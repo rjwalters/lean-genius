@@ -1,0 +1,62 @@
+import { z } from 'zod'
+
+// Username validation: 3-20 chars, alphanumeric + underscores, must start with letter
+export const usernameSchema = z
+  .string()
+  .min(3, 'Username must be at least 3 characters')
+  .max(20, 'Username must be at most 20 characters')
+  .regex(
+    /^[a-zA-Z][a-zA-Z0-9_]{2,19}$/,
+    'Username must start with a letter and contain only letters, numbers, and underscores'
+  )
+
+// Registration request
+export const registerRequestSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z
+    .string()
+    .min(8, 'Password must be at least 8 characters')
+    .max(128, 'Password must be less than 128 characters'),
+  username: usernameSchema,
+})
+
+export type RegisterRequest = z.infer<typeof registerRequestSchema>
+
+// Login request
+export const loginRequestSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(1, 'Password is required'),
+})
+
+export type LoginRequest = z.infer<typeof loginRequestSchema>
+
+// Comment request
+export const createCommentSchema = z.object({
+  proofId: z.string().min(1, 'Proof ID is required'),
+  lineNumber: z.number().int().positive('Line number must be positive'),
+  parentId: z.string().optional(),
+  content: z.string().min(1, 'Content is required').max(10000, 'Content too long'),
+})
+
+export type CreateCommentRequest = z.infer<typeof createCommentSchema>
+
+export const updateCommentSchema = z.object({
+  content: z.string().min(1, 'Content is required').max(10000, 'Content too long'),
+})
+
+export type UpdateCommentRequest = z.infer<typeof updateCommentSchema>
+
+// Error response
+export interface ErrorResponse {
+  error: string
+  details?: string
+}
+
+// Helper to format validation errors
+export function formatZodError(error: z.ZodError): ErrorResponse {
+  const issues = error.issues || []
+  return {
+    error: 'Validation error',
+    details: issues[0]?.message || 'Unknown validation error',
+  }
+}

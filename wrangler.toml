@@ -2,3 +2,9 @@
 name = "lean-genius"
 compatibility_date = "2024-01-01"
 pages_build_output_dir = "dist"
+
+# D1 Database for users, sessions, and comments
+[[d1_databases]]
+binding = "DB"
+database_name = "lean-genius-db"
+database_id = "2830c709-96a0-47d5-a5f6-b72fdf314a8a"

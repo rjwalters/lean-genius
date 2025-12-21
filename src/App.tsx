@@ -9,8 +9,10 @@ import {
   SheetContent,
   SheetTrigger,
 } from '@/components/ui/sheet'
+import { AuthProvider } from '@/contexts/AuthContext'
+import { UserMenu } from '@/components/auth'
 
-function App() {
+function AppContent() {
   const proofData = getProof('navier-stokes')
   const [selectedLine, setSelectedLine] = useState<number | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -99,6 +101,8 @@ function App() {
           </span>
           <span>{annotations.length} annotations</span>
         </div>
+
+        <UserMenu />
       </header>
 
       {/* Main content */}
@@ -129,27 +133,39 @@ function App() {
         <aside className="hidden md:block w-96 shrink-0 border-l border-border bg-card">
           <AnnotationPanel
             annotation={selectedAnnotation}
+            proofId={proof.id}
+            lineNumber={selectedLine}
             onClose={handleAnnotationClose}
           />
         </aside>
       </div>
 
       {/* Mobile annotation panel */}
-      {selectedAnnotation && (
+      {selectedLine && (
         <Sheet
-          open={!!selectedAnnotation}
+          open={!!selectedLine}
           onOpenChange={(open) => !open && handleAnnotationClose()}
           modal={false}
         >
           <SheetContent side="bottom" className="h-[70vh] p-0 md:hidden" showOverlay={false}>
             <AnnotationPanel
               annotation={selectedAnnotation}
+              proofId={proof.id}
+              lineNumber={selectedLine}
               onClose={handleAnnotationClose}
             />
           </SheetContent>
         </Sheet>
       )}
     </div>
+  )
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   )
 }
 
