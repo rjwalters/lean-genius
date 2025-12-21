@@ -1,0 +1,1224 @@
+[
+  {
+    "line": 56,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 58,
+    "tactic": "unfold one two add",
+    "goalsBefore": [
+      {
+        "hypotheses": [],
+        "conclusion": "(zero.succ + zero).succ = zero.succ.succ"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [],
+        "conclusion": "(zero.succ + zero).succ = zero.succ.succ"
+      }
+    ]
+  },
+  {
+    "line": 64,
+    "tactic": "rfl",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 77,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 78,
+    "tactic": "induction n with",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "zero + n = n"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "zero + n = n"
+      }
+    ]
+  },
+  {
+    "line": 79,
+    "tactic": "| zero =>",
+    "goalsBefore": [
+      {
+        "name": "zero",
+        "hypotheses": [],
+        "conclusion": "zero + zero = zero"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "zero",
+        "hypotheses": [],
+        "conclusion": "zero + zero = zero"
+      }
+    ]
+  },
+  {
+    "line": 79,
+    "tactic": "rfl",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 80,
+    "tactic": "| succ n ih =>",
+    "goalsBefore": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "zero + n = n"
+          }
+        ],
+        "conclusion": "zero + n.succ = n.succ"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "zero + n = n"
+          }
+        ],
+        "conclusion": "zero + n.succ = n.succ"
+      }
+    ]
+  },
+  {
+    "line": 81,
+    "tactic": "unfold add",
+    "goalsBefore": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "zero + n = n"
+          }
+        ],
+        "conclusion": "(zero + n).succ = n.succ"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "zero + n = n"
+          }
+        ],
+        "conclusion": "(zero + n).succ = n.succ"
+      }
+    ]
+  },
+  {
+    "line": 82,
+    "tactic": "rw [",
+    "goalsBefore": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "zero + n = n"
+          }
+        ],
+        "conclusion": "(zero + n).succ = n.succ"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "zero + n = n"
+          }
+        ],
+        "conclusion": "(zero + n).succ = n.succ"
+      }
+    ]
+  },
+  {
+    "line": 82,
+    "tactic": "ih",
+    "goalsBefore": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "zero + n = n"
+          }
+        ],
+        "conclusion": "n.succ = n.succ"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "zero + n = n"
+          }
+        ],
+        "conclusion": "n.succ = n.succ"
+      }
+    ]
+  },
+  {
+    "line": 82,
+    "tactic": "]",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 87,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 88,
+    "tactic": "induction m with",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "m"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "n.succ + m = (n + m).succ"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "m"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "n.succ + m = (n + m).succ"
+      }
+    ]
+  },
+  {
+    "line": 89,
+    "tactic": "| zero =>",
+    "goalsBefore": [
+      {
+        "name": "zero",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "n.succ + zero = (n + zero).succ"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "zero",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "n.succ + zero = (n + zero).succ"
+      }
+    ]
+  },
+  {
+    "line": 89,
+    "tactic": "rfl",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 90,
+    "tactic": "| succ m ih =>",
+    "goalsBefore": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "m"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "n.succ + m = (n + m).succ"
+          }
+        ],
+        "conclusion": "n.succ + m.succ = (n + m.succ).succ"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "m"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "n.succ + m = (n + m).succ"
+          }
+        ],
+        "conclusion": "n.succ + m.succ = (n + m.succ).succ"
+      }
+    ]
+  },
+  {
+    "line": 91,
+    "tactic": "unfold add",
+    "goalsBefore": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "m"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "n.succ + m = (n + m).succ"
+          }
+        ],
+        "conclusion": "(n.succ + m).succ = (n + m).succ.succ"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "m"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "n.succ + m = (n + m).succ"
+          }
+        ],
+        "conclusion": "(n.succ + m).succ = (n + m).succ.succ"
+      }
+    ]
+  },
+  {
+    "line": 92,
+    "tactic": "rw [",
+    "goalsBefore": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "m"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "n.succ + m = (n + m).succ"
+          }
+        ],
+        "conclusion": "(n.succ + m).succ = (n + m).succ.succ"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "m"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "n.succ + m = (n + m).succ"
+          }
+        ],
+        "conclusion": "(n.succ + m).succ = (n + m).succ.succ"
+      }
+    ]
+  },
+  {
+    "line": 92,
+    "tactic": "ih",
+    "goalsBefore": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "m"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "n.succ + m = (n + m).succ"
+          }
+        ],
+        "conclusion": "(n + m).succ.succ = (n + m).succ.succ"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "m"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "n.succ + m = (n + m).succ"
+          }
+        ],
+        "conclusion": "(n + m).succ.succ = (n + m).succ.succ"
+      }
+    ]
+  },
+  {
+    "line": 92,
+    "tactic": "]",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 95,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 96,
+    "tactic": "induction n with",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "m"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "n + m = m + n"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "m"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "n + m = m + n"
+      }
+    ]
+  },
+  {
+    "line": 97,
+    "tactic": "| zero =>",
+    "goalsBefore": [
+      {
+        "name": "zero",
+        "hypotheses": [
+          {
+            "names": [
+              "m"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "zero + m = m + zero"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "zero",
+        "hypotheses": [
+          {
+            "names": [
+              "m"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "zero + m = m + zero"
+      }
+    ]
+  },
+  {
+    "line": 98,
+    "tactic": "rw [",
+    "goalsBefore": [
+      {
+        "name": "zero",
+        "hypotheses": [
+          {
+            "names": [
+              "m"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "zero + m = m + zero"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "zero",
+        "hypotheses": [
+          {
+            "names": [
+              "m"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "zero + m = m + zero"
+      }
+    ]
+  },
+  {
+    "line": 98,
+    "tactic": "zero_add",
+    "goalsBefore": [
+      {
+        "name": "zero",
+        "hypotheses": [
+          {
+            "names": [
+              "m"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "m = m + zero"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "zero",
+        "hypotheses": [
+          {
+            "names": [
+              "m"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "m = m + zero"
+      }
+    ]
+  },
+  {
+    "line": 98,
+    "tactic": "]",
+    "goalsBefore": [
+      {
+        "name": "zero",
+        "hypotheses": [
+          {
+            "names": [
+              "m"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "m = m + zero"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "zero",
+        "hypotheses": [
+          {
+            "names": [
+              "m"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "m = m + zero"
+      }
+    ]
+  },
+  {
+    "line": 99,
+    "tactic": "rfl",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 100,
+    "tactic": "| succ n ih =>",
+    "goalsBefore": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "m",
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "n + m = m + n"
+          }
+        ],
+        "conclusion": "n.succ + m = m + n.succ"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "m",
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "n + m = m + n"
+          }
+        ],
+        "conclusion": "n.succ + m = m + n.succ"
+      }
+    ]
+  },
+  {
+    "line": 101,
+    "tactic": "rw [",
+    "goalsBefore": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "m",
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "n + m = m + n"
+          }
+        ],
+        "conclusion": "n.succ + m = m + n.succ"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "m",
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "n + m = m + n"
+          }
+        ],
+        "conclusion": "n.succ + m = m + n.succ"
+      }
+    ]
+  },
+  {
+    "line": 101,
+    "tactic": "succ_add,",
+    "goalsBefore": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "m",
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "n + m = m + n"
+          }
+        ],
+        "conclusion": "(n + m).succ = m + n.succ"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "m",
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "n + m = m + n"
+          }
+        ],
+        "conclusion": "(n + m).succ = m + n.succ"
+      }
+    ]
+  },
+  {
+    "line": 101,
+    "tactic": "add_succ,",
+    "goalsBefore": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "m",
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "n + m = m + n"
+          }
+        ],
+        "conclusion": "(n + m).succ = (m + n).succ"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "m",
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "n + m = m + n"
+          }
+        ],
+        "conclusion": "(n + m).succ = (m + n).succ"
+      }
+    ]
+  },
+  {
+    "line": 101,
+    "tactic": "ih",
+    "goalsBefore": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "m",
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "n + m = m + n"
+          }
+        ],
+        "conclusion": "(m + n).succ = (m + n).succ"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "m",
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "n + m = m + n"
+          }
+        ],
+        "conclusion": "(m + n).succ = (m + n).succ"
+      }
+    ]
+  },
+  {
+    "line": 101,
+    "tactic": "]",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 104,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 105,
+    "tactic": "induction c with",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "a",
+              "b",
+              "c"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "a + b + c = a + (b + c)"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "a",
+              "b",
+              "c"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "a + b + c = a + (b + c)"
+      }
+    ]
+  },
+  {
+    "line": 106,
+    "tactic": "| zero =>",
+    "goalsBefore": [
+      {
+        "name": "zero",
+        "hypotheses": [
+          {
+            "names": [
+              "a",
+              "b"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "a + b + zero = a + (b + zero)"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "zero",
+        "hypotheses": [
+          {
+            "names": [
+              "a",
+              "b"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "a + b + zero = a + (b + zero)"
+      }
+    ]
+  },
+  {
+    "line": 106,
+    "tactic": "rfl",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 107,
+    "tactic": "| succ c ih =>",
+    "goalsBefore": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "a",
+              "b",
+              "c"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "a + b + c = a + (b + c)"
+          }
+        ],
+        "conclusion": "a + b + c.succ = a + (b + c.succ)"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "a",
+              "b",
+              "c"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "a + b + c = a + (b + c)"
+          }
+        ],
+        "conclusion": "a + b + c.succ = a + (b + c.succ)"
+      }
+    ]
+  },
+  {
+    "line": 108,
+    "tactic": "simp only [add_succ]",
+    "goalsBefore": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "a",
+              "b",
+              "c"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "a + b + c = a + (b + c)"
+          }
+        ],
+        "conclusion": "(a + b + c).succ = (a + (b + c)).succ"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "a",
+              "b",
+              "c"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "a + b + c = a + (b + c)"
+          }
+        ],
+        "conclusion": "(a + b + c).succ = (a + (b + c)).succ"
+      }
+    ]
+  },
+  {
+    "line": 109,
+    "tactic": "rw [",
+    "goalsBefore": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "a",
+              "b",
+              "c"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "a + b + c = a + (b + c)"
+          }
+        ],
+        "conclusion": "(a + b + c).succ = (a + (b + c)).succ"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "a",
+              "b",
+              "c"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "a + b + c = a + (b + c)"
+          }
+        ],
+        "conclusion": "(a + b + c).succ = (a + (b + c)).succ"
+      }
+    ]
+  },
+  {
+    "line": 109,
+    "tactic": "ih",
+    "goalsBefore": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "a",
+              "b",
+              "c"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "a + b + c = a + (b + c)"
+          }
+        ],
+        "conclusion": "(a + (b + c)).succ = (a + (b + c)).succ"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "a",
+              "b",
+              "c"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "a + b + c = a + (b + c)"
+          }
+        ],
+        "conclusion": "(a + (b + c)).succ = (a + (b + c)).succ"
+      }
+    ]
+  },
+  {
+    "line": 109,
+    "tactic": "]",
+    "goalsBefore": [],
+    "goalsAfter": []
+  }
+]

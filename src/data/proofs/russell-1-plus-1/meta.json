@@ -7,8 +7,9 @@
     "author": "Bertrand Russell & Alfred North Whitehead (formalized in Lean 4)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Principia_Mathematica",
     "date": "1910",
-    "status": "pending",
-    "tags": ["foundations", "peano-arithmetic", "type-theory", "classic", "beginner"]
+    "status": "verified",
+    "tags": ["foundations", "peano-arithmetic", "type-theory", "classic", "beginner"],
+    "proofRepoPath": "Proofs/OnePlusOne.lean"
   },
   "overview": {
     "historicalContext": "In 1910, Bertrand Russell and Alfred North Whitehead published *Principia Mathematica*, an ambitious attempt to derive all mathematical truths from a small set of logical axioms. The famous claim that it took 362 pages to prove 1+1=2 has become a popular meme about mathematical rigor—though it's slightly misleading. Those 362 pages were building the entire logical machinery needed to even *state* what numbers are, not just proving one equation.\n\nRussell was motivated by the foundational crisis in mathematics, particularly paradoxes like his own Russell's Paradox which showed naive set theory was inconsistent. Principia introduced a ramified type theory to avoid these paradoxes, defining numbers as equivalence classes of sets with the same cardinality.",
