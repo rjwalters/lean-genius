@@ -78,4 +78,24 @@ export type AnnotationSignificance =
 export interface ProofData {
   proof: Proof
   annotations: Annotation[]
+  tacticStates?: TacticState[]
+}
+
+// LeanInk-extracted tactic goal states
+export interface TacticState {
+  line: number
+  tactic: string
+  goalsBefore: GoalState[]
+  goalsAfter: GoalState[]
+}
+
+export interface GoalState {
+  name?: string
+  hypotheses: Hypothesis[]
+  conclusion: string
+}
+
+export interface Hypothesis {
+  names: string[]
+  type: string
 }

@@ -4,8 +4,9 @@
   "slug": "sqrt2-irrational",
   "description": "A classic proof that the square root of 2 cannot be expressed as a ratio of integers, formalized in Lean 4.",
   "meta": {
-    "status": "pending",
-    "tags": ["number-theory", "classic", "irrationality"]
+    "status": "verified",
+    "tags": ["number-theory", "classic", "irrationality"],
+    "mathlib_version": "4.10.0"
   },
   "overview": {
     "historicalContext": "The discovery that $\\sqrt{2}$ is irrational is attributed to the ancient Greeks, possibly Hippasus of Metapontum around 500 BCE. The Pythagoreans had built their philosophy on the belief that all quantities could be expressed as ratios of whole numbers—\"all is number.\" The discovery that the diagonal of a unit square (which has length $\\sqrt{2}$ by the Pythagorean theorem) cannot be so expressed shattered this worldview.\n\nAccording to legend, Hippasus was drowned at sea for revealing this disturbing truth. Whether or not the legend is true, the mathematical crisis was real: it forced Greek mathematicians to distinguish between *number* (arithmetic) and *magnitude* (geometry), a distinction that would persist for two millennia until the rigorous construction of the real numbers in the 19th century.\n\nThis proof represents one of the earliest examples of proof by contradiction (*reductio ad absurdum*) in mathematics, and remains a cornerstone of mathematical education to this day.",
@@ -21,24 +22,31 @@
   "sections": [
     {
       "id": "setup",
-      "title": "Setup and Definitions",
+      "title": "Setup and Imports",
       "startLine": 1,
-      "endLine": 21,
-      "summary": "Import statements and definitions of irrationality and coprimality."
+      "endLine": 14,
+      "summary": "Module documentation and import statements."
     },
     {
       "id": "lemmas",
       "title": "Supporting Lemmas",
-      "startLine": 22,
-      "endLine": 50,
-      "summary": "Key lemmas connecting parity of integers to parity of their squares."
+      "startLine": 15,
+      "endLine": 35,
+      "summary": "Key lemmas: if n² is even then n is even, and divisibility properties."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
-      "startLine": 51,
-      "endLine": 98,
-      "summary": "The proof that sqrt(2) is irrational via contradiction from coprimality."
+      "startLine": 36,
+      "endLine": 47,
+      "summary": "The irrationality of √2 using Mathlib's formalization."
+    },
+    {
+      "id": "examples",
+      "title": "Example Proofs",
+      "startLine": 48,
+      "endLine": 104,
+      "summary": "Additional proofs demonstrating tactics: case analysis, induction, logic."
     }
   ],
   "conclusion": {
