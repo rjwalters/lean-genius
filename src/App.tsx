@@ -147,7 +147,14 @@ function AppContent() {
           onOpenChange={(open) => !open && handleAnnotationClose()}
           modal={false}
         >
-          <SheetContent side="bottom" className="h-[70vh] p-0 md:hidden" showOverlay={false} showCloseButton={false}>
+          <SheetContent
+            side="bottom"
+            className="h-[70vh] p-0 md:hidden"
+            showOverlay={false}
+            showCloseButton={false}
+            onInteractOutside={(e) => e.preventDefault()}
+            onPointerDownOutside={(e) => e.preventDefault()}
+          >
             <AnnotationPanel
               annotation={selectedAnnotation}
               proofId={proof.id}

@@ -59,7 +59,11 @@ export function AnnotationPanel({ annotation, proofId, lineNumber, onClose }: An
       {/* Tab header */}
       <div className="shrink-0 flex border-b border-border">
         <button
-          onClick={() => setActiveTab('annotation')}
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation()
+            setActiveTab('annotation')
+          }}
           className={cn(
             'flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium transition-colors',
             activeTab === 'annotation'
@@ -71,7 +75,11 @@ export function AnnotationPanel({ annotation, proofId, lineNumber, onClose }: An
           Annotation
         </button>
         <button
-          onClick={() => setActiveTab('comments')}
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation()
+            setActiveTab('comments')
+          }}
           className={cn(
             'flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium transition-colors',
             activeTab === 'comments'
@@ -82,7 +90,7 @@ export function AnnotationPanel({ annotation, proofId, lineNumber, onClose }: An
           <MessageSquare className="h-4 w-4" />
           Discussion
         </button>
-        <Button variant="ghost" size="icon" onClick={onClose} className="h-10 w-10 shrink-0">
+        <Button type="button" variant="ghost" size="icon" onClick={onClose} className="h-10 w-10 shrink-0">
           <X className="h-4 w-4" />
         </Button>
       </div>

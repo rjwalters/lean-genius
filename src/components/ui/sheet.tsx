@@ -48,6 +48,8 @@ function SheetContent({
   side = "right",
   showOverlay = true,
   showCloseButton = true,
+  onInteractOutside,
+  onPointerDownOutside,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Content> & {
   side?: "top" | "right" | "bottom" | "left"
@@ -59,6 +61,8 @@ function SheetContent({
       {showOverlay && <SheetOverlay />}
       <SheetPrimitive.Content
         data-slot="sheet-content"
+        onInteractOutside={onInteractOutside}
+        onPointerDownOutside={onPointerDownOutside}
         className={cn(
           "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out fixed z-50 flex flex-col gap-4 shadow-lg transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500",
           side === "right" &&

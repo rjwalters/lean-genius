@@ -18,4 +18,4 @@ PRAGMA foreign_keys=ON;--> statement-breakpoint
 CREATE UNIQUE INDEX `users_email_unique` ON `users` (`email`);--> statement-breakpoint
 CREATE INDEX `idx_users_email` ON `users` (`email`);--> statement-breakpoint
 CREATE INDEX `idx_users_oauth` ON `users` (`oauth_provider`,`oauth_id`);--> statement-breakpoint
-CREATE UNIQUE INDEX `idx_users_username_lower` ON `users` (`LOWER("username")`);
+CREATE UNIQUE INDEX `idx_users_username_lower` ON `users` (LOWER(`username`));

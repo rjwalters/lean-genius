@@ -5,6 +5,7 @@ const SESSION_KEY = 'leangenius_session_token'
 
 interface AuthContextType extends AuthState {
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>
+  loginWithGoogle: () => void
   register: (email: string, password: string, username: string) => Promise<{ success: boolean; error?: string }>
   logout: () => Promise<void>
   refreshUser: () => Promise<void>
@@ -19,14 +20,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isLoading: true,
   })
 
-  // Check session on mount
+  // Check session on mount and handle OAuth callback
   useEffect(() => {
     const checkSession = async () => {
-      const sessionToken = localStorage.getItem(SESSION_KEY)
+      // Check for OAuth callback token in URL
+      const urlParams = new URLSearchParams(window.location.search)
+      const oauthToken = urlParams.get('oauth_token')
+      const authError = urlParams.get('auth_error')
+
+      // Clear URL params without triggering navigation
+      if (oauthToken || authError) {
+        const newUrl = window.location.pathname
+        window.history.replaceState({}, '', newUrl)
+      }
+
+      // Handle OAuth error
+      if (authError) {
+        console.error('OAuth error:', authError)
+        setState({ user: null, isAuthenticated: false, isLoading: false })
+        return
+      }
+
+      // Use OAuth token if present, otherwise check localStorage
+      const sessionToken = oauthToken || localStorage.getItem(SESSION_KEY)
 
       if (!sessionToken) {
         setState({ user: null, isAuthenticated: false, isLoading: false })
         return
+      }
+
+      // Store the OAuth token if we got one
+      if (oauthToken) {
+        localStorage.setItem(SESSION_KEY, oauthToken)
       }
 
       try {
@@ -54,6 +79,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     checkSession()
+  }, [])
+
+  const loginWithGoogle = useCallback(() => {
+    // Redirect to Google OAuth endpoint
+    window.location.href = '/api/auth/google/login'
   }, [])
 
   const login = useCallback(async (email: string, password: string) => {
@@ -166,6 +196,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         ...state,
         login,
+        loginWithGoogle,
         register,
         logout,
         refreshUser,
