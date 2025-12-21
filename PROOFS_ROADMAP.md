@@ -9,6 +9,8 @@ A curated list of proofs to add to Lean Genius, selected for educational value, 
 | Infinitude of Primes | Number Theory | Verified | Beginner |
 | Irrationality of √2 | Number Theory | Pending | Beginner |
 | Navier-Stokes Regularity | PDEs | Pending | Advanced |
+| Russell's 1+1=2 | Foundations | Verified | Beginner |
+| Cantor's Diagonalization | Set Theory | Verified | Intermediate |
 
 ---
 

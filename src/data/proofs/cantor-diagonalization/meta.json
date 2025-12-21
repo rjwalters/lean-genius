@@ -1,0 +1,69 @@
+{
+  "id": "cantor-diagonalization",
+  "title": "Cantor's Diagonalization Theorem",
+  "slug": "cantor-diagonalization",
+  "description": "Cantor's elegant 1891 proof that the real numbers are uncountable, using the famous diagonal argument to show no enumeration can list all infinite binary sequences.",
+  "meta": {
+    "author": "Georg Cantor (1891)",
+    "date": "1891",
+    "status": "verified",
+    "tags": ["set-theory", "infinity", "cardinality", "classic", "intermediate"]
+  },
+  "overview": {
+    "historicalContext": "Georg Cantor published this proof in 1891, though he had already proven the uncountability of the reals in 1874 using a different argument. The diagonal method proved far more influential, becoming a fundamental technique in logic, computability theory, and mathematics.\n\nCantor's work was revolutionary and controversial. The idea that there could be different 'sizes' of infinity challenged centuries of mathematical intuition. Leopold Kronecker famously opposed Cantor's work, but David Hilbert declared: 'No one shall expel us from the paradise that Cantor has created.'\n\nThe diagonal argument's influence extends far beyond set theory. Alan Turing used a diagonal construction to prove the undecidability of the halting problem (1936). Kurt Godel used diagonalization in his incompleteness theorems (1931). The technique appears throughout theoretical computer science in proofs about computational limits.",
+    "problemStatement": "**Theorem (Cantor, 1891):** The set of real numbers is uncountable.\n\nMore precisely: there is no bijection between the natural numbers $\\mathbb{N}$ and the real numbers $\\mathbb{R}$. The 'infinity' of reals is strictly larger than the 'infinity' of naturals:\n\n$$|\\mathbb{N}| < |\\mathbb{R}|$$\n\nWe prove this using infinite binary sequences, which correspond to real numbers in $[0, 1]$ via binary expansion.",
+    "proofStrategy": "Cantor's diagonal argument is a proof by contradiction:\n\n1. **Assume** we have an enumeration $f : \\mathbb{N} \\to \\{0,1\\}^{\\mathbb{N}}$ of all binary sequences\n2. **Construct** a new sequence $d$ by 'flipping' the diagonal:\n   - $d(n) = \\neg f(n)(n)$ (the opposite of the $n$-th bit of the $n$-th sequence)\n3. **Observe** that $d$ differs from every sequence in our list:\n   - $d \\neq f(0)$ because they differ at position 0\n   - $d \\neq f(1)$ because they differ at position 1\n   - In general, $d \\neq f(n)$ because they differ at position $n$\n4. **Contradiction**: $d$ is a binary sequence not in our 'complete' enumeration\n\nTherefore, no such enumeration exists. The reals are uncountable.\n\nThe genius is in step 2: by looking at the diagonal, we ensure our new sequence differs from *every* listed sequence in at least one position.",
+    "keyInsights": [
+      "The diagonal construction guarantees disagreement with every listed sequence at a specific position",
+      "Binary sequences correspond to real numbers via $0.b_0b_1b_2\\ldots$ in binary",
+      "The same argument proves $|P(S)| > |S|$ for any set $S$ (the power set is always strictly larger)",
+      "This technique reappears in the halting problem, Godel's incompleteness, and Rice's theorem"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Binary Sequences",
+      "startLine": 15,
+      "endLine": 17,
+      "summary": "Defines binary sequences as functions from Nat to Bool, representing infinite strings of 0s and 1s."
+    },
+    {
+      "id": "diagonal",
+      "title": "The Diagonal Construction",
+      "startLine": 19,
+      "endLine": 27,
+      "summary": "Defines the diagonal function that flips each bit along the diagonal, and proves it differs from every input sequence."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Cantor's Main Theorem",
+      "startLine": 29,
+      "endLine": 44,
+      "summary": "Proves that no function from Nat to BinarySeq can be surjective, establishing uncountability."
+    },
+    {
+      "id": "corollary",
+      "title": "The Reals Are Uncountable",
+      "startLine": 46,
+      "endLine": 54,
+      "summary": "States the theorem in its classic form: no surjection from naturals to binary sequences exists."
+    },
+    {
+      "id": "powerset",
+      "title": "Power Set Generalization",
+      "startLine": 59,
+      "endLine": 75,
+      "summary": "Proves the general theorem that for any set S, there is no surjection from S to its power set P(S)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Cantor's diagonal argument is one of the most elegant proofs in mathematics. In just a few lines, it establishes that infinity comes in different sizes, a counterintuitive result that revolutionized our understanding of the infinite.\n\nThe proof's power lies in its self-referential construction: by looking at the diagonal, we create a witness that must differ from every sequence in the list. This technique is now a standard tool in mathematical logic.\n\nThe formalization shows how naturally this argument translates to type theory. Binary sequences are simply functions `Nat -> Bool`, and the diagonal is constructed by function application and negation.",
+    "implications": "Cantor's theorem has profound implications across mathematics and computer science:\n\n1. **Hierarchy of Infinities** - There are infinitely many distinct infinite cardinalities: $|\\mathbb{N}| < |\\mathbb{R}| < |P(\\mathbb{R})| < \\ldots$\n\n2. **Computability Limits** - The uncountability of reals implies most real numbers are not computable (only countably many programs exist)\n\n3. **The Continuum Hypothesis** - Cantor conjectured that no cardinality lies strictly between $|\\mathbb{N}|$ and $|\\mathbb{R}|$. This was proven independent of ZFC by Godel (1940) and Cohen (1963)\n\n4. **Diagonalization Everywhere** - The technique proves:\n   - Halting problem undecidability (Turing, 1936)\n   - Godel's incompleteness theorems (1931)\n   - Russell's paradox (naive set theory is inconsistent)\n   - Rice's theorem (semantic properties of programs are undecidable)",
+    "openQuestions": [
+      "The Continuum Hypothesis: Is there a cardinality between countable and continuum?",
+      "What is the cardinality of the set of all countable ordinals?",
+      "Which mathematical statements are independent of ZFC due to cardinality considerations?"
+    ]
+  }
+}
