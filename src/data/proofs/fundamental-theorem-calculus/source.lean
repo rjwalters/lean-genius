@@ -19,10 +19,14 @@
 import Mathlib.Analysis.Calculus.FDeriv.Basic
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.MeasureTheory.Integral.IntervalIntegral
-import Mathlib.Analysis.Calculus.Integral.FundThm
+import Mathlib.MeasureTheory.Integral.FundThmCalculus
+import Mathlib.Analysis.Calculus.MeanValue
+import Mathlib.Topology.Basic
 
 -- We work in the real numbers
-open MeasureTheory Set Filter Topology
+open MeasureTheory Set Filter Topology intervalIntegral
+
+namespace FundamentalTheoremCalculus
 
 /-
   Part 1: The Derivative of an Integral
@@ -38,19 +42,21 @@ noncomputable def integralFunction (f : ℝ → ℝ) (a : ℝ) : ℝ → ℝ :=
   fun x => ∫ t in a..x, f t
 
 -- FTC Part 1: The derivative of the integral function equals f
--- This is the key theorem from Mathlib
-theorem ftc_part1 {f : ℝ → ℝ} {a x : ℝ}
-    (hf : ContinuousAt f x) (hfi : IntervalIntegrable f volume a x) :
-    HasDerivAt (integralFunction f a) (f x) x :=
-  integral_hasDerivAt_right hfi hf
+-- Uses Mathlib's fundamental theorem
+theorem ftc_part1 {f : ℝ → ℝ} {a b : ℝ}
+    (hf_cont : ContinuousAt f b) (hf_int : IntervalIntegrable f volume a b)
+    (hf_meas : StronglyMeasurableAtFilter f (𝓝 b) volume) :
+    HasDerivAt (integralFunction f a) (f b) b :=
+  integral_hasDerivAt_right hf_int hf_meas hf_cont
 
 -- Corollary: Under stronger continuity, we get the classic statement
-theorem ftc_part1_continuous {f : ℝ → ℝ} {a b : ℝ}
-    (hf : Continuous f) (x : ℝ) (hx : x ∈ Icc a b) :
+theorem ftc_part1_continuous {f : ℝ → ℝ} {a : ℝ}
+    (hf : Continuous f) (x : ℝ) :
     HasDerivAt (integralFunction f a) (f x) x := by
   apply ftc_part1
   · exact hf.continuousAt
   · exact hf.intervalIntegrable a x
+  · exact hf.stronglyMeasurableAtFilter volume (𝓝 x)
 
 /-
   Part 2: The Integral of a Derivative
@@ -63,21 +69,21 @@ theorem ftc_part1_continuous {f : ℝ → ℝ} {a b : ℝ}
 -/
 
 -- FTC Part 2: The integral of a derivative equals the net change
-theorem ftc_part2 {F : ℝ → ℝ} {a b : ℝ}
-    (hF : ∀ x ∈ Icc a b, HasDerivAt F (deriv F x) x)
-    (hF' : ContinuousOn (deriv F) (Icc a b))
-    (hab : a ≤ b) :
-    ∫ x in a..b, deriv F x = F b - F a :=
-  integral_eq_sub_of_hasDerivAt (fun x hx => hF x (Icc_subset_Icc_left (le_refl a) hx))
-    (hF'.mono Ioc_subset_Icc_self) (intervalIntegrable_of_continuous hab hF')
-
--- Simplified version using Mathlib's interval integral theorem
-theorem ftc_part2_simple {F f : ℝ → ℝ} {a b : ℝ}
-    (hF : ∀ x ∈ [[a, b]], HasDerivAt F (f x) x)
-    (hf : ContinuousOn f [[a, b]]) :
+theorem ftc_part2 {F f : ℝ → ℝ} {a b : ℝ}
+    (hab : a ≤ b)
+    (hF_cont : ContinuousOn F (Icc a b))
+    (hF_deriv : ∀ x ∈ Ioo a b, HasDerivAt F (f x) x)
+    (hf_int : IntervalIntegrable f volume a b) :
     ∫ x in a..b, f x = F b - F a :=
-  intervalIntegral.integral_eq_sub_of_hasDerivAt hF
-    (hf.mono Ioc_subset_Icc_self) (hf.intervalIntegrable)
+  integral_eq_sub_of_hasDerivAt_of_le hab hF_cont hF_deriv hf_int
+
+-- Version without the a ≤ b assumption, using uIcc
+theorem ftc_part2_general {F f : ℝ → ℝ} {a b : ℝ}
+    (hF_cont : ContinuousOn F (uIcc a b))
+    (hF_deriv : ∀ x ∈ Ioo (min a b) (max a b), HasDerivWithinAt F (f x) (Ioi x) x)
+    (hf_int : IntervalIntegrable f volume a b) :
+    ∫ x in a..b, f x = F b - F a :=
+  integral_eq_sub_of_hasDeriv_right hF_cont hF_deriv hf_int
 
 /-
   The Unity of Calculus
@@ -100,9 +106,18 @@ theorem integral_is_antiderivative {f : ℝ → ℝ} {a : ℝ}
     (hf : Continuous f) :
     IsAntiderivative (integralFunction f a) f := by
   intro x
-  apply ftc_part1
-  · exact hf.continuousAt
-  · exact hf.intervalIntegrable a x
+  exact ftc_part1_continuous hf x
+
+-- Helper: a function with everywhere-zero derivative is constant
+-- This follows from the mean value theorem
+theorem hasDerivAt_zero_implies_constant {F : ℝ → ℝ}
+    (hF : ∀ x, HasDerivAt F 0 x) :
+    ∀ x y, F x = F y := by
+  have hdiff : Differentiable ℝ F := fun z => (hF z).differentiableAt
+  have hderiv : ∀ z, deriv F z = 0 := fun z => (hF z).deriv
+  intro x y
+  -- Use is_const_of_deriv_eq_zero
+  exact is_const_of_deriv_eq_zero hdiff hderiv x y
 
 -- Antiderivatives differ by a constant
 -- If F and G are both antiderivatives of f, then F - G is constant
@@ -110,39 +125,22 @@ theorem antiderivatives_differ_by_constant {F G f : ℝ → ℝ}
     (hF : IsAntiderivative F f) (hG : IsAntiderivative G f) :
     ∃ c : ℝ, ∀ x, F x - G x = c := by
   -- The derivative of (F - G) is f - f = 0
-  -- A function with zero derivative is constant
   use F 0 - G 0
   intro x
-  -- This follows from the mean value theorem
+  -- The derivative of F - G is 0
   have h : ∀ y, HasDerivAt (fun z => F z - G z) 0 y := by
     intro y
     have := (hF y).sub (hG y)
     simp at this
     exact this
   -- Apply the constant function theorem
-  have hconst := hasDerivAt_zero_constant h
-  exact hconst x 0
+  have hconst := hasDerivAt_zero_implies_constant h
+  have := hconst x 0
+  linarith
 
--- Helper: a function with everywhere-zero derivative is constant
-theorem hasDerivAt_zero_constant {F : ℝ → ℝ}
-    (hF : ∀ x, HasDerivAt F 0 x) :
-    ∀ x y, F x = F y := by
-  intro x y
-  by_cases hxy : x = y
-  · rw [hxy]
-  · -- Use the mean value theorem
-    have hderiv : ∀ z, HasDerivAt F 0 z := hF
-    have hcont : Continuous F := by
-      apply Differentiable.continuous
-      intro z
-      exact (hF z).differentiableAt
-    -- F' = 0 everywhere implies F is constant
-    have := Convex.is_const_of_fderivWithin_eq_zero convex_univ
-      (hcont.continuousOn) (fun z _ => (hF z).hasFDerivAt.hasFDerivWithinAt)
-      (fun z _ => by simp [ContinuousLinearMap.ext_iff]) (mem_univ x) (mem_univ y)
-    exact this
+end FundamentalTheoremCalculus
 
-#check ftc_part1
-#check ftc_part2
-#check integral_is_antiderivative
-#check antiderivatives_differ_by_constant
+#check FundamentalTheoremCalculus.ftc_part1
+#check FundamentalTheoremCalculus.ftc_part2
+#check FundamentalTheoremCalculus.integral_is_antiderivative
+#check FundamentalTheoremCalculus.antiderivatives_differ_by_constant

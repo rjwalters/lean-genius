@@ -30,6 +30,7 @@ const PROOFS_REPO_PATH = process.env.PROOFS_REPO_PATH || DEFAULT_PROOFS_PATH;
 // Mapping from Lean file names to frontend slug names
 const PROOF_MAPPING = {
   'Sqrt2Irrational': 'sqrt2-irrational',
+  'FundamentalTheoremCalculus': 'fundamental-theorem-calculus',
   // Add more mappings as proofs are added:
   // 'InfinitudePrimes': 'infinitude-primes',
   // 'CantorDiagonalization': 'cantor-diagonalization',
