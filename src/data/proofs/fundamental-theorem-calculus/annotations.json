@@ -1,0 +1,123 @@
+[
+  {
+    "id": "ann-integral-function",
+    "proofId": "fundamental-theorem-calculus",
+    "range": { "startLine": 28, "endLine": 30 },
+    "type": "definition",
+    "title": "The Integral Function F(x)",
+    "content": "We define **F(x) = ∫ₐˣ f(t) dt**, the cumulative integral from a fixed starting point $a$ to a variable endpoint $x$.\n\nThis function measures the 'accumulated area' under $f$ from $a$ to $x$. As $x$ increases, more area is accumulated (if $f$ is positive).\n\nThe key insight: F is constructed from f via integration, and we'll prove F' = f.",
+    "mathContext": "$F : \\mathbb{R} \\to \\mathbb{R}$\n\n$F(x) = \\int_a^x f(t)\\,dt$\n\nF(a) = 0 (integral over an empty interval)",
+    "significance": "critical",
+    "relatedConcepts": ["definite integral", "area under curve", "accumulation function"]
+  },
+  {
+    "id": "ann-ftc-part1",
+    "proofId": "fundamental-theorem-calculus",
+    "range": { "startLine": 35, "endLine": 39 },
+    "type": "theorem",
+    "title": "FTC Part 1: Derivative of an Integral",
+    "content": "**The derivative of the integral function equals the integrand.**\n\nIf $F(x) = \\int_a^x f(t)\\,dt$, then $F'(x) = f(x)$.\n\nThis is profound: integration 'builds' an antiderivative of any continuous function. Even if we can't write ∫f in closed form, the integral function exists and has f as its derivative.",
+    "mathContext": "$\\frac{d}{dx}\\int_a^x f(t)\\,dt = f(x)$\n\nIn Leibniz notation: $\\frac{d}{dx}F(x) = f(x)$",
+    "significance": "critical",
+    "relatedConcepts": ["antiderivative", "HasDerivAt", "differentiability"]
+  },
+  {
+    "id": "ann-continuity-requirement",
+    "proofId": "fundamental-theorem-calculus",
+    "range": { "startLine": 36, "endLine": 37 },
+    "type": "concept",
+    "title": "Continuity is Essential",
+    "content": "The theorem requires **continuity at x** (for the pointwise statement) or **continuity on [a,b]** (for the global statement).\n\nWhy? The proof relies on limits: as the integration interval shrinks, the average value approaches f(x). This requires continuity.\n\nFor discontinuous functions, we need the more sophisticated Lebesgue-Stieltjes integral and almost-everywhere differentiability.",
+    "mathContext": "$f$ continuous at $x$ means:\n\n$\\lim_{h \\to 0} f(x+h) = f(x)$\n\nThis ensures $\\lim_{h \\to 0} \\frac{1}{h}\\int_x^{x+h} f(t)\\,dt = f(x)$",
+    "significance": "key",
+    "relatedConcepts": ["continuity", "ContinuousAt", "limit definition"]
+  },
+  {
+    "id": "ann-ftc-part1-proof",
+    "proofId": "fundamental-theorem-calculus",
+    "range": { "startLine": 38, "endLine": 39 },
+    "type": "tactic",
+    "title": "Using Mathlib's integral_hasDerivAt_right",
+    "content": "Mathlib provides `integral_hasDerivAt_right`, which encapsulates the entire proof of FTC Part 1.\n\nThe proof internally:\n1. Forms the difference quotient $\\frac{F(x+h) - F(x)}{h} = \\frac{1}{h}\\int_x^{x+h} f(t)\\,dt$\n2. Applies the integral mean value theorem\n3. Uses continuity to take the limit as $h \\to 0$\n\nThis demonstrates how Mathlib builds complex theorems from foundational pieces.",
+    "mathContext": "The mean value theorem for integrals:\n\n$\\int_x^{x+h} f(t)\\,dt = f(c) \\cdot h$ for some $c$ between $x$ and $x+h$",
+    "significance": "key",
+    "relatedConcepts": ["difference quotient", "mean value theorem", "Mathlib integration"]
+  },
+  {
+    "id": "ann-ftc-part2",
+    "proofId": "fundamental-theorem-calculus",
+    "range": { "startLine": 58, "endLine": 65 },
+    "type": "theorem",
+    "title": "FTC Part 2: Evaluation Theorem",
+    "content": "**The integral of a derivative equals the net change.**\n\n$\\int_a^b F'(x)\\,dx = F(b) - F(a)$\n\nThis is the 'computational' part of FTC: it reduces the problem of integration (infinite sums) to simple evaluation at two points.\n\nEvery integral table and integration technique is ultimately about finding antiderivatives to apply this theorem.",
+    "mathContext": "$\\int_a^b f(x)\\,dx = F(b) - F(a)$\n\nwhere $F' = f$ on $[a, b]$\n\nOften written: $\\left[F(x)\\right]_a^b = F(b) - F(a)$",
+    "significance": "critical",
+    "relatedConcepts": ["antiderivative", "evaluation", "net change"]
+  },
+  {
+    "id": "ann-ftc-part2-conditions",
+    "proofId": "fundamental-theorem-calculus",
+    "range": { "startLine": 59, "endLine": 62 },
+    "type": "concept",
+    "title": "Conditions for FTC Part 2",
+    "content": "The theorem requires:\n\n1. **F is differentiable** on [a, b]\n2. **F' is continuous** on [a, b] (or at least integrable)\n3. **a ≤ b** (the integration bounds are in order)\n\nThe continuity of F' is crucial: if F' has 'bad' discontinuities, the integral may not equal F(b) - F(a).\n\nCounterexamples exist for merely differentiable F with discontinuous derivative.",
+    "mathContext": "We need:\n- $\\forall x \\in [a,b], \\text{HasDerivAt } F (F'(x)) x$\n- $F' \\in C([a,b])$ (continuous on closed interval)",
+    "significance": "key",
+    "relatedConcepts": ["differentiability", "ContinuousOn", "interval conditions"]
+  },
+  {
+    "id": "ann-antiderivative-def",
+    "proofId": "fundamental-theorem-calculus",
+    "range": { "startLine": 84, "endLine": 86 },
+    "type": "definition",
+    "title": "Antiderivative Definition",
+    "content": "**F is an antiderivative of f** if $F'(x) = f(x)$ for all $x$.\n\nAlso called a **primitive** or **indefinite integral** of f.\n\nThe key property: if F is an antiderivative of f, then so is F + C for any constant C. This is why indefinite integrals always have the '+C'.",
+    "mathContext": "$F$ is an antiderivative of $f$ means:\n\n$\\forall x, \\frac{d}{dx}F(x) = f(x)$\n\nNotation: $\\int f(x)\\,dx = F(x) + C$",
+    "significance": "key",
+    "relatedConcepts": ["derivative", "indefinite integral", "primitive function"]
+  },
+  {
+    "id": "ann-integral-antiderivative",
+    "proofId": "fundamental-theorem-calculus",
+    "range": { "startLine": 89, "endLine": 95 },
+    "type": "theorem",
+    "title": "Every Continuous Function Has an Antiderivative",
+    "content": "**The integral function is an antiderivative of f.**\n\nThis is a profound existence theorem: every continuous function has an antiderivative (the integral function), even if we can't express it in terms of elementary functions.\n\nExample: $\\int e^{-x^2}dx$ has no closed form, but $F(x) = \\int_0^x e^{-t^2}dt$ is still a perfectly valid antiderivative (related to the error function erf).",
+    "mathContext": "For continuous $f$:\n\n$F(x) = \\int_a^x f(t)\\,dt$ satisfies $F' = f$\n\nProof: Apply FTC Part 1 at each point.",
+    "significance": "critical",
+    "relatedConcepts": ["existence theorem", "error function", "non-elementary antiderivatives"]
+  },
+  {
+    "id": "ann-uniqueness",
+    "proofId": "fundamental-theorem-calculus",
+    "range": { "startLine": 98, "endLine": 104 },
+    "type": "theorem",
+    "title": "Antiderivatives Differ by Constants",
+    "content": "**If F and G are both antiderivatives of f, then F - G is constant.**\n\nThis explains the '+C' in indefinite integrals:\n- F and G both satisfy F' = f and G' = f\n- So (F - G)' = 0\n- A function with zero derivative is constant (by MVT)\n- Therefore F = G + C\n\nThis means antiderivatives are 'unique up to a constant'.",
+    "mathContext": "$F' = G' = f \\Rightarrow (F - G)' = 0$\n\n$\\Rightarrow F - G = C$ (constant)\n\nSo $\\int f\\,dx$ represents a *family* of functions differing by constants.",
+    "significance": "critical",
+    "relatedConcepts": ["mean value theorem", "constant function", "uniqueness"]
+  },
+  {
+    "id": "ann-zero-derivative",
+    "proofId": "fundamental-theorem-calculus",
+    "range": { "startLine": 107, "endLine": 122 },
+    "type": "lemma",
+    "title": "Zero Derivative Implies Constant",
+    "content": "**If F'(x) = 0 for all x, then F is constant.**\n\nThis is a consequence of the Mean Value Theorem:\n\nFor any two points x and y, there exists c between them with\n$F(y) - F(x) = F'(c)(y - x) = 0 \\cdot (y - x) = 0$\n\nSo F(y) = F(x) for all x, y.\n\nThis lemma is essential for proving uniqueness of antiderivatives.",
+    "mathContext": "Mean Value Theorem: $F(y) - F(x) = F'(c)(y - x)$ for some $c \\in (x, y)$\n\nIf $F' \\equiv 0$, then $F(y) = F(x)$ for all $x, y$.",
+    "significance": "key",
+    "relatedConcepts": ["mean value theorem", "constant function", "convexity"]
+  },
+  {
+    "id": "ann-inverse-operations",
+    "proofId": "fundamental-theorem-calculus",
+    "range": { "startLine": 74, "endLine": 82 },
+    "type": "insight",
+    "title": "The Unity of Calculus",
+    "content": "**Differentiation and integration are inverse operations.**\n\nIntegrate then differentiate: $\\frac{d}{dx}\\int_a^x f = f$ (FTC Part 1)\n\nDifferentiate then integrate: $\\int_a^x F' = F - F(a)$ (FTC Part 2)\n\nThis 'almost inverse' relationship (up to the constant F(a)) unifies the two branches of calculus that Newton and Leibniz developed from completely different perspectives.\n\nNewton saw derivatives as velocities and integrals as areas. Leibniz saw both through infinitesimals. FTC shows they were studying the same thing.",
+    "mathContext": "$D$ = differentiation, $I_a$ = integration from $a$\n\n$D \\circ I_a = \\text{id}$ (FTC Part 1)\n\n$I_a \\circ D = \\text{id} + \\text{const}$ (FTC Part 2, roughly)",
+    "significance": "critical",
+    "relatedConcepts": ["inverse functions", "Newton", "Leibniz", "calculus unification"]
+  }
+]

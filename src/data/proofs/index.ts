@@ -3,6 +3,7 @@ import { sqrt2Data } from './sqrt2-irrational'
 import { infinitudePrimesData } from './infinitude-primes'
 import { russell1Plus1Data } from './russell-1-plus-1'
 import { cantorDiagonalizationData } from './cantor-diagonalization'
+import { fundamentalTheoremCalculusData } from './fundamental-theorem-calculus'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -11,6 +12,7 @@ export const proofs: Record<string, ProofData> = {
   'infinitude-primes': infinitudePrimesData,
   'russell-1-plus-1': russell1Plus1Data,
   'cantor-diagonalization': cantorDiagonalizationData,
+  'fundamental-theorem-calculus': fundamentalTheoremCalculusData,
 }
 
 export function getProof(slug: string): ProofData | undefined {
