@@ -11,6 +11,7 @@ A curated list of proofs to add to Lean Genius, selected for educational value, 
 | Navier-Stokes Regularity | PDEs | Pending | Advanced |
 | Russell's 1+1=2 | Foundations | Verified | Beginner |
 | Cantor's Diagonalization | Set Theory | Verified | Intermediate |
+| Fundamental Theorem of Calculus | Analysis | Verified | Intermediate |
 
 ---
 
