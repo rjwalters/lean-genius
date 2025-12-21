@@ -69,4 +69,38 @@ src/
 functions/            # Cloudflare Workers API endpoints
 shared/               # Shared code between frontend and backend
 drizzle/              # Database migrations
+scripts/              # Build and import scripts
 ```
+
+## Working with Proofs
+
+Lean proofs are maintained in a separate repository to isolate the Lean toolchain (elan, lake, Mathlib) from the web stack.
+
+**Proofs Repository:** [lean-genius-proofs](https://github.com/rjwalters/lean-genius-proofs)
+
+### Importing Proof Data
+
+After running LeanInk on a proof in the proofs repo, import the tactic states:
+
+```bash
+# List available proofs
+node scripts/import-proof.cjs --list
+
+# Import a specific proof
+node scripts/import-proof.cjs Sqrt2Irrational
+
+# Import all proofs with LeanInk output
+node scripts/import-proof.cjs --all
+```
+
+### Adding a New Proof
+
+1. Create the Lean proof in `lean-genius-proofs/Proofs/`
+2. Run LeanInk: `lake exe leanink Proofs/YourProof.lean`
+3. Create the frontend structure in `src/data/proofs/your-proof/`:
+   - `meta.json` - Proof metadata, sections, overview
+   - `source.lean` - The Lean source code
+   - `annotations.json` - Line-by-line annotations
+   - `index.ts` - Export the proof data
+4. Run `node scripts/import-proof.cjs YourProof` to import tactic states
+5. Add to `src/data/proofs/index.ts`
