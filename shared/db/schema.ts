@@ -10,6 +10,7 @@ export const users = sqliteTable('users', {
   email: text('email').unique().notNull(),
   passwordHash: text('password_hash'), // nullable for OAuth-only users
   username: text('username').notNull(),
+  usernameChangedAt: integer('username_changed_at'), // For 30-day cooldown
   // OAuth fields
   oauthProvider: text('oauth_provider'), // 'google' | null
   oauthId: text('oauth_id'), // Provider's user ID

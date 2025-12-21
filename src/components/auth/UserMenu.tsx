@@ -2,11 +2,13 @@ import { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { Button } from '@/components/ui/button'
 import { AuthModal } from './AuthModal'
-import { User, LogOut } from 'lucide-react'
+import { ProfileModal } from './ProfileModal'
+import { User, LogOut, Settings } from 'lucide-react'
 
 export function UserMenu() {
   const { user, isAuthenticated, isLoading, logout } = useAuth()
   const [authModalOpen, setAuthModalOpen] = useState(false)
+  const [profileModalOpen, setProfileModalOpen] = useState(false)
 
   if (isLoading) {
     return (
@@ -32,18 +34,29 @@ export function UserMenu() {
   }
 
   return (
-    <div className="flex items-center gap-2">
-      <span className="text-sm text-muted-foreground hidden sm:inline">
-        {user?.username}
-      </span>
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={() => logout()}
-        title="Sign out"
-      >
-        <LogOut className="h-4 w-4" />
-      </Button>
-    </div>
+    <>
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-muted-foreground hidden sm:inline">
+          {user?.username}
+        </span>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setProfileModalOpen(true)}
+          title="Profile settings"
+        >
+          <Settings className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => logout()}
+          title="Sign out"
+        >
+          <LogOut className="h-4 w-4" />
+        </Button>
+      </div>
+      <ProfileModal open={profileModalOpen} onOpenChange={setProfileModalOpen} />
+    </>
   )
 }
