@@ -1,0 +1,75 @@
+{
+  "id": "navier-stokes-regularity",
+  "title": "Global Regularity for Navier-Stokes",
+  "slug": "navier-stokes",
+  "description": "A formalized proof claiming to establish global regularity for the 3D incompressible Navier-Stokes equations - one of the Millennium Prize Problems.",
+  "meta": {
+    "status": "pending",
+    "tags": ["PDE", "fluid-dynamics", "millennium-problem", "regularity"]
+  },
+  "sections": [
+    {
+      "id": "part-1",
+      "title": "Part I: Numerical Constants",
+      "startLine": 37,
+      "endLine": 96,
+      "summary": "Establishes fundamental constants including the spectral gap (first eigenvalue on the 3-torus), Faber-Krahn constant, and proves the key numerical inequality that drives the depletion mechanism."
+    },
+    {
+      "id": "part-2",
+      "title": "Part II: Basic Inequalities",
+      "startLine": 98,
+      "endLine": 165,
+      "summary": "Proves foundational inequalities including Bernoulli's inequality, backward growth estimates, and shows exponential dominates polynomial growth."
+    },
+    {
+      "id": "part-3",
+      "title": "Part III: Ancient Solutions and ESS Theorem",
+      "startLine": 167,
+      "endLine": 363,
+      "summary": "Defines the structure of ancient solutions (solutions existing for all backward time) and proves the ESS (Escauriaza-Seregin-Šverák) theorem: bounded ancient solutions must be constant, ruling out Type I blowup."
+    },
+    {
+      "id": "part-4",
+      "title": "Part IV: NS Solution Structure",
+      "startLine": 365,
+      "endLine": 408,
+      "summary": "Defines the mathematical structure of Navier-Stokes solutions including enstrophy, vorticity, palinstrophy, and the stretching term with their physical constraints."
+    },
+    {
+      "id": "part-5",
+      "title": "Part V: Type II Scenario",
+      "startLine": 410,
+      "endLine": 440,
+      "summary": "Characterizes Type II blowup behavior where the blowup rate is slower than the self-similar (Type I) rate."
+    },
+    {
+      "id": "part-6",
+      "title": "Part VI: Stability and No Blowup",
+      "startLine": 442,
+      "endLine": 653,
+      "summary": "The core argument: proves that under physical axioms, enstrophy remains bounded which by BKM criterion implies global regularity."
+    },
+    {
+      "id": "part-7",
+      "title": "Part VII: NS Axioms and Main Theorem",
+      "startLine": 655,
+      "endLine": 719,
+      "summary": "Formalizes the physical axioms (spectral gap, theta dynamics, blowup rate bounds, BKM criterion) and states the main regularity theorem."
+    },
+    {
+      "id": "part-8",
+      "title": "Part VIII: Concentration via Supremum and CKN Dimension",
+      "startLine": 721,
+      "endLine": 1403,
+      "summary": "Establishes concentration inequalities, CKN (Caffarelli-Kohn-Nirenberg) dimensional analysis, and V-cell foundations for the geometric depletion argument."
+    },
+    {
+      "id": "part-9",
+      "title": "Part IX: Complete Theorem",
+      "startLine": 1405,
+      "endLine": 1541,
+      "summary": "Assembles the complete proof: combines ESS theorem (no Type I), Type II dynamics, spectral gap depletion, and BKM criterion to conclude global regularity."
+    }
+  ]
+}
