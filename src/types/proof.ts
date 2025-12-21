@@ -31,6 +31,8 @@ export interface ProofMeta {
   mathlib_version?: string
   status: 'verified' | 'pending' | 'disputed'
   tags: string[]
+  /** Path to verified Lean source in lean-genius-proofs repo (e.g., "Proofs/Sqrt2Irrational.lean") */
+  proofRepoPath?: string
 }
 
 export interface ProofSection {
