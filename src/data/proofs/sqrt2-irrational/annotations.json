@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ann-sqrt2-setup",
+    "proofId": "sqrt2-irrational",
+    "range": { "startLine": 1, "endLine": 10 },
+    "type": "definition",
+    "title": "Proof Setup",
+    "content": "We begin by assuming $\\sqrt{2}$ is rational, meaning it can be written as $p/q$ where $p$ and $q$ are coprime integers (no common factors). This is the standard setup for a proof by contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["proof by contradiction", "coprime", "rational numbers"]
+  },
+  {
+    "id": "ann-sqrt2-even-square",
+    "proofId": "sqrt2-irrational",
+    "range": { "startLine": 25, "endLine": 35 },
+    "type": "lemma",
+    "title": "Even Squares Imply Even Roots",
+    "content": "A key lemma: if $n^2$ is even, then $n$ must be even. The contrapositive is easier to prove: if $n$ is odd, then $n^2$ is odd. Since $(2k+1)^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1$.",
+    "mathContext": "This lemma relies on the closure of odd numbers under multiplication. The product of odd numbers is always odd.",
+    "significance": "critical",
+    "relatedConcepts": ["parity", "contrapositive", "closure properties"]
+  },
+  {
+    "id": "ann-sqrt2-main",
+    "proofId": "sqrt2-irrational",
+    "range": { "startLine": 55, "endLine": 75 },
+    "type": "theorem",
+    "title": "The Irrationality of Square Root of 2",
+    "content": "From $p^2 = 2q^2$, we deduce $p$ is even. Writing $p = 2k$, we get $4k^2 = 2q^2$, so $q^2 = 2k^2$, making $q$ even. But both $p$ and $q$ being even contradicts coprimality. Therefore, no such $p, q$ exist.",
+    "mathContext": "This is an instance of infinite descent: if a solution exists, a smaller one must exist, ad infinitum—impossible for positive integers.",
+    "significance": "critical",
+    "prerequisites": ["ann-sqrt2-even-square"],
+    "relatedConcepts": ["infinite descent", "fundamental theorem of arithmetic"]
+  }
+]

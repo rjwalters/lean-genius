@@ -1,0 +1,51 @@
+{
+  "id": "sqrt2-irrational",
+  "title": "Irrationality of Square Root of 2",
+  "slug": "sqrt2-irrational",
+  "description": "A classic proof that the square root of 2 cannot be expressed as a ratio of integers, formalized in Lean 4.",
+  "meta": {
+    "status": "pending",
+    "tags": ["number-theory", "classic", "irrationality"]
+  },
+  "overview": {
+    "historicalContext": "The discovery that $\\sqrt{2}$ is irrational is attributed to the ancient Greeks, possibly Hippasus of Metapontum around 500 BCE. According to legend, this discovery was so shocking to the Pythagoreans—who believed all numbers could be expressed as ratios—that Hippasus was drowned at sea for revealing it.\n\nThis proof represents one of the earliest examples of proof by contradiction in mathematics, and remains a cornerstone of mathematical education to this day.",
+    "problemStatement": "Prove that there do not exist integers $p$ and $q$ with $q \\neq 0$ such that:\n\n$$\\frac{p}{q} = \\sqrt{2}$$\n\nEquivalently, prove that $\\sqrt{2}$ is irrational.",
+    "proofStrategy": "The proof proceeds by contradiction:\n\n1. Assume $\\sqrt{2} = p/q$ where $p, q$ are integers with no common factors\n2. Then $p^2 = 2q^2$, so $p^2$ is even\n3. Therefore $p$ is even, say $p = 2k$\n4. Then $4k^2 = 2q^2$, so $q^2 = 2k^2$, meaning $q$ is also even\n5. But this contradicts our assumption that $p, q$ have no common factors",
+    "keyInsights": [
+      "The proof relies on the fundamental theorem of arithmetic: every integer has a unique prime factorization.",
+      "If $p^2$ is even, then $p$ must be even (the square of an odd number is odd).",
+      "The contradiction arises from the impossibility of a fraction being in lowest terms while both numerator and denominator are even."
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup and Definitions",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Import statements and basic definitions for working with rationals and irrationals."
+    },
+    {
+      "id": "lemmas",
+      "title": "Supporting Lemmas",
+      "startLine": 21,
+      "endLine": 50,
+      "summary": "Key lemmas about even numbers and their squares."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 51,
+      "endLine": 80,
+      "summary": "The proof that sqrt(2) is irrational using contradiction."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization demonstrates the power of proof by contradiction. The Lean proof closely mirrors the classical argument, showing that the assumption of rationality leads to an infinite descent—a logical impossibility.",
+    "implications": "The irrationality of $\\sqrt{2}$ has profound implications:\n\n1. **Incommensurable magnitudes exist** — The diagonal of a unit square cannot be measured by any common unit with its sides.\n\n2. **The rationals are incomplete** — There are 'gaps' in the rational number line that require irrational numbers to fill.\n\n3. **Foundation for real analysis** — Understanding irrational numbers is essential for developing the real number system.",
+    "openQuestions": [
+      "The same technique can be extended to prove the square root of any prime is irrational.",
+      "What about cube root of 2? The proof requires different techniques (algebraic number theory)."
+    ]
+  }
+}
