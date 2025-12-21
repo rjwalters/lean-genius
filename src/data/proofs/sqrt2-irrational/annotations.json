@@ -1,35 +1,127 @@
 [
   {
-    "id": "ann-sqrt2-setup",
+    "id": "ann-sqrt2-imports",
     "proofId": "sqrt2-irrational",
-    "range": { "startLine": 1, "endLine": 10 },
+    "range": { "startLine": 1, "endLine": 3 },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import from Mathlib: `Data.Rat.Basic` for rational number operations, `Data.Int.Parity` for even/odd predicates on integers, and `Tactic` for proof automation.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "Lean 4", "tactic mode"]
+  },
+  {
+    "id": "ann-sqrt2-irrational-def",
+    "proofId": "sqrt2-irrational",
+    "range": { "startLine": 16, "endLine": 17 },
     "type": "definition",
-    "title": "Proof Setup",
-    "content": "We begin by assuming $\\sqrt{2}$ is rational, meaning it can be written as $p/q$ where $p$ and $q$ are coprime integers (no common factors). This is the standard setup for a proof by contradiction.",
+    "title": "Definition of Irrational",
+    "content": "A real number $x$ is **irrational** if for all integers $p, q$ with $q \\neq 0$, we have $x \\neq p/q$. This is the negation of rationality: there is no way to express $x$ as a ratio of integers.",
+    "mathContext": "In Lean, this is a universal statement: `∀ p q : ℤ, q ≠ 0 → x ≠ p / q`. The proof will show this holds for $x = \\sqrt{2}$ by contradiction.",
     "significance": "key",
-    "relatedConcepts": ["proof by contradiction", "coprime", "rational numbers"]
+    "relatedConcepts": ["rational numbers", "negation", "universal quantification"]
   },
   {
-    "id": "ann-sqrt2-even-square",
+    "id": "ann-sqrt2-coprime-def",
     "proofId": "sqrt2-irrational",
-    "range": { "startLine": 25, "endLine": 35 },
+    "range": { "startLine": 19, "endLine": 20 },
+    "type": "definition",
+    "title": "Definition of Coprime",
+    "content": "Two integers $p$ and $q$ are **coprime** (or relatively prime) if their greatest common divisor is 1: $\\gcd(p, q) = 1$. Equivalently, they share no prime factors.",
+    "mathContext": "Every rational number can be written in lowest terms $p/q$ where $p$ and $q$ are coprime. This is crucial for the contradiction—if both are even, they're not coprime.",
+    "significance": "key",
+    "relatedConcepts": ["GCD", "lowest terms", "prime factorization"]
+  },
+  {
+    "id": "ann-sqrt2-even-of-even-sq",
+    "proofId": "sqrt2-irrational",
+    "range": { "startLine": 24, "endLine": 31 },
     "type": "lemma",
-    "title": "Even Squares Imply Even Roots",
-    "content": "A key lemma: if $n^2$ is even, then $n$ must be even. The contrapositive is easier to prove: if $n$ is odd, then $n^2$ is odd. Since $(2k+1)^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1$.",
-    "mathContext": "This lemma relies on the closure of odd numbers under multiplication. The product of odd numbers is always odd.",
+    "title": "Even Square Implies Even Root",
+    "content": "**The key lemma**: If $n^2$ is even, then $n$ is even. The proof uses the contrapositive: assume $n$ is odd, show $n^2$ is odd, contradicting that $n^2$ is even.",
+    "mathContext": "Why does odd$^2$ = odd? Write $n = 2k+1$. Then $n^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1$, which is odd. The tactic `Odd.pow` handles this in Lean.",
     "significance": "critical",
-    "relatedConcepts": ["parity", "contrapositive", "closure properties"]
+    "relatedConcepts": ["contrapositive", "parity", "proof by contradiction"]
   },
   {
-    "id": "ann-sqrt2-main",
+    "id": "ann-sqrt2-odd-sq",
     "proofId": "sqrt2-irrational",
-    "range": { "startLine": 55, "endLine": 75 },
+    "range": { "startLine": 33, "endLine": 38 },
+    "type": "lemma",
+    "title": "Square of Odd is Odd",
+    "content": "A direct proof that odd$^2$ = odd. If $n = 2k + 1$ (odd), then $n^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1$, which has the form $2m + 1$ (odd).",
+    "mathContext": "The `ring` tactic handles the algebraic manipulation automatically. The `obtain` tactic destructs the existential in the definition of `Odd`.",
+    "significance": "supporting",
+    "prerequisites": ["ann-sqrt2-even-of-even-sq"],
+    "relatedConcepts": ["algebraic manipulation", "existential elimination"]
+  },
+  {
+    "id": "ann-sqrt2-two-dvd-iff",
+    "proofId": "sqrt2-irrational",
+    "range": { "startLine": 40, "endLine": 49 },
+    "type": "lemma",
+    "title": "Divisibility by 2 Preserved by Squaring",
+    "content": "A bidirectional lemma: $2 \\mid n^2 \\iff 2 \\mid n$. The forward direction uses `even_of_even_sq`; the reverse is direct calculation: if $n = 2k$, then $n^2 = 4k^2 = 2(2k^2)$.",
+    "mathContext": "The `↔` (iff) in Lean requires proving both directions. The `constructor` tactic splits this into two goals.",
+    "significance": "key",
+    "prerequisites": ["ann-sqrt2-even-of-even-sq"],
+    "relatedConcepts": ["biconditional", "divisibility"]
+  },
+  {
+    "id": "ann-sqrt2-theorem-setup",
+    "proofId": "sqrt2-irrational",
+    "range": { "startLine": 53, "endLine": 59 },
     "type": "theorem",
-    "title": "The Irrationality of Square Root of 2",
-    "content": "From $p^2 = 2q^2$, we deduce $p$ is even. Writing $p = 2k$, we get $4k^2 = 2q^2$, so $q^2 = 2k^2$, making $q$ even. But both $p$ and $q$ being even contradicts coprimality. Therefore, no such $p, q$ exist.",
-    "mathContext": "This is an instance of infinite descent: if a solution exists, a smaller one must exist, ad infinitum—impossible for positive integers.",
+    "title": "Main Theorem: Setup",
+    "content": "The theorem states $\\sqrt{2}$ is irrational. We assume the contrary: there exist integers $p, q$ with $q \\neq 0$ and $\\sqrt{2} = p/q$. We may assume $p, q$ are coprime (in lowest terms).",
+    "mathContext": "The WLOG (without loss of generality) step to assume coprimality is marked `sorry` here—a complete proof would reduce any $p/q$ to lowest terms first.",
     "significance": "critical",
-    "prerequisites": ["ann-sqrt2-even-square"],
-    "relatedConcepts": ["infinite descent", "fundamental theorem of arithmetic"]
+    "relatedConcepts": ["proof by contradiction", "WLOG", "lowest terms"]
+  },
+  {
+    "id": "ann-sqrt2-squaring",
+    "proofId": "sqrt2-irrational",
+    "range": { "startLine": 61, "endLine": 65 },
+    "type": "tactic",
+    "title": "Squaring Both Sides",
+    "content": "From $\\sqrt{2} = p/q$, we square both sides to get $2 = p^2/q^2$, hence $p^2 = 2q^2$. This eliminates the square root and gives us an equation in integers.",
+    "mathContext": "This is the key algebraic step. In Lean, `congrArg (·^2)` applies squaring to both sides of an equation.",
+    "significance": "key",
+    "relatedConcepts": ["algebraic manipulation", "congruence"]
+  },
+  {
+    "id": "ann-sqrt2-p-even",
+    "proofId": "sqrt2-irrational",
+    "range": { "startLine": 67, "endLine": 74 },
+    "type": "insight",
+    "title": "p Must Be Even",
+    "content": "From $p^2 = 2q^2$, we see $p^2$ is even (it's $2 \\times$ something). By our key lemma, this means $p$ itself is even. We write $p = 2k$ for some integer $k$.",
+    "mathContext": "The `obtain ⟨k, hk⟩` tactic extracts the witness $k$ from the existential statement that $p$ is even.",
+    "significance": "critical",
+    "prerequisites": ["ann-sqrt2-even-of-even-sq", "ann-sqrt2-squaring"],
+    "relatedConcepts": ["parity", "existential witness"]
+  },
+  {
+    "id": "ann-sqrt2-q-even",
+    "proofId": "sqrt2-irrational",
+    "range": { "startLine": 76, "endLine": 85 },
+    "type": "insight",
+    "title": "q Must Also Be Even",
+    "content": "Substituting $p = 2k$ into $p^2 = 2q^2$ gives $4k^2 = 2q^2$, so $q^2 = 2k^2$. Now $q^2$ is even, so by the same lemma, $q$ is even.",
+    "mathContext": "We've now shown both $p$ and $q$ are divisible by 2. But we assumed they were coprime—a contradiction is imminent!",
+    "significance": "critical",
+    "prerequisites": ["ann-sqrt2-p-even"],
+    "relatedConcepts": ["substitution", "chain of reasoning"]
+  },
+  {
+    "id": "ann-sqrt2-contradiction",
+    "proofId": "sqrt2-irrational",
+    "range": { "startLine": 87, "endLine": 96 },
+    "type": "theorem",
+    "title": "The Contradiction",
+    "content": "If $p$ and $q$ are both even, then $2$ divides both, so $\\gcd(p, q) \\geq 2$. But we assumed $\\gcd(p, q) = 1$ (coprimality). Contradiction! Therefore, our assumption that $\\sqrt{2}$ is rational must be false.",
+    "mathContext": "This completes the proof by contradiction. The `exact this h_coprime` line applies the negation of coprimality to the assumed coprimality, deriving `False`.",
+    "significance": "critical",
+    "prerequisites": ["ann-sqrt2-q-even", "ann-sqrt2-coprime-def"],
+    "relatedConcepts": ["proof by contradiction", "GCD", "QED"]
   }
 ]

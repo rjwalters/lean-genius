@@ -8,13 +8,14 @@
     "tags": ["number-theory", "classic", "irrationality"]
   },
   "overview": {
-    "historicalContext": "The discovery that $\\sqrt{2}$ is irrational is attributed to the ancient Greeks, possibly Hippasus of Metapontum around 500 BCE. According to legend, this discovery was so shocking to the Pythagoreans—who believed all numbers could be expressed as ratios—that Hippasus was drowned at sea for revealing it.\n\nThis proof represents one of the earliest examples of proof by contradiction in mathematics, and remains a cornerstone of mathematical education to this day.",
-    "problemStatement": "Prove that there do not exist integers $p$ and $q$ with $q \\neq 0$ such that:\n\n$$\\frac{p}{q} = \\sqrt{2}$$\n\nEquivalently, prove that $\\sqrt{2}$ is irrational.",
-    "proofStrategy": "The proof proceeds by contradiction:\n\n1. Assume $\\sqrt{2} = p/q$ where $p, q$ are integers with no common factors\n2. Then $p^2 = 2q^2$, so $p^2$ is even\n3. Therefore $p$ is even, say $p = 2k$\n4. Then $4k^2 = 2q^2$, so $q^2 = 2k^2$, meaning $q$ is also even\n5. But this contradicts our assumption that $p, q$ have no common factors",
+    "historicalContext": "The discovery that $\\sqrt{2}$ is irrational is attributed to the ancient Greeks, possibly Hippasus of Metapontum around 500 BCE. The Pythagoreans had built their philosophy on the belief that all quantities could be expressed as ratios of whole numbers—\"all is number.\" The discovery that the diagonal of a unit square (which has length $\\sqrt{2}$ by the Pythagorean theorem) cannot be so expressed shattered this worldview.\n\nAccording to legend, Hippasus was drowned at sea for revealing this disturbing truth. Whether or not the legend is true, the mathematical crisis was real: it forced Greek mathematicians to distinguish between *number* (arithmetic) and *magnitude* (geometry), a distinction that would persist for two millennia until the rigorous construction of the real numbers in the 19th century.\n\nThis proof represents one of the earliest examples of proof by contradiction (*reductio ad absurdum*) in mathematics, and remains a cornerstone of mathematical education to this day.",
+    "problemStatement": "The diagonal of a unit square has length $\\sqrt{2}$. The question is: can this length be expressed as a ratio of integers?\n\n$$\\text{Does there exist } \\frac{p}{q} = \\sqrt{2} \\text{ with } p, q \\in \\mathbb{Z}, q \\neq 0?$$\n\nEquivalently, squaring both sides: does there exist a solution to $p^2 = 2q^2$ in integers? The answer is no—$\\sqrt{2}$ is **irrational**.",
+    "proofStrategy": "The proof proceeds by contradiction:\n\n1. **Assume** $\\sqrt{2} = p/q$ where $p, q$ are integers in lowest terms (no common factors)\n2. **Square** both sides: $p^2 = 2q^2$\n3. **Parity argument**: $p^2$ is even, so $p$ must be even (key lemma!)\n4. **Substitute**: Write $p = 2k$, then $4k^2 = 2q^2$, so $q^2 = 2k^2$\n5. **Repeat**: $q^2$ is even, so $q$ is even\n6. **Contradiction**: Both $p$ and $q$ are even, so they share factor 2—but we assumed lowest terms!",
     "keyInsights": [
-      "The proof relies on the fundamental theorem of arithmetic: every integer has a unique prime factorization.",
-      "If $p^2$ is even, then $p$ must be even (the square of an odd number is odd).",
-      "The contradiction arises from the impossibility of a fraction being in lowest terms while both numerator and denominator are even."
+      "The geometric origin: $\\sqrt{2}$ is the diagonal of a unit square, arising naturally from the Pythagorean theorem $1^2 + 1^2 = (\\sqrt{2})^2$.",
+      "The parity lemma is the engine: if $n^2$ is even, then $n$ is even. This follows because odd$^2$ = odd.",
+      "Infinite descent: the argument implicitly shows that if $(p, q)$ is a solution, so is $(q, p/2)$—a smaller solution. This can't continue forever.",
+      "The proof generalizes: the same technique shows $\\sqrt{p}$ is irrational for any prime $p$."
     ]
   },
   "sections": [
@@ -22,30 +23,31 @@
       "id": "setup",
       "title": "Setup and Definitions",
       "startLine": 1,
-      "endLine": 20,
-      "summary": "Import statements and basic definitions for working with rationals and irrationals."
+      "endLine": 21,
+      "summary": "Import statements and definitions of irrationality and coprimality."
     },
     {
       "id": "lemmas",
       "title": "Supporting Lemmas",
-      "startLine": 21,
+      "startLine": 22,
       "endLine": 50,
-      "summary": "Key lemmas about even numbers and their squares."
+      "summary": "Key lemmas connecting parity of integers to parity of their squares."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "startLine": 51,
-      "endLine": 80,
-      "summary": "The proof that sqrt(2) is irrational using contradiction."
+      "endLine": 98,
+      "summary": "The proof that sqrt(2) is irrational via contradiction from coprimality."
     }
   ],
   "conclusion": {
-    "summary": "This formalization demonstrates the power of proof by contradiction. The Lean proof closely mirrors the classical argument, showing that the assumption of rationality leads to an infinite descent—a logical impossibility.",
-    "implications": "The irrationality of $\\sqrt{2}$ has profound implications:\n\n1. **Incommensurable magnitudes exist** — The diagonal of a unit square cannot be measured by any common unit with its sides.\n\n2. **The rationals are incomplete** — There are 'gaps' in the rational number line that require irrational numbers to fill.\n\n3. **Foundation for real analysis** — Understanding irrational numbers is essential for developing the real number system.",
+    "summary": "This formalization demonstrates the power of proof by contradiction—a technique invented by the ancient Greeks and still central to mathematics today. The Lean proof closely mirrors the classical argument: assume rationality, derive that both numerator and denominator must be even, contradict the assumption of lowest terms.\n\nThe proof's elegance lies in its simplicity: it requires only basic properties of even and odd numbers. Yet it establishes something profound—that the number system of ratios is fundamentally incomplete.",
+    "implications": "**Historical Impact**\n\nThe irrationality of $\\sqrt{2}$ triggered the first foundational crisis in mathematics. The Pythagorean belief that \"all is number\" (meaning ratios of integers) was shattered. Greek mathematics responded by developing the theory of proportions (Eudoxus) and separating arithmetic from geometry—a split that lasted until the 19th century.\n\n**Mathematical Consequences**\n\n1. **Incommensurable magnitudes exist** — The diagonal of a unit square cannot share a common measure with its sides. There is no length, however small, that divides both evenly.\n\n2. **The rationals have gaps** — Between any two rationals lie infinitely many irrationals. The rational number line is \"full of holes.\"\n\n3. **Necessity of real numbers** — To do calculus, we need limits. Limits require completeness. The rationals aren't complete; the reals are. This proof shows why we can't stop at $\\mathbb{Q}$.",
     "openQuestions": [
-      "The same technique can be extended to prove the square root of any prime is irrational.",
-      "What about cube root of 2? The proof requires different techniques (algebraic number theory)."
+      "The same parity argument extends to prove $\\sqrt{p}$ is irrational for any prime $p$. What about $\\sqrt{6}$? (Hint: unique factorization)",
+      "What about $\\sqrt[3]{2}$? Parity arguments don't work here. This requires algebraic number theory and the rational root theorem.",
+      "Are there irrational numbers that aren't roots of any polynomial? Yes—transcendental numbers like $\\pi$ and $e$. Proving their irrationality is much harder."
     ]
   }
 }

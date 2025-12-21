@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth, getSessionToken } from '@/contexts/AuthContext'
 import { Button } from '@/components/ui/button'
 import {
@@ -8,7 +9,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
-import { User, Check, AlertCircle } from 'lucide-react'
+import { proofs } from '@/data/proofs'
+import { User, Check, AlertCircle, MessageSquare, ExternalLink } from 'lucide-react'
 
 interface ProfileModalProps {
   open: boolean
@@ -22,19 +24,33 @@ interface UsernameStatus {
   nextChangeAt: number | null
 }
 
+interface UserComment {
+  id: string
+  proofId: string
+  lineNumber: number
+  parentId: string | null
+  content: string
+  createdAt: number
+  updatedAt: number
+}
+
 export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
   const { user, refreshUser } = useAuth()
+  const navigate = useNavigate()
   const [usernameStatus, setUsernameStatus] = useState<UsernameStatus | null>(null)
   const [newUsername, setNewUsername] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
+  const [comments, setComments] = useState<UserComment[]>([])
+  const [commentsLoading, setCommentsLoading] = useState(false)
 
-  // Fetch username status when modal opens
+  // Fetch username status and comments when modal opens
   useEffect(() => {
     if (open && user) {
       fetchUsernameStatus()
+      fetchComments()
     }
   }, [open, user])
 
@@ -56,6 +72,53 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const fetchComments = async () => {
+    setCommentsLoading(true)
+    try {
+      const token = getSessionToken()
+      const response = await fetch('/api/users/me/comments', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if (response.ok) {
+        const data = await response.json()
+        setComments(data.comments || [])
+      }
+    } catch (err) {
+      console.error('Failed to load comments:', err)
+    } finally {
+      setCommentsLoading(false)
+    }
+  }
+
+  const getProofTitle = (proofId: string): string => {
+    const proofData = proofs[proofId]
+    return proofData?.proof.title || proofId
+  }
+
+  const formatRelativeTime = (timestamp: number): string => {
+    const now = Date.now()
+    const diff = now - timestamp
+    const minutes = Math.floor(diff / 60000)
+    const hours = Math.floor(diff / 3600000)
+    const days = Math.floor(diff / 86400000)
+
+    if (minutes < 1) return 'just now'
+    if (minutes < 60) return `${minutes}m ago`
+    if (hours < 24) return `${hours}h ago`
+    if (days < 30) return `${days}d ago`
+    return formatDate(timestamp)
+  }
+
+  const truncateContent = (content: string, maxLength: number = 100): string => {
+    if (content.length <= maxLength) return content
+    return content.slice(0, maxLength).trim() + '...'
+  }
+
+  const handleCommentClick = (comment: UserComment) => {
+    onOpenChange(false)
+    navigate(`/proof/${comment.proofId}?line=${comment.lineNumber}`)
   }
 
   const handleSave = async () => {
@@ -118,7 +181,7 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-hidden flex flex-col">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <User className="h-5 w-5" />
@@ -207,6 +270,57 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
               >
                 {isSaving ? 'Saving...' : 'Save Changes'}
               </Button>
+            </div>
+
+            {/* Comments section */}
+            <div className="border-t border-border pt-4 mt-2">
+              <h3 className="text-sm font-medium flex items-center gap-2 mb-3">
+                <MessageSquare className="h-4 w-4" />
+                Your Comments ({comments.length})
+              </h3>
+
+              {commentsLoading ? (
+                <div className="text-sm text-muted-foreground text-center py-4">
+                  Loading comments...
+                </div>
+              ) : comments.length === 0 ? (
+                <div className="text-sm text-muted-foreground text-center py-4">
+                  You haven't posted any comments yet.
+                </div>
+              ) : (
+                <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                  {comments.map((comment) => (
+                    <button
+                      key={comment.id}
+                      type="button"
+                      onClick={() => handleCommentClick(comment)}
+                      className={cn(
+                        'w-full text-left p-3 rounded-md border border-border',
+                        'hover:bg-muted/50 transition-colors',
+                        'focus:outline-none focus:ring-2 focus:ring-annotation'
+                      )}
+                    >
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <span className="text-xs font-medium text-annotation truncate">
+                          {getProofTitle(comment.proofId)}
+                        </span>
+                        <span className="text-xs text-muted-foreground shrink-0">
+                          Line {comment.lineNumber}
+                        </span>
+                      </div>
+                      <p className="text-sm text-foreground/80 line-clamp-2">
+                        {truncateContent(comment.content)}
+                      </p>
+                      <div className="flex items-center justify-between mt-1">
+                        <span className="text-xs text-muted-foreground">
+                          {formatRelativeTime(comment.createdAt)}
+                        </span>
+                        <ExternalLink className="h-3 w-3 text-muted-foreground" />
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )}

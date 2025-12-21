@@ -11,60 +11,60 @@
     "tags": ["number-theory", "primes", "classic", "euclid", "beginner-friendly"]
   },
   "overview": {
-    "historicalContext": "Euclid's theorem on the infinitude of primes, presented in Book IX, Proposition 20 of his *Elements* (circa 300 BCE), is one of the most celebrated results in mathematics. It answers a fundamental question: do the prime numbers eventually run out, or do they continue forever?\n\nThe theorem's proof is remarkable for its elegance and accessibility. Unlike many ancient mathematical results that have been superseded by modern methods, Euclid's proof remains the standard approach taught today. It requires no advanced mathematics—just the basic properties of divisibility and the fundamental theorem of arithmetic.\n\nThis result has inspired centuries of research into the distribution of primes, from the Prime Number Theorem to the Riemann Hypothesis.",
-    "problemStatement": "**Theorem (Euclid):** There are infinitely many prime numbers.\n\nMore precisely, for any natural number $n$, there exists a prime $p$ with $p > n$. In symbols:\n\n$$\\forall n \\in \\mathbb{N}, \\exists p \\text{ prime}, p > n$$\n\nThis means the primes are **unbounded**—no matter how large a number we choose, there's always a larger prime.",
-    "proofStrategy": "Euclid's proof is beautifully simple:\n\n1. **Given** any number $n$, consider $Q = n! + 1$\n2. **Observe** that $Q > 1$, so $Q$ has at least one prime divisor $p$\n3. **Claim** that $p > n$\n4. **Proof of claim:** If $p \\leq n$, then $p$ divides $n!$ (since $p$ appears in the product $1 \\cdot 2 \\cdot \\ldots \\cdot n$)\n5. **But** $p$ also divides $Q = n! + 1$\n6. **Therefore** $p$ divides $Q - n! = 1$\n7. **Contradiction:** No prime divides 1\n8. **Conclusion:** $p > n$ ✓",
+    "historicalContext": "Euclid's theorem on the infinitude of primes appears as Proposition 20 in Book IX of his *Elements*, written around 300 BCE in Alexandria. This makes it one of the oldest theorems with a proof that is still taught essentially unchanged today.\n\nThe result answered a question that must have puzzled ancient mathematicians: the primes 2, 3, 5, 7, 11, 13... seem to thin out as numbers grow larger. Do they eventually stop? Euclid showed definitively that they do not.\n\nWhat makes this proof remarkable is its method. Rather than trying to find large primes directly (which is computationally hard even today), Euclid showed that assuming finitely many primes leads to a contradiction. This **proof by contradiction** became a template for countless mathematical arguments.\n\nThe theorem launched two millennia of investigation into prime distribution, from Euler's proof that $\\sum 1/p$ diverges, to the Prime Number Theorem (1896), to the still-unsolved Riemann Hypothesis.",
+    "problemStatement": "**Theorem (Euclid, c. 300 BCE):** There are infinitely many prime numbers.\n\nModern formulation: for any natural number $n$, there exists a prime $p$ with $p > n$:\n\n$$\\forall n \\in \\mathbb{N}, \\exists p \\text{ prime such that } p > n$$\n\nEquivalently: the sequence of primes $2, 3, 5, 7, 11, 13, 17, 19, 23, \\ldots$ never terminates.",
+    "proofStrategy": "Euclid's proof is a masterpiece of mathematical economy:\n\n1. **Given** any $n$, construct $Q = n! + 1$ (one more than $n$ factorial)\n2. **Observe** that $Q \\geq 2$, so $Q$ has at least one prime divisor $p$\n3. **Key claim:** This prime $p$ must satisfy $p > n$\n4. **Proof by contradiction:** Suppose $p \\leq n$\n   - Then $p$ appears in the product $1 \\times 2 \\times \\cdots \\times n = n!$\n   - So $p$ divides $n!$\n   - But $p$ also divides $Q = n! + 1$\n   - Therefore $p$ divides $(n! + 1) - n! = 1$\n   - **Contradiction:** No integer $\\geq 2$ can divide 1\n5. **Conclusion:** Our assumption was wrong, so $p > n$ ✓\n\nNote: Euclid's original proof used the product of the first $n$ primes plus 1, not $n! + 1$. The factorial version is a modern simplification that avoids needing to enumerate primes.",
     "keyInsights": [
-      "The factorial n! is divisible by every positive integer up to n",
-      "If p divides both a and b, then p divides a - b",
-      "No prime can divide 1 (since primes are ≥ 2)",
-      "We don't need to find the prime explicitly—we just prove one exists"
+      "The factorial $n!$ is divisible by every positive integer from 1 to $n$—this is the engine of the proof",
+      "Adding 1 to any multiple of $p$ gives a number that is NOT divisible by $p$ (it leaves remainder 1)",
+      "The only positive divisor of 1 is 1 itself—no prime can divide 1",
+      "We never need to identify which prime exceeds $n$—existence is enough"
     ]
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Basic Definitions",
-      "startLine": 16,
-      "endLine": 35,
-      "summary": "Defines divisibility, regular numbers (≥2), and two characterizations of primality."
+      "startLine": 17,
+      "endLine": 38,
+      "summary": "Defines divisibility, regular numbers (≥2), and two characterizations of primality: Euclid's (p divides a product implies p divides a factor) and the natural definition (no proper divisors)."
     },
     {
       "id": "divisibility",
       "title": "Divisibility Lemmas",
-      "startLine": 37,
-      "endLine": 56,
-      "summary": "Establishes basic properties: reflexivity, transitivity, and that only 1 divides 1."
+      "startLine": 40,
+      "endLine": 58,
+      "summary": "Three foundational facts: every number divides itself, divisibility is transitive, and only 1 divides 1."
     },
     {
       "id": "factorial",
       "title": "Factorial Properties",
-      "startLine": 58,
-      "endLine": 77,
-      "summary": "Defines factorial and proves two key facts: k divides n! when k ≤ n, and n! is always positive."
+      "startLine": 60,
+      "endLine": 83,
+      "summary": "Defines factorial recursively and proves that any k ≤ n divides n!, plus that factorials are always positive."
     },
     {
       "id": "prime-divisor",
-      "title": "Prime Divisor Theorem",
-      "startLine": 79,
-      "endLine": 88,
-      "summary": "Every integer ≥ 2 has a prime divisor. This uses the well-ordering principle."
+      "title": "Prime Divisor Existence",
+      "startLine": 85,
+      "endLine": 93,
+      "summary": "Every integer ≥ 2 has a prime divisor. Uses well-ordering: the smallest divisor ≥ 2 must be prime."
     },
     {
       "id": "main-theorem",
-      "title": "Unbounded Primes",
-      "startLine": 90,
-      "endLine": 116,
-      "summary": "The main result: for any n, there exists a prime p > n. This is Euclid's theorem."
+      "title": "The Main Theorem",
+      "startLine": 95,
+      "endLine": 131,
+      "summary": "Euclid's theorem: for any n, there exists a prime p > n. Constructs Q = n! + 1 and shows its prime divisor exceeds n."
     }
   ],
   "conclusion": {
-    "summary": "This Lean formalization captures Euclid's timeless proof in precise logical terms. The key construction—considering n! + 1—reveals the beautiful interplay between multiplication and addition that makes primes inexhaustible.\n\nThe proof is entirely constructive in spirit: given any bound n, we can exhibit a number (n! + 1) that must have a prime divisor exceeding n. While we may not know which prime this is, we prove its existence with certainty.",
-    "implications": "The infinitude of primes has far-reaching consequences:\n\n1. **Cryptography** — RSA and other systems rely on the abundance of large primes\n\n2. **The Prime Number Theorem** — Approximately n/ln(n) primes exist below n\n\n3. **Twin Prime Conjecture** — Are there infinitely many primes p where p+2 is also prime?\n\n4. **Goldbach's Conjecture** — Can every even number > 2 be written as a sum of two primes?\n\n5. **Riemann Hypothesis** — The deepest unsolved problem about prime distribution",
+    "summary": "This Lean formalization captures one of mathematics' most elegant arguments. The proof's power lies in its indirection: rather than constructing large primes (which is hard), we show that their non-existence leads to the absurdity of a prime dividing 1.\n\nThe construction $Q = n! + 1$ is ingenious. The factorial ensures that every 'small' prime divides $n!$, while the +1 shifts us to a number coprime to all of them. Whatever primes divide $Q$ must therefore be 'large'.\n\nNote: This formalization builds primality from first principles without importing Mathlib, demonstrating that the infinitude of primes requires only basic number theory.",
+    "implications": "Euclid's theorem is the foundation for understanding prime distribution:\n\n1. **Cryptographic Security** — RSA, Diffie-Hellman, and elliptic curve cryptography all rely on the abundance of large primes. If primes were finite, modern encryption would be impossible.\n\n2. **The Prime Number Theorem** — Proved in 1896 by Hadamard and de la Vallée Poussin: the number of primes below $n$ is approximately $n/\\ln(n)$. Primes thin out, but never vanish.\n\n3. **Prime Gaps** — How far apart can consecutive primes be? Gaps grow, but there's always another prime ahead.\n\n4. **Open Problems** — The Twin Prime Conjecture (infinitely many $p$ with $p+2$ prime), Goldbach's Conjecture (every even $n > 2$ is a sum of two primes), and the Riemann Hypothesis all extend Euclid's question.",
     "openQuestions": [
-      "Can we strengthen this to show there's a prime between n and 2n? (Bertrand's postulate—yes!)",
-      "How does the density of primes decrease as numbers grow larger?",
-      "Are there infinitely many primes of special forms (Mersenne, Fermat, Sophie Germain)?"
+      "Bertrand's Postulate: Is there always a prime between $n$ and $2n$? (Yes—proved by Chebyshev in 1852)",
+      "How large can gaps between consecutive primes grow?",
+      "Are there infinitely many Mersenne primes ($2^p - 1$)? Sophie Germain primes? Twin primes?"
     ]
   }
 }
