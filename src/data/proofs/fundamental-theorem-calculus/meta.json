@@ -26,42 +26,42 @@
       "id": "setup",
       "title": "Setup and Imports",
       "startLine": 1,
-      "endLine": 22,
+      "endLine": 25,
       "summary": "Introduces the historical context and imports Mathlib's calculus and integration libraries."
     },
     {
       "id": "integral-function",
       "title": "The Integral Function",
-      "startLine": 24,
-      "endLine": 32,
+      "startLine": 27,
+      "endLine": 38,
       "summary": "Defines F(x) = ∫ₐˣ f(t)dt, the cumulative integral that measures accumulated area."
     },
     {
       "id": "ftc-part1",
       "title": "FTC Part 1: Differentiation of Integrals",
-      "startLine": 34,
-      "endLine": 48,
+      "startLine": 40,
+      "endLine": 53,
       "summary": "Proves that the derivative of an integral recovers the original function: F'(x) = f(x)."
     },
     {
       "id": "ftc-part2",
       "title": "FTC Part 2: Evaluation of Integrals",
-      "startLine": 50,
-      "endLine": 72,
+      "startLine": 55,
+      "endLine": 80,
       "summary": "Proves that the integral of a derivative equals the net change: ∫ₐᵇ F' = F(b) - F(a)."
     },
     {
       "id": "antiderivatives",
       "title": "Antiderivatives and Uniqueness",
-      "startLine": 74,
-      "endLine": 104,
+      "startLine": 82,
+      "endLine": 124,
       "summary": "Shows that the integral function is an antiderivative, and that antiderivatives differ only by constants."
     },
     {
       "id": "constant-theorem",
       "title": "Zero Derivative Implies Constant",
-      "startLine": 106,
-      "endLine": 122,
+      "startLine": 126,
+      "endLine": 148,
       "summary": "Proves that a function with zero derivative everywhere must be constant, using the Mean Value Theorem."
     }
   ],
