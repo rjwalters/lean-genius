@@ -6,10 +6,27 @@ export interface Proof {
   source: string
   sections: ProofSection[]
   meta: ProofMeta
+  overview?: ProofOverview
+  conclusion?: ProofConclusion
+}
+
+export interface ProofOverview {
+  historicalContext: string
+  problemStatement: string
+  proofStrategy: string
+  keyInsights: string[]
+}
+
+export interface ProofConclusion {
+  summary: string
+  implications: string
+  openQuestions?: string[]
 }
 
 export interface ProofMeta {
   author?: string
+  authorHandle?: string
+  sourceUrl?: string
   date?: string
   mathlib_version?: string
   status: 'verified' | 'pending' | 'disputed'

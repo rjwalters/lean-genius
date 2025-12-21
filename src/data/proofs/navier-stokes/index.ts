@@ -1,4 +1,4 @@
-import type { Proof, Annotation, ProofData, ProofMeta, ProofSection } from '@/types/proof'
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 import sourceRaw from './source.lean?raw'
@@ -10,6 +10,8 @@ const meta = metaJson as {
   description: string
   meta: ProofMeta
   sections: ProofSection[]
+  overview?: ProofOverview
+  conclusion?: ProofConclusion
 }
 
 export const navierStokesProof: Proof = {
@@ -20,6 +22,8 @@ export const navierStokesProof: Proof = {
   meta: meta.meta,
   sections: meta.sections,
   source: sourceRaw,
+  overview: meta.overview,
+  conclusion: meta.conclusion,
 }
 
 export const navierStokesAnnotations: Annotation[] = annotationsJson as Annotation[]

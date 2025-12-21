@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useRef } from 'react'
-import { ProofViewer, AnnotationPanel, TableOfContents } from '@/components/proof'
+import { ProofViewer, AnnotationPanel, TableOfContents, ProofOverview, ProofConclusion } from '@/components/proof'
 import { getProof } from '@/data/proofs'
 import type { Annotation, ProofSection } from '@/types/proof'
 import { Menu } from 'lucide-react'
@@ -115,12 +115,14 @@ function App() {
 
         {/* Main proof viewer */}
         <main ref={viewerRef} className="flex-1 overflow-auto">
+          <ProofOverview proof={proof} />
           <ProofViewer
             proof={proof}
             annotations={annotations}
             selectedLine={selectedLine}
             onLineSelect={handleLineSelect}
           />
+          <ProofConclusion proof={proof} />
         </main>
 
         {/* Right sidebar - Annotation panel */}
@@ -137,8 +139,9 @@ function App() {
         <Sheet
           open={!!selectedAnnotation}
           onOpenChange={(open) => !open && handleAnnotationClose()}
+          modal={false}
         >
-          <SheetContent side="bottom" className="h-[70vh] p-0 md:hidden">
+          <SheetContent side="bottom" className="h-[70vh] p-0 md:hidden" showOverlay={false}>
             <AnnotationPanel
               annotation={selectedAnnotation}
               onClose={handleAnnotationClose}
