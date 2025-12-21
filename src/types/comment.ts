@@ -10,6 +10,9 @@ export interface Comment {
     id: string
     username: string
   }
+  // Voting
+  score: number
+  userVote: 1 | -1 | null
   // Built client-side for rendering thread tree
   children?: Comment[]
 }

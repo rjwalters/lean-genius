@@ -46,6 +46,13 @@ export const updateCommentSchema = z.object({
 
 export type UpdateCommentRequest = z.infer<typeof updateCommentSchema>
 
+// Vote request
+export const voteCommentSchema = z.object({
+  value: z.union([z.literal(1), z.literal(-1), z.literal(0)]),
+})
+
+export type VoteCommentRequest = z.infer<typeof voteCommentSchema>
+
 // Error response
 export interface ErrorResponse {
   error: string

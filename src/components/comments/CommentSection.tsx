@@ -7,15 +7,34 @@ import {
   createComment,
   updateComment,
   deleteComment,
+  voteComment,
   buildCommentTree,
 } from '@/lib/comments'
 import type { Comment } from '@/types/comment'
-import { MessageSquare, RefreshCw } from 'lucide-react'
+import { MessageSquare, RefreshCw, ArrowUpDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+
+type SortOrder = 'newest' | 'top'
 
 interface CommentSectionProps {
   proofId: string
   lineNumber: number
+}
+
+// Sort comments recursively
+function sortComments(comments: Comment[], order: SortOrder): Comment[] {
+  const sorted = [...comments].sort((a, b) => {
+    if (order === 'top') {
+      return b.score - a.score
+    }
+    // newest first
+    return b.createdAt - a.createdAt
+  })
+
+  return sorted.map((comment) => ({
+    ...comment,
+    children: comment.children ? sortComments(comment.children, order) : undefined,
+  }))
 }
 
 export function CommentSection({ proofId, lineNumber }: CommentSectionProps) {
@@ -23,6 +42,7 @@ export function CommentSection({ proofId, lineNumber }: CommentSectionProps) {
   const [comments, setComments] = useState<Comment[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [sortOrder, setSortOrder] = useState<SortOrder>('newest')
 
   const loadComments = useCallback(async () => {
     setIsLoading(true)
@@ -41,7 +61,10 @@ export function CommentSection({ proofId, lineNumber }: CommentSectionProps) {
     loadComments()
   }, [loadComments])
 
-  const tree = useMemo(() => buildCommentTree(comments), [comments])
+  const tree = useMemo(() => {
+    const built = buildCommentTree(comments)
+    return sortComments(built, sortOrder)
+  }, [comments, sortOrder])
 
   const handleCreate = async (content: string) => {
     const newComment = await createComment(proofId, lineNumber, content)
@@ -63,6 +86,38 @@ export function CommentSection({ proofId, lineNumber }: CommentSectionProps) {
   const handleDelete = async (commentId: string) => {
     await deleteComment(commentId)
     setComments((prev) => prev.filter((c) => c.id !== commentId))
+  }
+
+  const handleVote = async (commentId: string, value: 1 | -1 | 0) => {
+    // Optimistic update
+    setComments((prev) =>
+      prev.map((c) => {
+        if (c.id !== commentId) return c
+        const oldVote = c.userVote ?? 0
+        const newVote = value === 0 ? null : value
+        const scoreDelta = (value === 0 ? 0 : value) - oldVote
+        return {
+          ...c,
+          score: c.score + scoreDelta,
+          userVote: newVote,
+        }
+      })
+    )
+
+    try {
+      const result = await voteComment(commentId, value)
+      // Sync with server response
+      setComments((prev) =>
+        prev.map((c) =>
+          c.id === commentId
+            ? { ...c, score: result.score, userVote: result.userVote }
+            : c
+        )
+      )
+    } catch (err) {
+      // Revert on error
+      loadComments()
+    }
   }
 
   if (isLoading) {
@@ -101,14 +156,28 @@ export function CommentSection({ proofId, lineNumber }: CommentSectionProps) {
         </div>
       )}
 
-      {/* Comments */}
+      {/* Sort and Comments */}
       {tree.length > 0 ? (
-        <CommentThread
-          comments={tree}
-          onReply={handleReply}
-          onUpdate={handleUpdate}
-          onDelete={handleDelete}
-        />
+        <>
+          <div className="flex items-center gap-2 mb-3">
+            <ArrowUpDown className="h-3 w-3 text-muted-foreground" />
+            <select
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value as SortOrder)}
+              className="text-xs bg-transparent border border-border rounded px-2 py-1 text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+            >
+              <option value="newest">Newest</option>
+              <option value="top">Top</option>
+            </select>
+          </div>
+          <CommentThread
+            comments={tree}
+            onReply={handleReply}
+            onUpdate={handleUpdate}
+            onDelete={handleDelete}
+            onVote={handleVote}
+          />
+        </>
       ) : (
         <div className="text-center py-8 text-muted-foreground">
           <MessageSquare className="h-8 w-8 mx-auto mb-2 opacity-30" />

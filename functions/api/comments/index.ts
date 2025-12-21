@@ -1,6 +1,7 @@
 import { createDb } from '../../../shared/db/client'
-import { comments, users } from '../../../shared/db/schema'
-import { eq, and, isNull } from 'drizzle-orm'
+import { comments, users, commentVotes } from '../../../shared/db/schema'
+import { eq, and, isNull, sql } from 'drizzle-orm'
+import { validateSession } from '../../lib/auth'
 
 interface Env {
   DB: D1Database
@@ -21,6 +22,10 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       )
     }
+
+    // Check for optional authentication to get user's votes
+    const session = await validateSession(context.request, DB)
+    const currentUserId = session.valid ? session.userId : null
 
     // Build query conditions
     const conditions = [
@@ -58,6 +63,41 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
       .where(and(...conditions))
       .orderBy(comments.createdAt)
 
+    // Get vote scores for all comments
+    const commentIds = result.map(r => r.id)
+
+    // Aggregate vote scores
+    const voteScores = commentIds.length > 0
+      ? await db
+          .select({
+            commentId: commentVotes.commentId,
+            score: sql<number>`COALESCE(SUM(${commentVotes.value}), 0)`.as('score'),
+          })
+          .from(commentVotes)
+          .where(sql`${commentVotes.commentId} IN (${sql.join(commentIds.map(id => sql`${id}`), sql`, `)})`)
+          .groupBy(commentVotes.commentId)
+      : []
+
+    // Get current user's votes if authenticated
+    const userVotes = currentUserId && commentIds.length > 0
+      ? await db
+          .select({
+            commentId: commentVotes.commentId,
+            value: commentVotes.value,
+          })
+          .from(commentVotes)
+          .where(
+            and(
+              sql`${commentVotes.commentId} IN (${sql.join(commentIds.map(id => sql`${id}`), sql`, `)})`,
+              eq(commentVotes.userId, currentUserId)
+            )
+          )
+      : []
+
+    // Create lookup maps
+    const scoreMap = new Map(voteScores.map(v => [v.commentId, Number(v.score)]))
+    const userVoteMap = new Map(userVotes.map(v => [v.commentId, v.value as 1 | -1]))
+
     // Transform to response format
     const commentsData = result.map(row => ({
       id: row.id,
@@ -71,6 +111,8 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
         id: row.authorId,
         username: row.authorUsername,
       },
+      score: scoreMap.get(row.id) ?? 0,
+      userVote: userVoteMap.get(row.id) ?? null,
     }))
 
     return new Response(

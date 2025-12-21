@@ -8,6 +8,7 @@ interface CommentThreadProps {
   onReply: (parentId: string, content: string) => Promise<void>
   onUpdate: (commentId: string, content: string) => Promise<void>
   onDelete: (commentId: string) => Promise<void>
+  onVote: (commentId: string, value: 1 | -1 | 0) => Promise<void>
 }
 
 export function CommentThread({
@@ -16,6 +17,7 @@ export function CommentThread({
   onReply,
   onUpdate,
   onDelete,
+  onVote,
 }: CommentThreadProps) {
   if (comments.length === 0) return null
 
@@ -33,6 +35,7 @@ export function CommentThread({
             onReply={onReply}
             onUpdate={onUpdate}
             onDelete={onDelete}
+            onVote={onVote}
           />
           {comment.children && comment.children.length > 0 && (
             <CommentThread
@@ -41,6 +44,7 @@ export function CommentThread({
               onReply={onReply}
               onUpdate={onUpdate}
               onDelete={onDelete}
+              onVote={onVote}
             />
           )}
         </div>

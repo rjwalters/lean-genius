@@ -40,7 +40,14 @@ export async function fetchComments(proofId: string, lineNumber?: number): Promi
     params.set('line', lineNumber.toString())
   }
 
-  const response = await fetch(`${API_BASE}?${params}`)
+  // Include auth header if available to get user's votes
+  const token = getSessionToken()
+  const headers: HeadersInit = {}
+  if (token) {
+    headers.Authorization = `Bearer ${token}`
+  }
+
+  const response = await fetch(`${API_BASE}?${params}`, { headers })
   if (!response.ok) {
     throw new Error('Failed to fetch comments')
   }
@@ -133,6 +140,33 @@ export async function deleteComment(commentId: string): Promise<void> {
     const data = await response.json()
     throw new Error(data.error || 'Failed to delete comment')
   }
+}
+
+// Vote on a comment
+export async function voteComment(
+  commentId: string,
+  value: 1 | -1 | 0
+): Promise<{ score: number; userVote: 1 | -1 | null }> {
+  const token = getSessionToken()
+  if (!token) {
+    throw new Error('Not authenticated')
+  }
+
+  const response = await fetch(`${API_BASE}/${commentId}/vote`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ value }),
+  })
+
+  if (!response.ok) {
+    const data = await response.json()
+    throw new Error(data.error || 'Failed to vote')
+  }
+
+  return response.json()
 }
 
 // Format relative time

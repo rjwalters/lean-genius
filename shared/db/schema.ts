@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, index, uniqueIndex } from 'drizzle-orm/sqlite-core'
+import { sqliteTable, text, integer, index, uniqueIndex, primaryKey } from 'drizzle-orm/sqlite-core'
 import { relations, sql } from 'drizzle-orm'
 
 // =============================================================================
@@ -82,4 +82,31 @@ export const commentsRelations = relations(comments, ({ one, many }) => ({
     relationName: 'replies',
   }),
   replies: many(comments, { relationName: 'replies' }),
+  votes: many(commentVotes),
+}))
+
+// =============================================================================
+// Comment Votes Table (Upvotes/Downvotes)
+// =============================================================================
+
+export const commentVotes = sqliteTable('comment_votes', {
+  commentId: text('comment_id').notNull().references(() => comments.id, { onDelete: 'cascade' }),
+  userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  value: integer('value').notNull(), // 1 for upvote, -1 for downvote
+  createdAt: integer('created_at').notNull(),
+}, (table) => [
+  primaryKey({ columns: [table.commentId, table.userId] }),
+  index('idx_votes_comment').on(table.commentId),
+  index('idx_votes_user').on(table.userId),
+])
+
+export const commentVotesRelations = relations(commentVotes, ({ one }) => ({
+  comment: one(comments, {
+    fields: [commentVotes.commentId],
+    references: [comments.id],
+  }),
+  user: one(users, {
+    fields: [commentVotes.userId],
+    references: [users.id],
+  }),
 }))

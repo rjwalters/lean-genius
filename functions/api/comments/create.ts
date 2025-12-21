@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { createCommentSchema, formatZodError } from '../../lib/schemas'
 import { validateSession } from '../../lib/auth'
 import { createDb } from '../../../shared/db/client'
-import { comments } from '../../../shared/db/schema'
+import { comments, commentVotes } from '../../../shared/db/schema'
 import { eq } from 'drizzle-orm'
 
 interface Env {
@@ -65,6 +65,14 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
       updatedAt: now,
     })
 
+    // Auto-upvote: the author automatically upvotes their own comment (Reddit-style)
+    await db.insert(commentVotes).values({
+      commentId,
+      userId: session.userId,
+      value: 1,
+      createdAt: now,
+    })
+
     return new Response(
       JSON.stringify({
         comment: {
@@ -79,6 +87,8 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
             id: session.user.id,
             username: session.user.username,
           },
+          score: 1,
+          userVote: 1,
         },
       }),
       { status: 201, headers: { 'Content-Type': 'application/json' } }
