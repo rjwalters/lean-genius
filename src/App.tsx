@@ -147,7 +147,7 @@ function AppContent() {
           onOpenChange={(open) => !open && handleAnnotationClose()}
           modal={false}
         >
-          <SheetContent side="bottom" className="h-[70vh] p-0 md:hidden" showOverlay={false}>
+          <SheetContent side="bottom" className="h-[70vh] p-0 md:hidden" showOverlay={false} showCloseButton={false}>
             <AnnotationPanel
               annotation={selectedAnnotation}
               proofId={proof.id}
