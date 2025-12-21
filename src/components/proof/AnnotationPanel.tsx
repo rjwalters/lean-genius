@@ -2,6 +2,7 @@ import type { Annotation } from '@/types/proof'
 import { cn } from '@/lib/utils'
 import { X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { MathText } from '@/components/ui/math'
 
 interface AnnotationPanelProps {
   annotation: Annotation | null
@@ -77,18 +78,18 @@ export function AnnotationPanel({ annotation, onClose }: AnnotationPanelProps) {
         )}
       >
         <h3 className="text-lg font-semibold mb-3">{annotation.title}</h3>
-        <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-          {annotation.content}
-        </p>
+        <div className="text-sm text-muted-foreground leading-relaxed mb-4">
+          <MathText>{annotation.content}</MathText>
+        </div>
 
         {annotation.mathContext && (
           <div className="mt-4 p-3 bg-muted/30 rounded-md">
             <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">
               Mathematical Context
             </h4>
-            <p className="text-sm font-mono leading-relaxed">
-              {annotation.mathContext}
-            </p>
+            <div className="text-sm leading-relaxed">
+              <MathText>{annotation.mathContext}</MathText>
+            </div>
           </div>
         )}
 
