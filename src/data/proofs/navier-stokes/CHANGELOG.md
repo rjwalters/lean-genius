@@ -4,11 +4,25 @@ This document tracks the evolution of our analysis of the Navier-Stokes regulari
 
 ---
 
-## v2 - θₖ Refactor + Literature Analysis (2025-12-22)
+## v2 - θₖ Refactor + Literature Analysis + Tropical Dynamics (2025-12-22)
 
 **Status:** Conditional
 
-**Summary:** Replaced single-ball concentration with weaker K-ball finite-bubble conjecture. Added comprehensive literature analysis.
+**Summary:** Replaced single-ball concentration with weaker K-ball finite-bubble conjecture. Added comprehensive literature analysis. Analyzed tropical crossing dynamics and identified new β → θ hypothesis.
+
+### Update (Dec 22, 2025 - Session 2)
+
+**Tropical Crossing Analysis:**
+- L(t) = exp(1/τ)·(1+θ²) grows superexponentially
+- L_max(t) ~ 1/τ grows linearly
+- **Crossing MUST occur** as τ → 0, but may happen at τ > 0.1 (missing rigidity trigger)
+- See `analysis/tropical-crossing-analysis.md`
+
+**New Hypothesis Identified:**
+- The proof has TWO ingredients: β → 0 [PROVED] and θ ≥ c [ASSUMED]
+- **Key question:** Does β → 0 imply θ → 1?
+- Physical intuition: Vorticity alignment → tube structures → concentrated enstrophy
+- If true, Type II blowup → β → 0 → θ → 1 → proof closes
 
 ### Changes from v1
 

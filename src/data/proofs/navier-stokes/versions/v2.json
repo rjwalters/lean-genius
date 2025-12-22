@@ -1,24 +1,40 @@
 {
   "version": {
     "number": "v2",
-    "name": "θₖ Refactor + Literature Analysis",
+    "name": "θₖ Refactor + Literature Analysis + Tropical Dynamics",
     "date": "2025-12-22",
-    "gitCommit": "7ebc440",
     "status": "conditional",
-    "summary": "Replaced single-ball concentration with weaker K-ball finite-bubble conjecture. Added comprehensive literature analysis (Lei-Ren 2022, Barker 2025, Barker-Prange 2022). Key finding: K=1 consistent but θ exponentially small.",
+    "summary": "Replaced single-ball concentration with K-ball finite-bubble conjecture. Analyzed tropical crossing dynamics. Identified new direction: β → 0 implies θ → 1.",
     "previousVersion": "v1",
     "changes": [
       "Replaced concentration_near_blowup with finite_bubble_concentration",
       "Added Faber-Krahn additivity for K-ball configurations",
-      "Added averaging lemma (θ ≥ θₖ/K)",
-      "Comprehensive literature analysis in papers/INDEX.md",
-      "Identified tropical crossing inevitability as promising direction"
+      "Analyzed tropical L vs L_max dynamics - crossing occurs but timing uncertain",
+      "Identified new hypothesis: vorticity alignment (β → 0) may force enstrophy concentration (θ → 1)",
+      "Literature analysis: Lei-Ren, Barker 2025, Barker-Prange"
     ]
   },
   "id": "navier-stokes-regularity",
   "title": "Global Regularity for Navier-Stokes",
   "slug": "navier-stokes",
   "description": "A sophisticated proof attempt for the Navier-Stokes Millennium Prize Problem. REVISION: The original single-ball concentration axiom has been replaced with the weaker K-ball 'finite-bubble' conjecture, which may be more tractable.",
+  "currentVersion": "v2",
+  "versionHistory": [
+    {
+      "version": "v1",
+      "name": "Original Analysis",
+      "date": "2025-12-20",
+      "status": "disputed",
+      "file": "versions/v1.json"
+    },
+    {
+      "version": "v2",
+      "name": "θₖ Refactor + Literature Analysis",
+      "date": "2025-12-22",
+      "status": "conditional",
+      "file": "versions/v2.json"
+    }
+  ],
   "meta": {
     "author": "David Budden",
     "authorHandle": "@davidmbudden",
@@ -59,7 +75,7 @@
         "NEW: Averaging lemma θ ≥ θₖ/K",
         "NEW: K-threshold analysis showing proof works if θₖ ≥ 0.203·K"
       ],
-      "theActualGap": "REFINED (Dec 2025): Literature analysis reveals K=1 is consistent with all known results. The REAL gap: captured fraction θ ≥ e^{-M^c} is exponentially small in Type I bound M, not uniform as t → T*.",
+      "theActualGap": "REFINED (Dec 2025): The proof has TWO ingredients: (1) β → 0 [PROVED for Type II], (2) θ ≥ c [ASSUMED]. Literature shows θ ≥ e^{-M^{1813}} is exponentially small. NEW DIRECTION: Does β → 0 imply θ → 1? If vorticity alignment forces enstrophy concentration, the gap closes.",
       "whyTheGapIsHard": "Barker 2025 shows θ ≥ e^{-M^{1813}} where M is Type I bound. As solutions approach blowup, M → ∞ (for Type II), so θ → 0. The exponential comes from Carleman inequalities - upgrading seems very hard.",
       "literatureContext": "ANALYZED (Dec 2025): Lei-Ren 2022 (N(r) unbounded), Barker 2025 (θ exponentially small, K=1), Barker-Prange Survey (Type I only). All show single-region concentration with non-uniform θ. See papers/INDEX.md."
     },
@@ -72,9 +88,15 @@
       },
       {
         "name": "Tropical crossing inevitability",
-        "description": "Proof shows: crossing ⇒ θ > 0.99. If crossings unavoidable for Type II, proof closes. BYPASSES concentration uniformity question.",
-        "likelihood": "Medium - requires barrier argument showing L(t) must cross L_max(t)",
-        "status": "PROMISING - NOT YET INVESTIGATED"
+        "description": "ANALYZED (Dec 2025): L(t)=exp(1/τ)·(1+θ²) grows superexponentially while L_max(t)~1/τ grows linearly. Crossing MUST occur, but may happen at τ > 0.1 (missing rigidity trigger). Gap: when does crossing happen? See analysis/tropical-crossing-analysis.md",
+        "likelihood": "Medium - crossing happens but τ timing uncertain",
+        "status": "INVESTIGATED - GAP IDENTIFIED"
+      },
+      {
+        "name": "β → 0 implies θ → 1 (vorticity-concentration link)",
+        "description": "NEW HYPOTHESIS: For Type II, β = (T-t)^{α-1} → 0 is PROVED (vorticity alignment). If alignment forces concentration (β → 0 ⟹ θ → 1), proof closes. Physical intuition: aligned vorticity forms tubes with small cross-section → high θ.",
+        "likelihood": "Medium-High - physically plausible, would bypass all other gaps",
+        "status": "NEW - NOT YET INVESTIGATED"
       },
       {
         "name": "Type II-specific concentration",
