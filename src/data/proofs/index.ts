@@ -11,6 +11,7 @@ import { haltingProblemData } from './halting-problem'
 import { fourColorTheoremData } from './four-color-theorem'
 import { eulerIdentityData } from './euler-identity'
 import { brouwerFixedPointData } from './brouwer-fixed-point'
+import { ramanujanSumFallacyData } from './ramanujan-sum-fallacy'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -27,6 +28,7 @@ export const proofs: Record<string, ProofData> = {
   'four-color-theorem': fourColorTheoremData,
   'euler-identity': eulerIdentityData,
   'brouwer-fixed-point': brouwerFixedPointData,
+  'ramanujan-sum-fallacy': ramanujanSumFallacyData,
 }
 
 export function getProof(slug: string): ProofData | undefined {
