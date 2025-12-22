@@ -119,8 +119,16 @@ theorem pythagorean_converse (v w : Vec2) :
     ‖v + w‖^2 = ‖v‖^2 + ‖w‖^2 → v ⊥ w := by
   intro h
   unfold perpendicular
-  -- The proof uses the expansion of ‖v + w‖² and the symmetry of inner product
-  sorry  -- Requires careful manipulation of inner product identities
+  -- Expand ‖v + w‖² = ⟨v + w, v + w⟩ = ⟨v, v⟩ + 2⟨v, w⟩ + ⟨w, w⟩
+  simp only [sq] at h
+  rw [← real_inner_self_eq_norm_mul_norm, ← real_inner_self_eq_norm_mul_norm,
+      ← real_inner_self_eq_norm_mul_norm] at h
+  rw [inner_add_left, inner_add_right, inner_add_right] at h
+  -- Now h says: ⟨v, v⟩ + ⟨v, w⟩ + ⟨w, v⟩ + ⟨w, w⟩ = ⟨v, v⟩ + ⟨w, w⟩
+  -- Using ⟨w, v⟩ = ⟨v, w⟩, we get 2⟨v, w⟩ = 0
+  simp only [real_inner_comm w v] at h
+  rw [real_inner_comm]
+  linarith
 
 -- ============================================================
 -- PART 7: Applications
@@ -140,10 +148,44 @@ when all pairs of vectors are perpendicular.
 -/
 
 /-- Generalized Pythagorean theorem for mutually perpendicular vectors -/
-theorem pythagorean_sum {ι : Type*} {s : Finset ι} {v : ι → Vec2}
+theorem pythagorean_sum {ι : Type*} [DecidableEq ι] {s : Finset ι} {v : ι → Vec2}
     (h : ∀ i ∈ s, ∀ j ∈ s, i ≠ j → inner (v i) (v j) = (0 : ℝ)) :
     ‖∑ i ∈ s, v i‖^2 = ∑ i ∈ s, ‖v i‖^2 := by
-  sorry  -- Requires induction on the finite set
+  -- Induction on the finite set
+  induction s using Finset.induction_on with
+  | empty =>
+    -- Base case: empty sum
+    simp
+  | insert ha ih =>
+    -- Induction step: add one element (a is the new element, s✝ is the smaller set)
+    rename_i a s'
+    rw [Finset.sum_insert ha, Finset.sum_insert ha]
+    -- The key: v a ⊥ (∑ i ∈ s', v i) because v a ⊥ v i for all i ∈ s'
+    have perp : inner (v a) (∑ i ∈ s', v i) = (0 : ℝ) := by
+      rw [inner_sum]
+      apply Finset.sum_eq_zero
+      intro i hi
+      apply h a (Finset.mem_insert_self a s') i (Finset.mem_insert_of_mem hi)
+      intro eq
+      rw [eq] at ha
+      exact ha hi
+    -- Apply Pythagorean theorem for two vectors
+    have pyth : ‖v a + ∑ i ∈ s', v i‖^2 = ‖v a‖^2 + ‖∑ i ∈ s', v i‖^2 := by
+      simp only [sq]
+      rw [← real_inner_self_eq_norm_mul_norm, ← real_inner_self_eq_norm_mul_norm,
+          ← real_inner_self_eq_norm_mul_norm]
+      rw [inner_add_left, inner_add_right, inner_add_right]
+      have perp_symm : inner (∑ i ∈ s', v i) (v a) = (0 : ℝ) := by
+        rw [real_inner_comm]; exact perp
+      rw [perp, perp_symm]
+      ring
+    rw [pyth]
+    -- Apply induction hypothesis
+    have ih' : ‖∑ i ∈ s', v i‖^2 = ∑ i ∈ s', ‖v i‖^2 := by
+      apply ih
+      intro i hi j hj ne
+      apply h i (Finset.mem_insert_of_mem hi) j (Finset.mem_insert_of_mem hj) ne
+    rw [ih']
 
 -- Export main results
 #check @pythagorean_theorem
