@@ -64,6 +64,14 @@ Implements Barker-Prange strategy (physical space analogue of Tao's approach).
 **Key Question to Answer:**
 Do the concentration regions have bounded multiplicity?
 
+**ANSWER (from detailed analysis):**
+- **Theorem 1 (eq 1.10):** Concentration in ONE ANNULUS at scale T^{1/2}
+- **Proposition 13 (eq 3.7):** Vorticity in SINGLE BALL of radius M^{708}√t
+- **Critical:** K=1 at each scale, but θ ≥ e^{-M^{1813}} (exponentially small)
+- Type I ruled out for axisymmetric (any blowup must be Type II)
+
+**CONCLUSION: K=1 consistent, but θ not uniform.** Does NOT close the gap.
+
 ---
 
 ### 3. Barker & Prange 2022 - Survey: From Concentration to Quantitative Regularity
@@ -87,6 +95,14 @@ connection between concentration phenomena and quantitative regularity estimates
 
 **Key Question to Answer:**
 Does their notion of "concentration" imply finite bubble count?
+
+**ANSWER (from detailed analysis):**
+- **Type I uses K=1:** Single ball captures γ_univ fraction (Kang-Miura-Tsai)
+- **Multiple scales are NESTED annuli**, not disjoint balls at same scale
+- **Type II NOT analyzed** - survey focuses on Type I only
+- **Absolute bounds dominate:** E_loc ≥ f(t), not ratio bounds
+
+**CONCLUSION: Does NOT address bubble count for Type II.**
 
 ---
 
@@ -199,6 +215,33 @@ does α > 1 impose on concentration structure?
 
 - **Tao 2019** - Quantitative bounds for critically bounded solutions
   - Blog post: https://terrytao.wordpress.com/2019/08/15/quantitative-bounds-for-critically-bounded-solutions-to-the-navier-stokes-equations/
+
+---
+
+## Synthesis: What We Learned About Bubble Count K (Dec 2025)
+
+### Summary of Paper Analysis
+
+| Paper | Bubble Count | Type | Ratio Bounds? | Verdict |
+|-------|-------------|------|---------------|---------|
+| Lei-Ren 2022 | N(r) → ∞ possible | Both | No | ❌ BAD |
+| Barker 2025 | K=1 (single region) | Type II | θ exponentially small | ❌ BAD |
+| Barker-Prange Survey | K=1 for Type I | Type I only | Absolute | ❌ N/A |
+
+### Key Insight: K=1 Is Consistent, But θ Is Not Uniform
+
+All existing results show concentration in **ONE region** at diffusion scale.
+However, the captured fraction is:
+- **θ ≥ e^{-M^{1813}}** (Barker 2025) — exponentially small in Type I bound M
+- As M → ∞ near blowup, θ → 0
+
+**The question shifts from "is K bounded?" to "is θ uniform?"**
+
+### Remaining Viable Routes
+
+1. **Tropical crossing inevitability** — PROMISING, bypasses θ uniformity
+2. **Type II-specific concentration** — NOT YET INVESTIGATED
+3. **Quantitative partial regularity** — INVESTIGATED, appears closed
 
 ---
 

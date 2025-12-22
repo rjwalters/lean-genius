@@ -43,25 +43,34 @@
         "NEW: Averaging lemma θ ≥ θₖ/K",
         "NEW: K-threshold analysis showing proof works if θₖ ≥ 0.203·K"
       ],
-      "theActualGap": "REVISED: The proof needs to show that near Type II blowup, some fixed K exists such that θₖ(t) ≥ c > 0 uniformly. This is WEAKER than single-ball concentration.",
-      "whyTheGapIsHard": "Quantitative CKN (Lei 2024) gives covering number bounds on bad cylinders, but the covering number can grow as scale → 0. To get uniform K, we need a NEW rigidity principle showing blowup forces finite bubble count.",
-      "literatureContext": "Lei 2024 provides logarithmic improvements to CKN covering bounds. Tao's work gives absolute lower bounds on local enstrophy. Neither directly proves finite bubble count, but they're the closest results."
+      "theActualGap": "REFINED (Dec 2025): Literature analysis reveals K=1 is consistent with all known results. The REAL gap: captured fraction θ ≥ e^{-M^c} is exponentially small in Type I bound M, not uniform as t → T*.",
+      "whyTheGapIsHard": "Barker 2025 shows θ ≥ e^{-M^{1813}} where M is Type I bound. As solutions approach blowup, M → ∞ (for Type II), so θ → 0. The exponential comes from Carleman inequalities - upgrading seems very hard.",
+      "literatureContext": "ANALYZED (Dec 2025): Lei-Ren 2022 (N(r) unbounded), Barker 2025 (θ exponentially small, K=1), Barker-Prange Survey (Type I only). All show single-region concentration with non-uniform θ. See papers/INDEX.md."
     },
     "promisingDirections": [
       {
         "name": "Quantitative partial regularity → finite bubble count",
-        "description": "Lei 2024 and related papers give scale-dependent bounds on bad cylinders. Extract explicit N(r) and check if N(r) → ∞ as r → 0 or stays bounded.",
-        "likelihood": "Medium - requires careful analysis of existing results"
+        "description": "ANALYZED: Lei-Ren bounds Σ radii not count. Barker 2025 shows K=1 but θ exponentially small. Route appears CLOSED for uniform θ.",
+        "likelihood": "Low - exponential bounds from Carleman seem hard to upgrade",
+        "status": "INVESTIGATED"
       },
       {
         "name": "Tropical crossing inevitability",
-        "description": "The proof already shows: crossing ⇒ θ > 0.99 (single ball suffices!). If crossings are unavoidable for Type II, the proof closes.",
-        "likelihood": "Low but elegant - requires analytic geometry / barrier argument on θ(t)"
+        "description": "Proof shows: crossing ⇒ θ > 0.99. If crossings unavoidable for Type II, proof closes. BYPASSES concentration uniformity question.",
+        "likelihood": "Medium - requires barrier argument showing L(t) must cross L_max(t)",
+        "status": "PROMISING - NOT YET INVESTIGATED"
+      },
+      {
+        "name": "Type II-specific concentration",
+        "description": "Most literature analyzes Type I. Type II has α > 1 so β → 0. This structure might force better concentration than Type I exponential estimates.",
+        "likelihood": "Medium - Type II less studied, may have exploitable structure",
+        "status": "NOT YET INVESTIGATED"
       },
       {
         "name": "Hou scenario analysis",
-        "description": "Hou's blowup scenarios require degenerate viscosity. Standard NS prevents blowup in his constructions. This suggests structural constraints on any potential counterexample.",
-        "likelihood": "Unclear - may provide physical intuition but not rigorous bounds"
+        "description": "Hou's blowup requires degenerate viscosity. Standard NS prevents blowup in his constructions.",
+        "likelihood": "Low - physical intuition only",
+        "status": "BACKGROUND"
       }
     ],
     "allAxioms": [
