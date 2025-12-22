@@ -1,0 +1,107 @@
+{
+  "id": "four-color-theorem",
+  "title": "Four Color Theorem",
+  "slug": "four-color-theorem",
+  "description": "Every planar map can be colored with at most four colors such that no adjacent regions share a color. First major theorem proved by computer (1976), the proof sparked debates about the nature of mathematical truth.",
+  "meta": {
+    "author": "Appel & Haken (formalized sketch in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Four_color_theorem",
+    "date": "1976",
+    "status": "pending",
+    "tags": ["graph-theory", "combinatorics", "computer-assisted-proof", "advanced"]
+  },
+  "overview": {
+    "historicalContext": "The Four Color Problem captivated mathematicians for over a century. First posed in 1852 by Francis Guthrie while coloring a map of England, it asked: can every map be colored with just four colors so that no two adjacent regions share the same color?\n\nMany attempted proofs failed. Alfred Kempe published a 'proof' in 1879 that stood for 11 years before Percy Heawood found a fatal flaw. In 1976, Kenneth Appel and Wolfgang Haken finally proved the theorem—but their proof required a computer to check 1,936 reducible configurations. This was the first major theorem proved with essential computer assistance, sparking philosophical debates: Is a proof humans cannot verify still a 'proof'?\n\nIn 2005, Georges Gonthier formalized the complete proof in Coq, providing a machine-verified certificate that settled remaining doubts about the computer calculations.",
+    "problemStatement": "**The Four Color Theorem:** Every planar graph $G$ is 4-colorable. Equivalently, every map on a plane or sphere can be colored with at most 4 colors such that no two adjacent regions share the same color.\n\nFormally: $\\chi(G) \\leq 4$ for every planar graph $G$, where $\\chi(G)$ is the chromatic number (minimum colors needed).",
+    "proofStrategy": "The proof combines two key ideas:\n\n1. **Reducibility:** Show that certain configurations cannot appear in a minimal counterexample. If a graph contains a reducible configuration, it can be simplified while preserving its 4-colorability status.\n\n2. **Unavoidability:** Prove that every planar graph must contain at least one configuration from a finite set of reducible configurations.\n\nTogether, these imply no minimal counterexample exists—thus all planar graphs are 4-colorable.\n\nThe challenge: the unavoidable set required checking 1,936 configurations, each requiring computer verification of reducibility. Gonthier's Coq formalization verified this exhaustively.",
+    "keyInsights": [
+      "The theorem is equivalent to showing every planar graph has chromatic number at most 4—graph coloring and map coloring are dual problems",
+      "Euler's formula (V - E + F = 2) constrains planar graph structure, guaranteeing vertices of low degree exist",
+      "The Kempe chain argument (swapping colors along alternating paths) is the key technique, though Kempe's original proof misapplied it",
+      "Reducibility proofs use discharging: redistributing a 'charge' among vertices to derive contradictions",
+      "Computer-assisted proofs raised foundational questions: What makes a proof 'acceptable' to the mathematical community?"
+    ]
+  },
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Overview of the Four Color Theorem, its history from 1852 to 1976, and why it became a landmark in computer-assisted mathematics."
+    },
+    {
+      "id": "graph-theory-setup",
+      "title": "Graph Theory Foundations",
+      "startLine": 25,
+      "endLine": 52,
+      "summary": "Defining planar graphs, graph coloring, and the key concepts needed to state the theorem precisely."
+    },
+    {
+      "id": "euler-formula",
+      "title": "Euler's Formula",
+      "startLine": 54,
+      "endLine": 77,
+      "summary": "The fundamental constraint on planar graphs: V - E + F = 2, which forces every planar graph to have vertices of degree at most 5."
+    },
+    {
+      "id": "five-color-theorem",
+      "title": "The Five Color Theorem",
+      "startLine": 79,
+      "endLine": 120,
+      "summary": "A warm-up: proving every planar graph is 5-colorable using Kempe chains. This proof works; the difficulty is reducing 5 to 4."
+    },
+    {
+      "id": "kempe-chains",
+      "title": "Kempe Chains",
+      "startLine": 122,
+      "endLine": 155,
+      "summary": "The technique of swapping colors along alternating paths. Kempe's insight was correct, but his application to four colors was flawed."
+    },
+    {
+      "id": "reducibility",
+      "title": "Reducibility",
+      "startLine": 157,
+      "endLine": 195,
+      "summary": "A configuration is reducible if any planar graph containing it can be simplified while preserving 4-colorability. This is where computer verification becomes essential."
+    },
+    {
+      "id": "unavoidability",
+      "title": "Unavoidability",
+      "startLine": 197,
+      "endLine": 230,
+      "summary": "Using discharging to prove every planar graph contains at least one reducible configuration from a finite set."
+    },
+    {
+      "id": "computer-verification",
+      "title": "Computer Verification",
+      "startLine": 232,
+      "endLine": 265,
+      "summary": "How Appel-Haken's 1976 proof and Gonthier's 2005 Coq formalization verified 1,936 configurations exhaustively."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 267,
+      "endLine": 295,
+      "summary": "Combining unavoidability and reducibility to conclude: no minimal counterexample exists, so all planar graphs are 4-colorable."
+    },
+    {
+      "id": "philosophical-implications",
+      "title": "Philosophical Implications",
+      "startLine": 297,
+      "endLine": 330,
+      "summary": "The debate over computer-assisted proofs: can we trust what we cannot humanly verify? How Gonthier's formalization addressed these concerns."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Four Color Theorem demonstrates that every planar map can be colored with at most four colors such that no adjacent regions share a color. Its proof, requiring computer verification of nearly 2,000 configurations, marked a turning point in the philosophy of mathematics.",
+    "implications": "The theorem's proof challenged traditional notions of mathematical proof. Appel and Haken's 1976 work was initially met with skepticism—how can we trust a proof no human can fully check? Gonthier's 2005 Coq formalization provided a different kind of certainty: instead of trusting a fallible computer program, we now trust a small, verified proof-checking kernel. This approach—using formal verification to establish trust in complex proofs—has become increasingly important in both mathematics and software engineering.",
+    "openQuestions": [
+      "Is there a 'human-readable' proof of the Four Color Theorem that doesn't require computer case analysis?",
+      "Can the set of unavoidable reducible configurations be significantly reduced?",
+      "What other long-standing conjectures might yield to computer-assisted proof techniques?",
+      "As formal verification matures, will machine-checked proofs become the standard for publication in mathematics?"
+    ]
+  }
+}
