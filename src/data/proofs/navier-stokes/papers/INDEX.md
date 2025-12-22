@@ -32,6 +32,14 @@ for absolute continuity of dissipation energy.
 **Key Question to Answer:**
 What is the explicit form of N(r) in their covering bounds?
 
+**ANSWER (from reading the paper):**
+The paper bounds Σ r_k(w) ≲ o(1/(k ln k)), the SUM of radii, NOT the COUNT.
+Since r_k(w) can be as small as c|ln R_k|^{-2β} R_k, the covering number could be:
+  N_k ≲ (bound) / (min radius) ~ |ln R_k|^{2β} / R_k → ∞ as R_k → 0
+
+**CONCLUSION: N(r) is NOT bounded.** The paper does not give finite bubble count.
+This is BAD NEWS for our θₖ approach - quantitative CKN alone is insufficient.
+
 ---
 
 ### 2. Barker 2025 - Quantitative Classification of Singularities
