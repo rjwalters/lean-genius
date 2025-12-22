@@ -1,0 +1,80 @@
+{
+  "id": "abel-ruffini",
+  "title": "Abel-Ruffini Theorem",
+  "slug": "abel-ruffini",
+  "description": "Galois's profound theorem that there is no general algebraic solution to polynomial equations of degree five or higher, connecting field theory to group theory through the unsolvability of the symmetric group S5.",
+  "meta": {
+    "author": "Niels Henrik Abel (1824), Evariste Galois (1832)",
+    "date": "1824",
+    "status": "verified",
+    "tags": ["algebra", "galois-theory", "group-theory", "field-theory", "classic", "intermediate"],
+    "proofRepoPath": "Proofs/AbelRuffini.lean"
+  },
+  "overview": {
+    "historicalContext": "The quest to solve polynomial equations drove mathematics for centuries. Quadratic equations were solved in antiquity, cubic equations by Cardano (1545), and quartic equations by Ferrari (1545). For 300 years, mathematicians sought a quintic formula.\n\nPaolo Ruffini gave an incomplete proof in 1799 that no such formula exists. Niels Henrik Abel provided the first rigorous proof in 1824, at age 21, showing that the general quintic equation cannot be solved by radicals.\n\nBut it was Evariste Galois, tragically killed in a duel at age 20 in 1832, who revealed the deeper truth: the solvability of a polynomial is determined by the structure of its symmetry group. His theory explains not just why quintics are unsolvable, but precisely which polynomials can be solved by radicals.\n\nGalois's manuscripts, hastily written the night before his fatal duel, took decades to be understood. Today, Galois theory is fundamental to modern algebra, connecting field extensions to group theory in profound ways.",
+    "problemStatement": "Theorem (Abel-Ruffini): There is no general solution in radicals to polynomial equations of degree five or higher.\n\nMore precisely: there exist polynomials of degree 5 (and higher) whose roots cannot be expressed using only addition, subtraction, multiplication, division, and nth roots applied to the coefficients.\n\nGalois's formulation: A polynomial equation is solvable by radicals if and only if its Galois group is a solvable group.\n\nThe symmetric group $S_5$ is not solvable (because the alternating group $A_5$ is simple and non-abelian), so the general quintic, which has Galois group $S_5$, cannot be solved by radicals.",
+    "proofStrategy": "The proof connects two seemingly unrelated concepts:\n\n1. FIELD EXTENSIONS: Define what it means for an element to be 'solvable by radicals' - expressible using field operations and nth roots from a base field.\n\n2. GALOIS GROUPS: For a polynomial p(x), its Galois group Gal(p) captures the symmetries of its roots. This group acts on the roots by permuting them while preserving all algebraic relations.\n\n3. THE BRIDGE: An element is solvable by radicals if and only if its minimal polynomial has a solvable Galois group.\n\n4. GROUP THEORY: A group is solvable if it has a composition series with abelian quotients. Crucially:\n   - S2, S3, S4 are solvable (explaining why quadratics, cubics, quartics have formulas)\n   - S5 is NOT solvable (because A5 is a simple non-abelian group)\n\n5. CONCLUSION: The general quintic has Galois group S5. Since S5 is not solvable, the quintic cannot be solved by radicals.",
+    "keyInsights": [
+      "Solvability of polynomials is determined by group-theoretic properties of their symmetries",
+      "The alternating group A5 is the smallest non-abelian simple group, with 60 elements",
+      "S5 is not solvable because it contains A5, which has no non-trivial normal subgroups",
+      "Specific quintics like x^5 - x - 1 have Galois group exactly S5",
+      "The proof explains WHY degree 5 is special: S4 happens to be solvable, but S5 is not",
+      "Galois theory precisely characterizes which polynomials are solvable, not just which degrees"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Import Mathlib's Galois theory, group theory (solvable groups), and the Abel-Ruffini theorem components."
+    },
+    {
+      "id": "solvable-def",
+      "title": "Solvable by Radicals",
+      "startLine": 22,
+      "endLine": 50,
+      "summary": "The inductive definition: an element is solvable by radicals if it can be built from the base field using field operations and nth roots."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Abel-Ruffini Theorem",
+      "startLine": 52,
+      "endLine": 85,
+      "summary": "If an element is solvable by radicals, its minimal polynomial has a solvable Galois group. This is Mathlib's solvableByRad.isSolvable'."
+    },
+    {
+      "id": "a5-simple",
+      "title": "A5 is Simple",
+      "startLine": 87,
+      "endLine": 115,
+      "summary": "The alternating group on 5 elements is a simple group - it has no non-trivial normal subgroups. This makes S5 unsolvable."
+    },
+    {
+      "id": "s5-not-solvable",
+      "title": "S5 is Not Solvable",
+      "startLine": 117,
+      "endLine": 145,
+      "summary": "Since A5 is simple and non-abelian, S5 cannot have a composition series with all abelian quotients, so S5 is not solvable."
+    },
+    {
+      "id": "quintic",
+      "title": "The General Quintic",
+      "startLine": 147,
+      "endLine": 180,
+      "summary": "Combining the pieces: the general quintic has Galois group S5, which is not solvable, so the quintic cannot be solved by radicals."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization demonstrates one of mathematics' most beautiful connections: the solution of polynomial equations reduces to group theory. Galois's insight that symmetry groups control solvability unified algebra in a profound way.\n\nThe key results: Mathlib's solvableByRad.isSolvable' proves that solvability by radicals implies a solvable Galois group. The simplicity of A5 (alternatingGroup.isSimple_five) implies S5 is not solvable. Together, these show the general quintic is unsolvable.",
+    "implications": "Galois theory has far-reaching consequences:\n\n1. CONSTRUCTIBILITY: Similar techniques prove that angle trisection and cube doubling are impossible with compass and straightedge.\n\n2. INVERSE GALOIS PROBLEM: Which groups appear as Galois groups over Q? This remains open for many groups.\n\n3. ALGEBRAIC NUMBER THEORY: Galois groups of field extensions are central to understanding number fields and their arithmetic.\n\n4. MODERN ALGEBRA: Galois's ideas pioneered the abstract study of groups, fields, and their relationships - the foundation of modern algebra.\n\n5. SPECIFIC SOLUTIONS: While the general quintic is unsolvable, specific quintics may be solvable. Galois theory tells us exactly which ones.",
+    "openQuestions": [
+      "The Inverse Galois Problem: Does every finite group appear as a Galois group over Q?",
+      "Can we algorithmically compute Galois groups efficiently for arbitrary polynomials?",
+      "What are the computational complexity bounds for determining polynomial solvability?",
+      "How do Galois groups behave in families of polynomials?"
+    ]
+  }
+}
