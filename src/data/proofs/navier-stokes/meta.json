@@ -2,24 +2,24 @@
   "id": "navier-stokes-regularity",
   "title": "Global Regularity for Navier-Stokes",
   "slug": "navier-stokes",
-  "description": "A formalized proof claiming to establish global regularity for the 3D incompressible Navier-Stokes equations - one of the Millennium Prize Problems.",
+  "description": "A flawed proof attempt for the Navier-Stokes Millennium Prize Problem. The proof uses 6 axioms that assume the key properties that would need to be proven, making the argument circular.",
   "meta": {
     "author": "David Budden",
     "authorHandle": "@davidmbudden",
     "sourceUrl": "https://x.com/davidmbudden/status/2002627726877069805",
     "date": "2025-12-20",
     "status": "disputed",
-    "tags": ["PDE", "fluid-dynamics", "millennium-problem", "regularity"]
+    "tags": ["PDE", "fluid-dynamics", "millennium-problem", "regularity", "flawed"]
   },
   "overview": {
-    "historicalContext": "The Navier-Stokes equations, formulated by Claude-Louis Navier (1822) and George Gabriel Stokes (1845), describe the motion of viscous fluids. For nearly two centuries, these equations have been the foundation of fluid mechanics, governing everything from weather patterns to blood flow to aircraft design.\n\nIn 2000, the Clay Mathematics Institute designated the Navier-Stokes existence and smoothness problem as one of seven Millennium Prize Problems, offering $1 million for its resolution. The question: given smooth initial conditions, do solutions to the 3D incompressible Navier-Stokes equations remain smooth for all time, or can singularities (blowup) develop?\n\nThe 2D case was resolved by Ladyzhenskaya in the 1960s—solutions remain smooth. But 3D has resisted all attempts. The fundamental difficulty is the **vortex stretching term**, which has no analog in 2D and can potentially amplify vorticity without bound.",
-    "problemStatement": "The 3D incompressible Navier-Stokes equations are:\n\n$$\\partial_t u + (u \\cdot \\nabla)u = -\\nabla p + \\nu \\Delta u$$\n$$\\nabla \\cdot u = 0$$\n\nwhere $u$ is velocity, $p$ is pressure, and $\\nu > 0$ is viscosity. The **global regularity problem** asks: given smooth initial data $u_0 \\in C^\\infty(\\mathbb{T}^3)$ with $\\nabla \\cdot u_0 = 0$, does there exist a unique smooth solution $u(x,t)$ for all $t > 0$?\n\nEquivalently: can the vorticity $\\omega = \\nabla \\times u$ blow up in finite time? The Beale-Kato-Majda criterion (1984) shows blowup occurs if and only if $\\int_0^T \\|\\omega\\|_\\infty \\, dt = \\infty$. So the question reduces to controlling vorticity growth.",
-    "proofStrategy": "This proof attacks blowup from two directions:\n\n**Part 1: Rule out Type I blowup** (Parts I–III)\nType I blowup has a self-similar structure with rate $(T-t)^{-1/2}$. The ESS theorem (Escauriaza-Seregin-Šverák, 2003) shows this leads to bounded ancient solutions. The spectral gap argument proves such solutions must be constant—contradiction.\n\n**Part 2: Rule out Type II blowup** (Parts IV–IX)\nType II blowup is slower, with rate $(T-t)^{-\\alpha}$ for $\\alpha > 1$. The key insight is the **geometric depletion mechanism**: the interaction between vortex stretching and the spectral gap creates negative feedback. The numerical inequality $\\kappa \\cdot c_{FK} > 2$ proves that depletion dominates concentration.\n\nThe proof concludes by combining these: ESS rules out Type I, geometric depletion prevents Type II enstrophy blowup, and BKM criterion converts bounded enstrophy to global regularity.",
+    "historicalContext": "The Navier-Stokes equations, formulated by Claude-Louis Navier (1822) and George Gabriel Stokes (1845), describe the motion of viscous fluids. In 2000, the Clay Mathematics Institute designated the Navier-Stokes existence and smoothness problem as one of seven Millennium Prize Problems, offering $1 million for its resolution.\n\nThe question: given smooth initial conditions, do solutions to the 3D incompressible Navier-Stokes equations remain smooth for all time, or can singularities (blowup) develop? This remains one of the great unsolved problems in mathematics.",
+    "problemStatement": "The 3D incompressible Navier-Stokes equations are:\n\n$$\\partial_t u + (u \\cdot \\nabla)u = -\\nabla p + \\nu \\Delta u$$\n$$\\nabla \\cdot u = 0$$\n\nwhere $u$ is velocity, $p$ is pressure, and $\\nu > 0$ is viscosity. The **global regularity problem** asks: given smooth initial data, does a unique smooth solution exist for all time?",
+    "proofStrategy": "**WHY THIS PROOF IS FLAWED:**\n\nThis Lean formalization uses **6 axioms** that assume the very properties that would need to be proven:\n\n1. **`concentration_near_blowup`** (line 1260): Assumes θ ≥ 1/2 near blowup — *this is exactly what you'd need to prove*\n2. **`faber_krahn_on_ball`** (line 1152): Assumes a specific Faber-Krahn bound on palinstrophy\n3. **`stretching_beta_bound`** (line 1241): Assumes a bound on vortex stretching\n4. **`poincare_dissipation_bound`** (line 1247): Assumes Poincaré dissipation lower bound\n5. **`E_loc_le_E`** (line 821): Assumes local enstrophy ≤ total\n6. **`E_loc_nonneg`** (line 826): Assumes local enstrophy ≥ 0\n\nIn Lean, `axiom` means \"assume this is true without proof.\" The proof essentially says: \"If we assume these 6 properties about NS solutions, then there's no blowup.\" But proving these properties *is* the Millennium Prize problem!\n\nThis is analogous to: \"Axiom: The Riemann Hypothesis is true. Theorem: The Riemann Hypothesis follows.\"",
     "keyInsights": [
-      "The spectral gap $\\lambda_1 = 4\\pi^2$ on the 3-torus provides a universal lower bound on energy dissipation, which constrains how vorticity can grow.",
-      "Ancient solutions (existing for all backward time) arise from rescaling around potential blowup points. Proving they must be trivial rules out self-similar blowup.",
-      "The geometric depletion mechanism exploits the alignment between strain and vorticity—vortex stretching is not arbitrary but constrained by geometry.",
-      "The inequality $\\kappa \\cdot c_{FK} > 2$ is purely numerical: the depletion coefficient $\\kappa = 4$ times the Faber-Krahn constant exceeds the critical threshold."
+      "The proof structure is logically correct IF the axioms hold — but the axioms are unproven",
+      "The critical flaw is `concentration_near_blowup` which assumes enstrophy concentration (θ ≥ 1/2) near blowup — this assumption is precisely what needs to be established",
+      "The numerical inequality κ·c_FK > 2 is genuinely proven, but it only matters if the axioms hold",
+      "In Lean: `axiom` = assumed without proof, `theorem` = proven, `sorry` = incomplete proof"
     ]
   },
   "sections": [
@@ -28,74 +28,30 @@
       "title": "Part I: Numerical Constants",
       "startLine": 37,
       "endLine": 96,
-      "summary": "Establishes fundamental constants including the spectral gap (first eigenvalue on the 3-torus), Faber-Krahn constant, and proves the key numerical inequality that drives the depletion mechanism."
+      "summary": "Establishes numerical constants. The inequality κ·c_FK > 2 is genuinely proven here."
     },
     {
-      "id": "part-2",
-      "title": "Part II: Basic Inequalities",
-      "startLine": 98,
-      "endLine": 165,
-      "summary": "Proves foundational inequalities including Bernoulli's inequality, backward growth estimates, and shows exponential dominates polynomial growth."
+      "id": "axioms",
+      "title": "THE CRITICAL FLAW: Unproven Axioms",
+      "startLine": 815,
+      "endLine": 1262,
+      "summary": "Lines 821, 826, 1152, 1241, 1247, and 1260 contain 6 AXIOMS that assume the key properties. Most critically: `concentration_near_blowup` (line 1260) assumes θ ≥ 1/2, which is exactly what needs to be proven for Navier-Stokes regularity."
     },
     {
-      "id": "part-3",
-      "title": "Part III: Ancient Solutions and ESS Theorem",
-      "startLine": 167,
-      "endLine": 363,
-      "summary": "Defines the structure of ancient solutions (solutions existing for all backward time) and proves the ESS (Escauriaza-Seregin-Šverák) theorem: bounded ancient solutions must be constant, ruling out Type I blowup."
-    },
-    {
-      "id": "part-4",
-      "title": "Part IV: NS Solution Structure",
-      "startLine": 365,
-      "endLine": 408,
-      "summary": "Defines the mathematical structure of Navier-Stokes solutions including enstrophy, vorticity, palinstrophy, and the stretching term with their physical constraints."
-    },
-    {
-      "id": "part-5",
-      "title": "Part V: Type II Scenario",
-      "startLine": 410,
-      "endLine": 440,
-      "summary": "Characterizes Type II blowup behavior where the blowup rate is slower than the self-similar (Type I) rate."
-    },
-    {
-      "id": "part-6",
-      "title": "Part VI: Stability and No Blowup",
-      "startLine": 442,
-      "endLine": 653,
-      "summary": "The core argument: proves that under physical axioms, enstrophy remains bounded which by BKM criterion implies global regularity."
-    },
-    {
-      "id": "part-7",
-      "title": "Part VII: NS Axioms and Main Theorem",
-      "startLine": 655,
-      "endLine": 719,
-      "summary": "Formalizes the physical axioms (spectral gap, theta dynamics, blowup rate bounds, BKM criterion) and states the main regularity theorem."
-    },
-    {
-      "id": "part-8",
-      "title": "Part VIII: Concentration via Supremum and CKN Dimension",
-      "startLine": 721,
-      "endLine": 1403,
-      "summary": "Establishes concentration inequalities, CKN (Caffarelli-Kohn-Nirenberg) dimensional analysis, and V-cell foundations for the geometric depletion argument."
-    },
-    {
-      "id": "part-9",
-      "title": "Part IX: Complete Theorem",
-      "startLine": 1405,
+      "id": "theorems",
+      "title": "Theorems (valid IF axioms hold)",
+      "startLine": 1480,
       "endLine": 1541,
-      "summary": "Assembles the complete proof: combines ESS theorem (no Type I), Type II dynamics, spectral gap depletion, and BKM criterion to conclude global regularity."
+      "summary": "The final theorems are logically valid derivations from the axioms. The issue is not the logic — it's that the axioms assume the conclusion."
     }
   ],
   "conclusion": {
-    "summary": "This Lean formalization presents a sophisticated approach to the Navier-Stokes regularity problem. The proof strategy is elegant: rule out Type I blowup via the ESS theorem (ancient solutions must be constant), then rule out Type II blowup via the geometric depletion mechanism ($\\kappa \\cdot c_{FK} > 2$ ensures dissipation dominates stretching). The logical structure is complete—if the axioms hold, blowup is impossible.\n\nThe formalization successfully encodes the key physical mechanisms: the spectral gap provides universal dissipation bounds, the Beale-Kato-Majda criterion converts energy estimates to regularity, and the Type II asymptotic analysis shows stretching becomes negligible near potential blowup times.",
-    "implications": "**If verified correct**, this proof would:\n\n1. **Resolve a Millennium Prize Problem** — The first of the seven problems to be solved since Perelman's proof of the Poincaré Conjecture in 2003.\n\n2. **Validate centuries of physics** — Engineers and physicists have used Navier-Stokes assuming smooth solutions. This would confirm that trust was well-placed.\n\n3. **Close a fundamental question in analysis** — The dichotomy between 2D (smooth) and 3D (unknown) would be resolved: both are smooth.\n\n4. **Demonstrate the power of formal verification** — A 1500-line Lean proof achieving what decades of traditional mathematics could not would be a landmark for computer-verified mathematics.\n\nHowever, extraordinary claims require extraordinary scrutiny. The proof's status remains \"pending\" until the mathematical community has thoroughly verified both the formalization and the underlying mathematical arguments.",
+    "summary": "**THIS PROOF IS FLAWED.** It uses Lean's `axiom` keyword to assume 6 critical properties about Navier-Stokes solutions without proving them. The most egregious is `concentration_near_blowup` which directly assumes that enstrophy concentrates with θ ≥ 1/2 near blowup — this is precisely the key step that would be needed to solve the Millennium Prize problem.\n\nThe proof demonstrates: \"If these 6 properties hold for NS solutions, then there's no blowup.\" But it does NOT prove that these properties actually hold. The hard work is entirely assumed away via axioms.",
+    "implications": "**What this proof actually shows:**\n\n1. The *logical structure* of the argument is sound — if the axioms held, the conclusion would follow\n2. The numerical calculations (κ·c_FK > 2) are correct\n3. BUT the axioms are unproven assumptions about Navier-Stokes solutions\n\n**This is NOT a valid proof of Navier-Stokes regularity.** The Millennium Prize problem remains unsolved.\n\n**Lesson for formal verification:** Lean can verify that theorems follow from axioms, but it cannot verify that axioms are true. A proof is only as strong as its assumptions.",
     "openQuestions": [
-      "Does the Lean code actually compile against the claimed Mathlib version? Independent verification of the build is essential.",
-      "Are the 'axioms' (spectral gap on dissipation scale, θ dynamics, etc.) actually derivable from NS physics, or do they encode unproven assumptions?",
-      "The CKN (Caffarelli-Kohn-Nirenberg) dimensional analysis in Part VIII is extensive but complex—does it correctly formalize the published theorems?",
-      "The numerical constants (κ = 4, c_FK ≈ 2.11) are critical. Are these values rigorously justified, or are there hidden approximations?",
-      "How does this approach relate to known partial results (weak solutions, Leray-Hopf, partial regularity)? Does it build on or contradict existing theory?"
+      "Can the axioms actually be proven for Navier-Stokes solutions? This is equivalent to solving the Millennium Prize problem.",
+      "Is `concentration_near_blowup` (θ ≥ 1/2 near blowup) a known result? No — if it were, NS regularity would already be solved.",
+      "Why did the author use `axiom` instead of `sorry`? Axioms appear as \"assumptions\" rather than \"incomplete proofs\" — but the effect is the same: critical steps are not proven."
     ]
   }
 }
