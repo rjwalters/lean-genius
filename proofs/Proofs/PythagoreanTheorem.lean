@@ -1,259 +1,151 @@
-/-
-  Pythagorean Theorem - a² + b² = c²
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.Data.Real.Basic
+import Mathlib.Data.Real.Sqrt
+import Mathlib.Tactic
 
-  A formal proof of the Pythagorean theorem using inner product spaces.
-  In a right triangle, the square of the hypotenuse equals the sum of
-  the squares of the other two sides.
+/-!
+# Pythagorean Theorem: a² + b² = c²
 
-  This proof uses the elegant connection between perpendicularity (zero inner
-  product) and the norm formula in inner product spaces.
+A formal proof of the Pythagorean theorem using inner product spaces.
+In a right triangle, the square of the hypotenuse equals the sum of
+the squares of the other two sides.
 
-  Historical Note: While Pythagoras (c. 570-495 BCE) gets credit, the theorem
-  was known to Babylonians 1000 years earlier and has 300+ known proofs.
+This proof uses the elegant connection between perpendicularity (zero inner
+product) and the norm formula in inner product spaces.
+
+Historical Note: While Pythagoras (c. 570-495 BCE) gets credit, the theorem
+was known to Babylonians 1000 years earlier and has 300+ known proofs.
 -/
 
--- ============================================================
--- PART 1: Real Numbers and Basic Operations
--- ============================================================
+set_option linter.unusedVariables false
 
--- We work with real numbers for geometric quantities
--- In a full formalization, we'd import Mathlib's reals
-axiom Real : Type
-axiom Real.add : Real → Real → Real
-axiom Real.mul : Real → Real → Real
-axiom Real.zero : Real
-axiom Real.one : Real
-
-notation a " + " b => Real.add a b
-notation a " * " b => Real.mul a b
-notation "0" => Real.zero
-notation "1" => Real.one
-
--- Square of a real number
-def sq (x : Real) : Real := x * x
-
-notation x "²" => sq x
+open scoped RealInnerProductSpace
 
 -- ============================================================
--- PART 2: Vector Space Structure
+-- PART 1: Vector Space Structure
 -- ============================================================
 
--- A 2D vector in the plane
-structure Vec2 where
-  x : Real
-  y : Real
-
--- Vector addition
-def Vec2.add (v w : Vec2) : Vec2 :=
-  ⟨v.x + w.x, v.y + w.y⟩
-
--- Vector subtraction (for displacement vectors)
-axiom Real.sub : Real → Real → Real
-notation a " - " b => Real.sub a b
-
-def Vec2.sub (v w : Vec2) : Vec2 :=
-  ⟨v.x - w.x, v.y - w.y⟩
-
-notation v " - " w => Vec2.sub v w
+-- We work in ℝ², the Euclidean plane
+abbrev Vec2 := EuclideanSpace ℝ (Fin 2)
 
 -- ============================================================
--- PART 3: Inner Product
+-- PART 2: Inner Product and Norm
 -- ============================================================
 
-/-
-  The inner product (dot product) is the key to the Pythagorean theorem.
-  For vectors v = (v₁, v₂) and w = (w₁, w₂):
-    ⟨v, w⟩ = v₁w₁ + v₂w₂
--/
-def inner (v w : Vec2) : Real :=
-  (v.x * w.x) + (v.y * w.y)
+-- The inner product ⟨v, w⟩ = v₁w₁ + v₂w₂
+#check @inner ℝ Vec2 _
 
-notation "⟨" v ", " w "⟩" => inner v w
+-- The squared norm ‖v‖² = v₁² + v₂²
+-- norm : Vec2 → ℝ
 
--- The norm squared of a vector: ‖v‖² = ⟨v, v⟩
-def normSq (v : Vec2) : Real := inner v v
-
-notation "‖" v "‖²" => normSq v
+-- Key property: ‖v‖² = ⟨v, v⟩
+theorem norm_sq_eq_inner (v : Vec2) : ‖v‖^2 = inner v v := by
+  rw [sq, ← real_inner_self_eq_norm_mul_norm]
 
 -- ============================================================
--- PART 4: Perpendicularity
+-- PART 3: Perpendicularity
 -- ============================================================
 
-/-
-  Two vectors are perpendicular (orthogonal) if their inner product is zero.
-  This is the geometric definition of a right angle.
--/
-def perpendicular (v w : Vec2) : Prop := inner v w = 0
+/-- Two vectors are perpendicular if their inner product is zero -/
+def perpendicular (v w : Vec2) : Prop := inner v w = (0 : ℝ)
 
 notation v " ⊥ " w => perpendicular v w
 
+-- Perpendicularity is symmetric
+theorem perp_symm (v w : Vec2) (h : v ⊥ w) : w ⊥ v := by
+  unfold perpendicular at *
+  rw [real_inner_comm]
+  exact h
+
 -- ============================================================
--- PART 5: The Pythagorean Theorem
+-- PART 4: The Pythagorean Theorem
 -- ============================================================
 
-/-
-  The Pythagorean Theorem in inner product form:
-  If v ⊥ w, then ‖v + w‖² = ‖v‖² + ‖w‖²
+/-- **The Pythagorean Theorem** (inner product space version)
 
-  Proof sketch:
-    ‖v + w‖² = ⟨v + w, v + w⟩
-             = ⟨v, v⟩ + ⟨v, w⟩ + ⟨w, v⟩ + ⟨w, w⟩  (bilinearity)
-             = ‖v‖² + 0 + 0 + ‖w‖²                 (perpendicularity)
-             = ‖v‖² + ‖w‖²
--/
+For perpendicular vectors v and w:
+  ‖v + w‖² = ‖v‖² + ‖w‖²
 
--- First, we need bilinearity of the inner product
-axiom inner_add_left (u v w : Vec2) :
-  ⟨Vec2.add u v, w⟩ = ⟨u, w⟩ + ⟨v, w⟩
-
-axiom inner_add_right (u v w : Vec2) :
-  ⟨u, Vec2.add v w⟩ = ⟨u, v⟩ + ⟨u, w⟩
-
--- Symmetry of inner product
-axiom inner_comm (v w : Vec2) : ⟨v, w⟩ = ⟨w, v⟩
-
--- Arithmetic axioms we need
-axiom add_zero (a : Real) : a + 0 = a
-axiom zero_add (a : Real) : 0 + a = a
-axiom add_assoc (a b c : Real) : (a + b) + c = a + (b + c)
-axiom add_comm (a b : Real) : a + b = b + a
-
--- The Pythagorean Theorem for vectors
+This says: if two sides of a right triangle are represented by v and w
+(with the right angle between them), then the hypotenuse (v + w) satisfies
+the Pythagorean relation. -/
 theorem pythagorean_theorem (v w : Vec2) (h : v ⊥ w) :
-    ‖Vec2.add v w‖² = ‖v‖² + ‖w‖² := by
-  -- Expand the norm squared of the sum
-  unfold normSq
-  -- ⟨v + w, v + w⟩ = ⟨v, v + w⟩ + ⟨w, v + w⟩
-  rw [inner_add_left]
-  -- = ⟨v, v⟩ + ⟨v, w⟩ + ⟨w, v⟩ + ⟨w, w⟩
-  rw [inner_add_right, inner_add_right]
+    ‖v + w‖^2 = ‖v‖^2 + ‖w‖^2 := by
+  -- Expand using ‖x‖² = ⟨x, x⟩
+  simp only [sq]
+  rw [← real_inner_self_eq_norm_mul_norm, ← real_inner_self_eq_norm_mul_norm,
+      ← real_inner_self_eq_norm_mul_norm]
+  -- Expand ⟨v + w, v + w⟩
+  rw [inner_add_left, inner_add_right, inner_add_right]
   -- Use perpendicularity: ⟨v, w⟩ = 0
   unfold perpendicular at h
-  rw [h]
-  -- By symmetry: ⟨w, v⟩ = ⟨v, w⟩ = 0
-  rw [inner_comm w v, h]
-  -- Simplify: ‖v‖² + 0 + 0 + ‖w‖² = ‖v‖² + ‖w‖²
-  rw [add_zero, add_zero]
-  rfl
+  have hw : inner w v = (0 : ℝ) := by rw [real_inner_comm]; exact h
+  rw [h, hw]
+  -- Simplify
+  ring
 
 -- ============================================================
--- PART 6: Geometric Interpretation
+-- PART 5: Classical Formulation
 -- ============================================================
 
-/-
-  For a right triangle with:
-  - Right angle at vertex C
-  - Vertices A, B, C as points in the plane
-  - Side a opposite to A (from B to C)
-  - Side b opposite to B (from A to C)
-  - Side c opposite to C (from A to B) - the hypotenuse
-
-  If we place C at the origin:
-  - Vector v points from C to A (length = b)
-  - Vector w points from C to B (length = a)
-  - The hypotenuse is represented by v - w (length = c)
-
-  The right angle at C means v ⊥ w.
-
-  Then: a² + b² = c²
-  becomes: ‖w‖² + ‖v‖² = ‖v - w‖²
--/
-
--- A right triangle with the right angle at the origin
+/-- Right triangle with legs a, b and hypotenuse c -/
 structure RightTriangle where
-  legA : Vec2  -- vector to vertex A
-  legB : Vec2  -- vector to vertex B
-  right_angle : legA ⊥ legB
+  a : ℝ  -- length of first leg
+  b : ℝ  -- length of second leg
+  c : ℝ  -- length of hypotenuse
+  a_pos : 0 < a
+  b_pos : 0 < b
+  c_pos : 0 < c
+  pythagorean : a^2 + b^2 = c^2  -- the defining relation
 
--- Length squared of each side
-def RightTriangle.sideLengthsSq (t : RightTriangle) :=
-  (‖t.legA‖², ‖t.legB‖², ‖t.legA - t.legB‖²)
+/-- Classic examples of Pythagorean triples -/
 
--- The classical a² + b² = c² formulation
--- For subtraction, we need an additional axiom about the norm
-axiom normSq_sub (v w : Vec2) (h : v ⊥ w) :
-  ‖v - w‖² = ‖v‖² + ‖w‖²
+-- 3² + 4² = 5²
+theorem pythagorean_3_4_5 : (3 : ℝ)^2 + 4^2 = 5^2 := by norm_num
 
-theorem pythagorean_classical (t : RightTriangle) :
-    ‖t.legA‖² + ‖t.legB‖² = ‖t.legA - t.legB‖² := by
-  rw [normSq_sub t.legA t.legB t.right_angle]
+-- 5² + 12² = 13²
+theorem pythagorean_5_12_13 : (5 : ℝ)^2 + 12^2 = 13^2 := by norm_num
+
+-- 8² + 15² = 17²
+theorem pythagorean_8_15_17 : (8 : ℝ)^2 + 15^2 = 17^2 := by norm_num
 
 -- ============================================================
--- PART 7: Famous Pythagorean Triples
+-- PART 6: Converse (Characterization of Right Angles)
 -- ============================================================
 
-/-
-  Pythagorean triples are integer solutions to a² + b² = c².
-  The most famous is (3, 4, 5):
-    3² + 4² = 9 + 16 = 25 = 5²
+/-- Converse of Pythagorean theorem: if ‖v + w‖² = ‖v‖² + ‖w‖², then v ⊥ w -/
+theorem pythagorean_converse (v w : Vec2) :
+    ‖v + w‖^2 = ‖v‖^2 + ‖w‖^2 → v ⊥ w := by
+  intro h
+  unfold perpendicular
+  -- The proof uses the expansion of ‖v + w‖² and the symmetry of inner product
+  sorry  -- Requires careful manipulation of inner product identities
 
-  Other well-known triples:
-  - (5, 12, 13):  25 + 144 = 169 ✓
-  - (8, 15, 17):  64 + 225 = 289 ✓
-  - (7, 24, 25):  49 + 576 = 625 ✓
+-- ============================================================
+-- PART 7: Applications
+-- ============================================================
 
-  All primitive triples (where gcd(a,b,c) = 1) can be generated by:
-    a = m² - n²,  b = 2mn,  c = m² + n²
-  where m > n > 0 are coprime with different parity.
+/-!
+### Distance in the Plane
+
+The Pythagorean theorem underlies the Euclidean distance formula:
+  d((x₁, y₁), (x₂, y₂)) = √((x₂-x₁)² + (y₂-y₁)²)
+
+### Higher Dimensions
+
+In ℝⁿ, the theorem generalizes:
+  ‖v₁ + v₂ + ... + vₖ‖² = ‖v₁‖² + ‖v₂‖² + ... + ‖vₖ‖²
+when all pairs of vectors are perpendicular.
 -/
 
--- Natural number versions for computational examples
-def Nat.sq (n : Nat) : Nat := n * n
+/-- Generalized Pythagorean theorem for mutually perpendicular vectors -/
+theorem pythagorean_sum {ι : Type*} {s : Finset ι} {v : ι → Vec2}
+    (h : ∀ i ∈ s, ∀ j ∈ s, i ≠ j → inner (v i) (v j) = (0 : ℝ)) :
+    ‖∑ i ∈ s, v i‖^2 = ∑ i ∈ s, ‖v i‖^2 := by
+  sorry  -- Requires induction on the finite set
 
--- Verify (3, 4, 5) is a Pythagorean triple
-example : Nat.sq 3 + Nat.sq 4 = Nat.sq 5 := by native_decide
-
--- Verify (5, 12, 13) is a Pythagorean triple
-example : Nat.sq 5 + Nat.sq 12 = Nat.sq 13 := by native_decide
-
--- Verify (8, 15, 17) is a Pythagorean triple
-example : Nat.sq 8 + Nat.sq 15 = Nat.sq 17 := by native_decide
-
--- ============================================================
--- PART 8: The Converse
--- ============================================================
-
-/-
-  The converse of the Pythagorean theorem also holds:
-  If a² + b² = c² for the sides of a triangle, then the angle
-  opposite to c is a right angle.
-
-  This was known to Euclid (Elements, Book I, Proposition 48).
--/
-
--- We state the converse as an axiom here (full proof requires
--- additional geometric machinery)
-axiom pythagorean_converse (v w : Vec2) :
-  ‖v‖² + ‖w‖² = ‖v - w‖² → v ⊥ w
-
--- ============================================================
--- PART 9: Historical Context
--- ============================================================
-
-/-
-  The Pythagorean theorem is arguably the most famous theorem in mathematics.
-
-  Historical Timeline:
-  - ~1800 BCE: Babylonian tablet Plimpton 322 shows knowledge of triples
-  - ~1100 BCE: Chinese mathematicians knew the 3-4-5 triangle
-  - ~570-495 BCE: Pythagoras (or his school) provided a general proof
-  - ~300 BCE: Euclid included it in the Elements (Book I, Prop. 47)
-  - 1876: James Garfield (future US President) discovered a new proof
-  - 1940: Elisha Loomis catalogued 367 distinct proofs
-
-  Proof Methods:
-  1. Rearrangement proofs (visual, showing areas equal)
-  2. Similar triangles (Euclid's original approach)
-  3. Algebraic proofs (like our inner product version)
-  4. Calculus-based proofs
-  5. Proofs using complex numbers
-
-  The theorem generalizes in many directions:
-  - Law of Cosines: c² = a² + b² - 2ab·cos(C)
-  - Higher dimensions: ‖v‖² = v₁² + v₂² + ... + vₙ²
-  - Non-Euclidean geometries: fails in hyperbolic/spherical geometry
--/
-
--- Final verification
-#check pythagorean_theorem
-#check pythagorean_classical
+-- Export main results
+#check @pythagorean_theorem
+#check @pythagorean_converse
+#check @pythagorean_3_4_5

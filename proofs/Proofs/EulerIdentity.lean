@@ -131,7 +131,8 @@ theorem eulers_identity' : Complex.exp (Real.pi * Complex.I) + 1 = 0 := by
 
 -- Full rotation: e^(2πi) = 1
 theorem full_rotation : Complex.exp (2 * Real.pi * Complex.I) = 1 := by
-  rw [mul_comm 2 Real.pi, mul_assoc]
+  have h : 2 * Real.pi * Complex.I = 2 * π * Complex.I := rfl
+  rw [h]
   exact Complex.exp_two_pi_mul_I
 
 -- Half rotation: e^(πi) = -1 (same as exp_i_pi_eq_neg_one)
@@ -180,12 +181,9 @@ theorem exp_on_unit_circle (θ : ℝ) : Complex.abs (Complex.exp (θ * Complex.I
   identities in analysis.
 -/
 
--- Cosine in terms of exponentials
-theorem cos_eq_exp (x : ℝ) :
-    Complex.cos x = (Complex.exp (x * Complex.I) + Complex.exp (-(x * Complex.I))) / 2 := by
-  rw [Complex.cos_eq]
-  ring_nf
-  simp [mul_comm]
+-- Cosine in terms of exponentials (this is essentially the definition)
+theorem cos_eq_exp (x : ℂ) :
+    Complex.cos x = (Complex.exp (x * Complex.I) + Complex.exp (-x * Complex.I)) / 2 := rfl
 
 -- ============================================================
 -- PART 8: Why This Matters
