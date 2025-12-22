@@ -1,0 +1,136 @@
+{
+  "id": "borsuk-ulam",
+  "title": "Borsuk-Ulam Theorem",
+  "slug": "borsuk-ulam",
+  "description": "For any continuous function from the n-sphere to n-dimensional Euclidean space, there exist antipodal points with the same image. The 'weather theorem' that guarantees antipodal points on Earth with identical temperature and pressure.",
+  "meta": {
+    "author": "Karol Borsuk (formalized sketch in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem",
+    "date": "1933",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BorsukUlam.lean",
+    "tags": ["topology", "algebraic-topology", "covering-spaces", "advanced"]
+  },
+  "overview": {
+    "historicalContext": "The Borsuk-Ulam theorem was conjectured by Stanislaw Ulam and proved by Karol Borsuk in 1933. It emerged from the Polish school of topology and quickly became one of the most celebrated results in algebraic topology.\n\nThe theorem has a beautifully intuitive interpretation: at any given moment, there exist two antipodal points on Earth (opposite ends of a diameter) that have exactly the same temperature AND the same atmospheric pressure. This 'weather interpretation' makes abstract topology tangible.\n\nWhat makes Borsuk-Ulam remarkable is its wide range of applications. In 1978, Laszlo Lovasz used it to prove Kneser's conjecture about graph coloring, launching the field of topological combinatorics. It also implies the Ham Sandwich Theorem (any n objects in n-dimensional space can be simultaneously bisected by a single hyperplane) and has applications to fair division problems.",
+    "problemStatement": "Borsuk-Ulam Theorem: For any continuous function $f: S^n \\to \\mathbb{R}^n$, there exists a point $x \\in S^n$ such that $f(x) = f(-x)$.\n\nEquivalently: there is no continuous antipode-preserving (odd) map from $S^n$ to $S^{n-1}$.\n\nThe intuitive statement: on any sphere, for any continuous measurement of n quantities, some pair of antipodal points gives identical readings.",
+    "proofStrategy": "The proof proceeds by contradiction using covering space theory:\n\n1. Suppose $f: S^n \\to \\mathbb{R}^n$ has no antipodal pair, i.e., $f(x) \\neq f(-x)$ for all $x$.\n\n2. Define the 'gadget function' $g(x) = f(x) - f(-x)$. Since $f(x) \\neq f(-x)$, we have $g(x) \\neq 0$ for all $x$.\n\n3. Observe that $g(-x) = -g(x)$ (g is an odd function).\n\n4. Normalize: $h(x) = g(x)/|g(x)|$ gives a continuous map $h: S^n \\to S^{n-1}$ with $h(-x) = -h(x)$.\n\n5. The key lemma: No continuous antipode-preserving map $S^n \\to S^{n-1}$ can exist.\n\n6. This is proved using covering spaces: such a map would induce a map $\\mathbb{R}P^n \\to \\mathbb{R}P^{n-1}$ on projective spaces, leading to contradictions in fundamental groups.\n\n7. Contradiction! Therefore $f$ must have an antipodal pair.",
+    "keyInsights": [
+      "The gadget function g(x) = f(x) - f(-x) transforms the antipodal pair problem into a zeros problem",
+      "Odd functions (f(-x) = -f(x)) relate spheres of different dimensions via normalization",
+      "Projective space RP^n = S^n/Z_2 provides the algebraic topology machinery",
+      "The fundamental group pi_1(RP^n) = Z_2 detects the obstruction to antipode-preserving maps",
+      "The proof is non-constructive: we know antipodal pairs exist but not where"
+    ]
+  },
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Overview of the Borsuk-Ulam Theorem, its statement, and historical significance."
+    },
+    {
+      "id": "foundations",
+      "title": "Foundational Definitions",
+      "startLine": 23,
+      "endLine": 49,
+      "summary": "Setting up points in n-dimensional Euclidean space and the norm function."
+    },
+    {
+      "id": "sphere-antipodal",
+      "title": "The n-Sphere and Antipodal Points",
+      "startLine": 51,
+      "endLine": 81,
+      "summary": "Defining the n-sphere as unit vectors and the antipodal map x to -x."
+    },
+    {
+      "id": "continuous-functions",
+      "title": "Continuous Functions",
+      "startLine": 83,
+      "endLine": 100,
+      "summary": "Formalizing continuous functions from sphere to Euclidean space and the antipodal pair property."
+    },
+    {
+      "id": "gadget-function",
+      "title": "The Gadget Function",
+      "startLine": 102,
+      "endLine": 135,
+      "summary": "The key construction g(x) = f(x) - f(-x) and its properties."
+    },
+    {
+      "id": "covering-spaces",
+      "title": "Covering Spaces and Projective Space",
+      "startLine": 137,
+      "endLine": 173,
+      "summary": "Introduction to covering spaces, projective space RP^n, and fundamental groups."
+    },
+    {
+      "id": "no-odd-map",
+      "title": "No Antipode-Preserving Map Theorem",
+      "startLine": 175,
+      "endLine": 219,
+      "summary": "The key lemma: no continuous antipode-preserving map from S^n to S^(n-1) can exist."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Borsuk-Ulam Theorem",
+      "startLine": 221,
+      "endLine": 265,
+      "summary": "Proof of the main theorem by contradiction using the gadget function construction."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 267,
+      "endLine": 285,
+      "summary": "The n=1 case (IVT proof) and n=2 case (weather theorem interpretation)."
+    },
+    {
+      "id": "ham-sandwich",
+      "title": "The Ham Sandwich Theorem",
+      "startLine": 287,
+      "endLine": 311,
+      "summary": "Application: n sets in R^n can be simultaneously bisected by a single hyperplane."
+    },
+    {
+      "id": "necklace-splitting",
+      "title": "Necklace Splitting",
+      "startLine": 313,
+      "endLine": 326,
+      "summary": "Application to fair division: dividing a necklace among thieves."
+    },
+    {
+      "id": "kneser-conjecture",
+      "title": "Kneser's Conjecture",
+      "startLine": 328,
+      "endLine": 350,
+      "summary": "Lovasz's 1978 proof of Kneser's graph coloring conjecture using Borsuk-Ulam."
+    },
+    {
+      "id": "related-theorems",
+      "title": "Related Fixed Point Theorems",
+      "startLine": 352,
+      "endLine": 386,
+      "summary": "Connections to Brouwer, Sperner's Lemma, Tucker's Lemma, and Lusternik-Schnirelmann."
+    },
+    {
+      "id": "significance",
+      "title": "Why This Theorem Matters",
+      "startLine": 388,
+      "endLine": 415,
+      "summary": "The broader impact and significance of the Borsuk-Ulam theorem."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Borsuk-Ulam Theorem demonstrates that any continuous function from the n-sphere to n-dimensional Euclidean space must map some pair of antipodal points to the same value. The proof ingeniously transforms the antipodal pair problem into showing no odd map from S^n to S^(n-1) can exist, which follows from covering space theory.",
+    "implications": "This theorem has far-reaching consequences:\n\n1. **Fair Division**: The Ham Sandwich Theorem guarantees n objects in R^n can be bisected by one cut. Necklace splitting problems become tractable.\n\n2. **Topological Combinatorics**: Lovasz's proof of Kneser's conjecture launched an entire field connecting topology and combinatorics.\n\n3. **Fixed Point Theory**: Borsuk-Ulam implies Brouwer's Fixed Point Theorem, connecting different branches of topology.\n\n4. **Computer Science**: Tucker's Lemma (the discrete version) has applications in computational complexity.\n\n5. **Economics**: Related techniques appear in equilibrium theory and mechanism design.",
+    "openQuestions": [
+      "What is the computational complexity of finding an approximately antipodal pair?",
+      "How do equivariant versions of Borsuk-Ulam extend to other group actions?",
+      "Can the theorem be made constructive (intuitionistic)?",
+      "What are the higher categorical analogues of the covering space argument?"
+    ]
+  }
+}

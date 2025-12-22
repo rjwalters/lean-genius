@@ -8,6 +8,7 @@ import Proofs.CantorDiagonalization
 
 -- Additional proofs (may contain sorry/axioms - work in progress)
 import Proofs.AbelRuffini
+import Proofs.BorsukUlam
 import Proofs.BrouwerFixedPoint
 import Proofs.EulerIdentity
 import Proofs.FourColorTheorem
