@@ -1,0 +1,114 @@
+{
+  "id": "godel-incompleteness",
+  "title": "Gödel's First Incompleteness Theorem",
+  "slug": "godel-incompleteness",
+  "description": "Any consistent formal system capable of expressing basic arithmetic contains statements that are true but unprovable within the system. This 1931 theorem shattered Hilbert's program and revealed fundamental limits of formal reasoning.",
+  "meta": {
+    "author": "Kurt Gödel (formalized sketch in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/G%C3%B6del%27s_incompleteness_theorems",
+    "date": "1931",
+    "status": "pending",
+    "tags": ["logic", "foundations", "incompleteness", "self-reference", "advanced"]
+  },
+  "overview": {
+    "historicalContext": "In 1931, Kurt Gödel, a 25-year-old logician in Vienna, published a paper that would fundamentally change our understanding of mathematics and logic. His *Incompleteness Theorems* demonstrated that the dream of a complete, consistent foundation for mathematics—Hilbert's Program—was impossible.\n\nDavid Hilbert had proposed that all mathematical truths could be derived from a fixed set of axioms using formal rules. Gödel showed this was a fantasy: any system powerful enough to do arithmetic would contain truths it could never prove. The implications rippled through philosophy, computer science (anticipating the Halting Problem), and our understanding of the limits of human knowledge.",
+    "problemStatement": "**Gödel's First Incompleteness Theorem:** If $F$ is a consistent formal system capable of expressing basic arithmetic, then there exists a sentence $G$ such that:\n\n1. $G$ is true (in the standard model of arithmetic)\n2. $G$ is not provable in $F$\n3. $\\neg G$ is not provable in $F$ (assuming $\\omega$-consistency)\n\nIn other words: $F$ is *incomplete*—there are truths it cannot reach.",
+    "proofStrategy": "The proof proceeds through a remarkable self-referential construction:\n\n1. **Gödel Numbering:** Encode every formula as a natural number, allowing the system to \"talk about\" its own formulas\n2. **Representability:** Show that the provability relation can be expressed *within* the system via a formula $\\text{Prov}(x)$\n3. **Diagonal Lemma:** Construct a sentence $G$ that says \"$G$ is not provable\"—formal self-reference\n4. **The Contradiction:** If $G$ were provable, the system would prove both $\\text{Prov}(\\ulcorner G \\urcorner)$ and $\\neg\\text{Prov}(\\ulcorner G \\urcorner)$, violating consistency\n5. **Conclusion:** $G$ must be true but unprovable",
+    "keyInsights": [
+      "Gödel's key innovation was *arithmetizing* metamathematics—proofs become numbers, derivations become calculations",
+      "The Diagonal Lemma transforms the ancient Liar's Paradox ('This sentence is false') into rigorous mathematics by replacing 'false' with 'unprovable'",
+      "Any formal system powerful enough to express arithmetic can encode statements about its own provability, enabling self-reference",
+      "The theorem applies to *any* consistent, sufficiently strong system—not just Peano Arithmetic but ZFC set theory and beyond",
+      "This proof foreshadows the Halting Problem: the same diagonalization technique shows computers have inherent limitations"
+    ]
+  },
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Overview of the theorem and its historical significance, explaining how Gödel shattered Hilbert's dream of a complete formal mathematics."
+    },
+    {
+      "id": "formal-system",
+      "title": "The Formal System",
+      "startLine": 22,
+      "endLine": 38,
+      "summary": "Axiomatizing the minimal requirements for a formal system F capable of expressing arithmetic, including formulas, provability, and negation."
+    },
+    {
+      "id": "consistency",
+      "title": "Consistency Assumption",
+      "startLine": 40,
+      "endLine": 49,
+      "summary": "Defining consistency: no formula can have both itself and its negation provable. This is the key assumption for the theorem."
+    },
+    {
+      "id": "godel-numbering",
+      "title": "Gödel Numbering",
+      "startLine": 51,
+      "endLine": 68,
+      "summary": "The revolutionary encoding scheme that assigns unique natural numbers to formulas, allowing the system to reason about its own syntax."
+    },
+    {
+      "id": "representability",
+      "title": "Representability",
+      "startLine": 70,
+      "endLine": 87,
+      "summary": "The crucial property that provability itself can be expressed within the system, enabling self-reference about provability."
+    },
+    {
+      "id": "diagonal-lemma",
+      "title": "The Diagonal Lemma",
+      "startLine": 89,
+      "endLine": 110,
+      "summary": "The heart of Gödel's construction—a fixed point theorem that enables formulas to 'talk about themselves' in a precise sense."
+    },
+    {
+      "id": "godel-sentence",
+      "title": "The Gödel Sentence",
+      "startLine": 112,
+      "endLine": 132,
+      "summary": "Constructing G—the sentence that says 'I am not provable'—by applying the diagonal lemma to the negation of provability."
+    },
+    {
+      "id": "incompleteness-argument",
+      "title": "The Incompleteness Argument",
+      "startLine": 134,
+      "endLine": 164,
+      "summary": "The central proof: showing that if G were provable, we'd have a contradiction, so G must be true but unprovable."
+    },
+    {
+      "id": "first-incompleteness-theorem",
+      "title": "The First Incompleteness Theorem",
+      "startLine": 166,
+      "endLine": 185,
+      "summary": "The main theorem stated formally: no consistent system capable of expressing arithmetic is complete."
+    },
+    {
+      "id": "philosophical-implications",
+      "title": "Philosophical Implications",
+      "startLine": 187,
+      "endLine": 210,
+      "summary": "The profound consequences: death of Hilbert's program, limits of formalization, the inexhaustibility of mathematics, and the mind-mechanism debate."
+    },
+    {
+      "id": "summary",
+      "title": "The Construction Summarized",
+      "startLine": 212,
+      "endLine": 241,
+      "summary": "A concise summary of the proof strategy: encoding, representability, self-reference, the truth of G, and the final conclusion."
+    }
+  ],
+  "conclusion": {
+    "summary": "Gödel's First Incompleteness Theorem demonstrates that mathematical truth forever exceeds formal provability. Any consistent system powerful enough to express arithmetic contains true statements it cannot prove. This isn't a flaw in specific systems—it's a fundamental feature of formal reasoning itself.",
+    "implications": "The incompleteness theorems transformed our understanding of foundations. Hilbert's vision of a complete, mechanizable mathematics was shown to be impossible. In computer science, the same techniques yield the undecidability of the Halting Problem. Philosophically, the theorems raise profound questions: Does human mathematical insight transcend algorithmic computation? Is there a limit to what we can know through formal methods? Gödel's work suggests that creativity and intuition in mathematics cannot be fully captured by any fixed set of rules.",
+    "openQuestions": [
+      "Can human mathematical reasoning genuinely transcend formal systems, or are we also bound by incompleteness?",
+      "What is the relationship between Gödel incompleteness, Turing undecidability, and Chaitin incompleteness?",
+      "Are there 'natural' mathematical statements (not self-referential) that are independent of standard axioms?",
+      "Could new axioms (like large cardinals) help us prove currently unprovable statements, and how do we know which axioms to trust?"
+    ]
+  }
+}
