@@ -2,7 +2,7 @@ import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOvervi
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 import tacticStatesJson from './tacticStates.json'
-import sourceRaw from './source.lean?raw'
+import sourceRaw from '../../../../proofs/Proofs/AbelRuffini.lean?raw'
 
 const meta = metaJson as {
   id: string

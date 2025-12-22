@@ -105,7 +105,7 @@ theorem add_assoc (a b c : ℕ) : (a + b) + c = a + (b + c) := by
   induction c with
   | zero => rfl
   | succ c ih =>
-    unfold add
+    simp only [add_succ]
     rw [ih]
 
 -- ============================================================
