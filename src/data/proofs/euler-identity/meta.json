@@ -1,0 +1,108 @@
+{
+  "id": "euler-identity",
+  "title": "Euler's Identity",
+  "slug": "euler-identity",
+  "description": "The most beautiful equation in mathematics: e^(iπ) + 1 = 0. This elegant identity connects five fundamental constants—e, i, π, 1, and 0—in one perfect equation.",
+  "meta": {
+    "author": "Leonhard Euler (formalized in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_identity",
+    "date": "1748",
+    "status": "pending",
+    "tags": ["complex-analysis", "exponentials", "trigonometry", "classic", "intermediate"],
+    "proofRepoPath": "Proofs/EulerIdentity.lean"
+  },
+  "overview": {
+    "historicalContext": "Euler's Identity first appeared in Leonhard Euler's masterwork *Introductio in analysin infinitorum* (1748), though Euler himself may never have written it in the now-famous form e^(iπ) + 1 = 0.\n\nThe identity connects five of the most important numbers in mathematics:\n- **e** (~2.718): The base of natural logarithms, fundamental to calculus\n- **i** (√-1): The imaginary unit that extends the real numbers\n- **π** (~3.14159): The ratio of circumference to diameter\n- **1**: The multiplicative identity\n- **0**: The additive identity\n\nIn 1988, readers of *Mathematical Intelligencer* voted it 'the most beautiful theorem in mathematics.' Richard Feynman called it 'our jewel... the most remarkable formula in mathematics.'",
+    "problemStatement": "**Euler's Identity:**\n\n$$e^{i\\pi} + 1 = 0$$\n\nEquivalently: $e^{i\\pi} = -1$\n\nThis follows from **Euler's Formula:** For any real number $x$,\n\n$$e^{ix} = \\cos(x) + i\\sin(x)$$\n\nSubstituting $x = \\pi$ and using $\\cos(\\pi) = -1$, $\\sin(\\pi) = 0$, we get $e^{i\\pi} = -1$.",
+    "proofStrategy": "Our proof proceeds in three steps:\n\n1. **Establish Euler's Formula** (axiomatized): $e^{ix} = \\cos(x) + i\\sin(x)$\n   - This can be proven via Taylor series or differential equations\n   - We take it as our starting point\n\n2. **Substitute $x = \\pi$:**\n   - $e^{i\\pi} = \\cos(\\pi) + i\\sin(\\pi)$\n   - $= -1 + i \\cdot 0$\n   - $= -1$\n\n3. **Add 1 to both sides:**\n   - $e^{i\\pi} + 1 = -1 + 1 = 0$\n\nThe proof is almost embarrassingly simple—yet it reveals deep connections between exponentials, trigonometry, and complex numbers.",
+    "keyInsights": [
+      "Euler's Formula e^(ix) = cos(x) + i·sin(x) is the real star—the identity is a special case at x = π",
+      "Complex exponentials represent rotations: e^(iθ) traces the unit circle as θ varies",
+      "The Taylor series of e^x, cos(x), and sin(x) combine perfectly when x is replaced by ix",
+      "The identity shows that the five 'fundamental constants' are not independent—they're secretly related",
+      "In physics, e^(iωt) appears everywhere oscillations or waves occur, from quantum mechanics to signal processing"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 17,
+      "summary": "Overview of Euler's Identity and its significance as 'the most beautiful equation in mathematics.'"
+    },
+    {
+      "id": "complex-numbers",
+      "title": "Complex Numbers",
+      "startLine": 19,
+      "endLine": 70,
+      "summary": "Defining complex numbers as pairs (re, im), with the imaginary unit i and basic operations."
+    },
+    {
+      "id": "transcendental-functions",
+      "title": "Transcendental Functions",
+      "startLine": 72,
+      "endLine": 95,
+      "summary": "Axiomatizing sin, cos, and the complex exponential, along with key values at π."
+    },
+    {
+      "id": "eulers-formula",
+      "title": "Euler's Formula",
+      "startLine": 97,
+      "endLine": 124,
+      "summary": "The foundational identity e^(ix) = cos(x) + i·sin(x) that underlies Euler's Identity."
+    },
+    {
+      "id": "eulers-identity",
+      "title": "Euler's Identity",
+      "startLine": 126,
+      "endLine": 165,
+      "summary": "The main proof: substituting x = π into Euler's formula yields e^(iπ) + 1 = 0."
+    },
+    {
+      "id": "alternative-forms",
+      "title": "Alternative Forms",
+      "startLine": 167,
+      "endLine": 185,
+      "summary": "Equivalent formulations: e^(iπ) = -1 and e^(2iπ) = 1 (full rotation)."
+    },
+    {
+      "id": "taylor-series",
+      "title": "Taylor Series Proof",
+      "startLine": 187,
+      "endLine": 210,
+      "summary": "The classical proof of Euler's formula by matching Taylor series coefficients."
+    },
+    {
+      "id": "geometric-interpretation",
+      "title": "Geometric Interpretation",
+      "startLine": 212,
+      "endLine": 247,
+      "summary": "How e^(iθ) traces the unit circle, connecting exponentials to rotation."
+    },
+    {
+      "id": "applications",
+      "title": "Why This Matters",
+      "startLine": 249,
+      "endLine": 272,
+      "summary": "Applications in physics, engineering, and the philosophical significance of the identity."
+    },
+    {
+      "id": "history",
+      "title": "Historical Context",
+      "startLine": 274,
+      "endLine": 296,
+      "summary": "From Cotes to Euler to Feynman—the identity's journey through mathematical history."
+    }
+  ],
+  "conclusion": {
+    "summary": "Euler's Identity e^(iπ) + 1 = 0 emerges elegantly from Euler's Formula by substituting x = π. The proof is almost trivial—yet it reveals that five fundamental constants, discovered independently across centuries, are deeply interconnected.",
+    "implications": "The identity is more than a curiosity: it's the tip of an iceberg. Complex exponentials unify exponential growth, oscillation, and rotation. This unification powers Fourier analysis, quantum mechanics, electrical engineering, and much of modern physics. The 'beauty' mathematicians see is really the recognition of deep structural unity.",
+    "openQuestions": [
+      "Why do e, i, and π—defined so differently—combine so simply? Is there a deeper explanation?",
+      "What makes certain equations 'beautiful'? Can mathematical aesthetics be formalized?",
+      "Are there other 'identities of identities' connecting fundamental constants we haven't discovered?",
+      "How does Euler's identity generalize to quaternions and other number systems?"
+    ]
+  }
+}

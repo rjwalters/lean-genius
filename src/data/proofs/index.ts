@@ -9,6 +9,7 @@ import { godelIncompletenessData } from './godel-incompleteness'
 import { pythagoreanTheoremData } from './pythagorean-theorem'
 import { haltingProblemData } from './halting-problem'
 import { fourColorTheoremData } from './four-color-theorem'
+import { eulerIdentityData } from './euler-identity'
 import { brouwerFixedPointData } from './brouwer-fixed-point'
 import type { ProofData } from '@/types/proof'
 
@@ -24,6 +25,7 @@ export const proofs: Record<string, ProofData> = {
   'pythagorean-theorem': pythagoreanTheoremData,
   'halting-problem': haltingProblemData,
   'four-color-theorem': fourColorTheoremData,
+  'euler-identity': eulerIdentityData,
   'brouwer-fixed-point': brouwerFixedPointData,
 }
 
