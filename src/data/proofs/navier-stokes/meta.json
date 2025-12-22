@@ -13,9 +13,9 @@
   },
   "objection": {
     "verdict": "INVALID PROOF",
-    "summary": "This proof assumes what it needs to prove. It uses Lean's `axiom` keyword to declare 6 unproven properties as true, then derives regularity from them. The axioms themselves are the hard part of the Millennium Prize problem.",
-    "coreIssue": "The proof contains this axiom on line 1260:\n\n```lean\naxiom concentration_near_blowup (sol : NSSolution) (t : ℝ) \n  (ht : t ∈ Ioo 0 sol.T) : thetaAt sol t ≥ 1/2\n```\n\nThis axiom **assumes** that enstrophy concentration θ ≥ 1/2 near any potential blowup time. But proving this concentration property IS the key step needed to establish Navier-Stokes regularity. The proof assumes its own conclusion.",
-    "analogy": "This is equivalent to:\n\n```lean\naxiom riemann_hypothesis_is_true : RiemannHypothesis\ntheorem riemann_hypothesis : RiemannHypothesis := riemann_hypothesis_is_true\n```\n\nLean will verify the theorem follows from the axiom. But Lean cannot verify that the axiom is actually true.",
+    "summary": "This proof assumes what it needs to prove. It uses Lean's axiom keyword to declare 6 unproven properties as true, then derives regularity from them. The axioms themselves are the hard part of the Millennium Prize problem.",
+    "coreIssue": "The proof contains this axiom on line 1260:\n\naxiom concentration_near_blowup (sol : NSSolution) (t : ℝ) (ht : t ∈ Ioo 0 sol.T) : thetaAt sol t ≥ 1/2\n\nThis axiom ASSUMES that enstrophy concentration θ ≥ 1/2 near any potential blowup time. But proving this concentration property IS the key step needed to establish Navier-Stokes regularity. The proof assumes its own conclusion.",
+    "analogy": "This is equivalent to:\n\naxiom riemann_hypothesis_is_true : RiemannHypothesis\ntheorem riemann_hypothesis : RiemannHypothesis := riemann_hypothesis_is_true\n\nLean will verify the theorem follows from the axiom. But Lean cannot verify that the axiom is actually true.",
     "allAxioms": [
       {
         "name": "concentration_near_blowup",
@@ -59,13 +59,13 @@
   },
   "overview": {
     "historicalContext": "The Navier-Stokes equations, formulated by Claude-Louis Navier (1822) and George Gabriel Stokes (1845), describe the motion of viscous fluids. In 2000, the Clay Mathematics Institute designated the Navier-Stokes existence and smoothness problem as one of seven Millennium Prize Problems, offering $1 million for its resolution.\n\nThe question: given smooth initial conditions, do solutions to the 3D incompressible Navier-Stokes equations remain smooth for all time, or can singularities (blowup) develop? This remains one of the great unsolved problems in mathematics.",
-    "problemStatement": "The 3D incompressible Navier-Stokes equations are:\n\n$$\\partial_t u + (u \\cdot \\nabla)u = -\\nabla p + \\nu \\Delta u$$\n$$\\nabla \\cdot u = 0$$\n\nwhere $u$ is velocity, $p$ is pressure, and $\\nu > 0$ is viscosity. The **global regularity problem** asks: given smooth initial data, does a unique smooth solution exist for all time?",
-    "proofStrategy": "**WHY THIS PROOF IS FLAWED:**\n\nThis Lean formalization uses **6 axioms** that assume the very properties that would need to be proven:\n\n1. **`concentration_near_blowup`** (line 1260): Assumes θ ≥ 1/2 near blowup — *this is exactly what you'd need to prove*\n2. **`faber_krahn_on_ball`** (line 1152): Assumes a specific Faber-Krahn bound on palinstrophy\n3. **`stretching_beta_bound`** (line 1241): Assumes a bound on vortex stretching\n4. **`poincare_dissipation_bound`** (line 1247): Assumes Poincaré dissipation lower bound\n5. **`E_loc_le_E`** (line 821): Assumes local enstrophy ≤ total\n6. **`E_loc_nonneg`** (line 826): Assumes local enstrophy ≥ 0\n\nIn Lean, `axiom` means \"assume this is true without proof.\" The proof essentially says: \"If we assume these 6 properties about NS solutions, then there's no blowup.\" But proving these properties *is* the Millennium Prize problem!\n\nThis is analogous to: \"Axiom: The Riemann Hypothesis is true. Theorem: The Riemann Hypothesis follows.\"",
+    "problemStatement": "The 3D incompressible Navier-Stokes equations are:\n\n$$\\partial_t u + (u \\cdot \\nabla)u = -\\nabla p + \\nu \\Delta u$$\n$$\\nabla \\cdot u = 0$$\n\nwhere $u$ is velocity, $p$ is pressure, and $\\nu > 0$ is viscosity. The global regularity problem asks: given smooth initial data, does a unique smooth solution exist for all time?",
+    "proofStrategy": "WHY THIS PROOF IS FLAWED:\n\nThis Lean formalization uses 6 axioms that assume the very properties that would need to be proven:\n\n1. concentration_near_blowup (line 1260): Assumes θ ≥ 1/2 near blowup — this is exactly what you'd need to prove\n2. faber_krahn_on_ball (line 1152): Assumes a specific Faber-Krahn bound on palinstrophy\n3. stretching_beta_bound (line 1241): Assumes a bound on vortex stretching\n4. poincare_dissipation_bound (line 1247): Assumes Poincaré dissipation lower bound\n5. E_loc_le_E (line 821): Assumes local enstrophy ≤ total\n6. E_loc_nonneg (line 826): Assumes local enstrophy ≥ 0\n\nIn Lean, \"axiom\" means \"assume this is true without proof.\" The proof essentially says: \"If we assume these 6 properties about NS solutions, then there's no blowup.\" But proving these properties IS the Millennium Prize problem!\n\nThis is analogous to: \"Axiom: The Riemann Hypothesis is true. Theorem: The Riemann Hypothesis follows.\"",
     "keyInsights": [
       "The proof structure is logically correct IF the axioms hold — but the axioms are unproven",
-      "The critical flaw is `concentration_near_blowup` which assumes enstrophy concentration (θ ≥ 1/2) near blowup — this assumption is precisely what needs to be established",
+      "The critical flaw is concentration_near_blowup which assumes enstrophy concentration (θ ≥ 1/2) near blowup — this assumption is precisely what needs to be established",
       "The numerical inequality κ·c_FK > 2 is genuinely proven, but it only matters if the axioms hold",
-      "In Lean: `axiom` = assumed without proof, `theorem` = proven, `sorry` = incomplete proof"
+      "In Lean: axiom = assumed without proof, theorem = proven, sorry = incomplete proof"
     ]
   },
   "sections": [
@@ -81,7 +81,7 @@
       "title": "THE CRITICAL FLAW: Unproven Axioms",
       "startLine": 815,
       "endLine": 1262,
-      "summary": "Lines 821, 826, 1152, 1241, 1247, and 1260 contain 6 AXIOMS that assume the key properties. Most critically: `concentration_near_blowup` (line 1260) assumes θ ≥ 1/2, which is exactly what needs to be proven for Navier-Stokes regularity."
+      "summary": "Lines 821, 826, 1152, 1241, 1247, and 1260 contain 6 AXIOMS that assume the key properties. Most critically: concentration_near_blowup (line 1260) assumes θ ≥ 1/2, which is exactly what needs to be proven for Navier-Stokes regularity."
     },
     {
       "id": "theorems",
@@ -92,12 +92,12 @@
     }
   ],
   "conclusion": {
-    "summary": "**THIS PROOF IS FLAWED.** It uses Lean's `axiom` keyword to assume 6 critical properties about Navier-Stokes solutions without proving them. The most egregious is `concentration_near_blowup` which directly assumes that enstrophy concentrates with θ ≥ 1/2 near blowup — this is precisely the key step that would be needed to solve the Millennium Prize problem.\n\nThe proof demonstrates: \"If these 6 properties hold for NS solutions, then there's no blowup.\" But it does NOT prove that these properties actually hold. The hard work is entirely assumed away via axioms.",
-    "implications": "**What this proof actually shows:**\n\n1. The *logical structure* of the argument is sound — if the axioms held, the conclusion would follow\n2. The numerical calculations (κ·c_FK > 2) are correct\n3. BUT the axioms are unproven assumptions about Navier-Stokes solutions\n\n**This is NOT a valid proof of Navier-Stokes regularity.** The Millennium Prize problem remains unsolved.\n\n**Lesson for formal verification:** Lean can verify that theorems follow from axioms, but it cannot verify that axioms are true. A proof is only as strong as its assumptions.",
+    "summary": "THIS PROOF IS FLAWED. It uses Lean's axiom keyword to assume 6 critical properties about Navier-Stokes solutions without proving them. The most egregious is concentration_near_blowup which directly assumes that enstrophy concentrates with θ ≥ 1/2 near blowup — this is precisely the key step that would be needed to solve the Millennium Prize problem.\n\nThe proof demonstrates: \"If these 6 properties hold for NS solutions, then there's no blowup.\" But it does NOT prove that these properties actually hold. The hard work is entirely assumed away via axioms.",
+    "implications": "What this proof actually shows:\n\n1. The logical structure of the argument is sound — if the axioms held, the conclusion would follow\n2. The numerical calculations (κ·c_FK > 2) are correct\n3. BUT the axioms are unproven assumptions about Navier-Stokes solutions\n\nThis is NOT a valid proof of Navier-Stokes regularity. The Millennium Prize problem remains unsolved.\n\nLesson for formal verification: Lean can verify that theorems follow from axioms, but it cannot verify that axioms are true. A proof is only as strong as its assumptions.",
     "openQuestions": [
       "Can the axioms actually be proven for Navier-Stokes solutions? This is equivalent to solving the Millennium Prize problem.",
-      "Is `concentration_near_blowup` (θ ≥ 1/2 near blowup) a known result? No — if it were, NS regularity would already be solved.",
-      "Why did the author use `axiom` instead of `sorry`? Axioms appear as \"assumptions\" rather than \"incomplete proofs\" — but the effect is the same: critical steps are not proven."
+      "Is concentration_near_blowup (θ ≥ 1/2 near blowup) a known result? No — if it were, NS regularity would already be solved.",
+      "Why did the author use axiom instead of sorry? Axioms appear as assumptions rather than incomplete proofs — but the effect is the same: critical steps are not proven."
     ]
   }
 }
