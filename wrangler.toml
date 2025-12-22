@@ -9,3 +9,12 @@ binding = "DB"
 database_name = "lean-genius-db"
 database_id = "2830c709-96a0-47d5-a5f6-b72fdf314a8a"
 migrations_dir = "drizzle"
+
+# Environment variables
+# Note: RESEND_API_KEY should be set as a secret via `wrangler secret put RESEND_API_KEY`
+[vars]
+# Using Resend's test sender (no domain verification needed)
+# To use your own domain later: "LeanGenius <proofs@lean-genius.com>"
+EMAIL_FROM = "LeanGenius <onboarding@resend.dev>"
+# Your email address where submissions will be sent
+SUBMISSION_EMAIL = "rwalters@gmail.com"

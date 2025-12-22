@@ -1,18 +1,33 @@
 import { Link } from 'react-router-dom'
 import { getAllProofs } from '@/data/proofs'
-import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle } from 'lucide-react'
+import { useAuth } from '@/contexts/AuthContext'
+import { UserMenu } from '@/components/auth/UserMenu'
+import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus } from 'lucide-react'
 
 export function HomePage() {
   const proofs = getAllProofs()
+  const { isAuthenticated } = useAuth()
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border">
-        <div className="max-w-6xl mx-auto px-6 py-4">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <span className="text-2xl font-bold tracking-tight">
             Lean<span className="text-annotation">Genius</span>
           </span>
+          <div className="flex items-center gap-4">
+            {isAuthenticated && (
+              <Link
+                to="/submit"
+                className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <Plus className="h-4 w-4" />
+                <span className="hidden sm:inline">Submit a Proof</span>
+              </Link>
+            )}
+            <UserMenu />
+          </div>
         </div>
       </header>
 

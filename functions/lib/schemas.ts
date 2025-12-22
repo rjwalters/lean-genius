@@ -53,6 +53,18 @@ export const voteCommentSchema = z.object({
 
 export type VoteCommentRequest = z.infer<typeof voteCommentSchema>
 
+// Proof submission request
+export const submitProofSchema = z.object({
+  title: z.string().min(1, 'Title is required').max(200, 'Title too long'),
+  description: z.string().min(10, 'Please provide a description (at least 10 characters)').max(5000, 'Description too long'),
+  leanSource: z.string().min(10, 'Lean source code is required').max(100000, 'Source code too long'),
+  mathlibVersion: z.string().max(50).optional(),
+  githubUrl: z.string().url('Invalid URL').optional().or(z.literal('')),
+  additionalNotes: z.string().max(5000).optional(),
+})
+
+export type SubmitProofRequest = z.infer<typeof submitProofSchema>
+
 // Error response
 export interface ErrorResponse {
   error: string
