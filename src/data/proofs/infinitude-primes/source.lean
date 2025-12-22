@@ -5,130 +5,102 @@
   This follows Euclid's classic proof: for any n, we can find a prime p > n
   by considering n! + 1.
 
-  Author: Yannis Konstantoulas
+  Original author: Yannis Konstantoulas
   Source: https://github.com/ykonstant1/InfinitePrimes
 
-  This proof builds everything from first principles using only core Lean,
-  demonstrating decidability of primality and the unboundedness of primes.
+  This version uses Mathlib for cleaner proofs while following the same
+  structure as Euclid's classical argument.
 -/
 
-variable {a b : Nat}
+import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.Factorial.Basic
+import Mathlib.Tactic
 
--- Divisibility definition
-def divides (n m : Nat) : Prop :=
-  ∃ k : Nat, m = k * n
+namespace InfinitudePrimes
 
-notation n " ∣ " m => divides n m
-notation n " ∤ " m => ¬ (n ∣ m)
+/-! ## Key Lemmas for the Proof -/
 
--- Regular numbers (≥ 2)
-abbrev Reg (n : Nat) := 2 ≤ n
+/-- Any positive k ≤ n divides n!
+    This is the crucial property of factorials used in Euclid's proof. -/
+theorem dvd_factorial {k n : ℕ} (hk : 0 < k) (hkn : k ≤ n) : k ∣ n.factorial := by
+  -- Use Mathlib's existing theorem
+  exact Nat.dvd_factorial hk hkn
 
--- Range predicate for regular numbers less than n
-abbrev RegularRange (r n : Nat) := (2 ≤ r) ∧ (r < n)
+/-- n! + 1 is always ≥ 2 for any n.
+    This ensures n! + 1 has at least one prime divisor. -/
+theorem factorial_succ_ge_two (n : ℕ) : n.factorial + 1 ≥ 2 := by
+  have h : n.factorial ≥ 1 := Nat.factorial_pos n
+  omega
 
-infix:50 " ⋖ " => RegularRange
+/-- If p divides both a and a + 1, then p divides 1.
+    This is the key observation in Euclid's proof. -/
+theorem dvd_of_dvd_add_one {p a : ℕ} (h1 : p ∣ a) (h2 : p ∣ a + 1) : p ∣ 1 := by
+  have hsub : p ∣ (a + 1) - a := Nat.dvd_sub' h2 h1
+  simp only [add_tsub_cancel_left] at hsub
+  exact hsub
 
--- Prime number definition (Euclid's characterization)
-def Prime (k : Nat) :=
-  (Reg k) ∧ ∀ n m : Nat, (k ∣ n * m) → (k ∣ n) ∨ (k ∣ m)
+/-! ## The Main Theorem -/
 
--- Natural prime definition (no divisors between 2 and k-1)
-def NatPrime (k : Nat) :=
-  (Reg k) ∧ ∀ m, (2 ≤ m) ∧ (m < k) → (m ∤ k)
+/-- **Euclid's Theorem: There are infinitely many primes**
 
--- Basic divisibility lemmas
-theorem dvd_self : n ∣ n := ⟨1, by rw [Nat.one_mul]⟩
+    For any natural number n, there exists a prime p greater than n.
 
-theorem dvd_trans (h₁ : a ∣ b) (h₂ : b ∣ c) : (a ∣ c) :=
-  let ⟨m, hm⟩ := h₁
-  let ⟨n, hn⟩ := h₂
-  ⟨n * m, by rw [hn, hm, Nat.mul_assoc]⟩
-
-theorem one_of_dvd_one (a_div_one : a ∣ 1) : a = 1 :=
-  let ⟨k, ka_eq_one⟩ := a_div_one
-  have a_pos : a ≥ 1 := Nat.one_le_iff_ne_zero.mpr (by
-    intro h; simp [h] at ka_eq_one)
-  have k_pos : k ≥ 1 := Nat.one_le_iff_ne_zero.mpr (by
-    intro h; simp [h] at ka_eq_one)
-  have : a ≤ 1 := calc
-    a = 1 * a := (Nat.one_mul a).symm
-    _ ≤ k * a := Nat.mul_le_mul_right a k_pos
-    _ = 1     := ka_eq_one.symm
-  Nat.le_antisymm this a_pos
-
--- Factorial definition
-def fact : Nat → Nat
-  | 0     => 1
-  | k + 1 => (k + 1) * fact k
-
--- Any positive k ≤ n divides n!
-theorem dvd_fact (pos_k : 0 < k) (ineq : k ≤ n) : k ∣ (fact n) := by
-  have : 0 < n := Nat.lt_of_lt_of_le pos_k ineq
-  match n with
-  | r + 1 =>
-    if h : k = r + 1 then
-      unfold fact
-      rw [h]
-      exact ⟨fact r, rfl⟩
-    else
-      have : k ≤ r := Nat.lt_succ_iff.mp (Nat.lt_of_le_of_ne ineq h)
-      have ih : k ∣ fact r := dvd_fact pos_k this
-      let ⟨m, hm⟩ := ih
-      exact ⟨(r + 1) * m, by unfold fact; rw [hm]; ring⟩
-
--- Factorial is always positive
-theorem fact_positive : ∀ n, fact n > 0
-  | 0     => by decide
-  | k + 1 => Nat.mul_pos (Nat.succ_pos k) (fact_positive k)
-
--- Every regular number has a prime divisor
-theorem nat_prime_divisor (n : Nat) (reg_n : Reg n) :
-    ∃ p, (NatPrime p) ∧ (p ∣ n) := by
-  -- Use well-founded recursion on n
-  have ⟨p, hp, hdiv, hmin⟩ := Nat.find_min_of_exists ⟨n, reg_n, dvd_self⟩
-    (fun k => Reg k ∧ k ∣ n)
-  refine ⟨p, ⟨hp, fun m ⟨hm_reg, hm_lt⟩ hm_div => ?_⟩, hdiv⟩
-  have : m ∣ n := dvd_trans hm_div hdiv
-  exact hmin m hm_lt ⟨hm_reg, this⟩
-
--- The main theorem: for any n, there exists a prime p > n
-theorem unbounded_primes : ∀ n, ∃ p, (Prime p) ∧ (p > n) := by
+    Proof sketch:
+    1. Consider Q = n! + 1
+    2. Q ≥ 2, so Q has a prime divisor p
+    3. Claim: p > n
+    4. Proof by contradiction: If p ≤ n, then:
+       - p ∣ n! (since p is in the product 1 × 2 × ... × n)
+       - p ∣ n! + 1 = Q (by assumption)
+       - Therefore p ∣ 1
+       - But p ≥ 2, contradiction!
+    5. So p > n, and we found our prime. -/
+theorem unbounded_primes : ∀ n : ℕ, ∃ p : ℕ, Nat.Prime p ∧ p > n := by
   intro n
-  let Q := (fact n) + 1
-  have reg_q : Reg Q := Nat.add_le_add (fact_positive n) (Nat.le_refl 1)
-  -- Q has a prime divisor p
-  obtain ⟨p, nat_prime_p, p_div_q⟩ := nat_prime_divisor Q reg_q
+  -- Let Q = n! + 1
+  let Q := n.factorial + 1
+  -- Q ≥ 2, so it has a minimum prime factor
+  have hQ : Q ≥ 2 := factorial_succ_ge_two n
+  have hQ_ne_one : Q ≠ 1 := by omega
+  -- Get the minimum prime factor of Q
+  have ⟨p, hp_prime, hp_dvd⟩ := Nat.exists_prime_and_dvd hQ_ne_one
   -- We claim p > n
-  have p_gt_n : p > n := by
-    by_contra h
-    push_neg at h
-    -- If p ≤ n, then p | n!
-    have p_div_fact : p ∣ (fact n) := dvd_fact (Nat.lt_of_lt_of_le (by decide) nat_prime_p.1) h
-    -- So p | (n! + 1) - n! = 1
-    have p_div_one : p ∣ 1 := by
-      obtain ⟨k₁, hk₁⟩ := p_div_q
-      obtain ⟨k₂, hk₂⟩ := p_div_fact
-      use k₁ - k₂
-      omega
-    -- But p ≥ 2, contradiction
-    have : p = 1 := one_of_dvd_one p_div_one
-    omega
-  -- Convert NatPrime to Prime (they're equivalent)
-  have prime_p : Prime p := by
-    constructor
-    · exact nat_prime_p.1
-    · intro a b hab
-      -- Standard primality argument
-      by_contra h
-      push_neg at h
-      obtain ⟨hna, hnb⟩ := h
-      -- If p ∤ a and p ∤ b, use Bezout... (simplified)
-      sorry -- Full proof requires more machinery
-  exact ⟨p, prime_p, p_gt_n⟩
+  use p
+  constructor
+  · exact hp_prime
+  · -- Prove p > n by contradiction
+    by_contra h_not_gt
+    push_neg at h_not_gt  -- h_not_gt : p ≤ n
+    -- Since p ≤ n and p is prime (so p ≥ 2 > 0), p divides n!
+    have hp_pos : 0 < p := hp_prime.pos
+    have hp_dvd_fact : p ∣ n.factorial := dvd_factorial hp_pos h_not_gt
+    -- But p also divides Q = n! + 1
+    -- So p divides (n! + 1) - n! = 1
+    have hp_dvd_one : p ∣ 1 := dvd_of_dvd_add_one hp_dvd_fact hp_dvd
+    -- Since p divides 1, p must equal 1
+    have hp_eq_one : p = 1 := Nat.dvd_one.mp hp_dvd_one
+    -- But p is prime, so p ≠ 1 - contradiction!
+    exact hp_prime.ne_one hp_eq_one
 
--- Infinitude stated as: the set of primes is unbounded
-theorem primes_infinite : ∀ n, ∃ p, Prime p ∧ p > n := unbounded_primes
+/-- Alternative statement: The set of primes is infinite.
+    This follows immediately from unbounded_primes. -/
+theorem primes_infinite : ∀ n : ℕ, ∃ p : ℕ, Nat.Prime p ∧ p > n := unbounded_primes
+
+/-! ## Corollaries -/
+
+/-- There exists a prime greater than any given prime. -/
+theorem exists_prime_gt_prime (p : ℕ) (_hp : Nat.Prime p) : ∃ q : ℕ, Nat.Prime q ∧ q > p := by
+  exact unbounded_primes p
+
+/-- There is no largest prime. -/
+theorem no_largest_prime : ¬∃ p : ℕ, Nat.Prime p ∧ ∀ q : ℕ, Nat.Prime q → q ≤ p := by
+  intro ⟨p, _, hp_largest⟩
+  obtain ⟨q, hq_prime, hq_gt⟩ := unbounded_primes p
+  have hq_le := hp_largest q hq_prime
+  omega
 
 #check unbounded_primes
 #check primes_infinite
+#check no_largest_prime
+
+end InfinitudePrimes
