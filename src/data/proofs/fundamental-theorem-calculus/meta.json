@@ -7,7 +7,8 @@
     "author": "Newton & Leibniz (1680s), Cauchy (1820s)",
     "date": "1680s",
     "status": "verified",
-    "tags": ["analysis", "calculus", "integration", "differentiation", "classic", "intermediate"]
+    "tags": ["analysis", "calculus", "integration", "differentiation", "classic", "intermediate"],
+    "proofRepoPath": "Proofs/FundamentalTheoremCalculus.lean"
   },
   "overview": {
     "historicalContext": "The Fundamental Theorem of Calculus (FTC) represents one of mathematics' greatest unifications. Isaac Newton and Gottfried Leibniz independently discovered it in the 1680s, though their bitter priority dispute would rage for decades.\n\nNewton developed his 'method of fluxions' while avoiding the plague at Woolsthorpe Manor (1665-1666), but published much later. Leibniz independently created his differential calculus in the 1670s, with superior notation that we still use today (dx, dy, ∫).\n\nWhile Newton and Leibniz grasped the theorem intuitively, rigorous proof required the epsilon-delta foundations developed by Cauchy (1821) and perfected by Weierstrass (1860s). The theorem connects area (integration) with slope (differentiation) - two concepts that appear completely unrelated until FTC reveals their deep connection.",
@@ -26,43 +27,43 @@
       "id": "setup",
       "title": "Setup and Imports",
       "startLine": 1,
-      "endLine": 25,
-      "summary": "Introduces the historical context and imports Mathlib's calculus and integration libraries."
+      "endLine": 29,
+      "summary": "Introduces the historical context, imports Mathlib's calculus and integration libraries, and opens the namespace."
     },
     {
       "id": "integral-function",
       "title": "The Integral Function",
-      "startLine": 27,
-      "endLine": 38,
+      "startLine": 31,
+      "endLine": 42,
       "summary": "Defines F(x) = ∫ₐˣ f(t)dt, the cumulative integral that measures accumulated area."
     },
     {
       "id": "ftc-part1",
       "title": "FTC Part 1: Differentiation of Integrals",
-      "startLine": 40,
-      "endLine": 53,
+      "startLine": 44,
+      "endLine": 59,
       "summary": "Proves that the derivative of an integral recovers the original function: F'(x) = f(x)."
     },
     {
       "id": "ftc-part2",
       "title": "FTC Part 2: Evaluation of Integrals",
-      "startLine": 55,
-      "endLine": 80,
+      "startLine": 61,
+      "endLine": 86,
       "summary": "Proves that the integral of a derivative equals the net change: ∫ₐᵇ F' = F(b) - F(a)."
     },
     {
       "id": "antiderivatives",
       "title": "Antiderivatives and Uniqueness",
-      "startLine": 82,
-      "endLine": 124,
+      "startLine": 88,
+      "endLine": 139,
       "summary": "Shows that the integral function is an antiderivative, and that antiderivatives differ only by constants."
     },
     {
-      "id": "constant-theorem",
-      "title": "Zero Derivative Implies Constant",
-      "startLine": 126,
-      "endLine": 148,
-      "summary": "Proves that a function with zero derivative everywhere must be constant, using the Mean Value Theorem."
+      "id": "checks",
+      "title": "Type Checking",
+      "startLine": 141,
+      "endLine": 146,
+      "summary": "Verifies the types of the main theorems using #check commands."
     }
   ],
   "conclusion": {
