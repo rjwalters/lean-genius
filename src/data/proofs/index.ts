@@ -13,6 +13,7 @@ import { eulerIdentityData } from './euler-identity'
 import { brouwerFixedPointData } from './brouwer-fixed-point'
 import { ramanujanSumFallacyData } from './ramanujan-sum-fallacy'
 import { abelRuffiniData } from './abel-ruffini'
+import { borsukUlamData } from './borsuk-ulam'
 import { centralLimitTheoremData } from './central-limit-theorem'
 import type { ProofData } from '@/types/proof'
 
@@ -32,6 +33,7 @@ export const proofs: Record<string, ProofData> = {
   'brouwer-fixed-point': brouwerFixedPointData,
   'ramanujan-sum-fallacy': ramanujanSumFallacyData,
   'abel-ruffini': abelRuffiniData,
+  'borsuk-ulam': borsukUlamData,
   'central-limit-theorem': centralLimitTheoremData,
 }
 
