@@ -117,6 +117,10 @@ export function HomePage() {
             >
               Mathlib
             </a>
+            {' · '}
+            <Link to="/about" className="text-annotation hover:underline">
+              About
+            </Link>
           </p>
         </div>
       </footer>
