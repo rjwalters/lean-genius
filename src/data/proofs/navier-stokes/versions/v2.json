@@ -1,25 +1,24 @@
 {
+  "version": {
+    "number": "v2",
+    "name": "θₖ Refactor + Literature Analysis",
+    "date": "2025-12-22",
+    "gitCommit": "7ebc440",
+    "status": "conditional",
+    "summary": "Replaced single-ball concentration with weaker K-ball finite-bubble conjecture. Added comprehensive literature analysis (Lei-Ren 2022, Barker 2025, Barker-Prange 2022). Key finding: K=1 consistent but θ exponentially small.",
+    "previousVersion": "v1",
+    "changes": [
+      "Replaced concentration_near_blowup with finite_bubble_concentration",
+      "Added Faber-Krahn additivity for K-ball configurations",
+      "Added averaging lemma (θ ≥ θₖ/K)",
+      "Comprehensive literature analysis in papers/INDEX.md",
+      "Identified tropical crossing inevitability as promising direction"
+    ]
+  },
   "id": "navier-stokes-regularity",
   "title": "Global Regularity for Navier-Stokes",
   "slug": "navier-stokes",
   "description": "A sophisticated proof attempt for the Navier-Stokes Millennium Prize Problem. REVISION: The original single-ball concentration axiom has been replaced with the weaker K-ball 'finite-bubble' conjecture, which may be more tractable.",
-  "currentVersion": "v2",
-  "versionHistory": [
-    {
-      "version": "v1",
-      "name": "Original Analysis",
-      "date": "2025-12-20",
-      "status": "disputed",
-      "file": "versions/v1.json"
-    },
-    {
-      "version": "v2",
-      "name": "θₖ Refactor + Literature Analysis",
-      "date": "2025-12-22",
-      "status": "conditional",
-      "file": "versions/v2.json"
-    }
-  ],
   "meta": {
     "author": "David Budden",
     "authorHandle": "@davidmbudden",
