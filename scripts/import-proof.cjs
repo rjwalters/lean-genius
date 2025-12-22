@@ -30,6 +30,7 @@ const PROOFS_REPO_PATH = process.env.PROOFS_REPO_PATH || DEFAULT_PROOFS_PATH;
 // Mapping from Lean file names to frontend slug names
 const PROOF_MAPPING = {
   'Sqrt2Irrational': 'sqrt2-irrational',
+  'OnePlusOne': 'russell-1-plus-1',
   'FundamentalTheoremCalculus': 'fundamental-theorem-calculus',
   // Add more mappings as proofs are added:
   // 'InfinitudePrimes': 'infinitude-primes',
@@ -80,26 +81,31 @@ function toSlug(name) {
     .toLowerCase();
 }
 
+function getContentsString(contents) {
+  if (typeof contents === 'string') {
+    return contents;
+  }
+  if (Array.isArray(contents)) {
+    return contents.map(t => t.raw || '').join('');
+  }
+  return '';
+}
+
 function convertLeanInkToTacticStates(leanInkData) {
   const tacticStates = [];
   let currentLine = 1;
 
   for (const item of leanInkData) {
     if (item._type === 'text') {
-      const content = typeof item.contents === 'string'
-        ? item.contents
-        : item.contents?.map(t => t.raw || '').join('') || '';
+      const content = getContentsString(item.contents);
       currentLine += (content.match(/\n/g) || []).length;
     }
 
     if (item._type === 'sentence' && item.goals && item.goals.length > 0) {
-      const tactic = item.contents
-        ?.map(t => t.raw || '')
-        .join('')
-        .trim() || '';
+      const tactic = getContentsString(item.contents).trim();
 
       if (!tactic || tactic === '' || /^\s*$/.test(tactic)) {
-        const content = item.contents?.map(t => t.raw || '').join('') || '';
+        const content = getContentsString(item.contents);
         currentLine += (content.match(/\n/g) || []).length;
         continue;
       }
@@ -129,7 +135,7 @@ function convertLeanInkToTacticStates(leanInkData) {
         });
       }
 
-      const content = item.contents?.map(t => t.raw || '').join('') || '';
+      const content = getContentsString(item.contents);
       currentLine += (content.match(/\n/g) || []).length;
     }
   }
