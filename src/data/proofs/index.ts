@@ -15,6 +15,7 @@ import { ramanujanSumFallacyData } from './ramanujan-sum-fallacy'
 import { abelRuffiniData } from './abel-ruffini'
 import { borsukUlamData } from './borsuk-ulam'
 import { centralLimitTheoremData } from './central-limit-theorem'
+import { fermatsLastTheoremData } from './fermats-last-theorem'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -35,6 +36,7 @@ export const proofs: Record<string, ProofData> = {
   'abel-ruffini': abelRuffiniData,
   'borsuk-ulam': borsukUlamData,
   'central-limit-theorem': centralLimitTheoremData,
+  'fermats-last-theorem': fermatsLastTheoremData,
 }
 
 export function getProof(slug: string): ProofData | undefined {
