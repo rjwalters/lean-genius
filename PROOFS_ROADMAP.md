@@ -15,6 +15,9 @@ A curated list of proofs to add to Lean Genius, selected for educational value, 
 | Gödel's First Incompleteness | Mathematical Logic | Pending | Advanced |
 | Pythagorean Theorem | Geometry | Verified | Beginner |
 | Four Color Theorem | Graph Theory | Pending | Advanced |
+| Euler's Identity | Complex Analysis | Pending | Intermediate |
+| Undecidability of Halting Problem | Computability Theory | Pending | Intermediate |
+| Fundamental Theorem of Algebra | Algebra/Analysis | Pending | Intermediate |
 
 ---
 

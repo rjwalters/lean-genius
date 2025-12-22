@@ -9,6 +9,7 @@ import { godelIncompletenessData } from './godel-incompleteness'
 import { pythagoreanTheoremData } from './pythagorean-theorem'
 import { haltingProblemData } from './halting-problem'
 import { fourColorTheoremData } from './four-color-theorem'
+import { eulerIdentityData } from './euler-identity'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -23,6 +24,7 @@ export const proofs: Record<string, ProofData> = {
   'pythagorean-theorem': pythagoreanTheoremData,
   'halting-problem': haltingProblemData,
   'four-color-theorem': fourColorTheoremData,
+  'euler-identity': eulerIdentityData,
 }
 
 export function getProof(slug: string): ProofData | undefined {
