@@ -14,6 +14,7 @@ A curated list of proofs to add to Lean Genius, selected for educational value, 
 | Fundamental Theorem of Calculus | Analysis | Verified | Intermediate |
 | Gödel's First Incompleteness | Mathematical Logic | Pending | Advanced |
 | Pythagorean Theorem | Geometry | Verified | Beginner |
+| Four Color Theorem | Graph Theory | Pending | Advanced |
 
 ---
 
