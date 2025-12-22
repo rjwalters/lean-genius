@@ -4,6 +4,7 @@ import { infinitudePrimesData } from './infinitude-primes'
 import { russell1Plus1Data } from './russell-1-plus-1'
 import { cantorDiagonalizationData } from './cantor-diagonalization'
 import { fundamentalTheoremCalculusData } from './fundamental-theorem-calculus'
+import { fundamentalTheoremAlgebraData } from './fundamental-theorem-algebra'
 import { godelIncompletenessData } from './godel-incompleteness'
 import { pythagoreanTheoremData } from './pythagorean-theorem'
 import type { ProofData } from '@/types/proof'
@@ -15,6 +16,7 @@ export const proofs: Record<string, ProofData> = {
   'russell-1-plus-1': russell1Plus1Data,
   'cantor-diagonalization': cantorDiagonalizationData,
   'fundamental-theorem-calculus': fundamentalTheoremCalculusData,
+  'fundamental-theorem-algebra': fundamentalTheoremAlgebraData,
   'godel-incompleteness': godelIncompletenessData,
   'pythagorean-theorem': pythagoreanTheoremData,
 }
