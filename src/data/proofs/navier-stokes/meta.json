@@ -11,6 +11,52 @@
     "status": "disputed",
     "tags": ["PDE", "fluid-dynamics", "millennium-problem", "regularity", "flawed"]
   },
+  "objection": {
+    "verdict": "INVALID PROOF",
+    "summary": "This proof assumes what it needs to prove. It uses Lean's `axiom` keyword to declare 6 unproven properties as true, then derives regularity from them. The axioms themselves are the hard part of the Millennium Prize problem.",
+    "coreIssue": "The proof contains this axiom on line 1260:\n\n```lean\naxiom concentration_near_blowup (sol : NSSolution) (t : ℝ) \n  (ht : t ∈ Ioo 0 sol.T) : thetaAt sol t ≥ 1/2\n```\n\nThis axiom **assumes** that enstrophy concentration θ ≥ 1/2 near any potential blowup time. But proving this concentration property IS the key step needed to establish Navier-Stokes regularity. The proof assumes its own conclusion.",
+    "analogy": "This is equivalent to:\n\n```lean\naxiom riemann_hypothesis_is_true : RiemannHypothesis\ntheorem riemann_hypothesis : RiemannHypothesis := riemann_hypothesis_is_true\n```\n\nLean will verify the theorem follows from the axiom. But Lean cannot verify that the axiom is actually true.",
+    "allAxioms": [
+      {
+        "name": "concentration_near_blowup",
+        "line": 1260,
+        "assumes": "θ ≥ 1/2 near blowup",
+        "severity": "CRITICAL — this is exactly what needs to be proven"
+      },
+      {
+        "name": "faber_krahn_on_ball",
+        "line": 1152,
+        "assumes": "Faber-Krahn eigenvalue bound on palinstrophy",
+        "severity": "HIGH — unproven for NS solutions"
+      },
+      {
+        "name": "stretching_beta_bound",
+        "line": 1241,
+        "assumes": "Bound on vortex stretching term",
+        "severity": "HIGH — unproven for NS solutions"
+      },
+      {
+        "name": "poincare_dissipation_bound",
+        "line": 1247,
+        "assumes": "Poincaré-type dissipation lower bound",
+        "severity": "HIGH — unproven for NS solutions"
+      },
+      {
+        "name": "E_loc_le_E",
+        "line": 821,
+        "assumes": "Local enstrophy ≤ total enstrophy",
+        "severity": "MEDIUM — plausible but not proven in context"
+      },
+      {
+        "name": "E_loc_nonneg",
+        "line": 826,
+        "assumes": "Local enstrophy ≥ 0",
+        "severity": "LOW — likely true but still assumed"
+      }
+    ],
+    "whatLeanActuallyVerified": "Lean verified that IF these 6 axioms are true, THEN Navier-Stokes has global regularity. This is a valid conditional statement. But Lean did NOT verify that the axioms are true — because they are assumed, not proven.",
+    "millenniumPrizeStatus": "The Navier-Stokes Millennium Prize problem remains UNSOLVED. This proof does not resolve it."
+  },
   "overview": {
     "historicalContext": "The Navier-Stokes equations, formulated by Claude-Louis Navier (1822) and George Gabriel Stokes (1845), describe the motion of viscous fluids. In 2000, the Clay Mathematics Institute designated the Navier-Stokes existence and smoothness problem as one of seven Millennium Prize Problems, offering $1 million for its resolution.\n\nThe question: given smooth initial conditions, do solutions to the 3D incompressible Navier-Stokes equations remain smooth for all time, or can singularities (blowup) develop? This remains one of the great unsolved problems in mathematics.",
     "problemStatement": "The 3D incompressible Navier-Stokes equations are:\n\n$$\\partial_t u + (u \\cdot \\nabla)u = -\\nabla p + \\nu \\Delta u$$\n$$\\nabla \\cdot u = 0$$\n\nwhere $u$ is velocity, $p$ is pressure, and $\\nu > 0$ is viscosity. The **global regularity problem** asks: given smooth initial data, does a unique smooth solution exist for all time?",
