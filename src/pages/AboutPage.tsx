@@ -68,18 +68,11 @@ export function AboutPage() {
         <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-6">
           Open Source
         </h2>
-        <div className="grid gap-6 md:grid-cols-2">
-          <RepoCard
+        <RepoCard
             name="lean-genius"
-            description="The web application you're using right now. Built with React, TypeScript, and Cloudflare Workers."
+            description="The complete monorepo containing the web application, Lean 4 proofs with Mathlib, and all verified theorems. Built with React, TypeScript, and Cloudflare Workers."
             url="https://github.com/rjwalters/lean-genius"
           />
-          <RepoCard
-            name="lean-genius-proofs"
-            description="Our collection of formalized Lean 4 proofs with Mathlib. Contains the source code for all verified theorems."
-            url="https://github.com/rjwalters/lean-genius-proofs"
-          />
-        </div>
       </section>
 
       {/* Footer */}

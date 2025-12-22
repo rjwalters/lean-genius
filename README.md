@@ -74,13 +74,30 @@ scripts/              # Build and import scripts
 
 ## Working with Proofs
 
-Lean proofs are maintained in a separate repository to isolate the Lean toolchain (elan, lake, Mathlib) from the web stack.
+Lean proofs are in the `proofs/` directory, a Lean 4 project with Mathlib.
 
-**Proofs Repository:** [lean-genius-proofs](https://github.com/rjwalters/lean-genius-proofs)
+### Project Structure
+
+```
+proofs/
+├── Proofs/              # Individual Lean proof files
+├── Proofs.lean          # Main import file
+├── lakefile.toml        # Mathlib @ 05147a76b4
+├── lean-toolchain       # Lean 4.10.0
+└── scripts/             # Build and extraction scripts
+```
+
+### Building Proofs
+
+```bash
+cd proofs
+./scripts/setup.sh       # First-time setup
+lake build               # Build all proofs
+```
 
 ### Importing Proof Data
 
-After running LeanInk on a proof in the proofs repo, import the tactic states:
+After running LeanInk on a proof, import the tactic states:
 
 ```bash
 # List available proofs
@@ -95,12 +112,13 @@ node scripts/import-proof.cjs --all
 
 ### Adding a New Proof
 
-1. Create the Lean proof in `lean-genius-proofs/Proofs/`
-2. Run LeanInk: `lake exe leanink Proofs/YourProof.lean`
-3. Create the frontend structure in `src/data/proofs/your-proof/`:
+1. Create the Lean proof in `proofs/Proofs/YourProof.lean`
+2. Add import to `proofs/Proofs.lean`
+3. Build: `cd proofs && lake build`
+4. Run LeanInk: `./scripts/extract-proof-info.sh Proofs/YourProof.lean`
+5. Create the frontend structure in `src/data/proofs/your-proof/`:
    - `meta.json` - Proof metadata, sections, overview
-   - `source.lean` - The Lean source code
    - `annotations.json` - Line-by-line annotations
-   - `index.ts` - Export the proof data
-4. Run `node scripts/import-proof.cjs YourProof` to import tactic states
-5. Add to `src/data/proofs/index.ts`
+   - `index.ts` - Import from `proofs/Proofs/YourProof.lean`
+6. Run `node scripts/import-proof.cjs YourProof` to import tactic states
+7. Add to `src/data/proofs/index.ts`
