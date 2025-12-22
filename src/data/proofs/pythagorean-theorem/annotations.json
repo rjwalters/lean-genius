@@ -1,0 +1,143 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "pythagorean-theorem",
+    "range": { "startLine": 1, "endLine": 13 },
+    "type": "concept",
+    "title": "The Most Famous Theorem",
+    "content": "The Pythagorean theorem—$a^2 + b^2 = c^2$—is arguably the most recognized mathematical result in the world. Nearly everyone learns it in school, and it's been known for over 4000 years.\n\nOur proof takes a modern approach using **inner product spaces**. Instead of rearranging areas (as in visual proofs) or using similar triangles (as Euclid did), we leverage the algebraic structure of vector spaces.",
+    "significance": "key",
+    "relatedConcepts": ["inner product", "perpendicularity", "Euclidean geometry"]
+  },
+  {
+    "id": "ann-vec2",
+    "proofId": "pythagorean-theorem",
+    "range": { "startLine": 39, "endLine": 42 },
+    "type": "definition",
+    "title": "2D Vectors",
+    "content": "A 2D vector is simply a pair of real numbers $(x, y)$. We can think of it as:\n\n- A **point** in the plane\n- An **arrow** from the origin to that point\n- A **displacement** between two points\n\nIn our triangle proof, vectors represent the legs of the triangle emanating from the right-angle vertex.",
+    "mathContext": "$\\vec{v} = (v_x, v_y) \\in \\mathbb{R}^2$",
+    "significance": "supporting",
+    "relatedConcepts": ["coordinate geometry", "displacement"]
+  },
+  {
+    "id": "ann-inner-product",
+    "proofId": "pythagorean-theorem",
+    "range": { "startLine": 62, "endLine": 65 },
+    "type": "definition",
+    "title": "The Inner Product (Dot Product)",
+    "content": "The **inner product** of two vectors is defined as:\n\n$$\\langle \\vec{v}, \\vec{w} \\rangle = v_x w_x + v_y w_y$$\n\nThis simple formula encodes remarkable geometric information:\n- When positive: vectors point in similar directions\n- When negative: vectors point in opposite directions  \n- When zero: vectors are **perpendicular**\n\nThe last case is the key to the Pythagorean theorem!",
+    "mathContext": "$\\langle (a, b), (c, d) \\rangle = ac + bd$",
+    "significance": "critical",
+    "relatedConcepts": ["dot product", "angle between vectors", "projection"]
+  },
+  {
+    "id": "ann-norm-sq",
+    "proofId": "pythagorean-theorem",
+    "range": { "startLine": 68, "endLine": 69 },
+    "type": "definition",
+    "title": "Norm Squared",
+    "content": "The **norm** of a vector is its length. The norm squared is simply the inner product of a vector with itself:\n\n$$\\|\\vec{v}\\|^2 = \\langle \\vec{v}, \\vec{v} \\rangle = v_x^2 + v_y^2$$\n\nThis is the 2D version of the Pythagorean theorem! The length of a vector $(v_x, v_y)$ satisfies $\\|\\vec{v}\\|^2 = v_x^2 + v_y^2$.",
+    "mathContext": "$\\|\\vec{v}\\|^2 = v_x^2 + v_y^2$",
+    "significance": "key",
+    "relatedConcepts": ["Euclidean norm", "length", "magnitude"]
+  },
+  {
+    "id": "ann-perpendicular",
+    "proofId": "pythagorean-theorem",
+    "range": { "startLine": 79, "endLine": 81 },
+    "type": "definition",
+    "title": "Perpendicularity via Inner Product",
+    "content": "Two vectors are **perpendicular** (or orthogonal) if and only if their inner product is zero:\n\n$$\\vec{v} \\perp \\vec{w} \\iff \\langle \\vec{v}, \\vec{w} \\rangle = 0$$\n\nThis is the algebraic translation of 'at right angles'. It's remarkable that such a simple algebraic condition captures a geometric concept.\n\nExample: $(1, 0)$ and $(0, 1)$ are perpendicular because $1 \\cdot 0 + 0 \\cdot 1 = 0$.",
+    "mathContext": "$\\vec{v} \\perp \\vec{w} \\iff \\langle \\vec{v}, \\vec{w} \\rangle = 0$",
+    "significance": "critical",
+    "relatedConcepts": ["orthogonality", "right angle", "inner product"]
+  },
+  {
+    "id": "ann-bilinearity",
+    "proofId": "pythagorean-theorem",
+    "range": { "startLine": 95, "endLine": 100 },
+    "type": "lemma",
+    "title": "Bilinearity of Inner Product",
+    "content": "The inner product is **bilinear**, meaning it distributes over addition in both arguments:\n\n$$\\langle \\vec{u} + \\vec{v}, \\vec{w} \\rangle = \\langle \\vec{u}, \\vec{w} \\rangle + \\langle \\vec{v}, \\vec{w} \\rangle$$\n$$\\langle \\vec{u}, \\vec{v} + \\vec{w} \\rangle = \\langle \\vec{u}, \\vec{v} \\rangle + \\langle \\vec{u}, \\vec{w} \\rangle$$\n\nThis property is what makes the Pythagorean theorem work: when we expand $\\|\\vec{v} + \\vec{w}\\|^2$, the bilinearity gives us all four terms.",
+    "mathContext": "Bilinearity: linear in each argument",
+    "significance": "key",
+    "relatedConcepts": ["linearity", "distributive property", "multilinear algebra"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "pythagorean-theorem",
+    "range": { "startLine": 106, "endLine": 117 },
+    "type": "theorem",
+    "title": "The Pythagorean Theorem (Vector Form)",
+    "content": "The theorem states: if $\\vec{v} \\perp \\vec{w}$, then\n\n$$\\|\\vec{v} + \\vec{w}\\|^2 = \\|\\vec{v}\\|^2 + \\|\\vec{w}\\|^2$$\n\nThe proof is a beautiful application of bilinearity:\n\n1. $\\|\\vec{v} + \\vec{w}\\|^2 = \\langle \\vec{v} + \\vec{w}, \\vec{v} + \\vec{w} \\rangle$ (by definition)\n2. $= \\langle \\vec{v}, \\vec{v} \\rangle + \\langle \\vec{v}, \\vec{w} \\rangle + \\langle \\vec{w}, \\vec{v} \\rangle + \\langle \\vec{w}, \\vec{w} \\rangle$ (bilinearity)\n3. $= \\|\\vec{v}\\|^2 + 0 + 0 + \\|\\vec{w}\\|^2$ (perpendicularity!)\n4. $= \\|\\vec{v}\\|^2 + \\|\\vec{w}\\|^2$\n\nThe cross terms vanish because the vectors are perpendicular.",
+    "mathContext": "$\\vec{v} \\perp \\vec{w} \\implies \\|\\vec{v} + \\vec{w}\\|^2 = \\|\\vec{v}\\|^2 + \\|\\vec{w}\\|^2$",
+    "significance": "critical",
+    "prerequisites": ["ann-perpendicular", "ann-bilinearity"],
+    "relatedConcepts": ["orthogonal decomposition", "norm", "direct sum"]
+  },
+  {
+    "id": "ann-right-triangle",
+    "proofId": "pythagorean-theorem",
+    "range": { "startLine": 135, "endLine": 142 },
+    "type": "definition",
+    "title": "Right Triangle Structure",
+    "content": "We formalize a right triangle as a structure with:\n\n- Two vectors `legA` and `legB` representing the legs\n- A proof `right_angle` that these legs are perpendicular\n\nPlacing the right angle at the origin, the legs point to vertices A and B. The hypotenuse connects these vertices, represented by `legA - legB`.",
+    "significance": "supporting",
+    "relatedConcepts": ["structure", "dependent type", "geometric modeling"]
+  },
+  {
+    "id": "ann-classical",
+    "proofId": "pythagorean-theorem",
+    "range": { "startLine": 147, "endLine": 149 },
+    "type": "theorem",
+    "title": "Classical Formulation: a² + b² = c²",
+    "content": "The classical theorem states that for a right triangle with legs $a, b$ and hypotenuse $c$:\n\n$$a^2 + b^2 = c^2$$\n\nIn our vector notation:\n- $a = \\|\\text{legB}\\|$ (length of leg B)\n- $b = \\|\\text{legA}\\|$ (length of leg A)  \n- $c = \\|\\text{legA} - \\text{legB}\\|$ (length of hypotenuse)\n\nThe theorem follows directly from our vector form.",
+    "mathContext": "$a^2 + b^2 = c^2$",
+    "significance": "key",
+    "prerequisites": ["ann-main-theorem"],
+    "relatedConcepts": ["right triangle", "hypotenuse", "Euclidean geometry"]
+  },
+  {
+    "id": "ann-triples",
+    "proofId": "pythagorean-theorem",
+    "range": { "startLine": 156, "endLine": 167 },
+    "type": "concept",
+    "title": "Pythagorean Triples",
+    "content": "A **Pythagorean triple** is a set of three positive integers $(a, b, c)$ satisfying $a^2 + b^2 = c^2$. The most famous is $(3, 4, 5)$:\n\n$$3^2 + 4^2 = 9 + 16 = 25 = 5^2 \\checkmark$$\n\nOther common triples:\n- $(5, 12, 13)$: $25 + 144 = 169$\n- $(8, 15, 17)$: $64 + 225 = 289$\n- $(7, 24, 25)$: $49 + 576 = 625$\n\nAll **primitive** triples (where $\\gcd(a,b,c) = 1$) are generated by:\n$$a = m^2 - n^2, \\quad b = 2mn, \\quad c = m^2 + n^2$$\nwhere $m > n > 0$ are coprime with different parity.",
+    "mathContext": "$(a, b, c)$ where $a^2 + b^2 = c^2$",
+    "significance": "supporting",
+    "relatedConcepts": ["number theory", "Diophantine equations", "Plimpton 322"]
+  },
+  {
+    "id": "ann-native-decide",
+    "proofId": "pythagorean-theorem",
+    "range": { "startLine": 172, "endLine": 177 },
+    "type": "tactic",
+    "title": "Computational Verification",
+    "content": "Lean can **compute** that these are valid Pythagorean triples using `native_decide`. This tactic evaluates the arithmetic and checks that both sides equal the same value.\n\nFor $(3, 4, 5)$:\n- Left side: $3^2 + 4^2 = 9 + 16 = 25$\n- Right side: $5^2 = 25$\n- Equal? Yes! Proof complete.\n\nThis is one of Lean's strengths: verifiable computation meets rigorous proof.",
+    "significance": "supporting",
+    "relatedConcepts": ["decidability", "computation in type theory", "reflection"]
+  },
+  {
+    "id": "ann-converse",
+    "proofId": "pythagorean-theorem",
+    "range": { "startLine": 187, "endLine": 193 },
+    "type": "theorem",
+    "title": "The Converse Theorem",
+    "content": "The **converse** of the Pythagorean theorem states:\n\n*If the sides of a triangle satisfy $a^2 + b^2 = c^2$, then the angle opposite $c$ is a right angle.*\n\nThis appears as Proposition 48 in Book I of Euclid's Elements. It means we can *test* whether an angle is 90° using only length measurements—no protractor needed!\n\nThe converse is crucial in surveying, construction, and navigation.",
+    "mathContext": "$a^2 + b^2 = c^2 \\implies$ right angle",
+    "significance": "key",
+    "relatedConcepts": ["Euclid's Elements", "angle measurement", "construction"]
+  },
+  {
+    "id": "ann-history",
+    "proofId": "pythagorean-theorem",
+    "range": { "startLine": 200, "endLine": 225 },
+    "type": "concept",
+    "title": "4000 Years of History",
+    "content": "The Pythagorean theorem has an extraordinary history:\n\n**Ancient Origins:**\n- ~1800 BCE: Babylonian tablet Plimpton 322 lists Pythagorean triples\n- ~1100 BCE: Chinese mathematicians knew the $(3, 4, 5)$ triple\n- ~570 BCE: Pythagoras (or his school) gave a general proof\n\n**Mathematical Developments:**\n- ~300 BCE: Euclid's *Elements* includes the theorem (I.47) and converse (I.48)\n- 1876: James Garfield discovers a new proof (later becomes US President!)\n- 1940: Elisha Loomis catalogs 367 distinct proofs\n\n**Generalizations:**\n- **Law of Cosines:** $c^2 = a^2 + b^2 - 2ab\\cos(C)$\n- **Higher dimensions:** $\\|\\vec{v}\\|^2 = \\sum_i v_i^2$\n- **Non-Euclidean:** The theorem *fails* in hyperbolic/spherical geometry—it's a defining property of flat space!",
+    "significance": "key",
+    "relatedConcepts": ["Euclid", "Plimpton 322", "history of mathematics"]
+  }
+]
