@@ -1,6 +1,7 @@
-import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion } from '@/types/proof'
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, TacticState } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
+import tacticStatesJson from './tacticStates.json'
 import sourceRaw from './source.lean?raw'
 
 const meta = metaJson as {
@@ -27,8 +28,10 @@ export const cantorDiagonalizationProof: Proof = {
 }
 
 export const cantorDiagonalizationAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const cantorDiagonalizationTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const cantorDiagonalizationData: ProofData = {
   proof: cantorDiagonalizationProof,
   annotations: cantorDiagonalizationAnnotations,
+  tacticStates: cantorDiagonalizationTacticStates,
 }

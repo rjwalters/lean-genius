@@ -6,7 +6,7 @@
   "meta": {
     "author": "Georg Cantor (1891)",
     "date": "1891",
-    "status": "pending",
+    "status": "verified",
     "tags": ["set-theory", "infinity", "cardinality", "classic", "intermediate"]
   },
   "overview": {
@@ -24,37 +24,44 @@
     {
       "id": "setup",
       "title": "Binary Sequences",
-      "startLine": 15,
-      "endLine": 17,
+      "startLine": 23,
+      "endLine": 27,
       "summary": "Defines binary sequences as functions from Nat to Bool, representing infinite strings of 0s and 1s."
     },
     {
       "id": "diagonal",
       "title": "The Diagonal Construction",
-      "startLine": 19,
-      "endLine": 27,
+      "startLine": 29,
+      "endLine": 44,
       "summary": "Defines the diagonal function that flips each bit along the diagonal, and proves it differs from every input sequence."
     },
     {
       "id": "main-theorem",
       "title": "Cantor's Main Theorem",
-      "startLine": 29,
-      "endLine": 44,
+      "startLine": 46,
+      "endLine": 68,
       "summary": "Proves that no function from Nat to BinarySeq can be surjective, establishing uncountability."
     },
     {
       "id": "corollary",
       "title": "The Reals Are Uncountable",
-      "startLine": 46,
-      "endLine": 54,
+      "startLine": 70,
+      "endLine": 89,
       "summary": "States the theorem in its classic form: no surjection from naturals to binary sequences exists."
     },
     {
       "id": "powerset",
       "title": "Power Set Generalization",
-      "startLine": 59,
-      "endLine": 75,
+      "startLine": 91,
+      "endLine": 115,
       "summary": "Proves the general theorem that for any set S, there is no surjection from S to its power set P(S)."
+    },
+    {
+      "id": "russell",
+      "title": "Connection to Russell's Paradox",
+      "startLine": 117,
+      "endLine": 133,
+      "summary": "Shows how the diagonal set construction relates to Russell's famous paradox about the set of all sets."
     }
   ],
   "conclusion": {
