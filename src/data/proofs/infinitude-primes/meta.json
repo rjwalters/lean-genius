@@ -2,12 +2,13 @@
   "id": "infinitude-primes",
   "title": "Infinitude of Prime Numbers",
   "slug": "infinitude-primes",
-  "description": "Euclid's elegant proof that there are infinitely many prime numbers, formalized in Lean 4 from first principles.",
+  "description": "Euclid's elegant proof that there are infinitely many prime numbers, formalized in Lean 4 with Mathlib.",
   "meta": {
     "author": "Euclid (formalized by Yannis Konstantoulas)",
     "sourceUrl": "https://github.com/ykonstant1/InfinitePrimes",
     "date": "~300 BCE",
-    "status": "pending",
+    "status": "verified",
+    "proofRepoPath": "Proofs/InfinitudePrimes.lean",
     "tags": ["number-theory", "primes", "classic", "euclid", "beginner-friendly"]
   },
   "overview": {
@@ -23,43 +24,29 @@
   },
   "sections": [
     {
-      "id": "definitions",
-      "title": "Basic Definitions",
-      "startLine": 17,
-      "endLine": 38,
-      "summary": "Defines divisibility, regular numbers (≥2), and two characterizations of primality: Euclid's (p divides a product implies p divides a factor) and the natural definition (no proper divisors)."
-    },
-    {
-      "id": "divisibility",
-      "title": "Divisibility Lemmas",
-      "startLine": 40,
-      "endLine": 58,
-      "summary": "Three foundational facts: every number divides itself, divisibility is transitive, and only 1 divides 1."
-    },
-    {
-      "id": "factorial",
-      "title": "Factorial Properties",
-      "startLine": 60,
-      "endLine": 83,
-      "summary": "Defines factorial recursively and proves that any k ≤ n divides n!, plus that factorials are always positive."
-    },
-    {
-      "id": "prime-divisor",
-      "title": "Prime Divisor Existence",
-      "startLine": 85,
-      "endLine": 93,
-      "summary": "Every integer ≥ 2 has a prime divisor. Uses well-ordering: the smallest divisor ≥ 2 must be prime."
+      "id": "key-lemmas",
+      "title": "Key Lemmas",
+      "startLine": 21,
+      "endLine": 40,
+      "summary": "Three supporting lemmas: dvd_factorial (any k ≤ n divides n!), factorial_succ_ge_two (n! + 1 ≥ 2), and dvd_of_dvd_add_one (if p divides both a and a+1, then p divides 1)."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
-      "startLine": 95,
-      "endLine": 134,
-      "summary": "Euclid's theorem: for any n, there exists a prime p > n. Constructs Q = n! + 1 and shows its prime divisor exceeds n."
+      "startLine": 42,
+      "endLine": 87,
+      "summary": "Euclid's theorem: for any n, there exists a prime p > n. Constructs Q = n! + 1, finds its prime divisor p, and proves p > n by contradiction."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries",
+      "startLine": 89,
+      "endLine": 100,
+      "summary": "Two corollaries: every prime has a larger prime (exists_prime_gt_prime), and there is no largest prime (no_largest_prime)."
     }
   ],
   "conclusion": {
-    "summary": "This Lean formalization captures one of mathematics' most elegant arguments. The proof's power lies in its indirection: rather than constructing large primes (which is hard), we show that their non-existence leads to the absurdity of a prime dividing 1.\n\nThe construction $Q = n! + 1$ is ingenious. The factorial ensures that every 'small' prime divides $n!$, while the +1 shifts us to a number coprime to all of them. Whatever primes divide $Q$ must therefore be 'large'.\n\nNote: This formalization builds primality from first principles without importing Mathlib, demonstrating that the infinitude of primes requires only basic number theory.",
+    "summary": "This Lean formalization captures one of mathematics' most elegant arguments. The proof's power lies in its indirection: rather than constructing large primes (which is hard), we show that their non-existence leads to the absurdity of a prime dividing 1.\n\nThe construction $Q = n! + 1$ is ingenious. The factorial ensures that every 'small' prime divides $n!$, while the +1 shifts us to a number coprime to all of them. Whatever primes divide $Q$ must therefore be 'large'.\n\nThis formalization uses Mathlib's prime and factorial definitions, providing a clean and complete proof with no sorries.",
     "implications": "Euclid's theorem is the foundation for understanding prime distribution:\n\n1. **Cryptographic Security** — RSA, Diffie-Hellman, and elliptic curve cryptography all rely on the abundance of large primes. If primes were finite, modern encryption would be impossible.\n\n2. **The Prime Number Theorem** — Proved in 1896 by Hadamard and de la Vallée Poussin: the number of primes below $n$ is approximately $n/\\ln(n)$. Primes thin out, but never vanish.\n\n3. **Prime Gaps** — How far apart can consecutive primes be? Gaps grow, but there's always another prime ahead.\n\n4. **Open Problems** — The Twin Prime Conjecture (infinitely many $p$ with $p+2$ prime), Goldbach's Conjecture (every even $n > 2$ is a sum of two primes), and the Riemann Hypothesis all extend Euclid's question.",
     "openQuestions": [
       "Bertrand's Postulate: Is there always a prime between $n$ and $2n$? (Yes—proved by Chebyshev in 1852)",

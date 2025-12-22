@@ -32,8 +32,8 @@ const PROOF_MAPPING = {
   'Sqrt2Irrational': 'sqrt2-irrational',
   'OnePlusOne': 'russell-1-plus-1',
   'FundamentalTheoremCalculus': 'fundamental-theorem-calculus',
+  'InfinitudePrimes': 'infinitude-primes',
   // Add more mappings as proofs are added:
-  // 'InfinitudePrimes': 'infinitude-primes',
   // 'CantorDiagonalization': 'cantor-diagonalization',
 };
 
