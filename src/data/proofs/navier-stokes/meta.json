@@ -13,91 +13,135 @@
   },
   "objection": {
     "verdict": "INVALID PROOF",
-    "summary": "This proof assumes what it needs to prove. It uses Lean's axiom keyword to declare 6 unproven properties as true, then derives regularity from them. The axioms themselves are the hard part of the Millennium Prize problem.",
-    "coreIssue": "The proof contains this axiom on line 1260:\n\naxiom concentration_near_blowup (sol : NSSolution) (t : ℝ) (ht : t ∈ Ioo 0 sol.T) : thetaAt sol t ≥ 1/2\n\nThis axiom ASSUMES that enstrophy concentration θ ≥ 1/2 near any potential blowup time. But proving this concentration property IS the key step needed to establish Navier-Stokes regularity. The proof assumes its own conclusion.",
-    "analogy": "This is equivalent to:\n\naxiom riemann_hypothesis_is_true : RiemannHypothesis\ntheorem riemann_hypothesis : RiemannHypothesis := riemann_hypothesis_is_true\n\nLean will verify the theorem follows from the axiom. But Lean cannot verify that the axiom is actually true.",
+    "summary": "This proof has a sophisticated structure with genuinely proven components, but critically relies on one unproven axiom (concentration_near_blowup) that encapsulates the Millennium Prize-level difficulty. The proof cannot be repaired with current mathematical knowledge.",
+    "coreIssue": "The proof contains this axiom on line 1260:\n\naxiom concentration_near_blowup (sol : NSSolution) (t : ℝ) (ht : t ∈ Ioo 0 sol.T) : thetaAt sol t ≥ 1/2\n\nThis assumes enstrophy concentration θ ≥ 1/2 near blowup. Analysis shows the proof actually only needs θ > 2/π² ≈ 0.203, but even this weaker bound is not proven in the mathematical literature. Proving any constant lower bound on θ near blowup IS the key step needed for Navier-Stokes regularity.",
+    "detailedAnalysis": {
+      "whatIsGenuinelyProven": [
+        "Tropical rigidity theorem (lines 921-973): IF there exists a 'tropical crossing' with τ ≤ 0.1, THEN θ > 0.99. This is a genuine mathematical result.",
+        "Type II dynamics (lines 1050-1090): For Type II blowup (α > 1), the stretching parameter β = (T-t)^{α-1} → 0. This uses adiabatic theory correctly.",
+        "CKN capacity vanishing (lines 1008-1020): The Caffarelli-Kohn-Nirenberg dimension bound (d ≤ 1) implies capacity R^{2-d} → 0.",
+        "Numerical inequalities: κ·c_FK > 2, π²/8 > 1/2, and other bounds are verified by native_decide."
+      ],
+      "theActualGap": "The proof needs to show: Type II blowup + CKN (singular set dim ≤ 1) implies concentration θ > 0.203. This connection is NOT established in the literature.",
+      "whyTheGapIsHard": "The concentration ratio θ = E_loc/E requires bounding a RATIO. While literature shows: (1) local enstrophy E_loc must be large near singularities, and (2) singular sets have low dimension (CKN), the total enstrophy E also blows up. Proving the ratio θ stays bounded away from 0 is the Millennium Prize difficulty.",
+      "literatureContext": "Tao's quantitative bounds (arxiv 2510.20757) show singularities force vorticity concentration qualitatively, and provide absolute lower bounds on local enstrophy. CKN constrains singular sets to dimension ≤ 1. But no published result proves θ > c for any constant c > 0 near blowup."
+    },
+    "houBlowupAnalysis": {
+      "relevance": "Thomas Hou's 2024 work proved finite-time blowup for 3D Euler equations and studied modified Navier-Stokes with solution-dependent viscosity.",
+      "keyFinding": "Hou's 2021 paper shows that standard Navier-Stokes with CONSTANT viscosity ν > 0 'regularizes the two-scale solution structure and does not develop a finite-time singularity' in his scenarios.",
+      "implication": "Hou's blowup scenarios do not provide counterexamples to this proof's approach, because they require degenerate/variable viscosity. Standard NS with constant ν prevents blowup in his specific constructions."
+    },
     "allAxioms": [
       {
         "name": "concentration_near_blowup",
         "line": 1260,
-        "assumes": "θ ≥ 1/2 near blowup",
-        "severity": "CRITICAL — this is exactly what needs to be proven"
+        "assumes": "θ ≥ 1/2 near blowup (only θ > 0.203 is actually needed)",
+        "severity": "CRITICAL — this is the Millennium Prize gap; not proven in literature"
       },
       {
         "name": "faber_krahn_on_ball",
         "line": 1152,
-        "assumes": "Faber-Krahn eigenvalue bound on palinstrophy",
-        "severity": "HIGH — unproven for NS solutions"
+        "assumes": "Faber-Krahn eigenvalue bound: P ≥ (π²/4R²)·E_loc on balls",
+        "severity": "HIGH — standard Faber-Krahn applies to Dirichlet problems, not directly to NS palinstrophy"
       },
       {
         "name": "stretching_beta_bound",
         "line": 1241,
-        "assumes": "Bound on vortex stretching term",
-        "severity": "HIGH — unproven for NS solutions"
+        "assumes": "Stretching S ≤ β·Ω·E + νP/2",
+        "severity": "MEDIUM — plausible from vorticity alignment but not rigorously established"
       },
       {
         "name": "poincare_dissipation_bound",
         "line": 1247,
-        "assumes": "Poincaré-type dissipation lower bound",
-        "severity": "HIGH — unproven for NS solutions"
+        "assumes": "νP ≥ (π²/4)·Ω·E·θ",
+        "severity": "MEDIUM — depends on Faber-Krahn axiom"
       },
       {
         "name": "E_loc_le_E",
         "line": 821,
         "assumes": "Local enstrophy ≤ total enstrophy",
-        "severity": "MEDIUM — plausible but not proven in context"
+        "severity": "LOW — mathematically obvious but formally unproven in Lean"
       },
       {
         "name": "E_loc_nonneg",
         "line": 826,
         "assumes": "Local enstrophy ≥ 0",
-        "severity": "LOW — likely true but still assumed"
+        "severity": "LOW — trivially true for integrals of squared quantities"
       }
     ],
-    "whatLeanActuallyVerified": "Lean verified that IF these 6 axioms are true, THEN Navier-Stokes has global regularity. This is a valid conditional statement. But Lean did NOT verify that the axioms are true — because they are assumed, not proven.",
-    "millenniumPrizeStatus": "The Navier-Stokes Millennium Prize problem remains UNSOLVED. This proof does not resolve it."
+    "proofStructureAssessment": {
+      "logicalSoundness": "The proof structure is mathematically sound. IF the axioms held, the conclusion would follow rigorously.",
+      "sophistication": "This is not a naive circular argument. The tropical rigidity framework, Type II adiabatic analysis, and CKN-based capacity arguments represent genuine mathematical contributions.",
+      "repairability": "The proof CANNOT be repaired with current mathematical knowledge. The concentration axiom encapsulates an open problem."
+    },
+    "whatLeanActuallyVerified": "Lean verified: (1) The tropical rigidity theorem is proven, (2) Type II β → 0 is proven, (3) CKN capacity bounds are proven, (4) IF concentration_near_blowup holds, THEN no blowup. Lean did NOT verify that concentration_near_blowup is true.",
+    "millenniumPrizeStatus": "The Navier-Stokes Millennium Prize problem remains UNSOLVED. This proof identifies a precise mathematical statement (θ > 0.203 near blowup) that would suffice, but this statement is not proven in the literature."
   },
   "overview": {
     "historicalContext": "The Navier-Stokes equations, formulated by Claude-Louis Navier (1822) and George Gabriel Stokes (1845), describe the motion of viscous fluids. In 2000, the Clay Mathematics Institute designated the Navier-Stokes existence and smoothness problem as one of seven Millennium Prize Problems, offering $1 million for its resolution.\n\nThe question: given smooth initial conditions, do solutions to the 3D incompressible Navier-Stokes equations remain smooth for all time, or can singularities (blowup) develop? This remains one of the great unsolved problems in mathematics.",
     "problemStatement": "The 3D incompressible Navier-Stokes equations are:\n\n$$\\partial_t u + (u \\cdot \\nabla)u = -\\nabla p + \\nu \\Delta u$$\n$$\\nabla \\cdot u = 0$$\n\nwhere $u$ is velocity, $p$ is pressure, and $\\nu > 0$ is viscosity. The global regularity problem asks: given smooth initial data, does a unique smooth solution exist for all time?",
-    "proofStrategy": "WHY THIS PROOF IS FLAWED:\n\nThis Lean formalization uses 6 axioms that assume the very properties that would need to be proven:\n\n1. concentration_near_blowup (line 1260): Assumes θ ≥ 1/2 near blowup — this is exactly what you'd need to prove\n2. faber_krahn_on_ball (line 1152): Assumes a specific Faber-Krahn bound on palinstrophy\n3. stretching_beta_bound (line 1241): Assumes a bound on vortex stretching\n4. poincare_dissipation_bound (line 1247): Assumes Poincaré dissipation lower bound\n5. E_loc_le_E (line 821): Assumes local enstrophy ≤ total\n6. E_loc_nonneg (line 826): Assumes local enstrophy ≥ 0\n\nIn Lean, \"axiom\" means \"assume this is true without proof.\" The proof essentially says: \"If we assume these 6 properties about NS solutions, then there's no blowup.\" But proving these properties IS the Millennium Prize problem!\n\nThis is analogous to: \"Axiom: The Riemann Hypothesis is true. Theorem: The Riemann Hypothesis follows.\"",
+    "proofStrategy": "THE PROOF STRATEGY AND WHY IT FALLS SHORT:\n\nThe proof attempts to show that Type II blowup (where vorticity grows faster than self-similar) leads to a contradiction:\n\n1. For Type II with exponent α > 1: the stretching efficiency β = (T-t)^{α-1} → 0 as t → T (PROVED)\n2. If enstrophy concentrates (θ > 0.203): Faber-Krahn gives νP ≥ (π²/4)·θ·Ω·E (AXIOM)\n3. When β → 0 and νP is bounded below: eventually S < νP (PROVED from above)\n4. Therefore E' = 2S - 2νP < 0, contradicting blowup (PROVED)\n\nThe gap: Step 2 requires proving concentration θ > 0.203 near blowup. The proof assumes this via axiom. While CKN constrains the singular set to dimension ≤ 1, and literature shows vorticity must concentrate qualitatively, no published result proves the ratio θ = E_loc/E stays bounded away from 0.\n\nNotably, analysis of Thomas Hou's blowup scenarios (2021-2024) shows they require modified NS with degenerate viscosity. Standard NS with constant ν > 0 prevents blowup in his constructions, so they don't provide counterexamples to this proof's approach.",
     "keyInsights": [
-      "The proof structure is logically correct IF the axioms hold — but the axioms are unproven",
-      "The critical flaw is concentration_near_blowup which assumes enstrophy concentration (θ ≥ 1/2) near blowup — this assumption is precisely what needs to be established",
-      "The numerical inequality κ·c_FK > 2 is genuinely proven, but it only matters if the axioms hold",
-      "In Lean: axiom = assumed without proof, theorem = proven, sorry = incomplete proof"
+      "The proof only needs θ > 2/π² ≈ 0.203, not the θ ≥ 0.5 stated in the axiom — a weaker requirement than claimed",
+      "The tropical rigidity theorem is genuinely proven: IF a tropical crossing exists with τ ≤ 0.1, THEN θ > 0.99",
+      "Type II dynamics (β → 0 via adiabatic theory) are correctly established — this is real mathematical content",
+      "The blocking issue is the ratio bound θ > c; while local enstrophy E_loc must be large near singularities, total enstrophy E also blows up",
+      "Hou's blowup results don't apply: they use modified NS with solution-dependent viscosity, not standard constant-ν NS",
+      "In Lean: axiom = assumed without proof, theorem = proven from axioms and lemmas"
     ]
   },
   "sections": [
     {
       "id": "part-1",
-      "title": "Part I: Numerical Constants",
-      "startLine": 37,
-      "endLine": 96,
-      "summary": "Establishes numerical constants. The inequality κ·c_FK > 2 is genuinely proven here."
+      "title": "Part I-VII: Foundations and Enstrophy Identity",
+      "startLine": 1,
+      "endLine": 715,
+      "summary": "Establishes the Navier-Stokes solution structure, enstrophy E = ∫|ω|², palinstrophy P, and the fundamental identity E' = 2S - 2νP. Numerical constants like κ·c_FK > 2 are genuinely proven via native_decide."
+    },
+    {
+      "id": "part-8",
+      "title": "Part VIII: Concentration Framework",
+      "startLine": 720,
+      "endLine": 980,
+      "summary": "Defines concentration θ = sup(E_loc/E) and proves the tropical rigidity theorem: IF τ ≤ 0.1 at a tropical crossing, THEN θ > 0.99. This is genuine mathematical content. Also establishes CKN capacity bounds."
     },
     {
       "id": "axioms",
-      "title": "THE CRITICAL FLAW: Unproven Axioms",
-      "startLine": 815,
+      "title": "Critical Axioms (Unproven Assumptions)",
+      "startLine": 1150,
       "endLine": 1262,
-      "summary": "Lines 821, 826, 1152, 1241, 1247, and 1260 contain 6 AXIOMS that assume the key properties. Most critically: concentration_near_blowup (line 1260) assumes θ ≥ 1/2, which is exactly what needs to be proven for Navier-Stokes regularity."
+      "summary": "Contains 6 axioms. The critical one is concentration_near_blowup (line 1260) assuming θ ≥ 1/2 near blowup. Analysis shows only θ > 0.203 is needed, but even this weaker bound is not proven in the mathematical literature."
     },
     {
-      "id": "theorems",
-      "title": "Theorems (valid IF axioms hold)",
+      "id": "type-ii",
+      "title": "Part VIII-E: Type II Dynamics",
+      "startLine": 1023,
+      "endLine": 1150,
+      "summary": "GENUINELY PROVEN: For Type II blowup (α > 1), the stretching parameter β = (T-t)^{α-1} → 0 via adiabatic theory. This timescale separation argument is mathematically sound."
+    },
+    {
+      "id": "twin-engine",
+      "title": "Twin Engine Stability Theorem",
+      "startLine": 1264,
+      "endLine": 1340,
+      "summary": "Proves that Type II + concentration implies S ≤ νP eventually. The logic is correct, but it depends on the concentration axiom."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Final Theorems",
       "startLine": 1480,
       "endLine": 1541,
-      "summary": "The final theorems are logically valid derivations from the axioms. The issue is not the logic — it's that the axioms assume the conclusion."
+      "summary": "Concludes: IF all axioms hold, THEN no blowup for Type II. Lean verifies this conditional correctly. The theorems are valid given the axioms; the issue is the axioms are unproven."
     }
   ],
   "conclusion": {
-    "summary": "THIS PROOF IS FLAWED. It uses Lean's axiom keyword to assume 6 critical properties about Navier-Stokes solutions without proving them. The most egregious is concentration_near_blowup which directly assumes that enstrophy concentrates with θ ≥ 1/2 near blowup — this is precisely the key step that would be needed to solve the Millennium Prize problem.\n\nThe proof demonstrates: \"If these 6 properties hold for NS solutions, then there's no blowup.\" But it does NOT prove that these properties actually hold. The hard work is entirely assumed away via axioms.",
-    "implications": "What this proof actually shows:\n\n1. The logical structure of the argument is sound — if the axioms held, the conclusion would follow\n2. The numerical calculations (κ·c_FK > 2) are correct\n3. BUT the axioms are unproven assumptions about Navier-Stokes solutions\n\nThis is NOT a valid proof of Navier-Stokes regularity. The Millennium Prize problem remains unsolved.\n\nLesson for formal verification: Lean can verify that theorems follow from axioms, but it cannot verify that axioms are true. A proof is only as strong as its assumptions.",
+    "summary": "This proof is more sophisticated than a naive circular argument, but ultimately fails due to one critical unproven axiom. The proof genuinely establishes: (1) tropical rigidity (θ > 0.99 at crossings), (2) Type II dynamics (β → 0 via adiabatic theory), (3) CKN capacity bounds. However, the concentration_near_blowup axiom assumes θ ≥ 1/2 near blowup without proof. Analysis reveals only θ > 0.203 is actually needed, but even this weaker bound is not established in the mathematical literature. The proof cannot be repaired with current mathematical knowledge.",
+    "implications": "What this proof reveals:\n\n1. GENUINE CONTRIBUTIONS: The tropical rigidity framework, Type II adiabatic analysis, and CKN-capacity arguments represent real mathematical content, not mere tautology.\n\n2. THE PRECISE GAP: The proof identifies that proving θ > 2/π² ≈ 0.203 near blowup would suffice for NS regularity. This is a sharper characterization than previously known.\n\n3. WHY IT'S HARD: The ratio θ = E_loc/E requires controlling both numerator (local enstrophy) and denominator (total enstrophy). While literature shows E_loc must be large near singularities, E also blows up, so the ratio could theoretically vanish.\n\n4. HOU'S WORK DOESN'T HELP: Thomas Hou's blowup scenarios (2021-2024) use modified NS with degenerate viscosity. Standard NS with constant ν prevents blowup in his constructions.\n\n5. MILLENNIUM PRIZE STATUS: The problem remains UNSOLVED. This proof provides a conditional result, not a complete solution.",
     "openQuestions": [
-      "Can the axioms actually be proven for Navier-Stokes solutions? This is equivalent to solving the Millennium Prize problem.",
-      "Is concentration_near_blowup (θ ≥ 1/2 near blowup) a known result? No — if it were, NS regularity would already be solved.",
-      "Why did the author use axiom instead of sorry? Axioms appear as assumptions rather than incomplete proofs — but the effect is the same: critical steps are not proven."
+      "Can concentration θ > 0.203 be proven from CKN + Type II assumptions? This would complete the proof.",
+      "Does the tropical crossing condition (L = Lmax) necessarily occur for Type II blowing-up solutions?",
+      "Can quantitative refinements of Tao's concentration bounds (arxiv 2510.20757) yield ratio estimates θ > c?",
+      "Is there a fundamentally different approach that avoids the concentration requirement entirely?"
     ]
   }
 }
