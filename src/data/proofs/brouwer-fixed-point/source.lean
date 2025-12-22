@@ -177,9 +177,10 @@ axiom ray_intersection_continuous :
   ∀ a b : Point n, a ≠ b → Continuous (fun p => ray_sphere_intersection n a b)
 
 -- If b is on the sphere, ray from a through b hits sphere at b
+-- (assuming a is in the ball, which holds when a = f(x).val for x in the ball)
 axiom ray_through_boundary :
   ∀ a : Point n, ∀ b : Sphere n,
-    (⟨a, sorry⟩ : ClosedBall n).val ≠ b.val →
+    a ≠ b.val →
     ray_sphere_intersection n a b.val = b
 
 -- Construction of retraction from fixed-point-free map
@@ -193,10 +194,14 @@ noncomputable def retraction_from_no_fixpoint
     -- If x is on the boundary, the ray from f(x) through x hits the sphere at x
     have hne : (f.toFun ⟨x.val, le_of_eq x.property⟩).val ≠ x.val := by
       intro heq
-      -- If f(x) = x, then x is a fixed point, contradicting hno_fix
+      -- If f(x).val = x.val, then f(x) = x as subtypes (extensionality)
+      have h_eq : f.toFun ⟨x.val, le_of_eq x.property⟩ = ⟨x.val, le_of_eq x.property⟩ := by
+        apply Subtype.ext
+        exact heq
+      -- So x is a fixed point, contradicting hno_fix
       have : IsFixedPoint n f ⟨x.val, le_of_eq x.property⟩ := by
         unfold IsFixedPoint
-        sorry -- Need to show f(x) = x from heq
+        exact h_eq
       exact hno_fix ⟨⟨x.val, le_of_eq x.property⟩, this⟩
     exact ray_through_boundary n (f.toFun ⟨x.val, le_of_eq x.property⟩).val x hne
 

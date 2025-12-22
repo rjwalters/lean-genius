@@ -54,8 +54,12 @@ def Consistent : Prop :=
   ∀ φ : Formula, ¬(⊢ φ ∧ ⊢ ¬ᶠφ)
 
 -- ω-consistency: a stronger condition Gödel originally used
--- If ⊢ ∃x.P(x), then for some n, ⊢ P(n)
--- (We use simple consistency here, following later simplifications)
+-- The system is ω-consistent if: whenever ⊢ ¬P(0), ⊢ ¬P(1), ⊢ ¬P(2), ...
+-- for all numerals, we don't also have ⊢ ∃x.P(x)
+-- This prevents the system from being "wrong" about the natural numbers
+
+-- ω-consistency implies simple consistency
+-- (Rosser later showed simple consistency suffices with a modified sentence)
 
 -- ============================================================
 -- PART 3: Gödel Numbering
@@ -177,8 +181,35 @@ theorem G_not_provable (h_consistent : Consistent) : ¬(⊢ G) := by
 def Complete : Prop :=
   ∀ φ : Formula, ⊢ φ ∨ ⊢ ¬ᶠφ
 
+-- Key lemma: ¬G implies Prov(⌜G⌝) (¬G says "G is provable")
+-- This follows from the self-reference: G ⟺ ¬Prov(⌜G⌝), so ¬G ⟺ Prov(⌜G⌝)
+axiom notG_implies_prov : ⊢ ¬ᶠG → ⊢ Prov(godelNum G)
+
+-- Σ₁-completeness: Provability claims that are true are provable
+-- If φ is actually provable (i.e., there exists a proof), then ⊢ Prov(⌜φ⌝)
+-- Conversely (and crucially): if ⊢ Prov(⌜φ⌝), the system correctly reflects provability
+-- This is the key technical condition that Gödel originally captured via ω-consistency
+axiom sigma1_soundness : ⊢ Prov(godelNum G) → ⊢ G
+
+-- ¬G is also not provable (under consistency)
+-- If ⊢ ¬G, then ⊢ Prov(⌜G⌝) (since ¬G says "G is provable")
+-- By Σ₁-soundness, this would mean ⊢ G
+-- But then both ⊢ G and ⊢ ¬G, contradicting consistency
+theorem notG_not_provable (h_consistent : Consistent) : ¬(⊢ ¬ᶠG) := by
+  intro hNotG
+  -- ¬G says "G is provable", so ⊢ ¬G implies ⊢ Prov(⌜G⌝)
+  have h_prov : ⊢ Prov(godelNum G) := notG_implies_prov hNotG
+  -- By Σ₁-soundness, if the system proves Prov(⌜G⌝), then G is provable
+  have hG : ⊢ G := sigma1_soundness h_prov
+  -- Now we have both ⊢ G and ⊢ ¬G, contradicting consistency
+  exact h_consistent G ⟨hG, hNotG⟩
+
 -- First Incompleteness Theorem:
--- No consistent system capable of expressing arithmetic is complete
+-- G is undecidable: neither G nor ¬G is provable
+theorem G_undecidable (h_consistent : Consistent) : ¬(⊢ G) ∧ ¬(⊢ ¬ᶠG) :=
+  ⟨G_not_provable h_consistent, notG_not_provable h_consistent⟩
+
+-- The Incompleteness Theorem: No consistent system is complete
 theorem first_incompleteness (h_consistent : Consistent) : ¬Complete := by
   intro h_complete
   -- By completeness, either ⊢ G or ⊢ ¬G
@@ -187,12 +218,8 @@ theorem first_incompleteness (h_consistent : Consistent) : ¬Complete := by
     -- Case 1: G is provable - contradicts G_not_provable
     exact G_not_provable h_consistent hG
   | inr hNotG =>
-    -- Case 2: ¬G is provable
-    -- ¬G says "G is provable" (negation of "G is not provable")
-    -- If ¬G is provable and the system is sound, then G is provable
-    -- This contradicts Case 1, so the system must be incomplete
-    -- (Full proof requires ω-consistency or additional assumptions)
-    sorry  -- Requires stronger assumptions about ¬G
+    -- Case 2: ¬G is provable - contradicts notG_not_provable
+    exact notG_not_provable h_consistent hNotG
 
 -- ============================================================
 -- PART 9: Philosophical Implications

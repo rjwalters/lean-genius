@@ -16,119 +16,69 @@
   infinitorum," though he may never have written it in this exact form.
 -/
 
--- ============================================================
--- PART 1: Complex Numbers
--- ============================================================
+import Mathlib.Analysis.SpecialFunctions.Complex.Circle
+import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 
-/-
-  Complex numbers extend the reals by adding an imaginary unit i
-  where i² = -1. Every complex number has the form a + bi.
--/
-
--- We axiomatize the real numbers
-axiom Real : Type
-axiom Real.add : Real → Real → Real
-axiom Real.mul : Real → Real → Real
-axiom Real.neg : Real → Real
-axiom Real.zero : Real
-axiom Real.one : Real
-
--- Standard notation for reals
-instance : Add Real := ⟨Real.add⟩
-instance : Mul Real := ⟨Real.mul⟩
-instance : Neg Real := ⟨Real.neg⟩
-instance : OfNat Real 0 := ⟨Real.zero⟩
-instance : OfNat Real 1 := ⟨Real.one⟩
-
--- Subtraction derived from negation
-def Real.sub (a b : Real) : Real := a + (-b)
-instance : Sub Real := ⟨Real.sub⟩
-
--- A complex number is a pair (re, im) representing re + im·i
-structure Complex where
-  re : Real  -- real part
-  im : Real  -- imaginary part
-
--- Notation for complex construction
-notation "⟨" a ", " b "⟩ℂ" => Complex.mk a b
-
--- The real number 0 as a complex number
-def Complex.zero : Complex := ⟨0, 0⟩ℂ
-
--- The real number 1 as a complex number
-def Complex.one : Complex := ⟨1, 0⟩ℂ
-
--- The imaginary unit i = 0 + 1·i
-def Complex.I : Complex := ⟨0, 1⟩ℂ
-
-notation "𝕚" => Complex.I
-
--- Complex addition: (a + bi) + (c + di) = (a+c) + (b+d)i
-def Complex.add (z w : Complex) : Complex :=
-  ⟨z.re + w.re, z.im + w.im⟩ℂ
-
-instance : Add Complex := ⟨Complex.add⟩
+open Complex Real
 
 -- ============================================================
--- PART 2: The Transcendental Functions
+-- PART 1: Complex Numbers in Mathlib
 -- ============================================================
 
 /-
-  We axiomatize the key properties of sin, cos, and exp that we need.
-  In a full formalization, these would be defined via power series
-  or as solutions to differential equations.
+  Mathlib provides a complete development of complex numbers:
+  - `Complex` is the type of complex numbers
+  - `Complex.I` is the imaginary unit, satisfying I² = -1
+  - `Complex.exp` is the complex exponential function
+  - `Complex.cos` and `Complex.sin` are complex trig functions
+
+  All arithmetic properties are already proven.
 -/
 
--- Trigonometric functions on reals
-axiom Real.sin : Real → Real
-axiom Real.cos : Real → Real
-
-notation "sin" => Real.sin
-notation "cos" => Real.cos
-
--- The fundamental constant π
-axiom Real.pi : Real
-notation "π" => Real.pi
-
--- Key values at π (our main ingredients)
-axiom cos_pi : cos π = -1
-axiom sin_pi : sin π = 0
-
--- Complex exponential function
-axiom Complex.exp : Complex → Complex
-notation "exp" => Complex.exp
+-- Examples of Mathlib's complex number support
+#check Complex.I           -- The imaginary unit
+#check Complex.exp         -- Complex exponential
+#check Complex.I_sq        -- Proof that I² = -1
 
 -- ============================================================
--- PART 3: Euler's Formula
+-- PART 2: Euler's Formula in Mathlib
 -- ============================================================
 
 /-
   Euler's Formula: e^(ix) = cos(x) + i·sin(x)
 
   This remarkable identity connects exponentials and trigonometry.
-  It can be proven by:
-  1. Taylor series: comparing the series for e^(ix), cos(x), sin(x)
-  2. Differential equations: both sides satisfy y' = iy with y(0) = 1
-  3. Geometric interpretation: e^(ix) traces the unit circle
+  In Mathlib, this is expressed as:
 
-  The formula reveals that complex exponentials are rotations!
+    Complex.exp (x * I) = Complex.cos x + Complex.sin x * I
+
+  or equivalently, for real x:
+
+    Complex.exp (↑x * I) = ↑(Real.cos x) + ↑(Real.sin x) * I
+
+  The formula reveals that complex exponentials trace the unit circle!
 -/
 
--- Convert a real to complex (embed ℝ into ℂ)
-def ofReal (x : Real) : Complex := ⟨x, 0⟩ℂ
-
--- Multiply a real by the imaginary unit: x ↦ ix
-def timesI (x : Real) : Complex := ⟨0, x⟩ℂ
-
-notation x "·𝕚" => timesI x
-
--- Euler's Formula as an axiom
--- In a full development, this would be a theorem
-axiom eulers_formula (x : Real) :
-  exp (x·𝕚) = ⟨cos x, sin x⟩ℂ
+-- Euler's formula is a theorem in Mathlib
+#check Complex.exp_mul_I   -- exp(x * I) = cos(x) + sin(x) * I
 
 -- ============================================================
--- PART 4: Euler's Identity
+-- PART 3: Key Trigonometric Values
+-- ============================================================
+
+/-
+  For Euler's Identity, we need:
+  - cos(π) = -1
+  - sin(π) = 0
+
+  Mathlib provides these as theorems.
+-/
+
+#check Real.cos_pi   -- cos π = -1
+#check Real.sin_pi   -- sin π = 0
+
+-- ============================================================
+-- PART 4: Euler's Identity - The Main Theorem
 -- ============================================================
 
 /-
@@ -137,44 +87,32 @@ axiom eulers_formula (x : Real) :
   Proof:
     e^(iπ) = cos(π) + i·sin(π)    (by Euler's formula)
            = -1 + i·0              (by cos(π) = -1, sin(π) = 0)
-           = -1                    (by properties of 0)
+           = -1                    (since i·0 = 0)
     Therefore: e^(iπ) + 1 = -1 + 1 = 0
 -/
 
--- Arithmetic axioms needed for the proof
-axiom Real.mul_zero (x : Real) : x * 0 = 0
-axiom Real.zero_mul (x : Real) : 0 * x = 0
-axiom Real.add_neg_self (x : Real) : x + (-x) = 0
-axiom Real.neg_one : -1 + 1 = (0 : Real)
+-- The heart of Euler's Identity: e^(iπ) = -1
+-- This is already in Mathlib!
+#check Complex.exp_pi_mul_I  -- exp(π * I) = -1
 
--- Helper: -1 as a complex number
-def Complex.negOne : Complex := ⟨-1, 0⟩ℂ
-
--- Complex equality
-def Complex.eq (z w : Complex) : Prop := z.re = w.re ∧ z.im = w.im
-
--- The heart of the proof: e^(iπ) = -1
-theorem exp_i_pi_eq_neg_one : exp (π·𝕚) = Complex.negOne := by
-  -- Apply Euler's formula with x = π
-  rw [eulers_formula π]
-  -- Now we need: ⟨cos π, sin π⟩ℂ = ⟨-1, 0⟩ℂ
+-- Let's prove it ourselves as well for pedagogical clarity
+theorem exp_i_pi_eq_neg_one : Complex.exp (Real.pi * Complex.I) = -1 := by
+  -- Use Euler's formula: exp(x * I) = cos(x) + sin(x) * I
+  rw [Complex.exp_mul_I]
+  -- Now we have: cos(π) + sin(π) * I = -1
   -- Use cos(π) = -1 and sin(π) = 0
-  rw [cos_pi, sin_pi]
-  -- Both sides are now ⟨-1, 0⟩ℂ
-  rfl
+  simp [Real.cos_pi, Real.sin_pi]
 
 -- Euler's Identity: e^(iπ) + 1 = 0
-theorem eulers_identity : exp (π·𝕚) + Complex.one = Complex.zero := by
-  -- First, use that exp(iπ) = -1
+theorem eulers_identity : Complex.exp (Real.pi * Complex.I) + 1 = 0 := by
+  -- Use e^(iπ) = -1
   rw [exp_i_pi_eq_neg_one]
-  -- Now show: (-1, 0) + (1, 0) = (0, 0)
-  unfold Complex.negOne Complex.one Complex.zero Complex.add
-  -- Need: ⟨-1 + 1, 0 + 0⟩ℂ = ⟨0, 0⟩ℂ
-  simp only []
-  -- Use -1 + 1 = 0
-  rw [Real.neg_one]
-  -- Use 0 + 0 = 0 (need this axiom)
-  sorry  -- In full development: rfl after proving 0 + 0 = 0
+  -- Now: -1 + 1 = 0
+  ring
+
+-- Alternative proof using Mathlib directly
+theorem eulers_identity' : Complex.exp (Real.pi * Complex.I) + 1 = 0 := by
+  simp [Complex.exp_pi_mul_I]
 
 -- ============================================================
 -- PART 5: Alternative Forms
@@ -191,34 +129,22 @@ theorem eulers_identity : exp (π·𝕚) + Complex.one = Complex.zero := by
   brings you back to where you started.
 -/
 
--- Axiom for angle doubling
-axiom exp_add (z w : Complex) : exp (z + w) = Complex.mk 0 0  -- Simplified
+-- Full rotation: e^(2πi) = 1
+theorem full_rotation : Complex.exp (2 * Real.pi * Complex.I) = 1 := by
+  rw [mul_comm 2 Real.pi, mul_assoc]
+  exact Complex.exp_two_pi_mul_I
+
+-- Half rotation: e^(πi) = -1 (same as exp_i_pi_eq_neg_one)
+theorem half_rotation : Complex.exp (Real.pi * Complex.I) = -1 :=
+  Complex.exp_pi_mul_I
+
+-- Quarter rotation: e^(πi/2) = i
+theorem quarter_rotation : Complex.exp (Real.pi / 2 * Complex.I) = Complex.I := by
+  rw [Complex.exp_mul_I]
+  simp [Real.cos_pi_div_two, Real.sin_pi_div_two]
 
 -- ============================================================
--- PART 6: The Proof via Taylor Series
--- ============================================================
-
-/-
-  The classical proof of Euler's formula uses Taylor series.
-
-  The exponential function:
-    e^x = 1 + x + x²/2! + x³/3! + x⁴/4! + ...
-
-  For complex argument ix:
-    e^(ix) = 1 + ix + (ix)²/2! + (ix)³/3! + (ix)⁴/4! + ...
-           = 1 + ix - x²/2! - ix³/3! + x⁴/4! + ...
-
-  Separating real and imaginary parts:
-    Real: 1 - x²/2! + x⁴/4! - ... = cos(x)
-    Imag: x - x³/3! + x⁵/5! - ... = sin(x)
-
-  Therefore: e^(ix) = cos(x) + i·sin(x)
--/
-
--- The Taylor series perspective is captured in our axiom eulers_formula
-
--- ============================================================
--- PART 7: Geometric Interpretation
+-- PART 6: The Geometric Interpretation
 -- ============================================================
 
 /-
@@ -232,23 +158,34 @@ axiom exp_add (z w : Complex) : exp (z + w) = Complex.mk 0 0  -- Simplified
   - e^(i·3π/2) = -i    (bottommost point)
   - e^(i·2π) = 1       (back to start)
 
-  Multiplication by e^(iθ) rotates a complex number by angle θ.
-  This is why complex exponentials appear throughout physics
-  and engineering whenever rotation or oscillation is involved.
+  The complex exponential parameterizes the unit circle!
 -/
 
--- Special angle values (for reference)
-axiom Real.pi_div_2 : Real
-notation "π/2" => Real.pi_div_2
+-- e^(iθ) lies on the unit circle: |e^(iθ)| = 1
+theorem exp_on_unit_circle (θ : ℝ) : Complex.abs (Complex.exp (θ * Complex.I)) = 1 := by
+  rw [Complex.exp_mul_I]
+  simp [Complex.abs_cos_add_sin_mul_I]
 
-axiom cos_pi_div_2 : cos π/2 = 0
-axiom sin_pi_div_2 : sin π/2 = 1
+-- ============================================================
+-- PART 7: Connection to Trigonometry
+-- ============================================================
 
--- e^(iπ/2) = i (90-degree rotation)
-theorem exp_i_pi_div_2 : exp (π/2·𝕚) = Complex.I := by
-  rw [eulers_formula]
-  rw [cos_pi_div_2, sin_pi_div_2]
-  rfl
+/-
+  Euler's formula provides elegant formulas for sine and cosine:
+
+  cos(x) = (e^(ix) + e^(-ix)) / 2
+  sin(x) = (e^(ix) - e^(-ix)) / (2i)
+
+  These are the basis for hyperbolic functions and many
+  identities in analysis.
+-/
+
+-- Cosine in terms of exponentials
+theorem cos_eq_exp (x : ℝ) :
+    Complex.cos x = (Complex.exp (x * Complex.I) + Complex.exp (-(x * Complex.I))) / 2 := by
+  rw [Complex.cos_eq]
+  ring_nf
+  simp [mul_comm]
 
 -- ============================================================
 -- PART 8: Why This Matters
@@ -298,6 +235,8 @@ theorem exp_i_pi_div_2 : exp (π/2·𝕚) = Complex.I := by
     the very essence of love"
 -/
 
--- Final verification
-#check eulers_identity
-#check exp_i_pi_eq_neg_one
+-- Final verification: all our theorems are fully proven
+#check eulers_identity      -- e^(iπ) + 1 = 0
+#check exp_i_pi_eq_neg_one  -- e^(iπ) = -1
+#check full_rotation        -- e^(2πi) = 1
+#check quarter_rotation     -- e^(πi/2) = i
