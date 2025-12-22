@@ -13,6 +13,7 @@ import { eulerIdentityData } from './euler-identity'
 import { brouwerFixedPointData } from './brouwer-fixed-point'
 import { ramanujanSumFallacyData } from './ramanujan-sum-fallacy'
 import { abelRuffiniData } from './abel-ruffini'
+import { centralLimitTheoremData } from './central-limit-theorem'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -31,6 +32,7 @@ export const proofs: Record<string, ProofData> = {
   'brouwer-fixed-point': brouwerFixedPointData,
   'ramanujan-sum-fallacy': ramanujanSumFallacyData,
   'abel-ruffini': abelRuffiniData,
+  'central-limit-theorem': centralLimitTheoremData,
 }
 
 export function getProof(slug: string): ProofData | undefined {
