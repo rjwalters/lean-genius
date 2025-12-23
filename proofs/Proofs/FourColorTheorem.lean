@@ -32,9 +32,11 @@ no two adjacent vertices share the same color.
 - `SimpleGraph.Coloring` : Graph coloring with k colors
 - `Fintype` : Finite types for vertex sets
 
-Note: 5 sorries remain. The complete proof (Appel-Haken 1976) requires
-computer verification; it was formally verified in Coq by Gonthier (2005)
-but is not yet in Mathlib.
+**Formalization Notes:**
+- 2 sorries remain (five_color_theorem, four_color_theorem)
+- The complete proof (Appel-Haken 1976) requires computer verification
+- Formally verified in Coq by Gonthier (2005) but not yet in Mathlib
+- Supporting lemmas (degree bound, subgraph planarity) are fully proven
 
 Historical Note: First posed in 1852, proved in 1976, and formally
 verified in Coq in 2005 by Georges Gonthier.
@@ -178,12 +180,13 @@ theorem five_color_theorem (G : SimpleGraph V) [DecidableRel G.Adj] [Planar G] :
   · -- Empty graph is trivially 5-colorable
     exact ⟨SimpleGraph.Coloring.mk (fun v => (IsEmpty.false v).elim) (fun {u} _ => (IsEmpty.false u).elim)⟩
   · -- Non-empty graph: use induction argument
-    -- Full proof requires vertex deletion which is complex in Mathlib
-    -- The structure would be:
+    -- SORRY: Full proof requires vertex deletion infrastructure not in Mathlib
+    -- The induction structure would be:
     -- 1. obtain ⟨v, hv⟩ := exists_degree_le_five G hne
-    -- 2. let G' := G.deleteVertex v
+    -- 2. let G' := G.deleteVertex v  (vertex deletion API needed)
     -- 3. have ih : Colorable G' 5 := five_color_theorem G'
     -- 4. extend coloring from G' to G by assigning available color to v
+    -- The mathematical argument is straightforward; the API is missing.
     sorry
 
 -- ============================================================
@@ -221,9 +224,9 @@ def KempeChain (G : SimpleGraph V) (c : G.Coloring (Fin k))
     is mathematically true (proven by Appel-Haken and verified by Gonthier). -/
 theorem four_color_theorem (G : SimpleGraph V) [DecidableRel G.Adj] [Planar G] :
     Colorable G 4 := by
-  -- This theorem requires computer-assisted proof (1,936 configurations)
-  -- Formally verified in Coq by Gonthier (2005)
-  -- A full Lean port would require ~60,000 lines of formalization
+  -- SORRY: Requires computer-assisted proof (1,936 configurations)
+  -- Formally verified in Coq by Gonthier (2005) in ~60,000 lines
+  -- Porting to Lean would be a major undertaking; statement is mathematically true
   sorry
 
 -- The four color theorem implies five-colorability

@@ -56,11 +56,14 @@ r ∈ [R_diff, c√(T*-t)].
 
 This file does NOT solve the Millennium Problem. It provides:
 1. Infrastructure for the regularity problem
-2. Numerical constants verified by native_decide
-3. Framework for the conditional theorem
-4. Clear documentation of what is proven vs assumed
+2. Framework for the conditional theorem
+3. Clear documentation of what is proven vs assumed
 
-See: analysis/conditional-regularity-theorem.md for the full theorem statement.
+**Formalization Notes:**
+- 37 sorries (numerical bounds, API changes, conceptual gaps)
+- 9 axioms (physical assumptions, concentration hypothesis)
+- Key sorries are marked with "SORRY:" prefix explaining the gap
+- See: analysis/conditional-regularity-theorem.md for the full theorem statement
 
 ## Mathlib Dependencies
 - `Analysis.Calculus.*` : Derivatives and differential calculus
@@ -97,8 +100,8 @@ theorem spectralGap_pos : 0 < spectralGap := by unfold spectralGap; positivity
 
 theorem spectralGap_val : spectralGap > 39 := by
   unfold spectralGap
-  -- 4π² ≈ 39.48, need π > 3.12 to get 4π² > 39
-  -- Using sorry as this requires tighter bounds than pi_gt_three provides
+  -- SORRY: Requires tighter π bounds than Mathlib's pi_gt_three provides
+  -- 4π² ≈ 39.48, need π > 3.12; can be verified with interval arithmetic
   sorry
 
 
@@ -126,7 +129,8 @@ theorem κ_pos : 0 < κ := by norm_num [κ]
     Numerical verification: κ·c_FK = 4·(1-e⁻²)·π²/4 = (1-e⁻²)·π² ≈ 0.865·9.87 ≈ 8.5 > 2
     Requires interval arithmetic bounds. -/
 theorem key_numerical_inequality : κ * c_FK > 2 := by
-  -- This numerical bound requires tighter estimates than standard Mathlib lemmas provide
+  -- SORRY: Requires interval arithmetic (polyrith or norm_num extensions)
+  -- Numerically verified: (1-e⁻²)·π² ≈ 8.5 > 2
   sorry
 
 
@@ -275,7 +279,7 @@ theorem ancient_E_monotone (v : AncientSolution) (τ₁ τ₂ : ℝ) (hτ₁ : 0
   sorry
 
 
-/-- LIOUVILLE THEOREM: Bounded ancient ⟹ constant [PROVED via monotonicity] 
+/-- LIOUVILLE THEOREM: Bounded ancient ⟹ constant [PROVED via monotonicity]
 
 
 The proof:
@@ -285,8 +289,8 @@ The proof:
 -/
 theorem liouville_bounded_ancient (v : AncientSolution) (hb : AncientBounded v) :
     AncientConstant v := by
-  -- Bounded ancient solution must be constant by monotonicity + compactness argument
-  -- The proof requires showing monotone bounded E converges to a constant
+  -- SORRY: Requires monotone convergence theorem (API may have changed in Mathlib)
+  -- Proof: monotone + bounded ⟹ converges to constant by completeness
   sorry
 
 
@@ -453,8 +457,11 @@ theorem E_bounded_after (sol : NSSolution) (t₀ : ℝ) (ht₀ : t₀ ∈ Ioo 0 
 
 /-- Type II blowup is impossible -/
 theorem typeII_no_blowup (sol : NSSolution) (sc : TypeIIScenario sol) : ¬IsBlowup sol := by
-  -- Type II eventual stability + BKM criterion shows E is bounded
-  -- Bounded E + BKM gives bounded Ω, contradicting blowup
+  -- SORRY: Requires chaining multiple lemmas:
+  -- 1. typeII_eventual_stability → E' ≤ 0 eventually
+  -- 2. E_bounded_after → E bounded
+  -- 3. BKM criterion → Ω bounded
+  -- 4. Bounded Ω contradicts blowup
   sorry
 
 
@@ -921,7 +928,8 @@ structure TropicalCrossing (sol : NSSolution) where
     The linarith final step has numerical precision issues. -/
 theorem rigidity_thetaAt_gt_099 (sol : NSSolution) (tc : TropicalCrossing sol) :
     thetaAt sol tc.t_star > 0.99 := by
-  -- Tropical crossing rigidity calculation
+  -- SORRY: Requires exp(10) > 20000 bound (numerically true but needs interval arith)
+  -- Proof structure: crossing equation + τ ≤ 0.1 → (1-θ)⁻² > 10000 → θ > 0.99
   sorry
 
 
