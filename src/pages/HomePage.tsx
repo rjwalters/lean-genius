@@ -4,7 +4,7 @@ import { getAllProofs } from '@/data/proofs'
 import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
 import { ProofBadge, BadgeFilter, MathlibIndicator } from '@/components/ui/proof-badge'
-import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter } from 'lucide-react'
+import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, Github } from 'lucide-react'
 import type { ProofBadge as ProofBadgeType } from '@/types/proof'
 
 export function HomePage() {
@@ -211,6 +211,16 @@ export function HomePage() {
             <Link to="/about" className="text-annotation hover:underline">
               About
             </Link>
+            {' · '}
+            <a
+              href="https://github.com/rwalters/lean-genius"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-annotation hover:underline"
+            >
+              <Github className="h-3.5 w-3.5" />
+              <span>GitHub</span>
+            </a>
           </p>
         </div>
       </footer>
