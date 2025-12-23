@@ -4,23 +4,38 @@ import Mathlib.Data.Fintype.Basic
 import Mathlib.Tactic
 
 /-!
-# The Four Color Theorem
+# Four Color Theorem
 
+## What This Proves
 Every planar graph can be colored with at most four colors such that
 no two adjacent vertices share the same color.
 
-This formalization presents the key conceptual components of the proof:
-1. Planar graphs and colorability
-2. Euler's formula for planar graphs
-3. The Five Color Theorem (a tractable warm-up)
-4. Kempe chains and color swapping
-5. Reducibility and unavoidability
-6. The main theorem
+## Approach
+- **Foundation (from Mathlib):** We use Mathlib's `SimpleGraph` and
+  `Coloring` definitions from the combinatorics library.
+- **Original Contributions:** This file provides the conceptual framework:
+  Euler's formula, the Five Color Theorem sketch, and Kempe chain ideas.
+  The full proof requires computer verification of 1,936 configurations.
+- **Proof Techniques Demonstrated:** Graph coloring definitions, working
+  with Mathlib's graph API, induction on vertices.
 
-This is an illustrative proof sketch. The complete proof (Appel-Haken 1976,
-Gonthier 2005) requires computer verification of 1,936 configurations.
+## Status
+- [ ] Complete proof
+- [ ] Uses Mathlib for main result
+- [ ] Proves extensions/corollaries
+- [ ] Pedagogical example
+- [x] Incomplete (has sorries)
 
-Historical note: First posed in 1852, proved in 1976, and formally
+## Mathlib Dependencies
+- `SimpleGraph` : Undirected graphs without self-loops
+- `SimpleGraph.Coloring` : Graph coloring with k colors
+- `Fintype` : Finite types for vertex sets
+
+Note: 5 sorries remain. The complete proof (Appel-Haken 1976) requires
+computer verification; it was formally verified in Coq by Gonthier (2005)
+but is not yet in Mathlib.
+
+Historical Note: First posed in 1852, proved in 1976, and formally
 verified in Coq in 2005 by Georges Gonthier.
 -/
 

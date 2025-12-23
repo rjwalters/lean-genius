@@ -1,16 +1,32 @@
-/-
-  Russell's 1+1=2 from Peano Arithmetic
+/-!
+# 1 + 1 = 2 (Peano Arithmetic)
 
-  A formal proof that 1 + 1 = 2, demonstrating how type theory
-  trivializes what famously took 362 pages in Principia Mathematica.
+## What This Proves
+We prove 1 + 1 = 2 by building natural numbers and addition from scratch
+using Peano's axioms. In Lean, this is definitionally true (`rfl`).
 
-  The natural numbers are defined inductively via the Peano axioms:
-  - Zero is a natural number
-  - Every natural number has a successor
-  - Addition is defined recursively on this structure
+## Approach
+- **Foundation (from Mathlib):** None! This file uses no Mathlib imports.
+  We define natural numbers and addition from first principles.
+- **Original Contributions:** Complete self-contained development of Peano
+  arithmetic: inductive natural numbers, recursive addition, and basic
+  arithmetic theorems (commutativity, associativity).
+- **Proof Techniques Demonstrated:** Inductive types, recursive definitions,
+  proof by reflexivity (`rfl`), induction on natural numbers.
 
-  In Lean 4, this proof is definitionally true (rfl), showing
-  how modern type theory has evolved beyond classical set theory.
+## Status
+- [x] Complete proof
+- [ ] Uses Mathlib for main result
+- [ ] Proves extensions/corollaries
+- [x] Pedagogical example
+- [ ] Incomplete (has sorries)
+
+## Mathlib Dependencies
+None. This is a self-contained pedagogical example demonstrating how natural
+numbers and arithmetic can be built from nothing but Lean's type system.
+
+Historical Note: Russell and Whitehead's Principia Mathematica (1910-1913)
+took 362 pages to prove 1+1=2. In modern type theory, it's definitional.
 -/
 
 namespace Peano

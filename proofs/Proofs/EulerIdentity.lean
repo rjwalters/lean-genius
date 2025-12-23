@@ -1,23 +1,40 @@
-/-
-  Euler's Identity: e^(iπ) + 1 = 0
-
-  Often called "the most beautiful equation in mathematics," Euler's Identity
-  connects five fundamental constants in one elegant equation:
-  - e (Euler's number, ~2.71828...)
-  - i (the imaginary unit, √(-1))
-  - π (pi, ~3.14159...)
-  - 1 (the multiplicative identity)
-  - 0 (the additive identity)
-
-  This proof derives the identity from Euler's formula: e^(ix) = cos(x) + i·sin(x)
-  by substituting x = π and using the facts that cos(π) = -1 and sin(π) = 0.
-
-  Historical Note: Euler published this in 1748 in "Introductio in analysin
-  infinitorum," though he may never have written it in this exact form.
--/
-
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+
+/-!
+# Euler's Identity
+
+## What This Proves
+We prove Euler's famous identity: e^(iπ) + 1 = 0, connecting five fundamental
+mathematical constants (e, i, π, 1, 0) in one elegant equation.
+
+## Approach
+- **Foundation (from Mathlib):** The core result `Complex.exp_pi_mul_I` proves
+  e^(iπ) = -1 directly. Mathlib's complex analysis library provides the complete
+  theory of complex exponentials and trigonometric functions.
+- **Original Contributions:** This file provides pedagogical exposition,
+  alternative proofs, and explores geometric interpretations (unit circle,
+  rotations) and connections to trigonometry.
+- **Proof Techniques Demonstrated:** Using Mathlib's complex analysis API,
+  `simp` with domain-specific lemmas, `ring` for algebraic simplification.
+
+## Status
+- [ ] Complete proof
+- [x] Uses Mathlib for main result
+- [ ] Proves extensions/corollaries
+- [ ] Pedagogical example
+- [ ] Incomplete (has sorries)
+
+## Mathlib Dependencies
+- `Complex.exp_pi_mul_I` : The core theorem that exp(π * I) = -1
+- `Complex.exp_mul_I` : Euler's formula exp(x * I) = cos(x) + sin(x) * I
+- `Complex.exp_two_pi_mul_I` : Full rotation exp(2π * I) = 1
+- `Real.cos_pi`, `Real.sin_pi` : Trigonometric values at π
+- `Complex.abs_cos_add_sin_mul_I` : |cos(θ) + sin(θ)*I| = 1
+
+Historical Note: Euler published this in 1748 in "Introductio in analysin
+infinitorum," though he may never have written it in this exact form.
+-/
 
 open Complex Real
 

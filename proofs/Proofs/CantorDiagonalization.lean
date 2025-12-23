@@ -1,22 +1,40 @@
-/-
-  Cantor's Diagonalization Theorem
-
-  A formal proof in Lean 4 that the real numbers are uncountable.
-  This follows Cantor's famous diagonal argument from 1891: no function
-  from natural numbers to infinite binary sequences can be surjective.
-
-  Historical context: Georg Cantor published this proof in 1891, building
-  on his 1874 proof of uncountability. This elegant argument revolutionized
-  our understanding of infinity, showing that some infinities are larger
-  than others.
-
-  We prove the theorem in terms of functions from Nat to Bool, which
-  represent infinite binary sequences (equivalently, real numbers in [0,1]).
--/
-
 import Mathlib.Logic.Function.Basic
 import Mathlib.Data.Set.Function
 import Mathlib.Tactic
+
+/-!
+# Cantor's Diagonalization Theorem
+
+## What This Proves
+We prove that no function from ℕ to infinite binary sequences can be
+surjective—there are "more" real numbers than natural numbers. This
+establishes that the reals are uncountable.
+
+## Approach
+- **Foundation (from Mathlib):** We use only basic logic and function
+  definitions from Mathlib. No non-trivial theorems are imported.
+- **Original Contributions:** The complete diagonal construction and proof
+  are original. We define `BinarySeq`, construct the diagonal sequence that
+  differs from every enumerated sequence, and prove the main theorem.
+- **Proof Techniques Demonstrated:** Boolean case analysis, function
+  extensionality, proof by construction, the `unfold` tactic.
+
+## Status
+- [x] Complete proof
+- [ ] Uses Mathlib for main result
+- [ ] Proves extensions/corollaries
+- [ ] Pedagogical example
+- [ ] Incomplete (has sorries)
+
+## Mathlib Dependencies
+- `Mathlib.Logic.Function.Basic` : Basic function definitions (not used for main proof)
+- `Mathlib.Data.Set.Function` : Set-theoretic function properties
+- `Mathlib.Tactic` : Standard tactic library
+
+Historical Note: Georg Cantor published this proof in 1891, revolutionizing
+our understanding of infinity and showing that some infinities are larger
+than others.
+-/
 
 namespace CantorDiagonalization
 

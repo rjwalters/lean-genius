@@ -8,23 +8,37 @@ import Mathlib.Topology.MetricSpace.Basic
 /-!
 # Borsuk-Ulam Theorem
 
-For any continuous function f: Sⁿ → ℝⁿ, there exists a point x ∈ Sⁿ
-such that f(x) = f(-x).
+## What This Proves
+For any continuous function f: Sⁿ → ℝⁿ, there exists a point x on the
+n-sphere such that f(x) = f(-x). Antipodal points must map to the same value.
 
-This formalization presents the key conceptual components:
-1. The n-dimensional sphere and antipodal points
-2. Continuous functions from sphere to Euclidean space
-3. Covering spaces and the projective space ℝPⁿ
-4. Fundamental group arguments
-5. The main theorem via contradiction
+## Approach
+- **Foundation (from Mathlib):** We use Mathlib's topology library for
+  continuity, metric spaces, and Euclidean spaces.
+- **Original Contributions:** This file provides the conceptual framework
+  and proof structure. Key lemmas are marked `sorry` where full formalization
+  would require algebraic topology (covering spaces, fundamental groups).
+- **Proof Techniques Demonstrated:** Defining spheres and antipodal maps,
+  topological reasoning, proof by contradiction outline.
 
-The classical proof uses covering space theory or homology.
-We present an outline emphasizing the logical structure, with key lemmas
-marked as sorry where full formalization would require substantial machinery.
+## Status
+- [ ] Complete proof
+- [ ] Uses Mathlib for main result
+- [ ] Proves extensions/corollaries
+- [ ] Pedagogical example
+- [x] Incomplete (has sorries)
 
-Historical note: Conjectured by Stanislaw Ulam and proved by Karol Borsuk
-in 1933, this theorem has beautiful applications including the Ham Sandwich
-Theorem and Kneser's Conjecture.
+## Mathlib Dependencies
+- `Metric.sphere` : The sphere as a metric space subset
+- `EuclideanSpace ℝ (Fin n)` : n-dimensional Euclidean space
+- `Continuous` : Continuity of functions
+- Requires algebraic topology machinery not yet in Mathlib
+
+Note: 3 sorries remain. Full proof requires covering space theory or homology,
+which would need substantial additional formalization.
+
+Historical Note: Conjectured by Stanislaw Ulam and proved by Karol Borsuk
+in 1933. Applications include the Ham Sandwich Theorem.
 -/
 
 set_option linter.unusedVariables false

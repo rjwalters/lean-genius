@@ -1,14 +1,42 @@
-/-
-  Irrationality of √2 - A Classic Proof by Contradiction
-
-  This is the traditional proof that √2 is irrational, formalized in Lean 4.
-  The key insight is that if √2 = a/b for coprime integers a and b,
-  then both a and b must be even - contradicting that they are coprime.
--/
-
 import Mathlib.Data.Real.Irrational
 import Mathlib.Algebra.Ring.Parity
 import Mathlib.Tactic
+
+/-!
+# Irrationality of √2
+
+## What This Proves
+We prove that √2 is irrational—it cannot be expressed as a ratio of integers.
+This is one of the oldest proofs by contradiction, attributed to ancient Greek
+mathematicians around 500 BCE.
+
+## Approach
+- **Foundation (from Mathlib):** The main theorem `irrational_sqrt_two` is
+  provided directly by Mathlib. We use it via `exact irrational_sqrt_two`.
+- **Original Contributions:** This file demonstrates the classical parity-based
+  proof structure, provides supporting lemmas about even/odd numbers, and
+  includes additional example proofs for learning Lean tactics.
+- **Proof Techniques Demonstrated:** Proof by contradiction (`by_contra`),
+  case analysis (`by_cases`), pattern matching on existentials (`obtain`),
+  `ring` for algebraic calculations, `omega` for linear arithmetic.
+
+## Status
+- [ ] Complete proof
+- [x] Uses Mathlib for main result
+- [ ] Proves extensions/corollaries
+- [ ] Pedagogical example
+- [ ] Incomplete (has sorries)
+
+## Mathlib Dependencies
+- `irrational_sqrt_two` : The main theorem proving √2 is irrational
+- `Int.odd_iff_not_even` : Characterization of odd integers
+- `Odd.pow` : Odd^n is odd
+- `sq_nonneg`, `sq_pos_of_neg` : Properties of squares
+
+Historical Note: The discovery that √2 is irrational is attributed to
+Hippasus of Metapontum (~500 BCE), which challenged the Pythagorean belief
+that all quantities could be expressed as ratios of whole numbers.
+-/
 
 namespace Sqrt2Irrational
 

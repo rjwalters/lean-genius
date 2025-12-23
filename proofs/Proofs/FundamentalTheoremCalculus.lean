@@ -1,27 +1,46 @@
-/-
-  The Fundamental Theorem of Calculus
-
-  A formal proof in Lean 4 demonstrating the profound connection between
-  differentiation and integration - the two pillars of calculus.
-
-  Historical context: Though Newton and Leibniz independently discovered
-  calculus in the late 17th century, the rigorous formulation of FTC required
-  the epsilon-delta definitions of Cauchy (1820s) and Weierstrass (1860s).
-
-  The theorem has two parts:
-  - FTC Part 1: The derivative of an integral recovers the original function
-  - FTC Part 2: The integral of a derivative equals the net change
-
-  This formalization demonstrates these relationships using interval integrals
-  and derivatives, following Mathlib's analysis conventions.
--/
-
 import Mathlib.Analysis.Calculus.FDeriv.Basic
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.MeasureTheory.Integral.IntervalIntegral
 import Mathlib.MeasureTheory.Integral.FundThmCalculus
 import Mathlib.Analysis.Calculus.MeanValue
 import Mathlib.Topology.Basic
+
+/-!
+# Fundamental Theorem of Calculus
+
+## What This Proves
+We prove both parts of the Fundamental Theorem of Calculus:
+- Part 1: d/dx ∫ₐˣ f(t)dt = f(x) (differentiation undoes integration)
+- Part 2: ∫ₐᵇ f'(x)dx = f(b) - f(a) (integration undoes differentiation)
+
+## Approach
+- **Foundation (from Mathlib):** We use Mathlib's measure theory and calculus
+  libraries. The core theorems `integral_hasDerivAt_right` and
+  `integral_eq_sub_of_hasDerivAt` are from Mathlib.
+- **Original Contributions:** This file provides pedagogical organization,
+  wrapper theorems with cleaner hypotheses (like `ftc_part1_continuous`),
+  and extensive commentary explaining the theorem's significance.
+- **Proof Techniques Demonstrated:** Working with Mathlib's measure theory API,
+  continuity and integrability conditions, interval integrals.
+
+## Status
+- [x] Complete proof
+- [ ] Uses Mathlib for main result
+- [ ] Proves extensions/corollaries
+- [ ] Pedagogical example
+- [ ] Incomplete (has sorries)
+
+## Mathlib Dependencies
+- `integral_hasDerivAt_right` : FTC Part 1 (derivative of integral)
+- `integral_eq_sub_of_hasDerivAt` : FTC Part 2 (integral of derivative)
+- `IntervalIntegrable` : Integrability on intervals
+- `HasDerivAt` : Derivative at a point
+- `ContinuousAt`, `Continuous` : Continuity definitions
+
+Historical Note: Newton and Leibniz discovered calculus independently in the
+late 17th century, but rigorous formulation required Cauchy (1820s) and
+Weierstrass (1860s).
+-/
 
 -- We work in the real numbers
 open MeasureTheory Set Filter Topology intervalIntegral

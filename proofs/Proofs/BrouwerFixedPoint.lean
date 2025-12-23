@@ -9,22 +9,37 @@ import Mathlib.Topology.MetricSpace.Basic
 /-!
 # Brouwer Fixed Point Theorem
 
-Every continuous function from a closed ball to itself has at least
-one fixed point.
+## What This Proves
+Every continuous function from a closed ball to itself has at least one
+fixed point: if f: Bⁿ → Bⁿ is continuous, then ∃x, f(x) = x.
 
-This formalization presents the key conceptual components:
-1. Topological foundations: continuous maps and fixed points
-2. The n-dimensional ball and sphere
-3. Retractions and the No-Retraction Theorem
-4. Proof of Brouwer's theorem via contradiction
-5. Applications and implications
+## Approach
+- **Foundation (from Mathlib):** We use Mathlib's topology and metric space
+  libraries for balls, spheres, and continuity.
+- **Original Contributions:** This file provides the conceptual framework:
+  the No-Retraction Theorem and the main proof structure. Key lemmas are
+  marked `sorry` where full formalization requires algebraic topology.
+- **Proof Techniques Demonstrated:** Defining closed balls and retractions,
+  topological reasoning, proof by contradiction.
 
-The classical proof uses algebraic topology (homology or degree theory).
-We present an outline emphasizing the logical structure.
+## Status
+- [ ] Complete proof
+- [ ] Uses Mathlib for main result
+- [ ] Proves extensions/corollaries
+- [ ] Pedagogical example
+- [x] Incomplete (has sorries)
 
-Historical note: Proved by L.E.J. Brouwer in 1911, this theorem has
-profound applications in economics (Nash equilibrium), differential
-equations, and game theory.
+## Mathlib Dependencies
+- `Metric.closedBall`, `Metric.sphere` : Ball and sphere definitions
+- `EuclideanSpace ℝ (Fin n)` : n-dimensional Euclidean space
+- `Continuous`, `ContinuousOn` : Continuity predicates
+- `IsCompact` : Compactness for the closed ball
+
+Note: 2 sorries remain. Full proof requires algebraic topology (homology or
+degree theory) not yet available in Mathlib for this application.
+
+Historical Note: Proved by L.E.J. Brouwer in 1911. Applications include
+Nash equilibrium in game theory and existence of solutions to ODEs.
 -/
 
 set_option linter.unusedVariables false
