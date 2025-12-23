@@ -61,7 +61,7 @@ export function ProofPage() {
     )
   }
 
-  const { proof, annotations } = proofData
+  const { proof, annotations, versionInfo } = proofData
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
@@ -125,7 +125,7 @@ export function ProofPage() {
 
         {/* Main proof viewer */}
         <main ref={viewerRef} className="flex-1 overflow-auto">
-          <ProofOverview proof={proof} />
+          <ProofOverview proof={proof} versionInfo={versionInfo} />
           <ProofViewer
             proof={proof}
             annotations={annotations}

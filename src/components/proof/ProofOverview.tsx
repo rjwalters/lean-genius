@@ -1,17 +1,32 @@
 import { useState } from 'react'
-import { ChevronDown, ChevronUp, ExternalLink, Lightbulb, Package, Award } from 'lucide-react'
+import { ChevronDown, ChevronUp, ExternalLink, Lightbulb, Package, Award, History, CheckCircle, Clock, AlertCircle, AlertTriangle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { MarkdownMath, MarkdownMathInline } from '@/components/ui/markdown-math'
 import { ProofBadge } from '@/components/ui/proof-badge'
 import { BADGE_INFO } from '@/types/proof'
-import type { Proof } from '@/types/proof'
+import type { Proof, ProofVersionInfo, VersionHistoryEntry } from '@/types/proof'
 
 interface ProofOverviewProps {
   proof: Proof
+  versionInfo?: ProofVersionInfo
 }
 
-export function ProofOverview({ proof }: ProofOverviewProps) {
+// Helper to get status icon and color
+function getVersionStatusConfig(status: VersionHistoryEntry['status']) {
+  const config: Record<VersionHistoryEntry['status'], { icon: typeof CheckCircle; className: string; label: string }> = {
+    verified: { icon: CheckCircle, className: 'text-green-400', label: 'Verified' },
+    pending: { icon: Clock, className: 'text-yellow-400', label: 'Pending' },
+    disputed: { icon: AlertCircle, className: 'text-red-400', label: 'Disputed' },
+    conditional: { icon: AlertTriangle, className: 'text-orange-400', label: 'Conditional' },
+    axiomatized: { icon: AlertCircle, className: 'text-purple-400', label: 'Axiomatized' },
+    revised: { icon: Clock, className: 'text-blue-400', label: 'Revised' },
+  }
+  return config[status] || config.pending
+}
+
+export function ProofOverview({ proof, versionInfo }: ProofOverviewProps) {
   const [isExpanded, setIsExpanded] = useState(true)
+  const [isVersionHistoryExpanded, setIsVersionHistoryExpanded] = useState(false)
   const { overview, meta } = proof
 
   if (!overview) return null
@@ -74,6 +89,81 @@ export function ProofOverview({ proof }: ProofOverviewProps) {
                   <span>Source</span>
                   <ExternalLink className="h-3 w-3" />
                 </a>
+              )}
+            </div>
+          )}
+
+          {/* Version History */}
+          {versionInfo && versionInfo.versionHistory.length > 1 && (
+            <div className="bg-muted/20 rounded-lg border border-border/50 overflow-hidden">
+              <button
+                onClick={() => setIsVersionHistoryExpanded(!isVersionHistoryExpanded)}
+                className="w-full px-4 py-3 flex items-center justify-between hover:bg-muted/30 transition-colors"
+              >
+                <div className="flex items-center gap-2">
+                  <History className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm font-medium">Version History</span>
+                  <span className="text-xs text-muted-foreground">
+                    (Currently viewing {versionInfo.currentVersion})
+                  </span>
+                </div>
+                <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${isVersionHistoryExpanded ? 'rotate-180' : ''}`} />
+              </button>
+
+              {isVersionHistoryExpanded && (
+                <div className="px-4 pb-4 space-y-3">
+                  {versionInfo.versionHistory.map((version, index) => {
+                    const isCurrent = version.version === versionInfo.currentVersion
+                    const statusConfig = getVersionStatusConfig(version.status)
+                    const StatusIcon = statusConfig.icon
+
+                    return (
+                      <div
+                        key={version.version}
+                        className={`relative pl-6 pb-3 ${index < versionInfo.versionHistory.length - 1 ? 'border-l border-border/50 ml-2' : ''}`}
+                      >
+                        {/* Timeline dot */}
+                        <div className={`absolute left-0 top-0 -translate-x-1/2 w-4 h-4 rounded-full border-2 ${
+                          isCurrent
+                            ? 'bg-annotation border-annotation'
+                            : 'bg-background border-muted-foreground/50'
+                        }`} />
+
+                        <div className={`rounded-lg p-3 ${isCurrent ? 'bg-annotation/10 border border-annotation/30' : 'bg-muted/10'}`}>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className={`font-mono text-sm font-semibold ${isCurrent ? 'text-annotation' : 'text-foreground'}`}>
+                              {version.version}
+                            </span>
+                            <span className="text-sm text-foreground/90">{version.name}</span>
+                            {isCurrent && (
+                              <span className="text-xs bg-annotation/20 text-annotation px-1.5 py-0.5 rounded">
+                                Current
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="flex items-center gap-3 mt-1.5 text-xs text-muted-foreground">
+                            <span>{new Date(version.date).toLocaleDateString('en-US', {
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric'
+                            })}</span>
+                            <span className={`flex items-center gap-1 ${statusConfig.className}`}>
+                              <StatusIcon className="h-3 w-3" />
+                              {statusConfig.label}
+                            </span>
+                          </div>
+
+                          {version.summary && (
+                            <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
+                              {version.summary}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
               )}
             </div>
           )}

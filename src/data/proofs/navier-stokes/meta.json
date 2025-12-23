@@ -10,21 +10,24 @@
       "name": "Original Analysis",
       "date": "2025-12-20",
       "status": "disputed",
-      "file": "versions/v1.json"
+      "file": "versions/v1.json",
+      "summary": "Initial analysis identifying 6 unproven axioms. The critical flaw: concentration_near_blowup assumes θ ≥ 1/2, which is exactly what needs to be proven."
     },
     {
       "version": "v2",
       "name": "θₖ Refactor + Literature Analysis",
       "date": "2025-12-22",
       "status": "conditional",
-      "file": "versions/v2.json"
+      "file": "versions/v2.json",
+      "summary": "Introduced K-ball concentration framework (θₖ). Added literature review connecting to Barker-Prange, Seregin, ESŠ."
     },
     {
       "version": "v3",
       "name": "Conditional Regularity Theorem (B′ → Regularity)",
       "date": "2025-12-22",
       "status": "conditional",
-      "file": "analysis/conditional-regularity-theorem.md"
+      "file": "analysis/conditional-regularity-theorem.md",
+      "summary": "Identified the precise obstruction: scale-bridging concentration. Formulated minimal Bubble Persistence hypothesis B′."
     }
   ],
   "meta": {

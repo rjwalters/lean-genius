@@ -157,6 +157,36 @@ export interface ProofData {
   proof: Proof
   annotations: Annotation[]
   tacticStates?: TacticState[]
+  /** Version metadata for proofs with version history */
+  versionInfo?: ProofVersionInfo
+}
+
+/**
+ * Version information for a proof with multiple revisions
+ */
+export interface ProofVersionInfo {
+  /** Currently displayed version (e.g., "v3") */
+  currentVersion: string
+  /** History of all versions */
+  versionHistory: VersionHistoryEntry[]
+}
+
+/**
+ * Entry in the version history
+ */
+export interface VersionHistoryEntry {
+  /** Version identifier (e.g., "v1", "v2") */
+  version: string
+  /** Human-readable name for this version */
+  name: string
+  /** Date of this version (ISO format) */
+  date: string
+  /** Status of this version */
+  status: 'verified' | 'pending' | 'disputed' | 'conditional' | 'axiomatized' | 'revised'
+  /** Path to version file (relative to proof data directory) */
+  file: string
+  /** Brief summary of changes in this version */
+  summary?: string
 }
 
 // LeanInk-extracted tactic goal states
