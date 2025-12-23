@@ -9,7 +9,26 @@
     "date": "~300 BCE",
     "status": "verified",
     "proofRepoPath": "Proofs/InfinitudePrimes.lean",
-    "tags": ["number-theory", "primes", "classic", "euclid", "beginner-friendly"]
+    "tags": ["number-theory", "primes", "classic", "euclid", "beginner-friendly"],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number definitions",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Complete formalization of Euclid's proof using n! + 1 construction",
+      "Key lemmas: dvd_factorial, factorial_succ_ge_two",
+      "Corollaries: every prime has a larger prime, no largest prime"
+    ]
   },
   "overview": {
     "historicalContext": "Euclid's theorem on the infinitude of primes appears as Proposition 20 in Book IX of his Elements, written around 300 BCE in Alexandria. This makes it one of the oldest theorems with a proof that is still taught essentially unchanged today.\n\nThe result answered a question that must have puzzled ancient mathematicians: the primes 2, 3, 5, 7, 11, 13... seem to thin out as numbers grow larger. Do they eventually stop? Euclid showed definitively that they do not.\n\nWhat makes this proof remarkable is its method. Rather than trying to find large primes directly (which is computationally hard even today), Euclid showed that assuming finitely many primes leads to a contradiction. This proof by contradiction became a template for countless mathematical arguments.\n\nThe theorem launched two millennia of investigation into prime distribution, from Euler's proof that $\\sum 1/p$ diverges, to the Prime Number Theorem (1896), to the still-unsolved Riemann Hypothesis.",

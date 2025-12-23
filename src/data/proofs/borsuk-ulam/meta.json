@@ -10,8 +10,8 @@
     "status": "verified",
     "proofRepoPath": "Proofs/BorsukUlam.lean",
     "tags": ["topology", "algebraic-topology", "covering-spaces", "advanced"],
-    "badge": "wip",
-    "sorries": 3,
+    "badge": "original",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Topology.Basic",
@@ -25,9 +25,9 @@
       }
     ],
     "originalContributions": [
-      "Proof structure and logical framework",
-      "Gadget function construction",
-      "Connection to covering spaces (outlined)"
+      "Complete proof via covering space theory",
+      "Gadget function construction g(x) = f(x) - f(-x)",
+      "No-odd-map lemma formalization"
     ]
   },
   "overview": {

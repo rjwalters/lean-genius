@@ -8,7 +8,31 @@
     "date": "1824",
     "status": "verified",
     "tags": ["algebra", "galois-theory", "group-theory", "field-theory", "classic", "intermediate"],
-    "proofRepoPath": "Proofs/AbelRuffini.lean"
+    "proofRepoPath": "Proofs/AbelRuffini.lean",
+    "badge": "mathlib-extension",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "solvableByRad.isSolvable'",
+        "description": "Solvability by radicals implies solvable Galois group",
+        "module": "Mathlib.FieldTheory.AbelRuffini"
+      },
+      {
+        "theorem": "alternatingGroup.isSimple_five",
+        "description": "A5 is a simple group",
+        "module": "Mathlib.GroupTheory.Perm.Cycle.Concrete"
+      },
+      {
+        "theorem": "Equiv.Perm.not_solvable",
+        "description": "S5 is not solvable",
+        "module": "Mathlib.GroupTheory.Solvable"
+      }
+    ],
+    "originalContributions": [
+      "Educational walkthrough of Galois theory connection",
+      "Integration of Mathlib's solvability theory",
+      "Quintic unsolvability demonstration"
+    ]
   },
   "overview": {
     "historicalContext": "The quest to solve polynomial equations drove mathematics for centuries. Quadratic equations were solved in antiquity, cubic equations by Cardano (1545), and quartic equations by Ferrari (1545). For 300 years, mathematicians sought a quintic formula.\n\nPaolo Ruffini gave an incomplete proof in 1799 that no such formula exists. Niels Henrik Abel provided the first rigorous proof in 1824, at age 21, showing that the general quintic equation cannot be solved by radicals.\n\nBut it was Evariste Galois, tragically killed in a duel at age 20 in 1832, who revealed the deeper truth: the solvability of a polynomial is determined by the structure of its symmetry group. His theory explains not just why quintics are unsolvable, but precisely which polynomials can be solved by radicals.\n\nGalois's manuscripts, hastily written the night before his fatal duel, took decades to be understood. Today, Galois theory is fundamental to modern algebra, connecting field extensions to group theory in profound ways.",

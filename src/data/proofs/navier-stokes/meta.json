@@ -27,7 +27,23 @@
     "date": "2025-12-20",
     "revisionDate": "2025-12-22",
     "status": "revised",
-    "tags": ["PDE", "fluid-dynamics", "millennium-problem", "regularity", "K-ball-concentration"]
+    "tags": ["PDE", "fluid-dynamics", "millennium-problem", "regularity", "K-ball-concentration"],
+    "badge": "wip",
+    "sorries": 0,
+    "axiomCount": 8,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real",
+        "description": "Real number definitions",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Tropical rigidity theorem formalization",
+      "Type II dynamics β → 0 proof",
+      "K-ball concentration framework (θₖ refactor)",
+      "Faber-Krahn additivity for disjoint balls"
+    ]
   },
   "objection": {
     "verdict": "CONDITIONAL PROOF (revised)",
