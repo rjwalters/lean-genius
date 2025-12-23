@@ -228,8 +228,8 @@ export function HomePage() {
   )
 }
 
-function StatusBadge({ status }: { status: 'verified' | 'pending' | 'disputed' }) {
-  const config = {
+function StatusBadge({ status }: { status: string }) {
+  const config: Record<string, { icon: typeof CheckCircle; className: string; label: string }> = {
     verified: {
       icon: CheckCircle,
       className: 'bg-green-500/20 text-green-400',
@@ -245,9 +245,19 @@ function StatusBadge({ status }: { status: 'verified' | 'pending' | 'disputed' }
       className: 'bg-red-500/20 text-red-400',
       label: 'Disputed',
     },
+    axiomatized: {
+      icon: AlertCircle,
+      className: 'bg-purple-500/20 text-purple-400',
+      label: 'Axiomatized',
+    },
+    revised: {
+      icon: Clock,
+      className: 'bg-blue-500/20 text-blue-400',
+      label: 'Revised',
+    },
   }
 
-  const { icon: Icon, className, label } = config[status]
+  const { icon: Icon, className, label } = config[status] || config.pending
 
   return (
     <span className={`flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium ${className}`}>
