@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ChevronDown, ChevronUp, ExternalLink, Lightbulb, Package, Award } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { MathText } from '@/components/ui/math'
+import { MarkdownMath, MarkdownMathInline } from '@/components/ui/markdown-math'
 import { ProofBadge } from '@/components/ui/proof-badge'
 import { BADGE_INFO } from '@/types/proof'
 import type { Proof } from '@/types/proof'
@@ -147,13 +147,9 @@ export function ProofOverview({ proof }: ProofOverviewProps) {
             <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-3">
               Historical Context
             </h3>
-            <div className="prose prose-invert prose-sm max-w-none">
-              {overview.historicalContext.split('\n\n').map((para, i) => (
-                <p key={i} className="text-foreground/90 leading-relaxed mb-3">
-                  <MathText>{para}</MathText>
-                </p>
-              ))}
-            </div>
+            <MarkdownMath className="prose prose-invert prose-sm max-w-none text-foreground/90 leading-relaxed">
+              {overview.historicalContext}
+            </MarkdownMath>
           </section>
 
           {/* Problem Statement */}
@@ -162,11 +158,9 @@ export function ProofOverview({ proof }: ProofOverviewProps) {
               The Problem
             </h3>
             <div className="bg-muted/20 rounded-lg p-4 border border-border/50">
-              {overview.problemStatement.split('\n\n').map((para, i) => (
-                <div key={i} className="text-foreground/90 leading-relaxed mb-3 last:mb-0">
-                  <MathText>{para}</MathText>
-                </div>
-              ))}
+              <MarkdownMath className="text-foreground/90 leading-relaxed">
+                {overview.problemStatement}
+              </MarkdownMath>
             </div>
           </section>
 
@@ -175,13 +169,9 @@ export function ProofOverview({ proof }: ProofOverviewProps) {
             <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-3">
               Proof Strategy
             </h3>
-            <div className="prose prose-invert prose-sm max-w-none">
-              {overview.proofStrategy.split('\n\n').map((para, i) => (
-                <div key={i} className="text-foreground/90 leading-relaxed mb-3">
-                  <MathText>{para}</MathText>
-                </div>
-              ))}
-            </div>
+            <MarkdownMath className="prose prose-invert prose-sm max-w-none text-foreground/90 leading-relaxed">
+              {overview.proofStrategy}
+            </MarkdownMath>
           </section>
 
           {/* Key Insights */}
@@ -199,9 +189,9 @@ export function ProofOverview({ proof }: ProofOverviewProps) {
                     <span className="shrink-0 h-5 w-5 rounded-full bg-annotation/20 text-annotation text-xs flex items-center justify-center font-medium">
                       {i + 1}
                     </span>
-                    <span className="leading-relaxed">
-                      <MathText>{insight}</MathText>
-                    </span>
+                    <MarkdownMathInline className="leading-relaxed">
+                      {insight}
+                    </MarkdownMathInline>
                   </li>
                 ))}
               </ul>

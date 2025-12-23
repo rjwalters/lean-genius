@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ChevronDown, ChevronUp, MessageSquare, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { MathText } from '@/components/ui/math'
+import { MarkdownMath, MarkdownMathInline } from '@/components/ui/markdown-math'
 import type { Proof } from '@/types/proof'
 
 interface ProofConclusionProps {
@@ -49,13 +49,9 @@ export function ProofConclusion({ proof }: ProofConclusionProps) {
             <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-3">
               Summary
             </h3>
-            <div className="prose prose-invert prose-sm max-w-none">
-              {conclusion.summary.split('\n\n').map((para, i) => (
-                <p key={i} className="text-foreground/90 leading-relaxed mb-3">
-                  <MathText>{para}</MathText>
-                </p>
-              ))}
-            </div>
+            <MarkdownMath className="prose prose-invert prose-sm max-w-none text-foreground/90 leading-relaxed">
+              {conclusion.summary}
+            </MarkdownMath>
           </section>
 
           {/* Implications */}
@@ -64,11 +60,9 @@ export function ProofConclusion({ proof }: ProofConclusionProps) {
               Implications
             </h3>
             <div className="bg-green-500/5 rounded-lg p-4 border border-green-500/20">
-              {conclusion.implications.split('\n\n').map((para, i) => (
-                <div key={i} className="text-foreground/90 leading-relaxed mb-3 last:mb-0">
-                  <MathText>{para}</MathText>
-                </div>
-              ))}
+              <MarkdownMath className="text-foreground/90 leading-relaxed">
+                {conclusion.implications}
+              </MarkdownMath>
             </div>
           </section>
 
@@ -88,9 +82,9 @@ export function ProofConclusion({ proof }: ProofConclusionProps) {
                     <span className="shrink-0 h-5 w-5 rounded-full bg-yellow-500/20 text-yellow-400 text-xs flex items-center justify-center font-medium">
                       ?
                     </span>
-                    <span className="leading-relaxed">
-                      <MathText>{question}</MathText>
-                    </span>
+                    <MarkdownMathInline className="leading-relaxed">
+                      {question}
+                    </MarkdownMathInline>
                   </li>
                 ))}
               </ul>
