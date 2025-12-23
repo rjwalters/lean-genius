@@ -5,14 +5,35 @@ import Mathlib.Data.Real.Sqrt
 import Mathlib.Tactic
 
 /-!
-# Pythagorean Theorem: a² + b² = c²
+# Pythagorean Theorem
 
-A formal proof of the Pythagorean theorem using inner product spaces.
-In a right triangle, the square of the hypotenuse equals the sum of
-the squares of the other two sides.
+## What This Proves
+In a right triangle, the square of the hypotenuse equals the sum of the
+squares of the other two sides: a² + b² = c². We prove this using the
+inner product space formulation: if v ⊥ w, then ‖v + w‖² = ‖v‖² + ‖w‖².
 
-This proof uses the elegant connection between perpendicularity (zero inner
-product) and the norm formula in inner product spaces.
+## Approach
+- **Foundation (from Mathlib):** We use Mathlib's `InnerProductSpace` and
+  `EuclideanSpace` structures for the vector space setting.
+- **Original Contributions:** The complete proof of the Pythagorean theorem
+  is original. We define perpendicularity, prove the norm expansion lemma,
+  and establish the main theorem using inner product properties.
+- **Proof Techniques Demonstrated:** Inner product manipulation, `ring` for
+  algebraic simplification, working with Mathlib's normed space API.
+
+## Status
+- [x] Complete proof
+- [ ] Uses Mathlib for main result
+- [ ] Proves extensions/corollaries
+- [ ] Pedagogical example
+- [ ] Incomplete (has sorries)
+
+## Mathlib Dependencies
+- `InnerProductSpace` : Abstract inner product space structure
+- `EuclideanSpace ℝ (Fin 2)` : The Euclidean plane ℝ²
+- `inner`, `norm` : Inner product and norm operations
+- `real_inner_self_eq_norm_mul_norm` : ‖v‖² = ⟨v, v⟩
+- `inner_add_left`, `inner_add_right` : Linearity of inner product
 
 Historical Note: While Pythagoras (c. 570-495 BCE) gets credit, the theorem
 was known to Babylonians 1000 years earlier and has 300+ known proofs.

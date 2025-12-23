@@ -1,18 +1,3 @@
-/-
-  Central Limit Theorem: Classical Proof with Topological Interpretation
-
-  This proof demonstrates both perspectives on the Central Limit Theorem:
-  1. **Classical**: Via characteristic functions (Fourier transforms)
-  2. **Topological**: The Gaussian as a fixed point attractor
-
-  The CLT states that the sum of many independent random variables, when
-  properly normalized, converges to a normal distribution. This is perhaps
-  the most important theorem in probability theory.
-
-  Historical note: De Moivre (1733) → Laplace (1812) → Lyapunov (1901)
-  Topological interpretation: late 20th century dynamical systems view
--/
-
 import Mathlib.Probability.Distributions.Gaussian
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.MeasureTheory.Integral.Bochner
@@ -22,6 +7,44 @@ import Mathlib.Probability.Independence.Basic
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Analysis.Calculus.Taylor
 import Mathlib.Tactic
+
+/-!
+# Central Limit Theorem
+
+## What This Proves
+The sum of many independent random variables, when properly normalized,
+converges in distribution to a Gaussian. This is the foundation of
+statistical inference.
+
+## Approach
+- **Foundation (from Mathlib):** We use Mathlib's probability theory,
+  measure theory, and Fourier analysis libraries.
+- **Original Contributions:** This file provides the proof framework
+  using characteristic functions (Fourier transforms). Key convergence
+  lemmas are marked `sorry` where full measure-theoretic proofs would
+  require substantial additional machinery.
+- **Proof Techniques Demonstrated:** Characteristic functions, Taylor
+  expansion of exp, convergence in distribution, Fourier analysis.
+
+## Status
+- [ ] Complete proof
+- [ ] Uses Mathlib for main result
+- [ ] Proves extensions/corollaries
+- [ ] Pedagogical example
+- [x] Incomplete (has sorries)
+
+## Mathlib Dependencies
+- `MeasureTheory.Measure`, `IsProbabilityMeasure` : Probability measures
+- `Mathlib.Probability.Distributions.Gaussian` : Gaussian distribution
+- `MeasureTheory.Integral.Bochner` : Bochner integration
+- `Analysis.Fourier.FourierTransform` : Fourier transforms
+- `Probability.Independence.Basic` : Independence of random variables
+
+Note: 5 sorries remain. Full proof requires careful measure-theoretic
+convergence arguments and characteristic function manipulation.
+
+Historical Note: De Moivre (1733) → Laplace (1812) → Lyapunov (1901).
+-/
 
 namespace CentralLimitTheorem
 

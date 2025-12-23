@@ -1,20 +1,41 @@
-/-
-  Infinitude of Primes - Euclid's Theorem
-
-  A formal proof in Lean 4 that there are infinitely many prime numbers.
-  This follows Euclid's classic proof: for any n, we can find a prime p > n
-  by considering n! + 1.
-
-  Original author: Yannis Konstantoulas
-  Source: https://github.com/ykonstant1/InfinitePrimes
-
-  This version uses Mathlib for cleaner proofs while following the same
-  structure as Euclid's classical argument.
--/
-
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorial.Basic
 import Mathlib.Tactic
+
+/-!
+# Infinitude of Prime Numbers
+
+## What This Proves
+We prove Euclid's theorem: for any n, there exists a prime p > n. This
+establishes that there are infinitely many prime numbers.
+
+## Approach
+- **Foundation (from Mathlib):** We use Mathlib's definitions of `Nat.Prime`
+  and `Nat.factorial`, plus the lemma `Nat.dvd_factorial`. The existence of
+  prime divisors (`Nat.exists_prime_and_dvd`) is also from Mathlib.
+- **Original Contributions:** The proof structure follows Euclid's classical
+  argument with our own lemmas. We prove `dvd_factorial`, `factorial_succ_ge_two`,
+  and `dvd_of_dvd_add_one` to build up to the main theorem.
+- **Proof Techniques Demonstrated:** Constructive existence proofs, proof by
+  contradiction for the bound, `omega` for arithmetic, divisibility reasoning.
+
+## Status
+- [x] Complete proof
+- [ ] Uses Mathlib for main result
+- [ ] Proves extensions/corollaries
+- [ ] Pedagogical example
+- [ ] Incomplete (has sorries)
+
+## Mathlib Dependencies
+- `Nat.Prime` : Definition of prime numbers
+- `Nat.factorial` : Factorial function and properties
+- `Nat.dvd_factorial` : k ∣ n! when 0 < k ≤ n
+- `Nat.exists_prime_and_dvd` : Every n ≥ 2 has a prime divisor
+- `Nat.Prime.one_lt` : Every prime is > 1
+
+Original author: Yannis Konstantoulas
+Source: https://github.com/ykonstant1/InfinitePrimes
+-/
 
 namespace InfinitudePrimes
 

@@ -1,3 +1,42 @@
+/-!
+# Navier-Stokes Regularity
+
+## What This Proves
+This file explores the regularity problem for the Navier-Stokes equations—
+one of the Clay Millennium Prize problems. We develop infrastructure for
+analyzing blow-up criteria and energy estimates.
+
+## Approach
+- **Foundation (from Mathlib):** We use Mathlib's calculus, analysis, and
+  linear algebra libraries for derivatives, norms, and eigenvalues.
+- **Original Contributions:** This file provides extensive infrastructure
+  for the regularity problem: numerical constants, energy estimates,
+  scaling analysis, and blow-up criteria. The full problem remains open.
+- **Proof Techniques Demonstrated:** Energy methods, scaling arguments,
+  differential inequalities, spectral analysis.
+
+## Status
+- [ ] Complete proof
+- [ ] Uses Mathlib for main result
+- [ ] Proves extensions/corollaries
+- [ ] Pedagogical example
+- [x] Incomplete (has sorries)
+
+## Mathlib Dependencies
+- `Analysis.Calculus.*` : Derivatives and differential calculus
+- `Analysis.InnerProductSpace.*` : Hilbert space structure
+- `MeasureTheory.Integral.Bochner` : Bochner integration
+- `LinearAlgebra.Eigenspace.Basic` : Eigenvalue theory
+- Various special functions (log, exp, pow)
+
+Note: This is an active research problem. The Navier-Stokes existence and
+smoothness problem is one of the seven Clay Millennium Prize Problems.
+
+Historical Note: The equations were derived by Navier (1822) and Stokes
+(1845). Global regularity in 3D remains one of mathematics' greatest open
+problems.
+-/
+
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.Calculus.FDeriv.Basic
 import Mathlib.Analysis.Calculus.ContDiff.Basic

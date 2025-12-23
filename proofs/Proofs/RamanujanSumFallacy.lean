@@ -1,20 +1,45 @@
-/-
-  The Ramanujan Summation Fallacy: Why 1+2+3+... ≠ -1/12
-
-  This proof demonstrates how Lean catches mathematical fallacies.
-  The claim that 1+2+3+... = -1/12 is famous from physics and the
-  Numberphile video, but it relies on manipulating DIVERGENT series
-  as if they were convergent - something Lean refuses to allow.
-
-  The -1/12 result comes from analytic continuation of the Riemann
-  zeta function: ζ(-1) = -1/12. But this is NOT the same as saying
-  the sum converges to -1/12 in the usual sense.
--/
-
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
+
+/-!
+# Ramanujan Sum Fallacy
+
+## What This Proves
+We demonstrate that the claim "1+2+3+... = -1/12" is NOT a valid identity
+for convergent series. Lean's type system enforces that `tsum` only gives
+meaningful results for summable (convergent) series. We show the series
+1+2+3+... is NOT summable.
+
+## Approach
+- **Foundation (from Mathlib):** We use Mathlib's `tsum` (topological sum)
+  and `Summable` predicate, which require convergence proofs.
+- **Original Contributions:** This file provides pedagogical exposition
+  of why the famous "identity" fails in standard mathematics. We prove
+  the Grandi series (1-1+1-1+...) is not summable.
+- **Proof Techniques Demonstrated:** Working with Mathlib's infinite sum API,
+  Cauchy criterion for series, proof by contradiction.
+
+## Status
+- [ ] Complete proof
+- [ ] Uses Mathlib for main result
+- [ ] Proves extensions/corollaries
+- [x] Pedagogical example
+- [x] Incomplete (has sorries)
+
+## Mathlib Dependencies
+- `tsum` : Topological sum of a series (returns 0 for non-summable)
+- `Summable` : Predicate that a series converges
+- `Topology.Algebra.InfiniteSum.Basic` : Infinite sum theory
+
+Note: 3 sorries remain for detailed convergence arguments. The -1/12 result
+comes from analytic continuation of ζ(-1), not standard summation.
+
+Historical Note: Ramanujan used divergent series regularization in his
+work. The value ζ(-1) = -1/12 has applications in physics (string theory)
+but requires careful interpretation.
+-/
 
 namespace RamanujanFallacy
 

@@ -4,21 +4,37 @@ import Mathlib.Tactic
 /-!
 # Gödel's First Incompleteness Theorem
 
+## What This Proves
 Any consistent formal system F capable of expressing basic arithmetic
-contains statements that are true but unprovable within F.
+contains statements that are true but unprovable within F. We construct
+the Gödel sentence G that says "I am not provable" and show G is true
+but unprovable.
 
-This formalization presents the key conceptual components of the proof:
-1. Gödel numbering - encoding formulas as natural numbers
-2. Representability - expressing arithmetic within the formal system
-3. The Diagonal Lemma - achieving self-reference
-4. The Gödel sentence - "This statement is unprovable"
-5. The incompleteness argument
+## Approach
+- **Foundation (from Mathlib):** Only basic logic from Mathlib is used.
+- **Original Contributions:** This file provides an illustrative proof
+  sketch showing the conceptual structure: Gödel numbering, the Diagonal
+  Lemma, and the incompleteness argument. Full formalization would require
+  thousands of lines defining formal syntax and proof systems.
+- **Proof Techniques Demonstrated:** Self-reference via diagonalization,
+  reasoning about provability predicates, proof by contradiction.
 
-This is an illustrative proof sketch capturing the essential structure.
-A complete formalization would require thousands of lines defining
-formal syntax, proof systems, and computability theory.
+## Status
+- [ ] Complete proof
+- [ ] Uses Mathlib for main result
+- [ ] Proves extensions/corollaries
+- [ ] Pedagogical example
+- [x] Incomplete (has sorries)
 
-Historical note: Proved by Kurt Gödel in 1931, this theorem shattered
+## Mathlib Dependencies
+- `Mathlib.Logic.Basic` : Basic logical connectives and predicates
+- `Mathlib.Tactic` : Standard tactic library
+
+Note: 1 sorry remains. Full formalization requires extensive machinery:
+formal syntax, Gödel numbering, primitive recursive functions, and the
+representability of provability.
+
+Historical Note: Proved by Kurt Gödel in 1931, this theorem shattered
 Hilbert's program to establish a complete, consistent foundation for
 all of mathematics.
 -/

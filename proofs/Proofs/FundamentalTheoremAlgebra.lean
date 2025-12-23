@@ -3,26 +3,40 @@ import Mathlib.Algebra.Polynomial.Basic
 import Mathlib.Algebra.Polynomial.Degree.Definitions
 import Mathlib.FieldTheory.IsAlgClosed.Basic
 
-/-
-  The Fundamental Theorem of Algebra
+/-!
+# Fundamental Theorem of Algebra
 
-  A formal proof in Lean 4 that every non-constant polynomial with complex
-  coefficients has at least one complex root.
+## What This Proves
+Every non-constant polynomial with complex coefficients has at least one
+complex root. Equivalently: the complex numbers ℂ are algebraically closed.
 
-  Historical context: First conjectured by Albert Girard (1629), with the first
-  rigorous proof by Carl Friedrich Gauss in his 1799 doctoral dissertation.
-  Despite its name, every known proof requires analysis - there is no purely
-  algebraic proof.
+## Approach
+- **Foundation (from Mathlib):** The core theorem `Complex.exists_root` is
+  provided by Mathlib, which proves it using Liouville's theorem from complex
+  analysis. The full algebraic closure `Complex.isAlgClosed` is also provided.
+- **Original Contributions:** This file provides exposition, demonstrates the
+  connection to polynomial factorization, and shows consequences like complete
+  splitting of polynomials over ℂ.
+- **Proof Techniques Demonstrated:** Working with Mathlib's polynomial API,
+  using algebraically closed field instances, `simp` with polynomial lemmas.
 
-  The Mathlib proof uses Liouville's theorem: a bounded entire function is
-  constant. If p(z) had no roots, then 1/p(z) would be a bounded entire
-  function, hence constant, contradicting that p is non-constant.
+## Status
+- [ ] Complete proof
+- [x] Uses Mathlib for main result
+- [ ] Proves extensions/corollaries
+- [ ] Pedagogical example
+- [x] Incomplete (has sorries)
 
-  Author: Chris Hughes (Mathlib formalization)
-  Source: https://github.com/leanprover-community/mathlib4
+## Mathlib Dependencies
+- `Complex.exists_root` : Core theorem—every non-constant polynomial has a root
+- `Complex.isAlgClosed` : Instance proving ℂ is algebraically closed
+- `IsAlgClosed.splits_codomain` : Every polynomial splits over an algebraically closed field
+- `Polynomial.degree`, `Polynomial.IsRoot` : Polynomial degree and root definitions
 
-  This proof demonstrates how Mathlib's deep library of complex analysis
-  yields this fundamental result with elegant concision.
+Historical Note: First conjectured by Albert Girard (1629), with the first
+rigorous proof by Carl Friedrich Gauss in his 1799 doctoral dissertation.
+Despite its name, every known proof requires analysis—there is no purely
+algebraic proof.
 -/
 
 -- We work with complex polynomials

@@ -1,22 +1,33 @@
-/-
-  Undecidability of the Halting Problem
+/-!
+# Undecidability of the Halting Problem
 
-  A formal proof in Lean 4 that no algorithm can determine whether
-  an arbitrary program halts on a given input.
+## What This Proves
+We prove that no algorithm can determine whether an arbitrary program halts
+on a given input. Any proposed "halting oracle" can be diagonalized against
+to produce a contradiction.
 
-  Historical context: Alan Turing proved this result in 1936, establishing
-  fundamental limits on what can be computed. This theorem, along with
-  Church's lambda calculus work, founded the theory of computation.
+## Approach
+- **Foundation (from Mathlib):** None! This proof uses only Lean's built-in
+  types (Nat, Bool) with no external imports.
+- **Original Contributions:** Complete self-contained proof using
+  diagonalization. We model programs as natural numbers, define what a
+  halting oracle would be, and show any such oracle leads to contradiction.
+- **Proof Techniques Demonstrated:** Diagonalization, proof by contradiction,
+  Boolean case analysis, modeling computation abstractly.
 
-  The proof uses diagonalization, the same technique Cantor used to prove
-  the uncountability of the reals and Godel used in his incompleteness
-  theorems. We construct a program that behaves contrary to any proposed
-  halting oracle, creating a contradiction.
+## Status
+- [x] Complete proof
+- [ ] Uses Mathlib for main result
+- [ ] Proves extensions/corollaries
+- [ ] Pedagogical example
+- [ ] Incomplete (has sorries)
 
-  We model programs abstractly: a "program" is identified by a natural number
-  (its source code as a number), and we ask whether a decider can determine
-  halting behavior. The key insight is that the decider itself can be
-  diagonalized against.
+## Mathlib Dependencies
+None. This is a completely self-contained proof using only Lean's core library.
+
+Historical Note: Alan Turing proved this in 1936, establishing fundamental
+limits on computability. The proof uses diagonalization—the same technique
+Cantor used for uncountability and Gödel used for incompleteness.
 -/
 
 -- A "halting oracle" claims to decide if program p halts on input i

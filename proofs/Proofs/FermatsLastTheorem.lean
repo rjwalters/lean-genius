@@ -4,46 +4,43 @@ import Mathlib.NumberTheory.FLT.Three
 import Mathlib.Algebra.EuclideanDomain.Basic
 import Mathlib.RingTheory.Int.Basic
 
-/-
-Copyright (c) 2024 LeanGenius Contributors. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Formalized using Mathlib's FLT foundations
--/
-
 /-!
 # Fermat's Last Theorem
 
-This file presents Fermat's Last Theorem and its proof structure. For n > 2, there are
-no three positive integers a, b, c such that a^n + b^n = c^n.
+## What This Proves
+For n > 2, there are no three positive integers a, b, c such that aⁿ + bⁿ = cⁿ.
+We present the cases n = 3 and n = 4 from Mathlib, and axiomatize the general
+theorem pending the Lean FLT project completion.
 
-## Main results
+## Approach
+- **Foundation (from Mathlib):** Mathlib provides `fermatLastTheoremFour` and
+  `fermatLastTheoremThree`. The general theorem will come from the Imperial
+  College Lean FLT project.
+- **Original Contributions:** This file provides pedagogical exposition of
+  the proof structure (Frey curves, modularity, Ribet's theorem) and wraps
+  the Mathlib theorems. The general case is axiomatized.
+- **Proof Techniques Demonstrated:** Infinite descent (n=4), algebraic number
+  theory (n=3), axiomatization of deep results.
 
-* `FermatLastTheoremFor`: The statement that n has no non-trivial solutions
-* `fermatLastTheoremFour`: Fermat's proof for n = 4 (via infinite descent)
-* `fermatLastTheoremThree`: Euler's proof for n = 3 (formalized in Mathlib)
-* `fermatLastTheorem`: The full theorem (axiomatized pending Lean FLT project)
+## Status
+- [ ] Complete proof
+- [ ] Uses Mathlib for main result
+- [x] Proves extensions/corollaries
+- [ ] Pedagogical example
+- [x] Incomplete (has sorries)
 
-## Historical context
+## Mathlib Dependencies
+- `FermatLastTheoremFor` : Statement that n has no non-trivial solutions
+- `fermatLastTheoremFour` : Fermat's proof for n = 4 via infinite descent
+- `fermatLastTheoremThree` : Euler's proof for n = 3
+- `NumberTheory.FLT.Basic` : FLT foundations
 
-Pierre de Fermat wrote in 1637: "I have discovered a truly marvelous proof of this,
-which this margin is too narrow to contain." This 358-year-old conjecture was finally
-proven by Andrew Wiles in 1995, using the modularity of elliptic curves.
+Note: 3 sorries remain. The full theorem requires the Modularity Theorem and
+Ribet's theorem, currently being formalized by the Imperial College FLT project.
 
-## Proof overview
-
-Wiles' proof proceeds by contradiction:
-1. Assume a counterexample (a, b, c, n) with n > 2
-2. Construct the Frey curve: y² = x(x - aⁿ)(x + bⁿ)
-3. This curve is semi-stable with unusual properties
-4. Prove all semi-stable elliptic curves over ℚ are modular (Modularity Theorem)
-5. Apply Ribet's theorem: Frey curves cannot be modular
-6. Contradiction!
-
-## References
-
-* [A. Wiles, *Modular elliptic curves and Fermat's Last Theorem*][wiles1995]
-* [R. Taylor, A. Wiles, *Ring-theoretic properties of certain Hecke algebras*][taylorwiles1995]
-* Lean FLT Project: https://github.com/ImperialCollegeLondon/FLT
+Historical Note: Fermat claimed a proof in 1637. Andrew Wiles proved it in
+1995 using the modularity of elliptic curves—one of mathematics' greatest
+achievements.
 -/
 
 -- Mathlib defines these key theorems

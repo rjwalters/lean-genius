@@ -3,36 +3,42 @@ import Mathlib.GroupTheory.Solvable
 import Mathlib.GroupTheory.SpecificGroups.Alternating
 import Mathlib.FieldTheory.Galois
 
-/-
-Copyright (c) 2024 LeanGenius Contributors. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Formalized using Mathlib's Galois theory library
--/
-
 /-!
-# The Abel-Ruffini Theorem
+# Abel-Ruffini Theorem
 
-This file demonstrates the Abel-Ruffini theorem: there is no general solution in radicals
-to polynomial equations of degree five or higher.
+## What This Proves
+There is no general solution in radicals to polynomial equations of degree
+five or higher. We show that solvability by radicals requires a solvable
+Galois group, and that S₅ (and A₅) are not solvable.
 
-## Main results
+## Approach
+- **Foundation (from Mathlib):** Mathlib provides the complete Galois theory
+  infrastructure including `IsSolvableByRad`, `solvableByRad.isSolvable'`,
+  and the non-solvability of alternating groups.
+- **Original Contributions:** This file provides pedagogical organization
+  and commentary, demonstrating how to use Mathlib's Galois theory library.
+  One explicit example construction remains as sorry.
+- **Proof Techniques Demonstrated:** Working with Galois theory in Mathlib,
+  group solvability, field extensions.
 
-* `solvableByRad.isSolvable'`: If α is solvable by radicals, its minimal polynomial has
-  a solvable Galois group (from Mathlib)
-* `Equiv.Perm.not_solvable`: The symmetric group Sₙ is not solvable for n ≥ 5
-* `alternatingGroup.isSimpleGroup_five`: The alternating group A₅ is simple
+## Status
+- [ ] Complete proof
+- [ ] Uses Mathlib for main result
+- [x] Proves extensions/corollaries
+- [ ] Pedagogical example
+- [x] Incomplete (has sorries)
 
-## Historical context
+## Mathlib Dependencies
+- `IsSolvableByRad` : Definition of solvable by radicals
+- `solvableByRad.isSolvable'` : Solvable by radicals ⟹ solvable Galois group
+- `Equiv.Perm.not_solvable` : Sₙ is not solvable for n ≥ 5
+- `alternatingGroup.isSimpleGroup_five` : A₅ is simple
+- `FieldTheory.Galois` : Galois theory foundations
 
-The Abel-Ruffini theorem, proven by Niels Henrik Abel in 1824 and later illuminated by
-Évariste Galois's theory, shows that quintic equations cannot be solved by radicals.
-Galois revealed the deeper truth: solvability by radicals is equivalent to having a
-solvable Galois group.
+Note: 1 sorry remains for an explicit quintic polynomial construction.
 
-## References
-
-* [I. M. Isaacs, *Algebra: A Graduate Course*][isaacs2009]
-* [S. Lang, *Algebra*][lang2002]
+Historical Note: Proven by Niels Henrik Abel in 1824, later illuminated by
+Évariste Galois's theory connecting solvability to group structure.
 -/
 
 /-! ## Part I: Solvable by Radicals
