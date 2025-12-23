@@ -4,6 +4,74 @@ This document tracks the evolution of our analysis of the Navier-Stokes regulari
 
 ---
 
+## v3 - Conditional Regularity Theorem (2025-12-22, Session 6)
+
+**Status:** CONDITIONAL THEOREM FORMULATED
+
+**Summary:** Identified that anti-escape is the missing heart of the problem.
+Formulated a clean conditional theorem with honest attribution of proven vs.
+assumed components. CKN + enstrophy ODE cannot give θ ≥ c without anti-escape.
+
+### Key Findings
+
+1. **The Scale Mismatch Problem**
+   - Barker-Prange smoothing lemma works at parabolic scale √(T*-t)
+   - For Type I: diffusion scale R_diff ≈ √(T*-t) (scales match)
+   - For Type II: R_diff << √(T*-t) (scales don't match)
+   - Smoothing lemma cannot be directly applied at diffusion scale for Type II
+
+2. **CKN + Enstrophy Cannot Give θ ≥ c**
+   - CKN gives: local concentration ≥ ε₀ at singular points (ABSOLUTE bound)
+   - Enstrophy ODE: dE/dt ≤ CE³ limits E ~ (T*-t)^{-1/2} (GLOBAL timing)
+   - Neither prevents enstrophy from "escaping" to other regions
+   - θ = E_loc/E_total is NOT bounded by these alone
+
+3. **Anti-Escape is the Missing Heart**
+   - Proving anti-escape unconditionally would rule out cascade/escape mechanisms
+   - This is exactly the obstruction Tao identifies as the core difficulty
+   - Anti-escape is logically STRONGER than what basic inequalities can force
+
+4. **Conditional Theorem Formulated**
+   - Hypothesis: "Bubble Persistence" - concentration at R_diff propagates to √(T*-t)
+   - Conclusion: Blowup must be Type I → ESŠ backward uniqueness → regularity
+   - All steps proven EXCEPT the anti-escape hypothesis
+
+### Hierarchy of Anti-Escape Hypotheses
+
+| Hypothesis | Statement | Strength |
+|------------|-----------|----------|
+| A | Critical norm concentration at √(T*-t) | Weakest (proven for Type I) |
+| B | Bounded bubble count at √(T*-t) | Medium |
+| B′ | Bubble persistence across [R_diff, √(T*-t)] | Medium (recommended) |
+| C | Fraction θ₀ of enstrophy at R_diff | Strongest (our original) |
+
+### Literature Integration
+
+- **Seregin 2507.08733:** Uses Euler scaling + generalized LPS to exclude Type II
+  - LPS plays the anti-escape role
+  - Shows that SOME hypothesis beyond CKN is needed
+
+- **Barker-Prange:** Proves concentration at √(T*-t) for Type I
+  - The mechanism is local smoothing + contrapositive
+  - Type I is exactly when this matches diffusion scale
+
+- **CKN 1982:** Correct source for ε-regularity (not arXiv:2503.02575)
+
+### Files Created
+
+- `analysis/enstrophy-type-ii-exclusion.md` - Enstrophy constraint analysis
+- `analysis/ckn-critical-concentration.md` - CKN + correct formulation
+- `analysis/conditional-regularity-theorem.md` - **Main theorem statement**
+
+### Resolution Paths
+
+1. **Accept anti-escape as axiom** - reasonable for physics applications
+2. **Prove in restricted classes** - axisymmetric, periodic, etc.
+3. **Seregin-style** - minimal LPS-like condition
+4. **Weaker sufficient condition** - bubble persistence (B′)
+
+---
+
 ## v2 - θₖ Refactor + Literature Analysis + Tropical Dynamics (2025-12-22)
 
 **Status:** Conditional

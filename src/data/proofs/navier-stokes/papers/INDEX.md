@@ -218,34 +218,56 @@ does α > 1 impose on concentration structure?
 
 ---
 
-## Synthesis: What We Learned About Bubble Count K (Dec 2025)
+## V3 Synthesis: Scale-Bridging Concentration (Dec 2025)
 
-### Summary of Paper Analysis
+### Core Literature for Conditional Theorem
 
-| Paper | Bubble Count | Type | Ratio Bounds? | Verdict |
-|-------|-------------|------|---------------|---------|
-| Lei-Ren 2022 | N(r) → ∞ possible | Both | No | ❌ BAD |
-| Barker 2025 | K=1 (single region) | Type II | θ exponentially small | ❌ BAD |
-| Barker-Prange Survey | K=1 for Type I | Type I only | Absolute | ❌ N/A |
+| Paper | What It Proves | Role in Chain |
+|-------|---------------|---------------|
+| CKN 1982 | ε-regularity: A(r)+C(r)+D(r) ≥ ε₀ at singular points | Step 1 |
+| Standard | Enstrophy ODE: dE/dt ≤ CE³ | Step 2 |
+| Barker-Prange 2020 | Type I concentration at √(T*-t) | Step 4 |
+| ESŠ 2003 | Backward uniqueness excludes Type I | Step 5 |
+| Seregin 2025 | Type II exclusion via LPS condition | Comparison |
 
-### Key Insight: K=1 Is Consistent, But θ Is Not Uniform
+### The Scale Mismatch Problem (V3 Key Finding)
 
-All existing results show concentration in **ONE region** at diffusion scale.
-However, the captured fraction is:
-- **θ ≥ e^{-M^{1813}}** (Barker 2025) — exponentially small in Type I bound M
-- As M → ∞ near blowup, θ → 0
+**For Type I blowup:**
+- Diffusion scale R_diff = √(ν/Ω) ≈ √(T*-t)
+- Barker-Prange concentration works at this scale
+- ESŠ backward uniqueness applies → no Type I blowup
 
-**The question shifts from "is K bounded?" to "is θ uniform?"**
+**For Type II blowup:**
+- R_diff << √(T*-t) (scales don't match)
+- Barker-Prange only gives concentration at √(T*-t)
+- Smoothing lemma cannot reach R_diff → GAP
 
-### Remaining Viable Routes
+### Bubble Persistence (B′) — The Minimal Hypothesis
 
-1. **Tropical crossing inevitability** — PROMISING, bypasses θ uniformity
-2. **Type II-specific concentration** — NOT YET INVESTIGATED
-3. **Quantitative partial regularity** — INVESTIGATED, appears closed
+**B′:** Concentration A(r) ≥ ε persists for all dyadic r ∈ [R_diff, c√(T*-t)]
+
+This is:
+- **Strictly weaker** than Seregin's LPS condition
+- **Exactly what bridges** the scale gap for Type II
+- **Rules out** cascade/escape mechanisms (Tao's core obstruction)
+
+### Comparison of Anti-Escape Hypotheses
+
+| Hypothesis | Strength | Applies to |
+|------------|----------|------------|
+| B′ (Bubble Persistence) | Weakest | All blowup |
+| Seregin LPS | Medium | Type II |
+| Type I bound | Strongest | Type I only |
+
+### Important Reference Correction
+
+⚠️ **CKN ε-regularity source:** CKN 1982, Comm. Pure Appl. Math. 35, 771-831
+(NOT arXiv:2503.02575 which is Maria Esteban's 2025 expository paper)
 
 ---
 
 ## Notes
 
 Last updated: 2025-12-22
-Related to: θₖ refactor (feature/theta-k-refactor branch)
+Version: v3 (Conditional Regularity Theorem)
+Main theorem: analysis/conditional-regularity-theorem.md
