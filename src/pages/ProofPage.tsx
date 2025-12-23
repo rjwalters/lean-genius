@@ -11,6 +11,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { UserMenu } from '@/components/auth'
+import { ProofBadge } from '@/components/ui/proof-badge'
 
 export function ProofPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -91,7 +92,8 @@ export function ProofPage() {
 
         <div className="flex-1" />
 
-        <div className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="hidden sm:flex items-center gap-3 text-sm text-muted-foreground">
+          <ProofBadge badge={proof.meta.badge} />
           <span
             className={`px-2 py-0.5 rounded text-xs font-medium ${
               proof.meta.status === 'verified'

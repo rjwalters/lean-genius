@@ -1,7 +1,9 @@
 import { useState } from 'react'
-import { ChevronDown, ChevronUp, ExternalLink, Lightbulb } from 'lucide-react'
+import { ChevronDown, ChevronUp, ExternalLink, Lightbulb, Package, Award } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { MathText } from '@/components/ui/math'
+import { ProofBadge } from '@/components/ui/proof-badge'
+import { BADGE_INFO } from '@/types/proof'
 import type { Proof } from '@/types/proof'
 
 interface ProofOverviewProps {
@@ -72,6 +74,70 @@ export function ProofOverview({ proof }: ProofOverviewProps) {
                   <span>Source</span>
                   <ExternalLink className="h-3 w-3" />
                 </a>
+              )}
+            </div>
+          )}
+
+          {/* Badge & Mathlib Transparency */}
+          {(meta.badge || meta.mathlibDependencies || meta.originalContributions) && (
+            <div className="grid gap-4 sm:grid-cols-2">
+              {/* Badge info */}
+              {meta.badge && (
+                <div className="bg-muted/20 rounded-lg p-4 border border-border/50">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Award className="h-4 w-4 text-muted-foreground" />
+                    <h4 className="text-sm font-medium">Proof Category</h4>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <ProofBadge badge={meta.badge} size="md" />
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    {BADGE_INFO[meta.badge].description}
+                  </p>
+                </div>
+              )}
+
+              {/* Mathlib dependencies */}
+              {meta.mathlibDependencies && meta.mathlibDependencies.length > 0 && (
+                <div className="bg-muted/20 rounded-lg p-4 border border-border/50">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Package className="h-4 w-4 text-muted-foreground" />
+                    <h4 className="text-sm font-medium">Mathlib Dependencies</h4>
+                  </div>
+                  <ul className="space-y-2">
+                    {meta.mathlibDependencies.slice(0, 3).map((dep, i) => (
+                      <li key={i} className="text-xs">
+                        <code className="bg-background/50 px-1.5 py-0.5 rounded text-annotation font-mono">
+                          {dep.theorem}
+                        </code>
+                        <p className="text-muted-foreground mt-0.5">{dep.description}</p>
+                      </li>
+                    ))}
+                    {meta.mathlibDependencies.length > 3 && (
+                      <li className="text-xs text-muted-foreground">
+                        +{meta.mathlibDependencies.length - 3} more dependencies
+                      </li>
+                    )}
+                  </ul>
+                </div>
+              )}
+
+              {/* Original contributions */}
+              {meta.originalContributions && meta.originalContributions.length > 0 && (
+                <div className="bg-annotation/5 rounded-lg p-4 border border-annotation/20 sm:col-span-2">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-lg">🏆</span>
+                    <h4 className="text-sm font-medium text-annotation">What's Original</h4>
+                  </div>
+                  <ul className="space-y-1">
+                    {meta.originalContributions.map((contribution, i) => (
+                      <li key={i} className="text-sm text-foreground/90 flex gap-2">
+                        <span className="text-annotation">•</span>
+                        <span>{contribution}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
             </div>
           )}

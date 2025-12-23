@@ -1,12 +1,36 @@
+import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { getAllProofs } from '@/data/proofs'
 import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
-import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus } from 'lucide-react'
+import { ProofBadge, BadgeFilter, MathlibIndicator } from '@/components/ui/proof-badge'
+import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter } from 'lucide-react'
+import type { ProofBadge as ProofBadgeType } from '@/types/proof'
 
 export function HomePage() {
-  const proofs = getAllProofs()
+  const allProofs = getAllProofs()
   const { isAuthenticated } = useAuth()
+  const [selectedBadges, setSelectedBadges] = useState<ProofBadgeType[]>([])
+  const [showFilters, setShowFilters] = useState(false)
+
+  // Filter proofs by selected badges
+  const proofs = useMemo(() => {
+    if (selectedBadges.length === 0) return allProofs
+    return allProofs.filter(({ proof }) =>
+      proof.meta.badge && selectedBadges.includes(proof.meta.badge)
+    )
+  }, [allProofs, selectedBadges])
+
+  const handleBadgeToggle = (badge: ProofBadgeType) => {
+    setSelectedBadges((prev) => {
+      if (prev.includes(badge)) {
+        return prev.filter((b) => b !== badge)
+      }
+      return [...prev, badge]
+    })
+  }
+
+  const clearFilters = () => setSelectedBadges([])
 
   return (
     <div className="min-h-screen bg-background">
@@ -45,9 +69,49 @@ export function HomePage() {
 
       {/* Proof Cards */}
       <section className="max-w-6xl mx-auto px-6 pb-16">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-6">
-          Available Proofs
-        </h2>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+            Available Proofs ({proofs.length})
+          </h2>
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className={`flex items-center gap-1.5 text-sm transition-colors ${
+              showFilters || selectedBadges.length > 0
+                ? 'text-annotation'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            <Filter className="h-4 w-4" />
+            <span>Filter</span>
+            {selectedBadges.length > 0 && (
+              <span className="bg-annotation/20 text-annotation px-1.5 py-0.5 rounded text-xs">
+                {selectedBadges.length}
+              </span>
+            )}
+          </button>
+        </div>
+
+        {/* Filter Panel */}
+        {showFilters && (
+          <div className="mb-6 p-4 bg-card border border-border rounded-lg">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-sm font-medium">Filter by Category</span>
+              {selectedBadges.length > 0 && (
+                <button
+                  onClick={clearFilters}
+                  className="text-xs text-muted-foreground hover:text-foreground"
+                >
+                  Clear all
+                </button>
+              )}
+            </div>
+            <BadgeFilter
+              selectedBadges={selectedBadges}
+              onToggle={handleBadgeToggle}
+            />
+          </div>
+        )}
+
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {proofs.map(({ proof, annotations }) => (
             <Link
@@ -55,20 +119,31 @@ export function HomePage() {
               to={`/proof/${proof.slug}`}
               className="group block bg-card border border-border rounded-xl p-6 hover:border-annotation/50 hover:bg-card/80 transition-all"
             >
+              {/* Badge row - prominently displayed at top */}
               <div className="flex items-start justify-between mb-4">
-                <div className="h-10 w-10 rounded-lg bg-annotation/20 flex items-center justify-center">
-                  <BookOpen className="h-5 w-5 text-annotation" />
-                </div>
+                <ProofBadge badge={proof.meta.badge} />
                 <StatusBadge status={proof.meta.status} />
               </div>
 
-              <h3 className="text-lg font-semibold mb-2 group-hover:text-annotation transition-colors">
-                {proof.title}
-              </h3>
+              <div className="flex items-start gap-3 mb-3">
+                <div className="h-10 w-10 rounded-lg bg-annotation/20 flex items-center justify-center flex-shrink-0">
+                  <BookOpen className="h-5 w-5 text-annotation" />
+                </div>
+                <h3 className="text-lg font-semibold group-hover:text-annotation transition-colors pt-1">
+                  {proof.title}
+                </h3>
+              </div>
 
               <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
                 {proof.description}
               </p>
+
+              {/* Mathlib dependency indicator */}
+              <MathlibIndicator
+                dependencyCount={proof.meta.mathlibDependencies?.length}
+                sorries={proof.meta.sorries}
+                className="mb-4"
+              />
 
               <div className="flex items-center justify-between text-sm">
                 <div className="flex flex-wrap gap-2">
@@ -93,6 +168,21 @@ export function HomePage() {
             </Link>
           ))}
         </div>
+
+        {/* Empty state when filters result in no proofs */}
+        {proofs.length === 0 && selectedBadges.length > 0 && (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground mb-4">
+              No proofs match the selected filters.
+            </p>
+            <button
+              onClick={clearFilters}
+              className="text-sm text-annotation hover:underline"
+            >
+              Clear filters
+            </button>
+          </div>
+        )}
       </section>
 
       {/* Footer */}
