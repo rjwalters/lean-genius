@@ -1,6 +1,7 @@
 -- Verified proofs (from original lean-genius-proofs)
 import Proofs.Sqrt2
 import Proofs.Sqrt2Irrational
+import Proofs.Sqrt2IrrationalFromAxioms
 import Proofs.OnePlusOne
 import Proofs.FundamentalTheoremCalculus
 import Proofs.InfinitudePrimes
