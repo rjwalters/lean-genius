@@ -23,6 +23,65 @@ export interface ProofConclusion {
   openQuestions?: string[]
 }
 
+/**
+ * Badge types for categorizing proofs based on their relationship to Mathlib
+ * See proofs/BADGE_TAXONOMY.md for full documentation
+ */
+export type ProofBadge =
+  | 'original'           // 🏆 Novel formalization with minimal Mathlib delegation
+  | 'mathlib-exploration' // 📚 Uses Mathlib for main theorem, proves extensions
+  | 'pedagogical'        // 🎓 Focused on teaching Lean techniques
+  | 'from-axioms'        // ⚡ Proves from first principles, no/minimal imports
+  | 'wip'                // 🚧 Has sorries or incomplete sections
+
+/**
+ * Display information for proof badges
+ */
+export const BADGE_INFO: Record<ProofBadge, { emoji: string; label: string; color: string; description: string }> = {
+  'original': {
+    emoji: '🏆',
+    label: 'Original Proof',
+    color: '#F59E0B',
+    description: 'Novel formalization with minimal Mathlib delegation'
+  },
+  'mathlib-exploration': {
+    emoji: '📚',
+    label: 'Mathlib Exploration',
+    color: '#3B82F6',
+    description: 'Uses Mathlib for main theorem, proves extensions/corollaries'
+  },
+  'pedagogical': {
+    emoji: '🎓',
+    label: 'Learning Example',
+    color: '#10B981',
+    description: 'Focused on teaching Lean techniques'
+  },
+  'from-axioms': {
+    emoji: '⚡',
+    label: 'From Axioms',
+    color: '#8B5CF6',
+    description: 'Proves from first principles with no/minimal imports'
+  },
+  'wip': {
+    emoji: '🚧',
+    label: 'Work in Progress',
+    color: '#F97316',
+    description: 'Has sorries or incomplete sections'
+  }
+}
+
+/**
+ * A theorem or lemma imported from Mathlib
+ */
+export interface MathlibDependency {
+  /** The theorem name (e.g., "Complex.exists_root") */
+  theorem: string
+  /** Brief description of what it provides */
+  description: string
+  /** The Mathlib module (e.g., "Mathlib.Analysis.Complex.Polynomial.Basic") */
+  module?: string
+}
+
 export interface ProofMeta {
   author?: string
   authorHandle?: string
@@ -33,6 +92,16 @@ export interface ProofMeta {
   tags: string[]
   /** Path to verified Lean source in proofs/ directory (e.g., "Proofs/Sqrt2Irrational.lean") */
   proofRepoPath?: string
+
+  // Badge system fields
+  /** The proof's category badge - see BADGE_TAXONOMY.md */
+  badge?: ProofBadge
+  /** Key theorems imported from Mathlib */
+  mathlibDependencies?: MathlibDependency[]
+  /** Number of sorry statements in the Lean file (0 = complete) */
+  sorries?: number
+  /** What this proof contributes beyond Mathlib */
+  originalContributions?: string[]
 }
 
 export interface ProofSection {

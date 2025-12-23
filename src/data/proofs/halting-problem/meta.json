@@ -7,7 +7,15 @@
     "author": "Alan Turing (1936)",
     "date": "1936",
     "status": "verified",
-    "tags": ["computability", "undecidability", "diagonalization", "classic", "intermediate"]
+    "tags": ["computability", "undecidability", "diagonalization", "classic", "intermediate"],
+    "badge": "from-axioms",
+    "sorries": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "Complete proof with zero imports",
+      "Self-contained formalization of diagonal argument",
+      "Demonstrates pure logical reasoning in Lean"
+    ]
   },
   "overview": {
     "historicalContext": "Alan Turing published this groundbreaking result in 1936, the same paper where he introduced the Turing machine model of computation. Working independently from Alonzo Church (who proved an equivalent result using lambda calculus), Turing established that there are fundamental limits to what can be computed.\n\nThe halting problem was the first concrete example of an undecidable problem, and it remains the canonical example in computer science education. The proof technique - diagonalization - connects deeply to Cantor's work on uncountability (1891) and Godel's incompleteness theorems (1931).\n\nThe practical implications are profound: no static analysis tool can perfectly detect all infinite loops, no compiler can optimize away all non-terminating code, and no verification system can automatically prove termination for all programs.",

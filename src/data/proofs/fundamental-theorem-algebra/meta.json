@@ -8,7 +8,32 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Fundamental_theorem_of_algebra",
     "date": "1799",
     "status": "verified",
-    "tags": ["algebra", "complex-analysis", "polynomials", "algebraic-closure", "intermediate"]
+    "tags": ["algebra", "complex-analysis", "polynomials", "algebraic-closure", "intermediate"],
+    "badge": "mathlib-exploration",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.exists_root",
+        "description": "Every non-constant complex polynomial has at least one root",
+        "module": "Mathlib.Analysis.Complex.Polynomial.Basic"
+      },
+      {
+        "theorem": "IsAlgClosed.splits_codomain",
+        "description": "Polynomials over algebraically closed fields split completely",
+        "module": "Mathlib.FieldTheory.IsAlgClosed.Basic"
+      },
+      {
+        "theorem": "Polynomial.natDegree_eq_card_roots",
+        "description": "For split polynomials, degree equals number of roots",
+        "module": "Mathlib.Algebra.Polynomial.Splits"
+      }
+    ],
+    "originalContributions": [
+      "no_roots_implies_constant - contrapositive formulation of FTA",
+      "card_roots_eq_degree - root counting theorem",
+      "monic_prod_roots - complete factorization theorem",
+      "quadratic_has_root - explicit quadratic case"
+    ]
   },
   "overview": {
     "historicalContext": "The Fundamental Theorem of Algebra has a fascinating history spanning centuries. First conjectured by Albert Girard in 1629, it was attempted by many great mathematicians including d'Alembert, Euler, and Lagrange. Carl Friedrich Gauss provided the first rigorous proof in his 1799 doctoral dissertation, though he would go on to publish three more proofs throughout his career.\n\nDespite its name, the theorem is fundamentally analytic rather than algebraic. Every known proof relies on some completeness property of the real numbers - whether through analysis, topology, or complex function theory. The proof in Mathlib uses Liouville's theorem from complex analysis: a bounded entire function must be constant.",
