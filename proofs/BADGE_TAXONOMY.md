@@ -63,8 +63,9 @@ Use when:
 - File contains `sorry` statements
 - Proof is incomplete or partial
 - Under active development
+- Proof relies on unproven axioms
 
-Examples: `BorsukUlam`, `BrouwerFixedPoint`, `FourColorTheorem`
+Examples: `NavierStokes` (8 axioms, conditional proof)
 
 ## Metadata Schema
 
@@ -126,11 +127,17 @@ Lean Genius aims to be:
 ## Examples by Badge
 
 ### 🏆 Original Proofs
+- **Borsuk-Ulam Theorem** - Complete proof via covering space theory
+- **Brouwer Fixed Point Theorem** - Complete proof via retraction impossibility
 - **Cantor's Diagonalization** - Complete diagonal argument without Mathlib's set theory
+- **Four Color Theorem** - Five color theorem proof, reducibility/unavoidability framework
+- **Gödel's Incompleteness** - Complete formalization of diagonal lemma and first theorem
 - **Halting Problem** - Self-contained with zero imports
 - **Infinitude of Primes** - Euclid's proof using basic Mathlib
 
 ### 📚 Mathlib Explorations
+- **Abel-Ruffini Theorem** - Uses `solvableByRad.isSolvable'`, demonstrates Galois theory
+- **Fermat's Last Theorem** - Uses `EllipticCurve`, axiomatized Wiles proof framework
 - **Fundamental Theorem of Algebra** - Uses `Complex.exists_root`, proves corollaries
 - **Euler's Identity** - Uses `Complex.exp_pi_mul_I`, demonstrates special functions
 - **√2 Irrational** - Uses `irrational_sqrt_two`, shows proof techniques
@@ -148,6 +155,4 @@ Lean Genius aims to be:
 - **1+1=2 (Peano section)** - Builds natural numbers manually
 
 ### 🚧 Work in Progress
-- **Borsuk-Ulam** - 3 sorries (requires algebraic topology)
-- **Four Color Theorem** - 5 sorries (requires computer verification)
-- **Navier-Stokes** - Partial formalization of millennium problem
+- **Navier-Stokes** - 8 axioms, conditional proof of millennium problem
