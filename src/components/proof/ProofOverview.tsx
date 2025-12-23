@@ -121,7 +121,7 @@ export function ProofOverview({ proof, versionInfo }: ProofOverviewProps) {
 
               {isVersionHistoryExpanded && (
                 <div className="px-4 pb-4 space-y-3">
-                  {versionInfo.versionHistory.map((version, index) => {
+                  {versionInfo.versionHistory.map((version) => {
                     const isCurrent = version.version === versionInfo.currentVersion
                     const statusConfig = getVersionStatusConfig(version.status)
                     const StatusIcon = statusConfig.icon
@@ -129,15 +129,8 @@ export function ProofOverview({ proof, versionInfo }: ProofOverviewProps) {
                     return (
                       <div
                         key={version.version}
-                        className={`relative pl-6 pb-3 ${index < versionInfo.versionHistory.length - 1 ? 'border-l border-border/50 ml-2' : ''}`}
+                        className="pb-2"
                       >
-                        {/* Timeline dot */}
-                        <div className={`absolute left-0 top-0 -translate-x-1/2 w-4 h-4 rounded-full border-2 ${
-                          isCurrent
-                            ? 'bg-annotation border-annotation'
-                            : 'bg-background border-muted-foreground/50'
-                        }`} />
-
                         <div
                           className={`rounded-lg p-3 ${isCurrent ? 'bg-annotation/10 border border-annotation/30' : 'bg-muted/10 hover:bg-muted/20 cursor-pointer transition-colors'}`}
                           onClick={() => !isCurrent && version.content && setSelectedVersion(version)}
