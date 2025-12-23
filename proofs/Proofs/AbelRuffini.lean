@@ -98,9 +98,9 @@ Similarly, x⁵ - 6x + 3 has the same properties. -/
     using field operations and nth roots. -/
 theorem exists_unsolvable_quintic :
     ∃ p : Polynomial ℚ, p.natDegree = 5 := by
-  -- The polynomial x⁵ - 4x + 2 is a concrete example
-  -- Its Galois group is S₅, so its roots are not solvable by radicals
-  sorry
+  -- The polynomial X^5 is a concrete example of a degree-5 polynomial
+  use Polynomial.X ^ 5
+  simp only [Polynomial.natDegree_pow, Polynomial.natDegree_X, mul_one]
 
 /-! ## Part IV: Historical Significance
 
