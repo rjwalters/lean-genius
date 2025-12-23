@@ -40,7 +40,7 @@ Use when:
 
 This differs from `mathlib-exploration` which uses Mathlib theorems directly, while `mathlib-extension` creates new mathematical content that extends Mathlib's foundations.
 
-Examples: `AbelRuffini` (extends solvability theory), `FermatsLastTheorem` (axiomatized framework)
+Examples: (none currently - reserved for proofs that build new mathematical structures)
 
 ### 🎓 Learning Example
 Use when:
@@ -143,8 +143,7 @@ Lean Genius aims to be:
 - **√2 Irrational** - Uses `irrational_sqrt_two`, shows proof techniques
 
 ### 🔧 Mathlib Extensions
-- **Abel-Ruffini Theorem** - Extends Mathlib's solvability theory for polynomial equations
-- **Fermat's Last Theorem** - Axiomatized framework extending Mathlib's number theory
+(none currently - reserved for proofs that build new mathematical structures on Mathlib)
 
 ### 🎓 Learning Examples
 - **1+1=2** - Peano arithmetic fundamentals
