@@ -7,11 +7,11 @@ This document defines the badge system for categorizing proofs in Lean Genius ba
 | Badge ID | Display Name | Emoji | Color | Description |
 |----------|--------------|-------|-------|-------------|
 | `original` | Original Proof | 🏆 | Gold (#F59E0B) | Novel formalization with minimal Mathlib delegation. The main theorem is proven from first principles or with a unique approach. |
-| `mathlib-exploration` | Mathlib Exploration | 📚 | Blue (#3B82F6) | Uses Mathlib for the main theorem, but provides valuable extensions, corollaries, or pedagogical presentation. |
-| `mathlib-extension` | Mathlib Extension | 🔧 | Teal (#14B8A6) | Extends Mathlib's existing theorems with new results or frameworks. Builds new mathematical structures on top of Mathlib. |
+| `mathlib` | Mathlib | 📚 | Blue (#3B82F6) | Uses Mathlib theorems for the main result. Standard approach leveraging the library. |
 | `pedagogical` | Learning Example | 🎓 | Green (#10B981) | Focused on teaching Lean techniques, syntax, or proof patterns. May be simple by design. |
 | `from-axioms` | From Axioms | ⚡ | Purple (#8B5CF6) | Proves from first principles with no or minimal imports. Demonstrates foundational reasoning. |
-| `wip` | Work in Progress | 🚧 | Orange (#F97316) | Has `sorry` statements or incomplete sections. Under active development. |
+| `fallacy` | Fallacy | ⚠️ | Red (#EF4444) | Demonstrates a mathematical fallacy or invalid argument. Shows where reasoning breaks down. |
+| `wip` | Work in Progress | 🚧 | Orange (#F97316) | Has `sorry` statements, incomplete sections, or relies on unproven axioms. |
 
 ## Badge Selection Criteria
 
@@ -23,24 +23,13 @@ Use when:
 
 Examples: `CantorDiagonalization`, `HaltingProblem`, `InfinitudePrimes`, `PythagoreanTheorem`
 
-### 📚 Mathlib Exploration
+### 📚 Mathlib
 Use when:
 - The main theorem comes from Mathlib (e.g., `Complex.exists_root`)
-- The file proves useful corollaries or extensions
-- Provides pedagogical value in how to USE Mathlib
+- The file proves corollaries or demonstrates usage
+- Standard approach leveraging the Mathlib library
 
-Examples: `FundamentalTheoremAlgebra`, `EulerIdentity`, `Sqrt2Irrational`
-
-### 🔧 Mathlib Extension
-Use when:
-- Building NEW mathematical structures on top of Mathlib
-- Extending Mathlib's existing theories with new results
-- Creating frameworks that go beyond what Mathlib provides
-- The proof adds substantial new formalization, not just using existing theorems
-
-This differs from `mathlib-exploration` which uses Mathlib theorems directly, while `mathlib-extension` creates new mathematical content that extends Mathlib's foundations.
-
-Examples: (none currently - reserved for proofs that build new mathematical structures)
+Examples: `FundamentalTheoremAlgebra`, `EulerIdentity`, `Sqrt2Irrational`, `AbelRuffini`
 
 ### 🎓 Learning Example
 Use when:
@@ -48,7 +37,7 @@ Use when:
 - Proof complexity is intentionally low
 - Demonstrates specific proof techniques or patterns
 
-Examples: `OnePlusOne`, `Sqrt2`
+Examples: `OnePlusOne`
 
 ### ⚡ From Axioms
 Use when:
@@ -58,12 +47,20 @@ Use when:
 
 Examples: `HaltingProblem` (no imports), `OnePlusOne` (Peano construction)
 
+### ⚠️ Fallacy
+Use when:
+- The proof intentionally demonstrates invalid reasoning
+- Shows where a mathematical argument breaks down
+- Educational purpose: teaching what NOT to do
+
+Examples: `RamanujanSumFallacy` (demonstrates why 1+2+3+... ≠ -1/12 in standard analysis)
+
 ### 🚧 Work in Progress
 Use when:
 - File contains `sorry` statements
 - Proof is incomplete or partial
-- Under active development
 - Proof relies on unproven axioms
+- Under active development
 
 Examples: `NavierStokes` (8 axioms, conditional proof)
 
@@ -76,7 +73,7 @@ Each proof's `meta.json` should include badge information:
   "meta": {
     "status": "verified",
     "tags": ["algebra", "complex-analysis"],
-    "badge": "mathlib-exploration",
+    "badge": "mathlib",
     "mathlibDependencies": [
       {
         "theorem": "Complex.exists_root",
@@ -135,23 +132,21 @@ Lean Genius aims to be:
 - **Halting Problem** - Self-contained with zero imports
 - **Infinitude of Primes** - Euclid's proof using basic Mathlib
 
-### 📚 Mathlib Explorations
+### 📚 Mathlib
 - **Abel-Ruffini Theorem** - Uses `solvableByRad.isSolvable'`, demonstrates Galois theory
 - **Fermat's Last Theorem** - Uses `EllipticCurve`, axiomatized Wiles proof framework
 - **Fundamental Theorem of Algebra** - Uses `Complex.exists_root`, proves corollaries
 - **Euler's Identity** - Uses `Complex.exp_pi_mul_I`, demonstrates special functions
 - **√2 Irrational** - Uses `irrational_sqrt_two`, shows proof techniques
 
-### 🔧 Mathlib Extensions
-(none currently - reserved for proofs that build new mathematical structures on Mathlib)
-
 ### 🎓 Learning Examples
 - **1+1=2** - Peano arithmetic fundamentals
-- **Basic Sqrt2** - Minimal proof template
 
 ### ⚡ From Axioms
 - **Halting Problem** - Pure logic, no imports
-- **1+1=2 (Peano section)** - Builds natural numbers manually
+
+### ⚠️ Fallacy
+- **Ramanujan Sum Fallacy** - Demonstrates where the -1/12 argument breaks down
 
 ### 🚧 Work in Progress
 - **Navier-Stokes** - 8 axioms, conditional proof of millennium problem

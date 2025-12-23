@@ -29,10 +29,10 @@ export interface ProofConclusion {
  */
 export type ProofBadge =
   | 'original'           // 🏆 Novel formalization with minimal Mathlib delegation
-  | 'mathlib-exploration' // 📚 Uses Mathlib for main theorem, proves extensions
-  | 'mathlib-extension'  // 🔧 Extends Mathlib with new results or frameworks
+  | 'mathlib'            // 📚 Uses Mathlib theorems (standard approach)
   | 'pedagogical'        // 🎓 Focused on teaching Lean techniques
   | 'from-axioms'        // ⚡ Proves from first principles, no/minimal imports
+  | 'fallacy'            // ⚠️ Demonstrates a mathematical fallacy or invalid argument
   | 'wip'                // 🚧 Has sorries or incomplete sections
 
 /**
@@ -45,17 +45,11 @@ export const BADGE_INFO: Record<ProofBadge, { emoji: string; label: string; colo
     color: '#F59E0B',
     description: 'Novel formalization with minimal Mathlib delegation'
   },
-  'mathlib-exploration': {
+  'mathlib': {
     emoji: '📚',
-    label: 'Mathlib Exploration',
+    label: 'Mathlib',
     color: '#3B82F6',
-    description: 'Uses Mathlib for main theorem, proves extensions/corollaries'
-  },
-  'mathlib-extension': {
-    emoji: '🔧',
-    label: 'Mathlib Extension',
-    color: '#14B8A6',
-    description: 'Extends Mathlib with new results or frameworks'
+    description: 'Uses Mathlib theorems for the main result'
   },
   'pedagogical': {
     emoji: '🎓',
@@ -68,6 +62,12 @@ export const BADGE_INFO: Record<ProofBadge, { emoji: string; label: string; colo
     label: 'From Axioms',
     color: '#8B5CF6',
     description: 'Proves from first principles with no/minimal imports'
+  },
+  'fallacy': {
+    emoji: '⚠️',
+    label: 'Fallacy',
+    color: '#EF4444',
+    description: 'Demonstrates a mathematical fallacy or invalid argument'
   },
   'wip': {
     emoji: '🚧',
