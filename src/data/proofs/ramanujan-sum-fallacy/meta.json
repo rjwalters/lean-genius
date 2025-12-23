@@ -23,6 +23,25 @@
         "url": "https://www.youtube.com/watch?v=YuIIjLr6vUA",
         "type": "video"
       }
+    ],
+    "badge": "pedagogical",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "tsum",
+        "description": "Topological sum for infinite series",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "Summable",
+        "description": "Typeclass for convergent series",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Demonstration of how Lean catches invalid series manipulation",
+      "Educational walkthrough of the famous -1/12 fallacy",
+      "Distinction between summation and zeta regularization"
     ]
   },
   "overview": {

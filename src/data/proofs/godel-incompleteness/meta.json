@@ -8,7 +8,15 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/G%C3%B6del%27s_incompleteness_theorems",
     "date": "1931",
     "status": "verified",
-    "tags": ["logic", "foundations", "incompleteness", "self-reference", "advanced"]
+    "tags": ["logic", "foundations", "incompleteness", "self-reference", "advanced"],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "Complete formalization of Gödel numbering framework",
+      "Diagonal Lemma construction for self-reference",
+      "First Incompleteness Theorem proof structure"
+    ]
   },
   "overview": {
     "historicalContext": "In 1931, Kurt Gödel, a 25-year-old logician in Vienna, published a paper that would fundamentally change our understanding of mathematics and logic. His Incompleteness Theorems demonstrated that the dream of a complete, consistent foundation for mathematics—Hilbert's Program—was impossible.\n\nDavid Hilbert had proposed that all mathematical truths could be derived from a fixed set of axioms using formal rules. Gödel showed this was a fantasy: any system powerful enough to do arithmetic would contain truths it could never prove. The implications rippled through philosophy, computer science (anticipating the Halting Problem), and our understanding of the limits of human knowledge.",
