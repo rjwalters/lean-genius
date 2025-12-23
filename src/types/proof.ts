@@ -187,6 +187,26 @@ export interface VersionHistoryEntry {
   file: string
   /** Brief summary of changes in this version */
   summary?: string
+  /** Full content of this version (loaded from file) */
+  content?: VersionContent
+}
+
+/**
+ * Content of a historical version snapshot
+ */
+export interface VersionContent {
+  /** Description of this version */
+  description: string
+  /** Overview content */
+  overview?: ProofOverview
+  /** Conclusion content */
+  conclusion?: ProofConclusion
+  /** Objection/analysis details */
+  objection?: {
+    verdict: string
+    summary: string
+    coreIssue?: string
+  }
 }
 
 // LeanInk-extracted tactic goal states

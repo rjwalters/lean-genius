@@ -1,10 +1,18 @@
 import { useState } from 'react'
-import { ChevronDown, ChevronUp, ExternalLink, Lightbulb, Package, Award, History, CheckCircle, Clock, AlertCircle, AlertTriangle } from 'lucide-react'
+import { ChevronDown, ChevronUp, ExternalLink, Lightbulb, Package, Award, History, CheckCircle, Clock, AlertCircle, AlertTriangle, Eye } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { MarkdownMath, MarkdownMathInline } from '@/components/ui/markdown-math'
 import { ProofBadge } from '@/components/ui/proof-badge'
 import { BADGE_INFO } from '@/types/proof'
 import type { Proof, ProofVersionInfo, VersionHistoryEntry } from '@/types/proof'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 interface ProofOverviewProps {
   proof: Proof
@@ -27,6 +35,7 @@ function getVersionStatusConfig(status: VersionHistoryEntry['status']) {
 export function ProofOverview({ proof, versionInfo }: ProofOverviewProps) {
   const [isExpanded, setIsExpanded] = useState(true)
   const [isVersionHistoryExpanded, setIsVersionHistoryExpanded] = useState(false)
+  const [selectedVersion, setSelectedVersion] = useState<VersionHistoryEntry | null>(null)
   const { overview, meta } = proof
 
   if (!overview) return null
@@ -129,7 +138,18 @@ export function ProofOverview({ proof, versionInfo }: ProofOverviewProps) {
                             : 'bg-background border-muted-foreground/50'
                         }`} />
 
-                        <div className={`rounded-lg p-3 ${isCurrent ? 'bg-annotation/10 border border-annotation/30' : 'bg-muted/10'}`}>
+                        <div
+                          className={`rounded-lg p-3 ${isCurrent ? 'bg-annotation/10 border border-annotation/30' : 'bg-muted/10 hover:bg-muted/20 cursor-pointer transition-colors'}`}
+                          onClick={() => !isCurrent && version.content && setSelectedVersion(version)}
+                          role={!isCurrent && version.content ? 'button' : undefined}
+                          tabIndex={!isCurrent && version.content ? 0 : undefined}
+                          onKeyDown={(e) => {
+                            if (!isCurrent && version.content && (e.key === 'Enter' || e.key === ' ')) {
+                              e.preventDefault()
+                              setSelectedVersion(version)
+                            }
+                          }}
+                        >
                           <div className="flex items-center gap-2 flex-wrap">
                             <span className={`font-mono text-sm font-semibold ${isCurrent ? 'text-annotation' : 'text-foreground'}`}>
                               {version.version}
@@ -138,6 +158,12 @@ export function ProofOverview({ proof, versionInfo }: ProofOverviewProps) {
                             {isCurrent && (
                               <span className="text-xs bg-annotation/20 text-annotation px-1.5 py-0.5 rounded">
                                 Current
+                              </span>
+                            )}
+                            {!isCurrent && version.content && (
+                              <span className="ml-auto flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
+                                <Eye className="h-3 w-3" />
+                                View
                               </span>
                             )}
                           </div>
@@ -289,6 +315,108 @@ export function ProofOverview({ proof, versionInfo }: ProofOverviewProps) {
           )}
         </div>
       )}
+
+      {/* Version Content Dialog */}
+      <Dialog open={!!selectedVersion} onOpenChange={(open) => !open && setSelectedVersion(null)}>
+        <DialogContent className="max-w-3xl max-h-[85vh] flex flex-col">
+          {selectedVersion && selectedVersion.content && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-3">
+                  <span className="font-mono text-annotation">{selectedVersion.version}</span>
+                  <span>{selectedVersion.name}</span>
+                </DialogTitle>
+                <DialogDescription className="flex items-center gap-3">
+                  <span>{new Date(selectedVersion.date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}</span>
+                  <span className={`flex items-center gap-1 ${getVersionStatusConfig(selectedVersion.status).className}`}>
+                    {(() => {
+                      const StatusIcon = getVersionStatusConfig(selectedVersion.status).icon
+                      return <StatusIcon className="h-3 w-3" />
+                    })()}
+                    {getVersionStatusConfig(selectedVersion.status).label}
+                  </span>
+                </DialogDescription>
+              </DialogHeader>
+
+              <ScrollArea className="flex-1 -mx-6 px-6">
+                <div className="space-y-6 pb-4">
+                  {/* Verdict/Status */}
+                  {selectedVersion.content.objection && (
+                    <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+                      <h4 className="text-sm font-semibold text-red-400 mb-2">
+                        {selectedVersion.content.objection.verdict}
+                      </h4>
+                      <p className="text-sm text-foreground/90">
+                        {selectedVersion.content.objection.summary}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Description */}
+                  <div>
+                    <h4 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-2">
+                      Description
+                    </h4>
+                    <p className="text-sm text-foreground/90 leading-relaxed">
+                      {selectedVersion.content.description}
+                    </p>
+                  </div>
+
+                  {/* Proof Strategy */}
+                  {selectedVersion.content.overview?.proofStrategy && (
+                    <div>
+                      <h4 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-2">
+                        Proof Strategy
+                      </h4>
+                      <MarkdownMath className="prose prose-invert prose-sm max-w-none text-foreground/90">
+                        {selectedVersion.content.overview.proofStrategy}
+                      </MarkdownMath>
+                    </div>
+                  )}
+
+                  {/* Key Insights */}
+                  {selectedVersion.content.overview?.keyInsights && selectedVersion.content.overview.keyInsights.length > 0 && (
+                    <div>
+                      <h4 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-2">
+                        Key Insights
+                      </h4>
+                      <ul className="space-y-2">
+                        {selectedVersion.content.overview.keyInsights.map((insight, i) => (
+                          <li
+                            key={i}
+                            className="flex gap-3 text-sm text-foreground/90 bg-muted/20 rounded-lg p-3"
+                          >
+                            <span className="shrink-0 h-5 w-5 rounded-full bg-muted text-muted-foreground text-xs flex items-center justify-center font-medium">
+                              {i + 1}
+                            </span>
+                            <span className="leading-relaxed">{insight}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Conclusion */}
+                  {selectedVersion.content.conclusion && (
+                    <div>
+                      <h4 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-2">
+                        Conclusion
+                      </h4>
+                      <MarkdownMath className="prose prose-invert prose-sm max-w-none text-foreground/90">
+                        {selectedVersion.content.conclusion.summary}
+                      </MarkdownMath>
+                    </div>
+                  )}
+                </div>
+              </ScrollArea>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
