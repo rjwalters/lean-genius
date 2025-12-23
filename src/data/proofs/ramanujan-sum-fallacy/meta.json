@@ -6,12 +6,21 @@
   "meta": {
     "status": "disputed",
     "tags": ["fallacy", "divergent-series", "analysis", "zeta-function", "educational"],
+    "badge": "pedagogical",
+    "sorries": 9,
+    "sorriesIntentional": true,
+    "sorriesExplanation": "All 9 sorries in this file are INTENTIONALLY unprovable. They mark steps in the famous '1+2+3+...=-1/12' fallacy that are mathematically impossible. Each sorry documents where Lean's type system catches an invalid manipulation of divergent series. These sorries should NOT be filled - they demonstrate the educational value of formal verification in catching fallacies.",
     "mathlib_version": "4.10.0",
-    "proofRepoPath": "Proofs/RamanujanFallacy.lean",
+    "proofRepoPath": "Proofs/RamanujanSumFallacy.lean",
     "externalReferences": [
       {
         "title": "Numberphile: ASTOUNDING: 1+2+3+4+... = -1/12",
         "url": "https://www.youtube.com/watch?v=w-I6XTVZXww",
+        "type": "video"
+      },
+      {
+        "title": "Mathologer: Numberphile v. Math: the truth about 1+2+3+...=-1/12",
+        "url": "https://www.youtube.com/watch?v=YuIIjLr6vUA",
         "type": "video"
       }
     ]
