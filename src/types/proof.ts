@@ -30,6 +30,7 @@ export interface ProofConclusion {
 export type ProofBadge =
   | 'original'           // 🏆 Novel formalization with minimal Mathlib delegation
   | 'mathlib-exploration' // 📚 Uses Mathlib for main theorem, proves extensions
+  | 'mathlib-extension'  // 🔧 Extends Mathlib with new results or frameworks
   | 'pedagogical'        // 🎓 Focused on teaching Lean techniques
   | 'from-axioms'        // ⚡ Proves from first principles, no/minimal imports
   | 'wip'                // 🚧 Has sorries or incomplete sections
@@ -49,6 +50,12 @@ export const BADGE_INFO: Record<ProofBadge, { emoji: string; label: string; colo
     label: 'Mathlib Exploration',
     color: '#3B82F6',
     description: 'Uses Mathlib for main theorem, proves extensions/corollaries'
+  },
+  'mathlib-extension': {
+    emoji: '🔧',
+    label: 'Mathlib Extension',
+    color: '#14B8A6',
+    description: 'Extends Mathlib with new results or frameworks'
   },
   'pedagogical': {
     emoji: '🎓',

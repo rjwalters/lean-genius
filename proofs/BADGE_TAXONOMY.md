@@ -8,6 +8,7 @@ This document defines the badge system for categorizing proofs in Lean Genius ba
 |----------|--------------|-------|-------|-------------|
 | `original` | Original Proof | 🏆 | Gold (#F59E0B) | Novel formalization with minimal Mathlib delegation. The main theorem is proven from first principles or with a unique approach. |
 | `mathlib-exploration` | Mathlib Exploration | 📚 | Blue (#3B82F6) | Uses Mathlib for the main theorem, but provides valuable extensions, corollaries, or pedagogical presentation. |
+| `mathlib-extension` | Mathlib Extension | 🔧 | Teal (#14B8A6) | Extends Mathlib's existing theorems with new results or frameworks. Builds new mathematical structures on top of Mathlib. |
 | `pedagogical` | Learning Example | 🎓 | Green (#10B981) | Focused on teaching Lean techniques, syntax, or proof patterns. May be simple by design. |
 | `from-axioms` | From Axioms | ⚡ | Purple (#8B5CF6) | Proves from first principles with no or minimal imports. Demonstrates foundational reasoning. |
 | `wip` | Work in Progress | 🚧 | Orange (#F97316) | Has `sorry` statements or incomplete sections. Under active development. |
@@ -29,6 +30,17 @@ Use when:
 - Provides pedagogical value in how to USE Mathlib
 
 Examples: `FundamentalTheoremAlgebra`, `EulerIdentity`, `Sqrt2Irrational`
+
+### 🔧 Mathlib Extension
+Use when:
+- Building NEW mathematical structures on top of Mathlib
+- Extending Mathlib's existing theories with new results
+- Creating frameworks that go beyond what Mathlib provides
+- The proof adds substantial new formalization, not just using existing theorems
+
+This differs from `mathlib-exploration` which uses Mathlib theorems directly, while `mathlib-extension` creates new mathematical content that extends Mathlib's foundations.
+
+Examples: `AbelRuffini` (extends solvability theory), `FermatsLastTheorem` (axiomatized framework)
 
 ### 🎓 Learning Example
 Use when:
@@ -122,6 +134,10 @@ Lean Genius aims to be:
 - **Fundamental Theorem of Algebra** - Uses `Complex.exists_root`, proves corollaries
 - **Euler's Identity** - Uses `Complex.exp_pi_mul_I`, demonstrates special functions
 - **√2 Irrational** - Uses `irrational_sqrt_two`, shows proof techniques
+
+### 🔧 Mathlib Extensions
+- **Abel-Ruffini Theorem** - Extends Mathlib's solvability theory for polynomial equations
+- **Fermat's Last Theorem** - Axiomatized framework extending Mathlib's number theory
 
 ### 🎓 Learning Examples
 - **1+1=2** - Peano arithmetic fundamentals
