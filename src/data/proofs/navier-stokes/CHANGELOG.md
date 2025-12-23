@@ -18,11 +18,19 @@ This document tracks the evolution of our analysis of the Navier-Stokes regulari
 - **Crossing MUST occur** as τ → 0, but may happen at τ > 0.1 (missing rigidity trigger)
 - See `analysis/tropical-crossing-analysis.md`
 
-**New Hypothesis Identified:**
-- The proof has TWO ingredients: β → 0 [PROVED] and θ ≥ c [ASSUMED]
-- **Key question:** Does β → 0 imply θ → 1?
-- Physical intuition: Vorticity alignment → tube structures → concentrated enstrophy
-- If true, Type II blowup → β → 0 → θ → 1 → proof closes
+**β → θ Hypothesis - RULED OUT:**
+- Initial hypothesis: β → 0 (alignment) implies θ → 1 (concentration)
+- **Finding:** β and θ are INDEPENDENT properties
+  - β: pointwise vorticity-strain alignment
+  - θ: spatial distribution of enstrophy
+- Constantin-Fefferman coherence ≠ our β
+- Tube structures can have β ≈ 0 but θ ≈ 0 if elongated
+- See `analysis/beta-theta-investigation.md`
+
+**New Promising Directions Identified:**
+1. **Diffusion-scale matching:** If concentration scale r(t) ~ R(t), then θ ~ O(1)
+2. **Carleman lower bounds:** Tao's methods might give lower bounds on local enstrophy
+3. **Type II timescale separation:** β·R ~ (T-t)^{3α/2-1} → 0 might force concentration
 
 ### Changes from v1
 

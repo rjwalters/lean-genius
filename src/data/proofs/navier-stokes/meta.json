@@ -79,15 +79,27 @@
       },
       {
         "name": "β → 0 implies θ → 1 (vorticity-concentration link)",
-        "description": "NEW HYPOTHESIS: For Type II, β = (T-t)^{α-1} → 0 is PROVED (vorticity alignment). If alignment forces concentration (β → 0 ⟹ θ → 1), proof closes. Physical intuition: aligned vorticity forms tubes with small cross-section → high θ.",
-        "likelihood": "Medium-High - physically plausible, would bypass all other gaps",
-        "status": "NEW - NOT YET INVESTIGATED"
+        "description": "INVESTIGATED (Dec 2025): β (alignment) and θ (concentration) are INDEPENDENT properties. Constantin-Fefferman coherence ≠ our β. Tube structures can have β≈0 but θ≈0 if elongated. Physical intuition was misleading. See analysis/beta-theta-investigation.md",
+        "likelihood": "Low - β and θ are fundamentally different properties",
+        "status": "INVESTIGATED - RULED OUT"
+      },
+      {
+        "name": "Diffusion-scale matching",
+        "description": "NEW: For blowup, vorticity concentration scale r(t) might match diffusion scale R(t)=√(ν/Ω). Physics: viscosity smooths structures smaller than R. If r~R, then θ~O(1) automatically. Requires rigorous argument.",
+        "likelihood": "Medium - physically motivated, new direction",
+        "status": "NEW - PROMISING"
+      },
+      {
+        "name": "Carleman lower bounds on enstrophy",
+        "description": "NEW: Tao uses Carleman estimates for LOWER bounds on vorticity in annuli. Can these give lower bounds on local ENSTROPHY? If so, might get θ ≥ c from backwards-propagation arguments.",
+        "likelihood": "Medium - Tao's methods might extend",
+        "status": "NEW - PROMISING"
       },
       {
         "name": "Type II-specific concentration",
-        "description": "Most literature analyzes Type I. Type II has α > 1 so β → 0. This structure might force better concentration than Type I exponential estimates.",
-        "likelihood": "Medium - Type II less studied, may have exploitable structure",
-        "status": "NOT YET INVESTIGATED"
+        "description": "Most literature analyzes Type I. Type II has α > 1 so β → 0 faster. The ratio β·R ~ (T-t)^{3α/2-1} → 0 for α > 2/3. This timescale separation might force concentration.",
+        "likelihood": "Medium - Type II less studied, timescale argument new",
+        "status": "PARTIALLY INVESTIGATED"
       },
       {
         "name": "Hou scenario analysis",
