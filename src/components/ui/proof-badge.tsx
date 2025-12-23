@@ -60,7 +60,7 @@ interface BadgeFilterProps {
  * Filter buttons for selecting proof badges
  */
 export function BadgeFilter({ selectedBadges, onToggle, className = '' }: BadgeFilterProps) {
-  const badges: ProofBadgeType[] = ['original', 'mathlib-exploration', 'pedagogical', 'from-axioms', 'wip']
+  const badges: ProofBadgeType[] = ['original', 'mathlib-exploration', 'mathlib-extension', 'pedagogical', 'from-axioms', 'wip']
 
   return (
     <div className={`flex flex-wrap gap-2 ${className}`}>
