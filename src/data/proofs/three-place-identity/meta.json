@@ -19,7 +19,7 @@
     ],
     "proofRepoPath": "Proofs/ThreePlaceIdentity.lean",
     "badge": "original",
-    "sorries": 1,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "tauto",
@@ -53,20 +53,20 @@
       "id": "header",
       "title": "Introduction",
       "startLine": 1,
-      "endLine": 35,
+      "endLine": 40,
       "summary": "Overview of the proof and its significance: formalizing Etter's claim that three-place identity is foundationally universal."
     },
     {
       "id": "relative-identity",
       "title": "The Relative Identity Structure",
-      "startLine": 37,
-      "endLine": 84,
+      "startLine": 42,
+      "endLine": 86,
       "summary": "Definition of RelativeIdentity: a three-place predicate where each fixed viewpoint induces an equivalence relation."
     },
     {
       "id": "bridge-d1",
       "title": "Bridge D1: Membership from Identity",
-      "startLine": 86,
+      "startLine": 88,
       "endLine": 126,
       "summary": "First bridge: y exists for x when x distinguishes y from itself. Formalizes 'existence as distinguishability.'"
     },
@@ -74,49 +74,49 @@
       "id": "bridge-d2",
       "title": "Bridge D2: Identity from Membership",
       "startLine": 128,
-      "endLine": 165,
+      "endLine": 168,
       "summary": "Second bridge: x regards y,z as identical when they have the same membership status. Connects to Quine's role identities."
     },
     {
       "id": "d2-preserves",
       "title": "D2 Preserves Identity Structure",
-      "startLine": 167,
-      "endLine": 214,
+      "startLine": 170,
+      "endLine": 221,
       "summary": "Proof that any membership relation induces a valid relative identity structure via D2."
     },
     {
       "id": "foundation",
       "title": "The Foundation Axiom",
-      "startLine": 216,
-      "endLine": 236,
+      "startLine": 223,
+      "endLine": 243,
       "summary": "The ZF Foundation axiom: no set contains itself. Essential for the round-trip theorem."
     },
     {
       "id": "round-trip",
       "title": "The Round-Trip Theorem",
-      "startLine": 238,
-      "endLine": 296,
+      "startLine": 245,
+      "endLine": 282,
       "summary": "The key result: mem -> Id_mem -> mem' = mem. Identity and membership are mutually interpretable."
     },
     {
       "id": "universality",
       "title": "The Universality Theorem",
-      "startLine": 298,
-      "endLine": 348,
+      "startLine": 283,
+      "endLine": 335,
       "summary": "The main theorem: identity theory can express all of mathematics via the ZF-derived membership."
     },
     {
       "id": "philosophy",
       "title": "Philosophical Consequences",
-      "startLine": 350,
-      "endLine": 382,
+      "startLine": 336,
+      "endLine": 370,
       "summary": "Discussion of implications: identity precedes existence, relativity of ontology, connection to Quine."
     },
     {
       "id": "examples",
       "title": "Examples and Verification",
-      "startLine": 384,
-      "endLine": 435,
+      "startLine": 371,
+      "endLine": 425,
       "summary": "Concrete examples: trivial identity, discrete identity, and verification with natural numbers."
     }
   ],
