@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 
@@ -58,6 +59,11 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
           <DialogTitle>
             {mode === 'login' ? 'Sign in to LeanGenius' : 'Create an account'}
           </DialogTitle>
+          <DialogDescription>
+            {mode === 'login'
+              ? 'Sign in to save your progress and join the discussion.'
+              : 'Create an account to save your progress and join the discussion.'}
+          </DialogDescription>
         </DialogHeader>
 
         <div className="mt-4">
