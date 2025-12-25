@@ -1,0 +1,89 @@
+{
+  "id": "knights-tour-oblique",
+  "title": "Knight's Tour Oblique Angles",
+  "slug": "knights-tour-oblique",
+  "description": "Every closed knight's tour has at least 4 oblique (>90 degree) turns, and exactly one tour achieves this minimum. Based on Donald Knuth's 2025 Christmas Lecture.",
+  "meta": {
+    "author": "Donald E. Knuth (result)",
+    "authorHandle": "Stanford Computer Science",
+    "sourceUrl": "https://online.stanford.edu/events/202412/donald-knuths-annual-christmas-lecture-2025",
+    "date": "2025-12-04",
+    "status": "pending",
+    "tags": ["combinatorics", "graph-theory", "knights-tour", "symmetry", "Knuth", "D4", "winding-number"]
+  },
+  "overview": {
+    "historicalContext": "The knight's tour problem has fascinated mathematicians for over 1200 years, with the earliest known reference from the 9th century. Euler studied it in 1759. In his 29th Annual Christmas Lecture (December 2025), Donald Knuth revealed a new structural property: the minimum number of 'oblique' turns in any closed tour, and the remarkable uniqueness of the tour achieving this minimum.",
+    "problemStatement": "Consider a knight making a complete tour of an 8x8 chessboard, visiting each square exactly once and returning to the starting square. At each intermediate square, the knight changes direction. An 'oblique' turn occurs when the direction changes by more than 90 degrees (equivalently, when consecutive move vectors have negative dot product). Question: What is the minimum number of oblique turns, and how many tours achieve it?",
+    "proofStrategy": "We discretize knight move directions into 8 values (Z/8Z) and use a winding number argument: the sum of all turn angles in a closed tour must be 0 mod 8. Oblique turns contribute 'large' angle changes (3, 4, or 5 units), while non-oblique turns contribute 'small' changes (0, 1, 2, 6, or 7 units). A counting argument on this modular constraint forces at least 4 oblique turns. For uniqueness, we apply D4 symmetry reduction (8-fold) and verify computationally that exactly one equivalence class achieves the minimum.",
+    "keyInsights": [
+      "The dot product of consecutive knight move vectors determines whether a turn is oblique: negative dot product means angle > 90 degrees",
+      "Knight moves have 8 discrete directions, so we can work in Z/8Z for turn angles",
+      "A closed tour's total winding (sum of turn angles) must be 0 mod 8, constraining which angle combinations are possible",
+      "The D4 dihedral group (symmetries of the square) reduces the 13+ trillion tours to ~1.7 trillion equivalence classes",
+      "Among all these equivalence classes, exactly ONE achieves the minimum of 4 oblique turns - 'It's a beauty' (Knuth)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "board-definitions",
+      "title": "Board and Knight Definitions",
+      "startLine": 29,
+      "endLine": 77,
+      "summary": "Define the 8x8 board as Fin 8 x Fin 8 and the knight graph where edges connect squares reachable by a knight move."
+    },
+    {
+      "id": "move-vectors",
+      "title": "Move Vectors and Oblique Predicate",
+      "startLine": 79,
+      "endLine": 118,
+      "summary": "Define move vectors for knight moves and the key 'oblique' predicate: a turn is oblique iff the dot product of consecutive move vectors is negative (angle > 90 degrees)."
+    },
+    {
+      "id": "tour-representation",
+      "title": "Tour Representation",
+      "startLine": 120,
+      "endLine": 169,
+      "summary": "Define a closed knight's tour as a Hamiltonian cycle in the knight graph, and the obliqueCount function that counts oblique turns."
+    },
+    {
+      "id": "winding-argument",
+      "title": "Winding Number Argument",
+      "startLine": 171,
+      "endLine": 250,
+      "summary": "The core mathematical argument: discretize directions into Z/8Z, prove the winding constraint (total turn angle = 0 mod 8), and derive the lower bound of 4 oblique turns."
+    },
+    {
+      "id": "d4-symmetry",
+      "title": "D4 Symmetry and Group Action",
+      "startLine": 252,
+      "endLine": 331,
+      "summary": "Define the D4 dihedral group action on the board and prove that both the knight graph structure and oblique count are invariant under symmetry transformations."
+    },
+    {
+      "id": "uniqueness",
+      "title": "Uniqueness via Certified Search",
+      "startLine": 333,
+      "endLine": 373,
+      "summary": "Construct the unique minimal-oblique tour explicitly and prove that any tour with exactly 4 oblique turns must be D4-equivalent to it."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Main Theorems",
+      "startLine": 375,
+      "endLine": 418,
+      "summary": "State the two main results: (1) every closed tour has at least 4 oblique turns, and (2) exactly one tour (up to symmetry) achieves this minimum."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Donald Knuth's surprising 2025 discovery about knight's tours. The lower bound of 4 oblique turns follows from a beautiful winding number argument on Z/8Z, while the uniqueness requires computational verification over the symmetry-reduced search space. The result reveals unexpected structure in the vast space of knight's tours.",
+    "implications": "The result demonstrates how discrete geometry, group theory, and computational methods combine in modern combinatorics. The winding number technique may apply to other Hamiltonian cycle problems. The uniqueness of the minimal-oblique tour suggests deeper structural properties of knight's tours waiting to be discovered.",
+    "openQuestions": [
+      "Can similar oblique-angle bounds be proven for larger n x n boards?",
+      "What is the distribution of oblique counts across all 13+ trillion knight's tours?",
+      "Is there a closed-form or generating function for counting tours by oblique count?",
+      "What is the maximum number of oblique turns in a closed tour?",
+      "Can the uniqueness proof be made more 'mathematical' (less computational)?",
+      "What is the connection to Knuth's cryptic index entry 'Pun resisted, 62, 470' in TAOCP Vol. 4A?"
+    ]
+  }
+}
