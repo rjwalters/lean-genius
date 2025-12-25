@@ -16,6 +16,7 @@ import { abelRuffiniData } from './abel-ruffini'
 import { borsukUlamData } from './borsuk-ulam'
 import { centralLimitTheoremData } from './central-limit-theorem'
 import { fermatsLastTheoremData } from './fermats-last-theorem'
+import { randomizedMaxCutData } from './randomized-maxcut'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -37,6 +38,7 @@ export const proofs: Record<string, ProofData> = {
   'borsuk-ulam': borsukUlamData,
   'central-limit-theorem': centralLimitTheoremData,
   'fermats-last-theorem': fermatsLastTheoremData,
+  'randomized-maxcut': randomizedMaxCutData,
 }
 
 export function getProof(slug: string): ProofData | undefined {

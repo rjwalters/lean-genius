@@ -1,0 +1,144 @@
+{
+  "id": "randomized-maxcut",
+  "title": "Randomized MaxCut Approximation",
+  "slug": "randomized-maxcut",
+  "description": "A formal proof that a simple randomized algorithm achieves a 1/2-approximation for the NP-Complete Maximum Cut problem, using linearity of expectation.",
+  "meta": {
+    "author": "Aditya Bhamra",
+    "authorHandle": "abhamra",
+    "sourceUrl": "https://abhamra.com/blog/randomized-maxcut/",
+    "status": "verified",
+    "tags": ["graph-theory", "algorithms", "probability", "approximation", "randomized"],
+    "mathlib_version": "4.10.0",
+    "proofRepoPath": "Proofs/RandomizedMaxCut.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Graph structure with symmetric adjacency relation",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "edgeFinset",
+        "description": "Finite set of graph edges",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Finite"
+      },
+      {
+        "theorem": "Finset.sum_comm",
+        "description": "Swap order of finite summations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Sym2",
+        "description": "Unordered pairs for representing edges",
+        "module": "Mathlib.Data.Sym.Sym2"
+      }
+    ],
+    "originalContributions": [
+      "Cut structure with partition proof obligations",
+      "Edge indicator characteristic function",
+      "Bijection-based counting of separating assignments",
+      "Complete formalization of 1/2-approximation guarantee"
+    ],
+    "externalReferences": [
+      {
+        "title": "Randomized MaxCut Blog Post",
+        "url": "https://abhamra.com/blog/randomized-maxcut/",
+        "type": "article"
+      },
+      {
+        "title": "Original GitHub Repository",
+        "url": "https://github.com/abhamra/verif-randomized-maxcut",
+        "type": "repository"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Maximum Cut problem asks: given a graph, partition its vertices into two sets to maximize the number of edges crossing between them. This problem is NP-Complete, meaning no polynomial-time algorithm is known (and likely none exists).\n\nIn the 1970s, researchers began studying approximation algorithms—algorithms that don't find the optimal solution but guarantee a solution within some factor of optimal. The randomized algorithm presented here, which simply flips a fair coin for each vertex, was one of the earliest and simplest approximation algorithms discovered.\n\nRemarkably, this trivial algorithm achieves a 1/2-approximation: the expected cut size is at least half of the maximum possible. The proof uses linearity of expectation, a fundamental technique in probabilistic analysis that remains central to algorithm design today.\n\nIn 1994, Goemans and Williamson achieved a breakthrough with a 0.878-approximation using semidefinite programming. However, the simple randomized algorithm remains important for its elegance, efficiency, and as a teaching tool for probabilistic analysis.",
+    "problemStatement": "Given a graph $G = (V, E)$, a **cut** is a partition of vertices into two disjoint sets $A$ and $B$. The **cut value** is the number of edges with one endpoint in $A$ and one in $B$.\n\n$$\\text{MaxCut}(G) = \\max_{A \\subseteq V} |\\{(u,v) \\in E : u \\in A, v \\in V \\setminus A\\}|$$\n\nThe algorithm is remarkably simple: for each vertex $v$, independently flip a fair coin to decide whether $v \\in A$ or $v \\in B$.\n\nWe prove: $\\mathbb{E}[|C|] \\geq \\frac{1}{2} \\cdot \\text{MaxCut}(G)$",
+    "proofStrategy": "The proof proceeds in six steps:\n\n1. **Indicator decomposition**: Express cut size as sum of edge indicators: $|C| = \\sum_{e \\in E} \\chi_e$ where $\\chi_e = 1$ if edge $e$ is cut\n\n2. **Count separating assignments**: Show that exactly half of all $2^{|V|}$ boolean assignments place any two distinct vertices in different partitions (via bijection with toggle operation)\n\n3. **Edge probability**: Derive $\\Pr[e \\in C] = 1/2$ for any edge from the counting lemma\n\n4. **Linearity of expectation**: $\\mathbb{E}[|C|] = \\mathbb{E}[\\sum \\chi_e] = \\sum \\mathbb{E}[\\chi_e] = \\sum \\frac{1}{2} = \\frac{|E|}{2}$\n\n5. **Upper bound**: Observe that $\\text{MaxCut} \\leq |E|$ (trivially)\n\n6. **Approximation guarantee**: Combine to get $\\mathbb{E}[|C|] = \\frac{|E|}{2} \\geq \\frac{\\text{MaxCut}}{2}$",
+    "keyInsights": [
+      "The Cut structure carries proof obligations (partition and disjointness), making invalid cuts unrepresentable in the type system.",
+      "The toggle bijection is the combinatorial heart: flipping one vertex's assignment swaps 'same partition' and 'different partition' cases.",
+      "Linearity of expectation works even when random variables are dependent—we don't need edge independence!",
+      "The proof is constructive: it doesn't just show a good cut exists, it shows the algorithm's expected performance.",
+      "This 1/2-approximation is tight for the algorithm: a path graph achieves exactly this ratio."
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup and Imports",
+      "startLine": 1,
+      "endLine": 6,
+      "summary": "Import Mathlib modules for graphs, probability, and finite sets."
+    },
+    {
+      "id": "cut-structure",
+      "title": "The Cut Structure",
+      "startLine": 48,
+      "endLine": 80,
+      "summary": "Define cuts as vertex partitions with proof obligations."
+    },
+    {
+      "id": "algorithm",
+      "title": "The Randomized Algorithm",
+      "startLine": 82,
+      "endLine": 96,
+      "summary": "Define the randomized MaxCut algorithm and edge indicator."
+    },
+    {
+      "id": "theorem1",
+      "title": "Theorem 1: Sum of Indicators",
+      "startLine": 98,
+      "endLine": 120,
+      "summary": "Cut size equals sum of edge indicator values."
+    },
+    {
+      "id": "theorem2",
+      "title": "Theorem 2: Counting Lemma",
+      "startLine": 122,
+      "endLine": 165,
+      "summary": "Half of assignments separate any two vertices."
+    },
+    {
+      "id": "theorem3",
+      "title": "Theorem 3: Edge Probability",
+      "startLine": 167,
+      "endLine": 210,
+      "summary": "Each edge has 1/2 probability of being cut."
+    },
+    {
+      "id": "theorem4",
+      "title": "Theorem 4: Expected Cut Size",
+      "startLine": 212,
+      "endLine": 245,
+      "summary": "The main result: E[|C|] = |E|/2."
+    },
+    {
+      "id": "theorem5",
+      "title": "Theorem 5: MaxCut Upper Bound",
+      "startLine": 247,
+      "endLine": 265,
+      "summary": "MaxCut cannot exceed total edges."
+    },
+    {
+      "id": "theorem6",
+      "title": "Theorem 6: Approximation Guarantee",
+      "startLine": 267,
+      "endLine": 285,
+      "summary": "The algorithm achieves E[|C|] >= MaxCut/2."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization demonstrates how a trivial randomized algorithm—just flip coins!—achieves a provably good approximation for an NP-Complete problem. The proof elegantly combines combinatorics (the toggle bijection), probability (linearity of expectation), and graph theory (edge counting).\n\nThe Lean formalization makes every step rigorous: the Cut structure's proof obligations ensure valid partitions, the Sym2 type handles unordered edges correctly, and Mathlib's Finset operations provide the summation machinery.",
+    "implications": "Algorithmic Impact\n\nThis result illustrates a powerful paradigm in algorithm design: when optimal solutions are computationally intractable, randomization can provide efficient algorithms with provable guarantees.\n\nThe 1/2-approximation means: for any graph, running this O(n) algorithm gives (in expectation) at least half the edges of the best possible cut.\n\nTheoretical Significance\n\n1. **Derandomization**: The probabilistic method shows good cuts exist. The method of conditional expectations can derandomize this into a deterministic 1/2-approximation.\n\n2. **Hardness**: Under the Unique Games Conjecture, no polynomial-time algorithm can achieve better than the Goemans-Williamson 0.878 ratio.\n\n3. **Linearity of expectation**: This technique—summing over indicator variables—is fundamental to probabilistic combinatorics and algorithm analysis.",
+    "openQuestions": [
+      "Can we formalize the Goemans-Williamson 0.878-approximation using semidefinite programming in Lean?",
+      "What about weighted MaxCut, where edges have different values?",
+      "Can we prove the 1/2 ratio is tight by exhibiting a graph family where the algorithm achieves exactly 1/2?",
+      "How would we formalize the derandomization via conditional expectations?"
+    ]
+  }
+}
