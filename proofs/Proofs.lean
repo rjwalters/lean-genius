@@ -19,3 +19,4 @@ import Proofs.HaltingProblem
 import Proofs.NavierStokes
 import Proofs.PythagoreanTheorem
 import Proofs.RamanujanSumFallacy
+import Proofs.ThreePlaceIdentity

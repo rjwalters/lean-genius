@@ -17,6 +17,7 @@ import { borsukUlamData } from './borsuk-ulam'
 import { centralLimitTheoremData } from './central-limit-theorem'
 import { fermatsLastTheoremData } from './fermats-last-theorem'
 import { randomizedMaxCutData } from './randomized-maxcut'
+import { threePlaceIdentityData } from './three-place-identity'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -39,6 +40,7 @@ export const proofs: Record<string, ProofData> = {
   'central-limit-theorem': centralLimitTheoremData,
   'fermats-last-theorem': fermatsLastTheoremData,
   'randomized-maxcut': randomizedMaxCutData,
+  'three-place-identity': threePlaceIdentityData,
 }
 
 export function getProof(slug: string): ProofData | undefined {

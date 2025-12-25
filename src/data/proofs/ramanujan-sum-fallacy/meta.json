@@ -5,7 +5,13 @@
   "description": "A demonstration of how Lean catches the famous fallacious 'proof' that 1+2+3+... = -1/12, showing why mathematical rigor matters.",
   "meta": {
     "status": "disputed",
-    "tags": ["fallacy", "divergent-series", "analysis", "zeta-function", "educational"],
+    "tags": [
+      "fallacy",
+      "divergent-series",
+      "analysis",
+      "zeta-function",
+      "educational"
+    ],
     "badge": "fallacy",
     "sorries": 9,
     "sorriesIntentional": true,
@@ -40,7 +46,8 @@
       "Demonstration of how Lean catches invalid series manipulation",
       "Educational walkthrough of the famous -1/12 fallacy",
       "Distinction between summation and zeta regularization"
-    ]
+    ],
+    "dateAdded": "12/21/24"
   },
   "overview": {
     "historicalContext": "The claim that $1+2+3+4+\\cdots = -\\frac{1}{12}$ gained widespread attention through a 2014 Numberphile video that has over 10 million views. The result has legitimate origins in the work of Ramanujan and the theory of the Riemann zeta function, where $\\zeta(-1) = -\\frac{1}{12}$. However, the video's 'elementary proof' using series manipulation is fundamentally flawed.\n\nThe actual -1/12 result comes from analytic continuation of the Riemann zeta function. For $\\text{Re}(s) > 1$, the zeta function is defined as $\\zeta(s) = \\sum_{n=1}^{\\infty} n^{-s}$. This series diverges for $s = -1$, but the zeta function can be uniquely extended to a meromorphic function on the complex plane, and $\\zeta(-1) = -\\frac{1}{12}$.\n\nThis is NOT the same as saying the sum converges to $-\\frac{1}{12}$. The result appears in string theory and physics through a technique called zeta function regularization, which is a specific mathematical procedure - not ordinary summation.",

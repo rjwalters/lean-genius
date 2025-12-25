@@ -4,22 +4,48 @@ import { getAllProofs } from '@/data/proofs'
 import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
 import { ProofBadge, BadgeFilter, MathlibIndicator } from '@/components/ui/proof-badge'
-import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, Github } from 'lucide-react'
+import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, Github, ArrowUpDown, Calendar } from 'lucide-react'
 import type { ProofBadge as ProofBadgeType } from '@/types/proof'
+
+type SortOption = 'newest' | 'oldest' | 'alphabetical'
+
+// Parse MM/DD/YY to Date object
+function parseDateAdded(dateStr?: string): Date {
+  if (!dateStr) return new Date(0)
+  const [month, day, year] = dateStr.split('/').map(Number)
+  return new Date(2000 + year, month - 1, day)
+}
 
 export function HomePage() {
   const allProofs = getAllProofs()
   const { isAuthenticated } = useAuth()
   const [selectedBadges, setSelectedBadges] = useState<ProofBadgeType[]>([])
   const [showFilters, setShowFilters] = useState(false)
+  const [sortBy, setSortBy] = useState<SortOption>('newest')
 
-  // Filter proofs by selected badges
+  // Filter and sort proofs
   const proofs = useMemo(() => {
-    if (selectedBadges.length === 0) return allProofs
-    return allProofs.filter(({ proof }) =>
-      proof.meta.badge && selectedBadges.includes(proof.meta.badge)
-    )
-  }, [allProofs, selectedBadges])
+    let filtered = allProofs
+    if (selectedBadges.length > 0) {
+      filtered = allProofs.filter(({ proof }) =>
+        proof.meta.badge && selectedBadges.includes(proof.meta.badge)
+      )
+    }
+
+    // Sort proofs
+    return [...filtered].sort((a, b) => {
+      switch (sortBy) {
+        case 'newest':
+          return parseDateAdded(b.proof.meta.dateAdded).getTime() - parseDateAdded(a.proof.meta.dateAdded).getTime()
+        case 'oldest':
+          return parseDateAdded(a.proof.meta.dateAdded).getTime() - parseDateAdded(b.proof.meta.dateAdded).getTime()
+        case 'alphabetical':
+          return a.proof.title.localeCompare(b.proof.title)
+        default:
+          return 0
+      }
+    })
+  }, [allProofs, selectedBadges, sortBy])
 
   const handleBadgeToggle = (badge: ProofBadgeType) => {
     setSelectedBadges((prev) => {
@@ -73,22 +99,38 @@ export function HomePage() {
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
             Available Proofs ({proofs.length})
           </h2>
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className={`flex items-center gap-1.5 text-sm transition-colors ${
-              showFilters || selectedBadges.length > 0
-                ? 'text-annotation'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <Filter className="h-4 w-4" />
-            <span>Filter</span>
-            {selectedBadges.length > 0 && (
-              <span className="bg-annotation/20 text-annotation px-1.5 py-0.5 rounded text-xs">
-                {selectedBadges.length}
-              </span>
-            )}
-          </button>
+          <div className="flex items-center gap-4">
+            {/* Sort Dropdown */}
+            <div className="flex items-center gap-1.5">
+              <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as SortOption)}
+                className="text-sm bg-transparent border-none text-muted-foreground hover:text-foreground cursor-pointer focus:outline-none focus:ring-0"
+              >
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="alphabetical">A-Z</option>
+              </select>
+            </div>
+            {/* Filter Button */}
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className={`flex items-center gap-1.5 text-sm transition-colors ${
+                showFilters || selectedBadges.length > 0
+                  ? 'text-annotation'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              <Filter className="h-4 w-4" />
+              <span>Filter</span>
+              {selectedBadges.length > 0 && (
+                <span className="bg-annotation/20 text-annotation px-1.5 py-0.5 rounded text-xs">
+                  {selectedBadges.length}
+                </span>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Filter Panel */}
@@ -156,9 +198,17 @@ export function HomePage() {
                     </span>
                   ))}
                 </div>
-                <span className="text-muted-foreground">
-                  {annotations.length} annotations
-                </span>
+                <div className="flex items-center gap-3 text-muted-foreground">
+                  {proof.meta.dateAdded && (
+                    <span className="flex items-center gap-1 text-xs">
+                      <Calendar className="h-3 w-3" />
+                      {proof.meta.dateAdded}
+                    </span>
+                  )}
+                  <span className="text-xs">
+                    {annotations.length} annotations
+                  </span>
+                </div>
               </div>
 
               <div className="mt-4 flex items-center text-sm text-annotation opacity-0 group-hover:opacity-100 transition-opacity">

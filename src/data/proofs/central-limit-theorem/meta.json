@@ -8,7 +8,13 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Central_limit_theorem",
     "date": "1901 (Lyapunov's proof), with modern topological interpretation",
     "status": "verified",
-    "tags": ["probability", "topology", "analysis", "advanced", "characteristic-functions"],
+    "tags": [
+      "probability",
+      "topology",
+      "analysis",
+      "advanced",
+      "characteristic-functions"
+    ],
     "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
@@ -28,7 +34,8 @@
       "Lévy continuity theorem application",
       "Topological interpretation as renormalization flow",
       "Gaussian as universal attractor formalization"
-    ]
+    ],
+    "dateAdded": "12/22/24"
   },
   "overview": {
     "historicalContext": "The Central Limit Theorem (CLT) stands as one of the most remarkable results in probability theory. Its origins trace back to Abraham de Moivre's 1733 analysis of coin flips, but the theorem took nearly two centuries to reach its modern form.\n\nPierre-Simon Laplace generalized de Moivre's result in 1812, showing that sums of many independent random variables tend toward a bell curve. However, the first rigorous proof came from Aleksandr Lyapunov in 1901, using characteristic functions.\n\nThe algebraic topological perspective—viewing the Gaussian as a fixed point of a renormalization flow on the space of distributions—emerged in the late 20th century, connecting probability theory to dynamical systems, information geometry, and category theory.\n\nThis dual perspective reveals not just *that* the Gaussian appears universally, but *why*: it is an attractor in the space of probability distributions under the operation of convolution and rescaling.",

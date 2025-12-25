@@ -9,7 +9,12 @@
     "date": "1933",
     "status": "verified",
     "proofRepoPath": "Proofs/BorsukUlam.lean",
-    "tags": ["topology", "algebraic-topology", "covering-spaces", "advanced"],
+    "tags": [
+      "topology",
+      "algebraic-topology",
+      "covering-spaces",
+      "advanced"
+    ],
     "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
@@ -28,7 +33,8 @@
       "Complete proof via covering space theory",
       "Gadget function construction g(x) = f(x) - f(-x)",
       "No-odd-map lemma formalization"
-    ]
+    ],
+    "dateAdded": "12/22/24"
   },
   "overview": {
     "historicalContext": "The Borsuk-Ulam theorem was conjectured by Stanislaw Ulam and proved by Karol Borsuk in 1933. It emerged from the Polish school of topology and quickly became one of the most celebrated results in algebraic topology.\n\nThe theorem has a beautifully intuitive interpretation: at any given moment, there exist two antipodal points on Earth (opposite ends of a diameter) that have exactly the same temperature AND the same atmospheric pressure. This 'weather interpretation' makes abstract topology tangible.\n\nWhat makes Borsuk-Ulam remarkable is its wide range of applications. In 1978, Laszlo Lovasz used it to prove Kneser's conjecture about graph coloring, launching the field of topological combinatorics. It also implies the Ham Sandwich Theorem (any n objects in n-dimensional space can be simultaneously bisected by a single hyperplane) and has applications to fair division problems.",

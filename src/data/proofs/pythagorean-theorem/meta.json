@@ -8,7 +8,12 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Pythagorean_theorem",
     "date": "c. 500 BCE",
     "status": "verified",
-    "tags": ["geometry", "inner-product", "classic", "beginner"],
+    "tags": [
+      "geometry",
+      "inner-product",
+      "classic",
+      "beginner"
+    ],
     "proofRepoPath": "Proofs/Pythagorean.lean",
     "badge": "original",
     "sorries": 0,
@@ -23,7 +28,8 @@
       "Complete proof using inner product space formulation",
       "Algebraic proof via bilinearity of inner products",
       "Geometric interpretation connecting to classical triangle formulation"
-    ]
+    ],
+    "dateAdded": "12/21/24"
   },
   "overview": {
     "historicalContext": "The Pythagorean theorem is arguably the most recognized result in all of mathematics. While named after the Greek mathematician Pythagoras (c. 570-495 BCE), evidence suggests the theorem was known to Babylonian mathematicians over 1000 years earlier—clay tablet Plimpton 322 (c. 1800 BCE) contains a list of Pythagorean triples.\n\nPythagoras, or more likely his school, is credited with providing the first general proof. The theorem appears as Proposition 47 in Book I of Euclid's Elements (c. 300 BCE), where it's proved using areas of squares constructed on the triangle's sides.\n\nBy 1940, mathematician Elisha Loomis had catalogued 367 distinct proofs, and new proofs continue to be discovered. James Garfield, before becoming the 20th US President, published an original proof in 1876.",

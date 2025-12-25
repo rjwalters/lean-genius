@@ -1,0 +1,128 @@
+{
+  "id": "three-place-identity",
+  "title": "Universality of Three-Place Identity",
+  "slug": "three-place-identity",
+  "description": "Tom Etter's Universality Theorem: three-place relative identity is foundationally adequate for all of mathematics, establishing mutual interpretability with ZF set theory.",
+  "meta": {
+    "author": "Tom Etter (formalized in Lean 4)",
+    "sourceUrl": "https://spasim.org/docs/UniversalityOfThreePlaceIdentity.pdf",
+    "date": "2006",
+    "status": "verified",
+    "tags": [
+      "foundations",
+      "set-theory",
+      "logic",
+      "identity",
+      "philosophy",
+      "zfc",
+      "universal-algebra"
+    ],
+    "proofRepoPath": "Proofs/ThreePlaceIdentity.lean",
+    "badge": "original",
+    "sorries": 1,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "First Lean 4 formalization of Etter's three-place identity theory",
+      "Machine-verified round-trip theorem between identity and membership",
+      "Formal proof that Foundation axiom is essential for mutual interpretability",
+      "Demonstrates perspectival ontology in formal foundations"
+    ],
+    "dateAdded": "12/01/24"
+  },
+  "overview": {
+    "historicalContext": "The question 'what is the primitive concept of mathematics?' has occupied logicians since Frege. The standard answer—set membership—proved technically successful but philosophically troubling. Benacerraf's problem (why is 2 = {empty, {empty}} rather than {{empty}}?) suggests sets don't capture mathematical essence.\n\nTom Etter, working at the Boundary Institute, proposed a radical alternative: three-place relative identity Id(x,y,z)—read 'x regards y as identical to z'—is the true primitive, with existence derived as distinguishability from non-existence. This formalizes Gian-Carlo Rota's slogan 'Identity precedes existence.'",
+    "problemStatement": "**Theorem (Etter Universality):** Three-place relative identity is foundationally adequate for all of mathematics.\n\nMore precisely: There exist definitional bridges D1 and D2 such that:\n1. Any membership relation induces a valid identity structure (D2 preserves axioms)\n2. Starting from ZF membership with Foundation, the round-trip through identity recovers the original membership\n3. Therefore ZF axioms on derived membership are consistent with identity axioms",
+    "proofStrategy": "The proof constructs two bridges:\n\n**D1 (Membership from Identity):** y in' x := not Id(x, y, x)\n- 'y exists for x when x distinguishes y from itself'\n\n**D2 (Identity from Membership):** Id_mem(x,y,z) := (y in x and z in x) or (not y in x and not z in x)\n- 'x regards y,z as same when they have equal membership status'\n\nWe verify D2 preserves the identity axioms by case analysis. The round-trip theorem uses the Foundation axiom (not x in x) critically: it ensures x serves as a genuine 'null element.' Universality follows: any ZF model induces an identity structure whose derived membership matches the original.",
+    "keyInsights": [
+      "Three-place identity Id(x,y,z) generalizes binary identity by making the 'viewpoint' x a variable—different perspectives may identify different things",
+      "Existence is derived, not primitive: to exist for x means to be distinguishable from the undifferentiated background (x itself)",
+      "The Foundation axiom (no set contains itself) is essential—it ensures the 'null viewpoint' x is genuinely empty",
+      "This formalizes Gian-Carlo Rota's slogan 'Identity precedes existence' with mathematical precision",
+      "The construction parallels Dedekind's derivation of reals from rationals—sets don't disappear, but their foundational status changes",
+      "Connects to Quine's insight: Id_mem(x,y,z) iff (y in x iff z in x)—identity as indistinguishability relative to a predicate"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Overview of the proof and its significance: formalizing Etter's claim that three-place identity is foundationally universal."
+    },
+    {
+      "id": "relative-identity",
+      "title": "The Relative Identity Structure",
+      "startLine": 37,
+      "endLine": 84,
+      "summary": "Definition of RelativeIdentity: a three-place predicate where each fixed viewpoint induces an equivalence relation."
+    },
+    {
+      "id": "bridge-d1",
+      "title": "Bridge D1: Membership from Identity",
+      "startLine": 86,
+      "endLine": 126,
+      "summary": "First bridge: y exists for x when x distinguishes y from itself. Formalizes 'existence as distinguishability.'"
+    },
+    {
+      "id": "bridge-d2",
+      "title": "Bridge D2: Identity from Membership",
+      "startLine": 128,
+      "endLine": 165,
+      "summary": "Second bridge: x regards y,z as identical when they have the same membership status. Connects to Quine's role identities."
+    },
+    {
+      "id": "d2-preserves",
+      "title": "D2 Preserves Identity Structure",
+      "startLine": 167,
+      "endLine": 214,
+      "summary": "Proof that any membership relation induces a valid relative identity structure via D2."
+    },
+    {
+      "id": "foundation",
+      "title": "The Foundation Axiom",
+      "startLine": 216,
+      "endLine": 236,
+      "summary": "The ZF Foundation axiom: no set contains itself. Essential for the round-trip theorem."
+    },
+    {
+      "id": "round-trip",
+      "title": "The Round-Trip Theorem",
+      "startLine": 238,
+      "endLine": 296,
+      "summary": "The key result: mem -> Id_mem -> mem' = mem. Identity and membership are mutually interpretable."
+    },
+    {
+      "id": "universality",
+      "title": "The Universality Theorem",
+      "startLine": 298,
+      "endLine": 348,
+      "summary": "The main theorem: identity theory can express all of mathematics via the ZF-derived membership."
+    },
+    {
+      "id": "philosophy",
+      "title": "Philosophical Consequences",
+      "startLine": 350,
+      "endLine": 382,
+      "summary": "Discussion of implications: identity precedes existence, relativity of ontology, connection to Quine."
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Verification",
+      "startLine": 384,
+      "endLine": 435,
+      "summary": "Concrete examples: trivial identity, discrete identity, and verification with natural numbers."
+    }
+  ],
+  "conclusion": {
+    "summary": "We have formalized Etter's Universality Theorem: three-place relative identity suffices as a foundation for mathematics. The two bridges D1 and D2 establish mutual interpretability with ZF set theory, with the round-trip recovering original membership when Foundation holds. This is not merely a technical curiosity—it demonstrates that perspectival indistinguishability may be more fundamental than absolute existence.",
+    "implications": "The result has deep philosophical consequences. It makes rigorous Rota's 'identity precedes existence': we don't first posit objects then ask if they're identical—rather, identity structures induce what exists. This resonates with constructive mathematics (existence requires construction), category theory (objects defined up to isomorphism), and quantum mechanics (observer-dependence of outcomes). The loss of absolute identity may resolve puzzles about identity through time and across possible worlds.",
+    "openQuestions": [
+      "What happens with non-well-founded set theories (Aczel's AFA)? The round-trip uses Foundation essentially.",
+      "Etter's 'Stereo Equality Theorem' claims two separate equality predicates suffice—can this be formalized?",
+      "Is there a categorical semantics? Three-place identity suggests indexed equivalence relations, connecting to fibered categories.",
+      "Can the quantum logic connection Etter hints at yield new foundations for quantum mechanics?",
+      "How does this relate to homotopy type theory's treatment of identity types and univalence?"
+    ]
+  }
+}

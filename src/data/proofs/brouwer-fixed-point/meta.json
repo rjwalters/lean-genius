@@ -8,7 +8,12 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Brouwer_fixed-point_theorem",
     "date": "1911",
     "status": "verified",
-    "tags": ["topology", "fixed-point-theory", "algebraic-topology", "advanced"],
+    "tags": [
+      "topology",
+      "fixed-point-theory",
+      "algebraic-topology",
+      "advanced"
+    ],
     "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
@@ -22,7 +27,8 @@
       "Complete proof via retraction impossibility",
       "No-Retraction Theorem formalization",
       "Ray-casting construction for fixed-point-free maps"
-    ]
+    ],
+    "dateAdded": "12/21/24"
   },
   "overview": {
     "historicalContext": "Luitzen Egbertus Jan Brouwer proved this theorem in 1911, establishing one of the most important results in topology. The theorem states that any continuous function mapping a closed ball to itself must have at least one fixed point.\n\nThe result is surprisingly counterintuitive: no matter how you continuously 'stir' a disk, some point must end up exactly where it started. This has led to the famous coffee-stirring analogy: when you stir coffee in a cup, at least one molecule of coffee returns to its starting position.\n\nIronically, Brouwer later founded intuitionism, a philosophy of mathematics that rejects the kind of proof-by-contradiction used in his own theorem! The constructive proof of Brouwer's theorem came much later and is considerably more complex.",

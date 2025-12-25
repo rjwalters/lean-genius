@@ -94,6 +94,8 @@ export interface ProofMeta {
   authorHandle?: string
   sourceUrl?: string
   date?: string
+  /** Date when proof was added to the site (MM/DD/YY format) */
+  dateAdded?: string
   mathlib_version?: string
   status: 'verified' | 'pending' | 'disputed'
   tags: string[]
