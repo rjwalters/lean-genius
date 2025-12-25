@@ -59,7 +59,7 @@
         "type": "repository"
       }
     ],
-    "dateAdded": "12/24/24"
+    "dateAdded": "12/24/25"
   },
   "overview": {
     "historicalContext": "The Maximum Cut problem asks: given a graph, partition its vertices into two sets to maximize the number of edges crossing between them. This problem is NP-Complete, meaning no polynomial-time algorithm is known (and likely none exists).\n\nIn the 1970s, researchers began studying approximation algorithms—algorithms that don't find the optimal solution but guarantee a solution within some factor of optimal. The randomized algorithm presented here, which simply flips a fair coin for each vertex, was one of the earliest and simplest approximation algorithms discovered.\n\nRemarkably, this trivial algorithm achieves a 1/2-approximation: the expected cut size is at least half of the maximum possible. The proof uses linearity of expectation, a fundamental technique in probabilistic analysis that remains central to algorithm design today.\n\nIn 1994, Goemans and Williamson achieved a breakthrough with a 0.878-approximation using semidefinite programming. However, the simple randomized algorithm remains important for its elegance, efficiency, and as a teaching tool for probabilistic analysis.",

@@ -106,9 +106,9 @@ export function ProofConclusion({ proof }: ProofConclusionProps) {
             </span>
             <span>
               {proof.meta.status === 'pending'
-                ? 'This proof is awaiting independent verification by the mathematical community.'
+                ? 'This proof contains sorry statements or has not yet been verified in Lean.'
                 : proof.meta.status === 'verified'
-                  ? 'This proof has been verified by the mathematical community.'
+                  ? 'This proof compiles in Lean with no sorry statements.'
                   : 'This proof is disputed and requires further analysis.'}
             </span>
           </div>

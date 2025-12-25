@@ -40,7 +40,7 @@
       "monic_prod_roots - complete factorization theorem",
       "quadratic_has_root - explicit quadratic case"
     ],
-    "dateAdded": "12/21/24"
+    "dateAdded": "12/21/25"
   },
   "overview": {
     "historicalContext": "The Fundamental Theorem of Algebra has a fascinating history spanning centuries. First conjectured by Albert Girard in 1629, it was attempted by many great mathematicians including d'Alembert, Euler, and Lagrange. Carl Friedrich Gauss provided the first rigorous proof in his 1799 doctoral dissertation, though he would go on to publish three more proofs throughout his career.\n\nDespite its name, the theorem is fundamentally analytic rather than algebraic. Every known proof relies on some completeness property of the real numbers - whether through analysis, topology, or complex function theory. The proof in Mathlib uses Liouville's theorem from complex analysis: a bounded entire function must be constant.",
