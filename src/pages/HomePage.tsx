@@ -4,7 +4,7 @@ import { getAllProofs } from '@/data/proofs'
 import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
 import { ProofBadge, BadgeFilter, MathlibIndicator } from '@/components/ui/proof-badge'
-import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, Github, ArrowUpDown, Calendar } from 'lucide-react'
+import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, Github, ArrowUpDown } from 'lucide-react'
 import type { ProofBadge as ProofBadgeType } from '@/types/proof'
 
 type SortOption = 'newest' | 'oldest' | 'alphabetical'
@@ -176,7 +176,14 @@ export function HomePage() {
                 </h3>
               </div>
 
-              <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+              {/* Date - letter style */}
+              {proof.meta.dateAdded && (
+                <p className="text-xs text-muted-foreground mb-2">
+                  {proof.meta.dateAdded}
+                </p>
+              )}
+
+              <p className="text-sm text-muted-foreground mb-4 line-clamp-5">
                 {proof.description}
               </p>
 
@@ -198,17 +205,9 @@ export function HomePage() {
                     </span>
                   ))}
                 </div>
-                <div className="flex items-center gap-3 text-muted-foreground">
-                  {proof.meta.dateAdded && (
-                    <span className="flex items-center gap-1 text-xs">
-                      <Calendar className="h-3 w-3" />
-                      {proof.meta.dateAdded}
-                    </span>
-                  )}
-                  <span className="text-xs">
-                    {annotations.length} annotations
-                  </span>
-                </div>
+                <span className="text-xs text-muted-foreground">
+                  {annotations.length} annotations
+                </span>
               </div>
 
               <div className="mt-4 flex items-center text-sm text-annotation opacity-0 group-hover:opacity-100 transition-opacity">

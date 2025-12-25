@@ -20,7 +20,13 @@
     "proofRepoPath": "Proofs/ThreePlaceIdentity.lean",
     "badge": "original",
     "sorries": 1,
-    "mathlibDependencies": [],
+    "mathlibDependencies": [
+      {
+        "theorem": "tauto",
+        "description": "Propositional logic decision procedure",
+        "module": "Mathlib.Tactic.Tauto"
+      }
+    ],
     "originalContributions": [
       "First Lean 4 formalization of Etter's three-place identity theory",
       "Machine-verified round-trip theorem between identity and membership",

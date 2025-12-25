@@ -266,45 +266,18 @@ def RelativeIdentity.fromMembership (M : WellFoundedMembership U) : RelativeIden
     is logically equivalent to the original membership.
 
     Starting with mem, we define IdMem via D2, then define mem' via D1.
-    The theorem states: y mem' x <-> y mem x -/
+    The theorem states: y mem' x <-> y mem x
+
+    The proof is pure propositional logic once we have the Foundation axiom.
+    We use tauto to handle the case analysis automatically. -/
 theorem roundtrip (M : WellFoundedMembership U) (y x : U) :
     MemFromId (RelativeIdentity.fromMembership M) y x <-> M.mem y x := by
   -- Unfold all the definitions
   unfold MemFromId RelativeIdentity.fromMembership
   unfold IdFromMem.toRelativeIdentity IdFromMem
-  simp only
-
   -- The Foundation axiom is crucial here
   have foundation_x : Not (M.mem x x) := M.foundation x
-
-  -- Now it's pure propositional logic
-  constructor
-  . -- Forward: not ((y mem x and x mem x) or (not y mem x and not x mem x)) -> y mem x
-    intro h
-    push_neg at h
-    -- From h: (y not mem x or x not mem x) and (y mem x or x mem x)
-    obtain ⟨h1, h2⟩ := h
-    -- Since x not mem x (foundation), we must have y mem x from h2
-    cases h2 with
-    | inl hy => exact hy
-    | inr hx => exact absurd hx foundation_x
-  . -- Backward: y mem x -> not ((y mem x and x mem x) or (not y mem x and not x mem x))
-    intro hy
-    push_neg
-    constructor
-    . -- y mem x and x mem x is false because x not mem x
-      intro _
-      exact foundation_x
-    . -- not y mem x and not x mem x is false because y mem x
-      intro hny
-      exact absurd hy hny
-
-/-- Alternative proof using tauto -/
-theorem roundtrip' (M : WellFoundedMembership U) (y x : U) :
-    MemFromId (RelativeIdentity.fromMembership M) y x <-> M.mem y x := by
-  unfold MemFromId RelativeIdentity.fromMembership
-  unfold IdFromMem.toRelativeIdentity IdFromMem
-  have nxx : Not (M.mem x x) := M.foundation x
+  -- The rest is pure propositional logic
   tauto
 
 -- ============================================================
