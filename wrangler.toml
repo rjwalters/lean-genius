@@ -14,7 +14,7 @@ migrations_dir = "drizzle"
 # Note: RESEND_API_KEY should be set as a secret via `wrangler secret put RESEND_API_KEY`
 [vars]
 # Using Resend's test sender (no domain verification needed)
-# To use your own domain later: "LeanGenius <proofs@lean-genius.com>"
+# To use your own domain later: "LeanGenius <proofs@leangenius.org>"
 EMAIL_FROM = "LeanGenius <onboarding@resend.dev>"
 # Your email address where submissions will be sent
 SUBMISSION_EMAIL = "r.j.walters@gmail.com"

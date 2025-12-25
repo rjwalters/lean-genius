@@ -29,7 +29,7 @@ export async function sendEmail(
   env: EmailEnv
 ): Promise<SendEmailResult> {
   const apiKey = env.RESEND_API_KEY
-  const from = env.EMAIL_FROM || 'LeanGenius <noreply@lean-genius.com>'
+  const from = env.EMAIL_FROM || 'LeanGenius <noreply@leangenius.org>'
 
   // Development mode - log to console if no API key
   if (!apiKey) {

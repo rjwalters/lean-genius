@@ -41,7 +41,7 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
     })
 
     // Send email to admin
-    const adminEmail = SUBMISSION_EMAIL || 'proofs@lean-genius.com'
+    const adminEmail = SUBMISSION_EMAIL || 'proofs@leangenius.org'
     const result = await sendEmail(
       {
         to: adminEmail,
