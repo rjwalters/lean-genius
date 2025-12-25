@@ -1,3 +1,7 @@
+import Mathlib.Tactic.Tauto
+import Mathlib.Tactic.PushNeg
+import Mathlib.Logic.Basic
+
 /-!
 # Universality of Three-Place Identity
 
@@ -46,7 +50,7 @@ namespace ThreePlaceIdentity
 
   For each fixed viewpoint x, the relation Id(x, -, -) must be
   an equivalence relation. But different viewpoints may identify
-  different things—there is no requirement of a global equivalence.
+  different things--there is no requirement of a global equivalence.
 -/
 
 /-- A relative identity structure on a type U.
@@ -56,15 +60,15 @@ namespace ThreePlaceIdentity
 
     The axioms ensure that for each fixed viewpoint x, the relation
     Id(x, -, -) is an equivalence relation on the remaining arguments. -/
-structure RelativeIdentity (U : Type*) where
+structure RelativeIdentity (U : Type) where
   /-- The three-place identity predicate -/
-  Id : U → U → U → Prop
+  Id : U -> U -> U -> Prop
   /-- Reflexivity: x always regards y as identical to itself -/
-  refl : ∀ x y, Id x y y
+  refl : forall x y, Id x y y
   /-- Symmetry: if x regards y as identical to z, then x regards z as identical to y -/
-  symm : ∀ x y z, Id x y z → Id x z y
+  symm : forall x y z, Id x y z -> Id x z y
   /-- Transitivity: identity from x's viewpoint is transitive -/
-  trans : ∀ x y z w, Id x y z → Id x z w → Id x y w
+  trans : forall x y z w, Id x y z -> Id x z w -> Id x y w
 
 /-- For any fixed viewpoint, the induced binary relation is reflexive -/
 theorem RelativeIdentity.refl' (RI : RelativeIdentity U) (x : U) :
@@ -88,18 +92,18 @@ theorem RelativeIdentity.trans' (RI : RelativeIdentity U) (x : U) :
 /-
   The first bridge derives membership from identity:
 
-    y ∈' x  ≡  ¬ Id(x, y, x)
+    y mem' x  :=  not Id(x, y, x)
 
   Philosophical reading: y "exists for" x (is a member of x) when
   x regards y as *different* from itself.
 
-  The viewpoint x serves as a kind of "ontological origin"—what exists
+  The viewpoint x serves as a kind of "ontological origin"--what exists
   for x is precisely what x distinguishes from the undifferentiated
   background (represented by x itself as the null element).
 
   This makes rigorous Rota's slogan: "Identity precedes existence."
   We don't first posit that things exist and then ask if they're
-  identical—rather, existence is derived from distinguishability.
+  identical--rather, existence is derived from distinguishability.
 -/
 
 /-- D1: Membership derived from identity.
@@ -107,19 +111,16 @@ theorem RelativeIdentity.trans' (RI : RelativeIdentity U) (x : U) :
     `MemFromId RI y x` means "y is a member of x" in the membership
     relation derived from the relative identity structure RI.
 
-    Definition: y ∈' x ≡ ¬ Id(x, y, x)
+    Definition: y mem' x := not Id(x, y, x)
 
     That is, y exists for x when x does NOT regard y as identical to x. -/
 def MemFromId (RI : RelativeIdentity U) (y x : U) : Prop :=
-  ¬ RI.Id x y x
-
-/-- Notation for derived membership -/
-scoped notation:50 y " ∈[" RI "] " x => MemFromId RI y x
+  Not (RI.Id x y x)
 
 /-- Key property: x never contains itself in derived membership.
     This is automatic from the reflexivity of relative identity! -/
 theorem MemFromId.irrefl (RI : RelativeIdentity U) (x : U) :
-    ¬ MemFromId RI x x := by
+    Not (MemFromId RI x x) := by
   unfold MemFromId
   push_neg
   exact RI.refl x x
@@ -131,7 +132,7 @@ theorem MemFromId.irrefl (RI : RelativeIdentity U) (x : U) :
 /-
   The second bridge derives identity from membership:
 
-    Id∈(x, y, z)  ≡  (y ∈ x ∧ z ∈ x) ∨ (¬y ∈ x ∧ ¬z ∈ x)
+    IdMem(x, y, z)  :=  (y mem x and z mem x) or (not y mem x and not z mem x)
 
   That is, x regards y and z as identical when they have the same
   "membership status" with respect to x: either both are members,
@@ -147,24 +148,24 @@ theorem MemFromId.irrefl (RI : RelativeIdentity U) (x : U) :
     `IdFromMem mem x y z` means "x regards y as identical to z"
     in the identity relation derived from the membership relation mem.
 
-    Definition: Id∈(x, y, z) ≡ (y ∈ x ∧ z ∈ x) ∨ (¬y ∈ x ∧ ¬z ∈ x) -/
-def IdFromMem (mem : U → U → Prop) (x y z : U) : Prop :=
-  (mem y x ∧ mem z x) ∨ (¬ mem y x ∧ ¬ mem z x)
+    Definition: IdMem(x, y, z) := (y mem x and z mem x) or (not y mem x and not z mem x) -/
+def IdFromMem (mem : U -> U -> Prop) (x y z : U) : Prop :=
+  (mem y x /\ mem z x) \/ (Not (mem y x) /\ Not (mem z x))
 
 /-- D2 is equivalent to: y and z have the same membership status in x -/
-theorem IdFromMem_iff_same_status (mem : U → U → Prop) (x y z : U) :
-    IdFromMem mem x y z ↔ (mem y x ↔ mem z x) := by
+theorem IdFromMem_iff_same_status (mem : U -> U -> Prop) (x y z : U) :
+    IdFromMem mem x y z <-> (mem y x <-> mem z x) := by
   unfold IdFromMem
   constructor
-  · intro h
+  . intro h
     cases h with
-    | inl hboth => exact ⟨fun _ => hboth.2, fun _ => hboth.1⟩
-    | inr hneither => exact ⟨fun hy => absurd hy hneither.1,
-                            fun hz => absurd hz hneither.2⟩
-  · intro h
+    | inl hboth => exact Iff.intro (fun _ => hboth.2) (fun _ => hboth.1)
+    | inr hneither => exact Iff.intro (fun hy => absurd hy hneither.1)
+                            (fun hz => absurd hz hneither.2)
+  . intro h
     by_cases hy : mem y x
-    · exact Or.inl ⟨hy, h.mp hy⟩
-    · exact Or.inr ⟨hy, fun hz => hy (h.mpr hz)⟩
+    . exact Or.inl (And.intro hy (h.mp hy))
+    . exact Or.inr (And.intro hy (fun hz => hy (h.mpr hz)))
 
 -- ============================================================
 -- PART 4: D2 Preserves the Identity Structure
@@ -178,46 +179,46 @@ theorem IdFromMem_iff_same_status (mem : U → U → Prop) (x y z : U) :
 -/
 
 /-- D2 produces a valid relative identity structure from any membership relation -/
-def IdFromMem.toRelativeIdentity (mem : U → U → Prop) : RelativeIdentity U where
+def IdFromMem.toRelativeIdentity (mem : U -> U -> Prop) : RelativeIdentity U where
   Id := IdFromMem mem
 
-  -- Reflexivity: For any x, y, either y ∈ x or ¬y ∈ x
+  -- Reflexivity: For any x, y, either y mem x or not y mem x
   -- In either case, y has the same status as itself
   refl := fun x y => by
     unfold IdFromMem
     by_cases h : mem y x
-    · exact Or.inl ⟨h, h⟩
-    · exact Or.inr ⟨h, h⟩
+    . exact Or.inl (And.intro h h)
+    . exact Or.inr (And.intro h h)
 
-  -- Symmetry: Immediate from the symmetry of ∧ and ∨
+  -- Symmetry: Immediate from the symmetry of and/or
   symm := fun x y z h => by
     unfold IdFromMem at *
     cases h with
-    | inl hboth => exact Or.inl ⟨hboth.2, hboth.1⟩
-    | inr hneither => exact Or.inr ⟨hneither.2, hneither.1⟩
+    | inl hboth => exact Or.inl (And.intro hboth.2 hboth.1)
+    | inr hneither => exact Or.inr (And.intro hneither.2 hneither.1)
 
   -- Transitivity: If y ~ z and z ~ w (same status), then y ~ w
   trans := fun x y z w hyz hzw => by
     unfold IdFromMem at *
     cases hyz with
     | inl hyz_both =>
-      -- y ∈ x and z ∈ x
+      -- y mem x and z mem x
       cases hzw with
       | inl hzw_both =>
-        -- z ∈ x and w ∈ x, so y ∈ x and w ∈ x
-        exact Or.inl ⟨hyz_both.1, hzw_both.2⟩
+        -- z mem x and w mem x, so y mem x and w mem x
+        exact Or.inl (And.intro hyz_both.1 hzw_both.2)
       | inr hzw_neither =>
-        -- z ∉ x, but we have z ∈ x. Contradiction!
+        -- z not mem x, but we have z mem x. Contradiction!
         exact absurd hyz_both.2 hzw_neither.1
     | inr hyz_neither =>
-      -- y ∉ x and z ∉ x
+      -- y not mem x and z not mem x
       cases hzw with
       | inl hzw_both =>
-        -- z ∈ x, but we have z ∉ x. Contradiction!
+        -- z mem x, but we have z not mem x. Contradiction!
         exact absurd hzw_both.1 hyz_neither.2
       | inr hzw_neither =>
-        -- z ∉ x and w ∉ x, so y ∉ x and w ∉ x
-        exact Or.inr ⟨hyz_neither.1, hzw_neither.2⟩
+        -- z not mem x and w not mem x, so y not mem x and w not mem x
+        exact Or.inr (And.intro hyz_neither.1 hzw_neither.2)
 
 -- ============================================================
 -- PART 5: The Foundation Axiom
@@ -227,22 +228,19 @@ def IdFromMem.toRelativeIdentity (mem : U → U → Prop) : RelativeIdentity U w
   The round-trip theorem requires the Foundation (Regularity) axiom
   from ZF set theory: no set is a member of itself.
 
-  ∀x. ¬(x ∈ x)
+  forall x. not (x mem x)
 
   This is essential! Without it, the round-trip breaks down.
   Foundation ensures that x serves as a genuine "null element"
-  that contains nothing—not even itself.
+  that contains nothing--not even itself.
 -/
 
 /-- A membership structure satisfying the Foundation axiom -/
-structure WellFoundedMembership (U : Type*) where
+structure WellFoundedMembership (U : Type) where
   /-- The membership relation -/
-  mem : U → U → Prop
+  mem : U -> U -> Prop
   /-- Foundation: no element is a member of itself -/
-  foundation : ∀ x, ¬ mem x x
-
-/-- Notation for membership -/
-scoped notation:50 y " ∈ₘ " x => WellFoundedMembership.mem _ y x
+  foundation : forall x, Not (mem x x)
 
 -- ============================================================
 -- PART 6: The Round-Trip Theorem
@@ -253,10 +251,10 @@ scoped notation:50 y " ∈ₘ " x => WellFoundedMembership.mem _ y x
   going to identity via D2, and back to membership via D1, we
   recover the original membership relation exactly.
 
-  mem → Id∈ → ∈' = mem
+  mem -> IdMem -> mem' = mem
 
   This establishes that identity and membership are mutually
-  interpretable—neither is more fundamental than the other,
+  interpretable--neither is more fundamental than the other,
   they can be defined in terms of each other.
 -/
 
@@ -267,46 +265,46 @@ def RelativeIdentity.fromMembership (M : WellFoundedMembership U) : RelativeIden
 /-- The Round-Trip Theorem: The membership derived from the induced identity
     is logically equivalent to the original membership.
 
-    Starting with ∈, we define Id∈ via D2, then define ∈' via D1.
-    The theorem states: y ∈' x ↔ y ∈ x -/
+    Starting with mem, we define IdMem via D2, then define mem' via D1.
+    The theorem states: y mem' x <-> y mem x -/
 theorem roundtrip (M : WellFoundedMembership U) (y x : U) :
-    MemFromId (RelativeIdentity.fromMembership M) y x ↔ M.mem y x := by
+    MemFromId (RelativeIdentity.fromMembership M) y x <-> M.mem y x := by
   -- Unfold all the definitions
   unfold MemFromId RelativeIdentity.fromMembership
   unfold IdFromMem.toRelativeIdentity IdFromMem
   simp only
 
   -- The Foundation axiom is crucial here
-  have foundation_x : ¬ M.mem x x := M.foundation x
+  have foundation_x : Not (M.mem x x) := M.foundation x
 
   -- Now it's pure propositional logic
   constructor
-  · -- Forward: ¬((y ∈ x ∧ x ∈ x) ∨ (¬y ∈ x ∧ ¬x ∈ x)) → y ∈ x
+  . -- Forward: not ((y mem x and x mem x) or (not y mem x and not x mem x)) -> y mem x
     intro h
     push_neg at h
-    -- From h: (y ∉ x ∨ x ∉ x) ∧ (y ∈ x ∨ x ∈ x)
+    -- From h: (y not mem x or x not mem x) and (y mem x or x mem x)
     obtain ⟨h1, h2⟩ := h
-    -- Since x ∉ x (foundation), we must have y ∈ x from h2
+    -- Since x not mem x (foundation), we must have y mem x from h2
     cases h2 with
     | inl hy => exact hy
     | inr hx => exact absurd hx foundation_x
-  · -- Backward: y ∈ x → ¬((y ∈ x ∧ x ∈ x) ∨ (¬y ∈ x ∧ ¬x ∈ x))
+  . -- Backward: y mem x -> not ((y mem x and x mem x) or (not y mem x and not x mem x))
     intro hy
     push_neg
     constructor
-    · -- y ∈ x ∧ x ∈ x is false because x ∉ x
+    . -- y mem x and x mem x is false because x not mem x
       intro _
       exact foundation_x
-    · -- ¬y ∈ x ∧ ¬x ∈ x is false because y ∈ x
+    . -- not y mem x and not x mem x is false because y mem x
       intro hny
       exact absurd hy hny
 
 /-- Alternative proof using tauto -/
 theorem roundtrip' (M : WellFoundedMembership U) (y x : U) :
-    MemFromId (RelativeIdentity.fromMembership M) y x ↔ M.mem y x := by
+    MemFromId (RelativeIdentity.fromMembership M) y x <-> M.mem y x := by
   unfold MemFromId RelativeIdentity.fromMembership
   unfold IdFromMem.toRelativeIdentity IdFromMem
-  have nxx : ¬ M.mem x x := M.foundation x
+  have nxx : Not (M.mem x x) := M.foundation x
   tauto
 
 -- ============================================================
@@ -320,8 +318,8 @@ theorem roundtrip' (M : WellFoundedMembership U) (y x : U) :
   The argument:
   1. ZF set theory is a universal foundation (can express all math)
   2. Any ZF model M induces a relative identity structure via D2
-  3. The derived membership ∈' is equivalent to original ∈ (round-trip)
-  4. Therefore, ZF axioms on ∈' are satisfied
+  3. The derived membership mem' is equivalent to original mem (round-trip)
+  4. Therefore, ZF axioms on mem' are satisfied
   5. Therefore, identity theory + ZF-on-derived-membership is consistent
   6. Therefore, identity theory can express all of mathematics
 
@@ -330,10 +328,7 @@ theorem roundtrip' (M : WellFoundedMembership U) (y x : U) :
 -/
 
 /-- A model of set theory (simplified: we focus on the key properties) -/
-structure SetModel (U : Type*) extends WellFoundedMembership U where
-  /-- We could add more ZF axioms here, but Foundation is the key one
-      for the round-trip theorem. The other axioms transfer automatically
-      since ∈' ↔ ∈. -/
+structure SetModel (U : Type) extends WellFoundedMembership U
 
 /-- The identity structure induced by a set model -/
 def SetModel.toIdentity (M : SetModel U) : RelativeIdentity U :=
@@ -345,15 +340,15 @@ def SetModel.derivedMem (M : SetModel U) (y x : U) : Prop :=
 
 /-- Universality: The derived membership is equivalent to the original -/
 theorem universality (M : SetModel U) (y x : U) :
-    M.derivedMem y x ↔ M.mem y x :=
+    M.derivedMem y x <-> M.mem y x :=
   roundtrip M.toWellFoundedMembership y x
 
-/-- Corollary: Any property expressible in terms of ∈ is equally
-    expressible in terms of the identity-derived ∈' -/
-theorem universality_transfer (M : SetModel U) (P : (U → U → Prop) → Prop)
+/-- Corollary: Any property expressible in terms of mem is equally
+    expressible in terms of the identity-derived mem' -/
+theorem universality_transfer (M : SetModel U) (P : (U -> U -> Prop) -> Prop)
     (hP : P M.mem) : P M.derivedMem := by
-  -- This follows because ∈' ↔ ∈, so any predicate over membership
-  -- relations that holds for ∈ also holds for ∈'
+  -- This follows because mem' <-> mem, so any predicate over membership
+  -- relations that holds for mem also holds for mem'
   -- We need P to respect logical equivalence of membership relations
   -- This is a meta-theorem; we state it informally
   sorry -- This requires a more sophisticated formalization
@@ -379,15 +374,15 @@ theorem universality_transfer (M : SetModel U) (P : (U → U → Prop) → Prop)
 
   3. CONNECTION TO QUINE
 
-  We proved: Id∈(x, y, z) ↔ (y ∈ x ↔ z ∈ x)
+  We proved: IdMem(x, y, z) <-> (y mem x <-> z mem x)
 
-  This shows Id∈ is exactly the Quine identity for the predicate
-  λw. w ∈ x. The viewpoint x determines which predicate is
+  This shows IdMem is exactly the Quine identity for the predicate
+  (fun w => w mem x). The viewpoint x determines which predicate is
   relevant for identity.
 
   4. FOUNDATIONS WITHOUT SETS?
 
-  The theorem doesn't eliminate sets—it shows they can be derived
+  The theorem doesn't eliminate sets--it shows they can be derived
   from identity. This is analogous to Dedekind deriving reals from
   rationals: the reals don't disappear, but their foundational
   status changes.
@@ -398,32 +393,31 @@ theorem universality_transfer (M : SetModel U) (P : (U → U → Prop) → Prop)
 -- ============================================================
 
 /-- Example: The trivial relative identity (everything is identical) -/
-def trivialIdentity (U : Type*) : RelativeIdentity U where
+def trivialIdentity (U : Type) : RelativeIdentity U where
   Id := fun _ _ _ => True
   refl := fun _ _ => trivial
   symm := fun _ _ _ _ => trivial
   trans := fun _ _ _ _ _ _ => trivial
 
-/-- Example: The discrete relative identity (nothing is identified except reflexively) -/
-def discreteIdentity (U : Type*) [DecidableEq U] : RelativeIdentity U where
+/-- Example: The discrete relative identity (only reflexive identity) -/
+def discreteIdentity (U : Type) [DecidableEq U] : RelativeIdentity U where
   Id := fun _ y z => y = z
   refl := fun _ y => rfl
   symm := fun _ _ _ h => h.symm
   trans := fun _ _ _ _ h1 h2 => h1.trans h2
 
-/-- In the discrete identity, derived membership is always false
-    (nothing exists because x always identifies y with x when y = x) -/
+/-- In the discrete identity, derived membership for x in x is always false -/
 theorem discreteIdentity_empty [DecidableEq U] (x : U) :
-    ¬ MemFromId (discreteIdentity U) x x := by
+    Not (MemFromId (discreteIdentity U) x x) := by
   unfold MemFromId discreteIdentity
   simp
 
-/-- Example membership relation -/
-def exampleMem : Nat → Nat → Prop
+/-- Example membership relation: less-than on natural numbers -/
+def exampleMem : Nat -> Nat -> Prop
   | y, x => y < x
 
 /-- Verify Foundation for natural numbers with < as membership -/
-theorem exampleMem_foundation : ∀ x : Nat, ¬ exampleMem x x := by
+theorem exampleMem_foundation : forall x : Nat, Not (exampleMem x x) := by
   intro x
   unfold exampleMem
   exact Nat.lt_irrefl x
@@ -435,7 +429,7 @@ def exampleWFM : WellFoundedMembership Nat where
 
 /-- Verify round-trip for the example -/
 example (y x : Nat) :
-    MemFromId (RelativeIdentity.fromMembership exampleWFM) y x ↔ y < x :=
+    MemFromId (RelativeIdentity.fromMembership exampleWFM) y x <-> y < x :=
   roundtrip exampleWFM y x
 
 end ThreePlaceIdentity
