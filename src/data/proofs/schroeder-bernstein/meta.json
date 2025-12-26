@@ -1,0 +1,132 @@
+{
+  "id": "schroeder-bernstein",
+  "title": "Schroeder-Bernstein Theorem",
+  "slug": "schroeder-bernstein",
+  "description": "If there exist injections f: A to B and g: B to A, then there exists a bijection between A and B. This establishes that cardinality is antisymmetric.",
+  "meta": {
+    "author": "Schroeder, Bernstein, Dedekind (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Schr%C3%B6der%E2%80%93Bernstein_theorem",
+    "date": "1887-1898",
+    "status": "verified",
+    "tags": [
+      "set-theory",
+      "cardinality",
+      "bijections",
+      "classic",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/SchroederBernstein.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Function.Embedding.schroeder_bernstein",
+        "description": "Given injections both ways, there exists a bijective function",
+        "module": "Mathlib.SetTheory.Cardinal.SchroederBernstein"
+      },
+      {
+        "theorem": "Function.Embedding.antisymm",
+        "description": "Given embeddings both ways, there exists an equivalence",
+        "module": "Mathlib.SetTheory.Cardinal.SchroederBernstein"
+      },
+      {
+        "theorem": "Cardinal.mk_congr",
+        "description": "Equivalent types have equal cardinalities",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Multiple formulations: function, embedding, equivalence, and cardinal forms",
+      "Detailed explanation of the orbit-based proof strategy",
+      "Connection to Cantor's theorem and cardinality theory"
+    ],
+    "dateAdded": "12/26/25"
+  },
+  "overview": {
+    "historicalContext": "The Schroeder-Bernstein theorem has a rich history with multiple independent discoveries:\n\n- **Richard Dedekind (1887)**: First proved the theorem but did not publish\n- **Ernst Schroder (1896)**: Published a flawed proof\n- **Felix Bernstein (1898)**: Published the first correct proof as a 19-year-old student\n- **Cantor**: Knew the result was true and used it, but did not prove it himself\n\nThe theorem is fundamental to cardinal arithmetic, establishing that the cardinality relation is antisymmetric: if |A| <= |B| and |B| <= |A|, then |A| = |B|. This allows us to compare infinite sets using injections rather than explicit bijections.",
+    "problemStatement": "Schroeder-Bernstein Theorem:\n\nIf there exist injections $f: A \\to B$ and $g: B \\to A$, then there exists a bijection $h: A \\to B$.\n\n**Equivalently in terms of cardinality:**\nIf $|A| \\leq |B|$ and $|B| \\leq |A|$, then $|A| = |B|$.\n\nThis is the antisymmetry property for cardinal numbers, making the cardinality relation a partial order.",
+    "proofStrategy": "The classical proof partitions elements into 'orbits' based on where their backward chains terminate:\n\n1. **Trace backwards**: For each element, follow the inverse functions backwards as far as possible.\n\n2. **Classify elements**:\n   - **Type A**: Backward chain terminates in A (started in A)\n   - **Type B**: Backward chain terminates in B (started in B)\n   - **Type C**: Backward chain is infinite (cycles or doubly infinite)\n\n3. **Define the bijection h**:\n   - For Type A and C elements: use f (the A to B injection)\n   - For Type B elements: use g inverse (the B to A injection, reversed)\n\n4. **Verify bijectivity**: The injectivity of f and g ensures this piecewise construction works.\n\nThe proof requires classical logic (law of excluded middle) to partition elements into these categories.",
+    "keyInsights": [
+      "Cardinality is antisymmetric: mutual injections imply equal size",
+      "The proof is inherently non-constructive, using classical logic",
+      "The orbit partition approach shows every element has a well-defined 'origin'",
+      "This theorem fails for many other structures (e.g., groups, rings)",
+      "The result is equivalent to the law of excluded middle (assuming infinity axiom)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Overview of the Schroeder-Bernstein theorem, its historical significance, and Mathlib dependencies."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 53,
+      "endLine": 78,
+      "summary": "The core theorem in function form: injections both ways implies existence of a bijection."
+    },
+    {
+      "id": "embedding-form",
+      "title": "Embedding Formulation",
+      "startLine": 79,
+      "endLine": 93,
+      "summary": "The embedding form using Lean's Function.Embedding type for bundled injective functions."
+    },
+    {
+      "id": "cardinality-form",
+      "title": "Cardinality Formulation",
+      "startLine": 95,
+      "endLine": 106,
+      "summary": "The cardinal arithmetic form: embeddings both ways implies equal cardinalities."
+    },
+    {
+      "id": "proof-strategy",
+      "title": "The Proof Strategy",
+      "startLine": 107,
+      "endLine": 129,
+      "summary": "Detailed explanation of the orbit-based proof technique."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries",
+      "startLine": 131,
+      "endLine": 147,
+      "summary": "Derived results including composition injectivity and the symmetric equivalence."
+    },
+    {
+      "id": "set-form",
+      "title": "Set-Theoretic Formulation",
+      "startLine": 148,
+      "endLine": 159,
+      "summary": "The set-based version for subsets of a common type."
+    },
+    {
+      "id": "connection",
+      "title": "Connection to Cantor's Theorem",
+      "startLine": 160,
+      "endLine": 171,
+      "summary": "How Schroeder-Bernstein complements Cantor's diagonal argument."
+    },
+    {
+      "id": "visualization",
+      "title": "Proof Visualization",
+      "startLine": 172,
+      "endLine": 198,
+      "summary": "ASCII diagram showing the orbit classification and bijection construction."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Schroeder-Bernstein theorem is now fully verified using Mathlib's cardinality infrastructure. We provide multiple formulations (function, embedding, equivalence, cardinal) and explain the classical orbit-based proof strategy.",
+    "implications": "This theorem is essential for comparing infinite cardinalities. It allows us to prove |R| = |P(N)| by finding injections in both directions, without explicitly constructing a bijection. The result also shows that cardinal arithmetic is well-behaved: we can use inequalities to establish equalities.",
+    "openQuestions": [
+      "Why does this theorem fail for other mathematical structures like groups?",
+      "Can we characterize exactly which structures satisfy the 'Schroeder-Bernstein property'?",
+      "What is the computational complexity of constructing the bijection from the injections?",
+      "Are there effective (constructive) versions for specific classes of sets?"
+    ]
+  }
+}

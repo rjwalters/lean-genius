@@ -1,0 +1,127 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "schroeder-bernstein",
+    "range": { "startLine": 1, "endLine": 51 },
+    "type": "concept",
+    "title": "Antisymmetry of Cardinality",
+    "content": "The Schroeder-Bernstein theorem establishes that cardinality is **antisymmetric**: if we can inject A into B and B into A, then A and B have the same size.\n\nThis is remarkable because:\n- We only need *injections* (one-to-one functions), not *bijections* (one-to-one and onto)\n- The bijection is guaranteed to exist, even though we don't explicitly construct it\n- This works for *infinite* sets, where counting elements doesn't make sense\n\nThe theorem allows indirect proofs of equicardinality: instead of building a bijection directly, we can find injections in both directions.",
+    "significance": "critical",
+    "relatedConcepts": ["cardinal numbers", "injective functions", "bijective functions"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "schroeder-bernstein",
+    "range": { "startLine": 57, "endLine": 67 },
+    "type": "theorem",
+    "title": "The Main Theorem",
+    "content": "**Schroeder-Bernstein Theorem (Function Form)**:\n\nGiven:\n- $f: A \\to B$ injective\n- $g: B \\to A$ injective\n\nThen: There exists $h: A \\to B$ that is bijective.\n\nIn Lean, we state this as:\n```\ntheorem schroeder_bernstein (f : A -> B) (g : B -> A)\n    (hf : Injective f) (hg : Injective g) :\n    exists h : A -> B, Bijective h\n```\n\nMathlib's `Function.Embedding.schroeder_bernstein` provides this directly.",
+    "mathContext": "$\\exists h: A \\to B$ bijective",
+    "significance": "critical",
+    "relatedConcepts": ["injection", "bijection", "cardinality"]
+  },
+  {
+    "id": "ann-equiv-form",
+    "proofId": "schroeder-bernstein",
+    "range": { "startLine": 69, "endLine": 77 },
+    "type": "definition",
+    "title": "Equivalence Form",
+    "content": "The **equivalence form** goes beyond existence to provide an actual bijection with its inverse:\n\n```\ndef schroeder_bernstein_equiv : A equiv B\n```\n\nIn Lean's type theory, `A equiv B` bundles:\n- A function `to_fun : A -> B`\n- Its inverse `inv_fun : B -> A`\n- Proofs that these are mutual inverses\n\nThis uses `Classical.choice` to extract a witness from the existence proof, making it `noncomputable`.",
+    "mathContext": "$A \\cong B$",
+    "significance": "key",
+    "relatedConcepts": ["equivalence", "inverse function", "choice axiom"]
+  },
+  {
+    "id": "ann-embedding",
+    "proofId": "schroeder-bernstein",
+    "range": { "startLine": 79, "endLine": 93 },
+    "type": "definition",
+    "title": "Embeddings",
+    "content": "An **embedding** (`A hookrightarrow B`) is an injective function bundled with its injectivity proof:\n\n```\nstructure Embedding (A B : Type) where\n  to_fun : A -> B\n  injective : Injective to_fun\n```\n\nEmbeddings are the natural morphisms for 'subset-like' relationships between types. The notation `A hookrightarrow B` means 'A embeds into B' or 'A is at most as large as B'.\n\nMathlib's `Function.Embedding.antisymm` states: embeddings both ways implies equivalence exists.",
+    "significance": "key",
+    "relatedConcepts": ["injective function", "subtype", "cardinality comparison"]
+  },
+  {
+    "id": "ann-cardinal",
+    "proofId": "schroeder-bernstein",
+    "range": { "startLine": 95, "endLine": 106 },
+    "type": "theorem",
+    "title": "Cardinal Arithmetic Form",
+    "content": "In terms of **cardinal numbers**:\n\n$$|A| \\leq |B| \\land |B| \\leq |A| \\implies |A| = |B|$$\n\nThis makes cardinality a **partial order** on sets (up to bijection):\n- Reflexive: $|A| \\leq |A|$ (identity injection)\n- Antisymmetric: $|A| \\leq |B| \\land |B| \\leq |A| \\implies |A| = |B|$ (Schroeder-Bernstein!)\n- Transitive: $|A| \\leq |B| \\land |B| \\leq |C| \\implies |A| \\leq |C|$ (compose injections)\n\nNote: Both types must be in the same universe for cardinal equality to make sense.",
+    "mathContext": "$|A| = |B|$",
+    "significance": "key",
+    "relatedConcepts": ["cardinal numbers", "partial order", "universe polymorphism"]
+  },
+  {
+    "id": "ann-orbit-proof",
+    "proofId": "schroeder-bernstein",
+    "range": { "startLine": 107, "endLine": 129 },
+    "type": "concept",
+    "title": "The Orbit Partition Strategy",
+    "content": "The classical proof works by **partitioning elements into orbits**:\n\n**Step 1**: For any element, trace backwards:\n- From $a \\in A$: look for $b$ with $g(b) = a$, then $a'$ with $f(a') = b$, etc.\n- The chain: $... \\to a' \\to b \\to a \\to f(a) \\to g(f(a)) \\to ...$\n\n**Step 2**: Classify by termination:\n- **Type A**: Chain terminates in A (no preimage under g at some point)\n- **Type B**: Chain terminates in B (no preimage under f at some point)\n- **Type C**: Chain is infinite (never terminates)\n\n**Step 3**: Define the bijection:\n- Type A/C elements: use $f$ (go forward)\n- Type B elements: use $g^{-1}$ (go backward)\n\nThis requires **classical logic** to decide which type each element is.",
+    "significance": "critical",
+    "relatedConcepts": ["orbit", "partition", "classical logic"]
+  },
+  {
+    "id": "ann-classical",
+    "proofId": "schroeder-bernstein",
+    "range": { "startLine": 43, "endLine": 49 },
+    "type": "concept",
+    "title": "Classical vs Constructive",
+    "content": "The Schroeder-Bernstein theorem is **inherently classical**:\n\n- It requires the **law of excluded middle** to partition elements into orbit types\n- In fact, Schroeder-Bernstein is **equivalent** to excluded middle (assuming infinity axiom)\n\n**Constructively**, we cannot decide whether an element's backward chain terminates or not. The theorem fails in constructive settings like:\n- Intuitionistic type theory\n- Bishop-style constructive mathematics\n\nMathlib uses classical logic throughout, so this is not an issue for formalization.",
+    "significance": "key",
+    "relatedConcepts": ["law of excluded middle", "constructive mathematics", "classical logic"]
+  },
+  {
+    "id": "ann-corollary-comp",
+    "proofId": "schroeder-bernstein",
+    "range": { "startLine": 131, "endLine": 139 },
+    "type": "lemma",
+    "title": "Composition Preserves Injectivity",
+    "content": "A useful corollary: if $f: A \\to B$ and $g: B \\to A$ are both injective, then so is $g \\circ f: A \\to A$.\n\n**Proof**: Suppose $g(f(a_1)) = g(f(a_2))$. Since $g$ is injective, $f(a_1) = f(a_2)$. Since $f$ is injective, $a_1 = a_2$. Thus $g \\circ f$ is injective.\n\nThis composition gives an injective self-map $A \\to A$, which in the finite case would imply $A$ and $B$ have the same size immediately.",
+    "mathContext": "$g \\circ f: A \\hookrightarrow A$",
+    "significance": "supporting",
+    "relatedConcepts": ["function composition", "injectivity"]
+  },
+  {
+    "id": "ann-set-version",
+    "proofId": "schroeder-bernstein",
+    "range": { "startLine": 148, "endLine": 159 },
+    "type": "theorem",
+    "title": "Set-Theoretic Version",
+    "content": "For **sets within a common type** (subtypes in Lean):\n\nGiven sets $A, B \\subseteq X$ with:\n- An injection $f: A \\to B$\n- An injection $g: B \\to A$\n\nWe can conclude $|A| = |B|$ as cardinal numbers.\n\nIn Lean, sets are predicates `Set A = A -> Prop`, and elements of a set are subtypes. The theorem applies to these subtypes directly.",
+    "mathContext": "$|A| = |B|$ for $A, B \\subseteq X$",
+    "significance": "supporting",
+    "relatedConcepts": ["subset", "subtype", "set theory"]
+  },
+  {
+    "id": "ann-cantor-connection",
+    "proofId": "schroeder-bernstein",
+    "range": { "startLine": 160, "endLine": 171 },
+    "type": "concept",
+    "title": "Connection to Cantor's Theorem",
+    "content": "Schroeder-Bernstein and **Cantor's theorem** work together:\n\n- **Cantor**: There is no surjection $A \\to \\mathcal{P}(A)$, so $|A| < |\\mathcal{P}(A)|$\n- **Schroeder-Bernstein**: To show $|X| = |Y|$, find injections both ways\n\n**Example**: Proving $|\\mathbb{R}| = |\\mathcal{P}(\\mathbb{N})|$\n1. Injection $\\mathbb{R} \\to \\mathcal{P}(\\mathbb{N})$: encode reals as sets of rationals (Dedekind cuts)\n2. Injection $\\mathcal{P}(\\mathbb{N}) \\to \\mathbb{R}$: binary representation $S \\mapsto \\sum_{n \\in S} 2^{-n}$\n3. Apply Schroeder-Bernstein!\n\nWithout SB, we'd need to construct an explicit bijection, which is much harder.",
+    "significance": "key",
+    "relatedConcepts": ["Cantor's theorem", "power set", "continuum"]
+  },
+  {
+    "id": "ann-visualization",
+    "proofId": "schroeder-bernstein",
+    "range": { "startLine": 172, "endLine": 191 },
+    "type": "concept",
+    "title": "Visualizing the Bijection",
+    "content": "The ASCII diagram shows the orbit structure:\n\n```\nA                           B\no--f--> o                   o--g--> o\n         \\                 /\n           o <--g-- o--f--> o\n                     \\\n                       ...\n```\n\n**Reading the diagram**:\n- `o` represents elements (filled = A, empty = B)\n- Arrows show where f and g map elements\n- Following arrows backwards classifies orbit type\n\n**The bijection h**:\n- Follows f-arrows for Type A/C elements\n- Follows g-arrows backwards for Type B elements\n\nThe key insight: every element in B is reached exactly once.",
+    "significance": "supporting",
+    "relatedConcepts": ["graph theory", "orbit", "bijection construction"]
+  },
+  {
+    "id": "ann-failures",
+    "proofId": "schroeder-bernstein",
+    "range": { "startLine": 160, "endLine": 165 },
+    "type": "concept",
+    "title": "Where Schroeder-Bernstein Fails",
+    "content": "The theorem is **specific to sets**. It fails for:\n\n**Groups**: There exist groups $G, H$ with injective homomorphisms $G \\to H$ and $H \\to G$, but $G \\not\\cong H$ as groups.\n\n**Rings**: Similarly, non-isomorphic rings can embed into each other.\n\n**Topological spaces**: Embeddings both ways don't imply homeomorphism.\n\n**Ordered sets**: Monotone injections both ways don't imply order-isomorphism.\n\nThe 'Schroeder-Bernstein property' holds for **sets and cardinal numbers**, but not for most algebraic or topological structures.",
+    "significance": "key",
+    "relatedConcepts": ["group homomorphism", "isomorphism", "category theory"]
+  }
+]
