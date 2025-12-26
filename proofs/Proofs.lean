@@ -19,6 +19,7 @@ import Proofs.KnightsTourOblique
 import Proofs.AbelRuffini
 import Proofs.BorsukUlam
 import Proofs.BrouwerFixedPoint
+import Proofs.DeMoivre
 import Proofs.EulerIdentity
 import Proofs.FourColorTheorem
 import Proofs.FundamentalTheoremAlgebra
