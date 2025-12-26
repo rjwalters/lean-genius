@@ -7,6 +7,8 @@ import Proofs.FundamentalTheoremCalculus
 import Proofs.InfinitudePrimes
 import Proofs.CantorDiagonalization
 import Proofs.CantorsTheorem
+import Proofs.DenumerabilityRationals
+import Proofs.SchroederBernstein
 
 -- Additional proofs (may contain sorry/axioms - work in progress)
 import Proofs.HarmonicDivergence
@@ -24,3 +26,4 @@ import Proofs.NavierStokes
 import Proofs.PythagoreanTheorem
 import Proofs.RamanujanSumFallacy
 import Proofs.ThreePlaceIdentity
+import Proofs.WilsonsTheorem
