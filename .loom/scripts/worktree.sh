@@ -237,6 +237,11 @@ if check_if_in_worktree; then
     fi
 fi
 
+# Set MAIN_WORKSPACE if not already set (when running from main workspace directly)
+if [[ -z "$MAIN_WORKSPACE" ]]; then
+    MAIN_WORKSPACE=$(pwd)
+fi
+
 # Determine branch name
 if [[ -n "$CUSTOM_BRANCH" ]]; then
     BRANCH_NAME="feature/$CUSTOM_BRANCH"
@@ -353,27 +358,37 @@ if git worktree add "${CREATE_ARGS[@]}"; then
         cd - > /dev/null
     fi
 
-    # Download Mathlib cache for Lean projects (much faster than building)
-    # Uses Mathlib's cloud cache to download pre-compiled oleans
+    # Symlink .lake from main workspace for Lean projects (instant, no rebuild)
+    # This shares the pre-built Mathlib artifacts with the worktree
     WORKTREE_PROOFS_DIR="$ABS_WORKTREE_PATH/proofs"
+    MAIN_PROOFS_LAKE="$MAIN_WORKSPACE/proofs/.lake"
 
     if [[ -d "$WORKTREE_PROOFS_DIR" ]] && [[ -f "$WORKTREE_PROOFS_DIR/lakefile.toml" ]]; then
-        if [[ "$JSON_OUTPUT" != "true" ]]; then
-            print_info "Downloading Mathlib cache (this is much faster than building)..."
-        fi
-
-        cd "$WORKTREE_PROOFS_DIR"
-        if lake exe cache get 2>/dev/null; then
+        if [[ -d "$MAIN_PROOFS_LAKE" ]]; then
             if [[ "$JSON_OUTPUT" != "true" ]]; then
-                print_success "Mathlib cache downloaded"
+                print_info "Symlinking .lake from main workspace (instant, no rebuild needed)..."
+            fi
+
+            # Remove any existing .lake in worktree and create symlink
+            rm -rf "$WORKTREE_PROOFS_DIR/.lake"
+            # Use relative path so symlink works regardless of repo location
+            ln -s "../../../../proofs/.lake" "$WORKTREE_PROOFS_DIR/.lake"
+
+            if [[ -L "$WORKTREE_PROOFS_DIR/.lake" ]]; then
+                if [[ "$JSON_OUTPUT" != "true" ]]; then
+                    print_success "Linked .lake from main workspace"
+                fi
+            else
+                if [[ "$JSON_OUTPUT" != "true" ]]; then
+                    print_warning "Failed to create .lake symlink"
+                fi
             fi
         else
             if [[ "$JSON_OUTPUT" != "true" ]]; then
-                print_warning "Failed to download Mathlib cache (will build from source)"
-                print_info "You can try manually: cd $WORKTREE_PROOFS_DIR && lake exe cache get"
+                print_warning "Main workspace .lake not found - run 'lake build' in main first"
+                print_info "Then re-run: cd $WORKTREE_PROOFS_DIR && ln -s ../../../../proofs/.lake .lake"
             fi
         fi
-        cd - > /dev/null
     fi
 
     # Output results
