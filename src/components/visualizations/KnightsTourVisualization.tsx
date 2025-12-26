@@ -2,6 +2,13 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { Play, Pause, RotateCcw, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
+// Knight SVG path for chess piece
+const KnightIcon = ({ className = '' }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M19 22H5v-2h14v2M13 2c-1.25 0-2.42.62-3.11 1.66L7 8l2 2 2.06-2.75c.27-.36.7-.58 1.16-.61L9 13H7v7h10v-7h-2l-2.06-5.52c.58-.14 1.06-.56 1.28-1.12l2.28 1.28 2.75-1.88-2.1-3.56C16.19 2.08 14.42 2 13 2z"/>
+  </svg>
+)
+
 /**
  * Tour (t) - The unique closed knight's tour with exactly 4 oblique turns.
  * Based on Knuth TAOCP Vol 4 Fascicle 8a, Fig. A-19(t)
@@ -146,10 +153,13 @@ export function KnightsTourVisualization({ className = '', compact = false }: Pr
                   key={i}
                   className={`
                     relative flex items-center justify-center font-mono text-xs
-                    transition-all duration-300
+                    transition-colors duration-300
                     ${isLight ? 'bg-[oklch(0.16_0_0)]' : 'bg-[oklch(0.12_0_0)]'}
-                    ${isCurrent ? 'bg-annotation/30 ring-2 ring-annotation ring-inset' : ''}
+                    ${isCurrent ? 'bg-annotation/30' : ''}
                   `}
+                  style={{
+                    boxShadow: isCurrent ? 'inset 0 0 0 2px var(--color-annotation)' : 'inset 0 0 0 2px transparent'
+                  }}
                 >
                   {/* Oblique marker */}
                   {isOblique && (
@@ -206,13 +216,16 @@ export function KnightsTourVisualization({ className = '', compact = false }: Pr
             )}
             {/* Knight marker */}
             {currentStep > 0 && (
-              <circle
-                cx={knightX}
-                cy={knightY}
-                r={12 / scale}
-                fill="var(--color-annotation)"
-                className="drop-shadow-lg"
-              />
+              <foreignObject
+                x={knightX - 16 / scale}
+                y={knightY - 16 / scale}
+                width={32 / scale}
+                height={32 / scale}
+              >
+                <div className="w-full h-full flex items-center justify-center text-annotation drop-shadow-lg">
+                  <KnightIcon className="w-full h-full" />
+                </div>
+              </foreignObject>
             )}
           </svg>
         </div>
@@ -284,7 +297,11 @@ export function KnightsTourVisualization({ className = '', compact = false }: Pr
           {/* Legend */}
           <div className="mt-4 pt-4 border-t border-border space-y-2">
             <div className="flex items-center gap-2 text-xs">
-              <div className="w-3 h-3 bg-annotation rounded-sm" />
+              <KnightIcon className="w-4 h-4 text-annotation" />
+              <span className="text-muted-foreground">Knight's position</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs">
+              <div className="w-3 h-0.5 bg-annotation rounded-full" />
               <span className="text-muted-foreground">Knight's path</span>
             </div>
             <div className="flex items-center gap-2 text-xs">
