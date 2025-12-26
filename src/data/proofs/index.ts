@@ -28,6 +28,7 @@ import { schroederBernsteinData } from './schroeder-bernstein'
 import { cantorsTheoremData } from './cantors-theorem'
 import { wilsonsTheoremData } from './wilsons-theorem'
 import { intermediateValueTheoremData } from './intermediate-value-theorem'
+import { gcdAlgorithmData } from './gcd-algorithm'
 import { mathematicalInductionData } from './mathematical-induction'
 import { arithmeticSeriesData } from './arithmetic-series'
 import { subsetCountData } from './subset-count'
@@ -64,6 +65,7 @@ export const proofs: Record<string, ProofData> = {
   'cantors-theorem': cantorsTheoremData,
   'wilsons-theorem': wilsonsTheoremData,
   'intermediate-value-theorem': intermediateValueTheoremData,
+  'gcd-algorithm': gcdAlgorithmData,
   'mathematical-induction': mathematicalInductionData,
   'arithmetic-series': arithmeticSeriesData,
   'subset-count': subsetCountData,

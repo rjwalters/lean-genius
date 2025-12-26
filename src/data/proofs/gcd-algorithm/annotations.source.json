@@ -1,0 +1,231 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "gcd-algorithm",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "What This Proves"
+    },
+    "type": "context",
+    "title": "The Oldest Algorithm",
+    "content": "The Euclidean algorithm is arguably the oldest non-trivial algorithm still in common use:\n\n$$\\gcd(a, b) = \\gcd(b, a \\mod b)$$\n\n**Why it matters**:\n- Over 2,300 years old (Euclid's Elements, c. 300 BCE)\n- Foundation of modern cryptography (RSA, Diffie-Hellman)\n- Remarkably efficient: O(log min(a, b)) steps\n- Extends to polynomials, Gaussian integers, and more\n\nThe algorithm terminates because $a \\mod b < b$, giving a strictly decreasing sequence.",
+    "significance": "critical",
+    "relatedConcepts": ["divisibility", "modular arithmetic", "well-founded recursion"]
+  },
+  {
+    "id": "ann-historical",
+    "proofId": "gcd-algorithm",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Historical Note"
+    },
+    "type": "insight",
+    "title": "2,300 Years of Mathematical Truth",
+    "content": "The Euclidean algorithm appears in Book VII of Euclid's *Elements* (c. 300 BCE), making it over 2,300 years old. It was originally stated in terms of repeated subtraction rather than the modulo operation, but the principle is the same.\n\nThe algorithm is also described in ancient Chinese and Indian mathematics, suggesting independent discovery.",
+    "mathContext": "Original form: repeated subtraction\nModern form: modulo operation\n\nBoth converge to the GCD.",
+    "significance": "key",
+    "relatedConcepts": ["Euclid's Elements", "mathematical history", "algorithm evolution"]
+  },
+  {
+    "id": "ann-recurrence",
+    "proofId": "gcd-algorithm",
+    "anchor": {
+      "type": "declaration",
+      "name": "euclidean_recurrence",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "The Euclidean Recurrence",
+    "content": "**The Core Identity**:\n$$\\gcd(a, b) = \\gcd(b, a \\mod b)$$\n\nThis is the heart of the algorithm. The key insight is that common divisors are preserved:\n\n- If $d | a$ and $d | b$, then $d | (a \\mod b)$ since $a \\mod b = a - qb$\n- Conversely, if $d | b$ and $d | (a \\mod b)$, then $d | a$ since $a = qb + (a \\mod b)$\n\nThus the two pairs have exactly the same common divisors.",
+    "mathContext": "$\\gcd(a, b) = \\gcd(b, a \\mod b)$",
+    "significance": "critical",
+    "relatedConcepts": ["divisibility", "modulo operation", "recursion"]
+  },
+  {
+    "id": "ann-base-case",
+    "proofId": "gcd-algorithm",
+    "anchor": {
+      "type": "declaration",
+      "name": "gcd_zero_right",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "Base Case: GCD with Zero",
+    "content": "**Base Case**: $\\gcd(a, 0) = a$\n\nThis makes sense because:\n- Every number divides 0 (since $0 = 0 \\cdot n$ for any $n$)\n- So the common divisors of $a$ and $0$ are exactly the divisors of $a$\n- The greatest of these is $a$ itself\n\nThis base case terminates the recursion.",
+    "mathContext": "$\\gcd(a, 0) = a$",
+    "significance": "key",
+    "relatedConcepts": ["base case", "termination", "divisibility by zero"]
+  },
+  {
+    "id": "ann-symmetry",
+    "proofId": "gcd-algorithm",
+    "anchor": {
+      "type": "declaration",
+      "name": "gcd_comm",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "GCD is Commutative",
+    "content": "**Symmetry**: $\\gcd(a, b) = \\gcd(b, a)$\n\nThe order of arguments doesn't matter for GCD. This follows directly from the definition: the common divisors of $a$ and $b$ are exactly the common divisors of $b$ and $a$.",
+    "mathContext": "$\\gcd(a, b) = \\gcd(b, a)$",
+    "significance": "supporting",
+    "relatedConcepts": ["commutativity", "symmetry"]
+  },
+  {
+    "id": "ann-divisibility",
+    "proofId": "gcd-algorithm",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Correctness: GCD Divides Both Arguments"
+    },
+    "type": "theorem",
+    "title": "GCD Divides Both Arguments",
+    "content": "**Correctness Property 1**: The GCD divides both inputs.\n\n$$\\gcd(a, b) \\mid a \\text{ and } \\gcd(a, b) \\mid b$$\n\nThis is half of what makes it a *common* divisor. The proofs follow directly from the definition of GCD in Mathlib.",
+    "mathContext": "$\\gcd(a,b) \\mid a$ and $\\gcd(a,b) \\mid b$",
+    "significance": "key",
+    "relatedConcepts": ["divisibility", "common divisor"]
+  },
+  {
+    "id": "ann-greatest",
+    "proofId": "gcd-algorithm",
+    "anchor": {
+      "type": "declaration",
+      "name": "gcd_is_greatest",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "GCD is the Greatest",
+    "content": "**Correctness Property 2**: Any common divisor divides the GCD.\n\nIf $d \\mid a$ and $d \\mid b$, then $d \\mid \\gcd(a, b)$.\n\nThis means $\\gcd(a, b)$ is the *greatest* common divisor because every other common divisor must be smaller (since it divides the GCD).\n\n**Universal Property**: This characterizes GCD uniquely.",
+    "mathContext": "$d \\mid a \\land d \\mid b \\Rightarrow d \\mid \\gcd(a, b)$",
+    "significance": "critical",
+    "relatedConcepts": ["universal property", "lattice theory", "lcm-gcd duality"]
+  },
+  {
+    "id": "ann-characterization",
+    "proofId": "gcd-algorithm",
+    "anchor": {
+      "type": "declaration",
+      "name": "gcd_characterization",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "Complete Characterization",
+    "content": "**The Universal Property of GCD**:\n\n$d = \\gcd(a, b)$ if and only if:\n1. $d \\mid a$ and $d \\mid b$ (it's a common divisor)\n2. For all $e$: if $e \\mid a$ and $e \\mid b$, then $e \\mid d$ (it's the greatest)\n\nThis completely characterizes the GCD and shows it's unique.",
+    "mathContext": "Universal property of GCD",
+    "significance": "key",
+    "relatedConcepts": ["universal property", "uniqueness", "category theory"]
+  },
+  {
+    "id": "ann-properties",
+    "proofId": "gcd-algorithm",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Key Properties"
+    },
+    "type": "concept",
+    "title": "Algebraic Properties",
+    "content": "GCD satisfies many nice algebraic properties:\n\n- **Commutativity**: $\\gcd(a, b) = \\gcd(b, a)$\n- **Associativity**: $\\gcd(\\gcd(a, b), c) = \\gcd(a, \\gcd(b, c))$\n- **Identity**: $\\gcd(a, 0) = a$\n- **Idempotence**: $\\gcd(a, a) = a$\n- **Absorption with 1**: $\\gcd(a, 1) = 1$\n\nThese make $(\\mathbb{N}, \\gcd)$ a semilattice (actually, with LCM it forms a lattice).",
+    "significance": "supporting",
+    "relatedConcepts": ["lattice theory", "algebraic structures", "semilattice"]
+  },
+  {
+    "id": "ann-coprime",
+    "proofId": "gcd-algorithm",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Coprimality"
+    },
+    "type": "concept",
+    "title": "Coprimality",
+    "content": "Two numbers are **coprime** (or relatively prime) if their GCD is 1:\n\n$$\\gcd(a, b) = 1$$\n\n**Key Examples**:\n- Consecutive integers are always coprime: $\\gcd(n, n+1) = 1$\n- Prime $p$ is coprime to any $a$ with $p \\nmid a$\n- If $\\gcd(a, b) = 1$ and $\\gcd(a, c) = 1$, then $\\gcd(a, bc) = 1$\n\nCoprimality is essential in number theory and cryptography.",
+    "mathContext": "$\\gcd(a, b) = 1$ means $a$ and $b$ are coprime",
+    "significance": "key",
+    "relatedConcepts": ["Euler's totient", "RSA", "modular multiplicative inverse"]
+  },
+  {
+    "id": "ann-consecutive",
+    "proofId": "gcd-algorithm",
+    "anchor": {
+      "type": "declaration",
+      "name": "consecutive_coprime",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "Consecutive Integers are Coprime",
+    "content": "For any $n$, we have $\\gcd(n, n+1) = 1$.\n\nIntuition: if $d$ divides both $n$ and $n+1$, then $d$ divides their difference $(n+1) - n = 1$. So $d = 1$.\n\nThis is why consecutive Fibonacci numbers are always coprime!",
+    "mathContext": "$\\gcd(n, n+1) = 1$",
+    "significance": "supporting",
+    "relatedConcepts": ["coprimality", "Fibonacci numbers"]
+  },
+  {
+    "id": "ann-bezout",
+    "proofId": "gcd-algorithm",
+    "anchor": {
+      "type": "declaration",
+      "name": "bezout_identity",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "Bezout's Identity",
+    "content": "**Bezout's Identity**: For any $a, b \\in \\mathbb{N}$, there exist integers $x, y$ such that:\n\n$$\\gcd(a, b) = ax + by$$\n\nThe **extended Euclidean algorithm** computes these coefficients alongside the GCD.\n\n**Applications**:\n- Solving linear Diophantine equations $ax + by = c$\n- Computing modular multiplicative inverses\n- RSA key generation\n\n**Example**: $\\gcd(35, 15) = 5 = 35 \\cdot 1 + 15 \\cdot (-2)$",
+    "mathContext": "$\\gcd(a, b) = ax + by$ for some integers $x, y$",
+    "significance": "critical",
+    "relatedConcepts": ["extended Euclidean algorithm", "linear Diophantine equations", "modular inverse"]
+  },
+  {
+    "id": "ann-bezout-equation",
+    "proofId": "gcd-algorithm",
+    "anchor": {
+      "type": "declaration",
+      "name": "bezout_equation",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "Bezout Coefficients",
+    "content": "Mathlib provides explicit Bezout coefficients via `Nat.gcdA` and `Nat.gcdB`:\n\n$$\\gcd(a, b) = a \\cdot \\text{gcdA}(a, b) + b \\cdot \\text{gcdB}(a, b)$$\n\nThese are computed by the extended Euclidean algorithm, which tracks the linear combination as it computes the GCD.",
+    "mathContext": "$\\gcd(a, b) = a \\cdot x + b \\cdot y$",
+    "significance": "key",
+    "relatedConcepts": ["extended Euclidean algorithm", "Bezout coefficients"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "gcd-algorithm",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Worked Examples"
+    },
+    "type": "example",
+    "title": "Worked Examples",
+    "content": "**Tracing gcd(48, 18)**:\n\n```\ngcd(48, 18) = gcd(18, 48 mod 18) = gcd(18, 12)\ngcd(18, 12) = gcd(12, 18 mod 12) = gcd(12, 6)\ngcd(12, 6)  = gcd(6, 12 mod 6)   = gcd(6, 0)\ngcd(6, 0)   = 6\n```\n\nOnly 4 steps! The algorithm is remarkably efficient.\n\nEach step is verified in Lean using `native_decide` to compute the result directly.",
+    "mathContext": "$\\gcd(48, 18) = 6$",
+    "significance": "supporting",
+    "relatedConcepts": ["algorithm trace", "decidability", "native_decide tactic"]
+  },
+  {
+    "id": "ann-euclidean-domain",
+    "proofId": "gcd-algorithm",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Connection to Euclidean Domains"
+    },
+    "type": "concept",
+    "title": "Euclidean Domains",
+    "content": "The algorithm generalizes beyond natural numbers to any **Euclidean domain**:\n\n- **Integers** $\\mathbb{Z}$: Same algorithm with absolute value\n- **Polynomials** $F[x]$: Polynomial GCD and division\n- **Gaussian integers** $\\mathbb{Z}[i]$: Complex number version\n\nA Euclidean domain has:\n1. A Euclidean function $\\phi$ (for $\\mathbb{N}$, just the identity)\n2. Division with remainder: $a = qb + r$ where $\\phi(r) < \\phi(b)$\n\nThis abstraction is key in abstract algebra and computer algebra systems.",
+    "significance": "key",
+    "relatedConcepts": ["Euclidean domain", "polynomial GCD", "Gaussian integers"]
+  },
+  {
+    "id": "ann-complexity",
+    "proofId": "gcd-algorithm",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Complexity Analysis"
+    },
+    "type": "concept",
+    "title": "Complexity Analysis",
+    "content": "**Time Complexity**: $O(\\log(\\min(a, b)))$\n\nThe Euclidean algorithm is extremely efficient:\n\n**Gabriel Lame's Theorem (1844)**:\nThe number of steps is at most 5 times the number of digits in the smaller input.\n\n**Worst Case**: Consecutive Fibonacci numbers\n- $\\gcd(F_{n+1}, F_n)$ takes exactly $n$ steps\n- This gives $O(\\log_\\phi n)$ steps where $\\phi \\approx 1.618$\n\n**Why so fast?** Each step roughly halves the larger number, giving logarithmic behavior.",
+    "mathContext": "$O(\\log n)$ time complexity",
+    "significance": "key",
+    "relatedConcepts": ["Fibonacci numbers", "complexity analysis", "Lame's theorem"]
+  }
+]
