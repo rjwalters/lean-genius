@@ -31,3 +31,8 @@ dist-ssr
 .loom/*.log
 .loom/*.sock
 leanInk/
+
+# Knuth tour-finder build artifacts
+proofs/data/knuth/ham-benchmarks.tgz
+proofs/data/knuth/tour-finder/Cargo.lock
+proofs/data/knuth/tour-finder/target/

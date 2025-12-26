@@ -1,12 +1,12 @@
 import { createDb } from '../../../shared/db/client'
 import { comments } from '../../../shared/db/schema'
-import { eq, isNull, sql } from 'drizzle-orm'
+import { sql } from 'drizzle-orm'
 
 interface Env {
   DB: D1Database
 }
 
-// GET /api/comments/counts?proof_id=X - Get comment counts per line
+// GET /api/comments/counts?proof_id=X - Get comment counts per line and annotation
 export async function onRequestGet(context: EventContext<Env, string, unknown>) {
   const { DB } = context.env
   const db = createDb(DB)
@@ -22,26 +22,50 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
       )
     }
 
-    // Get comment counts grouped by line number
-    const result = await db
+    // Get comment counts grouped by line number (for legacy line-based comments)
+    const lineResult = await db
       .select({
         lineNumber: comments.lineNumber,
         count: sql<number>`count(*)`.as('count'),
       })
       .from(comments)
       .where(
-        sql`${comments.proofId} = ${proofId} AND ${comments.deletedAt} IS NULL`
+        sql`${comments.proofId} = ${proofId} AND ${comments.deletedAt} IS NULL AND ${comments.lineNumber} IS NOT NULL`
       )
       .groupBy(comments.lineNumber)
 
-    // Convert to a map for easier client-side use
-    const counts: Record<number, number> = {}
-    for (const row of result) {
-      counts[row.lineNumber] = row.count
+    // Get comment counts grouped by annotation ID (for annotation-anchored comments)
+    const annotationResult = await db
+      .select({
+        annotationId: comments.annotationId,
+        count: sql<number>`count(*)`.as('count'),
+      })
+      .from(comments)
+      .where(
+        sql`${comments.proofId} = ${proofId} AND ${comments.deletedAt} IS NULL AND ${comments.annotationId} IS NOT NULL`
+      )
+      .groupBy(comments.annotationId)
+
+    // Convert to maps for easier client-side use
+    const lineCounts: Record<number, number> = {}
+    for (const row of lineResult) {
+      if (row.lineNumber !== null) {
+        lineCounts[row.lineNumber] = row.count
+      }
+    }
+
+    const annotationCounts: Record<string, number> = {}
+    for (const row of annotationResult) {
+      if (row.annotationId !== null) {
+        annotationCounts[row.annotationId] = row.count
+      }
     }
 
     return new Response(
-      JSON.stringify({ counts }),
+      JSON.stringify({
+        counts: lineCounts,           // Legacy: { lineNumber: count }
+        annotationCounts,             // New: { annotationId: count }
+      }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
     )
   } catch (error) {

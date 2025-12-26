@@ -1,0 +1,80 @@
+[
+  {
+    "id": "denumerable-instance",
+    "proofId": "denumerability-rationals",
+    "anchor": {
+      "type": "declaration",
+      "name": "natEquivRat",
+      "kind": "def"
+    },
+    "type": "concept",
+    "title": "Mathlib's Denumerable Instance",
+    "content": "The `Denumerable ℚ` instance is provided by Mathlib. This typeclass asserts that ℚ is in bijection with ℕ, with explicit encoding/decoding functions.",
+    "significance": "key"
+  },
+  {
+    "id": "equiv-definition",
+    "proofId": "denumerability-rationals",
+    "anchor": {
+      "type": "declaration",
+      "name": "natEquivRat",
+      "kind": "def"
+    },
+    "type": "definition",
+    "title": "The Explicit Bijection",
+    "content": "`Denumerable.eqv` gives an equivalence `ℚ ≃ ℕ`. We use `.symm` to get `ℕ ≃ ℚ`, which lets us enumerate rationals by natural numbers.",
+    "significance": "key"
+  },
+  {
+    "id": "main-theorem",
+    "proofId": "denumerability-rationals",
+    "anchor": {
+      "type": "declaration",
+      "name": "rationals_denumerable",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "Cantor's Classical Statement",
+    "content": "This is the classical formulation: there exists a bijection f : ℕ ≃ ℚ. The proof extracts the bijection from Mathlib's Denumerable instance.",
+    "significance": "critical"
+  },
+  {
+    "id": "countable-corollary",
+    "proofId": "denumerability-rationals",
+    "anchor": {
+      "type": "declaration",
+      "name": "rationals_countable",
+      "kind": "theorem"
+    },
+    "type": "lemma",
+    "title": "Countability Follows",
+    "content": "Every denumerable type is countable. The converse is false: finite types are countable but not denumerable.",
+    "significance": "supporting"
+  },
+  {
+    "id": "round-trip",
+    "proofId": "denumerability-rationals",
+    "anchor": {
+      "type": "declaration",
+      "name": "decode_encode",
+      "kind": "theorem"
+    },
+    "type": "insight",
+    "title": "Round-Trip Properties",
+    "content": "The encode and decode functions are mutual inverses. These proofs verify that no information is lost in the encoding.",
+    "significance": "key"
+  },
+  {
+    "id": "cardinality",
+    "proofId": "denumerability-rationals",
+    "anchor": {
+      "type": "declaration",
+      "name": "card_rat_eq_aleph0",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "Cardinal Equality",
+    "content": "In cardinal arithmetic, |ℚ| = ℵ₀. This connects the type-theoretic notion (Denumerable) to the set-theoretic notion (cardinality).",
+    "significance": "key"
+  }
+]

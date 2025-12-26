@@ -1,6 +1,7 @@
 import { useMemo, useCallback } from 'react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { ProofLine } from './ProofLine'
+import { tokenizeLine } from '@/lib/lean-tokenizer'
 import type { Proof, Annotation } from '@/types/proof'
 
 interface ProofViewerProps {
@@ -17,6 +18,18 @@ export function ProofViewer({
   onLineSelect,
 }: ProofViewerProps) {
   const lines = useMemo(() => proof.source.split('\n'), [proof.source])
+
+  // Pre-compute block comment state for each line
+  const blockCommentState = useMemo(() => {
+    const state: boolean[] = []
+    let inBlockComment = false
+    for (const line of lines) {
+      state.push(inBlockComment)
+      const result = tokenizeLine(line, inBlockComment)
+      inBlockComment = result.endsInBlockComment
+    }
+    return state
+  }, [lines])
 
   // Create a map of line numbers to annotations
   const annotationsByLine = useMemo(() => {
@@ -52,6 +65,7 @@ export function ProofViewer({
               annotations={lineAnnotations}
               isSelected={selectedLine === lineNumber}
               onClick={() => handleLineClick(lineNumber)}
+              inBlockComment={blockCommentState[index]}
             />
           )
         })}
