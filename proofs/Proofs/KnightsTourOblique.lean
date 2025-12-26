@@ -751,6 +751,51 @@ theorem reflect_preserves_dot (v1 v2 : MoveVector) :
   simp only [reflectMoveVector, MoveVector.dot]
   ring
 
+/-- Rotation preserves the isOblique predicate -/
+theorem rotate_preserves_isOblique (v1 v2 : MoveVector) :
+    isOblique (rotateMoveVector v1) (rotateMoveVector v2) = isOblique v1 v2 := by
+  simp only [isOblique, rotate_preserves_dot]
+
+/-- Reflection preserves the isOblique predicate -/
+theorem reflect_preserves_isOblique (v1 v2 : MoveVector) :
+    isOblique (reflectMoveVector v1) (reflectMoveVector v2) = isOblique v1 v2 := by
+  simp only [isOblique, reflect_preserves_dot]
+
+/-- Apply D4 transformation to a move vector -/
+def applyD4MoveVector (g : Bool × Fin 4) (v : MoveVector) : MoveVector :=
+  let reflected := if g.1 then reflectMoveVector v else v
+  match g.2 with
+  | 0 => reflected
+  | 1 => rotateMoveVector reflected
+  | 2 => rotateMoveVector (rotateMoveVector reflected)
+  | 3 => rotateMoveVector (rotateMoveVector (rotateMoveVector reflected))
+
+/-- D4 transformations preserve dot products -/
+theorem applyD4_preserves_dot (g : Bool × Fin 4) (v1 v2 : MoveVector) :
+    (applyD4MoveVector g v1).dot (applyD4MoveVector g v2) = v1.dot v2 := by
+  simp only [applyD4MoveVector]
+  -- Handle the reflection case first
+  cases hr : g.1 with
+  | false =>
+    -- No reflection, just rotation
+    match g.2 with
+    | 0 => simp only [hr, ↓reduceIte]
+    | 1 => simp only [hr, ↓reduceIte, rotate_preserves_dot]
+    | 2 => simp only [hr, ↓reduceIte, rotate_preserves_dot]
+    | 3 => simp only [hr, ↓reduceIte, rotate_preserves_dot]
+  | true =>
+    -- Reflection then rotation
+    match g.2 with
+    | 0 => simp only [hr, ↓reduceIte, reflect_preserves_dot]
+    | 1 => simp only [hr, ↓reduceIte, rotate_preserves_dot, reflect_preserves_dot]
+    | 2 => simp only [hr, ↓reduceIte, rotate_preserves_dot, reflect_preserves_dot]
+    | 3 => simp only [hr, ↓reduceIte, rotate_preserves_dot, reflect_preserves_dot]
+
+/-- D4 transformations preserve the isOblique predicate -/
+theorem applyD4_preserves_isOblique (g : Bool × Fin 4) (v1 v2 : MoveVector) :
+    isOblique (applyD4MoveVector g v1) (applyD4MoveVector g v2) = isOblique v1 v2 := by
+  simp only [isOblique, applyD4_preserves_dot]
+
 /-- **Key Invariance**: Oblique count is preserved under D4 symmetries.
 
     Intuition: D4 transformations are orthogonal (preserve angles).
@@ -758,9 +803,14 @@ theorem reflect_preserves_dot (v1 v2 : MoveVector) :
     transformations preserve dot products, oblique count is invariant. -/
 theorem oblique_count_invariant (g : Bool × Fin 4) (t : ClosedTour) :
     obliqueCount (applyD4Tour g t) = obliqueCount t := by
-  -- The proof follows from rotate_preserves_dot and reflect_preserves_dot:
-  -- D4 transformations preserve dot products, hence preserve isOblique
-  sorry -- Connecting transformation of tourMoves to D4 action on tour
+  -- The key insight is that D4 preserves the isOblique predicate for each pair
+  -- of consecutive moves. Since isOblique is preserved, the filter produces
+  -- the same length list.
+  simp only [obliqueCount, tourMoves, applyD4Tour]
+  -- The transformed tour has the same structure, just with transformed squares.
+  -- Each move vector gets transformed by applyD4MoveVector, and isOblique is preserved.
+  -- This follows from applyD4_preserves_isOblique.
+  sorry -- Technical: connecting tour transformation to move vector transformation
 
 /-!
 ## Section 6: Uniqueness via Certified Search
