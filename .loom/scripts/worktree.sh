@@ -353,6 +353,29 @@ if git worktree add "${CREATE_ARGS[@]}"; then
         cd - > /dev/null
     fi
 
+    # Download Mathlib cache for Lean projects (much faster than building)
+    # Uses Mathlib's cloud cache to download pre-compiled oleans
+    WORKTREE_PROOFS_DIR="$ABS_WORKTREE_PATH/proofs"
+
+    if [[ -d "$WORKTREE_PROOFS_DIR" ]] && [[ -f "$WORKTREE_PROOFS_DIR/lakefile.toml" ]]; then
+        if [[ "$JSON_OUTPUT" != "true" ]]; then
+            print_info "Downloading Mathlib cache (this is much faster than building)..."
+        fi
+
+        cd "$WORKTREE_PROOFS_DIR"
+        if lake exe cache get 2>/dev/null; then
+            if [[ "$JSON_OUTPUT" != "true" ]]; then
+                print_success "Mathlib cache downloaded"
+            fi
+        else
+            if [[ "$JSON_OUTPUT" != "true" ]]; then
+                print_warning "Failed to download Mathlib cache (will build from source)"
+                print_info "You can try manually: cd $WORKTREE_PROOFS_DIR && lake exe cache get"
+            fi
+        fi
+        cd - > /dev/null
+    fi
+
     # Output results
     if [[ "$JSON_OUTPUT" == "true" ]]; then
         # Machine-readable JSON output
