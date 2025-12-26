@@ -115,7 +115,20 @@ def isOblique (v1 v2 : MoveVector) : Bool :=
 /-- All possible dot products between knight move vectors -/
 theorem dot_product_values (v1 v2 : MoveVector) :
     v1.dot v2 ∈ ({-5, -4, -1, 0, 1, 4, 5} : Set Int) := by
-  sorry -- Case analysis on all 64 pairs of knight moves
+  -- Extract the components and validity proofs
+  obtain ⟨dx1, dy1, h1⟩ := v1
+  obtain ⟨dx2, dy2, h2⟩ := v2
+  -- The validity constraints mean (dx, dy) is one of the 8 knight offsets
+  simp only [isKnightOffset, knightOffsets, List.mem_cons, List.mem_singleton,
+             Prod.mk.injEq, decide_eq_true_eq] at h1 h2
+  -- Enumerate all 64 combinations and compute the dot product
+  simp only [MoveVector.dot, Set.mem_insert_iff, Set.mem_singleton_iff]
+  rcases h1 with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ |
+                 ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;>
+  rcases h2 with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ |
+                 ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;>
+  -- Each case reduces to a concrete integer computation
+  simp only [Int.mul_comm, Int.add_comm] <;> omega
 
 /-!
 ## Section 3: Tour Representation
@@ -147,13 +160,42 @@ structure ClosedTour where
   closes : knightGraph.Adj (squares.getLast (by simp [length_eq]))
                            (squares.head (by simp [length_eq]))
 
+/-- Helper: For i < 63, consecutive squares in a tour are knight-adjacent -/
+theorem tour_consecutive_adj (t : ClosedTour) (i : Fin 63) :
+    knightGraph.Adj (t.squares.get ⟨i.val, by omega⟩)
+                    (t.squares.get ⟨i.val + 1, by omega⟩) := by
+  have h := t.path ⟨i.val, by omega⟩
+  simp only [t.length_eq] at h
+  convert h using 2 <;> congr 1 <;> omega
+
+/-- Helper: The last square is knight-adjacent to the first -/
+theorem tour_closes_adj (t : ClosedTour) :
+    knightGraph.Adj (t.squares.get ⟨63, by omega⟩)
+                    (t.squares.get ⟨0, by omega⟩) := by
+  have h := t.closes
+  simp only [List.getLast_eq_getElem, List.head_eq_getElem, t.length_eq] at h
+  convert h using 2 <;> congr 1 <;> omega
+
 /-- Extract the move vector from position i to position i+1 in a tour -/
 def tourMoveAt (t : ClosedTour) (i : Fin 64) : MoveVector :=
   let s1 := t.squares.get ⟨i.val, by omega⟩
   let s2 := t.squares.get ⟨(i.val + 1) % 64, by omega⟩
   let dx := (s2.1 : Int) - (s1.1 : Int)
   let dy := (s2.2 : Int) - (s1.2 : Int)
-  ⟨dx, dy, by sorry⟩ -- Proof that this is a valid knight offset
+  ⟨dx, dy, by
+    -- The path property ensures consecutive squares are knight-adjacent
+    simp only [knightGraph, knightAdj] at *
+    by_cases hi : i.val < 63
+    · -- For i < 63, use the path property
+      have := tour_consecutive_adj t ⟨i.val, hi⟩
+      simp only [knightGraph, knightAdj] at this
+      convert this using 2 <;> simp <;> omega
+    · -- For i = 63, use the closes property
+      have hi63 : i.val = 63 := by omega
+      have := tour_closes_adj t
+      simp only [knightGraph, knightAdj] at this
+      simp only [hi63]
+      convert this using 2 <;> simp⟩
 
 /-- Get all 64 move vectors in a tour -/
 def tourMoveVectors (t : ClosedTour) : List MoveVector :=
@@ -212,24 +254,85 @@ def turnAngle (v1 v2 : MoveVector) : ZMod 8 :=
     The oblique turns are exactly those with dot product < 0. -/
 theorem oblique_iff_large_turn (v1 v2 : MoveVector) :
     isOblique v1 v2 = true ↔ turnAngle v1 v2 ∈ ({3, 4, 5} : Set (ZMod 8)) := by
-  sorry -- Case analysis on all 64 pairs
+  -- Extract components and validity proofs
+  obtain ⟨dx1, dy1, h1⟩ := v1
+  obtain ⟨dx2, dy2, h2⟩ := v2
+  simp only [isKnightOffset, knightOffsets, List.mem_cons, List.mem_singleton,
+             Prod.mk.injEq, decide_eq_true_eq] at h1 h2
+  -- Enumerate all 64 combinations
+  simp only [isOblique, MoveVector.dot, turnAngle, moveDirection,
+             Set.mem_insert_iff, Set.mem_singleton_iff]
+  rcases h1 with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ |
+                 ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;>
+  rcases h2 with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ |
+                 ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;>
+  -- Each case: compute dot product sign and turn angle, verify equivalence
+  simp only [Int.mul_comm, Int.add_comm, decide_eq_true_eq] <;>
+  native_decide
+
+/-- Telescoping sum in a commutative group: sum of (f(i+1) - f(i)) over a cycle = 0
+
+    Proof idea: Σᵢ (f(i+1 mod n) - f(i)) = Σᵢ f(i+1 mod n) - Σᵢ f(i)
+    Both sums iterate over all n values of f, just in different order.
+    Since addition is commutative, both sums equal Σⱼ f(j), so their difference is 0. -/
+theorem cyclic_telescope {α : Type*} [AddCommGroup α] (n : ℕ) (hn : 0 < n) (f : Fin n → α) :
+    (List.range n).map (fun i =>
+      f ⟨(i + 1) % n, Nat.mod_lt _ hn⟩ - f ⟨i % n, Nat.mod_lt _ hn⟩)
+    |>.foldl (· + ·) 0 = 0 := by
+  -- Rewrite sum of differences as difference of sums
+  -- Σᵢ (f(i+1 mod n) - f(i mod n)) = Σᵢ f(i+1 mod n) - Σᵢ f(i mod n)
+  -- Both iterate over all f(j) for j in Fin n, so equal; difference = 0
+  have sum_eq : ∀ g : ℕ → α,
+      (List.range n).map g |>.foldl (· + ·) 0 =
+      (List.range n).foldl (fun acc i => acc + g i) 0 := by
+    intro g
+    induction List.range n with
+    | nil => simp
+    | cons x xs ih => simp [List.foldl_map, ih]
+  -- Key insight: i ↦ (i+1) mod n is a bijection on Fin n
+  -- so Σᵢ f((i+1) mod n) = Σⱼ f(j)
+  -- and Σᵢ f(i mod n) = Σⱼ f(j) (since i mod n = i for i < n in range n)
+  -- Therefore their difference is 0
+  sorry -- Technical: requires permutation lemma for List.foldl
 
 /-- The sum of all turn angles in a closed tour is 0 (mod 8).
 
     Intuition: A closed tour returns to its starting position AND
     starting direction. The total rotation must be a multiple of
-    360° = 8 units in our discretization. -/
+    360° = 8 units in our discretization.
+
+    Proof: This is a telescoping sum! The turn angle from move i to i+1 is
+      dir(i+1) - dir(i)
+    Summing over all 64 turns:
+      (dir(1) - dir(0)) + (dir(2) - dir(1)) + ... + (dir(0) - dir(63)) = 0
+    Everything cancels in Z/8Z. -/
 theorem tour_winding_zero (t : ClosedTour) :
     (List.range 64).map (fun i =>
       turnAngle (tourMoveAt t ⟨i, by omega⟩)
                 (tourMoveAt t ⟨(i + 1) % 64, by omega⟩))
     |>.foldl (· + ·) 0 = (0 : ZMod 8) := by
-  sorry -- The tour closes, so cumulative rotation is 0 mod 2π
+  -- Apply the cyclic telescoping lemma
+  simp only [turnAngle]
+  -- Let f(i) = moveDirection (tourMoveAt t i)
+  -- Then we're computing Σᵢ (f((i+1) mod 64) - f(i mod 64)) = 0
+  let f : Fin 64 → ZMod 8 := fun i => moveDirection (tourMoveAt t i)
+  have h := cyclic_telescope 64 (by omega) f
+  convert h using 2
+  ext i hi
+  simp only [List.mem_range] at hi
+  simp only [f]
+  congr 1 <;> congr 1 <;> omega
 
 /-- Auxiliary: non-oblique turns contribute angles in {0, 1, 2, 6, 7} mod 8 -/
 theorem nonOblique_small_angle (v1 v2 : MoveVector) (h : isOblique v1 v2 = false) :
     turnAngle v1 v2 ∈ ({0, 1, 2, 6, 7} : Set (ZMod 8)) := by
-  sorry -- Complement of oblique_iff_large_turn
+  -- Use the contrapositive of oblique_iff_large_turn
+  have h' : ¬(isOblique v1 v2 = true) := by simp [h]
+  rw [oblique_iff_large_turn] at h'
+  -- The turn angle is in Z/8Z = {0,1,2,3,4,5,6,7}, and not in {3,4,5}
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff, not_or] at h'
+  -- So it must be in {0,1,2,6,7}
+  fin_cases turnAngle v1 v2 <;> simp_all
 
 /-- **Main Lower Bound Theorem**: Every closed knight's tour has at least 4 oblique turns.
 
@@ -285,18 +388,46 @@ def applyD4 (g : Bool × Fin 4) (s : Square) : Square :=
 /-- Knight adjacency is preserved under D4 symmetries -/
 theorem knight_adj_invariant (g : Bool × Fin 4) (s1 s2 : Square) :
     knightGraph.Adj s1 s2 ↔ knightGraph.Adj (applyD4 g s1) (applyD4 g s2) := by
-  sorry -- The L-shape is preserved under rotation and reflection
+  -- Unfold the definitions
+  simp only [knightGraph, knightAdj, applyD4, rotateSquare, rotateSquare90, reflectSquare]
+  -- The key insight: rotation and reflection preserve |dx|*|dy| = 2
+  -- For rotation by 90°: (dx, dy) → (-dy, dx), so the L-shape is preserved
+  -- For reflection: (dx, dy) → (-dx, dy), also preserves the L-shape
+  constructor <;> intro h <;>
+  simp only [isKnightOffset, knightOffsets, List.mem_cons, List.mem_singleton,
+             Prod.mk.injEq, decide_eq_true_eq] at h ⊢ <;>
+  -- Case split on g.1 (reflect) and g.2 (rotation amount)
+  rcases g with ⟨refl, rot⟩ <;>
+  fin_cases rot <;>
+  cases refl <;>
+  simp_all <;>
+  omega
+
+/-- applyD4 is injective (needed for nodup preservation) -/
+theorem applyD4_injective (g : Bool × Fin 4) : Function.Injective (applyD4 g) := by
+  intro a b h
+  simp only [applyD4, rotateSquare, rotateSquare90, reflectSquare] at h
+  rcases g with ⟨refl, rot⟩
+  fin_cases rot <;> cases refl <;>
+  simp only [ite_true, ite_false] at h <;>
+  ext <;> omega
 
 /-- Apply a D4 symmetry to an entire tour -/
 def applyD4Tour (g : Bool × Fin 4) (t : ClosedTour) : ClosedTour where
   squares := t.squares.map (applyD4 g)
   length_eq := by simp [t.length_eq]
-  nodup := by
-    apply List.Nodup.map _ t.nodup
-    intro a b h
-    sorry -- applyD4 is injective
-  path := by sorry -- Follows from knight_adj_invariant
-  closes := by sorry -- Follows from knight_adj_invariant
+  nodup := List.Nodup.map (applyD4_injective g) t.nodup
+  path := by
+    intro i
+    simp only [List.get_map]
+    have := t.path i
+    rw [knight_adj_invariant g] at this
+    convert this using 2 <;> simp [t.length_eq]
+  closes := by
+    simp only [List.getLast_map, List.head_map]
+    have := t.closes
+    rw [knight_adj_invariant g] at this
+    exact this
 
 /-- Rotate a move vector by 90° counterclockwise -/
 def rotateMoveVector90 (v : MoveVector) : MoveVector :=
@@ -309,7 +440,72 @@ def rotateMoveVector90 (v : MoveVector) : MoveVector :=
 /-- The direction of a rotated move vector shifts by 2 in Z/8Z -/
 theorem rotate_direction (v : MoveVector) :
     moveDirection (rotateMoveVector90 v) = moveDirection v + 2 := by
-  sorry -- Direct computation
+  -- Extract components and enumerate all 8 cases
+  obtain ⟨dx, dy, h⟩ := v
+  simp only [isKnightOffset, knightOffsets, List.mem_cons, List.mem_singleton,
+             Prod.mk.injEq, decide_eq_true_eq] at h
+  simp only [rotateMoveVector90, moveDirection]
+  rcases h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ |
+                ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;>
+  -- Each case: (1,2)→(-2,1), (2,1)→(-1,2), etc. Direction shifts by 2.
+  native_decide
+
+/-- Reflect a move vector across the vertical axis: (dx, dy) → (-dx, dy) -/
+def reflectMoveVector (v : MoveVector) : MoveVector :=
+  ⟨-v.dx, v.dy, by
+    obtain ⟨dx, dy, h⟩ := v
+    simp only [isKnightOffset, knightOffsets, List.mem_cons, List.mem_singleton,
+               Prod.mk.injEq, decide_eq_true_eq] at h ⊢
+    omega⟩
+
+/-- D4 transformations preserve dot products of move vectors.
+    Rotation by 90° maps (dx, dy) → (-dy, dx), which preserves dx² + dy² and dx₁dx₂ + dy₁dy₂.
+    Reflection maps (dx, dy) → (-dx, dy), which also preserves dot products. -/
+theorem d4_preserves_dot (g : Bool × Fin 4) (v1 v2 : MoveVector) :
+    let v1' := if g.1 then reflectMoveVector v1 else v1
+    let v2' := if g.1 then reflectMoveVector v2 else v2
+    v1.dot v2 = v1'.dot v2' := by
+  -- Reflection negates dx but preserves dy, so dot product is preserved
+  -- (-dx₁)(-dx₂) + dy₁dy₂ = dx₁dx₂ + dy₁dy₂
+  simp only [MoveVector.dot, reflectMoveVector]
+  cases g.1 <;> ring
+
+/-- Apply D4 transformation to a move vector -/
+def applyD4MoveVector (g : Bool × Fin 4) (v : MoveVector) : MoveVector :=
+  let v' := if g.1 then reflectMoveVector v else v
+  -- Apply rotation k times
+  match g.2 with
+  | 0 => v'
+  | 1 => rotateMoveVector90 v'
+  | 2 => rotateMoveVector90 (rotateMoveVector90 v')
+  | 3 => rotateMoveVector90 (rotateMoveVector90 (rotateMoveVector90 v'))
+
+/-- Rotation preserves dot products -/
+theorem rotate_preserves_dot (v1 v2 : MoveVector) :
+    (rotateMoveVector90 v1).dot (rotateMoveVector90 v2) = v1.dot v2 := by
+  simp only [rotateMoveVector90, MoveVector.dot]
+  ring
+
+/-- Reflection preserves dot products -/
+theorem reflect_preserves_dot (v1 v2 : MoveVector) :
+    (reflectMoveVector v1).dot (reflectMoveVector v2) = v1.dot v2 := by
+  simp only [reflectMoveVector, MoveVector.dot]
+  ring
+
+/-- D4 transformations preserve dot products -/
+theorem applyD4_preserves_dot (g : Bool × Fin 4) (v1 v2 : MoveVector) :
+    (applyD4MoveVector g v1).dot (applyD4MoveVector g v2) = v1.dot v2 := by
+  simp only [applyD4MoveVector]
+  rcases g with ⟨refl, rot⟩
+  fin_cases rot <;> cases refl <;>
+  simp only [ite_true, ite_false] <;>
+  try rfl <;>
+  simp only [rotate_preserves_dot, reflect_preserves_dot]
+
+/-- D4 transformations preserve the oblique predicate -/
+theorem applyD4_preserves_oblique (g : Bool × Fin 4) (v1 v2 : MoveVector) :
+    isOblique (applyD4MoveVector g v1) (applyD4MoveVector g v2) = isOblique v1 v2 := by
+  simp only [isOblique, applyD4_preserves_dot]
 
 /-- **Key Invariance**: Oblique count is preserved under D4 symmetries.
 
@@ -318,17 +514,40 @@ theorem rotate_direction (v : MoveVector) :
     transformations preserve dot products, oblique count is invariant. -/
 theorem oblique_count_invariant (g : Bool × Fin 4) (t : ClosedTour) :
     obliqueCount (applyD4Tour g t) = obliqueCount t := by
-  sorry -- Dot products preserved under orthogonal transformations
+  -- The key insight: D4 transformations preserve the sign of dot products
+  -- between consecutive move vectors, hence preserve the oblique count.
+  -- Technical proof: show tourMoveAt commutes appropriately with D4,
+  -- then use applyD4_preserves_oblique to show each turn's oblique status is preserved.
+  sorry -- Requires showing tourMoveAt commutes with applyD4Tour
+
+/-- Lexicographic ordering on squares: compare row first, then column -/
+instance : Ord Square where
+  compare s1 s2 :=
+    match compare s1.1.val s2.1.val with
+    | .lt => .lt
+    | .gt => .gt
+    | .eq => compare s1.2.val s2.2.val
+
+/-- Lexicographic ordering on lists of squares -/
+def squareListLe (l1 l2 : List Square) : Bool :=
+  match l1, l2 with
+  | [], [] => true
+  | [], _ => true
+  | _, [] => false
+  | x :: xs, y :: ys =>
+    match compare x y with
+    | .lt => true
+    | .gt => false
+    | .eq => squareListLe xs ys
 
 /-- A tour is in canonical form if:
-    1. It starts at a corner square (say a1)
-    2. Among all D4-equivalent tours starting at a1, it has the
-       lexicographically smallest representation -/
+    1. It starts at a corner square (0, 0)
+    2. Among all D4-equivalent tours, it has the lexicographically
+       smallest representation -/
 def isCanonical (t : ClosedTour) : Prop :=
   t.squares.head? = some (⟨0, by omega⟩, ⟨0, by omega⟩) ∧
   ∀ g : Bool × Fin 4, g ≠ (false, 0) →
-    -- Lexicographic comparison (simplified)
-    sorry
+    squareListLe t.squares (applyD4Tour g t).squares = true
 
 /-!
 ## Section 6: Uniqueness via Certified Search
@@ -412,9 +631,22 @@ theorem oblique_count_bounds (t : ClosedTour) :
     4 ≤ obliqueCount t ∧ obliqueCount t ≤ 64 := by
   constructor
   · exact oblique_lower_bound t
-  · -- At most 64 turns total
-    unfold obliqueCount
-    sorry
+  · -- At most 64 turns total (one per move)
+    unfold obliqueCount tourMoveVectors
+    -- countP on a list is at most the list length
+    have h1 : (List.ofFn (tourMoveAt t)).length = 64 := List.length_ofFn _
+    have h2 : ∀ l : List (MoveVector × MoveVector),
+              l.countP (fun (v1, v2) => isOblique v1 v2) ≤ l.length :=
+      fun l => List.countP_le_length l _
+    -- The pairs list has at most 64 elements (zip of two 64-element lists)
+    calc (List.zip (List.ofFn (tourMoveAt t))
+           ((List.ofFn (tourMoveAt t)).tail ++ [(List.ofFn (tourMoveAt t)).head!])).countP
+             (fun (v1, v2) => isOblique v1 v2)
+         ≤ (List.zip (List.ofFn (tourMoveAt t))
+             ((List.ofFn (tourMoveAt t)).tail ++ [(List.ofFn (tourMoveAt t)).head!])).length :=
+           h2 _
+       _ ≤ (List.ofFn (tourMoveAt t)).length := List.length_zip_le_left _ _
+       _ = 64 := h1
 
 end KnightsTourOblique
 
