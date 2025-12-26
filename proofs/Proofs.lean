@@ -25,3 +25,4 @@ import Proofs.NavierStokes
 import Proofs.PythagoreanTheorem
 import Proofs.RamanujanSumFallacy
 import Proofs.ThreePlaceIdentity
+import Proofs.WilsonsTheorem
