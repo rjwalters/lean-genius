@@ -8,7 +8,7 @@
     "authorHandle": "Stanford Computer Science",
     "sourceUrl": "https://online.stanford.edu/events/202412/donald-knuths-annual-christmas-lecture-2025",
     "dateAdded": "12/25/25",
-    "status": "pending",
+    "status": "axiomatized",
     "tags": ["combinatorics", "graph-theory", "knights-tour", "symmetry", "Knuth", "D4", "winding-number"]
   },
   "overview": {
@@ -27,55 +27,62 @@
     {
       "id": "board-definitions",
       "title": "Board and Knight Definitions",
-      "startLine": 29,
-      "endLine": 77,
+      "startLine": 30,
+      "endLine": 88,
       "summary": "Define the 8x8 board as Fin 8 x Fin 8 and the knight graph where edges connect squares reachable by a knight move."
     },
     {
       "id": "move-vectors",
       "title": "Move Vectors and Oblique Predicate",
-      "startLine": 79,
-      "endLine": 118,
+      "startLine": 89,
+      "endLine": 161,
       "summary": "Define move vectors for knight moves and the key 'oblique' predicate: a turn is oblique iff the dot product of consecutive move vectors is negative (angle > 90 degrees)."
     },
     {
       "id": "tour-representation",
       "title": "Tour Representation",
-      "startLine": 120,
-      "endLine": 169,
+      "startLine": 162,
+      "endLine": 211,
       "summary": "Define a closed knight's tour as a Hamiltonian cycle in the knight graph, and the obliqueCount function that counts oblique turns."
     },
     {
       "id": "winding-argument",
-      "title": "Winding Number Argument",
-      "startLine": 171,
-      "endLine": 250,
-      "summary": "The core mathematical argument: discretize directions into Z/8Z, prove the winding constraint (total turn angle = 0 mod 8), and derive the lower bound of 4 oblique turns."
+      "title": "Winding Number Argument and Lower Bound",
+      "startLine": 212,
+      "endLine": 1405,
+      "summary": "The core mathematical argument: each corner of the board forces an oblique turn because corners have only 2 knight-adjacent squares. With 4 corners, we get at least 4 oblique turns. Full proof using corner analysis and counting arguments."
     },
     {
       "id": "d4-symmetry",
       "title": "D4 Symmetry and Group Action",
-      "startLine": 252,
-      "endLine": 331,
+      "startLine": 1406,
+      "endLine": 2046,
       "summary": "Define the D4 dihedral group action on the board and prove that both the knight graph structure and oblique count are invariant under symmetry transformations."
     },
     {
       "id": "uniqueness",
       "title": "Uniqueness via Certified Search",
-      "startLine": 333,
-      "endLine": 373,
-      "summary": "Construct the unique minimal-oblique tour explicitly and prove that any tour with exactly 4 oblique turns must be D4-equivalent to it."
+      "startLine": 2047,
+      "endLine": 2358,
+      "summary": "Construct the unique minimal-oblique tour explicitly (64 squares from Knuth's Fig. A-19(t)), verify it has exactly 4 oblique turns, and accept Knuth's computational verification as an axiom that any tour with 4 obliques is D4-equivalent to this one."
     },
     {
       "id": "main-theorems",
       "title": "Main Theorems",
-      "startLine": 375,
-      "endLine": 418,
+      "startLine": 2359,
+      "endLine": 2445,
       "summary": "State the two main results: (1) every closed tour has at least 4 oblique turns, and (2) exactly one tour (up to symmetry) achieves this minimum."
     }
   ],
+  "axioms": {
+    "knuth_unique_four_oblique": {
+      "statement": "Any closed knight's tour with exactly 4 oblique turns is D4-equivalent to the minimal oblique tour",
+      "justification": "Based on Donald Knuth's exhaustive computational verification of all ~13.3 trillion closed knight's tours (TAOCP Vol 4 Fascicle 8a, December 2025). The enumeration confirmed exactly one D4-equivalence class achieves the minimum.",
+      "note": "This axiom could be eliminated via SAT/LRAT certificate verification or a certified backtracking search in Lean."
+    }
+  },
   "conclusion": {
-    "summary": "This formalization captures Donald Knuth's surprising 2025 discovery about knight's tours. The lower bound of 4 oblique turns follows from a beautiful winding number argument on Z/8Z, while the uniqueness requires computational verification over the symmetry-reduced search space. The result reveals unexpected structure in the vast space of knight's tours.",
+    "summary": "This formalization captures Donald Knuth's surprising 2025 discovery about knight's tours. The lower bound of 4 oblique turns is fully proved using a corner-forcing argument: each of the 4 board corners has only 2 knight-adjacent squares, forcing an oblique turn when the tour passes through. The uniqueness relies on Knuth's computational verification as an axiom.",
     "implications": "The result demonstrates how discrete geometry, group theory, and computational methods combine in modern combinatorics. The winding number technique may apply to other Hamiltonian cycle problems. The uniqueness of the minimal-oblique tour suggests deeper structural properties of knight's tours waiting to be discovered.",
     "openQuestions": [
       "Can similar oblique-angle bounds be proven for larger n x n boards?",

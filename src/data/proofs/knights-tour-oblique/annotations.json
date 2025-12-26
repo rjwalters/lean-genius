@@ -187,14 +187,14 @@
   {
     "id": "ann-counting-argument",
     "proofId": "knights-tour-oblique",
-    "range": { "startLine": 234, "endLine": 250 },
+    "range": { "startLine": 1101, "endLine": 1405 },
     "type": "theorem",
     "title": "The 4-Oblique Lower Bound",
-    "content": "**Main Theorem**: Every closed knight's tour has at least 4 oblique turns.\n\n**Proof idea**:\n1. 64 turns total, sum of angles ≡ 0 (mod 8)\n2. Oblique turns contribute {3, 4, 5}; non-oblique contribute {0, 1, 2, 6, 7}\n3. Angles 3 and 5 are ±3 mod 8 (they don't self-cancel)\n4. To sum to 0 mod 8, we need balanced combinations\n5. Minimum requirement: at least 4 oblique turns\n\nThe key insight: angles 3 and 5 must appear in pairs to cancel their ±3 contribution.",
-    "mathContext": "$\\forall T : \\text{ClosedTour}, \\quad \\text{obliqueCount}(T) \\geq 4$\n\nThis is a parity/counting argument on $\\mathbb{Z}/8\\mathbb{Z}$.",
+    "content": "**Main Theorem**: Every closed knight's tour has at least 4 oblique turns.\n\n**Proof**: Each of the 4 corner squares (a1, a8, h1, h8) has exactly 2 knight-adjacent squares. When the tour passes through a corner, the knight must enter from one neighbor and exit to the other. This forced path creates an oblique turn at each corner.\n\nSince the tour visits all 64 squares including all 4 corners, we get at least 4 oblique turns.",
+    "mathContext": "$\\forall T : \\text{ClosedTour}, \\quad \\text{obliqueCount}(T) \\geq 4$\n\nThis is proved by the corner-forcing argument: corners have degree 2 in the knight graph, forcing oblique turns.",
     "significance": "critical",
     "prerequisites": ["ann-winding-zero", "ann-oblique-iff-large"],
-    "relatedConcepts": ["lower bound", "counting argument", "modular constraints"]
+    "relatedConcepts": ["lower bound", "corner forcing", "graph degree"]
   },
   {
     "id": "ann-d4-intro",
@@ -269,46 +269,46 @@
   {
     "id": "ann-minimal-tour",
     "proofId": "knights-tour-oblique",
-    "range": { "startLine": 345, "endLine": 354 },
+    "range": { "startLine": 2236, "endLine": 2327 },
     "type": "theorem",
     "title": "The Unique Minimal Tour",
-    "content": "There exists a specific closed knight's tour with exactly 4 oblique turns. Knuth called it 'a beauty.'\n\nThe explicit 64-square sequence minimizes direction reversals. Here we use `sorry` as a placeholder; the actual tour would be specified as a concrete list of squares.\n\nThe construction is the result of Knuth's computational search, not a mathematical derivation.",
-    "mathContext": "$\\exists T^* : \\text{ClosedTour}, \\quad \\text{obliqueCount}(T^*) = 4$\n\nThis achieves the theoretical minimum from our lower bound theorem.",
+    "content": "The explicit 64-square minimal oblique tour is constructed from Knuth's Fig. A-19(t). It visits squares in a specific order that achieves exactly 4 oblique turns.\n\nThe tour is verified using `native_decide` to check:\n- All 64 squares are visited exactly once (nodup)\n- Consecutive squares are knight-adjacent (path)\n- The tour closes (last square adjacent to first)\n- Oblique count equals 4\n\nKnuth called it 'a beauty.'",
+    "mathContext": "$\\exists T^* : \\text{ClosedTour}, \\quad \\text{obliqueCount}(T^*) = 4$\n\nExplicitly constructed and computationally verified.",
     "significance": "critical",
     "prerequisites": ["ann-counting-argument"],
-    "relatedConcepts": ["extremal solution", "construction"]
+    "relatedConcepts": ["extremal solution", "construction", "native_decide"]
   },
   {
     "id": "ann-uniqueness",
     "proofId": "knights-tour-oblique",
-    "range": { "startLine": 364, "endLine": 373 },
+    "range": { "startLine": 2328, "endLine": 2358 },
     "type": "theorem",
     "title": "Uniqueness of the Minimal Tour",
-    "content": "**Remarkable result**: Any closed knight's tour with exactly 4 oblique turns is D4-equivalent to the minimal tour.\n\nAmong ~13 trillion directed closed tours (or ~1.7 trillion up to symmetry), **exactly ONE equivalence class** achieves the minimum of 4 oblique turns.\n\nThis requires computational verification over the symmetry-reduced search space, potentially using SAT solvers with verified certificates.",
-    "mathContext": "$\\forall T, \\quad \\text{obliqueCount}(T) = 4 \\implies \\exists g \\in D_4, \\quad g \\cdot T = T^*$",
+    "content": "**Remarkable result**: Any closed knight's tour with exactly 4 oblique turns is D4-equivalent to the minimal tour.\n\nAmong ~13 trillion directed closed tours (or ~1.7 trillion up to symmetry), **exactly ONE equivalence class** achieves the minimum of 4 oblique turns.\n\nThis is accepted as an **axiom** (`knuth_unique_four_oblique`) based on Donald Knuth's exhaustive computational verification in TAOCP Vol 4 Fascicle 8a (December 2025).",
+    "mathContext": "$\\forall T, \\quad \\text{obliqueCount}(T) = 4 \\implies \\exists g \\in D_4, \\quad g \\cdot T = T^*$\n\nThe axiom could be eliminated via SAT/LRAT certificate verification in Lean.",
     "significance": "critical",
     "prerequisites": ["ann-minimal-tour", "ann-oblique-invariant"],
-    "relatedConcepts": ["uniqueness", "computational verification", "SAT solving"]
+    "relatedConcepts": ["uniqueness", "axiom", "Knuth verification"]
   },
   {
     "id": "ann-main-lower",
     "proofId": "knights-tour-oblique",
-    "range": { "startLine": 383, "endLine": 391 },
+    "range": { "startLine": 2367, "endLine": 2372 },
     "type": "theorem",
     "title": "Main Theorem 1: Lower Bound",
-    "content": "**Theorem 1 (Lower Bound)**: Every closed knight's tour on an 8x8 board has at least 4 oblique turns.\n\nThis is proven purely mathematically via the winding number argument on Z/8Z. No computer search is needed for the lower bound - it follows from modular arithmetic constraints.",
+    "content": "**Theorem 1 (Lower Bound)**: Every closed knight's tour on an 8x8 board has at least 4 oblique turns.\n\nThis is proven mathematically via the corner-forcing argument: each of the 4 corners has only 2 knight-adjacent squares, so passing through a corner forces an oblique turn.",
     "mathContext": "$\\forall T : \\text{ClosedTour}, \\quad \\text{obliqueCount}(T) \\geq 4$",
     "significance": "critical",
     "prerequisites": ["ann-counting-argument"],
-    "relatedConcepts": ["main result", "winding number"]
+    "relatedConcepts": ["main result", "corner forcing"]
   },
   {
     "id": "ann-main-unique",
     "proofId": "knights-tour-oblique",
-    "range": { "startLine": 393, "endLine": 407 },
+    "range": { "startLine": 2422, "endLine": 2444 },
     "type": "theorem",
     "title": "Main Theorem 2: Uniqueness",
-    "content": "**Theorem 2 (Uniqueness)**: There exists exactly one closed knight's tour (up to D4 symmetry) with exactly 4 oblique turns.\n\nThis combines:\n- **Existence**: We construct the minimal tour explicitly\n- **Uniqueness**: Any 4-oblique tour is D4-equivalent to it\n\nThe 'beauty' Knuth described is this unique minimal-oblique tour.",
+    "content": "**Theorem 2 (Uniqueness)**: There exists exactly one closed knight's tour (up to D4 symmetry) with exactly 4 oblique turns.\n\nThis combines:\n- **Existence**: The minimal tour is explicitly constructed from Knuth's Fig. A-19(t)\n- **Uniqueness**: Accepted as axiom based on Knuth's enumeration\n\nThe 'beauty' Knuth described is this unique minimal-oblique tour.",
     "mathContext": "$\\exists! T : \\text{ClosedTour}, \\quad \\text{isCanonical}(T) \\land \\text{obliqueCount}(T) = 4$\n\nThe notation $\\exists!$ means 'there exists exactly one.'",
     "significance": "critical",
     "prerequisites": ["ann-uniqueness", "ann-canonical"],
@@ -317,19 +317,19 @@
   {
     "id": "ann-bounds",
     "proofId": "knights-tour-oblique",
-    "range": { "startLine": 409, "endLine": 417 },
+    "range": { "startLine": 2447, "endLine": 2459 },
     "type": "theorem",
-    "title": "Oblique Count Bounds",
-    "content": "The oblique count of any tour is between 4 and 64 (inclusive).\n\n- **Lower bound**: 4 (proven via winding argument)\n- **Upper bound**: 64 (trivially, at most 64 turns exist)\n\nThe exact maximum is another interesting open question - what's the most 'twisty' possible tour?",
-    "mathContext": "$4 \\leq \\text{obliqueCount}(T) \\leq 64$",
+    "title": "References and Historical Context",
+    "content": "The knight's tour problem has captivated mathematicians for over 1200 years. Knuth's 2025 Christmas Lecture adds a new chapter, revealing the minimum-oblique structure.\n\nThe OEIS sequence A001230 tracks closed tours on n×n boards. The cryptic 'Pun resisted, 62, 470' in TAOCP Vol. 4A remains a mystery...",
+    "mathContext": "Historical references include Euler (1759), TAOCP Vol 4 Fascicle 8a, and the annual Stanford Christmas Lectures.",
     "significance": "supporting",
-    "prerequisites": ["ann-counting-argument"],
-    "relatedConcepts": ["bounds", "extremal values"]
+    "prerequisites": [],
+    "relatedConcepts": ["TAOCP", "OEIS", "Euler", "Christmas Lecture"]
   },
   {
     "id": "ann-references",
     "proofId": "knights-tour-oblique",
-    "range": { "startLine": 421, "endLine": 443 },
+    "range": { "startLine": 2447, "endLine": 2459 },
     "type": "concept",
     "title": "Historical Context",
     "content": "The knight's tour problem has captivated mathematicians for over **1200 years**:\n\n- **9th century**: Earliest known references in Arabic manuscripts\n- **1759**: Euler's systematic study of tours\n- **1823**: Warnsdorff's greedy heuristic\n- **1996**: First computer enumeration of 8×8 tours\n- **2025**: Knuth's oblique angle theorem!\n\nThe cryptic 'Pun resisted, 62, 470' in TAOCP Vol. 4A remains a mystery...",
