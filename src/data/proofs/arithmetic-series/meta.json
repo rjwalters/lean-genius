@@ -1,0 +1,102 @@
+{
+  "id": "arithmetic-series",
+  "title": "Sum of an Arithmetic Series",
+  "slug": "arithmetic-series",
+  "description": "Gauss's formula for the sum of the first n natural numbers: 1 + 2 + ... + n = n(n+1)/2. A classic result with a famous anecdote about young Gauss.",
+  "meta": {
+    "author": "Carl Friedrich Gauss (formalized via Mathlib)",
+    "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/BigOperators/Intervals.html",
+    "date": "~1785",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ArithmeticSeries.lean",
+    "tags": [
+      "number-theory",
+      "algebra",
+      "series",
+      "wiedijk-100",
+      "classic",
+      "gauss"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_range_id",
+        "description": "Sum of 0..n-1 equals n*(n-1)/2",
+        "module": "Mathlib.Algebra.BigOperators.Intervals"
+      },
+      {
+        "theorem": "Finset.sum_range_id_mul_two",
+        "description": "Gauss pairing identity for sums",
+        "module": "Mathlib.Algebra.BigOperators.Intervals"
+      }
+    ],
+    "originalContributions": [
+      "Classical 1..n formula derived from Mathlib's 0-indexed version",
+      "General arithmetic series formula",
+      "Sum of odd numbers equals n squared",
+      "Triangular number definitions and recurrence",
+      "Historical context about Gauss's schoolboy discovery"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 68
+  },
+  "overview": {
+    "historicalContext": "The formula for 1 + 2 + ... + n = n(n+1)/2 is famously attributed to Carl Friedrich Gauss, who allegedly discovered it as a schoolboy around 1785. The story goes that when his teacher asked the class to sum the numbers 1 to 100 (hoping for a quiet classroom), young Gauss immediately answered 5050.\n\nGauss realized that pairing 1+100, 2+99, 3+98, etc. gives 50 pairs, each summing to 101, yielding 50 x 101 = 5050. This pairing argument is the essence of the proof.\n\nWhile this anecdote may be apocryphal, the formula was known to the ancient Greeks and appears in works by Archimedes. It also appears in Babylonian mathematics and was studied extensively by Indian mathematicians.",
+    "problemStatement": "**Theorem (Gauss, ~1785)**: The sum of the first n natural numbers:\n\n$$\\sum_{k=1}^{n} k = \\frac{n(n+1)}{2}$$\n\nMore generally, for an arithmetic series with first term a and common difference d:\n\n$$\\sum_{k=0}^{n-1} (a + kd) = na + \\frac{dn(n-1)}{2}$$\n\nThis is Wiedijk's 100 Theorems #68.",
+    "proofStrategy": "**The Pairing Argument (Gauss's Method):**\n\nWrite the sum S twice, forwards and backwards:\n\n```\n  S = 1   +   2   +   3   + ... + (n-1) +   n\n  S = n   + (n-1) + (n-2) + ... +   2   +   1\n ─────────────────────────────────────────────\n 2S = (n+1) + (n+1) + (n+1) + ... + (n+1) + (n+1)\n    = n x (n+1)\n```\n\nTherefore S = n(n+1)/2.\n\nThe formalization uses Mathlib's `Finset.sum_range_id` and derives the classical formula by adjusting indices.",
+    "keyInsights": [
+      "The pairing argument: terms from opposite ends of the sequence sum to a constant",
+      "Sum 0 + 1 + ... + n = n(n+1)/2 (Mathlib uses 0-indexed convention)",
+      "The sum of the first n odd numbers equals n squared",
+      "Triangular numbers T(n) = n(n+1)/2 satisfy T(n+1) = T(n) + (n+1)",
+      "Gauss's original problem: sum of 1 to 100 = 5050"
+    ]
+  },
+  "sections": [
+    {
+      "id": "gauss-formula",
+      "title": "Gauss's Summation Formula",
+      "startLine": 50,
+      "endLine": 70,
+      "summary": "The fundamental formulas for summing 0..n-1 and 0..n."
+    },
+    {
+      "id": "pairing-argument",
+      "title": "The Pairing Argument",
+      "startLine": 72,
+      "endLine": 94,
+      "summary": "The algebraic heart of Gauss's proof: 2S = n(n+1)."
+    },
+    {
+      "id": "general-series",
+      "title": "General Arithmetic Series",
+      "startLine": 96,
+      "endLine": 108,
+      "summary": "Generalization to arithmetic progressions with arbitrary first term and difference."
+    },
+    {
+      "id": "special-cases",
+      "title": "Famous Special Cases",
+      "startLine": 110,
+      "endLine": 139,
+      "summary": "Gauss's original 1-100 problem, sum of odd numbers, and sum of even numbers."
+    },
+    {
+      "id": "triangular-numbers",
+      "title": "Triangular Numbers",
+      "startLine": 141,
+      "endLine": 178,
+      "summary": "Definition and properties of triangular numbers."
+    }
+  ],
+  "conclusion": {
+    "summary": "The sum of an arithmetic series is one of the most fundamental results in mathematics, with a beautiful proof that demonstrates the power of algebraic manipulation. The formalization builds on Mathlib's `Finset.sum_range_id` theorem while providing the classical formulations and extensions that make this result so useful in practice.",
+    "implications": "**Theoretical Significance:**\n\n1. **Foundation for series**: This formula is often the first example of summing an infinite series and motivates more advanced techniques.\n\n2. **Triangular numbers**: These arise naturally in combinatorics as binomial coefficients: T(n) = C(n+1, 2).\n\n3. **Induction template**: The proof by pairing (or induction) serves as a template for proving many similar identities.\n\n**Practical Applications:**\n\nThe formula appears in algorithm analysis (summing loop iterations), probability theory, and physics (potential energy in springs, summing forces).",
+    "openQuestions": [
+      "What is the closed form for the sum of the first n cubes?",
+      "How does this generalize to higher-dimensional simplicial numbers?",
+      "What is the relationship to the Riemann zeta function at negative integers?"
+    ]
+  }
+}
