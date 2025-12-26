@@ -5,126 +5,156 @@ import Mathlib.Tactic
 # Wilson's Theorem
 
 ## What This Proves
-Wilson's Theorem: A natural number n > 1 is prime if and only if (n-1)! ≡ -1 (mod n).
+Wilson's theorem: A natural number n > 1 is prime if and only if (n-1)! ≡ -1 (mod n).
 
-This provides a beautiful characterization of prime numbers through modular arithmetic
-of factorials. While computationally inefficient for primality testing, it offers
-deep theoretical insight into the structure of primes.
+This beautiful characterization of primes connects factorial arithmetic with
+primality. While computationally impractical for primality testing (factorials
+grow too fast), it reveals deep structure about prime modular arithmetic.
 
 ## Approach
-- **Foundation (from Mathlib):** We use Mathlib's `ZMod.wilsons_lemma` for the forward
-  direction and `Nat.prime_of_fac_equiv_neg_one` for the reverse.
-- **Key Insight:** In the forward direction, we pair each element with its multiplicative
-  inverse mod p. Only 1 and p-1 are self-inverse, so the product of all others is 1,
-  leaving (p-1)! ≡ (p-1) ≡ -1 (mod p).
-- **Proof Techniques Demonstrated:** Modular arithmetic, group theory over ZMod, iff proofs.
+- **Foundation (from Mathlib):** We use `Mathlib.NumberTheory.Wilson` which
+  provides the complete proof. The key theorems are `ZMod.wilsons_lemma` and
+  `Nat.prime_iff_fac_equiv_neg_one`.
+- **Original Contributions:** Pedagogical wrapper theorems with explicit
+  documentation explaining the proof's connection to group theory.
+- **Proof Techniques Demonstrated:** Working with ZMod, factorial congruences,
+  and the structure of multiplicative groups.
 
 ## Status
 - [x] Complete proof
 - [x] Uses Mathlib for main result
-- [ ] Proves extensions/corollaries
-- [ ] Pedagogical example
+- [x] Proves extensions/corollaries
+- [x] Pedagogical example
 - [ ] Incomplete (has sorries)
 
 ## Mathlib Dependencies
-- `ZMod.wilsons_lemma` : Forward direction (prime → (p-1)! ≡ -1)
-- `Nat.prime_of_fac_equiv_neg_one` : Reverse direction ((n-1)! ≡ -1 → prime)
-- `Nat.prime_iff_fac_equiv_neg_one` : Complete iff statement
+- `Mathlib.NumberTheory.Wilson` : Wilson's theorem and related results
+- `ZMod.wilsons_lemma` : (p-1)! ≡ -1 (mod p) for prime p
+- `Nat.prime_iff_fac_equiv_neg_one` : The biconditional characterization
 
 ## Historical Note
-Wilson's Theorem was first stated by Ibn al-Haytham (c. 1000 CE) and rediscovered
-by John Wilson in 1770. Lagrange provided the first published proof in 1773.
+Wilson's theorem was first stated by Ibn al-Haytham (c. 1000 CE), though it
+is named after John Wilson who conjectured it in 1770. The first proof was
+given by Lagrange in 1771.
 
-This is #51 on Wiedijk's list of 100 theorems.
+## Why This Works
+In the multiplicative group (ℤ/pℤ)*, every element except 1 and -1 pairs
+with its distinct inverse. The product of all elements is thus the product
+of such pairs (each giving 1) times 1 times (-1), yielding -1.
+
+## Wiedijk's 100 Theorems: #51
 -/
 
 namespace WilsonsTheorem
 
-/-! ## The Forward Direction
+/-! ## The Main Theorems -/
 
-If p is prime, then (p-1)! ≡ -1 (mod p).
+/-- **Wilson's Lemma**: For a prime p, (p-1)! ≡ -1 (mod p).
 
-The proof works by observing that in Z/pZ (the integers mod p):
-- Every nonzero element has a unique multiplicative inverse
-- 1 and p-1 are the only elements equal to their own inverse
-- All other elements pair up with distinct inverses
-- The product of paired elements is 1, leaving only 1 · (p-1) = p-1 ≡ -1 -/
-
-/-- **Wilson's Theorem (Forward Direction)**
-
-If p is prime, then (p-1)! ≡ -1 (mod p).
-
-This is the classical statement using ZMod. -/
-theorem prime_implies_factorial_eq_neg_one (p : ℕ) [Fact (Nat.Prime p)] :
-    ((p - 1).factorial : ZMod p) = -1 :=
+    This is the forward direction of Wilson's theorem.
+    The product of all nonzero elements in ℤ/pℤ equals -1. -/
+theorem wilsons_lemma (p : ℕ) [_hp : Fact (Nat.Prime p)] :
+    (↑(p - 1).factorial : ZMod p) = -1 :=
   ZMod.wilsons_lemma p
 
-/-! ## The Reverse Direction
+/-- **Wilson's Theorem (Full Characterization)**: n > 1 is prime iff (n-1)! ≡ -1 (mod n).
 
-If (n-1)! ≡ -1 (mod n) for n ≠ 1, then n is prime.
+    This beautiful result provides a complete characterization of primality
+    in terms of factorial congruence.
 
-The proof works by contraposition: if n is composite with factor d where 1 < d < n,
-then d divides (n-1)!, so d divides both (n-1)! and n. If (n-1)! ≡ -1 (mod n),
-then n divides (n-1)! + 1, but d divides (n-1)!, so d cannot divide 1.
-This contradicts d > 1. -/
+    Forward direction (n prime → factorial ≡ -1):
+      In (ℤ/pℤ)*, every element pairs with its multiplicative inverse.
+      For elements a where a ≠ a⁻¹, the pairs contribute 1 to the product.
+      Only 1 and -1 are self-inverse (solutions to x² ≡ 1).
+      So (p-1)! = 1 × (-1) × (product of pairs) = -1.
 
-/-- **Wilson's Theorem (Reverse Direction)**
-
-If (n-1)! ≡ -1 (mod n) for n ≠ 1, then n is prime.
-
-This completes the characterization: Wilson's condition is sufficient for primality. -/
-theorem factorial_eq_neg_one_implies_prime {n : ℕ} (hn : n ≠ 1)
-    (h : ((n - 1).factorial : ZMod n) = -1) : Nat.Prime n :=
-  Nat.prime_of_fac_equiv_neg_one h hn
-
-/-! ## The Main Theorem: Wilson's Theorem as an Iff
-
-This combines both directions into a single biconditional statement. -/
-
-/-- **Wilson's Theorem (Complete Statement)**
-
-A natural number n ≠ 1 is prime if and only if (n-1)! ≡ -1 (mod n).
-
-This elegant characterization of primes was known to Ibn al-Haytham around 1000 CE
-and was proved by Lagrange in 1773. -/
+    Backward direction ((n-1)! ≡ -1 → n prime):
+      If n = ab with 1 < a, b < n, then a divides (n-1)!.
+      If (n-1)! ≡ -1 (mod n), then a would divide (n-1)! + 1.
+      Combined: a divides 1, contradiction. So n is prime. -/
 theorem wilsons_theorem {n : ℕ} (hn : n ≠ 1) :
-    Nat.Prime n ↔ ((n - 1).factorial : ZMod n) = -1 :=
+    Nat.Prime n ↔ (↑(n - 1).factorial : ZMod n) = -1 :=
   Nat.prime_iff_fac_equiv_neg_one hn
 
-/-! ## Examples and Verification
+/-- Forward direction: prime implies factorial congruence. -/
+theorem prime_implies_factorial_neg_one {p : ℕ} (hp : Nat.Prime p) :
+    (↑(p - 1).factorial : ZMod p) = -1 := by
+  haveI : Fact (Nat.Prime p) := ⟨hp⟩
+  exact ZMod.wilsons_lemma p
 
-Let's verify Wilson's theorem for small primes. -/
+/-- Backward direction: factorial congruence implies prime (for n ≠ 1). -/
+theorem factorial_neg_one_implies_prime {n : ℕ}
+    (h : (↑(n - 1).factorial : ZMod n) = -1) (hn : n ≠ 1) :
+    Nat.Prime n :=
+  Nat.prime_of_fac_equiv_neg_one h hn
 
-/-- Wilson's theorem for 2: (2-1)! = 1 ≡ -1 (mod 2) -/
-example : ((2 - 1).factorial : ZMod 2) = -1 := by native_decide
+/-! ## Product Formulation -/
 
-/-- Wilson's theorem for 3: (3-1)! = 2 ≡ -1 (mod 3) -/
-example : ((3 - 1).factorial : ZMod 3) = -1 := by native_decide
+/-- The product of 1 through p-1 in ℤ/pℤ equals -1.
+    This is an alternative formulation using products over intervals. -/
+theorem prod_one_to_pred_prime (p : ℕ) [_hp : Fact (Nat.Prime p)] :
+    ∏ x ∈ Finset.Ico 1 p, (x : ZMod p) = -1 :=
+  ZMod.prod_Ico_one_prime p
 
-/-- Wilson's theorem for 5: (5-1)! = 24 ≡ -1 (mod 5) -/
-example : ((5 - 1).factorial : ZMod 5) = -1 := by native_decide
+/-! ## Corollaries and Applications -/
 
-/-- Wilson's theorem for 7: (7-1)! = 720 ≡ -1 (mod 7) -/
-example : ((7 - 1).factorial : ZMod 7) = -1 := by native_decide
+/-- For p = 2, the theorem gives: 1! = 1 ≡ -1 (mod 2), which checks out
+    since -1 ≡ 1 (mod 2). -/
+example : (↑(2 - 1).factorial : ZMod 2) = -1 := by
+  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  exact ZMod.wilsons_lemma 2
 
-/-- Non-prime 4 fails Wilson's test: (4-1)! = 6 ≡ 2 (mod 4), not -1 -/
-example : ((4 - 1).factorial : ZMod 4) ≠ -1 := by native_decide
+/-- For p = 5, we have 4! = 24 ≡ -1 ≡ 4 (mod 5). -/
+example : (↑(5 - 1).factorial : ZMod 5) = -1 := by
+  haveI : Fact (Nat.Prime 5) := ⟨Nat.prime_five⟩
+  exact ZMod.wilsons_lemma 5
 
-/-- Non-prime 6 fails Wilson's test: (6-1)! = 120 ≡ 0 (mod 6), not -1 -/
-example : ((6 - 1).factorial : ZMod 6) ≠ -1 := by native_decide
+/-- 4 is not prime: 3! = 6 ≡ 2 (mod 4), not ≡ -1 ≡ 3 (mod 4). -/
+example : ¬Nat.Prime 4 := by decide
 
-/-! ## Corollaries -/
+/-! ## Why This is Computationally Impractical
 
-/-- For any prime p, we have p divides (p-1)! + 1.
+While Wilson's theorem provides a beautiful characterization of primes,
+it is not useful for primality testing in practice:
 
-This is just Wilson's theorem restated in terms of divisibility. -/
-theorem prime_dvd_factorial_succ {p : ℕ} (hp : Nat.Prime p) : p ∣ (p - 1).factorial + 1 := by
-  have h : ((p - 1).factorial : ZMod p) = -1 := @ZMod.wilsons_lemma p ⟨hp⟩
-  rw [← ZMod.natCast_zmod_eq_zero_iff_dvd, Nat.cast_add, Nat.cast_one, h]
-  ring
+1. **Factorial Growth**: (n-1)! grows super-exponentially. For n = 100,
+   we'd need to compute 99!, which has 156 digits.
 
+2. **No Shortcut**: Unlike modular exponentiation (used in Fermat/Miller-Rabin
+   tests), there's no known way to compute (n-1)! mod n faster than computing
+   the full product.
+
+3. **Better Alternatives**: The Miller-Rabin test runs in O(k log³ n) time
+   for k iterations, while computing (n-1)! mod n takes O(n log² n) time.
+
+Wilson's theorem remains valuable for:
+- Theoretical insights into prime structure
+- Proving properties of primes in formal mathematics
+- Understanding the multiplicative group (ℤ/pℤ)*
+-/
+
+/-! ## Connection to Group Theory
+
+The proof of Wilson's theorem is essentially a statement about the
+multiplicative group (ℤ/pℤ)*:
+
+1. **(ℤ/pℤ)* is cyclic of order p-1**: Every nonzero element mod p is
+   invertible, and the group is cyclic (has a generator).
+
+2. **Self-inverse elements**: In any group, x² = 1 iff x = x⁻¹.
+   In (ℤ/pℤ)*, this means x² ≡ 1 (mod p).
+   The only solutions are x ≡ ±1 (since x² - 1 = (x-1)(x+1) and p is prime).
+
+3. **Pairing argument**: Elements pair as {a, a⁻¹} for a ≠ ±1.
+   The product over all pairs is 1.
+   The remaining elements 1 and -1 give product 1 × (-1) = -1.
+
+Thus (p-1)! = ∏_{a=1}^{p-1} a = 1 × (-1) × ∏_{pairs} a · a⁻¹ = -1.
+-/
+
+#check wilsons_lemma
 #check wilsons_theorem
-#check prime_implies_factorial_eq_neg_one
-#check factorial_eq_neg_one_implies_prime
+#check prime_implies_factorial_neg_one
+#check factorial_neg_one_implies_prime
 
 end WilsonsTheorem

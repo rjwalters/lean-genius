@@ -1,0 +1,143 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "wilsons-theorem",
+    "range": { "startLine": 1, "endLine": 44 },
+    "type": "concept",
+    "title": "A Primality Characterization",
+    "content": "Wilson's theorem gives a complete characterization of prime numbers in terms of factorials:\n\n$$n > 1 \\text{ is prime} \\iff (n-1)! \\equiv -1 \\pmod{n}$$\n\nThis is remarkable because:\n- It provides an *exact* test for primality (not probabilistic)\n- The condition involves only modular arithmetic\n- It reveals deep structure about how primes behave\n\nHowever, computing $(n-1)!$ is computationally expensive, making this impractical for actual primality testing.",
+    "significance": "critical",
+    "relatedConcepts": ["primality testing", "factorial", "modular arithmetic"]
+  },
+  {
+    "id": "ann-historical",
+    "proofId": "wilsons-theorem",
+    "range": { "startLine": 29, "endLine": 35 },
+    "type": "insight",
+    "title": "A Thousand-Year Journey",
+    "content": "Wilson's theorem has a remarkably long history:\n\n- **Ibn al-Haytham (~1000 CE)**: First stated the result, making it one of the earliest known primality characterizations\n- **John Wilson (1770)**: Rediscovered the theorem as a student at Cambridge\n- **Lagrange (1771)**: Provided the first rigorous proof\n\nThe theorem is named after Wilson, though al-Haytham's contribution predates it by 770 years!",
+    "mathContext": "The theorem waited centuries for a proof.",
+    "significance": "key",
+    "relatedConcepts": ["history of mathematics", "number theory"]
+  },
+  {
+    "id": "ann-wilsons-lemma",
+    "proofId": "wilsons-theorem",
+    "range": { "startLine": 48, "endLine": 53 },
+    "type": "theorem",
+    "title": "Wilson's Lemma (Forward Direction)",
+    "content": "**Wilson's Lemma**: For a prime $p$, $(p-1)! \\equiv -1 \\pmod{p}$.\n\nIn Lean:\n```\ntheorem wilsons_lemma (p : N) [Fact (Nat.Prime p)] :\n    ((p - 1).factorial : ZMod p) = -1\n```\n\nThis is the 'easy' direction—the core insight is the pairing of elements with their inverses in $(\\mathbb{Z}/p\\mathbb{Z})^*$.",
+    "mathContext": "$(p-1)! \\equiv -1 \\pmod{p}$",
+    "significance": "critical",
+    "relatedConcepts": ["factorial", "modular congruence", "ZMod"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "wilsons-theorem",
+    "range": { "startLine": 55, "endLine": 75 },
+    "type": "theorem",
+    "title": "Wilson's Theorem (Biconditional)",
+    "content": "**Wilson's Theorem (Full Version)**:\n\n$$n > 1 \\text{ is prime} \\iff (n-1)! \\equiv -1 \\pmod{n}$$\n\nThe backward direction is equally important: if $(n-1)! \\equiv -1 \\pmod{n}$, then $n$ must be prime.\n\n**Proof of backward direction**:\n- Suppose $n = ab$ with $1 < a < n$\n- Then $a$ divides $(n-1)!$ (since $a < n$)\n- If also $(n-1)! \\equiv -1 \\pmod{n}$, then $a | (n-1)! + 1 = -1 + 1 \\pmod{a}$\n- But this means $a | 0$ and $a | 1$, contradiction for $a > 1$",
+    "mathContext": "$n$ prime $\\iff (n-1)! \\equiv -1 \\pmod{n}$",
+    "significance": "critical",
+    "relatedConcepts": ["primality", "divisibility", "proof by contradiction"]
+  },
+  {
+    "id": "ann-pairing",
+    "proofId": "wilsons-theorem",
+    "range": { "startLine": 129, "endLine": 149 },
+    "type": "concept",
+    "title": "The Pairing Argument",
+    "content": "The proof's key insight is a **pairing argument** in the multiplicative group:\n\n1. In $(\\mathbb{Z}/p\\mathbb{Z})^*$, every element $a$ has an inverse $a^{-1}$\n2. **Self-inverse elements**: $a = a^{-1}$ iff $a^2 \\equiv 1 \\pmod{p}$\n   - Solutions: $(a-1)(a+1) \\equiv 0 \\pmod{p}$\n   - Since $p$ is prime: $a \\equiv \\pm 1 \\pmod{p}$\n3. **Non-self-inverse elements** pair up: $\\{a, a^{-1}\\}$ contributes $a \\cdot a^{-1} = 1$\n\n**The product**:\n$$(p-1)! = 1 \\cdot \\underbrace{(2 \\cdot 2^{-1})}_{=1} \\cdot \\ldots \\cdot \\underbrace{((p-2) \\cdot (p-2)^{-1})}_{=1} \\cdot (p-1)$$\n$$= 1 \\cdot 1 \\cdot \\ldots \\cdot 1 \\cdot (-1) = -1$$",
+    "mathContext": "Elements pair as $\\{a, a^{-1}\\}$, except 1 and -1.",
+    "significance": "critical",
+    "relatedConcepts": ["multiplicative group", "inverse", "group theory"]
+  },
+  {
+    "id": "ann-self-inverse",
+    "proofId": "wilsons-theorem",
+    "range": { "startLine": 133, "endLine": 138 },
+    "type": "lemma",
+    "title": "Only 1 and -1 Are Self-Inverse",
+    "content": "In $(\\mathbb{Z}/p\\mathbb{Z})^*$, the only elements equal to their own inverse are 1 and -1.\n\n**Proof**:\n- $a = a^{-1}$ iff $a^2 = 1$\n- So $(a-1)(a+1) \\equiv 0 \\pmod{p}$\n- Since $p$ is prime, either $a \\equiv 1$ or $a \\equiv -1$\n\nThis is why primes are special—composite moduli can have more than 2 self-inverse elements!",
+    "mathContext": "$x^2 \\equiv 1 \\pmod{p} \\implies x \\equiv \\pm 1$",
+    "significance": "key",
+    "relatedConcepts": ["square roots", "prime modulus", "quadratic residues"]
+  },
+  {
+    "id": "ann-product-form",
+    "proofId": "wilsons-theorem",
+    "range": { "startLine": 84, "endLine": 89 },
+    "type": "theorem",
+    "title": "Product Formulation",
+    "content": "An equivalent formulation using explicit products:\n\n$$\\prod_{x=1}^{p-1} x \\equiv -1 \\pmod{p}$$\n\nThis makes the group-theoretic nature more visible: we're multiplying all elements of $(\\mathbb{Z}/p\\mathbb{Z})^*$.",
+    "mathContext": "$\\prod_{x \\in (\\mathbb{Z}/p\\mathbb{Z})^*} x = -1$",
+    "significance": "supporting",
+    "relatedConcepts": ["product notation", "finite products", "Finset.Ico"]
+  },
+  {
+    "id": "ann-example-2",
+    "proofId": "wilsons-theorem",
+    "range": { "startLine": 93, "endLine": 96 },
+    "type": "example",
+    "title": "Example: p = 2",
+    "content": "For $p = 2$:\n- $(2-1)! = 1! = 1$\n- $-1 \\equiv 1 \\pmod{2}$\n\nSo $1 \\equiv -1 \\pmod{2}$ ✓\n\nThis works because in $\\mathbb{Z}/2\\mathbb{Z}$, we have $-1 = 1$.",
+    "mathContext": "$1! = 1 \\equiv -1 \\pmod{2}$",
+    "significance": "supporting",
+    "relatedConcepts": ["modular arithmetic", "verification"]
+  },
+  {
+    "id": "ann-example-5",
+    "proofId": "wilsons-theorem",
+    "range": { "startLine": 98, "endLine": 101 },
+    "type": "example",
+    "title": "Example: p = 5",
+    "content": "For $p = 5$:\n- $(5-1)! = 4! = 24$\n- $24 = 4 \\cdot 5 + 4 \\equiv 4 \\pmod{5}$\n- $-1 \\equiv 4 \\pmod{5}$\n\nSo $24 \\equiv -1 \\pmod{5}$ ✓\n\nWe can verify the pairing: $2 \\cdot 3 = 6 \\equiv 1$, then $1 \\cdot 4 \\cdot 1 = 4 \\equiv -1$.",
+    "mathContext": "$4! = 24 \\equiv -1 \\pmod{5}$",
+    "significance": "supporting",
+    "relatedConcepts": ["modular arithmetic", "verification"]
+  },
+  {
+    "id": "ann-non-prime",
+    "proofId": "wilsons-theorem",
+    "range": { "startLine": 103, "endLine": 104 },
+    "type": "example",
+    "title": "Counterexample: n = 4 (Non-Prime)",
+    "content": "For $n = 4$ (composite):\n- $(4-1)! = 3! = 6$\n- $6 = 1 \\cdot 4 + 2 \\equiv 2 \\pmod{4}$\n- $-1 \\equiv 3 \\pmod{4}$\n\nSo $6 \\not\\equiv -1 \\pmod{4}$ ✗\n\nThis confirms 4 is not prime (which we knew). The backward direction tells us: since $(n-1)! \\not\\equiv -1$, the number cannot be prime.",
+    "mathContext": "$3! = 6 \\equiv 2 \\not\\equiv -1 \\pmod{4}$",
+    "significance": "key",
+    "relatedConcepts": ["composite numbers", "counterexample"]
+  },
+  {
+    "id": "ann-computational",
+    "proofId": "wilsons-theorem",
+    "range": { "startLine": 106, "endLine": 127 },
+    "type": "concept",
+    "title": "Why This Isn't Practical",
+    "content": "Despite being a complete primality characterization, Wilson's theorem is **computationally impractical**:\n\n1. **Factorial growth**: $(n-1)!$ grows super-exponentially. For $n = 100$, we'd compute $99!$ which has 156 digits.\n\n2. **No shortcuts**: Unlike modular exponentiation (used in Fermat/Miller-Rabin), there's no known way to compute $(n-1)! \\mod n$ faster than multiplying all terms.\n\n3. **Time complexity**: Computing $(n-1)! \\mod n$ takes $O(n)$ multiplications, while Miller-Rabin runs in $O(k \\log^3 n)$ for $k$ iterations.\n\n**Better alternatives**:\n- Miller-Rabin (probabilistic, very fast)\n- AKS (deterministic polynomial, but slower in practice)",
+    "mathContext": "Computing $(n-1)! \\mod n$ takes $\\Theta(n)$ operations.",
+    "significance": "key",
+    "relatedConcepts": ["computational complexity", "primality testing", "Miller-Rabin"]
+  },
+  {
+    "id": "ann-group-structure",
+    "proofId": "wilsons-theorem",
+    "range": { "startLine": 129, "endLine": 133 },
+    "type": "concept",
+    "title": "The Multiplicative Group",
+    "content": "Wilson's theorem is really a statement about $(\\mathbb{Z}/p\\mathbb{Z})^*$, the **multiplicative group of units modulo p**:\n\n- **Elements**: $\\{1, 2, \\ldots, p-1\\}$\n- **Operation**: Multiplication modulo $p$\n- **Size**: $p - 1$ (Euler's totient function $\\varphi(p) = p-1$)\n- **Structure**: Cyclic group (there exists a generator)\n\nThe product of all elements in *any* finite group where the only order-2 element is the identity (or -1 in this case) equals that element.",
+    "mathContext": "$(\\mathbb{Z}/p\\mathbb{Z})^* \\cong \\mathbb{Z}/(p-1)\\mathbb{Z}$",
+    "significance": "key",
+    "relatedConcepts": ["group theory", "cyclic groups", "primitive roots"]
+  },
+  {
+    "id": "ann-zmod",
+    "proofId": "wilsons-theorem",
+    "range": { "startLine": 48, "endLine": 50 },
+    "type": "tactic",
+    "title": "Working with ZMod",
+    "content": "In Lean/Mathlib, `ZMod n` represents the integers modulo $n$:\n\n```\nZMod n := if n = 0 then Z else Fin n\n```\n\nFor prime $p$, `ZMod p` is a field (we can divide). The typeclass `Fact (Nat.Prime p)` provides this automatically.\n\nThe coercion `(k : ZMod n)` converts a natural number to its residue class.",
+    "significance": "supporting",
+    "relatedConcepts": ["ZMod", "Fin", "typeclasses"]
+  }
+]

@@ -26,6 +26,7 @@ import { denumerabilityRationalsData } from './denumerability-rationals'
 import { hurwitzTheoremData } from './hurwitz-theorem'
 import { schroederBernsteinData } from './schroeder-bernstein'
 import { cantorsTheoremData } from './cantors-theorem'
+import { wilsonsTheoremData } from './wilsons-theorem'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -57,6 +58,7 @@ export const proofs: Record<string, ProofData> = {
   'hurwitz-theorem': hurwitzTheoremData,
   'schroeder-bernstein': schroederBernsteinData,
   'cantors-theorem': cantorsTheoremData,
+  'wilsons-theorem': wilsonsTheoremData,
 }
 
 export function getProof(slug: string): ProofData | undefined {
