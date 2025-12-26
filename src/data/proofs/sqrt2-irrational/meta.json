@@ -1,14 +1,15 @@
 {
   "id": "sqrt2-irrational",
-  "title": "Irrationality of Square Root of 2",
+  "title": "Irrationality of Square Roots",
   "slug": "sqrt2-irrational",
-  "description": "A classic proof that the square root of 2 cannot be expressed as a ratio of integers, formalized in Lean 4.",
+  "description": "The classic proof that √2 is irrational, generalized to show √n is irrational for any non-perfect-square n. Covers √2, √3, √5, √6, √7 and the general theorem.",
   "meta": {
     "status": "verified",
     "tags": [
       "number-theory",
       "classic",
-      "irrationality"
+      "irrationality",
+      "generalization"
     ],
     "mathlib_version": "4.10.0",
     "proofRepoPath": "Proofs/Sqrt2Irrational.lean",
@@ -21,15 +22,31 @@
         "module": "Mathlib.Data.Real.Irrational"
       },
       {
+        "theorem": "Nat.Prime.irrational_sqrt",
+        "description": "√p is irrational for any prime p",
+        "module": "Mathlib.Data.Real.Irrational"
+      },
+      {
+        "theorem": "irrational_sqrt_natCast_iff",
+        "description": "√n is irrational iff n is not a perfect square (for ℕ)",
+        "module": "Mathlib.Data.Real.Irrational"
+      },
+      {
         "theorem": "Nat.Prime",
         "description": "Prime number definitions",
         "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "IsSquare",
+        "description": "Perfect square predicate",
+        "module": "Mathlib.Algebra.Associated.Basic"
       }
     ],
     "originalContributions": [
       "Educational demonstration of classical parity argument",
-      "Additional proofs showing different tactics",
-      "Connection to Pythagorean theorem"
+      "Generalization from √2 to √n for all non-perfect squares",
+      "Specific proofs for √3, √5, √6, √7",
+      "Connection between parity and prime multiplicity"
     ],
     "dateAdded": "12/21/25"
   },
@@ -41,7 +58,8 @@
       "The geometric origin: $\\sqrt{2}$ is the diagonal of a unit square, arising naturally from the Pythagorean theorem $1^2 + 1^2 = (\\sqrt{2})^2$.",
       "The parity lemma is the engine: if $n^2$ is even, then $n$ is even. This follows because odd$^2$ = odd.",
       "Infinite descent: the argument implicitly shows that if $(p, q)$ is a solution, so is $(q, p/2)$—a smaller solution. This can't continue forever.",
-      "The proof generalizes: the same technique shows $\\sqrt{p}$ is irrational for any prime $p$."
+      "**Generalization**: The proof works because 2 appears to *odd multiplicity* (exactly once). For any $n$ where some prime $p$ appears to odd multiplicity, $\\sqrt{n}$ is irrational.",
+      "Perfect squares ($1, 4, 9, 16, ...$) have all primes appearing to even multiplicity—that's why their square roots are rational."
     ]
   },
   "sections": [
@@ -49,38 +67,45 @@
       "id": "setup",
       "title": "Setup and Imports",
       "startLine": 1,
-      "endLine": 14,
+      "endLine": 50,
       "summary": "Module documentation and import statements."
     },
     {
       "id": "lemmas",
       "title": "Supporting Lemmas",
-      "startLine": 15,
-      "endLine": 35,
+      "startLine": 52,
+      "endLine": 73,
       "summary": "Key lemmas: if n² is even then n is even, and divisibility properties."
     },
     {
       "id": "main-theorem",
-      "title": "Main Theorem",
-      "startLine": 36,
-      "endLine": 47,
+      "title": "Main Theorem: √2",
+      "startLine": 75,
+      "endLine": 85,
       "summary": "The irrationality of √2 using Mathlib's formalization."
     },
     {
       "id": "examples",
       "title": "Example Proofs",
-      "startLine": 48,
-      "endLine": 104,
+      "startLine": 87,
+      "endLine": 141,
       "summary": "Additional proofs demonstrating tactics: case analysis, induction, logic."
+    },
+    {
+      "id": "generalization",
+      "title": "Generalization: √n for Non-Squares",
+      "startLine": 143,
+      "endLine": 225,
+      "summary": "The general theorem: √n is irrational iff n is not a perfect square. Includes √3, √5, √6, √7."
     }
   ],
   "conclusion": {
-    "summary": "This formalization demonstrates the power of proof by contradiction—a technique invented by the ancient Greeks and still central to mathematics today. The Lean proof closely mirrors the classical argument: assume rationality, derive that both numerator and denominator must be even, contradict the assumption of lowest terms.\n\nThe proof's elegance lies in its simplicity: it requires only basic properties of even and odd numbers. Yet it establishes something profound—that the number system of ratios is fundamentally incomplete.",
-    "implications": "Historical Impact\n\nThe irrationality of $\\sqrt{2}$ triggered the first foundational crisis in mathematics. The Pythagorean belief that \"all is number\" (meaning ratios of integers) was shattered. Greek mathematics responded by developing the theory of proportions (Eudoxus) and separating arithmetic from geometry—a split that lasted until the 19th century.\n\nMathematical Consequences\n\n1. Incommensurable magnitudes exist — The diagonal of a unit square cannot share a common measure with its sides. There is no length, however small, that divides both evenly.\n\n2. The rationals have gaps — Between any two rationals lie infinitely many irrationals. The rational number line is \"full of holes.\"\n\n3. Necessity of real numbers — To do calculus, we need limits. Limits require completeness. The rationals aren't complete; the reals are. This proof shows why we can't stop at $\\mathbb{Q}$.",
+    "summary": "This formalization demonstrates the power of proof by contradiction—a technique invented by the ancient Greeks and still central to mathematics today. The Lean proof closely mirrors the classical argument: assume rationality, derive that both numerator and denominator must be even, contradict the assumption of lowest terms.\n\nThe generalization reveals the deeper principle: the argument works because primes in non-squares appear to *odd multiplicity*. Whether it's $\\sqrt{2}$, $\\sqrt{3}$, $\\sqrt{5}$, $\\sqrt{6}$, or $\\sqrt{7}$—the same underlying theorem applies.",
+    "implications": "Historical Impact\n\nThe irrationality of $\\sqrt{2}$ triggered the first foundational crisis in mathematics. The Pythagorean belief that \"all is number\" (meaning ratios of integers) was shattered. Greek mathematics responded by developing the theory of proportions (Eudoxus) and separating arithmetic from geometry—a split that lasted until the 19th century.\n\nMathematical Consequences\n\n1. Incommensurable magnitudes exist — The diagonal of a unit square cannot share a common measure with its sides. There is no length, however small, that divides both evenly.\n\n2. The rationals have gaps — Between any two rationals lie infinitely many irrationals. The rational number line is \"full of holes.\"\n\n3. Necessity of real numbers — To do calculus, we need limits. Limits require completeness. The rationals aren't complete; the reals are. This proof shows why we can't stop at $\\mathbb{Q}$.\n\n4. The General Pattern — $\\sqrt{n}$ is irrational exactly when $n$ is not a perfect square. This is because non-squares have some prime appearing to odd multiplicity.",
     "openQuestions": [
-      "The same parity argument extends to prove $\\sqrt{p}$ is irrational for any prime $p$. What about $\\sqrt{6}$? (Hint: unique factorization)",
-      "What about $\\sqrt[3]{2}$? Parity arguments don't work here. This requires algebraic number theory and the rational root theorem.",
-      "Are there irrational numbers that aren't roots of any polynomial? Yes—transcendental numbers like $\\pi$ and $e$. Proving their irrationality is much harder."
+      "What about $\\sqrt[3]{2}$? Parity arguments don't work here. This requires algebraic number theory and the rational root theorem. (The multiplicity argument generalizes: if some prime has multiplicity not divisible by 3, the cube root is irrational.)",
+      "Are there irrational numbers that aren't roots of any polynomial? Yes—transcendental numbers like $\\pi$ and $e$. Proving their irrationality is much harder.",
+      "Can this generalize to $\\sqrt[n]{m}$? Yes! $\\sqrt[n]{m}$ is irrational iff $m$ is not a perfect $n$-th power."
     ]
   }
 }

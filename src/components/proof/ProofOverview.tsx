@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronDown, ChevronUp, ExternalLink, Lightbulb, Package, Award, History, CheckCircle, Clock, AlertCircle, AlertTriangle, Eye } from 'lucide-react'
+import { ChevronDown, ChevronUp, ExternalLink, Lightbulb, Package, Award, History, CheckCircle, Clock, AlertCircle, AlertTriangle, Eye, Play } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { MarkdownMath, MarkdownMathInline } from '@/components/ui/markdown-math'
 import { ProofBadge } from '@/components/ui/proof-badge'
@@ -13,6 +13,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { getVisualization } from '@/components/visualizations'
 
 interface ProofOverviewProps {
   proof: Proof
@@ -37,6 +38,9 @@ export function ProofOverview({ proof, versionInfo }: ProofOverviewProps) {
   const [isVersionHistoryExpanded, setIsVersionHistoryExpanded] = useState(false)
   const [selectedVersion, setSelectedVersion] = useState<VersionHistoryEntry | null>(null)
   const { overview, meta } = proof
+
+  // Get visualization component if one exists for this proof
+  const VisualizationComponent = getVisualization(proof.slug)
 
   if (!overview) return null
 
@@ -304,6 +308,19 @@ export function ProofOverview({ proof, versionInfo }: ProofOverviewProps) {
                   </li>
                 ))}
               </ul>
+            </section>
+          )}
+
+          {/* Interactive Visualization */}
+          {VisualizationComponent && (
+            <section>
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-3 flex items-center gap-2">
+                <Play className="h-3.5 w-3.5" />
+                Interactive Visualization
+              </h3>
+              <div className="bg-muted/20 rounded-lg p-4 border border-border/50">
+                <VisualizationComponent />
+              </div>
             </section>
           )}
         </div>

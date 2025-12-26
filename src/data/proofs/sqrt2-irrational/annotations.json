@@ -123,5 +123,89 @@
     "significance": "critical",
     "prerequisites": ["ann-sqrt2-q-even", "ann-sqrt2-coprime-def"],
     "relatedConcepts": ["proof by contradiction", "GCD", "QED"]
+  },
+  {
+    "id": "ann-generalization-intro",
+    "proofId": "sqrt2-irrational",
+    "range": { "startLine": 143, "endLine": 160 },
+    "type": "insight",
+    "title": "The Generalization Insight",
+    "content": "The √2 proof works because 2 is prime and appears exactly once in its factorization (odd multiplicity). The key insight is: **if any prime $p$ appears to odd multiplicity in $n$, then $\\sqrt{n}$ is irrational**.",
+    "mathContext": "If $n = p^{2k+1} \\cdot m$ where $p \\nmid m$, and $\\sqrt{n} = a/b$ in lowest terms, then looking at $p$'s multiplicity in $n \\cdot b^2 = a^2$ gives: $(2k+1) + 2 \\cdot \\text{mult}(p,b) = 2 \\cdot \\text{mult}(p,a)$. The left side is odd, the right side is even—contradiction!",
+    "significance": "critical",
+    "prerequisites": ["ann-sqrt2-contradiction"],
+    "relatedConcepts": ["prime factorization", "multiplicity", "generalization"]
+  },
+  {
+    "id": "ann-sqrt3-proof",
+    "proofId": "sqrt2-irrational",
+    "range": { "startLine": 162, "endLine": 169 },
+    "type": "theorem",
+    "title": "Irrationality of √3",
+    "content": "Since 3 is prime, it appears to multiplicity 1 (odd) in 3. By the same multiplicity argument that proved √2 irrational, √3 is also irrational.",
+    "mathContext": "In Lean, we use `Nat.Prime.irrational_sqrt` which proves √p is irrational for any prime p. The proof reduces to showing 3 is prime via `Nat.prime_three`.",
+    "significance": "key",
+    "prerequisites": ["ann-generalization-intro"],
+    "relatedConcepts": ["prime numbers", "irrationality"]
+  },
+  {
+    "id": "ann-sqrt5-proof",
+    "proofId": "sqrt2-irrational",
+    "range": { "startLine": 171, "endLine": 178 },
+    "type": "theorem",
+    "title": "Irrationality of √5",
+    "content": "5 is prime, so it appears to odd multiplicity in 5. Therefore √5 is irrational.",
+    "mathContext": "Same pattern as √3. Mathlib provides `Nat.prime_five` to establish that 5 is prime.",
+    "significance": "supporting",
+    "prerequisites": ["ann-generalization-intro"],
+    "relatedConcepts": ["prime numbers", "irrationality"]
+  },
+  {
+    "id": "ann-sqrt6-proof",
+    "proofId": "sqrt2-irrational",
+    "range": { "startLine": 180, "endLine": 188 },
+    "type": "theorem",
+    "title": "Irrationality of √6",
+    "content": "6 = 2 × 3. Both primes 2 and 3 appear to multiplicity 1 (odd). The same argument applies: √6 is irrational.",
+    "mathContext": "This example shows the theorem works for composite numbers too. We use `irrational_sqrt_natCast_iff.mpr` with the fact that 6 is not a perfect square (`¬ IsSquare 6`). The `decide` tactic verifies this computationally.",
+    "significance": "key",
+    "prerequisites": ["ann-generalization-intro"],
+    "relatedConcepts": ["composite numbers", "IsSquare", "decide tactic"]
+  },
+  {
+    "id": "ann-sqrt7-proof",
+    "proofId": "sqrt2-irrational",
+    "range": { "startLine": 190, "endLine": 196 },
+    "type": "theorem",
+    "title": "Irrationality of √7",
+    "content": "7 is prime, so √7 is irrational by the same reasoning.",
+    "mathContext": "We use `by decide : Nat.Prime 7` to verify primality computationally, then apply `Nat.Prime.irrational_sqrt`.",
+    "significance": "supporting",
+    "prerequisites": ["ann-generalization-intro"],
+    "relatedConcepts": ["prime numbers", "decide tactic"]
+  },
+  {
+    "id": "ann-general-theorem",
+    "proofId": "sqrt2-irrational",
+    "range": { "startLine": 198, "endLine": 210 },
+    "type": "theorem",
+    "title": "The General Theorem",
+    "content": "**Main Result**: For any natural number $n$ that is not a perfect square, $\\sqrt{n}$ is irrational. This single theorem subsumes all the specific cases: √2, √3, √5, √6, √7, √8, √10, ...",
+    "mathContext": "The theorem `irrational_sqrt_of_not_square` uses Mathlib's `irrational_sqrt_natCast_iff` which establishes the result based on `¬ IsSquare n`.",
+    "significance": "critical",
+    "prerequisites": ["ann-sqrt3-proof", "ann-sqrt6-proof"],
+    "relatedConcepts": ["IsSquare", "general theorem", "subsumption"]
+  },
+  {
+    "id": "ann-examples-squares",
+    "proofId": "sqrt2-irrational",
+    "range": { "startLine": 212, "endLine": 224 },
+    "type": "example",
+    "title": "Perfect Squares vs Non-Squares",
+    "content": "The `decide` tactic can verify whether a number is a perfect square. Non-squares: 2, 3, 5, 6, 7, 8, 10, ... Perfect squares: 1 = 1², 4 = 2², 9 = 3², 16 = 4², ...",
+    "mathContext": "For perfect squares, we provide explicit witnesses: `IsSquare 4` is proven by `⟨2, by ring⟩` showing $4 = 2 \\cdot 2$. The `decide` tactic handles non-squares by computation.",
+    "significance": "supporting",
+    "prerequisites": ["ann-general-theorem"],
+    "relatedConcepts": ["perfect squares", "computational verification", "witnesses"]
   }
 ]
