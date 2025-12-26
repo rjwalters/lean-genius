@@ -1,0 +1,113 @@
+{
+  "id": "wilsons-theorem",
+  "title": "Wilson's Theorem",
+  "slug": "wilsons-theorem",
+  "description": "A natural number n > 1 is prime if and only if (n-1)! is congruent to -1 modulo n. A beautiful characterization connecting factorials and primality.",
+  "meta": {
+    "author": "Wilson, Lagrange (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Wilson%27s_theorem",
+    "date": "1770-1771",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "primes",
+      "modular-arithmetic",
+      "classic",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/WilsonsTheorem.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod.wilsons_lemma",
+        "description": "(p-1)! ≡ -1 (mod p) for prime p",
+        "module": "Mathlib.NumberTheory.Wilson"
+      },
+      {
+        "theorem": "Nat.prime_iff_fac_equiv_neg_one",
+        "description": "n is prime iff (n-1)! ≡ -1 (mod n)",
+        "module": "Mathlib.NumberTheory.Wilson"
+      },
+      {
+        "theorem": "Nat.prime_of_fac_equiv_neg_one",
+        "description": "Factorial congruence implies primality",
+        "module": "Mathlib.NumberTheory.Wilson"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical documentation explaining the group-theoretic proof",
+      "Multiple theorem formulations (lemma, iff, implications)",
+      "Discussion of computational impracticality",
+      "Connection to the multiplicative group structure of (Z/pZ)*"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 51
+  },
+  "overview": {
+    "historicalContext": "Wilson's theorem has a fascinating multicultural history:\n\n- **Ibn al-Haytham (c. 1000 CE)**: First stated the theorem in his work on optics and number theory, making this one of the earliest primality characterizations\n- **John Wilson (1770)**: Rediscovered and conjectured the result while a student at Cambridge\n- **Edward Waring (1770)**: Published Wilson's conjecture in his book 'Meditationes Algebraicae'\n- **Joseph-Louis Lagrange (1771)**: Provided the first proof, establishing the result rigorously\n\nThe theorem reveals a beautiful algebraic structure: in the multiplicative group (Z/pZ)*, every element pairs with its inverse, leaving only the self-inverse elements 1 and -1 to contribute to the final product.",
+    "problemStatement": "Wilson's Theorem:\n\nA natural number $n > 1$ is prime if and only if $(n-1)! \\equiv -1 \\pmod{n}$.\n\n**Forward direction (Wilson's Lemma):**\nIf $p$ is prime, then $(p-1)! \\equiv -1 \\pmod{p}$\n\n**Backward direction:**\nIf $(n-1)! \\equiv -1 \\pmod{n}$ and $n > 1$, then $n$ is prime.\n\nThis provides a complete characterization of primality in terms of factorial congruence.",
+    "proofStrategy": "The forward direction uses a beautiful pairing argument:\n\n1. **Consider the multiplicative group (Z/pZ)***:\n   - This group has p-1 elements: {1, 2, ..., p-1}\n   - Every element has a unique multiplicative inverse\n\n2. **Identify self-inverse elements**:\n   - x is self-inverse iff x² ≡ 1 (mod p)\n   - This means (x-1)(x+1) ≡ 0 (mod p)\n   - Since p is prime: x ≡ 1 or x ≡ -1 (mod p)\n   - Only two self-inverse elements: 1 and p-1 (which is -1)\n\n3. **Pair non-self-inverse elements**:\n   - All other elements pair up: a with a⁻¹ where a ≠ a⁻¹\n   - Each pair contributes a · a⁻¹ = 1 to the product\n\n4. **Compute the product**:\n   - (p-1)! = 1 × (pairs) × (-1) = 1 × 1 × (-1) = -1\n\nThe backward direction uses divisibility: if n = ab is composite with 1 < a < n, then a | (n-1)!, so (n-1)! ≢ -1 (mod n).",
+    "keyInsights": [
+      "Only 1 and -1 are self-inverse in (Z/pZ)* because p is prime",
+      "The pairing of elements with their inverses is the key insight",
+      "The theorem characterizes primes but is impractical for testing primality",
+      "This connects number theory to group theory in a beautiful way",
+      "Computationally, (n-1)! grows faster than we can practically compute for large n"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Overview of Wilson's theorem, its historical context, and connection to group theory."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Main Theorems",
+      "startLine": 46,
+      "endLine": 82,
+      "summary": "Wilson's lemma and the full biconditional characterization of primes."
+    },
+    {
+      "id": "product-form",
+      "title": "Product Formulation",
+      "startLine": 84,
+      "endLine": 89,
+      "summary": "Alternative formulation using products over the interval [1, p-1]."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 91,
+      "endLine": 104,
+      "summary": "Concrete examples for p = 2, p = 5, and the non-prime n = 4."
+    },
+    {
+      "id": "computational",
+      "title": "Computational Considerations",
+      "startLine": 106,
+      "endLine": 127,
+      "summary": "Why Wilson's theorem is computationally impractical for primality testing."
+    },
+    {
+      "id": "group-theory",
+      "title": "Group Theory Connection",
+      "startLine": 129,
+      "endLine": 149,
+      "summary": "The proof's connection to the multiplicative group structure."
+    }
+  ],
+  "conclusion": {
+    "summary": "Wilson's theorem is now fully verified using Mathlib's number theory infrastructure. We provide the biconditional characterization along with pedagogical explanations of the group-theoretic proof strategy.",
+    "implications": "While beautiful, Wilson's theorem is primarily of theoretical interest:\n\n1. **Primality Characterization**: It provides a complete characterization of primes, but computing (n-1)! mod n is slower than practical primality tests like Miller-Rabin.\n\n2. **Group Theory**: The proof illuminates the structure of (Z/pZ)*, showing how elements pair with their inverses.\n\n3. **Number Theory**: The theorem appears in many number-theoretic contexts, including proofs about primitive roots and quadratic residues.\n\n4. **Cryptography**: Understanding (Z/pZ)* is fundamental to RSA and other cryptographic systems, though Wilson's theorem itself isn't directly used.",
+    "openQuestions": [
+      "Are there efficient ways to compute (n-1)! mod n without computing the full factorial?",
+      "What generalizations of Wilson's theorem exist for non-prime moduli?",
+      "How does Wilson's theorem relate to the theory of primitive roots?",
+      "Can Wilson's theorem be used to generate prime numbers efficiently?"
+    ]
+  }
+}
