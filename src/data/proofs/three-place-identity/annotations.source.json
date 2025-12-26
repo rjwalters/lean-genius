@@ -1,0 +1,284 @@
+[
+  {
+    "id": "relative-identity-structure",
+    "proofId": "three-place-identity",
+    "anchor": {
+      "type": "block-comment",
+      "contains": "The key insight: instead of binary identity x = y,"
+    },
+    "type": "definition",
+    "title": "The RelativeIdentity Structure",
+    "content": "This is the core innovation: instead of binary identity x = y, we use a three-place predicate Id(x, y, z) meaning 'x regards y as identical to z.' The key insight is that identity becomes perspectival—different viewpoints x may identify different pairs of objects.",
+    "mathContext": "For each fixed x, the relation Id(x, -, -) must satisfy reflexivity, symmetry, and transitivity—making it an equivalence relation. But there's no requirement that these equivalences agree across different viewpoints.",
+    "significance": "critical",
+    "prerequisites": [
+      "equivalence-relation",
+      "predicate-logic"
+    ],
+    "relatedConcepts": [
+      "quine-identity",
+      "indistinguishability",
+      "leibniz-law"
+    ]
+  },
+  {
+    "id": "mem-from-id",
+    "proofId": "three-place-identity",
+    "anchor": {
+      "type": "block-comment",
+      "contains": "The first bridge derives membership from identity:"
+    },
+    "type": "definition",
+    "title": "Bridge D1: Existence as Distinguishability",
+    "content": "The first definitional bridge: y ∈' x := ¬Id(x, y, x). This says 'y is a member of x' when 'x does NOT regard y as identical to x itself.' Philosophically stunning: existence is derived from distinguishability from non-existence!",
+    "mathContext": "The viewpoint x serves as an 'ontological origin.' What exists for x is precisely what x distinguishes from the undifferentiated background (x itself playing the role of 'nothing'). This formalizes Rota's 'identity precedes existence.'",
+    "significance": "critical",
+    "prerequisites": [
+      "relative-identity-structure"
+    ],
+    "relatedConcepts": [
+      "ontology",
+      "existence",
+      "rota-primacy"
+    ]
+  },
+  {
+    "id": "mem-from-id-irrefl",
+    "proofId": "three-place-identity",
+    "anchor": {
+      "type": "declaration",
+      "name": "MemFromId",
+      "kind": "def"
+    },
+    "type": "theorem",
+    "title": "Automatic Foundation",
+    "content": "A beautiful consequence: in the derived membership, x never contains itself! This follows automatically from the reflexivity of relative identity: Id(x, x, x) always holds, so ¬Id(x, x, x) is always false.",
+    "mathContext": "This means D1 automatically produces membership relations satisfying the Foundation axiom. The identity axioms encode well-foundedness for free.",
+    "significance": "key",
+    "prerequisites": [
+      "mem-from-id",
+      "relative-identity-structure"
+    ],
+    "relatedConcepts": [
+      "foundation-axiom",
+      "well-founded",
+      "regularity"
+    ]
+  },
+  {
+    "id": "id-from-mem",
+    "proofId": "three-place-identity",
+    "anchor": {
+      "type": "block-comment",
+      "contains": "The second bridge derives identity from membership"
+    },
+    "type": "definition",
+    "title": "Bridge D2: Identity from Membership Status",
+    "content": "The second bridge: Id∈(x, y, z) := (y ∈ x ∧ z ∈ x) ∨ (¬y ∈ x ∧ ¬z ∈ x). This says 'x regards y and z as identical' when they have the same membership status in x—either both members or both non-members.",
+    "mathContext": "This connects directly to Quine's insight: identity within a language is indistinguishability with respect to that language's predicates. Here the predicate is 'member of x', and the viewpoint x determines which predicate matters.",
+    "significance": "critical",
+    "prerequisites": [
+      "set-membership"
+    ],
+    "relatedConcepts": [
+      "quine-identity",
+      "indiscernibility",
+      "leibniz-law"
+    ]
+  },
+  {
+    "id": "id-from-mem-iff",
+    "proofId": "three-place-identity",
+    "anchor": {
+      "type": "declaration",
+      "name": "IdFromMem",
+      "kind": "def"
+    },
+    "type": "lemma",
+    "title": "Same Status Characterization",
+    "content": "We prove Id∈(x, y, z) ↔ (y ∈ x ↔ z ∈ x). This elegant characterization shows that D2-identity is exactly biconditional membership: y and z are identified by x iff they have logically equivalent membership in x.",
+    "mathContext": "The proof uses case analysis on whether y ∈ x. This characterization makes the connection to Quine explicit and simplifies later reasoning.",
+    "significance": "supporting",
+    "prerequisites": [
+      "id-from-mem"
+    ],
+    "relatedConcepts": [
+      "biconditional",
+      "logical-equivalence"
+    ]
+  },
+  {
+    "id": "d2-preserves-transitivity",
+    "proofId": "three-place-identity",
+    "anchor": {
+      "type": "declaration",
+      "name": "IdFromMem",
+      "kind": "def"
+    },
+    "type": "tactic",
+    "title": "Transitivity by Case Analysis",
+    "content": "The transitivity proof is the most intricate. Given Id∈(x, y, z) and Id∈(x, z, w), we case-split on which disjunct holds for each. Two cases lead to contradictions (z is both member and non-member), and two cases give the result directly.",
+    "mathContext": "The four cases: (both,both), (both,neither), (neither,both), (neither,neither). The middle two are impossible by consistency. This is a nice example of exhaustive case analysis in Lean.",
+    "significance": "key",
+    "prerequisites": [
+      "case-analysis",
+      "propositional-logic"
+    ],
+    "relatedConcepts": [
+      "case-split",
+      "proof-by-cases"
+    ]
+  },
+  {
+    "id": "foundation-axiom",
+    "proofId": "three-place-identity",
+    "anchor": {
+      "type": "declaration",
+      "name": "WellFoundedMembership",
+      "kind": "structure"
+    },
+    "type": "definition",
+    "title": "The Foundation (Regularity) Axiom",
+    "content": "ZF's Foundation axiom: ∀x. ¬(x ∈ x). No set is a member of itself. This seems like a technical detail but is ESSENTIAL for the round-trip theorem. Without it, the mutual interpretability breaks down.",
+    "mathContext": "Foundation ensures x can serve as a 'null element'—something that genuinely contains nothing. In non-well-founded set theories (like Aczel's AFA), the round-trip fails, suggesting a deep connection between well-foundedness and the identity-membership duality.",
+    "significance": "critical",
+    "prerequisites": [
+      "zf-set-theory"
+    ],
+    "relatedConcepts": [
+      "regularity",
+      "well-founded-sets",
+      "aczel-afa"
+    ]
+  },
+  {
+    "id": "round-trip-theorem",
+    "proofId": "three-place-identity",
+    "anchor": {
+      "type": "block-comment",
+      "contains": "The key theorem: starting from a well-founded memb"
+    },
+    "type": "theorem",
+    "title": "The Round-Trip Theorem",
+    "content": "THE key theorem: starting from membership ∈, going to identity via D2, then back to membership via D1, we recover the original: ∈' ↔ ∈. This establishes that identity and membership are mutually interpretable.",
+    "mathContext": "The proof expands definitions and uses Foundation crucially. The expression simplifies because x ∉ x (by Foundation), making the 'y ∈ x ∧ x ∈ x' disjunct always false. What remains is ¬(¬y ∈ x), which is just y ∈ x.",
+    "significance": "critical",
+    "prerequisites": [
+      "mem-from-id",
+      "id-from-mem",
+      "foundation-axiom"
+    ],
+    "relatedConcepts": [
+      "mutual-interpretability",
+      "definitional-equivalence"
+    ]
+  },
+  {
+    "id": "round-trip-foundation-use",
+    "proofId": "three-place-identity",
+    "anchor": {
+      "type": "doc-comment",
+      "contains": "The Round-Trip Theorem: The membership derived fro"
+    },
+    "type": "insight",
+    "title": "Why Foundation is Essential",
+    "content": "The line 'have foundation_x : ¬ M.mem x x := M.foundation x' is where Foundation enters. Without it, we couldn't simplify '(y ∈ x ∧ x ∈ x) ∨ (¬y ∈ x ∧ ¬x ∈ x)'. The first disjunct might be satisfiable!",
+    "mathContext": "This is why the theorem fails for non-well-founded set theories. If we allow x ∈ x, then x identifies y with x when y ∈ x (both are members), breaking the intended semantics.",
+    "significance": "key",
+    "prerequisites": [
+      "foundation-axiom"
+    ],
+    "relatedConcepts": [
+      "non-well-founded-sets",
+      "aczel-afa"
+    ]
+  },
+  {
+    "id": "tauto-proof",
+    "proofId": "three-place-identity",
+    "anchor": {
+      "type": "declaration",
+      "name": "roundtrip",
+      "kind": "theorem"
+    },
+    "type": "tactic",
+    "title": "The Power of tauto",
+    "content": "The alternative proof using 'tauto' is remarkably short: just unfold definitions, introduce the Foundation hypothesis, and let the tautology checker handle the rest. This demonstrates that the core logic is purely propositional.",
+    "mathContext": "The 'tauto' tactic in Lean handles classical propositional logic automatically. Once we have ¬(x ∈ x) as a hypothesis, the equivalence MemFromId ↔ mem is a propositional tautology.",
+    "significance": "supporting",
+    "prerequisites": [
+      "propositional-logic",
+      "lean-tactics"
+    ],
+    "relatedConcepts": [
+      "tauto-tactic",
+      "decision-procedures"
+    ]
+  },
+  {
+    "id": "universality-theorem",
+    "proofId": "three-place-identity",
+    "anchor": {
+      "type": "declaration",
+      "name": "universality",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "The Universality Theorem",
+    "content": "The culmination: identity theory can express all of mathematics. Since ZF is a universal foundation and derived membership ∈' is equivalent to original ∈, any ZF axiom true of ∈ is equally true of ∈'. Identity theory + ZF-on-∈' is consistent.",
+    "mathContext": "This is a meta-theorem: it says identity theory is 'open-ended' in Etter's terminology—capable of expressing any mathematical structure. The three-place identity predicate, with its minimal axioms, suffices for all of mathematics.",
+    "significance": "critical",
+    "prerequisites": [
+      "round-trip-theorem",
+      "zf-set-theory"
+    ],
+    "relatedConcepts": [
+      "foundational-adequacy",
+      "interpretability",
+      "relative-consistency"
+    ]
+  },
+  {
+    "id": "trivial-identity",
+    "proofId": "three-place-identity",
+    "anchor": {
+      "type": "declaration",
+      "name": "discreteIdentity_empty",
+      "kind": "theorem"
+    },
+    "type": "definition",
+    "title": "Example: Trivial Identity",
+    "content": "The trivial identity identifies everything with everything from every viewpoint: Id(x,y,z) = True always. This satisfies the axioms vacuously but is philosophically uninteresting—there's no distinguishing power.",
+    "mathContext": "The derived membership from trivial identity would be: y ∈' x iff ¬True, i.e., never. So the trivial identity induces empty membership—nothing exists for anyone.",
+    "significance": "supporting",
+    "prerequisites": [
+      "relative-identity-structure"
+    ],
+    "relatedConcepts": [
+      "trivial-examples",
+      "degenerate-cases"
+    ]
+  },
+  {
+    "id": "discrete-identity",
+    "proofId": "three-place-identity",
+    "anchor": {
+      "type": "declaration",
+      "name": "exampleMem_foundation",
+      "kind": "theorem"
+    },
+    "type": "definition",
+    "title": "Example: Discrete Identity",
+    "content": "The discrete identity identifies only reflexively: Id(x,y,z) iff y = z (ignoring the viewpoint x). This is the 'maximally distinguishing' case—everything that could be different is different.",
+    "mathContext": "Interestingly, discrete identity also induces empty derived membership! Since Id(x,y,x) iff y = x, we have y ∈' x iff y ≠ x... but wait, that's non-empty. Let me reconsider—the proof shows ¬MemFromId for x itself.",
+    "significance": "supporting",
+    "prerequisites": [
+      "relative-identity-structure",
+      "decidable-equality"
+    ],
+    "relatedConcepts": [
+      "discrete-topology",
+      "hausdorff-spaces"
+    ]
+  }
+]

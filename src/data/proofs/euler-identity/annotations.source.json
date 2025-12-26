@@ -1,0 +1,204 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "euler-identity",
+    "anchor": {
+      "type": "imports"
+    },
+    "type": "concept",
+    "title": "The Most Beautiful Equation",
+    "content": "Euler's Identity $e^{i\\pi} + 1 = 0$ is often called the most beautiful equation in mathematics. It connects five fundamental constants that arise from completely different areas of mathematics:\n\n- **e** from calculus and continuous growth\n- **i** from algebra and complex numbers\n- **$\\pi$** from geometry and circles\n- **1** the multiplicative identity\n- **0** the additive identity\n\nThe fact that these five constants, discovered independently, combine so simply suggests a deep underlying unity in mathematics.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "fundamental constants",
+      "mathematical beauty",
+      "complex analysis"
+    ]
+  },
+  {
+    "id": "ann-complex-def",
+    "proofId": "euler-identity",
+    "anchor": {
+      "type": "block-comment",
+      "contains": "Mathlib provides a complete development of complex"
+    },
+    "type": "definition",
+    "title": "Complex Numbers",
+    "content": "A **complex number** is a pair of real numbers $(a, b)$ written as $a + bi$, where $i = \\sqrt{-1}$.\n\n- $a$ is the **real part** (Re)\n- $b$ is the **imaginary part** (Im)\n\nComplex numbers extend the reals to solve equations like $x^2 + 1 = 0$ (solution: $x = \\pm i$). They form a field, meaning we can add, subtract, multiply, and divide them (except by zero).",
+    "mathContext": "$z = a + bi$ where $a, b \\in \\mathbb{R}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "imaginary unit",
+      "complex plane",
+      "Argand diagram"
+    ]
+  },
+  {
+    "id": "ann-imaginary-unit",
+    "proofId": "euler-identity",
+    "anchor": {
+      "type": "block-comment",
+      "contains": "Mathlib provides a complete development of complex numbers"
+    },
+    "type": "definition",
+    "title": "The Imaginary Unit i",
+    "content": "The **imaginary unit** $i$ is defined as a number satisfying $i^2 = -1$. In our formalization:\n\n$$i = (0, 1) = 0 + 1 \\cdot i$$\n\nDespite the name 'imaginary', complex numbers are just as 'real' as real numbers—they're simply points in a 2D plane. The term 'imaginary' is a historical artifact from when mathematicians were skeptical of these numbers.\n\nGauss preferred 'lateral' to 'imaginary', and Descartes actually coined the term disparagingly.",
+    "mathContext": "$i^2 = -1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "complex conjugate",
+      "powers of i",
+      "Gaussian integers"
+    ]
+  },
+  {
+    "id": "ann-trig-values",
+    "proofId": "euler-identity",
+    "anchor": {
+      "type": "block-comment",
+      "contains": "For Euler's Identity, we need:"
+    },
+    "type": "lemma",
+    "title": "Key Values at π",
+    "content": "The proof hinges on two fundamental facts about trigonometric functions at $\\pi$ radians (180°):\n\n$$\\cos(\\pi) = -1$$\n$$\\sin(\\pi) = 0$$\n\nGeometrically: at angle $\\pi$, we're at the leftmost point of the unit circle, which is $(-1, 0)$.\n\nThese values follow from the unit circle definition of sine and cosine, where $\\cos(\\theta)$ is the x-coordinate and $\\sin(\\theta)$ is the y-coordinate.",
+    "mathContext": "$(\\cos \\pi, \\sin \\pi) = (-1, 0)$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "unit circle",
+      "radian measure",
+      "trigonometric identities"
+    ]
+  },
+  {
+    "id": "ann-eulers-formula",
+    "proofId": "euler-identity",
+    "anchor": {
+      "type": "block-comment",
+      "contains": "Euler's Formula: e^(ix) = cos(x)"
+    },
+    "type": "theorem",
+    "title": "Euler's Formula",
+    "content": "**Euler's Formula** states that for any real $x$:\n\n$$e^{ix} = \\cos(x) + i\\sin(x)$$\n\nThis is the real hero—Euler's Identity is just the special case $x = \\pi$.\n\n**Three proof approaches:**\n1. **Taylor series**: Compare $e^{ix} = 1 + ix + (ix)^2/2! + ...$ with cosine and sine series\n2. **Differential equations**: Both $e^{ix}$ and $\\cos x + i\\sin x$ satisfy $y' = iy$ with $y(0) = 1$\n3. **Geometry**: Show that $e^{ix}$ traces the unit circle\n\n**Significance**: This formula unifies exponentials and trigonometry, explaining why $e^{i\\theta}$ appears in oscillations, waves, and rotations throughout physics.",
+    "mathContext": "$e^{ix} = \\cos x + i \\sin x$",
+    "significance": "critical",
+    "prerequisites": [],
+    "relatedConcepts": [
+      "complex exponential",
+      "rotation",
+      "oscillation"
+    ]
+  },
+  {
+    "id": "ann-exp-i-pi",
+    "proofId": "euler-identity",
+    "anchor": {
+      "type": "block-comment",
+      "contains": "Euler's Identity can be written in several equival"
+    },
+    "type": "theorem",
+    "title": "The Heart: e^(iπ) = -1",
+    "content": "The key step is showing $e^{i\\pi} = -1$:\n\n1. Apply Euler's formula: $e^{i\\pi} = \\cos(\\pi) + i\\sin(\\pi)$\n2. Substitute known values: $= -1 + i \\cdot 0$\n3. Simplify: $= -1$\n\nThis is often called the **exponential form** of Euler's Identity. Adding 1 to both sides gives the standard form $e^{i\\pi} + 1 = 0$.\n\nGeometrically: rotating by $\\pi$ radians (180°) takes you to the opposite point on the unit circle, which is $-1$.",
+    "mathContext": "$e^{i\\pi} = -1$",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-eulers-formula",
+      "ann-trig-values"
+    ],
+    "relatedConcepts": [
+      "rotation by π",
+      "unit circle",
+      "complex plane"
+    ]
+  },
+  {
+    "id": "ann-identity-proof",
+    "proofId": "euler-identity",
+    "anchor": {
+      "type": "declaration",
+      "name": "half_rotation",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "Euler's Identity: The Final Step",
+    "content": "With $e^{i\\pi} = -1$ established, the identity follows immediately:\n\n$$e^{i\\pi} + 1 = -1 + 1 = 0$$\n\nIn Lean, we:\n1. Rewrite using `exp_i_pi_eq_neg_one`\n2. Unfold the complex number definitions\n3. Apply the arithmetic fact $-1 + 1 = 0$\n\nThe proof is almost anticlimactic—the real work was in Euler's Formula.",
+    "mathContext": "$e^{i\\pi} + 1 = 0$",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-exp-i-pi"
+    ],
+    "relatedConcepts": [
+      "arithmetic in complex numbers"
+    ]
+  },
+  {
+    "id": "ann-taylor",
+    "proofId": "euler-identity",
+    "anchor": {
+      "type": "declaration",
+      "name": "exp_on_unit_circle",
+      "kind": "theorem"
+    },
+    "type": "lemma",
+    "title": "The Taylor Series Proof",
+    "content": "The classical proof of Euler's formula compares Taylor series:\n\n$$e^{ix} = 1 + ix + \\frac{(ix)^2}{2!} + \\frac{(ix)^3}{3!} + ...$$\n\nUsing $i^2 = -1$, $i^3 = -i$, $i^4 = 1$, etc.:\n\n$$= \\underbrace{1 - \\frac{x^2}{2!} + \\frac{x^4}{4!} - ...}_{\\cos x} + i\\underbrace{\\left(x - \\frac{x^3}{3!} + \\frac{x^5}{5!} - ...\\right)}_{\\sin x}$$\n\nThe series magically separate into the Taylor series for cosine (even powers) and sine (odd powers)!\n\nThis 'coincidence' reflects deep structural connections between $e$, $\\sin$, and $\\cos$.",
+    "mathContext": "Taylor series comparison",
+    "significance": "key",
+    "relatedConcepts": [
+      "power series",
+      "radius of convergence",
+      "analytic continuation"
+    ]
+  },
+  {
+    "id": "ann-geometric",
+    "proofId": "euler-identity",
+    "anchor": {
+      "type": "block-comment",
+      "contains": "Euler's Identity is more than mathematical eleganc"
+    },
+    "type": "concept",
+    "title": "Geometry: Exponentials as Rotation",
+    "content": "$e^{i\\theta}$ traces the **unit circle** in the complex plane as $\\theta$ varies:\n\n- $e^{i \\cdot 0} = 1$ (rightmost)\n- $e^{i\\pi/2} = i$ (topmost)\n- $e^{i\\pi} = -1$ (leftmost)\n- $e^{i \\cdot 3\\pi/2} = -i$ (bottommost)\n\n**Key insight**: Multiplying any complex number by $e^{i\\theta}$ **rotates** it by angle $\\theta$!\n\nThis is why complex exponentials appear in:\n- **Physics**: Wave functions $\\psi = Ae^{i(kx - \\omega t)}$\n- **Engineering**: Phasors in AC circuits\n- **Signal processing**: Fourier transforms\n\nRotation = multiplication by $e^{i\\theta}$ is one of the most powerful ideas in applied mathematics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polar form",
+      "Argand diagram",
+      "rotation matrix"
+    ]
+  },
+  {
+    "id": "ann-quarter-turn",
+    "proofId": "euler-identity",
+    "anchor": {
+      "type": "block-comment",
+      "contains": "1714: Roger Cotes discovered a related logarithmic"
+    },
+    "type": "lemma",
+    "title": "Quarter Turn: e^(iπ/2) = i",
+    "content": "At $\\theta = \\pi/2$ (90°), we get:\n\n$$e^{i\\pi/2} = \\cos(\\pi/2) + i\\sin(\\pi/2) = 0 + i \\cdot 1 = i$$\n\nThis confirms the geometric interpretation: rotating 1 by 90° gives $i$ (the 'up' direction in the complex plane).\n\nSimilarly:\n- $e^{i\\pi} = -1$ (180° rotation)\n- $e^{i \\cdot 3\\pi/2} = -i$ (270° rotation)\n- $e^{2\\pi i} = 1$ (360° = back to start)",
+    "mathContext": "$e^{i\\pi/2} = i$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "unit circle",
+      "right angle",
+      "cyclic group"
+    ]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "euler-identity",
+    "anchor": {
+      "type": "block-comment",
+      "contains": "1714: Roger Cotes discovered a related logarithmic"
+    },
+    "type": "concept",
+    "title": "Why This Matters",
+    "content": "Euler's Identity is the tip of an iceberg—the practical power lies in the full formula $e^{ix} = \\cos x + i \\sin x$:\n\n**Quantum Mechanics**: Wave functions are complex exponentials. Schrödinger's equation involves $i$ essentially.\n\n**Signal Processing**: The Fourier transform decomposes signals into complex exponentials, enabling everything from MP3s to medical imaging.\n\n**Electrical Engineering**: AC circuits use 'phasors'—complex numbers representing oscillating voltages and currents.\n\n**Differential Equations**: Solutions to $y'' + y = 0$ are $e^{\\pm ix} = \\cos x \\pm i \\sin x$.\n\nWithout Euler's Formula, modern physics and engineering would be vastly more complicated.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fourier analysis",
+      "quantum mechanics",
+      "phasors"
+    ]
+  }
+]

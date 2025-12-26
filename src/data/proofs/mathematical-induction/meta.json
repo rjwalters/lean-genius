@@ -63,49 +63,49 @@
       "id": "header",
       "title": "Introduction",
       "startLine": 1,
-      "endLine": 42,
+      "endLine": 45,
       "summary": "Overview of mathematical induction, its historical significance, and role in Lean's foundations."
     },
     {
       "id": "weak-induction",
       "title": "Weak Induction",
-      "startLine": 44,
-      "endLine": 69,
+      "startLine": 49,
+      "endLine": 76,
       "summary": "The standard form of induction: prove P(0), prove P(n) -> P(n+1), conclude forall n. P(n)."
     },
     {
       "id": "strong-induction",
       "title": "Strong Induction",
-      "startLine": 71,
-      "endLine": 90,
+      "startLine": 78,
+      "endLine": 104,
       "summary": "Complete induction where the hypothesis is P(k) for all k < n."
     },
     {
       "id": "equivalence",
       "title": "Equivalence of Weak and Strong Induction",
-      "startLine": 92,
-      "endLine": 140,
+      "startLine": 106,
+      "endLine": 147,
       "summary": "Proof that weak and strong induction can derive each other."
     },
     {
       "id": "examples",
       "title": "Example Applications",
-      "startLine": 142,
-      "endLine": 174,
+      "startLine": 149,
+      "endLine": 173,
       "summary": "Classic examples: sum of first n naturals and existence of prime divisors."
     },
     {
       "id": "well-ordering",
       "title": "Well-Ordering Principle",
       "startLine": 175,
-      "endLine": 204,
+      "endLine": 202,
       "summary": "The well-ordering principle and its connection to strong induction."
     },
     {
       "id": "peano-axioms",
       "title": "Connection to Peano Axioms",
-      "startLine": 206,
-      "endLine": 230,
+      "startLine": 204,
+      "endLine": 240,
       "summary": "How induction relates to Lean's type theory and the Nat recursor."
     }
   ],

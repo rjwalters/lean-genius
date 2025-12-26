@@ -1,4 +1,4 @@
-import { tokenizeLine, tokenTypeToClass } from '@/lib/lean-tokenizer'
+import { tokenizeLine, tokenTypeToClass, type Token } from '@/lib/lean-tokenizer'
 import type { Annotation } from '@/types/proof'
 import { cn } from '@/lib/utils'
 
@@ -8,6 +8,7 @@ interface ProofLineProps {
   annotations: Annotation[]
   isSelected: boolean
   onClick: () => void
+  inBlockComment?: boolean
 }
 
 export function ProofLine({
@@ -16,8 +17,9 @@ export function ProofLine({
   annotations,
   isSelected,
   onClick,
+  inBlockComment = false,
 }: ProofLineProps) {
-  const tokens = tokenizeLine(content)
+  const { tokens } = tokenizeLine(content, inBlockComment)
   const hasAnnotation = annotations.length > 0
   const significance = annotations[0]?.significance
 
@@ -77,7 +79,7 @@ function TokenizedContent({
   tokens,
 }: {
   content: string
-  tokens: ReturnType<typeof tokenizeLine>
+  tokens: Token[]
 }) {
   const result: React.ReactNode[] = []
   let lastEnd = 0
