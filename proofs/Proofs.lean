@@ -35,3 +35,5 @@ import Proofs.EulerTotient
 import Proofs.HurwitzTheorem
 import Proofs.ArithmeticSeries
 import Proofs.SubsetCount
+import Proofs.IntermediateValueTheorem
+import Proofs.PerfectNumbers
