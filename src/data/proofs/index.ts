@@ -21,6 +21,7 @@ import { randomizedMaxCutData } from './randomized-maxcut'
 import { threePlaceIdentityData } from './three-place-identity'
 import { lagrangeFourSquaresData } from './lagrange-four-squares'
 import { fermatTwoSquaresData } from './fermat-two-squares'
+import { harmonicDivergenceData } from './harmonic-divergence'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -47,6 +48,7 @@ export const proofs: Record<string, ProofData> = {
   'three-place-identity': threePlaceIdentityData,
   'lagrange-four-squares': lagrangeFourSquaresData,
   'fermat-two-squares': fermatTwoSquaresData,
+  'harmonic-divergence': harmonicDivergenceData,
 }
 
 export function getProof(slug: string): ProofData | undefined {

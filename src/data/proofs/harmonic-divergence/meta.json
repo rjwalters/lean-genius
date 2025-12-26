@@ -1,0 +1,102 @@
+{
+  "id": "harmonic-divergence",
+  "title": "Divergence of the Harmonic Series",
+  "slug": "harmonic-divergence",
+  "description": "The harmonic series 1 + 1/2 + 1/3 + ... diverges, despite its terms approaching zero. A classic result with an elegant 14th-century proof.",
+  "meta": {
+    "author": "Nicole Oresme (formalized via Mathlib)",
+    "sourceUrl": "https://github.com/leanprover-community/mathlib4/blob/master/Mathlib/Analysis/PSeries.lean",
+    "date": "~1350",
+    "status": "verified",
+    "proofRepoPath": "Proofs/HarmonicDivergence.lean",
+    "tags": [
+      "analysis",
+      "series",
+      "divergence",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.not_summable_one_div_natCast",
+        "description": "The harmonic series 1/n is not summable",
+        "module": "Mathlib.Analysis.PSeries"
+      },
+      {
+        "theorem": "Real.tendsto_sum_range_one_div_nat_succ_atTop",
+        "description": "Partial sums of harmonic series tend to infinity",
+        "module": "Mathlib.Analysis.PSeries"
+      },
+      {
+        "theorem": "Real.summable_nat_rpow_inv",
+        "description": "p-series 1/n^p converges for p > 1",
+        "module": "Mathlib.Analysis.PSeries"
+      }
+    ],
+    "originalContributions": [
+      "Oresme's grouping argument explained with formal bounds",
+      "Contrast with convergent p-series (p > 1)",
+      "Pedagogical presentation of why terms → 0 doesn't imply convergence"
+    ],
+    "dateAdded": "12/26/25"
+  },
+  "overview": {
+    "historicalContext": "The divergence of the harmonic series is one of the most counterintuitive results in mathematics. The terms 1, 1/2, 1/3, 1/4, ... clearly approach zero, yet their sum is infinite!\n\nNicole Oresme, a 14th-century French philosopher and mathematician, gave the first known proof around 1350. His elegant grouping argument showed that infinitely many groups of terms each sum to more than 1/2. This was one of the earliest uses of infinite series in mathematical reasoning.\n\nThe result was independently rediscovered by Pietro Mengoli (1647) and Johann Bernoulli (1689). Today it serves as a fundamental example in calculus courses, demonstrating that the terms of a series approaching zero is necessary but not sufficient for convergence.",
+    "problemStatement": "**Theorem (Oresme, ~1350)**: The harmonic series diverges:\n\n$$\\sum_{n=1}^{\\infty} \\frac{1}{n} = 1 + \\frac{1}{2} + \\frac{1}{3} + \\frac{1}{4} + \\cdots = \\infty$$\n\nMore precisely: the partial sums $H_n = \\sum_{k=1}^{n} \\frac{1}{k}$ grow without bound as $n \\to \\infty$.\n\nThis is Wiedijk's 100 Theorems #34.",
+    "proofStrategy": "**Oresme's Grouping Argument:**\n\nGroup the terms strategically:\n\n$$1 + \\frac{1}{2} + \\left(\\frac{1}{3} + \\frac{1}{4}\\right) + \\left(\\frac{1}{5} + \\frac{1}{6} + \\frac{1}{7} + \\frac{1}{8}\\right) + \\cdots$$\n\nEach group of $2^k$ terms (from $2^k$ to $2^{k+1}-1$) sums to at least 1/2:\n\n- $1/3 + 1/4 > 1/4 + 1/4 = 1/2$\n- $1/5 + 1/6 + 1/7 + 1/8 > 4 \\cdot (1/8) = 1/2$\n- In general: $\\sum_{i=2^k}^{2^{k+1}-1} \\frac{1}{i} \\geq 2^k \\cdot \\frac{1}{2^{k+1}} = \\frac{1}{2}$\n\nSince we have infinitely many groups each contributing at least 1/2, the sum is infinite.",
+    "keyInsights": [
+      "Terms approaching zero is NOT sufficient for convergence—the harmonic series is the classic counterexample",
+      "Oresme's grouping shows each power-of-2 block contributes at least 1/2 to the sum",
+      "The divergence is extremely slow: $H_n \\approx \\ln(n) + \\gamma$ where $\\gamma \\approx 0.5772$ is the Euler-Mascheroni constant",
+      "Slight modification to $\\sum 1/n^p$ converges for any $p > 1$—the harmonic series is at the boundary"
+    ]
+  },
+  "sections": [
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 40,
+      "endLine": 60,
+      "summary": "The harmonic series is not summable—its partial sums grow without bound."
+    },
+    {
+      "id": "partial-sums",
+      "title": "Partial Sums Tend to Infinity",
+      "startLine": 62,
+      "endLine": 75,
+      "summary": "An equivalent formulation: the partial sums H_n → ∞."
+    },
+    {
+      "id": "oresme-argument",
+      "title": "Oresme's Grouping Argument",
+      "startLine": 77,
+      "endLine": 130,
+      "summary": "The classical proof showing each group of 2^k terms sums to at least 1/2."
+    },
+    {
+      "id": "convergent-contrast",
+      "title": "Contrast with Convergent Series",
+      "startLine": 132,
+      "endLine": 150,
+      "summary": "The p-series with p > 1 converges, showing harmonic is at the boundary."
+    },
+    {
+      "id": "growth-rate",
+      "title": "Asymptotic Growth Rate",
+      "startLine": 152,
+      "endLine": 175,
+      "summary": "The harmonic series grows like ln(n), explaining its slow divergence."
+    }
+  ],
+  "conclusion": {
+    "summary": "The harmonic series provides one of mathematics' most important lessons: a series can diverge even when its terms approach zero. Oresme's elegant 14th-century proof remains the most intuitive explanation—by grouping terms cleverly, we see that infinitely many contributions of 1/2 force the sum to infinity.\n\nThe formalization uses Mathlib's `Real.not_summable_one_div_natCast` for the main result, while also demonstrating Oresme's grouping argument to show why the result is true.",
+    "implications": "**Theoretical Significance:**\n\n1. **Convergence tests**: The harmonic series motivates the development of convergence tests (comparison, ratio, root tests) that can distinguish convergent from divergent series.\n\n2. **p-series**: The boundary behavior at p = 1 is fundamental—slight changes to the exponent completely change convergence behavior.\n\n3. **Euler-Mascheroni constant**: The difference $H_n - \\ln(n)$ converges to the mysterious constant $\\gamma \\approx 0.5772$, whose rationality remains an open problem.\n\n**Practical Applications:**\n\nThe harmonic series appears in algorithm analysis (coupon collector's problem), probability theory, and physics (divergent integrals in quantum field theory).",
+    "openQuestions": [
+      "Is the Euler-Mascheroni constant γ ≈ 0.5772 rational or irrational?",
+      "What is the precise rate of convergence of H_n - ln(n) to γ?",
+      "How does the alternating harmonic series 1 - 1/2 + 1/3 - 1/4 + ... = ln(2) relate?"
+    ]
+  }
+}
