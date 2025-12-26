@@ -105,6 +105,7 @@ export const WIEDIJK_BADGE_INFO = {
 export const WIEDIJK_THEOREMS: Record<number, string> = {
   1: 'Irrationality of √2',
   2: 'Fundamental Theorem of Algebra',
+  3: 'Denumerability of the Rationals',
   4: 'Pythagorean Theorem',
   6: "Gödel's Incompleteness Theorem",
   11: 'Infinitude of Primes',
@@ -115,6 +116,7 @@ export const WIEDIJK_THEOREMS: Record<number, string> = {
   33: "Fermat's Last Theorem",
   36: 'Brouwer Fixed Point Theorem',
   47: 'Central Limit Theorem',
+  51: "Wilson's Theorem",
   63: "Cantor's Theorem"
 }
 
