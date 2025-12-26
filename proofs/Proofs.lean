@@ -11,6 +11,7 @@ import Proofs.DenumerabilityRationals
 import Proofs.SchroederBernstein
 
 -- Additional proofs (may contain sorry/axioms - work in progress)
+import Proofs.AMGMInequality
 import Proofs.HarmonicDivergence
 import Proofs.LagrangeFourSquares
 import Proofs.KnightsTourOblique
