@@ -24,6 +24,7 @@ import { fermatTwoSquaresData } from './fermat-two-squares'
 import { harmonicDivergenceData } from './harmonic-divergence'
 import { denumerabilityRationalsData } from './denumerability-rationals'
 import { hurwitzTheoremData } from './hurwitz-theorem'
+import { schroederBernsteinData } from './schroeder-bernstein'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -53,6 +54,7 @@ export const proofs: Record<string, ProofData> = {
   'harmonic-divergence': harmonicDivergenceData,
   'denumerability-rationals': denumerabilityRationalsData,
   'hurwitz-theorem': hurwitzTheoremData,
+  'schroeder-bernstein': schroederBernsteinData,
 }
 
 export function getProof(slug: string): ProofData | undefined {
