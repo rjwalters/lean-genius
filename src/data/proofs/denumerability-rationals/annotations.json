@@ -1,0 +1,74 @@
+[
+  {
+    "id": "denumerable-instance",
+    "proofId": "denumerability-rationals",
+    "range": {
+      "startLine": 57,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "Mathlib's Denumerable Instance",
+    "content": "The `Denumerable ℚ` instance is provided by Mathlib. This typeclass asserts that ℚ is in bijection with ℕ, with explicit encoding/decoding functions.",
+    "significance": "key"
+  },
+  {
+    "id": "equiv-definition",
+    "proofId": "denumerability-rationals",
+    "range": {
+      "startLine": 63,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "The Explicit Bijection",
+    "content": "`Denumerable.eqv` gives an equivalence `ℚ ≃ ℕ`. We use `.symm` to get `ℕ ≃ ℚ`, which lets us enumerate rationals by natural numbers.",
+    "significance": "key"
+  },
+  {
+    "id": "main-theorem",
+    "proofId": "denumerability-rationals",
+    "range": {
+      "startLine": 70,
+      "endLine": 72
+    },
+    "type": "theorem",
+    "title": "Cantor's Classical Statement",
+    "content": "This is the classical formulation: there exists a bijection f : ℕ ≃ ℚ. The proof extracts the bijection from Mathlib's Denumerable instance.",
+    "significance": "critical"
+  },
+  {
+    "id": "countable-corollary",
+    "proofId": "denumerability-rationals",
+    "range": {
+      "startLine": 78,
+      "endLine": 78
+    },
+    "type": "lemma",
+    "title": "Countability Follows",
+    "content": "Every denumerable type is countable. The converse is false: finite types are countable but not denumerable.",
+    "significance": "supporting"
+  },
+  {
+    "id": "round-trip",
+    "proofId": "denumerability-rationals",
+    "range": {
+      "startLine": 114,
+      "endLine": 119
+    },
+    "type": "insight",
+    "title": "Round-Trip Properties",
+    "content": "The encode and decode functions are mutual inverses. These proofs verify that no information is lost in the encoding.",
+    "significance": "key"
+  },
+  {
+    "id": "cardinality",
+    "proofId": "denumerability-rationals",
+    "range": {
+      "startLine": 168,
+      "endLine": 169
+    },
+    "type": "theorem",
+    "title": "Cardinal Equality",
+    "content": "In cardinal arithmetic, |ℚ| = ℵ₀. This connects the type-theoretic notion (Denumerable) to the set-theoretic notion (cardinality).",
+    "significance": "key"
+  }
+]

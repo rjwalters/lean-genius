@@ -1,0 +1,102 @@
+{
+  "id": "denumerability-rationals",
+  "title": "Denumerability of the Rationals",
+  "slug": "denumerability-rationals",
+  "description": "Cantor's proof that the rational numbers are countable: despite being dense in the reals, there exists a bijection between the natural numbers and the rationals.",
+  "meta": {
+    "author": "Georg Cantor (1874)",
+    "date": "1874",
+    "status": "verified",
+    "tags": [
+      "set-theory",
+      "infinity",
+      "cardinality",
+      "classic",
+      "wiedijk-100"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Denumerable ℚ",
+        "description": "Instance proving the rationals are denumerable",
+        "module": "Mathlib.Data.Rat.Denumerable"
+      },
+      {
+        "theorem": "Denumerable.eqv",
+        "description": "The explicit equivalence between a denumerable type and ℕ",
+        "module": "Mathlib.Logic.Denumerable"
+      },
+      {
+        "theorem": "Cardinal.mk_denumerable",
+        "description": "Cardinality of denumerable types equals aleph-null",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Alternative formulations (surjection, injection)",
+      "Explicit encode/decode functions with round-trip proofs",
+      "Cardinality theorem connecting to cardinal arithmetic",
+      "Pedagogical documentation with diagonal visualization"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 3
+  },
+  "overview": {
+    "historicalContext": "Georg Cantor proved the denumerability of the rationals in the 1870s, establishing that the 'infinity' of rational numbers is the same size as the natural numbers. This was part of his revolutionary work on infinite sets that would eventually lead to modern set theory.\n\nThe result is surprising: the rationals are dense in the reals (between any two rationals lies another), yet they form a 'small' infinity. Cantor's diagonal enumeration method shows how to systematically list all positive rationals by traversing a grid of numerator/denominator pairs.\n\nThis theorem pairs with Cantor's later proof (1891) that the reals are uncountable. Together they establish a hierarchy of infinities: ℵ₀ (countable) < 2^ℵ₀ (continuum).",
+    "problemStatement": "Theorem (Cantor): The set of rational numbers ℚ is denumerable.\n\nMore precisely: there exists a bijection between ℕ and ℚ. Both sets have cardinality ℵ₀ (aleph-null), the smallest infinite cardinal:\n\n$$|\\mathbb{N}| = |\\mathbb{Q}| = \\aleph_0$$\n\nThis means we can assign a unique natural number to each rational, with no rationals left out.",
+    "proofStrategy": "The proof proceeds by constructing an explicit enumeration:\n\n1. Represent each rational q as a reduced pair (numerator, denominator) where gcd = 1\n2. Use Cantor's pairing function to encode pairs of integers as natural numbers\n3. Handle signs appropriately (interleave positives and negatives)\n\nThe diagonal enumeration visualizes this:\n- Arrange positive rationals in a grid (row = denominator, column = numerator)\n- Traverse diagonals: 1/1, 2/1, 1/2, 3/1, 2/2, 1/3, ...\n- Skip non-reduced fractions (like 2/2 = 1/1)\n- Extend to all rationals by interleaving with negatives and zero\n\nMathlib provides this construction via the Denumerable typeclass, giving us the bijection directly.",
+    "keyInsights": [
+      "Density does not imply uncountability: ℚ is dense in ℝ but countable",
+      "The diagonal traversal ensures every positive rational is reached in finite steps",
+      "Countable unions of countable sets remain countable",
+      "This contrasts with ℝ, which Cantor later proved uncountable via diagonalization"
+    ]
+  },
+  "sections": [
+    {
+      "id": "main-result",
+      "title": "The Main Result",
+      "startLine": 46,
+      "endLine": 78,
+      "summary": "Establishes that ℚ is denumerable using Mathlib's typeclass, and provides the explicit bijection between ℕ and ℚ."
+    },
+    {
+      "id": "alternative-formulations",
+      "title": "Alternative Formulations",
+      "startLine": 80,
+      "endLine": 93,
+      "summary": "Presents the theorem as existence of surjection and injection, showing equivalent ways to state countability."
+    },
+    {
+      "id": "encoding",
+      "title": "The Encoding Explained",
+      "startLine": 94,
+      "endLine": 120,
+      "summary": "Documents how Mathlib encodes rationals as natural numbers and proves round-trip properties."
+    },
+    {
+      "id": "cardinality",
+      "title": "Connection to Cardinality",
+      "startLine": 160,
+      "endLine": 174,
+      "summary": "Shows that |ℚ| = |ℕ| = ℵ₀ using cardinal arithmetic."
+    },
+    {
+      "id": "visualization",
+      "title": "Cantor's Diagonal Enumeration",
+      "startLine": 134,
+      "endLine": 158,
+      "summary": "ASCII visualization of the classical diagonal traversal that enumerates all positive rationals."
+    }
+  ],
+  "conclusion": {
+    "summary": "The denumerability of the rationals is a foundational result in set theory, showing that 'dense' does not mean 'large' in the cardinality sense. Despite the rationals filling the real line with no gaps, they can still be put in one-to-one correspondence with the counting numbers.\n\nThe formalization uses Mathlib's Denumerable typeclass, which provides an explicit bijection. This gives us computable encoding and decoding functions with verified round-trip properties.",
+    "implications": "This theorem has important consequences:\n\n1. Measure Theory - The rationals have Lebesgue measure zero in ℝ, despite being dense\n\n2. Computability - Every rational is computable, which follows from countability\n\n3. Algebraic Numbers - The countability of ℚ extends to algebraic numbers (roots of polynomials with rational coefficients)\n\n4. Transcendental Numbers - Since ℝ is uncountable and algebraic numbers are countable, 'almost all' real numbers are transcendental",
+    "openQuestions": [
+      "What is the most efficient pairing function for encoding rationals?",
+      "How does the enumeration extend to algebraic numbers of bounded degree?",
+      "What are the computational properties of specific rational enumerations?"
+    ]
+  }
+}
