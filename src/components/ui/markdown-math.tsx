@@ -1,4 +1,5 @@
 import 'katex/dist/katex.min.css'
+import type { ReactNode } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
@@ -27,29 +28,29 @@ export function MarkdownMath({ children, className }: MarkdownMathProps) {
         rehypePlugins={[rehypeKatex]}
         components={{
           // Style paragraphs to match existing design
-          p: ({ children }) => (
+          p: ({ children }: { children?: ReactNode }) => (
             <p className="mb-3 last:mb-0">{children}</p>
           ),
           // Style lists
-          ol: ({ children }) => (
+          ol: ({ children }: { children?: ReactNode }) => (
             <ol className="list-decimal list-inside space-y-2 mb-3">{children}</ol>
           ),
-          ul: ({ children }) => (
+          ul: ({ children }: { children?: ReactNode }) => (
             <ul className="list-disc list-inside space-y-2 mb-3">{children}</ul>
           ),
-          li: ({ children }) => (
+          li: ({ children }: { children?: ReactNode }) => (
             <li className="leading-relaxed">{children}</li>
           ),
           // Style strong/bold
-          strong: ({ children }) => (
+          strong: ({ children }: { children?: ReactNode }) => (
             <strong className="font-semibold text-foreground">{children}</strong>
           ),
           // Style emphasis/italic
-          em: ({ children }) => (
+          em: ({ children }: { children?: ReactNode }) => (
             <em className="italic">{children}</em>
           ),
           // Style code
-          code: ({ children }) => (
+          code: ({ children }: { children?: ReactNode }) => (
             <code className="bg-muted/50 px-1.5 py-0.5 rounded text-sm font-mono">{children}</code>
           ),
         }}
@@ -71,14 +72,14 @@ export function MarkdownMathInline({ children, className }: MarkdownMathProps) {
         rehypePlugins={[rehypeKatex]}
         components={{
           // Remove paragraph wrapper for inline use
-          p: ({ children }) => <>{children}</>,
-          strong: ({ children }) => (
+          p: ({ children }: { children?: ReactNode }) => <>{children}</>,
+          strong: ({ children }: { children?: ReactNode }) => (
             <strong className="font-semibold text-foreground">{children}</strong>
           ),
-          em: ({ children }) => (
+          em: ({ children }: { children?: ReactNode }) => (
             <em className="italic">{children}</em>
           ),
-          code: ({ children }) => (
+          code: ({ children }: { children?: ReactNode }) => (
             <code className="bg-muted/50 px-1.5 py-0.5 rounded text-sm font-mono">{children}</code>
           ),
         }}
