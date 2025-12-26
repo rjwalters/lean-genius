@@ -2,192 +2,178 @@
   {
     "id": "ann-maxcut-imports",
     "proofId": "randomized-maxcut",
-    "range": { "startLine": 1, "endLine": 5 },
+    "range": {
+      "startLine": 1,
+      "endLine": 6
+    },
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import key Mathlib modules: `Finset.Basic` for finite set operations and summation, `SimpleGraph.Basic` and `SimpleGraph.Finite` for graph structure and edge sets, and `Data.Real.Basic` for real number arithmetic in probability calculations.",
     "significance": "supporting",
-    "relatedConcepts": ["Mathlib", "SimpleGraph", "Finset"]
-  },
-  {
-    "id": "ann-maxcut-cut-structure",
-    "proofId": "randomized-maxcut",
-    "range": { "startLine": 60, "endLine": 66 },
-    "type": "definition",
-    "title": "The Cut Structure",
-    "content": "A **Cut** is a partition of vertices into two disjoint sets $A$ and $B$. The structure carries proof obligations: `partition` proves $A \\cup B = V$ (every vertex is assigned) and `disjoint` proves $A \\cap B = \\emptyset$ (no vertex is in both).",
-    "mathContext": "In Lean, these proof obligations are fields of the structure. You cannot construct an invalid Cut—the type system prevents it. This is a key advantage of dependent types.",
-    "significance": "critical",
-    "relatedConcepts": ["dependent types", "proof obligations", "graph partitions"]
-  },
-  {
-    "id": "ann-maxcut-edge-in-cut",
-    "proofId": "randomized-maxcut",
-    "range": { "startLine": 70, "endLine": 74 },
-    "type": "definition",
-    "title": "Edge Membership in Cut",
-    "content": "An edge is in the cut if its endpoints are in different partitions: $(u \\in A \\land v \\in B) \\lor (u \\in B \\land v \\in A)$. The `Sym2.lift` operation ensures this works for unordered pairs—we prove the predicate is symmetric.",
-    "mathContext": "`Sym2 V` represents unordered pairs (edges). The `lift` operation requires proving the function respects symmetry: $f(u,v) = f(v,u)$. The `by simp [or_comm, and_comm]` proves this.",
-    "significance": "key",
-    "relatedConcepts": ["Sym2", "unordered pairs", "quotient types"]
-  },
-  {
-    "id": "ann-maxcut-cut-size",
-    "proofId": "randomized-maxcut",
-    "range": { "startLine": 76, "endLine": 79 },
-    "type": "definition",
-    "title": "Cut Size",
-    "content": "The size of a cut is the count of edges crossing between $A$ and $B$. We filter the graph's edge set to those satisfying `edgeInCut`, then take the cardinality.",
-    "mathContext": "$$|C| = |\\{e \\in E : e \\text{ crosses } A, B\\}|$$\n\nThe `edgeFinset` is Mathlib's finite edge set for decidable graphs.",
-    "significance": "key",
-    "relatedConcepts": ["cardinality", "filter", "edgeFinset"]
-  },
-  {
-    "id": "ann-maxcut-of-assignment",
-    "proofId": "randomized-maxcut",
-    "range": { "startLine": 81, "endLine": 92 },
-    "type": "definition",
-    "title": "Cut from Boolean Assignment",
-    "content": "Given a function $f : V \\to \\text{Bool}$, we construct a cut where $A = \\{v : f(v) = \\text{true}\\}$ and $B = \\{v : f(v) = \\text{false}\\}$. The proof obligations are discharged automatically.",
-    "mathContext": "The `grind` tactic handles the partition proof (union of 'true' and 'not true' cases is everything). The disjointness proof uses basic logic: nothing is both true and not true.",
-    "significance": "key",
-    "relatedConcepts": ["assignment function", "boolean partition", "grind tactic"]
-  },
-  {
-    "id": "ann-maxcut-algorithm",
-    "proofId": "randomized-maxcut",
-    "range": { "startLine": 101, "endLine": 105 },
-    "type": "definition",
-    "title": "The Randomized Algorithm",
-    "content": "The algorithm is trivially simple: given a random boolean assignment (coin flip for each vertex), construct the corresponding cut using `ofAssignment`. The 'randomness' comes from the input—we analyze over all possible assignments.",
-    "mathContext": "We don't model randomness explicitly. Instead, we sum over all $2^{|V|}$ possible assignments and divide by the count—this is the expectation under uniform distribution.",
-    "significance": "critical",
-    "relatedConcepts": ["randomized algorithms", "uniform distribution", "expectation"]
-  },
-  {
-    "id": "ann-maxcut-indicator",
-    "proofId": "randomized-maxcut",
-    "range": { "startLine": 107, "endLine": 111 },
-    "type": "definition",
-    "title": "Edge Indicator Function",
-    "content": "The characteristic function $\\chi_e$ returns 1 if edge $e$ is in the cut, 0 otherwise. This is the random variable whose expectation we compute.",
-    "mathContext": "$$\\chi_e = \\begin{cases} 1 & \\text{if } e \\in C \\\\ 0 & \\text{otherwise} \\end{cases}$$\n\nSince $\\chi_e \\in \\{0,1\\}$, we have $\\mathbb{E}[\\chi_e] = \\Pr[e \\in C]$.",
-    "significance": "key",
-    "relatedConcepts": ["indicator function", "Bernoulli random variable", "expectation"]
-  },
-  {
-    "id": "ann-maxcut-theorem1",
-    "proofId": "randomized-maxcut",
-    "range": { "startLine": 119, "endLine": 135 },
-    "type": "theorem",
-    "title": "Theorem 1: Sum of Indicators",
-    "content": "**Key Identity**: The cut size equals the sum of edge indicators: $|C| = \\sum_{e \\in E} \\chi_e$. This allows us to compute expectation using linearity.",
-    "mathContext": "Since $\\chi_e \\in \\{0,1\\}$, summing indicators counts the edges in the cut. The proof unfolds definitions and shows the filter-then-count equals sum-of-indicators.",
-    "significance": "critical",
-    "prerequisites": ["ann-maxcut-indicator", "ann-maxcut-cut-size"],
-    "relatedConcepts": ["indicator decomposition", "counting via summation"]
+    "relatedConcepts": [
+      "Mathlib",
+      "SimpleGraph",
+      "Finset"
+    ]
   },
   {
     "id": "ann-maxcut-theorem2",
     "proofId": "randomized-maxcut",
-    "range": { "startLine": 143, "endLine": 189 },
+    "range": {
+      "startLine": 141,
+      "endLine": 144
+    },
     "type": "theorem",
     "title": "Theorem 2: Counting Lemma",
     "content": "**The Combinatorial Heart**: For distinct vertices $u \\neq v$, exactly half of all $2^{|V|}$ boolean assignments satisfy $f(u) \\neq f(v)$.",
     "mathContext": "The proof constructs a bijection via the toggle operation: flipping $u$'s assignment swaps 'same' and 'different' cases. Since toggle is an involution (self-inverse), the two sets have equal size. Together they partition all assignments, so each has exactly half.",
     "significance": "critical",
-    "relatedConcepts": ["bijection", "involution", "double counting"]
+    "relatedConcepts": [
+      "bijection",
+      "involution",
+      "double counting"
+    ]
   },
   {
     "id": "ann-maxcut-toggle",
     "proofId": "randomized-maxcut",
-    "range": { "startLine": 148, "endLine": 156 },
+    "range": {
+      "startLine": 141,
+      "endLine": 192
+    },
     "type": "insight",
     "title": "The Toggle Bijection",
     "content": "Define `toggle_u(f) = f` with $f(u)$ flipped to $\\neg f(u)$. This is an involution: `toggle_u(toggle_u(f)) = f`. Crucially, toggling swaps whether $u$ and $v$ agree: if $f(u) \\neq f(v)$, then `toggle_u(f)` has $f(u) = f(v)$.",
     "mathContext": "The `Function.update` replaces $f(u)$ with $\\neg f(u)$ while keeping other values. The case split `cases f u <;> cases f v` exhaustively checks all four boolean combinations.",
     "significance": "key",
-    "prerequisites": ["ann-maxcut-theorem2"],
-    "relatedConcepts": ["function update", "case analysis", "involution"]
+    "prerequisites": [
+      "ann-maxcut-theorem2"
+    ],
+    "relatedConcepts": [
+      "function update",
+      "case analysis",
+      "involution"
+    ]
   },
   {
     "id": "ann-maxcut-theorem3",
     "proofId": "randomized-maxcut",
-    "range": { "startLine": 197, "endLine": 245 },
+    "range": {
+      "startLine": 194,
+      "endLine": 198
+    },
     "type": "theorem",
     "title": "Theorem 3: Edge Probability",
     "content": "**Each Edge Has 1/2 Probability**: For any edge $e = \\{u, v\\}$, the probability it's in a random cut is exactly $1/2$.",
     "mathContext": "We compute probability as: $$\\Pr[e \\in C] = \\frac{\\#\\{f : f(u) \\neq f(v)\\}}{2^{|V|}} = \\frac{2^{|V|}/2}{2^{|V|}} = \\frac{1}{2}$$\n\nThe counting lemma (Theorem 2) provides the numerator.",
     "significance": "critical",
-    "prerequisites": ["ann-maxcut-theorem2"],
-    "relatedConcepts": ["probability", "counting", "uniform distribution"]
+    "prerequisites": [
+      "ann-maxcut-theorem2"
+    ],
+    "relatedConcepts": [
+      "probability",
+      "counting",
+      "uniform distribution"
+    ]
   },
   {
     "id": "ann-maxcut-sym2-induction",
     "proofId": "randomized-maxcut",
-    "range": { "startLine": 203, "endLine": 205 },
+    "range": {
+      "startLine": 200,
+      "endLine": 240
+    },
     "type": "tactic",
     "title": "Sym2 Induction",
     "content": "To prove something about an unordered pair $e$, we use `induction e using Sym2.ind` to get representatives $u, v$. The hypothesis `h : ¬e.IsDiag` ensures $u \\neq v$ (edges don't have both endpoints the same).",
     "significance": "supporting",
-    "relatedConcepts": ["quotient induction", "Sym2", "diagonal"]
+    "relatedConcepts": [
+      "quotient induction",
+      "Sym2",
+      "diagonal"
+    ]
   },
   {
     "id": "ann-maxcut-theorem4",
     "proofId": "randomized-maxcut",
-    "range": { "startLine": 253, "endLine": 288 },
+    "range": {
+      "startLine": 248,
+      "endLine": 277
+    },
     "type": "theorem",
     "title": "Theorem 4: Expected Cut Size (Main Result)",
     "content": "**The Central Theorem**: $\\mathbb{E}[|C|] = |E|/2$. The expected size of a random cut equals half the number of edges.",
     "mathContext": "The proof chains the previous results:\n$$\\mathbb{E}[|C|] = \\mathbb{E}\\left[\\sum_e \\chi_e\\right] = \\sum_e \\mathbb{E}[\\chi_e] = \\sum_e \\frac{1}{2} = \\frac{|E|}{2}$$\n\nThe key step is swapping $\\sum_{\\text{assignments}} \\sum_{\\text{edges}}$ to $\\sum_{\\text{edges}} \\sum_{\\text{assignments}}$—this is linearity of expectation.",
     "significance": "critical",
-    "prerequisites": ["ann-maxcut-theorem1", "ann-maxcut-theorem3"],
-    "relatedConcepts": ["linearity of expectation", "sum interchange", "Finset.sum_comm"]
+    "prerequisites": [
+      "ann-maxcut-theorem1",
+      "ann-maxcut-theorem3"
+    ],
+    "relatedConcepts": [
+      "linearity of expectation",
+      "sum interchange",
+      "Finset.sum_comm"
+    ]
   },
   {
     "id": "ann-maxcut-linearity",
     "proofId": "randomized-maxcut",
-    "range": { "startLine": 269, "endLine": 271 },
+    "range": {
+      "startLine": 248,
+      "endLine": 277
+    },
     "type": "insight",
     "title": "Linearity of Expectation",
     "content": "The crucial step: `Finset.sum_comm` swaps the order of summation. This is linearity of expectation—it works even when random variables are dependent!",
     "mathContext": "Unlike variance or higher moments, expectation is always linear: $\\mathbb{E}[X + Y] = \\mathbb{E}[X] + \\mathbb{E}[Y]$, regardless of dependence. This is why the proof is so elegant.",
     "significance": "critical",
-    "prerequisites": ["ann-maxcut-theorem4"],
-    "relatedConcepts": ["linearity", "Fubini's theorem", "sum interchange"]
+    "prerequisites": [
+      "ann-maxcut-theorem4"
+    ],
+    "relatedConcepts": [
+      "linearity",
+      "Fubini's theorem",
+      "sum interchange"
+    ]
   },
   {
     "id": "ann-maxcut-maxcut-def",
     "proofId": "randomized-maxcut",
-    "range": { "startLine": 295, "endLine": 298 },
+    "range": {
+      "startLine": 289,
+      "endLine": 299
+    },
     "type": "definition",
     "title": "Maximum Cut Value",
     "content": "The maximum cut value is the supremum (maximum) over all possible boolean assignments. We iterate over all $2^{|V|}$ functions and take the largest cut size.",
     "mathContext": "$$\\text{MaxCut}(G) = \\max_{f : V \\to \\text{Bool}} |C_f|$$\n\nThe `Finset.univ.sup` computes the maximum over the finite set of all assignments.",
     "significance": "key",
-    "relatedConcepts": ["supremum", "optimization", "NP-hardness"]
-  },
-  {
-    "id": "ann-maxcut-theorem5",
-    "proofId": "randomized-maxcut",
-    "range": { "startLine": 300, "endLine": 310 },
-    "type": "theorem",
-    "title": "Theorem 5: MaxCut Upper Bound",
-    "content": "**Trivial Bound**: $\\text{MaxCut} \\leq |E|$. No cut can contain more edges than the graph has.",
-    "mathContext": "Each cut is a subset of edges, so its size is at most $|E|$. The proof uses `Finset.card_filter_le`: filtering a set can only reduce cardinality.",
-    "significance": "key",
-    "relatedConcepts": ["upper bound", "cardinality", "subset"]
+    "relatedConcepts": [
+      "supremum",
+      "optimization",
+      "NP-hardness"
+    ]
   },
   {
     "id": "ann-maxcut-theorem6",
     "proofId": "randomized-maxcut",
-    "range": { "startLine": 317, "endLine": 328 },
+    "range": {
+      "startLine": 306,
+      "endLine": 317
+    },
     "type": "theorem",
     "title": "Theorem 6: Approximation Guarantee",
     "content": "**The 1/2-Approximation**: $\\mathbb{E}[|C|] \\geq \\text{MaxCut}/2$. The expected cut size is at least half the optimal.",
     "mathContext": "Combining Theorems 4 and 5:\n$$\\mathbb{E}[|C|] = \\frac{|E|}{2} \\geq \\frac{\\text{MaxCut}}{2}$$\n\nThis proves the randomized algorithm achieves a 1/2-approximation ratio.",
     "significance": "critical",
-    "prerequisites": ["ann-maxcut-theorem4", "ann-maxcut-theorem5"],
-    "relatedConcepts": ["approximation algorithm", "approximation ratio", "NP-hard optimization"]
+    "prerequisites": [
+      "ann-maxcut-theorem4",
+      "ann-maxcut-theorem5"
+    ],
+    "relatedConcepts": [
+      "approximation algorithm",
+      "approximation ratio",
+      "NP-hard optimization"
+    ]
   }
 ]

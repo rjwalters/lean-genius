@@ -2,99 +2,91 @@
   {
     "id": "ann-header",
     "proofId": "abel-ruffini",
-    "range": { "startLine": 1, "endLine": 27 },
+    "range": {
+      "startLine": 1,
+      "endLine": 4
+    },
     "type": "concept",
     "title": "Historical Introduction",
     "content": "The Abel-Ruffini theorem, proven by Niels Henrik Abel in 1824 and later illuminated by Galois's theory, answers a 300-year-old question: why is there no 'quintic formula' like the quadratic formula?\n\nGalois discovered that solvability by radicals is equivalent to having a solvable Galois group, revealing a profound connection between field theory and group theory.",
     "mathContext": "The question: Given $ax^5 + bx^4 + cx^3 + dx^2 + ex + f = 0$, is there a formula for $x$ using only $+, -, \\times, \\div,$ and $\\sqrt[n]{\\phantom{x}}$?",
     "significance": "supporting",
-    "relatedConcepts": ["Galois theory", "radical extensions", "polynomial solvability"]
+    "relatedConcepts": [
+      "Galois theory",
+      "radical extensions",
+      "polynomial solvability"
+    ]
   },
   {
     "id": "ann-imports",
     "proofId": "abel-ruffini",
-    "range": { "startLine": 29, "endLine": 32 },
+    "range": {
+      "startLine": 6,
+      "endLine": 42
+    },
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import the key Mathlib modules:\n- `AbelRuffini`: The main theorem connecting radicals to solvable groups\n- `Solvable`: Definition of solvable groups and key theorems\n- `Alternating`: Properties of alternating groups, including A₅ simplicity\n- `Galois.Basic`: Galois group definitions and correspondence",
     "significance": "supporting",
-    "relatedConcepts": ["Mathlib", "Galois theory", "group theory"]
+    "relatedConcepts": [
+      "Mathlib",
+      "Galois theory",
+      "group theory"
+    ]
   },
   {
     "id": "ann-solvable-by-rad",
     "proofId": "abel-ruffini",
-    "range": { "startLine": 34, "endLine": 60 },
+    "range": {
+      "startLine": 6,
+      "endLine": 42
+    },
     "type": "definition",
     "title": "Solvable by Radicals",
     "content": "An element α is 'solvable by radicals' if it can be built from the base field using field operations and nth roots. The quadratic formula is an example: $x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$\n\nMathlib defines this inductively via `IsSolvableByRad`, with constructors for: base field elements, arithmetic operations, and radical extraction.",
     "mathContext": "`solvableByRad F E` is the intermediate field of all elements solvable by radicals over F.\n\nExample: $\\sqrt{1 + \\sqrt{2}}$ is built by: 2 ∈ ℚ, then √2, then 1+√2, then √(1+√2).",
     "significance": "critical",
-    "relatedConcepts": ["radical extension", "intermediate field", "inductive definition"]
+    "relatedConcepts": [
+      "radical extension",
+      "intermediate field",
+      "inductive definition"
+    ]
   },
   {
     "id": "ann-abel-ruffini-theorem",
     "proofId": "abel-ruffini",
-    "range": { "startLine": 63, "endLine": 85 },
+    "range": {
+      "startLine": 59,
+      "endLine": 61
+    },
     "type": "theorem",
     "title": "Abel-Ruffini Theorem (One Direction)",
     "content": "**Theorem**: If α is expressible using radicals, then the Galois group of its minimal polynomial is solvable.\n\nThis is the key bridge: radical solvability (field theory) → group solvability (group theory).\n\nThe proof proceeds by induction on `IsSolvableByRad`. The key case: if α^n is solvable, then adjoining α creates a cyclic extension, and cyclic groups are abelian (hence solvable).",
     "mathContext": "$\\alpha$ solvable by radicals $\\Rightarrow$ Gal(minpoly(α)) is solvable\n\nContrapositive: If Galois group is NOT solvable, roots are NOT expressible by radicals.",
     "significance": "critical",
-    "relatedConcepts": ["Galois group", "solvable group", "minimal polynomial"]
+    "relatedConcepts": [
+      "Galois group",
+      "solvable group",
+      "minimal polynomial"
+    ]
   },
   {
     "id": "ann-a5-simple",
     "proofId": "abel-ruffini",
-    "range": { "startLine": 87, "endLine": 108 },
+    "range": {
+      "startLine": 80,
+      "endLine": 87
+    },
     "type": "theorem",
     "title": "A₅ is Simple",
     "content": "A group is simple if its only normal subgroups are {1} and the whole group. The alternating group A₅ is simple - it's the smallest non-abelian simple group, with 60 elements.\n\nThe proof analyzes cycle types: identity (1), 3-cycles (20), 5-cycles (24), double transpositions (15). Any normal subgroup containing a non-identity element must contain a 3-cycle, and 3-cycles generate all of A₅.",
     "mathContext": "A₅ = {even permutations of 5 objects} = ker(sign : S₅ → {±1})\n\n|A₅| = 60 = 5!/2",
     "significance": "critical",
-    "relatedConcepts": ["alternating group", "simple group", "normal subgroup", "cycle type"]
-  },
-  {
-    "id": "ann-s5-not-solvable",
-    "proofId": "abel-ruffini",
-    "range": { "startLine": 110, "endLine": 135 },
-    "type": "theorem",
-    "title": "S₅ is Not Solvable",
-    "content": "A group is solvable if its derived series terminates at the trivial group. Equivalently, it has a composition series with all abelian quotients.\n\nS₅'s composition series is: {1} ◁ A₅ ◁ S₅\n\nThe quotients are: A₅ (simple, non-abelian) and ℤ/2ℤ (abelian). Since A₅ is simple but NOT abelian, S₅ fails the solvability condition.",
-    "mathContext": "Derived series: $G \\supseteq [G,G] \\supseteq [[G,G],[G,G]] \\supseteq \\cdots$\n\nSolvable means this terminates at $\\{1\\}$.",
-    "significance": "critical",
-    "relatedConcepts": ["solvable group", "derived series", "composition series"]
-  },
-  {
-    "id": "ann-quintic-unsolvable",
-    "proofId": "abel-ruffini",
-    "range": { "startLine": 137, "endLine": 167 },
-    "type": "theorem",
-    "title": "The General Quintic is Unsolvable",
-    "content": "Combining everything:\n\n1. Solvable by radicals ⟹ Solvable Galois group (Abel-Ruffini)\n2. S₅ is not solvable (just proved)\n3. General quintic has Galois group S₅\n\nTherefore: The general quintic is NOT solvable by radicals!\n\nFor simple groups, solvable ⟺ abelian. Since A₅ is simple and non-abelian, it's not solvable, making S₅ not solvable.",
-    "mathContext": "The general quintic over $\\mathbb{Q}(a_0, \\ldots, a_4)$ has Galois group $S_5$.",
-    "significance": "critical",
-    "relatedConcepts": ["quintic equation", "Galois group", "contrapositive"]
-  },
-  {
-    "id": "ann-concrete-example",
-    "proofId": "abel-ruffini",
-    "range": { "startLine": 168, "endLine": 188 },
-    "type": "concept",
-    "title": "Concrete Example: x⁵ - x - 1",
-    "content": "The polynomial $x^5 - x - 1$ over ℚ is a specific quintic with Galois group S₅.\n\nTo prove this: (1) Show irreducibility, (2) Count real roots (3), (3) Find a 5-cycle from irreducibility, (4) Find a transposition from complex conjugation. A transposition + 5-cycle generate S₅.\n\nInterestingly, pure radicals like x^n - c always have solvable Galois groups (subgroups of ℤ/nℤ ⋊ (ℤ/nℤ)×).",
-    "mathContext": "$x^5 - x - 1$ has exactly 3 real roots and 2 complex conjugate roots.\n\nComplex conjugation gives a transposition; the 5-cycle comes from transitivity.",
-    "significance": "supporting",
-    "relatedConcepts": ["irreducibility", "complex conjugation", "transposition"]
-  },
-  {
-    "id": "ann-summary",
-    "proofId": "abel-ruffini",
-    "range": { "startLine": 197, "endLine": 217 },
-    "type": "theorem",
-    "title": "Summary and Conclusion",
-    "content": "The Abel-Ruffini theorem reveals a profound connection: **Polynomial Solvability ⟺ Group Solvability**.\n\nGalois discovered that solving polynomials by radicals is controlled by group theory. S₅ is not solvable because A₅ is simple and non-abelian. Since the general quintic has Galois group S₅, there is no quintic formula.\n\nThis insight launched modern algebra and remains one of mathematics' deepest connections.",
-    "mathContext": "S₂, S₃, S₄ are solvable (explaining formulas for degree 2, 3, 4)\nS₅, S₆, ... are not solvable (no formulas for degree ≥ 5)",
-    "significance": "critical",
-    "relatedConcepts": ["Galois correspondence", "modern algebra", "polynomial solving"]
+    "relatedConcepts": [
+      "alternating group",
+      "simple group",
+      "normal subgroup",
+      "cycle type"
+    ]
   }
 ]

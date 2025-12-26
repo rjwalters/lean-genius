@@ -1,0 +1,119 @@
+{
+  "id": "intermediate-value-theorem",
+  "title": "Intermediate Value Theorem",
+  "slug": "intermediate-value-theorem",
+  "description": "A continuous function on a closed interval attains every value between its endpoints: the foundational theorem connecting topology to analysis.",
+  "meta": {
+    "author": "Bolzano (1817), Cauchy (1821)",
+    "date": "1817",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "topology",
+      "continuity",
+      "connectedness",
+      "classic",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/IntermediateValueTheorem.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "intermediate_value_Icc",
+        "description": "IVT for continuous functions on closed intervals",
+        "module": "Mathlib.Topology.Order.IntermediateValue"
+      },
+      {
+        "theorem": "isPreconnected_Icc",
+        "description": "Closed intervals are connected sets",
+        "module": "Mathlib.Topology.Order.IntermediateValue"
+      },
+      {
+        "theorem": "ContinuousOn",
+        "description": "Continuity on a set",
+        "module": "Mathlib.Topology.ContinuousFunction.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Bolzano's theorem (root-finding corollary)",
+      "Root existence from opposite signs",
+      "Fixed point theorem for interval maps",
+      "General existence theorem for continuous functions"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 79
+  },
+  "overview": {
+    "historicalContext": "The Intermediate Value Theorem (IVT) is one of the foundational results in real analysis, first rigorously stated by Bernard Bolzano in 1817. Bolzano's work was largely ignored in his time, and Augustin-Louis Cauchy independently presented a more complete treatment in 1821.\n\nHowever, both Bolzano's and Cauchy's proofs relied on properties of real numbers that weren't rigorously established until later. The theorem essentially requires the completeness of the real numbers - the property that every bounded set has a supremum. This was finally formalized by Richard Dedekind and Georg Cantor in the 1870s through their constructions of the real numbers from the rationals.\n\nThe IVT is intimately connected to the topological notion of connectedness: it expresses the fact that continuous images of connected sets are connected, and connected subsets of ℝ are intervals.",
+    "problemStatement": "The Intermediate Value Theorem states:\n\nIf $f : \\mathbb{R} \\to \\mathbb{R}$ is continuous on the closed interval $[a, b]$, then for every value $c$ between $f(a)$ and $f(b)$, there exists some $x \\in [a, b]$ such that $f(x) = c$.\n\nMore precisely:\n$$\\forall c \\in [\\min(f(a), f(b)), \\max(f(a), f(b))], \\exists x \\in [a, b], f(x) = c$$\n\nAn important special case (Bolzano's theorem): If $f(a) < 0 < f(b)$, then there exists $x \\in (a, b)$ with $f(x) = 0$.",
+    "proofStrategy": "The modern proof relies on the topological characterization of the reals:\n\n1. **Connectedness of Intervals**: Closed intervals $[a, b]$ in $\\mathbb{R}$ are connected sets. This follows from the completeness of $\\mathbb{R}$ - any attempt to partition an interval into two non-empty separated sets fails because the supremum of one part must be in the closure of both.\n\n2. **Continuous Images Preserve Connectedness**: If $f$ is continuous and $S$ is connected, then $f(S)$ is connected. This is because the preimage of any separation would give a separation of $S$.\n\n3. **Connected Subsets of ℝ are Intervals**: Any connected subset of $\\mathbb{R}$ must be an interval. If $a$ and $b$ are in a connected set and $a < c < b$, then $c$ must also be in the set.\n\n4. **Conclusion**: Since $[a, b]$ is connected, $f([a, b])$ is connected, hence an interval containing $f(a)$ and $f(b)$. Therefore it contains all values between them.",
+    "keyInsights": [
+      "IVT is fundamentally about connectedness: continuous functions cannot 'jump' over intermediate values",
+      "The theorem requires completeness of ℝ - it fails for rational-valued functions on ℚ",
+      "IVT provides existence but not uniqueness - there may be multiple x with f(x) = c",
+      "Bolzano's theorem (root-finding) is the key computational application",
+      "The theorem generalizes to any continuous function from a connected space to an ordered space"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup and Imports",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Introduces the historical context, imports Mathlib's topology and intermediate value libraries, and opens the namespace."
+    },
+    {
+      "id": "classical-statement",
+      "title": "The Classical Statement",
+      "startLine": 45,
+      "endLine": 72,
+      "summary": "Presents the main IVT theorem: continuous functions on closed intervals hit all intermediate values."
+    },
+    {
+      "id": "existence-form",
+      "title": "Explicit Existence Form",
+      "startLine": 74,
+      "endLine": 107,
+      "summary": "Reformulates IVT as an explicit existence statement: given c between f(a) and f(b), there exists x with f(x) = c."
+    },
+    {
+      "id": "bolzano",
+      "title": "Root-Finding Corollary (Bolzano's Theorem)",
+      "startLine": 109,
+      "endLine": 167,
+      "summary": "Proves that if f(a) and f(b) have opposite signs, f has a root in (a, b). Also proves the general sign-change criterion."
+    },
+    {
+      "id": "connected-sets",
+      "title": "Continuous Functions on Connected Sets",
+      "startLine": 169,
+      "endLine": 183,
+      "summary": "Shows IVT as a consequence of the general principle that continuous images of connected sets are connected."
+    },
+    {
+      "id": "applications",
+      "title": "Applications and Corollaries",
+      "startLine": 185,
+      "endLine": 213,
+      "summary": "Proves that odd-degree polynomials have roots and the fixed point theorem for continuous self-maps on intervals."
+    },
+    {
+      "id": "checks",
+      "title": "Type Checking",
+      "startLine": 215,
+      "endLine": 221,
+      "summary": "Verifies the types of the main theorems using #check commands."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Intermediate Value Theorem is a cornerstone of real analysis, expressing the intuitive idea that continuous functions cannot 'jump' over values. Our formalization demonstrates how naturally this classical result fits into modern type theory, with Lean's type system capturing the subtle conditions (continuity, interval endpoints) that make IVT valid.\n\nThe proof leverages Mathlib's powerful topology framework, using the connectedness of intervals and the preservation of connectedness under continuous maps. The key corollaries - Bolzano's theorem for root-finding and the fixed point theorem for interval maps - show the theorem's practical power.",
+    "implications": "The IVT has profound implications across mathematics:\n\n1. **Numerical Analysis** - Bolzano's theorem underlies the bisection method for finding roots: if f(a) and f(b) have opposite signs, repeatedly bisect to find a root to arbitrary precision.\n\n2. **Existence Theorems** - IVT proves existence of solutions (nth roots exist, odd polynomials have roots) without computing them.\n\n3. **Fixed Point Theory** - If f : [a,b] → [a,b] is continuous, it has a fixed point. This generalizes to Brouwer's theorem in higher dimensions.\n\n4. **Topological Characterization** - The reals are characterized (among ordered fields) by having IVT hold for all continuous functions.\n\n5. **The Role of Completeness** - IVT fails for ℚ: f(x) = x² - 2 is continuous on [1, 2] ⊂ ℚ with f(1) < 0 and f(2) > 0, but has no rational root.",
+    "openQuestions": [
+      "How does IVT generalize to functions between arbitrary connected and ordered topological spaces?",
+      "What is the constructive content of IVT, and can we compute x given c?",
+      "How does IVT relate to Brouwer's fixed point theorem in higher dimensions?"
+    ]
+  }
+}

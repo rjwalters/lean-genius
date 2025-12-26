@@ -2,7 +2,10 @@
   {
     "id": "normSq-def",
     "proofId": "hurwitz-theorem",
-    "range": { "startLine": 70, "endLine": 71 },
+    "range": {
+      "startLine": 69,
+      "endLine": 71
+    },
     "type": "definition",
     "title": "Squared Norm Definition",
     "content": "The squared Euclidean norm of a vector v = (v_1, ..., v_n) is defined as the sum of squares: ||v||^2 = v_1^2 + v_2^2 + ... + v_n^2. This is the quantity that appears in n-square identities.",
@@ -11,7 +14,10 @@
   {
     "id": "nsquare-structure",
     "proofId": "hurwitz-theorem",
-    "range": { "startLine": 74, "endLine": 79 },
+    "range": {
+      "startLine": 73,
+      "endLine": 86
+    },
     "type": "definition",
     "title": "N-Square Identity Structure",
     "content": "An NSquareIdentity consists of a bilinear multiplication operation 'mul' such that ||a||^2 * ||b||^2 = ||mul(a,b)||^2. This is the formal statement that 'the product of two sums of n squares is again a sum of n squares with bilinear coordinates'.",
@@ -20,25 +26,22 @@
   {
     "id": "one-square",
     "proofId": "hurwitz-theorem",
-    "range": { "startLine": 96, "endLine": 100 },
+    "range": {
+      "startLine": 92,
+      "endLine": 97
+    },
     "type": "theorem",
     "title": "The 1-Square Identity",
     "content": "The trivial identity x^2 * y^2 = (xy)^2. This corresponds to the real numbers R as a 1-dimensional normed division algebra. The multiplication is just scalar multiplication.",
     "significance": "supporting"
   },
   {
-    "id": "two-mul-def",
-    "proofId": "hurwitz-theorem",
-    "range": { "startLine": 121, "endLine": 122 },
-    "type": "definition",
-    "title": "Complex Multiplication Encoded",
-    "content": "The formula ![ac-bd, ad+bc] is exactly complex number multiplication: (a+bi)(c+di) = (ac-bd) + (ad+bc)i. The 2-square identity encodes this algebraically without mentioning complex numbers!",
-    "significance": "key"
-  },
-  {
     "id": "brahmagupta",
     "proofId": "hurwitz-theorem",
-    "range": { "startLine": 125, "endLine": 130 },
+    "range": {
+      "startLine": 122,
+      "endLine": 130
+    },
     "type": "theorem",
     "title": "Brahmagupta-Fibonacci Identity",
     "content": "Discovered by Brahmagupta in 628 CE and rediscovered by Fibonacci in 1202. The identity (a^2+b^2)(c^2+d^2) = (ac-bd)^2 + (ad+bc)^2 shows that the product of two sums of two squares is always another sum of two squares. The ring tactic expands both sides and verifies they're equal.",
@@ -47,7 +50,10 @@
   {
     "id": "four-mul-def",
     "proofId": "hurwitz-theorem",
-    "range": { "startLine": 153, "endLine": 158 },
+    "range": {
+      "startLine": 143,
+      "endLine": 162
+    },
     "type": "definition",
     "title": "Quaternion Multiplication Formula",
     "content": "This 4x4 formula encodes Hamilton's quaternion multiplication. For quaternions q = a0 + a1*i + a2*j + a3*k, the product formula involves all 16 pairwise products, but organized to give a quaternion result. The key relations are i^2 = j^2 = k^2 = ijk = -1.",
@@ -56,7 +62,10 @@
   {
     "id": "euler-identity",
     "proofId": "hurwitz-theorem",
-    "range": { "startLine": 160, "endLine": 166 },
+    "range": {
+      "startLine": 143,
+      "endLine": 162
+    },
     "type": "theorem",
     "title": "Euler's Four-Square Identity",
     "content": "Euler discovered this in 1748, nearly 100 years before Hamilton understood quaternions! Euler found the algebraic identity without knowing the underlying algebraic structure. The ring tactic verifies the 64-term polynomial identity by algebraic expansion.",
@@ -65,7 +74,10 @@
   {
     "id": "quaternion-mathlib",
     "proofId": "hurwitz-theorem",
-    "range": { "startLine": 183, "endLine": 185 },
+    "range": {
+      "startLine": 180,
+      "endLine": 185
+    },
     "type": "insight",
     "title": "Mathlib's Quaternion Verification",
     "content": "Mathlib provides Quaternion.normSq_mul which proves that ||q1*q2||^2 = ||q1||^2 * ||q2||^2 for quaternions. This is exactly the 4-square identity stated in terms of the quaternion norm, giving an alternative verification.",
@@ -74,7 +86,10 @@
   {
     "id": "octonion-axiom",
     "proofId": "hurwitz-theorem",
-    "range": { "startLine": 201, "endLine": 201 },
+    "range": {
+      "startLine": 197,
+      "endLine": 212
+    },
     "type": "concept",
     "title": "8-Square Identity Exists",
     "content": "We state the existence of the 8-square identity as an axiom. The full formula (Degen's identity from 1818) has 8 output components, each a sum of 8 products of the 16 input variables - too complex to display here. It corresponds to octonion multiplication.",
@@ -83,7 +98,10 @@
   {
     "id": "no-three-intuition",
     "proofId": "hurwitz-theorem",
-    "range": { "startLine": 215, "endLine": 235 },
+    "range": {
+      "startLine": 197,
+      "endLine": 212
+    },
     "type": "insight",
     "title": "Why n=3 Fails: Intuition",
     "content": "The cross product in R^3 has |a x b| = |a||b|sin(theta), which equals |a||b| only for perpendicular vectors. Parallel vectors give |a x b| = 0, violating the norm-multiplicativity requirement. No rearrangement can fix this - it's a fundamental obstruction.",
@@ -92,7 +110,10 @@
   {
     "id": "no-three-theorem",
     "proofId": "hurwitz-theorem",
-    "range": { "startLine": 242, "endLine": 251 },
+    "range": {
+      "startLine": 241,
+      "endLine": 242
+    },
     "type": "theorem",
     "title": "No 3-Square Identity",
     "content": "The key negative result: there is NO 3-square identity. Hamilton searched for 15 years before realizing he needed 4 dimensions. This theorem, proved by Hurwitz in 1898, explains why his search was doomed. The full proof requires representation theory or topology.",
@@ -101,7 +122,10 @@
   {
     "id": "admissible-set",
     "proofId": "hurwitz-theorem",
-    "range": { "startLine": 266, "endLine": 266 },
+    "range": {
+      "startLine": 248,
+      "endLine": 276
+    },
     "type": "definition",
     "title": "Admissible Dimensions",
     "content": "The set {1, 2, 4, 8} contains exactly those n for which an n-square identity exists. These are the dimensions of the four normed division algebras: R, C, H (quaternions), and O (octonions).",
@@ -110,7 +134,10 @@
   {
     "id": "hurwitz-main",
     "proofId": "hurwitz-theorem",
-    "range": { "startLine": 280, "endLine": 293 },
+    "range": {
+      "startLine": 278,
+      "endLine": 312
+    },
     "type": "theorem",
     "title": "Hurwitz's Main Theorem",
     "content": "The complete biconditional: n-square identities exist if and only if n is in {1, 2, 4, 8}. The 'if' direction is constructive (we built the identities). The 'only if' direction is the hard part, requiring impossibility proofs for n = 3, 5, 6, 7, etc.",
@@ -119,7 +146,10 @@
   {
     "id": "division-algebras-enum",
     "proofId": "hurwitz-theorem",
-    "range": { "startLine": 319, "endLine": 325 },
+    "range": {
+      "startLine": 318,
+      "endLine": 320
+    },
     "type": "definition",
     "title": "The Four Division Algebras",
     "content": "An enumeration of the only four finite-dimensional normed division algebras over R: the reals (1D), complex numbers (2D), quaternions (4D), and octonions (8D). The Cayley-Dickson construction builds each from the previous by 'doubling'.",
@@ -128,7 +158,10 @@
   {
     "id": "dimension-function",
     "proofId": "hurwitz-theorem",
-    "range": { "startLine": 326, "endLine": 331 },
+    "range": {
+      "startLine": 322,
+      "endLine": 331
+    },
     "type": "definition",
     "title": "Dimension Function",
     "content": "Maps each division algebra to its dimension: 1, 2, 4, or 8. Note these are all powers of 2 - this is no coincidence, as the Cayley-Dickson construction doubles dimension at each step.",
@@ -137,7 +170,10 @@
   {
     "id": "physical-significance",
     "proofId": "hurwitz-theorem",
-    "range": { "startLine": 350, "endLine": 370 },
+    "range": {
+      "startLine": 346,
+      "endLine": 356
+    },
     "type": "insight",
     "title": "Physical Significance",
     "content": "These four algebras appear throughout physics: R for classical mechanics, C for quantum mechanics, H for 3D rotations and special relativity, O for string theory and exceptional structures. The deep connection between these algebraic constraints and physical reality remains mysterious.",

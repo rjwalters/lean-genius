@@ -51,9 +51,39 @@ const OPERATORS = new Set([
   '·', '•', '∑', '∏', '∫', '∂', '∇', '√', 'λ',
 ])
 
-export function tokenizeLine(line: string): Token[] {
+export interface TokenizeResult {
+  tokens: Token[]
+  endsInBlockComment: boolean
+}
+
+export function tokenizeLine(line: string, inBlockComment: boolean = false): TokenizeResult {
   const tokens: Token[] = []
   let i = 0
+
+  // If we're continuing a block comment from a previous line
+  if (inBlockComment) {
+    const endIdx = line.indexOf('-/')
+    if (endIdx !== -1) {
+      // Block comment ends on this line
+      tokens.push({
+        type: 'comment',
+        value: line.slice(0, endIdx + 2),
+        start: 0,
+        end: endIdx + 2,
+      })
+      i = endIdx + 2
+      inBlockComment = false
+    } else {
+      // Entire line is still inside the block comment
+      tokens.push({
+        type: 'comment',
+        value: line,
+        start: 0,
+        end: line.length,
+      })
+      return { tokens, endsInBlockComment: true }
+    }
+  }
 
   while (i < line.length) {
     // Skip whitespace
@@ -91,7 +121,7 @@ export function tokenizeLine(line: string): Token[] {
           start: i,
           end: line.length,
         })
-        break
+        return { tokens, endsInBlockComment: true }
       }
       continue
     }
@@ -232,7 +262,7 @@ export function tokenizeLine(line: string): Token[] {
     i++
   }
 
-  return tokens
+  return { tokens, endsInBlockComment: false }
 }
 
 export function tokenTypeToClass(type: TokenType): string {
