@@ -9,6 +9,7 @@ import Proofs.CantorDiagonalization
 import Proofs.CantorsTheorem
 import Proofs.DenumerabilityRationals
 import Proofs.SchroederBernstein
+import Proofs.BinomialTheorem
 
 -- Additional proofs (may contain sorry/axioms - work in progress)
 import Proofs.AMGMInequality
