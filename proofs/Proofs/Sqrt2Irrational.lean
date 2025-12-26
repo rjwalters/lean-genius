@@ -1,6 +1,5 @@
 import Mathlib.Data.Real.Irrational
 import Mathlib.Algebra.Ring.Parity
-import Mathlib.NumberTheory.Zsqrtd.Basic
 import Mathlib.Tactic
 
 /-!
@@ -18,8 +17,8 @@ rational q ≥ 0. This demonstrates that the √2 proof technique extends to
 ## Approach
 - **Foundation (from Mathlib):** The main theorem `irrational_sqrt_two` is
   provided directly by Mathlib. We use it via `exact irrational_sqrt_two`.
-  For the generalization, we use `irrational_sqrt_of_nonarchimedean` and
-  related theorems from `Mathlib.Data.Real.Irrational`.
+  For the generalization, we use `Nat.Prime.irrational_sqrt` for primes and
+  `irrational_sqrt_natCast_iff` for the general non-square case.
 - **Original Contributions:** This file demonstrates the classical parity-based
   proof structure, provides supporting lemmas about even/odd numbers,
   proves specific cases (√3, √5, √6, √7), and includes pedagogical examples.
