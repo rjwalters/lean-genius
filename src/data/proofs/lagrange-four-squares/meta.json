@@ -1,0 +1,85 @@
+{
+  "id": "lagrange-four-squares",
+  "title": "Lagrange's Four Squares Theorem",
+  "slug": "lagrange-four-squares",
+  "description": "Every natural number can be expressed as the sum of four squares, a profound result connecting number theory to quaternion algebra.",
+  "meta": {
+    "author": "Joseph-Louis Lagrange (formalized via Mathlib)",
+    "sourceUrl": "https://github.com/leanprover-community/mathlib4/blob/master/Mathlib/NumberTheory/SumFourSquares.lean",
+    "date": "1770",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LagrangeFourSquares.lean",
+    "tags": [
+      "number-theory",
+      "quaternions",
+      "algebra",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.sum_four_squares",
+        "description": "Main theorem: every natural number is sum of four squares",
+        "module": "Mathlib.NumberTheory.SumFourSquares"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical presentation with quaternion connection",
+      "Euler's four-square identity with quaternion interpretation",
+      "Examples showing why three squares fail but four succeed"
+    ],
+    "dateAdded": "12/26/25"
+  },
+  "overview": {
+    "historicalContext": "Lagrange's four squares theorem was proved by Joseph-Louis Lagrange in 1770, building on earlier work by Euler. The result answered a question that had puzzled mathematicians since antiquity: Diophantus had noted around 250 CE that certain numbers seemed to require many squares.\n\nThe deeper story involves one of mathematics' greatest coincidences: Euler discovered the four-square identity in 1748, showing that the product of two sums-of-four-squares is itself a sum of four squares. Nearly a century later, Hamilton discovered quaternions in 1843. The four-square identity IS quaternion multiplication! The norm of a product equals the product of norms.\n\nThis explains WHY four squares work when three don't: quaternions form a division algebra, but there is no 3-dimensional division algebra (proved by Frobenius in 1877). The algebraic structure that makes four squares work simply doesn't exist for three.\n\nAs one reviewer put it: \"The four squares theorem is astounding, it says something utterly profound about the universe... that's what binds the galaxies together.\"",
+    "problemStatement": "Theorem (Lagrange, 1770): Every natural number n can be written as the sum of four squares:\n\n$$n = a^2 + b^2 + c^2 + d^2$$\n\nfor some non-negative integers a, b, c, d.\n\nKey contrast: While every number is a sum of four squares, NOT every number is a sum of three squares. Numbers of the form $4^k(8m + 7)$ (such as 7, 15, 23, 28, ...) require all four squares.",
+    "proofStrategy": "The proof uses Euler's four-square identity and a descent argument:\n\n1. **Euler's Identity**: Show that $(a^2 + b^2 + c^2 + d^2)(x^2 + y^2 + z^2 + w^2) = A^2 + B^2 + C^2 + D^2$ where A, B, C, D are explicit bilinear combinations. This means we only need to prove the theorem for primes.\n\n2. **Primes**: For each prime p, find some multiple mp (with m < p) that is a sum of four squares. This uses properties of quadratic residues.\n\n3. **Descent**: If m > 1, show we can find a smaller multiple. This is the technical heart of the proof.\n\n4. **Conclusion**: By descent, m = 1, so p itself is a sum of four squares.\n\n5. **Extension**: Use Euler's identity to extend from primes to all naturals via unique factorization.",
+    "keyInsights": [
+      "Euler's four-square identity IS quaternion multiplication: $|q_1 \\cdot q_2|^2 = |q_1|^2 \\cdot |q_2|^2$",
+      "Numbers like 7 = 1 + 1 + 1 + 4 require all four squares - three are not enough",
+      "The theorem reduces to primes because sums-of-four-squares are closed under multiplication",
+      "There is no three-square identity because there is no 3-dimensional division algebra"
+    ]
+  },
+  "sections": [
+    {
+      "id": "euler-identity",
+      "title": "Euler's Four-Square Identity",
+      "startLine": 37,
+      "endLine": 60,
+      "summary": "The key algebraic identity showing the product of two sums-of-four-squares is itself a sum of four squares. This is quaternion norm multiplicativity."
+    },
+    {
+      "id": "three-vs-four",
+      "title": "Why Four Squares and Not Three?",
+      "startLine": 62,
+      "endLine": 68,
+      "summary": "Numbers of the form 4^k(8m+7) cannot be sums of three squares, but four always suffice."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 70,
+      "endLine": 95,
+      "summary": "Lagrange's theorem: every natural number is a sum of four squares. Uses Mathlib's Nat.sum_four_squares."
+    },
+    {
+      "id": "examples",
+      "title": "Specific Examples",
+      "startLine": 97,
+      "endLine": 120,
+      "summary": "Concrete decompositions of small numbers, including the notorious 7 which needs all four squares."
+    }
+  ],
+  "conclusion": {
+    "summary": "Lagrange's four squares theorem is one of the most beautiful results in number theory, revealing a deep connection between arithmetic and algebra. The proof's reliance on Euler's identity - which is secretly quaternion multiplication - explains why four squares succeed where three fail.\n\nThis formalization uses Mathlib's complete proof of the theorem, while providing pedagogical annotations that highlight the quaternion connection and the significance of the result.",
+    "implications": "The four squares theorem has far-reaching implications:\n\n1. **Quaternion Theory**: The theorem is intimately connected to Hamilton's quaternions. Euler's identity is the statement that quaternion norm is multiplicative.\n\n2. **Division Algebras**: The success of four squares and failure of three reflects Frobenius's theorem: the only finite-dimensional associative division algebras over the reals are R (1D), C (2D), and H (4D).\n\n3. **Modular Forms**: Modern proofs use theta functions and modular forms, connecting to the Langlands program.\n\n4. **Cryptography**: Quaternion arithmetic has applications in computer graphics and cryptographic protocols.",
+    "openQuestions": [
+      "What is the computational complexity of finding a four-square representation?",
+      "How do representations distribute among the possible orderings?",
+      "What are the connections to the theory of modular forms and theta functions?"
+    ]
+  }
+}
