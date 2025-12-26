@@ -27,6 +27,7 @@ import { hurwitzTheoremData } from './hurwitz-theorem'
 import { schroederBernsteinData } from './schroeder-bernstein'
 import { cantorsTheoremData } from './cantors-theorem'
 import { wilsonsTheoremData } from './wilsons-theorem'
+import { intermediateValueTheoremData } from './intermediate-value-theorem'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -59,6 +60,7 @@ export const proofs: Record<string, ProofData> = {
   'schroeder-bernstein': schroederBernsteinData,
   'cantors-theorem': cantorsTheoremData,
   'wilsons-theorem': wilsonsTheoremData,
+  'intermediate-value-theorem': intermediateValueTheoremData,
 }
 
 export function getProof(slug: string): ProofData | undefined {
