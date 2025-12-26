@@ -25,6 +25,7 @@ import { harmonicDivergenceData } from './harmonic-divergence'
 import { denumerabilityRationalsData } from './denumerability-rationals'
 import { hurwitzTheoremData } from './hurwitz-theorem'
 import { schroederBernsteinData } from './schroeder-bernstein'
+import { cantorsTheoremData } from './cantors-theorem'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -55,6 +56,7 @@ export const proofs: Record<string, ProofData> = {
   'denumerability-rationals': denumerabilityRationalsData,
   'hurwitz-theorem': hurwitzTheoremData,
   'schroeder-bernstein': schroederBernsteinData,
+  'cantors-theorem': cantorsTheoremData,
 }
 
 export function getProof(slug: string): ProofData | undefined {

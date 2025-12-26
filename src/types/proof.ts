@@ -114,7 +114,8 @@ export const WIEDIJK_THEOREMS: Record<number, string> = {
   32: 'Four Color Problem',
   33: "Fermat's Last Theorem",
   36: 'Brouwer Fixed Point Theorem',
-  47: 'Central Limit Theorem'
+  47: 'Central Limit Theorem',
+  63: "Cantor's Theorem"
 }
 
 /**

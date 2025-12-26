@@ -1,0 +1,107 @@
+{
+  "id": "cantors-theorem",
+  "title": "Cantor's Theorem",
+  "slug": "cantors-theorem",
+  "description": "For any set A, there is no surjection from A to its power set P(A). This establishes that |A| < |P(A)| = 2^|A|, proving the hierarchy of infinite cardinalities.",
+  "meta": {
+    "author": "Georg Cantor (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cantor%27s_theorem",
+    "date": "1891",
+    "status": "verified",
+    "tags": [
+      "set-theory",
+      "cardinality",
+      "diagonal-argument",
+      "classic",
+      "easy"
+    ],
+    "proofRepoPath": "Proofs/CantorsTheorem.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "wiedijkNumber": 63,
+    "mathlibDependencies": [
+      {
+        "theorem": "Function.cantor_surjective",
+        "description": "No function from A to (A -> Prop) is surjective",
+        "module": "Mathlib.Logic.Function.Basic"
+      },
+      {
+        "theorem": "Function.Surjective",
+        "description": "Definition of surjectivity",
+        "module": "Mathlib.Logic.Function.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Alternative Set formulation alongside (A -> Prop) formulation",
+      "Explicit diagonal set construction with helper definitions",
+      "Pedagogical documentation connecting to Russell's paradox",
+      "Multiple corollaries including constructive witness"
+    ],
+    "dateAdded": "12/26/25"
+  },
+  "overview": {
+    "historicalContext": "Georg Cantor published this theorem in 1891, using the now-famous diagonal argument. It was revolutionary because it showed that not all infinities are equal - the power set of any set is strictly larger than the set itself.\n\nThis result shattered the intuition that 'infinity is just infinity' and established the foundation for the theory of transfinite cardinal numbers. Cantor showed there is an endless hierarchy of infinities: |N| < |P(N)| < |P(P(N))| < ...\n\nThe diagonal construction used in the proof is remarkably versatile and appears in many areas of mathematics and computer science, including Godel's incompleteness theorems and the undecidability of the halting problem.",
+    "problemStatement": "Cantor's Theorem (Wiedijk #63):\n\nFor any set A, there is no surjection from A to its power set P(A).\n\n**Equivalently:**\n- There is no function f: A -> P(A) such that every subset of A is f(x) for some x in A\n- The cardinality of A is strictly less than the cardinality of P(A): |A| < |P(A)| = 2^|A|\n\nThis proves that the power set is always 'larger' than the original set, even for infinite sets.",
+    "proofStrategy": "The proof uses Cantor's diagonal argument:\n\n1. **Assume for contradiction** that f: A -> P(A) is surjective.\n\n2. **Construct the diagonal set** D = {x in A | x is not in f(x)}.\n   This is the set of elements that are NOT in their own image.\n\n3. **By surjectivity**, there exists some b in A with f(b) = D.\n\n4. **Ask: Is b in D?**\n   - If b in D, then by definition of D, b is not in f(b) = D. Contradiction!\n   - If b not in D, then by definition of D, b is in f(b) = D. Contradiction!\n\n5. **Conclude** no such surjection can exist.\n\nThe construction is entirely explicit - given any f, we can exhibit a set not in its range.",
+    "keyInsights": [
+      "The diagonal set D = {x | x not in f(x)} is the witness to non-surjectivity",
+      "The argument is constructive: we don't just prove existence, we exhibit D",
+      "This is closely related to Russell's paradox (D resembles 'the set of all sets not containing themselves')",
+      "The proof works identically for finite and infinite sets",
+      "Applying this to A = N shows there are uncountably many subsets of the natural numbers"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Overview of Cantor's theorem, its connection to Wiedijk #63, and relationship to the diagonalization result."
+    },
+    {
+      "id": "main-mathlib",
+      "title": "Main Theorem (Mathlib)",
+      "startLine": 48,
+      "endLine": 60,
+      "summary": "The core theorem using Mathlib's Function.cantor_surjective for the (A -> Prop) formulation."
+    },
+    {
+      "id": "set-formulation",
+      "title": "Set Formulation",
+      "startLine": 62,
+      "endLine": 94,
+      "summary": "Alternative proof using Set A instead of (A -> Prop), with explicit diagonal set construction."
+    },
+    {
+      "id": "diagonal-paradox",
+      "title": "The Diagonal Paradox",
+      "startLine": 96,
+      "endLine": 106,
+      "summary": "The core lemma showing that the diagonal set leads to a self-referential contradiction."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries",
+      "startLine": 108,
+      "endLine": 131,
+      "summary": "Derived results including strict cardinality inequality and impossibility of bijection."
+    },
+    {
+      "id": "constructive-witness",
+      "title": "Constructive Witness",
+      "startLine": 133,
+      "endLine": 156,
+      "summary": "Shows the proof is constructive: given any f, we can explicitly construct a set not in its range."
+    }
+  ],
+  "conclusion": {
+    "summary": "Cantor's theorem is now fully verified using both Mathlib's infrastructure and an explicit diagonal construction. We provide the (A -> Prop) formulation (matching Mathlib) and the Set A formulation, along with multiple corollaries.",
+    "implications": "This theorem is foundational to understanding infinite cardinalities. It shows:\n- There are infinitely many sizes of infinity\n- The continuum (real numbers) is larger than the natural numbers (via |R| = |P(N)|)\n- No universe can contain its own power set\n\nThe diagonal argument technique is used throughout mathematics and computer science to prove impossibility results.",
+    "openQuestions": [
+      "What is the cardinality of P(R)? Is there a set strictly between N and P(N) (Continuum Hypothesis)?",
+      "How does this relate to type-theoretic universes and Girard's paradox?",
+      "Can we generalize the diagonal argument to other structures beyond sets?"
+    ]
+  }
+}
