@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronDown, ChevronUp, MessageSquare, AlertCircle } from 'lucide-react'
+import { ChevronDown, ChevronUp, MessageSquare, AlertCircle, Lightbulb } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { MarkdownMath, MarkdownMathInline } from '@/components/ui/markdown-math'
 import type { Proof } from '@/types/proof'
@@ -10,6 +10,7 @@ interface ProofConclusionProps {
 
 export function ProofConclusion({ proof }: ProofConclusionProps) {
   const [isExpanded, setIsExpanded] = useState(true)
+  const [isAltInterpExpanded, setIsAltInterpExpanded] = useState(false)
   const { conclusion } = proof
 
   if (!conclusion) return null
@@ -88,6 +89,88 @@ export function ProofConclusion({ proof }: ProofConclusionProps) {
                   </li>
                 ))}
               </ul>
+            </section>
+          )}
+
+          {/* Alternative Interpretation (collapsible) */}
+          {conclusion.alternativeInterpretation && (
+            <section className="border border-purple-500/30 rounded-lg overflow-hidden">
+              <button
+                onClick={() => setIsAltInterpExpanded(!isAltInterpExpanded)}
+                className="w-full px-4 py-3 flex items-center justify-between bg-purple-500/10 hover:bg-purple-500/15 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <Lightbulb className="h-4 w-4 text-purple-400" />
+                  <div className="text-left">
+                    <h3 className="text-sm font-semibold text-purple-300">
+                      {conclusion.alternativeInterpretation.title}
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                      A different philosophical perspective on this proof
+                    </p>
+                  </div>
+                </div>
+                {isAltInterpExpanded ? (
+                  <ChevronUp className="h-4 w-4 text-purple-400" />
+                ) : (
+                  <ChevronDown className="h-4 w-4 text-purple-400" />
+                )}
+              </button>
+
+              {isAltInterpExpanded && (
+                <div className="px-4 py-4 space-y-4 bg-purple-500/5">
+                  {/* Summary */}
+                  <div className="text-sm text-foreground/80 italic border-l-2 border-purple-500/50 pl-3">
+                    {conclusion.alternativeInterpretation.summary}
+                  </div>
+
+                  {/* Main Perspective */}
+                  <div>
+                    <h4 className="text-xs font-semibold uppercase tracking-wide text-purple-400 mb-2">
+                      The Perspective
+                    </h4>
+                    <MarkdownMath className="prose prose-invert prose-sm max-w-none text-foreground/90 leading-relaxed">
+                      {conclusion.alternativeInterpretation.perspective}
+                    </MarkdownMath>
+                  </div>
+
+                  {/* Computational View */}
+                  {conclusion.alternativeInterpretation.computationalView && (
+                    <div>
+                      <h4 className="text-xs font-semibold uppercase tracking-wide text-purple-400 mb-2">
+                        Computational View
+                      </h4>
+                      <MarkdownMath className="prose prose-invert prose-sm max-w-none text-foreground/90 leading-relaxed">
+                        {conclusion.alternativeInterpretation.computationalView}
+                      </MarkdownMath>
+                    </div>
+                  )}
+
+                  {/* Historical Context */}
+                  {conclusion.alternativeInterpretation.historicalContext && (
+                    <div>
+                      <h4 className="text-xs font-semibold uppercase tracking-wide text-purple-400 mb-2">
+                        Historical Context
+                      </h4>
+                      <MarkdownMath className="prose prose-invert prose-sm max-w-none text-foreground/90 leading-relaxed">
+                        {conclusion.alternativeInterpretation.historicalContext}
+                      </MarkdownMath>
+                    </div>
+                  )}
+
+                  {/* Lean Foundations */}
+                  {conclusion.alternativeInterpretation.leanFoundations && (
+                    <div>
+                      <h4 className="text-xs font-semibold uppercase tracking-wide text-purple-400 mb-2">
+                        What Lean Actually Proves
+                      </h4>
+                      <MarkdownMath className="prose prose-invert prose-sm max-w-none text-foreground/90 leading-relaxed">
+                        {conclusion.alternativeInterpretation.leanFoundations}
+                      </MarkdownMath>
+                    </div>
+                  )}
+                </div>
+              )}
             </section>
           )}
 
