@@ -27,6 +27,7 @@ import { hurwitzTheoremData } from './hurwitz-theorem'
 import { schroederBernsteinData } from './schroeder-bernstein'
 import { cantorsTheoremData } from './cantors-theorem'
 import { wilsonsTheoremData } from './wilsons-theorem'
+import { geometricSeriesData } from './geometric-series'
 import { intermediateValueTheoremData } from './intermediate-value-theorem'
 import { gcdAlgorithmData } from './gcd-algorithm'
 import { mathematicalInductionData } from './mathematical-induction'
@@ -64,6 +65,7 @@ export const proofs: Record<string, ProofData> = {
   'schroeder-bernstein': schroederBernsteinData,
   'cantors-theorem': cantorsTheoremData,
   'wilsons-theorem': wilsonsTheoremData,
+  'geometric-series': geometricSeriesData,
   'intermediate-value-theorem': intermediateValueTheoremData,
   'gcd-algorithm': gcdAlgorithmData,
   'mathematical-induction': mathematicalInductionData,
