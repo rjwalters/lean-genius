@@ -31,6 +31,7 @@ import { intermediateValueTheoremData } from './intermediate-value-theorem'
 import { mathematicalInductionData } from './mathematical-induction'
 import { arithmeticSeriesData } from './arithmetic-series'
 import { subsetCountData } from './subset-count'
+import { triangleInequalityData } from './triangle-inequality'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -67,6 +68,7 @@ export const proofs: Record<string, ProofData> = {
   'mathematical-induction': mathematicalInductionData,
   'arithmetic-series': arithmeticSeriesData,
   'subset-count': subsetCountData,
+  'triangle-inequality': triangleInequalityData,
 }
 
 export function getProof(slug: string): ProofData | undefined {
