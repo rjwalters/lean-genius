@@ -359,7 +359,8 @@ if git worktree add "${CREATE_ARGS[@]}"; then
     fi
 
     # Symlink .lake from main workspace for Lean projects (instant, no rebuild)
-    # This shares the pre-built Mathlib artifacts with the worktree
+    # This shares the pre-built Mathlib artifacts with the worktree instead of
+    # downloading them again (which is slow and duplicates disk usage)
     WORKTREE_PROOFS_DIR="$ABS_WORKTREE_PATH/proofs"
     MAIN_PROOFS_LAKE="$MAIN_WORKSPACE/proofs/.lake"
 
@@ -369,18 +370,21 @@ if git worktree add "${CREATE_ARGS[@]}"; then
                 print_info "Symlinking .lake from main workspace (instant, no rebuild needed)..."
             fi
 
-            # Remove any existing .lake in worktree and create symlink
+            # Remove any existing .lake in worktree (could be dir or broken symlink)
             rm -rf "$WORKTREE_PROOFS_DIR/.lake"
-            # Use relative path so symlink works regardless of repo location
+
+            # Create symlink using relative path so it works regardless of repo location
+            # From .loom/worktrees/issue-N/proofs/.lake -> ../../../../proofs/.lake
             ln -s "../../../../proofs/.lake" "$WORKTREE_PROOFS_DIR/.lake"
 
-            if [[ -L "$WORKTREE_PROOFS_DIR/.lake" ]]; then
+            if [[ -L "$WORKTREE_PROOFS_DIR/.lake" ]] && [[ -d "$WORKTREE_PROOFS_DIR/.lake" ]]; then
                 if [[ "$JSON_OUTPUT" != "true" ]]; then
                     print_success "Linked .lake from main workspace"
                 fi
             else
                 if [[ "$JSON_OUTPUT" != "true" ]]; then
                     print_warning "Failed to create .lake symlink"
+                    print_info "Try manually: ln -s ../../../../proofs/.lake $WORKTREE_PROOFS_DIR/.lake"
                 fi
             fi
         else
