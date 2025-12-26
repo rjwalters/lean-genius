@@ -1,0 +1,155 @@
+[
+  {
+    "id": "ann-gauss-zero",
+    "proofId": "arithmetic-series",
+    "range": {
+      "startLine": 52,
+      "endLine": 58
+    },
+    "type": "theorem",
+    "title": "Gauss's Formula (0-indexed)",
+    "content": "**The sum 0 + 1 + 2 + ... + (n-1) = n*(n-1)/2.**\n\nThis is Mathlib's convention using `range n` = {0, 1, ..., n-1}. The proof is a direct application of `Finset.sum_range_id`.",
+    "mathContext": "$\\sum_{i=0}^{n-1} i = \\frac{n(n-1)}{2}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.range",
+      "Finset.sum_range_id"
+    ]
+  },
+  {
+    "id": "ann-gauss-classical",
+    "proofId": "arithmetic-series",
+    "range": {
+      "startLine": 60,
+      "endLine": 70
+    },
+    "type": "theorem",
+    "title": "Gauss's Classical Formula",
+    "content": "**The sum 0 + 1 + 2 + ... + n = n*(n+1)/2.**\n\nThis is the formula young Gauss allegedly used to sum 1 to 100. Using `range (n+1)` gives us {0, 1, ..., n}.\n\nThe proof derives this from the 0-indexed version by adjusting the multiplication order.",
+    "mathContext": "$\\sum_{i=0}^{n} i = \\frac{n(n+1)}{2}$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Gauss schoolboy anecdote",
+      "triangular numbers"
+    ]
+  },
+  {
+    "id": "ann-pairing",
+    "proofId": "arithmetic-series",
+    "range": {
+      "startLine": 72,
+      "endLine": 94
+    },
+    "type": "insight",
+    "title": "The Pairing Argument",
+    "content": "**Gauss's brilliant insight: pair terms from opposite ends.**\n\nWrite S = 1 + 2 + ... + n twice (forwards and backwards). Each pair sums to (n+1), and there are n pairs:\n\n```\n  S = 1 + 2 + ... + n\n  S = n + (n-1) + ... + 1\n ───────────────────────\n 2S = (n+1) + (n+1) + ... = n(n+1)\n```\n\nTherefore S = n(n+1)/2.",
+    "mathContext": "$2S = n \\times (n+1) \\Rightarrow S = \\frac{n(n+1)}{2}$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "bijective argument",
+      "symmetric sum"
+    ]
+  },
+  {
+    "id": "ann-arithmetic-series",
+    "proofId": "arithmetic-series",
+    "range": {
+      "startLine": 96,
+      "endLine": 108
+    },
+    "type": "theorem",
+    "title": "General Arithmetic Series",
+    "content": "**Sum of an arithmetic progression with first term a and common difference d.**\n\nThis generalizes Gauss's formula. Setting a=0 and d=1 recovers the sum of 0..n-1.\n\nThe formula is derived by separating the constant term (na) from the varying part (sum of k*d).",
+    "mathContext": "$\\sum_{k=0}^{n-1} (a + kd) = na + d \\cdot \\frac{n(n-1)}{2}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic progression",
+      "first term and common difference"
+    ]
+  },
+  {
+    "id": "ann-gauss-100",
+    "proofId": "arithmetic-series",
+    "range": {
+      "startLine": 110,
+      "endLine": 116
+    },
+    "type": "example",
+    "title": "Gauss's Original Problem",
+    "content": "**Sum of 1 to 100 = 5050.**\n\nThis is the famous problem Gauss allegedly solved as a schoolboy. The proof uses `native_decide` for computational verification.\n\n50 pairs × 101 = 5050.",
+    "mathContext": "$1 + 2 + \\cdots + 100 = 5050$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Gauss anecdote",
+      "native_decide"
+    ]
+  },
+  {
+    "id": "ann-sum-odd",
+    "proofId": "arithmetic-series",
+    "range": {
+      "startLine": 118,
+      "endLine": 128
+    },
+    "type": "theorem",
+    "title": "Sum of Odd Numbers = n²",
+    "content": "**The sum of the first n odd numbers equals n squared.**\n\n1 + 3 + 5 + ... + (2n-1) = n²\n\nThis beautiful identity has a lovely visual proof: each odd number adds an 'L-shaped' layer to a growing square. The proof uses induction.",
+    "mathContext": "$\\sum_{k=0}^{n-1} (2k+1) = n^2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "perfect squares",
+      "L-shaped gnomon"
+    ]
+  },
+  {
+    "id": "ann-sum-even",
+    "proofId": "arithmetic-series",
+    "range": {
+      "startLine": 130,
+      "endLine": 139
+    },
+    "type": "theorem",
+    "title": "Sum of Even Numbers",
+    "content": "**The sum 0 + 2 + 4 + ... + 2(n-1) = n*(n-1).**\n\nThis is a special case of the arithmetic series with a=0 and d=2. The proof factors out the 2 and uses the Gauss pairing identity.",
+    "mathContext": "$\\sum_{k=0}^{n-1} 2k = n(n-1)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "even numbers",
+      "arithmetic series"
+    ]
+  },
+  {
+    "id": "ann-triangular-def",
+    "proofId": "arithmetic-series",
+    "range": {
+      "startLine": 141,
+      "endLine": 148
+    },
+    "type": "definition",
+    "title": "Triangular Numbers",
+    "content": "**The n-th triangular number T(n) = n(n+1)/2.**\n\nTriangular numbers count the dots in triangular arrangements: 1, 3, 6, 10, 15, ...\n\nThey're called 'triangular' because T(n) dots can be arranged in an equilateral triangle with n rows.",
+    "mathContext": "$T(n) = \\frac{n(n+1)}{2} = 1 + 2 + \\cdots + n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "figurate numbers",
+      "binomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-triangular-recurrence",
+    "proofId": "arithmetic-series",
+    "range": {
+      "startLine": 150,
+      "endLine": 167
+    },
+    "type": "theorem",
+    "title": "Triangular Recurrence",
+    "content": "**T(n+1) = T(n) + (n+1).**\n\nEach triangular number is obtained by adding the next integer to the previous one. The proof uses divisibility arguments to handle the division by 2.",
+    "mathContext": "$T(n+1) = T(n) + (n+1)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "recurrence relation",
+      "inductive definition"
+    ]
+  }
+]
