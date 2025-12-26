@@ -203,17 +203,18 @@ export function HomePage() {
             >
               {/* Badge row - prominently displayed at top */}
               <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <ProofBadge badge={proof.meta.badge} />
-                  <WiedijkBadge number={proof.meta.wiedijkNumber} />
-                </div>
+                <ProofBadge badge={proof.meta.badge} />
                 <StatusBadge status={proof.meta.status} />
               </div>
 
               <div className="flex items-start gap-3 mb-3">
-                <div className="h-10 w-10 rounded-lg bg-annotation/20 flex items-center justify-center flex-shrink-0">
-                  <BookOpen className="h-5 w-5 text-annotation" />
-                </div>
+                {proof.meta.wiedijkNumber ? (
+                  <WiedijkBadge number={proof.meta.wiedijkNumber} size="md" />
+                ) : (
+                  <div className="h-10 w-10 rounded-lg bg-annotation/20 flex items-center justify-center flex-shrink-0">
+                    <BookOpen className="h-5 w-5 text-annotation" />
+                  </div>
+                )}
                 <h3 className="text-lg font-semibold group-hover:text-annotation transition-colors pt-1">
                   {proof.title}
                 </h3>
