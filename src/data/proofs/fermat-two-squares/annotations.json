@@ -1,0 +1,123 @@
+[
+  {
+    "id": "ann-imports",
+    "proofId": "fermat-two-squares",
+    "range": { "startLine": 1, "endLine": 2 },
+    "type": "context",
+    "title": "Mathlib Imports",
+    "content": "This proof uses Mathlib's `SumTwoSquares` module which contains the main characterization theorem `Nat.Prime.sq_add_sq`. This theorem has been proved in two independent ways in Mathlib: via Zagier's elegant involution argument and via factorization in Gaussian integers.",
+    "mathContext": "Mathlib provides `Nat.Prime.sq_add_sq` which states: for a prime p, there exist a,b with a^2 + b^2 = p iff p % 4 is not 3.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "sum of squares", "prime characterization"]
+  },
+  {
+    "id": "ann-historical",
+    "proofId": "fermat-two-squares",
+    "range": { "startLine": 5, "endLine": 15 },
+    "type": "insight",
+    "title": "A Century-Long Mathematical Mystery",
+    "content": "Fermat claimed in 1640 to have a proof of this theorem but never published it - a pattern that would repeat with his famous \"Last Theorem.\" Unlike that case, Euler was able to prove this theorem in 1747, demonstrating that Fermat likely did have a valid proof.\n\nThe theorem's significance extends beyond the specific result: it opened the door to understanding which integers can be represented as sums of squares, leading to Lagrange's four squares theorem and Waring's problem.",
+    "mathContext": "Fermat's margin was too small for many proofs. This one took 107 years to verify.",
+    "significance": "key",
+    "relatedConcepts": ["mathematical history", "Fermat", "Euler", "Lagrange"]
+  },
+  {
+    "id": "ann-zagier",
+    "proofId": "fermat-two-squares",
+    "range": { "startLine": 17, "endLine": 31 },
+    "type": "insight",
+    "title": "Zagier's One-Sentence Proof",
+    "content": "In 1990, Don Zagier published a proof that fits in a single sentence (though understanding it takes considerably longer):\n\n\"The involution on the finite set S = {(x,y,z) ∈ N³ : x² + 4yz = p} defined by (x,y,z) → (x+2z, z, y-x-z) if x < y-z, (2y-x, y, x-y+z) if y-z < x < 2y, (x-2y, x-y+z, y) if x > 2y, has exactly one fixed point, so |S| is odd and the involution (x,y,z) → (x,z,y) also has a fixed point.\"\n\nThe genius is in choosing the right set S and the right involutions.",
+    "mathContext": "Zagier's proof exploits: (1) |S| is odd since p is odd, (2) an involution on a set of odd cardinality must have a fixed point.",
+    "significance": "critical",
+    "relatedConcepts": ["involutions", "combinatorial proof", "Zagier"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "fermat-two-squares",
+    "range": { "startLine": 47, "endLine": 65 },
+    "type": "theorem",
+    "title": "The Complete Characterization",
+    "content": "**A prime p is a sum of two squares iff p % 4 ≠ 3**\n\nThe proof has two directions:\n\n1. **If p = a² + b², then p % 4 ≠ 3**: Squares mod 4 are 0 or 1, so their sum is 0, 1, or 2 - never 3.\n\n2. **If p % 4 ≠ 3, then p = a² + b²**: This is the hard direction, proved by Zagier's involution argument in Mathlib.",
+    "mathContext": "$(2k)^2 = 4k^2 \\equiv 0 \\pmod 4$\n$(2k+1)^2 = 4k^2 + 4k + 1 \\equiv 1 \\pmod 4$\n\nSo $a^2 + b^2 \\mod 4 \\in \\{0+0, 0+1, 1+0, 1+1\\} = \\{0, 1, 2\\}$",
+    "significance": "critical",
+    "relatedConcepts": ["modular arithmetic", "characterization theorem"]
+  },
+  {
+    "id": "ann-squares-mod-4",
+    "proofId": "fermat-two-squares",
+    "range": { "startLine": 54, "endLine": 59 },
+    "type": "tactic",
+    "title": "Why Squares Mod 4 Are 0 or 1",
+    "content": "Every integer is either even (2k) or odd (2k+1).\n\n- Even: $(2k)^2 = 4k^2 \\equiv 0 \\pmod 4$\n- Odd: $(2k+1)^2 = 4k^2 + 4k + 1 \\equiv 1 \\pmod 4$\n\nThe `omega` tactic handles this linear arithmetic automatically.",
+    "mathContext": "This is why 3 mod 4 primes can never be sums of two squares: the maximum possible residue is 1+1 = 2.",
+    "significance": "critical",
+    "relatedConcepts": ["modular arithmetic", "quadratic residues"]
+  },
+  {
+    "id": "ann-one-mod-four",
+    "proofId": "fermat-two-squares",
+    "range": { "startLine": 67, "endLine": 73 },
+    "type": "theorem",
+    "title": "The Classic Statement: p ≡ 1 (mod 4)",
+    "content": "This is the form Fermat originally stated: every prime congruent to 1 modulo 4 is a sum of two squares.\n\nExamples:\n- 5 = 1 + 4 = 1² + 2²\n- 13 = 4 + 9 = 2² + 3²\n- 17 = 1 + 16 = 1² + 4²\n- 29 = 4 + 25 = 2² + 5²",
+    "mathContext": "The first few primes ≡ 1 (mod 4): 5, 13, 17, 29, 37, 41, 53, 61, 73, 89, 97...",
+    "significance": "key",
+    "relatedConcepts": ["Fermat's original statement", "prime classification"]
+  },
+  {
+    "id": "ann-two-special",
+    "proofId": "fermat-two-squares",
+    "range": { "startLine": 75, "endLine": 78 },
+    "type": "lemma",
+    "title": "The Prime 2: A Special Case",
+    "content": "2 = 1² + 1² is trivially a sum of two squares.\n\nNote that 2 ≡ 2 (mod 4), so it's neither in the \"1 mod 4\" nor the \"3 mod 4\" category. The theorem correctly handles this edge case.",
+    "mathContext": "2 is the only even prime, making it unique in many ways.",
+    "significance": "supporting",
+    "relatedConcepts": ["special cases", "edge cases"]
+  },
+  {
+    "id": "ann-three-mod-four",
+    "proofId": "fermat-two-squares",
+    "range": { "startLine": 80, "endLine": 93 },
+    "type": "theorem",
+    "title": "The Negative Result: 3 mod 4 Primes",
+    "content": "**No prime p ≡ 3 (mod 4) can be a sum of two squares.**\n\nThis is purely a modular arithmetic argument:\n1. Squares mod 4 are only 0 or 1\n2. Sum of two values from {0,1} gives {0,1,2}\n3. The value 3 is impossible\n\nExamples of primes that are NOT sums of two squares: 3, 7, 11, 19, 23, 31, 43, 47, 59, 67, 71, 79, 83...",
+    "mathContext": "Primes ≡ 3 (mod 4): 3, 7, 11, 19, 23, 31, 43, 47, 59, 67, 71, 79, 83, 103...\n\nNone of these can be written as a² + b².",
+    "significance": "key",
+    "relatedConcepts": ["impossibility proof", "modular arithmetic"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "fermat-two-squares",
+    "range": { "startLine": 97, "endLine": 113 },
+    "type": "insight",
+    "title": "Concrete Examples",
+    "content": "These examples verify the theorem for small primes ≡ 1 (mod 4):\n\n- 5 = 1² + 2² (5 = 4·1 + 1)\n- 13 = 2² + 3² (13 = 4·3 + 1)\n- 17 = 1² + 4² (17 = 4·4 + 1)\n- 29 = 2² + 5² (29 = 4·7 + 1)\n- 37 = 1² + 6² (37 = 4·9 + 1)\n- 41 = 4² + 5² (41 = 4·10 + 1)\n\nIn Lean, these are proved by `rfl` - the equality is definitionally true.",
+    "mathContext": "The representations are unique up to order and signs (for primes ≡ 1 mod 4).",
+    "significance": "supporting",
+    "relatedConcepts": ["examples", "verification"]
+  },
+  {
+    "id": "ann-classification",
+    "proofId": "fermat-two-squares",
+    "range": { "startLine": 117, "endLine": 145 },
+    "type": "theorem",
+    "title": "Complete Prime Classification",
+    "content": "Every prime falls into exactly one of three categories:\n\n1. **p = 2**: The unique even prime. 2 = 1² + 1².\n2. **p ≡ 1 (mod 4)**: Odd primes of the form 4k+1. Always sums of two squares.\n3. **p ≡ 3 (mod 4)**: Odd primes of the form 4k+3. Never sums of two squares.\n\nNote: p ≡ 0 (mod 4) is impossible for primes > 2 (would be divisible by 4).",
+    "mathContext": "The three categories partition all primes:\n$\\{2\\} \\cup \\{5,13,17,29,...\\} \\cup \\{3,7,11,19,...\\}$",
+    "significance": "key",
+    "relatedConcepts": ["prime classification", "complete characterization"]
+  },
+  {
+    "id": "ann-gaussian",
+    "proofId": "fermat-two-squares",
+    "range": { "startLine": 34, "endLine": 36 },
+    "type": "insight",
+    "title": "Connection to Gaussian Integers",
+    "content": "There's a deep algebraic explanation for this theorem. In the Gaussian integers ℤ[i] = {a + bi : a,b ∈ ℤ}:\n\n- p = a² + b² ⟺ p = (a+bi)(a-bi) ⟺ p *splits* in ℤ[i]\n- A prime p splits in ℤ[i] ⟺ -1 is a quadratic residue mod p ⟺ p = 2 or p ≡ 1 (mod 4)\n\nThis connects the theorem to quadratic reciprocity and algebraic number theory.",
+    "mathContext": "In ℤ[i], the norm is N(a+bi) = a² + b². Primes in ℤ[i] are: (1+i), primes p ≡ 3 (mod 4), and π,π̄ for primes p ≡ 1 (mod 4).",
+    "significance": "key",
+    "relatedConcepts": ["Gaussian integers", "algebraic number theory", "quadratic reciprocity"]
+  }
+]

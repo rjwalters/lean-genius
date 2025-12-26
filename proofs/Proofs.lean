@@ -7,8 +7,10 @@ import Proofs.FundamentalTheoremCalculus
 import Proofs.InfinitudePrimes
 import Proofs.CantorDiagonalization
 import Proofs.DenumerabilityRationals
+import Proofs.SchroederBernstein
 
 -- Additional proofs (may contain sorry/axioms - work in progress)
+import Proofs.HarmonicDivergence
 import Proofs.LagrangeFourSquares
 import Proofs.KnightsTourOblique
 import Proofs.AbelRuffini

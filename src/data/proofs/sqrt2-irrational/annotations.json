@@ -190,7 +190,7 @@
     "range": { "startLine": 198, "endLine": 210 },
     "type": "theorem",
     "title": "The General Theorem",
-    "content": "**Main Result**: For any natural number $n \\geq 1$ that is not a perfect square, $\\sqrt{n}$ is irrational. This single theorem subsumes all the specific cases: √2, √3, √5, √6, √7, √8, √10, ...",
+    "content": "**Main Result**: For any natural number $n$ that is not a perfect square, $\\sqrt{n}$ is irrational. This single theorem subsumes all the specific cases: √2, √3, √5, √6, √7, √8, √10, ...",
     "mathContext": "The theorem `irrational_sqrt_of_not_square` uses Mathlib's `irrational_sqrt_natCast_iff` which establishes the result based on `¬ IsSquare n`.",
     "significance": "critical",
     "prerequisites": ["ann-sqrt3-proof", "ann-sqrt6-proof"],

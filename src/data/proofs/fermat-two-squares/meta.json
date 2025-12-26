@@ -1,0 +1,91 @@
+{
+  "id": "fermat-two-squares",
+  "title": "Fermat's Sum of Two Squares",
+  "slug": "fermat-two-squares",
+  "description": "A prime p can be expressed as a sum of two squares if and only if p = 2 or p is congruent to 1 (mod 4). Formalized using Zagier's elegant one-sentence proof.",
+  "meta": {
+    "author": "Fermat (1640) / Euler (1747) / Zagier (1990)",
+    "sourceUrl": "https://people.mpim-bonn.mpg.de/zagier/files/doi/10.2307/2323918/fulltext.pdf",
+    "date": "1640 (stated), 1747 (first proved)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FermatTwoSquares.lean",
+    "tags": [
+      "number-theory",
+      "primes",
+      "classic",
+      "fermat",
+      "zagier",
+      "sum-of-squares"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime.sq_add_sq",
+        "description": "Main sum of two squares characterization",
+        "module": "Mathlib.NumberTheory.SumTwoSquares"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number definitions",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical wrapper theorems for the 1 mod 4 and 3 mod 4 cases",
+      "Explicit examples: 5, 13, 17, 29, 37, 41",
+      "Complete classification theorem for all primes"
+    ],
+    "dateAdded": "12/26/25"
+  },
+  "overview": {
+    "historicalContext": "Fermat stated this theorem around 1640 in a letter to Mersenne, claiming he had an \"irrefutable proof\" but, as with many of his claims, never published it. The theorem remained unproven for over a century until Euler provided the first complete proof in 1747.\n\nIn 1990, Don Zagier published what he called a \"one-sentence proof\" - an extraordinarily elegant argument that fits on a single page. This proof has become famous in mathematical circles for its beauty and brevity.\n\nThe theorem connects number theory to algebra in profound ways. It's closely related to factorization in the Gaussian integers Z[i], where p = a^2 + b^2 corresponds to p = (a+bi)(a-bi) splitting in Z[i]. This connection to algebraic number theory makes it a gateway to deeper results like Lagrange's four squares theorem.",
+    "problemStatement": "Theorem (Fermat, 1640; first proved by Euler, 1747):\n\nA prime $p$ can be expressed as $p = a^2 + b^2$ for some integers $a, b$ if and only if:\n- $p = 2$, or\n- $p \\equiv 1 \\pmod{4}$\n\nEquivalently: $p$ is NOT expressible as a sum of two squares if and only if $p \\equiv 3 \\pmod{4}$.\n\nExamples:\n- $5 = 1^2 + 2^2$ (since $5 \\equiv 1 \\pmod 4$)\n- $13 = 2^2 + 3^2$ (since $13 \\equiv 1 \\pmod 4$)\n- $3, 7, 11, 19, 23$ are NOT sums of two squares (all $\\equiv 3 \\pmod 4$)",
+    "proofStrategy": "Zagier's One-Sentence Proof (1990):\n\nFor a prime $p \\equiv 1 \\pmod 4$, define:\n$$S = \\{(x,y,z) \\in \\mathbb{N}^3 : x^2 + 4yz = p\\}$$\n\nThe proof proceeds by studying involutions on $S$:\n\n1. **$S$ is finite and has odd cardinality** (since $p$ is odd)\n\n2. **The \"obvious\" involution**: $(x,y,z) \\mapsto (x,z,y)$\n   - This swaps $y$ and $z$\n   - Fixed points satisfy $y = z$\n\n3. **The \"complex\" involution**: A carefully constructed map with exactly one fixed point\n\n4. **Parity argument**: Since $|S|$ is odd, any involution must have an odd number of fixed points (at least one)\n\n5. **Conclusion**: The obvious involution has a fixed point $(x,y,y)$, giving:\n   $$p = x^2 + 4y \\cdot y = x^2 + (2y)^2$$\n\nThe negative result ($p \\equiv 3 \\pmod 4$ cannot be a sum of two squares) follows from modular arithmetic: squares mod 4 are 0 or 1, so $a^2 + b^2 \\mod 4 \\in \\{0, 1, 2\\}$, never 3.",
+    "keyInsights": [
+      "Squares modulo 4 can only be 0 or 1: $(2k)^2 \\equiv 0$ and $(2k+1)^2 \\equiv 1 \\pmod 4$",
+      "Therefore $a^2 + b^2 \\mod 4$ can only be 0, 1, or 2 - never 3",
+      "Zagier's proof uses the pigeonhole principle via involutions on a finite set of odd cardinality",
+      "The connection to Gaussian integers: $p = a^2 + b^2$ iff $p$ splits in $\\mathbb{Z}[i]$"
+    ]
+  },
+  "sections": [
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 47,
+      "endLine": 65,
+      "summary": "The complete characterization: a prime p is a sum of two squares if and only if p % 4 is not 3."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 67,
+      "endLine": 93,
+      "summary": "Explicit statements for primes congruent to 1 (mod 4), the prime 2, and primes congruent to 3 (mod 4)."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 95,
+      "endLine": 113,
+      "summary": "Verification of small cases: 5 = 1^2 + 2^2, 13 = 2^2 + 3^2, 17 = 1^2 + 4^2, etc."
+    },
+    {
+      "id": "classification",
+      "title": "Prime Classification",
+      "startLine": 115,
+      "endLine": 160,
+      "summary": "Complete classification of all primes into three categories based on their residue mod 4."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures one of number theory's most elegant theorems. The proof demonstrates the deep connection between modular arithmetic and the representability of primes as sums of squares.\n\nZagier's one-sentence proof is particularly remarkable - it uses only elementary concepts (finite sets, involutions, parity) to prove a result that stumped mathematicians for over a century. The key insight is that counting arguments on carefully constructed sets can reveal arithmetic structure.\n\nMathlib's implementation provides both Zagier's proof (in the Archive) and the Gaussian integer approach, giving us confidence in the result through independent verification.",
+    "implications": "Fermat's theorem is a cornerstone of algebraic number theory:\n\n1. **Gaussian Integers**: The theorem is equivalent to characterizing which primes split in Z[i]. A prime p splits as p = (a+bi)(a-bi) iff p = 2 or p is 1 mod 4.\n\n2. **Quadratic Reciprocity**: This result is closely related to quadratic reciprocity and the question of when -1 is a quadratic residue mod p.\n\n3. **Lagrange's Four Squares**: The natural generalization asks which integers are sums of k squares. Lagrange proved every positive integer is a sum of four squares.\n\n4. **Class Field Theory**: These questions about representability lead to the deep waters of class field theory and the Langlands program.",
+    "openQuestions": [
+      "Lagrange's Four Squares: Every positive integer is a sum of four squares (proven 1770)",
+      "Waring's Problem: For each k, what is the smallest s such that every positive integer is a sum of s k-th powers?",
+      "Which integers (not just primes) are sums of two squares? Answer: n = 2^a * p_1^{b_1} * ... * q_1^{c_1} * ... where each q_i is 3 mod 4 and each c_i is even"
+    ]
+  }
+}
