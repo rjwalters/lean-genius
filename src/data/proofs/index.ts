@@ -28,6 +28,7 @@ import { schroederBernsteinData } from './schroeder-bernstein'
 import { cantorsTheoremData } from './cantors-theorem'
 import { wilsonsTheoremData } from './wilsons-theorem'
 import { intermediateValueTheoremData } from './intermediate-value-theorem'
+import { subsetCountData } from './subset-count'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -61,6 +62,7 @@ export const proofs: Record<string, ProofData> = {
   'cantors-theorem': cantorsTheoremData,
   'wilsons-theorem': wilsonsTheoremData,
   'intermediate-value-theorem': intermediateValueTheoremData,
+  'subset-count': subsetCountData,
 }
 
 export function getProof(slug: string): ProofData | undefined {
