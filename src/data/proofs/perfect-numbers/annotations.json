@@ -1,0 +1,101 @@
+{
+  "proofId": "perfect-numbers",
+  "annotations": [
+    {
+      "id": "perfect-def",
+      "lineStart": 60,
+      "lineEnd": 63,
+      "type": "definition",
+      "title": "Perfect Number Definition",
+      "content": "A number n is perfect if σ(n) = 2n, where σ is the sum-of-divisors function. Equivalently, the sum of proper divisors equals n. For example, 6 = 1 + 2 + 3."
+    },
+    {
+      "id": "mersenne-def",
+      "lineStart": 69,
+      "lineEnd": 70,
+      "type": "definition",
+      "title": "Mersenne Number",
+      "content": "The Mersenne number M_p = 2^p - 1. When M_p is prime, it's called a Mersenne prime. The first few Mersenne primes are 3, 7, 31, 127."
+    },
+    {
+      "id": "sigma-power-2",
+      "lineStart": 73,
+      "lineEnd": 75,
+      "type": "key-insight",
+      "title": "Sum of Divisors of Powers of 2",
+      "content": "σ(2^k) = 1 + 2 + 4 + ... + 2^k = 2^(k+1) - 1 = M_{k+1}. This geometric series sum equals the next Mersenne number."
+    },
+    {
+      "id": "euclid-thm",
+      "lineStart": 79,
+      "lineEnd": 88,
+      "type": "theorem",
+      "title": "Euclid's Theorem (Elements IX.36)",
+      "content": "If 2^(k+1) - 1 is a Mersenne prime, then 2^k × (2^(k+1) - 1) is perfect. This 2300-year-old result gives a recipe for generating perfect numbers from Mersenne primes."
+    },
+    {
+      "id": "euler-thm",
+      "lineStart": 92,
+      "lineEnd": 101,
+      "type": "theorem",
+      "title": "Euler's Theorem (1747)",
+      "content": "Every EVEN perfect number has Euclid's form. Euler proved the converse 2000 years after Euclid, completing the characterization of even perfect numbers."
+    },
+    {
+      "id": "iff-characterization",
+      "lineStart": 105,
+      "lineEnd": 112,
+      "type": "theorem",
+      "title": "Euclid-Euler Biconditional",
+      "content": "n is even and perfect ⟺ n = 2^k × (2^(k+1) - 1) where 2^(k+1) - 1 is a Mersenne prime. This is the complete characterization."
+    },
+    {
+      "id": "example-6",
+      "lineStart": 120,
+      "lineEnd": 128,
+      "type": "example",
+      "title": "First Perfect Number: 6",
+      "content": "6 = 2^1 × 3 where 3 = 2^2 - 1 is prime. Proper divisors: 1, 2, 3. Sum = 6. ✓"
+    },
+    {
+      "id": "example-28",
+      "lineStart": 130,
+      "lineEnd": 135,
+      "type": "example",
+      "title": "Second Perfect Number: 28",
+      "content": "28 = 2^2 × 7 where 7 = 2^3 - 1 is prime. Proper divisors: 1, 2, 4, 7, 14. Sum = 28. ✓"
+    },
+    {
+      "id": "example-496",
+      "lineStart": 137,
+      "lineEnd": 142,
+      "type": "example",
+      "title": "Third Perfect Number: 496",
+      "content": "496 = 2^4 × 31 where 31 = 2^5 - 1 is prime. This is the largest perfect number the ancient Greeks knew."
+    },
+    {
+      "id": "example-8128",
+      "lineStart": 144,
+      "lineEnd": 149,
+      "type": "example",
+      "title": "Fourth Perfect Number: 8128",
+      "content": "8128 = 2^6 × 127 where 127 = 2^7 - 1 is prime. Discovered in antiquity, this remained the largest known perfect number for over 1000 years."
+    },
+    {
+      "id": "odd-perfect-open",
+      "lineStart": 160,
+      "lineEnd": 165,
+      "type": "historical",
+      "title": "The Odd Perfect Number Problem",
+      "content": "Whether odd perfect numbers exist is one of the oldest unsolved problems in mathematics (2000+ years). If one exists, it must be > 10^1500 with at least 101 prime factors."
+    },
+    {
+      "id": "multiplicative-key",
+      "lineStart": 167,
+      "lineEnd": 169,
+      "type": "key-insight",
+      "title": "Key Algebraic Property",
+      "content": "The sigma function is multiplicative: σ(mn) = σ(m)σ(n) when gcd(m,n) = 1. This is the crucial property that makes the proof work."
+    }
+  ]
+}
