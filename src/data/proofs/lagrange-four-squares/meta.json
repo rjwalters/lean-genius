@@ -47,30 +47,37 @@
     {
       "id": "euler-identity",
       "title": "Euler's Four-Square Identity",
-      "startLine": 37,
-      "endLine": 60,
+      "startLine": 44,
+      "endLine": 69,
       "summary": "The key algebraic identity showing the product of two sums-of-four-squares is itself a sum of four squares. This is quaternion norm multiplicativity."
     },
     {
       "id": "three-vs-four",
       "title": "Why Four Squares and Not Three?",
-      "startLine": 62,
-      "endLine": 68,
+      "startLine": 71,
+      "endLine": 78,
       "summary": "Numbers of the form 4^k(8m+7) cannot be sums of three squares, but four always suffice."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
-      "startLine": 70,
-      "endLine": 95,
+      "startLine": 80,
+      "endLine": 102,
       "summary": "Lagrange's theorem: every natural number is a sum of four squares. Uses Mathlib's Nat.sum_four_squares."
     },
     {
       "id": "examples",
       "title": "Specific Examples",
-      "startLine": 97,
-      "endLine": 120,
+      "startLine": 104,
+      "endLine": 127,
       "summary": "Concrete decompositions of small numbers, including the notorious 7 which needs all four squares."
+    },
+    {
+      "id": "two-squares-connection",
+      "title": "Connection to Two Squares Theorem",
+      "startLine": 129,
+      "endLine": 138,
+      "summary": "Cross-reference to Fermat's Two Squares Theorem showing the contrast between universal four squares and restrictive two squares."
     }
   ],
   "conclusion": {
