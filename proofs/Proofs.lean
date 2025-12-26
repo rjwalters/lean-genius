@@ -6,6 +6,7 @@ import Proofs.OnePlusOne
 import Proofs.FundamentalTheoremCalculus
 import Proofs.InfinitudePrimes
 import Proofs.CantorDiagonalization
+import Proofs.DenumerabilityRationals
 
 -- Additional proofs (may contain sorry/axioms - work in progress)
 import Proofs.LagrangeFourSquares
