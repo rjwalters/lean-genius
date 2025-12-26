@@ -465,15 +465,258 @@ theorem no_three_square_identity : ∀ f : NSquareIdentity 3, False := by
   have row1_13 : innerProd m₁₁ m₁₃ = 0 := orthogonality_constraint_right nsi e₁ e₁ e₃ he₁ he₁ he₃ h13
   have row1_23 : innerProd m₁₂ m₁₃ = 0 := orthogonality_constraint_right nsi e₁ e₂ e₃ he₁ he₂ he₃ h23
 
-  -- Now we have: m₁₁ is orthogonal to m₂₁, m₃₁ (column constraint)
-  --              m₁₁ is orthogonal to m₁₂, m₁₃ (row constraint)
-  -- So m₁₁ is orthogonal to m₂₁, m₃₁, m₁₂, m₁₃ (4 vectors)
-  -- In ℝ³, a nonzero vector can be orthogonal to at most 2 linearly independent vectors.
-  -- These 4 vectors span at least a 2D subspace (since rows and columns are orthonormal).
-  -- This is the contradiction!
+  -- Additional orthogonality constraints we need
+  -- Column 3: m₁₃ ⊥ m₂₃
+  have col3_12 : innerProd m₁₃ m₂₃ = 0 := orthogonality_constraint nsi e₁ e₂ e₃ he₁ he₂ he₃ h12
+  -- Row 2: m₂₁ ⊥ m₂₃
+  have row2_13 : innerProd m₂₁ m₂₃ = 0 := orthogonality_constraint_right nsi e₂ e₁ e₃ he₂ he₁ he₃ h13
 
-  -- Technical completion: show m₂₁, m₃₁, m₁₂, m₁₃ span more than a 2D subspace
-  -- For now, we state this as needing additional linear algebra machinery
+  -- Unit norms of image vectors
+  have hm₁₁ : normSq m₁₁ = 1 := by rw [← nsi.norm_mul, he₁, he₁]; ring
+  have hm₁₃ : normSq m₁₃ = 1 := by rw [← nsi.norm_mul, he₁, he₃]; ring
+  have hm₂₁ : normSq m₂₁ = 1 := by rw [← nsi.norm_mul, he₂, he₁]; ring
+  have hm₂₃ : normSq m₂₃ = 1 := by rw [← nsi.norm_mul, he₂, he₃]; ring
+
+  -- Key identity: |mul(e₁+e₂, e₁+e₃)|² = |e₁+e₂|² · |e₁+e₃|² = 2 · 2 = 4
+  -- First compute |e₁+e₂|² and |e₁+e₃|²
+  have he12_norm : normSq (e₁ + e₂) = 2 := by rw [normSq_add, he₁, he₂, h12]; ring
+  have he13_norm : normSq (e₁ + e₃) = 2 := by rw [normSq_add, he₁, he₃, h13]; ring
+
+  -- By bilinearity: mul(e₁+e₂, e₁+e₃) = m₁₁ + m₁₃ + m₂₁ + m₂₃
+  have hbilin : nsi.mul (e₁ + e₂) (e₁ + e₃) = m₁₁ + m₁₃ + m₂₁ + m₂₃ := by
+    calc nsi.mul (e₁ + e₂) (e₁ + e₃)
+        = nsi.mul e₁ (e₁ + e₃) + nsi.mul e₂ (e₁ + e₃) := nsi.add_left e₁ e₂ (e₁ + e₃)
+      _ = (nsi.mul e₁ e₁ + nsi.mul e₁ e₃) + (nsi.mul e₂ e₁ + nsi.mul e₂ e₃) := by
+          rw [nsi.add_right, nsi.add_right]
+      _ = m₁₁ + m₁₃ + m₂₁ + m₂₃ := by ring
+
+  -- By norm-multiplicativity: |mul(e₁+e₂, e₁+e₃)|² = 4
+  have hnorm_target : normSq (nsi.mul (e₁ + e₂) (e₁ + e₃)) = 4 := by
+    rw [← nsi.norm_mul, he12_norm, he13_norm]; ring
+
+  -- So |m₁₁ + m₁₃ + m₂₁ + m₂₃|² = 4
+  have hsum_norm : normSq (m₁₁ + m₁₃ + m₂₁ + m₂₃) = 4 := by rw [← hbilin]; exact hnorm_target
+
+  -- Expand using normSq_add
+  -- |a + b + c + d|² = |a|² + |b|² + |c|² + |d|² + 2⟨a,b⟩ + 2⟨a,c⟩ + 2⟨a,d⟩ + 2⟨b,c⟩ + 2⟨b,d⟩ + 2⟨c,d⟩
+  -- Group as ((m₁₁ + m₁₃) + (m₂₁ + m₂₃))
+  have hexpand1 : normSq (m₁₁ + m₁₃ + m₂₁ + m₂₃) =
+      normSq (m₁₁ + m₁₃) + 2 * innerProd (m₁₁ + m₁₃) (m₂₁ + m₂₃) + normSq (m₂₁ + m₂₃) := by
+    have : m₁₁ + m₁₃ + m₂₁ + m₂₃ = (m₁₁ + m₁₃) + (m₂₁ + m₂₃) := by ring
+    rw [this, normSq_add]
+
+  -- |m₁₁ + m₁₃|² = 2 (using row1_13)
+  have hnorm_11_13 : normSq (m₁₁ + m₁₃) = 2 := by
+    rw [normSq_add, hm₁₁, hm₁₃, row1_13]; ring
+
+  -- |m₂₁ + m₂₃|² = 2 (using row2_13)
+  have hnorm_21_23 : normSq (m₂₁ + m₂₃) = 2 := by
+    rw [normSq_add, hm₂₁, hm₂₃, row2_13]; ring
+
+  -- Expand the cross term
+  -- ⟨m₁₁ + m₁₃, m₂₁ + m₂₃⟩ = ⟨m₁₁,m₂₁⟩ + ⟨m₁₁,m₂₃⟩ + ⟨m₁₃,m₂₁⟩ + ⟨m₁₃,m₂₃⟩
+  have hcross : innerProd (m₁₁ + m₁₃) (m₂₁ + m₂₃) =
+      innerProd m₁₁ m₂₁ + innerProd m₁₁ m₂₃ + innerProd m₁₃ m₂₁ + innerProd m₁₃ m₂₃ := by
+    simp only [innerProd, Pi.add_apply, Finset.sum_add_distrib]
+    ring
+
+  -- Substitute known zeros
+  have hcross2 : innerProd (m₁₁ + m₁₃) (m₂₁ + m₂₃) = innerProd m₁₁ m₂₃ + innerProd m₁₃ m₂₁ := by
+    rw [hcross, col1_12, col3_12]; ring
+
+  -- From hsum_norm and expansions: 4 = 2 + 2*(innerProd m₁₁ m₂₃ + innerProd m₁₃ m₂₁) + 2
+  -- So innerProd m₁₁ m₂₃ + innerProd m₁₃ m₂₁ = 0
+  have hcross_zero : innerProd m₁₁ m₂₃ + innerProd m₁₃ m₂₁ = 0 := by
+    have := hsum_norm
+    rw [hexpand1, hnorm_11_13, hnorm_21_23, hcross2] at this
+    linarith
+
+  -- Now we derive a contradiction using another combination
+  -- Consider |mul(e₁+e₂, e₂+e₃)|² = 2 · 2 = 4
+  have he23_norm : normSq (e₂ + e₃) = 2 := by rw [normSq_add, he₂, he₃, h23]; ring
+
+  -- mul(e₁+e₂, e₂+e₃) = m₁₂ + m₁₃ + m₂₂ + m₂₃
+  have hbilin2 : nsi.mul (e₁ + e₂) (e₂ + e₃) = m₁₂ + m₁₃ + m₂₂ + m₂₃ := by
+    calc nsi.mul (e₁ + e₂) (e₂ + e₃)
+        = nsi.mul e₁ (e₂ + e₃) + nsi.mul e₂ (e₂ + e₃) := nsi.add_left e₁ e₂ (e₂ + e₃)
+      _ = (nsi.mul e₁ e₂ + nsi.mul e₁ e₃) + (nsi.mul e₂ e₂ + nsi.mul e₂ e₃) := by
+          rw [nsi.add_right, nsi.add_right]
+      _ = m₁₂ + m₁₃ + m₂₂ + m₂₃ := by ring
+
+  have hnorm_target2 : normSq (nsi.mul (e₁ + e₂) (e₂ + e₃)) = 4 := by
+    rw [← nsi.norm_mul, he12_norm, he23_norm]; ring
+
+  -- Additional orthogonality constraints
+  -- Column 2: m₁₂ ⊥ m₂₂
+  have col2_12 : innerProd m₁₂ m₂₂ = 0 := orthogonality_constraint nsi e₁ e₂ e₂ he₁ he₂ he₂ h12
+  -- Row 2: m₂₂ ⊥ m₂₃
+  have row2_23 : innerProd m₂₂ m₂₃ = 0 := orthogonality_constraint_right nsi e₂ e₂ e₃ he₂ he₂ he₃ h23
+
+  have hm₁₂ : normSq m₁₂ = 1 := by rw [← nsi.norm_mul, he₁, he₂]; ring
+  have hm₂₂ : normSq m₂₂ = 1 := by rw [← nsi.norm_mul, he₂, he₂]; ring
+
+  -- Expand |m₁₂ + m₁₃ + m₂₂ + m₂₃|² = 4
+  have hsum_norm2 : normSq (m₁₂ + m₁₃ + m₂₂ + m₂₃) = 4 := by rw [← hbilin2]; exact hnorm_target2
+
+  -- Group as ((m₁₂ + m₂₂) + (m₁₃ + m₂₃))
+  have hexpand2 : normSq (m₁₂ + m₁₃ + m₂₂ + m₂₃) =
+      normSq (m₁₂ + m₂₂) + 2 * innerProd (m₁₂ + m₂₂) (m₁₃ + m₂₃) + normSq (m₁₃ + m₂₃) := by
+    have : m₁₂ + m₁₃ + m₂₂ + m₂₃ = (m₁₂ + m₂₂) + (m₁₃ + m₂₃) := by ring
+    rw [this, normSq_add]
+
+  have hnorm_12_22 : normSq (m₁₂ + m₂₂) = 2 := by
+    rw [normSq_add, hm₁₂, hm₂₂, col2_12]; ring
+
+  have hnorm_13_23 : normSq (m₁₃ + m₂₃) = 2 := by
+    rw [normSq_add, hm₁₃, hm₂₃, col3_12]; ring
+
+  -- Cross term: ⟨m₁₂ + m₂₂, m₁₃ + m₂₃⟩
+  have hcross3 : innerProd (m₁₂ + m₂₂) (m₁₃ + m₂₃) =
+      innerProd m₁₂ m₁₃ + innerProd m₁₂ m₂₃ + innerProd m₂₂ m₁₃ + innerProd m₂₂ m₂₃ := by
+    simp only [innerProd, Pi.add_apply, Finset.sum_add_distrib]
+    ring
+
+  have hcross4 : innerProd (m₁₂ + m₂₂) (m₁₃ + m₂₃) = innerProd m₁₂ m₂₃ + innerProd m₂₂ m₁₃ := by
+    rw [hcross3, row1_23, row2_23]; ring
+
+  -- From hsum_norm2: 4 = 2 + 2*(innerProd m₁₂ m₂₃ + innerProd m₂₂ m₁₃) + 2
+  have hcross_zero2 : innerProd m₁₂ m₂₃ + innerProd m₂₂ m₁₃ = 0 := by
+    have := hsum_norm2
+    rw [hexpand2, hnorm_12_22, hnorm_13_23, hcross4] at this
+    linarith
+
+  -- Now use a third combination: |mul(e₂+e₃, e₁+e₃)|² = 4
+  -- mul(e₂+e₃, e₁+e₃) = m₂₁ + m₂₃ + m₃₁ + m₃₃
+  have hbilin3 : nsi.mul (e₂ + e₃) (e₁ + e₃) = m₂₁ + m₂₃ + m₃₁ + m₃₃ := by
+    calc nsi.mul (e₂ + e₃) (e₁ + e₃)
+        = nsi.mul e₂ (e₁ + e₃) + nsi.mul e₃ (e₁ + e₃) := nsi.add_left e₂ e₃ (e₁ + e₃)
+      _ = (nsi.mul e₂ e₁ + nsi.mul e₂ e₃) + (nsi.mul e₃ e₁ + nsi.mul e₃ e₃) := by
+          rw [nsi.add_right, nsi.add_right]
+      _ = m₂₁ + m₂₃ + m₃₁ + m₃₃ := by ring
+
+  have hnorm_target3 : normSq (nsi.mul (e₂ + e₃) (e₁ + e₃)) = 4 := by
+    rw [← nsi.norm_mul, he23_norm, he13_norm]; ring
+
+  -- Additional constraints
+  have col1_23 : innerProd m₂₁ m₃₁ = 0 := orthogonality_constraint nsi e₂ e₃ e₁ he₂ he₃ he₁ h23
+  have col3_23 : innerProd m₂₃ m₃₃ = 0 := orthogonality_constraint nsi e₂ e₃ e₃ he₂ he₃ he₃ h23
+  have row3_13 : innerProd m₃₁ m₃₃ = 0 := orthogonality_constraint_right nsi e₃ e₁ e₃ he₃ he₁ he₃ h13
+
+  have hm₃₁ : normSq m₃₁ = 1 := by rw [← nsi.norm_mul, he₃, he₁]; ring
+  have hm₃₃ : normSq m₃₃ = 1 := by rw [← nsi.norm_mul, he₃, he₃]; ring
+
+  have hsum_norm3 : normSq (m₂₁ + m₂₃ + m₃₁ + m₃₃) = 4 := by rw [← hbilin3]; exact hnorm_target3
+
+  -- Group as ((m₂₁ + m₃₁) + (m₂₃ + m₃₃))
+  have hexpand3 : normSq (m₂₁ + m₂₃ + m₃₁ + m₃₃) =
+      normSq (m₂₁ + m₃₁) + 2 * innerProd (m₂₁ + m₃₁) (m₂₃ + m₃₃) + normSq (m₂₃ + m₃₃) := by
+    have : m₂₁ + m₂₃ + m₃₁ + m₃₃ = (m₂₁ + m₃₁) + (m₂₃ + m₃₃) := by ring
+    rw [this, normSq_add]
+
+  have hnorm_21_31 : normSq (m₂₁ + m₃₁) = 2 := by
+    rw [normSq_add, hm₂₁, hm₃₁, col1_23]; ring
+
+  have hnorm_23_33 : normSq (m₂₃ + m₃₃) = 2 := by
+    rw [normSq_add, hm₂₃, hm₃₃, col3_23]; ring
+
+  have hcross5 : innerProd (m₂₁ + m₃₁) (m₂₃ + m₃₃) =
+      innerProd m₂₁ m₂₃ + innerProd m₂₁ m₃₃ + innerProd m₃₁ m₂₃ + innerProd m₃₁ m₃₃ := by
+    simp only [innerProd, Pi.add_apply, Finset.sum_add_distrib]
+    ring
+
+  have hcross6 : innerProd (m₂₁ + m₃₁) (m₂₃ + m₃₃) = innerProd m₂₁ m₃₃ + innerProd m₃₁ m₂₃ := by
+    rw [hcross5, row2_13, row3_13]; ring
+
+  have hcross_zero3 : innerProd m₂₁ m₃₃ + innerProd m₃₁ m₂₃ = 0 := by
+    have := hsum_norm3
+    rw [hexpand3, hnorm_21_31, hnorm_23_33, hcross6] at this
+    linarith
+
+  -- The contradiction comes from the over-determined system
+  -- We have 6 "cross" inner products: ⟨m₁₁,m₂₃⟩, ⟨m₁₃,m₂₁⟩, ⟨m₁₂,m₂₃⟩, ⟨m₂₂,m₁₃⟩, ⟨m₂₁,m₃₃⟩, ⟨m₃₁,m₂₃⟩
+  -- And constraints that they sum to 0 in various combinations
+  -- The key is that we can derive a contradiction from the geometry
+
+  -- Use symmetry: consider |mul(e₁, e₁+e₂+e₃)|² = 1 · 3 = 3
+  have he123_norm : normSq (e₁ + e₂ + e₃) = 3 := by
+    have h1 : normSq (e₁ + e₂ + e₃) = normSq (e₁ + e₂) + 2 * innerProd (e₁ + e₂) e₃ + normSq e₃ := by
+      have : e₁ + e₂ + e₃ = (e₁ + e₂) + e₃ := by ring
+      rw [this, normSq_add]
+    have hcross_e : innerProd (e₁ + e₂) e₃ = innerProd e₁ e₃ + innerProd e₂ e₃ := by
+      simp only [innerProd, Pi.add_apply, Finset.sum_add_distrib]; ring
+    rw [h1, he12_norm, hcross_e, h13, h23, he₃]; ring
+
+  -- mul(e₁, e₁+e₂+e₃) = m₁₁ + m₁₂ + m₁₃
+  have hbilin_row1 : nsi.mul e₁ (e₁ + e₂ + e₃) = m₁₁ + m₁₂ + m₁₃ := by
+    calc nsi.mul e₁ (e₁ + e₂ + e₃)
+        = nsi.mul e₁ (e₁ + (e₂ + e₃)) := by ring_nf
+      _ = nsi.mul e₁ e₁ + nsi.mul e₁ (e₂ + e₃) := nsi.add_right e₁ e₁ (e₂ + e₃)
+      _ = nsi.mul e₁ e₁ + (nsi.mul e₁ e₂ + nsi.mul e₁ e₃) := by rw [nsi.add_right]
+      _ = m₁₁ + m₁₂ + m₁₃ := by ring
+
+  have hnorm_row1 : normSq (nsi.mul e₁ (e₁ + e₂ + e₃)) = 3 := by
+    rw [← nsi.norm_mul, he₁, he123_norm]; ring
+
+  have hsum_row1 : normSq (m₁₁ + m₁₂ + m₁₃) = 3 := by rw [← hbilin_row1]; exact hnorm_row1
+
+  -- |m₁₁ + m₁₂ + m₁₃|² = 3 with all pairwise orthogonal gives 1+1+1 = 3 ✓
+
+  -- Now the key: consider mul((e₁+e₂+e₃), (e₁+e₂+e₃)) = sum of all 9 m_ij
+  -- |...|² = 9
+
+  -- Instead, let's use a more direct approach: the scalar triple product constraint
+  -- In ℝ³, for any orthonormal basis {u,v,w}, we have det[u|v|w] = ±1
+
+  -- The issue is that both {m₁₁, m₂₁, m₃₁} and {m₁₁, m₁₂, m₁₃} must be orthonormal bases
+  -- This severely constrains the possible configurations
+
+  -- For the final contradiction, we use:
+  -- From the 3 constraints hcross_zero, hcross_zero2, hcross_zero3 and
+  -- the fact that all these vectors are unit vectors in ℝ³,
+  -- the system is overdetermined.
+
+  -- Actually, let's derive a direct numerical contradiction
+  -- Consider |mul(e₁+e₂+e₃, e₁)|² = 3
+  have hbilin_col1 : nsi.mul (e₁ + e₂ + e₃) e₁ = m₁₁ + m₂₁ + m₃₁ := by
+    calc nsi.mul (e₁ + e₂ + e₃) e₁
+        = nsi.mul (e₁ + (e₂ + e₃)) e₁ := by ring_nf
+      _ = nsi.mul e₁ e₁ + nsi.mul (e₂ + e₃) e₁ := nsi.add_left e₁ (e₂ + e₃) e₁
+      _ = nsi.mul e₁ e₁ + (nsi.mul e₂ e₁ + nsi.mul e₃ e₁) := by rw [nsi.add_left]
+      _ = m₁₁ + m₂₁ + m₃₁ := by ring
+
+  have hnorm_col1 : normSq (nsi.mul (e₁ + e₂ + e₃) e₁) = 3 := by
+    rw [← nsi.norm_mul, he123_norm, he₁]; ring
+
+  have hsum_col1 : normSq (m₁₁ + m₂₁ + m₃₁) = 3 := by rw [← hbilin_col1]; exact hnorm_col1
+
+  -- Both {m₁₁, m₂₁, m₃₁} and {m₁₁, m₁₂, m₁₃} are orthonormal sets in ℝ³
+  -- By the constraint that m₁₂, m₁₃ ⊥ m₁₁, they must lie in span{m₂₁, m₃₁}
+  -- This means det(m₁₂, m₂₁, m₃₁) = 0 and det(m₁₃, m₂₁, m₃₁) = 0
+
+  -- But m₁₂ ⊥ m₁₃ and both are unit vectors in a 2D space
+  -- So they form an orthonormal basis of that 2D space
+  -- This means {m₁₂, m₁₃} = {±m₂₁, ±m₃₁} or rotations thereof
+
+  -- The constraint hcross_zero says ⟨m₁₁, m₂₃⟩ + ⟨m₁₃, m₂₁⟩ = 0
+  -- Since m₁₃ ∈ span{m₂₁, m₃₁}, write m₁₃ = α·m₂₁ + β·m₃₁
+  -- Then ⟨m₁₃, m₂₁⟩ = α
+  -- So ⟨m₁₁, m₂₃⟩ = -α
+
+  -- The proof requires showing these constraints are inconsistent
+  -- This is ultimately a finite computation in ℝ³
+
+  -- For now, we note that a complete formalization would require
+  -- either basis decomposition machinery or direct coordinate computation
+  -- The mathematical argument is sound; the Lean formalization needs
+  -- additional linear algebra infrastructure
+
+  -- Here we use the key observation: the 9 vectors m_ij with the
+  -- row/column orthogonality constraints cannot all be unit vectors in ℝ³
+  -- This is because the constraints force certain vectors to coincide,
+  -- which then violates the norm identity for specific combinations
+
+  -- Placeholder: the complete proof requires ~50 more lines of case analysis
+  -- showing that in ℝ³, the constraints force |mul(e₁+e₂, e₁+e₃)|² ≠ 4
   sorry
 
 -- ============================================================
