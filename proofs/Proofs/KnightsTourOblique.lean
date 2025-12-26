@@ -96,6 +96,7 @@ which occurs when their dot product is negative.
 
 /-- A move vector represents the direction of a knight move.
     We track dx and dy as integers. -/
+@[ext]
 structure MoveVector where
   dx : Int
   dy : Int
@@ -110,6 +111,29 @@ def allMoveVectors : List MoveVector := [
   ⟨-1, -2, by decide⟩, ⟨-2, -1, by decide⟩, ⟨-2, 1, by decide⟩, ⟨-1, 2, by decide⟩
 ]
 
+/-- Decidable equality for MoveVector -/
+instance : DecidableEq MoveVector := fun v1 v2 =>
+  if h : v1.dx = v2.dx ∧ v1.dy = v2.dy then
+    isTrue (by ext <;> [exact h.1; exact h.2])
+  else
+    isFalse (by intro heq; apply h; constructor <;> [exact congrArg MoveVector.dx heq; exact congrArg MoveVector.dy heq])
+
+/-- MoveVector is a finite type with 8 elements -/
+instance : Fintype MoveVector where
+  elems := ⟨allMoveVectors, by decide⟩
+  complete := fun ⟨dx, dy, hv⟩ => by
+    simp only [Finset.mem_mk, Multiset.mem_coe, allMoveVectors, List.mem_cons, List.mem_singleton,
+               List.not_mem_nil, or_false]
+    simp only [isKnightOffset, knightOffsets, decide_eq_true_eq] at hv
+    simp only [List.mem_cons, Prod.mk.injEq, List.mem_singleton, List.not_mem_nil, or_false] at hv
+    rcases hv with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ |
+                   ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;>
+    first | left; rfl | right; left; rfl | right; right; left; rfl |
+            right; right; right; left; rfl | right; right; right; right; left; rfl |
+            right; right; right; right; right; left; rfl |
+            right; right; right; right; right; right; left; rfl |
+            right; right; right; right; right; right; right; rfl
+
 /-- Dot product of two move vectors -/
 def MoveVector.dot (v1 v2 : MoveVector) : Int :=
   v1.dx * v2.dx + v1.dy * v2.dy
@@ -117,18 +141,23 @@ def MoveVector.dot (v1 v2 : MoveVector) : Int :=
 /-- An oblique turn has negative dot product (angle > 90 degrees).
 
     For knight moves, the possible dot products are:
-    - Positive (acute): 5, 4, 1
+    - Positive (acute): 5, 4, 3
     - Zero (right angle): 0
-    - Negative (obtuse/oblique): -1, -4, -5
+    - Negative (obtuse/oblique): -3, -4, -5
 
     An oblique turn means the knight is "doubling back" somewhat. -/
 def isOblique (v1 v2 : MoveVector) : Bool :=
   v1.dot v2 < 0
 
-/-- All possible dot products between knight move vectors -/
+/-- All possible dot products between knight move vectors.
+    Computed by enumerating all 64 pairs of the 8 knight directions.
+    Values: (1,2)·(1,2)=5, (1,2)·(2,1)=4, (1,2)·(1,-2)=-3, etc. -/
 theorem dot_product_values (v1 v2 : MoveVector) :
-    v1.dot v2 ∈ ({-5, -4, -1, 0, 1, 4, 5} : Set Int) := by
-  sorry -- 64-case analysis on knight move pairs
+    v1.dot v2 ∈ ({-5, -4, -3, 0, 3, 4, 5} : Set Int) := by
+  -- Enumerate all 64 cases using fin_cases
+  fin_cases v1 <;> fin_cases v2 <;>
+  simp only [MoveVector.dot, Set.mem_insert_iff, Set.mem_singleton_iff] <;>
+  decide
 
 /-!
 ## Section 3: Tour Representation
@@ -224,7 +253,11 @@ def turnAngle (v1 v2 : MoveVector) : ZMod 8 :=
     The oblique turns are exactly those with dot product < 0. -/
 theorem oblique_iff_large_turn (v1 v2 : MoveVector) :
     isOblique v1 v2 = true ↔ turnAngle v1 v2 ∈ ({3, 4, 5} : Set (ZMod 8)) := by
-  sorry -- 64-case analysis
+  -- 64-case enumeration using fin_cases
+  fin_cases v1 <;> fin_cases v2 <;>
+  simp only [isOblique, MoveVector.dot, turnAngle, moveDirection,
+             Set.mem_insert_iff, Set.mem_singleton_iff] <;>
+  decide
 
 /-- The sum of all turn angles in a closed tour is 0 (mod 8).
 
@@ -233,21 +266,33 @@ theorem oblique_iff_large_turn (v1 v2 : MoveVector) :
     360° = 8 units in our discretization.
 
     Proof: This is a telescoping sum! -/
-theorem tour_winding_zero (t : ClosedTour) : True := by
+theorem tour_winding_zero (_t : ClosedTour) : True := by
   -- The actual statement would be: sum of turn angles = 0 mod 8
   -- This is a telescoping sum that cancels
   trivial
 
 /-- **Main Lower Bound Theorem**: Every closed knight's tour has at least 4 oblique turns.
 
-    Proof sketch:
+    Proof sketch (from Knuth's lecture):
     1. The tour has 64 moves, hence 64 turns (it's closed)
     2. Sum of all turn angles ≡ 0 (mod 8) [winding constraint]
-    3. Oblique turns contribute angles in {3, 4, 5}
+    3. Oblique turns contribute angles in {3, 5} (NOT 4 - reversal impossible!)
     4. Non-oblique turns contribute angles in {0, 1, 2, 6, 7}
-    5. A counting/parity argument shows at least 4 are needed -/
+    5. Key observation: angles 3 and 5 are ≡ ±3 (mod 8)
+    6. The 64 turn angles sum to 0 mod 8 (telescoping)
+    7. With <4 oblique turns, we can't get enough "3-contribution" to sum to 0
+
+    Full proof requires showing that for any partition into oblique (±3 mod 8)
+    and non-oblique (0, ±1, ±2 mod 8) with total 64 terms summing to 0 mod 8,
+    we need at least 4 terms from the oblique set. -/
 theorem oblique_lower_bound (t : ClosedTour) : obliqueCount t ≥ 4 := by
-  sorry -- Counting argument on Z/8Z
+  -- This requires a counting/modular arithmetic argument
+  -- Key lemma: if sum of 64 terms (each ∈ {0,±1,±2,±3}) ≡ 0 (mod 8),
+  -- and ≤3 terms are from {±3}, the sum cannot reach 0 mod 8.
+  -- Proof: Max contribution from ≤3 oblique terms is ±9 ≡ ±1 (mod 8)
+  --        Max non-oblique contribution is ±2*61 = ±122 ≡ ±2 (mod 8)
+  --        Combined: only ±1, ±2, ±3 reachable, not 0
+  sorry -- Requires computational verification or detailed case analysis
 
 /-!
 ## Section 5: D4 Symmetry and Group Action
@@ -326,12 +371,102 @@ theorem applyD4_injective (g : Bool × Fin 4) : Function.Injective (applyD4 g) :
     simp only [hg, ↓reduceIte] at h'
     exact reflectSquare_injective h'
 
+/-- 90° rotation of a knight offset is still a knight offset: (dx, dy) → (-dy, dx) -/
+theorem rotate_knight_offset {dx dy : Int} (h : isKnightOffset dx dy = true) :
+    isKnightOffset (-dy) dx = true := by
+  simp only [isKnightOffset, knightOffsets, decide_eq_true_eq] at h ⊢
+  simp only [List.mem_cons, Prod.mk.injEq, List.mem_singleton, List.not_mem_nil, or_false] at h ⊢
+  rcases h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ |
+               ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> simp
+
+/-- Rotation by 90° preserves knight adjacency.
+    Key: rotation maps offset (dx, dy) → (-dy, dx), preserving L-shape.
+    Each of the 8 offsets maps to another: (1,2)→(-2,1), (2,1)→(-1,2), etc. -/
+theorem rotate90_preserves_adj (s1 s2 : Square) :
+    knightGraph.Adj s1 s2 ↔ knightGraph.Adj (rotateSquare90 s1) (rotateSquare90 s2) := by
+  simp only [knightGraph, SimpleGraph.Adj, knightAdj, rotateSquare90]
+  -- After rotation: new_dx = (7 - s2.2) - (7 - s1.2) = s1.2 - s2.2 = -dy
+  --                 new_dy = s2.1 - s1.1 = dx
+  -- Simplify the Fin coercions
+  have h1 : (↑(7 - s2.2.val) : Int) - ↑(7 - s1.2.val) = -(↑s2.2.val : Int) + ↑s1.2.val := by omega
+  have h2 : (↑(7 - s2.2.val) : Int) - ↑(7 - s1.2.val) = -(↑s2.2.val - ↑s1.2.val) := by omega
+  constructor
+  · intro h
+    have hoff := rotate_knight_offset h
+    simp only [Fin.val_natCast] at hoff ⊢
+    rw [h2]
+    exact hoff
+  · intro h
+    -- The inverse rotation maps (-dy, dx) back to (dx, dy)
+    -- Apply rotation 3 times to get back: (dx,dy) -> (-dy,dx) -> (-dx,-dy) -> (dy,-dx) -> (dx,dy)
+    have hrot := rotate_knight_offset h
+    have hrot2 := rotate_knight_offset hrot
+    have hrot3 := rotate_knight_offset hrot2
+    simp only [Fin.val_natCast] at hrot3 ⊢
+    convert hrot3 using 2 <;> omega
+
+/-- X-reflection of a knight offset is still a knight offset: (dx, dy) → (-dx, dy) -/
+theorem reflect_knight_offset {dx dy : Int} (h : isKnightOffset dx dy = true) :
+    isKnightOffset (-dx) dy = true := by
+  simp only [isKnightOffset, knightOffsets, decide_eq_true_eq] at h ⊢
+  simp only [List.mem_cons, Prod.mk.injEq, List.mem_singleton, List.not_mem_nil, or_false] at h ⊢
+  rcases h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ |
+               ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> simp
+
+/-- Reflection preserves knight adjacency.
+    Key: reflection maps offset (dx, dy) → (-dx, dy), preserving L-shape.
+    Each of the 8 offsets maps to another: (1,2)→(-1,2), (2,1)→(-2,1), etc. -/
+theorem reflect_preserves_adj (s1 s2 : Square) :
+    knightGraph.Adj s1 s2 ↔ knightGraph.Adj (reflectSquare s1) (reflectSquare s2) := by
+  simp only [knightGraph, SimpleGraph.Adj, knightAdj, reflectSquare]
+  -- After reflection: new_dx = (7 - s2.1) - (7 - s1.1) = s1.1 - s2.1 = -dx
+  --                   new_dy = s2.2 - s1.2 = dy
+  constructor
+  · intro h
+    have hoff := reflect_knight_offset h
+    simp only [Fin.val_natCast] at hoff ⊢
+    convert hoff using 2
+    omega
+  · intro h
+    -- Double reflection is identity: apply again
+    have hrefl := reflect_knight_offset h
+    simp only [Fin.val_natCast] at hrefl ⊢
+    convert hrefl using 2
+    omega
+
+/-- rotateSquareN preserves knight adjacency -/
+theorem rotateN_preserves_adj (n : Fin 4) (s1 s2 : Square) :
+    knightGraph.Adj s1 s2 ↔ knightGraph.Adj (rotateSquareN n s1) (rotateSquareN n s2) := by
+  match n with
+  | ⟨0, _⟩ => simp only [rotateSquareN]
+  | ⟨1, _⟩ => simp only [rotateSquareN]; exact rotate90_preserves_adj s1 s2
+  | ⟨2, _⟩ =>
+    simp only [rotateSquareN]
+    calc knightGraph.Adj s1 s2
+        ↔ knightGraph.Adj (rotateSquare90 s1) (rotateSquare90 s2) := rotate90_preserves_adj s1 s2
+      _ ↔ knightGraph.Adj (rotateSquare90 (rotateSquare90 s1)) (rotateSquare90 (rotateSquare90 s2)) :=
+          rotate90_preserves_adj _ _
+  | ⟨3, _⟩ =>
+    simp only [rotateSquareN]
+    calc knightGraph.Adj s1 s2
+        ↔ knightGraph.Adj (rotateSquare90 s1) (rotateSquare90 s2) := rotate90_preserves_adj s1 s2
+      _ ↔ knightGraph.Adj (rotateSquare90 (rotateSquare90 s1)) (rotateSquare90 (rotateSquare90 s2)) :=
+          rotate90_preserves_adj _ _
+      _ ↔ knightGraph.Adj (rotateSquare90 (rotateSquare90 (rotateSquare90 s1)))
+            (rotateSquare90 (rotateSquare90 (rotateSquare90 s2))) := rotate90_preserves_adj _ _
+
 /-- Knight adjacency is preserved under D4 symmetries -/
 theorem knight_adj_invariant (g : Bool × Fin 4) (s1 s2 : Square) :
     knightGraph.Adj s1 s2 ↔ knightGraph.Adj (applyD4 g s1) (applyD4 g s2) := by
-  -- D4 transformations preserve the L-shape; the proof follows from
-  -- the fact that D4 acts by orthogonal transformations on the board
-  sorry -- Technical proof: D4 preserves {±1, ±2} × {±1, ±2} offset structure
+  simp only [applyD4]
+  cases hg : g.1 with
+  | false =>
+    simp only [hg, ↓reduceIte]
+    exact rotateN_preserves_adj g.2 s1 s2
+  | true =>
+    simp only [hg, ↓reduceIte]
+    rw [reflect_preserves_adj]
+    exact rotateN_preserves_adj g.2 (reflectSquare s1) (reflectSquare s2)
 
 /-- Apply a D4 symmetry to an entire tour -/
 def applyD4Tour (g : Bool × Fin 4) (t : ClosedTour) : ClosedTour where
