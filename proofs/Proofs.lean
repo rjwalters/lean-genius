@@ -6,6 +6,7 @@ import Proofs.OnePlusOne
 import Proofs.FundamentalTheoremCalculus
 import Proofs.InfinitudePrimes
 import Proofs.CantorDiagonalization
+import Proofs.CantorsTheorem
 import Proofs.DenumerabilityRationals
 import Proofs.SchroederBernstein
 
