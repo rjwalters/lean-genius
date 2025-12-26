@@ -2,6 +2,14 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { Play, Pause, RotateCcw, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
+// Chess knight - iconic horse head silhouette
+const KnightIcon = ({ className = '' }: { className?: string }) => (
+  <svg viewBox="4 5 36 36" fill="currentColor" className={className}>
+    <path d="M 22 10 C 32.5 11 38.5 18 38 39 L 15 39 C 15 30 25 32.5 23 18 C 21 18 20 14 20 12 C 20 7 22 10 22 10 M 24 18 C 24.38 20.91 18.45 25.37 16 27 C 13 29 13.18 31.34 11 31 C 9.958 30.06 12.41 27.96 11 28 C 10 28 11.19 29.23 10 30 C 9 30 5.997 31 6 26 C 6 24 12 14 12 14 C 12 14 13.89 12.1 14 10.5 C 13.27 9.506 13.5 8.5 13.5 7.5 C 14.5 6.5 16.5 10 16.5 10 L 18.5 10 C 18.5 10 19.28 8.008 21 7 C 22 7 22 10 22 10"/>
+    <circle cx="9" cy="25.5" r="0.5"/>
+  </svg>
+)
+
 /**
  * Tour (t) - The unique closed knight's tour with exactly 4 oblique turns.
  * Based on Knuth TAOCP Vol 4 Fascicle 8a, Fig. A-19(t)
@@ -27,7 +35,7 @@ interface Props {
 }
 
 export function KnightsTourVisualization({ className = '', compact = false }: Props) {
-  const [currentStep, setCurrentStep] = useState(0)
+  const [currentStep, setCurrentStep] = useState(1)
   const [isPlaying, setIsPlaying] = useState(false)
   const [speed, setSpeed] = useState(400)
   const animationRef = useRef<number | null>(null)
@@ -64,7 +72,7 @@ export function KnightsTourVisualization({ className = '', compact = false }: Pr
 
   const handlePlayPause = () => {
     if (currentStep >= 64) {
-      setCurrentStep(0)
+      setCurrentStep(1)
     }
     setIsPlaying(!isPlaying)
   }
@@ -78,7 +86,7 @@ export function KnightsTourVisualization({ className = '', compact = false }: Pr
 
   const handleReset = () => {
     setIsPlaying(false)
-    setCurrentStep(0)
+    setCurrentStep(1)
   }
 
   // Build path data for SVG
@@ -125,7 +133,7 @@ export function KnightsTourVisualization({ className = '', compact = false }: Pr
         <div className="relative" style={{ width: boardSize, height: boardSize }}>
           {/* Chessboard grid */}
           <div
-            className="grid grid-cols-8 absolute inset-0 border border-border rounded-sm overflow-hidden"
+            className="grid grid-cols-8 grid-rows-8 absolute inset-0 border border-border rounded-sm overflow-hidden"
             style={{ width: boardSize, height: boardSize }}
           >
             {Array.from({ length: 64 }, (_, i) => {
@@ -206,13 +214,16 @@ export function KnightsTourVisualization({ className = '', compact = false }: Pr
             )}
             {/* Knight marker */}
             {currentStep > 0 && (
-              <circle
-                cx={knightX}
-                cy={knightY}
-                r={12 / scale}
-                fill="var(--color-annotation)"
-                className="drop-shadow-lg"
-              />
+              <foreignObject
+                x={knightX - 18 / scale}
+                y={knightY - 18 / scale}
+                width={36 / scale}
+                height={36 / scale}
+              >
+                <div className="w-full h-full flex items-center justify-center text-annotation drop-shadow-lg">
+                  <KnightIcon className="w-full h-full" />
+                </div>
+              </foreignObject>
             )}
           </svg>
         </div>
@@ -284,7 +295,11 @@ export function KnightsTourVisualization({ className = '', compact = false }: Pr
           {/* Legend */}
           <div className="mt-4 pt-4 border-t border-border space-y-2">
             <div className="flex items-center gap-2 text-xs">
-              <div className="w-3 h-3 bg-annotation rounded-sm" />
+              <KnightIcon className="w-4 h-4 text-annotation" />
+              <span className="text-muted-foreground">Knight's position</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs">
+              <div className="w-4 h-0.5 rounded-full" style={{ backgroundColor: 'var(--color-annotation)' }} />
               <span className="text-muted-foreground">Knight's path</span>
             </div>
             <div className="flex items-center gap-2 text-xs">

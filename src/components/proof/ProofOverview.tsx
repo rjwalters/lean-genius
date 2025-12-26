@@ -62,13 +62,13 @@ export function ProofOverview({ proof, versionInfo }: ProofOverviewProps) {
             </p>
           </div>
         </div>
-        <Button variant="ghost" size="icon" className="shrink-0">
+        <div className="shrink-0 h-9 w-9 flex items-center justify-center rounded-md hover:bg-accent">
           {isExpanded ? (
             <ChevronUp className="h-5 w-5" />
           ) : (
             <ChevronDown className="h-5 w-5" />
           )}
-        </Button>
+        </div>
       </button>
 
       {/* Content */}
