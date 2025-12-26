@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 import { getAllProofs } from '@/data/proofs'
 import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
-import { ProofBadge, BadgeFilter, MathlibIndicator } from '@/components/ui/proof-badge'
+import { ProofBadge, WiedijkBadge, BadgeFilter, MathlibIndicator } from '@/components/ui/proof-badge'
+import { WIEDIJK_BADGE_INFO } from '@/types/proof'
 import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, Github, ArrowUpDown } from 'lucide-react'
 import type { ProofBadge as ProofBadgeType } from '@/types/proof'
 
@@ -22,13 +23,23 @@ export function HomePage() {
   const [selectedBadges, setSelectedBadges] = useState<ProofBadgeType[]>([])
   const [showFilters, setShowFilters] = useState(false)
   const [sortBy, setSortBy] = useState<SortOption>('newest')
+  const [showWiedijkOnly, setShowWiedijkOnly] = useState(false)
 
   // Filter and sort proofs
   const proofs = useMemo(() => {
     let filtered = allProofs
+
+    // Filter by badge type
     if (selectedBadges.length > 0) {
-      filtered = allProofs.filter(({ proof }) =>
+      filtered = filtered.filter(({ proof }) =>
         proof.meta.badge && selectedBadges.includes(proof.meta.badge)
+      )
+    }
+
+    // Filter by Wiedijk's 100
+    if (showWiedijkOnly) {
+      filtered = filtered.filter(({ proof }) =>
+        proof.meta.wiedijkNumber !== undefined
       )
     }
 
@@ -45,7 +56,7 @@ export function HomePage() {
           return 0
       }
     })
-  }, [allProofs, selectedBadges, sortBy])
+  }, [allProofs, selectedBadges, sortBy, showWiedijkOnly])
 
   const handleBadgeToggle = (badge: ProofBadgeType) => {
     setSelectedBadges((prev) => {
@@ -56,7 +67,10 @@ export function HomePage() {
     })
   }
 
-  const clearFilters = () => setSelectedBadges([])
+  const clearFilters = () => {
+    setSelectedBadges([])
+    setShowWiedijkOnly(false)
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -117,16 +131,16 @@ export function HomePage() {
             <button
               onClick={() => setShowFilters(!showFilters)}
               className={`flex items-center gap-1.5 text-sm transition-colors ${
-                showFilters || selectedBadges.length > 0
+                showFilters || selectedBadges.length > 0 || showWiedijkOnly
                   ? 'text-annotation'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
               <Filter className="h-4 w-4" />
               <span>Filter</span>
-              {selectedBadges.length > 0 && (
+              {(selectedBadges.length > 0 || showWiedijkOnly) && (
                 <span className="bg-annotation/20 text-annotation px-1.5 py-0.5 rounded text-xs">
-                  {selectedBadges.length}
+                  {selectedBadges.length + (showWiedijkOnly ? 1 : 0)}
                 </span>
               )}
             </button>
@@ -138,7 +152,7 @@ export function HomePage() {
           <div className="mb-6 p-4 bg-card border border-border rounded-lg">
             <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-medium">Filter by Category</span>
-              {selectedBadges.length > 0 && (
+              {(selectedBadges.length > 0 || showWiedijkOnly) && (
                 <button
                   onClick={clearFilters}
                   className="text-xs text-muted-foreground hover:text-foreground"
@@ -147,10 +161,36 @@ export function HomePage() {
                 </button>
               )}
             </div>
-            <BadgeFilter
-              selectedBadges={selectedBadges}
-              onToggle={handleBadgeToggle}
-            />
+            <div className="flex flex-wrap items-center gap-2">
+              <BadgeFilter
+                selectedBadges={selectedBadges}
+                onToggle={handleBadgeToggle}
+              />
+              {/* Wiedijk Filter Toggle */}
+              <button
+                onClick={() => setShowWiedijkOnly(!showWiedijkOnly)}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all
+                  ${showWiedijkOnly
+                    ? 'ring-2 ring-offset-2 ring-offset-background'
+                    : 'opacity-50 hover:opacity-75'
+                  }`}
+                style={{
+                  backgroundColor: `${WIEDIJK_BADGE_INFO.color}20`,
+                  color: WIEDIJK_BADGE_INFO.textColor,
+                  ...(showWiedijkOnly && { ringColor: WIEDIJK_BADGE_INFO.color })
+                }}
+              >
+                <span className="inline-flex items-center justify-center h-4 w-4 rounded-full text-[9px] font-bold"
+                  style={{
+                    backgroundColor: `${WIEDIJK_BADGE_INFO.color}40`,
+                    color: WIEDIJK_BADGE_INFO.textColor
+                  }}
+                >
+                  100
+                </span>
+                <span className="hidden sm:inline">Wiedijk's 100</span>
+              </button>
+            </div>
           </div>
         )}
 
@@ -163,7 +203,10 @@ export function HomePage() {
             >
               {/* Badge row - prominently displayed at top */}
               <div className="flex items-start justify-between mb-4">
-                <ProofBadge badge={proof.meta.badge} />
+                <div className="flex items-center gap-2">
+                  <ProofBadge badge={proof.meta.badge} />
+                  <WiedijkBadge number={proof.meta.wiedijkNumber} />
+                </div>
                 <StatusBadge status={proof.meta.status} />
               </div>
 
@@ -219,7 +262,7 @@ export function HomePage() {
         </div>
 
         {/* Empty state when filters result in no proofs */}
-        {proofs.length === 0 && selectedBadges.length > 0 && (
+        {proofs.length === 0 && (selectedBadges.length > 0 || showWiedijkOnly) && (
           <div className="text-center py-12">
             <p className="text-muted-foreground mb-4">
               No proofs match the selected filters.

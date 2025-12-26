@@ -1,4 +1,4 @@
-import { BADGE_INFO, type ProofBadge as ProofBadgeType } from '@/types/proof'
+import { BADGE_INFO, WIEDIJK_BADGE_INFO, WIEDIJK_THEOREMS, type ProofBadge as ProofBadgeType } from '@/types/proof'
 import { Tooltip, TooltipTrigger, TooltipContent } from './tooltip'
 
 interface ProofBadgeProps {
@@ -45,6 +45,60 @@ export function ProofBadge({
       </TooltipTrigger>
       <TooltipContent>
         <p>{info.description}</p>
+      </TooltipContent>
+    </Tooltip>
+  )
+}
+
+interface WiedijkBadgeProps {
+  number?: number
+  size?: 'sm' | 'md'
+  className?: string
+}
+
+/**
+ * Displays a medallion badge for Wiedijk's 100 Famous Theorems
+ */
+export function WiedijkBadge({
+  number,
+  size = 'sm',
+  className = ''
+}: WiedijkBadgeProps) {
+  if (!number) return null
+
+  const sizeClasses = size === 'sm'
+    ? 'h-6 w-6 text-[10px]'
+    : 'h-8 w-8 text-xs'
+
+  const paddedNumber = number.toString().padStart(2, '0')
+  const theoremName = WIEDIJK_THEOREMS[number] || `Theorem #${number}`
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span
+          className={`inline-flex items-center justify-center rounded-full font-bold ${sizeClasses} ${className}`}
+          style={{
+            backgroundColor: `${WIEDIJK_BADGE_INFO.color}25`,
+            color: WIEDIJK_BADGE_INFO.textColor,
+            border: `1.5px solid ${WIEDIJK_BADGE_INFO.color}50`
+          }}
+        >
+          {paddedNumber}
+        </span>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p className="font-medium">Wiedijk's 100 Famous Theorems #{number}</p>
+        <p className="text-muted-foreground">{theoremName}</p>
+        <a
+          href={`${WIEDIJK_BADGE_INFO.url}#${number}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-annotation hover:underline mt-1 block"
+          onClick={(e) => e.stopPropagation()}
+        >
+          View on Wiedijk's list →
+        </a>
       </TooltipContent>
     </Tooltip>
   )

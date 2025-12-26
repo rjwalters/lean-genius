@@ -88,6 +88,36 @@ export const BADGE_INFO: Record<ProofBadge, { emoji: string; label: string; colo
 }
 
 /**
+ * Display information for Wiedijk's 100 Famous Theorems badge
+ */
+export const WIEDIJK_BADGE_INFO = {
+  color: '#CD7F32', // Bronze
+  textColor: '#8B4513', // Saddle brown for contrast
+  label: "Wiedijk's 100",
+  description: "One of Freek Wiedijk's 100 Famous Theorems",
+  url: 'https://www.cs.ru.nl/~freek/100/'
+}
+
+/**
+ * Mapping of Wiedijk theorem numbers to their names
+ * See: https://www.cs.ru.nl/~freek/100/
+ */
+export const WIEDIJK_THEOREMS: Record<number, string> = {
+  1: 'Irrationality of √2',
+  2: 'Fundamental Theorem of Algebra',
+  4: 'Pythagorean Theorem',
+  6: "Gödel's Incompleteness Theorem",
+  11: 'Infinitude of Primes',
+  15: 'Fundamental Theorem of Integral Calculus',
+  16: 'Insolvability of Higher Degree Equations',
+  22: 'Non-Denumerability of the Continuum',
+  32: 'Four Color Problem',
+  33: "Fermat's Last Theorem",
+  36: 'Brouwer Fixed Point Theorem',
+  47: 'Central Limit Theorem'
+}
+
+/**
  * A theorem or lemma imported from Mathlib
  */
 export interface MathlibDependency {
@@ -121,6 +151,8 @@ export interface ProofMeta {
   sorries?: number
   /** What this proof contributes beyond Mathlib */
   originalContributions?: string[]
+  /** Wiedijk's 100 Famous Theorems number (1-100) if applicable */
+  wiedijkNumber?: number
 }
 
 export interface ProofSection {

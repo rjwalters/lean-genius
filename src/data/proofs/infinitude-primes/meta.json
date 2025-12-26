@@ -35,7 +35,8 @@
       "Key lemmas: dvd_factorial, factorial_succ_ge_two",
       "Corollaries: every prime has a larger prime, no largest prime"
     ],
-    "dateAdded": "12/21/25"
+    "dateAdded": "12/21/25",
+    "wiedijkNumber": 11
   },
   "overview": {
     "historicalContext": "Euclid's theorem on the infinitude of primes appears as Proposition 20 in Book IX of his Elements, written around 300 BCE in Alexandria. This makes it one of the oldest theorems with a proof that is still taught essentially unchanged today.\n\nThe result answered a question that must have puzzled ancient mathematicians: the primes 2, 3, 5, 7, 11, 13... seem to thin out as numbers grow larger. Do they eventually stop? Euclid showed definitively that they do not.\n\nWhat makes this proof remarkable is its method. Rather than trying to find large primes directly (which is computationally hard even today), Euclid showed that assuming finitely many primes leads to a contradiction. This proof by contradiction became a template for countless mathematical arguments.\n\nThe theorem launched two millennia of investigation into prime distribution, from Euler's proof that $\\sum 1/p$ diverges, to the Prime Number Theorem (1896), to the still-unsolved Riemann Hypothesis.",
