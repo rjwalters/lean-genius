@@ -21,6 +21,16 @@ export interface ProofConclusion {
   summary: string
   implications: string
   openQuestions?: string[]
+  alternativeInterpretation?: AlternativeInterpretation
+}
+
+export interface AlternativeInterpretation {
+  title: string
+  summary: string
+  perspective: string
+  computationalView?: string
+  historicalContext?: string
+  leanFoundations?: string
 }
 
 /**
