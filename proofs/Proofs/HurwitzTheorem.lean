@@ -472,10 +472,10 @@ theorem no_three_square_identity : ∀ f : NSquareIdentity 3, False := by
   have row2_13 : innerProd m₂₁ m₂₃ = 0 := orthogonality_constraint_right nsi e₂ e₁ e₃ he₂ he₁ he₃ h13
 
   -- Unit norms of image vectors
-  have hm₁₁ : normSq m₁₁ = 1 := by rw [← nsi.norm_mul, he₁, he₁]; ring
-  have hm₁₃ : normSq m₁₃ = 1 := by rw [← nsi.norm_mul, he₁, he₃]; ring
-  have hm₂₁ : normSq m₂₁ = 1 := by rw [← nsi.norm_mul, he₂, he₁]; ring
-  have hm₂₃ : normSq m₂₃ = 1 := by rw [← nsi.norm_mul, he₂, he₃]; ring
+  have hm₁₁ : normSq m₁₁ = 1 := by simp only [← nsi.norm_mul, he₁]; ring
+  have hm₁₃ : normSq m₁₃ = 1 := by simp only [← nsi.norm_mul, he₁, he₃]; ring
+  have hm₂₁ : normSq m₂₁ = 1 := by simp only [← nsi.norm_mul, he₂, he₁]; ring
+  have hm₂₃ : normSq m₂₃ = 1 := by simp only [← nsi.norm_mul, he₂, he₃]; ring
 
   -- Key identity: |mul(e₁+e₂, e₁+e₃)|² = |e₁+e₂|² · |e₁+e₃|² = 2 · 2 = 4
   -- First compute |e₁+e₂|² and |e₁+e₃|²
@@ -517,8 +517,9 @@ theorem no_three_square_identity : ∀ f : NSquareIdentity 3, False := by
   -- ⟨m₁₁ + m₁₃, m₂₁ + m₂₃⟩ = ⟨m₁₁,m₂₁⟩ + ⟨m₁₁,m₂₃⟩ + ⟨m₁₃,m₂₁⟩ + ⟨m₁₃,m₂₃⟩
   have hcross : innerProd (m₁₁ + m₁₃) (m₂₁ + m₂₃) =
       innerProd m₁₁ m₂₁ + innerProd m₁₁ m₂₃ + innerProd m₁₃ m₂₁ + innerProd m₁₃ m₂₃ := by
-    simp only [innerProd, Pi.add_apply, Finset.sum_add_distrib]
-    ring
+    simp only [innerProd, Pi.add_apply]
+    rw [← Finset.sum_add_distrib, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+    congr 1; ext i; ring
 
   -- Substitute known zeros
   have hcross2 : innerProd (m₁₁ + m₁₃) (m₂₁ + m₂₃) = innerProd m₁₁ m₂₃ + innerProd m₁₃ m₂₁ := by
@@ -552,8 +553,8 @@ theorem no_three_square_identity : ∀ f : NSquareIdentity 3, False := by
   -- Row 2: m₂₂ ⊥ m₂₃
   have row2_23 : innerProd m₂₂ m₂₃ = 0 := orthogonality_constraint_right nsi e₂ e₂ e₃ he₂ he₂ he₃ h23
 
-  have hm₁₂ : normSq m₁₂ = 1 := by rw [← nsi.norm_mul, he₁, he₂]; ring
-  have hm₂₂ : normSq m₂₂ = 1 := by rw [← nsi.norm_mul, he₂, he₂]; ring
+  have hm₁₂ : normSq m₁₂ = 1 := by simp only [← nsi.norm_mul, he₁, he₂]; ring
+  have hm₂₂ : normSq m₂₂ = 1 := by simp only [← nsi.norm_mul, he₂]; ring
 
   -- Expand |m₁₂ + m₁₃ + m₂₂ + m₂₃|² = 4
   have hsum_norm2 : normSq (m₁₂ + m₁₃ + m₂₂ + m₂₃) = 4 := by rw [← hbilin2]; exact hnorm_target2
@@ -573,8 +574,9 @@ theorem no_three_square_identity : ∀ f : NSquareIdentity 3, False := by
   -- Cross term: ⟨m₁₂ + m₂₂, m₁₃ + m₂₃⟩
   have hcross3 : innerProd (m₁₂ + m₂₂) (m₁₃ + m₂₃) =
       innerProd m₁₂ m₁₃ + innerProd m₁₂ m₂₃ + innerProd m₂₂ m₁₃ + innerProd m₂₂ m₂₃ := by
-    simp only [innerProd, Pi.add_apply, Finset.sum_add_distrib]
-    ring
+    simp only [innerProd, Pi.add_apply]
+    rw [← Finset.sum_add_distrib, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+    congr 1; ext i; ring
 
   have hcross4 : innerProd (m₁₂ + m₂₂) (m₁₃ + m₂₃) = innerProd m₁₂ m₂₃ + innerProd m₂₂ m₁₃ := by
     rw [hcross3, row1_23, row2_23]; ring
@@ -602,8 +604,8 @@ theorem no_three_square_identity : ∀ f : NSquareIdentity 3, False := by
   have col3_23 : innerProd m₂₃ m₃₃ = 0 := orthogonality_constraint nsi e₂ e₃ e₃ he₂ he₃ he₃ h23
   have row3_13 : innerProd m₃₁ m₃₃ = 0 := orthogonality_constraint_right nsi e₃ e₁ e₃ he₃ he₁ he₃ h13
 
-  have hm₃₁ : normSq m₃₁ = 1 := by rw [← nsi.norm_mul, he₃, he₁]; ring
-  have hm₃₃ : normSq m₃₃ = 1 := by rw [← nsi.norm_mul, he₃, he₃]; ring
+  have hm₃₁ : normSq m₃₁ = 1 := by simp only [← nsi.norm_mul, he₃, he₁]; ring
+  have hm₃₃ : normSq m₃₃ = 1 := by simp only [← nsi.norm_mul, he₃]; ring
 
   have hsum_norm3 : normSq (m₂₁ + m₂₃ + m₃₁ + m₃₃) = 4 := by rw [← hbilin3]; exact hnorm_target3
 
@@ -621,8 +623,9 @@ theorem no_three_square_identity : ∀ f : NSquareIdentity 3, False := by
 
   have hcross5 : innerProd (m₂₁ + m₃₁) (m₂₃ + m₃₃) =
       innerProd m₂₁ m₂₃ + innerProd m₂₁ m₃₃ + innerProd m₃₁ m₂₃ + innerProd m₃₁ m₃₃ := by
-    simp only [innerProd, Pi.add_apply, Finset.sum_add_distrib]
-    ring
+    simp only [innerProd, Pi.add_apply]
+    rw [← Finset.sum_add_distrib, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+    congr 1; ext i; ring
 
   have hcross6 : innerProd (m₂₁ + m₃₁) (m₂₃ + m₃₃) = innerProd m₂₁ m₃₃ + innerProd m₃₁ m₂₃ := by
     rw [hcross5, row2_13, row3_13]; ring
@@ -643,7 +646,9 @@ theorem no_three_square_identity : ∀ f : NSquareIdentity 3, False := by
       have : e₁ + e₂ + e₃ = (e₁ + e₂) + e₃ := by ring
       rw [this, normSq_add]
     have hcross_e : innerProd (e₁ + e₂) e₃ = innerProd e₁ e₃ + innerProd e₂ e₃ := by
-      simp only [innerProd, Pi.add_apply, Finset.sum_add_distrib]; ring
+      simp only [innerProd, Pi.add_apply]
+      rw [← Finset.sum_add_distrib]
+      congr 1; ext i; ring
     rw [h1, he12_norm, hcross_e, h13, h23, he₃]; ring
 
   -- mul(e₁, e₁+e₂+e₃) = m₁₁ + m₁₂ + m₁₃
