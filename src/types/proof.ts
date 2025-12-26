@@ -117,7 +117,8 @@ export const WIEDIJK_THEOREMS: Record<number, string> = {
   36: 'Brouwer Fixed Point Theorem',
   47: 'Central Limit Theorem',
   51: "Wilson's Theorem",
-  63: "Cantor's Theorem"
+  63: "Cantor's Theorem",
+  66: 'Sum of a Geometric Series'
 }
 
 /**
