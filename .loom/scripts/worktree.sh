@@ -237,6 +237,11 @@ if check_if_in_worktree; then
     fi
 fi
 
+# Set MAIN_WORKSPACE if not already set (when running from main workspace directly)
+if [[ -z "$MAIN_WORKSPACE" ]]; then
+    MAIN_WORKSPACE=$(pwd)
+fi
+
 # Determine branch name
 if [[ -n "$CUSTOM_BRANCH" ]]; then
     BRANCH_NAME="feature/$CUSTOM_BRANCH"
@@ -357,9 +362,7 @@ if git worktree add "${CREATE_ARGS[@]}"; then
     # This shares the pre-built Mathlib artifacts with the worktree instead of
     # downloading them again (which is slow and duplicates disk usage)
     WORKTREE_PROOFS_DIR="$ABS_WORKTREE_PATH/proofs"
-    # Get absolute path to main workspace from git common dir
-    MAIN_WORKSPACE_ABS=$(dirname "$(git rev-parse --git-common-dir)")
-    MAIN_PROOFS_LAKE="$MAIN_WORKSPACE_ABS/proofs/.lake"
+    MAIN_PROOFS_LAKE="$MAIN_WORKSPACE/proofs/.lake"
 
     if [[ -d "$WORKTREE_PROOFS_DIR" ]] && [[ -f "$WORKTREE_PROOFS_DIR/lakefile.toml" ]]; then
         if [[ -d "$MAIN_PROOFS_LAKE" ]]; then
@@ -386,8 +389,8 @@ if git worktree add "${CREATE_ARGS[@]}"; then
             fi
         else
             if [[ "$JSON_OUTPUT" != "true" ]]; then
-                print_warning "Main workspace .lake not found at: $MAIN_PROOFS_LAKE"
-                print_info "Run 'lake exe cache get' in main workspace first, then re-run this script"
+                print_warning "Main workspace .lake not found - run 'lake build' in main first"
+                print_info "Then re-run: cd $WORKTREE_PROOFS_DIR && ln -s ../../../../proofs/.lake .lake"
             fi
         fi
     fi
