@@ -277,6 +277,49 @@ theorem tourMoves_length (t : ClosedTour) : (tourMoves t).length = 64 := by
   simp only [List.length_tail, List.length_append, List.length_singleton]
   omega
 
+/-- For adjacent squares, getMoveVector correctly captures the offset -/
+theorem getMoveVector_offset (s1 s2 : Square) (h : knightGraph.Adj s1 s2) :
+    let v := getMoveVector s1 s2
+    (s2.1 : Int) = s1.1 + v.dx ∧ (s2.2 : Int) = s1.2 + v.dy := by
+  simp only [getMoveVector, knightGraph, SimpleGraph.Adj, knightAdj] at h ⊢
+  simp only [h, ↓reduceDIte]
+  constructor <;> ring
+
+/-- If two consecutive moves have turn angle 4 (reversal), positions repeat -/
+theorem reversal_implies_repeat (s0 s1 s2 : Square)
+    (h01 : knightGraph.Adj s0 s1) (h12 : knightGraph.Adj s1 s2)
+    (hrev : turnAngle (getMoveVector s0 s1) (getMoveVector s1 s2) = 4) :
+    s0 = s2 := by
+  -- Get move vectors
+  set v1 := getMoveVector s0 s1 with hv1
+  set v2 := getMoveVector s1 s2 with hv2
+  -- Turn angle 4 means v2 = -v1
+  have hopp := (turn_angle_4_means_opposite v1 v2).mp hrev
+  obtain ⟨hdx, hdy⟩ := hopp
+  -- Get position equations
+  have ⟨hx1, hy1⟩ := getMoveVector_offset s0 s1 h01
+  have ⟨hx2, hy2⟩ := getMoveVector_offset s1 s2 h12
+  -- Show s0 = s2
+  ext
+  · -- First coordinate
+    have heq : (s2.1 : Int) = s0.1 := by
+      calc (s2.1 : Int) = s1.1 + v2.dx := hx2
+        _ = s1.1 + (-v1.dx) := by rw [hdx]
+        _ = (s0.1 + v1.dx) - v1.dx := by rw [hx1]; ring
+        _ = s0.1 := by ring
+    have hs0 : (s0.1 : Nat) < 8 := s0.1.isLt
+    have hs2 : (s2.1 : Nat) < 8 := s2.1.isLt
+    omega
+  · -- Second coordinate
+    have heq : (s2.2 : Int) = s0.2 := by
+      calc (s2.2 : Int) = s1.2 + v2.dy := hy2
+        _ = s1.2 + (-v1.dy) := by rw [hdy]
+        _ = (s0.2 + v1.dy) - v1.dy := by rw [hy1]; ring
+        _ = s0.2 := by ring
+    have hs0 : (s0.2 : Nat) < 8 := s0.2.isLt
+    have hs2 : (s2.2 : Nat) < 8 := s2.2.isLt
+    omega
+
 /-- In a valid closed tour, turn angle 4 never occurs at any position.
 
     Proof: If turn angle is 4 at position i, then move[i+1] = -move[i].
@@ -294,9 +337,12 @@ theorem no_turn_angle_4_in_tour (t : ClosedTour) (i : Fin 63) :
     let v2 := moves[i.val + 1]'(by omega)
     turnAngle v1 v2 ≠ 4 := by
   intro heq
-  -- If turn angle is 4, then v2 = -v1, meaning we'd revisit a position
-  -- This contradicts nodup
-  sorry -- Requires connecting getMoveVector back to tour positions
+  -- Extract the three relevant positions: s0 = squares[i], s1 = squares[i+1], s2 = squares[i+2]
+  -- The moves are getMoveVector s0 s1 and getMoveVector s1 s2
+  -- By reversal_implies_repeat, turn angle 4 implies s0 = s2
+  -- But this contradicts nodup since i ≠ i+2
+  -- The technical details of extracting squares from tourMoves are complex
+  sorry -- Requires detailed list indexing lemmas for tourMoves
 
 /-- The sum of all turn angles in a closed tour is 0 (mod 8).
 
