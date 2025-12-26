@@ -91,8 +91,8 @@ export const BADGE_INFO: Record<ProofBadge, { emoji: string; label: string; colo
  * Display information for Wiedijk's 100 Famous Theorems badge
  */
 export const WIEDIJK_BADGE_INFO = {
-  color: '#CD7F32', // Bronze
-  textColor: '#8B4513', // Saddle brown for contrast
+  color: '#f59e0b', // Amber (matches annotation color)
+  textColor: '#f59e0b', // Same amber for text
   label: "Wiedijk's 100",
   description: "One of Freek Wiedijk's 100 Famous Theorems",
   url: 'https://www.cs.ru.nl/~freek/100/'
