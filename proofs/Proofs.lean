@@ -27,3 +27,4 @@ import Proofs.PythagoreanTheorem
 import Proofs.RamanujanSumFallacy
 import Proofs.ThreePlaceIdentity
 import Proofs.WilsonsTheorem
+import Proofs.EulerTotient
