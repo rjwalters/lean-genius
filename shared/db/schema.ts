@@ -57,7 +57,8 @@ export const sessionTokensRelations = relations(sessionTokens, ({ one }) => ({
 export const comments = sqliteTable('comments', {
   id: text('id').primaryKey(),
   proofId: text('proof_id').notNull(),
-  lineNumber: integer('line_number').notNull(),
+  annotationId: text('annotation_id'), // Stable anchor to author annotation (preferred)
+  lineNumber: integer('line_number'), // Legacy anchor (may drift when source changes)
   parentId: text('parent_id'), // NULL for root comments, references comments.id for replies
   userId: text('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
   content: text('content').notNull(), // Supports $LaTeX$ via MathText
@@ -66,6 +67,7 @@ export const comments = sqliteTable('comments', {
   deletedAt: integer('deleted_at'), // Soft delete
 }, (table) => [
   index('idx_comments_proof_line').on(table.proofId, table.lineNumber),
+  index('idx_comments_annotation').on(table.annotationId),
   index('idx_comments_parent').on(table.parentId),
   index('idx_comments_user').on(table.userId),
   index('idx_comments_created').on(table.createdAt),

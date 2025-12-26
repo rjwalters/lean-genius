@@ -2,112 +2,165 @@
   {
     "id": "ann-imports",
     "proofId": "lagrange-four-squares",
-    "range": { "startLine": 1, "endLine": 2 },
+    "range": {
+      "startLine": 1,
+      "endLine": 2
+    },
     "type": "context",
     "title": "Mathlib's Four Squares Module",
     "content": "We import Mathlib's `SumFourSquares` module which contains the complete proof of Lagrange's theorem. The proof involves algebraic identities, quadratic residues, and a descent argument.",
     "mathContext": "Module provides `Nat.sum_four_squares` and related lemmas.",
     "significance": "supporting",
-    "relatedConcepts": ["Mathlib", "number theory", "sum of squares"]
+    "relatedConcepts": [
+      "Mathlib",
+      "number theory",
+      "sum of squares"
+    ]
   },
   {
     "id": "ann-historical",
     "proofId": "lagrange-four-squares",
-    "range": { "startLine": 4, "endLine": 35 },
+    "range": {
+      "startLine": 4,
+      "endLine": 40
+    },
     "type": "insight",
     "title": "From Euler to Quaternions: A 100-Year Mystery",
     "content": "Euler discovered the four-square identity in 1748, but its true meaning remained hidden until Hamilton discovered quaternions in 1843. The identity encodes quaternion multiplication!\n\nFor quaternions $q_1 = a + bi + cj + dk$ and $q_2 = x + yi + zj + wk$:\n$$|q_1 \\cdot q_2|^2 = |q_1|^2 \\cdot |q_2|^2$$\n\nwhere $|q|^2 = a^2 + b^2 + c^2 + d^2$.\n\nThis explains WHY four squares work when three don't: quaternions form a division algebra, but Frobenius proved there's no 3-dimensional division algebra.",
     "mathContext": "The four-square identity IS quaternion norm multiplicativity in disguise.",
     "significance": "critical",
-    "relatedConcepts": ["quaternions", "Hamilton", "division algebras", "Frobenius theorem"]
+    "relatedConcepts": [
+      "quaternions",
+      "Hamilton",
+      "division algebras",
+      "Frobenius theorem"
+    ]
   },
   {
     "id": "ann-euler-identity",
     "proofId": "lagrange-four-squares",
-    "range": { "startLine": 44, "endLine": 57 },
+    "range": {
+      "startLine": 44,
+      "endLine": 47
+    },
     "type": "theorem",
     "title": "Euler's Four-Square Identity",
     "content": "**The Heart of the Proof**\n\nEuler proved in 1748 that:\n$$(a^2 + b^2 + c^2 + d^2)(x^2 + y^2 + z^2 + w^2) = A^2 + B^2 + C^2 + D^2$$\n\nwhere:\n- $A = ax - by - cz - dw$\n- $B = ay + bx + cw - dz$\n- $C = az - bw + cx + dy$\n- $D = aw + bz - cy + dx$\n\nThese are exactly the components of the quaternion product $(a + bi + cj + dk)(x + yi + zj + wk)$!\n\nThe proof is pure algebra - Lean's `ring` tactic handles it instantly.",
     "mathContext": "$(a^2+b^2+c^2+d^2)(x^2+y^2+z^2+w^2) = (ax-by-cz-dw)^2 + (ay+bx+cw-dz)^2 + (az-bw+cx+dy)^2 + (aw+bz-cy+dx)^2$",
     "significance": "critical",
-    "relatedConcepts": ["quaternions", "bilinear forms", "algebraic identities"]
+    "relatedConcepts": [
+      "quaternions",
+      "bilinear forms",
+      "algebraic identities"
+    ]
   },
   {
     "id": "ann-ring-tactic",
     "proofId": "lagrange-four-squares",
-    "range": { "startLine": 57, "endLine": 57 },
+    "range": {
+      "startLine": 49,
+      "endLine": 62
+    },
     "type": "tactic",
     "title": "The ring Tactic",
     "content": "The `ring` tactic is Lean's automated prover for polynomial ring identities. It expands both sides and verifies they're equal.\n\nThis 8-term polynomial identity would be tedious to prove by hand, but `ring` handles it instantly by normalizing both sides to a canonical form.",
     "mathContext": "Ring arithmetic in any commutative ring R.",
     "significance": "supporting",
-    "relatedConcepts": ["proof automation", "polynomial identities", "commutative algebra"]
+    "relatedConcepts": [
+      "proof automation",
+      "polynomial identities",
+      "commutative algebra"
+    ]
   },
   {
     "id": "ann-why-not-three",
     "proofId": "lagrange-four-squares",
-    "range": { "startLine": 62, "endLine": 68 },
+    "range": {
+      "startLine": 49,
+      "endLine": 62
+    },
     "type": "insight",
     "title": "Why Three Squares Fail",
     "content": "**Legendre's Three Squares Theorem** tells us exactly which numbers fail:\n\nA natural number $n$ is a sum of three squares if and only if $n$ is NOT of the form $4^k(8m + 7)$.\n\nThe smallest failures are: 7, 15, 23, 28, 31, 39, 47, 55, 60, 63, ...\n\nFor example:\n- 7 = 1 + 1 + 1 + 4 (needs 4 squares)\n- 15 = 1 + 1 + 4 + 9 (needs 4 squares)\n\nThis is why four squares is special - it's universal!",
     "mathContext": "$n$ is NOT a sum of 3 squares $\\Leftrightarrow n = 4^k(8m+7)$ for some $k, m \\geq 0$.",
     "significance": "key",
-    "relatedConcepts": ["Legendre's theorem", "quadratic forms", "three squares problem"]
+    "relatedConcepts": [
+      "Legendre's theorem",
+      "quadratic forms",
+      "three squares problem"
+    ]
   },
   {
     "id": "ann-example-seven",
     "proofId": "lagrange-four-squares",
-    "range": { "startLine": 68, "endLine": 68 },
+    "range": {
+      "startLine": 49,
+      "endLine": 69
+    },
     "type": "example",
     "title": "The Notorious Seven",
     "content": "7 is the smallest number that requires all four squares:\n$$7 = 1^2 + 1^2 + 1^2 + 2^2 = 1 + 1 + 1 + 4$$\n\nYou can verify: there's no way to write 7 = a² + b² + c² with integers.",
     "mathContext": "7 = 4⁰(8·0 + 7) fits Legendre's obstruction.",
     "significance": "key",
-    "relatedConcepts": ["counterexamples", "three squares theorem"]
+    "relatedConcepts": [
+      "counterexamples",
+      "three squares theorem"
+    ]
   },
   {
     "id": "ann-main-theorem",
     "proofId": "lagrange-four-squares",
-    "range": { "startLine": 75, "endLine": 87 },
+    "range": {
+      "startLine": 71,
+      "endLine": 75
+    },
     "type": "theorem",
     "title": "Lagrange's Four Squares Theorem",
     "content": "**Every natural number is a sum of four squares.**\n\nThe proof in Mathlib follows the classical strategy:\n\n1. **Euler's Identity** reduces the problem to primes\n2. **Existence**: For each prime p, show some mp (m < p) is a sum of four squares\n3. **Descent**: If m > 1, find a smaller working multiple\n4. **Conclusion**: By descent, p itself is a sum of four squares\n5. **Extension**: Use Euler's identity for composites\n\nThis is #19 on Wiedijk's list of 100 famous theorems.",
     "mathContext": "$\\forall n \\in \\mathbb{N}, \\exists a,b,c,d \\in \\mathbb{N}: a^2 + b^2 + c^2 + d^2 = n$",
     "significance": "critical",
-    "prerequisites": ["ann-euler-identity"],
-    "relatedConcepts": ["Wiedijk 100", "descent method", "prime factorization"]
+    "prerequisites": [
+      "ann-euler-identity"
+    ],
+    "relatedConcepts": [
+      "Wiedijk 100",
+      "descent method",
+      "prime factorization"
+    ]
   },
   {
     "id": "ann-integer-version",
     "proofId": "lagrange-four-squares",
-    "range": { "startLine": 89, "endLine": 93 },
+    "range": {
+      "startLine": 82,
+      "endLine": 93
+    },
     "type": "corollary",
     "title": "Integer Version",
     "content": "The theorem also holds with integers instead of natural numbers. The squares of any integers work, since $(-a)^2 = a^2$.\n\nThis version is sometimes more convenient in algebraic contexts.",
     "mathContext": "$\\forall n \\in \\mathbb{N}, \\exists a,b,c,d \\in \\mathbb{Z}: a^2 + b^2 + c^2 + d^2 = n$",
     "significance": "supporting",
-    "relatedConcepts": ["integer arithmetic", "type coercion"]
-  },
-  {
-    "id": "ann-examples",
-    "proofId": "lagrange-four-squares",
-    "range": { "startLine": 97, "endLine": 118 },
-    "type": "example",
-    "title": "Concrete Decompositions",
-    "content": "These examples verify the theorem computationally:\n\n- 0 = 0² + 0² + 0² + 0²\n- 1 = 1² + 0² + 0² + 0²\n- 2 = 1² + 1² + 0² + 0²\n- 3 = 1² + 1² + 1² + 0²\n- **7 = 1² + 1² + 1² + 2²** (needs all four!)\n- 100 = 6² + 8² + 0² + 0² (Pythagorean triple!)\n- 100 = 6² + 6² + 6² + 4² (non-unique!)\n\nDecompositions are not unique - 100 has many representations.",
-    "mathContext": "Examples verified by `rfl` (definitional equality).",
-    "significance": "supporting",
-    "relatedConcepts": ["computational verification", "non-uniqueness"]
+    "relatedConcepts": [
+      "integer arithmetic",
+      "type coercion"
+    ]
   },
   {
     "id": "ann-two-squares-connection",
     "proofId": "lagrange-four-squares",
-    "range": { "startLine": 120, "endLine": 130 },
+    "range": {
+      "startLine": 120,
+      "endLine": 120
+    },
     "type": "insight",
     "title": "Connection to Two Squares",
     "content": "**Fermat's Two Squares Theorem**: An odd prime p is a sum of two squares iff p ≡ 1 (mod 4).\n\n- 5 ≡ 1 (mod 4): 5 = 1² + 2²\n- 13 ≡ 1 (mod 4): 13 = 2² + 3²\n- 7 ≡ 3 (mod 4): 7 is NOT a sum of two squares\n\nTwo squares is much more restrictive than four. Fermat proved the two-square theorem; Lagrange proved the four-square theorem. Together they reveal the arithmetic of quadratic forms.",
     "mathContext": "Odd prime p = a² + b² $\\Leftrightarrow$ p ≡ 1 (mod 4).",
     "significance": "key",
-    "relatedConcepts": ["Fermat two squares", "quadratic residues", "number theory"]
+    "relatedConcepts": [
+      "Fermat two squares",
+      "quadratic residues",
+      "number theory"
+    ]
   }
 ]

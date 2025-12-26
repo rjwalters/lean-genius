@@ -1,0 +1,169 @@
+[
+  {
+    "id": "ann-harmonic-imports",
+    "proofId": "harmonic-divergence",
+    "anchor": {
+      "type": "imports"
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import `Mathlib.Analysis.PSeries` which contains the main theorems about p-series convergence and the harmonic series, plus `Mathlib.Topology.Algebra.InfiniteSum.Basic` for the `Summable` predicate.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "p-series",
+      "infinite sums"
+    ]
+  },
+  {
+    "id": "ann-harmonic-main",
+    "proofId": "harmonic-divergence",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "The Main Theorem: Harmonic Series Diverges"
+    },
+    "type": "theorem",
+    "title": "Harmonic Series Not Summable",
+    "content": "**The Main Result**: The function $n \\mapsto 1/n$ is not summable over the natural numbers. In other words, $\\sum_{n=1}^{\\infty} \\frac{1}{n} = \\infty$.",
+    "mathContext": "In Lean, `Summable f` means the series $\\sum f(n)$ converges. We prove `¬Summable (fun n => 1 / n)` using Mathlib's `Real.not_summable_one_div_natCast`.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Summable",
+      "divergence",
+      "harmonic series"
+    ]
+  },
+  {
+    "id": "ann-harmonic-alt",
+    "proofId": "harmonic-divergence",
+    "anchor": {
+      "type": "doc-comment",
+      "contains": "Harmonic Series Divergence (Wiedijk #34)**"
+    },
+    "type": "theorem",
+    "title": "Alternative Formulation",
+    "content": "The same result using $n^{-1}$ notation instead of $1/n$. These are mathematically equivalent but use different Mathlib lemmas.",
+    "mathContext": "`Real.not_summable_natCast_inv` proves `¬Summable (fun n => (n : ℝ)⁻¹)`, which is the inverse notation rather than division.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "notation",
+      "inverse",
+      "equivalence"
+    ]
+  },
+  {
+    "id": "ann-oresme-intro",
+    "proofId": "harmonic-divergence",
+    "anchor": {
+      "type": "declaration",
+      "name": "partial_sums_tendsto_atTop",
+      "kind": "theorem"
+    },
+    "type": "insight",
+    "title": "Oresme's Grouping Argument",
+    "content": "The classical proof from ~1350: group terms so each group of $2^k$ consecutive terms (from $2^k$ to $2^{k+1}-1$) sums to at least $1/2$. With infinitely many such groups, the series diverges.",
+    "mathContext": "The key observation: in the group from $2^k$ to $2^{k+1}-1$, there are $2^k$ terms, and each is at least $1/2^{k+1}$. So the sum is at least $2^k \\cdot (1/2^{k+1}) = 1/2$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "grouping",
+      "comparison",
+      "Nicole Oresme"
+    ]
+  },
+  {
+    "id": "ann-term-positive",
+    "proofId": "harmonic-divergence",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Why Does This Happen? Oresme's Grouping Argument"
+    },
+    "type": "lemma",
+    "title": "Terms are Positive",
+    "content": "A simple but necessary fact: $1/n > 0$ for all $n > 0$. This ensures all our terms contribute positively to the sum.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "positivity",
+      "well-definedness"
+    ]
+  },
+  {
+    "id": "ann-group-bound",
+    "proofId": "harmonic-divergence",
+    "anchor": {
+      "type": "declaration",
+      "name": "one_div_nat_pos",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "Each Group Sums to ≥ 1/2",
+    "content": "**Key Lemma**: For $k \\geq 1$, the sum $\\sum_{i=2^k}^{2^{k+1}-1} \\frac{1}{i} \\geq \\frac{1}{2}$. This is the heart of Oresme's argument.",
+    "mathContext": "The proof: the group has $2^k$ terms, each at least $1/2^{k+1}$ (since $i \\leq 2^{k+1}-1 < 2^{k+1}$). Thus the sum is at least $2^k \\cdot (1/2^{k+1}) = 1/2$.",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-oresme-intro"
+    ],
+    "relatedConcepts": [
+      "Finset.Icc",
+      "sum bounds",
+      "cardinality"
+    ]
+  },
+  {
+    "id": "ann-p-series",
+    "proofId": "harmonic-divergence",
+    "anchor": {
+      "type": "declaration",
+      "name": "group_sum_ge_half",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "p-Series Converges for p > 1",
+    "content": "In contrast to the harmonic series ($p = 1$), the p-series $\\sum 1/n^p$ converges for any $p > 1$. The harmonic series is right at the boundary!",
+    "mathContext": "We use `Real.summable_nat_rpow_inv` which proves summability when the exponent exceeds 1. The Basel problem shows $\\sum 1/n^2 = \\pi^2/6$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "p-series",
+      "Basel problem",
+      "convergence boundary"
+    ]
+  },
+  {
+    "id": "ann-growth-rate",
+    "proofId": "harmonic-divergence",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Contrast with Convergent Series"
+    },
+    "type": "insight",
+    "title": "Logarithmic Growth",
+    "content": "The harmonic series grows like $\\ln(n)$: specifically, $H_n \\approx \\ln(n) + \\gamma$ where $\\gamma \\approx 0.5772$ is the Euler-Mascheroni constant.",
+    "mathContext": "This explains the extremely slow divergence. To reach a partial sum of 10, you need about $e^{10} \\approx 22026$ terms. To reach 100, you'd need about $e^{100} \\approx 10^{43}$ terms!",
+    "significance": "key",
+    "relatedConcepts": [
+      "logarithm",
+      "Euler-Mascheroni constant",
+      "asymptotics"
+    ]
+  },
+  {
+    "id": "ann-eventually-exceeds",
+    "proofId": "harmonic-divergence",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Asymptotic Growth Rate"
+    },
+    "type": "theorem",
+    "title": "Eventually Exceeds Any Bound",
+    "content": "For any real number $M$, there exists $N$ such that $H_n > M$ for all $n \\geq N$. This is the definition of divergence to infinity.",
+    "mathContext": "This follows directly from `partial_sums_tendsto_atTop` via the definition of `Filter.Tendsto ... Filter.atTop`.",
+    "significance": "supporting",
+    "prerequisites": [
+      "ann-partial-sums"
+    ],
+    "relatedConcepts": [
+      "divergence",
+      "unboundedness",
+      "Filter.atTop"
+    ]
+  }
+]

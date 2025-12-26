@@ -1,0 +1,262 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "perfect-numbers",
+    "range": {
+      "startLine": 4,
+      "endLine": 57
+    },
+    "type": "insight",
+    "title": "The Perfect Number Theorem",
+    "content": "A number is **perfect** if it equals the sum of its proper divisors. The first four perfect numbers are:\n\n- $6 = 1 + 2 + 3$\n- $28 = 1 + 2 + 4 + 7 + 14$\n- $496 = 1 + 2 + 4 + 8 + 16 + 31 + 62 + 124 + 248$\n- $8128 = 1 + 2 + 4 + 8 + 16 + 32 + 64 + 127 + ...$\n\nThe Euclid-Euler Theorem completely characterizes **even** perfect numbers: $n$ is even and perfect if and only if $n = 2^{k}(2^{k+1}-1)$ where $2^{k+1}-1$ is a Mersenne prime.",
+    "mathContext": "$n$ perfect $\\Leftrightarrow \\sigma(n) = 2n$\n\nwhere $\\sigma$ is the sum of divisors function.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "sum of divisors",
+      "Mersenne primes",
+      "Euclid's Elements"
+    ]
+  },
+  {
+    "id": "ann-historical",
+    "proofId": "perfect-numbers",
+    "range": {
+      "startLine": 4,
+      "endLine": 57
+    },
+    "type": "insight",
+    "title": "2,300 Years of Mathematical History",
+    "content": "This theorem spans two millennia of mathematical discovery:\n\n**Euclid (300 BCE)**: Proved in *Elements* Book IX, Proposition 36 that if $2^p - 1$ is prime, then $2^{p-1}(2^p - 1)$ is perfect.\n\n**Euler (1747)**: Proved the converse 2,000 years later, showing that every even perfect number has this form.\n\nThe question of whether **odd perfect numbers** exist remains one of the oldest unsolved problems in mathematics!",
+    "mathContext": "If odd perfect numbers exist, they must be $> 10^{1500}$ with at least 101 prime factors.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euclid's Elements",
+      "Euler's contributions",
+      "unsolved problems"
+    ]
+  },
+  {
+    "id": "ann-perfect-def",
+    "proofId": "perfect-numbers",
+    "range": {
+      "startLine": 65,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "Perfect Number Definition",
+    "content": "A number $n$ is **perfect** if $\\sigma(n) = 2n$, where $\\sigma$ is the sum-of-divisors function. Equivalently, the sum of proper divisors equals $n$.\n\nFor $n = 6$:\n- All divisors: $1, 2, 3, 6$ with sum $= 12 = 2 \\times 6$ ✓\n- Proper divisors: $1, 2, 3$ with sum $= 6$ ✓",
+    "mathContext": "$\\sigma(n) = \\sum_{d \\mid n} d$\n\n$n$ perfect $\\Leftrightarrow \\sigma(n) = 2n$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "sum of divisors",
+      "proper divisors",
+      "number theory"
+    ]
+  },
+  {
+    "id": "ann-mersenne-def",
+    "proofId": "perfect-numbers",
+    "range": {
+      "startLine": 77,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "Mersenne Numbers",
+    "content": "The **Mersenne number** $M_p = 2^p - 1$. When $M_p$ is prime, it's called a **Mersenne prime**.\n\nThe first few Mersenne primes are:\n- $M_2 = 3$\n- $M_3 = 7$\n- $M_5 = 31$\n- $M_7 = 127$\n\nNote: Not all Mersenne numbers are prime. For example, $M_4 = 15 = 3 \\times 5$.",
+    "mathContext": "$M_p = 2^p - 1$\n\nThe Great Internet Mersenne Prime Search (GIMPS) continues to find new Mersenne primes.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mersenne primes",
+      "GIMPS",
+      "prime search"
+    ]
+  },
+  {
+    "id": "ann-sigma-power-2",
+    "proofId": "perfect-numbers",
+    "range": {
+      "startLine": 81,
+      "endLine": 84
+    },
+    "type": "insight",
+    "title": "Sum of Divisors of Powers of 2",
+    "content": "The sum of divisors of $2^k$ equals the next Mersenne number:\n\n$$\\sigma(2^k) = 1 + 2 + 4 + \\cdots + 2^k = 2^{k+1} - 1 = M_{k+1}$$\n\nThis geometric series sum is a key ingredient in the proof.",
+    "mathContext": "$\\sigma(2^k) = \\sum_{i=0}^{k} 2^i = 2^{k+1} - 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "geometric series",
+      "divisor function",
+      "powers of 2"
+    ]
+  },
+  {
+    "id": "ann-euclid-thm",
+    "proofId": "perfect-numbers",
+    "range": {
+      "startLine": 88,
+      "endLine": 98
+    },
+    "type": "theorem",
+    "title": "Euclid's Theorem (Elements IX.36)",
+    "content": "**Euclid's Theorem**: If $2^{k+1} - 1$ is a Mersenne prime, then $2^k \\times (2^{k+1} - 1)$ is perfect.\n\nThis 2,300-year-old result gives a recipe for generating perfect numbers from Mersenne primes:\n\n| $k$ | Mersenne Prime | Perfect Number |\n|-----|----------------|----------------|\n| 1   | $M_2 = 3$      | $2 \\times 3 = 6$ |\n| 2   | $M_3 = 7$      | $4 \\times 7 = 28$ |\n| 4   | $M_5 = 31$     | $16 \\times 31 = 496$ |\n| 6   | $M_7 = 127$    | $64 \\times 127 = 8128$ |",
+    "mathContext": "Euclid's proof uses:\n$\\sigma(2^k \\cdot M) = \\sigma(2^k) \\cdot \\sigma(M) = (2^{k+1}-1)(M+1) = M \\cdot 2^{k+1} = 2n$",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-mersenne-def",
+      "ann-sigma-power-2"
+    ],
+    "relatedConcepts": [
+      "Euclid's Elements",
+      "constructive proof",
+      "multiplicative functions"
+    ]
+  },
+  {
+    "id": "ann-euler-thm",
+    "proofId": "perfect-numbers",
+    "range": {
+      "startLine": 102,
+      "endLine": 109
+    },
+    "type": "theorem",
+    "title": "Euler's Theorem (1747)",
+    "content": "**Euler's Theorem**: Every *even* perfect number has Euclid's form.\n\nEuler proved the converse 2,000 years after Euclid, completing the characterization of even perfect numbers. If $n$ is even and perfect, then:\n\n$$n = 2^k \\times (2^{k+1} - 1)$$\n\nwhere $2^{k+1} - 1$ is a Mersenne prime.",
+    "mathContext": "Euler's proof analyzes the prime factorization and uses properties of the multiplicative $\\sigma$ function.",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-euclid-thm"
+    ],
+    "relatedConcepts": [
+      "Euler",
+      "converse theorem",
+      "prime factorization"
+    ]
+  },
+  {
+    "id": "ann-iff-characterization",
+    "proofId": "perfect-numbers",
+    "range": {
+      "startLine": 113,
+      "endLine": 122
+    },
+    "type": "theorem",
+    "title": "Euclid-Euler Biconditional",
+    "content": "**The Complete Characterization**:\n\n$$n \\text{ is even and perfect} \\Leftrightarrow n = 2^k(2^{k+1}-1) \\text{ where } 2^{k+1}-1 \\text{ is prime}$$\n\nThis biconditional combines Euclid's ancient result with Euler's 18th-century proof, providing a complete classification of even perfect numbers.",
+    "mathContext": "This is Wiedijk's 100 Theorems #70.",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-euclid-thm",
+      "ann-euler-thm"
+    ],
+    "relatedConcepts": [
+      "classification theorem",
+      "Wiedijk 100",
+      "biconditional"
+    ]
+  },
+  {
+    "id": "ann-example-6",
+    "proofId": "perfect-numbers",
+    "range": {
+      "startLine": 129,
+      "endLine": 136
+    },
+    "type": "example",
+    "title": "First Perfect Number: 6",
+    "content": "$6 = 2^1 \\times 3$ where $3 = 2^2 - 1$ is prime.\n\n**Verification**: Proper divisors of 6 are $1, 2, 3$. Their sum is $1 + 2 + 3 = 6$. ✓\n\nThe proof uses `native_decide` to verify that $3$ is prime, then applies Euclid's theorem.",
+    "mathContext": "$6 = 2^1 \\cdot M_2 = 2 \\cdot 3$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "concrete examples",
+      "native_decide",
+      "verification"
+    ]
+  },
+  {
+    "id": "ann-example-28",
+    "proofId": "perfect-numbers",
+    "range": {
+      "startLine": 138,
+      "endLine": 145
+    },
+    "type": "example",
+    "title": "Second Perfect Number: 28",
+    "content": "$28 = 2^2 \\times 7$ where $7 = 2^3 - 1$ is prime.\n\n**Verification**: Proper divisors of 28 are $1, 2, 4, 7, 14$. Their sum is $1 + 2 + 4 + 7 + 14 = 28$. ✓",
+    "mathContext": "$28 = 2^2 \\cdot M_3 = 4 \\cdot 7$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "concrete examples",
+      "verification"
+    ]
+  },
+  {
+    "id": "ann-example-496",
+    "proofId": "perfect-numbers",
+    "range": {
+      "startLine": 147,
+      "endLine": 154
+    },
+    "type": "example",
+    "title": "Third Perfect Number: 496",
+    "content": "$496 = 2^4 \\times 31$ where $31 = 2^5 - 1$ is prime.\n\nThis is the largest perfect number the ancient Greeks knew. Nicomachus of Gerasa listed 6, 28, and 496 in his *Introduction to Arithmetic* (c. 100 CE).",
+    "mathContext": "$496 = 2^4 \\cdot M_5 = 16 \\cdot 31$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Greek mathematics",
+      "Nicomachus"
+    ]
+  },
+  {
+    "id": "ann-example-8128",
+    "proofId": "perfect-numbers",
+    "range": {
+      "startLine": 156,
+      "endLine": 163
+    },
+    "type": "example",
+    "title": "Fourth Perfect Number: 8128",
+    "content": "$8128 = 2^6 \\times 127$ where $127 = 2^7 - 1$ is prime.\n\nDiscovered in antiquity, 8128 remained the largest known perfect number for over 1,000 years until the Renaissance.",
+    "mathContext": "$8128 = 2^6 \\cdot M_7 = 64 \\cdot 127$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "mathematical history",
+      "Renaissance mathematics"
+    ]
+  },
+  {
+    "id": "ann-multiplicative-key",
+    "proofId": "perfect-numbers",
+    "range": {
+      "startLine": 186,
+      "endLine": 196
+    },
+    "type": "insight",
+    "title": "Key Algebraic Property",
+    "content": "The **multiplicativity** of $\\sigma$ is the crucial property:\n\n$$\\sigma(mn) = \\sigma(m)\\sigma(n) \\text{ when } \\gcd(m,n) = 1$$\n\nFor $n = 2^k \\cdot M$ where $M = 2^{k+1}-1$ is an odd prime:\n\n$$\\sigma(n) = \\sigma(2^k) \\cdot \\sigma(M) = (2^{k+1}-1) \\cdot (M+1) = M \\cdot 2^{k+1} = 2n$$",
+    "mathContext": "$\\sigma$ is multiplicative: $\\sigma(ab) = \\sigma(a)\\sigma(b)$ for $\\gcd(a,b)=1$\n\n$\\sigma(p) = 1 + p$ for prime $p$",
+    "significance": "key",
+    "relatedConcepts": [
+      "multiplicative functions",
+      "arithmetic functions",
+      "coprimality"
+    ]
+  },
+  {
+    "id": "ann-odd-perfect-open",
+    "proofId": "perfect-numbers",
+    "range": {
+      "startLine": 165,
+      "endLine": 184
+    },
+    "type": "insight",
+    "title": "The Odd Perfect Number Problem",
+    "content": "Whether **odd perfect numbers** exist is one of the oldest unsolved problems in mathematics (2,000+ years!).\n\nIf an odd perfect number exists, we know:\n- It must be $> 10^{1500}$\n- It must have at least 101 prime factors (not necessarily distinct)\n- It must have a specific form involving prime powers\n- Many other constraints have been proven\n\nYet no one has proven they exist or don't exist!",
+    "mathContext": "The existence of odd perfect numbers remains open despite extensive computational searches and theoretical constraints.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unsolved problems",
+      "number theory",
+      "computational search"
+    ]
+  }
+]
