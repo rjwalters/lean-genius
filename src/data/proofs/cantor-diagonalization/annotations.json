@@ -1,0 +1,134 @@
+[
+  {
+    "id": "ann-binary-seq",
+    "proofId": "cantor-diagonalization",
+    "range": { "startLine": 15, "endLine": 16 },
+    "type": "definition",
+    "title": "Binary Sequences as Functions",
+    "content": "A **binary sequence** is modeled as a function from natural numbers to booleans: `Nat -> Bool`. Each sequence assigns either `true` (1) or `false` (0) to every position.\n\nThese correspond to real numbers in $[0, 1]$ via binary expansion: the sequence $(b_0, b_1, b_2, \\ldots)$ represents $0.b_0b_1b_2\\ldots$ in binary.",
+    "mathContext": "$s : \\mathbb{N} \\to \\{0, 1\\}$\n\nFor example, the sequence $1, 0, 1, 0, 1, 0, \\ldots$ represents $0.101010\\ldots_2 = \\frac{2}{3}$ in decimal.",
+    "significance": "key",
+    "relatedConcepts": ["real numbers", "binary representation", "function types"]
+  },
+  {
+    "id": "ann-diagonal-def",
+    "proofId": "cantor-diagonalization",
+    "range": { "startLine": 19, "endLine": 21 },
+    "type": "definition",
+    "title": "The Diagonal Function",
+    "content": "Given any enumeration $f$ of binary sequences, we construct a **diagonal sequence** by:\n\n1. Look at position $n$ of sequence $n$\n2. Flip that bit (0 becomes 1, 1 becomes 0)\n\nThis ensures our new sequence differs from $f(n)$ at position $n$ for every $n$.",
+    "mathContext": "$\\text{diagonal}(f)(n) = \\neg f(n)(n)$\n\nVisually:\n```\nf(0): [0] 1  1  0  ...\nf(1):  1 [0] 0  1  ...\nf(2):  0  0 [1] 0  ...\nDiag:  1  1  0  ...  (flipped diagonal)\n```",
+    "significance": "critical",
+    "relatedConcepts": ["diagonal argument", "self-reference", "construction"]
+  },
+  {
+    "id": "ann-diagonal-differs",
+    "proofId": "cantor-diagonalization",
+    "range": { "startLine": 24, "endLine": 27 },
+    "type": "lemma",
+    "title": "Diagonal Differs at Each Position",
+    "content": "The key lemma: our constructed diagonal sequence differs from $f(n)$ specifically at position $n$.\n\nSince `diagonal f n = !(f n n)`, we have `diagonal f n != f n n` by the fact that `!b != b` for any boolean.\n\nThis one-line observation is the heart of the proof.",
+    "mathContext": "$\\text{diagonal}(f)(n) \\neq f(n)(n)$\n\nBecause $\\neg b \\neq b$ for any boolean $b$.",
+    "significance": "critical",
+    "relatedConcepts": ["boolean negation", "pointwise difference"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "cantor-diagonalization",
+    "range": { "startLine": 30, "endLine": 31 },
+    "type": "theorem",
+    "title": "Cantor's Diagonalization Theorem",
+    "content": "**For any function $f : \\mathbb{N} \\to \\text{BinarySeq}$, there exists a sequence $s$ not in the range of $f$.**\n\nIn other words, no enumeration of binary sequences can be complete. There will always be a sequence we missed.",
+    "mathContext": "$\\forall f : \\mathbb{N} \\to 2^{\\mathbb{N}}, \\exists s \\in 2^{\\mathbb{N}}, \\forall n, f(n) \\neq s$",
+    "significance": "critical",
+    "relatedConcepts": ["surjectivity", "uncountability", "cardinality"]
+  },
+  {
+    "id": "ann-proof-construct",
+    "proofId": "cantor-diagonalization",
+    "range": { "startLine": 33, "endLine": 35 },
+    "type": "tactic",
+    "title": "Constructing the Witness",
+    "content": "We exhibit the diagonal sequence as our witness. The `use` tactic provides this existential witness.\n\nNow we must prove this sequence differs from every $f(n)$.",
+    "mathContext": "Take $s = \\text{diagonal}(f)$, then show $\\forall n, f(n) \\neq s$.",
+    "significance": "key",
+    "relatedConcepts": ["existential witnesses", "constructive proof"]
+  },
+  {
+    "id": "ann-proof-differ",
+    "proofId": "cantor-diagonalization",
+    "range": { "startLine": 36, "endLine": 44 },
+    "type": "tactic",
+    "title": "Deriving the Contradiction",
+    "content": "Suppose for contradiction that $f(n) = \\text{diagonal}(f)$ for some $n$.\n\nThen at position $n$: $f(n)(n) = \\text{diagonal}(f)(n)$.\n\nBut $\\text{diagonal}(f)(n) = \\neg f(n)(n)$ by definition.\n\nSo $f(n)(n) = \\neg f(n)(n)$, which is impossible for any boolean.\n\nContradiction! Therefore $f(n) \\neq \\text{diagonal}(f)$ for all $n$.",
+    "mathContext": "$f(n) = s \\Rightarrow f(n)(n) = s(n) = \\neg f(n)(n)$ — contradiction.",
+    "significance": "critical",
+    "relatedConcepts": ["proof by contradiction", "function equality", "congruence"]
+  },
+  {
+    "id": "ann-corollary",
+    "proofId": "cantor-diagonalization",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "theorem",
+    "title": "Reals Are Uncountable",
+    "content": "The classic formulation: there is no surjective function from $\\mathbb{N}$ to the binary sequences (equivalently, to $\\mathbb{R}$).\n\nThis follows immediately from Cantor's theorem: if $f$ were surjective, every sequence would be in its range, but we just showed one isn't.",
+    "mathContext": "$\\nexists f : \\mathbb{N} \\to 2^{\\mathbb{N}}$ such that $f$ is surjective.\n\nEquivalently: $|\\mathbb{N}| < |\\mathbb{R}|$",
+    "significance": "critical",
+    "relatedConcepts": ["surjectivity", "cardinality comparison", "uncountable sets"]
+  },
+  {
+    "id": "ann-corollary-proof",
+    "proofId": "cantor-diagonalization",
+    "range": { "startLine": 49, "endLine": 54 },
+    "type": "tactic",
+    "title": "Proof of Uncountability",
+    "content": "Assume for contradiction that some surjective $f$ exists.\n\nBy Cantor's theorem, there exists $s$ with $f(n) \\neq s$ for all $n$.\n\nBut surjectivity says every $s$ equals some $f(n)$.\n\nThese contradict: $s = f(n)$ but also $f(n) \\neq s$.",
+    "mathContext": "$f$ surjective $\\Rightarrow \\forall s, \\exists n, f(n) = s$\n\nCantor: $\\exists s, \\forall n, f(n) \\neq s$\n\nContradiction!",
+    "significance": "key",
+    "relatedConcepts": ["proof by contradiction", "negating existence"]
+  },
+  {
+    "id": "ann-powerset",
+    "proofId": "cantor-diagonalization",
+    "range": { "startLine": 59, "endLine": 60 },
+    "type": "theorem",
+    "title": "Cantor's Power Set Theorem",
+    "content": "The general version: for **any** set $S$, there is no surjection from $S$ to its power set $\\mathcal{P}(S)$.\n\nThis proves $|S| < |\\mathcal{P}(S)|$ for all sets, establishing an infinite hierarchy of cardinalities.\n\nFor finite sets: $|\\mathcal{P}(S)| = 2^{|S|}$. For infinite sets: the power set is strictly larger.",
+    "mathContext": "$\\forall S, \\nexists f : S \\to \\mathcal{P}(S)$ surjective.\n\nCorollary: $|S| < |\\mathcal{P}(S)| < |\\mathcal{P}(\\mathcal{P}(S))| < \\ldots$",
+    "significance": "critical",
+    "relatedConcepts": ["power sets", "cardinality hierarchy", "beth numbers"]
+  },
+  {
+    "id": "ann-powerset-diag",
+    "proofId": "cantor-diagonalization",
+    "range": { "startLine": 62, "endLine": 63 },
+    "type": "insight",
+    "title": "The Diagonal Set",
+    "content": "The diagonal construction for sets: $D = \\{x \\in S : x \\notin f(x)\\}$.\n\nThis is the set of elements that are *not* in their own image under $f$.\n\nThis is exactly Russell's paradox applied to $f$! If $f$ were surjective, $D = f(a)$ for some $a$. But then: is $a \\in D$?",
+    "mathContext": "$D = \\{x : x \\notin f(x)\\}$\n\nIf $D = f(a)$:\n- $a \\in D \\iff a \\notin f(a) = D$ — contradiction!",
+    "significance": "critical",
+    "relatedConcepts": ["Russell's paradox", "self-reference", "fixed points"]
+  },
+  {
+    "id": "ann-powerset-proof",
+    "proofId": "cantor-diagonalization",
+    "range": { "startLine": 65, "endLine": 75 },
+    "type": "tactic",
+    "title": "The Russell Paradox Argument",
+    "content": "If $f(a) = D$ for some $a$, then:\n\n**Case 1: $a \\in D$**\nBy definition of $D$: $a \\notin f(a) = D$. Contradiction!\n\n**Case 2: $a \\notin D$**\nThen $a \\in f(a) = D$, so $a \\in D$. Contradiction!\n\nBoth cases are impossible, so no such $a$ exists, and $f$ cannot be surjective.",
+    "mathContext": "$a \\in D \\iff a \\notin f(a) \\iff a \\notin D$\n\nThis is a semantic paradox: $a \\in D \\iff a \\notin D$.",
+    "significance": "critical",
+    "relatedConcepts": ["proof by cases", "excluded middle", "Russell's paradox"]
+  },
+  {
+    "id": "ann-visualization",
+    "proofId": "cantor-diagonalization",
+    "range": { "startLine": 77, "endLine": 86 },
+    "type": "insight",
+    "title": "Visualizing the Diagonal",
+    "content": "The comment shows the diagonal argument visually. Imagine an infinite table where row $n$ is sequence $f(n)$.\n\nThe diagonal elements are $f(0)(0), f(1)(1), f(2)(2), \\ldots$\n\nFlipping each gives a sequence that differs from:\n- Row 0 at column 0\n- Row 1 at column 1\n- Row $n$ at column $n$\n\nSo the flipped diagonal cannot be any row in the table!",
+    "mathContext": "```\n     0  1  2  3  4  ...\n0:  [0] 1  1  0  1  ...\n1:   1 [0] 0  1  1  ...\n2:   0  0 [1] 0  0  ...\n3:   1  1  0 [0] 1  ...\nDiag: 1  1  0  1  ...  <- not in table\n```",
+    "significance": "key",
+    "relatedConcepts": ["infinite matrices", "diagonal extraction", "visualization"]
+  }
+]

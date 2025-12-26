@@ -1,0 +1,164 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "four-color-theorem",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "concept",
+    "title": "The Theorem That Took 124 Years",
+    "content": "The Four Color Theorem has a remarkable history. Posed in 1852, it resisted proof for over a century, defeating many brilliant mathematicians. Its eventual 1976 proof required something unprecedented: a computer checking thousands of cases no human could verify.\n\nThe theorem states that any map can be colored with at most four colors such that no two adjacent regions share a color. While easy to state and seemingly simple, the proof revealed deep connections between graph theory, combinatorics, and computation.\n\nThis formalization presents the conceptual structure. The complete proof (Appel-Haken 1976, Gonthier 2005) requires computer verification of 1,936 configurations.",
+    "significance": "critical",
+    "relatedConcepts": ["graph theory", "computer-assisted proof", "planar graphs"]
+  },
+  {
+    "id": "ann-graph-structure",
+    "proofId": "four-color-theorem",
+    "range": { "startLine": 28, "endLine": 32 },
+    "type": "definition",
+    "title": "Graphs and Their Structure",
+    "content": "We model maps as graphs where vertices represent regions and edges connect adjacent regions. This transforms the map coloring problem into a graph coloring problem.\n\nA graph $G = (V, E)$ consists of:\n- A set $V$ of vertices (the regions)\n- A set $E$ of edges (adjacency relations)\n- Edges are symmetric: if region A borders B, then B borders A\n\nThis abstraction lets us apply graph-theoretic tools to a geometric problem.",
+    "significance": "key",
+    "relatedConcepts": ["vertex", "edge", "adjacency"]
+  },
+  {
+    "id": "ann-coloring",
+    "proofId": "four-color-theorem",
+    "range": { "startLine": 34, "endLine": 43 },
+    "type": "definition",
+    "title": "Graph Coloring",
+    "content": "A **proper k-coloring** assigns one of k colors to each vertex such that adjacent vertices receive different colors. The **chromatic number** $\\chi(G)$ is the minimum k for which a proper k-coloring exists.\n\nThe Four Color Theorem states: $\\chi(G) \\leq 4$ for all planar graphs G.\n\nNote that we need $k \\geq 4$ for some graphs (like the complete graph $K_4$, where every vertex connects to every other). The theorem says 4 always suffices for planar graphs.",
+    "mathContext": "$\\chi(G) = \\min\\{k : G \\text{ is } k\\text{-colorable}\\}$",
+    "significance": "key",
+    "relatedConcepts": ["chromatic number", "proper coloring", "k-colorable"]
+  },
+  {
+    "id": "ann-planar",
+    "proofId": "four-color-theorem",
+    "range": { "startLine": 53, "endLine": 60 },
+    "type": "definition",
+    "title": "Planar Graphs",
+    "content": "A graph is **planar** if it can be drawn in the plane with no edge crossings. Equivalently, it can be embedded on a sphere.\n\nNot all graphs are planar! The complete graph $K_5$ (5 vertices, all connected) and the complete bipartite graph $K_{3,3}$ are the 'forbidden minors'—every non-planar graph contains one of these as a substructure.\n\nPlanarity is essential to the theorem. Non-planar graphs can require arbitrarily many colors.",
+    "significance": "critical",
+    "relatedConcepts": ["planar embedding", "Kuratowski's theorem", "forbidden minors"]
+  },
+  {
+    "id": "ann-euler",
+    "proofId": "four-color-theorem",
+    "range": { "startLine": 67, "endLine": 77 },
+    "type": "theorem",
+    "title": "Euler's Formula: The Fundamental Constraint",
+    "content": "For any connected planar graph embedded in the plane:\n\n$$V - E + F = 2$$\n\nwhere V = vertices, E = edges, F = faces (including the unbounded outer face).\n\nThis remarkable formula constrains planar graph structure. Combined with the handshaking lemma (sum of degrees = 2E), it implies every planar graph has a vertex of degree at most 5.\n\nThis 'low-degree vertex' existence is the entry point for inductive proofs of coloring theorems.",
+    "mathContext": "$V - E + F = 2$ for connected planar graphs",
+    "significance": "critical",
+    "prerequisites": ["ann-planar"],
+    "relatedConcepts": ["Euler characteristic", "handshaking lemma", "degree"]
+  },
+  {
+    "id": "ann-low-degree",
+    "proofId": "four-color-theorem",
+    "range": { "startLine": 82, "endLine": 84 },
+    "type": "theorem",
+    "title": "Every Planar Graph Has a Low-Degree Vertex",
+    "content": "Every planar graph with at least one vertex has a vertex of degree at most 5.\n\n**Proof sketch:** By Euler's formula and handshaking, the average degree in a planar graph is less than 6. Therefore, some vertex must have degree at most 5.\n\nThis result is crucial: it guarantees we can always find a 'removable' vertex for inductive arguments. It's why the Five Color Theorem is easy (6 colors would be trivial, 5 requires one trick, 4 requires computer assistance).",
+    "mathContext": "$\\forall G$ planar, $\\exists v \\in V(G)$ with $\\deg(v) \\leq 5$",
+    "significance": "key",
+    "prerequisites": ["ann-euler"],
+    "relatedConcepts": ["minimum degree", "induction base"]
+  },
+  {
+    "id": "ann-five-color",
+    "proofId": "four-color-theorem",
+    "range": { "startLine": 91, "endLine": 107 },
+    "type": "theorem",
+    "title": "The Five Color Theorem",
+    "content": "Every planar graph is 5-colorable. This is much easier than Four Color!\n\n**Proof by induction:**\n1. Find a vertex v of degree ≤ 5\n2. Remove v to get smaller graph G'\n3. By induction, G' is 5-colorable\n4. Restore v: it has ≤ 5 neighbors using ≤ 5 colors\n5. If all 5 colors appear among neighbors, use Kempe chains to free one\n6. Color v with the freed color\n\nThe key insight: with 5 colors and ≤ 5 neighbors, we can always make room. With 4 colors, this argument fails—hence the difficulty of the Four Color Theorem.",
+    "mathContext": "$\\chi(G) \\leq 5$ for all planar graphs G",
+    "significance": "key",
+    "prerequisites": ["ann-low-degree"],
+    "relatedConcepts": ["Heawood's proof", "induction on vertices"]
+  },
+  {
+    "id": "ann-kempe-chains",
+    "proofId": "four-color-theorem",
+    "range": { "startLine": 126, "endLine": 145 },
+    "type": "concept",
+    "title": "Kempe Chains: The Color-Swapping Trick",
+    "content": "A **Kempe chain** for colors a and b starting at vertex v is the maximal connected subgraph of vertices colored a or b containing v.\n\nThe crucial property: swapping colors a ↔ b on a Kempe chain produces another valid coloring! Adjacent vertices still have different colors because:\n- Vertices outside the chain keep their colors\n- Inside the chain, neighbors alternate between a and b\n\nKempe invented this for his 1879 'proof' of Four Colors. His argument was flawed, but the technique is correct and essential. The flaw was in handling cases where multiple Kempe chains interact.",
+    "significance": "critical",
+    "relatedConcepts": ["color swapping", "connected component", "Kempe's fallacy"]
+  },
+  {
+    "id": "ann-kempe-swap",
+    "proofId": "four-color-theorem",
+    "range": { "startLine": 147, "endLine": 155 },
+    "type": "theorem",
+    "title": "Kempe Chain Swapping Preserves Validity",
+    "content": "If we have a proper coloring and swap colors along a Kempe chain, the result is still a proper coloring.\n\n**Why it works:**\n- Any edge with both endpoints in the chain: before, one was color a, one was b; after, they're swapped but still different\n- Any edge with one endpoint in, one out: the outside endpoint keeps its original color (not a or b), so still different from the inside endpoint\n- Any edge with both endpoints outside: unchanged\n\nThis lets us 'free up' a color at a specific vertex by pushing conflicting colors elsewhere.",
+    "mathContext": "Swapping on Kempe chain preserves $\\forall(u,v) \\in E: c(u) \\neq c(v)$",
+    "significance": "key",
+    "prerequisites": ["ann-kempe-chains"],
+    "relatedConcepts": ["proper coloring", "color permutation"]
+  },
+  {
+    "id": "ann-reducibility",
+    "proofId": "four-color-theorem",
+    "range": { "startLine": 172, "endLine": 188 },
+    "type": "concept",
+    "title": "Reducibility: Configurations That Can't Block Coloring",
+    "content": "A configuration C is **reducible** if it cannot appear in a minimal counterexample to Four Color. That is: if a planar graph G contains C, then G is 4-colorable (or G can be simplified to a smaller graph that's 4-colorable).\n\nProving reducibility requires showing that any 4-coloring of the graph minus the configuration can be extended to include it. This involves analyzing all possible colorings of the boundary and showing Kempe chains can always make room.\n\nFor many configurations, this case analysis is astronomically complex—too many cases for human verification. This is where computers become essential.",
+    "significance": "critical",
+    "relatedConcepts": ["minimal counterexample", "configuration", "extendability"]
+  },
+  {
+    "id": "ann-unavoidability",
+    "proofId": "four-color-theorem",
+    "range": { "startLine": 205, "endLine": 218 },
+    "type": "concept",
+    "title": "Unavoidability: Covering All Planar Graphs",
+    "content": "A set S of configurations is **unavoidable** if every planar graph contains at least one configuration from S.\n\nThe proof uses **discharging**: assign each vertex an initial 'charge' (typically 6 - degree), then redistribute charges according to rules. The total charge is fixed by Euler's formula.\n\nBy carefully designed discharging rules, we can show that if no configuration from S appears, some vertex ends up with positive charge when it shouldn't. Contradiction!\n\nAppel-Haken's 1,936 configurations form an unavoidable set. Combined with their reducibility, this proves Four Color.",
+    "mathContext": "$\\forall G$ planar, $\\exists C \\in S$ with $C \\subseteq G$",
+    "significance": "critical",
+    "relatedConcepts": ["discharging method", "charge transfer", "averaging argument"]
+  },
+  {
+    "id": "ann-computer-verification",
+    "proofId": "four-color-theorem",
+    "range": { "startLine": 234, "endLine": 258 },
+    "type": "concept",
+    "title": "Computer-Assisted Proof",
+    "content": "The Appel-Haken proof (1976) required:\n- 1,200 hours of computer time\n- Verification of 1,936 configurations\n- 400+ pages of hand-written supporting proofs\n\nInitial reception was skeptical. How can we trust a proof no human can check? What if there's a bug in the program?\n\nGeorges Gonthier's 2005 Coq formalization addressed these concerns by reducing trust to a small, verified proof-checking kernel. The proof certificate is machine-checkable, and the checker itself is tiny enough to be human-verified.\n\nThis paradigm shift—from 'trust the program' to 'trust the proof checker'—has become foundational in formal methods.",
+    "significance": "key",
+    "relatedConcepts": ["Coq", "formal verification", "proof assistant"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "four-color-theorem",
+    "range": { "startLine": 280, "endLine": 293 },
+    "type": "theorem",
+    "title": "The Four Color Theorem",
+    "content": "**Theorem:** Every planar graph is 4-colorable.\n\n**Proof structure:**\n1. Assume a minimal counterexample G exists (smallest non-4-colorable planar graph)\n2. By unavoidability, G contains some reducible configuration C\n3. By reducibility, we can simplify G to a smaller graph G'\n4. By minimality of G, the smaller G' is 4-colorable\n5. By reducibility, G' being 4-colorable means G is 4-colorable\n6. Contradiction! No minimal counterexample exists.\n\nTherefore, all planar graphs are 4-colorable.",
+    "mathContext": "$\\forall G$ planar, $\\chi(G) \\leq 4$",
+    "significance": "critical",
+    "prerequisites": ["ann-reducibility", "ann-unavoidability"],
+    "relatedConcepts": ["proof by contradiction", "well-founded induction"]
+  },
+  {
+    "id": "ann-philosophy",
+    "proofId": "four-color-theorem",
+    "range": { "startLine": 302, "endLine": 325 },
+    "type": "concept",
+    "title": "What Is a Proof?",
+    "content": "The Four Color Theorem forced mathematics to confront fundamental questions:\n\n**Can we trust computer proofs?** The 1976 proof relied on software that could have bugs. Many mathematicians were uncomfortable with a proof they couldn't personally verify.\n\n**Is machine verification better than human verification?** Gonthier's Coq formalization shifts trust to a small proof checker. Arguably, this is more reliable than human review of complex arguments.\n\n**Does beauty matter?** Mathematicians often seek 'elegant' proofs. Four Color has only an 'ugly' proof—massive case analysis. Does this diminish the result?\n\n**The future:** As mathematics grows more complex, computer assistance becomes essential. The question is how to maintain rigor, not whether to use computers.",
+    "significance": "key",
+    "relatedConcepts": ["philosophy of mathematics", "proof theory", "formal verification"]
+  },
+  {
+    "id": "ann-gonthier",
+    "proofId": "four-color-theorem",
+    "range": { "startLine": 249, "endLine": 255 },
+    "type": "insight",
+    "title": "Gonthier's Coq Formalization",
+    "content": "In 2005, Georges Gonthier completed a full formalization of the Four Color Theorem in Coq. This was a landmark achievement:\n\n- **Complete verification:** Every step machine-checked, including all 1,936 configurations\n- **Independent verification:** The Coq proof is a certificate anyone can verify using the proof checker\n- **Trust reduction:** We no longer trust Appel-Haken's program; we trust Coq's small kernel\n\nThe formalization took several person-years but provided certainty that the theorem is correct. It demonstrated that even massive computational proofs can be made rigorous through formal methods.",
+    "significance": "key",
+    "relatedConcepts": ["Coq proof assistant", "SSReflect", "proof certificate"]
+  }
+]

@@ -4,13 +4,39 @@
   "slug": "sqrt2-irrational",
   "description": "A classic proof that the square root of 2 cannot be expressed as a ratio of integers, formalized in Lean 4.",
   "meta": {
-    "status": "pending",
-    "tags": ["number-theory", "classic", "irrationality"]
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "classic",
+      "irrationality"
+    ],
+    "mathlib_version": "4.10.0",
+    "proofRepoPath": "Proofs/Sqrt2Irrational.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "irrational_sqrt_two",
+        "description": "Mathlib's proof that √2 is irrational",
+        "module": "Mathlib.Data.Real.Irrational"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number definitions",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Educational demonstration of classical parity argument",
+      "Additional proofs showing different tactics",
+      "Connection to Pythagorean theorem"
+    ],
+    "dateAdded": "12/21/25"
   },
   "overview": {
-    "historicalContext": "The discovery that $\\sqrt{2}$ is irrational is attributed to the ancient Greeks, possibly Hippasus of Metapontum around 500 BCE. The Pythagoreans had built their philosophy on the belief that all quantities could be expressed as ratios of whole numbers—\"all is number.\" The discovery that the diagonal of a unit square (which has length $\\sqrt{2}$ by the Pythagorean theorem) cannot be so expressed shattered this worldview.\n\nAccording to legend, Hippasus was drowned at sea for revealing this disturbing truth. Whether or not the legend is true, the mathematical crisis was real: it forced Greek mathematicians to distinguish between *number* (arithmetic) and *magnitude* (geometry), a distinction that would persist for two millennia until the rigorous construction of the real numbers in the 19th century.\n\nThis proof represents one of the earliest examples of proof by contradiction (*reductio ad absurdum*) in mathematics, and remains a cornerstone of mathematical education to this day.",
-    "problemStatement": "The diagonal of a unit square has length $\\sqrt{2}$. The question is: can this length be expressed as a ratio of integers?\n\n$$\\text{Does there exist } \\frac{p}{q} = \\sqrt{2} \\text{ with } p, q \\in \\mathbb{Z}, q \\neq 0?$$\n\nEquivalently, squaring both sides: does there exist a solution to $p^2 = 2q^2$ in integers? The answer is no—$\\sqrt{2}$ is **irrational**.",
-    "proofStrategy": "The proof proceeds by contradiction:\n\n1. **Assume** $\\sqrt{2} = p/q$ where $p, q$ are integers in lowest terms (no common factors)\n2. **Square** both sides: $p^2 = 2q^2$\n3. **Parity argument**: $p^2$ is even, so $p$ must be even (key lemma!)\n4. **Substitute**: Write $p = 2k$, then $4k^2 = 2q^2$, so $q^2 = 2k^2$\n5. **Repeat**: $q^2$ is even, so $q$ is even\n6. **Contradiction**: Both $p$ and $q$ are even, so they share factor 2—but we assumed lowest terms!",
+    "historicalContext": "The discovery that $\\sqrt{2}$ is irrational is attributed to the ancient Greeks, possibly Hippasus of Metapontum around 500 BCE. The Pythagoreans had built their philosophy on the belief that all quantities could be expressed as ratios of whole numbers—\"all is number.\" The discovery that the diagonal of a unit square (which has length $\\sqrt{2}$ by the Pythagorean theorem) cannot be so expressed shattered this worldview.\n\nAccording to legend, Hippasus was drowned at sea for revealing this disturbing truth. Whether or not the legend is true, the mathematical crisis was real: it forced Greek mathematicians to distinguish between number (arithmetic) and magnitude (geometry), a distinction that would persist for two millennia until the rigorous construction of the real numbers in the 19th century.\n\nThis proof represents one of the earliest examples of proof by contradiction (reductio ad absurdum) in mathematics, and remains a cornerstone of mathematical education to this day.",
+    "problemStatement": "The diagonal of a unit square has length $\\sqrt{2}$. The question is: can this length be expressed as a ratio of integers?\n\n$$\\text{Does there exist } \\frac{p}{q} = \\sqrt{2} \\text{ with } p, q \\in \\mathbb{Z}, q \\neq 0?$$\n\nEquivalently, squaring both sides: does there exist a solution to $p^2 = 2q^2$ in integers? The answer is no—$\\sqrt{2}$ is irrational.",
+    "proofStrategy": "The proof proceeds by contradiction:\n\n1. Assume $\\sqrt{2} = p/q$ where $p, q$ are integers in lowest terms (no common factors)\n2. Square both sides: $p^2 = 2q^2$\n3. Parity argument: $p^2$ is even, so $p$ must be even (key lemma!)\n4. Substitute: Write $p = 2k$, then $4k^2 = 2q^2$, so $q^2 = 2k^2$\n5. Repeat: $q^2$ is even, so $q$ is even\n6. Contradiction: Both $p$ and $q$ are even, so they share factor 2—but we assumed lowest terms!",
     "keyInsights": [
       "The geometric origin: $\\sqrt{2}$ is the diagonal of a unit square, arising naturally from the Pythagorean theorem $1^2 + 1^2 = (\\sqrt{2})^2$.",
       "The parity lemma is the engine: if $n^2$ is even, then $n$ is even. This follows because odd$^2$ = odd.",
@@ -21,29 +47,36 @@
   "sections": [
     {
       "id": "setup",
-      "title": "Setup and Definitions",
+      "title": "Setup and Imports",
       "startLine": 1,
-      "endLine": 21,
-      "summary": "Import statements and definitions of irrationality and coprimality."
+      "endLine": 14,
+      "summary": "Module documentation and import statements."
     },
     {
       "id": "lemmas",
       "title": "Supporting Lemmas",
-      "startLine": 22,
-      "endLine": 50,
-      "summary": "Key lemmas connecting parity of integers to parity of their squares."
+      "startLine": 15,
+      "endLine": 35,
+      "summary": "Key lemmas: if n² is even then n is even, and divisibility properties."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
-      "startLine": 51,
-      "endLine": 98,
-      "summary": "The proof that sqrt(2) is irrational via contradiction from coprimality."
+      "startLine": 36,
+      "endLine": 47,
+      "summary": "The irrationality of √2 using Mathlib's formalization."
+    },
+    {
+      "id": "examples",
+      "title": "Example Proofs",
+      "startLine": 48,
+      "endLine": 104,
+      "summary": "Additional proofs demonstrating tactics: case analysis, induction, logic."
     }
   ],
   "conclusion": {
     "summary": "This formalization demonstrates the power of proof by contradiction—a technique invented by the ancient Greeks and still central to mathematics today. The Lean proof closely mirrors the classical argument: assume rationality, derive that both numerator and denominator must be even, contradict the assumption of lowest terms.\n\nThe proof's elegance lies in its simplicity: it requires only basic properties of even and odd numbers. Yet it establishes something profound—that the number system of ratios is fundamentally incomplete.",
-    "implications": "**Historical Impact**\n\nThe irrationality of $\\sqrt{2}$ triggered the first foundational crisis in mathematics. The Pythagorean belief that \"all is number\" (meaning ratios of integers) was shattered. Greek mathematics responded by developing the theory of proportions (Eudoxus) and separating arithmetic from geometry—a split that lasted until the 19th century.\n\n**Mathematical Consequences**\n\n1. **Incommensurable magnitudes exist** — The diagonal of a unit square cannot share a common measure with its sides. There is no length, however small, that divides both evenly.\n\n2. **The rationals have gaps** — Between any two rationals lie infinitely many irrationals. The rational number line is \"full of holes.\"\n\n3. **Necessity of real numbers** — To do calculus, we need limits. Limits require completeness. The rationals aren't complete; the reals are. This proof shows why we can't stop at $\\mathbb{Q}$.",
+    "implications": "Historical Impact\n\nThe irrationality of $\\sqrt{2}$ triggered the first foundational crisis in mathematics. The Pythagorean belief that \"all is number\" (meaning ratios of integers) was shattered. Greek mathematics responded by developing the theory of proportions (Eudoxus) and separating arithmetic from geometry—a split that lasted until the 19th century.\n\nMathematical Consequences\n\n1. Incommensurable magnitudes exist — The diagonal of a unit square cannot share a common measure with its sides. There is no length, however small, that divides both evenly.\n\n2. The rationals have gaps — Between any two rationals lie infinitely many irrationals. The rational number line is \"full of holes.\"\n\n3. Necessity of real numbers — To do calculus, we need limits. Limits require completeness. The rationals aren't complete; the reals are. This proof shows why we can't stop at $\\mathbb{Q}$.",
     "openQuestions": [
       "The same parity argument extends to prove $\\sqrt{p}$ is irrational for any prime $p$. What about $\\sqrt{6}$? (Hint: unique factorization)",
       "What about $\\sqrt[3]{2}$? Parity arguments don't work here. This requires algebraic number theory and the rational root theorem.",

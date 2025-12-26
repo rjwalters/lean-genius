@@ -1,0 +1,107 @@
+{
+  "id": "russell-1-plus-1",
+  "title": "Russell's 1+1=2",
+  "slug": "russell-1-plus-1",
+  "description": "The legendary proof that 1+1=2, which famously took 362 pages in Principia Mathematica but is trivial in modern type theory.",
+  "meta": {
+    "author": "Bertrand Russell & Alfred North Whitehead (formalized in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Principia_Mathematica",
+    "date": "1910",
+    "status": "verified",
+    "tags": [
+      "foundations",
+      "peano-arithmetic",
+      "type-theory",
+      "classic",
+      "beginner"
+    ],
+    "proofRepoPath": "Proofs/OnePlusOne.lean",
+    "badge": "pedagogical",
+    "sorries": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "Self-contained Peano arithmetic from scratch",
+      "Demonstrates 'rfl' proof for definitional equality",
+      "Historical comparison with Principia Mathematica approach"
+    ],
+    "dateAdded": "12/21/25"
+  },
+  "overview": {
+    "historicalContext": "In 1910, Bertrand Russell and Alfred North Whitehead published Principia Mathematica, an ambitious attempt to derive all mathematical truths from a small set of logical axioms. The famous claim that it took 362 pages to prove 1+1=2 has become a popular meme about mathematical rigor—though it's slightly misleading. Those 362 pages were building the entire logical machinery needed to even state what numbers are, not just proving one equation.\n\nRussell was motivated by the foundational crisis in mathematics, particularly paradoxes like his own Russell's Paradox which showed naive set theory was inconsistent. Principia introduced a ramified type theory to avoid these paradoxes, defining numbers as equivalence classes of sets with the same cardinality.",
+    "problemStatement": "Theorem: $1 + 1 = 2$\n\nMore precisely, using Peano's axioms: if we define $1 = S(0)$ (the successor of zero) and $2 = S(S(0))$ (the successor of the successor of zero), and addition recursively by $n + 0 = n$ and $n + S(m) = S(n + m)$, then $S(0) + S(0) = S(S(0))$.",
+    "proofStrategy": "In modern type theory, this proof is almost embarrassingly simple. We define natural numbers inductively (zero and successor), define addition by recursion, and then 1+1=2 follows by definitional equality—no axioms needed, just computation.\n\nThe proof unfolds as: $1 + 1 = S(0) + S(0) = S(S(0) + 0) = S(S(0)) = 2$. Each step is just applying the definition of addition. In Lean, the rfl tactic (reflexivity) handles this automatically.",
+    "keyInsights": [
+      "Modern type theory makes foundational proofs trivial by building natural numbers as primitive inductive types rather than set-theoretic constructions",
+      "The 'rfl' proof works because type theory has computation built into its equality—if two terms compute to the same value, they are equal by definition",
+      "Russell's approach defined 1 as 'the set of all singleton sets' and 2 as 'the set of all two-element sets'—far more complex than Peano's successor-based definition",
+      "This proof demonstrates why mathematicians moved away from set-theoretic foundations toward type-theoretic ones for formalization"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 15,
+      "summary": "Overview of the proof and its historical significance, explaining how type theory simplifies what was once a monumental undertaking."
+    },
+    {
+      "id": "peano-naturals",
+      "title": "Building Natural Numbers",
+      "startLine": 17,
+      "endLine": 33,
+      "summary": "Defining the natural numbers from scratch using Peano's axioms: zero and successor, with numeric notation for convenience."
+    },
+    {
+      "id": "addition-definition",
+      "title": "Defining Addition",
+      "startLine": 35,
+      "endLine": 49,
+      "summary": "Recursive definition of addition following Peano's original formulation: n + 0 = n and n + succ(m) = succ(n + m)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Famous Theorem",
+      "startLine": 51,
+      "endLine": 66,
+      "summary": "The proof of 1+1=2, showing step-by-step how the definitions unfold, and the ultimate simplicity of 'rfl'."
+    },
+    {
+      "id": "arithmetic-properties",
+      "title": "Building Up Arithmetic",
+      "startLine": 68,
+      "endLine": 99,
+      "summary": "Developing fundamental properties of addition: identity laws, commutativity, and associativity—the algebraic structure emerges."
+    },
+    {
+      "id": "consequences",
+      "title": "More Consequences",
+      "startLine": 101,
+      "endLine": 111,
+      "summary": "Extending the pattern to prove 2+1=3, 1+2=3, and 2+2=4, all following immediately from definitions."
+    },
+    {
+      "id": "builtin-naturals",
+      "title": "Using Built-in Naturals",
+      "startLine": 113,
+      "endLine": 130,
+      "summary": "Demonstrating that Lean's standard library naturals work identically, with the same trivial proof."
+    },
+    {
+      "id": "principia-comparison",
+      "title": "Why Principia Took 362 Pages",
+      "startLine": 132,
+      "endLine": 155,
+      "summary": "Historical context explaining Russell's set-theoretic approach versus modern type theory, and why the complexity was necessary in 1910."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization demonstrates the dramatic simplification that type theory brings to mathematical foundations. What took Russell and Whitehead hundreds of pages is now a single rfl—not because we're cheating, but because we've chosen a cleaner foundation where natural numbers and their operations are primitive concepts rather than derived constructions.",
+    "implications": "The evolution from Principia to modern proof assistants like Lean represents a fundamental shift in how we think about mathematical foundations. Type theory provides a computationally meaningful framework where proofs aren't just certificates of truth but executable programs. This has enabled the development of verified software, formalized mathematics (like Mathlib), and a new understanding of the deep connections between logic, computation, and mathematics.",
+    "openQuestions": [
+      "How do the various foundations for mathematics (set theory, type theory, category theory) relate to each other?",
+      "Can we formalize all of classical mathematics in type theory, or are there statements that require set-theoretic axioms?",
+      "What is the relationship between proof complexity and the choice of foundational system?"
+    ]
+  }
+}

@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 import { proofs } from '@/data/proofs'
@@ -187,6 +188,9 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
             <User className="h-5 w-5" />
             Profile Settings
           </DialogTitle>
+          <DialogDescription>
+            Manage your account settings and view your activity.
+          </DialogDescription>
         </DialogHeader>
 
         {isLoading ? (

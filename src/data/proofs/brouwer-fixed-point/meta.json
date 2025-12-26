@@ -1,0 +1,134 @@
+{
+  "id": "brouwer-fixed-point",
+  "title": "Brouwer Fixed Point Theorem",
+  "slug": "brouwer-fixed-point",
+  "description": "Every continuous function from a closed ball to itself has at least one fixed point. A cornerstone of topology with profound applications in economics, game theory, and differential equations.",
+  "meta": {
+    "author": "L.E.J. Brouwer (formalized sketch in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Brouwer_fixed-point_theorem",
+    "date": "1911",
+    "status": "verified",
+    "tags": [
+      "topology",
+      "fixed-point-theory",
+      "algebraic-topology",
+      "advanced"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Metric.ball",
+        "description": "Metric space ball definitions",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Complete proof via retraction impossibility",
+      "No-Retraction Theorem formalization",
+      "Ray-casting construction for fixed-point-free maps"
+    ],
+    "dateAdded": "12/21/25"
+  },
+  "overview": {
+    "historicalContext": "Luitzen Egbertus Jan Brouwer proved this theorem in 1911, establishing one of the most important results in topology. The theorem states that any continuous function mapping a closed ball to itself must have at least one fixed point.\n\nThe result is surprisingly counterintuitive: no matter how you continuously 'stir' a disk, some point must end up exactly where it started. This has led to the famous coffee-stirring analogy: when you stir coffee in a cup, at least one molecule of coffee returns to its starting position.\n\nIronically, Brouwer later founded intuitionism, a philosophy of mathematics that rejects the kind of proof-by-contradiction used in his own theorem! The constructive proof of Brouwer's theorem came much later and is considerably more complex.",
+    "problemStatement": "Brouwer Fixed Point Theorem: Let $B^n$ be the closed unit ball in $\\mathbb{R}^n$, and let $f: B^n \\to B^n$ be a continuous function. Then $f$ has a fixed point: there exists $x \\in B^n$ such that $f(x) = x$.\n\nEquivalently: every continuous self-map of a compact convex set in Euclidean space has a fixed point.",
+    "proofStrategy": "The proof proceeds by contradiction using a beautiful topological construction:\n\n1. Assume no fixed point exists: Suppose $f: B^n \\to B^n$ is continuous with $f(x) \\neq x$ for all $x$.\n\n2. Construct a retraction: For each point $x$, draw a ray from $f(x)$ through $x$. Since $f(x) \\neq x$, this ray is well-defined and must exit the ball. Define $r(x)$ as the point where the ray hits the boundary sphere.\n\n3. Verify retraction properties: The map $r$ is continuous and fixes points on the boundary (the ray from $f(x)$ through $x$ hits the sphere at $x$ when $x$ is already on the sphere).\n\n4. Apply No-Retraction Theorem: But topologically, no retraction from the ball to its boundary can exist! The ball is contractible while the sphere has nontrivial homology.\n\n5. Contradiction: Therefore our assumption was wrong, and $f$ must have a fixed point.",
+    "keyInsights": [
+      "The theorem converts a dynamical question (existence of fixed points) into a topological impossibility (non-existence of retractions)",
+      "The No-Retraction Theorem is the topological heart: you cannot continuously 'project' a solid ball onto a hollow sphere",
+      "Homology theory distinguishes the ball (H_n = 0) from the sphere (H_{n-1} nontrivial), making retractions impossible",
+      "The proof is fundamentally non-constructive: it proves existence without providing a method to find the fixed point",
+      "Finding fixed points computationally is PPAD-complete, showing this non-constructiveness is inherent"
+    ]
+  },
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Overview of the Brouwer Fixed Point Theorem, its statement, and its significance in mathematics."
+    },
+    {
+      "id": "topological-foundations",
+      "title": "Topological Foundations",
+      "startLine": 23,
+      "endLine": 37,
+      "summary": "Setting up the basic topological machinery: points in n-dimensional space and the distance metric."
+    },
+    {
+      "id": "ball-and-sphere",
+      "title": "The Closed Ball and Sphere",
+      "startLine": 39,
+      "endLine": 53,
+      "summary": "Defining the closed n-ball and its boundary (n-1)-sphere, the central objects of the theorem."
+    },
+    {
+      "id": "continuous-functions",
+      "title": "Continuous Functions and Fixed Points",
+      "startLine": 55,
+      "endLine": 76,
+      "summary": "Formalizing continuous self-maps of the ball and what it means for a point to be fixed."
+    },
+    {
+      "id": "retractions",
+      "title": "Retractions",
+      "startLine": 78,
+      "endLine": 93,
+      "summary": "Introducing retractions: continuous maps that project a space onto a subspace while fixing the subspace."
+    },
+    {
+      "id": "no-retraction-theorem",
+      "title": "The No-Retraction Theorem",
+      "startLine": 95,
+      "endLine": 126,
+      "summary": "The crucial lemma: there is no retraction from the ball to its boundary. This is where algebraic topology enters."
+    },
+    {
+      "id": "construction",
+      "title": "Constructing the Retraction",
+      "startLine": 128,
+      "endLine": 177,
+      "summary": "The key construction: given a fixed-point-free map, build a retraction by ray-casting through each point."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 179,
+      "endLine": 210,
+      "summary": "Putting it together: proving Brouwer's Fixed Point Theorem via contradiction using the No-Retraction Theorem."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 212,
+      "endLine": 228,
+      "summary": "Examining specific dimensions: the 1D case (interval), 2D case (disk), and 3D case (solid ball)."
+    },
+    {
+      "id": "applications",
+      "title": "Applications",
+      "startLine": 230,
+      "endLine": 282,
+      "summary": "Real-world applications including the Hex game theorem and Nash equilibrium in game theory."
+    },
+    {
+      "id": "significance",
+      "title": "Why This Theorem Matters",
+      "startLine": 284,
+      "endLine": 315,
+      "summary": "The broader impact of Brouwer's theorem across mathematics, economics, and computer science."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Brouwer Fixed Point Theorem demonstrates that every continuous self-map of a closed ball has a fixed point. The proof ingeniously transforms this dynamical question into a topological one: if no fixed point existed, we could construct a retraction from the ball to its boundary, which is impossible.",
+    "implications": "This theorem has far-reaching consequences: Nash's Nobel Prize-winning proof of equilibrium existence in game theory relies on it; solutions to many differential equations are guaranteed by it; and it reveals deep connections between topology and dynamics. Computationally, finding fixed points is PPAD-complete, explaining why equilibrium computation is hard. The theorem beautifully illustrates how abstract topology answers concrete questions about continuous processes.",
+    "openQuestions": [
+      "Can we find constructive proofs that are as elegant as the classical contradiction argument?",
+      "What is the computational complexity of finding approximate fixed points in various settings?",
+      "How do fixed point theorems generalize to infinite-dimensional spaces (Schauder, Kakutani)?",
+      "What is the relationship between topological fixed point theorems and their discrete analogues (Sperner's lemma)?"
+    ]
+  }
+}

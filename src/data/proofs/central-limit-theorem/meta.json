@@ -1,0 +1,135 @@
+{
+  "id": "central-limit-theorem",
+  "title": "Central Limit Theorem",
+  "slug": "central-limit-theorem",
+  "description": "The sum of a large number of independent random variables converges to a normal distribution. This proof combines the classical characteristic function approach with an algebraic topological interpretation of the Gaussian as an attractor.",
+  "meta": {
+    "author": "Laplace, Lyapunov, et al. (formalized in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Central_limit_theorem",
+    "date": "1901 (Lyapunov's proof), with modern topological interpretation",
+    "status": "verified",
+    "tags": [
+      "probability",
+      "topology",
+      "analysis",
+      "advanced",
+      "characteristic-functions"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.Measure",
+        "description": "Measure theory foundations",
+        "module": "Mathlib.MeasureTheory.Measure.MeasureSpace"
+      },
+      {
+        "theorem": "ProbabilityTheory",
+        "description": "Probability theory basics",
+        "module": "Mathlib.Probability.ProbabilityMassFunction.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Complete proof via characteristic functions",
+      "Lévy continuity theorem application",
+      "Topological interpretation as renormalization flow",
+      "Gaussian as universal attractor formalization"
+    ],
+    "dateAdded": "12/22/25"
+  },
+  "overview": {
+    "historicalContext": "The Central Limit Theorem (CLT) stands as one of the most remarkable results in probability theory. Its origins trace back to Abraham de Moivre's 1733 analysis of coin flips, but the theorem took nearly two centuries to reach its modern form.\n\nPierre-Simon Laplace generalized de Moivre's result in 1812, showing that sums of many independent random variables tend toward a bell curve. However, the first rigorous proof came from Aleksandr Lyapunov in 1901, using characteristic functions.\n\nThe algebraic topological perspective—viewing the Gaussian as a fixed point of a renormalization flow on the space of distributions—emerged in the late 20th century, connecting probability theory to dynamical systems, information geometry, and category theory.\n\nThis dual perspective reveals not just *that* the Gaussian appears universally, but *why*: it is an attractor in the space of probability distributions under the operation of convolution and rescaling.",
+    "problemStatement": "**Classical Statement**: Let $X_1, X_2, \\ldots, X_n$ be independent and identically distributed random variables with mean $\\mu$ and variance $\\sigma^2$. Define the normalized sum:\n$$Z_n = \\frac{\\sum_{i=1}^n X_i - n\\mu}{\\sigma\\sqrt{n}}$$\n\nThen $Z_n \\xrightarrow{d} N(0,1)$ as $n \\to \\infty$, where $N(0,1)$ is the standard normal distribution.\n\n**Topological Interpretation**: The space of probability distributions with finite variance forms a metric space under the Wasserstein metric. Convolution is a binary operation, and rescaling by $\\sqrt{n}$ defines a flow. The Gaussian is the unique fixed point of this renormalization group flow, and its basin of attraction includes all finite-variance distributions.",
+    "proofStrategy": "**Classical Proof via Characteristic Functions**:\n\n1. **Define characteristic functions**: The characteristic function $\\varphi_X(t) = \\mathbb{E}[e^{itX}]$ encodes a distribution's properties.\n\n2. **Key property**: The characteristic function of a sum equals the product: $\\varphi_{X+Y}(t) = \\varphi_X(t) \\cdot \\varphi_Y(t)$.\n\n3. **Normalize and expand**: For $Z_n = (S_n - n\\mu)/(\\sigma\\sqrt{n})$, compute $\\varphi_{Z_n}(t)$ using Taylor expansion.\n\n4. **Take the limit**: Show $\\varphi_{Z_n}(t) \\to e^{-t^2/2}$ as $n \\to \\infty$.\n\n5. **Lévy's theorem**: Pointwise convergence of characteristic functions to a continuous function implies convergence in distribution.\n\n**Topological Interpretation**:\n\nThe convolution-rescaling operation $T_n(\\mu) = \\frac{1}{\\sqrt{n}} \\mu^{*n}$ defines a discrete dynamical system on probability measures. The Gaussian is a fixed point: $T_n(\\mathcal{N}) = \\mathcal{N}$. The CLT asserts that for any starting distribution $\\mu$ with finite variance, the orbit $T_n(\\mu) \\to \\mathcal{N}$.",
+    "keyInsights": [
+      "**Characteristic functions as topology**: The Fourier transform converts convolution (sums of r.v.s) to multiplication, revealing the multiplicative semigroup structure of distributions.",
+      "**Why $e^{-t^2/2}$?**: This is the unique characteristic function that is both a fixed point of the renormalization map and is the Fourier transform of a probability density.",
+      "**The Gaussian as attractor**: Just as fixed point theorems guarantee equilibria in dynamical systems, the CLT shows the Gaussian is a universal attractor in the 'dynamics' of averaging.",
+      "**Information geometry**: The Gaussian minimizes Fisher information among distributions with fixed variance—it is the 'center' of the statistical manifold.",
+      "**Stable distributions**: The Gaussian is one of a family of stable distributions (Lévy distributions), each attracting different scaling behaviors. The Gaussian corresponds to finite variance.",
+      "**Edgeworth expansions**: The rate of convergence to the Gaussian, with topological corrections, connects to asymptotic analysis and perturbation theory."
+    ]
+  },
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "Introduction and Imports",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Module documentation explaining both perspectives, with imports for measure theory and probability."
+    },
+    {
+      "id": "characteristic-functions",
+      "title": "Characteristic Functions",
+      "startLine": 27,
+      "endLine": 58,
+      "summary": "Defining characteristic functions and their key multiplicative property for sums."
+    },
+    {
+      "id": "taylor-expansion",
+      "title": "Taylor Expansion of Characteristic Functions",
+      "startLine": 60,
+      "endLine": 95,
+      "summary": "The crucial expansion showing how moments appear in characteristic functions."
+    },
+    {
+      "id": "limit-computation",
+      "title": "Computing the Limit",
+      "startLine": 97,
+      "endLine": 135,
+      "summary": "Showing the normalized characteristic function converges to the Gaussian."
+    },
+    {
+      "id": "levy-continuity",
+      "title": "Lévy Continuity Theorem",
+      "startLine": 137,
+      "endLine": 165,
+      "summary": "The bridge from characteristic function convergence to distributional convergence."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Central Limit Theorem",
+      "startLine": 167,
+      "endLine": 195,
+      "summary": "The main theorem combining all ingredients: sums converge to Normal distribution."
+    },
+    {
+      "id": "topological-interpretation",
+      "title": "Topological Interpretation",
+      "startLine": 197,
+      "endLine": 255,
+      "summary": "Understanding CLT through the lens of dynamical systems and fixed point theory."
+    },
+    {
+      "id": "renormalization-flow",
+      "title": "The Renormalization Group Flow",
+      "startLine": 257,
+      "endLine": 300,
+      "summary": "Formalizing the convolution-rescaling operation as a dynamical system on measure space."
+    },
+    {
+      "id": "gaussian-as-attractor",
+      "title": "Gaussian as Universal Attractor",
+      "startLine": 302,
+      "endLine": 345,
+      "summary": "Why the Gaussian emerges: it is the unique stable fixed point of the renormalization flow."
+    },
+    {
+      "id": "connections",
+      "title": "Connections and Generalizations",
+      "startLine": 347,
+      "endLine": 390,
+      "summary": "Links to information geometry, stable distributions, and modern applied topology."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Central Limit Theorem reveals that the Gaussian distribution is not merely common but inevitable. The classical proof via characteristic functions shows *that* sums converge to the normal distribution; the topological interpretation explains *why*—the Gaussian is a fixed point attractor under the fundamental operation of averaging.\n\nThis dual perspective unifies analysis (characteristic functions, Fourier transforms) with geometry (the space of distributions, Wasserstein metrics) and dynamics (renormalization flows, fixed point theory). The result has profound implications: wherever we see averages of many independent effects, we expect Gaussian behavior.",
+    "implications": "**Practical Impact**:\n- Statistical inference relies on CLT for confidence intervals and hypothesis tests\n- Measurement errors are approximately Gaussian (many small independent sources)\n- Financial models (Black-Scholes) assume log-normal returns via CLT\n- Quality control uses normal distributions for process variation\n\n**Mathematical Significance**:\n- Connects probability to topology and dynamical systems\n- Explains universality: why the same distribution appears across domains\n- Foundation for stable distribution theory and heavy-tailed analysis\n- Information geometry reveals Gaussian as Fisher-information minimizer\n\n**Computational Aspects**:\n- Monte Carlo methods exploit CLT for error estimation\n- Berry-Esseen bounds quantify convergence rates\n- Edgeworth expansions provide corrections for finite samples",
+    "openQuestions": [
+      "What happens when variance is infinite? This leads to stable distributions (Lévy alpha-stable) with heavier tails than the Gaussian.",
+      "Can CLT be generalized to dependent random variables? Yes, under mixing conditions—but the geometry becomes more complex.",
+      "What is the categorical structure of probability distributions under convolution? This leads to operads and higher category theory.",
+      "How does the topological perspective extend to non-commutative probability (free probability theory)? The free CLT produces semicircular rather than Gaussian distributions."
+    ]
+  }
+}

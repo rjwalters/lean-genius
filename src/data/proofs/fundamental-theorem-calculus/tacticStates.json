@@ -1,0 +1,1380 @@
+[
+  {
+    "line": 55,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 56,
+    "tactic": "apply ftc_part1",
+    "goalsBefore": [
+      {
+        "name": "hf_cont",
+        "hypotheses": [
+          {
+            "names": [
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "a"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "hf"
+            ],
+            "type": "Continuous f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "ContinuousAt f x"
+      },
+      {
+        "name": "hf_int",
+        "hypotheses": [
+          {
+            "names": [
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "a"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "hf"
+            ],
+            "type": "Continuous f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "IntervalIntegrable f volume a x"
+      },
+      {
+        "name": "hf_meas",
+        "hypotheses": [
+          {
+            "names": [
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "a"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "hf"
+            ],
+            "type": "Continuous f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "StronglyMeasurableAtFilter f (𝓝 x) volume"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "hf_cont",
+        "hypotheses": [
+          {
+            "names": [
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "a"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "hf"
+            ],
+            "type": "Continuous f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "ContinuousAt f x"
+      },
+      {
+        "name": "hf_int",
+        "hypotheses": [
+          {
+            "names": [
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "a"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "hf"
+            ],
+            "type": "Continuous f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "IntervalIntegrable f volume a x"
+      },
+      {
+        "name": "hf_meas",
+        "hypotheses": [
+          {
+            "names": [
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "a"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "hf"
+            ],
+            "type": "Continuous f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "StronglyMeasurableAtFilter f (𝓝 x) volume"
+      }
+    ]
+  },
+  {
+    "line": 57,
+    "tactic": "·",
+    "goalsBefore": [
+      {
+        "name": "hf_cont",
+        "hypotheses": [
+          {
+            "names": [
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "a"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "hf"
+            ],
+            "type": "Continuous f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "ContinuousAt f x"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "hf_cont",
+        "hypotheses": [
+          {
+            "names": [
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "a"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "hf"
+            ],
+            "type": "Continuous f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "ContinuousAt f x"
+      }
+    ]
+  },
+  {
+    "line": 57,
+    "tactic": "exact hf.continuousAt",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 58,
+    "tactic": "·",
+    "goalsBefore": [
+      {
+        "name": "hf_int",
+        "hypotheses": [
+          {
+            "names": [
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "a"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "hf"
+            ],
+            "type": "Continuous f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "IntervalIntegrable f volume a x"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "hf_int",
+        "hypotheses": [
+          {
+            "names": [
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "a"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "hf"
+            ],
+            "type": "Continuous f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "IntervalIntegrable f volume a x"
+      }
+    ]
+  },
+  {
+    "line": 58,
+    "tactic": "exact hf.intervalIntegrable a x",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 59,
+    "tactic": "·",
+    "goalsBefore": [
+      {
+        "name": "hf_meas",
+        "hypotheses": [
+          {
+            "names": [
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "a"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "hf"
+            ],
+            "type": "Continuous f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "StronglyMeasurableAtFilter f (𝓝 x) volume"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "hf_meas",
+        "hypotheses": [
+          {
+            "names": [
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "a"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "hf"
+            ],
+            "type": "Continuous f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "StronglyMeasurableAtFilter f (𝓝 x) volume"
+      }
+    ]
+  },
+  {
+    "line": 59,
+    "tactic": "exact hf.stronglyMeasurableAtFilter volume (𝓝 x)",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 107,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 108,
+    "tactic": "intro x",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "a"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "hf"
+            ],
+            "type": "Continuous f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "HasDerivAt (integralFunction f a) (f x) x"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "a"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "hf"
+            ],
+            "type": "Continuous f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "HasDerivAt (integralFunction f a) (f x) x"
+      }
+    ]
+  },
+  {
+    "line": 109,
+    "tactic": "exact ftc_part1_continuous hf x",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 115,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 116,
+    "tactic": "have hdiff : Differentiable ℝ F := fun z => (hF z).differentiableAt",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "F"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "∀ (x : ℝ), HasDerivAt F 0 x"
+          },
+          {
+            "names": [
+              "hdiff"
+            ],
+            "type": "Differentiable ℝ F"
+          }
+        ],
+        "conclusion": "∀ (x y : ℝ), F x = F y"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "F"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "∀ (x : ℝ), HasDerivAt F 0 x"
+          },
+          {
+            "names": [
+              "hdiff"
+            ],
+            "type": "Differentiable ℝ F"
+          }
+        ],
+        "conclusion": "∀ (x y : ℝ), F x = F y"
+      }
+    ]
+  },
+  {
+    "line": 117,
+    "tactic": "have hderiv : ∀ z, deriv F z = 0 := fun z => (hF z).deriv",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "F"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "∀ (x : ℝ), HasDerivAt F 0 x"
+          },
+          {
+            "names": [
+              "hdiff"
+            ],
+            "type": "Differentiable ℝ F"
+          },
+          {
+            "names": [
+              "hderiv"
+            ],
+            "type": "∀ (z : ℝ), deriv F z = 0"
+          }
+        ],
+        "conclusion": "∀ (x y : ℝ), F x = F y"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "F"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "∀ (x : ℝ), HasDerivAt F 0 x"
+          },
+          {
+            "names": [
+              "hdiff"
+            ],
+            "type": "Differentiable ℝ F"
+          },
+          {
+            "names": [
+              "hderiv"
+            ],
+            "type": "∀ (z : ℝ), deriv F z = 0"
+          }
+        ],
+        "conclusion": "∀ (x y : ℝ), F x = F y"
+      }
+    ]
+  },
+  {
+    "line": 118,
+    "tactic": "intro x y",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "F"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "∀ (x : ℝ), HasDerivAt F 0 x"
+          },
+          {
+            "names": [
+              "hdiff"
+            ],
+            "type": "Differentiable ℝ F"
+          },
+          {
+            "names": [
+              "hderiv"
+            ],
+            "type": "∀ (z : ℝ), deriv F z = 0"
+          },
+          {
+            "names": [
+              "x",
+              "y"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "F x = F y"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "F"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "∀ (x : ℝ), HasDerivAt F 0 x"
+          },
+          {
+            "names": [
+              "hdiff"
+            ],
+            "type": "Differentiable ℝ F"
+          },
+          {
+            "names": [
+              "hderiv"
+            ],
+            "type": "∀ (z : ℝ), deriv F z = 0"
+          },
+          {
+            "names": [
+              "x",
+              "y"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "F x = F y"
+      }
+    ]
+  },
+  {
+    "line": 120,
+    "tactic": "exact is_const_of_deriv_eq_zero hdiff hderiv x y",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 126,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 128,
+    "tactic": "use F 0 - G 0",
+    "goalsBefore": [
+      {
+        "name": "h",
+        "hypotheses": [
+          {
+            "names": [
+              "F",
+              "G",
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "IsAntiderivative F f"
+          },
+          {
+            "names": [
+              "hG"
+            ],
+            "type": "IsAntiderivative G f"
+          }
+        ],
+        "conclusion": "∀ (x : ℝ), F x - G x = F 0 - G 0"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "h",
+        "hypotheses": [
+          {
+            "names": [
+              "F",
+              "G",
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "IsAntiderivative F f"
+          },
+          {
+            "names": [
+              "hG"
+            ],
+            "type": "IsAntiderivative G f"
+          }
+        ],
+        "conclusion": "∀ (x : ℝ), F x - G x = F 0 - G 0"
+      }
+    ]
+  },
+  {
+    "line": 129,
+    "tactic": "intro x",
+    "goalsBefore": [
+      {
+        "name": "h",
+        "hypotheses": [
+          {
+            "names": [
+              "F",
+              "G",
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "IsAntiderivative F f"
+          },
+          {
+            "names": [
+              "hG"
+            ],
+            "type": "IsAntiderivative G f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "F x - G x = F 0 - G 0"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "h",
+        "hypotheses": [
+          {
+            "names": [
+              "F",
+              "G",
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "IsAntiderivative F f"
+          },
+          {
+            "names": [
+              "hG"
+            ],
+            "type": "IsAntiderivative G f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "F x - G x = F 0 - G 0"
+      }
+    ]
+  },
+  {
+    "line": 131,
+    "tactic": "have h : ∀ y, HasDerivAt (fun z => F z - G z) 0 y :=",
+    "goalsBefore": [
+      {
+        "name": "h",
+        "hypotheses": [
+          {
+            "names": [
+              "F",
+              "G",
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "IsAntiderivative F f"
+          },
+          {
+            "names": [
+              "hG"
+            ],
+            "type": "IsAntiderivative G f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "F x - G x = F 0 - G 0"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "h",
+        "hypotheses": [
+          {
+            "names": [
+              "F",
+              "G",
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "IsAntiderivative F f"
+          },
+          {
+            "names": [
+              "hG"
+            ],
+            "type": "IsAntiderivative G f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "F x - G x = F 0 - G 0"
+      }
+    ]
+  },
+  {
+    "line": 131,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 132,
+    "tactic": "intro y",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "F",
+              "G",
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "IsAntiderivative F f"
+          },
+          {
+            "names": [
+              "hG"
+            ],
+            "type": "IsAntiderivative G f"
+          },
+          {
+            "names": [
+              "x",
+              "y"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "HasDerivAt (fun z => F z - G z) 0 y"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "F",
+              "G",
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "IsAntiderivative F f"
+          },
+          {
+            "names": [
+              "hG"
+            ],
+            "type": "IsAntiderivative G f"
+          },
+          {
+            "names": [
+              "x",
+              "y"
+            ],
+            "type": "ℝ"
+          }
+        ],
+        "conclusion": "HasDerivAt (fun z => F z - G z) 0 y"
+      }
+    ]
+  },
+  {
+    "line": 133,
+    "tactic": "have := (hF y).sub (hG y)",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "F",
+              "G",
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "IsAntiderivative F f"
+          },
+          {
+            "names": [
+              "hG"
+            ],
+            "type": "IsAntiderivative G f"
+          },
+          {
+            "names": [
+              "x",
+              "y"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "this"
+            ],
+            "type": "HasDerivAt (fun x => F x - G x) (f y - f y) y"
+          }
+        ],
+        "conclusion": "HasDerivAt (fun z => F z - G z) 0 y"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "F",
+              "G",
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "IsAntiderivative F f"
+          },
+          {
+            "names": [
+              "hG"
+            ],
+            "type": "IsAntiderivative G f"
+          },
+          {
+            "names": [
+              "x",
+              "y"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "this"
+            ],
+            "type": "HasDerivAt (fun x => F x - G x) (f y - f y) y"
+          }
+        ],
+        "conclusion": "HasDerivAt (fun z => F z - G z) 0 y"
+      }
+    ]
+  },
+  {
+    "line": 134,
+    "tactic": "simp at this",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "F",
+              "G",
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "IsAntiderivative F f"
+          },
+          {
+            "names": [
+              "hG"
+            ],
+            "type": "IsAntiderivative G f"
+          },
+          {
+            "names": [
+              "x",
+              "y"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "this"
+            ],
+            "type": "HasDerivAt (fun x => F x - G x) 0 y"
+          }
+        ],
+        "conclusion": "HasDerivAt (fun z => F z - G z) 0 y"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "F",
+              "G",
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "IsAntiderivative F f"
+          },
+          {
+            "names": [
+              "hG"
+            ],
+            "type": "IsAntiderivative G f"
+          },
+          {
+            "names": [
+              "x",
+              "y"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "this"
+            ],
+            "type": "HasDerivAt (fun x => F x - G x) 0 y"
+          }
+        ],
+        "conclusion": "HasDerivAt (fun z => F z - G z) 0 y"
+      }
+    ]
+  },
+  {
+    "line": 135,
+    "tactic": "exact this",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 137,
+    "tactic": "have hconst := hasDerivAt_zero_implies_constant h",
+    "goalsBefore": [
+      {
+        "name": "h",
+        "hypotheses": [
+          {
+            "names": [
+              "F",
+              "G",
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "IsAntiderivative F f"
+          },
+          {
+            "names": [
+              "hG"
+            ],
+            "type": "IsAntiderivative G f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "∀ (y : ℝ), HasDerivAt (fun z => F z - G z) 0 y"
+          },
+          {
+            "names": [
+              "hconst"
+            ],
+            "type": "∀ (x y : ℝ), F x - G x = F y - G y"
+          }
+        ],
+        "conclusion": "F x - G x = F 0 - G 0"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "h",
+        "hypotheses": [
+          {
+            "names": [
+              "F",
+              "G",
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "IsAntiderivative F f"
+          },
+          {
+            "names": [
+              "hG"
+            ],
+            "type": "IsAntiderivative G f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "∀ (y : ℝ), HasDerivAt (fun z => F z - G z) 0 y"
+          },
+          {
+            "names": [
+              "hconst"
+            ],
+            "type": "∀ (x y : ℝ), F x - G x = F y - G y"
+          }
+        ],
+        "conclusion": "F x - G x = F 0 - G 0"
+      }
+    ]
+  },
+  {
+    "line": 138,
+    "tactic": "have := hconst x 0",
+    "goalsBefore": [
+      {
+        "name": "h",
+        "hypotheses": [
+          {
+            "names": [
+              "F",
+              "G",
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "IsAntiderivative F f"
+          },
+          {
+            "names": [
+              "hG"
+            ],
+            "type": "IsAntiderivative G f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "∀ (y : ℝ), HasDerivAt (fun z => F z - G z) 0 y"
+          },
+          {
+            "names": [
+              "hconst"
+            ],
+            "type": "∀ (x y : ℝ), F x - G x = F y - G y"
+          },
+          {
+            "names": [
+              "this"
+            ],
+            "type": "F x - G x = F 0 - G 0"
+          }
+        ],
+        "conclusion": "F x - G x = F 0 - G 0"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "h",
+        "hypotheses": [
+          {
+            "names": [
+              "F",
+              "G",
+              "f"
+            ],
+            "type": "ℝ → ℝ"
+          },
+          {
+            "names": [
+              "hF"
+            ],
+            "type": "IsAntiderivative F f"
+          },
+          {
+            "names": [
+              "hG"
+            ],
+            "type": "IsAntiderivative G f"
+          },
+          {
+            "names": [
+              "x"
+            ],
+            "type": "ℝ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "∀ (y : ℝ), HasDerivAt (fun z => F z - G z) 0 y"
+          },
+          {
+            "names": [
+              "hconst"
+            ],
+            "type": "∀ (x y : ℝ), F x - G x = F y - G y"
+          },
+          {
+            "names": [
+              "this"
+            ],
+            "type": "F x - G x = F 0 - G 0"
+          }
+        ],
+        "conclusion": "F x - G x = F 0 - G 0"
+      }
+    ]
+  },
+  {
+    "line": 139,
+    "tactic": "linarith",
+    "goalsBefore": [],
+    "goalsAfter": []
+  }
+]

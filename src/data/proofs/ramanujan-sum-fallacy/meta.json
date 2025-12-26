@@ -1,0 +1,132 @@
+{
+  "id": "ramanujan-sum-fallacy",
+  "title": "The Ramanujan Sum Fallacy",
+  "slug": "ramanujan-sum-fallacy",
+  "description": "A demonstration of how Lean catches the famous fallacious 'proof' that 1+2+3+... = -1/12, showing why mathematical rigor matters.",
+  "meta": {
+    "status": "disputed",
+    "tags": [
+      "fallacy",
+      "divergent-series",
+      "analysis",
+      "zeta-function",
+      "educational"
+    ],
+    "badge": "fallacy",
+    "sorries": 9,
+    "sorriesIntentional": true,
+    "sorriesExplanation": "All 9 sorries in this file are INTENTIONALLY unprovable. They mark steps in the famous '1+2+3+...=-1/12' fallacy that are mathematically impossible. Each sorry documents where Lean's type system catches an invalid manipulation of divergent series. These sorries should NOT be filled - they demonstrate the educational value of formal verification in catching fallacies.",
+    "mathlib_version": "4.10.0",
+    "proofRepoPath": "Proofs/RamanujanSumFallacy.lean",
+    "externalReferences": [
+      {
+        "title": "Numberphile: ASTOUNDING: 1+2+3+4+... = -1/12",
+        "url": "https://www.youtube.com/watch?v=w-I6XTVZXww",
+        "type": "video"
+      },
+      {
+        "title": "Mathologer: Numberphile v. Math: the truth about 1+2+3+...=-1/12",
+        "url": "https://www.youtube.com/watch?v=YuIIjLr6vUA",
+        "type": "video"
+      }
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "tsum",
+        "description": "Topological sum for infinite series",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "Summable",
+        "description": "Typeclass for convergent series",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Demonstration of how Lean catches invalid series manipulation",
+      "Educational walkthrough of the famous -1/12 fallacy",
+      "Distinction between summation and zeta regularization"
+    ],
+    "dateAdded": "12/21/25"
+  },
+  "overview": {
+    "historicalContext": "The claim that $1+2+3+4+\\cdots = -\\frac{1}{12}$ gained widespread attention through a 2014 Numberphile video that has over 10 million views. The result has legitimate origins in the work of Ramanujan and the theory of the Riemann zeta function, where $\\zeta(-1) = -\\frac{1}{12}$. However, the video's 'elementary proof' using series manipulation is fundamentally flawed.\n\nThe actual -1/12 result comes from analytic continuation of the Riemann zeta function. For $\\text{Re}(s) > 1$, the zeta function is defined as $\\zeta(s) = \\sum_{n=1}^{\\infty} n^{-s}$. This series diverges for $s = -1$, but the zeta function can be uniquely extended to a meromorphic function on the complex plane, and $\\zeta(-1) = -\\frac{1}{12}$.\n\nThis is NOT the same as saying the sum converges to $-\\frac{1}{12}$. The result appears in string theory and physics through a technique called zeta function regularization, which is a specific mathematical procedure - not ordinary summation.",
+    "problemStatement": "The Numberphile 'proof' proceeds as follows:\n\nStep 1: Let $S_1 = 1-1+1-1+\\cdots$. Claim: $S_1 = \\frac{1}{2}$\n\nStep 2: Let $S_2 = 1-2+3-4+\\cdots$. Using shift-and-add:\n$$2S_2 = (1-2+3-4+\\cdots) + (0+1-2+3-\\cdots) = 1-1+1-1+\\cdots = S_1 = \\frac{1}{2}$$\nThus $S_2 = \\frac{1}{4}$.\n\nStep 3: Let $S = 1+2+3+4+\\cdots$. Then:\n$$S - S_2 = (1+2+3+4+\\cdots) - (1-2+3-4+\\cdots) = 0+4+0+8+\\cdots = 4(1+2+3+\\cdots) = 4S$$\n\nStep 4: Solving $S - \\frac{1}{4} = 4S$ gives $S = -\\frac{1}{12}$.\n\nThe Question: Where does this argument fail, and how does Lean catch it?",
+    "proofStrategy": "This 'proof' contains multiple fundamental errors that Lean's type system prevents:\n\n1. Assigning values to divergent series: The series $1-1+1-1+\\cdots$ (Grandi's series) does NOT converge. Its partial sums alternate between 0 and 1 forever. The 'value' $\\frac{1}{2}$ is the Cesaro mean, not the limit.\n\n2. Invalid series manipulation: Rearranging or shifting terms is only valid for absolutely convergent series. The Riemann series theorem proves that conditionally convergent series can be rearranged to converge to ANY value, and divergent series have no meaningful term manipulation.\n\n3. Treating $\\infty$ as a number: The series $1+2+3+\\cdots$ diverges to infinity. Subtracting two infinite quantities is undefined.\n\nIn Lean/Mathlib, the tsum function (topological sum) returns 0 for non-summable series - preventing any false conclusions. All series manipulation lemmas require a Summable hypothesis that acts as a type-level gatekeeper.",
+    "keyInsights": [
+      "Lean's Summable typeclass acts as a proof obligation - you cannot manipulate series without first proving convergence.",
+      "Mathlib's tsum returns 0 for divergent series by convention, preventing arithmetic on meaningless quantities.",
+      "The actual -1/12 comes from analytic continuation of $\\zeta(s)$, which is a completely different mathematical operation.",
+      "This demonstrates the value of formal verification: errors that seem plausible in informal mathematics are blocked by the type system.",
+      "The Riemann series theorem shows that rearranging conditionally convergent series can give ANY result - so manipulations must be carefully justified."
+    ]
+  },
+  "sections": [
+    {
+      "id": "intro",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 16,
+      "summary": "Overview of the fallacy and its origins in physics."
+    },
+    {
+      "id": "convergence",
+      "title": "Lean Requires Convergence Proofs",
+      "startLine": 17,
+      "endLine": 38,
+      "summary": "How Mathlib's tsum function handles infinite series."
+    },
+    {
+      "id": "grandi",
+      "title": "The Grandi Series Fallacy",
+      "startLine": 39,
+      "endLine": 60,
+      "summary": "Why 1-1+1-1+... cannot be assigned the value 1/2."
+    },
+    {
+      "id": "shift-add",
+      "title": "The Shift-and-Add Manipulation",
+      "startLine": 61,
+      "endLine": 90,
+      "summary": "Why series manipulation requires convergence proofs."
+    },
+    {
+      "id": "core-theorem",
+      "title": "The Core Theorem: Naturals Diverge",
+      "startLine": 91,
+      "endLine": 117,
+      "summary": "Lean proves the natural number series diverges."
+    },
+    {
+      "id": "zeta",
+      "title": "What -1/12 Actually Means",
+      "startLine": 118,
+      "endLine": 144,
+      "summary": "The distinction between summation and zeta regularization."
+    },
+    {
+      "id": "step-by-step",
+      "title": "Where Each Step Fails",
+      "startLine": 145,
+      "endLine": 178,
+      "summary": "Tracing through the Numberphile proof and marking each fallacy."
+    },
+    {
+      "id": "conclusion",
+      "title": "Conclusion",
+      "startLine": 179,
+      "endLine": 194,
+      "summary": "Summary of how Lean enforces mathematical rigor."
+    }
+  ],
+  "conclusion": {
+    "summary": "This demonstration shows the power of formal verification in catching mathematical errors. The 'proof' that $1+2+3+\\cdots = -\\frac{1}{12}$ seems convincing in informal presentation, but Lean's type system immediately rejects it.\n\nEvery step of the argument requires manipulating divergent series - something that Mathlib's Summable typeclass forbids. The lemmas for adding, shifting, or rearranging series all carry Summable as a hypothesis. When we try to apply them to $1-1+1-1+\\cdots$ or $1+2+3+\\cdots$, Lean demands a proof of convergence that we cannot provide.\n\nThe result is that tsum naturals evaluates to 0 (the default for non-summable series), and we can prove $0 \\neq -\\frac{1}{12}$ trivially.",
+    "implications": "For Mathematics Education\n\nThis example illustrates why proof assistants are valuable: they force us to make every assumption explicit. The Numberphile video is entertaining but mathematically misleading. A student using Lean would immediately see where the argument breaks down.\n\nFor Physics\n\nThe -1/12 result IS used in physics (string theory, Casimir effect), but through zeta function regularization - a specific renormalization technique. Physicists understand this is not ordinary summation; it's a way of extracting finite values from divergent expressions in quantum field theory.\n\nFor Formal Methods\n\nThis showcases how dependent types and typeclasses can enforce mathematical invariants. The Summable typeclass is a compile-time proof obligation that prevents invalid reasoning about infinite series.",
+    "openQuestions": [
+      "How would you formalize zeta function regularization in Lean, as distinct from ordinary summation?",
+      "The Cesaro sum of Grandi's series really is 1/2 - how would you define Cesaro summation in Lean?",
+      "What other famous 'proofs' contain similar fallacies that Lean would catch? (e.g., 1 = 2 proofs involving division by zero)",
+      "Could we build a Lean library that allows manipulating divergent series with explicit regularization schemes?"
+    ]
+  }
+}

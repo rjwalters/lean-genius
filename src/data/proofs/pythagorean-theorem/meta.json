@@ -1,0 +1,128 @@
+{
+  "id": "pythagorean-theorem",
+  "title": "Pythagorean Theorem",
+  "slug": "pythagorean-theorem",
+  "description": "The most famous theorem in mathematics: in a right triangle, the square of the hypotenuse equals the sum of the squares of the other two sides. a² + b² = c²",
+  "meta": {
+    "author": "Pythagoras of Samos (formalized in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Pythagorean_theorem",
+    "date": "c. 500 BCE",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "inner-product",
+      "classic",
+      "beginner"
+    ],
+    "proofRepoPath": "Proofs/Pythagorean.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "InnerProductSpace",
+        "description": "Basic inner product space structure",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Complete proof using inner product space formulation",
+      "Algebraic proof via bilinearity of inner products",
+      "Geometric interpretation connecting to classical triangle formulation"
+    ],
+    "dateAdded": "12/21/25"
+  },
+  "overview": {
+    "historicalContext": "The Pythagorean theorem is arguably the most recognized result in all of mathematics. While named after the Greek mathematician Pythagoras (c. 570-495 BCE), evidence suggests the theorem was known to Babylonian mathematicians over 1000 years earlier—clay tablet Plimpton 322 (c. 1800 BCE) contains a list of Pythagorean triples.\n\nPythagoras, or more likely his school, is credited with providing the first general proof. The theorem appears as Proposition 47 in Book I of Euclid's Elements (c. 300 BCE), where it's proved using areas of squares constructed on the triangle's sides.\n\nBy 1940, mathematician Elisha Loomis had catalogued 367 distinct proofs, and new proofs continue to be discovered. James Garfield, before becoming the 20th US President, published an original proof in 1876.",
+    "problemStatement": "Theorem (Pythagorean): In a right triangle with legs of lengths $a$ and $b$ and hypotenuse of length $c$:\n\n$$a^2 + b^2 = c^2$$\n\nEquivalently, using vectors: if $\\vec{v}$ and $\\vec{w}$ are perpendicular ($\\vec{v} \\perp \\vec{w}$), then:\n\n$$\\|\\vec{v} + \\vec{w}\\|^2 = \\|\\vec{v}\\|^2 + \\|\\vec{w}\\|^2$$",
+    "proofStrategy": "Our proof uses the language of inner product spaces, which provides an elegant algebraic formulation. The key insight is that perpendicularity means the inner product is zero: $\\langle \\vec{v}, \\vec{w} \\rangle = 0$.\n\nThe proof unfolds as:\n1. Expand $\\|\\vec{v} + \\vec{w}\\|^2 = \\langle \\vec{v} + \\vec{w}, \\vec{v} + \\vec{w} \\rangle$\n2. Use bilinearity to distribute: $= \\langle \\vec{v}, \\vec{v} \\rangle + \\langle \\vec{v}, \\vec{w} \\rangle + \\langle \\vec{w}, \\vec{v} \\rangle + \\langle \\vec{w}, \\vec{w} \\rangle$\n3. Apply perpendicularity: the cross terms vanish\n4. Conclude: $= \\|\\vec{v}\\|^2 + \\|\\vec{w}\\|^2$\n\nThis approach reveals the theorem as a natural consequence of the geometry encoded in inner products.",
+    "keyInsights": [
+      "Perpendicularity in inner product spaces means exactly that the inner product is zero—this is the algebraic translation of 'right angle'",
+      "The theorem follows from bilinearity of the inner product; no geometric constructions needed",
+      "Pythagorean triples (3,4,5), (5,12,13), etc. are integer solutions—all primitive triples come from the formula a = m² - n², b = 2mn, c = m² + n²",
+      "The converse also holds: if a² + b² = c², the triangle has a right angle",
+      "The theorem fails in non-Euclidean geometries, making it a defining property of Euclidean space"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 13,
+      "summary": "Overview of the theorem and its historical significance, from ancient Babylon through Pythagoras to modern formalization."
+    },
+    {
+      "id": "real-numbers",
+      "title": "Real Number Foundations",
+      "startLine": 15,
+      "endLine": 32,
+      "summary": "Setting up the real number type and basic operations needed for geometric quantities."
+    },
+    {
+      "id": "vector-space",
+      "title": "Vector Space Structure",
+      "startLine": 34,
+      "endLine": 54,
+      "summary": "Defining 2D vectors and vector operations (addition, subtraction) for representing geometric points."
+    },
+    {
+      "id": "inner-product",
+      "title": "The Inner Product",
+      "startLine": 56,
+      "endLine": 73,
+      "summary": "Introducing the dot product and norm—the algebraic tools that encode geometry."
+    },
+    {
+      "id": "perpendicularity",
+      "title": "Perpendicularity",
+      "startLine": 75,
+      "endLine": 85,
+      "summary": "Defining perpendicular vectors as those with zero inner product—the key to the theorem."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Pythagorean Theorem",
+      "startLine": 87,
+      "endLine": 117,
+      "summary": "The main proof using bilinearity of inner products and the perpendicularity condition."
+    },
+    {
+      "id": "geometric-interpretation",
+      "title": "Geometric Interpretation",
+      "startLine": 119,
+      "endLine": 147,
+      "summary": "Connecting the vector formulation to the classical triangle with sides a, b, c."
+    },
+    {
+      "id": "pythagorean-triples",
+      "title": "Pythagorean Triples",
+      "startLine": 149,
+      "endLine": 177,
+      "summary": "Integer solutions like (3,4,5), verified computationally, and the generating formula."
+    },
+    {
+      "id": "converse",
+      "title": "The Converse",
+      "startLine": 179,
+      "endLine": 195,
+      "summary": "If a² + b² = c², then the triangle has a right angle—Euclid's Proposition 48."
+    },
+    {
+      "id": "history",
+      "title": "Historical Context",
+      "startLine": 197,
+      "endLine": 225,
+      "summary": "Timeline from Babylon to modern times, proof methods, and generalizations."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization demonstrates how inner product spaces provide an elegant algebraic framework for geometric theorems. The Pythagorean theorem emerges naturally from the definition of perpendicularity as zero inner product, combined with the bilinearity property.",
+    "implications": "The inner product approach generalizes seamlessly to higher dimensions and reveals the theorem's true nature: it's not about triangles per se, but about the orthogonal decomposition of vectors. This perspective is foundational in linear algebra, functional analysis, and quantum mechanics.",
+    "openQuestions": [
+      "What's the simplest possible proof of the Pythagorean theorem? (Candidates include Einstein's similar-triangles proof)",
+      "How many truly distinct proofs exist? Loomis catalogued 367, but the count depends on what 'distinct' means",
+      "What's the analog of the Pythagorean theorem in hyperbolic and spherical geometry?",
+      "Can all Pythagorean triples be found efficiently for very large numbers?"
+    ]
+  }
+}

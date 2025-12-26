@@ -1,0 +1,170 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "russell-1-plus-1",
+    "range": { "startLine": 1, "endLine": 15 },
+    "type": "concept",
+    "title": "The Most Famous 'Trivial' Proof",
+    "content": "The claim that Principia Mathematica took 362 pages to prove $1+1=2$ has become legendary—and somewhat misleading. Those pages weren't proving a single equation; they were constructing the entire logical framework needed to give rigorous meaning to the symbols '1', '+', '=', and '2'.\n\nIn modern type theory, this proof is definitionally true: the computation $1+1$ *reduces to* $2$ by the very definitions of the symbols involved. The `rfl` tactic (reflexivity) captures this.",
+    "significance": "key",
+    "relatedConcepts": ["Principia Mathematica", "definitional equality", "type theory"]
+  },
+  {
+    "id": "ann-peano-inductive",
+    "proofId": "russell-1-plus-1",
+    "range": { "startLine": 22, "endLine": 26 },
+    "type": "definition",
+    "title": "Peano Natural Numbers",
+    "content": "The natural numbers are defined as an **inductive type** with exactly two constructors:\n\n1. `zero` — the base case, representing 0\n2. `succ` — the successor function, taking any natural to its successor\n\nThis is Peano's original insight: we don't need to say *what* numbers are, only *how they behave*. Zero exists, and every number has a successor. From these two building blocks, we get all of $\\mathbb{N}$.",
+    "mathContext": "$\\mathbb{N} = \\{0, S(0), S(S(0)), S(S(S(0))), \\ldots\\}$",
+    "significance": "critical",
+    "relatedConcepts": ["inductive types", "Peano axioms", "structural induction"]
+  },
+  {
+    "id": "ann-numeric-notation",
+    "proofId": "russell-1-plus-1",
+    "range": { "startLine": 30, "endLine": 33 },
+    "type": "definition",
+    "title": "Numeric Notation",
+    "content": "We define convenient names for the first few numbers:\n\n- $1 = S(0)$ (one successor of zero)\n- $2 = S(S(0))$ (two successors of zero)\n- $3 = S(S(S(0)))$ (three successors)\n\nThese are just syntactic sugar—`one` is literally defined to *be* `succ zero`, not merely equal to it.",
+    "mathContext": "$1 \\stackrel{\\text{def}}{=} S(0), \\quad 2 \\stackrel{\\text{def}}{=} S(S(0))$",
+    "significance": "supporting",
+    "relatedConcepts": ["definitional equality", "notation"]
+  },
+  {
+    "id": "ann-add-definition",
+    "proofId": "russell-1-plus-1",
+    "range": { "startLine": 40, "endLine": 47 },
+    "type": "definition",
+    "title": "Recursive Definition of Addition",
+    "content": "Addition is defined by **recursion on the second argument**. This follows Peano's original definition:\n\n1. **Base case:** $n + 0 = n$ (adding zero does nothing)\n2. **Recursive case:** $n + S(m) = S(n + m)$ (adding a successor means taking the successor of the sum)\n\nThe key insight is that every natural number is either zero or a successor, so these two cases cover all possibilities. The recursion is **well-founded** because the second argument strictly decreases.",
+    "mathContext": "$n + 0 = n \\\\ n + S(m) = S(n + m)$",
+    "significance": "critical",
+    "prerequisites": ["ann-peano-inductive"],
+    "relatedConcepts": ["structural recursion", "well-founded recursion", "termination"]
+  },
+  {
+    "id": "ann-main-theorem-statement",
+    "proofId": "russell-1-plus-1",
+    "range": { "startLine": 55, "endLine": 56 },
+    "type": "theorem",
+    "title": "The Main Theorem",
+    "content": "Here it is—the theorem that launched a thousand memes. We claim that $1 + 1 = 2$, or more precisely, that `one + one = two` where these are our defined Peano naturals.\n\nThe proof will show that both sides compute to the same thing.",
+    "mathContext": "$S(0) + S(0) = S(S(0))$",
+    "significance": "critical",
+    "prerequisites": ["ann-add-definition", "ann-numeric-notation"],
+    "relatedConcepts": ["362 pages", "Principia Mathematica"]
+  },
+  {
+    "id": "ann-unfold-proof",
+    "proofId": "russell-1-plus-1",
+    "range": { "startLine": 57, "endLine": 64 },
+    "type": "tactic",
+    "title": "Unfolding the Computation",
+    "content": "The `unfold` tactic expands definitions, revealing the computation:\n\n1. `one + one` = `succ zero + succ zero`\n2. By the recursive case of `add`: `succ (succ zero + zero)`\n3. By the base case of `add`: `succ (succ zero)`\n4. Which is exactly `two`\n\nEach step is just applying a definition—no axioms, no magic, just computation. The `rfl` at the end confirms that both sides are definitionally equal.",
+    "mathContext": "$S(0) + S(0) = S(S(0) + 0) = S(S(0)) = 2$",
+    "significance": "critical",
+    "prerequisites": ["ann-main-theorem-statement"],
+    "relatedConcepts": ["definitional equality", "computation", "reduction"]
+  },
+  {
+    "id": "ann-rfl-proof",
+    "proofId": "russell-1-plus-1",
+    "range": { "startLine": 66, "endLine": 66 },
+    "type": "insight",
+    "title": "The Power of 'rfl'",
+    "content": "This alternative proof using just `rfl` shows the true elegance of type theory. The term `rfl` (reflexivity) proves any goal of the form `a = a`.\n\nBut here's the magic: type theory has **definitional equality** built in. If `a` and `b` compute to the same normal form, then `a = b` is proved by `rfl`. Since `one + one` and `two` both reduce to `succ (succ zero)`, they're definitionally equal.\n\nThis is why the proof is 'trivial'—it's not that we're avoiding work, it's that the *definitions themselves* do the work.",
+    "significance": "key",
+    "prerequisites": ["ann-unfold-proof"],
+    "relatedConcepts": ["reflexivity", "normal form", "beta reduction"]
+  },
+  {
+    "id": "ann-add-zero",
+    "proofId": "russell-1-plus-1",
+    "range": { "startLine": 72, "endLine": 72 },
+    "type": "theorem",
+    "title": "Right Identity",
+    "content": "Zero is a right identity for addition: $n + 0 = n$. This follows immediately from the definition of `add`—it's the base case! The proof is `rfl` because `n + zero` *reduces to* `n` by definition.",
+    "mathContext": "$\\forall n \\in \\mathbb{N}: n + 0 = n$",
+    "significance": "supporting",
+    "relatedConcepts": ["identity element", "monoid"]
+  },
+  {
+    "id": "ann-zero-add",
+    "proofId": "russell-1-plus-1",
+    "range": { "startLine": 74, "endLine": 79 },
+    "type": "theorem",
+    "title": "Left Identity (Requires Induction)",
+    "content": "Zero is also a left identity: $0 + n = n$. But this requires **induction**! Why?\n\nOur addition is defined by recursion on the *second* argument, so `zero + n` doesn't immediately reduce. We must prove it for all `n` by induction:\n\n- **Base case:** `zero + zero = zero` ✓ (by definition)\n- **Inductive step:** If `zero + n = n`, then `zero + succ n = succ (zero + n) = succ n` ✓",
+    "mathContext": "$\\forall n \\in \\mathbb{N}: 0 + n = n$",
+    "significance": "key",
+    "prerequisites": ["ann-add-definition"],
+    "relatedConcepts": ["structural induction", "asymmetry of recursion"]
+  },
+  {
+    "id": "ann-add-comm",
+    "proofId": "russell-1-plus-1",
+    "range": { "startLine": 87, "endLine": 92 },
+    "type": "theorem",
+    "title": "Commutativity of Addition",
+    "content": "Addition is commutative: $n + m = m + n$. This requires induction and uses both the `zero_add` and `succ_add` lemmas as stepping stones.\n\nThe proof goes by induction on `n`:\n- When $n = 0$: Use `zero_add` to show $0 + m = m = m + 0$\n- When $n = S(k)$: Use `succ_add` and the inductive hypothesis",
+    "mathContext": "$\\forall m, n \\in \\mathbb{N}: m + n = n + m$",
+    "significance": "key",
+    "prerequisites": ["ann-zero-add"],
+    "relatedConcepts": ["commutative property", "abelian group"]
+  },
+  {
+    "id": "ann-add-assoc",
+    "proofId": "russell-1-plus-1",
+    "range": { "startLine": 94, "endLine": 99 },
+    "type": "theorem",
+    "title": "Associativity of Addition",
+    "content": "Addition is associative: $(a + b) + c = a + (b + c)$. With commutativity, this makes $(\\mathbb{N}, +)$ a commutative monoid.\n\nThe proof is by induction on `c`, which matches how addition is defined (recursion on the second argument). Both base case and inductive step reduce to definitional equality after applying the definition of `add`.",
+    "mathContext": "$\\forall a, b, c \\in \\mathbb{N}: (a + b) + c = a + (b + c)$",
+    "significance": "key",
+    "relatedConcepts": ["associative property", "monoid", "semigroup"]
+  },
+  {
+    "id": "ann-more-arithmetic",
+    "proofId": "russell-1-plus-1",
+    "range": { "startLine": 105, "endLine": 111 },
+    "type": "concept",
+    "title": "Extending the Pattern",
+    "content": "Once we have the machinery, more arithmetic facts fall out immediately:\n\n- $2 + 1 = 3$ — `rfl`\n- $1 + 2 = 3$ — `rfl` \n- $2 + 2 = 4$ — `rfl`\n\nAll definitionally true, requiring no proof beyond reflexivity. The pattern extends to any concrete computation with natural numbers.",
+    "significance": "supporting",
+    "relatedConcepts": ["definitional equality", "computation"]
+  },
+  {
+    "id": "ann-builtin-nat",
+    "proofId": "russell-1-plus-1",
+    "range": { "startLine": 117, "endLine": 128 },
+    "type": "concept",
+    "title": "Lean's Built-in Naturals",
+    "content": "Lean's standard library defines `Nat` identically to our `Peano.ℕ`:\n\n```lean\ninductive Nat where\n  | zero : Nat\n  | succ : Nat → Nat\n```\n\nThe numeric literals `1`, `2`, etc. are notation for `Nat.succ Nat.zero`, `Nat.succ (Nat.succ Nat.zero)`, etc. And `Nat.add` is defined exactly as our `add`. So the proof `(1 : Nat) + 1 = 2` is also just `rfl`.",
+    "significance": "supporting",
+    "prerequisites": ["ann-peano-inductive"],
+    "relatedConcepts": ["standard library", "numeric literals"]
+  },
+  {
+    "id": "ann-principia-context",
+    "proofId": "russell-1-plus-1",
+    "range": { "startLine": 132, "endLine": 153 },
+    "type": "concept",
+    "title": "Understanding Principia Mathematica",
+    "content": "Russell and Whitehead weren't trying to prove $1+1=2$ in isolation—they were building a complete logical foundation for all of mathematics.\n\nTheir approach was radically different from ours:\n\n- **Numbers as sets:** 1 was defined as *the set of all singleton sets*, 2 as *the set of all two-element sets*\n- **Addition via unions:** $a + b$ meant taking the union of disjoint representatives\n- **Ramified type theory:** To avoid paradoxes, they used a complex type hierarchy\n\nIn contrast, modern type theory treats natural numbers as a primitive inductive type, making the foundations far simpler. We're not cheating—we've just found a better foundation.",
+    "significance": "key",
+    "relatedConcepts": ["Frege-Russell definition", "logicism", "set-theoretic foundations"]
+  },
+  {
+    "id": "ann-succ-add",
+    "proofId": "russell-1-plus-1",
+    "range": { "startLine": 83, "endLine": 86 },
+    "type": "lemma",
+    "title": "Successor Distributes Left",
+    "content": "This lemma shows that $S(n) + m = S(n + m)$—the successor can be 'factored out' from the left argument.\n\nThis is NOT definitionally true (unlike `add_succ`) because our `add` recurses on the *right* argument. We need induction on `m` to prove it.\n\nThis asymmetry—one direction is trivial, the other requires proof—reflects the inherent asymmetry in our recursive definition.",
+    "mathContext": "$S(n) + m = S(n + m)$",
+    "significance": "supporting",
+    "prerequisites": ["ann-add-definition"],
+    "relatedConcepts": ["induction", "recursion structure"]
+  }
+]

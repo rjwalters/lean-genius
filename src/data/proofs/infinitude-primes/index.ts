@@ -1,7 +1,8 @@
-import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion } from '@/types/proof'
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, TacticState } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
-import sourceRaw from './source.lean?raw'
+import tacticStatesJson from './tacticStates.json'
+import sourceRaw from '../../../../proofs/Proofs/InfinitudePrimes.lean?raw'
 
 const meta = metaJson as {
   id: string
@@ -27,8 +28,10 @@ export const infinitudePrimesProof: Proof = {
 }
 
 export const infinitudePrimesAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const infinitudePrimesTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const infinitudePrimesData: ProofData = {
   proof: infinitudePrimesProof,
   annotations: infinitudePrimesAnnotations,
+  tacticStates: infinitudePrimesTacticStates,
 }

@@ -1,0 +1,204 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "ramanujan-sum-fallacy",
+    "range": { "startLine": 1, "endLine": 12 },
+    "type": "concept",
+    "title": "The Famous Fallacy",
+    "content": "The claim $1+2+3+4+\\cdots = -\\frac{1}{12}$ went viral through a Numberphile video. While the value $-\\frac{1}{12}$ does appear in the Riemann zeta function ($\\zeta(-1) = -\\frac{1}{12}$), the 'elementary proof' using series manipulation is mathematically invalid.",
+    "mathContext": "In standard analysis, this series diverges to infinity. The -1/12 comes from **analytic continuation**, not from adding up the terms.",
+    "significance": "critical",
+    "relatedConcepts": ["divergent series", "zeta function", "analytic continuation"]
+  },
+  {
+    "id": "ann-tsum",
+    "proofId": "ramanujan-sum-fallacy",
+    "range": { "startLine": 17, "endLine": 23 },
+    "type": "definition",
+    "title": "How Mathlib Handles Infinite Sums",
+    "content": "Mathlib's `tsum` (topological sum) function is the standard way to express infinite sums in Lean. Crucially, `tsum f` only equals the expected limit if the sum **converges**. For divergent series, `tsum` returns **0** by convention.",
+    "mathContext": "This design choice prevents false conclusions: you can't do arithmetic with 'infinite' values because they're just represented as 0. All the useful lemmas about series require a `Summable` proof.",
+    "significance": "key",
+    "relatedConcepts": ["tsum", "Summable", "convergence"]
+  },
+  {
+    "id": "ann-naturals-def",
+    "proofId": "ramanujan-sum-fallacy",
+    "range": { "startLine": 25, "endLine": 26 },
+    "type": "definition",
+    "title": "Defining the Natural Number Series",
+    "content": "We define `naturals n = n + 1` to get the sequence $1, 2, 3, 4, \\ldots$ (offset by 1 because $\\mathbb{N}$ starts at 0 in Lean).",
+    "significance": "supporting",
+    "relatedConcepts": ["natural numbers", "sequences"]
+  },
+  {
+    "id": "ann-false-claim",
+    "proofId": "ramanujan-sum-fallacy",
+    "range": { "startLine": 28, "endLine": 34 },
+    "type": "theorem",
+    "title": "The False Claim Would Require Convergence",
+    "content": "This theorem shows that IF we could prove $\\sum n = -\\frac{1}{12}$, THEN the series would need to be `Summable`. But the series diverges, so this implication is vacuously true - we can never satisfy the hypothesis.",
+    "mathContext": "The `sorry` here is permanent - this line of reasoning is blocked. Lean forces us to acknowledge that the hypothesis is impossible.",
+    "significance": "critical",
+    "relatedConcepts": ["vacuous truth", "impossible hypothesis"]
+  },
+  {
+    "id": "ann-grandi",
+    "proofId": "ramanujan-sum-fallacy",
+    "range": { "startLine": 42, "endLine": 43 },
+    "type": "definition",
+    "title": "The Grandi Series",
+    "content": "The **Grandi series** $1-1+1-1+\\cdots$ has partial sums that alternate forever between 0 and 1. It does not converge in any standard sense.",
+    "mathContext": "The Numberphile video claims this equals $\\frac{1}{2}$ by averaging 0 and 1. This is actually the **Cesaro mean**, not the limit. They're different mathematical concepts!",
+    "significance": "key",
+    "relatedConcepts": ["partial sums", "Cesaro mean", "divergence"]
+  },
+  {
+    "id": "ann-grandi-not-summable",
+    "proofId": "ramanujan-sum-fallacy",
+    "range": { "startLine": 45, "endLine": 51 },
+    "type": "lemma",
+    "title": "Grandi Series Does Not Converge",
+    "content": "Lean can prove that the Grandi series is NOT summable. The partial sums oscillate forever - they don't approach any limit.",
+    "mathContext": "This is the first place the Numberphile 'proof' breaks down. Without convergence, we cannot assign the value $\\frac{1}{2}$.",
+    "significance": "critical",
+    "relatedConcepts": ["Summable", "oscillation", "Cauchy criterion"]
+  },
+  {
+    "id": "ann-grandi-half-impossible",
+    "proofId": "ramanujan-sum-fallacy",
+    "range": { "startLine": 53, "endLine": 59 },
+    "type": "theorem",
+    "title": "FALLACY: Cannot Prove Grandi = 1/2",
+    "content": "Here we attempt to prove the Numberphile claim that $1-1+1-1+\\cdots = \\frac{1}{2}$. **This is impossible** - the `sorry` can never be filled in. Since the series isn't summable, `tsum grandi = 0` by definition, and $0 \\neq \\frac{1}{2}$.",
+    "mathContext": "The red X (❌) in the comments indicates Lean rejects this. This is the first fallacy in the Numberphile argument.",
+    "significance": "critical",
+    "relatedConcepts": ["tsum convention", "proof failure"]
+  },
+  {
+    "id": "ann-shift-concept",
+    "proofId": "ramanujan-sum-fallacy",
+    "range": { "startLine": 66, "endLine": 72 },
+    "type": "concept",
+    "title": "The Shift-and-Add Trick",
+    "content": "The Numberphile proof adds $S_2$ to a shifted copy of itself:\n$$2S_2 = (1-2+3-4+\\cdots) + (0+1-2+3+\\cdots)$$\nThis term-by-term addition is ONLY valid for convergent series!",
+    "mathContext": "The **Riemann series theorem** proves that rearranging a conditionally convergent series can give any real number as a 'sum'. For divergent series, such manipulations are completely meaningless.",
+    "significance": "key",
+    "relatedConcepts": ["Riemann series theorem", "rearrangement", "absolute convergence"]
+  },
+  {
+    "id": "ann-alternating-not-summable",
+    "proofId": "ramanujan-sum-fallacy",
+    "range": { "startLine": 77, "endLine": 81 },
+    "type": "lemma",
+    "title": "Alternating Naturals Don't Converge Either",
+    "content": "The series $1-2+3-4+5-6+\\cdots$ also diverges. Its partial sums grow without bound in absolute value: $1, -1, 2, -2, 3, -3, \\ldots$",
+    "significance": "key",
+    "relatedConcepts": ["divergence", "partial sums"]
+  },
+  {
+    "id": "ann-shift-requires-summable",
+    "proofId": "ramanujan-sum-fallacy",
+    "range": { "startLine": 83, "endLine": 88 },
+    "type": "theorem",
+    "title": "Shifting Requires Convergence Proof",
+    "content": "Mathlib's lemmas for manipulating series (like `tsum_eq_zero_add`) all require a `Summable` hypothesis. This is the **type-level gatekeeper** that prevents invalid reasoning.",
+    "mathContext": "Notice `hf : Summable f` in the theorem statement. Without this proof, Lean won't let you use the lemma.",
+    "significance": "critical",
+    "relatedConcepts": ["typeclass constraints", "proof obligations"]
+  },
+  {
+    "id": "ann-shift-blocked",
+    "proofId": "ramanujan-sum-fallacy",
+    "range": { "startLine": 90, "endLine": 97 },
+    "type": "theorem",
+    "title": "FALLACY: Shift-Add Blocked by Type System",
+    "content": "When we try to apply the shift-and-add manipulation to our divergent series, **Lean blocks us**. We would need `Summable alternatingNaturals`, but we proved this is false!",
+    "significance": "critical",
+    "relatedConcepts": ["type checking", "blocked proof"]
+  },
+  {
+    "id": "ann-unbounded",
+    "proofId": "ramanujan-sum-fallacy",
+    "range": { "startLine": 104, "endLine": 110 },
+    "type": "lemma",
+    "title": "Partial Sums Grow Without Bound",
+    "content": "The sum $1+2+\\cdots+n = \\frac{n(n+1)}{2}$, which grows without bound as $n \\to \\infty$. This is the formal statement that the series diverges.",
+    "mathContext": "For any $M$, we can find $N$ large enough that the partial sum exceeds $M$. This is the definition of divergence to infinity.",
+    "significance": "key",
+    "relatedConcepts": ["divergence to infinity", "triangle numbers"]
+  },
+  {
+    "id": "ann-naturals-not-summable",
+    "proofId": "ramanujan-sum-fallacy",
+    "range": { "startLine": 112, "endLine": 117 },
+    "type": "theorem",
+    "title": "Natural Numbers Series Diverges",
+    "content": "We prove that `naturals` is NOT summable. If it were, its partial sums would converge - but we just showed they're unbounded. Contradiction!",
+    "significance": "critical",
+    "relatedConcepts": ["proof by contradiction", "unboundedness"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "ramanujan-sum-fallacy",
+    "range": { "startLine": 119, "endLine": 126 },
+    "type": "theorem",
+    "title": "MAIN RESULT: The Sum Does NOT Equal -1/12",
+    "content": "Here's the key theorem: $\\sum_{n=1}^{\\infty} n \\neq -\\frac{1}{12}$. The proof is almost trivial once we know the series doesn't converge:\n1. `naturals` is not summable\n2. Therefore `tsum naturals = 0` (by Mathlib convention)\n3. $0 \\neq -\\frac{1}{12}$ (by `norm_num`)",
+    "mathContext": "This is what Lean can actually PROVE, as opposed to the fallacious claim. The type system has protected us from error.",
+    "significance": "critical",
+    "relatedConcepts": ["tsum_eq_zero_of_not_summable", "norm_num"]
+  },
+  {
+    "id": "ann-zeta-distinction",
+    "proofId": "ramanujan-sum-fallacy",
+    "range": { "startLine": 128, "endLine": 143 },
+    "type": "concept",
+    "title": "What -1/12 Actually Means",
+    "content": "The value $-\\frac{1}{12}$ is real - it comes from the **Riemann zeta function** $\\zeta(s) = \\sum n^{-s}$ analytically continued to $s = -1$. But this is a DIFFERENT mathematical operation than ordinary summation.",
+    "mathContext": "In Lean, we would model zeta regularization with a completely different function type. The type system enforces the distinction automatically - you can't confuse `tsum` with `zeta_regularized`.",
+    "significance": "key",
+    "relatedConcepts": ["Riemann zeta function", "analytic continuation", "regularization"]
+  },
+  {
+    "id": "ann-step1",
+    "proofId": "ramanujan-sum-fallacy",
+    "range": { "startLine": 151, "endLine": 155 },
+    "type": "theorem",
+    "title": "Step 1 Fails: Grandi ≠ 1/2",
+    "content": "The first step of the Numberphile proof claims $S_1 = \\frac{1}{2}$. **BLOCKED**: The Grandi series doesn't converge, so `tsum grandi = 0 ≠ \\frac{1}{2}`.",
+    "significance": "critical",
+    "relatedConcepts": ["first fallacy"]
+  },
+  {
+    "id": "ann-step2",
+    "proofId": "ramanujan-sum-fallacy",
+    "range": { "startLine": 157, "endLine": 162 },
+    "type": "theorem",
+    "title": "Step 2 Fails: Cannot Shift Divergent Series",
+    "content": "The second step uses the shift-and-add manipulation. **BLOCKED**: This requires `Summable` which we cannot prove for divergent series.",
+    "significance": "critical",
+    "relatedConcepts": ["second fallacy", "manipulation blocked"]
+  },
+  {
+    "id": "ann-step3",
+    "proofId": "ramanujan-sum-fallacy",
+    "range": { "startLine": 164, "endLine": 178 },
+    "type": "theorem",
+    "title": "Step 3 'Works' But Is Useless",
+    "content": "Interestingly, the equation $S - S_2 = 4S$ **does typecheck** - but it's trivially true because both sides equal 0! This shows how Mathlib's convention prevents false conclusions: we can prove $0 - 0 = 4 \\cdot 0$, but this tells us nothing about $-\\frac{1}{12}$.",
+    "mathContext": "The `sorry`-free proof here uses `tsum_eq_zero_of_not_summable` twice, reducing everything to $0 = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["vacuous truth", "zero convention"]
+  },
+  {
+    "id": "ann-conclusion",
+    "proofId": "ramanujan-sum-fallacy",
+    "range": { "startLine": 180, "endLine": 194 },
+    "type": "concept",
+    "title": "Conclusion: Type Systems Enforce Rigor",
+    "content": "Lean's type system and Mathlib's design choices enforce mathematical rigor automatically:\n\n1. **Summable typeclass**: Acts as proof obligation before series manipulation\n2. **tsum = 0 convention**: Prevents arithmetic on divergent 'values'\n3. **Distinct types**: Regularization would be a different function entirely\n\nThe -1/12 result is useful in physics, but it requires different mathematical machinery that Lean would model with appropriate types.",
+    "significance": "critical",
+    "relatedConcepts": ["formal verification", "type safety", "mathematical rigor"]
+  }
+]

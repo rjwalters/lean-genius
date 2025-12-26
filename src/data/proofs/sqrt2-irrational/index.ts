@@ -1,7 +1,8 @@
-import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion } from '@/types/proof'
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, TacticState } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
-import sourceRaw from './source.lean?raw'
+import tacticStatesJson from './tacticStates.json'
+import sourceRaw from '../../../../proofs/Proofs/Sqrt2Irrational.lean?raw'
 
 const meta = metaJson as {
   id: string
@@ -27,8 +28,10 @@ export const sqrt2Proof: Proof = {
 }
 
 export const sqrt2Annotations: Annotation[] = annotationsJson as Annotation[]
+export const sqrt2TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const sqrt2Data: ProofData = {
   proof: sqrt2Proof,
   annotations: sqrt2Annotations,
+  tacticStates: sqrt2TacticStates,
 }

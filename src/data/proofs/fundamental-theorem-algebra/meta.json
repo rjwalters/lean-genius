@@ -1,0 +1,111 @@
+{
+  "id": "fundamental-theorem-algebra",
+  "title": "Fundamental Theorem of Algebra",
+  "slug": "fundamental-theorem-algebra",
+  "description": "Every non-constant polynomial with complex coefficients has at least one complex root. This profound theorem reveals that the complex numbers are algebraically closed - they contain all solutions to polynomial equations.",
+  "meta": {
+    "author": "Carl Friedrich Gauss (formalized in Lean 4 via Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fundamental_theorem_of_algebra",
+    "date": "1799",
+    "status": "verified",
+    "tags": [
+      "algebra",
+      "complex-analysis",
+      "polynomials",
+      "algebraic-closure",
+      "intermediate"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.exists_root",
+        "description": "Every non-constant complex polynomial has at least one root",
+        "module": "Mathlib.Analysis.Complex.Polynomial.Basic"
+      },
+      {
+        "theorem": "IsAlgClosed.splits_codomain",
+        "description": "Polynomials over algebraically closed fields split completely",
+        "module": "Mathlib.FieldTheory.IsAlgClosed.Basic"
+      },
+      {
+        "theorem": "Polynomial.natDegree_eq_card_roots",
+        "description": "For split polynomials, degree equals number of roots",
+        "module": "Mathlib.Algebra.Polynomial.Splits"
+      }
+    ],
+    "originalContributions": [
+      "no_roots_implies_constant - contrapositive formulation of FTA",
+      "card_roots_eq_degree - root counting theorem",
+      "monic_prod_roots - complete factorization theorem",
+      "quadratic_has_root - explicit quadratic case"
+    ],
+    "dateAdded": "12/21/25"
+  },
+  "overview": {
+    "historicalContext": "The Fundamental Theorem of Algebra has a fascinating history spanning centuries. First conjectured by Albert Girard in 1629, it was attempted by many great mathematicians including d'Alembert, Euler, and Lagrange. Carl Friedrich Gauss provided the first rigorous proof in his 1799 doctoral dissertation, though he would go on to publish three more proofs throughout his career.\n\nDespite its name, the theorem is fundamentally analytic rather than algebraic. Every known proof relies on some completeness property of the real numbers - whether through analysis, topology, or complex function theory. The proof in Mathlib uses Liouville's theorem from complex analysis: a bounded entire function must be constant.",
+    "problemStatement": "The Fundamental Theorem of Algebra: If $p(z) = a_n z^n + a_{n-1} z^{n-1} + \\cdots + a_1 z + a_0$ is a polynomial with complex coefficients and $n \\geq 1$ (i.e., the polynomial is non-constant), then there exists at least one complex number $z_0$ such that $p(z_0) = 0$.\n\nEquivalently: The field of complex numbers $\\mathbb{C}$ is algebraically closed - every polynomial over $\\mathbb{C}$ splits completely into linear factors.",
+    "proofStrategy": "The Mathlib proof proceeds via complex analysis:\n\n1. Assume the contrary: Suppose $p(z) \\neq 0$ for all $z \\in \\mathbb{C}$\n2. Define the reciprocal: Consider $f(z) = 1/p(z)$, which would be entire (holomorphic everywhere)\n3. Show boundedness: Since $|p(z)| \\to \\infty$ as $|z| \\to \\infty$, the function $f$ is bounded\n4. Apply Liouville's theorem: A bounded entire function must be constant\n5. Reach contradiction: If $f$ is constant, then $p$ is constant, contradicting our assumption that $\\deg p \\geq 1$\n\nTherefore, $p$ must have at least one root in $\\mathbb{C}$.",
+    "keyInsights": [
+      "Despite its algebraic statement, every proof requires analysis - there is no purely algebraic proof",
+      "The theorem immediately implies that every degree-n polynomial has exactly n roots (counted with multiplicity)",
+      "This makes complex numbers 'complete' for algebra: you never need to extend further to solve polynomials",
+      "The proof uses that polynomials grow unboundedly - a topological fact about continuous functions",
+      "Liouville's theorem is the key analytical ingredient: bounded + entire implies constant"
+    ]
+  },
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Overview of the Fundamental Theorem of Algebra and its historical significance as the foundation of algebraic closure."
+    },
+    {
+      "id": "mathlib-imports",
+      "title": "Mathlib Imports",
+      "startLine": 24,
+      "endLine": 32,
+      "summary": "Importing the complex polynomial theory from Mathlib, which provides the formalized theorem."
+    },
+    {
+      "id": "polynomial-basics",
+      "title": "Polynomial Foundations",
+      "startLine": 34,
+      "endLine": 55,
+      "summary": "Setting up polynomial notation and reviewing key concepts: degree, evaluation, and what it means to be a root."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 57,
+      "endLine": 82,
+      "summary": "Stating and proving the Fundamental Theorem of Algebra using Mathlib's Complex.exists_root theorem."
+    },
+    {
+      "id": "algebraic-closure",
+      "title": "Algebraic Closure",
+      "startLine": 84,
+      "endLine": 105,
+      "summary": "The powerful consequence: the complex numbers form an algebraically closed field."
+    },
+    {
+      "id": "complete-factorization",
+      "title": "Complete Factorization",
+      "startLine": 107,
+      "endLine": 135,
+      "summary": "Every complex polynomial splits into a product of linear factors - the full power of algebraic closure."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Fundamental Theorem of Algebra establishes that every non-constant polynomial with complex coefficients has a root in the complex numbers. This makes the complex numbers algebraically closed - the natural 'completion' of algebra. No matter how complicated a polynomial equation, its solutions always live in the complex plane.",
+    "implications": "This theorem is foundational to all of modern algebra. It tells us that the complex numbers are the right setting for polynomial algebra - we never need to extend further. Every polynomial of degree n has exactly n roots (with multiplicity), enabling complete factorization. The theorem connects algebra with analysis and topology, demonstrating the deep unity of mathematics.",
+    "openQuestions": [
+      "Can a purely algebraic proof ever be found, or is analysis inherently required?",
+      "What is the 'simplest' proof of FTA - measuring by which prerequisites are needed?",
+      "How does the theorem generalize to other coefficient fields and algebraic closure?",
+      "What computational aspects arise when actually finding roots numerically?"
+    ]
+  }
+}

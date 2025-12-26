@@ -1,0 +1,167 @@
+[
+  {
+    "id": "ann-zero-imports",
+    "proofId": "halting-problem",
+    "range": { "startLine": 10, "endLine": 11 },
+    "type": "insight",
+    "title": "Zero External Dependencies",
+    "content": "This proof uses **no imports whatsoever** - not even Mathlib. It relies only on Lean's built-in types (`Nat`, `Bool`) and core tactics.\n\nThis demonstrates that the halting problem's undecidability is a purely logical result, requiring no sophisticated mathematical machinery.",
+    "mathContext": "The proof needs only:\n- Natural numbers $\\mathbb{N}$ (for program codes)\n- Booleans $\\{\\text{true}, \\text{false}\\}$ (for halt/loop)\n- Boolean negation $\\neg$",
+    "significance": "key",
+    "relatedConcepts": ["self-contained proofs", "minimal axioms", "pure logic"]
+  },
+  {
+    "id": "ann-halting-oracle",
+    "proofId": "halting-problem",
+    "range": { "startLine": 33, "endLine": 36 },
+    "type": "definition",
+    "title": "Halting Oracle",
+    "content": "A **halting oracle** is a hypothetical function that takes two natural numbers - a program code $p$ and an input $i$ - and returns whether program $p$ halts on input $i$.\n\nWe model this as `Nat -> Nat -> Bool`. The claim is that no such correct oracle can exist.",
+    "mathContext": "$H : \\mathbb{N} \\times \\mathbb{N} \\to \\{\\text{true}, \\text{false}\\}$\n\n$H(p, i) = \\text{true}$ means \"program $p$ halts on input $i$\"",
+    "significance": "critical",
+    "relatedConcepts": ["oracle machines", "decision problems", "Turing machines"]
+  },
+  {
+    "id": "ann-behavior",
+    "proofId": "halting-problem",
+    "range": { "startLine": 38, "endLine": 39 },
+    "type": "definition",
+    "title": "Program Behavior",
+    "content": "A **behavior** is a function from inputs to booleans, representing whether a program halts on each possible input.\n\nEvery program has a behavior (even if we can't compute it). The diagonal construction will create a behavior that no oracle can correctly predict.",
+    "mathContext": "$b : \\mathbb{N} \\to \\{\\text{true}, \\text{false}\\}$\n\n$b(n) = \\text{true}$ means the program halts on input $n$",
+    "significance": "key",
+    "relatedConcepts": ["program semantics", "extensional behavior"]
+  },
+  {
+    "id": "ann-diagonal-behavior",
+    "proofId": "halting-problem",
+    "range": { "startLine": 41, "endLine": 44 },
+    "type": "definition",
+    "title": "The Diagonal Behavior",
+    "content": "The **diagonal behavior** is the key construction. Given an oracle $H$:\n\n1. For input $n$, ask the oracle: \"Does program $n$ halt on input $n$?\"\n2. Return the **opposite** of what the oracle says\n\nThis creates a behavior that deliberately contradicts the oracle's self-referential predictions.",
+    "mathContext": "$\\text{diagonal}(H)(n) = \\neg H(n, n)$\n\nIf $H$ says program $n$ halts on itself, diagonal loops.\nIf $H$ says program $n$ loops on itself, diagonal halts.",
+    "significance": "critical",
+    "relatedConcepts": ["diagonal argument", "self-reference", "negation"]
+  },
+  {
+    "id": "ann-key-insight",
+    "proofId": "halting-problem",
+    "range": { "startLine": 46, "endLine": 47 },
+    "type": "insight",
+    "title": "Self-Reference Plus Negation",
+    "content": "The undecidability arises from combining two elements:\n\n1. **Self-reference**: We ask about program $n$ running on input $n$\n2. **Negation**: We do the opposite of what the oracle predicts\n\nThis same pattern appears in Cantor's diagonal argument, Godel's incompleteness, and Russell's paradox.",
+    "mathContext": "The \"liar's paradox\" structure:\n\"This program does the opposite of what you predict.\"\n\nNo prediction can be correct!",
+    "significance": "critical",
+    "relatedConcepts": ["liar paradox", "self-reference", "fixed-point theorems"]
+  },
+  {
+    "id": "ann-diagonal-differs",
+    "proofId": "halting-problem",
+    "range": { "startLine": 48, "endLine": 54 },
+    "type": "lemma",
+    "title": "Diagonal Differs from Oracle",
+    "content": "**Key Lemma**: The diagonal behavior always differs from the oracle's prediction at self-application points.\n\nFor any program code $n$:\n$\\text{diagonal}(H)(n) \\neq H(n, n)$\n\nThis follows immediately from the fact that $\\neg b \\neq b$ for any boolean.",
+    "mathContext": "$\\text{diagonal}(H)(n) = \\neg H(n, n) \\neq H(n, n)$\n\nBecause $\\neg \\text{true} = \\text{false} \\neq \\text{true}$\nand $\\neg \\text{false} = \\text{true} \\neq \\text{false}$",
+    "significance": "critical",
+    "relatedConcepts": ["boolean negation", "pointwise difference"]
+  },
+  {
+    "id": "ann-no-oracle-theorem",
+    "proofId": "halting-problem",
+    "range": { "startLine": 56, "endLine": 65 },
+    "type": "theorem",
+    "title": "No Correct Halting Oracle Exists",
+    "content": "**Main Theorem**: For any oracle $H$ and any code $c$ that implements the diagonal behavior, the oracle $H$ cannot correctly predict $c$'s behavior on input $c$.\n\nIf the oracle were correct, then:\n- $H(c, c) = \\text{true}$ would mean $c$ halts on $c$\n- But $c$ implements diagonal, so $c(c) = \\neg H(c,c) = \\text{false}$\n\nContradiction! (And similarly for the false case.)",
+    "mathContext": "$\\forall H, \\forall c,$ if $c$ implements $\\text{diagonal}(H)$, then\n$H(c, c) = \\text{true} \\Rightarrow c(c) = \\text{false}$ (contradiction)\n$H(c, c) = \\text{false} \\Rightarrow c(c) = \\text{true}$ (contradiction)",
+    "significance": "critical",
+    "relatedConcepts": ["proof by contradiction", "case analysis"]
+  },
+  {
+    "id": "ann-proof-case-true",
+    "proofId": "halting-problem",
+    "range": { "startLine": 71, "endLine": 79 },
+    "type": "tactic",
+    "title": "Case: Oracle Says Halt",
+    "content": "**Case 1**: Suppose $H(c, c) = \\text{true}$ (oracle predicts halt).\n\nThen by definition of diagonal:\n$\\text{diagonal}(H)(c) = \\neg H(c, c) = \\text{false}$\n\nBut the hypothesis says $c$ correctly implements diagonal, so $c$ halting means diagonal returns true.\n\nContradiction: $\\text{false} = \\text{true}$.",
+    "mathContext": "$H(c,c) = \\text{true}$\n$\\Rightarrow \\text{diagonal}(H)(c) = \\text{false}$\n$\\Rightarrow c(c)$ loops\n$\\Rightarrow H(c,c)$ should be $\\text{false}$ (contradiction)",
+    "significance": "key",
+    "relatedConcepts": ["case analysis", "simp tactic"]
+  },
+  {
+    "id": "ann-proof-case-false",
+    "proofId": "halting-problem",
+    "range": { "startLine": 80, "endLine": 87 },
+    "type": "tactic",
+    "title": "Case: Oracle Says Loop",
+    "content": "**Case 2**: Suppose $H(c, c) = \\text{false}$ (oracle predicts loop).\n\nThen by definition of diagonal:\n$\\text{diagonal}(H)(c) = \\neg H(c, c) = \\text{true}$\n\nBut the hypothesis says $c$ correctly implements diagonal, so diagonal returning true means $c$ halts.\n\nContradiction: $H$ said $c$ loops but $c$ halts.",
+    "mathContext": "$H(c,c) = \\text{false}$\n$\\Rightarrow \\text{diagonal}(H)(c) = \\text{true}$\n$\\Rightarrow c(c)$ halts\n$\\Rightarrow H(c,c)$ should be $\\text{true}$ (contradiction)",
+    "significance": "key",
+    "relatedConcepts": ["case analysis", "exhaustive cases"]
+  },
+  {
+    "id": "ann-iff-formulation",
+    "proofId": "halting-problem",
+    "range": { "startLine": 89, "endLine": 95 },
+    "type": "theorem",
+    "title": "Logical Equivalence Formulation",
+    "content": "A cleaner restatement: there is no oracle-code pair $(H, c)$ where the oracle's prediction matches the diagonal behavior in both directions.\n\nThe biconditional $H(c,c) = \\text{true} \\iff \\text{diagonal}(H)(c) = \\text{true}$ cannot hold, because the diagonal is defined to be the negation.",
+    "mathContext": "$\\neg\\big[(H(c,c) = \\text{true} \\iff \\text{diagonal}(c) = \\text{true}) \\land$\n$(H(c,c) = \\text{false} \\iff \\text{diagonal}(c) = \\text{false})\\big]$",
+    "significance": "key",
+    "relatedConcepts": ["logical equivalence", "biconditional"]
+  },
+  {
+    "id": "ann-self-halting",
+    "proofId": "halting-problem",
+    "range": { "startLine": 110, "endLine": 117 },
+    "type": "theorem",
+    "title": "No Self-Halting Decider",
+    "content": "**Alternative Formulation**: No function can correctly determine its own halting behavior on its own encoding.\n\nFor any proposed decider $H : \\mathbb{N} \\to \\text{Bool}$ (where $H(n)$ means \"program $n$ halts on $n$\"), there exists a behavior that $H$ gets wrong everywhere.",
+    "mathContext": "$\\forall H : \\mathbb{N} \\to \\text{Bool},$\n$\\exists b : \\mathbb{N} \\to \\text{Bool},$\n$\\forall n : \\mathbb{N},$\n$b(n) \\neq H(n)$",
+    "significance": "key",
+    "relatedConcepts": ["self-reference", "fixed points"]
+  },
+  {
+    "id": "ann-summary-theorem",
+    "proofId": "halting-problem",
+    "range": { "startLine": 131, "endLine": 142 },
+    "type": "theorem",
+    "title": "Halting Problem Undecidable",
+    "content": "**Final Summary**: For any halting oracle $H$, the diagonal program provides an explicit counterexample.\n\nThe diagonal behavior exists (we constructed it), and it differs from every oracle prediction at the self-application point. Therefore no oracle can be correct.",
+    "mathContext": "$\\forall H : \\text{HaltingOracle},$\n$\\exists b : \\text{Behavior},$\n$\\forall c : \\mathbb{N},$\n$\\neg(H(c,c) = b(c))$\n\nWitness: $b = \\text{diagonal}(H)$",
+    "significance": "critical",
+    "relatedConcepts": ["undecidability", "explicit counterexamples"]
+  },
+  {
+    "id": "ann-connections",
+    "proofId": "halting-problem",
+    "range": { "startLine": 144, "endLine": 149 },
+    "type": "concept",
+    "title": "Connections to Other Results",
+    "content": "The diagonal technique appears across mathematics and logic:\n\n- **Cantor** (1891): No surjection $\\mathbb{N} \\to 2^{\\mathbb{N}}$ - same construction!\n- **Godel** (1931): No complete consistent theory - \"this statement is unprovable\"\n- **Russell** (1901): No set of all sets - the set of sets not containing themselves\n- **Tarski** (1936): Truth is undefinable - \"this statement is false\"",
+    "mathContext": "All share the pattern: self-reference + negation = paradox/impossibility",
+    "significance": "critical",
+    "relatedConcepts": ["Cantor diagonal", "Godel incompleteness", "Russell paradox", "Tarski undefinability"]
+  },
+  {
+    "id": "ann-visualization",
+    "proofId": "halting-problem",
+    "range": { "startLine": 151, "endLine": 166 },
+    "type": "insight",
+    "title": "Visualizing the Diagonal",
+    "content": "Imagine an infinite table where row $n$ shows whether program $n$ halts on each input.\n\nThe diagonal consists of the self-application entries: does program 0 halt on 0? Does program 1 halt on 1? Etc.\n\nFlipping each diagonal entry gives a behavior that differs from every row at the critical position. If this flipped diagonal could be program $d$, then row $d$ would have to differ from itself at column $d$ - impossible!",
+    "mathContext": "```\n       Input 0  Input 1  Input 2  ...\nProg 0:  [halt]  loop     halt    ...\nProg 1:  loop    [halt]   halt    ...\nProg 2:  halt    halt     [loop]  ...\n  ...\nFlipped: loop    loop     halt    ...\n```\nFlipped diagonal can't be any row!",
+    "significance": "key",
+    "relatedConcepts": ["infinite matrices", "diagonal extraction", "visual proof"]
+  },
+  {
+    "id": "ann-practical-implications",
+    "proofId": "halting-problem",
+    "range": { "startLine": 1, "endLine": 8 },
+    "type": "concept",
+    "title": "Practical Implications",
+    "content": "The halting problem's undecidability has real-world consequences:\n\n1. **Static Analysis**: No tool can detect all infinite loops or bugs\n2. **Compilers**: Can't always optimize away dead code\n3. **Verification**: Fully automatic program verification is impossible\n4. **Security**: Can't perfectly detect all malware behaviors\n\nEvery static analysis tool must either miss some problems or report false positives.",
+    "mathContext": "Rice's Theorem generalizes this: ANY non-trivial semantic property of programs is undecidable.",
+    "significance": "key",
+    "relatedConcepts": ["Rice's theorem", "static analysis", "program verification"]
+  }
+]

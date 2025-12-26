@@ -69,4 +69,56 @@ src/
 functions/            # Cloudflare Workers API endpoints
 shared/               # Shared code between frontend and backend
 drizzle/              # Database migrations
+scripts/              # Build and import scripts
 ```
+
+## Working with Proofs
+
+Lean proofs are in the `proofs/` directory, a Lean 4 project with Mathlib.
+
+### Project Structure
+
+```
+proofs/
+├── Proofs/              # Individual Lean proof files
+├── Proofs.lean          # Main import file
+├── lakefile.toml        # Mathlib @ 05147a76b4
+├── lean-toolchain       # Lean 4.10.0
+└── scripts/             # Build and extraction scripts
+```
+
+### Building Proofs
+
+```bash
+cd proofs
+./scripts/setup.sh       # First-time setup
+lake build               # Build all proofs
+```
+
+### Importing Proof Data
+
+After running LeanInk on a proof, import the tactic states:
+
+```bash
+# List available proofs
+node scripts/import-proof.cjs --list
+
+# Import a specific proof
+node scripts/import-proof.cjs Sqrt2Irrational
+
+# Import all proofs with LeanInk output
+node scripts/import-proof.cjs --all
+```
+
+### Adding a New Proof
+
+1. Create the Lean proof in `proofs/Proofs/YourProof.lean`
+2. Add import to `proofs/Proofs.lean`
+3. Build: `cd proofs && lake build`
+4. Run LeanInk: `./scripts/extract-proof-info.sh Proofs/YourProof.lean`
+5. Create the frontend structure in `src/data/proofs/your-proof/`:
+   - `meta.json` - Proof metadata, sections, overview
+   - `annotations.json` - Line-by-line annotations
+   - `index.ts` - Import from `proofs/Proofs/YourProof.lean`
+6. Run `node scripts/import-proof.cjs YourProof` to import tactic states
+7. Add to `src/data/proofs/index.ts`

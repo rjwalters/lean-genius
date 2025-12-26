@@ -1,0 +1,102 @@
+{
+  "id": "fermats-last-theorem",
+  "title": "Fermat's Last Theorem",
+  "slug": "fermats-last-theorem",
+  "description": "Andrew Wiles' monumental proof that there are no three positive integers a, b, c such that a^n + b^n = c^n for any integer n > 2, resolving a 358-year-old conjecture through the modularity of elliptic curves.",
+  "meta": {
+    "author": "Andrew Wiles (1995), with Richard Taylor",
+    "date": "1995",
+    "status": "axiomatized",
+    "tags": [
+      "number-theory",
+      "algebraic-geometry",
+      "elliptic-curves",
+      "modular-forms",
+      "advanced",
+      "milestone"
+    ],
+    "proofRepoPath": "Proofs/FermatsLastTheorem.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "EllipticCurve",
+        "description": "Elliptic curve definitions",
+        "module": "Mathlib.AlgebraicGeometry.EllipticCurve.Weierstrass"
+      }
+    ],
+    "originalContributions": [
+      "Axiomatized framework for FLT proof structure",
+      "Frey curve construction formalization",
+      "Educational overview of Wiles' proof strategy"
+    ],
+    "dateAdded": "12/22/25"
+  },
+  "overview": {
+    "historicalContext": "In 1637, Pierre de Fermat wrote in the margin of his copy of Diophantus's *Arithmetica*: \"I have discovered a truly marvelous proof of this, which this margin is too narrow to contain.\" This tantalizing note launched 358 years of mathematical obsession.\n\nGenerations of mathematicians attacked the problem. Euler proved the case n=3 (1770). Sophie Germain developed techniques for certain primes (1823). Ernst Kummer's work on ideal class groups proved it for all regular primes (1850), but infinitely many cases remained.\n\nThe modern breakthrough came from an unexpected direction. In 1984, Gerhard Frey proposed that a counterexample to Fermat would yield an elliptic curve with impossible properties. Jean-Pierre Serre refined this, and in 1986, Ken Ribet proved the key connection: if Fermat's Last Theorem were false, it would contradict the Taniyama-Shimura-Weil conjecture about modular forms.\n\nAndrew Wiles, who had dreamed of proving FLT since childhood, worked in secret for seven years. In June 1993, he announced his proof of enough of the modularity conjecture to imply FLT. But a gap was found. After a year of anguish, Wiles and Richard Taylor patched the proof using a brilliant new technique. On October 25, 1994, the proof was complete. It was published in 1995, ending the longest-standing unsolved problem in mathematics.",
+    "problemStatement": "For any integer $n > 2$, there are no three positive integers $a$, $b$, $c$ such that:\n\n$$a^n + b^n = c^n$$\n\nEquivalently: the only integer solutions to $x^n + y^n = z^n$ for $n > 2$ are the trivial ones where $xyz = 0$.\n\nNote that $n = 2$ has infinitely many solutions (Pythagorean triples like $3^2 + 4^2 = 5^2$), but something fundamentally changes at $n = 3$.",
+    "proofStrategy": "Wiles' proof proceeds by contradiction through a remarkable chain of ideas:\n\n1. **ASSUME** a counterexample exists: $a^n + b^n = c^n$ with $n > 2$ and $a, b, c$ positive integers.\n\n2. **CONSTRUCT** the Frey curve: From this hypothetical solution, build the elliptic curve\n   $$E: y^2 = x(x - a^n)(x + b^n)$$\n   This curve has unusual properties: it is semi-stable with discriminant divisible by enormous prime powers.\n\n3. **APPLY RIBET'S THEOREM** (1986): The Frey curve, if it existed, would be modular but have a conductor too small to match any modular form. This is impossible.\n\n4. **PROVE MODULARITY**: Wiles proves that all semistable elliptic curves over $\\mathbb{Q}$ are modular (the Taniyama-Shimura-Weil conjecture for semistable curves).\n\n5. **CONTRADICTION**: The Frey curve must be modular (by step 4), but cannot be modular (by step 3). Therefore, no counterexample exists.\n\nThe bulk of Wiles' 100+ page proof establishes the modularity theorem. The Taylor-Wiles patching method, developed to fix the gap, has become a fundamental tool in modern number theory.",
+    "keyInsights": [
+      "The Frey curve y^2 = x(x - a^n)(x + b^n) encodes a hypothetical counterexample as geometry",
+      "Modularity means every elliptic curve over Q corresponds to a modular form - arithmetic and analysis connected",
+      "Ribet's theorem (epsilon conjecture) shows Frey curves cannot match any modular form's conductor",
+      "Galois representations carry arithmetic information about elliptic curves and modular forms",
+      "The proof uses the deformation theory of Galois representations and commutative algebra",
+      "Taylor-Wiles patching: construct an infinite family of auxiliary problems to control the main one"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Imports and Mathematical Framework",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Import statements and module documentation establishing the mathematical context."
+    },
+    {
+      "id": "statement",
+      "title": "The Theorem Statement",
+      "startLine": 54,
+      "endLine": 68,
+      "summary": "Fermat's Last Theorem stated precisely: no positive integer solutions to a^n + b^n = c^n for n > 2."
+    },
+    {
+      "id": "frey-curve",
+      "title": "The Frey Curve Construction",
+      "startLine": 70,
+      "endLine": 92,
+      "summary": "How a hypothetical counterexample gives rise to an elliptic curve with special properties."
+    },
+    {
+      "id": "modularity",
+      "title": "The Modularity Theorem",
+      "startLine": 94,
+      "endLine": 109,
+      "summary": "Every semi-stable elliptic curve over Q is modular - the key to Wiles' approach."
+    },
+    {
+      "id": "ribet",
+      "title": "Ribet's Theorem and the Contradiction",
+      "startLine": 111,
+      "endLine": 139,
+      "summary": "Why Frey curves cannot be modular, completing the proof by contradiction."
+    },
+    {
+      "id": "special-cases",
+      "title": "Classical Special Cases",
+      "startLine": 141,
+      "endLine": 207,
+      "summary": "Elementary proofs of Fermat's Last Theorem for n = 3, n = 4, and the full theorem."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization presents the structure of Wiles' proof of Fermat's Last Theorem, one of the greatest achievements in the history of mathematics. While a complete formalization requires the ongoing Lean FLT project (thousands of definitions and lemmas about elliptic curves, modular forms, and Galois representations), this educational overview captures the key ideas.\n\nThe proof's beauty lies in its unexpected connections: a question about integer powers leads to elliptic curves, which connect to modular forms, which are analyzed via Galois representations and deformation theory. Fermat could not have imagined that his marginal note would require the full apparatus of 20th-century algebraic geometry.",
+    "implications": "**Impact on Mathematics**\n\nWiles' proof didn't just solve a famous problem - it opened new research directions:\n\n1. **Full Modularity Theorem** (2001): Breuil, Conrad, Diamond, and Taylor extended Wiles' result to ALL elliptic curves over Q, not just semi-stable ones.\n\n2. **Serre's Modularity Conjecture** (2009): Khare and Wintenberger proved this vast generalization, showing all odd irreducible 2-dimensional Galois representations are modular.\n\n3. **Fermat-Catalan Conjecture**: Current frontier - the equation $a^m + b^n = c^k$ with $1/m + 1/n + 1/k < 1$ has only finitely many solutions.\n\n4. **Taylor-Wiles Method**: The patching technique invented for this proof is now fundamental to modern number theory.\n\n5. **Langlands Program**: FLT is a tiny corner of this vast program connecting automorphic forms to Galois representations across all number fields.",
+    "openQuestions": [
+      "Did Fermat actually have a proof? Almost certainly not - his method likely worked only for n=4 (descent). But we'll never know what he was thinking.",
+      "Can the proof be simplified? The Lean FLT project aims to formalize it in about 10,000 lines of Lean. Full simplification remains an open problem.",
+      "What about a^n + b^n = c^n over other number fields? This leads to deep questions in arithmetic geometry.",
+      "The abc conjecture, if proven, would give a much shorter proof of FLT. Mochizuki claims a proof (2012) but it remains controversial."
+    ]
+  }
+}
