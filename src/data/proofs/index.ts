@@ -29,6 +29,7 @@ import { cantorsTheoremData } from './cantors-theorem'
 import { wilsonsTheoremData } from './wilsons-theorem'
 import { geometricSeriesData } from './geometric-series'
 import { intermediateValueTheoremData } from './intermediate-value-theorem'
+import { gcdAlgorithmData } from './gcd-algorithm'
 import { mathematicalInductionData } from './mathematical-induction'
 import { arithmeticSeriesData } from './arithmetic-series'
 import { subsetCountData } from './subset-count'
@@ -66,6 +67,7 @@ export const proofs: Record<string, ProofData> = {
   'wilsons-theorem': wilsonsTheoremData,
   'geometric-series': geometricSeriesData,
   'intermediate-value-theorem': intermediateValueTheoremData,
+  'gcd-algorithm': gcdAlgorithmData,
   'mathematical-induction': mathematicalInductionData,
   'arithmetic-series': arithmeticSeriesData,
   'subset-count': subsetCountData,
