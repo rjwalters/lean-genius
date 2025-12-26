@@ -490,6 +490,26 @@ def applyD4Tour (g : Bool × Fin 4) (t : ClosedTour) : ClosedTour where
     rw [← knight_adj_invariant g]
     exact hc
 
+/-- How rotation transforms a move vector: (dx, dy) → (-dy, dx) -/
+def rotateMoveVector (v : MoveVector) : MoveVector :=
+  ⟨-v.dy, v.dx, rotate_knight_offset v.valid⟩
+
+/-- How reflection transforms a move vector: (dx, dy) → (-dx, dy) -/
+def reflectMoveVector (v : MoveVector) : MoveVector :=
+  ⟨-v.dx, v.dy, reflect_knight_offset v.valid⟩
+
+/-- Rotation preserves dot products -/
+theorem rotate_preserves_dot (v1 v2 : MoveVector) :
+    (rotateMoveVector v1).dot (rotateMoveVector v2) = v1.dot v2 := by
+  simp only [rotateMoveVector, MoveVector.dot]
+  ring
+
+/-- Reflection preserves dot products -/
+theorem reflect_preserves_dot (v1 v2 : MoveVector) :
+    (reflectMoveVector v1).dot (reflectMoveVector v2) = v1.dot v2 := by
+  simp only [reflectMoveVector, MoveVector.dot]
+  ring
+
 /-- **Key Invariance**: Oblique count is preserved under D4 symmetries.
 
     Intuition: D4 transformations are orthogonal (preserve angles).
@@ -497,7 +517,9 @@ def applyD4Tour (g : Bool × Fin 4) (t : ClosedTour) : ClosedTour where
     transformations preserve dot products, oblique count is invariant. -/
 theorem oblique_count_invariant (g : Bool × Fin 4) (t : ClosedTour) :
     obliqueCount (applyD4Tour g t) = obliqueCount t := by
-  sorry -- D4 preserves dot products
+  -- The proof follows from rotate_preserves_dot and reflect_preserves_dot:
+  -- D4 transformations preserve dot products, hence preserve isOblique
+  sorry -- Connecting transformation of tourMoves to D4 action on tour
 
 /-!
 ## Section 6: Uniqueness via Certified Search
