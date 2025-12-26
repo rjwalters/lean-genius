@@ -2,9 +2,8 @@
   {
     "id": "ann-intro",
     "proofId": "mathematical-induction",
-    "range": {
-      "startLine": 1,
-      "endLine": 2
+    "anchor": {
+      "type": "imports"
     },
     "type": "concept",
     "title": "The Foundation of Recursive Reasoning",
@@ -20,9 +19,9 @@
   {
     "id": "ann-historical",
     "proofId": "mathematical-induction",
-    "range": {
-      "startLine": 4,
-      "endLine": 45
+    "anchor": {
+      "type": "section-doc",
+      "contains": "What This Proves"
     },
     "type": "insight",
     "title": "Historical Context and Approach",
@@ -38,9 +37,10 @@
   {
     "id": "ann-weak-induction",
     "proofId": "mathematical-induction",
-    "range": {
-      "startLine": 57,
-      "endLine": 70
+    "anchor": {
+      "type": "declaration",
+      "name": "weak_induction",
+      "kind": "theorem"
     },
     "type": "theorem",
     "title": "Weak Induction (Standard Form)",
@@ -56,9 +56,10 @@
   {
     "id": "ann-rec-direct",
     "proofId": "mathematical-induction",
-    "range": {
-      "startLine": 72,
-      "endLine": 76
+    "anchor": {
+      "type": "declaration",
+      "name": "weak_induction'",
+      "kind": "theorem"
     },
     "type": "insight",
     "title": "Induction IS the Recursor",
@@ -73,9 +74,10 @@
   {
     "id": "ann-strong-induction",
     "proofId": "mathematical-induction",
-    "range": {
-      "startLine": 87,
-      "endLine": 99
+    "anchor": {
+      "type": "declaration",
+      "name": "strong_induction",
+      "kind": "theorem"
     },
     "type": "theorem",
     "title": "Strong Induction (Complete Induction)",
@@ -91,9 +93,9 @@
   {
     "id": "ann-strong-vs-weak",
     "proofId": "mathematical-induction",
-    "range": {
-      "startLine": 78,
-      "endLine": 85
+    "anchor": {
+      "type": "section-doc",
+      "contains": "The Principle of Strong Induction"
     },
     "type": "concept",
     "title": "Why Use Strong Induction?",
@@ -108,9 +110,10 @@
   {
     "id": "ann-equivalence-strong-from-weak",
     "proofId": "mathematical-induction",
-    "range": {
-      "startLine": 113,
-      "endLine": 133
+    "anchor": {
+      "type": "declaration",
+      "name": "strong_from_weak",
+      "kind": "theorem"
     },
     "type": "theorem",
     "title": "Weak Induction Implies Strong",
@@ -125,9 +128,10 @@
   {
     "id": "ann-equivalence-weak-from-strong",
     "proofId": "mathematical-induction",
-    "range": {
-      "startLine": 135,
-      "endLine": 147
+    "anchor": {
+      "type": "declaration",
+      "name": "weak_from_strong",
+      "kind": "theorem"
     },
     "type": "theorem",
     "title": "Strong Induction Implies Weak",
@@ -142,9 +146,10 @@
   {
     "id": "ann-sum-example",
     "proofId": "mathematical-induction",
-    "range": {
-      "startLine": 154,
-      "endLine": 164
+    "anchor": {
+      "type": "declaration",
+      "name": "sum_first_n",
+      "kind": "theorem"
     },
     "type": "theorem",
     "title": "Example: Sum of First n Natural Numbers",
@@ -159,9 +164,10 @@
   {
     "id": "ann-prime-example",
     "proofId": "mathematical-induction",
-    "range": {
-      "startLine": 166,
-      "endLine": 173
+    "anchor": {
+      "type": "declaration",
+      "name": "exists_prime_divisor",
+      "kind": "theorem"
     },
     "type": "theorem",
     "title": "Example: Existence of Prime Divisors",
@@ -177,9 +183,10 @@
   {
     "id": "ann-well-ordering",
     "proofId": "mathematical-induction",
-    "range": {
-      "startLine": 180,
-      "endLine": 186
+    "anchor": {
+      "type": "declaration",
+      "name": "well_ordering",
+      "kind": "theorem"
     },
     "type": "theorem",
     "title": "The Well-Ordering Principle",
@@ -195,9 +202,10 @@
   {
     "id": "ann-well-ordering-implies-induction",
     "proofId": "mathematical-induction",
-    "range": {
-      "startLine": 188,
-      "endLine": 202
+    "anchor": {
+      "type": "declaration",
+      "name": "strong_induction_from_well_ordering",
+      "kind": "theorem"
     },
     "type": "theorem",
     "title": "Well-Ordering Implies Strong Induction",
@@ -213,9 +221,9 @@
   {
     "id": "ann-peano-connection",
     "proofId": "mathematical-induction",
-    "range": {
-      "startLine": 204,
-      "endLine": 215
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Connection to Peano Axioms"
     },
     "type": "concept",
     "title": "Connection to Type Theory",
@@ -230,9 +238,10 @@
   {
     "id": "ann-structural",
     "proofId": "mathematical-induction",
-    "range": {
-      "startLine": 233,
-      "endLine": 239
+    "anchor": {
+      "type": "declaration",
+      "name": "list_induction",
+      "kind": "theorem"
     },
     "type": "concept",
     "title": "Generalizing to Other Data Types",
