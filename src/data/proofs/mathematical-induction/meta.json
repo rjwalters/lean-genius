@@ -1,0 +1,122 @@
+{
+  "id": "mathematical-induction",
+  "title": "The Principle of Mathematical Induction",
+  "slug": "mathematical-induction",
+  "description": "For any predicate P on natural numbers, if P(0) holds and P(n) implies P(n+1) for all n, then P(n) holds for all n. Peano's fifth axiom and the foundation of recursive proofs.",
+  "meta": {
+    "author": "Giuseppe Peano (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Mathematical_induction",
+    "date": "1889",
+    "status": "verified",
+    "tags": [
+      "set-theory",
+      "logic",
+      "foundations",
+      "induction",
+      "classic",
+      "easy"
+    ],
+    "proofRepoPath": "Proofs/MathematicalInduction.lean",
+    "badge": "pedagogical",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.rec",
+        "description": "The recursor for natural numbers (built-in induction principle)",
+        "module": "Init.Prelude"
+      },
+      {
+        "theorem": "Nat.strong_induction_on",
+        "description": "Strong induction principle for natural numbers",
+        "module": "Mathlib.Data.Nat.Defs"
+      },
+      {
+        "theorem": "Nat.find",
+        "description": "Well-ordering: find least n satisfying decidable predicate",
+        "module": "Mathlib.Data.Nat.Find"
+      }
+    ],
+    "originalContributions": [
+      "Explicit statements of weak and strong induction principles",
+      "Proof that weak and strong induction are equivalent",
+      "Connection to well-ordering principle",
+      "Example applications (sum formula, prime divisors)",
+      "Pedagogical documentation on Peano axioms and recursors"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 74
+  },
+  "overview": {
+    "historicalContext": "The Principle of Mathematical Induction was rigorously formulated by Giuseppe Peano in 1889 as the fifth axiom in his axiomatization of the natural numbers. However, the technique of proving statements by establishing a base case and showing the step from n to n+1 has much older roots.\n\nPascal used induction explicitly in his 1665 'Traite du Triangle Arithmetique' to prove properties of binomial coefficients. Fermat used a form of infinite descent (essentially contrapositive induction) in his number-theoretic proofs. Even ancient Greek mathematicians like Euclid implicitly used inductive reasoning.\n\nIn modern type theory and proof assistants like Lean, induction is not just a proof technique but is built into the foundations: the natural numbers are an inductive type, and the induction principle is automatically generated as the recursor.",
+    "problemStatement": "The Principle of Mathematical Induction:\n\nFor any predicate $P$ on natural numbers, if:\n1. $P(0)$ holds (base case), and\n2. For all $n$, $P(n)$ implies $P(n+1)$ (inductive step)\n\nThen $P(n)$ holds for all natural numbers $n$.\n\n$$P(0) \\land (\\forall n. P(n) \\to P(n+1)) \\to \\forall n. P(n)$$\n\nThis is equivalent to several other principles:\n- Strong induction (assuming P(k) for all k < n)\n- The well-ordering principle (every nonempty set has a minimum)\n- Infinite descent (no infinite descending chains)",
+    "proofStrategy": "In Lean, mathematical induction is built into the type system through the `Nat.rec` recursor. We demonstrate this explicitly:\n\n**Weak Induction:**\nGiven P(0) and the step function (P(n) -> P(n+1)), we use Lean's `induction` tactic which applies the recursor.\n\n**Strong Induction:**\nWe use `Nat.strong_induction_on` from Mathlib, which provides the stronger hypothesis that P(k) holds for ALL k < n.\n\n**Equivalence:**\nWe prove that weak induction implies strong induction by strengthening the predicate to 'P holds for all values up to n'. Conversely, strong induction implies weak induction trivially since the weak hypothesis is a special case.\n\n**Well-Ordering:**\nWe show the well-ordering principle using `Nat.find`, and demonstrate that it implies strong induction via contraposition.",
+    "keyInsights": [
+      "Induction is not just a proof technique but is inherent to the definition of natural numbers",
+      "In type theory, the induction principle IS the recursor for the inductive type",
+      "Weak and strong induction have the same expressive power",
+      "Well-ordering and induction are equivalent principles",
+      "The base case in strong induction is implicit (vacuously true for n = 0)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Overview of mathematical induction, its historical significance, and role in Lean's foundations."
+    },
+    {
+      "id": "weak-induction",
+      "title": "Weak Induction",
+      "startLine": 44,
+      "endLine": 69,
+      "summary": "The standard form of induction: prove P(0), prove P(n) -> P(n+1), conclude forall n. P(n)."
+    },
+    {
+      "id": "strong-induction",
+      "title": "Strong Induction",
+      "startLine": 71,
+      "endLine": 90,
+      "summary": "Complete induction where the hypothesis is P(k) for all k < n."
+    },
+    {
+      "id": "equivalence",
+      "title": "Equivalence of Weak and Strong Induction",
+      "startLine": 92,
+      "endLine": 140,
+      "summary": "Proof that weak and strong induction can derive each other."
+    },
+    {
+      "id": "examples",
+      "title": "Example Applications",
+      "startLine": 142,
+      "endLine": 174,
+      "summary": "Classic examples: sum of first n naturals and existence of prime divisors."
+    },
+    {
+      "id": "well-ordering",
+      "title": "Well-Ordering Principle",
+      "startLine": 175,
+      "endLine": 204,
+      "summary": "The well-ordering principle and its connection to strong induction."
+    },
+    {
+      "id": "peano-axioms",
+      "title": "Connection to Peano Axioms",
+      "startLine": 206,
+      "endLine": 230,
+      "summary": "How induction relates to Lean's type theory and the Nat recursor."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Principle of Mathematical Induction is now fully formalized with both weak and strong forms, their equivalence proven, and connections to the well-ordering principle demonstrated. Example applications show the practical use of induction in number theory.",
+    "implications": "Mathematical induction is foundational to:\n\n1. **Number Theory**: Most proofs about natural numbers use induction in some form.\n\n2. **Algorithm Analysis**: Loop invariants and recursive function correctness rely on induction.\n\n3. **Type Theory**: Inductive types generalize this principle to arbitrary data structures.\n\n4. **Proof Assistants**: The recursor (induction principle) is automatically generated for each inductive type.\n\n5. **Foundations**: Induction distinguishes the natural numbers from other structures satisfying the first four Peano axioms.",
+    "openQuestions": [
+      "How does transfinite induction generalize to ordinals beyond omega?",
+      "What is the relationship between induction and well-foundedness in general?",
+      "Can we characterize which predicates require strong vs weak induction?",
+      "How does structural induction on data types relate to mathematical induction?"
+    ]
+  }
+}
