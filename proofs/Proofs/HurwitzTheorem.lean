@@ -184,39 +184,31 @@ def fourMul (a b : Fin 4 → ℝ) : Fin 4 → ℝ :=
     a 0 * b 2 - a 1 * b 3 + a 2 * b 0 + a 3 * b 1,
     a 0 * b 3 + a 1 * b 2 - a 2 * b 1 + a 3 * b 0]
 
+set_option maxHeartbeats 800000 in
 /-- Euler's 4-square identity -/
-set_option maxHeartbeats 400000 in
 theorem four_square_identity (a b : Fin 4 → ℝ) :
     normSq a * normSq b = normSq (fourMul a b) := by
-  simp only [normSq, fourMul]
-  simp only [Fin.sum_univ_four, Matrix.cons_val_zero, Matrix.cons_val_one,
-             Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three]
+  simp only [normSq, fourMul, Fin.sum_univ_four, Fin.isValue]
+  simp [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+        Matrix.cons_val_two, Matrix.cons_val_three]
   ring
 
+set_option maxHeartbeats 800000 in
 /-- The 4-square identity structure (quaternions) -/
-set_option maxHeartbeats 400000 in
 def fourSquareIdentity : NSquareIdentity 4 where
   mul := fourMul
   add_left := fun a b c => by
-    ext i
-    fin_cases i <;> simp only [fourMul, Pi.add_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
-      Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three]
-    all_goals ring
+    funext i
+    fin_cases i <;> simp [fourMul] <;> ring
   add_right := fun a b c => by
-    ext i
-    fin_cases i <;> simp only [fourMul, Pi.add_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
-      Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three]
-    all_goals ring
+    funext i
+    fin_cases i <;> simp [fourMul] <;> ring
   smul_left := fun r a b => by
-    ext i
-    fin_cases i <;> simp only [fourMul, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-      Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three]
-    all_goals ring
+    funext i
+    fin_cases i <;> simp [fourMul, smul_eq_mul] <;> ring
   smul_right := fun r a b => by
-    ext i
-    fin_cases i <;> simp only [fourMul, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-      Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three]
-    all_goals ring
+    funext i
+    fin_cases i <;> simp [fourMul, smul_eq_mul] <;> ring
   norm_mul := four_square_identity
 
 -- ============================================================
