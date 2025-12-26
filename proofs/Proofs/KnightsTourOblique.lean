@@ -259,6 +259,45 @@ theorem oblique_iff_large_turn (v1 v2 : MoveVector) :
              Set.mem_insert_iff, Set.mem_singleton_iff] <;>
   decide
 
+/-- Move vector negation: the opposite direction -/
+def MoveVector.neg (v : MoveVector) : MoveVector :=
+  ⟨-v.dx, -v.dy, neg_knight_offset v.valid⟩
+
+/-- Turn angle 4 means the second move is the opposite of the first -/
+theorem turn_angle_4_means_opposite (v1 v2 : MoveVector) :
+    turnAngle v1 v2 = 4 ↔ v2.dx = -v1.dx ∧ v2.dy = -v1.dy := by
+  fin_cases v1 <;> fin_cases v2 <;>
+  simp only [turnAngle, moveDirection] <;>
+  decide
+
+/-- tourMoves has length 64 (same as the tour) -/
+theorem tourMoves_length (t : ClosedTour) : (tourMoves t).length = 64 := by
+  simp only [tourMoves, List.length_map, List.length_zip]
+  have h := t.length_eq
+  simp only [List.length_tail, List.length_append, List.length_singleton]
+  omega
+
+/-- In a valid closed tour, turn angle 4 never occurs at any position.
+
+    Proof: If turn angle is 4 at position i, then move[i+1] = -move[i].
+    This means position[i+1] = position[i] + move[i+1]
+                            = position[i] + (-move[i])
+                            = position[i] - (position[i] - position[i-1])
+                            = position[i-1]
+    But this violates nodup since we'd revisit position[i-1].
+
+    This is a key lemma: it means oblique turns have angle in {3, 5} only, not 4. -/
+theorem no_turn_angle_4_in_tour (t : ClosedTour) (i : Fin 63) :
+    let moves := tourMoves t
+    let hlen : moves.length = 64 := tourMoves_length t
+    let v1 := moves[i.val]'(by omega)
+    let v2 := moves[i.val + 1]'(by omega)
+    turnAngle v1 v2 ≠ 4 := by
+  intro heq
+  -- If turn angle is 4, then v2 = -v1, meaning we'd revisit a position
+  -- This contradicts nodup
+  sorry -- Requires connecting getMoveVector back to tour positions
+
 /-- The sum of all turn angles in a closed tour is 0 (mod 8).
 
     Intuition: A closed tour returns to its starting position AND
