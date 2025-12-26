@@ -109,10 +109,10 @@ theorem one_square_identity (a b : Fin 1 → ℝ) :
 /-- The 1-square identity structure -/
 def oneSquareIdentity : NSquareIdentity 1 where
   mul := oneMul
-  add_left := fun a b c => by simp [oneMul, add_mul]
-  add_right := fun a b c => by simp [oneMul, mul_add]
-  smul_left := fun r a b => by simp [oneMul, Pi.smul_apply]
-  smul_right := fun r a b => by simp [oneMul, Pi.smul_apply]
+  add_left := fun a b c => by ext; simp only [oneMul, Pi.add_apply]; ring
+  add_right := fun a b c => by ext; simp only [oneMul, Pi.add_apply]; ring
+  smul_left := fun r a b => by ext; simp only [oneMul, Pi.smul_apply, smul_eq_mul]; ring
+  smul_right := fun r a b => by ext; simp only [oneMul, Pi.smul_apply, smul_eq_mul]; ring
   norm_mul := one_square_identity
 
 -- ============================================================
@@ -185,6 +185,7 @@ def fourMul (a b : Fin 4 → ℝ) : Fin 4 → ℝ :=
     a 0 * b 3 + a 1 * b 2 - a 2 * b 1 + a 3 * b 0]
 
 /-- Euler's 4-square identity -/
+set_option maxHeartbeats 400000 in
 theorem four_square_identity (a b : Fin 4 → ℝ) :
     normSq a * normSq b = normSq (fourMul a b) := by
   simp only [normSq, fourMul]
@@ -193,6 +194,7 @@ theorem four_square_identity (a b : Fin 4 → ℝ) :
   ring
 
 /-- The 4-square identity structure (quaternions) -/
+set_option maxHeartbeats 400000 in
 def fourSquareIdentity : NSquareIdentity 4 where
   mul := fourMul
   add_left := fun a b c => by
@@ -226,11 +228,10 @@ def fourSquareIdentity : NSquareIdentity 4 where
   This provides an alternative proof of the 4-square identity.
 -/
 
-open Quaternion in
 /-- The quaternion norm squared is multiplicative -/
-theorem quaternion_norm_mul (q₁ q₂ : ℍ[ℝ]) :
-    normSq (q₁ * q₂) = normSq q₁ * normSq q₂ :=
-  Quaternion.normSq_mul q₁ q₂
+theorem quaternion_norm_mul (q₁ q₂ : Quaternion ℝ) :
+    Quaternion.normSq (q₁ * q₂) = Quaternion.normSq q₁ * Quaternion.normSq q₂ :=
+  Quaternion.normSq.map_mul q₁ q₂
 
 -- ============================================================
 -- PART 6: The 8-Square Identity (Octonions)
@@ -340,20 +341,9 @@ theorem normSq_stdBasis {n : ℕ} [NeZero n] (i : Fin n) :
 /-- The norm squared expands with inner product -/
 lemma normSq_add (a b : Fin n → ℝ) :
     normSq (a + b) = normSq a + 2 * innerProd a b + normSq b := by
-  simp only [normSq, innerProd, Pi.add_apply]
-  rw [Finset.sum_add_distrib, Finset.sum_add_distrib]
-  congr 1
-  · congr 1
-    · congr 1
-      ext i
-      ring
-    · rw [← Finset.sum_add_distrib]
-      congr 1
-      ext i
-      ring
-  · congr 1
-    ext i
-    ring
+  simp only [normSq, innerProd, Pi.add_apply, add_sq]
+  simp only [Finset.sum_add_distrib, Finset.mul_sum]
+  ring
 
 /-- Inner product in terms of normSq -/
 lemma innerProd_eq_normSq (a b : Fin n → ℝ) :
@@ -444,9 +434,21 @@ theorem no_three_square_identity : ∀ f : NSquareIdentity 3, False := by
   have he₃ : normSq e₃ = 1 := normSq_stdBasis 2
 
   -- They are pairwise orthogonal
-  have h12 : innerProd e₁ e₂ = 0 := by simp [innerProd, stdBasis, Fin.sum_univ_three]
-  have h13 : innerProd e₁ e₃ = 0 := by simp [innerProd, stdBasis, Fin.sum_univ_three]
-  have h23 : innerProd e₂ e₃ = 0 := by simp [innerProd, stdBasis, Fin.sum_univ_three]
+  have h12 : innerProd e₁ e₂ = 0 := by
+    show innerProd (stdBasis 0) (stdBasis 1) = 0
+    simp only [innerProd, stdBasis, Fin.sum_univ_three, Fin.isValue]
+    simp only [Fin.zero_eta, Fin.mk_one, Fin.reduceEq, ↓reduceIte]
+    norm_num
+  have h13 : innerProd e₁ e₃ = 0 := by
+    show innerProd (stdBasis 0) (stdBasis 2) = 0
+    simp only [innerProd, stdBasis, Fin.sum_univ_three, Fin.isValue]
+    simp only [Fin.zero_eta, Fin.reduceEq, ↓reduceIte]
+    norm_num
+  have h23 : innerProd e₂ e₃ = 0 := by
+    show innerProd (stdBasis 1) (stdBasis 2) = 0
+    simp only [innerProd, stdBasis, Fin.sum_univ_three, Fin.isValue]
+    simp only [Fin.mk_one, Fin.reduceEq, ↓reduceIte]
+    norm_num
 
   -- Define the 9 image vectors M[i,j] = mul(eᵢ, eⱼ)
   let m₁₁ := nsi.mul e₁ e₁
