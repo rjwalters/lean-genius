@@ -74,6 +74,14 @@ def normSq {n : ℕ} (v : Fin n → ℝ) : ℝ :=
 structure NSquareIdentity (n : ℕ) where
   /-- The bilinear multiplication that produces the z_i components -/
   mul : (Fin n → ℝ) → (Fin n → ℝ) → (Fin n → ℝ)
+  /-- Left linearity: mul(a + b, c) = mul(a, c) + mul(b, c) -/
+  add_left : ∀ a b c, mul (a + b) c = mul a c + mul b c
+  /-- Right linearity: mul(a, b + c) = mul(a, b) + mul(a, c) -/
+  add_right : ∀ a b c, mul a (b + c) = mul a b + mul a c
+  /-- Left scalar: mul(r • a, b) = r • mul(a, b) -/
+  smul_left : ∀ (r : ℝ) a b, mul (r • a) b = r • mul a b
+  /-- Right scalar: mul(a, r • b) = r • mul(a, b) -/
+  smul_right : ∀ (r : ℝ) a b, mul a (r • b) = r • mul a b
   /-- The identity property: ‖a‖²·‖b‖² = ‖a⊗b‖² -/
   norm_mul : ∀ a b, normSq a * normSq b = normSq (mul a b)
 
@@ -101,6 +109,10 @@ theorem one_square_identity (a b : Fin 1 → ℝ) :
 /-- The 1-square identity structure -/
 def oneSquareIdentity : NSquareIdentity 1 where
   mul := oneMul
+  add_left := fun a b c => by simp [oneMul, add_mul]
+  add_right := fun a b c => by simp [oneMul, mul_add]
+  smul_left := fun r a b => by simp [oneMul, Pi.smul_apply]
+  smul_right := fun r a b => by simp [oneMul, Pi.smul_apply]
   norm_mul := one_square_identity
 
 -- ============================================================
@@ -131,6 +143,22 @@ theorem two_square_identity (a b : Fin 2 → ℝ) :
 /-- The 2-square identity structure (complex numbers) -/
 def twoSquareIdentity : NSquareIdentity 2 where
   mul := twoMul
+  add_left := fun a b c => by
+    ext i
+    fin_cases i <;> simp [twoMul, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    all_goals ring
+  add_right := fun a b c => by
+    ext i
+    fin_cases i <;> simp [twoMul, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    all_goals ring
+  smul_left := fun r a b => by
+    ext i
+    fin_cases i <;> simp [twoMul, Pi.smul_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    all_goals ring
+  smul_right := fun r a b => by
+    ext i
+    fin_cases i <;> simp [twoMul, Pi.smul_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    all_goals ring
   norm_mul := two_square_identity
 
 -- ============================================================
@@ -167,6 +195,26 @@ theorem four_square_identity (a b : Fin 4 → ℝ) :
 /-- The 4-square identity structure (quaternions) -/
 def fourSquareIdentity : NSquareIdentity 4 where
   mul := fourMul
+  add_left := fun a b c => by
+    ext i
+    fin_cases i <;> simp only [fourMul, Pi.add_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three]
+    all_goals ring
+  add_right := fun a b c => by
+    ext i
+    fin_cases i <;> simp only [fourMul, Pi.add_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three]
+    all_goals ring
+  smul_left := fun r a b => by
+    ext i
+    fin_cases i <;> simp only [fourMul, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+      Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three]
+    all_goals ring
+  smul_right := fun r a b => by
+    ext i
+    fin_cases i <;> simp only [fourMul, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+      Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.cons_val_three]
+    all_goals ring
   norm_mul := four_square_identity
 
 -- ============================================================
@@ -234,19 +282,204 @@ axiom eight_square_identity_exists : NSquareIdentity 8
   Mathlib (either representation theory, topology, or careful case analysis).
 -/
 
+/-
+  ## Proof Strategy for n = 3 Impossibility
+
+  The proof uses orthogonality constraints. Key insight:
+
+  For any NSquareIdentity, if |a| = |b| = 1, then |mul(a,b)| = 1.
+  If a ⊥ b (orthogonal unit vectors), then |a + b|² = 2, so
+  |mul(a + b, c)|² = 2|c|² for any c.
+
+  By bilinearity: mul(a + b, c) = mul(a, c) + mul(b, c)
+  So: |mul(a,c) + mul(b,c)|² = 2 when |c| = 1
+
+  Since |mul(a,c)|² = |mul(b,c)|² = 1, we get:
+  1 + 2⟨mul(a,c), mul(b,c)⟩ + 1 = 2
+  ⟨mul(a,c), mul(b,c)⟩ = 0
+
+  This forces orthogonality: mul(a,c) ⊥ mul(b,c) whenever a ⊥ b.
+
+  In 3D, we have 3 orthonormal basis vectors e₁, e₂, e₃.
+  For fixed c = e₁:
+  - mul(e₁, e₁), mul(e₂, e₁), mul(e₃, e₁) must be pairwise orthogonal unit vectors
+
+  But that's 3 pairwise orthogonal unit vectors in ℝ³, which is fine (they form a basis).
+  The contradiction comes from considering multiple right-hand arguments...
+
+  For c = e₁: mul(eᵢ, e₁) pairwise orthogonal
+  For c = e₂: mul(eᵢ, e₂) pairwise orthogonal
+  For c = e₃: mul(eᵢ, e₃) pairwise orthogonal
+
+  And additionally, for each fixed a = eᵢ:
+  mul(eᵢ, e₁), mul(eᵢ, e₂), mul(eᵢ, e₃) must be pairwise orthogonal
+
+  This creates 9 unit vectors in ℝ³ with a complex web of orthogonality constraints.
+  The constraints are over-determined and lead to contradiction.
+-/
+
+/-- Inner product on ℝⁿ represented as functions -/
+def innerProd {n : ℕ} (v w : Fin n → ℝ) : ℝ :=
+  ∑ i, v i * w i
+
+/-- Standard basis vector in ℝⁿ -/
+def stdBasis {n : ℕ} (i : Fin n) : Fin n → ℝ :=
+  fun j => if i = j then 1 else 0
+
+/-- The norm squared of a standard basis vector is 1 -/
+theorem normSq_stdBasis {n : ℕ} [NeZero n] (i : Fin n) :
+    normSq (stdBasis i) = 1 := by
+  simp only [normSq, stdBasis]
+  rw [Finset.sum_eq_single i]
+  · simp
+  · intro j _ hji
+    simp [hji.symm]
+  · intro h
+    exact absurd (Finset.mem_univ i) h
+
+/-- The norm squared expands with inner product -/
+lemma normSq_add (a b : Fin n → ℝ) :
+    normSq (a + b) = normSq a + 2 * innerProd a b + normSq b := by
+  simp only [normSq, innerProd, Pi.add_apply]
+  rw [Finset.sum_add_distrib, Finset.sum_add_distrib]
+  congr 1
+  · congr 1
+    · congr 1
+      ext i
+      ring
+    · rw [← Finset.sum_add_distrib]
+      congr 1
+      ext i
+      ring
+  · congr 1
+    ext i
+    ring
+
+/-- Inner product in terms of normSq -/
+lemma innerProd_eq_normSq (a b : Fin n → ℝ) :
+    innerProd a b = (normSq (a + b) - normSq a - normSq b) / 2 := by
+  rw [normSq_add]
+  ring
+
+/-- Key orthogonality lemma: if a ⊥ b are unit vectors, then mul(a,c) ⊥ mul(b,c)
+    for any unit vector c -/
+lemma orthogonality_constraint (nsi : NSquareIdentity n)
+    (a b c : Fin n → ℝ)
+    (ha : normSq a = 1) (hb : normSq b = 1) (hc : normSq c = 1)
+    (hab : innerProd a b = 0) :
+    innerProd (nsi.mul a c) (nsi.mul b c) = 0 := by
+  -- Step 1: |a + b|² = 2 (since a, b are orthogonal unit vectors)
+  have hab_normSq : normSq (a + b) = 2 := by
+    rw [normSq_add, ha, hb, hab]
+    ring
+
+  -- Step 2: |mul(a,c)|² = 1 and |mul(b,c)|² = 1
+  have hmac : normSq (nsi.mul a c) = 1 := by
+    rw [← nsi.norm_mul, ha, hc]; ring
+  have hmbc : normSq (nsi.mul b c) = 1 := by
+    rw [← nsi.norm_mul, hb, hc]; ring
+
+  -- Step 3: |mul(a+b, c)|² = |a+b|² * |c|² = 2
+  have hmabc : normSq (nsi.mul (a + b) c) = 2 := by
+    rw [← nsi.norm_mul, hab_normSq, hc]; ring
+
+  -- Step 4: mul(a+b, c) = mul(a,c) + mul(b,c) by left linearity
+  have hlin : nsi.mul (a + b) c = nsi.mul a c + nsi.mul b c := nsi.add_left a b c
+
+  -- Step 5: |mul(a,c) + mul(b,c)|² = 2
+  have hsum : normSq (nsi.mul a c + nsi.mul b c) = 2 := by
+    rw [← hlin]; exact hmabc
+
+  -- Step 6: Expand |mul(a,c) + mul(b,c)|² and solve for inner product
+  rw [normSq_add] at hsum
+  -- hsum : normSq (nsi.mul a c) + 2 * innerProd (nsi.mul a c) (nsi.mul b c)
+  --        + normSq (nsi.mul b c) = 2
+  rw [hmac, hmbc] at hsum
+  -- hsum : 1 + 2 * innerProd ... + 1 = 2
+  linarith
+
+/-- Right orthogonality: if b ⊥ c are unit vectors, then mul(a,b) ⊥ mul(a,c)
+    for any unit vector a -/
+lemma orthogonality_constraint_right (nsi : NSquareIdentity n)
+    (a b c : Fin n → ℝ)
+    (ha : normSq a = 1) (hb : normSq b = 1) (hc : normSq c = 1)
+    (hbc : innerProd b c = 0) :
+    innerProd (nsi.mul a b) (nsi.mul a c) = 0 := by
+  -- Similar to left orthogonality, using add_right instead of add_left
+  have hbc_normSq : normSq (b + c) = 2 := by
+    rw [normSq_add, hb, hc, hbc]; ring
+
+  have hmab : normSq (nsi.mul a b) = 1 := by
+    rw [← nsi.norm_mul, ha, hb]; ring
+  have hmac : normSq (nsi.mul a c) = 1 := by
+    rw [← nsi.norm_mul, ha, hc]; ring
+
+  have hmabc : normSq (nsi.mul a (b + c)) = 2 := by
+    rw [← nsi.norm_mul, ha, hbc_normSq]; ring
+
+  have hlin : nsi.mul a (b + c) = nsi.mul a b + nsi.mul a c := nsi.add_right a b c
+
+  have hsum : normSq (nsi.mul a b + nsi.mul a c) = 2 := by
+    rw [← hlin]; exact hmabc
+
+  rw [normSq_add] at hsum
+  rw [hmab, hmac] at hsum
+  linarith
+
 /-- Hurwitz's Theorem: There is no 3-square identity.
 
     This is equivalent to saying there is no 3-dimensional normed
     division algebra, or equivalently, no norm-multiplicative
     bilinear product on ℝ³. -/
 theorem no_three_square_identity : ∀ f : NSquareIdentity 3, False := by
-  -- The full proof requires either:
-  -- 1. Representation theory of division algebras
-  -- 2. Topological methods (Adams' theorem on vector fields)
-  -- 3. Careful algebraic case analysis (Hurwitz's original approach)
-  --
-  -- We state this as a theorem; a full formalization would be a
-  -- significant contribution to Mathlib.
+  intro nsi
+  -- The 3 standard basis vectors
+  let e₁ : Fin 3 → ℝ := stdBasis 0
+  let e₂ : Fin 3 → ℝ := stdBasis 1
+  let e₃ : Fin 3 → ℝ := stdBasis 2
+
+  -- Each has norm 1
+  have he₁ : normSq e₁ = 1 := normSq_stdBasis 0
+  have he₂ : normSq e₂ = 1 := normSq_stdBasis 1
+  have he₃ : normSq e₃ = 1 := normSq_stdBasis 2
+
+  -- They are pairwise orthogonal
+  have h12 : innerProd e₁ e₂ = 0 := by simp [innerProd, stdBasis, Fin.sum_univ_three]
+  have h13 : innerProd e₁ e₃ = 0 := by simp [innerProd, stdBasis, Fin.sum_univ_three]
+  have h23 : innerProd e₂ e₃ = 0 := by simp [innerProd, stdBasis, Fin.sum_univ_three]
+
+  -- Define the 9 image vectors M[i,j] = mul(eᵢ, eⱼ)
+  let m₁₁ := nsi.mul e₁ e₁
+  let m₁₂ := nsi.mul e₁ e₂
+  let m₁₃ := nsi.mul e₁ e₃
+  let m₂₁ := nsi.mul e₂ e₁
+  let m₂₂ := nsi.mul e₂ e₂
+  let m₂₃ := nsi.mul e₂ e₃
+  let m₃₁ := nsi.mul e₃ e₁
+  let m₃₂ := nsi.mul e₃ e₂
+  let m₃₃ := nsi.mul e₃ e₃
+
+  -- LEFT orthogonality: columns of M are orthonormal
+  -- Column 1: m₁₁, m₂₁, m₃₁ pairwise orthogonal
+  have col1_12 : innerProd m₁₁ m₂₁ = 0 := orthogonality_constraint nsi e₁ e₂ e₁ he₁ he₂ he₁ h12
+  have col1_13 : innerProd m₁₁ m₃₁ = 0 := orthogonality_constraint nsi e₁ e₃ e₁ he₁ he₃ he₁ h13
+  have col1_23 : innerProd m₂₁ m₃₁ = 0 := orthogonality_constraint nsi e₂ e₃ e₁ he₂ he₃ he₁ h23
+
+  -- RIGHT orthogonality: rows of M are orthonormal
+  -- Row 1: m₁₁, m₁₂, m₁₃ pairwise orthogonal
+  have row1_12 : innerProd m₁₁ m₁₂ = 0 := orthogonality_constraint_right nsi e₁ e₁ e₂ he₁ he₁ he₂ h12
+  have row1_13 : innerProd m₁₁ m₁₃ = 0 := orthogonality_constraint_right nsi e₁ e₁ e₃ he₁ he₁ he₃ h13
+  have row1_23 : innerProd m₁₂ m₁₃ = 0 := orthogonality_constraint_right nsi e₁ e₂ e₃ he₁ he₂ he₃ h23
+
+  -- Now we have: m₁₁ is orthogonal to m₂₁, m₃₁ (column constraint)
+  --              m₁₁ is orthogonal to m₁₂, m₁₃ (row constraint)
+  -- So m₁₁ is orthogonal to m₂₁, m₃₁, m₁₂, m₁₃ (4 vectors)
+  -- In ℝ³, a nonzero vector can be orthogonal to at most 2 linearly independent vectors.
+  -- These 4 vectors span at least a 2D subspace (since rows and columns are orthonormal).
+  -- This is the contradiction!
+
+  -- Technical completion: show m₂₁, m₃₁, m₁₂, m₁₃ span more than a 2D subspace
+  -- For now, we state this as needing additional linear algebra machinery
   sorry
 
 -- ============================================================
