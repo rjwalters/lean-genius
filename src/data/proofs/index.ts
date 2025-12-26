@@ -19,6 +19,7 @@ import { centralLimitTheoremData } from './central-limit-theorem'
 import { fermatsLastTheoremData } from './fermats-last-theorem'
 import { randomizedMaxCutData } from './randomized-maxcut'
 import { threePlaceIdentityData } from './three-place-identity'
+import { hurwitzTheoremData } from './hurwitz-theorem'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -43,6 +44,7 @@ export const proofs: Record<string, ProofData> = {
   'fermats-last-theorem': fermatsLastTheoremData,
   'randomized-maxcut': randomizedMaxCutData,
   'three-place-identity': threePlaceIdentityData,
+  'hurwitz-theorem': hurwitzTheoremData,
 }
 
 export function getProof(slug: string): ProofData | undefined {
