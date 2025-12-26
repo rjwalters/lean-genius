@@ -2,106 +2,176 @@
   {
     "id": "ann-intro",
     "proofId": "cantors-theorem",
-    "range": { "startLine": 1, "endLine": 46 },
+    "range": {
+      "startLine": 1,
+      "endLine": 3
+    },
     "type": "concept",
     "title": "The Hierarchy of Infinities",
     "content": "Cantor's theorem establishes that **not all infinities are equal**. For any set A:\n\n$$|A| < |\\mathcal{P}(A)| = 2^{|A|}$$\n\nThis means:\n- There are strictly more subsets of N than there are natural numbers\n- There are strictly more real numbers than rationals\n- The hierarchy continues: $|\\mathbb{N}| < |\\mathcal{P}(\\mathbb{N})| < |\\mathcal{P}(\\mathcal{P}(\\mathbb{N}))| < ...$\n\nThe proof uses the **diagonal argument**, which constructs an explicit witness to the non-surjectivity of any proposed function.",
     "significance": "critical",
-    "relatedConcepts": ["cardinal numbers", "power set", "diagonal argument"]
+    "relatedConcepts": [
+      "cardinal numbers",
+      "power set",
+      "diagonal argument"
+    ]
   },
   {
     "id": "ann-main-theorem",
     "proofId": "cantors-theorem",
-    "range": { "startLine": 52, "endLine": 60 },
+    "range": {
+      "startLine": 52,
+      "endLine": 57
+    },
     "type": "theorem",
     "title": "No Surjection to Power Set",
     "content": "**Cantor's Theorem (Wiedijk #63)**:\n\n$$\\neg \\exists f: A \\to \\mathcal{P}(A), \\text{Surjective}(f)$$\n\nIn Lean, the power set is represented as `A -> Prop` (the type of predicates on A). Each predicate corresponds to a subset: the set of elements satisfying that predicate.\n\nMathlib's `Function.cantor_surjective` provides this directly:\n```lean\ntheorem cantor_no_surjection (A : Type*) :\n    not exists f : A -> (A -> Prop), Function.Surjective f\n```",
     "mathContext": "$\\neg \\exists f: A \\to \\mathcal{P}(A)$ surjective",
     "significance": "critical",
-    "relatedConcepts": ["surjection", "power set", "cardinality"]
+    "relatedConcepts": [
+      "surjection",
+      "power set",
+      "cardinality"
+    ]
   },
   {
     "id": "ann-diagonal-set",
     "proofId": "cantors-theorem",
-    "range": { "startLine": 64, "endLine": 67 },
+    "range": {
+      "startLine": 64,
+      "endLine": 65
+    },
     "type": "definition",
     "title": "The Diagonal Set",
     "content": "The key construction is the **diagonal set**:\n\n$$D = \\{x \\in A \\mid x \\notin f(x)\\}$$\n\nThis is the set of elements that are **not** contained in their own image under f.\n\nIn Lean:\n```lean\ndef diagonalSet (f : A -> Set A) : Set A :=\n  { x | x not_in f x }\n```\n\nThe diagonal set always exists and is well-defined for any function f. It's the **witness** that f cannot be surjective.",
     "mathContext": "$D = \\{x \\mid x \\notin f(x)\\}$",
     "significance": "critical",
-    "relatedConcepts": ["set comprehension", "complement", "witness"]
+    "relatedConcepts": [
+      "set comprehension",
+      "complement",
+      "witness"
+    ]
   },
   {
     "id": "ann-set-proof",
     "proofId": "cantors-theorem",
-    "range": { "startLine": 69, "endLine": 94 },
+    "range": {
+      "startLine": 69,
+      "endLine": 78
+    },
     "type": "theorem",
     "title": "Set Formulation Proof",
     "content": "The proof using `Set A` instead of `(A -> Prop)`:\n\n1. **Assume** f : A -> Set A is surjective\n2. **Define** D = {x | x not in f x}\n3. **By surjectivity**, exists b with f(b) = D\n4. **Consider**: Is b in D?\n   - **If b in D**: By definition, b not in f(b) = D. Contradiction!\n   - **If b not in D**: By definition, b in f(b) = D. Contradiction!\n5. **Conclude**: No such surjection exists\n\nThe `by_cases` tactic handles the case split, and `simp only [hb]` substitutes f(b) = D to reach the contradiction.",
     "significance": "key",
-    "relatedConcepts": ["proof by contradiction", "case analysis", "substitution"]
+    "relatedConcepts": [
+      "proof by contradiction",
+      "case analysis",
+      "substitution"
+    ]
   },
   {
     "id": "ann-paradox",
     "proofId": "cantors-theorem",
-    "range": { "startLine": 96, "endLine": 106 },
+    "range": {
+      "startLine": 96,
+      "endLine": 96
+    },
     "type": "lemma",
     "title": "The Self-Reference Paradox",
     "content": "The **diagonal paradox** is the heart of the argument:\n\nIf f(b) = D where D = {x | x not in f(x)}, then:\n$$b \\in D \\iff b \\notin D$$\n\nThis is a **self-referential contradiction** - b's membership in D depends on whether b is in D.\n\nThis paradox is closely related to:\n- **Russell's Paradox**: Consider R = {x | x not in x}. Is R in R?\n- **The Liar Paradox**: 'This statement is false'\n- **Godel's Incompleteness**: Self-referential sentences about provability\n\nIn type theory, we avoid Russell's paradox by stratifying types into universes.",
     "mathContext": "$b \\in D \\iff b \\notin D$",
     "significance": "critical",
-    "relatedConcepts": ["Russell's paradox", "self-reference", "fixed point"]
+    "relatedConcepts": [
+      "Russell's paradox",
+      "self-reference",
+      "fixed point"
+    ]
   },
   {
     "id": "ann-strict-inequality",
     "proofId": "cantors-theorem",
-    "range": { "startLine": 108, "endLine": 114 },
+    "range": {
+      "startLine": 108,
+      "endLine": 108
+    },
     "type": "theorem",
     "title": "Strict Cardinality Inequality",
     "content": "Cantor's theorem implies the **strict inequality**:\n$$|A| < |\\mathcal{P}(A)|$$\n\nThe inequality has two parts:\n1. $|A| \\leq |\\mathcal{P}(A)|$ : The injection $a \\mapsto \\{a\\}$ (singleton sets)\n2. $|A| \\neq |\\mathcal{P}(A)|$ : No bijection exists (Cantor's theorem)\n\nFor the natural numbers:\n$$|\\mathbb{N}| < |\\mathcal{P}(\\mathbb{N})| = |\\mathbb{R}| = \\mathfrak{c}$$\n\nThe symbol $\\mathfrak{c}$ denotes the **cardinality of the continuum**.",
     "mathContext": "$|A| < 2^{|A|}$",
     "significance": "key",
-    "relatedConcepts": ["cardinal inequality", "continuum", "injection"]
+    "relatedConcepts": [
+      "cardinal inequality",
+      "continuum",
+      "injection"
+    ]
   },
   {
     "id": "ann-no-bijection",
     "proofId": "cantors-theorem",
-    "range": { "startLine": 116, "endLine": 121 },
+    "range": {
+      "startLine": 116,
+      "endLine": 116
+    },
     "type": "theorem",
     "title": "No Bijection Corollary",
     "content": "A direct corollary: no set can be put in **bijection** with its power set.\n\n$$\\neg \\exists f: A \\to \\mathcal{P}(A), \\text{Bijective}(f)$$\n\nProof: A bijection is in particular a surjection, which we just showed cannot exist.\n\nThis means:\n- N and P(N) have different cardinalities\n- R and P(R) have different cardinalities\n- For any set, its power set is strictly larger",
     "mathContext": "$A \\not\\cong \\mathcal{P}(A)$",
     "significance": "key",
-    "relatedConcepts": ["bijection", "equinumerosity", "cardinality"]
+    "relatedConcepts": [
+      "bijection",
+      "equinumerosity",
+      "cardinality"
+    ]
   },
   {
     "id": "ann-constructive",
     "proofId": "cantors-theorem",
-    "range": { "startLine": 133, "endLine": 152 },
+    "range": {
+      "startLine": 133,
+      "endLine": 140
+    },
     "type": "concept",
     "title": "Constructive Witness",
     "content": "Unlike many existence proofs, Cantor's theorem is **constructive**:\n\nGiven ANY f : A -> Set A, we can **explicitly construct** a set D not in the range of f.\n\n```lean\ntheorem cantor_witness (A : Type*) (f : A -> Set A) :\n    exists D : Set A, forall a : A, f a != D\n```\n\nThe witness is always the diagonal set D = {x | x not in f(x)}.\n\nThis constructivity is important because:\n- We don't just know D exists - we know exactly what it is\n- The proof can be 'run' to produce the witness\n- It works in constructive mathematics (intuitionistic logic)",
     "significance": "key",
-    "relatedConcepts": ["constructive proof", "witness", "intuitionistic logic"]
+    "relatedConcepts": [
+      "constructive proof",
+      "witness",
+      "intuitionistic logic"
+    ]
   },
   {
     "id": "ann-russell",
     "proofId": "cantors-theorem",
-    "range": { "startLine": 38, "endLine": 42 },
+    "range": {
+      "startLine": 5,
+      "endLine": 46
+    },
     "type": "concept",
     "title": "Connection to Russell's Paradox",
     "content": "The diagonal set D = {x | x not in f(x)} is reminiscent of **Russell's paradox**.\n\nRussell asked: Consider R = {x | x not in x}. Is R in R?\n- If R in R, then by definition, R not in R. Contradiction!\n- If R not in R, then by definition, R in R. Contradiction!\n\nThe key difference:\n- **Russell**: Tries to define a set in terms of *all* sets\n- **Cantor**: Defines a set in terms of a *specific function* f\n\nType theory resolves Russell's paradox by **stratifying** types into universes. A set can only contain elements of a lower type, preventing self-membership.",
     "significance": "key",
-    "relatedConcepts": ["Russell's paradox", "type theory", "universes"]
+    "relatedConcepts": [
+      "Russell's paradox",
+      "type theory",
+      "universes"
+    ]
   },
   {
     "id": "ann-connection",
     "proofId": "cantors-theorem",
-    "range": { "startLine": 37, "endLine": 45 },
+    "range": {
+      "startLine": 5,
+      "endLine": 46
+    },
     "type": "concept",
     "title": "Wiedijk #22 vs #63",
     "content": "This proof is the **general form** of Cantor's theorem:\n\n- **Wiedijk #63 (this proof)**: For any set A, no surjection A -> P(A)\n- **Wiedijk #22 (CantorDiagonalization.lean)**: The reals are uncountable (no surjection N -> R)\n\n#22 is a **special case** of #63:\n- Take A = N (natural numbers)\n- P(N) corresponds to binary sequences (N -> Bool), which represent reals in [0,1]\n- No surjection N -> (N -> Bool) means |N| < |R|\n\nBoth proofs use the diagonal argument, but #63 is the more abstract formulation.",
     "significance": "supporting",
-    "relatedConcepts": ["uncountability", "binary sequences", "real numbers"]
+    "relatedConcepts": [
+      "uncountability",
+      "binary sequences",
+      "real numbers"
+    ]
   }
 ]

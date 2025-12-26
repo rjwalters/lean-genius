@@ -25,13 +25,13 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
 
     // Parse and validate request body
     const body = await context.request.json()
-    const { proofId, lineNumber, parentId, content } = createCommentSchema.parse(body)
+    const { proofId, annotationId, lineNumber, parentId, content } = createCommentSchema.parse(body)
 
-    // If parentId provided, verify it exists
+    // If parentId provided, verify it exists and matches anchor
     if (parentId) {
       const parent = await db.query.comments.findFirst({
         where: eq(comments.id, parentId),
-        columns: { id: true, proofId: true, lineNumber: true },
+        columns: { id: true, proofId: true, annotationId: true, lineNumber: true },
       })
 
       if (!parent) {
@@ -41,10 +41,14 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
         )
       }
 
-      // Replies must be on the same proof/line as parent
-      if (parent.proofId !== proofId || parent.lineNumber !== lineNumber) {
+      // Replies must be on the same proof and anchor as parent
+      const sameAnchor = annotationId
+        ? parent.annotationId === annotationId
+        : parent.lineNumber === lineNumber
+
+      if (parent.proofId !== proofId || !sameAnchor) {
         return new Response(
-          JSON.stringify({ error: 'Reply must be on the same proof line as parent' }),
+          JSON.stringify({ error: 'Reply must be on the same proof and anchor as parent' }),
           { status: 400, headers: { 'Content-Type': 'application/json' } }
         )
       }
@@ -57,7 +61,8 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
     await db.insert(comments).values({
       id: commentId,
       proofId,
-      lineNumber,
+      annotationId: annotationId || null,
+      lineNumber: lineNumber || null,
       parentId: parentId || null,
       userId: session.userId,
       content,
@@ -78,7 +83,8 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
         comment: {
           id: commentId,
           proofId,
-          lineNumber,
+          annotationId: annotationId || null,
+          lineNumber: lineNumber || null,
           parentId: parentId || null,
           content,
           createdAt: now,

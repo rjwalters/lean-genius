@@ -1,0 +1,173 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "brouwer-fixed-point",
+    "anchor": {
+      "type": "imports"
+    },
+    "type": "concept",
+    "title": "The Fixed Point Theorem That Changed Mathematics",
+    "content": "Brouwer's Fixed Point Theorem states: every continuous function from a closed ball to itself has a fixed point. Despite its simple statement, this 1911 result required the development of algebraic topology to prove.\n\nThe intuition is beautiful: imagine stirring coffee in a circular cup. No matter how you stir (continuously), at least one point of coffee ends up exactly where it started. You cannot continuously move every point!\n\nThis formalization presents the conceptual structure. The full proof requires homology theory or degree theory, which we axiomatize to focus on the logical flow.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "fixed point",
+      "continuous map",
+      "algebraic topology"
+    ]
+  },
+  {
+    "id": "ann-closed-ball",
+    "proofId": "brouwer-fixed-point",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "What This Proves"
+    },
+    "type": "definition",
+    "title": "The Closed Ball and Its Boundary",
+    "content": "The **closed n-ball** $B^n$ is the set of all points within distance 1 of the origin:\n$$B^n = \\{x \\in \\mathbb{R}^n : |x| \\leq 1\\}$$\n\nThe **sphere** $S^{n-1}$ is the boundary of the ball:\n$$S^{n-1} = \\{x \\in \\mathbb{R}^n : |x| = 1\\}$$\n\nKey topological facts:\n- The ball is *contractible*: it can be continuously shrunk to a point\n- The sphere is *not contractible*: it has a 'hole' that cannot be eliminated\n- This difference is captured by homology: $H_n(B^n) = 0$ but $H_{n-1}(S^{n-1}) \\neq 0$\n\nThis topological distinction is the heart of why Brouwer's theorem works.",
+    "mathContext": "$B^n = \\{x : |x| \\leq 1\\}$, $S^{n-1} = \\{x : |x| = 1\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "compact set",
+      "boundary",
+      "contractibility"
+    ]
+  },
+  {
+    "id": "ann-fixed-point-def",
+    "proofId": "brouwer-fixed-point",
+    "anchor": {
+      "type": "declaration",
+      "name": "closedBall_nonempty",
+      "kind": "theorem"
+    },
+    "type": "definition",
+    "title": "What Is a Fixed Point?",
+    "content": "A **fixed point** of function $f$ is a point $x$ where $f(x) = x$. The point is 'fixed' because applying $f$ doesn't move it.\n\nFixed points are crucial in many areas:\n- **Dynamical systems:** Equilibrium states are fixed points\n- **Iteration:** $x, f(x), f(f(x)), ...$ converges if there's an attracting fixed point\n- **Economics:** Nash equilibria are fixed points of best-response maps\n- **Differential equations:** Steady-state solutions are fixed points\n\nBrouwer's theorem guarantees that continuous self-maps of balls always have at least one fixed point. This existence guarantee is powerful even when we can't find the fixed point explicitly.",
+    "mathContext": "$x$ is a fixed point of $f$ iff $f(x) = x$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "equilibrium",
+      "iteration",
+      "convergence"
+    ]
+  },
+  {
+    "id": "ann-retraction",
+    "proofId": "brouwer-fixed-point",
+    "anchor": {
+      "type": "declaration",
+      "name": "closedBall_convex",
+      "kind": "theorem"
+    },
+    "type": "definition",
+    "title": "Retractions: Projecting to Subspaces",
+    "content": "A **retraction** from space X onto subspace A is a continuous map $r: X \\to A$ that fixes A:\n$$r(a) = a \\text{ for all } a \\in A$$\n\nIntuitively: a retraction 'projects' X onto A without moving points already in A. Examples:\n- Projecting $\\mathbb{R}^2$ onto the x-axis: $(x, y) \\mapsto (x, 0)$ is a retraction\n- Projecting a square onto one of its edges: valid retraction\n\nBut some retractions are impossible! You cannot retract the ball onto its boundary sphere. This impossibility is the key to Brouwer's theorem.\n\nThe intuition: the ball is 'solid' (contractible), but the sphere is 'hollow' (has a hole). You can't continuously project solid onto hollow.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "projection",
+      "subspace",
+      "continuous map"
+    ]
+  },
+  {
+    "id": "ann-no-retraction",
+    "proofId": "brouwer-fixed-point",
+    "anchor": {
+      "type": "declaration",
+      "name": "HasFixedPoint",
+      "kind": "def"
+    },
+    "type": "theorem",
+    "title": "No-Retraction Theorem: The Topological Heart",
+    "content": "**Theorem:** There is no retraction from the closed ball $B^n$ to its boundary sphere $S^{n-1}$ (for $n \\geq 1$).\n\nThis is the topological core of Brouwer's theorem. The proof uses algebraic topology:\n\n**Via Homology:**\n- The ball has trivial homology: $H_k(B^n) = 0$ for $k > 0$\n- The sphere has nontrivial homology: $H_{n-1}(S^{n-1}) \\cong \\mathbb{Z}$\n- A retraction would induce $H_{n-1}(S^{n-1}) \\to H_{n-1}(B^n) \\to H_{n-1}(S^{n-1}) = \\text{id}$\n- But this factors through $H_{n-1}(B^n) = 0$, forcing $\\text{id} = 0$. Contradiction!\n\n**Via Degree Theory:**\n- The identity on $S^{n-1}$ has degree 1\n- A retraction composed with inclusion gives the identity\n- But the composition factors through $B^n$, which is contractible\n- Contractible spaces have degree 0. So $1 = 0$. Contradiction!",
+    "mathContext": "$\\nexists r: B^n \\to S^{n-1}$ continuous with $r|_{S^{n-1}} = \\text{id}$",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-retraction",
+      "ann-closed-ball"
+    ],
+    "relatedConcepts": [
+      "homology",
+      "degree theory",
+      "contractibility"
+    ]
+  },
+  {
+    "id": "ann-ray-construction",
+    "proofId": "brouwer-fixed-point",
+    "anchor": {
+      "type": "declaration",
+      "name": "no_retraction",
+      "kind": "theorem"
+    },
+    "type": "concept",
+    "title": "The Brilliant Ray Construction",
+    "content": "This is the proof's clever geometric construction. Given a fixed-point-free map $f$, we build a retraction:\n\n**Construction:** For each point $x$ in the ball:\n1. Compute $f(x)$ (which is different from $x$ by assumption)\n2. Draw a ray from $f(x)$ through $x$\n3. The ray must exit the ball at some point on the sphere\n4. Define $r(x)$ to be that exit point\n\n**Why this works:**\n- Since $f(x) \\neq x$, the ray direction is well-defined\n- The map $x \\mapsto r(x)$ is continuous (ray-casting varies smoothly)\n- If $x$ is on the sphere, the ray from $f(x)$ through $x$ exits at $x$ itself\n- Therefore $r$ fixes the boundary: it's a retraction!\n\nBut wait: we just proved no retraction exists! Contradiction. So our assumption was wrong: $f$ must have a fixed point.",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-no-retraction"
+    ],
+    "relatedConcepts": [
+      "ray casting",
+      "geometric construction",
+      "proof by contradiction"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "brouwer-fixed-point",
+    "anchor": {
+      "type": "doc-comment",
+      "contains": "Brouwer Fixed Point Theorem**"
+    },
+    "type": "theorem",
+    "title": "Brouwer's Fixed Point Theorem",
+    "content": "**Theorem:** Every continuous map $f: B^n \\to B^n$ has a fixed point.\n\n**Proof:**\n1. Suppose $f$ has no fixed point (aiming for contradiction)\n2. Construct the retraction $r: B^n \\to S^{n-1}$ using the ray construction\n3. But no such retraction can exist (No-Retraction Theorem)\n4. Contradiction! So $f$ must have a fixed point. $\\square$\n\nThe beauty of this proof:\n- It transforms dynamics (fixed points) into topology (retractions)\n- It's completely non-constructive: we know a fixed point exists but not where\n- The construction is visual and geometric, yet the obstruction is algebraic",
+    "mathContext": "$\\forall f: B^n \\to B^n$ continuous, $\\exists x: f(x) = x$",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-ray-construction",
+      "ann-no-retraction"
+    ],
+    "relatedConcepts": [
+      "existence theorem",
+      "proof by contradiction",
+      "fixed point"
+    ]
+  },
+  {
+    "id": "ann-dimension-1",
+    "proofId": "brouwer-fixed-point",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Applications"
+    },
+    "type": "insight",
+    "title": "Dimension 1: The Intermediate Value Theorem",
+    "content": "In dimension 1, Brouwer's theorem says: every continuous $f: [0,1] \\to [0,1]$ has a fixed point.\n\nThis can be proved directly using the Intermediate Value Theorem!\n\n**Proof:** Define $g(x) = f(x) - x$.\n- At $x = 0$: $g(0) = f(0) - 0 = f(0) \\geq 0$ (since $f(0) \\in [0,1]$)\n- At $x = 1$: $g(1) = f(1) - 1 \\leq 0$ (since $f(1) \\in [0,1]$)\n- By IVT, $g(c) = 0$ for some $c$, meaning $f(c) = c$\n\nThe 1D case is elementary; the theorem's power comes from higher dimensions where this argument fails and algebraic topology is needed.",
+    "significance": "key",
+    "relatedConcepts": [
+      "intermediate value theorem",
+      "calculus",
+      "1D topology"
+    ]
+  },
+  {
+    "id": "ann-dimension-2",
+    "proofId": "brouwer-fixed-point",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Applications"
+    },
+    "type": "insight",
+    "title": "Dimension 2: Stirring Coffee",
+    "content": "The 2D case is the famous 'coffee cup theorem': when you stir coffee in a circular cup, at least one point of coffee returns to its starting position.\n\n**Why is this surprising?**\nYou might think: 'I'll just rotate everything!' But pure rotation has the center fixed. What about more complex stirring?\n\nNo matter how cleverly you stir:\n- If continuous (no tearing the liquid)\n- And the coffee stays in the cup (maps cup to itself)\n\n...some point must be fixed. You cannot continuously move every point of a disk!\n\nThis is genuinely counterintuitive. The theorem says it's impossible to avoid fixed points, even though we can't easily find them.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rotation",
+      "stirring",
+      "intuitive mathematics"
+    ]
+  }
+]
