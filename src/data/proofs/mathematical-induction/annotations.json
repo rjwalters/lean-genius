@@ -1,0 +1,247 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "mathematical-induction",
+    "range": {
+      "startLine": 1,
+      "endLine": 2
+    },
+    "type": "concept",
+    "title": "The Foundation of Recursive Reasoning",
+    "content": "Mathematical induction is the principle that allows us to prove statements about all natural numbers by:\n\n1. **Base Case**: Prove the statement holds for 0\n2. **Inductive Step**: Prove that if it holds for $n$, it holds for $n+1$\n\n$$P(0) \\land (\\forall n. P(n) \\to P(n+1)) \\to \\forall n. P(n)$$\n\nThis is Peano's fifth axiom, and it's what distinguishes the natural numbers from other structures.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Peano axioms",
+      "recursion",
+      "natural numbers",
+      "well-ordering"
+    ]
+  },
+  {
+    "id": "ann-historical",
+    "proofId": "mathematical-induction",
+    "range": {
+      "startLine": 4,
+      "endLine": 45
+    },
+    "type": "insight",
+    "title": "Historical Context and Approach",
+    "content": "The Principle of Mathematical Induction was rigorously formulated by Giuseppe Peano in 1889 as the fifth axiom in his axiomatization of the natural numbers.\n\nHowever, the technique has much older roots:\n- **Pascal (1665)**: Used induction explicitly in 'Traité du Triangle Arithmétique'\n- **Fermat**: Used infinite descent (contrapositive induction)\n- **Ancient Greeks**: Euclid implicitly used inductive reasoning\n\nIn modern type theory, induction is built into the foundations: natural numbers are an inductive type, and the induction principle is automatically generated as the recursor.",
+    "mathContext": "Peano's Fifth Axiom (1889)",
+    "significance": "key",
+    "relatedConcepts": [
+      "Peano axioms",
+      "history of mathematics",
+      "type theory"
+    ]
+  },
+  {
+    "id": "ann-weak-induction",
+    "proofId": "mathematical-induction",
+    "range": {
+      "startLine": 57,
+      "endLine": 70
+    },
+    "type": "theorem",
+    "title": "Weak Induction (Standard Form)",
+    "content": "**Weak Induction**: The standard form of mathematical induction.\n\n```lean\ntheorem weak_induction (P : ℕ → Prop)\n    (base : P 0)\n    (step : ∀ n, P n → P (n + 1)) :\n    ∀ n, P n\n```\n\nThe proof uses Lean's `induction` tactic, which applies the `Nat.rec` recursor. This is the most common form of induction used in practice.",
+    "mathContext": "$P(0) \\land (\\forall n. P(n) \\to P(n+1)) \\to \\forall n. P(n)$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "base case",
+      "inductive step",
+      "Nat.rec"
+    ]
+  },
+  {
+    "id": "ann-rec-direct",
+    "proofId": "mathematical-induction",
+    "range": {
+      "startLine": 72,
+      "endLine": 76
+    },
+    "type": "insight",
+    "title": "Induction IS the Recursor",
+    "content": "The alternative proof `weak_induction'` shows that induction is literally the recursor:\n\n```lean\ntheorem weak_induction' ... : ∀ n, P n :=\n  Nat.rec base step\n```\n\nIn type theory, the induction principle for any inductive type is automatically generated as its **recursor**. For `Nat`, this is `Nat.rec`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "recursor",
+      "type theory",
+      "inductive types"
+    ]
+  },
+  {
+    "id": "ann-strong-induction",
+    "proofId": "mathematical-induction",
+    "range": {
+      "startLine": 87,
+      "endLine": 99
+    },
+    "type": "theorem",
+    "title": "Strong Induction (Complete Induction)",
+    "content": "**Strong Induction**: Instead of assuming just $P(n)$, we assume $P(k)$ for **all** $k < n$.\n\n```lean\ntheorem strong_induction (P : ℕ → Prop)\n    (step : ∀ n, (∀ k, k < n → P k) → P n) :\n    ∀ n, P n\n```\n\n**Key insight**: The base case is implicit! When $n = 0$, the hypothesis '$\\forall k < 0, P(k)$' is vacuously true (there are no such $k$), so we must prove $P(0)$ directly.",
+    "mathContext": "$(\\forall n. (\\forall k < n. P(k)) \\to P(n)) \\to \\forall n. P(n)$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "complete induction",
+      "course-of-values induction",
+      "vacuous truth"
+    ]
+  },
+  {
+    "id": "ann-strong-vs-weak",
+    "proofId": "mathematical-induction",
+    "range": {
+      "startLine": 78,
+      "endLine": 85
+    },
+    "type": "concept",
+    "title": "Why Use Strong Induction?",
+    "content": "Strong induction is more convenient when the proof of $P(n)$ needs information about values other than $n-1$.\n\n**Example**: To prove every $n \\geq 2$ has a prime divisor:\n- If $n$ is prime, done.\n- If $n = ab$ is composite, we need $P(a)$ where $a$ could be much smaller than $n-1$.\n\nWeak induction would require a more complex auxiliary statement.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisibility",
+      "prime numbers",
+      "inductive hypothesis"
+    ]
+  },
+  {
+    "id": "ann-equivalence-strong-from-weak",
+    "proofId": "mathematical-induction",
+    "range": {
+      "startLine": 113,
+      "endLine": 133
+    },
+    "type": "theorem",
+    "title": "Weak Induction Implies Strong",
+    "content": "**Weak → Strong**: Strengthen the predicate to $Q(n) = \\forall k < n. P(k)$.\n\n1. **Base**: $Q(0)$ is vacuously true (no $k < 0$).\n2. **Step**: If $Q(n)$ holds (i.e., $P(k)$ for all $k < n$), then by the strong step hypothesis, $P(n)$ holds, so $Q(n+1)$ holds.\n3. By weak induction on $Q$, we get $Q(n)$ for all $n$, which gives $P(n)$.\n\nThis is a classic proof technique: strengthening the induction hypothesis.",
+    "mathContext": "Weak induction $\\Rightarrow$ Strong induction",
+    "significance": "key",
+    "relatedConcepts": [
+      "strengthening hypothesis",
+      "logical equivalence"
+    ]
+  },
+  {
+    "id": "ann-equivalence-weak-from-strong",
+    "proofId": "mathematical-induction",
+    "range": {
+      "startLine": 135,
+      "endLine": 147
+    },
+    "type": "theorem",
+    "title": "Strong Induction Implies Weak",
+    "content": "**Strong → Weak**: This direction is straightforward.\n\nWeak induction is a special case of strong induction where we only use the hypothesis at $n-1$.\n\nGiven base case $P(0)$ and step $P(n) \\to P(n+1)$, we can construct the strong step: assuming $P(k)$ for all $k < n$, use only $P(n-1)$ (when $n > 0$) to get $P(n)$.\n\nThis shows both principles have the same expressive power!",
+    "mathContext": "Strong induction $\\Rightarrow$ Weak induction",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "logical equivalence",
+      "proof strength"
+    ]
+  },
+  {
+    "id": "ann-sum-example",
+    "proofId": "mathematical-induction",
+    "range": {
+      "startLine": 154,
+      "endLine": 164
+    },
+    "type": "theorem",
+    "title": "Example: Sum of First n Natural Numbers",
+    "content": "A classic application of weak induction:\n\n$$2 \\cdot \\sum_{i=0}^{n} i = n(n+1)$$\n\nOr equivalently: $0 + 1 + 2 + \\cdots + n = \\frac{n(n+1)}{2}$\n\n**Base case** ($n = 0$): $2 \\cdot 0 = 0 \\cdot 1$ ✓\n\n**Inductive step**: Assuming the formula for $n$, we verify it for $n+1$ using `ring` to handle the algebra.",
+    "mathContext": "$\\sum_{i=0}^{n} i = \\frac{n(n+1)}{2}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "arithmetic series",
+      "Finset.sum"
+    ]
+  },
+  {
+    "id": "ann-prime-example",
+    "proofId": "mathematical-induction",
+    "range": {
+      "startLine": 166,
+      "endLine": 173
+    },
+    "type": "theorem",
+    "title": "Example: Existence of Prime Divisors",
+    "content": "Every natural number $n \\geq 2$ has a prime divisor.\n\nThis requires strong induction because if $n = ab$ is composite, we apply the hypothesis to $a$, which could be much smaller than $n-1$.\n\nWe use Mathlib's `Nat.exists_prime_and_dvd` which encapsulates this strong induction argument.",
+    "mathContext": "$\\forall n \\geq 2. \\exists p. \\text{prime}(p) \\land p | n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime numbers",
+      "divisibility",
+      "fundamental theorem of arithmetic"
+    ]
+  },
+  {
+    "id": "ann-well-ordering",
+    "proofId": "mathematical-induction",
+    "range": {
+      "startLine": 180,
+      "endLine": 186
+    },
+    "type": "theorem",
+    "title": "The Well-Ordering Principle",
+    "content": "**Well-Ordering Principle**: Every nonempty subset of $\\mathbb{N}$ has a least element.\n\nIn Lean, this is captured by `Nat.find`: given a decidable predicate $P$ and a proof that some $n$ satisfies $P$, `Nat.find` returns the smallest such $n$.\n\n```lean\ntheorem well_ordering (P : ℕ → Prop) [DecidablePred P]\n    (hne : ∃ n, P n) :\n    ∃ m, P m ∧ ∀ n, P n → m ≤ n\n```",
+    "mathContext": "$\\forall S \\subseteq \\mathbb{N}. S \\neq \\emptyset \\to \\exists m \\in S. \\forall n \\in S. m \\leq n$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "minimum",
+      "Nat.find",
+      "decidability"
+    ]
+  },
+  {
+    "id": "ann-well-ordering-implies-induction",
+    "proofId": "mathematical-induction",
+    "range": {
+      "startLine": 188,
+      "endLine": 202
+    },
+    "type": "theorem",
+    "title": "Well-Ordering Implies Strong Induction",
+    "content": "**Proof by contraposition**: If $\\neg \\forall n. P(n)$, then the set $S = \\{n : \\neg P(n)\\}$ is nonempty.\n\nBy well-ordering, $S$ has a minimum $m$. But then $P(k)$ holds for all $k < m$, so by the strong induction hypothesis, $P(m)$ should hold—contradiction!\n\nThis shows well-ordering and induction are equivalent principles.",
+    "mathContext": "Well-ordering $\\Rightarrow$ Strong induction",
+    "significance": "key",
+    "relatedConcepts": [
+      "contraposition",
+      "proof by contradiction",
+      "minimum element"
+    ]
+  },
+  {
+    "id": "ann-peano-connection",
+    "proofId": "mathematical-induction",
+    "range": {
+      "startLine": 204,
+      "endLine": 215
+    },
+    "type": "concept",
+    "title": "Connection to Type Theory",
+    "content": "In Lean's type theory, the natural numbers are defined as an **inductive type**:\n\n```lean\ninductive Nat where\n  | zero : Nat\n  | succ : Nat → Nat\n```\n\nThe induction principle is automatically generated as the **recursor** `Nat.rec`:\n\n```lean\nNat.rec : (base : P 0) → (step : ∀ n, P n → P (n+1)) → (n : ℕ) → P n\n```\n\nThis is exactly the computational content of the induction principle!",
+    "significance": "key",
+    "relatedConcepts": [
+      "inductive types",
+      "recursor",
+      "Curry-Howard correspondence"
+    ]
+  },
+  {
+    "id": "ann-structural",
+    "proofId": "mathematical-induction",
+    "range": {
+      "startLine": 233,
+      "endLine": 239
+    },
+    "type": "concept",
+    "title": "Generalizing to Other Data Types",
+    "content": "Induction generalizes to any inductively defined type. For lists:\n\n```lean\ntheorem list_induction (P : List α → Prop)\n    (base : P [])\n    (step : ∀ x xs, P xs → P (x :: xs)) :\n    ∀ l, P l\n```\n\nThis is **structural induction**: prove for the empty list, and prove for `x :: xs` assuming it holds for `xs`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "structural induction",
+      "lists",
+      "data structures"
+    ]
+  }
+]

@@ -34,4 +34,8 @@ import Proofs.WilsonsTheorem
 import Proofs.EulerTotient
 import Proofs.HurwitzTheorem
 import Proofs.GCDAlgorithm
+import Proofs.MathematicalInduction
+import Proofs.ArithmeticSeries
+import Proofs.SubsetCount
 import Proofs.IntermediateValueTheorem
+import Proofs.PerfectNumbers
