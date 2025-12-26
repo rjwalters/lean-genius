@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { ChevronDown, ChevronUp, ExternalLink, Lightbulb, Package, Award, History, CheckCircle, Clock, AlertCircle, AlertTriangle, Eye, Play } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import { MarkdownMath, MarkdownMathInline } from '@/components/ui/markdown-math'
 import { ProofBadge } from '@/components/ui/proof-badge'
 import { BADGE_INFO } from '@/types/proof'
