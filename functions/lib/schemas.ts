@@ -31,12 +31,20 @@ export const loginRequestSchema = z.object({
 export type LoginRequest = z.infer<typeof loginRequestSchema>
 
 // Comment request
+// Comments can anchor to either:
+//   - annotationId (stable - survives source changes, preferred)
+//   - lineNumber (legacy - may drift when source changes)
+// At least one anchor must be provided
 export const createCommentSchema = z.object({
   proofId: z.string().min(1, 'Proof ID is required'),
-  lineNumber: z.number().int().positive('Line number must be positive'),
+  annotationId: z.string().optional(), // Stable anchor to author annotation
+  lineNumber: z.number().int().positive('Line number must be positive').optional(), // Legacy anchor
   parentId: z.string().optional(),
   content: z.string().min(1, 'Content is required').max(10000, 'Content too long'),
-})
+}).refine(
+  (data) => data.annotationId || data.lineNumber,
+  { message: 'Either annotationId or lineNumber must be provided' }
+)
 
 export type CreateCommentRequest = z.infer<typeof createCommentSchema>
 

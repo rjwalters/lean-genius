@@ -26,6 +26,7 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
       .select({
         id: comments.id,
         proofId: comments.proofId,
+        annotationId: comments.annotationId,
         lineNumber: comments.lineNumber,
         parentId: comments.parentId,
         content: comments.content,

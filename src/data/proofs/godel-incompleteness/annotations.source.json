@@ -1,0 +1,288 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "godel-incompleteness",
+    "anchor": {
+      "type": "imports"
+    },
+    "type": "concept",
+    "title": "The Theorem That Changed Everything",
+    "content": "Gödel's 1931 paper is one of the most important in the history of mathematics and logic. It proved that Hilbert's dream of a complete, consistent formal foundation for mathematics was impossible.\n\nThe theorem states that any formal system $F$ capable of expressing basic arithmetic must be **incomplete**: there exist true statements that $F$ cannot prove. This isn't a flaw in our axioms—it's a fundamental limitation of formal reasoning itself.\n\nThis formalization presents the key conceptual components. A complete proof would require thousands of lines defining syntax, proof systems, and primitive recursive functions.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Hilbert's Program",
+      "formal systems",
+      "metamathematics"
+    ]
+  },
+  {
+    "id": "ann-formula-type",
+    "proofId": "godel-incompleteness",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "What This Proves"
+    },
+    "type": "definition",
+    "title": "The Formula Type",
+    "content": "We axiomatize `Formula` as an abstract type representing well-formed formulas in our formal system. In a full formalization, this would be an inductive type defining the syntax of first-order arithmetic:\n\n- Variables: $x, y, z, \\ldots$\n- Constants: $0, 1, 2, \\ldots$\n- Functions: $+, \\times, S$ (successor)\n- Relations: $=, <$\n- Logical connectives: $\\land, \\lor, \\neg, \\rightarrow$\n- Quantifiers: $\\forall, \\exists$\n\nEvery formula in Peano Arithmetic can be built from these primitives.",
+    "significance": "key",
+    "relatedConcepts": [
+      "formal syntax",
+      "first-order logic",
+      "Peano Arithmetic"
+    ]
+  },
+  {
+    "id": "ann-provability",
+    "proofId": "godel-incompleteness",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "What This Proves"
+    },
+    "type": "definition",
+    "title": "The Provability Predicate",
+    "content": "The statement $\\vdash \\phi$ means \"$\\phi$ is provable in the formal system $F$.\" A proof is a finite sequence of formulas where each step follows from previous steps by inference rules.\n\nCrucially, provability is a **syntactic** notion—it depends only on the formal rules, not on whether $\\phi$ is \"true\" in any model. This distinction between provability and truth is central to Gödel's argument.",
+    "mathContext": "$\\vdash \\phi$ iff there exists a proof of $\\phi$ from the axioms of $F$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "proof",
+      "derivation",
+      "syntactic consequence"
+    ]
+  },
+  {
+    "id": "ann-godel-numbering",
+    "proofId": "godel-incompleteness",
+    "anchor": {
+      "type": "declaration",
+      "name": "Formula",
+      "kind": "structure"
+    },
+    "type": "concept",
+    "title": "Gödel Numbering: The Key Innovation",
+    "content": "Gödel's revolutionary insight was to assign a unique natural number to every formula. This encoding, called **Gödel numbering**, allows the formal system to reason about its own syntax.\n\nFor example, the formula \"$0 = 0$\" might receive Gödel number 4,782,969. The number encodes the structure: which symbols appear, in what order, how they combine.\n\nWith this encoding, questions about formulas become questions about numbers. \"Is $\\phi$ provable?\" becomes \"Does the number $\\ulcorner\\phi\\urcorner$ have property $P$?\" And arithmetic can talk about properties of numbers!",
+    "mathContext": "$\\ulcorner\\phi\\urcorner$ denotes the Gödel number of formula $\\phi$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "encoding",
+      "arithmetization",
+      "metamathematics"
+    ]
+  },
+  {
+    "id": "ann-encoding-injective",
+    "proofId": "godel-incompleteness",
+    "anchor": {
+      "type": "doc-comment",
+      "contains": "Provability predicate: ⊢ φ means φ is provable in "
+    },
+    "type": "insight",
+    "title": "Injectivity of Encoding",
+    "content": "The Gödel numbering must be **injective**: different formulas get different numbers. This ensures we can uniquely identify formulas by their codes.\n\nGödel used prime factorization for his encoding. For instance, a sequence of symbols $(a_1, a_2, \\ldots, a_n)$ might be encoded as $2^{a_1} \\cdot 3^{a_2} \\cdot 5^{a_3} \\cdots p_n^{a_n}$ where $p_i$ is the $i$th prime. The fundamental theorem of arithmetic guarantees unique decoding.",
+    "significance": "supporting",
+    "prerequisites": [
+      "ann-godel-numbering"
+    ],
+    "relatedConcepts": [
+      "prime factorization",
+      "encoding schemes"
+    ]
+  },
+  {
+    "id": "ann-prov-formula",
+    "proofId": "godel-incompleteness",
+    "anchor": {
+      "type": "declaration",
+      "name": "Consistent",
+      "kind": "def"
+    },
+    "type": "definition",
+    "title": "The Provability Formula",
+    "content": "Here's where things get magical. We can express provability *inside* the system using a formula $\\text{Prov}(x)$.\n\n$\\text{Prov}(n)$ is a formula that says: \"The formula with Gödel number $n$ is provable.\" This is possible because checking if something is a valid proof is a mechanical procedure—it can be expressed as an arithmetic statement about the numbers encoding the proof and the formula.\n\nThe key is that proofs are finite symbol sequences, verification is algorithmic, and algorithms can be expressed in arithmetic (via primitive recursive functions).",
+    "mathContext": "$\\text{Prov}(\\ulcorner\\phi\\urcorner)$ represents \"$\\phi$ is provable\"",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-godel-numbering"
+    ],
+    "relatedConcepts": [
+      "representability",
+      "primitive recursive",
+      "formal provability"
+    ]
+  },
+  {
+    "id": "ann-prov-complete",
+    "proofId": "godel-incompleteness",
+    "anchor": {
+      "type": "doc-comment",
+      "contains": "A system is complete if every formula or its negat"
+    },
+    "type": "theorem",
+    "title": "Representability of Provability",
+    "content": "This axiom captures a key property: if $\\phi$ is actually provable, then the system can prove that $\\phi$ is provable.\n\nFormally: $\\vdash\\phi \\Rightarrow \\vdash\\text{Prov}(\\ulcorner\\phi\\urcorner)$\n\nThis is not trivial! It requires showing that the Gödel encoding preserves enough structure that proofs of provability can be internalized. It's one of the technical heart of the incompleteness proof.",
+    "mathContext": "$\\vdash\\phi \\implies \\vdash\\text{Prov}(\\ulcorner\\phi\\urcorner)$",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-prov-formula"
+    ],
+    "relatedConcepts": [
+      "Hilbert-Bernays derivability conditions",
+      "Löb's theorem"
+    ]
+  },
+  {
+    "id": "ann-diagonal-lemma",
+    "proofId": "godel-incompleteness",
+    "anchor": {
+      "type": "doc-comment",
+      "contains": "Gödel numbering is injective"
+    },
+    "type": "theorem",
+    "title": "The Diagonal Lemma (Fixed Point Theorem)",
+    "content": "This is the formal engine of self-reference. For any property $P(x)$ expressible in the system, there exists a sentence $\\gamma$ such that:\n\n$\\gamma \\iff P(\\ulcorner\\gamma\\urcorner)$\n\nIn other words, $\\gamma$ says \"I have property $P$.\" The sentence refers to itself—not by name, but by describing its own Gödel number!\n\nThe construction uses the substitution function and diagonalization, similar to Cantor's proof that the reals are uncountable. It's the formalization of the Liar's Paradox mechanism.",
+    "mathContext": "$\\forall P. \\exists\\gamma. \\gamma \\iff P(\\ulcorner\\gamma\\urcorner)$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "self-reference",
+      "fixed point",
+      "Liar's Paradox",
+      "diagonalization"
+    ]
+  },
+  {
+    "id": "ann-not-prov",
+    "proofId": "godel-incompleteness",
+    "anchor": {
+      "type": "doc-comment",
+      "contains": "The Diagonal Lemma: For any property P expressible"
+    },
+    "type": "definition",
+    "title": "The Unprovability Predicate",
+    "content": "We define $\\text{NotProv}(n)$ as $\\neg\\text{Prov}(n)$—\"the formula with Gödel number $n$ is *not* provable.\"\n\nThis is the property we'll plug into the Diagonal Lemma to create the Gödel sentence.",
+    "mathContext": "$\\text{NotProv}(n) \\stackrel{\\text{def}}{=} \\neg\\text{Prov}(n)$",
+    "significance": "key",
+    "prerequisites": [
+      "ann-prov-formula"
+    ],
+    "relatedConcepts": [
+      "negation",
+      "unprovability"
+    ]
+  },
+  {
+    "id": "ann-godel-sentence-construction",
+    "proofId": "godel-incompleteness",
+    "anchor": {
+      "type": "doc-comment",
+      "contains": "The Diagonal Lemma: For any property P expressible"
+    },
+    "type": "theorem",
+    "title": "Existence of the Gödel Sentence",
+    "content": "By the Diagonal Lemma applied to $\\text{NotProv}$, there exists a sentence $G$ such that:\n\n$G \\iff \\neg\\text{Prov}(\\ulcorner G\\urcorner)$\n\nTranslating to English: $G$ says \"I am not provable.\" This is the formal realization of the Liar's Paradox, but replacing \"false\" with \"unprovable\" avoids the contradiction—instead, we get incompleteness.",
+    "mathContext": "$G \\iff \\neg\\text{Prov}(\\ulcorner G\\urcorner)$",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-diagonal-lemma",
+      "ann-not-prov"
+    ],
+    "relatedConcepts": [
+      "Gödel sentence",
+      "self-reference"
+    ]
+  },
+  {
+    "id": "ann-g-not-provable",
+    "proofId": "godel-incompleteness",
+    "anchor": {
+      "type": "doc-comment",
+      "contains": "Axiom:** The self-referential property of G."
+    },
+    "type": "tactic",
+    "title": "G Is Not Provable",
+    "content": "This is the heart of the argument. Assume for contradiction that $G$ is provable.\n\n1. By representability, $\\vdash\\text{Prov}(\\ulcorner G\\urcorner)$\n2. But $G \\iff \\neg\\text{Prov}(\\ulcorner G\\urcorner)$, so $\\vdash\\neg\\text{Prov}(\\ulcorner G\\urcorner)$\n3. We've proved both $\\text{Prov}(\\ulcorner G\\urcorner)$ and $\\neg\\text{Prov}(\\ulcorner G\\urcorner)$\n4. This contradicts consistency!\n\nTherefore, if the system is consistent, $G$ cannot be provable. But $G$ *says* \"I am not provable\"—so $G$ is true! A true sentence that cannot be proved.",
+    "mathContext": "$\\text{Consistent}(F) \\implies \\neg\\vdash G$",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-godel-sentence-construction",
+      "ann-prov-complete"
+    ],
+    "relatedConcepts": [
+      "proof by contradiction",
+      "consistency"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "godel-incompleteness",
+    "anchor": {
+      "type": "doc-comment",
+      "contains": "If the system is ω-consistent, ¬G is not provable "
+    },
+    "type": "theorem",
+    "title": "The First Incompleteness Theorem",
+    "content": "The theorem in its full glory: **No consistent formal system capable of expressing arithmetic is complete.**\n\nThe proof considers both cases:\n- If $G$ is provable: contradiction (we showed this)\n- If $\\neg G$ is provable: $\\neg G$ says \"$G$ is provable,\" which (with $\\omega$-consistency) leads to contradiction\n\nEither way, completeness fails. Mathematics is forever incomplete.",
+    "mathContext": "$\\text{Consistent}(F) \\implies \\neg\\text{Complete}(F)$",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-g-not-provable",
+      "ann-first-incompleteness"
+    ],
+    "relatedConcepts": [
+      "Second Incompleteness Theorem",
+      "Tarski's theorem"
+    ]
+  },
+  {
+    "id": "ann-hilbert-program",
+    "proofId": "godel-incompleteness",
+    "anchor": {
+      "type": "declaration",
+      "name": "first_incompleteness",
+      "kind": "theorem"
+    },
+    "type": "concept",
+    "title": "Death of Hilbert's Program",
+    "content": "David Hilbert had proposed that:\n1. All mathematics could be formalized in a complete, consistent system\n2. The consistency of this system could be proved by \"finitary\" means\n\nGödel's First Incompleteness Theorem killed (1): no complete system exists. His Second Incompleteness Theorem killed (2): no consistent system can prove its own consistency.\n\nThis was a shock to the mathematical community. The dream of absolute certainty in mathematics was over.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hilbert",
+      "formalism",
+      "finitism"
+    ]
+  },
+  {
+    "id": "ann-limits",
+    "proofId": "godel-incompleteness",
+    "anchor": {
+      "type": "declaration",
+      "name": "first_incompleteness",
+      "kind": "theorem"
+    },
+    "type": "insight",
+    "title": "The Inexhaustibility of Mathematics",
+    "content": "Gödel's theorem reveals something profound: mathematical truth is inexhaustible. No matter how many axioms we add, there will always be truths beyond our reach.\n\nWe can always add $G$ as a new axiom—then the system proves what it couldn't before. But immediately, a new Gödel sentence $G'$ emerges that the expanded system cannot prove. It's turtles all the way down.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom extension",
+      "ordinal analysis",
+      "transfinite hierarchy"
+    ]
+  },
+  {
+    "id": "ann-mechanism-debate",
+    "proofId": "godel-incompleteness",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Philosophical Implications"
+    },
+    "type": "concept",
+    "title": "Mind vs. Machine",
+    "content": "Some philosophers (notably Roger Penrose and J.R. Lucas) have argued that Gödel's theorem shows human minds are not machines—we can \"see\" that $G$ is true even though no formal system can prove it.\n\nThis interpretation is controversial. Critics argue that humans are also subject to limitations, and our \"seeing\" the truth of $G$ depends on assumptions (like consistency) that we cannot verify.\n\nThe debate continues: does mathematical intuition transcend computation, or are we also bounded by our own version of incompleteness?",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "mechanism",
+      "Lucas-Penrose argument",
+      "philosophy of mind"
+    ]
+  }
+]

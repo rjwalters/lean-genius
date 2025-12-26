@@ -14,6 +14,7 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
   try {
     const url = new URL(context.request.url)
     const proofId = url.searchParams.get('proof_id')
+    const annotationId = url.searchParams.get('annotation_id')
     const lineNumberStr = url.searchParams.get('line')
 
     if (!proofId) {
@@ -33,7 +34,12 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
       isNull(comments.deletedAt),
     ]
 
-    // If line number specified, filter to that line
+    // Filter by annotation ID (preferred, stable anchor)
+    if (annotationId) {
+      conditions.push(eq(comments.annotationId, annotationId))
+    }
+
+    // Filter by line number (legacy anchor)
     if (lineNumberStr) {
       const lineNumber = parseInt(lineNumberStr, 10)
       if (isNaN(lineNumber)) {
@@ -50,6 +56,7 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
       .select({
         id: comments.id,
         proofId: comments.proofId,
+        annotationId: comments.annotationId,
         lineNumber: comments.lineNumber,
         parentId: comments.parentId,
         content: comments.content,
@@ -102,6 +109,7 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
     const commentsData = result.map(row => ({
       id: row.id,
       proofId: row.proofId,
+      annotationId: row.annotationId,
       lineNumber: row.lineNumber,
       parentId: row.parentId,
       content: row.content,

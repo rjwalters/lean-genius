@@ -1,0 +1,119 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "borsuk-ulam",
+    "anchor": {
+      "type": "imports"
+    },
+    "type": "concept",
+    "title": "The Theorem That Connects Temperature to Topology",
+    "content": "The Borsuk-Ulam Theorem states: for any continuous function f: S^n -> R^n, there exist antipodal points x and -x with f(x) = f(-x).\n\nThe intuition is captivating: at any moment, there are two points on opposite sides of Earth with exactly the same temperature AND pressure. You can continuously measure any n quantities on an n-sphere, and somewhere, antipodal points match.\n\nThis 1933 result by Karol Borsuk (answering Stanislaw Ulam's question) became a cornerstone of algebraic topology with surprising applications from graph theory to fair division.\n\nThis formalization presents the conceptual structure. The full proof requires covering space theory, which we axiomatize to focus on the logical flow.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "antipodal points",
+      "continuous function",
+      "algebraic topology"
+    ]
+  },
+  {
+    "id": "ann-antipode-map",
+    "proofId": "borsuk-ulam",
+    "anchor": {
+      "type": "declaration",
+      "name": "antipode_on_sphere",
+      "kind": "theorem"
+    },
+    "type": "definition",
+    "title": "The Antipodal Map: Flipping the Sphere",
+    "content": "The **antipodal map** A: S^n -> S^n sends each point to its diametrically opposite point: A(x) = -x.\n\nKey properties:\n- **Involution**: A(A(x)) = x (applying twice returns to original)\n- **No fixed points**: A(x) != x for all x (you can't be your own opposite)\n- **Isometry**: Preserves distances on the sphere\n- **Free Z_2 action**: The two-element group {1, A} acts freely on S^n\n\nThe quotient space S^n / Z_2 (identifying x with -x) is **real projective space** RP^n. This quotient is central to the proof:\n- RP^n has fundamental group Z_2\n- The quotient map p: S^n -> RP^n is a 2-sheeted covering\n- This covering space structure is what makes the theorem work",
+    "significance": "key",
+    "relatedConcepts": [
+      "involution",
+      "group action",
+      "projective space"
+    ]
+  },
+  {
+    "id": "ann-gadget",
+    "proofId": "borsuk-ulam",
+    "anchor": {
+      "type": "declaration",
+      "name": "gadget_odd",
+      "kind": "theorem"
+    },
+    "type": "concept",
+    "title": "The Gadget Function: The Heart of the Proof",
+    "content": "The **gadget function** is the proof's clever construction. Given f: S^n -> R^n, define:\n$$g(x) = f(x) - f(-x)$$\n\n**Crucial observation**: g is an **odd function**:\n$$g(-x) = f(-x) - f(x) = -(f(x) - f(-x)) = -g(x)$$\n\n**Strategy**:\n1. If f(x) = f(-x) for some x, we're done (found our antipodal pair)\n2. Otherwise, g(x) != 0 for all x\n3. We can normalize: h(x) = g(x)/|g(x)| maps S^n -> S^(n-1)\n4. h is still odd: h(-x) = g(-x)/|g(-x)| = -g(x)/|g(x)| = -h(x)\n5. But no odd map S^n -> S^(n-1) can exist!\n\nThe gadget function converts 'finding an antipodal pair' into 'showing no odd map exists'. This shift of perspective is the proof's key insight.",
+    "mathContext": "$g(x) = f(x) - f(-x)$, $h(x) = g(x)/|g(x)|$ when $g(x) \\neq 0$",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-sphere"
+    ],
+    "relatedConcepts": [
+      "odd function",
+      "normalization",
+      "proof strategy"
+    ]
+  },
+  {
+    "id": "ann-covering-space",
+    "proofId": "borsuk-ulam",
+    "anchor": {
+      "type": "doc-comment",
+      "contains": "Key topological insight: For n ≥ 1, there is no co"
+    },
+    "type": "concept",
+    "title": "Covering Spaces: The Topological Machinery",
+    "content": "**Covering space theory** is the algebraic topology machinery that powers the proof.\n\n**Key ideas**:\n1. **Real Projective Space**: RP^n = S^n / Z_2 (identify antipodal points)\n2. **Covering Map**: p: S^n -> RP^n is a 2-sheeted covering\n3. **Fundamental Group**: pi_1(RP^n) = Z_2 for n >= 1\n\n**Why this matters**:\n- An odd map h: S^n -> S^(n-1) respects the antipodal action\n- So h induces a map h_bar: RP^n -> RP^(n-1)\n- On fundamental groups: h_bar*: Z_2 -> Z_2\n- The covering structure forces h_bar* to be injective\n- But S^n is simply connected (n >= 2), so h_bar* must be trivial\n- Injective AND trivial? Only if Z_2 = 0. Contradiction!\n\nFor n=1, a direct argument using the intermediate value theorem works.",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-sphere",
+      "ann-gadget"
+    ],
+    "relatedConcepts": [
+      "covering map",
+      "fundamental group",
+      "projective space"
+    ]
+  },
+  {
+    "id": "ann-fundamental-group",
+    "proofId": "borsuk-ulam",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "MAIN THEOREM: For any continuous f: Sⁿ → Rⁿ, there"
+    },
+    "type": "definition",
+    "title": "Fundamental Groups: Detecting Holes",
+    "content": "The **fundamental group** pi_1(X) captures the 'holes' in a space by looking at loops.\n\n**Key values**:\n- pi_1(S^n) = 0 for n >= 2 (simply connected, no holes)\n- pi_1(S^1) = Z (loops can wind around the circle)\n- pi_1(RP^n) = Z_2 for n >= 1 (two-fold symmetry)\n\n**How it's used**:\nA continuous map f: X -> Y induces a homomorphism f*: pi_1(X) -> pi_1(Y). This is **functorial**: the map respects composition.\n\nIf S^n is simply connected but RP^n has pi_1 = Z_2, then the covering map p: S^n -> RP^n can't have a 'right inverse' that respects the group structure. This obstruction is what prevents odd maps.",
+    "mathContext": "$\\pi_1(S^n) = 0$ for $n \\geq 2$, $\\pi_1(\\mathbb{R}P^n) = \\mathbb{Z}_2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "homotopy",
+      "loops",
+      "simply connected"
+    ]
+  },
+  {
+    "id": "ann-no-odd-map",
+    "proofId": "borsuk-ulam",
+    "anchor": {
+      "type": "doc-comment",
+      "contains": "The gadget function is continuous when f is contin"
+    },
+    "type": "theorem",
+    "title": "The Impossibility of Antipode-Preserving Maps",
+    "content": "**Theorem**: For n >= 1, there is no continuous antipode-preserving map h: S^n -> S^(n-1).\n\nAn antipode-preserving (odd) map satisfies h(-x) = -h(x).\n\n**Proof Sketch**:\n1. Such a map h would respect the Z_2 action on both spheres\n2. So h descends to a map h_bar: RP^n -> RP^(n-1)\n3. On fundamental groups: h_bar*: Z_2 -> Z_2\n4. The covering structure forces h_bar* to be injective\n5. Lift to the universal cover: we get a map S^n -> S^(n-1)\n6. But S^n is simply connected (n >= 2), so this lift is null-homotopic\n7. This forces h_bar* = 0, contradicting injectivity\n\n**The n=1 case** uses the intermediate value theorem directly:\n- An odd function g: S^1 -> R must have g(x) = 0 somewhere\n- So we can't normalize to get S^1 -> S^0 = {-1, 1}\n\nThis impossibility is what makes Borsuk-Ulam work!",
+    "mathContext": "$\\nexists h: S^n \\to S^{n-1}$ continuous with $h(-x) = -h(x)$",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-covering-space",
+      "ann-fundamental-group"
+    ],
+    "relatedConcepts": [
+      "odd map",
+      "induced homomorphism",
+      "covering space obstruction"
+    ]
+  }
+]

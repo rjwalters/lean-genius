@@ -1,7 +1,6 @@
-import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, TacticState } from '@/types/proof'
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
-import tacticStatesJson from './tacticStates.json'
 import sourceRaw from '../../../../proofs/Proofs/ArithmeticSeries.lean?raw'
 
 const meta = metaJson as {
@@ -28,10 +27,8 @@ export const arithmeticSeriesProof: Proof = {
 }
 
 export const arithmeticSeriesAnnotations: Annotation[] = annotationsJson as Annotation[]
-export const arithmeticSeriesTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const arithmeticSeriesData: ProofData = {
   proof: arithmeticSeriesProof,
   annotations: arithmeticSeriesAnnotations,
-  tacticStates: arithmeticSeriesTacticStates,
 }
