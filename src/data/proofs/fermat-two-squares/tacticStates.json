@@ -1,0 +1,167 @@
+[
+  {
+    "line": 52,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 53,
+    "tactic": "constructor",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": ["p"],
+            "type": "ℕ"
+          },
+          {
+            "names": ["hp"],
+            "type": "Fact (Nat.Prime p)"
+          }
+        ],
+        "conclusion": "(∃ a b, a ^ 2 + b ^ 2 = p) ↔ p % 4 ≠ 3"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": ["p"],
+            "type": "ℕ"
+          },
+          {
+            "names": ["hp"],
+            "type": "Fact (Nat.Prime p)"
+          }
+        ],
+        "conclusion": "(∃ a b, a ^ 2 + b ^ 2 = p) → p % 4 ≠ 3"
+      },
+      {
+        "hypotheses": [
+          {
+            "names": ["p"],
+            "type": "ℕ"
+          },
+          {
+            "names": ["hp"],
+            "type": "Fact (Nat.Prime p)"
+          }
+        ],
+        "conclusion": "p % 4 ≠ 3 → ∃ a b, a ^ 2 + b ^ 2 = p"
+      }
+    ]
+  },
+  {
+    "line": 54,
+    "tactic": "intro ⟨a, b, hab⟩",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 56,
+    "tactic": "have ha : a ^ 2 % 4 = 0 ∨ a ^ 2 % 4 = 1 := by omega",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": ["p"],
+            "type": "ℕ"
+          },
+          {
+            "names": ["a", "b"],
+            "type": "ℕ"
+          },
+          {
+            "names": ["hab"],
+            "type": "a ^ 2 + b ^ 2 = p"
+          }
+        ],
+        "conclusion": "p % 4 ≠ 3"
+      }
+    ],
+    "goalsAfter": []
+  },
+  {
+    "line": 72,
+    "tactic": "apply Nat.Prime.sq_add_sq",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": ["p"],
+            "type": "ℕ"
+          },
+          {
+            "names": ["hp"],
+            "type": "p % 4 = 1"
+          }
+        ],
+        "conclusion": "∃ a b, a ^ 2 + b ^ 2 = p"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": ["p"],
+            "type": "ℕ"
+          },
+          {
+            "names": ["hp"],
+            "type": "p % 4 = 1"
+          }
+        ],
+        "conclusion": "p % 4 ≠ 3"
+      }
+    ]
+  },
+  {
+    "line": 73,
+    "tactic": "omega",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 87,
+    "tactic": "intro ⟨a, b, hab⟩",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": ["p"],
+            "type": "ℕ"
+          },
+          {
+            "names": ["hp"],
+            "type": "p % 4 = 3"
+          }
+        ],
+        "conclusion": "¬∃ a b, a ^ 2 + b ^ 2 = p"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": ["p"],
+            "type": "ℕ"
+          },
+          {
+            "names": ["hp"],
+            "type": "p % 4 = 3"
+          },
+          {
+            "names": ["a", "b"],
+            "type": "ℕ"
+          },
+          {
+            "names": ["hab"],
+            "type": "a ^ 2 + b ^ 2 = p"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ]
+  }
+]
