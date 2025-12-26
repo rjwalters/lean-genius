@@ -2,9 +2,9 @@
   {
     "id": "ann-intro",
     "proofId": "perfect-numbers",
-    "range": {
-      "startLine": 4,
-      "endLine": 57
+    "anchor": {
+      "type": "section-doc",
+      "contains": "What This Proves"
     },
     "type": "insight",
     "title": "The Perfect Number Theorem",
@@ -20,9 +20,9 @@
   {
     "id": "ann-historical",
     "proofId": "perfect-numbers",
-    "range": {
-      "startLine": 4,
-      "endLine": 57
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Historical Note"
     },
     "type": "insight",
     "title": "2,300 Years of Mathematical History",
@@ -38,9 +38,10 @@
   {
     "id": "ann-perfect-def",
     "proofId": "perfect-numbers",
-    "range": {
-      "startLine": 65,
-      "endLine": 73
+    "anchor": {
+      "type": "declaration",
+      "name": "perfect_iff_divisor_sum",
+      "kind": "theorem"
     },
     "type": "definition",
     "title": "Perfect Number Definition",
@@ -56,9 +57,10 @@
   {
     "id": "ann-mersenne-def",
     "proofId": "perfect-numbers",
-    "range": {
-      "startLine": 77,
-      "endLine": 79
+    "anchor": {
+      "type": "declaration",
+      "name": "mersenne_def",
+      "kind": "theorem"
     },
     "type": "definition",
     "title": "Mersenne Numbers",
@@ -74,9 +76,10 @@
   {
     "id": "ann-sigma-power-2",
     "proofId": "perfect-numbers",
-    "range": {
-      "startLine": 81,
-      "endLine": 84
+    "anchor": {
+      "type": "declaration",
+      "name": "sigma_two_pow",
+      "kind": "theorem"
     },
     "type": "insight",
     "title": "Sum of Divisors of Powers of 2",
@@ -92,9 +95,10 @@
   {
     "id": "ann-euclid-thm",
     "proofId": "perfect-numbers",
-    "range": {
-      "startLine": 88,
-      "endLine": 98
+    "anchor": {
+      "type": "declaration",
+      "name": "euclid_perfect_numbers",
+      "kind": "theorem"
     },
     "type": "theorem",
     "title": "Euclid's Theorem (Elements IX.36)",
@@ -114,9 +118,10 @@
   {
     "id": "ann-euler-thm",
     "proofId": "perfect-numbers",
-    "range": {
-      "startLine": 102,
-      "endLine": 109
+    "anchor": {
+      "type": "declaration",
+      "name": "euler_even_perfect",
+      "kind": "theorem"
     },
     "type": "theorem",
     "title": "Euler's Theorem (1747)",
@@ -135,9 +140,10 @@
   {
     "id": "ann-iff-characterization",
     "proofId": "perfect-numbers",
-    "range": {
-      "startLine": 113,
-      "endLine": 122
+    "anchor": {
+      "type": "declaration",
+      "name": "even_perfect_iff",
+      "kind": "theorem"
     },
     "type": "theorem",
     "title": "Euclid-Euler Biconditional",
@@ -157,9 +163,10 @@
   {
     "id": "ann-example-6",
     "proofId": "perfect-numbers",
-    "range": {
-      "startLine": 129,
-      "endLine": 136
+    "anchor": {
+      "type": "declaration",
+      "name": "six_is_perfect",
+      "kind": "theorem"
     },
     "type": "example",
     "title": "First Perfect Number: 6",
@@ -175,9 +182,10 @@
   {
     "id": "ann-example-28",
     "proofId": "perfect-numbers",
-    "range": {
-      "startLine": 138,
-      "endLine": 145
+    "anchor": {
+      "type": "declaration",
+      "name": "twentyeight_is_perfect",
+      "kind": "theorem"
     },
     "type": "example",
     "title": "Second Perfect Number: 28",
@@ -192,9 +200,10 @@
   {
     "id": "ann-example-496",
     "proofId": "perfect-numbers",
-    "range": {
-      "startLine": 147,
-      "endLine": 154
+    "anchor": {
+      "type": "declaration",
+      "name": "fourhundredninetysix_is_perfect",
+      "kind": "theorem"
     },
     "type": "example",
     "title": "Third Perfect Number: 496",
@@ -209,9 +218,10 @@
   {
     "id": "ann-example-8128",
     "proofId": "perfect-numbers",
-    "range": {
-      "startLine": 156,
-      "endLine": 163
+    "anchor": {
+      "type": "declaration",
+      "name": "eightthousandonetwentyeight_is_perfect",
+      "kind": "theorem"
     },
     "type": "example",
     "title": "Fourth Perfect Number: 8128",
@@ -226,9 +236,9 @@
   {
     "id": "ann-multiplicative-key",
     "proofId": "perfect-numbers",
-    "range": {
-      "startLine": 186,
-      "endLine": 196
+    "anchor": {
+      "type": "section-doc",
+      "contains": "The Formula in Action"
     },
     "type": "insight",
     "title": "Key Algebraic Property",
@@ -244,9 +254,9 @@
   {
     "id": "ann-odd-perfect-open",
     "proofId": "perfect-numbers",
-    "range": {
-      "startLine": 165,
-      "endLine": 184
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Open Problem"
     },
     "type": "insight",
     "title": "The Odd Perfect Number Problem",
