@@ -107,10 +107,10 @@
     "id": "ann-applications",
     "proofId": "cayley-hamilton",
     "range": {
-      "startLine": 189,
+      "startLine": 193,
       "endLine": 242
     },
-    "type": "concept",
+    "type": "context",
     "title": "Applications and Significance",
     "content": "**Computing Matrix Powers**: Since Aⁿ can be expressed in terms of I, A, ..., A^(n-1), any power of A (even A¹⁰⁰⁰) can be computed using only n-1 matrix multiplications.\n\n**Matrix Exponential**: The exponential e^(At) is crucial in solving dx/dt = Ax. Cayley-Hamilton helps simplify the infinite series.\n\n**Minimal Polynomial**: The minimal polynomial m(x) is the monic polynomial of smallest degree such that m(A) = 0. By Cayley-Hamilton, m divides the characteristic polynomial, so deg(m) ≤ n.\n\n**Eigenvalue Connection**: If λ₁, ..., λₙ are the eigenvalues, then:\n$$(A - λ₁I)(A - λ₂I)\\cdots(A - λₙI) = 0$$\n\nRemarkably, while each factor (A - λᵢI) may be nonzero, their product is always zero!",
     "significance": "key",

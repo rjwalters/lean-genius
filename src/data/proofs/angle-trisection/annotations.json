@@ -130,10 +130,10 @@
     "id": "ann-three-not-power",
     "proofId": "angle-trisection",
     "range": {
-      "startLine": 167,
-      "endLine": 193
+      "startLine": 172,
+      "endLine": 201
     },
-    "type": "lemma",
+    "type": "theorem",
     "title": "3 Is Not a Power of 2",
     "content": "We prove that 3 ≠ 2^n for any natural number n. The key observation is that powers of 2 are all even (except 2^0 = 1), but 3 is odd. Similarly, 3 does not divide any power of 2 since gcd(3, 2) = 1.",
     "mathContext": "These lemmas are proven by induction. For 3 ∤ 2^n, we use that 3 is prime and coprime to 2.",
@@ -191,10 +191,10 @@
     "id": "ann-circle-squaring",
     "proofId": "angle-trisection",
     "range": {
-      "startLine": 270,
-      "endLine": 285
+      "startLine": 280,
+      "endLine": 289
     },
-    "type": "corollary",
+    "type": "theorem",
     "title": "Squaring the Circle is Impossible",
     "content": "Constructing a square with the same area as a unit circle requires side length √π. But π is transcendental (Lindemann, 1882), meaning it satisfies no polynomial over ℚ. Therefore √π is also transcendental and certainly not constructible.",
     "mathContext": "This is a deeper result than the algebraic impossibilities, requiring the transcendence of π rather than just a degree argument.",

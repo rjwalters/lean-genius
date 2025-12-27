@@ -36,8 +36,9 @@
     "id": "ann-main-theorem",
     "proofId": "bertrands-postulate",
     "anchor": {
-      "type": "theorem",
-      "name": "bertrand_postulate"
+      "type": "declaration",
+      "name": "bertrand_postulate",
+      "kind": "theorem"
     },
     "type": "theorem",
     "title": "The Main Statement",
@@ -53,8 +54,9 @@
     "id": "ann-prime-gaps",
     "proofId": "bertrands-postulate",
     "anchor": {
-      "type": "theorem",
-      "name": "prime_gap_bounded"
+      "type": "declaration",
+      "name": "prime_gap_bounded",
+      "kind": "theorem"
     },
     "type": "insight",
     "title": "Bounded Prime Gaps",
@@ -70,8 +72,9 @@
     "id": "ann-infinitude",
     "proofId": "bertrands-postulate",
     "anchor": {
-      "type": "theorem",
-      "name": "primes_infinite_via_bertrand"
+      "type": "declaration",
+      "name": "primes_infinite_via_bertrand",
+      "kind": "theorem"
     },
     "type": "technique",
     "title": "Infinitude of Primes (Alternative Proof)",
@@ -86,8 +89,9 @@
     "id": "ann-erdos-proof",
     "proofId": "bertrands-postulate",
     "anchor": {
-      "type": "theorem",
-      "name": "bertrand_large"
+      "type": "declaration",
+      "name": "bertrand_large",
+      "kind": "theorem"
     },
     "type": "technique",
     "title": "Erdős's Central Binomial Approach",

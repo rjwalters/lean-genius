@@ -50,6 +50,24 @@
     ]
   },
   {
+    "id": "ann-mvt",
+    "proofId": "lhopital",
+    "range": {
+      "startLine": 119,
+      "endLine": 132
+    },
+    "type": "concept",
+    "title": "The Mean Value Connection",
+    "content": "L'Hopital's Rule follows from **Cauchy's Mean Value Theorem**:\n\nFor differentiable $f, g$ on $(a, b)$ with $g'(x) \\neq 0$:\n$$\\frac{f(b) - f(a)}{g(b) - g(a)} = \\frac{f'(c)}{g'(c)}$$\nfor some $c \\in (a, b)$.\n\n**Intuition**: For small $h > 0$:\n- $f(a + h) \\approx f(a) + h \\cdot f'(a) = 0 + h \\cdot f'(a)$\n- $g(a + h) \\approx g(a) + h \\cdot g'(a) = 0 + h \\cdot g'(a)$\n\nSo $\\frac{f(a+h)}{g(a+h)} \\approx \\frac{f'(a)}{g'(a)}$",
+    "mathContext": "Cauchy MVT: $\\frac{f(b)-f(a)}{g(b)-g(a)} = \\frac{f'(c)}{g'(c)}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mean Value Theorem",
+      "Cauchy's theorem",
+      "linear approximation"
+    ]
+  },
+  {
     "id": "ann-infinity",
     "proofId": "lhopital",
     "range": {
