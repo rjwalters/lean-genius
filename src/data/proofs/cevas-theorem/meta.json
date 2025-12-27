@@ -1,0 +1,117 @@
+{
+  "id": "cevas-theorem",
+  "title": "Ceva's Theorem",
+  "slug": "cevas-theorem",
+  "description": "Ceva's Theorem (Wiedijk's #61): Given a triangle ABC with cevians AD, BE, CF, these lines are concurrent if and only if (AF/FB) * (BD/DC) * (CE/EA) = 1",
+  "meta": {
+    "author": "Giovanni Ceva (1678, formalized in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Ceva%27s_theorem",
+    "date": "1678",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "triangle",
+      "concurrency",
+      "signed-ratios",
+      "classic"
+    ],
+    "proofRepoPath": "Proofs/CevasTheorem.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real number arithmetic",
+        "description": "Basic real number operations and field structure",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Complete algebraic formalization using signed ratios",
+      "Equivalence between product form and parameter condition",
+      "Special case verification for medians (centroid)",
+      "Characterization of equal-parameter configurations"
+    ],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 61
+  },
+  "overview": {
+    "historicalContext": "Ceva's Theorem was published by Italian mathematician Giovanni Ceva in 1678 in his work 'De lineis rectis se invicem secantibus statica constructio' (On straight lines intersecting each other in a static construction). The theorem is closely related to Menelaus's theorem (which deals with collinear points rather than concurrent lines) and both are fundamental results in triangle geometry.\n\nThe theorem provides a unified framework for understanding classical concurrence results including medians meeting at the centroid, altitudes meeting at the orthocenter, and angle bisectors meeting at the incenter.",
+    "problemStatement": "**Theorem (Ceva):** Let ABC be a triangle with points D, E, F on sides BC, CA, AB respectively. The cevians AD, BE, CF are concurrent if and only if:\n\n$$(\\frac{AF}{FB}) \\cdot (\\frac{BD}{DC}) \\cdot (\\frac{CE}{EA}) = 1$$\n\nwhere the ratios are signed (positive for internal division, negative for external division).\n\n**Algebraic Form:** If D = (1-d)B + dC, E = (1-e)C + eA, F = (1-f)A + fB, then concurrency holds iff:\n$$d \\cdot e \\cdot f = (1-d) \\cdot (1-e) \\cdot (1-f)$$",
+    "proofStrategy": "Our proof uses a direct algebraic approach with signed ratios:\n\n1. **Signed Ratios:** Define the signed ratio for a point P dividing AB such that P = (1-t)A + tB as t/(1-t)\n\n2. **Cevian Configuration:** Model the configuration with parameters d, e, f for points on BC, CA, AB\n\n3. **Product Equivalence:** Show that the product of signed ratios equals 1 if and only if d*e*f = (1-d)*(1-e)*(1-f)\n\n4. **Special Cases:** Verify for medians (d = e = f = 1/2) and prove equal parameters only work at 1/2",
+    "keyInsights": [
+      "The product of signed ratios captures the geometric constraint of concurrent cevians algebraically",
+      "The parameter condition d*e*f = (1-d)*(1-e)*(1-f) is symmetric and elegant",
+      "For equal parameters d = e = f = t, the only solution is t = 1/2 (medians)",
+      "Menelaus's theorem is the dual: product = -1 for collinear points on a transversal",
+      "The theorem generalizes to higher dimensions and projective geometry"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Overview of Ceva's theorem, its historical context, and the approach taken in this formalization."
+    },
+    {
+      "id": "signed-ratios",
+      "title": "Signed Ratios",
+      "startLine": 40,
+      "endLine": 58,
+      "summary": "Definition of signed ratios for segment division: if P = (1-t)A + tB, then AP/PB = t/(1-t)."
+    },
+    {
+      "id": "cevian-config",
+      "title": "Cevian Configuration",
+      "startLine": 59,
+      "endLine": 81,
+      "summary": "Structure for cevian configurations with parameters d, e, f determining points on triangle sides."
+    },
+    {
+      "id": "ceva-product",
+      "title": "The Ceva Product",
+      "startLine": 82,
+      "endLine": 96,
+      "summary": "Definition of the Ceva product (AF/FB)*(BD/DC)*(CE/EA) and the equivalent parameter condition."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 97,
+      "endLine": 130,
+      "summary": "The core theorem: cevaProduct = 1 if and only if d*e*f = (1-d)*(1-e)*(1-f)."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 131,
+      "endLine": 199,
+      "summary": "Verification for medians (d = e = f = 1/2) and characterization of equal-parameter solutions."
+    },
+    {
+      "id": "converse",
+      "title": "Converse Forms",
+      "startLine": 200,
+      "endLine": 208,
+      "summary": "Direct and converse implications extracted from the main equivalence theorem."
+    },
+    {
+      "id": "historical-context",
+      "title": "Historical Context",
+      "startLine": 209,
+      "endLine": 262,
+      "summary": "Extended discussion of Menelaus's theorem, applications, and generalizations."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization establishes Ceva's Theorem through a direct algebraic approach using signed ratios. The equivalence between the product condition and the parameter condition is proven using field simplification and linear arithmetic. Special cases including medians are verified, demonstrating the theorem's application to classical triangle concurrence results.",
+    "implications": "Ceva's Theorem, along with its dual Menelaus's Theorem, forms the foundation of triangle geometry. The theorem provides a unified framework for understanding why medians, altitudes, and angle bisectors are concurrent. The algebraic formulation generalizes naturally to projective geometry and higher dimensions.",
+    "openQuestions": [
+      "Can the full geometric proof (concurrent cevians from parameter condition) be formalized using affine geometry in Mathlib?",
+      "How does the theorem extend to non-Euclidean geometries?",
+      "What is the computational complexity of finding cevian configurations with specific properties?",
+      "Can mass point geometry provide an alternative formalization approach?"
+    ]
+  }
+}

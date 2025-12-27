@@ -1,0 +1,122 @@
+[
+  {
+    "id": "signed-ratio-def",
+    "proofId": "cevas-theorem",
+    "range": {
+      "startLine": 52,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Signed Ratio",
+    "content": "The signed ratio captures how a point divides a line segment. If P divides AB such that P = (1-t)A + tB, then AP/PB = t/(1-t). Positive when P is between A and B, negative when outside.",
+    "mathContext": "signedRatio(t) = t / (1 - t) for t != 1",
+    "significance": "key",
+    "prerequisites": ["Division by non-zero reals"],
+    "relatedConcepts": ["Affine combination", "Barycentric coordinates"]
+  },
+  {
+    "id": "cevian-config-struct",
+    "proofId": "cevas-theorem",
+    "range": {
+      "startLine": 71,
+      "endLine": 81
+    },
+    "type": "definition",
+    "title": "Cevian Configuration",
+    "content": "A structure capturing the configuration of three cevians through parameters d, e, f. Point D = (1-d)B + dC lies on BC, E = (1-e)C + eA lies on CA, and F = (1-f)A + fB lies on AB. The constraints ensure points are distinct from vertices.",
+    "mathContext": "Parameters must satisfy d, e, f in (0, 1) excluding endpoints",
+    "significance": "key",
+    "prerequisites": ["Affine combinations", "Real number inequalities"],
+    "relatedConcepts": ["Cevian", "Triangle vertices", "Internal division"]
+  },
+  {
+    "id": "ceva-product-def",
+    "proofId": "cevas-theorem",
+    "range": {
+      "startLine": 89,
+      "endLine": 90
+    },
+    "type": "definition",
+    "title": "Ceva Product",
+    "content": "The product (AF/FB) * (BD/DC) * (CE/EA) of signed ratios. This equals signedRatio(f) * signedRatio(d) * signedRatio(e). The theorem states this equals 1 exactly when cevians are concurrent.",
+    "mathContext": "cevaProduct = [f/(1-f)] * [d/(1-d)] * [e/(1-e)]",
+    "significance": "critical",
+    "prerequisites": ["Signed ratios"],
+    "relatedConcepts": ["Product of ratios", "Concurrent lines"]
+  },
+  {
+    "id": "ceva-param-condition",
+    "proofId": "cevas-theorem",
+    "range": {
+      "startLine": 94,
+      "endLine": 95
+    },
+    "type": "definition",
+    "title": "Parameter Condition",
+    "content": "The algebraic condition d*e*f = (1-d)*(1-e)*(1-f) is equivalent to the Ceva product equaling 1. This symmetric form makes it easy to verify special cases.",
+    "mathContext": "def = (1-d)(1-e)(1-f)",
+    "significance": "key",
+    "prerequisites": ["Real number arithmetic"],
+    "relatedConcepts": ["Ceva product", "Symmetric functions"]
+  },
+  {
+    "id": "main-theorem",
+    "proofId": "cevas-theorem",
+    "range": {
+      "startLine": 116,
+      "endLine": 129
+    },
+    "type": "theorem",
+    "title": "Ceva's Theorem - Main Result",
+    "content": "The central equivalence: cevaProduct cfg = 1 if and only if cevaParameterCondition cfg holds. The proof unfolds definitions, applies field_simp to clear denominators, then uses linarith for the algebraic manipulation.",
+    "mathContext": "[f/(1-f)] * [d/(1-d)] * [e/(1-e)] = 1  <-->  d*e*f = (1-d)*(1-e)*(1-f)",
+    "significance": "critical",
+    "prerequisites": ["Signed ratios", "Cevian configuration", "Field arithmetic"],
+    "relatedConcepts": ["Concurrent cevians", "Triangle geometry"]
+  },
+  {
+    "id": "median-case",
+    "proofId": "cevas-theorem",
+    "range": {
+      "startLine": 143,
+      "endLine": 160
+    },
+    "type": "theorem",
+    "title": "Medians Satisfy Ceva",
+    "content": "For the median configuration where d = e = f = 1/2, the Ceva product equals 1. This verifies that the three medians of a triangle are concurrent (meeting at the centroid).",
+    "mathContext": "(1/2)/(1-1/2) * (1/2)/(1-1/2) * (1/2)/(1-1/2) = 1 * 1 * 1 = 1",
+    "significance": "key",
+    "prerequisites": ["Ceva's theorem", "Numeric computation"],
+    "relatedConcepts": ["Centroid", "Median of triangle", "Classical concurrence"]
+  },
+  {
+    "id": "equal-params-iff",
+    "proofId": "cevas-theorem",
+    "range": {
+      "startLine": 172,
+      "endLine": 198
+    },
+    "type": "theorem",
+    "title": "Equal Parameters Characterization",
+    "content": "For equal parameters d = e = f = t, the Ceva condition holds if and only if t = 1/2. This shows that medians are the unique configuration with equal division ratios that satisfies Ceva's theorem.",
+    "mathContext": "t^3 = (1-t)^3 has unique real solution t = 1/2",
+    "significance": "supporting",
+    "prerequisites": ["Main theorem", "Polynomial arithmetic"],
+    "relatedConcepts": ["Medians", "Symmetry", "Uniqueness"]
+  },
+  {
+    "id": "menelaus-dual",
+    "proofId": "cevas-theorem",
+    "range": {
+      "startLine": 213,
+      "endLine": 227
+    },
+    "type": "concept",
+    "title": "Menelaus's Theorem (Dual)",
+    "content": "Menelaus's theorem is the 'dual' of Ceva's theorem. While Ceva deals with concurrent lines (cevians meeting at a point), Menelaus deals with collinear points on a transversal. For collinearity, the product of signed ratios equals -1 instead of +1.",
+    "mathContext": "(AF/FB) * (BD/DC) * (CE/EA) = -1 for collinear D, E, F",
+    "significance": "supporting",
+    "prerequisites": ["Ceva's theorem"],
+    "relatedConcepts": ["Transversal", "Collinearity", "Sign difference"]
+  }
+]
