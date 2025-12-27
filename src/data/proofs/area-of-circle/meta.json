@@ -1,0 +1,34 @@
+{
+  "id": "area-of-circle",
+  "title": "Area of a Circle",
+  "slug": "area-of-circle",
+  "description": "The area of a circle with radius r is πr². One of the most fundamental formulas in geometry, known since Archimedes proved it around 250 BCE.",
+  "meta": {
+    "author": "Archimedes (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Area_of_a_circle",
+    "date": "~250 BCE",
+    "status": "verified",
+    "tags": ["geometry", "measure-theory", "classic", "beginner"],
+    "proofRepoPath": "Proofs/AreaOfCircle.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "Complex.volume_ball", "description": "Volume of open ball in the complex plane", "module": "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls"},
+      {"theorem": "Complex.volume_closedBall", "description": "Volume of closed ball in the complex plane", "module": "Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls"}
+    ],
+    "originalContributions": ["Complete formalization using Lebesgue measure", "Pedagogical documentation of measure-theoretic approach"],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 9
+  },
+  "overview": {
+    "historicalContext": "The formula A = πr² was known to ancient civilizations, but Archimedes of Syracuse (c. 287-212 BCE) gave the first rigorous proof using the method of exhaustion—an ancient precursor to integral calculus.",
+    "problemStatement": "**Area of a Circle**:\n\nFor a disk D = {p ∈ ℝ² : |p - center| ≤ r} with radius r ≥ 0:\n$$\\text{Area}(D) = \\pi r^2$$",
+    "proofStrategy": "We use measure theory: the area is the Lebesgue measure of the 2-dimensional disk. Using the complex plane ℂ ≅ ℝ², we apply Mathlib's volume_ball theorem.",
+    "keyInsights": ["Area is formalized as Lebesgue measure in ℝ²", "The complex plane provides an elegant framework", "The formula generalizes to n-dimensional balls using the gamma function"]
+  },
+  "sections": [
+    {"id": "header", "title": "Introduction", "startLine": 1, "endLine": 50, "summary": "Overview and historical context."},
+    {"id": "main-theorem", "title": "Main Theorem", "startLine": 52, "endLine": 80, "summary": "The area formula for open and closed disks."}
+  ],
+  "conclusion": {"summary": "The area of a circle is verified using modern measure theory, connecting ancient geometry to contemporary mathematics."}
+}

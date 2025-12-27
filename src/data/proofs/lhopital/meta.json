@@ -1,0 +1,99 @@
+{
+  "id": "lhopital",
+  "title": "L'Hopital's Rule",
+  "slug": "lhopital",
+  "description": "A fundamental technique for evaluating limits of indeterminate forms: if f(x)/g(x) approaches 0/0 or infinity/infinity, then the limit equals the limit of f'(x)/g'(x).",
+  "meta": {
+    "author": "L'Hopital, Bernoulli (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/L%27H%C3%B4pital%27s_rule",
+    "date": "1696",
+    "status": "verified",
+    "tags": [
+      "calculus",
+      "limits",
+      "derivatives",
+      "classic",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/LHopital.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "HasDerivAt.lhopital_zero_right_on_Ioo",
+        "description": "L'Hopital's rule for 0/0 form approaching from the right",
+        "module": "Mathlib.Analysis.Calculus.LHopital"
+      },
+      {
+        "theorem": "HasDerivAt.lhopital_zero_left_on_Ioo",
+        "description": "L'Hopital's rule for 0/0 form approaching from the left",
+        "module": "Mathlib.Analysis.Calculus.LHopital"
+      },
+      {
+        "theorem": "HasDerivAt.lhopital_zero_atTop_on_Ioi",
+        "description": "L'Hopital's rule for 0/0 form as x approaches infinity",
+        "module": "Mathlib.Analysis.Calculus.LHopital"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical wrapper theorems for the various limit directions",
+      "Explanation of why the rule works via Mean Value Theorem",
+      "Coverage of right limits, left limits, and limits at infinity",
+      "Historical context about the Bernoulli-L'Hopital arrangement"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 64
+  },
+  "overview": {
+    "historicalContext": "L'Hopital's Rule has a fascinating origin story:\n\n- **Johann Bernoulli (1694)**: Actually discovered the rule and taught it to L'Hopital\n- **Guillaume de L'Hopital (1696)**: Published it in the first calculus textbook ever written\n- **The arrangement**: L'Hopital paid Bernoulli a salary in exchange for mathematical discoveries\n- **Priority dispute**: Bernoulli claimed credit only after L'Hopital's death in 1704\n\nDespite the controversy, the rule bears L'Hopital's name to this day.",
+    "problemStatement": "**L'Hopital's Rule**:\n\nIf $f$ and $g$ are differentiable near $a$, and:\n1. Both $\\lim_{x \\to a} f(x) = 0$ and $\\lim_{x \\to a} g(x) = 0$ (the 0/0 form), or\n2. Both limits are $\\pm\\infty$ (the $\\infty/\\infty$ form)\n\nAnd if $\\lim_{x \\to a} \\frac{f'(x)}{g'(x)} = L$ exists, then:\n\n$$\\lim_{x \\to a} \\frac{f(x)}{g(x)} = \\lim_{x \\to a} \\frac{f'(x)}{g'(x)} = L$$",
+    "proofStrategy": "The proof relies on the **Cauchy Mean Value Theorem**:\n\n1. **Cauchy MVT**: For differentiable $f, g$ on $(a, b)$:\n   $$\\frac{f(b) - f(a)}{g(b) - g(a)} = \\frac{f'(c)}{g'(c)}$$\n   for some $c \\in (a, b)$.\n\n2. **Apply to our setting**: For $x$ near $a$:\n   $$\\frac{f(x) - f(a)}{g(x) - g(a)} = \\frac{f(x) - 0}{g(x) - 0} = \\frac{f(x)}{g(x)}$$\n   equals $\\frac{f'(c_x)}{g'(c_x)}$ for some $c_x$ between $a$ and $x$.\n\n3. **Take the limit**: As $x \\to a$, we have $c_x \\to a$, so\n   $$\\lim_{x \\to a} \\frac{f(x)}{g(x)} = \\lim_{c \\to a} \\frac{f'(c)}{g'(c)}$$",
+    "keyInsights": [
+      "The rule transforms a difficult limit into a (hopefully) easier one",
+      "Can be applied repeatedly if the result is still indeterminate",
+      "Works for limits at infinity, not just at finite points",
+      "The underlying mechanism is Cauchy's Mean Value Theorem",
+      "Does NOT work if the derivative limit doesn't exist (but original might)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Overview of L'Hopital's Rule, historical context, and the Bernoulli connection."
+    },
+    {
+      "id": "zero-form",
+      "title": "The 0/0 Form",
+      "startLine": 51,
+      "endLine": 103,
+      "summary": "L'Hopital's rule for right limits, left limits, and limits at infinity."
+    },
+    {
+      "id": "why-it-works",
+      "title": "Why It Works",
+      "startLine": 119,
+      "endLine": 132,
+      "summary": "Explanation via the Mean Value Theorem."
+    },
+    {
+      "id": "applications",
+      "title": "Applications",
+      "startLine": 134,
+      "endLine": 146,
+      "summary": "Common use cases including sin(x)/x and exponential limits."
+    }
+  ],
+  "conclusion": {
+    "summary": "L'Hopital's Rule is fully verified using Mathlib's calculus infrastructure. We provide the theorem in multiple forms: right limits, left limits, and limits at infinity.",
+    "implications": "L'Hopital's Rule is one of the most practical tools in calculus:\n\n1. **Evaluating limits**: Transforms indeterminate forms into tractable ones\n\n2. **Asymptotic analysis**: Comparing growth rates of functions\n\n3. **Series expansions**: Helps derive Taylor series coefficients\n\n4. **Physics and engineering**: Ubiquitous in rate calculations",
+    "openQuestions": [
+      "When does L'Hopital's rule fail even though the original limit exists?",
+      "What are the most efficient strategies for repeatedly applying the rule?",
+      "How does this generalize to multivariate calculus?",
+      "What is the relationship to Taylor series methods for limits?"
+    ]
+  }
+}

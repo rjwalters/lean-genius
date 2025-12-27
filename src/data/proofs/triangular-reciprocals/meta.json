@@ -1,0 +1,30 @@
+{
+  "id": "triangular-reciprocals",
+  "title": "Sum of Reciprocals of Triangular Numbers",
+  "slug": "triangular-reciprocals",
+  "description": "The sum of reciprocals of triangular numbers equals 2: ∑(2/(n(n+1))) = 2. A beautiful telescoping series result.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Triangular_number",
+    "date": "Classical",
+    "status": "verified",
+    "tags": ["analysis", "series", "combinatorics", "classic", "intermediate"],
+    "proofRepoPath": "Proofs/TriangularNumberReciprocals.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "tsum", "description": "Topological sum of infinite series", "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"}
+    ],
+    "originalContributions": ["Telescoping series proof", "Connection to triangular numbers"],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 42
+  },
+  "overview": {
+    "historicalContext": "Triangular numbers were studied by the Pythagoreans. This identity connects them to infinite series via partial fractions.",
+    "problemStatement": "**Sum of Triangular Reciprocals**:\n\n$$\\sum_{n=1}^{\\infty} \\frac{1}{T_n} = \\sum_{n=1}^{\\infty} \\frac{2}{n(n+1)} = 2$$\n\nwhere $T_n = n(n+1)/2$ is the nth triangular number.",
+    "proofStrategy": "Use partial fractions: 2/(n(n+1)) = 2(1/n - 1/(n+1)). The series telescopes to 2·1 = 2.",
+    "keyInsights": ["Partial fractions decomposition", "Telescoping cancellation", "The sum converges to exactly 2"]
+  },
+  "sections": [{"id": "header", "title": "Introduction", "startLine": 1, "endLine": 47, "summary": "Overview and approach."}],
+  "conclusion": {"summary": "The telescoping series identity is verified using Mathlib's infinite sum machinery."}
+}

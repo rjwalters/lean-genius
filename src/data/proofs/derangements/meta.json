@@ -1,0 +1,30 @@
+{
+  "id": "derangements",
+  "title": "The Derangements Formula",
+  "slug": "derangements",
+  "description": "The number of permutations with no fixed points: D(n) = n! Σ(-1)^k/k!. The 'hat-check problem'.",
+  "meta": {
+    "author": "Montmort, Euler (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Derangement",
+    "date": "1708",
+    "status": "verified",
+    "tags": ["combinatorics", "probability", "classic", "intermediate"],
+    "proofRepoPath": "Proofs/Derangements.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "numDerangements_sum", "description": "Closed-form sum formula", "module": "Mathlib.Combinatorics.Derangements.Finite"}
+    ],
+    "originalContributions": ["Recurrence relation", "Limit approaches 1/e"],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 88
+  },
+  "overview": {
+    "historicalContext": "The 'hat-check problem': if n people check hats and receive them randomly, D(n) counts ways no one gets their own.",
+    "problemStatement": "**Derangements Formula**:\n\n$$D_n = n! \\sum_{k=0}^{n} \\frac{(-1)^k}{k!}$$\n\nRecurrence: D(n) = (n-1)(D(n-1) + D(n-2))",
+    "proofStrategy": "Inclusion-exclusion on fixed points, or recurrence relation proof.",
+    "keyInsights": ["As n→∞, P(derangement)→1/e≈36.79%", "Subfactorial notation !n", "Recurrence is elegant"]
+  },
+  "sections": [{"id": "header", "title": "Introduction", "startLine": 1, "endLine": 53, "summary": "Overview."}],
+  "conclusion": {"summary": "The derangements formula is verified with both closed form and recurrence."}
+}

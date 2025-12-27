@@ -1,0 +1,113 @@
+{
+  "id": "law-of-cosines",
+  "title": "Law of Cosines",
+  "slug": "law-of-cosines",
+  "description": "The generalization of the Pythagorean theorem to arbitrary triangles: c^2 = a^2 + b^2 - 2ab*cos(C), which reduces to the Pythagorean theorem when C = 90 degrees.",
+  "meta": {
+    "author": "Euclid, al-Kashi (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Law_of_cosines",
+    "date": "~300 BCE (Euclid), 1400s (al-Kashi)",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "trigonometry",
+      "linear-algebra",
+      "classic",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/LawOfCosines.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "real_inner_self_eq_norm_mul_norm",
+        "description": "||v||^2 = <v, v> for real inner product spaces",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "inner_sub_left",
+        "description": "Linearity of inner product: <v - w, u> = <v, u> - <w, u>",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "real_inner_comm",
+        "description": "Symmetry of real inner product: <v, w> = <w, v>",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Complete proof using inner product space formulation",
+      "Connection to perpendicularity and Pythagorean theorem",
+      "Derivation of polarization identity and parallelogram law",
+      "Classical triangle formulation with worked examples"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 94
+  },
+  "overview": {
+    "historicalContext": "The Law of Cosines has ancient origins:\n\n- **Euclid (~300 BCE)**: Elements Book II, Propositions 12-13 contain geometric equivalents\n- **al-Kashi (1420s)**: First modern trigonometric formulation (sometimes called al-Kashi's theorem)\n- **Modern form**: Became standard with the development of trigonometry\n\nThe theorem is fundamental to surveying, navigation, and physics.",
+    "problemStatement": "**The Law of Cosines**:\n\nFor a triangle with sides $a$, $b$, $c$ and angle $C$ opposite side $c$:\n\n$$c^2 = a^2 + b^2 - 2ab\\cos(C)$$\n\n**Special case**: When $C = 90°$, $\\cos(C) = 0$, giving the Pythagorean theorem:\n$$c^2 = a^2 + b^2$$\n\n**Inner product form**: For vectors $v$ and $w$:\n$$\\|v - w\\|^2 = \\|v\\|^2 + \\|w\\|^2 - 2\\langle v, w \\rangle$$",
+    "proofStrategy": "We prove this using the inner product structure:\n\n1. **Start with $\\|v - w\\|^2$**:\n   $$\\|v - w\\|^2 = \\langle v - w, v - w \\rangle$$\n\n2. **Expand using linearity**:\n   $$= \\langle v, v \\rangle - \\langle v, w \\rangle - \\langle w, v \\rangle + \\langle w, w \\rangle$$\n\n3. **Use symmetry** ($\\langle v, w \\rangle = \\langle w, v \\rangle$):\n   $$= \\|v\\|^2 + \\|w\\|^2 - 2\\langle v, w \\rangle$$\n\n4. **For perpendicular vectors** ($\\langle v, w \\rangle = 0$):\n   $$\\|v - w\\|^2 = \\|v\\|^2 + \\|w\\|^2$$\n\nThis is the Pythagorean theorem as a special case.",
+    "keyInsights": [
+      "The Law of Cosines is really a statement about inner products",
+      "Perpendicularity means the inner product is zero, recovering Pythagoras",
+      "The polarization identity recovers inner products from norms alone",
+      "The parallelogram law follows as a corollary",
+      "This connects geometry, algebra, and trigonometry"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Overview of the Law of Cosines and its historical context."
+    },
+    {
+      "id": "inner-product",
+      "title": "Inner Product Form",
+      "startLine": 52,
+      "endLine": 101,
+      "summary": "The main theorem in terms of inner products and norms."
+    },
+    {
+      "id": "perpendicular",
+      "title": "Perpendicularity",
+      "startLine": 103,
+      "endLine": 129,
+      "summary": "The special case that gives the Pythagorean theorem."
+    },
+    {
+      "id": "classical",
+      "title": "Classical Formulation",
+      "startLine": 131,
+      "endLine": 173,
+      "summary": "The traditional triangle formulation with sides and angles."
+    },
+    {
+      "id": "examples",
+      "title": "Numerical Examples",
+      "startLine": 175,
+      "endLine": 211,
+      "summary": "Concrete examples for 60, 90, and 120 degree angles."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries",
+      "startLine": 213,
+      "endLine": 246,
+      "summary": "Polarization identity and parallelogram law."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Law of Cosines is fully verified using Mathlib's inner product space infrastructure. We prove both the algebraic (inner product) and classical (trigonometric) forms, along with important corollaries.",
+    "implications": "The Law of Cosines is essential in many fields:\n\n1. **Navigation**: Computing distances and bearings\n\n2. **Surveying**: Triangulation and distance measurement\n\n3. **Physics**: Force composition and vector addition\n\n4. **Computer graphics**: 3D transformations and lighting calculations",
+    "openQuestions": [
+      "What is the spherical analogue of the Law of Cosines?",
+      "How does this generalize to higher-dimensional inner product spaces?",
+      "What are the hyperbolic versions of this theorem?",
+      "How is this used in modern GPS and positioning systems?"
+    ]
+  }
+}

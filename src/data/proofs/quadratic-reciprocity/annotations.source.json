@@ -1,0 +1,126 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "quadratic-reciprocity",
+    "anchor": {
+      "type": "imports"
+    },
+    "type": "concept",
+    "title": "Gauss's Golden Theorem",
+    "content": "The Law of Quadratic Reciprocity relates the solvability of two quadratic equations:\n\n$$x^2 \\equiv p \\pmod{q} \\quad \\text{and} \\quad x^2 \\equiv q \\pmod{p}$$\n\nfor distinct odd primes $p$ and $q$. Remarkably, whether $p$ is a square mod $q$ is closely related to whether $q$ is a square mod $p$.\n\nGauss called this the 'theorema aureum' (golden theorem) and published 8 different proofs during his lifetime.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "quadratic residues",
+      "Legendre symbol",
+      "number theory"
+    ]
+  },
+  {
+    "id": "ann-legendre",
+    "proofId": "quadratic-reciprocity",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "What This Proves"
+    },
+    "type": "concept",
+    "title": "The Legendre Symbol",
+    "content": "The **Legendre symbol** $(a/p)$ for an integer $a$ and odd prime $p$ is:\n\n- $(a/p) = 1$ if $a$ is a **quadratic residue** mod $p$ (i.e., $x^2 \\equiv a \\pmod{p}$ has a solution)\n- $(a/p) = -1$ if $a$ is a **quadratic nonresidue** mod $p$\n- $(a/p) = 0$ if $p | a$\n\n**Euler's Criterion**: $(a/p) \\equiv a^{(p-1)/2} \\pmod{p}$\n\nThis gives a computational method for evaluating Legendre symbols.",
+    "mathContext": "$(a/p) = a^{(p-1)/2} \\mod p$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Euler's criterion",
+      "quadratic residues",
+      "Fermat's little theorem"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "quadratic-reciprocity",
+    "anchor": {
+      "type": "declaration",
+      "name": "quadratic_reciprocity_product",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "The Main Law (Product Form)",
+    "content": "**Quadratic Reciprocity** (Product Form):\n\nFor distinct odd primes $p$ and $q$:\n\n$$\\left(\\frac{q}{p}\\right) \\cdot \\left(\\frac{p}{q}\\right) = (-1)^{\\frac{p-1}{2} \\cdot \\frac{q-1}{2}}$$\n\nThe exponent $(p-1)/2 \\cdot (q-1)/2$ is odd exactly when both $p \\equiv 3$ and $q \\equiv 3 \\pmod{4}$.\n\nThis means the Legendre symbols are:\n- **Equal** if at least one of $p, q \\equiv 1 \\pmod{4}$\n- **Opposite** if both $p, q \\equiv 3 \\pmod{4}$",
+    "mathContext": "$(q/p)(p/q) = (-1)^{(p-1)/2 \\cdot (q-1)/2}$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Legendre symbol",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-first-supp",
+    "proofId": "quadratic-reciprocity",
+    "anchor": {
+      "type": "declaration",
+      "name": "first_supplementary_law",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "First Supplementary Law",
+    "content": "**First Supplementary Law**:\n\n$$\\left(\\frac{-1}{p}\\right) = (-1)^{(p-1)/2} = \\begin{cases} 1 & \\text{if } p \\equiv 1 \\pmod{4} \\\\ -1 & \\text{if } p \\equiv 3 \\pmod{4} \\end{cases}$$\n\nEquivalently: $-1$ is a quadratic residue mod $p$ iff $p \\equiv 1 \\pmod{4}$.\n\n**Example**: $-1 \\equiv 4 = 2^2 \\pmod{5}$ since $5 \\equiv 1 \\pmod{4}$",
+    "mathContext": "$-1$ is a QR mod $p$ iff $p \\equiv 1 \\pmod 4$",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic residues",
+      "Fermat's theorem on sums of squares"
+    ]
+  },
+  {
+    "id": "ann-second-supp",
+    "proofId": "quadratic-reciprocity",
+    "anchor": {
+      "type": "declaration",
+      "name": "second_supplementary_law",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "Second Supplementary Law",
+    "content": "**Second Supplementary Law**:\n\n$$\\left(\\frac{2}{p}\\right) = (-1)^{(p^2-1)/8} = \\begin{cases} 1 & \\text{if } p \\equiv \\pm 1 \\pmod{8} \\\\ -1 & \\text{if } p \\equiv \\pm 3 \\pmod{8} \\end{cases}$$\n\nEquivalently: $2$ is a quadratic residue mod $p$ iff $p \\equiv 1$ or $7 \\pmod{8}$.\n\n**Example**: $2 \\equiv 9 = 3^2 \\pmod{7}$ since $7 \\equiv 7 \\pmod{8}$",
+    "mathContext": "$2$ is a QR mod $p$ iff $p \\equiv \\pm 1 \\pmod 8$",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic residues",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-euler",
+    "proofId": "quadratic-reciprocity",
+    "anchor": {
+      "type": "declaration",
+      "name": "euler_criterion",
+      "kind": "theorem"
+    },
+    "type": "lemma",
+    "title": "Euler's Criterion",
+    "content": "**Euler's Criterion** provides a computational formula for the Legendre symbol:\n\n$$\\left(\\frac{a}{p}\\right) \\equiv a^{(p-1)/2} \\pmod{p}$$\n\nThis follows from Fermat's Little Theorem: $a^{p-1} \\equiv 1 \\pmod{p}$.\n\nSince $a^{p-1} - 1 = (a^{(p-1)/2} - 1)(a^{(p-1)/2} + 1)$, we have $a^{(p-1)/2} \\equiv \\pm 1$, and the sign determines quadratic residuosity.",
+    "mathContext": "$(a/p) = a^{(p-1)/2} \\mod p$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fermat's little theorem",
+      "modular exponentiation"
+    ]
+  },
+  {
+    "id": "ann-multiplicative",
+    "proofId": "quadratic-reciprocity",
+    "anchor": {
+      "type": "declaration",
+      "name": "legendre_mul",
+      "kind": "theorem"
+    },
+    "type": "lemma",
+    "title": "Multiplicativity",
+    "content": "The Legendre symbol is **completely multiplicative**:\n\n$$\\left(\\frac{ab}{p}\\right) = \\left(\\frac{a}{p}\\right) \\cdot \\left(\\frac{b}{p}\\right)$$\n\nThis is crucial for computing Legendre symbols of composite numbers by factoring them.\n\n**Example**: $(6/7) = (2/7)(3/7) = 1 \\cdot (-1) = -1$",
+    "mathContext": "$(ab/p) = (a/p)(b/p)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "multiplicative functions",
+      "factorization"
+    ]
+  }
+]

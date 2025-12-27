@@ -1,0 +1,30 @@
+{
+  "id": "fundamental-arithmetic",
+  "title": "Fundamental Theorem of Arithmetic",
+  "slug": "fundamental-arithmetic",
+  "description": "Every integer > 1 is uniquely representable as a product of primes. The cornerstone of number theory.",
+  "meta": {
+    "author": "Euclid, Gauss (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic",
+    "date": "~300 BCE (Euclid), 1801 (Gauss)",
+    "status": "verified",
+    "tags": ["number-theory", "primes", "classic", "beginner"],
+    "proofRepoPath": "Proofs/FundamentalArithmetic.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "Nat.prod_primeFactorsList", "description": "Product of factors equals the number", "module": "Mathlib.Data.Nat.Factors"}
+    ],
+    "originalContributions": ["Existence and uniqueness proofs", "Pedagogical examples"],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 80
+  },
+  "overview": {
+    "historicalContext": "Known to Euclid, formally proved by Gauss in 1801. Primes are the 'atoms' of number theory.",
+    "problemStatement": "**Fundamental Theorem of Arithmetic**:\n\nEvery n > 1 has a unique prime factorization:\n$$n = p_1^{a_1} \\cdot p_2^{a_2} \\cdots p_k^{a_k}$$",
+    "proofStrategy": "Existence by strong induction. Uniqueness via Euclid's Lemma (if p|ab then p|a or p|b).",
+    "keyInsights": ["Primes are building blocks", "Euclid's Lemma is key to uniqueness", "ℤ is a UFD"]
+  },
+  "sections": [{"id": "header", "title": "Introduction", "startLine": 1, "endLine": 57, "summary": "Overview."}],
+  "conclusion": {"summary": "Both existence and uniqueness of prime factorization are verified."}
+}

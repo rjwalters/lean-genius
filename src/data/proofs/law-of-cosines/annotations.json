@@ -1,0 +1,123 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "law-of-cosines",
+    "range": {
+      "startLine": 1,
+      "endLine": 5
+    },
+    "type": "concept",
+    "title": "Generalizing Pythagoras",
+    "content": "The **Law of Cosines** generalizes the Pythagorean theorem to all triangles, not just right triangles:\n\n$$c^2 = a^2 + b^2 - 2ab\\cos(C)$$\n\nWhen $C = 90°$, we have $\\cos(90°) = 0$, so:\n$$c^2 = a^2 + b^2$$\n\nThis is precisely the Pythagorean theorem! The Law of Cosines adds a correction term $-2ab\\cos(C)$ that accounts for non-right angles.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Pythagorean theorem",
+      "trigonometry",
+      "triangles"
+    ]
+  },
+  {
+    "id": "ann-inner-product",
+    "proofId": "law-of-cosines",
+    "range": {
+      "startLine": 67,
+      "endLine": 86
+    },
+    "type": "theorem",
+    "title": "The Inner Product Form",
+    "content": "**Law of Cosines** (Inner Product Form):\n\nFor any vectors $v$ and $w$ in an inner product space:\n\n$$\\|v - w\\|^2 = \\|v\\|^2 + \\|w\\|^2 - 2\\langle v, w \\rangle$$\n\nThis is the fundamental algebraic identity. The inner product $\\langle v, w \\rangle$ equals $\\|v\\|\\|w\\|\\cos(\\theta)$ where $\\theta$ is the angle between the vectors.\n\nThe proof uses linearity and symmetry of the inner product.",
+    "mathContext": "$\\|v-w\\|^2 = \\|v\\|^2 + \\|w\\|^2 - 2\\langle v, w \\rangle$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "inner product",
+      "norm",
+      "vector spaces"
+    ]
+  },
+  {
+    "id": "ann-perpendicular",
+    "proofId": "law-of-cosines",
+    "range": {
+      "startLine": 112,
+      "endLine": 121
+    },
+    "type": "theorem",
+    "title": "The Pythagorean Special Case",
+    "content": "**Pythagorean Theorem from Law of Cosines**:\n\nWhen vectors $v$ and $w$ are **perpendicular** (orthogonal), their inner product is zero:\n$$\\langle v, w \\rangle = 0$$\n\nSubstituting into the Law of Cosines:\n$$\\|v - w\\|^2 = \\|v\\|^2 + \\|w\\|^2 - 2 \\cdot 0 = \\|v\\|^2 + \\|w\\|^2$$\n\nThis is exactly the Pythagorean theorem! The '- 2ab cos(C)' term vanishes when C = 90°.",
+    "mathContext": "$v \\perp w \\Rightarrow \\|v-w\\|^2 = \\|v\\|^2 + \\|w\\|^2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "perpendicularity",
+      "orthogonality",
+      "Pythagorean theorem"
+    ]
+  },
+  {
+    "id": "ann-polarization",
+    "proofId": "law-of-cosines",
+    "range": {
+      "startLine": 216,
+      "endLine": 225
+    },
+    "type": "theorem",
+    "title": "The Polarization Identity",
+    "content": "The **Polarization Identity** recovers the inner product from norms alone:\n\n$$\\langle v, w \\rangle = \\frac{\\|v + w\\|^2 - \\|v\\|^2 - \\|w\\|^2}{2}$$\n\nOr equivalently:\n$$\\langle v, w \\rangle = \\frac{\\|v\\|^2 + \\|w\\|^2 - \\|v - w\\|^2}{2}$$\n\nThis is remarkable: you can compute the inner product (which captures angle information) using only lengths!",
+    "mathContext": "$\\langle v, w \\rangle = \\frac{1}{2}(\\|v+w\\|^2 - \\|v\\|^2 - \\|w\\|^2)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "inner product",
+      "norm",
+      "angle measurement"
+    ]
+  },
+  {
+    "id": "ann-parallelogram",
+    "proofId": "law-of-cosines",
+    "range": {
+      "startLine": 235,
+      "endLine": 245
+    },
+    "type": "theorem",
+    "title": "The Parallelogram Law",
+    "content": "The **Parallelogram Law** follows directly from adding the two forms of the Law of Cosines:\n\n$$\\|v + w\\|^2 + \\|v - w\\|^2 = 2(\\|v\\|^2 + \\|w\\|^2)$$\n\n**Geometric meaning**: In a parallelogram, the sum of the squares of the diagonals equals the sum of the squares of all four sides.\n\nThis identity characterizes inner product spaces among normed spaces.",
+    "mathContext": "$\\|v+w\\|^2 + \\|v-w\\|^2 = 2\\|v\\|^2 + 2\\|w\\|^2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "parallelogram",
+      "diagonals",
+      "inner product characterization"
+    ]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "law-of-cosines",
+    "range": {
+      "startLine": 179,
+      "endLine": 185
+    },
+    "type": "example",
+    "title": "Worked Examples",
+    "content": "**60° angle (equilateral triangle)**:\n- $a = b = 1$, $\\cos(60°) = 1/2$\n- $c^2 = 1 + 1 - 2(1)(1)(1/2) = 1$\n- So $c = 1$ (equilateral!)\n\n**90° angle (Pythagorean)**:\n- $a = 3$, $b = 4$, $\\cos(90°) = 0$\n- $c^2 = 9 + 16 - 0 = 25$\n- So $c = 5$ (the 3-4-5 triangle)\n\n**120° angle (obtuse)**:\n- $a = b = 1$, $\\cos(120°) = -1/2$\n- $c^2 = 1 + 1 - 2(1)(1)(-1/2) = 3$\n- So $c = \\sqrt{3}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "special triangles",
+      "cosine values"
+    ]
+  },
+  {
+    "id": "ann-historical",
+    "proofId": "law-of-cosines",
+    "range": {
+      "startLine": 7,
+      "endLine": 46
+    },
+    "type": "insight",
+    "title": "From Euclid to al-Kashi",
+    "content": "The Law of Cosines has ancient roots:\n\n**Euclid (300 BCE)**: Elements Book II, Propositions 12-13 contain geometric versions:\n- Prop 12: For obtuse triangles, $c^2 = a^2 + b^2 + 2a \\cdot h$\n- Prop 13: For acute triangles, $c^2 = a^2 + b^2 - 2a \\cdot h$\n\n**al-Kashi (1420s)**: Persian mathematician who first stated the modern trigonometric form, sometimes called 'al-Kashi's theorem' in his honor.\n\nThe theorem is fundamental to surveying, navigation, and physics.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "history of mathematics",
+      "Euclid's Elements"
+    ]
+  }
+]

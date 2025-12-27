@@ -1,0 +1,35 @@
+{
+  "id": "euler-totient",
+  "title": "Euler's Generalization of Fermat's Little Theorem",
+  "slug": "euler-totient",
+  "description": "For coprime integers a and n, a^φ(n) ≡ 1 (mod n), where φ(n) is Euler's totient function. This generalizes Fermat's Little Theorem.",
+  "meta": {
+    "author": "Euler (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_theorem",
+    "date": "1763",
+    "status": "verified",
+    "tags": ["number-theory", "modular-arithmetic", "primes", "classic", "intermediate"],
+    "proofRepoPath": "Proofs/EulerTotient.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "ZMod.pow_totient", "description": "Main Euler's theorem for units in ZMod", "module": "Mathlib.Data.ZMod.Basic"},
+      {"theorem": "Nat.totient_prime", "description": "φ(p) = p - 1 for prime p", "module": "Mathlib.Data.Nat.Totient"}
+    ],
+    "originalContributions": ["Derivation of Fermat's Little Theorem as corollary", "Multiple formulations for different use cases"],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 10
+  },
+  "overview": {
+    "historicalContext": "Euler published this generalization in 1763. It extends Fermat's Little Theorem (1640) from prime moduli to arbitrary positive integers. The theorem is fundamental to RSA cryptography.",
+    "problemStatement": "**Euler's Theorem**:\n\nFor n > 0 and gcd(a, n) = 1:\n$$a^{\\varphi(n)} \\equiv 1 \\pmod{n}$$\n\nwhere φ(n) counts integers 1 ≤ k ≤ n that are coprime to n.",
+    "proofStrategy": "The multiplicative group (ℤ/nℤ)* has order φ(n), so by Lagrange's theorem any element raised to the group order equals the identity.",
+    "keyInsights": ["Fermat's Little Theorem is the special case when n is prime", "φ(p) = p - 1 for prime p", "Foundation for RSA cryptography"]
+  },
+  "sections": [
+    {"id": "header", "title": "Introduction", "startLine": 1, "endLine": 40, "summary": "Overview of Euler's theorem."},
+    {"id": "main-theorem", "title": "Main Theorem", "startLine": 42, "endLine": 58, "summary": "Euler's theorem statement and proof."},
+    {"id": "fermat", "title": "Fermat's Little Theorem", "startLine": 60, "endLine": 80, "summary": "Derivation as a corollary."}
+  ],
+  "conclusion": {"summary": "Euler's theorem is verified using group theory, with Fermat's Little Theorem as a natural corollary."}
+}
