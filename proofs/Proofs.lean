@@ -25,6 +25,7 @@ import Proofs.CramersRule
 import Proofs.DeMoivre
 import Proofs.DenumerabilityRationals
 import Proofs.Derangements
+import Proofs.DesarguesTheorem
 import Proofs.DivisibilityBy3
 import Proofs.ErdosSzekeres
 import Proofs.EulerIdentity
@@ -41,6 +42,7 @@ import Proofs.FundamentalTheoremCalculus
 import Proofs.GCDAlgorithm
 import Proofs.GeometricSeries
 import Proofs.GodelIncompleteness
+import Proofs.GreensTheorem
 import Proofs.HaltingProblem
 import Proofs.HarmonicDivergence
 import Proofs.HeronsFormula
