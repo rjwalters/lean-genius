@@ -3,6 +3,7 @@
 
 import Proofs.AbelRuffini
 import Proofs.AMGMInequality
+import Proofs.AreaOfCircle
 import Proofs.ArithmeticSeries
 import Proofs.BezoutIdentity
 import Proofs.BinomialTheorem
@@ -37,6 +38,7 @@ import Proofs.HurwitzTheorem
 import Proofs.InclusionExclusion
 import Proofs.InfinitudePrimes
 import Proofs.IntermediateValueTheorem
+import Proofs.IsoscelesTriangle
 import Proofs.KnightsTourOblique
 import Proofs.LagrangeFourSquares
 import Proofs.LagrangeTheorem
@@ -60,4 +62,5 @@ import Proofs.TaylorTheorem
 import Proofs.ThreePlaceIdentity
 import Proofs.TriangleAngleSum
 import Proofs.TriangleInequality
+import Proofs.TriangularNumberReciprocals
 import Proofs.WilsonsTheorem
