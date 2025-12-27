@@ -62,6 +62,7 @@ import { combinationsFormulaData } from './combinations-formula'
 import { factorRemainderTheoremData } from './factor-remainder-theorem'
 import { leibnizPiData } from './leibniz-pi'
 import { perfectNumbersData } from './perfect-numbers'
+import { angleTrisectionData } from './angle-trisection'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -129,6 +130,7 @@ export const proofs: Record<string, ProofData> = {
   'factor-remainder-theorem': factorRemainderTheoremData,
   'leibniz-pi': leibnizPiData,
   'perfect-numbers': perfectNumbersData,
+  'angle-trisection': angleTrisectionData,
 }
 
 export function getProof(slug: string): ProofData | undefined {

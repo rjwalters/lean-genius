@@ -1,0 +1,119 @@
+{
+  "id": "angle-trisection",
+  "title": "Impossibility of Trisecting an Angle",
+  "slug": "angle-trisection",
+  "description": "The classical impossibility proof that an arbitrary angle cannot be trisected using only compass and straightedge, along with the impossibility of doubling the cube. These problems puzzled mathematicians for over 2000 years until Wantzel's 1837 proof.",
+  "meta": {
+    "author": "Pierre Wantzel (1837)",
+    "date": "1837",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "galois-theory",
+      "field-theory",
+      "classic",
+      "impossibility",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/AngleTrisection.lean",
+    "badge": "mathlib",
+    "sorries": 3,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.cos",
+        "description": "Cosine function on real numbers",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "cos_three_mul",
+        "description": "Triple angle formula: cos(3θ) = 4cos³(θ) - 3cos(θ)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Polynomial",
+        "description": "Polynomial ring structure",
+        "module": "Mathlib.Algebra.Polynomial.Basic"
+      },
+      {
+        "theorem": "IntermediateField",
+        "description": "Field extensions",
+        "module": "Mathlib.FieldTheory.IntermediateField.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Educational demonstration of the algebraic characterization of constructible numbers",
+      "Connection between compass-and-straightedge constructions and field extensions",
+      "Proof that 3 does not divide any power of 2",
+      "Application to doubling the cube and squaring the circle"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 8
+  },
+  "overview": {
+    "historicalContext": "The problem of trisecting an arbitrary angle using only compass and straightedge is one of the three famous classical Greek problems, along with doubling the cube and squaring the circle. For over 2000 years, mathematicians attempted to solve these problems without success.\n\nThe impossibility was not proven until the 19th century. Pierre Wantzel published his proof in 1837, showing that angle trisection and doubling the cube are impossible. His key insight was to translate the geometric problem into algebra: compass and straightedge constructions correspond to field extensions of degree 2, so constructible numbers have degree 2^n over the rationals.\n\nThe squaring of the circle was proven impossible by Lindemann in 1882, when he showed that π is transcendental (not the root of any polynomial with rational coefficients).",
+    "problemStatement": "Given an arbitrary angle θ, can it be divided into three equal parts using only a compass and unmarked straightedge?\n\nThe answer is NO for a general angle. In particular, a 60° angle cannot be trisected.\n\nTo trisect 60°, we would need to construct a 20° angle, which is equivalent to constructing the number cos(20°). Using the triple angle formula:\n$$\\cos(60°) = 4\\cos^3(20°) - 3\\cos(20°)$$\n$$\\frac{1}{2} = 4x^3 - 3x$$\n$$8x^3 - 6x - 1 = 0$$\n\nSo cos(20°) satisfies an irreducible cubic polynomial over ℚ.",
+    "proofStrategy": "The proof proceeds in several stages:\n\n1. **Algebraic Translation**: Show that trisecting 60° requires constructing cos(20°).\n\n2. **Find the Minimal Polynomial**: Use the triple angle formula to derive that cos(20°) satisfies 8x³ - 6x - 1 = 0.\n\n3. **Prove Irreducibility**: By the rational root theorem, check that ±1, ±1/2, ±1/4, ±1/8 are not roots. For cubics, no rational roots means irreducible over ℚ.\n\n4. **Degree Argument**: Since the polynomial is irreducible of degree 3, we have [ℚ(cos 20°) : ℚ] = 3.\n\n5. **Constructibility Criterion**: Wantzel's theorem: constructible numbers have degree 2^n over ℚ.\n\n6. **Contradiction**: 3 is not a power of 2, so cos(20°) is not constructible.",
+    "keyInsights": [
+      "Compass and straightedge constructions correspond to quadratic field extensions - each new point requires solving at most a quadratic equation",
+      "Constructible numbers form a field closed under square roots of non-negative elements",
+      "The degree [ℚ(α) : ℚ] for a constructible number α must divide 2^n for some n",
+      "The triple angle formula cos(3θ) = 4cos³(θ) - 3cos(θ) is the key algebraic tool",
+      "The same technique proves doubling the cube is impossible: ∛2 satisfies x³ - 2 = 0, giving degree 3",
+      "Some angles CAN be trisected (like 90° → 30°, since cos(30°) = √3/2 is constructible)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup and the Minimal Polynomial",
+      "startLine": 1,
+      "endLine": 80,
+      "summary": "Introduction, imports, and derivation of the polynomial 8x³ - 6x - 1 that cos(20°) satisfies."
+    },
+    {
+      "id": "triple-angle",
+      "title": "The Triple Angle Formula",
+      "startLine": 82,
+      "endLine": 110,
+      "summary": "Proof of the identity cos(3θ) = 4cos³(θ) - 3cos(θ) and its application to cos(20°)."
+    },
+    {
+      "id": "irreducibility",
+      "title": "Irreducibility over ℚ",
+      "startLine": 112,
+      "endLine": 140,
+      "summary": "Verification that the cubic polynomial has no rational roots, hence is irreducible."
+    },
+    {
+      "id": "constructible",
+      "title": "Constructible Numbers",
+      "startLine": 142,
+      "endLine": 195,
+      "summary": "The algebraic characterization: constructible numbers have degree 2^n over ℚ."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Impossibility Theorem",
+      "startLine": 197,
+      "endLine": 235,
+      "summary": "The main result: 60° cannot be trisected because cos(20°) has degree 3, not a power of 2."
+    },
+    {
+      "id": "corollaries",
+      "title": "Other Classical Impossibilities",
+      "startLine": 237,
+      "endLine": 290,
+      "summary": "Application to doubling the cube (∛2) and squaring the circle (√π)."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization demonstrates one of the great achievements of 19th century mathematics: the translation of geometric construction problems into field theory. Wantzel's insight that constructibility corresponds to degree 2^n extensions over ℚ definitively settled problems that had resisted solution for two millennia.\n\nThe proof reveals why degree 3 polynomials create the obstruction: the equation 8x³ - 6x - 1 = 0 for cos(20°) is irreducible over ℚ, giving degree 3, which is not a power of 2.",
+    "implications": "The algebraic characterization of constructibility has far-reaching consequences:\n\n1. **Wantzel's Complete Characterization**: An angle θ can be trisected iff cos(θ) is a root of a polynomial whose degree is a power of 2.\n\n2. **Regular Polygons**: A regular n-gon is constructible iff n = 2^k · p₁ · p₂ · ... · pₘ where the pᵢ are distinct Fermat primes (3, 5, 17, 257, 65537).\n\n3. **Connection to Galois Theory**: The same ideas connect to Abel-Ruffini's theorem on the unsolvability of the quintic.\n\n4. **Alternative Constructions**: While compass-and-straightedge fails, angle trisection IS possible with:\n   - A marked ruler (neusis construction)\n   - Origami (paper folding)\n   - Certain curves (trisectrix, conchoid)\n\n5. **Modern Mathematics**: This problem launched the systematic study of field extensions and laid groundwork for abstract algebra.",
+    "openQuestions": [
+      "What is the minimal polynomial degree that guarantees non-constructibility for a given problem?",
+      "Can we characterize which algebraic numbers are constructible in terms of their Galois groups?",
+      "What is the computational complexity of determining constructibility?",
+      "Are there natural generalizations to constructions with additional tools (e.g., compass-only, straightedge-only)?"
+    ]
+  }
+}
