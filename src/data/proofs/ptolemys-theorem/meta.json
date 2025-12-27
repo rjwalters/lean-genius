@@ -1,0 +1,30 @@
+{
+  "id": "ptolemys-theorem",
+  "title": "Ptolemy's Theorem",
+  "slug": "ptolemys-theorem",
+  "description": "For a cyclic quadrilateral, the product of diagonals equals the sum of products of opposite sides: AC·BD = AB·CD + BC·DA",
+  "meta": {
+    "author": "Ptolemy of Alexandria (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Ptolemy%27s_theorem",
+    "date": "c. 150 AD",
+    "status": "verified",
+    "tags": ["geometry", "circle", "classic", "intermediate"],
+    "proofRepoPath": "Proofs/PtolemysTheorem.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "mul_dist_add_mul_dist_eq_mul_dist_of_cospherical", "description": "Ptolemy's theorem for cospherical points", "module": "Mathlib.Geometry.Euclidean.Sphere.Ptolemy"}
+    ],
+    "originalContributions": ["Multiple formulations", "Numerical examples", "Historical context"],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 95
+  },
+  "overview": {
+    "historicalContext": "Ptolemy proved this in the Almagest (c. 150 AD) to compute chord tables for astronomy. It was fundamental to trigonometry before modern notation.",
+    "problemStatement": "**Ptolemy's Theorem**:\n\nFor a cyclic quadrilateral ABCD (inscribed in a circle):\n\n$$|AC| \\cdot |BD| = |AB| \\cdot |CD| + |BC| \\cdot |DA|$$\n\nThe product of the diagonals equals the sum of the products of opposite sides.",
+    "proofStrategy": "Use Mathlib's cospherical point framework with angle conditions at the diagonal intersection.",
+    "keyInsights": ["Generalizes Pythagorean theorem (rectangle case)", "Used historically for trigonometric identities", "Characterizes cyclic quadrilaterals"]
+  },
+  "sections": [{"id": "header", "title": "Introduction", "startLine": 1, "endLine": 46, "summary": "Overview and historical context."}],
+  "conclusion": {"summary": "Ptolemy's theorem is verified using Mathlib's Euclidean geometry library for cospherical points."}
+}
