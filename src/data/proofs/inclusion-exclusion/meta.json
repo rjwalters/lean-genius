@@ -1,0 +1,100 @@
+{
+  "id": "inclusion-exclusion",
+  "title": "Principle of Inclusion/Exclusion",
+  "slug": "inclusion-exclusion",
+  "description": "The fundamental counting principle for unions of finite sets: |A ∪ B| = |A| + |B| - |A ∩ B|, and its generalization to three or more sets.",
+  "meta": {
+    "author": "Abraham de Moivre (1718), formalized via Mathlib",
+    "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Finset/Card.html",
+    "date": "1718",
+    "status": "verified",
+    "proofRepoPath": "Proofs/InclusionExclusion.lean",
+    "tags": [
+      "combinatorics",
+      "set-theory",
+      "counting",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_union_add_card_inter",
+        "description": "|A ∪ B| + |A ∩ B| = |A| + |B|",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.card_union_of_disjoint",
+        "description": "For disjoint sets, |A ∪ B| = |A| + |B|",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "Classical two-set form: |A ∪ B| = |A| + |B| - |A ∩ B|",
+      "Three-set generalization with all pairwise and triple intersections",
+      "Upper and lower bounds for union cardinality",
+      "Symmetric difference cardinality formula",
+      "Venn diagram intuition explained"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 96
+  },
+  "overview": {
+    "historicalContext": "The inclusion-exclusion principle was first formulated by Abraham de Moivre in 1718 for computing probabilities. It was later generalized by Daniel da Silva (1854) and Joseph Sylvester. The principle is fundamental in combinatorics, probability theory, and number theory (e.g., Euler's totient function uses inclusion-exclusion).\n\nThe basic idea addresses a common counting problem: when we add the sizes of two sets, elements in their intersection get counted twice. The principle systematically corrects for this overcounting.",
+    "problemStatement": "**Two-Set Formula**: For finite sets A and B:\n\n$$|A \\cup B| = |A| + |B| - |A \\cap B|$$\n\n**Three-Set Formula**: For finite sets A, B, and C:\n\n$$|A \\cup B \\cup C| = |A| + |B| + |C| - |A \\cap B| - |A \\cap C| - |B \\cap C| + |A \\cap B \\cap C|$$\n\nThis is Wiedijk's 100 Theorems #96.",
+    "proofStrategy": "**The Venn Diagram Intuition:**\n\nWhen counting |A ∪ B| by adding |A| and |B|:\n- Elements only in A are counted once (correct)\n- Elements only in B are counted once (correct)\n- Elements in A ∩ B are counted twice (overcounted!)\n\nSo we subtract |A ∩ B| to correct. For three sets, we:\n1. Add individual sets (overcount pairwise intersections)\n2. Subtract pairwise intersections (oversubtract triple intersection)\n3. Add back the triple intersection\n\nThe formalization uses Mathlib's `card_union_add_card_inter` identity and derives the classical subtraction form.",
+    "keyInsights": [
+      "The additive form |A ∪ B| + |A ∩ B| = |A| + |B| is often easier to work with",
+      "Each element is counted exactly once in the alternating sum",
+      "For n sets, alternating sums involve all possible intersections",
+      "The principle extends to probability: P(A ∪ B) = P(A) + P(B) - P(A ∩ B)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "two-set-case",
+      "title": "The Two-Set Case",
+      "startLine": 56,
+      "endLine": 83,
+      "summary": "The fundamental inclusion-exclusion identity for two sets."
+    },
+    {
+      "id": "three-set-case",
+      "title": "The Three-Set Case",
+      "startLine": 85,
+      "endLine": 124,
+      "summary": "Generalization to three sets with all pairwise and triple intersections."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases and Applications",
+      "startLine": 126,
+      "endLine": 150,
+      "summary": "Disjoint unions, upper/lower bounds for cardinality."
+    },
+    {
+      "id": "symmetric-difference",
+      "title": "Symmetric Difference",
+      "startLine": 152,
+      "endLine": 193,
+      "summary": "Cardinality of the symmetric difference using inclusion-exclusion."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 195,
+      "endLine": 216,
+      "summary": "Computational verification on specific finite sets."
+    }
+  ],
+  "conclusion": {
+    "summary": "The inclusion-exclusion principle provides a systematic way to count elements in unions of sets by correcting for overcounting. The formalization uses Mathlib's additive identity and derives the classical subtraction form through careful handling of natural number arithmetic.",
+    "implications": "**Theoretical Significance:**\n\n1. **Counting Theory**: Foundation for counting problems involving overlapping sets\n\n2. **Probability**: Extends directly to probability measures on finite sample spaces\n\n3. **Number Theory**: Euler's totient function φ(n) uses inclusion-exclusion to count integers coprime to n\n\n**Applications:**\n\n- Counting permutations with forbidden positions (derangements)\n- Computing probabilities of compound events\n- Combinatorial identities like Stirling numbers",
+    "openQuestions": [
+      "What is the general n-set formula with formal induction?",
+      "How does this connect to Möbius inversion on posets?",
+      "What are efficient algorithms for computing inclusion-exclusion sums?"
+    ]
+  }
+}
