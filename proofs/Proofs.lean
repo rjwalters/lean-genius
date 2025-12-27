@@ -8,9 +8,9 @@ import Proofs.AreaOfCircle
 import Proofs.ArithmeticSeries
 import Proofs.BallotProblem
 import Proofs.BaselProblem
+import Proofs.BertrandsPostulate
 import Proofs.BezoutIdentity
 import Proofs.BinomialTheorem
-import Proofs.BertrandsPostulate
 import Proofs.BirthdayProblem
 import Proofs.BorsukUlam
 import Proofs.BrouwerFixedPoint
@@ -19,20 +19,23 @@ import Proofs.CantorsTheorem
 import Proofs.CauchySchwarz
 import Proofs.CayleyHamilton
 import Proofs.CentralLimitTheorem
+import Proofs.CevasTheorem
 import Proofs.CombinationsFormula
 import Proofs.CramersRule
 import Proofs.DeMoivre
 import Proofs.DenumerabilityRationals
 import Proofs.Derangements
 import Proofs.DivisibilityBy3
+import Proofs.ErdosSzekeres
 import Proofs.EulerIdentity
 import Proofs.EulerPolyhedralFormula
 import Proofs.EulerTotient
 import Proofs.FactorRemainderTheorem
 import Proofs.FermatTwoSquares
 import Proofs.FermatsLastTheorem
-import Proofs.FriendshipTheorem
+import Proofs.FeuerbachsTheorem
 import Proofs.FourColorTheorem
+import Proofs.FriendshipTheorem
 import Proofs.FundamentalArithmetic
 import Proofs.FundamentalTheoremAlgebra
 import Proofs.FundamentalTheoremCalculus
@@ -47,7 +50,7 @@ import Proofs.InclusionExclusion
 import Proofs.InfinitudePrimes
 import Proofs.IntermediateValueTheorem
 import Proofs.IsoscelesTriangle
--- import Proofs.KnightsTourOblique  -- Excluded: build separately with `lake build ProofsHeavy`
+import Proofs.KnightsTourOblique
 import Proofs.Konigsberg
 import Proofs.LHopital
 import Proofs.LagrangeFourSquares
@@ -60,6 +63,7 @@ import Proofs.MeanValueTheorem
 import Proofs.NavierStokes
 import Proofs.OnePlusOne
 import Proofs.PerfectNumbers
+import Proofs.PlatonicSolids
 import Proofs.PrimeReciprocalDivergence
 import Proofs.ProductOfSegmentsOfChords
 import Proofs.PtolemysTheorem
@@ -67,6 +71,7 @@ import Proofs.PythagoreanTheorem
 import Proofs.PythagoreanTriples
 import Proofs.QuadraticReciprocity
 import Proofs.RamanujanSumFallacy
+import Proofs.RamseysTheorem
 import Proofs.RandomizedMaxCut
 import Proofs.SchroederBernstein
 import Proofs.Sqrt2
