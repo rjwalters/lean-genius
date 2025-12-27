@@ -132,7 +132,7 @@
   ],
   "conclusion": {
     "summary": "The Euclidean algorithm is now fully verified using Mathlib's GCD infrastructure. We prove correctness (the result divides both inputs), maximality (it's the greatest such divisor), and provide the extended algorithm via Bezout's identity.",
-    "implications": "The Euclidean algorithm has profound implications across mathematics and computer science:\n\n1. **Cryptography**: Essential for RSA key generation and modular arithmetic operations\n2. **Computer Algebra**: Foundation for polynomial GCD and simplification algorithms\n3. **Continued Fractions**: The algorithm produces continued fraction expansions\n4. **Linear Diophantine Equations**: Bezout's identity solves ax + by = c when c is divisible by gcd(a,b)\n5. **Euclidean Domains**: The algorithm generalizes to any ring with a Euclidean function",
+    "implications": "The Euclidean algorithm has profound implications across mathematics and computer science:\n\n**1. Cryptography**\nEssential for RSA key generation and modular arithmetic operations.\n\n**2. Computer Algebra**\nFoundation for polynomial GCD and simplification algorithms.\n\n**3. Continued Fractions**\nThe algorithm produces continued fraction expansions.\n\n**4. Linear Diophantine Equations**\nBezout's identity solves ax + by = c when c is divisible by gcd(a,b).\n\n**5. Euclidean Domains**\nThe algorithm generalizes to any ring with a Euclidean function.",
     "openQuestions": [
       "What is the average-case complexity of the Euclidean algorithm?",
       "How do binary GCD algorithms compare in practice?",

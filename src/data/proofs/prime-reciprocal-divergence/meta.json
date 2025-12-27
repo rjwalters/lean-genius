@@ -81,7 +81,7 @@
   ],
   "conclusion": {
     "summary": "The divergence of the prime reciprocal series reveals that primes, while becoming increasingly rare among integers, remain 'dense enough' for their reciprocals to form a divergent sum. This connects to deep results in analytic number theory.",
-    "implications": "**Connections:**\n\n1. **Mertens' Theorems**: Precise asymptotics for sums over primes\n2. **Riemann Zeta Function**: The prime zeta function P(s) = sum_p p^(-s)\n3. **Prime Number Theorem**: Primes thin out as n/ln(n)\n4. **Probabilistic Number Theory**: Random models for prime distribution",
+    "implications": "**Connections:**\n\n**1. Mertens' Theorems**\nPrecise asymptotics for sums over primes.\n\n**2. Riemann Zeta Function**\nThe prime zeta function P(s) = sum_p p^(-s).\n\n**3. Prime Number Theorem**\nPrimes thin out as n/ln(n).\n\n**4. Probabilistic Number Theory**\nRandom models for prime distribution.",
     "openQuestions": [
       "Precise error terms in the asymptotic sum_{p<=n} 1/p ~ ln(ln(n)) + M",
       "Connections to the Riemann Hypothesis via the prime zeta function"

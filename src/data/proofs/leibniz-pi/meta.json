@@ -83,7 +83,7 @@
   ],
   "conclusion": {
     "summary": "The Leibniz series is one of the most famous formulas in mathematics, demonstrating that pi can be expressed through the simple pattern of alternating fractions with odd denominators. Though it converges too slowly for practical computation, it reveals the deep connection between pi and the arctangent function.",
-    "implications": "**Theoretical Significance:**\n\n1. **Historical importance**: One of the first infinite series for pi.\n\n2. **Connection to arctangent**: Shows the relationship between pi and inverse trigonometric functions.\n\n3. **Conditional convergence**: A beautiful example where alternating signs create sufficient cancellation.\n\n**Faster Alternatives:**\n\n- Machin's formula (1706): pi/4 = 4*arctan(1/5) - arctan(1/239)\n- Chudnovsky algorithm: Converges at 14+ digits per term",
+    "implications": "**Theoretical Significance:**\n\n**1. Historical importance**\nOne of the first infinite series for pi.\n\n**2. Connection to arctangent**\nShows the relationship between pi and inverse trigonometric functions.\n\n**3. Conditional convergence**\nA beautiful example where alternating signs create sufficient cancellation.\n\n**Faster Alternatives:**\n\n- Machin's formula (1706): pi/4 = 4*arctan(1/5) - arctan(1/239)\n- Chudnovsky algorithm: Converges at 14+ digits per term",
     "openQuestions": [
       "What is the optimal rate of convergence for arctangent-based series?",
       "How do generalized Leibniz-type formulas extend to other constants?"

@@ -92,7 +92,7 @@
   ],
   "conclusion": {
     "summary": "The AM-GM inequality is one of the most useful inequalities in mathematics, with applications ranging from optimization problems to information theory. The formalization demonstrates both the elementary algebraic proof for two variables and the general weighted form from Mathlib.",
-    "implications": "**Theoretical Significance:**\n\n1. **Optimization**: When maximizing a product with fixed sum (or minimizing sum with fixed product), the optimum occurs when all variables are equal.\n\n2. **Information Theory**: The AM-GM inequality underlies the relationship between arithmetic and geometric means in entropy calculations.\n\n3. **Competition Mathematics**: A fundamental tool for solving olympiad problems involving inequalities.\n\n**Practical Applications:**\n\n- Resource allocation problems\n- Geometric optimization\n- Proving other inequalities (Cauchy-Schwarz, etc.)",
+    "implications": "**Theoretical Significance:**\n\n**1. Optimization**\nWhen maximizing a product with fixed sum (or minimizing sum with fixed product), the optimum occurs when all variables are equal.\n\n**2. Information Theory**\nThe AM-GM inequality underlies the relationship between arithmetic and geometric means in entropy calculations.\n\n**3. Competition Mathematics**\nA fundamental tool for solving olympiad problems involving inequalities.\n\n**Practical Applications:**\n\n- Resource allocation problems\n- Geometric optimization\n- Proving other inequalities (Cauchy-Schwarz, etc.)",
     "openQuestions": [
       "How does AM-GM generalize to operator means in matrix analysis?",
       "What are the connections to convexity and Jensen's inequality?",

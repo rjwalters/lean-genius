@@ -90,7 +90,7 @@
   ],
   "conclusion": {
     "summary": "The inclusion-exclusion principle provides a systematic way to count elements in unions of sets by correcting for overcounting. The formalization uses Mathlib's additive identity and derives the classical subtraction form through careful handling of natural number arithmetic.",
-    "implications": "**Theoretical Significance:**\n\n1. **Counting Theory**: Foundation for counting problems involving overlapping sets\n\n2. **Probability**: Extends directly to probability measures on finite sample spaces\n\n3. **Number Theory**: Euler's totient function φ(n) uses inclusion-exclusion to count integers coprime to n\n\n**Applications:**\n\n- Counting permutations with forbidden positions (derangements)\n- Computing probabilities of compound events\n- Combinatorial identities like Stirling numbers",
+    "implications": "**Theoretical Significance:**\n\n**1. Counting Theory**\nFoundation for counting problems involving overlapping sets.\n\n**2. Probability**\nExtends directly to probability measures on finite sample spaces.\n\n**3. Number Theory**\nEuler's totient function φ(n) uses inclusion-exclusion to count integers coprime to n.\n\n**Applications:**\n\n- Counting permutations with forbidden positions (derangements)\n- Computing probabilities of compound events\n- Combinatorial identities like Stirling numbers",
     "openQuestions": [
       "What is the general n-set formula with formal induction?",
       "How does this connect to Möbius inversion on posets?",

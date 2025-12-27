@@ -92,7 +92,7 @@
   ],
   "conclusion": {
     "summary": "The Sylow theorems are indispensable for understanding finite group structure. They combine existence, uniqueness up to conjugacy, and counting constraints into a powerful toolkit for analyzing groups.",
-    "implications": "**Applications:**\n\n1. **Groups of order pq**: Sylow shows n_q = 1 when q > p\n2. **Groups of order p^2**: Must be abelian\n3. **Simple group classification**: Rules out many possible orders\n4. **Burnside's theorem**: Groups of order p^a * q^b are solvable",
+    "implications": "**Applications:**\n\n**1. Groups of order pq**\nSylow shows n_q = 1 when q > p.\n\n**2. Groups of order p^2**\nMust be abelian.\n\n**3. Simple group classification**\nRules out many possible orders.\n\n**4. Burnside's theorem**\nGroups of order p^a * q^b are solvable.",
     "openQuestions": [
       "Algorithmic computation of Sylow subgroups",
       "Generalizations to profinite and infinite groups"

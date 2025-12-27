@@ -102,7 +102,7 @@
   ],
   "conclusion": {
     "summary": "The Birthday Problem is formalized using Mathlib's combinatorics. We prove the probability formula and establish boundary cases, with the 23-person threshold stated as an axiom due to computational constraints on large integer arithmetic.",
-    "implications": "The Birthday Problem has practical implications beyond probability theory:\n\n1. **Cryptography**: Birthday attacks can break hash functions in O(sqrt(n)) rather than O(n) time\n\n2. **Database systems**: Hash collision probabilities follow the same mathematics\n\n3. **Statistical sampling**: Understanding coincidences in random samples\n\n4. **Teaching probability**: A perfect example of how intuition can mislead",
+    "implications": "The Birthday Problem has practical implications beyond probability theory:\n\n**1. Cryptography**\nBirthday attacks can break hash functions in O(sqrt(n)) rather than O(n) time.\n\n**2. Database systems**\nHash collision probabilities follow the same mathematics.\n\n**3. Statistical sampling**\nUnderstanding coincidences in random samples.\n\n**4. Teaching probability**\nA perfect example of how intuition can mislead.",
     "openQuestions": [
       "What is the expected number of shared pairs in a group of n people?",
       "How does the problem change with non-uniform birthday distributions?",

@@ -92,7 +92,7 @@
   ],
   "conclusion": {
     "summary": "Stirling's formula provides a remarkably accurate approximation for factorials, with relative error decreasing as 1/n. The formula is essential in probability, statistical mechanics, and combinatorics.",
-    "implications": "**Applications:**\n\n1. **Binomial coefficients**: C(n,k) approximation\n2. **Entropy**: log(n!) ~ n*log(n) - n\n3. **Central Limit Theorem**: Via characteristic functions\n4. **Statistical mechanics**: Boltzmann entropy calculations",
+    "implications": "**Applications:**\n\n**1. Binomial coefficients**\nC(n,k) approximation.\n\n**2. Entropy**\nlog(n!) ~ n*log(n) - n.\n\n**3. Central Limit Theorem**\nVia characteristic functions.\n\n**4. Statistical mechanics**\nBoltzmann entropy calculations.",
     "openQuestions": [
       "Higher-order terms in the Stirling expansion",
       "Extension to the Gamma function: Gamma(x+1) ~ sqrt(2*pi*x) * (x/e)^x"

@@ -95,7 +95,7 @@
   ],
   "conclusion": {
     "summary": "The Factor and Remainder Theorems are fundamental tools in polynomial algebra, providing an elegant connection between polynomial evaluation and divisibility. Together, they form the theoretical basis for polynomial factorization.",
-    "implications": "**Theoretical Significance:**\n\n1. **Polynomial Factorization**: Finding roots systematically leads to complete factorization over algebraically closed fields.\n\n2. **Fundamental Theorem of Algebra**: Combined with complex analysis, these theorems help prove that every polynomial over C factors completely into linear terms.\n\n3. **Computational Algebra**: Form the basis for polynomial GCD algorithms and factorization in computer algebra systems.\n\n**Practical Applications:**\n\n- Root finding by testing divisibility\n- Polynomial long division shortcuts\n- Interpolation and curve fitting\n- Error-correcting codes",
+    "implications": "**Theoretical Significance:**\n\n**1. Polynomial Factorization**\nFinding roots systematically leads to complete factorization over algebraically closed fields.\n\n**2. Fundamental Theorem of Algebra**\nCombined with complex analysis, these theorems help prove that every polynomial over C factors completely into linear terms.\n\n**3. Computational Algebra**\nForm the basis for polynomial GCD algorithms and factorization in computer algebra systems.\n\n**Practical Applications:**\n\n- Root finding by testing divisibility\n- Polynomial long division shortcuts\n- Interpolation and curve fitting\n- Error-correcting codes",
     "openQuestions": [
       "How do these theorems generalize to multivariate polynomials?",
       "What is the computational complexity of polynomial factorization over various fields?",
