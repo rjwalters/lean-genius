@@ -6,6 +6,7 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+import Mathlib.Data.Complex.ExponentialBounds
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Normed.Module.FiniteDimension
@@ -306,7 +307,23 @@ theorem zero_dissipation_of_constant (v : AncientSolution) (hc : AncientConstant
 theorem const_no_blowup_rate (v : AncientSolution) (hc : AncientConstant v) :
     ¬HasBlowupRate v := by
   -- Constant E cannot tend to infinity
-  sorry
+  intro hblowup
+  obtain ⟨c, hc_pos, hconst⟩ := hc
+  -- HasBlowupRate means E → ∞, but E is constantly c
+  -- Use Filter.Tendsto definition: preimage of {y | y > c + 1} is in atTop
+  have hmem : Ioi (c + 1) ∈ atTop := Ioi_mem_atTop (c + 1)
+  have hpre := hblowup hmem
+  -- hpre : Ioi (c + 1) ∈ map v.E atTop, convert to preimage form
+  rw [Filter.mem_map] at hpre
+  -- Now hpre : v.E ⁻¹' Ioi (c + 1) ∈ atTop
+  rw [Filter.mem_atTop_sets] at hpre
+  obtain ⟨τ₀, hτ₀⟩ := hpre
+  -- At τ = max τ₀ 0, we have E > c + 1 but also E = c
+  have hmax_ge : max τ₀ 0 ≥ τ₀ := le_max_left _ _
+  have hmax_ge0 : max τ₀ 0 ≥ 0 := le_max_right _ _
+  have hgt : v.E (max τ₀ 0) > c + 1 := hτ₀ (max τ₀ 0) hmax_ge
+  have heq : v.E (max τ₀ 0) = c := hconst (max τ₀ 0) hmax_ge0
+  linarith
 
 
 /-- ESS THEOREM: Type I blowup is impossible [PROVED] -/
@@ -616,8 +633,31 @@ theorem depletion_constant_neg : 2 - θcrit * c_FK_full < 0 := by
 
 /-- exp(10) > 20000 (for rigidity proof) -/
 theorem exp_ten_gt_20000 : Real.exp (10:ℝ) > 20000 := by
-  -- exp(10) ≈ 22026, requires numerical verification
-  sorry
+  -- Use exp(10) = exp(1)^10 and exp(1) > 2.718
+  have h1 : Real.exp 10 = Real.exp 1 ^ 10 := by
+    rw [← Real.exp_nat_mul]
+    norm_num
+  rw [h1]
+  -- exp(1) > 2.7182818283 from Mathlib
+  have he : (2.7182818283 : ℝ) < Real.exp 1 := Real.exp_one_gt_d9
+  -- We show: exp(1)^10 > 2.7182818283^10 > 20000
+  -- First: exp(1)^10 > 2.7182818283^10
+  have hpow_exp : Real.exp 1 ^ 10 > 2.7182818283 ^ 10 := by
+    apply pow_lt_pow_left he (by norm_num) (by norm_num)
+  -- Second: 2.7182818283^10 > 20000
+  -- Using (2718/1000)^10 = 2718^10/10^30 and showing 2718^10 > 20000 * 10^30
+  have hpow_num : (2.7182818283 : ℝ) ^ 10 > 20000 := by
+    -- 2.7182818283^10 ≈ 21971.5... > 20000
+    -- Use interval arithmetic or direct calculation
+    have h27 : (2.7182818283 : ℝ) = 27182818283 / 10000000000 := by norm_num
+    rw [h27]
+    rw [div_pow]
+    -- Need: 27182818283^10 / 10000000000^10 > 20000
+    -- i.e., 27182818283^10 > 20000 * 10^100
+    rw [gt_iff_lt, lt_div_iff (by positivity)]
+    -- 20000 * 10000000000^10 < 27182818283^10
+    norm_num
+  linarith
 
 
 end ConcentrationConstants

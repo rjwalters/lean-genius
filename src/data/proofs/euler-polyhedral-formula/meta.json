@@ -1,0 +1,91 @@
+{
+  "id": "euler-polyhedral-formula",
+  "title": "Euler's Polyhedral Formula",
+  "slug": "euler-polyhedral-formula",
+  "description": "For any convex polyhedron: V - E + F = 2, where V = vertices, E = edges, F = faces. This is the Euler characteristic of a sphere.",
+  "meta": {
+    "wiedijkNumber": 13,
+    "author": "Leonhard Euler (pedagogical formalization)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euler_characteristic",
+    "date": "1758",
+    "status": "partial",
+    "proofRepoPath": "Proofs/EulerPolyhedralFormula.lean",
+    "tags": [
+      "topology",
+      "geometry",
+      "polyhedra",
+      "wiedijk-100",
+      "euler-characteristic"
+    ],
+    "badge": "pedagogical",
+    "sorries": 2,
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Graph structure for modeling polyhedra",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Verification of Euler's formula for all five Platonic solids",
+      "Proof that edge operations preserve the Euler characteristic",
+      "Connection to topological invariants and the Gauss-Bonnet theorem"
+    ],
+    "dateAdded": "12/27/25"
+  },
+  "overview": {
+    "historicalContext": "Euler discovered this formula in 1758 while studying polyhedra. The formula V - E + F = 2 is one of the most beautiful results in mathematics, connecting three seemingly unrelated counts with a simple constant.\n\nCauchy provided the first rigorous proof in 1813. The result generalizes to the Euler characteristic chi = 2 - 2g for surfaces of genus g.",
+    "problemStatement": "**Theorem (Euler, 1758)**: For any convex polyhedron with V vertices, E edges, and F faces:\n\n$$V - E + F = 2$$\n\nThis is Wiedijk's 100 Theorems #13 and represents a fundamental topological invariant.",
+    "proofStrategy": "**Proof by Edge Reduction**:\n\n1. **Base Case**: The tetrahedron has V=4, E=6, F=4, so 4 - 6 + 4 = 2\n2. **Inductive Step**: For any polyhedron with E > 6 edges:\n   - Remove an edge (merges two faces): decreases E and F by 1\n   - Contract an edge (merges two vertices): decreases V and E by 1\n3. Both operations preserve V - E + F\n4. By reduction to tetrahedron, all polyhedra have V - E + F = 2",
+    "keyInsights": [
+      "The Euler characteristic is a topological invariant - it depends only on the surface type",
+      "All convex polyhedra are homeomorphic to a sphere, which has chi = 2",
+      "The formula extends to V - E + F = 2 - 2g for surfaces of genus g"
+    ]
+  },
+  "sections": [
+    {
+      "id": "polyhedral-structure",
+      "title": "Polyhedral Graph Structure",
+      "startLine": 57,
+      "endLine": 91,
+      "summary": "The correspondence between polyhedra and planar graphs."
+    },
+    {
+      "id": "platonic-solids",
+      "title": "The Platonic Solids",
+      "startLine": 93,
+      "endLine": 172,
+      "summary": "Verification of Euler's formula for all five Platonic solids."
+    },
+    {
+      "id": "proof-strategy",
+      "title": "General Proof Strategy",
+      "startLine": 174,
+      "endLine": 217,
+      "summary": "Proof by edge reduction preserving the Euler characteristic."
+    },
+    {
+      "id": "main-formula",
+      "title": "The Euler Polyhedral Formula",
+      "startLine": 219,
+      "endLine": 261,
+      "summary": "The main theorem stating V - E + F = 2 for all convex polyhedra."
+    },
+    {
+      "id": "topology",
+      "title": "Connection to Topology",
+      "startLine": 295,
+      "endLine": 342,
+      "summary": "The Euler characteristic as a topological invariant."
+    }
+  ],
+  "conclusion": {
+    "summary": "Euler's polyhedral formula V - E + F = 2 is a cornerstone of topology and geometry. It reveals that three apparently independent quantities (vertices, edges, faces) are constrained by the topological structure of the surface.",
+    "implications": "**Significance:**\n\n1. First topological invariant discovered\n2. Led to development of algebraic topology\n3. Applications in graph theory, geometry, and physics\n4. Generalizes via the Euler-Poincare formula to higher dimensions",
+    "openQuestions": [
+      "Full formalization of planar graph embedding in Lean",
+      "Formalization of the Gauss-Bonnet theorem relating curvature to Euler characteristic"
+    ]
+  }
+}

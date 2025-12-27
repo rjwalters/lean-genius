@@ -1,0 +1,90 @@
+{
+  "id": "prime-reciprocal-divergence",
+  "title": "Divergence of Prime Reciprocals",
+  "slug": "prime-reciprocal-divergence",
+  "description": "The sum of reciprocals of all prime numbers diverges: 1/2 + 1/3 + 1/5 + 1/7 + 1/11 + ... = infinity.",
+  "meta": {
+    "wiedijkNumber": 81,
+    "author": "Leonhard Euler (formalized via Mathlib)",
+    "sourceUrl": "https://github.com/leanprover-community/mathlib4/blob/master/Mathlib/NumberTheory/SumPrimeReciprocals.lean",
+    "date": "1737",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PrimeReciprocalDivergence.lean",
+    "tags": [
+      "number-theory",
+      "analysis",
+      "primes",
+      "wiedijk-100",
+      "divergence",
+      "series"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Primes.not_summable_one_div",
+        "description": "The prime reciprocal sum is not summable",
+        "module": "Mathlib.NumberTheory.SumPrimeReciprocals"
+      },
+      {
+        "theorem": "Nat.Primes.summable_rpow",
+        "description": "Convergence criterion for sum of p^r over primes",
+        "module": "Mathlib.NumberTheory.SumPrimeReciprocals"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical presentation of divergence result",
+      "Comparison with p-series convergence criterion",
+      "Connection to prime density and analytic number theory"
+    ],
+    "dateAdded": "12/27/25"
+  },
+  "overview": {
+    "historicalContext": "Euler proved this result in 1737, showing that primes are 'dense enough' for their reciprocals to diverge. This is a remarkable strengthening of Euclid's theorem on the infinitude of primes.\n\nEuler's proof used the connection between the harmonic series and the product over primes (Euler's product formula). The divergence shows that primes, while becoming sparser, don't thin out too quickly.",
+    "problemStatement": "**Theorem (Euler, 1737)**: The sum of reciprocals of prime numbers diverges:\n\n$$\\sum_{p \\text{ prime}} \\frac{1}{p} = \\frac{1}{2} + \\frac{1}{3} + \\frac{1}{5} + \\frac{1}{7} + \\cdots = \\infty$$\n\nThis is Wiedijk's 100 Theorems #81.",
+    "proofStrategy": "**Erdos's Elementary Proof**:\n\n1. Assume for contradiction that the sum converges to S\n2. Define 'smooth numbers' (those with all prime factors <= k)\n3. Estimate the count of smooth numbers up to n\n4. If the sum converges, there are 'too few' smooth numbers\n5. But we can also show there are 'enough' smooth numbers\n6. Contradiction!",
+    "keyInsights": [
+      "The prime series diverges much slower than the harmonic series: sum_{p<=n} 1/p ~ ln(ln(n))",
+      "In contrast, the harmonic series grows as ln(n)",
+      "For r < -1, the series sum_p p^r converges; r = -1 is the critical case"
+    ]
+  },
+  "sections": [
+    {
+      "id": "main-theorem",
+      "title": "Prime Reciprocal Divergence",
+      "startLine": 57,
+      "endLine": 89,
+      "summary": "The main result: the prime reciprocal series is not summable."
+    },
+    {
+      "id": "generalization",
+      "title": "The p-Series over Primes",
+      "startLine": 91,
+      "endLine": 109,
+      "summary": "General criterion: sum_p p^r converges iff r < -1."
+    },
+    {
+      "id": "significance",
+      "title": "Why This Matters",
+      "startLine": 111,
+      "endLine": 126,
+      "summary": "Connections to prime distribution and analytic number theory."
+    },
+    {
+      "id": "convergent-cases",
+      "title": "Convergent Cases",
+      "startLine": 128,
+      "endLine": 146,
+      "summary": "The sum of squared reciprocals of primes converges."
+    }
+  ],
+  "conclusion": {
+    "summary": "The divergence of the prime reciprocal series reveals that primes, while becoming increasingly rare among integers, remain 'dense enough' for their reciprocals to form a divergent sum. This connects to deep results in analytic number theory.",
+    "implications": "**Connections:**\n\n1. **Mertens' Theorems**: Precise asymptotics for sums over primes\n2. **Riemann Zeta Function**: The prime zeta function P(s) = sum_p p^(-s)\n3. **Prime Number Theorem**: Primes thin out as n/ln(n)\n4. **Probabilistic Number Theory**: Random models for prime distribution",
+    "openQuestions": [
+      "Precise error terms in the asymptotic sum_{p<=n} 1/p ~ ln(ln(n)) + M",
+      "Connections to the Riemann Hypothesis via the prime zeta function"
+    ]
+  }
+}

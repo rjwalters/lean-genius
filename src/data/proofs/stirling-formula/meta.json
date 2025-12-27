@@ -1,0 +1,101 @@
+{
+  "id": "stirling-formula",
+  "title": "Stirling's Formula",
+  "slug": "stirling-formula",
+  "description": "Stirling's approximation for factorials: n! ~ sqrt(2*pi*n) * (n/e)^n. The ratio approaches 1 as n goes to infinity.",
+  "meta": {
+    "wiedijkNumber": 90,
+    "author": "James Stirling / Abraham de Moivre (formalized via Mathlib)",
+    "sourceUrl": "https://github.com/leanprover-community/mathlib4/blob/master/Mathlib/Analysis/SpecialFunctions/Stirling.lean",
+    "date": "1730",
+    "status": "partial",
+    "proofRepoPath": "Proofs/StirlingFormula.lean",
+    "tags": [
+      "analysis",
+      "asymptotics",
+      "factorials",
+      "wiedijk-100",
+      "approximation"
+    ],
+    "badge": "mathlib",
+    "sorries": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "Stirling.tendsto_stirlingSeq_sqrt_pi",
+        "description": "The Stirling sequence converges to sqrt(pi)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Stirling"
+      },
+      {
+        "theorem": "Stirling.factorial_isEquivalent_stirling",
+        "description": "n! is asymptotically equivalent to the Stirling approximation",
+        "module": "Mathlib.Analysis.SpecialFunctions.Stirling"
+      },
+      {
+        "theorem": "Stirling.le_factorial_stirling",
+        "description": "Lower bound on n! from Stirling's formula",
+        "module": "Mathlib.Analysis.SpecialFunctions.Stirling"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical presentation connecting sequence convergence to asymptotic equivalence",
+      "Numerical examples showing approximation accuracy",
+      "Connection to log-factorial approximation for entropy calculations"
+    ],
+    "dateAdded": "12/27/25"
+  },
+  "overview": {
+    "historicalContext": "The formula is named after James Stirling (1730), but the leading constant sqrt(2*pi) was discovered by Abraham de Moivre. Stirling refined the formula with the full asymptotic expansion:\n\nn! ~ sqrt(2*pi*n) * (n/e)^n * (1 + 1/(12n) + 1/(288n^2) - ...)",
+    "problemStatement": "**Theorem (Stirling, 1730)**: As n approaches infinity:\n\n$$n! \\sim \\sqrt{2\\pi n} \\cdot \\left(\\frac{n}{e}\\right)^n$$\n\nMore precisely, the ratio n!/[sqrt(2*pi*n) * (n/e)^n] approaches 1.\n\nThis is Wiedijk's 100 Theorems #90.",
+    "proofStrategy": "**Via the Wallis Product**:\n\n1. Define stirlingSeq(n) = n!/[sqrt(2n) * (n/e)^n]\n2. Show stirlingSeq converges to sqrt(pi)\n3. This is proved using the Wallis product: pi/2 = prod_n (4n^2)/(4n^2-1)\n4. The asymptotic equivalence follows immediately",
+    "keyInsights": [
+      "The Stirling sequence converges to sqrt(pi), not 1",
+      "Multiplying by sqrt(2) gives the sqrt(2*pi) in the formula",
+      "The relative error is approximately 1/(12n) for large n"
+    ]
+  },
+  "sections": [
+    {
+      "id": "stirling-sequence",
+      "title": "The Stirling Sequence",
+      "startLine": 51,
+      "endLine": 71,
+      "summary": "Definition of stirlingSeq(n) = n!/[sqrt(2n) * (n/e)^n]."
+    },
+    {
+      "id": "convergence",
+      "title": "Convergence to sqrt(pi)",
+      "startLine": 73,
+      "endLine": 97,
+      "summary": "The Stirling sequence converges to sqrt(pi)."
+    },
+    {
+      "id": "asymptotic",
+      "title": "Asymptotic Equivalence",
+      "startLine": 99,
+      "endLine": 121,
+      "summary": "Stirling's formula as asymptotic equivalence."
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds",
+      "startLine": 123,
+      "endLine": 149,
+      "summary": "Upper and lower bounds from Stirling's formula."
+    },
+    {
+      "id": "applications",
+      "title": "Applications",
+      "startLine": 209,
+      "endLine": 271,
+      "summary": "Log-factorial approximation and connections to entropy."
+    }
+  ],
+  "conclusion": {
+    "summary": "Stirling's formula provides a remarkably accurate approximation for factorials, with relative error decreasing as 1/n. The formula is essential in probability, statistical mechanics, and combinatorics.",
+    "implications": "**Applications:**\n\n1. **Binomial coefficients**: C(n,k) approximation\n2. **Entropy**: log(n!) ~ n*log(n) - n\n3. **Central Limit Theorem**: Via characteristic functions\n4. **Statistical mechanics**: Boltzmann entropy calculations",
+    "openQuestions": [
+      "Higher-order terms in the Stirling expansion",
+      "Extension to the Gamma function: Gamma(x+1) ~ sqrt(2*pi*x) * (x/e)^x"
+    ]
+  }
+}

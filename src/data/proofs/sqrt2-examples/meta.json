@@ -1,0 +1,63 @@
+{
+  "id": "sqrt2-examples",
+  "title": "Basic Lean Examples",
+  "slug": "sqrt2-examples",
+  "description": "A collection of simple example proofs demonstrating basic Lean tactics including non-negativity of squares and implication transitivity.",
+  "meta": {
+    "author": "Pedagogical example",
+    "date": "2024",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Sqrt2.lean",
+    "tags": [
+      "pedagogical",
+      "basics",
+      "tactics",
+      "tutorial"
+    ],
+    "badge": "pedagogical",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "mul_nonneg",
+        "description": "Product of non-negative numbers is non-negative",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "Simple examples showing basic proof techniques",
+      "Case analysis with by_cases",
+      "Calculation proofs with calc blocks"
+    ],
+    "dateAdded": "12/27/25"
+  },
+  "overview": {
+    "historicalContext": "These are pedagogical examples demonstrating fundamental Lean proof techniques. They serve as a starting point for learning formal verification.",
+    "problemStatement": "**Examples proven:**\n\n1. For any integer n: n * n >= 0 (squares are non-negative)\n2. Implication transitivity: (P -> Q) -> (Q -> R) -> (P -> R)",
+    "proofStrategy": "The proofs use basic tactics:\n- `by_cases` for case analysis on whether n >= 0\n- `calc` for step-by-step calculations\n- `ring` for polynomial arithmetic\n- `intro`, `apply`, `exact` for logical reasoning",
+    "keyInsights": [
+      "Case analysis is a fundamental proof technique",
+      "The calc block provides readable step-by-step proofs",
+      "Simple lemmas build foundations for complex proofs"
+    ]
+  },
+  "sections": [
+    {
+      "id": "square-nonneg",
+      "title": "Squares are Non-negative",
+      "startLine": 30,
+      "endLine": 40,
+      "summary": "Proof that n * n >= 0 for any integer n."
+    },
+    {
+      "id": "implication-transitivity",
+      "title": "Implication Transitivity",
+      "startLine": 42,
+      "endLine": 47,
+      "summary": "Proof that implications compose: (P -> Q) -> (Q -> R) -> (P -> R)."
+    }
+  ],
+  "conclusion": {
+    "summary": "These simple examples demonstrate the building blocks of formal proofs in Lean: case analysis, calculation chains, and logical reasoning.",
+    "implications": "These basic techniques are used throughout more complex proofs in mathematics and computer science."
+  }
+}

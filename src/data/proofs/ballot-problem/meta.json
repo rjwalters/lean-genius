@@ -1,0 +1,97 @@
+{
+  "id": "ballot-problem",
+  "title": "The Ballot Problem",
+  "slug": "ballot-problem",
+  "description": "In an election where candidate A receives p votes and candidate B receives q votes (p > q), the probability that A leads throughout the counting is (p-q)/(p+q).",
+  "meta": {
+    "wiedijkNumber": 30,
+    "author": "Joseph Bertrand (formalized via Mathlib)",
+    "sourceUrl": "https://github.com/leanprover-community/mathlib4/blob/master/Archive/Wiedijk100Theorems/BallotProblem.lean",
+    "date": "1887",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BallotProblem.lean",
+    "tags": [
+      "probability",
+      "combinatorics",
+      "counting",
+      "wiedijk-100",
+      "reflection-principle"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Ballot.ballot_problem",
+        "description": "The main ballot theorem",
+        "module": "Archive.Wiedijk100Theorems.BallotProblem"
+      },
+      {
+        "theorem": "Ballot.countedSequence",
+        "description": "Set of vote sequences with p votes for A and q for B",
+        "module": "Archive.Wiedijk100Theorems.BallotProblem"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical wrapper with clear explanation of the reflection principle",
+      "Connection to lattice path interpretation",
+      "Historical context and applications to random walks"
+    ],
+    "dateAdded": "12/27/25"
+  },
+  "overview": {
+    "historicalContext": "The Ballot Problem was posed by Joseph Bertrand in 1887. It asks: if candidate A receives p votes and candidate B receives q votes (with p > q), what is the probability that A is ahead of B throughout the entire counting process?\n\nThe answer is the elegant formula (p-q)/(p+q). This result has a beautiful proof using the 'reflection principle' - a bijective argument that pairs unfavorable vote sequences with paths to a different endpoint.",
+    "problemStatement": "**Theorem (Bertrand, 1887)**: In an election where candidate A receives p votes and candidate B receives q votes, with p > q, the probability that A leads B throughout the counting is:\n\n$$P = \\frac{p - q}{p + q}$$\n\nThis is Wiedijk's 100 Theorems #30.",
+    "proofStrategy": "**The Reflection Principle**:\n\n1. Model vote counting as a path in a lattice (each vote moves the cumulative total up or down)\n2. 'A leads throughout' means the path never touches the x-axis after time 0\n3. Count 'bad' paths by reflecting them across the axis at their first touch point\n4. This creates a bijection with paths to a different endpoint\n5. The probability follows from counting good vs total paths",
+    "keyInsights": [
+      "The reflection principle provides a bijective proof that avoids complex recursion",
+      "The ballot problem connects to Catalan numbers and lattice path enumeration",
+      "Applications include random walks, queueing theory, and financial mathematics"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setting",
+      "title": "The Setting",
+      "startLine": 93,
+      "endLine": 111,
+      "summary": "Modeling vote counting as sequences of +1 and -1."
+    },
+    {
+      "id": "key-properties",
+      "title": "Key Properties",
+      "startLine": 113,
+      "endLine": 130,
+      "summary": "Properties of counted sequences and their cardinalities."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Ballot Theorem",
+      "startLine": 132,
+      "endLine": 152,
+      "summary": "The main result: probability of A leading throughout equals (p-q)/(p+q)."
+    },
+    {
+      "id": "edge-cases",
+      "title": "Edge Cases",
+      "startLine": 154,
+      "endLine": 166,
+      "summary": "Special cases: unanimous vote and tied election."
+    },
+    {
+      "id": "reflection-principle",
+      "title": "The Reflection Principle",
+      "startLine": 216,
+      "endLine": 249,
+      "summary": "Detailed explanation of the bijective proof technique."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Ballot Problem elegantly connects probability theory with combinatorics through the reflection principle. The formula (p-q)/(p+q) emerges naturally from counting lattice paths.",
+    "implications": "**Applications:**\n\n1. **Random Walks**: The ballot problem is equivalent to asking when a random walk stays positive\n2. **Queueing Theory**: Models queues that never empty\n3. **Financial Mathematics**: Stock prices staying above a barrier\n4. **Catalan Numbers**: Connected to the count of non-crossing paths",
+    "openQuestions": [
+      "Generalizations to multiple candidates",
+      "Continuous-time versions of the ballot problem",
+      "Higher-dimensional lattice path problems"
+    ]
+  }
+}

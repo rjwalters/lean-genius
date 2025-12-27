@@ -68,6 +68,14 @@ import { leibnizPiData } from './leibniz-pi'
 import { perfectNumbersData } from './perfect-numbers'
 import { angleTrisectionData } from './angle-trisection'
 import { baselProblemData } from './basel-problem'
+import { ballotProblemData } from './ballot-problem'
+import { eulerPolyhedralFormulaData } from './euler-polyhedral-formula'
+import { primeReciprocalDivergenceData } from './prime-reciprocal-divergence'
+import { sqrt2ExamplesData } from './sqrt2-examples'
+import { sqrt2FromAxiomsData } from './sqrt2-from-axioms'
+import { stirlingFormulaData } from './stirling-formula'
+import { sumOfKthPowersData } from './sum-of-kth-powers'
+import { sylowTheoremsData } from './sylow-theorems'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -141,6 +149,14 @@ export const proofs: Record<string, ProofData> = {
   'perfect-numbers': perfectNumbersData,
   'angle-trisection': angleTrisectionData,
   'basel-problem': baselProblemData,
+  'ballot-problem': ballotProblemData,
+  'euler-polyhedral-formula': eulerPolyhedralFormulaData,
+  'prime-reciprocal-divergence': primeReciprocalDivergenceData,
+  'sqrt2-examples': sqrt2ExamplesData,
+  'sqrt2-from-axioms': sqrt2FromAxiomsData,
+  'stirling-formula': stirlingFormulaData,
+  'sum-of-kth-powers': sumOfKthPowersData,
+  'sylow-theorems': sylowTheoremsData,
 }
 
 export function getProof(slug: string): ProofData | undefined {

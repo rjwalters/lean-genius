@@ -1,0 +1,96 @@
+{
+  "id": "sum-of-kth-powers",
+  "title": "Sum of kth Powers (Faulhaber's Formulas)",
+  "slug": "sum-of-kth-powers",
+  "description": "Closed-form formulas for sums of consecutive kth powers, including the remarkable identity that the sum of cubes equals the square of the sum.",
+  "meta": {
+    "wiedijkNumber": 77,
+    "author": "Johann Faulhaber / Nicomachus (formalized)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Faulhaber%27s_formulas",
+    "date": "c. 100 CE",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SumOfKthPowers.lean",
+    "tags": [
+      "algebra",
+      "combinatorics",
+      "sums",
+      "wiedijk-100",
+      "induction"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_range_id",
+        "description": "Sum of 0..n-1 equals n*(n-1)/2",
+        "module": "Mathlib.Algebra.BigOperators.Intervals"
+      },
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "Splitting off the last term of a sum",
+        "module": "Mathlib.Algebra.BigOperators.Ring"
+      }
+    ],
+    "originalContributions": [
+      "Direct proofs of sum of squares and sum of cubes formulas",
+      "Divisibility lemmas for the closed forms",
+      "The elegant 'sum of cubes = square of sum' identity (Nicomachus theorem)"
+    ],
+    "dateAdded": "12/27/25"
+  },
+  "overview": {
+    "historicalContext": "Johann Faulhaber (1580-1635) discovered closed-form formulas for sums of powers up to k=17 without knowing the general pattern involving Bernoulli numbers.\n\nThe sum of cubes formula was known to Nicomachus of Gerasa (c. 100 CE) and later proved by Aryabhata in India (499 CE). The sum of squares formula appears in Archimedes' work on spirals.",
+    "problemStatement": "**Theorems proven:**\n\n1. Sum of first powers: sum_{i=0}^n i = n(n+1)/2 (Gauss's formula)\n2. Sum of squares: sum_{i=0}^n i^2 = n(n+1)(2n+1)/6\n3. Sum of cubes: sum_{i=0}^n i^3 = [n(n+1)/2]^2\n4. **Nicomachus**: sum of cubes = (sum of first powers)^2\n\nThis is Wiedijk's 100 Theorems #77.",
+    "proofStrategy": "**Proof by Induction**:\n\n1. For each formula, prove the base case (n=0)\n2. Assume the formula holds for n\n3. Add the (n+1)th term and simplify\n4. Verify algebraically that the formula holds for n+1\n\nDivisibility lemmas (e.g., 6 | n(n+1)(2n+1)) are proven using modular arithmetic.",
+    "keyInsights": [
+      "The sum of cubes equals the square of the sum - a remarkable coincidence",
+      "Divisibility properties follow from consecutive integers having mixed parity",
+      "General formulas involve Bernoulli numbers, but low powers have simple expressions"
+    ]
+  },
+  "sections": [
+    {
+      "id": "first-powers",
+      "title": "Sum of First Powers",
+      "startLine": 58,
+      "endLine": 79,
+      "summary": "Gauss's formula: 0 + 1 + 2 + ... + n = n(n+1)/2."
+    },
+    {
+      "id": "sum-squares",
+      "title": "Sum of Squares",
+      "startLine": 81,
+      "endLine": 155,
+      "summary": "The formula sum i^2 = n(n+1)(2n+1)/6 with divisibility proof."
+    },
+    {
+      "id": "sum-cubes",
+      "title": "Sum of Cubes",
+      "startLine": 157,
+      "endLine": 218,
+      "summary": "The formula sum i^3 = [n(n+1)/2]^2."
+    },
+    {
+      "id": "nicomachus",
+      "title": "Nicomachus Theorem",
+      "startLine": 220,
+      "endLine": 239,
+      "summary": "The remarkable identity: sum of cubes = square of sum."
+    },
+    {
+      "id": "verification",
+      "title": "Numerical Verification",
+      "startLine": 241,
+      "endLine": 256,
+      "summary": "Concrete examples verifying the formulas."
+    }
+  ],
+  "conclusion": {
+    "summary": "The power sum formulas demonstrate beautiful closed-form expressions for sums that grow polynomially. The Nicomachus theorem - that the sum of cubes equals the square of the sum - is one of the most elegant identities in mathematics.",
+    "implications": "**Applications:**\n\n1. **Analysis**: Building blocks for Riemann sums and integrals\n2. **Combinatorics**: Counting arguments involving powers\n3. **Number theory**: Connections to Bernoulli numbers\n4. **Computer science**: Algorithm analysis with polynomial sums",
+    "openQuestions": [
+      "Formalization of general Faulhaber formula with Bernoulli numbers",
+      "Extensions to non-integer exponents"
+    ]
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "id": "sylow-theorems",
+  "title": "Sylow's Theorems",
+  "slug": "sylow-theorems",
+  "description": "The three Sylow theorems: existence of Sylow p-subgroups, their conjugacy, and counting constraints. Fundamental structure theorems for finite groups.",
+  "meta": {
+    "wiedijkNumber": 72,
+    "author": "Peter Ludwig Mejdell Sylow (formalized via Mathlib)",
+    "sourceUrl": "https://github.com/leanprover-community/mathlib4/blob/master/Mathlib/GroupTheory/Sylow.lean",
+    "date": "1872",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SylowTheorem.lean",
+    "tags": [
+      "group-theory",
+      "algebra",
+      "finite-groups",
+      "wiedijk-100",
+      "subgroups"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Sylow.nonempty",
+        "description": "Sylow p-subgroups exist",
+        "module": "Mathlib.GroupTheory.Sylow"
+      },
+      {
+        "theorem": "MulAction.exists_smul_eq",
+        "description": "All Sylow p-subgroups are conjugate",
+        "module": "Mathlib.GroupTheory.Sylow"
+      },
+      {
+        "theorem": "card_sylow_modEq_one",
+        "description": "Number of Sylow subgroups is congruent to 1 mod p",
+        "module": "Mathlib.GroupTheory.Sylow"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical statement of all three Sylow theorems",
+      "Proof that unique Sylow subgroups are normal",
+      "Cauchy's theorem as a corollary of Sylow I"
+    ],
+    "dateAdded": "12/27/25"
+  },
+  "overview": {
+    "historicalContext": "Peter Ludwig Mejdell Sylow proved these theorems in 1872. They generalize Cauchy's theorem and provide crucial structural information about finite groups.\n\nThe Sylow theorems are among the most important tools in finite group theory, used extensively in classification problems including the classification of finite simple groups.",
+    "problemStatement": "**The Three Sylow Theorems** for a group G of order n = p^k * m where p is prime and p does not divide m:\n\n1. **Existence**: G has a subgroup of order p^k (Sylow p-subgroup)\n2. **Conjugacy**: All Sylow p-subgroups are conjugate to each other\n3. **Counting**: The number n_p of Sylow p-subgroups satisfies: n_p divides m and n_p ≡ 1 (mod p)\n\nThis is Wiedijk's 100 Theorems #72.",
+    "proofStrategy": "**Sylow I (Existence)**:\nUse induction on |G| and analyze the class equation.\n\n**Sylow II (Conjugacy)**:\nLet P act on cosets G/Q by multiplication and use orbit-stabilizer.\n\n**Sylow III (Counting)**:\nP acts on the set of Sylow p-subgroups by conjugation; the only fixed point is P itself.",
+    "keyInsights": [
+      "Existence guarantees every finite group has maximal p-subgroups",
+      "Conjugacy means all maximal p-subgroups are structurally identical",
+      "The counting constraints severely limit possible group structures"
+    ]
+  },
+  "sections": [
+    {
+      "id": "existence",
+      "title": "First Sylow Theorem (Existence)",
+      "startLine": 80,
+      "endLine": 103,
+      "summary": "For any prime p, a finite group has at least one Sylow p-subgroup."
+    },
+    {
+      "id": "conjugacy",
+      "title": "Second Sylow Theorem (Conjugacy)",
+      "startLine": 105,
+      "endLine": 128,
+      "summary": "All Sylow p-subgroups are conjugate to each other."
+    },
+    {
+      "id": "counting",
+      "title": "Third Sylow Theorem (Counting)",
+      "startLine": 130,
+      "endLine": 148,
+      "summary": "The number of Sylow p-subgroups is congruent to 1 mod p."
+    },
+    {
+      "id": "uniqueness",
+      "title": "Uniqueness and Normality",
+      "startLine": 150,
+      "endLine": 180,
+      "summary": "A unique Sylow p-subgroup is normal."
+    },
+    {
+      "id": "cauchy",
+      "title": "Cauchy's Theorem",
+      "startLine": 182,
+      "endLine": 195,
+      "summary": "If p divides |G|, then G has an element of order p."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Sylow theorems are indispensable for understanding finite group structure. They combine existence, uniqueness up to conjugacy, and counting constraints into a powerful toolkit for analyzing groups.",
+    "implications": "**Applications:**\n\n1. **Groups of order pq**: Sylow shows n_q = 1 when q > p\n2. **Groups of order p^2**: Must be abelian\n3. **Simple group classification**: Rules out many possible orders\n4. **Burnside's theorem**: Groups of order p^a * q^b are solvable",
+    "openQuestions": [
+      "Algorithmic computation of Sylow subgroups",
+      "Generalizations to profinite and infinite groups"
+    ]
+  }
+}

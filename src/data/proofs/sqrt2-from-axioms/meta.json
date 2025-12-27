@@ -1,0 +1,95 @@
+{
+  "id": "sqrt2-from-axioms",
+  "title": "Square Root of 2 is Irrational (From Axioms)",
+  "slug": "sqrt2-from-axioms",
+  "description": "A complete proof that sqrt(2) is irrational built from first principles, demonstrating the classical proof by contradiction with even/odd analysis.",
+  "meta": {
+    "author": "Hippasus of Metapontum (pedagogical formalization)",
+    "date": "~500 BCE",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Sqrt2IrrationalFromAxioms.lean",
+    "tags": [
+      "number-theory",
+      "irrationality",
+      "pedagogical",
+      "first-principles",
+      "classic"
+    ],
+    "badge": "pedagogical",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ring",
+        "description": "Polynomial arithmetic tactic",
+        "module": "Mathlib.Tactic"
+      },
+      {
+        "theorem": "omega",
+        "description": "Linear arithmetic tactic",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "Complete development of even/odd definitions from scratch",
+      "Parity lemmas built manually",
+      "The key lemma: if n^2 is even then n is even",
+      "Full irrationality proof using infinite descent"
+    ],
+    "dateAdded": "12/27/25"
+  },
+  "overview": {
+    "historicalContext": "This proof is attributed to Hippasus of Metapontum (~500 BCE). Legend says he was thrown overboard for revealing that sqrt(2) is irrational, challenging the Pythagorean belief that all numbers are rational.\n\nThe proof demonstrates the method of infinite descent: assuming sqrt(2) = a/b in lowest terms leads to both a and b being even, contradicting the assumption.",
+    "problemStatement": "**Theorem**: There are no natural numbers a, b with b > 0 such that a^2 = 2 * b^2 and gcd(a,b) = 1.\n\nThis is equivalent to saying sqrt(2) is irrational, since if sqrt(2) = a/b in lowest terms, then a^2 = 2b^2.",
+    "proofStrategy": "**The Classic Proof by Contradiction**:\n\n1. Assume sqrt(2) = a/b where a, b are coprime\n2. Then 2b^2 = a^2, so a^2 is even\n3. Therefore a is even (key lemma!), say a = 2k\n4. Substituting: 2b^2 = 4k^2, so b^2 = 2k^2\n5. Therefore b^2 is even, so b is even\n6. But both a and b even contradicts gcd(a,b) = 1!",
+    "keyInsights": [
+      "The key lemma is: if n^2 is even, then n is even (proved by contrapositive)",
+      "We build even/odd definitions and parity lemmas from scratch",
+      "This ~200 line proof shows the architecture hidden in Mathlib's one-liner"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 49,
+      "endLine": 57,
+      "summary": "Defining even and odd numbers from scratch."
+    },
+    {
+      "id": "parity-lemmas",
+      "title": "Parity Lemmas",
+      "startLine": 59,
+      "endLine": 102,
+      "summary": "Every number is even XOR odd; successor flips parity."
+    },
+    {
+      "id": "key-lemma",
+      "title": "Key Lemma: Even Squares",
+      "startLine": 104,
+      "endLine": 122,
+      "summary": "If n^2 is even, then n is even (proved by contrapositive)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 133,
+      "endLine": 166,
+      "summary": "No coprime solution to a^2 = 2b^2 exists."
+    },
+    {
+      "id": "educational-notes",
+      "title": "Educational Notes",
+      "startLine": 188,
+      "endLine": 232,
+      "summary": "Why this proof works and comparison with Mathlib."
+    }
+  ],
+  "conclusion": {
+    "summary": "This proof builds the sqrt(2) irrationality argument from first principles, revealing the structure hidden in library functions. The key insight is the parity argument: if n^2 is even, then n must be even.",
+    "implications": "**Educational Value:**\n\n1. Shows the architecture of a mathematical proof\n2. Demonstrates building definitions and lemmas from scratch\n3. Contrasts with the one-liner using Mathlib's theorem\n4. Illustrates the infinite descent method",
+    "openQuestions": [
+      "Generalizing to sqrt(p) for any prime p",
+      "Connections to quadratic irrationals and continued fractions"
+    ]
+  }
+}
