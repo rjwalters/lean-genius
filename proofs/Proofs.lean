@@ -14,6 +14,7 @@ import Proofs.BinomialTheorem
 import Proofs.BirthdayProblem
 import Proofs.BorsukUlam
 import Proofs.BrouwerFixedPoint
+import Proofs.BuffonsNeedle
 import Proofs.CantorDiagonalization
 import Proofs.CantorsTheorem
 import Proofs.CauchySchwarz
