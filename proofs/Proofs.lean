@@ -48,3 +48,4 @@ import Proofs.CombinationsFormula
 import Proofs.LagrangeTheorem
 import Proofs.TriangleInequality
 import Proofs.PythagoreanTriples
+import Proofs.MeanValueTheorem
