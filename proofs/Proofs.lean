@@ -5,6 +5,7 @@ import Proofs.AMGMInequality
 import Proofs.AbelRuffini
 import Proofs.AreaOfCircle
 import Proofs.ArithmeticSeries
+import Proofs.BallotProblem
 import Proofs.BezoutIdentity
 import Proofs.BinomialTheorem
 import Proofs.BirthdayProblem
@@ -53,6 +54,7 @@ import Proofs.OnePlusOne
 import Proofs.PerfectNumbers
 import Proofs.PythagoreanTheorem
 import Proofs.PythagoreanTriples
+import Proofs.QuadraticReciprocity
 import Proofs.RamanujanSumFallacy
 import Proofs.RandomizedMaxCut
 import Proofs.SchroederBernstein
