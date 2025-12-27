@@ -31,6 +31,7 @@ import Proofs.EulerTotient
 import Proofs.FactorRemainderTheorem
 import Proofs.FermatTwoSquares
 import Proofs.FermatsLastTheorem
+import Proofs.FriendshipTheorem
 import Proofs.FourColorTheorem
 import Proofs.FundamentalArithmetic
 import Proofs.FundamentalTheoremAlgebra
@@ -52,6 +53,7 @@ import Proofs.LHopital
 import Proofs.LagrangeFourSquares
 import Proofs.LagrangeTheorem
 import Proofs.LawOfCosines
+import Proofs.LawsOfLargeNumbers
 import Proofs.LeibnizPi
 import Proofs.MathematicalInduction
 import Proofs.MeanValueTheorem
@@ -60,6 +62,7 @@ import Proofs.OnePlusOne
 import Proofs.PerfectNumbers
 import Proofs.PrimeReciprocalDivergence
 import Proofs.ProductOfSegmentsOfChords
+import Proofs.PtolemysTheorem
 import Proofs.PythagoreanTheorem
 import Proofs.PythagoreanTriples
 import Proofs.QuadraticReciprocity

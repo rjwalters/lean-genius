@@ -15,6 +15,7 @@ import { fourColorTheoremData } from './four-color-theorem'
 import { eulerIdentityData } from './euler-identity'
 import { brouwerFixedPointData } from './brouwer-fixed-point'
 import { ramanujanSumFallacyData } from './ramanujan-sum-fallacy'
+import { ramseysTheoremData } from './ramseys-theorem'
 import { abelRuffiniData } from './abel-ruffini'
 import { bertrandsPostulateData } from './bertrands-postulate'
 import { borsukUlamData } from './borsuk-ulam'
@@ -24,6 +25,7 @@ import { randomizedMaxCutData } from './randomized-maxcut'
 import { threePlaceIdentityData } from './three-place-identity'
 import { lagrangeFourSquaresData } from './lagrange-four-squares'
 import { fermatTwoSquaresData } from './fermat-two-squares'
+import { friendshipTheoremData } from './friendship-theorem'
 import { harmonicDivergenceData } from './harmonic-divergence'
 import { denumerabilityRationalsData } from './denumerability-rationals'
 import { hurwitzTheoremData } from './hurwitz-theorem'
@@ -42,6 +44,7 @@ import { triangleInequalityData } from './triangle-inequality'
 import { konigsbergData } from './konigsberg'
 import { productOfSegmentsOfChordsData } from './product-of-segments-of-chords'
 import { lawOfCosinesData } from './law-of-cosines'
+import { lawsOfLargeNumbersData } from './laws-of-large-numbers'
 import { birthdayProblemData } from './birthday-problem'
 import { quadraticReciprocityData } from './quadratic-reciprocity'
 import { lhopitalData } from './lhopital'
@@ -77,6 +80,7 @@ import { sqrt2FromAxiomsData } from './sqrt2-from-axioms'
 import { stirlingFormulaData } from './stirling-formula'
 import { sumOfKthPowersData } from './sum-of-kth-powers'
 import { sylowTheoremsData } from './sylow-theorems'
+import { ptolemysTheoremData } from './ptolemys-theorem'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -97,6 +101,7 @@ export const proofs: Record<string, ProofData> = {
   'euler-identity': eulerIdentityData,
   'brouwer-fixed-point': brouwerFixedPointData,
   'ramanujan-sum-fallacy': ramanujanSumFallacyData,
+  'ramseys-theorem': ramseysTheoremData,
   'abel-ruffini': abelRuffiniData,
   'bertrands-postulate': bertrandsPostulateData,
   'borsuk-ulam': borsukUlamData,
@@ -106,6 +111,7 @@ export const proofs: Record<string, ProofData> = {
   'three-place-identity': threePlaceIdentityData,
   'lagrange-four-squares': lagrangeFourSquaresData,
   'fermat-two-squares': fermatTwoSquaresData,
+  'friendship-theorem': friendshipTheoremData,
   'harmonic-divergence': harmonicDivergenceData,
   'denumerability-rationals': denumerabilityRationalsData,
   'hurwitz-theorem': hurwitzTheoremData,
@@ -124,6 +130,7 @@ export const proofs: Record<string, ProofData> = {
   'konigsberg': konigsbergData,
   'product-of-segments-of-chords': productOfSegmentsOfChordsData,
   'law-of-cosines': lawOfCosinesData,
+  'laws-of-large-numbers': lawsOfLargeNumbersData,
   'birthday-problem': birthdayProblemData,
   'quadratic-reciprocity': quadraticReciprocityData,
   'lhopital': lhopitalData,
@@ -159,6 +166,7 @@ export const proofs: Record<string, ProofData> = {
   'stirling-formula': stirlingFormulaData,
   'sum-of-kth-powers': sumOfKthPowersData,
   'sylow-theorems': sylowTheoremsData,
+  'ptolemys-theorem': ptolemysTheoremData,
 }
 
 export function getProof(slug: string): ProofData | undefined {
