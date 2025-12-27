@@ -59,6 +59,7 @@ import Proofs.MathematicalInduction
 import Proofs.MeanValueTheorem
 import Proofs.NavierStokes
 import Proofs.OnePlusOne
+import Proofs.PellEquation
 import Proofs.PerfectNumbers
 import Proofs.PrimeReciprocalDivergence
 import Proofs.ProductOfSegmentsOfChords

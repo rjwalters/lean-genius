@@ -1,0 +1,37 @@
+{
+  "id": "pell-equation",
+  "title": "Solutions to Pell's Equation",
+  "slug": "pell-equation",
+  "description": "Pell's equation x^2 - Dy^2 = 1 always has infinitely many solutions when D is not a perfect square, all generated from a unique fundamental solution.",
+  "meta": {
+    "author": "Lagrange (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Pell%27s_equation",
+    "date": "1766-1769",
+    "status": "verified",
+    "tags": ["number-theory", "diophantine-equations", "continued-fractions", "intermediate"],
+    "proofRepoPath": "Proofs/PellEquation.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "Pell.exists_of_not_isSquare", "description": "Existence of non-trivial solutions", "module": "Mathlib.NumberTheory.Pell"},
+      {"theorem": "Pell.IsFundamental", "description": "Characterization of fundamental solution", "module": "Mathlib.NumberTheory.Pell"},
+      {"theorem": "Pell.IsFundamental.eq_zpow_or_neg_zpow", "description": "All solutions are powers of fundamental", "module": "Mathlib.NumberTheory.Pell"}
+    ],
+    "originalContributions": ["Group structure of solutions", "Explicit verification examples", "Connection to algebraic number theory"],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 39
+  },
+  "overview": {
+    "historicalContext": "Named after John Pell (1611-1685), though studied earlier by Brahmagupta and Bhaskara II. Lagrange gave the first complete existence proof in 1766-1769. Fermat famously challenged mathematicians with x^2 - 61y^2 = 1.",
+    "problemStatement": "**Pell's Equation**:\n\nFor any positive integer $D$ that is not a perfect square, the equation\n$$x^2 - Dy^2 = 1$$\nhas infinitely many integer solutions, all generated from a unique fundamental solution $(x_1, y_1)$ by the recurrence $x_n + y_n\\sqrt{D} = (x_1 + y_1\\sqrt{D})^n$.",
+    "proofStrategy": "Use the theory of continued fractions and Dirichlet's approximation theorem to establish existence. The multiplicative group structure in Z[sqrt(D)] shows all solutions are powers of the fundamental.",
+    "keyInsights": ["Solutions form a multiplicative group", "Fundamental solution generates all others", "Connected to units in algebraic number rings"]
+  },
+  "sections": [
+    {"id": "existence", "title": "Existence of Solutions", "startLine": 70, "endLine": 100, "summary": "Proof that non-trivial solutions always exist when D is not a perfect square."},
+    {"id": "fundamental", "title": "The Fundamental Solution", "startLine": 100, "endLine": 130, "summary": "Definition and uniqueness of the fundamental (minimal positive) solution."},
+    {"id": "generation", "title": "Generating All Solutions", "startLine": 130, "endLine": 160, "summary": "Every solution is a power of the fundamental solution."},
+    {"id": "examples", "title": "Explicit Examples", "startLine": 180, "endLine": 230, "summary": "Verification of solutions for D = 2, 3, 5, 7, and Fermat's challenge D = 61."}
+  ],
+  "conclusion": {"summary": "Pell's equation is fully characterized: infinitely many solutions exist for non-square D, all generated from a unique fundamental solution via the multiplicative structure of Z[sqrt(D)]."}
+}

@@ -84,6 +84,7 @@ import { erdosSzekeresData } from './erdos-szekeres'
 import { platonicSolidsData } from './platonic-solids'
 import { ptolemysTheoremData } from './ptolemys-theorem'
 import { desarguesTheoremData } from './desargues-theorem'
+import { pellEquationData } from './pell-equation'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -173,6 +174,7 @@ export const proofs: Record<string, ProofData> = {
   'platonic-solids': platonicSolidsData,
   'ptolemys-theorem': ptolemysTheoremData,
   'desargues-theorem': desarguesTheoremData,
+  'pell-equation': pellEquationData,
 }
 
 export function getProof(slug: string): ProofData | undefined {
