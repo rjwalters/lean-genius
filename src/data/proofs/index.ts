@@ -80,6 +80,7 @@ import { stirlingFormulaData } from './stirling-formula'
 import { sumOfKthPowersData } from './sum-of-kth-powers'
 import { sylowTheoremsData } from './sylow-theorems'
 import { erdosSzekeresData } from './erdos-szekeres'
+import { platonicSolidsData } from './platonic-solids'
 import { ptolemysTheoremData } from './ptolemys-theorem'
 import type { ProofData } from '@/types/proof'
 
@@ -166,6 +167,7 @@ export const proofs: Record<string, ProofData> = {
   'sum-of-kth-powers': sumOfKthPowersData,
   'sylow-theorems': sylowTheoremsData,
   'erdos-szekeres': erdosSzekeresData,
+  'platonic-solids': platonicSolidsData,
   'ptolemys-theorem': ptolemysTheoremData,
 }
 
