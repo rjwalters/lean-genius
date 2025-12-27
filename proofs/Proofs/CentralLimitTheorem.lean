@@ -3,6 +3,7 @@ import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.MeasureTheory.Integral.Bochner
 import Mathlib.Analysis.Fourier.FourierTransform
 import Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral
+import Mathlib.Analysis.SpecialFunctions.Pow.Deriv
 import Mathlib.Probability.Independence.Basic
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Analysis.Calculus.Taylor
@@ -142,8 +143,26 @@ theorem charFun_deriv_mean (μ_meas : MeasureTheory.Measure ℝ)
   -- Using differentiation under the integral sign
   rw [charFun_deriv_interchange μ_meas h_int 0]
   -- At t=0, exp(0) = 1, so we get ∫ ix·1 dμ = i·∫ x dμ
-  simp only [mul_zero, Complex.ofReal_zero, Complex.exp_zero, mul_one]
-  -- Factor out Complex.I from the integral - requires integral linearity
+  -- First simplify the integrand: exp(0 * x) = exp(0) = 1
+  have h_simp : (fun x : ℝ => Complex.I * ↑x * Complex.exp (Complex.I * ↑(0 : ℝ) * ↑x)) =
+                (fun x : ℝ => Complex.I * ↑x) := by
+    ext x
+    simp only [Complex.ofReal_zero, mul_zero, zero_mul, Complex.exp_zero, mul_one]
+  rw [h_simp]
+  -- Now we need: ∫ (I * x) dμ = I * ∫ x dμ
+  -- This follows from integral linearity for the coercion and scalar multiplication
+  -- First convert mul to smul
+  have h_smul : (fun x : ℝ => Complex.I * ↑x) = (fun x : ℝ => Complex.I • (↑x : ℂ)) := by
+    ext x; simp only [smul_eq_mul]
+  rw [h_smul, MeasureTheory.integral_smul Complex.I (fun x : ℝ => (x : ℂ))]
+  simp only [smul_eq_mul]
+  -- The goal is now: I * ∫ x, (x : ℂ) ∂μ = I * (∫ x, x ∂μ : ℂ)
+  -- Need: ∫ (x : ℂ) dμ = (∫ x dμ : ℂ) where μ is a real measure
+  -- This requires showing the complex integral of the real coercion equals
+  -- the coercion of the real integral. Uses that ℂ is a real vector space.
+  congr 1
+  -- Requires: MeasureTheory.integral_ofReal or similar
+  -- This is true but finding the exact API is complex
   sorry
 
 /-- Axiom: Taylor expansion remainder bound for characteristic functions.
@@ -189,10 +208,9 @@ section LimitComputation
 
 /-- Key lemma: (1 + x/n)^n → e^x as n → ∞ -/
 theorem limit_one_plus_x_over_n (x : ℝ) :
-    Filter.Tendsto (fun n : ℕ => (1 + x / n)^n) Filter.atTop (nhds (Real.exp x)) := by
-  -- This is the classical limit defining e^x
-  -- Full proof requires careful analysis of the log
-  sorry
+    Filter.Tendsto (fun n : ℕ => (1 + x / n)^n) Filter.atTop (nhds (Real.exp x)) :=
+  -- This is a standard result in Mathlib
+  tendsto_one_plus_div_pow_exp x
 
 /-- The characteristic function of Sₙ = (X₁ + ... + Xₙ)/√n -/
 theorem normalized_sum_charFun (μ : MeasureTheory.Measure ℝ)
