@@ -1,0 +1,153 @@
+[
+  {
+    "id": "ann-mathlib-form",
+    "proofId": "inclusion-exclusion",
+    "range": {
+      "startLine": 65,
+      "endLine": 72
+    },
+    "type": "theorem",
+    "title": "Mathlib's Additive Form",
+    "content": "**|A ∪ B| + |A ∩ B| = |A| + |B|**\n\nThis is the form provided by Mathlib's `card_union_add_card_inter`. The additive form avoids subtraction, which makes it easier to work with in natural numbers where subtraction can be truncated.",
+    "mathContext": "$|A \\cup B| + |A \\cap B| = |A| + |B|$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.card_union_add_card_inter"
+    ]
+  },
+  {
+    "id": "ann-classical-form",
+    "proofId": "inclusion-exclusion",
+    "range": {
+      "startLine": 74,
+      "endLine": 83
+    },
+    "type": "theorem",
+    "title": "Classical Inclusion-Exclusion",
+    "content": "**|A ∪ B| = |A| + |B| - |A ∩ B|**\n\nThe form most commonly taught. Elements in the intersection are counted in both |A| and |B|, so we subtract |A ∩ B| to avoid double-counting.\n\nThe proof derives this from the additive form using omega arithmetic.",
+    "mathContext": "$|A \\cup B| = |A| + |B| - |A \\cap B|$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Venn diagrams",
+      "overcounting"
+    ]
+  },
+  {
+    "id": "ann-three-set",
+    "proofId": "inclusion-exclusion",
+    "range": {
+      "startLine": 95,
+      "endLine": 124
+    },
+    "type": "theorem",
+    "title": "Three-Set Formula",
+    "content": "**The complete formula for three sets:**\n\n|A ∪ B ∪ C| = |A| + |B| + |C| - |A ∩ B| - |A ∩ C| - |B ∩ C| + |A ∩ B ∩ C|\n\nThe alternating signs ensure each element is counted exactly once:\n- Counted 1 time by individual sets → keep it\n- Counted 2 times → subtract pairwise intersection\n- Counted 3 times → add back triple intersection",
+    "mathContext": "$|A \\cup B \\cup C| = |A| + |B| + |C| - |A \\cap B| - |A \\cap C| - |B \\cap C| + |A \\cap B \\cap C|$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "alternating sum",
+      "distribution law"
+    ]
+  },
+  {
+    "id": "ann-distributivity",
+    "proofId": "inclusion-exclusion",
+    "range": {
+      "startLine": 110,
+      "endLine": 111
+    },
+    "type": "insight",
+    "title": "Distributivity of Intersection",
+    "content": "**(A ∪ B) ∩ C = (A ∩ C) ∪ (B ∩ C)**\n\nThis is the key set-algebraic identity used in the proof. Intersection distributes over union, allowing us to express (A ∪ B) ∩ C in terms of smaller intersections.",
+    "mathContext": "$(A \\cup B) \\cap C = (A \\cap C) \\cup (B \\cap C)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "set algebra",
+      "Boolean algebra"
+    ]
+  },
+  {
+    "id": "ann-disjoint",
+    "proofId": "inclusion-exclusion",
+    "range": {
+      "startLine": 128,
+      "endLine": 134
+    },
+    "type": "theorem",
+    "title": "Disjoint Union",
+    "content": "**When A and B are disjoint, |A ∪ B| = |A| + |B|**\n\nThis is the base case that motivates inclusion-exclusion. For disjoint sets (A ∩ B = ∅), there's no overcounting to correct.",
+    "mathContext": "$A \\cap B = \\emptyset \\Rightarrow |A \\cup B| = |A| + |B|$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "disjoint sets",
+      "additive counting"
+    ]
+  },
+  {
+    "id": "ann-upper-bound",
+    "proofId": "inclusion-exclusion",
+    "range": {
+      "startLine": 136,
+      "endLine": 143
+    },
+    "type": "theorem",
+    "title": "Union Upper Bound",
+    "content": "**|A ∪ B| ≤ |A| + |B|**\n\nThe union is never larger than the sum of its parts. Equality holds exactly when A and B are disjoint.",
+    "mathContext": "$|A \\cup B| \\leq |A| + |B|$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "subadditivity"
+    ]
+  },
+  {
+    "id": "ann-lower-bound",
+    "proofId": "inclusion-exclusion",
+    "range": {
+      "startLine": 145,
+      "endLine": 150
+    },
+    "type": "theorem",
+    "title": "Union Lower Bound",
+    "content": "**|A ∪ B| ≥ max(|A|, |B|)**\n\nThe union is at least as large as either of its parts, since both A and B are subsets of A ∪ B.",
+    "mathContext": "$|A \\cup B| \\geq \\max(|A|, |B|)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotonicity",
+      "subset"
+    ]
+  },
+  {
+    "id": "ann-symm-diff",
+    "proofId": "inclusion-exclusion",
+    "range": {
+      "startLine": 158,
+      "endLine": 193
+    },
+    "type": "theorem",
+    "title": "Symmetric Difference Cardinality",
+    "content": "**|A △ B| = |A| + |B| - 2|A ∩ B|**\n\nThe symmetric difference contains elements in exactly one of A or B. Since elements in A ∩ B appear in both |A| and |B| but should not appear in A △ B, we subtract 2|A ∩ B|.",
+    "mathContext": "$|A \\triangle B| = |A| + |B| - 2|A \\cap B|$",
+    "significance": "key",
+    "relatedConcepts": [
+      "symmetric difference",
+      "XOR"
+    ]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "inclusion-exclusion",
+    "range": {
+      "startLine": 199,
+      "endLine": 211
+    },
+    "type": "example",
+    "title": "Computational Examples",
+    "content": "**Concrete verification using native_decide:**\n\n- {1,2,3} ∪ {2,3,4} = {1,2,3,4} has 4 elements\n- {1,2,3} ∩ {2,3,4} = {2,3} has 2 elements\n- 4 = 3 + 3 - 2 ✓\n\nThese examples verify that our theorems give correct results on specific sets.",
+    "mathContext": "$|\\{1,2,3\\} \\cup \\{2,3,4\\}| = 3 + 3 - 2 = 4$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "computational verification"
+    ]
+  }
+]
