@@ -1,0 +1,233 @@
+[
+  {
+    "line": 74,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 75,
+    "tactic": "exact bertrand_postulate n hn",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          { "names": ["n"], "type": "ℕ" },
+          { "names": ["hn"], "type": "1 ≤ n" }
+        ],
+        "conclusion": "∃ p, Nat.Prime p ∧ n < p ∧ p ≤ 2 * n"
+      }
+    ],
+    "goalsAfter": []
+  },
+  {
+    "line": 89,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 90,
+    "tactic": "intro n",
+    "goalsBefore": [
+      {
+        "hypotheses": [],
+        "conclusion": "∀ (n : ℕ), ∃ p, Nat.Prime p ∧ p > n"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          { "names": ["n"], "type": "ℕ" }
+        ],
+        "conclusion": "∃ p, Nat.Prime p ∧ p > n"
+      }
+    ]
+  },
+  {
+    "line": 91,
+    "tactic": "cases' n with n",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          { "names": ["n"], "type": "ℕ" }
+        ],
+        "conclusion": "∃ p, Nat.Prime p ∧ p > n"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [],
+        "conclusion": "∃ p, Nat.Prime p ∧ p > Nat.zero"
+      },
+      {
+        "hypotheses": [
+          { "names": ["n"], "type": "ℕ" }
+        ],
+        "conclusion": "∃ p, Nat.Prime p ∧ p > Nat.succ n"
+      }
+    ]
+  },
+  {
+    "line": 93,
+    "tactic": "use 2",
+    "goalsBefore": [
+      {
+        "hypotheses": [],
+        "conclusion": "∃ p, Nat.Prime p ∧ p > Nat.zero"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [],
+        "conclusion": "Nat.Prime 2 ∧ 2 > Nat.zero"
+      }
+    ]
+  },
+  {
+    "line": 94,
+    "tactic": "exact ⟨Nat.prime_two, by omega⟩",
+    "goalsBefore": [
+      {
+        "hypotheses": [],
+        "conclusion": "Nat.Prime 2 ∧ 2 > Nat.zero"
+      }
+    ],
+    "goalsAfter": []
+  },
+  {
+    "line": 96,
+    "tactic": "obtain ⟨p, hp_prime, hp_gt, _⟩ := bertrand_postulate (n + 1) (by omega)",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          { "names": ["n"], "type": "ℕ" }
+        ],
+        "conclusion": "∃ p, Nat.Prime p ∧ p > Nat.succ n"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          { "names": ["n"], "type": "ℕ" },
+          { "names": ["p"], "type": "ℕ" },
+          { "names": ["hp_prime"], "type": "Nat.Prime p" },
+          { "names": ["hp_gt"], "type": "n + 1 < p" }
+        ],
+        "conclusion": "∃ p, Nat.Prime p ∧ p > Nat.succ n"
+      }
+    ]
+  },
+  {
+    "line": 97,
+    "tactic": "exact ⟨p, hp_prime, hp_gt⟩",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          { "names": ["n"], "type": "ℕ" },
+          { "names": ["p"], "type": "ℕ" },
+          { "names": ["hp_prime"], "type": "Nat.Prime p" },
+          { "names": ["hp_gt"], "type": "n + 1 < p" }
+        ],
+        "conclusion": "∃ p, Nat.Prime p ∧ p > Nat.succ n"
+      }
+    ],
+    "goalsAfter": []
+  },
+  {
+    "line": 102,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 103,
+    "tactic": "intro ⟨p, _, h_largest⟩",
+    "goalsBefore": [
+      {
+        "hypotheses": [],
+        "conclusion": "¬∃ p, Nat.Prime p ∧ ∀ (q : ℕ), Nat.Prime q → q ≤ p"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          { "names": ["p"], "type": "ℕ" },
+          { "names": ["h_largest"], "type": "∀ (q : ℕ), Nat.Prime q → q ≤ p" }
+        ],
+        "conclusion": "False"
+      }
+    ]
+  },
+  {
+    "line": 104,
+    "tactic": "obtain ⟨q, hq_prime, hq_gt⟩ := primes_infinite_via_bertrand p",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          { "names": ["p"], "type": "ℕ" },
+          { "names": ["h_largest"], "type": "∀ (q : ℕ), Nat.Prime q → q ≤ p" }
+        ],
+        "conclusion": "False"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          { "names": ["p"], "type": "ℕ" },
+          { "names": ["h_largest"], "type": "∀ (q : ℕ), Nat.Prime q → q ≤ p" },
+          { "names": ["q"], "type": "ℕ" },
+          { "names": ["hq_prime"], "type": "Nat.Prime q" },
+          { "names": ["hq_gt"], "type": "q > p" }
+        ],
+        "conclusion": "False"
+      }
+    ]
+  },
+  {
+    "line": 105,
+    "tactic": "have hq_le := h_largest q hq_prime",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          { "names": ["p"], "type": "ℕ" },
+          { "names": ["h_largest"], "type": "∀ (q : ℕ), Nat.Prime q → q ≤ p" },
+          { "names": ["q"], "type": "ℕ" },
+          { "names": ["hq_prime"], "type": "Nat.Prime q" },
+          { "names": ["hq_gt"], "type": "q > p" }
+        ],
+        "conclusion": "False"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          { "names": ["p"], "type": "ℕ" },
+          { "names": ["h_largest"], "type": "∀ (q : ℕ), Nat.Prime q → q ≤ p" },
+          { "names": ["q"], "type": "ℕ" },
+          { "names": ["hq_prime"], "type": "Nat.Prime q" },
+          { "names": ["hq_gt"], "type": "q > p" },
+          { "names": ["hq_le"], "type": "q ≤ p" }
+        ],
+        "conclusion": "False"
+      }
+    ]
+  },
+  {
+    "line": 106,
+    "tactic": "omega",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          { "names": ["p"], "type": "ℕ" },
+          { "names": ["h_largest"], "type": "∀ (q : ℕ), Nat.Prime q → q ≤ p" },
+          { "names": ["q"], "type": "ℕ" },
+          { "names": ["hq_prime"], "type": "Nat.Prime q" },
+          { "names": ["hq_gt"], "type": "q > p" },
+          { "names": ["hq_le"], "type": "q ≤ p" }
+        ],
+        "conclusion": "False"
+      }
+    ],
+    "goalsAfter": []
+  }
+]

@@ -8,6 +8,7 @@ import Proofs.ArithmeticSeries
 import Proofs.BallotProblem
 import Proofs.BezoutIdentity
 import Proofs.BinomialTheorem
+import Proofs.BertrandsPostulate
 import Proofs.BirthdayProblem
 import Proofs.BorsukUlam
 import Proofs.BrouwerFixedPoint
