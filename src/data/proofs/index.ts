@@ -84,6 +84,7 @@ import { erdosSzekeresData } from './erdos-szekeres'
 import { platonicSolidsData } from './platonic-solids'
 import { ptolemysTheoremData } from './ptolemys-theorem'
 import { desarguesTheoremData } from './desargues-theorem'
+import { descartesRuleOfSignsData } from './descartes-rule-of-signs'
 import { pellEquationData } from './pell-equation'
 import { riemannHypothesisData } from './riemann-hypothesis'
 import type { ProofData } from '@/types/proof'
@@ -175,6 +176,7 @@ export const proofs: Record<string, ProofData> = {
   'platonic-solids': platonicSolidsData,
   'ptolemys-theorem': ptolemysTheoremData,
   'desargues-theorem': desarguesTheoremData,
+  'descartes-rule-of-signs': descartesRuleOfSignsData,
   'pell-equation': pellEquationData,
   'riemann-hypothesis': riemannHypothesisData,
 }
