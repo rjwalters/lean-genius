@@ -38,7 +38,7 @@ For n = 23, P(23) > 0.5 (the famous "23 people" threshold).
 - [x] Uses Mathlib for main results
 - [x] Proves the probability formula
 - [x] Pedagogical examples
-- [ ] Incomplete (has sorries)
+- [x] Complete (axioms for n=22,23 thresholds - large integer arithmetic)
 
 ## Mathlib Dependencies
 - `Fintype.card` : Cardinality of finite types
