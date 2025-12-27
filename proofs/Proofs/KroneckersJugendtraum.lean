@@ -40,8 +40,9 @@ their relatives) whose special values generate all abelian extensions of K.
 
 | Component | Status |
 |-----------|--------|
-| Cyclotomic extensions of ℚ are abelian | PROVEN (Mathlib) |
-| Kronecker-Weber: abelian ext. of ℚ ⊆ cyclotomic | PROVEN |
+| Cyclotomic extensions of ℚ are abelian | PROVEN (this file) |
+| Cyclotomic degree = φ(n) | PROVEN (this file) |
+| Kronecker-Weber: abelian ext. of ℚ ⊆ cyclotomic | PROVEN (statement only) |
 | CM theory for imaginary quadratic fields | PARTIALLY PROVEN |
 | General explicit class field theory | **OPEN CONJECTURE** |
 
@@ -127,21 +128,56 @@ def KroneckerWeberTheorem : Prop :=
 
 /-- Cyclotomic extensions of ℚ have abelian Galois groups.
 
-The Galois group of ℚ(ζₙ)/ℚ is isomorphic to (ℤ/nℤ)×, which is abelian. -/
+The Galois group of ℚ(ζₙ)/ℚ is isomorphic to (ℤ/nℤ)×, which is abelian.
+
+**Proof**: Each automorphism σ ∈ Gal(ℚ(ζₙ)/ℚ) is determined by where it sends
+the primitive nth root of unity ζₙ. Since σ must send roots of unity to roots of unity
+of the same order, we have σ(ζₙ) = ζₙ^k for some k coprime to n. The map σ ↦ k gives
+an isomorphism Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)×. Since multiplication in (ℤ/nℤ)× is commutative,
+the Galois group is abelian.
+
+In Mathlib, `IsCyclotomicExtension.autEquivPow` provides the equivalence between
+automorphisms and (ZMod n)ˣ, from which commutativity follows. -/
+/-- The Galois group of a cyclotomic extension is commutative.
+
+This is proven by showing that Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)× via the map σ ↦ k where σ(ζₙ) = ζₙ^k.
+Since (ℤ/nℤ)× is commutative, the Galois group inherits commutativity. -/
+instance cyclotomic_galois_comm (n : ℕ+) (K : Type*) [Field K] [Algebra ℚ K]
+    [h : IsCyclotomicExtension {n} ℚ K] [FiniteDimensional ℚ K] :
+    Std.Commutative (α := K ≃ₐ[ℚ] K) (· * ·) where
+  comm σ τ := by
+    -- The Galois group Gal(ℚ(ζₙ)/ℚ) is isomorphic to (ℤ/nℤ)× which is commutative
+    haveI : IsGalois ℚ K := IsCyclotomicExtension.isGalois {n} ℚ K
+    -- Get a primitive root to work with
+    obtain ⟨ζ, hζ⟩ := IsCyclotomicExtension.exists_prim_root ℚ (B := K) (Set.mem_singleton n)
+    -- Automorphisms are determined by action on ζ, and both σ∘τ and τ∘σ
+    -- give the same power of ζ since multiplication in ℤ is commutative:
+    -- σ(τ(ζ)) = σ(ζ^m) = ζ^(km), τ(σ(ζ)) = τ(ζ^k) = ζ^(mk), and km = mk
+    -- Since K = ℚ(ζ), automorphisms agreeing on ζ are equal
+    have hgen : Algebra.adjoin ℚ {(ζ : K)} = ⊤ := IsPrimitiveRoot.adjoin_isCyclotomicExtension ℚ hζ
+    -- Apply IsCyclotomicExtension.autEquivPow to transfer from commutative (ℤ/nℤ)×
+    have hequiv := IsCyclotomicExtension.autEquivPow ℚ K n
+    -- The equivalence is a group isomorphism, so it preserves commutativity
+    calc σ * τ = hequiv.symm (hequiv (σ * τ)) := (hequiv.symm_apply_apply _).symm
+      _ = hequiv.symm (hequiv σ * hequiv τ) := by rw [map_mul]
+      _ = hequiv.symm (hequiv τ * hequiv σ) := by rw [mul_comm]
+      _ = hequiv.symm (hequiv (τ * σ)) := by rw [map_mul]
+      _ = τ * σ := hequiv.symm_apply_apply _
+
+/-- Cyclotomic extensions of ℚ have abelian Galois groups. -/
 theorem cyclotomic_galois_abelian (n : ℕ+) (K : Type*) [Field K] [Algebra ℚ K]
     [IsCyclotomicExtension {n} ℚ K] [FiniteDimensional ℚ K] :
-    ∀ σ τ : K ≃ₐ[ℚ] K, σ * τ = τ * σ := by
-  -- The Galois group Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)× which is abelian
-  -- Each automorphism σ is determined by σ(ζₙ) = ζₙ^k for some k coprime to n
-  -- For σₖ and σₘ: σₖ ∘ σₘ (ζₙ) = ζₙ^(km) = σₘ ∘ σₖ (ζₙ)
-  sorry -- Requires cyclotomic Galois group structure from Mathlib
+    ∀ σ τ : K ≃ₐ[ℚ] K, σ * τ = τ * σ := fun σ τ =>
+  (cyclotomic_galois_comm n K).comm σ τ
 
-/-- The degree of a cyclotomic extension equals Euler's totient function -/
+/-- The degree of a cyclotomic extension equals Euler's totient function.
+
+This follows from the fact that the minimal polynomial of a primitive nth root
+of unity over ℚ is the nth cyclotomic polynomial, which has degree φ(n). -/
 theorem cyclotomic_degree (n : ℕ+) (K : Type*) [Field K] [Algebra ℚ K]
-    [IsCyclotomicExtension {n} ℚ K] [FiniteDimensional ℚ K] :
-    FiniteDimensional.finrank ℚ K = Nat.totient n := by
-  -- [ℚ(ζₙ) : ℚ] = φ(n)
-  sorry -- Requires cyclotomic degree theorem from Mathlib
+    [h : IsCyclotomicExtension {n} ℚ K] [FiniteDimensional ℚ K] :
+    FiniteDimensional.finrank ℚ K = Nat.totient n :=
+  IsCyclotomicExtension.finrank {n} ℚ K
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART III: COMPLEX MULTIPLICATION
