@@ -63,6 +63,7 @@ import Proofs.MathematicalInduction
 import Proofs.MeanValueTheorem
 import Proofs.NavierStokes
 import Proofs.OnePlusOne
+import Proofs.ParallelPostulateIndependence
 import Proofs.PellEquation
 import Proofs.PerfectNumbers
 import Proofs.PlatonicSolids
