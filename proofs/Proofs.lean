@@ -1,8 +1,8 @@
 -- Auto-generated file - do not edit manually
 -- Run: ./.loom/scripts/generate-proofs-imports.sh
 
-import Proofs.AbelRuffini
 import Proofs.AMGMInequality
+import Proofs.AbelRuffini
 import Proofs.AreaOfCircle
 import Proofs.ArithmeticSeries
 import Proofs.BezoutIdentity
@@ -22,8 +22,8 @@ import Proofs.DivisibilityBy3
 import Proofs.EulerIdentity
 import Proofs.EulerTotient
 import Proofs.FactorRemainderTheorem
-import Proofs.FermatsLastTheorem
 import Proofs.FermatTwoSquares
+import Proofs.FermatsLastTheorem
 import Proofs.FourColorTheorem
 import Proofs.FundamentalArithmetic
 import Proofs.FundamentalTheoremAlgebra
@@ -40,10 +40,10 @@ import Proofs.InfinitudePrimes
 import Proofs.IntermediateValueTheorem
 import Proofs.IsoscelesTriangle
 import Proofs.KnightsTourOblique
+import Proofs.LHopital
 import Proofs.LagrangeFourSquares
 import Proofs.LagrangeTheorem
 import Proofs.LeibnizPi
-import Proofs.LHopital
 import Proofs.MathematicalInduction
 import Proofs.MeanValueTheorem
 import Proofs.NavierStokes
