@@ -50,3 +50,4 @@ import Proofs.TriangleInequality
 import Proofs.PythagoreanTriples
 import Proofs.MeanValueTheorem
 import Proofs.BezoutIdentity
+import Proofs.TaylorTheorem
