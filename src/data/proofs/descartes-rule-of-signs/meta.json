@@ -1,0 +1,132 @@
+{
+  "id": "descartes-rule-of-signs",
+  "title": "Descartes' Rule of Signs",
+  "slug": "descartes-rule-of-signs",
+  "description": "The number of positive real roots of a polynomial is either equal to the number of sign changes in the coefficient sequence, or less than it by an even number.",
+  "meta": {
+    "author": "Rene Descartes (1637)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Descartes%27_rule_of_signs",
+    "date": "1637",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DescartesRuleOfSigns.lean",
+    "tags": [
+      "polynomials",
+      "algebra",
+      "real-analysis",
+      "root-counting",
+      "wiedijk-100"
+    ],
+    "badge": "wip",
+    "sorries": 12,
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial",
+        "description": "Polynomial type and basic operations",
+        "module": "Mathlib.Algebra.Polynomial.Basic"
+      },
+      {
+        "theorem": "Polynomial.coeff",
+        "description": "Coefficient access for polynomials",
+        "module": "Mathlib.Algebra.Polynomial.Coeff"
+      },
+      {
+        "theorem": "Polynomial.eval",
+        "description": "Polynomial evaluation at a point",
+        "module": "Mathlib.Algebra.Polynomial.Eval.Basic"
+      },
+      {
+        "theorem": "Polynomial.natDegree",
+        "description": "Natural number degree of polynomial",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Definitions"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of sign changes in coefficient sequences",
+      "Definition of positive root counting with multiplicity",
+      "Main theorem: upper bound on positive roots",
+      "Parity result: difference is even",
+      "Extension to negative roots via p(-x) substitution",
+      "Connection to Rolle's theorem for proof strategy"
+    ],
+    "dateAdded": "12/27/24",
+    "wiedijkNumber": 100
+  },
+  "overview": {
+    "historicalContext": "Rene Descartes published this rule in his groundbreaking work \"La Geometrie\" (1637), which was an appendix to his philosophical treatise \"Discours de la methode.\" This was one of the first systematic methods for determining properties of polynomial roots without explicitly solving the equation.\n\nThe rule was later refined by Carl Friedrich Gauss, who provided a rigorous proof and characterized exactly when the bound is achieved. Jean-Baptiste Fourier and Jacques Charles Francois Sturm extended these ideas to develop complete algorithms for real root isolation.",
+    "problemStatement": "**Descartes' Rule of Signs**: For a polynomial $p(x) = a_n x^n + a_{n-1} x^{n-1} + \\cdots + a_1 x + a_0$ with real coefficients:\n\n1. Count the **sign changes** in the sequence $(a_n, a_{n-1}, \\ldots, a_1, a_0)$, ignoring zero coefficients.\n\n2. The number of **positive real roots** (counted with multiplicity) is either equal to this count, or less than it by an even positive integer.\n\n**Corollary for Negative Roots**: Apply the rule to $p(-x)$ to bound negative roots.\n\nThis is Wiedijk's 100 Theorems #100.",
+    "proofStrategy": "**The Classical Proof via Rolle's Theorem:**\n\n**Step 1: Induction on Degree**\nFor degree 0, there are no positive roots and no sign changes. Assume true for degree < n.\n\n**Step 2: Relate p to p'**\nBy Rolle's theorem, between any two positive roots of p, there is a positive root of p'.\n\n**Step 3: Sign Change Analysis**\nWhen passing from p to p', the number of sign changes decreases by at least one for each root \"lost\". More precisely:\n- If p has k positive roots, p' has at least k-1 positive roots between them\n- The sign changes in p' relate to those in p in a controlled way\n\n**Step 4: Parity Preservation**\nComplex roots come in conjugate pairs, so the count of real roots has the same parity as the degree. Combined with the sign change analysis, the difference must be even.",
+    "keyInsights": [
+      "Sign changes provide an algebraic proxy for analytic root behavior",
+      "Rolle's theorem connects roots of p to roots of p'",
+      "Complex conjugate pairs explain the even difference",
+      "The substitution x -> -x elegantly handles negative roots"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sign-change-definitions",
+      "title": "Sign Change Definitions",
+      "startLine": 61,
+      "endLine": 86,
+      "summary": "Formal definitions of sign, opposite sign, and sign changes between sequence elements."
+    },
+    {
+      "id": "coefficient-sign-changes",
+      "title": "Coefficient Sign Changes",
+      "startLine": 88,
+      "endLine": 102,
+      "summary": "Definitions for extracting coefficient sequences from polynomials and counting their sign changes."
+    },
+    {
+      "id": "positive-roots",
+      "title": "Positive Roots",
+      "startLine": 104,
+      "endLine": 124,
+      "summary": "Definitions for positive roots and root multiplicity counting."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 126,
+      "endLine": 165,
+      "summary": "The main Descartes' Rule of Signs theorems: upper bound, parity, and combined form."
+    },
+    {
+      "id": "negative-roots",
+      "title": "Negative Roots",
+      "startLine": 167,
+      "endLine": 198,
+      "summary": "Extension to negative roots via p(-x) substitution."
+    },
+    {
+      "id": "examples",
+      "title": "Sign Change Examples",
+      "startLine": 200,
+      "endLine": 220,
+      "summary": "Concrete examples demonstrating sign change counting on specific polynomials."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 222,
+      "endLine": 245,
+      "summary": "Special cases: all positive coefficients (no positive roots) and alternating signs (maximum roots)."
+    },
+    {
+      "id": "rolle-connection",
+      "title": "Connection to Rolle's Theorem",
+      "startLine": 247,
+      "endLine": 265,
+      "summary": "The key lemma from Rolle's theorem used in the proof, and its effect on sign changes."
+    }
+  ],
+  "conclusion": {
+    "summary": "Descartes' Rule of Signs provides an elegant and computationally simple method to bound the number of positive and negative real roots of a polynomial. The formalization introduces sign change counting for coefficient sequences, states the main bound and parity results, and extends to negative roots via substitution.",
+    "implications": "**Theoretical Significance:**\n\n**1. Historical Importance**\nOne of the earliest general results about polynomial roots, published in 1637 before the Fundamental Theorem of Algebra was proven.\n\n**2. Algorithmic Applications**\nForms the basis for real root isolation algorithms like Sturm's theorem, Vincent's theorem, and the Continued Fraction method used in computer algebra systems.\n\n**3. Educational Value**\nDemonstrates the deep connection between algebraic properties (coefficient signs) and analytic properties (root locations).\n\n**4. Practical Use**\nQuickly determines existence or non-existence of positive/negative roots without solving.",
+    "openQuestions": [
+      "How can the full proof be formalized using Mathlib's analysis library?",
+      "What is the relationship to Budan's theorem and the Budan-Fourier theorem?",
+      "Can the proof be made constructive to extract root bounds?"
+    ]
+  }
+}

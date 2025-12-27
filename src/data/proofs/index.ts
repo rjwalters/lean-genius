@@ -83,6 +83,7 @@ import { sylowTheoremsData } from './sylow-theorems'
 import { erdosSzekeresData } from './erdos-szekeres'
 import { platonicSolidsData } from './platonic-solids'
 import { ptolemysTheoremData } from './ptolemys-theorem'
+import { descartesRuleOfSignsData } from './descartes-rule-of-signs'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -171,6 +172,7 @@ export const proofs: Record<string, ProofData> = {
   'erdos-szekeres': erdosSzekeresData,
   'platonic-solids': platonicSolidsData,
   'ptolemys-theorem': ptolemysTheoremData,
+  'descartes-rule-of-signs': descartesRuleOfSignsData,
 }
 
 export function getProof(slug: string): ProofData | undefined {
