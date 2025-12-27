@@ -1,5 +1,6 @@
 #!/bin/bash
 # generate-proofs-imports.sh - Auto-generate proofs/Proofs.lean from directory contents
+# Ensures consistent sorting across all platforms using LC_ALL=C
 #
 # Usage: ./.loom/scripts/generate-proofs-imports.sh [--check]
 #
@@ -36,9 +37,10 @@ generate_imports() {
     echo ""
 
     # Find all .lean files, extract module names, and sort them
+    # Use LC_ALL=C for consistent sorting across macOS and Linux
     find "$PROOFS_DIR" -maxdepth 1 -name "*.lean" -type f | \
         xargs -I{} basename {} .lean | \
-        sort | \
+        LC_ALL=C sort | \
         while read -r module; do
             echo "import Proofs.$module"
         done
