@@ -25,6 +25,7 @@ import Proofs.CramersRule
 import Proofs.DeMoivre
 import Proofs.DenumerabilityRationals
 import Proofs.Derangements
+import Proofs.DesarguesTheorem
 import Proofs.DivisibilityBy3
 import Proofs.ErdosSzekeres
 import Proofs.EulerIdentity
@@ -41,6 +42,7 @@ import Proofs.FundamentalTheoremCalculus
 import Proofs.GCDAlgorithm
 import Proofs.GeometricSeries
 import Proofs.GodelIncompleteness
+import Proofs.GreensTheorem
 import Proofs.HaltingProblem
 import Proofs.HarmonicDivergence
 import Proofs.HeronsFormula
@@ -62,6 +64,7 @@ import Proofs.MeanValueTheorem
 import Proofs.NavierStokes
 import Proofs.OnePlusOne
 import Proofs.ParallelPostulateIndependence
+import Proofs.PellEquation
 import Proofs.PerfectNumbers
 import Proofs.PlatonicSolids
 import Proofs.PrimeReciprocalDivergence
@@ -73,6 +76,7 @@ import Proofs.QuadraticReciprocity
 import Proofs.RamanujanSumFallacy
 import Proofs.RamseysTheorem
 import Proofs.RandomizedMaxCut
+import Proofs.RiemannHypothesis
 import Proofs.SchroederBernstein
 import Proofs.Sqrt2
 import Proofs.Sqrt2Irrational
@@ -87,3 +91,4 @@ import Proofs.TriangleAngleSum
 import Proofs.TriangleInequality
 import Proofs.TriangularNumberReciprocals
 import Proofs.WilsonsTheorem
+import Proofs.eTranscendental
