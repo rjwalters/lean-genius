@@ -1,0 +1,118 @@
+{
+  "id": "cayley-hamilton",
+  "title": "Cayley-Hamilton Theorem",
+  "slug": "cayley-hamilton",
+  "description": "Every square matrix satisfies its own characteristic polynomial. If A is an n×n matrix with characteristic polynomial p(λ) = det(λI - A), then p(A) = 0.",
+  "meta": {
+    "author": "Cayley and Hamilton (formalized in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cayley%E2%80%93Hamilton_theorem",
+    "date": "1858",
+    "status": "verified",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "polynomials",
+      "eigenvalues"
+    ],
+    "proofRepoPath": "Proofs/CayleyHamilton.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.aeval_self_charpoly",
+        "description": "The Cayley-Hamilton theorem: p_A(A) = 0",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "Matrix.charpoly_monic",
+        "description": "The characteristic polynomial is monic",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "Matrix.charpoly_natDegree_eq_dim",
+        "description": "The degree equals the matrix dimension",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical presentation with detailed explanations",
+      "Nilpotent matrix characterization via characteristic polynomial",
+      "Examples for identity and zero matrices",
+      "Historical context connecting Cayley and Hamilton"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 49
+  },
+  "overview": {
+    "historicalContext": "The Cayley-Hamilton theorem is named after Arthur Cayley (1821-1895) and William Rowan Hamilton (1805-1865). Hamilton first proved a version for quaternions in 1853, while Cayley stated the theorem for matrices in 1858, though he only verified specific cases. The first complete proof for arbitrary matrices was given by Ferdinand Frobenius in 1878.\n\nThe theorem is fundamental to linear algebra and has applications in control theory, differential equations, and quantum mechanics. It shows that every matrix is a root of a polynomial of bounded degree, which has profound implications for computing matrix functions.",
+    "problemStatement": "Theorem (Cayley-Hamilton): If A is an n×n matrix over a commutative ring, and p(λ) = det(λI - A) is its characteristic polynomial, then:\n\n$$p(A) = A^n - c_{n-1}A^{n-1} - \\cdots - c_1A - c_0I = 0$$\n\nwhere the c_i are the coefficients of the characteristic polynomial.",
+    "proofStrategy": "The proof in Mathlib uses a clever algebraic approach. The key insight is the identity relating the adjugate matrix to the determinant:\n\n$$A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$$\n\nBy working with matrices over the polynomial ring and carefully manipulating the adjugate of (XI - A), the proof shows that evaluating the characteristic polynomial at A yields zero.\n\nThe beauty of this approach is that it's purely algebraic and works over any commutative ring, not just fields.",
+    "keyInsights": [
+      "The characteristic polynomial encodes all eigenvalues (with multiplicity) as its roots",
+      "Cayley-Hamilton implies that A^n can be expressed as a linear combination of I, A, A², ..., A^(n-1)",
+      "When det(A) ≠ 0, the inverse A⁻¹ can be written as a polynomial in A",
+      "For 2×2 matrices: A² - trace(A)·A + det(A)·I = 0, giving the explicit inverse formula",
+      "The minimal polynomial divides the characteristic polynomial, so its degree is at most n"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Overview of the Cayley-Hamilton theorem, its historical context, and the approach using Mathlib."
+    },
+    {
+      "id": "charpoly",
+      "title": "The Characteristic Polynomial",
+      "startLine": 43,
+      "endLine": 71,
+      "summary": "Definition and properties of the characteristic polynomial: monic and degree equals dimension."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Cayley-Hamilton Theorem",
+      "startLine": 73,
+      "endLine": 103,
+      "summary": "The main theorem statement: every matrix satisfies its characteristic polynomial."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 105,
+      "endLine": 140,
+      "summary": "Concrete examples: identity matrix, nilpotent matrices, scalar matrices, zero matrix."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences",
+      "startLine": 142,
+      "endLine": 162,
+      "summary": "Applications: polynomial annihilation, bounds on matrix dimension."
+    },
+    {
+      "id": "2x2-case",
+      "title": "The 2×2 Case",
+      "startLine": 164,
+      "endLine": 187,
+      "summary": "The explicit formula for 2×2 matrices and connection to trace and determinant."
+    },
+    {
+      "id": "significance",
+      "title": "Theoretical Significance",
+      "startLine": 189,
+      "endLine": 250,
+      "summary": "Why Cayley-Hamilton matters: applications to linear algebra, control theory, and eigenvalue theory."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization demonstrates the Cayley-Hamilton theorem using Mathlib's algebraic approach. The theorem states that every square matrix satisfies its own characteristic polynomial, a fundamental result with far-reaching applications.",
+    "implications": "The theorem has important implications for computing matrix functions, analyzing linear dynamical systems, and understanding the algebraic structure of matrix rings. It shows that n×n matrices form a space of 'polynomial dimension' n.",
+    "openQuestions": [
+      "What is the minimal polynomial of a given matrix, and how does it relate to the characteristic polynomial?",
+      "How can Cayley-Hamilton be used to efficiently compute matrix exponentials e^(At)?",
+      "What is the analog of Cayley-Hamilton for infinite-dimensional operators?"
+    ]
+  }
+}
