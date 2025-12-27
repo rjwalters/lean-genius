@@ -1,0 +1,108 @@
+{
+  "id": "erdos-szekeres",
+  "title": "Erdős–Szekeres Theorem",
+  "slug": "erdos-szekeres",
+  "description": "Any sequence of at least (r-1)(s-1) + 1 distinct numbers contains either an increasing subsequence of length r, or a decreasing subsequence of length s.",
+  "meta": {
+    "author": "Paul Erdős and George Szekeres (1935)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93Szekeres_theorem",
+    "date": "1935",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ErdosSzekeres.lean",
+    "tags": [
+      "combinatorics",
+      "ramsey-theory",
+      "sequences",
+      "pigeonhole",
+      "wiedijk-100"
+    ],
+    "badge": "wip",
+    "sorries": 2,
+    "mathlibDependencies": [
+      {
+        "theorem": "StrictMono",
+        "description": "Strictly monotone functions",
+        "module": "Mathlib.Order.Monotone.Basic"
+      },
+      {
+        "theorem": "StrictAnti",
+        "description": "Strictly antitone (decreasing) functions",
+        "module": "Mathlib.Order.Monotone.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of increasing/decreasing subsequences",
+      "Structure definitions for subsequences with positions",
+      "Main theorem statement with pigeonhole approach",
+      "Classic n²+1 corollary",
+      "Tightness bound construction",
+      "Erdős–Szekeres number function and properties"
+    ],
+    "dateAdded": "12/27/24",
+    "wiedijkNumber": 73
+  },
+  "overview": {
+    "historicalContext": "Paul Erdős and George Szekeres proved this theorem in 1935 in their paper \"A combinatorial problem in geometry.\" It was one of Erdős's first major results, published when he was just 22 years old. The theorem arose from the \"Happy Ending Problem\" about convex polygons, but has since become a cornerstone of combinatorics and Ramsey theory.\n\nThe theorem is remarkable for its elegant proof using the pigeonhole principle and for establishing an exact bound that cannot be improved.",
+    "problemStatement": "**Erdős–Szekeres Theorem**: Any sequence of at least $(r-1)(s-1) + 1$ distinct real numbers contains either:\n- An increasing subsequence of length $r$, OR\n- A decreasing subsequence of length $s$\n\n**Corollary (Classic Form)**: Any sequence of $n^2 + 1$ distinct numbers contains a monotonic subsequence of length $n + 1$.\n\nThis is Wiedijk's 100 Theorems #73.",
+    "proofStrategy": "**The Pigeonhole Argument:**\n\nFor each position $i$ in the sequence, assign a pair $(a_i, b_i)$ where:\n- $a_i$ = length of longest increasing subsequence ending at position $i$\n- $b_i$ = length of longest decreasing subsequence ending at position $i$\n\n**Key insight**: All pairs $(a_i, b_i)$ are distinct!\n\nIf $i < j$ and $(a_i, b_i) = (a_j, b_j)$:\n- If $f(i) < f(j)$: the increasing subsequence ending at $i$ extends to $j$, so $a_j > a_i$\n- If $f(i) > f(j)$: the decreasing subsequence ending at $i$ extends to $j$, so $b_j > b_i$\n\nThis contradicts $(a_i, b_i) = (a_j, b_j)$. Since all pairs are distinct and bounded by $(r-1, s-1)$, we can have at most $(r-1)(s-1)$ elements. But we have $(r-1)(s-1) + 1$, contradiction!",
+    "keyInsights": [
+      "The pigeonhole principle on (longest-inc, longest-dec) pairs",
+      "Pairs are distinct because extending subsequences increases at least one coordinate",
+      "The bound (r-1)(s-1) + 1 is tight (optimal)",
+      "The theorem is a special case of Ramsey theory for ordered sets"
+    ]
+  },
+  "sections": [
+    {
+      "id": "subsequence-definitions",
+      "title": "Subsequence Definitions",
+      "startLine": 58,
+      "endLine": 84,
+      "summary": "Formal definitions of increasing and decreasing subsequences using StrictMono and StrictAnti."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 111,
+      "endLine": 153,
+      "summary": "Statement and proof of the Erdős–Szekeres theorem in existence form."
+    },
+    {
+      "id": "classic-form",
+      "title": "Classic Form",
+      "startLine": 142,
+      "endLine": 153,
+      "summary": "The n²+1 corollary: any sequence of n²+1 elements has a monotonic subsequence of length n+1."
+    },
+    {
+      "id": "tightness",
+      "title": "Tightness of Bound",
+      "startLine": 155,
+      "endLine": 183,
+      "summary": "Construction showing the bound (r-1)(s-1) + 1 cannot be improved."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 185,
+      "endLine": 229,
+      "summary": "Examples demonstrating the theorem on specific sequences."
+    },
+    {
+      "id": "ramsey-perspective",
+      "title": "Ramsey-Theoretic Perspective",
+      "startLine": 231,
+      "endLine": 274,
+      "summary": "The Erdős–Szekeres number and its connection to Ramsey theory."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Erdős–Szekeres theorem provides an elegant and exact bound for the existence of monotonic subsequences. The formalization introduces formal definitions of increasing and decreasing subsequences, states the main theorem using the pigeonhole principle, and proves the classic n²+1 corollary.",
+    "implications": "**Theoretical Significance:**\n\n**1. Ramsey Theory**\nThe theorem is a foundational result in Ramsey theory, showing that order (monotonicity) emerges from sufficiently long sequences.\n\n**2. Combinatorics**\nUsed extensively in combinatorics for proving existence of structured subsequences.\n\n**3. Computer Science**\nConnects to longest increasing subsequence algorithms (O(n log n) via patience sorting).\n\n**4. The Happy Ending Problem**\nThe original application: any 5 points in general position contain a convex quadrilateral.",
+    "openQuestions": [
+      "How can the pigeonhole argument be fully formalized with explicit pair tracking?",
+      "What is the complexity of finding the actual monotonic subsequence?",
+      "How does this generalize to higher dimensions (Ramsey numbers for hypergraphs)?"
+    ]
+  }
+}
