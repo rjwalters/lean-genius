@@ -7,6 +7,7 @@ import Proofs.AreaOfCircle
 import Proofs.ArithmeticSeries
 import Proofs.BezoutIdentity
 import Proofs.BinomialTheorem
+import Proofs.BirthdayProblem
 import Proofs.BorsukUlam
 import Proofs.BrouwerFixedPoint
 import Proofs.CantorDiagonalization
@@ -63,5 +64,4 @@ import Proofs.ThreePlaceIdentity
 import Proofs.TriangleAngleSum
 import Proofs.TriangleInequality
 import Proofs.TriangularNumberReciprocals
-import Proofs.BirthdayProblem
 import Proofs.WilsonsTheorem
