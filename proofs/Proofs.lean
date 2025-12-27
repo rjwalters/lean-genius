@@ -60,6 +60,7 @@ import Proofs.OnePlusOne
 import Proofs.PerfectNumbers
 import Proofs.PrimeReciprocalDivergence
 import Proofs.ProductOfSegmentsOfChords
+import Proofs.PtolemysTheorem
 import Proofs.PythagoreanTheorem
 import Proofs.PythagoreanTriples
 import Proofs.QuadraticReciprocity
