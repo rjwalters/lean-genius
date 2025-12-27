@@ -119,7 +119,8 @@ export const WIEDIJK_THEOREMS: Record<number, string> = {
   51: "Wilson's Theorem",
   63: "Cantor's Theorem",
   66: 'Sum of a Geometric Series',
-  74: "The Principle of Mathematical Induction"
+  74: "The Principle of Mathematical Induction",
+  83: "Friendship Theorem"
 }
 
 /**
