@@ -53,3 +53,4 @@ import Proofs.BezoutIdentity
 import Proofs.TaylorTheorem
 import Proofs.LeibnizPi
 import Proofs.CramersRule
+import Proofs.FactorRemainderTheorem
