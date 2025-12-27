@@ -1,0 +1,125 @@
+{
+  "id": "konigsberg",
+  "title": "Königsberg Bridges Problem",
+  "slug": "konigsberg",
+  "description": "Euler's 1736 proof that it's impossible to walk through Königsberg crossing each of its seven bridges exactly once. This problem founded graph theory.",
+  "meta": {
+    "author": "Leonhard Euler (formalized in Lean 4 by Kyle Miller)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg",
+    "date": "1736",
+    "status": "verified",
+    "tags": [
+      "graph-theory",
+      "combinatorics",
+      "classic",
+      "beginner"
+    ],
+    "proofRepoPath": "Proofs/Konigsberg.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Undirected graphs without self-loops",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Walk.IsEulerian",
+        "description": "Predicate for Eulerian trails",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Trails"
+      },
+      {
+        "theorem": "Walk.IsEulerian.card_odd_degree",
+        "description": "Eulerian paths require 0 or 2 odd-degree vertices",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Trails"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical presentation of the graph model",
+      "Detailed vertex and edge labeling matching historical geography",
+      "Complete proof with historical context"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 54
+  },
+  "overview": {
+    "historicalContext": "In 1736, Leonhard Euler solved the Königsberg bridge problem, asking whether one could walk through the city crossing each of its seven bridges exactly once. Königsberg (now Kaliningrad, Russia) was built on both sides of the Pregel River with two islands in the middle, connected by seven bridges.\n\nEuler's key insight was to abstract away the geographical details and focus only on the connection structure. He represented each landmass as a point and each bridge as a line connecting two points. This abstraction created what we now call a graph.\n\nEuler observed that in any successful walk, each intermediate landmass must be entered and exited the same number of times, requiring an even number of bridges. Only the start and end points can have odd numbers of bridges. Since all four Königsberg landmasses had odd numbers of bridges, no such walk exists.\n\nThis paper, 'Solutio problematis ad geometriam situs pertinentis' (Solution of a problem relating to the geometry of position), is considered the first paper in graph theory and an early work in topology.",
+    "problemStatement": "**The Königsberg Bridge Problem:**\n\nGiven a graph $G = (V, E)$ representing the city of Königsberg:\n- 4 vertices representing landmasses (north bank, south bank, and two islands)\n- 7 edges representing bridges\n\nProve that there is no **Eulerian path** - a path that traverses each edge exactly once.\n\n**Euler's Theorem:** A connected graph has an Eulerian path if and only if it has exactly 0 or 2 vertices of odd degree.",
+    "proofStrategy": "Our proof proceeds in three steps:\n\n1. **Model the graph**: Define the Königsberg graph with 11 vertices (4 landmasses + 7 bridges) to create a simple graph without multi-edges.\n\n2. **Calculate degrees**: Show that the four landmass vertices have degrees 5, 3, 3, and 3 - all odd. Bridge vertices have degree 2 (even).\n\n3. **Apply Euler's theorem**: Use Mathlib's `IsEulerian.card_odd_degree` which states that an Eulerian path implies 0 or 2 odd-degree vertices. Since we have 4, no Eulerian path exists.",
+    "keyInsights": [
+      "The problem's solution depends only on the graph structure, not the physical layout - this is the birth of graph theory",
+      "Vertices of odd degree must be endpoints of an Eulerian path (if one exists)",
+      "A connected graph with 0 odd-degree vertices has an Eulerian circuit (returns to start)",
+      "A connected graph with 2 odd-degree vertices has an Eulerian path (between those vertices)",
+      "Any other number of odd-degree vertices means no Eulerian path exists"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Overview of the problem and its significance as the founding of graph theory."
+    },
+    {
+      "id": "vertices",
+      "title": "Graph Vertices",
+      "startLine": 47,
+      "endLine": 82,
+      "summary": "Defining the 11 vertices: 4 landmasses and 7 bridges."
+    },
+    {
+      "id": "edges",
+      "title": "Edge Definition",
+      "startLine": 84,
+      "endLine": 101,
+      "summary": "The edge list connecting bridges to their landmasses."
+    },
+    {
+      "id": "simple-graph",
+      "title": "SimpleGraph Construction",
+      "startLine": 103,
+      "endLine": 117,
+      "summary": "Constructing the graph with symmetry and no self-loops."
+    },
+    {
+      "id": "degrees",
+      "title": "Degree Calculation",
+      "startLine": 119,
+      "endLine": 140,
+      "summary": "Computing the degree of each vertex: landmasses are odd, bridges are even."
+    },
+    {
+      "id": "odd-vertices",
+      "title": "Odd-Degree Vertices",
+      "startLine": 142,
+      "endLine": 159,
+      "summary": "Proving exactly the four landmasses have odd degree."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 161,
+      "endLine": 188,
+      "summary": "The impossibility proof using Euler's theorem on odd-degree vertices."
+    },
+    {
+      "id": "history",
+      "title": "Historical Notes",
+      "startLine": 190,
+      "endLine": 216,
+      "summary": "Euler's original reasoning and the broader impact on mathematics."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization demonstrates how graph theory reduces a seemingly geographical puzzle to a simple counting argument. The Königsberg graph has 4 vertices of odd degree, but an Eulerian path requires exactly 0 or 2. This contradiction proves no solution exists.",
+    "implications": "Euler's insight - abstracting away physical details to focus on structural relationships - became the foundation of graph theory and topology. Today, Eulerian path algorithms are used in DNA sequencing, circuit design, network routing, and many other applications.",
+    "openQuestions": [
+      "How can we efficiently find Eulerian paths when they exist? (Hierholzer's algorithm solves this in linear time)",
+      "What's the analog of Eulerian paths for directed graphs? (In-degree must equal out-degree for all vertices except possibly two)",
+      "How does the problem generalize to hypergraphs or infinite graphs?",
+      "What computational complexity does it take to count all Eulerian paths in a graph?"
+    ]
+  }
+}

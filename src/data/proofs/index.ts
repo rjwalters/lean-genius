@@ -36,6 +36,7 @@ import { subsetCountData } from './subset-count'
 import { divisibilityBy3Data } from './divisibility-by-3'
 import { inclusionExclusionData } from './inclusion-exclusion'
 import { triangleInequalityData } from './triangle-inequality'
+import { konigsbergData } from './konigsberg'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -77,6 +78,7 @@ export const proofs: Record<string, ProofData> = {
   'divisibility-by-3': divisibilityBy3Data,
   'inclusion-exclusion': inclusionExclusionData,
   'triangle-inequality': triangleInequalityData,
+  'konigsberg': konigsbergData,
 }
 
 export function getProof(slug: string): ProofData | undefined {
