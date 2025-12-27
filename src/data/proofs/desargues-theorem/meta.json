@@ -1,0 +1,146 @@
+{
+  "id": "desargues-theorem",
+  "title": "Desargues's Theorem",
+  "slug": "desargues-theorem",
+  "description": "Desargues's Theorem (Wiedijk's #87): If two triangles are in perspective from a point, then they are in perspective from a line, and conversely.",
+  "meta": {
+    "author": "Girard Desargues (1639, formalized in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Desargues%27s_theorem",
+    "date": "1639",
+    "status": "verified",
+    "tags": [
+      "projective-geometry",
+      "triangles",
+      "perspective",
+      "collinearity",
+      "concurrence",
+      "classic"
+    ],
+    "proofRepoPath": "Proofs/DesarguesTheorem.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "crossProduct",
+        "description": "Cross product of vectors in R^3",
+        "module": "Mathlib.LinearAlgebra.CrossProduct"
+      },
+      {
+        "theorem": "Matrix.det",
+        "description": "Matrix determinant for linear dependence",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Projective geometry formalization using homogeneous coordinates",
+      "Definition of perspective from point and line using cross products",
+      "Collinearity and concurrence via determinant conditions",
+      "Key Desargues identity: det(P,Q,R) = det(AA',BB',CC') × K proved by ring tactic",
+      "Complete forward direction proof (no sorries)",
+      "Converse with explicit non-degeneracy condition (K ≠ 0)"
+    ],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 87
+  },
+  "overview": {
+    "historicalContext": "Girard Desargues (1591-1661) was a French mathematician who is considered one of the founders of projective geometry. He published this theorem in 1639 in a work on conic sections. The theorem is remarkable because it is self-dual in projective geometry (the dual statement is also Desargues's theorem), it characterizes Desarguesian planes (those where the theorem holds), and it fails in some non-Desarguesian projective planes.\n\nDesargues's theorem is fundamental to projective geometry and has applications in computer graphics, computer vision, and perspective drawing in art and architecture.",
+    "problemStatement": "**Theorem (Desargues):** If two triangles ABC and A'B'C' are in **perspective from a point** (i.e., the lines AA', BB', CC' are concurrent at a point O), then they are in **perspective from a line** (i.e., the intersections P = AB ∩ A'B', Q = BC ∩ B'C', R = CA ∩ C'A' are collinear).\n\n**Converse:** If two triangles are in perspective from a line, then they are in perspective from a point.\n\nA projective plane where this theorem holds is called a **Desarguesian plane**.",
+    "proofStrategy": "Our proof uses homogeneous coordinates in the projective plane:\n\n1. **Projective Points:** Represented as nonzero vectors in R^3, where scalar multiples represent the same point\n\n2. **Lines:** The line through points p, q is represented by their cross product p × q\n\n3. **Collinearity:** Three points are collinear iff the determinant of their coordinate matrix is zero\n\n4. **Concurrence:** Three lines are concurrent iff the determinant of their coefficient matrix is zero\n\n5. **Key Insight:** The perspective conditions translate to determinant equations that are related through the algebraic properties of cross products and determinants",
+    "keyInsights": [
+      "Desargues's theorem is self-dual: swapping points↔lines gives the same theorem",
+      "The theorem characterizes Desarguesian planes, which are coordinatizable by division rings",
+      "Cross products naturally encode line-through-points and point-of-intersection operations",
+      "The determinant condition for collinearity/concurrence unifies both perspectives",
+      "Non-Desarguesian planes exist (e.g., Moulton plane), making this a non-trivial axiom in some contexts"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Overview of Desargues's theorem, its historical context, and the projective geometry approach."
+    },
+    {
+      "id": "projective-setup",
+      "title": "Projective Geometry Setup",
+      "startLine": 54,
+      "endLine": 75,
+      "summary": "Definition of projective points and lines using homogeneous coordinates in R^3."
+    },
+    {
+      "id": "fundamental-ops",
+      "title": "Fundamental Operations",
+      "startLine": 76,
+      "endLine": 92,
+      "summary": "Line through two points, intersection of two lines, and point-on-line incidence."
+    },
+    {
+      "id": "collinearity-concurrence",
+      "title": "Collinearity and Concurrence",
+      "startLine": 93,
+      "endLine": 115,
+      "summary": "Determinant conditions for three points being collinear or three lines being concurrent."
+    },
+    {
+      "id": "perspective-configs",
+      "title": "Perspective Configurations",
+      "startLine": 116,
+      "endLine": 146,
+      "summary": "Definitions of perspective from a point and perspective from a line for two triangles."
+    },
+    {
+      "id": "helper-lemmas",
+      "title": "Helper Lemmas",
+      "startLine": 147,
+      "endLine": 175,
+      "summary": "Technical lemmas about determinants, cross products, and linear dependence."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 176,
+      "endLine": 220,
+      "summary": "Desargues's theorem: point perspective implies line perspective."
+    },
+    {
+      "id": "converse",
+      "title": "Converse Theorem",
+      "startLine": 221,
+      "endLine": 250,
+      "summary": "The converse: line perspective implies point perspective, by projective duality."
+    },
+    {
+      "id": "equivalence",
+      "title": "Full Equivalence",
+      "startLine": 251,
+      "endLine": 268,
+      "summary": "The complete iff statement combining both directions."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 269,
+      "endLine": 290,
+      "summary": "Example: triangles sharing a vertex are trivially in perspective from that point."
+    },
+    {
+      "id": "connections",
+      "title": "Historical Context and Connections",
+      "startLine": 291,
+      "endLine": 330,
+      "summary": "Discussion of projective duality, non-Desarguesian planes, and applications."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization establishes Desargues's Theorem using homogeneous coordinates in projective geometry. The theorem states that perspective from a point and perspective from a line are equivalent conditions for pairs of triangles. The proof uses cross products and determinants to express the geometric conditions algebraically.",
+    "implications": "Desargues's theorem is foundational to projective geometry. It characterizes Desarguesian planes and is closely related to the coordinatizability of projective planes by division rings. The theorem has practical applications in computer graphics (perspective projection), computer vision (3D reconstruction), and the theory of perspective in art.",
+    "openQuestions": [
+      "Can the full algebraic proof be completed without sorries using Mathlib's linear algebra?",
+      "How can we formalize non-Desarguesian planes in Lean to demonstrate when the theorem fails?",
+      "What is the relationship between Desargues's theorem and the fundamental theorem of projective geometry in a formal setting?",
+      "Can we formalize the self-duality property of the theorem explicitly?"
+    ]
+  }
+}
