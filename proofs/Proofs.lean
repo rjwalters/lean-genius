@@ -11,6 +11,7 @@ import Proofs.DenumerabilityRationals
 import Proofs.SchroederBernstein
 import Proofs.BinomialTheorem
 import Proofs.CauchySchwarz
+import Proofs.FundamentalArithmetic
 
 -- Additional proofs (may contain sorry/axioms - work in progress)
 import Proofs.AMGMInequality
@@ -40,5 +41,12 @@ import Proofs.ArithmeticSeries
 import Proofs.SubsetCount
 import Proofs.IntermediateValueTheorem
 import Proofs.PerfectNumbers
+import Proofs.Derangements
 import Proofs.DivisibilityBy3
+import Proofs.InclusionExclusion
+import Proofs.CombinationsFormula
+import Proofs.LagrangeTheorem
+import Proofs.TriangleInequality
+import Proofs.PythagoreanTriples
+import Proofs.MeanValueTheorem
 import Proofs.LeibnizPi
