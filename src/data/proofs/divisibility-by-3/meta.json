@@ -1,0 +1,126 @@
+{
+  "id": "divisibility-by-3",
+  "title": "Divisibility by 3 Rule",
+  "slug": "divisibility-by-3",
+  "description": "A natural number is divisible by 3 if and only if the sum of its digits is divisible by 3. This ancient divisibility test works because 10 ≡ 1 (mod 3).",
+  "meta": {
+    "author": "Ancient mathematicians (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Divisibility_rule#Divisibility_by_3_or_9",
+    "date": "Ancient",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "divisibility",
+      "modular-arithmetic",
+      "classic",
+      "easy"
+    ],
+    "proofRepoPath": "Proofs/DivisibilityBy3.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.three_dvd_iff",
+        "description": "3 ∣ n ↔ 3 ∣ (digits 10 n).sum",
+        "module": "Mathlib.Data.Nat.Digits"
+      },
+      {
+        "theorem": "Nat.nine_dvd_iff",
+        "description": "9 ∣ n ↔ 9 ∣ (digits 10 n).sum",
+        "module": "Mathlib.Data.Nat.Digits"
+      },
+      {
+        "theorem": "Nat.modEq_three_digits_sum",
+        "description": "n ≡ (digits 10 n).sum [MOD 3]",
+        "module": "Mathlib.Data.Nat.Digits"
+      },
+      {
+        "theorem": "Nat.modEq_nine_digits_sum",
+        "description": "n ≡ (digits 10 n).sum [MOD 9]",
+        "module": "Mathlib.Data.Nat.Digits"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical documentation explaining why the rule works",
+      "Generalized divisibility theorem for arbitrary bases",
+      "Divisibility by 9 as a corollary",
+      "Concrete examples with verification",
+      "Application theorems for iterative digit sums"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 85
+  },
+  "overview": {
+    "historicalContext": "The divisibility-by-3 rule is one of the oldest and most widely known divisibility tests. It has been used across cultures for mental arithmetic and checking calculations for centuries.\n\nThe rule appears in various ancient mathematical traditions, as the observation that 10 ≡ 1 (mod 3) makes the test particularly natural for base-10 arithmetic. This same principle gives us the divisibility-by-9 rule (since 10 ≡ 1 (mod 9) as well) and the technique of 'casting out nines' for verifying arithmetic.\n\nThe mathematical generalization states: for any base b and divisor d where b ≡ 1 (mod d), a number is divisible by d if and only if its digit sum (in base b) is divisible by d.",
+    "problemStatement": "**Divisibility by 3 Rule (Wiedijk #85):**\n\nA natural number $n$ is divisible by 3 if and only if the sum of its decimal digits is divisible by 3.\n\n$$3 | n \\iff 3 | (d_0 + d_1 + d_2 + \\cdots)$$\n\nwhere $n = d_0 + d_1 \\cdot 10 + d_2 \\cdot 10^2 + \\cdots$ is the decimal representation.\n\n**Stronger Form (Congruence):**\n\n$$n \\equiv (d_0 + d_1 + d_2 + \\cdots) \\pmod 3$$\n\n**Corollary (Divisibility by 9):**\n\n$$9 | n \\iff 9 | (d_0 + d_1 + d_2 + \\cdots)$$",
+    "proofStrategy": "The proof relies on the key observation that 10 ≡ 1 (mod 3).\n\n1. **Base Representation**: Any natural number n can be written as:\n   $$n = d_0 + d_1 \\cdot 10 + d_2 \\cdot 10^2 + d_3 \\cdot 10^3 + \\cdots$$\n\n2. **Modular Reduction**: Since $10 \\equiv 1 \\pmod 3$, we have:\n   $$10^k \\equiv 1^k = 1 \\pmod 3$$ for all $k \\geq 0$.\n\n3. **Apply to Each Term**: Taking the equation modulo 3:\n   $$n \\equiv d_0 \\cdot 1 + d_1 \\cdot 1 + d_2 \\cdot 1 + \\cdots \\pmod 3$$\n   $$n \\equiv d_0 + d_1 + d_2 + \\cdots \\pmod 3$$\n\n4. **Conclude**: Therefore $3 | n$ if and only if $3 | (d_0 + d_1 + d_2 + \\cdots)$.\n\nThe same argument works for 9 since $10 \\equiv 1 \\pmod 9$ as well.",
+    "keyInsights": [
+      "10 ≡ 1 (mod 3) is the fundamental reason the rule works",
+      "The same principle gives divisibility by 9 (casting out nines)",
+      "The rule generalizes: for base b and divisor d with b ≡ 1 (mod d)",
+      "Iteratively summing digits gives the 'digital root'",
+      "This is one of the most practical mental arithmetic techniques"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Overview of the divisibility by 3 rule and its significance as Wiedijk #85."
+    },
+    {
+      "id": "key-insight",
+      "title": "The Key Insight",
+      "startLine": 42,
+      "endLine": 62,
+      "summary": "Explanation of why the rule works: 10 ≡ 1 (mod 3)."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Main Theorems",
+      "startLine": 64,
+      "endLine": 97,
+      "summary": "The divisibility by 3 and 9 rules with both divisibility and congruence forms."
+    },
+    {
+      "id": "general-principle",
+      "title": "General Principle",
+      "startLine": 99,
+      "endLine": 117,
+      "summary": "Generalization to arbitrary bases and divisors."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 119,
+      "endLine": 177,
+      "summary": "Concrete examples verifying the divisibility rules."
+    },
+    {
+      "id": "proof-explanation",
+      "title": "Why It Works",
+      "startLine": 179,
+      "endLine": 205,
+      "summary": "Detailed explanation of the proof idea with modular arithmetic examples."
+    },
+    {
+      "id": "applications",
+      "title": "Applications",
+      "startLine": 207,
+      "endLine": 228,
+      "summary": "Theorems for iterative digit sums and transitivity properties."
+    }
+  ],
+  "conclusion": {
+    "summary": "The divisibility by 3 rule is fully verified using Mathlib's digit representation infrastructure. We prove both the divisibility and congruence forms, extend to divisibility by 9, and provide a generalized theorem for arbitrary bases.",
+    "implications": "This proof demonstrates several important concepts:\n\n1. **Practical Mental Arithmetic**: The rule is one of the most useful divisibility tests, easily computed without paper.\n\n2. **Modular Arithmetic**: The proof showcases how modular equivalences propagate through arithmetic operations.\n\n3. **Generalization**: The same principle works for any (base, divisor) pair where base ≡ 1 (mod divisor). For example, in base 8 (octal), the rule works for divisibility by 7.\n\n4. **Casting Out Nines**: The divisibility-by-9 corollary forms the basis of the ancient technique for checking arithmetic calculations.\n\n5. **Digital Root**: Iteratively applying the rule gives the digital root, useful in numerology and checksum algorithms.",
+    "openQuestions": [
+      "What other divisibility rules have similarly elegant proofs?",
+      "How do divisibility rules extend to different number bases?",
+      "What's the most efficient algorithm for computing digital roots?",
+      "Are there practical applications of the generalized divisibility theorem?"
+    ]
+  }
+}

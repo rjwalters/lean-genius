@@ -1,0 +1,126 @@
+{
+  "id": "perfect-numbers",
+  "title": "Perfect Number Theorem",
+  "slug": "perfect-numbers",
+  "description": "The Euclid-Euler theorem: a number is even and perfect if and only if it has the form 2^(p-1)(2^p - 1) where 2^p - 1 is a Mersenne prime.",
+  "meta": {
+    "author": "Euclid (300 BCE), Euler (1747)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Perfect_number",
+    "date": "300 BCE / 1747",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "perfect-numbers",
+      "mersenne-primes",
+      "divisors",
+      "classic",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/PerfectNumbers.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Theorems100.Nat.perfect_two_pow_mul_mersenne_of_prime",
+        "description": "Euclid's theorem: Mersenne prime yields perfect number",
+        "module": "Archive.Wiedijk100Theorems.PerfectNumbers"
+      },
+      {
+        "theorem": "Theorems100.Nat.eq_two_pow_mul_prime_mersenne_of_even_perfect",
+        "description": "Euler's theorem: even perfect numbers have Mersenne form",
+        "module": "Archive.Wiedijk100Theorems.PerfectNumbers"
+      },
+      {
+        "theorem": "Theorems100.Nat.even_and_perfect_iff",
+        "description": "Complete characterization of even perfect numbers",
+        "module": "Archive.Wiedijk100Theorems.PerfectNumbers"
+      },
+      {
+        "theorem": "ArithmeticFunction.sigma",
+        "description": "Sum of divisors function",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Misc"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical documentation connecting Euclid's ancient result with Euler's modern proof",
+      "Examples verifying 6, 28, 496, and 8128 are perfect",
+      "Discussion of the open problem of odd perfect numbers",
+      "Explanation of the multiplicative property of sigma"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 70
+  },
+  "overview": {
+    "historicalContext": "The Perfect Number Theorem spans over 2000 years of mathematical history:\n\n- **Euclid (300 BCE)**: In Elements Book IX, Proposition 36, Euclid proved that if 2^p - 1 is prime, then 2^(p-1)(2^p - 1) is perfect. This gave a recipe for generating perfect numbers from Mersenne primes.\n\n- **Marin Mersenne (1644)**: Compiled a list of primes p for which 2^p - 1 is prime. These 'Mersenne primes' are now named after him, though his list contained errors.\n\n- **Leonhard Euler (1747)**: Proved the converse - every EVEN perfect number must have Euclid's form. This completed the characterization of even perfect numbers.\n\n- **Present Day**: Whether odd perfect numbers exist remains one of the oldest unsolved problems in mathematics. If one exists, it must be astronomically large (> 10^1500) with very specific structural constraints.\n\nThe connection between perfect numbers and Mersenne primes means that discovering new Mersenne primes (via projects like GIMPS) yields new perfect numbers.",
+    "problemStatement": "A number n is *perfect* if it equals the sum of its proper divisors:\n$$n = \\sum_{d | n, d < n} d$$\n\nEquivalently, if $\\sigma(n) = 2n$ where $\\sigma$ is the sum-of-divisors function.\n\n**The Euclid-Euler Theorem**:\n\nA natural number n is even and perfect if and only if $n = 2^{p-1}(2^p - 1)$ where $2^p - 1$ is a Mersenne prime.\n\n**Examples**:\n- 6 = 1 + 2 + 3 (p = 2, Mersenne prime 3)\n- 28 = 1 + 2 + 4 + 7 + 14 (p = 3, Mersenne prime 7)\n- 496 = 2^4 × 31 (p = 5, Mersenne prime 31)\n- 8128 = 2^6 × 127 (p = 7, Mersenne prime 127)",
+    "proofStrategy": "**Euclid's Direction** (Mersenne prime → perfect):\n\nLet M = 2^p - 1 be a Mersenne prime. We show n = 2^(p-1) × M is perfect.\n\n1. Since gcd(2^(p-1), M) = 1, the sigma function is multiplicative:\n   σ(n) = σ(2^(p-1)) × σ(M)\n\n2. For powers of 2: σ(2^(p-1)) = 1 + 2 + ... + 2^(p-1) = 2^p - 1 = M\n\n3. For prime M: σ(M) = 1 + M = 2^p\n\n4. Therefore: σ(n) = M × 2^p = 2 × (2^(p-1) × M) = 2n\n\n**Euler's Direction** (even perfect → Mersenne form):\n\n1. Write n = 2^k × m where m is odd and k ≥ 1\n\n2. Since n is perfect: σ(n) = 2n = 2^(k+1) × m\n\n3. Multiplicativity: σ(n) = σ(2^k) × σ(m) = (2^(k+1) - 1) × σ(m)\n\n4. Comparing: (2^(k+1) - 1) × σ(m) = 2^(k+1) × m\n\n5. This forces m = 2^(k+1) - 1 and σ(m) = m + 1, meaning m is prime.\n\n6. Thus n = 2^k × (2^(k+1) - 1) with 2^(k+1) - 1 prime.",
+    "keyInsights": [
+      "Perfect numbers are intimately connected to Mersenne primes via the sigma function",
+      "The multiplicativity of sigma is the key algebraic property enabling the proof",
+      "Euler's converse required understanding the divisibility properties of sigma",
+      "No odd perfect numbers are known - this 2000+ year old question remains open",
+      "Only 51 Mersenne primes (and thus perfect numbers) are currently known"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Introduction and Definitions",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Historical context, Mathlib dependencies, and the definition of perfect numbers."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 54,
+      "endLine": 72,
+      "summary": "Perfect numbers via sigma function and Mersenne number definitions."
+    },
+    {
+      "id": "euclid",
+      "title": "Euclid's Theorem",
+      "startLine": 74,
+      "endLine": 88,
+      "summary": "If 2^(k+1) - 1 is prime, then 2^k × (2^(k+1) - 1) is perfect."
+    },
+    {
+      "id": "euler",
+      "title": "Euler's Theorem",
+      "startLine": 90,
+      "endLine": 101,
+      "summary": "Every even perfect number has the Mersenne form."
+    },
+    {
+      "id": "characterization",
+      "title": "Complete Characterization",
+      "startLine": 103,
+      "endLine": 112,
+      "summary": "The Euclid-Euler theorem as a biconditional."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 114,
+      "endLine": 148,
+      "summary": "Verification that 6, 28, 496, and 8128 are perfect numbers."
+    },
+    {
+      "id": "significance",
+      "title": "Why This Matters",
+      "startLine": 150,
+      "endLine": 175,
+      "summary": "Historical significance, open problems, and connections to modern number theory."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Perfect Number Theorem is now fully verified using Mathlib's number theory infrastructure. We provide both directions of the Euclid-Euler characterization along with pedagogical examples demonstrating the first four perfect numbers.",
+    "implications": "The theorem has profound implications:\n\n1. **Perfect Number Generation**: Given a Mersenne prime, we can immediately compute the corresponding perfect number.\n\n2. **Rarity of Perfection**: Only 51 perfect numbers are known (as of 2024), corresponding to the 51 known Mersenne primes.\n\n3. **Connection to GIMPS**: The Great Internet Mersenne Prime Search discovers new Mersenne primes, each yielding a new perfect number.\n\n4. **Open Problems**: The existence of odd perfect numbers remains unsolved after 2000+ years. If one exists, it must satisfy incredibly restrictive conditions.\n\n5. **Multiplicative Functions**: The proof showcases the power of multiplicative arithmetic functions in number theory.",
+    "openQuestions": [
+      "Do odd perfect numbers exist? This is one of the oldest open problems in mathematics.",
+      "Are there infinitely many even perfect numbers? Equivalently, are there infinitely many Mersenne primes?",
+      "What is the distribution of Mersenne primes among the primes?",
+      "Can perfect numbers be characterized in other algebraic structures?"
+    ]
+  }
+}

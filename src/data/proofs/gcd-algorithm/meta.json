@@ -1,0 +1,143 @@
+{
+  "id": "gcd-algorithm",
+  "title": "Greatest Common Divisor Algorithm",
+  "slug": "gcd-algorithm",
+  "description": "The Euclidean algorithm correctly computes the GCD: gcd(a, b) = gcd(b, a mod b). One of the oldest algorithms still in use, dating back to Euclid's Elements (c. 300 BCE).",
+  "meta": {
+    "author": "Euclid (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euclidean_algorithm",
+    "date": "c. 300 BCE",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "algorithms",
+      "divisibility",
+      "classic",
+      "beginner"
+    ],
+    "proofRepoPath": "Proofs/GCDAlgorithm.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.gcd",
+        "description": "The GCD function for natural numbers",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.gcd_rec",
+        "description": "gcd(a, b) = gcd(b, a mod b)",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.gcd_dvd_left",
+        "description": "gcd(a, b) divides a",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.gcd_dvd_right",
+        "description": "gcd(a, b) divides b",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.dvd_gcd",
+        "description": "d | a and d | b implies d | gcd(a, b)",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.gcd_eq_gcd_ab",
+        "description": "Bezout's identity: gcd(a, b) = a * x + b * y",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical documentation explaining the algorithm's 2300-year history",
+      "Multiple theorem formulations covering all GCD properties",
+      "Worked examples tracing the algorithm step-by-step",
+      "Connection to Euclidean domains and Bezout's identity",
+      "Complexity analysis with Gabriel Lame's theorem"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 69
+  },
+  "overview": {
+    "historicalContext": "The Euclidean algorithm is one of the oldest algorithms still in common use today:\n\n- **Euclid's Elements (c. 300 BCE)**: Described in Book VII, Propositions 1-2, using repeated subtraction\n- **Ancient China**: The algorithm appears in the Chinese mathematical text 'Nine Chapters on the Mathematical Art' (c. 200 BCE)\n- **India**: Described by Aryabhata (c. 500 CE) in his Aryabhatiya\n- **Modern Form**: The modulo-based formulation we use today is equivalent but more efficient\n\nThe algorithm has been continuously used for over 2,300 years, making it perhaps the oldest non-trivial algorithm still in practical use.",
+    "problemStatement": "**The Euclidean Algorithm**:\n\nCompute the greatest common divisor (GCD) of two natural numbers a and b.\n\n**Recursive Definition**:\n$$\\gcd(a, b) = \\begin{cases} a & \\text{if } b = 0 \\\\ \\gcd(b, a \\mod b) & \\text{otherwise} \\end{cases}$$\n\n**What We Prove**:\n1. **Correctness**: The algorithm returns a value that divides both inputs\n2. **Maximality**: The result is the *greatest* such divisor\n3. **Termination**: The algorithm always halts (via well-founded recursion)\n4. **Bezout's Identity**: gcd(a, b) can be expressed as ax + by for some integers x, y",
+    "proofStrategy": "The proof of correctness relies on two key observations:\n\n**1. Common Divisors Are Preserved**:\n- If d | a and d | b, then d | (a mod b) since a mod b = a - q*b\n- Conversely, if d | b and d | (a mod b), then d | a\n- Thus gcd(a, b) and gcd(b, a mod b) have the same common divisors\n\n**2. Termination via Well-Founded Recursion**:\n- Since a mod b < b (for b > 0), the second argument strictly decreases\n- The natural numbers are well-founded under <\n- Therefore the recursion must terminate\n\n**3. Base Case**:\n- When b = 0, gcd(a, 0) = a (every number divides 0, so a is the GCD)\n\nThe extended Euclidean algorithm additionally tracks Bezout coefficients, giving us x and y such that gcd(a, b) = ax + by.",
+    "keyInsights": [
+      "The algorithm exploits that common divisors are preserved under the mod operation",
+      "Termination is guaranteed because a mod b < b for b > 0",
+      "The worst case (consecutive Fibonacci numbers) takes only O(log n) steps",
+      "Bezout's identity shows GCD can be written as a linear combination",
+      "The algorithm generalizes to any Euclidean domain (polynomials, Gaussian integers, etc.)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Overview of the Euclidean algorithm, its ancient history, and connection to Wiedijk's 100 Theorems."
+    },
+    {
+      "id": "core-algorithm",
+      "title": "Core Algorithm",
+      "startLine": 56,
+      "endLine": 82,
+      "summary": "The fundamental recurrence relation and base case that define the Euclidean algorithm."
+    },
+    {
+      "id": "divisibility",
+      "title": "Divisibility Properties",
+      "startLine": 84,
+      "endLine": 96,
+      "summary": "Proof that gcd(a, b) divides both a and b."
+    },
+    {
+      "id": "greatest",
+      "title": "Greatest Property",
+      "startLine": 98,
+      "endLine": 122,
+      "summary": "Proof that gcd(a, b) is the greatest common divisor, with complete characterization."
+    },
+    {
+      "id": "properties",
+      "title": "Key Properties",
+      "startLine": 124,
+      "endLine": 147,
+      "summary": "Associativity, commutativity, identity element, and related GCD properties."
+    },
+    {
+      "id": "coprimality",
+      "title": "Coprimality",
+      "startLine": 149,
+      "endLine": 158,
+      "summary": "Definition and examples of coprime numbers."
+    },
+    {
+      "id": "bezout",
+      "title": "Bezout's Identity",
+      "startLine": 160,
+      "endLine": 180,
+      "summary": "The extended Euclidean algorithm and Bezout coefficients."
+    },
+    {
+      "id": "examples",
+      "title": "Worked Examples",
+      "startLine": 182,
+      "endLine": 202,
+      "summary": "Step-by-step examples tracing the algorithm execution."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Euclidean algorithm is now fully verified using Mathlib's GCD infrastructure. We prove correctness (the result divides both inputs), maximality (it's the greatest such divisor), and provide the extended algorithm via Bezout's identity.",
+    "implications": "The Euclidean algorithm has profound implications across mathematics and computer science:\n\n1. **Cryptography**: Essential for RSA key generation and modular arithmetic operations\n2. **Computer Algebra**: Foundation for polynomial GCD and simplification algorithms\n3. **Continued Fractions**: The algorithm produces continued fraction expansions\n4. **Linear Diophantine Equations**: Bezout's identity solves ax + by = c when c is divisible by gcd(a,b)\n5. **Euclidean Domains**: The algorithm generalizes to any ring with a Euclidean function",
+    "openQuestions": [
+      "What is the average-case complexity of the Euclidean algorithm?",
+      "How do binary GCD algorithms compare in practice?",
+      "Can we extend this to more exotic number systems?",
+      "What is the connection to continued fractions and best rational approximations?"
+    ]
+  }
+}
