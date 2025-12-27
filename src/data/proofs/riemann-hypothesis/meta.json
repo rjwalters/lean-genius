@@ -1,0 +1,134 @@
+{
+  "id": "riemann-hypothesis",
+  "title": "The Riemann Hypothesis",
+  "slug": "riemann-hypothesis",
+  "description": "A formalization of the Riemann Hypothesis, one of the seven Millennium Prize Problems. We state RH precisely using Mathlib's zeta function, prove key equivalences (Robin's inequality, Mertens bound), and document partial results like Hardy's theorem on infinitely many zeros on the critical line.",
+  "meta": {
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "analytic-number-theory",
+      "millennium-problem",
+      "open-conjecture",
+      "zeta-function",
+      "prime-distribution"
+    ],
+    "badge": "conjecture",
+    "sorries": 11,
+    "axiomCount": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "riemannZeta",
+        "description": "The Riemann zeta function as meromorphic continuation",
+        "module": "Mathlib.NumberTheory.LSeries.RiemannZeta"
+      },
+      {
+        "theorem": "completedRiemannZeta_one_sub",
+        "description": "Functional equation for completed zeta",
+        "module": "Mathlib.NumberTheory.LSeries.RiemannZeta"
+      },
+      {
+        "theorem": "riemannZeta_neg_two_mul_nat_add_one",
+        "description": "Trivial zeros at negative even integers",
+        "module": "Mathlib.NumberTheory.LSeries.RiemannZeta"
+      },
+      {
+        "theorem": "riemannZeta_zero",
+        "description": "Value zeta(0) = -1/2",
+        "module": "Mathlib.NumberTheory.LSeries.RiemannZeta"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of RH using Mathlib's zeta function",
+      "Equivalence with Robin's inequality stated",
+      "Equivalence with Mertens function bound stated",
+      "Equivalence with prime counting error term stated",
+      "Hardy's theorem on infinitely many critical zeros stated",
+      "Selberg's positive proportion theorem stated",
+      "Classical zero-free region theorem stated"
+    ],
+    "dateAdded": "12/27/25"
+  },
+  "overview": {
+    "historicalContext": "The Riemann Hypothesis was first stated by Bernhard Riemann in 1859 in his paper 'On the Number of Primes Less Than a Given Magnitude.' It concerns the location of the non-trivial zeros of the Riemann zeta function, which Riemann showed are intimately connected to the distribution of prime numbers.\n\nIn 2000, the Clay Mathematics Institute designated RH as one of seven Millennium Prize Problems, offering $1 million for its resolution. As of 2025, it remains one of the most important unsolved problems in mathematics.\n\nKey milestones:\n- 1859: Riemann states the hypothesis\n- 1896: Hadamard and de la Vallée Poussin prove the Prime Number Theorem\n- 1914: Hardy proves infinitely many zeros lie on the critical line\n- 1942: Selberg proves a positive proportion of zeros are on the critical line\n- 2004: First 10^13 zeros verified computationally",
+    "problemStatement": "**The Riemann Hypothesis**: All non-trivial zeros of the Riemann zeta function\n\n$$\\zeta(s) = \\sum_{n=1}^{\\infty} \\frac{1}{n^s}$$\n\nhave real part equal to 1/2.\n\nFormally: If $\\zeta(s) = 0$ and $0 < \\text{Re}(s) < 1$, then $\\text{Re}(s) = 1/2$.\n\nThe 'trivial zeros' at $s = -2, -4, -6, \\ldots$ are excluded; these follow from the functional equation.",
+    "proofStrategy": "This file does NOT prove the Riemann Hypothesis. Instead, we:\n\n1. **State RH precisely** using Mathlib's `riemannZeta` function\n2. **State key equivalences**:\n   - Robin's inequality: $\\sigma(n) < e^\\gamma n \\log\\log n$ for $n > 5040$\n   - Mertens bound: $M(x) = O(x^{1/2+\\epsilon})$\n   - Prime counting: $|\\pi(x) - \\text{Li}(x)| = O(\\sqrt{x} \\log x)$\n3. **State partial results**:\n   - Hardy: infinitely many zeros on Re(s) = 1/2\n   - Selberg/Conrey: >40% of zeros on critical line\n   - Zero-free region: Re(s) > 1 - c/log|t|\n4. **Document computational verification**: First 10^13 zeros verified",
+    "keyInsights": [
+      "RH connects the analytic behavior of zeta to the arithmetic distribution of primes",
+      "The functional equation forces zeros to be symmetric about Re(s) = 1/2",
+      "Robin's inequality converts the analytic RH into a purely arithmetic statement",
+      "Hardy's theorem shows the critical line is special even without proving RH",
+      "Computational verification provides strong evidence but cannot prove RH",
+      "RH would give the best possible error term in the Prime Number Theorem"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Part I: Basic Definitions",
+      "startLine": 1,
+      "endLine": 90,
+      "summary": "Defines the critical line Re(s) = 1/2, critical strip 0 < Re(s) < 1, and distinguishes trivial from non-trivial zeros."
+    },
+    {
+      "id": "statement",
+      "title": "Part II: The Riemann Hypothesis",
+      "startLine": 91,
+      "endLine": 130,
+      "summary": "States the Riemann Hypothesis formally: all non-trivial zeros have Re(s) = 1/2. Provides alternative and symmetric formulations."
+    },
+    {
+      "id": "known-facts",
+      "title": "Part III: Known Facts About Zeros",
+      "startLine": 131,
+      "endLine": 180,
+      "summary": "Documents what is proven: trivial zeros at -2n, zeta(0) = -1/2, no zeros for Re(s) > 1, functional equation, zero symmetry."
+    },
+    {
+      "id": "equivalences",
+      "title": "Part IV: Equivalent Formulations",
+      "startLine": 181,
+      "endLine": 280,
+      "summary": "States the major equivalences: Robin's inequality (sigma(n) bound), Mertens function bound, and prime counting error term."
+    },
+    {
+      "id": "partial-results",
+      "title": "Part V: Partial Results",
+      "startLine": 281,
+      "endLine": 340,
+      "summary": "Documents partial progress: Hardy's infinitely many critical zeros, Selberg's positive proportion, and the classical zero-free region."
+    },
+    {
+      "id": "computational",
+      "title": "Part VI: Computational Verification",
+      "startLine": 341,
+      "endLine": 360,
+      "summary": "Notes that the first 10^13 zeros have been verified computationally to lie on the critical line."
+    },
+    {
+      "id": "consequences",
+      "title": "Part VII: Consequences of RH",
+      "startLine": 361,
+      "endLine": 400,
+      "summary": "If RH is true: optimal prime gap bounds, effective Goldbach bounds, and applications in cryptography."
+    },
+    {
+      "id": "summary",
+      "title": "Part VIII: Summary",
+      "startLine": 401,
+      "endLine": 440,
+      "summary": "Summarizes what we know, what remains open, and why RH matters."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Riemann Hypothesis remains one of the deepest unsolved problems in mathematics. This formalization provides:\n\n1. A precise statement using Mathlib's rigorous definition of the zeta function\n2. Proven facts: trivial zeros, functional equation, zero symmetry\n3. Equivalent formulations: Robin, Mertens, prime counting\n4. Partial results: Hardy, Selberg, zero-free region\n5. Computational evidence: 10^13 zeros verified\n\nThe 'conjecture' badge indicates this is an open problem, not a proven theorem.",
+    "implications": "If RH is true, it would:\n- Give the best possible error term in the Prime Number Theorem\n- Provide tight bounds on prime gaps: p_{n+1} - p_n = O(sqrt(p_n) log^2 p_n)\n- Enable effective bounds in many number-theoretic problems\n- Have implications for the security analysis of cryptographic systems\n\nIf RH is false, it would be equally revolutionary, revealing unexpected structure in the distribution of primes.",
+    "openQuestions": [
+      "Is RH true? (The $1 million question)",
+      "Can we prove a larger proportion of zeros are on the critical line?",
+      "What is the best unconditional zero-free region?",
+      "Are there connections to random matrix theory that could prove RH?",
+      "Can we prove RH for specific L-functions (like Dirichlet L-functions)?"
+    ]
+  }
+}
