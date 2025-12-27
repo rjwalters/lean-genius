@@ -52,6 +52,7 @@ import Proofs.LHopital
 import Proofs.LagrangeFourSquares
 import Proofs.LagrangeTheorem
 import Proofs.LawOfCosines
+import Proofs.LawsOfLargeNumbers
 import Proofs.LeibnizPi
 import Proofs.MathematicalInduction
 import Proofs.MeanValueTheorem
