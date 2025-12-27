@@ -37,6 +37,7 @@ import { subsetCountData } from './subset-count'
 import { divisibilityBy3Data } from './divisibility-by-3'
 import { inclusionExclusionData } from './inclusion-exclusion'
 import { triangleInequalityData } from './triangle-inequality'
+import { konigsbergData } from './konigsberg'
 import { productOfSegmentsOfChordsData } from './product-of-segments-of-chords'
 import { lawOfCosinesData } from './law-of-cosines'
 import { birthdayProblemData } from './birthday-problem'
@@ -106,6 +107,7 @@ export const proofs: Record<string, ProofData> = {
   'divisibility-by-3': divisibilityBy3Data,
   'inclusion-exclusion': inclusionExclusionData,
   'triangle-inequality': triangleInequalityData,
+  'konigsberg': konigsbergData,
   'product-of-segments-of-chords': productOfSegmentsOfChordsData,
   'law-of-cosines': lawOfCosinesData,
   'birthday-problem': birthdayProblemData,
