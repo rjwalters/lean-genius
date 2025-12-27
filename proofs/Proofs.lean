@@ -7,6 +7,7 @@ import Proofs.AreaOfCircle
 import Proofs.ArithmeticSeries
 import Proofs.BezoutIdentity
 import Proofs.BinomialTheorem
+import Proofs.BertrandsPostulate
 import Proofs.BirthdayProblem
 import Proofs.BorsukUlam
 import Proofs.BrouwerFixedPoint
