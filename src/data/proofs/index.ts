@@ -5,6 +5,7 @@ import { knightsTourObliqueData } from './knights-tour-oblique'
 import { russell1Plus1Data } from './russell-1-plus-1'
 import { cantorDiagonalizationData } from './cantor-diagonalization'
 import { cayleyHamiltonData } from './cayley-hamilton'
+import { cevasTheoremData } from './cevas-theorem'
 import { fundamentalTheoremCalculusData } from './fundamental-theorem-calculus'
 import { fundamentalTheoremAlgebraData } from './fundamental-theorem-algebra'
 import { godelIncompletenessData } from './godel-incompleteness'
@@ -86,6 +87,7 @@ export const proofs: Record<string, ProofData> = {
   'russell-1-plus-1': russell1Plus1Data,
   'cantor-diagonalization': cantorDiagonalizationData,
   'cayley-hamilton': cayleyHamiltonData,
+  'cevas-theorem': cevasTheoremData,
   'fundamental-theorem-calculus': fundamentalTheoremCalculusData,
   'fundamental-theorem-algebra': fundamentalTheoremAlgebraData,
   'godel-incompleteness': godelIncompletenessData,
