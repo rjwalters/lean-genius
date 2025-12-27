@@ -1,0 +1,84 @@
+{
+  "id": "bertrands-postulate",
+  "title": "Bertrand's Postulate",
+  "slug": "bertrands-postulate",
+  "description": "For every integer n > 1, there exists a prime p such that n < p ≤ 2n. Conjectured by Bertrand (1845), first proved by Chebyshev (1852), with an elegant elementary proof by Erdős (1932).",
+  "meta": {
+    "author": "Chebyshev (1852), Erdős (1932)",
+    "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/Bertrand.html",
+    "date": "1852",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BertrandsPostulate.lean",
+    "tags": [
+      "number-theory",
+      "primes",
+      "prime-gaps",
+      "classic",
+      "erdos"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.exists_prime_lt_and_le_two_mul",
+        "description": "Main Bertrand's Postulate theorem",
+        "module": "Mathlib.NumberTheory.Bertrand"
+      },
+      {
+        "theorem": "Nat.bertrand",
+        "description": "Alias for the main theorem",
+        "module": "Mathlib.NumberTheory.Bertrand"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical wrapper with clear documentation",
+      "Corollaries: prime gaps are bounded, infinitude of primes via Bertrand",
+      "Connection to Prime Number Theorem explained"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 98
+  },
+  "overview": {
+    "historicalContext": "Joseph Bertrand conjectured this result in 1845 after verifying it computationally for all integers up to 3 million. Pafnuty Chebyshev provided the first proof in 1852 using analytic methods involving the Chebyshev functions. In 1932, the 19-year-old Paul Erdős published an elegant elementary proof that avoided complex analysis entirely, relying instead on clever analysis of the central binomial coefficient.\n\nThe theorem is sometimes called the \"Bertrand-Chebyshev theorem\" in honor of both the conjecturer and first prover. Erdős's proof became his first published paper and launched his legendary mathematical career.\n\nBertrand's Postulate is a stepping stone toward the Prime Number Theorem, which gives the asymptotic density of primes. While Bertrand guarantees at least one prime in (n, 2n], the PNT tells us there are approximately n/ln(n) primes below n.",
+    "problemStatement": "**Bertrand's Postulate**: For every positive integer $n$, there exists a prime $p$ such that:\n\n$$n < p \\leq 2n$$\n\nEquivalently: between any positive integer and its double, there is always at least one prime number.\n\nThis gives an explicit upper bound on prime gaps: if $p$ is prime, the next prime is at most $2p$.",
+    "proofStrategy": "The Mathlib proof follows Erdős's elementary approach:\n\n1. **Central Binomial Coefficient**: Analyze $\\binom{2n}{n} = \\frac{(2n)!}{(n!)^2}$\n\n2. **Prime Factorization**: Examine which primes divide $\\binom{2n}{n}$ and with what multiplicity\n\n3. **Upper Bound**: Show that if no prime exists in $(n, 2n]$, then the prime factorization of $\\binom{2n}{n}$ is \"too small\"\n\n4. **Lower Bound**: Use the inequality $4^n / (2n) < \\binom{2n}{n}$\n\n5. **Contradiction**: For large $n$ (specifically $n \\geq 512$), these bounds conflict\n\n6. **Small Cases**: Handle $n < 512$ by exhibiting an explicit descending chain of primes:\n   983, 491, 241, 127, 61, 31, 17, 11, 7, 5, 3, 2\n   where each prime is more than half but at most double the next.",
+    "keyInsights": [
+      "The central binomial coefficient $\\binom{2n}{n}$ encodes information about primes in $(n, 2n]$",
+      "Primes in $(n, 2n]$ divide $\\binom{2n}{n}$ exactly once (they appear in $(2n)!$ but not in $(n!)^2$)",
+      "The absence of such primes would make $\\binom{2n}{n}$ \"too small\" compared to its known lower bound",
+      "Erdős's proof is entirely elementary—no complex analysis or calculus required"
+    ]
+  },
+  "sections": [
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 52,
+      "endLine": 67,
+      "summary": "Bertrand's Postulate: for any positive n, there exists a prime p with n < p ≤ 2n. Includes an alias using Mathlib's naming convention."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries",
+      "startLine": 69,
+      "endLine": 106,
+      "summary": "Consequences including: existence of primes in intervals, prime gaps are bounded, and infinitude of primes (derived from Bertrand)."
+    },
+    {
+      "id": "large-n",
+      "title": "Stronger Bounds for Large n",
+      "startLine": 108,
+      "endLine": 119,
+      "summary": "The theorem for n ≥ 512, where the Erdős-style analysis of C(2n,n) applies directly."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization wraps Mathlib's complete proof of Bertrand's Postulate, which follows the elementary approach of Erdős. The proof demonstrates that advanced results in number theory can be established without complex analysis.\n\nThe key insight is that the central binomial coefficient's prime factorization is constrained by the distribution of primes—if there were no prime between n and 2n, the factorization would be too \"sparse\" to match the coefficient's known magnitude.",
+    "implications": "Bertrand's Postulate has several important applications:\n\n1. **Prime Gaps**: Provides an explicit bound on gaps between consecutive primes—the gap after prime p is at most p.\n\n2. **Algorithmic Applications**: Guarantees a prime can always be found in a known range, useful for primality-related algorithms.\n\n3. **Foundation for Stronger Results**: Leads to refinements like Nagura's theorem (1952): for n > 25, there's a prime between n and (1.2)n.\n\n4. **Historical Significance**: Erdős's proof at age 19 launched a legendary career with over 1,500 papers.",
+    "openQuestions": [
+      "Cramér's Conjecture: Are prime gaps bounded by O((log p)²)?",
+      "Is there always a prime between n² and (n+1)² (Legendre's conjecture)?",
+      "What is the precise density of primes in short intervals?"
+    ]
+  }
+}

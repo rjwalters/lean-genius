@@ -1,0 +1,109 @@
+[
+  {
+    "id": "ann-basel-imports",
+    "proofId": "basel-problem",
+    "range": {
+      "startLine": 1,
+      "endLine": 4
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import `Mathlib.NumberTheory.ZetaValues` which contains the main Basel identity theorem, plus `Mathlib.Analysis.PSeries` for convergence and `Mathlib.Topology.Algebra.InfiniteSum.Basic` for the `HasSum` and `Summable` predicates.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "zeta values",
+      "infinite sums"
+    ]
+  },
+  {
+    "id": "ann-basel-main",
+    "proofId": "basel-problem",
+    "range": {
+      "startLine": 62,
+      "endLine": 70
+    },
+    "type": "theorem",
+    "title": "The Basel Identity",
+    "content": "**The Main Result**: $\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6}$. This is Euler's celebrated 1734 solution to the Basel Problem.",
+    "mathContext": "In Lean, `HasSum f s` means the series $\\sum f(n)$ converges to $s$. We prove `HasSum (fun n => 1 / n^2) (π^2 / 6)` using Mathlib's `hasSum_zeta_two`.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "HasSum",
+      "convergence",
+      "Basel problem"
+    ]
+  },
+  {
+    "id": "ann-basel-tsum",
+    "proofId": "basel-problem",
+    "range": {
+      "startLine": 72,
+      "endLine": 74
+    },
+    "type": "theorem",
+    "title": "The tsum Version",
+    "content": "The `tsum` (topological sum) version: `∑' n, 1/n² = π²/6`. This is the form using Lean's notation for infinite sums.",
+    "mathContext": "`tsum` is defined as the limit of partial sums when the series is summable, and 0 otherwise. For summable series, `HasSum.tsum_eq` converts between the two forms.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "tsum",
+      "notation",
+      "equivalence"
+    ]
+  },
+  {
+    "id": "ann-convergence",
+    "proofId": "basel-problem",
+    "range": {
+      "startLine": 76,
+      "endLine": 78
+    },
+    "type": "theorem",
+    "title": "Series Convergence",
+    "content": "The series $\\sum 1/n^2$ converges because it's a p-series with $p = 2 > 1$. This is a fundamental result in analysis.",
+    "mathContext": "We use `Real.summable_nat_rpow_inv` which proves that $\\sum n^{-p}$ converges for $p > 1$. The harmonic series ($p = 1$) is the boundary case that diverges.",
+    "significance": "key",
+    "relatedConcepts": [
+      "p-series",
+      "Summable",
+      "comparison test"
+    ]
+  },
+  {
+    "id": "ann-euler-history",
+    "proofId": "basel-problem",
+    "range": {
+      "startLine": 108,
+      "endLine": 123
+    },
+    "type": "insight",
+    "title": "Euler's Original Proof",
+    "content": "Euler's 1734 proof used the Weierstrass factorization of $\\sin(x)/x$. By comparing the $x^2$ coefficient in the infinite product with the Taylor series, he derived the Basel identity.",
+    "mathContext": "Euler wrote $\\sin(x)/x = \\prod_{n=1}^{\\infty}(1 - x^2/(n\\pi)^2)$. Expanding and comparing with $1 - x^2/6 + \\ldots$ gives $1/6 = \\sum 1/(n\\pi)^2$, hence $\\sum 1/n^2 = \\pi^2/6$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Weierstrass factorization",
+      "Taylor series",
+      "infinite products"
+    ]
+  },
+  {
+    "id": "ann-zeta-four",
+    "proofId": "basel-problem",
+    "range": {
+      "startLine": 130,
+      "endLine": 132
+    },
+    "type": "theorem",
+    "title": "Higher Zeta Values",
+    "content": "Euler generalized the Basel identity: $\\zeta(4) = \\pi^4/90$, $\\zeta(6) = \\pi^6/945$, and in general $\\zeta(2k)$ is a rational multiple of $\\pi^{2k}$ involving Bernoulli numbers.",
+    "mathContext": "The general formula is $\\zeta(2k) = (-1)^{k+1} \\cdot 2^{2k-1} \\cdot \\pi^{2k} \\cdot B_{2k} / (2k)!$ where $B_{2k}$ is the $(2k)$-th Bernoulli number.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bernoulli numbers",
+      "zeta values",
+      "special functions"
+    ]
+  }
+]

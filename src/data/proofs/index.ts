@@ -4,6 +4,7 @@ import { infinitudePrimesData } from './infinitude-primes'
 import { knightsTourObliqueData } from './knights-tour-oblique'
 import { russell1Plus1Data } from './russell-1-plus-1'
 import { cantorDiagonalizationData } from './cantor-diagonalization'
+import { cayleyHamiltonData } from './cayley-hamilton'
 import { fundamentalTheoremCalculusData } from './fundamental-theorem-calculus'
 import { fundamentalTheoremAlgebraData } from './fundamental-theorem-algebra'
 import { godelIncompletenessData } from './godel-incompleteness'
@@ -14,6 +15,7 @@ import { eulerIdentityData } from './euler-identity'
 import { brouwerFixedPointData } from './brouwer-fixed-point'
 import { ramanujanSumFallacyData } from './ramanujan-sum-fallacy'
 import { abelRuffiniData } from './abel-ruffini'
+import { bertrandsPostulateData } from './bertrands-postulate'
 import { borsukUlamData } from './borsuk-ulam'
 import { centralLimitTheoremData } from './central-limit-theorem'
 import { fermatsLastTheoremData } from './fermats-last-theorem'
@@ -36,6 +38,8 @@ import { subsetCountData } from './subset-count'
 import { divisibilityBy3Data } from './divisibility-by-3'
 import { inclusionExclusionData } from './inclusion-exclusion'
 import { triangleInequalityData } from './triangle-inequality'
+import { konigsbergData } from './konigsberg'
+import { productOfSegmentsOfChordsData } from './product-of-segments-of-chords'
 import { lawOfCosinesData } from './law-of-cosines'
 import { birthdayProblemData } from './birthday-problem'
 import { quadraticReciprocityData } from './quadratic-reciprocity'
@@ -63,6 +67,7 @@ import { factorRemainderTheoremData } from './factor-remainder-theorem'
 import { leibnizPiData } from './leibniz-pi'
 import { perfectNumbersData } from './perfect-numbers'
 import { angleTrisectionData } from './angle-trisection'
+import { baselProblemData } from './basel-problem'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -72,6 +77,7 @@ export const proofs: Record<string, ProofData> = {
   'knights-tour-oblique': knightsTourObliqueData,
   'russell-1-plus-1': russell1Plus1Data,
   'cantor-diagonalization': cantorDiagonalizationData,
+  'cayley-hamilton': cayleyHamiltonData,
   'fundamental-theorem-calculus': fundamentalTheoremCalculusData,
   'fundamental-theorem-algebra': fundamentalTheoremAlgebraData,
   'godel-incompleteness': godelIncompletenessData,
@@ -82,6 +88,7 @@ export const proofs: Record<string, ProofData> = {
   'brouwer-fixed-point': brouwerFixedPointData,
   'ramanujan-sum-fallacy': ramanujanSumFallacyData,
   'abel-ruffini': abelRuffiniData,
+  'bertrands-postulate': bertrandsPostulateData,
   'borsuk-ulam': borsukUlamData,
   'central-limit-theorem': centralLimitTheoremData,
   'fermats-last-theorem': fermatsLastTheoremData,
@@ -104,6 +111,8 @@ export const proofs: Record<string, ProofData> = {
   'divisibility-by-3': divisibilityBy3Data,
   'inclusion-exclusion': inclusionExclusionData,
   'triangle-inequality': triangleInequalityData,
+  'konigsberg': konigsbergData,
+  'product-of-segments-of-chords': productOfSegmentsOfChordsData,
   'law-of-cosines': lawOfCosinesData,
   'birthday-problem': birthdayProblemData,
   'quadratic-reciprocity': quadraticReciprocityData,
@@ -131,6 +140,7 @@ export const proofs: Record<string, ProofData> = {
   'leibniz-pi': leibnizPiData,
   'perfect-numbers': perfectNumbersData,
   'angle-trisection': angleTrisectionData,
+  'basel-problem': baselProblemData,
 }
 
 export function getProof(slug: string): ProofData | undefined {

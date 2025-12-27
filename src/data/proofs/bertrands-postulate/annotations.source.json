@@ -1,0 +1,136 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "bertrands-postulate",
+    "anchor": {
+      "type": "imports"
+    },
+    "type": "concept",
+    "title": "Primes Are Never Far Apart",
+    "content": "Bertrand's Postulate guarantees that primes are distributed densely enough that between any positive integer $n$ and its double $2n$, there's always at least one prime.\n\n$$\\forall n > 0, \\exists p \\text{ prime}: n < p \\leq 2n$$\n\nThis means:\n- After 2, the next prime (3) is at most 4\n- After 100, there's a prime before 200\n- Prime gaps grow, but not too fast",
+    "significance": "critical",
+    "relatedConcepts": [
+      "prime gaps",
+      "prime distribution",
+      "number theory"
+    ]
+  },
+  {
+    "id": "ann-historical",
+    "proofId": "bertrands-postulate",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "What This Proves"
+    },
+    "type": "insight",
+    "title": "Three Mathematical Giants",
+    "content": "**Bertrand (1845)**: Conjectured the result after checking it for all $n$ up to 3 million by hand calculation.\n\n**Chebyshev (1852)**: Proved the conjecture using analytic techniques involving his famous $\\vartheta$ and $\\psi$ functions.\n\n**Erdős (1932)**: Published an elementary proof at age 19—his first paper. This launched a legendary career of 1,500+ papers and became the standard approach taught today.",
+    "mathContext": "The proof evolved from analytic to elementary methods.",
+    "significance": "key",
+    "relatedConcepts": [
+      "history of mathematics",
+      "analytic number theory"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "bertrands-postulate",
+    "anchor": {
+      "type": "theorem",
+      "name": "bertrand_postulate"
+    },
+    "type": "theorem",
+    "title": "The Main Statement",
+    "content": "**Bertrand's Postulate**: For any positive natural number $n$, there exists a prime $p$ with $n < p \\leq 2n$.\n\n```lean\ntheorem bertrand_postulate (n : ℕ) (hn : 0 < n) :\n    ∃ p, Nat.Prime p ∧ n < p ∧ p ≤ 2 * n\n```\n\nWe wrap Mathlib's `Nat.exists_prime_lt_and_le_two_mul`, converting the hypothesis from `n ≠ 0` to `0 < n`.",
+    "mathContext": "$\\exists p \\text{ prime}: n < p \\leq 2n$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "prime numbers",
+      "existence proofs"
+    ]
+  },
+  {
+    "id": "ann-prime-gaps",
+    "proofId": "bertrands-postulate",
+    "anchor": {
+      "type": "theorem",
+      "name": "prime_gap_bounded"
+    },
+    "type": "insight",
+    "title": "Bounded Prime Gaps",
+    "content": "A direct corollary: **prime gaps are bounded by the prime itself**.\n\nIf $p$ is prime, the next prime $q$ satisfies $q \\leq 2p$.\n\nThis means the gap $g = q - p$ satisfies $g < p$.\n\nFor comparison:\n- Gap after 2: at most 2 (actual: 1, next is 3)\n- Gap after 7: at most 7 (actual: 4, next is 11)\n- Gap after 113: at most 113 (actual: 14, next is 127)",
+    "mathContext": "$p_{n+1} - p_n < p_n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime gaps",
+      "consecutive primes"
+    ]
+  },
+  {
+    "id": "ann-infinitude",
+    "proofId": "bertrands-postulate",
+    "anchor": {
+      "type": "theorem",
+      "name": "primes_infinite_via_bertrand"
+    },
+    "type": "technique",
+    "title": "Infinitude of Primes (Alternative Proof)",
+    "content": "Bertrand's Postulate provides yet another proof that there are infinitely many primes:\n\n1. Given any $n$, apply Bertrand to get prime $p$ with $n < p$\n2. This prime $p > n$\n3. Since $n$ was arbitrary, primes are unbounded\n4. Therefore there are infinitely many primes\n\nThis is distinct from Euclid's factorial argument, showing how the same result can arise from different perspectives.",
+    "significance": "key",
+    "relatedConcepts": [
+      "infinitude of primes",
+      "Euclid's theorem"
+    ]
+  },
+  {
+    "id": "ann-erdos-proof",
+    "proofId": "bertrands-postulate",
+    "anchor": {
+      "type": "theorem",
+      "name": "bertrand_large"
+    },
+    "type": "technique",
+    "title": "Erdős's Central Binomial Approach",
+    "content": "For large $n$ (≥ 512), the proof analyzes the **central binomial coefficient** $\\binom{2n}{n}$:\n\n1. **Lower bound**: $\\binom{2n}{n} > \\frac{4^n}{2n}$\n\n2. **Upper bound (if no prime in $(n, 2n]$)**: The prime factorization is constrained by primes ≤ $n$\n\n3. **Contradiction**: These bounds conflict for $n \\geq 512$\n\nThe key insight: primes in $(n, 2n]$ divide $\\binom{2n}{n}$ exactly once, so their absence shrinks the factorization.",
+    "mathContext": "Analyze $\\binom{2n}{n} = \\frac{(2n)!}{(n!)^2}$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "binomial coefficients",
+      "prime factorization"
+    ]
+  },
+  {
+    "id": "ann-small-cases",
+    "proofId": "bertrands-postulate",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Examples"
+    },
+    "type": "insight",
+    "title": "The Descending Prime Chain",
+    "content": "For small $n$ (< 512), an explicit chain of primes covers all cases:\n\n983, 491, 241, 127, 61, 31, 17, 11, 7, 5, 3, 2\n\nEach prime $p$ in this list satisfies $p > q/2$ where $q$ is the previous prime. This ensures every $n < 521$ has a prime in $(n, 2n]$.\n\nExample: For $n = 50$, we find 61 in the chain with $50 < 61 \\leq 100$. ✓",
+    "significance": "key",
+    "relatedConcepts": [
+      "constructive proofs",
+      "explicit bounds"
+    ]
+  },
+  {
+    "id": "ann-pnt-connection",
+    "proofId": "bertrands-postulate",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Connection to Prime Number Theorem"
+    },
+    "type": "insight",
+    "title": "Beyond Bertrand: The Prime Number Theorem",
+    "content": "Bertrand's Postulate is a \"first step\" toward understanding prime distribution. The **Prime Number Theorem** (1896) goes further:\n\n$$\\pi(x) \\sim \\frac{x}{\\ln x}$$\n\nThis tells us *how many* primes exist below $x$, not just that primes exist in certain ranges.\n\nFor the interval $(n, 2n]$, the PNT predicts roughly $n/\\ln n$ primes—far more than Bertrand's guaranteed minimum of 1.",
+    "mathContext": "$\\pi(x)$ counts primes up to $x$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Prime Number Theorem",
+      "asymptotic analysis",
+      "Riemann Hypothesis"
+    ]
+  }
+]

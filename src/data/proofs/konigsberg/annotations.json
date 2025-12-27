@@ -1,0 +1,199 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "konigsberg",
+    "range": {
+      "startLine": 11,
+      "endLine": 45
+    },
+    "type": "concept",
+    "title": "The Birth of Graph Theory",
+    "content": "The Seven Bridges of Königsberg is one of the most famous problems in mathematics. The question seems simple: can you walk through the city crossing each bridge exactly once?\n\nEuler's 1736 solution didn't just answer this question - it created an entirely new field of mathematics. He realized that the physical layout doesn't matter; only the **connections** matter.\n\nThis abstraction - representing places as points and connections as lines - is the essence of graph theory.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "graph theory",
+      "topology",
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-verts",
+    "proofId": "konigsberg",
+    "range": {
+      "startLine": 67,
+      "endLine": 80
+    },
+    "type": "definition",
+    "title": "Vertices as an Inductive Type",
+    "content": "We model the graph with 11 vertices:\n\n- **V1, V2, V3, V4**: The four landmasses (north bank, south bank, and two islands)\n- **B1-B7**: The seven bridges\n\nWhy include bridges as vertices? In a `SimpleGraph`, edges are unique between vertex pairs. Since multiple bridges connect the same landmasses, we insert bridge vertices to avoid multi-edges.\n\nThe `deriving DecidableEq, Fintype` clause automatically generates:\n- `DecidableEq`: We can test if two vertices are equal\n- `Fintype`: The type is finite (Lean can enumerate all elements)",
+    "mathContext": "Graph $G = (V, E)$ with $|V| = 11$, $|E| = 14$",
+    "significance": "key",
+    "relatedConcepts": [
+      "inductive type",
+      "deriving",
+      "simple graph"
+    ]
+  },
+  {
+    "id": "ann-edges",
+    "proofId": "konigsberg",
+    "range": {
+      "startLine": 91,
+      "endLine": 98
+    },
+    "type": "definition",
+    "title": "Edge List",
+    "content": "The edges are defined as pairs connecting landmasses to their adjacent bridges:\n\n- **V1** connects to 5 bridges (B1, B2, B3, B4, B5)\n- **V2** connects to 3 bridges (B1, B2, B6)\n- **V3** connects to 3 bridges (B4, B5, B7)\n- **V4** connects to 3 bridges (B3, B6, B7)\n\nEach bridge vertex has exactly 2 edges (to its two endpoints).\n\nNote: We only list each edge once; the graph is made symmetric in the adjacency definition.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "edge list",
+      "adjacency"
+    ]
+  },
+  {
+    "id": "ann-adj",
+    "proofId": "konigsberg",
+    "range": {
+      "startLine": 100,
+      "endLine": 101
+    },
+    "type": "definition",
+    "title": "Symmetric Adjacency",
+    "content": "The adjacency relation checks if `(v, w)` or `(w, v)` appears in the edge list:\n\n```lean\ndef adj (v w : Verts) : Bool := (v, w) ∈ edges || (w, v) ∈ edges\n```\n\nThis makes the graph **undirected** - if you can walk from A to B, you can walk from B to A.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "undirected graph",
+      "symmetric relation"
+    ]
+  },
+  {
+    "id": "ann-simplegraph",
+    "proofId": "konigsberg",
+    "range": {
+      "startLine": 110,
+      "endLine": 117
+    },
+    "type": "definition",
+    "title": "SimpleGraph Structure",
+    "content": "A `SimpleGraph` in Mathlib is an undirected graph with:\n\n1. **Symmetric adjacency**: If $u \\sim v$ then $v \\sim u$\n2. **No self-loops**: $v \\not\\sim v$ for all vertices\n\nThe `@[simps]` attribute generates helper lemmas for the graph's components.\n\nThe proofs of symmetry and irreflexivity use `decide`, which works because our vertex type is finite and the adjacency is decidable.",
+    "mathContext": "Simple graph: symmetric, irreflexive adjacency relation",
+    "significance": "key",
+    "relatedConcepts": [
+      "SimpleGraph",
+      "decidability",
+      "symmetry"
+    ]
+  },
+  {
+    "id": "ann-degree",
+    "proofId": "konigsberg",
+    "range": {
+      "startLine": 130,
+      "endLine": 136
+    },
+    "type": "definition",
+    "title": "Vertex Degrees",
+    "content": "The **degree** of a vertex is the number of edges incident to it.\n\nFor Königsberg:\n- **V1**: degree 5 (connected to 5 bridges)\n- **V2, V3, V4**: degree 3 each (connected to 3 bridges each)\n- **All bridges**: degree 2 (each connects exactly two landmasses)\n\nThis is the key data for Euler's theorem: 4 vertices have **odd** degree.",
+    "mathContext": "$\\deg(V_1) = 5$, $\\deg(V_2) = \\deg(V_3) = \\deg(V_4) = 3$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "degree",
+      "odd/even",
+      "handshaking lemma"
+    ]
+  },
+  {
+    "id": "ann-degree-proof",
+    "proofId": "konigsberg",
+    "range": {
+      "startLine": 138,
+      "endLine": 140
+    },
+    "type": "lemma",
+    "title": "Degree Verification",
+    "content": "We prove that `graph.degree v = degree v` for all vertices.\n\nThe proof is by case analysis: `by cases v <;> rfl`\n\nThis unfolds the definition for each of the 11 vertices and confirms the computed degree matches the graph's actual degree.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "case analysis",
+      "reflexivity"
+    ]
+  },
+  {
+    "id": "ann-odd-set",
+    "proofId": "konigsberg",
+    "range": {
+      "startLine": 155,
+      "endLine": 159
+    },
+    "type": "lemma",
+    "title": "The Set of Odd-Degree Vertices",
+    "content": "We prove that the odd-degree vertices are exactly {V1, V2, V3, V4}:\n\n$$\\{v : \\text{Odd}(\\deg(v))\\} = \\{V_1, V_2, V_3, V_4\\}$$\n\nThis set has **4 elements** - the crucial fact for the impossibility proof.\n\nThe proof uses:\n- `Nat.odd_iff_not_even`: A number is odd iff it's not even\n- Set extensionality: Two sets are equal iff they have the same members",
+    "mathContext": "$|\\{v : \\text{deg}(v) \\text{ is odd}\\}| = 4$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "set equality",
+      "cardinality",
+      "parity"
+    ]
+  },
+  {
+    "id": "ann-euler-theorem",
+    "proofId": "konigsberg",
+    "range": {
+      "startLine": 161,
+      "endLine": 179
+    },
+    "type": "theorem",
+    "title": "Euler's Theorem on Eulerian Paths",
+    "content": "The key theorem from Mathlib's graph theory library:\n\n**If an Eulerian path exists, the number of odd-degree vertices is 0 or 2.**\n\nWhy?\n- Each time a path passes through a vertex (not at the endpoints), it uses two edges\n- So interior vertices need even degree\n- Only endpoints can have odd degree\n- An Eulerian path has at most 2 endpoints\n\nThe Königsberg graph has 4 odd-degree vertices, so no Eulerian path can exist.",
+    "mathContext": "$\\exists$ Eulerian path $\\Rightarrow |\\{v : \\deg(v) \\text{ odd}\\}| \\in \\{0, 2\\}$",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-odd-set"
+    ],
+    "relatedConcepts": [
+      "Eulerian path",
+      "degree parity",
+      "graph traversal"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "konigsberg",
+    "range": {
+      "startLine": 180,
+      "endLine": 188
+    },
+    "type": "theorem",
+    "title": "The Impossibility Proof",
+    "content": "The main theorem: **No Eulerian path exists in the Königsberg graph.**\n\nThe proof is by contradiction:\n1. Assume an Eulerian path `p` exists\n2. Apply `card_odd_degree`: the number of odd-degree vertices must be 0 or 2\n3. But we proved it's 4 (the set {V1, V2, V3, V4})\n4. Contradiction!\n\nIn Lean: `simp at h` derives a contradiction from `4 ∈ {0, 2}`.",
+    "mathContext": "$\\neg\\exists$ Eulerian path in $G_{\\text{Königsberg}}$",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-euler-theorem",
+      "ann-odd-set"
+    ],
+    "relatedConcepts": [
+      "proof by contradiction",
+      "Eulerian path",
+      "graph theory"
+    ]
+  },
+  {
+    "id": "ann-history",
+    "proofId": "konigsberg",
+    "range": {
+      "startLine": 190,
+      "endLine": 216
+    },
+    "type": "concept",
+    "title": "Historical Impact",
+    "content": "Euler's solution had far-reaching consequences:\n\n**Birth of Graph Theory**: The idea that structure matters, not geometry, became graph theory - now essential in computer science, biology, and social sciences.\n\n**Early Topology**: Euler called this 'geometry of position' (analysis situs). The problem depends on connectivity, not distances - a topological property.\n\n**Modern Applications**:\n- **DNA sequencing**: Assembling genome fragments\n- **Circuit design**: Drawing circuits without lifting the pen\n- **Route optimization**: Garbage trucks, mail delivery, snow plowing\n- **Network analysis**: Understanding connectivity in social networks",
+    "significance": "key",
+    "relatedConcepts": [
+      "history of mathematics",
+      "topology",
+      "applications"
+    ]
+  }
+]
