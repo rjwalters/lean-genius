@@ -1,0 +1,72 @@
+[
+  {
+    "id": "geom-sum-formula",
+    "proofId": "geometric-series",
+    "range": { "startLine": 54, "endLine": 58 },
+    "type": "theorem",
+    "title": "Finite Geometric Sum Formula",
+    "content": "The fundamental identity (1-r) * sum = 1 - r^(n+1). This is proved using Mathlib's `Finset.geom_sum_eq` which captures the telescoping that occurs when multiplying the sum by (1-r).",
+    "mathContext": "(1 - r) * \\sum_{k=0}^{n} r^k = 1 - r^{n+1}",
+    "significance": "critical",
+    "prerequisites": ["ring operations", "finite sums"],
+    "relatedConcepts": ["telescoping sums", "polynomial division"]
+  },
+  {
+    "id": "infinite-geom-sum",
+    "proofId": "geometric-series",
+    "range": { "startLine": 76, "endLine": 82 },
+    "type": "theorem",
+    "title": "Infinite Geometric Series Sum",
+    "content": "For |r| < 1, the infinite geometric series converges to 1/(1-r). This is the limit of the finite sums as n → ∞, using the fact that r^n → 0 when |r| < 1.",
+    "mathContext": "\\sum_{k=0}^{\\infty} r^k = \\frac{1}{1-r} \\text{ for } |r| < 1",
+    "significance": "critical",
+    "prerequisites": ["limits", "series convergence", "absolute value"],
+    "relatedConcepts": ["power series", "radius of convergence"]
+  },
+  {
+    "id": "summability",
+    "proofId": "geometric-series",
+    "range": { "startLine": 84, "endLine": 88 },
+    "type": "lemma",
+    "title": "Geometric Series is Summable",
+    "content": "When |r| < 1, the geometric series is summable (convergent). This is a prerequisite for computing the infinite sum.",
+    "significance": "key",
+    "prerequisites": ["Summable predicate"],
+    "relatedConcepts": ["absolute convergence", "comparison test"]
+  },
+  {
+    "id": "scaled-form",
+    "proofId": "geometric-series",
+    "range": { "startLine": 97, "endLine": 102 },
+    "type": "theorem",
+    "title": "General Form with First Term a",
+    "content": "The general geometric series with first term a: sum of a*r^k = a/(1-r). This follows by factoring out a from the basic formula.",
+    "mathContext": "\\sum_{k=0}^{\\infty} ar^k = \\frac{a}{1-r}",
+    "significance": "key",
+    "prerequisites": ["linearity of sums"],
+    "relatedConcepts": ["scaling infinite series"]
+  },
+  {
+    "id": "sum-halves",
+    "proofId": "geometric-series",
+    "range": { "startLine": 108, "endLine": 118 },
+    "type": "insight",
+    "title": "Sum of Halves Equals 1",
+    "content": "The classic example: 1/2 + 1/4 + 1/8 + ... = 1. Zeno's paradox in mathematical form - infinitely many steps can sum to a finite distance.",
+    "mathContext": "\\sum_{k=1}^{\\infty} \\frac{1}{2^k} = 1",
+    "significance": "supporting",
+    "prerequisites": [],
+    "relatedConcepts": ["Zeno's paradox", "binary representation"]
+  },
+  {
+    "id": "convergence-condition",
+    "proofId": "geometric-series",
+    "range": { "startLine": 76, "endLine": 78 },
+    "type": "concept",
+    "title": "Convergence Condition |r| < 1",
+    "content": "The series converges if and only if |r| < 1. When |r| ≥ 1, the terms don't approach zero, so the series must diverge.",
+    "significance": "critical",
+    "prerequisites": ["absolute value", "limit of powers"],
+    "relatedConcepts": ["divergence test", "radius of convergence"]
+  }
+]

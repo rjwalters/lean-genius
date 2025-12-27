@@ -1,0 +1,104 @@
+{
+  "id": "geometric-series",
+  "title": "Sum of a Geometric Series",
+  "slug": "geometric-series",
+  "description": "The classic formulas for finite and infinite geometric series: for |r| < 1, the infinite sum converges to 1/(1-r).",
+  "meta": {
+    "author": "Archimedes, Newton (formalized via Mathlib)",
+    "sourceUrl": "https://github.com/leanprover-community/mathlib4/blob/master/Mathlib/Algebra/GeomSum.html",
+    "date": "~250 BCE",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeries.lean",
+    "tags": [
+      "analysis",
+      "series",
+      "convergence",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "wiedijkNumber": 66,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.geom_sum_eq",
+        "description": "Finite geometric sum: (1-r) * sum = 1 - r^(n+1)",
+        "module": "Mathlib.Algebra.GeomSum"
+      },
+      {
+        "theorem": "tsum_geometric_of_lt_one",
+        "description": "Infinite geometric series sum for |r| < 1",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Real"
+      },
+      {
+        "theorem": "summable_geometric_of_lt_one",
+        "description": "Geometric series is summable when |r| < 1",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Real"
+      }
+    ],
+    "originalContributions": [
+      "Unified presentation of finite and infinite cases",
+      "General form with arbitrary first term a",
+      "Classic examples: sum of halves, thirds, alternating series",
+      "Pedagogical explanation of convergence conditions"
+    ],
+    "dateAdded": "12/26/25"
+  },
+  "overview": {
+    "historicalContext": "Geometric series have been studied since antiquity. Archimedes (~250 BCE) used a geometric series to calculate the area under a parabola, summing 1 + 1/4 + 1/16 + ... = 4/3. This was one of the earliest uses of infinite processes in mathematics.\n\nThe general formula for infinite geometric series was developed in the 17th century by mathematicians including Newton and Leibniz. However, the rigorous treatment of convergence had to wait until the 19th century work of Cauchy and Weierstrass.\n\nToday, geometric series appear everywhere: compound interest calculations, probability theory (geometric distribution), signal processing (z-transforms), and physics (renormalization).",
+    "problemStatement": "**Theorem (Wiedijk #66)**: For a geometric series with ratio r:\n\n**Finite sum** (any r ≠ 1):\n$$\\sum_{k=0}^{n} r^k = \\frac{1 - r^{n+1}}{1 - r}$$\n\n**Infinite sum** (|r| < 1):\n$$\\sum_{k=0}^{\\infty} r^k = \\frac{1}{1-r}$$\n\n**General form** with first term a:\n$$\\sum_{k=0}^{\\infty} ar^k = \\frac{a}{1-r}$$",
+    "proofStrategy": "**Finite Sum Derivation:**\n\nLet $S_n = 1 + r + r^2 + \\cdots + r^n$. Then:\n$$rS_n = r + r^2 + \\cdots + r^{n+1}$$\n\nSubtracting:\n$$S_n - rS_n = 1 - r^{n+1}$$\n$$(1-r)S_n = 1 - r^{n+1}$$\n$$S_n = \\frac{1 - r^{n+1}}{1-r}$$\n\n**Infinite Sum:**\n\nWhen |r| < 1, we have $r^{n+1} \\to 0$ as $n \\to \\infty$, so:\n$$\\lim_{n \\to \\infty} S_n = \\frac{1 - 0}{1-r} = \\frac{1}{1-r}$$",
+    "keyInsights": [
+      "The finite formula works for any r ≠ 1, but the infinite sum requires |r| < 1 for convergence",
+      "The key trick is multiplying by r and subtracting to telescope the sum",
+      "The condition |r| < 1 ensures r^n → 0, allowing the limit to exist",
+      "For |r| ≥ 1, the series diverges because r^n doesn't approach zero"
+    ]
+  },
+  "sections": [
+    {
+      "id": "finite-sum",
+      "title": "Finite Geometric Sum",
+      "startLine": 50,
+      "endLine": 70,
+      "summary": "The classic formula (1-r) * sum = 1 - r^(n+1) using Finset.geom_sum_eq."
+    },
+    {
+      "id": "infinite-sum",
+      "title": "Infinite Geometric Series",
+      "startLine": 72,
+      "endLine": 95,
+      "summary": "For |r| < 1, the series converges to 1/(1-r)."
+    },
+    {
+      "id": "general-form",
+      "title": "General Form with First Term",
+      "startLine": 97,
+      "endLine": 110,
+      "summary": "The scaled version with first term a: sum = a/(1-r)."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases and Examples",
+      "startLine": 112,
+      "endLine": 145,
+      "summary": "Classic examples: sum of halves equals 1, thirds gives 3/2, alternating series."
+    },
+    {
+      "id": "finite-to-infinite",
+      "title": "Connection to Finite Sums",
+      "startLine": 147,
+      "endLine": 165,
+      "summary": "Finite partial sums converge to the infinite sum as n → ∞."
+    }
+  ],
+  "conclusion": {
+    "summary": "The geometric series formula is one of the most fundamental results in analysis. The finite sum formula (1-r^{n+1})/(1-r) follows from a clever algebraic trick of multiplying by r and subtracting. For |r| < 1, taking the limit gives the elegant infinite sum 1/(1-r).\n\nThe formalization uses Mathlib's `Finset.geom_sum_eq` for the finite case and `tsum_geometric_of_lt_one` for the infinite series, demonstrating how these foundational results connect.",
+    "implications": "**Theoretical Significance:**\n\n1. **Foundation of analysis**: The geometric series is often the first infinite series students encounter, providing intuition for convergence.\n\n2. **Radius of convergence**: The condition |r| < 1 foreshadows the concept of radius of convergence for power series.\n\n3. **Taylor series**: Many important functions (1/(1-x), e^x, sin(x)) can be expressed as power series that generalize geometric series.\n\n**Practical Applications:**\n\n- **Finance**: Compound interest and present value calculations\n- **Probability**: Geometric distribution and waiting times\n- **Signal Processing**: Z-transforms and filter design\n- **Physics**: Feynman diagrams and perturbation series",
+    "openQuestions": [
+      "What happens at exactly |r| = 1? (Series diverges, but behavior varies)",
+      "How does the geometric series generalize to matrices and operators?",
+      "What is the relationship to the Riemann zeta function ζ(s)?"
+    ]
+  }
+}
