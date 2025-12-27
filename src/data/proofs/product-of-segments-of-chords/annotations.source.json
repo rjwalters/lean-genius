@@ -21,7 +21,7 @@
     "anchor": {
       "type": "declaration",
       "name": "powerOfPoint",
-      "kind": "definition"
+      "kind": "def"
     },
     "type": "definition",
     "title": "Power of a Point",
@@ -110,8 +110,8 @@
     "id": "ann-examples",
     "proofId": "product-of-segments-of-chords",
     "anchor": {
-      "type": "section-doc",
-      "contains": "Numerical Examples"
+      "type": "doc-comment",
+      "contains": "circle of radius 5"
     },
     "type": "example",
     "title": "Worked Examples",

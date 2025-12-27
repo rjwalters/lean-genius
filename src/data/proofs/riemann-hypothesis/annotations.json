@@ -256,7 +256,7 @@
       "startLine": 216,
       "endLine": 222
     },
-    "type": "context",
+    "type": "insight",
     "title": "The sorry Statements",
     "content": "The `sorry` statements in this file do NOT indicate incomplete proofs - they mark theorems that are KNOWN to be true but whose proofs require machinery beyond this educational formalization.\n\nFor example, `RH_iff_Robin` is Robin's theorem (1984), a deep result requiring extensive analytic number theory. We state it precisely but acknowledge its proof is beyond our scope.",
     "mathContext": "`sorry` = 'this proof exists but is not formalized here'",
