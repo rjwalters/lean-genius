@@ -1,5 +1,6 @@
 #!/bin/bash
 # generate-proofs-imports.sh - Auto-generate proofs/Proofs.lean from directory contents
+# Ensures consistent sorting across all platforms using LC_ALL=C
 #
 # Usage: ./.loom/scripts/generate-proofs-imports.sh [--check]
 #
