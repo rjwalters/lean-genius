@@ -1,0 +1,208 @@
+[
+  {
+    "id": "ann-trisection-imports",
+    "proofId": "angle-trisection",
+    "range": {
+      "startLine": 1,
+      "endLine": 5
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import Mathlib modules for trigonometry, field extensions, and polynomial theory. These provide the algebraic infrastructure for translating the geometric problem.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "trigonometric functions",
+      "field extensions",
+      "polynomials"
+    ]
+  },
+  {
+    "id": "ann-historical-context",
+    "proofId": "angle-trisection",
+    "range": {
+      "startLine": 7,
+      "endLine": 48
+    },
+    "type": "concept",
+    "title": "The Three Classical Problems",
+    "content": "The three famous Greek construction problems are: (1) trisecting an arbitrary angle, (2) doubling the cube, and (3) squaring the circle. All three are impossible with compass and straightedge alone. The impossibilities were proven centuries later using field theory.",
+    "mathContext": "Wantzel (1837) proved angle trisection and cube doubling impossible. Lindemann (1882) proved circle squaring impossible by showing π is transcendental.",
+    "significance": "key",
+    "relatedConcepts": [
+      "compass and straightedge",
+      "constructibility",
+      "field extensions"
+    ]
+  },
+  {
+    "id": "ann-trisection-polynomial",
+    "proofId": "angle-trisection",
+    "range": {
+      "startLine": 68,
+      "endLine": 70
+    },
+    "type": "definition",
+    "title": "The Trisection Polynomial",
+    "content": "The polynomial $8x^3 - 6x - 1$ is the minimal polynomial for $\\cos(20°)$ over $\\mathbb{Q}$. It arises from the triple angle formula: $\\cos(60°) = 4\\cos^3(20°) - 3\\cos(20°)$, which gives $\\frac{1}{2} = 4x^3 - 3x$, or equivalently $8x^3 - 6x - 1 = 0$.",
+    "mathContext": "The polynomial is defined as `8 * X^3 - 6 * X - 1` in Lean's polynomial ring over ℚ.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "minimal polynomial",
+      "triple angle formula",
+      "cos(20°)"
+    ]
+  },
+  {
+    "id": "ann-triple-angle",
+    "proofId": "angle-trisection",
+    "range": {
+      "startLine": 97,
+      "endLine": 100
+    },
+    "type": "lemma",
+    "title": "Triple Angle Formula",
+    "content": "The identity $\\cos(3\\theta) = 4\\cos^3(\\theta) - 3\\cos(\\theta)$ is fundamental to the proof. It connects the cosine of an angle to the cosine of its triple.",
+    "mathContext": "Mathlib provides this as `cos_three_mul`. We use it with θ = 20° to derive the polynomial equation for cos(20°).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "trigonometric identities",
+      "angle multiplication",
+      "cosine"
+    ]
+  },
+  {
+    "id": "ann-cos-20-equation",
+    "proofId": "angle-trisection",
+    "range": {
+      "startLine": 102,
+      "endLine": 110
+    },
+    "type": "theorem",
+    "title": "cos(20°) Satisfies the Cubic",
+    "content": "We prove that $8\\cos^3(20°) - 6\\cos(20°) - 1 = 0$. This follows from the triple angle formula and the fact that $\\cos(60°) = \\frac{1}{2}$.",
+    "mathContext": "The proof uses `cos_three_mul` and `cos_pi_div_three` (which gives cos(π/3) = 1/2), then algebraic manipulation.",
+    "significance": "key",
+    "prerequisites": [
+      "ann-triple-angle"
+    ],
+    "relatedConcepts": [
+      "polynomial roots",
+      "cos(60°)"
+    ]
+  },
+  {
+    "id": "ann-no-rational-roots",
+    "proofId": "angle-trisection",
+    "range": {
+      "startLine": 123,
+      "endLine": 138
+    },
+    "type": "lemma",
+    "title": "No Rational Roots",
+    "content": "By the Rational Root Theorem, any rational root of $8x^3 - 6x - 1$ must be of the form $\\pm\\frac{p}{q}$ where $p | 1$ and $q | 8$. This gives candidates: ±1, ±1/2, ±1/4, ±1/8. We verify computationally that none of these is a root.",
+    "mathContext": "The `norm_num` tactic in Lean evaluates the polynomial at each candidate and confirms non-zero values.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Rational Root Theorem",
+      "polynomial evaluation",
+      "irreducibility"
+    ]
+  },
+  {
+    "id": "ann-constructible-def",
+    "proofId": "angle-trisection",
+    "range": {
+      "startLine": 157,
+      "endLine": 165
+    },
+    "type": "definition",
+    "title": "Constructible Numbers",
+    "content": "A real number α is **constructible** if it can be obtained from rational numbers using only field operations (+, -, ×, ÷) and square roots of non-negative numbers. Algebraically, this means there exists a tower of field extensions $\\mathbb{Q} = F_0 \\subset F_1 \\subset \\cdots \\subset F_n$ where α ∈ Fₙ and each [Fᵢ₊₁ : Fᵢ] = 2.",
+    "mathContext": "The key consequence is that [ℚ(α) : ℚ] must divide 2^n for some n. In other words, the degree must be a power of 2.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "field extensions",
+      "tower of fields",
+      "degree"
+    ]
+  },
+  {
+    "id": "ann-three-not-power",
+    "proofId": "angle-trisection",
+    "range": {
+      "startLine": 167,
+      "endLine": 193
+    },
+    "type": "lemma",
+    "title": "3 Is Not a Power of 2",
+    "content": "We prove that 3 ≠ 2^n for any natural number n. The key observation is that powers of 2 are all even (except 2^0 = 1), but 3 is odd. Similarly, 3 does not divide any power of 2 since gcd(3, 2) = 1.",
+    "mathContext": "These lemmas are proven by induction. For 3 ∤ 2^n, we use that 3 is prime and coprime to 2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "parity",
+      "divisibility",
+      "prime numbers"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "angle-trisection",
+    "range": {
+      "startLine": 209,
+      "endLine": 233
+    },
+    "type": "theorem",
+    "title": "Angle Trisection is Impossible",
+    "content": "**Main Theorem**: The 60° angle cannot be trisected with compass and straightedge. The proof combines all the pieces: cos(20°) satisfies an irreducible degree-3 polynomial over ℚ, but constructible numbers have degree 2^n over ℚ. Since 3 is not a power of 2, cos(20°) is not constructible.",
+    "mathContext": "This is the culmination of the proof. The `sorry` indicates where the full formalization would connect the polynomial degree to the field extension degree.",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-cos-20-equation",
+      "ann-no-rational-roots",
+      "ann-constructible-def",
+      "ann-three-not-power"
+    ],
+    "relatedConcepts": [
+      "impossibility proof",
+      "degree obstruction"
+    ]
+  },
+  {
+    "id": "ann-cube-doubling",
+    "proofId": "angle-trisection",
+    "range": {
+      "startLine": 250,
+      "endLine": 268
+    },
+    "type": "corollary",
+    "title": "Doubling the Cube is Impossible",
+    "content": "The same technique proves that ∛2 is not constructible. The cube root of 2 satisfies $x^3 - 2 = 0$, which is irreducible by Eisenstein's criterion at p = 2. Since [ℚ(∛2) : ℚ] = 3 and 3 is not a power of 2, ∛2 cannot be constructed.",
+    "mathContext": "To double a unit cube (volume 1), we need a cube of volume 2, requiring side length ∛2 ≈ 1.26.",
+    "significance": "key",
+    "prerequisites": [
+      "ann-main-theorem"
+    ],
+    "relatedConcepts": [
+      "Eisenstein criterion",
+      "cube root"
+    ]
+  },
+  {
+    "id": "ann-circle-squaring",
+    "proofId": "angle-trisection",
+    "range": {
+      "startLine": 270,
+      "endLine": 285
+    },
+    "type": "corollary",
+    "title": "Squaring the Circle is Impossible",
+    "content": "Constructing a square with the same area as a unit circle requires side length √π. But π is transcendental (Lindemann, 1882), meaning it satisfies no polynomial over ℚ. Therefore √π is also transcendental and certainly not constructible.",
+    "mathContext": "This is a deeper result than the algebraic impossibilities, requiring the transcendence of π rather than just a degree argument.",
+    "significance": "key",
+    "relatedConcepts": [
+      "transcendental numbers",
+      "Lindemann's theorem",
+      "π"
+    ]
+  }
+]
