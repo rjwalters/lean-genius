@@ -14,6 +14,7 @@ import { fourColorTheoremData } from './four-color-theorem'
 import { eulerIdentityData } from './euler-identity'
 import { brouwerFixedPointData } from './brouwer-fixed-point'
 import { ramanujanSumFallacyData } from './ramanujan-sum-fallacy'
+import { ramseysTheoremData } from './ramseys-theorem'
 import { abelRuffiniData } from './abel-ruffini'
 import { bertrandsPostulateData } from './bertrands-postulate'
 import { borsukUlamData } from './borsuk-ulam'
@@ -95,6 +96,7 @@ export const proofs: Record<string, ProofData> = {
   'euler-identity': eulerIdentityData,
   'brouwer-fixed-point': brouwerFixedPointData,
   'ramanujan-sum-fallacy': ramanujanSumFallacyData,
+  'ramseys-theorem': ramseysTheoremData,
   'abel-ruffini': abelRuffiniData,
   'bertrands-postulate': bertrandsPostulateData,
   'borsuk-ulam': borsukUlamData,
