@@ -62,6 +62,7 @@ import Proofs.SchroederBernstein
 import Proofs.Sqrt2
 import Proofs.Sqrt2Irrational
 import Proofs.Sqrt2IrrationalFromAxioms
+import Proofs.StirlingFormula
 import Proofs.SubsetCount
 import Proofs.TaylorTheorem
 import Proofs.ThreePlaceIdentity
