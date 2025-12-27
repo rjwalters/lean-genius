@@ -51,3 +51,4 @@ import Proofs.PythagoreanTriples
 import Proofs.MeanValueTheorem
 import Proofs.BezoutIdentity
 import Proofs.TaylorTheorem
+import Proofs.LeibnizPi
