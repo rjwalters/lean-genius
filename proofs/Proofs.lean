@@ -67,6 +67,7 @@ import Proofs.Sqrt2Irrational
 import Proofs.Sqrt2IrrationalFromAxioms
 import Proofs.StirlingFormula
 import Proofs.SubsetCount
+import Proofs.SumOfKthPowers
 import Proofs.SylowTheorem
 import Proofs.TaylorTheorem
 import Proofs.ThreePlaceIdentity
