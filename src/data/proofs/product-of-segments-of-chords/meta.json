@@ -16,7 +16,7 @@
     ],
     "proofRepoPath": "Proofs/ProductOfSegmentsOfChords.lean",
     "badge": "mathlib",
-    "sorries": 3,
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace",
@@ -60,13 +60,13 @@
       "id": "header",
       "title": "Introduction",
       "startLine": 1,
-      "endLine": 41,
+      "endLine": 44,
       "summary": "Overview of the theorem, its historical context, and the proof approach."
     },
     {
       "id": "definitions",
       "title": "Basic Definitions",
-      "startLine": 47,
+      "startLine": 50,
       "endLine": 69,
       "summary": "Circle and point-on-circle definitions in the Euclidean plane."
     },
@@ -74,35 +74,35 @@
       "id": "power",
       "title": "Power of a Point",
       "startLine": 71,
-      "endLine": 93,
-      "summary": "The power of a point concept and its relationship to chord products."
+      "endLine": 99,
+      "summary": "The power of a point concept and auxiliary lemmas."
+    },
+    {
+      "id": "chord-algebra",
+      "title": "Chord Intersection Algebra",
+      "startLine": 101,
+      "endLine": 219,
+      "summary": "Algebraic proof using quadratic equations and Vieta's formulas."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
-      "startLine": 95,
-      "endLine": 115,
+      "startLine": 221,
+      "endLine": 437,
       "summary": "The Product of Segments of Chords theorem: PA * PB = PC * PD."
-    },
-    {
-      "id": "algebraic",
-      "title": "Algebraic Proof",
-      "startLine": 117,
-      "endLine": 138,
-      "summary": "Alternative proof using parametric equations and Vieta's formulas."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "startLine": 140,
-      "endLine": 174,
+      "startLine": 439,
+      "endLine": 490,
       "summary": "The center case (all chords are diameters) and the converse theorem."
     },
     {
       "id": "examples",
       "title": "Numerical Examples",
-      "startLine": 176,
-      "endLine": 191,
+      "startLine": 492,
+      "endLine": 507,
       "summary": "Concrete numerical examples demonstrating the theorem."
     }
   ],
