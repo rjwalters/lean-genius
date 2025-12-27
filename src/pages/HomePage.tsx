@@ -5,7 +5,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
 import { ProofBadge, WiedijkBadge, BadgeFilter, MathlibIndicator } from '@/components/ui/proof-badge'
 import { WIEDIJK_BADGE_INFO } from '@/types/proof'
-import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, Github, ArrowUpDown } from 'lucide-react'
+import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, Github, ArrowUpDown, Search } from 'lucide-react'
 import type { ProofBadge as ProofBadgeType } from '@/types/proof'
 
 type SortOption = 'newest' | 'oldest' | 'alphabetical'
@@ -24,10 +24,21 @@ export function HomePage() {
   const [showFilters, setShowFilters] = useState(false)
   const [sortBy, setSortBy] = useState<SortOption>('newest')
   const [showWiedijkOnly, setShowWiedijkOnly] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
 
   // Filter and sort proofs
   const proofs = useMemo(() => {
     let filtered = allProofs
+
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase()
+      filtered = filtered.filter(({ proof }) =>
+        proof.title.toLowerCase().includes(query) ||
+        proof.description.toLowerCase().includes(query) ||
+        proof.meta.tags.some(tag => tag.toLowerCase().includes(query))
+      )
+    }
 
     // Filter by badge type
     if (selectedBadges.length > 0) {
@@ -56,7 +67,7 @@ export function HomePage() {
           return 0
       }
     })
-  }, [allProofs, selectedBadges, sortBy, showWiedijkOnly])
+  }, [allProofs, searchQuery, selectedBadges, sortBy, showWiedijkOnly])
 
   const handleBadgeToggle = (badge: ProofBadgeType) => {
     setSelectedBadges((prev) => {
@@ -70,6 +81,7 @@ export function HomePage() {
   const clearFilters = () => {
     setSelectedBadges([])
     setShowWiedijkOnly(false)
+    setSearchQuery('')
   }
 
   return (
@@ -114,6 +126,17 @@ export function HomePage() {
             Available Proofs ({proofs.length})
           </h2>
           <div className="flex items-center gap-4">
+            {/* Search Box */}
+            <div className="relative">
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Search proofs..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-8 pr-3 py-1.5 text-sm bg-muted/50 border border-border rounded-lg w-48 placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-annotation focus:border-annotation"
+              />
+            </div>
             {/* Sort Dropdown */}
             <div className="flex items-center gap-1.5">
               <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
@@ -263,10 +286,10 @@ export function HomePage() {
         </div>
 
         {/* Empty state when filters result in no proofs */}
-        {proofs.length === 0 && (selectedBadges.length > 0 || showWiedijkOnly) && (
+        {proofs.length === 0 && (searchQuery.trim() || selectedBadges.length > 0 || showWiedijkOnly) && (
           <div className="text-center py-12">
             <p className="text-muted-foreground mb-4">
-              No proofs match the selected filters.
+              No proofs match your search{selectedBadges.length > 0 || showWiedijkOnly ? ' and filters' : ''}.
             </p>
             <button
               onClick={clearFilters}
