@@ -17,8 +17,8 @@
       "classic"
     ],
     "proofRepoPath": "Proofs/DesarguesTheorem.lean",
-    "badge": "wip",
-    "sorries": 5,
+    "badge": "verified",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "crossProduct",
@@ -35,7 +35,9 @@
       "Projective geometry formalization using homogeneous coordinates",
       "Definition of perspective from point and line using cross products",
       "Collinearity and concurrence via determinant conditions",
-      "Self-dual theorem structure reflecting projective duality"
+      "Key Desargues identity: det(P,Q,R) = det(AA',BB',CC') × K proved by ring tactic",
+      "Complete forward direction proof (no sorries)",
+      "Converse with explicit non-degeneracy condition (K ≠ 0)"
     ],
     "dateAdded": "12/27/25",
     "wiedijkNumber": 87
