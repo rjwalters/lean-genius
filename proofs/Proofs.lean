@@ -34,6 +34,7 @@ import Proofs.EulerTotient
 import Proofs.FactorRemainderTheorem
 import Proofs.FermatTwoSquares
 import Proofs.FermatsLastTheorem
+import Proofs.FeuerbachsTheorem
 import Proofs.FourColorTheorem
 import Proofs.FriendshipTheorem
 import Proofs.FundamentalArithmetic
