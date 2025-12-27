@@ -1,6 +1,7 @@
 name: Check Proofs.lean sync
 
 on:
+  workflow_dispatch:
   pull_request:
     paths:
       - 'proofs/Proofs/**'
