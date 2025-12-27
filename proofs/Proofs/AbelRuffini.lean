@@ -22,11 +22,11 @@ Galois group, and that S₅ (and A₅) are not solvable.
   group solvability, field extensions.
 
 ## Status
-- [ ] Complete proof
-- [ ] Uses Mathlib for main result
+- [x] Complete proof
+- [x] Uses Mathlib for main result
 - [x] Proves extensions/corollaries
 - [ ] Pedagogical example
-- [x] Incomplete (has sorries)
+- [x] Complete (no sorries)
 
 ## Mathlib Dependencies
 - `IsSolvableByRad` : Definition of solvable by radicals

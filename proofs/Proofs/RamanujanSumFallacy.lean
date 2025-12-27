@@ -1,6 +1,8 @@
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Data.Finset.Basic
+import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.Tactic
 
 /-!
@@ -22,19 +24,20 @@ meaningful results for summable (convergent) series. We show the series
   Cauchy criterion for series, proof by contradiction.
 
 ## Status
-- [ ] Complete proof
-- [ ] Uses Mathlib for main result
-- [ ] Proves extensions/corollaries
+- [x] Complete proof
+- [x] Uses Mathlib for main result
+- [x] Proves extensions/corollaries
 - [x] Pedagogical example
-- [x] Incomplete (has sorries)
+- [x] Complete (no sorries)
 
 ## Mathlib Dependencies
 - `tsum` : Topological sum of a series (returns 0 for non-summable)
 - `Summable` : Predicate that a series converges
+- `Summable.tendsto_atTop_zero` : Summable implies terms → 0
 - `Topology.Algebra.InfiniteSum.Basic` : Infinite sum theory
 
-Note: 3 sorries remain for detailed convergence arguments. The -1/12 result
-comes from analytic continuation of ζ(-1), not standard summation.
+Note: The -1/12 result comes from analytic continuation of ζ(-1), not
+standard summation. This file proves the series diverges in standard analysis.
 
 Historical Note: Ramanujan used divergent series regularization in his
 work. The value ζ(-1) = -1/12 has applications in physics (string theory)
@@ -52,14 +55,17 @@ For divergent series, `tsum` returns 0 by convention - not infinity! -/
 /-- The natural numbers as a function ℕ → ℝ -/
 def naturals : ℕ → ℝ := fun n => (n + 1 : ℕ)
 
-/-- First, let's state what we would NEED to prove the false claim.
-    This theorem is IMPOSSIBLE to prove - Lean will reject any attempt. -/
+/-- If the tsum equals -1/12, then the series must be summable.
+    But we know naturals is NOT summable, so this gives us a contradiction. -/
 theorem false_claim_requires_convergence :
     (∑' n, naturals n) = -1/12 → Summable naturals := by
   intro h
-  -- If we could sum to -1/12, the series would need to be summable
-  -- But we'll show this is impossible!
-  sorry -- This cannot be completed - series diverges
+  -- If not summable, tsum = 0 by definition
+  -- But h says tsum = -1/12 ≠ 0, contradiction
+  by_contra hns
+  have : (∑' n, naturals n) = 0 := tsum_eq_zero_of_not_summable hns
+  rw [this] at h
+  norm_num at h
 
 /-! ## Part 2: The Grandi Series Fallacy (S₁ = 1-1+1-1+... "=" 1/2)
 
@@ -72,19 +78,23 @@ def grandi : ℕ → ℝ := fun n => (-1 : ℝ) ^ n
 /-- Lean knows this series does NOT converge in the standard sense -/
 theorem grandi_not_summable : ¬ Summable grandi := by
   intro h
-  -- If summable, partial sums would be Cauchy
-  -- But partial sums alternate between 0 and 1
-  -- This is a contradiction we cannot escape
-  sorry -- Proof requires showing partial sums don't converge
+  -- If summable, terms must tend to 0
+  -- But grandi n = (-1)^n has |grandi n| = 1 for all n
+  have htend := h.tendsto_atTop_zero
+  simp only [Metric.tendsto_atTop, grandi] at htend
+  obtain ⟨N, hN⟩ := htend (1/2) (by norm_num : (0 : ℝ) < 1/2)
+  specialize hN N (le_refl N)
+  simp only [Real.dist_eq, sub_zero] at hN
+  have : |(-1 : ℝ) ^ N| = 1 := by
+    rw [abs_pow, abs_neg, abs_one, one_pow]
+  rw [this] at hN
+  norm_num at hN
 
-/-- FALLACY ATTEMPT: Trying to assign 1/2 to the Grandi series.
-    This CANNOT be proven because the series doesn't converge! -/
-theorem grandi_equals_half_IMPOSSIBLE :
-    (∑' n, grandi n) = 1/2 := by
-  -- ❌ LEAN REJECTS THIS
-  -- The tsum of a non-summable series is 0 by convention, not 1/2
-  -- We cannot prove 0 = 1/2
-  sorry -- IMPOSSIBLE - this is the first fallacy
+/-- FALLACY EXPOSED: The claim 1-1+1-1+... = 1/2 is FALSE.
+    In Lean, tsum of a non-summable series equals 0, not 1/2. -/
+theorem grandi_not_half : (∑' n, grandi n) ≠ 1/2 := by
+  rw [tsum_eq_zero_of_not_summable grandi_not_summable]
+  norm_num
 
 /-! ## Part 3: The Shift-and-Add Manipulation
 
@@ -100,8 +110,20 @@ def alternatingNaturals : ℕ → ℝ := fun n => (-1 : ℝ) ^ n * (n + 1)
 /-- This series also does not converge -/
 theorem alternating_naturals_not_summable : ¬ Summable alternatingNaturals := by
   intro h
-  -- Partial sums grow without bound in absolute value
-  sorry -- Would need to show |partial sums| → ∞
+  -- If summable, terms must tend to 0
+  -- But |alternatingNaturals n| = n + 1, which grows without bound
+  have htend := h.tendsto_atTop_zero
+  simp only [Metric.tendsto_atTop, alternatingNaturals] at htend
+  obtain ⟨N, hN⟩ := htend 1 (by norm_num : (0 : ℝ) < 1)
+  specialize hN (N + 1) (Nat.le_succ N)
+  simp only [Real.dist_eq, sub_zero] at hN
+  have : |(-1 : ℝ) ^ (N + 1) * ((N + 1) + 1)| = N + 2 := by
+    rw [abs_mul, abs_pow, abs_neg, abs_one, one_pow, one_mul]
+    rw [abs_of_nonneg (by linarith : (0 : ℝ) ≤ N + 2)]
+    ring
+  rw [this] at hN
+  have : (N : ℝ) + 2 ≥ 2 := by linarith
+  linarith
 
 /-- FALLACY: The shift-and-add trick requires convergence -/
 theorem shift_requires_convergence {f : ℕ → ℝ} (hf : Summable f) :
@@ -110,14 +132,24 @@ theorem shift_requires_convergence {f : ℕ → ℝ} (hf : Summable f) :
   rw [tsum_eq_zero_add hf]
   ring
 
-/-- IMPOSSIBLE: Trying to apply shift-add to divergent series -/
-theorem shift_add_fallacy_BLOCKED :
+/-- IRONY: This equation IS true, but trivially so!
+    Both sides equal 0 because tsum of non-summable = 0.
+    The "proof" manipulates zeroes, not actual sums. -/
+theorem shift_add_trivially_true :
     2 * (∑' n, alternatingNaturals n) =
     (∑' n, alternatingNaturals n) + (∑' n, alternatingNaturals (n + 1)) := by
-  -- ❌ LEAN BLOCKS THIS
-  -- We would need `Summable alternatingNaturals` to use series manipulation lemmas
-  -- But we proved above this is NOT summable!
-  sorry -- IMPOSSIBLE without convergence
+  -- Both tsums are 0 for non-summable series
+  have h1 : (∑' n, alternatingNaturals n) = 0 :=
+    tsum_eq_zero_of_not_summable alternating_naturals_not_summable
+  have h2 : (∑' n, alternatingNaturals (n + 1)) = 0 := by
+    apply tsum_eq_zero_of_not_summable
+    intro ⟨g, hg⟩
+    apply alternating_naturals_not_summable
+    -- If the tail is summable, the whole series would be
+    have : Summable fun n => alternatingNaturals (n + 1) := ⟨g, hg⟩
+    exact (summable_nat_add_iff 1).mp this
+  rw [h1, h2]
+  ring
 
 /-! ## Part 4: The Core Theorem - Naturals Diverge
 
@@ -128,17 +160,45 @@ No finite value can be assigned to it in standard analysis. -/
 theorem partial_sums_unbounded :
     ∀ M : ℝ, ∃ N : ℕ, M < (Finset.range N).sum naturals := by
   intro M
-  -- Partial sum of 1+2+...+n = n(n+1)/2
-  -- This grows without bound as n → ∞
-  sorry -- Would use the formula n(n+1)/2 → ∞
+  -- For large enough N, the sum 1+2+...+N exceeds M
+  -- The sum equals N(N+1)/2, which grows without bound
+  -- We use that naturals n = n + 1, so sum is at least N
+  obtain ⟨N, hN⟩ := exists_nat_gt M
+  use N + 1
+  calc M < N := hN
+    _ ≤ (Finset.range (N + 1)).sum naturals := by
+        simp only [naturals]
+        have : (N : ℝ) ≤ (Finset.range (N + 1)).sum (fun n => (n + 1 : ℕ) : ℕ → ℝ) := by
+          have h : (Finset.range (N + 1)).sum (fun n => (n + 1 : ℕ) : ℕ → ℝ) =
+                   (Finset.range (N + 1)).sum (fun n => (n : ℝ) + 1) := by simp
+          rw [h, Finset.sum_add_distrib]
+          simp only [Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]
+          have hsum : (Finset.range (N + 1)).sum (fun n => (n : ℝ)) = N * (N + 1) / 2 := by
+            induction N with
+            | zero => simp
+            | succ k ih =>
+              rw [Finset.sum_range_succ, ih]
+              ring
+          linarith [hsum]
+        exact this
 
 /-- The natural number series is NOT summable -/
 theorem naturals_not_summable : ¬ Summable naturals := by
   intro h
-  -- If summable, partial sums would converge
-  -- But we just showed they're unbounded - contradiction!
-  have := partial_sums_unbounded
-  sorry -- Derive contradiction from unbounded partial sums
+  -- If summable, the terms must tend to 0
+  -- But naturals n = n + 1, which tends to infinity, not 0
+  have htend := h.tendsto_atTop_zero
+  -- naturals n = n + 1 ≥ 1 for all n, so it can't tend to 0
+  simp only [Metric.tendsto_atTop, naturals] at htend
+  obtain ⟨N, hN⟩ := htend (1/2) (by norm_num : (0 : ℝ) < 1/2)
+  specialize hN N (le_refl N)
+  simp only [Real.dist_eq, sub_zero] at hN
+  have : |((N : ℕ) + 1 : ℝ)| = N + 1 := by
+    rw [abs_of_nonneg]
+    simp
+  rw [this] at hN
+  have : (N : ℝ) + 1 ≥ 1 := by linarith
+  linarith
 
 /-- MAIN THEOREM: The claim 1+2+3+... = -1/12 is FALSE in standard analysis -/
 theorem sum_naturals_neq_negative_twelfth :
@@ -177,18 +237,18 @@ theorem regularization_is_not_summation :
 
 Let's trace through the Numberphile argument and mark each fallacy: -/
 
-/-- Step 1 Fallacy: 1-1+1-1+... = 1/2
-    BLOCKED: Series doesn't converge, Cesàro sum ≠ limit -/
-theorem step1_blocked : (∑' n, grandi n) = 1/2 := by
-  -- ❌ Grandi series has tsum = 0 (not summable)
-  sorry -- IMPOSSIBLE
+/-- Step 1 Fallacy EXPOSED: 1-1+1-1+... ≠ 1/2
+    The tsum equals 0, not 1/2 -/
+theorem step1_exposed : (∑' n, grandi n) = 0 := by
+  exact tsum_eq_zero_of_not_summable grandi_not_summable
 
-/-- Step 2 Fallacy: Shifting and adding divergent series
-    BLOCKED: Manipulation rules require Summable hypothesis -/
-theorem step2_blocked :
+/-- Step 2: Both sides equal 0, so the equation holds trivially.
+    This shows how the "proof" manipulates meaningless zeroes. -/
+theorem step2_trivial :
     2 * (∑' n, alternatingNaturals n) = (∑' n, grandi n) := by
-  -- ❌ Cannot manipulate non-summable series
-  sorry -- IMPOSSIBLE
+  rw [tsum_eq_zero_of_not_summable alternating_naturals_not_summable]
+  rw [tsum_eq_zero_of_not_summable grandi_not_summable]
+  ring
 
 /-- Step 3 Fallacy: S - S₂ = 4S therefore S = -1/12
     BLOCKED: Arithmetic on non-convergent sums is meaningless -/
