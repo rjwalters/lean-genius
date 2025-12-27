@@ -90,48 +90,57 @@ the series must diverge. -/
 theorem one_div_nat_pos (n : ℕ) (hn : n ≠ 0) : (0 : ℝ) < 1 / n := by
   simp [Nat.pos_iff_ne_zero.mpr hn]
 
-/-- The sum of two consecutive terms from 2^k to 2^{k+1} - 1 is at least 1/2.
+/-- The sum of terms from 2^k to 2^{k+1} - 1 is at least 1/2.
 This is the key insight in Oresme's grouping argument. -/
 theorem group_sum_ge_half (k : ℕ) (hk : k ≥ 1) :
-    ∑ i ∈ Finset.Icc (2^k) (2^(k+1) - 1), (1 : ℝ) / i ≥ 1/2 := by
+    ∑ i ∈ Finset.Icc (2^k) (2^(k+1) - 1), (1 : ℝ) / (i : ℕ) ≥ 1/2 := by
   -- The group from 2^k to 2^{k+1}-1 has 2^k terms
   -- Each term is ≥ 1/2^{k+1}
   -- So the sum is ≥ 2^k · (1/2^{k+1}) = 1/2
   have h1 : (2 : ℕ)^(k+1) - 1 ≥ 2^k := by
     have : 2^(k+1) = 2 * 2^k := by ring
     omega
-  have h2 : ∀ i ∈ Finset.Icc (2^k) (2^(k+1) - 1), (1 : ℝ) / i ≥ 1 / 2^(k+1) := by
+  -- Each term 1/i is at least 1/2^{k+1} since i ≤ 2^{k+1} - 1 < 2^{k+1}
+  have h2 : ∀ i ∈ Finset.Icc (2^k) (2^(k+1) - 1), (1 : ℝ) / (i : ℕ) ≥ 1 / 2^(k+1) := by
     intro i hi
     simp only [Finset.mem_Icc] at hi
-    have hi_pos : (0 : ℝ) < i := by
-      have : 2^k ≥ 1 := Nat.one_le_two_pow
-      linarith [hi.1]
+    have hi_pos : (0 : ℝ) < (i : ℕ) := by
+      have h1 : 2^k ≥ 1 := Nat.one_le_two_pow
+      have h2 : i ≥ 2^k := hi.1
+      have h3 : i ≥ 1 := Nat.le_trans h1 h2
+      exact Nat.cast_pos.mpr h3
     have h2k1_pos : (0 : ℝ) < 2^(k+1) := by positivity
-    rw [div_le_div_iff (by positivity : (0 : ℝ) < 1) hi_pos]
-    rw [div_le_div_iff (by positivity : (0 : ℝ) < 1) h2k1_pos]
+    rw [ge_iff_le, div_le_div_iff h2k1_pos hi_pos]
     simp only [one_mul]
-    have : i ≤ 2^(k+1) - 1 := hi.2
-    have : (i : ℝ) ≤ 2^(k+1) - 1 := by exact Nat.cast_le.mpr this
-    have h2k1_nat : (2 : ℝ)^(k+1) = ((2^(k+1) : ℕ) : ℝ) := by simp
-    linarith
+    have hle : i ≤ 2^(k+1) - 1 := hi.2
+    have h2k1_ge : (2 : ℕ)^(k+1) ≥ 1 := Nat.one_le_two_pow
+    have h_lt : i < 2^(k+1) := by omega
+    exact_mod_cast le_of_lt h_lt
   have card_eq : (Finset.Icc (2^k) (2^(k+1) - 1)).card = 2^k := by
-    rw [Finset.card_Icc]
-    have h : 2^(k+1) - 1 - 2^k + 1 = 2^k := by
-      have : 2^(k+1) = 2 * 2^k := by ring
+    rw [Nat.card_Icc]
+    have h : 2^(k+1) - 1 + 1 - 2^k = 2^k := by
+      have h1 : 2^(k+1) = 2 * 2^k := by ring
+      have h2 : 2^(k+1) ≥ 1 := Nat.one_le_two_pow
       omega
     exact h
-  calc ∑ i ∈ Finset.Icc (2^k) (2^(k+1) - 1), (1 : ℝ) / i
-      ≥ ∑ _i ∈ Finset.Icc (2^k) (2^(k+1) - 1), (1 : ℝ) / 2^(k+1) := by
-          apply Finset.sum_le_sum
-          intro i hi
-          exact h2 i hi
-    _ = (Finset.Icc (2^k) (2^(k+1) - 1)).card • ((1 : ℝ) / 2^(k+1)) := by
-          rw [Finset.sum_const, smul_eq_mul]
-    _ = 2^k * (1 / 2^(k+1)) := by rw [card_eq]; ring
-    _ = 1 / 2 := by
-          have : (2 : ℝ)^(k+1) = 2 * 2^k := by ring
-          field_simp
-          ring
+  have hsum : ∑ i ∈ Finset.Icc (2^k) (2^(k+1) - 1), (1 : ℝ) / (i : ℕ) ≥
+              ∑ _i ∈ Finset.Icc (2^k) (2^(k+1) - 1), (1 : ℝ) / 2^(k+1) := by
+    apply Finset.sum_le_sum
+    intro i hi
+    exact h2 i hi
+  have hconst : ∑ _i ∈ Finset.Icc (2^k) (2^(k+1) - 1), (1 : ℝ) / 2^(k+1) =
+                (Finset.Icc (2^k) (2^(k+1) - 1)).card * ((1 : ℝ) / 2^(k+1)) := by
+    simp only [Finset.sum_const, smul_eq_mul]
+    congr 1
+    simp
+  have hcard : (Finset.Icc (2^k) (2^(k+1) - 1)).card * ((1 : ℝ) / 2^(k+1)) = 1 / 2 := by
+    rw [card_eq]
+    have h2k_pos : (2 : ℝ)^k > 0 := by positivity
+    have h2k1_pos : (2 : ℝ)^(k+1) > 0 := by positivity
+    field_simp
+    have : (2 : ℝ)^(k+1) = 2 * 2^k := by ring
+    linarith
+  linarith [hsum, hconst, hcard]
 
 /-! ## Contrast with Convergent Series
 
@@ -165,7 +174,8 @@ theorem harmonic_eventually_exceeds (M : ℝ) :
   -- This follows from the partial sums tending to infinity
   have h := partial_sums_tendsto_atTop
   rw [Filter.tendsto_atTop_atTop] at h
-  obtain ⟨N, hN⟩ := h M
-  exact ⟨N, fun n hn => hN n hn⟩
+  -- Ask for M + 1 to get a strict inequality
+  obtain ⟨N, hN⟩ := h (M + 1)
+  exact ⟨N, fun n hn => lt_of_lt_of_le (by linarith) (hN n hn)⟩
 
 end HarmonicDivergence

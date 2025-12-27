@@ -3,9 +3,11 @@
 
 import Proofs.AMGMInequality
 import Proofs.AbelRuffini
+import Proofs.AngleTrisection
 import Proofs.AreaOfCircle
 import Proofs.ArithmeticSeries
 import Proofs.BallotProblem
+import Proofs.BaselProblem
 import Proofs.BezoutIdentity
 import Proofs.BinomialTheorem
 import Proofs.BertrandsPostulate
@@ -45,6 +47,7 @@ import Proofs.InfinitudePrimes
 import Proofs.IntermediateValueTheorem
 import Proofs.IsoscelesTriangle
 import Proofs.KnightsTourOblique
+import Proofs.Konigsberg
 import Proofs.LHopital
 import Proofs.LagrangeFourSquares
 import Proofs.LagrangeTheorem
@@ -56,6 +59,7 @@ import Proofs.NavierStokes
 import Proofs.OnePlusOne
 import Proofs.PerfectNumbers
 import Proofs.PrimeReciprocalDivergence
+import Proofs.ProductOfSegmentsOfChords
 import Proofs.PythagoreanTheorem
 import Proofs.PythagoreanTriples
 import Proofs.QuadraticReciprocity

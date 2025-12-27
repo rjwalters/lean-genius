@@ -71,8 +71,10 @@ namespace GCDAlgorithm
     The algorithm terminates because (a mod b) < b, providing a
     strictly decreasing sequence of second arguments. -/
 theorem euclidean_recurrence (a : ℕ) {b : ℕ} (hb : b ≠ 0) :
-    Nat.gcd a b = Nat.gcd b (a % b) :=
-  (Nat.gcd_rec a b).symm
+    Nat.gcd a b = Nat.gcd b (a % b) := by
+  conv_lhs => rw [Nat.gcd_comm]
+  rw [Nat.gcd_rec]
+  rw [Nat.gcd_comm]
 
 /-- **Base Case**: The GCD of any number with 0 is that number.
 
@@ -125,8 +127,8 @@ theorem gcd_characterization (a b d : ℕ) :
            fun e ha hb => Nat.dvd_gcd ha hb⟩
   · intro ⟨hda, hdb, hmax⟩
     apply Nat.dvd_antisymm
-    · exact hmax (Nat.gcd a b) (Nat.gcd_dvd_left a b) (Nat.gcd_dvd_right a b)
     · exact Nat.dvd_gcd hda hdb
+    · exact hmax (Nat.gcd a b) (Nat.gcd_dvd_left a b) (Nat.gcd_dvd_right a b)
 
 /-! ## Key Properties -/
 
@@ -159,7 +161,7 @@ theorem coprime_iff_gcd_one (a b : ℕ) : Nat.Coprime a b ↔ Nat.gcd a b = 1 :=
 
 /-- **Coprime Example**: Consecutive integers are coprime. -/
 theorem consecutive_coprime (n : ℕ) : Nat.Coprime n (n + 1) :=
-  Nat.coprime_self_add_one n
+  Nat.coprime_self_add_right n 1
 
 /-! ## The Extended Euclidean Algorithm (Bézout's Identity) -/
 
@@ -172,12 +174,12 @@ theorem consecutive_coprime (n : ℕ) : Nat.Coprime n (n + 1) :=
     Note: We use integers here since x and y may be negative. -/
 theorem bezout_identity (a b : ℕ) :
     ∃ x y : ℤ, (Nat.gcd a b : ℤ) = a * x + b * y :=
-  ⟨Nat.gcdA a b, Nat.gcdB a b, (Nat.gcd_eq_gcd_ab a b).symm⟩
+  ⟨Nat.gcdA a b, Nat.gcdB a b, Nat.gcd_eq_gcd_ab a b⟩
 
 /-- **Bézout Coefficients**: Mathlib provides explicit Bézout coefficients. -/
 theorem bezout_equation (a b : ℕ) :
     (Nat.gcd a b : ℤ) = a * Nat.gcdA a b + b * Nat.gcdB a b :=
-  (Nat.gcd_eq_gcd_ab a b).symm
+  Nat.gcd_eq_gcd_ab a b
 
 /-! ## Worked Examples -/
 

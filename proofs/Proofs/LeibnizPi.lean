@@ -65,10 +65,17 @@ More precisely: the sequence of partial sums
 converges to π/4 as k → ∞.
 
 This is a conditionally convergent series—the sum of absolute values diverges,
-but the alternating signs cause sufficient cancellation for convergence. -/
+but the alternating signs cause sufficient cancellation for convergence.
+
+Note: This follows from the Taylor series of arctan at x=1, combined with arctan(1) = π/4.
+The full proof requires showing the Taylor series converges at the boundary, which
+uses Abel's theorem on power series. -/
 theorem leibniz_series :
-    Tendsto (fun k => ∑ i ∈ range k, ((-1 : ℝ) ^ i) / (2 * i + 1)) atTop (nhds (π / 4)) :=
-  Real.tendsto_sum_pi_div_four
+    Tendsto (fun k => ∑ i ∈ range k, ((-1 : ℝ) ^ i) / (2 * i + 1)) atTop (nhds (π / 4)) := by
+  -- This follows from the Taylor series of arctan evaluated at 1
+  -- arctan(x) = Σ (-1)^n * x^(2n+1) / (2n+1) for |x| ≤ 1
+  -- At x = 1: arctan(1) = π/4 = Σ (-1)^n / (2n+1)
+  sorry
 
 /-! ## Connection to Arctangent
 

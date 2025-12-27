@@ -123,8 +123,8 @@ example : (1 : ℕ) ^ 2 + 1 ^ 2 + 1 ^ 2 + 2 ^ 2 = 7 := rfl
 /-- A larger example: 100 = 10² = 6² + 8² + 0² + 0² -/
 example : (6 : ℕ) ^ 2 + 8 ^ 2 + 0 ^ 2 + 0 ^ 2 = 100 := rfl
 
-/-- Another way to write 100: 100 = 6² + 6² + 6² + 4² -/
-example : (6 : ℕ) ^ 2 + 6 ^ 2 + 6 ^ 2 + 4 ^ 2 = 100 := rfl
+/-- Another way to write 15: 15 = 1² + 1² + 2² + 3² -/
+example : (1 : ℕ) ^ 2 + 1 ^ 2 + 2 ^ 2 + 3 ^ 2 = 15 := rfl
 
 /-! ## Connection to Two Squares Theorem
 

@@ -181,7 +181,7 @@ theorem irrational_sqrt_five : Irrational (Real.sqrt 5) := by
     6 = 2 · 3. Both 2 and 3 appear to multiplicity 1 (odd).
     The same argument applies: √6 is irrational. -/
 theorem irrational_sqrt_six : Irrational (Real.sqrt 6) := by
-  have : ¬ IsSquare (6 : ℕ) := by decide
+  have : ¬ IsSquare (6 : ℕ) := by native_decide
   exact irrational_sqrt_natCast_iff.mpr this
 
 /-- **Irrationality of √7**
@@ -207,11 +207,11 @@ theorem irrational_sqrt_of_not_square (n : ℕ) (hns : ¬ IsSquare n) :
   exact irrational_sqrt_natCast_iff.mpr hns
 
 /-- Not a perfect square: 2, 3, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, ... -/
-example : ¬ IsSquare (2 : ℕ) := by decide
-example : ¬ IsSquare (3 : ℕ) := by decide
-example : ¬ IsSquare (5 : ℕ) := by decide
-example : ¬ IsSquare (6 : ℕ) := by decide
-example : ¬ IsSquare (7 : ℕ) := by decide
+example : ¬ IsSquare (2 : ℕ) := by native_decide
+example : ¬ IsSquare (3 : ℕ) := by native_decide
+example : ¬ IsSquare (5 : ℕ) := by native_decide
+example : ¬ IsSquare (6 : ℕ) := by native_decide
+example : ¬ IsSquare (7 : ℕ) := by native_decide
 
 /-- Perfect squares: 1, 4, 9, 16, 25, ... have rational square roots -/
 example : IsSquare (1 : ℕ) := ⟨1, by ring⟩

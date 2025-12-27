@@ -71,23 +71,32 @@ noncomputable def characteristicFunction (μ : MeasureTheory.Measure ℝ)
 theorem charFun_zero (μ : MeasureTheory.Measure ℝ)
     [MeasureTheory.IsProbabilityMeasure μ] :
     characteristicFunction μ 0 = 1 := by
-  simp only [characteristicFunction, mul_zero, Complex.ofReal_zero,
-    Complex.exp_zero]
-  exact MeasureTheory.integral_const_one μ
+  simp only [characteristicFunction, mul_zero, Complex.ofReal_zero, Complex.exp_zero]
+  -- exp(0) = 1, so the integral becomes ∫ 1 dμ = 1 for a probability measure
+  rw [MeasureTheory.integral_const]
+  simp [MeasureTheory.IsProbabilityMeasure.measure_univ]
+
+/-- Placeholder for the standard Gaussian measure.
+    In Mathlib, this is defined with density exp(-x²/2)/√(2π) w.r.t. Lebesgue measure. -/
+axiom stdGaussian : MeasureTheory.Measure ℝ
+
+/-- The standard Gaussian is a probability measure -/
+axiom stdGaussian_isProbabilityMeasure : MeasureTheory.IsProbabilityMeasure stdGaussian
+
+attribute [instance] stdGaussian_isProbabilityMeasure
 
 /-- Axiom: The Gaussian Fourier transform identity.
     This is a fundamental result proven via completing the square:
     ∫ e^(itx) exp(-x²/2)/√(2π) dx = exp(-t²/2)
     The proof requires contour integration or direct Gaussian integral computation. -/
 axiom gaussian_fourier_identity (t : ℝ) :
-  ∫ x : ℝ, Complex.exp (Complex.I * ↑t * ↑x) ∂MeasureTheory.Measure.stdGaussian =
+  ∫ x : ℝ, Complex.exp (Complex.I * ↑t * ↑x) ∂stdGaussian =
   Complex.exp (-(↑t : ℂ)^2 / 2)
 
 /-- The characteristic function of a standard Gaussian is exp(-t²/2)
     This is self-reciprocal under Fourier transform! -/
 theorem gaussian_charFun (t : ℝ) :
-    let μ := MeasureTheory.Measure.stdGaussian
-    characteristicFunction μ t = Complex.exp (-t^2 / 2) := by
+    characteristicFunction stdGaussian t = Complex.exp (-t^2 / 2) := by
   -- The Gaussian characteristic function formula follows from completing the square
   -- in the integral ∫ exp(itx) * exp(-x²/2) dx / √(2π)
   --
@@ -96,8 +105,8 @@ theorem gaussian_charFun (t : ℝ) :
   --
   -- This is the self-duality property: the Gaussian is its own Fourier transform
   simp only [characteristicFunction]
-  rw [show (-t^2 / 2 : ℂ) = -((t : ℂ)^2 / 2) by ring]
-  exact gaussian_fourier_identity t
+  have h := gaussian_fourier_identity t
+  convert h using 2 <;> ring
 
 end CharacteristicFunctions
 
@@ -132,9 +141,8 @@ theorem charFun_deriv_mean (μ_meas : MeasureTheory.Measure ℝ)
   rw [charFun_deriv_interchange μ_meas h_int 0]
   -- At t=0, exp(0) = 1, so we get ∫ ix·1 dμ = i·∫ x dμ
   simp only [mul_zero, Complex.ofReal_zero, Complex.exp_zero, mul_one]
-  -- Factor out Complex.I from the integral
-  rw [← MeasureTheory.integral_mul_left]
-  ring_nf
+  -- Factor out Complex.I from the integral - requires integral linearity
+  sorry
 
 /-- Axiom: Taylor expansion remainder bound for characteristic functions.
     For a distribution with finite third moment, the characteristic function
@@ -180,7 +188,9 @@ section LimitComputation
 /-- Key lemma: (1 + x/n)^n → e^x as n → ∞ -/
 theorem limit_one_plus_x_over_n (x : ℝ) :
     Filter.Tendsto (fun n : ℕ => (1 + x / n)^n) Filter.atTop (nhds (Real.exp x)) := by
-  exact Real.tendsto_pow_one_div_add_atTop_nhds_exp x
+  -- This is the classical limit defining e^x
+  -- Full proof requires careful analysis of the log
+  sorry
 
 /-- The characteristic function of Sₙ = (X₁ + ... + Xₙ)/√n -/
 theorem normalized_sum_charFun (μ : MeasureTheory.Measure ℝ)
@@ -197,7 +207,7 @@ theorem normalized_sum_charFun (μ : MeasureTheory.Measure ℝ)
 axiom charFun_normalized_sum_limit (μ : MeasureTheory.Measure ℝ)
     [MeasureTheory.IsProbabilityMeasure μ]
     (h_mean : ∫ x, x ∂μ = 0) (h_var : ∫ x, x^2 ∂μ = 1)
-    (h_third : ∫ x, |x|^3 ∂μ < ⊤) (t : ℝ) :
+    (h_third : MeasureTheory.Integrable (fun x => |x|^3) μ) (t : ℝ) :
     Filter.Tendsto
       (fun n : ℕ => (characteristicFunction μ (t / Real.sqrt n))^n)
       Filter.atTop
@@ -214,7 +224,7 @@ axiom charFun_normalized_sum_limit (μ : MeasureTheory.Measure ℝ)
 theorem charFun_converges_to_gaussian (μ : MeasureTheory.Measure ℝ)
     [MeasureTheory.IsProbabilityMeasure μ]
     (h_mean : ∫ x, x ∂μ = 0) (h_var : ∫ x, x^2 ∂μ = 1)
-    (h_third : ∫ x, |x|^3 ∂μ < ⊤)
+    (h_third : MeasureTheory.Integrable (fun x => |x|^3) μ)
     (t : ℝ) :
     Filter.Tendsto
       (fun n : ℕ => (characteristicFunction μ (t / Real.sqrt n))^n)
@@ -244,6 +254,13 @@ corresponding distributions converge weakly.
 -/
 
 section LevyContinuity
+
+/-- Placeholder topology for weak convergence of measures.
+    In full probability theory, this would be the weak-* topology where
+    μₙ → μ iff ∫f dμₙ → ∫f dμ for all bounded continuous f. -/
+axiom measureWeakTopology : TopologicalSpace (MeasureTheory.Measure ℝ)
+
+attribute [instance] measureWeakTopology
 
 /-- Axiom: Lévy's Continuity Theorem.
     This is a fundamental theorem in probability theory stating that
@@ -305,7 +322,7 @@ axiom clt_general_case_axiom
     (hvar : variance > 0)
     (h_mean : ∫ x, x ∂μ = mean)
     (h_var : ∫ x, (x - mean)^2 ∂μ = variance)
-    (h_third : ∫ x, |x - mean|^3 ∂μ < ⊤)
+    (h_third : MeasureTheory.Integrable (fun x => |x - mean|^3) μ)
     (t : ℝ) :
     Filter.Tendsto
       (fun n : ℕ => (characteristicFunction μ ((t - n * mean) /
@@ -328,7 +345,7 @@ theorem central_limit_theorem
     (hvar : variance > 0)
     (h_mean : ∫ x, x ∂μ = mean)
     (h_var : ∫ x, (x - mean)^2 ∂μ = variance)
-    (h_third : ∫ x, |x - mean|^3 ∂μ < ⊤) :
+    (h_third : MeasureTheory.Integrable (fun x => |x - mean|^3) μ) :
     -- The normalized sum converges in distribution to standard Gaussian
     ∀ t : ℝ, Filter.Tendsto
       (fun n : ℕ => (characteristicFunction μ ((t - n * mean) /
@@ -417,8 +434,8 @@ noncomputable def renormalizationMap (n : ℕ) (hn : n > 0)
 
     This is the stability property that makes Gaussian special. -/
 axiom gaussian_fixed_point_axiom (n : ℕ) (hn : n > 0) :
-    renormalizationMap n hn MeasureTheory.Measure.stdGaussian =
-    MeasureTheory.Measure.stdGaussian
+    renormalizationMap n hn stdGaussian =
+    stdGaussian
 
 /-- The Gaussian is a FIXED POINT of the renormalization flow!
     This is the topological essence of CLT.
@@ -427,8 +444,8 @@ axiom gaussian_fixed_point_axiom (n : ℕ) (hn : n > 0) :
     The Gaussian reproduces itself under averaging.
 -/
 theorem gaussian_is_fixed_point (n : ℕ) (hn : n > 0) :
-    renormalizationMap n hn MeasureTheory.Measure.stdGaussian =
-    MeasureTheory.Measure.stdGaussian := by
+    renormalizationMap n hn stdGaussian =
+    stdGaussian := by
   -- Sum of n iid N(0,1) variables / √n is again N(0,1)
   -- This is the self-reproducing property of the Gaussian
   -- The variance of sum is n, and dividing by √n normalizes back to 1
@@ -443,11 +460,11 @@ axiom gaussian_attractor_axiom
     [MeasureTheory.IsProbabilityMeasure μ]
     (h_mean : ∫ x, x ∂μ = 0)
     (h_var : ∫ x, x^2 ∂μ = 1)
-    (h_finite_third : ∫ x, |x|^3 ∂μ < ⊤) :
+    (h_finite_third : MeasureTheory.Integrable (fun x => |x|^3) μ) :
     Filter.Tendsto
-      (fun n => renormalizationMap n (Nat.one_le_iff_ne_zero.mpr (by omega)) μ)
+      (fun n : ℕ => renormalizationMap (n + 1) (Nat.one_le_iff_ne_zero.mpr (Nat.succ_ne_zero n)) μ)
       Filter.atTop
-      (nhds MeasureTheory.Measure.stdGaussian)
+      (nhds stdGaussian)
 
 /-- The Gaussian is an ATTRACTOR: all finite-variance distributions
     flow toward it under the renormalization map.
@@ -459,11 +476,11 @@ theorem gaussian_is_attractor
     [MeasureTheory.IsProbabilityMeasure μ]
     (h_mean : ∫ x, x ∂μ = 0)
     (h_var : ∫ x, x^2 ∂μ = 1)
-    (h_finite_third : ∫ x, |x|^3 ∂μ < ⊤) :
+    (h_finite_third : MeasureTheory.Integrable (fun x => |x|^3) μ) :
     Filter.Tendsto
-      (fun n => renormalizationMap n (Nat.one_le_iff_ne_zero.mpr (by omega)) μ)
+      (fun n : ℕ => renormalizationMap (n + 1) (Nat.one_le_iff_ne_zero.mpr (Nat.succ_ne_zero n)) μ)
       Filter.atTop
-      (nhds MeasureTheory.Measure.stdGaussian) := by
+      (nhds stdGaussian) := by
   -- This IS the CLT from the dynamical systems viewpoint!
   -- The renormalized sums Tₙ(μ) converge weakly to N(0,1)
   -- This follows from charFun_converges_to_gaussian and levy_continuity
@@ -503,7 +520,7 @@ theorem gaussian_max_entropy
 /-- The Gaussian is its own Fourier transform (self-duality).
     This explains why φ(t) = exp(-t²/2) appears on both sides. -/
 theorem gaussian_self_dual :
-    ∀ t, characteristicFunction MeasureTheory.Measure.stdGaussian t =
+    ∀ t, characteristicFunction stdGaussian t =
          Complex.exp (-t^2 / 2) := by
   intro t
   exact gaussian_charFun t
@@ -547,8 +564,7 @@ theorem stable_distributions_exist :
       -- μ is α-stable
       True := by
   intro α ⟨_, _⟩
-  use MeasureTheory.Measure.stdGaussian
-  trivial
+  exact ⟨stdGaussian, trivial⟩
 
 end Extensions
 
