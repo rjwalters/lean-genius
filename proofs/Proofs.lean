@@ -5,6 +5,7 @@ import Proofs.AMGMInequality
 import Proofs.AbelRuffini
 import Proofs.AreaOfCircle
 import Proofs.ArithmeticSeries
+import Proofs.BallotProblem
 import Proofs.BezoutIdentity
 import Proofs.BinomialTheorem
 import Proofs.BirthdayProblem
