@@ -1,0 +1,111 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "divisibility-by-3",
+    "range": { "startLine": 1, "endLine": 40 },
+    "type": "concept",
+    "title": "Divisibility by 3 Rule",
+    "content": "A natural number is divisible by 3 if and only if the sum of its decimal digits is divisible by 3:\n\n$$3 | n \\iff 3 | (d_0 + d_1 + d_2 + \\cdots)$$\n\nThis is one of the most practical divisibility tests, easily performed mentally.\n\nThis is Wiedijk's 100 Theorems #85.",
+    "significance": "critical",
+    "relatedConcepts": ["divisibility", "modular arithmetic", "digit sum"]
+  },
+  {
+    "id": "ann-key-insight",
+    "proofId": "divisibility-by-3",
+    "range": { "startLine": 42, "endLine": 62 },
+    "type": "concept",
+    "title": "The Key Insight",
+    "content": "The rule works because $10 \\equiv 1 \\pmod 3$.\n\nThis means every power of 10 is also congruent to 1 modulo 3:\n$$10^k \\equiv 1^k = 1 \\pmod 3$$\n\nSo when we write $n = d_0 + d_1 \\cdot 10 + d_2 \\cdot 10^2 + \\cdots$, we get:\n$$n \\equiv d_0 + d_1 + d_2 + \\cdots \\pmod 3$$",
+    "mathContext": "$10 \\equiv 1 \\pmod 3$",
+    "significance": "critical",
+    "relatedConcepts": ["modular equivalence", "powers of 10"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "divisibility-by-3",
+    "range": { "startLine": 64, "endLine": 77 },
+    "type": "theorem",
+    "title": "Main Theorem: Divisibility by 3",
+    "content": "**Divisibility by 3 Rule (Wiedijk #85)**:\n\n```lean\ntheorem divisibility_by_3 (n : ℕ) :\n    3 ∣ n ↔ 3 ∣ (Nat.digits 10 n).sum\n```\n\nThis follows from Mathlib's `Nat.three_dvd_iff`.\n\nExample: 123 has digits [3, 2, 1], sum = 6. Since 3 | 6, we have 3 | 123.",
+    "mathContext": "$3 | n \\iff 3 | \\text{(digit sum)}$",
+    "significance": "critical",
+    "relatedConcepts": ["Nat.digits", "divisibility"]
+  },
+  {
+    "id": "ann-modEq-form",
+    "proofId": "divisibility-by-3",
+    "range": { "startLine": 79, "endLine": 82 },
+    "type": "theorem",
+    "title": "Congruence Form",
+    "content": "The stronger form shows n is congruent (not just divisible) to its digit sum:\n\n```lean\ntheorem modEq_three_digits (n : ℕ) :\n    n ≡ (Nat.digits 10 n).sum [MOD 3]\n```\n\nThis means n and its digit sum have the same remainder when divided by 3.",
+    "mathContext": "$n \\equiv \\text{(digit sum)} \\pmod 3$",
+    "significance": "key",
+    "relatedConcepts": ["modular congruence", "remainder"]
+  },
+  {
+    "id": "ann-divisibility-9",
+    "proofId": "divisibility-by-3",
+    "range": { "startLine": 84, "endLine": 97 },
+    "type": "theorem",
+    "title": "Divisibility by 9 (Corollary)",
+    "content": "The same principle gives divisibility by 9, since $10 \\equiv 1 \\pmod 9$ as well.\n\n```lean\ntheorem divisibility_by_9 (n : ℕ) :\n    9 ∣ n ↔ 9 ∣ (Nat.digits 10 n).sum\n```\n\nThis is the basis of 'casting out nines' - an ancient technique for checking arithmetic.",
+    "mathContext": "$9 | n \\iff 9 | \\text{(digit sum)}$",
+    "significance": "key",
+    "relatedConcepts": ["casting out nines", "arithmetic verification"]
+  },
+  {
+    "id": "ann-general",
+    "proofId": "divisibility-by-3",
+    "range": { "startLine": 99, "endLine": 117 },
+    "type": "concept",
+    "title": "General Principle",
+    "content": "The rule generalizes to any base b and divisor d where $b \\equiv 1 \\pmod d$.\n\nFor example:\n- Base 10, divisor 3: works because $10 \\equiv 1 \\pmod 3$\n- Base 10, divisor 9: works because $10 \\equiv 1 \\pmod 9$\n- Base 8, divisor 7: works because $8 \\equiv 1 \\pmod 7$",
+    "mathContext": "$b \\equiv 1 \\pmod d \\implies n \\equiv \\text{(digit sum in base }b\\text{)} \\pmod d$",
+    "significance": "key",
+    "relatedConcepts": ["generalization", "arbitrary base"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "divisibility-by-3",
+    "range": { "startLine": 119, "endLine": 158 },
+    "type": "example",
+    "title": "Verification Examples",
+    "content": "Concrete examples:\n\n| Number | Digit Sum | ÷3? | ÷9? |\n|--------|-----------|-----|-----|\n| 123    | 6         | ✓   | ✗   |\n| 729    | 18        | ✓   | ✓   |\n| 1000   | 1         | ✗   | ✗   |\n| 999    | 27        | ✓   | ✓   |\n| 12345  | 15        | ✓   | ✗   |\n\nEach is verified using `native_decide`.",
+    "mathContext": "Concrete verification",
+    "significance": "supporting",
+    "relatedConcepts": ["concrete examples", "native_decide"]
+  },
+  {
+    "id": "ann-digit-repr",
+    "proofId": "divisibility-by-3",
+    "range": { "startLine": 160, "endLine": 177 },
+    "type": "concept",
+    "title": "Digit Representation",
+    "content": "Mathlib's `Nat.digits 10 n` returns digits in **least-significant-first** order:\n\n| Number | Digits       | Sum |\n|--------|--------------|-----|\n| 123    | [3, 2, 1]    | 6   |\n| 1000   | [0, 0, 0, 1] | 1   |\n| 7      | [7]          | 7   |\n| 0      | []           | 0   |",
+    "mathContext": "Nat.digits returns [d₀, d₁, d₂, ...]",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.digits", "list representation"]
+  },
+  {
+    "id": "ann-modular-examples",
+    "proofId": "divisibility-by-3",
+    "range": { "startLine": 195, "endLine": 205 },
+    "type": "example",
+    "title": "Modular Arithmetic Examples",
+    "content": "Verification that powers of 10 are congruent to 1:\n\n- $10 \\% 3 = 1$ ✓\n- $10 \\% 9 = 1$ ✓\n- $100 \\% 3 = 1$ ✓\n- $100 \\% 9 = 1$ ✓\n\nThis is why the rule works for all natural numbers.",
+    "mathContext": "$10^k \\equiv 1 \\pmod{3}$ and $10^k \\equiv 1 \\pmod{9}$",
+    "significance": "supporting",
+    "relatedConcepts": ["powers of 10", "modular verification"]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "divisibility-by-3",
+    "range": { "startLine": 207, "endLine": 228 },
+    "type": "concept",
+    "title": "Applications",
+    "content": "The theorems support iterative digit summing:\n\n1. **Digital Root**: Keep summing digits until you get a single digit\n2. **Quick Divisibility Check**: 3 | n iff 3 | (final digit root)\n\nFor example: 99999 → 45 → 9 → 9, so 99999 is divisible by 9.\n\nThese application theorems formalize both directions of the iff.",
+    "mathContext": "Iterative digit sums",
+    "significance": "key",
+    "relatedConcepts": ["digital root", "iterative computation"]
+  }
+]
