@@ -41,6 +41,7 @@ import { triangleInequalityData } from './triangle-inequality'
 import { konigsbergData } from './konigsberg'
 import { productOfSegmentsOfChordsData } from './product-of-segments-of-chords'
 import { lawOfCosinesData } from './law-of-cosines'
+import { lawsOfLargeNumbersData } from './laws-of-large-numbers'
 import { birthdayProblemData } from './birthday-problem'
 import { quadraticReciprocityData } from './quadratic-reciprocity'
 import { lhopitalData } from './lhopital'
@@ -123,6 +124,7 @@ export const proofs: Record<string, ProofData> = {
   'konigsberg': konigsbergData,
   'product-of-segments-of-chords': productOfSegmentsOfChordsData,
   'law-of-cosines': lawOfCosinesData,
+  'laws-of-large-numbers': lawsOfLargeNumbersData,
   'birthday-problem': birthdayProblemData,
   'quadratic-reciprocity': quadraticReciprocityData,
   'lhopital': lhopitalData,
