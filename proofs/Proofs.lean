@@ -56,6 +56,7 @@ import Proofs.IntermediateValueTheorem
 import Proofs.IsoscelesTriangle
 import Proofs.KnightsTourOblique
 import Proofs.Konigsberg
+import Proofs.KroneckersJugendtraum
 import Proofs.LHopital
 import Proofs.LagrangeFourSquares
 import Proofs.LagrangeTheorem
