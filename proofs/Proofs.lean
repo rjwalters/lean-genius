@@ -44,6 +44,7 @@ import Proofs.KnightsTourOblique
 import Proofs.LHopital
 import Proofs.LagrangeFourSquares
 import Proofs.LagrangeTheorem
+import Proofs.LawOfCosines
 import Proofs.LeibnizPi
 import Proofs.MathematicalInduction
 import Proofs.MeanValueTheorem
