@@ -1,0 +1,28 @@
+name: Check Proofs.lean sync
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'proofs/Proofs/**'
+      - 'proofs/Proofs.lean'
+      - '.loom/scripts/generate-proofs-imports.sh'
+  push:
+    branches: [main]
+    paths:
+      - 'proofs/Proofs/**'
+      - 'proofs/Proofs.lean'
+      - '.loom/scripts/generate-proofs-imports.sh'
+
+permissions:
+  contents: read
+
+jobs:
+  check-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check Proofs.lean is in sync
+        run: ./.loom/scripts/generate-proofs-imports.sh --check

@@ -4,7 +4,7 @@
     "proofId": "knights-tour-oblique",
     "range": {
       "startLine": 1,
-      "endLine": 23
+      "endLine": 30
     },
     "type": "concept",
     "title": "The Knight's Adventure",
@@ -23,7 +23,7 @@
     "proofId": "knights-tour-oblique",
     "range": {
       "startLine": 1,
-      "endLine": 23
+      "endLine": 30
     },
     "type": "concept",
     "title": "Mathlib Foundations",
@@ -40,8 +40,8 @@
     "id": "ann-square-def",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 33,
-      "endLine": 39
+      "startLine": 40,
+      "endLine": 46
     },
     "type": "definition",
     "title": "Chessboard Squares",
@@ -58,8 +58,8 @@
     "id": "ann-knight-adj",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 51,
-      "endLine": 51
+      "startLine": 58,
+      "endLine": 58
     },
     "type": "definition",
     "title": "Knight Adjacency",
@@ -78,8 +78,8 @@
     "id": "ann-knight-graph",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 75,
-      "endLine": 90
+      "startLine": 82,
+      "endLine": 97
     },
     "type": "definition",
     "title": "The Knight Graph",
@@ -99,8 +99,8 @@
     "id": "ann-move-vector",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 75,
-      "endLine": 90
+      "startLine": 82,
+      "endLine": 97
     },
     "type": "definition",
     "title": "Move Vectors",
@@ -117,8 +117,8 @@
     "id": "ann-dot-product",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 100,
-      "endLine": 101
+      "startLine": 107,
+      "endLine": 108
     },
     "type": "definition",
     "title": "Dot Product of Move Vectors",
@@ -136,8 +136,8 @@
     "id": "ann-oblique-def",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 100,
-      "endLine": 106
+      "startLine": 107,
+      "endLine": 113
     },
     "type": "definition",
     "title": "Oblique Turns",
@@ -157,8 +157,8 @@
     "id": "ann-dot-values",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 111,
-      "endLine": 115
+      "startLine": 118,
+      "endLine": 122
     },
     "type": "theorem",
     "title": "Possible Dot Product Values",
@@ -177,8 +177,8 @@
     "id": "ann-closed-tour",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 178,
-      "endLine": 193
+      "startLine": 185,
+      "endLine": 200
     },
     "type": "definition",
     "title": "Closed Knight's Tour",
@@ -198,8 +198,8 @@
     "id": "ann-oblique-count",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 155,
-      "endLine": 163
+      "startLine": 162,
+      "endLine": 170
     },
     "type": "definition",
     "title": "Counting Oblique Turns",
@@ -219,8 +219,8 @@
     "id": "ann-direction-discretization",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 178,
-      "endLine": 193
+      "startLine": 185,
+      "endLine": 200
     },
     "type": "insight",
     "title": "Discretizing Directions into Z/8Z",
@@ -237,8 +237,8 @@
     "id": "ann-turn-angle",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 195,
-      "endLine": 199
+      "startLine": 202,
+      "endLine": 206
     },
     "type": "definition",
     "title": "Turn Angles in Z/8Z",
@@ -257,8 +257,8 @@
     "id": "ann-oblique-iff-large",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 201,
-      "endLine": 204
+      "startLine": 208,
+      "endLine": 211
     },
     "type": "theorem",
     "title": "Oblique = Large Turn Angle",
@@ -278,8 +278,8 @@
     "id": "ann-winding-zero",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 215,
-      "endLine": 226
+      "startLine": 222,
+      "endLine": 233
     },
     "type": "theorem",
     "title": "The Winding Constraint",
@@ -300,8 +300,8 @@
     "id": "ann-counting-argument",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 984,
-      "endLine": 1102
+      "startLine": 991,
+      "endLine": 1109
     },
     "type": "theorem",
     "title": "The 4-Oblique Lower Bound",
@@ -322,8 +322,8 @@
     "id": "ann-d4-intro",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 247,
-      "endLine": 256
+      "startLine": 254,
+      "endLine": 263
     },
     "type": "concept",
     "title": "D4 Symmetry of the Chessboard",
@@ -340,8 +340,8 @@
     "id": "ann-rotation-def",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 247,
-      "endLine": 263
+      "startLine": 254,
+      "endLine": 270
     },
     "type": "definition",
     "title": "Rotating Squares",
@@ -357,8 +357,8 @@
     "id": "ann-reflection-def",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 269,
-      "endLine": 274
+      "startLine": 276,
+      "endLine": 281
     },
     "type": "definition",
     "title": "D4 Transformations",
@@ -378,8 +378,8 @@
     "id": "ann-knight-invariant",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 283,
-      "endLine": 285
+      "startLine": 290,
+      "endLine": 292
     },
     "type": "theorem",
     "title": "Knight Graph Invariance",
@@ -399,8 +399,8 @@
     "id": "ann-oblique-invariant",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 305,
-      "endLine": 314
+      "startLine": 312,
+      "endLine": 321
     },
     "type": "theorem",
     "title": "Oblique Count is D4-Invariant",
@@ -420,8 +420,8 @@
     "id": "ann-canonical",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 316,
-      "endLine": 323
+      "startLine": 323,
+      "endLine": 330
     },
     "type": "definition",
     "title": "Canonical Form",
@@ -441,8 +441,8 @@
     "id": "ann-minimal-tour",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 2232,
-      "endLine": 2238
+      "startLine": 2239,
+      "endLine": 2245
     },
     "type": "theorem",
     "title": "The Unique Minimal Tour",
@@ -462,8 +462,8 @@
     "id": "ann-uniqueness",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 2328,
-      "endLine": 2328
+      "startLine": 2335,
+      "endLine": 2335
     },
     "type": "theorem",
     "title": "Uniqueness of the Minimal Tour",
@@ -484,8 +484,8 @@
     "id": "ann-main-lower",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 2362,
-      "endLine": 2368
+      "startLine": 2369,
+      "endLine": 2375
     },
     "type": "theorem",
     "title": "Main Theorem 1: Lower Bound",
@@ -504,8 +504,8 @@
     "id": "ann-main-unique",
     "proofId": "knights-tour-oblique",
     "range": {
-      "startLine": 2394,
-      "endLine": 2423
+      "startLine": 2401,
+      "endLine": 2430
     },
     "type": "theorem",
     "title": "Main Theorem 2: Uniqueness",
