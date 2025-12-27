@@ -26,6 +26,7 @@ import Proofs.DeMoivre
 import Proofs.DenumerabilityRationals
 import Proofs.Derangements
 import Proofs.DesarguesTheorem
+import Proofs.DescartesRuleOfSigns
 import Proofs.DivisibilityBy3
 import Proofs.ErdosSzekeres
 import Proofs.EulerIdentity
@@ -67,6 +68,7 @@ import Proofs.OnePlusOne
 import Proofs.PellEquation
 import Proofs.PerfectNumbers
 import Proofs.PlatonicSolids
+import Proofs.PrimeNumberTheorem
 import Proofs.PrimeReciprocalDivergence
 import Proofs.ProductOfSegmentsOfChords
 import Proofs.PtolemysTheorem
