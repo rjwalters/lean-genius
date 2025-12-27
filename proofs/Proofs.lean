@@ -34,3 +34,4 @@ import Proofs.WilsonsTheorem
 import Proofs.EulerTotient
 import Proofs.HurwitzTheorem
 import Proofs.SubsetCount
+import Proofs.LagrangeTheorem
