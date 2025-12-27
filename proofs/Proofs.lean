@@ -32,6 +32,7 @@ import Proofs.GeometricSeries
 import Proofs.GodelIncompleteness
 import Proofs.HaltingProblem
 import Proofs.HarmonicDivergence
+import Proofs.HeronsFormula
 import Proofs.HurwitzTheorem
 import Proofs.InclusionExclusion
 import Proofs.InfinitudePrimes
@@ -57,5 +58,6 @@ import Proofs.Sqrt2IrrationalFromAxioms
 import Proofs.SubsetCount
 import Proofs.TaylorTheorem
 import Proofs.ThreePlaceIdentity
+import Proofs.TriangleAngleSum
 import Proofs.TriangleInequality
 import Proofs.WilsonsTheorem
