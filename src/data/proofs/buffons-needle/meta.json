@@ -1,0 +1,100 @@
+{
+  "id": "buffons-needle",
+  "title": "Buffon's Needle Problem",
+  "slug": "buffons-needle",
+  "description": "If a needle of length l is dropped onto a floor with parallel lines spaced distance d apart, the probability it crosses a line is 2l/(pi*d).",
+  "meta": {
+    "wiedijkNumber": 99,
+    "author": "Georges-Louis Leclerc, Comte de Buffon",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Buffon%27s_needle_problem",
+    "date": "1777",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BuffonsNeedle.lean",
+    "tags": [
+      "probability",
+      "geometric-probability",
+      "integration",
+      "wiedijk-100",
+      "monte-carlo"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "integral_sin",
+        "description": "Integral of sine function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Integrals"
+      },
+      {
+        "theorem": "Real.pi",
+        "description": "The mathematical constant pi",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Complete formalization of Buffon's Needle formula",
+      "Proof of the key integral computation",
+      "Connection to Monte Carlo pi estimation",
+      "Pedagogical explanation of the geometric probability framework"
+    ],
+    "dateAdded": "12/27/25"
+  },
+  "overview": {
+    "historicalContext": "Buffon's Needle Problem was posed by Georges-Louis Leclerc, Comte de Buffon in 1777. It is one of the earliest problems in geometric probability and was published in his 'Essai d'arithmetique morale'. The problem asks: if a needle of length l is dropped randomly onto a floor marked with parallel lines spaced distance d apart, what is the probability that the needle crosses one of the lines?\n\nThe surprising answer involves pi, providing one of the first Monte Carlo methods for estimating this constant.",
+    "problemStatement": "**Theorem (Buffon, 1777)**: If a needle of length l is dropped randomly onto a floor with parallel lines spaced distance d apart (where l <= d), the probability it crosses a line is:\n\n$$P = \\frac{2\\ell}{\\pi d}$$\n\nThis is Wiedijk's 100 Theorems #99.",
+    "proofStrategy": "**Geometric Probability Setup**:\n\n1. Model the needle drop with two uniform random variables:\n   - Angle theta in [0, pi): orientation of the needle\n   - Position x in [0, d/2]: distance from center to nearest line\n2. The needle crosses a line when x <= (l/2)*sin(theta)\n3. Compute the probability as the ratio of favorable to total area:\n   - Crossing region area: integral from 0 to pi of (l/2)*sin(theta) = l\n   - Sample space area: (d/2) * pi = pi*d/2\n4. Therefore P = l / (pi*d/2) = 2l/(pi*d)",
+    "keyInsights": [
+      "The appearance of pi in the answer connects geometry to probability",
+      "This provides a Monte Carlo method to estimate pi by dropping needles",
+      "The formula generalizes to the Cauchy-Crofton formula in integral geometry",
+      "For long needles (l > d), the formula becomes more complex"
+    ]
+  },
+  "sections": [
+    {
+      "id": "physical-setup",
+      "title": "The Physical Setup",
+      "startLine": 52,
+      "endLine": 68,
+      "summary": "Defining the needle parameters and uniform random variables."
+    },
+    {
+      "id": "crossing-condition",
+      "title": "The Crossing Condition",
+      "startLine": 70,
+      "endLine": 86,
+      "summary": "The geometric condition for when the needle crosses a line."
+    },
+    {
+      "id": "key-integral",
+      "title": "The Key Integral",
+      "startLine": 88,
+      "endLine": 114,
+      "summary": "Computing the areas and the probability via integration."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 116,
+      "endLine": 145,
+      "summary": "Buffon's Needle Theorem: P = 2l/(pi*d)."
+    },
+    {
+      "id": "pi-estimation",
+      "title": "Connection to Pi Estimation",
+      "startLine": 147,
+      "endLine": 176,
+      "summary": "Using Buffon's Needle to estimate pi via Monte Carlo methods."
+    }
+  ],
+  "conclusion": {
+    "summary": "Buffon's Needle Problem elegantly demonstrates how geometric probability yields surprising connections to fundamental constants. The formula P = 2l/(pi*d) shows that pi naturally appears in the probability of a random geometric event.",
+    "implications": "**Applications:**\n\n**1. Monte Carlo Estimation of Pi**\nBy dropping n needles and counting k crossings, we can estimate pi as 2ln/(kd). This was one of the first Monte Carlo methods.\n\n**2. Integral Geometry**\nBuffon's Needle is a special case of the Cauchy-Crofton formula, which relates curve lengths to line intersection counts.\n\n**3. Stereology**\nUsed in microscopy to estimate lengths and areas from random sections.\n\n**4. Statistical Quality Control**\nInspecting surfaces with random probes.",
+    "openQuestions": [
+      "Generalizations to curved needles",
+      "Higher-dimensional versions (Buffon's noodle)",
+      "Optimal needle dropping strategies",
+      "Connections to percolation theory"
+    ]
+  }
+}
