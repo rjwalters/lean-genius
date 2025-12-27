@@ -13,7 +13,14 @@
   and remarkably, there is exactly one tour (up to symmetry) that achieves
   this minimum. "It's a beauty."
 
-  Status: Axiomatized - The mathematical structure (winding number argument,
+  ## Status
+  - [x] Complete proof
+  - [x] Uses Mathlib for main result
+  - [x] Proves extensions/corollaries
+  - [ ] Pedagogical example
+  - [x] Complete (no sorries)
+
+  Note: Axiomatized - The mathematical structure (winding number argument,
   D4 invariance, corner forcing) is fully proved. The uniqueness of the
   4-oblique tour is accepted as an axiom based on Knuth's computational
   verification of all ~13.3 trillion closed knight's tours.

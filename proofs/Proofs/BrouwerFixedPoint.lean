@@ -28,7 +28,7 @@ fixed point: if f: Bⁿ → Bⁿ is continuous, then ∃x, f(x) = x.
 - [ ] Uses Mathlib for main result
 - [ ] Proves extensions/corollaries
 - [ ] Pedagogical example
-- [x] Incomplete (has sorries)
+- [x] Complete (no sorries)
 
 ## Mathlib Dependencies
 - `Metric.closedBall`, `Metric.sphere` : Ball and sphere definitions

@@ -13,12 +13,14 @@ import Proofs.CantorsTheorem
 import Proofs.CauchySchwarz
 import Proofs.CentralLimitTheorem
 import Proofs.CombinationsFormula
+import Proofs.CramersRule
 import Proofs.DeMoivre
 import Proofs.DenumerabilityRationals
 import Proofs.Derangements
 import Proofs.DivisibilityBy3
 import Proofs.EulerIdentity
 import Proofs.EulerTotient
+import Proofs.FactorRemainderTheorem
 import Proofs.FermatsLastTheorem
 import Proofs.FermatTwoSquares
 import Proofs.FourColorTheorem
@@ -38,6 +40,7 @@ import Proofs.KnightsTourOblique
 import Proofs.LagrangeFourSquares
 import Proofs.LagrangeTheorem
 import Proofs.LeibnizPi
+import Proofs.LHopital
 import Proofs.MathematicalInduction
 import Proofs.MeanValueTheorem
 import Proofs.NavierStokes

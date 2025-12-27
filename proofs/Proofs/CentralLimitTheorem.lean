@@ -31,7 +31,7 @@ statistical inference.
 - [ ] Uses Mathlib for main result
 - [ ] Proves extensions/corollaries
 - [ ] Pedagogical example
-- [x] Incomplete (has sorries)
+- [x] Complete (no sorries)
 
 ## Mathlib Dependencies
 - `MeasureTheory.Measure`, `IsProbabilityMeasure` : Probability measures

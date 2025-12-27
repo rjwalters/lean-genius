@@ -26,7 +26,7 @@ n-sphere such that f(x) = f(-x). Antipodal points must map to the same value.
 - [ ] Uses Mathlib for main result
 - [ ] Proves extensions/corollaries
 - [ ] Pedagogical example
-- [x] Incomplete (has sorries)
+- [x] Complete (no sorries)
 
 ## Mathlib Dependencies
 - `Metric.sphere` : The sphere as a metric space subset
