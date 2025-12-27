@@ -69,17 +69,22 @@ theorem sum_two_squares_iff_not_three_mod_four {p : ℕ} [hp : Fact p.Prime] :
     -- Squares modulo 4 can only be 0 or 1
     -- So a² + b² ≡ 0, 1, or 2 (mod 4), never 3
     have ha : a ^ 2 % 4 = 0 ∨ a ^ 2 % 4 = 1 := by
-      have : a % 4 < 4 := Nat.mod_lt a (by omega)
-      interval_cases a % 4 <;> simp [Nat.pow_mod]
+      have h4 : a % 4 < 4 := Nat.mod_lt a (by omega)
+      have key : a ^ 2 % 4 = (a % 4) ^ 2 % 4 := by rw [Nat.pow_mod]
+      rw [key]
+      interval_cases a % 4 <;> simp
     have hb : b ^ 2 % 4 = 0 ∨ b ^ 2 % 4 = 1 := by
-      have : b % 4 < 4 := Nat.mod_lt b (by omega)
-      interval_cases b % 4 <;> simp [Nat.pow_mod]
+      have h4 : b % 4 < 4 := Nat.mod_lt b (by omega)
+      have key : b ^ 2 % 4 = (b % 4) ^ 2 % 4 := by rw [Nat.pow_mod]
+      rw [key]
+      interval_cases b % 4 <;> simp
     have hsum : (a ^ 2 + b ^ 2) % 4 ≠ 3 := by
       rcases ha with ha | ha <;> rcases hb with hb | hb <;> omega
     rw [hab] at hsum
     exact hsum h
   · -- If p % 4 ≠ 3, then p = a² + b²
-    exact Nat.Prime.sq_add_sq hp.out
+    intro hne3
+    exact Nat.Prime.sq_add_sq hne3
 
 /-- **Special Case: Primes Congruent to 1 (mod 4)**
 
@@ -113,11 +118,15 @@ theorem three_mod_four_not_sum_of_squares {p : ℕ} [Fact p.Prime] (hp : p % 4 =
   intro ⟨a, b, hab⟩
   -- Squares mod 4 are 0 or 1
   have ha : a ^ 2 % 4 = 0 ∨ a ^ 2 % 4 = 1 := by
-    have : a % 4 < 4 := Nat.mod_lt a (by omega)
-    interval_cases a % 4 <;> simp [Nat.pow_mod]
+    have h4 : a % 4 < 4 := Nat.mod_lt a (by omega)
+    have key : a ^ 2 % 4 = (a % 4) ^ 2 % 4 := by rw [Nat.pow_mod]
+    rw [key]
+    interval_cases a % 4 <;> simp
   have hb : b ^ 2 % 4 = 0 ∨ b ^ 2 % 4 = 1 := by
-    have : b % 4 < 4 := Nat.mod_lt b (by omega)
-    interval_cases b % 4 <;> simp [Nat.pow_mod]
+    have h4 : b % 4 < 4 := Nat.mod_lt b (by omega)
+    have key : b ^ 2 % 4 = (b % 4) ^ 2 % 4 := by rw [Nat.pow_mod]
+    rw [key]
+    interval_cases b % 4 <;> simp
   -- So their sum mod 4 is 0, 1, or 2
   have hsum : (a ^ 2 + b ^ 2) % 4 ≠ 3 := by
     rcases ha with ha | ha <;> rcases hb with hb | hb <;> omega
@@ -156,27 +165,16 @@ theorem prime_classification (p : ℕ) [Fact p.Prime] :
     (p = 2 ∨ p % 4 = 1) ∨ p % 4 = 3 := by
   have hp2 : p ≥ 2 := Nat.Prime.two_le (Fact.out)
   have hmod4 : p % 4 < 4 := Nat.mod_lt p (by omega)
-  interval_cases p % 4
-  · -- p % 4 = 0 means 4 | p
-    left; left
-    have hdiv : 4 ∣ p := Nat.dvd_of_mod_eq_zero rfl
-    have hprime := (Fact.out : p.Prime)
-    have := hprime.eq_one_or_self_of_dvd 4 hdiv
-    rcases this with h1 | h4
-    · omega
-    · omega
-  · -- p % 4 = 1
-    left; right; rfl
-  · -- p % 4 = 2 means 2 | p
-    left; left
-    have hdiv : 2 ∣ p := Nat.dvd_of_mod_eq_zero (by omega : p % 2 = 0)
-    have hprime := (Fact.out : p.Prime)
-    have := hprime.eq_one_or_self_of_dvd 2 hdiv
-    rcases this with h1 | h2
-    · omega
-    · exact h2
-  · -- p % 4 = 3
-    right; rfl
+  have hprime := (Fact.out : p.Prime)
+  -- p is odd unless p = 2
+  rcases hprime.eq_two_or_odd with hp2' | hodd
+  · -- p = 2
+    left; left; exact hp2'
+  · -- p is odd, so p % 4 = 1 or 3
+    have h14 : p % 4 = 1 ∨ p % 4 = 3 := by omega
+    rcases h14 with h1 | h3
+    · left; right; exact h1
+    · right; exact h3
 
 /-- **Sum of Two Squares iff Not 3 mod 4 (Corollary)**
 

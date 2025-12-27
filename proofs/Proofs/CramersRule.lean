@@ -125,30 +125,18 @@ The Cramer map is linear in its second argument. -/
 
 /-- Cramer is additive in the second argument -/
 theorem cramer_add (A : Matrix n n R) (b c : n → R) :
-    A.cramer (b + c) = A.cramer b + A.cramer c := by
-  ext i
-  simp only [cramer_apply, Pi.add_apply]
-  -- The Cramer map is a linear map in b, so it preserves addition
-  rw [← Matrix.cramer_apply, ← Matrix.cramer_apply, ← Matrix.cramer_apply]
-  have := A.cramerLinearMap.map_add b c
-  simp only [LinearMap.add_apply] at this
-  exact congrFun this i
+    A.cramer (b + c) = A.cramer b + A.cramer c :=
+  A.cramer.map_add b c
 
 /-- Cramer respects scalar multiplication -/
 theorem cramer_smul (A : Matrix n n R) (r : R) (b : n → R) :
-    A.cramer (r • b) = r • A.cramer b := by
-  ext i
-  simp only [cramer_apply, Pi.smul_apply, smul_eq_mul]
-  rw [← Matrix.cramer_apply, ← Matrix.cramer_apply]
-  have := A.cramerLinearMap.map_smul r b
-  simp only [LinearMap.smul_apply, RingHom.id_apply] at this
-  exact congrFun this i
+    A.cramer (r • b) = r • A.cramer b :=
+  A.cramer.map_smul r b
 
 /-- Cramer of zero is zero -/
 theorem cramer_zero (A : Matrix n n R) :
-    A.cramer 0 = 0 := by
-  have := A.cramerLinearMap.map_zero
-  exact this
+    A.cramer 0 = 0 :=
+  A.cramer.map_zero
 
 /-! ## Example: 2×2 System
 

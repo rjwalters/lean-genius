@@ -1,5 +1,6 @@
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv
+import Mathlib.Data.Real.Pi.Leibniz
 import Mathlib.Tactic
 
 /-!
@@ -29,7 +30,7 @@ with odd denominators.
 - [x] Uses Mathlib for main result
 - [x] Proves extensions/corollaries
 - [x] Pedagogical examples
-- [ ] Incomplete (has sorries)
+- [x] Complete (no sorries)
 
 ## Mathlib Dependencies
 - `Real.tendsto_sum_pi_div_four` : The alternating sum converges to π/4
@@ -71,11 +72,11 @@ Note: This follows from the Taylor series of arctan at x=1, combined with arctan
 The full proof requires showing the Taylor series converges at the boundary, which
 uses Abel's theorem on power series. -/
 theorem leibniz_series :
-    Tendsto (fun k => ∑ i ∈ range k, ((-1 : ℝ) ^ i) / (2 * i + 1)) atTop (nhds (π / 4)) := by
+    Tendsto (fun k => ∑ i ∈ range k, ((-1 : ℝ) ^ i) / (2 * i + 1)) atTop (nhds (π / 4)) :=
   -- This follows from the Taylor series of arctan evaluated at 1
   -- arctan(x) = Σ (-1)^n * x^(2n+1) / (2n+1) for |x| ≤ 1
   -- At x = 1: arctan(1) = π/4 = Σ (-1)^n / (2n+1)
-  sorry
+  Real.tendsto_sum_pi_div_four
 
 /-! ## Connection to Arctangent
 
@@ -139,9 +140,6 @@ theorem term_odd_neg (n : ℕ) : term (2 * n + 1) < 0 := by
     rw [pow_add, pow_mul]
     simp
   rw [h]
-  have h2 : (0 : ℝ) < 2 * (2 * n + 1) + 1 := by positivity
-  have h3 : 2 * ↑(2 * n + 1) + 1 = (2 * (2 * n + 1) + 1 : ℕ) := by simp; ring
-  rw [h3]
   apply div_neg_of_neg_of_pos (by norm_num : (-1 : ℝ) < 0)
   positivity
 

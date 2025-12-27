@@ -30,7 +30,7 @@ This is Wiedijk's 100 Theorems #90.
 - [x] Uses Mathlib for main result
 - [x] Proves bounds and corollaries
 - [x] Pedagogical examples
-- [ ] Incomplete (has sorries)
+- [ ] Incomplete (1 sorry: refined asymptotic bound for n ≥ 2)
 
 ## Mathlib Dependencies
 - `Stirling.stirlingSeq` : The sequence n!/[√(2n)(n/e)^n]
@@ -319,13 +319,66 @@ theorem stirling_error_bound :
   have hpi_pos : (0 : ℝ) < Real.sqrt π := Real.sqrt_pos.mpr Real.pi_pos
   have hupper : stirlingSeq n / Real.sqrt π ≤ stirlingSeq 1 / Real.sqrt π := by
     apply div_le_div_of_nonneg_right hbound (le_of_lt hpi_pos)
-  -- We need: stirlingSeq 1 / √π - 1 ≤ 1/n
-  -- stirlingSeq 1 / √π = e/√2 / √π = e / √(2π) ≈ 1.084
-  -- So stirlingSeq 1 / √π - 1 ≈ 0.084 < 1 ≤ 1/n for n ≥ 1
-  -- The numerical verification requires precise bounds on e and π which are
-  -- available in Mathlib but require careful orchestration.
-  -- Proof sketch complete - the bound follows from e ≈ 2.718 < 2√(2π) ≈ 5.01
-  sorry
+  -- We need: stirlingSeq n / √π - 1 ≤ 1/n
+  --
+  -- The refined asymptotic: stirlingSeq n / √π = 1 + 1/(12n) + O(1/n²)
+  -- So stirlingSeq n / √π - 1 ≈ 1/(12n) ≤ 1/n for all n ≥ 1.
+  --
+  -- Proof approach: Use Mathlib's log bounds. From log_stirlingSeq_sub_log_stirlingSeq_succ:
+  --   log(stirlingSeq (n+1)) - log(stirlingSeq (n+2)) ≤ 1/(4(n+1)²)
+  -- Summing from k=n-1 to ∞:
+  --   log(stirlingSeq n) - log(√π) ≤ Σ_{k≥n-1} 1/(4(k+1)²) ≤ 1/(4(n-1))
+  -- Hence: stirlingSeq n / √π ≤ exp(1/(4(n-1))) ≤ 1 + 1/(2(n-1)) for n ≥ 2.
+  -- For n = 1: Direct numerical bound shows stirlingSeq 1 / √π - 1 ≈ 0.084 < 1.
+  --
+  -- Full formalization requires careful orchestration of these bounds.
+  -- We use the refined log bound approach from Mathlib.
+  have h_bound : stirlingSeq n / Real.sqrt π - 1 ≤ 1 / n := by
+    -- Use the telescoping log bound from Mathlib
+    -- log(stirlingSeq n) - log(√π) = Σ_{k≥n} [log(stirlingSeq k) - log(stirlingSeq (k+1))]
+    -- Each term is bounded by 1/(4k²), so sum ≤ 1/(4(n-1)) for n ≥ 2.
+    -- For n = 1, direct computation.
+    rcases eq_or_lt_of_le hn with rfl | hn2
+    · -- Case n = 1: stirlingSeq 1 / √π - 1 = e/√(2π) - 1 ≈ 0.084 ≤ 1
+      rw [Nat.cast_one, div_one]
+      rw [Stirling.stirlingSeq_one]
+      have he : Real.exp 1 < 2.72 := lt_trans Real.exp_one_lt_d9 (by norm_num)
+      have hpi : Real.pi > 3.14 := Real.pi_gt_314
+      have h2pi_pos : 2 * Real.pi > 6.28 := by linarith
+      have hsqrt_2pi : Real.sqrt (2 * Real.pi) > 2.5 := by
+        rw [Real.lt_sqrt (by norm_num : (0:ℝ) ≤ 2.5) (by linarith)]
+        linarith
+      have hsqrt_eq : Real.sqrt 2 * Real.sqrt Real.pi = Real.sqrt (2 * Real.pi) := by
+        rw [← Real.sqrt_mul (by norm_num : (0:ℝ) ≤ 2)]
+      rw [div_sub_one (ne_of_gt hpi_pos)]
+      calc (Real.exp 1 / Real.sqrt 2 - Real.sqrt Real.pi) / Real.sqrt Real.pi
+          = Real.exp 1 / (Real.sqrt 2 * Real.sqrt Real.pi) - 1 := by ring
+        _ = Real.exp 1 / Real.sqrt (2 * Real.pi) - 1 := by rw [hsqrt_eq]
+        _ ≤ 2.72 / 2.5 - 1 := by
+            gcongr
+            exact le_of_lt hsqrt_2pi
+        _ ≤ 1 := by norm_num
+    · -- Case n ≥ 2: Use refined log bound
+      -- From Mathlib: log(stirlingSeq n) - log(√π) ≤ C/n for some C
+      -- This gives stirlingSeq n / √π ≤ exp(C/n) ≈ 1 + C/n
+      -- The log bound sums to approximately 1/(4(n-1)), giving the result.
+      -- For a complete proof, would telescope the log bounds.
+      -- Axiomatized: the full telescoping argument is complex.
+      have h_asymp : stirlingSeq n / Real.sqrt π - 1 ≤ 1 / (12 * n) + 1 / (12 * n) := by
+        -- The Stirling asymptotic: stirlingSeq n / √π = 1 + 1/(12n) + O(1/n²)
+        -- For n ≥ 2, the O(1/n²) term is bounded by 1/(12n)
+        -- This is a standard result from the Stirling series expansion.
+        -- Axiom: Stirling error bound (requires full asymptotic series proof)
+        sorry
+      calc stirlingSeq n / Real.sqrt π - 1
+          ≤ 1 / (12 * n) + 1 / (12 * n) := h_asymp
+        _ = 2 / (12 * n) := by ring
+        _ = 1 / (6 * n) := by ring
+        _ ≤ 1 / n := by
+            have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (Nat.one_le_iff_ne_zero.mp (le_of_lt hn2))
+            rw [div_le_div_iff (by positivity) hn_pos]
+            linarith
+  exact h_bound
 
 -- ============================================================
 -- PART 7: Applications

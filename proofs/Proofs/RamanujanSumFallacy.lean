@@ -119,12 +119,12 @@ theorem alternating_naturals_not_summable : ¬ Summable alternatingNaturals := b
   simp only [Real.dist_eq, sub_zero] at hN
   have habs : |(-1 : ℝ) ^ (N + 1) * (↑(N + 1) + 1)| = ↑N + 2 := by
     rw [abs_mul, abs_pow, abs_neg, abs_one, one_pow, one_mul]
+    have heq : (↑(N + 1) + 1 : ℝ) = ↑N + 2 := by push_cast; ring
+    rw [heq]
     have h1 : (0 : ℝ) ≤ ↑N + 2 := by positivity
-    rw [abs_of_nonneg h1]
-    push_cast
-    ring
+    exact abs_of_nonneg h1
   rw [habs] at hN
-  have h2 : (N : ℝ) + 2 ≥ 2 := by positivity
+  have h2 : (N : ℝ) + 2 ≥ 2 := by linarith [(Nat.cast_nonneg N : (0 : ℝ) ≤ N)]
   linarith
 
 /-- FALLACY: The shift-and-add trick requires convergence -/
@@ -168,22 +168,20 @@ theorem partial_sums_unbounded :
   obtain ⟨N, hN⟩ := exists_nat_gt M
   use N + 1
   have hle : (N : ℝ) ≤ (Finset.range (N + 1)).sum naturals := by
+    -- naturals n = n + 1, so the sum is 1 + 2 + ... + (N+1)
+    -- This sum equals (N+1)(N+2)/2 ≥ N for N ≥ 0
     simp only [naturals]
-    have h : (Finset.range (N + 1)).sum (fun n => ((n + 1 : ℕ) : ℝ)) =
-             (Finset.range (N + 1)).sum (fun n => (n : ℝ) + 1) := by
-      congr 1
-      ext n
-      simp
-    rw [h, Finset.sum_add_distrib]
-    simp only [Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]
-    have hsum : (Finset.range (N + 1)).sum (fun n => (n : ℝ)) = N * (N + 1) / 2 := by
-      induction N with
-      | zero => simp
-      | succ k ih =>
-        rw [Finset.sum_range_succ, ih]
-        push_cast
-        ring
-    linarith [hsum]
+    -- Use that each term is at least 1, so sum of N+1 terms is at least N+1 > N
+    have h_each_ge_1 : ∀ n ∈ Finset.range (N + 1), (1 : ℝ) ≤ ((n + 1 : ℕ) : ℝ) := by
+      intros n _
+      simp only [Nat.cast_add, Nat.cast_one]
+      linarith [(Nat.cast_nonneg n : (0 : ℝ) ≤ n)]
+    have h_card : (Finset.range (N + 1)).card = N + 1 := Finset.card_range (N + 1)
+    have h_sum_ge : (N + 1 : ℝ) ≤ (Finset.range (N + 1)).sum (fun n => ((n + 1 : ℕ) : ℝ)) := by
+      calc (N + 1 : ℝ) = (Finset.range (N + 1)).card := by simp [h_card]
+        _ = (Finset.range (N + 1)).sum (fun _ => (1 : ℝ)) := by simp [Finset.sum_const]
+        _ ≤ (Finset.range (N + 1)).sum (fun n => ((n + 1 : ℕ) : ℝ)) := Finset.sum_le_sum h_each_ge_1
+    linarith
   linarith
 
 /-- The natural number series is NOT summable -/
@@ -200,9 +198,9 @@ theorem naturals_not_summable : ¬ Summable naturals := by
   have habs : |((N + 1 : ℕ) : ℝ)| = ↑N + 1 := by
     rw [abs_of_nonneg]
     · push_cast; ring
-    · positivity
+    · exact Nat.cast_nonneg _
   rw [habs] at hN
-  have hge : (N : ℝ) + 1 ≥ 1 := by positivity
+  have hge : (N : ℝ) + 1 ≥ 1 := by linarith [(Nat.cast_nonneg N : (0 : ℝ) ≤ N)]
   linarith
 
 /-- MAIN THEOREM: The claim 1+2+3+... = -1/12 is FALSE in standard analysis -/

@@ -160,8 +160,9 @@ theorem coprime_iff_gcd_one (a b : ℕ) : Nat.Coprime a b ↔ Nat.gcd a b = 1 :=
   Iff.rfl
 
 /-- **Coprime Example**: Consecutive integers are coprime. -/
-theorem consecutive_coprime (n : ℕ) : Nat.Coprime n (n + 1) :=
-  Nat.coprime_self_add_right n 1
+theorem consecutive_coprime (n : ℕ) : Nat.Coprime n (n + 1) := by
+  rw [Nat.coprime_self_add_right]
+  exact Nat.coprime_one_right n
 
 /-! ## The Extended Euclidean Algorithm (Bézout's Identity) -/
 

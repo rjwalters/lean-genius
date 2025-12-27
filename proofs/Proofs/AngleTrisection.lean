@@ -1,6 +1,6 @@
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.FieldTheory.IntermediateField.Basic
-import Mathlib.RingTheory.Polynomial.Irreducible.Basic
+import Mathlib.FieldTheory.IntermediateField
+import Mathlib.RingTheory.Polynomial.IrreducibleRing
 import Mathlib.Algebra.Polynomial.Degree.Definitions
 import Mathlib.Tactic
 
