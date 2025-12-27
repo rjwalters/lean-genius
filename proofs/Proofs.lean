@@ -56,3 +56,4 @@ import Proofs.CramersRule
 import Proofs.FactorRemainderTheorem
 import Proofs.LHopital
 import Proofs.TriangleAngleSum
+import Proofs.TriangularNumberReciprocals
