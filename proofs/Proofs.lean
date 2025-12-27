@@ -54,6 +54,7 @@ import Proofs.MeanValueTheorem
 import Proofs.NavierStokes
 import Proofs.OnePlusOne
 import Proofs.PerfectNumbers
+import Proofs.PrimeReciprocalDivergence
 import Proofs.PythagoreanTheorem
 import Proofs.PythagoreanTriples
 import Proofs.QuadraticReciprocity
