@@ -71,8 +71,11 @@ noncomputable def characteristicFunction (μ : MeasureTheory.Measure ℝ)
 theorem charFun_zero (μ : MeasureTheory.Measure ℝ)
     [MeasureTheory.IsProbabilityMeasure μ] :
     characteristicFunction μ 0 = 1 := by
-  simp only [characteristicFunction, mul_zero, Complex.ofReal_zero, Complex.exp_zero]
-  -- exp(0) = 1, so the integral becomes ∫ 1 dμ = 1 for a probability measure
+  simp only [characteristicFunction]
+  -- At t=0, the integrand becomes exp(I * 0 * x) = exp(0) = 1
+  have h : ∀ x : ℝ, Complex.exp (Complex.I * (0 : ℝ) * x) = 1 := fun x => by simp
+  simp only [h]
+  -- Now the integral is ∫ 1 dμ = 1 for a probability measure
   rw [MeasureTheory.integral_const]
   simp [MeasureTheory.IsProbabilityMeasure.measure_univ]
 
@@ -105,8 +108,7 @@ theorem gaussian_charFun (t : ℝ) :
   --
   -- This is the self-duality property: the Gaussian is its own Fourier transform
   simp only [characteristicFunction]
-  have h := gaussian_fourier_identity t
-  convert h using 2 <;> ring
+  exact gaussian_fourier_identity t
 
 end CharacteristicFunctions
 
