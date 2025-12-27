@@ -21,6 +21,7 @@ import Proofs.DenumerabilityRationals
 import Proofs.Derangements
 import Proofs.DivisibilityBy3
 import Proofs.EulerIdentity
+import Proofs.EulerPolyhedralFormula
 import Proofs.EulerTotient
 import Proofs.FactorRemainderTheorem
 import Proofs.FermatTwoSquares
@@ -53,6 +54,7 @@ import Proofs.OnePlusOne
 import Proofs.PerfectNumbers
 import Proofs.PythagoreanTheorem
 import Proofs.PythagoreanTriples
+import Proofs.QuadraticReciprocity
 import Proofs.RamanujanSumFallacy
 import Proofs.RandomizedMaxCut
 import Proofs.SchroederBernstein
