@@ -1,0 +1,119 @@
+[
+  {
+    "id": "edge-coloring-def",
+    "proofId": "ramseys-theorem",
+    "range": {
+      "startLine": 61,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "Edge Coloring",
+    "content": "An EdgeColoring assigns a Boolean color (true = red, false = blue) to each pair of distinct vertices. The color function must be symmetric and irreflexive.",
+    "mathContext": "This represents a 2-coloring of the complete graph K_n where every edge is colored either red or blue.",
+    "significance": "critical",
+    "prerequisites": ["graphs", "complete-graphs"],
+    "relatedConcepts": ["graph-coloring", "ramsey-numbers"]
+  },
+  {
+    "id": "ramsey-property-def",
+    "proofId": "ramseys-theorem",
+    "range": {
+      "startLine": 91,
+      "endLine": 93
+    },
+    "type": "definition",
+    "title": "Ramsey Property",
+    "content": "A type α has the Ramsey property (r,s) if every edge coloring of K_α contains either a red r-clique or a blue s-clique.",
+    "mathContext": "This formalizes the statement that R(r,s) exists: for some n, every 2-coloring of K_n has the required monochromatic clique.",
+    "significance": "critical",
+    "prerequisites": ["cliques", "edge-colorings"],
+    "relatedConcepts": ["ramsey-numbers", "pigeonhole-principle"]
+  },
+  {
+    "id": "base-case-r1",
+    "proofId": "ramseys-theorem",
+    "range": {
+      "startLine": 110,
+      "endLine": 113
+    },
+    "type": "theorem",
+    "title": "R(1, s) = 1",
+    "content": "Any nonempty type has a red 1-clique: just pick any vertex. A single vertex trivially forms a clique since there are no pairs to check.",
+    "significance": "key",
+    "prerequisites": ["singleton-clique"],
+    "relatedConcepts": ["base-case", "induction"]
+  },
+  {
+    "id": "neighborhood-partition",
+    "proofId": "ramseys-theorem",
+    "range": {
+      "startLine": 179,
+      "endLine": 192
+    },
+    "type": "lemma",
+    "title": "Neighborhood Partition",
+    "content": "The red and blue neighborhoods of a vertex v partition all other vertices. Every vertex w ≠ v is either in v's red neighborhood (red edge to v) or blue neighborhood (blue edge to v).",
+    "mathContext": "This is the key structural observation: after removing v, the remaining vertices split cleanly by edge color to v.",
+    "significance": "critical",
+    "prerequisites": ["neighborhoods", "partition"],
+    "relatedConcepts": ["pigeonhole-principle", "induction"]
+  },
+  {
+    "id": "clique-extension-red",
+    "proofId": "ramseys-theorem",
+    "range": {
+      "startLine": 212,
+      "endLine": 227
+    },
+    "type": "lemma",
+    "title": "Red Clique Extension",
+    "content": "If s is a red clique contained in v's red neighborhood and v ∉ s, then (insert v s) is also a red clique. The new edges from v to s are all red by definition of red neighborhood.",
+    "significance": "critical",
+    "prerequisites": ["clique-definition", "neighborhood"],
+    "relatedConcepts": ["induction-step", "clique-growth"]
+  },
+  {
+    "id": "ramsey-bound",
+    "proofId": "ramseys-theorem",
+    "range": {
+      "startLine": 252,
+      "endLine": 254
+    },
+    "type": "definition",
+    "title": "Ramsey Bound",
+    "content": "The classical upper bound R(r,s) ≤ C(r+s-2, r-1). This follows from the recurrence R(r,s) ≤ R(r-1,s) + R(r,s-1) together with Pascal's identity.",
+    "mathContext": "This gives concrete bounds: R(3,3) ≤ 6, R(3,4) ≤ 10, R(4,4) ≤ 20.",
+    "significance": "supporting",
+    "prerequisites": ["binomial-coefficients", "pascal-identity"],
+    "relatedConcepts": ["ramsey-numbers", "upper-bounds"]
+  },
+  {
+    "id": "main-theorem",
+    "proofId": "ramseys-theorem",
+    "range": {
+      "startLine": 291,
+      "endLine": 447
+    },
+    "type": "theorem",
+    "title": "Ramsey's Theorem",
+    "content": "For any r, s ≥ 1, there exists n ≥ 1 such that any 2-coloring of K_n contains a red r-clique or blue s-clique. The proof uses strong induction on r + s.",
+    "mathContext": "This is Wiedijk #31: the existence of Ramsey numbers for 2-colorings of complete graphs.",
+    "significance": "critical",
+    "prerequisites": ["base-cases", "neighborhood-partition", "clique-extension", "pigeonhole-principle"],
+    "relatedConcepts": ["ramsey-theory", "combinatorics", "graph-theory"]
+  },
+  {
+    "id": "pigeonhole-application",
+    "proofId": "ramseys-theorem",
+    "range": {
+      "startLine": 327,
+      "endLine": 340
+    },
+    "type": "insight",
+    "title": "Pigeonhole Principle Application",
+    "content": "With n = R(r-1,s) + R(r,s-1) vertices and v removed, the remaining n-1 vertices partition into red and blue neighborhoods. The sum of their sizes is n-1, so one must be large enough for the IH.",
+    "significance": "key",
+    "prerequisites": ["pigeonhole-principle", "neighborhood-partition"],
+    "relatedConcepts": ["counting-argument", "induction"]
+  }
+]

@@ -1,0 +1,113 @@
+{
+  "id": "ramseys-theorem",
+  "title": "Ramsey's Theorem",
+  "slug": "ramseys-theorem",
+  "description": "Frank Ramsey's foundational theorem in combinatorics: for any 2-coloring of the complete graph K_n with sufficiently large n, there exists a monochromatic clique.",
+  "meta": {
+    "author": "Frank P. Ramsey (formalized by LeanGenius)",
+    "date": "1930",
+    "status": "verified",
+    "proofRepoPath": "Proofs/RamseysTheorem.lean",
+    "tags": [
+      "combinatorics",
+      "graph-theory",
+      "ramsey-theory",
+      "pigeonhole",
+      "classic"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.IsClique",
+        "description": "Clique definitions for simple graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite set operations and cardinality",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Sum"
+      }
+    ],
+    "originalContributions": [
+      "Complete formalization of edge 2-colorings and the Ramsey property",
+      "Full proofs of base cases R(1,s) = R(r,1) = 1",
+      "Proof of R(2,s) = s via edge existence dichotomy",
+      "Clique extension lemmas for the inductive argument",
+      "Ramsey bound computations via binomial coefficients",
+      "Full inductive proof using neighborhood partition and pigeonhole principle"
+    ],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 31
+  },
+  "overview": {
+    "historicalContext": "Ramsey's theorem was proved by Frank Plumpton Ramsey in 1930, just before his untimely death at age 26. The theorem appeared in his paper 'On a Problem of Formal Logic' where he was investigating decision procedures for first-order logic.\n\nThe result spawned an entire branch of combinatorics now called Ramsey theory, which studies the emergence of order in sufficiently large structures. The guiding principle is that complete disorder is impossible—given enough elements, some regular pattern must appear.\n\nThe most famous special case is the 'party problem': at any party of 6 people, either 3 mutually know each other or 3 are mutual strangers. This corresponds to R(3,3) = 6.",
+    "problemStatement": "Theorem (Ramsey, 1930): For any positive integers r and s, there exists a positive integer R(r,s) such that any 2-coloring of the edges of the complete graph K_{R(r,s)} contains either:\n- A red clique of size r (r vertices all pairwise connected by red edges), or\n- A blue clique of size s (s vertices all pairwise connected by blue edges)\n\nThe smallest such R(r,s) is called the Ramsey number.",
+    "proofStrategy": "The proof uses strong induction on r + s with the key recurrence:\n\nR(r,s) ≤ R(r-1,s) + R(r,s-1)\n\n1. Base cases: R(1,s) = R(r,1) = 1 (any single vertex forms a trivial clique)\n\n2. Inductive step for R(r,s):\n   - Assume we have R(r-1,s) and R(r,s-1) from the induction hypothesis\n   - Set n = R(r-1,s) + R(r,s-1)\n   - Pick any vertex v in K_n\n   - Partition remaining n-1 vertices by edge color to v:\n     * N_red = vertices connected to v by red edges\n     * N_blue = vertices connected to v by blue edges\n   - By pigeonhole: |N_red| ≥ R(r-1,s) or |N_blue| ≥ R(r,s-1)\n   - Case 1: If |N_red| ≥ R(r-1,s), find a red (r-1)-clique or blue s-clique in N_red\n     * Red (r-1)-clique extends with v to red r-clique\n     * Blue s-clique is already our answer\n   - Case 2: Symmetric argument with blue neighborhood\n\n3. The bound R(r,s) ≤ C(r+s-2, r-1) follows from Pascal's identity",
+    "keyInsights": [
+      "The pigeonhole principle: n-1 vertices partitioned into two sets means at least one is large enough",
+      "Neighborhood partition: v's neighbors are either red-connected or blue-connected to v",
+      "Clique extension: adding v to a clique in its monochromatic neighborhood preserves the clique property",
+      "The recurrence R(r,s) ≤ R(r-1,s) + R(r,s-1) mirrors Pascal's identity for binomial coefficients"
+    ]
+  },
+  "sections": [
+    {
+      "id": "edge-colorings",
+      "title": "Edge Colorings and Cliques",
+      "startLine": 52,
+      "endLine": 94,
+      "summary": "Definitions of edge 2-colorings, red/blue graphs, and the Ramsey property."
+    },
+    {
+      "id": "base-cases",
+      "title": "Base Cases",
+      "startLine": 95,
+      "endLine": 157,
+      "summary": "Proofs that R(1,s) = R(r,1) = 1 (singleton cliques) and R(2,s) = s."
+    },
+    {
+      "id": "neighborhood-partition",
+      "title": "Neighborhood Partitions",
+      "startLine": 158,
+      "endLine": 207,
+      "summary": "Red and blue neighborhood definitions, disjointness, partition theorem, and cardinality sum."
+    },
+    {
+      "id": "clique-extension",
+      "title": "Clique Extension",
+      "startLine": 208,
+      "endLine": 246,
+      "summary": "Lemmas showing that adding v to a clique in its monochromatic neighborhood yields a larger clique."
+    },
+    {
+      "id": "ramsey-bounds",
+      "title": "Ramsey Bounds",
+      "startLine": 247,
+      "endLine": 265,
+      "summary": "The classical bound R(r,s) ≤ C(r+s-2, r-1) and concrete computations for small cases."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Ramsey's Theorem",
+      "startLine": 283,
+      "endLine": 447,
+      "summary": "The main existence theorem using strong induction with the recurrence R(r,s) ≤ R(r-1,s) + R(r,s-1)."
+    }
+  ],
+  "conclusion": {
+    "summary": "This Lean formalization provides a complete, constructive proof of Ramsey's theorem for 2-colorings. The proof carefully builds up from base cases through neighborhood partitions to the main inductive argument.\n\nThe key insight is that the pigeonhole principle forces one of the two neighborhoods to be large enough to apply the induction hypothesis. Clique extension then allows us to grow cliques by adding the central vertex.\n\nAll proofs are complete with no sorries, and the formalization is self-contained within the Ramsey namespace.",
+    "implications": "Ramsey's theorem has profound implications:\n\n1. Ramsey Theory — The theorem launched an entire field studying unavoidable patterns in large structures. Extensions include Hales-Jewett theorem, van der Waerden's theorem, and the Paris-Harrington theorem.\n\n2. Computational Complexity — Computing exact Ramsey numbers is notoriously difficult. We know R(3,3)=6 and R(4,4)=18, but R(5,5) is only known to be between 43 and 48.\n\n3. Philosophical Implications — Ramsey theory shows that complete disorder is impossible. Given enough structure, patterns emerge regardless of how we try to avoid them.\n\n4. Applications — Ramsey theory has applications in algorithm design, communication complexity, and theoretical computer science.",
+    "openQuestions": [
+      "What is the exact value of R(5,5)? Currently only known to be in [43,48]",
+      "Can we improve the upper bound R(r,s) ≤ C(r+s-2, r-1)?",
+      "What are the asymptotic bounds for R(k,k) as k grows?",
+      "How does Ramsey theory extend to hypergraphs and higher dimensions?"
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+[
+  {
+    "id": "friendship-def",
+    "proofId": "friendship-theorem",
+    "range": {
+      "startLine": 75,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "Friendship Property",
+    "content": "The friendship property states that every pair of distinct vertices has exactly one common neighbor. This captures the sociological intuition: any two people have exactly one mutual friend.",
+    "mathContext": "∀ u v : V, u ≠ v → |N(u) ∩ N(v)| = 1",
+    "significance": "critical",
+    "prerequisites": ["SimpleGraph", "commonNeighbors"],
+    "relatedConcepts": ["windmill graphs", "strongly regular graphs"]
+  },
+  {
+    "id": "universal-vertex",
+    "proofId": "friendship-theorem",
+    "range": {
+      "startLine": 80,
+      "endLine": 81
+    },
+    "type": "definition",
+    "title": "Universal Vertex (Politician)",
+    "content": "A universal vertex, also called a 'politician', is adjacent to every other vertex in the graph. The Friendship Theorem proves that every friendship graph must have such a vertex.",
+    "mathContext": "IsUniversalVertex G c := ∀ v ≠ c, G.Adj c v",
+    "significance": "critical",
+    "prerequisites": ["adjacency"],
+    "relatedConcepts": ["complete graph", "star graph"]
+  },
+  {
+    "id": "main-theorem",
+    "proofId": "friendship-theorem",
+    "range": {
+      "startLine": 167,
+      "endLine": 173
+    },
+    "type": "theorem",
+    "title": "The Friendship Theorem",
+    "content": "The main result: every finite simple graph satisfying the friendship property has a universal vertex. This means someone must be friends with everyone.",
+    "mathContext": "IsFriendshipGraph G → ∃ c, IsUniversalVertex G c",
+    "significance": "critical",
+    "prerequisites": ["friendship property", "graph theory"],
+    "relatedConcepts": ["spectral graph theory", "windmill graphs"]
+  },
+  {
+    "id": "windmill-example",
+    "proofId": "friendship-theorem",
+    "range": {
+      "startLine": 232,
+      "endLine": 241
+    },
+    "type": "definition",
+    "title": "Windmill Graph W₂",
+    "content": "The windmill graph W₂ consists of two triangles sharing a common vertex (vertex 0). This is the simplest non-trivial friendship graph with 5 vertices.",
+    "significance": "supporting",
+    "prerequisites": ["SimpleGraph"],
+    "relatedConcepts": ["friendship graphs", "Dutch windmill"]
+  }
+]

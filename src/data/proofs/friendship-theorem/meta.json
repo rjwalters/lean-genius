@@ -1,0 +1,112 @@
+{
+  "id": "friendship-theorem",
+  "title": "Friendship Theorem",
+  "slug": "friendship-theorem",
+  "description": "The Friendship Theorem (Erdős–Rényi–Sós, 1966): In any finite graph where every pair of distinct vertices has exactly one common neighbor, there exists a 'politician' vertex adjacent to all others.",
+  "meta": {
+    "author": "Erdős, Rényi, and Sós (formalized in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Friendship_theorem",
+    "date": "1966",
+    "status": "verified",
+    "tags": [
+      "graph-theory",
+      "combinatorics",
+      "spectral-methods",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/FriendshipTheorem.lean",
+    "badge": "wip",
+    "sorries": 6,
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Undirected graphs without self-loops",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.commonNeighbors",
+        "description": "Set of vertices adjacent to two given vertices",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of a set as a natural number",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "Definition of the friendship property for simple graphs",
+      "Definition of windmill graphs",
+      "Statement of the main theorem with proof structure",
+      "Example windmill graph W₂ with five vertices"
+    ],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 83
+  },
+  "overview": {
+    "historicalContext": "In 1966, Paul Erdős, Alfréd Rényi, and Vera T. Sós proved the Friendship Theorem, one of the most elegant results in graph theory. The theorem has a beautiful sociological interpretation: if in any group of people, every pair has exactly one mutual friend, then there must be a 'politician' who is friends with everyone.\n\nThe theorem is also known as the 'politician theorem' and shows that the only graphs satisfying the friendship property are windmill graphs — collections of triangles all sharing a common central vertex.\n\nThe original proof uses spectral graph theory, analyzing the eigenvalues of the adjacency matrix to show that non-windmill graphs cannot satisfy the friendship condition.",
+    "problemStatement": "**The Friendship Theorem:**\n\nLet $G = (V, E)$ be a finite simple graph satisfying the **friendship property**:\n$$\\forall u, v \\in V, \\, u \\neq v \\implies |\\{w : w \\sim u \\land w \\sim v\\}| = 1$$\n\n(Every pair of distinct vertices has exactly one common neighbor.)\n\n**Theorem:** There exists a vertex $c \\in V$ adjacent to all other vertices:\n$$\\exists c \\in V : \\forall v \\in V, \\, v \\neq c \\implies c \\sim v$$",
+    "proofStrategy": "The proof follows the classical spectral approach:\n\n1. **Assume no universal vertex**: If all vertices have degree less than $n-1$, analyze the structure.\n\n2. **Show regularity**: Use the friendship property to establish that either a universal vertex exists or all vertices have the same degree.\n\n3. **Spectral analysis**: For regular friendship graphs, the adjacency matrix $A$ satisfies $A^2 = J - I + (k-1)A$. The eigenvalues must satisfy specific constraints.\n\n4. **Derive contradiction**: For $n > 3$ with no universal vertex, these constraints lead to a contradiction, proving that a universal vertex must exist.\n\n5. **Windmill structure**: Once a universal vertex exists, the friendship property forces the remaining graph to be a disjoint union of edges.",
+    "keyInsights": [
+      "The friendship property is extremely restrictive — only windmill graphs satisfy it",
+      "The spectral method reveals hidden algebraic structure in combinatorial conditions",
+      "The 'politician' name captures the sociological intuition: someone friends with everyone",
+      "Windmill graphs are the unique family satisfying the property",
+      "The theorem connects graph theory, linear algebra, and combinatorics"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "Overview of the Friendship Theorem and its significance in graph theory."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 62,
+      "endLine": 99,
+      "summary": "Defining the friendship property, universal vertex, and windmill graphs."
+    },
+    {
+      "id": "lemmas",
+      "title": "Key Lemmas",
+      "startLine": 101,
+      "endLine": 150,
+      "summary": "Supporting lemmas about the structure of friendship graphs."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 152,
+      "endLine": 201,
+      "summary": "Statement and proof of the Friendship Theorem."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 203,
+      "endLine": 260,
+      "summary": "The windmill graph W₂ as a concrete example satisfying the friendship property."
+    },
+    {
+      "id": "history",
+      "title": "Historical Notes",
+      "startLine": 262,
+      "endLine": 295,
+      "summary": "The 1966 paper and alternative proof approaches."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization defines the friendship property and states the Friendship Theorem: every friendship graph has a universal ('politician') vertex. The proof structure follows the classical spectral approach, though some lemmas remain as sorry placeholders for future work.",
+    "implications": "The Friendship Theorem demonstrates the power of algebraic methods in combinatorics. The spectral approach — analyzing eigenvalues to prove combinatorial results — has become a cornerstone technique in graph theory, with applications to expander graphs, random walks, and network analysis.",
+    "openQuestions": [
+      "Can the spectral proof be fully formalized using Mathlib's linear algebra?",
+      "What generalizations exist for directed graphs or hypergraphs?",
+      "How does the theorem relate to strongly regular graphs?",
+      "What is the computational complexity of checking the friendship property?"
+    ]
+  }
+}

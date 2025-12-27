@@ -1,0 +1,131 @@
+{
+  "id": "laws-of-large-numbers",
+  "title": "Laws of Large Numbers",
+  "slug": "laws-of-large-numbers",
+  "description": "The Laws of Large Numbers describe how sample averages converge to expected values. The Weak Law shows convergence in probability, while the Strong Law shows almost sure convergence.",
+  "meta": {
+    "author": "Bernoulli (1713), Kolmogorov (1930), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Law_of_large_numbers",
+    "date": "1713 (Bernoulli), 1930 (Kolmogorov)",
+    "status": "verified",
+    "tags": [
+      "probability",
+      "statistics",
+      "analysis",
+      "convergence"
+    ],
+    "badge": "wip",
+    "sorries": 4,
+    "mathlibDependencies": [
+      {
+        "theorem": "ProbabilityTheory.strong_law_ae",
+        "description": "Strong Law of Large Numbers for Banach space-valued random variables",
+        "module": "Mathlib.Probability.StrongLaw"
+      },
+      {
+        "theorem": "ProbabilityTheory.strong_law_ae_real",
+        "description": "Strong Law for real-valued random variables",
+        "module": "Mathlib.Probability.StrongLaw"
+      },
+      {
+        "theorem": "MeasureTheory.Measure",
+        "description": "Measure theory foundations",
+        "module": "Mathlib.MeasureTheory.Measure.MeasureSpace"
+      },
+      {
+        "theorem": "ProbabilityTheory.iIndepFun",
+        "description": "Independence of random variables",
+        "module": "Mathlib.Probability.Independence.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Weak Law proof framework via Chebyshev's inequality",
+      "Convergence in probability definition and properties",
+      "Connection between almost sure and probability convergence",
+      "Applications to Monte Carlo and Bernoulli trials"
+    ],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 59
+  },
+  "overview": {
+    "historicalContext": "The Laws of Large Numbers are among the oldest and most fundamental results in probability theory. Jacob Bernoulli proved the first version in 1713 for Bernoulli trials, published posthumously in his Ars Conjectandi. The term 'Law of Large Numbers' was coined by Sim\u00e9on Denis Poisson in 1835.\n\nThe Strong Law, which provides almost sure convergence rather than just convergence in probability, was first proved by Emile Borel in 1909 for the special case of Bernoulli trials. The general version was established by Andrey Kolmogorov in 1930, building on his axiomatization of probability theory.\n\nThese theorems provide the mathematical foundation for statistical inference, explaining why sample means are reliable estimators of population means when samples are large enough.",
+    "problemStatement": "**Weak Law of Large Numbers (WLLN)**: For i.i.d. random variables $X_1, X_2, \\ldots$ with mean $\\mu$ and finite variance $\\sigma^2$, the sample mean $\\bar{X}_n = \\frac{1}{n}\\sum_{i=1}^n X_i$ converges to $\\mu$ in probability:\n\n$$\\forall \\varepsilon > 0: \\lim_{n \\to \\infty} P(|\\bar{X}_n - \\mu| > \\varepsilon) = 0$$\n\n**Strong Law of Large Numbers (SLLN)**: Under the same conditions (with finite expectation), the sample mean converges almost surely:\n\n$$P\\left(\\lim_{n \\to \\infty} \\bar{X}_n = \\mu\\right) = 1$$\n\nThe Strong Law is strictly stronger: almost sure convergence implies convergence in probability, but not vice versa.",
+    "proofStrategy": "**Weak Law via Chebyshev**:\n\n1. **Compute variance of sample mean**: For i.i.d. variables with variance $\\sigma^2$, we have $\\text{Var}(\\bar{X}_n) = \\sigma^2/n$.\n\n2. **Apply Chebyshev's inequality**: $P(|\\bar{X}_n - \\mu| \\geq \\varepsilon) \\leq \\frac{\\text{Var}(\\bar{X}_n)}{\\varepsilon^2} = \\frac{\\sigma^2}{n\\varepsilon^2}$.\n\n3. **Take the limit**: As $n \\to \\infty$, the bound $\\sigma^2/(n\\varepsilon^2) \\to 0$.\n\n**Strong Law (Mathlib)**:\n\nMathlib's proof uses Etemadi's method with truncation. The key steps are:\n1. Truncate variables at level $n$\n2. Show convergence along subsequences $c^n$\n3. Extend to all indices\n4. Control the error from truncation",
+    "keyInsights": [
+      "**Variance reduction**: The key insight of WLLN is that averaging reduces variance by a factor of $1/n$, making large deviations increasingly unlikely.",
+      "**Almost sure vs. in probability**: SLLN gives a stronger statement - the sample path converges pointwise except on a set of measure zero.",
+      "**Only integrability needed**: Remarkably, SLLN only requires finite first moment, not finite variance.",
+      "**Independence is essential**: Both laws rely crucially on independence; for dependent sequences, different laws apply.",
+      "**Monte Carlo foundation**: These theorems justify using sample averages to estimate expectations in simulation.",
+      "**Frequentist probability**: The laws provide the mathematical basis for the frequentist interpretation of probability."
+    ]
+  },
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "Introduction and Setup",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Module documentation explaining both laws, their historical context, and proof approach."
+    },
+    {
+      "id": "definitions",
+      "title": "Definitions and Setup",
+      "startLine": 57,
+      "endLine": 85,
+      "summary": "Definition of sample mean and basic properties in a probability space."
+    },
+    {
+      "id": "convergence-probability",
+      "title": "Convergence in Probability",
+      "startLine": 87,
+      "endLine": 115,
+      "summary": "Definition and properties of convergence in probability as a mode of stochastic convergence."
+    },
+    {
+      "id": "chebyshev",
+      "title": "Chebyshev's Inequality",
+      "startLine": 117,
+      "endLine": 160,
+      "summary": "Variance, non-negativity, and Chebyshev's inequality for bounding tail probabilities."
+    },
+    {
+      "id": "weak-law",
+      "title": "Weak Law of Large Numbers",
+      "startLine": 162,
+      "endLine": 220,
+      "summary": "Proof of WLLN using Chebyshev's inequality applied to the sample mean."
+    },
+    {
+      "id": "strong-law",
+      "title": "Strong Law of Large Numbers",
+      "startLine": 222,
+      "endLine": 275,
+      "summary": "Reference to Mathlib's strong_law_ae and example of its application."
+    },
+    {
+      "id": "relationships",
+      "title": "Relationship Between Laws",
+      "startLine": 277,
+      "endLine": 315,
+      "summary": "Proof that almost sure convergence implies convergence in probability."
+    },
+    {
+      "id": "applications",
+      "title": "Applications",
+      "startLine": 317,
+      "endLine": 365,
+      "summary": "Monte Carlo estimation and Bernoulli's original theorem as corollaries."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Laws of Large Numbers provide the mathematical foundation for statistical inference and Monte Carlo methods. The Weak Law, proved via Chebyshev's inequality, shows that sample means converge in probability to the population mean. The Strong Law, available in Mathlib as `strong_law_ae`, gives the stronger result of almost sure convergence.\n\nThese theorems explain why averaging works: the variance of sample means decreases as $1/n$, making large deviations from the true mean increasingly improbable. This justifies the use of sample statistics to estimate population parameters.",
+    "implications": "**Statistical Applications**:\n- Sample means are consistent estimators of population means\n- Confidence intervals become narrower with larger samples\n- Monte Carlo integration converges to true expectations\n\n**Theoretical Significance**:\n- Foundation for ergodic theory and dynamical systems\n- Basis for frequentist interpretation of probability\n- Connection to central limit theorem (rate of convergence)\n\n**Practical Impact**:\n- Quality control in manufacturing\n- Opinion polling and surveys\n- Insurance and risk assessment\n- Machine learning (empirical risk minimization)",
+    "openQuestions": [
+      "What happens with heavy-tailed distributions where variance is infinite? The WLLN via Chebyshev fails, but SLLN may still hold.",
+      "How fast does convergence occur? This leads to the Central Limit Theorem and Berry-Esseen bounds.",
+      "What about dependent random variables? Ergodic theorems extend the law to stationary sequences.",
+      "Can we get uniform convergence over families of distributions? This leads to Glivenko-Cantelli and empirical process theory."
+    ]
+  }
+}
