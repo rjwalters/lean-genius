@@ -1,0 +1,102 @@
+{
+  "id": "platonic-solids",
+  "title": "The Number of Platonic Solids",
+  "slug": "platonic-solids",
+  "description": "There are exactly five Platonic solids (regular convex polyhedra): the tetrahedron, cube, octahedron, dodecahedron, and icosahedron.",
+  "meta": {
+    "wiedijkNumber": 50,
+    "author": "Euclid (Lean 4 formalization)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Platonic_solid",
+    "date": "c. 300 BCE",
+    "status": "complete",
+    "proofRepoPath": "Proofs/PlatonicSolids.lean",
+    "tags": [
+      "geometry",
+      "polyhedra",
+      "combinatorics",
+      "wiedijk-100",
+      "topology"
+    ],
+    "badge": "complete",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite set enumeration of valid Schlafli pairs",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Schlafli symbol characterization of Platonic solids",
+      "Complete proof that (p-2)(q-2) < 4 characterizes all five Platonic solids",
+      "Derivation of V, E, F for each solid from Schlafli symbols",
+      "Verification of Euler's formula for all five solids",
+      "Proof of duality relationships between Platonic solids"
+    ],
+    "dateAdded": "12/27/25"
+  },
+  "overview": {
+    "historicalContext": "The Platonic solids were known to the ancient Greeks and studied extensively by Plato (hence the name). Euclid proved in Elements Book XIII that these are the only five regular convex polyhedra.\n\nThe classification relies on Euler's polyhedral formula V - E + F = 2 combined with the regularity constraints that all faces are congruent regular polygons and the same number of faces meet at each vertex.",
+    "problemStatement": "**Theorem (Euclid, c. 300 BCE)**: There are exactly **five** Platonic solids (convex regular polyhedra):\n\n1. **Tetrahedron**: 4 triangular faces, {3, 3}\n2. **Cube**: 6 square faces, {4, 3}\n3. **Octahedron**: 8 triangular faces, {3, 4}\n4. **Dodecahedron**: 12 pentagonal faces, {5, 3}\n5. **Icosahedron**: 20 triangular faces, {3, 5}\n\nThis is Wiedijk's 100 Theorems #50.",
+    "proofStrategy": "**Proof via Schlafli Symbols**:\n\nA Platonic solid is characterized by {p, q} where p = sides per face and q = faces per vertex.\n\n1. Using Euler's formula V - E + F = 2 and regularity conditions:\n   - pF = 2E (each edge shared by 2 faces)\n   - qV = 2E (each edge connects 2 vertices)\n\n2. Derive the constraint: **1/p + 1/q > 1/2**, equivalently **(p-2)(q-2) < 4**\n\n3. Enumerate all integer solutions with p, q >= 3:\n   - (3,3), (3,4), (3,5), (4,3), (5,3)\n\n4. Verify each corresponds to a valid polyhedron",
+    "keyInsights": [
+      "The constraint (p-2)(q-2) < 4 limits valid Schlafli pairs to exactly five",
+      "Platonic solids come in dual pairs: cube/octahedron, dodecahedron/icosahedron",
+      "The tetrahedron is self-dual: swapping V and F yields the same solid",
+      "All five solids satisfy Euler's formula V - E + F = 2"
+    ]
+  },
+  "sections": [
+    {
+      "id": "schlafli-symbol",
+      "title": "The Schlafli Symbol",
+      "startLine": 65,
+      "endLine": 99,
+      "summary": "Definition of Schlafli pairs {p, q} and the regularity constraint."
+    },
+    {
+      "id": "five-solids",
+      "title": "The Five Platonic Solids",
+      "startLine": 100,
+      "endLine": 161,
+      "summary": "Definitions of the five Platonic solids and verification they satisfy the constraint."
+    },
+    {
+      "id": "completeness",
+      "title": "Completeness Proof",
+      "startLine": 163,
+      "endLine": 279,
+      "summary": "Proof that these five pairs are the only solutions to (p-2)(q-2) < 4."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 280,
+      "endLine": 313,
+      "summary": "Wiedijk #50: There are exactly five Platonic solids."
+    },
+    {
+      "id": "geometry",
+      "title": "Geometric Properties",
+      "startLine": 314,
+      "endLine": 369,
+      "summary": "Computing V, E, F for each solid and verifying Euler's formula."
+    },
+    {
+      "id": "duality",
+      "title": "Duality of Platonic Solids",
+      "startLine": 371,
+      "endLine": 420,
+      "summary": "Dual pairs and the self-duality of the tetrahedron."
+    }
+  ],
+  "conclusion": {
+    "summary": "The classification of Platonic solids is a beautiful result combining geometry, combinatorics, and topology. The constraint 1/p + 1/q > 1/2 (equivalently (p-2)(q-2) < 4) precisely characterizes which regular polygonal faces can tile a sphere, yielding exactly five solutions.",
+    "implications": "**Significance:**\n\n1. First complete classification of a family of geometric objects\n2. Foundation for understanding symmetry groups\n3. Deep connections to group theory (Platonic groups are finite subgroups of SO(3))\n4. Applications in chemistry (molecular structures), crystallography, and physics",
+    "openQuestions": [
+      "Extension to higher dimensions (regular polytopes)",
+      "Classification of semi-regular (Archimedean) solids",
+      "Connections to finite reflection groups"
+    ]
+  }
+}
