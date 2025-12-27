@@ -1,0 +1,34 @@
+{
+  "id": "pythagorean-triples",
+  "title": "Formula for Pythagorean Triples",
+  "slug": "pythagorean-triples",
+  "description": "All primitive Pythagorean triples (a,b,c) with a² + b² = c² are given by a = m² - n², b = 2mn, c = m² + n² for coprime m > n > 0.",
+  "meta": {
+    "author": "Ancient Babylonians (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Pythagorean_triple",
+    "date": "~1800 BCE",
+    "status": "verified",
+    "tags": ["number-theory", "geometry", "classic", "intermediate"],
+    "proofRepoPath": "Proofs/PythagoreanTriples.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "PythagoreanTriple.isPrimitiveClassified_of_coprime", "description": "Classification of primitive triples", "module": "Mathlib.NumberTheory.PythagoreanTriples"},
+      {"theorem": "PythagoreanTriple.classified", "description": "General classification theorem", "module": "Mathlib.NumberTheory.PythagoreanTriples"}
+    ],
+    "originalContributions": ["Complete parametric classification", "Verification of classic triples (3,4,5), (5,12,13)"],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 23
+  },
+  "overview": {
+    "historicalContext": "Known to ancient Babylonians (Plimpton 322 tablet, c. 1800 BCE). The parametric formula provides a complete characterization of all integer solutions.",
+    "problemStatement": "**Pythagorean Triples**:\n\nAll primitive Pythagorean triples have the form:\n- $a = m^2 - n^2$\n- $b = 2mn$\n- $c = m^2 + n^2$\n\nfor coprime m > n > 0 with m - n odd.",
+    "proofStrategy": "The parametrization arises from the rational parametrization of the unit circle: any rational point (a/c, b/c) on x² + y² = 1 corresponds to the slope m/n.",
+    "keyInsights": ["Every primitive triple arises from some (m, n) pair", "The 3-4-5 triple uses m=2, n=1", "All triples are scalar multiples of primitive triples"]
+  },
+  "sections": [
+    {"id": "header", "title": "Introduction", "startLine": 1, "endLine": 48, "summary": "Overview and historical context."},
+    {"id": "parametric", "title": "Parametric Formula", "startLine": 50, "endLine": 80, "summary": "The classification theorem."}
+  ],
+  "conclusion": {"summary": "The complete classification of Pythagorean triples is verified, connecting ancient number theory to modern algebra."}
+}

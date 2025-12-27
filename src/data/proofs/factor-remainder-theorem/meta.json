@@ -1,0 +1,105 @@
+{
+  "id": "factor-remainder-theorem",
+  "title": "Factor and Remainder Theorems",
+  "slug": "factor-remainder-theorem",
+  "description": "Two fundamental theorems connecting polynomial division, roots, and evaluation: (x - a) divides p(x) iff p(a) = 0 (Factor Theorem), and the remainder when dividing p(x) by (x - a) equals p(a) (Remainder Theorem).",
+  "meta": {
+    "author": "Descartes / Algebraists (formalized via Mathlib)",
+    "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Polynomial/Div.html",
+    "date": "17th-18th Century",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FactorRemainderTheorem.lean",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "division",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.dvd_iff_isRoot",
+        "description": "(X - C a) divides p iff p.IsRoot a",
+        "module": "Mathlib.Algebra.Polynomial.Div"
+      },
+      {
+        "theorem": "Polynomial.modByMonic_X_sub_C_eq_C_eval",
+        "description": "p mod (X - C a) = C(p.eval a)",
+        "module": "Mathlib.Algebra.Polynomial.FieldDivision"
+      },
+      {
+        "theorem": "Polynomial.monic_X_sub_C",
+        "description": "(X - C a) is monic",
+        "module": "Mathlib.Algebra.Polynomial.Div"
+      }
+    ],
+    "originalContributions": [
+      "Unified presentation of Factor and Remainder theorems",
+      "Connection between the two theorems via zero remainder",
+      "Division algorithm form with explicit quotient",
+      "Practical verification examples over integers and rationals"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 89
+  },
+  "overview": {
+    "historicalContext": "The Factor Theorem appears in various forms throughout mathematical history. The modern algebraic formulation emerged in the 17th-18th centuries alongside the development of polynomial algebra. Rene Descartes (1637) and others used these ideas in the study of polynomial equations. The theorem is fundamental to polynomial factorization and the fundamental theorem of algebra.\n\nThe Remainder Theorem is closely related - it says that polynomial long division by a linear term always yields a constant remainder equal to the polynomial's value at the root of that linear term.",
+    "problemStatement": "**Factor Theorem (Wiedijk #89)**: A polynomial p(x) has (x - a) as a factor if and only if p(a) = 0.\n\n$$(X - a) \\mid p(X) \\iff p(a) = 0$$\n\n**Remainder Theorem**: When a polynomial p(x) is divided by (x - a), the remainder is p(a).\n\n$$p(X) = (X - a) \\cdot q(X) + p(a)$$\n\nEquivalently: p(X) mod (X - a) = p(a) as a constant polynomial.",
+    "proofStrategy": "**Factor Theorem:**\nThe forward direction follows from the division algorithm: if (X - a) divides p, then p = (X - a) * q for some q. Evaluating at a gives p(a) = 0 * q(a) = 0.\n\nThe reverse direction: if p(a) = 0, the remainder theorem says p mod (X - a) = p(a) = 0, so (X - a) divides p exactly.\n\n**Remainder Theorem:**\nBy the division algorithm for polynomials, p = (X - a) * q + r where r has degree less than 1, so r is a constant. Evaluating at a: p(a) = 0 * q(a) + r = r.",
+    "keyInsights": [
+      "The Factor Theorem is a special case of the Remainder Theorem (when remainder is zero)",
+      "These theorems work over any commutative ring, not just real numbers",
+      "Finding a root immediately gives a factor, reducing the polynomial's degree",
+      "The theorems are fundamental to polynomial factorization algorithms",
+      "Monic polynomials like (X - a) have particularly nice division properties"
+    ]
+  },
+  "sections": [
+    {
+      "id": "factor-theorem",
+      "title": "The Factor Theorem",
+      "startLine": 59,
+      "endLine": 90,
+      "summary": "The Factor Theorem: (X - a) divides p iff p(a) = 0."
+    },
+    {
+      "id": "remainder-theorem",
+      "title": "The Remainder Theorem",
+      "startLine": 92,
+      "endLine": 125,
+      "summary": "The Remainder Theorem: p mod (X - a) = p(a)."
+    },
+    {
+      "id": "connection",
+      "title": "Connection Between Theorems",
+      "startLine": 126,
+      "endLine": 151,
+      "summary": "The Factor Theorem as a corollary of the Remainder Theorem."
+    },
+    {
+      "id": "applications",
+      "title": "Practical Applications",
+      "startLine": 152,
+      "endLine": 166,
+      "summary": "Using the theorems to verify roots and find factors."
+    },
+    {
+      "id": "examples",
+      "title": "Examples over Integers and Rationals",
+      "startLine": 186,
+      "endLine": 257,
+      "summary": "Concrete examples demonstrating the theorems with integer and rational polynomials."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Factor and Remainder Theorems are fundamental tools in polynomial algebra, providing an elegant connection between polynomial evaluation and divisibility. Together, they form the theoretical basis for polynomial factorization.",
+    "implications": "**Theoretical Significance:**\n\n1. **Polynomial Factorization**: Finding roots systematically leads to complete factorization over algebraically closed fields.\n\n2. **Fundamental Theorem of Algebra**: Combined with complex analysis, these theorems help prove that every polynomial over C factors completely into linear terms.\n\n3. **Computational Algebra**: Form the basis for polynomial GCD algorithms and factorization in computer algebra systems.\n\n**Practical Applications:**\n\n- Root finding by testing divisibility\n- Polynomial long division shortcuts\n- Interpolation and curve fitting\n- Error-correcting codes",
+    "openQuestions": [
+      "How do these theorems generalize to multivariate polynomials?",
+      "What is the computational complexity of polynomial factorization over various fields?",
+      "How do these results extend to non-commutative rings?"
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "cramers-rule",
+  "title": "Cramer's Rule",
+  "slug": "cramers-rule",
+  "description": "For Ax = b with det(A) ≠ 0, xᵢ = det(Aᵢ)/det(A) where Aᵢ has column i replaced by b.",
+  "meta": {
+    "author": "Cramer (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cramer%27s_rule",
+    "date": "1750",
+    "status": "verified",
+    "tags": ["linear-algebra", "matrices", "classic", "intermediate"],
+    "proofRepoPath": "Proofs/CramersRule.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "Matrix.mulVec_cramer", "description": "A * cramer(A,b) = det(A) • b", "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"}
+    ],
+    "originalContributions": ["General form without invertibility", "Examples for 2x2 and 3x3"],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 97
+  },
+  "overview": {
+    "historicalContext": "Published by Gabriel Cramer in 1750, known earlier to Maclaurin (1729) and Chinese mathematicians.",
+    "problemStatement": "**Cramer's Rule**:\n\n$$x_i = \\frac{\\det(A_i)}{\\det(A)}$$\n\nwhere Aᵢ is A with column i replaced by b.",
+    "proofStrategy": "Use the adjugate matrix: A·adj(A) = det(A)·I, then multiply both sides by b.",
+    "keyInsights": ["Elegant but O(n!·n) complexity", "Practical only for small systems", "Uses adjugate matrix"]
+  },
+  "sections": [{"id": "header", "title": "Introduction", "startLine": 1, "endLine": 50, "summary": "Overview."}],
+  "conclusion": {"summary": "Cramer's rule is verified using the adjugate matrix formulation."}
+}

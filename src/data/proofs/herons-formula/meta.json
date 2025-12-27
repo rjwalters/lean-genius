@@ -1,0 +1,30 @@
+{
+  "id": "herons-formula",
+  "title": "Heron's Formula",
+  "slug": "herons-formula",
+  "description": "Area = √(s(s-a)(s-b)(s-c)) where s is the semi-perimeter. Computes triangle area from side lengths alone.",
+  "meta": {
+    "author": "Hero of Alexandria (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Heron%27s_formula",
+    "date": "~60 AD",
+    "status": "verified",
+    "tags": ["geometry", "trigonometry", "classic", "intermediate"],
+    "proofRepoPath": "Proofs/HeronsFormula.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "Theorems100.heron", "description": "Heron's formula from Mathlib Archive", "module": "Archive.Wiedijk100Theorems.HeronsFormula"}
+    ],
+    "originalContributions": ["Multiple formulations", "Connection to law of cosines"],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 57
+  },
+  "overview": {
+    "historicalContext": "Hero of Alexandria described this in 'Metrica' (~60 AD). Practical for surveying without measuring angles.",
+    "problemStatement": "**Heron's Formula**:\n\n$$\\text{Area} = \\sqrt{s(s-a)(s-b)(s-c)}$$\n\nwhere $s = (a+b+c)/2$ is the semi-perimeter.",
+    "proofStrategy": "Derive from the Law of Cosines and the area formula Area = ½ab·sin(C).",
+    "keyInsights": ["Only requires side lengths", "Symmetric in all three sides", "Practical for surveying"]
+  },
+  "sections": [{"id": "header", "title": "Introduction", "startLine": 1, "endLine": 46, "summary": "Overview."}],
+  "conclusion": {"summary": "Heron's formula is verified using Mathlib's Euclidean geometry library."}
+}

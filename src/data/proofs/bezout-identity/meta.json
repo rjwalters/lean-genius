@@ -1,0 +1,31 @@
+{
+  "id": "bezout-identity",
+  "title": "Bezout's Identity",
+  "slug": "bezout-identity",
+  "description": "For any integers a, b, there exist x, y such that ax + by = gcd(a,b). Fundamental to number theory.",
+  "meta": {
+    "author": "Bezout (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity",
+    "date": "~1770",
+    "status": "verified",
+    "tags": ["number-theory", "algorithms", "classic", "beginner"],
+    "proofRepoPath": "Proofs/BezoutIdentity.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "Nat.gcd_eq_gcd_ab", "description": "Bezout's identity for naturals", "module": "Mathlib.Data.Nat.GCD.Basic"},
+      {"theorem": "Int.gcd_eq_gcd_ab", "description": "Bezout's identity for integers", "module": "Mathlib.Data.Int.GCD"}
+    ],
+    "originalContributions": ["Multiple formulations", "Connection to extended Euclidean algorithm"],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 60
+  },
+  "overview": {
+    "historicalContext": "Named after Étienne Bézout (1730-1783). Fundamental to computing modular inverses and RSA cryptography.",
+    "problemStatement": "**Bézout's Identity**:\n\n$$ax + by = \\gcd(a, b)$$\n\nfor some integers x, y.",
+    "proofStrategy": "The extended Euclidean algorithm computes both gcd(a,b) and the coefficients x, y.",
+    "keyInsights": ["Computed by extended Euclidean algorithm", "Foundation for modular inverses", "Essential for RSA"]
+  },
+  "sections": [{"id": "header", "title": "Introduction", "startLine": 1, "endLine": 60, "summary": "Overview."}],
+  "conclusion": {"summary": "Bézout's identity is verified with constructive coefficients."}
+}

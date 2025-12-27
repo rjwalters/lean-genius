@@ -1,0 +1,102 @@
+{
+  "id": "amgm-inequality",
+  "title": "Arithmetic Mean - Geometric Mean Inequality",
+  "slug": "amgm-inequality",
+  "description": "The AM-GM Inequality: For non-negative real numbers, the arithmetic mean is always greater than or equal to the geometric mean, with equality if and only if all numbers are equal.",
+  "meta": {
+    "author": "Euclid / Cauchy (formalized via Mathlib)",
+    "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/MeanInequalities.html",
+    "date": "~300 BCE / 1821",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AMGMInequality.lean",
+    "tags": [
+      "analysis",
+      "inequalities",
+      "mean-inequalities",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.geom_mean_le_arith_mean_weighted",
+        "description": "General weighted AM-GM inequality",
+        "module": "Mathlib.Analysis.MeanInequalities"
+      },
+      {
+        "theorem": "Real.geom_mean_le_arith_mean2_weighted",
+        "description": "Weighted 2-variable AM-GM",
+        "module": "Mathlib.Analysis.MeanInequalities"
+      },
+      {
+        "theorem": "Real.sqrt_mul",
+        "description": "sqrt(ab) = sqrt(a) * sqrt(b) for a >= 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "sq_nonneg",
+        "description": "x^2 >= 0 for all x",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "Elementary two-variable proof using (sqrt(a) - sqrt(b))^2 >= 0",
+      "Equality characterization for two-variable case",
+      "Product-sum inequality corollary",
+      "Three-variable AM-GM via weighted means"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 38
+  },
+  "overview": {
+    "historicalContext": "The AM-GM inequality has ancient origins, with geometric proofs dating to Euclid. The general n-variable form was developed in the 19th century by Cauchy. It is fundamental to optimization, economics, and information theory.\n\nThe inequality follows from the simple observation that squares are non-negative: (sqrt(a) - sqrt(b))^2 >= 0 expands to show that (a + b)/2 >= sqrt(ab).",
+    "problemStatement": "**Theorem (Wiedijk #38)**: For non-negative real numbers a and b:\n\n$$(a + b) / 2 \\geq \\sqrt{ab}$$\n\n**General Form**: For n non-negative real numbers:\n\n$$\\frac{a_1 + \\cdots + a_n}{n} \\geq \\sqrt[n]{a_1 \\cdots a_n}$$\n\n**Equality Condition**: Equality holds if and only if all numbers are equal.",
+    "proofStrategy": "**Elementary Proof (Two Variables):**\n\nThe key insight is that any square is non-negative:\n1. (sqrt(a) - sqrt(b))^2 >= 0\n2. Expanding: a - 2*sqrt(ab) + b >= 0\n3. Rearranging: a + b >= 2*sqrt(ab)\n4. Dividing by 2: (a + b)/2 >= sqrt(ab)\n\n**Mathlib Approach:**\nThe formalization uses `Real.geom_mean_le_arith_mean_weighted` for the general weighted form, which reduces to the classical AM-GM when all weights are equal.",
+    "keyInsights": [
+      "The inequality follows from the non-negativity of squares",
+      "Equality holds if and only if all numbers are equal",
+      "The weighted form generalizes to arbitrary positive weights summing to 1",
+      "The product of n numbers is maximized when their sum is fixed and they are all equal"
+    ]
+  },
+  "sections": [
+    {
+      "id": "two-variable",
+      "title": "Two-Variable Elementary Proof",
+      "startLine": 53,
+      "endLine": 87,
+      "summary": "The classical proof using (sqrt(a) - sqrt(b))^2 >= 0."
+    },
+    {
+      "id": "equality",
+      "title": "Equality Characterization",
+      "startLine": 89,
+      "endLine": 132,
+      "summary": "Proof that equality holds if and only if a = b."
+    },
+    {
+      "id": "weighted",
+      "title": "General Weighted AM-GM",
+      "startLine": 134,
+      "endLine": 160,
+      "summary": "The general weighted form via Mathlib's mean inequalities."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries and Applications",
+      "startLine": 182,
+      "endLine": 218,
+      "summary": "Product-sum inequality and three-variable AM-GM."
+    }
+  ],
+  "conclusion": {
+    "summary": "The AM-GM inequality is one of the most useful inequalities in mathematics, with applications ranging from optimization problems to information theory. The formalization demonstrates both the elementary algebraic proof for two variables and the general weighted form from Mathlib.",
+    "implications": "**Theoretical Significance:**\n\n1. **Optimization**: When maximizing a product with fixed sum (or minimizing sum with fixed product), the optimum occurs when all variables are equal.\n\n2. **Information Theory**: The AM-GM inequality underlies the relationship between arithmetic and geometric means in entropy calculations.\n\n3. **Competition Mathematics**: A fundamental tool for solving olympiad problems involving inequalities.\n\n**Practical Applications:**\n\n- Resource allocation problems\n- Geometric optimization\n- Proving other inequalities (Cauchy-Schwarz, etc.)",
+    "openQuestions": [
+      "How does AM-GM generalize to operator means in matrix analysis?",
+      "What are the connections to convexity and Jensen's inequality?",
+      "How do weighted power means interpolate between AM and GM?"
+    ]
+  }
+}

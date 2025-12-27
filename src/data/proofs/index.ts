@@ -36,6 +36,32 @@ import { subsetCountData } from './subset-count'
 import { divisibilityBy3Data } from './divisibility-by-3'
 import { inclusionExclusionData } from './inclusion-exclusion'
 import { triangleInequalityData } from './triangle-inequality'
+import { lawOfCosinesData } from './law-of-cosines'
+import { birthdayProblemData } from './birthday-problem'
+import { quadraticReciprocityData } from './quadratic-reciprocity'
+import { lhopitalData } from './lhopital'
+import { areaOfCircleData } from './area-of-circle'
+import { eulerTotientData } from './euler-totient'
+import { deMoivreData } from './de-moivre'
+import { pythagoreanTriplesData } from './pythagorean-triples'
+import { triangleAngleSumData } from './triangle-angle-sum'
+import { taylorTheoremData } from './taylor-theorem'
+import { triangularReciprocalsData } from './triangular-reciprocals'
+import { binomialTheoremData } from './binomial-theorem'
+import { heronsFormulaData } from './herons-formula'
+import { bezoutIdentityData } from './bezout-identity'
+import { isoscelesTriangleData } from './isosceles-triangle'
+import { lagrangeTheoremData } from './lagrange-theorem'
+import { meanValueTheoremData } from './mean-value-theorem'
+import { cauchySchwarzData } from './cauchy-schwarz'
+import { fundamentalArithmeticData } from './fundamental-arithmetic'
+import { derangementsData } from './derangements'
+import { cramersRuleData } from './cramers-rule'
+import { amgmInequalityData } from './amgm-inequality'
+import { combinationsFormulaData } from './combinations-formula'
+import { factorRemainderTheoremData } from './factor-remainder-theorem'
+import { leibnizPiData } from './leibniz-pi'
+import { perfectNumbersData } from './perfect-numbers'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -77,6 +103,32 @@ export const proofs: Record<string, ProofData> = {
   'divisibility-by-3': divisibilityBy3Data,
   'inclusion-exclusion': inclusionExclusionData,
   'triangle-inequality': triangleInequalityData,
+  'law-of-cosines': lawOfCosinesData,
+  'birthday-problem': birthdayProblemData,
+  'quadratic-reciprocity': quadraticReciprocityData,
+  'lhopital': lhopitalData,
+  'area-of-circle': areaOfCircleData,
+  'euler-totient': eulerTotientData,
+  'de-moivre': deMoivreData,
+  'pythagorean-triples': pythagoreanTriplesData,
+  'triangle-angle-sum': triangleAngleSumData,
+  'taylor-theorem': taylorTheoremData,
+  'triangular-reciprocals': triangularReciprocalsData,
+  'binomial-theorem': binomialTheoremData,
+  'herons-formula': heronsFormulaData,
+  'bezout-identity': bezoutIdentityData,
+  'isosceles-triangle': isoscelesTriangleData,
+  'lagrange-theorem': lagrangeTheoremData,
+  'mean-value-theorem': meanValueTheoremData,
+  'cauchy-schwarz': cauchySchwarzData,
+  'fundamental-arithmetic': fundamentalArithmeticData,
+  'derangements': derangementsData,
+  'cramers-rule': cramersRuleData,
+  'amgm-inequality': amgmInequalityData,
+  'combinations-formula': combinationsFormulaData,
+  'factor-remainder-theorem': factorRemainderTheoremData,
+  'leibniz-pi': leibnizPiData,
+  'perfect-numbers': perfectNumbersData,
 }
 
 export function getProof(slug: string): ProofData | undefined {

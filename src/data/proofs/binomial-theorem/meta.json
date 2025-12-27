@@ -1,0 +1,30 @@
+{
+  "id": "binomial-theorem",
+  "title": "The Binomial Theorem",
+  "slug": "binomial-theorem",
+  "description": "(x + y)^n = Σ C(n,k) x^k y^(n-k). One of the most fundamental results in algebra and combinatorics.",
+  "meta": {
+    "author": "Al-Karaji, Newton (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Binomial_theorem",
+    "date": "~1000 (al-Karaji), 1665 (Newton)",
+    "status": "verified",
+    "tags": ["algebra", "combinatorics", "classic", "beginner"],
+    "proofRepoPath": "Proofs/BinomialTheorem.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "add_pow", "description": "The binomial theorem expansion", "module": "Mathlib.Data.Nat.Choose.Sum"}
+    ],
+    "originalContributions": ["Multiple formulations", "Sum of coefficients equals 2^n"],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 44
+  },
+  "overview": {
+    "historicalContext": "Known since antiquity. Al-Karaji (~1000) described Pascal's triangle. Newton (1665) extended to fractional exponents.",
+    "problemStatement": "**Binomial Theorem**:\n\n$$(x + y)^n = \\sum_{k=0}^{n} \\binom{n}{k} x^k y^{n-k}$$",
+    "proofStrategy": "Each term arises from choosing k factors of x from n factors in the expansion.",
+    "keyInsights": ["Binomial coefficients count subsets", "Pascal's triangle encodes coefficients", "Generalizes to negative/fractional exponents"]
+  },
+  "sections": [{"id": "header", "title": "Introduction", "startLine": 1, "endLine": 43, "summary": "Overview."}],
+  "conclusion": {"summary": "The binomial theorem is verified for commutative semirings."}
+}

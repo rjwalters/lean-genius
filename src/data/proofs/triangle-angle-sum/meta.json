@@ -1,0 +1,33 @@
+{
+  "id": "triangle-angle-sum",
+  "title": "Sum of Angles of a Triangle",
+  "slug": "triangle-angle-sum",
+  "description": "The sum of the interior angles of a triangle equals 180° (π radians). One of the most fundamental results in Euclidean geometry.",
+  "meta": {
+    "author": "Euclid (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Sum_of_angles_of_a_triangle",
+    "date": "~300 BCE",
+    "status": "verified",
+    "tags": ["geometry", "euclidean", "classic", "beginner"],
+    "proofRepoPath": "Proofs/TriangleAngleSum.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "EuclideanGeometry.angle_add_angle_add_angle_eq_pi", "description": "Triangle angle sum theorem", "module": "Mathlib.Geometry.Euclidean.Triangle"}
+    ],
+    "originalContributions": ["Formulation for distinct points", "Properties of triangle angles"],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 27
+  },
+  "overview": {
+    "historicalContext": "This theorem is one of the oldest in mathematics. Euclid proved it around 300 BCE (Elements, Book I, Proposition 32). The theorem characterizes Euclidean geometry.",
+    "problemStatement": "**Triangle Angle Sum**:\n\nFor any triangle with vertices p₁, p₂, p₃:\n$$\\angle p_1 p_2 p_3 + \\angle p_2 p_3 p_1 + \\angle p_3 p_1 p_2 = \\pi$$",
+    "proofStrategy": "Euclid's proof constructs a line through one vertex parallel to the opposite side. The modern proof uses Mathlib's Euclidean geometry library.",
+    "keyInsights": ["In spherical geometry the sum exceeds π", "In hyperbolic geometry the sum is less than π", "This distinguishes Euclidean from non-Euclidean geometry"]
+  },
+  "sections": [
+    {"id": "header", "title": "Introduction", "startLine": 1, "endLine": 45, "summary": "Overview and historical context."},
+    {"id": "main-theorem", "title": "Main Theorem", "startLine": 47, "endLine": 67, "summary": "The angle sum theorem."}
+  ],
+  "conclusion": {"summary": "The triangle angle sum theorem is verified, characterizing flat Euclidean geometry."}
+}

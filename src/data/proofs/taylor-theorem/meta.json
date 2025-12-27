@@ -1,0 +1,34 @@
+{
+  "id": "taylor-theorem",
+  "title": "Taylor's Theorem",
+  "slug": "taylor-theorem",
+  "description": "A smooth function can be approximated by its Taylor polynomial, with explicit remainder terms (Lagrange and Cauchy forms).",
+  "meta": {
+    "author": "Taylor, Lagrange (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Taylor%27s_theorem",
+    "date": "1715",
+    "status": "verified",
+    "tags": ["calculus", "analysis", "approximation", "classic", "intermediate"],
+    "proofRepoPath": "Proofs/TaylorTheorem.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "taylor_mean_remainder_lagrange", "description": "Lagrange form of remainder", "module": "Mathlib.Analysis.Calculus.Taylor"},
+      {"theorem": "taylor_mean_remainder_cauchy", "description": "Cauchy form of remainder", "module": "Mathlib.Analysis.Calculus.Taylor"}
+    ],
+    "originalContributions": ["Pedagogical explanation of remainder forms", "Connection to numerical approximation"],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 35
+  },
+  "overview": {
+    "historicalContext": "Named after Brook Taylor (1715), though known earlier to James Gregory (1671). Lagrange developed the remainder term in 1797. Fundamental to numerical analysis.",
+    "problemStatement": "**Taylor's Theorem**:\n\n$$f(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(a)}{k!}(x-a)^k + R_n(x)$$\n\nLagrange remainder: $R_n(x) = \\frac{f^{(n+1)}(\\xi)}{(n+1)!}(x-a)^{n+1}$",
+    "proofStrategy": "Uses repeated application of the Mean Value Theorem and careful analysis of the error term.",
+    "keyInsights": ["The Taylor polynomial gives the best local approximation", "The remainder quantifies approximation error", "Foundation for numerical methods"]
+  },
+  "sections": [
+    {"id": "header", "title": "Introduction", "startLine": 1, "endLine": 51, "summary": "Overview and historical context."},
+    {"id": "lagrange", "title": "Lagrange Form", "startLine": 53, "endLine": 80, "summary": "The Lagrange remainder theorem."}
+  ],
+  "conclusion": {"summary": "Taylor's theorem is verified with both Lagrange and Cauchy remainder forms."}
+}
