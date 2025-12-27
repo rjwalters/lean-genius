@@ -1,0 +1,30 @@
+{
+  "id": "cauchy-schwarz",
+  "title": "Cauchy-Schwarz Inequality",
+  "slug": "cauchy-schwarz",
+  "description": "|⟨u,v⟩| ≤ ‖u‖·‖v‖. Fundamental to functional analysis and quantum mechanics.",
+  "meta": {
+    "author": "Cauchy, Schwarz (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality",
+    "date": "1821",
+    "status": "verified",
+    "tags": ["analysis", "linear-algebra", "classic", "intermediate"],
+    "proofRepoPath": "Proofs/CauchySchwarz.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "abs_real_inner_le_norm", "description": "Cauchy-Schwarz for real inner products", "module": "Mathlib.Analysis.InnerProductSpace.Basic"}
+    ],
+    "originalContributions": ["Inner product form", "Finite sum form", "Equality characterization"],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 78
+  },
+  "overview": {
+    "historicalContext": "Named after Cauchy (1821) and Schwarz (1888), also discovered by Bunyakovsky (1859).",
+    "problemStatement": "**Cauchy-Schwarz Inequality**:\n\n$$|\\langle u, v \\rangle| \\leq \\|u\\| \\cdot \\|v\\|$$\n\nFor sequences: $(\\sum a_i b_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$",
+    "proofStrategy": "Follows from (a₁b₂ - a₂b₁)² ≥ 0 and generalizes via quadratic non-negativity.",
+    "keyInsights": ["Equality iff vectors are linearly dependent", "Foundation for functional analysis", "Used in quantum mechanics"]
+  },
+  "sections": [{"id": "header", "title": "Introduction", "startLine": 1, "endLine": 47, "summary": "Overview."}],
+  "conclusion": {"summary": "Cauchy-Schwarz is verified in both inner product and finite sum forms."}
+}

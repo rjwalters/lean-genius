@@ -13,6 +13,7 @@ import Proofs.BrouwerFixedPoint
 import Proofs.CantorDiagonalization
 import Proofs.CantorsTheorem
 import Proofs.CauchySchwarz
+import Proofs.CayleyHamilton
 import Proofs.CentralLimitTheorem
 import Proofs.CombinationsFormula
 import Proofs.CramersRule
@@ -53,6 +54,7 @@ import Proofs.OnePlusOne
 import Proofs.PerfectNumbers
 import Proofs.PythagoreanTheorem
 import Proofs.PythagoreanTriples
+import Proofs.QuadraticReciprocity
 import Proofs.RamanujanSumFallacy
 import Proofs.RandomizedMaxCut
 import Proofs.SchroederBernstein

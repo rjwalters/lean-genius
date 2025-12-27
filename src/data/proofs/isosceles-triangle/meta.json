@@ -1,0 +1,30 @@
+{
+  "id": "isosceles-triangle",
+  "title": "Isosceles Triangle Theorem",
+  "slug": "isosceles-triangle",
+  "description": "In an isosceles triangle, the base angles are equal. Known as Pons Asinorum (Bridge of Asses).",
+  "meta": {
+    "author": "Euclid (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Isosceles_triangle",
+    "date": "~300 BCE",
+    "status": "verified",
+    "tags": ["geometry", "euclidean", "classic", "beginner"],
+    "proofRepoPath": "Proofs/IsoscelesTriangle.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "EuclideanGeometry.angle_eq_angle_of_dist_eq", "description": "Forward direction", "module": "Mathlib.Geometry.Euclidean.Triangle"}
+    ],
+    "originalContributions": ["Forward and converse directions", "Vector space formulation"],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 65
+  },
+  "overview": {
+    "historicalContext": "Euclid's Elements, Proposition I.5. Called 'Pons Asinorum' because it was the first challenging proof for students.",
+    "problemStatement": "**Isosceles Triangle Theorem**:\n\nIf AB = AC, then ∠ABC = ∠ACB.\n\n**Converse**: If ∠ABC = ∠ACB, then AB = AC.",
+    "proofStrategy": "The triangle is congruent to its own reflection, proving the angles equal.",
+    "keyInsights": ["Symmetry is the key insight", "First non-trivial proof in Euclid", "Tests mathematical reasoning ability"]
+  },
+  "sections": [{"id": "header", "title": "Introduction", "startLine": 1, "endLine": 49, "summary": "Overview."}],
+  "conclusion": {"summary": "Both the theorem and its converse are verified using Mathlib's Euclidean geometry."}
+}

@@ -1,0 +1,30 @@
+{
+  "id": "lagrange-theorem",
+  "title": "Lagrange's Theorem",
+  "slug": "lagrange-theorem",
+  "description": "For a finite group G and subgroup H, the order of H divides the order of G. Fundamental to group theory.",
+  "meta": {
+    "author": "Lagrange (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lagrange%27s_theorem_(group_theory)",
+    "date": "1771",
+    "status": "verified",
+    "tags": ["group-theory", "algebra", "classic", "intermediate"],
+    "proofRepoPath": "Proofs/LagrangeTheorem.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "Subgroup.card_subgroup_dvd_card", "description": "Subgroup order divides group order", "module": "Mathlib.GroupTheory.Coset"}
+    ],
+    "originalContributions": ["Corollaries about element order", "Connection to Euler's theorem"],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 71
+  },
+  "overview": {
+    "historicalContext": "Lagrange proved this in 1771 while studying permutation groups. One of the first major results in group theory.",
+    "problemStatement": "**Lagrange's Theorem**:\n\n$$|H| \\text{ divides } |G|$$\n\nfor any subgroup H of finite group G.",
+    "proofStrategy": "Partition G into cosets of H. Each coset has size |H|, so |G| = |H| × [G:H].",
+    "keyInsights": ["Cosets partition the group", "Each coset has the same size", "Index [G:H] = |G|/|H|"]
+  },
+  "sections": [{"id": "header", "title": "Introduction", "startLine": 1, "endLine": 55, "summary": "Overview."}],
+  "conclusion": {"summary": "Lagrange's theorem is verified with corollaries about element orders."}
+}

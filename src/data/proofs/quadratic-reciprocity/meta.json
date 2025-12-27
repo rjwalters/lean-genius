@@ -1,0 +1,113 @@
+{
+  "id": "quadratic-reciprocity",
+  "title": "Law of Quadratic Reciprocity",
+  "slug": "quadratic-reciprocity",
+  "description": "Gauss's 'golden theorem' of number theory: for distinct odd primes p and q, the Legendre symbols (p/q) and (q/p) are equal unless both p and q are congruent to 3 mod 4.",
+  "meta": {
+    "author": "Gauss (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Quadratic_reciprocity",
+    "date": "1796",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "primes",
+      "modular-arithmetic",
+      "classic",
+      "advanced"
+    ],
+    "proofRepoPath": "Proofs/QuadraticReciprocity.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "legendreSym.quadratic_reciprocity",
+        "description": "The law of quadratic reciprocity for Legendre symbols",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+      },
+      {
+        "theorem": "ZMod.exists_sq_eq_neg_one_iff",
+        "description": "First supplementary law: -1 is a square mod p iff p % 4 != 3",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+      },
+      {
+        "theorem": "ZMod.exists_sq_eq_two_iff",
+        "description": "Second supplementary law: 2 is a square mod p iff p % 8 in {1, 7}",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical documentation of the product and quotient forms",
+      "Explicit formulations for 1 mod 4 and 3 mod 4 cases",
+      "First and second supplementary laws with examples",
+      "Connection to Euler's criterion and multiplicativity"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 7
+  },
+  "overview": {
+    "historicalContext": "Quadratic reciprocity is one of the most celebrated theorems in number theory:\n\n- **Euler & Legendre**: Conjectured the result but could not prove it completely\n- **Gauss (1796)**: First complete proof at age 19, calling it the 'golden theorem'\n- **Gauss's obsession**: Published 8 different proofs during his lifetime\n- **Modern significance**: Foundation for class field theory and algebraic number theory\n\nThe theorem reveals deep connections between prime numbers that were completely unexpected.",
+    "problemStatement": "**The Law of Quadratic Reciprocity**:\n\nFor distinct odd primes $p$ and $q$:\n\n$$\\left(\\frac{p}{q}\\right)\\left(\\frac{q}{p}\\right) = (-1)^{\\frac{p-1}{2}\\cdot\\frac{q-1}{2}}$$\n\nwhere $(p/q)$ is the Legendre symbol:\n- $1$ if $p$ is a quadratic residue mod $q$\n- $-1$ if $p$ is a quadratic nonresidue mod $q$\n\n**Restated**: The symbols $(p/q)$ and $(q/p)$ are equal unless both $p \\equiv 3$ and $q \\equiv 3$ (mod 4), in which case they are negatives.",
+    "proofStrategy": "The proof uses properties of the multiplicative group $(\\mathbb{Z}/p\\mathbb{Z})^*$:\n\n1. **Legendre symbol definition**: $(a/p) = a^{(p-1)/2} \\mod p$ by Euler's criterion\n\n2. **Counting lattice points**: Gauss's original proof counts lattice points in specific regions\n\n3. **Modern approach**: Uses the structure of finite fields and character theory\n\n4. **Supplementary laws**:\n   - First: $-1$ is a QR mod $p$ iff $p \\equiv 1 \\pmod{4}$\n   - Second: $2$ is a QR mod $p$ iff $p \\equiv \\pm 1 \\pmod{8}$",
+    "keyInsights": [
+      "The sign depends only on whether both primes are 3 mod 4",
+      "Gauss considered this the most beautiful theorem in number theory",
+      "The theorem extends to higher reciprocity laws in algebraic number theory",
+      "Euler's criterion gives a computational method for the Legendre symbol",
+      "The multiplicativity of the Legendre symbol simplifies many calculations"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "Overview of quadratic reciprocity, historical context, and significance."
+    },
+    {
+      "id": "main-law",
+      "title": "The Main Law",
+      "startLine": 63,
+      "endLine": 114,
+      "summary": "Product form, quotient form, and special cases for 1 mod 4 and 3 mod 4."
+    },
+    {
+      "id": "first-supplementary",
+      "title": "First Supplementary Law",
+      "startLine": 116,
+      "endLine": 127,
+      "summary": "When -1 is a quadratic residue modulo a prime."
+    },
+    {
+      "id": "second-supplementary",
+      "title": "Second Supplementary Law",
+      "startLine": 129,
+      "endLine": 147,
+      "summary": "When 2 is a quadratic residue modulo a prime."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 163,
+      "endLine": 198,
+      "summary": "Concrete calculations for primes 3, 5, and 7."
+    },
+    {
+      "id": "euler-criterion",
+      "title": "Euler's Criterion",
+      "startLine": 200,
+      "endLine": 220,
+      "summary": "The connection between Legendre symbols and powers."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Law of Quadratic Reciprocity is fully verified using Mathlib's comprehensive number theory infrastructure. We provide the main theorem in multiple equivalent forms along with both supplementary laws.",
+    "implications": "Quadratic reciprocity has profound implications:\n\n1. **Primality testing**: Used in algorithms like Solovay-Strassen\n\n2. **Cryptography**: Foundation for understanding RSA and discrete logarithms\n\n3. **Algebraic number theory**: Generalizes to Artin reciprocity and class field theory\n\n4. **Computational number theory**: Enables efficient computation of Legendre symbols",
+    "openQuestions": [
+      "What is the most elementary proof of quadratic reciprocity?",
+      "How does quadratic reciprocity generalize to number fields?",
+      "What is the connection to the Langlands program?",
+      "Can reciprocity laws be used for faster primality tests?"
+    ]
+  }
+}

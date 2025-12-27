@@ -1,0 +1,104 @@
+{
+  "id": "combinations-formula",
+  "title": "Formula for the Number of Combinations",
+  "slug": "combinations-formula",
+  "description": "The number of ways to choose k elements from a set of n elements is C(n,k) = n! / (k!(n-k)!). This fundamental formula in combinatorics counts the number of k-element subsets of an n-element set.",
+  "meta": {
+    "author": "Pascal / Formalized via Mathlib",
+    "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Nat/Choose/Basic.html",
+    "date": "1654",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CombinationsFormula.lean",
+    "tags": [
+      "combinatorics",
+      "binomial-coefficients",
+      "factorial",
+      "wiedijk-100",
+      "pascal"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose_eq_factorial_div_factorial",
+        "description": "C(n,k) = n! / (k! * (n-k)!) for k <= n",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.factorial_mul_factorial_dvd_factorial",
+        "description": "k! * (n-k)! divides n!",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.choose_succ_succ",
+        "description": "Pascal's identity: C(n+1, k+1) = C(n, k) + C(n, k+1)",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical wrapper theorems with explicit documentation",
+      "Symmetry, boundary cases, and Pascal's identity as corollaries",
+      "Connection to subset counting via Finset.powersetCard",
+      "Concrete verification examples"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 58
+  },
+  "overview": {
+    "historicalContext": "The binomial coefficient formula has been known for centuries. The notation C(n,k) comes from 'combinations', and the formula n!/(k!(n-k)!) was formalized as mathematicians developed the theory of permutations and combinations. Pascal's 1654 treatise 'Traite du triangle arithmetique' systematically explored these numbers, though the triangle itself was known earlier in China, Persia, and India.",
+    "problemStatement": "**Theorem (Wiedijk #58)**: The number of ways to choose k elements from n elements is:\n\n$$C(n,k) = \\binom{n}{k} = \\frac{n!}{k!(n-k)!}$$\n\nThis formula counts the number of k-element subsets of an n-element set.",
+    "proofStrategy": "**Factorial Interpretation:**\n\nWhen selecting k items from n:\n1. There are n! ways to arrange all n items\n2. We divide by k! because the order of selected items doesn't matter\n3. We divide by (n-k)! because the order of unselected items doesn't matter\n\nThis gives n! / (k! * (n-k)!).\n\n**Mathlib Approach:**\nThe formalization uses `Nat.choose_eq_factorial_div_factorial` which directly proves the factorial formula, combined with `Nat.factorial_mul_factorial_dvd_factorial` to ensure exact division.",
+    "keyInsights": [
+      "The formula arises from counting ordered selections (permutations) and removing the ordering",
+      "Pascal's identity C(n+1, k+1) = C(n, k) + C(n, k+1) enables efficient computation",
+      "Symmetry C(n,k) = C(n, n-k) reflects that choosing k is equivalent to choosing n-k to exclude",
+      "The binomial coefficient is always a natural number despite involving division"
+    ]
+  },
+  "sections": [
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 55,
+      "endLine": 72,
+      "summary": "The fundamental formula C(n,k) = n! / (k!(n-k)!) and divisibility property."
+    },
+    {
+      "id": "properties",
+      "title": "Properties of Binomial Coefficients",
+      "startLine": 74,
+      "endLine": 99,
+      "summary": "Symmetry, boundary cases (k=0, k=n, k=1), and their combinatorial interpretations."
+    },
+    {
+      "id": "pascal",
+      "title": "Pascal's Triangle Relationship",
+      "startLine": 101,
+      "endLine": 109,
+      "summary": "Pascal's identity: each entry is the sum of two entries above it."
+    },
+    {
+      "id": "factorial-interpretation",
+      "title": "Factorial Interpretation",
+      "startLine": 111,
+      "endLine": 128,
+      "summary": "Connection between permutations P(n,k) and combinations C(n,k) via the falling factorial."
+    },
+    {
+      "id": "examples",
+      "title": "Verification Examples",
+      "startLine": 130,
+      "endLine": 163,
+      "summary": "Concrete examples verifying the formula and properties for specific values."
+    }
+  ],
+  "conclusion": {
+    "summary": "The combinations formula is one of the most fundamental results in combinatorics, connecting the abstract concept of subset counting to the concrete factorial formula. The formalization demonstrates the elegance of the relationship between permutations and combinations.",
+    "implications": "**Theoretical Significance:**\n\n1. **Foundation of combinatorics**: The binomial coefficient appears throughout mathematics, from probability to algebra.\n\n2. **Binomial theorem**: The coefficients in (x+y)^n are precisely C(n,k).\n\n3. **Pascal's triangle**: Provides an efficient recursive computation method.\n\n**Practical Applications:**\n\n- Probability calculations (choosing outcomes)\n- Counting problems in computer science\n- Polynomial expansion\n- Statistical sampling",
+    "openQuestions": [
+      "How do generalized binomial coefficients extend to non-integer arguments?",
+      "What are the connections to Catalan numbers and other combinatorial sequences?",
+      "How does the q-analog of binomial coefficients arise in quantum groups?"
+    ]
+  }
+}

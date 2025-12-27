@@ -1,0 +1,139 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "cayley-hamilton",
+    "range": {
+      "startLine": 1,
+      "endLine": 41
+    },
+    "type": "concept",
+    "title": "The Cayley-Hamilton Theorem",
+    "content": "The Cayley-Hamilton theorem is one of the most important results in linear algebra. It states that every square matrix satisfies its own characteristic polynomial.\n\nGiven an n×n matrix A, its characteristic polynomial is:\n$$p(\\lambda) = \\det(\\lambda I - A)$$\n\nThe theorem says that if we substitute the matrix A for λ and interpret powers of λ as matrix powers, we get the zero matrix:\n$$p(A) = 0$$\n\nThis is remarkable because p(λ) is a polynomial equation satisfied by the eigenvalues, yet the entire matrix A satisfies the same equation!",
+    "significance": "critical",
+    "relatedConcepts": [
+      "characteristic polynomial",
+      "eigenvalues",
+      "matrix algebra"
+    ]
+  },
+  {
+    "id": "ann-charpoly-monic",
+    "proofId": "cayley-hamilton",
+    "range": {
+      "startLine": 62,
+      "endLine": 65
+    },
+    "type": "lemma",
+    "title": "The Characteristic Polynomial is Monic",
+    "content": "A polynomial is **monic** if its leading coefficient is 1. The characteristic polynomial is always monic because when we expand det(λI - A), the λⁿ term comes from the product of the diagonal elements, which contributes exactly λⁿ.\n\nFor a 2×2 matrix [[a,b],[c,d]], the characteristic polynomial is:\n$$\\det \\begin{pmatrix} \\lambda - a & -b \\\\ -c & \\lambda - d \\end{pmatrix} = \\lambda^2 - (a+d)\\lambda + (ad-bc)$$\n\nNote the leading coefficient of λ² is 1.",
+    "mathContext": "Leading coefficient = 1",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monic polynomial",
+      "determinant expansion"
+    ]
+  },
+  {
+    "id": "ann-charpoly-degree",
+    "proofId": "cayley-hamilton",
+    "range": {
+      "startLine": 67,
+      "endLine": 71
+    },
+    "type": "lemma",
+    "title": "Degree Equals Dimension",
+    "content": "The characteristic polynomial of an n×n matrix has degree exactly n. This follows from the determinant formula: expanding det(λI - A), the highest power of λ that can appear is n (from the product of diagonal terms).\n\nThis has the important consequence that when we apply Cayley-Hamilton, the equation p(A) = 0 gives us a relation involving Aⁿ. This means Aⁿ can be written as a linear combination of lower powers!",
+    "mathContext": "deg(p) = n",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial degree",
+      "determinant"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "cayley-hamilton",
+    "range": {
+      "startLine": 87,
+      "endLine": 98
+    },
+    "type": "theorem",
+    "title": "The Main Theorem (Wiedijk #49)",
+    "content": "**The Cayley-Hamilton Theorem**: Every square matrix satisfies its own characteristic polynomial.\n\nFormally, if A is an n×n matrix with characteristic polynomial p(λ) = det(λI - A), then:\n$$p(A) = 0$$\n\nThe proof in Mathlib uses the adjugate matrix identity:\n$$A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$$\n\nBy working with matrices over the polynomial ring R[X] and carefully analyzing (XI - A) and its adjugate, the result follows from pure algebra.",
+    "mathContext": "$p_A(A) = 0$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "adjugate matrix",
+      "polynomial evaluation",
+      "matrix algebra"
+    ]
+  },
+  {
+    "id": "ann-nilpotent",
+    "proofId": "cayley-hamilton",
+    "range": {
+      "startLine": 122,
+      "endLine": 130
+    },
+    "type": "theorem",
+    "title": "Nilpotent Matrices",
+    "content": "A matrix is **nilpotent** if some power of it equals zero: Nᵏ = 0 for some k.\n\nIf N is nilpotent, all its eigenvalues are 0 (since if Nv = λv with v ≠ 0, then Nᵏv = λᵏv = 0 implies λ = 0). Thus the characteristic polynomial is just p(λ) = λⁿ.\n\nBy Cayley-Hamilton, p(N) = Nⁿ = 0. This proves that every nilpotent n×n matrix satisfies Nⁿ = 0.",
+    "mathContext": "N nilpotent ⟹ Nⁿ = 0",
+    "significance": "key",
+    "relatedConcepts": [
+      "nilpotent matrix",
+      "eigenvalue zero"
+    ]
+  },
+  {
+    "id": "ann-2x2",
+    "proofId": "cayley-hamilton",
+    "range": {
+      "startLine": 168,
+      "endLine": 187
+    },
+    "type": "concept",
+    "title": "The 2×2 Case",
+    "content": "For a 2×2 matrix A = [[a,b],[c,d]], the characteristic polynomial is:\n$$p(\\lambda) = \\lambda^2 - \\text{trace}(A)\\lambda + \\det(A)$$\n$$= \\lambda^2 - (a+d)\\lambda + (ad-bc)$$\n\nCayley-Hamilton gives:\n$$A^2 - (a+d)A + (ad-bc)I = 0$$\n\nRearranging (when det(A) ≠ 0):\n$$I = \\frac{1}{ad-bc}((a+d)A - A^2) = \\frac{1}{ad-bc}(\\text{trace}(A) \\cdot I - A) \\cdot A$$\n\nThis gives the inverse formula:\n$$A^{-1} = \\frac{1}{ad-bc} \\begin{pmatrix} d & -b \\\\ -c & a \\end{pmatrix}$$",
+    "mathContext": "$A^2 - \\text{tr}(A) \\cdot A + \\det(A) \\cdot I = 0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "trace",
+      "determinant",
+      "matrix inverse"
+    ]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "cayley-hamilton",
+    "range": {
+      "startLine": 189,
+      "endLine": 242
+    },
+    "type": "concept",
+    "title": "Applications and Significance",
+    "content": "**Computing Matrix Powers**: Since Aⁿ can be expressed in terms of I, A, ..., A^(n-1), any power of A (even A¹⁰⁰⁰) can be computed using only n-1 matrix multiplications.\n\n**Matrix Exponential**: The exponential e^(At) is crucial in solving dx/dt = Ax. Cayley-Hamilton helps simplify the infinite series.\n\n**Minimal Polynomial**: The minimal polynomial m(x) is the monic polynomial of smallest degree such that m(A) = 0. By Cayley-Hamilton, m divides the characteristic polynomial, so deg(m) ≤ n.\n\n**Eigenvalue Connection**: If λ₁, ..., λₙ are the eigenvalues, then:\n$$(A - λ₁I)(A - λ₂I)\\cdots(A - λₙI) = 0$$\n\nRemarkably, while each factor (A - λᵢI) may be nonzero, their product is always zero!",
+    "significance": "key",
+    "relatedConcepts": [
+      "matrix exponential",
+      "minimal polynomial",
+      "eigenvalues"
+    ]
+  },
+  {
+    "id": "ann-history",
+    "proofId": "cayley-hamilton",
+    "range": {
+      "startLine": 208,
+      "endLine": 217
+    },
+    "type": "concept",
+    "title": "Historical Notes",
+    "content": "The theorem has an interesting history:\n\n- **1853**: William Rowan Hamilton proves the result for quaternions (which can be viewed as 2×2 complex matrices)\n\n- **1858**: Arthur Cayley states the theorem for general matrices in 'A Memoir on the Theory of Matrices', but only verifies it for 2×2 and 3×3 cases, writing 'I have not thought it necessary to undertake the labor of a formal proof'\n\n- **1878**: Ferdinand Frobenius provides the first rigorous proof for arbitrary n×n matrices\n\nDespite Cayley only verifying special cases, the theorem bears his name along with Hamilton's, recognizing their foundational contributions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "quaternions",
+      "history of mathematics"
+    ]
+  }
+]

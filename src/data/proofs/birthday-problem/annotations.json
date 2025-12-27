@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 1,
+      "endLine": 7
+    },
+    "type": "concept",
+    "title": "The Birthday Paradox",
+    "content": "The **Birthday Problem** asks: How many people must be in a room for there to be a >50% chance that two share a birthday?\n\nThe surprising answer: **just 23 people**.\n\nMost people guess much higher (like 183, half of 365), because they confuse two different questions:\n- 'What's the chance someone shares MY birthday?' (needs ~253 people for 50%)\n- 'What's the chance ANY two people share A birthday?' (needs only 23)\n\nThe second question has many more pairs to check!",
+    "significance": "critical",
+    "relatedConcepts": [
+      "probability",
+      "combinatorics",
+      "complement counting"
+    ]
+  },
+  {
+    "id": "ann-formula",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 140,
+      "endLine": 149
+    },
+    "type": "theorem",
+    "title": "The Birthday Formula",
+    "content": "**Birthday Problem Formula**:\n\n$$P(\\text{shared birthday among } n \\text{ people}) = 1 - \\frac{365 \\cdot 364 \\cdots (365-n+1)}{365^n}$$\n\nEquivalently:\n$$P(n) = 1 - \\prod_{k=0}^{n-1} \\frac{365-k}{365} = 1 - \\prod_{k=0}^{n-1} \\left(1 - \\frac{k}{365}\\right)$$\n\nThe product represents the probability that each successive person has a unique birthday.",
+    "mathContext": "$P(n) = 1 - \\frac{365!}{365^n (365-n)!}$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "falling factorial",
+      "product formula"
+    ]
+  },
+  {
+    "id": "ann-counting",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 112,
+      "endLine": 117
+    },
+    "type": "concept",
+    "title": "Counting Injective Functions",
+    "content": "The number of ways for $n$ people to have **all distinct** birthdays equals the number of **injective functions** from an $n$-element set to a 365-element set.\n\nThis is the **falling factorial**:\n$$365^{\\underline{n}} = 365 \\times 364 \\times \\cdots \\times (365-n+1)$$\n\nIn Lean, this is `Nat.descFactorial 365 n`.\n\n**Why it works**: Person 1 has 365 choices, person 2 has 364 remaining choices, etc.",
+    "mathContext": "$|\\text{injections}| = 365^{\\underline{n}}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "injective functions",
+      "falling factorial",
+      "permutations"
+    ]
+  },
+  {
+    "id": "ann-pigeonhole",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 179,
+      "endLine": 182
+    },
+    "type": "theorem",
+    "title": "The Pigeonhole Case",
+    "content": "**When $n > 365$**: By the pigeonhole principle, at least two people MUST share a birthday.\n\nWith 366+ people and only 365 possible birthdays, there's no way to assign distinct birthdays to everyone.\n\nMathematically: `descFactorial 365 n = 0` when $n > 365$, so:\n$$P(n) = 1 - \\frac{0}{365^n} = 1$$\n\nThe probability is exactly 1 (certain).",
+    "mathContext": "If $n > 365$, then $P(n) = 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "certainty"
+    ]
+  },
+  {
+    "id": "ann-23-threshold",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 193,
+      "endLine": 205
+    },
+    "type": "theorem",
+    "title": "The 23-Person Threshold",
+    "content": "**The Famous Result**: With 23 people, P(shared birthday) > 50%.\n\nNumerically:\n- $P(22) \\approx 0.4757 < 0.5$\n- $P(23) \\approx 0.5073 > 0.5$\n\nSo 23 is the exact threshold where shared birthdays become more likely than not.\n\n**Note**: This is stated as an axiom in Lean because computing the exact rational requires arithmetic on ~50-digit numbers, which native_decide cannot handle efficiently.",
+    "mathContext": "$P(23) \\approx 50.73\\% > 50\\%$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "threshold",
+      "probability"
+    ]
+  },
+  {
+    "id": "ann-crypto",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 9,
+      "endLine": 63
+    },
+    "type": "insight",
+    "title": "The Birthday Attack",
+    "content": "The Birthday Problem has serious implications for **cryptography**:\n\nA **birthday attack** exploits this mathematics to find hash collisions. For a hash function with $n$-bit output:\n- Naive collision search: $O(2^n)$ attempts\n- Birthday attack: $O(2^{n/2})$ attempts\n\nThis is why hash functions need outputs twice as long as the desired security level. A 256-bit hash provides only 128 bits of collision resistance.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cryptography",
+      "hash functions",
+      "collision resistance"
+    ]
+  },
+  {
+    "id": "ann-two-people",
+    "proofId": "birthday-problem",
+    "range": {
+      "startLine": 165,
+      "endLine": 171
+    },
+    "type": "example",
+    "title": "Two People: P = 1/365",
+    "content": "With 2 people, the probability they share a birthday is:\n\n$$P(2) = 1 - \\frac{365 \\times 364}{365^2} = 1 - \\frac{364}{365} = \\frac{1}{365}$$\n\nThis makes intuitive sense: once person 1's birthday is fixed, person 2 has a 1/365 chance of matching.\n\nIn Lean: `prob_shared_birthday 2 = 1 / 365`",
+    "mathContext": "$P(2) = 1/365 \\approx 0.27\\%$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "base case",
+      "complement probability"
+    ]
+  }
+]

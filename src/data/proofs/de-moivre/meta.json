@@ -1,0 +1,34 @@
+{
+  "id": "de-moivre",
+  "title": "De Moivre's Theorem",
+  "slug": "de-moivre",
+  "description": "(cos θ + i sin θ)^n = cos(nθ) + i sin(nθ). Connects powers of complex numbers to multiple angle formulas.",
+  "meta": {
+    "author": "De Moivre, Euler (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/De_Moivre%27s_formula",
+    "date": "1707",
+    "status": "verified",
+    "tags": ["complex-analysis", "trigonometry", "classic", "intermediate"],
+    "proofRepoPath": "Proofs/DeMoivre.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "Complex.exp_mul_I", "description": "exp(θ·I) = cos θ + sin θ·I (Euler's formula)", "module": "Mathlib.Data.Complex.Exponential"},
+      {"theorem": "Complex.exp_nat_mul", "description": "exp(n·x) = (exp x)^n", "module": "Mathlib.Data.Complex.Exponential"}
+    ],
+    "originalContributions": ["Extension to integer exponents", "Double and triple angle formula derivations"],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 17
+  },
+  "overview": {
+    "historicalContext": "Abraham de Moivre (1667-1754) discovered this formula around 1707. It was later popularized by Euler and is essential for finding roots of unity and deriving trigonometric identities.",
+    "problemStatement": "**De Moivre's Theorem**:\n\n$$(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$$\n\nfor any real θ and natural number n.",
+    "proofStrategy": "Using Euler's formula e^(iθ) = cos θ + i sin θ, raising both sides to the n-th power gives e^(inθ) = cos(nθ) + i sin(nθ).",
+    "keyInsights": ["Direct consequence of Euler's formula", "Essential for finding n-th roots of complex numbers", "Derives all multiple angle formulas"]
+  },
+  "sections": [
+    {"id": "header", "title": "Introduction", "startLine": 1, "endLine": 42, "summary": "Overview and historical context."},
+    {"id": "main-theorem", "title": "Main Theorem", "startLine": 44, "endLine": 77, "summary": "De Moivre's theorem and proof."}
+  ],
+  "conclusion": {"summary": "De Moivre's theorem is elegantly proven via Euler's formula, demonstrating the power of complex exponentials."}
+}

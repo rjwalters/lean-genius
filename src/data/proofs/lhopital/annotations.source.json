@@ -1,0 +1,104 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "lhopital",
+    "anchor": {
+      "type": "imports"
+    },
+    "type": "concept",
+    "title": "Resolving Indeterminate Forms",
+    "content": "L'Hopital's Rule is a powerful technique for evaluating limits that initially appear as **indeterminate forms**:\n\n- $\\frac{0}{0}$ - both numerator and denominator approach 0\n- $\\frac{\\infty}{\\infty}$ - both approach infinity\n\nThe rule says: differentiate top and bottom separately, then take the limit. If the new limit exists, it equals the original.\n\n$$\\lim_{x \\to a} \\frac{f(x)}{g(x)} = \\lim_{x \\to a} \\frac{f'(x)}{g'(x)}$$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "limits",
+      "derivatives",
+      "indeterminate forms"
+    ]
+  },
+  {
+    "id": "ann-historical",
+    "proofId": "lhopital",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Historical Note"
+    },
+    "type": "insight",
+    "title": "The First Calculus Textbook",
+    "content": "L'Hopital's Rule appeared in **Analyse des Infiniment Petits** (1696), the first calculus textbook ever published.\n\nBut there's a twist: L'Hopital didn't discover the rule himself. He paid Johann Bernoulli a salary to send him mathematical discoveries. Bernoulli only revealed this arrangement after L'Hopital's death, leading to one of math's famous priority disputes.\n\nDespite this, the rule retains L'Hopital's name.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "history of calculus",
+      "Johann Bernoulli"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "lhopital",
+    "anchor": {
+      "type": "declaration",
+      "name": "lhopital_zero_right",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "L'Hopital's Rule (Right Limit)",
+    "content": "**L'Hopital's Rule** (0/0 form, right limit):\n\nIf $f$ and $g$ are differentiable on $(a, b)$, both tend to 0 as $x \\to a^+$, $g'(x) \\neq 0$ on $(a, b)$, and $\\frac{f'(x)}{g'(x)} \\to c$ as $x \\to a^+$, then:\n\n$$\\lim_{x \\to a^+} \\frac{f(x)}{g(x)} = c$$\n\nThis is the fundamental version; other variants (left limits, limits at infinity) follow similarly.",
+    "mathContext": "$\\lim_{x \\to a^+} f/g = \\lim_{x \\to a^+} f'/g'$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "one-sided limits",
+      "differentiability"
+    ]
+  },
+  {
+    "id": "ann-mvt",
+    "proofId": "lhopital",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Why L'Hopital's Rule Works"
+    },
+    "type": "concept",
+    "title": "The Mean Value Connection",
+    "content": "L'Hopital's Rule follows from **Cauchy's Mean Value Theorem**:\n\nFor differentiable $f, g$ on $(a, b)$ with $g'(x) \\neq 0$:\n$$\\frac{f(b) - f(a)}{g(b) - g(a)} = \\frac{f'(c)}{g'(c)}$$\nfor some $c \\in (a, b)$.\n\n**Intuition**: For small $h > 0$:\n- $f(a + h) \\approx f(a) + h \\cdot f'(a) = 0 + h \\cdot f'(a)$\n- $g(a + h) \\approx g(a) + h \\cdot g'(a) = 0 + h \\cdot g'(a)$\n\nSo $\\frac{f(a+h)}{g(a+h)} \\approx \\frac{f'(a)}{g'(a)}$",
+    "mathContext": "Cauchy MVT: $\\frac{f(b)-f(a)}{g(b)-g(a)} = \\frac{f'(c)}{g'(c)}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mean Value Theorem",
+      "Cauchy's theorem",
+      "linear approximation"
+    ]
+  },
+  {
+    "id": "ann-infinity",
+    "proofId": "lhopital",
+    "anchor": {
+      "type": "declaration",
+      "name": "lhopital_zero_atTop",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "Limits at Infinity",
+    "content": "L'Hopital's Rule also works for limits as $x \\to \\infty$:\n\nIf $f$ and $g$ are differentiable on $(a, \\infty)$, both tend to 0 as $x \\to \\infty$, $g'(x) \\neq 0$, and $\\frac{f'(x)}{g'(x)} \\to c$ as $x \\to \\infty$, then:\n\n$$\\lim_{x \\to \\infty} \\frac{f(x)}{g(x)} = c$$\n\nThis is useful for comparing growth rates of functions.",
+    "mathContext": "$\\lim_{x \\to \\infty} f/g = \\lim_{x \\to \\infty} f'/g'$",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "growth rates"
+    ]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "lhopital",
+    "anchor": {
+      "type": "section-doc",
+      "contains": "Common Applications"
+    },
+    "type": "example",
+    "title": "Classic Examples",
+    "content": "**Example 1**: $\\lim_{x \\to 0} \\frac{\\sin x}{x}$\n- Form: 0/0\n- Apply L'Hopital: $\\lim_{x \\to 0} \\frac{\\cos x}{1} = 1$\n\n**Example 2**: $\\lim_{x \\to 0} \\frac{e^x - 1}{x}$\n- Form: 0/0\n- Apply L'Hopital: $\\lim_{x \\to 0} \\frac{e^x}{1} = 1$\n\n**Example 3**: $\\lim_{x \\to 0^+} x \\ln x$\n- Rewrite as $\\frac{\\ln x}{1/x}$ (form: $-\\infty/\\infty$)\n- Apply L'Hopital: $\\frac{1/x}{-1/x^2} = -x \\to 0$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "trigonometric limits",
+      "exponential limits"
+    ]
+  }
+]

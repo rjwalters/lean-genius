@@ -4,6 +4,7 @@
   "slug": "schroeder-bernstein",
   "description": "If there exist injections f: A to B and g: B to A, then there exists a bijection between A and B. This establishes that cardinality is antisymmetric.",
   "meta": {
+    "wiedijkNumber": 25,
     "author": "Schroeder, Bernstein, Dedekind (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Schr%C3%B6der%E2%80%93Bernstein_theorem",
     "date": "1887-1898",

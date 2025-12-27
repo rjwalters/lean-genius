@@ -1,0 +1,30 @@
+{
+  "id": "mean-value-theorem",
+  "title": "Mean Value Theorem",
+  "slug": "mean-value-theorem",
+  "description": "If f is continuous on [a,b] and differentiable on (a,b), there exists c where f'(c) = (f(b)-f(a))/(b-a).",
+  "meta": {
+    "author": "Lagrange (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Mean_value_theorem",
+    "date": "1797",
+    "status": "verified",
+    "tags": ["calculus", "analysis", "classic", "intermediate"],
+    "proofRepoPath": "Proofs/MeanValueTheorem.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "exists_deriv_eq_slope", "description": "Lagrange's MVT", "module": "Mathlib.Analysis.Calculus.MeanValue"}
+    ],
+    "originalContributions": ["HasDerivAt version", "Cauchy's generalization"],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 75
+  },
+  "overview": {
+    "historicalContext": "Proved by Lagrange in 1797. Foundation for L'Hopital's rule and Taylor's theorem.",
+    "problemStatement": "**Mean Value Theorem**:\n\n$$f'(c) = \\frac{f(b) - f(a)}{b - a}$$\n\nfor some c ∈ (a, b).",
+    "proofStrategy": "Apply Rolle's theorem to g(x) = f(x) - f(a) - [(f(b)-f(a))/(b-a)](x-a).",
+    "keyInsights": ["Tangent line parallel to secant", "Foundation for calculus", "Generalizes to Cauchy MVT"]
+  },
+  "sections": [{"id": "header", "title": "Introduction", "startLine": 1, "endLine": 48, "summary": "Overview."}],
+  "conclusion": {"summary": "The Mean Value Theorem is verified with both classical and HasDerivAt formulations."}
+}
