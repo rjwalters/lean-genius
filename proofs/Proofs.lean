@@ -40,5 +40,7 @@ import Proofs.ArithmeticSeries
 import Proofs.SubsetCount
 import Proofs.IntermediateValueTheorem
 import Proofs.PerfectNumbers
+import Proofs.Derangements
 import Proofs.DivisibilityBy3
 import Proofs.CombinationsFormula
+import Proofs.LagrangeTheorem
