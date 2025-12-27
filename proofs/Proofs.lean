@@ -49,7 +49,7 @@ import Proofs.InclusionExclusion
 import Proofs.InfinitudePrimes
 import Proofs.IntermediateValueTheorem
 import Proofs.IsoscelesTriangle
-import Proofs.KnightsTourOblique
+-- import Proofs.KnightsTourOblique  -- Excluded: build separately with `lake build ProofsHeavy`
 import Proofs.Konigsberg
 import Proofs.LHopital
 import Proofs.LagrangeFourSquares
