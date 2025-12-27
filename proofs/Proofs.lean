@@ -69,6 +69,7 @@ import Proofs.NavierStokes
 import Proofs.OnePlusOne
 import Proofs.PellEquation
 import Proofs.PerfectNumbers
+import Proofs.PiTranscendental
 import Proofs.PlatonicSolids
 import Proofs.PrimeNumberTheorem
 import Proofs.PrimeReciprocalDivergence
