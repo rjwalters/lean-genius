@@ -1,0 +1,120 @@
+{
+  "id": "triangle-inequality",
+  "title": "The Triangle Inequality",
+  "slug": "triangle-inequality",
+  "description": "The fundamental inequality stating that the sum of any two sides of a triangle exceeds the third side. For real numbers: |x + y| ≤ |x| + |y|.",
+  "meta": {
+    "author": "Euclid / Fréchet / Banach (formalized via Mathlib)",
+    "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Topology/MetricSpace/Basic.html",
+    "date": "~300 BCE / 1906 / 1920s",
+    "status": "verified",
+    "proofRepoPath": "Proofs/TriangleInequality.lean",
+    "tags": [
+      "geometry",
+      "analysis",
+      "metric-spaces",
+      "normed-spaces",
+      "wiedijk-100",
+      "classic",
+      "euclid"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "abs_add",
+        "description": "|x + y| ≤ |x| + |y| for real numbers",
+        "module": "Mathlib.Algebra.Order.AbsoluteValue"
+      },
+      {
+        "theorem": "norm_add_le",
+        "description": "‖x + y‖ ≤ ‖x‖ + ‖y‖ for normed spaces",
+        "module": "Mathlib.Analysis.Normed.Group.Basic"
+      },
+      {
+        "theorem": "dist_triangle",
+        "description": "dist x z ≤ dist x y + dist y z for metric spaces",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "abs_abs_sub_abs_le_abs_sub",
+        "description": "| |x| - |y| | ≤ |x - y| (reverse triangle inequality)",
+        "module": "Mathlib.Algebra.Order.AbsoluteValue"
+      }
+    ],
+    "originalContributions": [
+      "Unified presentation of absolute value, norm, and metric formulations",
+      "Reverse triangle inequality with multiple formulations",
+      "Strict triangle inequality proof (equality iff collinear)",
+      "Four-point generalization for metric spaces",
+      "Lipschitz continuity applications"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 91
+  },
+  "overview": {
+    "historicalContext": "The triangle inequality appears in Euclid's Elements (Book I, Proposition 20, ~300 BCE) as the statement that any two sides of a triangle together are greater than the remaining side. This geometric insight—that the shortest path between two points is a straight line—is one of the most fundamental principles in mathematics.\n\nThe generalization to metric spaces by Maurice Fréchet (1906) and to normed vector spaces by Stefan Banach (1920s) laid the foundations for functional analysis. Today, the triangle inequality is an axiom in the definition of metrics and norms, making it central to modern analysis, topology, and geometry.",
+    "problemStatement": "**Theorem (Euclid/Wiedijk #91)**: For any real numbers x and y:\n\n$$|x + y| \\leq |x| + |y|$$\n\n**Normed Space Form**: For elements in a normed vector space:\n\n$$\\|x + y\\| \\leq \\|x\\| + \\|y\\|$$\n\n**Metric Space Form**: For points in a metric space:\n\n$$d(x, z) \\leq d(x, y) + d(y, z)$$\n\n**Reverse Triangle Inequality**: \n\n$$\\big||x| - |y|\\big| \\leq |x - y|$$",
+    "proofStrategy": "**For Real Numbers (Absolute Value Form):**\n\nThe proof considers cases based on the signs of x and y:\n1. If x, y ≥ 0: |x + y| = x + y = |x| + |y| (equality)\n2. If x, y ≤ 0: |x + y| = -(x + y) = -x + (-y) = |x| + |y| (equality)\n3. If opposite signs: |x + y| < |x| + |y| (strict inequality)\n\n**Mathlib Approach:**\nThe formalization leverages `abs_add` for real numbers, `norm_add_le` for normed spaces, and `dist_triangle` for metric spaces. These are the axiomatic foundations in their respective structures.",
+    "keyInsights": [
+      "The shortest distance between two points is a straight line",
+      "Equality holds iff the points are collinear (degenerate triangle)",
+      "The reverse triangle inequality gives a lower bound: | |x| - |y| | ≤ |x - y|",
+      "The inequality is an axiom defining metric spaces and norms",
+      "Implies that absolute value and norm are Lipschitz continuous with constant 1"
+    ]
+  },
+  "sections": [
+    {
+      "id": "abs-form",
+      "title": "Absolute Value Form",
+      "startLine": 61,
+      "endLine": 73,
+      "summary": "The fundamental triangle inequality for real numbers using absolute value."
+    },
+    {
+      "id": "reverse-triangle",
+      "title": "Reverse Triangle Inequality",
+      "startLine": 75,
+      "endLine": 103,
+      "summary": "The reverse inequality: | |x| - |y| | ≤ |x - y|, providing a lower bound."
+    },
+    {
+      "id": "normed-space",
+      "title": "Normed Space Form",
+      "startLine": 105,
+      "endLine": 132,
+      "summary": "Generalization to arbitrary normed vector spaces using the norm."
+    },
+    {
+      "id": "metric-space",
+      "title": "Metric Space Form",
+      "startLine": 134,
+      "endLine": 158,
+      "summary": "The most general form for arbitrary metric spaces using distance."
+    },
+    {
+      "id": "strict-triangle",
+      "title": "Strict Triangle Inequality",
+      "startLine": 173,
+      "endLine": 191,
+      "summary": "Proof that inequality is strict when x and y have opposite signs."
+    },
+    {
+      "id": "applications",
+      "title": "Applications",
+      "startLine": 212,
+      "endLine": 236,
+      "summary": "Lipschitz continuity of absolute value and norm as applications."
+    }
+  ],
+  "conclusion": {
+    "summary": "The triangle inequality is one of mathematics' most fundamental results, appearing across geometry, analysis, and topology. The formalization demonstrates the hierarchy from concrete real numbers through normed spaces to abstract metric spaces, showing how this single principle unifies diverse mathematical structures.",
+    "implications": "**Theoretical Significance:**\n\n1. **Foundation of metric topology**: The triangle inequality is one of the three axioms defining a metric, making it central to topology and analysis.\n\n2. **Convergence and continuity**: Many proofs of convergence and continuity rely on the triangle inequality to bound errors.\n\n3. **Lipschitz continuity**: The reverse triangle inequality shows that |·| and ‖·‖ are Lipschitz continuous, a key property for analysis.\n\n**Practical Applications:**\n\n- Bounding errors in numerical computation\n- Proving convergence of sequences and series\n- Establishing uniqueness in fixed-point theorems\n- Distance estimation in algorithms",
+    "openQuestions": [
+      "How does the triangle inequality generalize to quasi-metrics (where d(x,y) ≠ d(y,x))?",
+      "What are the connections to ultrametric spaces where the strong triangle inequality holds?",
+      "How does non-Euclidean geometry affect the triangle inequality?"
+    ]
+  }
+}
