@@ -53,6 +53,7 @@ import Proofs.OnePlusOne
 import Proofs.PerfectNumbers
 import Proofs.PythagoreanTheorem
 import Proofs.PythagoreanTriples
+import Proofs.QuadraticReciprocity
 import Proofs.RamanujanSumFallacy
 import Proofs.RandomizedMaxCut
 import Proofs.SchroederBernstein
@@ -60,6 +61,7 @@ import Proofs.Sqrt2
 import Proofs.Sqrt2Irrational
 import Proofs.Sqrt2IrrationalFromAxioms
 import Proofs.SubsetCount
+import Proofs.SylowTheorem
 import Proofs.TaylorTheorem
 import Proofs.ThreePlaceIdentity
 import Proofs.TriangleAngleSum
