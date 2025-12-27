@@ -56,7 +56,7 @@
   {
     "id": "ann-three-elements",
     "proofId": "subset-count",
-    "range": { "startLine": 86, "endLine": 87 },
+    "range": { "startLine": 97, "endLine": 98 },
     "type": "example",
     "title": "Example: Three Elements",
     "content": "The set $\\{1, 2, 3\\}$ has **8 subsets**:\n\n$$\\{\\}, \\{1\\}, \\{2\\}, \\{3\\}, \\{1,2\\}, \\{1,3\\}, \\{2,3\\}, \\{1,2,3\\}$$\n\n$$|\\mathcal{P}(\\{1,2,3\\})| = 2^3 = 8$$",
@@ -67,7 +67,7 @@
   {
     "id": "ann-doubling",
     "proofId": "subset-count",
-    "range": { "startLine": 112, "endLine": 118 },
+    "range": { "startLine": 128, "endLine": 134 },
     "type": "lemma",
     "title": "Adding an Element Doubles Subsets",
     "content": "When you add a new element to a set, the number of subsets **doubles**:\n\n$$|\\mathcal{P}(S \\cup \\{a\\})| = 2 \\cdot |\\mathcal{P}(S)|$$\n\n**Why?** Each subset of $S$ gives rise to two subsets of $S \\cup \\{a\\}$:\n1. The original subset (not containing $a$)\n2. The original subset plus $a$\n\nThis is the key insight for the inductive proof.",
