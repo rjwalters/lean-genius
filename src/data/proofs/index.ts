@@ -79,6 +79,7 @@ import { sqrt2FromAxiomsData } from './sqrt2-from-axioms'
 import { stirlingFormulaData } from './stirling-formula'
 import { sumOfKthPowersData } from './sum-of-kth-powers'
 import { sylowTheoremsData } from './sylow-theorems'
+import { platonicSolidsData } from './platonic-solids'
 import { ptolemysTheoremData } from './ptolemys-theorem'
 import type { ProofData } from '@/types/proof'
 
@@ -164,6 +165,7 @@ export const proofs: Record<string, ProofData> = {
   'stirling-formula': stirlingFormulaData,
   'sum-of-kth-powers': sumOfKthPowersData,
   'sylow-theorems': sylowTheoremsData,
+  'platonic-solids': platonicSolidsData,
   'ptolemys-theorem': ptolemysTheoremData,
 }
 
