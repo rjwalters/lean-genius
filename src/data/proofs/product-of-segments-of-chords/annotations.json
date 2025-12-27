@@ -1,0 +1,104 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "product-of-segments-of-chords",
+    "range": {
+      "startLine": 1,
+      "endLine": 6
+    },
+    "type": "concept",
+    "title": "Intersecting Chords",
+    "content": "The **Product of Segments of Chords** theorem states that when two chords of a circle intersect at a point P:\n\n$$PA \\cdot PB = PC \\cdot PD$$\n\nThis elegant result says that the product of the segments is the same for *any* chord through P. The product depends only on P's position relative to the circle, not on which direction the chord goes.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "circle geometry",
+      "power of a point",
+      "Euclid's Elements"
+    ]
+  },
+  {
+    "id": "ann-main",
+    "proofId": "product-of-segments-of-chords",
+    "range": {
+      "startLine": 419,
+      "endLine": 437
+    },
+    "type": "theorem",
+    "title": "The Main Theorem",
+    "content": "**Theorem (Euclid III.35)**:\n\nIf two chords AB and CD of a circle intersect at point P, then:\n$$PA \\cdot PB = PC \\cdot PD$$\n\n**Proof idea**: Both products equal the absolute value of the power of P:\n1. $PA \\cdot PB = |\\text{pow}(P)|$\n2. $PC \\cdot PD = |\\text{pow}(P)|$\n3. Therefore $PA \\cdot PB = PC \\cdot PD$\n\nThe power is an invariant of the point's position relative to the circle.",
+    "mathContext": "$PA \\cdot PB = PC \\cdot PD$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "chord properties",
+      "circle invariants",
+      "Euclid's Elements Book III"
+    ]
+  },
+  {
+    "id": "ann-algebraic",
+    "proofId": "product-of-segments-of-chords",
+    "range": {
+      "startLine": 197,
+      "endLine": 219
+    },
+    "type": "proof",
+    "title": "Algebraic Approach",
+    "content": "**Vieta's Formulas Approach**:\n\nParameterize points on a chord through P in direction $\\vec{d}$:\n$$Q(t) = P + t\\vec{d}$$\n\nA point is on the circle of radius r centered at origin iff:\n$$|P + t\\vec{d}|^2 = r^2$$\n\nExpanding (with $|\\vec{d}| = 1$):\n$$t^2 + 2t\\langle P, \\vec{d}\\rangle + |P|^2 - r^2 = 0$$\n\nBy **Vieta's formulas**, the product of roots is:\n$$t_1 \\cdot t_2 = |P|^2 - r^2$$\n\nSince distances are $|t_1|$ and $|t_2|$, we get $|t_1| \\cdot |t_2| = r^2 - |P|^2$ for interior points.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Vieta's formulas",
+      "quadratic equations",
+      "parametric lines"
+    ]
+  },
+  {
+    "id": "ann-center",
+    "proofId": "product-of-segments-of-chords",
+    "range": {
+      "startLine": 443,
+      "endLine": 455
+    },
+    "type": "example",
+    "title": "Special Case: Center",
+    "content": "When P is at the **center** of the circle:\n\n- Every chord through P is a diameter\n- Both segments have length r (the radius)\n- The product is $r \\cdot r = r^2$\n\nThis confirms our formula since pow(center) = $0^2 - r^2 = -r^2$, and $|\\text{pow}| = r^2$.\n\nThis is the *maximum* value of PA * PB for any interior point.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "diameter",
+      "maximum product"
+    ]
+  },
+  {
+    "id": "ann-converse",
+    "proofId": "product-of-segments-of-chords",
+    "range": {
+      "startLine": 457,
+      "endLine": 490
+    },
+    "type": "theorem",
+    "title": "The Converse",
+    "content": "**Converse Theorem**:\n\nIf lines AB and CD intersect at P, and:\n$$PA \\cdot PB = PC \\cdot PD$$\n\nthen A, B, C, D all lie on a common circle (they are **concyclic**).\n\nThis is a powerful criterion for proving four points lie on a circle. The converse follows because equal products imply equal power, which determines a unique circle.",
+    "significance": "key",
+    "relatedConcepts": [
+      "concyclic points",
+      "circumcircle",
+      "cyclic quadrilaterals"
+    ]
+  },
+  {
+    "id": "ann-historical",
+    "proofId": "product-of-segments-of-chords",
+    "range": {
+      "startLine": 8,
+      "endLine": 44
+    },
+    "type": "insight",
+    "title": "From Euclid to Steiner",
+    "content": "**Euclid (300 BCE)**: The theorem appears as Proposition 35 in Book III of the Elements. Euclid proved it using similar triangles formed by the chords.\n\n**Jakob Steiner (1826)**: Systematized the \"power of a point\" concept, unifying:\n- Intersecting chords (interior point)\n- Two secants (exterior point)\n- Secant and tangent\n- Two tangents\n\nAll are manifestations of the same invariant!",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "history of mathematics",
+      "Euclid's Elements",
+      "Jakob Steiner"
+    ]
+  }
+]

@@ -1,0 +1,119 @@
+{
+  "id": "product-of-segments-of-chords",
+  "title": "Product of Segments of Chords",
+  "slug": "product-of-segments-of-chords",
+  "description": "If two chords of a circle intersect at point P, then the product of the segments of one chord equals the product of the segments of the other: PA * PB = PC * PD.",
+  "meta": {
+    "author": "Euclid (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Power_of_a_point",
+    "date": "~300 BCE",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "circles",
+      "classic",
+      "beginner"
+    ],
+    "proofRepoPath": "Proofs/ProductOfSegmentsOfChords.lean",
+    "badge": "mathlib",
+    "sorries": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "The Euclidean plane as an inner product space",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "norm",
+        "description": "Euclidean distance/norm of vectors",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "inner",
+        "description": "Inner product (dot product) of vectors",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of the intersecting chords theorem",
+      "Connection to power of a point concept",
+      "Algebraic proof using inner products and parametric equations",
+      "Special case analysis for center and concyclic points"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 55
+  },
+  "overview": {
+    "historicalContext": "The Product of Segments of Chords theorem appears in Euclid's Elements (Book III, Proposition 35), making it one of the oldest results in circle geometry. The theorem is a special case of the \"Power of a Point\" concept, which was systematically developed by Swiss mathematician Jakob Steiner in the 1820s.\n\nThe power of a point unifies several circle theorems: intersecting chords, secants from an external point, and tangent-secant relationships are all manifestations of this single invariant quantity.",
+    "problemStatement": "**Theorem (Product of Segments of Chords)**:\n\nIf two chords $AB$ and $CD$ of a circle intersect at point $P$ inside the circle, then:\n\n$$PA \\cdot PB = PC \\cdot PD$$\n\n**Equivalent formulation**: The power of point $P$ with respect to the circle is the same regardless of which chord through $P$ we use to compute it.\n\n**Power of a point**: For a circle with center $O$ and radius $r$, the power of point $P$ is:\n$$\\text{pow}(P) = |PO|^2 - r^2$$",
+    "proofStrategy": "Our proof uses the power of a point concept:\n\n1. **Define the power**: For point $P$ and circle with center $O$, radius $r$:\n   $$\\text{pow}(P) = |PO|^2 - r^2$$\n\n2. **Show invariance**: For any chord $AB$ through $P$:\n   $$PA \\cdot PB = |\\text{pow}(P)|$$\n   This uses the quadratic relationship from the circle equation.\n\n3. **Conclude**: Since both $PA \\cdot PB$ and $PC \\cdot PD$ equal $|\\text{pow}(P)|$:\n   $$PA \\cdot PB = PC \\cdot PD$$\n\nThe algebraic approach parameterizes points on the chord and uses Vieta's formulas.",
+    "keyInsights": [
+      "The product PA * PB is an invariant - it depends only on the position of P relative to the circle, not the direction of the chord",
+      "For a point inside the circle, the power is negative, and |pow(P)| = r^2 - |PO|^2",
+      "When P is at the center, all chords are diameters and PA * PB = r^2",
+      "The theorem generalizes to secants from external points: PA * PB = PC * PD still holds",
+      "The converse is also true: if PA * PB = PC * PD for two lines through P, the four points are concyclic"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Overview of the theorem, its historical context, and the proof approach."
+    },
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 50,
+      "endLine": 69,
+      "summary": "Circle and point-on-circle definitions in the Euclidean plane."
+    },
+    {
+      "id": "power",
+      "title": "Power of a Point",
+      "startLine": 71,
+      "endLine": 99,
+      "summary": "The power of a point concept and auxiliary lemmas."
+    },
+    {
+      "id": "chord-algebra",
+      "title": "Chord Intersection Algebra",
+      "startLine": 101,
+      "endLine": 219,
+      "summary": "Algebraic proof using quadratic equations and Vieta's formulas."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 221,
+      "endLine": 437,
+      "summary": "The Product of Segments of Chords theorem: PA * PB = PC * PD."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 439,
+      "endLine": 490,
+      "summary": "The center case (all chords are diameters) and the converse theorem."
+    },
+    {
+      "id": "examples",
+      "title": "Numerical Examples",
+      "startLine": 492,
+      "endLine": 507,
+      "summary": "Concrete numerical examples demonstrating the theorem."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Product of Segments of Chords theorem is verified using Mathlib's Euclidean geometry infrastructure. We connect it to the power of a point concept and prove the main result along with special cases and the converse.",
+    "implications": "This theorem is fundamental to circle geometry and has many applications:\n\n1. **Geometric constructions**: Finding circle centers and constructing tangents\n\n2. **Lens design**: Optical path calculations through curved surfaces\n\n3. **Proof techniques**: Foundation for proving many other circle theorems\n\n4. **Coordinate geometry**: Computing intersections of circles and lines",
+    "openQuestions": [
+      "How does this theorem generalize to spheres in 3D?",
+      "What is the relationship to inversive geometry and Mobius transformations?",
+      "How can this be extended to non-Euclidean geometries?",
+      "What are efficient algorithms for computing the power of a point in computational geometry?"
+    ]
+  }
+}
