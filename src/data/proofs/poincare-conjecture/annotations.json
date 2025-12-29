@@ -1,0 +1,194 @@
+[
+  {
+    "id": "ann-sphere3",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 94,
+      "endLine": 125
+    },
+    "type": "definition",
+    "title": "The 3-Sphere S³",
+    "content": "The 3-sphere S³ is defined as the unit sphere in ℝ⁴: all points at distance 1 from the origin. This is the higher-dimensional analogue of the familiar 2-sphere (the surface of a ball). In the Poincaré Conjecture, S³ plays the role of the 'simplest' 3-manifold.",
+    "mathContext": "S³ = {x ∈ ℝ⁴ : ||x|| = 1} = Metric.sphere 0 1 in EuclideanSpace ℝ (Fin 4). Properties: compact (closed and bounded), connected (path-connected in dimension > 1), and nonempty (contains (1,0,0,0)).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "unit sphere",
+      "Euclidean space",
+      "compactness"
+    ]
+  },
+  {
+    "id": "ann-simply-connected",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 127,
+      "endLine": 157
+    },
+    "type": "definition",
+    "title": "Simply Connected Spaces",
+    "content": "A space is simply connected if it is path-connected and every loop can be continuously shrunk to a point. Formally, the fundamental group π₁(X) is trivial. This captures the intuition that the space has 'no holes' through which a loop could be threaded.",
+    "mathContext": "Simply connected ⟺ path-connected AND ∀ loops γ, γ is homotopic to the constant loop. The fundamental group π₁(X, x) at basepoint x captures equivalence classes of loops under homotopy.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "fundamental group",
+      "homotopy",
+      "path-connectedness"
+    ]
+  },
+  {
+    "id": "ann-closed-manifold",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 159,
+      "endLine": 182
+    },
+    "type": "definition",
+    "title": "Closed 3-Manifolds",
+    "content": "A closed 3-manifold is a compact, connected topological space without boundary where every point has a neighborhood homeomorphic to ℝ³. 'Closed' in topology means compact without boundary (like a sphere), not 'closed set'.",
+    "mathContext": "The structure ClosedManifold encodes: (1) CompactSpace M - finite extent, (2) ConnectedSpace M - one piece, (3) Nonempty M - has points, (4) locally Euclidean - looks like ℝ³ near each point.",
+    "significance": "key",
+    "relatedConcepts": [
+      "topological manifold",
+      "compactness",
+      "local Euclidean structure"
+    ]
+  },
+  {
+    "id": "ann-poincare-statement",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 208,
+      "endLine": 233
+    },
+    "type": "theorem",
+    "title": "The Poincaré Conjecture Statement",
+    "content": "Every simply connected, closed 3-manifold is homeomorphic to S³. In other words: if a 3-dimensional 'universe' is finite (closed), in one piece (connected), and has no holes (simply connected), then it must be a 3-sphere.",
+    "mathContext": "Formally: ∀ M, (Closed3Manifold M) → (SimplyConnected M) → (M ≅ₜ S³). This was the most famous open problem in topology for 99 years until Perelman's proof.",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-sphere3",
+      "ann-simply-connected",
+      "ann-closed-manifold"
+    ],
+    "relatedConcepts": [
+      "characterization theorem",
+      "topological classification"
+    ]
+  },
+  {
+    "id": "ann-ricci-flow",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 235,
+      "endLine": 280
+    },
+    "type": "concept",
+    "title": "Hamilton's Ricci Flow",
+    "content": "Ricci flow is a geometric PDE that evolves a Riemannian metric: ∂g/∂t = -2 Ric(g). Introduced by Richard Hamilton in 1982, it acts like a heat equation for geometry, smoothing out irregularities in curvature over time.",
+    "mathContext": "The Ricci curvature tensor Ric(g) measures how the metric deviates from flat space. Under Ricci flow, positively curved regions shrink while negatively curved regions expand. For S³, the flow shrinks uniformly to a point.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Riemannian geometry",
+      "heat equation",
+      "geometric evolution"
+    ]
+  },
+  {
+    "id": "ann-perelman-surgery",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 282,
+      "endLine": 323
+    },
+    "type": "theorem",
+    "title": "Perelman's Surgery Theorem (Axiom)",
+    "content": "Perelman's key innovation: when Ricci flow develops singularities, perform 'surgery' by cutting out the bad regions and capping them off with standard pieces. This allows the flow to continue past singularities.",
+    "mathContext": "The axiom captures: given any metric g on a closed 3-manifold M, surgery produces a new manifold M' that is still closed, and if M was simply connected, M' remains simply connected. This preserves the topological property we care about.",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-ricci-flow"
+    ],
+    "relatedConcepts": [
+      "surgery theory",
+      "singularity analysis",
+      "geometric topology"
+    ]
+  },
+  {
+    "id": "ann-finite-extinction",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 301,
+      "endLine": 311
+    },
+    "type": "theorem",
+    "title": "Finite Extinction Time (Axiom)",
+    "content": "For a simply connected, closed 3-manifold, Ricci flow with surgery causes the manifold to 'go extinct' in finite time - it either shrinks to a point or becomes a round 3-sphere. This is the heart of Perelman's proof.",
+    "mathContext": "The key insight: simply connected manifolds cannot contain incompressible tori or other obstructions that would prevent collapse. The fundamental group triviality forces eventual spherical geometry.",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-perelman-surgery"
+    ],
+    "relatedConcepts": [
+      "extinction time",
+      "spherical collapse"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 325,
+      "endLine": 340
+    },
+    "type": "theorem",
+    "title": "Poincaré Conjecture (Theorem)",
+    "content": "Every simply connected, closed 3-manifold is homeomorphic to S³. The proof follows directly from the finite extinction axiom: apply Ricci flow with surgery until the manifold becomes extinct, which leaves us with S³.",
+    "mathContext": "The proof structure: given M satisfying the hypotheses, Perelman's finite extinction theorem directly yields the homeomorphism M ≅ S³. The hard work is encapsulated in the axioms.",
+    "significance": "critical",
+    "prerequisites": [
+      "ann-poincare-statement",
+      "ann-finite-extinction"
+    ],
+    "relatedConcepts": [
+      "Millennium Prize",
+      "topological classification"
+    ]
+  },
+  {
+    "id": "ann-other-dimensions",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 342,
+      "endLine": 382
+    },
+    "type": "concept",
+    "title": "Poincaré Conjecture in Other Dimensions",
+    "content": "The generalized Poincaré Conjecture (is every simply connected, closed n-manifold homeomorphic to Sⁿ?) has different proofs for different dimensions: n=2 (classical), n=3 (Perelman 2003), n=4 (Freedman 1982, topological), n≥5 (Smale 1961).",
+    "mathContext": "The difficulty varies dramatically by dimension. n=3 was hardest because geometric techniques (Ricci flow) were needed. Higher dimensions admit h-cobordism arguments. The smooth version in dimension 4 remains open!",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "generalized Poincaré conjecture",
+      "h-cobordism",
+      "smooth vs topological"
+    ]
+  },
+  {
+    "id": "ann-historical",
+    "proofId": "poincare-conjecture",
+    "range": {
+      "startLine": 403,
+      "endLine": 460
+    },
+    "type": "historical",
+    "title": "Historical Context",
+    "content": "Poincaré posed the conjecture in 1904. After 99 years of failed attempts, Grigori Perelman posted three papers to arXiv in 2002-2003, completing the proof using Ricci flow with surgery. He declined both the Fields Medal (2006) and the $1 million Millennium Prize (2010).",
+    "mathContext": "Perelman's reasoning for declining included: 'My contribution is no greater than Hamilton's' (who invented Ricci flow). He also expressed disagreement with the mathematical community's ethics around credit and recognition.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fields Medal",
+      "Millennium Prize",
+      "mathematical community"
+    ]
+  }
+]
