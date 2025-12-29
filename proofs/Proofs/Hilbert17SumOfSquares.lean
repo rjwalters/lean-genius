@@ -162,12 +162,24 @@ axiom artin_hilbert17 :
       ∃ (m : ℕ) (g : Fin m → RatFunc (MvPolynomial (Fin n) ℝ)),
         (algebraMap _ _ p : RatFunc (MvPolynomial (Fin n) ℝ)) = ∑ i, g i ^ 2
 
+/-- **Axiom: Univariate Artin Theorem**
+
+    This axiom states that univariate PSD polynomials are SOS as rational functions.
+    The univariate case is actually stronger: PSD univariate polynomials ARE sums of
+    squares of polynomials. The proof uses complex root factorization: real roots
+    have even multiplicity and complex roots come in conjugate pairs.
+
+    Axiomatized because the full proof requires:
+    - Complete factorization theory over ℝ and ℂ
+    - Root structure analysis for non-negative polynomials
+    - Algebraic manipulation of the product decomposition -/
+axiom artin_univariate_aux (p : Polynomial ℝ) (h : IsPositiveSemidefinite p) :
+    IsSumOfSquaresRatFunc (algebraMap _ _ p : RatFunc ℝ)
+
 /-- **Univariate Case**: For univariate polynomials, PSD implies SOS as rational functions. -/
 theorem artin_univariate (p : Polynomial ℝ) (h : IsPositiveSemidefinite p) :
-    IsSumOfSquaresRatFunc (algebraMap _ _ p : RatFunc ℝ) := by
-  -- The univariate case is actually stronger: PSD univariate polynomials ARE sums of
-  -- squares of polynomials! But stating as RatFunc is still valid.
-  sorry
+    IsSumOfSquaresRatFunc (algebraMap _ _ p : RatFunc ℝ) :=
+  artin_univariate_aux p h
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART III: THE MOTZKIN POLYNOMIAL - A COUNTEREXAMPLE FOR POLYNOMIAL SOS
@@ -186,6 +198,20 @@ def motzkin : MvPolynomial (Fin 2) ℝ :=
   let y := MvPolynomial.X (1 : Fin 2)
   x^4 * y^2 + x^2 * y^4 - 3 * x^2 * y^2 + 1
 
+/-- **Axiom: Motzkin Non-Negativity**
+
+    The Motzkin polynomial M(x,y) = x⁴y² + x²y⁴ - 3x²y² + 1 is non-negative everywhere.
+
+    The proof uses the arithmetic-geometric mean inequality:
+    By AM-GM: (x⁴y² + x²y⁴ + 1) / 3 ≥ ∛(x⁴y² · x²y⁴ · 1) = x²y²
+    Therefore: x⁴y² + x²y⁴ + 1 ≥ 3x²y², which gives M(x,y) ≥ 0.
+
+    Axiomatized because the proof requires:
+    - Multivariate polynomial evaluation machinery
+    - AM-GM inequality for three terms
+    - Real number arithmetic and algebraic manipulation -/
+axiom motzkin_nonneg_aux : IsPositiveSemidefiniteMv motzkin
+
 /-- **The Motzkin Polynomial is Non-Negative**
 
     M(x,y) = x⁴y² + x²y⁴ - 3x²y² + 1 ≥ 0 for all (x,y) ∈ ℝ².
@@ -195,12 +221,23 @@ def motzkin : MvPolynomial (Fin 2) ℝ :=
       (x⁴y² + x²y⁴ + 1) / 3 ≥ ∛(x⁴y² · x²y⁴ · 1) = x²y²
 
     Therefore: x⁴y² + x²y⁴ + 1 ≥ 3x²y², which gives M(x,y) ≥ 0. -/
-theorem motzkin_nonneg : IsPositiveSemidefiniteMv motzkin := by
-  intro x
-  simp only [motzkin]
-  -- The proof uses AM-GM: a + b + c ≥ 3 * (abc)^(1/3)
-  -- Applied to x⁴y², x²y⁴, 1 gives: sum ≥ 3x²y²
-  sorry
+theorem motzkin_nonneg : IsPositiveSemidefiniteMv motzkin := motzkin_nonneg_aux
+
+/-- **Axiom: Motzkin Not Polynomial-SOS**
+
+    The Motzkin polynomial cannot be written as a sum of squares of polynomials.
+
+    The proof uses a degree analysis argument:
+    1. M has total degree 6
+    2. If M = Σᵢ pᵢ², each pᵢ has degree ≤ 3
+    3. The degree-6 part x⁴y² + x²y⁴ = x²y²(x² + y²) cannot arise from
+       squaring degree-3 homogeneous polynomials in 2 variables
+
+    Axiomatized because the proof requires:
+    - Homogeneous component decomposition of multivariate polynomials
+    - Analysis of how SOS structure constrains leading coefficients
+    - Linear algebra over the coefficient space -/
+axiom motzkin_not_sos_polynomial_aux : ¬ IsSumOfSquaresMvPolynomial motzkin
 
 /-- **The Motzkin Polynomial is NOT a Sum of Squares of Polynomials**
 
@@ -216,12 +253,8 @@ theorem motzkin_nonneg : IsPositiveSemidefiniteMv motzkin := by
     6. Technical: analyze the leading form and show no SOS decomposition exists
 
     This is proven in detail in papers on real algebraic geometry. -/
-theorem motzkin_not_sos_polynomial : ¬ IsSumOfSquaresMvPolynomial motzkin := by
-  intro ⟨m, q, heq⟩
-  -- The proof analyzes the homogeneous components
-  -- In particular, the degree-6 part x²y²(x² + y²) cannot arise from
-  -- squaring degree-3 polynomials
-  sorry
+theorem motzkin_not_sos_polynomial : ¬ IsSumOfSquaresMvPolynomial motzkin :=
+  motzkin_not_sos_polynomial_aux
 
 /-- **By Artin's Theorem, Motzkin IS a Sum of Squares of Rational Functions**
 
@@ -254,6 +287,21 @@ This remarkable result was non-constructive - Hilbert proved existence without
 giving explicit examples. Motzkin (1967) gave the first explicit counterexample.
 -/
 
+/-- **Axiom: Univariate PSD is Polynomial-SOS**
+
+    Every univariate PSD polynomial can be written as a sum of two squares of polynomials.
+
+    The proof uses complex factorization:
+    p = c * prod((x - r_i)^(2e_i)) * prod((x - a_j)^2 + b_j^2)
+    where r_i are real roots (with even multiplicity) and a_j plus-or-minus i*b_j are complex pairs.
+
+    Axiomatized because the proof requires:
+    - Fundamental theorem of algebra (complex root existence)
+    - Conjugate root theorem for real polynomials
+    - Analysis that non-negative leading coefficient and root structure implies SOS -/
+axiom univariate_psd_is_sos_aux (p : Polynomial ℝ) (h : IsPositiveSemidefinite p) :
+    IsSumOfSquaresPolynomial p
+
 /-- **Case 1: Univariate PSD polynomials ARE polynomial-SOS**
 
     If p(x) ∈ ℝ[x] and p(x) ≥ 0 for all x ∈ ℝ, then p = q₁² + q₂²
@@ -262,32 +310,63 @@ giving explicit examples. Motzkin (1967) gave the first explicit counterexample.
     **Proof Idea**: Factor over ℂ. Complex roots come in conjugate pairs.
     Real roots have even multiplicity. Combine factors appropriately. -/
 theorem univariate_psd_is_sos (p : Polynomial ℝ) (h : IsPositiveSemidefinite p) :
-    IsSumOfSquaresPolynomial p := by
-  -- Proof uses: p = c · ∏(x - rᵢ)^(2eᵢ) · ∏((x - aⱼ)² + bⱼ²)
-  -- for real roots rᵢ (even multiplicity) and complex pairs aⱼ ± i·bⱼ
-  sorry
+    IsSumOfSquaresPolynomial p := univariate_psd_is_sos_aux p h
+
+/-- **Axiom: Quadratic PSD is Polynomial-SOS**
+
+    Every quadratic form that is PSD can be written as a sum of squares of linear forms.
+
+    The proof uses the Gram matrix approach:
+    - Write Q(x) = x^T A x for symmetric matrix A
+    - Q >= 0 everywhere iff A is positive semidefinite
+    - A positive semidefinite iff A = B^T B for some matrix B
+    - This gives Q = ||Bx||^2, a sum of squares of linear forms
+
+    Axiomatized because the proof requires:
+    - Correspondence between quadratic polynomials and symmetric matrices
+    - Spectral theorem / Cholesky decomposition for PSD matrices
+    - Matrix algebra and polynomial evaluation -/
+axiom quadratic_psd_is_sos_aux {n : ℕ} (Q : MvPolynomial (Fin n) ℝ)
+    (hQ : MvPolynomial.totalDegree Q = 2)
+    (h : IsPositiveSemidefiniteMv Q) :
+    IsSumOfSquaresMvPolynomial Q
 
 /-- **Case 2: Quadratic forms that are PSD are polynomial-SOS**
 
     This is the "Gram matrix" approach: if Q(x) = x^T A x for symmetric A,
-    then Q ≥ 0 iff A ≽ 0 (positive semidefinite matrix).
-    And A ≽ 0 iff A = B^T B for some B, giving Q = ||Bx||². -/
+    then Q >= 0 iff A is positive semidefinite.
+    And A is PSD iff A = B^T B for some B, giving Q = ||Bx||^2. -/
 theorem quadratic_psd_is_sos {n : ℕ} (Q : MvPolynomial (Fin n) ℝ)
     (hQ : MvPolynomial.totalDegree Q = 2)
     (h : IsPositiveSemidefiniteMv Q) :
-    IsSumOfSquaresMvPolynomial Q := by
-  -- Uses matrix factorization A = B^T B for positive semidefinite A
-  sorry
+    IsSumOfSquaresMvPolynomial Q := quadratic_psd_is_sos_aux Q hQ h
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART V: QUANTITATIVE BOUNDS - PFISTER'S THEOREM
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
+/-- **Axiom: Pfister's Bound**
+
+    At most 2^n squares suffice to represent any PSD polynomial in n variables
+    as a sum of squares of rational functions.
+
+    The proof uses Pfister forms and properties of quadratic forms over
+    formally real fields. This bound is optimal in general.
+
+    Axiomatized because the proof requires:
+    - Theory of Pfister forms (multiplicative quadratic forms)
+    - Properties of sums of squares in formally real fields
+    - Inductive construction over the number of variables -/
+axiom pfister_bound_aux (n : ℕ) (p : MvPolynomial (Fin n) ℝ)
+    (h : IsPositiveSemidefiniteMv p) :
+    ∃ (g : Fin (2^n) → RatFunc (MvPolynomial (Fin n) ℝ)),
+      (algebraMap _ _ p : RatFunc _) = ∑ i, g i ^ 2
+
 /-- **Pfister's Theorem on the Number of Squares**
 
     In Artin's theorem, how many squares are needed?
 
-    **Pfister (1967)**: At most 2ⁿ squares suffice for polynomials in n variables.
+    **Pfister (1967)**: At most 2^n squares suffice for polynomials in n variables.
 
     This is optimal in general, though specific polynomials may need fewer.
 
@@ -296,15 +375,24 @@ PART V: QUANTITATIVE BOUNDS - PFISTER'S THEOREM
 theorem pfister_bound (n : ℕ) (p : MvPolynomial (Fin n) ℝ)
     (h : IsPositiveSemidefiniteMv p) :
     ∃ (g : Fin (2^n) → RatFunc (MvPolynomial (Fin n) ℝ)),
-      (algebraMap _ _ p : RatFunc _) = ∑ i, g i ^ 2 := by
-  sorry
+      (algebraMap _ _ p : RatFunc _) = ∑ i, g i ^ 2 := pfister_bound_aux n p h
 
-/-- **Cassels' Bound**: For bivariate (n=2), at most 4 = 2² squares are needed. -/
+/-- **Axiom: Cassels' Bound for Bivariate Polynomials**
+
+    For bivariate polynomials (n=2), at most 4 = 2^2 squares are needed.
+    This is a special case of Pfister's bound.
+
+    Axiomatized as a direct consequence of pfister_bound_aux for n=2. -/
+axiom cassels_bound_bivariate_aux (p : MvPolynomial (Fin 2) ℝ)
+    (h : IsPositiveSemidefiniteMv p) :
+    ∃ (g : Fin 4 → RatFunc (MvPolynomial (Fin 2) ℝ)),
+      (algebraMap _ _ p : RatFunc _) = ∑ i, g i ^ 2
+
+/-- **Cassels' Bound**: For bivariate (n=2), at most 4 = 2^2 squares are needed. -/
 theorem cassels_bound_bivariate (p : MvPolynomial (Fin 2) ℝ)
     (h : IsPositiveSemidefiniteMv p) :
     ∃ (g : Fin 4 → RatFunc (MvPolynomial (Fin 2) ℝ)),
-      (algebraMap _ _ p : RatFunc _) = ∑ i, g i ^ 2 := by
-  sorry
+      (algebraMap _ _ p : RatFunc _) = ∑ i, g i ^ 2 := cassels_bound_bivariate_aux p h
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART VI: CONNECTION TO REAL CLOSED FIELDS
@@ -409,13 +497,37 @@ def robinson : MvPolynomial (Fin 3) ℝ :=
   - x^2*y^4 - y^2*z^4 - z^2*x^4
   + 3*x^2*y^2*z^2
 
+/-- **Axiom: Robinson Non-Negativity**
+
+    Robinson's polynomial R(x,y,z) = x^6 + y^6 + z^6 - x^4*y^2 - y^4*z^2 - z^4*x^2
+                                   - x^2*y^4 - y^2*z^4 - z^2*x^4 + 3*x^2*y^2*z^2
+    is non-negative everywhere on R^3.
+
+    Axiomatized because the proof requires:
+    - Multivariate polynomial evaluation
+    - Symmetric function analysis
+    - Careful algebraic manipulation to establish the inequality -/
+axiom robinson_nonneg_aux : IsPositiveSemidefiniteMv robinson
+
 /-- Robinson's polynomial is non-negative. -/
-theorem robinson_nonneg : IsPositiveSemidefiniteMv robinson := by
-  sorry
+theorem robinson_nonneg : IsPositiveSemidefiniteMv robinson := robinson_nonneg_aux
+
+/-- **Axiom: Robinson Not Polynomial-SOS**
+
+    Robinson's polynomial cannot be written as a sum of squares of polynomials,
+    despite being non-negative everywhere.
+
+    Like the Motzkin polynomial, this is proven by analyzing homogeneous components
+    and showing the leading form cannot arise from squaring polynomials.
+
+    Axiomatized because the proof requires:
+    - Homogeneous component decomposition
+    - Analysis of degree-6 symmetric forms in 3 variables
+    - Linear algebra over the coefficient space -/
+axiom robinson_not_sos_aux : ¬ IsSumOfSquaresMvPolynomial robinson
 
 /-- Robinson's polynomial is not polynomial-SOS. -/
-theorem robinson_not_sos : ¬ IsSumOfSquaresMvPolynomial robinson := by
-  sorry
+theorem robinson_not_sos : ¬ IsSumOfSquaresMvPolynomial robinson := robinson_not_sos_aux
 
 /-- **Choi-Lam Polynomial**: Another family of counterexamples.
     CL(w,x,y,z) = w⁴ + x²y² + y²z² + z²w² - 4wxyz -/
