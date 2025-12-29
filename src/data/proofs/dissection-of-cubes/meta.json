@@ -1,0 +1,99 @@
+{
+  "id": "dissection-of-cubes",
+  "title": "Dissection of Cubes",
+  "slug": "dissection-of-cubes",
+  "description": "A cube cannot be dissected into a finite number of smaller cubes, all of different sizes.",
+  "meta": {
+    "wiedijkNumber": 82,
+    "author": "J.E. Littlewood",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Squaring_the_square",
+    "date": "1953",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DissectionOfCubes.lean",
+    "tags": [
+      "geometry",
+      "impossibility",
+      "infinite-descent",
+      "combinatorics",
+      "wiedijk-100"
+    ],
+    "badge": "original",
+    "sorries": 4,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.Nonempty",
+        "description": "Nonempty finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "WellFounded",
+        "description": "Well-foundedness for infinite descent",
+        "module": "Mathlib.Order.WellFounded"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of cube dissection definitions",
+      "Statement of the impossibility theorem",
+      "Proof framework using infinite descent",
+      "Comparison with squaring the square"
+    ],
+    "dateAdded": "12/28/25"
+  },
+  "overview": {
+    "historicalContext": "The impossibility of dissecting a cube into smaller cubes of all different sizes was proven elegantly by J.E. Littlewood. He included this proof in his book 'A Mathematician's Miscellany' as an example of mathematical elegance.\n\nInterestingly, the 2D analog has a completely different answer: a square CAN be dissected into squares of all different sizes. The first such 'squared square' was found by Brooks, Smith, Stone, and Tutte in 1940.",
+    "problemStatement": "**Theorem (Littlewood)**: A cube cannot be dissected into a finite number of smaller cubes, all of different sizes.\n\nEquivalently: In any dissection of a cube into finitely many smaller cubes, at least two cubes must have the same size.\n\nThis is Wiedijk's 100 Theorems #82.",
+    "proofStrategy": "**Littlewood's Elegant Proof by Infinite Descent**:\n\n1. Consider the bottom face of the large cube, covered by smaller cubes\n2. Find the smallest cube touching the bottom - call it C\n3. Since all sizes differ, C is surrounded by taller cubes on all sides\n4. C's top face becomes a new 'floor' at a higher level\n5. This floor is also covered by cubes, all smaller than C\n6. The smallest cube on this new floor creates another floor\n7. This generates an infinite sequence of ever-smaller cubes\n8. But we only have finitely many cubes - contradiction!",
+    "keyInsights": [
+      "The infinite descent argument requires no computation",
+      "The 2D case (squaring the square) is possible due to edge effects",
+      "The key is that interior cubes are completely surrounded",
+      "This exemplifies how dimension affects geometric problems"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 52,
+      "endLine": 85,
+      "summary": "Defining cubes and their properties in 3D space."
+    },
+    {
+      "id": "cube-dissection",
+      "title": "Cube Dissection Definition",
+      "startLine": 87,
+      "endLine": 120,
+      "summary": "What it means to dissect a cube into smaller cubes."
+    },
+    {
+      "id": "floor-argument",
+      "title": "The Key Lemma - Smallest Cube on a Floor",
+      "startLine": 122,
+      "endLine": 155,
+      "summary": "The smallest cube on any floor has its top as a new floor."
+    },
+    {
+      "id": "infinite-descent",
+      "title": "The Infinite Descent Argument",
+      "startLine": 157,
+      "endLine": 200,
+      "summary": "Building arbitrarily long chains of decreasing cube sizes."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 202,
+      "endLine": 240,
+      "summary": "No dissection can have all different sizes."
+    }
+  ],
+  "conclusion": {
+    "summary": "Littlewood's proof elegantly shows that cube dissection into different-sized cubes is impossible through infinite descent. The smallest cube on any 'floor' creates a new floor above it with even smaller cubes, leading to infinitely many cubes.",
+    "implications": "**Contrast with 2D:**\n\nThe surprising fact is that squaring the square IS possible! The first solution was found in 1940 and had 69 squares. The smallest 'simple' squared square has 21 squares.\n\n**Why the difference?**\n\nIn 2D, squares near the edge don't need to be completely surrounded, allowing complex interlocking patterns that prevent infinite descent.\n\n**Generalizations:**\n\n- No rectangular box can be cubed with all different sizes\n- The same impossibility holds in all dimensions >= 3",
+    "openQuestions": [
+      "Minimum number of repeated sizes needed in a cube dissection",
+      "Generalizations to other 3D shapes",
+      "Connections to packing problems"
+    ]
+  }
+}
