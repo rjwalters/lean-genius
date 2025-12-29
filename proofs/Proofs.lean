@@ -41,6 +41,7 @@ import Proofs.FermatTwoSquares
 import Proofs.FermatsLastTheorem
 import Proofs.FeuerbachsTheorem
 import Proofs.FourColorTheorem
+import Proofs.FourierSeries
 import Proofs.FriendshipTheorem
 import Proofs.FundamentalArithmetic
 import Proofs.FundamentalTheoremAlgebra
