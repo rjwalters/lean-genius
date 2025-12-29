@@ -1,0 +1,110 @@
+{
+  "id": "dirichlets-theorem",
+  "title": "Dirichlet's Theorem on Primes in Arithmetic Progressions",
+  "slug": "dirichlets-theorem",
+  "description": "For any two positive coprime integers a and q, there are infinitely many primes congruent to a modulo q. This foundational result in analytic number theory uses Dirichlet characters and L-functions.",
+  "meta": {
+    "wiedijkNumber": 48,
+    "author": "Dirichlet (1837)",
+    "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/LSeries/PrimesInAP.html",
+    "date": "1837",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DirichletsTheorem.lean",
+    "tags": [
+      "number-theory",
+      "primes",
+      "classic",
+      "dirichlet",
+      "analytic-number-theory",
+      "l-functions",
+      "arithmetic-progressions"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.infinite_setOf_prime_and_eq_mod",
+        "description": "Main theorem: infinitely many primes in any coprime arithmetic progression",
+        "module": "Mathlib.NumberTheory.LSeries.PrimesInAP"
+      },
+      {
+        "theorem": "DirichletCharacter",
+        "description": "Dirichlet characters modulo N",
+        "module": "Mathlib.NumberTheory.DirichletCharacter.Basic"
+      },
+      {
+        "theorem": "DirichletCharacter.LFunction",
+        "description": "L-function associated to a Dirichlet character",
+        "module": "Mathlib.NumberTheory.LSeries.DirichletContinuation"
+      },
+      {
+        "theorem": "DirichletCharacter.LFunction_apply_one_ne_zero",
+        "description": "L-function of nontrivial character does not vanish at s=1",
+        "module": "Mathlib.NumberTheory.LSeries.Nonvanishing"
+      }
+    ],
+    "originalContributions": [
+      "Wrapper theorems for multiple formulations (ZMod, modEq, constructive, filter)",
+      "Special cases: primes 1 mod 4, 3 mod 4, 1 mod 6, 5 mod 6",
+      "Comprehensive documentation linking to Mathlib's complete proof chain"
+    ],
+    "dateAdded": "12/29/25"
+  },
+  "overview": {
+    "historicalContext": "Dirichlet's theorem (1837) was the first use of analytic methods to prove results about the distribution of primes. While Euclid had proved there are infinitely many primes (c. 300 BCE), Dirichlet showed something far more refined: primes are equidistributed among arithmetic progressions.\n\nThe proof required Dirichlet to invent entirely new mathematical machinery: Dirichlet characters (group homomorphisms from (Z/qZ)* to C*) and L-functions (infinite series generalizing the Riemann zeta function). These tools became foundational for all of analytic number theory.\n\nThe key difficulty is proving that L(1, chi) is not zero for non-principal characters chi. For real characters, this requires showing the residue at s=1 is positive, which Dirichlet accomplished through careful analysis.",
+    "problemStatement": "**Dirichlet's Theorem** (1837):\n\nFor any two positive coprime integers $a$ and $q$ (i.e., $\\gcd(a, q) = 1$), there are infinitely many prime numbers $p$ such that:\n$$p \\equiv a \\pmod{q}$$\n\nEquivalently, every arithmetic progression $a, a+q, a+2q, a+3q, \\ldots$ where $\\gcd(a,q) = 1$ contains infinitely many primes.\n\n**Examples:**\n- There are infinitely many primes of the form $4k+1$ (i.e., 5, 13, 17, 29, 37, ...)\n- There are infinitely many primes of the form $4k+3$ (i.e., 3, 7, 11, 19, 23, ...)\n- There are infinitely many primes of the form $6k+1$ (i.e., 7, 13, 19, 31, 37, ...)",
+    "proofStrategy": "Dirichlet's original proof uses analytic methods:\n\n**1. Dirichlet Characters**\nDefine characters chi: (Z/qZ)* -> C* as group homomorphisms, extended to all integers by setting chi(n) = 0 when gcd(n,q) > 1.\n\n**2. Dirichlet L-Functions**\nFor each character chi, define:\n$$L(s, \\chi) = \\sum_{n=1}^{\\infty} \\frac{\\chi(n)}{n^s}$$\n\nThese converge for Re(s) > 1 and can be analytically continued.\n\n**3. Orthogonality Relations**\nUsing character orthogonality:\n$$\\sum_{\\chi} \\chi(a)^{-1} \\log L(s, \\chi) = \\phi(q) \\sum_{p \\equiv a \\pmod q} \\frac{1}{p^s} + O(1)$$\n\n**4. Non-vanishing at s=1**\nThe key step: prove L(1, chi) is not zero for non-principal chi. As s -> 1+, the left side behaves like log(1/(s-1)), which diverges. This forces the sum over primes to diverge, proving infinitude.\n\n**5. Mathlib Implementation**\nMathlib provides a complete formal proof chain from L-function non-vanishing to the infinitude statement.",
+    "keyInsights": [
+      "Dirichlet characters are the key: multiplicative functions that 'detect' residue classes mod q",
+      "L(1, chi) != 0 for non-principal chi is the heart of the proof - this is hard for real characters",
+      "The proof gives equidistribution: primes are roughly equally distributed among the phi(q) coprime residue classes",
+      "Mathlib's proof uses modern machinery: analytic continuation, Euler products, and functional equations"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 66,
+      "endLine": 85,
+      "summary": "Definitions of arithmetic progressions, coprimality, and sets of primes in progressions."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Dirichlet's Theorem - Primary Formulations",
+      "startLine": 87,
+      "endLine": 130,
+      "summary": "Multiple equivalent formulations: ZMod, natural number congruence, constructive, integer, and filter-theoretic versions."
+    },
+    {
+      "id": "l-functions",
+      "title": "Dirichlet Characters and L-Functions",
+      "startLine": 132,
+      "endLine": 165,
+      "summary": "The analytic machinery behind the proof: Dirichlet characters, L-functions, and the non-vanishing theorem."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 167,
+      "endLine": 215,
+      "summary": "Concrete applications: infinitely many primes congruent to 1 or 3 mod 4, and 1 or 5 mod 6."
+    },
+    {
+      "id": "connections",
+      "title": "Connections to Other Results",
+      "startLine": 225,
+      "endLine": 250,
+      "summary": "Relations to the Prime Number Theorem for arithmetic progressions and Linnik's theorem."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures one of the most important theorems in analytic number theory. Dirichlet's 1837 proof was revolutionary: it introduced L-functions and character theory, techniques that would later be essential for the Prime Number Theorem (1896) and remain central to modern number theory.\n\nMathlib provides a complete formal proof, building on:\n- Dirichlet character theory in `Mathlib.NumberTheory.DirichletCharacter`\n- L-function construction in `Mathlib.NumberTheory.LSeries.DirichletContinuation`\n- Non-vanishing results in `Mathlib.NumberTheory.LSeries.Nonvanishing`\n- The infinitude statement in `Mathlib.NumberTheory.LSeries.PrimesInAP`",
+    "implications": "**Consequences and Generalizations:**\n\n**1. Prime Number Theorem for Arithmetic Progressions**\nNot only are there infinitely many primes p = a (mod q), but the count up to x is asymptotically x/(phi(q) * ln(x)).\n\n**2. Linnik's Theorem (1944)**\nThe smallest prime p = a (mod q) satisfies p <= q^L for some absolute constant L (currently known: L <= 5).\n\n**3. Chebotarev Density Theorem**\nGeneralizes Dirichlet to number fields: primes split according to Galois conjugacy classes with density |C|/|G|.\n\n**4. Langlands Program**\nL-functions are central to the Langlands program, a vast generalization connecting representation theory, number theory, and geometry.",
+    "openQuestions": [
+      "Siegel zeros: Can L(1, chi) be very close to 0 for real characters? This affects the error term in PNT for arithmetic progressions.",
+      "Generalized Riemann Hypothesis for Dirichlet L-functions: All non-trivial zeros have real part 1/2.",
+      "Effective bounds: What is the best constant in Linnik's theorem? Conjecturally L = 2."
+    ]
+  }
+}

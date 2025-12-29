@@ -1,0 +1,215 @@
+[
+  {
+    "id": "ann-imports",
+    "proofId": "dirichlets-theorem",
+    "range": {
+      "startLine": 1,
+      "endLine": 6
+    },
+    "type": "context",
+    "title": "Mathlib L-Series and Character Imports",
+    "content": "This proof imports Mathlib's complete formalization of Dirichlet's theorem:\n\n- `LSeries.PrimesInAP`: The main theorem on infinitely many primes in arithmetic progressions\n- `DirichletCharacter.Basic`: Dirichlet characters as group homomorphisms\n- `LSeries.DirichletContinuation`: Analytic continuation of Dirichlet L-functions\n- `LSeries.Nonvanishing`: The crucial non-vanishing of L(1, chi) for non-principal characters",
+    "mathContext": "Mathlib provides a complete proof chain from L-function theory to the infinitude statement.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "L-functions",
+      "Dirichlet characters"
+    ]
+  },
+  {
+    "id": "ann-historical",
+    "proofId": "dirichlets-theorem",
+    "range": {
+      "startLine": 8,
+      "endLine": 55
+    },
+    "type": "insight",
+    "title": "The Birth of Analytic Number Theory",
+    "content": "Dirichlet's 1837 proof marks the birth of analytic number theory - using complex analysis to study prime numbers.\n\nBefore Dirichlet, Euclid had proved there are infinitely many primes, but mathematicians struggled to prove anything about their distribution. Dirichlet showed that primes are equidistributed among arithmetic progressions, a far more refined statement.\n\nTo prove this, Dirichlet invented entirely new mathematics: Dirichlet characters and L-functions. These tools would later be essential for the Prime Number Theorem (1896) and remain central to modern number theory.",
+    "mathContext": "The L-function $L(s, \\chi) = \\sum \\chi(n)/n^s$ generalizes the Riemann zeta function $\\zeta(s)$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "analytic number theory",
+      "L-functions",
+      "history of mathematics"
+    ]
+  },
+  {
+    "id": "ann-main-zmod",
+    "proofId": "dirichlets-theorem",
+    "range": {
+      "startLine": 95,
+      "endLine": 100
+    },
+    "type": "theorem",
+    "title": "Main Theorem (ZMod Formulation)",
+    "content": "**Mathlib's primary statement:** For any positive q and unit a in ZMod q, there are infinitely many primes p such that (p : ZMod q) = a.\n\nThe condition 'a is a unit' means gcd(a, q) = 1, which is necessary: if gcd(a, q) = d > 1, then all terms a + kq are divisible by d, so at most one can be prime (namely d itself, if a = d).\n\nThis formulation uses ZMod, Lean's type for integers modulo q, which provides a clean algebraic framework.",
+    "mathContext": "The unit group (ZMod q)* has order phi(q), and a is a unit iff gcd(a, q) = 1.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "ZMod",
+      "unit group",
+      "main theorem"
+    ]
+  },
+  {
+    "id": "ann-constructive",
+    "proofId": "dirichlets-theorem",
+    "range": {
+      "startLine": 110,
+      "endLine": 115
+    },
+    "type": "theorem",
+    "title": "Constructive Formulation",
+    "content": "**For any n, we can find a prime p > n in the progression.**\n\nThis is the constructive version: given any bound n, there exists a prime p larger than n that is congruent to a modulo q.\n\nThis is logically equivalent to 'infinitely many' but has a more computational flavor. It says the primes in the progression are unbounded.",
+    "mathContext": "Infinitely many primes <=> for all n, exists prime p > n in the progression.",
+    "significance": "key",
+    "relatedConcepts": [
+      "constructive mathematics",
+      "unboundedness"
+    ]
+  },
+  {
+    "id": "ann-dirichlet-characters",
+    "proofId": "dirichlets-theorem",
+    "range": {
+      "startLine": 140,
+      "endLine": 150
+    },
+    "type": "insight",
+    "title": "Dirichlet Characters: The Key Tool",
+    "content": "**Dirichlet characters** are completely multiplicative functions chi: Z -> C that are periodic with period q and vanish on integers not coprime to q.\n\nFormally, chi is a group homomorphism from (Z/qZ)* to C*, extended by zero. For q prime, there are exactly q-1 characters; for general q, there are phi(q) characters.\n\n**Key property (orthogonality):** Summing over all characters 'picks out' a specific residue class. This allows isolating primes p = a (mod q) in the analysis.",
+    "mathContext": "$\\sum_{\\chi \\mod q} \\chi(n) = \\begin{cases} \\phi(q) & \\text{if } n \\equiv 1 \\pmod q \\\\ 0 & \\text{otherwise} \\end{cases}$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Dirichlet characters",
+      "group homomorphisms",
+      "orthogonality"
+    ]
+  },
+  {
+    "id": "ann-l-functions",
+    "proofId": "dirichlets-theorem",
+    "range": {
+      "startLine": 152,
+      "endLine": 160
+    },
+    "type": "insight",
+    "title": "Dirichlet L-Functions",
+    "content": "**Dirichlet L-function** associated to a character chi:\n$$L(s, \\chi) = \\sum_{n=1}^{\\infty} \\frac{\\chi(n)}{n^s}$$\n\nFor chi = 1 (the principal character), this essentially gives the Riemann zeta function. For other characters, L(s, chi) extends to an entire function on C.\n\n**Euler product:** $L(s, \\chi) = \\prod_p (1 - \\chi(p)/p^s)^{-1}$\n\nThis product over primes connects L-functions to prime distribution.",
+    "mathContext": "The Euler product shows L-functions encode information about primes. Taking logarithmic derivatives gives sums over prime powers.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "L-functions",
+      "Riemann zeta function",
+      "Euler product"
+    ]
+  },
+  {
+    "id": "ann-nonvanishing",
+    "proofId": "dirichlets-theorem",
+    "range": {
+      "startLine": 162,
+      "endLine": 168
+    },
+    "type": "theorem",
+    "title": "The Key Lemma: L(1, chi) != 0",
+    "content": "**The heart of Dirichlet's proof:** For a non-trivial (non-principal) Dirichlet character chi, we have L(1, chi) != 0.\n\nThis is easy for complex characters (take absolute values) but subtle for real characters. Dirichlet needed to show that L(s, chi) does not have a zero at s = 1, which requires careful analysis of the class number formula.\n\nMathlib proves this in `DirichletCharacter.LFunction_apply_one_ne_zero`.",
+    "mathContext": "If L(1, chi) = 0 for some chi, then the orthogonality sum would be finite, contradicting the infinitude of primes = a (mod q).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "non-vanishing",
+      "real characters",
+      "class number formula"
+    ]
+  },
+  {
+    "id": "ann-special-1mod4",
+    "proofId": "dirichlets-theorem",
+    "range": {
+      "startLine": 175,
+      "endLine": 188
+    },
+    "type": "theorem",
+    "title": "Special Case: Primes 1 mod 4",
+    "content": "**There are infinitely many primes of the form 4k + 1.**\n\nExamples: 5, 13, 17, 29, 37, 41, 53, 61, 73, 89, 97, ...\n\nThis follows immediately from Dirichlet's theorem since gcd(1, 4) = 1. These primes are exactly those that can be written as a sum of two squares (by Fermat's theorem).",
+    "mathContext": "Primes p = 1 (mod 4) satisfy: -1 is a quadratic residue mod p, and p = a^2 + b^2 for some integers a, b.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic residues",
+      "Fermat's two squares theorem"
+    ]
+  },
+  {
+    "id": "ann-special-3mod4",
+    "proofId": "dirichlets-theorem",
+    "range": {
+      "startLine": 190,
+      "endLine": 200
+    },
+    "type": "theorem",
+    "title": "Special Case: Primes 3 mod 4",
+    "content": "**There are infinitely many primes of the form 4k + 3.**\n\nExamples: 3, 7, 11, 19, 23, 31, 43, 47, 59, 67, 71, 79, 83, ...\n\nInterestingly, this special case can be proved without L-functions: if there were only finitely many, say p_1, ..., p_n, then consider N = 4*p_1*...*p_n - 1. This is 3 mod 4 and must have a prime factor 3 mod 4, which must be new.",
+    "mathContext": "The elementary proof uses: a product of numbers 1 mod 4 is 1 mod 4, so N = 4k - 1 = 3 mod 4 needs a factor that is 3 mod 4.",
+    "significance": "key",
+    "relatedConcepts": [
+      "elementary proof",
+      "Euclid's argument"
+    ]
+  },
+  {
+    "id": "ann-density",
+    "proofId": "dirichlets-theorem",
+    "range": {
+      "startLine": 220,
+      "endLine": 230
+    },
+    "type": "insight",
+    "title": "Equidistribution of Primes",
+    "content": "**Dirichlet's theorem is actually stronger:** Not only are there infinitely many primes in each progression, but they are equidistributed.\n\n**Dirichlet density:** The primes p = a (mod q) have natural density 1/phi(q) among all primes.\n\nFor q = 4: primes 1 mod 4 and primes 3 mod 4 each comprise about half of all odd primes.\nFor q = 6: primes 1 mod 6 and primes 5 mod 6 each comprise about half of all primes > 3.",
+    "mathContext": "Natural density: $\\lim_{x \\to \\infty} \\frac{\\#\\{p \\leq x : p \\equiv a \\pmod q\\}}{\\#\\{p \\leq x\\}} = \\frac{1}{\\phi(q)}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural density",
+      "equidistribution",
+      "Euler totient"
+    ]
+  },
+  {
+    "id": "ann-pnt-connection",
+    "proofId": "dirichlets-theorem",
+    "range": {
+      "startLine": 232,
+      "endLine": 240
+    },
+    "type": "insight",
+    "title": "Connection to Prime Number Theorem",
+    "content": "**Prime Number Theorem for Arithmetic Progressions:**\n$$\\pi(x; q, a) \\sim \\frac{x}{\\phi(q) \\ln x}$$\n\nwhere pi(x; q, a) counts primes p <= x with p = a (mod q).\n\nThis quantitative version says not just that there are infinitely many such primes, but gives their asymptotic count. The proof requires the full power of L-function analysis.",
+    "mathContext": "The error term depends on zeros of L-functions. Under GRH, pi(x; q, a) = Li(x)/phi(q) + O(sqrt(x) log x).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Prime Number Theorem",
+      "asymptotic formula",
+      "GRH"
+    ]
+  },
+  {
+    "id": "ann-linnik",
+    "proofId": "dirichlets-theorem",
+    "range": {
+      "startLine": 242,
+      "endLine": 250
+    },
+    "type": "theorem",
+    "title": "Linnik's Theorem",
+    "content": "**Linnik's Theorem (1944):** There exists an absolute constant L such that the smallest prime p = a (mod q) satisfies p <= q^L.\n\nThe current best unconditional result is L = 5. Under the Generalized Riemann Hypothesis, L = 2 + epsilon suffices.\n\nThis theorem answers: how long do we have to wait for the first prime in a given progression?",
+    "mathContext": "The 'Linnik constant' L is a major topic in analytic number theory. The record is L = 5 (Xylouris, 2011).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Linnik's theorem",
+      "effective bounds",
+      "GRH"
+    ]
+  }
+]
