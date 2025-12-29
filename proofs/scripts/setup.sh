@@ -39,9 +39,9 @@ cd "$PROJECT_DIR"
 echo -e "${YELLOW}Step 3: Downloading Mathlib cache...${NC}"
 lake exe cache get
 
-# Step 4: Build all proofs
+# Step 4: Build all proofs (using lock to prevent concurrent builds)
 echo -e "${YELLOW}Step 4: Building proofs...${NC}"
-MACOSX_DEPLOYMENT_TARGET=15.0 lake build
+MACOSX_DEPLOYMENT_TARGET=15.0 "$SCRIPT_DIR/lake-build.sh"
 
 echo ""
 echo -e "${GREEN}✓ Setup complete!${NC}"

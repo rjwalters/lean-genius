@@ -46,6 +46,7 @@ import Proofs.FundamentalArithmetic
 import Proofs.FundamentalTheoremAlgebra
 import Proofs.FundamentalTheoremCalculus
 import Proofs.GCDAlgorithm
+import Proofs.GelfondSchneider
 import Proofs.GeneralQuartic
 import Proofs.GeometricSeries
 import Proofs.GodelIncompleteness
@@ -56,6 +57,7 @@ import Proofs.HermiteLindemann
 import Proofs.HeronsFormula
 import Proofs.Hilbert10
 import Proofs.Hilbert11_QuadraticForms
+import Proofs.Hilbert16
 import Proofs.HodgeConjecture
 import Proofs.HurwitzTheorem
 import Proofs.InclusionExclusion
@@ -92,6 +94,7 @@ import Proofs.PrimeNumberTheorem
 import Proofs.PrimeReciprocalDivergence
 import Proofs.ProductOfSegmentsOfChords
 import Proofs.PtolemysTheorem
+import Proofs.PuiseuxTheorem
 import Proofs.PythagoreanTheorem
 import Proofs.PythagoreanTriples
 import Proofs.QuadraticReciprocity
