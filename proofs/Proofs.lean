@@ -96,6 +96,7 @@ import Proofs.RamseysTheorem
 import Proofs.RandomizedMaxCut
 import Proofs.RiemannHypothesis
 import Proofs.SchroederBernstein
+import Proofs.SolutionOfCubic
 import Proofs.Sqrt2
 import Proofs.Sqrt2Irrational
 import Proofs.Sqrt2IrrationalFromAxioms
