@@ -28,6 +28,7 @@ import Proofs.DenumerabilityRationals
 import Proofs.Derangements
 import Proofs.DesarguesTheorem
 import Proofs.DescartesRuleOfSigns
+import Proofs.DissectionOfCubes
 import Proofs.DivisibilityBy3
 import Proofs.ErdosSzekeres
 import Proofs.EulerIdentity
