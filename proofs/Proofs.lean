@@ -28,6 +28,7 @@ import Proofs.DenumerabilityRationals
 import Proofs.Derangements
 import Proofs.DesarguesTheorem
 import Proofs.DescartesRuleOfSigns
+import Proofs.DissectionOfCubes
 import Proofs.DivisibilityBy3
 import Proofs.ErdosSzekeres
 import Proofs.EulerIdentity
@@ -48,11 +49,13 @@ import Proofs.GodelIncompleteness
 import Proofs.GreensTheorem
 import Proofs.HaltingProblem
 import Proofs.HarmonicDivergence
+import Proofs.HermiteLindemann
 import Proofs.HeronsFormula
 import Proofs.HurwitzTheorem
 import Proofs.InclusionExclusion
 import Proofs.InfinitudePrimes
 import Proofs.IntermediateValueTheorem
+import Proofs.IsoperimetricTheorem
 import Proofs.IsoscelesTriangle
 import Proofs.KnightsTourOblique
 import Proofs.Konigsberg
@@ -65,11 +68,15 @@ import Proofs.LawsOfLargeNumbers
 import Proofs.LeibnizPi
 import Proofs.MathematicalInduction
 import Proofs.MeanValueTheorem
+import Proofs.MorleysTheorem
 import Proofs.NavierStokes
 import Proofs.OnePlusOne
+import Proofs.ParallelPostulateIndependence
 import Proofs.PartitionTheorem
 import Proofs.PellEquation
 import Proofs.PerfectNumbers
+import Proofs.PicksTheorem
+import Proofs.PiTranscendental
 import Proofs.PlatonicSolids
 import Proofs.PrimeNumberTheorem
 import Proofs.PrimeReciprocalDivergence

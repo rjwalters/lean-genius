@@ -88,6 +88,7 @@ import { desarguesTheoremData } from './desargues-theorem'
 import { descartesRuleOfSignsData } from './descartes-rule-of-signs'
 import { pellEquationData } from './pell-equation'
 import { riemannHypothesisData } from './riemann-hypothesis'
+import { dissectionOfCubesData } from './dissection-of-cubes'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -181,6 +182,7 @@ export const proofs: Record<string, ProofData> = {
   'descartes-rule-of-signs': descartesRuleOfSignsData,
   'pell-equation': pellEquationData,
   'riemann-hypothesis': riemannHypothesisData,
+  'dissection-of-cubes': dissectionOfCubesData,
 }
 
 export function getProof(slug: string): ProofData | undefined {
