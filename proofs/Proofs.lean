@@ -72,6 +72,7 @@ import Proofs.MorleysTheorem
 import Proofs.NavierStokes
 import Proofs.OnePlusOne
 import Proofs.ParallelPostulateIndependence
+import Proofs.PartitionTheorem
 import Proofs.PellEquation
 import Proofs.PerfectNumbers
 import Proofs.PicksTheorem
