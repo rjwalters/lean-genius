@@ -92,6 +92,7 @@ import Proofs.PrimeNumberTheorem
 import Proofs.PrimeReciprocalDivergence
 import Proofs.ProductOfSegmentsOfChords
 import Proofs.PtolemysTheorem
+import Proofs.PuiseuxTheorem
 import Proofs.PythagoreanTheorem
 import Proofs.PythagoreanTriples
 import Proofs.QuadraticReciprocity
