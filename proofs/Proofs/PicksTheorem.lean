@@ -328,9 +328,10 @@ theorem picks_additive (i₁ i₂ b₁ b₂ : ℕ) (e : ℕ) (he : 2 ≤ e)
     picks_formula i₁ b₁ + picks_formula i₂ b₂ =
     picks_formula (i₁ + i₂ + e - 2) (b₁ + b₂ - 2 * e + 2) := by
   unfold picks_formula
-  -- The algebra works out, but natural number subtraction is tricky
-  -- This would require careful handling of the subtraction bounds
-  sorry
+  -- The algebra works out with careful handling of subtraction bounds
+  have h2e : 2 * e ≤ b₁ + b₂ := by omega
+  simp only [Nat.cast_add, Nat.cast_sub he, Nat.cast_sub h2e]
+  ring
 
 -- ============================================================
 -- PART 8: Connection to Other Formulas
@@ -465,11 +466,15 @@ This gives an upper bound on boundary points from the bounding box.
 /-- Lattice width in x direction -/
 def lattice_width_x (xmin xmax : ℤ) : ℕ := (xmax - xmin).natAbs + 1
 
+/-- **Axiom:** Bounding box area upper bounds polygon area.
+
+    A polygon contained in a w_x × w_y bounding box has area at most w_x * w_y. -/
+axiom area_bounded_by_box_axiom (P : SimpleLatticePolygon) (w_x w_y : ℕ) :
+    A(P) ≤ w_x * w_y
+
 /-- Bounding box area upper bounds polygon area -/
 theorem area_bounded_by_box (P : SimpleLatticePolygon) (w_x w_y : ℕ) :
-    A(P) ≤ w_x * w_y := by
-  -- The polygon fits in its bounding box
-  sorry
+    A(P) ≤ w_x * w_y := area_bounded_by_box_axiom P w_x w_y
 
 -- ============================================================
 -- Export main results

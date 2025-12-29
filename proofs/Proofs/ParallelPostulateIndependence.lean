@@ -21,14 +21,14 @@ but disagree on the parallel postulate.
 - [ ] Uses Mathlib for main result
 - [ ] Proves extensions/corollaries
 - [x] Pedagogical example
-- [x] Incomplete (has sorries)
+- [x] No sorries (uses axioms for model-theoretic facts)
 
 ## Mathlib Dependencies
 - `Mathlib.Logic.Basic` : Basic logical connectives and predicates
 - `Mathlib.Tactic` : Standard tactic library
 
 **Formalization Notes:**
-- 1 sorry, 5 axioms capturing key model-theoretic facts
+- 0 sorries, 7 axioms capturing key model-theoretic facts
 - Full formalization would require thousands of lines defining synthetic geometry
 - The abstract structures are placeholders capturing the essence
 - See each definition's docstring for implementation rationale
@@ -177,6 +177,13 @@ axiom poincare_is_neutral : True  -- Placeholder for full neutral geometry
 axiom poincare_satisfies_hyperbolic_parallel :
   SatisfiesHyperbolicParallel poincare_incidence_geometry
 
+/-- **Axiom:** The Poincaré disk is a non-trivial geometry.
+
+    There exists at least one line and one point not on that line.
+    This is obviously true in the Poincaré disk model. -/
+axiom poincare_nontrivial :
+  ∃ (l : GeomLine) (p : GeomPoint), ¬poincare_incidence_geometry.incident p l
+
 -- ============================================================
 -- PART 6: Key Theorems
 -- ============================================================
@@ -185,20 +192,25 @@ axiom poincare_satisfies_hyperbolic_parallel :
 
     If a geometry has two distinct parallels through a point, it cannot
     have a unique parallel (as the parallel postulate requires). -/
-theorem hyperbolic_contradicts_parallel_postulate (G : IncidenceGeometry) :
+theorem hyperbolic_contradicts_parallel_postulate (G : IncidenceGeometry)
+    (h_nontrivial : ∃ (l : GeomLine) (p : GeomPoint), ¬G.incident p l) :
     SatisfiesHyperbolicParallel G → ¬SatisfiesParallelPostulate G := by
   intro h_hyp h_par
   -- Get the hyperbolic property: ∃ two distinct parallels
   -- Get the parallel postulate: ∃! unique parallel
   -- These contradict each other
-  unfold SatisfiesHyperbolicParallel at h_hyp
-  unfold SatisfiesParallelPostulate at h_par
-  -- For any line l and point p not on l:
-  -- hyperbolic says: ∃ m₁ ≠ m₂ with both parallel to l through p
-  -- parallel postulate says: ∃! m parallel to l through p
-  -- This is a contradiction
-  -- We need specific l and p to instantiate; using sorry for the construction
-  sorry
+  obtain ⟨l, p, hp_not_on_l⟩ := h_nontrivial
+  -- Apply both properties to the same line l and point p
+  -- Hyperbolic: ∃ m₁ ≠ m₂ with both parallel to l through p
+  obtain ⟨m₁, m₂, hne, hpm₁, hpm₂, hpar₁, hpar₂⟩ := h_hyp l p hp_not_on_l
+  -- Parallel postulate: ∃! m parallel to l through p
+  obtain ⟨m, ⟨hpm, hpar_m⟩, huniq⟩ := h_par l p hp_not_on_l
+  -- By uniqueness, m₁ = m and m₂ = m
+  have h₁ : m₁ = m := huniq m₁ ⟨hpm₁, hpar₁⟩
+  have h₂ : m₂ = m := huniq m₂ ⟨hpm₂, hpar₂⟩
+  -- But m₁ ≠ m₂, contradiction
+  rw [h₁, h₂] at hne
+  exact hne rfl
 
 /-- The Poincaré disk does NOT satisfy the parallel postulate.
 
@@ -207,6 +219,7 @@ theorem poincare_not_parallel_postulate :
     ¬SatisfiesParallelPostulate poincare_incidence_geometry :=
   hyperbolic_contradicts_parallel_postulate
     poincare_incidence_geometry
+    poincare_nontrivial
     poincare_satisfies_hyperbolic_parallel
 
 -- ============================================================

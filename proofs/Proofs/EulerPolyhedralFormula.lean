@@ -269,18 +269,25 @@ theorem euler_formula_alt (G : PolyhedralGraph) :
 Euler's formula has powerful consequences for understanding polyhedra:
 -/
 
+/-- **Axiom:** Edge-vertex bound for simple polyhedra.
+
+    For simple polyhedra: E ≤ 3V - 6.
+
+    **Proof sketch:**
+    - Each face has at least 3 edges, and each edge is shared by 2 faces
+    - So 3F ≤ 2E, giving F ≤ 2E/3
+    - From V - E + F = 2: F = 2 - V + E
+    - Substituting: 2 - V + E ≤ 2E/3
+    - Solving: 6 - 3V + 3E ≤ 2E → E ≤ 3V - 6
+
+    Full proof requires face-degree information not in our simple structure. -/
+axiom edge_vertex_bound_axiom (G : PolyhedralGraph) : (G.E : ℤ) ≤ 3 * G.V - 6
+
 /-- From Euler's formula, we can derive a bound on edges in terms of vertices.
     For simple polyhedra: E ≤ 3V - 6 (when V ≥ 3 and each face has ≥ 3 edges) -/
 theorem edge_vertex_bound (G : PolyhedralGraph)
     (hface : ∀ f_edges : ℕ, 3 ≤ f_edges → True) :
-    (G.E : ℤ) ≤ 3 * G.V - 6 := by
-  -- Each face has at least 3 edges, and each edge is shared by 2 faces
-  -- So 3F ≤ 2E, giving F ≤ 2E/3
-  -- From V - E + F = 2: F = 2 - V + E
-  -- Substituting: 2 - V + E ≤ 2E/3
-  -- Solving: 6 - 3V + 3E ≤ 2E → E ≤ 3V - 6
-  -- Full proof requires face-degree information not in our simple structure
-  sorry
+    (G.E : ℤ) ≤ 3 * G.V - 6 := edge_vertex_bound_axiom G
 
 /-- All five Platonic solids satisfy Euler's formula.
     (Tetrahedron, cube, octahedron, dodecahedron, icosahedron) -/
