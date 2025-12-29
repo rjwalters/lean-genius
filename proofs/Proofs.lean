@@ -53,6 +53,7 @@ import Proofs.HurwitzTheorem
 import Proofs.InclusionExclusion
 import Proofs.InfinitudePrimes
 import Proofs.IntermediateValueTheorem
+import Proofs.IsoperimetricTheorem
 import Proofs.IsoscelesTriangle
 import Proofs.KnightsTourOblique
 import Proofs.Konigsberg
