@@ -55,6 +55,7 @@ import Proofs.HarmonicDivergence
 import Proofs.HermiteLindemann
 import Proofs.HeronsFormula
 import Proofs.Hilbert10
+import Proofs.Hilbert11_QuadraticForms
 import Proofs.HurwitzTheorem
 import Proofs.InclusionExclusion
 import Proofs.InfinitudePrimes
