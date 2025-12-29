@@ -91,6 +91,42 @@ import { pellEquationData } from './pell-equation'
 import { riemannHypothesisData } from './riemann-hypothesis'
 import { dissectionOfCubesData } from './dissection-of-cubes'
 import { dirichletsTheoremData } from './dirichlets-theorem'
+// Previously unwired proofs (21 existing directories)
+import { continuumHypothesisData } from './continuum-hypothesis'
+import { eTranscendentalData } from './e-transcendental'
+import { fairGamesTheoremData } from './fair-games-theorem'
+import { feuerbachsTheoremData } from './feuerbachs-theorem'
+import { fourierSeriesData } from './fourier-series'
+import { generalQuarticData } from './general-quartic'
+import { greensTheoremData } from './greens-theorem'
+import { hermiteLindemannData } from './hermite-lindemann'
+import { isoperimetricTheoremData } from './isoperimetric-theorem'
+import { lebesgueMeasureData } from './lebesgue-measure'
+import { liouvilleTheoremData } from './liouville-theorem'
+import { minkowskiTheoremData } from './minkowski-theorem'
+import { morleysTheoremData } from './morleys-theorem'
+import { parallelPostulateIndependenceData } from './parallel-postulate-independence'
+import { partitionTheoremData } from './partition-theorem'
+import { pascalsHexagonData } from './pascals-hexagon'
+import { piTranscendentalData } from './pi-transcendental'
+import { picksTheoremData } from './picks-theorem'
+import { primeNumberTheoremData } from './prime-number-theorem'
+import { puiseuxTheoremData } from './puiseux-theorem'
+import { solutionOfCubicData } from './solution-of-cubic'
+// New proofs (10 newly created directories)
+import { gelfondSchneiderData } from './gelfond-schneider'
+import { hilbert3Data } from './hilbert-3'
+import { hilbert11Data } from './hilbert-11'
+import { hilbert16Data } from './hilbert-16'
+import { hilbert17Data } from './hilbert-17'
+import { hodgeConjectureData } from './hodge-conjecture'
+import { keplerConjectureData } from './kepler-conjecture'
+import { kroneckersJugendtraumData } from './kroneckers-jugendtraum'
+import { pVsNpData } from './p-vs-np'
+import { yangMillsData } from './yang-mills'
+import { poincareConjectureData } from './poincare-conjecture'
+import { birchSwinnertonDyerData } from './birch-swinnerton-dyer'
+import { hilbert15Data } from './hilbert-15'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -187,6 +223,42 @@ export const proofs: Record<string, ProofData> = {
   'riemann-hypothesis': riemannHypothesisData,
   'dissection-of-cubes': dissectionOfCubesData,
   'dirichlets-theorem': dirichletsTheoremData,
+  // Previously unwired proofs (21 existing directories)
+  'continuum-hypothesis': continuumHypothesisData,
+  'e-transcendental': eTranscendentalData,
+  'fair-games-theorem': fairGamesTheoremData,
+  'feuerbachs-theorem': feuerbachsTheoremData,
+  'fourier-series': fourierSeriesData,
+  'general-quartic': generalQuarticData,
+  'greens-theorem': greensTheoremData,
+  'hermite-lindemann': hermiteLindemannData,
+  'isoperimetric-theorem': isoperimetricTheoremData,
+  'lebesgue-measure': lebesgueMeasureData,
+  'liouville-theorem': liouvilleTheoremData,
+  'minkowski-theorem': minkowskiTheoremData,
+  'morleys-theorem': morleysTheoremData,
+  'parallel-postulate-independence': parallelPostulateIndependenceData,
+  'partition-theorem': partitionTheoremData,
+  'pascals-hexagon': pascalsHexagonData,
+  'pi-transcendental': piTranscendentalData,
+  'picks-theorem': picksTheoremData,
+  'prime-number-theorem': primeNumberTheoremData,
+  'puiseux-theorem': puiseuxTheoremData,
+  'solution-of-cubic': solutionOfCubicData,
+  // New proofs (10 newly created directories)
+  'gelfond-schneider': gelfondSchneiderData,
+  'hilbert-3': hilbert3Data,
+  'hilbert-11': hilbert11Data,
+  'hilbert-16': hilbert16Data,
+  'hilbert-17': hilbert17Data,
+  'hodge-conjecture': hodgeConjectureData,
+  'kepler-conjecture': keplerConjectureData,
+  'kroneckers-jugendtraum': kroneckersJugendtraumData,
+  'p-vs-np': pVsNpData,
+  'yang-mills': yangMillsData,
+  'poincare-conjecture': poincareConjectureData,
+  'birch-swinnerton-dyer': birchSwinnertonDyerData,
+  'hilbert-15': hilbert15Data,
 }
 
 export function getProof(slug: string): ProofData | undefined {

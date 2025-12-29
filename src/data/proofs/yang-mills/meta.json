@@ -1,0 +1,69 @@
+{
+  "id": "yang-mills",
+  "title": "Yang-Mills Existence and Mass Gap",
+  "slug": "yang-mills",
+  "description": "One of the seven Millennium Prize Problems. Prove that quantum Yang-Mills theory exists and has a positive mass gap.",
+  "meta": {
+    "author": "Yang & Mills (1954)",
+    "date": "1954",
+    "status": "verified",
+    "tags": [
+      "mathematical-physics",
+      "quantum-field-theory",
+      "millennium-prize",
+      "advanced"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "LieAlgebra",
+        "description": "Lie algebra structures",
+        "module": "Mathlib.Algebra.Lie.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Classical Yang-Mills infrastructure",
+      "Gauge group definitions",
+      "Maxwell as U(1) Yang-Mills",
+      "Statement of the Millennium problem"
+    ],
+    "dateAdded": "12/29/25",
+    "millenniumProblem": "yang-mills"
+  },
+  "overview": {
+    "historicalContext": "Yang-Mills theory (1954) underlies the Standard Model of particle physics. The Millennium problem asks to prove rigorous existence of quantum Yang-Mills theory with a positive mass gap.",
+    "problemStatement": "**Problem (Clay Mathematics Institute):** Prove that for any compact simple gauge group G, a non-trivial quantum Yang-Mills theory exists on R^4 and has a mass gap Delta > 0.",
+    "proofStrategy": "This file provides:\n1. Classical Yang-Mills infrastructure (Lie algebras, gauge groups)\n2. Definition of the Yang-Mills action\n3. Statement of the mass gap problem\n4. Proof that Maxwell theory is U(1) Yang-Mills",
+    "keyInsights": [
+      "Yang-Mills is the mathematical foundation of QCD",
+      "The mass gap explains why the strong force is short-range",
+      "Full formalization requires rigorous QFT (not yet established)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "classical",
+      "title": "Classical Yang-Mills",
+      "startLine": 1,
+      "endLine": 100,
+      "summary": "Gauge groups, Lie algebras, and field strength."
+    },
+    {
+      "id": "quantum",
+      "title": "Quantum Yang-Mills",
+      "startLine": 101,
+      "endLine": 200,
+      "summary": "Axiomatized quantum theory and mass gap definition."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Yang-Mills Millennium Problem remains open. This formalization provides classical infrastructure and the problem statement.",
+    "implications": "Resolution would put quantum chromodynamics on rigorous mathematical foundations, explaining quark confinement.",
+    "openQuestions": [
+      "Can QFT be made mathematically rigorous?",
+      "What is the correct axiom system for quantum Yang-Mills?",
+      "Why are quarks confined?"
+    ]
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "id": "liouville-theorem",
+  "title": "Liouville's Theorem on Transcendental Numbers",
+  "slug": "liouville-theorem",
+  "description": "Liouville numbers are transcendental. This provides the first explicit construction of transcendental numbers via rational approximation bounds.",
+  "meta": {
+    "wiedijkNumber": 18,
+    "author": "Joseph Liouville (1844)",
+    "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/Liouville/Basic.html",
+    "date": "1844",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LiouvilleTheorem.lean",
+    "tags": [
+      "number-theory",
+      "transcendental",
+      "approximation",
+      "algebraic",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Liouville.transcendental",
+        "description": "Main theorem: Liouville numbers are transcendental",
+        "module": "Mathlib.NumberTheory.Liouville.Basic"
+      },
+      {
+        "theorem": "liouvilleNumber",
+        "description": "The explicit Liouville constant",
+        "module": "Mathlib.NumberTheory.Liouville.LiouvilleNumber"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical presentation of Liouville's approximation theorem",
+      "Connection to Roth's theorem and Diophantine approximation",
+      "Properties of Liouville numbers (uncountable, measure zero)"
+    ],
+    "dateAdded": "12/29/25"
+  },
+  "overview": {
+    "historicalContext": "Liouville's 1844 result was the first explicit proof that transcendental numbers exist. Before this, their existence was only suspected. The Liouville constant L = sum of 10^(-n!) was the first number proven transcendental.",
+    "problemStatement": "**Liouville's Theorem**: If alpha is algebraic of degree n >= 2, then there exists c > 0 such that |alpha - p/q| > c/q^n for all rationals p/q.\n\n**Corollary**: Numbers that violate this bound (Liouville numbers) must be transcendental.",
+    "proofStrategy": "For algebraic alpha with minimal polynomial P of degree n, if p/q is close to alpha, then q^n|P(p/q)| >= 1 (since it's a nonzero integer). The Mean Value Theorem bounds P(p/q) in terms of |alpha - p/q|, yielding the approximation bound.",
+    "keyInsights": [
+      "Algebraic numbers cannot be approximated too well by rationals",
+      "The degree of the minimal polynomial limits approximability",
+      "Liouville numbers violate all polynomial bounds, so must be transcendental",
+      "Roth's theorem (1955) improved the exponent to 2+epsilon for all algebraic irrationals"
+    ]
+  },
+  "sections": [
+    {
+      "id": "approximation-theorem",
+      "title": "Liouville's Approximation Theorem",
+      "startLine": 105,
+      "endLine": 165,
+      "summary": "Algebraic numbers have bounded rational approximability."
+    },
+    {
+      "id": "transcendence",
+      "title": "Transcendence of Liouville Numbers",
+      "startLine": 165,
+      "endLine": 210,
+      "summary": "Main result using Mathlib's Liouville.transcendental."
+    },
+    {
+      "id": "liouville-constant",
+      "title": "The Liouville Constant",
+      "startLine": 206,
+      "endLine": 260,
+      "summary": "Explicit construction: L = sum of 10^(-n!)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Liouville's theorem opened the field of transcendence theory by providing the first explicit transcendental numbers. The technique of bounding rational approximations remains fundamental to Diophantine approximation.",
+    "implications": "The theorem evolved into Roth's theorem (Fields Medal 1958), which gives optimal exponent 2+epsilon. This connects to Baker's theorem on linear forms in logarithms and modern transcendence theory.",
+    "openQuestions": [
+      "Is there an effective version of Roth's theorem?",
+      "Which specific constants are Liouville numbers?",
+      "What is the Hausdorff dimension of Liouville numbers?"
+    ]
+  }
+}

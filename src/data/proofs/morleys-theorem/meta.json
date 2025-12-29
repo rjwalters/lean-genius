@@ -1,0 +1,73 @@
+{
+  "id": "morleys-theorem",
+  "title": "Morley's Theorem",
+  "slug": "morleys-theorem",
+  "description": "The three angle trisectors of any triangle, taken in pairs, meet to form an equilateral triangle. A surprising result discovered in 1899.",
+  "meta": {
+    "wiedijkNumber": 84,
+    "author": "Frank Morley (1899)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Morley%27s_trisector_theorem",
+    "date": "1899",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/MorleysTheorem.lean",
+    "tags": [
+      "geometry",
+      "triangle",
+      "trisector",
+      "equilateral",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "axiom-based",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanGeometry.angle",
+        "description": "Angles in Euclidean geometry",
+        "module": "Mathlib.Geometry.Euclidean.Angle"
+      }
+    ],
+    "originalContributions": [
+      "Framework for angle trisection and the Morley triangle",
+      "Trigonometric approach to the theorem",
+      "Connection to cubic equations and ruler-compass constructibility"
+    ],
+    "dateAdded": "12/29/25"
+  },
+  "overview": {
+    "historicalContext": "Morley discovered this theorem in 1899, and it was later published in 1929. It's remarkable that such an elegant result about triangles wasn't found by the ancient Greeks. The theorem shows that trisecting angles (impossible with ruler and compass alone) reveals hidden structure.",
+    "problemStatement": "**Morley's Theorem**: In any triangle, the adjacent pairs of angle trisectors meet at three points that form an equilateral triangle.\n\nThe Morley triangle is always equilateral, regardless of the shape of the original triangle.",
+    "proofStrategy": "Modern proofs often use trigonometry or complex numbers. One approach verifies the result for a general triangle using angle relationships, showing all three sides of the Morley triangle have equal length.",
+    "keyInsights": [
+      "The Morley triangle is always equilateral, a universal constant shape",
+      "The result uses trisection, which requires cubic extensions",
+      "Multiple 'Morley triangles' exist for each original triangle",
+      "Simple statement but no elementary proof is known"
+    ]
+  },
+  "sections": [
+    {
+      "id": "trisectors",
+      "title": "Angle Trisectors",
+      "startLine": 50,
+      "endLine": 100,
+      "summary": "Definition of angle trisection in a triangle."
+    },
+    {
+      "id": "morleys-theorem",
+      "title": "Morley's Theorem",
+      "startLine": 100,
+      "endLine": 180,
+      "summary": "The Morley triangle is equilateral."
+    }
+  ],
+  "conclusion": {
+    "summary": "Morley's theorem is one of the most beautiful and surprising results in elementary geometry, revealing hidden equilateral structure in every triangle through angle trisection.",
+    "implications": "The theorem has inspired research into triangle centers, generalizations to n-gons, and the structure of angle-derived points in triangles.",
+    "openQuestions": [
+      "Is there a truly elementary proof?",
+      "What are the generalizations to other polygons?",
+      "How many distinct Morley-type triangles exist?"
+    ]
+  }
+}

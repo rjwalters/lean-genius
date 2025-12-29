@@ -1,0 +1,73 @@
+{
+  "id": "feuerbachs-theorem",
+  "title": "Feuerbach's Theorem",
+  "slug": "feuerbachs-theorem",
+  "description": "The nine-point circle of a triangle is tangent to its incircle and all three excircles. A beautiful result in triangle geometry.",
+  "meta": {
+    "wiedijkNumber": 29,
+    "author": "Karl Wilhelm Feuerbach (1822)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Feuerbach%27s_theorem",
+    "date": "1822",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/FeuerbachsTheorem.lean",
+    "tags": [
+      "geometry",
+      "triangle",
+      "circle",
+      "tangent",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "axiom-based",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanGeometry.Sphere",
+        "description": "Circles and spheres",
+        "module": "Mathlib.Geometry.Euclidean.Sphere"
+      }
+    ],
+    "originalContributions": [
+      "Framework for triangles, nine-point circle, incircle, excircles",
+      "Tangency relation between circles",
+      "Feuerbach point construction"
+    ],
+    "dateAdded": "12/29/25"
+  },
+  "overview": {
+    "historicalContext": "Feuerbach proved this theorem in 1822 at age 22. The nine-point circle passes through 9 special points of a triangle (midpoints of sides, feet of altitudes, midpoints of segments from vertices to orthocenter). Feuerbach showed this circle has a remarkable tangency property.",
+    "problemStatement": "**Feuerbach's Theorem**: The nine-point circle of any triangle is tangent to the incircle and to each of the three excircles.\n\nThe point of tangency with the incircle is called the Feuerbach point.",
+    "proofStrategy": "Modern proofs often use inversion or complex numbers. The key is to show that the distance between the centers of the nine-point circle and incircle equals the difference of their radii (internal tangency).",
+    "keyInsights": [
+      "The nine-point circle has radius exactly half the circumradius",
+      "Internal tangency with incircle, external tangency with excircles",
+      "The Feuerbach point lies on the nine-point circle",
+      "Generalizes to remarkable properties of triangle centers"
+    ]
+  },
+  "sections": [
+    {
+      "id": "triangle-circles",
+      "title": "Triangle Circles",
+      "startLine": 50,
+      "endLine": 120,
+      "summary": "Nine-point circle, incircle, and excircles."
+    },
+    {
+      "id": "feuerbachs-theorem",
+      "title": "Feuerbach's Theorem",
+      "startLine": 120,
+      "endLine": 200,
+      "summary": "Main tangency result."
+    }
+  ],
+  "conclusion": {
+    "summary": "Feuerbach's theorem is one of the most beautiful results in triangle geometry, revealing a hidden connection between the nine-point circle and the incircle/excircles that was unknown for millennia.",
+    "implications": "The theorem inspired much research in triangle geometry and the study of triangle centers, leading to the Encyclopedia of Triangle Centers with thousands of special points.",
+    "openQuestions": [
+      "What is the 3D analogue for tetrahedra?",
+      "How does Feuerbach's theorem generalize to other geometries?",
+      "What are all the tangent circles in a triangle?"
+    ]
+  }
+}

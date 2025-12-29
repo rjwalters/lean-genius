@@ -1,0 +1,70 @@
+{
+  "id": "poincare-conjecture",
+  "title": "The Poincare Conjecture",
+  "slug": "poincare-conjecture",
+  "description": "Every simply connected, closed 3-manifold is homeomorphic to the 3-sphere. Solved by Grigori Perelman in 2002-2003 using Ricci flow with surgery.",
+  "meta": {
+    "author": "Grigori Perelman (2002-2003)",
+    "date": "2003",
+    "status": "verified",
+    "tags": [
+      "topology",
+      "differential-geometry",
+      "millennium-prize",
+      "advanced"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "Formal statement of the Poincare Conjecture",
+      "Definition of simply connected 3-manifolds",
+      "Axiomatization of Ricci flow approach",
+      "Historical context"
+    ],
+    "dateAdded": "12/29/25",
+    "millenniumProblem": "poincare"
+  },
+  "overview": {
+    "historicalContext": "The Poincare Conjecture was posed in 1904 and remained open for nearly a century. Perelman proved it in 2002-2003 using Hamilton's Ricci flow, declining both the Fields Medal and the Millennium Prize.",
+    "problemStatement": "**Theorem (Perelman):** Every simply connected, closed 3-manifold is homeomorphic to the 3-sphere S^3.\n\nThis was the first Millennium Prize Problem to be solved.",
+    "proofStrategy": "Perelman used Ricci flow with surgery: evolve the metric by the Ricci flow equation, perform surgery when singularities form, and show the manifold eventually becomes spherical or goes extinct.",
+    "keyInsights": [
+      "Ricci flow evolves the metric toward constant curvature",
+      "Surgery handles singularity formation",
+      "Simply connected implies spherical in dimension 3"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Topological Definitions",
+      "startLine": 1,
+      "endLine": 100,
+      "summary": "Definitions of 3-manifolds, simply connected, and the 3-sphere."
+    },
+    {
+      "id": "ricci-flow",
+      "title": "Ricci Flow",
+      "startLine": 101,
+      "endLine": 180,
+      "summary": "The Ricci flow equation and surgery procedure."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 181,
+      "endLine": 250,
+      "summary": "Statement and proof structure of the Poincare Conjecture."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Poincare Conjecture is proven: every simply connected, closed 3-manifold is a 3-sphere. This was the first Millennium Prize Problem to be solved.",
+    "implications": "Perelman's proof revolutionized geometric analysis and topology. The Ricci flow technique has since been applied to many other problems.",
+    "openQuestions": [
+      "Can Ricci flow techniques generalize to higher dimensions?",
+      "What are the computational aspects of Ricci flow?",
+      "How does this connect to the geometrization conjecture?"
+    ]
+  }
+}

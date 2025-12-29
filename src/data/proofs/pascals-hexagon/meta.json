@@ -1,0 +1,73 @@
+{
+  "id": "pascals-hexagon",
+  "title": "Pascal's Hexagon Theorem",
+  "slug": "pascals-hexagon",
+  "description": "If a hexagon is inscribed in a conic section, the three pairs of opposite sides meet at collinear points. A fundamental result in projective geometry.",
+  "meta": {
+    "wiedijkNumber": 28,
+    "author": "Blaise Pascal (1639)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Pascal%27s_theorem",
+    "date": "1639",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/PascalsHexagon.lean",
+    "tags": [
+      "geometry",
+      "projective",
+      "conic",
+      "collinearity",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "axiom-based",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib.Geometry.Euclidean.Basic",
+        "description": "Basic Euclidean geometry",
+        "module": "Mathlib.Geometry.Euclidean.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Framework for projective points, lines, and conics",
+      "Hexagon inscribed in conic structure",
+      "Pascal line construction"
+    ],
+    "dateAdded": "12/29/25"
+  },
+  "overview": {
+    "historicalContext": "Pascal discovered this theorem at age 16 in 1639, calling it the 'Mystic Hexagram'. It is dual to Brianchon's theorem and is fundamental to projective geometry. Pascal's original proof is lost, but he claimed to derive over 400 corollaries from it.",
+    "problemStatement": "**Pascal's Theorem**: Let ABCDEF be a hexagon inscribed in a conic section. Let P = AB cap DE, Q = BC cap EF, R = CD cap FA. Then P, Q, R are collinear.\n\nThis line is called the Pascal line of the hexagon.",
+    "proofStrategy": "Modern proofs use projective geometry and the theory of conics. One approach uses the fact that the intersection properties are preserved under projective transformations, allowing reduction to a simpler configuration.",
+    "keyInsights": [
+      "The theorem holds for any conic: circle, ellipse, parabola, or hyperbola",
+      "Dual to Brianchon's theorem about circumscribed hexagons",
+      "Generalizes to the 'mystic hexagram' with 60 Pascal lines",
+      "Foundation for projective geometry and algebraic geometry"
+    ]
+  },
+  "sections": [
+    {
+      "id": "projective-setup",
+      "title": "Projective Geometry Setup",
+      "startLine": 45,
+      "endLine": 100,
+      "summary": "Points, lines, and incidence in projective plane."
+    },
+    {
+      "id": "pascals-theorem",
+      "title": "Pascal's Theorem",
+      "startLine": 100,
+      "endLine": 180,
+      "summary": "Main theorem statement and axiomatized proof."
+    }
+  ],
+  "conclusion": {
+    "summary": "Pascal's theorem is a cornerstone of projective geometry, discovered by a teenage prodigy. It reveals deep structure in the incidence relations of conics and points.",
+    "implications": "The theorem led to the development of projective geometry and continues to inspire research in algebraic geometry and combinatorics.",
+    "openQuestions": [
+      "What is the combinatorial structure of all Pascal lines for 6 points?",
+      "How does Pascal's theorem generalize to higher dimensions?",
+      "What are the connections to modern algebraic geometry?"
+    ]
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "id": "lebesgue-measure",
+  "title": "Lebesgue Measure",
+  "slug": "lebesgue-measure",
+  "description": "Lebesgue measure extends the notion of length/area/volume to a rich class of sets, enabling the powerful Lebesgue integral that revolutionized analysis.",
+  "meta": {
+    "wiedijkNumber": 86,
+    "author": "Henri Lebesgue (1901)",
+    "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/MeasureTheory/Measure/Lebesgue/Basic.html",
+    "date": "1901",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LebesgueMeasure.lean",
+    "tags": [
+      "analysis",
+      "measure-theory",
+      "integration",
+      "topology",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.volume",
+        "description": "Lebesgue measure on R^n",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "MeasurableSet",
+        "description": "Measurable sets",
+        "module": "Mathlib.MeasureTheory.MeasurableSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Framework for Lebesgue measure construction",
+      "Properties: translation invariance, countable additivity",
+      "Comparison with Jordan measure, non-measurable sets"
+    ],
+    "dateAdded": "12/29/25"
+  },
+  "overview": {
+    "historicalContext": "Lebesgue introduced his measure and integral in his 1901 thesis, revolutionizing analysis. Unlike the Riemann integral, the Lebesgue integral handles limits more gracefully, enabling powerful theorems like dominated convergence.",
+    "problemStatement": "**Lebesgue Measure**: There exists a complete, translation-invariant measure mu on R^n such that:\n- mu([a,b]) = b - a for intervals\n- mu is countably additive on disjoint measurable sets\n- The measurable sets form a sigma-algebra containing all Borel sets",
+    "proofStrategy": "Construct Lebesgue outer measure using infima of covering collections of intervals. Define measurable sets using Caratheodory's criterion. Verify the measure has the required properties.",
+    "keyInsights": [
+      "Lebesgue measure extends 'length' far beyond intervals",
+      "Not all sets are measurable (Vitali set construction)",
+      "The Lebesgue integral is more powerful than Riemann's",
+      "Foundation for probability theory and modern analysis"
+    ]
+  },
+  "sections": [
+    {
+      "id": "outer-measure",
+      "title": "Outer Measure Construction",
+      "startLine": 50,
+      "endLine": 120,
+      "summary": "Building measure via coverings by intervals."
+    },
+    {
+      "id": "measurable-sets",
+      "title": "Measurable Sets",
+      "startLine": 120,
+      "endLine": 200,
+      "summary": "Caratheodory criterion and sigma-algebra."
+    },
+    {
+      "id": "properties",
+      "title": "Key Properties",
+      "startLine": 200,
+      "endLine": 280,
+      "summary": "Translation invariance, completeness, countable additivity."
+    }
+  ],
+  "conclusion": {
+    "summary": "Lebesgue measure is the foundation of modern analysis and probability. It provides the right notion of 'size' for doing integration theory in full generality.",
+    "implications": "Applications include probability theory, functional analysis, harmonic analysis, and PDEs. The Lebesgue integral's limit theorems are essential throughout mathematics.",
+    "openQuestions": [
+      "What is the structure of non-measurable sets?",
+      "How does Lebesgue measure generalize to infinite dimensions?",
+      "What are the connections to fractal dimension?"
+    ]
+  }
+}

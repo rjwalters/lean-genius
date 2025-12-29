@@ -1,0 +1,68 @@
+{
+  "id": "hilbert-11",
+  "title": "Hilbert's 11th Problem: Quadratic Forms",
+  "slug": "hilbert-11",
+  "description": "Classification of quadratic forms over number fields. The Hasse-Minkowski theorem provides a local-global principle for rational solutions.",
+  "meta": {
+    "author": "Minkowski (1890), Hasse (1923)",
+    "date": "1923",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "quadratic-forms",
+      "hilbert-problems",
+      "advanced"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "QuadraticForm",
+        "description": "Quadratic form definitions",
+        "module": "Mathlib.LinearAlgebra.QuadraticForm.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Statement of Hasse-Minkowski theorem",
+      "Definition of local-global principle",
+      "Connection to p-adic analysis"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 11
+  },
+  "overview": {
+    "historicalContext": "Hilbert's 11th Problem asks for the classification of quadratic forms with algebraic number coefficients. The key result is the Hasse-Minkowski theorem, which provides a local-global principle.",
+    "problemStatement": "**Problem:** When does a quadratic form Q(x1,...,xn) = sum aij*xi*xj have a non-trivial zero over the rationals?\n\n**Theorem (Hasse-Minkowski):** Q has a non-trivial rational zero iff it has non-trivial zeros over R and all p-adic fields Qp.",
+    "proofStrategy": "The local-global principle reduces global questions to local ones:\n1. Check solvability over the reals\n2. Check solvability over each p-adic field\n3. If all local conditions pass, a global solution exists",
+    "keyInsights": [
+      "Local-global principles connect number theory and analysis",
+      "The Hasse principle fails for some higher-degree equations",
+      "Quadratic forms have a complete classification theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Quadratic Forms",
+      "startLine": 1,
+      "endLine": 100,
+      "summary": "Definition of quadratic forms and equivalence."
+    },
+    {
+      "id": "local-global",
+      "title": "Local-Global Principle",
+      "startLine": 101,
+      "endLine": 180,
+      "summary": "The Hasse-Minkowski theorem statement."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Hasse-Minkowski theorem provides a beautiful characterization of when quadratic forms have rational zeros, reducing global questions to local ones.",
+    "implications": "This theorem is fundamental to algebraic number theory and led to extensive study of when local-global principles hold or fail.",
+    "openQuestions": [
+      "When does the Hasse principle fail?",
+      "What is the Brauer-Manin obstruction?",
+      "How do we extend to number fields?"
+    ]
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "id": "hermite-lindemann",
+  "title": "The Hermite-Lindemann Theorem",
+  "slug": "hermite-lindemann",
+  "description": "For any non-zero algebraic number alpha, e^alpha is transcendental. This implies the transcendence of both e and pi.",
+  "meta": {
+    "wiedijkNumber": 56,
+    "author": "Hermite (1873) and Lindemann (1882)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lindemann%E2%80%93Weierstrass_theorem",
+    "date": "1882",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/HermiteLindemann.lean",
+    "tags": [
+      "number-theory",
+      "transcendental",
+      "exponential",
+      "algebraic",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "axiom-based",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Transcendental",
+        "description": "Transcendental number definition",
+        "module": "Mathlib.RingTheory.Algebraic"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential function",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      }
+    ],
+    "originalContributions": [
+      "Framework for Hermite-Lindemann theorem",
+      "Corollaries: e is transcendental, pi is transcendental",
+      "Connection to Lindemann-Weierstrass generalization"
+    ],
+    "dateAdded": "12/29/25"
+  },
+  "overview": {
+    "historicalContext": "Hermite proved e is transcendental in 1873. Lindemann extended this in 1882 to show e^alpha is transcendental for any algebraic alpha != 0. Weierstrass further generalized this to the Lindemann-Weierstrass theorem on linear combinations.",
+    "problemStatement": "**Hermite-Lindemann Theorem**: If alpha is a non-zero algebraic number, then e^alpha is transcendental.\n\n**Corollaries**:\n- e = e^1 is transcendental (since 1 is algebraic)\n- pi is transcendental (since e^(i*pi) = -1 is algebraic)",
+    "proofStrategy": "The proof constructs auxiliary functions using contour integrals. For a polynomial with algebraic roots, a careful integral estimate shows that a certain expression is both a non-zero integer and arbitrarily small, a contradiction.",
+    "keyInsights": [
+      "The key is Hermite's identity for exponential integrals",
+      "Algebraic independence of exponentials of algebraic numbers",
+      "Lindemann-Weierstrass generalizes to linear combinations",
+      "Foundation for transcendence theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "hermites-theorem",
+      "title": "Hermite's Theorem: e is Transcendental",
+      "startLine": 50,
+      "endLine": 120,
+      "summary": "The original 1873 result for e."
+    },
+    {
+      "id": "lindemann-extension",
+      "title": "Lindemann's Extension",
+      "startLine": 120,
+      "endLine": 200,
+      "summary": "Generalization to e^alpha for algebraic alpha."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries",
+      "startLine": 200,
+      "endLine": 260,
+      "summary": "Transcendence of e and pi."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Hermite-Lindemann theorem is a landmark in transcendence theory, providing a powerful method to prove numbers transcendental via their exponential relationships.",
+    "implications": "The theorem solved ancient construction problems and opened the door to Baker's theorem on linear forms in logarithms, with applications to Diophantine equations.",
+    "openQuestions": [
+      "Can Hermite-Lindemann methods be made effective?",
+      "What about e^e or e^(e^e)?",
+      "How does this connect to Schanuel's conjecture?"
+    ]
+  }
+}

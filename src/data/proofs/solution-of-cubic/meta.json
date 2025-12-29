@@ -1,0 +1,73 @@
+{
+  "id": "solution-of-cubic",
+  "title": "Solution of the Cubic Equation",
+  "slug": "solution-of-cubic",
+  "description": "Cardano's formula provides explicit radical solutions to cubic equations. The formula was discovered in the 16th century during the Italian mathematical renaissance.",
+  "meta": {
+    "wiedijkNumber": 37,
+    "author": "Cardano, Tartaglia, del Ferro (16th century)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cubic_equation",
+    "date": "1545",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/SolutionOfCubic.lean",
+    "tags": [
+      "algebra",
+      "polynomial",
+      "cubic",
+      "radicals",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "axiom-based",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.roots",
+        "description": "Polynomial root theory",
+        "module": "Mathlib.Algebra.Polynomial.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Depressed cubic form and reduction",
+      "Cardano's formula derivation",
+      "Handling the casus irreducibilis"
+    ],
+    "dateAdded": "12/29/25"
+  },
+  "overview": {
+    "historicalContext": "The cubic formula was a major breakthrough of the Italian Renaissance. Del Ferro solved it around 1515, Tartaglia rediscovered it, and Cardano published it in Ars Magna (1545). This was the first time a polynomial of degree > 2 was solved by radicals.",
+    "problemStatement": "**Theorem**: Every cubic equation x^3 + px + q = 0 has solutions given by Cardano's formula:\n\n$$x = \\sqrt[3]{-\\frac{q}{2} + \\sqrt{\\frac{q^2}{4} + \\frac{p^3}{27}}} + \\sqrt[3]{-\\frac{q}{2} - \\sqrt{\\frac{q^2}{4} + \\frac{p^3}{27}}}$$",
+    "proofStrategy": "Substitute x = u + v where uv = -p/3. This leads to u^3 + v^3 = -q and u^3v^3 = -p^3/27. These are the roots of a quadratic in u^3, which can be solved to give Cardano's formula.",
+    "keyInsights": [
+      "Any cubic can be reduced to depressed form x^3 + px + q = 0",
+      "The substitution x = u + v with uv = -p/3 is key",
+      "When the discriminant is negative, casus irreducibilis requires complex numbers",
+      "Opened the door to the quartic solution and eventually Galois theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "depressed-cubic",
+      "title": "Depressed Cubic",
+      "startLine": 50,
+      "endLine": 100,
+      "summary": "Reduction to x^3 + px + q = 0 form."
+    },
+    {
+      "id": "cardanos-formula",
+      "title": "Cardano's Formula",
+      "startLine": 100,
+      "endLine": 180,
+      "summary": "Derivation and statement of the solution formula."
+    }
+  ],
+  "conclusion": {
+    "summary": "The solution of the cubic was a watershed moment in algebra, showing for the first time that polynomials beyond the quadratic could be solved by radicals. It led directly to the quartic solution and eventually to the unsolvability of the quintic.",
+    "implications": "This result, combined with the quartic solution and the impossibility of the quintic, led to Galois theory, one of the most profound developments in mathematics.",
+    "openQuestions": [
+      "What is the geometric meaning of Cardano's formula?",
+      "How do different branches of cube roots give all three roots?",
+      "What are the computational aspects of the formula?"
+    ]
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "id": "prime-number-theorem",
+  "title": "The Prime Number Theorem",
+  "slug": "prime-number-theorem",
+  "description": "The prime counting function pi(x) is asymptotically equivalent to x/ln(x). This describes the distribution of prime numbers among positive integers.",
+  "meta": {
+    "wiedijkNumber": 5,
+    "author": "Hadamard & de la Vallee Poussin (1896)",
+    "sourceUrl": "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd",
+    "date": "1896",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/PrimeNumberTheorem.lean",
+    "tags": [
+      "number-theory",
+      "analysis",
+      "primes",
+      "asymptotic",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "axiom-based",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.primeCounting",
+        "description": "Prime counting function",
+        "module": "Mathlib.NumberTheory.PrimeCounting"
+      },
+      {
+        "theorem": "Asymptotics.IsEquivalent",
+        "description": "Asymptotic equivalence notation",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      }
+    ],
+    "originalContributions": [
+      "Multiple equivalent formulations (ratio, asymptotic, error term, Li)",
+      "Consequences: prime density, nth prime, Mertens sum",
+      "Connection to Riemann Hypothesis and error bounds"
+    ],
+    "dateAdded": "12/29/25"
+  },
+  "overview": {
+    "historicalContext": "The Prime Number Theorem was conjectured by Legendre (1798) and Gauss (1849), then proved independently by Hadamard and de la Vallee Poussin in 1896. It describes how primes become less frequent as numbers grow, with approximately x/ln(x) primes up to x.",
+    "problemStatement": "**Theorem**: The prime counting function pi(x) satisfies:\n\n$$\\lim_{x \\to \\infty} \\frac{\\pi(x)}{x/\\ln x} = 1$$\n\nEquivalently, pi(x) ~ x/ln(x), meaning the ratio approaches 1 as x approaches infinity.",
+    "proofStrategy": "The modern proof uses complex analysis and the Riemann zeta function. Key steps include establishing a zero-free region for zeta(s) on the line Re(s) = 1, then applying Tauberian theorems to convert this analytic information into the asymptotic formula for pi(x).",
+    "keyInsights": [
+      "The distribution of primes is governed by the Riemann zeta function",
+      "Li(x) = integral from 2 to x of dt/ln(t) is a better approximation than x/ln(x)",
+      "The Riemann Hypothesis would give the optimal error term O(sqrt(x) log(x))",
+      "Chebyshev's bounds (1852) showed the limit, if it exists, must be 1"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 66,
+      "endLine": 90,
+      "summary": "Prime counting function and approximation functions."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Prime Number Theorem",
+      "startLine": 92,
+      "endLine": 130,
+      "summary": "Multiple formulations: ratio, equivalence, error term, logarithmic integral."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences",
+      "startLine": 218,
+      "endLine": 310,
+      "summary": "Prime density, nth prime asymptotics, Mertens sum, prime gaps."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Prime Number Theorem is one of the crowning achievements of 19th century mathematics, connecting the discrete world of primes to the continuous world of analysis through the Riemann zeta function.",
+    "implications": "The PNT has applications in cryptography, computational number theory, and forms the foundation for understanding prime distribution. It also motivates the Riemann Hypothesis.",
+    "openQuestions": [
+      "The Riemann Hypothesis: do all non-trivial zeros of zeta have real part 1/2?",
+      "What is the true size of the error term |pi(x) - Li(x)|?",
+      "Can we prove PNT by elementary methods with good error bounds?"
+    ]
+  }
+}

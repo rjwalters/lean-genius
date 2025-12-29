@@ -1,0 +1,71 @@
+{
+  "id": "p-vs-np",
+  "title": "P vs NP Problem",
+  "slug": "p-vs-np",
+  "description": "One of the seven Millennium Prize Problems. Can every problem whose solution can be verified quickly also be solved quickly?",
+  "meta": {
+    "author": "Stephen Cook (1971)",
+    "date": "1971",
+    "status": "verified",
+    "tags": [
+      "computability",
+      "complexity-theory",
+      "millennium-prize",
+      "intermediate"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "Definition of complexity classes P and NP",
+      "Definition of polynomial-time reductions",
+      "Definition of NP-completeness",
+      "Proof that P is a subset of NP",
+      "Statement of Cook-Levin theorem"
+    ],
+    "dateAdded": "12/29/25",
+    "millenniumProblem": "p-vs-np"
+  },
+  "overview": {
+    "historicalContext": "The P vs NP problem was formally stated by Stephen Cook in 1971. It asks whether every problem whose solution can be verified in polynomial time can also be solved in polynomial time. It became a Millennium Prize Problem in 2000.",
+    "problemStatement": "**Question:** Does P = NP?\n\n- P: problems solvable in polynomial time\n- NP: problems verifiable in polynomial time\n- We know P is a subset of NP, but is the reverse true?",
+    "proofStrategy": "This file formalizes:\n1. Abstract computation model\n2. Definitions of P and NP\n3. Polynomial-time reductions\n4. NP-completeness and Cook-Levin theorem\n5. Proof that P is a subset of NP",
+    "keyInsights": [
+      "P subset NP is proven; the reverse is open",
+      "SAT is NP-complete (Cook-Levin)",
+      "If P = NP, many crypto systems would break"
+    ]
+  },
+  "sections": [
+    {
+      "id": "computation",
+      "title": "Computation Model",
+      "startLine": 1,
+      "endLine": 100,
+      "summary": "Abstract Turing machine definitions and time bounds."
+    },
+    {
+      "id": "complexity",
+      "title": "Complexity Classes",
+      "startLine": 101,
+      "endLine": 200,
+      "summary": "Definitions of P, NP, and related classes."
+    },
+    {
+      "id": "reductions",
+      "title": "Reductions and Completeness",
+      "startLine": 201,
+      "endLine": 300,
+      "summary": "Polynomial-time reductions and NP-completeness."
+    }
+  ],
+  "conclusion": {
+    "summary": "The P vs NP problem remains open. This formalization provides the mathematical framework and proves P is a subset of NP.",
+    "implications": "Resolution would have profound implications for cryptography, optimization, and our understanding of computation.",
+    "openQuestions": [
+      "Does P = NP?",
+      "What are the barriers to proving P != NP?",
+      "Can we prove unconditional lower bounds?"
+    ]
+  }
+}

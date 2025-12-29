@@ -1,0 +1,92 @@
+{
+  "id": "continuum-hypothesis",
+  "title": "Independence of the Continuum Hypothesis",
+  "slug": "continuum-hypothesis",
+  "description": "The Continuum Hypothesis is independent of ZFC set theory. Godel showed CH is consistent with ZFC; Cohen showed not-CH is also consistent.",
+  "meta": {
+    "wiedijkNumber": 24,
+    "author": "Godel (1940) and Cohen (1963)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Continuum_hypothesis",
+    "date": "1963",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/ContinuumHypothesis.lean",
+    "tags": [
+      "set-theory",
+      "foundations",
+      "logic",
+      "independence",
+      "wiedijk-100",
+      "hilbert"
+    ],
+    "badge": "axiom-based",
+    "sorries": 2,
+    "mathlibDependencies": [
+      {
+        "theorem": "Cardinal.aleph",
+        "description": "Aleph hierarchy of infinite cardinals",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Cardinal.cantor",
+        "description": "Cantor's theorem: |S| < |P(S)|",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Framework for ZFC models and relative consistency",
+      "Godel's constructible universe L axiomatized",
+      "Cohen's forcing approach outlined"
+    ],
+    "dateAdded": "12/29/25"
+  },
+  "overview": {
+    "historicalContext": "Cantor posed the Continuum Hypothesis in 1878. Hilbert listed it as Problem #1 in 1900. Godel (1940) proved CH is consistent with ZFC using the constructible universe L. Cohen (1963) proved not-CH is consistent using forcing, earning the Fields Medal in 1966.",
+    "problemStatement": "**Continuum Hypothesis**: There is no set with cardinality strictly between aleph_0 (countable infinity) and 2^(aleph_0) (the continuum).\n\nEquivalently: |R| = aleph_1.\n\n**Independence**: CH can neither be proved nor disproved from ZFC axioms.",
+    "proofStrategy": "Model-theoretic: Godel's constructible universe L is a model of ZFC where CH holds. Cohen's forcing constructs a model where CH fails. Since both are consistent with ZFC, CH is independent.",
+    "keyInsights": [
+      "The constructible universe L satisfies V = L and implies GCH",
+      "Forcing allows construction of models with almost any cardinal arithmetic",
+      "Independence means ZFC doesn't determine the size of the continuum",
+      "New axioms (large cardinals, forcing axioms) may decide CH"
+    ]
+  },
+  "sections": [
+    {
+      "id": "cardinals",
+      "title": "Cardinals and the Continuum",
+      "startLine": 50,
+      "endLine": 105,
+      "summary": "Continuum, aleph-one, and the CH statement."
+    },
+    {
+      "id": "godel",
+      "title": "Godel's Constructible Universe",
+      "startLine": 143,
+      "endLine": 185,
+      "summary": "The inner model L where CH holds."
+    },
+    {
+      "id": "cohen",
+      "title": "Cohen's Forcing",
+      "startLine": 185,
+      "endLine": 225,
+      "summary": "Forcing extensions where CH fails."
+    },
+    {
+      "id": "independence",
+      "title": "The Independence Theorem",
+      "startLine": 225,
+      "endLine": 280,
+      "summary": "Main result: CH is independent of ZFC."
+    }
+  ],
+  "conclusion": {
+    "summary": "The independence of CH resolved Hilbert's first problem, but not in the way expected. It revealed fundamental limitations of ZFC and opened new research directions in set theory, including forcing axioms and the set-theoretic multiverse.",
+    "implications": "The resolution has philosophical implications for mathematical truth and the nature of infinity. It also led to extensive research on large cardinals, inner models, and forcing axioms.",
+    "openQuestions": [
+      "Should we adopt axioms that decide CH?",
+      "What is the 'true' size of the continuum?",
+      "Does the set-theoretic multiverse perspective resolve the question?"
+    ]
+  }
+}

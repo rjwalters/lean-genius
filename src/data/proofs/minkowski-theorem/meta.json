@@ -1,0 +1,73 @@
+{
+  "id": "minkowski-theorem",
+  "title": "Minkowski's Fundamental Theorem",
+  "slug": "minkowski-theorem",
+  "description": "A convex, centrally symmetric body with volume greater than 2^n contains a non-zero lattice point. Foundational for the geometry of numbers.",
+  "meta": {
+    "wiedijkNumber": 40,
+    "author": "Hermann Minkowski (1896)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Minkowski%27s_theorem",
+    "date": "1896",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/MinkowskiFundamentalTheorem.lean",
+    "tags": [
+      "number-theory",
+      "geometry",
+      "convex",
+      "lattice",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "axiom-based",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Convex",
+        "description": "Convex sets",
+        "module": "Mathlib.Analysis.Convex.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Framework for convex bodies and lattice points",
+      "Central symmetry and volume conditions",
+      "Applications to Diophantine approximation"
+    ],
+    "dateAdded": "12/29/25"
+  },
+  "overview": {
+    "historicalContext": "Minkowski founded the 'geometry of numbers' in the 1890s, using geometric methods to prove number-theoretic results. His fundamental theorem has applications to Diophantine approximation, algebraic number theory, and cryptography.",
+    "problemStatement": "**Minkowski's Theorem**: Let S be a convex set in R^n that is symmetric about the origin (x in S implies -x in S). If vol(S) > 2^n, then S contains a non-zero integer lattice point.",
+    "proofStrategy": "Consider the set S/2 (scaled by 1/2). By the pigeonhole principle applied to translates of S/2 by lattice vectors, two distinct lattice translates must overlap. Their difference gives a non-zero lattice point in S.",
+    "keyInsights": [
+      "The volume bound 2^n is sharp (consider the open cube (-1,1)^n)",
+      "Convexity and symmetry are essential for the averaging argument",
+      "Generalizes to arbitrary lattices with determinant adjustment",
+      "Foundation for geometry of numbers and lattice algorithms"
+    ]
+  },
+  "sections": [
+    {
+      "id": "convex-bodies",
+      "title": "Convex Bodies and Lattices",
+      "startLine": 50,
+      "endLine": 100,
+      "summary": "Definitions of convexity, symmetry, and lattice points."
+    },
+    {
+      "id": "minkowskis-theorem",
+      "title": "Minkowski's Theorem",
+      "startLine": 100,
+      "endLine": 180,
+      "summary": "Main theorem statement and proof outline."
+    }
+  ],
+  "conclusion": {
+    "summary": "Minkowski's theorem is the cornerstone of the geometry of numbers, elegantly connecting volume with lattice point existence. It has deep applications throughout number theory.",
+    "implications": "Applications include proofs of the four squares theorem, finiteness of class numbers, lattice-based cryptography, and Diophantine approximation bounds.",
+    "openQuestions": [
+      "What is the exact lattice point counting for convex bodies?",
+      "How do Minkowski's ideas extend to non-Euclidean geometries?",
+      "What are the computational aspects for lattice algorithms?"
+    ]
+  }
+}

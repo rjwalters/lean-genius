@@ -1,0 +1,73 @@
+{
+  "id": "picks-theorem",
+  "title": "Pick's Theorem",
+  "slug": "picks-theorem",
+  "description": "The area of a simple lattice polygon equals I + B/2 - 1, where I is the number of interior lattice points and B is the number of boundary lattice points.",
+  "meta": {
+    "wiedijkNumber": 92,
+    "author": "Georg Alexander Pick (1899)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Pick%27s_theorem",
+    "date": "1899",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/PicksTheorem.lean",
+    "tags": [
+      "geometry",
+      "combinatorics",
+      "lattice",
+      "area",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "axiom-based",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.lattice",
+        "description": "Integer lattice",
+        "module": "Mathlib.Algebra.Order.Lattice"
+      }
+    ],
+    "originalContributions": [
+      "Framework for lattice polygons and point counting",
+      "Pick's formula: A = I + B/2 - 1",
+      "Proof via triangulation and additivity"
+    ],
+    "dateAdded": "12/29/25"
+  },
+  "overview": {
+    "historicalContext": "Pick published this theorem in 1899, but it remained obscure until popularized by Steinhaus in the 1960s. It provides an elegant way to compute areas by simply counting lattice points, connecting continuous geometry to discrete counting.",
+    "problemStatement": "**Pick's Theorem**: For a simple polygon with vertices at integer lattice points:\n\n$$A = I + \\frac{B}{2} - 1$$\n\nwhere A is the area, I is the number of interior lattice points, and B is the number of boundary lattice points.",
+    "proofStrategy": "Prove for triangles first using the fact that any lattice triangle has area (base * height)/2 expressed in lattice terms. Then use additivity: when triangulating a polygon, interior edges contribute zero net lattice points.",
+    "keyInsights": [
+      "Area is determined purely by lattice point counts",
+      "The formula is additive under subdivision",
+      "Generalizes to Euler's formula for polyhedra",
+      "Connected to Ehrhart polynomials in algebraic combinatorics"
+    ]
+  },
+  "sections": [
+    {
+      "id": "lattice-polygons",
+      "title": "Lattice Polygons",
+      "startLine": 50,
+      "endLine": 100,
+      "summary": "Simple polygons with vertices at integer points."
+    },
+    {
+      "id": "picks-formula",
+      "title": "Pick's Formula",
+      "startLine": 100,
+      "endLine": 180,
+      "summary": "A = I + B/2 - 1 and its proof."
+    }
+  ],
+  "conclusion": {
+    "summary": "Pick's theorem beautifully connects continuous area to discrete counting. It's a favorite in recreational mathematics and has deep connections to algebraic geometry.",
+    "implications": "The theorem generalizes to Ehrhart theory for counting lattice points in polytopes, with applications to combinatorics, integer programming, and toric geometry.",
+    "openQuestions": [
+      "What are the higher-dimensional analogues?",
+      "How does Pick's theorem connect to Ehrhart polynomials?",
+      "What are the generalizations to other lattices?"
+    ]
+  }
+}

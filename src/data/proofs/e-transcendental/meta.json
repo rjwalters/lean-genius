@@ -1,0 +1,78 @@
+{
+  "id": "e-transcendental",
+  "title": "Transcendence of e",
+  "slug": "e-transcendental",
+  "description": "The number e = 2.71828... is transcendental: it is not a root of any polynomial with integer coefficients. The first number proven transcendental by Hermite.",
+  "meta": {
+    "wiedijkNumber": 67,
+    "author": "Charles Hermite (1873)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Transcendental_number",
+    "date": "1873",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/eTranscendental.lean",
+    "tags": [
+      "number-theory",
+      "transcendental",
+      "e",
+      "analysis",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "axiom-based",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential function",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      },
+      {
+        "theorem": "Transcendental",
+        "description": "Transcendental number definition",
+        "module": "Mathlib.RingTheory.Algebraic"
+      }
+    ],
+    "originalContributions": [
+      "Framework for e's transcendence proof",
+      "Hermite's integral method",
+      "Historical significance as first explicitly transcendental constant"
+    ],
+    "dateAdded": "12/29/25"
+  },
+  "overview": {
+    "historicalContext": "Hermite proved e transcendental in 1873, making it the first 'natural' constant proven transcendental (Liouville's numbers were specifically constructed). This opened the door for Lindemann's proof of pi's transcendence 9 years later.",
+    "problemStatement": "**Theorem**: e is transcendental, i.e., there is no nonzero polynomial P with integer coefficients such that P(e) = 0.\n\nThis is stronger than irrationality (proved by Euler) and even algebraic irrationality.",
+    "proofStrategy": "Hermite's proof uses contour integration. Assume e is algebraic with minimal polynomial P. Construct an auxiliary integral that is simultaneously a non-zero integer and arbitrarily small (using factorial growth vs exponential), yielding a contradiction.",
+    "keyInsights": [
+      "The key is the interplay between factorial and exponential growth",
+      "Hermite's method was generalized by Lindemann to e^alpha",
+      "Transcendence is much stronger than irrationality",
+      "e was the first 'famous' number proved transcendental"
+    ]
+  },
+  "sections": [
+    {
+      "id": "irrationality-review",
+      "title": "From Irrationality to Transcendence",
+      "startLine": 50,
+      "endLine": 100,
+      "summary": "Historical progression of results about e."
+    },
+    {
+      "id": "hermites-proof",
+      "title": "Hermite's Proof",
+      "startLine": 100,
+      "endLine": 200,
+      "summary": "The integral method for proving transcendence."
+    }
+  ],
+  "conclusion": {
+    "summary": "Hermite's proof of e's transcendence was a breakthrough that initiated modern transcendence theory. The techniques developed led directly to the Lindemann-Weierstrass theorem and beyond.",
+    "implications": "The transcendence of e has implications for the theory of normal numbers, continued fractions, and the structure of the real numbers.",
+    "openQuestions": [
+      "Is e + pi transcendental? (Unknown!)",
+      "Is e a normal number?",
+      "What is the exact irrationality measure of e?"
+    ]
+  }
+}

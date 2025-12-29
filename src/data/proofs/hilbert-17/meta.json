@@ -1,0 +1,68 @@
+{
+  "id": "hilbert-17",
+  "title": "Hilbert's 17th Problem: Sum of Squares",
+  "slug": "hilbert-17",
+  "description": "Artin's theorem: every non-negative polynomial is a sum of squares of rational functions, but not necessarily polynomials (Motzkin's counterexample).",
+  "meta": {
+    "author": "Emil Artin (1927)",
+    "date": "1927",
+    "status": "verified",
+    "tags": [
+      "algebra",
+      "real-algebraic-geometry",
+      "hilbert-problems",
+      "intermediate"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "RatFunc",
+        "description": "Rational function fields",
+        "module": "Mathlib.FieldTheory.RatFunc.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Statement of Artin's theorem",
+      "Motzkin polynomial counterexample",
+      "Explanation of why rational functions are needed"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 17
+  },
+  "overview": {
+    "historicalContext": "Hilbert asked in 1900 whether every non-negative polynomial is a sum of squares. Artin resolved this in 1927: yes, but of rational functions, not polynomials!",
+    "problemStatement": "**Question:** If f is a polynomial with f(x) >= 0 for all x, is f a sum of squares?\n\n**Answer (Artin):** Yes, but as a sum of squares of rational functions. Motzkin's polynomial shows polynomials don't suffice.",
+    "proofStrategy": "1. State Artin's theorem using real closed field theory\n2. Show Motzkin's polynomial x^4*y^2 + x^2*y^4 - 3*x^2*y^2 + 1 is non-negative but not SOS of polynomials\n3. Explain the degree obstruction",
+    "keyInsights": [
+      "Non-negative does not imply SOS for polynomials",
+      "Rational functions provide more flexibility",
+      "Motzkin's polynomial is the simplest counterexample"
+    ]
+  },
+  "sections": [
+    {
+      "id": "theorem",
+      "title": "Artin's Theorem",
+      "startLine": 1,
+      "endLine": 100,
+      "summary": "Statement that non-negative polynomials are SOS of rational functions."
+    },
+    {
+      "id": "motzkin",
+      "title": "Motzkin's Counterexample",
+      "startLine": 101,
+      "endLine": 180,
+      "summary": "The Motzkin polynomial is non-negative but not SOS of polynomials."
+    }
+  ],
+  "conclusion": {
+    "summary": "Hilbert's 17th Problem is resolved: non-negative polynomials are sums of squares of rational functions, but the Motzkin polynomial shows polynomial squares don't suffice.",
+    "implications": "This connects to semidefinite programming and real algebraic geometry. The gap between non-negative and SOS has practical applications in optimization.",
+    "openQuestions": [
+      "What is the minimum degree needed for rational function representations?",
+      "How does this connect to semidefinite programming?",
+      "Can we compute SOS representations efficiently?"
+    ]
+  }
+}

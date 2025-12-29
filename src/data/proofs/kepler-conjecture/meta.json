@@ -1,0 +1,63 @@
+{
+  "id": "kepler-conjecture",
+  "title": "Kepler Conjecture: Sphere Packing",
+  "slug": "kepler-conjecture",
+  "description": "The face-centered cubic lattice achieves the maximum sphere packing density of pi/(3*sqrt(2)). Part of Hilbert's 18th Problem, proven by Hales (1998).",
+  "meta": {
+    "author": "Thomas Hales (1998)",
+    "date": "1998",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "combinatorics",
+      "hilbert-problems",
+      "advanced"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "2D hexagonal packing optimality",
+      "3D FCC density computation",
+      "Kepler conjecture statement",
+      "Connection to Flyspeck project"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 18
+  },
+  "overview": {
+    "historicalContext": "Kepler conjectured in 1611 that the FCC lattice achieves maximum sphere packing density. Hales proved this in 1998 with a computer-assisted proof, formally verified by Flyspeck (2014).",
+    "problemStatement": "**Theorem (Kepler-Hales):** The maximum density for sphere packing in R^3 is pi/(3*sqrt(2)) approx 74.05%, achieved by the face-centered cubic lattice.",
+    "proofStrategy": "The proof involves:\n1. Reducing to finite local configurations\n2. Computer verification of thousands of cases\n3. Formal verification in HOL Light (Flyspeck)",
+    "keyInsights": [
+      "FCC packing is optimal (74.05% density)",
+      "In 2D, hexagonal packing achieves 90.69%",
+      "The proof required computer assistance"
+    ]
+  },
+  "sections": [
+    {
+      "id": "2d",
+      "title": "2D Sphere Packing",
+      "startLine": 1,
+      "endLine": 80,
+      "summary": "Hexagonal packing in 2D achieves optimal density."
+    },
+    {
+      "id": "3d",
+      "title": "3D FCC Lattice",
+      "startLine": 81,
+      "endLine": 160,
+      "summary": "Face-centered cubic lattice and the Kepler conjecture."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Kepler Conjecture is proven: FCC achieves maximum sphere packing density. This was the first major theorem proved with computer assistance and formally verified.",
+    "implications": "The proof pioneered formal verification of computer-assisted proofs. Sphere packing has applications in coding theory and crystallography.",
+    "openQuestions": [
+      "What about sphere packing in higher dimensions?",
+      "Can the proof be simplified?",
+      "What are the applications to coding theory?"
+    ]
+  }
+}

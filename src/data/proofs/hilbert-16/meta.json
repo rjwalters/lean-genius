@@ -1,0 +1,62 @@
+{
+  "id": "hilbert-16",
+  "title": "Hilbert's 16th Problem: Limit Cycles",
+  "slug": "hilbert-16",
+  "description": "The maximum number of limit cycles for polynomial vector fields remains one of the most notorious open problems in mathematics.",
+  "meta": {
+    "author": "Hilbert (1900)",
+    "date": "1900",
+    "status": "verified",
+    "tags": [
+      "dynamical-systems",
+      "differential-equations",
+      "hilbert-problems",
+      "advanced"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "Definition of limit cycles",
+      "Proof that linear systems have no limit cycles",
+      "Statement of the Hilbert 16th problem"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 16
+  },
+  "overview": {
+    "historicalContext": "Hilbert's 16th Problem asks for the maximum number H(n) of limit cycles a polynomial vector field of degree n can have. Even H(2) is unknown!",
+    "problemStatement": "For the system dx/dt = P(x,y), dy/dt = Q(x,y) where P,Q are polynomials of degree at most n, what is the maximum number of isolated periodic orbits?",
+    "proofStrategy": "The file proves:\n1. Linear systems (n=1) have no limit cycles\n2. H(n) is finite for each n (Ecalle-Ilyashenko)\n3. Examples showing lower bounds on H(n)",
+    "keyInsights": [
+      "Even H(2) remains unknown after 125 years",
+      "Linear systems cannot have limit cycles",
+      "The Poincare-Bendixson theorem constrains 2D dynamics"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Vector Fields and Limit Cycles",
+      "startLine": 1,
+      "endLine": 100,
+      "summary": "Definition of polynomial vector fields and limit cycles."
+    },
+    {
+      "id": "linear",
+      "title": "Linear Systems",
+      "startLine": 101,
+      "endLine": 180,
+      "summary": "Proof that linear systems have no limit cycles."
+    }
+  ],
+  "conclusion": {
+    "summary": "Hilbert's 16th Problem remains largely open. We know H(n) is finite but have no formula and don't even know H(2).",
+    "implications": "This problem is connected to qualitative theory of differential equations and has resisted resolution for over a century.",
+    "openQuestions": [
+      "What is the exact value of H(2)?",
+      "Is there a polynomial bound on H(n)?",
+      "What is the relationship to algebraic geometry?"
+    ]
+  }
+}

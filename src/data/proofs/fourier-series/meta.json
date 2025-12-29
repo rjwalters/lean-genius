@@ -1,0 +1,85 @@
+{
+  "id": "fourier-series",
+  "title": "Fourier Series",
+  "slug": "fourier-series",
+  "description": "Every periodic function can be represented as an infinite sum of sines and cosines (Fourier series). A cornerstone of analysis with applications throughout science.",
+  "meta": {
+    "wiedijkNumber": 76,
+    "author": "Joseph Fourier (1822)",
+    "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/Fourier/AddCircle.html",
+    "date": "1822",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/FourierSeries.lean",
+    "tags": [
+      "analysis",
+      "harmonic-analysis",
+      "convergence",
+      "series",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "axiom-based",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "fourierCoeff",
+        "description": "Fourier coefficients",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "L2.innerProductSpace",
+        "description": "L^2 inner product",
+        "module": "Mathlib.MeasureTheory.Function.L2Space"
+      }
+    ],
+    "originalContributions": [
+      "Framework for Fourier coefficients and series",
+      "L^2 convergence (Parseval's theorem)",
+      "Pointwise and uniform convergence conditions"
+    ],
+    "dateAdded": "12/29/25"
+  },
+  "overview": {
+    "historicalContext": "Fourier introduced his series in 1807 while studying heat conduction, publishing the full theory in 1822. The question of convergence provoked intense debate and led to major developments in analysis, including the rigorous definition of functions and integrals.",
+    "problemStatement": "**Fourier Series**: A periodic function f with period 2*pi can be represented as:\n\n$$f(x) = \\frac{a_0}{2} + \\sum_{n=1}^{\\infty} (a_n \\cos(nx) + b_n \\sin(nx))$$\n\nwhere the Fourier coefficients are integrals of f against the trigonometric functions.",
+    "proofStrategy": "For L^2 functions, the proof uses the theory of Hilbert spaces: the trigonometric functions form an orthonormal basis for L^2([0,2*pi]). Parseval's theorem shows the series converges in L^2 norm. Pointwise convergence requires additional regularity.",
+    "keyInsights": [
+      "L^2 convergence holds for all square-integrable functions",
+      "Pointwise convergence requires smoothness conditions",
+      "The Fourier series is the best L^2 approximation by trig polynomials",
+      "Foundation for signal processing, PDEs, and quantum mechanics"
+    ]
+  },
+  "sections": [
+    {
+      "id": "fourier-coefficients",
+      "title": "Fourier Coefficients",
+      "startLine": 50,
+      "endLine": 100,
+      "summary": "Definition and computation of a_n, b_n."
+    },
+    {
+      "id": "l2-convergence",
+      "title": "L^2 Convergence",
+      "startLine": 100,
+      "endLine": 180,
+      "summary": "Parseval's theorem and mean-square convergence."
+    },
+    {
+      "id": "pointwise-convergence",
+      "title": "Pointwise Convergence",
+      "startLine": 180,
+      "endLine": 260,
+      "summary": "Dirichlet conditions and Fejer's theorem."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fourier series revolutionized analysis and have become indispensable in science and engineering. They decompose complex signals into simple frequencies, enabling everything from music synthesis to medical imaging.",
+    "implications": "Applications span signal processing, partial differential equations, quantum mechanics, data compression, and more. The theory led to functional analysis, distribution theory, and modern harmonic analysis.",
+    "openQuestions": [
+      "What are the best conditions for pointwise convergence?",
+      "How do Fourier series behave for fractal functions?",
+      "What are the computational limits for Fourier analysis?"
+    ]
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "id": "greens-theorem",
+  "title": "Green's Theorem",
+  "slug": "greens-theorem",
+  "description": "Green's theorem relates a line integral around a closed curve to a double integral over the enclosed region, connecting circulation to curl.",
+  "meta": {
+    "wiedijkNumber": 21,
+    "author": "George Green (1828)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Green%27s_theorem",
+    "date": "1828",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/GreensTheorem.lean",
+    "tags": [
+      "analysis",
+      "vector-calculus",
+      "integration",
+      "stokes",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "axiom-based",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real",
+        "description": "Real number field",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Framework for 2D vector fields and rectangles",
+      "Area computation via Green's theorem",
+      "Connection to Stokes' theorem and Cauchy's integral theorem"
+    ],
+    "dateAdded": "12/29/25"
+  },
+  "overview": {
+    "historicalContext": "George Green was a self-taught British mathematician who published his work in 1828. The theorem now bearing his name is a special case of the generalized Stokes' theorem and is fundamental to vector calculus, electromagnetism, and fluid dynamics.",
+    "problemStatement": "**Green's Theorem**: For a positively oriented, piecewise smooth, simple closed curve C bounding region D:\n\n$$\\oint_C (P\\,dx + Q\\,dy) = \\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right) dA$$",
+    "proofStrategy": "For rectangular regions, the proof uses Fubini's theorem and the Fundamental Theorem of Calculus. The double integral splits into iterated integrals, which evaluate to boundary contributions that combine to give the line integral.",
+    "keyInsights": [
+      "Relates local behavior (curl) to global behavior (circulation)",
+      "Area can be computed as a line integral: Area = integral of x dy",
+      "Special case of Stokes' theorem in 2D",
+      "Cauchy's integral theorem follows when the curl vanishes"
+    ]
+  },
+  "sections": [
+    {
+      "id": "vector-fields",
+      "title": "Vector Fields in the Plane",
+      "startLine": 48,
+      "endLine": 65,
+      "summary": "2D vector fields and curl definition."
+    },
+    {
+      "id": "greens-theorem",
+      "title": "Green's Theorem",
+      "startLine": 130,
+      "endLine": 190,
+      "summary": "Core statement for rectangles and general regions."
+    },
+    {
+      "id": "applications",
+      "title": "Applications",
+      "startLine": 190,
+      "endLine": 280,
+      "summary": "Area computation, connection to Stokes and Cauchy."
+    }
+  ],
+  "conclusion": {
+    "summary": "Green's theorem is fundamental to multivariable calculus and physics. It connects local properties of a vector field to global properties, enabling powerful computational techniques and theoretical insights.",
+    "implications": "Applications include fluid flow, electromagnetism, and complex analysis. The theorem generalizes to Stokes' theorem on manifolds, which is central to differential geometry and topology.",
+    "openQuestions": [
+      "What is the minimal regularity needed for Green's theorem?",
+      "How does Green's theorem extend to non-orientable surfaces?",
+      "What are the computational implications for numerical methods?"
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "id": "gelfond-schneider",
+  "title": "Gelfond-Schneider Theorem",
+  "slug": "gelfond-schneider",
+  "description": "If a and b are algebraic numbers with a not equal to 0, 1 and b irrational, then a^b is transcendental. Resolves Hilbert's 7th Problem.",
+  "meta": {
+    "author": "Gelfond & Schneider (1934)",
+    "date": "1934",
+    "status": "verified",
+    "tags": [
+      "transcendence",
+      "number-theory",
+      "hilbert-problems",
+      "intermediate"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Transcendental",
+        "description": "Definition of transcendental numbers",
+        "module": "Mathlib.RingTheory.Algebraic"
+      }
+    ],
+    "originalContributions": [
+      "Statement of Gelfond-Schneider theorem",
+      "Corollary that 2^sqrt(2) is transcendental",
+      "Corollary that e^pi is transcendental",
+      "Connection to Hermite-Lindemann theorem"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 7
+  },
+  "overview": {
+    "historicalContext": "In 1900, David Hilbert asked whether a^b is transcendental when a is algebraic (not 0 or 1) and b is irrational algebraic. This was resolved independently by Aleksandr Gelfond and Theodor Schneider in 1934.\n\nFamous examples include 2^sqrt(2) (the Gelfond-Schneider constant) and e^pi (Gelfond's constant), both proven transcendental as corollaries.",
+    "problemStatement": "**Theorem (Gelfond-Schneider):** If a and b are algebraic numbers with a not in {0, 1} and b irrational, then a^b is transcendental.\n\nHere a^b is defined as exp(b * log(a)) for an appropriate branch of the logarithm.",
+    "proofStrategy": "The proof uses the Gelfond-Schneider method:\n1. Assume for contradiction that a^b is algebraic\n2. Construct an auxiliary function with many zeros\n3. Apply Siegel's lemma to control coefficients\n4. Use analytic function theory to bound zeros\n5. Derive a contradiction",
+    "keyInsights": [
+      "Transcendence can arise from simple algebraic operations",
+      "The algebraic numbers are not closed under irrational exponentiation",
+      "Auxiliary function methods are powerful for transcendence proofs",
+      "2^sqrt(2) and e^pi are both transcendental"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup and Definitions",
+      "startLine": 1,
+      "endLine": 100,
+      "summary": "Imports and mathematical background including transcendence definitions."
+    },
+    {
+      "id": "theorem",
+      "title": "Main Theorem",
+      "startLine": 101,
+      "endLine": 150,
+      "summary": "Statement of the Gelfond-Schneider theorem."
+    },
+    {
+      "id": "corollaries",
+      "title": "Famous Corollaries",
+      "startLine": 151,
+      "endLine": 200,
+      "summary": "Transcendence of 2^sqrt(2) and e^pi."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Gelfond-Schneider theorem resolves Hilbert's 7th Problem, showing that irrational powers of algebraic bases yield transcendental numbers. This reveals a fundamental barrier: the algebraic numbers cannot be closed under all natural operations.",
+    "implications": "The theorem has profound implications for transcendence theory and was later generalized by Alan Baker to linear forms in logarithms, earning him the Fields Medal in 1970.",
+    "openQuestions": [
+      "Can Baker's theorem be used to prove more transcendence results?",
+      "What are effective bounds in transcendence proofs?",
+      "How does this connect to Schanuel's conjecture?"
+    ]
+  }
+}

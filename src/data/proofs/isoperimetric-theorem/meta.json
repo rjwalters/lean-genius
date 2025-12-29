@@ -1,0 +1,73 @@
+{
+  "id": "isoperimetric-theorem",
+  "title": "The Isoperimetric Theorem",
+  "slug": "isoperimetric-theorem",
+  "description": "Among all curves of a given perimeter, the circle encloses the maximum area. Equivalently, among all shapes of a given area, the circle has minimum perimeter.",
+  "meta": {
+    "wiedijkNumber": 43,
+    "author": "Ancient Greeks, rigorous proof by Weierstrass (1870s)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Isoperimetric_inequality",
+    "date": "1870",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/IsoperimetricTheorem.lean",
+    "tags": [
+      "geometry",
+      "optimization",
+      "calculus-of-variations",
+      "inequality",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "axiom-based",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.measure",
+        "description": "Measure theory for area",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Framework for perimeter and area of planar curves",
+      "Isoperimetric inequality: 4*pi*A <= L^2",
+      "Equality characterization for circles"
+    ],
+    "dateAdded": "12/29/25"
+  },
+  "overview": {
+    "historicalContext": "The isoperimetric problem is one of the oldest in mathematics, known to the ancient Greeks. The legendary Queen Dido founded Carthage by using an ox hide cut into a thin strip to enclose maximum land. Rigorous proofs came in the 19th century.",
+    "problemStatement": "**Isoperimetric Theorem**: For any simple closed curve with perimeter L enclosing area A:\n\n$$4\\pi A \\leq L^2$$\n\nEquality holds if and only if the curve is a circle.",
+    "proofStrategy": "Modern proofs use calculus of variations, Fourier analysis, or the Brunn-Minkowski inequality. The key is showing that any deviation from circular shape decreases the area-to-perimeter ratio.",
+    "keyInsights": [
+      "The circle is uniquely optimal among all shapes",
+      "Generalizes to spheres in higher dimensions",
+      "Connected to eigenvalue problems and heat diffusion",
+      "Foundation for geometric measure theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "perimeter-area",
+      "title": "Perimeter and Area",
+      "startLine": 50,
+      "endLine": 100,
+      "summary": "Definitions for closed curves."
+    },
+    {
+      "id": "isoperimetric-inequality",
+      "title": "Isoperimetric Inequality",
+      "startLine": 100,
+      "endLine": 180,
+      "summary": "Main inequality and equality case."
+    }
+  ],
+  "conclusion": {
+    "summary": "The isoperimetric theorem is a fundamental optimization result showing the circle's unique role in geometry. It has inspired vast generalizations in geometric measure theory and differential geometry.",
+    "implications": "Applications range from physics (soap bubbles, crystal growth) to engineering (optimal design) to biology (cell shapes). The theorem generalizes to Riemannian manifolds and metric spaces.",
+    "openQuestions": [
+      "What are the isoperimetric shapes on other surfaces?",
+      "How does the inequality behave in discrete settings?",
+      "What are the best constants in non-Euclidean spaces?"
+    ]
+  }
+}

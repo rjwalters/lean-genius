@@ -1,0 +1,73 @@
+{
+  "id": "fair-games-theorem",
+  "title": "The Fair Games Theorem",
+  "slug": "fair-games-theorem",
+  "description": "In a fair game (expected gain is zero), a gambler with finite wealth playing against an infinitely wealthy opponent will eventually go bankrupt with probability 1.",
+  "meta": {
+    "wiedijkNumber": 62,
+    "author": "Classical probability theory",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gambler%27s_ruin",
+    "date": "1700s",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/FairGamesTheorem.lean",
+    "tags": [
+      "probability",
+      "random-walk",
+      "martingale",
+      "gambling",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "axiom-based",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ProbabilityTheory.Martingale",
+        "description": "Martingale theory",
+        "module": "Mathlib.Probability.Martingale"
+      }
+    ],
+    "originalContributions": [
+      "Framework for fair games and random walks",
+      "Ruin probability calculations",
+      "Connection to martingale stopping theorems"
+    ],
+    "dateAdded": "12/29/25"
+  },
+  "overview": {
+    "historicalContext": "The gambler's ruin problem has been studied since the origins of probability theory with Pascal, Fermat, and Huygens. It shows that even in a fair game, the player with less capital is at a severe disadvantage over long time horizons.",
+    "problemStatement": "**Fair Games Theorem**: In a fair game where a player wins or loses $1 with equal probability, a player starting with finite capital n playing against an opponent with infinite capital will eventually go bankrupt with probability 1.\n\nThe expected time to ruin is infinite, but ruin is certain.",
+    "proofStrategy": "Model the game as a random walk on integers. The player's wealth is a martingale. By the martingale convergence theorem and recurrence properties of 1D random walks, the walk will hit 0 with probability 1.",
+    "keyInsights": [
+      "Fair games are still ruinous for the finite player",
+      "The random walk is recurrent in 1D: it returns to every point",
+      "Expected time to ruin is infinite despite certain ruin",
+      "Illustrates the difference between expected value and certain outcome"
+    ]
+  },
+  "sections": [
+    {
+      "id": "fair-game-model",
+      "title": "Fair Game Model",
+      "startLine": 50,
+      "endLine": 100,
+      "summary": "Random walk representation of gambling."
+    },
+    {
+      "id": "ruin-probability",
+      "title": "Ruin Probability",
+      "startLine": 100,
+      "endLine": 180,
+      "summary": "Proof that ruin occurs with probability 1."
+    }
+  ],
+  "conclusion": {
+    "summary": "The fair games theorem reveals a counterintuitive truth: even in perfectly fair games, the poorer player is doomed. It's a foundational result connecting random walks to practical questions of risk.",
+    "implications": "Applications include risk management, insurance, optimal stopping, and understanding why 'the house always wins' even in fair games if it has more capital.",
+    "openQuestions": [
+      "What is the distribution of ruin times?",
+      "How does the result change with biased games?",
+      "What are the optimal betting strategies?"
+    ]
+  }
+}

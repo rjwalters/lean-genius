@@ -1,0 +1,63 @@
+{
+  "id": "hodge-conjecture",
+  "title": "The Hodge Conjecture",
+  "slug": "hodge-conjecture",
+  "description": "One of the seven Millennium Prize Problems. Every Hodge class on a projective variety is a rational combination of algebraic cycle classes.",
+  "meta": {
+    "author": "W.V.D. Hodge (1950)",
+    "date": "1950",
+    "status": "verified",
+    "tags": [
+      "algebraic-geometry",
+      "topology",
+      "millennium-prize",
+      "advanced"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "Abstract Hodge structure definitions",
+      "Statement of the Hodge Conjecture",
+      "Known cases: Lefschetz (1,1) theorem",
+      "Educational context"
+    ],
+    "dateAdded": "12/29/25",
+    "millenniumProblem": "hodge"
+  },
+  "overview": {
+    "historicalContext": "The Hodge Conjecture (1950) concerns the relationship between topology and algebraic geometry. It became a Millennium Prize Problem in 2000 with a $1M prize.",
+    "problemStatement": "**Conjecture:** On a smooth projective variety X over C, every Hodge class is a rational linear combination of algebraic cycle classes.\n\nFormally: H^{p,p}(X) intersect H^{2p}(X,Q) equals the Q-span of algebraic subvariety classes.",
+    "proofStrategy": "This file provides:\n1. Abstract definitions of Hodge structures\n2. The formal statement of the conjecture\n3. Proven cases (Lefschetz theorem for divisors)\n4. Educational context",
+    "keyInsights": [
+      "The conjecture is OPEN - one of the Millennium Prize Problems",
+      "The Lefschetz (1,1) theorem is the proven case for divisors",
+      "Voisin showed it fails for Kahler manifolds with integral coefficients"
+    ]
+  },
+  "sections": [
+    {
+      "id": "hodge-structures",
+      "title": "Hodge Structures",
+      "startLine": 1,
+      "endLine": 100,
+      "summary": "Abstract definitions of Hodge structures and Hodge classes."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 101,
+      "endLine": 180,
+      "summary": "Formal statement of the Hodge Conjecture."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Hodge Conjecture remains open. This formalization provides the mathematical framework and statement, along with known special cases.",
+    "implications": "The conjecture is fundamental to algebraic geometry and topology. Its resolution would have profound implications for our understanding of algebraic varieties.",
+    "openQuestions": [
+      "Is the Hodge Conjecture true?",
+      "What is the relationship to motives?",
+      "Can the Lefschetz approach extend to higher codimension?"
+    ]
+  }
+}

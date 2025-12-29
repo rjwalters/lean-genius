@@ -1,0 +1,85 @@
+{
+  "id": "pi-transcendental",
+  "title": "Transcendence of Pi",
+  "slug": "pi-transcendental",
+  "description": "Pi is transcendental: it is not a root of any polynomial with integer coefficients. This proves the impossibility of squaring the circle with ruler and compass.",
+  "meta": {
+    "wiedijkNumber": 53,
+    "author": "Ferdinand von Lindemann (1882)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lindemann%E2%80%93Weierstrass_theorem",
+    "date": "1882",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/PiTranscendental.lean",
+    "tags": [
+      "number-theory",
+      "transcendental",
+      "pi",
+      "geometry",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "axiom-based",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.pi",
+        "description": "Definition of pi",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Transcendental",
+        "description": "Transcendental number definition",
+        "module": "Mathlib.RingTheory.Algebraic"
+      }
+    ],
+    "originalContributions": [
+      "Framework connecting pi's transcendence to circle squaring",
+      "Outline of Lindemann's proof via Hermite-Lindemann theorem",
+      "Connection to constructibility with ruler and compass"
+    ],
+    "dateAdded": "12/29/25"
+  },
+  "overview": {
+    "historicalContext": "Squaring the circle - constructing a square with the same area as a given circle using only ruler and compass - was a famous problem from antiquity. Lindemann's 1882 proof that pi is transcendental finally proved this impossible, as only algebraic numbers are constructible.",
+    "problemStatement": "**Theorem**: Pi is transcendental, i.e., there is no nonzero polynomial P with integer coefficients such that P(pi) = 0.\n\n**Corollary**: Squaring the circle is impossible with ruler and compass.",
+    "proofStrategy": "Lindemann's proof extends Hermite's method for e. It shows that for any distinct algebraic numbers alpha_1,...,alpha_n, the expression sum of beta_i * e^(alpha_i) cannot be zero unless all beta_i are zero. Since e^(i*pi) = -1, this implies pi is transcendental.",
+    "keyInsights": [
+      "Pi's transcendence follows from Euler's identity e^(i*pi) + 1 = 0",
+      "The Lindemann-Weierstrass theorem is the general result",
+      "Constructible numbers are exactly those in iterated quadratic extensions",
+      "Transcendence is much stronger than irrationality"
+    ]
+  },
+  "sections": [
+    {
+      "id": "transcendence",
+      "title": "Transcendental Numbers",
+      "startLine": 50,
+      "endLine": 100,
+      "summary": "Definition and basic properties."
+    },
+    {
+      "id": "pi-transcendental",
+      "title": "Pi is Transcendental",
+      "startLine": 100,
+      "endLine": 180,
+      "summary": "Main result via Hermite-Lindemann."
+    },
+    {
+      "id": "circle-squaring",
+      "title": "Impossibility of Squaring the Circle",
+      "startLine": 180,
+      "endLine": 240,
+      "summary": "Application to classical geometric construction."
+    }
+  ],
+  "conclusion": {
+    "summary": "The transcendence of pi resolved the ancient problem of squaring the circle, showing it impossible with ruler and compass. It was a triumph of 19th century mathematics.",
+    "implications": "Pi's transcendence has implications for normal numbers, Diophantine approximation, and the complexity of computing pi's digits.",
+    "openQuestions": [
+      "Is pi + e transcendental? (Unknown!)",
+      "Is pi a normal number?",
+      "What is the irrationality measure of pi?"
+    ]
+  }
+}

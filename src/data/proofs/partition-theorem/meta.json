@@ -1,0 +1,73 @@
+{
+  "id": "partition-theorem",
+  "title": "Euler's Partition Theorem",
+  "slug": "partition-theorem",
+  "description": "The number of partitions of n into odd parts equals the number of partitions into distinct parts. A beautiful bijection in combinatorics.",
+  "meta": {
+    "wiedijkNumber": 45,
+    "author": "Leonhard Euler (1748)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Partition_(number_theory)",
+    "date": "1748",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/PartitionTheorem.lean",
+    "tags": [
+      "combinatorics",
+      "number-theory",
+      "partition",
+      "bijection",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "axiom-based",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Partition",
+        "description": "Integer partitions",
+        "module": "Mathlib.Combinatorics.Partition"
+      }
+    ],
+    "originalContributions": [
+      "Framework for partitions into odd vs distinct parts",
+      "Generating function approach",
+      "Bijective proof via binary representation"
+    ],
+    "dateAdded": "12/29/25"
+  },
+  "overview": {
+    "historicalContext": "Euler discovered this theorem while studying partition generating functions. It reveals a surprising connection between two seemingly different partition types. The theorem has inspired centuries of work in partition theory, including Ramanujan's famous congruences.",
+    "problemStatement": "**Euler's Partition Theorem**: For any positive integer n:\n\n(# of partitions of n into odd parts) = (# of partitions of n into distinct parts)\n\nFor example, for n=5: odd parts: 5, 3+1+1, 1+1+1+1+1 (3 partitions); distinct: 5, 4+1, 3+2 (3 partitions).",
+    "proofStrategy": "Euler's proof uses generating functions: sum over n of p_odd(n)x^n = product of 1/(1-x^(2k-1)) equals product of (1+x^k) = sum of p_distinct(n)x^n. A bijective proof converts partitions via binary representation of multiplicities.",
+    "keyInsights": [
+      "Generating functions encode partition counts elegantly",
+      "The bijection uses binary expansion of part multiplicities",
+      "Generalizes to many partition identities (Rogers-Ramanujan)",
+      "Foundation for the theory of q-series"
+    ]
+  },
+  "sections": [
+    {
+      "id": "partitions",
+      "title": "Integer Partitions",
+      "startLine": 50,
+      "endLine": 100,
+      "summary": "Definitions of partitions, odd parts, distinct parts."
+    },
+    {
+      "id": "eulers-theorem",
+      "title": "Euler's Partition Theorem",
+      "startLine": 100,
+      "endLine": 180,
+      "summary": "Main theorem via generating functions and bijection."
+    }
+  ],
+  "conclusion": {
+    "summary": "Euler's partition theorem is a gem of combinatorics, revealing unexpected symmetry in how numbers can be decomposed. It sparked the rich field of partition theory.",
+    "implications": "Applications include statistical mechanics, representation theory, and modular forms. The theorem leads to deeper identities like the Rogers-Ramanujan identities.",
+    "openQuestions": [
+      "What other partition identities await discovery?",
+      "How do partition asymptotics (Hardy-Ramanujan) relate?",
+      "What are the connections to representation theory?"
+    ]
+  }
+}

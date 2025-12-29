@@ -1,0 +1,76 @@
+{
+  "id": "birch-swinnerton-dyer",
+  "title": "Birch and Swinnerton-Dyer Conjecture",
+  "slug": "birch-swinnerton-dyer",
+  "description": "One of the seven Millennium Prize Problems. The rank of an elliptic curve equals the order of vanishing of its L-function at s=1.",
+  "meta": {
+    "author": "Birch & Swinnerton-Dyer (1965)",
+    "date": "1965",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "elliptic-curves",
+      "millennium-prize",
+      "advanced"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "WeierstrassCurve",
+        "description": "Elliptic curve definitions",
+        "module": "Mathlib.AlgebraicGeometry.EllipticCurve.Weierstrass"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of BSD conjecture (weak and strong forms)",
+      "Definition of L-functions for elliptic curves",
+      "Known cases (rank 0 and 1)",
+      "Educational context"
+    ],
+    "dateAdded": "12/29/25",
+    "millenniumProblem": "bsd"
+  },
+  "overview": {
+    "historicalContext": "The BSD conjecture arose from extensive computational experiments in the 1960s. It connects arithmetic (rational points) with analysis (L-functions) in a precise quantitative way.",
+    "problemStatement": "**Weak BSD:** rank(E(Q)) = ord_{s=1} L(E,s)\n\n**Strong BSD:** The leading Taylor coefficient of L(E,s) at s=1 equals a precise formula involving periods, regulators, and the Shafarevich-Tate group.",
+    "proofStrategy": "This file provides:\n1. Abstract definitions of elliptic curves and L-functions\n2. The formal BSD statement\n3. Known proven cases (rank 0, rank 1)",
+    "keyInsights": [
+      "The conjecture is OPEN - one of the Millennium Prize Problems",
+      "Proven for rank 0 and rank 1 by Gross-Zagier and Kolyvagin",
+      "Modularity theorem is essential (proven by Wiles et al.)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "elliptic-curves",
+      "title": "Elliptic Curves",
+      "startLine": 1,
+      "endLine": 100,
+      "summary": "Definition of elliptic curves and the Mordell-Weil group."
+    },
+    {
+      "id": "l-functions",
+      "title": "L-Functions",
+      "startLine": 101,
+      "endLine": 180,
+      "summary": "Definition of the L-function and analytic continuation."
+    },
+    {
+      "id": "bsd",
+      "title": "The BSD Conjecture",
+      "startLine": 181,
+      "endLine": 260,
+      "summary": "Statement of weak and strong BSD."
+    }
+  ],
+  "conclusion": {
+    "summary": "The BSD Conjecture remains open. This formalization provides the mathematical framework and statement, along with the known partial results.",
+    "implications": "BSD is central to arithmetic geometry. A proof would have profound implications for understanding elliptic curves and their rational points.",
+    "openQuestions": [
+      "Is the Shafarevich-Tate group always finite?",
+      "Can we extend the rank 0 and 1 results to higher rank?",
+      "What is the connection to the Bloch-Kato conjecture?"
+    ]
+  }
+}

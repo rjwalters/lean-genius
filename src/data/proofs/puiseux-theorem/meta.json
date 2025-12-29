@@ -1,0 +1,80 @@
+{
+  "id": "puiseux-theorem",
+  "title": "Puiseux's Theorem",
+  "slug": "puiseux-theorem",
+  "description": "The field of Puiseux series (fractional power series) is algebraically closed. This provides a concrete algebraic closure of the Laurent series field.",
+  "meta": {
+    "wiedijkNumber": 41,
+    "author": "Victor Puiseux (1850)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Puiseux_series",
+    "date": "1850",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/PuiseuxTheorem.lean",
+    "tags": [
+      "algebra",
+      "field-theory",
+      "series",
+      "algebraic-closure",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "axiom-based",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "LaurentSeries",
+        "description": "Laurent series",
+        "module": "Mathlib.RingTheory.LaurentSeries"
+      }
+    ],
+    "originalContributions": [
+      "Framework for Puiseux series with fractional exponents",
+      "Newton polygon method for finding branches",
+      "Algebraic closure of Laurent series field"
+    ],
+    "dateAdded": "12/29/25"
+  },
+  "overview": {
+    "historicalContext": "Puiseux developed his theory of fractional power series in 1850 to study algebraic curves near singular points. Newton had earlier used similar ideas. The theorem shows that allowing fractional exponents suffices to solve all polynomial equations over Laurent series.",
+    "problemStatement": "**Puiseux's Theorem**: The field of Puiseux series over C (series of the form sum of a_n * t^(n/k) for some k) is algebraically closed.\n\nEquivalently: Every polynomial over C((t)) has a root in the Puiseux series field.",
+    "proofStrategy": "The Newton polygon method determines the possible leading exponents of roots. For each edge of the Newton polygon, one finds roots by solving a simpler polynomial, then iteratively refining the series expansion.",
+    "keyInsights": [
+      "Puiseux series are a concrete algebraic closure of C((t))",
+      "The Newton polygon predicts the structure of roots",
+      "Essential for studying algebraic curves and singularities",
+      "Connects to ramification theory in algebraic geometry"
+    ]
+  },
+  "sections": [
+    {
+      "id": "puiseux-series",
+      "title": "Puiseux Series",
+      "startLine": 50,
+      "endLine": 100,
+      "summary": "Definition of fractional power series."
+    },
+    {
+      "id": "newton-polygon",
+      "title": "Newton Polygon Method",
+      "startLine": 100,
+      "endLine": 160,
+      "summary": "Finding roots via Newton polygons."
+    },
+    {
+      "id": "algebraic-closure",
+      "title": "Algebraic Closure",
+      "startLine": 160,
+      "endLine": 220,
+      "summary": "Main theorem: Puiseux series field is algebraically closed."
+    }
+  ],
+  "conclusion": {
+    "summary": "Puiseux's theorem provides a beautiful and explicit algebraic closure for the field of Laurent series, essential for studying local behavior of algebraic curves.",
+    "implications": "The theorem is fundamental to singularity theory in algebraic geometry, resolution of singularities, and tropical geometry. It also connects to p-adic analysis and ramification theory.",
+    "openQuestions": [
+      "What is the p-adic analogue of Puiseux's theorem?",
+      "How does the theorem generalize to higher dimensions?",
+      "What are the computational aspects of Puiseux expansion?"
+    ]
+  }
+}

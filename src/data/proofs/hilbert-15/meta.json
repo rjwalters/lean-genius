@@ -1,0 +1,64 @@
+{
+  "id": "hilbert-15",
+  "title": "Hilbert's 15th Problem: Schubert Calculus",
+  "slug": "hilbert-15",
+  "description": "Rigorous foundation of Schubert's enumerative calculus for counting geometric configurations in Grassmannians.",
+  "meta": {
+    "author": "Various (20th century)",
+    "date": "1930s",
+    "status": "verified",
+    "tags": [
+      "algebraic-geometry",
+      "intersection-theory",
+      "hilbert-problems",
+      "advanced"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "Grassmannian definitions via linear algebra",
+      "Lines in P^3 = Gr(2,4)",
+      "Incidence conditions for lines meeting",
+      "Four Lines Theorem statement",
+      "Classic Schubert numbers"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 15
+  },
+  "overview": {
+    "historicalContext": "Schubert (1879) developed counting techniques for geometric configurations. Hilbert asked to make these rigorous. The problem was resolved through intersection theory on Grassmannians.",
+    "problemStatement": "**Problem:** Rigorously justify Schubert's counting methods.\n\n**Classic Results:**\n- 2 lines meet 4 given lines in 3D\n- 3264 conics tangent to 5 conics\n- 27 lines on a cubic surface",
+    "proofStrategy": "The formalization uses:\n1. Grassmannians as parameter spaces\n2. Incidence conditions as linear constraints\n3. Intersection theory for counting",
+    "keyInsights": [
+      "Grassmannians parametrize linear subspaces",
+      "Schubert classes form a cohomology basis",
+      "Littlewood-Richardson rule computes products"
+    ]
+  },
+  "sections": [
+    {
+      "id": "grassmannians",
+      "title": "Grassmannians",
+      "startLine": 1,
+      "endLine": 100,
+      "summary": "Definition of Grassmannians via linear algebra."
+    },
+    {
+      "id": "four-lines",
+      "title": "Four Lines Theorem",
+      "startLine": 101,
+      "endLine": 180,
+      "summary": "Exactly 2 lines meet 4 generic lines in 3D."
+    }
+  ],
+  "conclusion": {
+    "summary": "Hilbert's 15th Problem was resolved by developing rigorous intersection theory on Grassmannians. Schubert's counting methods are now justified.",
+    "implications": "Schubert calculus is fundamental to enumerative geometry and has applications in physics (string theory) and combinatorics.",
+    "openQuestions": [
+      "Can Schubert calculus be computed efficiently?",
+      "What are the connections to representation theory?",
+      "How does this extend to other homogeneous spaces?"
+    ]
+  }
+}

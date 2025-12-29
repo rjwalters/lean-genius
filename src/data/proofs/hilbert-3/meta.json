@@ -1,0 +1,77 @@
+{
+  "id": "hilbert-3",
+  "title": "Hilbert's 3rd Problem: Scissors Congruence",
+  "slug": "hilbert-3",
+  "description": "The Dehn invariant proves that a cube and regular tetrahedron of equal volume are NOT scissors congruent, answering Hilbert's 3rd Problem.",
+  "meta": {
+    "author": "Max Dehn (1900)",
+    "date": "1900",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "topology",
+      "hilbert-problems",
+      "intermediate"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "TensorProduct",
+        "description": "For the tensor product construction",
+        "module": "Mathlib.LinearAlgebra.TensorProduct.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of Dehn invariant",
+      "Proof that cube has zero Dehn invariant",
+      "Proof that tetrahedron has non-zero Dehn invariant",
+      "Statement of Bolyai-Gerwien theorem for contrast"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 3
+  },
+  "overview": {
+    "historicalContext": "Hilbert's 3rd Problem (1900) asked whether any two polyhedra of equal volume can be cut into congruent pieces. Max Dehn solved this in 1900 - just months after Hilbert posed it - by introducing the Dehn invariant.\n\nThis was the first of Hilbert's 23 problems to be completely resolved.",
+    "problemStatement": "**Question:** Given two polyhedra of equal volume, can one always be cut into finitely many polyhedral pieces that can be reassembled into the other?\n\n**Answer (Dehn 1900):** No! The Dehn invariant provides an obstruction.",
+    "proofStrategy": "The Dehn invariant D(P) lives in the tensor product R tensor (R/pi*Q).\n\n1. Define D(P) = sum over edges of length(e) tensor dihedral_angle(e)\n2. Prove D is additive under dissection\n3. Compute D(cube) = 0\n4. Compute D(tetrahedron) != 0\n5. Conclude they cannot be scissors congruent",
+    "keyInsights": [
+      "The tensor product R tensor (R/pi*Q) captures the obstruction",
+      "In 2D, all polygons of equal area ARE scissors congruent (Bolyai-Gerwien)",
+      "The 3D case is fundamentally different from 2D",
+      "Dihedral angles modulo pi*Q carry geometric information"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Polyhedra and Scissors Congruence",
+      "startLine": 1,
+      "endLine": 80,
+      "summary": "Basic definitions of polyhedra, dissections, and scissors congruence."
+    },
+    {
+      "id": "dehn",
+      "title": "The Dehn Invariant",
+      "startLine": 81,
+      "endLine": 150,
+      "summary": "Definition and properties of the Dehn invariant."
+    },
+    {
+      "id": "examples",
+      "title": "Cube and Tetrahedron",
+      "startLine": 151,
+      "endLine": 220,
+      "summary": "Computation showing cube and tetrahedron have different Dehn invariants."
+    }
+  ],
+  "conclusion": {
+    "summary": "Hilbert's 3rd Problem is resolved by the Dehn invariant. A cube and regular tetrahedron of equal volume cannot be scissors congruent because their Dehn invariants differ.",
+    "implications": "This was the first Hilbert problem solved and introduced important algebraic invariants to geometry. The Dehn invariant has connections to K-theory and scissors congruence groups.",
+    "openQuestions": [
+      "What are the scissors congruence groups in higher dimensions?",
+      "How does this connect to algebraic K-theory?",
+      "Can we compute Dehn invariants effectively for complex polyhedra?"
+    ]
+  }
+}

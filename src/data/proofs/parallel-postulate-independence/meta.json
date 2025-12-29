@@ -1,0 +1,80 @@
+{
+  "id": "parallel-postulate-independence",
+  "title": "Independence of the Parallel Postulate",
+  "slug": "parallel-postulate-independence",
+  "description": "Euclid's parallel postulate is independent of the other axioms of geometry. There exist consistent geometries (Euclidean and hyperbolic) that differ on this postulate.",
+  "meta": {
+    "wiedijkNumber": 12,
+    "author": "Bolyai, Lobachevsky, Beltrami (19th century)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Parallel_postulate",
+    "date": "1868",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/ParallelPostulateIndependence.lean",
+    "tags": [
+      "geometry",
+      "foundations",
+      "model-theory",
+      "non-euclidean",
+      "wiedijk-100",
+      "independence"
+    ],
+    "badge": "axiom-based",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Logic.Basic",
+        "description": "Basic logical connectives",
+        "module": "Mathlib.Logic.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Framework for neutral geometry and parallel postulate",
+      "Euclidean and Poincare disk models as axioms",
+      "Proof that hyperbolic parallel property contradicts Playfair's axiom"
+    ],
+    "dateAdded": "12/29/25"
+  },
+  "overview": {
+    "historicalContext": "For 2000 years, mathematicians tried to prove Euclid's fifth postulate from the others. Bolyai and Lobachevsky independently developed hyperbolic geometry (1820s-1830s), and Beltrami (1868) proved its consistency by constructing models within Euclidean geometry.",
+    "problemStatement": "**Theorem**: The parallel postulate (Playfair's axiom: through any point not on a line, exactly one parallel exists) is independent of neutral geometry axioms.\n\nThis means neither the postulate nor its negation can be proved from the other axioms.",
+    "proofStrategy": "Model-theoretic: construct two models of neutral geometry, one satisfying the parallel postulate (Euclidean plane) and one violating it (Poincare disk). Since both models satisfy neutral geometry but disagree on the parallel postulate, the postulate is independent.",
+    "keyInsights": [
+      "Independence is proved by exhibiting models that differ on the statement",
+      "The Poincare disk provides a concrete model of hyperbolic geometry",
+      "Non-Euclidean geometries are just as consistent as Euclidean geometry",
+      "Physical space's geometry is an empirical question, not a logical one"
+    ]
+  },
+  "sections": [
+    {
+      "id": "abstract-geometry",
+      "title": "Abstract Geometry Framework",
+      "startLine": 45,
+      "endLine": 75,
+      "summary": "Points, lines, and incidence geometry structures."
+    },
+    {
+      "id": "parallel-postulate",
+      "title": "The Parallel Postulate",
+      "startLine": 77,
+      "endLine": 96,
+      "summary": "Playfair's axiom and hyperbolic parallel property."
+    },
+    {
+      "id": "independence",
+      "title": "The Independence Theorem",
+      "startLine": 225,
+      "endLine": 260,
+      "summary": "Main result: models exist both with and without the parallel postulate."
+    }
+  ],
+  "conclusion": {
+    "summary": "The independence of the parallel postulate was one of the most important discoveries in mathematical history, showing that alternative geometries are logically consistent and opening the door to modern differential geometry and general relativity.",
+    "implications": "Non-Euclidean geometries are essential in physics (general relativity uses curved spacetime) and mathematics (hyperbolic geometry, Riemannian geometry). The independence proof revolutionized our understanding of axiom systems.",
+    "openQuestions": [
+      "What is the large-scale geometry of the universe?",
+      "How does hyperbolic geometry relate to quantum gravity?",
+      "What other geometric axioms are independent?"
+    ]
+  }
+}

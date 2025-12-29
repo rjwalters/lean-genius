@@ -1,0 +1,68 @@
+{
+  "id": "kroneckers-jugendtraum",
+  "title": "Kronecker's Jugendtraum (Hilbert's 12th)",
+  "slug": "kroneckers-jugendtraum",
+  "description": "Hilbert's 12th Problem asks to extend the Kronecker-Weber theorem: find explicit generators for all abelian extensions of number fields.",
+  "meta": {
+    "author": "Kronecker (1853), Weber (1886)",
+    "date": "1886",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "class-field-theory",
+      "hilbert-problems",
+      "advanced"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "IsCyclotomicExtension",
+        "description": "Cyclotomic field definitions",
+        "module": "Mathlib.NumberTheory.Cyclotomic.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Cyclotomic extensions are abelian",
+      "Kronecker-Weber theorem statement",
+      "Connection to complex multiplication"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 12
+  },
+  "overview": {
+    "historicalContext": "Kronecker's 'youthful dream' (Jugendtraum) was to find explicit generators for abelian extensions. For Q, the answer is cyclotomic fields (Kronecker-Weber). For imaginary quadratic fields, complex multiplication provides the answer.",
+    "problemStatement": "**Problem:** Given a number field K, find explicit analytic functions whose special values generate all abelian extensions of K.\n\n**Status:** Solved for Q and imaginary quadratic fields; open in general.",
+    "proofStrategy": "The file proves:\n1. Cyclotomic extensions of Q are abelian\n2. Statement of Kronecker-Weber theorem\n3. Connection to class field theory",
+    "keyInsights": [
+      "For Q: abelian extensions are cyclotomic",
+      "For imaginary quadratic: complex multiplication answers",
+      "General case remains open"
+    ]
+  },
+  "sections": [
+    {
+      "id": "cyclotomic",
+      "title": "Cyclotomic Extensions",
+      "startLine": 1,
+      "endLine": 100,
+      "summary": "Properties of cyclotomic extensions."
+    },
+    {
+      "id": "kronecker-weber",
+      "title": "Kronecker-Weber Theorem",
+      "startLine": 101,
+      "endLine": 180,
+      "summary": "Abelian extensions of Q are contained in cyclotomic fields."
+    }
+  ],
+  "conclusion": {
+    "summary": "Hilbert's 12th Problem is solved for Q and imaginary quadratic fields. The general case remains open and connects to the Langlands program.",
+    "implications": "This problem initiated class field theory and connects to modern number theory including Stark conjectures and Langlands program.",
+    "openQuestions": [
+      "What are explicit generators for real quadratic fields?",
+      "How does this connect to the Langlands program?",
+      "What is the role of modular forms?"
+    ]
+  }
+}
