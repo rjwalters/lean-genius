@@ -1,0 +1,100 @@
+{
+  "id": "hilbert-10",
+  "title": "Hilbert's Tenth Problem: Undecidability of Diophantine Equations",
+  "slug": "hilbert-10",
+  "description": "The MRDP theorem (1970) proves that no algorithm can determine whether an arbitrary Diophantine equation has integer solutions, answering Hilbert's 1900 challenge in the negative.",
+  "meta": {
+    "author": "Matiyasevich, Robinson, Davis, Putnam (1970)",
+    "date": "1970",
+    "status": "verified",
+    "tags": [
+      "computability",
+      "undecidability",
+      "number-theory",
+      "hilbert-problems",
+      "intermediate"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "Formal definition of Diophantine sets",
+      "Reduction from Halting Problem to H10",
+      "MRDP theorem statement (axiomatized)",
+      "Connection to recursively enumerable sets"
+    ],
+    "dateAdded": "12/28/25"
+  },
+  "overview": {
+    "historicalContext": "In 1900, David Hilbert presented 23 problems that would shape 20th-century mathematics. The tenth problem asked: 'Given a Diophantine equation with any number of unknown quantities and with rational integral numerical coefficients: to devise a process according to which it can be determined in a finite number of operations whether the equation is solvable in rational integers.'\n\nThe negative answer came 70 years later through a remarkable collaboration:\n- Martin Davis (1950s): Laid the groundwork by studying Diophantine representations of recursively enumerable sets\n- Hilary Putnam (1960s): Made key technical advances in encoding computations\n- Julia Robinson (1960s): Proved crucial results about exponential growth in Diophantine equations\n- Yuri Matiyasevich (1970): Completed the proof by showing that exponential relations are Diophantine, using Fibonacci numbers and Pell equations\n\nThe combined result is known as the MRDP theorem (Matiyasevich-Robinson-Davis-Putnam).",
+    "problemStatement": "Theorem (MRDP, 1970): There is no algorithm to decide whether an arbitrary Diophantine equation has integer solutions.\n\nEquivalently: The problem of determining whether\n\n$$P(x_1, x_2, \\ldots, x_n) = 0$$\n\nhas solutions in integers, where $P$ is a polynomial with integer coefficients, is undecidable.\n\nThe proof establishes a remarkable equivalence: a set of natural numbers is recursively enumerable if and only if it is Diophantine.",
+    "proofStrategy": "The proof proceeds by reduction from the Halting Problem:\n\n1. **Define Diophantine sets**: A set $S \\subseteq \\mathbb{N}$ is Diophantine if membership can be expressed as the solvability of a polynomial equation.\n\n2. **State MRDP**: Every recursively enumerable (r.e.) set is Diophantine. This is the heart of the theorem, requiring deep number-theoretic constructions.\n\n3. **Observe halting is r.e.**: The set of (program, input) pairs where the program halts is recursively enumerable.\n\n4. **Conclude undecidability**: If H10 were decidable, we could decide halting by encoding it as a Diophantine problem. But halting is undecidable (Turing, 1936), so H10 must be undecidable too.",
+    "keyInsights": [
+      "Polynomials over integers can encode arbitrary computation",
+      "Exponential growth (key to computation) can be captured by polynomial equations",
+      "The diagonal argument from computability theory applies to number theory",
+      "Some very natural mathematical questions have no algorithmic solution"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Diophantine Equations and Sets",
+      "startLine": 41,
+      "endLine": 60,
+      "summary": "Defines Diophantine polynomials, what it means for an equation to have a solution, and when a set is Diophantine."
+    },
+    {
+      "id": "re-sets",
+      "title": "Recursively Enumerable Sets",
+      "startLine": 62,
+      "endLine": 74,
+      "summary": "Defines recursively enumerable sets in terms of halting behavior - sets where membership can be confirmed by a terminating computation."
+    },
+    {
+      "id": "mrdp",
+      "title": "The MRDP Theorem",
+      "startLine": 76,
+      "endLine": 83,
+      "summary": "States the MRDP theorem: every recursively enumerable set is Diophantine. This deep result is axiomatized."
+    },
+    {
+      "id": "oracles",
+      "title": "Hypothetical H10 Oracle",
+      "startLine": 85,
+      "endLine": 94,
+      "summary": "Defines what it would mean to have an oracle that correctly decides Diophantine equations."
+    },
+    {
+      "id": "halting",
+      "title": "The Halting Problem",
+      "startLine": 96,
+      "endLine": 123,
+      "summary": "Self-contained proof of halting undecidability using the diagonal argument, matching the approach in HaltingProblem.lean."
+    },
+    {
+      "id": "reduction",
+      "title": "Reduction from Halting to H10",
+      "startLine": 125,
+      "endLine": 168,
+      "summary": "Shows how to construct a halting oracle from an H10 oracle using MRDP, demonstrating that H10 is at least as hard as halting."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Undecidability of H10",
+      "startLine": 170,
+      "endLine": 194,
+      "summary": "The main theorem: no correct H10 oracle exists, because it would contradict the undecidability of halting."
+    }
+  ],
+  "conclusion": {
+    "summary": "Hilbert's Tenth Problem is undecidable. No algorithm can determine whether an arbitrary polynomial equation with integer coefficients has integer solutions. This result, proven 70 years after Hilbert posed the question, reveals deep connections between number theory and computability.\n\nThe MRDP theorem shows that Diophantine sets are exactly the recursively enumerable sets - a surprising equivalence between ancient number theory and modern computability theory.",
+    "implications": "The undecidability of H10 has profound implications:\n\n1. **Number Theory**: Many natural questions about integers have no algorithmic solution. The simple question 'does this equation have solutions?' is in general unanswerable.\n\n2. **Decidability Hierarchy**: H10 over integers is undecidable, but over rationals remains open! Different number systems have different computational properties.\n\n3. **Universal Computation**: Polynomials over integers can encode arbitrary computation, making them a 'universal' computational model.\n\n4. **Open Problems**: Whether H10 is decidable over the rationals (or other number fields) remains one of the major open problems in mathematics.",
+    "openQuestions": [
+      "Is H10 decidable over the rationals?",
+      "What is the computational complexity of H10 restricted to bounded degree polynomials?",
+      "Can we characterize exactly which number fields have decidable H10?",
+      "What is the simplest undecidable Diophantine equation?"
+    ]
+  }
+}
