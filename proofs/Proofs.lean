@@ -65,6 +65,7 @@ import Proofs.LagrangeFourSquares
 import Proofs.LagrangeTheorem
 import Proofs.LawOfCosines
 import Proofs.LawsOfLargeNumbers
+import Proofs.LebesgueMeasure
 import Proofs.LeibnizPi
 import Proofs.MathematicalInduction
 import Proofs.MeanValueTheorem
