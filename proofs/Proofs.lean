@@ -74,6 +74,7 @@ import Proofs.OnePlusOne
 import Proofs.ParallelPostulateIndependence
 import Proofs.PellEquation
 import Proofs.PerfectNumbers
+import Proofs.PicksTheorem
 import Proofs.PiTranscendental
 import Proofs.PlatonicSolids
 import Proofs.PrimeNumberTheorem
