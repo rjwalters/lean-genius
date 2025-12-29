@@ -22,6 +22,7 @@ import Proofs.CayleyHamilton
 import Proofs.CentralLimitTheorem
 import Proofs.CevasTheorem
 import Proofs.CombinationsFormula
+import Proofs.ContinuumHypothesis
 import Proofs.CramersRule
 import Proofs.DeMoivre
 import Proofs.DenumerabilityRationals
@@ -35,6 +36,7 @@ import Proofs.EulerIdentity
 import Proofs.EulerPolyhedralFormula
 import Proofs.EulerTotient
 import Proofs.FactorRemainderTheorem
+import Proofs.FairGamesTheorem
 import Proofs.FermatTwoSquares
 import Proofs.FermatsLastTheorem
 import Proofs.FeuerbachsTheorem
@@ -44,6 +46,7 @@ import Proofs.FundamentalArithmetic
 import Proofs.FundamentalTheoremAlgebra
 import Proofs.FundamentalTheoremCalculus
 import Proofs.GCDAlgorithm
+import Proofs.GeneralQuartic
 import Proofs.GeometricSeries
 import Proofs.GodelIncompleteness
 import Proofs.GreensTheorem
@@ -51,6 +54,7 @@ import Proofs.HaltingProblem
 import Proofs.HarmonicDivergence
 import Proofs.HermiteLindemann
 import Proofs.HeronsFormula
+import Proofs.Hilbert10
 import Proofs.Hilbert11_QuadraticForms
 import Proofs.HurwitzTheorem
 import Proofs.InclusionExclusion
@@ -58,6 +62,7 @@ import Proofs.InfinitudePrimes
 import Proofs.IntermediateValueTheorem
 import Proofs.IsoperimetricTheorem
 import Proofs.IsoscelesTriangle
+import Proofs.KeplerConjecture
 import Proofs.KnightsTourOblique
 import Proofs.Konigsberg
 import Proofs.KroneckersJugendtraum
@@ -66,16 +71,21 @@ import Proofs.LagrangeFourSquares
 import Proofs.LagrangeTheorem
 import Proofs.LawOfCosines
 import Proofs.LawsOfLargeNumbers
+import Proofs.LebesgueMeasure
 import Proofs.LeibnizPi
 import Proofs.MathematicalInduction
 import Proofs.MeanValueTheorem
+import Proofs.MinkowskiFundamentalTheorem
 import Proofs.MorleysTheorem
 import Proofs.NavierStokes
 import Proofs.OnePlusOne
 import Proofs.ParallelPostulateIndependence
+import Proofs.PartitionTheorem
+import Proofs.PascalsHexagon
 import Proofs.PellEquation
 import Proofs.PerfectNumbers
 import Proofs.PiTranscendental
+import Proofs.PicksTheorem
 import Proofs.PlatonicSolids
 import Proofs.PrimeNumberTheorem
 import Proofs.PrimeReciprocalDivergence
@@ -89,6 +99,7 @@ import Proofs.RamseysTheorem
 import Proofs.RandomizedMaxCut
 import Proofs.RiemannHypothesis
 import Proofs.SchroederBernstein
+import Proofs.SolutionOfCubic
 import Proofs.Sqrt2
 import Proofs.Sqrt2Irrational
 import Proofs.Sqrt2IrrationalFromAxioms
