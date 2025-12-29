@@ -69,6 +69,7 @@ import Proofs.MeanValueTheorem
 import Proofs.MorleysTheorem
 import Proofs.NavierStokes
 import Proofs.OnePlusOne
+import Proofs.ParallelPostulateIndependence
 import Proofs.PellEquation
 import Proofs.PerfectNumbers
 import Proofs.PiTranscendental
