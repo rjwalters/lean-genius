@@ -11,6 +11,7 @@ import Proofs.BaselProblem
 import Proofs.BertrandsPostulate
 import Proofs.BezoutIdentity
 import Proofs.BinomialTheorem
+import Proofs.BirchSwinnertonDyer
 import Proofs.BirthdayProblem
 import Proofs.BorsukUlam
 import Proofs.BrouwerFixedPoint
@@ -29,6 +30,7 @@ import Proofs.DenumerabilityRationals
 import Proofs.Derangements
 import Proofs.DesarguesTheorem
 import Proofs.DescartesRuleOfSigns
+import Proofs.DirichletsTheorem
 import Proofs.DissectionOfCubes
 import Proofs.DivisibilityBy3
 import Proofs.ErdosSzekeres
