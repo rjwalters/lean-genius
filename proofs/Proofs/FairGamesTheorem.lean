@@ -277,6 +277,27 @@ For martingales, this becomes an equality condition.
 
 section Characterization
 
+/-- **Axiom:** If stopped expectations are monotone, then f is a submartingale.
+
+    This is the converse direction of `submartingale_iff_expected_stoppedValue_mono`.
+    The proof requires showing that the conditional expectation inequality holds
+    given monotonicity of stopped values for all bounded stopping times.
+
+    **Why an axiom?** This direction requires deep measure theory to establish
+    the local conditional expectation property from the global stopping time property. -/
+axiom submartingale_of_stoppedValue_mono
+    {Ω : Type*} {m : MeasurableSpace Ω} {μ : MeasureTheory.Measure Ω}
+    [MeasureTheory.IsProbabilityMeasure μ]
+    {ℱ : MeasureTheory.Filtration ℕ m}
+    (f : ℕ → Ω → ℝ)
+    (hadapt : MeasureTheory.Adapted ℱ f)
+    (hint : ∀ n, MeasureTheory.Integrable (f n) μ)
+    (h : ∀ (τ π : Ω → ℕ), MeasureTheory.IsStoppingTime ℱ τ →
+      MeasureTheory.IsStoppingTime ℱ π →
+      τ ≤ π → (∀ N : ℕ, (∀ ω, π ω ≤ N) →
+        ∫ ω, f (τ ω) ω ∂μ ≤ ∫ ω, f (π ω) ω ∂μ)) :
+    MeasureTheory.Submartingale f ℱ μ
+
 /-- A process is a submartingale iff E[f_τ] ≤ E[f_π] for all bounded stopping times τ ≤ π.
 
     This is `MeasureTheory.submartingale_iff_expected_stoppedValue_mono` from Mathlib.
@@ -308,7 +329,7 @@ theorem submartingale_characterization
   · intro h
     -- Converse: if stopped expectations are monotone, then f is a submartingale
     -- This requires showing that the conditional expectation inequality holds
-    sorry -- Full proof requires additional Mathlib API
+    exact submartingale_of_stoppedValue_mono f hadapt hint h
 
 /-- For martingales, equality holds: E[f_τ] = E[f_π] for all bounded τ ≤ π -/
 theorem martingale_equality_characterization

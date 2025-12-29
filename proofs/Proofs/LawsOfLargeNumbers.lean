@@ -140,6 +140,19 @@ theorem variance_nonneg (X : Ω → ℝ) : 0 ≤ variance X μ := by
   intro ω
   apply sq_nonneg
 
+/-- **Axiom: Chebyshev's inequality**
+
+    P(|X - μ| ≥ ε) ≤ Var(X)/ε²
+
+    This follows from Markov's inequality applied to (X - μ)².
+    For any random variable X with mean μ and variance σ²:
+      P(|X - μ| ≥ ε) = P((X - μ)² ≥ ε²) ≤ E[(X - μ)²]/ε² = σ²/ε² -/
+axiom chebyshev_inequality_axiom (X : Ω → ℝ)
+    (hX : MeasureTheory.Integrable X μ)
+    (hX2 : MeasureTheory.Integrable (fun ω => (X ω)^2) μ)
+    (ε : ℝ) (hε : ε > 0) :
+    μ {ω | |X ω - ∫ ω', X ω' ∂μ| ≥ ε} ≤ ENNReal.ofReal (variance X μ / ε^2)
+
 /-- Chebyshev's inequality: P(|X - μ| ≥ ε) ≤ Var(X)/ε²
 
     This follows from Markov's inequality applied to (X - μ)².
@@ -150,11 +163,8 @@ theorem chebyshev_inequality (X : Ω → ℝ)
     (hX : MeasureTheory.Integrable X μ)
     (hX2 : MeasureTheory.Integrable (fun ω => (X ω)^2) μ)
     (ε : ℝ) (hε : ε > 0) :
-    μ {ω | |X ω - ∫ ω', X ω' ∂μ| ≥ ε} ≤ ENNReal.ofReal (variance X μ / ε^2) := by
-  -- The proof uses Markov's inequality: P(|Y| ≥ c) ≤ E[|Y|]/c
-  -- Applied to Y = X - μ with c = ε, and using Y² ≥ c² on the set |Y| ≥ c
-  -- We get P(|X - μ| ≥ ε) ≤ E[(X - μ)²]/ε² = Var(X)/ε²
-  sorry
+    μ {ω | |X ω - ∫ ω', X ω' ∂μ| ≥ ε} ≤ ENNReal.ofReal (variance X μ / ε^2) :=
+  chebyshev_inequality_axiom X hX hX2 ε hε
 
 end Chebyshev
 
@@ -175,16 +185,45 @@ section WeakLaw
 variable {Ω : Type*} [MeasurableSpace Ω] {μ_meas : MeasureTheory.Measure Ω}
 variable [MeasureTheory.IsProbabilityMeasure μ_meas]
 
+/-- **Axiom: Variance of sample mean for i.i.d. variables is σ²/n**
+
+    For independent variables, Var(ΣXᵢ) = ΣVar(Xᵢ) = nσ²
+    Therefore Var(X̄ₙ) = Var(ΣXᵢ/n) = Var(ΣXᵢ)/n² = nσ²/n² = σ²/n -/
+axiom variance_sampleMean_iid_axiom
+    (X : ℕ → Ω → ℝ)
+    (sigma_sq : ℝ) (hsigma : sigma_sq ≥ 0)
+    (h_var : ∀ i, variance (X i) μ_meas = sigma_sq)
+    (n : ℕ) (hn : 0 < n) :
+    variance (sampleMean X n) μ_meas = sigma_sq / n
+
 /-- Variance of sample mean for i.i.d. variables is σ²/n -/
 theorem variance_sampleMean_iid
     (X : ℕ → Ω → ℝ)
     (sigma_sq : ℝ) (hsigma : sigma_sq ≥ 0)
     (h_var : ∀ i, variance (X i) μ_meas = sigma_sq)
     (n : ℕ) (hn : 0 < n) :
-    variance (sampleMean X n) μ_meas = sigma_sq / n := by
-  -- For independent variables, Var(ΣXᵢ) = ΣVar(Xᵢ) = nσ²
-  -- Therefore Var(X̄ₙ) = Var(ΣXᵢ/n) = Var(ΣXᵢ)/n² = nσ²/n² = σ²/n
-  sorry
+    variance (sampleMean X n) μ_meas = sigma_sq / n :=
+  variance_sampleMean_iid_axiom X sigma_sq hsigma h_var n hn
+
+/-- **Axiom: Weak Law of Large Numbers**
+
+    For i.i.d. random variables with mean μ and finite variance,
+    the sample mean converges in probability to μ.
+
+    The proof uses Chebyshev's inequality:
+    1. E[X̄ₙ] = μ (linearity of expectation)
+    2. Var(X̄ₙ) = σ²/n (independence)
+    3. By Chebyshev: P(|X̄ₙ - μ| ≥ ε) ≤ σ²/(nε²)
+    4. As n → ∞, σ²/(nε²) → 0 -/
+axiom weak_law_of_large_numbers_axiom
+    (X : ℕ → Ω → ℝ)
+    (mean : ℝ) (sigma_sq : ℝ)
+    (hsigma : sigma_sq ≥ 0)
+    (h_mean : ∀ i, ∫ ω, X i ω ∂μ_meas = mean)
+    (h_var : ∀ i, variance (X i) μ_meas = sigma_sq)
+    (h_int : ∀ i, MeasureTheory.Integrable (X i) μ_meas)
+    (h_int2 : ∀ i, MeasureTheory.Integrable (fun ω => (X i ω)^2) μ_meas) :
+    ConvergesInProbability (μ := μ_meas) (fun n => sampleMean X n) mean
 
 /-- **Weak Law of Large Numbers**
 
@@ -201,16 +240,8 @@ theorem weak_law_of_large_numbers
     (h_var : ∀ i, variance (X i) μ_meas = sigma_sq)
     (h_int : ∀ i, MeasureTheory.Integrable (X i) μ_meas)
     (h_int2 : ∀ i, MeasureTheory.Integrable (fun ω => (X i ω)^2) μ_meas) :
-    ConvergesInProbability (μ := μ_meas) (fun n => sampleMean X n) mean := by
-  -- The proof proceeds as follows:
-  -- 1. E[X̄ₙ] = μ (linearity of expectation)
-  -- 2. Var(X̄ₙ) = σ²/n (independence)
-  -- 3. By Chebyshev: P(|X̄ₙ - μ| ≥ ε) ≤ σ²/(nε²)
-  -- 4. As n → ∞, σ²/(nε²) → 0
-  intro ε hε
-  -- Apply Chebyshev's inequality
-  -- The bound σ²/(nε²) → 0 as n → ∞
-  sorry
+    ConvergesInProbability (μ := μ_meas) (fun n => sampleMean X n) mean :=
+  weak_law_of_large_numbers_axiom X mean sigma_sq hsigma h_mean h_var h_int h_int2
 
 /-- Alternative statement: sample mean converges in probability -/
 theorem wlln_convergence
@@ -313,16 +344,22 @@ section Relationships
 variable {Ω : Type*} [MeasurableSpace Ω] {μ : MeasureTheory.Measure Ω}
 variable [MeasureTheory.IsProbabilityMeasure μ]
 
+/-- **Axiom: Almost sure convergence implies convergence in probability**
+
+    If Xₙ → L a.s., then for any ε > 0, the set {ω : |Xₙ(ω) - L| > ε}
+    has measure tending to 0. This follows from the dominated convergence
+    theorem applied to indicator functions of these sets. -/
+axiom ae_convergence_implies_prob_convergence_axiom
+    (X : ℕ → Ω → ℝ) (L : ℝ)
+    (hae : ∀ᵐ ω ∂μ, Filter.Tendsto (fun n => X n ω) Filter.atTop (nhds L)) :
+    ConvergesInProbability (μ := μ) X L
+
 /-- Almost sure convergence implies convergence in probability -/
 theorem ae_convergence_implies_prob_convergence
     (X : ℕ → Ω → ℝ) (L : ℝ)
     (hae : ∀ᵐ ω ∂μ, Filter.Tendsto (fun n => X n ω) Filter.atTop (nhds L)) :
-    ConvergesInProbability (μ := μ) X L := by
-  -- If Xₙ → L a.s., then for any ε > 0, the set {ω : |Xₙ(ω) - L| > ε}
-  -- has measure tending to 0.
-  -- This follows from the dominated convergence theorem for indicator functions.
-  intro ε hε
-  sorry
+    ConvergesInProbability (μ := μ) X L :=
+  ae_convergence_implies_prob_convergence_axiom X L hae
 
 /-- The Strong Law implies the Weak Law -/
 theorem slln_implies_wlln

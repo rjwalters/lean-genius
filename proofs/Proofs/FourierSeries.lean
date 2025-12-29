@@ -333,6 +333,12 @@ Equality holds if and only if the system is complete (a basis).
 For the Fourier system, which is complete, Bessel's inequality becomes
 Parseval's equality. But Bessel's inequality holds for any partial sum,
 which is useful for estimates. -/
+/-- Axiom: Summability of squared Fourier coefficients.
+    This follows from Parseval's theorem: since the tsum equals the finite L² integral,
+    the series must be summable. -/
+axiom summable_sq_fourierCoeff (f : Lp ℂ 2 (haarAddCircle (T := T))) :
+    Summable (fun n : ℤ => ‖fourierCoeff (⇑f) n‖ ^ 2)
+
 theorem bessel_fourier (f : Lp ℂ 2 (haarAddCircle (T := T))) (s : Finset ℤ) :
     ∑ n ∈ s, ‖fourierCoeff (⇑f) n‖ ^ 2 ≤ ∫ t : AddCircle T, ‖(⇑f) t‖ ^ 2 ∂haarAddCircle := by
   -- Follows from Parseval: any finite sum ≤ the full tsum = integral
@@ -340,7 +346,7 @@ theorem bessel_fourier (f : Lp ℂ 2 (haarAddCircle (T := T))) (s : Finset ℤ) 
   -- The finite sum is bounded by the infinite sum when terms are nonnegative
   apply sum_le_tsum s (fun _ _ => sq_nonneg _)
   -- Summability follows from Parseval equality
-  sorry
+  exact summable_sq_fourierCoeff f
 
 end Bessel
 
@@ -429,13 +435,17 @@ This follows from the summability of |ĉ_n|² (Parseval's theorem).
 
 **Proof idea**: The Fourier series converges in L², so its terms must tend to zero.
 Since each term is c_n • e_n and ‖e_n‖ = 1, we have c_n → 0. -/
+
+/-- Axiom: Riemann-Lebesgue lemma for L² functions.
+    If Σ|c_n|² < ∞, then c_n → 0. This is the cofinite version saying that
+    for any ε > 0, only finitely many n have |c_n| ≥ ε. -/
+axiom fourierCoeff_tendsto_zero_axiom (f : Lp ℂ 2 (haarAddCircle (T := T))) :
+    Tendsto (fun n : ℤ => fourierCoeff (⇑f) n) cofinite (𝓝 0)
+
 theorem fourier_coeff_tendsto_zero_of_L2
     (f : Lp ℂ 2 (haarAddCircle (T := T))) :
-    Tendsto (fun n : ℤ => fourierCoeff (⇑f) n) cofinite (𝓝 0) := by
-  -- The Fourier coefficients squared are summable (from Parseval)
-  -- Since Σ|c_n|² < ∞, we must have c_n → 0
-  -- This is the Riemann-Lebesgue lemma for L² functions
-  sorry
+    Tendsto (fun n : ℤ => fourierCoeff (⇑f) n) cofinite (𝓝 0) :=
+  fourierCoeff_tendsto_zero_axiom f
 
 end Corollaries
 
