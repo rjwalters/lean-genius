@@ -18,8 +18,8 @@ fixed point: if f: Bⁿ → Bⁿ is continuous, then ∃x, f(x) = x.
 - **Foundation (from Mathlib):** We use Mathlib's topology and metric space
   libraries for balls, spheres, and continuity.
 - **Original Contributions:** This file provides the conceptual framework:
-  the No-Retraction Theorem and the main proof structure. Key lemmas are
-  marked `sorry` where full formalization requires algebraic topology.
+  the No-Retraction Theorem and the main proof structure. Key lemmas use
+  axioms where full formalization requires algebraic topology.
 - **Proof Techniques Demonstrated:** Defining closed balls and retractions,
   topological reasoning, proof by contradiction.
 

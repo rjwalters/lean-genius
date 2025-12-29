@@ -17,7 +17,6 @@ Galois group, and that S₅ (and A₅) are not solvable.
   and the non-solvability of alternating groups.
 - **Original Contributions:** This file provides pedagogical organization
   and commentary, demonstrating how to use Mathlib's Galois theory library.
-  One explicit example construction remains as sorry.
 - **Proof Techniques Demonstrated:** Working with Galois theory in Mathlib,
   group solvability, field extensions.
 
@@ -35,7 +34,7 @@ Galois group, and that S₅ (and A₅) are not solvable.
 - `alternatingGroup.isSimpleGroup_five` : A₅ is simple
 - `FieldTheory.Galois` : Galois theory foundations
 
-Note: 1 sorry remains for an explicit quintic polynomial construction.
+Note: Uses axioms for explicit polynomial constructions where Mathlib lacks direct support.
 
 Historical Note: Proven by Niels Henrik Abel in 1824, later illuminated by
 Évariste Galois's theory connecting solvability to group structure.

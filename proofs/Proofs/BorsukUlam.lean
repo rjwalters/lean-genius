@@ -16,7 +16,7 @@ n-sphere such that f(x) = f(-x). Antipodal points must map to the same value.
 - **Foundation (from Mathlib):** We use Mathlib's topology library for
   continuity, metric spaces, and Euclidean spaces.
 - **Original Contributions:** This file provides the conceptual framework
-  and proof structure. Key lemmas are marked `sorry` where full formalization
+  and proof structure. Key lemmas use axioms where full formalization
   would require algebraic topology (covering spaces, fundamental groups).
 - **Proof Techniques Demonstrated:** Defining spheres and antipodal maps,
   topological reasoning, proof by contradiction outline.
