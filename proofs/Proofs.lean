@@ -44,6 +44,7 @@ import Proofs.FundamentalArithmetic
 import Proofs.FundamentalTheoremAlgebra
 import Proofs.FundamentalTheoremCalculus
 import Proofs.GCDAlgorithm
+import Proofs.GelfondSchneider
 import Proofs.GeometricSeries
 import Proofs.GodelIncompleteness
 import Proofs.GreensTheorem
