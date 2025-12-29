@@ -48,6 +48,7 @@ import Proofs.GodelIncompleteness
 import Proofs.GreensTheorem
 import Proofs.HaltingProblem
 import Proofs.HarmonicDivergence
+import Proofs.HermiteLindemann
 import Proofs.HeronsFormula
 import Proofs.HurwitzTheorem
 import Proofs.InclusionExclusion
