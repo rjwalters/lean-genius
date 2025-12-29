@@ -67,6 +67,7 @@ import Proofs.MathematicalInduction
 import Proofs.MeanValueTheorem
 import Proofs.NavierStokes
 import Proofs.OnePlusOne
+import Proofs.PartitionTheorem
 import Proofs.PellEquation
 import Proofs.PerfectNumbers
 import Proofs.PlatonicSolids
