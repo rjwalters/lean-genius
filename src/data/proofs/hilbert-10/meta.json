@@ -23,7 +23,8 @@
       "MRDP theorem statement (axiomatized)",
       "Connection to recursively enumerable sets"
     ],
-    "dateAdded": "12/28/25"
+    "dateAdded": "12/28/25",
+    "hilbertNumber": 10
   },
   "overview": {
     "historicalContext": "In 1900, David Hilbert presented 23 problems that would shape 20th-century mathematics. The tenth problem asked: 'Given a Diophantine equation with any number of unknown quantities and with rational integral numerical coefficients: to devise a process according to which it can be determined in a finite number of operations whether the equation is solvable in rational integers.'\n\nThe negative answer came 70 years later through a remarkable collaboration:\n- Martin Davis (1950s): Laid the groundwork by studying Diophantine representations of recursively enumerable sets\n- Hilary Putnam (1960s): Made key technical advances in encoding computations\n- Julia Robinson (1960s): Proved crucial results about exponential growth in Diophantine equations\n- Yuri Matiyasevich (1970): Completed the proof by showing that exponential relations are Diophantine, using Fibonacci numbers and Pell equations\n\nThe combined result is known as the MRDP theorem (Matiyasevich-Robinson-Davis-Putnam).",

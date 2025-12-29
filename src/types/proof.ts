@@ -127,6 +127,81 @@ export const WIEDIJK_THEOREMS: Record<number, string> = {
 }
 
 /**
+ * Display information for Hilbert's 23 Problems badge
+ */
+export const HILBERT_BADGE_INFO = {
+  color: '#8B5CF6', // Purple
+  textColor: '#8B5CF6',
+  label: "Hilbert's Problems",
+  description: "One of Hilbert's 23 Problems presented in 1900",
+  url: 'https://en.wikipedia.org/wiki/Hilbert%27s_problems'
+}
+
+/**
+ * Mapping of Hilbert problem numbers to their names
+ * See: https://en.wikipedia.org/wiki/Hilbert's_problems
+ */
+export const HILBERT_PROBLEMS: Record<number, string> = {
+  1: 'Continuum Hypothesis',
+  2: 'Consistency of Arithmetic',
+  3: 'Equality of Volumes of Tetrahedra',
+  4: 'Straight Line as Shortest Distance',
+  5: 'Lie Groups without Differentiability',
+  6: 'Axiomatization of Physics',
+  7: 'Transcendence of Certain Numbers (Gelfond-Schneider)',
+  8: 'Riemann Hypothesis',
+  9: 'Reciprocity Laws in Number Fields',
+  10: 'Solvability of Diophantine Equations',
+  11: 'Quadratic Forms over Number Fields',
+  12: 'Kronecker-Weber Theorem Extension',
+  13: 'Solution of 7th Degree Equations',
+  14: 'Finiteness of Complete Systems of Functions',
+  15: 'Schubert Calculus',
+  16: 'Topology of Algebraic Curves and Surfaces',
+  17: 'Expression of Definite Forms by Squares',
+  18: 'Non-periodic Tilings and Sphere Packing',
+  19: 'Analyticity of Variational Problems',
+  20: 'General Boundary Value Problems',
+  21: 'Existence of Differential Equations with Monodromy',
+  22: 'Uniformization by Automorphic Functions',
+  23: 'Development of Calculus of Variations'
+}
+
+/**
+ * Display information for Millennium Prize Problems badge
+ */
+export const MILLENNIUM_BADGE_INFO = {
+  color: '#EC4899', // Pink
+  textColor: '#EC4899',
+  label: 'Millennium Prize',
+  description: 'One of the Clay Mathematics Institute Millennium Prize Problems',
+  url: 'https://www.claymath.org/millennium-problems'
+}
+
+/**
+ * The seven Millennium Prize Problems
+ * See: https://www.claymath.org/millennium-problems
+ */
+export type MillenniumProblem =
+  | 'birch-swinnerton-dyer'
+  | 'hodge'
+  | 'navier-stokes'
+  | 'p-vs-np'
+  | 'poincare'  // Solved by Perelman
+  | 'riemann'
+  | 'yang-mills'
+
+export const MILLENNIUM_PROBLEMS: Record<MillenniumProblem, string> = {
+  'birch-swinnerton-dyer': 'Birch and Swinnerton-Dyer Conjecture',
+  'hodge': 'Hodge Conjecture',
+  'navier-stokes': 'Navier-Stokes Existence and Smoothness',
+  'p-vs-np': 'P vs NP Problem',
+  'poincare': 'Poincaré Conjecture (Solved)',
+  'riemann': 'Riemann Hypothesis',
+  'yang-mills': 'Yang-Mills Existence and Mass Gap'
+}
+
+/**
  * A theorem or lemma imported from Mathlib
  */
 export interface MathlibDependency {
@@ -162,6 +237,10 @@ export interface ProofMeta {
   originalContributions?: string[]
   /** Wiedijk's 100 Famous Theorems number (1-100) if applicable */
   wiedijkNumber?: number
+  /** Hilbert's 23 Problems number (1-23) if applicable */
+  hilbertNumber?: number
+  /** Millennium Prize Problem identifier if applicable */
+  millenniumProblem?: MillenniumProblem
 }
 
 export interface ProofSection {
