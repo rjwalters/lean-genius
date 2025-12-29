@@ -11,6 +11,7 @@ import { fundamentalTheoremAlgebraData } from './fundamental-theorem-algebra'
 import { godelIncompletenessData } from './godel-incompleteness'
 import { pythagoreanTheoremData } from './pythagorean-theorem'
 import { haltingProblemData } from './halting-problem'
+import { hilbert10Data } from './hilbert-10'
 import { fourColorTheoremData } from './four-color-theorem'
 import { eulerIdentityData } from './euler-identity'
 import { brouwerFixedPointData } from './brouwer-fixed-point'
@@ -105,6 +106,7 @@ export const proofs: Record<string, ProofData> = {
   'godel-incompleteness': godelIncompletenessData,
   'pythagorean-theorem': pythagoreanTheoremData,
   'halting-problem': haltingProblemData,
+  'hilbert-10': hilbert10Data,
   'four-color-theorem': fourColorTheoremData,
   'euler-identity': eulerIdentityData,
   'brouwer-fixed-point': brouwerFixedPointData,
