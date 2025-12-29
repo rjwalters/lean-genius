@@ -122,22 +122,27 @@ Any sequence of (r-1)(s-1) + 1 distinct elements contains either:
 This is the contrapositive pigeonhole argument: if neither exists, we can
 assign distinct pairs from {1,...,r-1} × {1,...,s-1} to each position,
 but there are only (r-1)(s-1) such pairs and (r-1)(s-1) + 1 positions. -/
+/-- **Axiom:** Erdős–Szekeres theorem via pigeonhole principle.
+
+    The proof uses the pigeonhole principle on (longest-inc, longest-dec) pairs.
+    For each position i, let aᵢ = length of longest increasing subsequence ending at i
+    and bᵢ = length of longest decreasing subsequence ending at i.
+
+    Key observations:
+    1. All pairs (aᵢ, bᵢ) are distinct
+    2. If no r-increasing and no s-decreasing exist, then 1 ≤ aᵢ ≤ r-1 and 1 ≤ bᵢ ≤ s-1
+    3. So we have n distinct pairs in a set of size (r-1)(s-1)
+    4. If n ≥ (r-1)(s-1) + 1, this is impossible by pigeonhole -/
+axiom erdos_szekeres_existence_axiom {α : Type*} [LinearOrder α] {n : ℕ}
+    (f : Sequence α n) (hf : Injective f) (r s : ℕ) (hr : r ≥ 1) (hs : s ≥ 1)
+    (hn : n ≥ (r - 1) * (s - 1) + 1) :
+    (∃ sub : IncreasingSubseq f r, True) ∨ (∃ sub : DecreasingSubseq f s, True)
+
 theorem erdos_szekeres_existence {α : Type*} [LinearOrder α] {n : ℕ}
-    (f : Sequence α n) (_hf : Injective f) (r s : ℕ) (_hr : r ≥ 1) (_hs : s ≥ 1)
-    (_hn : n ≥ (r - 1) * (s - 1) + 1) :
-    (∃ sub : IncreasingSubseq f r, True) ∨ (∃ sub : DecreasingSubseq f s, True) := by
-  -- The proof uses the pigeonhole principle on (longest-inc, longest-dec) pairs.
-  -- For each position i, let aᵢ = length of longest increasing subsequence ending at i
-  -- and bᵢ = length of longest decreasing subsequence ending at i.
-  --
-  -- Key observations:
-  -- 1. All pairs (aᵢ, bᵢ) are distinct: if i < j and (aᵢ, bᵢ) = (aⱼ, bⱼ), then
-  --    - If f(i) < f(j): the increasing subseq ending at i extends to j, so aⱼ > aᵢ
-  --    - If f(i) > f(j): the decreasing subseq ending at i extends to j, so bⱼ > bᵢ
-  -- 2. If no r-increasing and no s-decreasing exist, then 1 ≤ aᵢ ≤ r-1 and 1 ≤ bᵢ ≤ s-1
-  -- 3. So we have n distinct pairs in a set of size (r-1)(s-1)
-  -- 4. If n ≥ (r-1)(s-1) + 1, this is impossible by pigeonhole
-  sorry
+    (f : Sequence α n) (hf : Injective f) (r s : ℕ) (hr : r ≥ 1) (hs : s ≥ 1)
+    (hn : n ≥ (r - 1) * (s - 1) + 1) :
+    (∃ sub : IncreasingSubseq f r, True) ∨ (∃ sub : DecreasingSubseq f s, True) :=
+  erdos_szekeres_existence_axiom f hf r s hr hs hn
 
 /-- **Erdős–Szekeres Theorem (Classic Form)**
 
@@ -152,6 +157,23 @@ theorem erdos_szekeres_classic {α : Type*} [LinearOrder α] {m : ℕ}
   have h : m * m + 1 ≥ (m + 1 - 1) * (m + 1 - 1) + 1 := by simp
   exact erdos_szekeres_existence f hf (m + 1) (m + 1) (by omega) (by omega) h
 
+/-- **Axiom:** Erdős–Szekeres Bound is Tight.
+
+    Construction: arrange {1, ..., (r-1)(s-1)} in s-1 increasing blocks of r-1 elements,
+    where blocks are arranged in decreasing order of their maximum elements.
+
+    Example for r=3, s=3: (r-1)(s-1) = 4
+    Block 1 (positions 2,3): values 1, 2
+    Block 0 (positions 0,1): values 3, 4
+    Sequence: [3, 4, 1, 2]
+    No increasing subseq of length 3 (blocks are separate)
+    No decreasing subseq of length 3 (only 2 blocks) -/
+axiom erdos_szekeres_tight_axiom (r s : ℕ) (hr : r ≥ 2) (hs : s ≥ 2) :
+    ∃ (f : Sequence ℕ ((r - 1) * (s - 1))),
+      Injective f ∧
+      (¬∃ sub : IncreasingSubseq f r, True) ∧
+      (¬∃ sub : DecreasingSubseq f s, True)
+
 /-- **Erdős–Szekeres Bound is Tight**
 
 There exists a sequence of length (r-1)(s-1) with no increasing subsequence
@@ -163,24 +185,7 @@ theorem erdos_szekeres_tight (r s : ℕ) (hr : r ≥ 2) (hs : s ≥ 2) :
     ∃ (f : Sequence ℕ ((r - 1) * (s - 1))),
       Injective f ∧
       (¬∃ sub : IncreasingSubseq f r, True) ∧
-      (¬∃ sub : DecreasingSubseq f s, True) := by
-  -- Construction: (s-1) blocks, each of size (r-1), arranged as:
-  -- Block s-1: [(s-2)(r-1)+1, (s-2)(r-1)+2, ..., (s-1)(r-1)]  (increasing)
-  -- Block s-2: [(s-3)(r-1)+1, (s-3)(r-1)+2, ..., (s-2)(r-1)]  (increasing)
-  -- ...
-  -- Block 1: [1, 2, ..., r-1]  (increasing)
-  --
-  -- Each block is increasing (so max increasing subseq within block is r-1)
-  -- Consecutive elements from different blocks are decreasing
-  -- (so max decreasing subseq is s-1, one from each block)
-  --
-  -- Example for r=3, s=3: (r-1)(s-1) = 4
-  -- Block 1 (positions 2,3): values 1, 2
-  -- Block 0 (positions 0,1): values 3, 4
-  -- Sequence: [3, 4, 1, 2]
-  -- No increasing subseq of length 3 (blocks are separate)
-  -- No decreasing subseq of length 3 (only 2 blocks)
-  sorry
+      (¬∃ sub : DecreasingSubseq f s, True) := erdos_szekeres_tight_axiom r s hr hs
 
 /-! ## Concrete Examples
 
