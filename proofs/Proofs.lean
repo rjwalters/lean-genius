@@ -22,6 +22,7 @@ import Proofs.CayleyHamilton
 import Proofs.CentralLimitTheorem
 import Proofs.CevasTheorem
 import Proofs.CombinationsFormula
+import Proofs.ContinuumHypothesis
 import Proofs.CramersRule
 import Proofs.DeMoivre
 import Proofs.DenumerabilityRationals
