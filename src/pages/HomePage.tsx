@@ -4,7 +4,7 @@ import { getAllProofs } from '@/data/proofs'
 import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
 import { ProofBadge, WiedijkBadge, BadgeFilter, MathlibIndicator } from '@/components/ui/proof-badge'
-import { WIEDIJK_BADGE_INFO } from '@/types/proof'
+import { WIEDIJK_BADGE_INFO, HILBERT_BADGE_INFO, MILLENNIUM_BADGE_INFO } from '@/types/proof'
 import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, Github, ArrowUpDown, Search } from 'lucide-react'
 import type { ProofBadge as ProofBadgeType } from '@/types/proof'
 
@@ -24,6 +24,8 @@ export function HomePage() {
   const [showFilters, setShowFilters] = useState(false)
   const [sortBy, setSortBy] = useState<SortOption>('newest')
   const [showWiedijkOnly, setShowWiedijkOnly] = useState(false)
+  const [showHilbertOnly, setShowHilbertOnly] = useState(false)
+  const [showMillenniumOnly, setShowMillenniumOnly] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
 
   // Filter and sort proofs
@@ -54,6 +56,20 @@ export function HomePage() {
       )
     }
 
+    // Filter by Hilbert's Problems
+    if (showHilbertOnly) {
+      filtered = filtered.filter(({ proof }) =>
+        proof.meta.hilbertNumber !== undefined
+      )
+    }
+
+    // Filter by Millennium Prize Problems
+    if (showMillenniumOnly) {
+      filtered = filtered.filter(({ proof }) =>
+        proof.meta.millenniumProblem !== undefined
+      )
+    }
+
     // Sort proofs
     return [...filtered].sort((a, b) => {
       switch (sortBy) {
@@ -67,7 +83,7 @@ export function HomePage() {
           return 0
       }
     })
-  }, [allProofs, searchQuery, selectedBadges, sortBy, showWiedijkOnly])
+  }, [allProofs, searchQuery, selectedBadges, sortBy, showWiedijkOnly, showHilbertOnly, showMillenniumOnly])
 
   const handleBadgeToggle = (badge: ProofBadgeType) => {
     setSelectedBadges((prev) => {
@@ -81,6 +97,8 @@ export function HomePage() {
   const clearFilters = () => {
     setSelectedBadges([])
     setShowWiedijkOnly(false)
+    setShowHilbertOnly(false)
+    setShowMillenniumOnly(false)
     setSearchQuery('')
   }
 
@@ -121,20 +139,20 @@ export function HomePage() {
 
       {/* Proof Cards */}
       <section className="max-w-6xl mx-auto px-6 pb-16">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
             Available Proofs ({proofs.length})
           </h2>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
             {/* Search Box */}
-            <div className="relative">
+            <div className="relative flex-1 min-w-0 sm:flex-none">
               <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Search proofs..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-8 pr-3 py-1.5 text-sm bg-muted/50 border border-border rounded-lg w-48 placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-annotation focus:border-annotation"
+                className="pl-8 pr-3 py-1.5 text-sm bg-muted/50 border border-border rounded-lg w-full sm:w-48 placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-annotation focus:border-annotation"
               />
             </div>
             {/* Sort Dropdown */}
@@ -154,16 +172,16 @@ export function HomePage() {
             <button
               onClick={() => setShowFilters(!showFilters)}
               className={`flex items-center gap-1.5 text-sm transition-colors ${
-                showFilters || selectedBadges.length > 0 || showWiedijkOnly
+                showFilters || selectedBadges.length > 0 || showWiedijkOnly || showHilbertOnly || showMillenniumOnly
                   ? 'text-annotation'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
               <Filter className="h-4 w-4" />
               <span>Filter</span>
-              {(selectedBadges.length > 0 || showWiedijkOnly) && (
+              {(selectedBadges.length > 0 || showWiedijkOnly || showHilbertOnly || showMillenniumOnly) && (
                 <span className="bg-annotation/20 text-annotation px-1.5 py-0.5 rounded text-xs">
-                  {selectedBadges.length + (showWiedijkOnly ? 1 : 0)}
+                  {selectedBadges.length + (showWiedijkOnly ? 1 : 0) + (showHilbertOnly ? 1 : 0) + (showMillenniumOnly ? 1 : 0)}
                 </span>
               )}
             </button>
@@ -175,7 +193,7 @@ export function HomePage() {
           <div className="mb-6 p-4 bg-card border border-border rounded-lg">
             <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-medium">Filter by Category</span>
-              {(selectedBadges.length > 0 || showWiedijkOnly) && (
+              {(selectedBadges.length > 0 || showWiedijkOnly || showHilbertOnly || showMillenniumOnly) && (
                 <button
                   onClick={clearFilters}
                   className="text-xs text-muted-foreground hover:text-foreground"
@@ -212,6 +230,54 @@ export function HomePage() {
                   100
                 </span>
                 <span className="hidden sm:inline">Wiedijk's 100</span>
+              </button>
+              {/* Hilbert Filter Toggle */}
+              <button
+                onClick={() => setShowHilbertOnly(!showHilbertOnly)}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all
+                  ${showHilbertOnly
+                    ? 'ring-2 ring-offset-2 ring-offset-background'
+                    : 'opacity-50 hover:opacity-75'
+                  }`}
+                style={{
+                  backgroundColor: `${HILBERT_BADGE_INFO.color}20`,
+                  color: HILBERT_BADGE_INFO.textColor,
+                  ...(showHilbertOnly && { ringColor: HILBERT_BADGE_INFO.color })
+                }}
+              >
+                <span className="inline-flex items-center justify-center h-4 w-4 rounded-full text-[9px] font-bold"
+                  style={{
+                    backgroundColor: `${HILBERT_BADGE_INFO.color}40`,
+                    color: HILBERT_BADGE_INFO.textColor
+                  }}
+                >
+                  23
+                </span>
+                <span className="hidden sm:inline">Hilbert's 23</span>
+              </button>
+              {/* Millennium Filter Toggle */}
+              <button
+                onClick={() => setShowMillenniumOnly(!showMillenniumOnly)}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all
+                  ${showMillenniumOnly
+                    ? 'ring-2 ring-offset-2 ring-offset-background'
+                    : 'opacity-50 hover:opacity-75'
+                  }`}
+                style={{
+                  backgroundColor: `${MILLENNIUM_BADGE_INFO.color}20`,
+                  color: MILLENNIUM_BADGE_INFO.textColor,
+                  ...(showMillenniumOnly && { ringColor: MILLENNIUM_BADGE_INFO.color })
+                }}
+              >
+                <span className="inline-flex items-center justify-center h-4 w-4 rounded-full text-[9px] font-bold"
+                  style={{
+                    backgroundColor: `${MILLENNIUM_BADGE_INFO.color}40`,
+                    color: MILLENNIUM_BADGE_INFO.textColor
+                  }}
+                >
+                  7
+                </span>
+                <span className="hidden sm:inline">Millennium</span>
               </button>
             </div>
           </div>
@@ -286,10 +352,10 @@ export function HomePage() {
         </div>
 
         {/* Empty state when filters result in no proofs */}
-        {proofs.length === 0 && (searchQuery.trim() || selectedBadges.length > 0 || showWiedijkOnly) && (
+        {proofs.length === 0 && (searchQuery.trim() || selectedBadges.length > 0 || showWiedijkOnly || showHilbertOnly || showMillenniumOnly) && (
           <div className="text-center py-12">
             <p className="text-muted-foreground mb-4">
-              No proofs match your search{selectedBadges.length > 0 || showWiedijkOnly ? ' and filters' : ''}.
+              No proofs match your search{selectedBadges.length > 0 || showWiedijkOnly || showHilbertOnly || showMillenniumOnly ? ' and filters' : ''}.
             </p>
             <button
               onClick={clearFilters}
