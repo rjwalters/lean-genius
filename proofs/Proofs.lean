@@ -71,6 +71,7 @@ import Proofs.LebesgueMeasure
 import Proofs.LeibnizPi
 import Proofs.MathematicalInduction
 import Proofs.MeanValueTheorem
+import Proofs.MinkowskiFundamentalTheorem
 import Proofs.MorleysTheorem
 import Proofs.NavierStokes
 import Proofs.OnePlusOne
