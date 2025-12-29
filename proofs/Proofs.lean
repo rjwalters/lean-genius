@@ -51,6 +51,7 @@ import Proofs.HaltingProblem
 import Proofs.HarmonicDivergence
 import Proofs.HermiteLindemann
 import Proofs.HeronsFormula
+import Proofs.Hilbert16
 import Proofs.HurwitzTheorem
 import Proofs.InclusionExclusion
 import Proofs.InfinitudePrimes
