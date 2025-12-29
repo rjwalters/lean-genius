@@ -66,6 +66,7 @@ import Proofs.LawsOfLargeNumbers
 import Proofs.LeibnizPi
 import Proofs.MathematicalInduction
 import Proofs.MeanValueTheorem
+import Proofs.MorleysTheorem
 import Proofs.NavierStokes
 import Proofs.OnePlusOne
 import Proofs.PellEquation
