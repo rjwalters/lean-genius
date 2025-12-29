@@ -94,6 +94,7 @@ import Proofs.PerfectNumbers
 import Proofs.PiTranscendental
 import Proofs.PicksTheorem
 import Proofs.PlatonicSolids
+import Proofs.PoincareConjecture
 import Proofs.PrimeNumberTheorem
 import Proofs.PrimeReciprocalDivergence
 import Proofs.ProductOfSegmentsOfChords
