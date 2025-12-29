@@ -117,4 +117,5 @@ import Proofs.TriangleAngleSum
 import Proofs.TriangleInequality
 import Proofs.TriangularNumberReciprocals
 import Proofs.WilsonsTheorem
+import Proofs.YangMillsMassGap
 import Proofs.eTranscendental
