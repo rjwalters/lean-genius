@@ -1,4 +1,4 @@
-import Mathlib.Probability.ProbabilityMassFunction.Uniform
+import Mathlib.Probability.ProbabilityMassFunction.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.MeasureTheory.Integral.IntervalIntegral
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic

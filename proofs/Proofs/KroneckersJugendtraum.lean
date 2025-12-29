@@ -2,7 +2,7 @@ import Mathlib.NumberTheory.Cyclotomic.Basic
 import Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots
 import Mathlib.NumberTheory.NumberField.Basic
 import Mathlib.FieldTheory.Galois
-import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.FieldTheory.Galois
 import Mathlib.FieldTheory.IsAlgClosed.Basic
 import Mathlib.FieldTheory.Adjoin
 import Mathlib.RingTheory.RootsOfUnity.Basic
