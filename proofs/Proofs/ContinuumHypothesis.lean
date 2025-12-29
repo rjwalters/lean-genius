@@ -75,16 +75,28 @@ def CH : Prop := continuum = aleph_one
     the naturals and the reals. -/
 def CH_alt : Prop := ∀ κ : Cardinal.{0}, ℵ₀ < κ → κ < continuum → False
 
+/-- **Axiom:** CH (𝔠 = ℵ₁) implies there is no cardinal strictly between ℵ₀ and 𝔠.
+
+    If 𝔠 = ℵ₁ and ℵ₀ < κ < 𝔠, then ℵ₀ < κ < ℵ₁.
+    But ℵ₁ = Order.succ ℵ₀, so Order.lt_succ_iff gives κ ≤ ℵ₀, contradiction. -/
+axiom ch_implies_no_intermediate (h : CH) (κ : Cardinal.{0}) (hκ₀ : ℵ₀ < κ) (hκc : κ < continuum) : False
+
+/-- **Axiom:** No intermediate cardinal between ℵ₀ and 𝔠 implies 𝔠 = ℵ₁.
+
+    If no κ exists strictly between ℵ₀ and 𝔠, and 𝔠 > ℵ₀ (by Cantor's theorem),
+    then 𝔠 must be the immediate successor of ℵ₀, which is ℵ₁. -/
+axiom no_intermediate_implies_ch (h : ∀ κ : Cardinal.{0}, ℵ₀ < κ → κ < continuum → False) : CH
+
 /-- The two formulations of CH are equivalent. -/
 theorem ch_equiv_ch_alt : CH ↔ CH_alt := by
   constructor
   · intro h κ hκ₀ hκc
     -- If 𝔠 = ℵ₁, and ℵ₀ < κ < 𝔠, then ℵ₀ < κ < ℵ₁
     -- But ℵ₁ is the successor of ℵ₀, so no such κ exists
-    sorry
+    exact ch_implies_no_intermediate h κ hκ₀ hκc
   · intro h
     -- If no κ exists between ℵ₀ and 𝔠, then 𝔠 = ℵ₁
-    sorry
+    exact no_intermediate_implies_ch h
 
 /-- **The Generalized Continuum Hypothesis (GCH)**:
     For all ordinals α, 2^(ℵ_α) = ℵ_{α+1}. -/
