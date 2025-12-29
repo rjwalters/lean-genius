@@ -79,6 +79,7 @@ import Proofs.NavierStokes
 import Proofs.OnePlusOne
 import Proofs.ParallelPostulateIndependence
 import Proofs.PartitionTheorem
+import Proofs.PascalsHexagon
 import Proofs.PellEquation
 import Proofs.PerfectNumbers
 import Proofs.PiTranscendental
