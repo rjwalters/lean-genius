@@ -28,7 +28,7 @@ but disagree on the parallel postulate.
 - `Mathlib.Tactic` : Standard tactic library
 
 **Formalization Notes:**
-- 0 sorries, 5 axioms capturing key model-theoretic facts
+- 1 sorry, 5 axioms capturing key model-theoretic facts
 - Full formalization would require thousands of lines defining synthetic geometry
 - The abstract structures are placeholders capturing the essence
 - See each definition's docstring for implementation rationale
