@@ -58,6 +58,7 @@ import Proofs.HeronsFormula
 import Proofs.Hilbert10
 import Proofs.Hilbert11_QuadraticForms
 import Proofs.Hilbert16
+import Proofs.Hilbert17SumOfSquares
 import Proofs.Hilbert3ScissorsCongruence
 import Proofs.HodgeConjecture
 import Proofs.HurwitzTheorem
