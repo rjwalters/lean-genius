@@ -57,6 +57,7 @@ import Proofs.InfinitudePrimes
 import Proofs.IntermediateValueTheorem
 import Proofs.IsoperimetricTheorem
 import Proofs.IsoscelesTriangle
+import Proofs.KeplerConjecture
 import Proofs.KnightsTourOblique
 import Proofs.Konigsberg
 import Proofs.KroneckersJugendtraum
