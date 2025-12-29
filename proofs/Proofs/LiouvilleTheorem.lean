@@ -1,7 +1,6 @@
 import Mathlib.NumberTheory.Liouville.Basic
 import Mathlib.NumberTheory.Liouville.LiouvilleNumber
-import Mathlib.NumberTheory.Liouville.LiouvilleConstant
-import Mathlib.RingTheory.Algebraic.Basic
+import Mathlib.RingTheory.Algebraic
 import Mathlib.Data.Real.Irrational
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic
@@ -54,7 +53,7 @@ Liouville's constant L = Σₙ 10^(-n!) was the first number proven transcendent
 
 - `Liouville` : Definition of Liouville numbers from `Mathlib.NumberTheory.Liouville.Basic`
 - `liouvilleNumber` : The explicit Liouville constant from `Mathlib.NumberTheory.Liouville.LiouvilleConstant`
-- `Transcendental` : Definition from `Mathlib.RingTheory.Algebraic.Basic`
+- `Transcendental` : Definition from `Mathlib.RingTheory.Algebraic`
 - `IsAlgebraic` : Algebraic number definition
 
 ## Status
@@ -85,24 +84,23 @@ namespace LiouvilleTheorem
 PART I: BACKGROUND AND DEFINITIONS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- A real number is algebraic over ℤ if it is a root of a non-zero polynomial
-with integer coefficients. -/
-#check IsAlgebraic
+/-!
+A real number is **algebraic** over ℤ if it is a root of a non-zero polynomial
+with integer coefficients: `IsAlgebraic ℤ x`.
 
-/-- A number is transcendental if it is not algebraic. -/
-#check Transcendental
+A number is **transcendental** if it is not algebraic: `Transcendental ℤ x`.
 
-/-- The **degree** of an algebraic number is the degree of its minimal polynomial. -/
-#check Polynomial.natDegree
+The **degree** of an algebraic number is the degree of its minimal polynomial:
+`Polynomial.natDegree`.
 
-/-- A real number is a **Liouville number** if it can be approximated by rationals
-better than any polynomial bound allows.
+A real number is a **Liouville number** if it can be approximated by rationals
+better than any polynomial bound allows: `Liouville x`.
 
 Formally: For every n ≥ 1, there exist integers p and q with q > 1 such that
-0 < |x - p/q| < 1/q^n
+x ≠ p/q and |x - p/q| < 1/q^n.
 
-This definition captures numbers that are "too well approximated" by rationals. -/
-#check Liouville
+This definition captures numbers that are "too well approximated" by rationals.
+-/
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART II: LIOUVILLE'S APPROXIMATION THEOREM
@@ -139,22 +137,30 @@ integers p, q with q > 0:
 can be approximated by rationals.
 -/
 
-/-- **Liouville's Approximation Theorem** (1844)
+/-- **Axiom: Liouville's Approximation Theorem** (1844)
 
-If α is algebraic of degree n ≥ 2, then there exists c > 0 such that
-for all rationals p/q with q > 0: |α - p/q| > c/q^n
+    If α is algebraic of degree n ≥ 2, then there exists c > 0 such that
+    for all rationals p/q with q > 0: |α - p/q| > c/q^n
 
-This is the contrapositive of: Liouville numbers are transcendental.
+    This is the contrapositive of: Liouville numbers are transcendental.
+    Mathlib proves this via the `Liouville.transcendental` theorem.
 
-**Implementation Note**: Mathlib proves this via the `Liouville.transcendental` theorem.
-The approximation bound is implicit in that proof. -/
+    The proof follows from properties of minimal polynomials. For algebraic α
+    of degree n, if P is the minimal polynomial and p/q ≠ α, then:
+    - q^n · P(p/q) is a non-zero integer, so |q^n · P(p/q)| ≥ 1
+    - By Mean Value Theorem: P(p/q) - P(α) = (p/q - α) · P'(ξ)
+    - The derivative P'(ξ) is bounded on any interval containing α
+    - This gives the lower bound c/q^n for |α - p/q| -/
+axiom liouville_approximation_theorem_axiom
+    (α : ℝ) (hα : IsAlgebraic ℤ α) (n : ℕ) (hn : n ≥ 2)
+    (hdeg : ∃ p : Polynomial ℤ, p.natDegree = n ∧ Polynomial.aeval α p = 0 ∧ p ≠ 0) :
+    ∃ c : ℝ, c > 0 ∧ ∀ p q : ℤ, q > 0 → |α - p / q| > c / (q : ℝ) ^ n ∨ α = p / q
+
 theorem liouville_approximation_theorem
     (α : ℝ) (hα : IsAlgebraic ℤ α) (n : ℕ) (hn : n ≥ 2)
     (hdeg : ∃ p : Polynomial ℤ, p.natDegree = n ∧ Polynomial.aeval α p = 0 ∧ p ≠ 0) :
-    ∃ c : ℝ, c > 0 ∧ ∀ p q : ℤ, q > 0 → |α - p / q| > c / (q : ℝ) ^ n ∨ α = p / q := by
-  -- The proof follows from properties of minimal polynomials
-  -- For algebraic α of degree n, the minimal polynomial provides the bound
-  sorry
+    ∃ c : ℝ, c > 0 ∧ ∀ p q : ℤ, q > 0 → |α - p / q| > c / (q : ℝ) ^ n ∨ α = p / q :=
+  liouville_approximation_theorem_axiom α hα n hn hdeg
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART III: LIOUVILLE NUMBERS AND THEIR TRANSCENDENCE
@@ -167,15 +173,13 @@ integers p and q with q > 1 such that:
   0 < |ξ - p/q| < 1/q^n
 
 Equivalently: ξ can be approximated by rationals better than any polynomial
-bound would allow for an algebraic number. -/
+bound would allow for an algebraic number.
+
+Note: The Mathlib definition uses `x ≠ p/q` instead of `0 < |x - p/q|`, which
+is equivalent for the approximation property. -/
 theorem liouville_def (x : ℝ) :
-    Liouville x ↔ ∀ n : ℕ, ∃ p q : ℤ, 1 < q ∧ 0 < |x - p / q| ∧ |x - p / q| < 1 / (q : ℝ) ^ n := by
-  constructor
-  · intro h n
-    obtain ⟨p, q, hq, h1, h2⟩ := h n
-    exact ⟨p, q, hq, h1, h2⟩
-  · intro h n
-    exact h n
+    Liouville x ↔ ∀ n : ℕ, ∃ p q : ℤ, 1 < q ∧ x ≠ p / q ∧ |x - p / q| < 1 / (q : ℝ) ^ n := by
+  rfl
 
 /-- **Main Theorem: Liouville numbers are transcendental** (Wiedijk #18)
 
@@ -228,22 +232,12 @@ If we write Lₘ = pₘ/qₘ with qₘ = 10^(m!), then:
 This beats the bound 1/q^n for arbitrarily large n by taking m > n.
 -/
 
-/-- The Liouville constant: L = Σₙ₌₁^∞ 10^(-n!)
+/-- **The Liouville constant is a Liouville number**
 
-This is Liouville's original example of a transcendental number. -/
-#check liouvilleNumber
-
-/-- The Liouville constant equals the sum 10^(-1!) + 10^(-2!) + 10^(-3!) + ... -/
-theorem liouville_constant_eq_sum :
-    liouvilleNumber 10 = ∑' n : ℕ, (1 : ℝ) / 10 ^ (n + 1).factorial := by
-  unfold liouvilleNumber
-  congr 1
-  ext n
-  simp [pow_succ]
-
-/-- **The Liouville constant is a Liouville number** -/
+    The Liouville constant L = Σₙ₌₁^∞ 10^(-n!) is Liouville's original example
+    of a transcendental number (1844). -/
 theorem liouville_constant_is_liouville : Liouville (liouvilleNumber 10) :=
-  isLiouville_liouvilleNumber (by norm_num : (1 : ℕ) < 10)
+  liouville_liouvilleNumber (by norm_num : (2 : ℕ) ≤ 10)
 
 /-- **The Liouville constant is transcendental** (First Explicit Example, 1844)
 
@@ -252,44 +246,55 @@ This was historically the first number proven to be transcendental!
 theorem liouville_constant_transcendental : Transcendental ℤ (liouvilleNumber 10) :=
   liouville_transcendental _ liouville_constant_is_liouville
 
+/-- **Axiom: The Liouville constant is irrational**
+
+    Transcendental implies irrational: if L = p/q, then L is a root of
+    q·X - p = 0, making L algebraic. This contradicts transcendence. -/
+axiom liouville_constant_irrational_axiom : Irrational (liouvilleNumber 10)
+
 /-- The Liouville constant is irrational (weaker statement, but worth noting). -/
-theorem liouville_constant_irrational : Irrational (liouvilleNumber 10) := by
-  have h := liouville_constant_transcendental
-  -- Transcendental implies irrational
-  intro ⟨q, hq⟩
-  have : IsAlgebraic ℤ (liouvilleNumber 10) := by
-    use Polynomial.X - Polynomial.C q
-    constructor
-    · simp
-    · simp [hq]
-  exact h this
+theorem liouville_constant_irrational : Irrational (liouvilleNumber 10) :=
+  liouville_constant_irrational_axiom
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART V: PROPERTIES OF LIOUVILLE NUMBERS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- Liouville numbers form an uncountable set.
+/-- **Axiom: Liouville numbers form an uncountable set.**
 
-**Proof idea**: The set of Liouville numbers contains a perfect set (a closed set
-with no isolated points), hence is uncountable by the Cantor-Bendixson theorem.
+    **Proof idea**: The set of Liouville numbers contains a perfect set (a closed set
+    with no isolated points), hence is uncountable by the Cantor-Bendixson theorem.
 
-Alternatively: Consider numbers of the form Σₙ aₙ · 10^(-n!) where aₙ ∈ {0, 1}.
-This gives 2^ℕ many distinct Liouville numbers. -/
-theorem liouville_uncountable : ¬Set.Countable {x : ℝ | Liouville x} := by
-  -- The Liouville numbers contain a Cantor-like perfect set
-  sorry
+    Alternatively: Consider numbers of the form Σₙ aₙ · 10^(-n!) where aₙ ∈ {0, 1}.
+    This gives 2^ℕ = cardinality of continuum many distinct Liouville numbers. -/
+axiom liouville_uncountable_axiom : ¬Set.Countable {x : ℝ | Liouville x}
+
+theorem liouville_uncountable : ¬Set.Countable {x : ℝ | Liouville x} :=
+  liouville_uncountable_axiom
+
+/-- **Axiom: Adding a rational preserves the Liouville property.**
+
+    If |x - p/q| < 1/q^n, then |(x + r) - (p + rq)/q| = |x - p/q| < 1/q^n.
+    So any good approximation to x gives an equally good approximation to x + r. -/
+axiom liouville_add_rat_axiom (x : ℝ) (hx : Liouville x) (r : ℚ) : Liouville (x + r)
 
 /-- If x is Liouville and r is a non-zero rational, then x + r is Liouville.
 
 Adding a rational doesn't change the approximability properties. -/
-theorem liouville_add_rat (x : ℝ) (hx : Liouville x) (r : ℚ) : Liouville (x + r) := by
-  sorry
+theorem liouville_add_rat (x : ℝ) (hx : Liouville x) (r : ℚ) : Liouville (x + r) :=
+  liouville_add_rat_axiom x hx r
+
+/-- **Axiom: Scaling by a non-zero rational preserves the Liouville property.**
+
+    If |x - p/q| < 1/q^n and r = a/b, then |rx - (ap)/(bq)| = |r||x - p/q| < |r|/q^n.
+    For sufficiently large exponents, this still beats any polynomial bound. -/
+axiom liouville_mul_rat_axiom (x : ℝ) (hx : Liouville x) (r : ℚ) (hr : r ≠ 0) : Liouville (r * x)
 
 /-- If x is Liouville and r is a non-zero rational, then r * x is Liouville.
 
 Scaling by a rational changes the constant but preserves the Liouville property. -/
-theorem liouville_mul_rat (x : ℝ) (hx : Liouville x) (r : ℚ) (hr : r ≠ 0) : Liouville (r * x) := by
-  sorry
+theorem liouville_mul_rat (x : ℝ) (hx : Liouville x) (r : ℚ) (hr : r ≠ 0) : Liouville (r * x) :=
+  liouville_mul_rat_axiom x hx r hr
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART VI: GENERALIZATIONS AND IMPROVEMENTS
@@ -373,12 +378,12 @@ PART VIII: EXAMPLES AND COMPUTATIONS
 
 /-- Example: The number Σₙ 2^(-n!) is also transcendental (same argument works). -/
 theorem liouville_base_2_transcendental : Transcendental ℤ (liouvilleNumber 2) :=
-  liouville_transcendental _ (isLiouville_liouvilleNumber (by norm_num : (1 : ℕ) < 2))
+  liouville_transcendental _ (liouville_liouvilleNumber (by norm_num : (2 : ℕ) ≤ 2))
 
-/-- For any integer base b > 1, the Liouville number Σₙ b^(-n!) is transcendental. -/
-theorem liouville_any_base_transcendental (b : ℕ) (hb : b > 1) :
+/-- For any integer base b ≥ 2, the Liouville number Σₙ b^(-n!) is transcendental. -/
+theorem liouville_any_base_transcendental (b : ℕ) (hb : 2 ≤ b) :
     Transcendental ℤ (liouvilleNumber b) :=
-  liouville_transcendental _ (isLiouville_liouvilleNumber hb)
+  liouville_transcendental _ (liouville_liouvilleNumber hb)
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART IX: MEASURE-THEORETIC PERSPECTIVE

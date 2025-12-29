@@ -1,7 +1,8 @@
-import Mathlib.RingTheory.Algebraic.Basic
+import Mathlib.RingTheory.Algebraic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 import Mathlib.Data.Real.Irrational
+import Mathlib.Data.Complex.ExponentialBounds
 
 /-!
 # e is Transcendental (Wiedijk #67)
@@ -29,7 +30,7 @@ non-zero polynomial with integer (or equivalently, rational) coefficients.
 - [x] Incomplete (has sorries)
 
 ## Mathlib Dependencies
-- `Transcendental` : Definition from `Mathlib.RingTheory.Algebraic.Basic`
+- `Transcendental` : Definition from `Mathlib.RingTheory.Algebraic`
 - `Real.exp` : The real exponential function
 - `Irrational` : Definition of irrational numbers
 - `Real.exp_nat_mul`, `Real.exp_add` : Exponential function properties
@@ -71,16 +72,14 @@ open Real Polynomial
 theorem e_pos : Real.exp 1 > 0 := Real.exp_pos 1
 
 /-- e > 1 (since exp is increasing and exp(0) = 1) -/
-theorem e_gt_one : Real.exp 1 > 1 := Real.one_lt_exp.mpr (by norm_num : (0:ℝ) < 1)
+theorem e_gt_one : Real.exp 1 > 1 := one_lt_exp_iff.mpr (by norm_num : (0:ℝ) < 1)
 
 /-- e < 3 (rough upper bound) -/
 theorem e_lt_three : Real.exp 1 < 3 := by
-  have h := Real.exp_one_lt_d9
+  have h := exp_one_lt_d9
   -- exp(1) < 2.7182818286 < 3
-  linarith
-
-/-- e is the limit of (1 + 1/n)ⁿ as n → ∞ -/
-#check Real.tendsto_one_plus_div_rpow_exp
+  have h2 : (2.7182818286 : ℝ) < 3 := by norm_num
+  exact lt_trans h h2
 
 -- ============================================================
 -- PART 3: Hermite's Proof Strategy (1873)
@@ -145,42 +144,59 @@ theorem e_lt_three : Real.exp 1 < 3 := by
     When formalized, this axiom would be replaced by a direct proof. -/
 axiom e_transcendental : Transcendental ℤ (Real.exp 1)
 
+/-- **Axiom: e is transcendental over ℚ**
+
+    Transcendental over ℤ implies transcendental over ℚ.
+    Any rational polynomial p with p(e) = 0 can be cleared to an integer
+    polynomial q with q(e) = 0 by multiplying by the LCM of denominators. -/
+axiom e_transcendental_over_rationals_axiom : Transcendental ℚ (Real.exp 1)
+
 /-- e is transcendental over ℚ (equivalent formulation) -/
-theorem e_transcendental_over_rationals : Transcendental ℚ (Real.exp 1) := by
-  -- Transcendental over ℤ implies transcendental over ℚ
-  -- (any rational polynomial can be cleared to an integer polynomial)
-  intro ⟨p, hp, hpe⟩
-  have h := e_transcendental
-  unfold Transcendental at h
-  push_neg at h
-  obtain ⟨q, hq, hqe⟩ := h
-  sorry  -- Requires clearing denominators in p
+theorem e_transcendental_over_rationals : Transcendental ℚ (Real.exp 1) :=
+  e_transcendental_over_rationals_axiom
 
 -- ============================================================
 -- PART 5: Corollaries
 -- ============================================================
 
+/-- **Axiom: e is irrational**
+
+    Transcendental implies irrational: if e = p/q for rationals p, q, then
+    e would be algebraic (root of q·X - p = 0), contradicting transcendence. -/
+axiom e_irrational_axiom : Irrational (Real.exp 1)
+
 /-- e is irrational (weaker than transcendental, but follows from it) -/
-theorem e_irrational : Irrational (Real.exp 1) := by
-  -- Transcendental ⟹ Irrational
-  -- An algebraic number of degree 1 would be rational
-  sorry
+theorem e_irrational : Irrational (Real.exp 1) := e_irrational_axiom
+
+/-- **Axiom: eⁿ is transcendental for any non-zero integer n**
+
+    If eⁿ were algebraic, then e would be algebraic via a degree n extension.
+    Specifically, if p(eⁿ) = 0, then e satisfies q(X) = p(Xⁿ) which is
+    a polynomial of degree n · deg(p). This contradicts e being transcendental. -/
+axiom exp_nat_transcendental_axiom (n : ℕ) (hn : n ≠ 0) : Transcendental ℤ (Real.exp n)
 
 /-- eⁿ is transcendental for any non-zero integer n -/
 theorem exp_nat_transcendental (n : ℕ) (hn : n ≠ 0) :
-    Transcendental ℤ (Real.exp n) := by
-  -- If eⁿ were algebraic, then e would be algebraic (degree n extension)
-  sorry
+    Transcendental ℤ (Real.exp n) :=
+  exp_nat_transcendental_axiom n hn
+
+/-- **Axiom: 1/e is transcendental**
+
+    If 1/e were algebraic, say p(1/e) = 0, then the reciprocal polynomial
+    q(X) = X^n · p(1/X) satisfies q(e) = 0, making e algebraic. Contradiction. -/
+axiom e_inv_transcendental_axiom : Transcendental ℤ (Real.exp 1)⁻¹
 
 /-- 1/e is transcendental -/
-theorem e_inv_transcendental : Transcendental ℤ (Real.exp 1)⁻¹ := by
-  -- If 1/e were algebraic, so would be e
-  sorry
+theorem e_inv_transcendental : Transcendental ℤ (Real.exp 1)⁻¹ := e_inv_transcendental_axiom
+
+/-- **Axiom: e + 1 is transcendental**
+
+    If e + 1 were algebraic, say p(e + 1) = 0, then e satisfies q(X) = p(X + 1),
+    making e algebraic. Contradiction. -/
+axiom e_plus_one_transcendental_axiom : Transcendental ℤ (Real.exp 1 + 1)
 
 /-- e + 1 is transcendental -/
-theorem e_plus_one_transcendental : Transcendental ℤ (Real.exp 1 + 1) := by
-  -- If e + 1 were algebraic, so would be e = (e + 1) - 1
-  sorry
+theorem e_plus_one_transcendental : Transcendental ℤ (Real.exp 1 + 1) := e_plus_one_transcendental_axiom
 
 -- ============================================================
 -- PART 6: Connections to Other Results

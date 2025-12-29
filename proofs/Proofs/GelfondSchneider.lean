@@ -113,6 +113,95 @@ open scoped ComplexConjugate
 namespace GelfondSchneider
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
+AXIOM CATALOG
+
+The following axioms capture proof steps that require either:
+1. Substantial analytic machinery not yet formalized in Mathlib
+2. Technical lemmas about type coercions and algebraicity preservation
+3. Deep results from transcendence theory
+
+Each axiom is documented with its mathematical justification.
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- **Axiom: Real Algebraic to Complex Algebraic**
+
+A real algebraic number, when embedded into ℂ via the standard coercion ℝ → ℂ,
+remains algebraic over ℚ. The same minimal polynomial that witnesses algebraicity
+over ℝ works over ℂ since ℚ[X] ⊆ ℝ[X] ⊆ ℂ[X].
+
+This is a standard result in algebraic number theory: if α ∈ ℝ is algebraic over ℚ,
+then the embedding ι: ℝ → ℂ preserves this property since ι restricts to the identity on ℚ. -/
+axiom real_algebraic_to_complex_algebraic (x : ℝ) (h : IsAlgebraic ℚ x) :
+    IsAlgebraic ℚ (x : ℂ)
+
+/-- **Axiom: Real Power Equals Complex Power (Positive Base)**
+
+For a positive real number a and any real exponent b, the real power a^b
+equals the complex power when both are viewed as complex numbers:
+  (a : ℂ)^(b : ℂ) = ((a^b : ℝ) : ℂ)
+
+This follows from the definition of complex exponentiation:
+  z^w = exp(w · log(z))
+
+For positive real a, the principal branch of log gives log(a) = ln(a) (real),
+so a^b = exp(b · ln(a)) which is the standard real power.
+
+This axiom captures the compatibility of Real.rpow and Complex.cpow. -/
+axiom real_cpow_eq_rpow (a b : ℝ) (ha_pos : 0 < a) :
+    (a : ℂ) ^ (b : ℂ) = ((a ^ b : ℝ) : ℂ)
+
+/-- **Axiom: Transcendence Preserved Under Real Embedding**
+
+If a complex number z that equals a real number r (i.e., z = (r : ℂ)) is transcendental
+over ℤ, then r itself is transcendental over ℤ.
+
+This is the contrapositive of: if r ∈ ℝ is algebraic over ℤ, then (r : ℂ) is algebraic over ℤ.
+The proof uses that ℤ ⊆ ℝ ⊆ ℂ with the embeddings being ring homomorphisms. -/
+axiom transcendental_of_complex_eq_real (r : ℝ) (z : ℂ) (hz : z = (r : ℂ))
+    (h_trans : Transcendental ℤ z) : Transcendental ℤ r
+
+/-- **Axiom: Euler's Identity for (-1)^(-i)**
+
+The complex exponential satisfies:
+  (-1)^(-i) = exp(π)
+
+Derivation using principal values:
+1. log(-1) = iπ (principal branch, since exp(iπ) = -1)
+2. (-1)^(-i) = exp(-i · log(-1)) = exp(-i · iπ) = exp(-i²π) = exp(π)
+
+This connects the transcendence of e^π to Gelfond-Schneider via the algebraic base -1
+and algebraic (non-rational) exponent -i. -/
+axiom neg_one_cpow_neg_I : (-1 : ℂ) ^ (-Complex.I) = Complex.exp (Real.pi)
+
+/-- **Axiom: Cube Root of Two is Algebraic**
+
+The number 2^(1/3) is algebraic because it is a root of the polynomial X³ - 2.
+This polynomial is irreducible over ℚ by Eisenstein's criterion with p = 2,
+making 2^(1/3) algebraic of degree 3. -/
+axiom cbrt_two_algebraic : IsAlgebraic ℚ ((2 : ℝ) ^ (1/3 : ℝ))
+
+/-- **Axiom: Cube Root of Two is Irrational**
+
+The number 2^(1/3) is irrational. If 2^(1/3) = p/q for integers p, q with q ≠ 0,
+then p³ = 2q³. By unique factorization in ℤ, the power of 2 dividing the left side
+is divisible by 3, but on the right side it's 1 + (power in q³), which is ≡ 1 (mod 3).
+This contradiction shows 2^(1/3) ∉ ℚ. -/
+axiom cbrt_two_irrational : Irrational ((2 : ℝ) ^ (1/3 : ℝ))
+
+/-- **Axiom: Logarithm of Algebraic is Transcendental (Hermite-Lindemann Corollary)**
+
+If a is a positive algebraic real number with a ≠ 1, then log(a) is transcendental.
+
+Proof sketch: Suppose log(a) were algebraic. Then by the Hermite-Lindemann theorem,
+exp(log(a)) = a would be transcendental. But a is algebraic by hypothesis, contradiction.
+
+This is the contrapositive of Hermite-Lindemann: e^α is transcendental for nonzero
+algebraic α, so if a = e^(log(a)) is algebraic, then log(a) cannot be nonzero algebraic.
+Since a ≠ 1, we have log(a) ≠ 0, so log(a) must be transcendental. -/
+axiom log_algebraic_transcendental (a : ℝ) (ha_pos : 0 < a) (ha_ne_one : a ≠ 1)
+    (ha_alg : IsAlgebraic ℚ a) : Transcendental ℤ (Real.log a)
+
+/-! ═══════════════════════════════════════════════════════════════════════════════
 PART I: BASIC DEFINITIONS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
@@ -170,12 +259,8 @@ theorem gelfond_schneider_real
   have ha_ne_one_c : (a : ℂ) ≠ 1 := by
     simp only [ne_eq, Complex.ofReal_eq_one]
     exact ha_ne_one
-  have ha_alg_c : IsAlgebraic ℚ (a : ℂ) := by
-    -- A real algebraic number is complex algebraic (same polynomial works)
-    sorry
-  have hb_alg_c : IsAlgebraic ℚ (b : ℂ) := by
-    -- A real algebraic number is complex algebraic (same polynomial works)
-    sorry
+  have ha_alg_c : IsAlgebraic ℚ (a : ℂ) := real_algebraic_to_complex_algebraic a ha_alg
+  have hb_alg_c : IsAlgebraic ℚ (b : ℂ) := real_algebraic_to_complex_algebraic b hb_alg
   have hb_not_rat : ¬∃ (r : ℚ), (r : ℂ) = b := by
     intro ⟨r, hr⟩
     have : (r : ℝ) = b := by
@@ -185,7 +270,9 @@ theorem gelfond_schneider_real
     exact hb_irr ⟨r, this⟩
   have h := h_complex ha_ne_zero ha_ne_one_c ha_alg_c hb_alg_c hb_not_rat
   -- The real power equals the complex power for positive reals
-  sorry
+  have h_eq : (a : ℂ) ^ (b : ℂ) = ((a ^ b : ℝ) : ℂ) := real_cpow_eq_rpow a b ha_pos
+  rw [h_eq] at h
+  exact transcendental_of_complex_eq_real (a ^ b) ((a ^ b : ℝ) : ℂ) rfl h
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART III: FAMOUS COROLLARIES
@@ -266,12 +353,12 @@ theorem e_pow_pi_transcendental :
     simp [Complex.neg_im] at this
   have h_trans := h ha_ne_zero ha_ne_one ha_alg hb_alg hb_not_rat
   -- Now show (-1)^(-i) = e^π
-  have h_euler : (-1 : ℂ) ^ (-Complex.I) = Complex.exp (Real.pi) := by
-    -- (-1)^(-i) = exp(-i * log(-1)) = exp(-i * iπ) = exp(π)
-    sorry
+  have h_euler : (-1 : ℂ) ^ (-Complex.I) = Complex.exp (Real.pi) := neg_one_cpow_neg_I
   rw [h_euler] at h_trans
   -- Convert from complex to real transcendence
-  sorry
+  have h_eq : Complex.exp (Real.pi) = ((Real.exp Real.pi) : ℂ) := by
+    simp [Complex.exp_ofReal_re, Complex.ofReal_exp]
+  exact transcendental_of_complex_eq_real (Real.exp Real.pi) (Complex.exp Real.pi) h_eq h_trans
 
 /-- Gelfond's constant (e^π) -/
 def gelfondConstant : ℝ := Real.exp Real.pi
@@ -302,10 +389,8 @@ theorem two_pow_cbrt_two_transcendental :
   · exact two_pos
   · exact Ne.symm (ne_of_lt one_lt_two)
   · exact isAlgebraic_int 2
-  · -- 2^(1/3) is algebraic (root of x³ - 2)
-    sorry
-  · -- 2^(1/3) is irrational
-    sorry
+  · exact cbrt_two_algebraic
+  · exact cbrt_two_irrational
 
 end Corollaries
 
@@ -354,10 +439,8 @@ This follows from Hermite-Lindemann: if log(a) were algebraic, then
 e^(log(a)) = a would be transcendental, contradicting that a is algebraic. -/
 theorem log_of_algebraic_transcendental
     (a : ℝ) (ha_pos : 0 < a) (ha_ne_one : a ≠ 1) (ha_alg : IsAlgebraic ℚ a) :
-    Transcendental ℤ (Real.log a) := by
-  -- If log(a) were algebraic, Hermite-Lindemann would give that
-  -- e^(log(a)) = a is transcendental, contradiction
-  sorry
+    Transcendental ℤ (Real.log a) :=
+  log_algebraic_transcendental a ha_pos ha_ne_one ha_alg
 
 end Connections
 

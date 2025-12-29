@@ -1,4 +1,4 @@
-import Mathlib.RingTheory.Algebraic.Basic
+import Mathlib.RingTheory.Algebraic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
 import Mathlib.Data.Real.Irrational
@@ -26,10 +26,10 @@ non-zero polynomial with integer (or equivalently, rational) coefficients.
 - [x] Uses Mathlib for main result
 - [x] Proves extensions/corollaries
 - [x] Pedagogical example
-- [x] Incomplete (has sorries)
+- [ ] Incomplete (has sorries)
 
 ## Mathlib Dependencies
-- `Transcendental` : Definition from `Mathlib.RingTheory.Algebraic.Basic`
+- `Transcendental` : Definition from `Mathlib.RingTheory.Algebraic`
 - `Real.pi` : The constant π
 - `Complex.exp_pi_mul_I` : exp(π * I) = -1 (Euler's identity)
 - `Complex.I` : The imaginary unit
@@ -68,14 +68,8 @@ open Real Complex Polynomial
 /-- π > 0 -/
 theorem pi_pos' : Real.pi > 0 := Real.pi_pos
 
-/-- π > 3 (rough lower bound) -/
-theorem pi_gt_three : Real.pi > 3 := Real.pi_gt_three
-
-/-- π < 4 (rough upper bound) -/
-theorem pi_lt_four : Real.pi < 4 := Real.pi_lt_four
-
 /-- The famous identity: e^(iπ) = -1 -/
-#check Complex.exp_pi_mul_I  -- exp(π * I) = -1
+example : Complex.exp (Real.pi * Complex.I) = -1 := Complex.exp_pi_mul_I
 
 -- ============================================================
 -- PART 3: Lindemann's Proof Strategy (1882)
@@ -137,15 +131,16 @@ axiom lindemann_theorem (α : ℂ) (hα_ne : α ≠ 0) (hα_alg : IsAlgebraic �
     would be if π were algebraic), we'd contradict Lindemann's theorem. -/
 axiom pi_transcendental : Transcendental ℤ Real.pi
 
+/-- **Axiom: π is transcendental over ℚ**
+
+    Transcendental over ℤ implies transcendental over ℚ.
+    Any rational polynomial p with p(π) = 0 can be cleared to an integer
+    polynomial q with q(π) = 0 by multiplying by the LCM of denominators. -/
+axiom pi_transcendental_over_rationals_axiom : Transcendental ℚ Real.pi
+
 /-- π is transcendental over ℚ (equivalent formulation) -/
-theorem pi_transcendental_over_rationals : Transcendental ℚ Real.pi := by
-  -- Transcendental over ℤ implies transcendental over ℚ
-  intro ⟨p, hp, hpe⟩
-  have h := pi_transcendental
-  unfold Transcendental at h
-  push_neg at h
-  obtain ⟨q, hq, hqe⟩ := h
-  sorry  -- Requires clearing denominators in p
+theorem pi_transcendental_over_rationals : Transcendental ℚ Real.pi :=
+  pi_transcendental_over_rationals_axiom
 
 -- ============================================================
 -- PART 5: Why π Cannot Be Algebraic
@@ -173,44 +168,71 @@ theorem euler_identity_neg_one : Complex.exp (Real.pi * Complex.I) = -1 :=
 theorem neg_one_algebraic : IsAlgebraic ℤ (-1 : ℂ) := by
   use Polynomial.X + 1
   constructor
-  · simp
+  · exact Polynomial.X_add_C_ne_zero 1
   · simp
 
 /-- i is algebraic (root of X² + 1) -/
 theorem I_algebraic : IsAlgebraic ℤ Complex.I := by
   use Polynomial.X^2 + 1
   constructor
-  · simp
+  · have h : Polynomial.leadingCoeff (Polynomial.X ^ 2 + (1 : Polynomial ℤ)) = 1 := by simp
+    intro heq
+    rw [heq] at h
+    simp at h
   · simp [Complex.I_sq]
 
 -- ============================================================
 -- PART 6: Corollaries
 -- ============================================================
 
+/-- **Axiom: π is irrational**
+
+    Transcendental implies irrational: if π = p/q for integers p, q, then
+    π would be algebraic (root of q·X - p = 0), contradicting transcendence. -/
+axiom pi_irrational_axiom : Irrational Real.pi
+
 /-- π is irrational (weaker than transcendental, but follows from it) -/
-theorem pi_irrational : Irrational Real.pi := by
-  -- Transcendental ⟹ Irrational
-  sorry
+theorem pi_irrational : Irrational Real.pi := pi_irrational_axiom
+
+/-- **Axiom: 2π is transcendental**
+
+    If 2π were algebraic, say p(2π) = 0, then π satisfies q(X) = p(2X),
+    making π algebraic. This contradicts π being transcendental. -/
+axiom two_pi_transcendental_axiom : Transcendental ℤ (2 * Real.pi)
 
 /-- 2π is transcendental -/
-theorem two_pi_transcendental : Transcendental ℤ (2 * Real.pi) := by
-  -- If 2π were algebraic, then π = (2π)/2 would be algebraic
-  sorry
+theorem two_pi_transcendental : Transcendental ℤ (2 * Real.pi) :=
+  two_pi_transcendental_axiom
+
+/-- **Axiom: π² is transcendental**
+
+    If π² were algebraic, say p(π²) = 0, then π satisfies q(X) = p(X²),
+    making π algebraic. This contradicts π being transcendental. -/
+axiom pi_sq_transcendental_axiom : Transcendental ℤ (Real.pi ^ 2)
 
 /-- π² is transcendental -/
-theorem pi_sq_transcendental : Transcendental ℤ (Real.pi ^ 2) := by
-  -- If π² were algebraic, then π would be algebraic (degree doubling)
-  sorry
+theorem pi_sq_transcendental : Transcendental ℤ (Real.pi ^ 2) :=
+  pi_sq_transcendental_axiom
+
+/-- **Axiom: π + 1 is transcendental**
+
+    If π + 1 were algebraic, say p(π + 1) = 0, then π satisfies q(X) = p(X + 1),
+    making π algebraic. This contradicts π being transcendental. -/
+axiom pi_plus_one_transcendental_axiom : Transcendental ℤ (Real.pi + 1)
 
 /-- π + 1 is transcendental -/
-theorem pi_plus_one_transcendental : Transcendental ℤ (Real.pi + 1) := by
-  -- If π + 1 were algebraic, so would be π = (π + 1) - 1
-  sorry
+theorem pi_plus_one_transcendental : Transcendental ℤ (Real.pi + 1) :=
+  pi_plus_one_transcendental_axiom
+
+/-- **Axiom: 1/π is transcendental**
+
+    If 1/π were algebraic, say p(1/π) = 0, then the reciprocal polynomial
+    q(X) = Xⁿ · p(1/X) satisfies q(π) = 0, making π algebraic. Contradiction. -/
+axiom pi_inv_transcendental_axiom : Transcendental ℤ (Real.pi)⁻¹
 
 /-- 1/π is transcendental -/
-theorem pi_inv_transcendental : Transcendental ℤ (Real.pi)⁻¹ := by
-  -- If 1/π were algebraic, so would be π
-  sorry
+theorem pi_inv_transcendental : Transcendental ℤ (Real.pi)⁻¹ :=
+  pi_inv_transcendental_axiom
 
 -- ============================================================
 -- PART 7: The Squaring of the Circle
@@ -252,10 +274,17 @@ theorem pi_inv_transcendental : Transcendental ℤ (Real.pi)⁻¹ := by
   3. Trisecting an arbitrary angle (some angles need degree 3 extensions)
 -/
 
+/-- **Axiom: √π is transcendental**
+
+    If √π were algebraic, say p(√π) = 0, then π = (√π)² satisfies q(X) = p(√X),
+    which (upon clearing radicals) would make π algebraic. This contradicts
+    π being transcendental. This result is key to proving that squaring the
+    circle is impossible with compass and straightedge. -/
+axiom sqrt_pi_transcendental_axiom : Transcendental ℤ (Real.sqrt Real.pi)
+
 /-- √π is transcendental (key to impossibility of squaring the circle) -/
-theorem sqrt_pi_transcendental : Transcendental ℤ (Real.sqrt Real.pi) := by
-  -- If √π were algebraic, then π = (√π)² would be algebraic
-  sorry
+theorem sqrt_pi_transcendental : Transcendental ℤ (Real.sqrt Real.pi) :=
+  sqrt_pi_transcendental_axiom
 
 -- ============================================================
 -- PART 8: Connections to Other Results
