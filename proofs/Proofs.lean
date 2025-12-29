@@ -35,6 +35,7 @@ import Proofs.EulerIdentity
 import Proofs.EulerPolyhedralFormula
 import Proofs.EulerTotient
 import Proofs.FactorRemainderTheorem
+import Proofs.FairGamesTheorem
 import Proofs.FermatTwoSquares
 import Proofs.FermatsLastTheorem
 import Proofs.FeuerbachsTheorem
