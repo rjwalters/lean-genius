@@ -1,0 +1,111 @@
+{
+  "id": "hilbert-9-reciprocity",
+  "title": "Hilbert's Ninth Problem: The Most General Reciprocity Law",
+  "slug": "hilbert-9-reciprocity",
+  "description": "Hilbert's 9th problem asked for the most general reciprocity law in algebraic number fields. The answer is Artin reciprocity (1927), which unifies quadratic, cubic, and all higher reciprocity laws through class field theory.",
+  "meta": {
+    "author": "Artin (1927), building on Gauss, Eisenstein, Takagi",
+    "date": "1927",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "algebraic-number-theory",
+      "hilbert-problems",
+      "class-field-theory",
+      "advanced"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "legendreSym.quadratic_reciprocity",
+        "description": "The law of quadratic reciprocity for Legendre symbols",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+      },
+      {
+        "theorem": "ZMod.exists_sq_eq_neg_one_iff",
+        "description": "First supplementary law: -1 is a square mod p iff p % 4 != 3",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+      },
+      {
+        "theorem": "ZMod.exists_sq_eq_two_iff",
+        "description": "Second supplementary law: 2 is a square mod p iff p % 8 in {1, 7}",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+      }
+    ],
+    "originalContributions": [
+      "Context of Hilbert's 9th problem formalized",
+      "Quadratic reciprocity as foundation (fully verified)",
+      "Artin reciprocity statement (axiomatized)",
+      "Connection to Langlands program outlined"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 9
+  },
+  "overview": {
+    "historicalContext": "In his 1900 address, Hilbert posed 23 problems to guide 20th-century mathematics. The ninth problem asked: 'For any given number field, to find the most general reciprocity law which governs the behavior of the n-th power residue symbol.'\n\nThe path to the answer:\n- **Gauss (1796)**: Proved quadratic reciprocity, the n=2 case\n- **Eisenstein, Jacobi (1840s)**: Cubic and quartic reciprocity\n- **Hilbert (1897)**: First general reciprocity law for cyclotomic fields\n- **Takagi (1920)**: Developed class field theory\n- **Artin (1927)**: Proved the definitive general reciprocity law\n\nArtin's theorem shows that all reciprocity laws arise from the structure of Galois groups of abelian extensions, unified through the Artin symbol.",
+    "problemStatement": "**Hilbert's 9th Problem**: Find the most general reciprocity law in arbitrary algebraic number fields.\n\n**Foundation - Quadratic Reciprocity (Gauss):**\nFor distinct odd primes $p$ and $q$:\n$$\\left(\\frac{p}{q}\\right)\\left(\\frac{q}{p}\\right) = (-1)^{\\frac{p-1}{2}\\cdot\\frac{q-1}{2}}$$\n\n**Answer - Artin Reciprocity (1927):**\nFor an abelian extension $L/K$ of number fields, the Artin map\n$$\\mathfrak{p} \\mapsto \\left(\\frac{L/K}{\\mathfrak{p}}\\right)$$\ninduces an isomorphism from the ray class group to $\\mathrm{Gal}(L/K)$, completely determining all reciprocity laws.",
+    "proofStrategy": "Our formalization proceeds in stages:\n\n1. **Quadratic Reciprocity (Proven)**: Import Gauss's theorem from Mathlib as the foundation. This handles the classical n=2 case completely.\n\n2. **Higher Reciprocity Context**: Describe cubic and quartic reciprocity in the rings Z[omega] and Z[i] (historical context).\n\n3. **Artin Reciprocity (Axiomatized)**: State the general theorem that unifies all cases. Full proof requires:\n   - Idele theory and adeles\n   - Galois cohomology\n   - Local-global principles\n   - Ray class groups\n\n4. **Specialization**: Show quadratic reciprocity as a special case of Artin's theorem.",
+    "keyInsights": [
+      "Quadratic reciprocity is the simplest case of a vast generalization",
+      "Reciprocity laws encode the splitting behavior of primes in field extensions",
+      "The Artin symbol generalizes the Legendre symbol to arbitrary extensions",
+      "Class field theory provides the complete classification of abelian extensions",
+      "The Langlands program seeks non-abelian generalizations (ongoing research)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "quadratic-foundation",
+      "title": "Foundation: Quadratic Reciprocity",
+      "startLine": 64,
+      "endLine": 90,
+      "summary": "Gauss's law of quadratic reciprocity and the supplementary laws, proven via Mathlib."
+    },
+    {
+      "id": "higher-reciprocity",
+      "title": "Higher Reciprocity Laws",
+      "startLine": 92,
+      "endLine": 107,
+      "summary": "Historical context for cubic, quartic, and Eisenstein reciprocity before Artin's unification."
+    },
+    {
+      "id": "artin-reciprocity",
+      "title": "Artin Reciprocity",
+      "startLine": 109,
+      "endLine": 152,
+      "summary": "The definitive answer to Hilbert's problem: the Artin symbol and reciprocity law."
+    },
+    {
+      "id": "quadratic-as-special",
+      "title": "Quadratic as Special Case",
+      "startLine": 154,
+      "endLine": 182,
+      "summary": "How Artin reciprocity recovers quadratic reciprocity when specialized."
+    },
+    {
+      "id": "langlands",
+      "title": "Beyond Artin: Langlands Program",
+      "startLine": 184,
+      "endLine": 217,
+      "summary": "The modern frontier: generalizing reciprocity to non-abelian extensions."
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Verification",
+      "startLine": 219,
+      "endLine": 250,
+      "summary": "Concrete computations verifying the Legendre symbol evaluations."
+    }
+  ],
+  "conclusion": {
+    "summary": "Hilbert's 9th problem is completely solved by Artin reciprocity (1927). This theorem shows that all reciprocity laws for n-th power residues in algebraic number fields follow from a single principle: the Artin map induces an isomorphism between ray class groups and Galois groups of abelian extensions.\n\nWe formalize the foundation (quadratic reciprocity) fully via Mathlib, and state the general answer axiomatically. The full proof of Artin reciprocity requires the machinery of class field theory.",
+    "implications": "The solution to Hilbert's 9th problem has profound implications:\n\n**1. Complete Classification**\nArtin reciprocity classifies all abelian extensions of number fields, answering both the existence and uniqueness questions.\n\n**2. Computational Power**\nThe Artin symbol gives explicit methods to compute power residue symbols in any number field.\n\n**3. Modern Number Theory**\nClass field theory, developed to answer this problem, became a cornerstone of algebraic number theory.\n\n**4. Langlands Program**\nArtin reciprocity is the abelian case of the Langlands correspondence, one of the most ambitious programs in modern mathematics.",
+    "openQuestions": [
+      "What is the most elementary proof of Artin reciprocity?",
+      "How does the Langlands program extend reciprocity to non-abelian extensions?",
+      "Can reciprocity laws be used to attack the Riemann hypothesis?",
+      "What reciprocity-type phenomena exist in function fields?"
+    ]
+  }
+}
