@@ -1,0 +1,113 @@
+{
+  "id": "hilbert-6",
+  "title": "Hilbert's Sixth Problem: Axiomatization of Physics",
+  "slug": "hilbert-6",
+  "description": "Hilbert's 1900 call for rigorous axiomatization of physics has been partially achieved through Kolmogorov's probability axioms (1933), von Neumann's quantum mechanics (1932), and other foundational frameworks.",
+  "meta": {
+    "author": "Kolmogorov, von Neumann, Caratheodory, et al.",
+    "date": "1909-1933",
+    "status": "verified",
+    "tags": [
+      "foundations",
+      "physics",
+      "probability",
+      "hilbert-problems",
+      "axiomatics",
+      "intermediate"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "IsProbabilityMeasure",
+        "description": "Defines probability measures with P(Ω)=1",
+        "module": "MeasureTheory.Measure.ProbabilityMeasure"
+      },
+      {
+        "theorem": "measure_iUnion",
+        "description": "σ-additivity for countable disjoint unions",
+        "module": "MeasureTheory.Measure.MeasureSpace"
+      },
+      {
+        "theorem": "InnerProductSpace",
+        "description": "Hilbert space structure for quantum mechanics",
+        "module": "Analysis.InnerProductSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Kolmogorov probability axioms demonstration",
+      "Conditional probability and Bayes theorem",
+      "Quantum state formalization (Born rule)",
+      "Classical mechanics Lagrangian structure",
+      "Thermodynamics Caratheodory formulation"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 6
+  },
+  "overview": {
+    "historicalContext": "In 1900, David Hilbert presented his famous 23 problems to guide 20th-century mathematics. The sixth problem called for 'a mathematical treatment of the axioms of physics,' analogous to his own axiomatization of geometry (1899).\n\nThis problem has a unique status among the 23: rather than having a definitive solution, it has led to multiple successful axiomatizations of individual physical theories:\n\n- **Probability Theory** (Kolmogorov, 1933): Built on measure theory, the Kolmogorov axioms provide rigorous foundations for probability\n- **Quantum Mechanics** (von Neumann, 1932): Hilbert space formulation with observables as self-adjoint operators\n- **Thermodynamics** (Caratheodory, 1909): Accessibility relations replace traditional entropy postulates\n- **Classical Mechanics** (Arnold et al.): Symplectic geometry and variational principles\n\nNo unified axiomatization of 'all physics' exists, and some argue this is philosophically impossible.",
+    "problemStatement": "Hilbert's original statement: 'To treat in the same manner, by means of axioms, those physical sciences in which mathematics plays an important part; in the first rank are the theory of probabilities and mechanics.'\n\nThe problem asks for:\n1. Clear, minimal axiom sets for physical theories\n2. Derivation of physical laws from these axioms\n3. Investigation of consistency and independence\n4. Ultimately, unification under a common framework",
+    "proofStrategy": "We demonstrate the most successful response to Hilbert's sixth problem: Kolmogorov's axiomatization of probability theory.\n\n1. **Probability Measure**: A measure P on a measurable space (Ω, Σ) with P(Ω) = 1\n\n2. **The Three Axioms**:\n   - P(Ω) = 1 (normalization)\n   - P(∅) = 0 (impossibility)\n   - P(⊔ᵢ Aᵢ) = Σᵢ P(Aᵢ) for disjoint events (σ-additivity)\n\n3. **Derived Concepts**: From these axioms, we derive conditional probability, Bayes' theorem, independence, and the foundation for all of probability theory.\n\nWe also sketch the quantum mechanical formulation (Born rule) and classical mechanics (Lagrangian/Hamiltonian formalism).",
+    "keyInsights": [
+      "Individual physical theories can be rigorously axiomatized",
+      "Probability is reducible to measure theory (Kolmogorov)",
+      "Quantum mechanics requires infinite-dimensional Hilbert spaces",
+      "A unified 'theory of everything' axiom system remains elusive",
+      "The problem reveals deep connections between mathematics and physics"
+    ]
+  },
+  "sections": [
+    {
+      "id": "kolmogorov",
+      "title": "Kolmogorov's Axioms (1933)",
+      "startLine": 56,
+      "endLine": 117,
+      "summary": "The three Kolmogorov axioms for probability: normalization (P(Ω)=1), empty set (P(∅)=0), and countable additivity."
+    },
+    {
+      "id": "conditional",
+      "title": "Conditional Probability & Bayes' Theorem",
+      "startLine": 119,
+      "endLine": 156,
+      "summary": "Conditional probability P(A|B) = P(A∩B)/P(B) and Bayes' theorem relating P(A|B) to P(B|A)."
+    },
+    {
+      "id": "quantum",
+      "title": "Quantum Mechanics: Hilbert Space Formulation",
+      "startLine": 158,
+      "endLine": 205,
+      "summary": "Von Neumann's axiomatization: states as unit vectors, observables as operators, Born rule for probabilities."
+    },
+    {
+      "id": "classical",
+      "title": "Classical Mechanics: Lagrangian Formulation",
+      "startLine": 207,
+      "endLine": 247,
+      "summary": "Hamilton's principle and the action functional: physical paths extremize the action integral."
+    },
+    {
+      "id": "thermodynamics",
+      "title": "Thermodynamics: Caratheodory Formulation",
+      "startLine": 249,
+      "endLine": 283,
+      "summary": "Caratheodory's axiom about inaccessible states implies the existence of entropy."
+    },
+    {
+      "id": "philosophy",
+      "title": "Philosophical Reflections",
+      "startLine": 285,
+      "endLine": 325,
+      "summary": "Discussion of what has been achieved, what remains open, and why unified axiomatization may be impossible."
+    }
+  ],
+  "conclusion": {
+    "summary": "Hilbert's sixth problem is partially solved. Individual physical theories have been given rigorous axiomatic foundations, most notably Kolmogorov's probability axioms. However, a unified axiomatization of 'all physics' remains elusive and may be philosophically impossible.\n\nThe success of measure-theoretic probability demonstrates that careful axiomatization can resolve foundational questions and enable rigorous development of a theory. Similar approaches have worked for quantum mechanics, thermodynamics, and classical mechanics.",
+    "implications": "The partial resolution of Hilbert's sixth problem has profound implications:\n\n1. **Foundations of Probability**: Statistics, machine learning, and data science rest on Kolmogorov's axioms\n\n2. **Quantum Foundations**: The Hilbert space formalism is essential for quantum computing and information theory\n\n3. **Mathematical Physics**: Rigorous foundations enable proofs about physical systems\n\n4. **Philosophy of Science**: The problem illuminates what 'axiomatization' means and its limits\n\n5. **Unification**: The search for unified axioms (quantum gravity, TOE) continues as a major research program",
+    "openQuestions": [
+      "Can quantum mechanics and general relativity be unified under common axioms?",
+      "What is the role of measurement in the foundations of quantum mechanics?",
+      "Is there a categorical framework that unifies all physical theories?",
+      "How do symmetry principles constrain possible axiom systems?"
+    ]
+  }
+}

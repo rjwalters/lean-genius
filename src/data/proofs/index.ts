@@ -118,6 +118,7 @@ import { gelfondSchneiderData } from './gelfond-schneider'
 import { hilbert3Data } from './hilbert-3'
 import { hilbert5Data } from './hilbert-5'
 import { hilbert11Data } from './hilbert-11'
+import { hilbert13Data } from './hilbert-13'
 import { hilbert16Data } from './hilbert-16'
 import { hilbert17Data } from './hilbert-17'
 import { hodgeConjectureData } from './hodge-conjecture'
@@ -128,6 +129,8 @@ import { yangMillsData } from './yang-mills'
 import { poincareConjectureData } from './poincare-conjecture'
 import { birchSwinnertonDyerData } from './birch-swinnerton-dyer'
 import { hilbert15Data } from './hilbert-15'
+import { hilbert4Data } from './hilbert-4'
+import { hilbert6Data } from './hilbert-6'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -251,6 +254,7 @@ export const proofs: Record<string, ProofData> = {
   'hilbert-3': hilbert3Data,
   'hilbert-5': hilbert5Data,
   'hilbert-11': hilbert11Data,
+  'hilbert-13': hilbert13Data,
   'hilbert-16': hilbert16Data,
   'hilbert-17': hilbert17Data,
   'hodge-conjecture': hodgeConjectureData,
@@ -261,6 +265,8 @@ export const proofs: Record<string, ProofData> = {
   'poincare-conjecture': poincareConjectureData,
   'birch-swinnerton-dyer': birchSwinnertonDyerData,
   'hilbert-15': hilbert15Data,
+  'hilbert-4': hilbert4Data,
+  'hilbert-6': hilbert6Data,
 }
 
 export function getProof(slug: string): ProofData | undefined {

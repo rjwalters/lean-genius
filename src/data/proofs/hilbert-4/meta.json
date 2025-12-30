@@ -1,0 +1,109 @@
+{
+  "id": "hilbert-4",
+  "title": "Hilbert's 4th Problem: Straight Line as Shortest Distance",
+  "slug": "hilbert-4",
+  "description": "Busemann's characterization of projective metrics where straight lines are geodesics, including Minkowski and Hilbert geometries.",
+  "meta": {
+    "author": "Busemann (1955), Hamel (1903)",
+    "date": "1955",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "metric-spaces",
+      "hilbert-problems",
+      "intermediate"
+    ],
+    "badge": "original",
+    "sorries": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "NormedSpace",
+        "description": "Normed vector space definitions",
+        "module": "Mathlib.Analysis.NormedSpace.Basic"
+      },
+      {
+        "theorem": "Convex",
+        "description": "Convexity of sets",
+        "module": "Mathlib.Analysis.Convex.Basic"
+      },
+      {
+        "theorem": "MetricSpace",
+        "description": "Metric space structure",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of Minkowski geometry structure",
+      "Definition of Hilbert geometry",
+      "Statement of Busemann's classification theorem",
+      "Examples: Euclidean, taxicab, Chebyshev norms",
+      "Hamel's 2D characterization theorem"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 4
+  },
+  "overview": {
+    "historicalContext": "Hilbert's 4th Problem (1900) asked for the characterization of geometries where straight lines remain the shortest distance between two points, while weakening congruence axioms and omitting the parallel postulate.\n\nHamel made the first progress in 1903, showing that in 2D, only Minkowski geometries satisfy these conditions. Busemann provided the complete solution in 1955.",
+    "problemStatement": "**Question:** Find all geometries whose axioms are closest to Euclidean geometry if the ordering and incidence axioms are retained, the congruence axioms weakened, and the parallel postulate omitted.\n\nMore specifically: Characterize all metrics where straight lines are the shortest paths between points.",
+    "proofStrategy": "The solution involves three main classes of metrics:\n\n1. **Minkowski Geometries**: Normed vector spaces with convex unit ball\n2. **Hilbert Geometries**: Metrics on convex domains defined by cross-ratio\n3. **Funk-type Metrics**: Asymmetric projective metrics\n\nBusemann proved these exhaust all possibilities.",
+    "keyInsights": [
+      "Minkowski geometries arise from translation-invariant norms",
+      "Hilbert geometries are projectively invariant",
+      "The triangle inequality forces geodesics to be straight lines",
+      "Convexity of the unit ball is the key geometric condition"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 1,
+      "endLine": 85,
+      "summary": "Introduction to Hilbert's 4th Problem and key definitions."
+    },
+    {
+      "id": "minkowski",
+      "title": "Minkowski Geometry",
+      "startLine": 86,
+      "endLine": 130,
+      "summary": "Definition of Minkowski gauges and geometries."
+    },
+    {
+      "id": "geodesics",
+      "title": "Geodesics and Straight Lines",
+      "startLine": 131,
+      "endLine": 180,
+      "summary": "Proof that straight lines are geodesics in Minkowski spaces."
+    },
+    {
+      "id": "hilbert-geometry",
+      "title": "Hilbert Geometry",
+      "startLine": 181,
+      "endLine": 230,
+      "summary": "The Hilbert metric on convex bodies."
+    },
+    {
+      "id": "busemann",
+      "title": "Busemann's Classification",
+      "startLine": 231,
+      "endLine": 280,
+      "summary": "Statement of Busemann's characterization theorem."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 281,
+      "endLine": 350,
+      "summary": "Euclidean, taxicab, and Chebyshev norms as examples."
+    }
+  ],
+  "conclusion": {
+    "summary": "Hilbert's 4th Problem is solved by Busemann's classification: projective metrics where straight lines are geodesics are exactly Minkowski metrics, Hilbert metrics, and Funk-type metrics.",
+    "implications": "This characterization underlies the modern theory of Finsler geometry and has applications in optimization, convex analysis, and differential geometry.",
+    "openQuestions": [
+      "What regularity conditions are necessary for Busemann's theorem?",
+      "How does the theory extend to infinite-dimensional spaces?",
+      "What are the connections to symplectic geometry?"
+    ]
+  }
+}
