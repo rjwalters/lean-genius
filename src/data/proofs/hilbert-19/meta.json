@@ -1,0 +1,120 @@
+{
+  "id": "hilbert-19",
+  "title": "Hilbert's Nineteenth Problem: Regularity of Variational Solutions",
+  "slug": "hilbert-19",
+  "description": "Hilbert's 1900 question on whether variational minimizers are analytic was resolved affirmatively by De Giorgi (1957) and Nash (1958): solutions of uniformly elliptic PDEs with smooth data are smooth.",
+  "meta": {
+    "author": "De Giorgi, Nash, Moser, Schauder",
+    "date": "1957-1960",
+    "status": "verified",
+    "tags": [
+      "pde",
+      "calculus-of-variations",
+      "regularity-theory",
+      "hilbert-problems",
+      "elliptic-equations",
+      "intermediate"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ContDiff",
+        "description": "Smooth functions (C^n and C^infinity)",
+        "module": "Analysis.Calculus.ContDiff.Basic"
+      },
+      {
+        "theorem": "FDeriv",
+        "description": "Frechet derivatives for multivariate calculus",
+        "module": "Analysis.Calculus.FDeriv.Basic"
+      },
+      {
+        "theorem": "deriv",
+        "description": "Real derivatives for 1D calculus",
+        "module": "Analysis.Calculus.Deriv.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Variational problem formalization",
+      "Euler-Lagrange equation structure",
+      "Ellipticity condition definition",
+      "De Giorgi-Nash-Moser theorem statement",
+      "Schauder estimates structure"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 19
+  },
+  "overview": {
+    "historicalContext": "In 1900, David Hilbert posed 23 problems to guide 20th-century mathematics. The nineteenth problem asked whether solutions of 'regular' variational problems are necessarily analytic (infinitely differentiable with convergent Taylor series).\n\nThis question lies at the heart of PDE theory: if we minimize a well-behaved functional, how smooth is the minimizer?\n\n**Key Contributors:**\n- **Bernstein (1904)**: Solved the 2D case\n- **Schauder (1934)**: Developed Holder estimates for bootstrapping\n- **De Giorgi (1957)**: Revolutionary proof for general dimensions\n- **Nash (1958)**: Independent proof (parabolic case)\n- **Moser (1960)**: Simplified proofs using Harnack inequality\n\nThe resolution established modern elliptic regularity theory.",
+    "problemStatement": "Consider a variational problem: minimize J[u] = integral of F(x, u, Du) dx over functions u satisfying boundary conditions.\n\nIf F satisfies:\n1. Smoothness: F is smooth (or analytic) in all arguments\n2. Ellipticity: F is strictly convex in the gradient variable (Legendre condition)\n\n**Question**: Must the minimizer u be smooth (or analytic)?\n\nThis is the 'regularity problem' for elliptic PDEs arising from variational principles.",
+    "proofStrategy": "The proof proceeds in stages of increasing regularity:\n\n1. **Existence**: Minimizers exist in weak (Sobolev) spaces\n\n2. **De Giorgi-Nash-Moser**: Weak solutions are Holder continuous\n   - Key: Caccioppoli inequality (energy estimate)\n   - De Giorgi iteration: oscillation decays geometrically\n\n3. **Schauder Bootstrap**: Once Holder, we gain derivatives\n   - C^{k,alpha} coefficients implies C^{k+2,alpha} solution\n   - Iterate to C^infinity\n\n4. **Analyticity**: If F is analytic, solutions are analytic",
+    "keyInsights": [
+      "Ellipticity (strict convexity in gradient) is the crucial structural condition",
+      "De Giorgi's method avoids differentiating the equation directly",
+      "The Caccioppoli inequality converts PDE structure to energy estimates",
+      "Regularity is a 'local' property - only depends on local ellipticity",
+      "For systems (not scalar equations), regularity can fail - De Giorgi's counterexample"
+    ]
+  },
+  "sections": [
+    {
+      "id": "variational",
+      "title": "The Calculus of Variations",
+      "startLine": 59,
+      "endLine": 89,
+      "summary": "Setup of variational problems: Lagrangian densities, action functionals, and critical points."
+    },
+    {
+      "id": "euler-lagrange",
+      "title": "The Euler-Lagrange Equation",
+      "startLine": 91,
+      "endLine": 116,
+      "summary": "Characterization of critical points via the Euler-Lagrange differential equation."
+    },
+    {
+      "id": "ellipticity",
+      "title": "Ellipticity - The Key Condition",
+      "startLine": 118,
+      "endLine": 149,
+      "summary": "The ellipticity (Legendre) condition ensuring the PDE is well-behaved."
+    },
+    {
+      "id": "regularity",
+      "title": "Regularity Theory",
+      "startLine": 151,
+      "endLine": 206,
+      "summary": "The main theorems: De Giorgi-Nash-Moser for Holder regularity, Schauder for smoothness."
+    },
+    {
+      "id": "degiorgi",
+      "title": "The De Giorgi Method",
+      "startLine": 208,
+      "endLine": 251,
+      "summary": "De Giorgi's elegant approach via Caccioppoli inequality and oscillation decay."
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Non-Examples",
+      "startLine": 253,
+      "endLine": 286,
+      "summary": "Dirichlet problem as prototypical example; minimal surfaces as non-example in high dimensions."
+    },
+    {
+      "id": "modern",
+      "title": "Modern Developments",
+      "startLine": 288,
+      "endLine": 337,
+      "summary": "Extensions to nonlinear theory, systems, and the final summary theorem."
+    }
+  ],
+  "conclusion": {
+    "summary": "Hilbert's nineteenth problem is resolved affirmatively: solutions of uniformly elliptic variational problems with smooth data are smooth, and analytic if the data is analytic.\n\nThe proof combines:\n1. De Giorgi-Nash-Moser theory for initial Holder regularity\n2. Schauder estimates for bootstrapping to full smoothness\n\nThis established the foundation of modern elliptic PDE theory.",
+    "implications": "The resolution of Hilbert's 19th problem has profound implications:\n\n1. **PDE Theory**: Elliptic regularity is now a cornerstone of analysis\n\n2. **Geometric Analysis**: Regularity of minimal surfaces, harmonic maps\n\n3. **Physics Applications**: Smoothness of equilibrium states, field configurations\n\n4. **Numerical Analysis**: Justifies approximation schemes for elliptic problems\n\n5. **Free Boundary Problems**: Extended to problems where the domain is unknown",
+    "openQuestions": [
+      "What is the optimal regularity for degenerate elliptic equations?",
+      "When do solutions of elliptic systems have singularities?",
+      "How does regularity extend to fully nonlinear equations?",
+      "What are the regularity properties of solutions in fractional Sobolev spaces?"
+    ]
+  }
+}
