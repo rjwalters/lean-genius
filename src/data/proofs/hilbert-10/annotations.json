@@ -96,7 +96,7 @@
       "startLine": 82,
       "endLine": 83
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The MRDP Theorem",
     "content": "**MRDP Theorem** (Matiyasevich-Robinson-Davis-Putnam, 1970):\n\nA set is recursively enumerable if and only if it is Diophantine.\n\nThis is a stunning result: the ancient concept of polynomial solvability over integers captures exactly the modern notion of semi-decidability!",
     "mathContext": "$S$ is r.e. $\\Leftrightarrow$ $S$ is Diophantine\n\nEvery computable enumeration can be encoded as polynomial solvability.",
@@ -195,24 +195,6 @@
       "Fibonacci numbers",
       "Pell equations",
       "exponential Diophantine"
-    ]
-  },
-  {
-    "id": "ann-open-rationals",
-    "proofId": "hilbert-10",
-    "range": {
-      "startLine": 207,
-      "endLine": 210
-    },
-    "type": "insight",
-    "title": "Open: H10 over Rationals",
-    "content": "Whether H10 is decidable over the **rationals** remains one of the major open problems in mathematics!\n\nOver integers: UNDECIDABLE (MRDP 1970)\nOver rationals: OPEN\nIn one variable: DECIDABLE (finite search)\nFor quadratics: Partially decidable\n\nThe rationals case is related to deep questions in algebraic geometry.",
-    "mathContext": "Is there an algorithm to decide whether $P(x_1, \\ldots, x_n) = 0$ has solutions in $\\mathbb{Q}^n$?",
-    "significance": "key",
-    "relatedConcepts": [
-      "rational points",
-      "Hasse principle",
-      "algebraic geometry"
     ]
   },
   {
