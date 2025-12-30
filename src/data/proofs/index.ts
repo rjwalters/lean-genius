@@ -132,6 +132,7 @@ import { hilbert15Data } from './hilbert-15'
 import { hilbert4Data } from './hilbert-4'
 import { hilbert6Data } from './hilbert-6'
 import { hilbert14Data } from './hilbert-14'
+import { hilbert19Data } from './hilbert-19'
 import { hilbert20Data } from './hilbert-20'
 import { hilbert21Data } from './hilbert-21'
 import { hilbert22Data } from './hilbert-22'
@@ -273,6 +274,7 @@ export const proofs: Record<string, ProofData> = {
   'hilbert-4': hilbert4Data,
   'hilbert-6': hilbert6Data,
   'hilbert-14': hilbert14Data,
+  'hilbert-19': hilbert19Data,
   'hilbert-20': hilbert20Data,
   'hilbert-21': hilbert21Data,
   'hilbert-22': hilbert22Data,

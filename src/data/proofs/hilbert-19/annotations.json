@@ -1,0 +1,218 @@
+[
+  {
+    "id": "ann-historical",
+    "proofId": "hilbert-19",
+    "range": {
+      "startLine": 1,
+      "endLine": 55
+    },
+    "type": "insight",
+    "title": "The Regularity Question",
+    "content": "Hilbert's 19th problem addresses a fundamental question in analysis: when we find a function that minimizes some energy functional, how smooth is it?\n\nThis isn't automatic - weak solutions (in Sobolev spaces) may exist without being classically differentiable. The breakthrough was showing that for **elliptic** problems, weak solutions are actually smooth.",
+    "mathContext": "Minimize $J[u] = \\int F(x, u, \\nabla u) \\, dx$\n\nQuestion: If $F$ is smooth/analytic and elliptic, is the minimizer $u$ also smooth/analytic?",
+    "significance": "critical",
+    "relatedConcepts": [
+      "calculus of variations",
+      "weak solutions",
+      "Sobolev spaces"
+    ]
+  },
+  {
+    "id": "ann-lagrangian",
+    "proofId": "hilbert-19",
+    "range": {
+      "startLine": 70,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "Lagrangian Density",
+    "content": "The **Lagrangian density** $F(x, u, p)$ encodes the physics of the problem:\n\n- $x$ = spatial position\n- $u$ = field value at $x$\n- $p = \\nabla u$ = gradient of the field\n\nFor physics problems, $F$ often represents energy density (kinetic minus potential).",
+    "mathContext": "Common example: $F = \\frac{1}{2}|\\nabla u|^2$ (Dirichlet energy)\n\nMinimizers satisfy $\\Delta u = 0$ (Laplace equation).",
+    "significance": "key",
+    "relatedConcepts": [
+      "action principle",
+      "energy functional",
+      "field theory"
+    ]
+  },
+  {
+    "id": "ann-euler-lagrange",
+    "proofId": "hilbert-19",
+    "range": {
+      "startLine": 101,
+      "endLine": 106
+    },
+    "type": "theorem",
+    "title": "Euler-Lagrange Equation",
+    "content": "Critical points of the action functional satisfy the **Euler-Lagrange equation**:\n\n$$\\frac{\\partial F}{\\partial u} - \\frac{d}{dx}\\frac{\\partial F}{\\partial u'} = 0$$\n\nThis is a second-order ODE (or PDE in higher dimensions) characterizing minimizers.",
+    "mathContext": "For $F = \\frac{1}{2}(u')^2 - V(u)$:\n\nEuler-Lagrange gives $u'' = -V'(u)$ (Newton's equation!)",
+    "significance": "critical",
+    "relatedConcepts": [
+      "calculus of variations",
+      "first variation",
+      "necessary conditions"
+    ]
+  },
+  {
+    "id": "ann-ellipticity",
+    "proofId": "hilbert-19",
+    "range": {
+      "startLine": 131,
+      "endLine": 140
+    },
+    "type": "definition",
+    "title": "Ellipticity Condition",
+    "content": "**Ellipticity** is the key structural condition for regularity. A variational problem is elliptic if the Lagrangian is **strictly convex in the gradient variable**:\n\n$$\\frac{\\partial^2 F}{\\partial p^2} > 0$$\n\nThis is also called the **Legendre condition**. It ensures the Euler-Lagrange equation is an elliptic PDE.",
+    "mathContext": "For the Dirichlet integral $F = \\frac{1}{2}|p|^2$:\n\n$\\frac{\\partial^2 F}{\\partial p^2} = 1 > 0$ (uniformly elliptic!)",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Legendre condition",
+      "convexity",
+      "elliptic PDE"
+    ]
+  },
+  {
+    "id": "ann-degiorgi",
+    "proofId": "hilbert-19",
+    "range": {
+      "startLine": 171,
+      "endLine": 178
+    },
+    "type": "theorem",
+    "title": "De Giorgi-Nash-Moser Theorem",
+    "content": "The **De Giorgi-Nash-Moser theorem** (1957-60) was the breakthrough:\n\n*Solutions of uniformly elliptic equations in divergence form are Holder continuous.*\n\nThis was revolutionary because it established regularity without differentiating the equation - using only energy estimates.",
+    "mathContext": "If $u$ is a weak solution of $\\text{div}(A(x)\\nabla u) = 0$ with uniformly elliptic $A$, then:\n\n$u \\in C^{0,\\alpha}$ for some $\\alpha > 0$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Holder continuity",
+      "weak solutions",
+      "energy estimates"
+    ]
+  },
+  {
+    "id": "ann-schauder",
+    "proofId": "hilbert-19",
+    "range": {
+      "startLine": 180,
+      "endLine": 187
+    },
+    "type": "theorem",
+    "title": "Schauder Estimates",
+    "content": "**Schauder estimates** (1934) provide the 'bootstrap' to higher regularity:\n\n*If coefficients are $C^{k,\\alpha}$ and the solution is $C^{0,\\alpha}$, then the solution is $C^{k+2,\\alpha}$.*\n\nCombined with De Giorgi-Nash-Moser, this gives full smoothness: iterate to get $C^\\infty$.",
+    "mathContext": "$C^{k,\\alpha}$ coefficients $\\Rightarrow$ $C^{k+2,\\alpha}$ solutions\n\nStarting from Holder (De Giorgi), iterate to $C^\\infty$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Holder spaces",
+      "regularity bootstrap",
+      "a priori estimates"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "hilbert-19",
+    "range": {
+      "startLine": 189,
+      "endLine": 199
+    },
+    "type": "theorem",
+    "title": "Hilbert 19 Main Theorem",
+    "content": "The main theorem resolving Hilbert's 19th problem:\n\n*If F is smooth and uniformly elliptic, then any solution of the Euler-Lagrange equation is smooth.*\n\nThis combines De Giorgi-Nash-Moser (initial Holder regularity) with Schauder estimates (bootstrap to $C^\\infty$).",
+    "mathContext": "Uniformly elliptic + smooth data $\\Rightarrow$ smooth solution\n\n$\\text{ContDiff } \\mathbb{R} \\top u$ means $u$ is $C^\\infty$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "elliptic regularity",
+      "smooth functions",
+      "variational calculus"
+    ]
+  },
+  {
+    "id": "ann-caccioppoli",
+    "proofId": "hilbert-19",
+    "range": {
+      "startLine": 225,
+      "endLine": 232
+    },
+    "type": "theorem",
+    "title": "Caccioppoli Inequality",
+    "content": "The **Caccioppoli inequality** is the key technical estimate in De Giorgi's proof:\n\n$$\\int_{B_r} |\\nabla u|^2 \\leq \\frac{C}{R^2} \\int_{B_R} |u - \\bar{u}|^2$$\n\nThis bounds the gradient in terms of oscillation - an 'energy estimate' that doesn't require differentiating the equation.",
+    "mathContext": "The inequality says: gradient energy on inner ball is controlled by oscillation on outer ball.\n\nThis is how De Giorgi avoids the need for classical derivatives.",
+    "significance": "key",
+    "relatedConcepts": [
+      "energy estimates",
+      "Poincare inequality",
+      "De Giorgi iteration"
+    ]
+  },
+  {
+    "id": "ann-oscillation",
+    "proofId": "hilbert-19",
+    "range": {
+      "startLine": 234,
+      "endLine": 238
+    },
+    "type": "definition",
+    "title": "De Giorgi Iteration",
+    "content": "De Giorgi's brilliant insight: the **oscillation decays geometrically** on nested balls:\n\n$$\\text{osc}_{B_{r/2}}(u) \\leq \\theta \\cdot \\text{osc}_{B_r}(u)$$\n\nfor some $\\theta < 1$. This geometric decay immediately implies Holder continuity with exponent $\\alpha = -\\log_2 \\theta$.",
+    "mathContext": "If oscillation decays like $r^\\alpha$, then:\n\n$|u(x) - u(y)| \\leq C|x-y|^\\alpha$ (Holder continuity)",
+    "significance": "key",
+    "relatedConcepts": [
+      "Holder continuity",
+      "geometric decay",
+      "iteration argument"
+    ]
+  },
+  {
+    "id": "ann-dirichlet",
+    "proofId": "hilbert-19",
+    "range": {
+      "startLine": 259,
+      "endLine": 276
+    },
+    "type": "example",
+    "title": "Dirichlet Problem",
+    "content": "The **Dirichlet problem** is the prototypical elliptic variational problem:\n\n*Minimize $\\int |\\nabla u|^2$ subject to boundary conditions.*\n\nThe Euler-Lagrange equation is $\\Delta u = 0$ (Laplace's equation). Solutions are **harmonic functions**, which are famously analytic.",
+    "mathContext": "Lagrangian: $F = \\frac{1}{2}|p|^2$\n\nEuler-Lagrange: $u'' = 0$ (1D) or $\\Delta u = 0$ (nD)\n\nHarmonic functions are $C^\\omega$ (real analytic)!",
+    "significance": "key",
+    "relatedConcepts": [
+      "harmonic functions",
+      "Laplace equation",
+      "potential theory"
+    ]
+  },
+  {
+    "id": "ann-systems",
+    "proofId": "hilbert-19",
+    "range": {
+      "startLine": 299,
+      "endLine": 302
+    },
+    "type": "insight",
+    "title": "Regularity Fails for Systems",
+    "content": "A remarkable fact: regularity can **fail** for systems of elliptic equations!\n\nDe Giorgi himself constructed a counterexample: a uniformly elliptic system whose solutions are not continuous.\n\nThis shows the scalar nature is essential for the full regularity theory.",
+    "mathContext": "De Giorgi (1968): There exists a uniformly elliptic system\n$\\text{div}(A(x)\\nabla u) = 0$ with $u : \\mathbb{R}^n \\to \\mathbb{R}^m$\n\nwhose weak solutions are unbounded (hence not Holder).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "elliptic systems",
+      "counterexamples",
+      "partial regularity"
+    ]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "hilbert-19",
+    "range": {
+      "startLine": 327,
+      "endLine": 335
+    },
+    "type": "insight",
+    "title": "Resolution Summary",
+    "content": "Hilbert's 19th problem is **completely resolved** for scalar equations:\n\n1. **Holder regularity**: De Giorgi-Nash-Moser (1957-60)\n2. **Smoothness**: Schauder estimates (1934) + bootstrap\n3. **Analyticity**: If data is analytic, so is the solution\n\nThe key is **uniform ellipticity** - strict convexity in the gradient variable.",
+    "mathContext": "Uniformly elliptic + smooth data $\\Rightarrow$ smooth solution\n\nUniformly elliptic + analytic data $\\Rightarrow$ analytic solution",
+    "significance": "critical",
+    "relatedConcepts": [
+      "elliptic regularity",
+      "Hilbert problems",
+      "PDE theory"
+    ]
+  }
+]
