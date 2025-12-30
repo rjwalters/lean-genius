@@ -1,1 +1,88 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "sylow-theorems",
+    "range": {"startLine": 8, "endLine": 65},
+    "type": "concept",
+    "title": "Sylow's Theorems: Wiedijk #72",
+    "content": "**The Sylow Theorems** (1872):\n\nFor a finite group $G$ with $|G| = p^k m$ where $p \\nmid m$:\n\n1. **Existence**: $G$ has a subgroup of order $p^k$ (Sylow $p$-subgroup)\n2. **Conjugacy**: All Sylow $p$-subgroups are conjugate\n3. **Counting**: The number $n_p$ satisfies $n_p \\mid m$ and $n_p \\equiv 1 \\pmod{p}$\n\n**Historical**: Peter Ludwig Mejdell Sylow (1832-1918).\n\n**Significance**: Among the most important tools in finite group theory, essential for classification.",
+    "significance": "critical",
+    "relatedConcepts": ["p-groups", "conjugacy", "group classification"]
+  },
+  {
+    "id": "ann-sylow-type",
+    "proofId": "sylow-theorems",
+    "range": {"startLine": 73, "endLine": 79},
+    "type": "definition",
+    "title": "The Sylow Type",
+    "content": "**Mathlib Representation**:\n\n`Sylow p G` is the type of Sylow $p$-subgroups of $G$.\n\n- `P : Sylow p G` represents a Sylow $p$-subgroup\n- `↑P : Subgroup G` is the underlying subgroup\n- Coercion gives access to group operations\n\n**Key**: Treating Sylow subgroups as a type enables powerful reasoning about their collection.",
+    "mathContext": "Sylow p G type",
+    "significance": "major",
+    "relatedConcepts": ["Subgroup", "Fintype", "coercion"]
+  },
+  {
+    "id": "ann-sylow-one",
+    "proofId": "sylow-theorems",
+    "range": {"startLine": 80, "endLine": 104},
+    "type": "theorem",
+    "title": "First Sylow Theorem: Existence",
+    "content": "**Sylow I (Existence)**:\n\nFor any prime $p$, a finite group $G$ has a Sylow $p$-subgroup.\n\nIf $|G| = p^k m$ with $p \\nmid m$, then $G$ has a subgroup of order $p^k$.\n\n**Lean**:\n```lean\ntheorem sylow_existence (G : Type*) [Group G] [Fintype G] \n    (p : ℕ) [Fact p.Prime] : Nonempty (Sylow p G) := Sylow.nonempty\n```\n\n**Cardinality**:\n$$|P| = p^{\\nu_p(|G|)}$$\nwhere $\\nu_p$ is the $p$-adic valuation.\n\n**Proof idea**: Induction on $|G|$, using class equation.",
+    "mathContext": "∃ P : Sylow p G",
+    "significance": "critical",
+    "relatedConcepts": ["p-groups", "existence", "Sylow.nonempty"]
+  },
+  {
+    "id": "ann-sylow-two",
+    "proofId": "sylow-theorems",
+    "range": {"startLine": 105, "endLine": 129},
+    "type": "theorem",
+    "title": "Second Sylow Theorem: Conjugacy",
+    "content": "**Sylow II (Conjugacy)**:\n\nAll Sylow $p$-subgroups are conjugate.\n\nIf $P, Q$ are Sylow $p$-subgroups, then $\\exists g \\in G: Q = gPg^{-1}$.\n\n**Lean**:\n```lean\ntheorem sylow_conjugacy (P Q : Sylow p G) : ∃ g : G, g • P = Q :=\n  MulAction.exists_smul_eq G P Q\n```\n\n**Consequences**:\n- All Sylow $p$-subgroups are isomorphic\n- There's essentially \"one\" Sylow $p$-subgroup up to conjugacy\n\n**Proof idea**: Let $P$ act on cosets $G/Q$ by multiplication, apply orbit-stabilizer.",
+    "mathContext": "P, Q Sylow ⟹ Q = gPg⁻¹",
+    "significance": "critical",
+    "relatedConcepts": ["conjugacy", "isomorphism", "MulAction"]
+  },
+  {
+    "id": "ann-sylow-three",
+    "proofId": "sylow-theorems",
+    "range": {"startLine": 130, "endLine": 149},
+    "type": "theorem",
+    "title": "Third Sylow Theorem: Counting",
+    "content": "**Sylow III (Counting)**:\n\nLet $n_p$ = number of Sylow $p$-subgroups. Then:\n$$n_p \\equiv 1 \\pmod{p}$$\n$$n_p \\mid [G : P] = m$$\n\n**Lean**:\n```lean\ntheorem sylow_count_mod_p : Nat.card (Sylow p G) ≡ 1 [MOD p]\ntheorem sylow_count_dvd_index (P : Sylow p G) : \n    Nat.card (Sylow p G) ∣ (↑P).index\n```\n\n**Power**: Combined constraints often force $n_p = 1$.\n\n**Example** ($|G| = 15 = 3 \\cdot 5$):\n- $n_3 | 5$ and $n_3 \\equiv 1 \\pmod{3}$ ⟹ $n_3 = 1$\n- $n_5 | 3$ and $n_5 \\equiv 1 \\pmod{5}$ ⟹ $n_5 = 1$",
+    "mathContext": "nₚ ≡ 1 (mod p), nₚ | m",
+    "significance": "critical",
+    "relatedConcepts": ["counting", "modular arithmetic", "index"]
+  },
+  {
+    "id": "ann-uniqueness",
+    "proofId": "sylow-theorems",
+    "range": {"startLine": 150, "endLine": 181},
+    "type": "theorem",
+    "title": "Uniqueness and Normality",
+    "content": "**Key Connection**:\n\n$$n_p = 1 \\quad \\Leftrightarrow \\quad \\text{Sylow } p\\text{-subgroup is normal}$$\n\n**Why**: Unique means \"only conjugate to itself\" = invariant under conjugation = normal.\n\n**Lean**:\n```lean\ntheorem sylow_normal_of_unique (P : Sylow p G) \n    [Subsingleton (Sylow p G)] : (↑P).Normal\n```\n\n**Converse**: A normal Sylow $p$-subgroup is unique.\n\n**Application**: Often use Sylow III to prove $n_p = 1$, concluding normality.",
+    "mathContext": "nₚ = 1 ⟺ P normal",
+    "significance": "major",
+    "relatedConcepts": ["Normal", "Subsingleton", "unique subgroup"]
+  },
+  {
+    "id": "ann-cauchy",
+    "proofId": "sylow-theorems",
+    "range": {"startLine": 182, "endLine": 196},
+    "type": "theorem",
+    "title": "Cauchy's Theorem (Corollary)",
+    "content": "**Cauchy from Sylow**:\n\nIf prime $p \\mid |G|$, then $G$ has an element of order $p$.\n\n**Proof from Sylow I**:\n1. By Sylow I, $G$ has a Sylow $p$-subgroup $P$ of order $p^k \\geq p$\n2. Take any non-identity $x \\in P$; its order is $p^j$ for some $j \\geq 1$\n3. Then $x^{p^{j-1}}$ has order $p$\n\n**Lean**:\n```lean\ntheorem cauchy_from_sylow (hdvd : p ∣ Fintype.card G) : \n    ∃ g : G, orderOf g = p\n```\n\nSylow generalizes Cauchy: not just elements, but entire subgroups.",
+    "mathContext": "p | |G| ⟹ ∃ g : ord(g) = p",
+    "significance": "major",
+    "relatedConcepts": ["Cauchy's theorem", "element order", "p-groups"]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "sylow-theorems",
+    "range": {"startLine": 205, "endLine": 233},
+    "type": "concept",
+    "title": "Classification Applications",
+    "content": "**Group Classification Tool**:\n\n**Groups of order $pq$** ($p < q$ primes):\n- $n_q \\equiv 1 \\pmod{q}$ and $n_q | p$\n- Since $q > p$: $n_q = 1$ (unique normal Sylow $q$-subgroup)\n\n**Groups of order $p^2$**:\n- Only one Sylow $p$-subgroup (the whole group)\n- Such groups are abelian: $\\mathbb{Z}_{p^2}$ or $\\mathbb{Z}_p \\times \\mathbb{Z}_p$\n\n**Simple group classification**:\n- Sylow counting rules out many orders for simple groups\n- E.g., groups of order 12 have normal subgroups\n\n**The Sylow theorems + Lagrange = foundation of finite group structure theory.**",
+    "significance": "major",
+    "relatedConcepts": ["classification", "simple groups", "direct products"]
+  }
+]

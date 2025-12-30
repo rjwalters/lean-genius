@@ -23,7 +23,7 @@
   {
     "id": "ann-main-theorem",
     "proofId": "puiseux-theorem",
-    "range": {"startLine": 160, "endLine": 203},
+    "range": {"startLine": 164, "endLine": 203},
     "type": "theorem",
     "title": "Algebraic Closure Theorem",
     "content": "**Main Theorem (Axiomatized)**:\n\nFor $K$ algebraically closed of characteristic 0:\n$$K\\{\\{x\\}\\} = \\overline{K((x))}$$\n\nPuiseux series form the algebraic closure of Laurent series.\n\n**Equivalent Statement**:\nEvery polynomial equation over $K((x))$ has solutions expressible as Puiseux series.\n\n**Lean Axiom**:\n```lean\naxiom puiseux_theorem (hK : IsAlgClosed K) (hchar : CharZero K) :\n    ∀ (n : ℕ) (p : Polynomial K), 0 < degree p →\n      ∃ y : ℕ → K, True\n```\n\n**Status**: Axiomatized; full proof requires Newton-Puiseux machinery.",
@@ -45,7 +45,7 @@
   {
     "id": "ann-applications",
     "proofId": "puiseux-theorem",
-    "range": {"startLine": 267, "endLine": 314},
+    "range": {"startLine": 269, "endLine": 314},
     "type": "concept",
     "title": "Applications: Curve Singularities",
     "content": "**Resolution of Singularities**:\n\nNear a singular point of $f(x,y) = 0$, each **branch** is parameterized by a Puiseux series.\n\n**Examples**:\n- **Cusp** $y^2 = x^3$: $y = \\pm x^{3/2}$\n- **Node** $y^2 = x^2(x+1)$: Two branches with integer expansions\n\n**Algebraic Functions**:\nMulti-valued functions $y(x)$ from $P(x,y) = 0$ become single-valued as Puiseux series.\n\n**Tropical Connection**:\nNewton polygon slopes = tropical roots = Puiseux leading exponents.\n\nThis links classical algebraic geometry with tropical geometry.",
@@ -55,7 +55,7 @@
   {
     "id": "ann-galois",
     "proofId": "puiseux-theorem",
-    "range": {"startLine": 320, "endLine": 344},
+    "range": {"startLine": 322, "endLine": 344},
     "type": "theorem",
     "title": "Galois Group: Profinite Integers",
     "content": "**Galois Theory of Puiseux Extension**:\n\n$$\\text{Gal}(K\\{\\{x\\}\\} / K((x))) \\cong \\hat{\\mathbb{Z}}$$\n\nwhere $\\hat{\\mathbb{Z}} = \\varprojlim_{n} \\mathbb{Z}/n\\mathbb{Z}$ is the profinite completion of $\\mathbb{Z}$.\n\n**Galois Action**:\n$$\\sigma: x^{1/n} \\mapsto \\zeta_n \\cdot x^{1/n}$$\n\nwhere $\\zeta_n$ is a primitive $n$-th root of unity.\n\n**Significance**:\n- Shows algebraic closures can have uncountable Galois groups\n- Compatibility across all $n$ gives profinite structure\n- Key example in infinite Galois theory",
@@ -66,7 +66,7 @@
   {
     "id": "ann-examples",
     "proofId": "puiseux-theorem",
-    "range": {"startLine": 350, "endLine": 397},
+    "range": {"startLine": 352, "endLine": 397},
     "type": "note",
     "title": "Concrete Calculations",
     "content": "**Worked Examples**:\n\n| Equation | Newton Slope | Puiseux Root |\n|----------|-------------|---------------|\n| $Y^2 = x$ | $-1/2$ | $\\pm x^{1/2}$ |\n| $Y^2 = x^3$ (cusp) | $-3/2$ | $\\pm x^{3/2}$ |\n| $Y^3 = x$ | $-1/3$ | $\\omega^k x^{1/3}$ |\n\n**Verification**:\n```lean\ntheorem square_root_puiseux :\n    ∃ exp : ℚ, exp = 1/2 ∧ True := ⟨1/2, rfl, trivial⟩\n```\n\nThe Newton polygon method systematically finds all roots.",

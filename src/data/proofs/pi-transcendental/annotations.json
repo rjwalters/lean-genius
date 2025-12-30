@@ -67,7 +67,7 @@
   {
     "id": "ann-corollaries",
     "proofId": "pi-transcendental",
-    "range": {"startLine": 185, "endLine": 236},
+    "range": {"startLine": 188, "endLine": 236},
     "type": "theorem",
     "title": "Corollaries of Transcendence",
     "content": "**Transcendence Propagates**:\n\n| Expression | Why Transcendental |\n|------------|--------------------|\n| $\\pi$ irrational | Transcendental $\\Rightarrow$ not rational |\n| $2\\pi$ | If algebraic, $\\pi$ satisfies $p(2X)$ |\n| $\\pi^2$ | If algebraic, $\\pi$ satisfies $p(X^2)$ |\n| $\\pi + 1$ | If algebraic, $\\pi$ satisfies $p(X+1)$ |\n| $1/\\pi$ | Reciprocal polynomial argument |\n\n**Pattern**: Any \"simple\" expression involving only $\\pi$ and algebraics remains transcendental.",

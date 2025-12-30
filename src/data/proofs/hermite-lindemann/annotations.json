@@ -56,7 +56,7 @@
   {
     "id": "ann-corollaries",
     "proofId": "hermite-lindemann",
-    "range": {"startLine": 211, "endLine": 281},
+    "range": {"startLine": 213, "endLine": 281},
     "type": "theorem",
     "title": "Fundamental Corollaries",
     "content": "**$e$ is transcendental** (Wiedijk #67):\n- Take $\\alpha = 1$ (algebraic)\n- $e = e^1$ is transcendental\n- Hermite (1873)\n\n**$\\pi$ is transcendental** (Wiedijk #53):\n1. Assume $\\pi$ algebraic\n2. Then $i\\pi$ algebraic ($i$ root of $X^2+1$)\n3. $e^{i\\pi} = -1$ must be transcendental\n4. But $-1$ is algebraic - contradiction!\n\n**$e^n$ transcendental** for $n \\in \\mathbb{Z} \\setminus \\{0\\}$:\nProved directly from Hermite-Lindemann.",
@@ -67,7 +67,7 @@
   {
     "id": "ann-applications",
     "proofId": "hermite-lindemann",
-    "range": {"startLine": 287, "endLine": 317},
+    "range": {"startLine": 289, "endLine": 317},
     "type": "concept",
     "title": "Applications",
     "content": "**Squaring the Circle is Impossible**:\n\n$\\sqrt{\\pi}$ is transcendental:\n- If $\\sqrt{\\pi}$ algebraic, then $(\\sqrt{\\pi})^2 = \\pi$ algebraic\n- But $\\pi$ is transcendental!\n\nTranscendental $\\Rightarrow$ not constructible with compass and straightedge.\n\n**$e$ is irrational**:\n- If $e = p/q$, then $e$ is root of $qX - p$\n- This makes $e$ algebraic\n- Contradicts transcendence!\n\n$e$ has non-periodic decimal expansion.",
@@ -78,7 +78,7 @@
   {
     "id": "ann-connections",
     "proofId": "hermite-lindemann",
-    "range": {"startLine": 323, "endLine": 350},
+    "range": {"startLine": 325, "endLine": 350},
     "type": "concept",
     "title": "Generalizations and Open Problems",
     "content": "**Generalizations**:\n\n| Theorem | Result |\n|---------|--------|\n| Gelfond-Schneider (1934) | $\\alpha^\\beta$ transcendental (Hilbert #7) |\n| Baker (1966) | Linear forms in logarithms |\n\n**Unsolved Problems**:\n- Is $e + \\pi$ transcendental? (Unknown)\n- Is $e \\cdot \\pi$ transcendental? (Unknown)\n- Is $\\gamma$ (Euler-Mascheroni) irrational? (Unknown!)\n\n**Schanuel's Conjecture**: Would resolve most open problems.\nIf $z_1, \\ldots, z_n$ are $\\mathbb{Q}$-linearly independent, then tr.deg $\\mathbb{Q}(z_i, e^{z_i}) \\geq n$.",

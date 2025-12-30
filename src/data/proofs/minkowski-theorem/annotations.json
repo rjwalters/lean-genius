@@ -45,7 +45,7 @@
   {
     "id": "ann-convex-body",
     "proofId": "minkowski-theorem",
-    "range": {"startLine": 189, "endLine": 206},
+    "range": {"startLine": 193, "endLine": 206},
     "type": "definition",
     "title": "Convex Bodies",
     "content": "**Convex Body Structure**:\n\n```lean\nstructure ConvexBody (n : ℕ) where\n  carrier : Set (EuclideanN n)\n  convex : Convex ℝ carrier\n  symmetric : CentrallySymmetric n carrier\n  nonempty : carrier.Nonempty\n```\n\n**Properties**:\n- The origin is always in a convex body\n- Compact with nonempty interior\n\nFor Minkowski: convex + symmetric + large volume.",

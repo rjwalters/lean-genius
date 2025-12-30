@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "bezout-identity",
+    "range": {"startLine": 5, "endLine": 63},
+    "type": "concept",
+    "title": "Bézout's Identity: Wiedijk #60",
+    "content": "**Bézout's Identity**:\n\nFor any integers $a$ and $b$, there exist integers $x$ and $y$ such that:\n$$ax + by = \\gcd(a, b)$$\n\nThe GCD is **always** expressible as a linear combination!\n\n**Historical**: Named after Étienne Bézout (1730-1783), though known earlier.\n\n**Applications**:\n- Modular inverses\n- Linear Diophantine equations\n- Chinese Remainder Theorem\n- RSA cryptography",
+    "significance": "critical",
+    "relatedConcepts": ["GCD", "linear combination", "extended Euclidean algorithm"]
+  },
+  {
+    "id": "ann-main-nat",
+    "proofId": "bezout-identity",
+    "range": {"startLine": 67, "endLine": 88},
+    "type": "theorem",
+    "title": "Bézout's Identity for Naturals",
+    "content": "**Main Theorem (ℕ)**:\n\nFor $a, b \\in \\mathbb{N}$, there exist $x, y \\in \\mathbb{Z}$ with:\n$$\\gcd(a, b) = ax + by$$\n\n**Note**: Coefficients are integers (one is typically negative).\n\n**Examples**:\n- $\\gcd(12, 8) = 4 = 12 \\cdot 1 + 8 \\cdot (-1)$\n- $\\gcd(35, 15) = 5 = 35 \\cdot 1 + 15 \\cdot (-2)$\n\n**Mathlib**:\n```lean\ntheorem bezout_nat (a b : ℕ) :\n    ∃ x y : ℤ, (Nat.gcd a b : ℤ) = a * x + b * y :=\n  ⟨Nat.gcdA a b, Nat.gcdB a b, Nat.gcd_eq_gcd_ab a b⟩\n```",
+    "mathContext": "gcd(a,b) = ax + by",
+    "significance": "critical",
+    "relatedConcepts": ["Nat.gcdA", "Nat.gcdB", "Nat.gcd_eq_gcd_ab"]
+  },
+  {
+    "id": "ann-main-int",
+    "proofId": "bezout-identity",
+    "range": {"startLine": 89, "endLine": 103},
+    "type": "theorem",
+    "title": "Bézout's Identity for Integers",
+    "content": "**General Form (ℤ)**:\n\nFor $a, b \\in \\mathbb{Z}$, there exist $x, y \\in \\mathbb{Z}$ with:\n$$\\gcd(a, b) = ax + by$$\n\nThis handles negative inputs.\n\n**Lean**:\n```lean\ntheorem bezout_int (a b : ℤ) :\n    ∃ x y : ℤ, (Int.gcd a b : ℤ) = a * x + b * y :=\n  ⟨Int.gcdA a b, Int.gcdB a b, Int.gcd_eq_gcd_ab a b⟩\n```\n\n**Key API**: `Int.gcdA`, `Int.gcdB` compute the Bézout coefficients.",
+    "mathContext": "∃ x y : ℤ, gcd(a,b) = ax + by",
+    "significance": "critical",
+    "relatedConcepts": ["Int.gcd", "Int.gcdA", "Int.gcdB"]
+  },
+  {
+    "id": "ann-extended-euclid",
+    "proofId": "bezout-identity",
+    "range": {"startLine": 104, "endLine": 117},
+    "type": "theorem",
+    "title": "Extended Euclidean Algorithm",
+    "content": "**How Coefficients Are Computed**:\n\nStart with:\n- $a = 1 \\cdot a + 0 \\cdot b$\n- $b = 0 \\cdot a + 1 \\cdot b$\n\nAt each step when $r = a - q \\cdot b$, update coefficients.\n\n**Example** ($\\gcd(35, 15)$):\n```\n35 = 2·15 + 5   →  5 = 35 - 2·15 = 1·35 + (-2)·15\n15 = 3·5 + 0    →  gcd = 5\n```\n\n**Mathlib**: `Nat.gcdA`, `Nat.gcdB` implement this.",
+    "mathContext": "tracking coefficients through Euclidean algorithm",
+    "significance": "major",
+    "relatedConcepts": ["Euclidean algorithm", "back-substitution", "gcdA/gcdB"]
+  },
+  {
+    "id": "ann-coprime",
+    "proofId": "bezout-identity",
+    "range": {"startLine": 118, "endLine": 149},
+    "type": "theorem",
+    "title": "Coprimality Characterization",
+    "content": "**Key Corollary**:\n\n$$\\gcd(a, b) = 1 \\quad \\Leftrightarrow \\quad \\exists x, y: ax + by = 1$$\n\nTwo numbers are **coprime** iff 1 is a linear combination.\n\n**This is huge!**\n- Constructive proof of coprimality\n- Find actual witnesses $x, y$\n\n**Example**: $\\gcd(17, 5) = 1$\n$$17 \\cdot 3 + 5 \\cdot (-10) = 51 - 50 = 1$$\n\n**Proof**: Forward from Bézout; backward because $\\gcd | ax + by = 1$ implies $\\gcd = 1$.",
+    "mathContext": "coprime ⟺ ax + by = 1 solvable",
+    "significance": "critical",
+    "relatedConcepts": ["coprimality", "Nat.Coprime", "constructive proof"]
+  },
+  {
+    "id": "ann-modular-inverse",
+    "proofId": "bezout-identity",
+    "range": {"startLine": 150, "endLine": 164},
+    "type": "theorem",
+    "title": "Modular Inverse Existence",
+    "content": "**Application: Finding Inverses mod n**:\n\nIf $\\gcd(a, n) = 1$, then $a$ has a multiplicative inverse mod $n$.\n\n**Proof from Bézout**:\n$$ax + ny = 1$$\n$$\\Rightarrow ax \\equiv 1 \\pmod{n}$$\n\nSo $x$ is the inverse of $a$ mod $n$.\n\n**Example**: Inverse of 3 mod 7?\n$$3 \\cdot 5 = 15 = 2 \\cdot 7 + 1 \\equiv 1 \\pmod{7}$$\nSo $3^{-1} \\equiv 5 \\pmod{7}$.",
+    "mathContext": "gcd(a,n) = 1 ⟹ a⁻¹ exists mod n",
+    "significance": "major",
+    "relatedConcepts": ["modular inverse", "RSA", "mod arithmetic"]
+  },
+  {
+    "id": "ann-diophantine",
+    "proofId": "bezout-identity",
+    "range": {"startLine": 165, "endLine": 192},
+    "type": "theorem",
+    "title": "Linear Diophantine Equations",
+    "content": "**Diophantine Solvability Criterion**:\n\nThe equation $ax + by = c$ has integer solutions **iff** $\\gcd(a, b) | c$.\n\n**Proof**:\n- (⟹) $\\gcd | a$ and $\\gcd | b$, so $\\gcd | ax + by = c$\n- (⟸) If $\\gcd(a,b) = ax_0 + by_0$ and $\\gcd | c$, let $c = k \\cdot \\gcd$:\n  $$a(kx_0) + b(ky_0) = k \\cdot \\gcd = c$$\n\n**Example**: Does $12x + 8y = 10$ have solutions?\n$\\gcd(12, 8) = 4$ does NOT divide 10. **No solutions!**\n\nDoes $12x + 8y = 20$ have solutions?\n$4 | 20$, so **yes**: $12 \\cdot 1 + 8 \\cdot 1 = 20$.",
+    "mathContext": "ax + by = c solvable ⟺ gcd(a,b) | c",
+    "significance": "major",
+    "relatedConcepts": ["Diophantine equation", "integer solutions", "divisibility"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "bezout-identity",
+    "range": {"startLine": 193, "endLine": 213},
+    "type": "note",
+    "title": "Worked Examples",
+    "content": "**Verified Examples**:\n\n| GCD | Linear Combination |\n|-----|--------------------|\n| $\\gcd(12, 8) = 4$ | $12 \\cdot 1 + 8 \\cdot (-1) = 4$ |\n| $\\gcd(35, 15) = 5$ | $35 \\cdot 1 + 15 \\cdot (-2) = 5$ |\n| $\\gcd(17, 5) = 1$ | $17 \\cdot 3 + 5 \\cdot (-10) = 1$ |\n\nAll verified with `native_decide` or `norm_num`.\n\n**Observation**: One coefficient is typically negative!",
+    "significance": "minor",
+    "relatedConcepts": ["examples", "native_decide", "norm_num"]
+  },
+  {
+    "id": "ann-connections",
+    "proofId": "bezout-identity",
+    "range": {"startLine": 214, "endLine": 230},
+    "type": "concept",
+    "title": "Connections to Other Theorems",
+    "content": "**Bézout is Foundational**:\n\n1. **Euclid's Lemma**: If prime $p | ab$ then $p | a$ or $p | b$\n   - If $p \\nmid a$: $\\gcd(p, a) = 1$, so $1 = px + ay$\n   - Then $b = pxb + ayb$, and $p | ab$ gives $p | b$\n\n2. **Unique Factorization**: Follows from Euclid's lemma\n\n3. **Chinese Remainder Theorem**: When $\\gcd(m, n) = 1$, solve simultaneous congruences\n\n4. **RSA Cryptography**: Private key $d$ satisfies $ed \\equiv 1 \\pmod{\\phi(n)}$\n   - Found using extended Euclidean algorithm!",
+    "significance": "major",
+    "relatedConcepts": ["Euclid's lemma", "FTA", "CRT", "RSA"]
+  }
+]

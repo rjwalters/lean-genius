@@ -1,1 +1,99 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "pascals-hexagon",
+    "range": {"startLine": 6, "endLine": 49},
+    "type": "concept",
+    "title": "Pascal's Hexagon Theorem: Wiedijk #28",
+    "content": "**Pascal's Theorem (1639)**:\n\nIf hexagon $ABCDEF$ is inscribed in a conic, then the three pairs of opposite sides meet in **collinear** points:\n- $P = AB \\cap DE$\n- $Q = BC \\cap EF$\n- $R = CD \\cap FA$\n\nThe line $PQR$ is called the **Pascal line**.\n\n**Historical**: Blaise Pascal discovered this at age 16! Called it \"Hexagrammum Mysticum\" (Mystic Hexagram).\n\n**Dual (Brianchon)**: For circumscribed hexagon, the three diagonals are concurrent.",
+    "significance": "critical",
+    "relatedConcepts": ["projective geometry", "conic sections", "collinearity"]
+  },
+  {
+    "id": "ann-projective",
+    "proofId": "pascals-hexagon",
+    "range": {"startLine": 59, "endLine": 73},
+    "type": "definition",
+    "title": "Projective Coordinates",
+    "content": "**Projective Plane in $\\mathbb{R}^3$**:\n\n- **Points**: Nonzero vectors in $\\mathbb{R}^3$ (up to scalar multiple)\n- **Lines**: Also nonzero vectors in $\\mathbb{R}^3$\n- **Incidence**: Point $p$ on line $l$ iff $p \\cdot l = 0$\n\n**Lean Types**:\n```lean\nabbrev ProjPoint := Fin 3 → ℝ\nabbrev ProjLine := Fin 3 → ℝ\ndef ProjPoint.valid (p : ProjPoint) : Prop := p ≠ 0\n```\n\nHomogeneous coordinates unify finite and infinite points.",
+    "mathContext": "projective plane via ℝ³",
+    "significance": "major",
+    "relatedConcepts": ["homogeneous coordinates", "incidence", "duality"]
+  },
+  {
+    "id": "ann-operations",
+    "proofId": "pascals-hexagon",
+    "range": {"startLine": 78, "endLine": 108},
+    "type": "definition",
+    "title": "Projective Operations",
+    "content": "**Cross Product Magic**:\n\n- **Line through $p, q$**: $p \\times q$\n- **Intersection of lines $l, m$**: $l \\times m$\n\n**Collinearity Test**:\n$$\\text{collinear}(p, q, r) \\Leftrightarrow \\det\\begin{pmatrix} p \\\\ q \\\\ r \\end{pmatrix} = 0$$\n\nThree points are collinear iff their coordinate matrix has zero determinant.\n\n**Concurrency** (dual): Three lines concurrent iff same determinant condition.",
+    "mathContext": "cross product and determinant",
+    "significance": "major",
+    "relatedConcepts": ["cross product", "determinant", "linear dependence"]
+  },
+  {
+    "id": "ann-conics",
+    "proofId": "pascals-hexagon",
+    "range": {"startLine": 113, "endLine": 133},
+    "type": "definition",
+    "title": "Conic Sections",
+    "content": "**Conic in Projective Coordinates**:\n\nA conic is a symmetric $3 \\times 3$ matrix $C$.\n\nPoint $p$ lies on conic $C$ iff:\n$$p^T C p = \\sum_{i,j} C_{ij} p_i p_j = 0$$\n\n**Lean**:\n```lean\nabbrev Conic := Matrix (Fin 3) (Fin 3) ℝ\ndef pointOnConic (p : ProjPoint) (C : Conic) : Prop :=\n  conicQuadraticForm C p = 0\n```\n\n**Non-degenerate**: $\\det(C) \\neq 0$ (not a pair of lines).",
+    "mathContext": "p^T C p = 0",
+    "significance": "major",
+    "relatedConcepts": ["quadratic form", "symmetric matrix", "ellipse/hyperbola/parabola"]
+  },
+  {
+    "id": "ann-hexagon",
+    "proofId": "pascals-hexagon",
+    "range": {"startLine": 138, "endLine": 172},
+    "type": "definition",
+    "title": "Inscribed Hexagon",
+    "content": "**Hexagon on Conic**:\n\n```lean\nstructure InscribedHexagon (C : Conic) where\n  A B C' D E F : ProjPoint\n  hA : pointOnConic A C  -- all 6 vertices on conic\n  ...\n```\n\n**Pascal Points** (opposite side intersections):\n- $P = AB \\cap DE$\n- $Q = BC \\cap EF$\n- $R = CD \\cap FA$\n\nThese are computed as cross products of the lines:\n```lean\ndef pascalP (hex) := lineIntersection (lineThrough hex.A hex.B) \n                                       (lineThrough hex.D hex.E)\n```",
+    "mathContext": "P = AB ∩ DE, Q = BC ∩ EF, R = CD ∩ FA",
+    "significance": "major",
+    "relatedConcepts": ["inscribed", "opposite sides", "intersection"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "pascals-hexagon",
+    "range": {"startLine": 192, "endLine": 231},
+    "type": "theorem",
+    "title": "Pascal's Theorem",
+    "content": "**Main Theorem (Wiedijk #28)**:\n\nFor hexagon $ABCDEF$ inscribed in conic $C$:\n$$\\text{collinear}(P, Q, R)$$\n\nwhere $P = AB \\cap DE$, $Q = BC \\cap EF$, $R = CD \\cap FA$.\n\n**Lean**:\n```lean\ntheorem pascal_hexagon_theorem (C : Conic) (hex : InscribedHexagon C) :\n    collinear (pascalP hex) (pascalQ hex) (pascalR hex)\n```\n\n**Proof method**: Uses `conic_implies_pascal_constraint` axiom, which captures the Cayley-Bacharach / Bézout theorem argument.",
+    "mathContext": "det(P, Q, R) = 0",
+    "significance": "critical",
+    "relatedConcepts": ["Pascal line", "Cayley-Bacharach", "Bézout's theorem"]
+  },
+  {
+    "id": "ann-pappus",
+    "proofId": "pascals-hexagon",
+    "range": {"startLine": 236, "endLine": 248},
+    "type": "theorem",
+    "title": "Special Case: Pappus's Theorem",
+    "content": "**Pappus as Degenerate Pascal**:\n\nWhen conic degenerates to two lines $l_1 \\cup l_2$:\n- If $A, C, E \\in l_1$\n- And $B, D, F \\in l_2$\n\nThen Pascal's theorem becomes **Pappus's theorem**:\n$$P = AB \\cap DE, \\quad Q = BC \\cap EF, \\quad R = CD \\cap FA$$\nare collinear.\n\nPappus is Pascal for the \"conic\" consisting of two lines!",
+    "mathContext": "Pappus = Pascal for degenerate conic",
+    "significance": "major",
+    "relatedConcepts": ["Pappus", "degenerate conic", "two lines"]
+  },
+  {
+    "id": "ann-brianchon",
+    "proofId": "pascals-hexagon",
+    "range": {"startLine": 253, "endLine": 274},
+    "type": "theorem",
+    "title": "Dual: Brianchon's Theorem",
+    "content": "**Brianchon's Theorem (Projective Dual)**:\n\nIf hexagon is **circumscribed** about a conic (each side tangent), then the three main diagonals $AD, BE, CF$ are **concurrent**.\n\n**Duality Correspondence**:\n| Pascal | Brianchon |\n|--------|----------|\n| Points | Lines |\n| Collinear | Concurrent |\n| Inscribed | Circumscribed |\n\nBrianchon (1806) discovered this as the dual of Pascal's 1639 theorem.",
+    "mathContext": "diagonals concurrent",
+    "significance": "major",
+    "relatedConcepts": ["Brianchon", "projective duality", "circumscribed"]
+  },
+  {
+    "id": "ann-history",
+    "proofId": "pascals-hexagon",
+    "range": {"startLine": 279, "endLine": 307},
+    "type": "note",
+    "title": "60 Pascal Lines",
+    "content": "**Remarkable Configuration**:\n\nGiven 6 points on a conic, there are **60 different Pascal lines** (from permuting the hexagon vertices).\n\nThese lines have beautiful incidence properties:\n- 20 **Steiner points** (3 lines through each)\n- 60 **Kirkman points** (3 lines through each)\n- 15 **Plücker lines** (4 points on each)\n\n**Proof Methods**:\n1. Cross-ratio (most elegant)\n2. Algebraic/determinant\n3. Cayley-Bacharach (two cubics, 9 intersections)\n4. Synthetic (ruler-and-compass)",
+    "significance": "minor",
+    "relatedConcepts": ["Steiner points", "Kirkman points", "configuration"]
+  }
+]

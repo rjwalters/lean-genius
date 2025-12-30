@@ -2,7 +2,7 @@
   {
     "id": "ann-intro",
     "proofId": "partition-theorem",
-    "range": {"startLine": 4, "endLine": 86},
+    "range": {"startLine": 5, "endLine": 86},
     "type": "concept",
     "title": "Partition Theorem: Wiedijk #45",
     "content": "**Euler's Partition Identity**:\n\nThe number of partitions of n into **distinct parts** equals the number of partitions into **odd parts**.\n\n$$|\\{\\text{distinct partitions}\\}| = |\\{\\text{odd partitions}\\}|$$\n\n**Example (n = 5)**:\n- **Distinct**: {5}, {4+1}, {3+2} = 3\n- **Odd**: {5}, {3+1+1}, {1+1+1+1+1} = 3\n\n**Historical**: Euler (1748), proved via generating functions.",

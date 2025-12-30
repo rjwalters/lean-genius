@@ -107,7 +107,7 @@
   {
     "id": "ann-summary",
     "proofId": "kepler-conjecture",
-    "range": {"startLine": 418, "endLine": 431},
+    "range": {"startLine": 406, "endLine": 415},
     "type": "concept",
     "title": "Problem Status: SOLVED",
     "content": "**Hilbert 18: SOLVED (Hales 1998)**\n\n**Summary**:\n- FCC/HCP achieve maximum 3D density ✓\n- $\\delta_{max} = \\pi/(3\\sqrt{2}) \\approx 74.05\\%$ ✓\n- Formally verified in HOL Light (Flyspeck 2014) ✓\n- Kissing number k(3) = 12 ✓\n\n**Also solved**:\n- 2D: Hexagonal (Thue 1892)\n- 8D: E₈ (Viazovska 2016)\n- 24D: Leech (Viazovska et al. 2016)\n\n**Open**: Dimensions 4-7, 9-23, and ≥25!",

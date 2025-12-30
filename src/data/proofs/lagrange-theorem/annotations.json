@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "lagrange-theorem",
+    "range": {"startLine": 8, "endLine": 55},
+    "type": "concept",
+    "title": "Lagrange's Theorem: Wiedijk #71",
+    "content": "**Lagrange's Theorem**:\n\nFor a finite group $G$ and subgroup $H \\leq G$:\n$$|H| \\text{ divides } |G|$$\n\nEquivalently:\n$$|G| = |H| \\cdot [G : H]$$\n\nwhere $[G : H]$ is the **index** (number of cosets).\n\n**Historical**: Joseph-Louis Lagrange proved this in 1771 studying permutation groups.\n\n**Significance**: One of the most important theorems in abstract algebra, constraining subgroup structure.",
+    "significance": "critical",
+    "relatedConcepts": ["subgroup", "index", "cosets", "finite groups"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "lagrange-theorem",
+    "range": {"startLine": 59, "endLine": 80},
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**Lagrange's Theorem (Wiedijk #71)**:\n\n$$|H| \\mid |G|$$\n\n**Lean Statement**:\n```lean\ntheorem card_subgroup_dvd_card (G : Type*) [Group G] [Fintype G]\n    (H : Subgroup G) [Fintype H] : \n    Fintype.card H ∣ Fintype.card G\n```\n\n**Proof idea**: Partition $G$ into left cosets of $H$:\n- Each coset $gH$ has size $|H|$ (via bijection $h \\mapsto gh$)\n- Cosets are disjoint\n- $G = \\bigsqcup gH$\n\nSo $|G| = (\\text{# cosets}) \\times |H|$.",
+    "mathContext": "|H| divides |G|",
+    "significance": "critical",
+    "relatedConcepts": ["Subgroup.card_subgroup_dvd_card", "coset partition"]
+  },
+  {
+    "id": "ann-index-formula",
+    "proofId": "lagrange-theorem",
+    "range": {"startLine": 81, "endLine": 91},
+    "type": "theorem",
+    "title": "Product Formula",
+    "content": "**Quantitative Lagrange**:\n\n$$|G| = |H| \\times [G : H]$$\n\nwhere $[G : H]$ = index = number of distinct cosets.\n\n**Lean**:\n```lean\ntheorem card_eq_card_mul_index :\n    Fintype.card G = Fintype.card H * H.index\n```\n\n**The index counts cosets**:\n- Trivial subgroup: index = $|G|$\n- Whole group: index = 1",
+    "mathContext": "|G| = |H| × [G:H]",
+    "significance": "major",
+    "relatedConcepts": ["index", "Subgroup.card_mul_index", "quotient"]
+  },
+  {
+    "id": "ann-cosets",
+    "proofId": "lagrange-theorem",
+    "range": {"startLine": 92, "endLine": 106},
+    "type": "concept",
+    "title": "Coset Partition",
+    "content": "**The Key Insight**:\n\nLeft cosets $gH = \\{gh : h \\in H\\}$ partition $G$:\n\n| Property | Why |\n|----------|-----|\n| $g \\in gH$ | $g = g \\cdot e$ and $e \\in H$ |\n| Cosets equal or disjoint | If $g_1H \\cap g_2H \\neq \\emptyset$ then $g_1H = g_2H$ |\n| $|gH| = |H|$ | $h \\mapsto gh$ is a bijection |\n| $G = \\bigsqcup gH$ | Every element in some coset |\n\n**Conclusion**:\n$$|G| = (\\text{# cosets}) \\times |H| = [G:H] \\times |H|$$",
+    "significance": "major",
+    "relatedConcepts": ["partition", "bijection", "equivalence classes"]
+  },
+  {
+    "id": "ann-element-order",
+    "proofId": "lagrange-theorem",
+    "range": {"startLine": 108, "endLine": 129},
+    "type": "theorem",
+    "title": "Corollary: Element Orders",
+    "content": "**Order of Element Divides Group Order**:\n\nFor any $g \\in G$:\n$$\\text{ord}(g) \\mid |G|$$\n\n**Proof**: Apply Lagrange to cyclic subgroup $\\langle g \\rangle$.\n\n**Power by Group Order**:\n$$g^{|G|} = 1$$\n\nSince $\\text{ord}(g) \\mid |G|$, we have $g^{|G|} = (g^{\\text{ord}(g)})^{|G|/\\text{ord}(g)} = 1$.\n\n**Mathlib**: `orderOf_dvd_card`, `pow_card_eq_one`",
+    "mathContext": "ord(g) | |G| ⟹ g^|G| = 1",
+    "significance": "major",
+    "relatedConcepts": ["orderOf", "cyclic subgroup", "pow_card_eq_one"]
+  },
+  {
+    "id": "ann-fermat",
+    "proofId": "lagrange-theorem",
+    "range": {"startLine": 130, "endLine": 153},
+    "type": "theorem",
+    "title": "Fermat's Little Theorem",
+    "content": "**Fermat from Lagrange**:\n\nApply to $(\\mathbb{Z}/p\\mathbb{Z})^\\times$:\n\n1. For prime $p$: $|(\\mathbb{Z}/p\\mathbb{Z})^\\times| = p - 1 = \\phi(p)$\n2. By Lagrange: $\\text{ord}(a) \\mid p - 1$\n3. Therefore: $a^{p-1} \\equiv 1 \\pmod{p}$\n\n**Lean**:\n```lean\ntheorem fermat_little_from_lagrange (a : (ZMod p)ˣ) : \n    a ^ (p - 1) = 1\n```\n\nThis is the **group-theoretic** proof of Fermat's little theorem!",
+    "mathContext": "a^(p-1) ≡ 1 (mod p)",
+    "significance": "major",
+    "relatedConcepts": ["Fermat's little theorem", "ZMod", "units group"]
+  },
+  {
+    "id": "ann-index-properties",
+    "proofId": "lagrange-theorem",
+    "range": {"startLine": 154, "endLine": 168},
+    "type": "theorem",
+    "title": "Index Properties",
+    "content": "**Index = Coset Count**:\n\n$$[G : H] = |G/H| = \\text{# of left cosets}$$\n\n**Index Divides Group Order**:\n$$[G : H] \\mid |G|$$\n\n**Boundary Cases**:\n- $[G : \\{1\\}] = |G|$ (trivial subgroup)\n- $[G : G] = 1$ (whole group)\n\n**Lean**: `Subgroup.index_eq_card`, `Subgroup.index_bot`, `Subgroup.index_top`",
+    "mathContext": "[G:H] = |G/H|",
+    "significance": "minor",
+    "relatedConcepts": ["index", "quotient group", "boundary cases"]
+  },
+  {
+    "id": "ann-prime-order",
+    "proofId": "lagrange-theorem",
+    "range": {"startLine": 182, "endLine": 212},
+    "type": "theorem",
+    "title": "Prime Order Groups",
+    "content": "**Consequence for Prime Order**:\n\nIf $|G| = p$ (prime), then $G$ has **no non-trivial proper subgroups**.\n\n**Proof**: By Lagrange, $|H| \\mid p$, so $|H| \\in \\{1, p\\}$.\n\n**Groups of Prime Order are Cyclic**:\nEvery element (except identity) generates $G$.\n\n**Converse Fails**: $n \\mid |G|$ does NOT guarantee a subgroup of order $n$.\n\n**Counterexample**: $A_4$ has order 12 but NO subgroup of order 6.\n\nThis motivates Sylow theorems (partial converse).",
+    "mathContext": "|G| prime ⟹ G cyclic",
+    "significance": "major",
+    "relatedConcepts": ["prime order", "cyclic groups", "Sylow theorems"]
+  },
+  {
+    "id": "ann-significance",
+    "proofId": "lagrange-theorem",
+    "range": {"startLine": 200, "endLine": 212},
+    "type": "concept",
+    "title": "Why Lagrange Matters",
+    "content": "**Fundamental Because**:\n\n1. **Structure constraints**: Limits possible subgroup orders\n2. **Element orders**: Via cyclic subgroups\n3. **Counting**: Enables group classification\n4. **Number theory**: Implies Fermat, Euler theorems\n5. **Generalizations**: Orbit-stabilizer, class equation\n\n**Important Non-Result**:\nConverse is FALSE! Having $n \\mid |G|$ doesn't guarantee a subgroup of order $n$.\n\n$A_4$ (order 12) has no subgroup of order 6 - motivates Sylow theorems.",
+    "significance": "major",
+    "relatedConcepts": ["orbit-stabilizer", "class equation", "Sylow"]
+  }
+]
