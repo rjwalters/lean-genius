@@ -1,1 +1,118 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "hilbert-11",
+    "range": {"startLine": 8, "endLine": 80},
+    "type": "concept",
+    "title": "Hilbert's 11th Problem",
+    "content": "**Hilbert's 11th Problem (1900)**:\n\n> Classify quadratic forms with algebraic number coefficients.\n\nSpecifically: When does Q(x₁,...,xₙ) = Σaᵢⱼxᵢxⱼ have a nontrivial zero?\n\n**Answer: The Hasse-Minkowski Theorem**\n\nA quadratic form over ℚ has a nontrivial zero iff it has zeros:\n- Over ℝ (indefinite)\n- Over ℚₚ for all primes p\n\nThis is the **local-global principle** for quadratic forms.",
+    "significance": "critical",
+    "relatedConcepts": ["quadratic forms", "local-global principle", "p-adic numbers"]
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "hilbert-11",
+    "range": {"startLine": 90, "endLine": 113},
+    "type": "definition",
+    "title": "Key Definitions",
+    "content": "**Isotropic Form**: Q represents zero nontrivially.\n$$\\exists x \\neq 0 : Q(x) = 0$$\n\n**Anisotropic Form**: Q does NOT represent zero nontrivially.\n\n**Equivalent Forms**: Q₁ ~ Q₂ if there's an isometry between them (a linear bijection preserving values).\n\nThese definitions apply over any field: ℚ, ℝ, ℚₚ, etc.",
+    "significance": "major",
+    "relatedConcepts": ["isometry", "quadratic form", "isotropic"]
+  },
+  {
+    "id": "ann-sylvester",
+    "proofId": "hilbert-11",
+    "range": {"startLine": 127, "endLine": 156},
+    "type": "theorem",
+    "title": "Sylvester's Law of Inertia",
+    "content": "**Sylvester's Law (1852)**:\n\nEvery real quadratic form is equivalent to a diagonal form:\n$$x_1^2 + \\cdots + x_p^2 - x_{p+1}^2 - \\cdots - x_{p+q}^2$$\n\nThe **signature (p,q)** is unique and completely classifies real quadratic forms!\n\n- p = number of positive eigenvalues\n- q = number of negative eigenvalues\n- Indefinite means p > 0 and q > 0",
+    "mathContext": "Signature (p,q) is a complete invariant",
+    "significance": "major",
+    "relatedConcepts": ["signature", "diagonalization", "eigenvalues"]
+  },
+  {
+    "id": "ann-hasse-minkowski",
+    "proofId": "hilbert-11",
+    "range": {"startLine": 157, "endLine": 210},
+    "type": "theorem",
+    "title": "Hasse-Minkowski Theorem",
+    "content": "**THE MAIN THEOREM**:\n\nA quadratic form Q over ℚ represents zero nontrivially iff:\n1. Q is indefinite over ℝ (signature has both + and −)\n2. Q represents zero over ℚₚ for ALL primes p\n\n**Timeline**:\n- 1890: Minkowski proves for ternary forms\n- 1923: Hasse extends to all dimensions\n\n**The local-global principle**: Check solvability locally everywhere, conclude globally!",
+    "mathContext": "Global isotropy ⟺ Local isotropy everywhere",
+    "significance": "critical",
+    "relatedConcepts": ["Hasse", "Minkowski", "local-global principle"]
+  },
+  {
+    "id": "ann-four-squares",
+    "proofId": "hilbert-11",
+    "range": {"startLine": 239, "endLine": 253},
+    "type": "theorem",
+    "title": "Four Squares Theorem",
+    "content": "**Lagrange's Theorem (1770)**:\n\nEvery positive integer is a sum of four squares:\n$$n = a^2 + b^2 + c^2 + d^2$$\n\nIn quadratic form language: The form x₁² + x₂² + x₃² + x₄² represents ALL positive integers.\n\nThis connects to Hilbert 11 through representation theory of quaternary forms.",
+    "mathContext": "$\\forall n \\in \\mathbb{N}: n = \\square + \\square + \\square + \\square$",
+    "significance": "major",
+    "relatedConcepts": ["Lagrange", "quaternions", "representation"]
+  },
+  {
+    "id": "ann-classification",
+    "proofId": "hilbert-11",
+    "range": {"startLine": 254, "endLine": 299},
+    "type": "concept",
+    "title": "Classification Theory",
+    "content": "**Complete Classification of Rational Quadratic Forms**:\n\nTwo forms over ℚ are equivalent iff they have the same:\n1. **Dimension** n\n2. **Discriminant** (in ℚ*/ℚ*²)\n3. **Hasse-Witt invariants** εₚ = ±1 at each prime p and at ∞\n\nThe Hasse-Minkowski theorem ensures these **local invariants** completely determine the global equivalence class!",
+    "significance": "major",
+    "relatedConcepts": ["discriminant", "Hasse-Witt invariant", "square classes"]
+  },
+  {
+    "id": "ann-witt",
+    "proofId": "hilbert-11",
+    "range": {"startLine": 300, "endLine": 330},
+    "type": "concept",
+    "title": "Witt Ring Structure",
+    "content": "**The Witt Ring W(F)**:\n\nThe Grothendieck ring of quadratic forms modulo hyperbolic forms.\n\n**Hyperbolic Plane**: H = ⟨1, −1⟩ (represents both +1 and −1)\n\n**Witt Cancellation**: If Q₁ ⊥ Q ≅ Q₂ ⊥ Q, then Q₁ ≅ Q₂\n\nThis allows algebraic manipulation of quadratic forms as ring elements!",
+    "significance": "minor",
+    "relatedConcepts": ["Witt ring", "hyperbolic form", "cancellation"]
+  },
+  {
+    "id": "ann-selmer",
+    "proofId": "hilbert-11",
+    "range": {"startLine": 331, "endLine": 382},
+    "type": "concept",
+    "title": "Failure for Higher Degree",
+    "content": "**The Selmer Curve (1951)**:\n\n$$3x^3 + 4y^3 + 5z^3 = 0$$\n\nhas points over ℝ and ALL ℚₚ, but **NO rational points**!\n\nThis shows the **Hasse principle FAILS for cubics**.\n\n**Why quadratics are special**: The Brauer-Manin obstruction is trivial for quadratic forms, so local-global works. For cubics and higher, additional obstructions exist.",
+    "mathContext": "Local solutions ⇏ Global solution",
+    "significance": "major",
+    "relatedConcepts": ["Selmer", "Brauer-Manin", "cubic curves"]
+  },
+  {
+    "id": "ann-dimension-five",
+    "proofId": "hilbert-11",
+    "range": {"startLine": 403, "endLine": 412},
+    "type": "theorem",
+    "title": "Meyer's Theorem",
+    "content": "**Meyer's Theorem**:\n\nAny quadratic form in **≥ 5 variables** over ℚₚ is always isotropic!\n\nConsequence: For forms in ≥ 5 variables, checking local solvability reduces to:\n- Check ℝ (indefiniteness)\n- Check finitely many \"bad\" primes\n\nDimension 5 is the threshold for automatic local solvability.",
+    "mathContext": "dim ≥ 5 ⟹ isotropic over ℚₚ",
+    "significance": "minor",
+    "relatedConcepts": ["Meyer", "dimension bounds", "p-adic"]
+  },
+  {
+    "id": "ann-hilbert-symbol",
+    "proofId": "hilbert-11",
+    "range": {"startLine": 421, "endLine": 445},
+    "type": "definition",
+    "title": "Hilbert Symbol & Reciprocity",
+    "content": "**Hilbert Symbol (a,b)ₚ**:\n\n= +1 if ax² + by² = z² has a nontrivial ℚₚ solution\n= −1 otherwise\n\n**Hilbert Reciprocity**:\n$$\\prod_p (a,b)_p = 1$$\n\nfor all a, b ∈ ℚ*. This generalizes quadratic reciprocity and connects quadratic forms to class field theory!",
+    "mathContext": "$\\prod_v (a,b)_v = 1$",
+    "significance": "major",
+    "relatedConcepts": ["Hilbert symbol", "quadratic reciprocity", "product formula"]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "hilbert-11",
+    "range": {"startLine": 446, "endLine": 497},
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "**Hilbert 11: Partially Solved**\n\n**Solved**:\n- Hasse-Minkowski for ℚ (complete)\n- Classification by local invariants\n- Witt ring theory\n\n**Open**:\n- Explicit algorithms over general number fields\n- Connections to Langlands program\n- Higher reciprocity phenomena\n\n**Impact**: Local-global philosophy is now central to algebraic number theory and arithmetic geometry.",
+    "significance": "minor",
+    "relatedConcepts": ["local-global", "number theory", "arithmetic geometry"]
+  }
+]

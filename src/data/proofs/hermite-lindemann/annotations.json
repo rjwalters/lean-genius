@@ -1,1 +1,99 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "hermite-lindemann",
+    "range": {"startLine": 9, "endLine": 98},
+    "type": "concept",
+    "title": "Hermite-Lindemann Theorem: Wiedijk #56",
+    "content": "**The Theorems**:\n\n**Hermite-Lindemann**: If $\\alpha \\neq 0$ is algebraic, then $e^\\alpha$ is transcendental.\n\n**Lindemann-Weierstrass**: If $\\alpha_1, \\ldots, \\alpha_n$ are $\\mathbb{Q}$-linearly independent algebraics, then $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are algebraically independent.\n\n**Key Corollaries**:\n- $e$ is transcendental ($\\alpha = 1$)\n- $\\pi$ is transcendental (via Euler's identity)\n\n**Historical**: Hermite (1873), Lindemann (1882), Weierstrass (1885).",
+    "significance": "critical",
+    "relatedConcepts": ["transcendence", "exponential function", "algebraic independence"]
+  },
+  {
+    "id": "ann-proof-outline",
+    "proofId": "hermite-lindemann",
+    "range": {"startLine": 54, "endLine": 70},
+    "type": "theorem",
+    "title": "Hermite's Proof Method",
+    "content": "**Proof Outline**:\n\n1. **Assume** $e^\\alpha$ is algebraic: $\\sum \\beta_k e^{k\\alpha} = 0$\n\n2. **Auxiliary polynomial** for large prime $p$:\n$$f(x) = \\frac{x^{p-1}(x-\\alpha)^p \\cdots (x-n\\alpha)^p}{(p-1)!}$$\n\n3. **Integral analysis**: $\\int_0^{k\\alpha} f(t)e^t dt = e^{k\\alpha}F(0) - F(k\\alpha)$\n\n4. **Contradiction**: $S = \\sum \\beta_k I_k$ is both:\n   - A non-zero integer divisible by $p$\n   - Less than 1 in absolute value\n\nImpossible for large $p$!",
+    "mathContext": "Auxiliary polynomial + integral analysis → contradiction",
+    "significance": "critical",
+    "relatedConcepts": ["auxiliary polynomials", "integration by parts", "prime selection"]
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "hermite-lindemann",
+    "range": {"startLine": 113, "endLine": 125},
+    "type": "definition",
+    "title": "Key Definitions",
+    "content": "**Algebraic over R**:\n$$\\text{IsAlgebraic } R \\ x : \\exists P \\in R[X] \\setminus \\{0\\}, P(x) = 0$$\n\n**Transcendental over R**:\n$$\\text{Transcendental } R \\ x : \\neg(\\text{IsAlgebraic } R \\ x)$$\n\n**Linear Independence**:\n$$\\text{LinearIndependent } R \\ v$$\n\n**Key fact**: Transcendental $\\mathbb{Z}$ $x$ $\\Leftrightarrow$ Transcendental $\\mathbb{Q}$ $x$\n(clear denominators to convert $\\mathbb{Q}$ polynomial to $\\mathbb{Z}$)",
+    "mathContext": "IsAlgebraic, Transcendental, LinearIndependent",
+    "significance": "major",
+    "relatedConcepts": ["algebraic numbers", "polynomial roots", "Mathlib API"]
+  },
+  {
+    "id": "ann-hermite-lindemann",
+    "proofId": "hermite-lindemann",
+    "range": {"startLine": 131, "endLine": 148},
+    "type": "theorem",
+    "title": "Hermite-Lindemann Theorem",
+    "content": "**Theorem** (axiom):\n\n$$\\forall \\alpha : \\mathbb{C}, \\alpha \\neq 0 \\land \\text{IsAlgebraic } \\mathbb{Q} \\ \\alpha \\Rightarrow \\text{Transcendental } \\mathbb{Z} \\ (e^\\alpha)$$\n\n**Contrapositive**:\nIf $e^\\alpha$ is algebraic (for $\\alpha \\neq 0$), then $\\alpha$ is transcendental.\n\n**Status**: Axiomatized pending full formalization.\nRequires polynomial manipulation, asymptotic analysis, prime selection.\n\nMathlib: `hermite_lindemann`",
+    "mathContext": "α ≠ 0 algebraic ⟹ exp(α) transcendental",
+    "significance": "critical",
+    "relatedConcepts": ["axiom", "contrapositive", "algebraicity"]
+  },
+  {
+    "id": "ann-lindemann-weierstrass",
+    "proofId": "hermite-lindemann",
+    "range": {"startLine": 164, "endLine": 205},
+    "type": "theorem",
+    "title": "Lindemann-Weierstrass Theorem",
+    "content": "**Algebraic Independence**:\n\nNumbers $z_1, \\ldots, z_n$ are algebraically independent over $\\mathbb{Q}$ if no non-trivial polynomial relation holds:\n$$\\forall P \\in \\mathbb{Q}[X_1, \\ldots, X_n] \\setminus \\{0\\}: P(z_1, \\ldots, z_n) \\neq 0$$\n\n**Linear Form (Classical)**:\nDistinct algebraics $\\alpha_1, \\ldots, \\alpha_n$ $\\Rightarrow$ $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ linearly independent.\n\n**Strong Form**:\n$\\mathbb{Q}$-linearly independent algebraics $\\Rightarrow$ algebraically independent exponentials.\n\nThis is the most powerful form of the theorem.",
+    "mathContext": "lin. indep. algebraics ⟹ alg. indep. exponentials",
+    "significance": "critical",
+    "relatedConcepts": ["algebraic independence", "MvPolynomial", "linear independence"]
+  },
+  {
+    "id": "ann-corollaries",
+    "proofId": "hermite-lindemann",
+    "range": {"startLine": 211, "endLine": 281},
+    "type": "theorem",
+    "title": "Fundamental Corollaries",
+    "content": "**$e$ is transcendental** (Wiedijk #67):\n- Take $\\alpha = 1$ (algebraic)\n- $e = e^1$ is transcendental\n- Hermite (1873)\n\n**$\\pi$ is transcendental** (Wiedijk #53):\n1. Assume $\\pi$ algebraic\n2. Then $i\\pi$ algebraic ($i$ root of $X^2+1$)\n3. $e^{i\\pi} = -1$ must be transcendental\n4. But $-1$ is algebraic - contradiction!\n\n**$e^n$ transcendental** for $n \\in \\mathbb{Z} \\setminus \\{0\\}$:\nProved directly from Hermite-Lindemann.",
+    "mathContext": "e, π transcendental; e^n transcendental",
+    "significance": "critical",
+    "relatedConcepts": ["Wiedijk 67", "Wiedijk 53", "Euler identity"]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "hermite-lindemann",
+    "range": {"startLine": 287, "endLine": 317},
+    "type": "concept",
+    "title": "Applications",
+    "content": "**Squaring the Circle is Impossible**:\n\n$\\sqrt{\\pi}$ is transcendental:\n- If $\\sqrt{\\pi}$ algebraic, then $(\\sqrt{\\pi})^2 = \\pi$ algebraic\n- But $\\pi$ is transcendental!\n\nTranscendental $\\Rightarrow$ not constructible with compass and straightedge.\n\n**$e$ is irrational**:\n- If $e = p/q$, then $e$ is root of $qX - p$\n- This makes $e$ algebraic\n- Contradicts transcendence!\n\n$e$ has non-periodic decimal expansion.",
+    "mathContext": "√π transcendental; e irrational",
+    "significance": "major",
+    "relatedConcepts": ["constructibility", "irrationality", "squaring the circle"]
+  },
+  {
+    "id": "ann-connections",
+    "proofId": "hermite-lindemann",
+    "range": {"startLine": 323, "endLine": 350},
+    "type": "concept",
+    "title": "Generalizations and Open Problems",
+    "content": "**Generalizations**:\n\n| Theorem | Result |\n|---------|--------|\n| Gelfond-Schneider (1934) | $\\alpha^\\beta$ transcendental (Hilbert #7) |\n| Baker (1966) | Linear forms in logarithms |\n\n**Unsolved Problems**:\n- Is $e + \\pi$ transcendental? (Unknown)\n- Is $e \\cdot \\pi$ transcendental? (Unknown)\n- Is $\\gamma$ (Euler-Mascheroni) irrational? (Unknown!)\n\n**Schanuel's Conjecture**: Would resolve most open problems.\nIf $z_1, \\ldots, z_n$ are $\\mathbb{Q}$-linearly independent, then tr.deg $\\mathbb{Q}(z_i, e^{z_i}) \\geq n$.",
+    "significance": "major",
+    "relatedConcepts": ["Gelfond-Schneider", "Baker", "Schanuel conjecture"]
+  },
+  {
+    "id": "ann-proof-technique",
+    "proofId": "hermite-lindemann",
+    "range": {"startLine": 360, "endLine": 392},
+    "type": "theorem",
+    "title": "Auxiliary Polynomial Method",
+    "content": "**Hermite's Innovation**:\n\n**Setup**: Assume $\\sum a_i e^i = 0$ for integers $a_i$.\n\n**Step 1** - Auxiliary polynomial:\n$$f(x) = \\frac{x^{p-1}(x-1)^p(x-2)^p \\cdots (x-n)^p}{(p-1)!}$$\n\n**Step 2** - Define $F(x) = \\sum_{k=0}^{\\infty} f^{(k)}(x)$\n\nKey: $F'(x) = F(x) - f(x)$\n\n**Step 3** - Integrals: $I_k = e^k F(0) - F(k)$\n\n**Step 4** - Sum $S = \\sum a_k I_k$:\n- Non-zero integer (derivative structure at 0)\n- Divisible by $p$ (structure at 1, ..., n)\n- $|S| < 1$ for large $p$ (integral estimates)\n\n**Contradiction!**",
+    "mathContext": "f(x) = x^{p-1}∏(x-k)^p / (p-1)!",
+    "significance": "major",
+    "relatedConcepts": ["auxiliary polynomial", "integration by parts", "contradiction"]
+  }
+]

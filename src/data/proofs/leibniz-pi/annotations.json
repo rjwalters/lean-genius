@@ -1,1 +1,75 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "leibniz-pi",
+    "range": {"startLine": 6, "endLine": 50},
+    "type": "concept",
+    "title": "Leibniz's Series for Pi: Wiedijk #26",
+    "content": "**The Leibniz Formula**:\n\n$$\\frac{\\pi}{4} = 1 - \\frac{1}{3} + \\frac{1}{5} - \\frac{1}{7} + \\frac{1}{9} - \\cdots$$\n\nOr in summation notation:\n$$\\frac{\\pi}{4} = \\sum_{n=0}^{\\infty} \\frac{(-1)^n}{2n+1}$$\n\n**Historical Discovery**:\n- Madhava of India (~1400 CE) - first discovery!\n- James Gregory (1671)\n- Gottfried Leibniz (1676)\n\n**Beauty vs Practicality**: Elegant formula, but converges too slowly for computing π.",
+    "significance": "critical",
+    "relatedConcepts": ["alternating series", "pi", "arctangent"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "leibniz-pi",
+    "range": {"startLine": 60, "endLine": 79},
+    "type": "theorem",
+    "title": "The Leibniz Series (Main Theorem)",
+    "content": "**Theorem (Leibniz Series)**:\n\n$$\\lim_{k\\to\\infty} \\sum_{i=0}^{k-1} \\frac{(-1)^i}{2i+1} = \\frac{\\pi}{4}$$\n\n**Key Properties**:\n- **Conditionally convergent**: Sum of |terms| diverges, but alternating sum converges\n- **Proof via Mathlib**: Uses `Real.tendsto_sum_pi_div_four`\n\n**The Idea**: This is arctan(x) Taylor series at x = 1, and arctan(1) = π/4.",
+    "mathContext": "∑ (-1)ⁿ/(2n+1) = π/4",
+    "significance": "critical",
+    "relatedConcepts": ["convergence", "Taylor series", "Abel's theorem"]
+  },
+  {
+    "id": "ann-arctan-connection",
+    "proofId": "leibniz-pi",
+    "range": {"startLine": 81, "endLine": 93},
+    "type": "theorem",
+    "title": "Connection to Arctangent",
+    "content": "**The Taylor Series of arctan**:\n$$\\arctan(x) = x - \\frac{x^3}{3} + \\frac{x^5}{5} - \\frac{x^7}{7} + \\cdots$$\n\nValid for |x| ≤ 1.\n\n**Key Value**:\n$$\\arctan(1) = \\frac{\\pi}{4}$$\n\nAt x = 1, we get the Leibniz series!\n\n**Geometric meaning**: tan(θ) = 1 when θ = 45° = π/4 radians.",
+    "mathContext": "arctan(1) = π/4",
+    "significance": "major",
+    "relatedConcepts": ["Taylor series", "arctangent", "45 degrees"]
+  },
+  {
+    "id": "ann-partial-sums",
+    "proofId": "leibniz-pi",
+    "range": {"startLine": 95, "endLine": 116},
+    "type": "note",
+    "title": "Partial Sum Calculations",
+    "content": "**First Few Partial Sums**:\n\n| k | S_k | Decimal | Error from π/4 |\n|---|-----|---------|----------------|\n| 1 | 1 | 1.000 | +0.215 |\n| 2 | 2/3 | 0.667 | −0.118 |\n| 3 | 13/15 | 0.867 | +0.082 |\n| 4 | 76/105 | 0.724 | −0.062 |\n\n**Pattern**: Alternates above/below π/4 ≈ 0.785.\n\n**Slow convergence**: Error decreases as ~1/(2k+1).",
+    "significance": "minor",
+    "relatedConcepts": ["partial sums", "approximation", "error bounds"]
+  },
+  {
+    "id": "ann-term-properties",
+    "proofId": "leibniz-pi",
+    "range": {"startLine": 122, "endLine": 144},
+    "type": "definition",
+    "title": "Properties of Individual Terms",
+    "content": "**Term Definition**:\n$$a_n = \\frac{(-1)^n}{2n+1}$$\n\n**Proven Properties**:\n1. term(0) = 1 (first term)\n2. Even-indexed terms are **positive**: a₀, a₂, a₄, ... > 0\n3. Odd-indexed terms are **negative**: a₁, a₃, a₅, ... < 0\n\n**Alternating Series Test**:\n- |aₙ| decreases monotonically\n- |aₙ| → 0 as n → ∞\n- Therefore series converges!",
+    "mathContext": "aₙ = (-1)ⁿ/(2n+1)",
+    "significance": "minor",
+    "relatedConcepts": ["alternating series", "sign pattern", "convergence test"]
+  },
+  {
+    "id": "ann-significance",
+    "proofId": "leibniz-pi",
+    "range": {"startLine": 146, "endLine": 163},
+    "type": "concept",
+    "title": "Why Leibniz's Series Matters",
+    "content": "**Five Key Points**:\n\n1. **Historical**: First infinite series for π (independent discoveries)\n\n2. **Theoretical**: π from pure arithmetic + limits!\n\n3. **Analytic**: Deep connection between π and arctan\n\n4. **Conditional convergence**: Classic example where\n   $$\\sum |a_n| = \\infty \\text{ but } \\sum a_n = \\frac{\\pi}{4}$$\n\n5. **Practical limitation**: ~10⁶ terms for 6 digits of π",
+    "significance": "major",
+    "relatedConcepts": ["conditional convergence", "history of pi", "infinite series"]
+  },
+  {
+    "id": "ann-faster-formulas",
+    "proofId": "leibniz-pi",
+    "range": {"startLine": 165, "endLine": 173},
+    "type": "note",
+    "title": "Faster Converging Formulas",
+    "content": "**Machin's Formula (1706)**:\n$$\\frac{\\pi}{4} = 4\\arctan\\left(\\frac{1}{5}\\right) - \\arctan\\left(\\frac{1}{239}\\right)$$\n\nConverges much faster because arctan(1/5) and arctan(1/239) use smaller arguments.\n\n**Modern Algorithms**:\n- Chudnovsky algorithm: 14+ digits per term\n- Borwein algorithms, BBP formula\n\nThese power modern π computation (trillions of digits!).",
+    "significance": "minor",
+    "relatedConcepts": ["Machin formula", "Chudnovsky", "pi computation"]
+  }
+]

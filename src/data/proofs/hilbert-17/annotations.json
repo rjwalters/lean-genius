@@ -1,1 +1,105 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "hilbert-17",
+    "range": {"startLine": 8, "endLine": 82},
+    "type": "concept",
+    "title": "Hilbert's 17th Problem",
+    "content": "**Hilbert's 17th Problem (1900)**:\n\n> Is every non-negative polynomial a sum of squares?\n\n**Answer (Artin 1927)**: YES, but as **rational functions**, not polynomials!\n\n**The Critical Distinction**:\n- NOT every PSD polynomial is a sum of squares of polynomials\n- BUT every PSD polynomial IS a sum of squares of rational functions\n\n**Motzkin (1967)**: First explicit non-SOS polynomial example.",
+    "significance": "critical",
+    "relatedConcepts": ["sum of squares", "PSD", "rational functions"]
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "hilbert-17",
+    "range": {"startLine": 92, "endLine": 133},
+    "type": "definition",
+    "title": "Key Definitions",
+    "content": "**Sum of Squares (SOS)**:\n$$p = q_1^2 + q_2^2 + \\cdots + q_m^2$$\n\n**Polynomial-SOS**: Each qᵢ is a polynomial\n\n**Rational-SOS**: Each qᵢ is a rational function (g/h)\n\n**Positive Semidefinite (PSD)**:\n$$p(x) \\geq 0 \\text{ for all } x \\in \\mathbb{R}^n$$\n\nQuestion: PSD ⟹ SOS?",
+    "significance": "major",
+    "relatedConcepts": ["polynomial", "rational function", "non-negativity"]
+  },
+  {
+    "id": "ann-artin",
+    "proofId": "hilbert-17",
+    "range": {"startLine": 134, "endLine": 183},
+    "type": "theorem",
+    "title": "Artin's Theorem",
+    "content": "**THE MAIN THEOREM (Artin 1927)**:\n\nIf p ∈ ℝ[X₁,...,Xₙ] and p(x) ≥ 0 for all x ∈ ℝⁿ, then p is a sum of squares in ℝ(X₁,...,Xₙ).\n\n**Proof Uses**:\n- Real closed field theory\n- Model-theoretic transfer\n- If p not SOS, an ordering makes it negative → contradiction!\n\nThis is the complete solution to Hilbert 17.",
+    "mathContext": "PSD ⟹ rational-SOS",
+    "significance": "critical",
+    "relatedConcepts": ["Artin", "real closed fields", "model theory"]
+  },
+  {
+    "id": "ann-motzkin",
+    "proofId": "hilbert-17",
+    "range": {"startLine": 184, "endLine": 268},
+    "type": "theorem",
+    "title": "Motzkin's Counterexample",
+    "content": "**The Motzkin Polynomial (1967)**:\n\n$$M(x,y) = x^4y^2 + x^2y^4 - 3x^2y^2 + 1$$\n\n**Properties**:\n- **PSD**: M(x,y) ≥ 0 for all (x,y) ∈ ℝ² (by AM-GM)\n- **NOT polynomial-SOS**: Degree analysis shows impossible\n- **IS rational-SOS**: By Artin's theorem!\n\nThis is the simplest explicit counterexample to polynomial-SOS.",
+    "mathContext": "PSD but not polynomial-SOS",
+    "significance": "critical",
+    "relatedConcepts": ["Motzkin", "counterexample", "AM-GM"]
+  },
+  {
+    "id": "ann-hilbert-1888",
+    "proofId": "hilbert-17",
+    "range": {"startLine": 269, "endLine": 343},
+    "type": "theorem",
+    "title": "When PSD = Polynomial-SOS",
+    "content": "**Hilbert's 1888 Classification**:\n\nPSD = polynomial-SOS if and only if:\n1. **n = 1** (univariate, any degree)\n2. **d = 2** (quadratic forms, any variables)\n3. **n = 2, d = 4** (bivariate quartics)\n\nIn ALL other cases, counterexamples exist!\n\n**Univariate case**: Every PSD p(x) = q₁² + q₂² (2 squares suffice)\n**Quadratic case**: Use Gram matrix factorization",
+    "significance": "major",
+    "relatedConcepts": ["Hilbert 1888", "classification", "special cases"]
+  },
+  {
+    "id": "ann-pfister",
+    "proofId": "hilbert-17",
+    "range": {"startLine": 344, "endLine": 396},
+    "type": "theorem",
+    "title": "Pfister's Bound",
+    "content": "**How Many Squares Needed?**\n\n**Pfister's Theorem (1967)**:\n\nAt most **2ⁿ** squares suffice for n-variable PSD polynomials!\n\n$$p = g_1^2 + g_2^2 + \\cdots + g_{2^n}^2$$\n\n**Special case (Cassels)**: For n = 2, at most 4 squares needed.\n\nThe bound is optimal in general.",
+    "mathContext": "≤ 2ⁿ squares",
+    "significance": "major",
+    "relatedConcepts": ["Pfister", "bound", "Pfister forms"]
+  },
+  {
+    "id": "ann-real-closed",
+    "proofId": "hilbert-17",
+    "range": {"startLine": 397, "endLine": 439},
+    "type": "concept",
+    "title": "Real Closed Fields",
+    "content": "**Real Closed Field R**:\n\n1. Formally real: −1 is not a sum of squares\n2. No proper formally real algebraic extension\n\n**Equivalently**:\n- Every positive element is a square\n- Every odd-degree polynomial has a root\n- Algebraic closure has degree 2 over R\n\n**ℝ is real closed** — this enables Artin's proof via model-theoretic transfer.",
+    "significance": "minor",
+    "relatedConcepts": ["real closed", "formally real", "transfer principle"]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "hilbert-17",
+    "range": {"startLine": 440, "endLine": 479},
+    "type": "concept",
+    "title": "Modern Applications",
+    "content": "**SOS Programming**:\n\nIf p is polynomial-SOS, we can find the decomposition via **semidefinite programming** (SDP)!\n\n**Applications**:\n- Control theory verification\n- Robotics safety\n- Program invariants\n- Optimization certificates\n\n**Positivstellensatz**: Characterizes infeasibility via SOS certificates.",
+    "significance": "minor",
+    "relatedConcepts": ["SDP", "optimization", "verification"]
+  },
+  {
+    "id": "ann-counterexamples",
+    "proofId": "hilbert-17",
+    "range": {"startLine": 481, "endLine": 541},
+    "type": "note",
+    "title": "More Counterexamples",
+    "content": "**Other Non-SOS Polynomials**:\n\n**Robinson (1973)**: 3-variable degree-6\n$$R = x^6 + y^6 + z^6 - \\text{cross terms} + 3x^2y^2z^2$$\n\n**Choi-Lam**: 4-variable\n$$CL = w^4 + x^2y^2 + y^2z^2 + z^2w^2 - 4wxyz$$\n\nAll are PSD but not polynomial-SOS.",
+    "significance": "minor",
+    "relatedConcepts": ["Robinson", "Choi-Lam", "counterexamples"]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "hilbert-17",
+    "range": {"startLine": 543, "endLine": 577},
+    "type": "concept",
+    "title": "Problem Status: SOLVED",
+    "content": "**Hilbert 17: SOLVED (Artin 1927)**\n\n**Summary**:\n- PSD ⟹ rational-SOS ✓ (Artin)\n- PSD ⟹ polynomial-SOS ✗ (Motzkin)\n- Univariate: PSD = polynomial-SOS ✓\n- Quadratic: PSD = polynomial-SOS ✓\n- ≤ 2ⁿ squares suffice (Pfister)\n\n**The distinction matters**: polynomial-SOS is tractable, rational-SOS always exists.",
+    "significance": "minor",
+    "relatedConcepts": ["solved", "Artin", "summary"]
+  }
+]

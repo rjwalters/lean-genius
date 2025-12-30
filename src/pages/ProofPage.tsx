@@ -83,6 +83,39 @@ export function ProofPage() {
 
   const { proof, annotations, versionInfo } = proofData
 
+  // Show "Coming Soon" state for proofs without annotations
+  if (annotations.length === 0) {
+    return (
+      <div className="h-screen flex flex-col overflow-hidden">
+        <header className="h-14 shrink-0 border-b border-border flex items-center px-4 gap-4">
+          <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <span className="text-xl font-bold tracking-tight">
+              Lean<span className="text-annotation">Genius</span>
+            </span>
+          </Link>
+          <div className="flex-1" />
+          <UserMenu />
+        </header>
+        <div className="flex-1 flex flex-col items-center justify-center gap-6 p-8">
+          <div className="text-center max-w-md">
+            <h1 className="text-2xl font-bold mb-2">{proof.title}</h1>
+            <p className="text-muted-foreground mb-6">{proof.description}</p>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">
+              <span className="text-lg">🚧</span>
+              <span className="font-medium">Coming Soon</span>
+            </div>
+            <p className="text-sm text-muted-foreground mt-4">
+              Annotations for this proof are currently being developed.
+            </p>
+          </div>
+          <Link to="/" className="text-annotation hover:underline text-sm">
+            ← Back to gallery
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       {/* Header */}

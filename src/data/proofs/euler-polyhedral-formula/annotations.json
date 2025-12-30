@@ -1,1 +1,195 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "euler-polyhedral-formula",
+    "range": {
+      "startLine": 5,
+      "endLine": 49
+    },
+    "type": "concept",
+    "title": "Euler's Polyhedral Formula",
+    "content": "One of the most beautiful formulas in mathematics:\n\n$$V - E + F = 2$$\n\nFor any convex polyhedron with V vertices, E edges, and F faces.\n\n**Wiedijk #13** on the 100 famous theorems list.\n\nDiscovered by Euler in 1758, this formula connects three seemingly unrelated counts with a constant — the **Euler characteristic** χ = 2.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Euler characteristic",
+      "topology",
+      "polyhedra",
+      "planar graphs"
+    ]
+  },
+  {
+    "id": "ann-graph-correspondence",
+    "proofId": "euler-polyhedral-formula",
+    "range": {
+      "startLine": 61,
+      "endLine": 71
+    },
+    "type": "concept",
+    "title": "Graph Correspondence",
+    "content": "Every convex polyhedron corresponds to a **3-connected planar graph**:\n\n- Vertices ↔ Graph vertices\n- Edges ↔ Graph edges  \n- Faces ↔ Graph regions (including unbounded face)\n\nThis lets us work with **combinatorics** instead of 3D geometry. The formula becomes a statement about planar graphs!",
+    "significance": "major",
+    "relatedConcepts": [
+      "planar graphs",
+      "Steinitz theorem",
+      "graph theory"
+    ]
+  },
+  {
+    "id": "ann-structure",
+    "proofId": "euler-polyhedral-formula",
+    "range": {
+      "startLine": 73,
+      "endLine": 91
+    },
+    "type": "definition",
+    "title": "Polyhedral Graph Structure",
+    "content": "We represent a polyhedron combinatorially:\n\n```lean\nstructure PolyhedralGraph where\n  V : ℕ  -- vertices\n  E : ℕ  -- edges\n  F : ℕ  -- faces\n```\n\n**Bounds**: The tetrahedron is minimal:\n- V ≥ 4, E ≥ 6, F ≥ 4",
+    "mathContext": "V, E, F ∈ ℕ",
+    "significance": "major",
+    "relatedConcepts": [
+      "Lean structures",
+      "natural numbers",
+      "constraints"
+    ]
+  },
+  {
+    "id": "ann-tetrahedron",
+    "proofId": "euler-polyhedral-formula",
+    "range": {
+      "startLine": 104,
+      "endLine": 116
+    },
+    "type": "theorem",
+    "title": "Tetrahedron: Base Case",
+    "content": "The **tetrahedron** is the simplest polyhedron:\n\n- V = 4 vertices\n- E = 6 edges\n- F = 4 faces (triangles)\n\nCheck: $4 - 6 + 4 = 2$ ✓\n\nThis serves as the **base case** for induction.",
+    "mathContext": "4 - 6 + 4 = 2",
+    "significance": "major",
+    "relatedConcepts": [
+      "Platonic solids",
+      "base case",
+      "triangular faces"
+    ]
+  },
+  {
+    "id": "ann-platonic",
+    "proofId": "euler-polyhedral-formula",
+    "range": {
+      "startLine": 97,
+      "endLine": 172
+    },
+    "type": "concept",
+    "title": "All Platonic Solids",
+    "content": "The five Platonic solids all satisfy V - E + F = 2:\n\n| Solid | V | E | F | Check |\n|-------|---|---|---|-------|\n| Tetrahedron | 4 | 6 | 4 | 2 |\n| Cube | 8 | 12 | 6 | 2 |\n| Octahedron | 6 | 12 | 8 | 2 |\n| Dodecahedron | 20 | 30 | 12 | 2 |\n| Icosahedron | 12 | 30 | 20 | 2 |\n\nThese are the only convex polyhedra with congruent regular polygon faces.",
+    "significance": "major",
+    "relatedConcepts": [
+      "Platonic solids",
+      "regular polyhedra",
+      "duality"
+    ]
+  },
+  {
+    "id": "ann-edge-removal",
+    "proofId": "euler-polyhedral-formula",
+    "range": {
+      "startLine": 196,
+      "endLine": 206
+    },
+    "type": "theorem",
+    "title": "Edge Removal Preserves χ",
+    "content": "**Edge removal**: Remove an edge between two faces (merging them).\n\n- V stays same\n- E decreases by 1\n- F decreases by 1\n\n$$V - (E-1) + (F-1) = V - E + F$$\n\nThe Euler characteristic is preserved!",
+    "mathContext": "Δχ = 0 - (-1) + (-1) = 0",
+    "significance": "major",
+    "relatedConcepts": [
+      "induction",
+      "graph operations",
+      "invariant"
+    ]
+  },
+  {
+    "id": "ann-edge-contraction",
+    "proofId": "euler-polyhedral-formula",
+    "range": {
+      "startLine": 208,
+      "endLine": 217
+    },
+    "type": "theorem",
+    "title": "Edge Contraction Preserves χ",
+    "content": "**Edge contraction**: Merge two endpoints of an edge.\n\n- V decreases by 1\n- E decreases by 1\n- F stays same\n\n$$(V-1) - (E-1) + F = V - E + F$$\n\nAgain, χ is preserved!",
+    "mathContext": "Δχ = (-1) - (-1) + 0 = 0",
+    "significance": "major",
+    "relatedConcepts": [
+      "graph contraction",
+      "induction step"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "euler-polyhedral-formula",
+    "range": {
+      "startLine": 244,
+      "endLine": 253
+    },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**Euler's Polyhedral Formula (Wiedijk #13)**:\n\n$$V - E + F = 2$$\n\nfor any convex polyhedron.\n\n**Proof strategy**:\n1. Reduce any polyhedron to tetrahedron via edge operations\n2. Each operation preserves V - E + F\n3. Tetrahedron has χ = 2\n4. Therefore all polyhedra have χ = 2",
+    "mathContext": "$\\chi = V - E + F = 2$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Euler",
+      "Cauchy proof",
+      "induction"
+    ]
+  },
+  {
+    "id": "ann-edge-bound",
+    "proofId": "euler-polyhedral-formula",
+    "range": {
+      "startLine": 272,
+      "endLine": 290
+    },
+    "type": "theorem",
+    "title": "Edge-Vertex Bound",
+    "content": "**Corollary**: For simple polyhedra:\n\n$$E \\leq 3V - 6$$\n\n**Derivation**:\n1. Each face has ≥ 3 edges, each edge borders 2 faces: 3F ≤ 2E\n2. From Euler: F = 2 - V + E\n3. Substituting: 3(2 - V + E) ≤ 2E\n4. Solving: E ≤ 3V - 6\n\nThis bound is tight for triangulated polyhedra.",
+    "mathContext": "$E \\leq 3V - 6$",
+    "significance": "minor",
+    "relatedConcepts": [
+      "double counting",
+      "triangulation",
+      "graph bounds"
+    ]
+  },
+  {
+    "id": "ann-topology",
+    "proofId": "euler-polyhedral-formula",
+    "range": {
+      "startLine": 306,
+      "endLine": 326
+    },
+    "type": "concept",
+    "title": "Topological Generalization",
+    "content": "The Euler characteristic generalizes to all surfaces:\n\n| Surface | Genus g | χ = 2 - 2g |\n|---------|---------|------------|\n| Sphere | 0 | 2 |\n| Torus | 1 | 0 |\n| Double torus | 2 | -2 |\n\nPolyhedra have χ = 2 because they're **homeomorphic to a sphere**!\n\nThis is the birth of **algebraic topology**.",
+    "significance": "major",
+    "relatedConcepts": [
+      "genus",
+      "homeomorphism",
+      "algebraic topology"
+    ]
+  },
+  {
+    "id": "ann-history",
+    "proofId": "euler-polyhedral-formula",
+    "range": {
+      "startLine": 334,
+      "endLine": 349
+    },
+    "type": "note",
+    "title": "Historical Timeline",
+    "content": "**Timeline**:\n- 1639: Descartes discovers related formula (unpublished)\n- 1750: Euler proves V - E + F = 2\n- 1758: Euler publishes\n- 1813: Cauchy gives rigorous proof\n- 1895: Poincaré generalizes to higher dimensions\n\n**Impact**: First topological invariant discovered, leading to algebraic topology.",
+    "significance": "minor",
+    "relatedConcepts": [
+      "history",
+      "Poincaré",
+      "Cauchy"
+    ]
+  }
+]

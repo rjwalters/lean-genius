@@ -1,1 +1,65 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "mean-value-theorem",
+    "range": {"startLine": 5, "endLine": 48},
+    "type": "concept",
+    "title": "Mean Value Theorem: Wiedijk #75",
+    "content": "**Mean Value Theorem (Lagrange)**:\n\nIf f is continuous on [a, b] and differentiable on (a, b), then:\n\n$$\\exists c \\in (a,b): f'(c) = \\frac{f(b) - f(a)}{b - a}$$\n\n**Geometric Meaning**:\n- Secant line through endpoints has slope $(f(b)-f(a))/(b-a)$\n- MVT guarantees a point where tangent is parallel to secant\n\n**Historical**: Lagrange (1797), Cauchy generalized (1821).",
+    "significance": "critical",
+    "relatedConcepts": ["calculus", "derivatives", "Lagrange"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "mean-value-theorem",
+    "range": {"startLine": 63, "endLine": 75},
+    "type": "theorem",
+    "title": "Lagrange's Mean Value Theorem",
+    "content": "**MVT (Main Statement)**:\n\nFor f : ℝ → ℝ:\n- Continuous on [a, b]\n- Differentiable on (a, b)\n\nThere exists c ∈ (a, b) such that:\n$$f'(c) = \\frac{f(b) - f(a)}{b - a}$$\n\n**Proof in Mathlib**: Uses `exists_deriv_eq_slope`, which applies Rolle's theorem to an auxiliary function.",
+    "mathContext": "f'(c) = (f(b)-f(a))/(b-a)",
+    "significance": "critical",
+    "relatedConcepts": ["derivative", "slope", "Rolle's theorem"]
+  },
+  {
+    "id": "ann-hasderivat",
+    "proofId": "mean-value-theorem",
+    "range": {"startLine": 77, "endLine": 85},
+    "type": "theorem",
+    "title": "HasDerivAt Version",
+    "content": "**Alternative Formulation**:\n\nWhen you have explicit derivative f'(x) = f'(x):\n$$\\exists c \\in (a,b): f'(c) = \\frac{f(b) - f(a)}{b - a}$$\n\n**Why two versions?**\n- `deriv` version: More general, derivative computed automatically\n- `HasDerivAt` version: More convenient when derivative is known explicitly\n\nBoth are mathematically equivalent.",
+    "significance": "minor",
+    "relatedConcepts": ["HasDerivAt", "deriv", "derivative forms"]
+  },
+  {
+    "id": "ann-cauchy",
+    "proofId": "mean-value-theorem",
+    "range": {"startLine": 94, "endLine": 109},
+    "type": "theorem",
+    "title": "Cauchy's Mean Value Theorem",
+    "content": "**Cauchy's MVT (Generalization)**:\n\nFor f, g continuous on [a,b] and differentiable on (a,b):\n\n$$\\exists c \\in (a,b): (g(b) - g(a)) \\cdot f'(c) = (f(b) - f(a)) \\cdot g'(c)$$\n\n**Special case**: When g(x) = x, this reduces to Lagrange's MVT.\n\n**Key application**: Foundation for **L'Hopital's Rule**!\n\n$$\\lim_{x \\to a} \\frac{f(x)}{g(x)} = \\lim_{x \\to a} \\frac{f'(x)}{g'(x)}$$",
+    "mathContext": "(g(b)-g(a))f'(c) = (f(b)-f(a))g'(c)",
+    "significance": "major",
+    "relatedConcepts": ["Cauchy", "L'Hopital", "parametric curves"]
+  },
+  {
+    "id": "ann-constant",
+    "proofId": "mean-value-theorem",
+    "range": {"startLine": 115, "endLine": 128},
+    "type": "theorem",
+    "title": "Zero Derivative Implies Constant",
+    "content": "**Corollary**: If f'(x) = 0 for all x ∈ (a, b), then f is constant on [a, b].\n\n$$\\forall x \\in (a,b): f'(x) = 0 \\Rightarrow f(b) = f(a)$$\n\n**Proof**: By MVT, there exists c where f'(c) = (f(b)-f(a))/(b-a). Since f'(c) = 0, we get f(b) = f(a).\n\n**Important consequence**: Two antiderivatives of the same function differ by at most a constant.",
+    "mathContext": "f' = 0 ⟹ f constant",
+    "significance": "major",
+    "relatedConcepts": ["constant function", "antiderivative", "uniqueness"]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "mean-value-theorem",
+    "range": {"startLine": 130, "endLine": 155},
+    "type": "concept",
+    "title": "Applications of MVT",
+    "content": "**Key Applications**:\n\n1. **L'Hopital's Rule**: Evaluate 0/0 and ∞/∞ limits using derivatives\n\n2. **Taylor's Theorem**: MVT provides the remainder term formula\n\n3. **Monotonicity**:\n   - f' > 0 on (a,b) ⟹ f strictly increasing\n   - f' < 0 on (a,b) ⟹ f strictly decreasing\n\n4. **Antiderivatives**: If F' = G' = f, then F - G = constant\n\n5. **Error bounds**: Control function values using derivative bounds",
+    "significance": "major",
+    "relatedConcepts": ["L'Hopital", "Taylor", "monotonicity"]
+  }
+]

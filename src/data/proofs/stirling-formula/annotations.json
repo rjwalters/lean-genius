@@ -1,1 +1,109 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "stirling-formula",
+    "range": {"startLine": 8, "endLine": 47},
+    "type": "concept",
+    "title": "Stirling's Formula: Wiedijk #90",
+    "content": "**Stirling's Approximation**:\n\n$$n! \\sim \\sqrt{2\\pi n} \\left(\\frac{n}{e}\\right)^n$$\n\n**More precisely**:\n$$\\lim_{n \\to \\infty} \\frac{n!}{\\sqrt{2\\pi n}(n/e)^n} = 1$$\n\n**Historical**:\n- De Moivre discovered the form $(n/e)^n \\sqrt{n}$\n- Stirling (1730) found the constant $\\sqrt{2\\pi}$\n- Full asymptotic expansion: $n! \\sim \\sqrt{2\\pi n}(n/e)^n(1 + \\frac{1}{12n} + ...)$",
+    "significance": "critical",
+    "relatedConcepts": ["factorial", "asymptotic", "gamma function"]
+  },
+  {
+    "id": "ann-stirling-seq",
+    "proofId": "stirling-formula",
+    "range": {"startLine": 66, "endLine": 82},
+    "type": "definition",
+    "title": "The Stirling Sequence",
+    "content": "**Stirling Sequence**:\n$$S_n = \\frac{n!}{\\sqrt{2n} \\cdot (n/e)^n}$$\n\n**Key fact**: This sequence converges to $\\sqrt{\\pi}$!\n\n**Properties**:\n- $S_n > 0$ for $n \\geq 1$\n- $S_n$ is decreasing (antitone)\n- $S_n \\geq \\sqrt{\\pi}$ for all $n$\n\nConvergence to $\\sqrt{\\pi}$ gives Stirling's formula.",
+    "mathContext": "Sₙ → √π",
+    "significance": "major",
+    "relatedConcepts": ["sequence", "convergence", "monotone"]
+  },
+  {
+    "id": "ann-convergence",
+    "proofId": "stirling-formula",
+    "range": {"startLine": 96, "endLine": 107},
+    "type": "theorem",
+    "title": "Convergence to √π",
+    "content": "**Central Theorem**:\n$$\\lim_{n \\to \\infty} \\frac{n!}{\\sqrt{2n}(n/e)^n} = \\sqrt{\\pi}$$\n\n**Proof method in Mathlib**: Via the **Wallis Product**:\n$$\\frac{\\pi}{2} = \\prod_{n=1}^{\\infty} \\frac{4n^2}{4n^2 - 1}$$\n\nThis product relates factorial ratios to π, giving the constant √π.",
+    "mathContext": "stirlingSeq → √π",
+    "significance": "critical",
+    "relatedConcepts": ["Wallis product", "limit", "pi"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "stirling-formula",
+    "range": {"startLine": 122, "endLine": 137},
+    "type": "theorem",
+    "title": "Stirling's Asymptotic Formula",
+    "content": "**Stirling's Formula**:\n$$n! \\sim \\sqrt{2\\pi n} \\left(\\frac{n}{e}\\right)^n$$\n\nas $n \\to \\infty$.\n\n**Meaning of ~**: The ratio of these quantities → 1.\n\n**In Mathlib**: `Asymptotics.IsEquivalent` captures this precisely.\n\nThis is the definitive statement from which all applications follow.",
+    "mathContext": "n! ~ √(2πn)(n/e)ⁿ",
+    "significance": "critical",
+    "relatedConcepts": ["asymptotic equivalence", "factorial growth", "exponential"]
+  },
+  {
+    "id": "ann-lower-bound",
+    "proofId": "stirling-formula",
+    "range": {"startLine": 149, "endLine": 209},
+    "type": "theorem",
+    "title": "Lower Bound on n!",
+    "content": "**Lower Bound**:\n$$n! \\geq \\sqrt{2\\pi n} \\left(\\frac{n}{e}\\right)^n$$\n\nfor all $n \\geq 1$.\n\n**Proof**: Since $S_n \\geq \\sqrt{\\pi}$, we have:\n$$\\frac{n!}{\\sqrt{2n}(n/e)^n} \\geq \\sqrt{\\pi}$$\n\nMultiplying: $n! \\geq \\sqrt{\\pi} \\cdot \\sqrt{2n} \\cdot (n/e)^n = \\sqrt{2\\pi n}(n/e)^n$.\n\n**Useful for**: Proving lower bounds on combinatorial quantities.",
+    "mathContext": "n! ≥ √(2πn)(n/e)ⁿ",
+    "significance": "major",
+    "relatedConcepts": ["lower bound", "inequality", "estimation"]
+  },
+  {
+    "id": "ann-approx-function",
+    "proofId": "stirling-formula",
+    "range": {"startLine": 237, "endLine": 262},
+    "type": "definition",
+    "title": "Stirling Approximation Function",
+    "content": "**Definition**:\n$$\\text{stirlingApprox}(n) = \\sqrt{2\\pi n} \\left(\\frac{n}{e}\\right)^n$$\n\n**Properties**:\n- Positive for $n \\geq 1$\n- $n!/\\text{stirlingApprox}(n) \\to 1$ as $n \\to \\infty$\n\n**Usage**: Use stirlingApprox(n) as a fast approximation for n! when exact values aren't needed.",
+    "mathContext": "stirlingApprox(n) = √(2πn)(n/e)ⁿ",
+    "significance": "minor",
+    "relatedConcepts": ["approximation", "function", "computation"]
+  },
+  {
+    "id": "ann-numerical",
+    "proofId": "stirling-formula",
+    "range": {"startLine": 268, "endLine": 281},
+    "type": "note",
+    "title": "Numerical Examples",
+    "content": "**Example Values**:\n\n| n | n! | Stirling Approx | Error |\n|---|---|---|---|\n| 10 | 3,628,800 | ~3,598,696 | ~0.8% |\n| 20 | 2.43×10¹⁸ | ~2.42×10¹⁸ | ~0.4% |\n\n**Relative error** is approximately $1/(12n)$.\n\nFor $n = 100$: error < 0.1%\nFor $n = 1000$: error < 0.01%",
+    "significance": "minor",
+    "relatedConcepts": ["numerical", "error", "accuracy"]
+  },
+  {
+    "id": "ann-error-bound",
+    "proofId": "stirling-formula",
+    "range": {"startLine": 294, "endLine": 425},
+    "type": "theorem",
+    "title": "Error Bound",
+    "content": "**Error Bound Theorem**:\n\nThere exists $C > 0$ such that for all $n \\geq 1$:\n$$\\left|\\frac{n!}{\\text{stirlingApprox}(n)} - 1\\right| \\leq \\frac{C}{n}$$\n\n**Refined asymptotic**:\n$$\\frac{n!}{\\sqrt{2\\pi n}(n/e)^n} = 1 + \\frac{1}{12n} + O(1/n^2)$$\n\nSo relative error is $O(1/n)$ with leading term $1/(12n)$.",
+    "mathContext": "|ratio - 1| ≤ C/n",
+    "significance": "major",
+    "relatedConcepts": ["error bound", "rate of convergence", "asymptotic expansion"]
+  },
+  {
+    "id": "ann-log-form",
+    "proofId": "stirling-formula",
+    "range": {"startLine": 440, "endLine": 469},
+    "type": "theorem",
+    "title": "Logarithmic Form",
+    "content": "**Log-Stirling Formula**:\n\n$$\\log(n!) \\approx n \\log n - n + \\frac{1}{2}\\log(2\\pi n)$$\n\n**Exact relation**:\n$$\\log(n!) = \\log(S_n) + \\frac{1}{2}\\log(2n) + n\\log n - n$$\n\n**Applications**:\n- Entropy calculations in information theory\n- Statistical mechanics (Boltzmann entropy)\n- Complexity analysis of algorithms",
+    "mathContext": "log(n!) ≈ n log n - n",
+    "significance": "major",
+    "relatedConcepts": ["logarithm", "entropy", "complexity"]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "stirling-formula",
+    "range": {"startLine": 431, "endLine": 489},
+    "type": "concept",
+    "title": "Applications of Stirling's Formula",
+    "content": "**Key Applications**:\n\n1. **Binomial coefficients**:\n   $$\\binom{n}{k} \\approx \\frac{n^n}{k^k(n-k)^{n-k}}$$\n\n2. **Entropy**: $H = \\log(n!) \\approx n\\log n - n$\n\n3. **Central Limit Theorem**: Derivations via characteristic functions\n\n4. **De Moivre-Laplace**: Normal approximation to binomial\n\n5. **Gamma function**: Extends to $\\Gamma(x+1) \\sim \\sqrt{2\\pi x}(x/e)^x$",
+    "significance": "major",
+    "relatedConcepts": ["binomial", "entropy", "CLT", "gamma function"]
+  }
+]

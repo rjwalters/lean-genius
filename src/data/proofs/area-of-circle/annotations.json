@@ -1,1 +1,44 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "area-of-circle",
+    "range": {"startLine": 4, "endLine": 50},
+    "type": "concept",
+    "title": "Area of a Circle",
+    "content": "The most fundamental formula in geometry:\n\n$$A = \\pi r^2$$\n\n**Wiedijk #9** on the list of 100 famous theorems.\n\n**Historical note**: Archimedes proved this around 250 BCE using the **method of exhaustion** — an ancient precursor to calculus.",
+    "significance": "critical",
+    "relatedConcepts": ["pi", "Archimedes", "Lebesgue measure"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "area-of-circle",
+    "range": {"startLine": 63, "endLine": 76},
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**Area of a Circle (Wiedijk #9)**:\n\n$$\\text{volume}(\\text{ball}(c, r)) = \\pi r^2$$\n\nThe proof is a **one-liner** — just applying Mathlib's `Complex.volume_ball`! This shows the power of building on a library.",
+    "mathContext": "$A = \\pi r^2$",
+    "significance": "critical",
+    "relatedConcepts": ["Mathlib", "Complex.volume_ball"]
+  },
+  {
+    "id": "ann-unit-disk",
+    "proofId": "area-of-circle",
+    "range": {"startLine": 88, "endLine": 115},
+    "type": "theorem",
+    "title": "Special Cases",
+    "content": "**Special cases**:\n\n- **Unit disk** (r = 1): Area = π\n- **Zero radius**: Area = 0 (empty ball)\n- **Closed vs open disk**: Same area — the boundary (circle) has measure 0\n- **Negative radius**: Empty set, area = 0",
+    "significance": "minor",
+    "relatedConcepts": ["unit disk", "measure zero", "edge cases"]
+  },
+  {
+    "id": "ann-archimedes",
+    "proofId": "area-of-circle",
+    "range": {"startLine": 138, "endLine": 148},
+    "type": "concept",
+    "title": "Archimedes' Insight",
+    "content": "Archimedes imagined the disk as **concentric thin rings**:\n\n$$dA = 2\\pi\\rho\\, d\\rho$$\n\nIntegrating:\n$$A = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$$\n\nThis is calculus **2000 years** before Newton and Leibniz!",
+    "mathContext": "$\\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$",
+    "significance": "major",
+    "relatedConcepts": ["Archimedes", "integration", "circumference"]
+  }
+]

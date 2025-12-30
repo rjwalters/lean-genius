@@ -1,1 +1,117 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "gelfond-schneider",
+    "range": {"startLine": 10, "endLine": 104},
+    "type": "concept",
+    "title": "Hilbert's 7th Problem (Wiedijk #60)",
+    "content": "**Hilbert's 7th Problem (1900)**:\n\n> Is a^b transcendental when a is algebraic (≠ 0,1) and b is irrational algebraic?\n\n**Answer (Gelfond & Schneider, 1934): YES!**\n\n**Famous examples**:\n- 2^√2 ≈ 2.665... (the Gelfond-Schneider constant)\n- e^π ≈ 23.14... (Gelfond's constant, via e^π = (-1)^(-i))\n\nThis shows transcendence arises from simple algebraic operations.",
+    "significance": "critical",
+    "relatedConcepts": ["transcendental numbers", "Hilbert problems", "algebraic numbers"]
+  },
+  {
+    "id": "ann-proof-outline",
+    "proofId": "gelfond-schneider",
+    "range": {"startLine": 60, "endLine": 75},
+    "type": "concept",
+    "title": "Proof Strategy",
+    "content": "**The Gelfond-Schneider Method**:\n\n1. **Contradiction**: Assume a^b is algebraic\n\n2. **Auxiliary Function**: Construct\n$$f(z) = \\sum p(m,n) \\cdot a^{mz} \\cdot a^{bnz}$$\n\n3. **Siegel's Lemma**: Choose coefficients so f has many zeros at integers\n\n4. **Growth Analysis**: Bound zeros using analytic function theory\n\n5. **Contradiction**: Zero count exceeds growth bounds → a^b transcendental",
+    "significance": "major",
+    "relatedConcepts": ["Siegel's lemma", "auxiliary functions", "analytic methods"]
+  },
+  {
+    "id": "ann-axioms",
+    "proofId": "gelfond-schneider",
+    "range": {"startLine": 115, "endLine": 203},
+    "type": "note",
+    "title": "Technical Axioms",
+    "content": "**Helper axioms for the formalization**:\n\n- Real algebraic → Complex algebraic (embedding preserves algebraicity)\n- Real power = Complex power for positive bases\n- Euler's identity: (-1)^(-i) = e^π\n- log(algebraic) is transcendental (Hermite-Lindemann corollary)\n\nThese bridge the gap between real and complex analysis in Mathlib.",
+    "significance": "minor",
+    "relatedConcepts": ["type theory", "Mathlib", "coercion"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "gelfond-schneider",
+    "range": {"startLine": 228, "endLine": 276},
+    "type": "theorem",
+    "title": "Gelfond-Schneider Theorem",
+    "content": "**The Theorem**:\n\nIf a, b ∈ ℂ are algebraic with:\n- a ≠ 0, 1\n- b ∉ ℚ (irrational)\n\nThen **a^b is transcendental**.\n\nThe real version follows by embedding into ℂ and using that real power = complex power for positive bases.\n\nThe proof spans both versions: complex (axiom) and real (derived).",
+    "mathContext": "$a^b \\notin \\overline{\\mathbb{Q}}$",
+    "significance": "critical",
+    "relatedConcepts": ["transcendence", "algebraic closure", "complex exponentiation"]
+  },
+  {
+    "id": "ann-sqrt-two-algebraic",
+    "proofId": "gelfond-schneider",
+    "range": {"startLine": 283, "endLine": 289},
+    "type": "theorem",
+    "title": "√2 is Algebraic",
+    "content": "**Lemma**: √2 is algebraic over ℚ.\n\n**Proof**: √2 is a root of X² - 2 = 0.\n\nThis polynomial is:\n- Non-zero (degree 2)\n- Has √2 as root: (√2)² - 2 = 0 ✓\n\nTherefore √2 ∈ $\\overline{\\mathbb{Q}}$.",
+    "mathContext": "$\\sqrt{2}^2 - 2 = 0$",
+    "significance": "minor",
+    "relatedConcepts": ["minimal polynomial", "algebraic integers"]
+  },
+  {
+    "id": "ann-two-pow-sqrt-two",
+    "proofId": "gelfond-schneider",
+    "range": {"startLine": 291, "endLine": 310},
+    "type": "theorem",
+    "title": "2^√2 is Transcendental",
+    "content": "**Corollary 1**: 2^√2 is transcendental.\n\n**Hilbert's original example!**\n\n**Proof by Gelfond-Schneider**:\n- a = 2 is algebraic, ≠ 0, 1 ✓\n- b = √2 is algebraic ✓\n- √2 is irrational ✓\n\nTherefore 2^√2 ≈ 2.6651441... is transcendental.\n\nThis is the **Gelfond-Schneider constant**.",
+    "mathContext": "$2^{\\sqrt{2}} \\notin \\overline{\\mathbb{Q}}$",
+    "significance": "critical",
+    "relatedConcepts": ["Hilbert", "Gelfond-Schneider constant", "1900 problems"]
+  },
+  {
+    "id": "ann-e-pow-pi",
+    "proofId": "gelfond-schneider",
+    "range": {"startLine": 312, "endLine": 369},
+    "type": "theorem",
+    "title": "e^π is Transcendental",
+    "content": "**Corollary 2**: e^π is transcendental (**Gelfond's constant**).\n\n**Clever trick using Euler's identity**:\n\nFrom e^(iπ) = -1:\n$$e^\\pi = (e^{i\\pi})^{-i} = (-1)^{-i}$$\n\nNow apply Gelfond-Schneider:\n- a = -1 is algebraic, ≠ 0, 1 ✓\n- b = -i is algebraic (root of X² + 1) ✓\n- -i ∉ ℚ (not real!) ✓\n\nTherefore e^π ≈ 23.1407... is transcendental.",
+    "mathContext": "$e^\\pi = (-1)^{-i}$",
+    "significance": "critical",
+    "relatedConcepts": ["Euler's identity", "Gelfond's constant", "complex logarithm"]
+  },
+  {
+    "id": "ann-more-corollaries",
+    "proofId": "gelfond-schneider",
+    "range": {"startLine": 371, "endLine": 395},
+    "type": "theorem",
+    "title": "More Corollaries",
+    "content": "**Additional transcendental numbers**:\n\n- (√2)^(√2) is transcendental\n- 2^(∛2) is transcendental\n\n**All follow the same pattern**:\n\n1. Check base is algebraic, ≠ 0, 1\n2. Check exponent is algebraic\n3. Check exponent is irrational\n4. Apply Gelfond-Schneider",
+    "significance": "minor",
+    "relatedConcepts": ["irrational exponents", "algebraic numbers"]
+  },
+  {
+    "id": "ann-hermite-lindemann",
+    "proofId": "gelfond-schneider",
+    "range": {"startLine": 397, "endLine": 445},
+    "type": "concept",
+    "title": "Connection to Hermite-Lindemann",
+    "content": "**Related theorem** (Hermite-Lindemann):\n\nIf α is non-zero algebraic, then e^α is transcendental.\n\n**Connection via a^b = exp(b·log(a))**:\n\n- If a is algebraic (≠0,1), then log(a) is **transcendental**\n- Gelfond-Schneider shows that multiplying by irrational algebraic b keeps b·log(a) \"transcendental enough\"\n\n**Baker's generalization (1966)**: Linear forms in logarithms with effective bounds.",
+    "mathContext": "$a^b = e^{b \\log a}$",
+    "significance": "major",
+    "relatedConcepts": ["Hermite-Lindemann", "Baker's theorem", "linear forms in logarithms"]
+  },
+  {
+    "id": "ann-proof-techniques",
+    "proofId": "gelfond-schneider",
+    "range": {"startLine": 447, "endLine": 512},
+    "type": "concept",
+    "title": "Proof Techniques",
+    "content": "**The Gelfond-Schneider Method** combines:\n\n1. **Hermite's auxiliary polynomials**\n2. **Siegel's lemma**: Find small integer solutions\n3. **Complex analysis**: Zero counting\n\n**Key lemma** (Siegel): Given m × n integer matrix A with m < n, entries ≤ B, there exists non-trivial integer solution with |xᵢ| ≤ C·B^(m/(n-m)).\n\n**Why irrational algebraic is crucial**:\n- Rational b → a^b is algebraic\n- Transcendental b → can't control relations\n- Algebraic irrational → just right!",
+    "significance": "major",
+    "relatedConcepts": ["Siegel's lemma", "auxiliary functions", "transcendence methods"]
+  },
+  {
+    "id": "ann-open-problems",
+    "proofId": "gelfond-schneider",
+    "range": {"startLine": 514, "endLine": 559},
+    "type": "concept",
+    "title": "Open Problems",
+    "content": "**What we DON'T know** (as of 2025):\n\n- Is e^e transcendental? (likely yes)\n- Is π^e transcendental? (likely yes)\n- Is 2^e transcendental? (e is transcendental, not covered)\n\n**Schanuel's Conjecture**: The \"grand unified theory\" of transcendence.\n\nIf z₁,...,zₙ are ℚ-linearly independent, then:\n$$\\text{trdeg}_\\mathbb{Q}\\, \\mathbb{Q}(z_1,...,z_n, e^{z_1},...,e^{z_n}) \\geq n$$\n\nWould imply e+π, e·π, e^e are all transcendental!",
+    "significance": "minor",
+    "relatedConcepts": ["Schanuel's conjecture", "transcendence degree", "open problems"]
+  }
+]

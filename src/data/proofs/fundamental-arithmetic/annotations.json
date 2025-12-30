@@ -1,1 +1,87 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "fundamental-arithmetic",
+    "range": {"startLine": 6, "endLine": 57},
+    "type": "concept",
+    "title": "Fundamental Theorem of Arithmetic: Wiedijk #80",
+    "content": "**Unique Factorization Theorem**:\n\nEvery integer $n > 1$ can be represented as a product of prime numbers, **uniquely** up to ordering.\n\n$$n = p_1^{a_1} p_2^{a_2} \\cdots p_k^{a_k}$$\n\n**Historical**:\n- Euclid's *Elements* (c. 300 BCE): Elements VII.31, VII.32\n- Gauss's *Disquisitiones Arithmeticae* (1801): First explicit proof\n\n**Key**: Primes are the \"atoms\" of arithmetic - the irreducible building blocks.",
+    "significance": "critical",
+    "relatedConcepts": ["prime numbers", "unique factorization", "number theory"]
+  },
+  {
+    "id": "ann-existence",
+    "proofId": "fundamental-arithmetic",
+    "range": {"startLine": 61, "endLine": 80},
+    "type": "theorem",
+    "title": "Existence of Prime Factorization",
+    "content": "**Existence Theorem**:\n\nFor $n \\geq 1$: `n.primeFactorsList.prod = n`\n\n**Proof idea** (strong induction):\n- If $n$ is prime, done\n- Otherwise $n = ab$ for $1 < a, b < n$\n- By induction, $a$ and $b$ have prime factorizations\n- Concatenate to get factorization of $n$\n\n**Mathlib API**:\n- `Nat.primeFactorsList n` : List of primes with multiplicity\n- `Nat.prod_primeFactorsList` : Product equals $n$\n- `Nat.primeFactorsList_sorted` : List is sorted",
+    "mathContext": "primeFactorsList.prod = n",
+    "significance": "critical",
+    "relatedConcepts": ["strong induction", "prime factors", "Mathlib"]
+  },
+  {
+    "id": "ann-uniqueness",
+    "proofId": "fundamental-arithmetic",
+    "range": {"startLine": 81, "endLine": 105},
+    "type": "theorem",
+    "title": "Uniqueness of Prime Factorization",
+    "content": "**Uniqueness Theorem**:\n\nTwo lists of primes with the same product are permutations of each other.\n\n**Key lemma**: `prime_lists_perm_of_prod_eq`\n\nIf $\\ell_1$ and $\\ell_2$ are prime lists with $\\prod \\ell_1 = \\prod \\ell_2$, then $\\ell_1 \\sim \\ell_2$ (permutation).\n\n**Absolute uniqueness**: If we require the list to be sorted, the factorization is absolutely unique.\n\n**Consequence**: `numbers_with_same_factors_equal` - same factor list implies same number.",
+    "mathContext": "prod equal ⟹ lists are permutations",
+    "significance": "critical",
+    "relatedConcepts": ["permutation", "uniqueness", "sorted list"]
+  },
+  {
+    "id": "ann-full-theorem",
+    "proofId": "fundamental-arithmetic",
+    "range": {"startLine": 106, "endLine": 131},
+    "type": "theorem",
+    "title": "Complete Statement of FTA",
+    "content": "**Fundamental Theorem of Arithmetic**:\n\nFor $n \\geq 2$, there exists a list $\\ell$ such that:\n1. **All primes**: $\\forall p \\in \\ell$, $p$ is prime\n2. **Sorted**: $\\ell$ is sorted (non-decreasing)\n3. **Product**: $\\prod \\ell = n$\n4. **Unique**: Any other prime list with same product is a permutation\n\n**Lean Statement**:\n```lean\ntheorem fundamental_theorem_of_arithmetic (n : ℕ) (hn : 2 ≤ n) :\n    ∃ l, (∀ p ∈ l, Prime p) ∧ l.Sorted (·≤·) ∧ \n         l.prod = n ∧ (∀ l', ... → l'.Perm l)\n```",
+    "mathContext": "n = ∏ primes, uniquely",
+    "significance": "critical",
+    "relatedConcepts": ["existence", "uniqueness", "sorted representation"]
+  },
+  {
+    "id": "ann-euclid-lemma",
+    "proofId": "fundamental-arithmetic",
+    "range": {"startLine": 142, "endLine": 150},
+    "type": "theorem",
+    "title": "Euclid's Lemma",
+    "content": "**Euclid's Lemma** (Key to Uniqueness):\n\nIf prime $p | ab$, then $p | a$ or $p | b$.\n\n$$p \\mid ab \\Rightarrow (p \\mid a) \\lor (p \\mid b)$$\n\n**Why crucial**: This is what makes primes \"irreducible\" in a meaningful way.\n\n**Without this**: We could have \"pseudo-primes\" that behave differently in different factorizations.\n\n**Mathlib**: `Nat.Prime.dvd_mul`",
+    "mathContext": "p | ab ⟹ p | a ∨ p | b",
+    "significance": "critical",
+    "relatedConcepts": ["Euclid", "divisibility", "prime property"]
+  },
+  {
+    "id": "ann-ufm",
+    "proofId": "fundamental-arithmetic",
+    "range": {"startLine": 133, "endLine": 140},
+    "type": "definition",
+    "title": "Unique Factorization Monoid",
+    "content": "**Algebraic Structure**:\n\n$\\mathbb{N}$ is a `UniqueFactorizationMonoid`.\n\n**Definition**: A monoid where every nonzero element has a unique factorization into irreducibles.\n\n**For $\\mathbb{N}$**: Irreducibles = Primes\n\n**Generalization**: This concept extends to:\n- Polynomial rings $K[x]$\n- Gaussian integers $\\mathbb{Z}[i]$\n- Many other rings\n\nMathlib: `UniqueFactorizationMonoid ℕ`",
+    "mathContext": "UniqueFactorizationMonoid ℕ",
+    "significance": "major",
+    "relatedConcepts": ["UFD", "monoid", "ring theory"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "fundamental-arithmetic",
+    "range": {"startLine": 152, "endLine": 171},
+    "type": "note",
+    "title": "Worked Examples",
+    "content": "**Prime Factorizations**:\n\n| n | primeFactorsList | Formula |\n|---|------------------|--------|\n| 12 | [2, 2, 3] | $2^2 \\cdot 3$ |\n| 30 | [2, 3, 5] | $2 \\cdot 3 \\cdot 5$ |\n| 60 | [2, 2, 3, 5] | $2^2 \\cdot 3 \\cdot 5$ |\n| 17 | [17] | prime |\n\n**Verification**:\n- `[2, 2, 3].prod = 12` \n- Lists are always sorted\n- All verified with `native_decide`",
+    "significance": "minor",
+    "relatedConcepts": ["examples", "verification", "native_decide"]
+  },
+  {
+    "id": "ann-corollaries",
+    "proofId": "fundamental-arithmetic",
+    "range": {"startLine": 173, "endLine": 217},
+    "type": "theorem",
+    "title": "Corollaries and Applications",
+    "content": "**Corollaries**:\n\n**Prime iff singleton**:\n$p$ prime $\\Leftrightarrow$ `p.primeFactorsList = [p]`\n\n**Coprime disjoint factors**:\n$\\gcd(m,n) = 1 \\Rightarrow$ `m.primeFactorsList.Disjoint n.primeFactorsList`\n\n**Canonical factorization** (`Nat.factorization`):\nRepresent as function from primes to exponents:\n- `factorization(12)(2) = 2`\n- `factorization(12)(3) = 1`\n- `factorization(12)(5) = 0`\n\nThis is often more convenient for computation.",
+    "significance": "major",
+    "relatedConcepts": ["coprimality", "disjoint factors", "Finsupp"]
+  }
+]

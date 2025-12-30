@@ -1,1 +1,117 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "greens-theorem",
+    "range": {"startLine": 4, "endLine": 42},
+    "type": "concept",
+    "title": "Green's Theorem: Wiedijk #21",
+    "content": "**Green's Theorem**:\n\n$$\\oint_C (P\\,dx + Q\\,dy) = \\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right) dA$$\n\n**The Key Insight**:\n- Line integral around a closed curve C\n- Equals double integral over enclosed region D\n- Connects **circulation** to **curl**\n\n**Physical Meaning**:\n- Total rotation around boundary = sum of local rotations inside\n- Foundation of vector calculus\n\n**Historical**: George Green (1828), self-taught British mathematician.",
+    "significance": "critical",
+    "relatedConcepts": ["line integral", "curl", "vector calculus"]
+  },
+  {
+    "id": "ann-vector-field",
+    "proofId": "greens-theorem",
+    "range": {"startLine": 52, "endLine": 65},
+    "type": "definition",
+    "title": "2D Vector Fields and Curl",
+    "content": "**Vector Field in 2D**:\n$$\\mathbf{F}(x,y) = (P(x,y), Q(x,y))$$\n\nAssigns a vector to each point in the plane.\n\n**2D Curl (Scalar)**:\n$$\\text{curl}(\\mathbf{F}) = \\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}$$\n\n**Interpretation**:\n- Measures rotation/circulation density\n- Positive: counterclockwise rotation\n- Negative: clockwise rotation\n- Zero: irrotational field",
+    "mathContext": "curl(F) = ∂Q/∂x - ∂P/∂y",
+    "significance": "major",
+    "relatedConcepts": ["vector field", "curl", "rotation"]
+  },
+  {
+    "id": "ann-rectangle",
+    "proofId": "greens-theorem",
+    "range": {"startLine": 70, "endLine": 102},
+    "type": "definition",
+    "title": "Rectangular Regions",
+    "content": "**Rectangle Structure**:\n$$R = [a, b] \\times [c, d]$$\n\nwith constraints:\n- a < b (positive width)\n- c < d (positive height)\n\n**Properties proven**:\n- width = b - a > 0\n- height = d - c > 0\n- area = width × height > 0\n\n**Why rectangles?**\nGreen's theorem is easiest to prove for rectangles (via Fubini + FTC), then extended to general regions by decomposition.",
+    "mathContext": "R = [a,b] × [c,d]",
+    "significance": "minor",
+    "relatedConcepts": ["region", "domain", "area"]
+  },
+  {
+    "id": "ann-integrals",
+    "proofId": "greens-theorem",
+    "range": {"startLine": 107, "endLine": 128},
+    "type": "definition",
+    "title": "Line and Double Integrals",
+    "content": "**Line Integral** (circulation):\n$$\\oint_{\\partial R} (P\\,dx + Q\\,dy)$$\n\nIntegral of vector field along the boundary curve.\n\n**Double Integral** (total curl):\n$$\\iint_R \\text{curl}(\\mathbf{F})\\,dA$$\n\nIntegral of curl over the region.\n\n**Note**: These are axiomatized since Mathlib's integration theory requires careful setup for full generality.",
+    "significance": "major",
+    "relatedConcepts": ["line integral", "double integral", "circulation"]
+  },
+  {
+    "id": "ann-key-insight",
+    "proofId": "greens-theorem",
+    "range": {"startLine": 134, "endLine": 147},
+    "type": "concept",
+    "title": "The Proof Strategy",
+    "content": "**Green's Theorem Proof Sketch**:\n\nFor rectangles, use Fubini + FTC:\n\n$$\\iint_R \\frac{\\partial Q}{\\partial x}\\,dA = \\int_c^d \\left[Q(b,y) - Q(a,y)\\right] dy$$\n\n$$\\iint_R \\frac{\\partial P}{\\partial y}\\,dA = \\int_a^b \\left[P(x,d) - P(x,c)\\right] dx$$\n\n**Subtraction gives**:\n- Right side: integral along right edge minus left edge\n- Bottom/top: P along top minus bottom\n- Together: line integral around boundary!",
+    "significance": "major",
+    "relatedConcepts": ["Fubini theorem", "FTC", "iterated integrals"]
+  },
+  {
+    "id": "ann-theorem-rectangle",
+    "proofId": "greens-theorem",
+    "range": {"startLine": 149, "endLine": 161},
+    "type": "theorem",
+    "title": "Green's Theorem for Rectangles",
+    "content": "**Green's Theorem (Rectangular Case)**:\n\nFor continuously differentiable F = (P, Q) on rectangle R:\n\n$$\\oint_{\\partial R} (P\\,dx + Q\\,dy) = \\iint_R \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right) dA$$\n\n**Axiomatized here**: Full proof requires Mathlib's integration machinery.\n\n**This is the foundation** - general regions are handled by decomposition.",
+    "mathContext": "∮_∂R F·dr = ∬_R curl(F) dA",
+    "significance": "critical",
+    "relatedConcepts": ["Green's theorem", "rectangle", "integration"]
+  },
+  {
+    "id": "ann-general",
+    "proofId": "greens-theorem",
+    "range": {"startLine": 166, "endLine": 188},
+    "type": "theorem",
+    "title": "General Green's Theorem",
+    "content": "**Green's Theorem (General Form)**:\n\nFor F = (P, Q) continuously differentiable, and D bounded by a positively oriented, piecewise smooth, simple closed curve C:\n\n$$\\oint_C (P\\,dx + Q\\,dy) = \\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right) dA$$\n\n**Proof idea for general regions**:\n1. Decompose region into rectangles\n2. Apply rectangular Green's theorem to each\n3. Internal boundaries cancel (opposite orientations)\n4. Only external boundary remains",
+    "mathContext": "∮_C F·dr = ∬_D curl(F) dA",
+    "significance": "critical",
+    "relatedConcepts": ["simple closed curve", "positively oriented", "piecewise smooth"]
+  },
+  {
+    "id": "ann-area-application",
+    "proofId": "greens-theorem",
+    "range": {"startLine": 193, "endLine": 234},
+    "type": "concept",
+    "title": "Area via Green's Theorem",
+    "content": "**Remarkable Application**: Computing area as a line integral!\n\n**Three equivalent formulas**:\n$$\\text{Area}(D) = \\oint_C x\\,dy = -\\oint_C y\\,dx = \\frac{1}{2}\\oint_C (x\\,dy - y\\,dx)$$\n\n**Why it works**:\nSet Q = x, P = 0: curl = ∂x/∂x - 0 = 1\nSo: ∬_D 1\\,dA = ∮_C x\\,dy\n\n**Planimeters**: Mechanical devices that measure area by tracing boundaries use exactly this principle!",
+    "significance": "major",
+    "relatedConcepts": ["area formula", "planimeter", "line integral"]
+  },
+  {
+    "id": "ann-stokes-connection",
+    "proofId": "greens-theorem",
+    "range": {"startLine": 239, "endLine": 271},
+    "type": "concept",
+    "title": "Connection to Stokes and Divergence",
+    "content": "**Green's Theorem as Stokes' Theorem**:\n\nIn the language of differential forms:\n- ω = P dx + Q dy (1-form)\n- dω = (∂Q/∂x - ∂P/∂y) dx ∧ dy (exterior derivative)\n- Stokes: ∫_∂D ω = ∫_D dω\n\n**Connection to Divergence Theorem**:\n\nRotate F by 90° to get the 2D divergence theorem:\n$$\\oint_C \\mathbf{F} \\cdot \\mathbf{n}\\,ds = \\iint_D \\text{div}(\\mathbf{F})\\,dA$$\n\n**Connection to Cauchy's Integral Theorem**:\n\nFor holomorphic f(z) = u + iv, Cauchy-Riemann equations make curl = 0, so ∮_C f(z)\\,dz = 0.",
+    "significance": "major",
+    "relatedConcepts": ["Stokes theorem", "divergence theorem", "Cauchy integral"]
+  },
+  {
+    "id": "ann-cauchy-riemann",
+    "proofId": "greens-theorem",
+    "range": {"startLine": 277, "endLine": 294},
+    "type": "theorem",
+    "title": "Cauchy-Riemann and Zero Circulation",
+    "content": "**Cauchy-Riemann Equations**:\n$$\\frac{\\partial P}{\\partial x} = \\frac{\\partial Q}{\\partial y}, \\quad \\frac{\\partial P}{\\partial y} = -\\frac{\\partial Q}{\\partial x}$$\n\n**Consequence**: curl = ∂Q/∂x - ∂P/∂y = -∂P/∂y - ∂P/∂y = 0\n(using second equation)\n\n**Theorem**: If F satisfies Cauchy-Riemann, then:\n$$\\oint_C (P\\,dx + Q\\,dy) = 0$$\n\nfor any closed curve C.\n\n**This is Cauchy's Integral Theorem** from complex analysis!",
+    "mathContext": "Cauchy-Riemann ⟹ ∮ F = 0",
+    "significance": "major",
+    "relatedConcepts": ["Cauchy-Riemann", "holomorphic", "complex analysis"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "greens-theorem",
+    "range": {"startLine": 299, "endLine": 343},
+    "type": "note",
+    "title": "Numerical Examples",
+    "content": "**Example 1: Unit Square with F = (-y, x)**\n- curl(F) = 1 - (-1) = 2\n- ∬_R 2\\,dA = 2 · 1 = 2\n- Line integral also equals 2 ✓\n\n**Example 2: Area of Circle**\n\nUsing F = (0, x) on circle of radius r:\n- Parametrize: x = r cos(t), dy = r cos(t) dt\n- ∮ x\\,dy = r² ∫₀^{2π} cos²(t)\\,dt = πr²\n\n**Verified**: Unit square has area 1, [0,2]×[0,3] has area 6.",
+    "significance": "minor",
+    "relatedConcepts": ["unit square", "circle area", "examples"]
+  }
+]

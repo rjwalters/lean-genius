@@ -1,1 +1,96 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "hilbert-13",
+    "range": {"startLine": 9, "endLine": 78},
+    "type": "concept",
+    "title": "Hilbert's 13th Problem",
+    "content": "**Hilbert's 13th Problem (1900)**:\n\n> Can the general degree-7 equation be solved using functions of only 2 variables?\n\n**Hilbert's Conjecture**: NO — some functions genuinely need 3 variables.\n\n**SURPRISE! Kolmogorov-Arnold (1956-57)**: Not only CAN it, but ANY continuous function of n variables can be represented using functions of only **ONE** variable!\n\nHilbert's conjecture was completely wrong for continuous functions.",
+    "significance": "critical",
+    "relatedConcepts": ["superposition", "Kolmogorov-Arnold", "continuous functions"]
+  },
+  {
+    "id": "ann-representation",
+    "proofId": "hilbert-13",
+    "range": {"startLine": 88, "endLine": 117},
+    "type": "definition",
+    "title": "Kolmogorov-Arnold Structure",
+    "content": "**The Representation Formula**:\n\n$$f(x_1, \\ldots, x_n) = \\sum_{q=0}^{2n} \\Phi_q\\left(\\sum_{p=1}^{n} \\lambda_{pq} \\cdot \\varphi_p(x_p)\\right)$$\n\n- **Φ_q**: Outer functions (continuous, depend on f)\n- **φ_p**: Inner functions (continuous, UNIVERSAL)\n- **λ_pq**: Constants\n\nKey insight: Only 2n+1 outer functions needed, and the inner functions work for ALL f!",
+    "mathContext": "2n+1 compositions suffice",
+    "significance": "major",
+    "relatedConcepts": ["superposition", "universal functions", "composition"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "hilbert-13",
+    "range": {"startLine": 118, "endLine": 166},
+    "type": "theorem",
+    "title": "Kolmogorov-Arnold Theorem",
+    "content": "**THE MAIN THEOREM (1956-57)**:\n\nEvery continuous f: [0,1]ⁿ → ℝ can be written as:\n\n$$f(x) = \\sum_{q} \\Phi_q\\left(\\sum_{p} \\lambda_{pq} \\cdot \\varphi_p(x_p)\\right)$$\n\nwith continuous Φ_q, φ_p.\n\n**Key Points**:\n- The φ_p are **universal** (work for all f)\n- Only Φ_q depend on the specific f\n- This DISPROVES Hilbert's conjecture!\n\nKolmogorov proved existence; Arnold showed universality of inner functions.",
+    "mathContext": "n variables → 1 variable",
+    "significance": "critical",
+    "relatedConcepts": ["Kolmogorov", "Arnold", "representation theorem"]
+  },
+  {
+    "id": "ann-septic",
+    "proofId": "hilbert-13",
+    "range": {"startLine": 167, "endLine": 203},
+    "type": "concept",
+    "title": "The Septic Connection",
+    "content": "**Original Motivation**: Solving polynomial equations.\n\n**Bring-Jerrard Form** for degree 7:\n$$x^7 + ax^3 + bx^2 + cx + 1 = 0$$\n\nA general degree-7 equation can be reduced to this 3-parameter form.\n\nHilbert asked: Can roots be expressed with functions of ≤2 variables?\n\n**By Abel-Ruffini**: No radical formula exists. But continuous solutions? Yes!",
+    "significance": "major",
+    "relatedConcepts": ["Bring-Jerrard", "Tschirnhaus", "Abel-Ruffini"]
+  },
+  {
+    "id": "ann-vitushkin",
+    "proofId": "hilbert-13",
+    "range": {"startLine": 204, "endLine": 257},
+    "type": "theorem",
+    "title": "Vitushkin: The Smooth Case",
+    "content": "**BUT for smooth functions, Hilbert was RIGHT!**\n\n**Vitushkin's Theorem (1954-77)**:\n\nSome C² functions of 3 variables CANNOT be represented using smooth functions of fewer variables.\n\n**The key distinction**:\n- **Continuous**: Kolmogorov-Arnold works — any f reduces to 1D\n- **Smooth (C^k)**: Obstructions exist — some f genuinely need 3+ variables\n\nThis vindicates Hilbert's intuition for algebraic/analytic functions!",
+    "mathContext": "Smooth ≠ Continuous",
+    "significance": "critical",
+    "relatedConcepts": ["Vitushkin", "smooth functions", "differentiability"]
+  },
+  {
+    "id": "ann-universal",
+    "proofId": "hilbert-13",
+    "range": {"startLine": 258, "endLine": 289},
+    "type": "theorem",
+    "title": "Arnold's Universal Functions",
+    "content": "**Arnold's Refinement (1957)**:\n\nThe inner functions φ₁, ..., φₙ can be chosen ONCE AND FOR ALL.\n\nThey work for every continuous f!\n\n**Construction**: The φ_p are highly irregular (like space-filling curves) to \"separate points\" sufficiently.\n\nOnly the outer functions Φ_q need to change for different f.",
+    "mathContext": "φ_p independent of f",
+    "significance": "major",
+    "relatedConcepts": ["universal functions", "space-filling curves", "Arnold"]
+  },
+  {
+    "id": "ann-neural",
+    "proofId": "hilbert-13",
+    "range": {"startLine": 290, "endLine": 327},
+    "type": "concept",
+    "title": "Neural Network Connection",
+    "content": "**Modern Applications**:\n\n1. **Neural Networks**: The theorem explains why 3-layer networks are universal approximators\n\n2. **KANs (2024)**: \"Kolmogorov-Arnold Networks\" — a new architecture inspired by the theorem\n\n3. **Dimension Reduction**: n-dimensional data can be \"encoded\" using only univariate functions\n\n**Caveat**: The outer functions Φ_q may be highly irregular (possibly nowhere differentiable).",
+    "significance": "minor",
+    "relatedConcepts": ["neural networks", "universal approximation", "KANs"]
+  },
+  {
+    "id": "ann-history",
+    "proofId": "hilbert-13",
+    "range": {"startLine": 328, "endLine": 359},
+    "type": "concept",
+    "title": "Historical Timeline",
+    "content": "**Timeline**:\n- **1900**: Hilbert poses problem at ICM Paris\n- **1954**: Vitushkin studies smooth superpositions\n- **1956**: Kolmogorov disproves conjecture for continuous!\n- **1957**: Arnold proves universality of inner functions\n- **1964-77**: Vitushkin completes smooth theory\n- **2024**: Kolmogorov-Arnold Networks in ML\n\nA 56-year journey from problem to surprising resolution!",
+    "significance": "minor",
+    "relatedConcepts": ["ICM 1900", "Soviet mathematics", "history"]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "hilbert-13",
+    "range": {"startLine": 360, "endLine": 399},
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "**Hilbert 13: SOLVED (with a twist!)**\n\n**For Continuous Functions**:\n- Hilbert WRONG — everything reduces to 1 variable\n- Kolmogorov-Arnold (1956-57)\n\n**For Smooth Functions**:\n- Hilbert RIGHT — some functions need 3+ variables\n- Vitushkin (1954-77)\n\n**Open**: Full classification for algebraic functions, optimal smoothness bounds.",
+    "significance": "minor",
+    "relatedConcepts": ["solved problems", "continuous vs smooth", "classification"]
+  }
+]

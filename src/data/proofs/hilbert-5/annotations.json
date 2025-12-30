@@ -1,1 +1,117 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "hilbert-5",
+    "range": {"startLine": 7, "endLine": 77},
+    "type": "concept",
+    "title": "Hilbert's Fifth Problem",
+    "content": "**Hilbert's 5th Problem (1900)**:\n\n> Can Lie's concept of a continuous group of transformations be achieved without the assumption of differentiability?\n\nIn modern terms: If G is a topological group acting on a manifold, must G be a **Lie group**?\n\n**Answer (1952): YES!**\n\nSolved by **Gleason**, **Montgomery**, and **Zippin**. Continuous symmetries are automatically smooth.",
+    "significance": "critical",
+    "relatedConcepts": ["Lie groups", "topological groups", "smoothness"]
+  },
+  {
+    "id": "ann-topological-groups",
+    "proofId": "hilbert-5",
+    "range": {"startLine": 87, "endLine": 117},
+    "type": "definition",
+    "title": "Key Definitions",
+    "content": "**Three crucial properties**:\n\n1. **No Small Subgroups**: ∃ neighborhood U of 1 containing no nontrivial subgroups\n\n2. **Locally Euclidean**: Every point has a neighborhood ≅ ℝⁿ\n\n3. **Locally Compact**: Every point has a compact neighborhood\n\nThese properties characterize when a topological group is a Lie group.",
+    "significance": "major",
+    "relatedConcepts": ["topological group", "locally compact", "subgroups"]
+  },
+  {
+    "id": "ann-gleason",
+    "proofId": "hilbert-5",
+    "range": {"startLine": 118, "endLine": 166},
+    "type": "theorem",
+    "title": "Gleason's Lemmas (1952)",
+    "content": "**Gleason's Key Contributions**:\n\n**Lemma 1**: A locally compact group with no small subgroups contains a neighborhood of the identity that generates a Lie group.\n\n**Lemma 2**: In a locally compact, locally connected group, every neighborhood of 1 contains an open subgroup.\n\nThese lemmas form the technical foundation of the solution.",
+    "mathContext": "NSS ⟹ local Lie structure",
+    "significance": "critical",
+    "relatedConcepts": ["Gleason", "one-parameter subgroups", "Peter-Weyl"]
+  },
+  {
+    "id": "ann-no-small-subgroups",
+    "proofId": "hilbert-5",
+    "range": {"startLine": 167, "endLine": 213},
+    "type": "theorem",
+    "title": "No Small Subgroups Theorem",
+    "content": "**Key Insight**: Lie groups have NO small subgroups.\n\n**Why?** Near the identity, a Lie group looks like its **Lie algebra** (a vector space). Vector spaces have no nontrivial bounded subgroups.\n\nThe exponential map exp: 𝔤 → G provides a local diffeomorphism, forcing this property.\n\n**Converse**: Having no small subgroups implies locally Euclidean!",
+    "mathContext": "Lie group ⟺ NSS",
+    "significance": "major",
+    "relatedConcepts": ["exponential map", "Lie algebra", "Baker-Campbell-Hausdorff"]
+  },
+  {
+    "id": "ann-montgomery-zippin",
+    "proofId": "hilbert-5",
+    "range": {"startLine": 214, "endLine": 249},
+    "type": "theorem",
+    "title": "Montgomery-Zippin Theorem (1952)",
+    "content": "**THE MAIN THEOREM**:\n\nA topological group G is a Lie group if and only if:\n1. G is locally compact\n2. G has no small subgroups\n\n**Equivalently**: Locally Euclidean topological groups ARE Lie groups.\n\n**This solves Hilbert's 5th Problem**: Continuous symmetries on manifolds are automatically smooth!\n\nThe proof spans 100+ pages in Montgomery-Zippin's book.",
+    "mathContext": "Locally compact + NSS ⟺ Lie group",
+    "significance": "critical",
+    "relatedConcepts": ["Montgomery", "Zippin", "Gleason", "1952"]
+  },
+  {
+    "id": "ann-von-neumann",
+    "proofId": "hilbert-5",
+    "range": {"startLine": 250, "endLine": 280},
+    "type": "theorem",
+    "title": "Von Neumann's Theorem (1933)",
+    "content": "**First Major Progress**:\n\nEvery **compact** topological group has a compatible smooth structure making it a Lie group.\n\n**Proof uses**:\n- Peter-Weyl theorem (representation theory)\n- Haar measure on compact groups\n- Matrix approximation\n\nThis was the compact case, 19 years before the full solution.",
+    "mathContext": "Compact ⟹ Lie structure",
+    "significance": "major",
+    "relatedConcepts": ["von Neumann", "Peter-Weyl", "Haar measure"]
+  },
+  {
+    "id": "ann-hilbert-smith",
+    "proofId": "hilbert-5",
+    "range": {"startLine": 281, "endLine": 323},
+    "type": "concept",
+    "title": "Hilbert-Smith Conjecture",
+    "content": "**The Remaining Open Problem**:\n\nIf a locally compact group G acts faithfully on a connected n-manifold, is G a Lie group?\n\n**Equivalently**: Can p-adic integers ℤₚ act faithfully on a manifold?\n\n**Status**:\n- ✓ dim 1, 2: Classical (Montgomery-Zippin 1943)\n- ✓ dim 3: **Pardon (2013)** — major breakthrough!\n- ❌ dim ≥ 4: **OPEN**\n\nThis is the last unsolved part of Hilbert's 5th problem.",
+    "significance": "major",
+    "relatedConcepts": ["p-adic integers", "Pardon", "manifold actions"]
+  },
+  {
+    "id": "ann-one-parameter",
+    "proofId": "hilbert-5",
+    "range": {"startLine": 324, "endLine": 363},
+    "type": "definition",
+    "title": "One-Parameter Subgroups",
+    "content": "**One-Parameter Subgroup**: A continuous homomorphism φ: ℝ → G.\n\nThese are the **infinitesimal generators** of group actions.\n\n**In Lie groups**: Every one-parameter subgroup has the form:\n$$t \\mapsto \\exp(tX)$$\nfor some X in the Lie algebra.\n\nThis connects the **Lie algebra** (infinitesimal) to the **Lie group** (global).",
+    "mathContext": "φ(t) = exp(tX)",
+    "significance": "minor",
+    "relatedConcepts": ["exponential map", "Lie algebra", "infinitesimal"]
+  },
+  {
+    "id": "ann-consequences",
+    "proofId": "hilbert-5",
+    "range": {"startLine": 364, "endLine": 405},
+    "type": "concept",
+    "title": "Consequences",
+    "content": "**Deep Implications**:\n\n1. **Smooth = Analytic** for Lie groups (group structure forces analyticity)\n\n2. **Automatic Continuity**: Measurable homomorphisms between Lie groups are automatically smooth!\n\n**Yamabe's Theorem (1953)**:\n\nEvery locally compact, connected group G is a projective limit of Lie groups:\n$$G = \\lim_{\\leftarrow} G_i$$",
+    "significance": "minor",
+    "relatedConcepts": ["analyticity", "automatic continuity", "Yamabe"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "hilbert-5",
+    "range": {"startLine": 406, "endLine": 440},
+    "type": "note",
+    "title": "Examples & Counterexamples",
+    "content": "**Lie Groups**:\n- GL(n,ℝ), SL(n,ℝ), SO(n), U(n) — matrix groups\n\n**NOT Lie Groups**:\n- Diff(M) — diffeomorphism groups (infinite-dimensional)\n- ℤₚ — p-adic integers\n\n**Why ℤₚ fails**:\n\nThe p-adic integers have **arbitrarily small open subgroups** (pⁿℤₚ → {0}). This violates the \"no small subgroups\" condition!",
+    "significance": "minor",
+    "relatedConcepts": ["matrix groups", "p-adic integers", "counterexamples"]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "hilbert-5",
+    "range": {"startLine": 441, "endLine": 486},
+    "type": "concept",
+    "title": "Historical Summary",
+    "content": "**Timeline**:\n- **1870s**: Lie founds theory of continuous groups\n- **1900**: Hilbert poses the problem\n- **1933**: von Neumann solves compact case\n- **1952**: Gleason, Montgomery, Zippin solve full problem\n- **1953**: Yamabe extends to approximation\n- **2013**: Pardon proves dim 3 Hilbert-Smith\n\n**The Answer**: Topology forces smoothness. Continuous symmetries are automatically differentiable!",
+    "significance": "minor",
+    "relatedConcepts": ["Lie", "Hilbert", "Gleason", "Montgomery", "Zippin"]
+  }
+]

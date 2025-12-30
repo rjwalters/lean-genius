@@ -1,1 +1,99 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "minkowski-theorem",
+    "range": {"startLine": 11, "endLine": 97},
+    "type": "concept",
+    "title": "Minkowski's Theorem: Wiedijk #40",
+    "content": "**Minkowski's Convex Body Theorem**:\n\nLet $L$ be a lattice in $\\mathbb{R}^n$ with covolume $V$. If $S$ is:\n1. **Convex**: Line segments between points lie in $S$\n2. **Centrally symmetric**: $x \\in S \\Rightarrow -x \\in S$\n3. **Volume**: $\\text{vol}(S) > 2^n V$\n\nThen $S$ contains a **non-zero lattice point**.\n\n**Historical**: Minkowski (1889), founding \"Geometry of Numbers.\"\n\n**Applications**: Fermat's two squares, Lagrange's four squares, class number finiteness.",
+    "significance": "critical",
+    "relatedConcepts": ["geometry of numbers", "lattices", "convex bodies"]
+  },
+  {
+    "id": "ann-proof-outline",
+    "proofId": "minkowski-theorem",
+    "range": {"startLine": 53, "endLine": 72},
+    "type": "theorem",
+    "title": "Pigeonhole Proof",
+    "content": "**Classical Proof**:\n\n1. **Scale**: $S/2 = \\{x/2 : x \\in S\\}$ has volume $\\text{vol}(S)/2^n > V$\n\n2. **Translate**: Consider $(S/2) + p$ for each lattice point $p$\n\n3. **Overlap**: By pigeonhole, two translates overlap:\n   $(S/2) + p_1 \\cap (S/2) + p_2 \\neq \\emptyset$\n\n4. **Find lattice point**: If $x = s_1/2 + p_1 = s_2/2 + p_2$, then\n   $(s_1 - s_2)/2 = p_2 - p_1 \\in L$\n\n5. **Verify in $S$**: By symmetry $-s_2 \\in S$, by convexity $(s_1 + (-s_2))/2 \\in S$.\n   This equals $p_2 - p_1 \\neq 0$.",
+    "mathContext": "Pigeonhole on translated sets",
+    "significance": "critical",
+    "relatedConcepts": ["pigeonhole principle", "covering argument", "measure theory"]
+  },
+  {
+    "id": "ann-symmetric",
+    "proofId": "minkowski-theorem",
+    "range": {"startLine": 114, "endLine": 131},
+    "type": "definition",
+    "title": "Central Symmetry",
+    "content": "**Centrally Symmetric Set**:\n\n$$\\text{CentrallySymmetric}(S) :\\Leftrightarrow \\forall x \\in S, -x \\in S$$\n\n**Key Property**: The origin lies in any nonempty symmetric convex set.\n\n**Proof**: For $x \\in S$:\n- $-x \\in S$ by symmetry\n- Midpoint $(x + (-x))/2 = 0$ by convexity\n\n**Examples**:\n- Balls centered at origin\n- Ellipses centered at origin\n- Any set with $S = -S$",
+    "mathContext": "x ∈ S ⟹ -x ∈ S",
+    "significance": "major",
+    "relatedConcepts": ["symmetry", "origin", "convexity"]
+  },
+  {
+    "id": "ann-lattice",
+    "proofId": "minkowski-theorem",
+    "range": {"startLine": 137, "endLine": 188},
+    "type": "definition",
+    "title": "Lattices in Euclidean Space",
+    "content": "**Lattice Definition**:\n\nA lattice $L \\subset \\mathbb{R}^n$ is the set of integer linear combinations of $n$ linearly independent vectors (a **basis**).\n\n$$L = \\{\\sum_{i=1}^n a_i \\mathbf{v}_i : a_i \\in \\mathbb{Z}\\} = B\\mathbb{Z}^n$$\n\n**Covolume**: $\\text{covol}(L) = |\\det(B)|$\n(Volume of fundamental domain)\n\n**Standard Lattice**: $\\mathbb{Z}^n$ with identity basis, covolume 1.\n\nMathlib representation: Basis matrix with nonzero determinant.",
+    "mathContext": "L = Bℤⁿ, covol = |det(B)|",
+    "significance": "critical",
+    "relatedConcepts": ["basis", "covolume", "fundamental domain"]
+  },
+  {
+    "id": "ann-convex-body",
+    "proofId": "minkowski-theorem",
+    "range": {"startLine": 189, "endLine": 206},
+    "type": "definition",
+    "title": "Convex Bodies",
+    "content": "**Convex Body Structure**:\n\n```lean\nstructure ConvexBody (n : ℕ) where\n  carrier : Set (EuclideanN n)\n  convex : Convex ℝ carrier\n  symmetric : CentrallySymmetric n carrier\n  nonempty : carrier.Nonempty\n```\n\n**Properties**:\n- The origin is always in a convex body\n- Compact with nonempty interior\n\nFor Minkowski: convex + symmetric + large volume.",
+    "mathContext": "Convex ∧ Symmetric ∧ Nonempty",
+    "significance": "major",
+    "relatedConcepts": ["convex set", "Mathlib Convex", "membership"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "minkowski-theorem",
+    "range": {"startLine": 254, "endLine": 275},
+    "type": "theorem",
+    "title": "Main Theorem (Axiomatized)",
+    "content": "**Minkowski's Fundamental Theorem**:\n\n$$\\text{vol}(S) > 2^n \\cdot \\text{covol}(L) \\Rightarrow \\exists x \\in S \\cap L, x \\neq 0$$\n\n**Critical Volume**:\n$$\\text{criticalVolume}(L) = 2^n \\cdot \\text{covol}(L)$$\n\n**Lean Statement**:\n```lean\naxiom minkowski_fundamental (L : Lattice n) (S : ConvexBody n) \n    [hv : HasVolume n S] :\n    hv.volume > criticalVolume n L →\n    ∃ x ∈ S.carrier, x ∈ latticePoints n L ∧ x ≠ 0\n```\n\n**Status**: Axiomatized (full proof needs measure theory).",
+    "mathContext": "vol(S) > 2ⁿ·covol(L) ⟹ ∃ nonzero lattice point",
+    "significance": "critical",
+    "relatedConcepts": ["axiom", "volume threshold", "lattice point"]
+  },
+  {
+    "id": "ann-fermat",
+    "proofId": "minkowski-theorem",
+    "range": {"startLine": 322, "endLine": 346},
+    "type": "theorem",
+    "title": "Application: Fermat's Two Squares",
+    "content": "**Fermat's Theorem**: Every prime $p \\equiv 1 \\pmod 4$ is a sum of two squares.\n\n**Proof via Minkowski**:\n1. Since $p \\equiv 1 \\pmod 4$, $-1$ is a quadratic residue: $k^2 \\equiv -1$\n2. Lattice $L = \\{(a,b) \\in \\mathbb{Z}^2 : a \\equiv kb \\pmod p\\}$\n3. $\\text{covol}(L) = p$\n4. Disk $D = \\{x^2 + y^2 < 2p\\}$ has area $2\\pi p > 4p = 2^2 \\cdot p$\n5. By Minkowski, $D$ contains $(a,b) \\in L \\setminus \\{0\\}$\n6. Then $a^2 + b^2 < 2p$ and $a^2 + b^2 \\equiv 0 \\pmod p$\n7. Therefore $a^2 + b^2 = p$\n\nMathlib: `Nat.Prime.sq_add_sq`",
+    "mathContext": "p ≡ 1 (mod 4) ⟹ p = a² + b²",
+    "significance": "major",
+    "relatedConcepts": ["Fermat", "sum of squares", "quadratic residues"]
+  },
+  {
+    "id": "ann-dirichlet",
+    "proofId": "minkowski-theorem",
+    "range": {"startLine": 348, "endLine": 361},
+    "type": "theorem",
+    "title": "Application: Dirichlet's Approximation",
+    "content": "**Dirichlet's Theorem**: For real $\\alpha$ and integer $Q \\geq 1$, there exist $p, q \\in \\mathbb{Z}$ with:\n- $1 \\leq q \\leq Q$\n- $|q\\alpha - p| < 1/Q$\n\n**Proof via Minkowski**:\n1. Consider $S = \\{(x,y) : |x| < Q+1, |\\alpha x - y| < 1/Q\\}$\n2. Area$(S) = 4(Q+1)(1/Q) > 4$\n3. By Minkowski, $S$ contains nonzero integer $(q, p)$\n4. Then $|q| \\leq Q$ and $|q\\alpha - p| < 1/Q$\n\nThis is fundamental to Diophantine approximation.",
+    "mathContext": "|qα - p| < 1/Q",
+    "significance": "major",
+    "relatedConcepts": ["Dirichlet", "Diophantine approximation", "continued fractions"]
+  },
+  {
+    "id": "ann-significance",
+    "proofId": "minkowski-theorem",
+    "range": {"startLine": 411, "endLine": 443},
+    "type": "concept",
+    "title": "Significance and Modern Relevance",
+    "content": "**Foundational Impact**:\n\nMinkowski's 1889 paper founded \"Geometry of Numbers\" - using geometry for arithmetic.\n\n**Connections**:\n- **Algebraic Number Theory**: Class group finiteness\n- **Diophantine Equations**: Existence of integer solutions\n- **Cryptography**: Lattice-based (LWE, NTRU)\n- **Coding Theory**: Sphere packing bounds\n\n**Modern Applications**:\n- Post-quantum cryptography (lattice problems quantum-resistant)\n- Shortest vector problem (NP-hard)\n- Signal processing, MIMO systems\n- Integer programming\n\n**Generalizations**: Blichfeldt, successive minima.",
+    "significance": "major",
+    "relatedConcepts": ["cryptography", "class number", "sphere packing"]
+  }
+]

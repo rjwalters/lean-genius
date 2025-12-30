@@ -1,1 +1,87 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "e-transcendental",
+    "range": {"startLine": 7, "endLine": 42},
+    "type": "concept",
+    "title": "Transcendence of e: Wiedijk #67",
+    "content": "**Main Result**:\n\nEuler's number $e = 2.71828...$ is **transcendental**: it is not the root of any non-zero polynomial with integer coefficients.\n\n$$\\nexists P \\in \\mathbb{Z}[X] \\setminus \\{0\\}: P(e) = 0$$\n\n**Historical Significance**: Hermite (1873) - first proof that a \"naturally occurring\" number is transcendental.\n\n**Status**: Axiomatized pending Lindemann-Weierstrass formalization.",
+    "significance": "critical",
+    "relatedConcepts": ["transcendental numbers", "Hermite", "exponential function"]
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "e-transcendental",
+    "range": {"startLine": 50, "endLine": 65},
+    "type": "definition",
+    "title": "Transcendental Numbers",
+    "content": "**Definition**:\n\nA number $x$ is transcendental over ring $R$ if it is not algebraic:\n$$\\nexists P \\in R[X] \\setminus \\{0\\}: P(x) = 0$$\n\n**Equivalently**: $1, x, x^2, x^3, \\ldots$ are linearly independent over $R$.\n\n**Key Facts**:\n- Transcendental $\\Rightarrow$ Irrational (but not conversely: $\\sqrt{2}$)\n- Most reals are transcendental (Cantor)\n- Proving specific numbers transcendental is hard!\n\nMathlib: `Transcendental R x`",
+    "mathContext": "Transcendental ℤ (exp 1)",
+    "significance": "major",
+    "relatedConcepts": ["algebraic numbers", "irrationality", "Cantor"]
+  },
+  {
+    "id": "ann-properties",
+    "proofId": "e-transcendental",
+    "range": {"startLine": 71, "endLine": 83},
+    "type": "theorem",
+    "title": "Properties of e",
+    "content": "**Basic Bounds**:\n\n$$e > 0$$\n(exponential is always positive)\n\n$$e > 1$$\n($\\exp$ is increasing and $\\exp(0) = 1$)\n\n$$e < 3$$\nUsing Mathlib's `exp_one_lt_d9`: $e < 2.7182818286$\n\n**Value**: $e \\approx 2.718281828459...$\n\n**Memory trick**: $e \\approx 2.7\\, 1828\\, 1828...$ (\"1828\" repeats)",
+    "mathContext": "0 < e < 3",
+    "significance": "minor",
+    "relatedConcepts": ["exponential bounds", "computation", "Mathlib"]
+  },
+  {
+    "id": "ann-hermite-proof",
+    "proofId": "e-transcendental",
+    "range": {"startLine": 88, "endLine": 128},
+    "type": "theorem",
+    "title": "Hermite's Proof Strategy",
+    "content": "**Proof Outline** (1873):\n\n**Assume**: $\\sum a_i e^i = 0$ for integers $a_i$.\n\n**Step 1** - Auxiliary polynomial for large prime $p$:\n$$f(x) = \\frac{x^{p-1}(x-1)^p \\cdots (x-n)^p}{(p-1)!}$$\n\n**Step 2** - Key integral:\n$$I_k = \\int_0^k f(x)e^x dx = e^k F(0) - F(k)$$\nwhere $F(x) = f(x) + f'(x) + f''(x) + \\cdots$\n\n**Step 3** - Sum $S = \\sum a_k I_k$ satisfies:\n- $|S| < 1$ for large $p$\n- $S \\neq 0$ and $p | S$\n\n**Contradiction!** A small non-zero integer divisible by $p$ is impossible.",
+    "mathContext": "f(x) = x^{p-1}∏(x-k)^p / (p-1)!",
+    "significance": "critical",
+    "relatedConcepts": ["auxiliary polynomial", "integration by parts", "divisibility"]
+  },
+  {
+    "id": "ann-main-axiom",
+    "proofId": "e-transcendental",
+    "range": {"startLine": 134, "endLine": 156},
+    "type": "theorem",
+    "title": "Main Theorem (Axiomatized)",
+    "content": "**Main Axiom**:\n$$\\text{Transcendental } \\mathbb{Z} \\ (\\exp 1)$$\n\n**Requirements for full proof**:\n1. Polynomial arithmetic over $\\mathbb{Z}$\n2. Integration by parts for polynomial $\\times$ exponential\n3. Divisibility analysis mod $p$\n4. Asymptotic estimates\n\n**Equivalence**:\n$$\\text{Transcendental } \\mathbb{Z} \\ e \\Leftrightarrow \\text{Transcendental } \\mathbb{Q} \\ e$$\n(Clear denominators to convert $\\mathbb{Q}$-polynomial to $\\mathbb{Z}$-polynomial)",
+    "mathContext": "Transcendental ℤ (exp 1)",
+    "significance": "critical",
+    "relatedConcepts": ["axiom", "Lindemann-Weierstrass", "pending formalization"]
+  },
+  {
+    "id": "ann-corollaries",
+    "proofId": "e-transcendental",
+    "range": {"startLine": 162, "endLine": 200},
+    "type": "theorem",
+    "title": "Corollaries",
+    "content": "**$e$ is irrational**:\n- If $e = p/q$, then $e$ is root of $qX - p$\n- This makes $e$ algebraic - contradiction!\n\n**$e^n$ is transcendental** ($n \\neq 0$):\n- If $P(e^n) = 0$, then $Q(X) = P(X^n)$ has $e$ as root\n- Contradicts $e$ transcendental\n\n**$1/e$ is transcendental**:\n- Reciprocal polynomial argument\n- $Q(X) = X^n \\cdot P(1/X)$\n\n**$e + 1$ is transcendental**:\n- Shift polynomial: $Q(X) = P(X + 1)$",
+    "mathContext": "e irrational; e^n, 1/e, e+1 transcendental",
+    "significance": "major",
+    "relatedConcepts": ["irrationality", "polynomial composition", "closure properties"]
+  },
+  {
+    "id": "ann-connections",
+    "proofId": "e-transcendental",
+    "range": {"startLine": 205, "endLine": 231},
+    "type": "concept",
+    "title": "Related Theorems",
+    "content": "**Generalizations**:\n\n| Theorem | Result |\n|---------|--------|\n| Lindemann-Weierstrass (1882) | $e^\\alpha$ transcendental for algebraic $\\alpha \\neq 0$ |\n| Gelfond-Schneider (1934) | $\\alpha^\\beta$ transcendental (Hilbert #7) |\n| Baker (1966) | Linear forms in logarithms |\n\n**Open Problems**:\n- Is $e + \\pi$ transcendental? (Unknown!)\n- Is $e\\pi$ transcendental? (Yes, Gelfond-Schneider)\n- Is $e^e$ transcendental? (Unknown)\n- Is $\\gamma$ irrational? (Unknown!)\n\n**Schanuel's Conjecture** would resolve most of these.",
+    "significance": "major",
+    "relatedConcepts": ["Lindemann-Weierstrass", "Gelfond-Schneider", "Schanuel"]
+  },
+  {
+    "id": "ann-significance",
+    "proofId": "e-transcendental",
+    "range": {"startLine": 237, "endLine": 269},
+    "type": "note",
+    "title": "Historical and Mathematical Significance",
+    "content": "**Historical Significance**:\n\nHermite's 1873 proof was revolutionary:\n- **First** \"naturally occurring\" transcendental\n  (Liouville's 1844 examples were constructed)\n- Introduced auxiliary polynomial method\n- Inspired Lindemann's proof of $\\pi$ transcendence (1882)\n\n**Mathematical Implications**:\n- $e$ cannot be constructed with compass/straightedge\n- Exponential function \"escapes\" algebraic relations\n- $e$'s decimal never becomes periodic\n\n**Computation**:\n$$e = 1 + \\frac{1}{1!} + \\frac{1}{2!} + \\frac{1}{3!} + \\cdots$$\n\n$e \\approx 2.7\\, 1828\\, 1828\\, 45\\, 90\\, 45\\ldots$",
+    "significance": "minor",
+    "relatedConcepts": ["history", "computation", "constructibility"]
+  }
+]

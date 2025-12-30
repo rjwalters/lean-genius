@@ -1,1 +1,76 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "sum-of-kth-powers",
+    "range": {"startLine": 5, "endLine": 52},
+    "type": "concept",
+    "title": "Sum of kth Powers: Wiedijk #77",
+    "content": "**Faulhaber's Formulas**:\n\nClosed-form formulas for sums of consecutive powers:\n$$\\sum_{i=1}^{n} i^k = \\frac{1}{k+1}\\sum_{j=0}^{k}\\binom{k+1}{j}B_j n^{k+1-j}$$\n\nwhere $B_j$ are Bernoulli numbers.\n\n**Special Cases**:\n- $\\sum i = n(n+1)/2$ (Gauss)\n- $\\sum i^2 = n(n+1)(2n+1)/6$\n- $\\sum i^3 = [n(n+1)/2]^2 = (\\sum i)^2$\n\n**Historical**: Faulhaber (1580-1635), Bernoulli (1713). Sum of cubes known to Nicomachus (100 CE).",
+    "significance": "critical",
+    "relatedConcepts": ["Bernoulli numbers", "Faulhaber", "power sums"]
+  },
+  {
+    "id": "ann-gauss",
+    "proofId": "sum-of-kth-powers",
+    "range": {"startLine": 62, "endLine": 79},
+    "type": "theorem",
+    "title": "Sum of First Powers (Gauss)",
+    "content": "**Gauss's Formula**:\n\n$$\\sum_{i=0}^{n} i = \\frac{n(n+1)}{2}$$\n\n**Story**: Young Gauss supposedly computed $1 + 2 + \\cdots + 100 = 5050$ by pairing terms: $(1+100) + (2+99) + \\cdots$\n\n**Mathlib versions**:\n- 0-indexed: `sum_range_id n` gives $n(n-1)/2$\n- Classical: $\\sum_{i=0}^{n} i = n(n+1)/2$\n\nThis is the foundation for all higher power formulas.",
+    "mathContext": "Σi = n(n+1)/2",
+    "significance": "critical",
+    "relatedConcepts": ["Gauss", "triangular numbers", "arithmetic progression"]
+  },
+  {
+    "id": "ann-squares",
+    "proofId": "sum-of-kth-powers",
+    "range": {"startLine": 81, "endLine": 155},
+    "type": "theorem",
+    "title": "Sum of Squares",
+    "content": "**Sum of Squares Formula**:\n\n$$\\sum_{i=0}^{n} i^2 = \\frac{n(n+1)(2n+1)}{6}$$\n\n**Divisibility Proof**:\n$6 | n(n+1)(2n+1)$ because:\n- $2 | n(n+1)$ (consecutive integers)\n- $3 | n(n+1)(2n+1)$ (mod 3 analysis)\n\n**Proof Technique**:\n1. Prove $6 \\cdot \\sum i^2 = n(n+1)(2n+1)$ by induction\n2. Use divisibility to get exact formula\n\n**Example**: $0^2 + 1^2 + \\cdots + 10^2 = 385$",
+    "mathContext": "Σi² = n(n+1)(2n+1)/6",
+    "significance": "major",
+    "relatedConcepts": ["induction", "divisibility", "pyramidal numbers"]
+  },
+  {
+    "id": "ann-cubes",
+    "proofId": "sum-of-kth-powers",
+    "range": {"startLine": 156, "endLine": 219},
+    "type": "theorem",
+    "title": "Sum of Cubes",
+    "content": "**Sum of Cubes Formula**:\n\n$$\\sum_{i=0}^{n} i^3 = \\left(\\frac{n(n+1)}{2}\\right)^2$$\n\n**Proof Technique**:\n1. Prove $4 \\cdot \\sum i^3 = [n(n+1)]^2$ by induction\n2. Use $2 | n(n+1)$ for exact formula\n\n**Key Insight**: The sum of cubes is a perfect square!\n\n$$1^3 + 2^3 + \\cdots + n^3 = (1 + 2 + \\cdots + n)^2$$\n\n**Example**: $1^3 + 2^3 + \\cdots + 10^3 = 3025 = 55^2$",
+    "mathContext": "Σi³ = [n(n+1)/2]²",
+    "significance": "major",
+    "relatedConcepts": ["perfect square", "consecutive divisibility", "induction"]
+  },
+  {
+    "id": "ann-nicomachus",
+    "proofId": "sum-of-kth-powers",
+    "range": {"startLine": 220, "endLine": 239},
+    "type": "theorem",
+    "title": "Nicomachus's Theorem",
+    "content": "**The Remarkable Identity**:\n\n$$\\sum_{i=0}^{n} i^3 = \\left(\\sum_{i=0}^{n} i\\right)^2$$\n\n**In words**: Sum of cubes equals square of sum!\n\n**Proof**:\n```lean\nsum_cubes_classical : Σi³ = [n(n+1)/2]²\nsum_first_powers_classical : Σi = n(n+1)/2\n```\nSubstitution gives the identity immediately.\n\n**Historical**: Known to Nicomachus of Gerasa (c. 100 CE), Aryabhata (499 CE).\n\nThis is one of the most elegant identities in elementary number theory.",
+    "mathContext": "Σi³ = (Σi)²",
+    "significance": "critical",
+    "relatedConcepts": ["Nicomachus", "elegant identity", "power sums"]
+  },
+  {
+    "id": "ann-verification",
+    "proofId": "sum-of-kth-powers",
+    "range": {"startLine": 241, "endLine": 267},
+    "type": "note",
+    "title": "Verified Examples",
+    "content": "**Computational Verification**:\n\n| Sum | Value | Formula Check |\n|-----|-------|---------------|\n| $\\sum_{i=0}^{10} i^2$ | 385 | $10 \\cdot 11 \\cdot 21 / 6$ |\n| $\\sum_{i=0}^{10} i^3$ | 3025 | $55^2$ |\n| $\\sum_{i=0}^{100} i^2$ | 338350 | |\n| $\\sum_{i=0}^{100} i^3$ | 25502500 | $5050^2$ |\n| $\\sum_{i=0}^{5} i^4$ | 979 | |\n| $\\sum_{i=0}^{5} i^5$ | 4425 | |\n\nAll verified with `native_decide` - Lean computes and confirms!",
+    "significance": "minor",
+    "relatedConcepts": ["native_decide", "verification", "computation"]
+  },
+  {
+    "id": "ann-higher",
+    "proofId": "sum-of-kth-powers",
+    "range": {"startLine": 258, "endLine": 278},
+    "type": "note",
+    "title": "Higher Powers and Bernoulli Numbers",
+    "content": "**General Formula** (Faulhaber):\n\nFor $k \\geq 4$, closed forms involve Bernoulli numbers $B_j$:\n$$\\sum i^k = \\frac{1}{k+1}\\sum_{j=0}^{k}\\binom{k+1}{j}B_j n^{k+1-j}$$\n\n**Bernoulli Numbers**:\n$B_0 = 1$, $B_1 = -1/2$, $B_2 = 1/6$, $B_4 = -1/30$, ...\n(Odd Bernoulli numbers beyond $B_1$ are 0)\n\n**Examples**:\n- $\\sum i^4 = n(n+1)(2n+1)(3n^2+3n-1)/30$\n- $\\sum i^5 = n^2(n+1)^2(2n^2+2n-1)/12$\n\nFormulas become increasingly complex for higher powers.",
+    "significance": "minor",
+    "relatedConcepts": ["Bernoulli numbers", "Faulhaber", "general formula"]
+  }
+]

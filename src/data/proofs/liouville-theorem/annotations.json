@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "liouville-theorem",
+    "range": {"startLine": 8, "endLine": 72},
+    "type": "concept",
+    "title": "Liouville's Theorem on Transcendentals",
+    "content": "**Wiedijk #18**: First Explicit Transcendental Number (1844)\n\nLiouville proved: **Numbers that can be approximated \"too well\" by rationals must be transcendental.**\n\nThis was the **first constructive proof** that transcendental numbers exist — before Cantor's diagonal argument (1874), before e (1873), before π (1882)!",
+    "significance": "critical",
+    "relatedConcepts": ["transcendental numbers", "Diophantine approximation", "algebraic numbers"]
+  },
+  {
+    "id": "ann-approximation",
+    "proofId": "liouville-theorem",
+    "range": {"startLine": 109, "endLine": 163},
+    "type": "theorem",
+    "title": "Liouville's Approximation Theorem",
+    "content": "**Key Result**: If α is algebraic of degree n ≥ 2, then:\n\n$$\\left|\\alpha - \\frac{p}{q}\\right| > \\frac{c}{q^n}$$\n\nfor some constant c > 0 and all rationals p/q.\n\n**Proof idea**:\n1. Let P(x) be α's minimal polynomial (degree n)\n2. For p/q ≠ α: q^n · P(p/q) is a nonzero integer, so ≥ 1\n3. Mean Value Theorem bounds the difference\n4. This gives the 1/q^n lower bound",
+    "mathContext": "$|\\alpha - p/q| > c/q^n$",
+    "significance": "critical",
+    "relatedConcepts": ["minimal polynomial", "Mean Value Theorem"]
+  },
+  {
+    "id": "ann-liouville-def",
+    "proofId": "liouville-theorem",
+    "range": {"startLine": 169, "endLine": 182},
+    "type": "definition",
+    "title": "Liouville Numbers",
+    "content": "**Definition**: ξ is a **Liouville number** if for every n ≥ 1, there exist p, q with q > 1 such that:\n\n$$0 < \\left|\\xi - \\frac{p}{q}\\right| < \\frac{1}{q^n}$$\n\nThese numbers can be approximated **better than any polynomial bound allows**.\n\nBy the approximation theorem, such numbers cannot be algebraic!",
+    "mathContext": "$|\\xi - p/q| < 1/q^n$",
+    "significance": "major",
+    "relatedConcepts": ["rational approximation", "continued fractions"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "liouville-theorem",
+    "range": {"startLine": 184, "endLine": 198},
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**Theorem**: All Liouville numbers are transcendental.\n\n**Proof by contradiction**:\n1. Suppose ξ is Liouville and algebraic of degree n\n2. Approximation theorem: $|\\xi - p/q| > c/q^n$\n3. Liouville property: $|\\xi - p/q| < 1/q^{n+1}$\n4. For large q: $1/q^{n+1} < c/q^n$ — contradiction!\n\nMathlib: `Liouville.transcendental`",
+    "mathContext": "Liouville ⟹ Transcendental",
+    "significance": "critical",
+    "relatedConcepts": ["proof by contradiction", "transcendence"]
+  },
+  {
+    "id": "ann-constant",
+    "proofId": "liouville-theorem",
+    "range": {"startLine": 210, "endLine": 247},
+    "type": "theorem",
+    "title": "Liouville's Constant",
+    "content": "**The first explicit transcendental** (1844):\n\n$$L = \\sum_{n=1}^{\\infty} 10^{-n!} = 0.110001000000000000000001...$$\n\nThe 1's appear at positions 1!, 2!, 3!, 4!, ... = 1, 2, 6, 24, 120, ...\n\n**Why L is Liouville**: Partial sums give approximations p/q where:\n$$|L - p/q| < 2 \\cdot 10^{-(m+1)!} < 1/q^m$$\n\nThis beats any polynomial bound!",
+    "mathContext": "$L = \\sum 10^{-n!}$",
+    "significance": "critical",
+    "relatedConcepts": ["explicit construction", "factorial", "decimal expansion"]
+  },
+  {
+    "id": "ann-properties",
+    "proofId": "liouville-theorem",
+    "range": {"startLine": 263, "endLine": 297},
+    "type": "concept",
+    "title": "Properties of Liouville Numbers",
+    "content": "**Surprising facts**:\n\n1. **Uncountable**: Despite being \"rare\", there are as many Liouville numbers as real numbers!\n2. **Measure zero**: Almost all reals are NOT Liouville (probability 0)\n3. **Closed under operations**: If L is Liouville, so is L + r and r·L for rational r ≠ 0\n\nSo: Liouville numbers are simultaneously \"everywhere\" (uncountable) and \"nowhere\" (measure zero).",
+    "significance": "major",
+    "relatedConcepts": ["measure theory", "cardinality", "Borel sets"]
+  },
+  {
+    "id": "ann-roth",
+    "proofId": "liouville-theorem",
+    "range": {"startLine": 303, "endLine": 346},
+    "type": "concept",
+    "title": "Roth's Improvement",
+    "content": "**Roth's Theorem (1955, Fields Medal)**:\n\n$$\\left|\\alpha - \\frac{p}{q}\\right| > \\frac{c}{q^{2+\\varepsilon}}$$\n\nfor ANY algebraic irrational α and ANY ε > 0!\n\n**History of the exponent**:\n- Liouville (1844): n (degree)\n- Thue (1909): n/2 + 1 + ε\n- Siegel (1921): 2√n + ε\n- Roth (1955): **2 + ε** (optimal!)\n\nThe exponent 2 cannot be improved (Hurwitz's theorem).",
+    "mathContext": "$|\\alpha - p/q| > c/q^{2+\\varepsilon}$",
+    "significance": "major",
+    "relatedConcepts": ["Fields Medal", "Diophantine approximation", "Hurwitz's theorem"]
+  }
+]

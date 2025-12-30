@@ -1,1 +1,130 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 16, "endLine": 89},
+    "type": "concept",
+    "title": "BSD Conjecture: Millennium Prize Problem",
+    "content": "**The Birch and Swinnerton-Dyer Conjecture**:\n\n> The algebraic rank of an elliptic curve equals its analytic rank.\n\n**Weak BSD**:\n$$\\text{rank}(E(\\mathbb{Q})) = \\text{ord}_{s=1} L(E, s)$$\n\n**Strong BSD**: The leading coefficient at s = 1 is:\n$$\\frac{\\Omega \\cdot R \\cdot |Ш| \\cdot \\prod c_p}{|E(\\mathbb{Q})_{\\text{tors}}|^2}$$\n\n**Status: OPEN** — One of 7 Millennium Prize Problems ($1,000,000)",
+    "significance": "critical",
+    "relatedConcepts": ["elliptic curve", "L-function", "rank"]
+  },
+  {
+    "id": "ann-elliptic-curve",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 100, "endLine": 126},
+    "type": "definition",
+    "title": "Elliptic Curves over ℚ",
+    "content": "**Elliptic Curve E/ℚ**:\n\nWeierstrass form:\n$$y^2 = x^3 + ax + b, \\quad a, b \\in \\mathbb{Q}$$\n\n**Discriminant**: Δ = −16(4a³ + 27b²) ≠ 0 (smoothness)\n\n**j-invariant**: j = −1728(4a³)/Δ\n\n**Key property**: E(ℚ) forms an abelian group under the chord-tangent law.",
+    "mathContext": "y² = x³ + ax + b",
+    "significance": "major",
+    "relatedConcepts": ["Weierstrass form", "discriminant", "j-invariant"]
+  },
+  {
+    "id": "ann-mordell-weil",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 128, "endLine": 191},
+    "type": "theorem",
+    "title": "Mordell-Weil Theorem",
+    "content": "**Mordell-Weil Theorem (1922-28)**:\n\nThe group E(ℚ) of rational points is **finitely generated**:\n$$E(\\mathbb{Q}) \\cong \\mathbb{Z}^r \\oplus T$$\n\nwhere:\n- r = **algebraic rank** (the key unknown!)\n- T = finite **torsion subgroup**\n\n**Mazur's Theorem (1977)**: T is one of exactly 15 groups.\n\n**Computing r**: Major algorithmic challenge in arithmetic geometry.",
+    "mathContext": "E(ℚ) ≅ ℤʳ ⊕ T",
+    "significance": "critical",
+    "relatedConcepts": ["Mordell-Weil", "rank", "torsion"]
+  },
+  {
+    "id": "ann-l-function",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 193, "endLine": 271},
+    "type": "definition",
+    "title": "L-Functions of Elliptic Curves",
+    "content": "**L-function L(E, s)**:\n\nEuler product for Re(s) > 3/2:\n$$L(E, s) = \\prod_p L_p(E, s)^{-1}$$\n\n**Local factors**:\n- Good reduction: $L_p = 1 - a_p p^{-s} + p^{1-2s}$\n- Bad reduction: depends on type\n\nwhere $a_p = p + 1 - \\#E(\\mathbb{F}_p)$.\n\n**Root number** w(E) ∈ {±1}: Determines parity of analytic rank.\n\n**Key**: By modularity, L(E, s) has analytic continuation to all ℂ!",
+    "mathContext": "L(E, s) = ∏ Lₚ(E, s)⁻¹",
+    "significance": "critical",
+    "relatedConcepts": ["Euler product", "local factor", "root number"]
+  },
+  {
+    "id": "ann-modularity",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 273, "endLine": 314},
+    "type": "theorem",
+    "title": "Modularity Theorem (Wiles)",
+    "content": "**Modularity Theorem (Wiles 1995, BCDT 2001)**:\n\nEvery elliptic curve E/ℚ is **modular**:\n$$L(E, s) = L(f, s)$$\n\nfor a weight 2 modular form f.\n\n**Consequences**:\n1. L(E, s) has **analytic continuation** to all ℂ\n2. **Functional equation**: Λ(E, s) = w · Λ(E, 2−s)\n\n**Historical**: This theorem completed Fermat's Last Theorem!",
+    "mathContext": "E/ℚ modular",
+    "significance": "critical",
+    "relatedConcepts": ["Wiles", "modular form", "FLT"]
+  },
+  {
+    "id": "ann-analytic-rank",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 316, "endLine": 349},
+    "type": "definition",
+    "title": "Analytic Rank",
+    "content": "**Analytic Rank**:\n\n$$r_{\\text{an}}(E) = \\text{ord}_{s=1} L(E, s)$$\n\nThe order of vanishing at the central point s = 1.\n\n**Parity constraint** (from functional equation):\n- w(E) = +1 ⟹ r_an is even\n- w(E) = −1 ⟹ r_an is odd\n\n**BSD predicts**: r_an = r_alg (algebraic rank).\n\nThis is the heart of the conjecture!",
+    "mathContext": "r_an = ord_{s=1} L(E, s)",
+    "significance": "major",
+    "relatedConcepts": ["order of vanishing", "central point", "parity"]
+  },
+  {
+    "id": "ann-bsd-statement",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 351, "endLine": 483},
+    "type": "concept",
+    "title": "BSD Conjecture Statement",
+    "content": "**BSD CONJECTURE**:\n\n**Weak form**: rank(E(ℚ)) = ord_{s=1} L(E, s)\n\n**Strong form**: The leading coefficient is:\n$$\\lim_{s\\to 1} \\frac{L(E,s)}{(s-1)^r} = \\frac{\\Omega \\cdot R \\cdot |Ш| \\cdot \\prod c_p}{|E(\\mathbb{Q})_{\\text{tors}}|^2}$$\n\nwhere:\n- Ω = real period\n- R = regulator (height pairing determinant)\n- Ш = Shafarevich-Tate group (mysterious!)\n- cₚ = Tamagawa numbers",
+    "mathContext": "rank = ord L(E, 1)",
+    "significance": "critical",
+    "relatedConcepts": ["regulator", "Sha", "Tamagawa"]
+  },
+  {
+    "id": "ann-proven-cases",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 485, "endLine": 554},
+    "type": "theorem",
+    "title": "Proven Cases of BSD",
+    "content": "**PROVEN CASES**:\n\n**Rank 0** (Kolyvagin 1990):\n$$L(E, 1) \\neq 0 \\Rightarrow \\text{rank} = 0, Ш \\text{ finite}$$\n\n**Rank 1** (Gross-Zagier 1986 + Kolyvagin):\n$$L(E, 1) = 0, L'(E, 1) \\neq 0 \\Rightarrow \\text{rank} = 1, Ш \\text{ finite}$$\n\n**CM curves** (Coates-Wiles 1977):\nFor complex multiplication curves with L(E, 1) ≠ 0.\n\n**Open**: Rank ≥ 2 cases completely unknown!",
+    "mathContext": "Rank 0, 1 proven",
+    "significance": "critical",
+    "relatedConcepts": ["Kolyvagin", "Gross-Zagier", "Heegner points"]
+  },
+  {
+    "id": "ann-gross-zagier",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 556, "endLine": 594},
+    "type": "theorem",
+    "title": "Gross-Zagier Formula",
+    "content": "**Gross-Zagier Formula (1986)**:\n\n$$L'(E, 1) = c \\cdot \\hat{h}(P_K)$$\n\nwhere:\n- P_K = Heegner point from CM theory\n- ĥ = Néron-Tate height\n- c = explicit constant\n\n**Significance**:\n- Bridges L-functions (analysis) and rational points (algebra)\n- If L'(E, 1) ≠ 0, the Heegner point is non-torsion\n- Combined with Kolyvagin ⟹ rank = 1",
+    "mathContext": "L'(E, 1) ~ height of Heegner point",
+    "significance": "major",
+    "relatedConcepts": ["Heegner point", "Néron-Tate height", "CM theory"]
+  },
+  {
+    "id": "ann-computational",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 596, "endLine": 656},
+    "type": "concept",
+    "title": "Computational Evidence",
+    "content": "**Computational Verification**:\n\n- BSD verified for **millions** of elliptic curves\n- All curves with conductor N ≤ 500,000 checked\n- **No counterexamples ever found!**\n- Leading coefficient matches to high precision\n\n**Congruent Numbers**:\n\nn is congruent (area of rational right triangle) iff:\n$$\\text{rank}(E_n) > 0 \\Leftrightarrow L(E_n, 1) = 0$$\n\nwhere E_n: y² = x³ − n²x.\n\nBSD connects geometry to L-values!",
+    "significance": "major",
+    "relatedConcepts": ["congruent numbers", "computation", "LMFDB"]
+  },
+  {
+    "id": "ann-why-hard",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 628, "endLine": 656},
+    "type": "concept",
+    "title": "Why BSD is Hard",
+    "content": "**Obstacles to Proving BSD**:\n\n1. **Higher rank**: Kolyvagin's methods only work for rank ≤ 1. No way to construct enough independent points for rank ≥ 2.\n\n2. **Sha is mysterious**: Cannot compute |Ш| in general. Examples with |Ш| > 10⁸ exist!\n\n3. **Finding points**: Even if rank ≥ 2, finding explicit generators is computationally hard.\n\n4. **Average rank** (Bhargava-Shankar): ≤ 1, so BSD \"usually\" true, but proving it universally remains elusive.",
+    "significance": "minor",
+    "relatedConcepts": ["Sha", "Euler systems", "descent"]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 708, "endLine": 749},
+    "type": "concept",
+    "title": "Problem Status: OPEN",
+    "content": "**BSD Conjecture: Still OPEN since 1965**\n\n**Proven cases**:\n- Rank 0: L(E,1) ≠ 0 ⟹ rank = 0 ✓ (Kolyvagin)\n- Rank 1: L(E,1) = 0, L'(E,1) ≠ 0 ⟹ rank = 1 ✓ (GZ + K)\n- CM curves with L(E,1) ≠ 0 ✓ (Coates-Wiles)\n- Parity conjecture ✓ (Dokchitsers)\n\n**OPEN for rank ≥ 2**!\n\n**Significance**:\n- Central to modern number theory\n- Connects arithmetic and analysis\n- Applications to cryptography\n\n**Prize**: $1,000,000 Millennium Prize",
+    "significance": "minor",
+    "relatedConcepts": ["open problem", "Millennium Prize", "number theory"]
+  }
+]

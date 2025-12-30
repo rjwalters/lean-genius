@@ -1,1 +1,303 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 10,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "The Prime Number Theorem",
+    "content": "One of the most celebrated results in mathematics:\n\n$$\\lim_{x \\to \\infty} \\frac{\\pi(x)}{x/\\ln x} = 1$$\n\nThis tells us the **density of primes** near $x$ is approximately $1/\\ln x$.\n\n**Historical milestones**:\n- 1798: Legendre's conjecture\n- 1849: Gauss refined to Li(x)\n- 1859: Riemann connected primes to zeta zeros\n- 1896: Hadamard & de la Vallée Poussin proved PNT\n- 2024: Fully formalized in Lean 4",
+    "significance": "critical",
+    "relatedConcepts": [
+      "prime counting function",
+      "Riemann zeta function",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-prime-pi",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 72,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "Prime Counting Function",
+    "content": "$$\\pi(x) = \\#\\{p \\leq x : p \\text{ is prime}\\}$$\n\nThe fundamental object of study. Some values:\n\n| x | π(x) |\n|---|------|\n| 10 | 4 |\n| 100 | 25 |\n| 1000 | 168 |\n| 10⁶ | 78,498 |\n\nMathlib provides `Nat.primeCounting` which counts primes up to n.",
+    "mathContext": "$\\pi(x) = $ count of primes ≤ x",
+    "significance": "critical",
+    "relatedConcepts": [
+      "prime numbers",
+      "counting functions",
+      "floor function"
+    ]
+  },
+  {
+    "id": "ann-prime-approx",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 77,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "The PNT Approximation",
+    "content": "The simplest approximation to π(x):\n\n$$\\text{primeApprox}(x) = \\frac{x}{\\ln x}$$\n\nThis is the \"first-order\" estimate. PNT says π(x) ∼ x/ln(x), meaning their ratio → 1.\n\n**Example**: At x = 10⁶, π(x) = 78,498 while x/ln(x) ≈ 72,382. The ratio is ≈ 1.08.",
+    "mathContext": "$x/\\ln x$",
+    "significance": "major",
+    "relatedConcepts": [
+      "asymptotic equivalence",
+      "logarithm"
+    ]
+  },
+  {
+    "id": "ann-li",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 81,
+      "endLine": 86
+    },
+    "type": "definition",
+    "title": "Logarithmic Integral",
+    "content": "A **better** approximation to π(x):\n\n$$\\text{Li}(x) = \\int_2^x \\frac{dt}{\\ln t}$$\n\nGauss observed that Li(x) tracks π(x) more closely than x/ln(x). The asymptotic expansion:\n\n$$\\text{Li}(x) = \\frac{x}{\\ln x} + \\frac{x}{\\ln^2 x} + \\frac{2x}{\\ln^3 x} + \\cdots$$\n\nshows Li(x) ∼ x/ln(x), but with better lower-order terms.",
+    "mathContext": "$\\text{Li}(x) = \\int_2^x \\frac{dt}{\\ln t}$",
+    "significance": "major",
+    "relatedConcepts": [
+      "integral",
+      "asymptotic expansion",
+      "Gauss"
+    ]
+  },
+  {
+    "id": "ann-pnt-ratio",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 92,
+      "endLine": 98
+    },
+    "type": "theorem",
+    "title": "PNT: Ratio Form",
+    "content": "**Prime Number Theorem (Ratio Form)**:\n\n$$\\lim_{x \\to \\infty} \\frac{\\pi(x) \\cdot \\ln x}{x} = 1$$\n\nThis is the classical statement. It says the ratio π(x)·ln(x)/x tends to 1, meaning π(x) behaves like x/ln(x) for large x.\n\nIn Lean, we express this using `Tendsto` to the neighborhood `𝓝 1`.",
+    "mathContext": "$\\pi(x) \\cdot \\ln x / x \\to 1$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "limits",
+      "Tendsto",
+      "atTop filter"
+    ]
+  },
+  {
+    "id": "ann-pnt-equiv",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 100,
+      "endLine": 107
+    },
+    "type": "theorem",
+    "title": "PNT: Asymptotic Equivalence",
+    "content": "**Asymptotic Notation**:\n\n$$\\pi(x) \\sim \\frac{x}{\\ln x}$$\n\nUsing Mathlib's `IsEquivalent` (notation `~[atTop]`), we express that two functions have the same asymptotic behavior.\n\nf ~ g means f/g → 1, or equivalently f = g·(1 + o(1)).",
+    "mathContext": "$\\pi(x) \\sim x/\\ln x$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "asymptotic equivalence",
+      "big-O notation",
+      "little-o notation"
+    ]
+  },
+  {
+    "id": "ann-pnt-error",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 109,
+      "endLine": 116
+    },
+    "type": "theorem",
+    "title": "PNT: Error Term Form",
+    "content": "**Error Term Formulation**:\n\n$$\\pi(x) = \\frac{x}{\\ln x} + o\\left(\\frac{x}{\\ln x}\\right)$$\n\nThe error π(x) - x/ln(x) grows slower than x/ln(x). This is expressed using `IsLittleO` (notation `=o[atTop]`).\n\nThe equivalence f ~ g ⟺ f - g = o(g) is a standard result in asymptotic analysis.",
+    "mathContext": "$\\pi(x) - x/\\ln x = o(x/\\ln x)$",
+    "significance": "major",
+    "relatedConcepts": [
+      "error bounds",
+      "little-o notation",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-pnt-li",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 118,
+      "endLine": 125
+    },
+    "type": "theorem",
+    "title": "PNT: Logarithmic Integral Form",
+    "content": "The **strongest** standard form of PNT:\n\n$$\\pi(x) \\sim \\text{Li}(x)$$\n\nSince Li(x) ~ x/ln(x), this is equivalent to the other forms. But Li(x) is a better approximation:\n\n| x | π(x) | x/ln(x) | Li(x) |\n|---|------|---------|-------|\n| 10⁶ | 78,498 | 72,382 | 78,628 |\n\nLi(x) is off by only 130, while x/ln(x) is off by 6,116!",
+    "mathContext": "$\\pi(x) \\sim \\text{Li}(x)$",
+    "significance": "major",
+    "relatedConcepts": [
+      "logarithmic integral",
+      "Gauss",
+      "approximation"
+    ]
+  },
+  {
+    "id": "ann-main-axiom",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 194,
+      "endLine": 208
+    },
+    "type": "theorem",
+    "title": "The Main Theorem",
+    "content": "**The Prime Number Theorem** (axiomatized):\n\n$$\\lim_{x \\to \\infty} \\frac{\\pi(x) \\cdot \\ln x}{x} = 1$$\n\n**Why an axiom?** A complete proof requires:\n1. Complex analysis (Cauchy, residues)\n2. Riemann zeta function properties\n3. Zero-free region on Re(s) = 1\n4. Tauberian theorems\n\nSee the **PrimeNumberTheoremAnd** project for a full Lean 4 formalization by Kontorovich, Tao, et al.",
+    "mathContext": "$\\pi(x) \\cdot \\ln x / x \\to 1$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Hadamard",
+      "de la Vallée Poussin",
+      "1896"
+    ]
+  },
+  {
+    "id": "ann-density",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 222,
+      "endLine": 238
+    },
+    "type": "theorem",
+    "title": "Prime Density → 0",
+    "content": "**Corollary**: The density of primes goes to zero:\n\n$$\\lim_{x \\to \\infty} \\frac{\\pi(x)}{x} = 0$$\n\nFrom PNT: π(x)/x ~ 1/ln(x) → 0.\n\n**Interpretation**: The \"probability\" of a random number near x being prime is ≈ 1/ln(x). At x = 10^100, this is about 1/230.",
+    "mathContext": "$\\pi(x)/x \\to 0$",
+    "significance": "major",
+    "relatedConcepts": [
+      "density",
+      "probability",
+      "rarity of primes"
+    ]
+  },
+  {
+    "id": "ann-nth-prime",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 240,
+      "endLine": 257
+    },
+    "type": "theorem",
+    "title": "Nth Prime Asymptotics",
+    "content": "**Inverse PNT**: The nth prime satisfies:\n\n$$p_n \\sim n \\ln n$$\n\nThis is the \"inverse\" of PNT. If π(x) ~ x/ln(x), then inverting gives p_n ~ n·ln(n).\n\n**Examples**:\n- p₁₀ = 29 ≈ 10·ln(10) = 23\n- p₁₀₀ = 541 ≈ 100·ln(100) = 461\n- p₁₀₀₀ = 7919 ≈ 1000·ln(1000) = 6908",
+    "mathContext": "$p_n \\sim n \\ln n$",
+    "significance": "major",
+    "relatedConcepts": [
+      "nth prime",
+      "inverse function",
+      "Nat.nth"
+    ]
+  },
+  {
+    "id": "ann-mertens",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 259,
+      "endLine": 282
+    },
+    "type": "theorem",
+    "title": "Mertens' Theorem",
+    "content": "**Sum of Prime Reciprocals** (Mertens, 1874):\n\n$$\\sum_{p \\leq x} \\frac{1}{p} = \\ln\\ln x + M + o(1)$$\n\nwhere M ≈ 0.2615 is the Meissel-Mertens constant.\n\nThis shows prime reciprocals diverge, but *very slowly* — as ln(ln(x)).\n\nCompare: harmonic series diverges as ln(x), much faster.",
+    "mathContext": "$\\sum_{p \\leq x} 1/p \\sim \\ln\\ln x$",
+    "significance": "major",
+    "relatedConcepts": [
+      "Mertens",
+      "prime reciprocals",
+      "divergence"
+    ]
+  },
+  {
+    "id": "ann-gaps",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 284,
+      "endLine": 306
+    },
+    "type": "theorem",
+    "title": "Prime Gaps",
+    "content": "**Prime Gaps Are Sublinear**:\n\nFor any ε > 0 and large enough x, consecutive primes near x differ by at most εx.\n\nFrom PNT: there are ~ x/ln(x) primes up to x, so the average gap is ~ ln(x).\n\nSince ln(x) = o(x), gaps are o(x) — sublinear growth.\n\n**Note**: Much stronger results are known (e.g., gaps ≤ x^0.525 unconditionally).",
+    "mathContext": "gaps = o(x)",
+    "significance": "minor",
+    "relatedConcepts": [
+      "prime gaps",
+      "consecutive primes",
+      "average gap"
+    ]
+  },
+  {
+    "id": "ann-rh",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 312,
+      "endLine": 326
+    },
+    "type": "concept",
+    "title": "Riemann Hypothesis",
+    "content": "The **Riemann Hypothesis** (RH):\n\nAll non-trivial zeros of ζ(s) have Re(s) = 1/2.\n\nThis is one of the **Millennium Prize Problems** ($1M reward).\n\nRH gives much stronger control over prime distribution — the error in PNT drops from O(x·exp(-c√ln x)) to O(√x·ln x).",
+    "significance": "major",
+    "relatedConcepts": [
+      "Riemann zeta function",
+      "zeros",
+      "Millennium Problems"
+    ]
+  },
+  {
+    "id": "ann-von-koch",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 328,
+      "endLine": 351
+    },
+    "type": "theorem",
+    "title": "Von Koch's Theorem",
+    "content": "**Under RH** (von Koch, 1901):\n\n$$|\\pi(x) - \\text{Li}(x)| = O(\\sqrt{x} \\ln x)$$\n\nThis is a **huge** improvement over the unconditional bound O(x·exp(-c√ln x)).\n\n**Why RH helps**: The explicit formula relates π(x) to zeta zeros. If all zeros have Re(s) = 1/2, the oscillatory terms are bounded by √x.",
+    "mathContext": "$|\\pi(x) - \\text{Li}(x)| = O(\\sqrt{x} \\ln x)$",
+    "significance": "major",
+    "relatedConcepts": [
+      "error bounds",
+      "Riemann Hypothesis",
+      "explicit formula"
+    ]
+  },
+  {
+    "id": "ann-chebyshev",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 357,
+      "endLine": 380
+    },
+    "type": "theorem",
+    "title": "Chebyshev's Bounds",
+    "content": "**Before PNT** (Chebyshev, 1852):\n\n$$0.92 < \\frac{\\pi(x) \\ln x}{x} < 1.11$$\n\nfor large x. Chebyshev proved that **if** the limit exists, it must equal 1.\n\n**Method**: Analyzed prime factors of $\\binom{2n}{n}$ using the identity:\n$$\\binom{2n}{n} = \\frac{(2n)!}{(n!)^2}$$\n\nThis was 44 years before Hadamard/de la Vallée Poussin proved the limit exists!",
+    "mathContext": "$0.92 < \\pi(x)\\ln x/x < 1.11$",
+    "significance": "major",
+    "relatedConcepts": [
+      "Chebyshev",
+      "elementary bounds",
+      "central binomial"
+    ]
+  },
+  {
+    "id": "ann-numerical",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 416,
+      "endLine": 428
+    },
+    "type": "note",
+    "title": "Numerical Evidence",
+    "content": "**Comparing approximations**:\n\n| x | π(x) | x/ln(x) | Li(x) |\n|---|------|---------|-------|\n| 10 | 4 | 4.3 | 6.2 |\n| 10³ | 168 | 145 | 178 |\n| 10⁶ | 78,498 | 72,382 | 78,628 |\n| 10⁹ | 50,847,534 | 48,254,942 | 50,849,235 |\n\nLi(x) is consistently better than x/ln(x). At 10⁹, Li(x) is off by only 1,701 while x/ln(x) is off by 2.6 million!",
+    "significance": "minor",
+    "relatedConcepts": [
+      "numerical computation",
+      "approximation quality"
+    ]
+  }
+]

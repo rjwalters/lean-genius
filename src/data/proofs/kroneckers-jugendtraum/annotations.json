@@ -1,1 +1,116 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "kroneckers-jugendtraum",
+    "range": {"startLine": 15, "endLine": 71},
+    "type": "concept",
+    "title": "Hilbert's 12th Problem",
+    "content": "**Kronecker's Jugendtraum** (\"Youthful Dream\"):\n\n> Find explicit generators for ALL abelian extensions of any number field K.\n\n**Status by case**:\n- K = ℚ: **SOLVED** (Kronecker-Weber: roots of unity)\n- K = imaginary quadratic: **SOLVED** (Complex Multiplication)\n- K = real quadratic: **OPEN** (Stark conjectures)\n- K = general: **OPEN**\n\nThe dream: connect number theory to explicit analytic functions.",
+    "significance": "critical",
+    "relatedConcepts": ["abelian extensions", "cyclotomic fields", "class field theory"]
+  },
+  {
+    "id": "ann-abelian-extension",
+    "proofId": "kroneckers-jugendtraum",
+    "range": {"startLine": 82, "endLine": 99},
+    "type": "definition",
+    "title": "Abelian Extensions",
+    "content": "**Abelian Extension L/K**:\n\nA field extension that is:\n1. **Galois**: L/K is normal and separable\n2. **Abelian Galois group**: Gal(L/K) is commutative\n\n**Examples**:\n- ℚ(√2)/ℚ has Gal = ℤ/2ℤ (abelian)\n- ℚ(ζₙ)/ℚ has Gal = (ℤ/nℤ)× (abelian)\n- Splitting field of x³-2 over ℚ is NOT abelian (Gal = S₃)",
+    "significance": "major",
+    "relatedConcepts": ["Galois group", "normal extension", "commutative group"]
+  },
+  {
+    "id": "ann-kronecker-weber",
+    "proofId": "kroneckers-jugendtraum",
+    "range": {"startLine": 100, "endLine": 128},
+    "type": "theorem",
+    "title": "Kronecker-Weber Theorem",
+    "content": "**THE SOLUTION FOR ℚ**:\n\nEvery finite abelian extension of ℚ is contained in some cyclotomic field ℚ(ζₙ).\n\n**In other words**: The ONLY way to build an abelian extension of ℚ is to adjoin roots of unity!\n\n**Proof**: Uses local class field theory at each prime p.\n\nThis completely solves Hilbert 12 for K = ℚ.",
+    "mathContext": "L/ℚ abelian ⟹ L ⊆ ℚ(ζₙ) for some n",
+    "significance": "critical",
+    "relatedConcepts": ["Kronecker", "Weber", "cyclotomic fields"]
+  },
+  {
+    "id": "ann-galois-abelian",
+    "proofId": "kroneckers-jugendtraum",
+    "range": {"startLine": 129, "endLine": 172},
+    "type": "theorem",
+    "title": "Cyclotomic Galois Groups",
+    "content": "**Key Fact**: Cyclotomic extensions have abelian Galois groups!\n\n$$\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^\\times$$\n\n**Why?** Each automorphism σ sends ζₙ ↦ ζₙᵏ for some k coprime to n.\n\nThe map σ ↦ k gives the isomorphism. Since multiplication in (ℤ/nℤ)× is commutative, so is the Galois group.\n\n**Proven in Lean** using `IsCyclotomicExtension.autEquivPow`.",
+    "mathContext": "Gal ≅ (ℤ/nℤ)×",
+    "significance": "major",
+    "relatedConcepts": ["Euler's totient", "primitive roots", "automorphisms"]
+  },
+  {
+    "id": "ann-degree",
+    "proofId": "kroneckers-jugendtraum",
+    "range": {"startLine": 173, "endLine": 181},
+    "type": "theorem",
+    "title": "Cyclotomic Degree",
+    "content": "**Theorem**: The degree of the cyclotomic extension equals Euler's totient:\n\n$$[\\mathbb{Q}(\\zeta_n) : \\mathbb{Q}] = \\varphi(n)$$\n\nThis follows from the irreducibility of the nth cyclotomic polynomial Φₙ(x) over ℚ.\n\n**Examples**:\n- [ℚ(ζ₄):ℚ] = φ(4) = 2\n- [ℚ(ζ₇):ℚ] = φ(7) = 6",
+    "mathContext": "$[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = \\varphi(n)$",
+    "significance": "minor",
+    "relatedConcepts": ["totient function", "cyclotomic polynomial", "field degree"]
+  },
+  {
+    "id": "ann-cm",
+    "proofId": "kroneckers-jugendtraum",
+    "range": {"startLine": 182, "endLine": 225},
+    "type": "concept",
+    "title": "Complex Multiplication",
+    "content": "**THE SOLUTION FOR IMAGINARY QUADRATIC FIELDS**:\n\nFor K = ℚ(√-d), abelian extensions come from:\n\n1. **j-invariant**: j(τ) generates the Hilbert class field\n2. **Torsion points**: Coordinates of n-torsion on CM elliptic curves\n3. **Weber functions**: Special values at division points\n\nThis is Kronecker's original dream realized!\n\n**Key insight**: Elliptic curves with complex multiplication by K provide the explicit generators.",
+    "significance": "critical",
+    "relatedConcepts": ["j-invariant", "elliptic curves", "CM theory"]
+  },
+  {
+    "id": "ann-class-field",
+    "proofId": "kroneckers-jugendtraum",
+    "range": {"startLine": 226, "endLine": 254},
+    "type": "concept",
+    "title": "Class Field Theory",
+    "content": "**Abstract Classification**:\n\nClass field theory tells us abelian extensions EXIST and classifies them via:\n\n$$\\text{Gal}(K^{\\text{ab}}/K) \\cong \\hat{C}_K / K^\\times$$\n\n(idele class group)\n\n**BUT**: This doesn't give EXPLICIT generators!\n\nHilbert 12 asks for the explicit analytic functions — that's the hard part.",
+    "mathContext": "Abstract vs Explicit",
+    "significance": "major",
+    "relatedConcepts": ["Artin reciprocity", "ideles", "adeles"]
+  },
+  {
+    "id": "ann-open",
+    "proofId": "kroneckers-jugendtraum",
+    "range": {"startLine": 255, "endLine": 300},
+    "type": "concept",
+    "title": "What Remains Open",
+    "content": "**Real Quadratic Fields**: K = ℚ(√d), d > 0\n\nNO analogue of CM theory exists! The Stark conjectures give conjectural answers using L-function special values.\n\n**General Number Fields**:\n\nModern approaches:\n1. **Stark Conjectures**: Units from L-values\n2. **Langlands Program**: Automorphic↔Galois\n3. **Higher CM**: Abelian varieties\n\nNo complete solution for general K!",
+    "significance": "major",
+    "relatedConcepts": ["Stark conjectures", "Langlands program", "open problems"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "kroneckers-jugendtraum",
+    "range": {"startLine": 301, "endLine": 324},
+    "type": "note",
+    "title": "Concrete Examples",
+    "content": "**Cyclotomic Field Examples**:\n\n- ℚ(i) = ℚ(ζ₄): The 4th roots of unity\n- ℚ(ω) = ℚ(ζ₃): The cube roots of unity (ω = e^(2πi/3))\n- ℚ(√-3) = ℚ(ζ₃): Same field!\n\n**Key fact**: The nth cyclotomic polynomial Φₙ(x) is irreducible over ℚ.\n\nProven in Lean: `cyclotomic.irreducible_rat`",
+    "significance": "minor",
+    "relatedConcepts": ["cyclotomic polynomial", "irreducibility", "examples"]
+  },
+  {
+    "id": "ann-stark",
+    "proofId": "kroneckers-jugendtraum",
+    "range": {"startLine": 325, "endLine": 351},
+    "type": "concept",
+    "title": "Stark Conjectures",
+    "content": "**Modern Approach (1970s-80s)**:\n\nPredict that special values of L-functions at s=0 are related to **Stark units** that generate abelian extensions.\n\n$$L'(s, \\chi) \\Big|_{s=0} = \\text{(regulator of Stark units)}$$\n\nFor real quadratic fields, Stark units would solve Hilbert 12!\n\n**Status**: Proven in special cases, general conjectures remain OPEN.",
+    "significance": "minor",
+    "relatedConcepts": ["L-functions", "regulators", "Stark units"]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "kroneckers-jugendtraum",
+    "range": {"startLine": 352, "endLine": 392},
+    "type": "concept",
+    "title": "Problem Status",
+    "content": "**Hilbert 12: Partially Solved**\n\n**Solved**:\n- ℚ: Kronecker-Weber (1886)\n- Imaginary quadratic: CM theory\n\n**Open**:\n- Real quadratic: Stark conjectures\n- General: No solution\n\n**Why it's hard**: Class field theory gives abstract classification but not explicit generators. The connection to analysis (exp for ℚ, elliptic curves for imaginary quadratic) doesn't generalize.",
+    "significance": "minor",
+    "relatedConcepts": ["explicit class field theory", "Langlands", "arithmetic geometry"]
+  }
+]

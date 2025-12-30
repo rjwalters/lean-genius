@@ -1,1 +1,75 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "de-moivre",
+    "range": {"startLine": 5, "endLine": 41},
+    "type": "concept",
+    "title": "De Moivre's Theorem",
+    "content": "**Wiedijk #17**: De Moivre's Formula (c. 1707)\n\n$$(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$$\n\nConnects **powers of complex numbers** in polar form to **multiple angle formulas** for trigonometry.\n\nNamed after Abraham de Moivre (1667-1754), later popularized by Euler.",
+    "significance": "critical",
+    "relatedConcepts": ["Euler's formula", "complex numbers", "trigonometry"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "de-moivre",
+    "range": {"startLine": 59, "endLine": 76},
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**Proof Strategy**:\n\n1. Use Euler's formula: $\\cos\\theta + i\\sin\\theta = e^{i\\theta}$\n2. Apply power rule: $(e^x)^n = e^{nx}$\n3. Convert back: $e^{in\\theta} = \\cos(n\\theta) + i\\sin(n\\theta)$\n\nMathlib provides:\n- `Complex.exp_mul_I`: Euler's formula\n- `Complex.exp_nat_mul`: Power rule for exp",
+    "mathContext": "$(e^{i\\theta})^n = e^{in\\theta}$",
+    "significance": "critical",
+    "relatedConcepts": ["exponential form", "Euler's identity"]
+  },
+  {
+    "id": "ann-exp-form",
+    "proofId": "de-moivre",
+    "range": {"startLine": 82, "endLine": 95},
+    "type": "theorem",
+    "title": "Exponential Form",
+    "content": "**Cleaner statement**:\n\n$$(e^{i\\theta})^n = e^{in\\theta}$$\n\nThis is just the rule $(e^a)^n = e^{na}$ applied with $a = i\\theta$.\n\nThe exponential form makes proofs trivial — multiplication in the exponent instead of repeated complex multiplication.",
+    "mathContext": "$(e^{i\\theta})^n = e^{in\\theta}$",
+    "significance": "major",
+    "relatedConcepts": ["exponential function", "complex analysis"]
+  },
+  {
+    "id": "ann-integer-ext",
+    "proofId": "de-moivre",
+    "range": {"startLine": 101, "endLine": 126},
+    "type": "theorem",
+    "title": "Integer Exponents",
+    "content": "De Moivre's theorem extends to **negative integers**:\n\n$$(\\cos\\theta + i\\sin\\theta)^{-n} = \\cos(-n\\theta) + i\\sin(-n\\theta)$$\n\nSince $\\cos(-\\alpha) = \\cos(\\alpha)$ and $\\sin(-\\alpha) = -\\sin(\\alpha)$:\n\n$$(\\cos\\theta + i\\sin\\theta)^{-1} = \\cos\\theta - i\\sin\\theta$$\n\nThis is just the complex conjugate divided by the modulus squared.",
+    "significance": "minor",
+    "relatedConcepts": ["complex conjugate", "negative exponents"]
+  },
+  {
+    "id": "ann-double-triple",
+    "proofId": "de-moivre",
+    "range": {"startLine": 132, "endLine": 162},
+    "type": "concept",
+    "title": "Double and Triple Angle Formulas",
+    "content": "**n = 2** (double angle):\n$$\\cos(2\\theta) = \\cos^2\\theta - \\sin^2\\theta$$\n$$\\sin(2\\theta) = 2\\sin\\theta\\cos\\theta$$\n\n**n = 3** (triple angle):\n$$\\cos(3\\theta) = 4\\cos^3\\theta - 3\\cos\\theta$$\n$$\\sin(3\\theta) = 3\\sin\\theta - 4\\sin^3\\theta$$\n\nThese come from expanding $(\\cos\\theta + i\\sin\\theta)^n$ and comparing real/imaginary parts.",
+    "significance": "major",
+    "relatedConcepts": ["trig identities", "angle formulas"]
+  },
+  {
+    "id": "ann-roots-of-unity",
+    "proofId": "de-moivre",
+    "range": {"startLine": 168, "endLine": 189},
+    "type": "theorem",
+    "title": "Roots of Unity",
+    "content": "De Moivre's theorem finds the **nth roots of unity**:\n\n$$\\omega_k = e^{2\\pi i k/n} \\quad (k = 0, 1, \\ldots, n-1)$$\n\nBy De Moivre: $(\\omega_k)^n = e^{2\\pi i k} = 1$\n\nThe n roots form a regular n-gon on the unit circle, equally spaced by angle 2π/n.",
+    "mathContext": "$\\omega^n = 1$",
+    "significance": "major",
+    "relatedConcepts": ["roots of unity", "cyclotomic polynomials", "FFT"]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "de-moivre",
+    "range": {"startLine": 210, "endLine": 231},
+    "type": "note",
+    "title": "Applications",
+    "content": "**De Moivre's theorem is fundamental to**:\n\n- **Signal processing**: Fourier analysis foundations\n- **Electrical engineering**: AC circuit analysis\n- **Physics**: Wave mechanics, quantum theory\n- **Number theory**: Cyclotomic fields\n\nThe elegance: powers become multiplication of angles, and roots become division of angles.",
+    "significance": "minor",
+    "relatedConcepts": ["Fourier transform", "phasors", "quantum mechanics"]
+  }
+]

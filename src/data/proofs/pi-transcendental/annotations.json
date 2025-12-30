@@ -1,1 +1,108 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "pi-transcendental",
+    "range": {"startLine": 6, "endLine": 40},
+    "type": "concept",
+    "title": "Transcendence of Pi: Wiedijk #53",
+    "content": "**Main Result**:\n\n$\\pi$ is **transcendental**: it is not the root of any non-zero polynomial with integer coefficients.\n\n$$\\nexists P \\in \\mathbb{Z}[X] \\setminus \\{0\\}: P(\\pi) = 0$$\n\n**Historical**: Lindemann (1882), settling the 2,000-year-old problem of squaring the circle.\n\n**Status**: Axiomatized pending full formalization of Lindemann-Weierstrass theorem.",
+    "significance": "critical",
+    "relatedConcepts": ["transcendental numbers", "algebraic numbers", "Lindemann-Weierstrass"]
+  },
+  {
+    "id": "ann-transcendental-def",
+    "proofId": "pi-transcendental",
+    "range": {"startLine": 48, "endLine": 63},
+    "type": "definition",
+    "title": "Transcendental Numbers",
+    "content": "**Transcendental over R**:\n\nA number x is transcendental over ring R if it is **not algebraic**:\n- No non-zero polynomial P in R[X] has P(x) = 0\n\n**Key insight for pi**:\n1. $e^{i\\pi} = -1$ (Euler's identity)\n2. If $\\pi$ algebraic, then $i\\pi$ algebraic\n3. Lindemann: $e^\\alpha$ is transcendental for non-zero algebraic $\\alpha$\n4. But $e^{i\\pi} = -1$ is algebraic - contradiction!\n\nMathlib: `Transcendental R x`",
+    "mathContext": "Transcendental ℤ π",
+    "significance": "major",
+    "relatedConcepts": ["algebraic numbers", "polynomial roots", "field extensions"]
+  },
+  {
+    "id": "ann-euler-identity",
+    "proofId": "pi-transcendental",
+    "range": {"startLine": 68, "endLine": 73},
+    "type": "theorem",
+    "title": "Euler's Identity",
+    "content": "**The Most Beautiful Equation**:\n\n$$e^{i\\pi} = -1$$\n\nOr equivalently: $e^{i\\pi} + 1 = 0$\n\n**Connects**:\n- $e$ (natural base)\n- $i$ (imaginary unit)\n- $\\pi$ (circle constant)\n- 1 and 0 (arithmetic foundations)\n\nMathlib: `Complex.exp_pi_mul_I`",
+    "mathContext": "exp(π·I) = -1",
+    "significance": "critical",
+    "relatedConcepts": ["complex exponential", "Euler", "fundamental constants"]
+  },
+  {
+    "id": "ann-lindemann-proof",
+    "proofId": "pi-transcendental",
+    "range": {"startLine": 78, "endLine": 113},
+    "type": "theorem",
+    "title": "Lindemann's Proof Strategy",
+    "content": "**Lindemann-Weierstrass Theorem**:\n\nIf $\\alpha_1, \\ldots, \\alpha_n$ are distinct algebraic numbers, then $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are linearly independent over algebraic numbers.\n\n**Corollary (Lindemann)**: For non-zero algebraic $\\alpha$, $e^\\alpha$ is transcendental.\n\n**Proof that $\\pi$ is transcendental**:\n1. Suppose $\\pi$ algebraic\n2. Then $i\\pi$ algebraic ($i$ is algebraic)\n3. By Lindemann, $e^{i\\pi}$ is transcendental\n4. But $e^{i\\pi} = -1$ is algebraic!\n5. Contradiction - $\\pi$ must be transcendental",
+    "mathContext": "π algebraic ⟹ e^(iπ) transcendental ⟹ contradiction",
+    "significance": "critical",
+    "relatedConcepts": ["Lindemann-Weierstrass", "contraposition", "auxiliary polynomials"]
+  },
+  {
+    "id": "ann-main-axiom",
+    "proofId": "pi-transcendental",
+    "range": {"startLine": 119, "endLine": 143},
+    "type": "theorem",
+    "title": "Main Theorems (Axiomatized)",
+    "content": "**Lindemann's Theorem** (axiom):\n$$\\alpha \\neq 0 \\text{ algebraic} \\Rightarrow e^\\alpha \\text{ transcendental}$$\n\n**Main Result** (axiom):\n$$\\text{Transcendental } \\mathbb{Z} \\ \\pi$$\n\n**Over rationals**:\n$$\\text{Transcendental } \\mathbb{Q} \\ \\pi$$\n\n(Equivalent: polynomial over $\\mathbb{Q}$ can be cleared to polynomial over $\\mathbb{Z}$)\n\n**Status**: Awaiting Mathlib's Lindemann-Weierstrass formalization.",
+    "mathContext": "Transcendental ℤ π",
+    "significance": "critical",
+    "relatedConcepts": ["axiomatization", "awaiting formalization", "Mathlib"]
+  },
+  {
+    "id": "ann-algebraic-examples",
+    "proofId": "pi-transcendental",
+    "range": {"startLine": 163, "endLine": 183},
+    "type": "theorem",
+    "title": "Algebraic Numbers",
+    "content": "**Key Algebraic Numbers**:\n\n**-1 is algebraic**: Root of $X + 1$\n```lean\nuse Polynomial.X + 1\n```\n\n**i is algebraic**: Root of $X^2 + 1$\n```lean\nuse Polynomial.X^2 + 1\n```\n\n**Connection**: These are fully proved in Lean - $-1$ and $i$ being algebraic is essential to the contraposition argument.",
+    "mathContext": "-1: X+1=0, i: X²+1=0",
+    "significance": "major",
+    "relatedConcepts": ["minimal polynomial", "algebraic integers", "Gaussian integers"]
+  },
+  {
+    "id": "ann-corollaries",
+    "proofId": "pi-transcendental",
+    "range": {"startLine": 185, "endLine": 236},
+    "type": "theorem",
+    "title": "Corollaries of Transcendence",
+    "content": "**Transcendence Propagates**:\n\n| Expression | Why Transcendental |\n|------------|--------------------|\n| $\\pi$ irrational | Transcendental $\\Rightarrow$ not rational |\n| $2\\pi$ | If algebraic, $\\pi$ satisfies $p(2X)$ |\n| $\\pi^2$ | If algebraic, $\\pi$ satisfies $p(X^2)$ |\n| $\\pi + 1$ | If algebraic, $\\pi$ satisfies $p(X+1)$ |\n| $1/\\pi$ | Reciprocal polynomial argument |\n\n**Pattern**: Any \"simple\" expression involving only $\\pi$ and algebraics remains transcendental.",
+    "significance": "major",
+    "relatedConcepts": ["polynomial composition", "field operations", "closure"]
+  },
+  {
+    "id": "ann-squaring-circle",
+    "proofId": "pi-transcendental",
+    "range": {"startLine": 241, "endLine": 288},
+    "type": "concept",
+    "title": "Squaring the Circle",
+    "content": "**The Ancient Problem**:\n\nConstruct a square with the same area as a given circle using only compass and straightedge.\n\n**Why Impossible**:\n1. A circle of radius r has area $\\pi r^2$\n2. Equal square has side $r\\sqrt{\\pi}$\n3. Constructible numbers have degree $2^n$ over $\\mathbb{Q}$\n4. But $\\sqrt{\\pi}$ is transcendental (not even algebraic!)\n5. Therefore: impossible to construct\n\n**The Three Classical Impossibilities**:\n1. Squaring the circle ($\\pi$ transcendental)\n2. Doubling the cube ($\\sqrt[3]{2}$ has degree 3)\n3. Trisecting arbitrary angles (degree 3 extensions needed)",
+    "mathContext": "√π transcendental ⟹ not constructible",
+    "significance": "critical",
+    "relatedConcepts": ["compass and straightedge", "constructible numbers", "Galois theory"]
+  },
+  {
+    "id": "ann-connections",
+    "proofId": "pi-transcendental",
+    "range": {"startLine": 293, "endLine": 318},
+    "type": "concept",
+    "title": "Related Theorems",
+    "content": "**Transcendence Results**:\n\n| Theorem | Statement |\n|---------|----------|\n| Hermite (1873) | $e$ is transcendental |\n| Lindemann (1882) | $\\pi$ is transcendental |\n| Gelfond-Schneider (1934) | $\\alpha^\\beta$ transcendental for algebraic $\\alpha,\\beta$ |\n| Baker (1966) | Linear forms in logarithms |\n\n**Open Problems**:\n- Is $e + \\pi$ transcendental? (Unknown!)\n- Is $e\\pi$ transcendental? (Yes, by Gelfond-Schneider)\n- Is $\\pi^\\pi$ transcendental? (Unknown)",
+    "significance": "major",
+    "relatedConcepts": ["Hermite", "Gelfond-Schneider", "open problems"]
+  },
+  {
+    "id": "ann-computation",
+    "proofId": "pi-transcendental",
+    "range": {"startLine": 324, "endLine": 376},
+    "type": "note",
+    "title": "Computational and Physical Significance",
+    "content": "**Computing $\\pi$**:\n- Leibniz: $\\pi/4 = 1 - 1/3 + 1/5 - \\cdots$ (slow)\n- Machin: $\\pi/4 = 4\\arctan(1/5) - \\arctan(1/239)$\n- Chudnovsky algorithm (billions of digits)\n\n**Current record**: > 100 trillion digits (2024)\n\n**Physical appearances**:\n- Circle: $C = 2\\pi r$, $A = \\pi r^2$\n- Heisenberg: $\\Delta x \\cdot \\Delta p \\geq h/(4\\pi)$\n- Einstein: $R_{\\mu\\nu} - \\frac{1}{2}Rg_{\\mu\\nu} = 8\\pi G T_{\\mu\\nu}$\n\n**Philosophical**: The circle - simplest curved figure - has fundamental complexity beyond algebra.",
+    "significance": "minor",
+    "relatedConcepts": ["computation", "physics", "non-periodicity"]
+  }
+]

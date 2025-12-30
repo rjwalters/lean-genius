@@ -1,1 +1,107 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "hilbert-16",
+    "range": {"startLine": 18, "endLine": 74},
+    "type": "concept",
+    "title": "Hilbert's 16th Problem",
+    "content": "**Hilbert's 16th Problem (Part B)**:\n\n> What is H(n), the maximum number of limit cycles for polynomial vector fields of degree n?\n\n$$\\frac{dx}{dt} = P(x,y), \\quad \\frac{dy}{dt} = Q(x,y)$$\n\n**Status: WIDE OPEN**\n\nEven H(2) is unknown! We know:\n- H(1) = 0 (no limit cycles for linear systems)\n- H(2) ≥ 4 (examples exist)\n- H(n) < ∞ for all n (Écalle-Ilyashenko 1991-92)",
+    "significance": "critical",
+    "relatedConcepts": ["limit cycles", "dynamical systems", "polynomial ODE"]
+  },
+  {
+    "id": "ann-vector-field",
+    "proofId": "hilbert-16",
+    "range": {"startLine": 85, "endLine": 113},
+    "type": "definition",
+    "title": "Polynomial Vector Fields",
+    "content": "**Polynomial Vector Field of Degree n**:\n\nA system of ODEs in the plane:\n$$\\frac{dx}{dt} = P(x,y), \\quad \\frac{dy}{dt} = Q(x,y)$$\n\nwhere P, Q are polynomials of degree ≤ n.\n\n**Example (n=2)**: Quadratic system\n$$\\dot{x} = x + y - x^2, \\quad \\dot{y} = -x + y + xy$$",
+    "significance": "major",
+    "relatedConcepts": ["ODE", "polynomial", "degree"]
+  },
+  {
+    "id": "ann-limit-cycle",
+    "proofId": "hilbert-16",
+    "range": {"startLine": 144, "endLine": 174},
+    "type": "definition",
+    "title": "Limit Cycles",
+    "content": "**Limit Cycle**: An isolated periodic orbit.\n\nA closed trajectory Γ such that no other periodic orbit is arbitrarily close to it.\n\n**NOT a limit cycle**: A center (like in linear systems) has infinitely many nested periodic orbits — not isolated!\n\n**The counting problem**: How many isolated periodic orbits can a polynomial system have?",
+    "mathContext": "Γ periodic + isolated",
+    "significance": "critical",
+    "relatedConcepts": ["periodic orbit", "isolation", "attractor"]
+  },
+  {
+    "id": "ann-hilbert-number",
+    "proofId": "hilbert-16",
+    "range": {"startLine": 175, "endLine": 223},
+    "type": "definition",
+    "title": "The Hilbert Number H(n)",
+    "content": "**H(n)** = Maximum number of limit cycles achievable by any polynomial vector field of degree n.\n\n$$H(n) = \\sup_{\\deg F \\leq n} |\\{\\text{limit cycles of } F\\}|$$\n\n**Known values**:\n- H(1) = 0\n- H(2) ≥ 4 (exact value unknown!)\n- H(3) ≥ 13\n- H(n) < ∞ for all n",
+    "mathContext": "H(n) = sup over degree-n fields",
+    "significance": "critical",
+    "relatedConcepts": ["supremum", "counting", "bound"]
+  },
+  {
+    "id": "ann-linear",
+    "proofId": "hilbert-16",
+    "range": {"startLine": 224, "endLine": 307},
+    "type": "theorem",
+    "title": "H(1) = 0: The Linear Case",
+    "content": "**Theorem**: Linear systems have NO limit cycles.\n\nPhase portraits determined by eigenvalues:\n- **Node**: Real eigenvalues, same sign\n- **Saddle**: Real eigenvalues, opposite signs\n- **Focus**: Complex eigenvalues with Re ≠ 0\n- **Center**: Pure imaginary eigenvalues — BUT all orbits periodic (NOT isolated!)\n\nNo isolated periodic orbits possible ⟹ H(1) = 0.",
+    "mathContext": "H(1) = 0",
+    "significance": "major",
+    "relatedConcepts": ["eigenvalues", "linear ODE", "phase portrait"]
+  },
+  {
+    "id": "ann-lower-bounds",
+    "proofId": "hilbert-16",
+    "range": {"startLine": 308, "endLine": 353},
+    "type": "theorem",
+    "title": "Known Lower Bounds",
+    "content": "**Explicit Constructions**:\n\n- **H(2) ≥ 4** (Shi Songling 1980)\n  - \"(3,1) distribution\": 3 around one focus, 1 around another\n\n- **H(3) ≥ 13** (various authors)\n  - Improved over time via computer-assisted proofs\n\nThese are **lower bounds** from explicit examples. Upper bounds unknown!",
+    "mathContext": "H(2) ≥ 4, H(3) ≥ 13",
+    "significance": "major",
+    "relatedConcepts": ["explicit construction", "lower bound", "Shi Songling"]
+  },
+  {
+    "id": "ann-finiteness",
+    "proofId": "hilbert-16",
+    "range": {"startLine": 354, "endLine": 390},
+    "type": "theorem",
+    "title": "Écalle-Ilyashenko Theorem",
+    "content": "**Theorem (1991-92)**: H(n) < ∞ for all n.\n\nPolynomial vector fields have only FINITELY many limit cycles.\n\n**History**:\n- 1923: Dulac claimed proof (gaps found later)\n- 1991-92: Écalle and Ilyashenko independently fix it\n- 500+ pages of complex analysis, resurgent functions\n\n**Caveat**: Gives NO bound on H(n) — just finiteness!",
+    "mathContext": "H(n) < ∞",
+    "significance": "critical",
+    "relatedConcepts": ["Dulac", "Écalle", "Ilyashenko", "resurgence"]
+  },
+  {
+    "id": "ann-poincare-bendixson",
+    "proofId": "hilbert-16",
+    "range": {"startLine": 391, "endLine": 458},
+    "type": "theorem",
+    "title": "Poincaré-Bendixson Theorem",
+    "content": "**2D Dynamics are Simple!**\n\nIf γ is a bounded trajectory with no equilibrium in its ω-limit set, then the ω-limit is a periodic orbit.\n\n**Consequence**: In 2D, bounded trajectories can only:\n- Approach equilibria\n- Approach periodic orbits\n- Approach saddle cycles\n\nThis FAILS in 3D (chaos is possible)!",
+    "significance": "major",
+    "relatedConcepts": ["ω-limit set", "2D dynamics", "qualitative theory"]
+  },
+  {
+    "id": "ann-bifurcation",
+    "proofId": "hilbert-16",
+    "range": {"startLine": 459, "endLine": 523},
+    "type": "concept",
+    "title": "Why It's Hard: Bifurcations",
+    "content": "**Global Problem**:\n\nLimit cycles can appear/disappear as parameters vary:\n\n1. **Hopf bifurcation**: Born from equilibria\n2. **From infinity**: Appear at large scale\n3. **From polycycles**: Saddle connections break\n4. **Annihilation**: Two cycles collide and vanish\n\nTracking these GLOBAL phenomena across all parameter space is the main difficulty.",
+    "significance": "minor",
+    "relatedConcepts": ["bifurcation", "Hopf", "global analysis"]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "hilbert-16",
+    "range": {"startLine": 524, "endLine": 565},
+    "type": "concept",
+    "title": "Problem Status: OPEN",
+    "content": "**Hilbert 16: Still OPEN after 125 years!**\n\n**Known**:\n- H(1) = 0\n- H(n) < ∞ (Écalle-Ilyashenko)\n- H(2) ≥ 4, H(3) ≥ 13\n\n**Unknown**:\n- Exact value of H(2)!\n- Any formula for H(n)\n- Any polynomial bound\n\n**Also Smale's 13th problem** for 21st century mathematics.",
+    "significance": "minor",
+    "relatedConcepts": ["Smale problems", "open problems", "21st century"]
+  }
+]

@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "prime-reciprocal-divergence",
+    "range": {"startLine": 5, "endLine": 53},
+    "type": "concept",
+    "title": "Prime Reciprocal Divergence: Wiedijk #81",
+    "content": "**Main Result**:\n\n$$\\sum_{p \\text{ prime}} \\frac{1}{p} = \\frac{1}{2} + \\frac{1}{3} + \\frac{1}{5} + \\frac{1}{7} + \\cdots = \\infty$$\n\n**Significance**: Strengthens Euclid's infinitude of primes. Not only infinitely many primes, but \"dense enough\" for reciprocals to diverge.\n\n**Growth Comparison**:\n- Harmonic series: $H_n \\sim \\ln(n)$\n- Prime reciprocals: $\\sum_{p \\leq n} 1/p \\sim \\ln(\\ln(n))$\n\n**Historical**: Euler (1737) using his product formula.",
+    "significance": "critical",
+    "relatedConcepts": ["divergence", "prime distribution", "Euler"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "prime-reciprocal-divergence",
+    "range": {"startLine": 62, "endLine": 76},
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**Prime Reciprocal Divergence**:\n\n$$\\neg\\text{Summable}\\left(p \\mapsto \\frac{1}{p}\\right)$$\n\nThe function $p \\mapsto 1/p$ over primes is **not summable** - its partial sums grow without bound.\n\n**Mathlib formalization**:\n- Uses `Nat.Primes` type for primes\n- `Nat.Primes.not_summable_one_div`\n\n**Equivalent**: The sequence $1/2, 1/3, 1/5, 1/7, 1/11, \\ldots$ has no finite sum.",
+    "mathContext": "¬Summable (p ↦ 1/p)",
+    "significance": "critical",
+    "relatedConcepts": ["summable", "divergence", "Nat.Primes"]
+  },
+  {
+    "id": "ann-indicator",
+    "proofId": "prime-reciprocal-divergence",
+    "range": {"startLine": 78, "endLine": 89},
+    "type": "theorem",
+    "title": "Indicator Function Formulation",
+    "content": "**As Sub-sum of Harmonic Series**:\n\nUsing set indicator functions:\n$$\\sum_{n=1}^{\\infty} \\mathbf{1}_{\\{p : \\text{Prime}(p)\\}}(n) \\cdot \\frac{1}{n}$$\n\nFor each $n$: get $1/n$ if $n$ is prime, else 0.\n\n**Why useful**:\n- Shows prime sum \"sits inside\" harmonic series\n- Both diverge, but prime sum grows much slower\n- Uses `Set.indicator` from Mathlib\n\n`not_summable_one_div_on_primes`",
+    "mathContext": "indicator over primes",
+    "significance": "major",
+    "relatedConcepts": ["indicator function", "harmonic series", "subset sum"]
+  },
+  {
+    "id": "ann-p-series",
+    "proofId": "prime-reciprocal-divergence",
+    "range": {"startLine": 91, "endLine": 109},
+    "type": "theorem",
+    "title": "Prime p-Series Criterion",
+    "content": "**Generalization** - When does $\\sum_p p^r$ converge?\n\n$$\\text{Summable}(p \\mapsto p^r) \\Leftrightarrow r < -1$$\n\n**Cases**:\n- $r = -1$: DIVERGES (our main theorem)\n- $r < -1$: CONVERGES\n- $r > -1$: DIVERGES (faster)\n\n**Prime zeta function**:\n$$P(s) = \\sum_{p \\text{ prime}} \\frac{1}{p^s}$$\nconverges for $s > 1$.\n\nMathlib: `Nat.Primes.summable_rpow`",
+    "mathContext": "Summable(p ↦ p^r) ⟺ r < -1",
+    "significance": "major",
+    "relatedConcepts": ["p-series", "prime zeta function", "convergence criterion"]
+  },
+  {
+    "id": "ann-significance",
+    "proofId": "prime-reciprocal-divergence",
+    "range": {"startLine": 111, "endLine": 126},
+    "type": "concept",
+    "title": "Significance for Prime Distribution",
+    "content": "**Comparison**:\n\n| Series | Result | Growth |\n|--------|--------|--------|\n| $\\sum 1/n^2$ | Converges ($\\pi^2/6$) | - |\n| $\\sum 1/n$ | Diverges | $\\ln(n)$ |\n| $\\sum_{p} 1/p$ | Diverges | $\\ln(\\ln(n))$ |\n\n**Prime Number Theorem**: $\\pi(n) \\sim n/\\ln(n)$\n\nPrimes become rare, but remain \"dense enough\" for reciprocals to diverge.\n\n**Applications**:\n- Mertens' theorems\n- Riemann zeta function\n- Probabilistic number theory",
+    "significance": "major",
+    "relatedConcepts": ["PNT", "Mertens", "Riemann zeta"]
+  },
+  {
+    "id": "ann-convergent-cases",
+    "proofId": "prime-reciprocal-divergence",
+    "range": {"startLine": 128, "endLine": 146},
+    "type": "theorem",
+    "title": "Convergent Cases",
+    "content": "**Contrast**: While $\\sum 1/p$ diverges, $\\sum 1/p^2$ converges!\n\n**Theorem**: For $r > 1$:\n$$\\sum_{p \\text{ prime}} \\frac{1}{p^r} < \\infty$$\n\n**Proof** (for $r = 2$):\n```lean\nhave h : Summable (p ↦ p^(-2)) := by\n  rw [prime_power_summable_iff]; norm_num\n```\n\n**Prime zeta values**:\n- $P(2) \\approx 0.4522...$\n- $P(3) \\approx 0.1747...$\n\nThese are related to the Riemann zeta function.",
+    "mathContext": "Σ 1/p² converges",
+    "significance": "major",
+    "relatedConcepts": ["prime zeta", "convergence", "p-series"]
+  },
+  {
+    "id": "ann-erdos-proof",
+    "proofId": "prime-reciprocal-divergence",
+    "range": {"startLine": 147, "endLine": 158},
+    "type": "theorem",
+    "title": "Erdős's Proof Strategy",
+    "content": "**Elementary Proof** (Erdős, from \"Proofs from THE BOOK\"):\n\n1. **Assume** $\\sum 1/p$ converges to $S$\n2. **Define** smooth numbers (all prime factors $\\leq k$)\n3. **Estimate** count of smooth numbers up to $n$\n4. **If convergent**: \"too few\" smooth numbers\n5. **But also**: can show \"enough\" smooth numbers\n6. **Contradiction!**\n\n**Why elegant**: Purely elementary, no analytic machinery.\n\nThe Mathlib proof follows this approach.",
+    "mathContext": "Erdős's smooth number argument",
+    "significance": "major",
+    "relatedConcepts": ["Erdős", "smooth numbers", "Proofs from THE BOOK"]
+  }
+]

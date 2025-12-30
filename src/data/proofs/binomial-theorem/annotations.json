@@ -1,1 +1,88 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "binomial-theorem",
+    "range": {"startLine": 6, "endLine": 43},
+    "type": "concept",
+    "title": "Binomial Theorem: Wiedijk #44",
+    "content": "**The Binomial Theorem**:\n\n$$(x + y)^n = \\sum_{k=0}^{n} \\binom{n}{k} x^k y^{n-k}$$\n\nwhere $\\binom{n}{k} = \\frac{n!}{k!(n-k)!}$ is the binomial coefficient.\n\n**Key Insight**: Each term counts ways to choose $k$ factors of $x$ from $n$ factors.\n\n**Historical**:\n- Al-Karaji (c. 1000): Coefficient triangle\n- Yang Hui (1261): Pascal's triangle in China\n- Newton (1665): Extended to fractional/negative exponents\n\n**Status**: Complete Mathlib proof using `add_pow`.",
+    "significance": "critical",
+    "relatedConcepts": ["combinatorics", "Pascal's triangle", "Newton"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "binomial-theorem",
+    "range": {"startLine": 49, "endLine": 66},
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**Binomial Theorem (Wiedijk #44)**:\n\nFor $x, y$ in a commutative semiring and $n \\in \\mathbb{N}$:\n$$(x + y)^n = \\sum_{k=0}^{n} \\binom{n}{k} x^k y^{n-k}$$\n\n**Lean Statement**:\n```lean\ntheorem binomial_theorem (x y : R) (n : ℕ) :\n    (x + y) ^ n = ∑ k in range (n + 1), \n      Nat.choose n k * x ^ k * y ^ (n - k)\n```\n\n**Proof**: Direct from Mathlib's `add_pow`, adjusting the form with `ring`.\n\n**Generality**: Works in any `CommSemiring` (not just ℤ or ℝ).",
+    "mathContext": "(x + y)^n = Σ C(n,k) x^k y^(n-k)",
+    "significance": "critical",
+    "relatedConcepts": ["add_pow", "CommSemiring", "Nat.choose"]
+  },
+  {
+    "id": "ann-sum-coefficients",
+    "proofId": "binomial-theorem",
+    "range": {"startLine": 67, "endLine": 81},
+    "type": "theorem",
+    "title": "Sum of Binomial Coefficients",
+    "content": "**Corollary: Sum = 2^n**\n\n$$\\sum_{k=0}^{n} \\binom{n}{k} = 2^n$$\n\n**Proof**: Set $x = y = 1$ in the binomial theorem:\n$$(1 + 1)^n = 2^n = \\sum_{k=0}^{n} \\binom{n}{k} \\cdot 1^k \\cdot 1^{n-k}$$\n\n**Combinatorial**: Total number of subsets of an $n$-element set.\n\n**Example**: Row 4 of Pascal's triangle: $1 + 4 + 6 + 4 + 1 = 16 = 2^4$\n\n**Mathlib**: `Nat.sum_range_choose`",
+    "mathContext": "Σ C(n,k) = 2^n",
+    "significance": "major",
+    "relatedConcepts": ["power of 2", "subset count", "row sum"]
+  },
+  {
+    "id": "ann-alternating-sum",
+    "proofId": "binomial-theorem",
+    "range": {"startLine": 82, "endLine": 97},
+    "type": "theorem",
+    "title": "Alternating Sum Vanishes",
+    "content": "**Corollary: Alternating Sum = 0** (for $n \\geq 1$)\n\n$$\\sum_{k=0}^{n} (-1)^k \\binom{n}{k} = 0$$\n\n**Proof**: Set $x = 1$, $y = -1$:\n$$(1 + (-1))^n = 0^n = 0$$\n\n**Interpretation**: Even-indexed coefficients sum equals odd-indexed sum.\n$$\\binom{n}{0} + \\binom{n}{2} + \\cdots = \\binom{n}{1} + \\binom{n}{3} + \\cdots$$\n\n**Example**: $1 - 4 + 6 - 4 + 1 = 0$\n\n**Mathlib**: `Int.alternating_sum_range_choose`",
+    "mathContext": "Σ (-1)^k C(n,k) = 0",
+    "significance": "major",
+    "relatedConcepts": ["alternating sum", "even/odd partition", "inclusion-exclusion"]
+  },
+  {
+    "id": "ann-pascal",
+    "proofId": "binomial-theorem",
+    "range": {"startLine": 98, "endLine": 110},
+    "type": "theorem",
+    "title": "Pascal's Identity",
+    "content": "**Recurrence Relation**:\n\n$$\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$$\n\n**This defines Pascal's triangle!**\n\nEach entry is the sum of the two entries above it.\n\n**Combinatorial Proof**:\n- To choose $k+1$ items from $n+1$: either\n- Include item $n+1$: choose remaining $k$ from first $n$\n- Exclude item $n+1$: choose all $k+1$ from first $n$\n\n**Mathlib**: `Nat.choose_succ_succ`",
+    "mathContext": "C(n+1, k+1) = C(n,k) + C(n, k+1)",
+    "significance": "major",
+    "relatedConcepts": ["Pascal's triangle", "recurrence", "combinatorial identity"]
+  },
+  {
+    "id": "ann-symmetry",
+    "proofId": "binomial-theorem",
+    "range": {"startLine": 111, "endLine": 131},
+    "type": "theorem",
+    "title": "Symmetry and Boundary",
+    "content": "**Symmetry**: $\\binom{n}{k} = \\binom{n}{n-k}$ for $k \\leq n$\n\nChoosing $k$ items = choosing which $n-k$ to leave out.\n\n**Boundary Values**:\n$$\\binom{n}{0} = 1, \\quad \\binom{n}{n} = 1$$\n\n- One way to choose nothing\n- One way to choose everything\n\n**Triangle Symmetry**:\n```\n      1\n     1 1\n    1 2 1\n   1 3 3 1\n  1 4 6 4 1\n```\nEach row is symmetric about the center.",
+    "mathContext": "C(n,k) = C(n, n-k)",
+    "significance": "minor",
+    "relatedConcepts": ["symmetry", "boundary conditions", "triangle"]
+  },
+  {
+    "id": "ann-special-cases",
+    "proofId": "binomial-theorem",
+    "range": {"startLine": 132, "endLine": 149},
+    "type": "theorem",
+    "title": "Special Cases: Square and Cube",
+    "content": "**Explicit Expansions**:\n\n**Square** ($n = 2$):\n$$(x + y)^2 = x^2 + 2xy + y^2$$\n\n**Cube** ($n = 3$):\n$$(x + y)^3 = x^3 + 3x^2y + 3xy^2 + y^3$$\n\n**Lean Proof**: Both follow directly from `ring` tactic.\n\n**Coefficients**:\n- $(x+y)^2$: 1, 2, 1 from row 2 of Pascal's triangle\n- $(x+y)^3$: 1, 3, 3, 1 from row 3",
+    "mathContext": "(x+y)² = x² + 2xy + y²",
+    "significance": "minor",
+    "relatedConcepts": ["square", "cube", "ring tactic"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "binomial-theorem",
+    "range": {"startLine": 150, "endLine": 170},
+    "type": "note",
+    "title": "Verified Examples",
+    "content": "**Computational Verification**:\n\n| Expression | Value |\n|------------|-------|\n| $(1+1)^4$ | $16$ |\n| $\\binom{5}{2}$ | $10$ |\n| $\\binom{10}{5}$ | $252$ |\n| $\\binom{6}{2} = \\binom{6}{4}$ | $15$ (symmetry) |\n\n**Pascal's Identity Check**:\n$$\\binom{5}{3} = \\binom{4}{2} + \\binom{4}{3} = 6 + 4 = 10$$\n\nAll verified with `native_decide` for concrete numerical checks.",
+    "significance": "minor",
+    "relatedConcepts": ["examples", "native_decide", "verification"]
+  }
+]

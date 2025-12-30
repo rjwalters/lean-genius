@@ -77,7 +77,7 @@ export function WiedijkBadge({
     <Tooltip>
       <TooltipTrigger asChild>
         <span
-          className={`inline-flex items-center justify-center rounded-full font-bold ${sizeClasses} ${className}`}
+          className={`inline-flex items-center justify-center rounded-full font-bold shrink-0 ${sizeClasses} ${className}`}
           style={{
             backgroundColor: `${WIEDIJK_BADGE_INFO.color}25`,
             color: WIEDIJK_BADGE_INFO.textColor,

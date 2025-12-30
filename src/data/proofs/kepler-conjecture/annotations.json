@@ -1,1 +1,117 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "kepler-conjecture",
+    "range": {"startLine": 5, "endLine": 65},
+    "type": "concept",
+    "title": "Hilbert's 18th Problem: Kepler Conjecture",
+    "content": "**Hilbert's 18th Problem (1900)**:\n\n> What is the densest packing of congruent spheres in ℝ³?\n\n**The Kepler Conjecture (1611)**: The face-centered cubic (FCC) arrangement achieves maximum density:\n$$\\delta_{FCC} = \\frac{\\pi}{3\\sqrt{2}} \\approx 74.05\\%$$\n\n**Status: SOLVED (Hales 1998, Flyspeck 2014)**\n\nThis is how grocers stack oranges — and it's mathematically optimal!",
+    "significance": "critical",
+    "relatedConcepts": ["sphere packing", "FCC lattice", "density", "Hales"]
+  },
+  {
+    "id": "ann-packing-density",
+    "proofId": "kepler-conjecture",
+    "range": {"startLine": 77, "endLine": 98},
+    "type": "definition",
+    "title": "Packing Density",
+    "content": "**Packing Density δ**:\n\nThe fraction of space covered by spheres:\n$$\\delta = \\lim_{R \\to \\infty} \\frac{\\text{volume of spheres in } B_R}{\\text{volume of } B_R}$$\n\n**For lattice packings**:\n$$\\delta = \\frac{V_{\\text{sphere}}}{V_{\\text{fundamental domain}}}$$\n\n**In our formalization**:\n- `sphereVolume r = (4/3)πr³`\n- `PackingDensity` structure ensures 0 ≤ δ ≤ 1",
+    "mathContext": "0 ≤ δ ≤ 1",
+    "significance": "major",
+    "relatedConcepts": ["volume", "lattice", "fundamental domain"]
+  },
+  {
+    "id": "ann-hexagonal-2d",
+    "proofId": "kepler-conjecture",
+    "range": {"startLine": 103, "endLine": 158},
+    "type": "theorem",
+    "title": "Thue's Theorem (2D Optimal Packing)",
+    "content": "**Thue's Theorem (1892)**:\n\nThe hexagonal packing achieves maximum density in 2D:\n$$\\delta_{hex} = \\frac{\\pi}{2\\sqrt{3}} \\approx 90.69\\%$$\n\n**Key facts**:\n- Each disk touches **6 neighbors** (kissing number)\n- Fundamental domain area: $2\\sqrt{3}r²$\n- Proven by Thue (1892), rigorously by Fejes Tóth (1940)\n\n**Proof idea**: Show every Voronoi cell has area ≥ $2\\sqrt{3}r²$.",
+    "mathContext": "δ = π/(2√3)",
+    "significance": "major",
+    "relatedConcepts": ["hexagonal lattice", "Voronoi cells", "Fejes Tóth"]
+  },
+  {
+    "id": "ann-fcc-lattice",
+    "proofId": "kepler-conjecture",
+    "range": {"startLine": 164, "endLine": 240},
+    "type": "definition",
+    "title": "Face-Centered Cubic (FCC) Lattice",
+    "content": "**FCC Lattice Structure**:\n\nSphere centers at:\n- All **corners** of a cube\n- **Center of each face**\n\n**Properties**:\n- Kissing number = **12** (each sphere touches 12 neighbors)\n- Sphere radius = $\\frac{\\sqrt{2}}{4}$ of lattice constant\n- Density: $\\delta = \\frac{\\pi}{3\\sqrt{2}} \\approx 0.7405$\n\n**Alternative view**: Hexagonal close-packed (HCP) layers stacked ABCABC.\n\n**Numerical bounds**: $0.74 < \\delta_{FCC} < 0.75$",
+    "mathContext": "δ = π/(3√2)",
+    "significance": "critical",
+    "relatedConcepts": ["lattice packing", "HCP", "crystallography"]
+  },
+  {
+    "id": "ann-kepler-theorem",
+    "proofId": "kepler-conjecture",
+    "range": {"startLine": 246, "endLine": 291},
+    "type": "theorem",
+    "title": "The Kepler Conjecture (Hales 1998)",
+    "content": "**THE MAIN THEOREM (Hales 1998)**:\n\nNo packing of congruent spheres in ℝ³ has density greater than FCC:\n$$\\forall \\text{ packings } P: \\delta(P) \\leq \\frac{\\pi}{3\\sqrt{2}}$$\n\n**The proof**:\n- 250+ pages of mathematics\n- 40,000+ lines of computer code\n- 12 referees over 4 years\n- Published in Annals (2005)\n\n**Formal verification**: Flyspeck project in HOL Light (2014)\n\n**Gauss (1831)**: Earlier proved FCC optimal among *lattice* packings only.",
+    "mathContext": "δ ≤ π/(3√2)",
+    "significance": "critical",
+    "relatedConcepts": ["Hales", "Flyspeck", "HOL Light", "computer-assisted proof"]
+  },
+  {
+    "id": "ann-kissing-numbers",
+    "proofId": "kepler-conjecture",
+    "range": {"startLine": 138, "endLine": 232},
+    "type": "concept",
+    "title": "Kissing Numbers",
+    "content": "**Kissing Number k(n)**:\n\nMaximum number of non-overlapping unit spheres that can touch a central sphere in dimension n.\n\n**Known values**:\n| Dim | k(n) | Arrangement |\n|-----|------|-------------|\n| 2 | 6 | Hexagonal |\n| 3 | **12** | FCC/HCP |\n| 4 | 24 | D₄ lattice |\n| 8 | 240 | E₈ lattice |\n| 24 | 196,560 | Leech lattice |\n\n**Historical note**: k(3) = 12 was a famous problem, solved by Schütte & van der Waerden (1953).",
+    "significance": "major",
+    "relatedConcepts": ["Newton-Gregory problem", "E8 lattice", "Leech lattice"]
+  },
+  {
+    "id": "ann-viazovska",
+    "proofId": "kepler-conjecture",
+    "range": {"startLine": 296, "endLine": 350},
+    "type": "theorem",
+    "title": "Viazovska's Theorem (Dimensions 8 and 24)",
+    "content": "**Higher-Dimensional Breakthroughs (Viazovska 2016)**:\n\n**Dimension 8 (E₈ lattice)**:\n$$\\delta_{E_8} = \\frac{\\pi^4}{384} \\approx 25.37\\%$$\n\n**Dimension 24 (Leech lattice)**:\n$$\\delta_{\\Lambda_{24}} \\approx 0.00193$$\n\n**Proof technique**: Modular forms + linear programming bounds.\n\n**Fields Medal**: Viazovska won the 2022 Fields Medal for this work!\n\n**Open**: Optimal packing unknown in dimensions 4-7, 9-23, ≥25.",
+    "mathContext": "δ₈ = π⁴/384",
+    "significance": "major",
+    "relatedConcepts": ["Viazovska", "E8", "Leech lattice", "modular forms"]
+  },
+  {
+    "id": "ann-density-trend",
+    "proofId": "kepler-conjecture",
+    "range": {"startLine": 380, "endLine": 415},
+    "type": "theorem",
+    "title": "Density Decreases with Dimension",
+    "content": "**Density vs Dimension**:\n\n| Dimension | Optimal δ | Structure |\n|-----------|-----------|----------|\n| 2 | ~90.7% | Hexagonal |\n| 3 | ~74.0% | FCC |\n| 8 | ~25.4% | E₈ |\n| 24 | ~0.19% | Leech |\n\n**Key inequality**:\n$$\\delta_{2D} > \\delta_{3D} > \\delta_{8D}$$\n\n**Intuition**: Higher dimensions have more \"gaps\" between spheres.\n\n**Proof of 3√2 > 2√3**: Square both sides: 18 > 12 ✓",
+    "significance": "minor",
+    "relatedConcepts": ["dimensional analysis", "curse of dimensionality"]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "kepler-conjecture",
+    "range": {"startLine": 356, "endLine": 374},
+    "type": "concept",
+    "title": "Applications of Sphere Packing",
+    "content": "**Real-World Applications**:\n\n1. **Error-Correcting Codes**: Dense packings → efficient codes. E₈ and Leech lattices give exceptional codes.\n\n2. **Crystallography**: FCC appears in Al, Cu, Au, Ag, Pb. Packing predicts material properties.\n\n3. **Digital Communications**: Sphere packing bounds limit signal constellation efficiency.\n\n4. **Computational Geometry**: Mesh generation, molecular simulation, granular materials.",
+    "significance": "minor",
+    "relatedConcepts": ["coding theory", "crystallography", "communications"]
+  },
+  {
+    "id": "ann-history",
+    "proofId": "kepler-conjecture",
+    "range": {"startLine": 52, "endLine": 65},
+    "type": "concept",
+    "title": "Historical Timeline",
+    "content": "**400+ Year Journey**:\n\n- **1611**: Kepler conjectures FCC is optimal\n- **1831**: Gauss proves FCC optimal among *lattice* packings\n- **1892**: Thue proves 2D hexagonal optimal\n- **1953**: Schütte-van der Waerden prove k(3) = 12\n- **1998**: Hales announces computer-assisted proof\n- **2005**: Published in Annals of Mathematics\n- **2014**: **Flyspeck formal verification complete!**\n- **2016**: Viazovska solves dimensions 8 and 24",
+    "significance": "minor",
+    "relatedConcepts": ["Kepler", "Gauss", "Hales", "Flyspeck"]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "kepler-conjecture",
+    "range": {"startLine": 418, "endLine": 431},
+    "type": "concept",
+    "title": "Problem Status: SOLVED",
+    "content": "**Hilbert 18: SOLVED (Hales 1998)**\n\n**Summary**:\n- FCC/HCP achieve maximum 3D density ✓\n- $\\delta_{max} = \\pi/(3\\sqrt{2}) \\approx 74.05\\%$ ✓\n- Formally verified in HOL Light (Flyspeck 2014) ✓\n- Kissing number k(3) = 12 ✓\n\n**Also solved**:\n- 2D: Hexagonal (Thue 1892)\n- 8D: E₈ (Viazovska 2016)\n- 24D: Leech (Viazovska et al. 2016)\n\n**Open**: Dimensions 4-7, 9-23, and ≥25!",
+    "significance": "minor",
+    "relatedConcepts": ["solved", "formal verification", "open problems"]
+  }
+]

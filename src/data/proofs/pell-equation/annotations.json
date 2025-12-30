@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "pell-equation",
+    "range": {"startLine": 4, "endLine": 66},
+    "type": "concept",
+    "title": "Pell's Equation: Wiedijk #39",
+    "content": "**Pell's Equation**:\n$$x^2 - Dy^2 = 1$$\n\nwhere D is a positive non-square integer.\n\n**Main Results**:\n1. Always has infinitely many solutions\n2. All solutions generated from a fundamental solution:\n   $$x_n + y_n\\sqrt{D} = (x_1 + y_1\\sqrt{D})^n$$\n\n**Historical**: Brahmagupta (628 CE), Bhaskara II (1150), Fermat, Lagrange.",
+    "significance": "critical",
+    "relatedConcepts": ["Diophantine equation", "continued fractions", "algebraic integers"]
+  },
+  {
+    "id": "ann-existence",
+    "proofId": "pell-equation",
+    "range": {"startLine": 86, "endLine": 105},
+    "type": "theorem",
+    "title": "Existence of Solutions",
+    "content": "**Existence Theorem**:\n\nFor any positive non-square D, Pell's equation $x^2 - Dy^2 = 1$ has non-trivial solutions.\n\n**Non-trivial** means $y \\neq 0$ (trivial: $(\\pm 1, 0)$).\n\n**Proof uses**:\n- Dirichlet's approximation theorem\n- Continued fraction expansion of $\\sqrt{D}$\n- Pigeonhole principle\n\nMathlib: `Pell.exists_of_not_isSquare`",
+    "mathContext": "∃ (x,y): x²-Dy²=1, y≠0",
+    "significance": "critical",
+    "relatedConcepts": ["existence", "Dirichlet", "continued fractions"]
+  },
+  {
+    "id": "ann-infinitely-many",
+    "proofId": "pell-equation",
+    "range": {"startLine": 107, "endLine": 124},
+    "type": "theorem",
+    "title": "Infinitely Many Solutions",
+    "content": "**Theorem**: There are infinitely many solutions.\n\n**Generation**: If $(x_1, y_1)$ is the fundamental solution:\n$$x_n + y_n\\sqrt{D} = (x_1 + y_1\\sqrt{D})^n$$\n\ngives all positive solutions.\n\n**Key insight**: Distinct powers give distinct solutions because y-coordinates are strictly increasing.",
+    "mathContext": "(x₁+y₁√D)ⁿ gives all solutions",
+    "significance": "critical",
+    "relatedConcepts": ["infinite family", "powers", "generation"]
+  },
+  {
+    "id": "ann-fundamental",
+    "proofId": "pell-equation",
+    "range": {"startLine": 128, "endLine": 153},
+    "type": "definition",
+    "title": "Fundamental Solution",
+    "content": "**Fundamental Solution**:\n\nThe smallest positive solution $(x_1, y_1)$ with:\n- $x_1 > 1$\n- $y_1 > 0$\n- $x_1$ minimal among all such solutions\n\n**Properties**:\n- Exists when D is not a perfect square\n- Unique\n- Generates all other solutions\n\nThis is the \"building block\" for the solution group.",
+    "mathContext": "Minimal (x,y) with x>1, y>0",
+    "significance": "major",
+    "relatedConcepts": ["fundamental unit", "minimal solution", "generator"]
+  },
+  {
+    "id": "ann-all-solutions",
+    "proofId": "pell-equation",
+    "range": {"startLine": 157, "endLine": 166},
+    "type": "theorem",
+    "title": "All Solutions from Fundamental",
+    "content": "**Structure Theorem**:\n\nEvery solution is either $a_1^n$ or $-a_1^n$ where:\n- $a_1$ is the fundamental solution\n- $n \\in \\mathbb{Z}$\n\n**Group structure**: Solutions form a group isomorphic to $\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$.\n\nMathlib: `IsFundamental.eq_zpow_or_neg_zpow`",
+    "mathContext": "a = a₁ⁿ or a = -a₁ⁿ",
+    "significance": "major",
+    "relatedConcepts": ["group structure", "classification", "cyclic"]
+  },
+  {
+    "id": "ann-multiplication",
+    "proofId": "pell-equation",
+    "range": {"startLine": 170, "endLine": 196},
+    "type": "theorem",
+    "title": "Group Structure of Solutions",
+    "content": "**Multiplication of Solutions**:\n\n$$(x_1, y_1) \\cdot (x_2, y_2) = (x_1x_2 + Dy_1y_2, x_1y_2 + x_2y_1)$$\n\n**Group properties**:\n- Identity: $(1, 0)$\n- Inverse: $(x, -y)$ for solution $(x, y)$\n- Associative\n\n**Connection**: This is multiplication in $\\mathbb{Z}[\\sqrt{D}]$!",
+    "mathContext": "(x₁,y₁)·(x₂,y₂) in ℤ[√D]",
+    "significance": "major",
+    "relatedConcepts": ["group", "ring of integers", "multiplication"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "pell-equation",
+    "range": {"startLine": 200, "endLine": 243},
+    "type": "note",
+    "title": "Explicit Examples",
+    "content": "**Fundamental Solutions**:\n\n| D | Fundamental $(x_1, y_1)$ | Verification |\n|---|---|---|\n| 2 | (3, 2) | 9 - 8 = 1 |\n| 3 | (2, 1) | 4 - 3 = 1 |\n| 5 | (9, 4) | 81 - 80 = 1 |\n| 7 | (8, 3) | 64 - 63 = 1 |\n| 61 | (1766319049, 226153980) | Fermat's challenge! |\n\n**D = 61**: Remarkably large solution shows computational difficulty.",
+    "significance": "minor",
+    "relatedConcepts": ["examples", "Fermat", "computation"]
+  },
+  {
+    "id": "ann-non-square",
+    "proofId": "pell-equation",
+    "range": {"startLine": 247, "endLine": 270},
+    "type": "theorem",
+    "title": "Why D Must Not Be Square",
+    "content": "**Theorem**: If $D = k^2$ is a perfect square, only trivial solutions exist.\n\n**Proof**:\n$$x^2 - k^2y^2 = (x-ky)(x+ky) = 1$$\n\nFor integers, either:\n- $x - ky = 1, x + ky = 1 \\Rightarrow y = 0$\n- $x - ky = -1, x + ky = -1 \\Rightarrow y = 0$\n\nSo the non-square condition is essential!",
+    "mathContext": "D = k² ⟹ only trivial solutions",
+    "significance": "major",
+    "relatedConcepts": ["square", "factorization", "necessity"]
+  },
+  {
+    "id": "ann-connections",
+    "proofId": "pell-equation",
+    "range": {"startLine": 272, "endLine": 289},
+    "type": "concept",
+    "title": "Connections to Other Areas",
+    "content": "**Algebraic Number Theory**:\n- Solutions = units in $\\mathbb{Z}[\\sqrt{D}]$\n- Fundamental solution = fundamental unit\n\n**Continued Fractions**:\n- Convergents $p_n/q_n$ of $\\sqrt{D}$ give solutions\n- $p_n^2 - Dq_n^2 = \\pm 1$\n\n**Diophantine Approximation**:\n- Best rational approximations to $\\sqrt{D}$\n- $|\\sqrt{D} - x/y| < 1/(2y^2)$",
+    "significance": "major",
+    "relatedConcepts": ["units", "continued fractions", "approximation"]
+  }
+]

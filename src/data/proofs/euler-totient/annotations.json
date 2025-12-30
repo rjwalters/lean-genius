@@ -1,1 +1,54 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "euler-totient",
+    "range": {"startLine": 6, "endLine": 40},
+    "type": "concept",
+    "title": "Euler's Generalization of Fermat's Little Theorem",
+    "content": "**Wiedijk #10**: Euler's Theorem (1763)\n\nFor coprime integers a and n:\n\n$$a^{\\varphi(n)} \\equiv 1 \\pmod{n}$$\n\nwhere φ(n) is **Euler's totient function** — the count of integers from 1 to n that are coprime to n.\n\n**Applications**: RSA encryption, primality testing, modular arithmetic.",
+    "significance": "critical",
+    "relatedConcepts": ["Fermat's Little Theorem", "RSA cryptography", "group theory"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "euler-totient",
+    "range": {"startLine": 51, "endLine": 58},
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**Euler's Theorem**:\n\n$$a^{\\varphi(n)} = 1 \\text{ in } (\\mathbb{Z}/n\\mathbb{Z})^*$$\n\n**Why it works**: The multiplicative group of units has order φ(n). By Lagrange's theorem, any element raised to the group order equals the identity.\n\nMathlib: `ZMod.pow_totient`",
+    "mathContext": "$a^{\\varphi(n)} \\equiv 1$",
+    "significance": "critical",
+    "relatedConcepts": ["Lagrange's theorem", "ZMod", "units"]
+  },
+  {
+    "id": "ann-fermat",
+    "proofId": "euler-totient",
+    "range": {"startLine": 65, "endLine": 74},
+    "type": "theorem",
+    "title": "Fermat's Little Theorem",
+    "content": "**Special case**: When n = p is prime:\n\n$$a^{p-1} \\equiv 1 \\pmod{p}$$\n\nSince φ(p) = p - 1 for prime p, Fermat's theorem is just Euler's theorem restricted to prime moduli.\n\n**Alternative form**: $a^p \\equiv a \\pmod{p}$ for all a (including when p | a).",
+    "mathContext": "$a^{p-1} \\equiv 1 \\pmod{p}$",
+    "significance": "major",
+    "relatedConcepts": ["prime numbers", "primality testing"]
+  },
+  {
+    "id": "ann-totient-values",
+    "proofId": "euler-totient",
+    "range": {"startLine": 88, "endLine": 104},
+    "type": "note",
+    "title": "Totient Values",
+    "content": "**φ(n) for small n**:\n\n| n | φ(n) | Coprime to n |\n|---|------|---------------|\n| 1 | 1 | {1} |\n| 2 | 1 | {1} |\n| 3 | 2 | {1, 2} |\n| 4 | 2 | {1, 3} |\n| 5 | 4 | {1, 2, 3, 4} |\n| 6 | 2 | {1, 5} |\n\n**Formula**: φ(p^k) = p^(k-1)(p-1) for prime p.",
+    "significance": "minor",
+    "relatedConcepts": ["coprimality", "gcd"]
+  },
+  {
+    "id": "ann-verification",
+    "proofId": "euler-totient",
+    "range": {"startLine": 106, "endLine": 117},
+    "type": "note",
+    "title": "Computational Verification",
+    "content": "**Examples verified by `native_decide`**:\n\n- 2^φ(5) = 2^4 = 16 ≡ 1 (mod 5) ✓\n- 3^φ(7) = 3^6 = 729 ≡ 1 (mod 7) ✓\n- 2^φ(4) = 2^2 = 4 ≡ 0 (mod 4) ✗\n\nThe last example shows coprimality is essential: gcd(2, 4) = 2 ≠ 1.",
+    "significance": "minor",
+    "relatedConcepts": ["native_decide", "counterexamples"]
+  }
+]

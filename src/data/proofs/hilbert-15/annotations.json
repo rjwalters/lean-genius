@@ -1,1 +1,97 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "hilbert-15",
+    "range": {"startLine": 9, "endLine": 62},
+    "type": "concept",
+    "title": "Hilbert's 15th Problem",
+    "content": "**Hilbert's 15th Problem (1900)**:\n\n> Put Schubert's enumerative calculus on rigorous foundations.\n\n**Schubert (1879)** developed techniques for counting:\n- How many lines meet 4 given lines? **2**\n- How many conics tangent to 5 conics? **3264**\n- How many lines on a cubic surface? **27**\n\n**Resolution**: Intersection theory on Grassmannians (1930s-1970s)",
+    "significance": "critical",
+    "relatedConcepts": ["Schubert calculus", "enumerative geometry", "intersection theory"]
+  },
+  {
+    "id": "ann-grassmannian",
+    "proofId": "hilbert-15",
+    "range": {"startLine": 73, "endLine": 105},
+    "type": "definition",
+    "title": "The Grassmannian",
+    "content": "**Grassmannian Gr(k,n)**:\n\nThe set of all k-dimensional subspaces of an n-dimensional vector space.\n\n$$Gr(k,n) = \\{V \\subseteq K^n : \\dim(V) = k\\}$$\n\n**Key examples**:\n- Gr(1,n) = projective (n-1)-space\n- **Gr(2,4)** = lines in projective 3-space\n- Gr(k,n) ≅ Gr(n-k,n) (duality)",
+    "mathContext": "Gr(k,n)",
+    "significance": "major",
+    "relatedConcepts": ["Grassmannian", "projective space", "subspace"]
+  },
+  {
+    "id": "ann-lines",
+    "proofId": "hilbert-15",
+    "range": {"startLine": 106, "endLine": 142},
+    "type": "definition",
+    "title": "Lines in P³",
+    "content": "**Lines in Projective 3-Space**:\n\nA line in P³ corresponds to a 2-dimensional subspace of K⁴.\n\n$$\\text{LineInP}^3 = Gr(2,4)$$\n\n**Two lines meet** iff their 2D subspaces have nontrivial intersection.\n\nEquivalently: their span has dimension < 4 (rather than 4).",
+    "significance": "major",
+    "relatedConcepts": ["projective geometry", "incidence", "linear algebra"]
+  },
+  {
+    "id": "ann-four-lines",
+    "proofId": "hilbert-15",
+    "range": {"startLine": 143, "endLine": 218},
+    "type": "theorem",
+    "title": "The Four Lines Theorem",
+    "content": "**THE CLASSIC RESULT**:\n\nGiven 4 lines in general position in P³, exactly **2 lines** meet all four!\n\n**Proof Idea**:\n1. Lines meeting L₁ and L₂ form a quadric surface Q₁₂\n2. Lines meeting L₃ and L₄ form another quadric Q₃₄\n3. By Bezout: Q₁₂ ∩ Q₃₄ has degree 4\n4. This contains exactly 2 transversal lines\n\nSchubert calculus: σ₁⁴ = 2σ₂₂",
+    "mathContext": "4 lines → 2 transversals",
+    "significance": "critical",
+    "relatedConcepts": ["Bezout's theorem", "quadric surface", "transversal"]
+  },
+  {
+    "id": "ann-numbers",
+    "proofId": "hilbert-15",
+    "range": {"startLine": 219, "endLine": 250},
+    "type": "note",
+    "title": "Famous Schubert Numbers",
+    "content": "**Classic Enumerative Results**:\n\n| Problem | Answer |\n|---------|--------|\n| Lines meeting 4 lines | **2** |\n| Lines on cubic surface | **27** |\n| Conics tangent to 5 conics | **3264** |\n| Conics through 5 points | **1** |\n\nThese are computed using intersection products of Schubert classes.",
+    "significance": "minor",
+    "relatedConcepts": ["27 lines", "Cayley-Salmon", "Steiner"]
+  },
+  {
+    "id": "ann-schubert-classes",
+    "proofId": "hilbert-15",
+    "range": {"startLine": 251, "endLine": 302},
+    "type": "concept",
+    "title": "Schubert Varieties & Classes",
+    "content": "**Schubert Variety Ω_μ**:\n\nDefined by incidence conditions with a fixed flag.\n\n$$\\Omega_\\mu = \\{V \\in Gr(k,n) : \\dim(V \\cap F_{n-k+i-\\mu_i}) \\geq i\\}$$\n\n**Schubert Class σ_μ**: The cohomology class of Ω_μ.\n\n**Key Facts**:\n1. {σ_μ} form a ℤ-basis for H*(Gr(k,n))\n2. Products given by Littlewood-Richardson rule",
+    "mathContext": "σ_μ form cohomology basis",
+    "significance": "major",
+    "relatedConcepts": ["cohomology", "Young tableau", "basis theorem"]
+  },
+  {
+    "id": "ann-lr-rule",
+    "proofId": "hilbert-15",
+    "range": {"startLine": 303, "endLine": 356},
+    "type": "theorem",
+    "title": "Littlewood-Richardson Rule",
+    "content": "**The Multiplication Formula**:\n\n$$\\sigma_\\mu \\cdot \\sigma_\\nu = \\sum_\\rho c^\\rho_{\\mu\\nu} \\sigma_\\rho$$\n\nwhere c^ρ_μν is the **Littlewood-Richardson coefficient** — computed combinatorially via Young tableaux.\n\n**Pieri's Rule** (special case):\nMultiplying by σ_(p) adds p boxes, no two in same column.\n\nConjectured 1934, proven by Schützenberger 1977.",
+    "mathContext": "$c^\\rho_{\\mu\\nu}$ via tableaux",
+    "significance": "major",
+    "relatedConcepts": ["Littlewood-Richardson", "Young tableaux", "RSK"]
+  },
+  {
+    "id": "ann-computation",
+    "proofId": "hilbert-15",
+    "range": {"startLine": 357, "endLine": 398},
+    "type": "theorem",
+    "title": "Four Lines via Schubert Calculus",
+    "content": "**Schubert Calculus Verification**:\n\nIn Gr(2,4), Schubert classes are indexed by partitions in 2×2 box:\n- σ₁ = lines meeting a fixed line\n- σ₂₂ = point class\n\n**The computation**:\n$$\\sigma_1^4 = 2 \\cdot \\sigma_{22}$$\n\nThis confirms: 4 general lines have exactly **2 transversals**.",
+    "mathContext": "$\\sigma_1^4 = 2\\sigma_{22}$",
+    "significance": "major",
+    "relatedConcepts": ["intersection product", "degree", "computation"]
+  },
+  {
+    "id": "ann-status",
+    "proofId": "hilbert-15",
+    "range": {"startLine": 399, "endLine": 437},
+    "type": "concept",
+    "title": "Problem Status: SOLVED",
+    "content": "**Hilbert 15: SOLVED**\n\n**Resolution timeline**:\n- 1930s: Van der Waerden, Weil — cohomology connection\n- 1934-73: Ehresmann, Chevalley, BGG — basis theorem\n- 1977: Schützenberger — LR rule proof\n- 1984: Fulton — complete intersection theory\n\n**Modern extensions**:\n- Quantum cohomology\n- K-theory Schubert calculus\n- Equivariant cohomology",
+    "significance": "minor",
+    "relatedConcepts": ["intersection theory", "Fulton", "quantum cohomology"]
+  }
+]

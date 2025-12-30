@@ -1,1 +1,130 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "hilbert-3",
+    "range": {"startLine": 8, "endLine": 69},
+    "type": "concept",
+    "title": "Hilbert's Third Problem",
+    "content": "**Hilbert's Third Problem (1900)**:\n\n> Given two polyhedra of equal volume, can one always be cut into finitely many polyhedral pieces that can be reassembled into the other?\n\n**Answer (Dehn 1900): NO!**\n\nThis was the **first** of Hilbert's 23 problems to be solved — just months after being posed at the Paris ICM.\n\nThe contrast with 2D is striking: by the Bolyai-Gerwien theorem (1833), any two polygons of equal area ARE scissors congruent.",
+    "significance": "critical",
+    "relatedConcepts": ["Dehn invariant", "scissors congruence", "polyhedra"]
+  },
+  {
+    "id": "ann-polyhedron-def",
+    "proofId": "hilbert-3",
+    "range": {"startLine": 75, "endLine": 102},
+    "type": "definition",
+    "title": "Polyhedron Structure",
+    "content": "A polyhedron is modeled by its **combinatorial structure**:\n\n- **Edges**: Each with a positive length\n- **Dihedral angles**: The angle between adjacent faces at each edge\n\nFor computations, we track:\n- Edge lengths l ∈ ℝ₊\n- Dihedral angles θ ∈ (0, 2π)",
+    "significance": "minor",
+    "relatedConcepts": ["edge", "dihedral angle", "geometry"]
+  },
+  {
+    "id": "ann-dehn-invariant",
+    "proofId": "hilbert-3",
+    "range": {"startLine": 103, "endLine": 149},
+    "type": "definition",
+    "title": "The Dehn Invariant",
+    "content": "**Dehn's Insight**: Consider the tensor product!\n\nThe Dehn invariant lives in **ℝ ⊗_ℤ (ℝ/πℚ)**:\n\n$$D(P) = \\sum_e \\ell(e) \\otimes \\theta(e)$$\n\nwhere:\n- ℝ captures edge **lengths**\n- ℝ/πℚ captures **angles mod rational multiples of π**\n\nTwo elements (l, θ) are equivalent if θ differs by a rational multiple of π.",
+    "mathContext": "$D(P) \\in \\mathbb{R} \\otimes (\\mathbb{R}/\\pi\\mathbb{Q})$",
+    "significance": "critical",
+    "relatedConcepts": ["tensor product", "angle classes", "algebraic invariant"]
+  },
+  {
+    "id": "ann-scissors",
+    "proofId": "hilbert-3",
+    "range": {"startLine": 150, "endLine": 168},
+    "type": "definition",
+    "title": "Scissors Congruence",
+    "content": "**Scissors Congruence** (Equidecomposability):\n\nTwo polyhedra P and Q are scissors congruent if:\n1. P can be cut into finitely many pieces P₁, ..., Pₙ\n2. These pieces can be rearranged by rigid motions\n3. The rearranged pieces form Q\n\nThis is an **equivalence relation** on polyhedra.",
+    "significance": "major",
+    "relatedConcepts": ["dissection", "rigid motion", "equidecomposability"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "hilbert-3",
+    "range": {"startLine": 170, "endLine": 226},
+    "type": "theorem",
+    "title": "Dehn's Invariance Theorem",
+    "content": "**Theorem (Dehn 1900)**:\n\nIf P and Q are scissors congruent, then D(P) = D(Q).\n\n**Proof Sketch**:\n1. When cutting: new edges have opposite dihedral angles summing to π\n2. These contribute l ⊗ (θ + (π-θ)) = l ⊗ π = 0 in ℝ/πℚ\n3. When reassembling: internal edges cancel out\n\nTherefore scissors operations preserve the Dehn invariant!",
+    "mathContext": "P ∼ Q ⟹ D(P) = D(Q)",
+    "significance": "critical",
+    "relatedConcepts": ["invariance", "obstruction", "cutting lemma"]
+  },
+  {
+    "id": "ann-contrapositive",
+    "proofId": "hilbert-3",
+    "range": {"startLine": 227, "endLine": 233},
+    "type": "theorem",
+    "title": "The Obstruction",
+    "content": "**Contrapositive**: Different Dehn invariants ⟹ NOT scissors congruent.\n\n$$D(P) \\neq D(Q) \\Rightarrow P \\not\\sim Q$$\n\nThis gives a **computable obstruction** to scissors congruence.",
+    "mathContext": "D(P) ≠ D(Q) ⟹ P ≁ Q",
+    "significance": "major",
+    "relatedConcepts": ["contrapositive", "obstruction theory"]
+  },
+  {
+    "id": "ann-cube",
+    "proofId": "hilbert-3",
+    "range": {"startLine": 234, "endLine": 280},
+    "type": "theorem",
+    "title": "The Cube: D = 0",
+    "content": "**Cube's Dehn invariant is ZERO**:\n\nEvery dihedral angle of a cube is **π/2** (90°).\n\nSince π/2 = (1/2)π is a **rational multiple of π**:\n\n$$\\ell \\otimes (\\pi/2) = 0 \\text{ in } \\mathbb{R}/\\pi\\mathbb{Q}$$\n\nTherefore: D(cube) = 0 for any cube, regardless of size.",
+    "mathContext": "D(cube) = 0",
+    "significance": "major",
+    "relatedConcepts": ["cube", "right angle", "rational multiple"]
+  },
+  {
+    "id": "ann-tetrahedron",
+    "proofId": "hilbert-3",
+    "range": {"startLine": 281, "endLine": 329},
+    "type": "theorem",
+    "title": "Regular Tetrahedron: D ≠ 0",
+    "content": "**Tetrahedron's Dehn invariant is NON-ZERO**:\n\nThe dihedral angle is θ = arccos(1/3) ≈ 70.53°.\n\n**Key fact (Niven's theorem)**: arccos(1/3) is **NOT** a rational multiple of π!\n\nIf cos(qπ) is algebraic for rational q, it must be 0, ±1/2, or ±1.\nSince cos(θ) = 1/3 ∉ {0, ±1/2, ±1}, the angle θ/π is irrational.\n\nTherefore: D(tetrahedron) ≠ 0.",
+    "mathContext": "D(tetrahedron) ≠ 0",
+    "significance": "critical",
+    "relatedConcepts": ["tetrahedron", "Niven's theorem", "transcendence"]
+  },
+  {
+    "id": "ann-main-result",
+    "proofId": "hilbert-3",
+    "range": {"startLine": 330, "endLine": 372},
+    "type": "theorem",
+    "title": "Hilbert 3: The Answer is NO!",
+    "content": "**Hilbert's Third Problem (Dehn 1900)**:\n\nA cube and regular tetrahedron of equal volume are **NOT** scissors congruent!\n\n**Proof**:\n1. D(cube) = 0 (all angles are π/2)\n2. D(tetrahedron) ≠ 0 (arccos(1/3) is irrational multiple of π)\n3. D(cube) ≠ D(tetrahedron)\n4. By Dehn's theorem: not scissors congruent ∎\n\n**The volume is irrelevant!** Only the Dehn invariant matters.",
+    "mathContext": "cube ≁ tetrahedron",
+    "significance": "critical",
+    "relatedConcepts": ["Dehn's theorem", "negative answer", "ICM 1900"]
+  },
+  {
+    "id": "ann-sydler",
+    "proofId": "hilbert-3",
+    "range": {"startLine": 373, "endLine": 401},
+    "type": "theorem",
+    "title": "Sydler's Theorem (1965)",
+    "content": "**Sydler's Completeness Theorem**:\n\nDehn's invariant is not just an obstruction — it's **COMPLETE**!\n\n$$P \\sim Q \\iff \\text{Vol}(P) = \\text{Vol}(Q) \\text{ AND } D(P) = D(Q)$$\n\nThis took 65 years to prove after Dehn's original result.\n\nIn ℝ³, volume and Dehn invariant **completely classify** scissors congruence.",
+    "mathContext": "P ∼ Q ⟺ Vol = Vol ∧ D = D",
+    "significance": "major",
+    "relatedConcepts": ["Sydler", "complete invariant", "1965"]
+  },
+  {
+    "id": "ann-bolyai-gerwien",
+    "proofId": "hilbert-3",
+    "range": {"startLine": 402, "endLine": 469},
+    "type": "theorem",
+    "title": "2D Contrast: Bolyai-Gerwien",
+    "content": "**Bolyai-Gerwien Theorem (1833)**:\n\nIn 2D, any two polygons of equal area ARE scissors congruent!\n\n**Why the 2D/3D difference?**\n\nIn 2D, when extending with cuts, all angles become multiples of π. The \"Dehn invariant\" is always zero.\n\nIn 3D, angles like arccos(1/3) are genuinely non-trivial in ℝ/πℚ.\n\nThis contrast is what Hilbert found **surprising** enough to ask about.",
+    "mathContext": "2D: Area = Area ⟹ P ∼ Q",
+    "significance": "major",
+    "relatedConcepts": ["Bolyai", "Gerwien", "2D vs 3D"]
+  },
+  {
+    "id": "ann-history",
+    "proofId": "hilbert-3",
+    "range": {"startLine": 470, "endLine": 507},
+    "type": "concept",
+    "title": "Historical Impact",
+    "content": "**Timeline**:\n- **1900**: Hilbert poses problem at Paris ICM\n- **1900**: Dehn solves it (first Hilbert problem solved!)\n- **1965**: Sydler proves the complete characterization\n- **1980s**: Connection to algebraic K-theory discovered\n\n**Connections**:\n- The Dehn invariant relates to K₃(ℂ)\n- Higher dimensions have additional invariants\n- Active research area in algebraic K-theory",
+    "significance": "minor",
+    "relatedConcepts": ["Max Dehn", "K-theory", "ICM Paris"]
+  }
+]

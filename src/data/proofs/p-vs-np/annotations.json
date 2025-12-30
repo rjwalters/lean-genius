@@ -1,1 +1,153 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "p-vs-np",
+    "range": {"startLine": 4, "endLine": 42},
+    "type": "concept",
+    "title": "P vs NP: The Million Dollar Question",
+    "content": "**The P vs NP Problem**:\n\n> Can every problem whose solution can be **verified** quickly also be **solved** quickly?\n\n**Formally**: Does P = NP?\n\n**Status: OPEN** — One of the 7 Millennium Prize Problems ($1,000,000 reward)\n\n**Widely believed**: P ≠ NP (there exist hard problems)\n\n**Impact if P = NP**: Cryptography breaks, optimization becomes easy, NP-hard problems tractable.",
+    "significance": "critical",
+    "relatedConcepts": ["complexity theory", "Millennium Prize", "Cook"]
+  },
+  {
+    "id": "ann-decision-problems",
+    "proofId": "p-vs-np",
+    "range": {"startLine": 48, "endLine": 83},
+    "type": "definition",
+    "title": "Decision Problems and Programs",
+    "content": "**Decision Problem**:\n\nA function from inputs to {YES, NO}:\n$$L : \\{0,1\\}^* \\to \\{\\text{true}, \\text{false}\\}$$\n\n**Program/Turing Machine**:\n\nAbstract model of computation with:\n- Code (transition function)\n- Decision function: input → (result, steps)\n\n**Key concepts**:\n- `solves p L`: Program p correctly decides L\n- `runsInTime p T`: Program uses ≤ T(n) steps on inputs of size n",
+    "mathContext": "L : Nat → Bool",
+    "significance": "major",
+    "relatedConcepts": ["Turing machine", "decidability", "time complexity"]
+  },
+  {
+    "id": "ann-class-p",
+    "proofId": "p-vs-np",
+    "range": {"startLine": 108, "endLine": 121},
+    "type": "definition",
+    "title": "Complexity Class P",
+    "content": "**Class P** (Polynomial Time):\n\n$$P = \\{L \\mid \\exists \\text{ TM } M, \\text{polynomial } p: M \\text{ decides } L \\text{ in time } O(p(n))\\}$$\n\n**Intuition**: Problems solvable \"efficiently\" (in practice: feasible)\n\n**Examples in P**:\n- Sorting\n- Shortest path\n- Primality testing (AKS)\n- Linear programming",
+    "mathContext": "P = polynomial-time solvable",
+    "significance": "critical",
+    "relatedConcepts": ["polynomial time", "efficient algorithms", "tractable"]
+  },
+  {
+    "id": "ann-class-np",
+    "proofId": "p-vs-np",
+    "range": {"startLine": 123, "endLine": 159},
+    "type": "definition",
+    "title": "Complexity Class NP",
+    "content": "**Class NP** (Nondeterministic Polynomial Time):\n\n$$NP = \\{L \\mid \\exists \\text{ verifier } V, \\text{polynomial } p: x \\in L \\Leftrightarrow \\exists c, V(x,c) \\text{ accepts in } O(p(n))\\}$$\n\n**Intuition**: Solutions can be **verified** quickly (even if hard to find)\n\n**The certificate**: A \"proof\" that x ∈ L (e.g., a satisfying assignment)\n\n**Examples in NP**:\n- SAT (certificate: assignment)\n- CLIQUE (certificate: the k vertices)\n- Traveling Salesman (certificate: the tour)",
+    "mathContext": "NP = verifiable in poly-time",
+    "significance": "critical",
+    "relatedConcepts": ["verifier", "certificate", "nondeterminism"]
+  },
+  {
+    "id": "ann-p-subset-np",
+    "proofId": "p-vs-np",
+    "range": {"startLine": 161, "endLine": 223},
+    "type": "theorem",
+    "title": "P ⊆ NP",
+    "content": "**Theorem**: P ⊆ NP\n\n**Proof**: If we can **solve** a problem quickly, we can certainly **verify** it quickly — just solve it and ignore the certificate!\n\n**Construction**:\n- Given: Polynomial-time solver M for L\n- Verifier: Run M(x), ignore certificate\n- Correctness: Accepts iff x ∈ L\n- Time: Same as M (polynomial)\n\nThis is the \"easy\" direction. The hard question: Is NP ⊆ P?",
+    "mathContext": "P ⊆ NP",
+    "significance": "major",
+    "relatedConcepts": ["inclusion", "solver as verifier"]
+  },
+  {
+    "id": "ann-reductions",
+    "proofId": "p-vs-np",
+    "range": {"startLine": 225, "endLine": 263},
+    "type": "definition",
+    "title": "Polynomial-Time Reductions",
+    "content": "**Polynomial-Time Reduction (Karp reduction)**:\n\nA ≤ₚ B means there exists polynomial-time computable f such that:\n$$x \\in A \\Leftrightarrow f(x) \\in B$$\n\n**Intuition**: If we can solve B, we can solve A (via f)\n\n**Properties**:\n- Reflexive: A ≤ₚ A\n- Transitive: A ≤ₚ B and B ≤ₚ C implies A ≤ₚ C\n\n**Key insight**: Reductions transfer hardness!",
+    "mathContext": "A ≤ₚ B",
+    "significance": "major",
+    "relatedConcepts": ["Karp reduction", "many-one reduction", "hardness transfer"]
+  },
+  {
+    "id": "ann-np-complete",
+    "proofId": "p-vs-np",
+    "range": {"startLine": 265, "endLine": 277},
+    "type": "definition",
+    "title": "NP-Hardness and NP-Completeness",
+    "content": "**NP-Hard**:\n\nProblem B is NP-hard if:\n$$\\forall A \\in NP: A \\leq_p B$$\n\n**NP-Complete**:\n\nProblem B is NP-complete if:\n- B ∈ NP (verifiable quickly)\n- B is NP-hard (as hard as anything in NP)\n\n**The \"hardest\" problems in NP** — solving any one efficiently solves all of NP!",
+    "mathContext": "NPC = NP ∩ NP-hard",
+    "significance": "critical",
+    "relatedConcepts": ["hardest problems", "completeness", "NPC"]
+  },
+  {
+    "id": "ann-sat",
+    "proofId": "p-vs-np",
+    "range": {"startLine": 279, "endLine": 312},
+    "type": "definition",
+    "title": "Boolean Satisfiability (SAT)",
+    "content": "**SAT Problem**:\n\nGiven a Boolean formula in CNF:\n$$(x_1 \\vee \\neg x_2) \\wedge (x_2 \\vee x_3 \\vee \\neg x_1) \\wedge \\ldots$$\n\nIs there an assignment making it TRUE?\n\n**Components**:\n- **Literal**: Variable xᵢ or negation ¬xᵢ\n- **Clause**: Disjunction of literals\n- **CNF Formula**: Conjunction of clauses\n\n**Certificate**: A satisfying assignment (easy to verify!)",
+    "mathContext": "∃ assignment: φ = true?",
+    "significance": "major",
+    "relatedConcepts": ["CNF", "clause", "assignment"]
+  },
+  {
+    "id": "ann-cook-levin",
+    "proofId": "p-vs-np",
+    "range": {"startLine": 328, "endLine": 349},
+    "type": "theorem",
+    "title": "Cook-Levin Theorem (1971)",
+    "content": "**Cook-Levin Theorem**:\n\n**SAT is NP-complete.**\n\n**Proof idea** (reduction from any NP problem):\n1. Encode TM configuration as Boolean variables\n2. Encode transition function as CNF clauses\n3. Encode acceptance condition\n4. Formula is satisfiable ⟺ TM accepts\n\n**Historical**: First NP-complete problem! Proven independently by Cook and Levin.\n\n**Impact**: Once we have ONE NP-complete problem, we can show others via reductions.",
+    "mathContext": "SAT ∈ NPC",
+    "significance": "critical",
+    "relatedConcepts": ["Cook", "Levin", "first NP-complete"]
+  },
+  {
+    "id": "ann-more-npc",
+    "proofId": "p-vs-np",
+    "range": {"startLine": 351, "endLine": 388},
+    "type": "concept",
+    "title": "NP-Complete Problems Gallery",
+    "content": "**Classic NP-Complete Problems**:\n\n| Problem | Description | Reduction from |\n|---------|-------------|----------------|\n| **3-SAT** | SAT with 3 literals/clause | SAT |\n| **CLIQUE** | k-vertex complete subgraph? | 3-SAT |\n| **VERTEX-COVER** | k vertices covering all edges? | CLIQUE |\n| **SUBSET-SUM** | Subset summing to target t? | 3-SAT |\n| **HAMPATH** | Hamiltonian path exists? | 3-SAT |\n| **TSP** | Tour of length ≤ k? | HAMPATH |\n\nAll shown NP-complete via reduction chains from SAT!",
+    "significance": "major",
+    "relatedConcepts": ["3-SAT", "CLIQUE", "SUBSET-SUM", "TSP"]
+  },
+  {
+    "id": "ann-conp",
+    "proofId": "p-vs-np",
+    "range": {"startLine": 390, "endLine": 439},
+    "type": "definition",
+    "title": "coNP and Complement Classes",
+    "content": "**coNP**: Complements of NP problems\n\n$$coNP = \\{L \\mid \\bar{L} \\in NP\\}$$\n\n**Key theorem**: P is closed under complement\n$$L \\in P \\Leftrightarrow \\bar{L} \\in P$$\n\n**Consequence**: P ⊆ NP ∩ coNP\n\n**Open question**: Does NP = coNP?\n\n**If P ≠ NP**: Likely NP ≠ coNP (SAT complement not in NP)",
+    "mathContext": "coNP = complements of NP",
+    "significance": "minor",
+    "relatedConcepts": ["complement", "co-NP-complete", "UNSAT"]
+  },
+  {
+    "id": "ann-conjecture",
+    "proofId": "p-vs-np",
+    "range": {"startLine": 441, "endLine": 488},
+    "type": "concept",
+    "title": "The P vs NP Conjecture",
+    "content": "**The Conjecture**: P ≠ NP\n\n**Equivalent formulations**:\n- ∃ problem in NP but not in P\n- No polynomial-time algorithm for SAT\n- NP-complete problems are not in P\n\n**Key equivalence**:\n$$P = NP \\Leftrightarrow \\text{any NPC problem} \\in P$$\n\n**Why believed P ≠ NP**:\n- Decades of failed attempts to find efficient algorithms\n- Strong intuition that \"finding\" is harder than \"checking\"\n- Barrier results (relativization, natural proofs, algebrization)",
+    "mathContext": "P ≠ NP?",
+    "significance": "critical",
+    "relatedConcepts": ["conjecture", "barriers", "open problem"]
+  },
+  {
+    "id": "ann-ladner",
+    "proofId": "p-vs-np",
+    "range": {"startLine": 514, "endLine": 523},
+    "type": "theorem",
+    "title": "Ladner's Theorem (NP-Intermediate)",
+    "content": "**Ladner's Theorem (1975)**:\n\nIf P ≠ NP, then there exist **NP-intermediate** problems:\n$$\\exists L \\in NP: L \\notin P \\text{ and } L \\notin NPC$$\n\n**Candidate NP-intermediate problems**:\n- Graph Isomorphism (unknown if in P or NPC)\n- Integer Factorization (unknown, basis of RSA)\n\n**Implication**: The NP landscape is rich — not just P and NP-complete!",
+    "mathContext": "NP-intermediate exists if P ≠ NP",
+    "significance": "major",
+    "relatedConcepts": ["Ladner", "graph isomorphism", "factoring"]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "p-vs-np",
+    "range": {"startLine": 529, "endLine": 569},
+    "type": "concept",
+    "title": "Problem Status: OPEN",
+    "content": "**P vs NP: Still OPEN after 50+ years**\n\n**Known results**:\n- P ⊆ NP ✓\n- SAT is NP-complete (Cook-Levin) ✓\n- P ≠ EXPTIME ✓ (Time Hierarchy)\n- Ladner: If P ≠ NP, NP-intermediate exists ✓\n\n**Unknown**:\n- P = NP or P ≠ NP?\n- Any super-polynomial lower bound for SAT?\n- NP = coNP?\n\n**Barriers to proving P ≠ NP**:\n- Relativization (Baker-Gill-Solovay)\n- Natural proofs (Razborov-Rudich)\n- Algebrization (Aaronson-Wigderson)",
+    "significance": "minor",
+    "relatedConcepts": ["open problem", "barriers", "complexity zoo"]
+  }
+]

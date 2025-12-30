@@ -1,1 +1,87 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "solution-of-cubic",
+    "range": {"startLine": 7, "endLine": 43},
+    "type": "concept",
+    "title": "Cardano's Formula: Wiedijk #37",
+    "content": "**The Cubic Formula**:\n\nFor $x^3 + px + q = 0$ (depressed cubic):\n\n$$x = \\sqrt[3]{-\\frac{q}{2} + \\sqrt{\\Delta}} + \\sqrt[3]{-\\frac{q}{2} - \\sqrt{\\Delta}}$$\n\nwhere $\\Delta = \\frac{q^2}{4} + \\frac{p^3}{27}$ is the discriminant.\n\n**Historical**: Cardano's *Ars Magna* (1545), discovered by del Ferro and Tartaglia.\n\n**Significance**: First algebraic solution beyond quadratics, led to complex numbers.",
+    "significance": "critical",
+    "relatedConcepts": ["Cardano", "cubic equation", "radical solution"]
+  },
+  {
+    "id": "ann-depressed",
+    "proofId": "solution-of-cubic",
+    "range": {"startLine": 49, "endLine": 60},
+    "type": "definition",
+    "title": "Depressed Cubic",
+    "content": "**Depressed Cubic**:\n\n$$x^3 + px + q = 0$$\n\nNo $x^2$ term (\"depressed\").\n\n**Reduction**: Any cubic $ax^3 + bx^2 + cx + d = 0$ reduces via:\n$$x = y - \\frac{b}{3a}$$\n\n**Discriminant**:\n$$\\Delta = \\frac{q^2}{4} + \\frac{p^3}{27}$$\n\n- $\\Delta > 0$: one real, two complex roots\n- $\\Delta = 0$: repeated roots\n- $\\Delta < 0$: three distinct real roots (casus irreducibilis)",
+    "mathContext": "x³ + px + q = 0",
+    "significance": "major",
+    "relatedConcepts": ["Tschirnhaus transformation", "discriminant", "depressed polynomial"]
+  },
+  {
+    "id": "ann-algebraic-identity",
+    "proofId": "solution-of-cubic",
+    "range": {"startLine": 70, "endLine": 93},
+    "type": "theorem",
+    "title": "Key Algebraic Identities",
+    "content": "**Cube of Sum**:\n$$(u + v)^3 = u^3 + v^3 + 3uv(u + v)$$\n\n**Cardano's Verification**:\n\nIf $u^3 + v^3 = -q$ and $3uv = -p$, then $x = u + v$ satisfies $x^3 + px + q = 0$.\n\n**Proof**:\n$$x^3 + px + q = (u^3 + v^3) + 3uv(u+v) + p(u+v) + q$$\n$$= -q + (-p)(u+v) + p(u+v) + q = 0$$\n\nThis is why Cardano's formula works!",
+    "mathContext": "(u+v)³ = u³+v³+3uv(u+v)",
+    "significance": "critical",
+    "relatedConcepts": ["binomial expansion", "substitution", "verification"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "solution-of-cubic",
+    "range": {"startLine": 129, "endLine": 144},
+    "type": "theorem",
+    "title": "Cardano's Formula",
+    "content": "**Main Theorem (Wiedijk #37)**:\n\nFor $u, v$ satisfying:\n- $u^3 + v^3 = -q$\n- $uv = -p/3$\n\nThe value $x = u + v$ is a root:\n$$(\\text{depressedCubic } p \\ q).\\text{eval}(u + v) = 0$$\n\n**Construction**:\n$$u = \\sqrt[3]{-q/2 + \\sqrt{\\Delta}}, \\quad v = \\sqrt[3]{-q/2 - \\sqrt{\\Delta}}$$\n\nThese satisfy the required conditions by construction.",
+    "mathContext": "eval (u+v) = 0",
+    "significance": "critical",
+    "relatedConcepts": ["polynomial evaluation", "root", "Cardano"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "solution-of-cubic",
+    "range": {"startLine": 146, "endLine": 164},
+    "type": "note",
+    "title": "Verified Examples",
+    "content": "**Special Cases**:\n\n| Cubic | Root | Verification |\n|-------|------|-------------|\n| $x^3 - 6x - 40 = 0$ | $x = 4$ | $64 - 24 - 40 = 0$ |\n| $x^3 + 6x - 20 = 0$ | $x = 2$ | $8 + 12 - 20 = 0$ |\n| $x^3 - 1 = 0$ | $x = 1$ | $1 - 1 = 0$ |\n| $x^3 - 2 = 0$ | $x = \\sqrt[3]{2}$ | When $p = 0$: $x = \\sqrt[3]{-q}$ |\n\nAll verified with `norm_num` in Lean.",
+    "significance": "minor",
+    "relatedConcepts": ["examples", "verification", "special cases"]
+  },
+  {
+    "id": "ann-cube-roots-unity",
+    "proofId": "solution-of-cubic",
+    "range": {"startLine": 166, "endLine": 227},
+    "type": "theorem",
+    "title": "Cube Roots of Unity",
+    "content": "**Primitive Cube Root**:\n$$\\omega = e^{2\\pi i/3} = -\\frac{1}{2} + \\frac{\\sqrt{3}}{2}i$$\n\n**Properties**:\n- $\\omega^3 = 1$\n- $\\omega \\neq 1$ (primitive)\n- $1 + \\omega + \\omega^2 = 0$\n\n**Three Roots of Cubic**:\nIf $(u, v)$ gives root $x_1 = u + v$, then:\n- $x_2 = \\omega u + \\omega^2 v$\n- $x_3 = \\omega^2 u + \\omega v$\n\nAll three satisfy the cubic!",
+    "mathContext": "ω = e^{2πi/3}, ω³ = 1",
+    "significance": "major",
+    "relatedConcepts": ["roots of unity", "cyclotomic", "three roots"]
+  },
+  {
+    "id": "ann-other-roots",
+    "proofId": "solution-of-cubic",
+    "range": {"startLine": 228, "endLine": 267},
+    "type": "theorem",
+    "title": "All Three Roots",
+    "content": "**Second Root**:\n$$x_2 = \\omega u + \\omega^2 v$$\n\n**Verification**:\n- $(\\omega u)^3 = \\omega^3 u^3 = u^3$ (since $\\omega^3 = 1$)\n- $(\\omega^2 v)^3 = \\omega^6 v^3 = v^3$\n- Product: $(\\omega u)(\\omega^2 v) = \\omega^3 uv = uv = -p/3$\n\nSame verification applies!\n\n**Theorem**: `second_root` proves $\\omega u + \\omega^2 v$ is a root.\n\nBy symmetry, $\\omega^2 u + \\omega v$ is the third root.",
+    "mathContext": "x₂ = ωu + ω²v is a root",
+    "significance": "major",
+    "relatedConcepts": ["all roots", "omega", "symmetry"]
+  },
+  {
+    "id": "ann-significance",
+    "proofId": "solution-of-cubic",
+    "range": {"startLine": 269, "endLine": 287},
+    "type": "concept",
+    "title": "Historical Significance",
+    "content": "**Mathematical Impact**:\n\n1. **First radical formula** beyond quadratics\n2. **Led to complex numbers** via casus irreducibilis\n3. **Motivated Galois theory** and Abel-Ruffini theorem\n\n**Casus Irreducibilis**:\nWhen three real distinct roots exist, $\\Delta < 0$ so $\\sqrt{\\Delta}$ is imaginary. Yet cube roots combine to give real answers!\n\nThis paradox forced acceptance of complex numbers.\n\n**Related Theorems**:\n- #46: Quartic formula (uses cubic resolvents)\n- #16: Abel-Ruffini (no quintic formula)\n- #80: Fundamental Theorem of Algebra",
+    "significance": "major",
+    "relatedConcepts": ["casus irreducibilis", "Galois theory", "Abel-Ruffini"]
+  }
+]

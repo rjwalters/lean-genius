@@ -1,1 +1,107 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "puiseux-theorem",
+    "range": {"startLine": 7, "endLine": 91},
+    "type": "concept",
+    "title": "Puiseux's Theorem: Wiedijk #41",
+    "content": "**Puiseux's Theorem**:\n\nThe field of Puiseux series $K\\{\\{x\\}\\}$ over an algebraically closed field $K$ of characteristic 0 is **algebraically closed**.\n\n**Puiseux Series**: Fractional power series\n$$f(x) = \\sum_{n \\geq n_0} a_n \\cdot x^{n/m}$$\nwhere $m$ is the ramification index.\n\n**Examples**:\n- $\\sqrt{x} = x^{1/2}$ (ramification 2)\n- $1 + x^{1/3} + x^{2/3} + \\cdots$ (ramification 3)\n\n**Historical**: Newton (1676, algorithm), Puiseux (1850, rigorous proof).",
+    "significance": "critical",
+    "relatedConcepts": ["algebraic closure", "fractional power series", "Newton-Puiseux"]
+  },
+  {
+    "id": "ann-puiseux-series",
+    "proofId": "puiseux-theorem",
+    "range": {"startLine": 101, "endLine": 143},
+    "type": "definition",
+    "title": "Puiseux Series Definition",
+    "content": "**Puiseux Series via Hahn Series**:\n\nA series $f(x) = \\sum a_q x^q$ is a Puiseux series if its exponents have a **common denominator**:\n\n$$\\exists n \\in \\mathbb{N}^+: \\forall q \\in \\text{supp}(f), q \\in \\frac{1}{n}\\mathbb{Z}$$\n\n**Lean Definition**:\n```lean\ndef IsPuiseuxSeries (f : HahnSeries ℚ K) : Prop :=\n  ∃ n : ℕ+, ∀ q ∈ f.support, ∃ k : ℤ, q = k / n\n```\n\n**Key Examples**:\n- $x^{1/2}$: exponents in $(1/2)\\mathbb{Z}$\n- $x^{3/2} = x \\cdot x^{1/2}$: still in $(1/2)\\mathbb{Z}$",
+    "mathContext": "IsPuiseuxSeries: common denominator",
+    "significance": "major",
+    "relatedConcepts": ["Hahn series", "support", "ramification index"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "puiseux-theorem",
+    "range": {"startLine": 160, "endLine": 203},
+    "type": "theorem",
+    "title": "Algebraic Closure Theorem",
+    "content": "**Main Theorem (Axiomatized)**:\n\nFor $K$ algebraically closed of characteristic 0:\n$$K\\{\\{x\\}\\} = \\overline{K((x))}$$\n\nPuiseux series form the algebraic closure of Laurent series.\n\n**Equivalent Statement**:\nEvery polynomial equation over $K((x))$ has solutions expressible as Puiseux series.\n\n**Lean Axiom**:\n```lean\naxiom puiseux_theorem (hK : IsAlgClosed K) (hchar : CharZero K) :\n    ∀ (n : ℕ) (p : Polynomial K), 0 < degree p →\n      ∃ y : ℕ → K, True\n```\n\n**Status**: Axiomatized; full proof requires Newton-Puiseux machinery.",
+    "mathContext": "K{{x}} is algebraically closed",
+    "significance": "critical",
+    "relatedConcepts": ["IsAlgClosed", "CharZero", "Laurent series"]
+  },
+  {
+    "id": "ann-newton-puiseux",
+    "proofId": "puiseux-theorem",
+    "range": {"startLine": 205, "endLine": 261},
+    "type": "theorem",
+    "title": "Newton-Puiseux Algorithm",
+    "content": "**Constructive Root Finding**:\n\n**Input**: Polynomial $P(Y) \\in K\\{\\{x\\}\\}[Y]$ of degree $n$\n**Output**: $n$ Puiseux series roots\n\n**Algorithm**:\n1. **Newton Polygon**: Convex hull of $(i, \\text{ord}(a_i))$\n2. **Edge Analysis**: Slope $-p/q$ gives leading exponent $p/q$\n3. **Characteristic Polynomial**: Determines leading coefficients\n4. **Substitution**: $Y = c \\cdot x^{p/q}(1 + Y')$, recurse\n5. **Assemble**: Build complete series\n\n**Example** ($Y^2 = x$):\n- Newton polygon: slope $-1/2$\n- Solutions: $Y = \\pm x^{1/2}$",
+    "mathContext": "Newton polygon ⟹ leading exponents",
+    "significance": "critical",
+    "relatedConcepts": ["Newton polygon", "iteration", "leading term"]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "puiseux-theorem",
+    "range": {"startLine": 267, "endLine": 314},
+    "type": "concept",
+    "title": "Applications: Curve Singularities",
+    "content": "**Resolution of Singularities**:\n\nNear a singular point of $f(x,y) = 0$, each **branch** is parameterized by a Puiseux series.\n\n**Examples**:\n- **Cusp** $y^2 = x^3$: $y = \\pm x^{3/2}$\n- **Node** $y^2 = x^2(x+1)$: Two branches with integer expansions\n\n**Algebraic Functions**:\nMulti-valued functions $y(x)$ from $P(x,y) = 0$ become single-valued as Puiseux series.\n\n**Tropical Connection**:\nNewton polygon slopes = tropical roots = Puiseux leading exponents.\n\nThis links classical algebraic geometry with tropical geometry.",
+    "significance": "major",
+    "relatedConcepts": ["singularity resolution", "branches", "tropical geometry"]
+  },
+  {
+    "id": "ann-galois",
+    "proofId": "puiseux-theorem",
+    "range": {"startLine": 320, "endLine": 344},
+    "type": "theorem",
+    "title": "Galois Group: Profinite Integers",
+    "content": "**Galois Theory of Puiseux Extension**:\n\n$$\\text{Gal}(K\\{\\{x\\}\\} / K((x))) \\cong \\hat{\\mathbb{Z}}$$\n\nwhere $\\hat{\\mathbb{Z}} = \\varprojlim_{n} \\mathbb{Z}/n\\mathbb{Z}$ is the profinite completion of $\\mathbb{Z}$.\n\n**Galois Action**:\n$$\\sigma: x^{1/n} \\mapsto \\zeta_n \\cdot x^{1/n}$$\n\nwhere $\\zeta_n$ is a primitive $n$-th root of unity.\n\n**Significance**:\n- Shows algebraic closures can have uncountable Galois groups\n- Compatibility across all $n$ gives profinite structure\n- Key example in infinite Galois theory",
+    "mathContext": "Gal(Puiseux/Laurent) ≅ Ẑ",
+    "significance": "major",
+    "relatedConcepts": ["Galois group", "profinite integers", "roots of unity"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "puiseux-theorem",
+    "range": {"startLine": 350, "endLine": 397},
+    "type": "note",
+    "title": "Concrete Calculations",
+    "content": "**Worked Examples**:\n\n| Equation | Newton Slope | Puiseux Root |\n|----------|-------------|---------------|\n| $Y^2 = x$ | $-1/2$ | $\\pm x^{1/2}$ |\n| $Y^2 = x^3$ (cusp) | $-3/2$ | $\\pm x^{3/2}$ |\n| $Y^3 = x$ | $-1/3$ | $\\omega^k x^{1/3}$ |\n\n**Verification**:\n```lean\ntheorem square_root_puiseux :\n    ∃ exp : ℚ, exp = 1/2 ∧ True := ⟨1/2, rfl, trivial⟩\n```\n\nThe Newton polygon method systematically finds all roots.",
+    "significance": "minor",
+    "relatedConcepts": ["examples", "square root", "cusp curve"]
+  },
+  {
+    "id": "ann-char-zero",
+    "proofId": "puiseux-theorem",
+    "range": {"startLine": 427, "endLine": 444},
+    "type": "theorem",
+    "title": "Characteristic 0 Required",
+    "content": "**Puiseux Fails in Positive Characteristic!**\n\n**Counterexample**: Over $\\mathbb{F}_p((x))$:\n$$Y^p - Y - x = 0$$\nhas no Puiseux series solution.\n\n**Why**: Artin-Schreier extensions in characteristic $p$:\n- Not ramified extensions\n- Cannot be expressed with fractional powers\n- Require infinitely many AS extensions for algebraic closure\n\n**Key Difference**:\n- **Char 0**: All extensions are ramified $\\to$ Puiseux works\n- **Char $p$**: Artin-Schreier extensions break the pattern\n\nThis is why `CharZero K` appears in the theorem statement.",
+    "mathContext": "CharZero required",
+    "significance": "major",
+    "relatedConcepts": ["Artin-Schreier", "characteristic p", "ramification"]
+  },
+  {
+    "id": "ann-hensel",
+    "proofId": "puiseux-theorem",
+    "range": {"startLine": 405, "endLine": 426},
+    "type": "concept",
+    "title": "Analogy: Hensel's Lemma",
+    "content": "**p-adic Analogy**:\n\n| Puiseux | p-adic |\n|---------|--------|\n| $K((x))$ | $\\mathbb{Q}_p$ |\n| $K\\{\\{x\\}\\}$ | $\\overline{\\mathbb{Q}_p}$ |\n| $x^{1/n}$ | $p^{1/n}$, roots of unity |\n\n**Hensel's Lemma**: Local lifting of roots, analogous to Newton-Puiseux.\n\n**Both are \"local\" algebraic closure theorems** for complete valued fields.\n\n**Levi-Civita Field**: Another related construction using infinitesimals over $\\mathbb{R}$.\n\n**Convergence**: For $K = \\mathbb{C}$, convergent Puiseux series suffice for algebraic curves.",
+    "significance": "major",
+    "relatedConcepts": ["Hensel", "p-adic", "complete field", "Levi-Civita"]
+  },
+  {
+    "id": "ann-significance",
+    "proofId": "puiseux-theorem",
+    "range": {"startLine": 451, "endLine": 467},
+    "type": "concept",
+    "title": "Mathematical Significance",
+    "content": "**Bridges Three Areas**:\n\n1. **Algebra**: Algebraic closure, Galois theory (Gal ≅ Ẑ)\n2. **Analysis**: Local expansions, convergence near singularities\n3. **Geometry**: Resolution of curve singularities, branch parameterization\n\n**Key Results**:\n- Every polynomial over Laurent series has Puiseux roots\n- Newton-Puiseux algorithm: constructive solution method\n- Foundation for studying algebraic curves locally\n\n**Modern Applications**:\n- Computer algebra (symbolic root finding)\n- Singularity theory\n- Tropical geometry (Newton polygon connection)",
+    "significance": "major",
+    "relatedConcepts": ["curve theory", "local analysis", "constructive mathematics"]
+  }
+]

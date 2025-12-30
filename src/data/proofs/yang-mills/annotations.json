@@ -1,1 +1,130 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "yang-mills",
+    "range": {"startLine": 18, "endLine": 131},
+    "type": "concept",
+    "title": "Yang-Mills Mass Gap: Millennium Prize",
+    "content": "**Yang-Mills Existence and Mass Gap**:\n\n> Prove that for any compact simple gauge group G, a non-trivial quantum Yang-Mills theory exists on ℝ⁴ and has a mass gap Δ > 0.\n\n**Status: OPEN** — The hardest Millennium Prize Problem ($1,000,000)\n\n**Physical significance**:\n- Foundation of QCD (quantum chromodynamics)\n- Explains quark confinement\n- Explains hadron masses (proton, neutron)\n\n**Why it's hard**: No rigorous 4D quantum field theory is known!",
+    "significance": "critical",
+    "relatedConcepts": ["QCD", "mass gap", "Wightman axioms"]
+  },
+  {
+    "id": "ann-gauge-group",
+    "proofId": "yang-mills",
+    "range": {"startLine": 143, "endLine": 194},
+    "type": "definition",
+    "title": "Gauge Groups and Lie Algebras",
+    "content": "**Compact Simple Gauge Group G**:\n\n- Compact topological group\n- Connected\n- Simple: No non-trivial normal subgroups\n\n**Key examples**:\n| Group | Physics |\n|-------|--------|\n| U(1) | Electromagnetism (abelian) |\n| SU(2) | Weak force |\n| **SU(3)** | Strong force (QCD) |\n\n**Lie Algebra 𝔤**:\n- Vector space with bracket [X, Y]\n- Antisymmetry + Jacobi identity\n- For SU(n): traceless anti-Hermitian matrices",
+    "mathContext": "G compact simple, 𝔤 its Lie algebra",
+    "significance": "major",
+    "relatedConcepts": ["SU(3)", "Lie algebra", "gauge symmetry"]
+  },
+  {
+    "id": "ann-gauge-field",
+    "proofId": "yang-mills",
+    "range": {"startLine": 196, "endLine": 227},
+    "type": "definition",
+    "title": "Gauge Fields and Field Strength",
+    "content": "**Gauge Field A_μ(x)**:\n\nConnection 1-form on spacetime, valued in Lie algebra 𝔤:\n$$A = A_\\mu^a T_a dx^\\mu$$\n\n**Field Strength F_μν** (curvature):\n$$F_{\\mu\\nu} = \\partial_\\mu A_\\nu - \\partial_\\nu A_\\mu + [A_\\mu, A_\\nu]$$\n\n**Key difference from electromagnetism**:\n- The Lie bracket term [Aμ, Aν] ≠ 0 for non-abelian G\n- This makes the field equations nonlinear!\n\n**Antisymmetry**: F_μν = -F_νμ",
+    "mathContext": "F = dA + A ∧ A",
+    "significance": "major",
+    "relatedConcepts": ["connection", "curvature", "covariant derivative"]
+  },
+  {
+    "id": "ann-action",
+    "proofId": "yang-mills",
+    "range": {"startLine": 229, "endLine": 292},
+    "type": "definition",
+    "title": "Yang-Mills Action and Equations",
+    "content": "**Yang-Mills Action**:\n$$S[A] = -\\frac{1}{4g^2} \\int \\text{Tr}(F_{\\mu\\nu} F^{\\mu\\nu}) d^4x$$\n\n- g = coupling constant\n- Tr = trace over Lie algebra\n- Integral over all spacetime ℝ⁴\n\n**Yang-Mills Equations** (Euler-Lagrange):\n$$D_\\mu F^{\\mu\\nu} = 0$$\n\nwhere D_μ is the covariant derivative.\n\n**Bianchi Identity**:\n$$D_\\mu F_{\\nu\\rho} + D_\\nu F_{\\rho\\mu} + D_\\rho F_{\\mu\\nu} = 0$$",
+    "mathContext": "S = -1/(4g²) ∫ Tr(F²)",
+    "significance": "major",
+    "relatedConcepts": ["action", "Euler-Lagrange", "Bianchi"]
+  },
+  {
+    "id": "ann-gauge-invariance",
+    "proofId": "yang-mills",
+    "range": {"startLine": 294, "endLine": 318},
+    "type": "theorem",
+    "title": "Gauge Invariance",
+    "content": "**Gauge Transformation g(x)**:\n\nSmooth map from spacetime to gauge group G.\n\n**Transformation law**:\n$$A_\\mu \\to g A_\\mu g^{-1} + g \\partial_\\mu g^{-1}$$\n\n**FUNDAMENTAL SYMMETRY**:\n$$S[A^g] = S[A]$$\n\nThe Yang-Mills action is invariant under gauge transformations!\n\nThis is the defining property of gauge theory.",
+    "mathContext": "S[A^g] = S[A]",
+    "significance": "critical",
+    "relatedConcepts": ["gauge symmetry", "local symmetry", "fiber bundle"]
+  },
+  {
+    "id": "ann-maxwell",
+    "proofId": "yang-mills",
+    "range": {"startLine": 320, "endLine": 398},
+    "type": "theorem",
+    "title": "Maxwell = U(1) Yang-Mills (PROVEN)",
+    "content": "**Theorem**: Maxwell's equations are U(1) Yang-Mills!\n\nFor the abelian group U(1):\n- Lie bracket [A_μ, A_ν] = 0\n- F_μν = ∂_μ A_ν - ∂_ν A_μ (ordinary derivatives)\n- Covariant derivative D_μ = ∂_μ\n\n**Yang-Mills equation**: D_μ F^μν = 0\n→ ∂_μ F^μν = 0\n→ **Maxwell's equations!**\n\nElectromagnetism is the abelian special case of Yang-Mills.",
+    "mathContext": "U(1) Yang-Mills = Maxwell",
+    "significance": "major",
+    "relatedConcepts": ["electromagnetism", "U(1)", "abelian"]
+  },
+  {
+    "id": "ann-wightman",
+    "proofId": "yang-mills",
+    "range": {"startLine": 400, "endLine": 446},
+    "type": "definition",
+    "title": "Wightman Axioms and Quantum YM",
+    "content": "**Wightman Axioms** for quantum field theory:\n\n1. **Hilbert space**: States form a Hilbert space H\n2. **Poincaré invariance**: Lorentz + translations\n3. **Spectral condition**: Energy bounded below\n4. **Locality**: Spacelike operators commute\n5. **Vacuum uniqueness**: Unique ground state\n\n**Quantum Yang-Mills** adds:\n- Gauge field operators\n- Gauge invariance of physical states\n- Asymptotic freedom\n\n**OPEN**: No rigorous construction in 4D exists!",
+    "mathContext": "Wightman axioms + gauge invariance",
+    "significance": "critical",
+    "relatedConcepts": ["QFT axioms", "Hilbert space", "vacuum"]
+  },
+  {
+    "id": "ann-mass-gap",
+    "proofId": "yang-mills",
+    "range": {"startLine": 448, "endLine": 471},
+    "type": "definition",
+    "title": "The Mass Gap",
+    "content": "**Mass Gap Δ**:\n\n$$\\Delta = E_1 - E_0 = E_1$$\n\n(since E₀ = 0 for vacuum)\n\n**Physical meaning**:\n- Δ > 0 ⟹ particles have minimum mass\n- For QCD: Δ ≈ 500 MeV (lightest glueball)\n- Explains **confinement**: gluons can't exist as free particles\n\n**Equivalent formulation**:\nCorrelation functions decay exponentially:\n$$\\langle 0| \\phi(x) \\phi(0) |0 \\rangle \\sim e^{-\\Delta |x|}$$",
+    "mathContext": "Δ = E₁ - E₀ > 0",
+    "significance": "critical",
+    "relatedConcepts": ["energy gap", "confinement", "glueball"]
+  },
+  {
+    "id": "ann-millennium",
+    "proofId": "yang-mills",
+    "range": {"startLine": 473, "endLine": 522},
+    "type": "concept",
+    "title": "The Millennium Problem Statement",
+    "content": "**YANG-MILLS MILLENNIUM PROBLEM**:\n\nFor any compact simple gauge group G, prove:\n\n1. **Existence**: A quantum Yang-Mills theory exists on ℝ⁴ satisfying Wightman axioms\n\n2. **Mass gap**: This theory has Δ > 0\n\n**Formally**:\n$$\\exists \\text{ QYM}: \\text{hasMassGap}(\\text{QYM})$$\n\n**Why this is extremely hard**:\n- No rigorous 4D interacting QFT exists!\n- Path integral is ill-defined\n- Perturbation theory diverges\n- Continuum limit from lattice unproven",
+    "mathContext": "∃ QYM with Δ > 0",
+    "significance": "critical",
+    "relatedConcepts": ["Millennium Prize", "existence", "Clay Institute"]
+  },
+  {
+    "id": "ann-partial-results",
+    "proofId": "yang-mills",
+    "range": {"startLine": 534, "endLine": 577},
+    "type": "concept",
+    "title": "Known Partial Results",
+    "content": "**Asymptotic Freedom** (Nobel Prize 2004):\n\nCoupling g decreases at high energies:\n$$\\beta(g) = \\mu \\frac{dg}{d\\mu} < 0$$\n\nYang-Mills becomes weakly coupled at short distances.\n\n**Lattice Yang-Mills** (Wilson 1974):\n- Rigorously defined on discrete lattice ✓\n- Shows confinement (area law) ✓\n- Numerical evidence for mass gap ✓\n- Continuum limit? **UNPROVEN**\n\n**Confinement**: Color charges always confined (experimental fact, no proof)",
+    "significance": "major",
+    "relatedConcepts": ["asymptotic freedom", "lattice QCD", "Wilson"]
+  },
+  {
+    "id": "ann-instantons",
+    "proofId": "yang-mills",
+    "range": {"startLine": 579, "endLine": 620},
+    "type": "concept",
+    "title": "Instantons",
+    "content": "**Instanton Solution**:\n\nFinite-action solution interpolating between vacua.\n\n**Properties**:\n- **Self-dual**: F_μν = ±*F_μν\n- **Topological charge**: k ∈ ℤ\n- **Action**: S = 8π²|k|/g²\n\n**Instanton number**:\n$$k = \\frac{1}{16\\pi^2} \\int \\text{Tr}(F \\wedge F) \\in \\mathbb{Z}$$\n\n**Significance**:\n- Minimize action in topological sector\n- Related to Chern class\n- BPST instanton (1975) for SU(2)",
+    "significance": "minor",
+    "relatedConcepts": ["self-dual", "topology", "BPST"]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "yang-mills",
+    "range": {"startLine": 622, "endLine": 661},
+    "type": "concept",
+    "title": "Problem Status: OPEN",
+    "content": "**Yang-Mills Mass Gap: Still OPEN**\n\n**Formalized in this file**:\n- Gauge groups, Lie algebras ✓\n- Field strength tensor ✓\n- Yang-Mills action ✓\n- Gauge invariance ✓\n- Maxwell = U(1) Yang-Mills ✓\n- Wightman axioms ✓\n- Mass gap definition ✓\n- Instanton solutions ✓\n\n**OPEN problems**:\n- Rigorous 4D quantum Yang-Mills ✗\n- Proof of mass gap ✗\n- Continuum limit ✗\n- Proof of confinement ✗\n\n**Prize**: $1,000,000 from Clay Math Institute",
+    "significance": "minor",
+    "relatedConcepts": ["open problem", "Millennium Prize", "QCD"]
+  }
+]

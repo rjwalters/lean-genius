@@ -1,1 +1,293 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "continuum-hypothesis",
+    "range": {
+      "startLine": 6,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "The First Problem of Hilbert",
+    "content": "The Continuum Hypothesis was Cantor's 1878 conjecture about the \"size\" of infinity:\n\n$$|\\mathbb{N}| < |\\mathbb{R}| \\stackrel{?}{=} \\aleph_1$$\n\nHilbert made it **Problem #1** in his famous 1900 list. The resolution—that CH is *independent* of standard set theory—earned Cohen the Fields Medal in 1966.\n\n**Key insight**: This proof shows CH can be neither proven nor disproven from ZFC axioms. Both CH and ¬CH are consistent with mathematics as we know it.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "ZFC axioms",
+      "cardinal numbers",
+      "Gödel's constructible universe",
+      "Cohen forcing"
+    ]
+  },
+  {
+    "id": "ann-continuum-def",
+    "proofId": "continuum-hypothesis",
+    "range": {
+      "startLine": 56,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "The Continuum",
+    "content": "The **continuum** is the cardinality of the real numbers:\n\n$$\\mathfrak{c} = 2^{\\aleph_0} = |\\mathbb{R}| = |\\mathcal{P}(\\mathbb{N})|$$\n\nThis is uncountable (by Cantor's diagonal argument) but we don't know *how* uncountable. Is it the \"next\" infinity after ℵ₀, or is there something between?",
+    "mathContext": "$\\mathfrak{c} = 2^{\\aleph_0}$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "power set",
+      "cardinal arithmetic",
+      "Cantor's theorem"
+    ]
+  },
+  {
+    "id": "ann-aleph-one",
+    "proofId": "continuum-hypothesis",
+    "range": {
+      "startLine": 61,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Aleph-One",
+    "content": "**ℵ₁** (aleph-one) is defined as the *smallest uncountable cardinal*:\n\n$$\\aleph_1 = \\text{sup}\\{\\alpha : |\\alpha| \\leq \\aleph_0\\}$$\n\nUnlike the continuum 2^ℵ₀ (which we define via power set), ℵ₁ is defined as the *next* cardinal after ℵ₀ in the well-ordering of cardinals.\n\nThe question is: does 2^ℵ₀ = ℵ₁?",
+    "mathContext": "$\\aleph_1 = $ smallest uncountable cardinal",
+    "significance": "major",
+    "relatedConcepts": [
+      "ordinals",
+      "well-ordering",
+      "successor cardinal"
+    ]
+  },
+  {
+    "id": "ann-ch-statement",
+    "proofId": "continuum-hypothesis",
+    "range": {
+      "startLine": 69,
+      "endLine": 72
+    },
+    "type": "theorem",
+    "title": "The Continuum Hypothesis",
+    "content": "**Continuum Hypothesis (CH)**:\n\n$$\\mathfrak{c} = 2^{\\aleph_0} = \\aleph_1$$\n\nEquivalently: there is no set with cardinality strictly between ℕ and ℝ.\n\nThis simple statement about infinity resisted proof for nearly a century until we discovered it cannot be proven or disproven from ZFC!",
+    "mathContext": "$2^{\\aleph_0} = \\aleph_1$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "continuum",
+      "aleph hierarchy",
+      "independence"
+    ]
+  },
+  {
+    "id": "ann-ch-alt",
+    "proofId": "continuum-hypothesis",
+    "range": {
+      "startLine": 74,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "Alternative CH Formulation",
+    "content": "An equivalent way to state CH:\n\n$$\\neg\\exists \\kappa : \\aleph_0 < \\kappa < 2^{\\aleph_0}$$\n\nNo cardinal sits strictly between countable infinity and the continuum. This \"gap-free\" formulation often appears in textbooks and is easier to visualize.",
+    "mathContext": "No $\\kappa$ with $\\aleph_0 < \\kappa < \\mathfrak{c}$",
+    "significance": "major",
+    "relatedConcepts": [
+      "cardinal comparison",
+      "intermediate cardinals"
+    ]
+  },
+  {
+    "id": "ann-gch",
+    "proofId": "continuum-hypothesis",
+    "range": {
+      "startLine": 101,
+      "endLine": 103
+    },
+    "type": "definition",
+    "title": "Generalized Continuum Hypothesis",
+    "content": "**GCH** extends CH to all infinite cardinals:\n\n$$\\forall \\alpha : 2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$$\n\nThis says the power set operation always produces the \"next\" aleph. GCH implies CH (set α = 0).\n\nGöran proved GCH holds in L, and Cohen showed GCH can fail via forcing.",
+    "mathContext": "$2^{\\aleph_\\alpha} = \\aleph_{\\alpha+1}$",
+    "significance": "major",
+    "relatedConcepts": [
+      "ordinal indexing",
+      "power set",
+      "successor cardinals"
+    ]
+  },
+  {
+    "id": "ann-zfc-structure",
+    "proofId": "continuum-hypothesis",
+    "range": {
+      "startLine": 118,
+      "endLine": 136
+    },
+    "type": "concept",
+    "title": "ZFC Set Theory",
+    "content": "**ZFC** (Zermelo-Fraenkel with Choice) is the standard foundation for mathematics:\n\n- **Z**: Extensionality, pairing, union, power set, infinity, separation\n- **F**: Replacement schema\n- **C**: Axiom of Choice\n\nA **model** of ZFC is a structure (Sets, ∈) satisfying all axioms. Different models can disagree on statements like CH!",
+    "significance": "critical",
+    "relatedConcepts": [
+      "axiomatic set theory",
+      "models",
+      "consistency"
+    ]
+  },
+  {
+    "id": "ann-godel-L",
+    "proofId": "continuum-hypothesis",
+    "range": {
+      "startLine": 147,
+      "endLine": 161
+    },
+    "type": "concept",
+    "title": "Gödel's Constructible Universe",
+    "content": "In 1940, Gödel built the **constructible universe L**:\n\n$$L = \\bigcup_{\\alpha} L_\\alpha$$\n\nwhere:\n- $L_0 = \\emptyset$\n- $L_{\\alpha+1} = \\text{Def}(L_\\alpha)$ (first-order definable subsets)\n- $L_\\lambda = \\bigcup_{\\alpha<\\lambda} L_\\alpha$ for limit $\\lambda$\n\nL is the \"minimal\" model of ZFC. **In L, CH holds** because every real number is definable at a countable stage.",
+    "mathContext": "L = ⋃_α L_α",
+    "significance": "critical",
+    "relatedConcepts": [
+      "transfinite recursion",
+      "definability",
+      "inner models"
+    ]
+  },
+  {
+    "id": "ann-L-exists",
+    "proofId": "continuum-hypothesis",
+    "range": {
+      "startLine": 163,
+      "endLine": 170
+    },
+    "type": "note",
+    "title": "Why L Is an Axiom Here",
+    "content": "Fully formalizing L would require:\n\n1. Transfinite recursion over all ordinals\n2. Gödel operations (8 operations for definability)\n3. Verification of each ZFC axiom in L\n4. ~1000+ lines of formal proof\n\nWe capture this as an axiom to focus on the *structure* of the independence proof.",
+    "significance": "minor"
+  },
+  {
+    "id": "ann-forcing",
+    "proofId": "continuum-hypothesis",
+    "range": {
+      "startLine": 187,
+      "endLine": 203
+    },
+    "type": "concept",
+    "title": "Cohen Forcing",
+    "content": "In 1963, Cohen invented **forcing** to construct models where CH fails:\n\n1. Start with ground model M\n2. Choose a poset P (partial order of \"conditions\")\n3. Add a generic filter G to get extension M[G]\n4. M[G] satisfies ZFC with new truths\n\nFor ¬CH, use P = Fn(ℵ₂ × ω, 2): this adds ℵ₂ new real numbers, making |ℝ| ≥ ℵ₂ > ℵ₁.",
+    "mathContext": "M[G] = forcing extension",
+    "significance": "critical",
+    "relatedConcepts": [
+      "generic filters",
+      "posets",
+      "boolean-valued models"
+    ]
+  },
+  {
+    "id": "ann-forcing-axiom",
+    "proofId": "continuum-hypothesis",
+    "range": {
+      "startLine": 205,
+      "endLine": 220
+    },
+    "type": "note",
+    "title": "Why Forcing Is an Axiom Here",
+    "content": "Formalizing Cohen forcing requires:\n\n1. Complete posets and dense sets\n2. Generic filters (via Rasiowa-Sikorski lemma)\n3. Names and interpretation\n4. Truth lemma and definability\n5. ~2000+ lines of machinery\n\nCohen's breakthrough was showing this construction preserves ZFC while changing the value of the continuum.",
+    "significance": "minor"
+  },
+  {
+    "id": "ann-relative-consistency",
+    "proofId": "continuum-hypothesis",
+    "range": {
+      "startLine": 226,
+      "endLine": 230
+    },
+    "type": "definition",
+    "title": "Relative Consistency",
+    "content": "**Relative consistency**: Con(ZFC) → Con(ZFC + φ)\n\nThis means: if ZFC has a model, then ZFC + φ also has a model. We prove this by *constructing* the model:\n\n- Gödel: ZFC → ZFC + CH (use L)\n- Cohen: ZFC → ZFC + ¬CH (use forcing)\n\nNeither result proves CH true or false—both show consistency!",
+    "mathContext": "Con(ZFC) → Con(ZFC + φ)",
+    "significance": "major",
+    "relatedConcepts": [
+      "consistency proofs",
+      "model theory",
+      "metamathematics"
+    ]
+  },
+  {
+    "id": "ann-godel-result",
+    "proofId": "continuum-hypothesis",
+    "range": {
+      "startLine": 232,
+      "endLine": 241
+    },
+    "type": "theorem",
+    "title": "Gödel's Consistency Result",
+    "content": "**Theorem (Gödel, 1940)**:\n\n$$\\text{Con}(ZFC) \\Rightarrow \\text{Con}(ZFC + CH)$$\n\n**Proof**: The constructible universe L is a model of ZFC where CH holds. If ZFC is consistent (has any model), then L exists and satisfies ZFC + CH.\n\nThis showed CH is *not refutable* from ZFC.",
+    "mathContext": "Con(ZFC) → Con(ZFC + CH)",
+    "significance": "critical",
+    "relatedConcepts": [
+      "constructible universe",
+      "inner models",
+      "GCH"
+    ]
+  },
+  {
+    "id": "ann-cohen-result",
+    "proofId": "continuum-hypothesis",
+    "range": {
+      "startLine": 243,
+      "endLine": 253
+    },
+    "type": "theorem",
+    "title": "Cohen's Consistency Result",
+    "content": "**Theorem (Cohen, 1963)**:\n\n$$\\text{Con}(ZFC) \\Rightarrow \\text{Con}(ZFC + \\neg CH)$$\n\n**Proof**: Starting from any model M, forcing with P = Fn(ℵ₂ × ω, 2) produces M[G] where |ℝ| ≥ ℵ₂. Thus CH fails in M[G].\n\nThis showed CH is *not provable* from ZFC. Combined with Gödel: **CH is independent of ZFC**.",
+    "mathContext": "Con(ZFC) → Con(ZFC + ¬CH)",
+    "significance": "critical",
+    "relatedConcepts": [
+      "forcing",
+      "Cohen reals",
+      "independence"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "continuum-hypothesis",
+    "range": {
+      "startLine": 255,
+      "endLine": 278
+    },
+    "type": "theorem",
+    "title": "Independence of CH",
+    "content": "**Main Theorem (Wiedijk #24 / Hilbert #1)**:\n\nThe Continuum Hypothesis is **independent** of ZFC:\n\n1. ∃ model M of ZFC where CH holds (Gödel's L)\n2. ∃ model M of ZFC where ¬CH holds (Cohen extension)\n\nTherefore ZFC ⊬ CH and ZFC ⊬ ¬CH.\n\n**Historical Impact**:\n- Answered Hilbert's first problem (unexpectedly!)\n- Revolutionized set theory with forcing\n- Raised philosophical questions about mathematical truth",
+    "mathContext": "ZFC ⊬ CH and ZFC ⊬ ¬CH",
+    "significance": "critical",
+    "relatedConcepts": [
+      "independence results",
+      "metamathematics",
+      "set-theoretic pluralism"
+    ]
+  },
+  {
+    "id": "ann-cantor",
+    "proofId": "continuum-hypothesis",
+    "range": {
+      "startLine": 284,
+      "endLine": 288
+    },
+    "type": "theorem",
+    "title": "Cantor's Theorem",
+    "content": "**Cantor's Theorem**: For any set A,\n\n$$|A| < |\\mathcal{P}(A)|$$\n\nThis guarantees ℵ₀ < 2^ℵ₀. The continuum is strictly *larger* than countable infinity—we just can't determine *how much* larger within ZFC.\n\nMathlib provides this as `Cardinal.cantor`.",
+    "mathContext": "|A| < |𝒫(A)|",
+    "significance": "major",
+    "relatedConcepts": [
+      "diagonal argument",
+      "power set",
+      "cardinal comparison"
+    ]
+  },
+  {
+    "id": "ann-philosophy",
+    "proofId": "continuum-hypothesis",
+    "range": {
+      "startLine": 300,
+      "endLine": 356
+    },
+    "type": "concept",
+    "title": "Philosophical Implications",
+    "content": "CH independence raises deep questions:\n\n**Platonism**: Is there a \"true\" answer we haven't found?\n\n**Formalism**: Is CH meaningless outside formal systems?\n\n**Multiverse view** (Hamkins): Many equally valid set-theoretic universes exist—some with CH, some without.\n\n**Modern research directions**:\n- Large cardinals and inner models\n- Forcing axioms (MA, PFA, MM)\n- Ultimate L (Woodin's program)",
+    "significance": "major",
+    "relatedConcepts": [
+      "philosophy of mathematics",
+      "set-theoretic pluralism",
+      "foundations"
+    ]
+  }
+]
