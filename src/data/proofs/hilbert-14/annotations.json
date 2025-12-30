@@ -1,0 +1,128 @@
+[
+  {
+    "id": "ann-historical",
+    "proofId": "hilbert-14",
+    "range": {
+      "startLine": 1,
+      "endLine": 55
+    },
+    "type": "insight",
+    "title": "A Problem with a Surprising Negative Answer",
+    "content": "Hilbert's 14th problem is notable for its **negative resolution**. Unlike most of Hilbert's problems which were eventually solved positively (or remain open), this one was answered 'NO' by Nagata in 1959.\n\nHowever, the story is more nuanced: for the cases Hilbert originally cared about (classical groups), the answer is YES.",
+    "mathContext": "Hilbert (1900): 'Is the ring of invariants always finitely generated?'\n\nNagata (1959): 'No, here's a counterexample.'",
+    "significance": "critical",
+    "relatedConcepts": [
+      "invariant theory",
+      "finite generation",
+      "counterexamples"
+    ]
+  },
+  {
+    "id": "ann-basis-theorem",
+    "proofId": "hilbert-14",
+    "range": {
+      "startLine": 75,
+      "endLine": 85
+    },
+    "type": "theorem",
+    "title": "Hilbert's Basis Theorem (1888)",
+    "content": "**Hilbert's Basis Theorem** states that if R is a Noetherian ring, then the polynomial ring R[X] is also Noetherian.\n\nThis was proved by Hilbert in 1888 as part of his revolutionary approach to invariant theory. Rather than computing invariants explicitly, Hilbert showed existence via finiteness arguments.",
+    "mathContext": "R Noetherian => R[X] Noetherian => R[X,Y] Noetherian => ...\n\nBy induction, k[x_1, ..., x_n] is Noetherian for any field k.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Noetherian rings",
+      "polynomial rings",
+      "ascending chain condition"
+    ]
+  },
+  {
+    "id": "ann-invariant-ring",
+    "proofId": "hilbert-14",
+    "range": {
+      "startLine": 115,
+      "endLine": 125
+    },
+    "type": "definition",
+    "title": "Ring of Invariants",
+    "content": "Given a group G acting on a ring R, the **ring of invariants** R^G consists of all elements unchanged by the action:\n\n$R^G = \\{r \\in R : g \\cdot r = r \\text{ for all } g \\in G\\}$\n\nThis forms a subring of R, and the central question is whether it's finitely generated.",
+    "mathContext": "Example: G = S_n permuting variables.\nk[x_1,...,x_n]^{S_n} = k[e_1,...,e_n] (elementary symmetric polynomials)\n\nThis IS finitely generated with n generators.",
+    "significance": "key",
+    "relatedConcepts": [
+      "group actions",
+      "subrings",
+      "symmetric functions"
+    ]
+  },
+  {
+    "id": "ann-reductive",
+    "proofId": "hilbert-14",
+    "range": {
+      "startLine": 210,
+      "endLine": 230
+    },
+    "type": "definition",
+    "title": "Reductive Groups",
+    "content": "A **reductive group** is one where every finite-dimensional representation is completely reducible (decomposes as a direct sum of irreducibles).\n\n**Examples of reductive groups:**\n- GL_n, SL_n, O_n, Sp_n (classical groups)\n- Finite groups\n- Tori (products of copies of k*)\n- Semisimple groups",
+    "mathContext": "Key property: Reductive groups have a **Reynolds operator**\n\nrho: R -> R^G (linear, idempotent, preserves products with invariants)\n\nThis is obtained by 'averaging over the group'.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "representation theory",
+      "complete reducibility",
+      "Reynolds operator"
+    ]
+  },
+  {
+    "id": "ann-hilbert-finiteness",
+    "proofId": "hilbert-14",
+    "range": {
+      "startLine": 232,
+      "endLine": 252
+    },
+    "type": "theorem",
+    "title": "Hilbert's Finiteness Theorem",
+    "content": "**Theorem** (Hilbert 1890, Mumford 1965, Haboush 1975):\n\nIf G is a reductive group acting on a polynomial ring k[x_1,...,x_n], then the ring of invariants is finitely generated.\n\nThe proof uses:\n1. Reynolds operator to project R onto R^G\n2. Hilbert's Basis Theorem to show R^G is Noetherian\n3. The interplay between the two",
+    "mathContext": "More precisely: if I is any ideal of R^G, then I*R (extended to R) satisfies:\n\nI = rho(I*R) = R^G intersection I*R\n\nThis shows ideals of R^G are finitely generated.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "reductive groups",
+      "Noetherian property",
+      "Reynolds operator"
+    ]
+  },
+  {
+    "id": "ann-nagata",
+    "proofId": "hilbert-14",
+    "range": {
+      "startLine": 282,
+      "endLine": 310
+    },
+    "type": "theorem",
+    "title": "Nagata's Counterexample (1959)",
+    "content": "**Nagata's Counterexample:**\n\nThere exists an algebraic group G acting on k^32 such that the ring of invariants is NOT finitely generated.\n\n**Construction:**\n- G = G_a^13 (13 copies of the additive group)\n- The action is via certain derivations\n- The invariant ring contains infinitely many algebraically independent elements",
+    "mathContext": "Why G_a fails:\n\nThe additive group G_a is **unipotent**, not reductive.\n- It has NO Reynolds operator\n- Its representations are NOT completely reducible\n- The 'bad' representation theory leads to bad invariant theory",
+    "significance": "critical",
+    "relatedConcepts": [
+      "additive group",
+      "unipotent groups",
+      "counterexamples"
+    ]
+  },
+  {
+    "id": "ann-classification",
+    "proofId": "hilbert-14",
+    "range": {
+      "startLine": 380,
+      "endLine": 410
+    },
+    "type": "insight",
+    "title": "The Complete Picture",
+    "content": "After Nagata's counterexample, the complete classification emerged:\n\n**Finitely Generated:**\n- Reductive groups (always)\n- Finite groups (always, with degree bound |G|)\n- Diagonalizable groups (always)\n\n**May Fail:**\n- General algebraic groups\n- Unipotent groups (like G_a)\n- Non-reductive groups",
+    "mathContext": "The dichotomy:\n\n- Reductive: good representation theory => good invariant theory\n- Non-reductive: bad representation theory => invariants may be bad",
+    "significance": "key",
+    "relatedConcepts": [
+      "reductive groups",
+      "classification",
+      "geometric invariant theory"
+    ]
+  }
+]
