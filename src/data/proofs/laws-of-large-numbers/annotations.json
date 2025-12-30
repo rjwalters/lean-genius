@@ -33,10 +33,10 @@
     "id": "variance-sample-mean",
     "proofId": "laws-of-large-numbers",
     "range": {
-      "startLine": 165,
-      "endLine": 175
+      "startLine": 200,
+      "endLine": 206
     },
-    "type": "lemma",
+    "type": "theorem",
     "title": "Variance of Sample Mean",
     "content": "For i.i.d. random variables with variance σ², the variance of the sample mean is σ²/n. This follows from Var(ΣXᵢ/n) = Var(ΣXᵢ)/n² = nσ²/n² = σ²/n.",
     "mathContext": "Independence is crucial here: Var(X+Y) = Var(X) + Var(Y) only holds for independent variables.",

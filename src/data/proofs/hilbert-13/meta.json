@@ -1,0 +1,114 @@
+{
+  "id": "hilbert-13",
+  "title": "Hilbert's 13th Problem: Superposition of Functions",
+  "slug": "hilbert-13",
+  "description": "The Kolmogorov-Arnold theorem (1956-57) disproves Hilbert's conjecture: every continuous function of n variables can be represented using functions of only one variable.",
+  "meta": {
+    "author": "Kolmogorov (1956), Arnold (1957)",
+    "date": "1957",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "topology",
+      "superposition",
+      "hilbert-problems",
+      "advanced"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Continuous",
+        "description": "Continuous function definitions",
+        "module": "Mathlib.Topology.Basic"
+      },
+      {
+        "theorem": "ContDiff",
+        "description": "Smooth function definitions",
+        "module": "Mathlib.Analysis.Calculus.ContDiff.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Statement of the Kolmogorov-Arnold representation theorem",
+      "Connection to the septic equation and Bring-Jerrard form",
+      "Vitushkin's theorem for smooth functions",
+      "Universal inner functions (Arnold's refinement)"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 13
+  },
+  "overview": {
+    "historicalContext": "In 1900, Hilbert asked whether the roots of the general degree-7 polynomial equation could be expressed using continuous functions of only two variables. The Bring-Jerrard form reduces the septic to three essential parameters, so Hilbert conjectured that functions of three variables are genuinely necessary.\n\nThe answer came as a complete surprise: Kolmogorov (1956) and Arnold (1957) proved that not only can the septic be solved with two-variable functions, but ANY continuous function of n variables can be expressed using only ONE-variable functions!\n\nThis stunning result completely disproved Hilbert's conjecture. However, for smooth (differentiable) functions, Vitushkin showed that Hilbert's intuition was correct - some smooth functions genuinely require more variables.",
+    "problemStatement": "**Original Problem:** Prove the impossibility of solving the general equation of the 7th degree by means of functions of only two arguments.\n\n**The Septic in Bring-Jerrard Form:**\n$$x^7 + ax^3 + bx^2 + cx + 1 = 0$$\n\nHilbert asked: Can the roots be expressed as functions of (a, b, c) using only functions of two variables?\n\n**Kolmogorov-Arnold Theorem:** Every continuous $f: [0,1]^n \\to \\mathbb{R}$ can be written as:\n$$f(x_1, \\ldots, x_n) = \\sum_{q=0}^{2n} \\Phi_q\\left(\\sum_{p=1}^{n} \\lambda_{pq} \\cdot \\varphi_p(x_p)\\right)$$\n\nwhere all $\\Phi_q$ and $\\varphi_p$ are continuous functions of ONE variable.",
+    "proofStrategy": "The Kolmogorov-Arnold theorem is proven constructively:\n\n1. **Inner Functions**: Construct universal functions $\\varphi_p: [0,1] \\to \\mathbb{R}$ that are continuous but highly irregular (similar to space-filling curves)\n\n2. **Separation Property**: Choose constants $\\lambda_{pq}$ so that the sums $\\sum_p \\lambda_{pq} \\varphi_p(x_p)$ separate all points in $[0,1]^n$\n\n3. **Outer Functions**: For any continuous $f$, construct $\\Phi_q$ to recover $f$ from the encoded values\n\n4. **Arnold's Refinement**: The $\\varphi_p$ can be chosen independently of $f$ (universal)",
+    "keyInsights": [
+      "Continuous functions are far more flexible than Hilbert expected",
+      "Superposition with one-variable functions is universal for continuous functions",
+      "The inner functions can be highly irregular (nowhere differentiable)",
+      "For smooth functions, Hilbert's intuition is vindicated (Vitushkin)",
+      "The theorem has modern applications in neural network theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Superposition of Functions",
+      "startLine": 63,
+      "endLine": 92,
+      "summary": "Definition of function representation using superpositions of lower-dimensional functions and the Kolmogorov-Arnold representation structure."
+    },
+    {
+      "id": "kolmogorov-arnold",
+      "title": "The Kolmogorov-Arnold Theorem",
+      "startLine": 94,
+      "endLine": 145,
+      "summary": "The main theorem stating that every continuous function of n variables can be represented using functions of one variable."
+    },
+    {
+      "id": "septic",
+      "title": "The Septic Equation",
+      "startLine": 147,
+      "endLine": 181,
+      "summary": "Connection to the original motivation: the Bring-Jerrard form of degree-7 polynomials and Abel-Ruffini impossibility."
+    },
+    {
+      "id": "smooth-case",
+      "title": "Smooth Functions: Vitushkin's Theorem",
+      "startLine": 183,
+      "endLine": 229,
+      "summary": "For smooth (C^k) functions, Hilbert's intuition holds: some require more variables. Vitushkin's obstruction theorem."
+    },
+    {
+      "id": "universal-functions",
+      "title": "Universal Inner Functions",
+      "startLine": 231,
+      "endLine": 268,
+      "summary": "Arnold's refinement showing that the inner functions can be chosen independently of the function being represented."
+    },
+    {
+      "id": "applications",
+      "title": "Applications and Consequences",
+      "startLine": 270,
+      "endLine": 299,
+      "summary": "Modern applications including neural network theory and Kolmogorov-Arnold Networks (KANs)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 319,
+      "endLine": 358,
+      "summary": "Complete summary of Hilbert's 13th problem, its resolution, and remaining open questions."
+    }
+  ],
+  "conclusion": {
+    "summary": "Hilbert's 13th Problem asked whether the degree-7 equation requires functions of three variables. The Kolmogorov-Arnold theorem (1956-57) gave a surprising negative answer: every continuous function of any number of variables can be represented using only one-variable functions! However, Vitushkin showed that for smooth functions, Hilbert's intuition was correct.",
+    "implications": "The Kolmogorov-Arnold theorem has profound implications:\n\n1. **Analysis**: Continuous functions are extremely flexible - dimension is not a fundamental obstruction\n\n2. **Neural Networks**: The theorem provides theoretical justification for the expressive power of neural networks with one hidden layer\n\n3. **Approximation Theory**: While the representation is exact, the outer functions may be highly irregular\n\n4. **Smooth Functions**: The dichotomy between continuous and smooth reveals fundamental differences in function spaces",
+    "openQuestions": [
+      "What is the optimal smoothness of the outer functions for smooth input?",
+      "How can the representation be computed efficiently?",
+      "What are the minimal requirements on the inner functions?",
+      "How does this extend to functions on more general spaces?",
+      "What is the computational complexity of finding representations?"
+    ]
+  }
+}
