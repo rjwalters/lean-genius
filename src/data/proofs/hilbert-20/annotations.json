@@ -1,0 +1,200 @@
+[
+  {
+    "id": "ann-historical",
+    "proofId": "hilbert-20",
+    "range": {
+      "startLine": 1,
+      "endLine": 52
+    },
+    "type": "insight",
+    "title": "The Boundary Value Problem Question",
+    "content": "Hilbert's twentieth problem asks a deceptively simple question: when do boundary value problems have solutions?\n\nThe answer turned out to require developing entirely new areas of mathematics (Sobolev spaces, weak solutions) and revealed surprising limitations (Lewy's counterexample).",
+    "mathContext": "Given $\\Omega \\subset \\mathbb{R}^n$ and boundary data $f: \\partial\\Omega \\to \\mathbb{R}$, find $u$ satisfying a PDE in $\\Omega$ with $u = f$ on $\\partial\\Omega$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "partial differential equations",
+      "Dirichlet problem",
+      "existence theory"
+    ]
+  },
+  {
+    "id": "ann-dirichlet",
+    "proofId": "hilbert-20",
+    "range": {
+      "startLine": 76,
+      "endLine": 85
+    },
+    "type": "definition",
+    "title": "The Dirichlet Problem",
+    "content": "The **Dirichlet problem** is the prototype boundary value problem:\n\n1. Find a harmonic function $u$ (satisfying $\\Delta u = 0$)\n2. That equals prescribed values $f$ on the boundary\n\nThis problem has a unique solution for bounded domains with regular boundaries.",
+    "mathContext": "$\\Delta u = 0$ in $\\Omega$, $u = f$ on $\\partial\\Omega$\n\nHarmonic: $\\Delta u = \\sum_{i=1}^n \\frac{\\partial^2 u}{\\partial x_i^2} = 0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Laplace equation",
+      "harmonic functions",
+      "maximum principle"
+    ]
+  },
+  {
+    "id": "ann-dirichlet-existence",
+    "proofId": "hilbert-20",
+    "range": {
+      "startLine": 87,
+      "endLine": 95
+    },
+    "type": "theorem",
+    "title": "Dirichlet Existence Theorem",
+    "content": "For a bounded domain with regular boundary and continuous boundary data, the Dirichlet problem **always has a unique solution**.\n\nThis positive result uses Perron's method (1923) with subharmonic functions or the direct method in calculus of variations.",
+    "mathContext": "If $\\Omega$ is bounded with regular boundary and $f \\in C(\\partial\\Omega)$, then $\\exists! u \\in C(\\bar{\\Omega}) \\cap C^2(\\Omega)$ solving the Dirichlet problem.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Perron's method",
+      "subharmonic functions",
+      "regularity theory"
+    ]
+  },
+  {
+    "id": "ann-bilinear",
+    "proofId": "hilbert-20",
+    "range": {
+      "startLine": 118,
+      "endLine": 128
+    },
+    "type": "definition",
+    "title": "Bounded and Coercive Bilinear Forms",
+    "content": "The key conditions for Lax-Milgram:\n\n**Bounded**: $|a(u,v)| \\leq M\\|u\\|\\|v\\|$\n**Coercive**: $a(u,u) \\geq \\alpha\\|u\\|^2$\n\nBoundedness ensures continuity; coercivity ensures the operator is 'positive definite' in a generalized sense.",
+    "mathContext": "Coercivity generalizes positive definiteness. For the Laplacian: $a(u,v) = \\int \\nabla u \\cdot \\nabla v$ is coercive by Poincare's inequality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ellipticity",
+      "Poincare inequality",
+      "energy estimates"
+    ]
+  },
+  {
+    "id": "ann-lax-milgram",
+    "proofId": "hilbert-20",
+    "range": {
+      "startLine": 148,
+      "endLine": 158
+    },
+    "type": "theorem",
+    "title": "The Lax-Milgram Theorem",
+    "content": "**Lax-Milgram (1954)**: The fundamental existence theorem for elliptic boundary value problems.\n\nIf $a$ is bounded and coercive on a Hilbert space $V$, and $F$ is a bounded linear functional, then $\\exists! u \\in V$ with $a(u,v) = F(v)$ for all $v$.\n\nThis single theorem handles a vast class of PDEs.",
+    "mathContext": "$\\exists! u \\in V: a(u,v) = F(v) \\quad \\forall v \\in V$\n\nMoreover: $\\|u\\| \\leq \\frac{1}{\\alpha}\\|F\\|$ where $\\alpha$ is the coercivity constant.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Riesz representation",
+      "variational methods",
+      "weak solutions"
+    ]
+  },
+  {
+    "id": "ann-energy",
+    "proofId": "hilbert-20",
+    "range": {
+      "startLine": 168,
+      "endLine": 182
+    },
+    "type": "insight",
+    "title": "Variational Interpretation",
+    "content": "When the bilinear form is **symmetric**, Lax-Milgram is equivalent to minimizing the **energy functional**:\n\n$J(v) = \\frac{1}{2}a(v,v) - F(v)$\n\nThe solution $u$ is the unique minimizer. This is the **direct method** in calculus of variations.",
+    "mathContext": "$u = \\arg\\min_{v \\in V} J(v) = \\arg\\min_{v \\in V} \\left[\\frac{1}{2}a(v,v) - F(v)\\right]$\n\nNature minimizes energy!",
+    "significance": "key",
+    "relatedConcepts": [
+      "calculus of variations",
+      "energy minimization",
+      "Euler-Lagrange equations"
+    ]
+  },
+  {
+    "id": "ann-sobolev",
+    "proofId": "hilbert-20",
+    "range": {
+      "startLine": 200,
+      "endLine": 212
+    },
+    "type": "definition",
+    "title": "Sobolev Spaces",
+    "content": "**Sobolev spaces** $H^k(\\Omega)$ consist of functions with $k$ weak derivatives in $L^2$.\n\n$H_0^1(\\Omega)$ is the subspace of $H^1$ functions vanishing on $\\partial\\Omega$ - the natural space for Dirichlet problems.\n\nThese spaces are Hilbert spaces, enabling Lax-Milgram.",
+    "mathContext": "$H^1(\\Omega) = \\{u \\in L^2: \\nabla u \\in L^2\\}$\n\n$H_0^1(\\Omega) = \\{u \\in H^1: u|_{\\partial\\Omega} = 0\\}$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "weak derivatives",
+      "trace theorem",
+      "embedding theorems"
+    ]
+  },
+  {
+    "id": "ann-poisson",
+    "proofId": "hilbert-20",
+    "range": {
+      "startLine": 216,
+      "endLine": 224
+    },
+    "type": "theorem",
+    "title": "Poisson Equation Existence",
+    "content": "The **Poisson equation** $-\\Delta u = f$ with $u = 0$ on $\\partial\\Omega$ has a unique weak solution for any $f \\in L^2(\\Omega)$.\n\nThis is a direct application of Lax-Milgram with $a(u,v) = \\int \\nabla u \\cdot \\nabla v$.",
+    "mathContext": "Weak form: Find $u \\in H_0^1(\\Omega)$ such that\n$\\int_\\Omega \\nabla u \\cdot \\nabla v = \\int_\\Omega fv \\quad \\forall v \\in H_0^1(\\Omega)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "electrostatics",
+      "gravitational potential",
+      "heat equation steady state"
+    ]
+  },
+  {
+    "id": "ann-lewy",
+    "proofId": "hilbert-20",
+    "range": {
+      "startLine": 240,
+      "endLine": 252
+    },
+    "type": "axiom",
+    "title": "Lewy's Counterexample",
+    "content": "**Lewy (1957)**: A shocking negative result!\n\nThere exists a perfectly smooth, first-order linear PDE that has **no solution at all** - not even locally, in any neighborhood of any point.\n\nThis definitively answers Hilbert's question: NOT all PDEs are solvable.",
+    "mathContext": "Lewy operator: $L = \\frac{\\partial}{\\partial x} + i\\frac{\\partial}{\\partial y} - 2i(x+iy)\\frac{\\partial}{\\partial t}$\n\nThere exists smooth $f$ such that $Lu = f$ has no solution.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "local solvability",
+      "Hormander condition",
+      "characteristic variety"
+    ]
+  },
+  {
+    "id": "ann-local-unsolvability",
+    "proofId": "hilbert-20",
+    "range": {
+      "startLine": 254,
+      "endLine": 260
+    },
+    "type": "insight",
+    "title": "The Failure is Fundamental",
+    "content": "Lewy's example shows that unsolvability is not about boundary conditions - the equation has no solution even **locally**, ignoring boundaries entirely.\n\nThis revealed that solvability is a deep structural property of the differential operator itself.",
+    "mathContext": "For Lewy's operator $L$, there exists $f$ such that for every open $U \\neq \\emptyset$: $\\nexists u$ with $Lu = f$ in $U$.\n\nNo boundary conditions involved!",
+    "significance": "critical",
+    "relatedConcepts": [
+      "local solvability",
+      "microlocal analysis",
+      "wave front set"
+    ]
+  },
+  {
+    "id": "ann-status",
+    "proofId": "hilbert-20",
+    "range": {
+      "startLine": 280,
+      "endLine": 300
+    },
+    "type": "insight",
+    "title": "Complete Resolution",
+    "content": "Hilbert's twentieth problem is **solved with qualifications**:\n\n**Positive**: Elliptic PDEs with coercive bilinear forms always have weak solutions (Lax-Milgram)\n\n**Negative**: Some smooth PDEs have no solutions at all (Lewy)\n\nThe structural property of ellipticity/coercivity determines solvability.",
+    "mathContext": "Elliptic: $a(u,u) \\geq \\alpha\\|u\\|^2$ guarantees existence\n\nNon-elliptic: May have no solutions (Lewy's example)",
+    "significance": "critical",
+    "relatedConcepts": [
+      "elliptic operators",
+      "Hormander condition",
+      "hypoellipticity"
+    ]
+  }
+]

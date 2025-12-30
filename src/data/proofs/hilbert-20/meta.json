@@ -1,0 +1,113 @@
+{
+  "id": "hilbert-20",
+  "title": "Hilbert's Twentieth Problem: Boundary Value Problems",
+  "slug": "hilbert-20",
+  "description": "Hilbert's 1900 question about the solvability of boundary value problems was resolved through Lax-Milgram (1954) for elliptic PDEs, but Lewy's example (1957) showed some smooth PDEs have no solutions.",
+  "meta": {
+    "author": "Lax, Milgram, Sobolev, Lewy",
+    "date": "1923-1957",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "pde",
+      "functional-analysis",
+      "hilbert-problems",
+      "boundary-value",
+      "intermediate"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "InnerProductSpace",
+        "description": "Hilbert space structure for variational formulations",
+        "module": "Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "CompleteSpace",
+        "description": "Completeness for weak convergence arguments",
+        "module": "Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "ContinuousLinearMap",
+        "description": "Bounded linear functionals",
+        "module": "Topology.Algebra.Module.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Dirichlet problem formulation and existence",
+      "Lax-Milgram theorem statement",
+      "Weak formulation framework",
+      "Poisson equation existence",
+      "Lewy's counterexample demonstration"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 20
+  },
+  "overview": {
+    "historicalContext": "Hilbert's twentieth problem asked: do all boundary value problems with reasonable boundary conditions have solutions?\n\nThe answer, developed over the 20th century, is nuanced:\n\n- **Perron's Method (1923)**: Solved the Dirichlet problem for Laplace's equation using subharmonic functions\n- **Sobolev Spaces (1936)**: Introduced the natural function spaces for weak solutions\n- **Lax-Milgram Theorem (1954)**: Provided an abstract existence framework for elliptic problems\n- **Lewy's Example (1957)**: Showed some perfectly smooth PDEs have NO solutions at all\n\nThe resolution reveals that solvability depends deeply on the structure of the equation, not just the boundary conditions.",
+    "problemStatement": "Given a partial differential equation with boundary conditions on a domain, when does a solution exist?\n\nFor the Dirichlet problem:\n- Domain: Bounded open set in n-dimensional space\n- Equation: Find u satisfying the Laplace equation (or more general elliptic PDE) in the domain\n- Boundary condition: u equals prescribed values f on the boundary\n\nHilbert asked if this always has a solution for 'reasonable' data.",
+    "proofStrategy": "The modern approach uses weak formulations and the Lax-Milgram theorem:\n\n1. **Weak Formulation**: Reformulate the PDE as finding u such that a(u,v) = F(v) for all test functions v\n\n2. **Lax-Milgram Theorem**: If a is bounded and coercive, and F is bounded, a unique solution exists\n\n3. **Coercivity from Poincare**: For elliptic PDEs, Poincare's inequality gives coercivity\n\n4. **Regularity Theory**: Weak solutions are actually smooth when data is smooth\n\nThe negative result (Lewy) shows this framework cannot be extended to all PDEs.",
+    "keyInsights": [
+      "Weak solutions generalize classical solutions and always exist for elliptic problems",
+      "The Lax-Milgram theorem reduces existence to checking two inequalities",
+      "Sobolev spaces are the natural setting for boundary value problems",
+      "Not all PDEs are solvable - Lewy's counterexample is definitive",
+      "Coercivity (related to ellipticity) is the key structural property"
+    ]
+  },
+  "sections": [
+    {
+      "id": "dirichlet",
+      "title": "The Dirichlet Problem",
+      "startLine": 56,
+      "endLine": 101,
+      "summary": "The classical Dirichlet problem: find a harmonic function with prescribed boundary values. Existence and uniqueness theorems."
+    },
+    {
+      "id": "weak",
+      "title": "Weak Formulations",
+      "startLine": 103,
+      "endLine": 130,
+      "summary": "The variational approach: bilinear forms, boundedness, and coercivity conditions."
+    },
+    {
+      "id": "lax-milgram",
+      "title": "The Lax-Milgram Theorem",
+      "startLine": 132,
+      "endLine": 182,
+      "summary": "The fundamental existence theorem for bounded coercive bilinear forms on Hilbert spaces."
+    },
+    {
+      "id": "poisson",
+      "title": "Application to Poisson Equation",
+      "startLine": 184,
+      "endLine": 224,
+      "summary": "Existence of weak solutions to -u = f with Dirichlet boundary conditions via Lax-Milgram."
+    },
+    {
+      "id": "lewy",
+      "title": "Lewy's Counterexample",
+      "startLine": 226,
+      "endLine": 260,
+      "summary": "Hans Lewy's 1957 example: a smooth PDE with no solution, even locally."
+    },
+    {
+      "id": "modern",
+      "title": "Modern Understanding",
+      "startLine": 262,
+      "endLine": 305,
+      "summary": "Summary of positive and negative results, the complete resolution of Hilbert's twentieth problem."
+    }
+  ],
+  "conclusion": {
+    "summary": "Hilbert's twentieth problem is solved with qualifications. For elliptic PDEs with coercive bilinear forms, the Lax-Milgram theorem guarantees existence of weak solutions. However, Lewy's 1957 example demonstrates that some smooth PDEs have no solutions at all, even locally.\n\nThe answer is thus:\n- YES for elliptic problems with reasonable boundary conditions\n- NO in full generality",
+    "implications": "The resolution of Hilbert's twentieth problem has profound implications:\n\n1. **PDE Theory**: Weak solutions in Sobolev spaces are the natural framework\n\n2. **Functional Analysis**: Lax-Milgram is a workhorse tool in applied mathematics\n\n3. **Numerical Methods**: Finite element methods are based on weak formulations\n\n4. **Structural Conditions**: Ellipticity/coercivity are essential, not just technical assumptions\n\n5. **Limitations**: Not every mathematical question about PDEs has a positive answer",
+    "openQuestions": [
+      "What is the precise characterization of locally solvable operators?",
+      "How does regularity of weak solutions depend on domain geometry?",
+      "Can machine learning methods discover new existence theorems?",
+      "What are the obstructions to solvability beyond Hormander's condition?"
+    ]
+  }
+}
