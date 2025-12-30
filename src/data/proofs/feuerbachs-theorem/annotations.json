@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "feuerbachs-theorem",
+    "range": {"startLine": 8, "endLine": 45},
+    "type": "concept",
+    "title": "Feuerbach's Theorem: Wiedijk #29",
+    "content": "**Feuerbach's Theorem (1822)**:\n\nThe **nine-point circle** of any triangle is:\n- **Internally tangent** to the **incircle**\n- **Externally tangent** to all three **excircles**\n\n**The Nine-Point Circle** passes through 9 special points:\n1. Midpoints of the three sides\n2. Feet of the three altitudes\n3. Midpoints of segments from vertices to orthocenter\n\n**Key Properties**:\n- Radius = $R/2$ (half the circumradius)\n- Center $N$ = midpoint of orthocenter $H$ and circumcenter $O$\n\n**Historical**: Karl Wilhelm Feuerbach discovered this beautiful tangency in 1822. The tangent point with the incircle is called the **Feuerbach point**.",
+    "significance": "critical",
+    "relatedConcepts": ["nine-point circle", "incircle", "excircle", "tangency"]
+  },
+  {
+    "id": "ann-triangle",
+    "proofId": "feuerbachs-theorem",
+    "range": {"startLine": 59, "endLine": 93},
+    "type": "definition",
+    "title": "Triangle Configuration",
+    "content": "**Triangle Structure in $\\mathbb{R}^2$**:\n\n```lean\nstructure Triangle where\n  A B C : Point\n  nondegenerate : (B.1 - A.1) * (C.2 - A.2) - (C.1 - A.1) * (B.2 - A.2) ≠ 0\n```\n\n**Side lengths** via distance formula:\n- $a = |BC|$, $b = |CA|$, $c = |AB|$\n\n**Semi-perimeter**: $s = \\frac{a + b + c}{2}$\n\n**Area** (shoelace formula):\n$$\\text{Area} = \\frac{1}{2}|\\det\\begin{pmatrix} B - A \\\\ C - A \\end{pmatrix}|$$\n\nThe non-degeneracy condition ensures positive area.",
+    "mathContext": "Triangle structure with side lengths",
+    "significance": "major",
+    "relatedConcepts": ["coordinate geometry", "shoelace formula", "distance"]
+  },
+  {
+    "id": "ann-special-points",
+    "proofId": "feuerbachs-theorem",
+    "range": {"startLine": 98, "endLine": 136},
+    "type": "definition",
+    "title": "Triangle Special Points",
+    "content": "**Special Points of a Triangle**:\n\n**Midpoints**: Centers of each side\n- $M_a$ = midpoint of $BC$, etc.\n\n**Circumcenter $O$**: Equidistant from all vertices\n- Center of the circumscribed circle\n- Computed via perpendicular bisector intersection\n\n**Orthocenter $H$**: Intersection of altitudes\n- Euler line relation: $H = A + B + C - 2O$\n\n**Centroid $G$**: Intersection of medians\n- $G = \\frac{A + B + C}{3}$\n\nThese three points are **collinear** on the **Euler line**, with $G$ dividing $OH$ in ratio $1:2$.",
+    "mathContext": "O, G, H on Euler line",
+    "significance": "major",
+    "relatedConcepts": ["circumcenter", "orthocenter", "centroid", "Euler line"]
+  },
+  {
+    "id": "ann-nine-point",
+    "proofId": "feuerbachs-theorem",
+    "range": {"startLine": 142, "endLine": 157},
+    "type": "definition",
+    "title": "Nine-Point Circle",
+    "content": "**The Nine-Point Circle**:\n\n**Center**: $N = $ midpoint of $O$ and $H$\n**Radius**: $R_9 = R/2$\n\n**The 9 points on this circle**:\n1. **Side midpoints**: $M_a, M_b, M_c$\n2. **Altitude feet**: Where altitudes meet opposite sides\n3. **Euler points**: Midpoints of $AH, BH, CH$\n\n**Lean**:\n```lean\ndef Triangle.ninePointCenter (T : Triangle) : Point :=\n  pointMidpoint T.orthocenter T.circumcenter\n\ndef Triangle.ninePointRadius (T : Triangle) : ℝ :=\n  T.circumradius / 2\n```\n\nAlso called the **Euler circle** or **Feuerbach circle**.",
+    "mathContext": "N = (O + H)/2, R₉ = R/2",
+    "significance": "critical",
+    "relatedConcepts": ["Euler circle", "midpoint", "half circumradius"]
+  },
+  {
+    "id": "ann-incircle",
+    "proofId": "feuerbachs-theorem",
+    "range": {"startLine": 163, "endLine": 210},
+    "type": "definition",
+    "title": "Incircle and Excircles",
+    "content": "**Incircle** (inscribed circle):\n- **Incenter $I$**: Intersection of angle bisectors\n- **Inradius $r$**: $r = \\frac{\\text{Area}}{s}$ (s = semi-perimeter)\n- Touches all three sides internally\n\n**Excircles** (escribed circles):\n- **Excircle opposite $A$**: Touches $BC$ and extensions of $AB$, $AC$\n- **Excenter $I_a$**: Uses signed weights in barycentric formula\n- **Exradius $r_a$**: $r_a = \\frac{\\text{Area}}{s - a}$\n\n**Key formulas**:\n$$I = \\frac{a \\cdot A + b \\cdot B + c \\cdot C}{a + b + c}$$\n$$I_a = \\frac{-a \\cdot A + b \\cdot B + c \\cdot C}{-a + b + c}$$",
+    "mathContext": "r = Area/s, rₐ = Area/(s-a)",
+    "significance": "major",
+    "relatedConcepts": ["incircle", "excircle", "angle bisector", "barycentric"]
+  },
+  {
+    "id": "ann-tangency",
+    "proofId": "feuerbachs-theorem",
+    "range": {"startLine": 216, "endLine": 224},
+    "type": "definition",
+    "title": "Circle Tangency Conditions",
+    "content": "**Tangency of Two Circles**:\n\nFor circles with centers $c_1, c_2$ and radii $r_1, r_2$:\n\n**Internal tangency**: One inside the other, touching at one point\n$$\\text{dist}(c_1, c_2) = |r_1 - r_2|$$\n\n**External tangency**: Both outside each other, touching at one point\n$$\\text{dist}(c_1, c_2) = r_1 + r_2$$\n\nFeuerbach's theorem establishes:\n- Nine-point circle **internally** tangent to incircle\n- Nine-point circle **externally** tangent to each excircle",
+    "mathContext": "internal: d = |r₁-r₂|, external: d = r₁+r₂",
+    "significance": "major",
+    "relatedConcepts": ["tangent circles", "internal tangency", "external tangency"]
+  },
+  {
+    "id": "ann-euler-line",
+    "proofId": "feuerbachs-theorem",
+    "range": {"startLine": 230, "endLine": 243},
+    "type": "theorem",
+    "title": "Euler Line Relations",
+    "content": "**Euler Line Theorem**:\n\nThe circumcenter $O$, centroid $G$, and orthocenter $H$ are collinear.\n\n**Division ratio**: $G$ divides $OH$ in ratio $1:2$\n$$G = \\frac{O + 2H}{3}$$\n\n**Nine-point center**: $N$ is the midpoint of $OH$\n$$N = \\frac{O + H}{2}$$\n\n**Lean proof**:\n```lean\ntheorem euler_line_relation (T : Triangle) :\n    T.centroid = ((O.1 + 2*H.1)/3, (O.2 + 2*H.2)/3)\n```\n\nProved by direct coordinate computation.",
+    "mathContext": "G = (O + 2H)/3",
+    "significance": "major",
+    "relatedConcepts": ["Euler line", "collinearity", "division ratio"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "feuerbachs-theorem",
+    "range": {"startLine": 308, "endLine": 364},
+    "type": "theorem",
+    "title": "Feuerbach's Theorem (Main Result)",
+    "content": "**Feuerbach's Theorem** (Wiedijk #29):\n\nFor any triangle $ABC$ with nine-point circle $(N, R/2)$:\n\n**Part 1** (Incircle tangency):\n$$\\text{dist}(N, I) = |R/2 - r|$$\nInternal tangency at the **Feuerbach point**.\n\n**Part 2** (Excircle tangencies):\n$$\\text{dist}(N, I_a) = R/2 + r_a$$\n$$\\text{dist}(N, I_b) = R/2 + r_b$$\n$$\\text{dist}(N, I_c) = R/2 + r_c$$\nExternal tangency to all three excircles.\n\n**Lean**:\n```lean\ntheorem feuerbachs_theorem (T : Triangle) :\n    dist2 N I = |R/2 - r| ∧\n    circlesExternallyTangent N Iₐ (R/2) rₐ ∧ ...\n```\n\n**Status**: Key distance relations are axiomatized.",
+    "mathContext": "dist(N,I) = |R/2 - r|",
+    "significance": "critical",
+    "relatedConcepts": ["Feuerbach point", "tangency", "distance formula"]
+  },
+  {
+    "id": "ann-equilateral",
+    "proofId": "feuerbachs-theorem",
+    "range": {"startLine": 370, "endLine": 403},
+    "type": "theorem",
+    "title": "Equilateral Triangle Case",
+    "content": "**Special Case: Equilateral Triangle**\n\nFor an equilateral triangle with side $s$:\n- Area $= \\frac{s^2 \\sqrt{3}}{4}$\n- Circumradius $R = \\frac{s}{\\sqrt{3}}$\n- Inradius $r = \\frac{s\\sqrt{3}}{6}$\n- Therefore: $R = 2r$\n\n**Consequence**: $R/2 = r$, so the nine-point circle has the **same radius** as the incircle!\n\n**Geometric insight**: For an equilateral triangle, the nine-point circle and incircle are concentric (same center) and **coincide**.\n\nThis is the degenerate case where the \"internal tangency\" becomes identity.",
+    "mathContext": "R = 2r for equilateral triangle",
+    "significance": "major",
+    "relatedConcepts": ["equilateral triangle", "coincident circles", "R = 2r"]
+  },
+  {
+    "id": "ann-example",
+    "proofId": "feuerbachs-theorem",
+    "range": {"startLine": 409, "endLine": 442},
+    "type": "note",
+    "title": "Numerical Example: 3-4-5 Triangle",
+    "content": "**Worked Example: 3-4-5 Right Triangle**\n\nVertices: $A = (0,0)$, $B = (3,0)$, $C = (0,4)$\n\n**Computed values**:\n- Area = 6 (half base times height)\n- Semi-perimeter = 6 (since $3 + 4 + 5 = 12$)\n- **Inradius** $r = 6/6 = 1$\n- **Circumradius** $R = 5/2$ (half the hypotenuse)\n- **Nine-point radius** = $5/4$\n\n**Verification**:\n```lean\ntheorem triangle_345_inradius : triangle_345.inradius = 1\n```\n\nFor right triangles, the circumcenter is at the midpoint of the hypotenuse.",
+    "significance": "minor",
+    "relatedConcepts": ["right triangle", "3-4-5 triangle", "numerical verification"]
+  }
+]

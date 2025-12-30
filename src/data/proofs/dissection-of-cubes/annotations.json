@@ -1,1 +1,78 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "dissection-of-cubes",
+    "range": {"startLine": 6, "endLine": 67},
+    "type": "concept",
+    "title": "Dissection of Cubes: Wiedijk #82",
+    "content": "**Impossibility Theorem**:\n\nA cube **cannot** be dissected into finitely many smaller cubes, all of **different sizes**.\n\n**Equivalently**: Any dissection of a cube into smaller cubes must have at least two cubes of the **same size**.\n\n**The Elegant Proof** (Littlewood):\n1. Look at the smallest cube touching the bottom face\n2. It's surrounded by taller cubes (all different sizes)\n3. Its top face becomes a new \"floor\" covered by smaller cubes\n4. Repeat: infinite descent of cube sizes\n5. Contradiction with finite dissection\n\n**Contrast**: A square CAN be dissected into squares of all different sizes (\"squaring the square\")!",
+    "significance": "critical",
+    "relatedConcepts": ["infinite descent", "cube dissection", "well-foundedness"]
+  },
+  {
+    "id": "ann-cube-def",
+    "proofId": "dissection-of-cubes",
+    "range": {"startLine": 75, "endLine": 106},
+    "type": "definition",
+    "title": "Cube Representation",
+    "content": "**Cube Structure**:\n\n```lean\nstructure Cube where\n  x : ℝ  -- corner x-coordinate\n  y : ℝ  -- corner y-coordinate  \n  z : ℝ  -- corner z-coordinate\n  side : ℝ  -- side length\n  side_pos : 0 < side\n```\n\n**Properties**:\n- `touchesBottom`: $z = 0$ (on the floor)\n- `inUnitCube`: contained in $[0,1]^3$\n- `interiorDisjoint`: cubes don't overlap except at boundaries\n\nAxis-aligned cubes in 3D space, represented by corner position and side length.",
+    "mathContext": "axis-aligned cubes in ℝ³",
+    "significance": "major",
+    "relatedConcepts": ["coordinate geometry", "axis-aligned", "bounding box"]
+  },
+  {
+    "id": "ann-dissection",
+    "proofId": "dissection-of-cubes",
+    "range": {"startLine": 112, "endLine": 140},
+    "type": "definition",
+    "title": "Cube Dissection",
+    "content": "**Dissection Definition**:\n\n```lean\nstructure CubeDissection where\n  cubes : Finset Cube\n  all_contained : ∀ c ∈ cubes, c.inUnitCube\n  pairwise_disjoint : ∀ c₁ ∈ cubes, ∀ c₂ ∈ cubes,\n                      c₁ ≠ c₂ → c₁.interiorDisjoint c₂\n  covers_unit_cube : True\n```\n\n**\"All Different Sizes\"**:\n```lean\ndef allDifferentSizes (d : CubeDissection) : Prop :=\n  ∀ c₁ ∈ d.cubes, ∀ c₂ ∈ d.cubes, c₁ ≠ c₂ → c₁.size ≠ c₂.size\n```\n\nA valid dissection partitions the unit cube into interior-disjoint smaller cubes.",
+    "mathContext": "partition into smaller cubes",
+    "significance": "major",
+    "relatedConcepts": ["Finset", "partition", "disjoint"]
+  },
+  {
+    "id": "ann-floor-argument",
+    "proofId": "dissection-of-cubes",
+    "range": {"startLine": 146, "endLine": 181},
+    "type": "theorem",
+    "title": "The Floor Argument",
+    "content": "**Key Insight: Smallest Cube on a Floor**\n\nIf all cubes have different sizes:\n1. The **smallest** cube touching the floor is completely **surrounded** by taller cubes\n2. Its **top face** becomes a new \"floor\" at height $z = s$\n3. This new floor is covered by **even smaller** cubes\n\n**Why surrounded?**\n- All sizes different $\\Rightarrow$ neighbors are taller\n- Taller neighbors \"wall in\" the small cube\n- Top face is interior, must be covered by other cubes\n\nThis creates an inescapable descent to smaller and smaller cubes.",
+    "mathContext": "smallest on floor ⟹ top is new floor",
+    "significance": "critical",
+    "relatedConcepts": ["floor argument", "surrounding", "minimality"]
+  },
+  {
+    "id": "ann-infinite-descent",
+    "proofId": "dissection-of-cubes",
+    "range": {"startLine": 187, "endLine": 240},
+    "type": "theorem",
+    "title": "Infinite Descent Argument",
+    "content": "**Infinite Descent Contradiction**:\n\nIf all sizes different:\n1. Start with smallest cube on bottom floor\n2. Its top is a new floor with smaller cubes\n3. Repeat: get strictly decreasing sequence of sizes\n4. Sequence length can exceed number of cubes\n5. **Contradiction**: Can't have more terms than cubes!\n\n**Lean Framework**:\n```lean\ndef hasDecreasingChain (d : CubeDissection) (n : ℕ) : Prop :=\n  ∃ chain : Fin n → Cube, ...\n\nlemma chain_length_bounded (d : CubeDissection) (n : ℕ)\n    (h : hasDecreasingChain d n) : n ≤ d.cubes.card\n```\n\nWell-foundedness of natural numbers prevents infinite descent.",
+    "mathContext": "chain length ≤ cardinality",
+    "significance": "critical",
+    "relatedConcepts": ["infinite descent", "well-foundedness", "omega"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "dissection-of-cubes",
+    "range": {"startLine": 246, "endLine": 282},
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**Wiedijk #82: Dissection of Cubes**\n\n```lean\ntheorem dissection_of_cubes (d : CubeDissection)\n    (h_nonempty : d.cubes.Nonempty) : ¬ d.allDifferentSizes\n```\n\n**Proof**:\n1. Assume all sizes different\n2. By floor argument: arbitrarily long decreasing chains\n3. Take chain of length `card + 1`\n4. But chain length $\\leq$ card\n5. `omega` gives contradiction\n\n**Equivalent form**:\n```lean\ntheorem two_cubes_same_size (d : CubeDissection) :\n    ∃ c₁ c₂ ∈ d.cubes, c₁ ≠ c₂ ∧ c₁.size = c₂.size\n```",
+    "mathContext": "¬(all different sizes)",
+    "significance": "critical",
+    "relatedConcepts": ["omega", "by_contra", "push_neg"]
+  },
+  {
+    "id": "ann-2d-contrast",
+    "proofId": "dissection-of-cubes",
+    "range": {"startLine": 288, "endLine": 313},
+    "type": "note",
+    "title": "Contrast: Squaring the Square",
+    "content": "**2D is Different!**\n\nA square **CAN** be dissected into squares of all different sizes!\n\nFirst demonstrated by Brooks, Smith, Stone, and Tutte (1940).\n\n**Smallest simple perfect squared square**: 21 squares, side 112.\n\n**Why the difference?**\n- In 2D: Small square on edge can extend to boundary\n- In 3D: Small cube in interior is completely surrounded\n\n**Dimension matters**: The floor argument fails in 2D because edge squares aren't walled in on all sides.\n\nThis shows how geometric problems can behave fundamentally differently across dimensions.",
+    "mathContext": "2D: possible; 3D: impossible",
+    "significance": "major",
+    "relatedConcepts": ["squaring the square", "dimension", "boundary effects"]
+  }
+]

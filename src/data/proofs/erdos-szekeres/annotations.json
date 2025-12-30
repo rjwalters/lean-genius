@@ -1,1 +1,66 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "erdos-szekeres",
+    "range": {"startLine": 7, "endLine": 52},
+    "type": "concept",
+    "title": "Erdős–Szekeres Theorem: Wiedijk #73",
+    "content": "**Erdős–Szekeres Theorem (1935)**:\n\nAny sequence of at least $(r-1)(s-1) + 1$ distinct real numbers contains:\n- An **increasing** subsequence of length $r$, OR\n- A **decreasing** subsequence of length $s$\n\n**Classic Form**: Any sequence of $n^2 + 1$ distinct elements has a monotonic subsequence of length $n + 1$.\n\n**Historical**: Paul Erdős and George Szekeres (1935), published when Erdős was 22. Originated from the \"Happy Ending Problem\" about convex polygons.\n\n**Applications**: Ramsey theory, sorting algorithms, computational geometry.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "pigeonhole principle", "monotonic subsequence"]
+  },
+  {
+    "id": "ann-proof-idea",
+    "proofId": "erdos-szekeres",
+    "range": {"startLine": 23, "endLine": 37},
+    "type": "concept",
+    "title": "The Pigeonhole Proof",
+    "content": "**Elegant Pigeonhole Argument**:\n\n1. For each position $i$, compute $(a_i, b_i)$:\n   - $a_i$ = longest increasing subsequence ending at $i$\n   - $b_i$ = longest decreasing subsequence ending at $i$\n\n2. All pairs $(a_i, b_i)$ are **distinct**\n\n3. If no increasing length $r$ and no decreasing length $s$:\n   - All pairs come from $\\{1,\\ldots,r-1\\} \\times \\{1,\\ldots,s-1\\}$\n   - Only $(r-1)(s-1)$ such pairs\n   - But we have $(r-1)(s-1) + 1$ positions!\n\n4. **Pigeonhole contradiction!**",
+    "mathContext": "(r-1)(s-1) + 1 positions, (r-1)(s-1) pairs",
+    "significance": "critical",
+    "relatedConcepts": ["pigeonhole", "distinctness", "labeling"]
+  },
+  {
+    "id": "ann-subsequences",
+    "proofId": "erdos-szekeres",
+    "range": {"startLine": 58, "endLine": 109},
+    "type": "definition",
+    "title": "Subsequence Definitions",
+    "content": "**Subsequence Structures**:\n\n```lean\nstructure IncreasingSubseq (f : Sequence α n) (k : ℕ) where\n  positions : Fin k → Fin n\n  strictMono_positions : StrictMono positions\n  strictMono_values : StrictMono (f ∘ positions)\n```\n\n- **positions**: indices of the subsequence elements\n- **strictMono_positions**: indices are increasing\n- **strictMono_values**: values at those indices are increasing\n\nDecreasingSubseq uses `StrictAnti` for values.\n\n**Key Properties**:\n- `HasIncreasingEndingAt f i len`: there's an increasing subsequence of length `len` ending at position `i`",
+    "mathContext": "StrictMono positions and values",
+    "significance": "major",
+    "relatedConcepts": ["StrictMono", "StrictAnti", "Fin"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "erdos-szekeres",
+    "range": {"startLine": 111, "endLine": 158},
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**Erdős–Szekeres Theorem** (Wiedijk #73):\n\n```lean\ntheorem erdos_szekeres_existence\n    (f : Sequence α n) (hf : Injective f) (r s : ℕ)\n    (hn : n ≥ (r - 1) * (s - 1) + 1) :\n    (∃ sub : IncreasingSubseq f r, True) ∨\n    (∃ sub : DecreasingSubseq f s, True)\n```\n\n**Classic Form** ($r = s = m + 1$):\n```lean\ntheorem erdos_szekeres_classic (f : Sequence α (m * m + 1)) :\n    (∃ sub : IncreasingSubseq f (m + 1), True) ∨\n    (∃ sub : DecreasingSubseq f (m + 1), True)\n```\n\nSince $(m+1-1)(m+1-1) + 1 = m^2 + 1$.",
+    "mathContext": "n ≥ (r-1)(s-1) + 1 → mono subseq",
+    "significance": "critical",
+    "relatedConcepts": ["Injective", "IncreasingSubseq", "DecreasingSubseq"]
+  },
+  {
+    "id": "ann-tightness",
+    "proofId": "erdos-szekeres",
+    "range": {"startLine": 160, "endLine": 188},
+    "type": "theorem",
+    "title": "Bound is Tight",
+    "content": "**Tightness**: $(r-1)(s-1)$ is not enough.\n\n```lean\ntheorem erdos_szekeres_tight (r s : ℕ) (hr : r ≥ 2) (hs : s ≥ 2) :\n    ∃ (f : Sequence ℕ ((r - 1) * (s - 1))),\n      Injective f ∧\n      (¬∃ sub : IncreasingSubseq f r, True) ∧\n      (¬∃ sub : DecreasingSubseq f s, True)\n```\n\n**Construction**: Arrange $\\{1, \\ldots, (r-1)(s-1)\\}$ in $s-1$ increasing blocks of $r-1$ elements, with blocks in decreasing order.\n\n**Example** ($r=3, s=3$): Sequence $[3, 4, 1, 2]$\n- No increasing length 3 (blocks separate)\n- No decreasing length 3 (only 2 blocks)",
+    "mathContext": "(r-1)(s-1) elements without mono subseq",
+    "significance": "major",
+    "relatedConcepts": ["extremal construction", "tight bound", "blocks"]
+  },
+  {
+    "id": "ann-ramsey",
+    "proofId": "erdos-szekeres",
+    "range": {"startLine": 235, "endLine": 265},
+    "type": "note",
+    "title": "Ramsey-Theoretic View",
+    "content": "**Ramsey Theory Connection**:\n\nColor each pair $(i, j)$ with $i < j$:\n- **Red** if $f(i) < f(j)$ (increasing)\n- **Blue** if $f(i) > f(j)$ (decreasing)\n\n**Erdős–Szekeres says**: Any 2-coloring of pairs from $\\{1,\\ldots,n\\}$ with $n \\geq (r-1)(s-1) + 1$ has:\n- Red clique of size $r$ (increasing), OR\n- Blue clique of size $s$ (decreasing)\n\n**ES Number**: $ES(r,s) = (r-1)(s-1) + 1$\n\n```lean\ndef erdosSzekeresNumber (r s : ℕ) : ℕ := (r - 1) * (s - 1) + 1\n\ntheorem erdosSzekeres_symmetric : ES(r,s) = ES(s,r)\n```\n\nExamples: $ES(3,3) = 5$, $ES(4,4) = 10$",
+    "significance": "major",
+    "relatedConcepts": ["Ramsey numbers", "graph coloring", "cliques"]
+  }
+]

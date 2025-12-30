@@ -1,1 +1,96 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "herons-formula",
+    "range": {"startLine": 7, "endLine": 46},
+    "type": "concept",
+    "title": "Heron's Formula: Wiedijk #57",
+    "content": "**Heron's Formula**:\n\nFor a triangle with sides $a, b, c$ and semi-perimeter $s = \\frac{a+b+c}{2}$:\n$$\\text{Area} = \\sqrt{s(s-a)(s-b)(s-c)}$$\n\n**Key feature**: Computes area from **side lengths only** — no heights or angles needed!\n\n**Historical**: Hero of Alexandria (c. 10-70 AD) described this in \"Metrica\", though it was known earlier.\n\n**Applications**:\n- Surveying: measure sides, compute area\n- Navigation: GPS coordinates to area\n- Computer graphics: triangle rendering",
+    "significance": "critical",
+    "relatedConcepts": ["triangle area", "semi-perimeter", "surveying"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "herons-formula",
+    "range": {"startLine": 58, "endLine": 100},
+    "type": "theorem",
+    "title": "Main Theorem from Mathlib",
+    "content": "**Heron's Formula** (Wiedijk #57):\n\nFor vertices $p_1, p_2, p_3$ with $a = d(p_1, p_2)$, $b = d(p_3, p_2)$, $c = d(p_1, p_3)$:\n\n$$\\frac{1}{2} \\cdot a \\cdot b \\cdot \\sin(\\angle p_1 p_2 p_3) = \\sqrt{s(s-a)(s-b)(s-c)}$$\n\n**Lean**:\n```lean\ntheorem heron_formula ... :\n    1/2 * a * b * sin(angle p₁ p₂ p₃) =\n    sqrt (s * (s - a) * (s - b) * (s - c)) :=\n  Theorems100.heron h₁ h₂\n```\n\nThis equates the **trigonometric area** (left) with **Heron's formula** (right).\n\n**Mathlib**: Uses `Theorems100.heron` from the Archive.",
+    "mathContext": "½ab·sin(C) = √(s(s-a)(s-b)(s-c))",
+    "significance": "critical",
+    "relatedConcepts": ["Theorems100.heron", "sine rule", "angle"]
+  },
+  {
+    "id": "ann-semiperimeter",
+    "proofId": "herons-formula",
+    "range": {"startLine": 106, "endLine": 126},
+    "type": "definition",
+    "title": "Semi-perimeter",
+    "content": "**The Semi-perimeter**:\n\n$$s = \\frac{a + b + c}{2}$$\n\n**Why $(s-a), (s-b), (s-c)$ are non-negative**:\n\nBy the triangle inequality:\n- $s - a = \\frac{b + c - a}{2} \\geq 0$ (since $b + c \\geq a$)\n- $s - b = \\frac{a + c - b}{2} \\geq 0$\n- $s - c = \\frac{a + b - c}{2} \\geq 0$\n\n**Lean**:\n```lean\nnoncomputable def semiperimeter (a b c : ℝ) : ℝ := (a + b + c) / 2\n\nnoncomputable def heron_product (a b c : ℝ) : ℝ :=\n  let s := semiperimeter a b c\n  s * (s - a) * (s - b) * (s - c)\n```",
+    "mathContext": "s = (a+b+c)/2",
+    "significance": "major",
+    "relatedConcepts": ["perimeter", "triangle inequality", "valid triangles"]
+  },
+  {
+    "id": "ann-expansion",
+    "proofId": "herons-formula",
+    "range": {"startLine": 131, "endLine": 146},
+    "type": "theorem",
+    "title": "Algebraic Expansion",
+    "content": "**Heron's Product Expanded**:\n\n$$s(s-a)(s-b)(s-c) = \\frac{(a+b+c)(-a+b+c)(a-b+c)(a+b-c)}{16}$$\n\n**Lean**:\n```lean\ntheorem heron_product_expand (a b c : ℝ) :\n    heron_product a b c =\n    (a + b + c) * (-a + b + c) * (a - b + c) * (a + b - c) / 16\n```\n\nThis algebraic form is useful for:\n- Numerical computation\n- Proving properties\n- Deriving alternative formulas\n\nProved by `ring`.",
+    "mathContext": "expanded form",
+    "significance": "major",
+    "relatedConcepts": ["ring tactic", "algebraic identity"]
+  },
+  {
+    "id": "ann-345",
+    "proofId": "herons-formula",
+    "range": {"startLine": 152, "endLine": 175},
+    "type": "note",
+    "title": "Example: 3-4-5 Triangle",
+    "content": "**3-4-5 Right Triangle**:\n\n- Semi-perimeter: $s = (3+4+5)/2 = 6$\n- Heron's product: $6 \\cdot 3 \\cdot 2 \\cdot 1 = 36$\n- Area: $\\sqrt{36} = 6$\n\n**Verification** (direct): $\\frac{1}{2} \\cdot 3 \\cdot 4 = 6$ ✓\n\n**Lean**:\n```lean\ntheorem heron_345_triangle : heron_product 3 4 5 = 36\ntheorem area_345_triangle : sqrt (heron_product 3 4 5) = 6\n```\n\nBoth verified by `norm_num` and `sqrt_sq`.",
+    "significance": "minor",
+    "relatedConcepts": ["right triangle", "Pythagorean triple", "norm_num"]
+  },
+  {
+    "id": "ann-equilateral",
+    "proofId": "herons-formula",
+    "range": {"startLine": 177, "endLine": 192},
+    "type": "note",
+    "title": "Example: Equilateral Triangle",
+    "content": "**Equilateral Triangle with Side 2**:\n\n- Semi-perimeter: $s = 3$\n- Heron's product: $3 \\cdot 1 \\cdot 1 \\cdot 1 = 3$\n- Area: $\\sqrt{3}$\n\n**Standard formula** for equilateral: $\\frac{\\sqrt{3}}{4} \\cdot 2^2 = \\sqrt{3}$ ✓\n\n**Lean**:\n```lean\ntheorem heron_equilateral_2 : heron_product 2 2 2 = 3\ntheorem area_equilateral_2 : sqrt (heron_product 2 2 2) = sqrt 3\n```",
+    "significance": "minor",
+    "relatedConcepts": ["equilateral triangle", "√3/4·s²"]
+  },
+  {
+    "id": "ann-5-12-13",
+    "proofId": "herons-formula",
+    "range": {"startLine": 194, "endLine": 211},
+    "type": "note",
+    "title": "Example: 5-12-13 Triangle",
+    "content": "**5-12-13 Right Triangle**:\n\n- Semi-perimeter: $s = 15$\n- Heron's product: $15 \\cdot 10 \\cdot 3 \\cdot 2 = 900$\n- Area: $\\sqrt{900} = 30$\n\n**Direct calculation**: $\\frac{1}{2} \\cdot 5 \\cdot 12 = 30$ ✓\n\n**Lean**:\n```lean\ntheorem heron_5_12_13_triangle : heron_product 5 12 13 = 900\ntheorem area_5_12_13_triangle : sqrt (heron_product 5 12 13) = 30\n```\n\nAnother Pythagorean triple example.",
+    "significance": "minor",
+    "relatedConcepts": ["5-12-13 triple", "right triangle"]
+  },
+  {
+    "id": "ann-triangle-ineq",
+    "proofId": "herons-formula",
+    "range": {"startLine": 217, "endLine": 238},
+    "type": "theorem",
+    "title": "Triangle Inequality Connection",
+    "content": "**Valid Triangles**:\n\nHeron's formula requires the triangle inequality:\n- $a < b + c$\n- $b < a + c$\n- $c < a + b$\n\nWhen satisfied, Heron's product is **non-negative**:\n\n**Lean**:\n```lean\ntheorem heron_product_nonneg {a b c : ℝ}\n    (ha : 0 < a) (hb : 0 < b) (hc : 0 < c)\n    (hab : a < b + c) (hbc : b < a + c) (hca : c < a + b) :\n    0 ≤ heron_product a b c\n```\n\nProved by showing all four factors are positive.",
+    "mathContext": "heron_product ≥ 0 for valid triangles",
+    "significance": "major",
+    "relatedConcepts": ["triangle inequality", "positivity", "valid triangle"]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "herons-formula",
+    "range": {"startLine": 244, "endLine": 266},
+    "type": "note",
+    "title": "Applications",
+    "content": "**Practical Applications**:\n\n1. **Surveying**: Measure three sides of a plot, compute area\n2. **Computer Graphics**: Triangle rasterization from vertex coordinates\n3. **Navigation**: Convert GPS coordinates to distances, then area\n4. **Engineering**: Structural analysis of triangular components\n\n**Advantage**: No need to measure heights or angles!\n\n**Lean API**:\n```lean\nnoncomputable def triangle_area (a b c : ℝ) : ℝ :=\n  sqrt (heron_product a b c)\n\ntheorem triangle_area_nonneg : 0 ≤ triangle_area a b c\n```",
+    "significance": "minor",
+    "relatedConcepts": ["surveying", "GPS", "practical geometry"]
+  }
+]

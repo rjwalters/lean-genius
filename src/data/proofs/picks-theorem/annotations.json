@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "picks-theorem",
+    "range": {"startLine": 5, "endLine": 49},
+    "type": "concept",
+    "title": "Pick's Theorem: Wiedijk #92",
+    "content": "**Pick's Theorem (1899)**:\n\nFor a simple polygon with vertices at lattice points:\n$$A = i + \\frac{b}{2} - 1$$\n\nwhere:\n- $A$ = area of the polygon\n- $i$ = number of **interior** lattice points\n- $b$ = number of **boundary** lattice points\n\n**Why Remarkable**: Connects discrete counting (lattice points) to continuous measurement (area).\n\n**Historical Note**: Georg Alexander Pick (1859-1942) published this in 1899. He was murdered in Theresienstadt concentration camp in 1942.\n\n**Proof Strategy**:\n1. Verify for unit right triangle (Area = 1/2, i = 0, b = 3)\n2. Show additivity when combining polygons\n3. Triangulate any simple polygon into unit triangles",
+    "significance": "critical",
+    "relatedConcepts": ["lattice points", "polygon area", "discrete geometry"]
+  },
+  {
+    "id": "ann-lattice-points",
+    "proofId": "picks-theorem",
+    "range": {"startLine": 59, "endLine": 77},
+    "type": "definition",
+    "title": "Lattice Points",
+    "content": "**Integer Lattice $\\mathbb{Z}^2$**:\n\nA lattice point has integer coordinates: $(x, y) \\in \\mathbb{Z}^2$.\n\n```lean\nabbrev LatticePoint := ℤ × ℤ\n\ndef LatticePoint.x (p : LatticePoint) : ℤ := p.1\ndef LatticePoint.y (p : LatticePoint) : ℤ := p.2\n\ndef origin : LatticePoint := (0, 0)\n```\n\nThe lattice forms a regular grid covering the plane. Pick's theorem relates the geometry of polygons to this discrete structure.",
+    "mathContext": "ℤ × ℤ",
+    "significance": "major",
+    "relatedConcepts": ["integer coordinates", "Z²", "grid"]
+  },
+  {
+    "id": "ann-polygon-structure",
+    "proofId": "picks-theorem",
+    "range": {"startLine": 82, "endLine": 122},
+    "type": "definition",
+    "title": "Simple Lattice Polygon",
+    "content": "**Axiomatized Structure**:\n\n```lean\nstructure SimpleLatticePolygon where\n  interior_count : ℕ     -- i: interior lattice points\n  boundary_count : ℕ     -- b: boundary lattice points\n  area : ℚ               -- A: area\n  area_pos : 0 < area\n  boundary_ge_three : 3 ≤ boundary_count\n```\n\n**Notation**:\n- `i(P)` = interior point count\n- `b(P)` = boundary point count (vertices + edge points)\n- `A(P)` = area\n\n**Requirements**:\n- All vertices at lattice points\n- Simple closed curve (no self-intersections)\n- Positive area (non-degenerate)\n- At least 3 boundary points (triangle is minimal)",
+    "mathContext": "i, b, A",
+    "significance": "major",
+    "relatedConcepts": ["simple polygon", "boundary", "interior"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "picks-theorem",
+    "range": {"startLine": 127, "endLine": 168},
+    "type": "theorem",
+    "title": "Pick's Theorem Statement",
+    "content": "**Pick's Theorem** (Wiedijk #92):\n\n$$A(P) = i(P) + \\frac{b(P)}{2} - 1$$\n\n```lean\ndef picks_formula (interior boundary : ℕ) : ℚ :=\n  interior + boundary / 2 - 1\n\naxiom picks_theorem (P : SimpleLatticePolygon) :\n    A(P) = picks_formula i(P) b(P)\n```\n\n**Rearranged Forms**:\n- Interior: $i = A - \\frac{b}{2} + 1$\n- Boundary: $b = 2(A - i + 1)$\n\nGiven any two of $(A, i, b)$, you can compute the third!",
+    "mathContext": "A = i + b/2 - 1",
+    "significance": "critical",
+    "relatedConcepts": ["picks_formula", "linarith", "algebraic rearrangement"]
+  },
+  {
+    "id": "ann-unit-triangle",
+    "proofId": "picks-theorem",
+    "range": {"startLine": 174, "endLine": 207},
+    "type": "theorem",
+    "title": "Unit Right Triangle",
+    "content": "**Fundamental Building Block**:\n\nTriangle with vertices $(0,0), (1,0), (0,1)$:\n- Area = $\\frac{1}{2}$\n- Interior points $i = 0$\n- Boundary points $b = 3$ (just vertices)\n\n**Verification**:\n$$i + \\frac{b}{2} - 1 = 0 + \\frac{3}{2} - 1 = \\frac{1}{2} = A \\checkmark$$\n\n```lean\ndef unit_right_triangle : SimpleLatticePolygon where\n  interior_count := 0\n  boundary_count := 3\n  area := 1/2\n\ntheorem picks_unit_triangle :\n    picks_formula 0 3 = 1/2 := by norm_num\n```\n\nEvery simple lattice polygon can be triangulated into unit triangles.",
+    "mathContext": "0 + 3/2 - 1 = 1/2",
+    "significance": "critical",
+    "relatedConcepts": ["triangulation", "base case", "norm_num"]
+  },
+  {
+    "id": "ann-rectangle",
+    "proofId": "picks-theorem",
+    "range": {"startLine": 212, "endLine": 265},
+    "type": "theorem",
+    "title": "Rectangle Verification",
+    "content": "**$m \\times n$ Rectangle**:\n\nCorners at $(0,0), (m,0), (m,n), (0,n)$:\n- Area = $mn$\n- Boundary = $2m + 2n$\n- Interior = $(m-1)(n-1)$\n\n**Verification**:\n$$(m-1)(n-1) + \\frac{2m+2n}{2} - 1 = mn - m - n + 1 + m + n - 1 = mn \\checkmark$$\n\n```lean\ntheorem picks_rectangle (m n : ℕ) (hm : 0 < m) (hn : 0 < n) :\n    picks_formula ((m - 1) * (n - 1)) (2 * m + 2 * n) = m * n\n```\n\n**Examples**:\n- Unit square ($1 \\times 1$): $i=0, b=4, A=1$\n- $3 \\times 4$ rectangle: $i=6, b=14, A=12$",
+    "mathContext": "rectangle: A = mn",
+    "significance": "major",
+    "relatedConcepts": ["rectangle", "ring tactic", "examples"]
+  },
+  {
+    "id": "ann-additivity",
+    "proofId": "picks-theorem",
+    "range": {"startLine": 299, "endLine": 335},
+    "type": "theorem",
+    "title": "Additivity Property",
+    "content": "**Combining Polygons**:\n\nWhen $P = P_1 \\cup P_2$ with shared edge $E$ having $e$ lattice points:\n\n- Areas add: $A(P) = A(P_1) + A(P_2)$\n- Interior: $i(P) = i_1 + i_2 + (e - 2)$ (edge interior $\\to$ polygon interior)\n- Boundary: $b(P) = b_1 + b_2 - 2e + 2$\n\n```lean\ntheorem picks_additive (i₁ i₂ b₁ b₂ e : ℕ) (he : 2 ≤ e) :\n    picks_formula i₁ b₁ + picks_formula i₂ b₂ =\n    picks_formula (i₁ + i₂ + e - 2) (b₁ + b₂ - 2 * e + 2)\n```\n\n**Why This Matters**: Proves Pick's theorem by induction. Triangulate into unit triangles, then combine using additivity.",
+    "mathContext": "A₁ + A₂ = A combined",
+    "significance": "major",
+    "relatedConcepts": ["polygon combination", "shared edge", "induction"]
+  },
+  {
+    "id": "ann-half-integer",
+    "proofId": "picks-theorem",
+    "range": {"startLine": 340, "endLine": 368},
+    "type": "theorem",
+    "title": "Half-Integer Area",
+    "content": "**Corollary**: Area is Always a Half-Integer\n\nFor any lattice polygon:\n$$2A = 2i + b - 2 \\in \\mathbb{Z}$$\n\n```lean\ntheorem twice_area_is_integer (P : SimpleLatticePolygon) :\n    ∃ n : ℤ, A(P) = n / 2\n\ntheorem area_half_integer (P : SimpleLatticePolygon) :\n    2 * A(P) = 2 * i(P) + b(P) - 2\n```\n\n**Connection to Shoelace Formula**:\nFor vertices $(x_i, y_i)$:\n$$2A = \\left| \\sum_i (x_i y_{i+1} - x_{i+1} y_i) \\right|$$\n\nThe shoelace formula always gives an integer for lattice polygons.",
+    "mathContext": "2A ∈ ℤ",
+    "significance": "major",
+    "relatedConcepts": ["shoelace formula", "half-integer", "Green's theorem"]
+  },
+  {
+    "id": "ann-3d-failure",
+    "proofId": "picks-theorem",
+    "range": {"startLine": 374, "endLine": 421},
+    "type": "note",
+    "title": "Failure in 3D",
+    "content": "**Pick's Theorem Does NOT Generalize to 3D!**\n\n**Reeve Tetrahedra**: Vertices $(0,0,0), (1,0,0), (0,1,0), (1,1,r)$ for integer $r$.\n\n- Interior points = 0 (for any $r$)\n- Boundary points = 4 (just vertices)\n- Volume = $\\frac{r}{6}$ (varies with $r$!)\n\n```lean\ntheorem picks_fails_3D :\n    reeve_interior 1 = reeve_interior 2 ∧\n    reeve_boundary 1 = reeve_boundary 2 ∧\n    reeve_volume 1 ≠ reeve_volume 2\n```\n\n**Same lattice counts, different volumes** — no Pick-like formula exists.\n\n**Ehrhart Theory**: The proper 3D generalization uses Ehrhart polynomials, counting lattice points in dilated polytopes.",
+    "mathContext": "3D: same i,b but different V",
+    "significance": "major",
+    "relatedConcepts": ["Reeve tetrahedra", "Ehrhart polynomial", "dimension"]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "picks-theorem",
+    "range": {"startLine": 426, "endLine": 447},
+    "type": "note",
+    "title": "Applications",
+    "content": "**Practical Uses**:\n\n1. **Surveying**: Calculate land area from boundary measurements\n2. **Computer Graphics**: Quick area computation for pixelated shapes\n3. **Combinatorics**: Counting lattice path problems\n4. **Number Theory**: GCD properties via lattice enumeration\n5. **Algorithm Verification**: Check geometric algorithms\n\n**Efficiency**: $O(1)$ area computation given point counts, vs $O(n)$ for shoelace on $n$ vertices.\n\n```lean\nnoncomputable def compute_area (interior boundary : ℕ) : ℚ :=\n  picks_formula interior boundary\n\nexample : compute_area 5 10 = 9 := by norm_num\n```",
+    "significance": "minor",
+    "relatedConcepts": ["surveying", "computational geometry", "O(1) complexity"]
+  }
+]

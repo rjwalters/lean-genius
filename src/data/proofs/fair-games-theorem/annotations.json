@@ -1,1 +1,65 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "fair-games-theorem",
+    "range": {"startLine": 8, "endLine": 84},
+    "type": "concept",
+    "title": "Fair Games Theorem: Wiedijk #62",
+    "content": "**The Fair Games Theorem (Optional Stopping)**:\n\nIn a fair game (martingale), **no betting strategy can change the expected value**.\n\n**Theorem**: If $X$ is a martingale and $\\tau$ is a bounded stopping time:\n$$E[X_\\tau] = E[X_0]$$\n\n**Intuition**: A gambler playing fair bets:\n- Each bet has expected value 0\n- Can choose when to stop based on observed outcomes\n- **Result**: No matter how clever the strategy, expected winnings = 0\n\n**Why \"quit while you're ahead\" fails**:\n- Waiting for a good outcome doesn't increase expected value\n- \"Hot streaks\" and \"due numbers\" are fallacies\n- Casinos win because games are supermartingales (unfair)",
+    "significance": "critical",
+    "relatedConcepts": ["martingale", "optional stopping", "gambling"]
+  },
+  {
+    "id": "ann-martingale",
+    "proofId": "fair-games-theorem",
+    "range": {"startLine": 88, "endLine": 116},
+    "type": "definition",
+    "title": "Martingale Definition",
+    "content": "**Martingale = Fair Game**:\n\nA sequence $X_0, X_1, X_2, \\ldots$ is a martingale if:\n1. Each $X_n$ is integrable ($E[|X_n|] < \\infty$)\n2. $X_n$ is measurable w.r.t. information at time $n$\n3. $E[X_{n+1} | X_0, \\ldots, X_n] = X_n$ (fair game property)\n\n```lean\ndef isFairGame (f : ℕ → Ω → ℝ) (ℱ : Filtration ℕ m) (μ : Measure Ω) : Prop :=\n  MeasureTheory.Martingale f ℱ μ\n```\n\n**Example**: Cumulative sum of fair coin flips forms a martingale. $E[\\text{flip}] = 0$ implies $E[\\text{sum}] = 0$ regardless of when we stop.",
+    "mathContext": "E[X_{n+1} | ℱ_n] = X_n",
+    "significance": "major",
+    "relatedConcepts": ["filtration", "conditional expectation", "fair game"]
+  },
+  {
+    "id": "ann-stopping-time",
+    "proofId": "fair-games-theorem",
+    "range": {"startLine": 118, "endLine": 161},
+    "type": "definition",
+    "title": "Stopping Times",
+    "content": "**Stopping Time = When to Stop**:\n\nA stopping time $\\tau$ is when the decision to stop at time $n$ depends only on information available at time $n$.\n\n**Valid Examples**:\n- First time wealth exceeds $100\n- First time cumulative winnings are positive\n\n**Invalid Examples**:\n- Time of maximum value (requires future knowledge)\n- Time just before a losing bet\n\n```lean\ndef isValidStoppingStrategy (τ : Ω → ℕ) (ℱ : Filtration ℕ m) : Prop :=\n  MeasureTheory.IsStoppingTime ℱ τ\n\ndef isBoundedStoppingTime (τ : Ω → ℕ) (N : ℕ) : Prop :=\n  ∀ ω, τ ω ≤ N\n```\n\n**Key Constraint**: Bounded stopping times prevent \"play until you win\" strategies.",
+    "mathContext": "{τ ≤ n} ∈ ℱ_n",
+    "significance": "major",
+    "relatedConcepts": ["IsStoppingTime", "bounded", "adapted"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "fair-games-theorem",
+    "range": {"startLine": 163, "endLine": 266},
+    "type": "theorem",
+    "title": "The Fair Games Theorem",
+    "content": "**Fair Games Theorem** (Wiedijk #62):\n\n```lean\ntheorem fair_games_theorem\n    (hf : Martingale f ℱ μ)\n    (hτ : IsStoppingTime ℱ τ) (hπ : IsStoppingTime ℱ π)\n    (hτπ : ∀ ω, τ ω ≤ π ω) (hπN : ∀ ω, π ω ≤ N) :\n    ∫ ω, f (τ ω) ω ∂μ = ∫ ω, f (π ω) ω ∂μ\n```\n\n**Proof Idea**:\n- Martingale is both sub- and supermartingale\n- Submartingale: $E[f_\\tau] \\leq E[f_\\pi]$\n- Supermartingale: $E[f_\\tau] \\geq E[f_\\pi]$\n- Together: $E[f_\\tau] = E[f_\\pi]$\n\n**Corollary**: $E[X_\\tau] = E[X_0]$ for any bounded $\\tau$.",
+    "mathContext": "E[f_τ] = E[f_π] for τ ≤ π bounded",
+    "significance": "critical",
+    "relatedConcepts": ["submartingale", "supermartingale", "le_antisymm"]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "fair-games-theorem",
+    "range": {"startLine": 350, "endLine": 427},
+    "type": "note",
+    "title": "Applications",
+    "content": "**Why This Matters**:\n\n1. **Gambler's Ruin**: Starting with wealth $W_0$, targeting $W_0 + a$ before 0:\n   $$P(\\text{success}) = \\frac{W_0}{W_0 + a}$$\n   Derived from $E[W_\\tau] = W_0$.\n\n2. **Betting Systems Fail**:\n   - Martingale system (double after loss)\n   - D'Alembert, Fibonacci systems\n   - All fail because bounded stopping → $E[\\text{final}] = E[\\text{initial}]$\n\n3. **Financial Mathematics**:\n   - Discounted asset prices are martingales under risk-neutral measure\n   - Option pricing = expected discounted payoff\n   - American option exercise = stopping time problem\n\n4. **Doob's Maximal Inequality**:\n   $$P(\\max_{n \\leq N} f_n \\geq \\lambda) \\leq \\frac{E[f_N]}{\\lambda}$$",
+    "significance": "major",
+    "relatedConcepts": ["gambler's ruin", "Black-Scholes", "Doob's inequality"]
+  },
+  {
+    "id": "ann-history",
+    "proofId": "fair-games-theorem",
+    "range": {"startLine": 429, "endLine": 450},
+    "type": "note",
+    "title": "Historical Context",
+    "content": "**Timeline**:\n- **1906**: Bachelier applies fair game concepts to finance\n- **1934**: Lévy develops martingale theory\n- **1939**: Ville coins \"martingale\"\n- **1953**: Doob proves optional stopping theorem\n\n**Wiedijk's Summary** (#62):\n\n*\"You cannot beat a fair game with any strategy.\"*\n\n**Three Connected Ideas**:\n1. **Fairness** (martingale): future expectation = current value\n2. **Strategy** (stopping time): when to stop based on past\n3. **Invariance** (theorem): strategy can't change expected outcome\n\nThis explains why casinos profit (games are unfair) and why \"systems\" don't work.",
+    "significance": "minor",
+    "relatedConcepts": ["Doob", "Lévy", "Bachelier"]
+  }
+]

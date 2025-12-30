@@ -1,1 +1,89 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "platonic-solids",
+    "range": {"startLine": 4, "endLine": 61},
+    "type": "concept",
+    "title": "Number of Platonic Solids: Wiedijk #50",
+    "content": "**There are exactly FIVE Platonic solids**:\n\n1. **Tetrahedron**: 4 triangular faces {3, 3}\n2. **Cube**: 6 square faces {4, 3}\n3. **Octahedron**: 8 triangular faces {3, 4}\n4. **Dodecahedron**: 12 pentagonal faces {5, 3}\n5. **Icosahedron**: 20 triangular faces {3, 5}\n\n**Definition**: A Platonic solid is a convex polyhedron where:\n- All faces are congruent regular $p$-gons\n- Same number $q$ of faces meet at each vertex\n\n**Historical**: Known to ancient Greeks; Euclid proved uniqueness in Elements Book XIII.",
+    "significance": "critical",
+    "relatedConcepts": ["regular polyhedra", "Schlafli symbol", "Euler's formula"]
+  },
+  {
+    "id": "ann-schlafli",
+    "proofId": "platonic-solids",
+    "range": {"startLine": 71, "endLine": 99},
+    "type": "definition",
+    "title": "Schlafli Symbol {p, q}",
+    "content": "**The Schlafli Symbol**:\n\nA Platonic solid is characterized by $\\{p, q\\}$:\n- $p$ = number of sides per face ($p \\geq 3$)\n- $q$ = number of faces per vertex ($q \\geq 3$)\n\n**Lean**:\n```lean\nstructure SchlafliPair where\n  p : ℕ\n  q : ℕ\n  hp : 3 ≤ p\n  hq : 3 ≤ q\n```\n\n**The Regularity Constraint**:\n$$(p-2)(q-2) < 4$$\n\nEquivalent to: $\\frac{1}{p} + \\frac{1}{q} > \\frac{1}{2}$\n\nThis constraint arises from Euler's formula $V - E + F = 2$.",
+    "mathContext": "(p-2)(q-2) < 4",
+    "significance": "critical",
+    "relatedConcepts": ["Schlafli symbol", "regularity", "vertex figure"]
+  },
+  {
+    "id": "ann-five-solids",
+    "proofId": "platonic-solids",
+    "range": {"startLine": 104, "endLine": 128},
+    "type": "definition",
+    "title": "The Five Platonic Solids",
+    "content": "**The Five Valid Pairs**:\n\n| Solid | {p, q} | Faces | Shape |\n|-------|--------|-------|-------|\n| Tetrahedron | {3, 3} | 4 | Triangle |\n| Cube | {4, 3} | 6 | Square |\n| Octahedron | {3, 4} | 8 | Triangle |\n| Dodecahedron | {5, 3} | 12 | Pentagon |\n| Icosahedron | {3, 5} | 20 | Triangle |\n\n**Lean definitions**:\n```lean\ndef tetrahedron : SchlafliPair := ⟨3, 3, ...⟩\ndef cube : SchlafliPair := ⟨4, 3, ...⟩\ndef octahedron : SchlafliPair := ⟨3, 4, ...⟩\ndef dodecahedron : SchlafliPair := ⟨5, 3, ...⟩\ndef icosahedron : SchlafliPair := ⟨3, 5, ...⟩\n```",
+    "mathContext": "{3,3}, {4,3}, {3,4}, {5,3}, {3,5}",
+    "significance": "major",
+    "relatedConcepts": ["regular faces", "vertex configuration"]
+  },
+  {
+    "id": "ann-verification",
+    "proofId": "platonic-solids",
+    "range": {"startLine": 134, "endLine": 161},
+    "type": "theorem",
+    "title": "Verification",
+    "content": "**Each Solid Satisfies the Constraint**:\n\nFor each pair, $(p-2)(q-2) < 4$:\n\n- Tetrahedron {3,3}: $(1)(1) = 1 < 4$ ✓\n- Cube {4,3}: $(2)(1) = 2 < 4$ ✓\n- Octahedron {3,4}: $(1)(2) = 2 < 4$ ✓\n- Dodecahedron {5,3}: $(3)(1) = 3 < 4$ ✓\n- Icosahedron {3,5}: $(1)(3) = 3 < 4$ ✓\n\n**Lean**:\n```lean\ntheorem all_platonic_solids_valid :\n    satisfiesConstraint tetrahedron ∧\n    satisfiesConstraint cube ∧ ...\n```\n\nAll verified by `norm_num`.",
+    "mathContext": "(p-2)(q-2) < 4 verified",
+    "significance": "major",
+    "relatedConcepts": ["norm_num", "verification"]
+  },
+  {
+    "id": "ann-classification",
+    "proofId": "platonic-solids",
+    "range": {"startLine": 167, "endLine": 279},
+    "type": "theorem",
+    "title": "Classification Theorem",
+    "content": "**Main Classification**:\n\nFor $p, q \\geq 3$: $(p-2)(q-2) < 4$ has **exactly 5 solutions**.\n\n**Case Analysis**:\n- $p = 3$: $(1)(q-2) < 4 \\Rightarrow q \\in \\{3, 4, 5\\}$\n- $p = 4$: $(2)(q-2) < 4 \\Rightarrow q = 3$\n- $p = 5$: $(3)(q-2) < 4 \\Rightarrow q = 3$\n- $p \\geq 6$: $(p-2)(q-2) \\geq 4$ always fails\n\n**Lean**:\n```lean\ntheorem platonic_classification {p q : ℕ} (hp : 3 ≤ p) (hq : 3 ≤ q) :\n    (p - 2) * (q - 2) < 4 ↔ (p, q) ∈ validPairs\n```\n\nProved by systematic case analysis using `omega`.",
+    "mathContext": "exactly 5 solutions",
+    "significance": "critical",
+    "relatedConcepts": ["case analysis", "omega", "completeness"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "platonic-solids",
+    "range": {"startLine": 284, "endLine": 312},
+    "type": "theorem",
+    "title": "Main Result: Exactly Five",
+    "content": "**Wiedijk #50: Number of Platonic Solids**\n\n```lean\ntheorem number_of_platonic_solids : validPairs.card = 5\n```\n\nVerified by `native_decide`.\n\n**Also proved**: All five are **distinct**:\n```lean\ntheorem platonic_solids_all_distinct :\n    tetrahedron ≠ cube ∧\n    tetrahedron ≠ octahedron ∧ ...\n```\n\nThis completes the proof that there are **exactly five** Platonic solids.",
+    "mathContext": "|validPairs| = 5",
+    "significance": "critical",
+    "relatedConcepts": ["native_decide", "cardinality", "distinctness"]
+  },
+  {
+    "id": "ann-geometry",
+    "proofId": "platonic-solids",
+    "range": {"startLine": 318, "endLine": 369},
+    "type": "theorem",
+    "title": "Geometric Properties (V, E, F)",
+    "content": "**Vertices, Edges, Faces**:\n\nUsing Euler's formula and regularity:\n\n| Solid | V | E | F | V-E+F |\n|-------|---|---|---|-------|\n| Tetrahedron | 4 | 6 | 4 | 2 |\n| Cube | 8 | 12 | 6 | 2 |\n| Octahedron | 6 | 12 | 8 | 2 |\n| Dodecahedron | 20 | 30 | 12 | 2 |\n| Icosahedron | 12 | 30 | 20 | 2 |\n\n**Formulas from {p, q}**:\n- $pF = 2E$ (face-edge relation)\n- $qV = 2E$ (vertex-edge relation)\n- $V - E + F = 2$ (Euler)\n\n**Lean**: All values computed and verified.",
+    "mathContext": "V - E + F = 2",
+    "significance": "major",
+    "relatedConcepts": ["Euler's formula", "face counting", "edge counting"]
+  },
+  {
+    "id": "ann-duality",
+    "proofId": "platonic-solids",
+    "range": {"startLine": 375, "endLine": 412},
+    "type": "theorem",
+    "title": "Duality",
+    "content": "**Dual Pairs**:\n\nSwapping $p \\leftrightarrow q$ gives the **dual** solid:\n\n- **Tetrahedron** is **self-dual**: $\\{3, 3\\} \\to \\{3, 3\\}$\n- **Cube-Octahedron**: $\\{4, 3\\} \\leftrightarrow \\{3, 4\\}$\n- **Dodecahedron-Icosahedron**: $\\{5, 3\\} \\leftrightarrow \\{3, 5\\}$\n\n**Geometric duality**: The dual's vertices are at the face centers.\n\n**Lean**:\n```lean\ndef dual (s : SchlafliPair) : SchlafliPair := ⟨s.q, s.p, ...⟩\n\ntheorem cube_octahedron_dual : dual cube = octahedron\ntheorem dual_dual (s : SchlafliPair) : dual (dual s) = s\n```\n\nDuality preserves the regularity constraint.",
+    "mathContext": "dual({p,q}) = {q,p}",
+    "significance": "major",
+    "relatedConcepts": ["duality", "self-dual", "face-vertex correspondence"]
+  }
+]

@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "cramers-rule",
+    "range": {"startLine": 4, "endLine": 50},
+    "type": "concept",
+    "title": "Cramer's Rule: Wiedijk #97",
+    "content": "**Cramer's Rule** solves systems of linear equations explicitly:\n\nFor $\\mathbf{A}\\mathbf{x} = \\mathbf{b}$ with $\\det(A) \\neq 0$:\n$$x_i = \\frac{\\det(A_i)}{\\det(A)}$$\n\nwhere $A_i$ is $A$ with column $i$ replaced by $\\mathbf{b}$.\n\n**General Form** (no invertibility required):\n$$A \\cdot \\text{cramer}(A, b) = \\det(A) \\cdot b$$\n\n**Historical**: Named for Gabriel Cramer (1750), but known earlier by Maclaurin (1729) and in 12th century Chinese mathematics.\n\n**Practical Note**: Beautiful theoretically, but $O(n! \\cdot n)$ complexity. Gaussian elimination is preferred for computation.",
+    "significance": "critical",
+    "relatedConcepts": ["determinant", "linear systems", "matrix inverse"]
+  },
+  {
+    "id": "ann-cramer-map",
+    "proofId": "cramers-rule",
+    "range": {"startLine": 59, "endLine": 72},
+    "type": "definition",
+    "title": "The Cramer Map",
+    "content": "**Component Formula**:\n\n```lean\ntheorem cramer_component (A : Matrix n n R) (b : n → R) (i : n) :\n    A.cramer b i = (A.updateColumn i b).det :=\n  Matrix.cramer_apply A b i\n```\n\n**Classic Formula**:\n$$x_i = \\det(A \\text{ with column } i \\leftarrow b)$$\n\nThe `cramer` map produces a vector where each component is a determinant.\n\n**Example** for 2×2:\n$$x = \\det\\begin{pmatrix} b_1 & a_{12} \\\\ b_2 & a_{22} \\end{pmatrix}$$",
+    "mathContext": "cramer(A,b)_i = det(A[col i → b])",
+    "significance": "critical",
+    "relatedConcepts": ["updateColumn", "determinant", "cramer_apply"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "cramers-rule",
+    "range": {"startLine": 74, "endLine": 96},
+    "type": "theorem",
+    "title": "Cramer's Rule - Main Identity",
+    "content": "**Main Identity** (Wiedijk #97):\n\n```lean\ntheorem cramers_rule (A : Matrix n n R) (b : n → R) :\n    A.mulVec (A.cramer b) = A.det • b :=\n  Matrix.mulVec_cramer A b\n```\n\n$$A \\cdot \\text{cramer}(A, b) = \\det(A) \\cdot b$$\n\n**Solution When Invertible**:\n```lean\ntheorem cramers_rule_solution [Invertible A.det] :\n    A.mulVec (⅟A.det • A.cramer b) = b\n```\n\n**Key Point**: The general identity works even when $\\det(A) = 0$! When invertible, divide both sides by $\\det(A)$.",
+    "mathContext": "A · cramer(A,b) = det(A) · b",
+    "significance": "critical",
+    "relatedConcepts": ["mulVec_cramer", "Invertible", "scalar multiplication"]
+  },
+  {
+    "id": "ann-adjugate",
+    "proofId": "cramers-rule",
+    "range": {"startLine": 98, "endLine": 111},
+    "type": "theorem",
+    "title": "Connection to Adjugate Matrix",
+    "content": "**Cramer via Adjugate**:\n\n```lean\ntheorem cramer_eq_adjugate_mulVec (A : Matrix n n R) (b : n → R) :\n    A.cramer b = A.adjugate.mulVec b\n```\n\n$$\\text{cramer}(A, b) = \\text{adj}(A) \\cdot b$$\n\n**The Adjugate Identity**:\n```lean\ntheorem adjugate_mul_self (A : Matrix n n R) :\n    A * A.adjugate = A.det • 1\n```\n\n$$A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$$\n\n**Why This Works**: The adjugate's entries are cofactors. When $A$ is invertible, $A^{-1} = \\frac{1}{\\det(A)} \\text{adj}(A)$.",
+    "mathContext": "cramer(A,b) = adj(A) · b",
+    "significance": "major",
+    "relatedConcepts": ["adjugate", "cofactor", "matrix inverse"]
+  },
+  {
+    "id": "ann-transpose",
+    "proofId": "cramers-rule",
+    "range": {"startLine": 113, "endLine": 120},
+    "type": "theorem",
+    "title": "Transpose Form",
+    "content": "**Row-Based Cramer's Rule**:\n\n```lean\ntheorem cramer_transpose (A : Matrix n n R) (b : n → R) (i : n) :\n    Aᵀ.cramer b i = (A.updateRow i b).det\n```\n\nFor the transpose, we replace **rows** instead of columns.\n\n**Why?** Transposition swaps rows and columns:\n- Column operations on $A^T$ = Row operations on $A$\n- $\\det(A^T) = \\det(A)$, so the rule still works\n\nThis dual form is useful when your system is naturally row-oriented.",
+    "mathContext": "cramer(Aᵀ,b)_i = det(A[row i → b])",
+    "significance": "major",
+    "relatedConcepts": ["transpose", "updateRow", "det_transpose"]
+  },
+  {
+    "id": "ann-linearity",
+    "proofId": "cramers-rule",
+    "range": {"startLine": 122, "endLine": 139},
+    "type": "theorem",
+    "title": "Linearity Properties",
+    "content": "**The Cramer Map is Linear in b**:\n\n```lean\ntheorem cramer_add (A : Matrix n n R) (b c : n → R) :\n    A.cramer (b + c) = A.cramer b + A.cramer c\n\ntheorem cramer_smul (A : Matrix n n R) (r : R) (b : n → R) :\n    A.cramer (r • b) = r • A.cramer b\n\ntheorem cramer_zero (A : Matrix n n R) :\n    A.cramer 0 = 0\n```\n\n**Why?** The determinant is multilinear in its columns. The column we replace with $b$ makes Cramer linear in $b$.\n\nThis makes `A.cramer` a **linear map** from $R^n$ to $R^n$.",
+    "mathContext": "cramer(A, -) is R-linear",
+    "significance": "major",
+    "relatedConcepts": ["LinearMap", "map_add", "map_smul"]
+  },
+  {
+    "id": "ann-2x2-example",
+    "proofId": "cramers-rule",
+    "range": {"startLine": 141, "endLine": 160},
+    "type": "note",
+    "title": "2×2 System Example",
+    "content": "**Classic 2×2 Formulas**:\n\nFor $\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix} \\begin{pmatrix} x \\\\ y \\end{pmatrix} = \\begin{pmatrix} e \\\\ f \\end{pmatrix}$:\n\n$$x = \\frac{ed - bf}{ad - bc}, \\quad y = \\frac{af - ec}{ad - bc}$$\n\n```lean\nexample [Field F] (A : Matrix (Fin 2) (Fin 2) F) (b : Fin 2 → F)\n    (hdet : A.det ≠ 0) :\n    A.mulVec (A.det⁻¹ • A.cramer b) = b\n```\n\n**Numerators**:\n- $x$: Replace column 1 with $b$: $\\det\\begin{pmatrix} e & b \\\\ f & d \\end{pmatrix}$\n- $y$: Replace column 2 with $b$: $\\det\\begin{pmatrix} a & e \\\\ c & f \\end{pmatrix}$\n\nThe denominator $ad - bc$ is the original determinant.",
+    "significance": "minor",
+    "relatedConcepts": ["Field", "inv_mul_cancel", "Fin 2"]
+  }
+]

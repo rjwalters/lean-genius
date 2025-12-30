@@ -1,1 +1,56 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "isosceles-triangle",
+    "range": {"startLine": 4, "endLine": 49},
+    "type": "concept",
+    "title": "Isosceles Triangle Theorem: Wiedijk #65",
+    "content": "**Pons Asinorum (Bridge of Asses)**:\n\nIn an isosceles triangle, the **base angles are equal**.\n\n**Forward**: If $AB = AC$, then $\\angle ABC = \\angle ACB$\n\n**Converse**: If $\\angle ABC = \\angle ACB$, then $AB = AC$\n\n**Historical**: This is Euclid's Elements Proposition I.5 (c. 300 BCE). The Latin name \"Pons Asinorum\" arose in medieval times because it was the **first serious test** of mathematical reasoning — \"asses\" (poor students) couldn't cross this \"bridge\".\n\n**Significance**: First proof requiring non-trivial reasoning beyond direct axiom application.",
+    "significance": "critical",
+    "relatedConcepts": ["isosceles", "base angles", "Euclid I.5"]
+  },
+  {
+    "id": "ann-forward",
+    "proofId": "isosceles-triangle",
+    "range": {"startLine": 58, "endLine": 73},
+    "type": "theorem",
+    "title": "Forward Direction",
+    "content": "**Equal Sides $\\Rightarrow$ Equal Angles**:\n\nIf $d(A, B) = d(A, C)$, then $\\angle ABC = \\angle ACB$.\n\n**Lean**:\n```lean\ntheorem base_angles_equal_of_sides_equal {A B C : P}\n    (h : dist A B = dist A C) :\n    ∠ A B C = ∠ A C B :=\n  EuclideanGeometry.angle_eq_angle_of_dist_eq h\n```\n\n**Proof idea**: The symmetry of an isosceles triangle when reflected across the perpendicular bisector of the base.\n\n**Mathlib**: Uses `angle_eq_angle_of_dist_eq`.",
+    "mathContext": "dist(A,B) = dist(A,C) ⟹ ∠ABC = ∠ACB",
+    "significance": "critical",
+    "relatedConcepts": ["angle_eq_angle_of_dist_eq", "symmetry", "reflection"]
+  },
+  {
+    "id": "ann-converse",
+    "proofId": "isosceles-triangle",
+    "range": {"startLine": 75, "endLine": 91},
+    "type": "theorem",
+    "title": "Converse Direction",
+    "content": "**Equal Angles $\\Rightarrow$ Equal Sides**:\n\nIf $\\angle ABC = \\angle ACB$ and $\\angle BAC \\neq \\pi$, then $d(A, B) = d(A, C)$.\n\n**Lean**:\n```lean\ntheorem sides_equal_of_base_angles_equal {A B C : P}\n    (h : ∠ A B C = ∠ A C B)\n    (hnd : ∠ B A C ≠ Real.pi) :\n    dist A B = dist A C :=\n  EuclideanGeometry.dist_eq_of_angle_eq_angle_of_angle_ne_pi h hnd\n```\n\n**Non-degeneracy**: The condition $\\angle BAC \\neq \\pi$ excludes collinear points.\n\n**Mathlib**: Uses `dist_eq_of_angle_eq_angle_of_angle_ne_pi`.",
+    "mathContext": "∠ABC = ∠ACB ⟹ dist(A,B) = dist(A,C)",
+    "significance": "critical",
+    "relatedConcepts": ["converse", "non-degeneracy", "collinearity"]
+  },
+  {
+    "id": "ann-biconditional",
+    "proofId": "isosceles-triangle",
+    "range": {"startLine": 93, "endLine": 106},
+    "type": "theorem",
+    "title": "Biconditional Form",
+    "content": "**Complete Characterization**:\n\nFor non-degenerate triangles:\n$$d(A, B) = d(A, C) \\quad \\Leftrightarrow \\quad \\angle ABC = \\angle ACB$$\n\n**Lean**:\n```lean\ntheorem isosceles_triangle_iff {A B C : P}\n    (hnd : ∠ B A C ≠ Real.pi) :\n    dist A B = dist A C ↔ ∠ A B C = ∠ A C B\n```\n\nCombines Pons Asinorum with its converse into a single equivalence.",
+    "mathContext": "dist = dist ⟺ angle = angle",
+    "significance": "major",
+    "relatedConcepts": ["iff", "equivalence", "characterization"]
+  },
+  {
+    "id": "ann-vector",
+    "proofId": "isosceles-triangle",
+    "range": {"startLine": 108, "endLine": 120},
+    "type": "theorem",
+    "title": "Vector Form",
+    "content": "**Vector Formulation**:\n\nFor vectors $x, y$ with $\\|x\\| = \\|y\\|$:\n$$\\angle(x, x-y) = \\angle(y, y-x)$$\n\n**Lean**:\n```lean\ntheorem angle_eq_of_norm_eq {x y : V} (h : ‖x‖ = ‖y‖) :\n    InnerProductGeometry.angle x (x - y) =\n    InnerProductGeometry.angle y (y - x)\n```\n\n**Interpretation**: Position vectors from the apex to the base vertices. Equal norms means equal distances from apex.\n\n**Mathlib**: Uses `angle_sub_eq_angle_sub_rev_of_norm_eq`.",
+    "mathContext": "‖x‖ = ‖y‖ ⟹ angle equality",
+    "significance": "major",
+    "relatedConcepts": ["inner product", "norm", "vector geometry"]
+  }
+]

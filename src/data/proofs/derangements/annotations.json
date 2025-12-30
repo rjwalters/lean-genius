@@ -1,1 +1,66 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "derangements",
+    "range": {"startLine": 5, "endLine": 53},
+    "type": "concept",
+    "title": "Derangements Formula: Wiedijk #88",
+    "content": "**Derangements (Fixed-Point-Free Permutations)**:\n\nA derangement is a permutation with **no fixed points** — every element moves.\n\n**Formula**:\n$$D_n = n! \\sum_{k=0}^{n} \\frac{(-1)^k}{k!}$$\n\n**Recurrence**: $D_n = (n-1)(D_{n-1} + D_{n-2})$\n\n**Hat-Check Problem**: If $n$ people check hats and receive them randomly, $D_n$ is the number of ways **no one gets their own hat**.\n\n**Limit**: As $n \\to \\infty$, $P(\\text{derangement}) \\to 1/e \\approx 36.79\\%$",
+    "significance": "critical",
+    "relatedConcepts": ["permutation", "fixed point", "inclusion-exclusion"]
+  },
+  {
+    "id": "ann-definition",
+    "proofId": "derangements",
+    "range": {"startLine": 59, "endLine": 75},
+    "type": "definition",
+    "title": "Derangement Definition",
+    "content": "**Formal Definition**:\n\n```lean\ntheorem mem_derangements_iff (f : Equiv.Perm α) :\n    f ∈ derangements α ↔ ∀ x, f x ≠ x\n\ntheorem derangement_iff_no_fixed_points (f : Equiv.Perm α) :\n    f ∈ derangements α ↔ Function.fixedPoints f = ∅\n```\n\n**Example** for $\\{1,2,3\\}$: The derangements are:\n- $(1 \\to 2, 2 \\to 3, 3 \\to 1)$ — 3-cycle $(123)$\n- $(1 \\to 3, 2 \\to 1, 3 \\to 2)$ — 3-cycle $(132)$\n\nSo $D_3 = 2$.",
+    "mathContext": "∀ x, f(x) ≠ x",
+    "significance": "major",
+    "relatedConcepts": ["Equiv.Perm", "fixedPoints", "derangements"]
+  },
+  {
+    "id": "ann-base-cases",
+    "proofId": "derangements",
+    "range": {"startLine": 77, "endLine": 99},
+    "type": "theorem",
+    "title": "Base Cases and Recurrence",
+    "content": "**Base Cases**:\n\n```lean\ntheorem numDerangements_zero : numDerangements 0 = 1  -- empty perm\ntheorem numDerangements_one : numDerangements 1 = 0   -- must fix\n```\n\n**Recurrence**:\n$$D_{n+2} = (n+1)(D_n + D_{n+1})$$\n\n```lean\ntheorem derangements_recurrence (n : ℕ) :\n    numDerangements (n + 2) =\n    (n + 1) * (numDerangements n + numDerangements (n + 1))\n```\n\n**Combinatorial Explanation**:\n- Element 1 goes to position $k$ ($n+1$ choices)\n- Either $k$ returns to 1 (reduces to $D_n$), or\n- $k$ goes elsewhere (reduces to $D_{n+1}$)",
+    "mathContext": "D(n+2) = (n+1)(D(n) + D(n+1))",
+    "significance": "major",
+    "relatedConcepts": ["recurrence", "numDerangements_add_two", "induction"]
+  },
+  {
+    "id": "ann-formula",
+    "proofId": "derangements",
+    "range": {"startLine": 101, "endLine": 121},
+    "type": "theorem",
+    "title": "Closed-Form Formula",
+    "content": "**The Derangement Formula**:\n\n$$D_n = n! \\sum_{k=0}^{n} \\frac{(-1)^k}{k!}$$\n\n```lean\ntheorem numDerangements_formula (n : ℕ) :\n    (numDerangements n : ℤ) =\n    ∑ k ∈ range (n + 1), (-1 : ℤ) ^ k * ↑((k + 1).ascFactorial (n - k))\n```\n\n**Derivation**: Inclusion-exclusion on \"permutations fixing element $i$\".\n\n**Mathlib**: Uses ascending factorials for the sum representation.\n\n**Connection to $e$**:\n$$\\frac{D_n}{n!} = \\sum_{k=0}^{n} \\frac{(-1)^k}{k!} \\to e^{-1} \\approx 0.3679$$",
+    "mathContext": "D(n) = n! × Σ(-1)^k/k!",
+    "significance": "critical",
+    "relatedConcepts": ["numDerangements_sum", "ascFactorial", "alternating sum"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "derangements",
+    "range": {"startLine": 128, "endLine": 160},
+    "type": "note",
+    "title": "Concrete Values",
+    "content": "**Derangement Numbers**:\n\n| $n$ | $D_n$ | $n!$ | $D_n/n!$ |\n|-----|-------|------|----------|\n| 0 | 1 | 1 | 1.000 |\n| 1 | 0 | 1 | 0.000 |\n| 2 | 1 | 2 | 0.500 |\n| 3 | 2 | 6 | 0.333 |\n| 4 | 9 | 24 | 0.375 |\n| 5 | 44 | 120 | 0.367 |\n| 6 | 265 | 720 | 0.368 |\n\n**Hat-Check Probabilities**:\n- 2 people: 50% no one gets their hat\n- 10 people: ~36.79% (close to $1/e$)\n\nAll verified with `native_decide`.",
+    "significance": "minor",
+    "relatedConcepts": ["hat-check problem", "1/e", "native_decide"]
+  },
+  {
+    "id": "ann-inclusion-exclusion",
+    "proofId": "derangements",
+    "range": {"startLine": 203, "endLine": 220},
+    "type": "concept",
+    "title": "Inclusion-Exclusion Derivation",
+    "content": "**Inclusion-Exclusion Proof**:\n\nLet $A_i = \\{\\text{permutations fixing element } i\\}$.\n\n$$D_n = n! - |\\bigcup A_i|$$\n\nBy inclusion-exclusion:\n$$= n! - \\sum|A_i| + \\sum|A_i \\cap A_j| - \\ldots$$\n\nSince $|A_{i_1} \\cap \\ldots \\cap A_{i_k}| = (n-k)!$ (fix $k$, permute rest):\n\n$$D_n = \\sum_{k=0}^{n} (-1)^k \\binom{n}{k} (n-k)!$$\n$$= \\sum_{k=0}^{n} (-1)^k \\frac{n!}{k!}$$\n$$= n! \\sum_{k=0}^{n} \\frac{(-1)^k}{k!}$$",
+    "mathContext": "inclusion-exclusion on fixed points",
+    "significance": "major",
+    "relatedConcepts": ["inclusion-exclusion", "complement", "fixed points"]
+  }
+]

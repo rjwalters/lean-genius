@@ -1,1 +1,87 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "morleys-theorem",
+    "range": {"startLine": 9, "endLine": 58},
+    "type": "concept",
+    "title": "Morley's Theorem: Wiedijk #84",
+    "content": "**Morley's Trisector Theorem (1899)**:\n\nThe three intersection points of **adjacent angle trisectors** of any triangle form an **equilateral triangle** (the Morley triangle).\n\n**Setup**: Given triangle $ABC$ with angles $\\alpha, \\beta, \\gamma$:\n1. Trisect each angle into three equal parts\n2. The **adjacent** trisectors (closest to each side) meet at three points\n3. These three points always form an equilateral triangle!\n\n**The Surprise**: Despite millennia of triangle study, this beautiful property was unknown until **1899**!\n\nFrank Morley discovered it. Called \"the most remarkable theorem in elementary geometry discovered in the 20th century.\"",
+    "significance": "critical",
+    "relatedConcepts": ["angle trisection", "equilateral", "triangle geometry"]
+  },
+  {
+    "id": "ann-triangle-angles",
+    "proofId": "morleys-theorem",
+    "range": {"startLine": 68, "endLine": 92},
+    "type": "definition",
+    "title": "Triangle Angles Structure",
+    "content": "**Triangle by Angles**:\n\n```lean\nstructure TriangleAngles where\n  α : ℝ  -- Angle at A\n  β : ℝ  -- Angle at B\n  γ : ℝ  -- Angle at C\n  α_pos : 0 < α\n  β_pos : 0 < β\n  γ_pos : 0 < γ\n  sum_eq_pi : α + β + γ = π\n```\n\n**Trisected angles**:\n- $\\alpha_3 = \\alpha/3$\n- $\\beta_3 = \\beta/3$\n- $\\gamma_3 = \\gamma/3$\n\n**Key relation**: $\\alpha_3 + \\beta_3 + \\gamma_3 = \\pi/3$\n\nThis sum of trisected angles relates to the equilateral result!",
+    "mathContext": "α + β + γ = π, α₃ + β₃ + γ₃ = π/3",
+    "significance": "major",
+    "relatedConcepts": ["triangle angles", "trisection", "sum to π"]
+  },
+  {
+    "id": "ann-backward-proof",
+    "proofId": "morleys-theorem",
+    "range": {"startLine": 98, "endLine": 136},
+    "type": "concept",
+    "title": "The Backward Proof Strategy",
+    "content": "**Conway's Elegant Approach**:\n\n**Direct proof** (HARD):\n1. Start with triangle $ABC$\n2. Construct trisectors\n3. Find intersections\n4. Prove equilateral (messy computation!)\n\n**Backward proof** (ELEGANT):\n1. Start with equilateral triangle $PQR$ (the Morley triangle)\n2. Construct original triangle around it\n3. Verify trisector property\n\n**Equilateral triangle vertices** (complex numbers):\n$$P = e^{0}, \\quad Q = e^{i \\cdot 2\\pi/3}, \\quad R = e^{i \\cdot 4\\pi/3}$$\n\nThis indirect approach avoids computational complexity.",
+    "mathContext": "backward construction",
+    "significance": "major",
+    "relatedConcepts": ["Conway", "backward proof", "complex coordinates"]
+  },
+  {
+    "id": "ann-trig-identity",
+    "proofId": "morleys-theorem",
+    "range": {"startLine": 142, "endLine": 157},
+    "type": "theorem",
+    "title": "Key Trigonometric Identities",
+    "content": "**Morley Identities**:\n\n$$\\sin(\\pi/3 + \\theta) = \\frac{\\sqrt{3}}{2}\\cos\\theta + \\frac{1}{2}\\sin\\theta$$\n\n$$\\cos(\\pi/3 + \\theta) = \\frac{1}{2}\\cos\\theta - \\frac{\\sqrt{3}}{2}\\sin\\theta$$\n\n**Lean**:\n```lean\ntheorem sin_pi_third_add (θ : ℝ) :\n    sin (π/3 + θ) = (sqrt 3 / 2) * cos θ + (1/2) * sin θ\n```\n\nThese identities connect trisected angles to the equilateral triangle's 60° angles.\n\nProved using `sin_add` and `cos_add` with $\\sin(\\pi/3) = \\sqrt{3}/2$, $\\cos(\\pi/3) = 1/2$.",
+    "mathContext": "sin(π/3 + θ) expansion",
+    "significance": "major",
+    "relatedConcepts": ["sin_add", "cos_add", "π/3 = 60°"]
+  },
+  {
+    "id": "ann-morley-side",
+    "proofId": "morleys-theorem",
+    "range": {"startLine": 217, "endLine": 230},
+    "type": "definition",
+    "title": "Morley Side Length Formula",
+    "content": "**Remarkable Formula**:\n\nThe side length of the Morley triangle is:\n$$s = 8R \\cdot \\sin(\\alpha/3) \\cdot \\sin(\\beta/3) \\cdot \\sin(\\gamma/3)$$\n\nwhere $R$ is the circumradius of the original triangle.\n\n**Lean**:\n```lean\nnoncomputable def morleySideLength (t : TriangleAngles)\n    (circumradius : ℝ) : ℝ :=\n  8 * circumradius * sin t.α₃ * sin t.β₃ * sin t.γ₃\n```\n\n**Why equilateral?** This formula is **symmetric** in the trisected angles — all three sides equal!",
+    "mathContext": "s = 8R·sin(α/3)·sin(β/3)·sin(γ/3)",
+    "significance": "critical",
+    "relatedConcepts": ["circumradius", "symmetric formula", "equilateral"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "morleys-theorem",
+    "range": {"startLine": 232, "endLine": 270},
+    "type": "theorem",
+    "title": "Morley's Theorem",
+    "content": "**Wiedijk #84: Morley's Theorem**\n\nFor any triangle, the three intersection points $M_1, M_2, M_3$ of adjacent angle trisectors satisfy:\n$$|M_1 M_2| = |M_2 M_3| = |M_3 M_1|$$\n\n**Lean**:\n```lean\ntheorem morleys_theorem (t : TriangleAngles)\n    (m : MorleyTriangle t) :\n    Complex.abs (m.M₂ - m.M₁) = Complex.abs (m.M₃ - m.M₂) ∧\n    Complex.abs (m.M₃ - m.M₂) = Complex.abs (m.M₁ - m.M₃)\n```\n\n**Status**: Main equidistance result axiomatized.\n\n**Proof idea**: The symmetric side length formula guarantees all sides equal.",
+    "mathContext": "|M₁M₂| = |M₂M₃| = |M₃M₁|",
+    "significance": "critical",
+    "relatedConcepts": ["equilateral", "Complex.abs", "distance"]
+  },
+  {
+    "id": "ann-special-cases",
+    "proofId": "morleys-theorem",
+    "range": {"startLine": 276, "endLine": 311},
+    "type": "note",
+    "title": "Special Cases",
+    "content": "**Equilateral Original Triangle**:\n\nWhen $\\alpha = \\beta = \\gamma = \\pi/3$ (equilateral):\n- Trisected angles: $\\alpha_3 = \\beta_3 = \\gamma_3 = \\pi/9$ (20°)\n- Morley triangle is centered inside, with specific ratio\n\n**Right Isosceles Triangle**:\n\nWhen $\\alpha = \\beta = \\pi/4$, $\\gamma = \\pi/2$:\n- Trisected angles: $\\pi/12, \\pi/12, \\pi/6$\n- Morley triangle has interesting symmetry\n\n**Lean**:\n```lean\nnoncomputable def equilateralAngles : TriangleAngles where\n  α := π/3; β := π/3; γ := π/3; ...\n\ntheorem equilateral_trisected_angle :\n    equilateralAngles.α₃ = π/9\n```",
+    "significance": "minor",
+    "relatedConcepts": ["equilateral", "right triangle", "π/9 = 20°"]
+  },
+  {
+    "id": "ann-history",
+    "proofId": "morleys-theorem",
+    "range": {"startLine": 317, "endLine": 346},
+    "type": "note",
+    "title": "Historical Significance",
+    "content": "**Why Was It Missed?**\n\n1. **Angle trisection is impossible** with compass/straightedge — Greeks couldn't construct it\n2. **Computational verification** requires careful trigonometry\n3. The result seems \"too beautiful\" to be true\n\n**Frank Morley** (1860-1937):\n- English-American mathematician\n- Professor at Johns Hopkins\n- Discovered theorem in 1899\n\n**Variations**:\n- Extended Morley: non-adjacent trisectors give other special triangles\n- Morley's Pentagon: quadrilateral angle trisection\n- Exterior trisectors: different configurations\n\n**Multiple elegant proofs**: trigonometric, complex numbers, Conway's backward proof.",
+    "significance": "minor",
+    "relatedConcepts": ["history", "construction", "generalizations"]
+  }
+]

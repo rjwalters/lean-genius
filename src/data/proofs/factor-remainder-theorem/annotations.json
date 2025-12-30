@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "factor-remainder-theorem",
+    "range": {"startLine": 5, "endLine": 53},
+    "type": "concept",
+    "title": "Factor and Remainder Theorems: Wiedijk #89",
+    "content": "**Two Fundamental Polynomial Theorems**:\n\n**Factor Theorem**: $(x - a) \\mid p(x) \\iff p(a) = 0$\n\nA polynomial has $(x - a)$ as a factor if and only if $a$ is a root.\n\n**Remainder Theorem**: $p(x) = (x - a) q(x) + p(a)$\n\nWhen dividing by $(x - a)$, the remainder is the constant $p(a)$.\n\n**Connection**: The Factor Theorem is the special case where remainder = 0.\n\n**Historical**: These ideas emerged in 17th-18th century polynomial algebra. Descartes (1637) and others used them to study polynomial equations.",
+    "significance": "critical",
+    "relatedConcepts": ["polynomial division", "roots", "divisibility"]
+  },
+  {
+    "id": "ann-factor-theorem",
+    "proofId": "factor-remainder-theorem",
+    "range": {"startLine": 59, "endLine": 90},
+    "type": "theorem",
+    "title": "The Factor Theorem",
+    "content": "**Factor Theorem** (Wiedijk #89):\n\n```lean\ntheorem factor_theorem (p : R[X]) (a : R) :\n    (X - C a) ∣ p ↔ p.eval a = 0 :=\n  dvd_iff_isRoot\n```\n\n**Meaning**: $(x - a)$ divides $p(x)$ exactly when $p(a) = 0$.\n\n**Why It Works**:\n- If $(x-a) \\mid p$, then $p = (x-a)q$ for some $q$\n- Evaluating: $p(a) = (a-a)q(a) = 0$\n- Conversely, if $p(a) = 0$, polynomial division gives remainder 0\n\n**Applications**:\n- Finding factors by testing roots\n- Reducing polynomial degree after finding a root",
+    "mathContext": "(X - a) ∣ p ⟺ p(a) = 0",
+    "significance": "critical",
+    "relatedConcepts": ["dvd_iff_isRoot", "IsRoot", "polynomial evaluation"]
+  },
+  {
+    "id": "ann-remainder-theorem",
+    "proofId": "factor-remainder-theorem",
+    "range": {"startLine": 92, "endLine": 125},
+    "type": "theorem",
+    "title": "The Remainder Theorem",
+    "content": "**Remainder Theorem** (Wiedijk #89):\n\n```lean\ntheorem remainder_theorem (p : R[X]) (a : R) :\n    p %ₘ (X - C a) = C (p.eval a) :=\n  modByMonic_X_sub_C_eq_C_eval p a\n```\n\n**Division Algorithm Form**:\n$$p(x) = (x - a) \\cdot q(x) + p(a)$$\n\n```lean\ntheorem division_algorithm (p : R[X]) (a : R) :\n    p = (X - C a) * (p /ₘ (X - C a)) + C (p.eval a)\n```\n\n**Practical Use**: To find the remainder when dividing by $(x - a)$, just evaluate $p(a)$! No long division needed.\n\n**Example**: $(x^2 - 3x + 2) \\div (x - 3)$ has remainder $3^2 - 3(3) + 2 = 2$",
+    "mathContext": "p %ₘ (X - a) = C(p(a))",
+    "significance": "critical",
+    "relatedConcepts": ["modByMonic", "polynomial division", "quotient"]
+  },
+  {
+    "id": "ann-connection",
+    "proofId": "factor-remainder-theorem",
+    "range": {"startLine": 126, "endLine": 150},
+    "type": "concept",
+    "title": "Connection Between Theorems",
+    "content": "**Factor = Zero Remainder**:\n\nThe Factor Theorem is a special case of the Remainder Theorem:\n\n```lean\ntheorem factor_iff_zero_remainder (p : R[X]) (a : R) :\n    (X - C a) ∣ p ↔ p %ₘ (X - C a) = 0\n```\n\n**Chain of Equivalences**:\n$$(x-a) \\mid p \\iff \\text{remainder} = 0 \\iff p(a) = 0$$\n\n**Exact Division**:\n```lean\ntheorem exact_division (p : R[X]) (a : R) (h : p.eval a = 0) :\n    p = (X - C a) * (p /ₘ (X - C a))\n```\n\nWhen $p(a) = 0$, the \"$+ p(a)$\" term vanishes, giving exact factorization.",
+    "mathContext": "(x-a) ∣ p ⟺ remainder = 0",
+    "significance": "major",
+    "relatedConcepts": ["exact division", "zero remainder", "factorization"]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "factor-remainder-theorem",
+    "range": {"startLine": 152, "endLine": 165},
+    "type": "theorem",
+    "title": "Practical Applications",
+    "content": "**Root Verification**:\n\n```lean\ntheorem verify_root (p : R[X]) (a : R) :\n    p.eval a = 0 → ∃ q : R[X], p = (X - C a) * q\n```\n\nIf $p(a) = 0$, we immediately get a factorization!\n\n**Non-Root Detection**:\n\n```lean\ntheorem not_factor_of_nonzero_eval (p : R[X]) (a : R)\n    (h : p.eval a ≠ 0) : ¬(X - C a) ∣ p\n```\n\nIf $p(a) \\neq 0$, then $(x-a)$ is definitely not a factor.\n\n**Polynomial Root-Finding Algorithm**:\n1. Test candidate roots $a$\n2. If $p(a) = 0$, divide out $(x-a)$\n3. Repeat on the quotient",
+    "significance": "major",
+    "relatedConcepts": ["root finding", "factorization algorithm", "synthetic division"]
+  },
+  {
+    "id": "ann-monic",
+    "proofId": "factor-remainder-theorem",
+    "range": {"startLine": 167, "endLine": 184},
+    "type": "definition",
+    "title": "Monic Linear Polynomials",
+    "content": "**Why (X - C a) is Special**:\n\n```lean\ntheorem linear_factor_monic (a : R) : (X - C a).Monic :=\n  monic_X_sub_C a\n\ntheorem linear_factor_degree [Nontrivial R] (a : R) :\n    (X - C a).degree = 1 :=\n  degree_X_sub_C a\n```\n\n**Monic**: Leading coefficient is 1, enabling unique polynomial division.\n\n**Remainder Degree**:\n```lean\ntheorem remainder_is_constant (p : R[X]) (a : R) :\n    (p %ₘ (X - C a)).degree < 1\n```\n\nDividing by degree 1 gives remainder of degree < 1, i.e., a constant.\n\nThis is why the remainder theorem gives $p(a)$ as a **constant**.",
+    "mathContext": "deg(X - a) = 1, monic",
+    "significance": "major",
+    "relatedConcepts": ["Monic", "degree", "polynomial division uniqueness"]
+  },
+  {
+    "id": "ann-integer-examples",
+    "proofId": "factor-remainder-theorem",
+    "range": {"startLine": 186, "endLine": 229},
+    "type": "note",
+    "title": "Integer Polynomial Examples",
+    "content": "**Factor Theorem Examples over ℤ**:\n\n$x^2 - 1$: Roots at $\\pm 1$\n```lean\nexample : (X ^ 2 - 1 : ℤ[X]).eval 1 = 0    -- (x-1) is factor\nexample : (X ^ 2 - 1 : ℤ[X]).eval (-1) = 0 -- (x+1) is factor\n```\n\n$x^3 - 8$: Root at $2$ (since $2^3 = 8$)\n```lean\nexample : (X - C (2 : ℤ)) ∣ (X ^ 3 - 8)\n```\n\n$x^2 + 1$: No real roots!\n```lean\nexample : ¬((X - C (1 : ℤ)) ∣ (X ^ 2 + 1))\n```\n\n**Remainder Examples**:\n- $(x^2 - 3x + 2) \\div (x-3)$: remainder = $3^2 - 9 + 2 = 2$\n- $x^3 \\div (x-1)$: remainder = $1^3 = 1$\n- $(x^4 - 2x^2 + 1) \\div (x-2)$: remainder = $16 - 8 + 1 = 9$",
+    "significance": "minor",
+    "relatedConcepts": ["integer polynomials", "simp", "native_decide"]
+  },
+  {
+    "id": "ann-rational-examples",
+    "proofId": "factor-remainder-theorem",
+    "range": {"startLine": 231, "endLine": 258},
+    "type": "note",
+    "title": "Rational Polynomial Examples",
+    "content": "**Factor Theorem over ℚ**:\n\n$x^2 - 4 = (x-2)(x+2)$:\n```lean\nexample : (X ^ 2 - C (4 : ℚ)).eval 2 = 0\nexample : (X ^ 2 - C (4 : ℚ)).eval (-2) = 0\n```\n\n$2x^2 - 5x + 2$ has roots at $x = 2$ and $x = 1/2$:\n```lean\nexample : (C 2 * X ^ 2 - C 5 * X + C 2 : ℚ[X]).eval 2 = 0\nexample : (C 2 * X ^ 2 - C 5 * X + C 2 : ℚ[X]).eval (1/2) = 0\n```\n\n**Verification**: $2(2)^2 - 5(2) + 2 = 8 - 10 + 2 = 0$ ✓\n\n**Rational Root Theorem**: If $p/q$ is a root of $ax^n + \\ldots + c$, then $p \\mid c$ and $q \\mid a$. This helps find candidates to test!",
+    "significance": "minor",
+    "relatedConcepts": ["rational polynomials", "norm_num", "rational root theorem"]
+  }
+]

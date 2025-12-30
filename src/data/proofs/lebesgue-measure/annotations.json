@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "lebesgue-measure",
+    "range": {"startLine": 14, "endLine": 56},
+    "type": "concept",
+    "title": "Lebesgue Measure: Wiedijk #86",
+    "content": "**Lebesgue Measure and Integration**:\n\nHenri Lebesgue's 1902 doctoral dissertation revolutionized analysis by introducing:\n\n1. **Lebesgue Measure**: A complete, translation-invariant measure on $\\mathbb{R}^n$ extending the notion of length/area/volume\n\n2. **Key Theorems**:\n   - **Monotone Convergence**: If $f_n \\nearrow f$, then $\\int f_n \\to \\int f$\n   - **Dominated Convergence**: If $|f_n| \\leq g$ integrable and $f_n \\to f$, then $\\int f_n \\to \\int f$\n   - **Fubini's Theorem**: Iterated integrals equal double integrals\n\n**Why Lebesgue?** The Riemann integral can't handle:\n- Functions like the Dirichlet function (1 on $\\mathbb{Q}$, 0 elsewhere)\n- Limits of sequences of Riemann integrable functions\n\nLebesgue's approach: integrate by partitioning the **range** rather than the domain.",
+    "significance": "critical",
+    "relatedConcepts": ["measure theory", "integration", "convergence theorems"]
+  },
+  {
+    "id": "ann-measure-construction",
+    "proofId": "lebesgue-measure",
+    "range": {"startLine": 62, "endLine": 100},
+    "type": "definition",
+    "title": "Lebesgue Measure Construction",
+    "content": "**The Lebesgue Measure on $\\mathbb{R}$**:\n\nIn Mathlib, Lebesgue measure is `volume`, constructed via Haar measure theory.\n\n**Key Properties**:\n```lean\ntheorem lebesgue_measure_Icc (a b : ℝ) (hab : a ≤ b) :\n    volume (Icc a b) = ENNReal.ofReal (b - a)\n\ntheorem lebesgue_measure_singleton (x : ℝ) :\n    volume ({x} : Set ℝ) = 0\n\ntheorem lebesgue_measure_univ :\n    volume (univ : Set ℝ) = ⊤\n```\n\n**Interpretation**:\n- $\\mu([a,b]) = b - a$ (interval has expected length)\n- $\\mu(\\{x\\}) = 0$ (points have zero measure)\n- $\\mu(\\mathbb{R}) = \\infty$ (the line has infinite measure)",
+    "mathContext": "μ([a,b]) = b - a",
+    "significance": "critical",
+    "relatedConcepts": ["volume", "Real.volume_Icc", "ENNReal"]
+  },
+  {
+    "id": "ann-translation-invariance",
+    "proofId": "lebesgue-measure",
+    "range": {"startLine": 102, "endLine": 128},
+    "type": "theorem",
+    "title": "Translation Invariance",
+    "content": "**Translation Invariance**:\n\nLebesgue measure is invariant under translation: $\\mu(E + c) = \\mu(E)$.\n\n**Lean**:\n```lean\ntheorem lebesgue_measure_translation_invariant :\n    IsAddLeftInvariant (volume : Measure ℝ) := inferInstance\n\ntheorem volume_add_left (c : ℝ) (E : Set ℝ) (hE : MeasurableSet E) :\n    volume ((fun x => c + x) '' E) = volume E\n```\n\n**Significance**:\n- This property **uniquely characterizes** Lebesgue measure (up to scaling)\n- Essential for physics: laws shouldn't depend on position\n- Foundation for Haar measure on groups\n\nIn Mathlib, this follows from the general theory of Haar measures on locally compact groups.",
+    "mathContext": "μ(E + c) = μ(E)",
+    "significance": "major",
+    "relatedConcepts": ["IsAddLeftInvariant", "Haar measure", "uniqueness"]
+  },
+  {
+    "id": "ann-lebesgue-integral",
+    "proofId": "lebesgue-measure",
+    "range": {"startLine": 130, "endLine": 170},
+    "type": "definition",
+    "title": "The Lebesgue Integral",
+    "content": "**Lebesgue Integration**:\n\nFor non-negative measurable $f$:\n$$\\int f \\, d\\mu = \\sup \\left\\{ \\int s \\, d\\mu : s \\text{ simple}, s \\leq f \\right\\}$$\n\n**Mathlib Notation**:\n- `∫⁻ x, f x ∂μ` — lintegral for $[0, \\infty]$-valued functions\n- `∫ x, f x ∂μ` — Bochner integral for signed/complex functions\n\n**Properties**:\n```lean\ntheorem integral_add_of_integrable\n    (hf : Integrable f) (hg : Integrable g) :\n    ∫ (f + g) = ∫ f + ∫ g\n\ntheorem integral_smul_const (c : ℝ) (f : ℝ → ℝ) :\n    ∫ c * f = c * ∫ f\n```\n\n**Key Difference from Riemann**: Partition the **range** of $f$, not the domain.",
+    "mathContext": "∫f dμ = sup{∫s : s simple, s ≤ f}",
+    "significance": "critical",
+    "relatedConcepts": ["lintegral", "Bochner integral", "simple functions"]
+  },
+  {
+    "id": "ann-monotone-convergence",
+    "proofId": "lebesgue-measure",
+    "range": {"startLine": 172, "endLine": 210},
+    "type": "theorem",
+    "title": "Monotone Convergence Theorem",
+    "content": "**Monotone Convergence Theorem**:\n\nIf $f_n \\nearrow f$ pointwise (non-decreasing to $f$), then:\n$$\\int f_n \\, d\\mu \\to \\int f \\, d\\mu$$\n\n**Lean**:\n```lean\ntheorem monotone_convergence\n    (hf_mono : ∀ x, Monotone (fun n => f n x))\n    (hf_lim : ∀ x, Tendsto (fun n => f n x) atTop (nhds (g x))) :\n    Tendsto (fun n => ∫⁻ f n) atTop (nhds (∫⁻ g))\n```\n\n**Corollary** (Series):\n$$\\int \\sum_n f_n = \\sum_n \\int f_n$$\n\n**Why Important**: Justifies interchanging limits and integrals under monotonicity — no need for uniform convergence!",
+    "mathContext": "fₙ ↗ f ⟹ ∫fₙ → ∫f",
+    "significance": "critical",
+    "relatedConcepts": ["lintegral_tendsto_of_tendsto_of_monotone", "series", "lintegral_tsum"]
+  },
+  {
+    "id": "ann-dominated-convergence",
+    "proofId": "lebesgue-measure",
+    "range": {"startLine": 212, "endLine": 239},
+    "type": "theorem",
+    "title": "Dominated Convergence Theorem",
+    "content": "**Dominated Convergence Theorem**:\n\nIf $f_n \\to f$ pointwise a.e. and $|f_n| \\leq g$ for integrable $g$, then:\n$$\\int f_n \\, d\\mu \\to \\int f \\, d\\mu$$\n\n**Lean**:\n```lean\ntheorem dominated_convergence\n    (hf_bound : ∀ n, ∀ᵐ x, ‖f n x‖ ≤ bound x)\n    (hbound_int : Integrable bound)\n    (hf_lim : ∀ᵐ x, Tendsto (f · x) atTop (nhds (g x))) :\n    Tendsto (fun n => ∫ f n) atTop (nhds (∫ g))\n```\n\n**The Workhorse Theorem**: This is the most practically useful convergence result:\n- Works for signed functions\n- Only needs pointwise a.e. convergence\n- Requires only a dominating bound, not monotonicity\n\n**Applications**: Differentiating under the integral sign, Fourier analysis, PDE.",
+    "mathContext": "|fₙ| ≤ g, fₙ → f ⟹ ∫fₙ → ∫f",
+    "significance": "critical",
+    "relatedConcepts": ["tendsto_integral_of_dominated_convergence", "dominating function", "a.e."]
+  },
+  {
+    "id": "ann-fubini",
+    "proofId": "lebesgue-measure",
+    "range": {"startLine": 241, "endLine": 294},
+    "type": "theorem",
+    "title": "Fubini's Theorem",
+    "content": "**Fubini's Theorem**:\n\nFor product measures, iterated integrals equal the double integral:\n$$\\int\\int f(x,y) \\, dx \\, dy = \\int\\int f(x,y) \\, dy \\, dx = \\iint f \\, d(\\mu \\times \\nu)$$\n\n**Lean** (Tonelli form for non-negative):\n```lean\ntheorem fubini_tonelli (hf : Measurable f) :\n    ∫⁻ x, ∫⁻ y, f (x, y) = ∫⁻ p, f p ∂(volume.prod volume)\n```\n\n**Lean** (General form):\n```lean\ntheorem fubini (hf : Integrable f (volume.prod volume)) :\n    ∫ x, ∫ y, f (x, y) = ∫ y, ∫ x, f (x, y)\n```\n\n**Applications**:\n- Computing volumes by slicing\n- Changing order of integration\n- Multi-dimensional probability",
+    "mathContext": "∫∫f dx dy = ∫∫f dy dx",
+    "significance": "critical",
+    "relatedConcepts": ["product measure", "integral_prod", "Tonelli"]
+  },
+  {
+    "id": "ann-completeness",
+    "proofId": "lebesgue-measure",
+    "range": {"startLine": 296, "endLine": 324},
+    "type": "theorem",
+    "title": "Completeness and Null Sets",
+    "content": "**Completeness of Lebesgue Measure**:\n\nSubsets of null sets are measurable (and have measure zero).\n\n**Key Results**:\n```lean\ntheorem countable_measure_zero (hs : s.Countable) :\n    volume s = 0\n\ntheorem rationals_measure_zero :\n    volume (Set.range (Rat.cast : ℚ → ℝ)) = 0\n```\n\n**Famous Examples**:\n- $\\mathbb{Q}$ is countable, so $\\mu(\\mathbb{Q}) = 0$\n- The **Cantor set** is uncountable but has measure zero\n- There exist measure-zero sets with cardinality of the continuum\n\n**Significance**: Completeness means we can work with \"almost everywhere\" statements without worrying about measurability of exceptional sets.",
+    "mathContext": "countable ⟹ measure zero",
+    "significance": "major",
+    "relatedConcepts": ["null sets", "Cantor set", "completion"]
+  },
+  {
+    "id": "ann-riemann-comparison",
+    "proofId": "lebesgue-measure",
+    "range": {"startLine": 326, "endLine": 370},
+    "type": "note",
+    "title": "Riemann vs Lebesgue",
+    "content": "**Lebesgue Extends Riemann**:\n\nEvery Riemann integrable function is Lebesgue integrable (with same value), but not vice versa.\n\n**The Dirichlet Function**:\n$$f(x) = \\begin{cases} 1 & x \\in \\mathbb{Q} \\\\ 0 & x \\notin \\mathbb{Q} \\end{cases}$$\n\n- **Riemann**: Not integrable (upper and lower sums differ)\n- **Lebesgue**: $\\int_0^1 f = 0$ because $\\mathbb{Q}$ has measure zero\n\n**Lean**:\n```lean\ntheorem dirichlet_function_integral :\n    ∫ x in Icc 0 1, indicator ℚ (fun _ => 1) x = 0\n```\n\n**Why Lebesgue Wins**: Functions equal almost everywhere have equal integrals. The Dirichlet function equals 0 a.e., so its integral is 0.",
+    "mathContext": "Dirichlet function: Lebesgue integrable, not Riemann",
+    "significance": "major",
+    "relatedConcepts": ["Dirichlet function", "almost everywhere", "indicator"]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "lebesgue-measure",
+    "range": {"startLine": 372, "endLine": 401},
+    "type": "note",
+    "title": "Applications",
+    "content": "**Modern Applications**:\n\n1. **Probability Theory**: Kolmogorov axioms use Lebesgue integration\n   - Expected value = Lebesgue integral\n   - Convergence theorems for random variables\n\n2. **Functional Analysis**: $L^p$ spaces\n   - $L^2$ is a Hilbert space (Fourier analysis)\n   - Hölder's inequality: $\\|fg\\|_1 \\leq \\|f\\|_p \\cdot \\|g\\|_q$\n\n3. **PDEs**: Weak solutions\n   - Sobolev spaces use Lebesgue integration\n   - Distributional derivatives\n\n4. **Fourier Analysis**:\n   - $L^2$ theory of Fourier series\n   - Plancherel theorem\n\n**The Dominated Convergence Theorem alone justifies the entire theory** — it's used constantly in analysis and probability.",
+    "significance": "minor",
+    "relatedConcepts": ["Lp spaces", "probability", "Fourier analysis"]
+  }
+]

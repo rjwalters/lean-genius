@@ -1,1 +1,77 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "ballot-problem",
+    "range": {"startLine": 4, "endLine": 78},
+    "type": "concept",
+    "title": "The Ballot Problem: Wiedijk #30",
+    "content": "**The Ballot Problem (Bertrand, 1887)**:\n\nIn an election where candidate A receives $p$ votes and B receives $q$ votes ($p > q$), what is the probability that A leads throughout the counting?\n\n$$P = \\frac{p - q}{p + q}$$\n\n**Example**: If A gets 5 votes and B gets 3:\n$$P = \\frac{5-3}{5+3} = \\frac{1}{4}$$\n\n**Key Insight**: The elegant **reflection principle** makes this tractable. Any \"bad\" path (where A ties) corresponds bijectively to a path ending at the \"wrong\" point.",
+    "significance": "critical",
+    "relatedConcepts": ["reflection principle", "Bertrand", "probability"]
+  },
+  {
+    "id": "ann-model",
+    "proofId": "ballot-problem",
+    "range": {"startLine": 93, "endLine": 131},
+    "type": "definition",
+    "title": "Vote Sequence Model",
+    "content": "**Modeling Votes as Sequences**:\n\n- $+1$ = vote for candidate A\n- $-1$ = vote for candidate B\n- Sequence = order of counting\n\n```lean\nexample (p q : ℕ) : Set (List ℤ) := countedSequence p q\nexample : Set (List ℤ) := staysPositive\n```\n\n**Key Properties**:\n- `countedSequence p q`: exactly $p$ ones and $q$ minus-ones\n- `staysPositive`: every nonempty suffix has positive sum\n- Count: $|\\text{countedSequence } p \\, q| = \\binom{p+q}{p}$\n\nA leads throughout iff the partial sums are always positive.",
+    "mathContext": "+1/-1 sequences",
+    "significance": "major",
+    "relatedConcepts": ["countedSequence", "staysPositive", "binomial coefficient"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "ballot-problem",
+    "range": {"startLine": 132, "endLine": 152},
+    "type": "theorem",
+    "title": "The Ballot Theorem",
+    "content": "**Ballot Theorem** (Wiedijk #30):\n\n```lean\ntheorem ballot_theorem (p q : ℕ) (h : q < p) :\n    condCount (countedSequence p q) staysPositive = (p - q) / (p + q)\n```\n\n**Interpretation**:\n- Condition on being in `countedSequence p q` (exactly $p$ for A, $q$ for B)\n- Probability of `staysPositive` (A ahead after each vote)\n- Result: $(p-q)/(p+q)$\n\n**Proof Method**:\n1. Model as lattice paths\n2. Use reflection principle to count \"bad\" paths\n3. Subtract from total",
+    "mathContext": "P(A leads) = (p-q)/(p+q)",
+    "significance": "critical",
+    "relatedConcepts": ["condCount", "Mathlib Archive", "reflection principle"]
+  },
+  {
+    "id": "ann-edge-cases",
+    "proofId": "ballot-problem",
+    "range": {"startLine": 154, "endLine": 166},
+    "type": "theorem",
+    "title": "Edge Cases",
+    "content": "**Special Values**:\n\n**Unanimous Vote** ($q = 0$):\n```lean\ntheorem ballot_unanimous (p : ℕ) :\n    condCount (countedSequence (p + 1) 0) staysPositive = 1\n```\nIf B gets no votes, A always leads — probability 1!\n\n**Tie** ($p = q$):\n```lean\ntheorem ballot_tie (p : ℕ) :\n    condCount (countedSequence (p + 1) (p + 1)) staysPositive = 0\n```\nWith equal votes, running totals must eventually tie — probability 0!",
+    "mathContext": "P = 1 if q=0; P = 0 if p=q",
+    "significance": "major",
+    "relatedConcepts": ["edge cases", "degenerate", "unanimity"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "ballot-problem",
+    "range": {"startLine": 168, "endLine": 189},
+    "type": "note",
+    "title": "Concrete Examples",
+    "content": "**Numerical Verifications**:\n\n| p | q | P = (p-q)/(p+q) |\n|---|---|----------------|\n| 2 | 1 | 1/3 |\n| 3 | 1 | 1/2 |\n| 4 | 2 | 1/3 |\n| 5 | 2 | 3/7 |\n| 10 | 4 | 3/7 |\n\n**Example**: $(p,q) = (2,1)$\nSequences: $[+1,+1,-1], [+1,-1,+1], [-1,+1,+1]$\nOnly $[+1,+1,-1]$ keeps A ahead (sums: 1, 2, 1)\nProbability = 1/3 ✓",
+    "significance": "minor",
+    "relatedConcepts": ["examples", "norm_num", "verification"]
+  },
+  {
+    "id": "ann-lattice-paths",
+    "proofId": "ballot-problem",
+    "range": {"startLine": 191, "endLine": 214},
+    "type": "concept",
+    "title": "Lattice Paths and Catalan Numbers",
+    "content": "**Lattice Path Interpretation**:\n\n- Start at $(0, 0)$\n- $+1$ vote: move to $(x+1, y+1)$\n- $-1$ vote: move to $(x+1, y-1)$\n- End at $(p+q, p-q)$\n\n\"A leads\" = path never touches $y = 0$ after start.\n\n**Catalan Connection**:\n\nFor weakly-ahead paths (can tie) with $p = q = n$:\n$$C_n = \\frac{1}{n+1} \\binom{2n}{n}$$\n\n**Applications**:\n- Finance: stock price above barrier\n- Queueing: server never idle\n- Branching processes",
+    "mathContext": "lattice path to (p+q, p-q)",
+    "significance": "major",
+    "relatedConcepts": ["Catalan numbers", "random walk", "lattice path"]
+  },
+  {
+    "id": "ann-reflection",
+    "proofId": "ballot-problem",
+    "range": {"startLine": 216, "endLine": 249},
+    "type": "concept",
+    "title": "The Reflection Principle",
+    "content": "**The Reflection Bijection**:\n\nFor any \"bad\" path (touches $y = 0$):\n1. Find **first** time partial sum = 0\n2. **Reflect** all votes before: swap $+1 \\leftrightarrow -1$\n3. Creates path to $(p+q, q-p)$ instead of $(p+q, p-q)$\n\n**Why Bijection?**\n- Every bad path maps to unique reflected path\n- Every path to $(q-p)$ comes from unique bad path\n- Reflection is self-inverse\n\n**Counting**:\n- Total: $\\binom{p+q}{p}$\n- Bad: $\\binom{p+q}{q}$ (paths to wrong endpoint)\n- Good: $\\binom{p+q}{p} - \\binom{p+q}{q}$\n\n**Probability**:\n$$P = \\frac{\\binom{p+q}{p} - \\binom{p+q}{q}}{\\binom{p+q}{p}} = \\frac{p-q}{p+q}$$\n\nThis elegant bijection is the heart of the proof!",
+    "mathContext": "reflect prefix at first touch",
+    "significance": "critical",
+    "relatedConcepts": ["bijection", "reflection", "André"]
+  }
+]

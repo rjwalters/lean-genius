@@ -1,1 +1,34 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "sqrt2-examples",
+    "range": {"startLine": 3, "endLine": 28},
+    "type": "concept",
+    "title": "Sqrt2 Examples: Pedagogical Proofs",
+    "content": "**Learning Lean Proof Techniques**:\n\nThis file demonstrates basic proof techniques in Lean 4:\n\n1. **Case analysis** (`by_cases`)\n2. **Calculational proofs** (`calc`)\n3. **Algebraic simplification** (`ring`)\n4. **Function application** (`apply`, `exact`)\n\n**Purpose**: A minimal template for learning Lean proof techniques.\n\n**Dependencies**: Only `Mathlib.Tactic` for standard tactics.\n\nThese examples show how to work with integers, inequalities, and logical implications.",
+    "significance": "minor",
+    "relatedConcepts": ["tactics", "proof techniques", "pedagogical"]
+  },
+  {
+    "id": "ann-square-nonneg",
+    "proofId": "sqrt2-examples",
+    "range": {"startLine": 32, "endLine": 40},
+    "type": "theorem",
+    "title": "Non-negativity of Squares",
+    "content": "**Theorem**: For any integer $n$, $n^2 \\geq 0$.\n\n```lean\ntheorem square_nonneg (n : ℤ) : 0 ≤ n * n\n```\n\n**Proof Structure**:\n\n1. **Case split** on $n \\geq 0$ vs $n < 0$\n\n2. **Case n ≥ 0**:\n   - Use `mul_nonneg h h`: product of non-negatives is non-negative\n\n3. **Case n < 0**:\n   - Note $-n \\geq 0$ since $n < 0$\n   - Use `calc`: $n \\cdot n = (-n) \\cdot (-n) \\geq 0$\n   - The `ring` tactic proves $n \\cdot n = (-n) \\cdot (-n)$\n\n**Tactics Demonstrated**: `by_cases`, `push_neg`, `calc`, `ring`, `exact`",
+    "mathContext": "n² ≥ 0 for all n ∈ ℤ",
+    "significance": "major",
+    "relatedConcepts": ["by_cases", "calc", "ring", "mul_nonneg"]
+  },
+  {
+    "id": "ann-imp-trans",
+    "proofId": "sqrt2-examples",
+    "range": {"startLine": 42, "endLine": 47},
+    "type": "theorem",
+    "title": "Implication Transitivity",
+    "content": "**Theorem**: Implication is transitive.\n\n$$(P \\to Q) \\to (Q \\to R) \\to (P \\to R)$$\n\n```lean\ntheorem imp_trans (P Q R : Prop) :\n    (P → Q) → (Q → R) → (P → R) := by\n  intro hpq hqr hp\n  apply hqr\n  apply hpq\n  exact hp\n```\n\n**Proof Breakdown**:\n\n1. `intro hpq hqr hp`: Introduce hypotheses\n   - `hpq : P → Q`\n   - `hqr : Q → R`\n   - `hp : P`\n\n2. `apply hqr`: To prove `R`, suffices to prove `Q`\n\n3. `apply hpq`: To prove `Q`, suffices to prove `P`\n\n4. `exact hp`: We have `P` as hypothesis\n\n**Key Insight**: Working backwards from goal using `apply`.",
+    "mathContext": "(P → Q) → (Q → R) → (P → R)",
+    "significance": "major",
+    "relatedConcepts": ["intro", "apply", "exact", "implication"]
+  }
+]

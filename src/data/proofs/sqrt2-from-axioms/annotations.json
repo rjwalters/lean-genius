@@ -1,1 +1,88 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "sqrt2-from-axioms",
+    "range": {"startLine": 3, "endLine": 45},
+    "type": "concept",
+    "title": "√2 is Irrational: From First Principles",
+    "content": "**Building the Classical Proof From Scratch**:\n\nThis file demonstrates how to construct the √2 irrationality proof from basic principles, without relying on Mathlib's pre-built machinery.\n\n**What We Build Ourselves**:\n1. Even/Odd definitions\n2. Parity lemmas (every number is even XOR odd)\n3. Key lemma: n² even → n even\n4. Main theorem via contradiction\n\n**Dependencies**: Only `ring` and `omega` for arithmetic convenience.\n\n**Historical**: Attributed to Hippasus of Metapontum (~500 BCE). Legend says he was thrown overboard for revealing this truth to the Pythagoreans!\n\n**Compare**: `Sqrt2Irrational.lean` proves this in one line using Mathlib. This version shows the architecture.",
+    "significance": "critical",
+    "relatedConcepts": ["proof from scratch", "irrationality", "pedagogical"]
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "sqrt2-from-axioms",
+    "range": {"startLine": 49, "endLine": 57},
+    "type": "definition",
+    "title": "Even and Odd Definitions",
+    "content": "**Formal Parity Definitions**:\n\n```lean\ndef Even (n : Nat) : Prop := ∃ k : Nat, n = 2 * k\n\ndef Odd (n : Nat) : Prop := ∃ k : Nat, n = 2 * k + 1\n```\n\n**Existential Propositions**:\n- Even: \"there exists k such that n = 2k\"\n- Odd: \"there exists k such that n = 2k + 1\"\n\n**Note**: These definitions are intentionally simple. Mathlib's versions are more sophisticated, handling negative numbers and using different formulations.\n\n**Key Point**: We define parity via **witnesses** (the k value), not via divisibility.",
+    "mathContext": "Even n ↔ ∃k, n = 2k",
+    "significance": "major",
+    "relatedConcepts": ["existential quantifier", "witness", "natural numbers"]
+  },
+  {
+    "id": "ann-parity-lemmas",
+    "proofId": "sqrt2-from-axioms",
+    "range": {"startLine": 59, "endLine": 102},
+    "type": "theorem",
+    "title": "Parity Lemmas",
+    "content": "**Basic Facts About Parity**:\n\n```lean\ntheorem zero_even : Even 0 := ⟨0, rfl⟩\ntheorem one_odd : Odd 1 := ⟨0, rfl⟩\ntheorem two_even : Even 2 := ⟨1, rfl⟩\n```\n\n**Successor Properties**:\n```lean\ntheorem succ_even_is_odd {n : Nat} (h : Even n) : Odd (n + 1)\ntheorem succ_odd_is_even {n : Nat} (h : Odd n) : Even (n + 1)\n```\n\n**Fundamental Dichotomy**:\n```lean\ntheorem even_or_odd (n : Nat) : Even n ∨ Odd n\ntheorem not_even_and_odd (n : Nat) : ¬(Even n ∧ Odd n)\n```\n\n**Proof Method**: The `even_or_odd` proof uses induction, alternating parity at each successor.",
+    "mathContext": "∀n, Even n ⊕ Odd n",
+    "significance": "major",
+    "relatedConcepts": ["induction", "dichotomy", "successor"]
+  },
+  {
+    "id": "ann-key-lemma",
+    "proofId": "sqrt2-from-axioms",
+    "range": {"startLine": 104, "endLine": 122},
+    "type": "theorem",
+    "title": "Key Lemma: Even Squares",
+    "content": "**The Heart of the Proof**:\n\n```lean\ntheorem even_of_sq_even {n : Nat} (h : Even (n * n)) : Even n\n```\n\n**Why This Works** (via contrapositive):\n\nFirst prove: Odd n → Odd n²\n- If n = 2k+1, then n² = 4k² + 4k + 1 = 2(2k² + 2k) + 1\n\n```lean\ntheorem odd_sq_odd {n : Nat} (h : Odd n) : Odd (n * n) := by\n  obtain ⟨k, hk⟩ := h\n  use 2 * k * k + 2 * k\n  rw [hk]\n  ring\n```\n\n**Then**: If n² is even but n is odd, we get n² is both even AND odd—contradiction!\n\n**Contrapositive**: Odd n → Odd n² is logically equivalent to Even n² → Even n.",
+    "mathContext": "n² even ⟹ n even",
+    "significance": "critical",
+    "relatedConcepts": ["contrapositive", "ring tactic", "absurd"]
+  },
+  {
+    "id": "ann-helpers",
+    "proofId": "sqrt2-from-axioms",
+    "range": {"startLine": 135, "endLine": 144},
+    "type": "theorem",
+    "title": "Helper Lemmas",
+    "content": "**Breaking Down the Main Proof**:\n\n```lean\ntheorem a_even_of_sq_eq_two_sq (a b : Nat)\n    (h : a * a = 2 * b * b) : Even a\n```\nFrom a² = 2b², conclude a² is even, hence a is even.\n\n```lean\ntheorem b_sq_eq_two_k_sq (a b k : Nat)\n    (ha : a = 2 * k) (h : a * a = 2 * b * b) :\n    b * b = 2 * k * k\n```\nSubstitute a = 2k into a² = 2b² to get b² = 2k².\n\n**Key Insight**: These helpers isolate the algebraic steps, making the main proof cleaner.",
+    "mathContext": "a² = 2b² ⟹ a even",
+    "significance": "major",
+    "relatedConcepts": ["helper lemmas", "algebraic manipulation", "linarith"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "sqrt2-from-axioms",
+    "range": {"startLine": 146, "endLine": 166},
+    "type": "theorem",
+    "title": "Main Theorem: √2 is Irrational",
+    "content": "**The Classic Proof by Contradiction**:\n\n```lean\ntheorem sqrt2_irrational :\n    ∀ a b : Nat, b > 0 → a * a = 2 * b * b → ¬Coprime a b\n```\n\n**Proof Steps**:\n1. Assume a² = 2b² with a, b coprime\n2. a² even → a even → a = 2k\n3. Substitute: 2b² = 4k² → b² = 2k²\n4. b² even → b even\n5. Both a and b are even → contradiction with coprime!\n\n**The Infinite Descent**:\nIf we could write √2 = a/b in lowest terms, then both a and b must be even—but then a/b wasn't in lowest terms after all!\n\n**Our Coprime Definition**: Simply \"not both even\" (simplified for pedagogy).",
+    "mathContext": "No coprime a,b with a² = 2b²",
+    "significance": "critical",
+    "relatedConcepts": ["proof by contradiction", "coprime", "infinite descent"]
+  },
+  {
+    "id": "ann-alternative",
+    "proofId": "sqrt2-from-axioms",
+    "range": {"startLine": 168, "endLine": 185},
+    "type": "theorem",
+    "title": "Alternative Formulation",
+    "content": "**A Cleaner Statement**:\n\n```lean\ntheorem sqrt2_no_rational_form (a b : Nat) (h : a * a = 2 * b * b) :\n    b = 0 ∨ (Even a ∧ Even b)\n```\n\n**Meaning**: If a² = 2b², then either:\n- b = 0 (trivial case), or\n- Both a and b are even\n\n**Consequence**: No reduced fraction a/b can satisfy (a/b)² = 2.\n\n**Pattern Match**: Uses Lean's `match b with` for case analysis on zero vs successor.",
+    "mathContext": "a² = 2b² ⟹ b = 0 ∨ 2|a,b",
+    "significance": "major",
+    "relatedConcepts": ["disjunction", "pattern matching", "alternative formulation"]
+  },
+  {
+    "id": "ann-educational",
+    "proofId": "sqrt2-from-axioms",
+    "range": {"startLine": 187, "endLine": 233},
+    "type": "note",
+    "title": "Educational Value",
+    "content": "**What This Proof Teaches**:\n\n1. **Existential proofs**: Using witnesses (`use k`)\n2. **Case analysis**: `cases even_or_odd n`\n3. **Induction**: Building `even_or_odd` inductively\n4. **Contrapositive**: Proving A → B by proving ¬B → ¬A\n5. **Contradiction**: `absurd` and `exact absurd ⟨h, h_sq_odd⟩ ...`\n\n**Comparison with Mathlib**:\n\n| Approach | Lines | What You Learn |\n|----------|-------|----------------|\n| This file | ~200 | Full proof architecture |\n| Mathlib | 1 | \"Trust the library\" |\n\n**Trade-off**: Mathlib's `exact irrational_sqrt_two` hides:\n- Real number construction\n- Square root definition\n- Irrationality for reals\n- The actual proof\n\nOur version exposes the essential ideas in ~200 lines.",
+    "significance": "major",
+    "relatedConcepts": ["proof architecture", "Mathlib comparison", "pedagogical value"]
+  }
+]

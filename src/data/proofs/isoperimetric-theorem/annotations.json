@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "isoperimetric-theorem",
+    "range": {"startLine": 6, "endLine": 69},
+    "type": "concept",
+    "title": "Isoperimetric Theorem: Wiedijk #43",
+    "content": "**The Isoperimetric Inequality**:\n\nAmong all closed curves with perimeter $L$, the **circle** encloses the maximum area $A$:\n$$4\\pi A \\leq L^2$$\n\nEquality holds **if and only if** the curve is a circle.\n\n**Equivalent forms**:\n- Isoperimetric ratio: $\\frac{A}{L^2} \\leq \\frac{1}{4\\pi}$\n- For fixed area, circle has minimum perimeter\n\n**Historical**: Known as **Dido's Problem** since antiquity. Queen Dido was given as much land as a bull's hide could enclose — she cut it into strips and made a semicircle against the coast!\n\nRigorous proofs came in the 19th century (Steiner 1838, Weierstrass 1870s).",
+    "significance": "critical",
+    "relatedConcepts": ["isoperimetric inequality", "circle", "optimization"]
+  },
+  {
+    "id": "ann-curve",
+    "proofId": "isoperimetric-theorem",
+    "range": {"startLine": 81, "endLine": 98},
+    "type": "definition",
+    "title": "Simple Closed Curves",
+    "content": "**Simple Closed Curve Structure**:\n\n```lean\nstructure SimpleClosedCurve where\n  perimeter : ℝ\n  perimeter_pos : 0 < perimeter\n  enclosedArea : ℝ\n  area_nonneg : 0 ≤ enclosedArea\n```\n\n**Properties**:\n- **Simple**: Doesn't self-intersect\n- **Closed**: Returns to starting point\n- **Perimeter** $L$: Arc length (positive)\n- **Area** $A$: Enclosed region (non-negative)\n\nWe abstract away the curve parameterization and focus on these geometric quantities.",
+    "mathContext": "L = perimeter, A = area",
+    "significance": "major",
+    "relatedConcepts": ["Jordan curve", "arc length", "enclosed area"]
+  },
+  {
+    "id": "ann-circle",
+    "proofId": "isoperimetric-theorem",
+    "range": {"startLine": 104, "endLine": 134},
+    "type": "definition",
+    "title": "Circle: The Optimal Shape",
+    "content": "**Circle Properties**:\n\nFor a circle with radius $r$:\n- **Perimeter**: $L = 2\\pi r$\n- **Area**: $A = \\pi r^2$\n\n**Lean**:\n```lean\nstructure Circle where\n  radius : ℝ\n  radius_pos : 0 < radius\n\ndef Circle.perimeter (c : Circle) : ℝ := 2 * π * c.radius\ndef Circle.area (c : Circle) : ℝ := π * c.radius ^ 2\n```\n\n**Verification**:\n- Perimeter is positive: $2\\pi r > 0$\n- Area is positive: $\\pi r^2 > 0$\n\nCircles can be converted to `SimpleClosedCurve` via `Circle.toCurve`.",
+    "mathContext": "L = 2πr, A = πr²",
+    "significance": "major",
+    "relatedConcepts": ["circumference", "πr²", "radius"]
+  },
+  {
+    "id": "ann-ratio",
+    "proofId": "isoperimetric-theorem",
+    "range": {"startLine": 140, "endLine": 162},
+    "type": "definition",
+    "title": "Isoperimetric Ratio",
+    "content": "**The Isoperimetric Ratio**:\n\n$$\\rho = \\frac{A}{L^2}$$\n\nmeasures how efficiently a curve encloses area relative to its perimeter.\n\n**Optimal value**: $\\rho_{\\max} = \\frac{1}{4\\pi} \\approx 0.0796$\n\n**For any curve**: $\\frac{A}{L^2} \\leq \\frac{1}{4\\pi}$\n\n**Lean**:\n```lean\nnoncomputable def isoperimetricRatio (C : SimpleClosedCurve) : ℝ :=\n  C.A / C.L ^ 2\n\nnoncomputable def optimalRatio : ℝ := 1 / (4 * π)\n```\n\nThe isoperimetric ratio is always non-negative.",
+    "mathContext": "ρ = A/L² ≤ 1/(4π)",
+    "significance": "major",
+    "relatedConcepts": ["efficiency", "shape factor", "circularity"]
+  },
+  {
+    "id": "ann-circle-optimal",
+    "proofId": "isoperimetric-theorem",
+    "range": {"startLine": 168, "endLine": 182},
+    "type": "theorem",
+    "title": "Circle Achieves Optimal Ratio",
+    "content": "**Verification: Circle is Optimal**\n\nFor a circle with radius $r$:\n- $L = 2\\pi r$\n- $A = \\pi r^2$\n- Ratio: $\\frac{A}{L^2} = \\frac{\\pi r^2}{(2\\pi r)^2} = \\frac{\\pi r^2}{4\\pi^2 r^2} = \\frac{1}{4\\pi}$ ✓\n\n**Lean**:\n```lean\ntheorem circle_achieves_optimal_ratio (c : Circle) :\n    isoperimetricRatio c.toCurve = optimalRatio\n```\n\nThis confirms circles exactly achieve the theoretical maximum ratio.",
+    "mathContext": "A/L² = 1/(4π) for circles",
+    "significance": "major",
+    "relatedConcepts": ["field_simp", "ring", "verification"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "isoperimetric-theorem",
+    "range": {"startLine": 188, "endLine": 233},
+    "type": "theorem",
+    "title": "The Isoperimetric Inequality",
+    "content": "**Main Theorem** (Wiedijk #43):\n\nFor any simple closed curve with perimeter $L$ and area $A$:\n$$4\\pi A \\leq L^2$$\n\n**Equivalent**: $\\frac{A}{L^2} \\leq \\frac{1}{4\\pi}$\n\n**Proof Approaches** (all beyond current Mathlib):\n1. **Steiner symmetrization**: Reflect to improve non-circles\n2. **Fourier/Wirtinger**: Parameterize by Fourier series\n3. **Brunn-Minkowski**: $|A+B|^{1/n} \\geq |A|^{1/n} + |B|^{1/n}$\n4. **Calculus of variations**: Lagrange multipliers\n\n**Status**: Main result axiomatized.\n\n**Lean**:\n```lean\naxiom isoperimetric_inequality (C : SimpleClosedCurve) :\n    4 * π * C.A ≤ C.L ^ 2\n```",
+    "mathContext": "4πA ≤ L²",
+    "significance": "critical",
+    "relatedConcepts": ["Steiner symmetrization", "Brunn-Minkowski", "calculus of variations"]
+  },
+  {
+    "id": "ann-equality",
+    "proofId": "isoperimetric-theorem",
+    "range": {"startLine": 239, "endLine": 276},
+    "type": "theorem",
+    "title": "Equality Characterization",
+    "content": "**When Does Equality Hold?**\n\n$$4\\pi A = L^2 \\quad \\Leftrightarrow \\quad \\text{curve is a circle}$$\n\n**Definition**:\n```lean\ndef IsOptimal (C : SimpleClosedCurve) : Prop :=\n  4 * π * C.A = C.L ^ 2\n```\n\n**Theorems**:\n```lean\ntheorem circle_isOptimal (c : Circle) : IsOptimal c.toCurve\n\naxiom equality_iff_circle (C : SimpleClosedCurve) :\n    IsOptimal C ↔ ∃ (c : Circle), C.perimeter = c.perimeter ∧\n                                  C.enclosedArea = c.area\n```\n\nThis is the \"rigidity\" part: circles are the **unique** optimal shapes.",
+    "mathContext": "4πA = L² ⟺ circle",
+    "significance": "critical",
+    "relatedConcepts": ["uniqueness", "rigidity", "characterization"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "isoperimetric-theorem",
+    "range": {"startLine": 281, "endLine": 327},
+    "type": "note",
+    "title": "Example: Square vs Circle",
+    "content": "**Comparison: Square vs Circle**\n\nFor same perimeter $L$:\n\n**Circle** (radius $r = L/(2\\pi)$):\n- Area: $\\pi r^2 = \\frac{L^2}{4\\pi}$\n- Ratio: $\\frac{1}{4\\pi} \\approx 0.0796$\n\n**Square** (side $s = L/4$):\n- Area: $s^2 = \\frac{L^2}{16}$\n- Ratio: $\\frac{1}{16} = 0.0625$\n\n**Circle wins by ~27%!**\n\n**Lean verification**:\n```lean\ntheorem square_ratio (sq : Square) :\n    isoperimetricRatio sq.toCurve = 1 / 16\n\ntheorem square_suboptimal (sq : Square) :\n    isoperimetricRatio sq.toCurve < optimalRatio\n```",
+    "mathContext": "1/16 < 1/(4π)",
+    "significance": "major",
+    "relatedConcepts": ["square", "comparison", "suboptimal"]
+  },
+  {
+    "id": "ann-3d",
+    "proofId": "isoperimetric-theorem",
+    "range": {"startLine": 374, "endLine": 398},
+    "type": "concept",
+    "title": "Generalization to 3D",
+    "content": "**3D Isoperimetric Inequality**:\n\nFor a region with volume $V$ and surface area $S$:\n$$36\\pi V^2 \\leq S^3$$\n\nEquality iff the region is a **sphere**.\n\n**General $n$ dimensions**:\n$$n \\omega_n^{1/n} V^{(n-1)/n} \\leq S$$\n\nwhere $\\omega_n$ = volume of unit $n$-ball.\n\n**Physical interpretation**: Soap bubbles are spherical because they minimize surface energy for a given enclosed volume!",
+    "mathContext": "36πV² ≤ S³ in 3D",
+    "significance": "major",
+    "relatedConcepts": ["sphere", "soap bubbles", "surface area"]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "isoperimetric-theorem",
+    "range": {"startLine": 404, "endLine": 438},
+    "type": "note",
+    "title": "Applications",
+    "content": "**Applications of the Isoperimetric Inequality**:\n\n**Biology**: Cells are often spherical to minimize membrane material.\n\n**Engineering**: Storage tanks use cylindrical/spherical shapes for efficiency.\n\n**Physics**: Soap bubbles form spheres to minimize surface energy.\n\n**Urban Planning**: Circular cities are more efficient than elongated ones.\n\n**Mathematics Connections**:\n- Sobolev inequalities in PDEs\n- Concentration of measure\n- Geometric measure theory\n- Optimal transport\n\n**Historical Note**: The search for a rigorous proof took over **2000 years**!",
+    "significance": "minor",
+    "relatedConcepts": ["optimization", "biology", "physics", "Sobolev"]
+  }
+]

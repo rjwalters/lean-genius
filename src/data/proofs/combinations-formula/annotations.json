@@ -1,1 +1,66 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "combinations-formula",
+    "range": {"startLine": 5, "endLine": 51},
+    "type": "concept",
+    "title": "Combinations Formula: Wiedijk #58",
+    "content": "**The Combinations Formula**:\n\nThe number of ways to choose $k$ elements from $n$ elements:\n$$C(n,k) = \\binom{n}{k} = \\frac{n!}{k!(n-k)!}$$\n\n**Why This Works**:\n- $n!$ ways to arrange all $n$ items\n- Divide by $k!$: order of selected items doesn't matter\n- Divide by $(n-k)!$: order of unselected items doesn't matter\n\n**Historical**: Pascal's 1654 treatise *Traité du triangle arithmétique* systematically explored binomial coefficients.",
+    "significance": "critical",
+    "relatedConcepts": ["binomial coefficient", "factorial", "Pascal"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "combinations-formula",
+    "range": {"startLine": 55, "endLine": 72},
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**Combinations Formula** (Wiedijk #58):\n\n```lean\ntheorem combinations_formula (n k : ℕ) (h : k ≤ n) :\n    Nat.choose n k = n.factorial / (k.factorial * (n - k).factorial)\n```\n\n**Mathlib**: Uses `Nat.choose_eq_factorial_div_factorial`.\n\n**Divisibility**:\n```lean\ntheorem factorial_product_divides (n k : ℕ) (h : k ≤ n) :\n    k.factorial * (n - k).factorial ∣ n.factorial\n```\n\nThe product of factorials always divides $n!$ exactly.",
+    "mathContext": "C(n,k) = n! / (k!(n-k)!)",
+    "significance": "critical",
+    "relatedConcepts": ["Nat.choose", "factorial", "divisibility"]
+  },
+  {
+    "id": "ann-properties",
+    "proofId": "combinations-formula",
+    "range": {"startLine": 74, "endLine": 99},
+    "type": "theorem",
+    "title": "Properties of Binomial Coefficients",
+    "content": "**Key Properties**:\n\n**Symmetry**: $C(n,k) = C(n, n-k)$\n```lean\ntheorem choose_symmetry (n k : ℕ) (h : k ≤ n) :\n    Nat.choose n k = Nat.choose n (n - k)\n```\nChoosing $k$ = choosing which $n-k$ to leave out.\n\n**Boundary Cases**:\n- $C(n, 0) = 1$ — one way to choose nothing\n- $C(n, n) = 1$ — one way to choose everything\n- $C(n, 1) = n$ — $n$ ways to choose one element\n\n```lean\ntheorem choose_zero_right (n : ℕ) : Nat.choose n 0 = 1\ntheorem choose_self (n : ℕ) : Nat.choose n n = 1\ntheorem choose_one_right (n : ℕ) : Nat.choose n 1 = n\n```",
+    "mathContext": "C(n,k) = C(n,n-k)",
+    "significance": "major",
+    "relatedConcepts": ["symmetry", "boundary cases", "choose_symm"]
+  },
+  {
+    "id": "ann-pascal",
+    "proofId": "combinations-formula",
+    "range": {"startLine": 101, "endLine": 109},
+    "type": "theorem",
+    "title": "Pascal's Identity",
+    "content": "**Pascal's Triangle Recurrence**:\n\n$$C(n+1, k+1) = C(n, k) + C(n, k+1)$$\n\n```lean\ntheorem pascal_identity (n k : ℕ) :\n    Nat.choose (n + 1) (k + 1) = Nat.choose n k + Nat.choose n (k + 1)\n```\n\nEach entry in Pascal's triangle is the sum of the two entries above it. This recurrence is fundamental for computing binomial coefficients efficiently.",
+    "mathContext": "C(n+1,k+1) = C(n,k) + C(n,k+1)",
+    "significance": "major",
+    "relatedConcepts": ["Pascal's triangle", "recurrence", "choose_succ_succ"]
+  },
+  {
+    "id": "ann-descending",
+    "proofId": "combinations-formula",
+    "range": {"startLine": 111, "endLine": 128},
+    "type": "theorem",
+    "title": "Falling Factorial Form",
+    "content": "**Permutation Connection**:\n\n- $P(n,k) = \\frac{n!}{(n-k)!} = n(n-1)\\cdots(n-k+1)$ — ordered selections\n- $C(n,k) = \\frac{P(n,k)}{k!}$ — remove ordering\n\n```lean\ntheorem choose_eq_desc_factorial_div (n k : ℕ) :\n    Nat.choose n k = Nat.descFactorial n k / k.factorial\n```\n\nThe **falling factorial** (descending factorial) $n^{\\underline{k}}$ counts ordered selections. Dividing by $k!$ gives unordered combinations.",
+    "mathContext": "C(n,k) = n^(k) / k!",
+    "significance": "major",
+    "relatedConcepts": ["falling factorial", "permutations", "descFactorial"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "combinations-formula",
+    "range": {"startLine": 130, "endLine": 163},
+    "type": "note",
+    "title": "Verification Examples",
+    "content": "**Numerical Checks**:\n\n| n | k | C(n,k) | Formula Check |\n|---|---|--------|---------------|\n| 5 | 2 | 10 | 5!/(2!·3!) = 120/12 = 10 ✓ |\n| 10 | 3 | 120 | 10!/(3!·7!) = 120 ✓ |\n| 6 | 3 | 20 | 6!/(3!·3!) = 720/36 = 20 ✓ |\n\n**Symmetry**: $C(7,2) = C(7,5) = 21$ ✓\n\n**Pascal**: $C(5,3) = C(4,2) + C(4,3) = 6 + 4 = 10$ ✓\n\n**Subset Counting**:\n```lean\ntheorem card_subsets_of_size (s : Finset α) (k : ℕ) :\n    (Finset.powersetCard k s).card = Nat.choose s.card k\n```",
+    "significance": "minor",
+    "relatedConcepts": ["native_decide", "powersetCard", "verification"]
+  }
+]

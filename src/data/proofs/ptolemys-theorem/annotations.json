@@ -1,1 +1,108 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "ptolemys-theorem",
+    "range": {"startLine": 8, "endLine": 46},
+    "type": "concept",
+    "title": "Ptolemy's Theorem: Wiedijk #95",
+    "content": "**Ptolemy's Theorem**:\n\nFor a cyclic quadrilateral $ABCD$ (four points on a circle):\n$$AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$$\n\nThe **product of the diagonals** equals the **sum of products of opposite sides**.\n\n**Historical**: Ptolemy of Alexandria (c. 100-170 AD) proved this in the *Almagest* for computing chord tables - the ancient equivalent of trig tables.\n\n**Significance**: Generalizes the Pythagorean theorem and connects to the Law of Cosines.",
+    "significance": "critical",
+    "relatedConcepts": ["cyclic quadrilateral", "Almagest", "chord tables"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "ptolemys-theorem",
+    "range": {"startLine": 68, "endLine": 86},
+    "type": "theorem",
+    "title": "The Main Theorem",
+    "content": "**Ptolemy's Theorem (Wiedijk #95)**:\n\nFor four points $A, B, C, D$ on a circle with diagonals intersecting at $P$:\n$$\\text{dist}(A,B) \\cdot \\text{dist}(C,D) + \\text{dist}(B,C) \\cdot \\text{dist}(D,A) = \\text{dist}(A,C) \\cdot \\text{dist}(B,D)$$\n\n**Mathlib Formulation**:\n- `Cospherical`: Points lie on a common sphere/circle\n- Angle conditions $\\angle APC = \\pi$ and $\\angle BPD = \\pi$: $P$ lies on both diagonals\n\n**Proof**: Direct application of Mathlib's `mul_dist_add_mul_dist_eq_mul_dist_of_cospherical`.",
+    "mathContext": "AC * BD = AB * CD + BC * DA",
+    "significance": "critical",
+    "relatedConcepts": ["Cospherical", "angle condition", "Mathlib"]
+  },
+  {
+    "id": "ann-alternative",
+    "proofId": "ptolemys-theorem",
+    "range": {"startLine": 92, "endLine": 115},
+    "type": "theorem",
+    "title": "Alternative Formulations",
+    "content": "**Equivalent Statements**:\n\n1. **Standard form**: $AB \\cdot CD + BC \\cdot DA = AC \\cdot BD$\n\n2. **Symmetric form**: $AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$\n   (Diagonals on left side)\n\n3. **Rearranged**: $BD \\cdot AC = AB \\cdot CD + BC \\cdot DA$\n   (Using commutativity)\n\nAll forms are equivalent by commutativity of multiplication. The choice depends on what you want to emphasize or compute.",
+    "mathContext": "Multiple equivalent forms",
+    "significance": "supporting",
+    "relatedConcepts": ["commutativity", "equivalent formulations"]
+  },
+  {
+    "id": "ann-corollaries",
+    "proofId": "ptolemys-theorem",
+    "range": {"startLine": 121, "endLine": 128},
+    "type": "theorem",
+    "title": "Computing Diagonals from Sides",
+    "content": "**Corollary**: Diagonal Product Formula\n\nFor a cyclic quadrilateral with known side lengths:\n$$AC \\cdot BD = AB \\cdot CD + BC \\cdot DA$$\n\nThis lets you compute the **product of diagonals** from the **four side lengths** alone.\n\n**Application**: In navigation and astronomy, you often know side lengths but need diagonal information.",
+    "mathContext": "diagonal product from sides",
+    "significance": "major",
+    "relatedConcepts": ["diagonal computation", "cyclic quadrilateral"]
+  },
+  {
+    "id": "ann-connections",
+    "proofId": "ptolemys-theorem",
+    "range": {"startLine": 134, "endLine": 161},
+    "type": "concept",
+    "title": "Connections to Other Theorems",
+    "content": "**Related Results**:\n\n| Connection | Relationship |\n|------------|-------------|\n| **Law of Cosines** | Ptolemy can be derived from it; conversely, Law of Cosines is a limiting case |\n| **Power of a Point** | Products $PA \\cdot PC$ and $PB \\cdot PD$ relate to circumcircle |\n| **Complex Numbers** | $(A-C)(B-D) = (A-B)(C-D) + (A-D)(B-C)$ for points as complex numbers |\n\n**Applications**:\n1. **Trigonometry**: Sum and difference formulas\n2. **Astronomy**: Chord tables (historical)\n3. **Optics**: Curved mirror analysis\n4. **Architecture**: Cyclic shape design",
+    "significance": "major",
+    "relatedConcepts": ["Law of Cosines", "complex numbers", "power of a point"]
+  },
+  {
+    "id": "ann-rectangle-example",
+    "proofId": "ptolemys-theorem",
+    "range": {"startLine": 167, "endLine": 177},
+    "type": "note",
+    "title": "Example: Rectangle (Pythagorean Theorem)",
+    "content": "**Rectangle inscribed in circle**:\n\nFor a rectangle with sides $a$ and $b$:\n- Opposite sides equal: $AB = CD = a$, $BC = DA = b$\n- Diagonals: $AC = BD = \\sqrt{a^2 + b^2}$\n\n**Ptolemy says**: $a \\cdot a + b \\cdot b = d \\cdot d$\n\nThis is just $a^2 + b^2 = d^2$ - the **Pythagorean theorem**!\n\n**Concrete**: For sides 3 and 4:\n$$4 \\cdot 4 + 3 \\cdot 3 = 16 + 9 = 25 = 5 \\cdot 5 \\checkmark$$\n\nPtolemy **generalizes** Pythagoras to non-rectangular cyclic quadrilaterals.",
+    "mathContext": "a*a + b*b = d*d",
+    "significance": "major",
+    "relatedConcepts": ["Pythagorean theorem", "rectangle", "generalization"]
+  },
+  {
+    "id": "ann-square-example",
+    "proofId": "ptolemys-theorem",
+    "range": {"startLine": 179, "endLine": 191},
+    "type": "note",
+    "title": "Example: Square",
+    "content": "**Square inscribed in circle**:\n\nFor a square with side $s$:\n- All sides equal: $AB = BC = CD = DA = s$\n- Diagonals: $AC = BD = s\\sqrt{2}$\n\n**Ptolemy verification**:\n$$s \\cdot s + s \\cdot s = (s\\sqrt{2}) \\cdot (s\\sqrt{2})$$\n$$2s^2 = 2s^2 \\checkmark$$\n\nThe proof uses `Real.mul_self_sqrt` to show $(\\sqrt{2})^2 = 2$.",
+    "mathContext": "2s^2 = 2s^2",
+    "significance": "supporting",
+    "relatedConcepts": ["square", "diagonal", "sqrt(2)"]
+  },
+  {
+    "id": "ann-trapezoid-example",
+    "proofId": "ptolemys-theorem",
+    "range": {"startLine": 193, "endLine": 207},
+    "type": "note",
+    "title": "Example: Isosceles Trapezoid",
+    "content": "**Isosceles trapezoid**:\n\nConsider sides $AB = CD = 5$ and $BC = DA = 6$:\n- This is an isosceles trapezoid inscribed in a circle\n- Diagonals are equal: $AC = BD$\n\n**Ptolemy gives**:\n$$5 \\cdot 5 + 6 \\cdot 6 = 25 + 36 = 61$$\n\nSo $AC \\cdot BD = 61$, meaning $AC = BD = \\sqrt{61} \\approx 7.81$\n\nThis shows how to **compute diagonal lengths** from side lengths!",
+    "mathContext": "AC = BD = sqrt(61)",
+    "significance": "supporting",
+    "relatedConcepts": ["isosceles trapezoid", "equal diagonals", "computation"]
+  },
+  {
+    "id": "ann-converse",
+    "proofId": "ptolemys-theorem",
+    "range": {"startLine": 213, "endLine": 231},
+    "type": "concept",
+    "title": "Converse and Ptolemy's Inequality",
+    "content": "**Converse of Ptolemy's Theorem**:\n\nIf $AC \\cdot BD = AB \\cdot CD + AD \\cdot BC$, then $A, B, C, D$ are **concyclic** (lie on a circle).\n\n**Ptolemy's Inequality**:\n\nFor **any** four points (not necessarily on a circle):\n$$AC \\cdot BD \\leq AB \\cdot CD + AD \\cdot BC$$\n\nEquality holds **if and only if** the points are concyclic AND form a convex quadrilateral in correct order.\n\n**Characterization**: Ptolemy's equality is equivalent to being a cyclic quadrilateral.",
+    "significance": "major",
+    "relatedConcepts": ["converse", "inequality", "characterization"]
+  },
+  {
+    "id": "ann-history",
+    "proofId": "ptolemys-theorem",
+    "range": {"startLine": 237, "endLine": 257},
+    "type": "concept",
+    "title": "Historical Context: The Almagest",
+    "content": "**The Almagest (c. 150 AD)**:\n\nPtolemy's theorem was proved to build **chord tables** - the ancient equivalent of trigonometric tables.\n\n**Key Applications**:\n- $\\text{chord}(\\alpha + \\beta)$ from $\\text{chord}(\\alpha)$ and $\\text{chord}(\\beta)$\n- Equivalent to: $\\sin(\\alpha + \\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$\n\n**Legacy**:\n- Fundamental tool in astronomy and navigation for 1500+ years\n- Now recognized as Wiedijk's 100 Theorems **#95**\n- Connects ancient geometry to modern trigonometry\n\nPtolemy's theorem is a bridge between **pure geometry** and **practical computation**.",
+    "significance": "minor",
+    "relatedConcepts": ["Almagest", "chord tables", "trigonometry", "history"]
+  }
+]

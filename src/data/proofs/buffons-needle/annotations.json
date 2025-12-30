@@ -1,1 +1,97 @@
-[]
+[
+  {
+    "id": "ann-intro",
+    "proofId": "buffons-needle",
+    "range": {"startLine": 8, "endLine": 50},
+    "type": "concept",
+    "title": "Buffon's Needle Problem: Wiedijk #99",
+    "content": "**Buffon's Needle** (1777):\n\nA needle of length $\\ell$ is dropped onto a floor with parallel lines spaced $d$ apart. If $\\ell \\leq d$:\n$$P(\\text{crosses line}) = \\frac{2\\ell}{\\pi d}$$\n\n**Why Remarkable**:\n1. One of the first problems in **geometric probability**\n2. Provides a **Monte Carlo method** to estimate $\\pi$!\n3. Connects probability to **integral geometry**\n\n**Historical**: Posed by Georges-Louis Leclerc, Comte de Buffon (1777) in \"Essai d'arithmétique morale\".\n\n**Key Insight**: The appearance of $\\pi$ arises from integrating $\\sin\\theta$ over the angle.",
+    "significance": "critical",
+    "relatedConcepts": ["geometric probability", "Monte Carlo", "integral geometry"]
+  },
+  {
+    "id": "ann-setup",
+    "proofId": "buffons-needle",
+    "range": {"startLine": 56, "endLine": 76},
+    "type": "definition",
+    "title": "Physical Setup",
+    "content": "**Parameters**:\n\n- $\\ell$: needle length\n- $d$: spacing between parallel lines\n- $\\ell \\leq d$: short needle case\n\n**Random Variables** (uniformly distributed):\n\n- $\\theta \\in [0, \\pi)$: angle from horizontal\n- $x \\in [0, d/2]$: distance from needle center to nearest line\n\n```lean\nvariable (ℓ : ℝ) (hℓ : 0 < ℓ)\nvariable (d : ℝ) (hd : 0 < d)\nvariable (hℓd : ℓ ≤ d)\n```\n\n**Why d/2?** By symmetry, we only consider distance to the *nearest* line.",
+    "mathContext": "θ ∈ [0,π), x ∈ [0,d/2]",
+    "significance": "major",
+    "relatedConcepts": ["uniform distribution", "symmetry", "geometric probability"]
+  },
+  {
+    "id": "ann-crossing",
+    "proofId": "buffons-needle",
+    "range": {"startLine": 77, "endLine": 95},
+    "type": "definition",
+    "title": "Crossing Condition",
+    "content": "**When Does the Needle Cross a Line?**\n\nThe needle crosses if the perpendicular distance from center to line is less than the needle's vertical projection:\n\n$$x \\leq \\frac{\\ell}{2} \\sin\\theta$$\n\n```lean\ndef crossesLine (x θ : ℝ) : Prop := x ≤ (ℓ / 2) * sin θ\n\ndef crossingRegion : Set (ℝ × ℝ) :=\n  {p | 0 ≤ p.1 ∧ p.1 ≤ d/2 ∧ 0 ≤ p.2 ∧ p.2 ≤ π ∧ p.1 ≤ (ℓ/2) * sin p.2}\n```\n\n**Geometry**: Half the needle projects $(\\ell/2)\\sin\\theta$ perpendicular to the lines. If this exceeds $x$, the needle touches a line.",
+    "mathContext": "x ≤ (ℓ/2)sin(θ)",
+    "significance": "critical",
+    "relatedConcepts": ["projection", "sin", "geometric condition"]
+  },
+  {
+    "id": "ann-integral",
+    "proofId": "buffons-needle",
+    "range": {"startLine": 97, "endLine": 122},
+    "type": "theorem",
+    "title": "The Key Integral",
+    "content": "**Computing Areas**:\n\n**Sample Space**: $[0, d/2] \\times [0, \\pi]$\n$$\\text{Area} = \\frac{d}{2} \\cdot \\pi = \\frac{\\pi d}{2}$$\n\n**Crossing Region**: Points below $y = \\frac{\\ell}{2}\\sin\\theta$\n$$\\text{Area} = \\int_0^\\pi \\frac{\\ell}{2}\\sin\\theta\\, d\\theta = \\frac{\\ell}{2} \\cdot 2 = \\ell$$\n\n```lean\ntheorem integral_sin_zero_pi : ∫ θ in (0 : ℝ)..π, sin θ = 2\n\ntheorem crossingRegion_area : ∫ θ in (0 : ℝ)..π, (ℓ / 2) * sin θ = ℓ\n```\n\n**The Magic**: $\\int_0^\\pi \\sin\\theta\\, d\\theta = [-\\cos\\theta]_0^\\pi = -(-1) - (-1) = 2$",
+    "mathContext": "∫sin = 2 over [0,π]",
+    "significance": "critical",
+    "relatedConcepts": ["interval integral", "integral_sin", "area calculation"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "buffons-needle",
+    "range": {"startLine": 124, "endLine": 153},
+    "type": "theorem",
+    "title": "Buffon's Needle Theorem",
+    "content": "**Main Theorem** (Wiedijk #99):\n\n```lean\ntheorem buffon_needle_probability :\n    ℓ / (π * d / 2) = 2 * ℓ / (π * d)\n```\n\n$$P = \\frac{\\text{Crossing Area}}{\\text{Sample Area}} = \\frac{\\ell}{\\pi d/2} = \\frac{2\\ell}{\\pi d}$$\n\n**Derivation**:\n1. Area of crossing region = $\\ell$\n2. Area of sample space = $\\pi d / 2$\n3. Probability = $\\ell / (\\pi d / 2) = 2\\ell / (\\pi d)$\n\n**Special Cases**:\n- $\\ell = d$: $P = 2/\\pi \\approx 0.6366$\n- $\\ell = d/2$: $P = 1/\\pi \\approx 0.3183$",
+    "mathContext": "P = 2ℓ/(πd)",
+    "significance": "critical",
+    "relatedConcepts": ["geometric probability", "area ratio", "field_simp"]
+  },
+  {
+    "id": "ann-pi-estimation",
+    "proofId": "buffons-needle",
+    "range": {"startLine": 155, "endLine": 188},
+    "type": "concept",
+    "title": "Monte Carlo Estimation of π",
+    "content": "**Estimating π by Dropping Needles!**\n\nFrom $P = 2\\ell/(\\pi d)$, solve for $\\pi$:\n$$\\pi = \\frac{2\\ell}{Pd}$$\n\n**Experiment**: Drop $n$ needles, count $k$ crossings:\n- Estimated $P \\approx k/n$\n- Estimated $\\pi \\approx 2\\ell n / (kd)$\n\n```lean\ntheorem pi_from_crossing_probability (p : ℝ) (hp : 0 < p)\n    (h_buffon : p = 2 * ℓ / (π * d)) :\n    π = 2 * ℓ / (p * d)\n```\n\n**Historical Note**: This predates the term \"Monte Carlo method\" by almost 200 years! Laplace and others actually performed this experiment.\n\n**Practical**: Mario Lazzarini (1901) claimed to estimate $\\pi$ to 6 decimal places with 3408 needle drops (likely fabricated).",
+    "mathContext": "π = 2ℓn/(kd) from k crossings in n drops",
+    "significance": "major",
+    "relatedConcepts": ["Monte Carlo", "pi estimation", "random sampling"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "buffons-needle",
+    "range": {"startLine": 190, "endLine": 207},
+    "type": "note",
+    "title": "Numerical Examples",
+    "content": "**Special Cases Verified**:\n\n**Equal Length** ($\\ell = d$):\n```lean\ntheorem buffon_equal_length (h : ℓ = d) :\n    2 * ℓ / (π * d) = 2 / π\n```\n$P = 2/\\pi \\approx 0.6366$ (about 64% chance of crossing)\n\n**Half Length** ($\\ell = d/2$):\n```lean\ntheorem buffon_half_length (h : ℓ = d / 2) :\n    2 * ℓ / (π * d) = 1 / π\n```\n$P = 1/\\pi \\approx 0.3183$ (about 32% chance of crossing)\n\n**Note**: As $\\ell \\to 0$, $P \\to 0$ (tiny needles rarely cross).",
+    "significance": "minor",
+    "relatedConcepts": ["special cases", "numerical verification", "field_simp"]
+  },
+  {
+    "id": "ann-long-needle",
+    "proofId": "buffons-needle",
+    "range": {"startLine": 209, "endLine": 224},
+    "type": "note",
+    "title": "Long Needle Case",
+    "content": "**When ℓ > d (Long Needle)**:\n\nThe formula becomes more complex:\n$$P = \\frac{2}{\\pi}\\left[\\frac{\\ell}{d} - \\sqrt{\\left(\\frac{\\ell}{d}\\right)^2 - 1} + \\arccos\\left(\\frac{d}{\\ell}\\right)\\right]$$\n\n**Why Different?**\n- When $\\ell > d$, the needle can cross multiple lines\n- For some angles, crossing is guaranteed\n- The geometry becomes more intricate\n\n**Limiting Behavior**: As $\\ell \\to \\infty$, $P \\to 1$ (always crosses).",
+    "significance": "minor",
+    "relatedConcepts": ["long needle", "arccos", "multiple crossings"]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "buffons-needle",
+    "range": {"startLine": 226, "endLine": 259},
+    "type": "note",
+    "title": "Applications and Context",
+    "content": "**Cauchy-Crofton Formula**:\n\nBuffon's Needle is a special case of the general formula relating curve length to expected line intersections.\n\n**Applications**:\n1. **Stereology**: Estimating lengths/areas from random sections\n2. **Quality control**: Inspecting surfaces with random probes\n3. **Computer graphics**: Ray tracing, visibility computations\n4. **Biology**: Estimating fiber lengths from cross-sections\n\n**The Deep Connection**:\n\nThe appearance of $\\pi$ is not coincidental—it connects:\n- **Geometry** (circles, angles)\n- **Analysis** ($\\int\\sin\\theta$)\n- **Probability** (uniform distributions)\n- **Measure theory** (area ratios)\n\nThis is why geometric probability is so elegant!",
+    "significance": "major",
+    "relatedConcepts": ["Cauchy-Crofton", "stereology", "integral geometry"]
+  }
+]
