@@ -116,6 +116,7 @@ import { solutionOfCubicData } from './solution-of-cubic'
 // New proofs (10 newly created directories)
 import { gelfondSchneiderData } from './gelfond-schneider'
 import { hilbert3Data } from './hilbert-3'
+import { hilbert5Data } from './hilbert-5'
 import { hilbert11Data } from './hilbert-11'
 import { hilbert16Data } from './hilbert-16'
 import { hilbert17Data } from './hilbert-17'
@@ -248,6 +249,7 @@ export const proofs: Record<string, ProofData> = {
   // New proofs (10 newly created directories)
   'gelfond-schneider': gelfondSchneiderData,
   'hilbert-3': hilbert3Data,
+  'hilbert-5': hilbert5Data,
   'hilbert-11': hilbert11Data,
   'hilbert-16': hilbert16Data,
   'hilbert-17': hilbert17Data,
