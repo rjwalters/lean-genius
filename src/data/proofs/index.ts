@@ -132,7 +132,9 @@ import { hilbert15Data } from './hilbert-15'
 import { hilbert4Data } from './hilbert-4'
 import { hilbert6Data } from './hilbert-6'
 import { hilbert14Data } from './hilbert-14'
+import { hilbert21Data } from './hilbert-21'
 import { hilbert22Data } from './hilbert-22'
+import { hilbert9ReciprocityData } from './hilbert-9-reciprocity'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -270,7 +272,9 @@ export const proofs: Record<string, ProofData> = {
   'hilbert-4': hilbert4Data,
   'hilbert-6': hilbert6Data,
   'hilbert-14': hilbert14Data,
+  'hilbert-21': hilbert21Data,
   'hilbert-22': hilbert22Data,
+  'hilbert-9-reciprocity': hilbert9ReciprocityData,
 }
 
 export function getProof(slug: string): ProofData | undefined {
