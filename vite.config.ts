@@ -24,19 +24,14 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          // Vendor chunks
-          if (id.includes('node_modules/react-dom')) return 'vendor-react'
-          if (id.includes('node_modules/react-router')) return 'vendor-react'
-          if (id.includes('node_modules/react/')) return 'vendor-react'
+          // KaTeX math rendering - large but safe to chunk
           if (id.includes('node_modules/katex')) return 'vendor-katex'
           if (id.includes('node_modules/react-katex')) return 'vendor-katex'
           if (id.includes('node_modules/rehype-katex')) return 'vendor-katex'
           if (id.includes('node_modules/remark-math')) return 'vendor-katex'
-          if (id.includes('node_modules/react-markdown')) return 'vendor-markdown'
-          if (id.includes('node_modules/@radix-ui')) return 'vendor-ui'
-          if (id.includes('node_modules/lucide-react')) return 'vendor-icons'
-          // Per-proof chunks (dynamic imports handle this automatically)
-          // listings.json stays in main bundle (small, needed for HomePage)
+          // Note: React/react-router/radix-ui/lucide-react are left to Vite
+          // to avoid module initialization order issues
+          // Per-proof chunks are handled by dynamic imports in proofs/index.ts
         },
       },
     },
