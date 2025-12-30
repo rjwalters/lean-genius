@@ -12,7 +12,7 @@
   {
     "id": "ann-square-nonneg",
     "proofId": "sqrt2-examples",
-    "range": {"startLine": 32, "endLine": 40},
+    "range": {"startLine": 33, "endLine": 40},
     "type": "theorem",
     "title": "Non-negativity of Squares",
     "content": "**Theorem**: For any integer $n$, $n^2 \\geq 0$.\n\n```lean\ntheorem square_nonneg (n : ℤ) : 0 ≤ n * n\n```\n\n**Proof Structure**:\n\n1. **Case split** on $n \\geq 0$ vs $n < 0$\n\n2. **Case n ≥ 0**:\n   - Use `mul_nonneg h h`: product of non-negatives is non-negative\n\n3. **Case n < 0**:\n   - Note $-n \\geq 0$ since $n < 0$\n   - Use `calc`: $n \\cdot n = (-n) \\cdot (-n) \\geq 0$\n   - The `ring` tactic proves $n \\cdot n = (-n) \\cdot (-n)$\n\n**Tactics Demonstrated**: `by_cases`, `push_neg`, `calc`, `ring`, `exact`",

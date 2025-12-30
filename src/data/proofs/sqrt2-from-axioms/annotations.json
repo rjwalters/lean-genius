@@ -12,7 +12,7 @@
   {
     "id": "ann-definitions",
     "proofId": "sqrt2-from-axioms",
-    "range": {"startLine": 49, "endLine": 57},
+    "range": {"startLine": 53, "endLine": 57},
     "type": "definition",
     "title": "Even and Odd Definitions",
     "content": "**Formal Parity Definitions**:\n\n```lean\ndef Even (n : Nat) : Prop := ∃ k : Nat, n = 2 * k\n\ndef Odd (n : Nat) : Prop := ∃ k : Nat, n = 2 * k + 1\n```\n\n**Existential Propositions**:\n- Even: \"there exists k such that n = 2k\"\n- Odd: \"there exists k such that n = 2k + 1\"\n\n**Note**: These definitions are intentionally simple. Mathlib's versions are more sophisticated, handling negative numbers and using different formulations.\n\n**Key Point**: We define parity via **witnesses** (the k value), not via divisibility.",
@@ -23,7 +23,7 @@
   {
     "id": "ann-parity-lemmas",
     "proofId": "sqrt2-from-axioms",
-    "range": {"startLine": 59, "endLine": 102},
+    "range": {"startLine": 63, "endLine": 102},
     "type": "theorem",
     "title": "Parity Lemmas",
     "content": "**Basic Facts About Parity**:\n\n```lean\ntheorem zero_even : Even 0 := ⟨0, rfl⟩\ntheorem one_odd : Odd 1 := ⟨0, rfl⟩\ntheorem two_even : Even 2 := ⟨1, rfl⟩\n```\n\n**Successor Properties**:\n```lean\ntheorem succ_even_is_odd {n : Nat} (h : Even n) : Odd (n + 1)\ntheorem succ_odd_is_even {n : Nat} (h : Odd n) : Even (n + 1)\n```\n\n**Fundamental Dichotomy**:\n```lean\ntheorem even_or_odd (n : Nat) : Even n ∨ Odd n\ntheorem not_even_and_odd (n : Nat) : ¬(Even n ∧ Odd n)\n```\n\n**Proof Method**: The `even_or_odd` proof uses induction, alternating parity at each successor.",
@@ -34,7 +34,7 @@
   {
     "id": "ann-key-lemma",
     "proofId": "sqrt2-from-axioms",
-    "range": {"startLine": 104, "endLine": 122},
+    "range": {"startLine": 108, "endLine": 122},
     "type": "theorem",
     "title": "Key Lemma: Even Squares",
     "content": "**The Heart of the Proof**:\n\n```lean\ntheorem even_of_sq_even {n : Nat} (h : Even (n * n)) : Even n\n```\n\n**Why This Works** (via contrapositive):\n\nFirst prove: Odd n → Odd n²\n- If n = 2k+1, then n² = 4k² + 4k + 1 = 2(2k² + 2k) + 1\n\n```lean\ntheorem odd_sq_odd {n : Nat} (h : Odd n) : Odd (n * n) := by\n  obtain ⟨k, hk⟩ := h\n  use 2 * k * k + 2 * k\n  rw [hk]\n  ring\n```\n\n**Then**: If n² is even but n is odd, we get n² is both even AND odd—contradiction!\n\n**Contrapositive**: Odd n → Odd n² is logically equivalent to Even n² → Even n.",
@@ -67,7 +67,7 @@
   {
     "id": "ann-alternative",
     "proofId": "sqrt2-from-axioms",
-    "range": {"startLine": 168, "endLine": 185},
+    "range": {"startLine": 172, "endLine": 185},
     "type": "theorem",
     "title": "Alternative Formulation",
     "content": "**A Cleaner Statement**:\n\n```lean\ntheorem sqrt2_no_rational_form (a b : Nat) (h : a * a = 2 * b * b) :\n    b = 0 ∨ (Even a ∧ Even b)\n```\n\n**Meaning**: If a² = 2b², then either:\n- b = 0 (trivial case), or\n- Both a and b are even\n\n**Consequence**: No reduced fraction a/b can satisfy (a/b)² = 2.\n\n**Pattern Match**: Uses Lean's `match b with` for case analysis on zero vs successor.",
@@ -78,7 +78,7 @@
   {
     "id": "ann-educational",
     "proofId": "sqrt2-from-axioms",
-    "range": {"startLine": 187, "endLine": 233},
+    "range": {"startLine": 191, "endLine": 233},
     "type": "note",
     "title": "Educational Value",
     "content": "**What This Proof Teaches**:\n\n1. **Existential proofs**: Using witnesses (`use k`)\n2. **Case analysis**: `cases even_or_odd n`\n3. **Induction**: Building `even_or_odd` inductively\n4. **Contrapositive**: Proving A → B by proving ¬B → ¬A\n5. **Contradiction**: `absurd` and `exact absurd ⟨h, h_sq_odd⟩ ...`\n\n**Comparison with Mathlib**:\n\n| Approach | Lines | What You Learn |\n|----------|-------|----------------|\n| This file | ~200 | Full proof architecture |\n| Mathlib | 1 | \"Trust the library\" |\n\n**Trade-off**: Mathlib's `exact irrational_sqrt_two` hides:\n- Real number construction\n- Square root definition\n- Irrationality for reals\n- The actual proof\n\nOur version exposes the essential ideas in ~200 lines.",
