@@ -1,0 +1,113 @@
+{
+  "id": "hilbert-14",
+  "title": "Hilbert's Fourteenth Problem: Finiteness of Invariant Systems",
+  "slug": "hilbert-14",
+  "description": "Hilbert's 14th problem asked whether the ring of invariants is always finitely generated. Nagata (1959) showed the answer is NO in general, but Hilbert-Mumford proved YES for reductive groups.",
+  "meta": {
+    "author": "Nagata, Hilbert, Mumford, Haboush",
+    "date": "1890-1975",
+    "status": "verified",
+    "tags": [
+      "invariant-theory",
+      "algebra",
+      "group-actions",
+      "hilbert-problems",
+      "noetherian",
+      "advanced"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "IsNoetherianRing",
+        "description": "Characterizes Noetherian rings where every ideal is finitely generated",
+        "module": "RingTheory.Noetherian"
+      },
+      {
+        "theorem": "Polynomial.isNoetherianRing",
+        "description": "Hilbert's Basis Theorem: R[X] is Noetherian if R is",
+        "module": "RingTheory.Polynomial.Basic"
+      },
+      {
+        "theorem": "MvPolynomial.isNoetherianRing",
+        "description": "Multivariate polynomial rings over Noetherian rings are Noetherian",
+        "module": "Algebra.MvPolynomial.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Invariant ring definition and structure",
+      "Hilbert's Finiteness Theorem statement (reductive case)",
+      "Nagata's counterexample description",
+      "Modern developments (Hochster-Roberts, Noether bound)",
+      "Classification of when finite generation holds"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 14
+  },
+  "overview": {
+    "historicalContext": "Hilbert's fourteenth problem arose from 19th century invariant theory, which sought to describe polynomial functions unchanged by group transformations. In 1890, Hilbert revolutionized the field by proving that finitely many invariants always suffice for classical groups like GL_n and SL_n, using his new Basis Theorem.\n\nIn 1900, Hilbert posed the general question: Is the ring of invariants always finitely generated? This remained open for nearly 60 years.\n\n**Timeline:**\n- 1890: Hilbert proves finiteness for classical invariant theory\n- 1900: Hilbert poses the general problem\n- 1959: Nagata constructs a counterexample\n- 1965: Mumford proves finiteness for reductive groups (char 0)\n- 1975: Haboush extends to all characteristics",
+    "problemStatement": "**Hilbert's Original Question:**\n\nLet G be an algebraic group acting linearly on the polynomial ring k[x_1, ..., x_n]. Consider the ring of invariants:\n\nR^G = {f in k[x_1,...,x_n] : g(f) = f for all g in G}\n\n**Is R^G always finitely generated as a k-algebra?**\n\nIn other words, are there always finitely many 'fundamental invariants' f_1, ..., f_m such that every invariant is a polynomial expression in f_1, ..., f_m?",
+    "proofStrategy": "We present the resolution of Hilbert's 14th problem in four parts:\n\n**1. Foundation - Hilbert's Basis Theorem:**\n- If R is Noetherian, then R[X] is Noetherian\n- This means k[x_1, ..., x_n] is Noetherian for any field k\n\n**2. Positive Case - Reductive Groups:**\n- For reductive groups (GL_n, SL_n, finite groups, etc.), YES\n- Uses the Reynolds operator: a projection R -> R^G\n- Combined with Hilbert's Basis Theorem gives finite generation\n\n**3. Negative Case - Nagata's Counterexample:**\n- G = (additive group)^13 acting on k^32\n- The invariant ring is NOT finitely generated\n- Key: the additive group is not reductive\n\n**4. Modern Classification:**\n- Reductive groups: always finitely generated\n- Non-reductive groups: may fail finite generation",
+    "keyInsights": [
+      "Noetherian property is necessary but not sufficient for finite generation",
+      "Reductivity of the group is the key condition",
+      "The additive group G_a provides counterexamples",
+      "Complete reducibility of representations implies good invariant theory",
+      "This problem spawned modern Geometric Invariant Theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basis-theorem",
+      "title": "Hilbert's Basis Theorem (Foundation)",
+      "startLine": 56,
+      "endLine": 100,
+      "summary": "The foundation: if R is Noetherian, then polynomial rings R[X] and R[x_1,...,x_n] are also Noetherian."
+    },
+    {
+      "id": "invariant-rings",
+      "title": "Invariant Ring Structure",
+      "startLine": 102,
+      "endLine": 150,
+      "summary": "Definition of the ring of invariants R^G = {r : g(r) = r for all g} and its basic properties."
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "startLine": 152,
+      "endLine": 195,
+      "summary": "Formal statement of Hilbert's 14th problem: is R^G always finitely generated?"
+    },
+    {
+      "id": "reductive-case",
+      "title": "Hilbert's Finiteness Theorem (Positive Case)",
+      "startLine": 197,
+      "endLine": 260,
+      "summary": "For reductive groups, the answer is YES. Proof uses Reynolds operator and Hilbert's Basis Theorem."
+    },
+    {
+      "id": "nagata",
+      "title": "Nagata's Counterexample (Negative Case)",
+      "startLine": 262,
+      "endLine": 320,
+      "summary": "Nagata (1959) constructed a counterexample: G_a^13 acting on k^32 has non-finitely-generated invariants."
+    },
+    {
+      "id": "modern",
+      "title": "Modern Developments",
+      "startLine": 322,
+      "endLine": 380,
+      "summary": "Hochster-Roberts theorem, Noether's degree bound, and the classification of when finite generation holds."
+    }
+  ],
+  "conclusion": {
+    "summary": "Hilbert's fourteenth problem received a nuanced resolution: the answer is NO in general (Nagata 1959), but YES for the important class of reductive groups (Hilbert-Mumford-Haboush).\n\nThe problem revealed that the key property for good invariant theory is not the Noetherian condition, but rather the reductivity of the group. Reductive groups have a 'Reynolds operator' that projects onto invariants while preserving algebraic structure.\n\nThis is a typical pattern for Hilbert's problems: the naive conjecture fails, but a refined version identifies the true underlying structure.",
+    "implications": "The resolution of Hilbert's 14th problem had far-reaching consequences:\n\n1. **Geometric Invariant Theory**: Mumford developed GIT to study quotients X/G using the reductive case\n\n2. **Moduli Spaces**: Many moduli spaces are constructed as GIT quotients where finite generation is crucial\n\n3. **Representation Theory**: The distinction between reductive and non-reductive groups became fundamental\n\n4. **Computational Algebra**: Algorithms for computing invariants when generators exist\n\n5. **Commutative Algebra**: Spurred development of Cohen-Macaulay theory and related structural results",
+    "openQuestions": [
+      "Can we characterize exactly which non-reductive groups have finitely generated invariants?",
+      "What is the optimal bound on degrees of generators for reductive groups?",
+      "How does the structure of the invariant ring relate to the geometry of the quotient?",
+      "Are there effective algorithms to decide finite generation for specific non-reductive groups?"
+    ]
+  }
+}
