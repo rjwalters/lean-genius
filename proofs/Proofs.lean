@@ -61,10 +61,7 @@ import Proofs.HeronsFormula
 import Proofs.Hilbert10
 import Proofs.Hilbert11_QuadraticForms
 import Proofs.Hilbert13Superposition
-<<<<<<< HEAD
-=======
 import Proofs.Hilbert14Invariants
->>>>>>> origin/main
 import Proofs.Hilbert15SchubertCalculus
 import Proofs.Hilbert16
 import Proofs.Hilbert17SumOfSquares
