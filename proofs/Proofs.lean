@@ -60,6 +60,7 @@ import Proofs.HermiteLindemann
 import Proofs.HeronsFormula
 import Proofs.Hilbert10
 import Proofs.Hilbert11_QuadraticForms
+import Proofs.Hilbert13Superposition
 import Proofs.Hilbert14Invariants
 import Proofs.Hilbert15SchubertCalculus
 import Proofs.Hilbert16
