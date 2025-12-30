@@ -4,9 +4,9 @@
     "proofId": "hilbert-22",
     "range": {
       "startLine": 71,
-      "endLine": 76
+      "endLine": 75
     },
-    "type": "definition",
+    "type": "inductive",
     "title": "The Uniformization Trichotomy",
     "content": "The three types of simply connected Riemann surfaces form a complete classification:\n\n1. **Elliptic/Spherical**: The Riemann sphere (compact, constant positive curvature)\n2. **Parabolic**: The complex plane (non-compact, zero curvature)\n3. **Hyperbolic**: The unit disk (non-compact, constant negative curvature)\n\nEvery simply connected Riemann surface is conformally equivalent to exactly one of these.",
     "mathContext": "Classification: Simply Connected $\\cong$ Sphere, Plane, or Disk\n\nThis trichotomy determines the geometry of the surface.",
@@ -58,9 +58,9 @@
     "proofId": "hilbert-22",
     "range": {
       "startLine": 174,
-      "endLine": 182
+      "endLine": 179
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Riemann Mapping Theorem",
     "content": "The **Riemann Mapping Theorem** (1851, rigorous proof 1912):\n\nEvery simply connected proper open subset of $\\mathbb{C}$ is conformally equivalent to the open unit disk.\n\nThis is the key stepping stone to the full Uniformization Theorem. The 'proper' condition (not all of $\\mathbb{C}$) is essential: $\\mathbb{C}$ itself is conformally equivalent to $\\mathbb{C}$, not to the disk.",
     "mathContext": "$U \\subsetneq \\mathbb{C}$ simply connected $\\Rightarrow U \\cong \\mathbb{D}$\n\nUniqueness: The map is unique once we fix $f(z_0) = 0$ and $f'(z_0) > 0$.",
@@ -76,9 +76,9 @@
     "proofId": "hilbert-22",
     "range": {
       "startLine": 214,
-      "endLine": 219
+      "endLine": 218
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "The Uniformization Theorem",
     "content": "**The Uniformization Theorem** (Koebe-Poincare, 1907):\n\nEvery simply connected Riemann surface is conformally equivalent to exactly one of:\n- The Riemann sphere $\\hat{\\mathbb{C}}$\n- The complex plane $\\mathbb{C}$\n- The unit disk $\\mathbb{D}$\n\nThis completely classifies simply connected Riemann surfaces up to conformal equivalence.",
     "mathContext": "Simply connected Riemann surface $S$ $\\Rightarrow$\n$S \\cong \\hat{\\mathbb{C}}$ or $S \\cong \\mathbb{C}$ or $S \\cong \\mathbb{D}$\n\nThe type is determined by the growth of harmonic functions on $S$.",
@@ -112,9 +112,9 @@
     "proofId": "hilbert-22",
     "range": {
       "startLine": 274,
-      "endLine": 277
+      "endLine": 276
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Uniformization by Genus",
     "content": "The uniformization type of a compact Riemann surface is determined by its **genus** $g$:\n\n- $g = 0$: Uniformized by the Riemann sphere (spherical geometry)\n- $g = 1$: Uniformized by $\\mathbb{C}$ (flat geometry, tori)\n- $g \\geq 2$: Uniformized by the disk (hyperbolic geometry)\n\nThis connects topology (genus) to geometry (curvature).",
     "mathContext": "$g = 0 \\Rightarrow S \\cong \\hat{\\mathbb{C}}/\\{1\\}$\n$g = 1 \\Rightarrow S \\cong \\mathbb{C}/\\Lambda$ (elliptic curves)\n$g \\geq 2 \\Rightarrow S \\cong \\mathbb{D}/\\Gamma$ (Fuchsian)",
@@ -130,9 +130,9 @@
     "proofId": "hilbert-22",
     "range": {
       "startLine": 309,
-      "endLine": 311
+      "endLine": 309
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Belyi's Theorem",
     "content": "**Belyi's Theorem** (1979) provides a remarkable connection between uniformization and arithmetic:\n\nA compact Riemann surface is defined over $\\bar{\\mathbb{Q}}$ (algebraic numbers) if and only if it admits a meromorphic function to $\\mathbb{P}^1$ ramified over at most three points.\n\nThis connects complex geometry to Galois theory and dessins d'enfants.",
     "mathContext": "$S$ defined over $\\bar{\\mathbb{Q}}$ $\\iff$ $\\exists f: S \\to \\mathbb{P}^1$ with ramification $\\subseteq \\{0, 1, \\infty\\}$",
@@ -147,10 +147,10 @@
     "id": "ann-status",
     "proofId": "hilbert-22",
     "range": {
-      "startLine": 322,
-      "endLine": 337
+      "startLine": 337,
+      "endLine": 342
     },
-    "type": "insight",
+    "type": "theorem",
     "title": "Complete Resolution",
     "content": "Hilbert's twenty-second problem is **completely solved** by the Uniformization Theorem.\n\nUnlike some of Hilbert's problems that remain open or are independence results, this problem has a definitive affirmative answer: every Riemann surface can be uniformized by automorphic functions.\n\nThe theorem was proven independently by Koebe and Poincare in 1907, just seven years after Hilbert posed the problem.",
     "mathContext": "Status: SOLVED (1907)\n\nKoebe and Poincare: Two independent proofs\nModern proofs: Perron method, potential theory",

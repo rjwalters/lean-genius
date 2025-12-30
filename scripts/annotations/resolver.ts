@@ -282,6 +282,11 @@ export function validateLineAnnotations(
       (ann.type === 'theorem' && construct.kind === 'theorem') ||
       (ann.type === 'lemma' && construct.kind === 'lemma') ||
       (ann.type === 'definition' && (construct.kind === 'def' || construct.kind === 'abbrev' || construct.kind === 'structure')) ||
+      (ann.type === 'axiom' && construct.kind === 'axiom') ||
+      (ann.type === 'inductive' && construct.kind === 'inductive') ||
+      (ann.type === 'structure' && construct.kind === 'structure') ||
+      (ann.type === 'def' && construct.kind === 'def') ||
+      (ann.type === 'example' && construct.kind === 'example') ||
       ann.type === 'concept' ||
       ann.type === 'insight' ||
       ann.type === 'tactic' ||

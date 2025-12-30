@@ -75,10 +75,10 @@
     "id": "ann-quantum-state",
     "proofId": "hilbert-6",
     "range": {
-      "startLine": 169,
-      "endLine": 172
+      "startLine": 173,
+      "endLine": 175
     },
-    "type": "definition",
+    "type": "structure",
     "title": "Quantum States",
     "content": "In von Neumann's formulation (1932), a **quantum state** is a unit vector in a complex Hilbert space H.\n\nThe normalization condition |ψ|² = 1 ensures that total probability sums to 1 (via the Born rule).",
     "mathContext": "$|\\psi\\rangle \\in H$ with $\\langle\\psi|\\psi\\rangle = 1$\n\nPhase is unobservable: $|\\psi\\rangle$ and $e^{i\\theta}|\\psi\\rangle$ represent the same state.",
@@ -165,10 +165,10 @@
     "id": "ann-entropy",
     "proofId": "hilbert-6",
     "range": {
-      "startLine": 279,
-      "endLine": 281
+      "startLine": 275,
+      "endLine": 276
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Existence of Entropy",
     "content": "From Caratheodory's axiom, one can prove the **existence of entropy** as a state function.\n\nEntropy increases (or stays constant) in adiabatic processes, formalized as: if s₁ → s₂ adiabatically, then S(s₁) ≤ S(s₂).",
     "mathContext": "$\\exists S : \\mathcal{S} \\to \\mathbb{R}$ such that $s_1 \\rightarrow_{\\text{adiabatic}} s_2 \\Rightarrow S(s_1) \\leq S(s_2)$",
@@ -183,10 +183,10 @@
     "id": "ann-status",
     "proofId": "hilbert-6",
     "range": {
-      "startLine": 318,
-      "endLine": 330
+      "startLine": 315,
+      "endLine": 320
     },
-    "type": "insight",
+    "type": "theorem",
     "title": "Partial Resolution Status",
     "content": "Hilbert's sixth problem has a unique status: **partially solved**.\n\nWe have rigorous axiom systems for:\n- Probability (Kolmogorov)\n- Quantum mechanics (von Neumann)\n- Thermodynamics (Caratheodory)\n- Classical mechanics (Lagrange/Hamilton)\n\nBut a unified 'theory of everything' axiom system does not exist.",
     "mathContext": "Individual theories: ✓ Axiomatized\nUnified framework: ✗ Open problem\n\nSome argue unified axiomatization is philosophically impossible.",

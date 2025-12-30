@@ -75,10 +75,10 @@
     "id": "ann-lax-milgram",
     "proofId": "hilbert-20",
     "range": {
-      "startLine": 148,
-      "endLine": 158
+      "startLine": 175,
+      "endLine": 179
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "The Lax-Milgram Theorem",
     "content": "**Lax-Milgram (1954)**: The fundamental existence theorem for elliptic boundary value problems.\n\nIf $a$ is bounded and coercive on a Hilbert space $V$, and $F$ is a bounded linear functional, then $\\exists! u \\in V$ with $a(u,v) = F(v)$ for all $v$.\n\nThis single theorem handles a vast class of PDEs.",
     "mathContext": "$\\exists! u \\in V: a(u,v) = F(v) \\quad \\forall v \\in V$\n\nMoreover: $\\|u\\| \\leq \\frac{1}{\\alpha}\\|F\\|$ where $\\alpha$ is the coercivity constant.",
@@ -111,10 +111,10 @@
     "id": "ann-sobolev",
     "proofId": "hilbert-20",
     "range": {
-      "startLine": 200,
-      "endLine": 212
+      "startLine": 225,
+      "endLine": 233
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Sobolev Spaces",
     "content": "**Sobolev spaces** $H^k(\\Omega)$ consist of functions with $k$ weak derivatives in $L^2$.\n\n$H_0^1(\\Omega)$ is the subspace of $H^1$ functions vanishing on $\\partial\\Omega$ - the natural space for Dirichlet problems.\n\nThese spaces are Hilbert spaces, enabling Lax-Milgram.",
     "mathContext": "$H^1(\\Omega) = \\{u \\in L^2: \\nabla u \\in L^2\\}$\n\n$H_0^1(\\Omega) = \\{u \\in H^1: u|_{\\partial\\Omega} = 0\\}$",
@@ -165,10 +165,10 @@
     "id": "ann-local-unsolvability",
     "proofId": "hilbert-20",
     "range": {
-      "startLine": 254,
-      "endLine": 260
+      "startLine": 288,
+      "endLine": 291
     },
-    "type": "insight",
+    "type": "axiom",
     "title": "The Failure is Fundamental",
     "content": "Lewy's example shows that unsolvability is not about boundary conditions - the equation has no solution even **locally**, ignoring boundaries entirely.\n\nThis revealed that solvability is a deep structural property of the differential operator itself.",
     "mathContext": "For Lewy's operator $L$, there exists $f$ such that for every open $U \\neq \\emptyset$: $\\nexists u$ with $Lu = f$ in $U$.\n\nNo boundary conditions involved!",

@@ -75,10 +75,10 @@
     "id": "ann-euler-lagrange",
     "proofId": "hilbert-23",
     "range": {
-      "startLine": 136,
-      "endLine": 146
+      "startLine": 156,
+      "endLine": 158
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "The Euler-Lagrange Equation",
     "content": "**Euler-Lagrange Equation** (Euler 1744, Lagrange 1788):\n\nIf y extremizes $J[y] = \\int L \\, dx$, then:\n\n$\\frac{\\partial L}{\\partial y} - \\frac{d}{dx}\\left(\\frac{\\partial L}{\\partial y'}\\right) = 0$\n\nThis is THE fundamental theorem of calculus of variations.",
     "mathContext": "$\\frac{\\partial L}{\\partial y} = \\frac{d}{dx}\\frac{\\partial L}{\\partial y'}$\n\nReduces infinite-dimensional optimization to a second-order ODE.",
@@ -111,10 +111,10 @@
     "id": "ann-mechanics",
     "proofId": "hilbert-23",
     "range": {
-      "startLine": 184,
-      "endLine": 195
+      "startLine": 198,
+      "endLine": 205
     },
-    "type": "theorem",
+    "type": "def",
     "title": "Newton from Lagrange",
     "content": "**Classical Mechanics** uses $L = T - V$ (kinetic minus potential energy).\n\nEuler-Lagrange yields:\n$m\\ddot{y} = -\\frac{dV}{dy}$\n\nThis is **Newton's second law**: F = ma where F = -grad(V).",
     "mathContext": "$L = \\frac{1}{2}m(y')^2 - V(y)$\n\nHamilton's principle: Nature extremizes the action integral.",
@@ -129,10 +129,10 @@
     "id": "ann-direct-methods",
     "proofId": "hilbert-23",
     "range": {
-      "startLine": 230,
-      "endLine": 245
+      "startLine": 239,
+      "endLine": 246
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Direct Methods (Tonelli)",
     "content": "**Direct Methods** prove existence without solving the Euler-Lagrange ODE:\n\n1. Show J is bounded below (coercivity)\n2. Take a minimizing sequence\n3. Extract convergent subsequence (weak compactness)\n4. Limit achieves minimum (weak lower semicontinuity)\n\nThis was a major response to Hilbert's 23rd problem.",
     "mathContext": "Tonelli (1920s): If J is coercive and weakly l.s.c. on W^{1,p}, then J attains its minimum.",
@@ -183,10 +183,10 @@
     "id": "ann-status",
     "proofId": "hilbert-23",
     "range": {
-      "startLine": 370,
-      "endLine": 390
+      "startLine": 373,
+      "endLine": 378
     },
-    "type": "insight",
+    "type": "theorem",
     "title": "A Living Research Program",
     "content": "Unlike most Hilbert problems with definitive solutions, Problem 23 is a **living research program**.\n\nModern applications include:\n- **Optimal transport** (Villani, Figalli)\n- **Machine learning** (neural networks as variational problems)\n- **Materials science** (phase transitions, microstructure)\n- **Image processing** (total variation regularization)",
     "mathContext": "The field continues to develop new methods and applications.",
