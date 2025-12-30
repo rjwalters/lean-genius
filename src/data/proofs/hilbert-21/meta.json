@@ -1,0 +1,89 @@
+{
+  "id": "hilbert-21",
+  "title": "Hilbert's 21st Problem: Riemann-Hilbert Problem",
+  "slug": "hilbert-21",
+  "description": "The Riemann-Hilbert problem asks whether a Fuchsian system exists with given singularities and monodromy. The answer is YES for irreducible representations (Plemelj, 1908), but NO in general (Bolibrukh, 1989).",
+  "meta": {
+    "author": "Josip Plemelj (1908), Andrey Bolibrukh (1989)",
+    "date": "1908-1989",
+    "status": "verified",
+    "tags": [
+      "complex-analysis",
+      "differential-equations",
+      "hilbert-problems",
+      "advanced"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.Basic",
+        "description": "Complex number field",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "GeneralLinearGroup",
+        "description": "GL(n, C) for monodromy matrices",
+        "module": "Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup"
+      }
+    ],
+    "originalContributions": [
+      "Definition of Fuchsian systems and monodromy representations",
+      "Plemelj's theorem for irreducible case",
+      "Statement of Bolibrukh's counterexample",
+      "Complete characterization of realizability"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 21
+  },
+  "overview": {
+    "historicalContext": "Hilbert's 21st Problem (1900) asks whether linear differential equations with prescribed singularities and monodromy always exist. This is the Riemann-Hilbert problem, connecting complex analysis, differential equations, and representation theory.\n\nPlemelj claimed a positive solution in 1908, but Bolibrukh discovered counterexamples in 1989, showing the answer is nuanced.",
+    "problemStatement": "**Question:** Given singular points z_1, ..., z_m and a monodromy representation rho: pi_1(C \\ {z_1,...,z_m}) -> GL(n, C), does there exist a Fuchsian system dY/dz = A(z)Y with these singularities and monodromy?\n\n**Answer:** YES for irreducible representations (Plemelj). NO in general (Bolibrukh).",
+    "proofStrategy": "The proof strategy involves:\n\n1. Define Fuchsian systems (ODEs with simple poles)\n2. Define monodromy representations (fundamental group to GL(n))\n3. Prove existence for irreducible case (Plemelj's theorem)\n4. Exhibit counterexamples for reducible case (Bolibrukh)\n5. State complete characterization via vector bundle conditions",
+    "keyInsights": [
+      "Irreducibility is the key condition for positive answer",
+      "Regular singular (vs Fuchsian) systems always suffice (Birkhoff)",
+      "The obstruction is cohomological in nature",
+      "Modern formulation: Riemann-Hilbert correspondence between D-modules and perverse sheaves"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Singular Points and Monodromy",
+      "startLine": 1,
+      "endLine": 100,
+      "summary": "Basic definitions of singular points, punctured planes, and monodromy representations."
+    },
+    {
+      "id": "fuchsian",
+      "title": "Fuchsian Systems",
+      "startLine": 101,
+      "endLine": 150,
+      "summary": "Definition of Fuchsian systems with simple pole singularities."
+    },
+    {
+      "id": "positive",
+      "title": "Plemelj's Theorem",
+      "startLine": 151,
+      "endLine": 200,
+      "summary": "The positive result: irreducible representations are always realizable."
+    },
+    {
+      "id": "negative",
+      "title": "Bolibrukh's Counterexamples",
+      "startLine": 201,
+      "endLine": 250,
+      "summary": "The negative result: some reducible representations have no Fuchsian realization."
+    }
+  ],
+  "conclusion": {
+    "summary": "Hilbert's 21st Problem has a nuanced answer. For irreducible monodromy representations, Fuchsian systems always exist (Plemelj, 1908). For reducible representations, counterexamples exist (Bolibrukh, 1989). The complete characterization involves vector bundle conditions.",
+    "implications": "This problem spawned major developments in the theory of differential equations, D-modules, and the geometric Langlands program. The Riemann-Hilbert correspondence is now a cornerstone of modern algebraic geometry.",
+    "openQuestions": [
+      "How to effectively compute the obstruction for a given representation?",
+      "Extensions to irregular singular points (Stokes phenomena)?",
+      "Connections to the geometric Langlands program?"
+    ]
+  }
+}

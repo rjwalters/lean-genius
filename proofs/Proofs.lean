@@ -65,6 +65,7 @@ import Proofs.Hilbert14Invariants
 import Proofs.Hilbert15SchubertCalculus
 import Proofs.Hilbert16
 import Proofs.Hilbert17SumOfSquares
+import Proofs.Hilbert21RiemannHilbert
 import Proofs.Hilbert3ScissorsCongruence
 import Proofs.Hilbert4Geodesics
 import Proofs.Hilbert5LieGroups
