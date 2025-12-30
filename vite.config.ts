@@ -20,4 +20,25 @@ export default defineConfig({
       'unsupported-css-property': 'silent',
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          // Vendor chunks
+          if (id.includes('node_modules/react-dom')) return 'vendor-react'
+          if (id.includes('node_modules/react-router')) return 'vendor-react'
+          if (id.includes('node_modules/react/')) return 'vendor-react'
+          if (id.includes('node_modules/katex')) return 'vendor-katex'
+          if (id.includes('node_modules/react-katex')) return 'vendor-katex'
+          if (id.includes('node_modules/rehype-katex')) return 'vendor-katex'
+          if (id.includes('node_modules/remark-math')) return 'vendor-katex'
+          if (id.includes('node_modules/react-markdown')) return 'vendor-markdown'
+          if (id.includes('node_modules/@radix-ui')) return 'vendor-ui'
+          if (id.includes('node_modules/lucide-react')) return 'vendor-icons'
+          // Proof data chunk
+          if (id.includes('src/data/proofs')) return 'proof-data'
+        },
+      },
+    },
+  },
 })
