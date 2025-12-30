@@ -296,8 +296,15 @@ def chebyshevNorm (n : ℕ) : (Fin n → ℝ) → ℝ := fun x =>
 /-- **Theorem**: The Euclidean norm satisfies the triangle inequality. -/
 theorem euclidean_triangle (n : ℕ) (x y : Fin n → ℝ) :
     euclideanNorm n (x + y) ≤ euclideanNorm n x + euclideanNorm n y := by
-  -- This follows from Cauchy-Schwarz inequality
-  sorry
+  simp only [euclideanNorm]
+  -- Our euclideanNorm equals the norm on EuclideanSpace ℝ (Fin n)
+  have h : ∀ z : Fin n → ℝ, Real.sqrt (∑ i, z i ^ 2) =
+      @norm (EuclideanSpace ℝ (Fin n)) _ z := fun z => by
+    rw [@EuclideanSpace.norm_eq ℝ (Fin n) _ _ z]
+    congr 1
+    exact Finset.sum_congr rfl fun i _ => by rw [Real.norm_eq_abs, sq_abs]
+  simp only [h]
+  exact @norm_add_le (EuclideanSpace ℝ (Fin n)) _ _ _
 
 /-- **Theorem**: The taxicab norm satisfies the triangle inequality. -/
 theorem taxicab_triangle (n : ℕ) (x y : Fin n → ℝ) :
