@@ -1,0 +1,120 @@
+{
+  "id": "hilbert-23",
+  "title": "Hilbert's Twenty-Third Problem: Calculus of Variations",
+  "slug": "hilbert-23",
+  "description": "Hilbert's 1900 call for further development of the calculus of variations has been spectacularly answered through direct methods (Tonelli), weak solutions (Sobolev), optimal control (Pontryagin), and geometric measure theory.",
+  "meta": {
+    "author": "Euler, Lagrange, Hilbert, Tonelli, Pontryagin, et al.",
+    "date": "1744-present",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "optimization",
+      "calculus-of-variations",
+      "hilbert-problems",
+      "research-program",
+      "intermediate"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "deriv",
+        "description": "One-dimensional derivatives for Euler-Lagrange",
+        "module": "Analysis.Calculus.Deriv.Basic"
+      },
+      {
+        "theorem": "intervalIntegral",
+        "description": "Integration over intervals for action functionals",
+        "module": "MeasureTheory.Integral.IntervalIntegral"
+      },
+      {
+        "theorem": "ContDiff",
+        "description": "Smoothness conditions for Lagrangians",
+        "module": "Analysis.Calculus.ContDiff.Defs"
+      }
+    ],
+    "originalContributions": [
+      "Euler-Lagrange equation formalization",
+      "Fundamental lemma of calculus of variations",
+      "Direct methods existence structure",
+      "Pontryagin maximum principle statement",
+      "Historical development overview"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 23
+  },
+  "overview": {
+    "historicalContext": "Hilbert's twenty-third problem (1900) is unique among the 23 problems: it is not a specific question but a **research program**. Hilbert called for 'further development of the methods of the calculus of variations.'\n\nThe calculus of variations originated with the brachistochrone problem (1696): what curve allows fastest descent under gravity? Bernoulli's solution led to a new field of mathematics.\n\nMajor developments responding to Hilbert's call:\n\n- **Direct Methods** (Hilbert 1900, Tonelli 1920s): Prove existence without solving ODEs\n- **Weak Solutions** (Sobolev 1930s): Generalized derivatives in Sobolev spaces\n- **Optimal Control** (Pontryagin 1956): Control theory via the maximum principle\n- **Geometric Measure Theory** (Federer-Fleming 1960s): Minimal surfaces and currents\n- **Gamma-Convergence** (De Giorgi 1970s): Variational limits and homogenization",
+    "problemStatement": "Hilbert's original statement: 'I wish to bring forward a question which should be attacked by the same method of continuous variation of a function by which Dirichlet solved the problem of the potential. This is the problem of the Calculus of Variations, to establish the existence of an extremum, whenever it can be proved that for a given problem a lower (or upper) limit is approached by continuous variation of the function.'\n\nThe calculus of variations asks: among all functions satisfying certain constraints, which one extremizes a given integral functional?\n\nJ[y] = integral from a to b of L(x, y(x), y'(x)) dx\n\nHilbert wanted rigorous existence proofs and new methods beyond the classical Euler-Lagrange approach.",
+    "proofStrategy": "We formalize the core structures and results of classical calculus of variations:\n\n1. **Variational Structure**: Lagrangians, admissible functions, action functionals\n\n2. **Fundamental Lemma**: If integral of f times eta equals 0 for all test functions eta, then f = 0\n\n3. **Euler-Lagrange Equation**: The necessary condition for extrema:\n   dL/dy - d/dx(dL/dy') = 0\n\n4. **Applications**: Geodesics, classical mechanics (Newton from Lagrange)\n\n5. **Direct Methods**: Existence via coercivity and weak lower semicontinuity\n\n6. **Optimal Control**: The Pontryagin maximum principle extending variations to control",
+    "keyInsights": [
+      "The Euler-Lagrange equation reduces infinite-dimensional optimization to ODEs",
+      "Direct methods prove existence without solving differential equations",
+      "Weak solutions require Sobolev spaces, not classical smoothness",
+      "Optimal control extends variational methods to engineering",
+      "The field remains active: optimal transport, machine learning, materials science"
+    ]
+  },
+  "sections": [
+    {
+      "id": "structure",
+      "title": "The Structure of Variational Problems",
+      "startLine": 51,
+      "endLine": 79,
+      "summary": "Lagrangians, admissible functions, and the action functional J[y] = integral of L(x, y, y') dx."
+    },
+    {
+      "id": "fundamental-lemma",
+      "title": "Fundamental Lemma of Calculus of Variations",
+      "startLine": 81,
+      "endLine": 108,
+      "summary": "The Du Bois-Reymond lemma: if the integral of f times eta vanishes for all test functions, then f = 0."
+    },
+    {
+      "id": "euler-lagrange",
+      "title": "The Euler-Lagrange Equation",
+      "startLine": 110,
+      "endLine": 162,
+      "summary": "The central theorem: extrema satisfy dL/dy - d/dx(dL/dy') = 0."
+    },
+    {
+      "id": "applications",
+      "title": "Applications of Euler-Lagrange",
+      "startLine": 164,
+      "endLine": 210,
+      "summary": "Geodesics as straight lines, and deriving Newton's laws from Lagrangian mechanics."
+    },
+    {
+      "id": "direct-methods",
+      "title": "Direct Methods (Tonelli)",
+      "startLine": 212,
+      "endLine": 258,
+      "summary": "Existence theorems via coercivity and weak lower semicontinuity."
+    },
+    {
+      "id": "optimal-control",
+      "title": "Optimal Control Theory",
+      "startLine": 260,
+      "endLine": 312,
+      "summary": "The Pontryagin maximum principle extending calculus of variations to control theory."
+    },
+    {
+      "id": "modern",
+      "title": "Modern Developments",
+      "startLine": 314,
+      "endLine": 368,
+      "summary": "Sobolev spaces, Gamma-convergence, geometric measure theory, and connections to PDEs."
+    }
+  ],
+  "conclusion": {
+    "summary": "Hilbert's twenty-third problem called for developing the calculus of variations, and the 20th century delivered spectacularly. The Euler-Lagrange equation provides necessary conditions for extrema. Direct methods (Tonelli) prove existence without solving differential equations. Optimal control theory (Pontryagin) extended these ideas to engineering. The field remains active, with applications to optimal transport, machine learning, and materials science.\n\nUnlike most Hilbert problems with definitive solutions, Problem 23 is a living research program that continues to evolve.",
+    "implications": "The development of calculus of variations has profound implications:\n\n1. **Classical Mechanics**: Hamilton's principle and Lagrangian mechanics\n\n2. **Modern Physics**: Quantum field theory uses action principles\n\n3. **Control Engineering**: Optimal control of dynamical systems\n\n4. **Machine Learning**: Neural networks as variational problems\n\n5. **Materials Science**: Phase transitions via Gamma-convergence\n\n6. **PDE Theory**: Many equations arise as Euler-Lagrange conditions",
+    "openQuestions": [
+      "What is the regularity theory for general variational problems?",
+      "How can optimal transport be further developed?",
+      "What new applications arise in machine learning?",
+      "Can variational methods solve open problems in geometric analysis?"
+    ]
+  }
+}
