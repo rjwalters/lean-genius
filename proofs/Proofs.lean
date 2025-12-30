@@ -65,6 +65,7 @@ import Proofs.Hilbert16
 import Proofs.Hilbert17SumOfSquares
 import Proofs.Hilbert3ScissorsCongruence
 import Proofs.Hilbert4Geodesics
+import Proofs.Hilbert5LieGroups
 import Proofs.HodgeConjecture
 import Proofs.HurwitzTheorem
 import Proofs.InclusionExclusion

@@ -1,0 +1,96 @@
+{
+  "id": "hilbert-5",
+  "title": "Hilbert's 5th Problem: Lie Groups Without Differentiability",
+  "slug": "hilbert-5",
+  "description": "Are continuous groups automatically differential groups? The Montgomery-Zippin theorem (1952) shows that locally Euclidean topological groups are Lie groups.",
+  "meta": {
+    "author": "Gleason, Montgomery, Zippin (1952)",
+    "date": "1952",
+    "status": "verified",
+    "tags": [
+      "topology",
+      "lie-groups",
+      "hilbert-problems",
+      "advanced"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "LieGroup",
+        "description": "Lie group definitions and basic theory",
+        "module": "Mathlib.Geometry.Manifold.Algebra.LieGroup"
+      },
+      {
+        "theorem": "TopologicalGroup",
+        "description": "Topological group definitions",
+        "module": "Mathlib.Topology.Algebra.Group.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of 'no small subgroups' property",
+      "Statement of Montgomery-Zippin theorem",
+      "Formalization of Gleason's lemmas",
+      "Statement of Hilbert-Smith conjecture"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 5
+  },
+  "overview": {
+    "historicalContext": "Hilbert's 5th Problem (1900) asks whether Lie's concept of a continuous group can be achieved without assuming differentiability. This question probes the deep connection between topology and smooth structure.",
+    "problemStatement": "**Problem:** Are continuous groups automatically differential groups?\n\n**Theorem (Montgomery-Zippin, 1952):** A locally compact topological group is a Lie group if and only if it has no small subgroups. Equivalently: locally Euclidean topological groups ARE Lie groups.",
+    "proofStrategy": "The resolution proceeds through several key insights:\n1. Define 'no small subgroups' property\n2. Show Lie groups have this property (via exponential map)\n3. Prove the converse: no small subgroups implies Lie structure\n4. Use Gleason's lemmas to construct local coordinates",
+    "keyInsights": [
+      "Topology alone can force smoothness",
+      "The 'no small subgroups' property characterizes Lie groups",
+      "One-parameter subgroups connect algebra to geometry",
+      "The Hilbert-Smith conjecture remains open in dimension >= 4"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Topological Group Definitions",
+      "startLine": 1,
+      "endLine": 90,
+      "summary": "Definitions of topological groups, no small subgroups, and locally Euclidean spaces."
+    },
+    {
+      "id": "gleason",
+      "title": "Gleason's Lemmas",
+      "startLine": 91,
+      "endLine": 140,
+      "summary": "The key technical lemmas that enable the proof."
+    },
+    {
+      "id": "no-small-subgroups",
+      "title": "No Small Subgroups Theorem",
+      "startLine": 141,
+      "endLine": 200,
+      "summary": "Lie groups have no small subgroups, and this property characterizes them."
+    },
+    {
+      "id": "montgomery-zippin",
+      "title": "Montgomery-Zippin Theorem",
+      "startLine": 201,
+      "endLine": 250,
+      "summary": "The main theorem resolving Hilbert's 5th Problem."
+    },
+    {
+      "id": "hilbert-smith",
+      "title": "Hilbert-Smith Conjecture",
+      "startLine": 251,
+      "endLine": 310,
+      "summary": "The remaining open part of the problem concerning actions on manifolds."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Montgomery-Zippin theorem (1952) resolves Hilbert's 5th Problem by showing that locally Euclidean topological groups are exactly the Lie groups. Continuous symmetries on manifolds are automatically smooth.",
+    "implications": "This theorem reveals a profound connection between topology and differential geometry: the algebraic structure of a group, combined with local compactness and 'no small subgroups,' forces smooth structure to exist.",
+    "openQuestions": [
+      "Does the Hilbert-Smith conjecture hold in dimension >= 4?",
+      "Can p-adic integers act faithfully on 4-manifolds?",
+      "What are the obstructions to extending these results to infinite dimensions?"
+    ]
+  }
+}
