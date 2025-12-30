@@ -1,12 +1,12 @@
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { getAllProofs } from '@/data/proofs'
+import { listings } from '@/data/proofs'
 import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
 import { ProofBadge, WiedijkBadge, BadgeFilter, MathlibIndicator } from '@/components/ui/proof-badge'
 import { WIEDIJK_BADGE_INFO, HILBERT_BADGE_INFO, MILLENNIUM_BADGE_INFO } from '@/types/proof'
 import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, Github, ArrowUpDown, Search } from 'lucide-react'
-import type { ProofBadge as ProofBadgeType } from '@/types/proof'
+import type { ProofBadge as ProofBadgeType, ProofListing } from '@/types/proof'
 
 type SortOption = 'newest' | 'oldest' | 'alphabetical'
 
@@ -18,7 +18,6 @@ function parseDateAdded(dateStr?: string): Date {
 }
 
 export function HomePage() {
-  const allProofs = getAllProofs()
   const { isAuthenticated } = useAuth()
   const [selectedBadges, setSelectedBadges] = useState<ProofBadgeType[]>([])
   const [showFilters, setShowFilters] = useState(false)
@@ -30,43 +29,43 @@ export function HomePage() {
 
   // Filter and sort proofs
   const proofs = useMemo(() => {
-    let filtered = allProofs
+    let filtered: ProofListing[] = listings
 
     // Filter by search query
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase()
-      filtered = filtered.filter(({ proof }) =>
-        proof.title.toLowerCase().includes(query) ||
-        proof.description.toLowerCase().includes(query) ||
-        proof.meta.tags.some(tag => tag.toLowerCase().includes(query))
+      filtered = filtered.filter((listing) =>
+        listing.title.toLowerCase().includes(query) ||
+        listing.description.toLowerCase().includes(query) ||
+        listing.tags.some(tag => tag.toLowerCase().includes(query))
       )
     }
 
     // Filter by badge type
     if (selectedBadges.length > 0) {
-      filtered = filtered.filter(({ proof }) =>
-        proof.meta.badge && selectedBadges.includes(proof.meta.badge)
+      filtered = filtered.filter((listing) =>
+        listing.badge && selectedBadges.includes(listing.badge)
       )
     }
 
     // Filter by Wiedijk's 100
     if (showWiedijkOnly) {
-      filtered = filtered.filter(({ proof }) =>
-        proof.meta.wiedijkNumber !== undefined
+      filtered = filtered.filter((listing) =>
+        listing.wiedijkNumber !== undefined
       )
     }
 
     // Filter by Hilbert's Problems
     if (showHilbertOnly) {
-      filtered = filtered.filter(({ proof }) =>
-        proof.meta.hilbertNumber !== undefined
+      filtered = filtered.filter((listing) =>
+        listing.hilbertNumber !== undefined
       )
     }
 
     // Filter by Millennium Prize Problems
     if (showMillenniumOnly) {
-      filtered = filtered.filter(({ proof }) =>
-        proof.meta.millenniumProblem !== undefined
+      filtered = filtered.filter((listing) =>
+        listing.millenniumProblem !== undefined
       )
     }
 
@@ -74,16 +73,16 @@ export function HomePage() {
     return [...filtered].sort((a, b) => {
       switch (sortBy) {
         case 'newest':
-          return parseDateAdded(b.proof.meta.dateAdded).getTime() - parseDateAdded(a.proof.meta.dateAdded).getTime()
+          return parseDateAdded(b.dateAdded).getTime() - parseDateAdded(a.dateAdded).getTime()
         case 'oldest':
-          return parseDateAdded(a.proof.meta.dateAdded).getTime() - parseDateAdded(b.proof.meta.dateAdded).getTime()
+          return parseDateAdded(a.dateAdded).getTime() - parseDateAdded(b.dateAdded).getTime()
         case 'alphabetical':
-          return a.proof.title.localeCompare(b.proof.title)
+          return a.title.localeCompare(b.title)
         default:
           return 0
       }
     })
-  }, [allProofs, searchQuery, selectedBadges, sortBy, showWiedijkOnly, showHilbertOnly, showMillenniumOnly])
+  }, [searchQuery, selectedBadges, sortBy, showWiedijkOnly, showHilbertOnly, showMillenniumOnly])
 
   const handleBadgeToggle = (badge: ProofBadgeType) => {
     setSelectedBadges((prev) => {
@@ -284,52 +283,52 @@ export function HomePage() {
         )}
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {proofs.map(({ proof, annotations }) => (
+          {proofs.map((listing) => (
             <Link
-              key={proof.slug}
-              to={`/proof/${proof.slug}`}
+              key={listing.slug}
+              to={`/proof/${listing.slug}`}
               className="group block bg-card border border-border rounded-xl p-6 hover:border-annotation/50 hover:bg-card/80 transition-all"
             >
               {/* Badge row - prominently displayed at top */}
               <div className="flex items-start justify-between mb-4">
-                <ProofBadge badge={proof.meta.badge} />
-                <StatusBadge status={proof.meta.status} />
+                <ProofBadge badge={listing.badge} />
+                <StatusBadge status={listing.status} />
               </div>
 
               <div className="flex items-start gap-3 mb-3">
-                {proof.meta.wiedijkNumber ? (
-                  <WiedijkBadge number={proof.meta.wiedijkNumber} size="md" />
+                {listing.wiedijkNumber ? (
+                  <WiedijkBadge number={listing.wiedijkNumber} size="md" />
                 ) : (
                   <div className="h-10 w-10 rounded-lg bg-annotation/20 flex items-center justify-center flex-shrink-0">
                     <BookOpen className="h-5 w-5 text-annotation" />
                   </div>
                 )}
                 <h3 className="text-lg font-semibold group-hover:text-annotation transition-colors pt-1">
-                  {proof.title}
+                  {listing.title}
                 </h3>
               </div>
 
               {/* Date - letter style */}
-              {proof.meta.dateAdded && (
+              {listing.dateAdded && (
                 <p className="text-xs text-muted-foreground mb-2">
-                  {proof.meta.dateAdded}
+                  {listing.dateAdded}
                 </p>
               )}
 
               <p className="text-sm text-muted-foreground mb-4 line-clamp-5">
-                {proof.description}
+                {listing.description}
               </p>
 
               {/* Mathlib dependency indicator */}
               <MathlibIndicator
-                dependencyCount={proof.meta.mathlibDependencies?.length}
-                sorries={proof.meta.sorries}
+                dependencyCount={listing.mathlibCount}
+                sorries={listing.sorries}
                 className="mb-4"
               />
 
               <div className="flex items-center justify-between text-sm">
                 <div className="flex flex-wrap gap-2">
-                  {proof.meta.tags.slice(0, 2).map((tag) => (
+                  {listing.tags.slice(0, 2).map((tag) => (
                     <span
                       key={tag}
                       className="px-2 py-0.5 bg-muted rounded text-xs text-muted-foreground"
@@ -339,7 +338,7 @@ export function HomePage() {
                   ))}
                 </div>
                 <span className="text-xs text-muted-foreground">
-                  {annotations.length} annotations
+                  {listing.annotationCount} annotations
                 </span>
               </div>
 

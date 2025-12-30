@@ -1,0 +1,2754 @@
+[
+  {
+    "id": "abel-ruffini",
+    "title": "Abel-Ruffini Theorem",
+    "slug": "abel-ruffini",
+    "description": "Galois's profound theorem that there is no general algebraic solution to polynomial equations of degree five or higher, connecting field theory to group theory through the unsolvability of the symmetric group S5.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "algebra",
+      "galois-theory",
+      "group-theory",
+      "field-theory",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/21/25",
+    "wiedijkNumber": 16,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 5
+  },
+  {
+    "id": "amgm-inequality",
+    "title": "Arithmetic Mean - Geometric Mean Inequality",
+    "slug": "amgm-inequality",
+    "description": "The AM-GM Inequality: For non-negative real numbers, the arithmetic mean is always greater than or equal to the geometric mean, with equality if and only if all numbers are equal.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "analysis",
+      "inequalities",
+      "mean-inequalities",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 38,
+    "mathlibCount": 4,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "angle-trisection",
+    "title": "Impossibility of Trisecting an Angle",
+    "slug": "angle-trisection",
+    "description": "The classical impossibility proof that an arbitrary angle cannot be trisected using only compass and straightedge, along with the impossibility of doubling the cube. These problems puzzled mathematicians for over 2000 years until Wantzel's 1837 proof.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "geometry",
+      "galois-theory",
+      "field-theory",
+      "classic",
+      "impossibility",
+      "intermediate"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 8,
+    "mathlibCount": 4,
+    "sorries": 3,
+    "annotationCount": 11
+  },
+  {
+    "id": "area-of-circle",
+    "title": "Area of a Circle",
+    "slug": "area-of-circle",
+    "description": "The area of a circle with radius r is πr². One of the most fundamental formulas in geometry, known since Archimedes proved it around 250 BCE.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "geometry",
+      "measure-theory",
+      "classic",
+      "beginner"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 9,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "arithmetic-series",
+    "title": "Sum of an Arithmetic Series",
+    "slug": "arithmetic-series",
+    "description": "Gauss's formula for the sum of the first n natural numbers: 1 + 2 + ... + n = n(n+1)/2. A classic result with a famous anecdote about young Gauss.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "algebra",
+      "series",
+      "wiedijk-100",
+      "classic",
+      "gauss"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 68,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 9
+  },
+  {
+    "id": "ballot-problem",
+    "title": "The Ballot Problem",
+    "slug": "ballot-problem",
+    "description": "In an election where candidate A receives p votes and candidate B receives q votes (p > q), the probability that A leads throughout the counting is (p-q)/(p+q).",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "probability",
+      "combinatorics",
+      "counting",
+      "wiedijk-100",
+      "reflection-principle"
+    ],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 30,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "basel-problem",
+    "title": "The Basel Problem: Sum of Reciprocal Squares",
+    "slug": "basel-problem",
+    "description": "The sum of reciprocals of squares equals π²/6. Euler's famous 1734 solution to the Basel Problem launched his illustrious career.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "analysis",
+      "series",
+      "convergence",
+      "wiedijk-100",
+      "zeta-function",
+      "classic"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 14,
+    "mathlibCount": 4,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
+    "id": "bertrands-postulate",
+    "title": "Bertrand's Postulate",
+    "slug": "bertrands-postulate",
+    "description": "For every integer n > 1, there exists a prime p such that n < p ≤ 2n. Conjectured by Bertrand (1845), first proved by Chebyshev (1852), with an elegant elementary proof by Erdős (1932).",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "primes",
+      "prime-gaps",
+      "classic",
+      "erdos"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 98,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 8
+  },
+  {
+    "id": "bezout-identity",
+    "title": "Bezout's Identity",
+    "slug": "bezout-identity",
+    "description": "For any integers a, b, there exist x, y such that ax + by = gcd(a,b). Fundamental to number theory.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "algorithms",
+      "classic",
+      "beginner"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 60,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "binomial-theorem",
+    "title": "The Binomial Theorem",
+    "slug": "binomial-theorem",
+    "description": "(x + y)^n = Σ C(n,k) x^k y^(n-k). One of the most fundamental results in algebra and combinatorics.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "algebra",
+      "combinatorics",
+      "classic",
+      "beginner"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 44,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "birch-swinnerton-dyer",
+    "title": "Birch and Swinnerton-Dyer Conjecture",
+    "slug": "birch-swinnerton-dyer",
+    "description": "One of the seven Millennium Prize Problems. The rank of an elliptic curve equals the order of vanishing of its L-function at s=1.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "number-theory",
+      "elliptic-curves",
+      "millennium-prize",
+      "advanced"
+    ],
+    "dateAdded": "12/29/25",
+    "millenniumProblem": "bsd",
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "birthday-problem",
+    "title": "The Birthday Problem",
+    "slug": "birthday-problem",
+    "description": "The surprising probability that in a group of just 23 people, there's a greater than 50% chance that two share a birthday. A classic example of how probability defies intuition.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "probability",
+      "combinatorics",
+      "counting",
+      "classic",
+      "beginner"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 93,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 7
+  },
+  {
+    "id": "borsuk-ulam",
+    "title": "Borsuk-Ulam Theorem",
+    "slug": "borsuk-ulam",
+    "description": "For any continuous function from the n-sphere to n-dimensional Euclidean space, there exist antipodal points with the same image. The 'weather theorem' that guarantees antipodal points on Earth with identical temperature and pressure.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "topology",
+      "algebraic-topology",
+      "covering-spaces",
+      "advanced"
+    ],
+    "dateAdded": "12/22/25",
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
+    "id": "brouwer-fixed-point",
+    "title": "Brouwer Fixed Point Theorem",
+    "slug": "brouwer-fixed-point",
+    "description": "Every continuous function from a closed ball to itself has at least one fixed point. A cornerstone of topology with profound applications in economics, game theory, and differential equations.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "topology",
+      "fixed-point-theory",
+      "algebraic-topology",
+      "advanced"
+    ],
+    "dateAdded": "12/21/25",
+    "wiedijkNumber": 36,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 9
+  },
+  {
+    "id": "buffons-needle",
+    "title": "Buffon's Needle Problem",
+    "slug": "buffons-needle",
+    "description": "If a needle of length l is dropped onto a floor with parallel lines spaced distance d apart, the probability it crosses a line is 2l/(pi*d).",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "probability",
+      "geometric-probability",
+      "integration",
+      "wiedijk-100",
+      "monte-carlo"
+    ],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 99,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "cantor-diagonalization",
+    "title": "Cantor's Diagonalization Theorem",
+    "slug": "cantor-diagonalization",
+    "description": "Cantor's elegant 1891 proof that the real numbers are uncountable, using the famous diagonal argument to show no enumeration can list all infinite binary sequences.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "set-theory",
+      "infinity",
+      "cardinality",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/21/25",
+    "wiedijkNumber": 22,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 11
+  },
+  {
+    "id": "cantors-theorem",
+    "title": "Cantor's Theorem",
+    "slug": "cantors-theorem",
+    "description": "For any set A, there is no surjection from A to its power set P(A). This establishes that |A| < |P(A)| = 2^|A|, proving the hierarchy of infinite cardinalities.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "set-theory",
+      "cardinality",
+      "diagonal-argument",
+      "classic",
+      "easy"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 63,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 10
+  },
+  {
+    "id": "cauchy-schwarz",
+    "title": "Cauchy-Schwarz Inequality",
+    "slug": "cauchy-schwarz",
+    "description": "|⟨u,v⟩| ≤ ‖u‖·‖v‖. Fundamental to functional analysis and quantum mechanics.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "analysis",
+      "linear-algebra",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 78,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "cayley-hamilton",
+    "title": "Cayley-Hamilton Theorem",
+    "slug": "cayley-hamilton",
+    "description": "Every square matrix satisfies its own characteristic polynomial. If A is an n×n matrix with characteristic polynomial p(λ) = det(λI - A), then p(A) = 0.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "polynomials",
+      "eigenvalues"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 49,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 8
+  },
+  {
+    "id": "central-limit-theorem",
+    "title": "Central Limit Theorem",
+    "slug": "central-limit-theorem",
+    "description": "The sum of a large number of independent random variables converges to a normal distribution. This proof combines the classical characteristic function approach with an algebraic topological interpretation of the Gaussian as an attractor.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "probability",
+      "topology",
+      "analysis",
+      "advanced",
+      "characteristic-functions"
+    ],
+    "dateAdded": "12/22/25",
+    "wiedijkNumber": 47,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 18
+  },
+  {
+    "id": "cevas-theorem",
+    "title": "Ceva's Theorem",
+    "slug": "cevas-theorem",
+    "description": "Ceva's Theorem (Wiedijk's #61): Given a triangle ABC with cevians AD, BE, CF, these lines are concurrent if and only if (AF/FB) * (BD/DC) * (CE/EA) = 1",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "geometry",
+      "triangle",
+      "concurrency",
+      "signed-ratios",
+      "classic"
+    ],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 61,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 8
+  },
+  {
+    "id": "combinations-formula",
+    "title": "Formula for the Number of Combinations",
+    "slug": "combinations-formula",
+    "description": "The number of ways to choose k elements from a set of n elements is C(n,k) = n! / (k!(n-k)!). This fundamental formula in combinatorics counts the number of k-element subsets of an n-element set.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "combinatorics",
+      "binomial-coefficients",
+      "factorial",
+      "wiedijk-100",
+      "pascal"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 58,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "continuum-hypothesis",
+    "title": "Independence of the Continuum Hypothesis",
+    "slug": "continuum-hypothesis",
+    "description": "The Continuum Hypothesis is independent of ZFC set theory. Godel showed CH is consistent with ZFC; Cohen showed not-CH is also consistent.",
+    "status": "axiom-based",
+    "badge": "axiom-based",
+    "tags": [
+      "set-theory",
+      "foundations",
+      "logic",
+      "independence",
+      "wiedijk-100",
+      "hilbert"
+    ],
+    "dateAdded": "12/29/25",
+    "wiedijkNumber": 24,
+    "mathlibCount": 2,
+    "sorries": 2,
+    "annotationCount": 0
+  },
+  {
+    "id": "cramers-rule",
+    "title": "Cramer's Rule",
+    "slug": "cramers-rule",
+    "description": "For Ax = b with det(A) ≠ 0, xᵢ = det(Aᵢ)/det(A) where Aᵢ has column i replaced by b.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 97,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "de-moivre",
+    "title": "De Moivre's Theorem",
+    "slug": "de-moivre",
+    "description": "(cos θ + i sin θ)^n = cos(nθ) + i sin(nθ). Connects powers of complex numbers to multiple angle formulas.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "complex-analysis",
+      "trigonometry",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 17,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "denumerability-rationals",
+    "title": "Denumerability of the Rationals",
+    "slug": "denumerability-rationals",
+    "description": "Cantor's proof that the rational numbers are countable: despite being dense in the reals, there exists a bijection between the natural numbers and the rationals.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "set-theory",
+      "infinity",
+      "cardinality",
+      "classic",
+      "wiedijk-100"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 3,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
+    "id": "derangements",
+    "title": "The Derangements Formula",
+    "slug": "derangements",
+    "description": "The number of permutations with no fixed points: D(n) = n! Σ(-1)^k/k!. The 'hat-check problem'.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "combinatorics",
+      "probability",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 88,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "desargues-theorem",
+    "title": "Desargues's Theorem",
+    "slug": "desargues-theorem",
+    "description": "Desargues's Theorem (Wiedijk's #87): If two triangles are in perspective from a point, then they are in perspective from a line, and conversely.",
+    "status": "verified",
+    "badge": "verified",
+    "tags": [
+      "projective-geometry",
+      "triangles",
+      "perspective",
+      "collinearity",
+      "concurrence",
+      "classic"
+    ],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 87,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "descartes-rule-of-signs",
+    "title": "Descartes' Rule of Signs",
+    "slug": "descartes-rule-of-signs",
+    "description": "The number of positive real roots of a polynomial is either equal to the number of sign changes in the coefficient sequence, or less than it by an even number.",
+    "status": "verified",
+    "badge": "wip",
+    "tags": [
+      "polynomials",
+      "algebra",
+      "real-analysis",
+      "root-counting",
+      "wiedijk-100"
+    ],
+    "dateAdded": "12/27/24",
+    "wiedijkNumber": 100,
+    "mathlibCount": 4,
+    "sorries": 12,
+    "annotationCount": 0
+  },
+  {
+    "id": "dirichlets-theorem",
+    "title": "Dirichlet's Theorem on Primes in Arithmetic Progressions",
+    "slug": "dirichlets-theorem",
+    "description": "For any two positive coprime integers a and q, there are infinitely many primes congruent to a modulo q. This foundational result in analytic number theory uses Dirichlet characters and L-functions.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "primes",
+      "classic",
+      "dirichlet",
+      "analytic-number-theory",
+      "l-functions",
+      "arithmetic-progressions"
+    ],
+    "dateAdded": "12/29/25",
+    "wiedijkNumber": 48,
+    "mathlibCount": 4,
+    "sorries": 0,
+    "annotationCount": 12
+  },
+  {
+    "id": "dissection-of-cubes",
+    "title": "Dissection of Cubes",
+    "slug": "dissection-of-cubes",
+    "description": "A cube cannot be dissected into a finite number of smaller cubes, all of different sizes.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "geometry",
+      "impossibility",
+      "infinite-descent",
+      "combinatorics",
+      "wiedijk-100"
+    ],
+    "dateAdded": "12/28/25",
+    "wiedijkNumber": 82,
+    "mathlibCount": 2,
+    "sorries": 4,
+    "annotationCount": 0
+  },
+  {
+    "id": "divisibility-by-3",
+    "title": "Divisibility by 3 Rule",
+    "slug": "divisibility-by-3",
+    "description": "A natural number is divisible by 3 if and only if the sum of its digits is divisible by 3. This ancient divisibility test works because 10 ≡ 1 (mod 3).",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "divisibility",
+      "modular-arithmetic",
+      "classic",
+      "easy"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 85,
+    "mathlibCount": 4,
+    "sorries": 0,
+    "annotationCount": 10
+  },
+  {
+    "id": "e-transcendental",
+    "title": "Transcendence of e",
+    "slug": "e-transcendental",
+    "description": "The number e = 2.71828... is transcendental: it is not a root of any polynomial with integer coefficients. The first number proven transcendental by Hermite.",
+    "status": "axiom-based",
+    "badge": "axiom-based",
+    "tags": [
+      "number-theory",
+      "transcendental",
+      "e",
+      "analysis",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/29/25",
+    "wiedijkNumber": 67,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-szekeres",
+    "title": "Erdős–Szekeres Theorem",
+    "slug": "erdos-szekeres",
+    "description": "Any sequence of at least (r-1)(s-1) + 1 distinct numbers contains either an increasing subsequence of length r, or a decreasing subsequence of length s.",
+    "status": "verified",
+    "badge": "wip",
+    "tags": [
+      "combinatorics",
+      "ramsey-theory",
+      "sequences",
+      "pigeonhole",
+      "wiedijk-100"
+    ],
+    "dateAdded": "12/27/24",
+    "wiedijkNumber": 73,
+    "mathlibCount": 2,
+    "sorries": 2,
+    "annotationCount": 0
+  },
+  {
+    "id": "euler-identity",
+    "title": "Euler's Identity",
+    "slug": "euler-identity",
+    "description": "The most beautiful equation in mathematics: e^(iπ) + 1 = 0. This elegant identity connects five fundamental constants—e, i, π, 1, and 0—in one perfect equation.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "complex-analysis",
+      "exponentials",
+      "trigonometry",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/21/25",
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 11
+  },
+  {
+    "id": "euler-polyhedral-formula",
+    "title": "Euler's Polyhedral Formula",
+    "slug": "euler-polyhedral-formula",
+    "description": "For any convex polyhedron: V - E + F = 2, where V = vertices, E = edges, F = faces. This is the Euler characteristic of a sphere.",
+    "status": "partial",
+    "badge": "pedagogical",
+    "tags": [
+      "topology",
+      "geometry",
+      "polyhedra",
+      "wiedijk-100",
+      "euler-characteristic"
+    ],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 13,
+    "mathlibCount": 1,
+    "sorries": 2,
+    "annotationCount": 0
+  },
+  {
+    "id": "euler-totient",
+    "title": "Euler's Generalization of Fermat's Little Theorem",
+    "slug": "euler-totient",
+    "description": "For coprime integers a and n, a^φ(n) ≡ 1 (mod n), where φ(n) is Euler's totient function. This generalizes Fermat's Little Theorem.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "modular-arithmetic",
+      "primes",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 10,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "factor-remainder-theorem",
+    "title": "Factor and Remainder Theorems",
+    "slug": "factor-remainder-theorem",
+    "description": "Two fundamental theorems connecting polynomial division, roots, and evaluation: (x - a) divides p(x) iff p(a) = 0 (Factor Theorem), and the remainder when dividing p(x) by (x - a) equals p(a) (Remainder Theorem).",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "division",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 89,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "fair-games-theorem",
+    "title": "The Fair Games Theorem",
+    "slug": "fair-games-theorem",
+    "description": "In a fair game (expected gain is zero), a gambler with finite wealth playing against an infinitely wealthy opponent will eventually go bankrupt with probability 1.",
+    "status": "axiom-based",
+    "badge": "axiom-based",
+    "tags": [
+      "probability",
+      "random-walk",
+      "martingale",
+      "gambling",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/29/25",
+    "wiedijkNumber": 62,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "fermat-two-squares",
+    "title": "Fermat's Sum of Two Squares",
+    "slug": "fermat-two-squares",
+    "description": "A prime p can be expressed as a sum of two squares if and only if p = 2 or p is congruent to 1 (mod 4). Formalized using Zagier's elegant one-sentence proof.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "primes",
+      "classic",
+      "fermat",
+      "zagier",
+      "sum-of-squares"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 20,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 10
+  },
+  {
+    "id": "fermats-last-theorem",
+    "title": "Fermat's Last Theorem",
+    "slug": "fermats-last-theorem",
+    "description": "Andrew Wiles' monumental proof that there are no three positive integers a, b, c such that a^n + b^n = c^n for any integer n > 2, resolving a 358-year-old conjecture through the modularity of elliptic curves.",
+    "status": "axiomatized",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "algebraic-geometry",
+      "elliptic-curves",
+      "modular-forms",
+      "advanced",
+      "milestone"
+    ],
+    "dateAdded": "12/22/25",
+    "wiedijkNumber": 33,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 12
+  },
+  {
+    "id": "feuerbachs-theorem",
+    "title": "Feuerbach's Theorem",
+    "slug": "feuerbachs-theorem",
+    "description": "The nine-point circle of a triangle is tangent to its incircle and all three excircles. A beautiful result in triangle geometry.",
+    "status": "axiom-based",
+    "badge": "axiom-based",
+    "tags": [
+      "geometry",
+      "triangle",
+      "circle",
+      "tangent",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/29/25",
+    "wiedijkNumber": 29,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "four-color-theorem",
+    "title": "Four Color Theorem",
+    "slug": "four-color-theorem",
+    "description": "Every planar map can be colored with at most four colors such that no adjacent regions share a color. First major theorem proved by computer (1976), the proof sparked debates about the nature of mathematical truth.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "graph-theory",
+      "combinatorics",
+      "computer-assisted-proof",
+      "advanced"
+    ],
+    "dateAdded": "12/21/25",
+    "wiedijkNumber": 32,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 12
+  },
+  {
+    "id": "fourier-series",
+    "title": "Fourier Series",
+    "slug": "fourier-series",
+    "description": "Every periodic function can be represented as an infinite sum of sines and cosines (Fourier series). A cornerstone of analysis with applications throughout science.",
+    "status": "axiom-based",
+    "badge": "axiom-based",
+    "tags": [
+      "analysis",
+      "harmonic-analysis",
+      "convergence",
+      "series",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/29/25",
+    "wiedijkNumber": 76,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "friendship-theorem",
+    "title": "Friendship Theorem",
+    "slug": "friendship-theorem",
+    "description": "The Friendship Theorem (Erdős–Rényi–Sós, 1966): In any finite graph where every pair of distinct vertices has exactly one common neighbor, there exists a 'politician' vertex adjacent to all others.",
+    "status": "verified",
+    "badge": "wip",
+    "tags": [
+      "graph-theory",
+      "combinatorics",
+      "spectral-methods",
+      "intermediate"
+    ],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 83,
+    "mathlibCount": 3,
+    "sorries": 6,
+    "annotationCount": 4
+  },
+  {
+    "id": "fundamental-arithmetic",
+    "title": "Fundamental Theorem of Arithmetic",
+    "slug": "fundamental-arithmetic",
+    "description": "Every integer > 1 is uniquely representable as a product of primes. The cornerstone of number theory.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "primes",
+      "classic",
+      "beginner"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 80,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "fundamental-theorem-algebra",
+    "title": "Fundamental Theorem of Algebra",
+    "slug": "fundamental-theorem-algebra",
+    "description": "Every non-constant polynomial with complex coefficients has at least one complex root. This profound theorem reveals that the complex numbers are algebraically closed - they contain all solutions to polynomial equations.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "algebra",
+      "complex-analysis",
+      "polynomials",
+      "algebraic-closure",
+      "intermediate"
+    ],
+    "dateAdded": "12/21/25",
+    "wiedijkNumber": 2,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 7
+  },
+  {
+    "id": "fundamental-theorem-calculus",
+    "title": "Fundamental Theorem of Calculus",
+    "slug": "fundamental-theorem-calculus",
+    "description": "The profound connection between differentiation and integration: Newton and Leibniz's crowning achievement that unified the two pillars of calculus into a single coherent theory.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "analysis",
+      "calculus",
+      "integration",
+      "differentiation",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/21/25",
+    "wiedijkNumber": 15,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 9
+  },
+  {
+    "id": "gcd-algorithm",
+    "title": "Greatest Common Divisor Algorithm",
+    "slug": "gcd-algorithm",
+    "description": "The Euclidean algorithm correctly computes the GCD: gcd(a, b) = gcd(b, a mod b). One of the oldest algorithms still in use, dating back to Euclid's Elements (c. 300 BCE).",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "algorithms",
+      "divisibility",
+      "classic",
+      "beginner"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 69,
+    "mathlibCount": 6,
+    "sorries": 0,
+    "annotationCount": 16
+  },
+  {
+    "id": "gelfond-schneider",
+    "title": "Gelfond-Schneider Theorem",
+    "slug": "gelfond-schneider",
+    "description": "If a and b are algebraic numbers with a not equal to 0, 1 and b irrational, then a^b is transcendental. Resolves Hilbert's 7th Problem.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "transcendence",
+      "number-theory",
+      "hilbert-problems",
+      "intermediate"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 7,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "general-quartic",
+    "title": "Solution of the General Quartic",
+    "slug": "general-quartic",
+    "description": "Ferrari's method for solving quartic equations using a resolvent cubic. Every quartic x^4 + ax^3 + bx^2 + cx + d = 0 can be solved by radicals.",
+    "status": "verified",
+    "badge": "wip",
+    "tags": [
+      "algebra",
+      "polynomial",
+      "classic",
+      "hard"
+    ],
+    "dateAdded": "12/28/25",
+    "wiedijkNumber": 46,
+    "mathlibCount": 2,
+    "sorries": 8,
+    "annotationCount": 0
+  },
+  {
+    "id": "geometric-series",
+    "title": "Sum of a Geometric Series",
+    "slug": "geometric-series",
+    "description": "The classic formulas for finite and infinite geometric series: for |r| < 1, the infinite sum converges to 1/(1-r).",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "analysis",
+      "series",
+      "convergence",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 66,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
+    "id": "godel-incompleteness",
+    "title": "Gödel's First Incompleteness Theorem",
+    "slug": "godel-incompleteness",
+    "description": "Any consistent formal system capable of expressing basic arithmetic contains statements that are true but unprovable within the system. This 1931 theorem shattered Hilbert's program and revealed fundamental limits of formal reasoning.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "logic",
+      "foundations",
+      "incompleteness",
+      "self-reference",
+      "advanced"
+    ],
+    "dateAdded": "12/21/25",
+    "wiedijkNumber": 6,
+    "mathlibCount": 0,
+    "sorries": 0,
+    "annotationCount": 15
+  },
+  {
+    "id": "greens-theorem",
+    "title": "Green's Theorem",
+    "slug": "greens-theorem",
+    "description": "Green's theorem relates a line integral around a closed curve to a double integral over the enclosed region, connecting circulation to curl.",
+    "status": "axiom-based",
+    "badge": "axiom-based",
+    "tags": [
+      "analysis",
+      "vector-calculus",
+      "integration",
+      "stokes",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/29/25",
+    "wiedijkNumber": 21,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "halting-problem",
+    "title": "Undecidability of the Halting Problem",
+    "slug": "halting-problem",
+    "description": "Turing's 1936 proof that no algorithm can determine whether an arbitrary program halts, establishing fundamental limits on computation using the diagonal argument.",
+    "status": "verified",
+    "badge": "from-axioms",
+    "tags": [
+      "computability",
+      "undecidability",
+      "diagonalization",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/21/25",
+    "mathlibCount": 0,
+    "sorries": 0,
+    "annotationCount": 15
+  },
+  {
+    "id": "harmonic-divergence",
+    "title": "Divergence of the Harmonic Series",
+    "slug": "harmonic-divergence",
+    "description": "The harmonic series 1 + 1/2 + 1/3 + ... diverges, despite its terms approaching zero. A classic result with an elegant 14th-century proof.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "analysis",
+      "series",
+      "divergence",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 34,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 9
+  },
+  {
+    "id": "hermite-lindemann",
+    "title": "The Hermite-Lindemann Theorem",
+    "slug": "hermite-lindemann",
+    "description": "For any non-zero algebraic number alpha, e^alpha is transcendental. This implies the transcendence of both e and pi.",
+    "status": "axiom-based",
+    "badge": "axiom-based",
+    "tags": [
+      "number-theory",
+      "transcendental",
+      "exponential",
+      "algebraic",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/29/25",
+    "wiedijkNumber": 56,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "herons-formula",
+    "title": "Heron's Formula",
+    "slug": "herons-formula",
+    "description": "Area = √(s(s-a)(s-b)(s-c)) where s is the semi-perimeter. Computes triangle area from side lengths alone.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "geometry",
+      "trigonometry",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 57,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "hilbert-10",
+    "title": "Hilbert's Tenth Problem: Undecidability of Diophantine Equations",
+    "slug": "hilbert-10",
+    "description": "The MRDP theorem (1970) proves that no algorithm can determine whether an arbitrary Diophantine equation has integer solutions, answering Hilbert's 1900 challenge in the negative.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "computability",
+      "undecidability",
+      "number-theory",
+      "hilbert-problems",
+      "intermediate"
+    ],
+    "dateAdded": "12/28/25",
+    "hilbertNumber": 10,
+    "mathlibCount": 0,
+    "sorries": 0,
+    "annotationCount": 12
+  },
+  {
+    "id": "hilbert-11",
+    "title": "Hilbert's 11th Problem: Quadratic Forms",
+    "slug": "hilbert-11",
+    "description": "Classification of quadratic forms over number fields. The Hasse-Minkowski theorem provides a local-global principle for rational solutions.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "number-theory",
+      "quadratic-forms",
+      "hilbert-problems",
+      "advanced"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 11,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "hilbert-13",
+    "title": "Hilbert's 13th Problem: Superposition of Functions",
+    "slug": "hilbert-13",
+    "description": "The Kolmogorov-Arnold theorem (1956-57) disproves Hilbert's conjecture: every continuous function of n variables can be represented using functions of only one variable.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "analysis",
+      "topology",
+      "superposition",
+      "hilbert-problems",
+      "advanced"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 13,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "hilbert-14",
+    "title": "Hilbert's Fourteenth Problem: Finiteness of Invariant Systems",
+    "slug": "hilbert-14",
+    "description": "Hilbert's 14th problem asked whether the ring of invariants is always finitely generated. Nagata (1959) showed the answer is NO in general, but Hilbert-Mumford proved YES for reductive groups.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "invariant-theory",
+      "algebra",
+      "group-actions",
+      "hilbert-problems",
+      "noetherian",
+      "advanced"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 14,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 7
+  },
+  {
+    "id": "hilbert-15",
+    "title": "Hilbert's 15th Problem: Schubert Calculus",
+    "slug": "hilbert-15",
+    "description": "Rigorous foundation of Schubert's enumerative calculus for counting geometric configurations in Grassmannians.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "algebraic-geometry",
+      "intersection-theory",
+      "hilbert-problems",
+      "advanced"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 15,
+    "mathlibCount": 0,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "hilbert-16",
+    "title": "Hilbert's 16th Problem: Limit Cycles",
+    "slug": "hilbert-16",
+    "description": "The maximum number of limit cycles for polynomial vector fields remains one of the most notorious open problems in mathematics.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "dynamical-systems",
+      "differential-equations",
+      "hilbert-problems",
+      "advanced"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 16,
+    "mathlibCount": 0,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "hilbert-17",
+    "title": "Hilbert's 17th Problem: Sum of Squares",
+    "slug": "hilbert-17",
+    "description": "Artin's theorem: every non-negative polynomial is a sum of squares of rational functions, but not necessarily polynomials (Motzkin's counterexample).",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "algebra",
+      "real-algebraic-geometry",
+      "hilbert-problems",
+      "intermediate"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 17,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "hilbert-19",
+    "title": "Hilbert's Nineteenth Problem: Regularity of Variational Solutions",
+    "slug": "hilbert-19",
+    "description": "Hilbert's 1900 question on whether variational minimizers are analytic was resolved affirmatively by De Giorgi (1957) and Nash (1958): solutions of uniformly elliptic PDEs with smooth data are smooth.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "pde",
+      "calculus-of-variations",
+      "regularity-theory",
+      "hilbert-problems",
+      "elliptic-equations",
+      "intermediate"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 19,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 12
+  },
+  {
+    "id": "hilbert-20",
+    "title": "Hilbert's Twentieth Problem: Boundary Value Problems",
+    "slug": "hilbert-20",
+    "description": "Hilbert's 1900 question about the solvability of boundary value problems was resolved through Lax-Milgram (1954) for elliptic PDEs, but Lewy's example (1957) showed some smooth PDEs have no solutions.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "analysis",
+      "pde",
+      "functional-analysis",
+      "hilbert-problems",
+      "boundary-value",
+      "intermediate"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 20,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 11
+  },
+  {
+    "id": "hilbert-21",
+    "title": "Hilbert's 21st Problem: Riemann-Hilbert Problem",
+    "slug": "hilbert-21",
+    "description": "The Riemann-Hilbert problem asks whether a Fuchsian system exists with given singularities and monodromy. The answer is YES for irreducible representations (Plemelj, 1908), but NO in general (Bolibrukh, 1989).",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "complex-analysis",
+      "differential-equations",
+      "hilbert-problems",
+      "advanced"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 21,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "hilbert-22",
+    "title": "Hilbert's Twenty-Second Problem: Uniformization Theorem",
+    "slug": "hilbert-22",
+    "description": "The Uniformization Theorem (Koebe-Poincare, 1907) proves that every simply connected Riemann surface is conformally equivalent to the Riemann sphere, the complex plane, or the unit disk, completely solving Hilbert's call for uniformization by automorphic functions.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "complex-analysis",
+      "riemann-surfaces",
+      "uniformization",
+      "hilbert-problems",
+      "automorphic-functions",
+      "advanced"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 22,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 9
+  },
+  {
+    "id": "hilbert-23",
+    "title": "Hilbert's Twenty-Third Problem: Calculus of Variations",
+    "slug": "hilbert-23",
+    "description": "Hilbert's 1900 call for further development of the calculus of variations has been spectacularly answered through direct methods (Tonelli), weak solutions (Sobolev), optimal control (Pontryagin), and geometric measure theory.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "analysis",
+      "optimization",
+      "calculus-of-variations",
+      "hilbert-problems",
+      "research-program",
+      "intermediate"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 23,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 11
+  },
+  {
+    "id": "hilbert-3",
+    "title": "Hilbert's 3rd Problem: Scissors Congruence",
+    "slug": "hilbert-3",
+    "description": "The Dehn invariant proves that a cube and regular tetrahedron of equal volume are NOT scissors congruent, answering Hilbert's 3rd Problem.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "geometry",
+      "topology",
+      "hilbert-problems",
+      "intermediate"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 3,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "hilbert-4",
+    "title": "Hilbert's 4th Problem: Straight Line as Shortest Distance",
+    "slug": "hilbert-4",
+    "description": "Busemann's characterization of projective metrics where straight lines are geodesics, including Minkowski and Hilbert geometries.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "geometry",
+      "metric-spaces",
+      "hilbert-problems",
+      "intermediate"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 4,
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "hilbert-5",
+    "title": "Hilbert's 5th Problem: Lie Groups Without Differentiability",
+    "slug": "hilbert-5",
+    "description": "Are continuous groups automatically differential groups? The Montgomery-Zippin theorem (1952) shows that locally Euclidean topological groups are Lie groups.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "topology",
+      "lie-groups",
+      "hilbert-problems",
+      "advanced"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 5,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "hilbert-6",
+    "title": "Hilbert's Sixth Problem: Axiomatization of Physics",
+    "slug": "hilbert-6",
+    "description": "Hilbert's 1900 call for rigorous axiomatization of physics has been partially achieved through Kolmogorov's probability axioms (1933), von Neumann's quantum mechanics (1932), and other foundational frameworks.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "foundations",
+      "physics",
+      "probability",
+      "hilbert-problems",
+      "axiomatics",
+      "intermediate"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 6,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 11
+  },
+  {
+    "id": "hilbert-9-reciprocity",
+    "title": "Hilbert's Ninth Problem: The Most General Reciprocity Law",
+    "slug": "hilbert-9-reciprocity",
+    "description": "Hilbert's 9th problem asked for the most general reciprocity law in algebraic number fields. The answer is Artin reciprocity (1927), which unifies quadratic, cubic, and all higher reciprocity laws through class field theory.",
+    "status": "verified",
+    "badge": "axiom",
+    "tags": [
+      "number-theory",
+      "algebraic-number-theory",
+      "hilbert-problems",
+      "class-field-theory",
+      "advanced"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 9,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 11
+  },
+  {
+    "id": "hodge-conjecture",
+    "title": "The Hodge Conjecture",
+    "slug": "hodge-conjecture",
+    "description": "One of the seven Millennium Prize Problems. Every Hodge class on a projective variety is a rational combination of algebraic cycle classes.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "algebraic-geometry",
+      "topology",
+      "millennium-prize",
+      "advanced"
+    ],
+    "dateAdded": "12/29/25",
+    "millenniumProblem": "hodge",
+    "mathlibCount": 0,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "hurwitz-theorem",
+    "title": "Hurwitz's Theorem",
+    "slug": "hurwitz-theorem",
+    "description": "There are only four n-square identities: for n = 1, 2, 4, 8. This profound constraint explains why only the reals, complex numbers, quaternions, and octonions can be normed division algebras.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "algebra",
+      "number-theory",
+      "quaternions",
+      "division-algebras",
+      "advanced"
+    ],
+    "dateAdded": "12/26/25",
+    "mathlibCount": 2,
+    "sorries": 2,
+    "annotationCount": 15
+  },
+  {
+    "id": "inclusion-exclusion",
+    "title": "Principle of Inclusion/Exclusion",
+    "slug": "inclusion-exclusion",
+    "description": "The fundamental counting principle for unions of finite sets: |A ∪ B| = |A| + |B| - |A ∩ B|, and its generalization to three or more sets.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "combinatorics",
+      "set-theory",
+      "counting",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 96,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 9
+  },
+  {
+    "id": "infinitude-primes",
+    "title": "Infinitude of Prime Numbers",
+    "slug": "infinitude-primes",
+    "description": "Euclid's elegant proof that there are infinitely many prime numbers, formalized in Lean 4 with Mathlib.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "number-theory",
+      "primes",
+      "classic",
+      "euclid",
+      "beginner-friendly"
+    ],
+    "dateAdded": "12/21/25",
+    "wiedijkNumber": 11,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 13
+  },
+  {
+    "id": "intermediate-value-theorem",
+    "title": "Intermediate Value Theorem",
+    "slug": "intermediate-value-theorem",
+    "description": "A continuous function on a closed interval attains every value between its endpoints: the foundational theorem connecting topology to analysis.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "analysis",
+      "topology",
+      "continuity",
+      "connectedness",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 79,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 10
+  },
+  {
+    "id": "isoperimetric-theorem",
+    "title": "The Isoperimetric Theorem",
+    "slug": "isoperimetric-theorem",
+    "description": "Among all curves of a given perimeter, the circle encloses the maximum area. Equivalently, among all shapes of a given area, the circle has minimum perimeter.",
+    "status": "axiom-based",
+    "badge": "axiom-based",
+    "tags": [
+      "geometry",
+      "optimization",
+      "calculus-of-variations",
+      "inequality",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/29/25",
+    "wiedijkNumber": 43,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "isosceles-triangle",
+    "title": "Isosceles Triangle Theorem",
+    "slug": "isosceles-triangle",
+    "description": "In an isosceles triangle, the base angles are equal. Known as Pons Asinorum (Bridge of Asses).",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "geometry",
+      "euclidean",
+      "classic",
+      "beginner"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 65,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "kepler-conjecture",
+    "title": "Kepler Conjecture: Sphere Packing",
+    "slug": "kepler-conjecture",
+    "description": "The face-centered cubic lattice achieves the maximum sphere packing density of pi/(3*sqrt(2)). Part of Hilbert's 18th Problem, proven by Hales (1998).",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "geometry",
+      "combinatorics",
+      "hilbert-problems",
+      "advanced"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 18,
+    "mathlibCount": 0,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "knights-tour-oblique",
+    "title": "Knight's Tour Oblique Angles",
+    "slug": "knights-tour-oblique",
+    "description": "Every closed knight's tour has at least 4 oblique (>90 degree) turns, and exactly one tour achieves this minimum. Based on Donald Knuth's 2025 Christmas Lecture.",
+    "status": "axiomatized",
+    "badge": "original",
+    "tags": [
+      "combinatorics",
+      "graph-theory",
+      "knights-tour",
+      "symmetry",
+      "Knuth",
+      "D4",
+      "winding-number"
+    ],
+    "dateAdded": "12/25/25",
+    "annotationCount": 26
+  },
+  {
+    "id": "konigsberg",
+    "title": "Königsberg Bridges Problem",
+    "slug": "konigsberg",
+    "description": "Euler's 1736 proof that it's impossible to walk through Königsberg crossing each of its seven bridges exactly once. This problem founded graph theory.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "graph-theory",
+      "combinatorics",
+      "classic",
+      "beginner"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 54,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 11
+  },
+  {
+    "id": "kroneckers-jugendtraum",
+    "title": "Kronecker's Jugendtraum (Hilbert's 12th)",
+    "slug": "kroneckers-jugendtraum",
+    "description": "Hilbert's 12th Problem asks to extend the Kronecker-Weber theorem: find explicit generators for all abelian extensions of number fields.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "number-theory",
+      "class-field-theory",
+      "hilbert-problems",
+      "advanced"
+    ],
+    "dateAdded": "12/29/25",
+    "hilbertNumber": 12,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "lagrange-four-squares",
+    "title": "Lagrange's Four Squares Theorem",
+    "slug": "lagrange-four-squares",
+    "description": "Every natural number can be expressed as the sum of four squares, a profound result connecting number theory to quaternion algebra.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "quaternions",
+      "algebra",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 19,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 9
+  },
+  {
+    "id": "lagrange-theorem",
+    "title": "Lagrange's Theorem",
+    "slug": "lagrange-theorem",
+    "description": "For a finite group G and subgroup H, the order of H divides the order of G. Fundamental to group theory.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "group-theory",
+      "algebra",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 71,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "law-of-cosines",
+    "title": "Law of Cosines",
+    "slug": "law-of-cosines",
+    "description": "The generalization of the Pythagorean theorem to arbitrary triangles: c^2 = a^2 + b^2 - 2ab*cos(C), which reduces to the Pythagorean theorem when C = 90 degrees.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "geometry",
+      "trigonometry",
+      "linear-algebra",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 94,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 7
+  },
+  {
+    "id": "laws-of-large-numbers",
+    "title": "Laws of Large Numbers",
+    "slug": "laws-of-large-numbers",
+    "description": "The Laws of Large Numbers describe how sample averages converge to expected values. The Weak Law shows convergence in probability, while the Strong Law shows almost sure convergence.",
+    "status": "verified",
+    "badge": "wip",
+    "tags": [
+      "probability",
+      "statistics",
+      "analysis",
+      "convergence"
+    ],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 59,
+    "mathlibCount": 4,
+    "sorries": 4,
+    "annotationCount": 5
+  },
+  {
+    "id": "lebesgue-measure",
+    "title": "Lebesgue Measure",
+    "slug": "lebesgue-measure",
+    "description": "Lebesgue measure extends the notion of length/area/volume to a rich class of sets, enabling the powerful Lebesgue integral that revolutionized analysis.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "analysis",
+      "measure-theory",
+      "integration",
+      "topology",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/29/25",
+    "wiedijkNumber": 86,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "leibniz-pi",
+    "title": "Leibniz's Series for Pi",
+    "slug": "leibniz-pi",
+    "description": "The Leibniz formula for pi: the alternating series 1 - 1/3 + 1/5 - 1/7 + ... converges to pi/4.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "analysis",
+      "series",
+      "pi",
+      "arctangent",
+      "wiedijk-100",
+      "infinite-series"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 26,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "lhopital",
+    "title": "L'Hopital's Rule",
+    "slug": "lhopital",
+    "description": "A fundamental technique for evaluating limits of indeterminate forms: if f(x)/g(x) approaches 0/0 or infinity/infinity, then the limit equals the limit of f'(x)/g'(x).",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "calculus",
+      "limits",
+      "derivatives",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 64,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 6
+  },
+  {
+    "id": "liouville-theorem",
+    "title": "Liouville's Theorem on Transcendental Numbers",
+    "slug": "liouville-theorem",
+    "description": "Liouville numbers are transcendental. This provides the first explicit construction of transcendental numbers via rational approximation bounds.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "transcendental",
+      "approximation",
+      "algebraic",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/29/25",
+    "wiedijkNumber": 18,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "mathematical-induction",
+    "title": "The Principle of Mathematical Induction",
+    "slug": "mathematical-induction",
+    "description": "For any predicate P on natural numbers, if P(0) holds and P(n) implies P(n+1) for all n, then P(n) holds for all n. Peano's fifth axiom and the foundation of recursive proofs.",
+    "status": "verified",
+    "badge": "pedagogical",
+    "tags": [
+      "set-theory",
+      "logic",
+      "foundations",
+      "induction",
+      "classic",
+      "easy"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 74,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 14
+  },
+  {
+    "id": "mean-value-theorem",
+    "title": "Mean Value Theorem",
+    "slug": "mean-value-theorem",
+    "description": "If f is continuous on [a,b] and differentiable on (a,b), there exists c where f'(c) = (f(b)-f(a))/(b-a).",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "calculus",
+      "analysis",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 75,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "minkowski-theorem",
+    "title": "Minkowski's Fundamental Theorem",
+    "slug": "minkowski-theorem",
+    "description": "A convex, centrally symmetric body with volume greater than 2^n contains a non-zero lattice point. Foundational for the geometry of numbers.",
+    "status": "axiom-based",
+    "badge": "axiom-based",
+    "tags": [
+      "number-theory",
+      "geometry",
+      "convex",
+      "lattice",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/29/25",
+    "wiedijkNumber": 40,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "morleys-theorem",
+    "title": "Morley's Theorem",
+    "slug": "morleys-theorem",
+    "description": "The three angle trisectors of any triangle, taken in pairs, meet to form an equilateral triangle. A surprising result discovered in 1899.",
+    "status": "axiom-based",
+    "badge": "axiom-based",
+    "tags": [
+      "geometry",
+      "triangle",
+      "trisector",
+      "equilateral",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/29/25",
+    "wiedijkNumber": 84,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "navier-stokes-regularity",
+    "title": "Global Regularity for Navier-Stokes",
+    "slug": "navier-stokes",
+    "description": "A conditional regularity theorem for the Navier-Stokes Millennium Prize Problem. We identify the precise structural obstruction (scale-bridging concentration) and formulate the minimal Bubble Persistence hypothesis B′ under which all known tools close: B′ → Type I → ESŠ → regularity.",
+    "status": "revised",
+    "badge": "wip",
+    "tags": [
+      "PDE",
+      "fluid-dynamics",
+      "millennium-problem",
+      "regularity",
+      "K-ball-concentration"
+    ],
+    "dateAdded": "12/21/25",
+    "millenniumProblem": "navier-stokes",
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 17
+  },
+  {
+    "id": "p-vs-np",
+    "title": "P vs NP Problem",
+    "slug": "p-vs-np",
+    "description": "One of the seven Millennium Prize Problems. Can every problem whose solution can be verified quickly also be solved quickly?",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "computability",
+      "complexity-theory",
+      "millennium-prize",
+      "intermediate"
+    ],
+    "dateAdded": "12/29/25",
+    "millenniumProblem": "p-vs-np",
+    "mathlibCount": 0,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "parallel-postulate-independence",
+    "title": "Independence of the Parallel Postulate",
+    "slug": "parallel-postulate-independence",
+    "description": "Euclid's parallel postulate is independent of the other axioms of geometry. There exist consistent geometries (Euclidean and hyperbolic) that differ on this postulate.",
+    "status": "axiom-based",
+    "badge": "axiom-based",
+    "tags": [
+      "geometry",
+      "foundations",
+      "model-theory",
+      "non-euclidean",
+      "wiedijk-100",
+      "independence"
+    ],
+    "dateAdded": "12/29/25",
+    "wiedijkNumber": 12,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "partition-theorem",
+    "title": "Euler's Partition Theorem",
+    "slug": "partition-theorem",
+    "description": "The number of partitions of n into odd parts equals the number of partitions into distinct parts. A beautiful bijection in combinatorics.",
+    "status": "axiom-based",
+    "badge": "axiom-based",
+    "tags": [
+      "combinatorics",
+      "number-theory",
+      "partition",
+      "bijection",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/29/25",
+    "wiedijkNumber": 45,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "pascals-hexagon",
+    "title": "Pascal's Hexagon Theorem",
+    "slug": "pascals-hexagon",
+    "description": "If a hexagon is inscribed in a conic section, the three pairs of opposite sides meet at collinear points. A fundamental result in projective geometry.",
+    "status": "axiom-based",
+    "badge": "axiom-based",
+    "tags": [
+      "geometry",
+      "projective",
+      "conic",
+      "collinearity",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/29/25",
+    "wiedijkNumber": 28,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "pell-equation",
+    "title": "Solutions to Pell's Equation",
+    "slug": "pell-equation",
+    "description": "Pell's equation x^2 - Dy^2 = 1 always has infinitely many solutions when D is not a perfect square, all generated from a unique fundamental solution.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "diophantine-equations",
+      "continued-fractions",
+      "intermediate"
+    ],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 39,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "perfect-numbers",
+    "title": "Perfect Number Theorem",
+    "slug": "perfect-numbers",
+    "description": "The Euclid-Euler theorem: a number is even and perfect if and only if it has the form 2^(p-1)(2^p - 1) where 2^p - 1 is a Mersenne prime.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "perfect-numbers",
+      "mersenne-primes",
+      "divisors",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 70,
+    "mathlibCount": 4,
+    "sorries": 0,
+    "annotationCount": 14
+  },
+  {
+    "id": "pi-transcendental",
+    "title": "Transcendence of Pi",
+    "slug": "pi-transcendental",
+    "description": "Pi is transcendental: it is not a root of any polynomial with integer coefficients. This proves the impossibility of squaring the circle with ruler and compass.",
+    "status": "axiom-based",
+    "badge": "axiom-based",
+    "tags": [
+      "number-theory",
+      "transcendental",
+      "pi",
+      "geometry",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/29/25",
+    "wiedijkNumber": 53,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "picks-theorem",
+    "title": "Pick's Theorem",
+    "slug": "picks-theorem",
+    "description": "The area of a simple lattice polygon equals I + B/2 - 1, where I is the number of interior lattice points and B is the number of boundary lattice points.",
+    "status": "axiom-based",
+    "badge": "axiom-based",
+    "tags": [
+      "geometry",
+      "combinatorics",
+      "lattice",
+      "area",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/29/25",
+    "wiedijkNumber": 92,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "platonic-solids",
+    "title": "The Number of Platonic Solids",
+    "slug": "platonic-solids",
+    "description": "There are exactly five Platonic solids (regular convex polyhedra): the tetrahedron, cube, octahedron, dodecahedron, and icosahedron.",
+    "status": "complete",
+    "badge": "complete",
+    "tags": [
+      "geometry",
+      "polyhedra",
+      "combinatorics",
+      "wiedijk-100",
+      "topology"
+    ],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 50,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "poincare-conjecture",
+    "title": "The Poincare Conjecture",
+    "slug": "poincare-conjecture",
+    "description": "Every simply connected, closed 3-manifold is homeomorphic to the 3-sphere. Solved by Grigori Perelman in 2002-2003 using Ricci flow with surgery.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "topology",
+      "differential-geometry",
+      "millennium-prize",
+      "advanced"
+    ],
+    "dateAdded": "12/29/25",
+    "millenniumProblem": "poincare",
+    "mathlibCount": 0,
+    "sorries": 0,
+    "annotationCount": 10
+  },
+  {
+    "id": "prime-number-theorem",
+    "title": "The Prime Number Theorem",
+    "slug": "prime-number-theorem",
+    "description": "The prime counting function pi(x) is asymptotically equivalent to x/ln(x). This describes the distribution of prime numbers among positive integers.",
+    "status": "axiom-based",
+    "badge": "axiom-based",
+    "tags": [
+      "number-theory",
+      "analysis",
+      "primes",
+      "asymptotic",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/29/25",
+    "wiedijkNumber": 5,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "prime-reciprocal-divergence",
+    "title": "Divergence of Prime Reciprocals",
+    "slug": "prime-reciprocal-divergence",
+    "description": "The sum of reciprocals of all prime numbers diverges: 1/2 + 1/3 + 1/5 + 1/7 + 1/11 + ... = infinity.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "analysis",
+      "primes",
+      "wiedijk-100",
+      "divergence",
+      "series"
+    ],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 81,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "product-of-segments-of-chords",
+    "title": "Product of Segments of Chords",
+    "slug": "product-of-segments-of-chords",
+    "description": "If two chords of a circle intersect at point P, then the product of the segments of one chord equals the product of the segments of the other: PA * PB = PC * PD.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "geometry",
+      "circles",
+      "classic",
+      "beginner"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 55,
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 8
+  },
+  {
+    "id": "ptolemys-theorem",
+    "title": "Ptolemy's Theorem",
+    "slug": "ptolemys-theorem",
+    "description": "For a cyclic quadrilateral, the product of diagonals equals the sum of products of opposite sides: AC·BD = AB·CD + BC·DA",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "geometry",
+      "circle",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 95,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "puiseux-theorem",
+    "title": "Puiseux's Theorem",
+    "slug": "puiseux-theorem",
+    "description": "The field of Puiseux series (fractional power series) is algebraically closed. This provides a concrete algebraic closure of the Laurent series field.",
+    "status": "axiom-based",
+    "badge": "axiom-based",
+    "tags": [
+      "algebra",
+      "field-theory",
+      "series",
+      "algebraic-closure",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/29/25",
+    "wiedijkNumber": 41,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "pythagorean-theorem",
+    "title": "Pythagorean Theorem",
+    "slug": "pythagorean-theorem",
+    "description": "The most famous theorem in mathematics: in a right triangle, the square of the hypotenuse equals the sum of the squares of the other two sides. a² + b² = c²",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "geometry",
+      "inner-product",
+      "classic",
+      "beginner"
+    ],
+    "dateAdded": "12/21/25",
+    "wiedijkNumber": 4,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 12
+  },
+  {
+    "id": "pythagorean-triples",
+    "title": "Formula for Pythagorean Triples",
+    "slug": "pythagorean-triples",
+    "description": "All primitive Pythagorean triples (a,b,c) with a² + b² = c² are given by a = m² - n², b = 2mn, c = m² + n² for coprime m > n > 0.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "geometry",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 23,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "quadratic-reciprocity",
+    "title": "Law of Quadratic Reciprocity",
+    "slug": "quadratic-reciprocity",
+    "description": "Gauss's 'golden theorem' of number theory: for distinct odd primes p and q, the Legendre symbols (p/q) and (q/p) are equal unless both p and q are congruent to 3 mod 4.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "primes",
+      "modular-arithmetic",
+      "classic",
+      "advanced"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 7,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 7
+  },
+  {
+    "id": "ramanujan-sum-fallacy",
+    "title": "The Ramanujan Sum Fallacy",
+    "slug": "ramanujan-sum-fallacy",
+    "description": "A demonstration of how Lean catches the famous fallacious 'proof' that 1+2+3+... = -1/12, showing why mathematical rigor matters.",
+    "status": "disputed",
+    "badge": "fallacy",
+    "tags": [
+      "fallacy",
+      "divergent-series",
+      "analysis",
+      "zeta-function",
+      "educational"
+    ],
+    "dateAdded": "12/21/25",
+    "mathlibCount": 2,
+    "sorries": 9,
+    "annotationCount": 16
+  },
+  {
+    "id": "ramseys-theorem",
+    "title": "Ramsey's Theorem",
+    "slug": "ramseys-theorem",
+    "description": "Frank Ramsey's foundational theorem in combinatorics: for any 2-coloring of the complete graph K_n with sufficiently large n, there exists a monochromatic clique.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "combinatorics",
+      "graph-theory",
+      "ramsey-theory",
+      "pigeonhole",
+      "classic"
+    ],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 31,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 8
+  },
+  {
+    "id": "randomized-maxcut",
+    "title": "Randomized MaxCut Approximation",
+    "slug": "randomized-maxcut",
+    "description": "A formal proof that a simple randomized algorithm achieves a 1/2-approximation for the NP-Complete Maximum Cut problem, using linearity of expectation.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "graph-theory",
+      "algorithms",
+      "probability",
+      "approximation",
+      "randomized"
+    ],
+    "dateAdded": "12/24/25",
+    "mathlibCount": 4,
+    "sorries": 0,
+    "annotationCount": 9
+  },
+  {
+    "id": "riemann-hypothesis",
+    "title": "The Riemann Hypothesis",
+    "slug": "riemann-hypothesis",
+    "description": "A formalization of the Riemann Hypothesis, one of the seven Millennium Prize Problems. We state RH precisely using Mathlib's zeta function, prove key equivalences (Robin's inequality, Mertens bound), and document partial results like Hardy's theorem on infinitely many zeros on the critical line.",
+    "status": "verified",
+    "badge": "conjecture",
+    "tags": [
+      "number-theory",
+      "analytic-number-theory",
+      "millennium-problem",
+      "open-conjecture",
+      "zeta-function",
+      "prime-distribution"
+    ],
+    "dateAdded": "12/27/25",
+    "hilbertNumber": 8,
+    "millenniumProblem": "riemann",
+    "mathlibCount": 4,
+    "sorries": 11,
+    "annotationCount": 16
+  },
+  {
+    "id": "russell-1-plus-1",
+    "title": "Russell's 1+1=2",
+    "slug": "russell-1-plus-1",
+    "description": "The legendary proof that 1+1=2, which famously took 362 pages in Principia Mathematica but is trivial in modern type theory.",
+    "status": "verified",
+    "badge": "pedagogical",
+    "tags": [
+      "foundations",
+      "peano-arithmetic",
+      "type-theory",
+      "classic",
+      "beginner"
+    ],
+    "dateAdded": "12/21/25",
+    "mathlibCount": 0,
+    "sorries": 0,
+    "annotationCount": 15
+  },
+  {
+    "id": "schroeder-bernstein",
+    "title": "Schroeder-Bernstein Theorem",
+    "slug": "schroeder-bernstein",
+    "description": "If there exist injections f: A to B and g: B to A, then there exists a bijection between A and B. This establishes that cardinality is antisymmetric.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "set-theory",
+      "cardinality",
+      "bijections",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 25,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 12
+  },
+  {
+    "id": "solution-of-cubic",
+    "title": "Solution of the Cubic Equation",
+    "slug": "solution-of-cubic",
+    "description": "Cardano's formula provides explicit radical solutions to cubic equations. The formula was discovered in the 16th century during the Italian mathematical renaissance.",
+    "status": "axiom-based",
+    "badge": "axiom-based",
+    "tags": [
+      "algebra",
+      "polynomial",
+      "cubic",
+      "radicals",
+      "wiedijk-100",
+      "classic"
+    ],
+    "dateAdded": "12/29/25",
+    "wiedijkNumber": 37,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "sqrt2-examples",
+    "title": "Basic Lean Examples",
+    "slug": "sqrt2-examples",
+    "description": "A collection of simple example proofs demonstrating basic Lean tactics including non-negativity of squares and implication transitivity.",
+    "status": "verified",
+    "badge": "pedagogical",
+    "tags": [
+      "pedagogical",
+      "basics",
+      "tactics",
+      "tutorial"
+    ],
+    "dateAdded": "12/27/25",
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "sqrt2-from-axioms",
+    "title": "Square Root of 2 is Irrational (From Axioms)",
+    "slug": "sqrt2-from-axioms",
+    "description": "A complete proof that sqrt(2) is irrational built from first principles, demonstrating the classical proof by contradiction with even/odd analysis.",
+    "status": "verified",
+    "badge": "pedagogical",
+    "tags": [
+      "number-theory",
+      "irrationality",
+      "pedagogical",
+      "first-principles",
+      "classic"
+    ],
+    "dateAdded": "12/27/25",
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "sqrt2-irrational",
+    "title": "Irrationality of Square Roots",
+    "slug": "sqrt2-irrational",
+    "description": "The classic proof that √2 is irrational, generalized to show √n is irrational for any non-perfect-square n. Covers √2, √3, √5, √6, √7 and the general theorem.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "classic",
+      "irrationality",
+      "generalization"
+    ],
+    "dateAdded": "12/21/25",
+    "wiedijkNumber": 1,
+    "mathlibCount": 5,
+    "sorries": 0,
+    "annotationCount": 17
+  },
+  {
+    "id": "stirling-formula",
+    "title": "Stirling's Formula",
+    "slug": "stirling-formula",
+    "description": "Stirling's approximation for factorials: n! ~ sqrt(2*pi*n) * (n/e)^n. The ratio approaches 1 as n goes to infinity.",
+    "status": "partial",
+    "badge": "mathlib",
+    "tags": [
+      "analysis",
+      "asymptotics",
+      "factorials",
+      "wiedijk-100",
+      "approximation"
+    ],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 90,
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "subset-count",
+    "title": "Number of Subsets of a Set",
+    "slug": "subset-count",
+    "description": "A finite set with n elements has exactly 2^n subsets. This fundamental result connects set theory to binary counting.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "set-theory",
+      "combinatorics",
+      "counting",
+      "classic",
+      "beginner"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 52,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 11
+  },
+  {
+    "id": "sum-of-kth-powers",
+    "title": "Sum of kth Powers (Faulhaber's Formulas)",
+    "slug": "sum-of-kth-powers",
+    "description": "Closed-form formulas for sums of consecutive kth powers, including the remarkable identity that the sum of cubes equals the square of the sum.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "algebra",
+      "combinatorics",
+      "sums",
+      "wiedijk-100",
+      "induction"
+    ],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 77,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "sylow-theorems",
+    "title": "Sylow's Theorems",
+    "slug": "sylow-theorems",
+    "description": "The three Sylow theorems: existence of Sylow p-subgroups, their conjugacy, and counting constraints. Fundamental structure theorems for finite groups.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "group-theory",
+      "algebra",
+      "finite-groups",
+      "wiedijk-100",
+      "subgroups"
+    ],
+    "dateAdded": "12/27/25",
+    "wiedijkNumber": 72,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "taylor-theorem",
+    "title": "Taylor's Theorem",
+    "slug": "taylor-theorem",
+    "description": "A smooth function can be approximated by its Taylor polynomial, with explicit remainder terms (Lagrange and Cauchy forms).",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "calculus",
+      "analysis",
+      "approximation",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 35,
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "three-place-identity",
+    "title": "Universality of Three-Place Identity",
+    "slug": "three-place-identity",
+    "description": "Tom Etter's Universality Theorem: three-place relative identity is foundationally adequate for all of mathematics, establishing mutual interpretability with ZF set theory.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "foundations",
+      "set-theory",
+      "logic",
+      "identity",
+      "philosophy",
+      "zfc",
+      "universal-algebra"
+    ],
+    "dateAdded": "12/24/25",
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 13
+  },
+  {
+    "id": "triangle-angle-sum",
+    "title": "Sum of Angles of a Triangle",
+    "slug": "triangle-angle-sum",
+    "description": "The sum of the interior angles of a triangle equals 180° (π radians). One of the most fundamental results in Euclidean geometry.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "geometry",
+      "euclidean",
+      "classic",
+      "beginner"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 27,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "triangle-inequality",
+    "title": "The Triangle Inequality",
+    "slug": "triangle-inequality",
+    "description": "The fundamental inequality stating that the sum of any two sides of a triangle exceeds the third side. For real numbers: |x + y| ≤ |x| + |y|.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "geometry",
+      "analysis",
+      "metric-spaces",
+      "normed-spaces",
+      "wiedijk-100",
+      "classic",
+      "euclid"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 91,
+    "mathlibCount": 4,
+    "sorries": 0,
+    "annotationCount": 9
+  },
+  {
+    "id": "triangular-reciprocals",
+    "title": "Sum of Reciprocals of Triangular Numbers",
+    "slug": "triangular-reciprocals",
+    "description": "The sum of reciprocals of triangular numbers equals 2: ∑(2/(n(n+1))) = 2. A beautiful telescoping series result.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "analysis",
+      "series",
+      "combinatorics",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 42,
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  },
+  {
+    "id": "wilsons-theorem",
+    "title": "Wilson's Theorem",
+    "slug": "wilsons-theorem",
+    "description": "A natural number n > 1 is prime if and only if (n-1)! is congruent to -1 modulo n. A beautiful characterization connecting factorials and primality.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "primes",
+      "modular-arithmetic",
+      "classic",
+      "intermediate"
+    ],
+    "dateAdded": "12/26/25",
+    "wiedijkNumber": 51,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 10
+  },
+  {
+    "id": "yang-mills",
+    "title": "Yang-Mills Existence and Mass Gap",
+    "slug": "yang-mills",
+    "description": "One of the seven Millennium Prize Problems. Prove that quantum Yang-Mills theory exists and has a positive mass gap.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "mathematical-physics",
+      "quantum-field-theory",
+      "millennium-prize",
+      "advanced"
+    ],
+    "dateAdded": "12/29/25",
+    "millenniumProblem": "yang-mills",
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 0
+  }
+]

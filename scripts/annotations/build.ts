@@ -164,6 +164,67 @@ function processLineBased(config: ProofConfig): { success: boolean; errors: stri
 }
 
 /**
+ * Generate lightweight listings.json for HomePage
+ */
+function generateListings(proofs: ProofConfig[]): void {
+  interface ProofListing {
+    id: string;
+    title: string;
+    slug: string;
+    description: string;
+    status: 'verified' | 'pending' | 'disputed';
+    badge?: string;
+    tags: string[];
+    dateAdded?: string;
+    wiedijkNumber?: number;
+    hilbertNumber?: number;
+    millenniumProblem?: string;
+    mathlibCount?: number;
+    sorries?: number;
+    annotationCount: number;
+  }
+
+  const listings: ProofListing[] = [];
+
+  for (const proof of proofs) {
+    const metaPath = path.join(proof.dataDir, 'meta.json');
+    const annotationsPath = path.join(proof.dataDir, 'annotations.json');
+
+    if (!fs.existsSync(metaPath)) continue;
+
+    const meta = JSON.parse(fs.readFileSync(metaPath, 'utf-8'));
+
+    // Count annotations
+    let annotationCount = 0;
+    if (fs.existsSync(annotationsPath)) {
+      const annotations = JSON.parse(fs.readFileSync(annotationsPath, 'utf-8'));
+      annotationCount = Array.isArray(annotations) ? annotations.length : 0;
+    }
+
+    listings.push({
+      id: meta.id || proof.id,
+      title: meta.title || proof.id,
+      slug: meta.slug || proof.id,
+      description: meta.description || '',
+      status: meta.meta?.status || 'pending',
+      badge: meta.meta?.badge,
+      tags: meta.meta?.tags || [],
+      dateAdded: meta.meta?.dateAdded,
+      wiedijkNumber: meta.meta?.wiedijkNumber,
+      hilbertNumber: meta.meta?.hilbertNumber,
+      millenniumProblem: meta.meta?.millenniumProblem,
+      mathlibCount: meta.meta?.mathlibDependencies?.length,
+      sorries: meta.meta?.sorries,
+      annotationCount,
+    });
+  }
+
+  const outputPath = path.join(PROOFS_DATA_DIR, 'listings.json');
+  fs.writeFileSync(outputPath, JSON.stringify(listings, null, 2) + '\n');
+  console.log(`\n📋 Generated listings.json (${listings.length} proofs, ${Math.round(fs.statSync(outputPath).size / 1024)}KB)`);
+}
+
+/**
  * Main build function
  */
 function build(options: { strict: boolean; verbose: boolean }): boolean {
@@ -196,6 +257,9 @@ function build(options: { strict: boolean; verbose: boolean }): boolean {
       }
     }
   }
+
+  // Generate lightweight listings for HomePage
+  generateListings(proofs);
 
   console.log(`\n📊 Summary:`);
   console.log(`   Anchor-based: ${anchorProofs} proofs`);

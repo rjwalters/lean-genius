@@ -10,7 +10,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
-import { proofs } from '@/data/proofs'
+import { listings } from '@/data/proofs'
 import { User, Check, AlertCircle, MessageSquare, ExternalLink } from 'lucide-react'
 
 interface ProfileModalProps {
@@ -94,8 +94,8 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
   }
 
   const getProofTitle = (proofId: string): string => {
-    const proofData = proofs[proofId]
-    return proofData?.proof.title || proofId
+    const listing = listings.find(l => l.id === proofId || l.slug === proofId)
+    return listing?.title || proofId
   }
 
   const formatRelativeTime = (timestamp: number): string => {

@@ -35,8 +35,8 @@ export default defineConfig({
           if (id.includes('node_modules/react-markdown')) return 'vendor-markdown'
           if (id.includes('node_modules/@radix-ui')) return 'vendor-ui'
           if (id.includes('node_modules/lucide-react')) return 'vendor-icons'
-          // Proof data chunk
-          if (id.includes('src/data/proofs')) return 'proof-data'
+          // Per-proof chunks (dynamic imports handle this automatically)
+          // listings.json stays in main bundle (small, needed for HomePage)
         },
       },
     },

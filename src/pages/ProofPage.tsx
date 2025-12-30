@@ -1,8 +1,8 @@
-import { useState, useMemo, useCallback, useRef } from 'react'
+import { useState, useMemo, useCallback, useRef, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { ProofViewer, AnnotationPanel, TableOfContents, ProofOverview, ProofConclusion } from '@/components/proof'
-import { getProof } from '@/data/proofs'
-import type { Annotation, ProofSection } from '@/types/proof'
+import { getProofAsync } from '@/data/proofs'
+import type { Annotation, ProofSection, ProofData } from '@/types/proof'
 import { Menu } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -15,10 +15,21 @@ import { ProofBadge } from '@/components/ui/proof-badge'
 
 export function ProofPage() {
   const { slug } = useParams<{ slug: string }>()
-  const proofData = getProof(slug || '')
+  const [proofData, setProofData] = useState<ProofData | null>(null)
+  const [loading, setLoading] = useState(true)
   const [selectedLine, setSelectedLine] = useState<number | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const viewerRef = useRef<HTMLDivElement>(null)
+
+  // Load proof data asynchronously
+  useEffect(() => {
+    setLoading(true)
+    setProofData(null)
+    getProofAsync(slug || '').then((data) => {
+      setProofData(data || null)
+      setLoading(false)
+    })
+  }, [slug])
 
   // Find annotation for selected line
   const selectedAnnotation = useMemo<Annotation | null>(() => {
@@ -49,6 +60,15 @@ export function ProofPage() {
   const handleAnnotationClose = useCallback(() => {
     setSelectedLine(null)
   }, [])
+
+  if (loading) {
+    return (
+      <div className="h-screen flex flex-col items-center justify-center gap-4">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-annotation" />
+        <p className="text-muted-foreground">Loading proof...</p>
+      </div>
+    )
+  }
 
   if (!proofData) {
     return (

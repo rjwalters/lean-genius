@@ -294,6 +294,27 @@ export interface ProofData {
 }
 
 /**
+ * Lightweight proof metadata for gallery listing.
+ * Contains only the fields needed by HomePage for display and filtering.
+ */
+export interface ProofListing {
+  id: string
+  title: string
+  slug: string
+  description: string
+  status: 'verified' | 'pending' | 'disputed'
+  badge?: ProofBadge
+  tags: string[]
+  dateAdded?: string
+  wiedijkNumber?: number
+  hilbertNumber?: number
+  millenniumProblem?: MillenniumProblem
+  mathlibCount?: number
+  sorries?: number
+  annotationCount: number
+}
+
+/**
  * Version information for a proof with multiple revisions
  */
 export interface ProofVersionInfo {
