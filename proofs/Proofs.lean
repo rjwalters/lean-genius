@@ -62,6 +62,7 @@ import Proofs.Hilbert10
 import Proofs.Hilbert11_QuadraticForms
 import Proofs.Hilbert16
 import Proofs.Hilbert17SumOfSquares
+import Proofs.Hilbert21RiemannHilbert
 import Proofs.Hilbert3ScissorsCongruence
 import Proofs.Hilbert4Geodesics
 import Proofs.HodgeConjecture

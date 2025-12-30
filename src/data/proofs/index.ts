@@ -129,6 +129,7 @@ import { birchSwinnertonDyerData } from './birch-swinnerton-dyer'
 import { hilbert15Data } from './hilbert-15'
 import { hilbert4Data } from './hilbert-4'
 import { hilbert6Data } from './hilbert-6'
+import { hilbert21Data } from './hilbert-21'
 import type { ProofData } from '@/types/proof'
 
 export const proofs: Record<string, ProofData> = {
@@ -263,6 +264,7 @@ export const proofs: Record<string, ProofData> = {
   'hilbert-15': hilbert15Data,
   'hilbert-4': hilbert4Data,
   'hilbert-6': hilbert6Data,
+  'hilbert-21': hilbert21Data,
 }
 
 export function getProof(slug: string): ProofData | undefined {
