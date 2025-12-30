@@ -2276,10 +2276,9 @@ private def minimalObliqueTourSquares : List Square := [
   (⟨3, by omega⟩, ⟨3, by omega⟩), (⟨1, by omega⟩, ⟨2, by omega⟩)
 ]
 
--- NOTE: The following proofs are marked `sorry` due to computational limits in Lean's
--- `decide` tactic on 64-element lists. These properties have been verified externally:
--- 1. Python script: proofs/scripts/find_tour_t.py (validates knight moves, uniqueness)
--- 2. Knuth's census: fasc8a.pdf Fig. A-19(t) confirms this is the unique 4-oblique tour
+-- NOTE: Tour properties (nodup, path validity, closure) are verified via `native_decide`.
+-- The uniqueness of this tour as the only 4-oblique tour (up to D4 symmetry) is accepted
+-- as an axiom based on Knuth's computational enumeration (see `knuth_unique_four_oblique`).
 
 -- Helper to check all consecutive pairs are knight-adjacent
 private def checkPath (squares : List Square) : Bool :=
