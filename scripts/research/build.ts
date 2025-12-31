@@ -507,6 +507,12 @@ function build(): void {
   const listings: ResearchListing[] = []
 
   for (const entry of registry.problems) {
+    // Skip template-derived problems (low-value stamp collecting)
+    if (entry.template) {
+      console.log(`   Skipping ${entry.slug} (template-derived)`)
+      continue
+    }
+
     console.log(`   Processing ${entry.slug}...`)
     const problem = processProblem(entry.slug, entry)
     if (problem) {

@@ -95,8 +95,8 @@ export const PHASE_INFO: Record<ResearchPhase, PhaseInfo> = {
   },
   BREAKTHROUGH: {
     phase: 'BREAKTHROUGH',
-    label: 'Breakthrough',
-    description: 'Success!',
+    label: 'Success',
+    description: 'Proof completed',
     color: '#22C55E',
     order: 7
   },
