@@ -22,6 +22,24 @@ You operate an OODA loop (Observe → Orient → Decide → Act) to:
 - The knowledge base of "what doesn't work" is the primary output
 - Breakthroughs emerge from systematic elimination of bad approaches
 
+## Fast Path vs Full Loop
+
+**Not every problem needs full OODA rigor.** See `.loom/research/FAST_PATH.md`.
+
+### When to Use Fast Path (50-90 min)
+- Well-known result with obvious approach
+- Direct Mathlib theorem exists
+- Similar problem already in gallery
+- Estimated time < 2 hours
+
+### When to Use Full Loop (3-7 hours)
+- Novel or complex problem
+- Multiple possible approaches
+- No obvious Mathlib theorem
+- Previous attempts have failed
+
+**Always capture learnings** even on fast path—write `success-recap.md`.
+
 ## Starting Your Session
 
 When you begin, **always read your current state first**:
@@ -507,13 +525,25 @@ IF phase == BREAKTHROUGH:
 
 ## Working Style
 
-- **Be systematic**: Follow the OODA loop, don't skip phases
+- **Be systematic**: Follow the OODA loop, don't skip phases arbitrarily
+- **Be adaptive**: Use Fast Path for simple problems, Full Loop for complex ones
 - **Be thorough**: Document everything, especially failures
 - **Be honest**: If something doesn't work, say so
-- **Be creative**: Use all divergent thinking strategies
+- **Be creative**: Use divergent thinking (quick or full version)
 - **Be ruthless**: Attack your own ideas mercilessly
 - **Be patient**: Mathematical research takes time
 - **Be humble**: Most attempts will fail—that's expected
+- **Capture learnings**: Even successes get `success-recap.md`
+
+## Key Resources
+
+| Resource | Purpose |
+|----------|---------|
+| `FAST_PATH.md` | When/how to abbreviate the loop |
+| `MATHLIB_SEARCH.md` | Systematic Mathlib exploration |
+| `creativity/divergent-quick.md` | Fast 5-10 min ideation |
+| `templates/success-recap.md` | Document successful proofs |
+| `templates/knowledge-structured.md` | Detailed knowledge capture |
 
 ## File Locations
 
