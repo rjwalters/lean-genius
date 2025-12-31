@@ -1,0 +1,77 @@
+{
+  "slug": "hurwitz-three-square-impossibility",
+  "title": "Hurwitz n=3 Impossibility Proof",
+  "phase": "ORIENT",
+  "status": "graduated",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\nexists \\text{ bilinear } \\mu: \\mathbb{R}^3 \\times \\mathbb{R}^3 \\to \\mathbb{R}^3 \\text{ such that } \\|\\mu(a,b)\\|^2 = \\|a\\|^2 \\cdot \\|b\\|^2",
+    "plain": "Hamilton spent 15 years (1828-1843) trying to extend complex numbers to three dimensions. He wanted \"triplets\" that would do for 3D geometry what complex numbers do for 2D. He finally realized he needed FOUR dimensions (quaternions), not three.",
+    "whyMatters": [
+      "Fundamental constraint"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2025-12-30T17:01:35-08:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [
+    {
+      "id": "approach-01-diagonal-constraint",
+      "name": "Diagonal Constraint",
+      "status": "active",
+      "hypothesis": "",
+      "strategy": "The key insight is that the existing proof is missing one crucial constraint - the \"diagonal constraint\" that comes from `|mul(e₁+e₂, e₁+e₂)|² = 4`.",
+      "risks": [],
+      "attempts": [
+        {
+          "file": "attempt-01.lean",
+          "succeeded": false
+        },
+        {
+          "file": "attempt-02-parseval.lean",
+          "succeeded": false
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "algebra",
+    "division-algebras",
+    "composition-algebras",
+    "hurwitz"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2025-12-30T16:59:27-08:00",
+  "lastUpdate": "2025-12-30T17:01:35-08:00",
+  "completed": "2025-12-30T23:58:14-08:00"
+}

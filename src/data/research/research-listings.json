@@ -1,0 +1,100 @@
+[
+  {
+    "slug": "cube-root-2-irrational",
+    "title": "Irrationality of ∛2",
+    "description": "The cube root of 2 is irrational. Unlike the square root case, the simple parity argument doesn't work here—cubing preserves parity (odd³ = odd, even³ = even), so we can't derive a contradiction from \"both p and q are even.\"",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
+    "tier": "C",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "irrationality",
+      "polynomial",
+      "algebraic-number-theory"
+    ],
+    "started": "2025-12-30T15:30:00-08:00",
+    "completed": "2025-12-30T16:00:00-08:00",
+    "attemptCount": 0,
+    "approachCount": 1
+  },
+  {
+    "slug": "cube-root-3-irrational",
+    "title": "[Problem Title]",
+    "description": "[Explain what we're trying to prove in accessible terms]",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
+    "tier": "C",
+    "path": "fast",
+    "tags": [
+      "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
+      "prime-gaps",
+      "sieve-methods"
+    ],
+    "started": "2025-12-30T16:02:07-08:00",
+    "lastUpdate": "2025-12-30T16:04:27-08:00",
+    "completed": "2025-12-30T16:04:27-08:00",
+    "attemptCount": 0,
+    "approachCount": 1
+  },
+  {
+    "slug": "hurwitz-three-square-impossibility",
+    "title": "Hurwitz n=3 Impossibility Proof",
+    "description": "Hamilton spent 15 years (1828-1843) trying to extend complex numbers to three dimensions. He wanted \"triplets\" that would do for 3D geometry what complex numbers do for 2D. He finally realized he needed FOUR dimensions (quaternions), not three.",
+    "phase": "ORIENT",
+    "status": "graduated",
+    "tier": "C",
+    "path": "full",
+    "tags": [
+      "algebra",
+      "division-algebras",
+      "composition-algebras",
+      "hurwitz"
+    ],
+    "started": "2025-12-30T16:59:27-08:00",
+    "lastUpdate": "2025-12-30T17:01:35-08:00",
+    "completed": "2025-12-30T23:58:14-08:00",
+    "attemptCount": 0,
+    "approachCount": 1
+  },
+  {
+    "slug": "sqrt2-plus-sqrt3-irrational",
+    "title": "Irrationality of √2 + √3",
+    "description": "The sum of the square root of 2 and the square root of 3 is irrational. Even though both √2 and √3 are individually irrational, we need to prove that their sum cannot be expressed as a ratio of integers.",
+    "phase": "BREAKTHROUGH",
+    "status": "active",
+    "tier": "C",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "irrationality",
+      "algebraic-numbers"
+    ],
+    "started": "2025-12-31T11:10:20-08:00",
+    "lastUpdate": "2025-12-31T11:15:53-08:00",
+    "attemptCount": 0,
+    "approachCount": 1
+  },
+  {
+    "slug": "weak-goldbach",
+    "title": "Weak Goldbach Conjecture (Ternary Goldbach)",
+    "description": "Every odd integer greater than 5 can be expressed as the sum of three prime numbers.",
+    "phase": "ACT",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "number-theory",
+      "additive-combinatorics",
+      "primes",
+      "circle-method",
+      "tier-a"
+    ],
+    "started": "2025-12-31T12:09:11-08:00",
+    "lastUpdate": "2025-12-31T12:12:26-08:00",
+    "attemptCount": 0,
+    "approachCount": 1,
+    "significance": 8,
+    "tractability": 3
+  }
+]

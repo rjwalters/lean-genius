@@ -5,14 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "pnpm annotations:build && tsc -b && vite build",
+    "build": "pnpm annotations:build && pnpm research:build && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "deploy": "pnpm build && wrangler pages deploy dist --project-name=lean-genius",
     "annotations:build": "tsx scripts/annotations/build.ts",
     "annotations:validate": "tsx scripts/annotations/build.ts --strict",
     "annotations:migrate": "tsx scripts/annotations/resolver.ts migrate",
-    "annotations:parse": "tsx scripts/annotations/resolver.ts parse"
+    "annotations:parse": "tsx scripts/annotations/resolver.ts parse",
+    "research:build": "tsx scripts/research/build.ts"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",

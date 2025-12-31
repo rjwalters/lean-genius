@@ -1,0 +1,79 @@
+{
+  "slug": "weak-goldbach",
+  "title": "Weak Goldbach Conjecture (Ternary Goldbach)",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall n \\in \\mathbb{Z}, \\quad n > 5 \\land n \\text{ odd} \\implies \\exists p_1, p_2, p_3 \\text{ prime}: n = p_1 + p_2 + p_3",
+    "plain": "Every odd integer greater than 5 can be expressed as the sum of three prime numbers.",
+    "whyMatters": [
+      "Historical significance"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2025-12-31T12:12:26-08:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Initial formalization with small case verification",
+    "builtItems": [],
+    "insights": [
+      "Proving Small Cases"
+    ],
+    "mathlibGaps": [
+      "Circle method infrastructure"
+    ],
+    "nextSteps": []
+  },
+  "approaches": [
+    {
+      "id": "approach-01",
+      "name": "approach-01",
+      "status": "active",
+      "hypothesis": "",
+      "strategy": "",
+      "risks": [],
+      "attempts": [
+        {
+          "file": "attempt-01.lean",
+          "succeeded": false
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "number-theory",
+    "additive-combinatorics",
+    "primes",
+    "circle-method",
+    "tier-a"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2025-12-31T12:09:11-08:00",
+  "lastUpdate": "2025-12-31T12:12:26-08:00",
+  "significance": 8,
+  "tractability": 3
+}

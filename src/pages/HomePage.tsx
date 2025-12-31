@@ -110,6 +110,12 @@ export function HomePage() {
             Lean<span className="text-annotation">Genius</span>
           </span>
           <div className="flex items-center gap-4">
+            <Link
+              to="/research"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Research
+            </Link>
             {isAuthenticated && (
               <Link
                 to="/submit"

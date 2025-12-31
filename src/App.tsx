@@ -5,6 +5,8 @@ import { AuthProvider } from '@/contexts/AuthContext'
 // Lazy load pages for code splitting
 const HomePage = lazy(() => import('@/pages/HomePage').then(m => ({ default: m.HomePage })))
 const ProofPage = lazy(() => import('@/pages/ProofPage').then(m => ({ default: m.ProofPage })))
+const ResearchPage = lazy(() => import('@/pages/ResearchPage').then(m => ({ default: m.ResearchPage })))
+const ResearchProblemPage = lazy(() => import('@/pages/ResearchProblemPage').then(m => ({ default: m.ResearchProblemPage })))
 const SubmitPage = lazy(() => import('@/pages/SubmitPage').then(m => ({ default: m.SubmitPage })))
 const AboutPage = lazy(() => import('@/pages/AboutPage').then(m => ({ default: m.AboutPage })))
 
@@ -24,6 +26,8 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/proof/:slug" element={<ProofPage />} />
+            <Route path="/research" element={<ResearchPage />} />
+            <Route path="/research/:slug" element={<ResearchProblemPage />} />
             <Route path="/submit" element={<SubmitPage />} />
             <Route path="/about" element={<AboutPage />} />
           </Routes>
