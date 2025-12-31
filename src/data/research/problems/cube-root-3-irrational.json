@@ -1,14 +1,16 @@
 {
   "slug": "cube-root-3-irrational",
-  "title": "[Problem Title]",
+  "title": "Irrationality of ∛3",
   "phase": "BREAKTHROUGH",
   "status": "graduated",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\sqrt[3]{3} \\notin \\mathbb{Q}",
+    "plain": "The cube root of 3 is irrational. This follows the same pattern as cube root of 2—the rational root theorem shows that x³ - 3 = 0 has no rational solutions.",
+    "whyMatters": [
+      "Generalization"
+    ]
   },
   "knownResults": {
     "proven": [],
@@ -52,9 +54,10 @@
     }
   ],
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "number-theory",
+    "irrationality",
+    "polynomial",
+    "algebraic-number-theory"
   ],
   "relatedProofs": [
     "Relevance"
@@ -66,5 +69,7 @@
   },
   "started": "2025-12-30T16:02:07-08:00",
   "lastUpdate": "2025-12-30T16:04:27-08:00",
-  "completed": "2025-12-30T16:04:27-08:00"
+  "completed": "2025-12-30T16:04:27-08:00",
+  "significance": 3,
+  "tractability": 9
 }
