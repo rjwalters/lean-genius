@@ -112,7 +112,7 @@ export function ResearchPage() {
 
   // Stats
   const activeCount = researchListings.filter(p => p.status === 'active').length
-  const breakthroughCount = researchListings.filter(p => p.phase === 'BREAKTHROUGH').length
+  const successCount = researchListings.filter(p => p.phase === 'BREAKTHROUGH').length
   const totalAttempts = researchListings.reduce((sum, p) => sum + p.attemptCount, 0)
 
   return (
@@ -168,9 +168,9 @@ export function ResearchPage() {
           <div className="bg-card border border-border rounded-lg p-4 text-center">
             <div className="flex items-center justify-center gap-2 text-yellow-400 mb-1">
               <Sparkles className="h-4 w-4" />
-              <span className="text-2xl font-bold">{breakthroughCount}</span>
+              <span className="text-2xl font-bold">{successCount}</span>
             </div>
-            <p className="text-xs text-muted-foreground">Breakthroughs</p>
+            <p className="text-xs text-muted-foreground">Successes</p>
           </div>
           <div className="bg-card border border-border rounded-lg p-4 text-center">
             <div className="flex items-center justify-center gap-2 text-blue-400 mb-1">
