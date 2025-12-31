@@ -99,5 +99,85 @@
     "approachCount": 1,
     "significance": 8,
     "tractability": 3
+  },
+  {
+    "slug": "twin-prime-special",
+    "title": "Twin Primes Modular Structure",
+    "description": "All twin prime pairs (p, p+2) with p > 3 satisfy p ≡ 5 (mod 6), meaning they have the form (6k-1, 6k+1). This is a provable structural result, unlike the conjecture about infinitely many twin primes.",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "number-theory",
+      "primes",
+      "twin-primes",
+      "modular-arithmetic"
+    ],
+    "started": "2025-12-31T16:00:00-08:00",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 5,
+    "tractability": 8
+  },
+  {
+    "slug": "prime-gaps-explicit",
+    "title": "Explicit Prime Gap Bounds",
+    "description": "The n-th prime is bounded above by 2^n. This follows from Bertrand's postulate by induction: if there's always a prime between n and 2n, then primes can't grow faster than doubling.",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "C",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "primes",
+      "explicit-bounds",
+      "bertrand"
+    ],
+    "started": "2025-12-31T16:00:00-08:00",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 4,
+    "tractability": 8
+  },
+  {
+    "slug": "collatz-structured",
+    "title": "Collatz for Structured Values",
+    "description": "Prove that the Collatz sequence reaches 1 for powers of 2 and other structured starting values. The full Collatz conjecture is unsolved, but specific cases like 2^n are trivially provable (pure halving).",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "C",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "collatz",
+      "iteration",
+      "termination"
+    ],
+    "started": "2025-12-31T16:00:00-08:00",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 4,
+    "tractability": 9
+  },
+  {
+    "slug": "szemeredi-theorem",
+    "title": "Szemerédi's Theorem Statement",
+    "description": "For any positive integer k and density δ > 0, there exists N such that every subset of {1,...,N} with at least δN elements contains an arithmetic progression of length k. The k=3 case (Roth's theorem) is already in Mathlib.",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "combinatorics",
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "regularity-lemma"
+    ],
+    "started": "2025-12-31T16:00:00-08:00",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
   }
 ]

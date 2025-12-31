@@ -1,0 +1,58 @@
+{
+  "slug": "prime-gaps-explicit",
+  "title": "Explicit Prime Gap Bounds",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "p_n \\leq 2^n \\quad \\text{for all } n \\geq 1",
+    "plain": "The n-th prime is bounded above by 2^n. This follows from Bertrand's postulate by induction: if there's always a prime between n and 2n, then primes can't grow faster than doubling.",
+    "whyMatters": [
+      "Explicit bounds"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2025-12-31T16:00:00-08:00",
+    "iteration": 1,
+    "focus": "",
+    "blockers": [],
+    "nextAction": "",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [
+      "Key Proof Technique"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [],
+  "tags": [
+    "number-theory",
+    "primes",
+    "explicit-bounds",
+    "bertrand"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2025-12-31T16:00:00-08:00",
+  "significance": 4,
+  "tractability": 8
+}
