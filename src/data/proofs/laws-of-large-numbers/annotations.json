@@ -1,10 +1,40 @@
 [
   {
+    "id": "chebyshev-ineq",
+    "proofId": "laws-of-large-numbers",
+    "range": {
+      "startLine": 145,
+      "endLine": 158
+    },
+    "type": "theorem",
+    "title": "Chebyshev's Inequality",
+    "content": "P(|X - μ| ≥ ε) ≤ Var(X)/ε². This is `ProbabilityTheory.meas_ge_le_variance_div_sq` from Mathlib, which follows from Markov's inequality applied to (X - μ)².",
+    "mathContext": "Chebyshev's inequality gives a universal bound on tail probabilities using only the variance. It's tight for two-point distributions.",
+    "significance": "key",
+    "prerequisites": ["variance", "markov-inequality"],
+    "relatedConcepts": ["concentration-inequalities", "wlln"]
+  },
+  {
+    "id": "variance-sample-mean",
+    "proofId": "laws-of-large-numbers",
+    "range": {
+      "startLine": 179,
+      "endLine": 186
+    },
+    "type": "theorem",
+    "title": "Variance of Sum of Independent Variables",
+    "content": "For independent random variables, the variance of the sum equals the sum of variances. This is `ProbabilityTheory.IndepFun.variance_sum` from Mathlib.",
+    "mathContext": "Independence is crucial here: Var(X+Y) = Var(X) + Var(Y) only holds for independent variables. For the sample mean, Var(X̄ₙ) = σ²/n.",
+    "significance": "key",
+    "prerequisites": ["variance", "independence"],
+    "relatedConcepts": ["chebyshev-inequality"]
+  },
+  {
     "id": "wlln-chebyshev",
     "proofId": "laws-of-large-numbers",
     "range": {
-      "startLine": 178,
-      "endLine": 195
+      "startLine": 214,
+      "endLine": 232
     },
     "type": "theorem",
     "title": "Weak Law of Large Numbers",
@@ -18,60 +48,30 @@
     "id": "slln-mathlib",
     "proofId": "laws-of-large-numbers",
     "range": {
-      "startLine": 247,
-      "endLine": 267
+      "startLine": 253,
+      "endLine": 272
     },
     "type": "theorem",
     "title": "Strong Law of Large Numbers",
-    "content": "Mathlib's strong_law_ae proves that for i.i.d. integrable random variables, the sample mean converges almost surely to the expectation. This only requires pairwise independence.",
+    "content": "For pairwise independent, identically distributed, integrable random variables, the sample mean converges almost surely to the expectation. This is `ProbabilityTheory.strong_law_ae` from Mathlib.",
     "mathContext": "Almost sure convergence means the set of outcomes where convergence fails has probability zero. This is strictly stronger than convergence in probability.",
     "significance": "critical",
     "prerequisites": ["almost-sure-convergence", "integrability"],
     "relatedConcepts": ["wlln", "ergodic-theorem"]
   },
   {
-    "id": "variance-sample-mean",
-    "proofId": "laws-of-large-numbers",
-    "range": {
-      "startLine": 200,
-      "endLine": 206
-    },
-    "type": "theorem",
-    "title": "Variance of Sample Mean",
-    "content": "For i.i.d. random variables with variance σ², the variance of the sample mean is σ²/n. This follows from Var(ΣXᵢ/n) = Var(ΣXᵢ)/n² = nσ²/n² = σ²/n.",
-    "mathContext": "Independence is crucial here: Var(X+Y) = Var(X) + Var(Y) only holds for independent variables.",
-    "significance": "key",
-    "prerequisites": ["variance", "independence"],
-    "relatedConcepts": ["chebyshev-inequality"]
-  },
-  {
     "id": "ae-implies-prob",
     "proofId": "laws-of-large-numbers",
     "range": {
-      "startLine": 290,
-      "endLine": 305
+      "startLine": 294,
+      "endLine": 303
     },
     "type": "theorem",
-    "title": "Almost Sure Implies In Probability",
-    "content": "Almost sure convergence implies convergence in probability. If Xₙ → X a.s., then for any ε > 0, P(|Xₙ - X| > ε) → 0.",
+    "title": "Almost Sure Implies Convergence in Measure",
+    "content": "Almost sure convergence implies convergence in measure. This is `MeasureTheory.tendstoInMeasure_of_tendsto_ae` from Mathlib. If Xₙ → X a.s., then for any ε > 0, P(|Xₙ - X| > ε) → 0.",
     "mathContext": "The converse is false: convergence in probability does not imply almost sure convergence. A counterexample involves random variables that 'flicker' back and forth.",
     "significance": "key",
     "prerequisites": ["almost-sure-convergence", "convergence-probability"],
     "relatedConcepts": ["modes-of-convergence"]
-  },
-  {
-    "id": "chebyshev-ineq",
-    "proofId": "laws-of-large-numbers",
-    "range": {
-      "startLine": 143,
-      "endLine": 162
-    },
-    "type": "theorem",
-    "title": "Chebyshev's Inequality",
-    "content": "P(|X - μ| ≥ ε) ≤ Var(X)/ε². This follows from Markov's inequality applied to (X - μ)².",
-    "mathContext": "Chebyshev's inequality gives a universal bound on tail probabilities using only the variance. It's tight for two-point distributions.",
-    "significance": "key",
-    "prerequisites": ["variance", "markov-inequality"],
-    "relatedConcepts": ["concentration-inequalities", "wlln"]
   }
 ]
