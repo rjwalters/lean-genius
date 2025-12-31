@@ -1,1 +1,11 @@
-[]
+[
+  {"id": "ann-imports", "proofId": "triangle-angle-sum", "range": {"startLine": 1, "endLine": 2}, "type": "concept", "title": "Mathlib Imports", "content": "We import Mathlib.Geometry.Euclidean.Triangle for Euclidean geometry.", "significance": "supporting", "relatedConcepts": ["Mathlib", "geometry"]},
+  {"id": "ann-header", "proofId": "triangle-angle-sum", "range": {"startLine": 4, "endLine": 45}, "type": "concept", "title": "Historical Context", "content": "Wiedijk #27: One of the oldest theorems, proven by Euclid around 300 BCE.", "significance": "key", "relatedConcepts": ["Euclid"]},
+  {"id": "ann-main", "proofId": "triangle-angle-sum", "range": {"startLine": 54, "endLine": 66}, "type": "theorem", "title": "Main Theorem", "content": "The sum of interior angles equals pi radians (180 degrees).", "significance": "critical", "relatedConcepts": ["angle", "pi"]},
+  {"id": "ann-distinct", "proofId": "triangle-angle-sum", "range": {"startLine": 68, "endLine": 77}, "type": "theorem", "title": "Distinct Points Version", "content": "Version for non-degenerate triangles.", "significance": "supporting", "relatedConcepts": ["triangle"]},
+  {"id": "ann-bounds", "proofId": "triangle-angle-sum", "range": {"startLine": 79, "endLine": 89}, "type": "theorem", "title": "Angle Bounds", "content": "Each angle is between 0 and pi.", "significance": "key", "relatedConcepts": ["bounds"]},
+  {"id": "ann-corollaries", "proofId": "triangle-angle-sum", "range": {"startLine": 91, "endLine": 115}, "type": "theorem", "title": "Corollaries", "content": "Third angle determined, each angle less than pi.", "significance": "key", "relatedConcepts": ["linarith"]},
+  {"id": "ann-right", "proofId": "triangle-angle-sum", "range": {"startLine": 117, "endLine": 126}, "type": "theorem", "title": "Right Triangle", "content": "Acute angles in right triangle sum to pi/2.", "significance": "key", "relatedConcepts": ["right triangle"]},
+  {"id": "ann-exterior", "proofId": "triangle-angle-sum", "range": {"startLine": 128, "endLine": 137}, "type": "theorem", "title": "Exterior Angle", "content": "Exterior angle equals sum of remote interior angles.", "significance": "key", "relatedConcepts": ["exterior"]},
+  {"id": "ann-summary", "proofId": "triangle-angle-sum", "range": {"startLine": 139, "endLine": 157}, "type": "concept", "title": "Summary", "content": "Complete theory of triangle angles verified.", "significance": "key", "relatedConcepts": ["Euclidean geometry"]}
+]

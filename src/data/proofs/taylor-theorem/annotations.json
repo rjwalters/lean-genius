@@ -1,1 +1,11 @@
-[]
+[
+  {"id": "ann-imports", "proofId": "taylor-theorem", "range": {"startLine": 1, "endLine": 2}, "type": "concept", "title": "Mathlib Imports", "content": "We import Mathlib.Analysis.Calculus.Taylor for Taylor expansion theory.", "significance": "supporting", "relatedConcepts": ["Mathlib", "calculus"]},
+  {"id": "ann-header", "proofId": "taylor-theorem", "range": {"startLine": 4, "endLine": 51}, "type": "concept", "title": "Historical Context", "content": "Wiedijk #35: Taylor's theorem gives polynomial approximation with remainder.", "significance": "key", "relatedConcepts": ["approximation"]},
+  {"id": "ann-taylor-poly", "proofId": "taylor-theorem", "range": {"startLine": 58, "endLine": 70}, "type": "definition", "title": "Taylor Polynomial", "content": "The Taylor polynomial of degree n matches f and its first n derivatives.", "significance": "key", "relatedConcepts": ["polynomial"]},
+  {"id": "ann-lagrange", "proofId": "taylor-theorem", "range": {"startLine": 72, "endLine": 96}, "type": "theorem", "title": "Lagrange Remainder", "content": "Main theorem with Lagrange form remainder.", "significance": "critical", "relatedConcepts": ["MVT", "remainder"]},
+  {"id": "ann-cauchy", "proofId": "taylor-theorem", "range": {"startLine": 98, "endLine": 121}, "type": "theorem", "title": "Cauchy Remainder", "content": "Alternative Cauchy form of remainder.", "significance": "key", "relatedConcepts": ["Cauchy"]},
+  {"id": "ann-bound", "proofId": "taylor-theorem", "range": {"startLine": 123, "endLine": 138}, "type": "theorem", "title": "Remainder Bound", "content": "Explicit error bound for approximation.", "significance": "key", "relatedConcepts": ["error bound"]},
+  {"id": "ann-mvt", "proofId": "taylor-theorem", "range": {"startLine": 140, "endLine": 159}, "type": "theorem", "title": "First-Order = MVT", "content": "n=0 case is the Mean Value Theorem.", "significance": "key", "relatedConcepts": ["MVT"]},
+  {"id": "ann-second", "proofId": "taylor-theorem", "range": {"startLine": 161, "endLine": 178}, "type": "theorem", "title": "Second-Order", "content": "n=1 gives quadratic approximation.", "significance": "key", "relatedConcepts": ["optimization"]},
+  {"id": "ann-summary", "proofId": "taylor-theorem", "range": {"startLine": 180, "endLine": 202}, "type": "concept", "title": "Summary", "content": "Complete theory of Taylor approximation verified.", "significance": "key", "relatedConcepts": ["numerical analysis"]}
+]
