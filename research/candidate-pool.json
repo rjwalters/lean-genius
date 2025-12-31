@@ -1,0 +1,106 @@
+{
+  "version": "1.0",
+  "last_updated": "",
+  "candidates": [
+    {
+      "id": "bounded-prime-gaps",
+      "name": "Bounded Prime Gaps (Zhang/Polymath)",
+      "tier": "A",
+      "significance": 9,
+      "tractability": 3,
+      "status": "available",
+      "notes": "First Lean formalization of 2013 breakthrough. Gaps < 246.",
+      "tags": ["number-theory", "primes", "formalization"]
+    },
+    {
+      "id": "weak-goldbach",
+      "name": "Weak Goldbach Conjecture (Helfgott)",
+      "tier": "A",
+      "significance": 8,
+      "tractability": 3,
+      "status": "available",
+      "notes": "Every odd n > 5 is sum of 3 primes. Proved 2013.",
+      "tags": ["number-theory", "primes", "formalization"]
+    },
+    {
+      "id": "szemeredi-theorem",
+      "name": "Szemerédi's Theorem",
+      "tier": "A",
+      "significance": 8,
+      "tractability": 4,
+      "status": "available",
+      "notes": "Dense sets contain arbitrary length AP. Fundamental.",
+      "tags": ["combinatorics", "additive", "formalization"]
+    },
+    {
+      "id": "twin-prime-special",
+      "name": "Twin Primes in Special Forms",
+      "tier": "B",
+      "significance": 8,
+      "tractability": 4,
+      "status": "available",
+      "notes": "Prove twin prime existence for specific residue classes.",
+      "tags": ["number-theory", "primes", "partial-progress"]
+    },
+    {
+      "id": "collatz-structured",
+      "name": "Collatz for Structured Starting Values",
+      "tier": "B",
+      "significance": 6,
+      "tractability": 5,
+      "status": "available",
+      "notes": "Prove Collatz for 2^n-1, Mersenne numbers, etc.",
+      "tags": ["number-theory", "dynamics", "partial-progress"]
+    },
+    {
+      "id": "pnp-barriers",
+      "name": "P≠NP Barrier Formalization",
+      "tier": "B",
+      "significance": 8,
+      "tractability": 4,
+      "status": "available",
+      "notes": "Formalize relativization, natural proofs barriers.",
+      "tags": ["complexity", "impossibility", "formalization"]
+    },
+    {
+      "id": "prime-gaps-explicit",
+      "name": "Explicit Prime Gap Bounds",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 5,
+      "status": "available",
+      "notes": "Improve Dusart-type explicit bounds.",
+      "tags": ["number-theory", "primes", "bounds"]
+    },
+    {
+      "id": "2d-navier-stokes",
+      "name": "2D Navier-Stokes Regularity",
+      "tier": "A",
+      "significance": 8,
+      "tractability": 4,
+      "status": "available",
+      "notes": "Known result. Major formalization for Millennium context.",
+      "tags": ["analysis", "pde", "formalization"]
+    },
+    {
+      "id": "rh-consequences",
+      "name": "Riemann Hypothesis Consequences",
+      "tier": "B",
+      "significance": 8,
+      "tractability": 5,
+      "status": "available",
+      "notes": "Formalize theorems conditional on RH.",
+      "tags": ["number-theory", "analytic", "conditional"]
+    },
+    {
+      "id": "legendre-partial",
+      "name": "Legendre Conjecture Partial",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 3,
+      "status": "available",
+      "notes": "Prime between n² and (n+1)² for specific n ranges.",
+      "tags": ["number-theory", "primes", "partial-progress"]
+    }
+  ]
+}
