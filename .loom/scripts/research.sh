@@ -15,7 +15,7 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-RESEARCH_DIR="$REPO_ROOT/.loom/research"
+RESEARCH_DIR="$REPO_ROOT/research"
 TEMPLATES_DIR="$RESEARCH_DIR/templates"
 PROBLEMS_DIR="$RESEARCH_DIR/problems"
 
@@ -347,7 +347,7 @@ EOF
     local date=$(date +%Y-%m-%d)
     echo "" >> "$knowledge_dir/tactics.md"
     echo "## From: $slug ($date)" >> "$knowledge_dir/tactics.md"
-    echo "See: .loom/research/problems/$slug/knowledge.md" >> "$knowledge_dir/tactics.md"
+    echo "See: research/problems/$slug/knowledge.md" >> "$knowledge_dir/tactics.md"
     echo "" >> "$knowledge_dir/tactics.md"
 
     echo -e "${GREEN}✓ Added reference in knowledge/tactics.md${NC}"

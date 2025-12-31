@@ -1,0 +1,95 @@
+{
+  "version": "1.0.0",
+  "problems": [
+    {
+      "slug": "cube-root-2-irrational",
+      "phase": "BREAKTHROUGH",
+      "path": "fast",
+      "started": "2025-12-30T15:30:00-08:00",
+      "status": "graduated",
+      "completed": "2025-12-30T16:00:00-08:00"
+    },
+    {
+      "slug": "cube-root-3-irrational",
+      "phase": "BREAKTHROUGH",
+      "path": "fast",
+      "started": "2025-12-30T16:02:07-08:00",
+      "status": "graduated",
+      "lastUpdate": "2025-12-30T16:04:27-08:00",
+      "completed": "2025-12-30T16:04:27-08:00"
+    },
+    {
+      "slug": "cube-root-5-irrational",
+      "phase": "BREAKTHROUGH",
+      "path": "fast",
+      "started": "2025-12-30T16:24:41-08:00",
+      "status": "graduated",
+      "derived_from": "cube-root-2-irrational",
+      "completed": "2025-12-30T16:26:50-08:00",
+      "lastUpdate": "2025-12-30T16:27:02-08:00"
+    },
+    {
+      "slug": "cube-root-9-irrational",
+      "phase": "ACT",
+      "path": "fast",
+      "started": "2025-12-30T16:45:31-08:00",
+      "status": "graduated",
+      "template": "nrt-irrational",
+      "template_value": "9",
+      "completed": "2025-12-30T16:46:15-08:00"
+    },
+    {
+      "slug": "cube-root-6-irrational",
+      "phase": "ACT",
+      "path": "fast",
+      "started": "2025-12-30T16:46:33-08:00",
+      "status": "graduated",
+      "template": "nrt-irrational",
+      "template_value": "6",
+      "completed": "2025-12-30T16:46:48-08:00"
+    },
+    {
+      "slug": "cube-root-7-irrational",
+      "phase": "ACT",
+      "path": "fast",
+      "started": "2025-12-30T16:46:33-08:00",
+      "status": "graduated",
+      "template": "nrt-irrational",
+      "template_value": "7",
+      "completed": "2025-12-30T16:46:54-08:00"
+    },
+    {
+      "slug": "cube-root-10-irrational",
+      "phase": "ACT",
+      "path": "fast",
+      "started": "2025-12-30T16:46:33-08:00",
+      "status": "graduated",
+      "template": "nrt-irrational",
+      "template_value": "10",
+      "completed": "2025-12-30T16:47:00-08:00"
+    },
+    {
+      "slug": "hurwitz-three-square-impossibility",
+      "phase": "ORIENT",
+      "path": "full",
+      "started": "2025-12-30T16:59:27-08:00",
+      "status": "graduated",
+      "lastUpdate": "2025-12-30T17:01:35-08:00",
+      "completed": "2025-12-30T23:58:14-08:00"
+    },
+    {
+      "slug": "fourth-root-2-irrational",
+      "phase": "ACT",
+      "path": "fast",
+      "started": "2025-12-31T00:00:13-08:00",
+      "status": "active",
+      "template": "nrt-irrational",
+      "template_value": "2"
+    }
+  ],
+  "config": {
+    "maxActiveProblemsPerAgent": 1,
+    "oodaTimeoutMinutes": 60,
+    "attemptsBeforePivot": 5
+  }
+}

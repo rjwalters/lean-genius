@@ -24,7 +24,7 @@ You operate an OODA loop (Observe → Orient → Decide → Act) to:
 
 ## Fast Path vs Full Loop
 
-**Not every problem needs full OODA rigor.** See `.loom/research/FAST_PATH.md`.
+**Not every problem needs full OODA rigor.** See `research/FAST_PATH.md`.
 
 ### When to Use Fast Path (50-90 min)
 - Well-known result with obvious approach
@@ -46,10 +46,10 @@ When you begin, **always read your current state first**:
 
 ```bash
 # 1. Check if there's an active research problem
-cat .loom/research/registry.json
+cat research/registry.json
 
 # 2. If active problem exists, read its state
-cat .loom/research/problems/{problem-slug}/state.md
+cat research/problems/{problem-slug}/state.md
 
 # 3. Based on the state, decide what to do (see Decision Logic below)
 ```
@@ -61,7 +61,7 @@ If no active problem exists, **automatically select one**:
 npx tsx .loom/scripts/extract-problems.ts --json
 
 # 2. Read the ranked problem list
-cat .loom/research/problems.json | head -50
+cat research/problems.json | head -50
 
 # 3. Select a tractable problem not already being researched
 # (See "Autonomous Problem Selection" section below)
@@ -80,14 +80,14 @@ Alternatively, invoke `/seeker` to have the Seeker role do detailed selection.
 
 ```bash
 # Read the problem statement
-cat .loom/research/problems/{slug}/problem.md
+cat research/problems/{slug}/problem.md
 
 # Read accumulated knowledge
-cat .loom/research/problems/{slug}/knowledge.md
+cat research/problems/{slug}/knowledge.md
 
 # Read all previous approach post-mortems
-ls .loom/research/problems/{slug}/approaches/
-cat .loom/research/problems/{slug}/approaches/*/post-mortem.md
+ls research/problems/{slug}/approaches/
+cat research/problems/{slug}/approaches/*/post-mortem.md
 
 # Check related proofs in the gallery
 ls src/data/proofs/
@@ -138,7 +138,7 @@ cat src/data/proofs/infinitude-of-primes/annotations.source.json
 
 #### Step 1: Divergent Ideation (Generate Many Ideas)
 
-Read and apply `.loom/research/creativity/divergent.md`:
+Read and apply `research/creativity/divergent.md`:
 
 ```markdown
 Generate at least 10 distinct approaches using these lenses:
@@ -173,7 +173,7 @@ For each idea, assess:
 #### Step 3: Create Approach
 
 ```bash
-mkdir -p .loom/research/problems/{slug}/approaches/approach-{N}
+mkdir -p research/problems/{slug}/approaches/approach-{N}
 ```
 
 Write `hypothesis.md`:
@@ -207,7 +207,7 @@ High-level strategy.
 **Goal**: Write Lean code and try to make it compile.
 
 ```bash
-cd .loom/research/problems/{slug}/approaches/approach-{N}
+cd research/problems/{slug}/approaches/approach-{N}
 mkdir -p attempts
 ```
 
@@ -252,7 +252,7 @@ theorem main_theorem : {statement} := by
 **You are now the Adversary. Attack ruthlessly.**
 
 ```bash
-mkdir -p .loom/research/problems/{slug}/approaches/approach-{N}/attacks
+mkdir -p research/problems/{slug}/approaches/approach-{N}/attacks
 ```
 
 **Attack strategies**:
@@ -367,7 +367,7 @@ The proof gallery contains 400+ extractable open problems. Use the automated sel
 
 ```bash
 npx tsx .loom/scripts/extract-problems.ts --json
-# Writes to: .loom/research/problems.json
+# Writes to: research/problems.json
 ```
 
 ### Step 2: View Candidates by Tractability
@@ -428,17 +428,17 @@ npx tsx .loom/scripts/extract-problems.ts --tractability=challenging
 ```bash
 # Create problem workspace
 SLUG="twin-prime-gap-bound"
-mkdir -p .loom/research/problems/$SLUG/{approaches,literature,lean}
+mkdir -p research/problems/$SLUG/{approaches,literature,lean}
 
 # Create problem.md from template
-cat .loom/research/templates/problem.md | \
-  sed "s/{{SLUG}}/$SLUG/g" > .loom/research/problems/$SLUG/problem.md
+cat research/templates/problem.md | \
+  sed "s/{{SLUG}}/$SLUG/g" > research/problems/$SLUG/problem.md
 
 # Edit problem.md with actual problem details
 # ...
 
 # Create initial state.md
-cat > .loom/research/problems/$SLUG/state.md << 'EOF'
+cat > research/problems/$SLUG/state.md << 'EOF'
 # Research State: {SLUG}
 
 ## Current State
@@ -466,7 +466,7 @@ EOF
 
 # Initialize empty knowledge base
 echo "# Knowledge Base: $SLUG\n\nInsights accumulated during research.\n" > \
-  .loom/research/problems/$SLUG/knowledge.md
+  research/problems/$SLUG/knowledge.md
 
 # Update registry
 # (manually edit registry.json to add the problem)
@@ -548,7 +548,7 @@ IF phase == BREAKTHROUGH:
 ## File Locations
 
 ```
-.loom/research/
+research/
 ├── registry.json                    # Active/completed problems
 ├── STATE_MACHINE.md                 # This file's source of truth
 ├── templates/                       # Templates for documents

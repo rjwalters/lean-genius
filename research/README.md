@@ -47,7 +47,7 @@ npx tsx .loom/scripts/extract-problems.ts
 ./.loom/scripts/research.sh init goldbach-weak
 
 # Edit problem definition
-# .loom/research/problems/goldbach-weak/problem.md
+# research/problems/goldbach-weak/problem.md
 
 # Start the OODA loop
 /researcher
@@ -128,7 +128,7 @@ OBSERVE → ORIENT → DECIDE → ACT → VERIFY → LEARN
 
 The system includes structured ideation tools:
 
-### Divergent Thinking (`.loom/research/creativity/divergent.md`)
+### Divergent Thinking (`research/creativity/divergent.md`)
 
 Generate many ideas using these lenses:
 - Analogical transfer
@@ -141,7 +141,7 @@ Generate many ideas using these lenses:
 - Wild card brainstorming
 - Cross-domain perspective
 
-### Convergent Thinking (`.loom/research/creativity/convergent.md`)
+### Convergent Thinking (`research/creativity/convergent.md`)
 
 Evaluate and rank ideas by:
 - Lean feasibility (0-3)
@@ -149,14 +149,14 @@ Evaluate and rank ideas by:
 - Attack surface (0-3)
 - Complexity (0-3)
 
-### Strategy Reference (`.loom/research/creativity/strategies.md`)
+### Strategy Reference (`research/creativity/strategies.md`)
 
 Catalog of proof techniques with guidance on when and how to apply each.
 
 ## Directory Structure
 
 ```
-.loom/research/
+research/
 ├── README.md                 # This file
 ├── registry.json             # Active/completed problems
 ├── STATE_MACHINE.md          # State definitions
