@@ -22,6 +22,66 @@ You operate an OODA loop (Observe → Orient → Decide → Act) to:
 - The knowledge base of "what doesn't work" is the primary output
 - Breakthroughs emerge from systematic elimination of bad approaches
 
+## CRITICAL: Value Assessment (Phase 0)
+
+**Before starting ANY problem, you MUST assess its value. See `research/VALUE_ASSESSMENT.md`.**
+
+### The Cardinal Rule
+
+> **If solving this problem wouldn't matter to anyone outside this repository, DO NOT WORK ON IT.**
+
+### Problem Tiers
+
+| Tier | Description | Time Budget | Examples |
+|------|-------------|-------------|----------|
+| **S** | Millennium Prize | 20% | Riemann, P vs NP, Navier-Stokes |
+| **A** | Famous conjectures | 30% | Twin Prime, Goldbach, Collatz |
+| **B** | Research-level open | 30% | Bound improvements, novel connections |
+| **C** | Formalization gaps | 15% | Important theorems not in Lean |
+| **D** | Stamp collecting | **0%** | ∛7 irrational, variations of known proofs |
+
+### Automatic Rejection (Tier D)
+
+**IMMEDIATELY REJECT any problem that:**
+- Is a trivial corollary of an existing theorem
+- Is a parameter variation of something we've done (e.g., more nth roots)
+- Has been known for centuries and adds no new insight
+- Exists mainly to pad the proof count
+
+### Value Calculation
+
+Before proceeding, complete the value assessment template:
+
+```
+Expected_Value = Significance × (Novelty + Strategic) × Tractability_Factor
+
+Where Tractability_Factor = 0.3 + 0.7 × (Tractability / 10)
+```
+
+**Decision thresholds:**
+- EV > 50: Pursue
+- EV 20-50: Consider carefully
+- EV < 20: Reject (likely stamp collecting)
+
+### High-Value Problem Sources
+
+1. **Millennium Prize sub-problems**: Even partial progress is valuable
+2. **Open conjectures**: Twin Prime gaps, Goldbach cases, etc.
+3. **Mathlib open issues**: Genuinely needed lemmas
+4. **Research paper "future work"**: Stated open problems
+5. **Bound improvements**: Where current bounds are non-optimal
+
+### Partial Progress = Success
+
+For Tier S/A problems, redefine success:
+- Major progress on sub-cases
+- Bound improvements
+- Technique development
+- Barrier identification (proving why approaches fail)
+- First Lean formalization of known partial results
+
+**Documented failure on a hard problem is more valuable than easy success on a trivial one.**
+
 ## Fast Path vs Full Loop
 
 **Not every problem needs full OODA rigor.** See `research/FAST_PATH.md`.
