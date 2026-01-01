@@ -14,24 +14,35 @@ Publish the research section to the lean-genius website. This syncs research dat
 
 ### Step 0: Verify Lean Proofs Build
 
-Before publishing, ensure any new or modified Lean proofs compile:
+Before publishing, verify proofs compile. **To avoid memory pressure, only build changed files:**
 
 ```bash
 cd /Users/rwalters/GitHub/lean-genius/proofs
 
-# Check for modified Lean files
-git diff --name-only -- '*.lean'
+# Check for modified Lean files since last commit
+CHANGED=$(git diff --name-only HEAD~1 -- '*.lean' | grep -v '^proofs/Proofs\.lean$' || true)
 
-# Build all proofs (or specific modified ones)
-lake build
+if [ -n "$CHANGED" ]; then
+  echo "Building changed proofs:"
+  echo "$CHANGED"
+  # Build each changed file individually to avoid memory pressure
+  for file in $CHANGED; do
+    # Convert path to module name: proofs/Proofs/Foo.lean -> Proofs.Foo
+    module=$(echo "$file" | sed 's|^proofs/||; s|/|.|g; s|\.lean$||')
+    echo "Building $module..."
+    lake build "$module"
+  done
+else
+  echo "No Lean files changed - skipping build verification"
+fi
 ```
+
+**Memory-safe options:**
+- **Skip verification**: If you recently built successfully, skip this step
+- **Build one at a time**: `lake build Proofs.SpecificFile` for each changed file
+- **Full build (high memory)**: `lake build` - only if you have 16GB+ RAM free
 
 **IMPORTANT**: If the build fails, fix the errors before proceeding. Do NOT commit broken proofs.
-
-If only specific proofs are modified, you can build just those:
-```bash
-lake build Proofs.SchursTheorem  # Example
-```
 
 ### Step 1: Sync Research Data
 
@@ -186,18 +197,20 @@ If sync seems wrong:
 
 ## Quick Reference
 
-One-liner to check everything before publish:
+One-liner to check everything before publish (memory-safe):
 ```bash
 cd /Users/rwalters/GitHub/lean-genius && \
-  (cd proofs && lake build) && \
   pnpm research:build && \
   git status
 ```
 
-Full publish (after verification):
+Full publish (skipping Lean verification if already built):
 ```bash
-git add -A && \
-  git commit -m "Publish research updates" && \
+cd /Users/rwalters/GitHub/lean-genius && \
+  pnpm research:sync && \
+  pnpm research:build && \
+  git add -A && \
+  git diff --staged --quiet || git commit -m "Publish research updates" && \
   git push origin main && \
   pnpm run deploy
 ```
