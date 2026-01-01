@@ -22,7 +22,8 @@ Execute a single research cycle. The mode depends on pool status:
 | Pool Status | Mode | Goal |
 |-------------|------|------|
 | Available problems exist | **FRESH** | Claim and work on new problem |
-| Pool empty | **REVISIT** | Re-attempt a blocked problem with fresh perspective |
+| Pool empty | **REVISIT/SCOUT** | Search for new knowledge on blocked problems |
+| Pool empty + promising lead | **REVISIT/DEEP** | Full implementation attempt with new approach |
 
 ---
 
@@ -313,21 +314,52 @@ This allows other agents to claim the problem if it needs more work (e.g., statu
 
 When no available problems exist, we don't stop. We dig deeper.
 
+REVISIT has two sub-modes:
+
+| Sub-Mode | When | Goal |
+|----------|------|------|
+| **SCOUT** | Quick check for new knowledge | Search for Mathlib/literature updates that might unblock |
+| **DEEP** | Ready to attempt proof work | Full implementation attempt with new approach |
+
+Start with SCOUT. Only proceed to DEEP if scouting reveals a viable path.
+
+### Step 2.0: Choose SCOUT or DEEP
+
+**Default to SCOUT** unless you have specific reason to attempt implementation.
+
+SCOUT is appropriate when:
+- Checking if blockers have been resolved
+- Problem hasn't been scouted recently (check `lastScouted` in pool)
+- You want to survey multiple blocked problems quickly
+
+DEEP is appropriate when:
+- Scouting revealed new Mathlib infrastructure
+- You found a new proof approach in literature
+- Related proofs were recently completed that enable this one
+
 ### Step 2.1: Select a Blocked Problem
 
 Read the pool and select a problem to revisit:
 
 ```bash
-jq -r '.candidates[] | select(.status == "surveyed" or .status == "in-progress" or .status == "skipped") | "\(.id): \(.name) [\(.status)]"' research/candidate-pool.json
+# List blocked problems with scouting info
+jq -r '.candidates[] | select(.status == "surveyed" or .status == "in-progress" or .status == "skipped") |
+  "\(.tier // "B") | \(.id) | \(.name) | \(.status) | Last scout: \(.lastScouted // "never")"' \
+  research/candidate-pool.json | sort
 ```
 
-**Selection priority:**
+**Selection priority for SCOUT:**
+1. High-tier problems (S, A) not recently scouted
+2. Problems where related work was recently completed
+3. Problems blocked on infrastructure that might have been added
+
+**Selection priority for DEEP:**
 1. `in-progress` - Continue stalled work
 2. `surveyed` - We have definitions, try to prove more
 3. `skipped` - Check if circumstances changed
 
 Pick one. Prefer problems where:
-- Time has passed (new Mathlib features may exist)
+- Time has passed since last scout (new Mathlib features may exist)
 - We have related completed proofs (technique transfer)
 - The skip reason was "infrastructure" not "impossible"
 
@@ -358,14 +390,15 @@ Pick one. Prefer problems where:
    - Check our gallery for new related proofs
    - Look for recent arXiv papers on the topic
 
-### Step 2.3: Literature Search
+### Step 2.3: Literature Search (SCOUT Phase)
 
-**Actively search for new approaches:**
+**Actively search for new knowledge:**
 
-1. **arXiv search**: WebSearch "arXiv [problem topic] Lean formalization 2024 2025"
-2. **Elementary proofs**: WebSearch "[theorem name] elementary proof"
-3. **Survey papers**: WebSearch "[topic] survey recent progress"
-4. **Mathlib PRs**: WebSearch "Mathlib4 GitHub PR [topic]"
+1. **Mathlib search**: WebSearch "Mathlib4 [topic] 2025 2026"
+2. **Mathlib PRs**: WebSearch "Mathlib4 GitHub PR [topic] merged"
+3. **arXiv search**: WebSearch "arXiv [problem topic] Lean formalization 2024 2025"
+4. **Elementary proofs**: WebSearch "[theorem name] elementary proof"
+5. **Survey papers**: WebSearch "[topic] survey recent progress"
 
 **What to look for:**
 - New proof techniques
@@ -373,7 +406,50 @@ Pick one. Prefer problems where:
 - Partial results we could formalize
 - Infrastructure that now exists
 
-### Step 2.4: Generate Novel Approach
+### Step 2.3.1: SCOUT Decision Point
+
+After literature search, assess the blocker status:
+
+| Finding | Blocker Status | Action |
+|---------|----------------|--------|
+| New Mathlib infrastructure found | **RESOLVED** | Proceed to DEEP (Step 2.4+) |
+| New proof approach found | **WEAKENED** | Proceed to DEEP (Step 2.4+) |
+| No relevant changes found | **UNCHANGED** | Complete SCOUT, pick another problem |
+
+**Update knowledge.md with scouting results:**
+
+```markdown
+## Scout: [DATE]
+
+### Searches Performed
+- Mathlib: [queries and results]
+- Literature: [queries and results]
+- Related proofs: [files checked]
+
+### Blocker Assessment
+- **Previous blocker**: [what was blocking]
+- **Status**: UNCHANGED | WEAKENED | RESOLVED
+- **Evidence**: [what you found or didn't find]
+
+### Recommendation
+- [ ] Keep blocked - blocker still exists
+- [ ] Attempt DEEP dive - new approach available
+- [ ] Move to available - fully unblocked
+```
+
+**Update lastScouted in pool:**
+```bash
+jq '(.candidates[] | select(.id == "<problem-id>")).lastScouted = "'$(date -Iseconds)'"' \
+  research/candidate-pool.json > tmp.json && mv tmp.json research/candidate-pool.json
+```
+
+**If SCOUT found nothing new:** You're done! Report findings and pick another problem to scout, or end the session.
+
+**If SCOUT found something promising:** Continue to Step 2.4 (DEEP mode).
+
+---
+
+### Step 2.4: Generate Novel Approach (DEEP Phase)
 
 Based on your research, propose a NEW approach not previously tried:
 
@@ -459,7 +535,7 @@ End every session with:
 ```markdown
 ## Research Iteration Complete
 
-**Mode**: FRESH | REVISIT
+**Mode**: FRESH | REVISIT/SCOUT | REVISIT/DEEP
 **Problem**: [id] - [name]
 **Prior Status**: [available | surveyed | skipped | in-progress]
 
@@ -478,6 +554,11 @@ End every session with:
 
 ### Knowledge Added
 [Summary of insights added to knowledge base]
+
+### Blocker Status (for SCOUT)
+- **Previous**: [blocker]
+- **Current**: UNCHANGED | WEAKENED | RESOLVED
+- **Next scout**: [when to check again]
 
 ### Next Steps
 [What the next researcher should try]
@@ -519,7 +600,66 @@ This workflow is safe for multiple agents:
 
 ---
 
-## Example: REVISIT Session
+## Example: SCOUT Session (Quick Knowledge Check)
+
+```
+> /research
+
+Checking available problems...
+Pool empty. Entering REVISIT mode.
+
+Selecting problem to scout...
+S | riemann-hypothesis | Riemann Hypothesis | skipped | Last scout: never
+S | p-vs-np | P vs NP | skipped | Last scout: never
+A | bounded-prime-gaps | Bounded Prime Gaps | skipped | Last scout: 2025-12-15
+
+Selected: riemann-hypothesis (S-tier, never scouted)
+
+Reading blocker from knowledge.md...
+- Primary blocker: Zeta function infrastructure not in Mathlib
+- Needs: ζ(s) definition, analytic continuation, functional equation
+
+Scouting for new knowledge...
+- WebSearch "Mathlib4 zeta function 2025 2026"
+  → No zeta function in Mathlib yet
+- WebSearch "Mathlib4 Dirichlet series merged"
+  → Found: Basic Dirichlet series in Mathlib.NumberTheory.LSeries
+- WebSearch "Riemann hypothesis Lean formalization"
+  → No complete formalizations found
+
+Updating knowledge.md with scout results...
+Updating lastScouted in pool...
+
+## Research Iteration Complete
+
+**Mode**: REVISIT/SCOUT
+**Problem**: riemann-hypothesis
+**Prior Status**: skipped
+
+### What I Did
+Scouted for new Mathlib/literature on Riemann hypothesis formalization.
+
+### Outcome
+Blocker unchanged. Zeta function still not in Mathlib.
+
+### Key Findings
+- Mathlib has basic LSeries (Dirichlet series) - partial progress
+- No complete zeta function definition yet
+- No formalizations of RH found in Lean/Coq/Isabelle
+
+### Blocker Status
+- **Previous**: Zeta function infrastructure missing
+- **Current**: UNCHANGED (but LSeries is a step toward it)
+- **Next scout**: After Mathlib analytic number theory updates
+
+### Pool Status
+- Available: 0
+- Skipped: 16
+```
+
+---
+
+## Example: DEEP Session (Full Implementation Attempt)
 
 ```
 > /research
@@ -539,10 +679,13 @@ Reading history...
 - Block reason: "Hypergraph regularity not in Mathlib"
 - Knowledge base: 3 previous insights
 
-Literature search...
+Literature search (SCOUT phase)...
 - Searching "Szemerédi theorem Lean Mathlib 2025"...
 - Found: New Mathlib.Combinatorics.Additive module (Dec 2024)
 - Found: arXiv paper on "container method" simplification
+
+Blocker assessment: WEAKENED - new approach available!
+Proceeding to DEEP phase...
 
 New approach: Container Method
 - Uses probabilistic argument, may avoid regularity lemma
@@ -559,14 +702,14 @@ Updating knowledge base...
 
 ## Research Iteration Complete
 
-**Mode**: REVISIT
+**Mode**: REVISIT/DEEP
 **Problem**: szemeredi-theorem
 **Prior Status**: surveyed
 
 ### What I Did
-1. Searched for recent Mathlib additions
+1. Searched for recent Mathlib additions (SCOUT)
 2. Found container method as alternative approach
-3. Created new proof file with container-based attempt
+3. Created new proof file with container-based attempt (DEEP)
 4. Proved 2 new connecting lemmas
 
 ### Outcome
@@ -590,3 +733,21 @@ Partial progress. New approach identified. Blocked on probability infrastructure
 - Surveyed: 3 (including this one, still surveyed but with progress)
 - Skipped: 7
 ```
+
+---
+
+## Scouting Strategy: Millennium Problems
+
+For S-tier problems (Millennium Prize), use targeted searches:
+
+| Problem | Key Search Terms | Primary Blocker |
+|---------|------------------|-----------------|
+| Riemann Hypothesis | "Mathlib zeta function", "Mathlib analytic continuation" | L-functions |
+| P vs NP | "Mathlib Turing machine", "Mathlib complexity" | Complexity framework |
+| Birch-Swinnerton-Dyer | "Mathlib elliptic curves L-function" | E-L-functions |
+| Hodge Conjecture | "Mathlib Hodge theory", "Mathlib algebraic cycles" | Hodge decomposition |
+| Yang-Mills | "Mathlib gauge theory", "Mathlib QFT" | QFT foundations |
+| Navier-Stokes | "Mathlib Navier-Stokes", "Mathlib Sobolev" | Advanced PDE |
+| Poincaré (solved!) | "Mathlib Ricci flow", "Mathlib 3-manifolds" | Ricci flow |
+
+**Note**: Poincaré is unique - it's proven (by Perelman). Formalizing it would be a landmark achievement but requires Ricci flow machinery.
