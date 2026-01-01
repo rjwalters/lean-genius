@@ -31,10 +31,10 @@
     "id": "ann-first-cases",
     "proofId": "legendre-partial",
     "range": {
-      "startLine": 46,
-      "endLine": 66
+      "startLine": 48,
+      "endLine": 75
     },
-    "type": "example",
+    "type": "theorem",
     "title": "First Ten Cases",
     "content": "Verified with explicit witnesses:\n\n| n | Interval | Witness |\n|---|----------|----------|\n| 1 | (1, 4) | 2 |\n| 2 | (4, 9) | 5 |\n| 3 | (9, 16) | 11 |\n| 4 | (16, 25) | 17 |\n| 5 | (25, 36) | 29 |\n| 6 | (36, 49) | 37 |\n| 7 | (49, 64) | 53 |\n| 8 | (64, 81) | 67 |\n| 9 | (81, 100) | 83 |\n| 10 | (100, 121) | 101 |",
     "mathContext": "Each witness verified with native_decide",

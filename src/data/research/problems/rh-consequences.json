@@ -1,116 +1,62 @@
 {
   "slug": "rh-consequences",
   "title": "Riemann Hypothesis Consequences",
-  "phase": "SURVEY",
-  "status": "graduated",
+  "phase": "ACT",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "RiemannHypothesis \\implies |M(x)| = O(\\sqrt{x})",
-    "plain": "The Riemann Hypothesis implies various consequences for prime distribution, including bounds on the Mertens function M(x), Chebyshev functions theta(x) and psi(x), and prime gaps.",
-    "whyMatters": [
-      "Central conjecture in number theory",
-      "RH already formalized in Mathlib",
-      "Consequences directly impact prime distribution"
-    ]
+    "formal": "\\text{RH} \\implies |M(x)| = O(\\sqrt{x})",
+    "plain": "Formalize consequences of the Riemann Hypothesis, including bounds on the Mertens function, prime gaps, and Chebyshev functions.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "RiemannHypothesis defined in Mathlib",
-      "Riemann zeta function fully formalized",
-      "Functional equation proven",
-      "Trivial zeros at -2n proven"
-    ],
-    "open": [
-      "Prime Number Theorem not in Mathlib (but in PrimeNumberTheoremAnd)",
-      "RH consequences require PNT infrastructure"
-    ],
-    "goal": "Formalize definitions and state consequences as axioms"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "SURVEY",
-    "since": "2025-12-31T16:00:00-08:00",
-    "iteration": 5,
-    "focus": "Extended with von Mangoldt, Chebyshev psi, zeta values from Mathlib",
+    "phase": "ACT",
+    "since": "2025-12-31",
+    "iteration": 3,
+    "focus": "Extending RH consequence formalizations with Mertens and Möbius computations.",
+    "activeApproach": "Computational verification of Mertens function and Möbius identities.",
     "blockers": [
-      "PNT not in Mathlib proper"
+      "PNT not in Mathlib (available in PrimeNumberTheoremAnd project)."
     ],
-    "nextAction": "Test importing PrimeNumberTheoremAnd as dependency",
+    "nextAction": "Consider importing PrimeNumberTheoremAnd as dependency to upgrade axioms.",
     "attemptCounts": {
-      "total": 5,
-      "currentApproach": 5,
+      "total": 3,
+      "currentApproach": 3,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Successfully formalized Mertens function, Chebyshev theta and psi functions. Found that RH is already in Mathlib! Computed values for M(n), verified Moebius function properties, stated RH consequences as axioms.",
-    "builtItems": [
-      {"name": "mertens", "type": "definition", "description": "M(n) = sum of Moebius function up to n"},
-      {"name": "chebyshevTheta", "type": "definition", "description": "theta(n) = sum of log(p) over primes p <= n"},
-      {"name": "chebyshevPsi", "type": "definition", "description": "psi(n) = sum of von Mangoldt function up to n"},
-      {"name": "mertens_step", "type": "theorem", "description": "M(n+1) = M(n) + mu(n+1)"},
-      {"name": "moebius_prime", "type": "theorem", "description": "mu(p) = -1 for primes"},
-      {"name": "rh_zeros_on_critical_line", "type": "theorem", "description": "RH implies non-trivial zeros have Re = 1/2"},
-      {"name": "vonMangoldt_zero", "type": "theorem", "description": "Lambda(0) = 0"},
-      {"name": "chebyshevPsi_step", "type": "theorem", "description": "psi(n+1) = psi(n) + Lambda(n+1)"},
-      {"name": "zeta_two_eq_pi_sq_div_six", "type": "theorem", "description": "zeta(2) = pi^2/6 (Basel problem)"},
-      {"name": "rh_implies_mertens_bound", "type": "axiom", "description": "RH implies |M(x)| = O(sqrt(x))"},
-      {"name": "rh_implies_psi_bound", "type": "axiom", "description": "RH implies psi(x) = x + O(sqrt(x) log^2 x)"}
-    ],
+    "progressSummary": "",
+    "builtItems": [],
     "insights": [
-      "RiemannHypothesis is already defined in Mathlib at Mathlib.NumberTheory.LSeries.RiemannZeta",
-      "Von Mangoldt function uses notation Lambda in Mathlib.NumberTheory.VonMangoldt",
-      "PrimeNumberTheoremAnd project has strong PNT proven - potential dependency",
-      "Use bernoulli_eq_bernoulli'_of_ne_one for Bernoulli number proofs",
-      "Euler product formula now fully formalized in Mathlib"
+      "What Mathlib Has"
     ],
-    "mathlibGaps": [
-      "Prime Number Theorem (in PrimeNumberTheoremAnd, not Mathlib)",
-      "Explicit formula connecting zeros to primes",
-      "Zero-free regions"
-    ],
-    "nextSteps": [
-      "Add PrimeNumberTheoremAnd as dependency",
-      "Import Chebyshev functions from PNT project",
-      "Replace RH axioms with conditional theorems"
-    ]
+    "mathlibGaps": [],
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "id": "approach-01",
-      "name": "Definitions + axioms for consequences",
-      "status": "graduated",
-      "hypothesis": "Can formalize definitions and state consequences",
-      "strategy": "Build helper functions, compute values, state consequences as axioms",
-      "risks": ["Cannot prove consequences without PNT"],
-      "attempts": []
-    }
-  ],
+  "approaches": [],
   "tags": [
     "number-theory",
+    "analytic-number-theory",
     "riemann-hypothesis",
-    "primes",
-    "zeta-function",
-    "tier-a"
+    "conditional"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "Relevance"
+  ],
   "references": {
-    "papers": [
-      "Edwards - Riemann's Zeta Function (1974)",
-      "Titchmarsh - Theory of the Riemann Zeta-Function (1986)"
-    ],
-    "urls": [
-      "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd"
-    ],
-    "mathlib": [
-      "Mathlib.NumberTheory.LSeries.RiemannZeta",
-      "Mathlib.NumberTheory.VonMangoldt",
-      "Mathlib.NumberTheory.ArithmeticFunction"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
-  "started": "2025-12-31T12:00:00-08:00",
-  "completed": "2025-12-31T20:00:00-08:00",
-  "lastUpdate": "2025-12-31T20:00:00-08:00",
-  "significance": 9,
-  "tractability": 4
+  "started": "2025-12-31T00:00:00-08:00",
+  "lastUpdate": "2025-12-31T21:30:00-08:00",
+  "significance": 8,
+  "tractability": 7
 }

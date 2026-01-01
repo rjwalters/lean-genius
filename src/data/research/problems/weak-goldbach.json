@@ -9,30 +9,21 @@
     "formal": "\\forall n \\in \\mathbb{Z}, \\quad n > 5 \\land n \\text{ odd} \\implies \\exists p_1, p_2, p_3 \\text{ prime}: n = p_1 + p_2 + p_3",
     "plain": "Every odd integer greater than 5 can be expressed as the sum of three prime numbers.",
     "whyMatters": [
-      "Historical significance",
-      "Proved by Helfgott in 2013",
-      "Connected to binary Goldbach conjecture"
+      "Historical significance"
     ]
   },
   "knownResults": {
-    "proven": [
-      "Vinogradov (1937): true for sufficiently large odd n",
-      "Helfgott (2013): true for all odd n > 5"
-    ],
-    "open": [
-      "Formal verification of full proof (requires circle method)"
-    ],
-    "goal": "Formalize as much as tractable without circle method"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
     "phase": "ACT",
     "since": "2025-12-31T12:12:26-08:00",
-    "iteration": 6,
-    "focus": "Built Decidable instances for both ternary and binary Goldbach",
-    "blockers": [
-      "Circle method not in Mathlib"
-    ],
-    "nextAction": "Extend verification to n ≤ 201",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
     "attemptCounts": {
       "total": 6,
       "currentApproach": 6,
@@ -40,46 +31,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Verified ternary Goldbach for n=7-101 (48 cases) and binary Goldbach for n=4-50 (24 cases). Built Decidable instances for both IsSumOfThreePrimes and IsSumOfTwoPrimes enabling `decide` tactic proofs. Proved structural reduction: Binary Goldbach => Weak Goldbach.",
-    "builtItems": [
-      {"name": "IsSumOfThreePrimes", "type": "definition", "description": "Predicate for n = p + q + r where p, q, r are primes"},
-      {"name": "IsSumOfTwoPrimes", "type": "definition", "description": "Predicate for n = p + q where p, q are primes"},
-      {"name": "WeakGoldbachConjecture", "type": "definition", "description": "Formal statement: every odd n > 5 is sum of 3 primes"},
-      {"name": "BinaryGoldbachConjecture", "type": "definition", "description": "Formal statement: every even n > 2 is sum of 2 primes"},
-      {"name": "decidableIsSumOfThreePrimes", "type": "instance", "description": "Decidable instance enabling decide tactic for ternary Goldbach"},
-      {"name": "decidableIsSumOfTwoPrimes", "type": "instance", "description": "Decidable instance enabling decide tactic for binary Goldbach"},
-      {"name": "binary_implies_weak", "type": "theorem", "description": "Binary Goldbach => Weak Goldbach (reduction theorem)"},
-      {"name": "goldbach_7 through goldbach_101", "type": "theorems", "description": "48 verified ternary Goldbach cases with explicit prime witnesses"},
-      {"name": "binary_goldbach_4 through binary_goldbach_50", "type": "theorems", "description": "24 verified binary Goldbach cases"}
-    ],
+    "progressSummary": "Decidable instance + verification to n ≤ 101 (48 cases) + structural lemma",
+    "builtItems": [],
     "insights": [
-      "Pattern `use p, q, r; refine <...> <;> decide` works for small primes",
-      "Decidable instances enable `decide` tactic: example : IsSumOfThreePrimes 7 := by decide",
-      "O(n^3) brute force search is practical for small n via isSumOfThreePrimesDecide",
-      "Structural reduction shows weak Goldbach follows from binary Goldbach for even n-3",
-      "Nat.Prime has DecidablePred instance enabling computational primality checks"
+      "Proving Small Cases"
     ],
     "mathlibGaps": [
-      "Circle method infrastructure",
-      "Exponential sum bounds",
-      "L-function machinery for primes",
-      "Explicit prime-counting bounds (Dusart-type)"
+      "Circle method infrastructure"
     ],
-    "nextSteps": [
-      "Extend verification to n <= 201",
-      "Use native_decide for faster verification of larger numbers",
-      "State Vinogradov bound with explicit N0 ~ 10^1346"
-    ]
+    "nextSteps": []
   },
   "approaches": [
     {
       "id": "approach-01",
-      "name": "Decidable instances + explicit witnesses",
+      "name": "approach-01",
       "status": "active",
-      "hypothesis": "Can verify small cases computationally",
-      "strategy": "Build Decidable instance, verify cases via decide tactic",
-      "risks": ["Limited to small n without circle method"],
-      "attempts": []
+      "hypothesis": "",
+      "strategy": "",
+      "risks": [],
+      "attempts": [
+        {
+          "file": "attempt-01.lean",
+          "succeeded": false
+        }
+      ]
     }
   ],
   "tags": [
@@ -89,18 +64,16 @@
     "circle-method",
     "tier-a"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "Relevance"
+  ],
   "references": {
-    "papers": [
-      "Helfgott (2013) - The ternary Goldbach conjecture is true"
-    ],
+    "papers": [],
     "urls": [],
-    "mathlib": [
-      "Mathlib.Data.Nat.Prime.Basic"
-    ]
+    "mathlib": []
   },
   "started": "2025-12-31T12:09:11-08:00",
-  "lastUpdate": "2025-12-31T20:00:00-08:00",
+  "lastUpdate": "2025-12-31T12:12:26-08:00",
   "significance": 8,
-  "tractability": 5
+  "tractability": 3
 }

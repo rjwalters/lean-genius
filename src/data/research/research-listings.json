@@ -1,5 +1,66 @@
 [
   {
+    "slug": "cube-root-2-irrational",
+    "title": "Irrationality of ∛2",
+    "description": "The cube root of 2 is irrational. Unlike the square root case, the simple parity argument doesn't work here—cubing preserves parity (odd³ = odd, even³ = even), so we can't derive a contradiction from \"both p and q are even.\"",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
+    "tier": "C",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "irrationality",
+      "polynomial",
+      "algebraic-number-theory"
+    ],
+    "started": "2025-12-30T15:30:00-08:00",
+    "completed": "2025-12-30T16:00:00-08:00",
+    "attemptCount": 0,
+    "approachCount": 1
+  },
+  {
+    "slug": "cube-root-3-irrational",
+    "title": "Irrationality of ∛3",
+    "description": "The cube root of 3 is irrational. This follows the same pattern as cube root of 2—the rational root theorem shows that x³ - 3 = 0 has no rational solutions.",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
+    "tier": "C",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "irrationality",
+      "polynomial",
+      "algebraic-number-theory"
+    ],
+    "started": "2025-12-30T16:02:07-08:00",
+    "lastUpdate": "2025-12-30T16:04:27-08:00",
+    "completed": "2025-12-30T16:04:27-08:00",
+    "attemptCount": 0,
+    "approachCount": 1,
+    "significance": 3,
+    "tractability": 9
+  },
+  {
+    "slug": "hurwitz-three-square-impossibility",
+    "title": "Hurwitz n=3 Impossibility Proof",
+    "description": "Hamilton spent 15 years (1828-1843) trying to extend complex numbers to three dimensions. He wanted \"triplets\" that would do for 3D geometry what complex numbers do for 2D. He finally realized he needed FOUR dimensions (quaternions), not three.",
+    "phase": "ORIENT",
+    "status": "graduated",
+    "tier": "C",
+    "path": "full",
+    "tags": [
+      "algebra",
+      "division-algebras",
+      "composition-algebras",
+      "hurwitz"
+    ],
+    "started": "2025-12-30T16:59:27-08:00",
+    "lastUpdate": "2025-12-30T17:01:35-08:00",
+    "completed": "2025-12-30T23:58:14-08:00",
+    "attemptCount": 0,
+    "approachCount": 1
+  },
+  {
     "slug": "sqrt2-plus-sqrt3-irrational",
     "title": "Irrationality of √2 + √3",
     "description": "The sum of the square root of 2 and the square root of 3 is irrational. Even though both √2 and √3 are individually irrational, we need to prove that their sum cannot be expressed as a ratio of integers.",
@@ -38,6 +99,90 @@
     "approachCount": 1,
     "significance": 8,
     "tractability": 3
+  },
+  {
+    "slug": "twin-prime-special",
+    "title": "Twin Primes Modular Structure",
+    "description": "All twin prime pairs (p, p+2) with p > 3 satisfy p ≡ 5 (mod 6), meaning they have the form (6k-1, 6k+1). This is a provable structural result, unlike the conjecture about infinitely many twin primes.",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "number-theory",
+      "primes",
+      "twin-primes",
+      "modular-arithmetic"
+    ],
+    "started": "2025-12-31T16:00:00-08:00",
+    "completed": "2025-12-31T17:00:00-08:00",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 5,
+    "tractability": 8
+  },
+  {
+    "slug": "prime-gaps-explicit",
+    "title": "Explicit Prime Gap Bounds",
+    "description": "The n-th prime is bounded above by 2^n. This follows from Bertrand's postulate by induction: if there's always a prime between n and 2n, then primes can't grow faster than doubling.",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
+    "tier": "C",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "primes",
+      "explicit-bounds",
+      "bertrand"
+    ],
+    "started": "2025-12-31T16:00:00-08:00",
+    "completed": "2025-12-31T17:00:00-08:00",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 4,
+    "tractability": 8
+  },
+  {
+    "slug": "collatz-structured",
+    "title": "Collatz for Structured Values",
+    "description": "Prove that the Collatz sequence reaches 1 for powers of 2 and other structured starting values. The full Collatz conjecture is unsolved, but specific cases like 2^n are trivially provable (pure halving).",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
+    "tier": "C",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "collatz",
+      "iteration",
+      "termination"
+    ],
+    "started": "2025-12-31T16:00:00-08:00",
+    "completed": "2025-12-31T17:00:00-08:00",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 4,
+    "tractability": 9
+  },
+  {
+    "slug": "szemeredi-theorem",
+    "title": "Szemerédi's Theorem Statement",
+    "description": "For any positive integer k and density δ > 0, there exists N such that every subset of {1,...,N} with at least δN elements contains an arithmetic progression of length k. The k=3 case (Roth's theorem) is already in Mathlib.",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "combinatorics",
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "regularity-lemma"
+    ],
+    "started": "2025-12-31T16:00:00-08:00",
+    "completed": "2025-12-31T17:00:00-08:00",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
   },
   {
     "slug": "pnp-barriers",
@@ -80,5 +225,271 @@
     "approachCount": 0,
     "significance": 8,
     "tractability": 7
+  },
+  {
+    "slug": "sophie-germain-structure",
+    "title": "Sophie Germain Prime Structure",
+    "description": "A Sophie Germain prime p is one where 2p+1 is also prime. For p > 3, such primes must be congruent to 5 mod 6. The corresponding safe prime 2p+1 is congruent to 11 mod 12.",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
+    "tier": "B",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "primes",
+      "partial-progress",
+      "sophie-germain"
+    ],
+    "started": "2025-12-31T14:00:00-08:00",
+    "completed": "2025-12-31T15:00:00-08:00",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 8
+  },
+  {
+    "slug": "chinese-remainder-constructive",
+    "title": "Chinese Remainder Theorem (Constructive)",
+    "description": "Given congruence conditions with pairwise coprime moduli, construct the explicit solution using Bézout coefficients. The classic example is Sunzi's problem: x ≡ 2 (mod 3), x ≡ 3 (mod 5), x ≡ 2 (mod 7), which has solution x = 23.",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
+    "tier": "B",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "algorithms",
+      "classical",
+      "crt"
+    ],
+    "started": "2025-12-31T14:00:00-08:00",
+    "completed": "2025-12-31T15:00:00-08:00",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 5,
+    "tractability": 9
+  },
+  {
+    "slug": "wolstenholme-theorem",
+    "title": "Wolstenholme's Theorem",
+    "description": "For primes p ≥ 5, the central binomial coefficient C(2p-1, p-1) is congruent to 1 modulo p³. This is a deep divisibility result for binomial coefficients.",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
+    "tier": "B",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "binomial",
+      "classical",
+      "wolstenholme"
+    ],
+    "started": "2025-12-31T14:00:00-08:00",
+    "completed": "2025-12-31T15:00:00-08:00",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 7
+  },
+  {
+    "slug": "kummer-theorem",
+    "title": "Kummer's Theorem on Binomial Divisibility",
+    "description": "The p-adic valuation of a binomial coefficient C(n,k) equals the number of carries when adding k and (n-k) in base p arithmetic.",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
+    "tier": "B",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "binomial",
+      "classical",
+      "p-adic"
+    ],
+    "started": "2025-12-31T14:00:00-08:00",
+    "completed": "2025-12-31T15:00:00-08:00",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 7
+  },
+  {
+    "slug": "primitive-roots-count",
+    "title": "Primitive Roots Modulo Primes",
+    "description": "For any prime p, the multiplicative group (ℤ/pℤ)* is cyclic, and the number of generators (primitive roots) equals Euler's totient of p-1.",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
+    "tier": "B",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "group-theory",
+      "classical",
+      "primitive-roots"
+    ],
+    "started": "2025-12-31T14:00:00-08:00",
+    "completed": "2025-12-31T15:00:00-08:00",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 6
+  },
+  {
+    "slug": "hurwitz-impossibility",
+    "title": "Hurwitz Quaternion Theorem",
+    "description": "SKIPPED: Already in HurwitzTheorem.",
+    "phase": "NEW",
+    "status": "blocked",
+    "tier": "A",
+    "path": "fast",
+    "tags": [
+      "algebra",
+      "impossibility",
+      "formalization"
+    ],
+    "started": "2026-01-01T05:32:39.476Z",
+    "lastUpdate": "2026-01-01T05:32:39.476Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 8
+  },
+  {
+    "slug": "infinitude-primes-4k1",
+    "title": "Infinitely Many Primes ≡ 1 (mod 4)",
+    "description": "SKIPPED: Already in DirichletsTheorem.",
+    "phase": "NEW",
+    "status": "blocked",
+    "tier": "B",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "primes",
+      "classical"
+    ],
+    "started": "2026-01-01T05:32:39.477Z",
+    "lastUpdate": "2026-01-01T05:32:39.477Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 8
+  },
+  {
+    "slug": "infinitude-primes-4k3",
+    "title": "Infinitely Many Primes ≡ 3 (mod 4)",
+    "description": "SKIPPED: Already in DirichletsTheorem.",
+    "phase": "NEW",
+    "status": "blocked",
+    "tier": "B",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "primes",
+      "classical"
+    ],
+    "started": "2026-01-01T05:32:39.477Z",
+    "lastUpdate": "2026-01-01T05:32:39.477Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 9
+  },
+  {
+    "slug": "sum-of-divisors",
+    "title": "Sum of Divisors Properties",
+    "description": "SKIPPED: Already covered by PerfectNumbers.",
+    "phase": "NEW",
+    "status": "blocked",
+    "tier": "B",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "arithmetic-functions",
+      "classical"
+    ],
+    "started": "2026-01-01T05:32:39.478Z",
+    "lastUpdate": "2026-01-01T05:32:39.478Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 5,
+    "tractability": 9
+  },
+  {
+    "slug": "mobius-inversion",
+    "title": "Möbius Inversion Formula",
+    "description": "SKIPPED: Already in Mathlib as sum_eq_iff_sum_mul_moebius_eq (rings), sum_eq_iff_sum_smul_moebius_eq (additive groups), prod_eq_iff_prod_pow_moebius_eq (multiplicative).",
+    "phase": "NEW",
+    "status": "blocked",
+    "tier": "A",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "arithmetic-functions",
+      "classical"
+    ],
+    "started": "2026-01-01T05:32:39.478Z",
+    "lastUpdate": "2026-01-01T05:32:39.478Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 7
+  },
+  {
+    "slug": "prime-counting-bounds",
+    "title": "Prime Counting Function Bounds",
+    "description": "SKIPPED: Explicit Chebyshev bounds not in Mathlib.",
+    "phase": "NEW",
+    "status": "blocked",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "number-theory",
+      "analytic",
+      "bounds"
+    ],
+    "started": "2026-01-01T05:32:39.479Z",
+    "lastUpdate": "2026-01-01T05:32:39.479Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 6
+  },
+  {
+    "slug": "vietas-formulas",
+    "title": "Vieta's Formulas",
+    "description": "COMPLETED: VietasFormulas.",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
+    "tier": "B",
+    "path": "fast",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "classical"
+    ],
+    "started": "2026-01-01T05:32:39.479Z",
+    "lastUpdate": "2026-01-01T05:32:39.479Z",
+    "completed": "2026-01-01T05:32:39.479Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 5,
+    "tractability": 9
+  },
+  {
+    "slug": "frobenius-two-coprime",
+    "title": "Frobenius Number (Two Coprime)",
+    "description": "SKIPPED: Already in Mathlib as frobeniusNumber_pair in Mathlib.",
+    "phase": "NEW",
+    "status": "blocked",
+    "tier": "B",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "classical"
+    ],
+    "started": "2026-01-01T05:32:39.480Z",
+    "lastUpdate": "2026-01-01T05:32:39.480Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 5,
+    "tractability": 9
   }
 ]

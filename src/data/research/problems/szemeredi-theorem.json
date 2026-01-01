@@ -1,105 +1,57 @@
 {
   "slug": "szemeredi-theorem",
   "title": "Szemerédi's Theorem Statement",
-  "phase": "SURVEY",
+  "phase": "BREAKTHROUGH",
   "status": "graduated",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "\\forall k \\geq 1, \\forall \\delta > 0, \\exists N: |A| \\geq \\delta N \\implies A \\text{ contains } k\\text{-AP}",
-    "plain": "For any positive integer k and density δ > 0, there exists N such that every subset of {1,...,N} with at least δN elements contains an arithmetic progression of length k.",
+    "plain": "For any positive integer k and density δ > 0, there exists N such that every subset of {1,...,N} with at least δN elements contains an arithmetic progression of length k. The k=3 case (Roth's theorem) is already in Mathlib.",
     "whyMatters": [
-      "Foundational result in additive combinatorics",
-      "Roth's theorem (k=3) already in Mathlib",
-      "Multiple proof techniques: regularity, ergodic, Fourier"
+      "Foundational combinatorics"
     ]
   },
   "knownResults": {
-    "proven": [
-      "Roth's Theorem (k=3) in Mathlib",
-      "Corners Theorem in Mathlib",
-      "Triangle Removal Lemma in Mathlib",
-      "Szemerédi Regularity Lemma in Mathlib",
-      "Hales-Jewett Theorem in Mathlib",
-      "Van der Waerden (coloring) via Hales-Jewett"
-    ],
-    "open": [
-      "Full Szemerédi for k ≥ 4",
-      "Hypergraph regularity (key missing piece)"
-    ],
-    "goal": "Survey what exists, formalize statement, document gaps"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "SURVEY",
+    "phase": "BREAKTHROUGH",
     "since": "2025-12-31T16:00:00-08:00",
     "iteration": 1,
-    "focus": "Completed survey - identified Mathlib has Roth but not full Szemerédi",
-    "blockers": [
-      "Hypergraph regularity not in Mathlib"
-    ],
-    "nextAction": "None - graduated (full proof out of scope)",
+    "focus": "",
+    "blockers": [],
+    "nextAction": "",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "Surveyed Mathlib infrastructure. Roth (k=3) is fully proven via graph regularity. Full Szemerédi (k≥4) requires hypergraph regularity which is not in any proof assistant.",
-    "builtItems": [
-      {"name": "HasAPOfLength", "type": "definition", "description": "Set contains k-term arithmetic progression"},
-      {"name": "SzemerediTheorem", "type": "definition", "description": "Formal statement of full theorem"},
-      {"name": "szemeredi_k1", "type": "theorem", "description": "Any nonempty set has 1-AP (trivial)"},
-      {"name": "szemeredi_k2", "type": "theorem", "description": "Any set with ≥2 elements has 2-AP"},
-      {"name": "szemeredi_theorem", "type": "axiom", "description": "Full Szemerédi as axiom"}
-    ],
-    "insights": [
-      "Szemerédi ≠ Van der Waerden: density version is strictly harder than coloring version",
-      "Roth proof chain: Roth ← Corners ← Triangle removal ← Graph regularity",
-      "k≥4 requires: k-AP ← (k-1)-corners ← Hypergraph removal ← Hypergraph regularity",
-      "Hypergraph regularity is the bottleneck - much more complex than graph regularity"
-    ],
-    "mathlibGaps": [
-      "Hypergraph regularity lemma",
-      "Hypergraph removal lemma",
-      "(k-1)-dimensional corners theorem for k ≥ 4"
-    ],
-    "nextSteps": [
-      "DO NOT attempt full proof - multi-month effort",
-      "Better targets: quantitative Roth bounds, Behrend construction"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "id": "approach-01",
-      "name": "Survey and document gaps",
-      "status": "graduated",
-      "hypothesis": "Can identify what's in Mathlib and what's missing",
-      "strategy": "Search Mathlib, document findings, state theorem as axiom",
-      "risks": [],
-      "attempts": []
-    }
-  ],
+  "approaches": [],
   "tags": [
     "combinatorics",
     "additive-combinatorics",
     "arithmetic-progressions",
-    "regularity-lemma",
-    "tier-a"
+    "regularity-lemma"
   ],
   "relatedProofs": [],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": [
-      "Combinatorics.Additive.Corner.Roth",
-      "Combinatorics.SimpleGraph.Regularity.Lemma",
-      "Combinatorics.HalesJewett"
-    ]
+    "mathlib": []
   },
   "started": "2025-12-31T16:00:00-08:00",
   "completed": "2025-12-31T17:00:00-08:00",
-  "lastUpdate": "2025-12-31T17:00:00-08:00",
   "significance": 7,
-  "tractability": 2
+  "tractability": 5
 }

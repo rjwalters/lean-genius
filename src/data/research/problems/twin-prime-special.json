@@ -1,98 +1,59 @@
 {
   "slug": "twin-prime-special",
-  "title": "Twin Primes in Special Forms",
-  "phase": "DEEP_DIVE",
+  "title": "Twin Primes Modular Structure",
+  "phase": "BREAKTHROUGH",
   "status": "graduated",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\forall p > 3: (p \\text{ prime} \\land p+2 \\text{ prime}) \\implies p \\equiv 5 \\pmod{6}",
-    "plain": "All twin prime pairs (p, p+2) with p > 3 have the form (6k-1, 6k+1) for some positive integer k. This is a structural result about twin primes using modular arithmetic.",
+    "formal": "\\forall p > 3: \\text{TwinPrime}(p) \\implies p \\equiv 5 \\pmod{6}",
+    "plain": "All twin prime pairs (p, p+2) with p > 3 satisfy p ≡ 5 (mod 6), meaning they have the form (6k-1, 6k+1). This is a provable structural result, unlike the conjecture about infinitely many twin primes.",
     "whyMatters": [
-      "Non-trivial structure theorem",
-      "Clean modular arithmetic proof",
-      "Educational showcase of proof technique"
+      "Tractable structure"
     ]
   },
   "knownResults": {
-    "proven": [
-      "Structure theorem: twin primes > 3 satisfy p ≡ 5 (mod 6)",
-      "Six verified examples: (3,5), (5,7), (11,13), (17,19), (29,31), (41,43)"
-    ],
-    "open": [
-      "Twin prime conjecture (infinitely many pairs)"
-    ],
-    "goal": "Prove the mod 6 structure theorem"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "DEEP_DIVE",
-    "since": "2025-12-31T14:00:00-08:00",
+    "phase": "BREAKTHROUGH",
+    "since": "2025-12-31T16:00:00-08:00",
     "iteration": 1,
-    "focus": "Completed - proved structure theorem",
+    "focus": "",
     "blockers": [],
-    "nextAction": "None - graduated",
+    "nextAction": "",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "Proved that all twin primes > 3 have the form (6k-1, 6k+1). Key insight: if p ≡ 1 (mod 6), then p+2 ≡ 3 (mod 6), so 3 divides p+2, contradicting primality.",
-    "builtItems": [
-      {"name": "IsTwinPrimePair", "type": "definition", "description": "p and p+2 are both prime"},
-      {"name": "TwinPrimeConjecture", "type": "definition", "description": "Infinitely many twin prime pairs exist"},
-      {"name": "prime_mod_six", "type": "theorem", "description": "For p > 3 prime, p ≡ 1 or 5 (mod 6)"},
-      {"name": "twin_prime_mod_six", "type": "theorem", "description": "For twin primes p > 3, p ≡ 5 (mod 6)"},
-      {"name": "twin_prime_form", "type": "theorem", "description": "Twin primes > 3 have form (6k-1, 6k+1)"},
-      {"name": "twin_prime_conjecture", "type": "axiom", "description": "The unsolved twin prime conjecture"}
-    ],
+    "progressSummary": "",
+    "builtItems": [],
     "insights": [
-      "All primes > 3 satisfy p ≡ 1 or 5 (mod 6) - avoids divisibility by 2 or 3",
-      "If p ≡ 1 (mod 6), then p+2 ≡ 3 (mod 6), making p+2 divisible by 3",
-      "Use Nat.Prime.eq_one_or_self_of_dvd for divisibility exclusion proofs",
-      "Pattern: prove n not divisible by 3 using primality and size constraints"
+      "The Proof Strategy"
     ],
-    "mathlibGaps": [
-      "Twin prime conjecture unsolved mathematically",
-      "Zhang/Maynard bounded gaps theorems not formalized"
-    ],
-    "nextSteps": [
-      "Consider formalizing bounded gaps results (Zhang 2013)",
-      "Explore Sophie Germain primes (p and 2p+1 both prime)"
-    ]
+    "mathlibGaps": [],
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "id": "approach-01",
-      "name": "Modular arithmetic structure",
-      "status": "graduated",
-      "hypothesis": "Twin primes > 3 must be ≡ 5 (mod 6)",
-      "strategy": "Case split on p mod 6, eliminate p ≡ 1 case by divisibility",
-      "risks": [],
-      "attempts": []
-    }
-  ],
+  "approaches": [],
   "tags": [
     "number-theory",
     "primes",
     "twin-primes",
-    "modular-arithmetic",
-    "tier-b"
+    "modular-arithmetic"
   ],
   "relatedProofs": [],
   "references": {
     "papers": [],
-    "urls": [
-      "https://en.wikipedia.org/wiki/Twin_prime"
-    ],
-    "mathlib": [
-      "Mathlib.Data.Nat.Prime.Basic"
-    ]
+    "urls": [],
+    "mathlib": []
   },
-  "started": "2025-12-31T14:00:00-08:00",
-  "completed": "2025-12-31T15:00:00-08:00",
-  "lastUpdate": "2025-12-31T15:00:00-08:00",
-  "significance": 6,
+  "started": "2025-12-31T16:00:00-08:00",
+  "completed": "2025-12-31T17:00:00-08:00",
+  "significance": 5,
   "tractability": 8
 }

@@ -1,102 +1,59 @@
 {
   "slug": "collatz-structured",
   "title": "Collatz for Structured Values",
-  "phase": "DEEP_DIVE",
+  "phase": "BREAKTHROUGH",
   "status": "graduated",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\forall k \\geq 1: \\text{Collatz sequence starting at } 2^k \\text{ reaches } 1",
-    "plain": "Prove that the Collatz sequence reaches 1 for powers of 2 (trivially by halving) and for other structured starting values. Includes closure property: if n reaches 1, so does 2n.",
+    "formal": "\\forall n \\geq 1: \\text{Collatz sequence starting at } 2^n \\text{ reaches } 1",
+    "plain": "Prove that the Collatz sequence reaches 1 for powers of 2 and other structured starting values. The full Collatz conjecture is unsolved, but specific cases like 2^n are trivially provable (pure halving).",
     "whyMatters": [
-      "First Collatz formalization in codebase",
-      "Clean induction on iteration",
-      "Educational showcase of Function.iterate"
+      "Novel formalization"
     ]
   },
   "knownResults": {
-    "proven": [
-      "2^k reaches 1 in k steps",
-      "If n reaches 1, then 2n reaches 1",
-      "If n reaches 1, then 2^m * n reaches 1",
-      "Verified for 3, 5, 6, 7, 9, 27 computationally"
-    ],
-    "open": [
-      "Full Collatz conjecture"
-    ],
-    "goal": "Prove termination for structured starting values"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "DEEP_DIVE",
-    "since": "2025-12-31T14:00:00-08:00",
+    "phase": "BREAKTHROUGH",
+    "since": "2025-12-31T16:00:00-08:00",
     "iteration": 1,
-    "focus": "Completed - powers of 2 and closure properties",
+    "focus": "",
     "blockers": [],
-    "nextAction": "None - graduated",
+    "nextAction": "",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "Proved Collatz reaches 1 for powers of 2 by induction (each step halves). Proved closure under multiplication by 2. Verified computationally for 3, 5, 6, 7, 9, and famous case n=27 (111 steps).",
-    "builtItems": [
-      {"name": "collatz", "type": "definition", "description": "n/2 if even, 3n+1 if odd"},
-      {"name": "collatzIter", "type": "definition", "description": "k-th iterate of Collatz"},
-      {"name": "ReachesOne", "type": "definition", "description": "Exists k such that collatzIter k n = 1"},
-      {"name": "collatz_two_mul", "type": "theorem", "description": "collatz(2n) = n"},
-      {"name": "collatz_pow_two", "type": "theorem", "description": "2^k reaches 1 in k steps"},
-      {"name": "pow_two_reaches_one", "type": "theorem", "description": "2^k reaches 1"},
-      {"name": "reaches_one_double", "type": "theorem", "description": "n reaches 1 implies 2n reaches 1"},
-      {"name": "reaches_one_pow_two_mul", "type": "theorem", "description": "n reaches 1 implies 2^m * n reaches 1"}
-    ],
+    "progressSummary": "",
+    "builtItems": [],
     "insights": [
-      "Function.iterate_succ_apply: f^[n+1] x = f^[n] (f x) - puts new step at end",
-      "Powers of 2 proof: induction where each step peels off one halving",
-      "Pattern 2^n - 1 is harder - doesn't simplify nicely after 3n+1"
+      "Key Proof Technique: Powers of 2"
     ],
-    "mathlibGaps": [
-      "Collatz sequence not in Mathlib",
-      "No stopping time analysis infrastructure"
-    ],
-    "nextSteps": [
-      "Consider 2^n - 1 pattern with case analysis",
-      "Consider Merkle-style analysis of stopping times"
-    ]
+    "mathlibGaps": [],
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "id": "approach-01",
-      "name": "Induction on iteration",
-      "status": "graduated",
-      "hypothesis": "Can prove termination for powers of 2 by induction",
-      "strategy": "Show 2^k halves k times to reach 1",
-      "risks": [],
-      "attempts": []
-    }
-  ],
+  "approaches": [],
   "tags": [
     "number-theory",
     "collatz",
     "iteration",
-    "termination",
-    "tier-c"
+    "termination"
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [
-      "Lagarias - The 3x+1 Problem and Its Generalizations (1985)",
-      "Tao - Almost all orbits attain almost bounded values (2019)"
-    ],
-    "urls": [
-      "https://en.wikipedia.org/wiki/Collatz_conjecture"
-    ],
+    "papers": [],
+    "urls": [],
     "mathlib": []
   },
-  "started": "2025-12-31T14:00:00-08:00",
-  "completed": "2025-12-31T15:00:00-08:00",
-  "lastUpdate": "2025-12-31T15:00:00-08:00",
+  "started": "2025-12-31T16:00:00-08:00",
+  "completed": "2025-12-31T17:00:00-08:00",
   "significance": 4,
-  "tractability": 8
+  "tractability": 9
 }

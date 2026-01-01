@@ -1,107 +1,77 @@
 {
   "slug": "hurwitz-three-square-impossibility",
-  "title": "Hurwitz Three-Square Impossibility",
-  "phase": "DEEP_DIVE",
-  "status": "active",
-  "tier": "B",
+  "title": "Hurwitz n=3 Impossibility Proof",
+  "phase": "ORIENT",
+  "status": "graduated",
+  "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "\\nexists \\text{ bilinear } f: \\mathbb{R}^3 \\times \\mathbb{R}^3 \\to \\mathbb{R}^3 \\text{ with } \\|f(a,b)\\|^2 = \\|a\\|^2 \\|b\\|^2",
-    "plain": "There is no norm-multiplicative bilinear map R³ × R³ → R³. This is the n=3 case of Hurwitz's theorem, which states such maps exist only for n = 1, 2, 4, 8.",
+    "formal": "\\nexists \\text{ bilinear } \\mu: \\mathbb{R}^3 \\times \\mathbb{R}^3 \\to \\mathbb{R}^3 \\text{ such that } \\|\\mu(a,b)\\|^2 = \\|a\\|^2 \\cdot \\|b\\|^2",
+    "plain": "Hamilton spent 15 years (1828-1843) trying to extend complex numbers to three dimensions. He wanted \"triplets\" that would do for 3D geometry what complex numbers do for 2D. He finally realized he needed FOUR dimensions (quaternions), not three.",
     "whyMatters": [
-      "Fundamental algebraic result",
-      "Connected to division algebras",
-      "Explains why quaternions and octonions are special"
+      "Fundamental constraint"
     ]
   },
   "knownResults": {
-    "proven": [
-      "All m_ij are unit vectors",
-      "Column orthonormality",
-      "Row orthonormality",
-      "Four cross-term equations including diagonal constraint"
-    ],
-    "open": [
-      "Final contradiction from Parseval identity"
-    ],
-    "goal": "Complete the proof by filling Parseval sorry"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "DEEP_DIVE",
-    "since": "2025-12-30T16:00:00-08:00",
-    "iteration": 2,
-    "focus": "Added diagonal constraint, need Parseval identity",
-    "blockers": [
-      "Parseval identity requires matrix invertibility"
-    ],
-    "nextAction": "Fill ortho_to_orthonormal_triple_eq_zero sorry",
+    "phase": "ORIENT",
+    "since": "2025-12-30T17:01:35-08:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "~700 lines proving structure. Key progress: added diagonal constraint, developed Parseval identity approach. One sorry remains: showing vector orthogonal to orthonormal triple is zero.",
-    "builtItems": [
-      {"name": "NSquareIdentity", "type": "definition", "description": "Norm-multiplicative bilinear map"},
-      {"name": "m_ij unit vectors", "type": "theorem", "description": "All mul(e_i, e_j) are unit vectors"},
-      {"name": "column orthonormality", "type": "theorem", "description": "For fixed j, {m_1j, m_2j, m_3j} orthonormal"},
-      {"name": "row orthonormality", "type": "theorem", "description": "For fixed i, {m_i1, m_i2, m_i3} orthonormal"},
-      {"name": "hdiag_zero", "type": "theorem", "description": "⟨m₁₁, m₂₂⟩ + ⟨m₁₂, m₂₁⟩ = 0 (diagonal constraint)"},
-      {"name": "proj3", "type": "definition", "description": "Projection onto span of 3 vectors"},
-      {"name": "normSq_proj3", "type": "theorem", "description": "|c₁v₁ + c₂v₂ + c₃v₃|² expansion"},
-      {"name": "inner_expansion_three", "type": "theorem", "description": "Parseval identity for orthonormal triple (with 1 sorry)"}
-    ],
-    "insights": [
-      "Diagonal constraint from |mul(e₁+e₂, e₁+e₂)|² = 4 expansion",
-      "Two orthonormal bases sharing one vector are related by rotation",
-      "Case analysis on sin(θ) leads to contradiction in both cases",
-      "Parseval requires: orthogonal to orthonormal triple ⟹ zero vector"
-    ],
-    "mathlibGaps": [
-      "Need OrthonormalBasis machinery for finite-dimensional Parseval"
-    ],
-    "nextSteps": [
-      "Fill ortho_to_orthonormal_triple_eq_zero (matrix invertibility)",
-      "Import Parseval lemmas into HurwitzTheorem.lean",
-      "Complete case analysis using unit_ortho_two_eq_pm_third",
-      "Remove no_three_square_identity axiom"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
   "approaches": [
     {
-      "id": "approach-01",
-      "name": "Diagonal constraint + Parseval",
+      "id": "approach-01-diagonal-constraint",
+      "name": "Diagonal Constraint",
       "status": "active",
-      "hypothesis": "Diagonal constraint + Parseval leads to contradiction",
-      "strategy": "Derive diagonal constraint, use Parseval to show m₂₃ = ±m₃₁, get contradiction from orthogonality",
-      "risks": ["Matrix invertibility proof may be complex"],
+      "hypothesis": "",
+      "strategy": "The key insight is that the existing proof is missing one crucial constraint - the \"diagonal constraint\" that comes from `|mul(e₁+e₂, e₁+e₂)|² = 4`.",
+      "risks": [],
       "attempts": [
-        {"file": "attempt-01.lean", "succeeded": false, "note": "Basic structure, multiple sorries"},
-        {"file": "attempt-02-parseval.lean", "succeeded": false, "note": "Only 1 sorry remains!"}
+        {
+          "file": "attempt-01.lean",
+          "succeeded": false
+        },
+        {
+          "file": "attempt-02-parseval.lean",
+          "succeeded": false
+        }
       ]
     }
   ],
   "tags": [
     "algebra",
     "division-algebras",
-    "hurwitz",
-    "bilinear-forms",
-    "tier-b"
+    "composition-algebras",
+    "hurwitz"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "Relevance"
+  ],
   "references": {
-    "papers": [
-      "Hurwitz (1898) - Über die Composition der quadratischen Formen"
-    ],
+    "papers": [],
     "urls": [],
-    "mathlib": [
-      "Mathlib.Analysis.InnerProductSpace.Orthonormal"
-    ]
+    "mathlib": []
   },
-  "started": "2025-12-30T12:00:00-08:00",
-  "lastUpdate": "2025-12-30T20:00:00-08:00",
-  "significance": 7,
-  "tractability": 6
+  "started": "2025-12-30T16:59:27-08:00",
+  "lastUpdate": "2025-12-30T17:01:35-08:00",
+  "completed": "2025-12-30T23:58:14-08:00"
 }

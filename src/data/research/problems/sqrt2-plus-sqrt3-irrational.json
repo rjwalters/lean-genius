@@ -1,84 +1,69 @@
 {
   "slug": "sqrt2-plus-sqrt3-irrational",
-  "title": "√2 + √3 is Irrational",
-  "phase": "DEEP_DIVE",
-  "status": "graduated",
+  "title": "Irrationality of √2 + √3",
+  "phase": "BREAKTHROUGH",
+  "status": "active",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
     "formal": "\\sqrt{2} + \\sqrt{3} \\notin \\mathbb{Q}",
-    "plain": "The sum √2 + √3 is irrational. Proof: squaring isolates √6, which is irrational since 6 is not a perfect square.",
-    "whyMatters": [
-      "Shows algebraic manipulation technique",
-      "Reduces to single square root irrationality",
-      "Generalizes to other sum proofs"
-    ]
+    "plain": "The sum of the square root of 2 and the square root of 3 is irrational. Even though both √2 and √3 are individually irrational, we need to prove that their sum cannot be expressed as a ratio of integers.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "√2 + √3 is irrational"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Prove by squaring and isolating √6"
+    "goal": ""
   },
   "currentState": {
-    "phase": "DEEP_DIVE",
-    "since": "2025-12-31T14:00:00-08:00",
+    "phase": "BREAKTHROUGH",
+    "since": "2025-12-31T11:15:53-08:00",
     "iteration": 1,
-    "focus": "Completed",
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "None - graduated",
+    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "Proved √2+√3 irrational. Strategy: assume √2+√3=r rational, square to get 5+2√6=r², isolate √6=(r²-5)/2 which is rational, contradiction since √6 is irrational.",
-    "builtItems": [
-      {"name": "sqrt2_plus_sqrt3_irrational", "type": "theorem", "description": "√2 + √3 is irrational"}
-    ],
-    "insights": [
-      "Pattern: sums of square roots reduce to single square root irrationality",
-      "If √a + √b = r, then √(ab) = (r² - a - b)/2",
-      "Use irrational_sqrt_natCast_iff: √n irrational iff n not perfect square",
-      "Use native_decide for ¬IsSquare 6"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Apply to √2+√5, √3+√5, etc."
-    ]
+    "nextSteps": []
   },
   "approaches": [
     {
       "id": "approach-01",
-      "name": "Squaring to isolate product",
-      "status": "graduated",
-      "hypothesis": "Square to reduce to √6 irrationality",
-      "strategy": "(√2+√3)² = 5 + 2√6, isolate √6, contradict rationality",
+      "name": "approach-01",
+      "status": "active",
+      "hypothesis": "",
+      "strategy": "",
       "risks": [],
-      "attempts": []
+      "attempts": [
+        {
+          "file": "attempt-01.lean",
+          "succeeded": false
+        }
+      ]
     }
   ],
   "tags": [
     "number-theory",
     "irrationality",
-    "algebraic-manipulation",
-    "tier-c"
+    "algebraic-numbers"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "Relevance"
+  ],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": [
-      "Mathlib.Data.Real.Irrational",
-      "Mathlib.Data.Real.Sqrt"
-    ]
+    "mathlib": []
   },
-  "started": "2025-12-31T14:00:00-08:00",
-  "completed": "2025-12-31T14:30:00-08:00",
-  "lastUpdate": "2025-12-31T14:30:00-08:00",
-  "significance": 3,
-  "tractability": 9
+  "started": "2025-12-31T11:10:20-08:00",
+  "lastUpdate": "2025-12-31T11:15:53-08:00"
 }

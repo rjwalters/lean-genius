@@ -433,6 +433,24 @@
     "annotationCount": 7
   },
   {
+    "id": "collatz-structured",
+    "title": "Collatz Conjecture for Structured Values",
+    "slug": "collatz-structured",
+    "description": "The Collatz sequence reaches 1 for powers of 2 and numbers of the form 2^k * m where m reaches 1. Verified cases include 3, 5, 6, 7, 9, and 27 (which takes 111 steps).",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "number-theory",
+      "dynamics",
+      "iteration",
+      "partial-progress"
+    ],
+    "dateAdded": "12/31/25",
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 8
+  },
+  {
     "id": "combinations-formula",
     "title": "Formula for the Number of Combinations",
     "slug": "combinations-formula",
@@ -451,24 +469,6 @@
     "mathlibCount": 3,
     "sorries": 0,
     "annotationCount": 6
-  },
-  {
-    "id": "collatz-structured",
-    "title": "Collatz Conjecture for Structured Values",
-    "slug": "collatz-structured",
-    "description": "The Collatz sequence reaches 1 for powers of 2 and numbers of the form 2^k * m where m reaches 1. Verified cases include 3, 5, 6, 7, 9, and 27 (which takes 111 steps).",
-    "status": "verified",
-    "badge": "original",
-    "tags": [
-      "number-theory",
-      "dynamics",
-      "iteration",
-      "partial-progress"
-    ],
-    "dateAdded": "12/31/25",
-    "mathlibCount": 1,
-    "sorries": 0,
-    "annotationCount": 8
   },
   {
     "id": "continuum-hypothesis",
@@ -2901,7 +2901,7 @@
     "id": "wolstenholme-theorem",
     "title": "Wolstenholme's Theorem",
     "slug": "wolstenholme-theorem",
-    "description": "For prime p >= 5, the binomial coefficient C(2p-1, p-1) = 1 (mod p^3). Verified computationally for p = 5, 7, 11, 13.",
+    "description": "For prime p >= 5, the binomial coefficient C(2p-1, p-1) = 1 (mod p^3). Verified computationally for p = 5, 7, 11, 13. Connected to harmonic number divisibility.",
     "status": "verified",
     "badge": "original",
     "tags": [
