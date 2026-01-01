@@ -1,45 +1,28 @@
 {
   "slug": "pnp-barriers",
-  "title": "P vs NP Barriers",
-  "phase": "SURVEY",
+  "title": "P vs NP Barrier Formalization",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Formalize the three major barriers to proving P ≠ NP: Relativization, Natural Proofs, and Algebrization",
-    "plain": "The P vs NP problem cannot be solved by techniques that relativize (Baker-Gill-Solovay 1975), by natural proofs assuming OWFs exist (Razborov-Rudich 1997), or by techniques that algebrize (Aaronson-Wigderson 2009).",
-    "whyMatters": [
-      "Explains why P vs NP is hard",
-      "Foundational complexity theory",
-      "Constrains possible proof approaches"
-    ]
+    "formal": "\\text{Relativization: } \\exists A, B. P^A = NP^A \\land P^B \\neq NP^B",
+    "plain": "Formalize the three major barriers to proving P ≠ NP: relativization (Baker-Gill-Solovay), natural proofs (Razborov-Rudich), and algebrization (Aaronson-Wigderson).",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "P^A ⊆ NP^A for any oracle A (full 40-line proof)",
-      "Relativization barrier - cannot prove P=NP or P≠NP by relativizing",
-      "Natural proofs break crypto - contradict OWFs",
-      "P ⊆ NP (unrelativized)",
-      "P ⊆ NP ⊆ PSPACE ⊆ EXP containment chain",
-      "At least one containment is strict (from time hierarchy)",
-      "P = NP implies PH collapse to P"
-    ],
-    "open": [
-      "Oracle construction for P^A = NP^A (Baker-Gill-Solovay Part 1)",
-      "Oracle construction for P^A ≠ NP^A (Baker-Gill-Solovay Part 2)",
-      "Full natural proofs barrier proof"
-    ],
-    "goal": "Formalize barrier theorems and their implications"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "SURVEY",
-    "since": "2025-12-31T16:00:00-08:00",
+    "phase": "ACT",
+    "since": "2025-12-31",
     "iteration": 3,
-    "focus": "Extended with PSPACE, EXP, polynomial hierarchy, NP-completeness",
-    "blockers": [
-      "Oracle TM not in Mathlib"
-    ],
-    "nextAction": "Fill remaining sorries, add coNP",
+    "focus": "Extending complexity class formalization with PSPACE, EXP, and NP-completeness framework.",
+    "activeApproach": "Abstract complexity class definitions with barrier theorems.",
+    "blockers": [],
+    "nextAction": "Add coNP, PSPACE-completeness, and explore removing sorries.",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 3,
@@ -47,84 +30,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "876-line file formalizing all three barriers. Proved P^A ⊆ NP^A, relativization barriers, P ⊆ NP ⊆ PSPACE ⊆ EXP chain, PH collapse theorem, NP-completeness framework with Cook-Levin.",
-    "builtItems": [
-      {
-        "name": "P_relative",
-        "type": "definition",
-        "description": "P with oracle access"
-      },
-      {
-        "name": "NP_relative",
-        "type": "definition",
-        "description": "NP with oracle access"
-      },
-      {
-        "name": "P_subset_NP_relative",
-        "type": "theorem",
-        "description": "P^A ⊆ NP^A for any oracle (full proof)"
-      },
-      {
-        "name": "relativization_barrier",
-        "type": "theorem",
-        "description": "Combined relativization barrier"
-      },
-      {
-        "name": "natural_proof_breaks_crypto",
-        "type": "theorem",
-        "description": "Natural proofs contradict OWFs"
-      },
-      {
-        "name": "Sigma_k",
-        "type": "definition",
-        "description": "k-th level of polynomial hierarchy"
-      },
-      {
-        "name": "PH",
-        "type": "definition",
-        "description": "Polynomial hierarchy union"
-      },
-      {
-        "name": "P_eq_NP_implies_PH_collapse",
-        "type": "theorem",
-        "description": "P = NP implies PH = P"
-      },
-      {
-        "name": "PSPACE",
-        "type": "definition",
-        "description": "Polynomial space complexity class"
-      },
-      {
-        "name": "EXP",
-        "type": "definition",
-        "description": "Exponential time complexity class"
-      },
-      {
-        "name": "complexity_containments",
-        "type": "theorem",
-        "description": "Full P ⊆ NP ⊆ PSPACE ⊆ EXP chain"
-      },
-      {
-        "name": "NPComplete",
-        "type": "definition",
-        "description": "NP-complete problems"
-      },
-      {
-        "name": "cook_levin_theorem",
-        "type": "axiom",
-        "description": "SAT is NP-complete"
-      },
-      {
-        "name": "SAT_in_P_implies_P_eq_NP",
-        "type": "theorem",
-        "description": "SAT in P implies P = NP"
-      }
-    ],
+    "progressSummary": "Surveyed (has axioms, full proofs for consequences)",
+    "builtItems": [],
     "insights": [
-      "Mathlib has TM0/TM1/TM2 and TM2ComputableInPolyTime but no oracle TMs",
-      "Abstract oracle model sufficient for barrier theorems",
-      "LeanMillenniumPrizeProblems project uses Primcodable with FinEncoding",
-      "Community suggests L (lambda calculus) model may be easier than TMs"
+      "P_subset_NP_relative",
+      "relativization_barrier_eq",
+      "relativization_barrier_neq",
+      "relativization_barrier",
+      "natural_proof_breaks_crypto",
+      "relativization_insight",
+      "P_subset_NP",
+      "all_barriers_constrain_proofs"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
@@ -133,50 +49,29 @@
       "Cryptographic primitives (OWFs, PRFs)"
     ],
     "nextSteps": [
-      "Remove remaining 2 sorries",
-      "Add coNP and explore NP ∩ coNP",
-      "Add PSPACE-completeness",
-      "Connect to LeanMillenniumPrizeProblems approach"
+      "Add more consequences",
+      "Connect to Mathlib TM",
+      "Formalize diagonalization",
+      "Circuit complexity basics"
     ]
   },
-  "approaches": [
-    {
-      "id": "approach-01",
-      "name": "Abstract oracle model + consequences",
-      "status": "graduated",
-      "hypothesis": "Can formalize barriers without full TM infrastructure",
-      "strategy": "Abstract oracle as function, prove relativization consequences",
-      "risks": [
-        "Missing Mathlib TM infrastructure for full proofs"
-      ],
-      "attempts": []
-    }
-  ],
+  "approaches": [],
   "tags": [
     "complexity-theory",
-    "p-vs-np",
-    "barriers",
-    "relativization",
-    "tier-a"
+    "impossibility",
+    "formalization",
+    "p-vs-np"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "Relevance"
+  ],
   "references": {
-    "papers": [
-      "Baker-Gill-Solovay (1975) - Relativizations of the P=?NP Question",
-      "Razborov-Rudich (1997) - Natural Proofs",
-      "Aaronson-Wigderson (2009) - Algebrization"
-    ],
-    "urls": [
-      "https://github.com/lean-dojo/LeanMillenniumPrizeProblems"
-    ],
-    "mathlib": [
-      "Mathlib.Computability.TuringMachine",
-      "Mathlib.Computability.TMComputable"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
-  "started": "2025-12-31T12:00:00-08:00",
-  "completed": "2025-12-31T20:00:00-08:00",
-  "lastUpdate": "2025-12-31T20:00:00-08:00",
-  "significance": 9,
-  "tractability": 5
+  "started": "2025-12-31T00:00:00-08:00",
+  "lastUpdate": "2025-12-31T21:30:00-08:00",
+  "significance": 8,
+  "tractability": 4
 }

@@ -274,19 +274,30 @@ function parseState(content: string, registryEntry: RegistryEntry): ResearchProb
  * Parse knowledge.md to extract knowledge
  */
 function parseKnowledge(content: string): ResearchProblem['knowledge'] {
-  const progressMatch = content.match(/\*\*Milestone achieved\*\*:\s*(.+)/)
-  const insightsMatch = content.match(/##\s*Technical Insights\s*\n([\s\S]*?)(?=\n##|$)/m)
-  const gapsMatch = content.match(/###\s*What Mathlib Lacks\s*\n([\s\S]*?)(?=\n##|$)/m)
-  const nextMatch = content.match(/##\s*Next Steps\s*\n([\s\S]*?)(?=\n##|$)/m)
+  // Try multiple patterns for progress summary
+  const progressMatch = content.match(/\*\*Milestone achieved\*\*:\s*(.+)/) ||
+    content.match(/\*\*Status\*\*:\s*(.+)/)
+
+  // Extract insights from "What's Proven" section - look for backtick items
+  const provenMatch = content.match(/###\s*What's Proven[^\n]*\n([\s\S]*?)(?=\n###|\n##)/m)
+
+  // Try multiple patterns for Mathlib gaps
+  const gapsMatch = content.match(/###\s*What Mathlib Lacks\s*\n([\s\S]*?)(?=\n###|\n##)/m) ||
+    content.match(/###\s*Missing in Mathlib\s*\n([\s\S]*?)(?=\n###|\n##)/m)
+
+  // Try multiple patterns for next steps - at end of file or before next ##
+  // Note: don't use 'm' flag as it makes $ match line endings, not just string end
+  const nextMatch = content.match(/##\s*Next Steps[^\n]*\n([\s\S]*?)(?=\n##)/i) ||
+    content.match(/##\s*Next Steps[^\n]*\n([\s\S]*)$/i)
 
   const insights: string[] = []
-  if (insightsMatch) {
-    const text = insightsMatch[1]
-    // Extract subsection titles as insights
-    const headers = text.match(/###\s+(.+)/g)
-    if (headers) {
-      for (const h of headers) {
-        insights.push(h.replace(/^###\s+/, ''))
+  if (provenMatch) {
+    const lines = provenMatch[1].split('\n')
+    for (const line of lines) {
+      // Match: - `theorem_name` - description
+      const itemMatch = line.match(/^-\s+`([^`]+)`/)
+      if (itemMatch) {
+        insights.push(itemMatch[1])
       }
     }
   }
@@ -306,9 +317,13 @@ function parseKnowledge(content: string): ResearchProblem['knowledge'] {
   if (nextMatch) {
     const lines = nextMatch[1].split('\n')
     for (const line of lines) {
-      const itemMatch = line.match(/^\d+\.\s+\*\*([^*]+)\*\*/)
-      if (itemMatch) {
-        nextSteps.push(itemMatch[1].trim())
+      // Match bold items: "1. **Step**" or plain items: "1. Step"
+      const boldMatch = line.match(/^\d+\.\s+\*\*([^*]+)\*\*/)
+      const plainMatch = line.match(/^\d+\.\s+(.+)$/)
+      if (boldMatch) {
+        nextSteps.push(boldMatch[1].trim())
+      } else if (plainMatch && !plainMatch[1].startsWith('**')) {
+        nextSteps.push(plainMatch[1].trim())
       }
     }
   }

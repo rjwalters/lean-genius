@@ -33,13 +33,20 @@
   "knowledge": {
     "progressSummary": "Decidable instance + verification to n ≤ 101 (48 cases) + structural lemma",
     "builtItems": [],
-    "insights": [
-      "Proving Small Cases"
-    ],
+    "insights": [],
     "mathlibGaps": [
-      "Circle method infrastructure"
+      "Circle method infrastructure",
+      "L-function machinery for primes",
+      "Exponential sum bounds",
+      "Explicit prime-counting bounds (Dusart-type)"
     ],
-    "nextSteps": []
+    "nextSteps": [
+      "Extend verification",
+      "Build decidable instance",
+      "Prove structural lemma",
+      "Formalize Vinogradov bound",
+      "Circle method basics"
+    ]
   },
   "approaches": [
     {
