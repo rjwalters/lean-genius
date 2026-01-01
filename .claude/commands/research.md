@@ -32,6 +32,54 @@ jq -r '.candidates | group_by(.status) | map({status: .[0].status, count: length
 
 ---
 
+## Knowledge-Based Prioritization (MANDATORY)
+
+**Problems with weak knowledge accumulation get priority.** Before selecting any problem, assess its knowledge score.
+
+### Calculate Knowledge Score
+
+```bash
+# Check knowledge accumulation for a problem
+PROBLEM_ID="weak-goldbach"
+FILE="src/data/research/problems/${PROBLEM_ID}.json"
+if [ -f "$FILE" ]; then
+  jq -r '"Knowledge: insights=\(.knowledge.insights | length) built=\(.knowledge.builtItems | length) gaps=\(.knowledge.mathlibGaps | length) steps=\(.knowledge.nextSteps | length)"' "$FILE"
+else
+  echo "No problem file - needs creation"
+fi
+```
+
+### Knowledge Tiers
+
+| Total Items | Tier | Priority |
+|-------------|------|----------|
+| 0 | **EMPTY** | Highest - explore immediately |
+| 1-5 | **WEAK** | High - needs more research |
+| 6-15 | **MODERATE** | Medium - continue if promising |
+| 16+ | **RICH** | Lower - only if new approach found |
+
+**Total Items** = insights + builtItems + mathlibGaps + nextSteps
+
+### List Problems by Knowledge (Weakest First)
+
+```bash
+# Show all problems sorted by knowledge accumulation (ascending)
+for f in src/data/research/problems/*.json; do
+  id=$(basename "$f" .json)
+  total=$(jq '[.knowledge.insights, .knowledge.builtItems, .knowledge.mathlibGaps, .knowledge.nextSteps] | map(length) | add' "$f" 2>/dev/null || echo 0)
+  echo "$total $id"
+done | sort -n | head -20
+```
+
+### Selection Rule
+
+When multiple problems are eligible:
+1. **Always prefer EMPTY/WEAK knowledge** over MODERATE/RICH
+2. Among same knowledge tier, use tractability as tiebreaker
+3. Document why you chose a particular problem
+
+---
+
 ## Pre-Work Assessment (MANDATORY)
 
 Before ANY work, answer these questions:
@@ -83,28 +131,55 @@ Invalid: "Verify n=7, 9, 11... and keep going" or "extend to n ≤ 1000".
 
 ## Mode 1: FRESH
 
-### Step 1: Claim Problem (Atomic Lock)
+### Step 1: Select Problem by Knowledge Score
+
+**Prioritize problems with weakest knowledge accumulation:**
 
 ```bash
-# Clean stale locks, claim atomically
+# Clean stale locks
 find research/claims -name "*.lock" -type d -mmin +120 -exec rm -rf {} \; 2>/dev/null || true
+
+# Get available problems with their knowledge scores (lowest first)
 AVAILABLE=$(jq -r '.candidates[] | select(.status == "available") | .id' research/candidate-pool.json)
+BEST_SCORE=999
+BEST_PROBLEM=""
+
 for PROBLEM_ID in $AVAILABLE; do
-  if mkdir "research/claims/${PROBLEM_ID}.lock" 2>/dev/null; then
-    echo "$$" > "research/claims/${PROBLEM_ID}.lock/pid"
-    echo "Claimed: $PROBLEM_ID"
-    break
+  FILE="src/data/research/problems/${PROBLEM_ID}.json"
+  if [ -f "$FILE" ]; then
+    SCORE=$(jq '[.knowledge.insights, .knowledge.builtItems, .knowledge.mathlibGaps, .knowledge.nextSteps] | map(length) | add' "$FILE")
+  else
+    SCORE=0  # No file = highest priority (completely unexplored)
+  fi
+  echo "  $PROBLEM_ID: knowledge=$SCORE"
+  if [ "$SCORE" -lt "$BEST_SCORE" ]; then
+    BEST_SCORE=$SCORE
+    BEST_PROBLEM=$PROBLEM_ID
   fi
 done
+
+echo "Selected: $BEST_PROBLEM (knowledge=$BEST_SCORE)"
 ```
 
-### Step 2: Feasibility Check
+### Step 2: Claim Problem (Atomic Lock)
+
+```bash
+PROBLEM_ID="$BEST_PROBLEM"
+if mkdir "research/claims/${PROBLEM_ID}.lock" 2>/dev/null; then
+  echo "$$" > "research/claims/${PROBLEM_ID}.lock/pid"
+  echo "Claimed: $PROBLEM_ID"
+else
+  echo "Failed to claim $PROBLEM_ID - try next lowest knowledge score"
+fi
+```
+
+### Step 3: Feasibility Check
 
 1. **Search Mathlib**: WebSearch "Mathlib4 Lean [topic] 2025 2026"
 2. **Check codebase**: Search `proofs/Proofs/` for related work
 3. **Assess tractability**: What exists? What needs building?
 
-### Step 3: Decision
+### Step 4: Decision
 
 | Decision | Criteria | Status |
 |----------|----------|--------|
@@ -114,7 +189,7 @@ done
 | **BLOCKED** | Needs > 1000 lines foundational work (after BUILD assessment) | `blocked` |
 | **SKIP** | Not worth pursuing | `skipped` |
 
-### Step 4: Implement & Release Lock
+### Step 5: Implement & Release Lock
 
 ```bash
 # Update pool, release lock
@@ -128,13 +203,28 @@ rm -rf "research/claims/${PROBLEM_ID}.lock"
 
 When pool is empty, we scout for new knowledge and attempt if promising.
 
-### Step 1: Select Problem
+### Step 1: Select Problem (Knowledge-First)
+
+**Prioritize by knowledge tier, then status:**
 
 ```bash
-jq -r '.candidates[] | select(.status == "surveyed" or .status == "in-progress" or .status == "skipped") | "\(.id): \(.name) [\(.status)]"' research/candidate-pool.json
+# List revisitable problems with knowledge scores
+echo "=== Problems by Knowledge Score (lowest first) ==="
+for id in $(jq -r '.candidates[] | select(.status == "surveyed" or .status == "in-progress" or .status == "skipped") | .id' research/candidate-pool.json); do
+  FILE="src/data/research/problems/${id}.json"
+  if [ -f "$FILE" ]; then
+    SCORE=$(jq '[.knowledge.insights, .knowledge.builtItems, .knowledge.mathlibGaps, .knowledge.nextSteps] | map(length) | add' "$FILE")
+  else
+    SCORE=0
+  fi
+  STATUS=$(jq -r --arg id "$id" '.candidates[] | select(.id == $id) | .status' research/candidate-pool.json)
+  echo "$SCORE|$STATUS|$id"
+done | sort -t'|' -k1,1n -k2,2
 ```
 
-Priority: `in-progress` > `surveyed` > `skipped`
+**Selection priority:**
+1. Lowest knowledge score (EMPTY > WEAK > MODERATE > RICH)
+2. Within same knowledge tier: `in-progress` > `surveyed` > `skipped`
 
 ### Step 2: Read Context
 
@@ -163,6 +253,41 @@ Search for new knowledge:
 ---
 
 ## Documentation
+
+### Update Problem Knowledge (MANDATORY)
+
+**Every research session MUST update the problem's knowledge accumulation:**
+
+```bash
+# Update src/data/research/problems/<id>.json
+PROBLEM_ID="weak-goldbach"
+FILE="src/data/research/problems/${PROBLEM_ID}.json"
+
+# Add insights (key findings, mathematical observations)
+jq '.knowledge.insights += ["New insight about approach X"]' "$FILE" > tmp.json && mv tmp.json "$FILE"
+
+# Add built items (lemmas, theorems, infrastructure created)
+jq '.knowledge.builtItems += ["Created LemmaX in ProofY.lean:123"]' "$FILE" > tmp.json && mv tmp.json "$FILE"
+
+# Add Mathlib gaps (missing infrastructure identified)
+jq '.knowledge.mathlibGaps += ["Mathlib lacks ternary quadratic forms"]' "$FILE" > tmp.json && mv tmp.json "$FILE"
+
+# Add next steps (concrete actions for future sessions)
+jq '.knowledge.nextSteps += ["Try descent argument for case n≡7 mod 8"]' "$FILE" > tmp.json && mv tmp.json "$FILE"
+
+# Update progress summary
+jq '.knowledge.progressSummary = "PROGRESS: Proved necessity direction"' "$FILE" > tmp.json && mv tmp.json "$FILE"
+```
+
+**What to capture:**
+
+| Field | Content |
+|-------|---------|
+| `insights` | Mathematical observations, failed approaches, key realizations |
+| `builtItems` | Lemmas, theorems, definitions added (with file:line) |
+| `mathlibGaps` | Missing Mathlib infrastructure discovered |
+| `nextSteps` | Concrete next actions for future sessions |
+| `progressSummary` | One-line status: BLOCKED, PROGRESS, COMPLETE |
 
 ### Update knowledge.md
 
