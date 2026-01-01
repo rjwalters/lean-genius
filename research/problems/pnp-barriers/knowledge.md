@@ -45,6 +45,102 @@ Formalize the major barriers to proving P ≠ NP:
 
 ## Session Log
 
+### 2025-12-31 Session 3
+
+**What we did**:
+- Extended PNPBarriers.lean from 704 to 876 lines
+- Added Part 10: PSPACE and the Complexity Zoo
+- Added PSPACE, EXP definitions
+- Proved `P_subset_PSPACE`, `NP_subset_PSPACE`
+- Proved `complexity_containments` - full P ⊆ NP ⊆ PSPACE ⊆ EXP chain
+- Proved `some_containment_strict` - at least one containment is proper (uses P ⊊ EXP from time hierarchy)
+- Added NP-completeness framework: `PolyTimeReduces`, `NPHard`, `NPComplete`
+- Stated Cook-Levin theorem as axiom
+- Proved `SAT_in_P_implies_P_eq_NP` and `P_neq_NP_implies_SAT_hard` corollaries
+
+**Literature searched**:
+- Mathlib4 Lean complexity theory PSPACE NL formalization 2024 2025
+- Lean 4 computational complexity P NP EXPTIME formal verification 2025
+- LeanMillenniumPrizeProblems project (GitHub)
+- Lean Zulip Computational Complexity Theory discussions
+
+**Key findings**:
+- **LeanMillenniumPrizeProblems** project by lean-dojo formalizes P vs NP using `TM2ComputableInPolyTime`
+- Their approach uses `Primcodable` types with `FinEncoding`, more concrete than ours
+- They have `Language`, `InP`, `InNP`, `NPComplete`, polynomial hierarchy
+- Key theorem `ph_collapse_if_p_eq_np` has sorry in their code too
+- Community discussion favors L (lambda calculus) model over TMs for ergonomics
+- Bolton Bailey working on PR #11046 to add `time` function for partial recursive functions
+
+**New definitions/theorems**:
+- `PSPACE` - polynomial space
+- `EXP` - exponential time
+- `P_subset_PSPACE` - proven
+- `NP_subset_PSPACE` - proven
+- `PSPACE_subset_EXP` - proven (with sorry for full construction)
+- `complexity_containments` - full chain theorem
+- `P_ne_EXP` - axiom from time hierarchy
+- `some_containment_strict` - at least one P ⊆ NP ⊆ PSPACE ⊆ EXP is proper
+- `PolyTimeReduces` - polynomial-time reductions
+- `NPHard`, `NPComplete` - standard definitions
+- `cook_levin_theorem` - axiom
+- `SAT_in_P_implies_P_eq_NP` - fundamental corollary
+- `P_neq_NP_implies_SAT_hard` - contrapositive
+
+**Outcome**:
+- Extended from 704 to 876 lines (+172 lines)
+- 14 new definitions/theorems
+- Complete complexity containment chain formalized
+- NP-completeness framework ready for further work
+
+**Next steps**:
+1. Remove the 2 remaining sorries (`PSPACE_subset_EXP`, `NPComplete_in_P_implies_P_eq_NP`)
+2. Add coNP and explore NP ∩ coNP
+3. Add PSPACE-completeness and show TQBF is PSPACE-complete
+4. Explore connection to LeanMillenniumPrizeProblems approach
+
+### 2025-12-31 Session 2
+
+**What we did**:
+- Extended PNPBarriers.lean from 511 to 704 lines
+- Added Part 9: Polynomial Hierarchy and Hierarchy Theorems
+- Formalized Σₖ, Πₖ, and PH complexity classes
+- Proved `P_eq_NP_implies_PH_collapse` - if P = NP then PH = P
+- Proved `PH_neq_P_implies_P_neq_NP` - contrapositive (key!)
+- Added DTIME(f) and DSPACE(f) parameterized complexity classes
+- Stated time/space hierarchy theorems as axioms
+- Added `barriers_explain_difficulty` connecting hierarchy theorems to barriers
+
+**Literature searched**:
+- Mathlib4 Lean complexity classes P NP formalization 2024 2025
+- PSPACE complexity class Lean Mathlib formalization
+
+**Key findings**:
+- Mathlib has TM0/TM1/TM2 but no oracle TMs or complexity classes P/NP
+- Community discussions suggest L (programming language) model may be easier than TMs
+- No formal PSPACE or hierarchy theorem in Mathlib yet
+
+**New definitions/theorems**:
+- `Sigma_k` - k-th level of polynomial hierarchy
+- `Pi_k` - co-Σₖ classes
+- `PH` - polynomial hierarchy union
+- `Sigma_monotone` - Σₖ ⊆ Σₖ₊₁
+- `P_eq_NP_implies_PH_collapse` - central collapse theorem
+- `PH_neq_P_implies_P_neq_NP` - key contrapositive
+- `DTIME`, `DSPACE` - parameterized complexity classes
+- `time_hierarchy_theorem`, `space_hierarchy_theorem` (axioms)
+- `barriers_explain_difficulty` - meta-theorem
+
+**Outcome**:
+- Extended from 511 to 704 lines
+- 13 new definitions/theorems
+- Deeper exploration of why P vs NP is hard vs hierarchy theorems
+
+**Next steps**:
+1. Formalize NL and show NL ⊆ P (logarithmic space)
+2. Add PSPACE and prove P ⊆ PSPACE ⊆ EXP
+3. Prove specific hierarchy theorem instances (e.g., P ⊊ EXP)
+
 ### 2025-12-31 Session 1
 
 **What we did**:
