@@ -4,16 +4,38 @@ Publish the research section to the lean-genius website. This syncs research dat
 
 ## What This Does
 
-1. **Sync Research Data** — Syncs `candidate-pool.json` → `registry.json` and creates missing problem directories
-2. **Build Research Section** — Generates `research-listings.json` and individual problem JSON files
-3. **Commit & Push** — Commits all changes with a descriptive message and pushes to origin
-4. **Deploy to Cloudflare** — Builds the full site and deploys to Cloudflare Pages
+1. **Verify Lean Proofs** — Ensure all proof files build without errors
+2. **Sync Research Data** — Syncs `candidate-pool.json` → `registry.json` and creates missing problem directories
+3. **Build Research Section** — Generates `research-listings.json` and individual problem JSON files
+4. **Commit & Push** — Commits all changes with a descriptive message and pushes to origin
+5. **Deploy to Cloudflare** — Builds the full site and deploys to Cloudflare Pages
 
 ## Steps
 
+### Step 0: Verify Lean Proofs Build
+
+Before publishing, ensure any new or modified Lean proofs compile:
+
+```bash
+cd /Users/rwalters/GitHub/lean-genius/proofs
+
+# Check for modified Lean files
+git diff --name-only -- '*.lean'
+
+# Build all proofs (or specific modified ones)
+lake build
+```
+
+**IMPORTANT**: If the build fails, fix the errors before proceeding. Do NOT commit broken proofs.
+
+If only specific proofs are modified, you can build just those:
+```bash
+lake build Proofs.SchursTheorem  # Example
+```
+
 ### Step 1: Sync Research Data
 
-First, sync the candidate pool with the registry:
+Sync the candidate pool with the registry:
 
 ```bash
 cd /Users/rwalters/GitHub/lean-genius
@@ -37,7 +59,7 @@ This generates:
 - `src/data/research/research-listings.json` — Gallery listing data
 - `src/data/research/problems/{slug}.json` — Individual problem detail pages
 
-### Step 3: Review Changes
+### Step 3: Check for Changes
 
 Check what files have changed:
 
@@ -46,15 +68,23 @@ git status
 git diff --stat
 ```
 
-If there are new research problems or updates, proceed to commit.
+**If there are no changes**: Skip to Step 6 (Deploy) or stop if nothing new to publish.
+
+**If there are changes**: Continue to Step 4.
 
 ### Step 4: Commit Changes
 
-Commit the research updates:
+Stage and commit the research updates:
 
 ```bash
-git add research/ src/data/research/
-git commit -m "$(cat <<'EOF'
+# Stage research and data files
+git add research/ src/data/research/ proofs/Proofs/
+
+# Check what's staged
+git diff --staged --stat
+
+# Commit (skip if nothing staged)
+git diff --staged --quiet || git commit -m "$(cat <<'EOF'
 Publish research updates
 
 - Synced candidate-pool.json with registry
@@ -81,12 +111,14 @@ git push origin main
 Build and deploy the full site:
 
 ```bash
-pnpm deploy
+pnpm run deploy
 ```
+
+**Note**: Use `pnpm run deploy`, not `pnpm deploy`.
 
 This runs:
 1. `pnpm annotations:build` — Resolve proof annotations
-2. `pnpm research:build` — Build research data (already done, but idempotent)
+2. `pnpm research:build` — Build research data (idempotent)
 3. `tsc -b` — TypeScript compilation
 4. `vite build` — Production bundle
 5. `wrangler pages deploy dist` — Deploy to Cloudflare Pages
@@ -106,6 +138,7 @@ After completing all steps, provide a summary:
 ```markdown
 ## Publish Complete
 
+**Lean Build**: ✓ All proofs compile
 **Synced**: X new problems added, Y statuses updated
 **Built**: Z research problems processed
 **Deployed**: https://lean-genius.pages.dev
@@ -121,6 +154,13 @@ After completing all steps, provide a summary:
 
 ## Troubleshooting
 
+### Lean Build Errors
+If `lake build` fails:
+- Check the specific error message and file
+- Fix syntax or type errors in the Lean file
+- Ensure all imports are correct
+- Run `lake clean && lake build` for a fresh build
+
 ### Build Errors
 If `pnpm research:build` fails:
 - Check that `research/registry.json` is valid JSON
@@ -128,13 +168,36 @@ If `pnpm research:build` fails:
 - Look for missing fields in problem.md templates
 
 ### Deploy Errors
-If `pnpm deploy` fails:
+If `pnpm run deploy` fails:
 - Check wrangler authentication: `wrangler whoami`
 - Verify project name: `wrangler pages project list`
 - Check for TypeScript errors in the build output
+
+### Nothing to Commit
+If `git status` shows no changes after sync:
+- This is normal if nothing has changed since last publish
+- Proceed directly to deploy if you want to redeploy
 
 ### Sync Issues
 If sync seems wrong:
 - Manually check `research/candidate-pool.json` for the source of truth
 - The pool file is authoritative for problem status
 - Registry is derived from pool + enriched with phase/path info
+
+## Quick Reference
+
+One-liner to check everything before publish:
+```bash
+cd /Users/rwalters/GitHub/lean-genius && \
+  (cd proofs && lake build) && \
+  pnpm research:build && \
+  git status
+```
+
+Full publish (after verification):
+```bash
+git add -A && \
+  git commit -m "Publish research updates" && \
+  git push origin main && \
+  pnpm run deploy
+```
