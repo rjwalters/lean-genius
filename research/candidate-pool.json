@@ -23,7 +23,7 @@
       "significance": 8,
       "tractability": 3,
       "status": "in-progress",
-      "notes": "Every odd n > 5 is sum of 3 primes. Proved 2013.",
+      "notes": "IN-PROGRESS: 23 odd cases verified (7-51) with explicit witnesses. Full proof requires circle method (not in Mathlib). Extended 2025-12-31.",
       "tags": [
         "number-theory",
         "primes",
@@ -79,7 +79,7 @@
       "significance": 8,
       "tractability": 4,
       "status": "surveyed",
-      "notes": "SURVEYED: PNPBarriers.lean with oracle TMs, relativized P^A/NP^A classes. Baker-Gill-Solovay (1975), Natural Proofs (1997), Algebrization (2009) barriers stated as axioms. Full proofs for P^A⊆NP^A, barrier implications from axioms.",
+      "notes": "SURVEYED: PNPBarriers.lean with oracle TMs, relativized P^A/NP^A classes. Baker-Gill-Solovay (1975), Natural Proofs (1997), Algebrization (2009) barriers. Extended 2025-12-31 with: P/NP unrelativized, P_eq_NP_Question, all_barriers_constrain_proofs combining all three barriers. Noted Mathlib has TM2ComputableInPolyTime.",
       "tags": [
         "complexity",
         "impossibility",

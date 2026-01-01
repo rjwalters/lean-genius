@@ -425,6 +425,65 @@ theorem relativization_insight :
   exact (h_all A) hA
 
 -- ============================================================
+-- PART 8: Connection to Mathlib Infrastructure
+-- ============================================================
+
+/-!
+### Connection to Mathlib's Computability Library
+
+Mathlib provides formal Turing machine infrastructure in:
+- `Mathlib.Computability.TuringMachine` - TM0, TM1, TM2 models
+- `Mathlib.Computability.TMComputable` - Polytime computability
+- `Mathlib.Computability.Halting` - Halting problem
+
+Our barrier theorems use abstract oracle TMs, which extend Mathlib's model.
+The key insight is that oracle access doesn't affect the barrier arguments'
+logical structure - they work for any uniform extension of computability.
+-/
+
+/-- Non-relativized P: problems computable in polynomial time without oracles.
+    This corresponds to Mathlib's `TM2ComputableInPolyTime` when viewing
+    decision problems as functions to Bool. -/
+def P_unrelativized : Set (Nat → Bool) := P_relative emptyOracle
+
+/-- Non-relativized NP: problems verifiable in polynomial time without oracles. -/
+def NP_unrelativized : Set (Nat → Bool) := NP_relative emptyOracle
+
+/-- P ⊆ NP (unrelativized case) - direct consequence of the relativized version. -/
+theorem P_subset_NP : P_unrelativized ⊆ NP_unrelativized :=
+  P_subset_NP_relative emptyOracle
+
+/-- The P vs NP question: are all efficiently verifiable problems efficiently solvable?
+    This is one of the Clay Millennium Prize Problems. -/
+def P_eq_NP_Question : Prop := P_unrelativized = NP_unrelativized
+
+/-- The relativization barrier implies we cannot prove P = NP using only
+    properties that hold relative to all oracles. -/
+theorem cannot_prove_P_eq_NP_by_relativizing :
+    ¬RelativizingProofForAll (fun A => P_relative A = NP_relative A) :=
+  relativization_barrier_eq
+
+/-- The relativization barrier implies we cannot prove P ≠ NP using only
+    properties that hold relative to all oracles. -/
+theorem cannot_prove_P_neq_NP_by_relativizing :
+    ¬RelativizingProofForAll (fun A => P_relative A ≠ NP_relative A) :=
+  relativization_barrier_neq
+
+/-- The three barriers together constrain proof techniques:
+    1. Relativization (1975): Proof must distinguish oracles
+    2. Natural Proofs (1997): Proof cannot use large/constructive circuit properties
+    3. Algebrization (2009): Proof must distinguish algebraic extensions
+
+    Any resolution of P vs NP must navigate around all three. -/
+theorem all_barriers_constrain_proofs :
+    -- Cannot prove by relativizing alone
+    (¬RelativizingProofForAll (fun A => P_relative A = NP_relative A)) ∧
+    (¬RelativizingProofForAll (fun A => P_relative A ≠ NP_relative A)) ∧
+    -- Cannot prove by natural proofs if OWFs exist
+    (OneWayFunctionExists → ¬∃ np : NaturalProof, True) :=
+  ⟨relativization_barrier_eq, relativization_barrier_neq, natural_proofs_barrier⟩
+
+-- ============================================================
 -- Exports
 -- ============================================================
 
@@ -439,5 +498,13 @@ theorem relativization_insight :
 #check natural_proof_breaks_crypto
 #check algebrization_barrier_pos
 #check algebrization_barrier_neg
+-- New exports
+#check P_unrelativized
+#check NP_unrelativized
+#check P_subset_NP
+#check P_eq_NP_Question
+#check cannot_prove_P_eq_NP_by_relativizing
+#check cannot_prove_P_neq_NP_by_relativizing
+#check all_barriers_constrain_proofs
 
 end PNPBarriers

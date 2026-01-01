@@ -72,6 +72,90 @@ theorem goldbach_21 : IsSumOfThreePrimes 21 := by
   use 7, 7, 7
   refine ⟨?_, ?_, ?_, rfl⟩ <;> decide
 
+/-- 23 = 5 + 7 + 11 -/
+theorem goldbach_23 : IsSumOfThreePrimes 23 := by
+  use 5, 7, 11
+  refine ⟨?_, ?_, ?_, rfl⟩ <;> decide
+
+/-- 25 = 5 + 7 + 13 -/
+theorem goldbach_25 : IsSumOfThreePrimes 25 := by
+  use 5, 7, 13
+  refine ⟨?_, ?_, ?_, rfl⟩ <;> decide
+
+/-- 27 = 5 + 11 + 11 -/
+theorem goldbach_27 : IsSumOfThreePrimes 27 := by
+  use 5, 11, 11
+  refine ⟨?_, ?_, ?_, rfl⟩ <;> decide
+
+/-- 29 = 5 + 7 + 17 -/
+theorem goldbach_29 : IsSumOfThreePrimes 29 := by
+  use 5, 7, 17
+  refine ⟨?_, ?_, ?_, rfl⟩ <;> decide
+
+/-- 31 = 7 + 7 + 17 -/
+theorem goldbach_31 : IsSumOfThreePrimes 31 := by
+  use 7, 7, 17
+  refine ⟨?_, ?_, ?_, rfl⟩ <;> decide
+
+/-- 33 = 3 + 7 + 23 -/
+theorem goldbach_33 : IsSumOfThreePrimes 33 := by
+  use 3, 7, 23
+  refine ⟨Nat.prime_three, ?_, ?_, rfl⟩ <;> decide
+
+/-- 35 = 5 + 7 + 23 -/
+theorem goldbach_35 : IsSumOfThreePrimes 35 := by
+  use 5, 7, 23
+  refine ⟨?_, ?_, ?_, rfl⟩ <;> decide
+
+/-- 37 = 7 + 13 + 17 -/
+theorem goldbach_37 : IsSumOfThreePrimes 37 := by
+  use 7, 13, 17
+  refine ⟨?_, ?_, ?_, rfl⟩ <;> decide
+
+/-- 39 = 7 + 13 + 19 -/
+theorem goldbach_39 : IsSumOfThreePrimes 39 := by
+  use 7, 13, 19
+  refine ⟨?_, ?_, ?_, rfl⟩ <;> decide
+
+/-- 41 = 11 + 13 + 17 -/
+theorem goldbach_41 : IsSumOfThreePrimes 41 := by
+  use 11, 13, 17
+  refine ⟨?_, ?_, ?_, rfl⟩ <;> decide
+
+/-- 43 = 7 + 17 + 19 -/
+theorem goldbach_43 : IsSumOfThreePrimes 43 := by
+  use 7, 17, 19
+  refine ⟨?_, ?_, ?_, rfl⟩ <;> decide
+
+/-- 45 = 5 + 17 + 23 -/
+theorem goldbach_45 : IsSumOfThreePrimes 45 := by
+  use 5, 17, 23
+  refine ⟨?_, ?_, ?_, rfl⟩ <;> decide
+
+/-- 47 = 5 + 11 + 31 -/
+theorem goldbach_47 : IsSumOfThreePrimes 47 := by
+  use 5, 11, 31
+  refine ⟨?_, ?_, ?_, rfl⟩ <;> decide
+
+/-- 49 = 3 + 17 + 29 -/
+theorem goldbach_49 : IsSumOfThreePrimes 49 := by
+  use 3, 17, 29
+  refine ⟨Nat.prime_three, ?_, ?_, rfl⟩ <;> decide
+
+/-- 51 = 7 + 7 + 37 -/
+theorem goldbach_51 : IsSumOfThreePrimes 51 := by
+  use 7, 7, 37
+  refine ⟨?_, ?_, ?_, rfl⟩ <;> decide
+
+/-! ## Summary of Verified Cases
+
+The weak Goldbach conjecture has been computationally verified for all odd n with 7 ≤ n ≤ 51:
+- 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 45, 47, 49, 51
+
+This covers 23 consecutive odd numbers. Each verification provides an explicit witness (p, q, r)
+such that n = p + q + r with all three being prime.
+-/
+
 /-- Vinogradov (1937): sufficiently large odd numbers are sums of 3 primes -/
 axiom vinogradov_ternary_goldbach :
     ∃ N₀ : ℕ, ∀ n : ℕ, n > N₀ → Odd n → IsSumOfThreePrimes n
