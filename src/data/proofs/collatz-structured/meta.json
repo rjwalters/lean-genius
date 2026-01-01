@@ -1,0 +1,92 @@
+{
+  "id": "collatz-structured",
+  "title": "Collatz Conjecture for Structured Values",
+  "slug": "collatz-structured",
+  "description": "The Collatz sequence reaches 1 for powers of 2 and numbers of the form 2^k * m where m reaches 1. Verified cases include 3, 5, 6, 7, 9, and 27 (which takes 111 steps).",
+  "meta": {
+    "author": "Lothar Collatz (formalized in Lean 4)",
+    "date": "1937",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CollatzStructured.lean",
+    "tags": [
+      "number-theory",
+      "dynamics",
+      "iteration",
+      "partial-progress"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Function.iterate",
+        "description": "Iterated function application",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of Collatz function and ReachesOne predicate",
+      "Proof that 2^k reaches 1 in exactly k steps",
+      "Closure theorem: if n reaches 1, so does 2^m * n",
+      "Verified cases: 3, 5, 6, 7, 9, 27 (with step counts)"
+    ],
+    "dateAdded": "12/31/25"
+  },
+  "overview": {
+    "historicalContext": "The Collatz conjecture was proposed by Lothar Collatz in 1937, though he didn't publish it until years later. It has many names: the 3n+1 problem, the Syracuse problem, Kakutani's problem, Hasse's algorithm, and Ulam's problem.\n\nDespite its simple statement, the conjecture has resisted all proof attempts. Paul Erdos famously said: 'Mathematics is not yet ready for such problems.' It's been verified for all n up to 2^68 (about 10^20) by computation.\n\nTerence Tao proved in 2019 that almost all Collatz orbits attain almost bounded values, the strongest result toward the conjecture to date.",
+    "problemStatement": "**The Collatz Function**:\n$$f(n) = \\begin{cases} n/2 & \\text{if } n \\text{ is even} \\\\ 3n+1 & \\text{if } n \\text{ is odd} \\end{cases}$$\n\n**The Conjecture**: For every positive integer n, repeatedly applying f eventually reaches 1.\n\n**What We Prove**:\n- Powers of 2: 2^k reaches 1 in k steps\n- Closure: if n reaches 1, so does 2^m * n\n- Specific verified values: 3, 5, 6, 7, 9, 27",
+    "proofStrategy": "The key insight is that powers of 2 are trivial:\n\n$$2^k \\to 2^{k-1} \\to \\cdots \\to 2 \\to 1$$\n\nEach step halves the value. This is proven by induction on k.\n\nFor the closure property: if n reaches 1 in k steps, then 2n reaches 1 in k+1 steps (first step halves 2n to n).\n\nFor specific values like 27, we use `native_decide` to computationally verify the entire trajectory.",
+    "keyInsights": [
+      "Powers of 2 form the 'backbone' that all trajectories eventually reach",
+      "The closure property means we only need to verify odd numbers",
+      "27 is famous for its long trajectory (111 steps) despite being small",
+      "The conjecture is equivalent to: no cycles exist other than 4 -> 2 -> 1"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "The Collatz Function",
+      "startLine": 32,
+      "endLine": 55,
+      "summary": "Definition of f(n) and basic properties for even/odd inputs."
+    },
+    {
+      "id": "reaches-one",
+      "title": "Reaching 1",
+      "startLine": 57,
+      "endLine": 76,
+      "summary": "The ReachesOne predicate and iteration machinery."
+    },
+    {
+      "id": "powers-of-two",
+      "title": "Powers of 2 Reach 1",
+      "startLine": 78,
+      "endLine": 109,
+      "summary": "The main theorem: 2^k reaches 1 in k steps."
+    },
+    {
+      "id": "closure",
+      "title": "Closure Properties",
+      "startLine": 111,
+      "endLine": 133,
+      "summary": "If n reaches 1, then 2^m * n also reaches 1."
+    },
+    {
+      "id": "verified-cases",
+      "title": "Verified Small Values",
+      "startLine": 135,
+      "endLine": 181,
+      "summary": "Computational verification for 3, 5, 6, 7, 9, 27."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization proves the Collatz conjecture for an important infinite family: all numbers of the form 2^m * n where we've verified n reaches 1. The closure property is key—once we verify any odd number, all its multiples by powers of 2 are covered.\n\nThe proof for powers of 2 is clean and illustrative: each application of the Collatz function halves the value until we reach 1. The specific verifications (especially 27's 111 steps) demonstrate how Lean's native_decide can handle substantial computations.",
+    "implications": "**Computational Verification**\n\nThis approach scales well: once we verify one odd number reaches 1, infinitely many even numbers are covered. The hard cases are odd numbers that grow before eventually descending.\n\n**The 27 Example**\n\n27 is famous because it takes 111 steps despite being small:\n27 -> 82 -> 41 -> 124 -> 62 -> 31 -> 94 -> 47 -> 142 -> 71 -> 214 -> 107 -> 322 -> ... -> 1\n\nThe maximum value in the trajectory is 9232, showing how even small starting values can have dramatic orbits.",
+    "openQuestions": [
+      "Does every positive integer reach 1? (The full Collatz conjecture)",
+      "Are there cycles other than 4 -> 2 -> 1?",
+      "What is the average stopping time for numbers up to N?",
+      "Is there a closed-form expression for the stopping time of 2^n - 1?"
+    ]
+  }
+}

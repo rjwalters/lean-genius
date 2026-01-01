@@ -1,0 +1,114 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "collatz-structured",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "context",
+    "title": "Introduction",
+    "content": "The Collatz conjecture is one of mathematics' most famous unsolved problems. Despite its simple statement, it has resisted proof since 1937.\n\nThis file proves the conjecture for structured starting values: powers of 2 and their multiples with verified numbers.",
+    "mathContext": "Proposed by Lothar Collatz in 1937. Verified computationally for all n up to 2^68.",
+    "significance": "supporting",
+    "relatedConcepts": ["Collatz conjecture", "3n+1 problem", "dynamical systems"]
+  },
+  {
+    "id": "ann-definition",
+    "proofId": "collatz-structured",
+    "range": {
+      "startLine": 32,
+      "endLine": 34
+    },
+    "type": "definition",
+    "title": "The Collatz Function",
+    "content": "The Collatz function:\n\n$$f(n) = \\begin{cases} n/2 & \\text{if } n \\equiv 0 \\pmod{2} \\\\ 3n+1 & \\text{if } n \\equiv 1 \\pmod{2} \\end{cases}$$\n\nSimple to define, but the dynamics are complex.",
+    "mathContext": "collatz n := if n % 2 = 0 then n / 2 else 3 * n + 1",
+    "significance": "critical",
+    "relatedConcepts": ["piecewise function", "iteration", "dynamics"]
+  },
+  {
+    "id": "ann-reaches-one",
+    "proofId": "collatz-structured",
+    "range": {
+      "startLine": 66,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "ReachesOne Predicate",
+    "content": "`ReachesOne n` means there exists k such that f^k(n) = 1.\n\nThe Collatz conjecture states that ReachesOne n holds for all n >= 1.\n\nThis is an existential statement—we don't need to know the exact number of steps, just that one exists.",
+    "mathContext": "ReachesOne n := exists k, collatzIter k n = 1",
+    "significance": "critical",
+    "relatedConcepts": ["predicate", "existential", "orbit"]
+  },
+  {
+    "id": "ann-pow-two-main",
+    "proofId": "collatz-structured",
+    "range": {
+      "startLine": 88,
+      "endLine": 105
+    },
+    "type": "theorem",
+    "title": "Powers of 2 Reach 1",
+    "content": "**Theorem**: For k >= 1, f^k(2^k) = 1.\n\n**Proof**: By induction on k.\n- Base: f(2) = 1\n- Step: 2^(k+1) = 2 * 2^k, so f(2^(k+1)) = 2^k\n\nEach application halves the value:\n$$2^k \\to 2^{k-1} \\to \\cdots \\to 2 \\to 1$$",
+    "mathContext": "collatz_pow_two: k >= 1 -> collatzIter k (2^k) = 1",
+    "significance": "critical",
+    "relatedConcepts": ["induction", "powers of 2", "main theorem"]
+  },
+  {
+    "id": "ann-closure",
+    "proofId": "collatz-structured",
+    "range": {
+      "startLine": 117,
+      "endLine": 133
+    },
+    "type": "theorem",
+    "title": "Closure Under Doubling",
+    "content": "**Theorem**: If n reaches 1, then 2^m * n also reaches 1.\n\n**Proof**: If n reaches 1 in k steps, then:\n- 2n reaches 1 in k+1 steps (first step: 2n -> n)\n- 4n reaches 1 in k+2 steps\n- In general: 2^m * n reaches 1 in k+m steps\n\nThis means verifying odd numbers is sufficient!",
+    "mathContext": "reaches_one_pow_two_mul: ReachesOne n -> ReachesOne (2^m * n)",
+    "significance": "key",
+    "relatedConcepts": ["closure", "induction", "reduction"]
+  },
+  {
+    "id": "ann-three",
+    "proofId": "collatz-structured",
+    "range": {
+      "startLine": 153,
+      "endLine": 156
+    },
+    "type": "example",
+    "title": "3 Reaches 1",
+    "content": "The trajectory of 3:\n\n3 -> 10 -> 5 -> 16 -> 8 -> 4 -> 2 -> 1\n\n(7 steps)\n\nThis is verified computationally using `native_decide`.",
+    "mathContext": "three_reaches_one: ReachesOne 3 := use 7; native_decide",
+    "significance": "supporting",
+    "relatedConcepts": ["verification", "native_decide"]
+  },
+  {
+    "id": "ann-twentyseven",
+    "proofId": "collatz-structured",
+    "range": {
+      "startLine": 178,
+      "endLine": 181
+    },
+    "type": "example",
+    "title": "27 Reaches 1 (111 Steps)",
+    "content": "27 is famous for its unexpectedly long trajectory.\n\nStarting from just 27, the sequence:\n- Grows to a maximum of 9232\n- Takes 111 steps to reach 1\n\nThis demonstrates how even small numbers can have dramatic orbits. Verified computationally in Lean.",
+    "mathContext": "twentyseven_reaches_one: ReachesOne 27 := use 111; native_decide",
+    "significance": "key",
+    "relatedConcepts": ["27", "long trajectory", "maximum value"]
+  },
+  {
+    "id": "ann-conjecture",
+    "proofId": "collatz-structured",
+    "range": {
+      "startLine": 189,
+      "endLine": 190
+    },
+    "type": "theorem",
+    "title": "The Full Conjecture",
+    "content": "**The Collatz Conjecture** (unsolved): For all n >= 1, ReachesOne n.\n\nWe state this as an axiom since it remains unproven.\n\nPaul Erdos: 'Mathematics is not yet ready for such problems.'",
+    "mathContext": "axiom collatz_conjecture: forall n, n >= 1 -> ReachesOne n",
+    "significance": "key",
+    "relatedConcepts": ["axiom", "open problem", "Erdos"]
+  }
+]
