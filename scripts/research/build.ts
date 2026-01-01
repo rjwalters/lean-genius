@@ -513,6 +513,12 @@ function build(): void {
       continue
     }
 
+    // Skip graduated/blocked problems (they're in the proof gallery now)
+    if (entry.status === 'graduated' || entry.status === 'blocked') {
+      console.log(`   Skipping ${entry.slug} (${entry.status})`)
+      continue
+    }
+
     console.log(`   Processing ${entry.slug}...`)
     const problem = processProblem(entry.slug, entry)
     if (problem) {
