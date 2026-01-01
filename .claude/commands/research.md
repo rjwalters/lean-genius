@@ -2,721 +2,242 @@
 
 You are a Lean theorem proving researcher. Run one research iteration on the lean-genius proof gallery.
 
-## Core Philosophy: Meaningful Progress Only
+## Core Philosophy
 
-**Every research session must make MEANINGFUL progress toward a complete proof.** This means:
+**Every session must make MEANINGFUL progress toward a complete proof:**
 - Work that brings us closer to proving the actual theorem
 - New mathematical insights or approaches
+- Building infrastructure that enables proofs
 - Identifying and documenting fundamental blockers
 
 **What is NOT progress:**
-- Enumerating more cases when enumeration cannot complete the proof
-- Adding lines of code without mathematical substance
-- Repeating approaches that have already failed
-- "Busywork" that feels productive but doesn't advance the goal
+- Enumerating cases when enumeration cannot complete the proof
+- Adding code without mathematical substance
+- Repeating failed approaches
+- "Mathlib doesn't have X → blocked" without assessing buildability
 
-## Your Task
+---
 
-Execute a single research cycle. The mode depends on pool status:
+## Quick Reference: Modes
 
 | Pool Status | Mode | Goal |
 |-------------|------|------|
 | Available problems exist | **FRESH** | Claim and work on new problem |
-| Pool empty | **REVISIT/SCOUT** | Search for new knowledge on blocked problems |
-| Pool empty + promising lead | **REVISIT/DEEP** | Full implementation attempt with new approach |
-
----
-
-## Step 0: Check Pool Status
-
-First, check what's available:
+| Pool empty | **REVISIT** | Scout for new knowledge, attempt if promising |
 
 ```bash
 # Check pool status
 jq -r '.candidates | group_by(.status) | map({status: .[0].status, count: length}) | .[]' research/candidate-pool.json
 ```
 
-If `available` count > 0, proceed to **Mode 1: FRESH**.
-If `available` count = 0, proceed to **Mode 2: REVISIT**.
-
 ---
 
-## Step 0.5: CRITICAL VALUE CHECK (MANDATORY)
+## Pre-Work Assessment (MANDATORY)
 
-**STOP. Before doing ANY work, you MUST answer these questions honestly.**
+Before ANY work, answer these questions:
 
-### The Key Question
+### 1. The Value Question
 
 > "If I complete this work, will I be meaningfully closer to a complete proof?"
 
-If the answer is "no, but it's still technically progress" — **IT IS NOT PROGRESS. STOP.**
+If "no, but it's technically progress" → **STOP. That's not progress.**
 
-### For FRESH Problems
+### 2. The Proof Strategy Question
 
-1. **Is there a tractable path to completion?**
-   - What proof technique would we use?
-   - Does Mathlib have the required infrastructure?
-   - If it requires circle method, L-functions, regularity lemmas, or other major machinery not in Mathlib → mark as `blocked`, not `available`
+> "How will I cover infinitely many cases?"
 
-2. **Can we actually prove something, or just state it?**
-   - Stating definitions and axioms = `surveyed`
-   - Proving the theorem or meaningful lemmas toward it = `in-progress`
+Valid: Induction, strong induction, case partition (finite), reduction, contradiction, construction.
+Invalid: "Verify n=7, 9, 11... and keep going" or "extend to n ≤ 1000".
 
-### For REVISIT Problems
+### 3. The Build vs Block Question
 
-1. **Why did this problem stall?** Read the actual blocker from knowledge.md.
+> "If infrastructure is missing, can we build it ourselves?"
 
-2. **Has that blocker been removed?**
-   - Search for new Mathlib PRs that add the missing infrastructure
-   - Check if new proof techniques have emerged
-   - If the blocker still exists → **STOP. Pick a different problem.**
+| Size | Decision |
+|------|----------|
+| < 300 lines | Build it this session |
+| 300-500 lines | Build if high-value |
+| 500-1000 lines | Consider alternative approach first |
+| > 1000 lines | Likely truly blocked |
 
-3. **Is the proposed work different from what's been tried?**
-   - "More of the same" is NOT a valid approach
-   - If previous sessions enumerated cases, DO NOT enumerate more cases
-   - You must identify what's ACTUALLY DIFFERENT this time
+**Before marking `blocked`:** Always check for elementary alternatives and assess buildability.
 
-### Anti-Patterns (NEVER DO THESE)
+### Anti-Patterns (NEVER DO)
 
-| Anti-Pattern | Example | Why It's Wrong |
-|--------------|---------|----------------|
-| **Enumeration Theater** | Extending Goldbach from n≤201 to n≤301 | Enumeration cannot complete an infinite proof |
-| **Busywork Progress** | Adding 50 more test cases | Lines of code ≠ mathematical progress |
-| **Repeating Failed Approaches** | "Let's try circle method" when it's not in Mathlib | Same blockers = same failure |
-| **Incremental Futility** | n≤201 → n≤301 → n≤401... | You need n≤∞, this will never complete |
-| **Premature Blocking** | "Mathlib doesn't have X → blocked" without assessing buildability | See Step 0.55 - always assess BUILD vs BLOCK |
+| Pattern | Example | Why Wrong |
+|---------|---------|-----------|
+| Enumeration Theater | n≤201 → n≤301 | Infinite proof needs finite technique |
+| Busywork | 50 more test cases | Lines ≠ progress |
+| Repeat Failures | "Try circle method again" | Same blockers = same failure |
+| Premature Blocking | "Mathlib lacks X → blocked" | Assess buildability first |
 
-### If You Fail the Value Check
+### Value Hierarchy (Most → Least)
 
-If the problem fails the value check:
-1. Update its status to `blocked` with clear documentation of WHY
-2. Document what Mathlib infrastructure would be needed
-3. Pick a DIFFERENT problem
-4. Do NOT proceed with busywork
+1. **Structural theorem** ("Binary Goldbach ⟹ Weak Goldbach") - one reduction > 1000 cases
+2. **Decidable instance** - subsumes ALL future verification
+3. **Lemma on critical path** - actual progress toward goal
+4. **3-5 examples** - demonstrates pattern works
+5. **More examples** - ZERO additional value after 5
 
 ---
 
-## Step 0.55: BUILD VS BLOCK ASSESSMENT (CRITICAL)
+## Mode 1: FRESH
 
-**Before marking ANY problem as "blocked due to missing Mathlib infrastructure", you MUST assess whether we can build it ourselves.**
-
-### The Wrong Mindset
-
-❌ "Mathlib doesn't have ternary quadratic forms → blocked"
-❌ "Sieve theory not in Mathlib → impossible"
-❌ "No L-functions → we can't proceed"
-
-### The Right Mindset
-
-✅ "Mathlib doesn't have X. Can we build X? How much effort? Is there a simpler approach?"
-
-### The Build Assessment Checklist
-
-When you identify missing infrastructure, answer these questions:
-
-| Question | If YES | If NO |
-|----------|--------|-------|
-| **1. Is it < 300 lines?** | Probably buildable in this session | Consider alternative approaches first |
-| **2. Is it mathematically self-contained?** | Good candidate for standalone module | May have deep dependency chains |
-| **3. Do we have the prerequisite theory?** | Can build directly | Need to build prerequisites first |
-| **4. Would this benefit multiple problems?** | Higher priority to build | Consider problem-specific workaround |
-| **5. Is there an elementary alternative?** | Try that first | Building may be necessary |
-
-### Decision Tree
-
-```
-Missing infrastructure identified
-           │
-           ▼
-┌─────────────────────────────────┐
-│ Is it < 300 lines to build?    │
-└─────────────────────────────────┘
-           │
-     ┌─────┴─────┐
-    YES         NO
-     │           │
-     ▼           ▼
-┌─────────┐  ┌─────────────────────────────┐
-│ BUILD IT│  │ Is there an elementary       │
-│         │  │ proof avoiding this?         │
-└─────────┘  └─────────────────────────────┘
-                        │
-                  ┌─────┴─────┐
-                 YES         NO
-                  │           │
-                  ▼           ▼
-          ┌───────────┐  ┌─────────────────────────┐
-          │ Use that  │  │ Can we build core subset│
-          │ approach  │  │ (~500 lines) that       │
-          └───────────┘  │ enables the proof?      │
-                         └─────────────────────────┘
-                                    │
-                              ┌─────┴─────┐
-                             YES         NO
-                              │           │
-                              ▼           ▼
-                      ┌───────────┐  ┌───────────┐
-                      │ BUILD IT  │  │ NOW it's  │
-                      │           │  │ blocked   │
-                      └───────────┘  └───────────┘
-```
-
-### Building Infrastructure: Guidelines
-
-**When to build yourself (in Lean, not Mathlib):**
-- The infrastructure is < 500 lines
-- It's specific to our proof gallery's needs
-- It doesn't require deep Mathlib internals
-- We can verify correctness through type-checking
-
-**When to consider Mathlib contribution:**
-- The infrastructure is general-purpose (benefits community)
-- It fills an obvious gap in Mathlib's coverage
-- We have time for the review process
-- It aligns with Mathlib's architecture
-
-**When it's truly blocked:**
-- Requires > 1000 lines of foundational work
-- Depends on infrastructure that itself doesn't exist
-- Requires expertise we don't have (e.g., advanced analysis)
-- No known elementary alternative exists
-
-### Example: Ternary Quadratic Forms
-
-**Wrong approach:**
-> "Three squares theorem needs ternary quadratic forms. Mathlib doesn't have them. Blocked."
-
-**Right approach:**
-> "Three squares theorem needs ternary quadratic forms. Let me assess:
-> 1. How much infrastructure? Need: form definition, equivalence, positive-definite classification
-> 2. Can I build a minimal version? Maybe 200-300 lines for the specific case we need
-> 3. Is there an elementary approach? Dirichlet's proof uses binary forms + primes in AP
-> 4. Primes in AP is in Mathlib! Try that approach first.
-> 5. If that fails, consider building minimal ternary form infrastructure."
-
-### Infrastructure Estimation Guidelines
-
-| Infrastructure Type | Typical Size | Buildable? |
-|---------------------|--------------|------------|
-| Simple definitions + basic lemmas | 50-150 lines | ✅ Yes, do it |
-| Small theory (e.g., specialized form type) | 150-400 lines | ✅ Consider it |
-| Medium theory (e.g., class of algebraic structures) | 400-800 lines | ⚠️ If high value |
-| Large theory (e.g., entire subdomain) | 800-2000 lines | ⚠️ Only if critical |
-| Foundational infrastructure | 2000+ lines | ❌ True blocker |
-
-### Document Your Assessment
-
-When you decide NOT to build, document why:
-
-```markdown
-## Infrastructure Assessment: [topic]
-
-**What's needed**: [specific infrastructure]
-**Estimated size**: [lines]
-**Prerequisites**: [what it depends on]
-**Decision**: BUILD | ALTERNATIVE | BLOCKED
-
-**Reasoning**:
-- [why this decision]
-- [what alternatives were considered]
-- [what would change this assessment]
-```
-
----
-
-## Step 0.6: PROOF STRATEGY CHECK (For Theorem Proving)
-
-**Before writing ANY code, you must articulate the proof strategy.**
-
-### The Key Distinction
-
-When we say "prove X for all n", we mean:
-> Find mathematical structure that covers infinite cases simultaneously
-
-We do NOT mean:
-> Check cases one by one until we get tired
-
-### Required: Identify Your Proof Technique
-
-| Technique | How It Covers All Cases | Example |
-|-----------|------------------------|---------|
-| **Induction** | Base case + step → all n | Prove P(0), prove P(n)→P(n+1) |
-| **Strong Induction** | All smaller cases → current case | P(0..n-1) → P(n) |
-| **Case Partition** | Finite classes, prove each | Odd vs even, then handle each |
-| **Reduction** | Reduce to solved problem | Show X follows from Y |
-| **Contradiction** | Assume ¬X, derive false | Assume no solution, find contradiction |
-| **Construction** | Build witness with property | Construct object satisfying spec |
-
-### Enumeration Check
-
-If your strategy involves checking individual cases:
-
-1. **Is the set FINITE?** If infinite → enumeration cannot work
-2. **Is it SMALL (< 20 cases)?** If large → seek structure instead
-3. **Is there truly no pattern?** Usually there is structure to exploit
-
-**If you're about to enumerate an infinite set: STOP. This approach will never complete.**
-
-### Infinite Domain Problems
-
-For theorems like "for all n > 5" or "for all primes p":
-
-**REQUIRED**: Explain how you'll cover infinitely many cases.
-
-Valid answers:
-- "Induction on n with base case 7 and step n→n+2"
-- "Reduce to finite check via modular arithmetic"
-- "Cases partition into 3 classes by residue mod 3"
-
-Invalid answers:
-- "Verify n=7, 9, 11, ... and keep going"
-- "Extend to n ≤ 1000" (still infinite cases after)
-- "Add more examples" (doesn't generalize)
-
----
-
-## Step 0.7: RABBIT HOLE DETECTION
-
-**Check periodically: Am I in a rabbit hole?**
-
-### Warning Signs
-
-You may be rabbit-holing if:
-
-| Sign | Example | What It Means |
-|------|---------|---------------|
-| **Mechanical repetition** | Copy-paste with different numbers | You're not thinking, just grinding |
-| **No new insights** | Last 5 cases taught you nothing new | Marginal value → 0 |
-| **Infinite horizon** | Could continue this forever | Approach doesn't converge |
-| **Avoiding the hard part** | Doing easy stuff while real blocker remains | Procrastination via busywork |
-| **Volume over insight** | "I added 50 cases!" | Quantity ≠ quality |
-
-### The Marginal Value Test
-
-Before extending work, ask:
-
-1. **What did case N teach us?** [specific insight]
-2. **What would case N+1 teach us?** [specific insight]
-3. **If the answer is "same as N"** → you have enough examples
-
-After ~5 examples of a pattern, additional examples have near-zero marginal value.
-
-### Recovery Protocol
-
-If you detect a rabbit hole:
-
-1. **STOP immediately** - don't "just finish this bit"
-2. **State the actual goal** - what are we really trying to achieve?
-3. **Identify the real blocker** - what's actually preventing progress?
-4. **Assess tractability** - is this achievable with current tools?
-5. **Pivot or mark blocked** - either find new approach or acknowledge impasse
-
----
-
-## Step 0.8: STRUCTURE OVER VOLUME
-
-**Mathematical progress comes from finding structure, not accumulating volume.**
-
-### Value Hierarchy
-
-From MOST to LEAST valuable:
-
-1. **Structural theorem** - "Binary Goldbach ⟹ Weak Goldbach"
-   - One reduction > 1000 verified cases
-
-2. **Decidable instance** - "Decidable (IsSumOfThreePrimes n)"
-   - Subsumes ALL future case verification
-
-3. **Lemma on critical path** - proves part of main theorem
-   - Actual progress toward goal
-
-4. **A few examples** - demonstrates approach works
-   - 3-5 examples sufficient for any pattern
-
-5. **Many examples** - ❌ ZERO additional value
-   - If you have 5 examples, 50 more teaches nothing
-
-### Before Adding More Examples
-
-Ask: "Do I already have a decidable instance or structural theorem?"
-- If YES → more examples are worthless
-- If NO → build the instance/theorem instead of enumerating
-
----
-
-## Mode 1: FRESH (Available Problems Exist)
-
-### Step 1.1: Claim a Problem (ATOMIC LOCK REQUIRED)
-
-**CRITICAL: You MUST acquire an atomic lock before working on any problem.**
-
-Multiple agents may be running `/research` simultaneously. To prevent duplicate work:
+### Step 1: Claim Problem (Atomic Lock)
 
 ```bash
-# Step 1: Clean stale locks (> 2 hours old)
+# Clean stale locks, claim atomically
 find research/claims -name "*.lock" -type d -mmin +120 -exec rm -rf {} \; 2>/dev/null || true
-
-# Step 2: List available problems
 AVAILABLE=$(jq -r '.candidates[] | select(.status == "available") | .id' research/candidate-pool.json)
-
-# Step 3: Attempt to claim each available problem atomically
-CLAIMED=""
 for PROBLEM_ID in $AVAILABLE; do
-  CLAIM_DIR="research/claims/${PROBLEM_ID}.lock"
-
-  # mkdir is POSIX-atomic: either succeeds (you got it) or fails (someone else has it)
-  if mkdir "$CLAIM_DIR" 2>/dev/null; then
-    # SUCCESS - we own this problem
-    echo "$$" > "$CLAIM_DIR/pid"
-    date -Iseconds > "$CLAIM_DIR/timestamp"
+  if mkdir "research/claims/${PROBLEM_ID}.lock" 2>/dev/null; then
+    echo "$$" > "research/claims/${PROBLEM_ID}.lock/pid"
     echo "Claimed: $PROBLEM_ID"
-    CLAIMED="$PROBLEM_ID"
     break
-  else
-    echo "Already claimed by another agent: $PROBLEM_ID"
   fi
 done
-
-if [ -z "$CLAIMED" ]; then
-  echo "No available problems could be claimed - entering REVISIT mode"
-  # Proceed to Mode 2: REVISIT
-fi
 ```
 
-**Why `mkdir`?** It's POSIX-atomic. There's no race window between "check if exists" and "create" - it's a single operation that either succeeds or fails.
+### Step 2: Feasibility Check
 
-**When done with the problem:** Release the lock:
+1. **Search Mathlib**: WebSearch "Mathlib4 Lean [topic] 2025 2026"
+2. **Check codebase**: Search `proofs/Proofs/` for related work
+3. **Assess tractability**: What exists? What needs building?
+
+### Step 3: Decision
+
+| Decision | Criteria | Status |
+|----------|----------|--------|
+| **DEEP DIVE** | Tractable path exists | `in-progress` |
+| **BUILD** | Missing infra < 500 lines | `in-progress` |
+| **SURVEY** | Can state but not prove yet | `surveyed` |
+| **BLOCKED** | Needs > 1000 lines foundational work (after BUILD assessment) | `blocked` |
+| **SKIP** | Not worth pursuing | `skipped` |
+
+### Step 4: Implement & Release Lock
+
 ```bash
+# Update pool, release lock
+jq '(.candidates[] | select(.id == "PROBLEM_ID")).status = "STATUS"' research/candidate-pool.json > tmp.json && mv tmp.json research/candidate-pool.json
 rm -rf "research/claims/${PROBLEM_ID}.lock"
 ```
 
-Save the problem ID in `PROBLEM_ID`.
+---
 
-### Step 1.2: Feasibility Check
+## Mode 2: REVISIT
 
-1. **Search Mathlib** - Check what infrastructure exists
-   - Use WebSearch for "Mathlib4 Lean [topic] 2025"
-   - Check if key lemmas/definitions exist
+When pool is empty, we scout for new knowledge and attempt if promising.
 
-2. **Check Codebase** - Look for existing related proofs
-   - Search `proofs/Proofs/` for related files
-   - Read any similar proofs
-
-3. **Assess Tractability**
-   - What's already in Mathlib?
-   - What needs to be built from scratch?
-   - Are there blocking dependencies?
-
-### Step 1.3: Decision
-
-| Decision | Criteria | Status | Action |
-|----------|----------|--------|--------|
-| **DEEP DIVE** | Tractable path to complete proof exists | `in-progress` | Create full proof file, work toward completion |
-| **BUILD** | Missing infrastructure is < 500 lines, buildable ourselves | `in-progress` | Build the infrastructure first, then prove theorem |
-| **SURVEY** | Can define/state but proof requires unavailable infrastructure | `surveyed` | Create stub with definitions, axioms, document blockers |
-| **BLOCKED** | Requires > 1000 lines foundational work we can't build | `blocked` | Document specific blockers after BUILD assessment |
-| **SKIP** | Not worth pursuing (too hard, not interesting, wrong approach) | `skipped` | Update notes explaining why |
-
-**Critical**: Before marking `blocked`, you MUST complete the BUILD vs BLOCK assessment (Step 0.55).
-- `blocked` means "we assessed buildability and determined it requires > 1000 lines of foundational work"
-- NOT "Mathlib doesn't have X" - that's just the starting point for assessment
-
-### Step 1.4: Implement, Update Pool, and Release Lock
-
-After implementing, update the problem status in `research/candidate-pool.json`:
+### Step 1: Select Problem
 
 ```bash
-# Update status using jq (replace <problem-id> and <new-status>)
-jq '(.candidates[] | select(.id == "<problem-id>")).status = "<completed|surveyed|skipped>"' research/candidate-pool.json > tmp.json && mv tmp.json research/candidate-pool.json
+jq -r '.candidates[] | select(.status == "surveyed" or .status == "in-progress" or .status == "skipped") | "\(.id): \(.name) [\(.status)]"' research/candidate-pool.json
 ```
 
-Also update the `notes` field with what was learned.
+Priority: `in-progress` > `surveyed` > `skipped`
 
-**IMPORTANT: Release the lock when done:**
-```bash
-rm -rf "research/claims/${PROBLEM_ID}.lock"
-```
+### Step 2: Read Context
 
-This allows other agents to claim the problem if it needs more work (e.g., status changed to `surveyed` or `in-progress`).
+1. Read `research/problems/<id>/knowledge.md` - full history
+2. Read pool notes: `jq '.candidates[] | select(.id == "<id>")' research/candidate-pool.json`
+3. Understand why it stalled
+
+### Step 3: Scout for Changes
+
+Search for new knowledge:
+- `WebSearch "Mathlib4 [topic] 2025 2026"`
+- `WebSearch "Mathlib4 GitHub PR [topic] merged"`
+- `WebSearch "[theorem] elementary proof"`
+
+**Decision point:**
+- Found new infrastructure/approach → Proceed to attempt
+- Nothing new → Document scout, pick different problem or end session
+
+### Step 4: Attempt (if promising)
+
+1. Propose NEW approach (different from previous attempts)
+2. Apply Pre-Work Assessment
+3. Implement meaningful work
+4. Document outcome in knowledge.md
 
 ---
 
-## Mode 2: REVISIT (Pool Empty - Never Give Up)
+## Documentation
 
-When no available problems exist, we don't stop. We dig deeper.
-
-REVISIT has two sub-modes:
-
-| Sub-Mode | When | Goal |
-|----------|------|------|
-| **SCOUT** | Quick check for new knowledge | Search for Mathlib/literature updates that might unblock |
-| **DEEP** | Ready to attempt proof work | Full implementation attempt with new approach |
-
-Start with SCOUT. Only proceed to DEEP if scouting reveals a viable path.
-
-### Step 2.0: Choose SCOUT or DEEP
-
-**Default to SCOUT** unless you have specific reason to attempt implementation.
-
-SCOUT is appropriate when:
-- Checking if blockers have been resolved
-- Problem hasn't been scouted recently (check `lastScouted` in pool)
-- You want to survey multiple blocked problems quickly
-
-DEEP is appropriate when:
-- Scouting revealed new Mathlib infrastructure
-- You found a new proof approach in literature
-- Related proofs were recently completed that enable this one
-
-### Step 2.1: Select a Blocked Problem
-
-Read the pool and select a problem to revisit:
-
-```bash
-# List blocked problems with scouting info
-jq -r '.candidates[] | select(.status == "surveyed" or .status == "in-progress" or .status == "skipped") |
-  "\(.tier // "B") | \(.id) | \(.name) | \(.status) | Last scout: \(.lastScouted // "never")"' \
-  research/candidate-pool.json | sort
-```
-
-**Selection priority for SCOUT:**
-1. High-tier problems (S, A) not recently scouted
-2. Problems where related work was recently completed
-3. Problems blocked on infrastructure that might have been added
-
-**Selection priority for DEEP:**
-1. `in-progress` - Continue stalled work
-2. `surveyed` - We have definitions, try to prove more
-3. `skipped` - Check if circumstances changed
-
-Pick one. Prefer problems where:
-- Time has passed since last scout (new Mathlib features may exist)
-- We have related completed proofs (technique transfer)
-- The skip reason was "infrastructure" not "impossible"
-
-### Step 2.2: Deep Context Gathering
-
-**This is critical. Read EVERYTHING about this problem:**
-
-1. **Read the problem history**
-   ```bash
-   # Check if problem directory exists
-   ls research/problems/<problem-id>/
-
-   # Read accumulated knowledge
-   cat research/problems/<problem-id>/knowledge.md
-
-   # Read all previous approaches
-   cat research/problems/<problem-id>/approaches/*/hypothesis.md
-   cat research/problems/<problem-id>/approaches/*/post-mortem.md
-   ```
-
-2. **Read the skip/survey notes**
-   ```bash
-   jq '.candidates[] | select(.id == "<problem-id>")' research/candidate-pool.json
-   ```
-
-3. **Check what's changed since last attempt**
-   - Search Mathlib for new lemmas: WebSearch "Mathlib4 [topic] 2025"
-   - Check our gallery for new related proofs
-   - Look for recent arXiv papers on the topic
-
-### Step 2.3: Literature Search (SCOUT Phase)
-
-**Actively search for new knowledge:**
-
-1. **Mathlib search**: WebSearch "Mathlib4 [topic] 2025 2026"
-2. **Mathlib PRs**: WebSearch "Mathlib4 GitHub PR [topic] merged"
-3. **arXiv search**: WebSearch "arXiv [problem topic] Lean formalization 2024 2025"
-4. **Elementary proofs**: WebSearch "[theorem name] elementary proof"
-5. **Survey papers**: WebSearch "[topic] survey recent progress"
-
-**What to look for:**
-- New proof techniques
-- Simplified approaches
-- Partial results we could formalize
-- Infrastructure that now exists
-
-### Step 2.3.1: SCOUT Decision Point
-
-After literature search, assess the blocker status:
-
-| Finding | Blocker Status | Action |
-|---------|----------------|--------|
-| New Mathlib infrastructure found | **RESOLVED** | Proceed to DEEP (Step 2.4+) |
-| New proof approach found | **WEAKENED** | Proceed to DEEP (Step 2.4+) |
-| No relevant changes found | **UNCHANGED** | Complete SCOUT, pick another problem |
-
-**Update knowledge.md with scouting results:**
+### Update knowledge.md
 
 ```markdown
-## Scout: [DATE]
+## Session [DATE]
 
-### Searches Performed
-- Mathlib: [queries and results]
-- Literature: [queries and results]
-- Related proofs: [files checked]
+**Mode**: FRESH | REVISIT
+**Outcome**: [completed | progress | blocked | scouted]
 
-### Blocker Assessment
-- **Previous blocker**: [what was blocking]
-- **Status**: UNCHANGED | WEAKENED | RESOLVED
-- **Evidence**: [what you found or didn't find]
+### What I Did
+[Concrete actions]
 
-### Recommendation
-- [ ] Keep blocked - blocker still exists
-- [ ] Attempt DEEP dive - new approach available
-- [ ] Move to available - fully unblocked
+### Key Findings
+- [insight 1]
+- [insight 2]
+
+### Next Steps
+[What to try next]
 ```
 
-**Update lastScouted in pool:**
-```bash
-jq '(.candidates[] | select(.id == "<problem-id>")).lastScouted = "'$(date -Iseconds)'"' \
-  research/candidate-pool.json > tmp.json && mv tmp.json research/candidate-pool.json
-```
-
-**If SCOUT found nothing new:** You're done! Report findings and pick another problem to scout, or end the session.
-
-**If SCOUT found something promising:** Continue to Step 2.4 (DEEP mode).
-
----
-
-### Step 2.4: Generate Novel Approach (DEEP Phase)
-
-Based on your research, propose a NEW approach not previously tried:
-
-1. **Review what's been tried** (from knowledge.md, post-mortems)
-2. **Identify gaps** - What approaches haven't we attempted?
-3. **Apply new information** - What did literature search reveal?
-4. **Propose something concrete** - Even if speculative
-
-Write a brief hypothesis:
-```markdown
-## New Approach: [Name]
-
-**Motivation**: [Why this might work]
-**Key insight**: [What's different from previous attempts]
-**First step**: [Concrete thing to try]
-**Risk**: [What could go wrong]
-```
-
-### Step 2.5: Attempt Something MEANINGFUL
-
-**You must try something that advances the proof.** But first, re-check the value gate:
-
-> "Will this work bring me closer to a complete proof, or is it busywork?"
-
-**Valid options:**
-1. **Prove a new lemma** that's on the critical path to the main theorem
-2. **Reduce to a simpler problem** that's tractable with current Mathlib
-3. **Find an alternative proof approach** that avoids the current blockers
-4. **Identify the minimal Mathlib addition** needed to unblock progress
-5. **Build infrastructure** (decidable instance, structural theorem) that subsumes many cases
-
-**INVALID options (do NOT do these):**
-- Enumerate more cases when enumeration won't complete the proof
-- Add more "verified examples" of something already demonstrated
-- Repeat the same approach that failed before
-- Write code that doesn't advance mathematical understanding
-- Extend from n≤k to n≤k+50 when you need n≤∞
-
-**The "More Examples" Trap:**
-If previous sessions added examples, and you're about to add more examples:
-- **STOP.** This is almost certainly the wrong move.
-- Ask: "Do we already have enough examples to demonstrate the pattern?"
-- Ask: "Would a decidable instance or structural theorem be more valuable?"
-- If you have 5+ examples, more examples have ZERO marginal value.
-
-**If no valid option exists:** The problem is `blocked` or `completed`. Update its status and move on.
-
-### Step 2.6: Document Progress
-
-**Even failure is progress.** Update:
-
-1. **Knowledge base** (`research/problems/<id>/knowledge.md`):
-   ```markdown
-   ## Session [date]
-
-   ### Literature Reviewed
-   - [papers/resources checked]
-
-   ### Approach Attempted
-   - [what we tried]
-
-   ### Outcome
-   - [what happened]
-
-   ### Insights
-   - [what we learned]
-
-   ### Next Steps
-   - [what to try next time]
-   ```
-
-2. **Pool notes** (update candidate-pool.json):
-   - Add timestamp of revisit
-   - Note new findings
-   - Update tractability if warranted
-
----
-
-## Report Template
-
-End every session with:
+### End-of-Session Report
 
 ```markdown
 ## Research Iteration Complete
 
-**Mode**: FRESH | REVISIT/SCOUT | REVISIT/DEEP
+**Mode**: FRESH | REVISIT
 **Problem**: [id] - [name]
-**Prior Status**: [available | surveyed | skipped | in-progress]
-
-### What I Did
-[Concrete actions taken]
+**Prior Status**: [status]
 
 ### Outcome
-[Results - proof progress, new insights, or documented failure]
-
-### Key Findings
-- [finding 1]
-- [finding 2]
+[Results - proof progress, new insights, or documented blocker]
 
 ### Files Modified
 - [paths]
 
-### Knowledge Added
-[Summary of insights added to knowledge base]
-
-### Blocker Status (for SCOUT)
-- **Previous**: [blocker]
-- **Current**: UNCHANGED | WEAKENED | RESOLVED
-- **Next scout**: [when to check again]
-
-### Next Steps
-[What the next researcher should try]
-
 ### Pool Status
-- Available: N
-- Surveyed: N
-- In-progress: N
-- Skipped: N
+- Available: N, Completed: N, Surveyed: N, Skipped: N
+```
+
+---
+
+## Infrastructure Building Guide
+
+When Mathlib lacks something, assess before blocking:
+
+**Build locally when:**
+- < 500 lines, self-contained
+- Specific to our needs
+- Doesn't need deep Mathlib internals
+
+**Consider Mathlib contribution when:**
+- General-purpose, fills obvious gap
+- Have time for review process
+
+**Truly blocked when:**
+- > 1000 lines foundational work
+- Deep dependency chains missing
+- No known elementary alternative
+
+**Document your assessment:**
+```markdown
+## Infrastructure Assessment: [topic]
+**Needed**: [specific infrastructure]
+**Size estimate**: [lines]
+**Decision**: BUILD | ALTERNATIVE | BLOCKED
+**Reasoning**: [why]
 ```
 
 ---
 
 ## Parallel Safety
 
-This workflow is safe for multiple agents:
-
-### FRESH Mode Coordination
-- **Atomic directory locks** (`research/claims/<problem-id>.lock/`) prevent duplicate claims
-- `mkdir` is POSIX-atomic: no race condition between check and create
-- Stale locks (> 2 hours) are automatically cleaned
-- Lock is released when work is complete
-
-### REVISIT Mode Coordination
-- Note the session start time in `knowledge.md` before beginning work
-- Check `knowledge.md` timestamps - if another session started recently, pick a different problem
-- Multiple agents can work on different aspects of the same problem if coordinated via knowledge.md
+- **Atomic locks** via `mkdir` prevent duplicate claims
+- Stale locks (> 2 hours) auto-cleaned
+- REVISIT: Check knowledge.md timestamps to avoid collision
 
 ---
 
@@ -724,161 +245,7 @@ This workflow is safe for multiple agents:
 
 | File | Purpose |
 |------|---------|
-| `research/candidate-pool.json` | Problem registry with status |
-| `research/claims/<id>.lock/` | Atomic locks (directories, not files) |
-| `research/problems/<id>/knowledge.md` | Accumulated insights per problem |
+| `research/candidate-pool.json` | Problem registry |
+| `research/claims/<id>.lock/` | Atomic locks |
+| `research/problems/<id>/knowledge.md` | Problem history |
 | `proofs/Proofs/*.lean` | Proof files |
-
----
-
-## Example: SCOUT Session (Quick Knowledge Check)
-
-```
-> /research
-
-Checking available problems...
-Pool empty. Entering REVISIT mode.
-
-Selecting problem to scout...
-S | riemann-hypothesis | Riemann Hypothesis | skipped | Last scout: never
-S | p-vs-np | P vs NP | skipped | Last scout: never
-A | bounded-prime-gaps | Bounded Prime Gaps | skipped | Last scout: 2025-12-15
-
-Selected: riemann-hypothesis (S-tier, never scouted)
-
-Reading blocker from knowledge.md...
-- Primary blocker: Zeta function infrastructure not in Mathlib
-- Needs: ζ(s) definition, analytic continuation, functional equation
-
-Scouting for new knowledge...
-- WebSearch "Mathlib4 zeta function 2025 2026"
-  → No zeta function in Mathlib yet
-- WebSearch "Mathlib4 Dirichlet series merged"
-  → Found: Basic Dirichlet series in Mathlib.NumberTheory.LSeries
-- WebSearch "Riemann hypothesis Lean formalization"
-  → No complete formalizations found
-
-Updating knowledge.md with scout results...
-Updating lastScouted in pool...
-
-## Research Iteration Complete
-
-**Mode**: REVISIT/SCOUT
-**Problem**: riemann-hypothesis
-**Prior Status**: skipped
-
-### What I Did
-Scouted for new Mathlib/literature on Riemann hypothesis formalization.
-
-### Outcome
-Blocker unchanged. Zeta function still not in Mathlib.
-
-### Key Findings
-- Mathlib has basic LSeries (Dirichlet series) - partial progress
-- No complete zeta function definition yet
-- No formalizations of RH found in Lean/Coq/Isabelle
-
-### Blocker Status
-- **Previous**: Zeta function infrastructure missing
-- **Current**: UNCHANGED (but LSeries is a step toward it)
-- **Next scout**: After Mathlib analytic number theory updates
-
-### Pool Status
-- Available: 0
-- Skipped: 16
-```
-
----
-
-## Example: DEEP Session (Full Implementation Attempt)
-
-```
-> /research
-
-Checking available problems...
-Pool empty. Entering REVISIT mode.
-
-Selecting blocked problem...
-- szemeredi-theorem [surveyed] - Last touched 2025-01-15
-- rh-consequences [surveyed] - Has related completed proofs
-- bounded-prime-gaps [skipped] - Blocked on sieve theory
-
-Selected: szemeredi-theorem (surveyed, may have new Mathlib support)
-
-Reading history...
-- Previous work: Defined AP, density, stated theorem as axiom
-- Block reason: "Hypergraph regularity not in Mathlib"
-- Knowledge base: 3 previous insights
-
-Literature search (SCOUT phase)...
-- Searching "Szemerédi theorem Lean Mathlib 2025"...
-- Found: New Mathlib.Combinatorics.Additive module (Dec 2024)
-- Found: arXiv paper on "container method" simplification
-
-Blocker assessment: WEAKENED - new approach available!
-Proceeding to DEEP phase...
-
-New approach: Container Method
-- Uses probabilistic argument, may avoid regularity lemma
-- Mathlib has probability foundations
-- Worth attempting!
-
-Attempting proof sketch...
-- Created proofs/Proofs/SzemerediContainer.lean
-- Defined container lemma statement
-- Proved connection to AP density
-- Blocked at: probabilistic counting argument (needs Mathlib.Probability)
-
-Updating knowledge base...
-
-## Research Iteration Complete
-
-**Mode**: REVISIT/DEEP
-**Problem**: szemeredi-theorem
-**Prior Status**: surveyed
-
-### What I Did
-1. Searched for recent Mathlib additions (SCOUT)
-2. Found container method as alternative approach
-3. Created new proof file with container-based attempt (DEEP)
-4. Proved 2 new connecting lemmas
-
-### Outcome
-Partial progress. New approach identified. Blocked on probability infrastructure.
-
-### Key Findings
-- Container method may be more tractable than regularity lemma
-- Mathlib.Combinatorics.Additive has new useful lemmas
-- Need Mathlib.Probability.ProbabilityMassFunction for counting
-
-### Files Modified
-- proofs/Proofs/SzemerediContainer.lean (new)
-- research/problems/szemeredi-theorem/knowledge.md (updated)
-
-### Next Steps
-- Check if probabilistic argument can be made deterministic
-- Look for "finitary" versions of container lemma
-
-### Pool Status
-- Available: 0
-- Surveyed: 3 (including this one, still surveyed but with progress)
-- Skipped: 7
-```
-
----
-
-## Scouting Strategy: Millennium Problems
-
-For S-tier problems (Millennium Prize), use targeted searches:
-
-| Problem | Key Search Terms | Primary Blocker |
-|---------|------------------|-----------------|
-| Riemann Hypothesis | "Mathlib zeta function", "Mathlib analytic continuation" | L-functions |
-| P vs NP | "Mathlib Turing machine", "Mathlib complexity" | Complexity framework |
-| Birch-Swinnerton-Dyer | "Mathlib elliptic curves L-function" | E-L-functions |
-| Hodge Conjecture | "Mathlib Hodge theory", "Mathlib algebraic cycles" | Hodge decomposition |
-| Yang-Mills | "Mathlib gauge theory", "Mathlib QFT" | QFT foundations |
-| Navier-Stokes | "Mathlib Navier-Stokes", "Mathlib Sobolev" | Advanced PDE |
-| Poincaré (solved!) | "Mathlib Ricci flow", "Mathlib 3-manifolds" | Ricci flow |
-
-**Note**: Poincaré is unique - it's proven (by Perelman). Formalizing it would be a landmark achievement but requires Ricci flow machinery.
