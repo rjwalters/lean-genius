@@ -415,6 +415,24 @@
     "annotationCount": 8
   },
   {
+    "id": "chinese-remainder-constructive",
+    "title": "Chinese Remainder Theorem (Constructive)",
+    "slug": "chinese-remainder-constructive",
+    "description": "For pairwise coprime moduli, there exists a unique solution to any system of congruences. Includes the classic Sunzi problem: find n where n = 2 (mod 3), n = 3 (mod 5), n = 2 (mod 7). Answer: 23.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "modular-arithmetic",
+      "algorithms",
+      "classical"
+    ],
+    "dateAdded": "12/31/25",
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 7
+  },
+  {
     "id": "combinations-formula",
     "title": "Formula for the Number of Combinations",
     "slug": "combinations-formula",
@@ -433,6 +451,24 @@
     "mathlibCount": 3,
     "sorries": 0,
     "annotationCount": 6
+  },
+  {
+    "id": "collatz-structured",
+    "title": "Collatz Conjecture for Structured Values",
+    "slug": "collatz-structured",
+    "description": "The Collatz sequence reaches 1 for powers of 2 and numbers of the form 2^k * m where m reaches 1. Verified cases include 3, 5, 6, 7, 9, and 27 (which takes 111 steps).",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "number-theory",
+      "dynamics",
+      "iteration",
+      "partial-progress"
+    ],
+    "dateAdded": "12/31/25",
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 8
   },
   {
     "id": "continuum-hypothesis",
@@ -1828,6 +1864,24 @@
     "annotationCount": 10
   },
   {
+    "id": "legendre-partial",
+    "title": "Legendre's Conjecture (Partial)",
+    "slug": "legendre-partial",
+    "description": "Legendre's conjecture states there's always a prime between n^2 and (n+1)^2. Verified with explicit witnesses for n = 1 to 20.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "number-theory",
+      "primes",
+      "prime-gaps",
+      "partial-progress"
+    ],
+    "dateAdded": "12/31/25",
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 5
+  },
+  {
     "id": "leibniz-pi",
     "title": "Leibniz's Series for Pi",
     "slug": "leibniz-pi",
@@ -2667,6 +2721,24 @@
     "annotationCount": 8
   },
   {
+    "id": "szemeredi-theorem",
+    "title": "Szemeredi's Theorem (k=3 via Mathlib)",
+    "slug": "szemeredi-theorem",
+    "description": "Dense subsets of natural numbers contain arbitrarily long arithmetic progressions. The k=3 case (Roth's theorem) is fully proved using Mathlib's corners theorem chain.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "combinatorics",
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "regularity"
+    ],
+    "dateAdded": "12/31/25",
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 7
+  },
+  {
     "id": "taylor-theorem",
     "title": "Taylor's Theorem",
     "slug": "taylor-theorem",
@@ -2788,6 +2860,24 @@
     "annotationCount": 9
   },
   {
+    "id": "vietas-formulas",
+    "title": "Vieta's Formulas",
+    "slug": "vietas-formulas",
+    "description": "Vieta's formulas relate polynomial coefficients to sums and products of roots. For x^2 - bx + c = 0 with roots r, s: r + s = b and r * s = c.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "roots",
+      "classical"
+    ],
+    "dateAdded": "12/31/25",
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 7
+  },
+  {
     "id": "wilsons-theorem",
     "title": "Wilson's Theorem",
     "slug": "wilsons-theorem",
@@ -2806,6 +2896,24 @@
     "mathlibCount": 3,
     "sorries": 0,
     "annotationCount": 10
+  },
+  {
+    "id": "wolstenholme-theorem",
+    "title": "Wolstenholme's Theorem",
+    "slug": "wolstenholme-theorem",
+    "description": "For prime p >= 5, the binomial coefficient C(2p-1, p-1) = 1 (mod p^3). Verified computationally for p = 5, 7, 11, 13.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "number-theory",
+      "binomial-coefficients",
+      "modular-arithmetic",
+      "classical"
+    ],
+    "dateAdded": "12/31/25",
+    "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 7
   },
   {
     "id": "yang-mills",

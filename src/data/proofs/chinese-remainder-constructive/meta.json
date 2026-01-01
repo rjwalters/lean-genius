@@ -1,0 +1,96 @@
+{
+  "id": "chinese-remainder-constructive",
+  "title": "Chinese Remainder Theorem (Constructive)",
+  "slug": "chinese-remainder-constructive",
+  "description": "For pairwise coprime moduli, there exists a unique solution to any system of congruences. Includes the classic Sunzi problem: find n where n = 2 (mod 3), n = 3 (mod 5), n = 2 (mod 7). Answer: 23.",
+  "meta": {
+    "author": "Sun Zi (formalized in Lean 4)",
+    "date": "3rd-5th century CE",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ChineseRemainderConstructive.lean",
+    "tags": [
+      "number-theory",
+      "modular-arithmetic",
+      "algorithms",
+      "classical"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.chineseRemainder",
+        "description": "Core CRT existence and uniqueness",
+        "module": "Mathlib.Data.Nat.ModEq"
+      },
+      {
+        "theorem": "Nat.modEq_and_modEq_iff_modEq_mul",
+        "description": "Combining modular congruences",
+        "module": "Mathlib.Data.Nat.ModEq"
+      }
+    ],
+    "originalContributions": [
+      "Constructive proofs with explicit witnesses",
+      "Extension to three pairwise coprime moduli",
+      "Classic Sunzi problem solution (23 mod 105)",
+      "Residue Number System (RNS) uniqueness theorem"
+    ],
+    "dateAdded": "12/31/25"
+  },
+  "overview": {
+    "historicalContext": "The Chinese Remainder Theorem first appeared in the Sunzi Suanjing ('The Mathematical Classic of Sun Zi'), a Chinese treatise from the 3rd-5th century CE. The classic problem asks:\n\n'Find a number that leaves remainder 2 when divided by 3, remainder 3 when divided by 5, and remainder 2 when divided by 7.'\n\nThe answer is 23, unique modulo 105 = 3 * 5 * 7. The theorem was rediscovered independently by Euler and fully developed by Gauss in his Disquisitiones Arithmeticae (1801).",
+    "problemStatement": "**Chinese Remainder Theorem**: Given pairwise coprime moduli m1, m2, ..., mk and any integers a1, a2, ..., ak, there exists a unique x (mod m1*m2*...*mk) such that:\n\nx = a1 (mod m1)\nx = a2 (mod m2)\n...\nx = ak (mod mk)\n\n**Constructive Formula**: For two moduli m, n with gcd(m,n) = 1, find u, v with mu + nv = 1 (Bezout). Then:\nx = a*n*v + b*m*u\nsatisfies x = a (mod m) and x = b (mod n).",
+    "proofStrategy": "The proof uses Mathlib's `Nat.chineseRemainder` for the core result.\n\n**Existence**: Bezout's identity gives coefficients u, v with mu + nv = 1. The solution x = a*n*v + b*m*u works because:\n- x = a*n*v + b*m*u = a*(1-mu) + b*m*u = a + m*(bu-au) = a (mod m)\n- Similarly x = b (mod n)\n\n**Uniqueness**: If x1 = x2 = a (mod m) and x1 = x2 = b (mod n), then m | (x1-x2) and n | (x1-x2). Since gcd(m,n)=1, we have m*n | (x1-x2).",
+    "keyInsights": [
+      "CRT converts 'big' problems mod M to 'small' problems mod prime factors",
+      "The solution is constructive: Bezout coefficients give explicit formulas",
+      "Uniqueness modulo the product is crucial for applications",
+      "CRT is the theoretical basis for Residue Number Systems"
+    ]
+  },
+  "sections": [
+    {
+      "id": "core-crt",
+      "title": "Core CRT for Two Moduli",
+      "startLine": 44,
+      "endLine": 68,
+      "summary": "Existence, uniqueness, and bounded solution for x = a (mod m), x = b (mod n)."
+    },
+    {
+      "id": "constructive",
+      "title": "Constructive Algorithm",
+      "startLine": 70,
+      "endLine": 103,
+      "summary": "Bezout coefficients and the explicit solution formula."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 105,
+      "endLine": 162,
+      "summary": "The Sunzi problem (23 mod 105) and other verified examples."
+    },
+    {
+      "id": "three-moduli",
+      "title": "Extension to Three Moduli",
+      "startLine": 164,
+      "endLine": 202,
+      "summary": "CRT for three pairwise coprime moduli by iteration."
+    },
+    {
+      "id": "applications",
+      "title": "Applications",
+      "startLine": 204,
+      "endLine": 238,
+      "summary": "RNS representation and uniqueness theorem."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization provides a complete treatment of the Chinese Remainder Theorem, from the abstract existence/uniqueness results to concrete computational examples. The Sunzi problem (23 mod 105) serves as the iconic example.\n\nThe constructive approach using Bezout coefficients gives explicit formulas for solutions, making the theorem practical for computation. The extension to three moduli demonstrates the iterative nature of the algorithm.",
+    "implications": "**Applications in Cryptography**\n\nCRT is fundamental to modern cryptography:\n\n1. **RSA**: CRT-based decryption is ~4x faster than naive exponentiation\n2. **Secret Sharing**: Shamir's scheme uses polynomial interpolation over finite fields\n\n**Residue Number Systems**\n\nAny x < m1*m2*...*mk is uniquely determined by its residues (x mod m1, x mod m2, ...). This allows:\n- Parallel arithmetic: add/multiply componentwise\n- Fault tolerance: losing one residue can be recovered\n\n**Calendar Calculations**\n\nFinding when multiple cycles align (e.g., days of week + phases of moon + ...) is a CRT problem.",
+    "openQuestions": [
+      "What are the best algorithms for computing Bezout coefficients?",
+      "How does CRT generalize to non-coprime moduli?",
+      "What are the most efficient RNS bases for computer arithmetic?"
+    ]
+  }
+}

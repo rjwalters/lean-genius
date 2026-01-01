@@ -1,0 +1,95 @@
+{
+  "id": "szemeredi-theorem",
+  "title": "Szemeredi's Theorem (k=3 via Mathlib)",
+  "slug": "szemeredi-theorem",
+  "description": "Dense subsets of natural numbers contain arbitrarily long arithmetic progressions. The k=3 case (Roth's theorem) is fully proved using Mathlib's corners theorem chain.",
+  "meta": {
+    "author": "Endre Szemeredi (formalized in Lean 4)",
+    "date": "1975",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SzemerediTheorem.lean",
+    "tags": [
+      "combinatorics",
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "regularity"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "roth_3ap_theorem_nat",
+        "description": "Roth's theorem for subsets of natural numbers",
+        "module": "Mathlib.Combinatorics.Additive.Corner.Roth"
+      },
+      {
+        "theorem": "ThreeAPFree",
+        "description": "Predicate for 3-AP-free sets",
+        "module": "Mathlib.Combinatorics.Additive.AP.Three.Defs"
+      },
+      {
+        "theorem": "cornersTheoremBound",
+        "description": "Quantitative bound from corners theorem",
+        "module": "Mathlib.Combinatorics.Additive.Corner.Roth"
+      }
+    ],
+    "originalContributions": [
+      "General k-AP definition and formal statement",
+      "Trivial cases k=1, k=2 proved directly",
+      "Equivalence between IsAPFree and ThreeAPFree",
+      "Roth's theorem via Mathlib's corners chain",
+      "Framework for k >= 4 (requires hypergraph regularity)"
+    ],
+    "dateAdded": "12/31/25"
+  },
+  "overview": {
+    "historicalContext": "Szemeredi's theorem is one of the crown jewels of combinatorics. The progression of proofs reflects major developments:\n\n- 1936: Erdos-Turan conjecture formulated\n- 1953: Roth proves k=3 (analytic method)\n- 1969: Szemeredi proves k=4 (combinatorial tour de force)\n- 1975: Szemeredi proves general case (regularity lemma)\n- 1977: Furstenberg proves via ergodic theory\n- 2001: Gowers proves with improved bounds (Fourier analysis)\n\nThe regularity lemma, developed for this proof, became a fundamental tool in combinatorics.",
+    "problemStatement": "**Szemeredi's Theorem (1975)**: For any k >= 1 and delta > 0, there exists N_0 such that any subset of {1,...,N} with at least delta*N elements contains a k-term arithmetic progression.\n\n**k-term AP**: A sequence a, a+d, a+2d, ..., a+(k-1)d with d > 0.\n\n**Special Cases**:\n- k=1: Trivial (any element is a 1-AP)\n- k=2: Trivial (any two distinct elements form a 2-AP)\n- k=3: Roth's theorem (1953) - PROVED in Mathlib\n- k>=4: Requires hypergraph regularity (not in Mathlib)",
+    "proofStrategy": "**Mathlib's Chain for k=3**:\n\nRegularity Lemma -> Triangle Removal -> Corners Theorem -> Roth's Theorem\n\nThis formalization:\n1. Defines general k-AP predicate `HasAPOfLength`\n2. Proves trivial cases k=1, k=2 directly\n3. Proves equivalence between our `IsAPFree` and Mathlib's `ThreeAPFree`\n4. Applies `roth_3ap_theorem_nat` for the k=3 case\n\nThe full theorem (k >= 4) is stated as an axiom.",
+    "keyInsights": [
+      "The regularity lemma decomposed sparse graphs into 'regular' pieces",
+      "Corners theorem bridges 2D grid patterns to 1D progressions",
+      "The k=3 proof chain is complete in Mathlib",
+      "k >= 4 requires hypergraph regularity (open in Mathlib)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Arithmetic Progressions",
+      "startLine": 40,
+      "endLine": 71,
+      "summary": "HasAPOfLength, IsAPFree, and formal theorem statement."
+    },
+    {
+      "id": "trivial",
+      "title": "Trivial Cases",
+      "startLine": 73,
+      "endLine": 106,
+      "summary": "k=1 and k=2 proved directly."
+    },
+    {
+      "id": "mathlib-connection",
+      "title": "Mathlib Connection",
+      "startLine": 128,
+      "endLine": 186,
+      "summary": "Equivalence between IsAPFree and ThreeAPFree."
+    },
+    {
+      "id": "roth",
+      "title": "Roth's Theorem",
+      "startLine": 188,
+      "endLine": 271,
+      "summary": "The k=3 case via Mathlib's roth_3ap_theorem_nat."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization proves Szemeredi's theorem for the important k=3 case (Roth's theorem) by connecting our definitions to Mathlib's infrastructure. The key achievement is the equivalence `threeAPFree_iff_isAPFree`, which allows us to apply Mathlib's complete proof chain.\n\nThe full theorem (k >= 4) remains as an axiom, awaiting formalization of hypergraph regularity in Mathlib.",
+    "implications": "**Theoretical Significance**\n\nSzemeredi's theorem has deep connections to:\n1. **Ergodic Theory**: Furstenberg's proof initiated the field of ergodic Ramsey theory\n2. **Fourier Analysis**: Gowers' proof introduced influential new techniques\n3. **Regularity Lemma**: Became a fundamental tool in graph theory\n\n**The Green-Tao Theorem**\n\nBuilding on Szemeredi, Green and Tao (2004) proved the primes contain arbitrarily long arithmetic progressions. This is one of the most celebrated results in 21st century mathematics.",
+    "openQuestions": [
+      "What is the optimal bound for Szemeredi's theorem?",
+      "Can the regularity lemma be avoided for small k?",
+      "When will hypergraph regularity be formalized in Mathlib?"
+    ]
+  }
+}

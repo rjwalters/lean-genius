@@ -1,0 +1,89 @@
+{
+  "id": "vietas-formulas",
+  "title": "Vieta's Formulas",
+  "slug": "vietas-formulas",
+  "description": "Vieta's formulas relate polynomial coefficients to sums and products of roots. For x^2 - bx + c = 0 with roots r, s: r + s = b and r * s = c.",
+  "meta": {
+    "author": "Francois Viete (formalized in Lean 4)",
+    "date": "1615",
+    "status": "verified",
+    "proofRepoPath": "Proofs/VietasFormulas.lean",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "roots",
+      "classical"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "vieta_formula_quadratic",
+        "description": "Vieta's formula for quadratic polynomials",
+        "module": "Mathlib.RingTheory.Polynomial.Vieta"
+      },
+      {
+        "theorem": "Multiset.esymm",
+        "description": "Elementary symmetric polynomials",
+        "module": "Mathlib.RingTheory.Polynomial.Vieta"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical wrappers for quadratic and cubic cases",
+      "Concrete numerical examples with verification",
+      "Explicit sum-product relationships for monic polynomials",
+      "Connection to Galois theory noted"
+    ],
+    "dateAdded": "12/31/25"
+  },
+  "overview": {
+    "historicalContext": "Francois Viete (1540-1603) introduced the systematic use of letters for unknowns and parameters in equations. His formulas, published posthumously in 'De aequationum recognitione et emendatione tractatus duo' (1615), were a breakthrough in the development of algebra.\n\nVieta's insight that coefficients are symmetric functions of roots laid the groundwork for Galois theory and the proof that quintic equations have no general radical solution (Abel-Ruffini theorem).",
+    "problemStatement": "**Vieta's Formulas for Monic Polynomials**:\n\nFor a monic polynomial with roots r1, r2, ..., rn:\n\n- Coefficient of x^(n-1) = -(r1 + r2 + ... + rn)\n- Coefficient of x^(n-2) = +(sum of products of pairs)\n- ...\n- Constant term = (-1)^n * (r1 * r2 * ... * rn)\n\n**Quadratic Case**: For x^2 - bx + c = 0 with roots r, s:\n- r + s = b\n- r * s = c",
+    "proofStrategy": "The proof uses Mathlib's elementary symmetric polynomial infrastructure.\n\nFor the quadratic case, `vieta_formula_quadratic` directly provides that if x is a root of x^2 - bx + c = 0, there exists another root y with x + y = b and x * y = c.\n\nFor general polynomials, `coeff_eq_esymm_roots_of_card` relates each coefficient to an elementary symmetric polynomial of the roots.",
+    "keyInsights": [
+      "Coefficients are elementary symmetric functions of roots",
+      "The alternating sign pattern: (-1)^k for the k-th symmetric function",
+      "Vieta's formulas are invertible: given sum/product, reconstruct polynomial",
+      "Foundation for Galois theory and solvability of equations"
+    ]
+  },
+  "sections": [
+    {
+      "id": "quadratic",
+      "title": "Quadratic Case",
+      "startLine": 29,
+      "endLine": 44,
+      "summary": "For x^2 - bx + c = 0 with roots r, s: sum = b, product = c."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 46,
+      "endLine": 92,
+      "summary": "Verification with specific polynomials and their roots."
+    },
+    {
+      "id": "general",
+      "title": "General Polynomial Case",
+      "startLine": 94,
+      "endLine": 114,
+      "summary": "The core Vieta relation for polynomials of any degree."
+    },
+    {
+      "id": "applications",
+      "title": "Applications",
+      "startLine": 116,
+      "endLine": 141,
+      "summary": "Reconstructing polynomials from roots and vice versa."
+    }
+  ],
+  "conclusion": {
+    "summary": "Vieta's formulas provide a fundamental bridge between the coefficients of a polynomial and the algebraic properties of its roots. The quadratic case (sum and product of roots) is the most familiar, but the pattern extends to polynomials of any degree.\n\nThis formalization uses Mathlib's elementary symmetric polynomial machinery, providing both the abstract theorem and concrete computational examples.",
+    "implications": "**Theoretical Significance**\n\nVieta's formulas are foundational to:\n\n1. **Galois Theory**: The coefficients are invariant under permutations of roots, leading to the study of symmetric functions and permutation groups\n\n2. **Abel-Ruffini Theorem**: Understanding which symmetric combinations of roots can be expressed in radicals\n\n3. **Newton's Identities**: Relating power sums to elementary symmetric functions\n\n**Practical Applications**\n\n1. **Root Finding**: Check proposed roots without fully factoring\n2. **Polynomial Construction**: Build polynomial from known roots\n3. **Numerical Analysis**: Relate rounding errors in coefficients to errors in roots",
+    "openQuestions": [
+      "How do perturbations in coefficients affect root locations?",
+      "What are the analogous formulas for multivariate polynomials?",
+      "How do Vieta's formulas generalize to non-commutative rings?"
+    ]
+  }
+}

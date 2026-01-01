@@ -1,0 +1,77 @@
+{
+  "id": "legendre-partial",
+  "title": "Legendre's Conjecture (Partial)",
+  "slug": "legendre-partial",
+  "description": "Legendre's conjecture states there's always a prime between n^2 and (n+1)^2. Verified with explicit witnesses for n = 1 to 20.",
+  "meta": {
+    "author": "Adrien-Marie Legendre (formalized in Lean 4)",
+    "date": "1798",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LegendrePartial.lean",
+    "tags": [
+      "number-theory",
+      "primes",
+      "prime-gaps",
+      "partial-progress"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Definition of prime numbers",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of Legendre's conjecture",
+      "20 verified cases with explicit prime witnesses",
+      "Table of prime witnesses for each interval",
+      "Gap formula: (n+1)^2 - n^2 = 2n + 1"
+    ],
+    "dateAdded": "12/31/25"
+  },
+  "overview": {
+    "historicalContext": "Adrien-Marie Legendre conjectured in 1798 that there is always at least one prime between consecutive perfect squares. Despite being believed true and verified computationally for huge values of n, it remains unproven after over 225 years.\n\nLegendre's conjecture implies the Andrica conjecture and is implied by the Riemann Hypothesis. It's one of several famous unsolved problems about prime gaps:\n- Bertrand's Postulate (n, 2n): PROVED (Chebyshev 1852)\n- Legendre's Conjecture (n^2, (n+1)^2): OPEN\n- Oppermann's Conjecture: OPEN (stronger than Legendre)",
+    "problemStatement": "**Legendre's Conjecture (1798)**: For every positive integer n, there exists a prime p with:\n$$n^2 < p < (n+1)^2$$\n\nEquivalently: there's always a prime between consecutive squares.\n\n**Gap Size**: The interval (n^2, (n+1)^2) has length 2n, which grows linearly. This is a weaker density requirement than Bertrand's (n, 2n).",
+    "proofStrategy": "We verify Legendre's conjecture for n = 1 to 20 by providing explicit prime witnesses.\n\nFor each n, we find a prime p with n^2 < p < (n+1)^2 and verify:\n1. p is prime (using `native_decide`)\n2. n^2 < p (arithmetic check)\n3. p < (n+1)^2 (arithmetic check)\n\nThe witnesses are chosen to be the smallest prime in each interval for consistency.",
+    "keyInsights": [
+      "The gap (n+1)^2 - n^2 = 2n + 1 grows linearly",
+      "Each interval contains multiple primes (often 3-7 for small n)",
+      "Related to the Prime Number Theorem: primes near n have density ~1/ln(n)",
+      "Computational verification extends far beyond n = 20"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 20,
+      "endLine": 35,
+      "summary": "LegendreAt predicate and formal conjecture statement."
+    },
+    {
+      "id": "verified-cases",
+      "title": "Verified Cases",
+      "startLine": 37,
+      "endLine": 105,
+      "summary": "20 verified cases with explicit prime witnesses for n = 1 to 20."
+    },
+    {
+      "id": "witness-table",
+      "title": "Summary Table",
+      "startLine": 107,
+      "endLine": 132,
+      "summary": "Table showing intervals and first prime witness for each n."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization verifies Legendre's conjecture for n = 1 to 20, providing explicit prime witnesses for each case. The pattern is clear: each interval (n^2, (n+1)^2) contains several primes, with the smallest serving as our witness.\n\nThe full conjecture remains one of the oldest unsolved problems in number theory, resisting proof since 1798.",
+    "implications": "**Relationship to Other Conjectures**\n\nLegendre's conjecture sits in a hierarchy:\n- Oppermann's Conjecture (stronger): prime in (n^2, n^2 + n) AND (n^2 + n, (n+1)^2)\n- Legendre's Conjecture: prime in (n^2, (n+1)^2)\n- Bertrand's Postulate (weaker): prime in (n, 2n) - PROVEN\n\n**Computational Evidence**\n\nLegendre's conjecture has been verified for n up to 10^18 and beyond. The Prime Number Theorem suggests the gap contains approximately 2n/ln(n^2) = n/ln(n) primes on average.",
+    "openQuestions": [
+      "Is Legendre's conjecture true for all n?",
+      "What is the smallest prime in (n^2, (n+1)^2) as a function of n?",
+      "How many primes are in (n^2, (n+1)^2) on average?"
+    ]
+  }
+}

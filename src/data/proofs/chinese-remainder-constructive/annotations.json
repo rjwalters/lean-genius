@@ -1,0 +1,100 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "chinese-remainder-constructive",
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
+    "type": "context",
+    "title": "Historical Introduction",
+    "content": "The Chinese Remainder Theorem dates to the 3rd-5th century CE, appearing in the Sunzi Suanjing.\n\nThe classic problem: 'Find N where N = 2 (mod 3), N = 3 (mod 5), N = 2 (mod 7).'\n\nAnswer: 23, unique modulo 105 = 3 * 5 * 7.",
+    "mathContext": "One of the oldest results in number theory, predating Western number theory by centuries.",
+    "significance": "supporting",
+    "relatedConcepts": ["Sunzi", "ancient mathematics", "modular arithmetic"]
+  },
+  {
+    "id": "ann-existence",
+    "proofId": "chinese-remainder-constructive",
+    "range": {
+      "startLine": 44,
+      "endLine": 49
+    },
+    "type": "theorem",
+    "title": "CRT Existence",
+    "content": "**Theorem**: For coprime m, n, any pair of congruences x = a (mod m), x = b (mod n) has a solution.\n\nThis uses Mathlib's `Nat.chineseRemainder`, which constructs the witness.",
+    "mathContext": "crt_exists: Coprime m n -> exists x, x = a (mod m) and x = b (mod n)",
+    "significance": "critical",
+    "relatedConcepts": ["existence", "coprime", "solution"]
+  },
+  {
+    "id": "ann-uniqueness",
+    "proofId": "chinese-remainder-constructive",
+    "range": {
+      "startLine": 51,
+      "endLine": 58
+    },
+    "type": "theorem",
+    "title": "CRT Uniqueness",
+    "content": "**Theorem**: The solution is unique modulo m * n.\n\nIf x1 = x2 = a (mod m) and x1 = x2 = b (mod n), then x1 = x2 (mod m*n).\n\n**Proof**: Both m and n divide (x1 - x2). Since gcd(m,n) = 1, their product m*n also divides (x1 - x2).",
+    "mathContext": "crt_unique: x1 = x2 (mod m*n)",
+    "significance": "critical",
+    "relatedConcepts": ["uniqueness", "lcm", "coprime"]
+  },
+  {
+    "id": "ann-bezout",
+    "proofId": "chinese-remainder-constructive",
+    "range": {
+      "startLine": 83,
+      "endLine": 96
+    },
+    "type": "insight",
+    "title": "Bezout's Identity",
+    "content": "For coprime m, n, there exist integers u, v with:\n\nm*u + n*v = 1\n\nThese Bezout coefficients give the constructive solution formula:\n\nx = a*n*v + b*m*u\n\n**Verification**:\n- x = a*n*v + b*m*u = a*(1 - m*u) + ... = a (mod m)\n- Similarly x = b (mod n)",
+    "mathContext": "bezout_coprime: Coprime m n -> m * gcdA m n + n * gcdB m n = 1",
+    "significance": "key",
+    "relatedConcepts": ["Bezout", "extended GCD", "constructive"]
+  },
+  {
+    "id": "ann-sunzi",
+    "proofId": "chinese-remainder-constructive",
+    "range": {
+      "startLine": 137,
+      "endLine": 142
+    },
+    "type": "example",
+    "title": "The Sunzi Problem",
+    "content": "The classic problem from the Sunzi Suanjing:\n\nx = 2 (mod 3)\nx = 3 (mod 5)\nx = 2 (mod 7)\n\nSolution: x = 23 (unique mod 105)\n\nVerification:\n- 23 = 7*3 + 2 = 2 (mod 3) ✓\n- 23 = 4*5 + 3 = 3 (mod 5) ✓\n- 23 = 3*7 + 2 = 2 (mod 7) ✓",
+    "mathContext": "23 mod 105 is the unique solution",
+    "significance": "key",
+    "relatedConcepts": ["Sunzi", "classic example", "verification"]
+  },
+  {
+    "id": "ann-three-moduli",
+    "proofId": "chinese-remainder-constructive",
+    "range": {
+      "startLine": 170,
+      "endLine": 186
+    },
+    "type": "theorem",
+    "title": "CRT for Three Moduli",
+    "content": "**Extension**: CRT extends to any number of pairwise coprime moduli.\n\n**Algorithm**:\n1. Solve for first two moduli: x = a1 (mod m1), x = a2 (mod m2)\n2. Get intermediate solution y\n3. Solve: x = y (mod m1*m2), x = a3 (mod m3)\n4. Result is unique mod m1*m2*m3\n\nThis iterative approach generalizes to k moduli.",
+    "mathContext": "crt_three: exists x, x = a1 (mod m1) and x = a2 (mod m2) and x = a3 (mod m3)",
+    "significance": "key",
+    "relatedConcepts": ["iteration", "extension", "generalization"]
+  },
+  {
+    "id": "ann-rns",
+    "proofId": "chinese-remainder-constructive",
+    "range": {
+      "startLine": 214,
+      "endLine": 238
+    },
+    "type": "insight",
+    "title": "Residue Number Systems",
+    "content": "**Application**: Any x < m1*m2*...*mk is uniquely determined by its residues.\n\nFor the Sunzi moduli (3, 5, 7) with product 105:\n- 23 is represented as (2, 3, 2)\n- 0 is represented as (0, 0, 0)\n- 104 is represented as (2, 4, 6)\n\nThis enables parallel arithmetic: operations on residues can be done independently and recombined via CRT.",
+    "mathContext": "rns_unique: x < 105 and y < 105 and same residues -> x = y",
+    "significance": "key",
+    "relatedConcepts": ["RNS", "parallel computing", "representation"]
+  }
+]

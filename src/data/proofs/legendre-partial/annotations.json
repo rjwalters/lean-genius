@@ -1,0 +1,72 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "legendre-partial",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "type": "context",
+    "title": "Introduction",
+    "content": "Legendre's conjecture (1798): For every n >= 1, there exists a prime p with n^2 < p < (n+1)^2.\n\nThis is one of the oldest unsolved problems in number theory, despite being verified for enormous values of n.\n\nThis file verifies the conjecture for n = 1 to 20 with explicit witnesses.",
+    "mathContext": "Conjectured by Legendre in 1798, still open after 225+ years",
+    "significance": "supporting",
+    "relatedConcepts": ["Legendre", "prime gaps", "consecutive squares"]
+  },
+  {
+    "id": "ann-definition",
+    "proofId": "legendre-partial",
+    "range": {
+      "startLine": 24,
+      "endLine": 27
+    },
+    "type": "definition",
+    "title": "LegendreAt Predicate",
+    "content": "`LegendreAt n` means there exists a prime p with n^2 < p < (n+1)^2.\n\nExamples:\n- LegendreAt 1: prime in (1, 4), witness: 2 or 3\n- LegendreAt 10: prime in (100, 121), witness: 101, 103, 107, 109, 113",
+    "mathContext": "LegendreAt n := exists p, Prime p AND n^2 < p < (n+1)^2",
+    "significance": "critical",
+    "relatedConcepts": ["predicate", "existence"]
+  },
+  {
+    "id": "ann-first-cases",
+    "proofId": "legendre-partial",
+    "range": {
+      "startLine": 46,
+      "endLine": 66
+    },
+    "type": "example",
+    "title": "First Ten Cases",
+    "content": "Verified with explicit witnesses:\n\n| n | Interval | Witness |\n|---|----------|----------|\n| 1 | (1, 4) | 2 |\n| 2 | (4, 9) | 5 |\n| 3 | (9, 16) | 11 |\n| 4 | (16, 25) | 17 |\n| 5 | (25, 36) | 29 |\n| 6 | (36, 49) | 37 |\n| 7 | (49, 64) | 53 |\n| 8 | (64, 81) | 67 |\n| 9 | (81, 100) | 83 |\n| 10 | (100, 121) | 101 |",
+    "mathContext": "Each witness verified with native_decide",
+    "significance": "key",
+    "relatedConcepts": ["verification", "witnesses"]
+  },
+  {
+    "id": "ann-gap-formula",
+    "proofId": "legendre-partial",
+    "range": {
+      "startLine": 138,
+      "endLine": 139
+    },
+    "type": "theorem",
+    "title": "Gap Formula",
+    "content": "**Theorem**: (n+1)^2 - n^2 = 2n + 1\n\nThe gap between consecutive squares grows linearly. This is key to understanding why the conjecture is weaker than Bertrand's postulate.\n\nFor n = 100: gap = 201 (plenty of room for primes)\nFor n = 1000: gap = 2001",
+    "mathContext": "square_gap_linear: (n+1)^2 = n^2 + 2n + 1",
+    "significance": "key",
+    "relatedConcepts": ["gap size", "linear growth"]
+  },
+  {
+    "id": "ann-conjecture",
+    "proofId": "legendre-partial",
+    "range": {
+      "startLine": 147,
+      "endLine": 148
+    },
+    "type": "theorem",
+    "title": "The Full Conjecture",
+    "content": "**Legendre's Conjecture**: For all n >= 1, LegendreAt n.\n\nStated as an axiom since the general case is unproven.\n\nBelieved true based on:\n- Computational verification to 10^18+\n- Prime Number Theorem heuristics\n- No counterexamples found in 225+ years",
+    "mathContext": "axiom legendre_conjecture : LegendreConjecture",
+    "significance": "key",
+    "relatedConcepts": ["axiom", "open problem"]
+  }
+]

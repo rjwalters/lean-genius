@@ -1,0 +1,100 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "szemeredi-theorem",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "context",
+    "title": "Introduction",
+    "content": "Szemeredi's theorem (1975): Dense subsets contain arbitrarily long arithmetic progressions.\n\nThis is one of the most important results in combinatorics. The k=3 case (Roth's theorem) is fully proved using Mathlib's corners theorem chain.\n\nThe proof chain: Regularity Lemma -> Triangle Removal -> Corners -> Roth.",
+    "mathContext": "Szemeredi (1975) proved the general case. Roth (1953) proved k=3.",
+    "significance": "supporting",
+    "relatedConcepts": ["Szemeredi", "Roth", "regularity lemma"]
+  },
+  {
+    "id": "ann-k-ap-definition",
+    "proofId": "szemeredi-theorem",
+    "range": {
+      "startLine": 48,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "k-term Arithmetic Progression",
+    "content": "`HasAPOfLength S k` means S contains a k-term AP: a, a+d, a+2d, ..., a+(k-1)d with d > 0.\n\nExamples:\n- {1, 4, 7} has a 3-AP (d=3)\n- {2, 4, 6, 8, 10} has a 5-AP (d=2)\n- {1, 2, 4, 8} has no 4-AP",
+    "mathContext": "HasAPOfLength S k := exists a d, d > 0 AND forall i < k, (a + i*d) in S",
+    "significance": "critical",
+    "relatedConcepts": ["arithmetic progression", "common difference"]
+  },
+  {
+    "id": "ann-szemeredi-statement",
+    "proofId": "szemeredi-theorem",
+    "range": {
+      "startLine": 66,
+      "endLine": 71
+    },
+    "type": "theorem",
+    "title": "The Main Statement",
+    "content": "**Szemeredi's Theorem**: For any k >= 1 and delta > 0, there exists N_0 such that:\n\nAny subset S of {1,...,N} with |S| >= delta*N contains a k-term AP.\n\nThe density delta*N ensures S is 'thick enough' to force long progressions.",
+    "mathContext": "SzemerediTheorem := forall k delta, k >= 1 -> delta > 0 -> exists N_0, ...",
+    "significance": "critical",
+    "relatedConcepts": ["density", "Ramsey theory"]
+  },
+  {
+    "id": "ann-trivial-k1",
+    "proofId": "szemeredi-theorem",
+    "range": {
+      "startLine": 80,
+      "endLine": 83
+    },
+    "type": "theorem",
+    "title": "k=1 Case",
+    "content": "**Trivial**: Any non-empty set contains a 1-AP.\n\nA single element forms a 1-term arithmetic progression (vacuously).\n\nProof: Take any element a in S; the sequence (a) is a 1-AP.",
+    "mathContext": "szemeredi_k1: S.Nonempty -> HasAPOfLength S 1",
+    "significance": "supporting",
+    "relatedConcepts": ["trivial case", "base case"]
+  },
+  {
+    "id": "ann-trivial-k2",
+    "proofId": "szemeredi-theorem",
+    "range": {
+      "startLine": 85,
+      "endLine": 106
+    },
+    "type": "theorem",
+    "title": "k=2 Case",
+    "content": "**Trivial**: Any set with 2+ elements contains a 2-AP.\n\nTake any two distinct elements a < b. Then (a, b) is a 2-AP with d = b - a.\n\nThe proof handles both orderings (a < b and b < a).",
+    "mathContext": "szemeredi_k2: |S| >= 2 -> HasAPOfLength S 2",
+    "significance": "supporting",
+    "relatedConcepts": ["trivial case", "two elements"]
+  },
+  {
+    "id": "ann-equivalence",
+    "proofId": "szemeredi-theorem",
+    "range": {
+      "startLine": 216,
+      "endLine": 256
+    },
+    "type": "theorem",
+    "title": "ThreeAPFree Equivalence",
+    "content": "**Key Result**: Our `IsAPFree S 3` is equivalent to Mathlib's `ThreeAPFree S`.\n\nMathlib's definition: ThreeAPFree means for a, b, c in S with a + c = 2b, we have a = b.\n\nOur definition: IsAPFree S 3 means no (a, a+d, a+2d) with d > 0 all in S.\n\nThe proof shows these are the same condition.",
+    "mathContext": "threeAPFree_iff_isAPFree: ThreeAPFree S <-> IsAPFree S 3",
+    "significance": "critical",
+    "relatedConcepts": ["equivalence", "Mathlib connection"]
+  },
+  {
+    "id": "ann-roth",
+    "proofId": "szemeredi-theorem",
+    "range": {
+      "startLine": 261,
+      "endLine": 271
+    },
+    "type": "theorem",
+    "title": "Roth's Theorem via Mathlib",
+    "content": "**Breakthrough**: The k=3 case is FULLY PROVED using Mathlib.\n\nWe apply `roth_3ap_theorem_nat` via the equivalence established above.\n\nThe bound comes from `cornersTheoremBound(delta/3)`, which uses the Szemeredi Regularity bound (a tower-type function).",
+    "mathContext": "roth_theorem_via_mathlib: RothTheorem := apply roth_3ap_theorem_nat",
+    "significance": "critical",
+    "relatedConcepts": ["Roth", "corners theorem", "Mathlib"]
+  }
+]

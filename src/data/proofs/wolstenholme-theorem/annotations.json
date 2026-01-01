@@ -1,0 +1,100 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "wolstenholme-theorem",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "context",
+    "title": "Introduction",
+    "content": "Wolstenholme's theorem (1862) states that for prime p >= 5:\n\nC(2p-1, p-1) = 1 (mod p^3)\n\nThis strengthens Babbage's 1819 result (mod p^2). The theorem connects binomial coefficients to harmonic numbers.",
+    "mathContext": "Wolstenholme (1862) strengthened Babbage (1819)",
+    "significance": "supporting",
+    "relatedConcepts": ["Wolstenholme", "Babbage", "binomial coefficients"]
+  },
+  {
+    "id": "ann-central-binomial",
+    "proofId": "wolstenholme-theorem",
+    "range": {
+      "startLine": 40,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "Central Binomial Coefficient",
+    "content": "The key quantity:\n\ncentralBinomial(p) = C(2p-1, p-1)\n\nFor example:\n- p = 5: C(9, 4) = 126\n- p = 7: C(13, 6) = 1716\n- p = 11: C(21, 10) = 352716",
+    "mathContext": "centralBinomial p := Nat.choose (2 * p - 1) (p - 1)",
+    "significance": "critical",
+    "relatedConcepts": ["binomial coefficient", "central binomial"]
+  },
+  {
+    "id": "ann-verification",
+    "proofId": "wolstenholme-theorem",
+    "range": {
+      "startLine": 57,
+      "endLine": 79
+    },
+    "type": "example",
+    "title": "Computational Verification",
+    "content": "We verify Wolstenholme for small primes:\n\n| p | C(2p-1, p-1) | p^3 | Result mod p^3 |\n|---|--------------|-----|----------------|\n| 5 | 126 | 125 | 1 |\n| 7 | 1716 | 343 | 1 |\n| 11 | 352716 | 1331 | 1 |\n| 13 | 5200300 | 2197 | 1 |\n\nAll verified using `native_decide`.",
+    "mathContext": "126 = 125 + 1, 1716 = 5 * 343 + 1, etc.",
+    "significance": "key",
+    "relatedConcepts": ["verification", "native_decide"]
+  },
+  {
+    "id": "ann-babbage",
+    "proofId": "wolstenholme-theorem",
+    "range": {
+      "startLine": 87,
+      "endLine": 94
+    },
+    "type": "theorem",
+    "title": "Babbage's Theorem",
+    "content": "**Babbage (1819)**: For p >= 3, C(2p-1, p-1) = 1 (mod p^2).\n\nThis is one power of p weaker than Wolstenholme.\n\nVerified for p = 3, 5, 7:\n- p = 3: 10 = 1 (mod 9)\n- p = 5: 126 = 1 (mod 25)\n- p = 7: 1716 = 1 (mod 49)",
+    "mathContext": "babbage_theorem: centralBinomial p % (p^2) = 1",
+    "significance": "key",
+    "relatedConcepts": ["Babbage", "mod p^2"]
+  },
+  {
+    "id": "ann-failure",
+    "proofId": "wolstenholme-theorem",
+    "range": {
+      "startLine": 103,
+      "endLine": 107
+    },
+    "type": "insight",
+    "title": "Why p >= 5",
+    "content": "**p = 3 fails Wolstenholme**: C(5, 2) = 10, and 10 mod 27 = 10 != 1.\n\n(But p = 3 satisfies Babbage: 10 mod 9 = 1.)\n\n**p = 2 fails both**: C(3, 1) = 3, and 3 mod 8 = 3 != 1.\n\nThe bound p >= 5 is sharp.",
+    "mathContext": "wolstenholme_fails_3: centralBinomial 3 % 27 != 1",
+    "significance": "key",
+    "relatedConcepts": ["counterexample", "sharpness"]
+  },
+  {
+    "id": "ann-wolstenholme-primes",
+    "proofId": "wolstenholme-theorem",
+    "range": {
+      "startLine": 153,
+      "endLine": 159
+    },
+    "type": "definition",
+    "title": "Wolstenholme Primes",
+    "content": "A prime p is a **Wolstenholme prime** if:\n\nC(2p-1, p-1) = 1 (mod p^4)\n\nThis is one power stronger than the theorem guarantees.\n\nOnly two are known: 16843 and 2124679.\n\nWe prove 5 and 7 are NOT Wolstenholme primes.",
+    "mathContext": "IsWolstenholmePrime p := Prime p AND centralBinomial p % p^4 = 1",
+    "significance": "key",
+    "relatedConcepts": ["Wolstenholme prime", "rare primes"]
+  },
+  {
+    "id": "ann-harmonic",
+    "proofId": "wolstenholme-theorem",
+    "range": {
+      "startLine": 183,
+      "endLine": 191
+    },
+    "type": "insight",
+    "title": "Harmonic Connection",
+    "content": "Wolstenholme's theorem is equivalent to:\n\nThe numerator of H_{p-1} = 1 + 1/2 + ... + 1/(p-1) is divisible by p^2 for p >= 5.\n\nThis connects binomial coefficients to harmonic sums in a deep way.",
+    "mathContext": "p^2 | harmonicNumerator p for p >= 5",
+    "significance": "key",
+    "relatedConcepts": ["harmonic numbers", "equivalent formulation"]
+  }
+]

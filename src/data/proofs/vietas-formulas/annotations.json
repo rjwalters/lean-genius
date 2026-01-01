@@ -1,0 +1,100 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "vietas-formulas",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "type": "context",
+    "title": "Introduction",
+    "content": "Vieta's formulas relate polynomial coefficients to symmetric functions of roots.\n\nFor x^2 - bx + c = 0 with roots r, s:\n- Sum: r + s = b\n- Product: r * s = c\n\nNamed after Francois Viete (1540-1603), who revolutionized algebra by using letters for unknowns.",
+    "mathContext": "Published posthumously in 1615",
+    "significance": "supporting",
+    "relatedConcepts": ["Viete", "symmetric functions", "polynomial roots"]
+  },
+  {
+    "id": "ann-quadratic",
+    "proofId": "vietas-formulas",
+    "range": {
+      "startLine": 39,
+      "endLine": 44
+    },
+    "type": "theorem",
+    "title": "Vieta's Formula (Quadratic)",
+    "content": "**Theorem**: If x is a root of x^2 - bx + c = 0, then there exists y with:\n- y is also a root\n- x + y = b (sum of roots)\n- x * y = c (product of roots)\n\nThis is `vieta_formula_quadratic` from Mathlib.",
+    "mathContext": "vieta_quadratic: root x -> exists y, root y and x + y = b and x * y = c",
+    "significance": "critical",
+    "relatedConcepts": ["quadratic", "sum", "product"]
+  },
+  {
+    "id": "ann-example-5-6",
+    "proofId": "vietas-formulas",
+    "range": {
+      "startLine": 54,
+      "endLine": 63
+    },
+    "type": "example",
+    "title": "Example: x^2 - 5x + 6",
+    "content": "The polynomial x^2 - 5x + 6 = 0 has roots 2 and 3.\n\nVerification:\n- Sum: 2 + 3 = 5 ✓\n- Product: 2 * 3 = 6 ✓\n- Root check: 2^2 - 5*2 + 6 = 4 - 10 + 6 = 0 ✓\n- Root check: 3^2 - 5*3 + 6 = 9 - 15 + 6 = 0 ✓",
+    "mathContext": "Factorization: x^2 - 5x + 6 = (x - 2)(x - 3)",
+    "significance": "supporting",
+    "relatedConcepts": ["verification", "factorization"]
+  },
+  {
+    "id": "ann-cubic-example",
+    "proofId": "vietas-formulas",
+    "range": {
+      "startLine": 79,
+      "endLine": 90
+    },
+    "type": "example",
+    "title": "Example: Cubic with Roots 1, 2, 3",
+    "content": "The polynomial x^3 - 6x^2 + 11x - 6 = 0 has roots 1, 2, 3.\n\nVerification:\n- Sum: 1 + 2 + 3 = 6 ✓\n- Sum of pairs: 1*2 + 1*3 + 2*3 = 2 + 3 + 6 = 11 ✓\n- Product: 1 * 2 * 3 = 6 ✓\n\nNote the sign pattern: coefficient of x^2 is -6 = -(sum of roots).",
+    "mathContext": "Factorization: (x-1)(x-2)(x-3) = x^3 - 6x^2 + 11x - 6",
+    "significance": "key",
+    "relatedConcepts": ["cubic", "sign pattern", "verification"]
+  },
+  {
+    "id": "ann-general",
+    "proofId": "vietas-formulas",
+    "range": {
+      "startLine": 101,
+      "endLine": 114
+    },
+    "type": "theorem",
+    "title": "General Vieta Relation",
+    "content": "**Theorem**: For a polynomial p with roots forming multiset S:\n\np.coeff(k) = leadingCoeff * (-1)^(deg - k) * esymm(S, deg - k)\n\nwhere esymm(S, j) is the j-th elementary symmetric polynomial of S.\n\nFor monic polynomials, leadingCoeff = 1, simplifying the formula.",
+    "mathContext": "coeff_eq_esymm_roots_of_card from Mathlib",
+    "significance": "critical",
+    "relatedConcepts": ["elementary symmetric", "general formula", "monic"]
+  },
+  {
+    "id": "ann-monic-quadratic",
+    "proofId": "vietas-formulas",
+    "range": {
+      "startLine": 130,
+      "endLine": 134
+    },
+    "type": "theorem",
+    "title": "Monic Quadratic Expansion",
+    "content": "**Formula**: (x - r1)(x - r2) = x^2 - (r1 + r2)*x + r1*r2\n\nThis explicit expansion shows:\n- Coefficient of x = -(sum of roots)\n- Constant term = product of roots\n\nThe formula is verified by ring arithmetic.",
+    "mathContext": "monic_quadratic_vieta: (x - r1) * (x - r2) = x^2 - (r1 + r2) * x + r1 * r2",
+    "significance": "key",
+    "relatedConcepts": ["expansion", "factorization", "roots"]
+  },
+  {
+    "id": "ann-monic-cubic",
+    "proofId": "vietas-formulas",
+    "range": {
+      "startLine": 136,
+      "endLine": 141
+    },
+    "type": "theorem",
+    "title": "Monic Cubic Expansion",
+    "content": "**Formula**:\n(x - r1)(x - r2)(x - r3) = x^3 - (r1+r2+r3)*x^2 + (r1r2+r1r3+r2r3)*x - r1r2r3\n\nThe alternating signs:\n- Coefficient of x^2: negative sum\n- Coefficient of x^1: positive sum of pairs\n- Coefficient of x^0: negative product",
+    "mathContext": "monic_cubic_vieta: expansion formula for three roots",
+    "significance": "key",
+    "relatedConcepts": ["cubic", "alternating signs", "expansion"]
+  }
+]
