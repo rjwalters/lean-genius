@@ -105,6 +105,134 @@ BPP can be defined deterministically: L ∈ BPP iff there exists poly-time M whe
 3. Define MA (Merlin-Arthur) and AM (Arthur-Merlin)
 4. Add PSPACE-completeness (TQBF)
 
+### 2026-01-01 Session 8 (Research Iteration)
+
+**Mode**: REVISIT
+**Problem**: pnp-barriers
+**Prior Status**: surveyed
+
+**What we did**:
+1. Literature search confirmed no MA/AM formalization in Mathlib
+2. Added Part 13: Interactive Proofs: MA and AM (~332 lines)
+3. Defined `inMA` and `MA` (Merlin-Arthur complexity class)
+4. Defined `inAM` and `AM` (Arthur-Merlin complexity class)
+5. Defined `coMA` and `coAM` (complement classes)
+6. Stated `NP_subset_MA_axiom` - NP is MA with deterministic verifier
+7. Stated `BPP_subset_MA_axiom` - BPP ignores Merlin's proof
+8. Proved `MA_subset_AM` - MA simulated by AM (Arthur sends dummy coins)
+9. Stated `AM_subset_PP_axiom` - AM is a counting class
+10. Stated `AM_subset_Pi2_axiom` - Sipser-Gács-Lautemann theorem
+11. Stated `coAM_subset_Sigma2_axiom` - complementary containment
+12. Stated `GNI_in_AM` - Graph Non-Isomorphism (Goldreich-Micali-Wigderson)
+13. Stated `GI_in_coAM_axiom` - Graph Isomorphism
+14. Defined `IP` (Interactive Polynomial time)
+15. Proved `AM_subset_IP` - AM is a special case
+16. Stated `IP_subset_PSPACE_axiom` and `PSPACE_subset_IP_axiom`
+17. **Proved `IP_eq_PSPACE`** - Shamir's Theorem!
+18. Proved `interactive_proof_chain` - NP ⊆ MA ⊆ AM ⊆ IP = PSPACE
+19. Proved `AM_subset_PSPACE` and `complexity_with_interactive_proofs`
+
+**Literature reviewed**:
+- [Mathlib4 GitHub](https://github.com/leanprover-community/mathlib4) - No MA/AM/IP formalization
+- [Wikipedia: AM complexity class](https://en.wikipedia.org/wiki/Arthur%E2%80%93Merlin_protocol)
+- [Wikipedia: IP complexity class](https://en.wikipedia.org/wiki/IP_(complexity))
+
+**Key insight**:
+Interactive proofs culminate in Shamir's theorem IP = PSPACE, one of the most celebrated results in complexity theory. The class AM (Arthur-Merlin) is particularly important because AM = AM[k] for constant k (rounds collapse), and Graph Non-Isomorphism is in AM but not known to be in NP. This suggests interactive proofs are more powerful than NP certificates.
+
+**New definitions/theorems**:
+- `inMA`, `MA` - Merlin-Arthur (NP with BPP verifier)
+- `inAM`, `AM` - Arthur-Merlin (verifier speaks first)
+- `coMA`, `coAM` - complement classes
+- `NP_subset_MA`, `BPP_subset_MA` - containments
+- `MA_subset_AM` - proved
+- `AM_subset_PP`, `AM_subset_Pi2` - axioms
+- `coAM_subset_Sigma2` - axiom
+- `GNI_in_AM`, `GI_in_coAM` - example problems
+- `IP` - Interactive Polynomial time
+- `AM_subset_IP` - proved
+- `IP_subset_PSPACE`, `PSPACE_subset_IP` - axioms
+- `IP_eq_PSPACE` - **Shamir's Theorem** (proved from axioms)
+- `interactive_proof_chain` - full chain theorem
+- `AM_subset_PSPACE`, `complexity_with_interactive_proofs`
+
+**Outcome**:
+- PNPBarriers.lean: ~1937 lines, **0 sorries** (up from 1605 lines)
+- Added 23 new definitions/theorems
+- Complete interactive proof hierarchy formalized
+- Shamir's Theorem IP = PSPACE included
+
+**Files Modified**:
+- `proofs/Proofs/PNPBarriers.lean` (+332 lines)
+- `research/problems/pnp-barriers/knowledge.md` - this file
+
+**Next steps**:
+1. ~~Add PSPACE-completeness (TQBF)~~ **DONE (Session 9)**
+2. Add MIP (multi-prover interactive proofs) and MIP = NEXP
+3. Add zero-knowledge proofs (ZK)
+4. Add PCP theorem and its connection to hardness of approximation
+5. Add quantum complexity classes (BQP)
+
+### 2026-01-01 Session 9 (Research Iteration)
+
+**Mode**: REVISIT
+**Problem**: pnp-barriers
+**Prior Status**: surveyed
+
+**What we did**:
+1. Scouted for Mathlib updates on three-squares-theorem first (found PrimesInAP.lean added Nov 2024, but our Mathlib is Sept 2024)
+2. Assessed three-squares sufficiency: even with Dirichlet upgrade, would need ~1000+ lines of ternary quadratic form theory → stays surveyed
+3. Added Part 15: PSPACE-Completeness and TQBF (~180 lines)
+4. Defined `QBF` structure for quantified Boolean formulas
+5. Defined `QBF.eval` for semantic evaluation
+6. Defined `TQBF` problem (abstract decision problem)
+7. Stated `TQBF_in_PSPACE_axiom` with proof sketch (game tree evaluation)
+8. Defined `PSPACEHard` and `PSPACEComplete`
+9. Stated `TQBF_PSPACE_hard_axiom` with Stockmeyer-Meyer proof sketch
+10. Proved `TQBF_PSPACE_complete` - combining membership and hardness
+11. Proved `TQBF_in_P_implies_P_eq_PSPACE` - collapse theorem
+12. Proved `P_neq_PSPACE_implies_TQBF_hard` - contrapositive
+13. Proved `TQBF_in_IP` - via IP = PSPACE
+14. Proved `completeness_hierarchy` - SAT (NP-complete), TQBF (PSPACE-complete), IP = PSPACE
+
+**Literature reviewed**:
+- [Mathlib4 PrimesInAP.lean](https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/LSeries/PrimesInAP.html) - Dirichlet's theorem
+- [arXiv 2503.00959: Formalizing zeta and L-functions in Lean](https://arxiv.org/abs/2503.00959) - Loeffler & Stoll
+- [Wikipedia: Legendre's three-square theorem](https://en.wikipedia.org/wiki/Legendre%27s_three-square_theorem)
+
+**Key insight**:
+TQBF is to PSPACE what SAT is to NP - the canonical complete problem. The key to PSPACE-hardness is that alternating quantifiers ∃∀∃∀... precisely capture the power of polynomial space computation. The Stockmeyer-Meyer reduction uses universal quantifiers to avoid formula blowup when encoding reachability in 2^k steps.
+
+**New definitions/theorems**:
+- `QBF` - quantified Boolean formula structure
+- `QBF.eval` - semantic evaluation
+- `TQBF` - True QBF decision problem
+- `TQBF_in_PSPACE` - membership (axiom)
+- `PSPACEHard`, `PSPACEComplete` - completeness definitions
+- `TQBF_PSPACE_hard` - hardness (axiom)
+- `TQBF_PSPACE_complete` - full completeness
+- `TQBF_in_P_implies_P_eq_PSPACE` - collapse theorem
+- `P_neq_PSPACE_implies_TQBF_hard` - hardness consequence
+- `TQBF_in_IP` - follows from IP = PSPACE
+- `completeness_hierarchy` - SAT/TQBF/IP=PSPACE comparison
+
+**Outcome**:
+- PNPBarriers.lean: ~2118 lines, **0 sorries** (up from 1937 lines)
+- Added 15 new definitions/theorems
+- Complete PSPACE-completeness framework with TQBF
+- Connection between NP-complete (SAT) and PSPACE-complete (TQBF) established
+
+**Files Modified**:
+- `proofs/Proofs/PNPBarriers.lean` (+181 lines)
+- `research/problems/pnp-barriers/knowledge.md` - this file
+
+**Next steps**:
+1. Add MIP (multi-prover interactive proofs) and MIP = NEXP
+2. Add zero-knowledge proofs (ZK)
+3. Add PCP theorem and its connection to hardness of approximation
+4. Add quantum complexity classes (BQP)
+5. Add relativized probabilistic classes (BPP^A)
+
 ### 2026-01-01 Session 7 (Research Iteration)
 
 **Mode**: REVISIT

@@ -148,3 +148,143 @@ The proof uses strong induction on n with two cases:
 ### Files Modified
 
 - `proofs/Proofs/ThreeSquares.lean` (major update: +120 lines, -1 axiom)
+
+---
+
+## Session 2026-01-01 (Research Iteration) - SCOUTING
+
+### Mode
+REVISIT - Scouting for new knowledge that could enable sufficiency proof
+
+### What We Found
+
+**Major discovery**: Dirichlet's theorem on primes in arithmetic progressions is NOW in Mathlib!
+
+- `Mathlib.NumberTheory.LSeries.PrimesInAP` - Complete formal proof
+- `Nat.infinite_setOf_prime_and_eq_mod` - For q positive, a unit in ZMod q, infinitely many primes p with (p : ZMod q) = a
+- `Nat.forall_exists_prime_gt_and_modEq` - Constructive version
+
+We already have `proofs/Proofs/DirichletsTheorem.lean` wrapping this infrastructure!
+
+### Infrastructure Assessment Update
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Dirichlet's theorem (primes in AP) | ✅ **AVAILABLE** | `Mathlib.NumberTheory.LSeries.PrimesInAP` |
+| Sum of two squares | ✅ **AVAILABLE** | `Mathlib.NumberTheory.SumTwoSquares` |
+| Fermat's two squares theorem | ✅ **AVAILABLE** | `Nat.Prime.sq_add_sq` |
+| Quadratic forms (general) | ✅ **AVAILABLE** | `Mathlib.LinearAlgebra.QuadraticForm.*` |
+| Sylvester's law of inertia | ✅ **AVAILABLE** | `equivalent_one_neg_one_weighted_sum_squared` |
+| Ternary quadratic form theory | ❌ Not available | Specific representation lemmas needed |
+| Genus theory / class numbers | ❌ Not available | Deep infrastructure |
+
+### Proof Requirements for Sufficiency
+
+Based on literature review ([Dirichlet's proof](https://pollack.uga.edu/finding3squares-6.pdf), [Warwick notes](https://warwick.ac.uk/fac/sci/maths/people/staff/michaud/thirdyearessay.pdf), [AFP formalization](https://www.isa-afp.org/entries/Three_Squares.html)):
+
+**Dirichlet's 1850 Proof Strategy** (3 main lemmas):
+
+1. **Lemma A**: For n ≡ 3 (mod 8), find prime p = Dn - 1 where D ≡ 2 (mod 4), p ≡ 3 (mod 8)
+   - Uses Dirichlet's theorem on primes in AP ✅ AVAILABLE
+
+2. **Lemma B**: Show -D is a quadratic residue mod p
+   - Uses quadratic reciprocity (available in Mathlib)
+
+3. **Lemma C (KEY)**: If n = p + 1 where p prime, -D QR mod p, then n = x² + y² + 2Dz²
+   - This requires ternary quadratic form representation theory ❌ NOT AVAILABLE
+   - The AFP formalization explicitly depends on L-function infrastructure
+
+### BUILD vs BLOCK Assessment
+
+**Size estimate for ternary form representation**: ~500-1000 lines
+- Need to formalize representation by x² + y² + 2z²
+- Need to connect Legendre symbols to representation
+- Need case analysis for all residue classes mod 8
+
+**Alternative approaches considered**:
+1. **Geometry of Numbers (Ankeny 1957)**: Requires Minkowski's convex body theorem - partially in Mathlib but gaps
+2. **Direct descent**: Works for four squares but not three
+3. **Class number formula**: Even more infrastructure needed
+
+**Decision**: BLOCKED (for now)
+
+The gap is not Dirichlet's theorem (now available) but the ternary quadratic form representation theory. This requires ~500-1000 lines of specialized infrastructure connecting:
+- Quadratic residues to representations
+- Case analysis for each residue class mod 8
+- Representation lemmas for x² + y² + Dz² forms
+
+This is significant specialized work beyond what we can complete in a single session.
+
+### What Changed Since Last Session
+
+| Before | After |
+|--------|-------|
+| Dirichlet's theorem ⚠️ "very recent, may not be available" | ✅ Confirmed available, wrapped in DirichletsTheorem.lean |
+| Need primes ≡ 3 (mod 8) | ✅ Can prove with `infinitely_many_primes_3_mod_4` pattern |
+| Gap: ternary QF theory | ❌ Still the blocker |
+
+### Outcome
+
+**Scouted** - Found that Dirichlet's theorem is now available, but the remaining gap (ternary quadratic form representation) still requires ~500-1000 lines of custom development.
+
+**Status remains**: `surveyed` - No code changes this session, knowledge updated.
+
+### Next Steps (if returning)
+
+1. **Build ternary QF basics**: Define representation by x² + y² + 2z², prove key lemma
+2. **Consider alternative**: Look for more elementary proof avoiding full genus theory
+3. **Check Mathlib updates**: Future Mathlib may add more QF infrastructure
+
+### Sources
+
+- [Mathlib: Primes in AP](https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/LSeries/PrimesInAP.html)
+- [Mathlib: Sum Two Squares](https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/SumTwoSquares.html)
+- [Mathlib: Quadratic Forms](https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/QuadraticForm/Real.html)
+- [AFP: Three Squares](https://www.isa-afp.org/entries/Three_Squares.html)
+- [Dirichlet's Algorithmic Proof](https://pollack.uga.edu/finding3squares-6.pdf)
+
+---
+
+## Session 2026-01-01 (Revisit 2) - VERIFICATION
+
+### Mode
+REVISIT - Verifying previous session's claims about Mathlib infrastructure
+
+### Verification Results
+
+**CORRECTION**: Previous session's claim about PrimesInAP availability was INCORRECT.
+
+Build test of `DirichletsTheorem.lean`:
+```
+error: bad import 'Mathlib.NumberTheory.LSeries.PrimesInAP'
+error: bad import 'Mathlib.NumberTheory.LSeries.DirichletContinuation'
+error: bad import 'Mathlib.NumberTheory.LSeries.Nonvanishing'
+```
+
+**Actual Mathlib status**:
+- Our project uses Mathlib commit `05147a76b4` (September 8, 2024)
+- `PrimesInAP.lean` was added to Mathlib on November 22, 2024 (commit `fe0e8bcc2ddc`)
+- DirichletsTheorem.lean was written speculatively but does NOT compile
+
+### Updated Infrastructure Assessment
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Dirichlet's theorem (primes in AP) | ❌ **NOT AVAILABLE** | Our Mathlib (Sept 2024) predates PrimesInAP (Nov 2024) |
+| Sum of two squares | ✅ Available | `Mathlib.NumberTheory.SumTwoSquares` |
+| Ternary quadratic form theory | ❌ Not available | ~500-1000 lines to build |
+
+### Implication
+
+Even upgrading Mathlib to get PrimesInAP would still leave us ~500-1000 lines short of the ternary quadratic form infrastructure needed for sufficiency.
+
+**Total infrastructure gap**:
+- Mathlib upgrade + ~500-1000 lines ternary QF theory
+
+**Decision**: Remains `surveyed`. Would need both:
+1. Mathlib version bump (non-trivial, may break other proofs)
+2. ~500-1000 lines of ternary QF development
+
+### Outcome
+
+**Scouted** - Corrected inaccurate claim from previous session. Dirichlet's theorem is NOT in our Mathlib version. The gap is larger than previously documented.
