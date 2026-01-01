@@ -1,0 +1,170 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "sophie-germain",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "context",
+    "title": "Introduction",
+    "content": "Sophie Germain primes are named after the French mathematician who used them in her work on Fermat's Last Theorem.\n\nA prime p is a Sophie Germain prime if 2p + 1 is also prime. The sequence begins: 2, 3, 5, 11, 23, 29, 41, 53, 83, 89...\n\nThis file proves the structure theorem: for p > 3, Sophie Germain primes must satisfy p ≡ 5 (mod 6).",
+    "mathContext": "Sophie Germain (1776-1831) used these primes to prove special cases of Fermat's Last Theorem.",
+    "significance": "supporting",
+    "relatedConcepts": ["Sophie Germain", "safe primes", "Fermat's Last Theorem"]
+  },
+  {
+    "id": "ann-definition",
+    "proofId": "sophie-germain",
+    "range": {
+      "startLine": 35,
+      "endLine": 36
+    },
+    "type": "definition",
+    "title": "Sophie Germain Prime",
+    "content": "The formal definition:\n\n`IsSophieGermainPrime p` holds when both p and 2p + 1 are prime.\n\nExamples:\n- p = 2: 2·2+1 = 5 (prime) ✓\n- p = 11: 2·11+1 = 23 (prime) ✓\n- p = 7: 2·7+1 = 15 = 3×5 ✗",
+    "mathContext": "IsSophieGermainPrime p := Nat.Prime p ∧ Nat.Prime (2 * p + 1)",
+    "significance": "critical",
+    "relatedConcepts": ["prime", "definition"]
+  },
+  {
+    "id": "ann-safe-prime-def",
+    "proofId": "sophie-germain",
+    "range": {
+      "startLine": 38,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Safe Prime",
+    "content": "A **safe prime** is a prime q of the form q = 2p + 1 where p is also prime.\n\nSafe primes are important in cryptography because (q-1)/2 = p is prime, giving the multiplicative group a large prime-order subgroup.\n\nExamples: 5, 7, 11, 23, 47, 59, 83, 107, 167, 179...",
+    "mathContext": "IsSafePrime q := Nat.Prime q ∧ q % 2 = 1 ∧ Nat.Prime ((q - 1) / 2)",
+    "significance": "key",
+    "relatedConcepts": ["cryptography", "safe prime", "Diffie-Hellman"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "sophie-germain",
+    "range": {
+      "startLine": 53,
+      "endLine": 95
+    },
+    "type": "example",
+    "title": "Verified Examples",
+    "content": "We verify 10 Sophie Germain primes computationally:\n\n| p | 2p+1 | Status |\n|---|------|--------|\n| 2 | 5 | ✓ |\n| 3 | 7 | ✓ |\n| 5 | 11 | ✓ |\n| 11 | 23 | ✓ |\n| 23 | 47 | ✓ |\n| 29 | 59 | ✓ |\n| 41 | 83 | ✓ |\n| 53 | 107 | ✓ |\n| 83 | 167 | ✓ |\n| 89 | 179 | ✓ |\n\nEach is proven using Lean's `decide` tactic which computationally verifies primality.",
+    "mathContext": "constructor <;> decide",
+    "significance": "supporting",
+    "relatedConcepts": ["computation", "verification", "decide tactic"]
+  },
+  {
+    "id": "ann-non-examples",
+    "proofId": "sophie-germain",
+    "range": {
+      "startLine": 103,
+      "endLine": 125
+    },
+    "type": "example",
+    "title": "Non-Examples",
+    "content": "Several primes are NOT Sophie Germain primes:\n\n| p | 2p+1 | Why not prime |\n|---|------|---------------|\n| 7 | 15 | 15 = 3 × 5 |\n| 13 | 27 | 27 = 3³ |\n| 17 | 35 | 35 = 5 × 7 |\n| 19 | 39 | 39 = 3 × 13 |\n\nNotice that 15, 27, 35, 39 are all ≡ 3 (mod 6) or composite for other reasons.",
+    "mathContext": "Proof by contradiction: assume IsSophieGermainPrime p, then show 2p+1 is not prime",
+    "significance": "supporting",
+    "relatedConcepts": ["counterexamples", "divisibility"]
+  },
+  {
+    "id": "ann-prime-mod-six",
+    "proofId": "sophie-germain",
+    "range": {
+      "startLine": 151,
+      "endLine": 174
+    },
+    "type": "theorem",
+    "title": "Primes mod 6",
+    "content": "**Lemma**: Every prime p > 3 satisfies p ≡ 1 or 5 (mod 6).\n\n**Proof**: The residue classes mod 6 are {0, 1, 2, 3, 4, 5}.\n- 0, 2, 4: divisible by 2\n- 0, 3: divisible by 3\n\nThis eliminates 0, 2, 3, 4. Only 1 and 5 remain.\n\nThis is the key lemma for the structure theorem.",
+    "mathContext": "prime_mod_six: Nat.Prime p → p > 3 → p % 6 = 1 ∨ p % 6 = 5",
+    "significance": "key",
+    "relatedConcepts": ["modular arithmetic", "prime residues"]
+  },
+  {
+    "id": "ann-mod-one-divisibility",
+    "proofId": "sophie-germain",
+    "range": {
+      "startLine": 176,
+      "endLine": 180
+    },
+    "type": "insight",
+    "title": "The Key Observation",
+    "content": "**Critical insight**: If p ≡ 1 (mod 6), then 2p + 1 ≡ 3 (mod 6).\n\nCalculation: 2·1 + 1 = 3 (mod 6)\n\nThis means 3 divides 2p + 1! Since 2p + 1 > 3 for p > 1, this composite number cannot be prime.\n\nThis eliminates the p ≡ 1 (mod 6) case entirely.",
+    "mathContext": "mod_one_implies_two_p_plus_one_div_three: p % 6 = 1 → 3 ∣ (2 * p + 1)",
+    "significance": "critical",
+    "relatedConcepts": ["modular arithmetic", "divisibility", "key insight"]
+  },
+  {
+    "id": "ann-structure-theorem",
+    "proofId": "sophie-germain",
+    "range": {
+      "startLine": 182,
+      "endLine": 193
+    },
+    "type": "theorem",
+    "title": "The Structure Theorem",
+    "content": "**Main Result**: For p > 3, if p is a Sophie Germain prime, then p ≡ 5 (mod 6).\n\n**Proof outline**:\n1. By prime_mod_six, p ≡ 1 or 5 (mod 6)\n2. If p ≡ 1: Then 3 | (2p+1), so 2p+1 is composite—contradiction\n3. Therefore p ≡ 5 (mod 6)\n\nThis means Sophie Germain primes > 3 have the form p = 6k - 1.",
+    "mathContext": "sophie_germain_mod_six: IsSophieGermainPrime p → p > 3 → p % 6 = 5",
+    "significance": "critical",
+    "relatedConcepts": ["structure theorem", "classification", "main result"]
+  },
+  {
+    "id": "ann-form-corollary",
+    "proofId": "sophie-germain",
+    "range": {
+      "startLine": 195,
+      "endLine": 212
+    },
+    "type": "theorem",
+    "title": "The 6k - 1 Form",
+    "content": "**Corollary**: Sophie Germain primes > 3 have the form p = 6k - 1 for some k ≥ 1.\n\nExamples:\n- 5 = 6·1 - 1 (k = 1)\n- 11 = 6·2 - 1 (k = 2)\n- 23 = 6·4 - 1 (k = 4)\n- 29 = 6·5 - 1 (k = 5)\n- 41 = 6·7 - 1 (k = 7)\n\nThis provides a simple characterization for searching.",
+    "mathContext": "sophie_germain_form: ∃ k : ℕ, k ≥ 1 ∧ p = 6 * k - 1",
+    "significance": "key",
+    "relatedConcepts": ["form", "characterization", "search"]
+  },
+  {
+    "id": "ann-safe-prime-mod-12",
+    "proofId": "sophie-germain",
+    "range": {
+      "startLine": 220,
+      "endLine": 226
+    },
+    "type": "theorem",
+    "title": "Safe Prime Structure",
+    "content": "**Theorem**: For a Sophie Germain prime p > 3, the safe prime 2p+1 satisfies q ≡ 11 (mod 12).\n\n**Proof**: Since p ≡ 5 (mod 6), we have p = 6k + 5 for some k.\nThen 2p + 1 = 12k + 11 ≡ 11 (mod 12).\n\nThis further constrains the structure of safe primes.",
+    "mathContext": "safe_prime_mod_twelve: IsSophieGermainPrime p → p > 3 → (2 * p + 1) % 12 = 11",
+    "significance": "key",
+    "relatedConcepts": ["safe prime", "modular structure"]
+  },
+  {
+    "id": "ann-equivalence",
+    "proofId": "sophie-germain",
+    "range": {
+      "startLine": 232,
+      "endLine": 244
+    },
+    "type": "theorem",
+    "title": "Sophie Germain ↔ Safe Prime",
+    "content": "**Equivalence**: p is a Sophie Germain prime if and only if p is prime and 2p+1 is a safe prime.\n\nThis shows the two concepts are two sides of the same coin:\n- Sophie Germain primes generate safe primes\n- Safe primes come from Sophie Germain primes\n\nThe relationship is bijective.",
+    "mathContext": "sophie_germain_iff_safe: IsSophieGermainPrime p ↔ Nat.Prime p ∧ IsSafePrime (2 * p + 1)",
+    "significance": "key",
+    "relatedConcepts": ["equivalence", "bijection", "duality"]
+  },
+  {
+    "id": "ann-cunningham-chain",
+    "proofId": "sophie-germain",
+    "range": {
+      "startLine": 282,
+      "endLine": 294
+    },
+    "type": "insight",
+    "title": "Cunningham Chain",
+    "content": "**Cunningham Chains**: A sequence where each term is 2p+1 of the previous.\n\nThe chain 2 → 5 → 11 → 23 shows this cascade:\n- 2 is SG: 2·2+1 = 5 ✓\n- 5 is SG: 2·5+1 = 11 ✓\n- 11 is SG: 2·11+1 = 23 ✓\n- 23 is SG: 2·23+1 = 47 ✓\n\nBut 47 is NOT Sophie Germain (2·47+1 = 95 = 5×19), ending the chain.\n\nLong Cunningham chains are rare and of interest in cryptography.",
+    "mathContext": "sg_chain_2_5_11_23: IsSophieGermainPrime 2 ∧ IsSophieGermainPrime 5 ∧ IsSophieGermainPrime 11 ∧ IsSophieGermainPrime 23",
+    "significance": "supporting",
+    "relatedConcepts": ["Cunningham chains", "cascading primes", "cryptography"]
+  }
+]

@@ -1,0 +1,104 @@
+{
+  "id": "sophie-germain",
+  "title": "Sophie Germain Primes",
+  "slug": "sophie-germain",
+  "description": "A prime p is a Sophie Germain prime if 2p+1 is also prime. We prove that all Sophie Germain primes greater than 3 must have the form 6k-1 (equivalently, p ≡ 5 mod 6).",
+  "meta": {
+    "author": "Sophie Germain (formalized in Lean 4)",
+    "date": "c. 1825",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SophieGermain.lean",
+    "tags": [
+      "number-theory",
+      "primes",
+      "modular-arithmetic",
+      "classical"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Definition of prime numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.dvd_of_mod_eq_zero",
+        "description": "Divisibility from modular arithmetic",
+        "module": "Mathlib.Data.Nat.ModEq"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of Sophie Germain primes",
+      "Structure theorem: p > 3 implies p ≡ 5 (mod 6)",
+      "10 verified examples with computational proofs",
+      "Safe prime characterization and mod 12 structure",
+      "Cunningham chain demonstration (2 → 5 → 11 → 23)"
+    ],
+    "dateAdded": "12/31/25"
+  },
+  "overview": {
+    "historicalContext": "Sophie Germain (1776-1831) was a pioneering French mathematician who made significant contributions to number theory and elasticity theory. Working in an era when women were excluded from formal mathematical education, she corresponded with Gauss and Lagrange under a male pseudonym.\n\nHer work on Fermat's Last Theorem introduced what we now call Sophie Germain primes. She proved that if p is a Sophie Germain prime, then the first case of Fermat's Last Theorem holds for exponent p. This was a major breakthrough, as it provided infinitely many exponents for which FLT was partially verified.\n\nThe conjecture that there are infinitely many Sophie Germain primes remains open, analogous to the twin prime conjecture.",
+    "problemStatement": "**Definition**: A prime p is a **Sophie Germain prime** if 2p + 1 is also prime.\n\nThe prime q = 2p + 1 is called a **safe prime**.\n\n**Examples**: 2, 3, 5, 11, 23, 29, 41, 53, 83, 89, ...\n\n**Structure Theorem**: For p > 3, if p is a Sophie Germain prime, then p ≡ 5 (mod 6).\n\nEquivalently, Sophie Germain primes greater than 3 have the form 6k - 1.",
+    "proofStrategy": "The structure theorem follows from modular arithmetic:\n\n1. **All primes > 3 are ≡ 1 or 5 (mod 6)**: Since primes > 3 are not divisible by 2 or 3, they avoid residue classes 0, 2, 3, 4 (mod 6).\n\n2. **If p ≡ 1 (mod 6)**: Then 2p + 1 ≡ 2·1 + 1 ≡ 3 (mod 6), so 3 | (2p + 1). But 2p + 1 > 3 for p > 1, so 2p + 1 cannot be prime.\n\n3. **Therefore p ≡ 5 (mod 6)**: The only remaining possibility.\n\nThis gives the form p = 6k - 1 for some k ≥ 1.",
+    "keyInsights": [
+      "Sophie Germain primes connect to Fermat's Last Theorem",
+      "The structure theorem eliminates half of potential candidates",
+      "Safe primes q = 2p + 1 satisfy q ≡ 11 (mod 12)",
+      "Cunningham chains show how Sophie Germain primes can cascade"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 35,
+      "endLine": 45,
+      "summary": "Formal definitions of Sophie Germain primes, safe primes, and the conjecture."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 53,
+      "endLine": 95,
+      "summary": "Computational verification of 10 Sophie Germain primes: 2, 3, 5, 11, 23, 29, 41, 53, 83, 89."
+    },
+    {
+      "id": "non-examples",
+      "title": "Non-Examples",
+      "startLine": 103,
+      "endLine": 125,
+      "summary": "Primes that are NOT Sophie Germain: 7, 13, 17, 19."
+    },
+    {
+      "id": "structure-theorem",
+      "title": "Structure Theorem",
+      "startLine": 127,
+      "endLine": 212,
+      "summary": "The main result: Sophie Germain primes > 3 must satisfy p ≡ 5 (mod 6)."
+    },
+    {
+      "id": "safe-primes",
+      "title": "Safe Prime Structure",
+      "startLine": 214,
+      "endLine": 244,
+      "summary": "Properties of safe primes: q ≡ 11 (mod 12) and the Sophie Germain ↔ safe prime equivalence."
+    },
+    {
+      "id": "chain",
+      "title": "Cunningham Chain",
+      "startLine": 282,
+      "endLine": 294,
+      "summary": "The chain 2 → 5 → 11 → 23 where each is 2p+1 of the previous."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization provides a complete treatment of Sophie Germain primes, from definition through the main structure theorem. The key result—that Sophie Germain primes greater than 3 must satisfy p ≡ 5 (mod 6)—follows from a clean modular arithmetic argument.\n\nThe proof demonstrates how divisibility constraints propagate: if p ≡ 1 (mod 6), then 2p + 1 is divisible by 3, eliminating these candidates. Only p ≡ 5 (mod 6) remains viable.",
+    "implications": "**Applications in Cryptography**\n\nSophie Germain and safe primes are crucial in cryptography:\n\n1. **Diffie-Hellman**: Safe primes ensure the multiplicative group has large prime-order subgroups\n\n2. **RSA**: Some implementations prefer safe primes to resist certain attacks\n\n3. **Pohlig-Hellman**: Safe primes make discrete log harder by avoiding small subgroups\n\n**Connection to Fermat's Last Theorem**\n\nSophie Germain proved: If p is a Sophie Germain prime, then x^p + y^p = z^p has no solutions with p ∤ xyz (the \"first case\" of FLT).",
+    "openQuestions": [
+      "Are there infinitely many Sophie Germain primes? (Analogous to twin prime conjecture)",
+      "What is the distribution of Sophie Germain primes among all primes?",
+      "What is the longest known Cunningham chain of Sophie Germain primes?"
+    ]
+  }
+}

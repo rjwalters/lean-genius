@@ -1,0 +1,97 @@
+{
+  "id": "twin-primes-special",
+  "title": "Twin Primes in Special Forms",
+  "slug": "twin-primes-special",
+  "description": "Twin prime pairs (p, p+2) where both are prime must have the form (6k-1, 6k+1) for p > 3. A structural theorem constraining where twin primes can occur.",
+  "meta": {
+    "author": "Classical (formalized in Lean 4)",
+    "date": "classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/TwinPrimes.lean",
+    "tags": [
+      "number-theory",
+      "primes",
+      "modular-arithmetic",
+      "twin-primes",
+      "classical"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Definition of prime numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.dvd_of_mod_eq_zero",
+        "description": "Divisibility from modular arithmetic",
+        "module": "Mathlib.Data.Nat.ModEq"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of twin prime pairs",
+      "Structure theorem: twin primes > 3 have form (6k-1, 6k+1)",
+      "6 verified twin prime pairs with computational proofs",
+      "Non-examples: 2, 1, 0 cannot start twin pairs"
+    ],
+    "dateAdded": "12/31/25"
+  },
+  "overview": {
+    "historicalContext": "Twin primes have fascinated mathematicians since antiquity. The ancient Greeks knew about pairs like (3,5), (5,7), (11,13), and the pattern seems to continue indefinitely, though primes become increasingly sparse.\n\nThe Twin Prime Conjecture—that there are infinitely many twin prime pairs—remains one of the most famous open problems in mathematics. While Zhang Yitang's 2013 breakthrough showed there are infinitely many primes differing by at most 70 million (later reduced to 246 by the Polymath project), the gap of exactly 2 remains elusive.\n\nThis formalization proves a structural result: twin primes greater than 3 must have a specific form, constraining where to search for them.",
+    "problemStatement": "**Definition**: A pair (p, p+2) is a **twin prime pair** if both p and p+2 are prime.\n\n**Examples**: (3,5), (5,7), (11,13), (17,19), (29,31), (41,43), ...\n\n**Structure Theorem**: For p > 3, if (p, p+2) are both prime, then p ≡ 5 (mod 6).\n\nEquivalently, twin prime pairs greater than (3,5) have the form (6k-1, 6k+1).",
+    "proofStrategy": "The proof uses modular arithmetic modulo 6:\n\n1. **All primes > 3 are ≡ 1 or 5 (mod 6)**: Primes > 3 cannot be divisible by 2 or 3.\n\n2. **If p ≡ 1 (mod 6)**: Then p + 2 ≡ 3 (mod 6), meaning 3 divides p + 2. Since p > 3 implies p + 2 > 5 > 3, we have p + 2 composite—contradiction.\n\n3. **Therefore p ≡ 5 (mod 6)**: The only remaining possibility.\n\nThis means twin primes (p, p+2) with p > 3 straddle a multiple of 6: if p = 6k - 1, then p + 2 = 6k + 1.",
+    "keyInsights": [
+      "Twin primes 'straddle' multiples of 6",
+      "The structure theorem eliminates half of potential starting points",
+      "Similar to Sophie Germain prime structure (also p ≡ 5 mod 6)",
+      "Both p and p+2 avoid being divisible by 2 or 3"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 30,
+      "endLine": 34,
+      "summary": "Formal definitions of twin prime pairs and the conjecture."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 42,
+      "endLine": 66,
+      "summary": "Computational verification of 6 twin prime pairs: (3,5), (5,7), (11,13), (17,19), (29,31), (41,43)."
+    },
+    {
+      "id": "structure-theorem",
+      "title": "Structure Theorem",
+      "startLine": 68,
+      "endLine": 154,
+      "summary": "The main result: twin primes > 3 must satisfy p ≡ 5 (mod 6), giving form (6k-1, 6k+1)."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 156,
+      "endLine": 167,
+      "summary": "The twin prime conjecture stated as an axiom."
+    },
+    {
+      "id": "non-examples",
+      "title": "Non-Examples",
+      "startLine": 169,
+      "endLine": 188,
+      "summary": "Why 0, 1, and 2 cannot start twin prime pairs."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization proves a clean structural result about twin primes: those greater than 3 must have the form (6k-1, 6k+1). The proof elegantly uses modular arithmetic to show that p ≡ 1 (mod 6) leads to p+2 being divisible by 3.\n\nNotably, this is the same residue class constraint as Sophie Germain primes—both require p ≡ 5 (mod 6) for p > 3. This isn't coincidental: in both cases, the 'companion' (2p+1 or p+2) would be divisible by 3 if p ≡ 1 (mod 6).",
+    "implications": "**Search Optimization**\n\nThe structure theorem means we only need to check numbers of the form 6k-1 when searching for twin primes greater than 3. This immediately eliminates half of all candidates.\n\n**Sieve Algorithms**\n\nTwin prime sieves can use this to be more efficient: after sieving for primes, only check pairs straddling multiples of 6.\n\n**Connection to Goldbach**\n\nEvery even number ≥ 8 can be written as 6k ± something. Understanding twin primes around multiples of 6 connects to additive problems.",
+    "openQuestions": [
+      "Are there infinitely many twin prime pairs? (The Twin Prime Conjecture)",
+      "What is the true growth rate of the count of twin primes up to N?",
+      "Is there a pattern in the gaps between consecutive twin prime pairs?"
+    ]
+  }
+}

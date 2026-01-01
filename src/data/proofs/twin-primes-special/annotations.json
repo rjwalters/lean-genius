@@ -1,0 +1,128 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "twin-primes-special",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "context",
+    "title": "Introduction",
+    "content": "Twin primes are pairs (p, p+2) where both are prime. Examples: (3,5), (5,7), (11,13), ...\n\nThis file proves that for p > 3, twin prime pairs must have the form (6k-1, 6k+1). They 'straddle' multiples of 6.\n\nThe twin prime conjecture (infinitely many pairs) remains one of math's great open problems.",
+    "mathContext": "The twin prime conjecture has resisted proof for centuries.",
+    "significance": "supporting",
+    "relatedConcepts": ["twin primes", "prime gaps", "open problems"]
+  },
+  {
+    "id": "ann-definition",
+    "proofId": "twin-primes-special",
+    "range": {
+      "startLine": 30,
+      "endLine": 31
+    },
+    "type": "definition",
+    "title": "Twin Prime Pair",
+    "content": "The formal definition:\n\n`IsTwinPrimePair p` holds when both p and p + 2 are prime.\n\nExamples:\n- p = 11: 11 prime, 13 prime ✓\n- p = 7: 7 prime, 9 = 3² ✗\n- p = 13: 13 prime, 15 = 3×5 ✗",
+    "mathContext": "IsTwinPrimePair p := Nat.Prime p ∧ Nat.Prime (p + 2)",
+    "significance": "critical",
+    "relatedConcepts": ["prime", "definition", "gap"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "twin-primes-special",
+    "range": {
+      "startLine": 42,
+      "endLine": 66
+    },
+    "type": "example",
+    "title": "Verified Twin Pairs",
+    "content": "We verify 6 twin prime pairs computationally:\n\n| p | p+2 | Status |\n|---|-----|--------|\n| 3 | 5 | ✓ |\n| 5 | 7 | ✓ |\n| 11 | 13 | ✓ |\n| 17 | 19 | ✓ |\n| 29 | 31 | ✓ |\n| 41 | 43 | ✓ |\n\nEach is proven using Lean's `decide` tactic.",
+    "mathContext": "constructor <;> decide",
+    "significance": "supporting",
+    "relatedConcepts": ["computation", "verification", "decide tactic"]
+  },
+  {
+    "id": "ann-prime-mod-six",
+    "proofId": "twin-primes-special",
+    "range": {
+      "startLine": 92,
+      "endLine": 115
+    },
+    "type": "theorem",
+    "title": "Primes mod 6",
+    "content": "**Lemma**: Every prime p > 3 satisfies p ≡ 1 or 5 (mod 6).\n\n**Proof**: Residue classes mod 6 are {0, 1, 2, 3, 4, 5}.\n- 0, 2, 4: divisible by 2\n- 0, 3: divisible by 3\n\nOnly 1 and 5 remain for primes > 3.\n\nThis is the foundation for the structure theorem.",
+    "mathContext": "prime_mod_six: Nat.Prime p → p > 3 → p % 6 = 1 ∨ p % 6 = 5",
+    "significance": "key",
+    "relatedConcepts": ["modular arithmetic", "prime residues"]
+  },
+  {
+    "id": "ann-key-insight",
+    "proofId": "twin-primes-special",
+    "range": {
+      "startLine": 117,
+      "endLine": 121
+    },
+    "type": "insight",
+    "title": "The Key Observation",
+    "content": "**Critical insight**: If p ≡ 1 (mod 6), then p + 2 ≡ 3 (mod 6).\n\nThis means 3 divides p + 2! Since p + 2 > 3 for p > 1, the number p + 2 is composite.\n\nThis eliminates the p ≡ 1 (mod 6) case entirely.",
+    "mathContext": "mod_one_implies_plus_two_div_three: p % 6 = 1 → 3 ∣ (p + 2)",
+    "significance": "critical",
+    "relatedConcepts": ["modular arithmetic", "divisibility", "key insight"]
+  },
+  {
+    "id": "ann-structure-theorem",
+    "proofId": "twin-primes-special",
+    "range": {
+      "startLine": 123,
+      "endLine": 134
+    },
+    "type": "theorem",
+    "title": "The Structure Theorem",
+    "content": "**Main Result**: For p > 3, if (p, p+2) is a twin prime pair, then p ≡ 5 (mod 6).\n\n**Proof**:\n1. By prime_mod_six, p ≡ 1 or 5 (mod 6)\n2. If p ≡ 1: Then 3 | (p+2), so p+2 composite—contradiction\n3. Therefore p ≡ 5 (mod 6)\n\nThe twin pair straddles the multiple of 6.",
+    "mathContext": "twin_prime_mod_six: IsTwinPrimePair p → p > 3 → p % 6 = 5",
+    "significance": "critical",
+    "relatedConcepts": ["structure theorem", "classification", "main result"]
+  },
+  {
+    "id": "ann-form-corollary",
+    "proofId": "twin-primes-special",
+    "range": {
+      "startLine": 136,
+      "endLine": 154
+    },
+    "type": "theorem",
+    "title": "The (6k-1, 6k+1) Form",
+    "content": "**Corollary**: Twin primes > 3 have the form (6k-1, 6k+1).\n\nExamples:\n- (5, 7) = (6·1-1, 6·1+1)\n- (11, 13) = (6·2-1, 6·2+1)\n- (17, 19) = (6·3-1, 6·3+1)\n- (29, 31) = (6·5-1, 6·5+1)\n- (41, 43) = (6·7-1, 6·7+1)\n\nThe twins straddle a multiple of 6.",
+    "mathContext": "twin_prime_form: ∃ k : ℕ, k ≥ 1 ∧ p = 6 * k - 1 ∧ p + 2 = 6 * k + 1",
+    "significance": "key",
+    "relatedConcepts": ["form", "characterization", "straddling"]
+  },
+  {
+    "id": "ann-conjecture",
+    "proofId": "twin-primes-special",
+    "range": {
+      "startLine": 162,
+      "endLine": 167
+    },
+    "type": "theorem",
+    "title": "The Conjecture",
+    "content": "**Twin Prime Conjecture**: There are infinitely many twin prime pairs.\n\nThis is stated as an axiom since it remains unproven.\n\nProgress: Zhang (2013) showed infinitely many primes with gap ≤ 70 million. Polymath reduced this to 246. Gap 2 remains open.",
+    "mathContext": "axiom twin_prime_conjecture : TwinPrimeConjecture",
+    "significance": "key",
+    "relatedConcepts": ["axiom", "open problem", "Zhang"]
+  },
+  {
+    "id": "ann-non-examples",
+    "proofId": "twin-primes-special",
+    "range": {
+      "startLine": 173,
+      "endLine": 188
+    },
+    "type": "example",
+    "title": "Non-Examples",
+    "content": "Some numbers cannot start twin prime pairs:\n\n- **2**: 2+2 = 4 = 2², not prime\n- **1**: 1 is not prime (by definition)\n- **0**: 0 is not prime\n\nThe only twin pair with p ≤ 3 is (3, 5).",
+    "mathContext": "Proof by showing the conditions fail",
+    "significance": "supporting",
+    "relatedConcepts": ["edge cases", "base cases"]
+  }
+]

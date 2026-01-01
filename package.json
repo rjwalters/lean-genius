@@ -13,7 +13,8 @@
     "annotations:validate": "tsx scripts/annotations/build.ts --strict",
     "annotations:migrate": "tsx scripts/annotations/resolver.ts migrate",
     "annotations:parse": "tsx scripts/annotations/resolver.ts parse",
-    "research:build": "tsx scripts/research/build.ts"
+    "research:sync": "tsx scripts/research/sync-data.ts",
+    "research:build": "pnpm research:sync && tsx scripts/research/build.ts"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",

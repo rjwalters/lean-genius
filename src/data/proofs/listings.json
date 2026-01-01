@@ -2513,6 +2513,24 @@
     "annotationCount": 8
   },
   {
+    "id": "sophie-germain",
+    "title": "Sophie Germain Primes",
+    "slug": "sophie-germain",
+    "description": "A prime p is a Sophie Germain prime if 2p+1 is also prime. We prove that all Sophie Germain primes greater than 3 must have the form 6k-1 (equivalently, p ≡ 5 mod 6).",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "number-theory",
+      "primes",
+      "modular-arithmetic",
+      "classical"
+    ],
+    "dateAdded": "12/31/25",
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 12
+  },
+  {
     "id": "sqrt2-examples",
     "title": "Basic Lean Examples",
     "slug": "sqrt2-examples",
@@ -2747,6 +2765,25 @@
     "dateAdded": "12/26/25",
     "wiedijkNumber": 42,
     "mathlibCount": 1,
+    "sorries": 0,
+    "annotationCount": 9
+  },
+  {
+    "id": "twin-primes-special",
+    "title": "Twin Primes in Special Forms",
+    "slug": "twin-primes-special",
+    "description": "Twin prime pairs (p, p+2) where both are prime must have the form (6k-1, 6k+1) for p > 3. A structural theorem constraining where twin primes can occur.",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "number-theory",
+      "primes",
+      "modular-arithmetic",
+      "twin-primes",
+      "classical"
+    ],
+    "dateAdded": "12/31/25",
+    "mathlibCount": 2,
     "sorries": 0,
     "annotationCount": 9
   },
