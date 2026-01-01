@@ -2,40 +2,48 @@
 
 ## Problem Summary
 
-Formalize Kummer's theorem relating prime power divisibility of binomial coefficients to carries in base-p addition.
+Formalize Kummer's theorem (1852): the highest power of prime p dividing C(n,k) equals the number of carries when adding k and n-k in base p.
 
-**Statement**: For prime p and n ≥ k, the highest power of p dividing C(n,k) equals the number of carries when adding k and (n-k) in base p.
+## Current State
 
-$$\nu_p\binom{n}{k} = \text{(carries when adding } k \text{ and } n-k \text{ in base } p)$$
+**Status**: COMPLETED
+**Proof File**: `proofs/Proofs/KummerTheorem.lean` (192 lines)
+**Sorries**: 0
 
-## Completion Status
+### What's Proven (no sorries)
 
-**Status**: Completed
-**Proof file**: `proofs/Proofs/KummerTheorem.lean`
+1. **Main Theorem**
+   - `kummer` - multiplicity p C(n,k) = #{carries when adding k and n-k in base p}
+   - Uses `Nat.Prime.multiplicity_choose` from Mathlib
+   - `kummer'` - Alternative for C(n+k, k)
 
-## What Was Proved
+2. **Concrete Examples**
+   - C(10,4) = 210 = 2*3*5*7, verified multiplicities
+   - C(6,3) = 20 has multiplicity 2 for prime 2 (2 carries)
+   - C(4,2) = 6 has multiplicity 1 for prime 2 (1 carry)
 
-1. **kummer** - Main theorem: multiplicity equals carry count
-2. **kummer_alt** - Alternative formulation using digit sums: (p-1)·νₚ(C(n,k)) = Sₚ(k) + Sₚ(n-k) - Sₚ(n)
-3. **Connection to Lucas** - Derived relationship to Lucas' theorem
-4. **Computational examples** - Verified for specific binomial coefficients
+3. **Corollaries**
+   - `prime_dvd_choose_prime_pow` - p | C(p^n, k) for 0 < k < p^n
 
-## Mathlib Infrastructure Used
+4. **Connections**
+   - Lucas' theorem example shown
+   - `legendre_digit_sum` - Legendre's formula for factorial multiplicity
 
-- `Nat.Prime.multiplicity_choose` - Core theorem (Mathlib provides this directly!)
-- `multiplicity` - p-adic valuation function
-- `Nat.digits` - Digit representation in arbitrary base
-- `Choose.lucas_theorem` - Lucas' theorem for mod p
+### Key Insight
 
-## Key Insights
+A carry at position i occurs when k mod p^i + (n-k) mod p^i >= p^i. This beautifully connects combinatorics with positional numeral systems.
 
-1. **Mathlib already has it**: `Nat.Prime.multiplicity_choose` is the theorem - we provided pedagogical wrappers
-2. **Carry = borrow duality**: A carry at position i when adding k + (n-k) equals a borrow when subtracting k from n
-3. **Lucas connection**: If any digit of k exceeds corresponding digit of n in base p, then p | C(n,k)
+### Mathlib Usage
 
-## Historical Context
+- `Nat.Prime.multiplicity_choose` - Core Kummer theorem
+- `multiplicity` - p-adic valuation
+- `Choose.lucas_theorem` - Lucas' theorem
+- `Nat.digits` - Digit representation
 
-Ernst Kummer proved this in 1852. Applications include:
-- Structure of Pascal's triangle mod p
-- Divisibility properties of binomial coefficients
-- Connections to p-adic analysis
+## Session Log
+
+### Backfill Session (2026-01-01)
+
+**Mode**: BACKFILL - Problem was completed without knowledge documentation
+
+**Quality Assessment**: HIGH - Clean Mathlib integration, good examples

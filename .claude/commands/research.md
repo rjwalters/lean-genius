@@ -64,11 +64,7 @@ fi
 
 ```bash
 # Show all problems sorted by knowledge accumulation (ascending)
-for f in src/data/research/problems/*.json; do
-  id=$(basename "$f" .json)
-  total=$(jq '[.knowledge.insights, .knowledge.builtItems, .knowledge.mathlibGaps, .knowledge.nextSteps] | map(length) | add' "$f" 2>/dev/null || echo 0)
-  echo "$total $id"
-done | sort -n | head -20
+.loom/scripts/knowledge-scores.sh
 ```
 
 ### Selection Rule
@@ -139,26 +135,10 @@ Invalid: "Verify n=7, 9, 11... and keep going" or "extend to n ≤ 1000".
 # Clean stale locks
 find research/claims -name "*.lock" -type d -mmin +120 -exec rm -rf {} \; 2>/dev/null || true
 
-# Get available problems with their knowledge scores (lowest first)
-AVAILABLE=$(jq -r '.candidates[] | select(.status == "available") | .id' research/candidate-pool.json)
-BEST_SCORE=999
-BEST_PROBLEM=""
+# List available problems by knowledge score (lowest first)
+.loom/scripts/knowledge-scores.sh --status available
 
-for PROBLEM_ID in $AVAILABLE; do
-  FILE="src/data/research/problems/${PROBLEM_ID}.json"
-  if [ -f "$FILE" ]; then
-    SCORE=$(jq '[.knowledge.insights, .knowledge.builtItems, .knowledge.mathlibGaps, .knowledge.nextSteps] | map(length) | add' "$FILE")
-  else
-    SCORE=0  # No file = highest priority (completely unexplored)
-  fi
-  echo "  $PROBLEM_ID: knowledge=$SCORE"
-  if [ "$SCORE" -lt "$BEST_SCORE" ]; then
-    BEST_SCORE=$SCORE
-    BEST_PROBLEM=$PROBLEM_ID
-  fi
-done
-
-echo "Selected: $BEST_PROBLEM (knowledge=$BEST_SCORE)"
+# Select the one with lowest knowledge score
 ```
 
 ### Step 2: Claim Problem (Atomic Lock)
@@ -208,18 +188,8 @@ When pool is empty, we scout for new knowledge and attempt if promising.
 **Prioritize by knowledge tier, then status:**
 
 ```bash
-# List revisitable problems with knowledge scores
-echo "=== Problems by Knowledge Score (lowest first) ==="
-for id in $(jq -r '.candidates[] | select(.status == "surveyed" or .status == "in-progress" or .status == "skipped") | .id' research/candidate-pool.json); do
-  FILE="src/data/research/problems/${id}.json"
-  if [ -f "$FILE" ]; then
-    SCORE=$(jq '[.knowledge.insights, .knowledge.builtItems, .knowledge.mathlibGaps, .knowledge.nextSteps] | map(length) | add' "$FILE")
-  else
-    SCORE=0
-  fi
-  STATUS=$(jq -r --arg id "$id" '.candidates[] | select(.id == $id) | .status' research/candidate-pool.json)
-  echo "$SCORE|$STATUS|$id"
-done | sort -t'|' -k1,1n -k2,2
+# List revisitable problems by knowledge score (lowest first)
+.loom/scripts/knowledge-scores.sh --revisit
 ```
 
 **Selection priority:**
