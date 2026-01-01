@@ -109,6 +109,7 @@ import Proofs.PlatonicSolids
 import Proofs.PoincareConjecture
 import Proofs.PrimeNumberTheorem
 import Proofs.PrimeReciprocalDivergence
+import Proofs.PrimitiveRoots
 import Proofs.ProductOfSegmentsOfChords
 import Proofs.PtolemysTheorem
 import Proofs.PuiseuxTheorem

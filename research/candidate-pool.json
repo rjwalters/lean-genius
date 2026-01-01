@@ -1,6 +1,6 @@
 {
   "version": "1.1",
-  "last_updated": "2025-12-31",
+  "last_updated": "2025-12-31T01:00:00Z",
   "candidates": [
     {
       "id": "bounded-prime-gaps",
@@ -302,8 +302,8 @@
       "tier": "B",
       "significance": 6,
       "tractability": 7,
-      "status": "available",
-      "notes": "The highest power of prime p dividing C(m+n,m) equals the number of carries when adding m and n in base p. Useful corollary of Lucas' theorem.",
+      "status": "completed",
+      "notes": "COMPLETED: KummerTheorem.lean proves ν_p(C(n,k)) = #carries when adding k + (n-k) in base p. Uses Mathlib's Nat.Prime.multiplicity_choose. Includes Lucas theorem connection, Legendre formula, examples for C(10,4), C(6,3), C(8,2), prime power divisibility theorem.",
       "tags": [
         "number-theory",
         "binomial",
@@ -316,8 +316,8 @@
       "tier": "B",
       "significance": 6,
       "tractability": 6,
-      "status": "available",
-      "notes": "For prime p, there are exactly φ(p-1) primitive roots. Existence proof uses structure of (Z/pZ)*. May be partially in Mathlib.",
+      "status": "completed",
+      "notes": "COMPLETED: PrimitiveRoots.lean proves for prime p there are exactly φ(p-1) primitive roots. Uses isCyclic_of_subgroup_isDomain to show (Z/pZ)* is cyclic, then IsCyclic.card_orderOf_eq_totient. Includes existence theorem, generator characterization, examples for p=2,3,5,7,11,13.",
       "tags": [
         "number-theory",
         "group-theory",
