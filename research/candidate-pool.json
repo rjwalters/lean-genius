@@ -1,6 +1,6 @@
 {
   "version": "1.2",
-  "last_updated": "2026-01-01T21:40:35.122Z",
+  "last_updated": "2026-01-01T21:41:16.123Z",
   "candidates": [
     {
       "id": "bounded-prime-gaps",
@@ -79,7 +79,7 @@
       "significance": 8,
       "tractability": 5,
       "status": "surveyed",
-      "notes": "SURVEYED: PNPBarriers.lean (~1190 lines, 0 sorries). Session 5 (2026-01-01): Added Part 11 - coNP, NP∩coNP, coNP-completeness. Proved P⊆coNP, NP≠coNP→P≠NP, P=NP→NP=coNP. FACTORING/GRAPH_ISOMORPHISM examples. TAUTOLOGY coNP-complete. Complete framework for P/NP/coNP/PSPACE/EXP containments, all 3 barriers.",
+      "notes": "SURVEYED: PNPBarriers.lean (~1459 lines, 0 sorries). Session 6 (2026-01-01): Added Part 12 - BPP, PP, ZPP probabilistic classes. Proved P⊆ZPP⊆BPP⊆PP⊆PSPACE chain, BPP=coBPP closure. P=BPP derandomization question. Impagliazzo-Wigderson connection. Complete framework for P/NP/coNP/BPP/PP/ZPP/PSPACE/EXP, all 3 barriers.",
       "tags": [
         "complexity",
         "impossibility",

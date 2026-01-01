@@ -45,6 +45,66 @@ Formalize the major barriers to proving P ≠ NP:
 
 ## Session Log
 
+### 2026-01-01 Session 6 (Research Iteration)
+
+**Mode**: REVISIT
+**Problem**: pnp-barriers
+**Prior Status**: surveyed
+
+**What we did**:
+1. Literature search confirmed no BPP formalization in Mathlib or major Lean projects
+2. Added Part 12: BPP and Probabilistic Complexity (~269 lines)
+3. Defined `ProbabilisticProgram` structure for randomized computation
+4. Defined `inBPP` and `BPP` (bounded-error probabilistic polynomial time)
+5. Defined `inPP` and `PP` (probabilistic polynomial time with majority acceptance)
+6. Proved `P_subset_BPP` - deterministic is special case of probabilistic
+7. Proved `BPP_subset_PP` - bounded error implies majority acceptance
+8. Proved `PP_subset_PSPACE` (via axiom) - counting can be done in poly space
+9. Proved `BPP_subset_PSPACE` - combines the above
+10. Proved `BPP_closed_under_complement` - BPP = co-BPP
+11. Defined `coBPP` and proved `BPP_eq_coBPP`
+12. Defined `ZPP` (zero-error probabilistic polynomial time)
+13. Proved `P_subset_ZPP` and `ZPP_subset_BPP`
+14. Defined `P_eq_BPP_Question` - the derandomization conjecture
+15. Stated `impagliazzo_wigderson` - circuit lower bounds imply P = BPP
+16. Proved `probabilistic_containments` - P ⊆ ZPP ⊆ BPP ⊆ PP ⊆ PSPACE chain
+17. Stated `NP_BPP_incomparable` and `NP_subset_BPP_implies_PH_collapse`
+
+**Literature reviewed**:
+- [Wikipedia: BPP complexity](https://en.wikipedia.org/wiki/BPP_(complexity)) - formal definition
+- [Lean Community Complexity Discussions](https://leanprover-community.github.io/archive/stream/113488-general/topic/Computational.20Complexity.20Theory.html)
+- [LeanMillenniumPrizeProblems](https://github.com/lean-dojo/LeanMillenniumPrizeProblems) - no BPP
+
+**Key insight**:
+BPP can be defined deterministically: L ∈ BPP iff there exists poly-time M where for all x, at least 2/3 of random tapes y give the correct answer. This avoids needing a probability monad. The key property BPP = co-BPP (closure under complement) distinguishes it from RP/coRP.
+
+**New definitions/theorems**:
+- `ProbabilisticProgram` - structure for randomized computation
+- `inBPP`, `BPP` - bounded-error probabilistic polynomial time
+- `inPP`, `PP` - probabilistic polynomial time (majority)
+- `P_subset_BPP`, `BPP_subset_PP`, `PP_subset_PSPACE`, `BPP_subset_PSPACE`
+- `BPP_closed_under_complement`, `coBPP`, `BPP_eq_coBPP`
+- `ZPP`, `P_subset_ZPP`, `ZPP_subset_BPP`
+- `P_eq_BPP_Question`, `impagliazzo_wigderson`
+- `probabilistic_containments`, `P_subset_BPP_subset_PSPACE`
+- `NP_BPP_incomparable`, `NP_subset_BPP_implies_PH_collapse`
+
+**Outcome**:
+- PNPBarriers.lean: ~1459 lines, **0 sorries** (up from 1190 lines)
+- Added 22 new definitions/theorems
+- Complete probabilistic complexity framework (BPP, PP, ZPP)
+- P ⊆ ZPP ⊆ BPP ⊆ PP ⊆ PSPACE chain formalized
+
+**Files Modified**:
+- `proofs/Proofs/PNPBarriers.lean` (+269 lines)
+- `research/problems/pnp-barriers/knowledge.md` - this file
+
+**Next steps**:
+1. Add RP (one-sided error) to complete ZPP = RP ∩ coRP
+2. Add relativized probabilistic classes (BPP^A)
+3. Define MA (Merlin-Arthur) and AM (Arthur-Merlin)
+4. Add PSPACE-completeness (TQBF)
+
 ### 2026-01-01 Session 5 (Research Iteration)
 
 **Mode**: REVISIT

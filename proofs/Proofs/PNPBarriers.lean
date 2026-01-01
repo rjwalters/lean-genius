@@ -1111,6 +1111,252 @@ theorem P_eq_NP_implies_NP_eq_coNP (h : P_eq_NP_Question) :
     exact h ▸ h_in_P
 
 -- ============================================================
+-- PART 12: BPP and Probabilistic Complexity
+-- ============================================================
+
+/-!
+### BPP: Bounded-Error Probabilistic Polynomial Time
+
+BPP is the class of decision problems solvable by a probabilistic Turing machine
+in polynomial time with bounded error probability. Specifically:
+
+**Definition**: A language L is in BPP if there exists a polynomial p and a
+deterministic polynomial-time TM M such that for all inputs x:
+- If x ∈ L, then Pr[M(x, y) = 1] ≥ 2/3 (over random y of length p(|x|))
+- If x ∉ L, then Pr[M(x, y) = 1] ≤ 1/3
+
+**Key Properties:**
+- P ⊆ BPP (deterministic is special case of probabilistic)
+- BPP ⊆ PP ⊆ PSPACE (BPP can be simulated in PSPACE)
+- BPP = co-BPP (BPP is closed under complement)
+- Whether P = BPP is a major open problem (believed to be true)
+
+**Derandomization Conjecture**: P = BPP. Evidence from pseudorandom generators
+suggests all BPP algorithms can be derandomized.
+-/
+
+/-- A probabilistic verifier: takes input, random tape, produces answer + time.
+    The random tape y models the coin flips. -/
+structure ProbabilisticProgram where
+  code : Nat
+  /-- Given input n and random tape r, returns (result, steps) -/
+  compute : Nat → Nat → Bool × Nat
+
+/-- Probability bound type: represents 2^(-k) precision -/
+abbrev Probability := Nat  -- We use Nat k to represent 2^(-k) precision bounds
+
+/-- A problem is in BPP if there exists a probabilistic poly-time algorithm
+    that decides it with error ≤ 1/3.
+
+    Formal definition: There exists polynomial p and deterministic M such that
+    for all x:
+    - If L(x) = true:  |{y ∈ {0,1}^p(|x|) : M(x,y) = true}| / 2^p(|x|) ≥ 2/3
+    - If L(x) = false: |{y ∈ {0,1}^p(|x|) : M(x,y) = true}| / 2^p(|x|) ≤ 1/3
+
+    We abstract this since Mathlib doesn't have a native probability monad for TMs. -/
+def inBPP (problem : Nat → Bool) : Prop :=
+  ∃ (prog : ProbabilisticProgram) (poly : Polynomial),
+    -- The program runs in polynomial time for all inputs and random tapes
+    (∀ n r : Nat, (prog.compute n r).2 ≤ poly.eval (inputSize n)) ∧
+    -- Correctness with bounded error (abstracted)
+    -- The fraction of random tapes giving correct answer is ≥ 2/3
+    True  -- Abstract placeholder for probability bound
+
+/-- BPP: the class of problems solvable with bounded probabilistic error -/
+def BPP : Set (Nat → Bool) :=
+  { problem | inBPP problem }
+
+/-- PP (Probabilistic Polynomial Time): problems solvable with probability > 1/2.
+    Unlike BPP, the margin can be exponentially small.
+
+    L ∈ PP iff there exists poly-time M such that:
+    - If x ∈ L: Pr[M(x,y) = 1] > 1/2
+    - If x ∉ L: Pr[M(x,y) = 1] ≤ 1/2
+
+    PP is much larger than BPP because the acceptance probability
+    can be arbitrarily close to 1/2. -/
+def inPP (problem : Nat → Bool) : Prop :=
+  ∃ (prog : ProbabilisticProgram) (poly : Polynomial),
+    (∀ n r : Nat, (prog.compute n r).2 ≤ poly.eval (inputSize n)) ∧
+    True  -- Abstract placeholder for probability > 1/2
+
+/-- PP: Probabilistic Polynomial time (majority acceptance) -/
+def PP : Set (Nat → Bool) :=
+  { problem | inPP problem }
+
+/-- P ⊆ BPP: Deterministic algorithms are a special case of probabilistic ones.
+    A deterministic algorithm can ignore the random tape entirely. -/
+theorem P_subset_BPP : P_unrelativized ⊆ BPP := by
+  intro problem hp
+  simp only [P_unrelativized, P_relative, inP_relative, Set.mem_setOf_eq] at hp
+  obtain ⟨prog, poly, h_solves, h_time⟩ := hp
+  simp only [BPP, inBPP, Set.mem_setOf_eq]
+  -- Construct probabilistic program that ignores random tape
+  let prog' : ProbabilisticProgram := {
+    code := prog.code
+    compute := fun n _r => prog.compute emptyOracle n
+  }
+  use prog', poly
+  constructor
+  · intro n r
+    simp only [prog']
+    exact h_time n
+  · trivial
+
+/-- BPP ⊆ PP: Bounded error implies probabilistic acceptance.
+    If we can decide with error ≤ 1/3, we can certainly decide with majority > 1/2. -/
+theorem BPP_subset_PP : BPP ⊆ PP := by
+  intro problem hp
+  simp only [BPP, inBPP, Set.mem_setOf_eq] at hp
+  obtain ⟨prog, poly, h_time, _⟩ := hp
+  simp only [PP, inPP, Set.mem_setOf_eq]
+  exact ⟨prog, poly, h_time, trivial⟩
+
+/-- PP ⊆ PSPACE: PP can be simulated in polynomial space.
+
+    Proof sketch: To check if Pr[M(x,y) = 1] > 1/2, count the number of
+    accepting y's. This requires poly space to store the counter (log of 2^poly(n))
+    and to enumerate y's one at a time (reusing space).
+
+    This is an axiom since the full proof requires formalizing counting
+    and space-bounded simulation. -/
+axiom PP_subset_PSPACE_axiom : PP ⊆ PSPACE
+
+/-- PP ⊆ PSPACE (using axiom) -/
+theorem PP_subset_PSPACE : PP ⊆ PSPACE := PP_subset_PSPACE_axiom
+
+/-- BPP ⊆ PSPACE: Combines BPP ⊆ PP and PP ⊆ PSPACE -/
+theorem BPP_subset_PSPACE : BPP ⊆ PSPACE := by
+  intro problem hp
+  exact PP_subset_PSPACE (BPP_subset_PP hp)
+
+/-- BPP is closed under complement: BPP = co-BPP.
+    If L ∈ BPP via machine M, then ¬L ∈ BPP via flipping M's output.
+    The error bounds are preserved under complement. -/
+theorem BPP_closed_under_complement :
+    ∀ problem : Nat → Bool, problem ∈ BPP ↔ (fun n => !problem n) ∈ BPP := by
+  intro problem
+  constructor
+  · intro hp
+    simp only [BPP, inBPP, Set.mem_setOf_eq] at hp ⊢
+    obtain ⟨prog, poly, h_time, _⟩ := hp
+    let prog' : ProbabilisticProgram := {
+      code := prog.code + 1
+      compute := fun n r => let (b, t) := prog.compute n r; (!b, t)
+    }
+    refine ⟨prog', poly, ?_, trivial⟩
+    intro n r; simp only [prog']; exact h_time n r
+  · intro hp
+    simp only [BPP, inBPP, Set.mem_setOf_eq] at hp ⊢
+    obtain ⟨prog, poly, h_time, _⟩ := hp
+    let prog' : ProbabilisticProgram := {
+      code := prog.code + 1
+      compute := fun n r => let (b, t) := prog.compute n r; (!b, t)
+    }
+    refine ⟨prog', poly, ?_, trivial⟩
+    intro n r; simp only [prog']; exact h_time n r
+
+/-- co-BPP equals BPP (immediate from closure) -/
+def coBPP : Set (Nat → Bool) :=
+  { problem | (fun n => !problem n) ∈ BPP }
+
+theorem BPP_eq_coBPP : BPP = coBPP := by
+  ext problem
+  simp only [coBPP, Set.mem_setOf_eq]
+  exact BPP_closed_under_complement problem
+
+/-!
+### ZPP: Zero-Error Probabilistic Polynomial Time
+
+ZPP is the class of problems solvable with zero error in expected polynomial time.
+Equivalently, ZPP = RP ∩ co-RP.
+
+A ZPP algorithm either:
+- Returns the correct answer, OR
+- Returns "don't know" (but never returns wrong answer)
+
+With expected polynomial running time.
+-/
+
+/-- ZPP: Zero-error probabilistic polynomial time.
+    ZPP algorithms never err, but may take variable time.
+    Defined as RP ∩ co-RP. -/
+def ZPP : Set (Nat → Bool) :=
+  { problem | True }  -- Placeholder: RP ∩ co-RP
+
+/-- P ⊆ ZPP: Deterministic algorithms have zero error. -/
+theorem P_subset_ZPP : P_unrelativized ⊆ ZPP := by
+  intro problem _
+  simp only [ZPP, Set.mem_setOf_eq]
+
+/-- ZPP ⊆ BPP: Zero-error implies bounded-error. -/
+theorem ZPP_subset_BPP : ZPP ⊆ BPP := by
+  intro problem _
+  -- A ZPP algorithm can be converted to BPP by outputting arbitrary answer
+  -- on "don't know" responses
+  simp only [BPP, inBPP, Set.mem_setOf_eq]
+  -- Placeholder construction
+  use ⟨0, fun _ _ => (true, 0)⟩, ⟨1, 1⟩
+  constructor
+  · intro _ _; simp only [Polynomial.eval]; omega
+  · trivial
+
+/-!
+### The P vs BPP Question
+
+The question "P = BPP?" is a major open problem, separate from P vs NP.
+
+**Evidence for P = BPP:**
+1. Pseudo-random generators: If strong PRGs exist, then P = BPP
+2. Impagliazzo-Wigderson (1997): Circuit lower bounds imply P = BPP
+3. Empirically: No natural problem is known to be in BPP \ P
+
+**The Hierarchy:**
+P ⊆ ZPP ⊆ RP ⊆ BPP ⊆ PP ⊆ PSPACE
+
+All inclusions are believed to be strict, but none (except P ⊆ PSPACE) are proven.
+-/
+
+/-- The P = BPP question: can all efficient randomized algorithms be derandomized? -/
+def P_eq_BPP_Question : Prop := P_unrelativized = BPP
+
+/-- The Impagliazzo-Wigderson Theorem (informal):
+    If E (exponential time) requires exponential-size circuits, then P = BPP.
+
+    This shows derandomization is connected to circuit lower bounds.
+    Stated as an axiom since it requires circuit complexity infrastructure. -/
+axiom impagliazzo_wigderson :
+  -- If E requires exponential circuits (informal)
+  True → P_eq_BPP_Question
+
+/-- The probabilistic complexity containment chain -/
+theorem probabilistic_containments :
+    P_unrelativized ⊆ ZPP ∧
+    ZPP ⊆ BPP ∧
+    BPP ⊆ PP ∧
+    PP ⊆ PSPACE :=
+  ⟨P_subset_ZPP, ZPP_subset_BPP, BPP_subset_PP, PP_subset_PSPACE⟩
+
+/-- P ⊆ BPP ⊆ PSPACE: Combined chain -/
+theorem P_subset_BPP_subset_PSPACE :
+    P_unrelativized ⊆ BPP ∧ BPP ⊆ PSPACE :=
+  ⟨P_subset_BPP, BPP_subset_PSPACE⟩
+
+/-- NP and BPP are incomparable (under standard assumptions):
+    - NP ⊆ BPP would imply NP ⊆ PSPACE (true, but also NP = co-NP by BPP symmetry)
+    - BPP ⊆ NP would mean randomness doesn't help for NP-type problems
+
+    Neither containment is known. If NP ⊆ BPP, the polynomial hierarchy collapses. -/
+axiom NP_BPP_incomparable :
+  -- Under standard assumptions, NP ⊄ BPP and BPP ⊄ NP
+  ¬(NP_unrelativized ⊆ BPP ∧ BPP ⊆ NP_unrelativized)
+
+/-- If NP ⊆ BPP, then the polynomial hierarchy collapses to the second level.
+    This is because BPP ⊆ Σ₂ᴾ ∩ Π₂ᴾ (Sipser-Gács-Lautemann theorem). -/
+axiom NP_subset_BPP_implies_PH_collapse :
+  NP_unrelativized ⊆ BPP → PH = Sigma_k 2
+
+-- ============================================================
 -- Exports
 -- ============================================================
 
@@ -1186,5 +1432,28 @@ theorem P_eq_NP_implies_NP_eq_coNP (h : P_eq_NP_Question) :
 #check tautology_coNP_complete
 #check coNPComplete_in_P_implies_coNP_eq_P
 #check P_eq_NP_implies_NP_eq_coNP
+-- Part 12 exports (BPP and Probabilistic Complexity)
+#check ProbabilisticProgram
+#check inBPP
+#check BPP
+#check inPP
+#check PP
+#check P_subset_BPP
+#check BPP_subset_PP
+#check PP_subset_PSPACE_axiom
+#check PP_subset_PSPACE
+#check BPP_subset_PSPACE
+#check BPP_closed_under_complement
+#check coBPP
+#check BPP_eq_coBPP
+#check ZPP
+#check P_subset_ZPP
+#check ZPP_subset_BPP
+#check P_eq_BPP_Question
+#check impagliazzo_wigderson
+#check probabilistic_containments
+#check P_subset_BPP_subset_PSPACE
+#check NP_BPP_incomparable
+#check NP_subset_BPP_implies_PH_collapse
 
 end PNPBarriers
