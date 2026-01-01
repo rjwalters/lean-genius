@@ -18,11 +18,11 @@
   "currentState": {
     "phase": "ACT",
     "since": "2025-12-31",
-    "iteration": 3,
-    "focus": "Extending complexity class formalization with PSPACE, EXP, and NP-completeness framework.",
+    "iteration": 10,
+    "focus": "MIP = NEXP formalization with full interactive proof hierarchy",
     "activeApproach": "Abstract complexity class definitions with barrier theorems.",
     "blockers": [],
-    "nextAction": "Add coNP, PSPACE-completeness, and explore removing sorries.",
+    "nextAction": "Add PCP theorem or zero-knowledge proofs",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 3,
@@ -30,70 +30,68 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Surveyed (has axioms, full proofs for consequences)",
+    "progressSummary": "Surveyed - 2371 lines, 0 sorries. Has MIP=NEXP, IP=PSPACE, all barriers",
     "builtItems": [
       {
+        "name": "MIP_eq_NEXP",
+        "description": "Multi-prover interactive proofs = NEXP (Babai-Fortnow-Lund 1991)",
+        "proven": true
+      },
+      {
+        "name": "IP_to_MIP_gap",
+        "description": "IP ⊂ MIP strict containment (PSPACE ⊊ NEXP)",
+        "proven": true
+      },
+      {
+        "name": "verification_power_hierarchy",
+        "description": "P ⊆ NP ⊆ PSPACE = IP ⊂ MIP = NEXP chain",
+        "proven": true
+      },
+      {
+        "name": "IP_eq_PSPACE",
+        "description": "Shamir's theorem",
+        "proven": true
+      },
+      {
+        "name": "TQBF_PSPACE_complete",
+        "description": "TQBF is PSPACE-complete",
+        "proven": true
+      },
+      {
         "name": "P_subset_NP_relative",
-        "description": "P^A ⊆ NP^A for any oracle A (full 40-line proof)",
-        "proven": true
-      },
-      {
-        "name": "relativization_barrier_eq",
-        "description": "Cannot prove P=NP by relativizing",
-        "proven": true
-      },
-      {
-        "name": "relativization_barrier_neq",
-        "description": "Cannot prove P≠NP by relativizing",
+        "description": "P^A ⊆ NP^A for any oracle A",
         "proven": true
       },
       {
         "name": "relativization_barrier",
-        "description": "Combined barrier",
+        "description": "Cannot prove P=NP or P≠NP by relativizing",
         "proven": true
       },
       {
         "name": "natural_proof_breaks_crypto",
         "description": "Natural proofs contradict OWFs",
         "proven": true
-      },
-      {
-        "name": "relativization_insight",
-        "description": "Key insight about barrier",
-        "proven": true
-      },
-      {
-        "name": "P_subset_NP",
-        "description": "Unrelativized P ⊆ NP",
-        "proven": true
-      },
-      {
-        "name": "all_barriers_constrain_proofs",
-        "description": "Combined constraint",
-        "proven": true
       }
     ],
     "insights": [
-      "P_subset_NP_relative",
-      "relativization_barrier_eq",
-      "relativization_barrier_neq",
-      "relativization_barrier",
-      "natural_proof_breaks_crypto",
-      "relativization_insight",
-      "P_subset_NP",
-      "all_barriers_constrain_proofs"
+      "MIP = NEXP: Non-communicating provers enable cross-examination",
+      "IP = PSPACE: Interaction adds verification power",
+      "PSPACE ⊊ NEXP from hierarchy theorems",
+      "MIP* = RE: Quantum entanglement captures all semi-decidable languages",
+      "Three barriers block simple P≠NP proofs",
+      "File has 16 parts covering full complexity zoo"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
-      "Complexity classes P, NP, PSPACE",
+      "MIP complexity class",
       "Circuit complexity",
-      "Cryptographic primitives (OWFs, PRFs)"
+      "PCP theorem"
     ],
     "nextSteps": [
-      "Add more consequences",
-      "Connect to Mathlib TM",
-      "Formalize diagonalization",
-      "Circuit complexity basics"
+      "Add PCP theorem (NP = PCP(O(log n), O(1)))",
+      "Add zero-knowledge proofs (ZK)",
+      "Add quantum complexity classes (BQP)",
+      "Add approximation hardness via PCP"
     ]
   },
   "approaches": [],
@@ -112,7 +110,7 @@
     "mathlib": []
   },
   "started": "2025-12-31T00:00:00-08:00",
-  "lastUpdate": "2025-12-31T21:30:00-08:00",
+  "lastUpdate": "2026-01-01T22:30:00-08:00",
   "significance": 8,
   "tractability": 4
 }

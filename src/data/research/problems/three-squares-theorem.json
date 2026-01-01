@@ -29,14 +29,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED (compiles, uses axioms for hard directions)",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
+    "progressSummary": "NECESSITY PROVED. Sufficiency blocked on Dirichlet's theorem (primes in AP).",
+    "builtItems": [
+      "excluded_form_not_sum_three_sq - FULL PROOF via descent (ThreeSquares.lean:173)",
+      "int_sq_mod_eight, sum_three_sq_mod_eight_ne_seven - mod 8 machinery",
+      "four_dvd_sum_three_sq_implies_even - descent lemma",
+      "legendre_three_squares - main theorem (1 axiom for sufficiency)"
+    ],
+    "insights": [
+      "Minkowski's theorem IS in Mathlib (MeasureTheory.Group.GeometryOfNumbers)",
+      "Ankeny 1957 proof uses Minkowski + Dirichlet + quadratic reciprocity",
+      "All known sufficiency proofs require Dirichlet's theorem on primes in AP",
+      "Gauss's proof (1801) used ternary quadratic form class theory",
+      "PrimesInAP added to Mathlib Nov 2024, our version is Sept 2024",
+      "Dirichlet Lemma 4.1: If -d is QR mod (dn-1), then n is sum of 3 squares",
+      "Key identity: n = x² + y² + 2z² ⟺ 2n = (x+y)² + (x−y)² + (2z)²",
+      "Excluded form for x² + y² + 2z² is 4^k(16l + 14)",
+      "arXiv:2206.00589 extends Mordell 1958 / Blackwell 2016 techniques"
+    ],
+    "mathlibGaps": [
+      "Mathlib.NumberTheory.LSeries.PrimesInAP - NOT in our Mathlib version (Sept 2024)",
+      "Ternary quadratic form representation theory - not in Mathlib"
+    ],
     "nextSteps": [
-      "Check if Mathlib update helps",
-      "~~**Focus on necessity**: The elementary direction could be fully proved with more work on API~~ **DONE!**",
-      "Alternative approach"
+      "Mathlib version bump to get PrimesInAP (non-trivial, may break other proofs)",
+      "Alternative: Build ~300 lines ternary form representation for x²+y²+2z²"
     ]
   },
   "approaches": [],
@@ -49,9 +66,19 @@
     "Relevance"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "arXiv:2206.00589 - Elementary Proofs of Ternary QF Representations (2022)"
+    ],
+    "urls": [
+      "https://www.ams.org/journals/mcom/2019-88-316/S0025-5718-2018-03349-X/",
+      "https://warwick.ac.uk/fac/sci/maths/people/staff/michaud/thirdyearessay.pdf",
+      "https://www.isa-afp.org/entries/Three_Squares.html"
+    ],
+    "mathlib": [
+      "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity",
+      "Mathlib.NumberTheory.SumTwoSquares",
+      "Mathlib.NumberTheory.SumFourSquares"
+    ]
   },
   "started": "2026-01-01T19:54:13.472Z",
   "lastUpdate": "2026-01-01T19:54:13.472Z",

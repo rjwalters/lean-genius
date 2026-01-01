@@ -288,3 +288,188 @@ Even upgrading Mathlib to get PrimesInAP would still leave us ~500-1000 lines sh
 ### Outcome
 
 **Scouted** - Corrected inaccurate claim from previous session. Dirichlet's theorem is NOT in our Mathlib version. The gap is larger than previously documented.
+
+---
+
+## Session 2026-01-01 (Revisit 3) - DEEPER SCOUTING
+
+### Mode
+REVISIT - Searching for alternative approaches to sufficiency
+
+### What We Searched
+
+1. **Elementary proofs literature**:
+   - [arXiv:2206.00589](https://arxiv.org/abs/2206.00589) "Elementary Proofs of Representation by Ternary Quadratic Forms" (2022)
+   - Extends Mordell's 1958 technique and Blackwell et al. 2016 work
+   - Applies to forms beyond just x² + y² + z²
+
+2. **Dirichlet's 1850 approach**:
+   - Uses "only basic facts about ternary quadratic forms"
+   - Key insight: Dirichlet's Lemma 4.1 connects quadratic residues to three-square representation
+
+3. **x² + y² + 2z² reduction** (NEW INSIGHT):
+   - E(1, 1, 2) = {4^k(16l + 14) : k, l ∈ ℕ} - excluded form for x² + y² + 2z²
+   - **Key identity**: n = x² + y² + 2z² ⟺ 2n = (x+y)² + (x−y)² + (2z)²
+   - This shows a deep connection between x² + y² + 2z² representations and three squares
+
+### Dirichlet's Key Lemma
+
+From Warwick essay (Michaud-Rodgers):
+> **Lemma 4.1**: Let n > 1 and d > 0 be integers with -d a quadratic residue modulo dn - 1. Then n = x² + y² + z² for some x, y, z ∈ ℤ.
+
+This is the bridge from quadratic reciprocity (which we have) to three-square representation!
+
+### Infrastructure Already Available
+
+| Component | Status | Location |
+|-----------|--------|----------|
+| Quadratic reciprocity | ✅ Full | `Proofs/QuadraticReciprocity.lean` |
+| Legendre symbol | ✅ Full | Mathlib |
+| Euler's criterion | ✅ Full | `legendreSym.eq_pow` |
+| First supplementary law | ✅ Full | `-1` is QR iff p ≢ 3 (mod 4) |
+| Second supplementary law | ✅ Full | `2` is QR iff p ≡ ±1 (mod 8) |
+| Sum of two squares | ✅ Full | `Nat.Prime.sq_add_sq` |
+| Fermat two squares | ✅ Full | `Proofs/FermatTwoSquares.lean` |
+
+### What's Still Missing
+
+To implement Dirichlet's approach:
+
+1. **Lemma 4.1 formalization** (~100-150 lines):
+   - Statement: If -d is QR mod (dn-1), then n is sum of 3 squares
+   - This is the KEY lemma connecting QR theory to representations
+
+2. **Prime existence for each case** (~50-100 lines per case):
+   - Need to find appropriate primes p with specific QR properties
+   - Cases: n ≡ 1, 2, 3, 5, 6 (mod 8) - five cases to handle
+
+3. **Case n ≡ 3 (mod 8)** (~100 lines):
+   - Find prime p = Dn - 1 with D ≡ 2 (mod 4) and p ≡ 3 (mod 8)
+   - Show -D is QR mod p using quadratic reciprocity
+   - Apply Lemma 4.1
+
+4. **Descent for 4^k factors** (~50 lines):
+   - Already done! The descent in necessity can be adapted
+
+### Revised Size Estimate
+
+**Previous estimate**: 500-1000 lines for "ternary QF theory"
+**Revised estimate**: 300-500 lines using Dirichlet's approach with existing infrastructure
+
+The key realization is that we DON'T need full genus theory or class numbers. Dirichlet's approach uses only:
+- Quadratic reciprocity (have it)
+- Primes in arithmetic progressions (blocked - need Mathlib upgrade)
+- One key representation lemma (Lemma 4.1)
+
+### Blocking Factor (Unchanged)
+
+The fundamental blocker is still **primes in arithmetic progressions**:
+- Our Mathlib (Sept 2024) doesn't have PrimesInAP
+- Mathlib added it Nov 2024
+- Without Dirichlet's theorem on primes in AP, we cannot find the required primes
+
+### Decision
+
+**Status remains: surveyed**
+
+Progress: Identified a more concrete path (Dirichlet's approach) with smaller gap than initially thought.
+Blocker: Still need Mathlib upgrade for PrimesInAP.
+
+### Next Steps (if returning with upgraded Mathlib)
+
+1. Upgrade Mathlib to include `PrimesInAP.lean`
+2. State and prove Lemma 4.1 (the key bridge lemma)
+3. Handle each residue class mod 8 separately
+4. Complete the theorem
+
+### Sources
+
+- [arXiv:2206.00589 - Elementary Proofs of Ternary QF Representations](https://arxiv.org/abs/2206.00589)
+- [Pollack - Dirichlet's Proof (AMS)](https://www.ams.org/journals/mcom/2019-88-316/S0025-5718-2018-03349-X/viewer/)
+- [Warwick Essay - Michaud-Rodgers](https://warwick.ac.uk/fac/sci/maths/people/staff/michaud/thirdyearessay.pdf)
+- [AFP Three Squares (Isabelle)](https://www.isa-afp.org/entries/Three_Squares.html)
+
+---
+
+## Session 2026-01-01 (Revisit 4) - MINKOWSKI DISCOVERY
+
+### Mode
+REVISIT - Scouting for new knowledge on alternative proof approaches
+
+### Key Discovery: Minkowski's Theorem IS in Mathlib
+
+Confirmed that `Mathlib.MeasureTheory.Group.GeometryOfNumbers` exists in our Mathlib version with:
+
+- `exists_pair_mem_lattice_not_disjoint_vadd` - Blichfeldt's principle
+- `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure` - **Minkowski's theorem** (non-zero lattice point in convex symmetric domain)
+- `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_le_measure` - Compact domain version
+
+### Ankeny's 1957 Proof Analysis
+
+Ankeny's paper ["Sums of Three Squares"](https://www.ams.org/journals/proc/1957-008-02/S0002-9939-1957-0085275-8/S0002-9939-1957-0085275-8.pdf) uses:
+
+1. **Minkowski's theorem** ✅ AVAILABLE in Mathlib
+2. **Quadratic reciprocity** ✅ AVAILABLE in Mathlib
+3. **Sum of two squares** ✅ AVAILABLE in Mathlib
+4. **Dirichlet's theorem on primes in AP** ❌ NOT in our Mathlib version
+
+The proof works for square-free m ≡ 3 (mod 8):
+- Find prime q with specific Jacobi symbol properties using Dirichlet
+- Apply Minkowski to an appropriate lattice
+- Use Fermat's two squares
+
+### Updated Infrastructure Assessment
+
+| Component | Status | Location |
+|-----------|--------|----------|
+| Minkowski's convex body theorem | ✅ **AVAILABLE** | `Mathlib.MeasureTheory.Group.GeometryOfNumbers` |
+| Quadratic reciprocity | ✅ Available | Mathlib + our `QuadraticReciprocity.lean` |
+| Sum of two squares | ✅ Available | `Mathlib.NumberTheory.SumTwoSquares` |
+| Dirichlet's theorem (primes in AP) | ❌ **NOT AVAILABLE** | Our Mathlib is Sept 2024, PrimesInAP added Nov 2024 |
+
+### Literature Confirmation
+
+All known proofs of three-squares sufficiency require either:
+1. **Dirichlet's theorem** on primes in arithmetic progressions, OR
+2. **Ternary quadratic form genus theory** (class numbers)
+
+No truly "elementary" proof exists that avoids both.
+
+- Gauss (1801): Ternary quadratic form theory (Disquisitiones Art. 291-292)
+- Dirichlet (1850): Primes in AP + simpler ternary form facts
+- Ankeny (1957): Minkowski + Dirichlet + quadratic reciprocity
+
+### Blocker Remains
+
+**The fundamental blocker is Dirichlet's theorem on primes in AP.**
+
+- Our Mathlib version: September 2024 (commit 05147a76b4)
+- PrimesInAP added to Mathlib: November 2024 (commit fe0e8bcc2ddc)
+- Version gap: ~2 months behind
+
+### Decision
+
+**Status remains: surveyed**
+
+The sufficiency proof cannot proceed without either:
+1. Mathlib upgrade to get `Mathlib.NumberTheory.LSeries.PrimesInAP`, OR
+2. Building primes-in-AP from scratch (~1000+ lines of L-function machinery)
+
+### Outcome
+
+**Scouted** - Confirmed Minkowski's theorem is available (good news for Ankeny approach), but the core blocker (Dirichlet's theorem on primes in AP) remains.
+
+### Next Steps (if returning)
+
+1. **Mathlib upgrade**: Bump to Mathlib version with PrimesInAP (non-trivial, may break other proofs)
+2. **After upgrade**: Implement Ankeny's approach using:
+   - Minkowski from `GeometryOfNumbers`
+   - Dirichlet from `PrimesInAP`
+   - Quadratic reciprocity (already have)
+   - Estimated: ~200-300 lines additional
+
+### Sources
+
+- [Mathlib GeometryOfNumbers](https://leanprover-community.github.io/mathlib4_docs/Mathlib/MeasureTheory/Group/GeometryOfNumbers.html)
+- [Ankeny 1957 - AMS](https://www.ams.org/journals/proc/1957-008-02/S0002-9939-1957-0085275-8/S0002-9939-1957-0085275-8.pdf)
+- [Gaurish4Math - Legendre Three Square](https://gaurish4math.wordpress.com/tag/legendre-three-square-theorem/)
