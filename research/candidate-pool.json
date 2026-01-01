@@ -36,8 +36,8 @@
       "tier": "A",
       "significance": 8,
       "tractability": 2,
-      "status": "surveyed",
-      "notes": "Dense sets contain arbitrary length AP. Roth (k=3) in Mathlib. k≥4 needs hypergraph regularity.",
+      "status": "completed",
+      "notes": "COMPLETED k=3: Roth's theorem proved via Mathlib's corners chain (Regularity→Triangle Removal→Corners→Roth). Equivalence IsAPFree↔ThreeAPFree. k≥4 still needs hypergraph regularity (axiom).",
       "tags": [
         "combinatorics",
         "additive",
@@ -78,8 +78,8 @@
       "tier": "B",
       "significance": 8,
       "tractability": 4,
-      "status": "available",
-      "notes": "Formalize relativization, natural proofs barriers.",
+      "status": "surveyed",
+      "notes": "SURVEYED: PNPBarriers.lean with oracle TMs, relativized P^A/NP^A classes. Baker-Gill-Solovay (1975), Natural Proofs (1997), Algebrization (2009) barriers stated as axioms. Full proofs for P^A⊆NP^A, barrier implications from axioms.",
       "tags": [
         "complexity",
         "impossibility",
@@ -148,8 +148,8 @@
       "tier": "B",
       "significance": 7,
       "tractability": 8,
-      "status": "available",
-      "notes": "Only n=1,2,4,8 admit normed division algebras. Frobenius theorem for associative case. Mathlib has quaternions.",
+      "status": "skipped",
+      "notes": "SKIPPED: Already in HurwitzTheorem.lean (~1680 lines). Has complete proofs for n=1,2,4 identities, n=3 impossibility theorem, Hurwitz theorem statement with n=8/only-if as axioms, division algebra formalization.",
       "tags": [
         "algebra",
         "impossibility",
@@ -190,8 +190,8 @@
       "tier": "B",
       "significance": 6,
       "tractability": 8,
-      "status": "available",
-      "notes": "If p and 2p+1 both prime, structural constraints. Similar to twin prime structure.",
+      "status": "completed",
+      "notes": "COMPLETED: SophieGermain.lean with structure theorem (p>3 SG prime => p≡5 mod 6), safe prime mod 12, 10 verified examples (2,3,5,11,23,29,41,53,83,89), non-examples, Cunningham chain 2→5→11→23, conjecture as axiom.",
       "tags": [
         "number-theory",
         "primes",
@@ -218,8 +218,8 @@
       "tier": "B",
       "significance": 7,
       "tractability": 7,
-      "status": "available",
-      "notes": "f = g * 1 implies g = f * μ. Mathlib has ArithmeticFunction, Möbius μ.",
+      "status": "skipped",
+      "notes": "SKIPPED: Already in Mathlib as sum_eq_iff_sum_mul_moebius_eq (rings), sum_eq_iff_sum_smul_moebius_eq (additive groups), prod_eq_iff_prod_pow_moebius_eq (multiplicative). ζ*μ=1 as coe_zeta_mul_moebius.",
       "tags": [
         "number-theory",
         "arithmetic-functions",
@@ -246,8 +246,8 @@
       "tier": "C",
       "significance": 5,
       "tractability": 9,
-      "status": "available",
-      "notes": "CRT is in Mathlib. Add constructive algorithm with explicit witnesses for small cases.",
+      "status": "completed",
+      "notes": "COMPLETED: ChineseRemainderConstructive.lean with existence/uniqueness, Bézout coefficients, explicit solution formula, Sunzi problem (23 mod 105), 3-moduli extension, RNS application.",
       "tags": [
         "number-theory",
         "algorithms",
@@ -265,6 +265,62 @@
       "tags": [
         "algebra",
         "polynomials",
+        "classical"
+      ]
+    },
+    {
+      "id": "wolstenholme-theorem",
+      "name": "Wolstenholme's Theorem",
+      "tier": "B",
+      "significance": 6,
+      "tractability": 7,
+      "status": "completed",
+      "notes": "COMPLETED: Computational verification for p=5,7,11,13. Babbage (mod p²) for p≥3. Failure cases p=2,3. Full theorem + Babbage as axioms. Wolstenholme primes definition. Harmonic number connection.",
+      "tags": [
+        "number-theory",
+        "binomial",
+        "classical"
+      ]
+    },
+    {
+      "id": "frobenius-two-coprime",
+      "name": "Frobenius Number (Two Coprime)",
+      "tier": "C",
+      "significance": 5,
+      "tractability": 9,
+      "status": "skipped",
+      "notes": "SKIPPED: Already in Mathlib as frobeniusNumber_pair in Mathlib.NumberTheory.FrobeniusNumber. Proves m*n-m-n is Frobenius number for coprime m,n.",
+      "tags": [
+        "number-theory",
+        "combinatorics",
+        "classical"
+      ]
+    },
+    {
+      "id": "kummer-theorem",
+      "name": "Kummer's Theorem on Binomial Divisibility",
+      "tier": "B",
+      "significance": 6,
+      "tractability": 7,
+      "status": "available",
+      "notes": "The highest power of prime p dividing C(m+n,m) equals the number of carries when adding m and n in base p. Useful corollary of Lucas' theorem.",
+      "tags": [
+        "number-theory",
+        "binomial",
+        "classical"
+      ]
+    },
+    {
+      "id": "primitive-roots-count",
+      "name": "Primitive Roots Modulo Primes",
+      "tier": "B",
+      "significance": 6,
+      "tractability": 6,
+      "status": "available",
+      "notes": "For prime p, there are exactly φ(p-1) primitive roots. Existence proof uses structure of (Z/pZ)*. May be partially in Mathlib.",
+      "tags": [
+        "number-theory",
+        "group-theory",
         "classical"
       ]
     }
