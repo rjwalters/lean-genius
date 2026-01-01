@@ -1,0 +1,57 @@
+{
+  "slug": "chinese-remainder-constructive",
+  "title": "Chinese Remainder Theorem (Constructive)",
+  "phase": "BREAKTHROUGH",
+  "status": "graduated",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "x \\equiv a_1 \\pmod{m_1}, \\ldots, x \\equiv a_k \\pmod{m_k}",
+    "plain": "Given congruence conditions with pairwise coprime moduli, construct the explicit solution using Bézout coefficients. The classic example is Sunzi's problem: x ≡ 2 (mod 3), x ≡ 3 (mod 5), x ≡ 2 (mod 7), which has solution x = 23.",
+    "whyMatters": [
+      "Algorithmic number theory"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "BREAKTHROUGH",
+    "since": "2025-12-31T14:00:00-08:00",
+    "iteration": 1,
+    "focus": "",
+    "blockers": [],
+    "nextAction": "",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [],
+  "tags": [
+    "number-theory",
+    "algorithms",
+    "classical",
+    "crt"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2025-12-31T14:00:00-08:00",
+  "completed": "2025-12-31T15:00:00-08:00",
+  "significance": 5,
+  "tractability": 9
+}

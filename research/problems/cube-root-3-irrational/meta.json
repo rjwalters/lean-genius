@@ -1,0 +1,75 @@
+{
+  "slug": "cube-root-3-irrational",
+  "title": "Irrationality of ∛3",
+  "phase": "BREAKTHROUGH",
+  "status": "graduated",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\sqrt[3]{3} \\notin \\mathbb{Q}",
+    "plain": "The cube root of 3 is irrational. This follows the same pattern as cube root of 2—the rational root theorem shows that x³ - 3 = 0 has no rational solutions.",
+    "whyMatters": [
+      "Generalization"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "BREAKTHROUGH",
+    "since": "2025-12-30T16:04:27-08:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [
+    {
+      "id": "approach-01",
+      "name": "Hypothesis: [Approach Name]",
+      "status": "active",
+      "hypothesis": "",
+      "strategy": "",
+      "risks": [],
+      "attempts": [
+        {
+          "file": "attempt-01.lean",
+          "succeeded": false
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "number-theory",
+    "irrationality",
+    "polynomial",
+    "algebraic-number-theory"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2025-12-30T16:02:07-08:00",
+  "lastUpdate": "2025-12-30T16:04:27-08:00",
+  "completed": "2025-12-30T16:04:27-08:00",
+  "significance": 3,
+  "tractability": 9
+}
