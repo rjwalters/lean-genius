@@ -1,6 +1,6 @@
 {
   "version": "1.2",
-  "last_updated": "2026-01-01T13:00:00.000Z",
+  "last_updated": "2026-01-01T12:30:00.000Z",
   "candidates": [
     {
       "id": "bounded-prime-gaps",
@@ -322,6 +322,76 @@
         "number-theory",
         "group-theory",
         "classical"
+      ]
+    },
+    {
+      "id": "ramsey-lower-bounds",
+      "name": "Explicit Ramsey Number Lower Bounds",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 8,
+      "status": "available",
+      "notes": "Prove R(3,3) = 6 exactly by constructing lower bound. K_5 can be 2-colored without monochromatic triangle (pentagon coloring). Connects to RamseysTheorem.lean which has upper bound.",
+      "tags": [
+        "combinatorics",
+        "ramsey",
+        "constructive"
+      ]
+    },
+    {
+      "id": "three-squares-theorem",
+      "name": "Legendre's Three Squares Theorem",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 6,
+      "status": "available",
+      "notes": "n is sum of 3 squares iff n ≠ 4^a(8b+7). NOT in Mathlib. Classic number theory. Connects to LagrangeFourSquares.lean. Wiedijk #100 list candidate.",
+      "tags": [
+        "number-theory",
+        "squares",
+        "classical"
+      ]
+    },
+    {
+      "id": "schur-theorem",
+      "name": "Schur's Theorem (Sum-Free Colorings)",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 7,
+      "status": "available",
+      "notes": "For any r, exists S(r) such that any r-coloring of [1,S(r)] has monochromatic x,y,z with x+y=z. Ramsey-type result. Connects to RamseysTheorem.lean.",
+      "tags": [
+        "combinatorics",
+        "ramsey",
+        "additive"
+      ]
+    },
+    {
+      "id": "burnside-counting",
+      "name": "Burnside Lemma Applications",
+      "tier": "B",
+      "significance": 6,
+      "tractability": 8,
+      "status": "available",
+      "notes": "Apply Mathlib's MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group to classic counting: necklaces, cube colorings. Connects to SylowTheorem.lean and group action theory.",
+      "tags": [
+        "combinatorics",
+        "group-theory",
+        "counting"
+      ]
+    },
+    {
+      "id": "erdos-ko-rado",
+      "name": "Erdős-Ko-Rado Theorem",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 6,
+      "status": "available",
+      "notes": "Maximum intersecting family of k-subsets of n-set has size C(n-1,k-1) for n ≥ 2k. Classic extremal combinatorics. May need custom infrastructure.",
+      "tags": [
+        "combinatorics",
+        "extremal",
+        "set-systems"
       ]
     }
   ],
