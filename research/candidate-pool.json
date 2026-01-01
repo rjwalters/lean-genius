@@ -1,6 +1,6 @@
 {
   "version": "1.2",
-  "last_updated": "2026-01-01T21:55:39.353Z",
+  "last_updated": "2026-01-01T21:58:17.622Z",
   "candidates": [
     {
       "id": "bounded-prime-gaps",
@@ -345,7 +345,7 @@
       "significance": 7,
       "tractability": 6,
       "status": "surveyed",
-      "notes": "SURVEYED: Defined IsExcludedForm, proved key modular arithmetic lemma. Main theorem uses axioms for both directions. Necessity is provable with more API work. Sufficiency requires Dirichlet on primes in AP or ternary quadratic forms (not in current Mathlib).",
+      "notes": "SURVEYED→PROGRESS: Session 2026-01-01 PROVED necessity direction (excluded form ⟹ not sum of 3 squares). Full proof via: (1) squares mod 8 ∈ {0,1,4}, (2) sum of 3 such never ≡ 7 mod 8, (3) strong induction with descent (4|n ∧ n=a²+b²+c² ⟹ 2|a,b,c). ~220 lines, 0 axioms for necessity. Sufficiency still requires Dirichlet on primes in AP or ternary quadratic forms.",
       "tags": [
         "number-theory",
         "squares",

@@ -69,3 +69,30 @@ The key insight that unlocked the solution:
 
 ### Mathlib Gaps Found
 -
+
+---
+
+## Scouting Log
+
+Track knowledge discovery sessions here. Each entry records what was searched and whether blockers have changed.
+
+### Scout Session Template
+```markdown
+## Scout: YYYY-MM-DD
+
+### Searches Performed
+- Mathlib: [queries]
+- Literature: [queries]
+- Related proofs: [files checked]
+
+### Findings
+- [What was discovered]
+
+### Blocker Status
+- **Previous**: [blocker description]
+- **Current**: UNCHANGED | WEAKENED | RESOLVED
+- **Evidence**: [why status changed or didn't]
+
+### Next Scout
+- Recommend re-scouting: [date or trigger]
+```

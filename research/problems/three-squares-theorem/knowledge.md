@@ -73,7 +73,7 @@ Mathlib recently added Dirichlet's theorem on primes in AP, but:
 ### Next Steps for Future Sessions
 
 1. **Check if Mathlib update helps**: Newer Mathlib may have `PrimesInAP.lean`
-2. **Focus on necessity**: The elementary direction could be fully proved with more work on API
+2. ~~**Focus on necessity**: The elementary direction could be fully proved with more work on API~~ **DONE!**
 3. **Alternative approach**: Look for simpler elementary proofs (unlikely to avoid deep results)
 
 ### Files Modified
@@ -81,3 +81,70 @@ Mathlib recently added Dirichlet's theorem on primes in AP, but:
 - `proofs/Proofs/ThreeSquares.lean` (new)
 - `research/candidate-pool.json` (status: in-progress → surveyed)
 - `research/problems/three-squares-theorem/knowledge.md` (new)
+
+---
+
+## Session 2026-01-01 (Second Session) - NECESSITY PROVED!
+
+### Major Achievement
+
+**FULLY PROVED the necessity direction** - removed the `excluded_form_not_sum_three_sq` axiom!
+
+### Proof Strategy
+
+The proof uses strong induction on n with two cases:
+
+**Base Case (k = 0)**: n = 8m + 7 ≡ 7 (mod 8)
+- Key lemma: `int_sq_mod_eight` - Integer squares mod 8 are in {0, 1, 4}
+- Key lemma: `sum_three_sq_mod_eight_ne_seven` - Sum of three from {0,1,4} never equals 7 mod 8
+- Case analysis on all 27 combinations (3³ = 27 residue combinations)
+
+**Inductive Case (k = k' + 1)**: n = 4^(k'+1) * (8m + 7)
+- Since 4 | n and n = a² + b² + c², we have 4 | (a² + b² + c²)
+- Key lemma: `four_dvd_sum_three_sq_implies_even` - If 4 | (a² + b² + c²), then 2 | a, 2 | b, 2 | c
+- Descent: n/4 = (a/2)² + (b/2)² + (c/2)² and n/4 = 4^k' * (8m + 7)
+- Apply IH to n/4 < n for contradiction
+
+### New Lemmas Proved
+
+1. `int_sq_mod_eight` - Integer squares mod 8 ∈ {0, 1, 4}
+2. `check_sum_ne_7` - Helper for residue combination check
+3. `sum_three_sq_mod_eight_ne_seven` - Main mod 8 impossibility
+4. `seven_mod_eight_not_sum_three_sq_int` - Numbers ≡ 7 (mod 8) excluded
+5. `int_sq_mod_four` - Integer squares mod 4 ∈ {0, 1}
+6. `sq_mod_four_zero_implies_even` - Square ≡ 0 (mod 4) implies even
+7. `four_dvd_sum_three_sq_implies_even` - Descent lemma
+8. `div_four_excluded` - Division preserves excluded form structure
+9. `excluded_form_not_sum_three_sq` - **THEOREM** (was axiom!)
+
+### Technical Challenges Overcome
+
+1. **ℤ vs ℕ coercions**: Required careful use of `Int.ofNat_ediv`, `Int.toNat`, and `omega`
+2. **Modular arithmetic API**: Used `Int.mul_emod`, `Int.add_emod`, `Int.emod_emod_of_dvd`
+3. **Strong induction setup**: `Nat.strong_induction_on` with proper decreasing argument
+4. **Case splitting**: 27 combinations for mod 8, 8 combinations for mod 4
+
+### Current Status
+
+| Component | Status |
+|-----------|--------|
+| Necessity (→) | ✅ **FULLY PROVED** (0 axioms) |
+| Sufficiency (←) | ❌ Axiom (requires Dirichlet/quadratic forms) |
+| Main theorem | Uses 1 axiom (sufficiency only) |
+
+### Statistics
+
+- **Lines added**: ~120 lines of new proofs
+- **Axioms removed**: 1 (necessity direction)
+- **Axioms remaining**: 1 (sufficiency direction)
+
+### Next Steps
+
+1. **Sufficiency**: Would require:
+   - Primes ≡ 3 (mod 8) existence (Dirichlet's theorem)
+   - Ternary quadratic form representation theory
+   - This is fundamentally harder and may require Mathlib updates
+
+### Files Modified
+
+- `proofs/Proofs/ThreeSquares.lean` (major update: +120 lines, -1 axiom)
