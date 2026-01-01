@@ -21,6 +21,146 @@
     "tractability": 4
   },
   {
+    "slug": "hurwitz-impossibility",
+    "title": "Hurwitz Quaternion Theorem",
+    "description": "SKIPPED: Already in HurwitzTheorem.",
+    "phase": "NEW",
+    "status": "blocked",
+    "tier": "A",
+    "path": "fast",
+    "tags": [
+      "algebra",
+      "impossibility",
+      "formalization"
+    ],
+    "started": "2026-01-01T05:32:39.476Z",
+    "lastUpdate": "2026-01-01T05:32:39.476Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 8
+  },
+  {
+    "slug": "infinitude-primes-4k1",
+    "title": "Infinitely Many Primes ≡ 1 (mod 4)",
+    "description": "SKIPPED: Already in DirichletsTheorem.",
+    "phase": "NEW",
+    "status": "blocked",
+    "tier": "B",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "primes",
+      "classical"
+    ],
+    "started": "2026-01-01T05:32:39.477Z",
+    "lastUpdate": "2026-01-01T05:32:39.477Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 8
+  },
+  {
+    "slug": "infinitude-primes-4k3",
+    "title": "Infinitely Many Primes ≡ 3 (mod 4)",
+    "description": "SKIPPED: Already in DirichletsTheorem.",
+    "phase": "NEW",
+    "status": "blocked",
+    "tier": "B",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "primes",
+      "classical"
+    ],
+    "started": "2026-01-01T05:32:39.477Z",
+    "lastUpdate": "2026-01-01T05:32:39.477Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 9
+  },
+  {
+    "slug": "sum-of-divisors",
+    "title": "Sum of Divisors Properties",
+    "description": "SKIPPED: Already covered by PerfectNumbers.",
+    "phase": "NEW",
+    "status": "blocked",
+    "tier": "B",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "arithmetic-functions",
+      "classical"
+    ],
+    "started": "2026-01-01T05:32:39.478Z",
+    "lastUpdate": "2026-01-01T05:32:39.478Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 5,
+    "tractability": 9
+  },
+  {
+    "slug": "mobius-inversion",
+    "title": "Möbius Inversion Formula",
+    "description": "SKIPPED: Already in Mathlib as sum_eq_iff_sum_mul_moebius_eq (rings), sum_eq_iff_sum_smul_moebius_eq (additive groups), prod_eq_iff_prod_pow_moebius_eq (multiplicative).",
+    "phase": "NEW",
+    "status": "blocked",
+    "tier": "A",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "arithmetic-functions",
+      "classical"
+    ],
+    "started": "2026-01-01T05:32:39.478Z",
+    "lastUpdate": "2026-01-01T05:32:39.478Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 7
+  },
+  {
+    "slug": "prime-counting-bounds",
+    "title": "Prime Counting Function Bounds",
+    "description": "SKIPPED: Explicit Chebyshev bounds not in Mathlib.",
+    "phase": "NEW",
+    "status": "blocked",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "number-theory",
+      "analytic",
+      "bounds"
+    ],
+    "started": "2026-01-01T05:32:39.479Z",
+    "lastUpdate": "2026-01-01T05:32:39.479Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 6
+  },
+  {
+    "slug": "frobenius-two-coprime",
+    "title": "Frobenius Number (Two Coprime)",
+    "description": "SKIPPED: Already in Mathlib as frobeniusNumber_pair in Mathlib.",
+    "phase": "NEW",
+    "status": "blocked",
+    "tier": "B",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "classical"
+    ],
+    "started": "2026-01-01T05:32:39.480Z",
+    "lastUpdate": "2026-01-01T05:32:39.480Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 5,
+    "tractability": 9
+  },
+  {
     "slug": "three-squares-theorem",
     "title": "Legendre's Three Squares Theorem",
     "description": "n is sum of 3 squares iff n ≠ 4^a(8b+7).",
@@ -39,5 +179,151 @@
     "approachCount": 0,
     "significance": 7,
     "tractability": 6
+  },
+  {
+    "slug": "riemann-hypothesis",
+    "title": "Riemann Hypothesis",
+    "description": "MILLENNIUM PRIZE: All non-trivial zeros of ζ(s) have Re(s)=1/2.",
+    "phase": "NEW",
+    "status": "blocked",
+    "tier": "S",
+    "path": "full",
+    "tags": [
+      "millennium-prize",
+      "number-theory",
+      "analytic",
+      "open-conjecture"
+    ],
+    "started": "2026-01-01T21:55:27.885Z",
+    "lastUpdate": "2026-01-01T21:55:27.886Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 10,
+    "tractability": 1
+  },
+  {
+    "slug": "birch-swinnerton-dyer",
+    "title": "Birch and Swinnerton-Dyer Conjecture",
+    "description": "MILLENNIUM PRIZE: rank(E(ℚ)) = ord_{s=1} L(E,s).",
+    "phase": "NEW",
+    "status": "blocked",
+    "tier": "S",
+    "path": "full",
+    "tags": [
+      "millennium-prize",
+      "number-theory",
+      "elliptic-curves",
+      "open-conjecture"
+    ],
+    "started": "2026-01-01T21:55:27.886Z",
+    "lastUpdate": "2026-01-01T21:55:27.886Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 10,
+    "tractability": 1
+  },
+  {
+    "slug": "hodge-conjecture",
+    "title": "Hodge Conjecture",
+    "description": "MILLENNIUM PRIZE: Every Hodge class on a projective complex manifold is algebraic.",
+    "phase": "NEW",
+    "status": "blocked",
+    "tier": "S",
+    "path": "full",
+    "tags": [
+      "millennium-prize",
+      "algebraic-geometry",
+      "topology",
+      "open-conjecture"
+    ],
+    "started": "2026-01-01T21:55:27.887Z",
+    "lastUpdate": "2026-01-01T21:55:27.887Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 10,
+    "tractability": 1
+  },
+  {
+    "slug": "yang-mills-mass-gap",
+    "title": "Yang-Mills Existence and Mass Gap",
+    "description": "MILLENNIUM PRIZE: Prove Yang-Mills theory exists in R⁴ and has positive mass gap.",
+    "phase": "NEW",
+    "status": "blocked",
+    "tier": "S",
+    "path": "full",
+    "tags": [
+      "millennium-prize",
+      "mathematical-physics",
+      "gauge-theory",
+      "open-conjecture"
+    ],
+    "started": "2026-01-01T21:55:27.887Z",
+    "lastUpdate": "2026-01-01T21:55:27.887Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 10,
+    "tractability": 1
+  },
+  {
+    "slug": "poincare-conjecture",
+    "title": "Poincaré Conjecture",
+    "description": "MILLENNIUM PRIZE (SOLVED): Every simply connected closed 3-manifold is homeomorphic to S³.",
+    "phase": "NEW",
+    "status": "blocked",
+    "tier": "S",
+    "path": "full",
+    "tags": [
+      "millennium-prize",
+      "topology",
+      "geometric-analysis",
+      "solved"
+    ],
+    "started": "2026-01-01T21:55:27.887Z",
+    "lastUpdate": "2026-01-01T21:55:27.887Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 10,
+    "tractability": 1
+  },
+  {
+    "slug": "navier-stokes-existence",
+    "title": "Navier-Stokes Existence and Smoothness",
+    "description": "MILLENNIUM PRIZE: Prove existence and smoothness of solutions to 3D Navier-Stokes, or find a counterexample.",
+    "phase": "NEW",
+    "status": "blocked",
+    "tier": "S",
+    "path": "full",
+    "tags": [
+      "millennium-prize",
+      "analysis",
+      "pde",
+      "open-conjecture"
+    ],
+    "started": "2026-01-01T21:55:27.888Z",
+    "lastUpdate": "2026-01-01T21:55:27.888Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 10,
+    "tractability": 1
+  },
+  {
+    "slug": "p-vs-np",
+    "title": "P versus NP Problem",
+    "description": "MILLENNIUM PRIZE: Does P = NP? PvsNP.",
+    "phase": "NEW",
+    "status": "blocked",
+    "tier": "S",
+    "path": "full",
+    "tags": [
+      "millennium-prize",
+      "complexity-theory",
+      "open-conjecture"
+    ],
+    "started": "2026-01-01T21:55:27.888Z",
+    "lastUpdate": "2026-01-01T21:55:27.888Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 10,
+    "tractability": 2
   }
 ]

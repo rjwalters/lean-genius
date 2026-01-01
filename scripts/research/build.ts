@@ -554,9 +554,10 @@ function build(): void {
       continue
     }
 
-    // Skip graduated/blocked problems (they're in the proof gallery now)
-    if (entry.status === 'graduated' || entry.status === 'blocked') {
-      console.log(`   Skipping ${entry.slug} (${entry.status})`)
+    // Skip graduated problems (they're in the proof gallery now)
+    // BUT keep blocked problems - they're still open research targets!
+    if (entry.status === 'graduated') {
+      console.log(`   Skipping ${entry.slug} (graduated)`)
       continue
     }
 

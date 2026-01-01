@@ -1,6 +1,6 @@
 {
   "version": "1.2",
-  "last_updated": "2026-01-01T21:41:16.123Z",
+  "last_updated": "2026-01-01T21:55:39.353Z",
   "candidates": [
     {
       "id": "bounded-prime-gaps",
@@ -392,6 +392,110 @@
         "combinatorics",
         "extremal",
         "set-systems"
+      ]
+    },
+    {
+      "id": "riemann-hypothesis",
+      "name": "Riemann Hypothesis",
+      "tier": "S",
+      "significance": 10,
+      "tractability": 1,
+      "status": "skipped",
+      "notes": "MILLENNIUM PRIZE: All non-trivial zeros of ζ(s) have Re(s)=1/2. RiemannHypothesis.lean has formal statement, known equivalences, trivial zeros. Full proof is one of deepest open problems in mathematics.",
+      "tags": [
+        "millennium-prize",
+        "number-theory",
+        "analytic",
+        "open-conjecture"
+      ]
+    },
+    {
+      "id": "birch-swinnerton-dyer",
+      "name": "Birch and Swinnerton-Dyer Conjecture",
+      "tier": "S",
+      "significance": 10,
+      "tractability": 1,
+      "status": "skipped",
+      "notes": "MILLENNIUM PRIZE: rank(E(ℚ)) = ord_{s=1} L(E,s). BirchSwinnertonDyer.lean has elliptic curve L-function framework, Mordell-Weil rank definition, BSD statement. Requires deep arithmetic geometry.",
+      "tags": [
+        "millennium-prize",
+        "number-theory",
+        "elliptic-curves",
+        "open-conjecture"
+      ]
+    },
+    {
+      "id": "hodge-conjecture",
+      "name": "Hodge Conjecture",
+      "tier": "S",
+      "significance": 10,
+      "tractability": 1,
+      "status": "skipped",
+      "notes": "MILLENNIUM PRIZE: Every Hodge class on a projective complex manifold is algebraic. HodgeConjecture.lean has Hodge decomposition, algebraic cycles, conjecture statement. Requires advanced algebraic geometry infrastructure.",
+      "tags": [
+        "millennium-prize",
+        "algebraic-geometry",
+        "topology",
+        "open-conjecture"
+      ]
+    },
+    {
+      "id": "yang-mills-mass-gap",
+      "name": "Yang-Mills Existence and Mass Gap",
+      "tier": "S",
+      "significance": 10,
+      "tractability": 1,
+      "status": "skipped",
+      "notes": "MILLENNIUM PRIZE: Prove Yang-Mills theory exists in R⁴ and has positive mass gap. YangMillsMassGap.lean has gauge theory basics, mass gap definition. Requires quantum field theory formalization.",
+      "tags": [
+        "millennium-prize",
+        "mathematical-physics",
+        "gauge-theory",
+        "open-conjecture"
+      ]
+    },
+    {
+      "id": "poincare-conjecture",
+      "name": "Poincaré Conjecture",
+      "tier": "S",
+      "significance": 10,
+      "tractability": 1,
+      "status": "skipped",
+      "notes": "MILLENNIUM PRIZE (SOLVED): Every simply connected closed 3-manifold is homeomorphic to S³. Proved by Perelman (2003) via Ricci flow. PoincareConjecture.lean has statement and historical context. Full proof requires Ricci flow infrastructure.",
+      "tags": [
+        "millennium-prize",
+        "topology",
+        "geometric-analysis",
+        "solved"
+      ]
+    },
+    {
+      "id": "navier-stokes-existence",
+      "name": "Navier-Stokes Existence and Smoothness",
+      "tier": "S",
+      "significance": 10,
+      "tractability": 1,
+      "status": "skipped",
+      "notes": "MILLENNIUM PRIZE: Prove existence and smoothness of solutions to 3D Navier-Stokes, or find a counterexample. NavierStokes.lean has equation formulation. Requires Sobolev spaces, weak solutions, blow-up analysis.",
+      "tags": [
+        "millennium-prize",
+        "analysis",
+        "pde",
+        "open-conjecture"
+      ]
+    },
+    {
+      "id": "p-vs-np",
+      "name": "P versus NP Problem",
+      "tier": "S",
+      "significance": 10,
+      "tractability": 2,
+      "status": "skipped",
+      "notes": "MILLENNIUM PRIZE: Does P = NP? PvsNP.lean has complexity class definitions. PNPBarriers.lean (1400+ lines) formalizes all 3 major barriers: relativization, natural proofs, algebrization. Most developed Millennium Problem in our repo.",
+      "tags": [
+        "millennium-prize",
+        "complexity-theory",
+        "open-conjecture"
       ]
     }
   ],
