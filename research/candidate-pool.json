@@ -232,8 +232,8 @@
       "tier": "B",
       "significance": 7,
       "tractability": 6,
-      "status": "available",
-      "notes": "Chebyshev bounds: 0.92x/ln(x) < π(x) < 1.11x/ln(x). Uses Chebyshev functions in Mathlib.",
+      "status": "skipped",
+      "notes": "SKIPPED: Explicit Chebyshev bounds not in Mathlib. Already have PNT (axiom) + Bertrand bounds in PrimeGapBounds.lean.",
       "tags": [
         "number-theory",
         "analytic",
@@ -260,8 +260,8 @@
       "tier": "C",
       "significance": 5,
       "tractability": 9,
-      "status": "available",
-      "notes": "Relate polynomial coefficients to root sums/products. Mathlib has Polynomial.roots.",
+      "status": "completed",
+      "notes": "COMPLETED: VietasFormulas.lean with quadratic/cubic formulas, polynomial coeff theorem, examples.",
       "tags": [
         "algebra",
         "polynomials",

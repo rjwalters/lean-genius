@@ -1,153 +1,135 @@
 # Research
 
-Run one complete iteration of the autonomous mathematical research loop.
+You are a Lean theorem proving researcher. Run one research iteration on the lean-genius proof gallery.
 
-## The Full Loop
+## Your Task
 
-This command orchestrates the complete research cycle:
+Execute a single research cycle: pick a problem, assess feasibility, and either SKIP, SURVEY, or DEEP DIVE.
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                 AUTONOMOUS RESEARCH LOOP                     │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│   1. CHECK STATE                                             │
-│      └── Any active research problems?                       │
-│                                                              │
-│   2. IF NO ACTIVE PROBLEM                                    │
-│      ├── Refresh problem registry                            │
-│      ├── Select tractable problem (Seeker)                   │
-│      └── Initialize workspace                                │
-│                                                              │
-│   3. IF ACTIVE PROBLEM                                       │
-│      ├── Read current OODA phase                             │
-│      ├── Execute phase (Researcher)                          │
-│      └── Update state                                        │
-│                                                              │
-│   4. REPORT                                                  │
-│      └── What was accomplished, next steps                   │
-│                                                              │
-└─────────────────────────────────────────────────────────────┘
-```
+## Step 1: Claim a Problem
 
-## Process
-
-### Step 1: Check State
+First, claim an available problem using the coordination system:
 
 ```bash
-# Check for active research
-./.loom/scripts/research.sh status
-
-# If active, read the state
-cat .loom/research/problems/{slug}/state.md
+./.loom/scripts/research-available.sh --random --claim
 ```
 
-### Step 2: Select Problem (if needed)
+If no problems available, report this and stop.
 
-If no active problem:
+Save the claimed problem ID for later.
+
+## Step 2: Feasibility Check (15-30 minutes)
+
+For the claimed problem, do a quick feasibility assessment:
+
+1. **Search Mathlib** - Check what infrastructure exists
+   - Use WebSearch for "Mathlib4 Lean [topic] 2025"
+   - Check if key lemmas/definitions exist
+
+2. **Check Codebase** - Look for existing related proofs
+   - `grep -r "keyword" proofs/Proofs/`
+   - Read any related files
+
+3. **Assess Tractability**
+   - What's already in Mathlib?
+   - What needs to be built from scratch?
+   - Are there blocking dependencies?
+
+## Step 3: Decision
+
+Based on feasibility, decide:
+
+| Decision | Criteria | Action |
+|----------|----------|--------|
+| **SKIP** | Missing infrastructure, already done, or requires multi-week effort | Update notes, release claim with `--status skipped` |
+| **SURVEY** | Can define/state but not fully prove | Create stub file with definitions, axioms, release with `--status surveyed` |
+| **DEEP DIVE** | Tractable milestones exist | Create full proof file, release with `--status completed` |
+
+## Step 4: Implement
+
+### For SKIP:
 ```bash
-# Refresh registry
-npx tsx .loom/scripts/extract-problems.ts --json
-
-# Select tractable problem
-# (Apply selection algorithm from seeker.md)
-
-# Initialize
-./.loom/scripts/research.sh init <slug>
+# Update candidate-pool.json with SKIPPED note
+./.loom/scripts/research-release.sh <problem-id> --status skipped
 ```
 
-### Step 3: Execute OODA Phase
-
-Based on current phase in `state.md`:
-
-| Phase | Action |
-|-------|--------|
-| OBSERVE | Read problem, knowledge, prior attempts |
-| ORIENT | Explore gallery, literature, techniques |
-| DECIDE | Generate ideas, evaluate, select approach |
-| ACT | Write Lean proof attempt |
-| VERIFY | Attack the proof |
-| LEARN | Document failure, extract insights |
-| PIVOT | Change direction, return to ORIENT |
-| BREAKTHROUGH | Document, create GitHub issue |
-
-### Step 4: Report
-
-```
-✓ Research Iteration Complete
-
-Problem: [slug]
-Phase: [old-phase] → [new-phase]
-Iteration: [N]
-
-Action Taken:
-- [What was done]
-
-Key Findings:
-- [Finding 1]
-- [Finding 2]
-
-Next: [What the next iteration should do]
+### For SURVEY:
+1. Create `proofs/Proofs/<ProblemName>.lean` with:
+   - Definitions
+   - Key lemmas as axioms
+   - Simple derived theorems
+2. Release claim:
+```bash
+./.loom/scripts/research-release.sh <problem-id> --status surveyed
 ```
 
-## Autonomous Mode
-
-For fully autonomous operation, this command can be run repeatedly:
-
-```
-/research  ← selects problem, starts OBSERVE
-/research  ← continues with ORIENT
-/research  ← continues with DECIDE
-/research  ← continues with ACT
-...
+### For DEEP DIVE:
+1. Create `proofs/Proofs/<ProblemName>.lean` with full proof
+2. Build and verify: `lake build Proofs.<ProblemName>`
+3. Fix any errors
+4. Release claim:
+```bash
+./.loom/scripts/research-release.sh <problem-id> --status completed
 ```
 
-Each invocation advances the research by one phase.
+## Step 5: Report
 
-## When to Use Each Command
+End with a summary:
 
-| Command | Purpose |
-|---------|---------|
-| `/research` | Full loop: select + execute (use this for autonomous operation) |
-| `/seeker` | Only problem selection |
-| `/researcher` | Only OODA execution (assumes problem exists) |
-| `/scout` | Deep exploration during ORIENT |
-| `/adversary` | Attack proofs during VERIFY |
-| `/chronicler` | Document learnings during LEARN |
+```
+## Research Iteration Complete
+
+**Problem**: [id] - [name]
+**Decision**: SKIP | SURVEY | DEEP DIVE
+**Outcome**: [what was accomplished]
+**File**: [path to created file, if any]
+
+### Key Findings
+- [finding 1]
+- [finding 2]
+
+### Pool Status
+- Available: N problems remaining
+```
+
+## Parallel Safety
+
+This workflow is safe for multiple agents:
+- Claims prevent duplicate work
+- 60-minute TTL prevents stale locks
+- Release updates pool status atomically
+
+## Files Reference
+
+| File | Purpose |
+|------|---------|
+| `research/candidate-pool.json` | Problem registry with status |
+| `research/claims/*.json` | Active claims |
+| `proofs/Proofs/*.lean` | Proof files |
 
 ## Example Session
 
 ```
 > /research
-Checking for active research... None found.
-Refreshing problem registry... 427 problems.
-Selecting problem... sqrt2-irrational-oq-01 (tractable extension)
-Initializing workspace... Done.
-Executing OBSERVE phase...
-✓ Research Iteration Complete
-Problem: sqrt2-extensions
-Phase: NEW → OBSERVE
-Next: Read related proofs, understand problem context
 
-> /research
-Problem: sqrt2-extensions
-Executing ORIENT phase...
-Found 3 related proofs: sqrt2-irrational, sqrt3-irrational, transcendence-of-e
-Identified techniques: descent, parity, algebraic number theory
-✓ Research Iteration Complete
-Phase: OBSERVE → ORIENT
-Next: Generate approaches using creativity engine
+Claiming problem...
+Selected: hurwitz-impossibility - Hurwitz Quaternion Theorem
 
-> /research
-...
+Feasibility Check:
+- Searching Mathlib for quaternions... Found Mathlib.Algebra.Quaternion
+- Checking for normed division algebras... Limited support
+- Tractability: 7/10 - Can prove Frobenius (n=1,2,4) easily
+
+Decision: DEEP DIVE
+
+Creating proofs/Proofs/HurwitzTheorem.lean...
+Building... Success!
+
+## Research Iteration Complete
+**Problem**: hurwitz-impossibility
+**Decision**: DEEP DIVE
+**Outcome**: Proved Frobenius theorem for associative case
+**File**: proofs/Proofs/HurwitzTheorem.lean
+
+Pool Status: 4 problems remaining
 ```
-
-## Philosophy
-
-**The goal is sustained autonomous progress.**
-
-Each `/research` invocation should:
-1. Make measurable progress (not just "think about it")
-2. Produce durable artifacts (code, documentation, insights)
-3. Leave clear state for the next iteration
-4. Accumulate knowledge even when proofs fail
