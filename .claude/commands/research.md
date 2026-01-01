@@ -84,7 +84,7 @@ If the answer is "no, but it's still technically progress" — **IT IS NOT PROGR
 | **Busywork Progress** | Adding 50 more test cases | Lines of code ≠ mathematical progress |
 | **Repeating Failed Approaches** | "Let's try circle method" when it's not in Mathlib | Same blockers = same failure |
 | **Incremental Futility** | n≤201 → n≤301 → n≤401... | You need n≤∞, this will never complete |
-| **Infrastructure Denial** | Working on problem that needs L-functions | Mathlib doesn't have L-functions, this is blocked |
+| **Premature Blocking** | "Mathlib doesn't have X → blocked" without assessing buildability | See Step 0.55 - always assess BUILD vs BLOCK |
 
 ### If You Fail the Value Check
 
@@ -93,6 +93,134 @@ If the problem fails the value check:
 2. Document what Mathlib infrastructure would be needed
 3. Pick a DIFFERENT problem
 4. Do NOT proceed with busywork
+
+---
+
+## Step 0.55: BUILD VS BLOCK ASSESSMENT (CRITICAL)
+
+**Before marking ANY problem as "blocked due to missing Mathlib infrastructure", you MUST assess whether we can build it ourselves.**
+
+### The Wrong Mindset
+
+❌ "Mathlib doesn't have ternary quadratic forms → blocked"
+❌ "Sieve theory not in Mathlib → impossible"
+❌ "No L-functions → we can't proceed"
+
+### The Right Mindset
+
+✅ "Mathlib doesn't have X. Can we build X? How much effort? Is there a simpler approach?"
+
+### The Build Assessment Checklist
+
+When you identify missing infrastructure, answer these questions:
+
+| Question | If YES | If NO |
+|----------|--------|-------|
+| **1. Is it < 300 lines?** | Probably buildable in this session | Consider alternative approaches first |
+| **2. Is it mathematically self-contained?** | Good candidate for standalone module | May have deep dependency chains |
+| **3. Do we have the prerequisite theory?** | Can build directly | Need to build prerequisites first |
+| **4. Would this benefit multiple problems?** | Higher priority to build | Consider problem-specific workaround |
+| **5. Is there an elementary alternative?** | Try that first | Building may be necessary |
+
+### Decision Tree
+
+```
+Missing infrastructure identified
+           │
+           ▼
+┌─────────────────────────────────┐
+│ Is it < 300 lines to build?    │
+└─────────────────────────────────┘
+           │
+     ┌─────┴─────┐
+    YES         NO
+     │           │
+     ▼           ▼
+┌─────────┐  ┌─────────────────────────────┐
+│ BUILD IT│  │ Is there an elementary       │
+│         │  │ proof avoiding this?         │
+└─────────┘  └─────────────────────────────┘
+                        │
+                  ┌─────┴─────┐
+                 YES         NO
+                  │           │
+                  ▼           ▼
+          ┌───────────┐  ┌─────────────────────────┐
+          │ Use that  │  │ Can we build core subset│
+          │ approach  │  │ (~500 lines) that       │
+          └───────────┘  │ enables the proof?      │
+                         └─────────────────────────┘
+                                    │
+                              ┌─────┴─────┐
+                             YES         NO
+                              │           │
+                              ▼           ▼
+                      ┌───────────┐  ┌───────────┐
+                      │ BUILD IT  │  │ NOW it's  │
+                      │           │  │ blocked   │
+                      └───────────┘  └───────────┘
+```
+
+### Building Infrastructure: Guidelines
+
+**When to build yourself (in Lean, not Mathlib):**
+- The infrastructure is < 500 lines
+- It's specific to our proof gallery's needs
+- It doesn't require deep Mathlib internals
+- We can verify correctness through type-checking
+
+**When to consider Mathlib contribution:**
+- The infrastructure is general-purpose (benefits community)
+- It fills an obvious gap in Mathlib's coverage
+- We have time for the review process
+- It aligns with Mathlib's architecture
+
+**When it's truly blocked:**
+- Requires > 1000 lines of foundational work
+- Depends on infrastructure that itself doesn't exist
+- Requires expertise we don't have (e.g., advanced analysis)
+- No known elementary alternative exists
+
+### Example: Ternary Quadratic Forms
+
+**Wrong approach:**
+> "Three squares theorem needs ternary quadratic forms. Mathlib doesn't have them. Blocked."
+
+**Right approach:**
+> "Three squares theorem needs ternary quadratic forms. Let me assess:
+> 1. How much infrastructure? Need: form definition, equivalence, positive-definite classification
+> 2. Can I build a minimal version? Maybe 200-300 lines for the specific case we need
+> 3. Is there an elementary approach? Dirichlet's proof uses binary forms + primes in AP
+> 4. Primes in AP is in Mathlib! Try that approach first.
+> 5. If that fails, consider building minimal ternary form infrastructure."
+
+### Infrastructure Estimation Guidelines
+
+| Infrastructure Type | Typical Size | Buildable? |
+|---------------------|--------------|------------|
+| Simple definitions + basic lemmas | 50-150 lines | ✅ Yes, do it |
+| Small theory (e.g., specialized form type) | 150-400 lines | ✅ Consider it |
+| Medium theory (e.g., class of algebraic structures) | 400-800 lines | ⚠️ If high value |
+| Large theory (e.g., entire subdomain) | 800-2000 lines | ⚠️ Only if critical |
+| Foundational infrastructure | 2000+ lines | ❌ True blocker |
+
+### Document Your Assessment
+
+When you decide NOT to build, document why:
+
+```markdown
+## Infrastructure Assessment: [topic]
+
+**What's needed**: [specific infrastructure]
+**Estimated size**: [lines]
+**Prerequisites**: [what it depends on]
+**Decision**: BUILD | ALTERNATIVE | BLOCKED
+
+**Reasoning**:
+- [why this decision]
+- [what alternatives were considered]
+- [what would change this assessment]
+```
 
 ---
 
@@ -284,11 +412,14 @@ Save the problem ID in `PROBLEM_ID`.
 | Decision | Criteria | Status | Action |
 |----------|----------|--------|--------|
 | **DEEP DIVE** | Tractable path to complete proof exists | `in-progress` | Create full proof file, work toward completion |
+| **BUILD** | Missing infrastructure is < 500 lines, buildable ourselves | `in-progress` | Build the infrastructure first, then prove theorem |
 | **SURVEY** | Can define/state but proof requires unavailable infrastructure | `surveyed` | Create stub with definitions, axioms, document blockers |
-| **BLOCKED** | Requires major Mathlib infrastructure (circle method, L-functions, etc.) | `blocked` | Document specific blockers, do NOT attempt work |
+| **BLOCKED** | Requires > 1000 lines foundational work we can't build | `blocked` | Document specific blockers after BUILD assessment |
 | **SKIP** | Not worth pursuing (too hard, not interesting, wrong approach) | `skipped` | Update notes explaining why |
 
-**Critical**: `blocked` means "we cannot make progress until Mathlib changes." Do NOT confuse with `in-progress`.
+**Critical**: Before marking `blocked`, you MUST complete the BUILD vs BLOCK assessment (Step 0.55).
+- `blocked` means "we assessed buildability and determined it requires > 1000 lines of foundational work"
+- NOT "Mathlib doesn't have X" - that's just the starting point for assessment
 
 ### Step 1.4: Implement, Update Pool, and Release Lock
 
