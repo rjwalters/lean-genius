@@ -17,8 +17,21 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+# Find repo root by traversing up to find .git
+find_repo_root() {
+    local dir="$PWD"
+    while [[ "$dir" != "/" ]]; do
+        if [[ -d "$dir/.git" ]]; then
+            echo "$dir"
+            return 0
+        fi
+        dir="$(dirname "$dir")"
+    done
+    echo "Error: Not in a git repository" >&2
+    return 1
+}
+
+REPO_ROOT="$(find_repo_root)"
 CLAIMS_DIR="$REPO_ROOT/research/claims"
 POOL_FILE="$REPO_ROOT/research/candidate-pool.json"
 
@@ -126,7 +139,7 @@ if [[ "$RANDOM_PICK" == "true" ]]; then
 
     if [[ "$AUTO_CLAIM" == "true" ]]; then
         # Claim the selected problem
-        if "$SCRIPT_DIR/research-claim.sh" "$SELECTED"; then
+        if "$REPO_ROOT/.loom/scripts/research-claim.sh" "$SELECTED"; then
             if [[ "$JSON_OUTPUT" == "true" ]]; then
                 jq ".candidates[] | select(.id == \"$SELECTED\")" "$POOL_FILE"
             else
