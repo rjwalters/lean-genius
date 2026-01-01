@@ -104,8 +104,8 @@
     "slug": "twin-prime-special",
     "title": "Twin Primes Modular Structure",
     "description": "All twin prime pairs (p, p+2) with p > 3 satisfy p ≡ 5 (mod 6), meaning they have the form (6k-1, 6k+1). This is a provable structural result, unlike the conjecture about infinitely many twin primes.",
-    "phase": "NEW",
-    "status": "active",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
     "tier": "B",
     "path": "full",
     "tags": [
@@ -115,6 +115,7 @@
       "modular-arithmetic"
     ],
     "started": "2025-12-31T16:00:00-08:00",
+    "completed": "2025-12-31T17:00:00-08:00",
     "attemptCount": 0,
     "approachCount": 0,
     "significance": 5,
@@ -124,8 +125,8 @@
     "slug": "prime-gaps-explicit",
     "title": "Explicit Prime Gap Bounds",
     "description": "The n-th prime is bounded above by 2^n. This follows from Bertrand's postulate by induction: if there's always a prime between n and 2n, then primes can't grow faster than doubling.",
-    "phase": "NEW",
-    "status": "active",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
     "tier": "C",
     "path": "fast",
     "tags": [
@@ -135,6 +136,7 @@
       "bertrand"
     ],
     "started": "2025-12-31T16:00:00-08:00",
+    "completed": "2025-12-31T17:00:00-08:00",
     "attemptCount": 0,
     "approachCount": 0,
     "significance": 4,
@@ -144,8 +146,8 @@
     "slug": "collatz-structured",
     "title": "Collatz for Structured Values",
     "description": "Prove that the Collatz sequence reaches 1 for powers of 2 and other structured starting values. The full Collatz conjecture is unsolved, but specific cases like 2^n are trivially provable (pure halving).",
-    "phase": "NEW",
-    "status": "active",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
     "tier": "C",
     "path": "fast",
     "tags": [
@@ -155,6 +157,7 @@
       "termination"
     ],
     "started": "2025-12-31T16:00:00-08:00",
+    "completed": "2025-12-31T17:00:00-08:00",
     "attemptCount": 0,
     "approachCount": 0,
     "significance": 4,
@@ -164,8 +167,8 @@
     "slug": "szemeredi-theorem",
     "title": "Szemerédi's Theorem Statement",
     "description": "For any positive integer k and density δ > 0, there exists N such that every subset of {1,...,N} with at least δN elements contains an arithmetic progression of length k. The k=3 case (Roth's theorem) is already in Mathlib.",
-    "phase": "NEW",
-    "status": "active",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
     "tier": "A",
     "path": "full",
     "tags": [
@@ -175,6 +178,7 @@
       "regularity-lemma"
     ],
     "started": "2025-12-31T16:00:00-08:00",
+    "completed": "2025-12-31T17:00:00-08:00",
     "attemptCount": 0,
     "approachCount": 0,
     "significance": 7,
@@ -195,7 +199,7 @@
       "p-vs-np"
     ],
     "started": "2025-12-31T00:00:00-08:00",
-    "lastUpdate": "2025-12-31T21:00:00-08:00",
+    "lastUpdate": "2025-12-31T21:30:00-08:00",
     "attemptCount": 3,
     "approachCount": 0,
     "significance": 8,
@@ -216,10 +220,115 @@
       "conditional"
     ],
     "started": "2025-12-31T00:00:00-08:00",
-    "lastUpdate": "2025-12-31T21:00:00-08:00",
+    "lastUpdate": "2025-12-31T21:30:00-08:00",
     "attemptCount": 3,
     "approachCount": 0,
     "significance": 8,
     "tractability": 7
+  },
+  {
+    "slug": "sophie-germain-structure",
+    "title": "Sophie Germain Prime Structure",
+    "description": "A Sophie Germain prime p is one where 2p+1 is also prime. For p > 3, such primes must be congruent to 5 mod 6. The corresponding safe prime 2p+1 is congruent to 11 mod 12.",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
+    "tier": "B",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "primes",
+      "partial-progress",
+      "sophie-germain"
+    ],
+    "started": "2025-12-31T14:00:00-08:00",
+    "completed": "2025-12-31T15:00:00-08:00",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 8
+  },
+  {
+    "slug": "chinese-remainder-constructive",
+    "title": "Chinese Remainder Theorem (Constructive)",
+    "description": "Given congruence conditions with pairwise coprime moduli, construct the explicit solution using Bézout coefficients. The classic example is Sunzi's problem: x ≡ 2 (mod 3), x ≡ 3 (mod 5), x ≡ 2 (mod 7), which has solution x = 23.",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
+    "tier": "B",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "algorithms",
+      "classical",
+      "crt"
+    ],
+    "started": "2025-12-31T14:00:00-08:00",
+    "completed": "2025-12-31T15:00:00-08:00",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 5,
+    "tractability": 9
+  },
+  {
+    "slug": "wolstenholme-theorem",
+    "title": "Wolstenholme's Theorem",
+    "description": "For primes p ≥ 5, the central binomial coefficient C(2p-1, p-1) is congruent to 1 modulo p³. This is a deep divisibility result for binomial coefficients.",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
+    "tier": "B",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "binomial",
+      "classical",
+      "wolstenholme"
+    ],
+    "started": "2025-12-31T14:00:00-08:00",
+    "completed": "2025-12-31T15:00:00-08:00",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 7
+  },
+  {
+    "slug": "kummer-theorem",
+    "title": "Kummer's Theorem on Binomial Divisibility",
+    "description": "The p-adic valuation of a binomial coefficient C(n,k) equals the number of carries when adding k and (n-k) in base p arithmetic.",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
+    "tier": "B",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "binomial",
+      "classical",
+      "p-adic"
+    ],
+    "started": "2025-12-31T14:00:00-08:00",
+    "completed": "2025-12-31T15:00:00-08:00",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 7
+  },
+  {
+    "slug": "primitive-roots-count",
+    "title": "Primitive Roots Modulo Primes",
+    "description": "For any prime p, the multiplicative group (ℤ/pℤ)* is cyclic, and the number of generators (primitive roots) equals Euler's totient of p-1.",
+    "phase": "BREAKTHROUGH",
+    "status": "graduated",
+    "tier": "B",
+    "path": "fast",
+    "tags": [
+      "number-theory",
+      "group-theory",
+      "classical",
+      "primitive-roots"
+    ],
+    "started": "2025-12-31T14:00:00-08:00",
+    "completed": "2025-12-31T15:00:00-08:00",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 6
   }
 ]

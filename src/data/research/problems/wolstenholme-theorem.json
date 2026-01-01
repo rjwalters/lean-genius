@@ -1,15 +1,15 @@
 {
-  "slug": "prime-gaps-explicit",
-  "title": "Explicit Prime Gap Bounds",
+  "slug": "wolstenholme-theorem",
+  "title": "Wolstenholme's Theorem",
   "phase": "BREAKTHROUGH",
   "status": "graduated",
-  "tier": "C",
+  "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "p_n \\leq 2^n \\quad \\text{for all } n \\geq 1",
-    "plain": "The n-th prime is bounded above by 2^n. This follows from Bertrand's postulate by induction: if there's always a prime between n and 2n, then primes can't grow faster than doubling.",
+    "formal": "p \\geq 5 \\text{ prime} \\Rightarrow \\binom{2p-1}{p-1} \\equiv 1 \\pmod{p^3}",
+    "plain": "For primes p ≥ 5, the central binomial coefficient C(2p-1, p-1) is congruent to 1 modulo p³. This is a deep divisibility result for binomial coefficients.",
     "whyMatters": [
-      "Explicit bounds"
+      "Classical number theory"
     ]
   },
   "knownResults": {
@@ -19,7 +19,7 @@
   },
   "currentState": {
     "phase": "BREAKTHROUGH",
-    "since": "2025-12-31T16:00:00-08:00",
+    "since": "2025-12-31T14:00:00-08:00",
     "iteration": 1,
     "focus": "",
     "blockers": [],
@@ -33,18 +33,16 @@
   "knowledge": {
     "progressSummary": "",
     "builtItems": [],
-    "insights": [
-      "Key Proof Technique"
-    ],
+    "insights": [],
     "mathlibGaps": [],
     "nextSteps": []
   },
   "approaches": [],
   "tags": [
     "number-theory",
-    "primes",
-    "explicit-bounds",
-    "bertrand"
+    "binomial",
+    "classical",
+    "wolstenholme"
   ],
   "relatedProofs": [],
   "references": {
@@ -52,8 +50,8 @@
     "urls": [],
     "mathlib": []
   },
-  "started": "2025-12-31T16:00:00-08:00",
-  "completed": "2025-12-31T17:00:00-08:00",
-  "significance": 4,
-  "tractability": 8
+  "started": "2025-12-31T14:00:00-08:00",
+  "completed": "2025-12-31T15:00:00-08:00",
+  "significance": 6,
+  "tractability": 7
 }

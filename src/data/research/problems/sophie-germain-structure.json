@@ -1,15 +1,15 @@
 {
-  "slug": "prime-gaps-explicit",
-  "title": "Explicit Prime Gap Bounds",
+  "slug": "sophie-germain-structure",
+  "title": "Sophie Germain Prime Structure",
   "phase": "BREAKTHROUGH",
   "status": "graduated",
-  "tier": "C",
+  "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "p_n \\leq 2^n \\quad \\text{for all } n \\geq 1",
-    "plain": "The n-th prime is bounded above by 2^n. This follows from Bertrand's postulate by induction: if there's always a prime between n and 2n, then primes can't grow faster than doubling.",
+    "formal": "p > 3 \\text{ is Sophie Germain prime} \\Rightarrow p \\equiv 5 \\pmod{6}",
+    "plain": "A Sophie Germain prime p is one where 2p+1 is also prime. For p > 3, such primes must be congruent to 5 mod 6. The corresponding safe prime 2p+1 is congruent to 11 mod 12.",
     "whyMatters": [
-      "Explicit bounds"
+      "Cryptographic importance"
     ]
   },
   "knownResults": {
@@ -19,7 +19,7 @@
   },
   "currentState": {
     "phase": "BREAKTHROUGH",
-    "since": "2025-12-31T16:00:00-08:00",
+    "since": "2025-12-31T14:00:00-08:00",
     "iteration": 1,
     "focus": "",
     "blockers": [],
@@ -33,9 +33,7 @@
   "knowledge": {
     "progressSummary": "",
     "builtItems": [],
-    "insights": [
-      "Key Proof Technique"
-    ],
+    "insights": [],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -43,8 +41,8 @@
   "tags": [
     "number-theory",
     "primes",
-    "explicit-bounds",
-    "bertrand"
+    "partial-progress",
+    "sophie-germain"
   ],
   "relatedProofs": [],
   "references": {
@@ -52,8 +50,8 @@
     "urls": [],
     "mathlib": []
   },
-  "started": "2025-12-31T16:00:00-08:00",
-  "completed": "2025-12-31T17:00:00-08:00",
-  "significance": 4,
+  "started": "2025-12-31T14:00:00-08:00",
+  "completed": "2025-12-31T15:00:00-08:00",
+  "significance": 6,
   "tractability": 8
 }

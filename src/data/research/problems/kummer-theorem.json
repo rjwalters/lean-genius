@@ -1,15 +1,15 @@
 {
-  "slug": "prime-gaps-explicit",
-  "title": "Explicit Prime Gap Bounds",
+  "slug": "kummer-theorem",
+  "title": "Kummer's Theorem on Binomial Divisibility",
   "phase": "BREAKTHROUGH",
   "status": "graduated",
-  "tier": "C",
+  "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "p_n \\leq 2^n \\quad \\text{for all } n \\geq 1",
-    "plain": "The n-th prime is bounded above by 2^n. This follows from Bertrand's postulate by induction: if there's always a prime between n and 2n, then primes can't grow faster than doubling.",
+    "formal": "\\nu_p\\binom{n}{k} = \\text{(number of carries when adding } k + (n-k) \\text{ in base } p\\text{)}",
+    "plain": "The p-adic valuation of a binomial coefficient C(n,k) equals the number of carries when adding k and (n-k) in base p arithmetic.",
     "whyMatters": [
-      "Explicit bounds"
+      "Classical number theory"
     ]
   },
   "knownResults": {
@@ -19,7 +19,7 @@
   },
   "currentState": {
     "phase": "BREAKTHROUGH",
-    "since": "2025-12-31T16:00:00-08:00",
+    "since": "2025-12-31T14:00:00-08:00",
     "iteration": 1,
     "focus": "",
     "blockers": [],
@@ -33,27 +33,27 @@
   "knowledge": {
     "progressSummary": "",
     "builtItems": [],
-    "insights": [
-      "Key Proof Technique"
-    ],
+    "insights": [],
     "mathlibGaps": [],
     "nextSteps": []
   },
   "approaches": [],
   "tags": [
     "number-theory",
-    "primes",
-    "explicit-bounds",
-    "bertrand"
+    "binomial",
+    "classical",
+    "p-adic"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "Relevance"
+  ],
   "references": {
     "papers": [],
     "urls": [],
     "mathlib": []
   },
-  "started": "2025-12-31T16:00:00-08:00",
-  "completed": "2025-12-31T17:00:00-08:00",
-  "significance": 4,
-  "tractability": 8
+  "started": "2025-12-31T14:00:00-08:00",
+  "completed": "2025-12-31T15:00:00-08:00",
+  "significance": 6,
+  "tractability": 7
 }
