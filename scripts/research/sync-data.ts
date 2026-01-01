@@ -298,7 +298,45 @@ function sync(): void {
     }
   }
 
-  // 3. Write updated files
+  // 3. Sync from meta.json to registry (meta.json is source of truth for status)
+  let updatedFromMeta = 0
+  for (const entry of registry.problems) {
+    if (entry.template) continue
+
+    const metaPath = path.join(PROBLEMS_DIR, entry.slug, 'meta.json')
+    if (!fs.existsSync(metaPath)) continue
+
+    try {
+      const meta = JSON.parse(fs.readFileSync(metaPath, 'utf-8'))
+      const metaStatus = meta.status as RegistryEntry['status'] | undefined
+
+      if (metaStatus && metaStatus !== entry.status) {
+        // Meta.json takes precedence - it's the source of truth
+        if (metaStatus === 'graduated' && entry.status !== 'graduated') {
+          entry.status = 'graduated'
+          entry.phase = 'BREAKTHROUGH'
+          entry.completed = entry.completed || meta.completed || new Date().toISOString()
+          entry.lastUpdate = new Date().toISOString()
+          updatedFromMeta++
+          console.log(`   🔄 Updated registry from meta.json: ${entry.slug} → graduated`)
+        } else if (metaStatus === 'blocked' && entry.status !== 'blocked') {
+          entry.status = 'blocked'
+          entry.lastUpdate = new Date().toISOString()
+          updatedFromMeta++
+          console.log(`   🔄 Updated registry from meta.json: ${entry.slug} → blocked`)
+        } else if (metaStatus === 'abandoned' && entry.status !== 'abandoned') {
+          entry.status = 'abandoned'
+          entry.lastUpdate = new Date().toISOString()
+          updatedFromMeta++
+          console.log(`   🔄 Updated registry from meta.json: ${entry.slug} → abandoned`)
+        }
+      }
+    } catch (e) {
+      console.warn(`   ⚠️  Could not read meta.json for ${entry.slug}`)
+    }
+  }
+
+  // 4. Write updated files
   // Update pool timestamp
   pool.last_updated = new Date().toISOString()
 
@@ -309,6 +347,7 @@ function sync(): void {
   console.log(`\n📊 Sync Summary:`)
   console.log(`   Added to registry:     ${addedToRegistry}`)
   console.log(`   Updated in registry:   ${updatedInRegistry}`)
+  console.log(`   Updated from meta:     ${updatedFromMeta}`)
   console.log(`   Updated in pool:       ${updatedInPool}`)
   console.log(`   Created problem dirs:  ${createdProblemDirs}`)
   console.log(`\n✅ Sync complete!`)

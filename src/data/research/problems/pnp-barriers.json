@@ -31,7 +31,48 @@
   },
   "knowledge": {
     "progressSummary": "Surveyed (has axioms, full proofs for consequences)",
-    "builtItems": [],
+    "builtItems": [
+      {
+        "name": "P_subset_NP_relative",
+        "description": "P^A ⊆ NP^A for any oracle A (full 40-line proof)",
+        "proven": true
+      },
+      {
+        "name": "relativization_barrier_eq",
+        "description": "Cannot prove P=NP by relativizing",
+        "proven": true
+      },
+      {
+        "name": "relativization_barrier_neq",
+        "description": "Cannot prove P≠NP by relativizing",
+        "proven": true
+      },
+      {
+        "name": "relativization_barrier",
+        "description": "Combined barrier",
+        "proven": true
+      },
+      {
+        "name": "natural_proof_breaks_crypto",
+        "description": "Natural proofs contradict OWFs",
+        "proven": true
+      },
+      {
+        "name": "relativization_insight",
+        "description": "Key insight about barrier",
+        "proven": true
+      },
+      {
+        "name": "P_subset_NP",
+        "description": "Unrelativized P ⊆ NP",
+        "proven": true
+      },
+      {
+        "name": "all_barriers_constrain_proofs",
+        "description": "Combined constraint",
+        "proven": true
+      }
+    ],
     "insights": [
       "P_subset_NP_relative",
       "relativization_barrier_eq",

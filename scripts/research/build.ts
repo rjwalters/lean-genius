@@ -278,26 +278,52 @@ function parseKnowledge(content: string): ResearchProblem['knowledge'] {
   const progressMatch = content.match(/\*\*Milestone achieved\*\*:\s*(.+)/) ||
     content.match(/\*\*Status\*\*:\s*(.+)/)
 
-  // Extract insights from "What's Proven" section - look for backtick items
+  // Extract insights from multiple possible sections
+  // Try: "### What's Proven", "## What We've Built", subsections with "(proven)"
   const provenMatch = content.match(/###\s*What's Proven[^\n]*\n([\s\S]*?)(?=\n###|\n##)/m)
+  const builtMatch = content.match(/##\s*What We've Built\s*\n([\s\S]*?)(?=\n##\s+[^#])/m)
 
   // Try multiple patterns for Mathlib gaps
   const gapsMatch = content.match(/###\s*What Mathlib Lacks\s*\n([\s\S]*?)(?=\n###|\n##)/m) ||
     content.match(/###\s*Missing in Mathlib\s*\n([\s\S]*?)(?=\n###|\n##)/m)
 
   // Try multiple patterns for next steps - at end of file or before next ##
-  // Note: don't use 'm' flag as it makes $ match line endings, not just string end
   const nextMatch = content.match(/##\s*Next Steps[^\n]*\n([\s\S]*?)(?=\n##)/i) ||
     content.match(/##\s*Next Steps[^\n]*\n([\s\S]*)$/i)
 
   const insights: string[] = []
+  const builtItems: { name: string; description: string; proven: boolean }[] = []
+
+  // Parse "What's Proven" section (format: - `name` - description)
   if (provenMatch) {
     const lines = provenMatch[1].split('\n')
     for (const line of lines) {
-      // Match: - `theorem_name` - description
-      const itemMatch = line.match(/^-\s+`([^`]+)`/)
+      const itemMatch = line.match(/^-\s+`([^`]+)`\s*-?\s*(.*)$/)
       if (itemMatch) {
         insights.push(itemMatch[1])
+        builtItems.push({
+          name: itemMatch[1],
+          description: itemMatch[2]?.trim() || '',
+          proven: true
+        })
+      }
+    }
+  }
+
+  // Parse "What We've Built" section (format: - `name` - description OR subsections)
+  if (builtMatch) {
+    const lines = builtMatch[1].split('\n')
+    for (const line of lines) {
+      // Match: - `name` - description  OR  - `name (params)` - description
+      const itemMatch = line.match(/^-\s+`([^`]+)`\s*-?\s*(.*)$/)
+      if (itemMatch) {
+        const name = itemMatch[1].split(/\s*\(/)[0].trim() // Extract just the name
+        insights.push(name)
+        builtItems.push({
+          name,
+          description: itemMatch[2]?.trim() || '',
+          proven: true
+        })
       }
     }
   }
@@ -330,7 +356,7 @@ function parseKnowledge(content: string): ResearchProblem['knowledge'] {
 
   return {
     progressSummary: progressMatch?.[1] || '',
-    builtItems: [],
+    builtItems,
     insights,
     mathlibGaps,
     nextSteps

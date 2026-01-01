@@ -439,7 +439,28 @@ export function ResearchProblemPage() {
                   </section>
                 )}
 
-                {problem.knowledge.insights.length > 0 && (
+                {problem.knowledge.builtItems && problem.knowledge.builtItems.length > 0 && (
+                  <section>
+                    <h3 className="text-sm font-semibold text-muted-foreground mb-2 uppercase tracking-wide">
+                      What We've Built
+                    </h3>
+                    <div className="space-y-2">
+                      {problem.knowledge.builtItems.map((item, i) => (
+                        <div key={i} className="flex items-start gap-3 p-2 bg-card border border-border rounded">
+                          <CheckCircle2 className="h-4 w-4 text-green-400 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <code className="text-sm font-mono text-annotation">{item.name}</code>
+                            {item.description && (
+                              <span className="text-sm text-muted-foreground ml-2">— {item.description}</span>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                )}
+
+                {problem.knowledge.insights.length > 0 && !problem.knowledge.builtItems?.length && (
                   <section>
                     <h3 className="text-sm font-semibold text-muted-foreground mb-2 uppercase tracking-wide">
                       Technical Insights
@@ -485,6 +506,7 @@ export function ResearchProblemPage() {
                 )}
 
                 {problem.knowledge.insights.length === 0 &&
+                 (!problem.knowledge.builtItems || problem.knowledge.builtItems.length === 0) &&
                  problem.knowledge.mathlibGaps.length === 0 &&
                  problem.knowledge.nextSteps.length === 0 &&
                  !problem.knowledge.progressSummary && (
