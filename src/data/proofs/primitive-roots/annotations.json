@@ -1,0 +1,156 @@
+[
+  {
+    "id": "ann-imports",
+    "proofId": "primitive-roots",
+    "range": {
+      "startLine": 1,
+      "endLine": 6
+    },
+    "type": "context",
+    "title": "Mathlib Imports",
+    "content": "This proof leverages four key Mathlib modules:\n\n- **IntegralDomain**: Provides the theorem that finite unit subgroups in integral domains are cyclic\n- **Cyclic**: Counting elements by order in cyclic groups\n- **Totient**: Euler's φ function\n- **ZMod**: Arithmetic modulo n",
+    "mathContext": "These imports bring in deep structural theorems that make the proof elegant.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "integral domain", "cyclic groups"]
+  },
+  {
+    "id": "ann-historical",
+    "proofId": "primitive-roots",
+    "range": {
+      "startLine": 41,
+      "endLine": 45
+    },
+    "type": "insight",
+    "title": "Historical Development",
+    "content": "Euler proved primitive roots exist for primes in 1773. Gauss, in his masterwork *Disquisitiones Arithmeticae* (1801), completely characterized which moduli have primitive roots: only 1, 2, 4, p^k, and 2p^k for odd primes p.\n\nThe count φ(p-1) follows from 19th century group theory.",
+    "mathContext": "Euler (1773) → Gauss (1801) → Modern group theory",
+    "significance": "key",
+    "relatedConcepts": ["Euler", "Gauss", "Disquisitiones Arithmeticae"]
+  },
+  {
+    "id": "ann-definition",
+    "proofId": "primitive-roots",
+    "range": {
+      "startLine": 61,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "Primitive Root Definition",
+    "content": "A **primitive root** g modulo p is an element whose multiplicative order equals the group order |G| = p-1.\n\nEquivalently:\n- g generates all of (ℤ/pℤ)*\n- The powers g, g², ..., g^(p-1) are all distinct\n- g is a generator of the cyclic group",
+    "mathContext": "$\\text{IsPrimitiveRoot}(g) \\Leftrightarrow \\text{ord}(g) = |(\\mathbb{Z}/p\\mathbb{Z})^*| = p-1$",
+    "significance": "critical",
+    "relatedConcepts": ["multiplicative order", "generator", "cyclic group"]
+  },
+  {
+    "id": "ann-iff-order",
+    "proofId": "primitive-roots",
+    "range": {
+      "startLine": 67,
+      "endLine": 71
+    },
+    "type": "theorem",
+    "title": "Order Characterization",
+    "content": "This theorem converts between two equivalent definitions:\n\n1. Order equals |G| (abstract group definition)\n2. Order equals p-1 (concrete number-theoretic definition)\n\nThe key step uses that |(ℤ/pℤ)*| = φ(p) = p-1 for prime p.",
+    "mathContext": "$|(\\mathbb{Z}/p\\mathbb{Z})^*| = \\varphi(p) = p-1$ for prime $p$",
+    "significance": "supporting",
+    "relatedConcepts": ["Euler's totient", "group order"]
+  },
+  {
+    "id": "ann-cyclic-proof",
+    "proofId": "primitive-roots",
+    "range": {
+      "startLine": 75,
+      "endLine": 82
+    },
+    "type": "theorem",
+    "title": "The Key Structural Theorem",
+    "content": "**This is the heart of the proof!**\n\nWhy is (ℤ/pℤ)* cyclic? Because:\n\n1. ZMod p is a **field** (for prime p)\n2. Fields are **integral domains**\n3. Mathlib's `isCyclic_of_subgroup_isDomain` says: finite subgroups of units in integral domains are always cyclic\n\nThis deep theorem instantly gives us the cyclic structure we need!",
+    "mathContext": "Finite subgroup of $R^*$ for integral domain $R$ $\\Rightarrow$ cyclic group",
+    "significance": "critical",
+    "relatedConcepts": ["integral domain", "field", "cyclic group", "unit group"]
+  },
+  {
+    "id": "ann-order-p-minus-1",
+    "proofId": "primitive-roots",
+    "range": {
+      "startLine": 84,
+      "endLine": 86
+    },
+    "type": "lemma",
+    "title": "Group Order is p-1",
+    "content": "The multiplicative group (ℤ/pℤ)* has exactly p-1 elements (all non-zero residues).\n\nThis uses Euler's formula: φ(p) = p-1 for prime p.",
+    "mathContext": "$|(\\mathbb{Z}/p\\mathbb{Z})^*| = \\varphi(p) = p-1$",
+    "significance": "supporting",
+    "relatedConcepts": ["Euler's totient", "group order"]
+  },
+  {
+    "id": "ann-existence",
+    "proofId": "primitive-roots",
+    "range": {
+      "startLine": 90,
+      "endLine": 97
+    },
+    "type": "theorem",
+    "title": "Primitive Roots Exist",
+    "content": "Since (ℤ/pℤ)* is cyclic, it has a generator. That generator is by definition a primitive root!\n\nThe proof:\n1. `IsCyclic.exists_generator` gives us some generator g\n2. A generator has order equal to the group order\n3. By definition, that makes g a primitive root",
+    "mathContext": "Cyclic group $\\Rightarrow$ has generator $\\Rightarrow$ primitive root exists",
+    "significance": "key",
+    "relatedConcepts": ["cyclic group", "generator", "existence proof"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "primitive-roots",
+    "range": {
+      "startLine": 105,
+      "endLine": 117
+    },
+    "type": "theorem",
+    "title": "The Main Counting Theorem",
+    "content": "**Main Result**: There are exactly φ(p-1) primitive roots modulo p.\n\nThe proof uses `IsCyclic.card_orderOf_eq_totient`: in any cyclic group of order n, there are exactly φ(d) elements of order d for each divisor d of n.\n\nSince primitive roots have order p-1, and the group has order p-1, there are φ(p-1) of them!",
+    "mathContext": "In cyclic group of order $n$: $|\\{g : \\text{ord}(g) = d\\}| = \\varphi(d)$ for $d \\mid n$",
+    "significance": "critical",
+    "relatedConcepts": ["cyclic group counting", "Euler's totient", "element order"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "primitive-roots",
+    "range": {
+      "startLine": 132,
+      "endLine": 154
+    },
+    "type": "example",
+    "title": "Concrete Examples",
+    "content": "Let's verify the formula for small primes:\n\n| p | p-1 | φ(p-1) | Primitive roots |\n|---|-----|--------|------------------|\n| 2 | 1 | 1 | {1} |\n| 3 | 2 | 1 | {2} |\n| 5 | 4 | 2 | {2, 3} |\n| 7 | 6 | 2 | {3, 5} |\n| 11 | 10 | 4 | {2, 6, 7, 8} |\n| 13 | 12 | 4 | {2, 6, 7, 11} |",
+    "mathContext": "$\\varphi(1)=1, \\varphi(2)=1, \\varphi(4)=2, \\varphi(6)=2, \\varphi(10)=4, \\varphi(12)=4$",
+    "significance": "supporting",
+    "relatedConcepts": ["Euler's totient", "computation"]
+  },
+  {
+    "id": "ann-generator-equiv",
+    "proofId": "primitive-roots",
+    "range": {
+      "startLine": 158,
+      "endLine": 177
+    },
+    "type": "theorem",
+    "title": "Primitive Roots = Generators",
+    "content": "This theorem proves the equivalence we've been using intuitively:\n\ng is a primitive root ⟺ g generates all of (ℤ/pℤ)*\n\nThe forward direction: if ord(g) = |G|, then the subgroup generated by g has order |G|, so it must be all of G.\n\nThe backward direction: a generator must have order equal to |G| (otherwise it couldn't generate everything).",
+    "mathContext": "$\\text{ord}(g) = |G| \\Leftrightarrow \\langle g \\rangle = G$",
+    "significance": "key",
+    "relatedConcepts": ["generator", "subgroup", "group order"]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "primitive-roots",
+    "range": {
+      "startLine": 179,
+      "endLine": 197
+    },
+    "type": "insight",
+    "title": "Why Primitive Roots Matter",
+    "content": "Primitive roots are fundamental in cryptography and number theory:\n\n**Discrete Logarithms**: If g is a primitive root, every a ≢ 0 (mod p) can be written as a ≡ g^k. Finding k from a is the discrete log problem—believed computationally hard.\n\n**Diffie-Hellman**: Alice and Bob can agree on a shared secret g^(ab) without revealing a or b, because computing discrete logs is hard.\n\n**Quadratic Residues**: a is a quadratic residue mod p iff its discrete log is even.",
+    "mathContext": "Discrete log: given $g, a$, find $k$ such that $g^k \\equiv a \\pmod{p}$",
+    "significance": "key",
+    "relatedConcepts": ["cryptography", "discrete logarithm", "Diffie-Hellman"]
+  }
+]

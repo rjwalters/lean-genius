@@ -1,0 +1,170 @@
+[
+  {
+    "id": "ann-imports",
+    "proofId": "kummer-theorem",
+    "range": {
+      "startLine": 1,
+      "endLine": 3
+    },
+    "type": "context",
+    "title": "Mathlib Imports",
+    "content": "The proof uses:\n\n- **Nat.Multiplicity**: Contains `Nat.Prime.multiplicity_choose`, the core theorem\n- **Choose.Lucas**: Lucas' theorem for binomial coefficients mod p\n- **Tactic**: Standard proof tactics",
+    "mathContext": "These imports bring in the full machinery for working with p-adic valuations and binomial coefficients.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "multiplicity", "Lucas theorem"]
+  },
+  {
+    "id": "ann-historical",
+    "proofId": "kummer-theorem",
+    "range": {
+      "startLine": 21,
+      "endLine": 27
+    },
+    "type": "insight",
+    "title": "Kummer's Discovery (1852)",
+    "content": "Ernst Kummer discovered this theorem while investigating cyclotomic fields and reciprocity laws. He was trying to prove Fermat's Last Theorem for certain primes.\n\nThe theorem reveals a beautiful connection: prime divisibility of binomial coefficients is determined by carries in base-p arithmetic!",
+    "mathContext": "Kummer (1852): \"Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen\"",
+    "significance": "key",
+    "relatedConcepts": ["Kummer", "cyclotomic fields", "Fermat's Last Theorem"]
+  },
+  {
+    "id": "ann-carry-condition",
+    "proofId": "kummer-theorem",
+    "range": {
+      "startLine": 64,
+      "endLine": 72
+    },
+    "type": "insight",
+    "title": "What is a Carry?",
+    "content": "When adding k and (n-k) in base p, a **carry** at position i occurs when:\n\n$$k \\mod p^i + (n-k) \\mod p^i \\geq p^i$$\n\nThis means the \"low-order bits\" (digits below position i) overflow into position i.\n\n**Example**: Adding 3 + 3 = 6 in base 2:\n- 3 = 011₂, 3 = 011₂\n- Position 1: 1 + 1 = 2 ≥ 2 → carry!\n- Position 2: 3 + 3 = 6 ≥ 4 → carry!\n- Result: 110₂ = 6, with 2 carries",
+    "mathContext": "Carry at position $i$: $k \\mod p^i + (n-k) \\mod p^i \\geq p^i$",
+    "significance": "critical",
+    "relatedConcepts": ["positional arithmetic", "base-p representation", "carries"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "kummer-theorem",
+    "range": {
+      "startLine": 74,
+      "endLine": 83
+    },
+    "type": "theorem",
+    "title": "Kummer's Theorem",
+    "content": "**The Main Result**: The multiplicity (p-adic valuation) of prime p in C(n,k) equals the number of carry positions when adding k and (n-k) in base p.\n\n$$\\nu_p\\binom{n}{k} = |\\{i : p^i \\leq k \\mod p^i + (n-k) \\mod p^i\\}|$$\n\nThis is `Nat.Prime.multiplicity_choose` from Mathlib—the theorem is already proven there!",
+    "mathContext": "multiplicity $p$ $\\binom{n}{k}$ = (filtered count of carry positions)",
+    "significance": "critical",
+    "relatedConcepts": ["multiplicity", "p-adic valuation", "binomial coefficient"]
+  },
+  {
+    "id": "ann-alternative",
+    "proofId": "kummer-theorem",
+    "range": {
+      "startLine": 85,
+      "endLine": 90
+    },
+    "type": "theorem",
+    "title": "Alternative Formulation",
+    "content": "An equivalent statement for C(n+k, k): the multiplicity equals carries when adding k and n in base p.\n\nThis form is sometimes more convenient because both numbers being added are non-negative and their sum is exactly n+k.",
+    "mathContext": "$\\nu_p\\binom{n+k}{k} = $ carries when adding $k + n$ in base $p$",
+    "significance": "supporting",
+    "relatedConcepts": ["alternative formulation", "symmetry"]
+  },
+  {
+    "id": "ann-example-10-4",
+    "proofId": "kummer-theorem",
+    "range": {
+      "startLine": 96,
+      "endLine": 112
+    },
+    "type": "example",
+    "title": "Example: C(10, 4) = 210",
+    "content": "Let's verify Kummer's theorem:\n\n**C(10, 4) = 210 = 2 × 3 × 5 × 7**\n\nFor p = 2: Adding 4 + 6 in binary:\n- 4 = 100₂, 6 = 110₂\n- 100 + 110 = 1010₂ (one carry)\n- ν₂(210) = 1 ✓\n\nFor p = 3: Adding 4 + 6 in base 3:\n- 4 = 11₃, 6 = 20₃\n- 11 + 20 = 101₃ (one carry)\n- ν₃(210) = 1 ✓",
+    "mathContext": "$C(10,4) = 210 = 2 \\times 3 \\times 5 \\times 7$",
+    "significance": "supporting",
+    "relatedConcepts": ["computation", "verification"]
+  },
+  {
+    "id": "ann-example-6-3",
+    "proofId": "kummer-theorem",
+    "range": {
+      "startLine": 114,
+      "endLine": 116
+    },
+    "type": "example",
+    "title": "Example: C(6, 3) = 20",
+    "content": "**C(6, 3) = 20 = 4 × 5 = 2² × 5**\n\nFor p = 2: Adding 3 + 3 in binary:\n- 3 = 11₂, 3 = 11₂\n- 11 + 11 = 110₂ (two carries at positions 1 and 2)\n- ν₂(20) = 2 ✓\n\nThe central binomial coefficient C(2n, n) often has high 2-adic valuation!",
+    "mathContext": "$C(6,3) = 20 = 2^2 \\times 5$, two carries in binary addition",
+    "significance": "supporting",
+    "relatedConcepts": ["central binomial coefficient", "binary addition"]
+  },
+  {
+    "id": "ann-prime-divides",
+    "proofId": "kummer-theorem",
+    "range": {
+      "startLine": 122,
+      "endLine": 124
+    },
+    "type": "insight",
+    "title": "Prime Divides C(p, k)",
+    "content": "A classic result: for 0 < k < p (prime), we have p | C(p, k).\n\nKummer's theorem explains why: in base p, k and p-k sum to p = 10ₚ, which always has exactly one carry (at position 1).\n\nSo ν_p(C(p, k)) ≥ 1, meaning p divides C(p, k).",
+    "mathContext": "For $0 < k < p$: $p \\mid \\binom{p}{k}$",
+    "significance": "key",
+    "relatedConcepts": ["prime divisibility", "Pascal's triangle"]
+  },
+  {
+    "id": "ann-prime-power",
+    "proofId": "kummer-theorem",
+    "range": {
+      "startLine": 135,
+      "endLine": 138
+    },
+    "type": "theorem",
+    "title": "Prime Power Case",
+    "content": "For 0 < k < p^n, the prime p divides C(p^n, k).\n\nIn base p, p^n = 10...0 (1 followed by n zeros). Adding any k < p^n to p^n - k produces at least one carry.\n\nThis generalizes the result that p | C(p, k) for 0 < k < p.",
+    "mathContext": "$0 < k < p^n \\Rightarrow p \\mid \\binom{p^n}{k}$",
+    "significance": "key",
+    "relatedConcepts": ["prime power", "generalization"]
+  },
+  {
+    "id": "ann-lucas",
+    "proofId": "kummer-theorem",
+    "range": {
+      "startLine": 140,
+      "endLine": 154
+    },
+    "type": "theorem",
+    "title": "Connection to Lucas' Theorem",
+    "content": "**Lucas' Theorem**: C(n, k) ≡ ∏ᵢ C(nᵢ, kᵢ) (mod p)\n\nwhere nᵢ, kᵢ are the i-th digits of n, k in base p.\n\nKummer's theorem explains the \"why\": if any digit kᵢ > nᵢ, then C(nᵢ, kᵢ) = 0, making the whole product 0 mod p.\n\nEach such \"digit overflow\" corresponds to a carry, and the number of carries gives the exact multiplicity.",
+    "mathContext": "Lucas: $\\binom{n}{k} \\equiv \\prod_i \\binom{n_i}{k_i} \\pmod{p}$",
+    "significance": "key",
+    "relatedConcepts": ["Lucas' theorem", "digit-wise computation"]
+  },
+  {
+    "id": "ann-digit-sum",
+    "proofId": "kummer-theorem",
+    "range": {
+      "startLine": 156,
+      "endLine": 170
+    },
+    "type": "theorem",
+    "title": "Digit Sum Formulation",
+    "content": "An equivalent formulation using digit sums:\n\n$$(p-1) \\cdot \\nu_p\\binom{n}{k} = S_p(k) + S_p(n-k) - S_p(n)$$\n\nwhere S_p(m) is the sum of digits of m in base p.\n\nThis follows from Legendre's formula: ν_p(n!) = (n - S_p(n))/(p-1).\n\nEach carry \"costs\" exactly p-1 in the digit sum equation!",
+    "mathContext": "$(p-1) \\cdot \\nu_p\\binom{n}{k} = S_p(k) + S_p(n-k) - S_p(n)$",
+    "significance": "key",
+    "relatedConcepts": ["Legendre's formula", "digit sum", "factorial multiplicity"]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "kummer-theorem",
+    "range": {
+      "startLine": 172,
+      "endLine": 185
+    },
+    "type": "insight",
+    "title": "Why Kummer's Theorem Matters",
+    "content": "**Practical Applications**:\n\n1. **Efficient computation**: Find ν_p(C(n,k)) by counting carries—no need to compute the (potentially huge) binomial coefficient\n\n2. **Pascal's triangle mod p**: Creates beautiful fractal patterns (Sierpiński triangle for p = 2)\n\n3. **Catalan numbers**: Similar analysis applies to C_n = C(2n,n)/(n+1)\n\n4. **Generalization**: Extends to multinomial coefficients and q-analogs",
+    "mathContext": "Applications in computation, combinatorics, and number theory",
+    "significance": "supporting",
+    "relatedConcepts": ["Sierpiński triangle", "Catalan numbers", "applications"]
+  }
+]

@@ -1,0 +1,110 @@
+{
+  "id": "kummer-theorem",
+  "title": "Kummer's Theorem on Binomial Coefficients",
+  "slug": "kummer-theorem",
+  "description": "The p-adic valuation of C(n,k) equals the number of carries when adding k and n-k in base p. A beautiful connection between combinatorics and positional numeral systems.",
+  "meta": {
+    "author": "Ernst Kummer (formalized via Mathlib)",
+    "date": "1852",
+    "status": "verified",
+    "proofRepoPath": "Proofs/KummerTheorem.lean",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "binomial-coefficients",
+      "p-adic",
+      "classical"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime.multiplicity_choose",
+        "description": "Kummer's theorem: multiplicity equals carry count",
+        "module": "Mathlib.Data.Nat.Multiplicity"
+      },
+      {
+        "theorem": "Choose.lucas_theorem",
+        "description": "Lucas' theorem for binomial coefficients mod p",
+        "module": "Mathlib.Data.Nat.Choose.Lucas"
+      },
+      {
+        "theorem": "Nat.Prime.sub_one_mul_multiplicity_factorial",
+        "description": "Legendre's formula connecting factorial multiplicity to digit sums",
+        "module": "Mathlib.Data.Nat.Multiplicity"
+      }
+    ],
+    "originalContributions": [
+      "Clean demonstration of Kummer's theorem using Mathlib",
+      "Concrete examples with C(10,4), C(6,3), C(4,2)",
+      "Connection to Lucas' theorem explained",
+      "Digit sum formulation via Legendre's formula"
+    ],
+    "dateAdded": "12/31/25",
+    "wiedijkNumber": null
+  },
+  "overview": {
+    "historicalContext": "Ernst Eduard Kummer proved this remarkable theorem in 1852, in a paper titled \"Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen\" (On the supplementary theorems to the general reciprocity laws). Kummer was investigating cyclotomic fields and needed to understand the divisibility properties of binomial coefficients.\n\nThe theorem reveals a surprising connection: the prime power dividing a binomial coefficient is completely determined by the pattern of carries in base-p addition. This bridges combinatorics (counting) with number theory (divisibility) through the arithmetic of positional numeral systems.\n\nKummer's work on cyclotomic fields and regular primes was part of his larger project to prove Fermat's Last Theorem for specific classes of primes.",
+    "problemStatement": "**Kummer's Theorem (1852)**: For prime p and integers 0 ≤ k ≤ n, the multiplicity of p in C(n,k) equals the number of carries when adding k and n-k in base p.\n\n$$\\nu_p\\binom{n}{k} = \\#\\{\\text{carries when adding } k + (n-k) \\text{ in base } p\\}$$\n\nA carry at position i occurs when: $k \\mod p^i + (n-k) \\mod p^i \\geq p^i$",
+    "proofStrategy": "The proof uses Mathlib's `Nat.Prime.multiplicity_choose` which directly establishes Kummer's theorem.\n\n**Key Insight**: A carry at position i when adding k and (n-k) in base p corresponds to a \"floor function gap\":\n$$\\left\\lfloor\\frac{n}{p^i}\\right\\rfloor < \\left\\lfloor\\frac{k}{p^i}\\right\\rfloor + \\left\\lfloor\\frac{n-k}{p^i}\\right\\rfloor$$\n\nThese gaps accumulate to give the total multiplicity via Legendre's formula:\n$$\\nu_p(n!) = \\sum_{i \\geq 1} \\left\\lfloor\\frac{n}{p^i}\\right\\rfloor$$\n\nSince $C(n,k) = \\frac{n!}{k!(n-k)!}$, the multiplicities subtract, and the carry positions are exactly where the floor function gaps occur.",
+    "keyInsights": [
+      "A carry at position i means k mod p^i + (n-k) mod p^i ≥ p^i",
+      "The theorem connects combinatorics to positional arithmetic",
+      "Equivalent formulation: (p-1)·ν_p(C(n,k)) = S_p(k) + S_p(n-k) - S_p(n) where S_p is digit sum",
+      "Lucas' theorem (C(n,k) mod p = product of digit-wise binomials) is a consequence"
+    ]
+  },
+  "sections": [
+    {
+      "id": "intro",
+      "title": "Introduction and Context",
+      "startLine": 5,
+      "endLine": 58,
+      "summary": "Historical background, statement of Kummer's theorem, and its relationship to Lucas' theorem."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 64,
+      "endLine": 90,
+      "summary": "Kummer's theorem: multiplicity equals the count of carry positions when adding k and n-k in base p."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 92,
+      "endLine": 129,
+      "summary": "Verification with specific binomial coefficients: C(10,4), C(6,3), C(4,2), C(5,2), C(8,2)."
+    },
+    {
+      "id": "prime-power",
+      "title": "Prime Power Case",
+      "startLine": 131,
+      "endLine": 138,
+      "summary": "Special case: p divides C(p^n, k) for 0 < k < p^n."
+    },
+    {
+      "id": "lucas-connection",
+      "title": "Connection to Lucas' Theorem",
+      "startLine": 140,
+      "endLine": 154,
+      "summary": "How Kummer's theorem relates to Lucas' theorem on binomial coefficients mod p."
+    },
+    {
+      "id": "digit-sum",
+      "title": "Digit Sum Formulation",
+      "startLine": 156,
+      "endLine": 170,
+      "summary": "The equivalent formula using digit sums: (p-1)·ν_p(C(n,k)) = S_p(k) + S_p(n-k) - S_p(n)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Kummer's theorem elegantly connects two seemingly unrelated areas: the divisibility properties of binomial coefficients and the arithmetic of positional numeral systems. The number of carries in a base-p addition completely determines the p-adic valuation of the corresponding binomial coefficient.\n\nThis formalization uses Mathlib's `Nat.Prime.multiplicity_choose` as the core theorem, then builds understanding through concrete examples and connections to related results like Lucas' theorem and Legendre's formula.",
+    "implications": "**Computational Applications**\n\n1. **Efficient Computation**: Determine the exact power of p dividing C(n,k) by just counting carries—no need to compute C(n,k) itself (which can be astronomically large).\n\n2. **Pascal's Triangle mod p**: The pattern of p | C(n,k) creates fractal-like structures. For p = 2, this is the famous Sierpiński triangle!\n\n**Theoretical Significance**\n\n1. **Lucas' Theorem**: Kummer's theorem explains *why* Lucas' theorem works: each digit-wise binomial coefficient contributes to the overall divisibility.\n\n2. **Catalan Numbers**: Similar techniques apply to Catalan numbers C_n = C(2n,n)/(n+1).\n\n3. **Binomial Coefficient Sequences**: Understanding divisibility patterns in rows and diagonals of Pascal's triangle.",
+    "openQuestions": [
+      "What are the analogs of Kummer's theorem for multinomial coefficients?",
+      "How does the theorem generalize to q-binomial coefficients?",
+      "What patterns emerge in Pascal's triangle mod p^k for k > 1?"
+    ]
+  }
+}

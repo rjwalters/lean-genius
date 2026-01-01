@@ -154,6 +154,8 @@ const proofModules: Record<string, () => Promise<any>> = {
   'hilbert-22': () => import('./hilbert-22'),
   'hilbert-23': () => import('./hilbert-23'),
   'hilbert-9-reciprocity': () => import('./hilbert-9-reciprocity'),
+  'primitive-roots': () => import('./primitive-roots'),
+  'kummer-theorem': () => import('./kummer-theorem'),
 }
 
 /**

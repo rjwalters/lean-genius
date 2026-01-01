@@ -1710,6 +1710,26 @@
     "annotationCount": 11
   },
   {
+    "id": "kummer-theorem",
+    "title": "Kummer's Theorem on Binomial Coefficients",
+    "slug": "kummer-theorem",
+    "description": "The p-adic valuation of C(n,k) equals the number of carries when adding k and n-k in base p. A beautiful connection between combinatorics and positional numeral systems.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "binomial-coefficients",
+      "p-adic",
+      "classical"
+    ],
+    "dateAdded": "12/31/25",
+    "wiedijkNumber": null,
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 12
+  },
+  {
     "id": "lagrange-four-squares",
     "title": "Lagrange's Four Squares Theorem",
     "slug": "lagrange-four-squares",
@@ -2216,6 +2236,26 @@
     "mathlibCount": 2,
     "sorries": 0,
     "annotationCount": 7
+  },
+  {
+    "id": "primitive-roots",
+    "title": "Primitive Roots Modulo Primes",
+    "slug": "primitive-roots",
+    "description": "For any prime p, there are exactly φ(p-1) primitive roots modulo p. Uses the cyclic structure of (ℤ/pℤ)* and Mathlib's counting theorem.",
+    "status": "verified",
+    "badge": "mathlib",
+    "tags": [
+      "number-theory",
+      "group-theory",
+      "cyclic-groups",
+      "cryptography",
+      "classical"
+    ],
+    "dateAdded": "12/31/25",
+    "wiedijkNumber": null,
+    "mathlibCount": 4,
+    "sorries": 0,
+    "annotationCount": 11
   },
   {
     "id": "product-of-segments-of-chords",
