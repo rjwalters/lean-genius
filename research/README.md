@@ -259,12 +259,76 @@ Every failed attempt should produce:
 
 The knowledge base (`knowledge.md`) grows with each attempt, making future research more informed.
 
+## Website Synchronization
+
+Research knowledge is displayed on the website at `leangenius.org/research/<slug>`. To keep the website current:
+
+### Architecture
+
+```
+research/problems/<slug>/
+├── meta.json         # Source of truth for website data
+├── knowledge.md      # Detailed session logs and insights
+├── state.md          # Current OODA state
+└── ...
+
+src/data/research/problems/<slug>.json  # Website JSON (synced from meta.json)
+```
+
+### Workflow
+
+1. **During research**: Update `knowledge.md` with detailed session logs
+2. **When ready to publish**: Create/update `meta.json` with structured knowledge
+3. **Sync to website**: Run `./scripts/sync-research.sh`
+
+### The meta.json Structure
+
+```json
+{
+  "slug": "problem-slug",
+  "title": "Problem Title",
+  "phase": "SURVEY | DEEP_DIVE | PIVOT | BREAKTHROUGH",
+  "status": "active | graduated | blocked",
+  "knowledge": {
+    "progressSummary": "One-line summary of what we've achieved",
+    "builtItems": [
+      {"name": "theorem_name", "type": "theorem|definition|axiom", "description": "..."}
+    ],
+    "insights": ["Key insight 1", "Key insight 2"],
+    "mathlibGaps": ["What Mathlib is missing"],
+    "nextSteps": ["What to do next"]
+  },
+  "approaches": [...],
+  "tags": [...],
+  "references": {...}
+}
+```
+
+### Sync Script
+
+```bash
+# Sync all meta.json files to website data
+./scripts/sync-research.sh
+
+# Output:
+# ✓ Synced: weak-goldbach
+# ✓ Synced: rh-consequences
+# ○ Skipped (up to date): twin-prime-special
+# ⚠ Orphaned (no meta.json source): old-problem.json
+```
+
+The script:
+- Copies `research/problems/<slug>/meta.json` → `src/data/research/problems/<slug>.json`
+- Only syncs files that are newer than the target
+- Reports orphaned files in target that don't have a meta.json source
+
 ## Integration with Lean-Genius
 
 Research outputs integrate with the main project:
 - Successful proofs → Added to `proofs/Proofs/`
 - New theorems → Get annotations in `src/data/proofs/`
 - Related proofs → Cross-referenced in gallery
+- **Research knowledge** → Synced to website via `./scripts/sync-research.sh`
 
 ## Best Practices
 
