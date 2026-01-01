@@ -144,6 +144,58 @@ SURVEY was the right choice - can't prove substantial RH consequences without PN
 
 ## Session Log
 
+### Session 6 (2026-01-01)
+
+**Mode**: REVISIT
+**Problem**: rh-consequences
+**Prior Status**: surveyed
+
+**Literature Search**:
+- Searched "[PrimeNumberTheoremAnd](https://github.com/AlexKontorovich/PrimeNumberTheoremAnd) Lean 4 Mathlib4 2025 2026"
+- Confirmed project is active; [arXiv:2503.07625](https://arxiv.org/abs/2503.07625) shows PNT with error term is formalized
+- Searched "Mathlib4 Riemann zeta zero-free region explicit formula 2025"
+- Found no Mathlib formalization of zero-free regions (only mathematical papers)
+- Searched "[Li's criterion](https://en.wikipedia.org/wiki/Li's_criterion)" - elegant RH equivalent from 1997
+
+**What we added**:
+1. Part 11: Completed Zeta Function (Xi Function)
+   - Re-exports of `completedRiemannZeta`, `completedRiemannZeta₀`
+   - Functional equation `completedRiemannZeta_one_sub`
+   - Differentiability of Λ₀
+   - Functional equation for ζ
+
+2. Part 12: Li's Criterion
+   - `liConstant` - Li's constants λₙ (abstract definition)
+   - `lis_criterion` - RH ↔ λₙ ≥ 0 for all n ≥ 1 (axiom)
+   - `li_constant_asymptotic` - Keiper-Li asymptotic behavior (axiom)
+
+3. Part 13: Zero Counting and Riemann-von Mangoldt Formula
+   - `zeroCountingFunction` - N(T) counts zeros up to height T
+   - `riemann_von_mangoldt_formula` - N(T) ~ (T/2π)log(T/2πe) (axiom)
+   - `gourdon_verification` - 10^13 zeros verified on critical line (axiom)
+
+4. Part 14: More Zeta Values
+   - `zeta_six_formula` - ζ(6) via general Bernoulli formula
+   - `zeta_eight_formula` - ζ(8) via general Bernoulli formula
+
+**Key Insight**:
+Li's criterion is a remarkable equivalence: RH holds iff all Li constants λₙ ≥ 0. This reduces RH to checking positivity of a sequence, though computing λₙ requires knowing the zeros. The Keiper-Li asymptotic shows λₙ ~ n(A log n + B) if RH holds, but oscillates wildly if RH fails.
+
+**Outcome**:
+- RiemannHypothesisConsequences.lean: ~632 lines (up from ~495)
+- Added 4 new definitions, 5 new axioms, 2 new theorems
+- File compiles successfully
+
+**Files Modified**:
+- `proofs/Proofs/RiemannHypothesisConsequences.lean` (+137 lines)
+- `research/problems/rh-consequences/knowledge.md` - this file
+
+**Next Steps**:
+1. Add PrimeNumberTheoremAnd as dependency to enable PNT-based proofs
+2. Formalize explicit bounds on Li constants (known numerical computations)
+3. Add Selberg's explicit formula relating zeros to primes
+4. Explore Nyman-Beurling criterion (another RH equivalent)
+
 ### Session 5 (2025-12-31)
 
 **Mode**: REVISIT
