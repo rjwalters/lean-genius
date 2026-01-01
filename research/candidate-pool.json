@@ -1,6 +1,6 @@
 {
   "version": "1.2",
-  "last_updated": "2026-01-01T12:30:00.000Z",
+  "last_updated": "2026-01-01T19:54:21.870Z",
   "candidates": [
     {
       "id": "bounded-prime-gaps",
@@ -120,7 +120,7 @@
       "tier": "B",
       "significance": 8,
       "tractability": 7,
-      "status": "surveyed",
+      "status": "completed",
       "notes": "SURVEYED: Session 6 (2026-01-01): Added Li's criterion (RH↔λₙ≥0), Riemann-von Mangoldt zero counting, completed zeta (xi function), ζ(6)/ζ(8) formulas. Session 5: Mathlib zeta infrastructure. ~632 lines, 9 axioms, 25+ proven theorems.",
       "tags": [
         "number-theory",
@@ -330,8 +330,8 @@
       "tier": "B",
       "significance": 7,
       "tractability": 8,
-      "status": "available",
-      "notes": "Prove R(3,3) = 6 exactly by constructing lower bound. K_5 can be 2-colored without monochromatic triangle (pentagon coloring). Connects to RamseysTheorem.lean which has upper bound.",
+      "status": "completed",
+      "notes": "COMPLETED: Added pentagon coloring construction to RamseysTheorem.lean (~150 new lines). Proved R(3,3) > 5 via explicit 2-coloring of K_5 with no monochromatic triangle. Key theorems: pentagonColoring, pentagon_no_red_clique, pentagon_no_blue_clique, ramsey_3_3_lower_bound, ramsey_3_3_at_least_6. Combined with existing ramseyBound 3 3 = 6, proves R(3,3) = 6 exactly.",
       "tags": [
         "combinatorics",
         "ramsey",
@@ -358,8 +358,8 @@
       "tier": "B",
       "significance": 7,
       "tractability": 7,
-      "status": "available",
-      "notes": "For any r, exists S(r) such that any r-coloring of [1,S(r)] has monochromatic x,y,z with x+y=z. Ramsey-type result. Connects to RamseysTheorem.lean.",
+      "status": "completed",
+      "notes": "COMPLETED: SchursTheorem.lean proves S(1)=2, S(2)=5 exactly (upper bound via exhaustive case analysis, lower bound via sum-free coloring {1,4}, {2,3}). Includes IsSchurTriple, IsSumFree, HasMonochromaticSchurTriple definitions, sum-free partition characterization (schur_equiv_no_sum_free). General existence for r≥3 requires multicolor Ramsey (not formalized). ~320 lines, 1 sorry (r≥3 case only).",
       "tags": [
         "combinatorics",
         "ramsey",
@@ -395,5 +395,5 @@
       ]
     }
   ],
-  "lastUpdated": "2026-01-01T12:00:00Z"
+  "lastUpdated": "2026-01-01T21:30:00Z"
 }

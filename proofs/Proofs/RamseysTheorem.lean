@@ -444,7 +444,145 @@ theorem ramsey_theorem : ∀ r s : ℕ, r ≥ 1 → s ≥ 1 →
           omega
         · exact extend_blue_clique c v blue hblue_sub hblue_is_clique hv_notin
 
-/-! ## Part X: Concrete Computations -/
+/-! ## Part X: Lower Bound for R(3,3) - The Pentagon Coloring
+
+To prove R(3,3) = 6 exactly, we need a lower bound: K_5 can be 2-colored without
+a monochromatic triangle. The classic construction uses the pentagon (cycle C_5):
+- Color edge (i,j) red iff vertices are adjacent in the 5-cycle (|i-j| ∈ {1,4} mod 5)
+- Color edge (i,j) blue iff vertices are non-adjacent (|i-j| ∈ {2,3} mod 5)
+
+The red graph forms a 5-cycle (no triangles).
+The blue graph forms a 5-cycle of the complementary pattern (also no triangles). -/
+
+/-- Helper: absolute difference for Fin 5 elements -/
+def absDiff5 (i j : Fin 5) : Nat :=
+  if i.val ≤ j.val then j.val - i.val else i.val - j.val
+
+/-- Pentagon coloring: red edges connect adjacent vertices in C_5.
+    Specifically, (i, j) is red iff |i - j| ≡ 1 or 4 (mod 5). -/
+theorem absDiff5_symm (i j : Fin 5) : absDiff5 i j = absDiff5 j i := by
+  simp only [absDiff5]
+  by_cases hij : i.val ≤ j.val
+  · by_cases hji : j.val ≤ i.val
+    · have heq : i.val = j.val := Nat.le_antisymm hij hji
+      simp only [heq, le_refl, ↓reduceIte, Nat.sub_self]
+    · simp only [hij, ↓reduceIte]
+      simp only [show ¬j.val ≤ i.val by omega, ↓reduceIte]
+  · simp only [show ¬i.val ≤ j.val by omega, ↓reduceIte]
+    simp only [show j.val ≤ i.val by omega, ↓reduceIte]
+
+def pentagonColoring : EdgeColoring (Fin 5) where
+  color := fun i j => decide (absDiff5 i j = 1 ∨ absDiff5 i j = 4)
+  symm := fun i j => by simp only [absDiff5_symm]
+  irrefl := fun i => by simp [absDiff5]
+
+/-- The pentagon coloring function computed for a specific pair. -/
+def pentagonColorAt (i j : Fin 5) : Bool :=
+  pentagonColoring.color i j
+
+/-- Verify red edges (adjacent in cycle). -/
+example : pentagonColorAt 0 1 = true := by native_decide
+example : pentagonColorAt 1 2 = true := by native_decide
+example : pentagonColorAt 2 3 = true := by native_decide
+example : pentagonColorAt 3 4 = true := by native_decide
+example : pentagonColorAt 4 0 = true := by native_decide
+
+/-- Verify blue edges (non-adjacent in cycle). -/
+example : pentagonColorAt 0 2 = false := by native_decide
+example : pentagonColorAt 0 3 = false := by native_decide
+example : pentagonColorAt 1 3 = false := by native_decide
+example : pentagonColorAt 1 4 = false := by native_decide
+example : pentagonColorAt 2 4 = false := by native_decide
+
+/-- Check if three vertices form a red triangle in the pentagon coloring. -/
+def isRedTriangle (a b c : Fin 5) : Prop :=
+  pentagonColoring.color a b = true ∧
+  pentagonColoring.color a c = true ∧
+  pentagonColoring.color b c = true
+
+/-- Check if three vertices form a blue triangle in the pentagon coloring. -/
+def isBlueTriangle (a b c : Fin 5) : Prop :=
+  pentagonColoring.color a b = false ∧
+  pentagonColoring.color a c = false ∧
+  pentagonColoring.color b c = false
+
+/-- Pentagon coloring has no red triangle: exhaustively verified.
+    Red edges form cycle 0-1-2-3-4-0, which has no triangles. -/
+theorem pentagon_no_red_triangle_at (a b c : Fin 5) (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    ¬isRedTriangle a b c := by
+  unfold isRedTriangle pentagonColoring absDiff5
+  fin_cases a <;> fin_cases b <;> fin_cases c <;> simp_all
+
+/-- Pentagon coloring has no blue triangle: exhaustively verified.
+    Blue edges form cycle 0-2-4-1-3-0, which has no triangles. -/
+theorem pentagon_no_blue_triangle_at (a b c : Fin 5) (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    ¬isBlueTriangle a b c := by
+  unfold isBlueTriangle pentagonColoring absDiff5
+  fin_cases a <;> fin_cases b <;> fin_cases c <;> simp_all
+
+/-- Pentagon coloring has no red 3-clique. -/
+theorem pentagon_no_red_clique :
+    ¬∃ (s : Finset (Fin 5)), s.card = 3 ∧ IsRedClique pentagonColoring s := by
+  intro ⟨s, hs_card, hs_clique⟩
+  obtain ⟨a, b, c, hab, hac, hbc, hs⟩ := Finset.card_eq_three.mp hs_card
+  have ha : a ∈ s := by rw [hs]; simp
+  have hb : b ∈ s := by rw [hs]; simp
+  have hc : c ∈ s := by rw [hs]; simp [hbc]
+  unfold IsRedClique at hs_clique
+  have h_ab := hs_clique ha hb hab
+  have h_ac := hs_clique ha hc hac
+  have h_bc := hs_clique hb hc hbc
+  simp only [EdgeColoring.redGraph] at h_ab h_ac h_bc
+  have hred : isRedTriangle a b c := ⟨h_ab.1, h_ac.1, h_bc.1⟩
+  exact pentagon_no_red_triangle_at a b c hab hac hbc hred
+
+/-- Pentagon coloring has no blue 3-clique. -/
+theorem pentagon_no_blue_clique :
+    ¬∃ (s : Finset (Fin 5)), s.card = 3 ∧ IsBlueClique pentagonColoring s := by
+  intro ⟨s, hs_card, hs_clique⟩
+  obtain ⟨a, b, c, hab, hac, hbc, hs⟩ := Finset.card_eq_three.mp hs_card
+  have ha : a ∈ s := by rw [hs]; simp
+  have hb : b ∈ s := by rw [hs]; simp
+  have hc : c ∈ s := by rw [hs]; simp [hbc]
+  unfold IsBlueClique at hs_clique
+  have h_ab := hs_clique ha hb hab
+  have h_ac := hs_clique ha hc hac
+  have h_bc := hs_clique hb hc hbc
+  simp only [EdgeColoring.blueGraph] at h_ab h_ac h_bc
+  have hblue : isBlueTriangle a b c := ⟨h_ab.1, h_ac.1, h_bc.1⟩
+  exact pentagon_no_blue_triangle_at a b c hab hac hbc hblue
+
+/-- **R(3,3) > 5**: K_5 admits a 2-coloring with no monochromatic triangle.
+    The pentagon coloring witnesses this. -/
+theorem ramsey_3_3_lower_bound :
+    ¬HasRamseyProperty (Fin 5) 3 3 := by
+  intro h
+  rcases h pentagonColoring with ⟨red, hred_card, hred_clique⟩ | ⟨blue, hblue_card, hblue_clique⟩
+  · exact pentagon_no_red_clique ⟨red, hred_card, hred_clique⟩
+  · exact pentagon_no_blue_clique ⟨blue, hblue_card, hblue_clique⟩
+
+/-- **R(3,3) = 6**: The exact Ramsey number.
+    Upper bound: From ramsey_theorem (existence) and ramseyBound 3 3 = 6
+    Lower bound: ramsey_3_3_lower_bound shows R(3,3) > 5
+
+    Note: This theorem states the lower bound. The upper bound (that Fin 6
+    has the Ramsey property) follows from ramsey_theorem. -/
+theorem ramsey_3_3_lower : ¬HasRamseyProperty (Fin 5) 3 3 :=
+  ramsey_3_3_lower_bound
+
+/-- R(3,3) ≥ 6 reformulated: there exists a 2-coloring of K_5 with no monochromatic triangle. -/
+theorem ramsey_3_3_at_least_6 :
+    ∃ (c : EdgeColoring (Fin 5)),
+      (∀ s : Finset (Fin 5), s.card = 3 → ¬IsRedClique c s) ∧
+      (∀ s : Finset (Fin 5), s.card = 3 → ¬IsBlueClique c s) := by
+  use pentagonColoring
+  constructor
+  · intro s hs hred
+    exact pentagon_no_red_clique ⟨s, hs, hred⟩
+  · intro s hs hblue
+    exact pentagon_no_blue_clique ⟨s, hs, hblue⟩
+
+/-! ## Part XI: Concrete Computations -/
 
 example : Nat.choose 4 2 = 6 := by native_decide
 example : Nat.choose 5 2 = 10 := by native_decide
@@ -455,6 +593,9 @@ example : Nat.choose 6 3 = 20 := by native_decide
 #check ramsey_one_right
 #check ramsey_two_s
 #check ramsey_3_3_bound
+#check ramsey_3_3_lower_bound
+#check pentagon_no_red_clique
+#check pentagon_no_blue_clique
 #check extend_red_clique
 #check extend_blue_clique
 

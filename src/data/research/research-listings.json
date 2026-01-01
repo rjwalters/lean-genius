@@ -1,27 +1,5 @@
 [
   {
-    "slug": "weak-goldbach",
-    "title": "Weak Goldbach Conjecture (Ternary Goldbach)",
-    "description": "Every odd integer greater than 5 can be expressed as the sum of three prime numbers.",
-    "phase": "ACT",
-    "status": "active",
-    "tier": "A",
-    "path": "full",
-    "tags": [
-      "number-theory",
-      "additive-combinatorics",
-      "primes",
-      "circle-method",
-      "tier-a"
-    ],
-    "started": "2025-12-31T12:09:11-08:00",
-    "lastUpdate": "2025-12-31T12:12:26-08:00",
-    "attemptCount": 6,
-    "approachCount": 1,
-    "significance": 8,
-    "tractability": 3
-  },
-  {
     "slug": "pnp-barriers",
     "title": "P vs NP Barrier Formalization",
     "description": "Formalize the three major barriers to proving P ≠ NP: relativization (Baker-Gill-Solovay), natural proofs (Razborov-Rudich), and algebrization (Aaronson-Wigderson).",
@@ -41,5 +19,65 @@
     "approachCount": 0,
     "significance": 8,
     "tractability": 4
+  },
+  {
+    "slug": "three-squares-theorem",
+    "title": "Legendre's Three Squares Theorem",
+    "description": "n is sum of 3 squares iff n ≠ 4^a(8b+7).",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "number-theory",
+      "squares",
+      "classical"
+    ],
+    "started": "2026-01-01T19:54:13.472Z",
+    "lastUpdate": "2026-01-01T19:54:13.472Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 6
+  },
+  {
+    "slug": "burnside-counting",
+    "title": "Burnside Lemma Applications",
+    "description": "Apply Mathlib's MulAction.",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "fast",
+    "tags": [
+      "combinatorics",
+      "group-theory",
+      "counting"
+    ],
+    "started": "2026-01-01T19:54:13.473Z",
+    "lastUpdate": "2026-01-01T19:54:13.473Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 8
+  },
+  {
+    "slug": "erdos-ko-rado",
+    "title": "Erdős-Ko-Rado Theorem",
+    "description": "Maximum intersecting family of k-subsets of n-set has size C(n-1,k-1) for n ≥ 2k.",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "combinatorics",
+      "extremal",
+      "set-systems"
+    ],
+    "started": "2026-01-01T19:54:13.473Z",
+    "lastUpdate": "2026-01-01T19:54:13.473Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 6
   }
 ]
