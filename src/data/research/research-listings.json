@@ -95,7 +95,7 @@
     ],
     "started": "2025-12-31T12:09:11-08:00",
     "lastUpdate": "2025-12-31T12:12:26-08:00",
-    "attemptCount": 0,
+    "attemptCount": 6,
     "approachCount": 1,
     "significance": 8,
     "tractability": 3
@@ -179,5 +179,47 @@
     "approachCount": 0,
     "significance": 7,
     "tractability": 5
+  },
+  {
+    "slug": "pnp-barriers",
+    "title": "P vs NP Barrier Formalization",
+    "description": "Formalize the three major barriers to proving P ≠ NP: relativization (Baker-Gill-Solovay), natural proofs (Razborov-Rudich), and algebrization (Aaronson-Wigderson).",
+    "phase": "ACT",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "complexity-theory",
+      "impossibility",
+      "formalization",
+      "p-vs-np"
+    ],
+    "started": "2025-12-31T00:00:00-08:00",
+    "lastUpdate": "2025-12-31T21:00:00-08:00",
+    "attemptCount": 3,
+    "approachCount": 0,
+    "significance": 8,
+    "tractability": 4
+  },
+  {
+    "slug": "rh-consequences",
+    "title": "Riemann Hypothesis Consequences",
+    "description": "Formalize consequences of the Riemann Hypothesis, including bounds on the Mertens function, prime gaps, and Chebyshev functions.",
+    "phase": "ACT",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "number-theory",
+      "analytic-number-theory",
+      "riemann-hypothesis",
+      "conditional"
+    ],
+    "started": "2025-12-31T00:00:00-08:00",
+    "lastUpdate": "2025-12-31T21:00:00-08:00",
+    "attemptCount": 3,
+    "approachCount": 0,
+    "significance": 8,
+    "tractability": 7
   }
 ]

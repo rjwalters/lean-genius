@@ -1,0 +1,62 @@
+{
+  "slug": "rh-consequences",
+  "title": "Riemann Hypothesis Consequences",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{RH} \\implies |M(x)| = O(\\sqrt{x})",
+    "plain": "Formalize consequences of the Riemann Hypothesis, including bounds on the Mertens function, prime gaps, and Chebyshev functions.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2025-12-31",
+    "iteration": 3,
+    "focus": "Extending RH consequence formalizations with Mertens and Möbius computations.",
+    "activeApproach": "Computational verification of Mertens function and Möbius identities.",
+    "blockers": [
+      "PNT not in Mathlib (available in PrimeNumberTheoremAnd project)."
+    ],
+    "nextAction": "Consider importing PrimeNumberTheoremAnd as dependency to upgrade axioms.",
+    "attemptCounts": {
+      "total": 3,
+      "currentApproach": 3,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [
+      "What Mathlib Has"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [],
+  "tags": [
+    "number-theory",
+    "analytic-number-theory",
+    "riemann-hypothesis",
+    "conditional"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2025-12-31T00:00:00-08:00",
+  "lastUpdate": "2025-12-31T21:00:00-08:00",
+  "significance": 8,
+  "tractability": 7
+}
