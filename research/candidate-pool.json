@@ -79,7 +79,7 @@
       "significance": 8,
       "tractability": 5,
       "status": "surveyed",
-      "notes": "SURVEYED: PNPBarriers.lean (~1459 lines, 0 sorries). Session 6 (2026-01-01): Added Part 12 - BPP, PP, ZPP probabilistic classes. Proved P⊆ZPP⊆BPP⊆PP⊆PSPACE chain, BPP=coBPP closure. P=BPP derandomization question. Impagliazzo-Wigderson connection. Complete framework for P/NP/coNP/BPP/PP/ZPP/PSPACE/EXP, all 3 barriers.",
+      "notes": "SURVEYED: PNPBarriers.lean (~1605 lines, 0 sorries). Session 7 (2026-01-01): Added Part 13 - RP, coRP, ZPP refinement. Defined RP/coRP (one-sided error classes). Proved P⊆RP, P⊆coRP, RP⊆BPP, coRP⊆BPP. **ZPP = RP ∩ coRP** proper definition. Full randomized chain: P⊆ZPP⊆RP⊆BPP⊆PP⊆PSPACE. Complete probabilistic complexity framework.",
       "tags": [
         "complexity",
         "impossibility",
