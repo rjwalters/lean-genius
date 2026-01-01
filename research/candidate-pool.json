@@ -344,8 +344,8 @@
       "tier": "B",
       "significance": 7,
       "tractability": 6,
-      "status": "available",
-      "notes": "n is sum of 3 squares iff n ≠ 4^a(8b+7). NOT in Mathlib. Classic number theory. Connects to LagrangeFourSquares.lean. Wiedijk #100 list candidate.",
+      "status": "surveyed",
+      "notes": "SURVEYED: Defined IsExcludedForm, proved key modular arithmetic lemma. Main theorem uses axioms for both directions. Necessity is provable with more API work. Sufficiency requires Dirichlet on primes in AP or ternary quadratic forms (not in current Mathlib).",
       "tags": [
         "number-theory",
         "squares",
@@ -372,8 +372,8 @@
       "tier": "B",
       "significance": 6,
       "tractability": 8,
-      "status": "available",
-      "notes": "Apply Mathlib's MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group to classic counting: necklaces, cube colorings. Connects to SylowTheorem.lean and group action theory.",
+      "status": "completed",
+      "notes": "COMPLETED: BurnsideCounting.lean (255 lines, 5 axioms, 0 sorries). Burnside lemma from Mathlib, cyclic AddAction on colorings, binary 4-necklace counting (|X/G|=6). Proves |Coloring 4 2|=16, |constant colorings|=2, |period-2|=4. Main counting via axioms.",
       "tags": [
         "combinatorics",
         "group-theory",
@@ -386,8 +386,8 @@
       "tier": "B",
       "significance": 7,
       "tractability": 6,
-      "status": "available",
-      "notes": "Maximum intersecting family of k-subsets of n-set has size C(n-1,k-1) for n ≥ 2k. Classic extremal combinatorics. May need custom infrastructure.",
+      "status": "completed",
+      "notes": "COMPLETED: ErdosKoRado.lean (231 lines, 3 axioms, 2 sorries). Katona's cyclic permutation proof approach. Defines IsIntersectingFamily, Star, cyclicInterval. Proves star_is_intersecting fully. Main bound and star_achieves_bound use sorries (double counting formalization). Uses Mathlib's Set.Intersecting, Shadow infrastructure.",
       "tags": [
         "combinatorics",
         "extremal",
@@ -395,5 +395,5 @@
       ]
     }
   ],
-  "lastUpdated": "2026-01-01T21:30:00Z"
+  "lastUpdated": "2026-01-01T22:00:00Z"
 }

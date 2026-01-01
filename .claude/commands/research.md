@@ -217,17 +217,51 @@ Ask: "Do I already have a decidable instance or structural theorem?"
 
 ## Mode 1: FRESH (Available Problems Exist)
 
-### Step 1.1: Claim a Problem
+### Step 1.1: Claim a Problem (ATOMIC LOCK REQUIRED)
+
+**CRITICAL: You MUST acquire an atomic lock before working on any problem.**
+
+Multiple agents may be running `/research` simultaneously. To prevent duplicate work:
 
 ```bash
-# List available problems
-jq -r '.candidates[] | select(.status == "available") | "\(.id): \(.name)"' research/candidate-pool.json
+# Step 1: Clean stale locks (> 2 hours old)
+find research/claims -name "*.lock" -type d -mmin +120 -exec rm -rf {} \; 2>/dev/null || true
 
-# Pick one (random selection or first listed)
-PROBLEM_ID="<selected-id>"
+# Step 2: List available problems
+AVAILABLE=$(jq -r '.candidates[] | select(.status == "available") | .id' research/candidate-pool.json)
+
+# Step 3: Attempt to claim each available problem atomically
+CLAIMED=""
+for PROBLEM_ID in $AVAILABLE; do
+  CLAIM_DIR="research/claims/${PROBLEM_ID}.lock"
+
+  # mkdir is POSIX-atomic: either succeeds (you got it) or fails (someone else has it)
+  if mkdir "$CLAIM_DIR" 2>/dev/null; then
+    # SUCCESS - we own this problem
+    echo "$$" > "$CLAIM_DIR/pid"
+    date -Iseconds > "$CLAIM_DIR/timestamp"
+    echo "Claimed: $PROBLEM_ID"
+    CLAIMED="$PROBLEM_ID"
+    break
+  else
+    echo "Already claimed by another agent: $PROBLEM_ID"
+  fi
+done
+
+if [ -z "$CLAIMED" ]; then
+  echo "No available problems could be claimed - entering REVISIT mode"
+  # Proceed to Mode 2: REVISIT
+fi
 ```
 
-Save the problem ID.
+**Why `mkdir`?** It's POSIX-atomic. There's no race window between "check if exists" and "create" - it's a single operation that either succeeds or fails.
+
+**When done with the problem:** Release the lock:
+```bash
+rm -rf "research/claims/${PROBLEM_ID}.lock"
+```
+
+Save the problem ID in `PROBLEM_ID`.
 
 ### Step 1.2: Feasibility Check
 
@@ -255,7 +289,7 @@ Save the problem ID.
 
 **Critical**: `blocked` means "we cannot make progress until Mathlib changes." Do NOT confuse with `in-progress`.
 
-### Step 1.4: Implement and Update Pool
+### Step 1.4: Implement, Update Pool, and Release Lock
 
 After implementing, update the problem status in `research/candidate-pool.json`:
 
@@ -265,6 +299,13 @@ jq '(.candidates[] | select(.id == "<problem-id>")).status = "<completed|surveye
 ```
 
 Also update the `notes` field with what was learned.
+
+**IMPORTANT: Release the lock when done:**
+```bash
+rm -rf "research/claims/${PROBLEM_ID}.lock"
+```
+
+This allows other agents to claim the problem if it needs more work (e.g., status changed to `surveyed` or `in-progress`).
 
 ---
 
@@ -453,8 +494,17 @@ End every session with:
 ## Parallel Safety
 
 This workflow is safe for multiple agents:
-- Claims prevent duplicate work on FRESH problems
-- REVISIT mode should note the session in knowledge.md to coordinate
+
+### FRESH Mode Coordination
+- **Atomic directory locks** (`research/claims/<problem-id>.lock/`) prevent duplicate claims
+- `mkdir` is POSIX-atomic: no race condition between check and create
+- Stale locks (> 2 hours) are automatically cleaned
+- Lock is released when work is complete
+
+### REVISIT Mode Coordination
+- Note the session start time in `knowledge.md` before beginning work
+- Check `knowledge.md` timestamps - if another session started recently, pick a different problem
+- Multiple agents can work on different aspects of the same problem if coordinated via knowledge.md
 
 ---
 
@@ -463,7 +513,7 @@ This workflow is safe for multiple agents:
 | File | Purpose |
 |------|---------|
 | `research/candidate-pool.json` | Problem registry with status |
-| `research/claims/*.json` | Active claims |
+| `research/claims/<id>.lock/` | Atomic locks (directories, not files) |
 | `research/problems/<id>/knowledge.md` | Accumulated insights per problem |
 | `proofs/Proofs/*.lean` | Proof files |
 
