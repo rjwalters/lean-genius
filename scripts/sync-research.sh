@@ -41,17 +41,19 @@ for meta_file in "$SOURCE_DIR"/*/meta.json; do
         slug=$(basename "$(dirname "$meta_file")")
         target_file="$TARGET_DIR/${slug}.json"
 
-        # Check if status is "skipped" - these should not be on the website
+        # Check status - only "active" problems should be on the research page
+        # - "skipped" = already in Mathlib or not feasible
+        # - "graduated" = completed, should be on main proof gallery instead
         status=$(jq -r '.status // "unknown"' "$meta_file" 2>/dev/null || echo "unknown")
 
-        if [ "$status" = "skipped" ]; then
+        if [ "$status" = "skipped" ] || [ "$status" = "graduated" ]; then
             # Remove from target if it exists
             if [ -f "$target_file" ]; then
                 rm "$target_file"
-                echo -e "${BLUE}✕${NC} Removed (status=skipped): $slug"
+                echo -e "${BLUE}✕${NC} Removed (status=$status): $slug"
                 ((removed++))
             else
-                echo -e "${BLUE}○${NC} Filtered (status=skipped): $slug"
+                echo -e "${BLUE}○${NC} Filtered (status=$status): $slug"
             fi
             ((filtered++))
             continue
@@ -77,7 +79,7 @@ echo ""
 echo "Summary:"
 echo -e "  ${GREEN}Synced:${NC}     $synced"
 echo -e "  ${YELLOW}Up to date:${NC} $up_to_date"
-echo -e "  ${BLUE}Filtered:${NC}   $filtered (status=skipped, not shown on website)"
+echo -e "  ${BLUE}Filtered:${NC}   $filtered (skipped/graduated, not on research page)"
 if [ $removed -gt 0 ]; then
     echo -e "  ${BLUE}Removed:${NC}    $removed (were in target, now filtered)"
 fi
