@@ -525,3 +525,85 @@ Updated `src/data/research/problems/three-squares-theorem.json` with:
 
 - `src/data/research/problems/three-squares-theorem.json` (structured knowledge fields populated)
 - `research/problems/three-squares-theorem/knowledge.md` (this session added)
+
+---
+
+## Session 2026-01-01 (Post-Upgrade) - BLOCKER RESOLVED! 🎉
+
+### Mode
+REVISIT - Checking if Mathlib v4.26.0 upgrade resolved the blocker
+
+### Major Discovery
+
+**THE BLOCKER IS RESOLVED!** After upgrading Mathlib from v4.10 to v4.26.0, PrimesInAP is now available.
+
+### Verification
+
+```lean
+import Mathlib.NumberTheory.LSeries.PrimesInAP
+
+#check Nat.infinite_setOf_prime_and_modEq
+-- Nat.infinite_setOf_prime_and_modEq {q a : ℕ} (hq : q ≠ 0) (h : a.Coprime q) :
+--   {p | Nat.Prime p ∧ p ≡ a [MOD q]}.Infinite
+```
+
+This compiles successfully with the upgraded Mathlib!
+
+### Available Theorems for Three Squares
+
+From `Mathlib.NumberTheory.LSeries.PrimesInAP`:
+
+| Theorem | Statement |
+|---------|-----------|
+| `Nat.infinite_setOf_prime_and_modEq` | Infinitely many primes in any coprime residue class |
+| `Nat.forall_exists_prime_gt_and_modEq` | For any n, exists prime p > n with p ≡ a (mod q) |
+| `Nat.forall_exists_prime_gt_and_eq_mod` | ZMod version |
+
+### Updated Infrastructure Assessment
+
+| Component | Before Upgrade | After Upgrade |
+|-----------|----------------|---------------|
+| Dirichlet's theorem (primes in AP) | ❌ Not available | ✅ **NOW AVAILABLE** |
+| Sum of two squares | ✅ Available | ✅ Available |
+| Minkowski's theorem | ✅ Available | ✅ Available |
+| Quadratic reciprocity | ✅ Available | ✅ Available |
+| Ternary QF basics | ❌ Not available | ❌ Still needs ~200-300 lines |
+
+### Path to Complete Proof
+
+With PrimesInAP now available, we can use **Ankeny's approach (1957)**:
+
+1. **Reduce to square-free case** (~30 lines)
+   - If m = k²n with n square-free and n is sum of 3 squares, so is m
+
+2. **Handle each residue class mod 8** (~150 lines total)
+   - n ≡ 1 (mod 8): Find representation via descent from 4-squares
+   - n ≡ 2 (mod 8): n = 1 + 1 + (n-2), recurse on n-2
+   - n ≡ 3 (mod 8): Use Dirichlet to find prime q ≡ 1 (mod 4), apply Fermat
+   - n ≡ 5 (mod 8): Similar to n ≡ 1
+   - n ≡ 6 (mod 8): Similar to n ≡ 2
+
+3. **Key Lemma (Dirichlet's)** (~50 lines)
+   - If -d is QR mod (dn-1), then n is sum of 3 squares
+   - Uses Minkowski + quadratic reciprocity
+
+**Total estimate: ~200-300 lines**
+
+### Decision
+
+**Status: blocked → in-progress**
+
+The Mathlib upgrade resolved the primary blocker. This is now tractable with ~200-300 lines of additional work.
+
+### Next Steps (Concrete)
+
+1. Create lemma skeleton for Ankeny's approach
+2. Prove reduction to square-free case
+3. Handle n ≡ 3 (mod 8) case using Dirichlet + Fermat two-squares
+4. Complete remaining residue classes
+5. Remove the axiom `not_excluded_form_is_sum_three_sq`
+
+### Sources
+
+- [PrimesInAP docs](https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/LSeries/PrimesInAP.html)
+- [Ankeny 1957](https://www.ams.org/journals/proc/1957-008-02/S0002-9939-1957-0085275-8/S0002-9939-1957-0085275-8.pdf)

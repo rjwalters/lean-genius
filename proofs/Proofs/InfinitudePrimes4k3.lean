@@ -184,7 +184,7 @@ theorem infinitely_many_primes_3_mod_4 :
     have := Nat.factorial_pos (n + 1)
     omega
   have hN_add : N + 1 = 4 * (n + 1).factorial := by omega
-  have hp_dvd_diff : p ∣ (N + 1) - N := Nat.dvd_sub' (by rw [hN_add]; exact hp_dvd_4fact) hp_div
+  have hp_dvd_diff : p ∣ (N + 1) - N := Nat.dvd_sub (by rw [hN_add]; exact hp_dvd_4fact) hp_div
   simp only [add_tsub_cancel_left] at hp_dvd_diff
   -- But p is prime, so p ≥ 2, contradiction with p ∣ 1
   exact hp_prime.not_dvd_one hp_dvd_diff

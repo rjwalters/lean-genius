@@ -344,8 +344,8 @@
       "tier": "B",
       "significance": 7,
       "tractability": 6,
-      "status": "blocked",
-      "notes": "SURVEYED: Necessity PROVED (0 axioms). Sufficiency BLOCKED on Mathlib version (Sept 2024) - needs PrimesInAP (added Nov 2024). After upgrade: ~200-300 lines to complete.",
+      "status": "in-progress",
+      "notes": "UNBLOCKED: Mathlib v4.26 has PrimesInAP. Necessity PROVED. Sufficiency needs ~200-300 lines using Ankeny approach with Dirichlet + Minkowski.",
       "tags": [
         "number-theory",
         "squares",

@@ -222,8 +222,8 @@ theorem schur_2_lower : ∃ (c : IntegerColoring 4 2), ¬HasMonochromaticSchurTr
   -- Valid: (0,0,1), (0,1,2), (0,2,3), (1,1,3)
   fin_cases i <;> fin_cases j <;> fin_cases k <;>
     simp only [sumFreeColoring4, Fin.val_zero, Fin.val_one, Fin.isValue,
-               decide_True, decide_False, Fin.zero_eta, Fin.mk_one] at hsum heq1 heq2 ⊢ <;>
-    first | omega | simp_all
+               Fin.zero_eta, Fin.mk_one] at hsum heq1 heq2 ⊢ <;>
+    first | omega | decide | simp_all
 
 /-! ## Part V: Main Results -/
 
@@ -257,14 +257,15 @@ theorem schur_theorem_existence (r : ℕ) (hr : r ≥ 1) :
       | zero =>
         -- r = 2: S(2) = 5
         exact ⟨5, by omega, schur_2_upper⟩
-      | succ _ =>
+      | succ r''' =>
         -- r ≥ 3: Use multicolor Ramsey theorem
         -- Schur's theorem for r colors follows from R_r(3,3,...,3)
         -- The multicolor Ramsey theorem gives us a monochromatic 3-clique
         -- which provides the Schur triple via edge coloring of the complete graph
         -- We use the axiomatized multicolor Ramsey theorem
-        have hr_pos : r' + 1 ≥ 1 := by omega
-        obtain ⟨n, hn_pos, hramsey⟩ := RamseysTheorem.multicolor_ramsey_exists (r' + 1) 3 hr_pos (by omega)
+        -- r = r''' + 3 here since r = succ (succ (succ r'''))
+        have hr_pos : r''' + 3 ≥ 1 := by omega
+        obtain ⟨n, hn_pos, hramsey⟩ := RamseysTheorem.multicolor_ramsey_exists (r''' + 3) 3 hr_pos (by omega)
         -- The connection: for any coloring c : {1,...,n} → Fin r,
         -- define edge color(i,j) := c(|i-j|)
         -- A monochromatic triangle i < j < k with color col means
