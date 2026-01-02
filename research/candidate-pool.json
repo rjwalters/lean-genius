@@ -1,397 +1,20 @@
 {
-  "version": "1.2",
-  "last_updated": "2026-01-02T02:31:47.000Z",
+  "version": "2.0",
+  "last_updated": "2026-01-02T09:13:12.996665Z",
+  "source": "auto-generated from research/db/knowledge.db",
   "candidates": [
     {
-      "id": "bounded-prime-gaps",
-      "name": "Bounded Prime Gaps (Zhang/Polymath)",
-      "tier": "A",
-      "significance": 9,
-      "tractability": 1,
-      "status": "skipped",
-      "notes": "SKIPPED: Requires sieve theory (Selberg, GPY) not in Mathlib. Bombieri-Vinogradov missing. Multi-year effort.",
-      "tags": [
-        "number-theory",
-        "primes",
-        "formalization"
-      ]
-    },
-    {
-      "id": "weak-goldbach",
-      "name": "Weak Goldbach Conjecture (Helfgott)",
-      "tier": "A",
-      "significance": 8,
-      "tractability": 5,
-      "status": "completed",
-      "notes": "COMPLETED: Formalization work done. We have: canonical statement, decidable instances (enables `decide` for any n), structural reduction (binary⟹weak). Full proof requires circle method (out of scope). Enumeration removed as zero-value busywork.",
-      "tags": [
-        "number-theory",
-        "primes",
-        "formalization"
-      ]
-    },
-    {
-      "id": "szemeredi-theorem",
-      "name": "Szemerédi's Theorem",
-      "tier": "A",
-      "significance": 8,
+      "id": "p-vs-np",
+      "name": "P versus NP Problem",
+      "tier": "S",
+      "significance": 10,
       "tractability": 2,
-      "status": "completed",
-      "notes": "COMPLETED k=3: Roth's theorem proved via Mathlib's corners chain (Regularity→Triangle Removal→Corners→Roth). Equivalence IsAPFree↔ThreeAPFree. k≥4 still needs hypergraph regularity (axiom).",
-      "tags": [
-        "combinatorics",
-        "additive",
-        "formalization"
-      ]
-    },
-    {
-      "id": "twin-prime-special",
-      "name": "Twin Primes in Special Forms",
-      "tier": "B",
-      "significance": 8,
-      "tractability": 8,
-      "status": "completed",
-      "notes": "Proved: twin primes > 3 must have form (6k-1, 6k+1). Structure theorem.",
-      "tags": [
-        "number-theory",
-        "primes",
-        "partial-progress"
-      ]
-    },
-    {
-      "id": "collatz-structured",
-      "name": "Collatz for Structured Starting Values",
-      "tier": "B",
-      "significance": 6,
-      "tractability": 7,
-      "status": "completed",
-      "notes": "COMPLETED: Proved 2^k reaches 1, closure under 2x, verified 3,5,6,7,9,27.",
-      "tags": [
-        "number-theory",
-        "dynamics",
-        "partial-progress"
-      ]
-    },
-    {
-      "id": "pnp-barriers",
-      "name": "P≠NP Barrier Formalization",
-      "tier": "B",
-      "significance": 8,
-      "tractability": 5,
-      "status": "surveyed",
-      "notes": "SURVEYED: PNPBarriers.lean (~4041 lines, 0 sorries). Session 18: Fixed build errors in Part 21-22. All 22 parts compile cleanly. Includes: barriers, PH, PSPACE/EXP, coNP, BPP/PP/ZPP, RP/coRP, MA/AM/IP, TQBF, MIP=NEXP, BQP/QMA, PCP, ZK, QCMA, P/poly/NC/AC/L/NL, #P/GapP/Toda.",
-      "tags": [
-        "complexity",
-        "impossibility",
-        "formalization"
-      ]
-    },
-    {
-      "id": "prime-gaps-explicit",
-      "name": "Explicit Prime Gap Bounds",
-      "tier": "B",
-      "significance": 7,
-      "tractability": 7,
-      "status": "completed",
-      "notes": "Proved π(2n) > π(n) from Bertrand. Stated p_n ≤ 2^n as axiom.",
-      "tags": [
-        "number-theory",
-        "primes",
-        "bounds"
-      ]
-    },
-    {
-      "id": "2d-navier-stokes",
-      "name": "2D Navier-Stokes Regularity",
-      "tier": "A",
-      "significance": 8,
-      "tractability": 1,
       "status": "skipped",
-      "notes": "SKIPPED: No PDE infrastructure in Mathlib. Requires defining NS equations, Sobolev spaces, weak solutions from scratch.",
+      "notes": "SKIPPED: MILLENNIUM PRIZE: Does P = NP? PvsNP. | Stats: 11 items built, 4 open gaps",
       "tags": [
-        "analysis",
-        "pde",
-        "formalization"
-      ]
-    },
-    {
-      "id": "rh-consequences",
-      "name": "Riemann Hypothesis Consequences",
-      "tier": "B",
-      "significance": 8,
-      "tractability": 7,
-      "status": "completed",
-      "notes": "SURVEYED: Session 6 (2026-01-01): Added Li's criterion (RH↔λₙ≥0), Riemann-von Mangoldt zero counting, completed zeta (xi function), ζ(6)/ζ(8) formulas. Session 5: Mathlib zeta infrastructure. ~632 lines, 9 axioms, 25+ proven theorems.",
-      "tags": [
-        "number-theory",
-        "analytic",
-        "conditional"
-      ]
-    },
-    {
-      "id": "legendre-partial",
-      "name": "Legendre Conjecture Partial",
-      "tier": "B",
-      "significance": 7,
-      "tractability": 7,
-      "status": "completed",
-      "notes": "COMPLETED: Verified Legendre for n=1 to 20 with explicit prime witnesses.",
-      "tags": [
-        "number-theory",
-        "primes",
-        "partial-progress"
-      ]
-    },
-    {
-      "id": "hurwitz-impossibility",
-      "name": "Hurwitz Quaternion Theorem",
-      "tier": "B",
-      "significance": 7,
-      "tractability": 8,
-      "status": "completed",
-      "notes": "COMPLETED: HurwitzTheorem.lean (~1680 lines). Complete proofs for n=1,2,4 identities, n=3 impossibility theorem. n=8/only-if as axioms. Division algebra formalization.",
-      "tags": [
-        "algebra",
-        "impossibility",
-        "formalization"
-      ]
-    },
-    {
-      "id": "infinitude-primes-4k1",
-      "name": "Infinitely Many Primes ≡ 1 (mod 4)",
-      "tier": "B",
-      "significance": 6,
-      "tractability": 8,
-      "status": "completed",
-      "notes": "COMPLETED: InfinitudePrimes4k1.lean (~175 lines, 0 axioms). Elementary proof using N = (2·(n+1)!)² + 1 construction. Uses Mathlib's SumTwoSquares: if odd p | k² + 1 then p ≡ 1 mod 4. No Dirichlet needed.",
-      "tags": [
-        "number-theory",
-        "primes",
-        "classical"
-      ]
-    },
-    {
-      "id": "infinitude-primes-4k3",
-      "name": "Infinitely Many Primes ≡ 3 (mod 4)",
-      "tier": "B",
-      "significance": 6,
-      "tractability": 9,
-      "status": "completed",
-      "notes": "COMPLETED: InfinitudePrimes4k3.lean (~230 lines, 0 axioms). Elementary Euclid-style proof using N = 4·(n+1)! - 1 construction. Proves infinitely_many_primes_3_mod_4, primes_3_mod_4_infinite (Set.Infinite), no_largest_prime_3_mod_4. No Dirichlet/analytic NT needed.",
-      "tags": [
-        "number-theory",
-        "primes",
-        "classical"
-      ]
-    },
-    {
-      "id": "sophie-germain-structure",
-      "name": "Sophie Germain Prime Structure",
-      "tier": "B",
-      "significance": 6,
-      "tractability": 8,
-      "status": "completed",
-      "notes": "COMPLETED: SophieGermain.lean with structure theorem (p>3 SG prime => p≡5 mod 6), safe prime mod 12, 10 verified examples (2,3,5,11,23,29,41,53,83,89), non-examples, Cunningham chain 2→5→11→23, conjecture as axiom.",
-      "tags": [
-        "number-theory",
-        "primes",
-        "partial-progress"
-      ]
-    },
-    {
-      "id": "sum-of-divisors",
-      "name": "Sum of Divisors Properties",
-      "tier": "C",
-      "significance": 5,
-      "tractability": 9,
-      "status": "skipped",
-      "notes": "SKIPPED: Already covered by PerfectNumbers.lean which has σ(2^k), Euclid-Euler theorem, examples.",
-      "tags": [
-        "number-theory",
-        "arithmetic-functions",
-        "classical"
-      ]
-    },
-    {
-      "id": "mobius-inversion",
-      "name": "Möbius Inversion Formula",
-      "tier": "B",
-      "significance": 7,
-      "tractability": 7,
-      "status": "completed",
-      "notes": "COMPLETED (IN MATHLIB): sum_eq_iff_sum_mul_moebius_eq (rings), sum_eq_iff_sum_smul_moebius_eq (additive), prod_eq_iff_prod_pow_moebius_eq (multiplicative). ζ*μ=1 as coe_zeta_mul_moebius.",
-      "tags": [
-        "number-theory",
-        "arithmetic-functions",
-        "classical"
-      ]
-    },
-    {
-      "id": "prime-counting-bounds",
-      "name": "Prime Counting Function Bounds",
-      "tier": "B",
-      "significance": 7,
-      "tractability": 7,
-      "status": "completed",
-      "notes": "COMPLETED: ChebyshevBounds.lean (~435 lines, 0 axioms, 12 theorems). Upper bounds: θ(n) ≤ n·log(4), n^{π(2n)-π(n)} ≤ 4^n. Lower bounds via Bertrand: π(2n)-π(n) ≥ 1, π(n) ≥ log₂(n), θ(2n)-θ(n) ≥ log(n+1). Central binomial bounds: C(2n,n) ≤ 4^n, 4^n ≤ (2n+1)·C(2n,n).",
-      "tags": [
-        "number-theory",
-        "analytic",
-        "bounds"
-      ]
-    },
-    {
-      "id": "chinese-remainder-constructive",
-      "name": "Chinese Remainder Theorem (Constructive)",
-      "tier": "C",
-      "significance": 5,
-      "tractability": 9,
-      "status": "completed",
-      "notes": "COMPLETED: ChineseRemainderConstructive.lean with existence/uniqueness, Bézout coefficients, explicit solution formula, Sunzi problem (23 mod 105), 3-moduli extension, RNS application.",
-      "tags": [
-        "number-theory",
-        "algorithms",
-        "classical"
-      ]
-    },
-    {
-      "id": "vietas-formulas",
-      "name": "Vieta's Formulas",
-      "tier": "C",
-      "significance": 5,
-      "tractability": 9,
-      "status": "completed",
-      "notes": "COMPLETED: VietasFormulas.lean with quadratic/cubic formulas, polynomial coeff theorem, examples.",
-      "tags": [
-        "algebra",
-        "polynomials",
-        "classical"
-      ]
-    },
-    {
-      "id": "wolstenholme-theorem",
-      "name": "Wolstenholme's Theorem",
-      "tier": "B",
-      "significance": 6,
-      "tractability": 7,
-      "status": "completed",
-      "notes": "COMPLETED: Computational verification for p=5,7,11,13. Babbage (mod p²) for p≥3. Failure cases p=2,3. Full theorem + Babbage as axioms. Wolstenholme primes definition. Harmonic number connection.",
-      "tags": [
-        "number-theory",
-        "binomial",
-        "classical"
-      ]
-    },
-    {
-      "id": "frobenius-two-coprime",
-      "name": "Frobenius Number (Two Coprime)",
-      "tier": "C",
-      "significance": 5,
-      "tractability": 9,
-      "status": "completed",
-      "notes": "COMPLETED (IN MATHLIB): frobeniusNumber_pair in Mathlib.NumberTheory.FrobeniusNumber proves mn-m-n is Frobenius number for coprime m,n.",
-      "tags": [
-        "number-theory",
-        "combinatorics",
-        "classical"
-      ]
-    },
-    {
-      "id": "kummer-theorem",
-      "name": "Kummer's Theorem on Binomial Divisibility",
-      "tier": "B",
-      "significance": 6,
-      "tractability": 7,
-      "status": "completed",
-      "notes": "COMPLETED: KummerTheorem.lean proves ν_p(C(n,k)) = #carries when adding k + (n-k) in base p. Uses Mathlib's Nat.Prime.multiplicity_choose. Includes Lucas theorem connection, Legendre formula, examples for C(10,4), C(6,3), C(8,2), prime power divisibility theorem.",
-      "tags": [
-        "number-theory",
-        "binomial",
-        "classical"
-      ]
-    },
-    {
-      "id": "primitive-roots-count",
-      "name": "Primitive Roots Modulo Primes",
-      "tier": "B",
-      "significance": 6,
-      "tractability": 6,
-      "status": "completed",
-      "notes": "COMPLETED: PrimitiveRoots.lean proves for prime p there are exactly φ(p-1) primitive roots. Uses isCyclic_of_subgroup_isDomain to show (Z/pZ)* is cyclic, then IsCyclic.card_orderOf_eq_totient. Includes existence theorem, generator characterization, examples for p=2,3,5,7,11,13.",
-      "tags": [
-        "number-theory",
-        "group-theory",
-        "classical"
-      ]
-    },
-    {
-      "id": "ramsey-lower-bounds",
-      "name": "Explicit Ramsey Number Lower Bounds",
-      "tier": "B",
-      "significance": 7,
-      "tractability": 8,
-      "status": "completed",
-      "notes": "COMPLETED: Added pentagon coloring construction to RamseysTheorem.lean (~150 new lines). Proved R(3,3) > 5 via explicit 2-coloring of K_5 with no monochromatic triangle. Key theorems: pentagonColoring, pentagon_no_red_clique, pentagon_no_blue_clique, ramsey_3_3_lower_bound, ramsey_3_3_at_least_6. Combined with existing ramseyBound 3 3 = 6, proves R(3,3) = 6 exactly.",
-      "tags": [
-        "combinatorics",
-        "ramsey",
-        "constructive"
-      ]
-    },
-    {
-      "id": "three-squares-theorem",
-      "name": "Legendre's Three Squares Theorem",
-      "tier": "B",
-      "significance": 7,
-      "tractability": 6,
-      "status": "in-progress",
-      "notes": "UNBLOCKED: Mathlib v4.26 has PrimesInAP. Necessity PROVED. Sufficiency needs ~200-300 lines using Ankeny approach with Dirichlet + Minkowski.",
-      "tags": [
-        "number-theory",
-        "squares",
-        "classical"
-      ]
-    },
-    {
-      "id": "schur-theorem",
-      "name": "Schur's Theorem (Sum-Free Colorings)",
-      "tier": "B",
-      "significance": 7,
-      "tractability": 7,
-      "status": "completed",
-      "notes": "COMPLETED: SchursTheorem.lean proves S(1)=2, S(2)=5 exactly. General existence uses multicolor Ramsey axiom from RamseysTheorem.lean. ~335 lines, 1 sorry (edge coloring connection for r≥3). Key insight: edge color(i,j) := c(|i-j|) gives Schur triple from monochromatic triangle.",
-      "tags": [
-        "combinatorics",
-        "ramsey",
-        "additive"
-      ]
-    },
-    {
-      "id": "burnside-counting",
-      "name": "Burnside Lemma Applications",
-      "tier": "B",
-      "significance": 6,
-      "tractability": 8,
-      "status": "completed",
-      "notes": "COMPLETED: BurnsideCounting.lean (255 lines, 5 axioms, 0 sorries). Burnside lemma from Mathlib, cyclic AddAction on colorings, binary 4-necklace counting (|X/G|=6). Proves |Coloring 4 2|=16, |constant colorings|=2, |period-2|=4. Main counting via axioms.",
-      "tags": [
-        "combinatorics",
-        "group-theory",
-        "counting"
-      ]
-    },
-    {
-      "id": "erdos-ko-rado",
-      "name": "Erdős-Ko-Rado Theorem",
-      "tier": "B",
-      "significance": 7,
-      "tractability": 6,
-      "status": "completed",
-      "notes": "COMPLETED: ErdosKoRado.lean 0 sorries. Main theorem uses double_counting_bound axiom (Katona counting argument). Alternative: upgrade Mathlib (Finset.erdos_ko_rado added Oct 2024).",
-      "tags": [
-        "combinatorics",
-        "extremal",
-        "set-systems"
+        "millennium-prize",
+        "complexity-theory",
+        "open-conjecture"
       ]
     },
     {
@@ -401,7 +24,7 @@
       "significance": 10,
       "tractability": 1,
       "status": "skipped",
-      "notes": "MILLENNIUM PRIZE: All non-trivial zeros of ζ(s) have Re(s)=1/2. RiemannHypothesis.lean has formal statement, known equivalences, trivial zeros. Full proof is one of deepest open problems in mathematics.",
+      "notes": "SKIPPED: MILLENNIUM PRIZE: All non-trivial zeros of ζ(s) have Re(s)=1/2. | Stats: 4 items built, 4 open gaps",
       "tags": [
         "millennium-prize",
         "number-theory",
@@ -416,7 +39,7 @@
       "significance": 10,
       "tractability": 1,
       "status": "skipped",
-      "notes": "MILLENNIUM PRIZE: rank(E(ℚ)) = ord_{s=1} L(E,s). BirchSwinnertonDyer.lean has elliptic curve L-function framework, Mordell-Weil rank definition, BSD statement. Requires deep arithmetic geometry.",
+      "notes": "SKIPPED: MILLENNIUM PRIZE: rank(E(ℚ)) = ord_{s=1} L(E,s). | Stats: 3 open gaps",
       "tags": [
         "millennium-prize",
         "number-theory",
@@ -431,7 +54,7 @@
       "significance": 10,
       "tractability": 1,
       "status": "skipped",
-      "notes": "MILLENNIUM PRIZE: Every Hodge class on a projective complex manifold is algebraic. HodgeConjecture.lean has Hodge decomposition, algebraic cycles, conjecture statement. Requires advanced algebraic geometry infrastructure.",
+      "notes": "SKIPPED: MILLENNIUM PRIZE: Every Hodge class on a projective complex manifold is algebraic. | Stats: 5 open gaps",
       "tags": [
         "millennium-prize",
         "algebraic-geometry",
@@ -440,17 +63,17 @@
       ]
     },
     {
-      "id": "yang-mills-mass-gap",
-      "name": "Yang-Mills Existence and Mass Gap",
+      "id": "navier-stokes-existence",
+      "name": "Navier-Stokes Existence and Smoothness",
       "tier": "S",
       "significance": 10,
       "tractability": 1,
       "status": "skipped",
-      "notes": "MILLENNIUM PRIZE: Prove Yang-Mills theory exists in R⁴ and has positive mass gap. YangMillsMassGap.lean has gauge theory basics, mass gap definition. Requires quantum field theory formalization.",
+      "notes": "SKIPPED: MILLENNIUM PRIZE: Prove existence and smoothness of solutions to 3D Navier-Stokes, or find a counterexample. | Stats: 2 open gaps",
       "tags": [
         "millennium-prize",
-        "mathematical-physics",
-        "gauge-theory",
+        "analysis",
+        "pde",
         "open-conjecture"
       ]
     },
@@ -461,7 +84,7 @@
       "significance": 10,
       "tractability": 1,
       "status": "skipped",
-      "notes": "MILLENNIUM PRIZE (SOLVED): Every simply connected closed 3-manifold is homeomorphic to S³. Proved by Perelman (2003) via Ricci flow. PoincareConjecture.lean has statement and historical context. Full proof requires Ricci flow infrastructure.",
+      "notes": "SKIPPED: MILLENNIUM PRIZE (SOLVED): Every simply connected closed 3-manifold is homeomorphic to S³. | Stats: 3 open gaps",
       "tags": [
         "millennium-prize",
         "topology",
@@ -470,34 +93,422 @@
       ]
     },
     {
-      "id": "navier-stokes-existence",
-      "name": "Navier-Stokes Existence and Smoothness",
+      "id": "yang-mills-mass-gap",
+      "name": "Yang-Mills Existence and Mass Gap",
       "tier": "S",
       "significance": 10,
       "tractability": 1,
       "status": "skipped",
-      "notes": "MILLENNIUM PRIZE: Prove existence and smoothness of solutions to 3D Navier-Stokes, or find a counterexample. NavierStokes.lean has equation formulation. Requires Sobolev spaces, weak solutions, blow-up analysis.",
+      "notes": "SKIPPED: MILLENNIUM PRIZE: Prove Yang-Mills theory exists in R⁴ and has positive mass gap. | Stats: 5 open gaps",
       "tags": [
         "millennium-prize",
-        "analysis",
-        "pde",
+        "mathematical-physics",
+        "gauge-theory",
         "open-conjecture"
       ]
     },
     {
-      "id": "p-vs-np",
-      "name": "P versus NP Problem",
-      "tier": "S",
-      "significance": 10,
-      "tractability": 2,
-      "status": "skipped",
-      "notes": "MILLENNIUM PRIZE: Does P = NP? PvsNP.lean has complexity class definitions. PNPBarriers.lean (1400+ lines) formalizes all 3 major barriers: relativization, natural proofs, algebrization. Most developed Millennium Problem in our repo.",
+      "id": "weak-goldbach",
+      "name": "Weak Goldbach Conjecture (Helfgott)",
+      "tier": "A",
+      "significance": 8,
+      "tractability": 5,
+      "status": "completed",
+      "notes": "COMPLETED: Every odd integer greater than 5 can be expressed as the sum of three prime numbers. | Stats: 14 items built, 4 open gaps",
       "tags": [
-        "millennium-prize",
-        "complexity-theory",
-        "open-conjecture"
+        "number-theory",
+        "primes",
+        "formalization"
+      ]
+    },
+    {
+      "id": "szemeredi-theorem",
+      "name": "Szemerédi's Theorem",
+      "tier": "A",
+      "significance": 8,
+      "tractability": 2,
+      "status": "completed",
+      "notes": "COMPLETED: COMPLETED k=3: Roth's theorem proved via Mathlib's corners chain (Regularity→Triangle Removal→Corners→Roth). Equivalence IsAPFree↔ThreeAPFree. k≥4 still needs hypergraph regularity (axiom).",
+      "tags": [
+        "combinatorics",
+        "additive",
+        "formalization"
+      ]
+    },
+    {
+      "id": "2d-navier-stokes",
+      "name": "2D Navier-Stokes Regularity",
+      "tier": "A",
+      "significance": 8,
+      "tractability": 1,
+      "status": "skipped",
+      "notes": "SKIPPED: SKIPPED: No PDE infrastructure in Mathlib. Requires defining NS equations, Sobolev spaces, weak solutions from scratch.",
+      "tags": [
+        "analysis",
+        "pde",
+        "formalization"
+      ]
+    },
+    {
+      "id": "bounded-prime-gaps",
+      "name": "Bounded Prime Gaps (Zhang/Polymath)",
+      "tier": "A",
+      "significance": 9,
+      "tractability": 1,
+      "status": "skipped",
+      "notes": "SKIPPED: SKIPPED: Requires sieve theory (Selberg, GPY) not in Mathlib. Bombieri-Vinogradov missing. Multi-year effort.",
+      "tags": [
+        "number-theory",
+        "primes",
+        "formalization"
+      ]
+    },
+    {
+      "id": "three-squares-theorem",
+      "name": "Legendre's Three Squares Theorem",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 6,
+      "status": "in-progress",
+      "notes": "IN-PROGRESS: n is sum of 3 squares iff n ≠ 4^a(8b+7). | Focus: Build Key Lemma 4.1 infrastructure for sufficiency direction | Stats: 10 sessions, 24 items built, 3 open gaps",
+      "tags": [
+        "number-theory",
+        "squares",
+        "classical"
+      ]
+    },
+    {
+      "id": "prime-counting-bounds",
+      "name": "Prime Counting Function Bounds",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 7,
+      "status": "completed",
+      "notes": "COMPLETED: Prove explicit bounds on π(x) and θ(x) using Chebyshev's 1852 method. | Stats: 13 items built",
+      "tags": [
+        "number-theory",
+        "analytic",
+        "bounds"
+      ]
+    },
+    {
+      "id": "erdos-ko-rado",
+      "name": "Erdős-Ko-Rado Theorem",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 6,
+      "status": "completed",
+      "notes": "COMPLETED: Maximum intersecting family of k-subsets of n-set has size C(n-1,k-1) for n ≥ 2k. | Stats: 7 items built, 3 open gaps",
+      "tags": [
+        "combinatorics",
+        "extremal",
+        "set-systems"
+      ]
+    },
+    {
+      "id": "infinitude-primes-4k3",
+      "name": "Infinitely Many Primes ≡ 3 (mod 4)",
+      "tier": "B",
+      "significance": 6,
+      "tractability": 9,
+      "status": "completed",
+      "notes": "COMPLETED: There are infinitely many primes congruent to 3 modulo 4. | Stats: 7 items built",
+      "tags": [
+        "number-theory",
+        "primes",
+        "classical"
+      ]
+    },
+    {
+      "id": "burnside-counting",
+      "name": "Burnside Lemma Applications",
+      "tier": "B",
+      "significance": 6,
+      "tractability": 8,
+      "status": "completed",
+      "notes": "COMPLETED: Apply Mathlib's MulAction. | Stats: 6 items built, 1 open gaps",
+      "tags": [
+        "combinatorics",
+        "group-theory",
+        "counting"
+      ]
+    },
+    {
+      "id": "hurwitz-impossibility",
+      "name": "Hurwitz Quaternion Theorem",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 8,
+      "status": "completed",
+      "notes": "COMPLETED: SKIPPED: Already in HurwitzTheorem. | Stats: 7 items built",
+      "tags": [
+        "algebra",
+        "impossibility",
+        "formalization"
+      ]
+    },
+    {
+      "id": "infinitude-primes-4k1",
+      "name": "Infinitely Many Primes ≡ 1 (mod 4)",
+      "tier": "B",
+      "significance": 6,
+      "tractability": 8,
+      "status": "completed",
+      "notes": "COMPLETED: There are infinitely many primes congruent to 1 modulo 4. | Stats: 5 items built",
+      "tags": [
+        "number-theory",
+        "primes",
+        "classical"
+      ]
+    },
+    {
+      "id": "pnp-barriers",
+      "name": "P≠NP Barrier Formalization",
+      "tier": "B",
+      "significance": 8,
+      "tractability": 5,
+      "status": "surveyed",
+      "notes": "SURVEYED: Formalize the three major barriers to proving P ≠ NP: relativization (Baker-Gill-Solovay), natural proofs (Razborov-Rudich), and algebrization (Aaronson-Wigderson). | Stats: 8 sessions, 8 items built, 4 open gaps",
+      "tags": [
+        "complexity",
+        "impossibility",
+        "formalization"
+      ]
+    },
+    {
+      "id": "mobius-inversion",
+      "name": "Möbius Inversion Formula",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 7,
+      "status": "completed",
+      "notes": "COMPLETED: SKIPPED: Already in Mathlib as sum_eq_iff_sum_mul_moebius_eq (rings), sum_eq_iff_sum_smul_moebius_eq (additive groups), prod_eq_iff_prod_pow_moebius_eq (multiplicative). | Stats: 4 items built",
+      "tags": [
+        "number-theory",
+        "arithmetic-functions",
+        "classical"
+      ]
+    },
+    {
+      "id": "collatz-structured",
+      "name": "Collatz for Structured Starting Values",
+      "tier": "B",
+      "significance": 6,
+      "tractability": 7,
+      "status": "completed",
+      "notes": "COMPLETED: COMPLETED: Proved 2^k reaches 1, closure under 2x, verified 3,5,6,7,9,27.",
+      "tags": [
+        "number-theory",
+        "dynamics",
+        "partial-progress"
+      ]
+    },
+    {
+      "id": "kummer-theorem",
+      "name": "Kummer's Theorem on Binomial Divisibility",
+      "tier": "B",
+      "significance": 6,
+      "tractability": 7,
+      "status": "completed",
+      "notes": "COMPLETED: COMPLETED: KummerTheorem.lean proves ν_p(C(n,k)) = #carries when adding k + (n-k) in base p. Uses Mathlib's Nat.Prime.multiplicity_choose. Includes Lucas theorem connection, Legendre formula, examples",
+      "tags": [
+        "number-theory",
+        "binomial",
+        "classical"
+      ]
+    },
+    {
+      "id": "legendre-partial",
+      "name": "Legendre Conjecture Partial",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 7,
+      "status": "completed",
+      "notes": "COMPLETED: COMPLETED: Verified Legendre for n=1 to 20 with explicit prime witnesses.",
+      "tags": [
+        "number-theory",
+        "primes",
+        "partial-progress"
+      ]
+    },
+    {
+      "id": "prime-gaps-explicit",
+      "name": "Explicit Prime Gap Bounds",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 7,
+      "status": "completed",
+      "notes": "COMPLETED: Proved π(2n) > π(n) from Bertrand. Stated p_n ≤ 2^n as axiom.",
+      "tags": [
+        "number-theory",
+        "primes",
+        "bounds"
+      ]
+    },
+    {
+      "id": "primitive-roots-count",
+      "name": "Primitive Roots Modulo Primes",
+      "tier": "B",
+      "significance": 6,
+      "tractability": 6,
+      "status": "completed",
+      "notes": "COMPLETED: COMPLETED: PrimitiveRoots.lean proves for prime p there are exactly φ(p-1) primitive roots. Uses isCyclic_of_subgroup_isDomain to show (Z/pZ)* is cyclic, then IsCyclic.card_orderOf_eq_totient. Include",
+      "tags": [
+        "number-theory",
+        "group-theory",
+        "classical"
+      ]
+    },
+    {
+      "id": "ramsey-lower-bounds",
+      "name": "Explicit Ramsey Number Lower Bounds",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 8,
+      "status": "completed",
+      "notes": "COMPLETED: COMPLETED: Added pentagon coloring construction to RamseysTheorem.lean (~150 new lines). Proved R(3,3) > 5 via explicit 2-coloring of K_5 with no monochromatic triangle. Key theorems: pentagonColoring",
+      "tags": [
+        "combinatorics",
+        "ramsey",
+        "constructive"
+      ]
+    },
+    {
+      "id": "rh-consequences",
+      "name": "Riemann Hypothesis Consequences",
+      "tier": "B",
+      "significance": 8,
+      "tractability": 7,
+      "status": "completed",
+      "notes": "COMPLETED: SURVEYED: Session 6 (2026-01-01): Added Li's criterion (RH↔λₙ≥0), Riemann-von Mangoldt zero counting, completed zeta (xi function), ζ(6)/ζ(8) formulas. Session 5: Mathlib zeta infrastructure. ~632 lin",
+      "tags": [
+        "number-theory",
+        "analytic",
+        "conditional"
+      ]
+    },
+    {
+      "id": "schur-theorem",
+      "name": "Schur's Theorem (Sum-Free Colorings)",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 7,
+      "status": "completed",
+      "notes": "COMPLETED: COMPLETED: SchursTheorem.lean proves S(1)=2, S(2)=5 exactly. General existence uses multicolor Ramsey axiom from RamseysTheorem.lean. ~335 lines, 1 sorry (edge coloring connection for r≥3). Key insigh",
+      "tags": [
+        "combinatorics",
+        "ramsey",
+        "additive"
+      ]
+    },
+    {
+      "id": "sophie-germain-structure",
+      "name": "Sophie Germain Prime Structure",
+      "tier": "B",
+      "significance": 6,
+      "tractability": 8,
+      "status": "completed",
+      "notes": "COMPLETED: COMPLETED: SophieGermain.lean with structure theorem (p>3 SG prime => p≡5 mod 6), safe prime mod 12, 10 verified examples (2,3,5,11,23,29,41,53,83,89), non-examples, Cunningham chain 2→5→11→23, conjec",
+      "tags": [
+        "number-theory",
+        "primes",
+        "partial-progress"
+      ]
+    },
+    {
+      "id": "twin-prime-special",
+      "name": "Twin Primes in Special Forms",
+      "tier": "B",
+      "significance": 8,
+      "tractability": 8,
+      "status": "completed",
+      "notes": "COMPLETED: Proved: twin primes > 3 must have form (6k-1, 6k+1). Structure theorem.",
+      "tags": [
+        "number-theory",
+        "primes",
+        "partial-progress"
+      ]
+    },
+    {
+      "id": "wolstenholme-theorem",
+      "name": "Wolstenholme's Theorem",
+      "tier": "B",
+      "significance": 6,
+      "tractability": 7,
+      "status": "completed",
+      "notes": "COMPLETED: COMPLETED: Computational verification for p=5,7,11,13. Babbage (mod p²) for p≥3. Failure cases p=2,3. Full theorem + Babbage as axioms. Wolstenholme primes definition. Harmonic number connection.",
+      "tags": [
+        "number-theory",
+        "binomial",
+        "classical"
+      ]
+    },
+    {
+      "id": "frobenius-two-coprime",
+      "name": "Frobenius Number (Two Coprime)",
+      "tier": "C",
+      "significance": 5,
+      "tractability": 9,
+      "status": "completed",
+      "notes": "COMPLETED: SKIPPED: Already in Mathlib as frobeniusNumber_pair in Mathlib. | Stats: 1 items built",
+      "tags": [
+        "number-theory",
+        "combinatorics",
+        "classical"
+      ]
+    },
+    {
+      "id": "chinese-remainder-constructive",
+      "name": "Chinese Remainder Theorem (Constructive)",
+      "tier": "C",
+      "significance": 5,
+      "tractability": 9,
+      "status": "completed",
+      "notes": "COMPLETED: COMPLETED: ChineseRemainderConstructive.lean with existence/uniqueness, Bézout coefficients, explicit solution formula, Sunzi problem (23 mod 105), 3-moduli extension, RNS application.",
+      "tags": [
+        "number-theory",
+        "algorithms",
+        "classical"
+      ]
+    },
+    {
+      "id": "hurwitz-three-square-impossibility",
+      "name": "Hurwitz n=3 Impossibility Proof",
+      "tier": "C",
+      "significance": null,
+      "tractability": null,
+      "status": "graduated",
+      "notes": "COMPLETED",
+      "tags": []
+    },
+    {
+      "id": "vietas-formulas",
+      "name": "Vieta's Formulas",
+      "tier": "C",
+      "significance": 5,
+      "tractability": 9,
+      "status": "completed",
+      "notes": "COMPLETED: COMPLETED: VietasFormulas.lean with quadratic/cubic formulas, polynomial coeff theorem, examples.",
+      "tags": [
+        "algebra",
+        "polynomials",
+        "classical"
+      ]
+    },
+    {
+      "id": "sum-of-divisors",
+      "name": "Sum of Divisors Properties",
+      "tier": "C",
+      "significance": 5,
+      "tractability": 9,
+      "status": "skipped",
+      "notes": "SKIPPED: SKIPPED: Already covered by PerfectNumbers. | Stats: 2 open gaps",
+      "tags": [
+        "number-theory",
+        "arithmetic-functions",
+        "classical"
       ]
     }
   ],
-  "lastUpdated": "2026-01-01T22:00:00Z"
+  "lastUpdated": "2026-01-02T09:13:12Z"
 }
