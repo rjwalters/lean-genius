@@ -1,6 +1,6 @@
 import Mathlib.AlgebraicGeometry.EllipticCurve.Weierstrass
-import Mathlib.AlgebraicGeometry.EllipticCurve.Affine
-import Mathlib.AlgebraicGeometry.EllipticCurve.Group
+import Mathlib.AlgebraicGeometry.EllipticCurve.Affine.Basic
+import Mathlib.AlgebraicGeometry.EllipticCurve.Affine.Point
 import Mathlib.NumberTheory.LSeries.Basic
 import Mathlib.NumberTheory.ArithmeticFunction
 import Mathlib.Algebra.Group.Subgroup.Basic
@@ -8,7 +8,7 @@ import Mathlib.Analysis.Complex.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Complex
 import Mathlib.Analysis.Calculus.Deriv.Basic
-import Mathlib.Order.Filter.AtTopBot
+import Mathlib.Order.Filter.AtTopBot.Basic
 import Mathlib.Data.Complex.ExponentialBounds
 import Mathlib.Topology.Order.Basic
 import Mathlib.Tactic

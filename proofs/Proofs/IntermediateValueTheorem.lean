@@ -1,5 +1,5 @@
 import Mathlib.Topology.Order.IntermediateValue
-import Mathlib.Topology.ContinuousFunction.Basic
+import Mathlib.Topology.ContinuousMap.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 /-!

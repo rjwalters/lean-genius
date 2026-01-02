@@ -1,8 +1,8 @@
 import Mathlib.Probability.StrongLaw
-import Mathlib.Probability.Variance
+import Mathlib.Probability.Moments.Variance
 import Mathlib.Probability.Independence.Basic
 import Mathlib.Probability.Notation
-import Mathlib.MeasureTheory.Integral.Bochner
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Function.ConvergenceInMeasure
 import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.Topology.MetricSpace.Basic

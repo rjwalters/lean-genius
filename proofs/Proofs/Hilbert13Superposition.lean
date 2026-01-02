@@ -1,9 +1,9 @@
 import Mathlib.Topology.Basic
-import Mathlib.Topology.ContinuousFunction.Basic
-import Mathlib.Topology.Instances.Real
+import Mathlib.Topology.ContinuousMap.Basic
+import Mathlib.Topology.Order.Basic
 import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.Data.Fin.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Tactic
 
 /-!

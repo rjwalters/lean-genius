@@ -1,6 +1,6 @@
 import Mathlib.Tactic
 import Mathlib.Data.Complex.Basic
-import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup
+import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Basic
 import Mathlib.Topology.Basic
 import Mathlib.Data.Finset.Basic
 

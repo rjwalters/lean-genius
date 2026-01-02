@@ -1,4 +1,4 @@
-import Mathlib.GroupTheory.Coset
+import Mathlib.GroupTheory.Coset.Basic
 import Mathlib.GroupTheory.Index
 import Mathlib.GroupTheory.OrderOfElement
 import Mathlib.GroupTheory.SpecificGroups.Cyclic

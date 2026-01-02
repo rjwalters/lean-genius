@@ -1,5 +1,5 @@
 import Mathlib.Tactic
-import Mathlib.Data.Nat.Defs
+import Mathlib.Data.Nat.Basic
 
 /-!
 # The Principle of Mathematical Induction

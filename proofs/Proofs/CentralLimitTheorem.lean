@@ -1,6 +1,6 @@
-import Mathlib.Probability.Distributions.Gaussian
+import Mathlib.Probability.Distributions.Gaussian.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.MeasureTheory.Integral.Bochner
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.Analysis.Fourier.FourierTransform
 import Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral
 import Mathlib.Analysis.SpecialFunctions.Pow.Deriv

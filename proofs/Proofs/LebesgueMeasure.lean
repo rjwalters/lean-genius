@@ -1,13 +1,13 @@
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
-import Mathlib.MeasureTheory.Integral.Lebesgue
-import Mathlib.MeasureTheory.Integral.Bochner
-import Mathlib.MeasureTheory.Integral.SetIntegral
+import Mathlib.MeasureTheory.Integral.Lebesgue.Basic
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
-import Mathlib.MeasureTheory.Integral.FundThmCalculus
-import Mathlib.MeasureTheory.Constructions.Prod.Basic
-import Mathlib.MeasureTheory.Function.LpSpace
-import Mathlib.Analysis.SpecialFunctions.Integrals
+import Mathlib.MeasureTheory.Integral.Bochner.FundThmCalculus
+import Mathlib.MeasureTheory.Measure.Prod
+import Mathlib.MeasureTheory.Function.LpSpace.Basic
+import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Tactic
 

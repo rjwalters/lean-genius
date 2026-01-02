@@ -6,7 +6,7 @@ import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Combinatorics.SimpleGraph.Clique
 import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Data.Fintype.Card
-import Mathlib.Algebra.BigOperators.Ring
+import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Data.Set.Card
 import Mathlib.Tactic.FinCases
 

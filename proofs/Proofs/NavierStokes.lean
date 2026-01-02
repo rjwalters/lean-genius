@@ -10,9 +10,9 @@ import Mathlib.Data.Complex.ExponentialBounds
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Normed.Module.FiniteDimension
-import Mathlib.MeasureTheory.Integral.Bochner
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.Topology.Order.Basic
-import Mathlib.Topology.Instances.Real
+import Mathlib.Topology.Order.Basic
 import Mathlib.Data.Real.Pi.Bounds
 import Mathlib.Data.Real.Basic
 import Mathlib.Order.Filter.Basic
