@@ -1,53 +1,60 @@
 {
   "slug": "infinitude-primes-4k1",
   "title": "Infinitely Many Primes ≡ 1 (mod 4)",
-  "phase": "NEW",
-  "status": "blocked",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "SKIPPED: Already in DirichletsTheorem.",
-    "whyMatters": []
+    "formal": "∀ n : ℕ, ∃ p : ℕ, Nat.Prime p ∧ p > n ∧ p % 4 = 1",
+    "plain": "There are infinitely many primes congruent to 1 modulo 4.",
+    "whyMatters": [
+      "Special case of Dirichlet's theorem on primes in arithmetic progressions",
+      "Demonstrates the distribution of primes across residue classes",
+      "Uses Fermat's two squares connection: p | k² + 1 implies p ≡ 1 mod 4"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "infinitely_many_primes_1_mod_4: ∀ n : ℕ, ∃ p : ℕ, Nat.Prime p ∧ p > n ∧ p % 4 = 1",
+      "primes_1_mod_4_infinite: Set.Infinite {p : ℕ | Nat.Prime p ∧ p % 4 = 1}",
+      "no_largest_prime_1_mod_4: ¬∃ p, Nat.Prime p ∧ p % 4 = 1 ∧ ∀ q, Nat.Prime q → q % 4 = 1 → q ≤ p"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "All goals achieved"
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETE",
     "since": "2026-01-01T05:32:39.477Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Proof completed",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None - proof complete",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED: DirichletsTheorem.lean written but requires PrimesInAP (not in our Mathlib). Elementary Fermat proof possible but not yet implemented.",
+    "progressSummary": "COMPLETE: Elementary proof in InfinitudePrimes4k1.lean using N = (2·(n+1)!)² + 1 construction. Uses Mathlib's SumTwoSquares infrastructure.",
     "builtItems": [
-      "DirichletsTheorem.infinitely_many_primes_1_mod_4 - statement exists but proof uses unavailable Mathlib"
+      "InfinitudePrimes4k1.infinitely_many_primes_1_mod_4 - main theorem",
+      "InfinitudePrimes4k1.primes_1_mod_4_infinite - Set.Infinite formulation",
+      "InfinitudePrimes4k1.no_largest_prime_1_mod_4 - no largest prime formulation",
+      "InfinitudePrimes4k1.prime_dvd_sq_add_one_mod_four - key lemma: odd p | k² + 1 implies p ≡ 1 mod 4",
+      "InfinitudePrimes4k1.exists_odd_prime_factor - odd numbers > 1 have odd prime factors"
     ],
     "insights": [
-      "Elementary proof exists via Fermat's two squares theorem: primes p|n²+1 satisfy p ≡ 1 mod 4",
-      "Standard construction: consider N = (2·p₁·p₂·...·pₖ)² + 1",
-      "Every odd prime factor of N is ≡ 1 mod 4 (since -1 is QR mod p iff p ≡ 1 mod 4)",
-      "At least one such prime is new (not in {p₁,...,pₖ})",
-      "This proof does NOT require Dirichlet's full theorem - only Fermat's two squares"
+      "Elementary proof uses N = (2·(n+1)!)² + 1 construction",
+      "Key insight: if odd prime p | k² + 1, then -1 is QR mod p, so p ≡ 1 mod 4",
+      "Uses Mathlib's Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one from SumTwoSquares",
+      "Every odd prime factor of N is ≡ 1 mod 4",
+      "At least one prime factor p > n since p ∤ (n+1)!",
+      "No Dirichlet or analytic NT needed - completely elementary"
     ],
-    "mathlibGaps": [
-      "PrimesInAP not in our Mathlib (Sept 2024) - blocks the Dirichlet approach",
-      "Elementary proof via Fermat would work with current Mathlib but not yet implemented"
-    ],
-    "nextSteps": [
-      "Implement elementary proof using Fermat's two squares (Mathlib has Nat.Prime.sq_add_sq)",
-      "Alternative: upgrade Mathlib to get PrimesInAP and use full Dirichlet"
-    ]
+    "mathlibGaps": [],
+    "nextSteps": []
   },
   "approaches": [],
   "tags": [
@@ -64,7 +71,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T05:32:39.477Z",
-  "lastUpdate": "2026-01-01T05:32:39.477Z",
+  "lastUpdate": "2026-01-01T23:50:00.000Z",
   "significance": 6,
   "tractability": 8
 }

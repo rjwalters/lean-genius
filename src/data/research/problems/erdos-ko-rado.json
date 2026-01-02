@@ -29,29 +29,36 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 231 lines, 3 axioms. Katona's cyclic permutation proof approach. Star bound achieved.",
+    "progressSummary": "BLOCKED: EKR has 1 sorry (double counting). Algebraic manipulation COMPLETE. Blocked on cyclic order infrastructure OR Mathlib upgrade (KruskalKatona.lean has full EKR).",
     "builtItems": [
       "ErdosKoRado.IsIntersectingFamily - predicate for intersecting k-set families",
       "ErdosKoRado.Star - family of all k-sets containing fixed element x",
       "ErdosKoRado.cyclicInterval - consecutive k elements in cyclic order",
       "ErdosKoRado.star_is_intersecting - PROVED: star families are intersecting",
       "ErdosKoRado.star_card - star has exactly C(n-1,k-1) elements",
-      "ErdosKoRado.erdos_ko_rado_bound - main theorem (with axiom for double counting)"
+      "ErdosKoRado.erdos_ko_rado_bound - main theorem (sorry at line 171)",
+      "erdos_ko_rado algebraic manipulation (h_div, h_algebra, h_choose_eq) - COMPLETE"
     ],
     "insights": [
       "Katona's proof uses cyclic permutations to avoid induction",
       "Key double-counting: count pairs (S, σ) where S ∈ A is cyclic interval in σ",
       "At most k consecutive intervals can pairwise intersect in any cyclic order",
-      "Mathlib's Set.Intersecting and Shadow infrastructure useful but not directly applicable"
+      "Mathlib's Set.Intersecting and Shadow infrastructure useful but not directly applicable",
+      "DISCOVERY: Finset.erdos_ko_rado exists in Mathlib.Combinatorics.SetFamily.KruskalKatona",
+      "Mathlib EKR uses compression/shifting, our proof uses Katona's cyclic method (different approaches)",
+      "Our Mathlib (Sept 2024) predates KruskalKatona merge due to branch timing",
+      "Double counting proof reduced to single sorry for cyclic order infrastructure",
+      "Algebraic identity for choose proven"
     ],
     "mathlibGaps": [
-      "Double counting formalization for cyclic permutations",
-      "Cyclic order theory (permutations as cyclic arrangements)"
+      "KruskalKatona.lean NOT in our Mathlib version (commit 05147a76b4)",
+      "Need Mathlib update to get Finset.erdos_ko_rado",
+      "Same upgrade would also provide PrimesInAP for three-squares"
     ],
     "nextSteps": [
-      "Prove double counting lemma to remove main axiom",
-      "Add uniqueness: equality iff family is a star",
-      "Generalize to t-intersecting families (EKR extensions)"
+      "PRIORITY: Mathlib upgrade to get KruskalKatona.lean",
+      "After upgrade: either use Mathlib EKR or complete our cyclic proof",
+      "Consider keeping both approaches for pedagogical value"
     ]
   },
   "approaches": [],

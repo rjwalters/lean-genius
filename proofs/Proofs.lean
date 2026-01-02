@@ -91,6 +91,8 @@ import Proofs.HodgeConjecture
 import Proofs.HurwitzTheorem
 import Proofs.InclusionExclusion
 import Proofs.InfinitudePrimes
+import Proofs.InfinitudePrimes4k1
+import Proofs.InfinitudePrimes4k3
 import Proofs.IntermediateValueTheorem
 import Proofs.IsoperimetricTheorem
 import Proofs.IsoscelesTriangle

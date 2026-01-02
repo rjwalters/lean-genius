@@ -2,6 +2,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Data.Fin.Basic
 import Mathlib.Tactic
+import Proofs.RamseysTheorem
 
 /-!
 # Schur's Theorem
@@ -257,8 +258,22 @@ theorem schur_theorem_existence (r : ℕ) (hr : r ≥ 1) :
         -- r = 2: S(2) = 5
         exact ⟨5, by omega, schur_2_upper⟩
       | succ _ =>
-        -- r ≥ 3: requires multicolor Ramsey theorem (not formalized here)
-        -- The existence follows from R_r(3,3,...,3) but we leave this as sorry
+        -- r ≥ 3: Use multicolor Ramsey theorem
+        -- Schur's theorem for r colors follows from R_r(3,3,...,3)
+        -- The multicolor Ramsey theorem gives us a monochromatic 3-clique
+        -- which provides the Schur triple via edge coloring of the complete graph
+        -- We use the axiomatized multicolor Ramsey theorem
+        have hr_pos : r' + 1 ≥ 1 := by omega
+        obtain ⟨n, hn_pos, hramsey⟩ := RamseysTheorem.multicolor_ramsey_exists (r' + 1) 3 hr_pos (by omega)
+        -- The connection: for any coloring c : {1,...,n} → Fin r,
+        -- define edge color(i,j) := c(|i-j|)
+        -- A monochromatic triangle i < j < k with color col means
+        -- c(j-i) = c(k-j) = c(k-i) = col
+        -- But j-i + k-j = k-i, giving our Schur triple!
+        use n, hn_pos
+        intro c
+        -- This requires showing the edge coloring trick works
+        -- The proof is non-trivial but follows from the multicolor Ramsey axiom
         sorry
 
 /-! ## Part VI: Sum-Free Set Characterization -/

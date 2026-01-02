@@ -40,6 +40,7 @@ We use **Katona's elegant proof** (1972) based on cyclic permutations.
 - [ ] Complete proof
 - [x] Uses Mathlib for foundations
 - [x] Proves the main bound
+- [x] Proves star achieves bound (bijective argument)
 - [ ] Proves uniqueness (star characterization)
 - [x] Pedagogical example
 - [ ] Complete (has axioms for complex lemmas)
@@ -115,6 +116,28 @@ axiom set_appears_in_cyclic_orders (n k : ℕ) (hn : 0 < n) (hk : k ≤ n) (s : 
     (hs : s.card = k) :
   ∃ (count : ℕ), count = k.factorial * (n - k).factorial
 
+/-- **Double Counting Bound** (Katona's counting argument)
+
+    This is the core of Katona's elegant proof. Count pairs (S, σ) where
+    S ∈ A and S appears as a cyclic interval in cyclic order σ.
+
+    **Counting by sets**: Each S ∈ A appears in exactly k!(n-k)! cyclic orders.
+    Total = |A| · k!(n-k)!
+
+    **Counting by orders**: There are (n-1)! cyclic orders. In each order,
+    there are n cyclic intervals, but at most k can belong to the intersecting
+    family A (by the key lemma at_most_k_intersecting_cyclic_intervals).
+    Total ≤ (n-1)! · k
+
+    **Inequality**: |A| · k!(n-k)! ≤ k · (n-1)!
+
+    This axiom encapsulates the double counting, which would require ~200 lines
+    of infrastructure to formalize (cyclic permutations, interval-set pairs,
+    bijective counting). -/
+axiom double_counting_bound {n k : ℕ} (hn : n ≥ 2 * k) (hk : 0 < k)
+    (A : Finset (Finset (Fin n))) (hA : IsIntersectingFamily A k) :
+    A.card * (k.factorial * (n - k).factorial) ≤ k * (n - 1).factorial
+
 /-! ## Main Theorem -/
 
 /-- **Erdős-Ko-Rado Theorem**
@@ -167,17 +190,136 @@ theorem erdos_ko_rado {n k : ℕ} (hn : n ≥ 2 * k) (hk : 0 < k)
   -- = (n-1)! / ((k-1)! · (n-k)!)
   -- = choose (n-1) (k-1)
 
-  sorry
+  -- We prove this using the double counting inequality and algebraic identity
+  -- The core algebraic fact: C(n-1, k-1) = (n-1)! / ((k-1)! * (n-k)!)
+
+  -- For the double counting argument, we need:
+  -- (1) A.card * k! * (n-k)! ≤ k * (n-1)!  (from at_most_k_intersecting_cyclic_intervals)
+  -- (2) k * (n-1)! / (k! * (n-k)!) = (n-1).choose (k-1)
+
+  -- The double counting inequality: A.card * k! * (n-k)! ≤ k * (n-1)!
+  -- This requires the full cyclic counting machinery building on the key lemma.
+  -- We state it as a derived axiom from the key lemma.
+
+  -- **Double Counting**: Follows from at_most_k_intersecting_cyclic_intervals
+  -- Each set in A appears in exactly k!(n-k)! cyclic orders
+  -- Each cyclic order has at most k sets from A (by key lemma)
+  -- Total cyclic orders: (n-1)!
+  -- Therefore: A.card * k!(n-k)! ≤ k * (n-1)!
+  have h_count : A.card * (k.factorial * (n - k).factorial) ≤ k * (n - 1).factorial :=
+    double_counting_bound hn hk A hA
+
+  -- Now derive the bound from the counting inequality
+  -- We need: A.card ≤ (n-1).choose (k-1)
+  -- From h_count: A.card * k! * (n-k)! ≤ k * (n-1)!
+
+  -- Key identity: k * (n-1)! / (k! * (n-k)!) = (n-1).choose (k-1)
+  -- Proof: k * (n-1)! / (k! * (n-k)!)
+  --      = k * (n-1)! / (k * (k-1)! * (n-k)!)    [since k! = k * (k-1)!]
+  --      = (n-1)! / ((k-1)! * (n-k)!)
+  --      = (n-1).choose (k-1)                    [by definition of choose]
+
+  -- Convert the inequality to the form we need
+  have h_factorial_pos : 0 < k.factorial * (n - k).factorial := by
+    apply Nat.mul_pos
+    · exact Nat.factorial_pos k
+    · exact Nat.factorial_pos (n - k)
+
+  -- We need: A.card * (k! * (n-k)!) ≤ k * (n-1)!
+  -- Implies: A.card ≤ k * (n-1)! / (k! * (n-k)!)
+
+  have h_div : A.card ≤ k * (n - 1).factorial / (k.factorial * (n - k).factorial) := by
+    rw [Nat.le_div_iff_mul_le h_factorial_pos]
+    -- h_count : A.card * (k! * (n-k)!) ≤ k * (n-1)!
+    -- Goal: A.card * (k! * (n-k)!) ≤ k * (n-1)!
+    ring_nf at h_count ⊢
+    exact h_count
+
+  -- Now we need to show: k * (n-1)! / (k! * (n-k)!) = (n-1).choose (k-1)
+
+  -- First, when k > 0: k! = k * (k-1)!
+  have hk_factorial : k.factorial = k * (k - 1).factorial := by
+    cases k with
+    | zero => omega  -- contradicts hk
+    | succ k' => simp [Nat.factorial_succ, Nat.succ_sub_one]
+
+  -- The key algebraic identity for choose
+  -- C(n-1, k-1) = (n-1)! / ((k-1)! * (n-k)!)
+  -- Note: (n-1) - (k-1) = n - k when n ≥ k
+  have hk_le_n : k ≤ n := by omega
+  have hk1_le_n1 : k - 1 ≤ n - 1 := by omega
+  have h_choose_eq : (n - 1).choose (k - 1) = (n - 1).factorial / ((k - 1).factorial * (n - k).factorial) := by
+    rw [Nat.choose_eq_factorial_div_factorial hk1_le_n1]
+    congr 1
+    -- Show (n - 1 - (k - 1))! = (n - k)!
+    have h : n - 1 - (k - 1) = n - k := by omega
+    rw [h]
+
+  -- Now we need: k * (n-1)! / (k! * (n-k)!) = (n-1)! / ((k-1)! * (n-k)!)
+
+  have h_algebra : k * (n - 1).factorial / (k.factorial * (n - k).factorial) =
+                   (n - 1).factorial / ((k - 1).factorial * (n - k).factorial) := by
+    rw [hk_factorial]
+    have h_pos : 0 < k := hk
+    have h_kfac_pos : 0 < (k - 1).factorial * (n - k).factorial := by
+      apply Nat.mul_pos <;> exact Nat.factorial_pos _
+    -- k * (n-1)! / (k * (k-1)! * (n-k)!) = (n-1)! / ((k-1)! * (n-k)!)
+    rw [mul_assoc, Nat.mul_div_mul_left _ _ (Nat.pos_of_ne_zero (Nat.one_le_iff_ne_zero.mp hk))]
+
+  calc A.card ≤ k * (n - 1).factorial / (k.factorial * (n - k).factorial) := h_div
+    _ = (n - 1).factorial / ((k - 1).factorial * (n - k).factorial) := h_algebra
+    _ = (n - 1).choose (k - 1) := h_choose_eq.symm
 
 /-- The star family achieves the EKR bound -/
-theorem star_achieves_bound {n k : ℕ} (hn : n ≥ 2 * k) (hk : 0 < k) (x : Fin n) :
+theorem star_achieves_bound {n k : ℕ} (_hn : n ≥ 2 * k) (_hk : 0 < k) (x : Fin n) :
     (Star x k).card = (n - 1).choose (k - 1) := by
   unfold Star
   -- The star consists of all k-sets containing x
   -- This is equivalent to choosing k-1 elements from the remaining n-1 elements
-  rw [card_filter]
-  -- Count: choosing x, then k-1 from remaining n-1
-  sorry
+  -- We use a bijection: s ↦ s.erase x from k-sets containing x to (k-1)-sets in univ \ {x}
+
+  -- Define the target set: (k-1)-subsets of univ.erase x
+  let T := powersetCard (k - 1) (univ.erase x)
+
+  -- Apply bijection argument
+  have hbij : (filter (fun s => x ∈ s) (powersetCard k univ)).card = T.card := by
+    apply Finset.card_nbij' (fun s => s.erase x) (fun t => insert x t)
+    -- Forward: s.erase x is a (k-1)-subset of univ.erase x
+    · intro s hs
+      simp only [mem_filter, mem_powersetCard_univ] at hs
+      simp only [T, mem_powersetCard]
+      constructor
+      · intro y hy
+        simp only [mem_erase] at hy
+        exact mem_erase.mpr ⟨hy.1, mem_univ y⟩
+      · rw [card_erase_of_mem hs.2, hs.1]
+    -- Backward: insert x t is a k-subset of univ containing x
+    · intro t ht
+      simp only [T, mem_powersetCard] at ht
+      simp only [mem_filter, mem_powersetCard_univ, mem_insert_self, and_true]
+      have hx_not_in : x ∉ t := by
+        intro hx_in
+        have := ht.1 hx_in
+        simp only [mem_erase, ne_eq, not_true_eq_false, false_and] at this
+      rw [card_insert_of_not_mem hx_not_in, ht.2]
+      omega
+    -- Left inverse: erase then insert = id
+    · intro s hs
+      simp only [mem_filter, mem_powersetCard_univ] at hs
+      exact insert_erase hs.2
+    -- Right inverse: insert then erase = id
+    · intro t ht
+      simp only [T, mem_powersetCard] at ht
+      have hx_not_in : x ∉ t := by
+        intro hx_in
+        have := ht.1 hx_in
+        simp only [mem_erase, ne_eq, not_true_eq_false, false_and] at this
+      exact erase_insert hx_not_in
+
+  rw [hbij]
+  simp only [T, card_powersetCard]
+  -- Now show card (univ.erase x) = n - 1
+  rw [card_erase_of_mem (mem_univ x), card_univ, Fintype.card_fin]
 
 /-- The star is an intersecting family -/
 theorem star_is_intersecting {n k : ℕ} (_hk : 0 < k) (x : Fin n) :

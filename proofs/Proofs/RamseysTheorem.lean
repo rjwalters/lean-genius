@@ -599,4 +599,29 @@ example : Nat.choose 6 3 = 20 := by native_decide
 #check extend_red_clique
 #check extend_blue_clique
 
+/-! ## Part XII: Multicolor Ramsey Theorem (Axiomatized)
+
+The multicolor Ramsey theorem extends our 2-color result to c colors.
+
+**Statement:** For any c ≥ 1 colors and k ≥ 1, there exists n such that any
+c-coloring of K_n has a monochromatic k-clique.
+
+**Proof outline by induction on c:**
+- Base (c = 1): Any 1-coloring is trivially monochromatic
+- Base (c = 2): Our ramsey_theorem
+- Inductive step: Group colors 0..(c-2) as "red", color (c-1) as "blue"
+  Apply 2-color Ramsey: get either red R_{c-1}(k)-clique (recurse) or blue k-clique
+
+The full formalization requires multicolor edge colorings and lifting lemmas.
+We axiomatize the result for use in other proofs (e.g., Schur's theorem). -/
+
+/-- Multicolor Ramsey theorem: For c ≥ 1 colors and k ≥ 1, there exists n such that
+    any c-coloring of edges of K_n contains a monochromatic k-clique.
+    Proof: By induction on c, reducing to 2-color Ramsey via color grouping. -/
+axiom multicolor_ramsey_exists (c k : ℕ) (hc : c ≥ 1) (hk : k ≥ 1) :
+    ∃ n : ℕ, n ≥ 1 ∧ ∀ (color : Fin n → Fin n → Fin c),
+      (∀ x y, color x y = color y x) →  -- symmetric
+      ∃ (clique : Finset (Fin n)) (col : Fin c),
+        clique.card ≥ k ∧ ∀ x y, x ∈ clique → y ∈ clique → x ≠ y → color x y = col
+
 end RamseysTheorem

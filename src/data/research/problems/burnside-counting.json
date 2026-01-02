@@ -42,12 +42,17 @@
       "Burnside's lemma already in Mathlib as sum_card_fixedBy_eq_card_orbits_mul_card_group",
       "The tricky part is setting up the AddAction/MulAction correctly for cyclic groups on colorings",
       "Computing fixed point counts for specific rotations requires modular arithmetic lemmas",
-      "For 4-element binary necklaces: |Fix(0)| = 16, |Fix(1)| = 2, |Fix(2)| = 4, |Fix(3)| = 2"
+      "For 4-element binary necklaces: |Fix(0)| = 16, |Fix(1)| = 2, |Fix(2)| = 4, |Fix(3)| = 2",
+      "rotatedIndex_add axiom is provable via ZMod subtraction: (a-b).val = (a.val + n - b.val) % n",
+      "Key: ZMod.val_neg_of_ne_zero, ZMod.val_add provide the machinery",
+      "The n=4 case of rotatedIndex_add verifies with native_decide"
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "ZMod.val_sub requires b.val ≤ a.val; general case needs manual derivation"
+    ],
     "nextSteps": [
-      "Remove axioms by proving fixed point counts computationally",
-      "Generalize to arbitrary n and k",
+      "Prove rotatedIndex_add axiom using ZMod.val_neg_of_ne_zero + ZMod.val_add (~30-50 lines)",
+      "Remove fixed_point_sum_binary_4 axiom with explicit computation",
       "Add Polya enumeration theorem formalization"
     ]
   },
@@ -66,7 +71,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T19:54:13.473Z",
-  "lastUpdate": "2026-01-01T19:54:13.473Z",
+  "lastUpdate": "2026-01-02T00:30:00.000Z",
   "significance": 6,
   "tractability": 8
 }

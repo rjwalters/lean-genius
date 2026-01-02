@@ -84,22 +84,16 @@ lemma factors_determine_mod_four {n : ℕ} (hn : n ≥ 1)
   -- We'll use induction on the number of factors
   induction n using Nat.strong_induction_on with
   | _ n ih =>
-    -- n ≥ 1 and n % 4 = 3, so n ≥ 3
-    have hn3 : n ≥ 3 := by omega
-    -- n has a prime factor p
+    -- n ≥ 1 and n % 4 = 3, so n ≥ 3; thus n ≠ 1
     have hn_ne1 : n ≠ 1 := by omega
     obtain ⟨p, hp_prime, hp_div⟩ := Nat.exists_prime_and_dvd hn_ne1
     -- p = 2 or p % 4 = 1
     have hp_cases := h_factors p hp_prime hp_div
     rcases hp_cases with hp2 | hp1
     · -- Case: p = 2
-      -- If 2 | n and n % 4 = 3, we get a contradiction
-      -- because n % 4 = 3 means n is odd
+      -- If 2 | n and n % 4 = 3, contradiction: n % 4 = 3 means n is odd, but 2 | n means n is even
       have h2_dvd : 2 ∣ n := by rw [hp2] at hp_div; exact hp_div
-      -- n % 4 = 3 means n % 2 = 1 (odd)
-      -- But 2 | n means n % 2 = 0 (even)
-      have hn_mod2 : n % 2 = 1 := by omega
-      have h2_mod2 : n % 2 = 0 := Nat.mod_eq_zero_of_dvd h2_dvd
+      have : n % 2 = 0 := Nat.mod_eq_zero_of_dvd h2_dvd
       omega
     · -- Case: p % 4 = 1
       -- Then n = p * m for some m ≥ 1
@@ -164,14 +158,11 @@ theorem infinitely_many_primes_3_mod_4 :
   -- This ensures N > n and N ≡ 3 (mod 4)
   let N := 4 * (n + 1).factorial - 1
   have hN_mod : N % 4 = 3 := by
-    have h1 : (n + 1).factorial ≥ 1 := Nat.factorial_pos _
-    have h2 : 4 * (n + 1).factorial ≥ 4 := by omega
-    simp only [N]
-    omega
+    have : (n + 1).factorial ≥ 1 := Nat.factorial_pos _
+    simp only [N]; omega
   have hN_ge3 : N ≥ 3 := by
-    have h1 : (n + 1).factorial ≥ 1 := Nat.factorial_pos _
-    simp only [N]
-    omega
+    have : (n + 1).factorial ≥ 1 := Nat.factorial_pos _
+    simp only [N]; omega
   -- N has a prime factor p ≡ 3 (mod 4)
   obtain ⟨p, hp_prime, hp_div, hp_mod⟩ := has_prime_factor_3_mod_4 hN_ge3 hN_mod
   use p
@@ -189,7 +180,6 @@ theorem infinitely_many_primes_3_mod_4 :
   -- So p ∣ 4 * (n+1)! - N = 1
   -- But p ∣ N = 4 * (n+1)! - 1
   -- So p ∣ 4 * (n+1)! - N = 1
-  have hN_eq : N = 4 * (n + 1).factorial - 1 := rfl
   have h_ge : 4 * (n + 1).factorial ≥ 1 := by
     have := Nat.factorial_pos (n + 1)
     omega
@@ -201,10 +191,12 @@ theorem infinitely_many_primes_3_mod_4 :
 
 /-- Alternative statement: The set of primes ≡ 3 (mod 4) is infinite -/
 theorem primes_3_mod_4_infinite : Set.Infinite {p : ℕ | Nat.Prime p ∧ p % 4 = 3} := by
-  rw [Set.infinite_iff_nat_lt]
-  intro n
+  apply Set.infinite_of_not_bddAbove
+  intro ⟨n, hn⟩
   obtain ⟨p, hp_prime, hp_gt, hp_mod⟩ := infinitely_many_primes_3_mod_4 n
-  exact ⟨p, ⟨hp_prime, hp_mod⟩, hp_gt⟩
+  have hp_mem : p ∈ {q : ℕ | Nat.Prime q ∧ q % 4 = 3} := ⟨hp_prime, hp_mod⟩
+  have hp_le : p ≤ n := hn hp_mem
+  omega
 
 /-- There is no largest prime ≡ 3 (mod 4) -/
 theorem no_largest_prime_3_mod_4 :

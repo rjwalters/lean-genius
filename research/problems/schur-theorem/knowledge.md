@@ -47,6 +47,38 @@ Connection to Ramsey: color edge {i,j} by color of |i-j|. Monochromatic triangle
 
 ## Session Log
 
+### Session 2026-01-01 (Research Iteration) - MULTICOLOR RAMSEY CONNECTION
+
+**Mode**: REVISIT
+**Prior Status**: completed (1 sorry)
+**Outcome**: PROGRESS - Connected to multicolor Ramsey axiom
+
+**What we did**:
+1. Added multicolor Ramsey axiom to `RamseysTheorem.lean`
+2. Updated Schur r≥3 case to use multicolor Ramsey
+3. Documented the edge coloring connection
+
+**Key insight (edge coloring trick)**:
+For coloring c : {1,...,n} → Fin r, define edge color:
+- color(i,j) := c(|i-j|) for i ≠ j
+
+A monochromatic triangle i < j < k means:
+- c(j-i) = c(k-j) = c(k-i) = col
+
+But j-i + k-j = k-i, so we have a Schur triple!
+
+**Files modified**:
+- `proofs/Proofs/RamseysTheorem.lean` - Added multicolor Ramsey axiom (+26 lines)
+- `proofs/Proofs/SchursTheorem.lean` - Uses multicolor Ramsey for r≥3
+
+**Status**: Still 1 sorry - the edge coloring connection proof needs:
+1. Define edge coloring from integer coloring
+2. Show monochromatic clique → Schur triple
+
+This is ~50-100 lines of additional infrastructure.
+
+---
+
 ### Backfill Session (2026-01-01)
 
 **Mode**: BACKFILL - Problem was completed without knowledge documentation

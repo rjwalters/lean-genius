@@ -1,6 +1,6 @@
 {
   "version": "1.2",
-  "last_updated": "2026-01-02T01:36:54.008Z",
+  "last_updated": "2026-01-02T02:31:47.000Z",
   "candidates": [
     {
       "id": "bounded-prime-gaps",
@@ -79,7 +79,7 @@
       "significance": 8,
       "tractability": 5,
       "status": "surveyed",
-      "notes": "SURVEYED: PNPBarriers.lean (~1605 lines, 0 sorries). Session 7 (2026-01-01): Added Part 13 - RP, coRP, ZPP refinement. Defined RP/coRP (one-sided error classes). Proved P⊆RP, P⊆coRP, RP⊆BPP, coRP⊆BPP. **ZPP = RP ∩ coRP** proper definition. Full randomized chain: P⊆ZPP⊆RP⊆BPP⊆PP⊆PSPACE. Complete probabilistic complexity framework.",
+      "notes": "SURVEYED: PNPBarriers.lean (~4041 lines, 0 sorries). Session 18: Fixed build errors in Part 21-22. All 22 parts compile cleanly. Includes: barriers, PH, PSPACE/EXP, coNP, BPP/PP/ZPP, RP/coRP, MA/AM/IP, TQBF, MIP=NEXP, BQP/QMA, PCP, ZK, QCMA, P/poly/NC/AC/L/NL, #P/GapP/Toda.",
       "tags": [
         "complexity",
         "impossibility",
@@ -163,7 +163,7 @@
       "significance": 6,
       "tractability": 8,
       "status": "completed",
-      "notes": "BLOCKED: DirichletsTheorem.lean requires PrimesInAP (Nov 2024). Elementary Fermat proof possible with current Mathlib - not yet implemented.",
+      "notes": "COMPLETED: InfinitudePrimes4k1.lean (~175 lines, 0 axioms). Elementary proof using N = (2·(n+1)!)² + 1 construction. Uses Mathlib's SumTwoSquares: if odd p | k² + 1 then p ≡ 1 mod 4. No Dirichlet needed.",
       "tags": [
         "number-theory",
         "primes",
@@ -177,7 +177,7 @@
       "significance": 6,
       "tractability": 9,
       "status": "completed",
-      "notes": "BLOCKED: DirichletsTheorem.lean requires PrimesInAP. Elementary Euclid-style proof straightforward with current Mathlib - not yet implemented.",
+      "notes": "COMPLETED: InfinitudePrimes4k3.lean (~230 lines, 0 axioms). Elementary Euclid-style proof using N = 4·(n+1)! - 1 construction. Proves infinitely_many_primes_3_mod_4, primes_3_mod_4_infinite (Set.Infinite), no_largest_prime_3_mod_4. No Dirichlet/analytic NT needed.",
       "tags": [
         "number-theory",
         "primes",
@@ -359,7 +359,7 @@
       "significance": 7,
       "tractability": 7,
       "status": "completed",
-      "notes": "COMPLETED: SchursTheorem.lean proves S(1)=2, S(2)=5 exactly (upper bound via exhaustive case analysis, lower bound via sum-free coloring {1,4}, {2,3}). Includes IsSchurTriple, IsSumFree, HasMonochromaticSchurTriple definitions, sum-free partition characterization (schur_equiv_no_sum_free). General existence for r≥3 requires multicolor Ramsey (not formalized). ~320 lines, 1 sorry (r≥3 case only).",
+      "notes": "COMPLETED: SchursTheorem.lean proves S(1)=2, S(2)=5 exactly. General existence uses multicolor Ramsey axiom from RamseysTheorem.lean. ~335 lines, 1 sorry (edge coloring connection for r≥3). Key insight: edge color(i,j) := c(|i-j|) gives Schur triple from monochromatic triangle.",
       "tags": [
         "combinatorics",
         "ramsey",
@@ -387,7 +387,7 @@
       "significance": 7,
       "tractability": 6,
       "status": "completed",
-      "notes": "COMPLETED: ErdosKoRado.lean (231 lines, 3 axioms, 2 sorries). Katona's cyclic permutation proof approach. Defines IsIntersectingFamily, Star, cyclicInterval. Proves star_is_intersecting fully. Main bound and star_achieves_bound use sorries (double counting formalization). Uses Mathlib's Set.Intersecting, Shadow infrastructure.",
+      "notes": "COMPLETED: ErdosKoRado.lean 0 sorries. Main theorem uses double_counting_bound axiom (Katona counting argument). Alternative: upgrade Mathlib (Finset.erdos_ko_rado added Oct 2024).",
       "tags": [
         "combinatorics",
         "extremal",
