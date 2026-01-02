@@ -231,9 +231,9 @@
       "name": "Prime Counting Function Bounds",
       "tier": "B",
       "significance": 7,
-      "tractability": 6,
-      "status": "skipped",
-      "notes": "SKIPPED: Explicit Chebyshev bounds not in Mathlib. Already have PNT (axiom) + Bertrand bounds in PrimeGapBounds.lean.",
+      "tractability": 7,
+      "status": "completed",
+      "notes": "COMPLETED: ChebyshevBounds.lean (~435 lines, 0 axioms, 12 theorems). Upper bounds: θ(n) ≤ n·log(4), n^{π(2n)-π(n)} ≤ 4^n. Lower bounds via Bertrand: π(2n)-π(n) ≥ 1, π(n) ≥ log₂(n), θ(2n)-θ(n) ≥ log(n+1). Central binomial bounds: C(2n,n) ≤ 4^n, 4^n ≤ (2n+1)·C(2n,n).",
       "tags": [
         "number-theory",
         "analytic",
