@@ -118,7 +118,7 @@ lemma factors_determine_mod_four {n : ℕ} (hn : n ≥ 1)
         have hm_lt : m < n := by
           rw [hm]
           calc m < 2 * m := by omega
-            _ ≤ p * m := by omega
+            _ ≤ p * m := Nat.mul_le_mul_right m hp_ge2
         -- m also has all prime factors = 2 or ≡ 1 (mod 4)
         have h_m_factors : ∀ q : ℕ, Nat.Prime q → q ∣ m → q = 2 ∨ q % 4 = 1 := by
           intro q hq_prime hq_div
@@ -187,18 +187,17 @@ theorem infinitely_many_primes_3_mod_4 :
   have hp_dvd_4fact : p ∣ 4 * (n + 1).factorial := dvd_mul_of_dvd_right hp_dvd_fact 4
   -- But p ∣ N = 4 * (n+1)! - 1
   -- So p ∣ 4 * (n+1)! - N = 1
-  have hp_dvd_1 : p ∣ 1 := by
-    have hN_eq : N = 4 * (n + 1).factorial - 1 := rfl
-    have h_ge : 4 * (n + 1).factorial ≥ 1 := by
-      have := Nat.factorial_pos (n + 1)
-      omega
-    have hN_add : N + 1 = 4 * (n + 1).factorial := by omega
-    have : p ∣ (N + 1) - N := Nat.dvd_sub' (by rw [hN_add]; exact hp_dvd_4fact) hp_div
-    simp at this
-    exact this
-  -- But p is prime, so p ≥ 2, contradiction
-  have : p = 1 := Nat.dvd_one.mp hp_dvd_1
-  exact hp_prime.ne_one this
+  -- But p ∣ N = 4 * (n+1)! - 1
+  -- So p ∣ 4 * (n+1)! - N = 1
+  have hN_eq : N = 4 * (n + 1).factorial - 1 := rfl
+  have h_ge : 4 * (n + 1).factorial ≥ 1 := by
+    have := Nat.factorial_pos (n + 1)
+    omega
+  have hN_add : N + 1 = 4 * (n + 1).factorial := by omega
+  have hp_dvd_diff : p ∣ (N + 1) - N := Nat.dvd_sub' (by rw [hN_add]; exact hp_dvd_4fact) hp_div
+  simp only [add_tsub_cancel_left] at hp_dvd_diff
+  -- But p is prime, so p ≥ 2, contradiction with p ∣ 1
+  exact hp_prime.not_dvd_one hp_dvd_diff
 
 /-- Alternative statement: The set of primes ≡ 3 (mod 4) is infinite -/
 theorem primes_3_mod_4_infinite : Set.Infinite {p : ℕ | Nat.Prime p ∧ p % 4 = 3} := by
