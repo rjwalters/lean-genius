@@ -1,6 +1,6 @@
 {
   "version": "1.2",
-  "last_updated": "2026-01-02T01:06:33.602Z",
+  "last_updated": "2026-01-02T01:11:00.653Z",
   "candidates": [
     {
       "id": "bounded-prime-gaps",
@@ -163,7 +163,7 @@
       "significance": 6,
       "tractability": 8,
       "status": "completed",
-      "notes": "COMPLETED: DirichletsTheorem.lean:196 has infinitely_many_primes_1_mod_4. Fermat factorization proof.",
+      "notes": "BLOCKED: DirichletsTheorem.lean requires PrimesInAP (Nov 2024). Elementary Fermat proof possible with current Mathlib - not yet implemented.",
       "tags": [
         "number-theory",
         "primes",
@@ -177,7 +177,7 @@
       "significance": 6,
       "tractability": 9,
       "status": "completed",
-      "notes": "COMPLETED: DirichletsTheorem.lean:210 has infinitely_many_primes_3_mod_4. Euclid-style proof.",
+      "notes": "BLOCKED: DirichletsTheorem.lean requires PrimesInAP. Elementary Euclid-style proof straightforward with current Mathlib - not yet implemented.",
       "tags": [
         "number-theory",
         "primes",

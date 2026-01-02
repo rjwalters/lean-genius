@@ -29,9 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "IN MATHLIB: frobeniusNumber_pair proves mn-m-n is Frobenius number for coprime m,n. No custom development needed.",
+    "builtItems": [
+      "Mathlib.NumberTheory.FrobeniusNumber.frobeniusNumber_pair"
+    ],
+    "insights": [
+      "Frobenius number for coprime (m,n) is mn-m-n",
+      "Formula generalizes: largest integer not representable as am+bn (a,b≥0)",
+      "Chicken McNugget theorem (6,9,20) is famous application"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },

@@ -29,11 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "BLOCKED: DirichletsTheorem.lean written but requires PrimesInAP (not in our Mathlib). Elementary Fermat proof possible but not yet implemented.",
+    "builtItems": [
+      "DirichletsTheorem.infinitely_many_primes_1_mod_4 - statement exists but proof uses unavailable Mathlib"
+    ],
+    "insights": [
+      "Elementary proof exists via Fermat's two squares theorem: primes p|n²+1 satisfy p ≡ 1 mod 4",
+      "Standard construction: consider N = (2·p₁·p₂·...·pₖ)² + 1",
+      "Every odd prime factor of N is ≡ 1 mod 4 (since -1 is QR mod p iff p ≡ 1 mod 4)",
+      "At least one such prime is new (not in {p₁,...,pₖ})",
+      "This proof does NOT require Dirichlet's full theorem - only Fermat's two squares"
+    ],
+    "mathlibGaps": [
+      "PrimesInAP not in our Mathlib (Sept 2024) - blocks the Dirichlet approach",
+      "Elementary proof via Fermat would work with current Mathlib but not yet implemented"
+    ],
+    "nextSteps": [
+      "Implement elementary proof using Fermat's two squares (Mathlib has Nat.Prime.sq_add_sq)",
+      "Alternative: upgrade Mathlib to get PrimesInAP and use full Dirichlet"
+    ]
   },
   "approaches": [],
   "tags": [

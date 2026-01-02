@@ -29,11 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "BLOCKED: DirichletsTheorem.lean requires PrimesInAP. But elementary Euclid-style proof is straightforward with current Mathlib.",
+    "builtItems": [
+      "DirichletsTheorem.infinitely_many_primes_3_mod_4 - statement exists but proof uses unavailable Mathlib"
+    ],
+    "insights": [
+      "Elementary Euclid-style proof: consider N = 4·p₁·p₂·...·pₖ - 1",
+      "N ≡ 3 mod 4, so N must have at least one prime factor ≡ 3 mod 4",
+      "This prime cannot be in {p₁,...,pₖ} since each pᵢ divides N+1 but not N",
+      "Product of integers ≡ 1 mod 4 stays ≡ 1 mod 4, so N can't factor entirely into 4k+1 primes",
+      "This proof is completely elementary - no Dirichlet needed"
+    ],
+    "mathlibGaps": [
+      "PrimesInAP not in our Mathlib - blocks the current DirichletsTheorem.lean approach",
+      "Elementary proof would work immediately with current Mathlib"
+    ],
+    "nextSteps": [
+      "Implement elementary Euclid-style proof (4·p₁·...·pₖ - 1 construction)",
+      "This should be ~50-100 lines with basic modular arithmetic"
+    ]
   },
   "approaches": [],
   "tags": [

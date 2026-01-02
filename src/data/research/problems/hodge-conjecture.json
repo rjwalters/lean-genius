@@ -29,32 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED - Heavy algebraic geometry requirements",
-    "builtItems": [
-      {
-        "name": "HodgeConjecture.lean",
-        "description": "Placeholder with axiomatized definitions",
-        "proven": true
-      }
-    ],
-    "insights": [
-      "HodgeConjecture.lean"
-    ],
-    "mathlibGaps": [
-      "Hodge decomposition",
-      "Dolbeault cohomology",
-      "Complex differential geometry",
-      "Algebraic cycles",
-      "Smooth projective varieties",
-      "Advanced sheaf cohomology",
-      "Intersection theory"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
     "nextSteps": [
-      "Monitor Mathlib algebraic geometry",
-      "Axiomatize core definitions",
-      "Survey related formalizations"
+      "Hodge Decomposition",
+      "Divisor Case",
+      "Abelian Varieties",
+      "K3 Surfaces"
     ],
-    "markdown": "# Knowledge Base: hodge-conjecture\n\n## Problem Understanding\n\n### Core Statement\nOn a smooth projective complex variety, every Hodge class is a rational linear combination of classes of algebraic cycles.\n\n### Formalization Requirements\n1. Complex algebraic varieties\n2. De Rham cohomology\n3. Hodge decomposition\n4. Algebraic cycles\n5. Cycle class map\n\n## What We've Built\n\n- `HodgeConjecture.lean` - Placeholder with axiomatized definitions\n\n## What's Proven\n\n(No theorems proven yet - problem is blocked on infrastructure)\n\n### What Mathlib Lacks\n\n- Hodge decomposition\n- Dolbeault cohomology\n- Complex differential geometry\n- Algebraic cycles\n- Smooth projective varieties\n- Advanced sheaf cohomology\n- Intersection theory\n\n## Tractable Partial Work\n\n1. **State the conjecture** - Define terms axiomatically\n2. **K3 surfaces case** - Known for certain K3s\n3. **Abelian varieties** - Partial results\n\n## Related Gallery Proofs\n\n| Proof | Relevance |\n|-------|-----------|\n| (none yet) | - |\n\n## Scouting Log\n\n### Initial Assessment: 2026-01-01\n\n**Status**: BLOCKED - Heavy algebraic geometry requirements\n\n**Blocker Tracking**:\n| Infrastructure | In Mathlib | Last Checked |\n|----------------|------------|--------------|\n| Algebraic varieties | Basic | 2026-01-01 |\n| Sheaf cohomology | Building | 2026-01-01 |\n| Hodge theory | No | 2026-01-01 |\n| Algebraic cycles | No | 2026-01-01 |\n\n## Next Steps\n\n1. **Monitor Mathlib algebraic geometry** - Watch for Hodge theory development\n2. **Axiomatize core definitions** - State conjecture with sorry'd foundations\n3. **Survey related formalizations** - Check Isabelle/Coq for prior work\n"
+    "markdown": "# Knowledge Base: Hodge Conjecture\n\n## The Problem\n\nThe Hodge Conjecture is a fundamental question about the relationship between algebraic geometry and topology, asking which topological features of complex algebraic varieties come from algebraic subvarieties.\n\n### Core Statement\n\n> On a smooth projective complex variety, every Hodge class is a rational linear combination of classes of algebraic cycles.\n\nIn simpler terms: Certain \"nice\" topological objects (Hodge classes) on complex algebraic varieties should all come from algebraic subvarieties.\n\n### Why It Matters\n\n1. **Algebraic Geometry**: Fundamental question about varieties\n2. **Topology-Algebra Bridge**: Connects Betti cohomology to algebraic cycles\n3. **Motives**: Central to the theory of motives\n4. **Representation Theory**: Connected to Langlands program\n\n## Historical Context\n\n| Year | Mathematician | Contribution |\n|------|--------------|--------------|\n| 1950 | Hodge | Formulated the conjecture |\n| 1961 | Lefschetz | Proved for divisors (codimension 1) |\n| 1969 | Deligne | Proved for abelian varieties (certain cases) |\n| 1983 | Cattani-Deligne-Kaplan | Some degenerations |\n| 2000 | Clay Institute | Named as Millennium Problem |\n\nUnlike some Millennium Problems, the Hodge Conjecture is wide open - no major progress on the general case in decades.\n\n## What This Means\n\n### Hodge Decomposition\n\nFor a compact Kähler manifold X, the cohomology splits:\n\nH^k(X, C) = ⊕_{p+q=k} H^{p,q}(X)\n\nwhere H^{p,q} consists of forms with p \"holomorphic\" and q \"antiholomorphic\" directions.\n\n### Hodge Classes\n\nA class α ∈ H^{2p}(X, Q) is a **Hodge class** if it lives in H^{p,p}(X) ∩ H^{2p}(X, Q).\n\n### Algebraic Cycles\n\nA codimension-p algebraic cycle is a formal sum of irreducible subvarieties of codimension p. Each gives a class in H^{2p}(X, Q).\n\n### The Conjecture\n\nEvery Hodge class is a Q-linear combination of classes of algebraic cycles.\n\n## What We Know\n\n### Proven Cases\n\n| Case | Status | Prover |\n|------|--------|--------|\n| Codimension 1 (divisors) | ✅ Proven | Lefschetz (1961) |\n| Abelian varieties (certain) | ✅ Proven | Deligne (1969) |\n| K3 surfaces | ✅ Proven | Various |\n| Fermat varieties (some) | ✅ Proven | Shioda |\n\n### Open Cases\n\n- General smooth projective varieties\n- Higher codimension on most varieties\n- Variants over other fields\n\n### Known Failures\n\nThe **integral** Hodge conjecture (with Z instead of Q coefficients) is FALSE. Counterexamples found by Atiyah-Hirzebruch (1962) and later Totaro.\n\n## What We Could Build\n\n### In Mathlib Now\n\n| Component | Status | Notes |\n|-----------|--------|-------|\n| Complex manifolds | ⚠️ Partial | Building |\n| Algebraic varieties | ⚠️ Partial | Scheme theory exists |\n| Cohomology | ⚠️ Partial | Some de Rham |\n| Hodge theory | ❌ | Not available |\n| Algebraic cycles | ❌ | Not available |\n\n### Tractable Partial Work\n\n1. **Hodge Decomposition**\n   - State for Kähler manifolds\n   - Prove for complex tori\n\n2. **Divisor Case**\n   - Lefschetz (1,1) theorem\n   - Line bundles ↔ divisor classes\n\n3. **Abelian Varieties**\n   - Define algebraic cycles\n   - State Deligne's theorem\n\n4. **K3 Surfaces**\n   - Important test case\n   - Rich structure theory\n\n## The Mathematical Challenges\n\n### Primary Blocker: Hodge Theory Infrastructure\n\nFormalizing requires:\n\n1. **Complex differential geometry** (~3000 lines)\n   - Kähler manifolds\n   - Dolbeault cohomology\n   - Harmonic forms\n\n2. **Hodge decomposition** (~2000 lines)\n   - Laplacian theory\n   - Elliptic regularity\n   - Representation on cohomology\n\n3. **Algebraic cycles** (~2000 lines)\n   - Chow groups\n   - Cycle class maps\n   - Intersection theory\n\n4. **Scheme theory for varieties** (~1500 lines)\n   - Smooth projective schemes\n   - Coherent sheaves\n   - GAGA principle\n\n### Why This Is Hard\n\nUnlike Navier-Stokes or P vs NP, the Hodge Conjecture:\n- Has no known attack strategy\n- Involves deep algebraic geometry\n- Requires substantial infrastructure just to state\n\n## Related Topics\n\n### Motives\n\nThe Hodge Conjecture is part of a larger picture:\n- Standard conjectures on algebraic cycles\n- Theory of motives\n- Motivic cohomology\n\n### Deligne's Conjectures\n\nRelated conjectures about:\n- Absolute Hodge cycles\n- Periods of algebraic varieties\n- Special values of L-functions\n\n## Key References\n\n- Hodge, W.V.D. (1950). \"The topological invariants of algebraic varieties\"\n- Deligne, P. (1982). \"Hodge cycles on abelian varieties\"\n- Voisin, C. (2002). \"Hodge Theory and Complex Algebraic Geometry\"\n- Lewis, J. (1999). \"A Survey of the Hodge Conjecture\"\n\n## Scouting Log\n\n### Assessment: 2026-01-01\n\n**Current Status**: BLOCKED - Heavy algebraic geometry requirements\n\n**Blocker Tracking**:\n| Infrastructure | In Mathlib | Last Checked |\n|----------------|------------|--------------|\n| Algebraic varieties | Basic | 2026-01-01 |\n| Sheaf cohomology | Building | 2026-01-01 |\n| Hodge theory | No | 2026-01-01 |\n| Algebraic cycles | No | 2026-01-01 |\n\n**Path Forward**:\n1. State conjecture with axiomatized definitions\n2. Formalize Lefschetz (1,1) theorem (divisor case)\n3. Build toward K3 surfaces case\n4. Long-term: general Hodge theory\n\n**Reality Check**: Even stating the conjecture precisely requires thousands of lines of infrastructure. This is a long-term goal.\n\n**Next Scout**: Monitor Mathlib algebraic geometry development (schemes, cohomology)\n"
   },
   "approaches": [],
   "tags": [
