@@ -229,6 +229,7 @@ export interface ResearchKnowledge {
   insights: string[]
   mathlibGaps: string[]
   nextSteps: string[]
+  markdown?: string  // Full knowledge.md content for rich rendering
 }
 
 /**
