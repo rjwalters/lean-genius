@@ -12,23 +12,23 @@ On a smooth projective complex variety, every Hodge class is a rational linear c
 4. Algebraic cycles
 5. Cycle class map
 
-## Blockers
+## What We've Built
 
-### Primary Blocker: Hodge Theory
-**Status**: BLOCKED
-**Severity**: Critical
+- `HodgeConjecture.lean` - Placeholder with axiomatized definitions
 
-Mathlib lacks:
-- [ ] Hodge decomposition
-- [ ] Dolbeault cohomology
-- [ ] Complex differential geometry
-- [ ] Algebraic cycles
+## What's Proven
 
-### Secondary Blocker: Algebraic Geometry Depth
-Even with basics, we need:
-- [ ] Smooth projective varieties
-- [ ] Sheaf cohomology (advanced)
-- [ ] Intersection theory
+(No theorems proven yet - problem is blocked on infrastructure)
+
+### What Mathlib Lacks
+
+- Hodge decomposition
+- Dolbeault cohomology
+- Complex differential geometry
+- Algebraic cycles
+- Smooth projective varieties
+- Advanced sheaf cohomology
+- Intersection theory
 
 ## Tractable Partial Work
 
@@ -46,7 +46,7 @@ Even with basics, we need:
 
 ### Initial Assessment: 2026-01-01
 
-**Current Status**: BLOCKED - Heavy algebraic geometry requirements
+**Status**: BLOCKED - Heavy algebraic geometry requirements
 
 **Blocker Tracking**:
 | Infrastructure | In Mathlib | Last Checked |
@@ -56,4 +56,8 @@ Even with basics, we need:
 | Hodge theory | No | 2026-01-01 |
 | Algebraic cycles | No | 2026-01-01 |
 
-**Next Scout**: After major algebraic geometry Mathlib development
+## Next Steps
+
+1. **Monitor Mathlib algebraic geometry** - Watch for Hodge theory development
+2. **Axiomatize core definitions** - State conjecture with sorry'd foundations
+3. **Survey related formalizations** - Check Isabelle/Coq for prior work

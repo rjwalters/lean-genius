@@ -102,6 +102,7 @@ interface ResearchProblem {
     insights: string[]
     mathlibGaps: string[]
     nextSteps: string[]
+    markdown?: string  // Full knowledge.md content for rich rendering
   }
   approaches: {
     id: string
@@ -272,8 +273,11 @@ function parseState(content: string, registryEntry: RegistryEntry): ResearchProb
 
 /**
  * Parse knowledge.md to extract knowledge
+ * Preserves full markdown content for rich rendering on frontend
  */
 function parseKnowledge(content: string): ResearchProblem['knowledge'] {
+  // Store the full markdown for rich rendering (if non-empty)
+  const markdown = content.trim() ? content : undefined
   // Try multiple patterns for progress summary
   const progressMatch = content.match(/\*\*Milestone achieved\*\*:\s*(.+)/) ||
     content.match(/\*\*Status\*\*:\s*(.+)/)
@@ -359,7 +363,8 @@ function parseKnowledge(content: string): ResearchProblem['knowledge'] {
     builtItems,
     insights,
     mathlibGaps,
-    nextSteps
+    nextSteps,
+    markdown
   }
 }
 

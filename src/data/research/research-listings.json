@@ -21,66 +21,6 @@
     "tractability": 4
   },
   {
-    "slug": "hurwitz-impossibility",
-    "title": "Hurwitz Quaternion Theorem",
-    "description": "SKIPPED: Already in HurwitzTheorem.",
-    "phase": "NEW",
-    "status": "blocked",
-    "tier": "A",
-    "path": "fast",
-    "tags": [
-      "algebra",
-      "impossibility",
-      "formalization"
-    ],
-    "started": "2026-01-01T05:32:39.476Z",
-    "lastUpdate": "2026-01-01T05:32:39.476Z",
-    "attemptCount": 0,
-    "approachCount": 0,
-    "significance": 7,
-    "tractability": 8
-  },
-  {
-    "slug": "infinitude-primes-4k1",
-    "title": "Infinitely Many Primes ≡ 1 (mod 4)",
-    "description": "SKIPPED: Already in DirichletsTheorem.",
-    "phase": "NEW",
-    "status": "blocked",
-    "tier": "B",
-    "path": "fast",
-    "tags": [
-      "number-theory",
-      "primes",
-      "classical"
-    ],
-    "started": "2026-01-01T05:32:39.477Z",
-    "lastUpdate": "2026-01-01T05:32:39.477Z",
-    "attemptCount": 0,
-    "approachCount": 0,
-    "significance": 6,
-    "tractability": 8
-  },
-  {
-    "slug": "infinitude-primes-4k3",
-    "title": "Infinitely Many Primes ≡ 3 (mod 4)",
-    "description": "SKIPPED: Already in DirichletsTheorem.",
-    "phase": "NEW",
-    "status": "blocked",
-    "tier": "B",
-    "path": "fast",
-    "tags": [
-      "number-theory",
-      "primes",
-      "classical"
-    ],
-    "started": "2026-01-01T05:32:39.477Z",
-    "lastUpdate": "2026-01-01T05:32:39.477Z",
-    "attemptCount": 0,
-    "approachCount": 0,
-    "significance": 6,
-    "tractability": 9
-  },
-  {
     "slug": "sum-of-divisors",
     "title": "Sum of Divisors Properties",
     "description": "SKIPPED: Already covered by PerfectNumbers.",
@@ -95,66 +35,6 @@
     ],
     "started": "2026-01-01T05:32:39.478Z",
     "lastUpdate": "2026-01-01T05:32:39.478Z",
-    "attemptCount": 0,
-    "approachCount": 0,
-    "significance": 5,
-    "tractability": 9
-  },
-  {
-    "slug": "mobius-inversion",
-    "title": "Möbius Inversion Formula",
-    "description": "SKIPPED: Already in Mathlib as sum_eq_iff_sum_mul_moebius_eq (rings), sum_eq_iff_sum_smul_moebius_eq (additive groups), prod_eq_iff_prod_pow_moebius_eq (multiplicative).",
-    "phase": "NEW",
-    "status": "blocked",
-    "tier": "A",
-    "path": "fast",
-    "tags": [
-      "number-theory",
-      "arithmetic-functions",
-      "classical"
-    ],
-    "started": "2026-01-01T05:32:39.478Z",
-    "lastUpdate": "2026-01-01T05:32:39.478Z",
-    "attemptCount": 0,
-    "approachCount": 0,
-    "significance": 7,
-    "tractability": 7
-  },
-  {
-    "slug": "prime-counting-bounds",
-    "title": "Prime Counting Function Bounds",
-    "description": "SKIPPED: Explicit Chebyshev bounds not in Mathlib.",
-    "phase": "NEW",
-    "status": "blocked",
-    "tier": "A",
-    "path": "full",
-    "tags": [
-      "number-theory",
-      "analytic",
-      "bounds"
-    ],
-    "started": "2026-01-01T05:32:39.479Z",
-    "lastUpdate": "2026-01-01T05:32:39.479Z",
-    "attemptCount": 0,
-    "approachCount": 0,
-    "significance": 7,
-    "tractability": 6
-  },
-  {
-    "slug": "frobenius-two-coprime",
-    "title": "Frobenius Number (Two Coprime)",
-    "description": "SKIPPED: Already in Mathlib as frobeniusNumber_pair in Mathlib.",
-    "phase": "NEW",
-    "status": "blocked",
-    "tier": "B",
-    "path": "fast",
-    "tags": [
-      "number-theory",
-      "combinatorics",
-      "classical"
-    ],
-    "started": "2026-01-01T05:32:39.480Z",
-    "lastUpdate": "2026-01-01T05:32:39.480Z",
     "attemptCount": 0,
     "approachCount": 0,
     "significance": 5,

@@ -29,11 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "SKIPPED (ALREADY COVERED)",
     "builtItems": [],
     "insights": [],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: sum-of-divisors\n\n## Problem Summary\n\nFormalize sum of divisors function properties.\n\n## Current State\n\n**Status**: SKIPPED (ALREADY COVERED)\n\n### Why Skipped\n\nAlready covered by `PerfectNumbers.lean` which has:\n- sigma(2^k) computations\n- Euclid-Euler theorem for even perfect numbers\n- Concrete examples (6, 28, 496, 8128)\n\n### What Exists\n\nThe divisor sum function is in Mathlib as `Nat.sigma`. Our PerfectNumbers.lean uses it.\n\nThis problem was marked \"skipped\" but related content exists.\n\n## Session Log\n\n### Backfill Session (2026-01-01)\n\n**Mode**: BACKFILL - Related work exists in PerfectNumbers.lean\n"
   },
   "approaches": [],
   "tags": [
