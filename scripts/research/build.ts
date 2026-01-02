@@ -283,24 +283,33 @@ function parseKnowledge(content: string): ResearchProblem['knowledge'] {
     content.match(/\*\*Status\*\*:\s*(.+)/)
 
   // Extract insights from multiple possible sections
-  // Try: "### What's Proven", "## What We've Built", subsections with "(proven)"
+  // Try: "### What's Proven", "## What We've Built", "### In This Repository"
   const provenMatch = content.match(/###\s*What's Proven[^\n]*\n([\s\S]*?)(?=\n###|\n##)/m)
-  const builtMatch = content.match(/##\s*What We've Built\s*\n([\s\S]*?)(?=\n##\s+[^#])/m)
+  const builtMatch = content.match(/##\s*What We've Built\s*\n([\s\S]*?)(?=\n##\s+[^#])/m) ||
+    content.match(/###\s*In This Repository\s*\n([\s\S]*?)(?=\n###|\n##)/m)
 
   // Try multiple patterns for Mathlib gaps
   // Pattern 1: "### What Mathlib Lacks" subsection
   // Pattern 2: "### Missing in Mathlib" subsection
-  // Pattern 3: "## Blockers" section (Millennium problems - parse "- [ ]" items)
+  // Pattern 3: "## Blockers" section (old Millennium problems - parse "- [ ]" items)
+  // Pattern 4: "### In Mathlib" table (scout format - parse ❌ items)
+  // Pattern 5: "### Primary Blocker:" section (scout format - parse requirements)
   const gapsMatch = content.match(/###\s*What Mathlib Lacks\s*\n([\s\S]*?)(?=\n###|\n##)/m) ||
     content.match(/###\s*Missing in Mathlib\s*\n([\s\S]*?)(?=\n###|\n##)/m) ||
-    content.match(/##\s*Blockers\s*\n([\s\S]*?)(?=\n##\s+[^#])/m)
+    content.match(/##\s*Blockers\s*\n([\s\S]*?)(?=\n##\s+[^#])/m) ||
+    content.match(/###\s*In Mathlib\s*\n([\s\S]*?)(?=\n##)/m) ||
+    content.match(/###\s*In Mathlib Now\s*\n([\s\S]*?)(?=\n##)/m) ||
+    content.match(/###\s*Mathlib Status\s*\n([\s\S]*?)(?=\n##)/m) ||
+    content.match(/###\s*Primary Blocker[^\n]*\n([\s\S]*?)(?=\n###|\n##)/m)
 
   // Try multiple patterns for next steps - at end of file or before next ##
   // Pattern 1: "## Next Steps" section
-  // Pattern 2: "## Tractable Partial Work" (Millennium problems)
+  // Pattern 2: "## Tractable Partial Work" (old Millennium problems)
+  // Pattern 3: "### What We Could Still Do" (scout format)
   const nextMatch = content.match(/##\s*Next Steps[^\n]*\n([\s\S]*?)(?=\n##)/i) ||
     content.match(/##\s*Next Steps[^\n]*\n([\s\S]*)$/i) ||
-    content.match(/##\s*Tractable Partial Work\s*\n([\s\S]*?)(?=\n##)/m)
+    content.match(/##\s*Tractable Partial Work\s*\n([\s\S]*?)(?=\n##)/m) ||
+    content.match(/###\s*What We Could Still Do\s*\n([\s\S]*?)(?=\n##)/m)
 
   const insights: string[] = []
   const builtItems: { name: string; description: string; proven: boolean }[] = []
@@ -347,8 +356,17 @@ function parseKnowledge(content: string): ResearchProblem['knowledge'] {
       // Also match checkbox items: "- [ ] item" or "- [x] item"
       const checkboxMatch = line.match(/^-\s+\[[ x]\]\s+(.+)$/)
       const itemMatch = line.match(/^-\s+(.+)$/)
+      // Match table rows with ❌ or ⚠️: "| Component | ❌ | Notes |" or "| Component | ❌ Not available |"
+      const tableMatch = line.match(/\|\s*([^|]+)\s*\|\s*[❌⚠️]/)
+      // Match numbered requirements: "1. **Name**: description"
+      const numberedMatch = line.match(/^\d+\.\s+\*\*([^*]+)\*\*/)
+
       if (checkboxMatch) {
         mathlibGaps.push(checkboxMatch[1].trim())
+      } else if (tableMatch && !tableMatch[1].includes('---')) {
+        mathlibGaps.push(tableMatch[1].trim())
+      } else if (numberedMatch) {
+        mathlibGaps.push(numberedMatch[1].trim())
       } else if (itemMatch && !itemMatch[1].startsWith('[')) {
         mathlibGaps.push(itemMatch[1].trim())
       }
