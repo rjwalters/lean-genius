@@ -166,7 +166,104 @@ noncomputable instance instEuclideanDomain : EuclideanDomain ZsqrtNegTwo :=
 /-- If p is a prime that is not irreducible in ℤ[√-2], then p = a² + 2b² for some a, b. -/
 theorem sq_add_two_sq_of_nat_prime_of_not_irreducible (p : ℕ) [hp : Fact p.Prime]
     (hpi : ¬Irreducible (p : ZsqrtNegTwo)) : ∃ a b : ℕ, a ^ 2 + 2 * b ^ 2 = p := by
-  sorry  -- TODO: Complete the factorization argument
+  -- Since p is not irreducible in a UFD, it factors as p = x * y with neither a unit
+  have hpu : ¬IsUnit (p : ZsqrtNegTwo) := natCast_not_unit hp.out.one_lt
+  rw [irreducible_iff] at hpi
+  push_neg at hpi
+  obtain ⟨x, y, hxy, hux, huy⟩ := hpi hpu
+  -- Taking norms: p² = N(p) = N(x)·N(y)
+  have hnorm_eq : Zsqrtd.norm (p : ZsqrtNegTwo) = (p : ℤ) ^ 2 := by
+    simp only [Zsqrtd.norm_def, Zsqrtd.natCast_re, Zsqrtd.natCast_im, mul_zero, sub_zero, sq]
+  have hnorm_mul : Zsqrtd.norm (x * y) = Zsqrtd.norm x * Zsqrtd.norm y := Zsqrtd.norm_mul x y
+  rw [hxy] at hnorm_eq
+  rw [hnorm_mul] at hnorm_eq
+  -- Since N(x), N(y) > 0 and neither is a unit, both N(x), N(y) > 1
+  have hx_norm_pos : 0 < Zsqrtd.norm x := by
+    have h0 : 0 ≤ Zsqrtd.norm x := norm_nonneg' x
+    rcases h0.eq_or_lt with heq | hpos
+    · exfalso; rw [← heq] at hux; simp [isUnit_iff_norm_one] at hux
+    · exact hpos
+  have hy_norm_pos : 0 < Zsqrtd.norm y := by
+    have h0 : 0 ≤ Zsqrtd.norm y := norm_nonneg' y
+    rcases h0.eq_or_lt with heq | hpos
+    · exfalso; rw [← heq] at huy; simp [isUnit_iff_norm_one] at huy
+    · exact hpos
+  have hx_norm_ne_one : Zsqrtd.norm x ≠ 1 := by
+    intro h; rw [isUnit_iff_norm_one] at hux; exact hux h
+  have hy_norm_ne_one : Zsqrtd.norm y ≠ 1 := by
+    intro h; rw [isUnit_iff_norm_one] at huy; exact huy h
+  have hx_norm_gt_one : 1 < Zsqrtd.norm x := by omega
+  have hy_norm_gt_one : 1 < Zsqrtd.norm y := by omega
+  -- The only divisor of p² that is > 1 and < p² (since other factor > 1) is p
+  have hdiv : Zsqrtd.norm x ∣ (p : ℤ) ^ 2 := by
+    use Zsqrtd.norm y; exact hnorm_eq.symm
+  have habs_div : (Zsqrtd.norm x).natAbs ∣ (p : ℕ) ^ 2 := by
+    have : ((Zsqrtd.norm x).natAbs : ℤ) ∣ (p : ℤ) ^ 2 := by
+      rw [Int.natAbs_dvd]; exact hdiv
+    exact Int.natCast_dvd_natCast.mp this
+  -- The divisors of p² for prime p are exactly {1, p, p²}
+  have hp_pos : 0 < p := hp.out.pos
+  have hdivisors : (Zsqrtd.norm x).natAbs ∈ ({1, p, p ^ 2} : Finset ℕ) := by
+    rw [Finset.mem_insert, Finset.mem_insert, Finset.mem_singleton]
+    have hdivpow := Nat.divisors_prime_pow hp.out 2
+    simp only [Finset.mem_insert, Finset.mem_singleton, pow_zero, pow_one] at hdivpow
+    have hmem : (Zsqrtd.norm x).natAbs ∈ Nat.divisors (p ^ 2) := Nat.mem_divisors.mpr ⟨habs_div, by positivity⟩
+    rw [hdivpow] at hmem
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hmem
+    rcases hmem with h1 | hp1 | hp2
+    · left; exact h1
+    · right; left; exact hp1
+    · right; right; exact hp2
+  -- It can't be 1 (since N(x) > 1) and can't be p² (since N(y) > 1 forces N(x) < p²)
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hdivisors
+  have hnat_abs_pos : 0 < (Zsqrtd.norm x).natAbs := by
+    rw [Int.natAbs_pos]; exact ne_of_gt hx_norm_pos
+  have hne_one : (Zsqrtd.norm x).natAbs ≠ 1 := by
+    intro h
+    have : Zsqrtd.norm x = 1 := by
+      have hnn := norm_nonneg' x
+      omega
+    exact hx_norm_ne_one this
+  have hne_psq : (Zsqrtd.norm x).natAbs ≠ p ^ 2 := by
+    intro h
+    have hxabs : (Zsqrtd.norm x).natAbs = p ^ 2 := h
+    have hx_int : Zsqrtd.norm x = (p : ℤ) ^ 2 := by
+      have hnn := norm_nonneg' x
+      have : (Zsqrtd.norm x).natAbs = ((p : ℤ) ^ 2).natAbs := by simp [hxabs]
+      omega
+    have hy_eq_one : Zsqrtd.norm y = 1 := by
+      have h1 : (p : ℤ) ^ 2 * Zsqrtd.norm y = (p : ℤ) ^ 2 * 1 := by
+        calc (p : ℤ) ^ 2 * Zsqrtd.norm y = Zsqrtd.norm x * Zsqrtd.norm y := by rw [hx_int]
+          _ = (p : ℤ) ^ 2 := hnorm_eq
+          _ = (p : ℤ) ^ 2 * 1 := by ring
+      have hp2_ne : (p : ℤ) ^ 2 ≠ 0 := by positivity
+      exact mul_left_cancel₀ hp2_ne h1
+    exact hy_norm_ne_one hy_eq_one
+  rcases hdivisors with h1 | hp1 | hp2
+  · exact absurd h1 hne_one
+  · -- N(x).natAbs = p, so N(x) = p (since N(x) > 0)
+    have hx_norm_eq : Zsqrtd.norm x = p := by
+      have hnn := norm_nonneg' x
+      omega
+    -- Now x = a + b√-2 with a² + 2b² = p
+    use x.re.natAbs, x.im.natAbs
+    have h := hx_norm_eq
+    rw [norm_def'] at h
+    -- Need: x.re.natAbs² + 2 * x.im.natAbs² = p
+    have hre_sq : (x.re.natAbs : ℤ) ^ 2 = x.re ^ 2 := by
+      have := Int.natAbs_sq x.re
+      rw [sq, sq]; exact this
+    have him_sq : (x.im.natAbs : ℤ) ^ 2 = x.im ^ 2 := by
+      have := Int.natAbs_sq x.im
+      rw [sq, sq]; exact this
+    have hint : (x.re.natAbs : ℤ) ^ 2 + 2 * (x.im.natAbs : ℤ) ^ 2 = p := by
+      rw [hre_sq, him_sq]; exact h
+    have hnat : (x.re.natAbs ^ 2 + 2 * x.im.natAbs ^ 2 : ℕ) = p := by
+      have : ((x.re.natAbs ^ 2 + 2 * x.im.natAbs ^ 2 : ℕ) : ℤ) = (p : ℤ) := by
+        push_cast; exact hint
+      exact Int.ofNat_inj.mp this
+    exact hnat
+  · exact absurd hp2 hne_psq
 
 end ZsqrtNegTwo
 
