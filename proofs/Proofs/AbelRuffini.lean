@@ -1,7 +1,7 @@
 import Mathlib.FieldTheory.AbelRuffini
 import Mathlib.GroupTheory.Solvable
 import Mathlib.GroupTheory.SpecificGroups.Alternating
-import Mathlib.FieldTheory.Galois
+import Mathlib.FieldTheory.Galois.Basic
 
 /-!
 # Abel-Ruffini Theorem

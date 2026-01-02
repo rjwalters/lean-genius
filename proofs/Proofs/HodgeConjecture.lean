@@ -3,12 +3,12 @@ import Mathlib.Geometry.Manifold.Sheaf.Basic
 import Mathlib.Topology.Sheaves.Sheaf
 import Mathlib.Algebra.Homology.DerivedCategory.Basic
 import Mathlib.LinearAlgebra.ExteriorAlgebra.Basic
-import Mathlib.LinearAlgebra.TensorPower
+import Mathlib.LinearAlgebra.TensorPower.Basic
 import Mathlib.RingTheory.GradedAlgebra.Basic
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Topology.CompactOpen
-import Mathlib.Data.Complex.Module
+import Mathlib.LinearAlgebra.Complex.Module
 import Mathlib.Algebra.DirectSum.Basic
 import Mathlib.Tactic
 

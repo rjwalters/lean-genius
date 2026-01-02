@@ -1,14 +1,14 @@
 import Mathlib.NumberTheory.Cyclotomic.Basic
 import Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots
 import Mathlib.NumberTheory.NumberField.Basic
-import Mathlib.FieldTheory.Galois
-import Mathlib.FieldTheory.Galois
+import Mathlib.FieldTheory.Galois.Basic
+import Mathlib.FieldTheory.Galois.Basic
 import Mathlib.FieldTheory.IsAlgClosed.Basic
-import Mathlib.FieldTheory.Adjoin
+import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
 import Mathlib.RingTheory.RootsOfUnity.Basic
 import Mathlib.RingTheory.RootsOfUnity.Complex
 import Mathlib.Algebra.Group.Subgroup.Basic
-import Mathlib.GroupTheory.Abelianization
+import Mathlib.GroupTheory.Abelianization.Defs
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Tactic
 

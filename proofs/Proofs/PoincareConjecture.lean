@@ -8,7 +8,7 @@ import Mathlib.Topology.Order.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.Analysis.NormedSpace.Connected
-import Mathlib.Geometry.Manifold.SmoothManifoldWithCorners
+import Mathlib.Geometry.Manifold.ContMDiff.Basic
 import Mathlib.MeasureTheory.Measure.Haar.Basic
 import Mathlib.Tactic
 

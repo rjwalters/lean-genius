@@ -1,5 +1,5 @@
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Finset.Lattice
+import Mathlib.Data.Finset.Lattice.Basic
 import Mathlib.Tactic
 
 /-!

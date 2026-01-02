@@ -1,4 +1,4 @@
-import Mathlib.Data.Nat.Digits
+import Mathlib.Data.Nat.Digits.Defs
 import Mathlib.Tactic
 
 /-!

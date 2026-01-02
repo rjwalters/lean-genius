@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Tauto
-import Mathlib.Tactic.PushNeg
+import Mathlib.Tactic.Push
 import Mathlib.Logic.Basic
 
 /-!

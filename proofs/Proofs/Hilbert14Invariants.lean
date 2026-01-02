@@ -1,5 +1,5 @@
 import Mathlib.RingTheory.Polynomial.Basic
-import Mathlib.RingTheory.Noetherian
+import Mathlib.RingTheory.Noetherian.Basic
 import Mathlib.RingTheory.FiniteType
 import Mathlib.Algebra.MvPolynomial.Basic
 import Mathlib.Algebra.Group.Defs

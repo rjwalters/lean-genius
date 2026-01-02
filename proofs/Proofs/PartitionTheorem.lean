@@ -1,4 +1,4 @@
-import Archive.Wiedijk100Theorems.Partition
+import Mathlib.Combinatorics.Enumerative.Partition
 import Mathlib.Combinatorics.Enumerative.Partition
 import Mathlib.Tactic
 

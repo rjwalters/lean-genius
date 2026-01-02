@@ -7,7 +7,7 @@ import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Topology.Connected.PathConnected
 import Mathlib.Topology.Bornology.Basic
 import Mathlib.Algebra.Polynomial.Basic
-import Mathlib.Algebra.Polynomial.Eval
+import Mathlib.Algebra.Polynomial.Eval.Defs
 import Mathlib.Algebra.MvPolynomial.Basic
 import Mathlib.Algebra.MvPolynomial.Variables
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse

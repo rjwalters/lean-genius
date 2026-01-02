@@ -1,4 +1,4 @@
-import Mathlib.Analysis.NormedSpace.Basic
+import Mathlib.Analysis.Normed.MulAction
 import Mathlib.Analysis.Convex.Basic
 import Mathlib.Analysis.Convex.Body
 import Mathlib.Topology.MetricSpace.Basic

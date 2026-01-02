@@ -1,4 +1,4 @@
-import Mathlib.Algebra.BigOperators.Ring
+import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Data.Nat.Choose.Sum
 import Mathlib.Algebra.Ring.Basic
 import Mathlib.Tactic
