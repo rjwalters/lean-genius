@@ -32,8 +32,20 @@
     "progressSummary": "BLOCKED",
     "builtItems": [],
     "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "mathlibGaps": [
+      "L-functions attached to elliptic curves",
+      "Analytic continuation framework",
+      "Modularity theorem machinery",
+      "Full Mordell-Weil theorem with rank computation",
+      "Height pairings",
+      "Tate-Shafarevich group (for full BSD)"
+    ],
+    "nextSteps": [
+      "Basic elliptic curve properties",
+      "Finite rank",
+      "Computational examples",
+      "Weak BSD"
+    ],
     "markdown": "# Knowledge Base: birch-swinnerton-dyer\n\n## Problem Understanding\n\n### Core Statement\nFor an elliptic curve E over Q, the rank of E(Q) equals the order of vanishing of L(E, s) at s = 1.\n\n### Formalization Requirements\n1. Elliptic curves over Q\n2. Mordell-Weil group E(Q)\n3. L-function attached to elliptic curve\n4. Analytic continuation of L(E, s)\n5. Order of vanishing at central point\n\n## Blockers\n\n### Primary Blocker: L-functions\n**Status**: BLOCKED\n**Severity**: Critical\n\nMathlib has elliptic curves but lacks:\n- [ ] L-functions attached to elliptic curves\n- [ ] Analytic continuation framework\n- [ ] Modularity theorem machinery\n\n### Secondary Blocker: Mordell-Weil\nThe algebraic side needs:\n- [ ] Full Mordell-Weil theorem with rank computation\n- [ ] Height pairings\n- [ ] Tate-Shafarevich group (for full BSD)\n\n## Tractable Partial Work\n\n1. **Basic elliptic curve properties** - Mathlib has foundations\n2. **Finite rank** - Mordell-Weil finiteness\n3. **Computational examples** - Verify BSD for specific curves\n4. **Weak BSD** - Just rank(E) = 0 ⟺ L(E,1) ≠ 0\n\n## Related Gallery Proofs\n\n| Proof | Relevance |\n|-------|-----------|\n| (none yet) | - |\n\n## Scouting Log\n\n### Initial Assessment: 2026-01-01\n\n**Current Status**: BLOCKED - Requires L-functions for elliptic curves\n\n**Blocker Tracking**:\n| Infrastructure | In Mathlib | Last Checked |\n|----------------|------------|--------------|\n| Elliptic curves | Yes | 2026-01-01 |\n| Mordell-Weil | Partial | 2026-01-01 |\n| E-L-functions | No | 2026-01-01 |\n| Modularity | No | 2026-01-01 |\n\n**Next Scout**: Track Mathlib elliptic curve development\n"
   },
   "approaches": [],

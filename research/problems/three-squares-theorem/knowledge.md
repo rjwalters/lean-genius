@@ -473,3 +473,55 @@ The sufficiency proof cannot proceed without either:
 - [Mathlib GeometryOfNumbers](https://leanprover-community.github.io/mathlib4_docs/Mathlib/MeasureTheory/Group/GeometryOfNumbers.html)
 - [Ankeny 1957 - AMS](https://www.ams.org/journals/proc/1957-008-02/S0002-9939-1957-0085275-8/S0002-9939-1957-0085275-8.pdf)
 - [Gaurish4Math - Legendre Three Square](https://gaurish4math.wordpress.com/tag/legendre-three-square-theorem/)
+
+---
+
+## Session 2026-01-01 (Revisit 5) - FINAL SCOUTING
+
+### Mode
+REVISIT - Final scout before marking as blocked-on-infrastructure
+
+### What We Searched
+
+1. **Mathlib PrimesInAP status**: Confirmed still at [leanprover-community/mathlib4](https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/LSeries/PrimesInAP.html)
+2. **Elementary alternatives**: Searched for 2024-2025 papers on elementary three-squares proofs
+3. **Mathlib upgrade feasibility**: Reviewed [update guides](https://malv.in/posts/2024-12-09-howto-update-lean-dependencies.html)
+
+### Findings
+
+**No new elementary proofs found.** All known approaches still require:
+- Dirichlet's theorem on primes in AP (blocked - needs Mathlib upgrade), OR
+- Ternary quadratic form genus theory (500-1000 lines to build)
+
+**Mathlib upgrade assessment**:
+- Current: `05147a76b4` (Sept 2024)
+- Required: Post-`fe0e8bcc2ddc` (Nov 2024) for PrimesInAP
+- Risk: Breaking changes between versions, especially with Lean 4.25+ changes
+- Procedure: `curl lean-toolchain && lake update && lake exe cache get`
+
+### Decision
+
+**Status: surveyed → blocked (infrastructure)**
+
+The problem is well-understood and a clear path exists:
+1. Upgrade Mathlib (non-trivial, cross-cutting change)
+2. Implement Ankeny approach (~200-300 lines post-upgrade)
+
+This is genuine infrastructure dependency, not a research blocker.
+
+### Structured Knowledge Update
+
+Updated `src/data/research/problems/three-squares-theorem.json` with:
+- 10 `builtItems` documenting all proven lemmas
+- 6 `insights` capturing mathematical understanding
+- 3 `mathlibGaps` identifying missing infrastructure
+- 3 `nextSteps` with concrete actions
+
+### Outcome
+
+**Scouted** - Confirmed blocker unchanged. Populated structured knowledge fields (knowledge score: 0 → 22).
+
+### Files Modified
+
+- `src/data/research/problems/three-squares-theorem.json` (structured knowledge fields populated)
+- `research/problems/three-squares-theorem/knowledge.md` (this session added)

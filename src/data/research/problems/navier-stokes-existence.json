@@ -32,8 +32,21 @@
     "progressSummary": "BLOCKED",
     "builtItems": [],
     "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "mathlibGaps": [
+      "Navier-Stokes equations",
+      "Sobolev spaces (limited)",
+      "Energy methods for fluids",
+      "Regularity for nonlinear PDE",
+      "Ladyzhenskaya inequality (3D only)",
+      "Enstrophy estimates",
+      "Vortex stretching analysis"
+    ],
+    "nextSteps": [
+      "2D Navier-Stokes",
+      "Weak solutions",
+      "Partial regularity",
+      "Stokes equations"
+    ],
     "markdown": "# Knowledge Base: navier-stokes-existence\n\n## Problem Understanding\n\n### Core Statement\nProve existence and smoothness of solutions to the 3D Navier-Stokes equations, or provide a counterexample.\n\n### Formalization Requirements\n1. Navier-Stokes equations in 3D\n2. Sobolev spaces and weak solutions\n3. Energy estimates\n4. Regularity theory\n\n## Blockers\n\n### Primary Blocker: Advanced PDE Theory\n**Status**: BLOCKED\n**Severity**: Critical\n\nMathlib lacks:\n- [ ] Navier-Stokes equations\n- [ ] Sobolev spaces (limited)\n- [ ] Energy methods for fluids\n- [ ] Regularity for nonlinear PDE\n\n### Secondary Blocker: 3D Specific Challenges\nThe 3D case uniquely requires:\n- [ ] Ladyzhenskaya inequality (3D only)\n- [ ] Enstrophy estimates\n- [ ] Vortex stretching analysis\n\n## Tractable Partial Work\n\n1. **2D Navier-Stokes** - Global existence IS known (2d-navier-stokes project)\n2. **Weak solutions** - Leray's existence theorem\n3. **Partial regularity** - Caffarelli-Kohn-Nirenberg\n4. **Stokes equations** - Linear case\n\n## Related Gallery Proofs\n\n| Proof | Relevance |\n|-------|-----------|\n| 2d-navier-stokes | Simpler case where existence is known |\n\n## Scouting Log\n\n### Initial Assessment: 2026-01-01\n\n**Current Status**: BLOCKED - Heavy PDE/analysis requirements\n\n**Blocker Tracking**:\n| Infrastructure | In Mathlib | Last Checked |\n|----------------|------------|--------------|\n| Basic PDEs | Yes | 2026-01-01 |\n| Sobolev spaces | Limited | 2026-01-01 |\n| Navier-Stokes | No | 2026-01-01 |\n| Fluid mechanics | No | 2026-01-01 |\n\n**Related Active Work**: 2d-navier-stokes attempts the tractable 2D case\n\n**Next Scout**: Check Mathlib PDE development\n"
   },
   "approaches": [],

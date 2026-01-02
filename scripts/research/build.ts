@@ -288,12 +288,19 @@ function parseKnowledge(content: string): ResearchProblem['knowledge'] {
   const builtMatch = content.match(/##\s*What We've Built\s*\n([\s\S]*?)(?=\n##\s+[^#])/m)
 
   // Try multiple patterns for Mathlib gaps
+  // Pattern 1: "### What Mathlib Lacks" subsection
+  // Pattern 2: "### Missing in Mathlib" subsection
+  // Pattern 3: "## Blockers" section (Millennium problems - parse "- [ ]" items)
   const gapsMatch = content.match(/###\s*What Mathlib Lacks\s*\n([\s\S]*?)(?=\n###|\n##)/m) ||
-    content.match(/###\s*Missing in Mathlib\s*\n([\s\S]*?)(?=\n###|\n##)/m)
+    content.match(/###\s*Missing in Mathlib\s*\n([\s\S]*?)(?=\n###|\n##)/m) ||
+    content.match(/##\s*Blockers\s*\n([\s\S]*?)(?=\n##\s+[^#])/m)
 
   // Try multiple patterns for next steps - at end of file or before next ##
+  // Pattern 1: "## Next Steps" section
+  // Pattern 2: "## Tractable Partial Work" (Millennium problems)
   const nextMatch = content.match(/##\s*Next Steps[^\n]*\n([\s\S]*?)(?=\n##)/i) ||
-    content.match(/##\s*Next Steps[^\n]*\n([\s\S]*)$/i)
+    content.match(/##\s*Next Steps[^\n]*\n([\s\S]*)$/i) ||
+    content.match(/##\s*Tractable Partial Work\s*\n([\s\S]*?)(?=\n##)/m)
 
   const insights: string[] = []
   const builtItems: { name: string; description: string; proven: boolean }[] = []
@@ -336,8 +343,13 @@ function parseKnowledge(content: string): ResearchProblem['knowledge'] {
   if (gapsMatch) {
     const lines = gapsMatch[1].split('\n')
     for (const line of lines) {
+      // Match regular list items: "- item"
+      // Also match checkbox items: "- [ ] item" or "- [x] item"
+      const checkboxMatch = line.match(/^-\s+\[[ x]\]\s+(.+)$/)
       const itemMatch = line.match(/^-\s+(.+)$/)
-      if (itemMatch) {
+      if (checkboxMatch) {
+        mathlibGaps.push(checkboxMatch[1].trim())
+      } else if (itemMatch && !itemMatch[1].startsWith('[')) {
         mathlibGaps.push(itemMatch[1].trim())
       }
     }

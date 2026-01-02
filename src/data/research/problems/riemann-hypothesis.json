@@ -32,8 +32,21 @@
     "progressSummary": "BLOCKED",
     "builtItems": [],
     "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "mathlibGaps": [
+      "Riemann zeta function for complex numbers",
+      "Analytic continuation of zeta",
+      "Functional equation ζ(s) = 2^s π^{s-1} sin(πs/2) Γ(1-s) ζ(1-s)",
+      "Definition of non-trivial zeros",
+      "Hadamard product representation",
+      "Zero-counting formulas",
+      "Explicit formula connecting zeros to primes"
+    ],
+    "nextSteps": [
+      "Basic zeta properties",
+      "RH consequences",
+      "Explicit zero-free regions",
+      "Computational verification"
+    ],
     "markdown": "# Knowledge Base: riemann-hypothesis\n\n## Problem Understanding\n\n### Core Statement\nAll non-trivial zeros of the Riemann zeta function ζ(s) have real part 1/2.\n\n### Formalization Requirements\n1. Definition of complex zeta function ζ(s) for Re(s) > 1\n2. Analytic continuation to the critical strip\n3. Definition of non-trivial zeros\n4. Statement that all such zeros lie on the critical line\n\n## Blockers\n\n### Primary Blocker: Zeta Function Infrastructure\n**Status**: BLOCKED\n**Severity**: Critical\n\nMathlib does not have:\n- [ ] Riemann zeta function for complex numbers\n- [ ] Analytic continuation of zeta\n- [ ] Functional equation ζ(s) = 2^s π^{s-1} sin(πs/2) Γ(1-s) ζ(1-s)\n- [ ] Definition of non-trivial zeros\n\n### Secondary Blocker: Complex Analysis Depth\nEven with basic zeta, we would need:\n- [ ] Hadamard product representation\n- [ ] Zero-counting formulas\n- [ ] Explicit formula connecting zeros to primes\n\n## Tractable Partial Work\n\nEven without proving RH, we could formalize:\n1. **Basic zeta properties** - Product formula for Re(s) > 1\n2. **RH consequences** - Assuming RH, prove prime gap bounds (we have some of this in rh-consequences)\n3. **Explicit zero-free regions** - Classical bounds on zero location\n4. **Computational verification** - Statement that first N zeros are on critical line\n\n## Related Gallery Proofs\n\n| Proof | Relevance |\n|-------|-----------|\n| rh-consequences | Uses RH as axiom to derive results |\n| prime-gaps-explicit | Related to prime distribution |\n\n## Scouting Log\n\n### Initial Assessment: 2026-01-01\n\n**Searches Performed**:\n- Not yet scouted\n\n**Current Status**: BLOCKED - Requires zeta function infrastructure not in Mathlib\n\n**Blocker Tracking**:\n| Infrastructure | In Mathlib | Last Checked |\n|----------------|------------|--------------|\n| Dirichlet series | Partial | 2026-01-01 |\n| Riemann zeta | No | 2026-01-01 |\n| Analytic continuation | No | 2026-01-01 |\n| L-functions | No | 2026-01-01 |\n\n**Next Scout**: After major Mathlib release or when analytic number theory PR lands\n"
   },
   "approaches": [],

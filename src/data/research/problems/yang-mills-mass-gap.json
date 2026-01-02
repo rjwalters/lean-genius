@@ -32,8 +32,21 @@
     "progressSummary": "BLOCKED",
     "builtItems": [],
     "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "mathlibGaps": [
+      "Quantum field theory axioms",
+      "Path integrals",
+      "Gauge theory",
+      "Yang-Mills equations",
+      "Functional integrals",
+      "Renormalization",
+      "Constructive QFT techniques"
+    ],
+    "nextSteps": [
+      "Classical Yang-Mills",
+      "2D Yang-Mills",
+      "Lattice gauge theory",
+      "Gauge group theory"
+    ],
     "markdown": "# Knowledge Base: yang-mills-mass-gap\n\n## Problem Understanding\n\n### Core Statement\nProve that for any compact simple gauge group G, a non-trivial quantum Yang-Mills theory exists on R^4 and has a mass gap Δ > 0.\n\n### Formalization Requirements\n1. Quantum field theory framework\n2. Yang-Mills Lagrangian\n3. Path integral formulation\n4. Mass gap definition\n5. Axiomatic QFT (Wightman or Haag-Kastler)\n\n## Blockers\n\n### Primary Blocker: QFT Foundations\n**Status**: BLOCKED\n**Severity**: Critical\n\nMathlib has essentially none of:\n- [ ] Quantum field theory axioms\n- [ ] Path integrals\n- [ ] Gauge theory\n- [ ] Yang-Mills equations\n\n### Secondary Blocker: Analysis Requirements\nThe rigorous construction needs:\n- [ ] Functional integrals\n- [ ] Renormalization\n- [ ] Constructive QFT techniques\n\n## Tractable Partial Work\n\n1. **Classical Yang-Mills** - The PDE without quantization\n2. **2D Yang-Mills** - Solvable exactly\n3. **Lattice gauge theory** - Discrete approximation\n4. **Gauge group theory** - Lie groups and connections\n\n## Related Gallery Proofs\n\n| Proof | Relevance |\n|-------|-----------|\n| (none yet) | - |\n\n## Scouting Log\n\n### Initial Assessment: 2026-01-01\n\n**Current Status**: BLOCKED - Requires QFT framework not in Mathlib\n\n**Blocker Tracking**:\n| Infrastructure | In Mathlib | Last Checked |\n|----------------|------------|--------------|\n| Lie groups | Yes | 2026-01-01 |\n| Connections | Partial | 2026-01-01 |\n| QFT axioms | No | 2026-01-01 |\n| Path integrals | No | 2026-01-01 |\n\n**Next Scout**: Long-term - QFT formalization is a major project\n"
   },
   "approaches": [],

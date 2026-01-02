@@ -344,8 +344,8 @@
       "tier": "B",
       "significance": 7,
       "tractability": 6,
-      "status": "surveyed",
-      "notes": "SURVEYED→PROGRESS: Session 2026-01-01 PROVED necessity direction (excluded form ⟹ not sum of 3 squares). Full proof via: (1) squares mod 8 ∈ {0,1,4}, (2) sum of 3 such never ≡ 7 mod 8, (3) strong induction with descent (4|n ∧ n=a²+b²+c² ⟹ 2|a,b,c). ~220 lines, 0 axioms for necessity. Sufficiency still requires Dirichlet on primes in AP or ternary quadratic forms.",
+      "status": "blocked",
+      "notes": "SURVEYED: Necessity PROVED (0 axioms). Sufficiency BLOCKED on Mathlib version (Sept 2024) - needs PrimesInAP (added Nov 2024). After upgrade: ~200-300 lines to complete.",
       "tags": [
         "number-theory",
         "squares",
