@@ -2,7 +2,10 @@ import Mathlib.NumberTheory.SumFourSquares
 import Mathlib.NumberTheory.SumTwoSquares
 import Mathlib.NumberTheory.LSeries.PrimesInAP
 import Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol
+import Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity
+import Mathlib.NumberTheory.Zsqrtd.Basic
 import Mathlib.Tactic
+import Proofs.ZsqrtdNegTwo
 
 /-!
 # Legendre's Three Squares Theorem
@@ -356,30 +359,20 @@ lemma product_structure_for_three_mod_eight {p q : ℕ} (_hp : Nat.Prime p) (hq 
     ∃ a b : ℕ, a^2 + b^2 = q := by
   exact auxiliary_prime_is_sum_two_sq hq hq_mod
 
-/-- **KEY LEMMA (Ankeny's approach, axiom for now)**:
+/-- **KEY LEMMA (via ℤ[√-2] approach)**:
 A prime p ≡ 3 (mod 8) is a sum of three squares.
 
-This requires connecting:
-1. Dirichlet's theorem to find an auxiliary prime q ≡ 1 (mod 4)
-2. Fermat's two squares for q = a² + b²
-3. A lattice/Minkowski argument to get p = x² + y² + z²
+**Proof strategy**:
+1. p ≡ 3 (mod 8) ⟹ -2 is a QR mod p (second supplementary law)
+2. -2 is QR mod p ⟹ p = a² + 2b² (ℤ[√-2] is a Euclidean domain)
+3. p = a² + 2b² = a² + b² + b² (trivial identity)
 
-**Proof sketch (Ankeny 1957)**:
-Given p ≡ 3 (mod 8), find prime q ≡ 1 (mod 4) such that:
-- The Jacobi symbol (p|q) has a specific value determined by quadratic reciprocity
-- q = a² + b² by Fermat's two-squares theorem
-- Apply Minkowski's theorem to a lattice Λ ⊂ ℤ³ defined using a, b, p, q
-- The lattice point gives the representation p = x² + y² + z²
-
-The full proof is approximately 150-200 lines of additional infrastructure. -/
-axiom prime_three_mod_eight_is_sum_three_sq_aux {p : ℕ} (hp : Nat.Prime p) (hmod : p % 8 = 3) :
-    ∃ a b c : ℤ, a^2 + b^2 + c^2 = p
-
-/-- Primes ≡ 3 (mod 8) are sums of 3 squares.
-This is the hardest case, using the auxiliary axiom above. -/
+The first step uses `ZMod.exists_sq_eq_neg_two_iff` from Mathlib.
+The second step requires proving ℤ[√-2] is a UFD, which is axiomatized in ZsqrtdNegTwo.lean.
+The third step is a trivial algebraic identity. -/
 lemma prime_three_mod_eight_is_sum_three_sq {p : ℕ} (hp : Nat.Prime p) (hmod : p % 8 = 3) :
     ∃ a b c : ℤ, a^2 + b^2 + c^2 = p :=
-  prime_three_mod_eight_is_sum_three_sq_aux hp hmod
+  SqAddTwoSq.prime_three_mod_eight_is_sum_three_sq' hp hmod
 
 /-- **Odd primes NOT ≡ 7 (mod 8) are sums of 3 squares.**
 This combines the cases p ≡ 1, 3, 5 (mod 8).
