@@ -400,7 +400,7 @@ export function HomePage() {
             </Link>
             {' · '}
             <a
-              href="https://github.com/rwalters/lean-genius"
+              href="https://github.com/rjwalters/lean-genius"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-annotation hover:underline"
