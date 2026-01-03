@@ -123,95 +123,60 @@ theorem sq_rounding_error_lt_one (r₁ r₂ : ℚ) :
 /-- The norm of the remainder is strictly less than the norm of the divisor. -/
 theorem norm_mod_lt (x : ZsqrtNegTwo) {y : ZsqrtNegTwo} (hy : y ≠ 0) :
     Zsqrtd.norm (x % y) < Zsqrtd.norm y := by
-  -- Key insight: N(r) * N(y) = N(r * star(y)) and r * star(y) has bounded components
+  -- The key estimate comes from rounding errors being bounded
   let n : ℤ := Zsqrtd.norm y
   have hn_pos : 0 < n := by
     have h0 := norm_nonneg' y
     have hne : Zsqrtd.norm y ≠ 0 := (norm_eq_zero_iff' y).not.mpr hy
     omega
-  -- The quotient rounded from (x * star(y)) / N(y)
-  let q := x / y
-  -- The remainder
-  let r := x % y
-  -- Compute r * star(y)
-  have hr : r = x - y * q := rfl
-  have hr_star : r * Zsqrtd.star y = x * Zsqrtd.star y - y * Zsqrtd.star y * q := by
-    rw [hr]; ring
-  have hy_star : y * Zsqrtd.star y = ⟨n, 0⟩ := by
-    ext
-    · simp only [Zsqrtd.mul_re, Zsqrtd.star_re, Zsqrtd.star_im, neg_neg, n, Zsqrtd.norm_def]; ring
-    · simp only [Zsqrtd.mul_im, Zsqrtd.star_re, Zsqrtd.star_im]; ring
-  rw [hy_star] at hr_star
-  -- Express r * star(y) in terms of rounding errors
-  let A := x * Zsqrtd.star y
-  have hA_re : A.re = x.re * y.re + 2 * x.im * y.im := by
-    simp only [A, Zsqrtd.mul_re, Zsqrtd.star_re, Zsqrtd.star_im, neg_neg]; ring
-  have hA_im : A.im = -x.re * y.im + x.im * y.re := by
-    simp only [A, Zsqrtd.mul_im, Zsqrtd.star_re, Zsqrtd.star_im]; ring
+  have hn_rat_pos : (0 : ℚ) < n := by exact_mod_cast hn_pos
   -- The quotient q has components that are rounded values
+  let A := x * star y
+  let q := x / y
+  let r := x % y
   have hq_re : q.re = round ((A.re : ℚ) / n) := rfl
   have hq_im : q.im = round ((A.im : ℚ) / n) := rfl
-  -- Now compute the norm of r * star(y)
-  -- r * star(y) = A - n * q = ⟨A.re - n * q.re, A.im - n * q.im⟩
-  have hr_star_re : (r * Zsqrtd.star y).re = A.re - n * q.re := by
-    calc (r * Zsqrtd.star y).re = (A - ⟨n, 0⟩ * q).re := by rw [← hr_star]; ring_nf
-      _ = A.re - (⟨n, 0⟩ * q).re := by simp [Zsqrtd.sub_re]
-      _ = A.re - (n * q.re + (-2) * 0 * q.im) := by simp [Zsqrtd.mul_re]
-      _ = A.re - n * q.re := by ring
-  have hr_star_im : (r * Zsqrtd.star y).im = A.im - n * q.im := by
-    calc (r * Zsqrtd.star y).im = (A - ⟨n, 0⟩ * q).im := by rw [← hr_star]; ring_nf
-      _ = A.im - (⟨n, 0⟩ * q).im := by simp [Zsqrtd.sub_im]
-      _ = A.im - (n * q.im + 0 * q.re) := by simp [Zsqrtd.mul_im]
-      _ = A.im - n * q.im := by ring
-  -- The norm of r * star(y)
-  have hn_rat_pos : (0 : ℚ) < n := by exact_mod_cast hn_pos
-  have hn_ne : (n : ℚ) ≠ 0 := ne_of_gt hn_rat_pos
-  -- Define the rounding errors
-  let ε_re : ℚ := (A.re : ℚ) / n - round ((A.re : ℚ) / n)
-  let ε_im : ℚ := (A.im : ℚ) / n - round ((A.im : ℚ) / n)
-  have hε_re_bound : ε_re ^ 2 ≤ 1/4 := by
-    have h := abs_sub_round ((A.re : ℚ) / n)
-    have habs : |ε_re| ≤ 1/2 := h
-    have habs' := abs_le.mp habs
-    nlinarith [sq_nonneg ε_re]
-  have hε_im_bound : ε_im ^ 2 ≤ 1/4 := by
-    have h := abs_sub_round ((A.im : ℚ) / n)
-    have habs : |ε_im| ≤ 1/2 := h
-    have habs' := abs_le.mp habs
-    nlinarith [sq_nonneg ε_im]
-  -- The components of r * star(y) are n * ε
-  have hcomp_re : (A.re : ℚ) - n * round ((A.re : ℚ) / n) = n * ε_re := by
-    simp only [ε_re]; field_simp; ring
-  have hcomp_im : (A.im : ℚ) - n * round ((A.im : ℚ) / n) = n * ε_im := by
-    simp only [ε_im]; field_simp; ring
-  -- Now use the rounding error bound
+  -- Define rounding errors
+  let ε_re : ℚ := (A.re : ℚ) / n - q.re
+  let ε_im : ℚ := (A.im : ℚ) / n - q.im
+  -- r * star(y) = A - n * q, so its components are n * ε
+  have hy_star : y * star y = ⟨n, 0⟩ := by
+    ext
+    · simp only [Zsqrtd.re_mul, Zsqrtd.re_star, Zsqrtd.im_star, n, Zsqrtd.norm_def]; ring
+    · simp only [Zsqrtd.im_mul, Zsqrtd.re_star, Zsqrtd.im_star]; ring
+  have hr_star : r * star y = A - ⟨n, 0⟩ * q := by
+    simp only [r, mod_def, A]; rw [sub_mul, mul_assoc, mul_comm (star y) q, mul_assoc, hy_star]
+  have hr_star_re : ((r * star y).re : ℚ) = n * ε_re := by
+    simp only [hr_star, Zsqrtd.re_sub, Zsqrtd.re_mul, ε_re]
+    ring_nf
+    field_simp
+  have hr_star_im : ((r * star y).im : ℚ) = n * ε_im := by
+    simp only [hr_star, Zsqrtd.im_sub, Zsqrtd.im_mul, ε_im]
+    ring_nf
+    field_simp
+  -- The rounding error bound
   have hbound : ε_re ^ 2 + 2 * ε_im ^ 2 < 1 := by
     have h := sq_rounding_error_lt_one ((A.re : ℚ) / n) ((A.im : ℚ) / n)
+    simp only [ε_re, ε_im, hq_re, hq_im]
     convert h using 2 <;> ring
   -- N(r) * N(y) = N(r * star(y))
-  have hnorm_mul : Zsqrtd.norm (r * Zsqrtd.star y) = Zsqrtd.norm r * n := by
-    rw [Zsqrtd.norm_mul, Zsqrtd.norm_star]; rfl
+  have hnorm_mul : Zsqrtd.norm (r * star y) = Zsqrtd.norm r * n := by
+    rw [Zsqrtd.norm_mul, Zsqrtd.norm_conj]; rfl
   -- Compute N(r * star(y)) in terms of ε
-  have hnorm_r_star : (Zsqrtd.norm (r * Zsqrtd.star y) : ℚ) = n ^ 2 * (ε_re ^ 2 + 2 * ε_im ^ 2) := by
-    simp only [Zsqrtd.norm_def]
-    have hre : ((r * Zsqrtd.star y).re : ℚ) = n * ε_re := by
-      rw [hr_star_re]; simp only [Int.cast_sub, Int.cast_mul]; rw [hcomp_re]
-    have him : ((r * Zsqrtd.star y).im : ℚ) = n * ε_im := by
-      rw [hr_star_im]; simp only [Int.cast_sub, Int.cast_mul]; rw [hcomp_im]
-    simp only [hre, him, sq]
+  have hnorm_r_star : (Zsqrtd.norm (r * star y) : ℚ) = n ^ 2 * (ε_re ^ 2 + 2 * ε_im ^ 2) := by
+    simp only [Zsqrtd.norm_def, sq]
+    rw [hr_star_re, hr_star_im]
     ring
   -- So N(r) * n < n^2, hence N(r) < n
   have hlt : (Zsqrtd.norm r * n : ℚ) < n ^ 2 := by
-    calc (Zsqrtd.norm r * n : ℚ) = Zsqrtd.norm (r * Zsqrtd.star y) := by rw [hnorm_mul]
+    calc (Zsqrtd.norm r * n : ℚ) = Zsqrtd.norm (r * star y) := by rw [hnorm_mul]
       _ = n ^ 2 * (ε_re ^ 2 + 2 * ε_im ^ 2) := hnorm_r_star
       _ < n ^ 2 * 1 := by nlinarith [sq_nonneg n, hbound]
       _ = n ^ 2 := by ring
-  have hr_nonneg : 0 ≤ Zsqrtd.norm r := norm_nonneg' r
   have hfinal : (Zsqrtd.norm r : ℚ) < n := by
     have hn2 : (n : ℚ) ^ 2 = n * n := by ring
     rw [hn2] at hlt
-    have := (mul_lt_mul_right hn_rat_pos).mp hlt
-    exact this
+    exact (mul_lt_mul_right hn_rat_pos).mp hlt
   exact_mod_cast hfinal
 
 /-- The natAbs of the norm decreases. -/
