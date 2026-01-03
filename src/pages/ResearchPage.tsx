@@ -4,6 +4,7 @@ import { researchListings } from '@/data/research'
 // Auth context available if needed for future features
 // import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
+import { Footer } from '@/components/Footer'
 import { ResearchCard, ContributeSection } from '@/components/research'
 import { PHASE_INFO, TIER_INFO } from '@/types/research'
 import type { ResearchPhase, ValueTier, ResearchStatus, ResearchListing } from '@/types/research'
@@ -14,8 +15,7 @@ import {
   Search,
   Sparkles,
   Activity,
-  Target,
-  Github
+  Target
 } from 'lucide-react'
 
 type SortOption = 'newest' | 'activity' | 'significance' | 'alphabetical'
@@ -367,33 +367,7 @@ export function ResearchPage() {
         )}
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border">
-        <div className="max-w-6xl mx-auto px-6 py-8 text-center text-sm text-muted-foreground">
-          <p>
-            Research powered by{' '}
-            <span className="text-annotation">OODA Loop</span>
-            {' · '}
-            <Link to="/" className="text-annotation hover:underline">
-              Proof Gallery
-            </Link>
-            {' · '}
-            <Link to="/about" className="text-annotation hover:underline">
-              About
-            </Link>
-            {' · '}
-            <a
-              href="https://github.com/rjwalters/lean-genius"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-annotation hover:underline"
-            >
-              <Github className="h-3.5 w-3.5" />
-              <span>GitHub</span>
-            </a>
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

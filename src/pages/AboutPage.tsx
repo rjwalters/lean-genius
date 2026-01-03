@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { ArrowLeft, Github, BookOpen, Target, Users, Sparkles } from 'lucide-react'
+import { Footer } from '@/components/Footer'
 
 export function AboutPage() {
   return (
@@ -75,31 +76,7 @@ export function AboutPage() {
           />
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border">
-        <div className="max-w-6xl mx-auto px-6 py-8 text-center text-sm text-muted-foreground">
-          <p>
-            Proofs are formalized in{' '}
-            <a
-              href="https://lean-lang.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-annotation hover:underline"
-            >
-              Lean 4
-            </a>{' '}
-            with{' '}
-            <a
-              href="https://github.com/leanprover-community/mathlib4"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-annotation hover:underline"
-            >
-              Mathlib
-            </a>
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }
