@@ -1,52 +1,40 @@
 # Publish
 
-Publish changes to the lean-genius website. Commits, pushes, and deploys to Cloudflare.
+Publish your research contributions by creating a Pull Request. This packages your work into a branch and opens a PR for review.
 
-> **Note**: `pnpm run deploy` automatically runs `research:sync`, `research:build`, `annotations:build`, TypeScript compilation, and Vite build. No manual sync/build steps needed.
+> **Note**: This creates a PR rather than pushing directly to main. Your contributions will be reviewed before merging.
 
 ## Quick Publish (Recommended)
 
-If Lean proofs are already built:
-
-```bash
-cd /Users/rwalters/GitHub/lean-genius && \
-  git add -A && \
-  git diff --staged --quiet || git commit -m "Publish updates" && \
-  git push origin main && \
-  pnpm run deploy
-```
-
-## Full Workflow
-
-### Step 1: Verify Lean Proofs (Optional)
-
-Only needed if you changed `.lean` files and haven't built recently:
-
-```bash
-cd /Users/rwalters/GitHub/lean-genius/proofs
-
-# Build only changed files (memory-safe)
-CHANGED=$(git diff --name-only HEAD~1 -- '*.lean' | grep -v '^proofs/Proofs\.lean$' || true)
-for file in $CHANGED; do
-  module=$(echo "$file" | sed 's|^proofs/||; s|/|.|g; s|\.lean$||')
-  lake build "$module"
-done
-```
-
-**If build fails**: Fix errors before proceeding.
-
-### Step 2: Commit & Push
+Run this to create a PR with your accumulated research work:
 
 ```bash
 cd /Users/rwalters/GitHub/lean-genius
 
-# Check what changed
-git status
+# Ensure we have the latest main
+git fetch origin main
 
-# Stage and commit (skip if nothing to commit)
+# Check for changes
+if git diff --quiet && git diff --staged --quiet && [ -z "$(git status --porcelain)" ]; then
+  echo "No changes to publish"
+  exit 0
+fi
+
+# Generate branch name with timestamp
+BRANCH_NAME="research/contribution-$(date +%Y%m%d-%H%M%S)"
+
+# Get current branch
+CURRENT_BRANCH=$(git branch --show-current)
+
+# If on main, create a new branch
+if [ "$CURRENT_BRANCH" = "main" ]; then
+  git checkout -b "$BRANCH_NAME"
+fi
+
+# Stage and commit all changes
 git add -A
-git diff --staged --quiet || git commit -m "$(cat <<'EOF'
-Publish updates
+git commit -m "$(cat <<'EOF'
+Research contribution
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 
@@ -54,44 +42,102 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 EOF
 )"
 
-# Push
-git push origin main
+# Push the branch
+git push -u origin HEAD
+
+# Create the PR
+gh pr create --fill --body "$(cat <<'EOF'
+## Research Contribution
+
+This PR contains research progress on the lean-genius proof gallery.
+
+### Changes
+<!-- The AI will fill this in, or you can describe manually -->
+
+### Checklist
+- [ ] Lean proofs build successfully (`lake build`)
+- [ ] Knowledge base updated (problem JSON files)
+- [ ] No secrets or credentials included
+
+---
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+EOF
+)"
 ```
 
-### Step 3: Deploy
+## What This Does
+
+1. **Checks for changes** - Exits early if nothing to publish
+2. **Creates a branch** - Named `research/contribution-YYYYMMDD-HHMMSS`
+3. **Commits your work** - All modified files including:
+   - Lean proof files (`proofs/Proofs/*.lean`)
+   - Research knowledge (`src/data/research/problems/*.json`)
+   - Candidate pool updates (`research/candidate-pool.json`)
+4. **Opens a Pull Request** - For review before merging
+
+## For External Contributors (Fork Workflow)
+
+If you're working on a fork:
 
 ```bash
-pnpm run deploy
+# Make sure your fork is set up correctly
+git remote -v
+# origin should point to YOUR fork
+# upstream should point to rjwalters/lean-genius
+
+# Push to your fork and create PR to upstream
+git push -u origin HEAD
+gh pr create --repo rjwalters/lean-genius --fill
 ```
 
-This single command:
-1. Syncs `candidate-pool.json` → `registry.json`
-2. Builds research data files
-3. Resolves proof annotations
-4. Compiles TypeScript
-5. Bundles with Vite
-6. Deploys to Cloudflare Pages
+## After Publishing
 
-### Step 4: Verify
+1. **Check the PR** - Visit the URL shown in the output
+2. **Verify CI passes** - Wait for automated checks
+3. **Respond to feedback** - Make additional commits if needed
+4. **Wait for merge** - Maintainers will review and merge
 
-1. Check deployment URL in terminal output
-2. Visit https://lean-genius.pages.dev/research
-3. Confirm changes appear correctly
+## Workflow Tips
 
-## Summary Template
+### Multiple Research Sessions
+You can run `/research` multiple times before publishing:
+```
+/research  # First iteration
+/research  # Second iteration
+/research  # Third iteration
+/publish   # Creates PR with all accumulated work
+```
 
-```markdown
-## Publish Complete
-
-**Deployed**: https://lean-genius.pages.dev
-**Changes**: [brief summary]
+### Descriptive Commits
+For better PR descriptions, commit with meaningful messages as you work:
+```bash
+git add -A
+git commit -m "Add infrastructure for ℤ[√-2] Euclidean domain"
+# ... more work ...
+git add -A
+git commit -m "Prove second supplementary law for -2"
+# When ready:
+/publish
 ```
 
 ## Troubleshooting
 
 | Problem | Solution |
 |---------|----------|
-| Lean build fails | Fix errors in `.lean` file, re-run `lake build Module` |
-| `pnpm run deploy` fails | Check `wrangler whoami`, verify auth |
-| Nothing to commit | Normal - proceed to deploy if redeploy needed |
-| Sync seems wrong | `candidate-pool.json` is source of truth |
+| `gh` not authenticated | Run `gh auth login` |
+| Branch already exists | Delete with `git branch -D research/...` |
+| Merge conflicts | Rebase on main: `git fetch origin && git rebase origin/main` |
+| PR to wrong repo | Use `--repo owner/repo` flag with `gh pr create` |
+| Want to add more changes | Push additional commits to the same branch |
+
+## Summary Template
+
+After publishing, share this summary:
+
+```markdown
+## Research Published
+
+**PR**: [link to PR]
+**Branch**: research/contribution-YYYYMMDD-HHMMSS
+**Changes**: [brief summary of what was researched]
+```

@@ -4,7 +4,7 @@ import { researchListings } from '@/data/research'
 // Auth context available if needed for future features
 // import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
-import { ResearchCard } from '@/components/research'
+import { ResearchCard, ContributeSection } from '@/components/research'
 import { PHASE_INFO, TIER_INFO } from '@/types/research'
 import type { ResearchPhase, ValueTier, ResearchStatus, ResearchListing } from '@/types/research'
 import {
@@ -179,6 +179,11 @@ export function ResearchPage() {
             </div>
             <p className="text-xs text-muted-foreground">Attempts</p>
           </div>
+        </div>
+
+        {/* Contribute Section */}
+        <div className="mt-8">
+          <ContributeSection />
         </div>
       </section>
 
