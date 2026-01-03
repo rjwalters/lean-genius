@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
 import { Github } from 'lucide-react'
 
-// Format ISO date to readable format
+// Format ISO date to readable format in Pacific time
 function formatBuildTime(isoString: string): string {
   try {
     const date = new Date(isoString)
     return date.toLocaleDateString('en-US', {
+      timeZone: 'America/Los_Angeles',
       year: 'numeric',
       month: 'short',
       day: 'numeric',
