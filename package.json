@@ -8,7 +8,7 @@
     "build": "pnpm annotations:build && pnpm research:build && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy": "pnpm build && wrangler pages deploy dist --project-name=lean-genius",
+    "deploy": "pnpm build && wrangler pages deploy dist --project-name=lean-genius --commit-dirty=true",
     "annotations:build": "tsx scripts/annotations/build.ts",
     "annotations:validate": "tsx scripts/annotations/build.ts --strict",
     "annotations:migrate": "tsx scripts/annotations/resolver.ts migrate",
