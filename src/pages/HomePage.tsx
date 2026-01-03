@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom'
 import { listings } from '@/data/proofs'
 import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
+import { Footer } from '@/components/Footer'
 import { ProofBadge, WiedijkBadge, BadgeFilter, MathlibIndicator } from '@/components/ui/proof-badge'
 import { WIEDIJK_BADGE_INFO, HILBERT_BADGE_INFO, MILLENNIUM_BADGE_INFO } from '@/types/proof'
-import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, Github, ArrowUpDown, Search } from 'lucide-react'
+import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, ArrowUpDown, Search } from 'lucide-react'
 import type { ProofBadge as ProofBadgeType, ProofListing } from '@/types/proof'
 
 type SortOption = 'newest' | 'oldest' | 'alphabetical'
@@ -372,45 +373,7 @@ export function HomePage() {
         )}
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border">
-        <div className="max-w-6xl mx-auto px-6 py-8 text-center text-sm text-muted-foreground">
-          <p>
-            Proofs are formalized in{' '}
-            <a
-              href="https://lean-lang.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-annotation hover:underline"
-            >
-              Lean 4
-            </a>{' '}
-            with{' '}
-            <a
-              href="https://github.com/leanprover-community/mathlib4"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-annotation hover:underline"
-            >
-              Mathlib
-            </a>
-            {' · '}
-            <Link to="/about" className="text-annotation hover:underline">
-              About
-            </Link>
-            {' · '}
-            <a
-              href="https://github.com/rjwalters/lean-genius"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-annotation hover:underline"
-            >
-              <Github className="h-3.5 w-3.5" />
-              <span>GitHub</span>
-            </a>
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }
