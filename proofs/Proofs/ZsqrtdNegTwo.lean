@@ -76,9 +76,9 @@ theorem units_eq (z : ZsqrtNegTwo) : IsUnit z ↔ z = 1 ∨ z = -1 := by
       have hpos : z.re ≥ 0 ∨ z.re < 0 := le_or_gt 0 z.re
       rcases hpos with hpos | hneg
       · have hle : z.re ≤ 1 := by nlinarith
-        interval_cases z.re <;> simp_all
+        interval_cases z.re; all_goals simp_all
       · have hle : z.re ≥ -1 := by nlinarith
-        interval_cases z.re <;> simp_all
+        interval_cases z.re; all_goals simp_all
     rcases hre_cases with hre1 | hre_neg1
     · left; ext <;> simp [him0, hre1]
     · right; ext <;> simp [him0, hre_neg1]
@@ -165,7 +165,7 @@ theorem norm_mod_lt (x : ZsqrtNegTwo) {y : ZsqrtNegTwo} (hy : y ≠ 0) :
   have hbound : ε_re ^ 2 + 2 * ε_im ^ 2 < 1 := by
     have h := sq_rounding_error_lt_one ((A.re : ℚ) / n) ((A.im : ℚ) / n)
     simp only [ε_re, ε_im, hq_re, hq_im]
-    convert h using 2 <;> ring
+    convert h using 2
   -- N(r) * N(y) = N(r * star(y))
   have hnorm_mul : Zsqrtd.norm (r * star y) = Zsqrtd.norm r * n := by
     rw [Zsqrtd.norm_mul, Zsqrtd.norm_conj]
@@ -189,14 +189,14 @@ theorem norm_mod_lt (x : ZsqrtNegTwo) {y : ZsqrtNegTwo} (hy : y ≠ 0) :
     have h3 : (Zsqrtd.norm (r * star y) : ℚ) = n ^ 2 * (ε_re ^ 2 + 2 * ε_im ^ 2) := hnorm_r_star
     have h4 : n ^ 2 * (ε_re ^ 2 + 2 * ε_im ^ 2) < (n : ℚ) ^ 2 * 1 := by
       have hn_sq_pos : 0 < (n : ℚ) ^ 2 := sq_pos_of_pos hn_rat_pos
-      exact (mul_lt_mul_left hn_sq_pos).mpr hbound
+      nlinarith [sq_nonneg ε_re, sq_nonneg ε_im]
     rw [h1, h2, h3]
     linarith
   have hfinal : (Zsqrtd.norm r : ℚ) < n := by
     have hn2 : (n : ℚ) ^ 2 = n * n := by ring
     rw [hn2] at hlt
-    have hn_ne : (n : ℚ) ≠ 0 := ne_of_gt hn_rat_pos
-    exact (mul_lt_mul_right hn_rat_pos).mp hlt
+    have hr_nn : 0 ≤ (Zsqrtd.norm r : ℚ) := by exact_mod_cast norm_nonneg' r
+    nlinarith [sq_nonneg (Zsqrtd.norm r : ℚ)]
   exact_mod_cast hfinal
 
 /-- The natAbs of the norm decreases. -/
@@ -247,7 +247,7 @@ theorem sq_add_two_sq_of_nat_prime_of_not_irreducible (p : ℕ) [hp : Fact p.Pri
   obtain ⟨x, y, hxy, hux, huy⟩ := hpi hpu
   -- Taking norms: p² = N(p) = N(x)·N(y)
   have hnorm_eq : Zsqrtd.norm (p : ZsqrtNegTwo) = (p : ℤ) ^ 2 := by
-    simp only [Zsqrtd.norm_def, Zsqrtd.natCast_re, Zsqrtd.natCast_im, mul_zero, sub_zero, sq]
+    simp only [Zsqrtd.norm_def, Zsqrtd.re_natCast, Zsqrtd.im_natCast, mul_zero, sub_zero, sq]
   have hnorm_mul : Zsqrtd.norm (x * y) = Zsqrtd.norm x * Zsqrtd.norm y := Zsqrtd.norm_mul x y
   rw [hxy] at hnorm_eq
   rw [hnorm_mul] at hnorm_eq
@@ -261,7 +261,7 @@ theorem sq_add_two_sq_of_nat_prime_of_not_irreducible (p : ℕ) [hp : Fact p.Pri
       have : (p : ZsqrtNegTwo) = 0 := by rw [hxy, hxz, zero_mul]
       have hp_pos : (0 : ℤ) < p := by exact_mod_cast hp.out.pos
       have : (p : ZsqrtNegTwo).re = 0 := by rw [this]; rfl
-      simp only [Zsqrtd.natCast_re] at this
+      simp only [Zsqrtd.re_natCast] at this
       omega
     · exact hpos
   have hy_norm_pos : 0 < Zsqrtd.norm y := by
@@ -273,7 +273,7 @@ theorem sq_add_two_sq_of_nat_prime_of_not_irreducible (p : ℕ) [hp : Fact p.Pri
       have : (p : ZsqrtNegTwo) = 0 := by rw [hxy, hyz, mul_zero]
       have hp_pos : (0 : ℤ) < p := by exact_mod_cast hp.out.pos
       have : (p : ZsqrtNegTwo).re = 0 := by rw [this]; rfl
-      simp only [Zsqrtd.natCast_re] at this
+      simp only [Zsqrtd.re_natCast] at this
       omega
     · exact hpos
   have hx_norm_ne_one : Zsqrtd.norm x ≠ 1 := by
@@ -316,7 +316,7 @@ theorem sq_add_two_sq_of_nat_prime_of_not_irreducible (p : ℕ) [hp : Fact p.Pri
     have hx_int : Zsqrtd.norm x = (p : ℤ) ^ 2 := by
       have hnn := norm_nonneg' x
       have hcast : ((Zsqrtd.norm x).natAbs : ℤ) = Zsqrtd.norm x := Int.natAbs_of_nonneg hnn
-      have : ((p : ℕ) ^ 2 : ℤ) = (p : ℤ) ^ 2 := by push_cast; ring
+      have : ((p : ℕ) ^ 2 : ℤ) = (p : ℤ) ^ 2 := by norm_cast
       rw [← hcast, hxabs]; exact this
     have hy_eq_one : Zsqrtd.norm y = 1 := by
       have h1 : (p : ℤ) ^ 2 * Zsqrtd.norm y = (p : ℤ) ^ 2 * 1 := by
@@ -412,7 +412,7 @@ lemma not_irreducible_of_neg_two_is_qr {p : ℕ} [hp : Fact (Nat.Prime p)]
   rcases hdiv_or with hdiv_α | hdiv_β
   · obtain ⟨q, hq⟩ := hdiv_α
     have him : α.im = ((p : ZsqrtNegTwo) * q).im := by rw [hq]
-    simp only [α, Zsqrtd.im_mul, Zsqrtd.re_natCast, Zsqrtd.im_natCast, mul_zero, zero_mul, add_zero] at him
+    simp only [α, Zsqrtd.im_mul, Zsqrtd.re_natCast, Zsqrtd.im_natCast, zero_mul, add_zero] at him
     -- him : 1 = p * q.im
     have hdvd : (p : ℤ) ∣ 1 := ⟨q.im, by linarith⟩
     have hp1 : (p : ℤ) ≤ 1 := Int.le_of_dvd one_pos hdvd
@@ -420,7 +420,7 @@ lemma not_irreducible_of_neg_two_is_qr {p : ℕ} [hp : Fact (Nat.Prime p)]
     omega
   · obtain ⟨q, hq⟩ := hdiv_β
     have him : β.im = ((p : ZsqrtNegTwo) * q).im := by rw [hq]
-    simp only [β, Zsqrtd.im_mul, Zsqrtd.re_natCast, Zsqrtd.im_natCast, mul_zero, zero_mul, add_zero] at him
+    simp only [β, Zsqrtd.im_mul, Zsqrtd.re_natCast, Zsqrtd.im_natCast, zero_mul, add_zero] at him
     -- him : -1 = p * q.im
     have hdvd : (p : ℤ) ∣ -1 := ⟨q.im, by linarith⟩
     have hdvd1 : (p : ℤ) ∣ 1 := by

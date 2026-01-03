@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "last_updated": "2026-01-03T00:15:30.457Z",
+  "last_updated": "2026-01-02T16:53:43.959130Z",
   "source": "auto-generated from research/db/knowledge.db",
   "candidates": [
     {
@@ -170,7 +170,7 @@
       "significance": 7,
       "tractability": 6,
       "status": "in-progress",
-      "notes": "IN-PROGRESS: n is sum of 3 squares iff n ≠ 4^a(8b+7). | Focus: Build Key Lemma 4.1 infrastructure for sufficiency direction | Stats: 10 sessions, 29 items built, 1 open gaps",
+      "notes": "IN-PROGRESS: n is sum of 3 squares iff n ≠ 4^a(8b+7). | Focus: Build Key Lemma 4.1 infrastructure for sufficiency direction | Stats: 11 sessions, 29 items built",
       "tags": [
         "number-theory",
         "squares",
@@ -472,6 +472,16 @@
       ]
     },
     {
+      "id": "hurwitz-three-square-impossibility",
+      "name": "Hurwitz n=3 Impossibility Proof",
+      "tier": "C",
+      "significance": null,
+      "tractability": null,
+      "status": "completed",
+      "notes": "COMPLETED: Hamilton spent 15 years (1828-1843) trying to extend complex numbers to three dimensions. He wanted \"triplets\" that would do for 3D geometry what complex numbers do for 2D. He finally realized he need | Stats: 1 sessions",
+      "tags": []
+    },
+    {
       "id": "vietas-formulas",
       "name": "Vieta's Formulas",
       "tier": "C",
@@ -484,16 +494,6 @@
         "polynomials",
         "classical"
       ]
-    },
-    {
-      "id": "hurwitz-three-square-impossibility",
-      "name": "Hurwitz n=3 Impossibility Proof",
-      "tier": "C",
-      "significance": null,
-      "tractability": null,
-      "status": "completed",
-      "notes": "AVAILABLE: Hamilton spent 15 years (1828-1843) trying to extend complex numbers to three dimensions. He wanted \"triplets\" that would do for 3D geometry what complex numbers do for 2D. He finally realized he need",
-      "tags": []
     },
     {
       "id": "sum-of-divisors",
@@ -510,5 +510,5 @@
       ]
     }
   ],
-  "lastUpdated": "2026-01-02T11:11:11Z"
+  "lastUpdated": "2026-01-02T16:53:43Z"
 }

@@ -3,6 +3,7 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Algebra.Quaternion
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Fin.VecNotation
+import Mathlib.Data.Matrix.Mul
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 
@@ -565,7 +566,7 @@ lemma ortho_to_orthonormal_triple_eq_zero (v₁ v₂ v₃ u : Fin 3 → ℝ)
 
   have hMTu : M.transpose.mulVec u = 0 := by
     ext i
-    simp only [Matrix.mulVec, Matrix.transpose_apply, Matrix.of_apply, Matrix.dotProduct,
+    simp only [Matrix.mulVec, Matrix.transpose_apply, Matrix.of_apply, dotProduct,
                Pi.zero_apply, Fin.sum_univ_three]
     fin_cases i <;> simp only [Fin.isValue, Fin.reduceFinMk]
     · show v₁ 0 * u 0 + v₁ 1 * u 1 + v₁ 2 * u 2 = 0; linarith
@@ -829,11 +830,11 @@ theorem no_three_square_identity_proof (nsi : NSquareIdentity 3) : False := by
   let m₃₁ := nsi.mul e₃ e₁
 
   -- Unit norms
-  have hm₁₁ : normSq m₁₁ = 1 := by simp only [← nsi.norm_mul, he₁]; ring
-  have hm₁₃ : normSq m₁₃ = 1 := by simp only [← nsi.norm_mul, he₁, he₃]; ring
-  have hm₂₁ : normSq m₂₁ = 1 := by simp only [← nsi.norm_mul, he₂, he₁]; ring
-  have hm₂₃ : normSq m₂₃ = 1 := by simp only [← nsi.norm_mul, he₂, he₃]; ring
-  have hm₃₁ : normSq m₃₁ = 1 := by simp only [← nsi.norm_mul, he₃, he₁]; ring
+  have hm₁₁ : normSq m₁₁ = 1 := by rw [← nsi.norm_mul, he₁]; ring
+  have hm₁₃ : normSq m₁₃ = 1 := by rw [← nsi.norm_mul, he₁, he₃]; ring
+  have hm₂₁ : normSq m₂₁ = 1 := by rw [← nsi.norm_mul, he₂, he₁]; ring
+  have hm₂₃ : normSq m₂₃ = 1 := by rw [← nsi.norm_mul, he₂, he₃]; ring
+  have hm₃₁ : normSq m₃₁ = 1 := by rw [← nsi.norm_mul, he₃, he₁]; ring
 
   -- Column 1 orthonormality: {m₁₁, m₂₁, m₃₁}
   have col1_12 : innerProd m₁₁ m₂₁ = 0 := orthogonality_constraint nsi e₁ e₂ e₁ he₁ he₂ he₁ h12
@@ -1098,7 +1099,7 @@ theorem no_three_square_identity_proof (nsi : NSquareIdentity 3) : False := by
 
   -- Now we need m₃₃ for the final contradiction
   let m₃₃ := nsi.mul e₃ e₃
-  have hm₃₃ : normSq m₃₃ = 1 := by simp only [← nsi.norm_mul, he₃]; ring
+  have hm₃₃ : normSq m₃₃ = 1 := by rw [← nsi.norm_mul, he₃]; ring
 
   -- Row 3 orthogonality: m₃₁ ⊥ m₃₃
   have row3_13 : innerProd m₃₁ m₃₃ = 0 := orthogonality_constraint_right nsi e₃ e₁ e₃ he₃ he₁ he₃ h13
@@ -1229,10 +1230,10 @@ theorem no_three_square_identity : ∀ f : NSquareIdentity 3, False := by
   have row2_13 : innerProd m₂₁ m₂₃ = 0 := orthogonality_constraint_right nsi e₂ e₁ e₃ he₂ he₁ he₃ h13
 
   -- Unit norms of image vectors
-  have hm₁₁ : normSq m₁₁ = 1 := by simp only [← nsi.norm_mul, he₁]; ring
-  have hm₁₃ : normSq m₁₃ = 1 := by simp only [← nsi.norm_mul, he₁, he₃]; ring
-  have hm₂₁ : normSq m₂₁ = 1 := by simp only [← nsi.norm_mul, he₂, he₁]; ring
-  have hm₂₃ : normSq m₂₃ = 1 := by simp only [← nsi.norm_mul, he₂, he₃]; ring
+  have hm₁₁ : normSq m₁₁ = 1 := by rw [← nsi.norm_mul, he₁]; ring
+  have hm₁₃ : normSq m₁₃ = 1 := by rw [← nsi.norm_mul, he₁, he₃]; ring
+  have hm₂₁ : normSq m₂₁ = 1 := by rw [← nsi.norm_mul, he₂, he₁]; ring
+  have hm₂₃ : normSq m₂₃ = 1 := by rw [← nsi.norm_mul, he₂, he₃]; ring
 
   -- Key identity: |mul(e₁+e₂, e₁+e₃)|² = |e₁+e₂|² · |e₁+e₃|² = 2 · 2 = 4
   -- First compute |e₁+e₂|² and |e₁+e₃|²
@@ -1304,8 +1305,8 @@ theorem no_three_square_identity : ∀ f : NSquareIdentity 3, False := by
   have hsum_diag : normSq (m₁₁ + m₁₂ + m₂₁ + m₂₂) = 4 := by rw [← hbilin_diag]; exact hnorm_diag
 
   -- Norms needed for diagonal constraint
-  have hm₁₂' : normSq m₁₂ = 1 := by simp only [← nsi.norm_mul, he₁, he₂]; ring
-  have hm₂₂' : normSq m₂₂ = 1 := by simp only [← nsi.norm_mul, he₂]; ring
+  have hm₁₂' : normSq m₁₂ = 1 := by rw [← nsi.norm_mul, he₁, he₂]; ring
+  have hm₂₂' : normSq m₂₂ = 1 := by rw [← nsi.norm_mul, he₂]; ring
 
   -- Orthogonality: m₂₁ ⊥ m₂₂ (column 1) and m₁₂ ⊥ m₂₂ (column 2)
   have col1_12' : innerProd m₂₁ m₂₂ = 0 := orthogonality_constraint_right nsi e₂ e₁ e₂ he₂ he₁ he₂ h12
@@ -1370,8 +1371,8 @@ theorem no_three_square_identity : ∀ f : NSquareIdentity 3, False := by
   -- Row 2: m₂₂ ⊥ m₂₃
   have row2_23 : innerProd m₂₂ m₂₃ = 0 := orthogonality_constraint_right nsi e₂ e₂ e₃ he₂ he₂ he₃ h23
 
-  have hm₁₂ : normSq m₁₂ = 1 := by simp only [← nsi.norm_mul, he₁, he₂]; ring
-  have hm₂₂ : normSq m₂₂ = 1 := by simp only [← nsi.norm_mul, he₂]; ring
+  have hm₁₂ : normSq m₁₂ = 1 := by rw [← nsi.norm_mul, he₁, he₂]; ring
+  have hm₂₂ : normSq m₂₂ = 1 := by rw [← nsi.norm_mul, he₂]; ring
 
   -- Expand |m₁₂ + m₁₃ + m₂₂ + m₂₃|² = 4
   have hsum_norm2 : normSq (m₁₂ + m₁₃ + m₂₂ + m₂₃) = 4 := by rw [← hbilin2]; exact hnorm_target2
@@ -1421,8 +1422,8 @@ theorem no_three_square_identity : ∀ f : NSquareIdentity 3, False := by
   have col3_23 : innerProd m₂₃ m₃₃ = 0 := orthogonality_constraint nsi e₂ e₃ e₃ he₂ he₃ he₃ h23
   have row3_13 : innerProd m₃₁ m₃₃ = 0 := orthogonality_constraint_right nsi e₃ e₁ e₃ he₃ he₁ he₃ h13
 
-  have hm₃₁ : normSq m₃₁ = 1 := by simp only [← nsi.norm_mul, he₃, he₁]; ring
-  have hm₃₃ : normSq m₃₃ = 1 := by simp only [← nsi.norm_mul, he₃]; ring
+  have hm₃₁ : normSq m₃₁ = 1 := by rw [← nsi.norm_mul, he₃, he₁]; ring
+  have hm₃₃ : normSq m₃₃ = 1 := by rw [← nsi.norm_mul, he₃]; ring
 
   have hsum_norm3 : normSq (m₂₁ + m₂₃ + m₃₁ + m₃₃) = 4 := by rw [← hbilin3]; exact hnorm_target3
 

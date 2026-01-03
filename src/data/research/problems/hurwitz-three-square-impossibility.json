@@ -2,7 +2,7 @@
   "slug": "hurwitz-three-square-impossibility",
   "title": "Hurwitz n=3 Impossibility Proof",
   "phase": "ORIENT",
-  "status": "graduated",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -31,9 +31,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: Hurwitz n=3 impossibility proven - no 3-square identity exists",
+    "builtItems": [
+      "no_three_square_identity theorem (Proofs/HurwitzTheorem.lean:1678)"
+    ],
+    "insights": [
+      "Proof complete in HurwitzTheorem.lean - n=3 case proven via orthonormality constraints"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -43,7 +47,7 @@
       "name": "Diagonal Constraint",
       "status": "active",
       "hypothesis": "",
-      "strategy": "The key insight is that the existing proof is missing one crucial constraint - the \"diagonal constraint\" that comes from `|mul(e₁+e₂, e₁+e₂)|² = 4`.",
+      "strategy": "The key insight is that the existing proof is missing one crucial constraint - the \"diagonal constraint\" that comes from `|mul(e\u2081+e\u2082, e\u2081+e\u2082)|\u00b2 = 4`.",
       "risks": [],
       "attempts": [
         {

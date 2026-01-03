@@ -248,6 +248,102 @@ lemma four_mul_sum_three_sq {n : ℕ} (h : ∃ a b c : ℤ, a^2 + b^2 + c^2 = n)
   rw [this, hab]
   simp
 
+/-- **Square scaling**: If m is a sum of 3 squares, so is k²m.
+This is the "easy direction" of the square-free reduction.
+Combined with the reverse (which requires more work), this allows reducing
+the sufficiency proof to square-free numbers. -/
+lemma sq_mul_sum_three_sq {m : ℕ} {k : ℤ} (h : ∃ a b c : ℤ, a^2 + b^2 + c^2 = m) :
+    ∃ a b c : ℤ, a^2 + b^2 + c^2 = k^2 * m := by
+  obtain ⟨a, b, c, hab⟩ := h
+  use k*a, k*b, k*c
+  have : (k*a)^2 + (k*b)^2 + (k*c)^2 = k^2 * (a^2 + b^2 + c^2) := by ring
+  rw [this, hab]
+
+/-- Natural number version of square scaling. -/
+lemma sq_mul_sum_three_sq_nat {m k : ℕ} (h : ∃ a b c : ℤ, a^2 + b^2 + c^2 = m) :
+    ∃ a b c : ℤ, a^2 + b^2 + c^2 = (k^2 * m : ℕ) := by
+  obtain ⟨a, b, c, hab⟩ := h
+  use (k : ℤ)*a, (k : ℤ)*b, (k : ℤ)*c
+  have : ((k : ℤ)*a)^2 + ((k : ℤ)*b)^2 + ((k : ℤ)*c)^2 = (k : ℤ)^2 * (a^2 + b^2 + c^2) := by ring
+  rw [this, hab]
+  push_cast; ring
+
+/-- Every number of the form k²(a² + b² + c²) is a sum of 3 squares.
+This provides a path: prove base cases (small numbers or primes),
+then scale by squares to cover more. -/
+lemma sum_three_sq_of_sq_mul {n k : ℕ} {a b c : ℤ} (h : (k : ℤ)^2 * (a^2 + b^2 + c^2) = n) :
+    ∃ x y z : ℤ, x^2 + y^2 + z^2 = n := by
+  use (k : ℤ)*a, (k : ℤ)*b, (k : ℤ)*c
+  have : ((k : ℤ)*a)^2 + ((k : ℤ)*b)^2 + ((k : ℤ)*c)^2 = (k : ℤ)^2 * (a^2 + b^2 + c^2) := by ring
+  rw [this, h]
+
+/-- Odd squares are ≡ 1 (mod 8). -/
+private lemma odd_sq_mod_eight {k : ℕ} (hk : Odd k) : k^2 % 8 = 1 := by
+  have hkne : k ≠ 0 := by
+    intro h
+    rw [h] at hk
+    exact Nat.not_odd_zero hk
+  have hk_mod8 : k % 8 = 1 ∨ k % 8 = 3 ∨ k % 8 = 5 ∨ k % 8 = 7 := by
+    have : k % 2 = 1 := Nat.odd_iff.mp hk
+    omega
+  -- Check each case explicitly
+  have hsq_mod : k^2 % 8 = (k % 8)^2 % 8 := Nat.pow_mod k 2 8
+  rw [hsq_mod]
+  rcases hk_mod8 with h | h | h | h <;> (rw [h]; native_decide)
+
+/-- Excluded form is preserved by odd square multiplication.
+If m is in excluded form and k is odd, then k²m is also in excluded form.
+This is because k² ≡ 1 (mod 8) when k is odd, so it doesn't change the 8b+7 part. -/
+lemma excluded_form_of_odd_sq_mul {m k : ℕ} (hm : IsExcludedForm m) (hk : Odd k) :
+    IsExcludedForm (k^2 * m) := by
+  obtain ⟨a, b, hm⟩ := hm
+  -- k² ≡ 1 (mod 8) when k is odd
+  have hodd_sq : k^2 % 8 = 1 := odd_sq_mod_eight hk
+  -- k² = 8q + 1 for some q
+  obtain ⟨q, hq⟩ : ∃ q, k^2 = 8 * q + 1 := ⟨k^2 / 8, by omega⟩
+  -- k² * (8b + 7) = (8q + 1)(8b + 7) = 64qb + 56q + 8b + 7 = 8(8qb + 7q + b) + 7
+  use a, 8 * q * b + 7 * q + b
+  calc k^2 * m = k^2 * (4^a * (8 * b + 7)) := by rw [hm]
+    _ = 4^a * (k^2 * (8 * b + 7)) := by ring
+    _ = 4^a * ((8 * q + 1) * (8 * b + 7)) := by rw [hq]
+    _ = 4^a * (8 * (8 * q * b + 7 * q + b) + 7) := by ring
+
+/-- **Key structural property**: Excluded form is preserved under square multiplication.
+If m is in excluded form, then k²m is also in excluded form.
+This follows because 4^a factors can absorb powers of 4 from k²,
+and the remaining odd part preserves the 8b+7 structure. -/
+lemma excluded_form_of_sq_mul {m k : ℕ} (hm : IsExcludedForm m) (hk : k ≠ 0) :
+    IsExcludedForm (k^2 * m) := by
+  -- Factor k = 2^e * r where r is odd
+  obtain ⟨e, r, hr_odd, hk_eq⟩ := Nat.exists_eq_two_pow_mul_odd hk
+  rw [hk_eq]
+  -- k² = 4^e * r²
+  have hk2 : (2^e * r)^2 = 4^e * r^2 := by
+    rw [mul_pow, ← pow_mul]
+    congr 1
+    have h4 : (4 : ℕ) = 2^2 := by norm_num
+    rw [h4, ← pow_mul]
+    ring_nf
+  rw [hk2]
+  -- k²m = 4^e * (r²m)
+  have h1 : 4^e * r^2 * m = 4^e * (r^2 * m) := by ring
+  rw [h1]
+  -- r²m is in excluded form (by odd square preservation)
+  have hr2m : IsExcludedForm (r^2 * m) := excluded_form_of_odd_sq_mul hm hr_odd
+  -- 4^e * (excluded form) is also excluded form
+  obtain ⟨a, b, hr2m_eq⟩ := hr2m
+  use e + a, b
+  calc 4^e * (r^2 * m) = 4^e * (4^a * (8 * b + 7)) := by rw [hr2m_eq]
+    _ = 4^(e + a) * (8 * b + 7) := by rw [pow_add]; ring
+
+/-- **Contrapositive**: If k²m is NOT in excluded form, then m is NOT in excluded form.
+This is key for reduction: to show m is a sum of 3 squares, it suffices to
+show k²m is a sum of 3 squares for some k. -/
+lemma not_excluded_of_sq_mul_not_excluded {m k : ℕ} (hk : k ≠ 0)
+    (h : ¬IsExcludedForm (k^2 * m)) : ¬IsExcludedForm m := by
+  intro hm
+  exact h (excluded_form_of_sq_mul hm hk)
+
 /-- Primes ≡ 1 (mod 4) are sums of 3 squares.
 This follows from Fermat's two-squares theorem (they're sums of 2 squares). -/
 lemma prime_one_mod_four_is_sum_three_sq {p : ℕ} (hp : Nat.Prime p) (hmod : p % 4 = 1) :
