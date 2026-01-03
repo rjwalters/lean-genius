@@ -43,3 +43,9 @@ research/claims/*.json
 research/claims/*.lock
 research/db/*.bak
 research/db/knowledge.db
+
+# Test artifacts
+test-results/
+
+# npm (using pnpm)
+package-lock.json
