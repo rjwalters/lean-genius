@@ -157,7 +157,7 @@ export function ContributeSection() {
                 href="https://github.com/rjwalters/lean-genius/fork"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-annotation text-black rounded-lg font-medium text-sm hover:bg-annotation/90 transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#f59e0b]/30 text-white/70 rounded-lg font-medium text-sm hover:bg-[#f59e0b] hover:text-white transition-colors"
               >
                 <GitFork className="h-4 w-4" />
                 Fork on GitHub
