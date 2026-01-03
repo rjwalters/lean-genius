@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ChevronDown, ChevronUp, GitFork, Terminal, GitPullRequest, ExternalLink } from 'lucide-react'
 
 export function ContributeSection() {
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(true)
 
   return (
     <div className="bg-gradient-to-r from-annotation/5 to-annotation/10 border border-annotation/20 rounded-xl overflow-hidden">

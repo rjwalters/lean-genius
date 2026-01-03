@@ -139,20 +139,27 @@ theorem norm_mod_lt (x : ZsqrtNegTwo) {y : ZsqrtNegTwo} (hy : y ≠ 0) :
   -- Define rounding errors
   let ε_re : ℚ := (A.re : ℚ) / n - q.re
   let ε_im : ℚ := (A.im : ℚ) / n - q.im
-  -- r * star(y) = A - n * q, so its components are n * ε
+  -- r * star(y) = A - n * q
   have hy_star : y * star y = ⟨n, 0⟩ := by
     ext
     · simp only [Zsqrtd.re_mul, Zsqrtd.re_star, Zsqrtd.im_star, n, Zsqrtd.norm_def]; ring
     · simp only [Zsqrtd.im_mul, Zsqrtd.re_star, Zsqrtd.im_star]; ring
   have hr_star : r * star y = A - ⟨n, 0⟩ * q := by
-    simp only [r, mod_def, A]; rw [sub_mul, mul_assoc, mul_comm (star y) q, mul_assoc, hy_star]
-  have hr_star_re : ((r * star y).re : ℚ) = n * ε_re := by
-    simp only [hr_star, Zsqrtd.re_sub, Zsqrtd.re_mul, ε_re]
-    ring_nf
+    simp only [r, mod_def, A]
+    calc (x - y * q) * star y = x * star y - y * q * star y := by ring
+      _ = x * star y - y * star y * q := by ring
+      _ = x * star y - ⟨n, 0⟩ * q := by rw [hy_star]
+  -- Compute the components of r * star y
+  have hr_star_re : (r * star y).re = A.re - n * q.re := by
+    rw [hr_star]; simp only [Zsqrtd.re_sub, Zsqrtd.re_mul]; ring
+  have hr_star_im : (r * star y).im = A.im - n * q.im := by
+    rw [hr_star]; simp only [Zsqrtd.im_sub, Zsqrtd.im_mul]; ring
+  -- Cast to rationals
+  have hr_star_re_rat : ((r * star y).re : ℚ) = n * ε_re := by
+    rw [hr_star_re]; simp only [ε_re, Int.cast_sub, Int.cast_mul]
     field_simp
-  have hr_star_im : ((r * star y).im : ℚ) = n * ε_im := by
-    simp only [hr_star, Zsqrtd.im_sub, Zsqrtd.im_mul, ε_im]
-    ring_nf
+  have hr_star_im_rat : ((r * star y).im : ℚ) = n * ε_im := by
+    rw [hr_star_im]; simp only [ε_im, Int.cast_sub, Int.cast_mul]
     field_simp
   -- The rounding error bound
   have hbound : ε_re ^ 2 + 2 * ε_im ^ 2 < 1 := by
@@ -161,21 +168,34 @@ theorem norm_mod_lt (x : ZsqrtNegTwo) {y : ZsqrtNegTwo} (hy : y ≠ 0) :
     convert h using 2 <;> ring
   -- N(r) * N(y) = N(r * star(y))
   have hnorm_mul : Zsqrtd.norm (r * star y) = Zsqrtd.norm r * n := by
-    rw [Zsqrtd.norm_mul, Zsqrtd.norm_conj]; rfl
+    rw [Zsqrtd.norm_mul, Zsqrtd.norm_conj]
   -- Compute N(r * star(y)) in terms of ε
   have hnorm_r_star : (Zsqrtd.norm (r * star y) : ℚ) = n ^ 2 * (ε_re ^ 2 + 2 * ε_im ^ 2) := by
     simp only [Zsqrtd.norm_def, sq]
-    rw [hr_star_re, hr_star_im]
-    ring
+    have h1 : ((r * star y).re * (r * star y).re : ℚ) = (n * ε_re) * (n * ε_re) := by
+      rw [← hr_star_re_rat]
+    have h2 : ((r * star y).im * (r * star y).im : ℚ) = (n * ε_im) * (n * ε_im) := by
+      rw [← hr_star_im_rat]
+    simp only [Int.cast_sub, Int.cast_mul, Int.cast_neg, Int.cast_ofNat]
+    calc ((r * star y).re * (r * star y).re - (-2) * (r * star y).im * (r * star y).im : ℚ)
+      = (r * star y).re * (r * star y).re + 2 * ((r * star y).im * (r * star y).im) := by ring
+      _ = (n * ε_re) * (n * ε_re) + 2 * ((n * ε_im) * (n * ε_im)) := by rw [hr_star_re_rat, hr_star_im_rat]
+      _ = n * n * (ε_re * ε_re + 2 * (ε_im * ε_im)) := by ring
   -- So N(r) * n < n^2, hence N(r) < n
-  have hlt : (Zsqrtd.norm r * n : ℚ) < n ^ 2 := by
-    calc (Zsqrtd.norm r * n : ℚ) = Zsqrtd.norm (r * star y) := by rw [hnorm_mul]
-      _ = n ^ 2 * (ε_re ^ 2 + 2 * ε_im ^ 2) := hnorm_r_star
-      _ < n ^ 2 * 1 := by nlinarith [sq_nonneg n, hbound]
-      _ = n ^ 2 := by ring
+  have hlt : (Zsqrtd.norm r : ℚ) * n < n ^ 2 := by
+    have h1 : (Zsqrtd.norm r : ℚ) * n = (Zsqrtd.norm r * n : ℤ) := by push_cast; ring
+    have h2 : ((Zsqrtd.norm r * n : ℤ) : ℚ) = Zsqrtd.norm (r * star y) := by
+      rw [hnorm_mul]
+    have h3 : (Zsqrtd.norm (r * star y) : ℚ) = n ^ 2 * (ε_re ^ 2 + 2 * ε_im ^ 2) := hnorm_r_star
+    have h4 : n ^ 2 * (ε_re ^ 2 + 2 * ε_im ^ 2) < (n : ℚ) ^ 2 * 1 := by
+      have hn_sq_pos : 0 < (n : ℚ) ^ 2 := sq_pos_of_pos hn_rat_pos
+      exact (mul_lt_mul_left hn_sq_pos).mpr hbound
+    rw [h1, h2, h3]
+    linarith
   have hfinal : (Zsqrtd.norm r : ℚ) < n := by
     have hn2 : (n : ℚ) ^ 2 = n * n := by ring
     rw [hn2] at hlt
+    have hn_ne : (n : ℚ) ≠ 0 := ne_of_gt hn_rat_pos
     exact (mul_lt_mul_right hn_rat_pos).mp hlt
   exact_mod_cast hfinal
 
