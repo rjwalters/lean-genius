@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS sessions (
     outcome TEXT,  -- SCOUTED, BUILT, BLOCKED, GRADUATED, etc.
     summary TEXT,  -- Short 1-2 line summary
     content TEXT,  -- Full markdown session notes
+    github_username TEXT NOT NULL DEFAULT 'unknown',  -- Contributor attribution
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (problem_slug) REFERENCES problems(slug) ON DELETE CASCADE,
     UNIQUE(problem_slug, session_date, session_number)
@@ -60,6 +61,7 @@ CREATE TABLE IF NOT EXISTS insights (
     session_id INTEGER,  -- NULL if imported from legacy data
     insight TEXT NOT NULL,
     category TEXT,  -- 'mathematical', 'infrastructure', 'approach', 'blocker'
+    github_username TEXT NOT NULL DEFAULT 'unknown',  -- Contributor attribution
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (problem_slug) REFERENCES problems(slug) ON DELETE CASCADE,
     FOREIGN KEY (session_id) REFERENCES sessions(id) ON DELETE SET NULL
@@ -75,6 +77,7 @@ CREATE TABLE IF NOT EXISTS built_items (
     name TEXT,  -- e.g., 'excluded_form_not_sum_three_sq'
     description TEXT NOT NULL,
     item_type TEXT,  -- 'theorem', 'lemma', 'definition', 'axiom', 'example'
+    github_username TEXT NOT NULL DEFAULT 'unknown',  -- Contributor attribution
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (problem_slug) REFERENCES problems(slug) ON DELETE CASCADE,
     FOREIGN KEY (session_id) REFERENCES sessions(id) ON DELETE SET NULL
@@ -90,6 +93,7 @@ CREATE TABLE IF NOT EXISTS mathlib_gaps (
     resolved INTEGER DEFAULT 0,  -- boolean
     resolved_session_id INTEGER,
     resolved_how TEXT,  -- 'built', 'mathlib_updated', 'workaround', 'not_needed'
+    github_username TEXT NOT NULL DEFAULT 'unknown',  -- Contributor attribution
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (problem_slug) REFERENCES problems(slug) ON DELETE CASCADE,
     FOREIGN KEY (resolved_session_id) REFERENCES sessions(id) ON DELETE SET NULL
@@ -103,6 +107,7 @@ CREATE TABLE IF NOT EXISTS next_steps (
     priority INTEGER DEFAULT 0,  -- Higher = more important
     completed INTEGER DEFAULT 0,  -- boolean
     completed_session_id INTEGER,
+    github_username TEXT NOT NULL DEFAULT 'unknown',  -- Contributor attribution
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (problem_slug) REFERENCES problems(slug) ON DELETE CASCADE,
     FOREIGN KEY (completed_session_id) REFERENCES sessions(id) ON DELETE SET NULL

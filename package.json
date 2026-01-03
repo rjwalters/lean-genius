@@ -14,7 +14,9 @@
     "annotations:migrate": "tsx scripts/annotations/resolver.ts migrate",
     "annotations:parse": "tsx scripts/annotations/resolver.ts parse",
     "research:sync": "tsx scripts/research/sync-data.ts",
-    "research:build": "pnpm research:sync && tsx scripts/research/build.ts"
+    "research:build": "pnpm research:sync && tsx scripts/research/build.ts",
+    "db:export": "tsx scripts/research/db-export.ts",
+    "db:rebuild": "tsx scripts/research/db-rebuild.ts"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
@@ -42,6 +44,7 @@
     "@cloudflare/workers-types": "^4.20251221.0",
     "@eslint/js": "^9.39.1",
     "@types/bcryptjs": "^3.0.0",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/katex": "^0.16.7",
     "@types/node": "^24.10.4",
     "@types/react": "^19.2.5",
@@ -49,6 +52,7 @@
     "@types/react-katex": "^3.0.4",
     "@vitejs/plugin-react": "^5.1.1",
     "autoprefixer": "^10.4.23",
+    "better-sqlite3": "^12.5.0",
     "drizzle-kit": "^0.31.8",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
