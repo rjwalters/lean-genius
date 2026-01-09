@@ -158,6 +158,12 @@ const proofModules: Record<string, () => Promise<any>> = {
   'kummer-theorem': () => import('./kummer-theorem'),
   'chinese-remainder-constructive': () => import('./chinese-remainder-constructive'),
   'collatz-structured': () => import('./collatz-structured'),
+  'legendre-partial': () => import('./legendre-partial'),
+  'sophie-germain': () => import('./sophie-germain'),
+  'szemeredi-theorem': () => import('./szemeredi-theorem'),
+  'twin-primes-special': () => import('./twin-primes-special'),
+  'vietas-formulas': () => import('./vietas-formulas'),
+  'wolstenholme-theorem': () => import('./wolstenholme-theorem'),
 }
 
 /**
