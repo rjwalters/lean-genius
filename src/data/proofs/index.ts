@@ -156,6 +156,8 @@ const proofModules: Record<string, () => Promise<any>> = {
   'hilbert-9-reciprocity': () => import('./hilbert-9-reciprocity'),
   'primitive-roots': () => import('./primitive-roots'),
   'kummer-theorem': () => import('./kummer-theorem'),
+  'chinese-remainder-constructive': () => import('./chinese-remainder-constructive'),
+  'collatz-structured': () => import('./collatz-structured'),
 }
 
 /**
