@@ -434,6 +434,43 @@ If setup fails, it's usually due to:
 - Branch doesn't exist yet (push at least one commit)
 - GitHub API unreachable (check network/auth)
 
+## Lean Proofs
+
+This repository contains formal mathematical proofs in Lean 4. Building Lean proofs can be memory-intensive.
+
+### Building Proofs Safely
+
+**IMPORTANT**: Always use the safe build script to prevent memory exhaustion:
+
+```bash
+# Default: 64GB memory limit, 60min timeout, half CPU cores
+./proofs/scripts/safe-build.sh
+
+# Build specific target
+./proofs/scripts/safe-build.sh Proofs
+
+# Custom limits
+LEAN_MEMORY_LIMIT=32768 ./proofs/scripts/safe-build.sh  # 32GB limit
+LEAN_BUILD_TIMEOUT=120m ./proofs/scripts/safe-build.sh  # 2 hour timeout
+LEAN_JOBS=4 ./proofs/scripts/safe-build.sh              # 4 parallel jobs
+```
+
+**Never run `lake build` directly** - it can consume all system memory and crash the machine.
+
+### Proof Organization
+
+- `proofs/` - Lean 4 project root
+- `proofs/Proofs/` - Individual proof files
+- `proofs/lakefile.toml` - Lake build configuration
+- `proofs/scripts/` - Build and utility scripts
+
+### Adding New Proofs
+
+1. Create proof file in `proofs/Proofs/YourProof.lean`
+2. Add gallery integration in `src/data/proofs/your-proof/`
+3. Run `./proofs/scripts/safe-build.sh` to verify
+4. Run `pnpm build` to verify gallery integration
+
 ## Troubleshooting
 
 ### Common Issues
