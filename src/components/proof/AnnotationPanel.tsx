@@ -3,7 +3,7 @@ import type { Annotation } from '@/types/proof'
 import { cn } from '@/lib/utils'
 import { X, BookOpen, MessageSquare } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { MathText } from '@/components/ui/math'
+import { MarkdownMath } from '@/components/ui/markdown-math'
 import { CommentSection } from '@/components/comments'
 
 interface AnnotationPanelProps {
@@ -122,18 +122,18 @@ export function AnnotationPanel({ annotation, proofId, lineNumber, onClose }: An
               </div>
 
               <h3 className="text-lg font-semibold mb-3">{annotation.title}</h3>
-              <div className="text-sm text-muted-foreground leading-relaxed mb-4">
-                <MathText>{annotation.content}</MathText>
-              </div>
+              <MarkdownMath className="text-sm text-muted-foreground leading-relaxed mb-4">
+                {annotation.content}
+              </MarkdownMath>
 
               {annotation.mathContext && (
                 <div className="mt-4 p-3 bg-muted/30 rounded-md">
                   <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">
                     Mathematical Context
                   </h4>
-                  <div className="text-sm leading-relaxed">
-                    <MathText>{annotation.mathContext}</MathText>
-                  </div>
+                  <MarkdownMath className="text-sm leading-relaxed">
+                    {annotation.mathContext}
+                  </MarkdownMath>
                 </div>
               )}
 
