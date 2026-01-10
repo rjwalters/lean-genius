@@ -139,5 +139,71 @@
     "content": "**January 5-7, 2026: A New Milestone**\n\n**Timeline**:\n- Problem clarification on erdosproblems.com forum\n- Kevin Barreto prompts GPT-5.2 with the refined problem\n- GPT-5.2 produces initial solution; when asked to handle arbitrary C, independently identifies the key reformulation\n- Aristotle formalizes in Lean\n- Boris Alexeev simplifies (proof now 1/3 shorter)\n\n**Terence Tao's Assessment**: \"An Erdos problem (#728) was solved more or less autonomously by AI... with the result not replicated in existing literature.\"\n\n**What's different from #124**:\n- Problem #124 used known techniques (Brown's criterion) in a new combination\n- Problem #728 appears to use genuinely novel probabilistic arguments\n- The AI showed independent mathematical reasoning in reformulating the approach\n\n**Links**:\n- [erdosproblems.com/728](https://www.erdosproblems.com/728)\n- [Tao's Mathstodon thread](https://mathstodon.xyz/@tao/115855840223258103)",
     "significance": "major",
     "relatedConcepts": ["AI mathematics", "GPT-5.2", "Aristotle", "human-AI collaboration"]
+  },
+  {
+    "id": "ann-spike-count",
+    "proofId": "erdos-728-factorial-divisibility",
+    "range": {"startLine": 198, "endLine": 230},
+    "type": "lemma",
+    "title": "Spike Count Bound",
+    "content": "**Counting Valuation Spikes**\n\n```lean\nlemma lemma_spike_count_bound (p M k t : ℕ) (hp : p.Prime) (hk : k > 0) :\n    ((Finset.Icc M (2 * M)).filter \n      (fun m => V_p p m k ≥ J_p p k + t)).card ≤\n    k * (M / p ^ (J_p p k + t) + 2)\n```\n\n**What is a \"spike\"?** When V_p(m) (the maximum p-adic valuation in the interval) exceeds J_p + t, we have an unusually high power of p dividing some m+i.\n\n**The bound**: At most k · (M/p^{J+t} + 2) values of m in [M, 2M] have such spikes.\n\n**Why it matters**: Spikes are \"bad\" - they contribute extra to W(p,m,k) without corresponding contributions to kappa. But this lemma shows spikes are rare enough that most m avoid them.",
+    "mathContext": "Counting m with unusually high p-adic valuations",
+    "significance": "key",
+    "relatedConcepts": ["spike", "valuation", "counting argument"]
+  },
+  {
+    "id": "ann-xp-small-primes",
+    "proofId": "erdos-728-factorial-divisibility",
+    "range": {"startLine": 231, "endLine": 287},
+    "type": "concept",
+    "title": "Small Prime Analysis via Digit Counting",
+    "content": "**X_p: Counting \"Large\" Digits**\n\n```lean\ndef X_p (p m L : ℕ) : ℕ := \n  ((Finset.range L).filter \n    (fun u => (m / p ^ u) % p ≥ (p + 1) / 2)).card\n```\n\n**What X_p counts**: The number of base-p digits of m that are ≥ (p+1)/2 (i.e., \"large\" digits).\n\n**Why large digits matter**: When a digit d_u ≥ (p+1)/2, doubling it causes a carry: 2d_u ≥ p+1 > p. These forced carries contribute to kappa(p,m).\n\n**The key lemma**:\n```lean\nlemma lemma_forced_carries_smallp : kappa p m ≥ X_p p m L\n```\n\nEach large digit guarantees at least one carry when computing C(2m,m).\n\n**Connection to probability**: For random m, each digit is uniform in {0,...,p-1}, so about half are \"large\". This gives the expected value μ = L · θ where θ ≈ 1/2.",
+    "mathContext": "X_p counts digits >= (p+1)/2",
+    "significance": "major",
+    "relatedConcepts": ["digit counting", "carries", "small primes", "expected value"]
+  },
+  {
+    "id": "ann-chernoff",
+    "proofId": "erdos-728-factorial-divisibility",
+    "range": {"startLine": 410, "endLine": 450},
+    "type": "lemma",
+    "title": "Chernoff Concentration Bound",
+    "content": "**The Heart of the Probabilistic Argument**\n\n```lean\nlemma lemma_chernoff_binomial (p L : ℕ) (hp : p.Prime) :\n    ((Finset.range (p ^ L)).filter \n      (fun m => X_p p m L ≤ (mu p L) / 2)).card / (p ^ L : ℝ) \n    ≤ Real.exp (- (mu p L) / 8)\n```\n\n**What this says**: The fraction of m (mod p^L) with \"too few\" large digits is exponentially small.\n\n**The Chernoff technique**:\n1. X_p is a sum of L independent Bernoulli trials (each digit ≥ (p+1)/2 with prob θ)\n2. Expected value: μ = L · θ\n3. Prob(X_p ≤ μ/2) ≤ exp(-μ/8) by Chernoff\n\n**Why exp(-μ/8)?** The proof uses the MGF (moment generating function) method with t = log 2, giving the clean bound.\n\n**This is GPT-5.2's key insight**: Using concentration inequalities to show \"bad\" m are rare, rather than trying to construct good m directly.",
+    "mathContext": "Pr[X_p ≤ μ/2] ≤ exp(-μ/8)",
+    "significance": "critical",
+    "relatedConcepts": ["Chernoff bound", "concentration inequality", "moment generating function", "probabilistic method"]
+  },
+  {
+    "id": "ann-infinite-unbounded",
+    "proofId": "erdos-728-factorial-divisibility",
+    "range": {"startLine": 1136, "endLine": 1150},
+    "type": "lemma",
+    "title": "Infinite Sets from Unbounded Elements",
+    "content": "**A Key Set-Theoretic Lemma**\n\n```lean\nlemma infinite_of_unbounded_n (S : Set (ℕ × ℕ × ℕ)) \n    (h : ∀ N, ∃ t ∈ S, t.2.2 ≥ N) : S.Infinite\n```\n\n**The argument**: If for every N we can find a triple (a,b,n) ∈ S with n ≥ N, then S must be infinite.\n\n**Proof by contradiction**: If S were finite, it would have a maximum n-coordinate. But the hypothesis says we can always find larger n, contradiction.\n\n**How it's used**: Instead of constructing infinitely many triples explicitly, we show: for any N, there exists M large enough that some m ∈ [M, 2M] is \"good\", giving a triple with n = 2m ≥ N.",
+    "mathContext": "Unbounded third coordinate implies infinite set",
+    "significance": "key",
+    "relatedConcepts": ["set theory", "infinity", "proof by contradiction"]
+  },
+  {
+    "id": "ann-final-construction",
+    "proofId": "erdos-728-factorial-divisibility",
+    "range": {"startLine": 1249, "endLine": 1295},
+    "type": "lemma",
+    "title": "The Final Triple Construction",
+    "content": "**Assembling All the Pieces**\n\n```lean\nlemma lemma_good_triple_construction_final (C ε c : ℝ) (M m : ℕ)\n    (hm_not_bad : m ∉ bad_m_set M c) :\n    let a := m + k_val c M\n    let b := m  \n    let n := 2 * m\n    ε * n ≤ a ∧ ... ∧ (a + b : ℝ) > n + C * Real.log n\n```\n\n**The construction**:\n- Given a \"good\" m (one that avoids all badness conditions)\n- Set a = m + k, b = m, n = 2m where k = ⌊c log M⌋\n- Verify all five conditions of the problem\n\n**Why m not bad implies divisibility**:\n1. For large primes (p > 2k): Automatic by lemma_p_gt_2k\n2. For small primes: m avoids both \"carry-bad\" (too few large digits) and \"spike-bad\" (unusually high valuations)\n3. Together: W(p,m,k) ≤ kappa(p,m) + v_p(k!) for all primes p\n4. This exactly means a!b! | n!(a+b-n)!\n\n**The gap condition**: k = c log M ≈ c log n, so a+b-n = k > C log n for c > C.",
+    "mathContext": "Good m yields valid (a,b,n) triple",
+    "significance": "major",
+    "relatedConcepts": ["construction", "verification", "divisibility"]
+  },
+  {
+    "id": "ann-good-m-exists",
+    "proofId": "erdos-728-factorial-divisibility",
+    "range": {"startLine": 1295, "endLine": 1335},
+    "type": "lemma",
+    "title": "Good m Always Exists",
+    "content": "**The Existence Guarantee**\n\n```lean\nlemma lemma_good_m_exists_any_c (c : ℝ) (hc : c > 0) :\n    ∃ M0, ∀ M ≥ M0, (Finset.Icc M (2 * M) \\ bad_m_set M c).Nonempty\n```\n\n**What this says**: For any c > 0, there exists M₀ such that for all M ≥ M₀, at least one m ∈ [M, 2M] is \"good\" (not in the bad set).\n\n**The counting argument**:\n1. |bad_m_set| ≤ sum_bad_carries + sum_bad_spikes\n2. Both sums are o(M) as M → ∞ (from Chernoff + spike bounds)\n3. But |[M, 2M]| = M + 1\n4. For large M: |bad| < M + 1 = |interval|\n5. Therefore: good m must exist!\n\n**This is the probabilistic method in action**: We don't find a specific good m—we prove one must exist because bad m are too rare to fill the interval.",
+    "mathContext": "For large M, good m exists in [M, 2M]",
+    "significance": "critical",
+    "relatedConcepts": ["existence", "counting", "probabilistic method", "pigeonhole"]
   }
 ]
