@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "last_updated": "2026-01-10T03:21:23.501Z",
+  "last_updated": "2026-01-10T18:59:46.685Z",
   "source": "auto-generated from research/db/knowledge.db",
   "candidates": [
     {
@@ -189,6 +189,21 @@
         "number-theory",
         "analytic",
         "bounds"
+      ]
+    },
+    {
+      "id": "erdos-728-factorial-divisibility",
+      "name": "Erdős Problem #728: Factorial Divisibility",
+      "tier": "A",
+      "significance": 9,
+      "tractability": 10,
+      "status": "completed",
+      "notes": "COMPLETED: AI MILESTONE (Jan 2026): GPT-5.2 + Aristotle solved factorial divisibility: infinitely many (a,b,n) with a!b! | n!(a+b-n)! and gap C log n < a+b-n < C' log n. First genuinely novel AI math per Tao.",
+      "tags": [
+        "number-theory",
+        "factorial",
+        "ai-milestone",
+        "formalization"
       ]
     },
     {
