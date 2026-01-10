@@ -6,7 +6,7 @@ import { UserMenu } from '@/components/auth/UserMenu'
 import { Footer } from '@/components/Footer'
 import { ProofBadge, WiedijkBadge, ErdosBadge, BadgeFilter, MathlibIndicator } from '@/components/ui/proof-badge'
 import { WIEDIJK_BADGE_INFO, HILBERT_BADGE_INFO, MILLENNIUM_BADGE_INFO, ERDOS_BADGE_INFO } from '@/types/proof'
-import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, ArrowUpDown, Search } from 'lucide-react'
+import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, ArrowUpDown, Search, Github } from 'lucide-react'
 import type { ProofBadge as ProofBadgeType, ProofListing } from '@/types/proof'
 
 type SortOption = 'newest' | 'oldest' | 'alphabetical'
@@ -135,6 +135,15 @@ export function HomePage() {
                 <span className="hidden sm:inline">Submit a Proof</span>
               </Link>
             )}
+            <a
+              href="https://github.com/rjwalters/lean-genius"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+              aria-label="View on GitHub"
+            >
+              <Github className="h-5 w-5" />
+            </a>
             <UserMenu />
           </div>
         </div>

@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { ProofViewer, AnnotationPanel, TableOfContents, ProofOverview, ProofConclusion } from '@/components/proof'
 import { getProofAsync } from '@/data/proofs'
 import type { Annotation, ProofSection, ProofData } from '@/types/proof'
-import { Menu } from 'lucide-react'
+import { Menu, Github } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Sheet,
@@ -94,6 +94,15 @@ export function ProofPage() {
             </span>
           </Link>
           <div className="flex-1" />
+          <a
+            href="https://github.com/rjwalters/lean-genius"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-foreground transition-colors"
+            aria-label="View on GitHub"
+          >
+            <Github className="h-5 w-5" />
+          </a>
           <UserMenu />
         </header>
         <div className="flex-1 flex flex-col items-center justify-center gap-6 p-8">
@@ -161,6 +170,15 @@ export function ProofPage() {
           <span>{annotations.length} annotations</span>
         </div>
 
+        <a
+          href="https://github.com/rjwalters/lean-genius"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-muted-foreground hover:text-foreground transition-colors"
+          aria-label="View on GitHub"
+        >
+          <Github className="h-5 w-5" />
+        </a>
         <UserMenu />
       </header>
 

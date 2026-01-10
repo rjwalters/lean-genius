@@ -15,7 +15,8 @@ import {
   Search,
   Sparkles,
   Activity,
-  Target
+  Target,
+  Github
 } from 'lucide-react'
 
 type SortOption = 'newest' | 'activity' | 'significance' | 'alphabetical'
@@ -133,6 +134,15 @@ export function ResearchPage() {
             <span className="text-sm text-annotation font-medium">
               Research
             </span>
+            <a
+              href="https://github.com/rjwalters/lean-genius"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-foreground transition-colors"
+              aria-label="View on GitHub"
+            >
+              <Github className="h-5 w-5" />
+            </a>
             <UserMenu />
           </div>
         </div>
