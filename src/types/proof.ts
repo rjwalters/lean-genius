@@ -44,6 +44,7 @@ export type ProofBadge =
   | 'from-axioms'        // ⚡ Proves from first principles, no/minimal imports
   | 'fallacy'            // ⚠️ Demonstrates a mathematical fallacy or invalid argument
   | 'wip'                // 🚧 Has sorries or incomplete sections
+  | 'ai-solved'          // 🤖 Open problem solved by AI
 
 /**
  * Display information for proof badges
@@ -84,6 +85,12 @@ export const BADGE_INFO: Record<ProofBadge, { emoji: string; label: string; colo
     label: 'Work in Progress',
     color: '#F97316',
     description: 'Has sorries or incomplete sections'
+  },
+  'ai-solved': {
+    emoji: '🤖',
+    label: 'AI-Solved',
+    color: '#06B6D4',
+    description: 'Open problem solved by AI'
   }
 }
 
