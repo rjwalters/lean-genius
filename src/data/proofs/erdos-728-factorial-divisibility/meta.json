@@ -1,0 +1,136 @@
+{
+  "id": "erdos-728-factorial-divisibility",
+  "title": "Erdos Problem #728: Factorial Divisibility",
+  "slug": "erdos-728-factorial-divisibility",
+  "description": "A milestone in AI mathematics: GPT-5.2 and Aristotle autonomously solved this factorial divisibility problem, producing genuinely novel mathematics not found in existing literature.",
+  "meta": {
+    "author": "Kevin Barreto, GPT-5.2, Harmonic Aristotle (AI collaboration), January 2026",
+    "sourceUrl": "https://www.erdosproblems.com/728",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos728FactorialDivisibility.lean",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "erdos",
+      "ai-solved",
+      "factorial",
+      "p-adic",
+      "probabilistic-method"
+    ],
+    "badge": "complete",
+    "sorries": 0,
+    "erdosNumber": 728,
+    "erdosUrl": "https://www.erdosproblems.com/728",
+    "solvedBy": "GPT-5.2 + Harmonic Aristotle",
+    "solvedDate": "2026-01-07",
+    "mathlibDependencies": [
+      {
+        "theorem": "padicValNat",
+        "description": "p-adic valuation of natural numbers",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Filter.Eventually",
+        "description": "Eventually true predicates for asymptotic statements",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm for bound expressions",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "First AI-generated genuinely novel mathematical result",
+      "Probabilistic method using Chernoff-style concentration bounds",
+      "Analysis of p-adic valuations in factorial products",
+      "Kummer's theorem for binomial coefficient divisibility"
+    ],
+    "relatedProblems": [
+      {
+        "id": "erdos-124-complete-sequences",
+        "relationship": "Both are AI-solved Erdos problems; #124 was first autonomous solution, #728 is first genuinely novel result"
+      }
+    ],
+    "dateAdded": "01/09/26"
+  },
+  "overview": {
+    "historicalContext": "**From Ambiguity to AI Breakthrough**\n\nErdos Problem #728 was posed by Erdos, Graham, Ruzsa, and Straus in 1975. The original formulation was ambiguous - as written, it had trivial solutions. The AlphaProof team noted solutions with very large values of a and b, and the mathematical community debated the intended constraints.\n\nIn January 2026, after the problem statement was clarified to require a,b ≤ (1-ε)n, Kevin Barreto prompted GPT-5.2 which produced a complete solution. The proof was then formalized in Lean using Aristotle and simplified by Boris Alexeev.\n\n**Why This Matters**: Unlike Erdos #124 (which used known techniques in a novel combination), this solution appears genuinely new. Terence Tao noted it was 'not replicated in existing literature' - the clearest evidence yet that AI can generate original mathematics.\n\n**See Also**: [Erdos Problem #124](https://www.erdosproblems.com/124) was the first AI-autonomous solution (November 2025). Problem #728 represents the next milestone: AI producing novel mathematical content.",
+    "problemStatement": "**Erdos Problem #728 (Clarified)**\n\nLet ε > 0 be small and C, C' > 0. Do there exist infinitely many integer triples (a, b, n) such that:\n\n1. **Range constraints**: a ≥ εn and b ≥ εn\n2. **Divisibility**: a! b! | n! (a+b-n)!\n3. **Gap condition**: C log n < a+b-n < C' log n\n\n**Background**: Erdos proved that if a!b! | n! then a+b ≤ n + O(log n). This problem asks whether we can find infinitely many examples achieving this logarithmic gap.\n\n**Answer**: YES - for any 0 < C₁ < C₂, there are infinitely many (a,b,n) with b = n/2, a = n/2 + O(log n), and C₁ log n < a+b-n < C₂ log n.",
+    "proofStrategy": "**Probabilistic Method with p-adic Analysis**\n\n1. **Kummer's Theorem**: The p-adic valuation of (n choose k) equals the number of carries when adding k and n-k in base p.\n\n2. **Key Insight**: For the divisibility a!b! | n!(a+b-n)!, we need to control p-adic valuations. The term (a+b-n)! in the denominator eliminates obstacles from small primes.\n\n3. **Concentration Bounds**: Use Chernoff-style estimates to show that 'good' values of m (where the divisibility holds) are plentiful in intervals [M, 2M].\n\n4. **Construction**: Set b = m, n = 2m, a = m + k where k ≈ c log m. Show the divisibility condition is satisfied for most m.\n\n5. **Infinitude**: Since good triples exist in every sufficiently large interval, there are infinitely many solutions.",
+    "keyInsights": [
+      "Kummer's theorem translates factorial divisibility into base-p digit carry counting",
+      "The (a+b-n)! term in the denominator is crucial - it cancels problematic small prime contributions",
+      "The probabilistic method shows most values work, rather than constructing specific examples",
+      "Setting b = n/2 and a close to n/2 optimizes the construction",
+      "GPT-5.2 independently identified that 'throwing away k!' was problematic and reformulated the argument"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 14,
+      "endLine": 20,
+      "summary": "Definitions of W (p-adic valuation of products) and kappa (p-adic valuation of central binomials)."
+    },
+    {
+      "id": "forced-carries",
+      "title": "Forced Carries Lemma",
+      "startLine": 21,
+      "endLine": 71,
+      "summary": "Key lemma: if p^j divides m+i for small i, then kappa_p(m) >= j."
+    },
+    {
+      "id": "large-primes",
+      "title": "Large Prime Analysis",
+      "startLine": 72,
+      "endLine": 112,
+      "summary": "For primes p > 2k, the p-adic valuations are well-controlled."
+    },
+    {
+      "id": "counting-bounds",
+      "title": "Counting and Bounds",
+      "startLine": 113,
+      "endLine": 200,
+      "summary": "Bounds on N_pj (multiples of prime powers) and spike counts."
+    },
+    {
+      "id": "threshold-lemmas",
+      "title": "Threshold Lemmas",
+      "startLine": 700,
+      "endLine": 900,
+      "summary": "Establishing when the p-adic conditions are satisfied."
+    },
+    {
+      "id": "good-triples",
+      "title": "Good Triple Construction",
+      "startLine": 1200,
+      "endLine": 1350,
+      "summary": "Constructing triples (a,b,n) satisfying all required conditions."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 1351,
+      "endLine": 1411,
+      "summary": "The complete proof that infinitely many good triples exist."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #728 asked whether infinitely many triples (a,b,n) exist with a!b! | n!(a+b-n)! and a+b exceeding n by a logarithmic amount. The proof uses p-adic analysis and the probabilistic method to show that such triples are abundant. This represents the first genuinely novel mathematical result generated primarily by AI systems.",
+    "implications": "**Theoretical Significance:**\n\n**1. Novel AI Mathematics**: Unlike previous AI proofs that combined known techniques, this appears to be genuinely new mathematics.\n\n**2. Probabilistic Number Theory**: Demonstrates the power of concentration inequalities in factorial divisibility problems.\n\n**3. Human-AI Collaboration**: The workflow (GPT-5.2 for insight, Aristotle for formalization, humans for verification) may become standard.\n\n**4. Problem Clarification**: The formal verification process helped disambiguate the original problem statement.\n\n**Related Work**: See [Erdos Problem #124](../erdos-124-complete-sequences) for the first autonomous AI solution, and [erdosproblems.com](https://www.erdosproblems.com/) for the full collection.",
+    "openQuestions": [
+      "Can the gap be improved beyond O(log n)?",
+      "What is the density of good triples asymptotically?",
+      "Are there effective algorithms to find specific good triples?",
+      "How do the techniques extend to related problems like #729?"
+    ]
+  }
+}

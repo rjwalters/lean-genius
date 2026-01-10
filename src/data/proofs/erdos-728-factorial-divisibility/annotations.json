@@ -1,0 +1,143 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "erdos-728-factorial-divisibility",
+    "range": {"startLine": 1, "endLine": 12},
+    "type": "concept",
+    "title": "AI's First Genuinely Novel Mathematics",
+    "content": "**Erdos Problem #728** (January 2026)\n\nThis proof marks a new milestone in AI mathematics: the **first genuinely novel mathematical result** produced primarily by AI.\n\n**The Distinction from #124**:\n- Erdos #124 (Nov 2025): AI found an olympiad-style proof using known techniques\n- Erdos #728 (Jan 2026): AI produced mathematics \"not replicated in existing literature\" (Tao)\n\n**The Team**:\n- **GPT-5.2**: Generated the initial solution and key insights\n- **Kevin Barreto**: Coordinated and prompted the AI\n- **Aristotle**: Formalized the proof in Lean\n- **Boris Alexeev**: Simplified the Lean code\n\n**External Links**:\n- [erdosproblems.com/728](https://www.erdosproblems.com/728)\n- [erdosproblems.com/124](https://www.erdosproblems.com/124) (first AI solution)",
+    "significance": "critical",
+    "relatedConcepts": ["AI mathematics", "formal verification", "Erdos problems"]
+  },
+  {
+    "id": "ann-problem-statement",
+    "proofId": "erdos-728-factorial-divisibility",
+    "range": {"startLine": 1, "endLine": 5},
+    "type": "definition",
+    "title": "The Problem Statement",
+    "content": "**Factorial Divisibility Beyond the Logarithmic Barrier**\n\nGiven constants ε, C, C' > 0, do there exist infinitely many triples (a, b, n) such that:\n\n1. **Range**: a ≥ εn and b ≥ εn\n2. **Divisibility**: $a! \\cdot b! \\mid n! \\cdot (a+b-n)!$\n3. **Gap**: C log n < a+b-n < C' log n\n\n**Context**: Erdos proved a!b! | n! implies a+b ≤ n + O(log n). This asks: can we achieve this logarithmic gap infinitely often?\n\n**Answer**: YES! The proof constructs infinitely many such triples with b = n/2 and a = n/2 + O(log n).",
+    "mathContext": "a!b! | n!(a+b-n)! with gap control",
+    "significance": "critical",
+    "relatedConcepts": ["factorial divisibility", "logarithmic gap", "Erdos-Graham-Ruzsa-Straus"]
+  },
+  {
+    "id": "ann-padic-defs",
+    "proofId": "erdos-728-factorial-divisibility",
+    "range": {"startLine": 14, "endLine": 19},
+    "type": "definition",
+    "title": "p-adic Valuation Definitions",
+    "content": "**Core Definitions**\n\n```lean\ndef W (p m k : ℕ) : ℕ := padicValNat p (Nat.descFactorial (m + k) k)\ndef kappa (p m : ℕ) : ℕ := padicValNat p (Nat.choose (2 * m) m)\n```\n\n**What these mean**:\n- **W(p, m, k)**: The p-adic valuation of (m+1)(m+2)...(m+k) = (m+k)!/m!\n- **kappa(p, m)**: The p-adic valuation of the central binomial coefficient C(2m, m)\n\n**Why these matter**: The divisibility a!b! | n!(a+b-n)! can be analyzed by comparing p-adic valuations for each prime p. These functions track the key quantities.",
+    "mathContext": "v_p(product) and v_p(binomial)",
+    "significance": "major",
+    "relatedConcepts": ["p-adic valuation", "factorial", "binomial coefficient"]
+  },
+  {
+    "id": "ann-kummer",
+    "proofId": "erdos-728-factorial-divisibility",
+    "range": {"startLine": 21, "endLine": 35},
+    "type": "theorem",
+    "title": "Kummer's Theorem",
+    "content": "**Kummer's Theorem (The Key Tool)**\n\nThe p-adic valuation of C(n, k) equals the number of **carries** when adding k and n-k in base p.\n\n**Example** (p = 3, n = 8, k = 3):\n- 3 in base 3: 10\n- 5 in base 3: 12\n- Adding: 10 + 12 = 22 with 1 carry\n- So v₃(C(8,3)) = 1\n\n**In the proof**: The p-adic valuation of C(2m, m) counts carries when adding m + m in base p. If p^j divides m+i for small i, this forces carries in specific digit positions.\n\n**Why it matters**: Translates factorial divisibility into combinatorial digit counting!",
+    "mathContext": "v_p(C(n,k)) = carries in base-p addition",
+    "significance": "critical",
+    "relatedConcepts": ["Kummer's theorem", "carries", "base-p representation"]
+  },
+  {
+    "id": "ann-forced-carries",
+    "proofId": "erdos-728-factorial-divisibility",
+    "range": {"startLine": 21, "endLine": 71},
+    "type": "lemma",
+    "title": "Forced Carries Lemma",
+    "content": "**Forced Carries from Divisibility**\n\n```lean\nlemma lemma_forced_carries_largep (p m i j : ℕ) (hp : p.Prime)\n    (hi : 1 ≤ i) (hip : i < p) (hij : i ≤ (p - 1) / 2)\n    (hdiv : p ^ j ∣ m + i) :\n    kappa p m ≥ j\n```\n\n**What this says**: If p^j divides m+i for a \"small\" i (between 1 and (p-1)/2), then the p-adic valuation of C(2m, m) is at least j.\n\n**Intuition**: When m+i is divisible by a high power of p, the base-p representation of m has a specific structure that forces carries when computing m+m.\n\n**Key technique**: Uses floor division identities and careful modular arithmetic to track digit positions.",
+    "mathContext": "p^j | m+i implies v_p(C(2m,m)) >= j",
+    "significance": "major",
+    "relatedConcepts": ["carries", "divisibility", "modular arithmetic"]
+  },
+  {
+    "id": "ann-large-primes",
+    "proofId": "erdos-728-factorial-divisibility",
+    "range": {"startLine": 72, "endLine": 112},
+    "type": "lemma",
+    "title": "Large Prime Simplification",
+    "content": "**For Large Primes: kappa >= W**\n\n```lean\nlemma lemma_p_gt_2k (m k p : ℕ) (hp : p.Prime) (hk : 2 * k < p) :\n    kappa p m ≥ W p m k\n```\n\n**What this says**: When p > 2k, the p-adic valuation of C(2m, m) dominates the valuation of the product (m+1)...(m+k).\n\n**Why it matters**: Large primes contribute positively to the divisibility condition. We only need to worry about primes up to 2k.\n\n**Proof idea**: For p > 2k, at most one multiple of p appears in (m+1, ..., m+k). The unique multiple (if it exists) contributes the same to both sides.",
+    "mathContext": "p > 2k implies kappa >= W",
+    "significance": "major",
+    "relatedConcepts": ["prime sieving", "valuation comparison"]
+  },
+  {
+    "id": "ann-counting",
+    "proofId": "erdos-728-factorial-divisibility",
+    "range": {"startLine": 113, "endLine": 145},
+    "type": "definition",
+    "title": "Counting Functions",
+    "content": "**Tracking Prime Power Multiples**\n\n```lean\ndef N_pj (p m k j : ℕ) : ℕ := \n  ((Finset.Icc 1 k).filter (fun i => p ^ j ∣ m + i)).card\n\ndef J_p (p k : ℕ) : ℕ := Nat.log p k\n\ndef V_p (p m k : ℕ) : ℕ := \n  Finset.sup (Finset.Icc 1 k) (fun i => padicValNat p (m + i))\n```\n\n**What these count**:\n- **N_pj**: Number of integers in (m, m+k] divisible by p^j\n- **J_p**: Floor of log_p(k), the maximum \"expected\" power\n- **V_p**: Maximum p-adic valuation among m+1, ..., m+k\n\n**The bound**: N_pj ≤ ceil(k/p^j) - at most this many multiples of p^j in any interval of length k.",
+    "mathContext": "Counting multiples of prime powers",
+    "significance": "key",
+    "relatedConcepts": ["counting", "prime powers", "interval arithmetic"]
+  },
+  {
+    "id": "ann-w-sum",
+    "proofId": "erdos-728-factorial-divisibility",
+    "range": {"startLine": 145, "endLine": 180},
+    "type": "lemma",
+    "title": "W as a Sum",
+    "content": "**Decomposing W(p, m, k)**\n\n```lean\nlemma lemma_W_eq_sum_N_pj (p m k : ℕ) (hp : p.Prime) :\n    W p m k = ∑ j ∈ Finset.Icc 1 (V_p p m k), N_pj p m k j\n```\n\n**What this says**: The p-adic valuation of (m+1)(m+2)...(m+k) equals the sum of counts of p^j-multiples.\n\n**Example** (p = 2, m = 0, k = 8):\n- Product = 8! = 40320\n- v₂(8!) = 7\n- Multiples of 2 in [1,8]: 4 numbers (N₂₁ = 4)\n- Multiples of 4 in [1,8]: 2 numbers (N₂₂ = 2)  \n- Multiples of 8 in [1,8]: 1 number (N₂₃ = 1)\n- Sum: 4 + 2 + 1 = 7 ✓",
+    "mathContext": "W = sum of N_pj over j",
+    "significance": "key",
+    "relatedConcepts": ["p-adic valuation", "counting formula"]
+  },
+  {
+    "id": "ann-probabilistic",
+    "proofId": "erdos-728-factorial-divisibility",
+    "range": {"startLine": 700, "endLine": 900},
+    "type": "concept",
+    "title": "The Probabilistic Method",
+    "content": "**Concentration Bounds**\n\nThe proof uses Chernoff-style concentration to show that \"bad\" values of m are rare.\n\n**Strategy**:\n1. Define \"bad\" m as those where some prime p causes the divisibility to fail\n2. Show the number of bad m in [M, 2M] is o(M)\n3. Therefore good m exist in every large interval\n4. Infinitely many good triples follow\n\n**Key insight from GPT-5.2**: The AI recognized that throwing away k! was problematic and reformulated the argument to directly count good m values.\n\n**Threshold lemmas**: For each prime p < 2k, bound the probability that m is \"p-bad\". Sum over primes using the prime number theorem.",
+    "mathContext": "Probabilistic method for existence",
+    "significance": "critical",
+    "relatedConcepts": ["probabilistic method", "Chernoff bounds", "concentration inequalities"]
+  },
+  {
+    "id": "ann-good-triples",
+    "proofId": "erdos-728-factorial-divisibility",
+    "range": {"startLine": 492, "endLine": 510},
+    "type": "definition",
+    "title": "Good Triple Construction",
+    "content": "**Building the Triples**\n\nA \"good triple\" (a, b, n) satisfies:\n- b = m for some good m\n- n = 2m\n- a = m + k where k = floor(c * log m)\n- The divisibility a!b! | n!(a+b-n)! holds\n- The gap C log n < a+b-n < C' log n is satisfied\n\n**Why b = n/2 works**:\n- Symmetry simplifies the p-adic analysis\n- The central binomial C(2m, m) appears naturally\n- The gap a+b-n = k is exactly controlled\n\n**Construction**: For each large M, find good m in [M, 2M] and output (m+k, m, 2m).",
+    "mathContext": "a = m+k, b = m, n = 2m",
+    "significance": "major",
+    "relatedConcepts": ["construction", "central binomial", "gap control"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "erdos-728-factorial-divisibility",
+    "range": {"startLine": 1335, "endLine": 1365},
+    "type": "theorem",
+    "title": "Main Theorem: Infinite Good Triples",
+    "content": "**The Main Result**\n\n```lean\ntheorem erdos_728 (C ε : ℝ) (hC : 0 < C) (hε : 0 < ε) \n    (hε_small : ε < 1 / 2) :\n    (good_triples C ε).Infinite\n```\n\n**Statement**: For any positive C and small ε, there are infinitely many triples (a, b, n) satisfying:\n- a, b > εn\n- a!b! | n!(a+b-n)!\n- a+b > n + C log n\n\n**Proof structure**:\n1. Apply `infinite_of_unbounded_n`: show for any N, there exists a good triple with n >= N\n2. For large M, the good-m lemmas guarantee a non-empty set of good m values\n3. Construct (m+k, m, 2m) from each good m\n4. Verify all conditions are satisfied",
+    "mathContext": "Infinitely many (a,b,n) with a!b! | n!(a+b-n)!",
+    "significance": "critical",
+    "relatedConcepts": ["main theorem", "infinite set", "unbounded existence"]
+  },
+  {
+    "id": "ann-formal-conjectures",
+    "proofId": "erdos-728-factorial-divisibility",
+    "range": {"startLine": 1366, "endLine": 1411},
+    "type": "theorem",
+    "title": "Formal Conjectures Compatibility",
+    "content": "**Matching the DeepMind Statement**\n\n```lean\ntheorem erdos_728_fc :\n    ∀ᶠ ε : ℝ in 𝓝[>] 0, ∀ C > (0 : ℝ), ∀ C' > C,\n      ∃ a b n : ℕ,\n        0 < n ∧ ε * n < a ∧ ε * n < b ∧\n        a ! * b ! ∣ n ! * (a + b - n)! ∧\n        a + b > n + C * log n ∧\n        a + b < n + C' * log n\n```\n\n**This version**: Matches the [Formal Conjectures statement](https://github.com/google-deepmind/formal-conjectures/blob/main/FormalConjectures/ErdosProblems/728.lean) exactly.\n\n**Axioms used**: Only propext, Classical.choice, and Quot.sound (standard foundational axioms).",
+    "mathContext": "Formal Conjectures compatible statement",
+    "significance": "key",
+    "relatedConcepts": ["Formal Conjectures", "DeepMind", "statement matching"]
+  },
+  {
+    "id": "ann-ai-story",
+    "proofId": "erdos-728-factorial-divisibility",
+    "range": {"startLine": 1, "endLine": 12},
+    "type": "note",
+    "title": "The AI Collaboration Story",
+    "content": "**January 5-7, 2026: A New Milestone**\n\n**Timeline**:\n- Problem clarification on erdosproblems.com forum\n- Kevin Barreto prompts GPT-5.2 with the refined problem\n- GPT-5.2 produces initial solution; when asked to handle arbitrary C, independently identifies the key reformulation\n- Aristotle formalizes in Lean\n- Boris Alexeev simplifies (proof now 1/3 shorter)\n\n**Terence Tao's Assessment**: \"An Erdos problem (#728) was solved more or less autonomously by AI... with the result not replicated in existing literature.\"\n\n**What's different from #124**:\n- Problem #124 used known techniques (Brown's criterion) in a new combination\n- Problem #728 appears to use genuinely novel probabilistic arguments\n- The AI showed independent mathematical reasoning in reformulating the approach\n\n**Links**:\n- [erdosproblems.com/728](https://www.erdosproblems.com/728)\n- [Tao's Mathstodon thread](https://mathstodon.xyz/@tao/115855840223258103)",
+    "significance": "major",
+    "relatedConcepts": ["AI mathematics", "GPT-5.2", "Aristotle", "human-AI collaboration"]
+  }
+]

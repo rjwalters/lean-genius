@@ -102,6 +102,7 @@ const proofModules: Record<string, () => Promise<any>> = {
   'sylow-theorems': () => import('./sylow-theorems'),
   'erdos-szekeres': () => import('./erdos-szekeres'),
   'erdos-124-complete-sequences': () => import('./erdos-124-complete-sequences'),
+  'erdos-728-factorial-divisibility': () => import('./erdos-728-factorial-divisibility'),
   'platonic-solids': () => import('./platonic-solids'),
   'ptolemys-theorem': () => import('./ptolemys-theorem'),
   'desargues-theorem': () => import('./desargues-theorem'),
