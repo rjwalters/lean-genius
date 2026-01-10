@@ -1,4 +1,4 @@
-import { BADGE_INFO, WIEDIJK_BADGE_INFO, WIEDIJK_THEOREMS, type ProofBadge as ProofBadgeType } from '@/types/proof'
+import { BADGE_INFO, WIEDIJK_BADGE_INFO, WIEDIJK_THEOREMS, ERDOS_BADGE_INFO, ERDOS_PROBLEMS, type ProofBadge as ProofBadgeType, type ErdosProblemStatus } from '@/types/proof'
 import { Tooltip, TooltipTrigger, TooltipContent } from './tooltip'
 
 interface ProofBadgeProps {
@@ -98,6 +98,75 @@ export function WiedijkBadge({
           onClick={(e) => e.stopPropagation()}
         >
           View on Wiedijk's list →
+        </a>
+      </TooltipContent>
+    </Tooltip>
+  )
+}
+
+interface ErdosBadgeProps {
+  number?: number
+  solvedBy?: string
+  problemStatus?: ErdosProblemStatus
+  size?: 'sm' | 'md'
+  className?: string
+}
+
+/**
+ * Displays a badge for Erdős Problems from erdosproblems.com
+ */
+export function ErdosBadge({
+  number,
+  solvedBy,
+  problemStatus,
+  size = 'sm',
+  className = ''
+}: ErdosBadgeProps) {
+  if (!number) return null
+
+  const sizeClasses = size === 'sm'
+    ? 'h-6 min-w-6 px-1.5 text-[10px]'
+    : 'h-8 min-w-8 px-2 text-xs'
+
+  const problemName = ERDOS_PROBLEMS[number] || `Problem #${number}`
+  const statusEmoji = problemStatus === 'solved' ? '✓' : problemStatus === 'partially-solved' ? '◐' : '○'
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span
+          className={`inline-flex items-center justify-center gap-1 rounded-full font-bold shrink-0 ${sizeClasses} ${className}`}
+          style={{
+            backgroundColor: `${ERDOS_BADGE_INFO.color}25`,
+            color: ERDOS_BADGE_INFO.textColor,
+            border: `1.5px solid ${ERDOS_BADGE_INFO.color}50`
+          }}
+        >
+          <span>E</span>
+          <span>{number}</span>
+        </span>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p className="font-medium">Erdős Problem #{number}</p>
+        <p className="text-muted-foreground">{problemName}</p>
+        {problemStatus && (
+          <p className="text-xs mt-1">
+            Status: {statusEmoji} {problemStatus}
+          </p>
+        )}
+        {solvedBy && (
+          <p className="text-xs text-annotation mt-1">
+            Solved by: {solvedBy}
+          </p>
+        )}
+        <a
+          href={`${ERDOS_BADGE_INFO.url}${number}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-annotation hover:underline mt-1 block"
+          onClick={(e) => e.stopPropagation()}
+        >
+          View on erdosproblems.com →
         </a>
       </TooltipContent>
     </Tooltip>

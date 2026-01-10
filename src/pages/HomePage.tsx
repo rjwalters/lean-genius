@@ -4,8 +4,8 @@ import { listings } from '@/data/proofs'
 import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
 import { Footer } from '@/components/Footer'
-import { ProofBadge, WiedijkBadge, BadgeFilter, MathlibIndicator } from '@/components/ui/proof-badge'
-import { WIEDIJK_BADGE_INFO, HILBERT_BADGE_INFO, MILLENNIUM_BADGE_INFO } from '@/types/proof'
+import { ProofBadge, WiedijkBadge, ErdosBadge, BadgeFilter, MathlibIndicator } from '@/components/ui/proof-badge'
+import { WIEDIJK_BADGE_INFO, HILBERT_BADGE_INFO, MILLENNIUM_BADGE_INFO, ERDOS_BADGE_INFO } from '@/types/proof'
 import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, ArrowUpDown, Search } from 'lucide-react'
 import type { ProofBadge as ProofBadgeType, ProofListing } from '@/types/proof'
 
@@ -26,6 +26,7 @@ export function HomePage() {
   const [showWiedijkOnly, setShowWiedijkOnly] = useState(false)
   const [showHilbertOnly, setShowHilbertOnly] = useState(false)
   const [showMillenniumOnly, setShowMillenniumOnly] = useState(false)
+  const [showErdosOnly, setShowErdosOnly] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
 
   // Filter and sort proofs
@@ -70,6 +71,13 @@ export function HomePage() {
       )
     }
 
+    // Filter by Erdős Problems
+    if (showErdosOnly) {
+      filtered = filtered.filter((listing) =>
+        listing.erdosNumber !== undefined
+      )
+    }
+
     // Sort proofs
     return [...filtered].sort((a, b) => {
       switch (sortBy) {
@@ -83,7 +91,7 @@ export function HomePage() {
           return 0
       }
     })
-  }, [searchQuery, selectedBadges, sortBy, showWiedijkOnly, showHilbertOnly, showMillenniumOnly])
+  }, [searchQuery, selectedBadges, sortBy, showWiedijkOnly, showHilbertOnly, showMillenniumOnly, showErdosOnly])
 
   const handleBadgeToggle = (badge: ProofBadgeType) => {
     setSelectedBadges((prev) => {
@@ -99,6 +107,7 @@ export function HomePage() {
     setShowWiedijkOnly(false)
     setShowHilbertOnly(false)
     setShowMillenniumOnly(false)
+    setShowErdosOnly(false)
     setSearchQuery('')
   }
 
@@ -178,16 +187,16 @@ export function HomePage() {
             <button
               onClick={() => setShowFilters(!showFilters)}
               className={`flex items-center gap-1.5 text-sm transition-colors ${
-                showFilters || selectedBadges.length > 0 || showWiedijkOnly || showHilbertOnly || showMillenniumOnly
+                showFilters || selectedBadges.length > 0 || showWiedijkOnly || showHilbertOnly || showMillenniumOnly || showErdosOnly
                   ? 'text-annotation'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
               <Filter className="h-4 w-4" />
               <span>Filter</span>
-              {(selectedBadges.length > 0 || showWiedijkOnly || showHilbertOnly || showMillenniumOnly) && (
+              {(selectedBadges.length > 0 || showWiedijkOnly || showHilbertOnly || showMillenniumOnly || showErdosOnly) && (
                 <span className="bg-annotation/20 text-annotation px-1.5 py-0.5 rounded text-xs">
-                  {selectedBadges.length + (showWiedijkOnly ? 1 : 0) + (showHilbertOnly ? 1 : 0) + (showMillenniumOnly ? 1 : 0)}
+                  {selectedBadges.length + (showWiedijkOnly ? 1 : 0) + (showHilbertOnly ? 1 : 0) + (showMillenniumOnly ? 1 : 0) + (showErdosOnly ? 1 : 0)}
                 </span>
               )}
             </button>
@@ -199,7 +208,7 @@ export function HomePage() {
           <div className="mb-6 p-4 bg-card border border-border rounded-lg">
             <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-medium">Filter by Category</span>
-              {(selectedBadges.length > 0 || showWiedijkOnly || showHilbertOnly || showMillenniumOnly) && (
+              {(selectedBadges.length > 0 || showWiedijkOnly || showHilbertOnly || showMillenniumOnly || showErdosOnly) && (
                 <button
                   onClick={clearFilters}
                   className="text-xs text-muted-foreground hover:text-foreground"
@@ -285,6 +294,30 @@ export function HomePage() {
                 </span>
                 <span className="hidden sm:inline">Millennium</span>
               </button>
+              {/* Erdős Filter Toggle */}
+              <button
+                onClick={() => setShowErdosOnly(!showErdosOnly)}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all
+                  ${showErdosOnly
+                    ? 'ring-2 ring-offset-2 ring-offset-background'
+                    : 'opacity-50 hover:opacity-75'
+                  }`}
+                style={{
+                  backgroundColor: `${ERDOS_BADGE_INFO.color}20`,
+                  color: ERDOS_BADGE_INFO.textColor,
+                  ...(showErdosOnly && { ringColor: ERDOS_BADGE_INFO.color })
+                }}
+              >
+                <span className="inline-flex items-center justify-center h-4 w-4 rounded-full text-[9px] font-bold"
+                  style={{
+                    backgroundColor: `${ERDOS_BADGE_INFO.color}40`,
+                    color: ERDOS_BADGE_INFO.textColor
+                  }}
+                >
+                  E
+                </span>
+                <span className="hidden sm:inline">Erdős</span>
+              </button>
             </div>
           </div>
         )}
@@ -305,6 +338,8 @@ export function HomePage() {
               <div className="flex items-start gap-3 mb-3">
                 {listing.wiedijkNumber ? (
                   <WiedijkBadge number={listing.wiedijkNumber} size="md" />
+                ) : listing.erdosNumber ? (
+                  <ErdosBadge number={listing.erdosNumber} size="md" />
                 ) : (
                   <div className="h-10 w-10 rounded-lg bg-annotation/20 flex items-center justify-center flex-shrink-0">
                     <BookOpen className="h-5 w-5 text-annotation" />
@@ -358,10 +393,10 @@ export function HomePage() {
         </div>
 
         {/* Empty state when filters result in no proofs */}
-        {proofs.length === 0 && (searchQuery.trim() || selectedBadges.length > 0 || showWiedijkOnly || showHilbertOnly || showMillenniumOnly) && (
+        {proofs.length === 0 && (searchQuery.trim() || selectedBadges.length > 0 || showWiedijkOnly || showHilbertOnly || showMillenniumOnly || showErdosOnly) && (
           <div className="text-center py-12">
             <p className="text-muted-foreground mb-4">
-              No proofs match your search{selectedBadges.length > 0 || showWiedijkOnly || showHilbertOnly || showMillenniumOnly ? ' and filters' : ''}.
+              No proofs match your search{selectedBadges.length > 0 || showWiedijkOnly || showHilbertOnly || showMillenniumOnly || showErdosOnly ? ' and filters' : ''}.
             </p>
             <button
               onClick={clearFilters}

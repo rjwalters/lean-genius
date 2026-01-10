@@ -202,6 +202,40 @@ export const MILLENNIUM_PROBLEMS: Record<MillenniumProblem, string> = {
 }
 
 /**
+ * Display information for Erdős Problems badge
+ */
+export const ERDOS_BADGE_INFO = {
+  color: '#22C55E', // Green - distinct from other collections
+  textColor: '#22C55E',
+  label: 'Erdős Problems',
+  description: 'A problem from Paul Erdős\'s collection at erdosproblems.com',
+  url: 'https://www.erdosproblems.com/'
+}
+
+/**
+ * Status of an Erdős problem
+ */
+export type ErdosProblemStatus = 'open' | 'solved' | 'partially-solved'
+
+/**
+ * Mapping of some notable Erdős problem numbers to their names
+ * See: https://www.erdosproblems.com/
+ */
+export const ERDOS_PROBLEMS: Record<number, string> = {
+  1: 'Covering Congruences',
+  28: 'Sum-Free Sets',
+  99: 'Squares in Arithmetic Progression',
+  124: 'Prime Gaps Conjecture',
+  178: 'Distinct Sums from Sets',
+  206: 'Chromatic Number of the Plane',
+  365: 'Erdős-Straus Conjecture',
+  396: 'Cameron-Erdős Conjecture',
+  434: 'Erdős-Ko-Rado Problem',
+  461: 'Multiplication Table Problem',
+  702: 'Erdős-Turán Conjecture on Additive Bases'
+}
+
+/**
  * A theorem or lemma imported from Mathlib
  */
 export interface MathlibDependency {
@@ -241,6 +275,20 @@ export interface ProofMeta {
   hilbertNumber?: number
   /** Millennium Prize Problem identifier if applicable */
   millenniumProblem?: MillenniumProblem
+
+  // Erdős Problems fields
+  /** Erdős problem number from erdosproblems.com */
+  erdosNumber?: number
+  /** Direct URL to the problem on erdosproblems.com */
+  erdosUrl?: string
+  /** Who solved the problem (person or AI system) */
+  erdosSolvedBy?: string
+  /** When the problem was solved (date string) */
+  erdosSolvedDate?: string
+  /** Prize money if applicable */
+  erdosPrizeValue?: string
+  /** Current status of the Erdős problem */
+  erdosProblemStatus?: ErdosProblemStatus
 }
 
 export interface ProofSection {
@@ -309,6 +357,7 @@ export interface ProofListing {
   wiedijkNumber?: number
   hilbertNumber?: number
   millenniumProblem?: MillenniumProblem
+  erdosNumber?: number
   mathlibCount?: number
   sorries?: number
   annotationCount: number
