@@ -23,6 +23,7 @@ import Proofs.CauchySchwarz
 import Proofs.CayleyHamilton
 import Proofs.CentralLimitTheorem
 import Proofs.CevasTheorem
+import Proofs.ChebyshevBounds
 import Proofs.ChineseRemainderConstructive
 import Proofs.CollatzStructured
 import Proofs.CombinationsFormula
@@ -43,6 +44,7 @@ import Proofs.DescartesRuleOfSigns
 import Proofs.DirichletsTheorem
 import Proofs.DissectionOfCubes
 import Proofs.DivisibilityBy3
+import Proofs.Erdos124CompleteSequences
 import Proofs.ErdosKoRado
 import Proofs.ErdosSzekeres
 import Proofs.EulerIdentity
@@ -167,4 +169,5 @@ import Proofs.WeakGoldbach
 import Proofs.WilsonsTheorem
 import Proofs.WolstenholmeTheorem
 import Proofs.YangMillsMassGap
+import Proofs.ZsqrtdNegTwo
 import Proofs.eTranscendental

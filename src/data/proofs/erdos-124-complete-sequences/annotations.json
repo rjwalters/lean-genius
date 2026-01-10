@@ -1,0 +1,121 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "erdos-124-complete-sequences",
+    "range": {"startLine": 3, "endLine": 48},
+    "type": "concept",
+    "title": "The First AI-Solved Open Problem",
+    "content": "**Erdos Problem #124** (November 2025)\n\nThis proof marks a historic milestone: the **first open mathematical conjecture solved autonomously by AI**.\n\n**The Story**:\n- 1996: Burr, Erdos, Graham, Li pose the problem\n- 1997: Erdos reformulates, accidentally creating ambiguity\n- 2025: Harmonic's Aristotle solves it in 6 hours\n- Lean verifies the proof in 1 minute\n\n**Key Quote** (Terence Tao): \"Aristotle solved 'a' version of this problem (indeed, with an olympiad-style proof), but not 'the' version.\"\n\nThe \"weak\" version (including $d^0 = 1$) was solved. The \"strong\" version remains open.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdos problems", "AI theorem proving", "formal verification"]
+  },
+  {
+    "id": "ann-problem-statement",
+    "proofId": "erdos-124-complete-sequences",
+    "range": {"startLine": 3, "endLine": 15},
+    "type": "definition",
+    "title": "The Problem Statement",
+    "content": "**Complete Sequences of Integer Powers**\n\nGiven bases $d_1, d_2, \\ldots, d_k$ with $d_i \\geq 2$, let $P(d_i, 0)$ be the set of numbers whose base-$d_i$ representation uses only digits 0 and 1.\n\nFor example, in base 3:\n- $P(3, 0) = \\{0, 1, 3, 4, 9, 10, 12, 13, \\ldots\\}$\n- These are: $0, 1, 3^1, 3^1+1, 3^2, 3^2+1, 3^2+3, \\ldots$\n\n**The Question**: If $\\sum_{i=1}^{k} \\frac{1}{d_i - 1} \\geq 1$, can every natural number be written as a sum $\\sum_i a_i$ where each $a_i \\in P(d_i, 0)$?\n\n**Answer**: YES!",
+    "mathContext": "P(d,0) = numbers with 0/1 digits in base d",
+    "significance": "critical",
+    "relatedConcepts": ["digit representation", "bases", "complete sequences"]
+  },
+  {
+    "id": "ann-reciprocal-condition",
+    "proofId": "erdos-124-complete-sequences",
+    "range": {"startLine": 66, "endLine": 71},
+    "type": "insight",
+    "title": "The Reciprocal Condition",
+    "content": "**Why $\\sum \\frac{1}{d_i - 1} \\geq 1$?**\n\nThis condition controls the \"density\" of available powers.\n\n**Intuition**: Each base $d_i$ contributes powers $1, d_i, d_i^2, \\ldots$ These grow exponentially, creating gaps. The reciprocal condition ensures enough bases to fill all gaps.\n\n**Example**: $d_1 = 3, d_2 = 5, d_3 = 15$\n$$\\frac{1}{3-1} + \\frac{1}{5-1} + \\frac{1}{15-1} = \\frac{1}{2} + \\frac{1}{4} + \\frac{1}{14} \\approx 0.82 < 1$$\n\nThis fails the condition! Indeed, not all integers are representable.\n\n**Pomerance's necessity**: The condition $\\sum 1/(d_i-1) \\geq 1$ is necessary (for finite base sets).",
+    "mathContext": "Reciprocal sum controls density of powers",
+    "significance": "major",
+    "relatedConcepts": ["density", "gap control", "necessity"]
+  },
+  {
+    "id": "ann-browns-criterion",
+    "proofId": "erdos-124-complete-sequences",
+    "range": {"startLine": 73, "endLine": 109},
+    "type": "theorem",
+    "title": "Brown's Criterion",
+    "content": "**Brown's Criterion for Complete Sequences**\n\nA sequence $f(0), f(1), f(2), \\ldots$ of positive integers is **complete** (every positive integer is a subset sum) if:\n\n1. $f(0) = 1$\n2. $f$ is non-decreasing (monotone)\n3. **Small gaps**: $f(n+1) \\leq 1 + \\sum_{i=0}^{n} f(i)$\n\n**Proof Idea**: By induction on $n$.\n- Base: $\\{1\\}$ represents 1\n- Step: If $m > S_n = f(0) + \\cdots + f(n)$, then $m - f(n+1) \\leq S_n$ by the gap condition\n- So $m - f(n+1)$ is representable by smaller terms\n- Adding $f(n+1)$ gives $m$\n\n**This is the KEY INSIGHT**: Convert the representation problem to a gap-checking problem!",
+    "mathContext": "f(n+1) - 1 <= sum of previous terms",
+    "significance": "critical",
+    "relatedConcepts": ["subset sums", "complete sequences", "gap condition"]
+  },
+  {
+    "id": "ann-greedy-construction",
+    "proofId": "erdos-124-complete-sequences",
+    "range": {"startLine": 111, "endLine": 136},
+    "type": "definition",
+    "title": "The Greedy Sequence",
+    "content": "**Greedy Algorithm for Sequence Construction**\n\n```lean\nnoncomputable def min_index (d e : Fin k → ℕ) : Fin k\nnoncomputable def u_seq (d : Fin k → ℕ) (n : ℕ) : ℕ\n```\n\n**Algorithm**:\n1. Start with exponents $e_1 = e_2 = \\cdots = e_k = 0$\n2. At step $n$:\n   - Find $i$ minimizing $d_i^{e_i}$ (the smallest available power)\n   - Set $u_n = d_i^{e_i}$\n   - Increment $e_i \\leftarrow e_i + 1$\n\n**Example** with $d_1 = 2, d_2 = 3$:\n- Step 0: min is $2^0 = 3^0 = 1$, pick any, $u_0 = 1$\n- Step 1: min is $2^1 = 2$ or $3^0 = 1$... (depends on tie-breaking)\n- Sequence grows: $1, 2, 3, 4, 8, 9, 16, 27, \\ldots$\n\n**Why greedy?** Minimizes gaps by always taking the smallest available power.",
+    "mathContext": "min_index selects smallest power",
+    "significance": "major",
+    "relatedConcepts": ["greedy algorithm", "sequence construction", "power selection"]
+  },
+  {
+    "id": "ann-gap-property",
+    "proofId": "erdos-124-complete-sequences",
+    "range": {"startLine": 138, "endLine": 150},
+    "type": "lemma",
+    "title": "Gap Property",
+    "content": "**Key Lemma: The Gap Property**\n\n```lean\nlemma u_seq_gap : ∀ n, u_seq d (n + 1) ≤ 1 + ∑ i ∈ range (n + 1), u_seq d i\n```\n\n**Why does the gap property hold?**\n\nThe reciprocal condition $\\sum 1/(d_i - 1) \\geq 1$ ensures:\n- When we take $d_i^{e_i}$, the \"contribution\" from base $i$ is roughly $1/(d_i - 1)$\n- Summing over all bases gives at least 1\n- This bounds the next term by the sum of previous terms plus 1\n\n**Algebraic Core**: The `algebraic_gap` lemma formalizes this bound using the reciprocal sum.",
+    "mathContext": "Gap bounded by reciprocal condition",
+    "significance": "major",
+    "relatedConcepts": ["gap analysis", "reciprocal sum", "bound propagation"]
+  },
+  {
+    "id": "ann-digit-decomposition",
+    "proofId": "erdos-124-complete-sequences",
+    "range": {"startLine": 172, "endLine": 187},
+    "type": "lemma",
+    "title": "Digit Decomposition",
+    "content": "**From Subset Sums to 0/1 Digits**\n\n```lean\nlemma digits_of_subset_sum_u_seq (S : Finset ℕ) :\n    ∃ a : Fin k → ℕ, (∀ i, (d i).digits (a i) ⊆ {0, 1}) ∧\n    ∑ j ∈ S, u_seq d j = ∑ i, a i\n```\n\n**The Decomposition**:\n1. Each $u_n$ is some $d_i^{e_n}$ for a specific base $i$ and exponent $e_n$\n2. The `chosen_pair_injective` lemma ensures each $(i, e)$ pair appears at most once\n3. For each base $i$, sum the powers used: $a_i = \\sum_{e \\in E_i} d_i^e$\n4. Since each exponent appears at most once, $a_i$ has 0/1 digits!\n\n**Example**: If $u_3 = 2^1$ and $u_7 = 2^3$, then $a_1 = 2 + 8 = 10 = (1010)_2$ - only 0/1 digits.",
+    "mathContext": "Subset sum → digit representation",
+    "significance": "major",
+    "relatedConcepts": ["digit representation", "unique exponents", "base decomposition"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "erdos-124-complete-sequences",
+    "range": {"startLine": 189, "endLine": 230},
+    "type": "theorem",
+    "title": "The Main Theorem",
+    "content": "**Erdos Problem #124 (Strengthened)**\n\n```lean\ntheorem erdos_124 : ∀ k, ∀ d : Fin k → ℕ,\n    (∀ i, 2 ≤ d i) → 1 ≤ ∑ i, (1 : ℚ) / (d i - 1) →\n    ∀ n, ∃ a : Fin k → ℕ,\n    ∀ i, (d i).digits (a i) ⊆ {0, 1} ∧ n = ∑ i, a i\n```\n\n**Strengthening**: This version:\n- Requires only $d_i \\geq 2$ (not $d_i \\geq 3$)\n- Doesn't require bases to be ordered\n- Works for ALL $n$ (not just sufficiently large)\n\n**Proof Assembly**:\n1. Apply Brown's criterion to show all $n$ are subset sums of $u\\_seq$\n2. Apply digit decomposition to convert subset sums to 0/1 representations\n3. Combine: every $n$ has a 0/1 digit representation across bases",
+    "mathContext": "Complete theorem with all components",
+    "significance": "critical",
+    "relatedConcepts": ["main theorem", "proof assembly", "strengthening"]
+  },
+  {
+    "id": "ann-two-versions",
+    "proofId": "erdos-124-complete-sequences",
+    "range": {"startLine": 3, "endLine": 15},
+    "type": "note",
+    "title": "The Two Versions",
+    "content": "**Weak vs Strong: A 30-Year Ambiguity**\n\n| Aspect | Weak (Solved) | Strong (Open) |\n|--------|---------------|---------------|\n| Powers | $P(d,0)$: includes $d^0 = 1$ | $P(d,1)$: excludes 1 |\n| GCD | Not required | $\\gcd(d_1,\\ldots,d_k) = 1$ |\n| Difficulty | Olympiad-level | Research-level |\n\n**Why the difference matters**:\n- With $d^0 = 1$: We always have 1 available, gaps are easily controlled\n- Without 1: Gaps can approach $d_i$, requiring \"something like Baker's theorem\" (Tao)\n\n**The formalization revealed**: Erdos's 1997 reformulation accidentally made the problem easier than Burr et al.'s 1996 version.\n\n**Thomas Bloom**: \"If something like this worked, surely the combined talents of the original authors would have spotted it.\"",
+    "mathContext": "P(d,0) vs P(d,1) distinction",
+    "significance": "major",
+    "relatedConcepts": ["problem formulation", "ambiguity", "strong conjecture"]
+  },
+  {
+    "id": "ann-ai-story",
+    "proofId": "erdos-124-complete-sequences",
+    "range": {"startLine": 43, "endLine": 48},
+    "type": "note",
+    "title": "The AI Story",
+    "content": "**Harmonic's Aristotle: First AI Mathematician**\n\n**Timeline**:\n- Boris Alexeev selects several Erdos problems\n- Launches Aristotle beta, goes to sleep\n- Wakes up to email: \"Problem 124 resolved\"\n\n**His reaction**: \"Not emotionally prepared to wake up to an email that Aristotle had successfully resolved Problem 124.\"\n\n**The Numbers**:\n- 6 hours solving time\n- 1 minute verification in Lean\n- 100% autonomy - no human assistance\n\n**What Aristotle found**: An elegant proof using Brown's criterion - a classic result that combines perfectly with the greedy construction. The proof is \"olympiad-style\" - something a skilled human could have found, but didn't for 30 years.\n\n**Vlad Tenev** (Harmonic founder): \"Vibe proving is here.\"",
+    "significance": "major",
+    "relatedConcepts": ["Harmonic", "Aristotle", "AI mathematics"]
+  },
+  {
+    "id": "ann-formal-conjectures",
+    "proofId": "erdos-124-complete-sequences",
+    "range": {"startLine": 232, "endLine": 258},
+    "type": "note",
+    "title": "Formal Conjectures Compatibility",
+    "content": "**Google DeepMind's Formal Conjectures Project**\n\nThe proof matches statements from Google DeepMind's formal-conjectures repository.\n\n**Known Issue**: The original formalization has a typo:\n- Comment says $\\sum 1/(d_i-1) \\geq 1$\n- Lean code says $\\sum 1/(d_i-1) = 1$\n\nBoth versions are proven here:\n- `formal_conjectures_erdos_124`: Original (weaker due to typo)\n- `formal_conjectures_erdos_124_corrected`: Fixed version\n\n**Lesson**: Formal verification catches even documentation errors!",
+    "mathContext": "= 1 vs >= 1 typo",
+    "significance": "key",
+    "relatedConcepts": ["formal verification", "typo detection", "DeepMind"]
+  }
+]

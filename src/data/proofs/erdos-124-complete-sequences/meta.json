@@ -1,0 +1,130 @@
+{
+  "id": "erdos-124-complete-sequences",
+  "title": "Erdos Problem #124: Complete Sequences",
+  "slug": "erdos-124-complete-sequences",
+  "description": "The first open mathematical conjecture solved autonomously by AI: every natural number is representable using 0/1 digits across multiple bases when the reciprocal condition is met.",
+  "meta": {
+    "author": "Harmonic Aristotle (AI), formalized November 2025",
+    "sourceUrl": "https://www.erdosproblems.com/124",
+    "date": "2025",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos124CompleteSequences.lean",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "erdos",
+      "ai-solved",
+      "complete-sequences"
+    ],
+    "badge": "wip",
+    "sorries": 8,
+    "erdosNumber": 124,
+    "erdosUrl": "https://www.erdosproblems.com/124",
+    "solvedBy": "Harmonic Aristotle",
+    "solvedDate": "2025-11-28",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.digits",
+        "description": "Digit representation in arbitrary bases",
+        "module": "Mathlib.Data.Nat.Digits"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Finite sums over indexed families",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Filter.Eventually",
+        "description": "Eventually true predicates",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "First AI-generated solution to an open mathematical conjecture",
+      "Brown's criterion for complete sequences",
+      "Greedy algorithm for sequence construction",
+      "Digit decomposition for subset sums"
+    ],
+    "dateAdded": "01/09/26"
+  },
+  "overview": {
+    "historicalContext": "**The 30-Year Problem**\n\nIn 1996, Stefan Burr, Paul Erdos, Ronald Graham, and Wen-Ching Li published \"Complete sequences of sets of integer powers\" in Acta Arithmetica. A year later, Erdos reformulated the problem in two separate publications, inadvertently creating ambiguity about the exact conditions.\n\nThe problem remained open for nearly 30 years until November 2025, when Harmonic's AI system \"Aristotle\" became the first to solve it autonomously. Boris Alexeev selected several Erdos problems for testing, launched Aristotle overnight, and woke up to find Problem #124 solved.\n\n**The AI Breakthrough**: Aristotle took 6 hours to find the proof with 100% autonomy. Lean verified it in 1 minute. This marked the first time an AI system autonomously solved an open mathematical conjecture.",
+    "problemStatement": "**Erdos Problem #124 (Weak Version)**\n\nGiven integers $d_1, d_2, \\ldots, d_k$ with $d_i \\geq 2$ and:\n$$\\sum_{i=1}^{k} \\frac{1}{d_i - 1} \\geq 1$$\n\nCan every natural number $n$ be written as:\n$$n = \\sum_{i=1}^{k} a_i$$\n\nwhere each $a_i$ has only digits 0 and 1 when written in base $d_i$?\n\n**Answer**: YES (proven by Aristotle)\n\n**Note**: The \"strong version\" (excluding $d^0 = 1$, requiring gcd condition) remains open.",
+    "proofStrategy": "**Brown's Criterion Approach**\n\n1. **Construct a sequence** $(u_n)$ by greedily selecting powers:\n   - At each step, pick the base $d_i$ with the smallest current power\n   - Add $d_i^{e_i}$ to the sequence and increment $e_i$\n\n2. **Show the sequence has small gaps**:\n   - The reciprocal condition $\\sum 1/(d_i-1) \\geq 1$ ensures:\n   - $u_{n+1} \\leq 1 + u_1 + \\cdots + u_n$\n\n3. **Apply Brown's criterion**:\n   - Any sequence starting with 1 and having small gaps allows all integers as subset sums\n\n4. **Decompose the representation**:\n   - Track which base contributed each term\n   - Subset sums map back to numbers with 0/1 digits in each base",
+    "keyInsights": [
+      "Brown's criterion: sequences with small gaps are 'complete' (every integer is a subset sum)",
+      "The greedy algorithm naturally produces a sequence with the required gap property",
+      "The reciprocal condition controls how fast bases 'compete' for the minimum",
+      "The formalization revealed 30-year ambiguity between P(d,0) and P(d,1) versions",
+      "AI found an 'olympiad-style' proof that humans had overlooked"
+    ]
+  },
+  "sections": [
+    {
+      "id": "historical-context",
+      "title": "Historical Context",
+      "startLine": 3,
+      "endLine": 48,
+      "summary": "The 30-year journey from Erdos's 1996/1997 papers to Aristotle's 2025 breakthrough."
+    },
+    {
+      "id": "algebraic-inequality",
+      "title": "Algebraic Gap Lemma",
+      "startLine": 62,
+      "endLine": 71,
+      "summary": "Key inequality derived from the reciprocal sum condition."
+    },
+    {
+      "id": "browns-criterion",
+      "title": "Brown's Criterion",
+      "startLine": 73,
+      "endLine": 109,
+      "summary": "The central insight: sequences with small gaps allow all integers as subset sums."
+    },
+    {
+      "id": "sequence-construction",
+      "title": "Greedy Sequence Construction",
+      "startLine": 111,
+      "endLine": 136,
+      "summary": "Definitions of min_index, next_e, e_seq, and u_seq for the greedy algorithm."
+    },
+    {
+      "id": "sequence-properties",
+      "title": "Sequence Properties",
+      "startLine": 138,
+      "endLine": 170,
+      "summary": "Proofs that u_seq is monotone and has bounded gaps."
+    },
+    {
+      "id": "digit-decomposition",
+      "title": "Digit Decomposition",
+      "startLine": 172,
+      "endLine": 187,
+      "summary": "Converting subset sums back to 0/1 digit representations in each base."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 189,
+      "endLine": 230,
+      "summary": "The complete proof combining all components."
+    },
+    {
+      "id": "formal-conjectures",
+      "title": "Formal Conjectures Compatibility",
+      "startLine": 232,
+      "endLine": 258,
+      "summary": "Versions matching Google DeepMind's Formal Conjectures project statements."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #124 asked whether every integer can be represented using 0/1 digits across multiple bases when the bases satisfy a reciprocal sum condition. The proof uses Brown's criterion and a greedy construction to show this is indeed always possible. This formalization represents a historic milestone: the first open mathematical conjecture solved autonomously by AI.",
+    "implications": "**Theoretical Significance:**\n\n**1. Complete Sequences**: Establishes when power sequences form 'complete' sets for integer representation.\n\n**2. AI in Mathematics**: Demonstrates that AI can discover novel mathematical proofs autonomously.\n\n**3. Formal Verification**: Shows the value of precise formalization - it revealed 30 years of ambiguity in the problem statement.\n\n**4. The Strong Version**: The original Burr-Erdos-Graham-Li conjecture (P(d,1) version with gcd condition) remains open and likely requires deeper techniques.",
+    "openQuestions": [
+      "Can the strong version (excluding d^0 = 1) be solved?",
+      "What techniques are needed when the reciprocal sum is exactly 1?",
+      "How does the gcd condition affect the representation problem?",
+      "What other open problems are susceptible to AI-assisted proof search?"
+    ]
+  }
+}

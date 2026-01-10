@@ -101,6 +101,7 @@ const proofModules: Record<string, () => Promise<any>> = {
   'sum-of-kth-powers': () => import('./sum-of-kth-powers'),
   'sylow-theorems': () => import('./sylow-theorems'),
   'erdos-szekeres': () => import('./erdos-szekeres'),
+  'erdos-124-complete-sequences': () => import('./erdos-124-complete-sequences'),
   'platonic-solids': () => import('./platonic-solids'),
   'ptolemys-theorem': () => import('./ptolemys-theorem'),
   'desargues-theorem': () => import('./desargues-theorem'),
