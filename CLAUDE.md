@@ -440,22 +440,34 @@ This repository contains formal mathematical proofs in Lean 4. Building Lean pro
 
 ### Building Proofs Safely
 
-**IMPORTANT**: Always use the safe build script to prevent memory exhaustion:
+**CRITICAL**: Some proofs can consume memory faster than external monitoring can detect. Use Docker for hard memory enforcement:
 
+**Option 1: Docker Build (Recommended)**
 ```bash
-# Default: 64GB memory limit, 60min timeout, half CPU cores
-./proofs/scripts/safe-build.sh
+# Hard memory limit enforced via Linux cgroups
+./proofs/scripts/docker-build.sh                           # Build all
+./proofs/scripts/docker-build.sh Proofs.OnePlusOne         # Specific target
 
-# Build specific target
-./proofs/scripts/safe-build.sh Proofs
-
-# Custom limits
-LEAN_MEMORY_LIMIT=32768 ./proofs/scripts/safe-build.sh  # 32GB limit
-LEAN_BUILD_TIMEOUT=120m ./proofs/scripts/safe-build.sh  # 2 hour timeout
-LEAN_JOBS=4 ./proofs/scripts/safe-build.sh              # 4 parallel jobs
+# Custom memory limit (default: 32GB)
+LEAN_MEMORY_LIMIT=8192 ./proofs/scripts/docker-build.sh    # 8GB limit
+LEAN_BUILD_TIMEOUT=30m ./proofs/scripts/docker-build.sh    # 30min timeout
 ```
 
-**Never run `lake build` directly** - it can consume all system memory and crash the machine.
+The first run will build a native ARM64 Lean Docker image (~1 min).
+
+**Option 2: Build Safe Subset**
+```bash
+# Builds all proofs EXCEPT known memory-intensive ones
+./proofs/scripts/build-safe-subset.sh
+```
+
+**Option 3: Direct Lake (safe proofs only)**
+```bash
+lake build Proofs.GeometricSeries
+lake build Proofs.OnePlusOne
+```
+
+**Never run `lake build` directly without memory limits** - tactics like `grind` can consume all system memory before external monitoring can react.
 
 ### Proof Organization
 
