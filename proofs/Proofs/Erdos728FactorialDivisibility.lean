@@ -9,7 +9,7 @@ open Real
 
 open scoped Classical Nat Topology
 
-set_option maxHeartbeats 0
+set_option maxHeartbeats 4000000
 
 /-
 Definitions of W and kappa. W_p(m) is the p-adic valuation of the product of m+1 to m+k. kappa_p(m) is the p-adic valuation of binom(2m, m).
@@ -307,8 +307,8 @@ lemma lemma_mod_uniform (M Q : ℕ) (A : Finset ℕ) (hM : M > 0) (hQ : Q > 0)
   have h_bound : 2 * A.card / (M + 1 : ℝ) ≤ 2 * M ^ (1 - eta) / (M + 1 : ℝ) := by
     gcongr;
     exact le_trans ( mod_cast le_trans ( Finset.card_le_card ( show A ⊆ Finset.range Q from fun x hx => Finset.mem_range.mpr ( hA x hx ) ) ) ( by simp ) ) hQ_bound;
-  refine le_trans h_div <| add_le_add_left ( h_bound.trans ?_ ) _;
-  rw [ div_le_div_iff₀ ] <;> try positivity;
+  refine le_trans h_div <| add_le_add le_rfl ( h_bound.trans ?_ )
+  rw [ div_le_div_iff₀ ] <;> try positivity
   rw [ mul_assoc, ← Real.rpow_add ] <;> norm_num ; linarith
 
 /-
@@ -472,19 +472,24 @@ lemma lemma_bad_carries_bound (p M : ℕ) (hp : p.Prime) (hM : M > 0) :
       rw [ div_le_iff₀ ] at this <;> norm_num at * <;> linarith;
     · convert lemma_Q_p_bound p M hp hM using 1;
     · aesop;
-  refine le_trans ?_ ( h_mod_uniform.trans <| mul_le_mul_of_nonneg_left ( add_le_add_right h_chernoff _ ) <| by positivity );
-  gcongr;
-  intro m hm; simp +decide [ Nat.mod_lt _ ( pow_pos hp.pos _ ) ] ;
-  -- Since $m \equiv m \mod p^{L_p p M} \pmod{p^{L_p p M}}$, we have $X_p p m (L_p p M) = X_p p (m \mod p^{L_p p M}) (L_p p M)$.
-  have h_cong : ∀ u < L_p p M, (m / p ^ u) % p = ((m % p ^ L_p p M) / p ^ u) % p := by
-    intro u hu; rw [ ← Nat.mod_add_div m ( p ^ L_p p M ) ] ; norm_num [ Nat.pow_add, Nat.pow_mul, Nat.mul_mod, Nat.pow_mod, Nat.div_div_eq_div_mul ] ;
-    norm_num [ Nat.add_div, Nat.mul_div_assoc, pow_pos hp.pos ];
-    norm_num [ Nat.add_mod, Nat.mul_mod, Nat.mod_eq_zero_of_dvd ( pow_dvd_pow _ hu.le ) ];
-    rw [ if_neg ( Nat.not_le_of_gt ( Nat.mod_lt _ ( pow_pos hp.pos _ ) ) ) ] ; norm_num [ Nat.mul_div_assoc _ ( pow_dvd_pow _ hu.le ) ] ;
-    norm_num [ show p ^ L_p p M * ( m / p ^ L_p p M ) / p ^ u = p ^ ( L_p p M - u ) * ( m / p ^ L_p p M ) by rw [ Nat.div_eq_of_eq_mul_left ( pow_pos hp.pos _ ) ] ; rw [ ← mul_right_comm, ← pow_add, Nat.sub_add_cancel hu.le ] ];
-    norm_num [ Nat.add_mod, Nat.mul_mod, Nat.mod_eq_zero_of_dvd ( dvd_pow_self _ ( Nat.sub_ne_zero_of_lt hu ) ) ];
-  convert hm using 1;
-  exact mod_cast congr_arg Finset.card ( Finset.filter_congr fun x hx => by aesop )
+  refine le_trans ?_ ( h_mod_uniform.trans <| mul_le_mul_of_nonneg_left ( add_le_add h_chernoff le_rfl ) <| by positivity )
+  gcongr
+  intro hX
+  rename_i m' _
+  simp only [ Finset.mem_filter, Finset.mem_range ]
+  refine ⟨ Nat.mod_lt _ ( pow_pos hp.pos _ ), ?_ ⟩
+  -- Since $m' \equiv m' \mod p^{L_p p M} \pmod{p^{L_p p M}}$, we have $X_p p m' (L_p p M) = X_p p (m' \mod p^{L_p p M}) (L_p p M)$.
+  have h_cong : ∀ u < L_p p M, (m' / p ^ u) % p = ((m' % p ^ L_p p M) / p ^ u) % p := by
+    intro u hu; rw [ ← Nat.mod_add_div m' ( p ^ L_p p M ) ] ; norm_num [ Nat.pow_add, Nat.pow_mul, Nat.mul_mod, Nat.pow_mod, Nat.div_div_eq_div_mul ]
+    norm_num [ Nat.add_div, Nat.mul_div_assoc, pow_pos hp.pos ]
+    norm_num [ Nat.add_mod, Nat.mul_mod, Nat.mod_eq_zero_of_dvd ( pow_dvd_pow _ hu.le ) ]
+    rw [ if_neg ( Nat.not_le_of_gt ( Nat.mod_lt _ ( pow_pos hp.pos _ ) ) ) ] ; norm_num [ Nat.mul_div_assoc _ ( pow_dvd_pow _ hu.le ) ]
+    norm_num [ show p ^ L_p p M * ( m' / p ^ L_p p M ) / p ^ u = p ^ ( L_p p M - u ) * ( m' / p ^ L_p p M ) by rw [ Nat.div_eq_of_eq_mul_left ( pow_pos hp.pos _ ) ] ; rw [ ← mul_right_comm, ← pow_add, Nat.sub_add_cancel hu.le ] ]
+    norm_num [ Nat.add_mod, Nat.mul_mod, Nat.mod_eq_zero_of_dvd ( dvd_pow_self _ ( Nat.sub_ne_zero_of_lt hu ) ) ]
+  convert hX using 1
+  unfold X_p
+  congr 1
+  exact congr_arg Finset.card ( Finset.filter_congr fun x hx => by rw [ h_cong x ( Finset.mem_range.mp hx ) ] )
 
 /-
 The set of triples (a, b, n) satisfying the conditions of Erdos problem #728.
