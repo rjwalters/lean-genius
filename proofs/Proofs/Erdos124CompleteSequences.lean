@@ -282,7 +282,7 @@ lemma sum_u_seq_eq_geom {k : ℕ} {d : Fin k → ℕ} (hk : k ≠ 0) (h_ge : ∀
     rw [← Finset.add_sum_erase _ _ (Finset.mem_univ idx)]
     ring
 
-set_option maxHeartbeats 0 in
+set_option maxHeartbeats 2000000 in
 lemma u_seq_gap {k : ℕ} {d : Fin k → ℕ} (hk : k ≠ 0) (h_ge : ∀ i, 2 ≤ d i)
     (h_sum : 1 ≤ ∑ i, (1 : ℚ) / (d i - 1)) :
     ∀ n, u_seq d (n + 1) ≤ 1 + ∑ j ∈ Finset.range (n + 1), u_seq d j := by
@@ -355,7 +355,7 @@ lemma chosen_pair_injective {k : ℕ} {d : Fin k → ℕ} (hk : k ≠ 0) :
 A subset sum of u_seq can be decomposed into numbers with 0/1 digits in each base.
 -/
 
-set_option maxHeartbeats 0 in
+set_option maxHeartbeats 2000000 in
 lemma digits_of_subset_sum_u_seq {k : ℕ} {d : Fin k → ℕ} (hk : k ≠ 0) (h_ge : ∀ i, 2 ≤ d i)
     (S : Finset ℕ) :
     ∃ a : Fin k → ℕ, (∀ i, ((d i).digits (a i)).toFinset ⊆ {0, 1}) ∧ ∑ j ∈ S, u_seq d j = ∑ i, a i := by
