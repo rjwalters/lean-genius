@@ -29,11 +29,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "IN-PROGRESS: Core Sidon infrastructure proved. Main conjectures (14a, 14b) remain OPEN.",
+    "builtItems": [
+      "repCount, uniqueSums, sumset definitions (Erdos14UniqueSums.lean:46-63)",
+      "IsSidon definition (Erdos14UniqueSums.lean:83)",
+      "sidon_all_unique - Sidon sets have all unique sums PROVED (Erdos14UniqueSums.lean:88)",
+      "empty_repCount - empty set has 0 reps PROVED (Erdos14UniqueSums.lean:173)",
+      "singleton_uniqueSums - {k} has uniqueSums = {2k} PROVED (Erdos14UniqueSums.lean:178)",
+      "consecutive_many_nonunique - {1..n} has non-unique sums PROVED (Erdos14UniqueSums.lean:212)"
+    ],
+    "insights": [
+      "Erdős #14 asks two related questions about uniquely representable sums",
+      "Sidon sets (B₂ sequences) have ALL sums unique, but are sparse (O(√N))",
+      "Key technique: wlog for a ≤ b normalization in pair counting",
+      "ncard of singleton set = 1, enabling clean repCount proofs",
+      "Consecutive integers {1,...,n} always have non-unique sums (e.g., 4 = 1+3 = 2+2)"
+    ],
+    "mathlibGaps": [
+      "No direct lemma for counting pairs with property in finite product sets"
+    ],
+    "nextSteps": [
+      "Prove erdos_14a_implies_not_14b using filter/tendsto contradiction",
+      "Prove sidon_size_bound (Erdős-Turán: |A| ≤ √N + O(N^{1/4}))",
+      "Build Decidable instance for repCount on finite sets"
+    ]
   },
   "approaches": [],
   "tags": [

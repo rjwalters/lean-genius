@@ -1,0 +1,33 @@
+{
+  "id": "erdos-149",
+  "title": "Erdős Problem #149",
+  "slug": "erdos-149",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with maximum degree .... Is ... the union of at most ... sets of strongly independent edges (sets such tha...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/149",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos149Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 149,
+    "erdosUrl": "https://erdosproblems.com/149",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #149 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph with maximum degree $\\Delta$. Is $G$ the union of at most $\\tfrac{5}{4}\\Delta^2$ sets of strongly independent edges (sets such that the induced subgraph is the union of vertex-disjoint edges)?\n\n\n\nAsked by Erd\\H{o}s and Ne\\v{s}et\\v{r}il in 1985 (see \\cite{FGST89}). This is equivalent to asking whether the chromatic number of the square of the line graph $L(G)^2$ is at most $\\frac{5}{4}\\Delta^2$.\n\nThis bound would be the best possible, as witnessed by a blowup of $C_5$. The minimum number of such sets required is sometimes called the strong chromatic index of $G$.\n\nThe weaker conjecture that there exists some $c>0$ such that $(2-c)\\Delta^2$ sets suffice was proved by Molloy and Reed \\cite{MoRe97}, who proved that $1.998\\Delta^2$ sets suffice (for $\\Delta$ sufficiently large). This was improved to $1.93\\Delta^2$ by Bruhn and Joos \\cite{BrJo18} and to $1.835\\Delta^2$ by Bonamy, Perrett, and Postle \\cite{BPP22}. The best bound currently available is\\[1.772\\Delta^2,\\]proved by Hurley, de Joannis de Verclos, and Kang \\cite{HJK22}. Mahdian has, in their Masters' thesis, proved an upper bound of $(2+o(1))\\frac{\\Delta^2}{\\log \\Delta}$ under the additional assumption that $G$ is $C_4$-free.\n\nErd\\H{o}s and Ne\\v{s}et\\v{r}il also asked the easier problem of whether $G$ containing at least $\\tfrac{5}{4}\\Delta^2$ many edges implies $G$ containing two strongly independent edges. This was proved by Chung, Gy\\'{a}rf\\'{a}s, Tuza, and Trotter \\cite{CGTT90}.\n\nIt is still open even whether the clique number of $L(G)^2$ at most $\\frac{5}{4}\\Delta^2$. Let $\\omega=\\omega(L(G)^2)$ be this clique number. \\'{S}leszy\\'{n}ska-Nowak \\cite{Sl15} proved $\\omega \\leq \\frac{3}{2}\\Delta^2$. Faron and Postle \\cite{FaPo19} proved $\\omega\\leq \\frac{4}{3}\\Delta^2$. Cames van Batenburg, Kang, and Pirot \\cite{CKP20} have proved $\\omega\\leq \\frac{5}{4}\\Delta^2$ under the additional assumption that $G$ is triangle-free (and $\\omega\\leq \\Delta^2$ if $G$ is $C_5$-free).\n\n\n\n\nReferences\n\n\n[BPP22] Bonamy, Marthe and Perrett, Thomas and Postle, Luke, Colouring graphs with sparse neighbourhoods: bounds and\napplications. J. Combin. Theory Ser. B (2022), 278-317.\n\n[BrJo18] Bruhn, Henning and Joos, Felix, A stronger bound for the strong chromatic index. Combin. Probab. Comput. (2018), 21-43.\n\n[CGTT90] Chung, F. R. K. and Gy\\'arf\\'as, A. and Tuza, Z. and Trotter,\nW. T., The maximum number of edges in {$2K_2$}-free graphs of bounded\ndegree. Discrete Math. (1990), 129--135.\n\n[CKP20] Cames van Batenburg, Wouter and Kang, Ross J. and Pirot,\nFran\\c cois, Strong cliques and forbidden cycles. Indag. Math. (N.S.) (2020), 64--82.\n\n[FGST89] Faudree, R. J. and Gy\\'{a}rf\\'{a}s, A. and Schelp, R. H. and Tuza,\nZs., Induced matchings in bipartite graphs. Discrete Math. (1989), 83-87.\n\n[FaPo19] Faron, Maxime and Postle, Luke, On the clique number of the square of a line graph and its\nrelation to maximum degree of the line graph. J. Graph Theory (2019), 261--274.\n\n[HJK22] Hurley, Eoin and de Joannis de Verclos, R\\'{e}mi and Kang, Ross\nJ., An improved procedure for colouring graphs of bounded local\ndensity. Adv. Comb. (2022), Paper No. 7, 33.\n\n[MoRe97] Molloy, Michael and Reed, Bruce, A bound on the strong chromatic index of a graph. J. Combin. Theory Ser. B (1997), 103-109.\n\n[Sl15] No reference found.\n\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

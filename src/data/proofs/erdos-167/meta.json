@@ -1,0 +1,33 @@
+{
+  "id": "erdos-167",
+  "title": "Erdős Problem #167",
+  "slug": "erdos-167",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph with at most ... edge disjoint triangles then can ... be made triangle-free after removing at most ... edge...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/167",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos167Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 167,
+    "erdosUrl": "https://erdosproblems.com/167",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #167 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ is a graph with at most $k$ edge disjoint triangles then can $G$ be made triangle-free after removing at most $2k$ edges?\n\n\n\nA problem of Tuza. It is trivial that $G$ can be made triangle-free after removing at most $3k$ edges. The examples of $K_4$ and $K_5$ show that $2k$ would be best possible.\n\nThe trivial bound of $\\leq 3k$ was improved to $\\leq (3-\\frac{3}{23}+o(1))k$ by Haxell \\cite{Ha99}.\n\nKahn and Park \\cite{KaPa22} have proved this is true for random graphs.\n\n\n\n\nReferences\n\n\n[Ha99] Haxell, P. E., Packing and covering triangles in graphs. Discrete Math. (1999), 251--254.\n\n[KaPa22] Kahn, Jeff and Park, Jinyoung, Tuza's conjecture for random graphs. Random Structures Algorithms (2022), 235--249.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

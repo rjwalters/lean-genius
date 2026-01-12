@@ -1,0 +1,34 @@
+{
+  "id": "erdos-165",
+  "title": "Erdős Problem #165",
+  "slug": "erdos-165",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGive an asymptotic formula for ....\n\n\n\nIt is known that there exists some constant ... such that for large ...\\[(c+o(1)){\\log...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/165",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos165Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 165,
+    "erdosUrl": "https://erdosproblems.com/165",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$250"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #165 from erdosproblems.com. Originally offered with a prize of $250.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGive an asymptotic formula for $R(3,k)$.\n\n\n\nIt is known that there exists some constant $c>0$ such that for large $k$\\[(c+o(1))\\frac{k^2}{\\log k}\\leq R(3,k) \\leq (1+o(1))\\frac{k^2}{\\log k}.\\]The lower bound is due to Kim \\cite{Ki95}, the upper bound is due to Shearer \\cite{Sh83}, improving an earlier bound of Ajtai, Koml\\'{o}s, and Szemer\\'{e}di \\cite{AKS80}.\n\nThe value of $c$ in the lower bound has seen a number of improvements. Kim's original proof gave $c\\geq 1/162$. The bound $c\\geq 1/4$ was proved independently by Bohman and Keevash \\cite{BoKe21} and Pontiveros, Griffiths and Morris \\cite{PGM20}. The latter collection of authors conjecture that this lower bound is the true order of magnitude.\n\nThis was, however, improved by Campos, Jenssen, Michelen, and Sahasrabudhe \\cite{CJMS25} to $c\\geq 1/3$, and further by Hefty, Horn, King, and Pfender \\cite{HHKP25} to $c\\geq 1/2$. Both of these papers conjecture that $c=1/2$ is the correct asymptotic.\n\nSee also [544], and [986] for the general case. See [1013] for a related function.\n\n\n\n\nReferences\n\n\n[AKS80] Ajtai, Mikl\\'{o}s and Koml\\'{o}s, J\\'{a}nos and Szemer\\'{e}di, Endre, A note on Ramsey numbers. J. Combin. Theory Ser. A (1980), 354-360.\n\n[BoKe21] Bohman, Tom and Keevash, Peter, Dynamic concentration of the triangle-free process. Random Structures Algorithms (2021), 221-293.\n\n[CJMS25] M. Campos, M. Jenssen, M. Michelen, and J. Sahasrabudhe, A new lower bound for the Ramsey numbers $R(3,k)$. arXiv:2505.13371 (2025).\n\n[HHKP25] Z. Hefty, P. Horn, D. King, and F. Pfender, Improving $R(3,k)$ in just two bites. arXiv:2510.19718 (2025).\n\n[Ki95] Kim, J. H., The Ramsey number $R(3,t)$ has order of magnitude $t^2/\\log t$. Random Structures and Algorithms (1995), 173-207.\n\n[PGM20] Fiz Pontiveros, Gonzalo and Griffiths, Simon and Morris, Robert, The triangle-free process and the Ramsey number $R(3,k)$. Mem. Amer. Math. Soc. (2020), v+125.\n\n[Sh83] Shearer J., A note on the independence number of triangle-free graphs. Discrete Math. (1983), 83-87.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

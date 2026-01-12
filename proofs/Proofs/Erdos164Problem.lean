@@ -1,0 +1,46 @@
+/-
+  Erdős Problem #164
+
+  Source: https://erdosproblems.com/164
+  Status: SOLVED
+  
+
+  Statement:
+  Forum
+  Favourites
+  Tags
+  More
+   Go
+   Go
+  Dual View
+  Random Solved
+  Random Open
+  
+  A set $A\subset \mathbb{N}$ is primitive if no member of $A$ divides another. Is the sum\[\sum_{n\in A}\frac{1}{n\log n}\]maximised over all primitive sets when $A$ is the set of primes?
+  
+  
+  
+  Erd\H{o}s \cite{Er35} proved that this sum always converges for a primitive set. Lichtman \cite{Li23} proved that the answer is yes.
+  
+  
+  
+  
+  References
+  
+  
+  [Er35] Erd\"{o}s, Paul, Note on Sequences...
+
+  Tags: 
+
+  TODO: Implement proof
+-/
+
+import Mathlib
+
+-- Placeholder theorem
+-- Replace with actual statement and proof
+theorem erdos_164 : True := by
+  trivial
+
+-- sorry marker for tracking
+#check erdos_164

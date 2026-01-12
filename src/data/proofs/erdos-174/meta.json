@@ -1,0 +1,33 @@
+{
+  "id": "erdos-174",
+  "title": "Erdős Problem #174",
+  "slug": "erdos-174",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA finite set ... is called Ramsey if, for any ..., there exists some ... such that in any ...-colouring of ... there exists a...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/174",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos174Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 174,
+    "erdosUrl": "https://erdosproblems.com/174",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #174 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA finite set $A\\subset \\mathbb{R}^n$ is called Ramsey if, for any $k\\geq 1$, there exists some $d=d(A,k)$ such that in any $k$-colouring of $\\mathbb{R}^d$ there exists a monochromatic copy of $A$. Characterise the Ramsey sets in $\\mathbb{R}^n$.\n\n\n\nErd\\H{o}s, Graham, Montgomery, Rothschild, Spencer, and Straus \\cite{EGMRSS73} proved that every Ramsey set is 'spherical': it lies on the surface of some sphere. Graham has conjectured that every spherical set is Ramsey. Leader, Russell, and Walters \\cite{LRW12} have alternatively conjectured that a set is Ramsey if and only if it is 'subtransitive': it can be embedded in some higher-dimensional set on which rotations act transitively.\n\nSets known to be Ramsey include vertices of $k$-dimensional rectangles \\cite{EGMRSS73}, non-degenerate simplices \\cite{FrRo90}, trapezoids \\cite{Kr92}, and regular polygons/polyhedra \\cite{Kr91}.\n\n\n\n\nReferences\n\n\n[EGMRSS73] Erd\\H{o}s, P. and Graham, R. L. and Montgomery, P. and Rothschild, B. L. and Spencer, J. and Straus, E. G., Euclidean Ramsey Theorems I. J. Comb. Th. A (1973), 341-363.\n\n[FrRo90] Frankl, P. and R\\\"{o}dl, V., A partition property of simplices in Euclidean space. J. Amer. Math. Soc. (1990), 1-7.\n\n[Kr91] K\\v{r}\\'{\\i}\\v{z}, Igor, Permutation groups in Euclidean Ramsey theory. Proc. Amer. Math. Soc. (1991), 899-907.\n\n[Kr92] K\\v{r}\\'{\\i}\\v{z}, Igor, All trapezoids are Ramsey. Discrete Math. (1992), 59-62.\n\n[LRW12] Leader, Imre and Russell, Paul A. and Walters, Mark, Transitive sets in Euclidean Ramsey theory. J. Combin. Theory Ser. A (2012), 382-396.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

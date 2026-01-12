@@ -1,0 +1,33 @@
+{
+  "id": "erdos-136",
+  "title": "Erdős Problem #136",
+  "slug": "erdos-136",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the smallest number of colours required to colour the edges of ... such that every ... contains at least 5 colours...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/136",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos136Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 136,
+    "erdosUrl": "https://erdosproblems.com/136",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #136 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be the smallest number of colours required to colour the edges of $K_n$ such that every $K_4$ contains at least 5 colours. Determine the size of $f(n)$.\n\n\n\nAsked by Erd\\H{o}s and Gy\\'{a}rf\\'{a}s, who proved that\\[\\frac{5}{6}(n-1) < f(n)<n,\\]and that $f(9)=8$. Erd\\H{o}s believed the upper bound is closer to the truth. In fact the lower bound is: Bennett, Cushman, Dudek,and Pralat \\cite{BCDP22} have shown that\\[f(n) \\sim \\frac{5}{6}n.\\]Joos and Mubayi \\cite{JoMu22} have found a shorter proof of this.\n\nSee also [135].\n\n\n\n\nReferences\n\n\n[BCDP22] Bennett, P. and Cushman, R. and Dudek, A. and Pralat, P., The Erd\\H{o}s-Gy\\'{a}rf\\'{a}s function $f(n,4,5)=\\frac{5}{6}n+o(n)$ - so Gy\\'{a}rf\\'{a}s was right. arXiv:2207.02920 (2022).\n\n[JoMu22] Joos, F. and Mubayi, D., Ramsey theory constructions from hypergraph matchings. arXiv:2208.12563 (2022).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

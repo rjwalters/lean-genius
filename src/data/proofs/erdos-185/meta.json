@@ -1,0 +1,33 @@
+{
+  "id": "erdos-185",
+  "title": "Erdős Problem #185",
+  "slug": "erdos-185",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal size of a subset of ... which contains no three points on a line. Is it true that ...?\n\n\n\nOriginally c...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/185",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos185Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 185,
+    "erdosUrl": "https://erdosproblems.com/185",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #185 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_3(n)$ be the maximal size of a subset of $\\{0,1,2\\}^n$ which contains no three points on a line. Is it true that $f_3(n)=o(3^n)$?\n\n\n\nOriginally considered by Moser. It is trivial that $f_3(n)\\geq R_3(3^n)$, the maximal size of a subset of $\\{1,\\ldots,3^n\\}$ without a three-term arithmetic progression. Moser showed that\\[f_3(n) \\gg \\frac{3^n}{\\sqrt{n}}.\\]The answer is yes, which is a corollary of the density Hales-Jewett theorem, proved by Furstenberg and Katznelson \\cite{FuKa91}.\n\n\n\n\nReferences\n\n\n[FuKa91] Furstenberg, H. and Katznelson, Y., A density version of the Hales-Jewett Theorem. Journal d'Analyse Math\\'{e}matique (1991), 64-119.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

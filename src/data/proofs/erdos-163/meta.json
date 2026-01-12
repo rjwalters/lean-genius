@@ -1,0 +1,33 @@
+{
+  "id": "erdos-163",
+  "title": "Erdős Problem #163",
+  "slug": "erdos-163",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any ... if ... is a graph such that every subgraph contains a vertex of degree at most ... then ....\n\n\n\nThe Burr-Erd. Thi...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/163",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos163Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 163,
+    "erdosUrl": "https://erdosproblems.com/163",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #163 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any $d\\geq 1$ if $H$ is a graph such that every subgraph contains a vertex of degree at most $d$ then $R(H)\\ll_d n$.\n\n\n\nThe Burr-Erd\\H{os conjecture}. This is equivalent to showing that if $H$ is the union of $c$ forests then $R(H)\\ll_c n$, and also that if every subgraph has average degree at most $d$ then $R(H)\\ll_d n$. Solved by Lee \\cite{Le16}, who proved that\\[ R(H) \\leq 2^{2^{O(d)}}n.\\]This problem is #9 in Ramsey Theory in the graphs problem collection. See also [800].\n\n\n\n\nReferences\n\n\n[Le16] No reference found.\n\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

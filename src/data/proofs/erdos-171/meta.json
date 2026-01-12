@@ -1,0 +1,33 @@
+{
+  "id": "erdos-171",
+  "title": "Erdős Problem #171",
+  "slug": "erdos-171",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every ... and integer ..., if ... is sufficiently large and ... is a subset of ... of size at least ... t...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/171",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos171Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 171,
+    "erdosUrl": "https://erdosproblems.com/171",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #171 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every $\\epsilon>0$ and integer $t\\geq 1$, if $N$ is sufficiently large and $A$ is a subset of $[t]^N$ of size at least $\\epsilon t^N$ then $A$ must contain a combinatorial line $P$ (a set $P=\\{p_1,\\ldots,p_t\\}$ where for each coordinate $1\\leq j\\leq t$ the $j$th coordinate of $p_i$ is either $i$ or constant).\n\n\n\nThe 'density Hales-Jewett' problem. This was proved by Furstenberg and Katznelson \\cite{FuKa91}. A new elementary proof, which gives quantitative bounds, was proved by the Polymath project \\cite{Po09}.\n\n\n\n\nReferences\n\n\n[FuKa91] Furstenberg, H. and Katznelson, Y., A density version of the Hales-Jewett Theorem. Journal d'Analyse Math\\'{e}matique (1991), 64-119.\n\n[Po09] No reference found.\n\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

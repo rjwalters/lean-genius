@@ -1,0 +1,33 @@
+{
+  "id": "erdos-184",
+  "title": "Erdős Problem #184",
+  "slug": "erdos-184",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAny graph on ... vertices can be decomposed into ... many edge-disjoint cycles and edges.\n\n\n\nConjectured by Erds and Gallai, ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/184",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos184Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 184,
+    "erdosUrl": "https://erdosproblems.com/184",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #184 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAny graph on $n$ vertices can be decomposed into $O(n)$ many edge-disjoint cycles and edges.\n\n\n\nConjectured by Erd\\H{o}s and Gallai, who proved that $O(n\\log n)$ many cycles and edges suffices. The graph $K_{3,n-3}$ shows that at least $(1+c)n$ many cycles and edges are required, for some constant $c>0$. In \\cite{Er71} Erd\\H{o}s suggests that only $n-1$ many cycles and edges are required if we do not require them to be edge-disjoint.\n\nThe best bound available is due to Buci\\'{c} and Montgomery \\cite{BM22}, who prove that $O(n\\log^*n)$ many cycles and edges suffice, where $\\log^*$ is the iterated logarithm function.\n\nConlon, Fox, and Sudakov \\cite{CFS14} proved that $O_\\epsilon(n)$ cycles and edges suffice if $G$ has minimum degree at least $\\epsilon n$, for any $\\epsilon>0$.\n\nSee also [583] for an analogous problem decomposing into paths, and [1017] for decomposing into complete graphs.\n\n\n\n\nReferences\n\n\n[BM22] Buci\\'C, M. and Montgomery, R., Towards the Erd\\H{o}s-Gallai Cycle Decomposition Conjecture. arXiv:2211.07689 (2022).\n\n[CFS14] Conlon, David and Fox, Jacob and Sudakov, Benny, Cycle packing. Random Structures Algorithms (2014), 608-626.\n\n[Er71] Erd\\H{o}s, P., Some unsolved problems in graph theory and combinatorial analysis. Combinatorial Mathematics and its Applications (Proc.\nConf., Oxford, 1969) (1971), 97-109.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

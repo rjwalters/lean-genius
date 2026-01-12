@@ -1,0 +1,33 @@
+{
+  "id": "erdos-172",
+  "title": "Erdős Problem #172",
+  "slug": "erdos-172",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that in any finite colouring of $...A...A...A...A...2......x,y...\\{x,x+y,xy\\}...\\backslash \\{0\\}...A...A...\\lvert ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/172",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos172Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 172,
+    "erdosUrl": "https://erdosproblems.com/172",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #172 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that in any finite colouring of $\\mathbb{N}$ there exist arbitrarily large finite $A$ such that all sums and products of distinct elements in $A$ are the same colour?\n\n\n\nFirst asked by Hindman. Hindman \\cite{Hi80} has proved this is false (with 7 colours) if we ask for an infinite $A$. In \\cite{Er77c} Erd\\H{o}s asks about the case for an infinite $A$ with just $2$ colours.\n\nMoreira \\cite{Mo17} has proved that in any finite colouring of $\\mathbb{N}$ there exist $x,y$ such that $\\{x,x+y,xy\\}$ are all the same colour.\n\nAlweiss \\cite{Al23} has proved that, in any finite colouring of $\\mathbb{Q}\\backslash \\{0\\}$ there exist arbitrarily large finite $A$ such that all sums and products of distinct elements in $A$ are the same colour. Bowen and Sabok \\cite{BoSa22} had proved this earlier for the first non-trivial case of $\\lvert A\\rvert=2$.\n\n\n\n\nReferences\n\n\n[Al23] R. Alweiss, Hindman's conjecture over the rationals. arXiv:2307.08901 (2023).\n\n[BoSa22] M. Bowen and M. Sabok, Monochromatic Sums and Products in the Rationals. arXiv:2210.12290 (2022).\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n[Hi80] Hindman, Neil, Partitions and sums and products-two counterexamples. J. Combin. Theory Ser. A (1980), 113-120.\n\n[Mo17] Moreira, J., Monochromatic sums and products in $\\mathbbN$. Ann. Math. (2017), 1069-1090.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

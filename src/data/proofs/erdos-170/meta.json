@@ -1,0 +1,33 @@
+{
+  "id": "erdos-170",
+  "title": "Erdős Problem #170",
+  "slug": "erdos-170",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the smallest possible size of ... such that .... Find the value of\\[\\lim_{N\\to \\infty}{N^{1/2}}.\\]\n\n\n\nThe Sparse R...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/170",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos170Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 170,
+    "erdosUrl": "https://erdosproblems.com/170",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #170 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $F(N)$ be the smallest possible size of $A\\subset \\{0,1,\\ldots,N\\}$ such that $\\{0,1,\\ldots,N\\}\\subset A-A$. Find the value of\\[\\lim_{N\\to \\infty}\\frac{F(N)}{N^{1/2}}.\\]\n\n\n\nThe Sparse Ruler problem. R\\'{e}dei asked whether this limit exists, which was proved by Erd\\H{o}s and G\\'{a}l \\cite{ErGa48}. Bounds on the limit were improved by Leech \\cite{Le56}. The limit is known to be in the interval $[1.56,\\sqrt{3}]$. The lower bound is due to Leech \\cite{Le56}, the upper bound is due to Wichmann \\cite{Wi63}. Computational evidence by Pegg \\cite{Pe20} suggests that the upper bound is the truth. A similar question can be asked without the restriction $A\\subset \\{0,1,\\ldots,N\\}$.\n\n\n\n\nReferences\n\n\n[ErGa48] Erd\\H{o}s, P. and G\\'{a}l, I., On the representation of $1,2,\\ldots,N$ by differences. Nederl. Akad. Wetensch., Proc. (1948), 1155-1158.\n\n[Le56] Leech, J., On the representation of $1,2,\\ldots,n$ by differences. J. London Math. Soc. (1956), 160-169.\n\n[Pe20] Pegg, E., Hitting All the Marks: Exploring New Bounds for Sparse Rulers and a Wolfram Language Proof. https://blog.wolfram.com/2020/02/12/hitting-all-the-marks-exploring-new-bounds-for-sparse-rulers-and-a-wolfram-language-proof/ (2020).\n\n[Wi63] Wichmann, B., A note on restricted difference bases. J. London Math. Soc. (1963), 465-466.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

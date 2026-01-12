@@ -1,0 +1,33 @@
+{
+  "id": "erdos-176",
+  "title": "Erdős Problem #176",
+  "slug": "erdos-176",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimal ... such that for any ... there must exist a ...-term arithmetic progression ... such that\\[ \\left\\lve...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/176",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos176Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 176,
+    "erdosUrl": "https://erdosproblems.com/176",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #176 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N(k,\\ell)$ be the minimal $N$ such that for any $f:\\{1,\\ldots,N\\}\\to\\{-1,1\\}$ there must exist a $k$-term arithmetic progression $P$ such that\\[ \\left\\lvert \\sum_{n\\in P}f(n)\\right\\rvert\\geq \\ell.\\]Find good upper bounds for $N(k,\\ell)$. Is it true that for any $c>0$ there exists some $C>1$ such that\\[N(k,ck)\\leq C^k?\\]What about\\[N(k,2)\\leq C^k\\]or\\[N(k,\\sqrt{k})\\leq C^k?\\]\n\n\n\nWhen $\\ell=k$ this is the van der Waerden number $W(k)$ (see [138]). Spencer \\cite{Sp73} has proved that if $k=2^tm$ with $m$ odd then\\[N(k,1)=2^t(k-1)+1.\\]Erd\\H{o}s and Graham write that 'no decent bound' is known even for $N(k,2)$.\n\nErd\\H{o}s \\cite{Er63d} proved that, for every $c>0$,\\[N(k,ck)> (1+\\alpha_c)^k\\]where $\\alpha_c\\to 0$ as $c\\to 0$ and $\\alpha_c\\to \\sqrt{2}-1$ as $c\\to 1$.\n\n\n\n\nReferences\n\n\n[Er63d] Erd\\H{o}s, P\\'al, On combinatorial questions connected with a theorem of\n{R}amsey and van der {W}aerden. Mat. Lapok (1963), 29--37.\n\n[Sp73] J. Spencer, Problems 185. Bull. Canad. Math. Soc. (1973), 185.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

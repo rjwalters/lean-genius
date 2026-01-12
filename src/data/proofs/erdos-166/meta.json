@@ -1,0 +1,34 @@
+{
+  "id": "erdos-166",
+  "title": "Erdős Problem #166",
+  "slug": "erdos-166",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nProve that\\[R(4,k) \\gg {(\\log k)^{O(1)}}.\\]\n\n\n\nSpencer  proved\\[R(4,k) \\gg (k\\log k)^{5/2}.\\]Ajtai, Koml\\'{o}s, and Szemer\\'{...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/166",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos166Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 166,
+    "erdosUrl": "https://erdosproblems.com/166",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$250"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #166 from erdosproblems.com. Originally offered with a prize of $250.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nProve that\\[R(4,k) \\gg \\frac{k^3}{(\\log k)^{O(1)}}.\\]\n\n\n\nSpencer \\cite{Sp77} proved\\[R(4,k) \\gg (k\\log k)^{5/2}.\\]Ajtai, Koml\\'{o}s, and Szemer\\'{e}di \\cite{AKS80} proved\\[R(4,k) \\ll \\frac{k^3}{(\\log k)^2}.\\]This is true, and was proved by Mattheus and Verstraete \\cite{MaVe23}, who showed that\\[R(4,k) \\gg \\frac{k^3}{(\\log k)^4}.\\]This problem is #5 in Ramsey Theory in the graphs problem collection.\n\nSee also [986] for the general case.\n\n\n\n\nReferences\n\n\n[AKS80] Ajtai, Mikl\\'{o}s and Koml\\'{o}s, J\\'{a}nos and Szemer\\'{e}di, Endre, A note on Ramsey numbers. J. Combin. Theory Ser. A (1980), 354-360.\n\n[MaVe23] Mattheus, S. and Verstraete, J., The asymptotics of $r(4,t)$. arXiv:2306.04007 (2023).\n\n[Sp77] Spencer, J., Asymptotic lower bounds for Ramsey functions. Discrete Math. (1977), 69-76.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

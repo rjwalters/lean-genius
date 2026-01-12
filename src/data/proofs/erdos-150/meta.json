@@ -1,0 +1,33 @@
+{
+  "id": "erdos-150",
+  "title": "Erdős Problem #150",
+  "slug": "erdos-150",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA minimal cut of a graph is a minimal set of vertices whose removal disconnects the graph. Let ... be the maximum number of m...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/150",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos150Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 150,
+    "erdosUrl": "https://erdosproblems.com/150",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #150 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA minimal cut of a graph is a minimal set of vertices whose removal disconnects the graph. Let $c(n)$ be the maximum number of minimal cuts a graph on $n$ vertices can have.\n\nDoes $c(n)^{1/n}\\to \\alpha$ for some $\\alpha <2$?\n\n\n\nAsked by Erd\\H{o}s and Ne\\v{s}et\\v{r}il, who also ask whether $c(3m+2)=3^m$. Seymour observed that $c(3m+2)\\geq 3^m$, as seen by the graph of $m$ independent paths of length $4$ joining two vertices.\n\nSolved by Brada\\v{c} \\cite{Br24}, who proved that $\\alpha=\\lim c(n)^{1/n}$ exists and\\[\\alpha \\leq 2^{H(1/3)}=1.8899\\cdots,\\]where $H(\\cdot)$ is the binary entropy function. Seymour's construction proves that $\\alpha\\geq 3^{1/3}=1.442\\cdots$. Brada\\v{c} conjectures that this lower bound is the true value of $\\alpha$.\n\n\n\n\nReferences\n\n\n[Br24] D. Brada\\vC, On a question of Erd\\H{o}s and Nesetril about minimal cuts in a graph. arXiv:2409.02974 (2024).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

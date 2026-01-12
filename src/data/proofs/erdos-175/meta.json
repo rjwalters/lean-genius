@@ -1,0 +1,33 @@
+{
+  "id": "erdos-175",
+  "title": "Erdős Problem #175",
+  "slug": "erdos-175",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nShow that, for any ..., the binomial coefficient ... is not squarefree.\n\n\n\nIt is easy to see that ... except when ..., and he...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/175",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos175Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 175,
+    "erdosUrl": "https://erdosproblems.com/175",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #175 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nShow that, for any $n\\geq 5$, the binomial coefficient $\\binom{2n}{n}$ is not squarefree.\n\n\n\nIt is easy to see that $4\\mid \\binom{2n}{n}$ except when $n=2^k$, and hence it suffices to prove this when $n$ is a power of $2$.\n\nProved by S\\'{a}rk\\\"{o}zy \\cite{Sa85} for all sufficiently large $n$, and by Granville and Ramar\\'{e} \\cite{GrRa96} for all $n\\geq 5$.\n\nMore generally, if $f(n)$ is the largest integer such that, for some prime $p$, we have $p^{f(n)}$ dividing $\\binom{2n}{n}$, then $f(n)$ should tend to infinity with $n$. Can one even disprove that $f(n)\\gg \\log n$?\n\nSander \\cite{Sa92} proved that $f(n)\\to \\infty$, and later \\cite{Sa95} quantified this to $f(n) \\gg (\\log n)^{1/10-o(1)}$. Sander \\cite{Sa95} also proved that $f(n)\\ll \\log n$ for all $n$, and that $f(n) \\gg \\log n$ for almost all $n$. The proofs of the latter two facts are very easy using Kummer's theorem -- indeed, this immediately implies that any $p$ divides $\\binom{2n}{n}$ with multiplicity $\\ll \\log_p n$, and that the multiplicity with which $2$ divides $\\binom{2n}{n}$ is equal to the number of $1$s in the binary expansion of $n$, which is $\\gg \\log n$ for almost all $n$.\n\nErd\\H{o}s and Kolesnik \\cite{ErKo99} improved the lower bound for all $n$ to\\[f(n) \\gg (\\log n)^{1/4-o(1)}.\\]It remains open whether $f(n) \\gg \\log n$ for all $n$.\n\nSander \\cite{Sa92b} proved that, for all $0<\\epsilon<1$, if $n$ is sufficiently large and $\\lvert d\\rvert\\leq n^{1-\\epsilon}$ then $\\binom{2n+d}{n}$ is not squarefree.\n\nThe largest $n$ known for which $\\binom{2n}{n}$ is not divisible by the square of an odd prime is $n=786$ (found by Levine). Guy \\cite{Gu04} reports that Erd\\H{o}s 'feels sure that there are no larger such $n$'.\n\nSee also [379].\n\nThis is mentioned in problem B33 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[ErKo99] Erd\\H{o}s, Paul and Kolesnik, Grigori, Prime power divisors of binomial coefficients. Discrete Math. (1999), 101--117.\n\n[GrRa96] Granville, Andrew and Ramar\\'{e}, Olivier, Explicit bounds on exponential sums and the scarcity of\nsquarefree binomial coefficients. Mathematika (1996), 73--107.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Sa85] S\\'{a}rk\\\"{o}zy, A., On divisors of binomial coefficients. Journal of Number Theory (1985), 70-80.\n\n[Sa92] Sander, J. W., Prime power divisors of binomial coefficients. J. Reine Angew. Math. (1992), 1--20.\n\n[Sa92b] Sander, J. W., On prime divisors of binomial coefficients. Bull. London Math. Soc. (1992), 140--142.\n\n[Sa95] Sander, J. W., On the order of prime powers dividing {$\\binom {2n}n$}. Acta Math. (1995), 85--118.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

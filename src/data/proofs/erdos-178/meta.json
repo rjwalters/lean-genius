@@ -1,0 +1,33 @@
+{
+  "id": "erdos-178",
+  "title": "Erdős Problem #178",
+  "slug": "erdos-178",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite collection of infinite sets of integers, say .... Does there exist some ... such that\\[\\max_{m, 1\\leq ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/178",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos178Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 178,
+    "erdosUrl": "https://erdosproblems.com/178",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #178 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A_1,A_2,\\ldots$ be an infinite collection of infinite sets of integers, say $A_i=\\{a_{i1}<a_{i2}<\\cdots\\}$. Does there exist some $f:\\mathbb{N}\\to\\{-1,1\\}$ such that\\[\\max_{m, 1\\leq i\\leq d} \\left\\lvert \\sum_{1\\leq j\\leq m} f(a_{ij})\\right\\rvert \\ll_d 1\\]for all $d\\geq 1$?\n\n\n\nErd\\H{o}s remarks 'it seems certain that the answer is affirmative'. This was solved by Beck \\cite{Be81}. Recently Beck \\cite{Be17} proved that one can replace $\\ll_d 1$ with $\\ll d^{4+\\epsilon}$ for any $\\epsilon>0$.\n\n\n\n\nReferences\n\n\n[Be17] Beck, J\\'{o}zsef, A discrepancy problem: balancing infinite dimensional vectors. Number theory-Diophantine problems, uniform distribution\nand applications (2017), 61-82.\n\n[Be81] Beck, J\\'{o}zsef, Balancing families of integer sequences. Combinatorica (1981), 209-216.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-179",
+  "title": "Erdős Problem #179",
+  "slug": "erdos-179",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be integers and define ... to be minimal such that every set ... of size ... which contains at least ... many ...-ter...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/179",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos179Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 179,
+    "erdosUrl": "https://erdosproblems.com/179",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #179 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $1\\leq k<\\ell$ be integers and define $F_k(N,\\ell)$ to be minimal such that every set $A\\subset \\mathbb{N}$ of size $N$ which contains at least $F_k(N,\\ell)$ many $k$-term arithmetic progressions must contain an $\\ell$-term arithmetic progression. Find good upper bounds for $F_k(N,\\ell)$. Is it true that\\[F_3(N,4)=o(N^2)?\\]Is it true that for every $\\ell>3$\\[\\lim_{N\\to \\infty}\\frac{\\log F_3(N,\\ell)}{\\log N}=2?\\]\n\n\n\nErd\\H{o}s remarks the upper bound $o(N^2)$ is certainly false for $\\ell >\\epsilon \\log N$. The answer is yes: Fox and Pohoata \\cite{FoPo20} have shown that, for all fixed $1\\leq k<\\ell$,\\[F_k(N,\\ell)=N^{2-o(1)}\\]and in fact\\[F_{k}(N,\\ell) \\leq \\frac{N^2}{(\\log\\log N)^{C_\\ell}}\\]where $C_\\ell>0$ is some constant. In fact, they show that, if $r_\\ell(N)$ is the size of the largest subset of $\\{1,\\ldots,N\\}$ without an $\\ell$-term arithmetic progression then there exists some absolute constant $c>0$ such that\\[\\left(c \\frac{r_\\ell(N)}{N}\\right)^{2(k-1)}N^2 < F_k(N,\\ell) <\\left(\\frac{r_\\ell(N)}{N}\\right)^{O(1)}N^2.\\]Any improved bounds for Szemer\\'{e}di's theorem (see [139]) therefore yield improved bounds for $F_k(N,\\ell)$. In particular, the bounds of Leng, Sah, and Sawhney \\cite{LSS24} imply\\[F_k(N,\\ell) \\leq \\frac{N^2}{\\exp((\\log\\log N)^{c_\\ell})}\\]for some constant $c_\\ell>0$.\n\n\n\n\nReferences\n\n\n[FoPo20] Fox, J. and Pohoata, C., Sets without $k$-term progressions can have many shorter progressions. arXiv:1908.09905 (2020).\n\n[LSS24] Leng, J., Sah, A. and Sawhney, M., Improved bounds for Szemer\\'{e}di's theorem. arXiv:2402.17995 (2024).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

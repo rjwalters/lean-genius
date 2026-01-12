@@ -1,0 +1,33 @@
+{
+  "id": "erdos-177",
+  "title": "Erdős Problem #177",
+  "slug": "erdos-177",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFind the smallest ... such that the following holds. There exists a function ... such that, for every ...,\\[\\max_{P_d}\\left\\l...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/177",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos177Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 177,
+    "erdosUrl": "https://erdosproblems.com/177",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #177 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFind the smallest $h(d)$ such that the following holds. There exists a function $f:\\mathbb{N}\\to\\{-1,1\\}$ such that, for every $d\\geq 1$,\\[\\max_{P_d}\\left\\lvert \\sum_{n\\in P_d}f(n)\\right\\rvert\\leq h(d),\\]where $P_d$ ranges over all finite arithmetic progressions with common difference $d$.\n\n\n\nCantor, Erd\\H{o}s, Schreiber, and Straus \\cite{Er66} proved that $h(d)\\ll d!$ is possible. Van der Waerden's theorem implies that $h(d)\\to \\infty$. Beck \\cite{Be17} has shown that $h(d) \\leq d^{8+\\epsilon}$ is possible for every $\\epsilon>0$. Roth's famous discrepancy lower bound \\cite{Ro64} implies that $h(d)\\gg d^{1/2}$.\n\n\n\n\nReferences\n\n\n[Be17] Beck, J\\'{o}zsef, A discrepancy problem: balancing infinite dimensional vectors. Number theory-Diophantine problems, uniform distribution\nand applications (2017), 61-82.\n\n[Er66] Erd\\H{o}s, P\\'al, Remarks on number theory. {V}. {E}xtremal problems in number\ntheory. {II}. Mat. Lapok (1966), 135--155.\n\n[Ro64] Roth, K. F., Remark concerning integer sequences. Acta Arith. (1964), 257-260.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

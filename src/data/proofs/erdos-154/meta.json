@@ -1,0 +1,33 @@
+{
+  "id": "erdos-154",
+  "title": "Erdős Problem #154",
+  "slug": "erdos-154",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a Sidon set with .... Must ... be well-distributed over all small moduli? In particular, must about half the eleme...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/154",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos154Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 154,
+    "erdosUrl": "https://erdosproblems.com/154",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #154 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset \\{1,\\ldots,N\\}$ be a Sidon set with $\\lvert A\\rvert\\sim N^{1/2}$. Must $A+A$ be well-distributed over all small moduli? In particular, must about half the elements of $A+A$ be even and half odd?\n\n\n\nLindstr\\\"{o}m \\cite{Li98} has shown this is true for $A$ itself, subsequently strengthened by Kolountzakis \\cite{Ko99}. It follows immediately using the Sidon property that $A+A$ is similarly well-distributed.\n\n\n\n\nReferences\n\n\n[Ko99] Kolountzakis, Mihail N., On the uniform distribution in residue classes of dense sets of integers with distinct sums. J. Number Theory (1999), 147-153.\n\n[Li98] Lindstr\\\"{o}m, Bernt, Well distribution of Sidon sets in residue classes. J. Number Theory (1998), 197-200.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

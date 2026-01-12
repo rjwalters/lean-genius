@@ -1,0 +1,33 @@
+{
+  "id": "erdos-158",
+  "title": "Erdős Problem #158",
+  "slug": "erdos-158",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite set such that, for any ..., there are most ... solutions to ... with .... Must\\[\\liminf_{N\\to\\infty}\\r...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/158",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos158Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 158,
+    "erdosUrl": "https://erdosproblems.com/158",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #158 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset \\mathbb{N}$ be an infinite set such that, for any $n$, there are most $2$ solutions to $a+b=n$ with $a\\leq b$. Must\\[\\liminf_{N\\to\\infty}\\frac{\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert}{N^{1/2}}=0?\\]\n\n\n\nIf we replace $2$ by $1$ then $A$ is a Sidon set, for which Erd\\H{o}s proved this is true.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}
