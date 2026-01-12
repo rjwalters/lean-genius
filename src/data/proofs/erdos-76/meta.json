@@ -1,0 +1,33 @@
+{
+  "id": "erdos-76",
+  "title": "Erdős Problem #76",
+  "slug": "erdos-76",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that in any ...-colouring of the edges of ... there must exist at least\\[(1+o(1)){12}\\]many edge-disjoint monochro...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/76",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos76Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 76,
+    "erdosUrl": "https://erdosproblems.com/76",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #76 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that in any $2$-colouring of the edges of $K_n$ there must exist at least\\[(1+o(1))\\frac{n^2}{12}\\]many edge-disjoint monochromatic triangles?\n\n\n\nConjectured by Erd\\H{o}s, Faudreee, and Ordman. This would be best possible, as witnessed by dividing the vertices of $K_n$ into two equal parts and colouring all edges between the parts red and all edges inside the parts blue.\n\nThe answer is yes, proved by Gruslys and Letzter \\cite{GrLe20}.\n\nIn \\cite{Er97d} Erd\\H{o}s also asks for a lower bound for the count of edge-disjoint monochromatic triangles in single colour (the colour chosen to maximise this quantity), and speculates that the answer is $\\geq cn^2$ for some constant $c>1/24$.\n\n\n\n\nReferences\n\n\n[Er97d] Erd\\H{o}s, Paul, Some recent problems and results in graph theory. Discrete Math. (1997), 81-85.\n\n[GrLe20] Gruslys, V. and Letzter, S., Monochromatic triangle packings in red-blue graphs. arXiv:2008.05311 (2020).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

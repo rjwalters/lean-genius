@@ -1,0 +1,33 @@
+{
+  "id": "erdos-60",
+  "title": "Erdős Problem #60",
+  "slug": "erdos-60",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph on ... vertices with ... edges contain ... many copies of ...?\n\n\n\nConjectured by Erds and Simonovits, who co...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/60",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos60Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 60,
+    "erdosUrl": "https://erdosproblems.com/60",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #60 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph on $n$ vertices with $>\\mathrm{ex}(n;C_4)$ edges contain $\\gg n^{1/2}$ many copies of $C_4$?\n\n\n\nConjectured by Erd\\H{o}s and Simonovits, who could not even prove that at least $2$ copies of $C_4$ are guaranteed.\n\nThe behaviour of $\\mathrm{ex}(n;C_4)$ is the subject of [765].\n\nHe, Ma, and Yang \\cite{HeMaYa21} have proved this conjecture when $n=q^2+q+1$ for some even integer $q$.\n\n\n\n\nReferences\n\n\n[HeMaYa21] He, J. and Ma, J. and Yang, T., Some extremal results on 4-cycles. Journal of Combinatorial Theory B (2021).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

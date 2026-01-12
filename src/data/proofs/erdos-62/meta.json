@@ -1,0 +1,33 @@
+{
+  "id": "erdos-62",
+  "title": "Erdős Problem #62",
+  "slug": "erdos-62",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... are two graphs with chromatic number ... then must there exist a graph ... whose chromatic number is ... (or even ...)...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/62",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos62Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 62,
+    "erdosUrl": "https://erdosproblems.com/62",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #62 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G_1,G_2$ are two graphs with chromatic number $\\aleph_1$ then must there exist a graph $G$ whose chromatic number is $4$ (or even $\\aleph_0$) which is a subgraph of both $G_1$ and $G_2$?\n\n\n\n\nErd\\H{o}s also asked \\cite{Er87} about finding a common subgraph $H$ (with chromatic number either $4$ or $\\aleph_0$) in any finite collection of graphs with chromatic number $\\aleph_1$.\n\nEvery graph with chromatic number $\\aleph_1$ contains all sufficiently large odd cycles (which have chromatic number $3$), see [594]. This was proved by Erd\\H{o}s, Hajnal, and Shelah \\cite{EHS74}. Erd\\H{o}s wrote \\cite{Er87} that 'probably' every graph with chromatic number $\\aleph_1$ contains as subgraphs all graphs with chromatic number $4$ with sufficiently large girth.\n\n\n\n\nReferences\n\n\n[EHS74] Erd\\H{o}s, P. and Hajnal, A. and Shelah, S., On some general properties of chromatic numbers. Topics in topology (Proc. Colloq., Keszthely, 1972) (1974), 243-255.\n\n[Er87] Erd\\H{o}s, P., Some problems on finite and infinite graphs. Logic and combinatorics (Arcata, Calif., 1985) (1987), 223-228.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

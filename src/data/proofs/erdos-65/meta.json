@@ -1,0 +1,33 @@
+{
+  "id": "erdos-65",
+  "title": "Erdős Problem #65",
+  "slug": "erdos-65",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with ... vertices and ... edges, and ... be the lengths of cycles in .... Is it true that\\[\\sum{a_i}\\gg \\l...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/65",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos65Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 65,
+    "erdosUrl": "https://erdosproblems.com/65",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #65 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph with $n$ vertices and $kn$ edges, and $a_1<a_2<\\cdots $ be the lengths of cycles in $G$. Is it true that\\[\\sum\\frac{1}{a_i}\\gg \\log k?\\]Is the sum $\\sum\\frac{1}{a_i}$ minimised when $G$ is a complete bipartite graph?\n\n\n\nA problem of Erd\\H{o}s and Hajnal.\n\nGy\\'{a}rf\\'{a}s, Koml\\'{o}s, and Szemer\\'{e}di \\cite{GKS84} have proved that this sum is $\\gg \\log k$, so that only the second question remains. Liu and Montgomery \\cite{LiMo20} have proved the asymptotically sharp lower bound of $\\geq (\\tfrac{1}{2}-o(1))\\log k$.\n\nSee also the entry in the graphs problem collection.\n\nSee also [57].\n\n\n\n\nReferences\n\n\n[GKS84] Gy\\'{a}rf\\'{a}s, A. and Koml\\'{o}s, J. and Szemer\\'{e}di, E., On the distribution of cycle lengths in graphs. J. Graph Theory (1984), 441-462.\n\n[LiMo20] Liu, Hong and Montgomery, Richard, A solution to Erd\\H{o}s and Hajnal's odd cycle problem. arXiv:2010.15802 (2020).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

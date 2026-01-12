@@ -1,0 +1,33 @@
+{
+  "id": "erdos-59",
+  "title": "Erdős Problem #59",
+  "slug": "erdos-59",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that the number of graphs on ... vertices which do not contain ... is\\[\\leq 2^{(1+o(1))(n;G)}?\\]\n\n\n\nIf ... is not ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/59",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos59Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 59,
+    "erdosUrl": "https://erdosproblems.com/59",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #59 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that the number of graphs on $n$ vertices which do not contain $G$ is\\[\\leq 2^{(1+o(1))\\mathrm{ex}(n;G)}?\\]\n\n\n\nIf $G$ is not bipartite the answer is yes, proved by Erd\\H{o}s, Frankl, and R\\\"{o}dl \\cite{EFR86}. The answer is no for $G=C_6$, the cycle on 6 vertices. Morris and Saxton \\cite{MoSa16} have proved there are at least\\[2^{(1+c)\\mathrm{ex}(n;C_6)}\\]such graphs for infinitely many $n$, for some constant $c>0$. It is still possible (and conjectured by Morris and Saxton) that the weaker bound of\\[2^{O(\\mathrm{ex}(n;G))}\\]holds for all $G$.\n\n\n\n\nReferences\n\n\n[EFR86] Erd\\H{o}s, P. and Frankl, P. and R\\\"{o}dl, V., The asymptotic number of graphs not containing a fixed subgraph and a problem for hypergraphs having no exponent. Graphs Combin. (1986), 113-121.\n\n[MoSa16] Morris, Robert and Saxton, David, The number of $C_{2\\ell}$-free graphs. Adv. Math. (2016), 534-580.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

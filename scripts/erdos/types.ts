@@ -167,8 +167,10 @@ export interface CliOptions {
   range?: string
   /** Process next N uncached problems */
   batch?: number
-  /** Slow/polite mode - 30s between requests */
+  /** Slow/polite mode - 60s between requests */
   slow: boolean
+  /** Use Playwright browser instead of fetch */
+  playwright: boolean
   /** Ignore cache, fetch fresh */
   refresh: boolean
   /** Only generate gallery */

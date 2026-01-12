@@ -1,0 +1,33 @@
+{
+  "id": "erdos-26",
+  "title": "Erdős Problem #26",
+  "slug": "erdos-26",
+  "description": "Let ... be infinite. Must there exist some ... such that almost all integers have a divisor of the form ... for some ...? Asked by Erdős and Tenenbaum. Ruzsa gave the following simple counterexampl...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/26",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos26Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 26,
+    "erdosUrl": "https://erdosproblems.com/26",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #26 from erdosproblems.com.",
+    "problemStatement": "Let $A\\subset\\mathbb{N}$ be infinite. Must there exist some $k\\geq 1$ such that almost all integers have a divisor of the form $a+k$ for some $a\\in A$? Asked by Erdős and Tenenbaum. Ruzsa gave the following simple counterexample: let $A=\\{n_10$ there is some $k=k(\\epsilon)$ such that at least $1-\\epsilon$ density of all integers have a divisor of the form $a+k$ for some $a\\in A$. View the LaTeX source This page was last edited 07 December 2025.",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

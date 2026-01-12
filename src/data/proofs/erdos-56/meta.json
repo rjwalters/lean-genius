@@ -1,0 +1,33 @@
+{
+  "id": "erdos-56",
+  "title": "Erdős Problem #56",
+  "slug": "erdos-56",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... where ... is the ...th prime. Suppose ... is such that there are no ... elements of ... which are relatively prime. A...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/56",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos56Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 56,
+    "erdosUrl": "https://erdosproblems.com/56",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #56 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N\\geq p_k$ where $p_k$ is the $k$th prime. Suppose $A\\subseteq \\{1,\\ldots,N\\}$ is such that there are no $k+1$ elements of $A$ which are relatively prime. An example is the set of all multiples of the first $k$ primes. Is this the largest such set?\n\n\n\nThis was disproved for $k=212$ by Ahlswede and Khachatrian \\cite{AhKh94}, who suggest that their methods can disprove this for arbitrarily large $k$.\n\nErd\\H{o}s later asked (\\cite{Er92b} and \\cite{Er95}) if the conjecture remains true provided $N\\geq (1+o(1))p_k^2$ (or, in a weaker form, whether it is true for $N$ sufficiently large depending on $k$).\n\nAhlswede and Khachatrian \\cite{AhKh95} proved this latter claim: in other words, for any fixed $k$, if $N$ is sufficiently large depending on $k$ then the largest such set is the set of all multiples of the first $k$ primes.\n\nSee also [534].\n\nThis is discussed in problem B26 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[AhKh94] Ahlswede, Rudolf and Khachatrian, Levon H., On extremal sets without coprimes. Acta Arith. (1994), 89-99.\n\n[AhKh95] Ahlswede, Rudolf and Khachatrian, Levon H., Maximal sets of numbers not containing {$k+1$} pairwise\ncoprime integers. Acta Arith. (1995), 77--100.\n\n[Er92b] Erd\\H{o}s, Paul, Some of my favourite problems in various branches of combinatorics. Matematiche (Catania) (1992), 231-240.\n\n[Er95] Erd\\H{o}s, Paul, Some of my favourite problems in number theory, combinatorics, and geometry. Resenhas (1995), 165-186.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

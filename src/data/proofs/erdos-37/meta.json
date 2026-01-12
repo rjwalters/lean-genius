@@ -1,0 +1,33 @@
+{
+  "id": "erdos-37",
+  "title": "Erdős Problem #37",
+  "slug": "erdos-37",
+  "description": "We say that ... is an essential component if ... for every ... with ... such that ... for all large .... Furthermore, Ruzsa proves that this is best possible, in that for any ... there exists an es...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/37",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos37Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 37,
+    "erdosUrl": "https://erdosproblems.com/37",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #37 from erdosproblems.com.",
+    "problemStatement": "We say that $A\\subset \\mathbb{N}$ is an essential component if $d_s(A+B)>d_s(B)$ for every $B\\subset \\mathbb{N}$ with $00$ such that $\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\geq (\\log N)^{1+c}$ for all large $N$. Furthermore, Ruzsa proves that this is best possible, in that for any $c>0$ there exists an essential component $A$ for which $\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\leq (\\log N)^{1+c}$ for all large $N$. In [Ru99] Ruzsa states \"The simplest set with a chance to be an essential component is the collection of numbers in the form $2^m3^n$ and Erdős often asked whether it is an essential component or not; I do not even have a plausible guess.\" View the LaTeX source This page was last edited 05 October 2025.",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

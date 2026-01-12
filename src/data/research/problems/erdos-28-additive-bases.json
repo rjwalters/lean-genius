@@ -1,0 +1,93 @@
+{
+  "id": "erdos-28-additive-bases",
+  "name": "Erdős #28: Erdős-Turán Conjecture on Additive Bases",
+  "tier": "A",
+  "significance": 9,
+  "tractability": 3,
+  "status": "in-progress",
+  "description": "If A is an asymptotic basis of order 2 (A+A contains all large integers), then lim sup r_A(n) = ∞ where r_A(n) counts representations as a+b with a,b ∈ A.",
+  "tags": [
+    "number-theory",
+    "additive-combinatorics",
+    "erdos-problem",
+    "prize-problem",
+    "open-conjecture"
+  ],
+  "knowledge": {
+    "insights": [
+      "The Erdős-Turán conjecture (1941) is one of the most important open problems in additive combinatorics",
+      "$500 prize offered by Erdős for proof or disproof",
+      "Stronger form: lim sup r_A(n) / log(n) > 0",
+      "Grekos et al. (2003): proved r_A(n) ≥ 6 infinitely often for any asymptotic basis",
+      "Borwein et al.: improved to r_A(n) ≥ 8 infinitely often",
+      "Sidon sets (where a+b=c+d implies {a,b}={c,d}) have r_A(n) ≤ 2, but Sidon sets cannot be asymptotic bases",
+      "The conjecture is about whether bounded representation is possible for bases"
+    ],
+    "builtItems": [
+      "repFunc definition (ordered pairs) at Erdos28AdditiveBases.lean:50",
+      "repFuncUnordered definition at Erdos28AdditiveBases.lean:54",
+      "repFuncFinset definition for finite sets at Erdos28AdditiveBases.lean:58",
+      "sumset definition at Erdos28AdditiveBases.lean:64",
+      "IsAsymptoticBasis definition at Erdos28AdditiveBases.lean:68",
+      "IsAsymptoticBasis' (finite complement form) at Erdos28AdditiveBases.lean:72",
+      "isAsymptoticBasis_iff (partial proof, one direction) at Erdos28AdditiveBases.lean:78",
+      "repFunc_pos_of_mem_sumset theorem at Erdos28AdditiveBases.lean:98",
+      "repFunc_pos_of_zero_mem theorem at Erdos28AdditiveBases.lean:105",
+      "IsSidon definition at Erdos28AdditiveBases.lean:111",
+      "sidon_repFunc_bounded theorem at Erdos28AdditiveBases.lean:116",
+      "erdos_turan_weak conjecture statement at Erdos28AdditiveBases.lean:133",
+      "erdos_turan_strong conjecture statement at Erdos28AdditiveBases.lean:140",
+      "erdos_28 official statement at Erdos28AdditiveBases.lean:147",
+      "grekos_lower_bound axiom at Erdos28AdditiveBases.lean:152",
+      "borwein_lower_bound axiom at Erdos28AdditiveBases.lean:156",
+      "evens example with sumset proof at Erdos28AdditiveBases.lean:165",
+      "nat_is_basis trivial basis at Erdos28AdditiveBases.lean:184",
+      "sidon_not_basis theorem at Erdos28AdditiveBases.lean:198"
+    ],
+    "mathlibGaps": [
+      "Set.ncard_pos needs explicit finiteness proof for the pair set",
+      "exists_maximal_wrt deprecated, need to use exists_maximalFor",
+      "No built-in asymptotic density formalization",
+      "Proving bounded representation for Sidon sets requires detailed pair counting"
+    ],
+    "nextSteps": [
+      "Complete the reverse direction of isAsymptoticBasis_iff (finite → threshold)",
+      "Prove repFunc_pos_of_mem_sumset with proper finiteness argument",
+      "Complete sidon_repFunc_bounded proof",
+      "Complete sidon_not_basis proof (density argument)",
+      "Verify evens_repFunc counting formula",
+      "Build infrastructure for studying specific constructions"
+    ],
+    "progressSummary": "PROGRESS: Created Erdos28AdditiveBases.lean (~210 lines) with core definitions and conjecture statements. Proved one direction of basis equivalence. 6 sorries for technical lemmas, 2 axioms for known results."
+  },
+  "sessions": [
+    {
+      "date": "2026-01-11",
+      "mode": "FRESH",
+      "outcome": "progress",
+      "summary": "Created Erdos28AdditiveBases.lean with representation function, sumset, asymptotic basis definitions. Stated both weak and strong forms of Erdős-Turán conjecture. Built examples (evens, naturals) and stated Sidon set connection. Proved one direction of basis equivalence theorem."
+    }
+  ],
+  "references": [
+    {
+      "type": "website",
+      "url": "https://www.erdosproblems.com/28",
+      "note": "Official Erdős problems page"
+    },
+    {
+      "type": "paper",
+      "title": "Erdős-Turán (1941)",
+      "note": "Original conjecture on additive bases"
+    },
+    {
+      "type": "paper",
+      "title": "Grekos et al. (2003)",
+      "note": "Proved r_A(n) ≥ 6 infinitely often"
+    },
+    {
+      "type": "paper",
+      "title": "Borwein et al.",
+      "note": "Improved to r_A(n) ≥ 8 infinitely often"
+    }
+  ]
+}

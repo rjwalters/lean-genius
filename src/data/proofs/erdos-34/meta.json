@@ -1,0 +1,33 @@
+{
+  "id": "erdos-34",
+  "title": "Erdős Problem #34",
+  "slug": "erdos-34",
+  "description": "For any permutation ... of ... let ... count the number of distinct consecutive sums, that is, sums of the shape .... Is it true that\\[S(\\pi) = o(n^2)\\]for all ...? It is easy to see that ... if .....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/34",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos34Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 34,
+    "erdosUrl": "https://erdosproblems.com/34",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #34 from erdosproblems.com.",
+    "problemStatement": "For any permutation $\\pi\\in S_n$ of $\\{1,\\ldots,n\\}$ let $S(\\pi)$ count the number of distinct consecutive sums, that is, sums of the shape $\\sum_{u\\leq i\\leq v}\\pi(i)$. Is it true that\\[S(\\pi) = o(n^2)\\]for all $\\pi\\in S_n$? It is easy to see that $S(\\iota)=o(n^2)$ if $\\iota$ denotes the identity permutation. Motivated by this, Erdős asked if this remains true for all permutations. The first counterexample was provided by Hegyvári [He86], who constructed a permutation with $S(\\pi) \\geq (1/18+o(1))n^2$. In fact this conjecture is extremely false, as shown by Konieczny [Ko15], who both constructs an explicit permutation with $S(\\pi) \\geq n^2/4$, and also shows that for a random permutation we have\\[S(\\pi)\\sim \\frac{1+e^{-2}}{4}n^2.\\]It is natural to further then ask about the behaviour of $f(n)=\\max_{\\pi\\in S_n}S(\\pi)$. Konieczny [Ko15] proves\\[(0.286\\cdots)n^2\\leq f(n) \\leq (0.446\\cdots)n^2.\\]One can also ask about $g(n)=\\min S(\\pi)$. Konieczny shows $g(n) \\gg n^{3/2}$, and it may be t",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

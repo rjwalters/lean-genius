@@ -1,0 +1,33 @@
+{
+  "id": "erdos-73",
+  "title": "Erdős Problem #73",
+  "slug": "erdos-73",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Let ... be a graph such that every subgraph ... contains an independent set of size ..., where ... is the number of ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/73",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos73Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 73,
+    "erdosUrl": "https://erdosproblems.com/73",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #73 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 0$. Let $G$ be a graph such that every subgraph $H$ contains an independent set of size $\\geq (n-k)/2$, where $n$ is the number of vertices of $H$. Must $G$ be the union of a bipartite graph and $O_k(1)$ many vertices?\n\n\n\nProved by Reed \\cite{Re99}. (Thanks also to Reed for pointing out that the case $k=0$ is trivial, since if $G$ is not bipartite then $G$ contains an odd cycle.)\n\nSee also [922] and the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[Re99] Reed, B., Mangoes and Blueberries. Combinatorica (1999), 267-296.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

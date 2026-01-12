@@ -170,7 +170,7 @@
       "significance": 7,
       "tractability": 6,
       "status": "in-progress",
-      "notes": "IN-PROGRESS: All primes proved (ℤ[√-2] for p≡3, Fermat for p≡1,5 mod 8). One axiom remains for composites. Lacks multiplicativity - needs Dirichlet Key Lemma with Minkowski.",
+      "notes": "IN-PROGRESS: Necessity PROVED, all primes PROVED (ℤ[√-2], Fermat). Gap is composites (~150 lines): Dirichlet Key Lemma proof via Minkowski lattice. Infrastructure ready: PrimesInAP ✓, Minkowski ✓, QR ✓.",
       "tags": [
         "number-theory",
         "squares",
@@ -529,9 +529,58 @@
       "name": "Erdős #340: Greedy Sidon Sequence Growth",
       "tier": "A",
       "significance": 8,
-      "tractability": 5,
+      "tractability": 1,
+      "status": "blocked",
+      "notes": "BLOCKED: OPEN CONJECTURE - The main theorem (|A ∩ [1,N]| >> N^(1/2-ε)) is an unsolved problem in mathematics. Best known bound is N^(1/3). $500 Erdős prize still open. Infrastructure built: IsSidon, basic lemmas, axiomatized sequence. Cannot prove an open conjecture.",
+      "tags": [
+        "number-theory",
+        "additive-combinatorics",
+        "sidon-sets",
+        "erdos-problem",
+        "open-conjecture",
+        "blocked-open-problem"
+      ]
+    },
+    {
+      "id": "erdos-5-prime-gaps",
+      "name": "Erdős #5: Prime Gap Limit Points",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 6,
       "status": "in-progress",
-      "notes": "IN-PROGRESS: Built IsSidon infrastructure, axiomatized greedy sequence. Proved basic lemmas (empty, singleton, pair, subset). Main conjecture N^(1/2-ε) and N^(1/3) bound stated. Aristotle attempting harder sorries.",
+      "notes": "PROGRESS: Created Erdos5PrimeGaps.lean with definitions, conjecture, basic proofs",
+      "tags": [
+        "number-theory",
+        "primes",
+        "prime-gaps",
+        "erdos-problem",
+        "open-conjecture"
+      ]
+    },
+    {
+      "id": "erdos-10-prime-powers-of-2",
+      "name": "Erdős #10: Prime Plus Powers of 2",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 6,
+      "status": "in-progress",
+      "notes": "IN-PROGRESS: Created Erdos10PrimePlusPowers.lean. Defined representations, proved n=3-10 as p+2^a. Conjecture likely FALSE (Grechuk counterexample).",
+      "tags": [
+        "number-theory",
+        "primes",
+        "additive",
+        "erdos-problem",
+        "open-conjecture"
+      ]
+    },
+    {
+      "id": "erdos-14-unique-sums",
+      "name": "Erdős #14: Unique Representation Sums",
+      "tier": "C",
+      "significance": 6,
+      "tractability": 4,
+      "status": "in-progress",
+      "notes": "PROGRESS: Created Erdos14UniqueSums.lean with Sidon sets, representation counting, conjectures",
       "tags": [
         "number-theory",
         "additive-combinatorics",
@@ -539,7 +588,39 @@
         "erdos-problem",
         "open-conjecture"
       ]
+    },
+    {
+      "id": "erdos-25-number-theory",
+      "name": "Erdős #25: Sequence Divisibility",
+      "tier": "B",
+      "significance": 7,
+      "tractability": 6,
+      "status": "in-progress",
+      "notes": "PROGRESS: Created Erdos25LogDensity.lean with density definitions, conjecture, proofs",
+      "tags": [
+        "number-theory",
+        "sequences",
+        "erdos-problem",
+        "open-conjecture"
+      ]
+    },
+    {
+      "id": "erdos-28-additive-bases",
+      "name": "Erdős #28: Erdős-Turán Additive Bases ($500)",
+      "tier": "C",
+      "significance": 6,
+      "tractability": 4,
+      "status": "in-progress",
+      "notes": "PROGRESS: Created Erdos28AdditiveBases.lean with definitions, conjecture statements, examples",
+      "tags": [
+        "number-theory",
+        "additive-combinatorics",
+        "additive-bases",
+        "erdos-problem",
+        "open-conjecture",
+        "prize-problem"
+      ]
     }
   ],
-  "lastUpdated": "2026-01-02T16:53:43Z"
+  "lastUpdated": "2026-01-11T23:00:00Z"
 }

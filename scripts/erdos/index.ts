@@ -42,6 +42,7 @@ function parseArgs(): CliOptions {
     range: undefined,
     batch: undefined,
     slow: false,
+    playwright: false,
     refresh: false,
     galleryOnly: false,
     researchOnly: false,
@@ -67,6 +68,9 @@ function parseArgs(): CliOptions {
         break
       case '--slow':
         options.slow = true
+        break
+      case '--playwright':
+        options.playwright = true
         break
       case '--refresh':
         options.refresh = true
@@ -113,7 +117,8 @@ Usage:
 Options:
   --batch N         Process next N uncached problems (default: 10)
   --continue        Continue from where we left off (same as --batch 10)
-  --slow            Polite mode - 30s between requests (recommended)
+  --slow            Polite mode - 60s between requests
+  --playwright      Use browser (avoids rate limiting, recommended)
   --range 1-100     Process specific range of problems
   --dry-run         Preview without writing files
   --refresh         Ignore cache, fetch fresh
@@ -124,14 +129,14 @@ Options:
   --help, -h        Show this help
 
 Examples:
-  # Process next 5 problems slowly (recommended)
-  npx tsx scripts/erdos/index.ts --batch 5 --slow
+  # Process next 5 problems with browser (recommended)
+  npx tsx scripts/erdos/index.ts --batch 5 --playwright
 
   # Check progress
   npx tsx scripts/erdos/index.ts --status
 
-  # Process next 10 problems
-  npx tsx scripts/erdos/index.ts --continue --slow
+  # Process next 10 problems with browser
+  npx tsx scripts/erdos/index.ts --continue --playwright
 `)
 }
 
@@ -207,13 +212,17 @@ async function runPipeline(options: CliOptions): Promise<PipelineStats> {
   }
 
   if (options.slow) {
-    console.log('** SLOW MODE - 20s between requests **\n')
+    console.log('** SLOW MODE - 60s between requests **\n')
+  }
+
+  if (options.playwright) {
+    console.log('** PLAYWRIGHT MODE - Using browser to avoid rate limiting **\n')
   }
 
   // Ensure cache directory exists
   ensureCacheDir()
 
-  // Get config (slow mode uses 30s delay)
+  // Get config (slow mode uses 60s delay)
   const config = options.slow ? getSlowConfig() : undefined
 
   // Determine which problems to scrape
@@ -229,16 +238,16 @@ async function runPipeline(options: CliOptions): Promise<PipelineStats> {
       return stats
     }
     console.log(`Step 1: Scraping batch of ${batchNumbers.length} uncached problems...`)
-    scraped = await scrapeProblems(batchNumbers, config, !options.refresh)
+    scraped = await scrapeProblems(batchNumbers, config, !options.refresh, undefined, options.playwright)
   } else if (options.range) {
     // Range mode: scrape specific range
     const range = parseRange(options.range)
     console.log(`Step 1: Scraping problems ${range.start}-${range.end}...`)
-    scraped = await scrapeRange(range.start, range.end, config, !options.refresh)
+    scraped = await scrapeRange(range.start, range.end, config, !options.refresh, undefined, options.playwright)
   } else {
     // Default: scrape all (1-1200)
     console.log('Step 1: Scraping all problems 1-1200...')
-    scraped = await scrapeRange(1, 1200, config, !options.refresh)
+    scraped = await scrapeRange(1, 1200, config, !options.refresh, undefined, options.playwright)
   }
   stats.totalScraped = scraped.length
 

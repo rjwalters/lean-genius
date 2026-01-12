@@ -18,8 +18,19 @@ import {
   rateLimitedFetch,
   type CacheConfig,
 } from './cache'
+import {
+  fetchWithPlaywright,
+  fetchLatexWithPlaywright,
+  closeBrowser,
+} from './playwright-fetch'
 
 const BASE_URL = 'https://erdosproblems.com'
+
+export interface ScrapeOptions {
+  config?: CacheConfig
+  useCache?: boolean
+  usePlaywright?: boolean
+}
 
 /**
  * Extract problem number from URL or page content
@@ -313,7 +324,8 @@ function cleanStatementHtml(html: string): string {
 export async function scrapeProblem(
   problemNumber: number,
   config?: CacheConfig,
-  useCache = true
+  useCache = true,
+  usePlaywright = false
 ): Promise<ScrapedProblem | null> {
   const url = `${BASE_URL}/${problemNumber}`
 
@@ -323,45 +335,70 @@ export async function scrapeProblem(
 
   // Fetch if not cached
   if (!html) {
-    try {
-      const response = await rateLimitedFetch(url, config)
-
-      if (response.status === 404) {
+    if (usePlaywright) {
+      // Use Playwright browser
+      const result = await fetchWithPlaywright(problemNumber)
+      if (!result) {
+        return null
+      }
+      if (result.status === 404) {
         console.log(`  Problem #${problemNumber} not found (404)`)
         return null
       }
+      html = result.html
+      cacheHtml(problemNumber, html, result.status, config)
+    } else {
+      // Use fetch API
+      try {
+        const response = await rateLimitedFetch(url, config)
 
-      if (!response.ok) {
-        console.log(`  Problem #${problemNumber} fetch failed: ${response.status}`)
+        if (response.status === 404) {
+          console.log(`  Problem #${problemNumber} not found (404)`)
+          return null
+        }
+
+        if (!response.ok) {
+          console.log(`  Problem #${problemNumber} fetch failed: ${response.status}`)
+          return null
+        }
+
+        html = await response.text()
+        cacheHtml(problemNumber, html, response.status, config)
+      } catch (error) {
+        console.error(`  Error fetching problem #${problemNumber}:`, error)
         return null
       }
-
-      html = await response.text()
-      cacheHtml(problemNumber, html, response.status, config)
-    } catch (error) {
-      console.error(`  Error fetching problem #${problemNumber}:`, error)
-      return null
     }
   }
 
   // Fetch LaTeX if not cached
   if (!latex) {
-    try {
-      const latexUrl = `${BASE_URL}/latex/${problemNumber}`
-      const response = await rateLimitedFetch(latexUrl, config)
-
-      if (response.ok) {
-        const latexContent = await response.text()
-        // Validate that it's actually LaTeX, not HTML
-        // The /latex endpoint sometimes returns HTML pages instead of LaTeX
-        if (!latexContent.startsWith('<!DOCTYPE') && !latexContent.startsWith('<html')) {
-          latex = latexContent
-          cacheLatex(problemNumber, latex, config)
-        }
+    if (usePlaywright) {
+      // Use Playwright browser
+      const latexContent = await fetchLatexWithPlaywright(problemNumber)
+      if (latexContent) {
+        latex = latexContent
+        cacheLatex(problemNumber, latex, config)
       }
-    } catch (error) {
-      // LaTeX is optional, don't fail on this
-      console.log(`  Could not fetch LaTeX for problem #${problemNumber}`)
+    } else {
+      // Use fetch API
+      try {
+        const latexUrl = `${BASE_URL}/latex/${problemNumber}`
+        const response = await rateLimitedFetch(latexUrl, config)
+
+        if (response.ok) {
+          const latexContent = await response.text()
+          // Validate that it's actually LaTeX, not HTML
+          // The /latex endpoint sometimes returns HTML pages instead of LaTeX
+          if (!latexContent.startsWith('<!DOCTYPE') && !latexContent.startsWith('<html')) {
+            latex = latexContent
+            cacheLatex(problemNumber, latex, config)
+          }
+        }
+      } catch (error) {
+        // LaTeX is optional, don't fail on this
+        console.log(`  Could not fetch LaTeX for problem #${problemNumber}`)
+      }
     }
   }
 
@@ -411,7 +448,8 @@ export async function scrapeProblems(
   numbers: number[],
   config?: CacheConfig,
   useCache = true,
-  onProgress?: (current: number, total: number, problem: ScrapedProblem | null) => void
+  onProgress?: (current: number, total: number, problem: ScrapedProblem | null) => void,
+  usePlaywright = false
 ): Promise<ScrapedProblem[]> {
   const problems: ScrapedProblem[] = []
   const total = numbers.length
@@ -423,22 +461,29 @@ export async function scrapeProblems(
 
   console.log(`Scraping ${total} problems: #${numbers[0]}-${numbers[numbers.length - 1]}...`)
 
-  for (let i = 0; i < numbers.length; i++) {
-    const num = numbers[i]
-    const problem = await scrapeProblem(num, config, useCache)
+  try {
+    for (let i = 0; i < numbers.length; i++) {
+      const num = numbers[i]
+      const problem = await scrapeProblem(num, config, useCache, usePlaywright)
 
-    if (problem) {
-      problems.push(problem)
+      if (problem) {
+        problems.push(problem)
+      }
+
+      if (onProgress) {
+        onProgress(i + 1, total, problem)
+      }
+
+      // Progress indicator every 10 problems
+      if ((i + 1) % 10 === 0) {
+        const pct = Math.round(((i + 1) / total) * 100)
+        console.log(`  Progress: ${i + 1}/${total} (${pct}%)`)
+      }
     }
-
-    if (onProgress) {
-      onProgress(i + 1, total, problem)
-    }
-
-    // Progress indicator every 10 problems
-    if ((i + 1) % 10 === 0) {
-      const pct = Math.round(((i + 1) / total) * 100)
-      console.log(`  Progress: ${i + 1}/${total} (${pct}%)`)
+  } finally {
+    // Close browser if using Playwright
+    if (usePlaywright) {
+      await closeBrowser()
     }
   }
 
@@ -454,13 +499,14 @@ export async function scrapeRange(
   end: number,
   config?: CacheConfig,
   useCache = true,
-  onProgress?: (current: number, total: number, problem: ScrapedProblem | null) => void
+  onProgress?: (current: number, total: number, problem: ScrapedProblem | null) => void,
+  usePlaywright = false
 ): Promise<ScrapedProblem[]> {
   const numbers: number[] = []
   for (let i = start; i <= end; i++) {
     numbers.push(i)
   }
-  return scrapeProblems(numbers, config, useCache, onProgress)
+  return scrapeProblems(numbers, config, useCache, onProgress, usePlaywright)
 }
 
 /**
@@ -469,9 +515,10 @@ export async function scrapeRange(
 export async function scrapeAll(
   config?: CacheConfig,
   useCache = true,
-  onProgress?: (current: number, total: number, problem: ScrapedProblem | null) => void
+  onProgress?: (current: number, total: number, problem: ScrapedProblem | null) => void,
+  usePlaywright = false
 ): Promise<ScrapedProblem[]> {
-  return scrapeRange(1, 1200, config, useCache, onProgress)
+  return scrapeRange(1, 1200, config, useCache, onProgress, usePlaywright)
 }
 
 /**
