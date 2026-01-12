@@ -574,7 +574,8 @@ def unitCube3 : Set (EuclideanSpace ℝ (Fin 3)) :=
 
 /-- The unit cube is measurable. -/
 theorem unitCube3_measurableSet : MeasurableSet unitCube3 := by
-  sorry -- Would use MeasurableSet.pi and Icc measurability
+  -- The unit cube [0,1)³ is measurable as a product of measurable intervals
+  sorry -- Technical: requires showing the product structure is compatible with PiLp measurability
 
 /-- The unit cube is a fundamental domain for ℤ³.
 
@@ -619,10 +620,10 @@ theorem dirichletEllipsoid_convex (d : ℕ) (R : ℝ) (_hd : 0 < d) (_hR : 0 ≤
   have h1 := sq_convex (x 1) (y 1)
   have h2 := sq_convex (x 2) (y 2)
   have hd' : (0 : ℝ) ≤ d := Nat.cast_nonneg d
-  -- Calculate using PiLp structure
+  -- Calculate using PiLp structure: (a • x + b • y) i = a * x i + b * y i
   have heq : (a • x + b • y) 0 ^ 2 + ↑d * (a • x + b • y) 1 ^ 2 + ↑d * (a • x + b • y) 2 ^ 2
            = (a * x 0 + b * y 0) ^ 2 + d * (a * x 1 + b * y 1) ^ 2 + d * (a * x 2 + b * y 2) ^ 2 := by
-    congr 1 <;> congr 1 <;> simp only [PiLp.add_apply, PiLp.smul_apply, smul_eq_mul]
+    simp only [PiLp.add_apply, PiLp.smul_apply, smul_eq_mul]
   rw [heq]
   calc (a * x 0 + b * y 0) ^ 2 + d * (a * x 1 + b * y 1) ^ 2 + d * (a * x 2 + b * y 2) ^ 2
       ≤ (a * (x 0)^2 + b * (y 0)^2) + d * (a * (x 1)^2 + b * (y 1)^2) + d * (a * (x 2)^2 + b * (y 2)^2) := by

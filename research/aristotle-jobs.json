@@ -29,6 +29,20 @@
         "diffSet_subset_Icc",
         "card_diffSet_eq"
       ]
+    },
+    {
+      "project_id": "0caca922-2d23-49b7-814f-2ad63b818d80",
+      "file": "proofs/Proofs/Erdos1Problem.lean",
+      "problem_id": "erdos-1",
+      "submitted": "2026-01-12T09:31:03Z",
+      "sorries": [
+        "theorem erdos_1_lower_bound {A : Finset ℕ} {N : ℕ}",
+        "theorem max_element_bound {A : Finset ℕ} (hA : A.Nonempty)",
+        "theorem subset_sums_spacing {A : Finset ℕ} (hA_pos : ∀ a ∈ A, 0 < a)"
+      ],
+      "notes": "Distinct subset sums - tractability 9/10",
+      "status": "submitted",
+      "last_check": null
     }
   ],
   "completed": [],
