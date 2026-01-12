@@ -149,11 +149,16 @@ export function generateAristotleCandidates(
   if (updateJobsFile && !dryRun && candidates.length > 0) {
     const jobs = loadAristotleJobs()
 
-    // Add candidates to pending list
-    jobs.pending_candidates = candidates
+    // Merge candidates with existing list (avoid duplicates by erdosNumber)
+    const existing = jobs.pending_candidates || []
+    const existingNumbers = new Set(existing.map(c => c.erdosNumber))
+    const newCandidates = candidates.filter(c => !existingNumbers.has(c.erdosNumber))
+
+    jobs.pending_candidates = [...existing, ...newCandidates]
+      .sort((a, b) => b.tractabilityScore - a.tractabilityScore)
 
     saveAristotleJobs(jobs)
-    console.log(`  Saved ${candidates.length} candidates to ${ARISTOTLE_JOBS_FILE}`)
+    console.log(`  Added ${newCandidates.length} new candidates (${jobs.pending_candidates.length} total) to ${ARISTOTLE_JOBS_FILE}`)
   }
 
   return candidates

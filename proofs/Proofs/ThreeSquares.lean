@@ -555,10 +555,18 @@ def intLattice3 : AddSubgroup (EuclideanSpace ℝ (Fin 3)) where
     obtain ⟨na, hna⟩ := ha i
     exact ⟨-na, by simp [hna]⟩
 
-/-- The lattice ℤ³ is countable. -/
+/-- The lattice ℤ³ is countable via injection to (Fin 3 → ℤ). -/
 instance : Countable intLattice3 := by
-  -- The integer lattice is countable since ℤ is countable and we have finitely many coordinates
-  sorry -- Would need to show injection into ℤ × ℤ × ℤ
+  -- Use Function.Injective.countable: if f : A → B is injective and B is countable, then A is countable
+  have h : Function.Injective (fun (v : intLattice3) i => (v.2 i).choose) := by
+    intro ⟨v, hv⟩ ⟨w, hw⟩ heq
+    simp only [Subtype.mk.injEq]
+    ext i
+    have hvi : v i = ↑((hv i).choose) := (hv i).choose_spec
+    have hwi : w i = ↑((hw i).choose) := (hw i).choose_spec
+    have heqi : (hv i).choose = (hw i).choose := congr_fun heq i
+    rw [hvi, hwi, heqi]
+  exact h.countable
 
 /-- The standard fundamental domain: the unit cube [0,1)³. -/
 def unitCube3 : Set (EuclideanSpace ℝ (Fin 3)) :=
@@ -584,10 +592,44 @@ theorem unitCube3_volume : MeasureTheory.volume unitCube3 = 1 := by
 def dirichletEllipsoid (d : ℕ) (R : ℝ) : Set (EuclideanSpace ℝ (Fin 3)) :=
   {v | v 0 ^ 2 + d * (v 1) ^ 2 + d * (v 2) ^ 2 ≤ R}
 
-/-- The Dirichlet ellipsoid is convex. -/
-theorem dirichletEllipsoid_convex (d : ℕ) (R : ℝ) (hd : 0 < d) (hR : 0 ≤ R) :
+/-- The Dirichlet ellipsoid is convex.
+This follows from the fact that sublevel sets of convex functions are convex,
+and f(v) = v₀² + d*v₁² + d*v₂² is a convex function (positive semidefinite quadratic). -/
+theorem dirichletEllipsoid_convex (d : ℕ) (R : ℝ) (_hd : 0 < d) (_hR : 0 ≤ R) :
     Convex ℝ (dirichletEllipsoid d R) := by
-  sorry -- Standard convexity argument for sublevel sets of convex functions
+  intro x hx y hy a b ha hb hab
+  simp only [dirichletEllipsoid, Set.mem_setOf_eq] at hx hy ⊢
+  -- Key lemma: for t ∈ [0,1], (tx + (1-t)y)² ≤ t·x² + (1-t)·y² (convexity of square)
+  have sq_convex : ∀ u v : ℝ, (a * u + b * v) ^ 2 ≤ a * u ^ 2 + b * v ^ 2 := by
+    intro u v
+    -- Algebraic identity: a*u² + b*v² - (a*u + b*v)² = a*b*(u-v)² when a+b=1
+    have key : a * u^2 + b * v^2 - (a * u + b * v)^2 = a * b * (u - v)^2 := by
+      have h1 : b = 1 - a := by linarith
+      have h2 : a = 1 - b := by linarith
+      rw [h1, h2]
+      ring
+    -- Since ab(u-v)² ≥ 0, we have a*u² + b*v² ≥ (au+bv)²
+    have h_nonneg : 0 ≤ a * b * (u - v)^2 := by
+      apply mul_nonneg
+      apply mul_nonneg ha hb
+      exact sq_nonneg _
+    linarith
+  -- Apply to each coordinate
+  have h0 := sq_convex (x 0) (y 0)
+  have h1 := sq_convex (x 1) (y 1)
+  have h2 := sq_convex (x 2) (y 2)
+  have hd' : (0 : ℝ) ≤ d := Nat.cast_nonneg d
+  -- Calculate using PiLp structure
+  have heq : (a • x + b • y) 0 ^ 2 + ↑d * (a • x + b • y) 1 ^ 2 + ↑d * (a • x + b • y) 2 ^ 2
+           = (a * x 0 + b * y 0) ^ 2 + d * (a * x 1 + b * y 1) ^ 2 + d * (a * x 2 + b * y 2) ^ 2 := by
+    congr 1 <;> congr 1 <;> simp only [PiLp.add_apply, PiLp.smul_apply, smul_eq_mul]
+  rw [heq]
+  calc (a * x 0 + b * y 0) ^ 2 + d * (a * x 1 + b * y 1) ^ 2 + d * (a * x 2 + b * y 2) ^ 2
+      ≤ (a * (x 0)^2 + b * (y 0)^2) + d * (a * (x 1)^2 + b * (y 1)^2) + d * (a * (x 2)^2 + b * (y 2)^2) := by
+        gcongr
+      _ = a * (x 0^2 + d * (x 1)^2 + d * (x 2)^2) + b * (y 0^2 + d * (y 1)^2 + d * (y 2)^2) := by ring
+      _ ≤ a * R + b * R := by gcongr
+      _ = R := by rw [← add_mul, hab, one_mul]
 
 /-- The Dirichlet ellipsoid is symmetric. -/
 theorem dirichletEllipsoid_symmetric (d : ℕ) (R : ℝ) :
