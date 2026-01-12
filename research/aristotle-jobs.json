@@ -1,0 +1,59 @@
+{
+  "version": "1.0",
+  "description": "Track Aristotle proof search jobs across research sessions",
+  "jobs": [
+    {
+      "project_id": "a17cbbc2-c537-42b1-8c50-f82e1513045e",
+      "file": "proofs/Proofs/Erdos340GreedySidon.lean",
+      "problem_id": "erdos-340-greedy-sidon",
+      "submitted": "2026-01-12T00:55:34Z",
+      "sorries": [
+        "sidon_lower_bound",
+        "sidon_upper_bound",
+        "greedySidon_growth_third",
+        "erdos_340",
+        "_22_mem_diffSet",
+        "_33_mem_diffSet_iff"
+      ],
+      "notes": "First attempt - includes open conjecture erdos_340 which cannot be proven. Future: submit selectively.",
+      "status": "stalled",
+      "last_check": {
+        "timestamp": "2026-01-12T02:45:00Z",
+        "percent": 5,
+        "runtime_minutes": 110
+      },
+      "outcome": "Killed after 110+ min at 5% - likely stuck on open conjecture erdos_340"
+    }
+  ],
+  "completed": [],
+  "failed": [],
+  "lessons_learned": [
+    "Aristotle = proof search (known results), Claude = creative work (OPEN problems)",
+    "Don't send OPEN conjectures to Aristotle - no proof exists to find",
+    "DO attempt OPEN problems ourselves - that's our mission!",
+    "ALLOW OVERNIGHT RUNS - Erdős #728 took 6 hours and succeeded with 1416 lines!",
+    "Aristotle can formalize hard theorems if a proof exists somewhere",
+    "Use --no-wait for async workflow, check status next morning",
+    "Classify sorries: TRIVIAL (fast), HARD (overnight OK), OPEN (Claude only)"
+  ],
+  "pending_candidates": [
+    {
+      "problemId": "erdos-4",
+      "erdosNumber": 4,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 10,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos4.lean",
+      "notes": "Tractability: 10/10. solved (formalization target); short statement"
+    },
+    {
+      "problemId": "erdos-6",
+      "erdosNumber": 6,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 9,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos6.lean",
+      "notes": "Tractability: 9/10. solved (formalization target); moderate statement"
+    }
+  ]
+}

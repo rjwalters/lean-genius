@@ -344,3 +344,86 @@ When Mathlib lacks something, assess before blocking:
 | `research/claims/<id>.lock/` | Atomic locks |
 | `research/problems/<id>/knowledge.md` | Problem history |
 | `proofs/Proofs/*.lean` | Proof files |
+| `research/aristotle-jobs.json` | Aristotle job tracking |
+| `research/SORRY-CLASSIFICATION.md` | Sorry classification guide |
+
+---
+
+## Aristotle Integration (Overnight Runs)
+
+Aristotle can prove HARD theorems given enough time (e.g., Erdős #728 took 6 hours for 1416 lines of proof).
+
+### Tool Roles
+
+| Tool | Strength | Best For |
+|------|----------|----------|
+| **Claude** | Strategic reasoning, creativity | OPEN problems, proof architecture, new approaches |
+| **Aristotle** | Proof search, tactic grinding | HARD problems with known proofs |
+
+**Our mission is solving OPEN problems!** But use tools appropriately:
+- Aristotle formalizes KNOWN mathematics (proof exists somewhere)
+- Claude attempts UNKNOWN mathematics (creative work needed)
+
+### Sorry Classification (for Aristotle submission)
+
+| Classification | Description | Send to Aristotle? |
+|----------------|-------------|-------------------|
+| **TRIVIAL** | Direct computation | Yes (fast) |
+| **HARD** | Known result, needs formalization | Yes (overnight OK) |
+| **OPEN** | Unsolved conjecture | No - work on it ourselves! |
+
+### Why OPEN Problems Shouldn't Go to Aristotle
+
+Aristotle does **proof search** - it looks for proofs that exist. For OPEN problems:
+- No proof exists to find
+- Aristotle will spin forever at low progress
+- Our time is better spent with Claude attempting creative approaches
+
+```lean
+-- OPEN: Send to Claude for creative work, not Aristotle
+theorem erdos_340 (ε : ℝ) (hε : ε > 0) :
+    ∃ C, ∀ᶠ N in atTop, N^(1/2 - ε) ≤ C * greedySidonCount N := by sorry
+
+-- HARD: Perfect for Aristotle - known result needs formalization
+theorem sidon_lower_bound (A : Finset ℕ) (hA : IsSidon A) :
+    A.max' hne ≥ A.card * (A.card - 1) / 2 := by sorry
+```
+
+### Overnight Submission Workflow
+
+```bash
+# 1. Review sorries and classify
+grep -n "sorry" proofs/Proofs/YourFile.lean
+
+# 2. Create provable-only version if needed (exclude OPEN conjectures)
+cp YourFile.lean YourFile-provable.lean
+# Edit to remove/comment OPEN theorems
+
+# 3. Submit for overnight processing
+./research/scripts/aristotle-submit.sh proofs/Proofs/YourFile-provable.lean problem-id "Notes"
+
+# 4. Check status next morning
+./research/scripts/aristotle-status.sh
+
+# 5. Retrieve completed solutions
+./research/scripts/aristotle-status.sh --retrieve
+```
+
+### When to Use Aristotle
+
+| Scenario | Action |
+|----------|--------|
+| Multiple HARD sorries | Submit overnight |
+| Stuck on proof search | Let Aristotle try |
+| Simple computations | Submit (fast) |
+| OPEN conjectures | **NEVER submit** |
+| Need result tomorrow | Submit tonight |
+
+### Success Example: Erdős #728
+
+- **Input:** File with HARD sorries only
+- **Runtime:** 6 hours
+- **Output:** 1,416 lines of complete proof
+- **Result:** Zero sorries, builds successfully
+
+This demonstrates that patience with HARD problems pays off!

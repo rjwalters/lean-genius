@@ -96,6 +96,93 @@ RETURNS:
       properties: {},
     },
   },
+  {
+    name: 'aristotle_submit',
+    description: `Submit a Lean file for proving WITHOUT waiting (async workflow).
+
+USE THIS FOR:
+- Long-running proofs (10+ minutes expected)
+- Batch submissions where you want to continue working
+- When you want to monitor progress manually
+
+WORKFLOW:
+1. Call aristotle_submit → get project_id
+2. Continue working on other tasks
+3. Periodically call aristotle_status to check progress
+4. When COMPLETE, call aristotle_retrieve to get solution
+
+RETURNS:
+- project_id: Use this to check status and retrieve results later`,
+    inputSchema: {
+      type: 'object',
+      properties: {
+        file_path: {
+          type: 'string',
+          description: 'Absolute path to Lean file with sorries to prove',
+        },
+        output_path: {
+          type: 'string',
+          description: 'Optional: path to save the solved proof when retrieved',
+        },
+      },
+      required: ['file_path'],
+    },
+  },
+  {
+    name: 'aristotle_status',
+    description: `Check the status of a submitted Aristotle project (non-blocking).
+
+STATUSES:
+- QUEUED: Waiting to start
+- IN_PROGRESS: Actively working (check percentComplete)
+- COMPLETE: Ready to retrieve solution
+- FAILED: Could not find proof
+
+Use this to monitor long-running proofs without blocking.`,
+    inputSchema: {
+      type: 'object',
+      properties: {
+        project_id: {
+          type: 'string',
+          description: 'Project ID returned from aristotle_submit',
+        },
+      },
+      required: ['project_id'],
+    },
+  },
+  {
+    name: 'aristotle_retrieve',
+    description: `Retrieve the solution for a completed Aristotle project.
+
+Only works when status is COMPLETE. Returns the solved Lean file.`,
+    inputSchema: {
+      type: 'object',
+      properties: {
+        project_id: {
+          type: 'string',
+          description: 'Project ID of a COMPLETE project',
+        },
+        output_path: {
+          type: 'string',
+          description: 'Path to save the solved proof',
+        },
+      },
+      required: ['project_id', 'output_path'],
+    },
+  },
+  {
+    name: 'aristotle_list',
+    description: `List all Aristotle projects and their statuses.
+
+Useful for:
+- Finding forgotten project IDs
+- Checking overall queue status
+- Identifying completed proofs to retrieve`,
+    inputSchema: {
+      type: 'object',
+      properties: {},
+    },
+  },
 ]
 
 class AristotleMCPServer {
@@ -143,6 +230,14 @@ class AristotleMCPServer {
             return await this.handleInformal(args ?? {})
           case 'aristotle_version':
             return await this.handleVersion()
+          case 'aristotle_submit':
+            return await this.handleSubmit(args ?? {})
+          case 'aristotle_status':
+            return await this.handleStatus(args ?? {})
+          case 'aristotle_retrieve':
+            return await this.handleRetrieve(args ?? {})
+          case 'aristotle_list':
+            return await this.handleList()
           default:
             throw new Error(`Unknown tool: ${name}`)
         }
@@ -265,6 +360,128 @@ class AristotleMCPServer {
         ],
         isError: true,
       }
+    }
+  }
+
+  private async handleSubmit(args: Record<string, unknown>) {
+    const filePath = args.file_path as string
+    const outputPath = args.output_path as string | undefined
+
+    if (!filePath) {
+      throw new Error('file_path is required')
+    }
+
+    const client = this.getClient()
+    const result = await client.submit(filePath, outputPath)
+
+    if (result.projectId) {
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Project submitted successfully!\n\n**Project ID:** \`${result.projectId}\`\n\nUse \`aristotle_status\` to check progress.\nUse \`aristotle_retrieve\` when complete.`,
+          },
+        ],
+      }
+    }
+
+    return {
+      content: [{ type: 'text', text: `Failed to submit: ${result.error}` }],
+      isError: true,
+    }
+  }
+
+  private async handleStatus(args: Record<string, unknown>) {
+    const projectId = args.project_id as string
+
+    if (!projectId) {
+      throw new Error('project_id is required')
+    }
+
+    const client = this.getClient()
+    const result = await client.getStatus(projectId)
+
+    if (result.error) {
+      return {
+        content: [{ type: 'text', text: `Error checking status: ${result.error}` }],
+        isError: true,
+      }
+    }
+
+    let message = `**Project:** \`${projectId}\`\n`
+    message += `**Status:** ${result.status}\n`
+    message += `**Progress:** ${result.percentComplete}%\n`
+    if (result.description) {
+      message += `**Description:** ${result.description}\n`
+    }
+
+    if (result.status === 'COMPLETE') {
+      message += `\n✅ Ready to retrieve! Use \`aristotle_retrieve\` to get the solution.`
+    } else if (result.status === 'FAILED') {
+      message += `\n❌ Proof search failed. Consider breaking into smaller lemmas.`
+    }
+
+    return {
+      content: [{ type: 'text', text: message }],
+    }
+  }
+
+  private async handleRetrieve(args: Record<string, unknown>) {
+    const projectId = args.project_id as string
+    const outputPath = args.output_path as string
+
+    if (!projectId || !outputPath) {
+      throw new Error('project_id and output_path are required')
+    }
+
+    const client = this.getClient()
+    const result = await client.getSolution(projectId, outputPath)
+
+    if (result.success) {
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Solution retrieved successfully!\n\n**Saved to:** ${outputPath}\n\n## Solution\n\`\`\`lean\n${result.solution}\n\`\`\``,
+          },
+        ],
+      }
+    }
+
+    return {
+      content: [{ type: 'text', text: `Failed to retrieve: ${result.error}` }],
+      isError: true,
+    }
+  }
+
+  private async handleList() {
+    const client = this.getClient()
+    const result = await client.listProjects()
+
+    if (result.error) {
+      return {
+        content: [{ type: 'text', text: `Error listing projects: ${result.error}` }],
+        isError: true,
+      }
+    }
+
+    if (result.projects.length === 0) {
+      return {
+        content: [{ type: 'text', text: 'No projects found.' }],
+      }
+    }
+
+    let message = '## Aristotle Projects\n\n'
+    message += '| Project ID | Status | File | Progress |\n'
+    message += '|------------|--------|------|----------|\n'
+
+    for (const p of result.projects) {
+      const progress = p.percentComplete !== undefined ? `${p.percentComplete}%` : '-'
+      message += `| \`${p.projectId.slice(0, 8)}...\` | ${p.status} | ${p.fileName || '-'} | ${progress} |\n`
+    }
+
+    return {
+      content: [{ type: 'text', text: message }],
     }
   }
 

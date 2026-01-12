@@ -1,0 +1,94 @@
+{
+  "id": "erdos-340-greedy-sidon",
+  "name": "Erdős #340: Greedy Sidon Sequence Growth",
+  "tier": "A",
+  "significance": 8,
+  "tractability": 5,
+  "status": "in-progress",
+  "description": "Let A = {1,2,4,8,13,21,31,45,66,...} be the greedy Sidon sequence. Conjecture: |A ∩ {1,...,N}| >> N^(1/2-ε) for all ε > 0. Best known bound is Ω(N^(1/3)).",
+  "tags": [
+    "number-theory",
+    "additive-combinatorics",
+    "sidon-sets",
+    "erdos-problem",
+    "open-conjecture"
+  ],
+  "knowledge": {
+    "insights": [
+      "Sidon sets (B₂ sequences) are sets where all pairwise sums are distinct",
+      "Greedy Sidon sequence: OEIS A005282, also called Mian-Chowla sequence",
+      "Axiomatization approach needed since computational construction is complex",
+      "DeepMind has formalized Sidon sets but not in Mathlib",
+      "Mathlib has asymptotics infrastructure (IsBigO, atTop filters)",
+      "Key insight: Sidon property implies distinct pairwise differences (proved via IsSidon.diff_injective)",
+      "omega/linarith struggle with Nat subtraction - need explicit Nat.sub_add_cancel in proofs",
+      "Don't submit open conjectures to Aristotle - it will spin indefinitely at low progress"
+    ],
+    "builtItems": [
+      "IsSidon definition at Erdos340GreedySidon.lean:55",
+      "IsSidon' alternative characterization at Erdos340GreedySidon.lean:60",
+      "isSidon_empty theorem at Erdos340GreedySidon.lean:64",
+      "isSidon_singleton theorem at Erdos340GreedySidon.lean:69",
+      "isSidon_pair theorem at Erdos340GreedySidon.lean:76",
+      "IsSidon.subset theorem at Erdos340GreedySidon.lean:87",
+      "IsSidon.diff_injective theorem at Erdos340GreedySidon.lean:96 (KEY LEMMA - PROVED)",
+      "orderedPairsLt definition at Erdos340GreedySidon.lean:146",
+      "pairDiff definition at Erdos340GreedySidon.lean:150",
+      "sidon_pairDiff_injective theorem at Erdos340GreedySidon.lean:153 (PROVED)",
+      "sidon_diffSet_card theorem at Erdos340GreedySidon.lean:166 (PROVED)",
+      "sidon_diff_pos_bounded theorem at Erdos340GreedySidon.lean:180 (PROVED)",
+      "greedySidonSeq axiomatized at Erdos340GreedySidon.lean:165",
+      "greedySidonSeq_strictMono axiom at Erdos340GreedySidon.lean:171",
+      "greedySidonSeq_isSidon axiom at Erdos340GreedySidon.lean:174",
+      "greedySidon_strictMono derived at Erdos340GreedySidon.lean:206",
+      "greedySidonSet_isSidon derived at Erdos340GreedySidon.lean:210",
+      "greedySidonCount definition at Erdos340GreedySidon.lean:216",
+      "greedySidon_growth_third statement at Erdos340GreedySidon.lean:222",
+      "erdos_340 main conjecture statement at Erdos340GreedySidon.lean:230"
+    ],
+    "mathlibGaps": [
+      "No IsSidon definition in Mathlib - we built ~100 lines of infrastructure",
+      "No greedy Sidon sequence infrastructure",
+      "Need lemma for counting ordered pairs with a < b (card = n(n-1)/2)",
+      "Finset.offDiag_card exists but need partition into < and > halves"
+    ],
+    "nextSteps": [
+      "Complete orderedPairsLt_card counting lemma (n(n-1)/2)",
+      "Complete sidon_lower_bound nontrivial case using counting + pigeonhole",
+      "Complete sidon_upper_bound using Erdős-Turán bound",
+      "Attempt greedySidon_growth_third for N^(1/3) bound"
+    ],
+    "progressSummary": "PROGRESS: IsSidon.diff_injective PROVED, difference set infrastructure built"
+  },
+  "sessions": [
+    {
+      "date": "2026-01-11",
+      "mode": "FRESH",
+      "outcome": "progress",
+      "summary": "Created Erdos340GreedySidon.lean with IsSidon definition, basic lemmas, axiomatized greedy sequence, and main conjecture statement. Aristotle attempting harder sorries."
+    },
+    {
+      "date": "2026-01-12",
+      "mode": "REVISIT",
+      "outcome": "progress",
+      "summary": "Proved IsSidon.diff_injective (key lemma: Sidon sets have distinct pairwise differences). Built infrastructure for sidon_lower_bound: orderedPairsLt, pairDiff, sidon_pairDiff_injective, sidon_diffSet_card, sidon_diff_pos_bounded. Documented vision for distributed research platform. Aristotle job stalled at 5% after 110min (included open conjecture)."
+    }
+  ],
+  "references": [
+    {
+      "type": "website",
+      "url": "https://www.erdosproblems.com/340",
+      "note": "Official Erdős problems page"
+    },
+    {
+      "type": "oeis",
+      "url": "https://oeis.org/A005282",
+      "note": "OEIS A005282 - Mian-Chowla sequence"
+    },
+    {
+      "type": "paper",
+      "title": "Singer (1938)",
+      "note": "Perfect difference sets give h(N) ≥ (1-o(1))N^(1/2)"
+    }
+  ]
+}

@@ -224,4 +224,196 @@ export class AristotleClient {
     const result = await this.runCli(['--version'])
     return result.stdout.trim() || result.stderr.trim()
   }
+
+  /**
+   * Submit a file for proving WITHOUT waiting (async workflow).
+   * Returns immediately with project_id.
+   */
+  async submit(filePath: string, outputPath?: string): Promise<{ projectId: string; error?: string }> {
+    const args = ['prove-from-file', filePath, '--no-wait']
+    if (outputPath) {
+      args.push('--output-file', outputPath)
+    }
+
+    const result = await this.runCli(args)
+    const logs = result.stderr + result.stdout
+
+    const projectIdMatch = logs.match(/Created project ([a-f0-9-]+)/i)
+    const projectId = projectIdMatch?.[1]
+
+    if (projectId) {
+      return { projectId }
+    }
+
+    return { projectId: '', error: logs }
+  }
+
+  /**
+   * Check status of a project via Python API (non-blocking).
+   */
+  async getStatus(projectId: string): Promise<{
+    status: ProjectStatus
+    percentComplete: number
+    description?: string
+    error?: string
+  }> {
+    const pythonScript = `
+import asyncio
+import json
+from aristotlelib import Project
+
+async def check():
+    project = await Project.from_id("${projectId}")
+    print(json.dumps({
+        "status": project.status.name,
+        "percentComplete": project.percent_complete or 0,
+        "description": project.description
+    }))
+
+asyncio.run(check())
+`
+    const result = await this.runPython(pythonScript)
+
+    if (result.code !== 0) {
+      return {
+        status: ProjectStatus.FAILED,
+        percentComplete: 0,
+        error: result.stderr,
+      }
+    }
+
+    try {
+      const data = JSON.parse(result.stdout.trim())
+      return {
+        status: data.status as ProjectStatus,
+        percentComplete: data.percentComplete,
+        description: data.description,
+      }
+    } catch {
+      return {
+        status: ProjectStatus.FAILED,
+        percentComplete: 0,
+        error: `Failed to parse response: ${result.stdout}`,
+      }
+    }
+  }
+
+  /**
+   * Retrieve solution for a completed project.
+   */
+  async getSolution(projectId: string, outputPath: string): Promise<{
+    success: boolean
+    solution?: string
+    error?: string
+  }> {
+    const pythonScript = `
+import asyncio
+from aristotlelib import Project
+
+async def retrieve():
+    project = await Project.from_id("${projectId}")
+    if project.status.name != "COMPLETE":
+        print(f"ERROR:Project not complete, status: {project.status.name}")
+        return
+    path = await project.get_solution("${outputPath}")
+    print(f"SUCCESS:{path}")
+
+asyncio.run(retrieve())
+`
+    const result = await this.runPython(pythonScript)
+    const output = result.stdout.trim()
+
+    if (output.startsWith('SUCCESS:')) {
+      try {
+        const solution = await readFile(outputPath, 'utf-8')
+        return { success: true, solution }
+      } catch (e) {
+        return { success: false, error: `Failed to read solution: ${e}` }
+      }
+    }
+
+    if (output.startsWith('ERROR:')) {
+      return { success: false, error: output.slice(6) }
+    }
+
+    return { success: false, error: result.stderr || 'Unknown error' }
+  }
+
+  /**
+   * List all projects.
+   */
+  async listProjects(): Promise<{
+    projects: Array<{
+      projectId: string
+      status: string
+      fileName?: string
+      percentComplete?: number
+    }>
+    error?: string
+  }> {
+    const pythonScript = `
+import asyncio
+import json
+from aristotlelib import Project
+
+async def list_all():
+    projects = await Project.list_projects()
+    result = []
+    for p in projects:
+        result.append({
+            "projectId": p.project_id,
+            "status": p.status.name,
+            "fileName": p.file_name,
+            "percentComplete": p.percent_complete
+        })
+    print(json.dumps(result))
+
+asyncio.run(list_all())
+`
+    const result = await this.runPython(pythonScript)
+
+    if (result.code !== 0) {
+      return { projects: [], error: result.stderr }
+    }
+
+    try {
+      const projects = JSON.parse(result.stdout.trim())
+      return { projects }
+    } catch {
+      return { projects: [], error: `Failed to parse: ${result.stdout}` }
+    }
+  }
+
+  /**
+   * Run Python code via uvx with aristotlelib.
+   */
+  private async runPython(script: string): Promise<{ stdout: string; stderr: string; code: number }> {
+    return new Promise((resolve) => {
+      const proc = spawn('uvx', ['--from', 'aristotlelib', 'python3', '-c', script], {
+        env: {
+          ...process.env,
+          ARISTOTLE_API_KEY: this.apiKey,
+        },
+      })
+
+      let stdout = ''
+      let stderr = ''
+
+      proc.stdout.on('data', (data) => {
+        stdout += data.toString()
+      })
+
+      proc.stderr.on('data', (data) => {
+        stderr += data.toString()
+      })
+
+      proc.on('close', (code) => {
+        resolve({ stdout, stderr, code: code ?? 0 })
+      })
+
+      proc.on('error', (err) => {
+        resolve({ stdout, stderr: err.message, code: 1 })
+      })
+    })
+  }
 }
