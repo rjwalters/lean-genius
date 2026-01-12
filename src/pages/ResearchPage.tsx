@@ -5,7 +5,7 @@ import { researchListings } from '@/data/research'
 // import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
 import { Footer } from '@/components/Footer'
-import { ResearchCard, ContributeSection } from '@/components/research'
+import { ResearchCard, ContributeSection, RelatedToolsSection } from '@/components/research'
 import { PHASE_INFO, TIER_INFO } from '@/types/research'
 import type { ResearchPhase, ValueTier, ResearchStatus, ResearchListing } from '@/types/research'
 import {
@@ -194,6 +194,11 @@ export function ResearchPage() {
         {/* Contribute Section */}
         <div className="mt-8">
           <ContributeSection />
+        </div>
+
+        {/* Related Tools Section */}
+        <div className="mt-4">
+          <RelatedToolsSection />
         </div>
       </section>
 
