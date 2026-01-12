@@ -167,6 +167,8 @@ export interface CliOptions {
   range?: string
   /** Process next N uncached problems */
   batch?: number
+  /** Slow/polite mode - 30s between requests */
+  slow: boolean
   /** Ignore cache, fetch fresh */
   refresh: boolean
   /** Only generate gallery */

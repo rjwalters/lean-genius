@@ -38,13 +38,35 @@
   ],
   "pending_candidates": [
     {
-      "problemId": "erdos-18",
-      "erdosNumber": 18,
+      "problemId": "erdos-19",
+      "erdosNumber": 19,
       "source": "erdosproblems.com scrape",
       "tractabilityScore": 10,
       "reason": "Solved problem - known proof exists for Aristotle to formalize",
-      "suggestedFile": "proofs/Proofs/Erdos18.lean",
+      "suggestedFile": "proofs/Proofs/Erdos19.lean",
       "notes": "Tractability: 10/10. solved (formalization target); short statement"
+    },
+    {
+      "problemId": "erdos-20",
+      "erdosNumber": 20,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 10,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos20.lean",
+      "notes": "Tractability: 10/10. solved (formalization target); short statement"
+    },
+    {
+      "problemId": "erdos-17",
+      "erdosNumber": 17,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos17.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
     }
+  ],
+  "notes": [
+    "CORRECTED: erdos-18 is OPEN (practical numbers), removed from candidates",
+    "erdos-69 verified SOLVED via erdosproblems.com on 2026-01-11"
   ]
 }

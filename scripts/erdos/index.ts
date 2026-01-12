@@ -24,7 +24,7 @@
  */
 
 import type { CliOptions, PipelineStats, TransformedProblem } from './types'
-import { getCacheStats, ensureCacheDir, getProgressSummary, getNextUncachedBatch } from './cache'
+import { getCacheStats, ensureCacheDir, getProgressSummary, getNextUncachedBatch, getSlowConfig } from './cache'
 import { scrapeRange, scrapeProblems, getScrapeStats } from './scrape'
 import { transformProblems, getTransformStats } from './transform'
 import { filterDuplicates, printDedupeReport } from './dedupe'
@@ -41,6 +41,7 @@ function parseArgs(): CliOptions {
     dryRun: false,
     range: undefined,
     batch: undefined,
+    slow: false,
     refresh: false,
     galleryOnly: false,
     researchOnly: false,
@@ -63,6 +64,9 @@ function parseArgs(): CliOptions {
         break
       case '--continue':
         options.batch = 10
+        break
+      case '--slow':
+        options.slow = true
         break
       case '--refresh':
         options.refresh = true
@@ -109,6 +113,7 @@ Usage:
 Options:
   --batch N         Process next N uncached problems (default: 10)
   --continue        Continue from where we left off (same as --batch 10)
+  --slow            Polite mode - 30s between requests (recommended)
   --range 1-100     Process specific range of problems
   --dry-run         Preview without writing files
   --refresh         Ignore cache, fetch fresh
@@ -119,17 +124,14 @@ Options:
   --help, -h        Show this help
 
 Examples:
-  # Process next 10 problems (incremental)
-  npx tsx scripts/erdos/index.ts --continue
-
-  # Process next 20 problems
-  npx tsx scripts/erdos/index.ts --batch 20
+  # Process next 5 problems slowly (recommended)
+  npx tsx scripts/erdos/index.ts --batch 5 --slow
 
   # Check progress
   npx tsx scripts/erdos/index.ts --status
 
-  # Process specific range
-  npx tsx scripts/erdos/index.ts --range 1-100
+  # Process next 10 problems
+  npx tsx scripts/erdos/index.ts --continue --slow
 `)
 }
 
@@ -204,8 +206,15 @@ async function runPipeline(options: CliOptions): Promise<PipelineStats> {
     console.log('** DRY RUN MODE - No files will be written **\n')
   }
 
+  if (options.slow) {
+    console.log('** SLOW MODE - 30s between requests **\n')
+  }
+
   // Ensure cache directory exists
   ensureCacheDir()
+
+  // Get config (slow mode uses 30s delay)
+  const config = options.slow ? getSlowConfig() : undefined
 
   // Determine which problems to scrape
   let scraped: Awaited<ReturnType<typeof scrapeProblems>>
@@ -220,16 +229,16 @@ async function runPipeline(options: CliOptions): Promise<PipelineStats> {
       return stats
     }
     console.log(`Step 1: Scraping batch of ${batchNumbers.length} uncached problems...`)
-    scraped = await scrapeProblems(batchNumbers, undefined, !options.refresh)
+    scraped = await scrapeProblems(batchNumbers, config, !options.refresh)
   } else if (options.range) {
     // Range mode: scrape specific range
     const range = parseRange(options.range)
     console.log(`Step 1: Scraping problems ${range.start}-${range.end}...`)
-    scraped = await scrapeRange(range.start, range.end, undefined, !options.refresh)
+    scraped = await scrapeRange(range.start, range.end, config, !options.refresh)
   } else {
     // Default: scrape all (1-1200)
     console.log('Step 1: Scraping all problems 1-1200...')
-    scraped = await scrapeRange(1, 1200, undefined, !options.refresh)
+    scraped = await scrapeRange(1, 1200, config, !options.refresh)
   }
   stats.totalScraped = scraped.length
 

@@ -10,6 +10,7 @@ const CACHE_DIR = '.erdos-cache'
 const MANIFEST_FILE = 'manifest.json'
 const DEFAULT_MAX_AGE_HOURS = 24
 const DEFAULT_REQUEST_DELAY_MS = 5000  // 5 seconds between requests
+const SLOW_REQUEST_DELAY_MS = 30000   // 30 seconds for slow/polite mode
 const DEFAULT_MAX_RETRIES = 5
 const BATCH_SIZE = 10
 
@@ -27,6 +28,18 @@ const defaultConfig: CacheConfig = {
   requestDelayMs: DEFAULT_REQUEST_DELAY_MS,
   maxRetries: DEFAULT_MAX_RETRIES,
   batchSize: BATCH_SIZE,
+}
+
+const slowConfig: CacheConfig = {
+  ...defaultConfig,
+  requestDelayMs: SLOW_REQUEST_DELAY_MS,
+}
+
+/**
+ * Get config for slow/polite mode
+ */
+export function getSlowConfig(): CacheConfig {
+  return slowConfig
 }
 
 /**
