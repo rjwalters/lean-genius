@@ -1,0 +1,33 @@
+{
+  "id": "erdos-245",
+  "title": "Erdős Problem #245",
+  "slug": "erdos-245",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite set such that .... Is it true that\\[\\limsup_{N\\to \\infty}\\rvert}{\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert}\\ge...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/245",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos245Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 245,
+    "erdosUrl": "https://erdosproblems.com/245",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #245 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ be an infinite set such that $\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert=o(N)$. Is it true that\\[\\limsup_{N\\to \\infty}\\frac{\\lvert (A+A)\\cap \\{1,\\ldots,N\\}\\rvert}{\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert}\\geq 3?\\]\n\n\n\nErd\\H{o}s writes it is 'easy to see' that this holds with $3$ replaced by $2$, and that $3$ would be best possible here. We do not see an easy argument that this holds with $2$, but this follows e.g. from the main result of Mann \\cite{Ma60}.\n\nThe answer is yes, proved by Freiman \\cite{Fr73}.\n\nSee also [899] for the difference set analogue.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Fr73] Fre\\u{\\i}man, G. A., Foundations of a structural theory of set addition. (1973), vii+108.\n\n[Ma60] Mann, H. B., A refinement of the fundamental theorem on the density of the sum of two sets of integers. Pacific J. Math. (1960), 909-915.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

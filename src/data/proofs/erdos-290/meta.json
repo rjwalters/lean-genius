@@ -1,0 +1,33 @@
+{
+  "id": "erdos-290",
+  "title": "Erdős Problem #290",
+  "slug": "erdos-290",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Must there exist some ... such that\\[\\sum_{a\\leq n\\leq b}{n}={s_1}\\sum_{a\\leq n\\leq b+1}{n}={s_2},\\]with ... and ......",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/290",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos290Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 290,
+    "erdosUrl": "https://erdosproblems.com/290",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #290 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a\\geq 1$. Must there exist some $b>a$ such that\\[\\sum_{a\\leq n\\leq b}\\frac{1}{n}=\\frac{r_1}{s_1}\\textrm{ and }\\sum_{a\\leq n\\leq b+1}\\frac{1}{n}=\\frac{r_2}{s_2},\\]with $(r_i,s_i)=1$ and $s_2<s_1$? If so, how does this $b(a)$ grow with $a$?\n\n\n\nFor example,\\[\\sum_{3\\leq n\\leq 5}\\frac{1}{n} = \\frac{47}{60}\\textrm{ and }\\sum_{3\\leq n\\leq 6}\\frac{1}{n}=\\frac{19}{20}.\\]The smallest $b$ for each $a$ are listed at A375081 at the OEIS.\n\nThis was resolved in the affirmative by van Doorn \\cite{vD24}, who proved $b=b(a)$ always exists, and in fact $b(a) \\ll a$. Indeed, if $a\\in (3^k,3^{k+1}]$ then one can take $b=2\\cdot 3^{k+1}-1$. van Doorn also proves that $b(a)>a+(1/2-o(1))\\log a$, and considers various generalisations of the original problem.\n\nvan Doorn proves, more precisely, that $b(a)<4.374a$ for all $a>1$, and that $b(a)>a+0.54\\log a$ for all large $a$. He further proves that $b(a)<a+0.61\\log a$ for infinitely many $a$, and expects that there are infinitely many $a$ with $b(a)>a+(\\log a)^2$. It seems likely that $b(a)\\leq (1+o(1))a$, and perhaps even $b(a)\\leq a+(\\log a)^{O(1)}$.\n\n\n\n\nReferences\n\n\n[vD24] W. van Doorn, On the non-monotonicity of the denominator of generalized harmonic sums. arXiv:2411.03073 (2024).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

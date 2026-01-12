@@ -1,0 +1,33 @@
+{
+  "id": "erdos-246",
+  "title": "Erdős Problem #246",
+  "slug": "erdos-246",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... The set ... is complete - that is, every large integer is the sum of distinct integers of the form ... with ....\n\n\n\n...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/246",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos246Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 246,
+    "erdosUrl": "https://erdosproblems.com/246",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #246 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $(a,b)=1$. The set $\\{a^kb^l: k,l\\geq 0\\}$ is complete - that is, every large integer is the sum of distinct integers of the form $a^kb^l$ with $k,l\\geq 0$.\n\n\n\nProved by Birch \\cite{Bi59}. This also follows from a later more general result of Cassels \\cite{Ca60} (see [254]).\n\nDavenport observed in \\cite{Bi59} that this is still true even with $l\\ll_{a,b}1$. Hegyv\\'{a}ri \\cite{He00b} gave an explicit upper bound for this threshold (which is quadruple exponential in $a$ and $b$). This was improved to triply exponential by Fang and Chen \\cite{FaCh17}.\n\nYu \\cite{Yu24} showed that one can write any large $n$ as the sum of distinct integers of this form, all of which are $> n/(\\log n)^{1+o(1)}$.\n\n\n\n\nReferences\n\n\n[Bi59] Birch, B. J., Note on a problem of Erd\\H{o}s. Proc. Cambridge Philos. Soc. (1959), 370-373.\n\n[Ca60] Cassels, J. W. S., On the representation of integers as the sums of distinct summands taken from a fixed set. Acta Sci. Math. (Szeged) (1960), 111-124.\n\n[FaCh17] Fang, Jin-Hui and Chen, Yong-Gao, A quantitative form of the {E}rd\\H{o}s-{B}irch theorem. Acta Arith. (2017), 301--311.\n\n[He00b] Hegyv\\'ari, N., On the completeness of an exponential type sequence. Acta Math. Hungar. (2000), 127--135.\n\n[Yu24] Yu, Wang-Xing, On the representation of an exponential type sequence. Publ. Math. Debrecen (2024), 253--261.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

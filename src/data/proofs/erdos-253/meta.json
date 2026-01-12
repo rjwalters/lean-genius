@@ -1,0 +1,33 @@
+{
+  "id": "erdos-253",
+  "title": "Erdős Problem #253",
+  "slug": "erdos-253",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence of integers such that .... If every arithmetic progression contains infinitely many integers ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/253",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos253Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 253,
+    "erdosUrl": "https://erdosproblems.com/253",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #253 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_1<a_2<\\cdots $ be an infinite sequence of integers such that $a_{i+1}/a_i\\to 1$. If every arithmetic progression contains infinitely many integers which are the sum of distinct $a_i$ then every sufficiently large integer is the sum of distinct $a_i$.\n\n\n\nThis was disproved by Cassels \\cite{Ca60}.\n\n\n\n\nReferences\n\n\n[Ca60] Cassels, J. W. S., On the representation of integers as the sums of distinct summands taken from a fixed set. Acta Sci. Math. (Szeged) (1960), 111-124.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

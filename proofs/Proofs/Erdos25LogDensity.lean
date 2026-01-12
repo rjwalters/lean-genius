@@ -161,10 +161,36 @@ theorem logDensity_empty : HasLogDensity ∅ 0 := by
 theorem logWeightedCount_full (N : ℕ) :
     logWeightedCount (Set.univ \ {0}) N = harmonicSum N := by
   unfold logWeightedCount harmonicSum
-  -- LHS: ∑ n ∈ range (N+1), if n ∈ univ\{0} ∧ n ≠ 0 then 1/n else 0
-  -- RHS: harmonic N = ∑ i ∈ range N, 1/(i+1)
-  -- These are equal by reindexing: sum over {1,...,N} with 1/n = sum over {0,...,N-1} with 1/(i+1)
-  sorry
+  simp only [Set.mem_diff, Set.mem_univ, Set.mem_singleton_iff, true_and, ne_eq, and_self]
+  -- Goal: ∑ n ∈ range (N+1), if ¬n = 0 then 1/n else 0 = harmonic N
+  have hsub : Finset.Icc 1 N ⊆ Finset.range (N + 1) := by
+    intro n hn; simp only [Finset.mem_Icc] at hn; simp only [Finset.mem_range]; omega
+  have h_cond : ∑ n ∈ Finset.range (N + 1), (if ¬n = 0 then (1 : ℝ) / n else 0) =
+                ∑ n ∈ Finset.Icc 1 N, (1 : ℝ) / n := by
+    rw [← Finset.sum_subset hsub]
+    · apply Finset.sum_congr rfl
+      intro n hn
+      simp only [Finset.mem_Icc] at hn
+      have hn' : ¬(n = 0) := by omega
+      simp [hn']
+    · intro n hn_range hn_not_Icc
+      simp only [Finset.mem_range] at hn_range
+      simp only [Finset.mem_Icc, not_and, not_le] at hn_not_Icc
+      have h0 : n = 0 := by
+        by_contra hne
+        have : 1 ≤ n := Nat.one_le_iff_ne_zero.mpr hne
+        specialize hn_not_Icc this; omega
+      simp [h0]
+  rw [h_cond]
+  -- Relate ∑ n ∈ Icc 1 N, 1/n to harmonic N via reindexing
+  have himage : (Finset.range N).image (· + 1) = Finset.Icc 1 N := by
+    ext x; simp only [Finset.mem_image, Finset.mem_range, Finset.mem_Icc]
+    constructor
+    · rintro ⟨i, hi, rfl⟩; omega
+    · intro ⟨h1, h2⟩; exact ⟨x - 1, by omega, by omega⟩
+  rw [← himage, Finset.sum_image]
+  · simp only [harmonic, one_div]; push_cast; rfl
+  · intro x _ y _ h; have : x + 1 = y + 1 := h; omega
 
 /-- The full set of positive integers has log density 1.
     This uses that Σ_{n≤N} 1/n ~ log(N). -/

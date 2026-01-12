@@ -1,0 +1,33 @@
+{
+  "id": "erdos-257",
+  "title": "Erdős Problem #257",
+  "slug": "erdos-257",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite set. Is\\[\\sum_{n\\in A}{2^n-1}\\]irrational?\n\n\n\nIf ... then this series is ..., where ... is the number ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/257",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos257Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 257,
+    "erdosUrl": "https://erdosproblems.com/257",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #257 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ be an infinite set. Is\\[\\sum_{n\\in A}\\frac{1}{2^n-1}\\]irrational?\n\n\n\nIf $A=\\mathbb{N}$ then this series is $\\sum_{n}\\frac{d(n)}{2^n}$, where $d(n)$ is the number of divisors of $n$, which Erd\\H{o}s \\cite{Er48} proved is irrational. In general, if $f_A(n)$ counts the number of divisors of $n$ which are elements of $A$ then\\[\\sum_{n\\in A}\\frac{1}{2^n-1}=\\sum_n \\frac{f_A(n)}{2^n}.\\]The case when $A$ is the set of primes is [69]. This case (and when $A$ is the set of prime powers) was settled in the affirmative by Tao and Ter\\\"{a}v\\\"{a}inen \\cite{TaTe25}.\n\nErd\\H{o}s \\cite{Er68d} proved this sum is irrational whenever $(a,b)=1$ for all $a\\neq b\\in A$ and $\\sum_{n\\in A}\\frac{1}{n}<\\infty$ (and thought that the condition $(a,b)=1$ could be dropped by complicating his proof).\n\nThere is nothing special about $2$ here, and this sum is likely irrational with $2$ replaced by any integer $t\\geq 2$.\n\nIn \\cite{Er88c} Erd\\H{o}s goes further and speculates that $\\sum_{n\\in A}\\frac{1}{2^n-t_n}$ is irrational for every infinite set $A$ and bounded sequence $t_n$ (presumably of integers, and presumably excluding the case when $t_n=0$ for all $n$). This was disproved by Kova\\v{c} and Tao \\cite{KoTa24}, and in the comments Kova\\v{c} has sketched a proof that there exists some choice of $t_n$ with $1\\leq t_n\\leq 6$ such that this sum is rational.\n\n\n\n\nReferences\n\n\n[Er48] Erd\\H{o}s, P., On arithmetical properties of Lambert series. J. Indian Math. Soc. (N.S.) (1948), 63-66.\n\n[Er68d] Erd\\H{o}s, P., On the irrationality of certain series. Math. Student (1968), 222--226.\n\n[Er88c] Erd\\\"{o}s, P., On the irrationality of certain series: problems and results. New advances in transcendence theory (Durham, 1986) (1988), 102-109.\n\n[KoTa24] Kova\\vC, V. and Tao T., On several irrationality problems for Ahmes series. arXiv:2406.17593 (2024).\n\n[TaTe25] T. Tao and J. Ter\\\"{a}v\\\"{a}inen, Quantitative correlations and some problems on prime factors of consecutive integers. arXiv:2512.01739 (2025).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

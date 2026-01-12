@@ -1,0 +1,33 @@
+{
+  "id": "erdos-252",
+  "title": "Erdős Problem #252",
+  "slug": "erdos-252",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and .... Is\\[\\sum {n!}\\]irrational?\n\n\n\nThis is known now for .... The cases ... are reasonably straightforward, as ob...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/252",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos252Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 252,
+    "erdosUrl": "https://erdosproblems.com/252",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #252 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 1$ and $\\sigma_k(n)=\\sum_{d\\mid n}d^k$. Is\\[\\sum \\frac{\\sigma_k(n)}{n!}\\]irrational?\n\n\n\nThis is known now for $1\\leq k\\leq 4$. The cases $k=1,2$ are reasonably straightforward, as observed by Erd\\H{o}s \\cite{Er52}. The case $k=3$ was proved independently by Schlage-Puchta \\cite{ScPu06} and Friedlander, Luca, and Stoiciu \\cite{FLC07}. The case $k=4$ was proved by Pratt \\cite{Pr22}.\n\nIt is known that this sum is irrational for all $k\\geq 1$ conditional on either Schinzel's conjecture (Schlage-Puchta \\cite{ScPu06}) or the prime tuples conjecture (Friedlander, Luca, and Stoiciu \\cite{FLC07}).\n\nThis is discussed in problem B14 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er52] Erd\\H{o}s, P., Problem 4493. Amer. Math. Monthly (1952), 557-558.\n\n[FLC07] Friedlander, J. B. and Luca, F. and Stoiciu, M., On the irrationality of a divisor function series. Integers (2007).\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Pr22] Pratt, K., The irrationality of a divisor function series of Erd\\H{o}s and Kac. arXiv:2209.11124 (2022).\n\n[ScPu06] Schlage-Puchta, J. C., The irrationality of a number theoretical series. Ramanujan J. (2006), 455-460.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

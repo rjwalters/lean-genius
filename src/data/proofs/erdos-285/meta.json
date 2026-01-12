@@ -1,0 +1,33 @@
+{
+  "id": "erdos-285",
+  "title": "Erdős Problem #285",
+  "slug": "erdos-285",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimal value of ... such that there exist ... with\\[1={n_1}+\\cdots+{n_k}.\\]Is it true that\\[f(k)=(1+o(1)){e-1...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/285",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos285Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 285,
+    "erdosUrl": "https://erdosproblems.com/285",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #285 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(k)$ be the minimal value of $n_k$ such that there exist $n_1<n_2<\\cdots <n_k$ with\\[1=\\frac{1}{n_1}+\\cdots+\\frac{1}{n_k}.\\]Is it true that\\[f(k)=(1+o(1))\\frac{e}{e-1}k?\\]\n\n\n\nIt is trivial that $f(k)\\geq (1+o(1))\\frac{e}{e-1}k$, since for any $u\\geq 1$\\[\\sum_{e\\leq n\\leq eu}\\frac{1}{n}= 1+o(1),\\]and so if $eu\\approx f(k)$ then $k\\leq \\frac{e-1}{e}f(k)$. Proved by Martin \\cite{Ma00}.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Ma00] Martin, Greg, Denser Egyptian fractions. Acta Arith. (2000), 231-260.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

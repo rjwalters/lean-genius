@@ -596,7 +596,7 @@
       "significance": 7,
       "tractability": 6,
       "status": "in-progress",
-      "notes": "PROGRESS: Created Erdos25LogDensity.lean with density definitions, conjecture, proofs",
+      "notes": "PROGRESS: logWeightedCount_full PROVED (9→8 sorries). Core log density infrastructure complete. Reindexing technique: Icc 1 N ↔ range N via i↦i+1.",
       "tags": [
         "number-theory",
         "sequences",
@@ -611,7 +611,7 @@
       "significance": 6,
       "tractability": 4,
       "status": "in-progress",
-      "notes": "PROGRESS: Created Erdos28AdditiveBases.lean with definitions, conjecture statements, examples",
+      "notes": "PROGRESS: 7→4 sorries. Proved isAsymptoticBasis_iff, pairs_summing_finite, repFunc_pos_of_mem_sumset. Key: finiteness via Iio product.",
       "tags": [
         "number-theory",
         "additive-combinatorics",

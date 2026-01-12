@@ -191,10 +191,99 @@ theorem twin_prime_implies_zero_limit (h : ∃ᶠ n in atTop, primeGap n = 2) :
     This was later improved to gaps ≤ 246 by the Polymath project. -/
 axiom zhang_bounded_gaps : ∃ H : ℕ, ∃ᶠ n in atTop, primeGap n ≤ H
 
+/-- Extract a strictly increasing subsequence from a frequently-true predicate. -/
+lemma strictly_increasing_from_frequently {P : ℕ → Prop} (h : ∃ᶠ n in atTop, P n) :
+    ∃ f : ℕ → ℕ, StrictMono f ∧ ∀ i, P (f i) := by
+  have hfreq : ∀ N, ∃ n ≥ N, P n := by
+    intro N
+    by_contra hc
+    push_neg at hc
+    apply h
+    filter_upwards [Filter.eventually_ge_atTop N] with n hn
+    exact hc n hn
+  have hfreq' : ∀ N, ∃ n > N, P n := by
+    intro N
+    obtain ⟨n, hn, hPn⟩ := hfreq (N + 1)
+    exact ⟨n, by omega, hPn⟩
+  choose g hg_gt hg_P using hfreq'
+  let f : ℕ → ℕ := fun n => Nat.rec (g 0) (fun k fk => g fk) n
+  use f
+  constructor
+  · intro a b hab
+    induction hab with
+    | refl => exact hg_gt (f a)
+    | step _ ih => exact Nat.lt_trans ih (hg_gt (f _))
+  · intro i
+    induction i with
+    | zero => exact hg_P 0
+    | succ k _ => exact hg_P (f k)
+
 /-- Zhang's theorem implies 0 is a limit point. -/
 theorem zhang_implies_zero_limit : IsLimitPoint 0 := by
-  -- Bounded gaps / log(n) → 0 as n → ∞
-  sorry
+  obtain ⟨H, hfreq⟩ := zhang_bounded_gaps
+  obtain ⟨f, hf_mono, hf_gap⟩ := strictly_increasing_from_frequently hfreq
+  use f, hf_mono
+  rw [Metric.tendsto_atTop]
+  intro ε hε
+  have h_f_tends : Tendsto f atTop atTop := StrictMono.tendsto_atTop hf_mono
+  have h_log_tends : Tendsto (fun k => Real.log (f k : ℝ)) atTop atTop := by
+    apply Tendsto.comp Real.tendsto_log_atTop
+    exact Tendsto.comp tendsto_natCast_atTop_atTop h_f_tends
+  -- Eventually log (f k) > H / ε
+  have h_log_bound : ∀ᶠ k in atTop, Real.log (f k : ℝ) > H / ε := by
+    rw [Filter.tendsto_atTop_atTop] at h_log_tends
+    obtain ⟨N, hN⟩ := h_log_tends (H / ε + 1)
+    filter_upwards [Filter.eventually_ge_atTop N] with k hk
+    have := hN k hk
+    linarith
+  -- Eventually f k > 1
+  have h_f_pos : ∀ᶠ k in atTop, 1 < f k := by
+    filter_upwards [Filter.eventually_ge_atTop 2] with k hk
+    have hf01 : f 0 < f 1 := hf_mono (Nat.zero_lt_one)
+    have hf1k : f 1 < f k := hf_mono (by omega : 1 < k)
+    have hf1_ge1 : f 1 ≥ 1 := by omega
+    omega
+  -- Combine the eventually conditions
+  obtain ⟨N, hN⟩ := (h_log_bound.and h_f_pos).exists_forall_of_atTop
+  use N
+  intro k hk
+  obtain ⟨h_log_k, h_fk_gt1⟩ := hN k hk
+  simp only [Function.comp_apply, dist_zero_right]
+  have h_fk_pos : 0 < (f k : ℝ) := by
+    have : 1 < f k := h_fk_gt1
+    have : 0 < f k := by omega
+    exact Nat.cast_pos.mpr this
+  have h_log_pos : 0 < Real.log (f k : ℝ) := by
+    apply Real.log_pos
+    have : 1 < f k := h_fk_gt1
+    exact_mod_cast this
+  unfold normalizedGap
+  have h_fk_ne : f k ≠ 0 := by
+    have : 1 < f k := h_fk_gt1
+    omega
+  simp only [h_fk_ne, ↓reduceIte]
+  have h_gap : primeGap (f k) ≤ H := hf_gap k
+  have h_bound : (primeGap (f k) : ℝ) / Real.log (f k : ℝ) ≤ H / Real.log (f k : ℝ) := by
+    apply div_le_div_of_nonneg_right
+    · exact_mod_cast h_gap
+    · exact le_of_lt h_log_pos
+  -- Key: log (f k) > H / ε implies H / log (f k) < ε
+  have h_final : (H : ℝ) / Real.log (f k : ℝ) < ε := by
+    have hlog : Real.log (f k : ℝ) > H / ε := h_log_k
+    have hε_pos : (0 : ℝ) < ε := hε
+    have h_log_pos' : Real.log (f k : ℝ) > 0 := h_log_pos
+    have hε_ne : ε ≠ 0 := ne_of_gt hε_pos
+    rw [div_lt_iff₀ h_log_pos']
+    have h1 : ε * Real.log (f k : ℝ) > ε * (H / ε) := by
+      apply mul_lt_mul_of_pos_left hlog hε_pos
+    have h2 : ε * ((H : ℝ) / ε) = H := by field_simp
+    linarith
+  have h_nonneg : 0 ≤ (primeGap (f k) : ℝ) / Real.log (f k : ℝ) := by
+    apply div_nonneg
+    · exact Nat.cast_nonneg _
+    · exact le_of_lt h_log_pos
+  rw [Real.norm_of_nonneg h_nonneg]
+  linarith
 
 #check erdos_5
 #check limitPointSet

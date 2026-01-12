@@ -1,0 +1,33 @@
+{
+  "id": "erdos-272",
+  "title": "Erdős Problem #272",
+  "slug": "erdos-272",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... What is the largest ... such that there are ... with ... a non-empty arithmetic progression for all ...?\n\n\n\nSimonovi...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/272",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos272Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 272,
+    "erdosUrl": "https://erdosproblems.com/272",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #272 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N\\geq 1$. What is the largest $t$ such that there are $A_1,\\ldots,A_t\\subseteq \\{1,\\ldots,N\\}$ with $A_i\\cap A_j$ a non-empty arithmetic progression for all $i\\neq j$?\n\n\n\nSimonovits and S\\'{o}s \\cite{SiSo81} have shown that $t\\ll N^2$.\n\nErd\\H{o}s and Graham asked whether the maximal $t$ is achieved when we take the $A_i$ to be all arithmetic progressions in $\\{1,\\ldots,N\\}$ containing some fixed element, 'presumably the integer $\\lfloor N/2\\rfloor$'. This was disproved by Simonovits and S\\'{o}s \\cite{SiSo81}, who observed that taking all sets containing at most $3$ elements, containing some fixed element, produces $\\binom{N}{2}+1$ many such sets, which is asymptotically greater than the number of arithmetic progressions containing a fixed element, which is $\\sim \\frac{\\pi^2}{24}N^2$.\n\nIf we drop the non-empty requirement then Graham, Simonovits, and S\\'{o}s \\cite{GSS80} have shown that\\[t\\leq \\binom{N}{3}+\\binom{N}{2}+\\binom{N}{1}+1\\]and this is best possible.\n\nSzabo \\cite{Sz99} proved that the maximal such $t$ is equal to\\[\\frac{N^2}{2}+O(N^{5/3}(\\log N)^3),\\]resolving the asymptotic question. On the other hand, Szabo showed that the conjecture of Simonovits and S\\'{o}s that $\\binom{n}{2}+1$ is best possible is false, giving a construction which yields\\[t \\geq \\binom{N}{2}+\\left\\lfloor\\frac{N-1}{4}\\right\\rfloor+1.\\]Szabo conjectures that the asymptotic $t=\\binom{N}{2}+O(N)$ holds, and that in any extremal example there is an integer contained in all sets.\n\n\n\n\nReferences\n\n\n[GSS80] Graham, R. L. and Simonovits, M. and S\\'{o}s, V. T., A note on the intersection properties of subsets of integers. J. Combin. Theory Ser. A (1980), 106-110.\n\n[SiSo81] Simonovits, Mikl\\'{o}s and S\\'{o}s, Vera T., Intersection properties of subsets of integers. European J. Combin. (1981), 363-372.\n\n[Sz99] Szab\\'o, Tibor, Intersection properties of subsets of integers. European J. Combin. (1999), 429--444.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

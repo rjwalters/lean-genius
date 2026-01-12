@@ -1,0 +1,33 @@
+{
+  "id": "erdos-244",
+  "title": "Erdős Problem #244",
+  "slug": "erdos-244",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Does the set of integers of the form ..., for some prime ... and ..., have density ...?\n\n\n\nOriginally asked to Erds ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/244",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos244Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 244,
+    "erdosUrl": "https://erdosproblems.com/244",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #244 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $C>1$. Does the set of integers of the form $p+\\lfloor C^k\\rfloor$, for some prime $p$ and $k\\geq 0$, have density $>0$?\n\n\n\nOriginally asked to Erd\\H{o}s by Kalm\\'{a}r. Erd\\H{o}s believed the answer is yes. Romanoff \\cite{Ro34} proved that the answer is yes if $C$ is an integer.\n\nDing \\cite{Di25} has proved that this is true for almost all $C>1$.\n\n\n\n\nReferences\n\n\n[Di25] Y. Ding, On a Romanoff type problem of Erd\\H{o}s and Kalm\\'{a}r. arXiv:2503.22700 (2025).\n\n[Ro34] Romanoff, N. P., \\\"{U}ber einige S\\\"Atze der additiven Zahlentheorie. Math. Ann. (1934), 668-678.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

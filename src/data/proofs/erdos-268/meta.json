@@ -1,0 +1,33 @@
+{
+  "id": "erdos-268",
+  "title": "Erdős Problem #268",
+  "slug": "erdos-268",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the set of all points of the shape\\[\\left( \\sum_{n\\in A} {n},\\sum_{n\\in A}{n+1},\\sum_{n\\in A} {n+2}\\right) \\]as .....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/268",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos268Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 268,
+    "erdosUrl": "https://erdosproblems.com/268",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #268 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $X\\subseteq \\mathbb{R}^3$ be the set of all points of the shape\\[\\left( \\sum_{n\\in A} \\frac{1}{n},\\sum_{n\\in A}\\frac{1}{n+1},\\sum_{n\\in A} \\frac{1}{n+2}\\right) \\]as $A\\subseteq\\mathbb{N}$ ranges over all infinite sets with $\\sum_{n\\in A}\\frac{1}{n}<\\infty$.\nDoes $X$ contain an open set?\n\n\n\nErd\\H{o}s and Straus proved the answer is yes for the 2-dimensional version, where $X\\subseteq \\mathbb{R}^2$ is the set of\\[\\left( \\sum_{n\\in A} \\frac{1}{n},\\sum_{n\\in A}\\frac{1}{n+1}\\right) \\]as $A\\subseteq\\mathbb{N}$ ranges over all infinite sets with $\\sum_{n\\in A}\\frac{1}{n}<\\infty$.\n\nThe answer is yes, proved by Kova\\v{c} \\cite{Ko24}, who constructs an explicit open ball inside the set. Kova\\v{c} and Tao \\cite{KoTa24} have proved an analogous result for all higher dimensions.\n\n\n\n\nReferences\n\n\n[Ko24] Kova\\vC, V., On the set of points represented by harmonic subseries. arXiv:2405.07681 (2024).\n\n[KoTa24] Kova\\vC, V. and Tao T., On several irrationality problems for Ahmes series. arXiv:2406.17593 (2024).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-250",
+  "title": "Erdős Problem #250",
+  "slug": "erdos-250",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs\\[\\sum {2^n}\\]irrational? (Here ... is the sum of divisors function.)\n\n\n\nThe answer is yes, as shown by Nesterenko .\n\nThis ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/250",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos250Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 250,
+    "erdosUrl": "https://erdosproblems.com/250",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #250 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs\\[\\sum \\frac{\\sigma(n)}{2^n}\\]irrational? (Here $\\sigma(n)$ is the sum of divisors function.)\n\n\n\nThe answer is yes, as shown by Nesterenko \\cite{Ne96}.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Ne96] Nesterenko, Yuri, Modular functions and transcendence problems. C. R. Acad. Sci. Paris S\\'{e}r. I Math. (1996), 909-914.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

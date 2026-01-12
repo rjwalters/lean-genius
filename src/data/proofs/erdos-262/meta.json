@@ -1,0 +1,33 @@
+{
+  "id": "erdos-262",
+  "title": "Erdős Problem #262",
+  "slug": "erdos-262",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose ... is a sequence of integers such that for all integer sequences ... with ... the sum\\[\\sum_{n=1}^\\infty {t_na_n}\\]i...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/262",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos262Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 262,
+    "erdosUrl": "https://erdosproblems.com/262",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #262 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose $a_1<a_2<\\cdots$ is a sequence of integers such that for all integer sequences $t_n$ with $t_n\\geq 1$ the sum\\[\\sum_{n=1}^\\infty \\frac{1}{t_na_n}\\]is irrational. How slowly can $a_n$ grow?\n\n\n\nOne possible definition of an 'irrationality sequence' (see also [263] and [264]). An example of such a sequence is $a_n=2^{2^n}$ (proved by Erd\\H{o}s \\cite{Er75c}), while a non-example is $a_n=n!$. It is known that if $a_n$ is such a sequence then $a_n^{1/n}\\to\\infty$.\n\nThis was essentially solved by Han\\v{c}l \\cite{Ha91}, who proved that such a sequence needs to satisfy\\[\\limsup_{n\\to \\infty} \\frac{\\log_2\\log_2 a_n}{n} \\geq 1.\\]More generally, if $a_n\\ll 2^{2^{n-F(n)}}$ with $F(n)<n$ and $\\sum 2^{-F(n)}<\\infty$ then $a_n$ cannot be an irrationality sequence.\n\n\n\n\nReferences\n\n\n[Er75c] Erd\\H{o}s, P., Some problems and results on the irrationality of the sum of infinite series. J. Math. Sci. (1975), 1-7 (1976).\n\n[Ha91] Han\\v cl, Jaroslav, Expression of real numbers with the help of infinite series. Acta Arith. (1991), 97--104.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

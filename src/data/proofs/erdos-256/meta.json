@@ -1,0 +1,33 @@
+{
+  "id": "erdos-256",
+  "title": "Erdős Problem #256",
+  "slug": "erdos-256",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be maximal such that for every ... we have\\[\\max_{\\lvert z\\rvert=1}\\left\\lvert \\prod_{i}(1-z^{a_i})\\right\\rve...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/256",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos256Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 256,
+    "erdosUrl": "https://erdosproblems.com/256",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #256 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n\\geq 1$ and $f(n)$ be maximal such that for every $a_1\\leq \\cdots \\leq a_n\\in \\mathbb{N}$ we have\\[\\max_{\\lvert z\\rvert=1}\\left\\lvert \\prod_{i}(1-z^{a_i})\\right\\rvert\\geq f(n).\\]Estimate $f(n)$ - in particular, is it true that there exists some constant $c>0$ such that\\[\\log f(n) \\gg n^c?\\]\n\n\n\nErd\\H{o}s and Szekeres \\cite{ErSz59} proved that $\\lim f(n)^{1/n}=1$ and $f(n)>\\sqrt{2n}$. Erd\\H{o}s proved an upper bound of $\\log f(n) \\ll n^{1-c}$ for some constant $c>0$ with probabilistic methods. Atkinson \\cite{At61} showed that $\\log f(n) \\ll n^{1/2}\\log n$.\n\nThis was improved to\\[\\log f(n) \\ll n^{1/3}(\\log n)^{4/3}\\]by Odlyzko \\cite{Od82}.\n\nIf we denote by $f^*(n)$ the analogous quantity with the assumption that $a_1<\\cdots<a_n$ then Bourgain and Chang \\cite{BoCh18} prove that\\[\\log f^*(n)\\ll (n\\log n)^{1/2}\\log\\log n.\\]Atkinson \\cite{At61} noted this is related to the Chowla cosine problem [510], in that if for any set of $n$ integers $A$ there exists $\\theta$ such that $\\sum_{n\\in A}\\cos(n\\theta) < -M_n$ then\\[\\log f^*(n) \\ll M_n \\log n.\\]The answer to the specific question asked is no - Belov and Konyagin \\cite{BeKo96} proved that\\[\\log f(n) \\ll (\\log n)^4.\\]\n\n\n\n\nReferences\n\n\n[At61] Atkinson, F. V., On a problem of Erd\\H{o}s and Szekeres. Canad. Math. Bull. (1961), 7-12.\n\n[BeKo96] Belov, A. S. and Konyagin, S. V., An estimate for the free term of a nonnegative trigonometric\npolynomial with integer coefficients. Mat. Zametki (1996), 627--629.\n\n[BoCh18] Bourgain, J. and Chang, Mei-Chu, On a paper of Erd\\\"{o}s and Szekeres. J. Anal. Math. (2018), 253-271.\n\n[ErSz59] Erd\\H{o}s, P. and Szekeres, G., On the product $\\Pi^n_{k=1}(1-z^ak)$. Acad. Serbe Sci. Publ. Inst. Math. (1959), 29-34.\n\n[Od82] Odlyzko, A. M., Minima of cosine sums and maxima of polynomials on the unit\ncircle. J. London Math. Soc. (2) (1982), 412-420.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

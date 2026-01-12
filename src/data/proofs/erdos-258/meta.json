@@ -1,0 +1,33 @@
+{
+  "id": "erdos-258",
+  "title": "Erdős Problem #258",
+  "slug": "erdos-258",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence of integers with .... Is\\[\\sum_{n} {a_1\\cdots a_n}\\]irrational, where ... is the number of divisors of ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/258",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos258Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 258,
+    "erdosUrl": "https://erdosproblems.com/258",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #258 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_1,a_2,\\ldots$ be a sequence of integers with $a_n\\to \\infty$. Is\\[\\sum_{n} \\frac{\\tau(n)}{a_1\\cdots a_n}\\]irrational, where $\\tau(n)$ is the number of divisors of $n$?\n\n\n\nErd\\H{o}s and Straus \\cite{ErSt71} proved this is true if $a_n$ is monotone, i.e. $a_{n-1}\\leq a_n$ for all $n$. Erd\\H{o}s \\cite{Er48} proved that $\\sum_n \\frac{d(n)}{t^n}$ is irrational for any integer $t\\geq 2$.\n\nErd\\H{o}s and Straus further conjectured that if $a_{n-1}\\leq a_n$ for all $n$ then\\[\\sum_{n} \\frac{\\phi(n)}{a_1\\cdots a_n}\\]and\\[\\sum_{n} \\frac{\\sigma(n)}{a_1\\cdots a_n}\\]are both irrational.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Er48] Erd\\H{o}s, P., On arithmetical properties of Lambert series. J. Indian Math. Soc. (N.S.) (1948), 63-66.\n\n[ErSt71] Erd\\H{o}s, P. and Straus, E. G., Some number theoretic results. Pacific J. Math. (1971), 635-646.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

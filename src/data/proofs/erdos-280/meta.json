@@ -1,0 +1,33 @@
+{
+  "id": "erdos-280",
+  "title": "Erdős Problem #280",
+  "slug": "erdos-280",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence of integers with associated ..., such that for some ... we have ... for all .... Then\\[\\#\\{ m...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/280",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos280Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 280,
+    "erdosUrl": "https://erdosproblems.com/280",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #280 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n_1<n_2<\\cdots $ be an infinite sequence of integers with associated $a_k\\pmod{n_k}$, such that for some $\\epsilon>0$ we have $n_k>(1+\\epsilon)k\\log k$ for all $k$. Then\\[\\#\\{ m<n_k : m\\not\\equiv a_i\\pmod{n_i} \\textrm{ for }1\\leq i\\leq k\\}\\neq o(k).\\]\n\n\n\nErd\\H{o}s and Graham \\cite{ErGr80} suggest this 'may have to await improvements in current sieve methods' (of which there have been several since 1980).\n\nNote that since the $k$th prime is $\\sim k\\log k$ the lower bound $n_k>(1+\\epsilon)k\\log k$ is best possible here.\n\nCambie has observed that this question has a trivial negative answer, since taking $n_k=2^k$ and $a_k=2^{k-1}+1$ for $k\\geq 1$ implies the only $m$ not in any congruence class is $1$, so the count is actually $1$!\n\nFor further discussion on counterexamples, and what a non-trivial variant of this problem might be, see the comments.\n\n\n\n\nReferences\n\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

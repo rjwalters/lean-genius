@@ -1,0 +1,33 @@
+{
+  "id": "erdos-275",
+  "title": "Erdős Problem #275",
+  "slug": "erdos-275",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf a finite system of ... congruences ... (the ... are not necessarily distinct) covers ... consecutive integers then it cove...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/275",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos275Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 275,
+    "erdosUrl": "https://erdosproblems.com/275",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #275 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf a finite system of $r$ congruences $\\{ a_i\\pmod{n_i} : 1\\leq i\\leq r\\}$ (the $n_i$ are not necessarily distinct) covers $2^r$ consecutive integers then it covers all integers.\n\n\n\nThis is best possible as the system $2^{i-1}\\pmod{2^i}$ shows. This was proved indepedently by Selfridge and Crittenden and Vanden Eynden \\cite{CrVE70}.\n\n\n\n\nReferences\n\n\n[CrVE70] Crittenden, R. B. and Vanden Eynden, C. L., Any $n$ arithmetic progressions covering the first $2^n$ integers cover all integers. Proc. Amer. Math. Soc. (1970), 475-481.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

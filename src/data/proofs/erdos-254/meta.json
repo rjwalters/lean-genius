@@ -1,0 +1,33 @@
+{
+  "id": "erdos-254",
+  "title": "Erdős Problem #254",
+  "slug": "erdos-254",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that\\[\\lvert A\\cap [1,2x]\\rvert -\\lvert A\\cap [1,x]\\rvert \\to \\inftyx\\to \\infty\\]and\\[\\sum_{n\\in A} \\{ \\theta...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/254",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos254Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 254,
+    "erdosUrl": "https://erdosproblems.com/254",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #254 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ be such that\\[\\lvert A\\cap [1,2x]\\rvert -\\lvert A\\cap [1,x]\\rvert \\to \\infty\\textrm{ as }x\\to \\infty\\]and\\[\\sum_{n\\in A} \\{ \\theta n\\}=\\infty\\]for every $\\theta\\in (0,1)$, where $\\{x\\}$ is the distance of $x$ from the nearest integer. Then every sufficiently large integer is the sum of distinct elements of $A$.\n\n\n\nCassels \\cite{Ca60} proved this under the alternative hypotheses\\[\\lim \\frac{\\lvert A\\cap [1,2x]\\rvert -\\lvert A\\cap [1,x]\\rvert}{\\log\\log x}=\\infty\\]and\\[\\sum_{n\\in A} \\{ \\theta n\\}^2=\\infty\\]for every $\\theta\\in (0,1)$.\n\n\n\n\nReferences\n\n\n[Ca60] Cassels, J. W. S., On the representation of integers as the sums of distinct summands taken from a fixed set. Acta Sci. Math. (Szeged) (1960), 111-124.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

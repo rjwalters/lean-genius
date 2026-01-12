@@ -1,0 +1,33 @@
+{
+  "id": "erdos-292",
+  "title": "Erdős Problem #292",
+  "slug": "erdos-292",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the set of ... such that there exist ... with .... Explore .... In particular, does ... have density ...?\n\n\n\nStrau...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/292",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos292Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 292,
+    "erdosUrl": "https://erdosproblems.com/292",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #292 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A$ be the set of $n\\in \\mathbb{N}$ such that there exist $1\\leq m_1<\\cdots <m_k=n$ with $\\sum\\tfrac{1}{m_i}=1$. Explore $A$. In particular, does $A$ have density $1$?\n\n\n\nStraus observed that $A$ is closed under multiplication. Furthermore, it is easy to see that $A$ does not contain any prime power.\n\nThe answer is yes, as proved by Martin \\cite{Ma00}, who in fact proved that if $B=\\mathbb{N}\\backslash A$ then, for all large $x$,\\[\\frac{\\lvert B\\cap [1,x]\\rvert}{x}\\asymp \\frac{\\log\\log x}{\\log x},\\]and also gave an essentially complete description of $B$ as those integers which are small multiples of prime powers.\n\nvan Doorn has observed that if $n\\in A$ (with $n>1$) then $2n\\in A$ also, since if $\\sum \\frac{1}{m_i}=1$ then $\\frac{1}{2}+\\sum\\frac{1}{2m_i}=1$ also.\n\n\n\n\nReferences\n\n\n[Ma00] Martin, Greg, Denser Egyptian fractions. Acta Arith. (2000), 231-260.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

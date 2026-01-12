@@ -1,0 +1,33 @@
+{
+  "id": "erdos-274",
+  "title": "Erdős Problem #274",
+  "slug": "erdos-274",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a group then can there exist an exact covering of ... by more than one cosets of different sizes? (i.e. each elemen...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/274",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos274Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 274,
+    "erdosUrl": "https://erdosproblems.com/274",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #274 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ is a group then can there exist an exact covering of $G$ by more than one cosets of different sizes? (i.e. each element is contained in exactly one of the cosets)\n\n\n\nA question of Herzog and Sch\\\"{onheim}, who conjectured more generally that if $G$ is any (not necessarily finite) group and $a_1G_1,\\ldots,a_kG_k$ are finitely many cosets of subgroups of $G$ with distinct indices $[G:G_i]$ then the $a_iG_i$ cannot form a partition of $G$.\n\nThis conjecture was proved in the case when all the $G_i$ are subnormal in $G$ by Sun \\cite{Su04}. In particular if $G$ is abelian (which was the special case asked about in \\cite{Er77c} and \\cite{ErGr80}) the answer to the original question is no.\n\nMargolis and Schnabel \\cite{MaSc19} proved this conjecture for all groups $G$ of size $<1440$.\n\n\n\n\nReferences\n\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[MaSc19] Margolis, Leo and Schnabel, Ofir, The {H}erzog-{S}ch\\\"onheim conjecture for small groups and\nharmonic subgroups. Beitr. Algebra Geom. (2019), 399--418.\n\n[Su04] Sun, Zhi-Wei, On the {H}erzog-{S}ch\\\"onheim conjecture for uniform covers of\ngroups. J. Algebra (2004), 153--175.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

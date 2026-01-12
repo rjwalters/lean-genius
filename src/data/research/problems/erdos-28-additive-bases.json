@@ -29,11 +29,38 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "IN-PROGRESS: Core infrastructure proved. 7→4 sorries. Key lemmas for repFunc and basis equivalence done.",
+    "builtItems": [
+      "repFunc definition (ordered pairs) (Erdos28AdditiveBases.lean:50-51)",
+      "repFuncUnordered definition (Erdos28AdditiveBases.lean:54-55)",
+      "repFuncFinset for finite sets (Erdos28AdditiveBases.lean:58-59)",
+      "sumset definition (Erdos28AdditiveBases.lean:64-65)",
+      "IsAsymptoticBasis definition (Erdos28AdditiveBases.lean:68-69)",
+      "IsAsymptoticBasis' (finite complement) (Erdos28AdditiveBases.lean:72-73)",
+      "isAsymptoticBasis_iff PROVED (Erdos28AdditiveBases.lean:78-107)",
+      "pairs_summing_finite PROVED (Erdos28AdditiveBases.lean:111-118)",
+      "repFunc_pos_of_mem_sumset PROVED (Erdos28AdditiveBases.lean:121-133)",
+      "repFunc_pos_of_zero_mem PROVED (Erdos28AdditiveBases.lean:136-138)",
+      "IsSidon definition (Erdos28AdditiveBases.lean:141-143)",
+      "erdos_turan_weak, erdos_turan_strong, erdos_28 definitions",
+      "evens_sumset PROVED (Erdos28AdditiveBases.lean:193-206)",
+      "nat_is_basis PROVED (Erdos28AdditiveBases.lean:214-217)"
+    ],
+    "insights": [
+      "Erdős-Turán conjecture ($500): asymptotic bases have unbounded representation",
+      "Key finiteness lemma: pairs summing to n are bounded by Iio(n+1) × Iio(n+1)",
+      "Equivalence: IsAsymptoticBasis ↔ finite complement (uses sSup for bounded sets)",
+      "ncard_pos requires Finite instance - prove via product of Iio sets",
+      "Sidon sets have r_A(n) ≤ 2 but are NOT asymptotic bases (density too low)",
+      "Known: Grekos r_A(n) ≥ 6, Borwein r_A(n) ≥ 8 infinitely often"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove sidon_repFunc_bounded (needs careful analysis of unordered pairs)",
+      "Prove evens_repFunc counting formula",
+      "Prove nat_repFunc counting formula",
+      "Prove sidon_not_basis using density argument"
+    ]
   },
   "approaches": [],
   "tags": [

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-266",
+  "title": "Erdős Problem #266",
+  "slug": "erdos-266",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence of positive integers such that ... converges. There exists some integer ... such that\\[\\sum {...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/266",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos266Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 266,
+    "erdosUrl": "https://erdosproblems.com/266",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #266 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_n$ be an infinite sequence of positive integers such that $\\sum \\frac{1}{a_n}$ converges. There exists some integer $t\\geq 1$ such that\\[\\sum \\frac{1}{a_n+t}\\]is irrational.\n\n\n\nThis conjecture is due to Stolarsky.\n\nA negative answer was proved by Kova\\v{c} and Tao \\cite{KoTa24}, who proved even more: there exists a strictly increasing sequence of positive integers $a_n$ such that\\[\\sum \\frac{1}{a_n+t}\\]converges to a rational number for every $t\\in \\mathbb{Q}$ (with $t\\neq -a_n$ for all $n$).\n\n\n\n\nReferences\n\n\n[KoTa24] Kova\\vC, V. and Tao T., On several irrationality problems for Ahmes series. arXiv:2406.17593 (2024).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

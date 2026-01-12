@@ -90,16 +90,47 @@ theorem isAsymptoticBasis_iff (A : Set ℕ) :
   · intro hfin
     -- The complement is finite, hence bounded, so has a maximum.
     -- All n beyond that maximum are in A+A.
-    sorry
+    by_cases h : (sumset A)ᶜ.Nonempty
+    · have hbdd : BddAbove (sumset A)ᶜ := hfin.bddAbove
+      let M := sSup (sumset A)ᶜ
+      use M + 1
+      intro n hn
+      by_contra hn'
+      have hn_compl : n ∈ (sumset A)ᶜ := hn'
+      have h_le : n ≤ M := le_csSup hbdd hn_compl
+      omega
+    · -- Complement is empty
+      rw [Set.not_nonempty_iff_eq_empty] at h
+      use 0
+      intro n _
+      rw [← Set.notMem_compl_iff, h]
+      exact Set.notMem_empty n
 
 /-! ## Part III: Basic Properties -/
+
+/-- The set of pairs summing to n is finite (both components bounded by n). -/
+lemma pairs_summing_finite (A : Set ℕ) (n : ℕ) :
+    {p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 + p.2 = n}.Finite := by
+  apply Set.Finite.subset
+  · exact (Set.finite_Iio (n + 1)).prod (Set.finite_Iio (n + 1))
+  · intro ⟨a, b⟩ ⟨_, _, hab⟩
+    simp only [Set.mem_prod, Set.mem_Iio]
+    constructor <;> omega
 
 /-- If n ∈ A+A then r_A(n) ≥ 1. -/
 theorem repFunc_pos_of_mem_sumset (A : Set ℕ) (n : ℕ) (h : n ∈ sumset A) :
     repFunc A n ≥ 1 := by
-  -- There exists at least one pair (a,b) with a + b = n
-  -- so the representation count is at least 1
-  sorry
+  obtain ⟨a, b, ha, hb, heq⟩ := h
+  unfold repFunc
+  have hpair : (a, b) ∈ {p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 + p.2 = n} := by
+    simp only [Set.mem_setOf_eq]
+    exact ⟨ha, hb, heq.symm⟩
+  have hne : {p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 + p.2 = n}.Nonempty := ⟨(a, b), hpair⟩
+  have hfin := pairs_summing_finite A n
+  have hpos : 0 < Set.ncard {p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 + p.2 = n} := by
+    rw [Set.ncard_pos hfin]
+    exact hne
+  omega
 
 /-- If A is infinite and 0 ∈ A, then r_A(n) ≥ 1 for all n ∈ A. -/
 theorem repFunc_pos_of_zero_mem (A : Set ℕ) (h0 : 0 ∈ A) (n : ℕ) (hn : n ∈ A) :

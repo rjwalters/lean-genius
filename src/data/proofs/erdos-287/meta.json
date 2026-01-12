@@ -1,0 +1,33 @@
+{
+  "id": "erdos-287",
+  "title": "Erdős Problem #287",
+  "slug": "erdos-287",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is it true that, for any distinct integers ... such that\\[1={n_1}+\\cdots+{n_k}\\]we must have ...?\n\n\n\nThe example ......",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/287",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos287Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 287,
+    "erdosUrl": "https://erdosproblems.com/287",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #287 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$. Is it true that, for any distinct integers $1<n_1<\\cdots <n_k$ such that\\[1=\\frac{1}{n_1}+\\cdots+\\frac{1}{n_k}\\]we must have $\\max(n_{i+1}-n_i)\\geq 3$?\n\n\n\nThe example $1=\\frac{1}{2}+\\frac{1}{3}+\\frac{1}{6}$ shows that $3$ would be best possible here. The lower bound of $\\geq 2$ is equivalent to saying that $1$ is not the sum of reciprocals of consecutive integers, proved by Erd\\H{o}s \\cite{Er32}.\n\nThis conjecture would follow for all but at most finitely many exceptions if it were known that, for all large $N$, there exists a prime $p\\in [N,2N]$ such that $\\frac{p+1}{2}$ is also prime.\n\n\n\n\nReferences\n\n\n[Er32] Erd\\H{o}s, P., Egy K\\\"{u}rschak-f\\'{e}le elemi sz\\'{a}melm\\'{e}ti t\\'{e}tel \\'{a}ltad\\'{a}nosit\\'{a}sa. MAt. es Phys. Lapok (1932).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

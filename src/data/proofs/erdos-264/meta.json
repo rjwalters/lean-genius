@@ -1,0 +1,33 @@
+{
+  "id": "erdos-264",
+  "title": "Erdős Problem #264",
+  "slug": "erdos-264",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence of integers such that for every bounded sequence of integers ... (with ... and ... for all ...) the sum...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/264",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos264Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 264,
+    "erdosUrl": "https://erdosproblems.com/264",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #264 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_n$ be a sequence of integers such that for every bounded sequence of integers $b_n$ (with $a_n+b_n\\neq 0$ and $b_n\\neq 0$ for all $n$) the sum\\[\\sum \\frac{1}{a_n+b_n}\\]is irrational. Are $a_n=2^n$ or $a_n=n!$ examples of such a sequence?\n\n\n\nA possible definition of an 'irrationality sequence' (see also [262] and [263]). One example is $a_n=2^{2^n}$. In \\cite{ErGr80} they also ask whether such a sequence can have polynomial growth, but Erd\\H{o}s later retracted this in \\cite{Er88c}, claiming 'It is not hard to show that it cannot increase slower than exponentially'.\n\nKova\\v{c} and Tao \\cite{KoTa24} have proved that $2^n$ is not such an irrationality sequence. More generally, they prove that any strictly increasing sequence of positive integers such that $\\sum\\frac{1}{a_n}$ converges and\\[\\liminf \\left(a_n^2\\sum_{k>n}\\frac{1}{a_k^2}\\right) >0 \\]is not such an irrationality sequence. In particular, any strictly increasing sequence with $\\limsup a_{n+1}/a_n <\\infty$ is not such an irrationality sequence.\n\nOn the other hand, Kova\\v{c} and Tao do prove that for any function $F$ with $\\lim F(n+1)/F(n)=\\infty$ there exists such an irrationality sequence with $a_n\\sim F(n)$.\n\n\n\n\nReferences\n\n\n[Er88c] Erd\\\"{o}s, P., On the irrationality of certain series: problems and results. New advances in transcendence theory (Durham, 1986) (1988), 102-109.\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[KoTa24] Kova\\vC, V. and Tao T., On several irrationality problems for Ahmes series. arXiv:2406.17593 (2024).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

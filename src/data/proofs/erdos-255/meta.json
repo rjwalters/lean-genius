@@ -1,0 +1,33 @@
+{
+  "id": "erdos-255",
+  "title": "Erdős Problem #255",
+  "slug": "erdos-255",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence, and define the discrepancy\\[D_N(I) = \\#\\{ n\\leq N : z_n\\in I\\} - N\\lvert I\\rvert.\\]Must ther...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/255",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos255Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 255,
+    "erdosUrl": "https://erdosproblems.com/255",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #255 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $z_1,z_2,\\ldots \\in [0,1]$ be an infinite sequence, and define the discrepancy\\[D_N(I) = \\#\\{ n\\leq N : z_n\\in I\\} - N\\lvert I\\rvert.\\]Must there exist some interval $I\\subseteq [0,1]$ such that\\[\\limsup_{N\\to \\infty}\\lvert D_N(I)\\rvert =\\infty?\\]\n\n\n\nThe answer is yes, as proved by Schmidt \\cite{Sc68}, who later showed \\cite{Sc72} that in fact this is true for all but countably many intervals of the shape $[0,x]$.\n\nEssentially the best possible result was proved by Tijdeman and Wagner \\cite{TiWa80}, who proved that, for almost all intervals of the shape $[0,x)$, we have\\[\\limsup_{N\\to \\infty}\\frac{\\lvert D_N([0,x))\\rvert}{\\log N}\\gg 1.\\]\n\n\n\n\nReferences\n\n\n[Sc68] Schmidt, Wolfgang M., Irregularities of distribution. Quart. J. Math. Oxford Ser. (2) (1968), 181-191.\n\n[Sc72] Schmidt, Wolfgang M., Irregularities of distribution. VI. Compositio Math. (1972), 63-74.\n\n[TiWa80] Tijdeman, R. and Wagner, G., A sequence has almost nowhere small discrepancy. Monatsh. Math. (1980), 315-329.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

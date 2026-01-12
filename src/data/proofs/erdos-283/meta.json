@@ -1,0 +1,33 @@
+{
+  "id": "erdos-283",
+  "title": "Erdős Problem #283",
+  "slug": "erdos-283",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a polynomial whose leading coefficient is positive and such that there exists no ... with ... for all .... Is it t...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/283",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos283Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 283,
+    "erdosUrl": "https://erdosproblems.com/283",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #283 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $p:\\mathbb{Z}\\to \\mathbb{Z}$ be a polynomial whose leading coefficient is positive and such that there exists no $d\\geq 2$ with $d\\mid p(n)$ for all $n\\geq 1$. Is it true that, for all sufficiently large $m$, there exist integers $1\\leq n_1<\\cdots <n_k$ such that\\[1=\\frac{1}{n_1}+\\cdots+\\frac{1}{n_k}\\]and\\[m=p(n_1)+\\cdots+p(n_k)?\\]\n\n\n\nGraham \\cite{Gr63} has proved this when $p(x)=x$. Graham also conjectures that this remains true with $1$ replaced by an arbitrary rational $\\alpha>0$ (provided $m$ is taken sufficiently large depending on $\\alpha$).\n\nCassels \\cite{Ca60} has proved that these conditions on the polynomial imply every sufficiently large integer is the sum of $p(n_i)$ with distinct $n_i$. Burr has proved this if $p(x)=x^k$ with $k\\geq 1$ and if we allow $n_i=n_j$.\n\nAlekseyev \\cite{Al19} has proved this when $p(x)=x^2$, for all $m>8542$. For example,\\[1=\\frac{1}{2}+\\frac{1}{4}+\\frac{1}{6}+\\frac{1}{12}\\]and\\[200 = 2^2+4^2+6^2+12^2.\\]van Doorn \\cite{vD25} has investigated the question of what 'sufficiently large' means for $p(x)=x$. van Doorn has also proved the original conjecture for many linear and quadratic polynomials, for example $p(x)=x+5$ or $p(x)=x^2+100$ - see the comments section.\n\n\n\n\nReferences\n\n\n[Al19] Alekseyev, Max A., On partitions into squares of distinct integers whose\nreciprocals sum to 1. (2019), 213--221.\n\n[Ca60] Cassels, J. W. S., On the representation of integers as the sums of distinct summands taken from a fixed set. Acta Sci. Math. (Szeged) (1960), 111-124.\n\n[Gr63] Graham, R. L., A theorem on partitions. J. Austral. Math. Soc. (1963), 435-441.\n\n[vD25] W. van Doorn, Partitions with prescribed sum of rationals: asymptotic bounds. arXiv:2502.02200 (2025).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

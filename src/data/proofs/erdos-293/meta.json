@@ -1,0 +1,33 @@
+{
+  "id": "erdos-293",
+  "title": "Erdős Problem #293",
+  "slug": "erdos-293",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... be the minimal integer which does not appear as some ... in a solution to\\[1={n_1}+\\cdots+{n_k}\\]with ......",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/293",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos293Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 293,
+    "erdosUrl": "https://erdosproblems.com/293",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #293 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 1$ and let $v(k)$ be the minimal integer which does not appear as some $n_i$ in a solution to\\[1=\\frac{1}{n_1}+\\cdots+\\frac{1}{n_k}\\]with $1\\leq n_1<\\cdots <n_k$. Estimate the growth of $v(k)$.\n\n\n\nResults of Bleicher and Erd\\H{o}s \\cite{BlEr75} imply $v(k) \\gg k!$. It may be that $v(k)$ grows doubly exponentially in $\\sqrt{k}$ or even $k$.\n\nAn elementary inductive argument shows that $n_k\\leq ku_k$ where $u_1=1$ and $u_{i+1}=u_i(u_i+1)$, and hence\\[v(k) \\leq kc_0^{2^k},\\]where\\[c_0=\\lim_n u_n^{1/2^n}=1.26408\\cdots\\]is the 'Vardi constant' (small improvements on this are possible as in [148]).\n\nvan Doorn and Tang \\cite{vDTa25b} have proved that\\[v(k)\\geq e^{ck^2}\\]for some constant $c>0$, and noted a close connection to [304]. In particular, if $N(b)\\ll \\log\\log b$ as in [304] then it is likely the methods of \\cite{vDTa25b} prove $v(k) \\geq e^{e^{ck}}$ for some $c>0$.\n\n\n\n\nReferences\n\n\n[BlEr75] Bleicher, M. N. and Erd\\H{o}s, P., The number of distinct subsums of $\\sum \\sb{1}\\spN\\,1/i$. Math. Comp. (1975), 29-42.\n\n[vDTa25b] W. van Doorn and Q. Tang, The smallest denominator not contained in a unit fraction decomposition of 1 with fixed length. arXiv:2512.22083 (2025).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

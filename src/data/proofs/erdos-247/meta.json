@@ -1,0 +1,33 @@
+{
+  "id": "erdos-247",
+  "title": "Erdős Problem #247",
+  "slug": "erdos-247",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence of integers such that\\[\\limsup {n}=\\infty.\\]Is\\[\\sum_{n=1}^\\infty {2^{a_n}}\\]transcendental?\n\n\n\nErds  p...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/247",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos247Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 247,
+    "erdosUrl": "https://erdosproblems.com/247",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #247 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_1<a_2<\\cdots$ be a sequence of integers such that\\[\\limsup \\frac{a_n}{n}=\\infty.\\]Is\\[\\sum_{n=1}^\\infty \\frac{1}{2^{a_n}}\\]transcendental?\n\n\n\nErd\\H{o}s \\cite{Er75c} proved the answer is yes under the stronger condition that $\\limsup n_k/k^t=\\infty$ for all $t\\geq 1$.\n\nErd\\H{o}s \\cite{Er88c} says 'many of these problems seem hopeless at present, but perhaps one can prove that if $a_n>cn^2$ then $\\sum_{n=1}^\\infty \\frac{1}{2^{a_n}}$ is not the root of any quadratic polynomial'.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Er75c] Erd\\H{o}s, P., Some problems and results on the irrationality of the sum of infinite series. J. Math. Sci. (1975), 1-7 (1976).\n\n[Er88c] Erd\\\"{o}s, P., On the irrationality of certain series: problems and results. New advances in transcendence theory (Durham, 1986) (1988), 102-109.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

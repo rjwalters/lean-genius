@@ -1,0 +1,33 @@
+{
+  "id": "erdos-267",
+  "title": "Erdős Problem #267",
+  "slug": "erdos-267",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be the Fibonacci sequence. Let ... be an infinite sequence with .... Must\\[\\sum_k{F_{n_k}}\\]be irrational?\n\n\n...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/267",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos267Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 267,
+    "erdosUrl": "https://erdosproblems.com/267",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #267 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $F_1=F_2=1$ and $F_{n+1}=F_n+F_{n-1}$ be the Fibonacci sequence. Let $n_1<n_2<\\cdots $ be an infinite sequence with $n_{k+1}/n_k \\geq c>1$. Must\\[\\sum_k\\frac{1}{F_{n_k}}\\]be irrational?\n\n\n\nIt may be sufficient to have $n_k/k\\to \\infty$. Good \\cite{Go74} and Bicknell and Hoggatt \\cite{BiHo76} have shown that $\\sum \\frac{1}{F_{2^n}}$ is irrational.\n\nThe sum $\\sum \\frac{1}{F_n}$ itself was proved to be irrational by Andr\\'{e}-Jeannin \\cite{An89}.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[An89] Andr\\'{e}-Jeannin, Richard, Irrationalit\\'{e}{} de la somme des inverses de certaines suites\nr\\'{e}currentes. C. R. Acad. Sci. Paris S\\'{e}r. I Math. (1989), 539--541.\n\n[BiHo76] Hoggatt, Jr., V. E. and Bicknell, Marjorie, A reciprocal series of Fibonacci numbers with subscripts $2^nk$. Fibonacci Quart. (1976), 453-455.\n\n[Go74] Good, I. J., A reciprocal series of Fibonacci numbers. Fibonacci Quart. (1974), 346.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

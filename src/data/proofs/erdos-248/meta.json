@@ -1,0 +1,33 @@
+{
+  "id": "erdos-248",
+  "title": "Erdős Problem #248",
+  "slug": "erdos-248",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many ... such that, for all ...,\\[ \\omega(n+k) \\ll k?\\](Here ... is the number of distinct prime divisor...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/248",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos248Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 248,
+    "erdosUrl": "https://erdosproblems.com/248",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #248 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many $n$ such that, for all $k\\geq 1$,\\[ \\omega(n+k) \\ll k?\\](Here $\\omega(n)$ is the number of distinct prime divisors of $n$.)\n\n\n\nRelated to [69]. Erd\\H{o}s and Graham \\cite{ErGr80} write 'we just know too little about sieves to be able to handle such a question (\"we\" here means not just us but the collective wisdom (?) of our poor struggling human race).'\n\nSee also [679] and [826].\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\nThis has been resolved by Tao and Ter\\\"{a}v\\\"{a}inen \\cite{TaTe25}, who have proved that there exists an absolute constant $C>0$ such that for infinitely many $n$, for all $k\\geq 1$,\\[\\omega(n+k)\\leq Ck.\\]\n\n\n\n\nReferences\n\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[TaTe25] T. Tao and J. Ter\\\"{a}v\\\"{a}inen, Quantitative correlations and some problems on prime factors of consecutive integers. arXiv:2512.01739 (2025).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}
