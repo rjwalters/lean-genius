@@ -9,6 +9,21 @@ This server enables Claude to use Aristotle's powerful proof search capabilities
 - **Claude controls strategy** (what to prove, how to structure lemmas)
 - **Aristotle handles tactics** (filling sorries, finding proofs)
 
+## Prerequisites
+
+1. **uv** - Modern Python package manager
+   ```bash
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   ```
+
+2. **Aristotle API Key** - Get from [aristotle.harmonic.fun](https://aristotle.harmonic.fun/)
+
+3. **Set environment variable**:
+   ```bash
+   # Add to ~/.zshrc (Mac) or ~/.bashrc (Linux)
+   export ARISTOTLE_API_KEY='arstl_your_key_here'
+   ```
+
 ## Installation
 
 ```bash
@@ -19,27 +34,20 @@ pnpm build
 
 ## Configuration
 
-1. Get your API key from [aristotle.harmonic.fun](https://aristotle.harmonic.fun/)
-
-2. Add to your `.env`:
-   ```
-   ARISTOTLE_API_KEY=arstl_your_key_here
-   ```
-
-3. Add to your Claude Code MCP config (`~/.claude/config.json`):
-   ```json
-   {
-     "mcpServers": {
-       "aristotle": {
-         "command": "node",
-         "args": ["/path/to/lean-genius/mcp-servers/aristotle/dist/index.js"],
-         "env": {
-           "ARISTOTLE_API_KEY": "arstl_your_key_here"
-         }
-       }
-     }
-   }
-   ```
+Add to your Claude Code MCP config (`~/.claude/config.json`):
+```json
+{
+  "mcpServers": {
+    "aristotle": {
+      "command": "node",
+      "args": ["/path/to/lean-genius/mcp-servers/aristotle/dist/index.js"],
+      "env": {
+        "ARISTOTLE_API_KEY": "arstl_your_key_here"
+      }
+    }
+  }
+}
+```
 
 ## Available Tools
 
@@ -54,23 +62,6 @@ Use when:
 - Complex lemmas requiring deep search
 ```
 
-### `aristotle_status`
-
-Check the status of an ongoing proof project.
-
-```
-Status values:
-- NOT_STARTED: Queued for processing
-- QUEUED: In queue
-- IN_PROGRESS: Actively being solved
-- COMPLETE: Solution ready
-- FAILED: Could not find proof
-```
-
-### `aristotle_solution`
-
-Retrieve the completed proof once status is COMPLETE.
-
 ### `aristotle_informal`
 
 Submit a natural language math problem for formalization and proof.
@@ -80,11 +71,12 @@ Use cases:
 - Convert textbook problems to Lean
 - Explore conjectures (true or false?)
 - Get counterexamples for invalid statements
+- Quick sanity checks during ORIENT phase
 ```
 
-### `aristotle_list_projects`
+### `aristotle_version`
 
-List recent proof projects to resume or review.
+Verify Aristotle CLI is working and check version.
 
 ## OODA Loop Integration
 

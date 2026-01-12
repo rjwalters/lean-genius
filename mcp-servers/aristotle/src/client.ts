@@ -1,12 +1,14 @@
 /**
- * Aristotle API Client
+ * Aristotle Client - Wraps the official aristotlelib CLI
  *
- * Wraps the Harmonic Aristotle API for theorem proving.
- * Based on the aristotlelib Python SDK API.
+ * Uses uvx to run aristotlelib, which is the official Harmonic SDK.
+ * This approach is more robust than reverse-engineering their HTTP API.
  */
 
-import { readFile, writeFile } from 'fs/promises'
-import { existsSync } from 'fs'
+import { spawn } from 'child_process'
+import { readFile, writeFile, unlink, mkdtemp } from 'fs/promises'
+import { tmpdir } from 'os'
+import { join } from 'path'
 
 export enum ProjectStatus {
   NOT_STARTED = 'NOT_STARTED',
@@ -17,60 +19,22 @@ export enum ProjectStatus {
   PENDING_RETRY = 'PENDING_RETRY',
 }
 
-export enum ProjectInputType {
-  FORMAL_LEAN = 'FORMAL_LEAN',
-  INFORMAL = 'INFORMAL',
-}
-
 interface ProveOptions {
   filePath?: string
   content?: string
-  contextFiles?: string[]
-  wait?: boolean
-}
-
-interface InformalOptions {
-  problem: string
-  contextFile?: string
-  wait?: boolean
+  outputPath?: string
+  informal?: boolean
+  formalContext?: string
 }
 
 interface ProveResult {
-  projectId: string
-  status: ProjectStatus
+  success: boolean
   solution?: string
+  outputPath?: string
+  projectId?: string
+  error?: string
+  logs: string
 }
-
-interface InformalResult {
-  projectId: string
-  status: ProjectStatus
-  formalization?: string
-  solution?: string
-  counterexample?: string
-}
-
-interface StatusResult {
-  status: ProjectStatus
-  progress?: string
-}
-
-interface SolutionResult {
-  content: string
-  savedTo?: string
-}
-
-interface ProjectInfo {
-  projectId: string
-  status: ProjectStatus
-  createdAt?: string
-}
-
-interface ListOptions {
-  status?: ProjectStatus
-  limit?: number
-}
-
-const API_BASE = 'https://api.aristotle.harmonic.fun'
 
 export class AristotleClient {
   private apiKey: string
@@ -84,237 +48,180 @@ export class AristotleClient {
     }
   }
 
-  private async request<T>(
-    endpoint: string,
-    options: RequestInit = {}
-  ): Promise<T> {
-    const url = `${API_BASE}${endpoint}`
-    const response = await fetch(url, {
-      ...options,
-      headers: {
-        'Authorization': `Bearer ${this.apiKey}`,
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
+  /**
+   * Run the aristotle CLI command
+   */
+  private async runCli(args: string[]): Promise<{ stdout: string; stderr: string; code: number }> {
+    return new Promise((resolve) => {
+      const proc = spawn('uvx', ['--from', 'aristotlelib', 'aristotle', ...args], {
+        env: {
+          ...process.env,
+          ARISTOTLE_API_KEY: this.apiKey,
+        },
+      })
+
+      let stdout = ''
+      let stderr = ''
+
+      proc.stdout.on('data', (data) => {
+        stdout += data.toString()
+      })
+
+      proc.stderr.on('data', (data) => {
+        stderr += data.toString()
+      })
+
+      proc.on('close', (code) => {
+        resolve({ stdout, stderr, code: code ?? 0 })
+      })
+
+      proc.on('error', (err) => {
+        resolve({ stdout, stderr: err.message, code: 1 })
+      })
     })
-
-    if (!response.ok) {
-      const error = await response.text()
-      throw new Error(`Aristotle API error (${response.status}): ${error}`)
-    }
-
-    return response.json()
   }
 
   /**
-   * Submit a Lean file with sorries for proof completion.
+   * Prove theorems from a Lean file with sorries.
    */
   async prove(options: ProveOptions): Promise<ProveResult> {
-    let content = options.content
+    let tempDir: string | undefined
+    let inputPath: string
+    let outputPath: string
 
-    // Read file if path provided
-    if (options.filePath && !content) {
-      if (!existsSync(options.filePath)) {
-        throw new Error(`File not found: ${options.filePath}`)
+    try {
+      // If content provided, write to temp file
+      if (options.content && !options.filePath) {
+        tempDir = await mkdtemp(join(tmpdir(), 'aristotle-'))
+        inputPath = join(tempDir, 'input.lean')
+        outputPath = options.outputPath ?? join(tempDir, 'output.lean')
+        await writeFile(inputPath, options.content, 'utf-8')
+      } else if (options.filePath) {
+        inputPath = options.filePath
+        outputPath = options.outputPath ?? options.filePath.replace('.lean', '-solved.lean')
+      } else {
+        return {
+          success: false,
+          error: 'Either filePath or content is required',
+          logs: '',
+        }
       }
-      content = await readFile(options.filePath, 'utf-8')
-    }
 
-    if (!content) {
-      throw new Error('No Lean content provided')
-    }
+      // Build CLI args
+      const args = ['prove-from-file', inputPath, '--output-file', outputPath]
 
-    // Create project
-    const createResponse = await this.request<{ project_id: string }>(
-      '/v1/projects',
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          input_type: ProjectInputType.FORMAL_LEAN,
-        }),
+      if (options.informal) {
+        args.push('--informal')
       }
-    )
 
-    const projectId = createResponse.project_id
-
-    // Add context files if provided
-    if (options.contextFiles && options.contextFiles.length > 0) {
-      const contextContents = await Promise.all(
-        options.contextFiles.slice(0, 10).map(async (path) => {
-          const fileContent = await readFile(path, 'utf-8')
-          return { path, content: fileContent }
-        })
-      )
-
-      await this.request(`/v1/projects/${projectId}/context`, {
-        method: 'POST',
-        body: JSON.stringify({ files: contextContents }),
-      })
-    }
-
-    // Submit for solving
-    await this.request(`/v1/projects/${projectId}/solve`, {
-      method: 'POST',
-      body: JSON.stringify({ content }),
-    })
-
-    // If wait mode, poll until complete
-    if (options.wait) {
-      return await this.waitForCompletion(projectId)
-    }
-
-    return {
-      projectId,
-      status: ProjectStatus.QUEUED,
-    }
-  }
-
-  /**
-   * Submit an informal (natural language) problem.
-   */
-  async proveInformal(options: InformalOptions): Promise<InformalResult> {
-    // Create project
-    const createResponse = await this.request<{ project_id: string }>(
-      '/v1/projects',
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          input_type: ProjectInputType.INFORMAL,
-        }),
+      if (options.formalContext) {
+        args.push('--formal-input-context', options.formalContext)
       }
-    )
 
-    const projectId = createResponse.project_id
+      // Run aristotle
+      const result = await this.runCli(args)
+      const logs = result.stderr + result.stdout
 
-    // Add context if provided
-    if (options.contextFile) {
-      const contextContent = await readFile(options.contextFile, 'utf-8')
-      await this.request(`/v1/projects/${projectId}/context`, {
-        method: 'POST',
-        body: JSON.stringify({
-          files: [{ path: options.contextFile, content: contextContent }],
-        }),
-      })
-    }
+      // Extract project ID from logs
+      const projectIdMatch = logs.match(/Created project ([a-f0-9-]+)/i)
+      const projectId = projectIdMatch?.[1]
 
-    // Submit problem
-    await this.request(`/v1/projects/${projectId}/solve`, {
-      method: 'POST',
-      body: JSON.stringify({ content: options.problem }),
-    })
+      if (result.code === 0 && logs.includes('Solution saved')) {
+        // Read the solution
+        const solution = await readFile(outputPath, 'utf-8')
+        return {
+          success: true,
+          solution,
+          outputPath,
+          projectId,
+          logs,
+        }
+      }
 
-    if (options.wait) {
-      const result = await this.waitForCompletion(projectId)
+      // Check for common error patterns
+      if (logs.includes('FAILED')) {
+        return {
+          success: false,
+          error: 'Aristotle could not find a proof',
+          projectId,
+          logs,
+        }
+      }
+
       return {
-        projectId: result.projectId,
-        status: result.status,
-        solution: result.solution,
-        // Note: formalization and counterexample would come from parsing the solution
+        success: false,
+        error: `Aristotle exited with code ${result.code}`,
+        projectId,
+        logs,
+      }
+    } finally {
+      // Clean up temp files if we created them
+      if (tempDir && !options.outputPath) {
+        try {
+          await unlink(join(tempDir, 'input.lean')).catch(() => {})
+          await unlink(join(tempDir, 'output.lean')).catch(() => {})
+        } catch {
+          // Ignore cleanup errors
+        }
       }
     }
-
-    return {
-      projectId,
-      status: ProjectStatus.QUEUED,
-    }
   }
 
   /**
-   * Get the status of a proof project.
+   * Prove from informal (natural language) problem description.
    */
-  async getStatus(projectId: string): Promise<StatusResult> {
-    const response = await this.request<{
-      status: ProjectStatus
-      progress?: string
-    }>(`/v1/projects/${projectId}`)
+  async proveInformal(problem: string, formalContext?: string): Promise<ProveResult> {
+    const tempDir = await mkdtemp(join(tmpdir(), 'aristotle-'))
+    const inputPath = join(tempDir, 'problem.txt')
+    const outputPath = join(tempDir, 'solution.lean')
 
-    return {
-      status: response.status,
-      progress: response.progress,
-    }
-  }
+    try {
+      await writeFile(inputPath, problem, 'utf-8')
 
-  /**
-   * Retrieve the solution from a completed project.
-   */
-  async getSolution(
-    projectId: string,
-    outputPath?: string
-  ): Promise<SolutionResult> {
-    const response = await this.request<{ solution: string }>(
-      `/v1/projects/${projectId}/solution`
-    )
+      const args = ['prove-from-file', inputPath, '--informal', '--output-file', outputPath]
 
-    const result: SolutionResult = {
-      content: response.solution,
-    }
+      if (formalContext) {
+        args.push('--formal-input-context', formalContext)
+      }
 
-    if (outputPath) {
-      await writeFile(outputPath, response.solution, 'utf-8')
-      result.savedTo = outputPath
-    }
+      const result = await this.runCli(args)
+      const logs = result.stderr + result.stdout
 
-    return result
-  }
+      const projectIdMatch = logs.match(/Created project ([a-f0-9-]+)/i)
+      const projectId = projectIdMatch?.[1]
 
-  /**
-   * List recent projects.
-   */
-  async listProjects(options: ListOptions = {}): Promise<ProjectInfo[]> {
-    const params = new URLSearchParams()
-    if (options.limit) params.set('limit', String(options.limit))
-    if (options.status) params.set('status', options.status)
-
-    const response = await this.request<{
-      projects: Array<{
-        project_id: string
-        status: ProjectStatus
-        created_at?: string
-      }>
-    }>(`/v1/projects?${params}`)
-
-    return response.projects.map((p) => ({
-      projectId: p.project_id,
-      status: p.status,
-      createdAt: p.created_at,
-    }))
-  }
-
-  /**
-   * Poll until project completes or fails.
-   */
-  private async waitForCompletion(
-    projectId: string,
-    intervalMs = 30000,
-    maxAttempts = 120 // 1 hour max
-  ): Promise<ProveResult> {
-    for (let i = 0; i < maxAttempts; i++) {
-      const status = await this.getStatus(projectId)
-
-      if (status.status === ProjectStatus.COMPLETE) {
-        const solution = await this.getSolution(projectId)
+      if (result.code === 0 && logs.includes('Solution saved')) {
+        const solution = await readFile(outputPath, 'utf-8')
         return {
+          success: true,
+          solution,
+          outputPath,
           projectId,
-          status: ProjectStatus.COMPLETE,
-          solution: solution.content,
+          logs,
         }
       }
 
-      if (status.status === ProjectStatus.FAILED) {
-        return {
-          projectId,
-          status: ProjectStatus.FAILED,
-        }
+      return {
+        success: false,
+        error: `Aristotle exited with code ${result.code}`,
+        projectId,
+        logs,
       }
-
-      // Wait before polling again
-      await new Promise((resolve) => setTimeout(resolve, intervalMs))
+    } finally {
+      try {
+        await unlink(inputPath).catch(() => {})
+        await unlink(outputPath).catch(() => {})
+      } catch {
+        // Ignore cleanup errors
+      }
     }
+  }
 
-    // Timed out
-    return {
-      projectId,
-      status: ProjectStatus.IN_PROGRESS,
-    }
+  /**
+   * Get CLI version info
+   */
+  async getVersion(): Promise<string> {
+    const result = await this.runCli(['--version'])
+    return result.stdout.trim() || result.stderr.trim()
   }
 }
