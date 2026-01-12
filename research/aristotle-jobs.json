@@ -41,8 +41,19 @@
         "theorem subset_sums_spacing {A : Finset ℕ} (hA_pos : ∀ a ∈ A, 0 < a)"
       ],
       "notes": "Distinct subset sums - tractability 9/10",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": {
+        "timestamp": "2026-01-12T10:15:00Z",
+        "percent": 100,
+        "runtime_minutes": 44
+      },
+      "outcome": "ALL 3 THEOREMS PROVED! erdos_1_lower_bound (main), max_element_bound, subset_sums_spacing",
+      "integrated": "2026-01-12",
+      "theorems_proven": [
+        "erdos_1_lower_bound",
+        "max_element_bound",
+        "subset_sums_spacing"
+      ]
     }
   ],
   "completed": [],
