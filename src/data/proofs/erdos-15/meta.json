@@ -1,0 +1,33 @@
+{
+  "id": "erdos-15",
+  "title": "Erdős Problem #15",
+  "slug": "erdos-15",
+  "description": "Is it true that\\[\\sum_{n=1}^\\infty(-1)^n{p_n}\\]converges, where ... is the sequence of primes?",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/15",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos15Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 15,
+    "erdosUrl": "https://erdosproblems.com/15",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #15 from erdosproblems.com.",
+    "problemStatement": "Is it true that\\[\\sum_{n=1}^\\infty(-1)^n\\frac{n}{p_n}\\]converges, where $p_n$ is the sequence of primes?",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

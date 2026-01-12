@@ -9,8 +9,8 @@ import type { CacheEntry, CacheManifest } from './types'
 const CACHE_DIR = '.erdos-cache'
 const MANIFEST_FILE = 'manifest.json'
 const DEFAULT_MAX_AGE_HOURS = 24
-const DEFAULT_REQUEST_DELAY_MS = 1000
-const DEFAULT_MAX_RETRIES = 3
+const DEFAULT_REQUEST_DELAY_MS = 5000  // 5 seconds between requests
+const DEFAULT_MAX_RETRIES = 5
 const BATCH_SIZE = 10
 
 export interface CacheConfig {
@@ -195,6 +195,16 @@ export async function fetchWithRetry(
   for (let attempt = 0; attempt < config.maxRetries; attempt++) {
     try {
       const response = await fetch(url)
+
+      // Handle rate limiting (429) with exponential backoff
+      if (response.status === 429) {
+        // Start at 10s and double each time: 10s, 20s, 40s, 80s, 160s
+        const delay = 10000 * Math.pow(2, attempt)
+        console.log(`  Rate limited (429), waiting ${delay / 1000}s before retry...`)
+        await sleep(delay)
+        continue
+      }
+
       return response
     } catch (error) {
       lastError = error as Error
