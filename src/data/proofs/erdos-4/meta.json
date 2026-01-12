@@ -1,0 +1,34 @@
+{
+  "id": "erdos-4",
+  "title": "Erdős Problem #4",
+  "slug": "erdos-4",
+  "description": "Is it true that, for any ..., there are infinitely many ... such that\\[p_{n+1}-p_n> C{(\\log\\log \\log n)^2}\\log n?\\]",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/4",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos4Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 4,
+    "erdosUrl": "https://erdosproblems.com/4",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$10000"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #4 from erdosproblems.com. Originally offered with a prize of $10000.",
+    "problemStatement": "Is it true that, for any $C>0$, there are infinitely many $n$ such that\\[p_{n+1}-p_n> C\\frac{\\log\\log n\\log\\log\\log\\log n}{(\\log\\log \\log n)^2}\\log n?\\]",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}
