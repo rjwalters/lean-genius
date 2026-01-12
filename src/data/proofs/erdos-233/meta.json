@@ -1,0 +1,33 @@
+{
+  "id": "erdos-233",
+  "title": "Erdős Problem #233",
+  "slug": "erdos-233",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., where ... is the ...th prime. Prove that\\[\\sum_{1\\leq n\\leq N}d_n^2 \\ll N(\\log N)^2.\\]\n\n\n\nCramer  proved an upper bo...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/233",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos233Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 233,
+    "erdosUrl": "https://erdosproblems.com/233",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #233 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $d_n=p_{n+1}-p_n$, where $p_n$ is the $n$th prime. Prove that\\[\\sum_{1\\leq n\\leq N}d_n^2 \\ll N(\\log N)^2.\\]\n\n\n\nCramer \\cite{Cr36} proved an upper bound of $O(N(\\log N)^4)$ conditional on the Riemann hypothesis. Selberg \\cite{Se43} improved this slightly (still assuming the Riemann hypothesis) to\\[\\sum_{1\\leq n\\leq N}\\frac{d_n^2}{n}\\ll (\\log N)^4.\\]The prime number theorem immediately implies a lower bound of\\[\\sum_{1\\leq n\\leq N}d_n^2\\gg N(\\log N)^2.\\]The values of the sum are listed at A074741 on the OEIS.\n\nThis is discussed in problem A8 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Cr36] Cram\\'{e}r, Harald, On the order of magnitude of the difference between consecutive prime numbers. Acta Arithmetica (1936), 23--46.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Se43] Selberg, Atle, On the normal density of primes in small intervals, and the\ndifference between consecutive primes. Arch. Math. Naturvid. (1943), 87--105.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

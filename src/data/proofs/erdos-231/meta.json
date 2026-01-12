@@ -1,0 +1,33 @@
+{
+  "id": "erdos-231",
+  "title": "Erdős Problem #231",
+  "slug": "erdos-231",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a string of length ... formed from an alphabet of ... characters. Must ... contain an abelian square: two consecut...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/231",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos231Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 231,
+    "erdosUrl": "https://erdosproblems.com/231",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #231 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $S$ be a string of length $2^k-1$ formed from an alphabet of $k$ characters. Must $S$ contain an abelian square: two consecutive blocks $x$ and $y$ such that $y$ is a permutation of $x$?\n\n\n\nErd\\H{o}s initially conjectured that the answer is yes for all $k\\geq 2$, but for $k=4$ this was disproved by de Bruijn and Erd\\H{o}s. At least, this is what Erd\\H{o}s writes, but gives no construction or reference, and a simple computer search produces no such counterexamples for $k=4$. Perhaps Erd\\H{o}s meant $2^k$, where indeed there is an example for $k=4$:\\[1213121412132124.\\]Erd\\H{o}s then asked if there is in fact an infinite string formed from $\\{1,2,3,4\\}$ which contains no abelian squares? This is equivalent to [192], and such a string was constructed by Keränen \\cite{Ke92}. The existence of this infinite string gives a negative answer to the problem for all $k\\geq 4$.\n\nContaining no abelian squares is a stronger property than being squarefree (the existence of infinitely long squarefree strings over alphabets with $k\\geq 3$ characters was established by Thue).\n\nWe refer to a recent survey by Fici and Puzynina \\cite{FiPu23} for more background and related results.\n\n\n\n\nReferences\n\n\n[FiPu23] Fici, Gabriele and Puzynina, Svetlana, Abelian combinatorics on words: a survey. Comput. Sci. Rev. (2023), Paper No. 100532, 21.\n\n[Ke92] Ker\\\"Anen, Veikko, Abelian squares are avoidable on {$4$} letters. Automata, languages and programming (Vienna, 1992) (1992), 41-52.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

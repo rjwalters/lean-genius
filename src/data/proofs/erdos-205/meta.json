@@ -1,0 +1,33 @@
+{
+  "id": "erdos-205",
+  "title": "Erdős Problem #205",
+  "slug": "erdos-205",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that all sufficiently large ... can be written as ... for some ..., where ...? (Here ... is the number of prime di...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/205",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos205Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 205,
+    "erdosUrl": "https://erdosproblems.com/205",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #205 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that all sufficiently large $n$ can be written as $2^k+m$ for some $k\\geq 0$, where $\\Omega(m)<\\log\\log m$? (Here $\\Omega(m)$ is the number of prime divisors of $m$ counted with multiplicity.) What about $<\\epsilon \\log\\log m$? Or some more slowly growing function?\n\n\n\nIt is easy to see by probabilistic methods that this holds for almost all integers. Romanoff \\cite{Ro34} showed that a positive density set of integers are representable as the sum of $2^k+p$ for prime $p$, and Erd\\H{o}s used covering systems to show that there is a positive density set of odd integers which cannot be so represented.\n\nSee also [851].\n\nBarreto and Leeham, using ChatGPT and Aristotle, have proved a negative answer: in fact there are infinitely many $n$ such that, for all $k$ with $2^k<n$, $n-2^k$ has at\\[\\gg \\left(\\frac{\\log n}{\\log\\log n}\\right)^{1/2}\\]many prime factors.\n\n\n\n\nReferences\n\n\n[Ro34] Romanoff, N. P., \\\"{U}ber einige S\\\"Atze der additiven Zahlentheorie. Math. Ann. (1934), 668-678.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-225",
+  "title": "Erdős Problem #225",
+  "slug": "erdos-225",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[ f(\\theta) = \\sum_{0\\leq k\\leq n}c_k e^{ik\\theta}\\]be a trigonometric polynomial all of whose roots are real, such that ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/225",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos225Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 225,
+    "erdosUrl": "https://erdosproblems.com/225",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #225 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[ f(\\theta) = \\sum_{0\\leq k\\leq n}c_k e^{ik\\theta}\\]be a trigonometric polynomial all of whose roots are real, such that $\\max_{\\theta\\in [0,2\\pi]}\\lvert f(\\theta)\\rvert=1$. Then\\[\\int_0^{2\\pi}\\lvert f(\\theta)\\rvert \\mathrm{d}\\theta \\leq 4.\\]\n\n\n\nThis is Problem 4.20 in \\cite{Ha74}, where it is attributed to Erd\\H{o}s.\n\nThis was solved independently by Kristiansen \\cite{Kr74} (only in the case when $c_k\\in\\mathbb{R}$) and Saff and Sheil-Small \\cite{SSS73} (for general $c_k\\in \\mathbb{C}$).\n\n\n\n\nReferences\n\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n[Kr74] Kristiansen, G. K., Proof of an inequality for trigonometric polynomials. Proc. Amer. Math. Soc. (1974), 49-57.\n\n[SSS73] No reference found.\n\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

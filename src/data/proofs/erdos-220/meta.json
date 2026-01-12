@@ -1,0 +1,34 @@
+{
+  "id": "erdos-220",
+  "title": "Erdős Problem #220",
+  "slug": "erdos-220",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and\\[A=\\{a_1<\\cdots <a_{\\phi(n)}\\}=\\{ 1\\leq m<n : (m,n)=1\\}.\\]Is it true that\\[ \\sum_{1\\leq k<\\phi(n)}(a_{k+1}-a_k)^2...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/220",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos220Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 220,
+    "erdosUrl": "https://erdosproblems.com/220",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$500"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #220 from erdosproblems.com. Originally offered with a prize of $500.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n\\geq 1$ and\\[A=\\{a_1<\\cdots <a_{\\phi(n)}\\}=\\{ 1\\leq m<n : (m,n)=1\\}.\\]Is it true that\\[ \\sum_{1\\leq k<\\phi(n)}(a_{k+1}-a_k)^2 \\ll \\frac{n^2}{\\phi(n)}?\\]\n\n\n\nThe answer is yes, as proved by Montgomery and Vaughan \\cite{MoVa86}, who in fact proved that for any $\\gamma\\geq 1$\\[ \\sum_{1\\leq k<\\phi(n)}(a_{k+1}-a_k)^\\gamma \\ll \\frac{n^\\gamma}{\\phi(n)^{\\gamma-1}}.\\]This general form was also asked by Erd\\H{o}s in \\cite{Er73}.\n\nThis is discussed in problem B40 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er73] Erd\\H{o}s, P., Problems and results on combinatorial number theory. A survey of combinatorial theory (Proc. Internat. Sympos., Colorado State Univ., Fort Collins, Colo., 1971) (1973), 117-138.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[MoVa86] Montgomery, H. L. and Vaughan, R. C., On the distribution of reduced residues. Ann. of Math. (2) (1986), 311-333.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

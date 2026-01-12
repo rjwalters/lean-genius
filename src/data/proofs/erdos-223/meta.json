@@ -1,0 +1,33 @@
+{
+  "id": "erdos-223",
+  "title": "Erdős Problem #223",
+  "slug": "erdos-223",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and .... Let ... be maximal such that there exists some set of ... points ..., with diameter ..., in which the distan...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/223",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos223Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 223,
+    "erdosUrl": "https://erdosproblems.com/223",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #223 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $d\\geq 2$ and $n\\geq 2$. Let $f_d(n)$ be maximal such that there exists some set of $n$ points $A\\subseteq \\mathbb{R}^d$, with diameter $1$, in which the distance 1 occurs between $f_d(n)$ many pairs of points in $A$. Estimate $f_d(n)$.\n\n\n\nIn \\cite{Er46b} Erd\\H{o}s says this was a conjecture of V\\'{a}zsonyi.\n{UL}\n{LI}Hopf and Pannwitz \\cite{HoPa34} proved $f_2(n)=n$ (with an elegant simple proof described by Erd\\H{o}s in \\cite{Er46b}).{/LI}\n{LI}Gr\\\"{u}nbaum \\cite{Gr56}, Heppes \\cite{He56}, and Strasziewicz \\cite{St57} independently showed that $f_3(n)=2n-2$.{/LI}\n{LI}Erd\\H{o}s \\cite{Er60b} proved that, for $d\\geq 4$, $f_d(n)=(\\frac{p-1}{2p}+o(1))n^2$ where $p=\\lfloor d/2\\rfloor$.{/LI}\n{LI}Swanepoel \\cite{Sw09} gave, for all $d\\geq 4$, an exact description of $f_d(n)$ for all $n$ sufficiently large depending on $d$, and also gave the extremal configurations.{/LI}\n{/UL}\n\nSee also [132], and [1084] for the analogous problem with minimal distance $1$.\n\n\n\n\nReferences\n\n\n[Er46b] Erd\\H{o}s, P., On sets of distances of {$n$} points. Amer. Math. Monthly (1946), 248--250.\n\n[Er60b] Erd\\H{o}s, P., On sets of distances of {$n$} points in {E}uclidean space. Magyar Tud. Akad. Mat. Kutat\\'o{} Int. K\\\"ozl. (1960), 165--169.\n\n[Gr56] Gruenbaum, B., A proof of {V}azonyi's conjecture. Bull. Res. Council Israel. Sect. A (1956), 77--78.\n\n[He56] Heppes, A., Beweis einer Vermutung von A. V\\\"Azsonyi. Aca Math. Acad. Sci. Hungar. (1956), 463-466.\n\n[HoPa34] Hopf, H. and Pannwitz, E., Aufgabe 167. Jber. Deutsch. Math. Verein. (1934), 114.\n\n[St57] Straszewicz, S., Sur un probl\\`eme g\\'{e}om\\'{e}trique de {P}. {E}rd\\\"os. Bull. Acad. Polon. Sci. Cl. III. (1957), 39--40, IV--V.\n\n[Sw09] Swanepoel, Konrad J., Unit distances and diameters in {E}uclidean spaces. Discrete Comput. Geom. (2009), 1--27.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

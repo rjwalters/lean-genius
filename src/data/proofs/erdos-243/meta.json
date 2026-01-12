@@ -1,0 +1,33 @@
+{
+  "id": "erdos-243",
+  "title": "Erdős Problem #243",
+  "slug": "erdos-243",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence of integers such that\\[\\lim_{n\\to \\infty}{a_{n-1}^2}=1\\]and .... Then, for all sufficiently large ...,\\...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/243",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos243Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 243,
+    "erdosUrl": "https://erdosproblems.com/243",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #243 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_1<a_2<\\cdots$ be a sequence of integers such that\\[\\lim_{n\\to \\infty}\\frac{a_n}{a_{n-1}^2}=1\\]and $\\sum\\frac{1}{a_n}\\in \\mathbb{Q}$. Then, for all sufficiently large $n\\geq 1$,\\[ a_n = a_{n-1}^2-a_{n-1}+1.\\]\n\n\n\nErd\\H{o}s and Straus \\cite{ErSt64} proved that if $\\lim a_n/a_{n-1}^2=1$ and $\\sum \\frac{1}{a_n}$ is rational, and $a_n$ does not satisfy the recurrence, then\\[\\limsup_{n\\to \\infty} \\frac{[a_1,\\ldots,a_n]}{a_{n+1}}\\left(\\frac{a_n^2}{a_{n+1}}-1\\right)>0.\\]A sequence satisfying the reucrrence $a_n = a_{n-1}^2-a_{n-1}+1$ is known as Sylvester's sequence.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[ErSt64] Erd\\H{o}s, P. and Straus, E. G., On the irrationality of certain {A}hmes series. J. Indian Math. Soc. (N.S.) (1964), 129--133.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

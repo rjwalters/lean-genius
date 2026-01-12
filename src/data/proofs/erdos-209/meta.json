@@ -1,0 +1,33 @@
+{
+  "id": "erdos-209",
+  "title": "Erdős Problem #209",
+  "slug": "erdos-209",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a finite collection of ... non-parallel lines in ... such that there are no points where at least four lines from ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/209",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos209Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 209,
+    "erdosUrl": "https://erdosproblems.com/209",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #209 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A$ be a finite collection of $d\\geq 4$ non-parallel lines in $\\mathbb{R}^2$ such that there are no points where at least four lines from $A$ meet. Must there exist a 'Gallai triangle' (or 'ordinary triangle'): three lines from $A$ which intersect in three points, and each of these intersection points only intersects two lines from $A$?\n\n\n\nEquivalently, one can ask the dual problem: given $n$ points in $\\mathbb{R}^2$ such that there are no lines containing at least four points then there are three points such that the lines determined by them are ordinary ones (i.e. contain exactly two points each).\n\nThe Sylvester-Gallai theorem implies that there must exist a point where only two lines from $A$ meet. This problem asks whether there must exist three such points which form a triangle (with sides induced by lines from $A$). F\\\"{u}redi and Pal\\'{a}sti \\cite{FuPa84} showed this is false when $d\\geq 4$ is not divisible by $9$. Escudero \\cite{Es16} showed this is false for all $d\\geq 4$.\n\nSee also [960].\n\n\n\n\nReferences\n\n\n[Es16] Escudero, Juan Garc\\'{i}a, Gallai triangles in configurations of lines in the projective plane. C. R. Math. Acad. Sci. Paris (2016), 551-554.\n\n[FuPa84] F\\\"{u}redi, Z. and Pal\\'{a}sti, I., Arrangements of lines with a large number of triangles. Proc. Amer. Math. Soc. (1984), 561-566.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

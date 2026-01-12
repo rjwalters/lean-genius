@@ -1,0 +1,33 @@
+{
+  "id": "erdos-230",
+  "title": "Erdős Problem #230",
+  "slug": "erdos-230",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... for some ... with ... for .... Does there exist a constant ... such that, for ..., we have\\[\\max_{\\lvert z\\rvert=1}\\l...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/230",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos230Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 230,
+    "erdosUrl": "https://erdosproblems.com/230",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #230 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $P(z)=\\sum_{1\\leq k\\leq n}a_kz^k$ for some $a_k\\in \\mathbb{C}$ with $\\lvert a_k\\rvert=1$ for $1\\leq k\\leq n$. Does there exist a constant $c>0$ such that, for $n\\geq 2$, we have\\[\\max_{\\lvert z\\rvert=1}\\lvert P(z)\\rvert \\geq (1+c)\\sqrt{n}?\\]\n\n\n\nThis is Problem 4.31 in \\cite{Ha74}, in which it is described as a conjecture of Erd\\H{o}s and Newman.\n\nThe lower bound of $\\sqrt{n}$ is trivial from Parseval's theorem. The answer is no (contrary to Erd\\H{o}s' initial guess). Kahane \\cite{Ka80} constructed 'ultraflat' polynomials $P(z)=\\sum a_kz^k$ with $\\lvert a_k\\rvert=1$ such that\\[P(z)=(1+o(1))\\sqrt{n}\\]uniformly for all $z\\in\\mathbb{C}$ with $\\lvert z\\rvert=1$, where the $o(1)$ term $\\to 0$ as $n\\to \\infty$.\n\nFor more details see the paper \\cite{BoBo09} of Bombieri and Bourgain and where Kahane's construction is improved to yield such a polynomial with\\[P(z)=\\sqrt{n}+O(n^{\\frac{7}{18}}(\\log n)^{O(1)})\\]for all $z\\in\\mathbb{C}$ with $\\lvert z\\rvert=1$.\n\n\nSee also [228].\n\n\n\n\nReferences\n\n\n[BoBo09] Bombieri, Enrico and Bourgain, Jean, On Kahane's ultraflat polynomials. J. Eur. Math. Soc. (JEMS) (2009), 627-703.\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n[Ka80] Kahane, Jean-Pierre, Sur les polyn\\^{o}mes \\`a coefficients unimodulaires. Bull. London Math. Soc. (1980), 321-342.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

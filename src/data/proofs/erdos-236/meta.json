@@ -1,0 +1,33 @@
+{
+  "id": "erdos-236",
+  "title": "Erdős Problem #236",
+  "slug": "erdos-236",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of solutions to ... for prime ... and .... Is it true that ...?\n\n\n\nErds  proved that there are infin...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/236",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos236Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 236,
+    "erdosUrl": "https://erdosproblems.com/236",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #236 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ count the number of solutions to $n=p+2^k$ for prime $p$ and $k\\geq 0$. Is it true that $f(n)=o(\\log n)$?\n\n\n\nErd\\H{o}s \\cite{Er50} proved that there are infinitely many $n$ such that $f(n)\\gg \\log\\log n$.\n\nErd\\H{o}s could not even prove that there do not exist infinitely many integers $n$ such that for all $1< 2^k<n$ the number $n-2^k$ is prime - he conjectured (see problem A19 of Guy's collection \\cite{Gu04}) that\\[4,7,15,21,45,75,105\\]are the only such $n$. This is A039669 in the OEIS. Mientka and Weitzenkamp \\cite{MiWe69} have proved there are no other such $n\\leq 2^{44}$.\n\nVaughan \\cite{Va73} has proved that the number of $n\\leq N$ such that $n-2^k$ is prime for all $2^k<n$ is\\[< \\exp\\left(-c\\frac{\\log \\log \\log N}{\\log\\log N}\\log N\\right)N\\]for some constant $c>0$.\n\nThe sequence of values of $f(n)$ is A109925 on the OEIS.\n\nSee also [237].\n\n\n\n\nReferences\n\n\n[Er50] Erd\\\"{o}s, P., On integers of the form $2^k+p$ and some related problems. Summa Brasil. Math. (1950), 113-123.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[MiWe69] Mientka, Walter E. and Weitzenkamp, Roger C., On {$f$}-plentiful numbers. J. Combinatorial Theory (1969), 374--377.\n\n[Va73] Vaughan, R. C., Some applications of {M}ontgomery's sieve. J. Number Theory (1973), 64--79.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

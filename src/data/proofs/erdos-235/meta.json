@@ -1,0 +1,33 @@
+{
+  "id": "erdos-235",
+  "title": "Erdős Problem #235",
+  "slug": "erdos-235",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be the integers ... which are relatively prime to .... Then, for any ..., the limit\\[\\leq c {\\phi(N_k)} : 2\\l...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/235",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos235Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 235,
+    "erdosUrl": "https://erdosproblems.com/235",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #235 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N_k=2\\cdot 3\\cdots p_k$ and $\\{a_1<a_2<\\cdots <a_{\\phi(N_k)}\\}$ be the integers $<N_k$ which are relatively prime to $N_k$. Then, for any $c\\geq 0$, the limit\\[\\frac{\\#\\{ a_i-a_{i-1}\\leq c \\frac{N_k}{\\phi(N_k)} : 2\\leq i\\leq \\phi(N_k)\\}}{\\phi(N_k)}\\]exists and is a continuous function of $c$.\n\n\n\nSolved by Hooley \\cite{Ho65}, who proved that these gaps have an exponential distribution: that is, if $f(c)$ is the function in question, then\\[f(c)=(1+o(1))(1-e^{-c})\\](where the $o(1)$ goes to $0$ uniformly as $k\\to \\infty$).\n\n\n\n\nReferences\n\n\n[Ho65] Hooley, Christopher, On the difference between consecutive numbers prime to $n$.\n{II}. Publ. Math. Debrecen (1965), 39--49.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

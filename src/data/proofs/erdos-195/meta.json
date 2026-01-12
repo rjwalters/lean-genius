@@ -1,0 +1,33 @@
+{
+  "id": "erdos-195",
+  "title": "Erdős Problem #195",
+  "slug": "erdos-195",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the largest ... such that in any permutation of $...k...x_1<\\cdots<x_k...k\\leq 5...k\\leq 4$.\n\nSee also [194] and [196...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/195",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos195Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 195,
+    "erdosUrl": "https://erdosproblems.com/195",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #195 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the largest $k$ such that in any permutation of $\\mathbb{Z}$ there must exist a monotone $k$-term arithmetic progression $x_1<\\cdots<x_k$?\n\n\n\nGeneson \\cite{Ge19} proved that $k\\leq 5$. Adenwalla \\cite{Ad22} proved that $k\\leq 4$.\n\nSee also [194] and [196].\n\n\n\n\nReferences\n\n\n[Ad22] Adenwalla, S., Avoiding Monotone Arithmetic Progressions in Permutations of Integers. arXiv:2211.04451 (2022).\n\n[Ge19] Geneson, Jesse, Forbidden arithmetic progressions in permutations of subsets\nof the integers. Discrete Math. (2019), 1489-1491.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

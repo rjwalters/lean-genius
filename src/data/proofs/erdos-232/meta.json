@@ -1,0 +1,33 @@
+{
+  "id": "erdos-232",
+  "title": "Erdős Problem #232",
+  "slug": "erdos-232",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor ... we define the upper density as\\[(A)=\\limsup_{R\\to \\infty}{\\lambda(B_R)},\\]where ... is the Lebesgue measure and ... i...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/232",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos232Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 232,
+    "erdosUrl": "https://erdosproblems.com/232",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #232 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor $A\\subset \\mathbb{R}^2$ we define the upper density as\\[\\overline{\\delta}(A)=\\limsup_{R\\to \\infty}\\frac{\\lambda(A \\cap B_R)}{\\lambda(B_R)},\\]where $\\lambda$ is the Lebesgue measure and $B_R$ is the ball of radius $R$.\n\nEstimate\\[m_1=\\sup \\overline{\\delta}(A),\\]where $A$ ranges over all measurable subsets of $\\mathbb{R}^2$ without two points distance $1$ apart. In particular, is $m_1\\leq 1/4$?\n\n\n\nA question of Moser \\cite{Mo66}. A lower bound of $m_1\\geq \\pi/8\\sqrt{3}\\approx 0.2267$ is given by taking the union of open circular discs of radius $1/2$ at a regular hexagonal lattice suitably spaced apart. Croft \\cite{Cr67} gives a small improvement of $m_1\\geq 0.22936$.\n\nThe trivial upper bound is $m_1\\leq 1/2$, since for any unit vector $u$ the sets $A$ and $A+u$ must be disjoint. Erd\\H{o}s' question was solved by Ambrus, Csisz\\'{a}rik, Matolcsi, Varga, and Zs\\'{a}mboki \\cite{ACMVZ23} who proved that $m_1\\leq 0.247$.\n\n\n\n\nReferences\n\n\n[ACMVZ23] G. Ambrus, A. Csisz\\'{a}rik, M. Matolcsi, D. Varga, and P. Zs\\'{a}mboki, The density of planar sets avoiding unit distances. arXiv:2207.14179 (2023).\n\n[Cr67] H. T. Croft, Incidence incidents. Eureka (1967), 22-26.\n\n[Mo66] L. Moser, Poorly formulated unsolved problems of combinatorial geometry. Mimeographed (1966).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

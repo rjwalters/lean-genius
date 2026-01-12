@@ -1,0 +1,33 @@
+{
+  "id": "erdos-212",
+  "title": "Erdős Problem #212",
+  "slug": "erdos-212",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a dense subset of ... such that all pairwise distances are rational?\n\n\n\nConjectured by Ulam. Erds believed there can...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/212",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos212Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 212,
+    "erdosUrl": "https://erdosproblems.com/212",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #212 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a dense subset of $\\mathbb{R}^2$ such that all pairwise distances are rational?\n\n\n\nConjectured by Ulam. Erd\\H{o}s believed there cannot be such a set. This problem is discussed in a blogpost by Terence Tao, in which he shows that there cannot be such a set, assuming the Bombieri-Lang conjecture. The same conclusion was independently obtained by Shaffaf \\cite{Sh18}.\n\nIndeed, Shaffaf and Tao actually proved that such a rational distance set must be contained in a finite union of real algebraic curves. Solymosi and de Zeeuw \\cite{SdZ10} then proved (unconditionally) that a rational distance set contained in a real algebraic curve must be finite, unless the curve contains a line or a circle.\n\nAscher, Braune, and Turchet \\cite{ABT20} observed that, combined, these facts imply that a rational distance set in general position must be finite (conditional on the Bombieri-Lang conjecture).\n\nIn \\cite{Er87b} Erd\\H{o}s mentions that Besicovitch conjectured that the limit points of a rational distance set cannot contain arbitrarily large convex sets.\n\n\n\n\nReferences\n\n\n[ABT20] Ascher, K. and Braune, L. and Turchet, A., The Erd\\H{o}s-Ulam problem, Lang's conjecture, and uniformity. arXiv:1901.02616 (2020).\n\n[Er87b] Erd\\H{o}s, P., Some combinatorial and metric problems in geometry. Intuitive geometry (Si\\'{o}fok, 1985) (1987), 167-177.\n\n[SdZ10] Solymosi, Jozsef and de Zeeuw, Frank, On a question of Erd\\H{o}s and Ulam. Discrete Comput. Geom. (2010), 393-401.\n\n[Sh18] Shaffaf, Jafar, A solution of the Erd\\H{o}s-Ulam problem on rational\ndistance sets assuming the Bombieri-Lang conjecture. Discrete Comput. Geom. (2018), 283-293.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

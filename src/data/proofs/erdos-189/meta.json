@@ -1,0 +1,33 @@
+{
+  "id": "erdos-189",
+  "title": "Erdős Problem #189",
+  "slug": "erdos-189",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is finitely coloured then must there exist some colour class which contains the vertices of a rectangle of every area?...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/189",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos189Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 189,
+    "erdosUrl": "https://erdosproblems.com/189",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #189 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $\\mathbb{R}^2$ is finitely coloured then must there exist some colour class which contains the vertices of a rectangle of every area?\n\n\n\nGraham \\cite{Gr80} has shown that this is true if we replace rectangle by right-angled triangle. The same question can be asked for parallelograms. It is not true for rhombuses.\n\nThis is false; Kova\\v{c} \\cite{Ko23} provides an explicit (and elegantly simple) colouring using 25 colours such that no colour class contains the vertices of a rectangle of area $1$. The question for parallelograms remains open.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Gr80] Graham, R. L., On partitions of ${\\bf E}^{n}$. J. Combin. Theory Ser. A (1980), 89-97.\n\n[Ko23] Kova\\vC, V., Coloring and density theorems for configurations of a given volume. arXiv:2309.09973 (2023).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

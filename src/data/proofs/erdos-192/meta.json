@@ -1,0 +1,33 @@
+{
+  "id": "erdos-192",
+  "title": "Erdős Problem #192",
+  "slug": "erdos-192",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence such that ... is a positive unit vector (i.e. is of the form ...). For which ... must ... con...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/192",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos192Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 192,
+    "erdosUrl": "https://erdosproblems.com/192",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #192 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{a_1,a_2,\\ldots\\}\\subset \\mathbb{R}^d$ be an infinite sequence such that $a_{i+1}-a_i$ is a positive unit vector (i.e. is of the form $(0,0,\\ldots,1,0,\\ldots,0)$). For which $d$ must $A$ contain a three-term arithmetic progression?\n\n\n\nThis is true for $d\\leq 3$ and false for $d\\geq 4$.\n\nThis problem is equivalent to one on 'abelian squares' (see [231]). In particular $A$ can be interpreted as an infinite string over an alphabet with $d$ letters (each letter describining which of the $d$ possible steps is taken at each point). An abelian square in a string $s$ is a pair of consecutive blocks $x$ and $y$ appearing in $s$ such that $y$ is a permutation of $x$. The connection comes from the observation that $p,q,r\\in A\\subset \\mathbb{R}^d$ form a three-term arithmetic progression if and only if the string corresponding to the steps from $p$ to $q$ is a permutation of the string corresponding to the steps from $q$ to $r$.\n\nThis problem is therefore equivalent to asking for which $d$ there exists an infinite string over $\\{1,\\ldots,d\\}$ with no abelian squares. It is easy to check that in fact any finite string of length $7$ over $\\{1,2,3\\}$ contains an abelian square.\n\nAn infinite string without abelian squares was constructed when $d=4$ by Keränen \\cite{Ke92}. We refer to a recent survey by Fici and Puzynina \\cite{FiPu23} for more background and related results, and a blog post by Renan for an entertaining and educational discussion.\n\n\n\n\nReferences\n\n\n[FiPu23] Fici, Gabriele and Puzynina, Svetlana, Abelian combinatorics on words: a survey. Comput. Sci. Rev. (2023), Paper No. 100532, 21.\n\n[Ke92] Ker\\\"Anen, Veikko, Abelian squares are avoidable on {$4$} letters. Automata, languages and programming (Vienna, 1992) (1992), 41-52.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-221",
+  "title": "Erdős Problem #221",
+  "slug": "erdos-221",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a set ... such that, for all large ...,\\[\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert \\ll N/\\log N\\]and such that every large in...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/221",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos221Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 221,
+    "erdosUrl": "https://erdosproblems.com/221",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #221 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a set $A\\subset\\mathbb{N}$ such that, for all large $N$,\\[\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert \\ll N/\\log N\\]and such that every large integer can be written as $2^k+a$ for some $k\\geq 0$ and $a\\in A$?\n\n\n\nLorentz \\cite{Lo54} proved there is such a set with, for all large $N$,\\[\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert \\ll \\frac{\\log\\log N}{\\log N}N\\]The answer is yes, proved by Ruzsa \\cite{Ru72}. Ruzsa's construction is ingeniously simple:\\[A = \\{ 5^nm : m\\geq 1\\textrm{ and }5^n\\geq C\\log m\\}+\\{0,1\\}\\]for some small absolute constant $C>0$ (van Doorn explains why $C=(5\\log 2)^{-1}$ works in the comments). That every large integer is of the form $2^k+a$ for some $a\\in A$ is a consequence of the fact that $2$ is a primitive root of $5^n$ for all $n\\geq 1$.\n\nIn \\cite{Ru01} Ruzsa constructs an asymptotically best possible answer to this question (a so-called 'exact additive complement'); that is, there is such a set $A$ with\\[\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert \\sim \\frac{N}{\\log_2N}\\]as $N\\to \\infty$.\n\n\n\n\nReferences\n\n\n[Lo54] Lorentz, G. G., On a problem of additive number theory. Proc. Amer. Math. Soc. (1954), 838-841.\n\n[Ru01] Ruzsa, Imre Z., Additive completion of lacunary sequences. Combinatorica (2001), 279-291.\n\n[Ru72] Ruzsa, Jr., I., On a problem of P. Erd\\H{o}s. Canad. Math. Bull. (1972), 309-310.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

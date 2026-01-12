@@ -1,0 +1,33 @@
+{
+  "id": "erdos-213",
+  "title": "Erdős Problem #213",
+  "slug": "erdos-213",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Are there ... points in ..., no three on a line and no four on a circle, such that all pairwise distances are intege...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/213",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos213Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 213,
+    "erdosUrl": "https://erdosproblems.com/213",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #213 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n\\geq 4$. Are there $n$ points in $\\mathbb{R}^2$, no three on a line and no four on a circle, such that all pairwise distances are integers?\n\n\n\nAnning and Erd\\H{o}s \\cite{AnEr45} proved there cannot exist an infinite such set. Harborth constructed such a set when $n=5$. The best construction to date, due to Kreisel and Kurz \\cite{KK08}, has $n=7$.\n\nAscher, Braune, and Turchet \\cite{ABT20} have shown that there is a uniform upper bound on the size of such a set, conditional on the Bombieri-Lang conjecture. Greenfeld, Iliopoulou, and Peluse \\cite{GIP24} have shown (unconditionally) that any such set must be very sparse, in that if $S\\subseteq [-N,N]^2$ has no three on a line and no four on a circle, and all pairwise distances integers, then\\[\\lvert S\\rvert \\ll (\\log N)^{O(1)}.\\]See also [130].\n\n\n\n\nReferences\n\n\n[ABT20] Ascher, K. and Braune, L. and Turchet, A., The Erd\\H{o}s-Ulam problem, Lang's conjecture, and uniformity. arXiv:1901.02616 (2020).\n\n[AnEr45] Anning, Norman H. and Erd\\H{o}s, Paul, Integral distances. Bull. Amer. Math. Soc. (1945), 598-600.\n\n[GIP24] Greenfeld, R. and Iliopoulou, M. and Peluse, S., On integer distance sets. arXiv:2401.10821 (2024).\n\n[KK08] Kreisel, Tobias and Kurz, Sascha, There are integral heptagons, no three points on a line, on four on a circle. Discrete Comput. Geom. (2008), 786-790.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-215",
+  "title": "Erdős Problem #215",
+  "slug": "erdos-215",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist ... such that every set congruent to ... (that is, ... after some translation and rotation) contains exactly...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/215",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos215Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 215,
+    "erdosUrl": "https://erdosproblems.com/215",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #215 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist $S\\subseteq \\mathbb{R}^2$ such that every set congruent to $S$ (that is, $S$ after some translation and rotation) contains exactly one point from $\\mathbb{Z}^2$?\n\n\n\nAn old question of Steinhaus. Erd\\H{o}s was 'almost certain that such a set does not exist'.\n\nIn fact, such a set does exist, as proved by Jackson and Mauldin \\cite{JaMa02}. Their construction depends on the axiom of choice.\n\n\n\n\nReferences\n\n\n[JaMa02] Jackson, Steve and Mauldin, R. Daniel, Sets meeting isometric copies of the lattice ${\\bf Z}^2$ in exactly one point. Proc. Natl. Acad. Sci. USA (2002), 15883-15887.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

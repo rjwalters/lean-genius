@@ -1,0 +1,33 @@
+{
+  "id": "erdos-210",
+  "title": "Erdős Problem #210",
+  "slug": "erdos-210",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that the following holds. For any ... points in ..., not all on a line, there must be at least ... ma...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/210",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos210Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 210,
+    "erdosUrl": "https://erdosproblems.com/210",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #210 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be minimal such that the following holds. For any $n$ points in $\\mathbb{R}^2$, not all on a line, there must be at least $f(n)$ many lines which contain exactly 2 points (called 'ordinary lines'). Does $f(n)\\to \\infty$? How fast?\n\n\n\nConjectured by Erd\\H{o}s and de Bruijn. The Sylvester-Gallai theorem states that $f(n)\\geq 1$. The fact that $f(n)\\geq 1$ was conjectured by Sylvester in 1893. Erd\\H{o}s rediscovered this conjecture in 1933 and told it to Gallai who proved it.\n\nThat $f(n)\\to \\infty$ was proved by Motzkin \\cite{Mo51}. Kelly and Moser \\cite{KeMo58} proved that $f(n)\\geq\\tfrac{3}{7}n$ for all $n$. This is best possible for $n=7$. Motzkin conjectured that for $n\\geq 13$ there are at least $n/2$ such lines. Csima and Sawyer \\cite{CsSa93} proved a lower bound of $f(n)\\geq \\tfrac{6}{13}n$ when $n\\geq 8$. Green and Tao \\cite{GrTa13} proved that $f(n)\\geq n/2$ for sufficiently large $n$. (A proof that $f(n)\\geq n/2$ for large $n$ was earlier claimed by Hansen but this proof was flawed.)\n\nThe bound of $n/2$ is best possible for even $n$, since one could take $n/2$ points on a circle and $n/2$ points at infinity. Surprisingly, Green and Tao \\cite{GrTa13} show that if $n$ is odd (and sufficiently large) then $f(n)\\geq 3\\lfloor n/4\\rfloor$.\n\n\n\n\nReferences\n\n\n[CsSa93] Csima, J. and Sawyer, E. T., There exist {$6n/13$} ordinary points. Discrete Comput. Geom. (1993), 187-202.\n\n[GrTa13] Green, Ben and Tao, Terence, On sets defining few ordinary lines. Discrete Comput. Geom. (2013), 409-468.\n\n[KeMo58] Kelly, L. M. and Moser, W. O. J., On the number of ordinary lines determined by {$n$} points. Canadian J. Math. (1958), 210-219.\n\n[Mo51] Motzkin, Th., The lines and planes connecting the points of a finite set. Trans. Amer. Math. Soc. (1951), 451-464.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

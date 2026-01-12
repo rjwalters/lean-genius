@@ -1,0 +1,33 @@
+{
+  "id": "erdos-204",
+  "title": "Erdős Problem #204",
+  "slug": "erdos-204",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there ... such that there is a covering system with moduli the divisors of ... which is 'as disjoint as possible'?\n\nThat ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/204",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos204Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 204,
+    "erdosUrl": "https://erdosproblems.com/204",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #204 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there $n$ such that there is a covering system with moduli the divisors of $n$ which is 'as disjoint as possible'?\n\nThat is, for all $d\\mid n$ with $d>1$ there is an associated $a_d$ such that every integer is congruent to some $a_d\\pmod{d}$, and if there is some integer $x$ with\\[x\\equiv a_d\\pmod{d}\\textrm{ and }x\\equiv a_{d'}\\pmod{d'}\\]then $(d,d')=1$.\n\n\n\nThe density of such $n$ is zero. Erd\\H{o}s and Graham believed that no such $n$ exist.\n\nAdenwalla \\cite{Ad25} has proved there are no such $n$.\n\nIn general, for any $n$ one can try to choose such $a_d$ to maximise the density of integers so covered, and ask what this density is. This was also investigated by Adenwalla \\cite{Ad25}.\n\n\n\n\nReferences\n\n\n[Ad25] S. Adenwalla, A Question of Erd\\H{o}s and Graham on Covering Systems. arXiv:2501.15170 (2025).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

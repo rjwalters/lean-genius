@@ -1,0 +1,33 @@
+{
+  "id": "erdos-242",
+  "title": "Erdős Problem #242",
+  "slug": "erdos-242",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor every ... there exist distinct integers ... such that\\[{n} = {x}+{y}+{z}.\\]\n\n\n\nThe Erd. The existence of a representation...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/242",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos242Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 242,
+    "erdosUrl": "https://erdosproblems.com/242",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #242 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor every $n>2$ there exist distinct integers $1\\leq x<y<z$ such that\\[\\frac{4}{n} = \\frac{1}{x}+\\frac{1}{y}+\\frac{1}{z}.\\]\n\n\n\nThe Erd\\H{os-Straus conjecture}. The existence of a representation of $4/n$ as the sum of at most four distinct unit fractions follows trivially from a greedy algorithm.\n\nSchinzel conjectured the generalisation that, for any fixed $a$, if $n$ is sufficiently large in terms of $a$ then there exist distinct integers $1\\leq x<y<z$ such that\\[\\frac{a}{n} = \\frac{1}{x}+\\frac{1}{y}+\\frac{1}{z}.\\]This problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-226",
+  "title": "Erdős Problem #226",
+  "slug": "erdos-226",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an entire non-linear function ... such that, for all ..., ... is rational if and only if ... is?\n\n\n\nThis is Problem ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/226",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos226Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 226,
+    "erdosUrl": "https://erdosproblems.com/226",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #226 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an entire non-linear function $f$ such that, for all $x\\in\\mathbb{R}$, $x$ is rational if and only if $f(x)$ is?\n\n\n\nThis is Problem 2.31 in \\cite{Ha74}, where it is attributed to Erd\\H{o}s.\n\nMore generally, if $A,B\\subseteq \\mathbb{R}$ are two countable dense sets then is there an entire function such that $f(A)=B$?\n\nSolved by Barth and Schneider \\cite{BaSc70}, who proved that if $A,B\\subset\\mathbb{R}$ are countable dense sets then there exists a transcendental entire function $f$ such that $f(z)\\in B$ if and only if $z\\in A$. In \\cite{BaSc71} they proved the same result for countable dense subsets of $\\mathbb{C}$.\n\n\n\n\nReferences\n\n\n[BaSc70] Barth, K. F. and Schneider, W. J., Entire functions mapping countable dense subsets of the reals\nonto each other monotonically. J. London Math. Soc. (2) (1970), 620--626.\n\n[BaSc71] Barth, K. F. and Schneider, W. J., Entire functions mapping arbitrary countable dense sets and\ntheir complements onto each other. J. London Math. Soc. (2) (1971/72), 482--488.\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

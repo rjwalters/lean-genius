@@ -1,0 +1,33 @@
+{
+  "id": "erdos-222",
+  "title": "Erdős Problem #222",
+  "slug": "erdos-222",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the sequence of integers which are the sum of two squares. Explore the behaviour of (i.e. find good upper and lowe...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/222",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos222Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 222,
+    "erdosUrl": "https://erdosproblems.com/222",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #222 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n_1<n_2<\\cdots$ be the sequence of integers which are the sum of two squares. Explore the behaviour of (i.e. find good upper and lower bounds for) the consecutive differences $n_{k+1}-n_k$.\n\n\n\nErd\\H{o}s \\cite{Er51} proved that, for infinitely many $k$,\\[ n_{k+1}-n_k \\gg \\frac{\\log n_k}{\\sqrt{\\log\\log n_k}}.\\]Richards \\cite{Ri82} improved this to\\[\\limsup_{k\\to \\infty} \\frac{n_{k+1}-n_k}{\\log n_k} \\geq 1/4.\\]The constant $1/4$ here has been improved, most lately to $0.868\\cdots$ by Dietmann, Elsholtz, Kalmynin, Konyagin, and Maynard \\cite{DEKKM22}.\n\nThe best known upper bound is due to Bambah and Chowla \\cite{BaCh47}, who proved that\\[n_{k+1}-n_k \\ll n_k^{1/4}.\\]The differences are listed at A256435 on the OEIS.\n\n\n\n\nReferences\n\n\n[BaCh47] Bambah, R. P. and Chowla, S., On numbers which can be expressed as a sum of two squares. Proc. Nat. Inst. Sci. India (1947), 101-103.\n\n[DEKKM22] Dietmann, R. and Elsholtz, C. and Kaymynin, A. and Konyagin, S. and Maynard, J., Longer Gaps Between Values of Binary Quadratic Forms. International Mathematics Research Notices (2023), 10313–10349.\n\n[Er51] Erd\\\"{o}s, P., Some problems and results in elementary number theory. Publ. Math. Debrecen (1951), 103-109.\n\n[Ri82] Richards, Ian, On the gaps between numbers which are sums of two squares. Adv. in Math. (1982), 1-2.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

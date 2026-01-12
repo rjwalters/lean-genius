@@ -1,0 +1,33 @@
+{
+  "id": "erdos-216",
+  "title": "Erdős Problem #216",
+  "slug": "erdos-216",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the smallest integer (if any such exists) such that any ... points in ... contains an empty convex ...-gon (i.e. w...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/216",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos216Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 216,
+    "erdosUrl": "https://erdosproblems.com/216",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #216 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $g(k)$ be the smallest integer (if any such exists) such that any $g(k)$ points in $\\mathbb{R}^2$ contains an empty convex $k$-gon (i.e. with no point in the interior). Does $g(k)$ exist? If so, estimate $g(k)$.\n\n\n\nA variant of the 'happy ending' problem [107], which asks for the same without the 'no point in the interior' restriction. Erd\\H{o}s observed $g(4)=5$ (as with the happy ending problem) but Harborth \\cite{Ha78} showed $g(5)=10$. Nicol\\'{a}s \\cite{Ni07} and Gerken \\cite{Ge08} independently showed that $g(6)$ exists. Horton \\cite{Ho83} showed that $g(n)$ does not exist for $n\\geq 7$.\n\nHeule and Scheucher \\cite{HeSc24} have proved that $g(6)=30$.\n\nThis problem is #2 in Ramsey Theory in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[Ge08] Gerken, Tobias, Empty convex hexagons in planar point sets. Discrete Comput. Geom. (2008), 239-272.\n\n[Ha78] Harborth, Heiko, Konvexe F\\\"{u}nfecke in ebenen Punktmengen. Elem. Math. (1978), 116-118.\n\n[HeSc24] M. Heule and M. Scheucher, Happy Ending: An Empty Hexagon in Every Set of $30$ Points. Tools and Algorithms for the Construction and Analysis of Systems, Lecture Notes in Computer Science (2024), 61-80.\n\n[Ho83] Horton, J. D., Sets with no empty convex 7-gons. Canad. Math. Bull. (1983), 482-484.\n\n[Ni07] Nicol\\'{a}s, Carlos M., The empty hexagon theorem. Discrete Comput. Geom. (2007), 389-397.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

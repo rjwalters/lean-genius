@@ -1,0 +1,33 @@
+{
+  "id": "erdos-237",
+  "title": "Erdős Problem #237",
+  "slug": "erdos-237",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set such that ... for all large .... Let ... count the number of solutions to ... for ... prime and .... Is it t...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/237",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos237Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 237,
+    "erdosUrl": "https://erdosproblems.com/237",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #237 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ be a set such that $\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\gg \\log N$ for all large $N$. Let $f(n)$ count the number of solutions to $n=p+a$ for $p$ prime and $a\\in A$. Is it true that $\\limsup f(n)=\\infty$?\n\n\n\nErd\\H{o}s \\cite{Er50} proved this when $A=\\{2^k : k\\geq 0\\}$.\n\nThe answer is yes, as proved by Chen and Ding \\cite{ChDi22} - in fact, the assumption that $\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\gg \\log N$ can be replaced just with the assumption that $A$ is infinite.\n\nSee also [236].\n\n\n\n\nReferences\n\n\n[ChDi22] Chen, Y.-G. and Ding, Y., On a conjecture of Erd\\H{o}s. arXiv:2201.10727 (2022).\n\n[Er50] Erd\\\"{o}s, P., On integers of the form $2^k+p$ and some related problems. Summa Brasil. Math. (1950), 113-123.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

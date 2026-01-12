@@ -1,0 +1,33 @@
+{
+  "id": "erdos-217",
+  "title": "Erdős Problem #217",
+  "slug": "erdos-217",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor which ... are there ... points in ..., no three on a line and no four on a circle, which determine ... distinct distances...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/217",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos217Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 217,
+    "erdosUrl": "https://erdosproblems.com/217",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #217 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor which $n$ are there $n$ points in $\\mathbb{R}^2$, no three on a line and no four on a circle, which determine $n-1$ distinct distances and so that (in some ordering of the distances) the $i$th distance occurs $i$ times?\n\n\n\nAn example with $n=4$ is an isosceles triangle with the point in the centre. Erd\\H{o}s originally believed this was impossible for $n\\geq 5$, but Pomerance constructed a set with $n=5$ (see \\cite{Er83c} for a description), and Pal\\'{a}sti has proved such sets exist for all $n\\leq 8$.\n\nErd\\H{o}s believed this is impossible for all sufficiently large $n$. This would follow from $h(n)\\geq n$ for sufficiently large $n$, where $h(n)$ is as in [98].\n\n\n\n\nReferences\n\n\n[Er83c] Erd\\H{o}s, Paul, Combinatorial problems in geometry. Math. Chronicle (1983), 35-54.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

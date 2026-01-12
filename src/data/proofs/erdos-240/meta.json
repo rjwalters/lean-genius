@@ -1,0 +1,33 @@
+{
+  "id": "erdos-240",
+  "title": "Erdős Problem #240",
+  "slug": "erdos-240",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite set of primes ... such that if ... is the set of integers divisible only by primes in ... then ...?\n\n\n\nO...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/240",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos240Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 240,
+    "erdosUrl": "https://erdosproblems.com/240",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #240 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite set of primes $P$ such that if $\\{a_1<a_2<\\cdots\\}$ is the set of integers divisible only by primes in $P$ then $\\lim a_{i+1}-a_i=\\infty$?\n\n\n\nOriginally asked to Erd\\H{o}s by Wintner.\n\nThe limit is infinite for a finite set of primes, which follows from a theorem of P\\'{o}lya \\cite{Po18}, that if $f(n)$ is a quadratic integer polynomial without repeated roots then as $n\\to \\infty$ the largest prime factor of $f(n)$ also approaches infinity. Indeed, if $P$ is a finite set of primes and $(a_i)$ is the set of integers divisible only by primes in $P$, and $a_{i+1}-a_i$ is bounded, then there exists some $k$ such that $a_{i+1}=a_i+k$ infinitely often, which contradicts P\\'{o}lya's theorem with $f(n)=n(n+k)$.\n\nTijdeman \\cite{Ti73} proved that, if $P$ is a finite set of primes, then\\[a_{i+1}-a_i \\gg \\frac{a_i}{(\\log a_i)^C}\\]for some constant $C>0$ depending on $P$.\n\nTijdeman \\cite{Ti73} resolved this question, proving that, for any $\\epsilon>0$, there exists an infinite set of primes $P$ such that, with $a_i$ defined as above,\\[a_{i+1}-a_i \\gg a_i^{1-\\epsilon}.\\]See also [368].\n\n\n\n\nReferences\n\n\n[Po18] P\\'{o}lya, Georg, Zur arithmetischen {U}ntersuchung der {P}olynome. Math. Z. (1918), 143--148.\n\n[Ti73] Tijdeman, R., On integers with many small prime factors. Compositio Math. (1973), 319--330.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

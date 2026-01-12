@@ -1,0 +1,33 @@
+{
+  "id": "erdos-206",
+  "title": "Erdős Problem #206",
+  "slug": "erdos-206",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a real number. For any ... let\\[R_n(x) = \\sum_{i=1}^n{m_i}<x\\]be the maximal sum of ... distinct unit fractions wh...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/206",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos206Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 206,
+    "erdosUrl": "https://erdosproblems.com/206",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #206 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $x>0$ be a real number. For any $n\\geq 1$ let\\[R_n(x) = \\sum_{i=1}^n\\frac{1}{m_i}<x\\]be the maximal sum of $n$ distinct unit fractions which is $<x$.\n\nIs it true that, for almost all $x$, for sufficiently large $n$, we have\\[R_{n+1}(x)=R_n(x)+\\frac{1}{m},\\]where $m$ is minimal such that $m$ does not appear in $R_n(x)$ and the right-hand side is $<x$? (That is, are the best underapproximations eventually always constructed in a 'greedy' fashion?)\n\n\n\nErd\\H{o}s and Graham write it is 'not difficult' to construct irrational $x$ such that this fails (although give no proof or reference, and it seems to still be an open problem to actually construct some such irrational $x$). Curtiss \\cite{Cu22} showed that this is true for $x=1$ and Erd\\H{o}s \\cite{Er50b} showed it is true for all $x=1/m$ with $m\\geq 1$. Nathanson \\cite{Na23} has shown it is true for $x=a/b$ when $a\\mid b+1$ and Chu \\cite{Ch23b} has shown it is true for a larger class of rationals; it is still unknown whether this is true for all rational $x>0$.\n\nWithout the 'eventually' condition this can fail for some rational $x$ (although Erd\\H{o}s \\cite{Er50b} showed it holds without the eventually for rationals of the form $1/m$). For example\\[R_1(\\tfrac{11}{24})=\\frac{1}{3}\\]but\\[R_2(\\tfrac{11}{24})=\\frac{1}{4}+\\frac{1}{5}.\\]Kova\\v{c} \\cite{Ko24b} has proved that this is false - in fact as false as possible: the set of $x\\in (0,\\infty)$ for which the best underapproximations are eventually 'greedy' has Lebesgue measure zero. (It remains an open problem to give any explicit example of a number which is not eventually greedy, despite the fact that almost all numbers have this property.)\n\nSee also [282].\n\n\n\n\nReferences\n\n\n[Ch23b] H. V. Chu, A threshold for the best two-term underapproximation by Egyptian fractions. arXiv:2306.12564 (2023).\n\n[Cu22] Curtiss, D. R., On Kellogg's Diophantine Problem. Amer. Math. Monthly (1922), 380-387.\n\n[Er50b] Erd\\\"{o}s, P\\'{a}l, On a Diophantine equation. Mat. Lapok (1950), 192-210.\n\n[Ko24b] Kova\\vC, V., On eventually greedy best underapproximations by Egyptian fractions. arXiv:2406.07218 (2024).\n\n[Na23] M. Nathanson, Underapproximation by Egyptian fractions. J. Number Theory (2023), 208-234.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

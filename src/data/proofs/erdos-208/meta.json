@@ -1,0 +1,33 @@
+{
+  "id": "erdos-208",
+  "title": "Erdős Problem #208",
+  "slug": "erdos-208",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the sequence of squarefree numbers. Is it true that, for any ... and large ...,\\[s_{n+1}-s_n \\ll_\\epsilon s_n^{\\ep...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/208",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos208Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 208,
+    "erdosUrl": "https://erdosproblems.com/208",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #208 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $s_1<s_2<\\cdots$ be the sequence of squarefree numbers. Is it true that, for any $\\epsilon>0$ and large $n$,\\[s_{n+1}-s_n \\ll_\\epsilon s_n^{\\epsilon}?\\]Is it true that\\[s_{n+1}-s_n \\leq (1+o(1))\\frac{\\pi^2}{6}\\frac{\\log s_n}{\\log\\log s_n}?\\]\n\n\n\nErd\\H{o}s \\cite{Er51} showed that there are infinitely many $n$ such that\\[s_{n+1}-s_n > (1+o(1))\\frac{\\pi^2}{6}\\frac{\\log s_n}{\\log\\log s_n},\\]so this bound would be the best possible.\n\nIn \\cite{Er79} Erd\\H{o}s says perhaps $s_{n+1}-s_n \\ll \\log s_n$, but he is 'very doubtful'.\n\nFilaseta and Trifonov \\cite{FiTr92} proved an upper bound of $s_n^{1/5+o(1)}$. Pandey \\cite{Pa24} has improved this exponent to $1/5-c$ for some constant $c>0$.\n\nGranville \\cite{Gr98} showed that $s_{n+1}-s_n\\ll_\\epsilon s_n^\\epsilon$ for all $\\epsilon>0$ follows from the ABC conjecture.\n\nSee also [489] and [145]. A more general form of this problem is given in [1101].\n\n\n\n\nReferences\n\n\n[Er51] Erd\\\"{o}s, P., Some problems and results in elementary number theory. Publ. Math. Debrecen (1951), 103-109.\n\n[Er79] Erd\\H{o}s, Paul, Some unconventional problems in number theory. Math. Mag. (1979), 67-70.\n\n[FiTr92] Filaseta, M. and Trifonov, O., On gaps between squarefree numbers II. J. London Math. Soc. (1992), 215-221.\n\n[Gr98] Granville, Andrew, {$ABC$} allows us to count squarefrees. Internat. Math. Res. Notices (1998), 991--1009.\n\n[Pa24] Pandey, M., Squarefree numbers in short intervals. arXiv:2401.13981 (2024).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

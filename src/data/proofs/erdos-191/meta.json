@@ -1,0 +1,33 @@
+{
+  "id": "erdos-191",
+  "title": "Erdős Problem #191",
+  "slug": "erdos-191",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be arbitrary. Is it true that, if ... is sufficiently large depending on ..., then in any ...-colouring of ... there ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/191",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos191Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 191,
+    "erdosUrl": "https://erdosproblems.com/191",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #191 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $C>0$ be arbitrary. Is it true that, if $n$ is sufficiently large depending on $C$, then in any $2$-colouring of $\\binom{\\{2,\\ldots,n\\}}{2}$ there exists some $X\\subset \\{2,\\ldots,n\\}$ such that $\\binom{X}{2}$ is monochromatic and\\[\\sum_{x\\in X}\\frac{1}{\\log x}\\geq C?\\]\n\n\n\nThe answer is yes, which was proved by R\\\"{o}dl \\cite{Ro03}.\n\nIn the same article R\\\"{o}dl also proved a lower bound for this problem, constructing, for all $n$, a $2$-colouring of $\\binom{\\{2,\\ldots,n\\}}{2}$ such that if $X\\subseteq \\{2,\\ldots,n\\}$ is such that $\\binom{X}{2}$ is monochromatic then\\[\\sum_{x\\in X}\\frac{1}{\\log x}\\ll \\log\\log\\log n.\\]This bound is best possible, as proved by Conlon, Fox, and Sudakov \\cite{CFS13}, who proved that, if $n$ is sufficiently large, then in any $2$-colouring of $\\binom{\\{2,\\ldots,n\\}}{2}$ there exists some $X\\subset \\{2,\\ldots,n\\}$ such that $\\binom{X}{2}$ is monochromatic and\\[\\sum_{x\\in X}\\frac{1}{\\log x}\\geq 2^{-8}\\log\\log\\log n.\\]\n\n\n\n\nReferences\n\n\n[CFS13] Conlon, David and Fox, Jacob and Sudakov, Benny, Two extensions of Ramsey's theorem. Duke Math. J. (2013), 2903-2927.\n\n[Ro03] R\\\"{o}dl, Vojt\\vEch, On homogeneous sets of positive integers. J. Combin. Theory Ser. A (2003), 229-240.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

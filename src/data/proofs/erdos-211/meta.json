@@ -1,0 +1,34 @@
+{
+  "id": "erdos-211",
+  "title": "Erdős Problem #211",
+  "slug": "erdos-211",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Given ... points in ..., at most ... on any line, there are ... many lines which contain at least two points.\n\n\n\nIn ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/211",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos211Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 211,
+    "erdosUrl": "https://erdosproblems.com/211",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$100"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #211 from erdosproblems.com. Originally offered with a prize of $100.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $1\\leq k<n$. Given $n$ points in $\\mathbb{R}^2$, at most $n-k$ on any line, there are $\\gg kn$ many lines which contain at least two points.\n\n\n\nIn particular, given any $2n$ points with at most $n$ on a line there are $\\gg n^2$ many lines formed by the points. Solved by Beck \\cite{Be83} and Szemer\\'{e}di and Trotter \\cite{SzTr83}.\n\nIn \\cite{Er84} Erd\\H{o}s speculates that perhaps there are $\\geq (1+o(1))kn/6$ many such lines, but says 'perhaps [this] is too optimistic and one should first look for a counterexample'. The constant $1/6$ would be best possible here, since there are arrangements of $n$ points with no four points on a line and $\\sim n^2/6$ many lines containing three points (see Burr, Gr\\\"{u}nbaum, and Sloane \\cite{BGS74} and F\\\"{u}redi and Pal\\'{a}sti \\cite{FuPa84}).\n\n\n\n\nReferences\n\n\n[BGS74] Burr, Stefan A. and Gr\\\"{u}nbaum, Branko and Sloane, N. J. A., The orchard problem. Geometriae Dedicata (1974), 397-424.\n\n[Be83] Beck, J\\'{o}zsef, On the lattice property of the plane and some problems of Dirac, Motzkin and Erd\\H{o}s in combinatorial geometry. Combinatorica (1983), 281-297.\n\n[Er84] Erd\\H{o}s, P., Research problems. Period. Math. Hungar. (1984), 101-103.\n\n[FuPa84] F\\\"{u}redi, Z. and Pal\\'{a}sti, I., Arrangements of lines with a large number of triangles. Proc. Amer. Math. Soc. (1984), 561-566.\n\n[SzTr83] Szemer\\'{e}di, Endre and Trotter, Jr., William T., Extremal problems in discrete geometry. Combinatorica (1983), 381-392.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}
