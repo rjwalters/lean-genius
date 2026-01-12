@@ -183,6 +183,33 @@ Useful for:
       properties: {},
     },
   },
+  {
+    name: 'aristotle_check_results',
+    description: `Check for completed Aristotle projects and auto-retrieve their solutions.
+
+USE THIS FOR:
+- Beginning of research sessions to check overnight jobs
+- Periodic polling during long-running proof work
+- Batch retrieval of all completed proofs
+
+WORKFLOW:
+1. Lists all your Aristotle projects
+2. Downloads solutions for any COMPLETE ones
+3. Reports pending jobs with their progress
+
+RETURNS:
+- List of retrieved solutions with file paths
+- List of pending jobs still in progress`,
+    inputSchema: {
+      type: 'object',
+      properties: {
+        output_dir: {
+          type: 'string',
+          description: 'Directory to save retrieved solutions (default: ./aristotle-results)',
+        },
+      },
+    },
+  },
 ]
 
 class AristotleMCPServer {
@@ -238,6 +265,8 @@ class AristotleMCPServer {
             return await this.handleRetrieve(args ?? {})
           case 'aristotle_list':
             return await this.handleList()
+          case 'aristotle_check_results':
+            return await this.handleCheckResults(args ?? {})
           default:
             throw new Error(`Unknown tool: ${name}`)
         }
@@ -478,6 +507,45 @@ class AristotleMCPServer {
     for (const p of result.projects) {
       const progress = p.percentComplete !== undefined ? `${p.percentComplete}%` : '-'
       message += `| \`${p.projectId.slice(0, 8)}...\` | ${p.status} | ${p.fileName || '-'} | ${progress} |\n`
+    }
+
+    return {
+      content: [{ type: 'text', text: message }],
+    }
+  }
+
+  private async handleCheckResults(args: Record<string, unknown>) {
+    const outputDir = (args.output_dir as string) || './aristotle-results'
+
+    const client = this.getClient()
+    const result = await client.checkAndRetrieveCompleted(outputDir)
+
+    if (result.error) {
+      return {
+        content: [{ type: 'text', text: `Error checking results: ${result.error}` }],
+        isError: true,
+      }
+    }
+
+    let message = '## Aristotle Results Check\n\n'
+
+    if (result.retrieved.length > 0) {
+      message += `### ✅ Retrieved ${result.retrieved.length} completed proof(s)\n\n`
+      for (const r of result.retrieved) {
+        message += `- **${r.fileName}** → \`${r.outputPath}\`\n`
+      }
+      message += '\n'
+    } else {
+      message += '### No new completed proofs to retrieve\n\n'
+    }
+
+    if (result.pending.length > 0) {
+      message += `### ⏳ ${result.pending.length} job(s) still pending\n\n`
+      message += '| File | Status | Progress |\n'
+      message += '|------|--------|----------|\n'
+      for (const p of result.pending) {
+        message += `| ${p.fileName || 'unknown'} | ${p.status} | ${p.percentComplete}% |\n`
+      }
     }
 
     return {

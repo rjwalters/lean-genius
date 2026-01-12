@@ -348,6 +348,8 @@ asyncio.run(retrieve())
       status: string
       fileName?: string
       percentComplete?: number
+      createdAt?: string
+      lastUpdatedAt?: string
     }>
     error?: string
   }> {
@@ -357,14 +359,16 @@ import json
 from aristotlelib import Project
 
 async def list_all():
-    projects = await Project.list_projects()
+    projects, _ = await Project.list_projects()
     result = []
     for p in projects:
         result.append({
             "projectId": p.project_id,
             "status": p.status.name,
             "fileName": p.file_name,
-            "percentComplete": p.percent_complete
+            "percentComplete": p.percent_complete,
+            "createdAt": p.created_at.isoformat() if p.created_at else None,
+            "lastUpdatedAt": p.last_updated_at.isoformat() if p.last_updated_at else None
         })
     print(json.dumps(result))
 
@@ -381,6 +385,84 @@ asyncio.run(list_all())
       return { projects }
     } catch {
       return { projects: [], error: `Failed to parse: ${result.stdout}` }
+    }
+  }
+
+  /**
+   * Check for completed projects and retrieve their solutions.
+   * Useful for async workflow - submit jobs, check later for results.
+   */
+  async checkAndRetrieveCompleted(outputDir: string): Promise<{
+    retrieved: Array<{
+      projectId: string
+      fileName: string
+      outputPath: string
+    }>
+    pending: Array<{
+      projectId: string
+      fileName?: string
+      status: string
+      percentComplete: number
+    }>
+    error?: string
+  }> {
+    const pythonScript = `
+import asyncio
+import json
+import os
+from aristotlelib import Project
+
+async def check_and_retrieve():
+    projects, _ = await Project.list_projects()
+    retrieved = []
+    pending = []
+    output_dir = "${outputDir}"
+
+    os.makedirs(output_dir, exist_ok=True)
+
+    for p in projects:
+        if p.status.name == "COMPLETE":
+            # Generate output path from file name
+            base_name = os.path.basename(p.file_name) if p.file_name else f"{p.project_id}.lean"
+            output_path = os.path.join(output_dir, base_name.replace(".lean", "-solved.lean"))
+
+            try:
+                await p.get_solution(output_path)
+                retrieved.append({
+                    "projectId": p.project_id,
+                    "fileName": p.file_name or "unknown",
+                    "outputPath": output_path
+                })
+            except Exception as e:
+                pending.append({
+                    "projectId": p.project_id,
+                    "fileName": p.file_name,
+                    "status": f"RETRIEVE_FAILED: {str(e)}",
+                    "percentComplete": 100
+                })
+        elif p.status.name not in ["FAILED"]:
+            pending.append({
+                "projectId": p.project_id,
+                "fileName": p.file_name,
+                "status": p.status.name,
+                "percentComplete": p.percent_complete or 0
+            })
+
+    print(json.dumps({"retrieved": retrieved, "pending": pending}))
+
+asyncio.run(check_and_retrieve())
+`
+    const result = await this.runPython(pythonScript)
+
+    if (result.code !== 0) {
+      return { retrieved: [], pending: [], error: result.stderr }
+    }
+
+    try {
+      const data = JSON.parse(result.stdout.trim())
+      return { retrieved: data.retrieved, pending: data.pending }
+    } catch {
+      return { retrieved: [], pending: [], error: `Failed to parse: ${result.stdout}` }
     }
   }
 
