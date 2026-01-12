@@ -38,35 +38,46 @@
   ],
   "pending_candidates": [
     {
-      "problemId": "erdos-19",
-      "erdosNumber": 19,
+      "problemId": "erdos-24",
+      "erdosNumber": 24,
       "source": "erdosproblems.com scrape",
-      "tractabilityScore": 10,
+      "tractabilityScore": 9,
       "reason": "Solved problem - known proof exists for Aristotle to formalize",
-      "suggestedFile": "proofs/Proofs/Erdos19.lean",
-      "notes": "Tractability: 10/10. solved (formalization target); short statement"
+      "suggestedFile": "proofs/Proofs/Erdos24.lean",
+      "notes": "Tractability: 9/10. solved (formalization target); moderate statement"
     },
     {
-      "problemId": "erdos-20",
-      "erdosNumber": 20,
-      "source": "erdosproblems.com scrape",
-      "tractabilityScore": 10,
-      "reason": "Solved problem - known proof exists for Aristotle to formalize",
-      "suggestedFile": "proofs/Proofs/Erdos20.lean",
-      "notes": "Tractability: 10/10. solved (formalization target); short statement"
-    },
-    {
-      "problemId": "erdos-17",
-      "erdosNumber": 17,
+      "problemId": "erdos-21",
+      "erdosNumber": 21,
       "source": "erdosproblems.com scrape",
       "tractabilityScore": 8,
       "reason": "Solved problem - known proof exists for Aristotle to formalize",
-      "suggestedFile": "proofs/Proofs/Erdos17.lean",
+      "suggestedFile": "proofs/Proofs/Erdos21.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-22",
+      "erdosNumber": 22,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos22.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-23",
+      "erdosNumber": 23,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos23.lean",
       "notes": "Tractability: 8/10. solved (formalization target)"
     }
   ],
   "notes": [
-    "CORRECTED: erdos-18 is OPEN (practical numbers), removed from candidates",
-    "erdos-69 verified SOLVED via erdosproblems.com on 2026-01-11"
+    "2026-01-11: Verified problems via erdosproblems.com directly",
+    "REMOVED as OPEN: erdos-17, erdos-18, erdos-19, erdos-20",
+    "erdos-205 and erdos-333 already have Lean proofs (check codebase)",
+    "erdos-69 (Tao-Teräväinen 2025) omitted - analytic proof may be hard to formalize"
   ]
 }

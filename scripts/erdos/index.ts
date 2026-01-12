@@ -207,7 +207,7 @@ async function runPipeline(options: CliOptions): Promise<PipelineStats> {
   }
 
   if (options.slow) {
-    console.log('** SLOW MODE - 30s between requests **\n')
+    console.log('** SLOW MODE - 20s between requests **\n')
   }
 
   // Ensure cache directory exists

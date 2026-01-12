@@ -1,0 +1,34 @@
+{
+  "id": "erdos-21",
+  "title": "Erdős Problem #21",
+  "slug": "erdos-21",
+  "description": "Let ... be minimal such that there is an intersecting family $...n...A\\cap B\\neq\\emptyset...A,B\\in ...\\lvert \\rvert=f(n)...S...\\lvert S\\rvert \\leq n-1...A\\in ...n...n-1...n-1...f(n) \\ll n...{3}n-O(...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/21",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos21Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 21,
+    "erdosUrl": "https://erdosproblems.com/21",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$500"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #21 from erdosproblems.com. Originally offered with a prize of $500.",
+    "problemStatement": "Let $f(n)$ be minimal such that there is an intersecting family $\\mathcal{F}$ of sets of size $n$ (so $A\\cap B\\neq\\emptyset$ for all $A,B\\in \\mathcal{F}$) with $\\lvert \\mathcal{F}\\rvert=f(n)$ such that any set $S$ with $\\lvert S\\rvert \\leq n-1$ is disjoint from at least one $A\\in \\mathcal{F}$. Is it true that\\[f(n) \\ll n?\\] Conjectured by Erdős and Lovász [ErLo75], who proved that\\[\\frac{8}{3}n-3\\leq f(n) \\ll n^{3/2}\\log n\\]for all $n$. The upper bound was improved by Kahn [Ka92b] to\\[f(n) \\ll n\\log n.\\](The upper bound constructions in both cases are formed by taking a random set of lines from a projective plane of order $n-1$, assuming $n-1$ is a prime power.) This problem was solved by Kahn [Ka94] who proved the upper bound $f(n) \\ll n$. The Erdős-Lovász lower bound of $\\frac{8}{3}n-O(1)$ has not been improved, and it has been speculated (see e.g. [Ka94]) that the correct answer is $3n+O(1)$. It is trivial that $f(1)=1$ and $f(2)=3$. The values $f(3)=6$ and $f(4)=9$ were established",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}
