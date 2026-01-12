@@ -1,0 +1,33 @@
+{
+  "id": "erdos-91",
+  "title": "Erdős Problem #91",
+  "slug": "erdos-91",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose ... has ... and minimises the number of distinct distances between points in .... Prove that for large ... there are ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/91",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos91Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 91,
+    "erdosUrl": "https://erdosproblems.com/91",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #91 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose $A\\subset \\mathbb{R}^2$ has $\\lvert A\\rvert=n$ and minimises the number of distinct distances between points in $A$. Prove that for large $n$ there are at least two (and probably many) such $A$ which are non-similar.\n\n\n\nFor $n=3$ the equilateral triangle is the only such set. For $n=4$ the square or two equilateral triangles sharing an edge give two non-similar examples.\n\nFor $n=5$ the regular pentagon is the unique such set (which has two distinct distances). Erd\\H{o}s mysteriously remarks in \\cite{Er90} this was proved by 'a colleague'. (In \\cite{Er87b} this is described as 'a colleague from Zagreb (unfortunately I do not have his letter)'.) A published proof of this fact is provided by Kov\\'{a}cs \\cite{Ko24c}.\n\nIn \\cite{Er87b} Erd\\H{o}s says that there are at least two non-similar examples for $6\\leq n\\leq 9$.\n\nThe minimal possible number of distinct distances is the subject of [89].\n\n\n\n\nReferences\n\n\n[Er87b] Erd\\H{o}s, P., Some combinatorial and metric problems in geometry. Intuitive geometry (Si\\'{o}fok, 1985) (1987), 167-177.\n\n[Er90] Erd\\H{o}s, Paul, Some of my favourite unsolved problems. A tribute to Paul Erd\\H{o}s (1990), 467-478.\n\n[Ko24c] Z. Kov\\'{a}cs, A note on Erd\\H{o}s's mysterious remark. arXiv:2412.05190 (2024).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-134",
+  "title": "Erdős Problem #134",
+  "slug": "erdos-134",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be sufficiently large in terms of ... and .... Let ... be a triangle-free graph on ... vertices with maximum ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/134",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos134Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 134,
+    "erdosUrl": "https://erdosproblems.com/134",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #134 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\epsilon,\\delta>0$ and $n$ be sufficiently large in terms of $\\epsilon$ and $\\delta$. Let $G$ be a triangle-free graph on $n$ vertices with maximum degree $<n^{1/2-\\epsilon}$.\n\nCan $G$ be made into a triangle-free graph with diameter $2$ by adding at most $\\delta n^2$ edges?\n\n\n\nAsked by Erd\\H{o}s and Gy\\'{a}rf\\'{a}s, who proved that this is the case when $G$ has maximum degree $\\ll \\log n/\\log\\log n$. A construction of Simonovits shows that this conjecture is false if we just have maximum degree $\\leq Cn^{1/2}$, for some large enough $C$.\n\nIn this note Alon solves this problem in a strong form, in particular proving that a triangle-free graph on $n$ vertices with maximum degree $<n^{1/2-\\epsilon}$ can be made into a triangle-free graph with diameter $2$ by adding at most $O(n^{2-\\epsilon})$ edges.\n\nSee also [618].\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

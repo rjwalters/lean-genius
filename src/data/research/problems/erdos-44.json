@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-44",
+  "title": "Erdős #44",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(LaTeX not available)",
+    "plain": "Let $N\\geq 1$ and $A\\subset \\{1,\\ldots,N\\}$ be a Sidon set. Is it true that, for any $\\epsilon>0$, there exist $M$ and $B\\subset \\{N+1,\\ldots,M\\}$ (which may depend on $N,A,\\epsilon$) such that $A\\cup B\\subset \\{1,\\ldots,M\\}$ is a Sidon set of size at least $(1-\\epsilon)M^{1/2}$? See also [329] and [707] (indeed a positive solution to [707] implies a positive solution to this problem, which in turn implies a positive solution to [329]). This is discussed in problem C9 of Guy's collection [Gu0...",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T06:58:30.839Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #44 - Knowledge Base\n\n## Problem Statement\n\nLet $N\\geq 1$ and $A\\subset \\{1,\\ldots,N\\}$ be a Sidon set. Is it true that, for any $\\epsilon>0$, there exist $M$ and $B\\subset \\{N+1,\\ldots,M\\}$ (which may depend on $N,A,\\epsilon$) such that $A\\cup B\\subset \\{1,\\ldots,M\\}$ is a Sidon set of size at least $(1-\\epsilon)M^{1/2}$? See also [329] and [707] (indeed a positive solution to [707] implies a positive solution to this problem, which in turn implies a positive solution to [329]). This is discussed in problem C9 of Guy's collection [Gu04]. View the LaTeX source This page was last edited 09 January 2026.\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #62\n- Problem #2\n- Problem #329\n- Problem #707\n- Problem #43\n- Problem #45\n- Problem #39\n- Problem #1\n\n## References\n\n- Er91\n- Er95\n- Er97c\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T06:58:30.839Z",
+  "significance": 6,
+  "tractability": 4
+}

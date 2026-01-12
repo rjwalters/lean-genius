@@ -1,0 +1,34 @@
+{
+  "id": "erdos-86",
+  "title": "Erdős Problem #86",
+  "slug": "erdos-86",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the ...-dimensional hypercube graph (so that ... has ... vertices and ... edges). Is it true that every subgraph o...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/86",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos86Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 86,
+    "erdosUrl": "https://erdosproblems.com/86",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$100"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #86 from erdosproblems.com. Originally offered with a prize of $100.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $Q_n$ be the $n$-dimensional hypercube graph (so that $Q_n$ has $2^n$ vertices and $n2^{n-1}$ edges). Is it true that every subgraph of $Q_n$ with\\[\\geq \\left(\\frac{1}{2}+o(1)\\right)n2^{n-1}\\]many edges contains a $C_4$?\n\n\n\nLet $f(n)$ be the maximum number of edges in a subgraph of $Q_n$ without a $C_4$, so that this conjecture is that $f(n)\\leq (\\frac{1}{2}+o(1))n2^{n-1}$.\n\nErd\\H{o}s \\cite{Er91} showed that\\[f(n) \\geq \\left(\\frac{1}{2}+\\frac{c}{n}\\right)n2^{n-1}\\]for some constant $c>0$, and wrote it is 'perhaps not hopeless' to determine $f(n)$ exactly. Brass, Harborth, and Nienborg \\cite{BHN95} improved this to\\[f(n) \\geq \\left(\\frac{1}{2}+\\frac{c}{\\sqrt{n}}\\right)n2^{n-1}\\]for some constant $c>0$.\n\nBalogh, Hu, Lidicky, and Liu \\cite{BHLL14} proved that $f(n)\\leq 0.6068 n2^{n-1}$. This was improved to $\\leq 0.60318 n2^{n-1}$ by Baber \\cite{Ba12b}.\n\nA similar question can be asked for other even cycles.\n\nSee also [666] and the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[BHLL14] Balogh, J\\'{o}zsef and Hu, Ping and Lidick\\'{y}, Bernard and Liu, Hong, Upper bounds on the size of 4- and 6-cycle-free subgraphs of the hypercube. European J. Combin. (2014), 75-85.\n\n[BHN95] Brass, Peter and Harborth, Heiko and Nienborg, Hauke, On the maximum number of edges in a {$C_4$}-free subgraph of\n{$Q_n$}. J. Graph Theory (1995), 17--23.\n\n[Ba12b] R. Baber, Tur\\'{a}n densities of hypercubes. arXiv:1201.3587 (2012).\n\n[Er91] Erd\\\"{o}s, P., Problems and results in combinatorial analysis and combinatorial number theory. Graph theory, combinatorics, and applications, Vol. 1 (Kalamazoo, MI, 1988) (1991), 397-406.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,130 +1,58 @@
 {
-  "id": "erdos-10-prime-powers-of-2",
-  "name": "Erdős #10: Prime Plus Powers of 2",
-  "tier": "B",
-  "significance": 7,
-  "tractability": 6,
-  "status": "in-progress",
-  "description": "Is there some constant k such that every integer can be expressed as the sum of a prime and at most k powers of 2?",
+  "slug": "erdos-10-prime-powers-of-2",
+  "title": "Erdős #10: Prime Plus Powers of 2",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "IN-PROGRESS: Created Erdos10PrimePlusPowers.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T09:10:09.148Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [],
   "tags": [
     "number-theory",
     "primes",
-    "additive-combinatorics",
+    "additive",
     "erdos-problem",
     "open-conjecture"
   ],
-  "knowledge": {
-    "insights": [
-      "Romanoff (1934): Positive density of integers are p + 2^k",
-      "Gallagher (1975): For any ε > 0, ∃ k(ε) with density ≥ 1-ε",
-      "Granville-Soundararajan (1998): Conjecture k=3 for odd, k=4 for even",
-      "Grechuk counterexample: 1,117,175,146 cannot be p + (≤3 powers of 2)",
-      "Erdős called this 'probably unattackable' - expected answer is NO universal k exists",
-      "DeepMind has formalized the statement in their formal-conjectures repo",
-      "262 is the smallest composite n that cannot be written as p + 2^a (k=1 counterexample)",
-      "128 is the smallest n>3 that cannot be p + 2^a + 2^b (k=2 counterexample, OEIS A006286)",
-      "Crocker (1971): Proved infinitely many odd numbers not representable as p + 2^a + 2^b",
-      "OEIS A006285: de Polignac numbers (odd, k=1 failures): 127, 149, 251, 331, ...",
-      "OEIS A006286: Numbers not p + 2^x + 2^y (k=2 failures): 128, 150, 252, ..."
-    ],
-    "builtItems": [
-      "IsPrimePlus2Pow definition at Erdos10PrimePlusPowers.lean:39",
-      "IsPrimePlusKPowers definition at Erdos10PrimePlusPowers.lean:43",
-      "IsPrimePlusDistinctPowers definition at Erdos10PrimePlusPowers.lean:48",
-      "primePlus2Pow_of_k_ge_one theorem at Erdos10PrimePlusPowers.lean:55",
-      "primePlusKPowers_mono theorem at Erdos10PrimePlusPowers.lean:64",
-      "primePlusZeroPowers_iff theorem at Erdos10PrimePlusPowers.lean:70 (PROVED)",
-      "Small case witnesses for n=3-10 at Erdos10PrimePlusPowers.lean:85-113 (PROVED)",
-      "counterexample_k1 definition (262) at Erdos10PrimePlusPowers.lean:132",
-      "counterexample_k1_not_prime theorem at Erdos10PrimePlusPowers.lean:135 (PROVED)",
-      "not_262_primePlus2Pow axiom at Erdos10PrimePlusPowers.lean:140",
-      "k_one_insufficient theorem at Erdos10PrimePlusPowers.lean:148 (PROVED)",
-      "counterexample_k2 definition (128) at Erdos10PrimePlusPowers.lean:178",
-      "counterexample_k2_not_prime theorem at Erdos10PrimePlusPowers.lean:181 (PROVED)",
-      "not_128_primePlus2Powers axiom at Erdos10PrimePlusPowers.lean:186",
-      "k_two_insufficient theorem at Erdos10PrimePlusPowers.lean:189 (PROVED)",
-      "grechuk_counterexample definition at Erdos10PrimePlusPowers.lean:194",
-      "grechuk_not_3_powers axiom at Erdos10PrimePlusPowers.lean:197",
-      "k_three_insufficient theorem at Erdos10PrimePlusPowers.lean:200 (PROVED)",
-      "first_three_k_insufficient theorem at Erdos10PrimePlusPowers.lean:210 (PROVED)",
-      "erdos_10_negative definition at Erdos10PrimePlusPowers.lean:228",
-      "erdos_10_positive definition at Erdos10PrimePlusPowers.lean:235",
-      "odd_minus_two_strategy theorem at Erdos10PrimePlusPowers.lean:250 (PROVED)",
-      "granville_soundararajan_odd definition at Erdos10PrimePlusPowers.lean:256",
-      "granville_soundararajan_even definition at Erdos10PrimePlusPowers.lean:261"
-    ],
-    "mathlibGaps": [
-      "No asymptotic/natural density formalization in Mathlib",
-      "Romanoff's theorem would require analytic number theory infrastructure",
-      "No direct support for 'frequently at infinity' proofs about representations"
-    ],
-    "nextSteps": [
-      "Prove axioms computationally or connect to decidable primality checking",
-      "Explore Crocker's covering congruence construction for infinite family",
-      "Find smallest k=4 counterexample (likely very large)"
-    ],
-    "progressSummary": "PROGRESS: Proved k_one_insufficient, added k=2 counterexample (128), proved k_two_insufficient, proved k_three_insufficient. first_three_k_insufficient summarizes pattern."
-  },
-  "sessions": [
-    {
-      "date": "2026-01-11",
-      "mode": "FRESH",
-      "outcome": "progress",
-      "summary": "Created Erdos10PrimePlusPowers.lean (~200 lines). Defined IsPrimePlus2Pow, IsPrimePlusKPowers. Proved small cases n=3-10 as p+2^a. Stated Romanoff/Gallagher as axioms. Formalized erdos_10_positive/negative conjectures. Documented Grechuk counterexample."
-    },
-    {
-      "date": "2026-01-11",
-      "mode": "REVISIT",
-      "outcome": "progress",
-      "summary": "Added k=1 counterexample: 262 cannot be p + 2^a. Proved counterexample_k1_not_prime. Added k_one_insufficient theorem (1 sorry for multiset reasoning)."
-    },
-    {
-      "date": "2026-01-11",
-      "mode": "REVISIT",
-      "outcome": "progress",
-      "summary": "Completed k_one_insufficient proof (multiset case analysis). Added k=2 counterexample: 128 (from OEIS A006286). Proved k_two_insufficient. Added k_three_insufficient using Grechuk. Proved first_three_k_insufficient summary theorem. Discovered Crocker (1971) result."
-    }
+  "relatedProofs": [
+    "Relevance"
   ],
-  "references": [
-    {
-      "type": "website",
-      "url": "https://www.erdosproblems.com/10",
-      "note": "Official Erdős problems page"
-    },
-    {
-      "type": "paper",
-      "title": "Romanoff (1934)",
-      "note": "Positive density of p + 2^k"
-    },
-    {
-      "type": "paper",
-      "title": "Gallagher (1975)",
-      "note": "For any ε, density ≥ 1-ε with enough powers"
-    },
-    {
-      "type": "repository",
-      "url": "https://github.com/google-deepmind/formal-conjectures",
-      "note": "DeepMind's Lean formalization"
-    },
-    {
-      "type": "oeis",
-      "url": "https://oeis.org/A387053",
-      "note": "Related OEIS sequence"
-    },
-    {
-      "type": "oeis",
-      "url": "https://oeis.org/A006285",
-      "note": "de Polignac numbers - k=1 counterexamples (odd)"
-    },
-    {
-      "type": "oeis",
-      "url": "https://oeis.org/A006286",
-      "note": "Numbers not p + 2^x + 2^y - k=2 counterexamples"
-    },
-    {
-      "type": "paper",
-      "title": "Crocker (1971)",
-      "note": "Infinitely many odd n not p + 2^a + 2^b (Pacific J. Math. 36)"
-    }
-  ]
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T09:10:09.148Z",
+  "lastUpdate": "2026-01-12T09:10:09.148Z",
+  "significance": 7,
+  "tractability": 6
 }

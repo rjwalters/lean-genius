@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-40",
+  "title": "Erdős #40",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(LaTeX not available)",
+    "plain": "For what functions $g(N)\\to \\infty$ is it true that\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\gg \\frac{N^{1/2}}{g(N)}\\]implies $\\limsup 1_A\\ast 1_A(n)=\\infty$? This is a stronger form of the Erdős-Turán conjecture [28] (since establishing this for any function $g(N)\\to \\infty$ would imply a positive solution to [28]). View the LaTeX source",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T06:58:30.838Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #40 - Knowledge Base\n\n## Problem Statement\n\nFor what functions $g(N)\\to \\infty$ is it true that\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\gg \\frac{N^{1/2}}{g(N)}\\]implies $\\limsup 1_A\\ast 1_A(n)=\\infty$? This is a stronger form of the Erdős-Turán conjecture [28] (since establishing this for any function $g(N)\\to \\infty$ would imply a positive solution to [28]). View the LaTeX source\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Prize**: $500\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #2\n- Problem #28\n- Problem #39\n- Problem #41\n- Problem #1\n\n## References\n\n- Er95\n- Er97c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T06:58:30.838Z",
+  "significance": 7,
+  "tractability": 5
+}

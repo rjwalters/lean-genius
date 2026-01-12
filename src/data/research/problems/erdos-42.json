@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-42",
+  "title": "Erdős #42",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(LaTeX not available)",
+    "plain": "Let $M\\geq 1$ and $N$ be sufficiently large in terms of $M$. Is it true that for every Sidon set $A\\subset \\{1,\\ldots,N\\}$ there is another Sidon set $B\\subset \\{1,\\ldots,N\\}$ of size $M$ such that $(A-A)\\cap(B-B)=\\{0\\}$? View the LaTeX source This page was last edited 14 September 2025.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T06:58:30.838Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #42 - Knowledge Base\n\n## Problem Statement\n\nLet $M\\geq 1$ and $N$ be sufficiently large in terms of $M$. Is it true that for every Sidon set $A\\subset \\{1,\\ldots,N\\}$ there is another Sidon set $B\\subset \\{1,\\ldots,N\\}$ of size $M$ such that $(A-A)\\cap(B-B)=\\{0\\}$? View the LaTeX source This page was last edited 14 September 2025.\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #41\n- Problem #43\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er95\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T06:58:30.839Z",
+  "significance": 7,
+  "tractability": 5
+}

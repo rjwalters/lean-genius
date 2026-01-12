@@ -1,0 +1,33 @@
+{
+  "id": "erdos-106",
+  "title": "Erdős Problem #106",
+  "slug": "erdos-106",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDraw ... squares inside the unit square with no common interior point. Let ... be the maximum possible sum of the side-length...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/106",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos106Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 106,
+    "erdosUrl": "https://erdosproblems.com/106",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #106 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDraw $n$ squares inside the unit square with no common interior point. Let $f(n)$ be the maximum possible sum of the side-lengths of the squares. Is $f(k^2+1)=k$?\n\n\n\nIn \\cite{Er94b} Erd\\H{o}s dates this conjecture to 'more than 60 years ago'. Erd\\H{o}s proved that $f(2)=1$ in an early mathematical paper for high school students in Hungary. Newman proved (in personal communication to Erd\\H{o}s) that $f(5)=2$.\n\nIt is trivial from the Cauchy-Schwarz inequality that $f(k^2)=k$. Erd\\H{o}s also asks for which $n$ is it true that $f(n+1)=f(n)$.\n\nIt is easy to see that $f(k^2+1)\\geq k$, by first dividing the unit square into $k^2$ smaller squares of side-length $1/k$, and then replacing one square by two smaller squares of side-length $1/2k$. Hal\\'{a}sz \\cite{Ha84} gives a construction that shows $f(k^2+2)\\geq k+\\frac{1}{k+1}$, and in general, for any $c\\geq 1$,\\[f(k^2+2c+1)\\geq k+\\frac{c}{k}\\]and\\[f(k^2+2c)\\geq k+\\frac{c}{k+1}.\\]Hal\\'{a}sz also considers the variants where we replace a square by a parallelogram or triangle.\n\nErd\\H{o}s and Soifer \\cite{ErSo95} and Campbell and Staton \\cite{CaSt05} have conjectured that, in general, for any integer $-k<c<k$, $f(k^2+2c+1)=k+\\frac{c}{k}$, and proved the corresponding lower bound. Praton \\cite{Pr08} has proved that this general conjecture is equivalent to $f(k^2+1)=k$.\n\nBaek, Koizumi, and Ueoro \\cite{BKU24} have proved $g(k^2+1)=k$, where $g(\\cdot)$ is defined identically to $f(\\cdot)$ with the additional assumption that all squares have sides parallel to the sides of the unit square. More generally, they prove that $g(k^2+2c+1)=k+c/k$ for any $-k<c<k$, which determines all values of $g(\\cdot)$.\n\n\n\n\nReferences\n\n\n[BKU24] Baek, J. and Koizumi, J. and Ueoro, T., A note on the Erd\\H{o}s conjecture about square packing. arXiv:2411.07274 (2024).\n\n[CaSt05] Campbell, Connie and Staton, William, A square-packing problem of Erd\\H{o}s. Amer. Math. Monthly (2005), 165--167.\n\n[Er94b] Erd\\H{o}s, Paul, Some problems in number theory, combinatorics and combinatorial geometry. Math. Pannon. (1994), 261-269.\n\n[ErSo95] Erd\\H{o}s, Paul and Soifer, Alexander, Squares in a square. Geombinatorics (1995), 110--114.\n\n[Ha84] Hal\\'{a}sz, Sylvia, Packing a convex domain with similar convex domains. J. Combin. Theory Ser. A (1984), 85--90.\n\n[Pr08] Praton, I., Packing squares in a square. Math. Mag. (2008), 358-361.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

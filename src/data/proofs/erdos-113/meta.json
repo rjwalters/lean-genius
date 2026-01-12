@@ -1,0 +1,34 @@
+{
+  "id": "erdos-113",
+  "title": "Erdős Problem #113",
+  "slug": "erdos-113",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is bipartite then ... if and only ... is ...-degenerate, that is, ... contains no induced subgraph with minimal degree...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/113",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos113Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 113,
+    "erdosUrl": "https://erdosproblems.com/113",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$500"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #113 from erdosproblems.com. Originally offered with a prize of $500.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ is bipartite then $\\mathrm{ex}(n;G)\\ll n^{3/2}$ if and only $G$ is $2$-degenerate, that is, $G$ contains no induced subgraph with minimal degree at least 3.\n\n\n\nConjectured by Erd\\H{o}s and Simonovits \\cite{ErSi84}. Erd\\H{o}s first offered \\$250 for a proof and \\$100 for a counterexample, but in \\cite{Er93} offered \\$500 for a counterexample.\n\nDisproved by Janzer \\cite{Ja23b} who constructed, for any $\\epsilon>0$, a $3$-regular bipartite graph $H$ such that\\[\\mathrm{ex}(n;H)\\ll n^{\\frac{4}{3}+\\epsilon}.\\]See also [146] and [147] and the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n[ErSi84] Erd\\H{o}s, P. and Simonovits, M., Cube-supersaturated graphs and related problems. Progress in graph theory (Waterloo, Ont., 1982) (1984), 203-218.\n\n[Ja23b] Janzer, Oliver, Disproof of a conjecture of {E}rd\\H{o}s and {S}imonovits on the\n{T}ur\\'an number of graphs with minimum degree 3. Int. Math. Res. Not. IMRN (2023), 8478--8494.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

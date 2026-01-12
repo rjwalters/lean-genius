@@ -1,0 +1,33 @@
+{
+  "id": "erdos-108",
+  "title": "Erdős Problem #108",
+  "slug": "erdos-108",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor every ... and ... is there some finite ... such that every graph of chromatic number ... contains a subgraph of girth ......",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/108",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos108Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 108,
+    "erdosUrl": "https://erdosproblems.com/108",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #108 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor every $r\\geq 4$ and $k\\geq 2$ is there some finite $f(k,r)$ such that every graph of chromatic number $\\geq f(k,r)$ contains a subgraph of girth $\\geq r$ and chromatic number $\\geq k$?\n\n\n\nConjectured by Erd\\H{o}s and Hajnal. R\\\"{o}dl \\cite{Ro77} has proved the $r=4$ case (see [923]). The infinite version (whether every graph of infinite chromatic number contains a subgraph of infinite chromatic number whose girth is $>k$) is also open.\n\nIn \\cite{Er79b} Erd\\H{o}s also asks whether\\[\\lim_{k\\to \\infty}\\frac{f(k,r+1)}{f(k,r)}=\\infty.\\]See also the entry in the graphs problem collection and [740] for the infinitary version.\n\n\n\n\nReferences\n\n\n[Er79b] Erd\\H{o}s, Paul, Problems and results in graph theory and combinatorial analysis. Graph theory and related topics (Proc. Conf., Univ. Waterloo, Waterloo, Ont., 1977) (1979), 153-163.\n\n[Ro77] R\\\"{o}dl, V., On the chromatic number of subgraphs of a given graph. Proc. Amer. Math. Soc. (1977), 370-371.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

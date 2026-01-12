@@ -1,0 +1,34 @@
+{
+  "id": "erdos-144",
+  "title": "Erdős Problem #144",
+  "slug": "erdos-144",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe density of integers which have two divisors ... such that ... exists and is equal to ....\n\n\n\nIn  asks the stronger versio...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/144",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos144Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 144,
+    "erdosUrl": "https://erdosproblems.com/144",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$250"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #144 from erdosproblems.com. Originally offered with a prize of $250.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe density of integers which have two divisors $d_1,d_2$ such that $d_1<d_2<2d_1$ exists and is equal to $1$.\n\n\n\nIn \\cite{Er79} asks the stronger version with $2$ replaced by any constant $c>1$.\n\nThe answer is yes (also to this stronger version), proved by Maier and Tenenbaum \\cite{MaTe84}. (Tenenbaum has told me that they received \\$650 for their solution.)\n\nIn \\cite{Er64h} claimed a proof that the set of integers $n$ with divisors\\[d_1<d_2<d_1(1+(\\log n)^{-\\beta})\\]has density $1$ if $\\beta<\\log 3-1$, but this claim was retracted in \\cite{ErHa79}. Erd\\H{o}s and Hall \\cite{ErHa79} proved that this set has density $0$ if $\\beta >\\log 3-1$ (in a stronger quantitative form). The proof of Maier and Tenenbaum \\cite{MaTe84} proves that the density is $1$ if $\\beta<\\log 3-1$.\n\nThis is discussed in problem E3 of Guy's collection \\cite{Gu04}.\n\nSee also [449] and [884].\n\n\n\n\nReferences\n\n\n[Er64h] Erd\\H{o}s, P., On some applications of probability to analysis and number\ntheory. J. London Math. Soc. (1964), 692--696.\n\n[Er79] Erd\\H{o}s, Paul, Some unconventional problems in number theory. Math. Mag. (1979), 67-70.\n\n[ErHa79] Erd\\H{o}s, P. and Hall, R. R., The propinquity of divisors. Bull. London Math. Soc. (1979), 304--307.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[MaTe84] Maier, H. and Tenenbaum, G., On the set of divisors of an integer. Invent. Math. (1984), 121-128.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

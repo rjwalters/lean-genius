@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-10",
+  "title": "Erdős #10",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(LaTeX not available)",
+    "plain": "Is there some $k$ such that every integer is the sum of a prime and at most $k$ powers of 2?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T04:04:26.047Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #10 - Knowledge Base\n\n## Problem Statement\n\nIs there some $k$ such that every integer is the sum of a prime and at most $k$ powers of 2?\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #9\n- Problem #11\n- Problem #16\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n- Er85c\n- Er92c\n- Er95\n- Er97\n- Er97c\n- Er97e\n- ErGr80\n- Ga75\n- GrSo98\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T04:04:26.047Z",
+  "significance": 7,
+  "tractability": 6
+}

@@ -1,0 +1,34 @@
+{
+  "id": "erdos-89",
+  "title": "Erdős Problem #89",
+  "slug": "erdos-89",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every set of ... distinct points in ... determine ... many distinct distances?\n\n\n\nA ... integer grid shows that this wou...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/89",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos89Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 89,
+    "erdosUrl": "https://erdosproblems.com/89",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$500"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #89 from erdosproblems.com. Originally offered with a prize of $500.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every set of $n$ distinct points in $\\mathbb{R}^2$ determine $\\gg n/\\sqrt{\\log n}$ many distinct distances?\n\n\n\nA $\\sqrt{n}\\times\\sqrt{n}$ integer grid shows that this would be the best possible. Nearly solved by Guth and Katz \\cite{GuKa15} who proved that there are always $\\gg n/\\log n$ many distinct distances.\n\nA stronger form (see [604]) may be true: is there a single point which determines $\\gg n/\\sqrt{\\log n}$ distinct distances, or even $\\gg n$ many such points, or even that this is true averaged over all points - for example, if $d(x)$ counts the number of distinct distances from $x$ then in \\cite{Er75f} Erd\\H{o}s conjectured\\[\\sum_{x\\in A}d(x) \\gg \\frac{n^2}{\\sqrt{\\log n}},\\]where $A\\subset \\mathbb{R}^2$ is any set of $n$ points.\n\nSee also [661], and [1083] for the generalisation to higher dimensions.\n\n\n\n\nReferences\n\n\n[Er75f] Erd\\H{o}s, Paul, On some problems of elementary and combinatorial geometry. Ann. Mat. Pura Appl. (4) (1975), 99-108.\n\n[GuKa15] Guth, Larry and Katz, Nets Hawk, On the Erd\\H{o}s distinct distances problem in the plane. Ann. of Math. (2) (2015), 155-190.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

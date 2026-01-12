@@ -205,5 +205,342 @@
     "approachCount": 0,
     "significance": 10,
     "tractability": 2
+  },
+  {
+    "slug": "erdos-5",
+    "title": "Erdős #5",
+    "description": "Let $C\\geq 0$. Is there an infinite sequence of $n_i$ such that\\[\\lim_{i\\to \\infty}\\frac{p_{n_i+1}-p_{n_i}}{\\log n_i}=C?\\]",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T03:31:00.704Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 6
+  },
+  {
+    "slug": "erdos-10",
+    "title": "Erdős #10",
+    "description": "Is there some $k$ such that every integer is the sum of a prime and at most $k$ powers of 2?",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T04:04:26.047Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 6
+  },
+  {
+    "slug": "erdos-14",
+    "title": "Erdős #14",
+    "description": "Let $A\\subseteq \\mathbb{N}$. Let $B\\subseteq \\mathbb{N}$ be the set of integers which are representable in exactly one way as the sum of two elements from $A$. Is it true that for all $\\epsilon>0$ and large $N$\\[\\lvert \\{1,\\ldots,N\\}\\backslash B\\rvert \\gg_\\epsilon N^{1/2-\\epsilon}?\\]Is it possible that\\[\\lvert \\{1,\\ldots,N\\}\\backslash B\\rvert =o(N^{1/2})?\\] Apparently originally considered by Erdős and Nathanson, although later Erdős attributes this to Erdős, Sárközy, and Szemerédi (but gives...",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T04:14:29.013Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-25",
+    "title": "Erdős #25",
+    "description": "Let $n_1 View the LaTeX source",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T04:34:21.348Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 6
+  },
+  {
+    "slug": "erdos-28",
+    "title": "Erdős #28",
+    "description": "If $A\\subseteq \\mathbb{N}$ is such that $A+A$ contains all but finitely many integers then $\\limsup 1_A\\ast 1_A(n)=\\infty$. Conjectured by Erdős and Turán. They also suggest the stronger conjecture that $\\limsup 1_A\\ast 1_A(n)/\\log n>0$. Another stronger conjecture would be that the hypothesis $\\lvert A\\cap [1,N]\\rvert \\gg N^{1/2}$ for all large $N$ suffices. Erdős and Sárközy conjectured the stronger version that if $A=\\{a_1[40]. This is discussed in problem C9 of Guy's collection [Gu04]. Vi...",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T06:42:02.929Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-36",
+    "title": "Erdős #36",
+    "description": "Find the optimal constant $c>0$ such that the following holds. For all sufficiently large $N$, if $A\\sqcup B=\\{1,\\ldots,2N\\}$ is a partition into two equal parts, so that $\\lvert A\\rvert=\\lvert B\\rvert=N$, then there is some $x$ such that the number of solutions to $a-b=x$ with $a\\in A$ and $b\\in B$ is at least $cN$. The minimum overlap problem. The example (with $N$ even) $A=\\{N/2+1,\\ldots,3N/2\\}$ shows that $c\\leq 1/2$ (indeed, Erdős initially conjectured that $c=1/2$). The lower bound of $...",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T06:58:30.838Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-40",
+    "title": "Erdős #40",
+    "description": "For what functions $g(N)\\to \\infty$ is it true that\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\gg \\frac{N^{1/2}}{g(N)}\\]implies $\\limsup 1_A\\ast 1_A(n)=\\infty$? This is a stronger form of the Erdős-Turán conjecture [28] (since establishing this for any function $g(N)\\to \\infty$ would imply a positive solution to [28]). View the LaTeX source",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T06:58:30.838Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-42",
+    "title": "Erdős #42",
+    "description": "Let $M\\geq 1$ and $N$ be sufficiently large in terms of $M$. Is it true that for every Sidon set $A\\subset \\{1,\\ldots,N\\}$ there is another Sidon set $B\\subset \\{1,\\ldots,N\\}$ of size $M$ such that $(A-A)\\cap(B-B)=\\{0\\}$? View the LaTeX source This page was last edited 14 September 2025.",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T06:58:30.839Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-43",
+    "title": "Erdős #43",
+    "description": "If $A,B\\subset \\{1,\\ldots,N\\}$ are two Sidon sets such that $(A-A)\\cap(B-B)=\\{0\\}$ then is it true that\\[ \\binom{\\lvert A\\rvert}{2}+\\binom{\\lvert B\\rvert}{2}\\leq\\binom{f(N)}{2}+O(1),\\]where $f(N)$ is the maximum possible size of a Sidon set in $\\{1,\\ldots,N\\}$? If $\\lvert A\\rvert=\\lvert B\\rvert$ then can this bound be improved to\\[\\binom{\\lvert A\\rvert}{2}+\\binom{\\lvert B\\rvert}{2}\\leq (1-c+o(1))\\binom{f(N)}{2}\\]for some constant $c>0$? Since it is known that $f(N)\\sim \\sqrt{N}$ (see [30]) th...",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T06:58:30.839Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-44",
+    "title": "Erdős #44",
+    "description": "Let $N\\geq 1$ and $A\\subset \\{1,\\ldots,N\\}$ be a Sidon set. Is it true that, for any $\\epsilon>0$, there exist $M$ and $B\\subset \\{N+1,\\ldots,M\\}$ (which may depend on $N,A,\\epsilon$) such that $A\\cup B\\subset \\{1,\\ldots,M\\}$ is a Sidon set of size at least $(1-\\epsilon)M^{1/2}$? See also [329] and [707] (indeed a positive solution to [707] implies a positive solution to this problem, which in turn implies a positive solution to [329]). This is discussed in problem C9 of Guy's collection [Gu0...",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T06:58:30.839Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-68",
+    "title": "Erdős #68",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T07:49:42.862Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-75",
+    "title": "Erdős #75",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T07:49:42.862Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-340-greedy-sidon",
+    "title": "Erdős #340: Greedy Sidon Sequence Growth",
+    "description": "BLOCKED: OPEN CONJECTURE - The main theorem (|A ∩ [1,N]| >> N^(1/2-ε)) is an unsolved problem in mathematics.",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "number-theory",
+      "additive-combinatorics",
+      "sidon-sets",
+      "erdos-problem",
+      "open-conjecture",
+      "blocked-open-problem"
+    ],
+    "started": "2026-01-12T09:10:09.147Z",
+    "lastUpdate": "2026-01-12T09:10:09.147Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 8,
+    "tractability": 1
+  },
+  {
+    "slug": "erdos-5-prime-gaps",
+    "title": "Erdős #5: Prime Gap Limit Points",
+    "description": "PROGRESS: Created Erdos5PrimeGaps.",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "number-theory",
+      "primes",
+      "prime-gaps",
+      "erdos-problem",
+      "open-conjecture"
+    ],
+    "started": "2026-01-12T09:10:09.148Z",
+    "lastUpdate": "2026-01-12T09:10:09.148Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 6
+  },
+  {
+    "slug": "erdos-10-prime-powers-of-2",
+    "title": "Erdős #10: Prime Plus Powers of 2",
+    "description": "IN-PROGRESS: Created Erdos10PrimePlusPowers.",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "number-theory",
+      "primes",
+      "additive",
+      "erdos-problem",
+      "open-conjecture"
+    ],
+    "started": "2026-01-12T09:10:09.148Z",
+    "lastUpdate": "2026-01-12T09:10:09.148Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 6
+  },
+  {
+    "slug": "erdos-14-unique-sums",
+    "title": "Erdős #14: Unique Representation Sums",
+    "description": "PROGRESS: Created Erdos14UniqueSums.",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "number-theory",
+      "additive-combinatorics",
+      "sidon-sets",
+      "erdos-problem",
+      "open-conjecture"
+    ],
+    "started": "2026-01-12T09:10:09.148Z",
+    "lastUpdate": "2026-01-12T09:10:09.148Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-25-number-theory",
+    "title": "Erdős #25: Sequence Divisibility",
+    "description": "PROGRESS: Created Erdos25LogDensity.",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "number-theory",
+      "sequences",
+      "erdos-problem",
+      "open-conjecture"
+    ],
+    "started": "2026-01-12T09:10:09.149Z",
+    "lastUpdate": "2026-01-12T09:10:09.149Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 6
+  },
+  {
+    "slug": "erdos-28-additive-bases",
+    "title": "Erdős #28: Erdős-Turán Additive Bases ($500)",
+    "description": "PROGRESS: Created Erdos28AdditiveBases.",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "number-theory",
+      "additive-combinatorics",
+      "additive-bases",
+      "erdos-problem",
+      "open-conjecture",
+      "prize-problem"
+    ],
+    "started": "2026-01-12T09:10:09.149Z",
+    "lastUpdate": "2026-01-12T09:10:09.149Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
   }
 ]

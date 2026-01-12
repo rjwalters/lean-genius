@@ -1,0 +1,33 @@
+{
+  "id": "erdos-133",
+  "title": "Erdős Problem #133",
+  "slug": "erdos-133",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that every triangle-free graph ... with ... vertices and diameter ... contains a vertex with degree ....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/133",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos133Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 133,
+    "erdosUrl": "https://erdosproblems.com/133",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #133 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be minimal such that every triangle-free graph $G$ with $n$ vertices and diameter $2$ contains a vertex with degree $\\geq f(n)$.\n\nWhat is the order of growth of $f(n)$? Does $f(n)/\\sqrt{n}\\to \\infty$?\n\n\n\nAsked by Erd\\H{o}s and Pach. The lower bound $f(n)\\geq (1-o(1))\\sqrt{n}$ follows from the fact that a graph with maximum degree $d$ and diameter $2$ has at most $1+d+d(d-1)=d^2+1$ many vertices.\n\nSimonovits observed that the subsets of $[3m-1]$ of size $m$, two sets joined by edge if and only if they are disjoint, forms a triangle-free graph of diameter $2$ which is regular of degree $\\binom{2m-1}{m}$. This construction proves that\\[f(n) \\leq n^{(1+o(1))\\frac{2}{3H(1/3)}}=n^{0.7182\\cdots},\\]where $H(x)$ is the binary entropy function. In \\cite{Er97b} Erd\\H{o}s encouraged the reader to try and find a better construction.\n\nIn this note Alon provides a simple construction that proves $f(n) \\ll \\sqrt{n\\log n}$: take a triangle-free graph with independence number $\\ll \\sqrt{n\\log n}$ (the existence of which is the lower bound in [165]) and add edges until it has diameter $2$; the neighbourhood of any set is an independent set and hence the maximum degree is still $\\ll \\sqrt{n\\log n}$.\n\nHanson and Seyffarth \\cite{HaSe84} proved that $f(n)\\leq (\\sqrt{2}+o(1))\\sqrt{n}$ using a Cayley graph on $\\mathbb{Z}/n\\mathbb{Z}$, with the generating set given by some symmetric complete sum-free set of size $\\sim \\sqrt{n}$. An alternative construction of such a complete sum-free set was given by Haviv and Levy \\cite{HaLe18}.\n\nF\\\"{u}redi and Seress \\cite{FuSe94} proved that $f(n)\\leq (\\frac{2}{\\sqrt{3}}+o(1))\\sqrt{n}$.\n\nThe precise asymptotics of $f(n)$ are unknown; Alon believes that the truth is $f(n)\\sim \\sqrt{n}$.\n\n\n\n\nReferences\n\n\n[Er97b] Erd\\H{o}s, Paul, Some old and new problems in various branches of combinatorics. Discrete Math. (1997), 227-231.\n\n[FuSe94] F\\\"{u}redi, Zolt\\'{a}n and Seress, \\'{a}kos, Maximal triangle-free graphs with restrictions on the degrees. J. Graph Theory (1994), 11-24.\n\n[HaLe18] Haviv, Ishay and Levy, Dan, Symmetric complete sum-free sets in cyclic groups. Israel J. Math. (2018), 931-956.\n\n[HaSe84] Hanson, D. and Seyffarth, K., {$k$}-saturated graphs of prescribed maximum degree. Congr. Numer. (1984), 169-182.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

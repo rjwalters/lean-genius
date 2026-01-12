@@ -1,92 +1,57 @@
 {
-  "id": "erdos-25-number-theory",
-  "name": "Erdős #25: Logarithmic Density of Residue-Avoiding Sets",
+  "slug": "erdos-25-number-theory",
+  "title": "Erdős #25: Sequence Divisibility",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
-  "significance": 7,
-  "tractability": 6,
-  "status": "in-progress",
-  "description": "Let n₁ < n₂ < ... be integers with residue classes aᵢ (mod nᵢ). Let A be the set avoiding these residue classes (n ∈ A iff ∀i: n < nᵢ or n ≢ aᵢ mod nᵢ). Must the logarithmic density of A exist?",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "PROGRESS: Created Erdos25LogDensity.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T09:10:09.149Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [],
   "tags": [
     "number-theory",
-    "density",
-    "modular-arithmetic",
+    "sequences",
     "erdos-problem",
     "open-conjecture"
   ],
-  "knowledge": {
-    "insights": [
-      "Logarithmic density is defined as lim_{N→∞} (1/log N) · Σ_{n ∈ A, n ≤ N} (1/n)",
-      "Log density is more robust than natural density - some sets have log density but not natural density",
-      "Davenport-Erdős theorem: For multiples of a sequence, log density = lower natural density",
-      "Related to Erdős Problem 486 (very similar structure)",
-      "DeepMind has formalized this in their formal-conjectures repo using Set.HasLogDensity",
-      "Mathlib has harmonic sum and Euler-Mascheroni constant in NumberTheory.Harmonic.EulerMascheroni",
-      "Key asymptotic: harmonic n / log n → 1 follows from harmonic n - log n → γ (Euler-Mascheroni)",
-      "The set A avoids residue classes incrementally: once n ≥ nᵢ, it must avoid aᵢ mod nᵢ"
-    ],
-    "builtItems": [
-      "harmonicSum definition (using Mathlib's harmonic) at Erdos25LogDensity.lean:52",
-      "harmonicSum_eq_harmonic theorem at Erdos25LogDensity.lean:55",
-      "tendsto_harmonic_div_log theorem (PROVED) at Erdos25LogDensity.lean:59",
-      "logWeightedCount definition at Erdos25LogDensity.lean:82",
-      "logDensityRatio definition at Erdos25LogDensity.lean:86",
-      "HasLogDensity definition at Erdos25LogDensity.lean:91",
-      "upperLogDensity definition at Erdos25LogDensity.lean:95",
-      "lowerLogDensity definition at Erdos25LogDensity.lean:99",
-      "residueAvoidingSet definition at Erdos25LogDensity.lean:109",
-      "residueAvoidingSetFinite definition at Erdos25LogDensity.lean:113",
-      "erdos_25_positive conjecture at Erdos25LogDensity.lean:127",
-      "erdos_25_negative conjecture at Erdos25LogDensity.lean:136",
-      "erdos_25_dichotomy theorem (PROVED) at Erdos25LogDensity.lean:143",
-      "logDensity_empty theorem (PROVED) at Erdos25LogDensity.lean:154",
-      "logWeightedCount_full theorem at Erdos25LogDensity.lean:161 (1 sorry for reindexing)",
-      "logDensity_full theorem (PROVED) at Erdos25LogDensity.lean:171",
-      "HasNaturalDensity definition at Erdos25LogDensity.lean:208",
-      "davenport_erdos axiom at Erdos25LogDensity.lean:227"
-    ],
-    "mathlibGaps": [
-      "No logarithmic density formalization in Mathlib (built our own)",
-      "No natural/asymptotic density formalization in Mathlib",
-      "Mathlib's harmonic sum uses ℚ, requires cast to ℝ for our use"
-    ],
-    "nextSteps": [
-      "Complete logWeightedCount_full proof (sum reindexing from range(N+1) to range(N))",
-      "Prove logDensity_evens (even numbers have density 1/2)",
-      "Prove naturalDensity_implies_logDensity",
-      "Prove logDensityRatio_bounded",
-      "Build more infrastructure for proving density exists for specific sets"
-    ],
-    "progressSummary": "PROGRESS: Added Mathlib harmonic import. Proved tendsto_harmonic_div_log (key asymptotic). Proved logDensity_full (full set has density 1). Now ~240 lines, 9 sorries, 1 axiom."
-  },
-  "sessions": [
-    {
-      "date": "2026-01-11",
-      "mode": "FRESH",
-      "outcome": "progress",
-      "summary": "Created Erdos25LogDensity.lean with logarithmic density infrastructure (harmonicSum, logWeightedCount, logDensityRatio, HasLogDensity, upperLogDensity, lowerLogDensity). Defined residueAvoidingSet construction. Stated erdos_25_positive and erdos_25_negative. Proved dichotomy theorem and empty set case."
-    },
-    {
-      "date": "2026-01-11",
-      "mode": "REVISIT",
-      "outcome": "progress",
-      "summary": "Added Mathlib.NumberTheory.Harmonic.EulerMascheroni import. Proved tendsto_harmonic_div_log: harmonic n / log n → 1 (key asymptotic following from Euler-Mascheroni). Proved logDensity_full: full set ℕ⁺ has log density 1. Used Real.tendsto_harmonic_sub_log from Mathlib."
-    }
+  "relatedProofs": [
+    "Relevance"
   ],
-  "references": [
-    {
-      "type": "website",
-      "url": "https://www.erdosproblems.com/25",
-      "note": "Official Erdős problems page"
-    },
-    {
-      "type": "repository",
-      "url": "https://github.com/google-deepmind/formal-conjectures",
-      "note": "DeepMind formalization (uses Set.HasLogDensity)"
-    },
-    {
-      "type": "paper",
-      "title": "Davenport-Erdős Theorem",
-      "note": "Log density = lower density for multiples"
-    }
-  ]
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T09:10:09.149Z",
+  "lastUpdate": "2026-01-12T09:10:09.149Z",
+  "significance": 7,
+  "tractability": 6
 }

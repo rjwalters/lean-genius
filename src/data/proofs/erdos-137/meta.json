@@ -1,0 +1,33 @@
+{
+  "id": "erdos-137",
+  "title": "Erdős Problem #137",
+  "slug": "erdos-137",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Can the product of any ... consecutive integers ... ever be powerful? That is, must there always exist a prime ... s...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/137",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos137Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 137,
+    "erdosUrl": "https://erdosproblems.com/137",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #137 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 3$. Can the product of any $k$ consecutive integers $N$ ever be powerful? That is, must there always exist a prime $p\\mid N$ such that $p^2\\nmid N$?\n\n\n\nConjectured by Erd\\H{o}s and Selfridge. There are infinitely many $n$ such that $n(n+1)$ is powerful (see [364]). Erd\\H{o}s and Selfridge \\cite{ErSe75} proved that $N$ can never be a perfect power. Erd\\H{o}s remarked that this 'seems hopeless at present'.\n\nIn \\cite{Er82c} he further conjectures that, if $k$ is fixed and $n$ is sufficiently large, then, for all $m$, there must be at least $k$ distinct primes $p$ such that\\[p\\mid m(m+1)\\cdots (m+n)\\]and yet $p^2$ does not divide the right-hand side.\n\nSee also [364].\n\n\n\n\nReferences\n\n\n[Er82c] Erd\\H{o}s, P., Miscellaneous problems in number theory. Congr. Numer. (1982), 25-45.\n\n[ErSe75] Erd\\H{o}s, P. and Selfridge, J. L., The product of consecutive integers is never a power. Illinois J. Math. (1975), 292-301.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-81",
+  "title": "Erdős Problem #81",
+  "slug": "erdos-81",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a chordal graph on ... vertices - that is, ... has no induced cycles of length greater than .... Can the edges of ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/81",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos81Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 81,
+    "erdosUrl": "https://erdosproblems.com/81",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #81 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a chordal graph on $n$ vertices - that is, $G$ has no induced cycles of length greater than $3$. Can the edges of $G$ be partitioned into $n^2/6+O(n)$ many cliques?\n\n\n\nAsked by Erd\\H{o}s, Ordman, and Zalcstein \\cite{EOZ93}, who proved an upper bound of $(1/4-\\epsilon)n^2$ many cliques (for some very small $\\epsilon>0$). The example of all edges between a complete graph on $n/3$ vertices and an empty graph on $2n/3$ vertices show that $n^2/6+O(n)$ is sometimes necessary.\n\nA split graph is one where the vertices can be split into a clique and an independent set. Every split graph is chordal. Chen, Erd\\H{o}s, and Ordman \\cite{CEO94} have shown that any split graph can be partitioned into $\\frac{3}{16}n^2+O(n)$ many cliques.\n\nSee also [1017].\n\n\n\n\nReferences\n\n\n[CEO94] Chen, Guan-Tao and Erd\\H{o}s, Paul and Ordman, Edward T., Clique partitions of split graphs. Combinatorics, graph theory, algorithms and applications\n(Beijing, 1993) (1994), 21-30.\n\n[EOZ93] Erd\\H{o}s, Paul and Ordman, Edward T. and Zalcstein, Yechezkel, Clique partitions of chordal graphs. Combin. Probab. Comput. (1993), 409-415.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

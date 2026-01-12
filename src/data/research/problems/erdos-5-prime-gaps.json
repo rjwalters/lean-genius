@@ -1,11 +1,41 @@
 {
-  "id": "erdos-5-prime-gaps",
-  "name": "Erdős #5: Prime Gap Limit Points",
+  "slug": "erdos-5-prime-gaps",
+  "title": "Erdős #5: Prime Gap Limit Points",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
-  "significance": 8,
-  "tractability": 6,
-  "status": "in-progress",
-  "description": "Is the set S of limit points of (p_{n+1} - p_n) / log(n) equal to [0, ∞]? Equivalently: for any C ≥ 0, does there exist a subsequence where the normalized gap converges to C?",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "PROGRESS: Created Erdos5PrimeGaps.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T09:10:09.148Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [],
   "tags": [
     "number-theory",
     "primes",
@@ -13,83 +43,16 @@
     "erdos-problem",
     "open-conjecture"
   ],
-  "knowledge": {
-    "insights": [
-      "Westzynthius (1931): ∞ ∈ S - arbitrarily large prime gaps exist",
-      "Goldston-Pintz-Yildirim (2005): 0 ∈ S - small gaps exist infinitely often",
-      "Erdős-Ricci: S has positive Lebesgue measure",
-      "Hildebrand-Maier: S contains arbitrarily large finite values",
-      "Pintz: [0, c] ⊆ S for some small c > 0",
-      "Merikoski: at least 1/3 of [0, ∞) belongs to S, and S has bounded gaps",
-      "Zhang (2013): bounded gaps ≤ 70M exist, improved to ≤ 246 by Polymath",
-      "The conjecture asks if S = [0, ∞], i.e., every non-negative real is a limit point",
-      "Mathlib has Nat.nth Prime for the nth prime number"
-    ],
-    "builtItems": [
-      "nthPrime definition at Erdos5PrimeGaps.lean:49",
-      "primeGap definition at Erdos5PrimeGaps.lean:52",
-      "normalizedGap definition at Erdos5PrimeGaps.lean:55",
-      "IsLimitPoint definition at Erdos5PrimeGaps.lean:64",
-      "limitPointSet definition at Erdos5PrimeGaps.lean:68",
-      "InfinityIsLimitPoint definition at Erdos5PrimeGaps.lean:71",
-      "erdos_5 conjecture statement at Erdos5PrimeGaps.lean:76",
-      "westzynthius_large_gaps axiom at Erdos5PrimeGaps.lean:84",
-      "goldston_pintz_yildirim_small_gaps axiom at Erdos5PrimeGaps.lean:89",
-      "nthPrime_zero, nthPrime_one, nthPrime_two proofs at Erdos5PrimeGaps.lean:112-121",
-      "primeGap_pos proof at Erdos5PrimeGaps.lean:124",
-      "primeGap_zero, primeGap_one proofs at Erdos5PrimeGaps.lean:132-138",
-      "nthPrime_strictMono proof at Erdos5PrimeGaps.lean:148",
-      "averageGap definition at Erdos5PrimeGaps.lean:157",
-      "cramer_conjecture definition at Erdos5PrimeGaps.lean:161",
-      "zhang_bounded_gaps axiom at Erdos5PrimeGaps.lean:174"
-    ],
-    "mathlibGaps": [
-      "No direct formalization of limit points of sequences in general",
-      "Prime Number Theorem not formally proven in Mathlib (needed for asymptotic gap analysis)",
-      "No Cramér's conjecture or related density results"
-    ],
-    "nextSteps": [
-      "Prove nthPrime_ge (nth prime ≥ n + 2)",
-      "Prove twin_prime_implies_zero_limit",
-      "Prove zhang_implies_zero_limit from bounded gaps axiom",
-      "Build infrastructure for subsequence convergence proofs",
-      "Formalize the density results more precisely with measure theory"
-    ],
-    "progressSummary": "PROGRESS: Created Erdos5PrimeGaps.lean (~190 lines) with definitions, conjecture statement, known results as axioms, and basic prime gap properties. 3 sorries for technical lemmas."
-  },
-  "sessions": [
-    {
-      "date": "2026-01-11",
-      "mode": "FRESH",
-      "outcome": "progress",
-      "summary": "Created Erdos5PrimeGaps.lean with nthPrime, primeGap, normalizedGap, IsLimitPoint definitions. Stated the conjecture formally. Proved basic properties (primeGap_pos, first few gaps). Stated known results (Westzynthius, GPY, Zhang) as axioms."
-    }
+  "relatedProofs": [
+    "Relevance"
   ],
-  "references": [
-    {
-      "type": "website",
-      "url": "https://www.erdosproblems.com/5",
-      "note": "Official Erdős problems page"
-    },
-    {
-      "type": "paper",
-      "title": "Westzynthius (1931)",
-      "note": "Arbitrarily large prime gaps"
-    },
-    {
-      "type": "paper",
-      "title": "Goldston-Pintz-Yildirim (2005)",
-      "note": "Small prime gaps"
-    },
-    {
-      "type": "paper",
-      "title": "Zhang (2013)",
-      "note": "Bounded gaps between primes"
-    },
-    {
-      "type": "paper",
-      "title": "Merikoski (2020s)",
-      "note": "Density results on limit point set"
-    }
-  ]
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T09:10:09.148Z",
+  "lastUpdate": "2026-01-12T09:10:09.148Z",
+  "significance": 7,
+  "tractability": 6
 }

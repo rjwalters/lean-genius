@@ -1,0 +1,33 @@
+{
+  "id": "erdos-100",
+  "title": "Erdős Problem #100",
+  "slug": "erdos-100",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set of ... points in ... such that all pairwise distances are at least ... and if two distinct distances differ ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/100",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos100Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 100,
+    "erdosUrl": "https://erdosproblems.com/100",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #100 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A$ be a set of $n$ points in $\\mathbb{R}^2$ such that all pairwise distances are at least $1$ and if two distinct distances differ then they differ by at least $1$. Is the diameter of $A$ $\\gg n$?\n\n\n\nPerhaps the diameter is even $\\geq n-1$ for sufficiently large $n$. Piepmeyer has an example of $9$ such points with diameter $<5$. Kanold proved the diameter is $\\geq n^{3/4}$. The bounds on the distinct distance problem [89] proved by Guth and Katz \\cite{GuKa15} imply a lower bound of $\\gg n/\\log n$.\n\n\n\n\nReferences\n\n\n[GuKa15] Guth, Larry and Katz, Nets Hawk, On the Erd\\H{o}s distinct distances problem in the plane. Ann. of Math. (2) (2015), 155-190.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

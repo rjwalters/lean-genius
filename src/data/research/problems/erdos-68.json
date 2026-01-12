@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-68",
+  "title": "Erdős #68",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs\\[\\sum_{n\\geq 2}\\frac{1}{n!-1}\\]irrational?\n\n\n\nThe decimal expansion is A331373 in the OEIS. Weisenberg has observed that this sum can also be written as\\[\\sum_{k\\geq 1}\\sum_{n\\geq 2}\\frac{1}{(n!)^k}.\\]Erd\\H{o}s \\cite{Er88c} notes that $\\sum \\frac{1}{n!+t}$ should be transcendental for every integer $t$.\n\n\n\n\nReferences\n\n\n[Er88c] Erd\\\"{o}s, P., On the irrationality of certain series: problems and results. New advances in transcendence theory (Durham, 1986) (1988), 102-109.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T07:49:42.862Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #68 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs\\[\\sum_{n\\geq 2}\\frac{1}{n!-1}\\]irrational?\n\n\n\nThe decimal expansion is A331373 in the OEIS. Weisenberg has observed that this sum can also be written as\\[\\sum_{k\\geq 1}\\sum_{n\\geq 2}\\frac{1}{(n!)^k}.\\]Erd\\H{o}s \\cite{Er88c} notes that $\\sum \\frac{1}{n!+t}$ should be transcendental for every integer $t$.\n\n\n\n\nReferences\n\n\n[Er88c] Erd\\\"{o}s, P., On the irrationality of certain series: problems and results. New advances in transcendence theory (Durham, 1986) (1988), 102-109.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #67\n- Problem #69\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er68d\n- Er90\n- Er97e\n- Er97f\n- Er88c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T07:49:42.862Z",
+  "significance": 6,
+  "tractability": 4
+}

@@ -1,0 +1,34 @@
+{
+  "id": "erdos-143",
+  "title": "Erdős Problem #143",
+  "slug": "erdos-143",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a countably infinite set such that for all ... and integers ... we have\\[ \\lvert kx -y\\rvert \\geq 1.\\]Does this im...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/143",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos143Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 143,
+    "erdosUrl": "https://erdosproblems.com/143",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$500"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #143 from erdosproblems.com. Originally offered with a prize of $500.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset (1,\\infty)$ be a countably infinite set such that for all $x\\neq y\\in A$ and integers $k\\geq 1$ we have\\[ \\lvert kx -y\\rvert \\geq 1.\\]Does this imply that $A$ is sparse? In particular, does this imply that\\[\\sum_{x\\in A}\\frac{1}{x\\log x}<\\infty\\]or\\[\\sum_{\\substack{x <n\\\\ x\\in A}}\\frac{1}{x}=o(\\log n)?\\]\n\n\n\nNote that if $A$ is a set of integers then the condition implies that $A$ is a primitive set (that is, no element of $A$ is divisible by any other), for which the convergence of $\\sum_{n\\in A}\\frac{1}{n\\log n}$ was proved by Erd\\H{o}s \\cite{Er35}, and the upper bound\\[\\sum_{n<x}\\frac{1}{n}\\ll \\frac{\\log x}{\\sqrt{\\log\\log x}}\\]was proved by Behrend \\cite{Be35}. This $O(\\cdot)$ bound was improved to a $o(\\cdot)$ bound by Erd\\H{o}s, S\\'{a}rk\\H{o}zy, and Szemer\\'{e}di \\cite{ESS67}.\n\n\nIn \\cite{Er73} and \\cite{Er77c} Erd\\H{o}s mentions an unpublished proof of Haight that\\[\\lim \\frac{\\lvert A\\cap [1,x]\\rvert}{x}=0\\]holds if the elements of $A$ are independent over $\\mathbb{Q}$.\n\nOver the years Erd\\H{o}s asked for various different quantitative estimates, for example\\[\\liminf \\frac{\\lvert A\\cap [1,x]\\rvert}{x}=0\\]or even (motivated by Behrend's bound)\\[\\sum_{\\substack{x <n\\\\ x\\in A}}\\frac{1}{x}\\ll \\frac{\\log x}{\\sqrt{\\log\\log x}}.\\]In \\cite{Er97c} he offers \\$500 for resolving the questions in the main problem statement above.\n\nThis was partially resolved by Koukoulopoulos, Lamzouri, and Lichtman \\cite{KLL25}, who proved that we must have\\[\\sum_{\\substack{x <n\\\\ x\\in A}}\\frac{1}{x}=o(\\log n).\\]See also [858].\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Be35] Behrend, F., On sequences of numbers not divisible by another. London Math. Soc. Journal (1935), 42-45.\n\n[ESS67] Erd\\H{o}s, P. and S\\'{a}rk\\\"ozy, A. and Szemer\\'{e}di, E., On a theorem of Behrend. J. Austral. Math. Soc. (1967), 9--16.\n\n[Er35] Erd\\\"{o}s, Paul, Note on Sequences of Integers No One of Which is Divisible By Any Other. J. London Math. Soc. (1935), 126-128.\n\n[Er73] Erd\\H{o}s, P., Problems and results on combinatorial number theory. A survey of combinatorial theory (Proc. Internat. Sympos., Colorado State Univ., Fort Collins, Colo., 1971) (1973), 117-138.\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n[Er97c] Erd\\H{o}s, Paul, Some of my favorite problems and results. The mathematics of Paul Erd\\H{o}s, I (1997), 47-67.\n\n[KLL25] D. Koukoulopoulos, Y. Lamzouri, and J. D. Lichtman, Erd\\H{o}s's integer dilation approximation problem and GCD graphs. arXiv:2502.09539 (2025).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

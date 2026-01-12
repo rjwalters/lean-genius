@@ -1,0 +1,33 @@
+{
+  "id": "erdos-93",
+  "title": "Erdős Problem #93",
+  "slug": "erdos-93",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... distinct points in ... form a convex polygon then they determine at least ... distinct distances.\n\n\n\nSolved by Altman ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/93",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos93Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 93,
+    "erdosUrl": "https://erdosproblems.com/93",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #93 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $n$ distinct points in $\\mathbb{R}^2$ form a convex polygon then they determine at least $\\lfloor \\frac{n}{2}\\rfloor$ distinct distances.\n\n\n\nSolved by Altman \\cite{Al63}. The stronger variant that says there is one point which determines at least $\\lfloor \\frac{n}{2}\\rfloor$ distinct distances (see [982]) is still open. Fishburn in fact conjectures that if $R(x)$ counts the number of distinct distances from $x$ then\\[\\sum_{x\\in A}R(x) \\geq \\binom{n}{2}.\\]Szemer\\'{e}di conjectured a stronger form in which the convexity is replaced by the assumption that there are no three points on a line - see [1082].\n\nSee also [660].\n\n\n\n\nReferences\n\n\n[Al63] Altman, E., On a problem of P. Erd\\H{o}s. Amer. Math. Monthly (1963), 148-157.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

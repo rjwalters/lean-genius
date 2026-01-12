@@ -1,0 +1,34 @@
+{
+  "id": "erdos-107",
+  "title": "Erdős Problem #107",
+  "slug": "erdos-107",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that any ... points in ..., no three on a line, contain ... points which form the vertices of a conve...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/107",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos107Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 107,
+    "erdosUrl": "https://erdosproblems.com/107",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$500"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #107 from erdosproblems.com. Originally offered with a prize of $500.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be minimal such that any $f(n)$ points in $\\mathbb{R}^2$, no three on a line, contain $n$ points which form the vertices of a convex $n$-gon. Prove that $f(n)=2^{n-2}+1$.\n\n\n\nThe Erd\\H{o}s-Klein-Szekeres 'Happy Ending' problem. The problem originated in 1931 when Klein observed that $f(4)=5$. Tur\\'{a}n and Makai showed $f(5)=9$. Erd\\H{o}s and Szekeres proved the bounds\\[2^{n-2}+1\\leq f(n)\\leq \\binom{2n-4}{n-2}+1.\\](\\cite{ErSz60} and \\cite{ErSz35} respectively). There were several improvements of the upper bound, but all of the form $4^{(1+o(1))n}$, until Suk \\cite{Su17} proved\\[f(n) \\leq 2^{(1+o(1))n}.\\]The current best bound is due to Holmsen, Mojarrad, Pach, and Tardos \\cite{HMPT20}, who prove\\[f(n) \\leq 2^{n+O(\\sqrt{n\\log n})}.\\]In \\cite{Er97e} Erd\\H{o}s clarifies that the \\$500 is for a proof, and only offers \\$100 for a disproof.\n\nThis problem is #1 in Ramsey Theory in the graphs problem collection.\n\nSee also [216], [651], and [838].\n\n\n\n\nReferences\n\n\n[Er97e] Erd\\H{o}s, Paul, Some of my favourite unsolved problems. Math. Japon. (1997), 527-537.\n\n[ErSz35] Erd\\H{o}s, P. and Szekeres, G., A combinatorial problem in geometry. Compos. Math. (1935), 463-470.\n\n[ErSz60] Erd\\H{o}s, P. and Szekeres, G., On some extremum problems in elementary geometry. Ann. Univ. Sci. Budapest. E\\\"{o}tv\\\"{o}s Sect. Math. (1960/61), 53-62.\n\n[HMPT20] Holmsen, Andreas F. and Mojarrad, Hossein Nassajian and Pach, J\\'{a}nos and Tardos, G\\'{a}bor, Two extensions of the Erd\\H{o}s-Szekeres problem. J. Eur. Math. Soc. (JEMS) (2020), 3981-3995.\n\n[Su17] Suk, Andrew, On the Erd\\H{o}s-Szekeres convex polygon problem. J. Amer. Math. Soc. (2017), 1047-1053.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

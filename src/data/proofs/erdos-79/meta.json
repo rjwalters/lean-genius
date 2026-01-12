@@ -1,0 +1,33 @@
+{
+  "id": "erdos-79",
+  "title": "Erdős Problem #79",
+  "slug": "erdos-79",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe say ... is Ramsey size linear if ... for all graphs ... with ... edges and no isolated vertices.\n\nAre there infinitely man...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/79",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos79Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 79,
+    "erdosUrl": "https://erdosproblems.com/79",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #79 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe say $G$ is Ramsey size linear if $R(G,H)\\ll m$ for all graphs $H$ with $m$ edges and no isolated vertices.\n\nAre there infinitely many graphs $G$ which are not Ramsey size linear but such that all of its subgraphs are?\n\n\n\nAsked by Erd\\H{o}s, Faudree, Rousseau, and Schelp \\cite{EFRS93}. $K_4$ is the only known example of such a graph.\n\nWigderson \\cite{Wi24} has proved that there are infinitely many such graphs (although his proof is not explicit, and an explicit example of such a graph apart from $K_4$ is still unknown).\n\n\n\n\nReferences\n\n\n[EFRS93] Erd\\H{o}s, Paul and Faudree, R. J. and Rousseau, C. C. and Schelp, R. H., Ramsey size linear graphs. Combin. Probab. Comput. (1993), 389-399.\n\n[Wi24] Y. Wigderson, Infinitely many minimally Ramsey size-linear graphs. arXiv:2409.05931 (2024).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

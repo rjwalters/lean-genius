@@ -1,0 +1,34 @@
+{
+  "id": "erdos-140",
+  "title": "Erdős Problem #140",
+  "slug": "erdos-140",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the size of the largest subset of ... which does not contain a non-trivial ...-term arithmetic progression. Prove ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/140",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos140Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 140,
+    "erdosUrl": "https://erdosproblems.com/140",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$500"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #140 from erdosproblems.com. Originally offered with a prize of $500.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r_3(N)$ be the size of the largest subset of $\\{1,\\ldots,N\\}$ which does not contain a non-trivial $3$-term arithmetic progression. Prove that $r_3(N)\\ll N/(\\log N)^C$ for every $C>0$.\n\n\n\nProved by Kelley and Meka \\cite{KeMe23}. In \\cite{ErGr80} and \\cite{Er81} it is conjectured that this holds for every $k$-term arithmetic progression.\n\nSee also [3].\n\n\n\n\nReferences\n\n\n[Er81] Erd\\H{o}s, P., On the combinatorial problems which I would most like to see solved. Combinatorica (1981), 25-42.\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[KeMe23] Kelley, Z. and Meka, R., Strong Bounds for 3-Progressions. arXiv:2302.05537 (2023).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -101,19 +101,42 @@ function generateIndexTs(problem: TransformedProblem): string {
   const pascalSlug = toPascalCase(problem.slug.replace(/^erdos-\d+-?/, ''))
   const leanFileName = `Erdos${problem.number}${pascalSlug || 'Problem'}`
 
-  return `import type { ProofData } from '@/types/proof'
-import metaData from './meta.json'
-import annotationsData from './annotations.json'
+  return `import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion } from '@/types/proof'
+import metaJson from './meta.json'
+import annotationsJson from './annotations.json'
+
+// Type assertion for JSON import
+const meta = metaJson as {
+  id: string
+  title: string
+  slug: string
+  description: string
+  meta: ProofMeta
+  sections: ProofSection[]
+  overview?: ProofOverview
+  conclusion?: ProofConclusion
+}
 
 // Import the Lean source file
 const leanSource = () => import('../../../../proofs/Proofs/${leanFileName}.lean?raw')
 
+export const proof: Proof = {
+  id: meta.id,
+  title: meta.title,
+  slug: meta.slug,
+  description: meta.description,
+  meta: meta.meta,
+  sections: meta.sections,
+  source: '', // Loaded dynamically
+  overview: meta.overview,
+  conclusion: meta.conclusion,
+}
+
+export const annotations: Annotation[] = annotationsJson as Annotation[]
+
 export const proofData: ProofData = {
-  proof: {
-    ...metaData,
-    source: '', // Loaded dynamically
-  },
-  annotations: annotationsData,
+  proof,
+  annotations,
 }
 
 export async function getProofSource(): Promise<string> {

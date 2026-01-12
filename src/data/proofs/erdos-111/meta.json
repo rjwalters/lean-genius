@@ -1,0 +1,33 @@
+{
+  "id": "erdos-111",
+  "title": "Erdős Problem #111",
+  "slug": "erdos-111",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph let ... be defined such that any subgraph of ... on ... vertices can be made bipartite after deleting at mo...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/111",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos111Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 111,
+    "erdosUrl": "https://erdosproblems.com/111",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #111 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ is a graph let $h_G(n)$ be defined such that any subgraph of $G$ on $n$ vertices can be made bipartite after deleting at most $h_G(n)$ edges.\n\nWhat is the behaviour of $h_G(n)$? Is it true that $h_G(n)/n\\to \\infty$ for every graph $G$ with chromatic number $\\aleph_1$?\n\n\n\n\nA problem of Erd\\H{o}s, Hajnal, and Szemer\\'{e}di \\cite{EHS82}. Every $G$ with chromatic number $\\aleph_1$ must have $h_G(n)\\gg n$ since $G$ must contain, for some $r$, $\\aleph_1$ many vertex disjoint odd cycles of length $2r+1$.\n\nOn the other hand, Erd\\H{o}s, Hajnal, and Szemer\\'{e}di proved that there is a $G$ with chromatic number $\\aleph_1$ such that $h_G(n)\\ll n^{3/2}$. In \\cite{Er81} Erd\\H{o}s conjectured that this can be improved to $\\ll n^{1+\\epsilon}$ for every $\\epsilon>0$.\n\nSee also [74].\n\n\n\n\nReferences\n\n\n[EHS82] Erd\\H{o}s, P. and Hajnal, A. and Szemer\\'{e}di, E., On almost bipartite large chromatic graphs. Theory and practice of combinatorics (1982), 117-123.\n\n[Er81] Erd\\H{o}s, P., On the combinatorial problems which I would most like to see solved. Combinatorica (1981), 25-42.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

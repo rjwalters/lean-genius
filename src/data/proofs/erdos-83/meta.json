@@ -1,0 +1,34 @@
+{
+  "id": "erdos-83",
+  "title": "Erdős Problem #83",
+  "slug": "erdos-83",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose that we have a family $...[4n]...\\lvert A\\rvert=2n...A\\in...A,B\\in ...\\lvert A\\cap B\\rvert \\geq 2......[4n]...2n...n+...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/83",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos83Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 83,
+    "erdosUrl": "https://erdosproblems.com/83",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$500"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #83 from erdosproblems.com. Originally offered with a prize of $500.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose that we have a family $\\mathcal{F}$ of subsets of $[4n]$ such that $\\lvert A\\rvert=2n$ for all $A\\in\\mathcal{F}$ and for every $A,B\\in \\mathcal{F}$ we have $\\lvert A\\cap B\\rvert \\geq 2$. Then\\[\\lvert \\mathcal{F}\\rvert \\leq \\frac{1}{2}\\left(\\binom{4n}{2n}-\\binom{2n}{n}^2\\right).\\]\n\n\n\nConjectured by Erd\\H{o}s, Ko, and Rado \\cite{ErKoRa61}. This inequality would be best possible, as shown by taking $\\mathcal{F}$ to be the collection of all subsets of $[4n]$ of size $2n$ containing at least $n+1$ elements from $[2n]$.\n\nProved by Ahlswede and Khachatrian \\cite{AhKh97}, who more generally showed the following. Let $2\\leq t\\leq k\\leq m$ and let $r\\geq 0$ be such that\\[\\frac{1}{r+1}\\leq \\frac{m-2k+2t-2}{(t-1)(k-t+1)}< \\frac{1}{r}.\\]The largest possible family of subsets of $[m]$ of size $k$, such that the pairwise intersections have size at least $t$, is the family of all subsets of $[m]$ of size $k$ which contain at least $t+r$ elements from $\\{1,\\ldots,t+2r\\}$.\n\n\n\n\n\nReferences\n\n\n[AhKh97] Ahlswede, Rudolf and Khachatrian, Levon H., The complete intersection theorem for systems of finite sets. European J. Combin. (1997), 125-136.\n\n[ErKoRa61] Erd\\H{o}s, P. and Ko, Chao and Rado, R., Intersection theorems for systems of finite sets. Quart. J. Math. Oxford Ser. (2) (1961), 313-320.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

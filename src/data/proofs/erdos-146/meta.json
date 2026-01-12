@@ -1,0 +1,34 @@
+{
+  "id": "erdos-146",
+  "title": "Erdős Problem #146",
+  "slug": "erdos-146",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is bipartite and is ...-degenerate, that is, every induced subgraph of ... has minimum degree ..., then\\[(n;H) \\ll n^{...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/146",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos146Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 146,
+    "erdosUrl": "https://erdosproblems.com/146",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$500"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #146 from erdosproblems.com. Originally offered with a prize of $500.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $H$ is bipartite and is $r$-degenerate, that is, every induced subgraph of $H$ has minimum degree $\\leq r$, then\\[\\mathrm{ex}(n;H) \\ll n^{2-1/r}.\\]\n\n\n\nConjectured by Erd\\H{o}s and Simonovits \\cite{ErSi84}. Open even for $r=2$. Alon, Krivelevich, and Sudakov \\cite{AKS03} have proved\\[\\mathrm{ex}(n;H) \\ll n^{2-1/4r}.\\]They also prove the full Erd\\H{o}s-Simonovits conjectured bound if $H$ is bipartite and the maximum degree in one side of the bipartition is $r$.\n\nSee also [113] and [147].\n\nSee also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[AKS03] Alon, Noga and Krivelevich, Michael and Sudakov, Benny, Tur\\'{a}n numbers of bipartite graphs and related\nRamsey-type questions. Combin. Probab. Comput. (2003), 477-494.\n\n[ErSi84] Erd\\H{o}s, P. and Simonovits, M., Cube-supersaturated graphs and related problems. Progress in graph theory (Waterloo, Ont., 1982) (1984), 203-218.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-85",
+  "title": "Erdős Problem #85",
+  "slug": "erdos-85",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be minimal such that every graph on ... vertices with minimal degree ... contains a .... Is it true that, for...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/85",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos85Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 85,
+    "erdosUrl": "https://erdosproblems.com/85",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #85 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n\\geq 4$ and $f(n)$ be minimal such that every graph on $n$ vertices with minimal degree $\\geq f(n)$ contains a $C_4$. Is it true that, for all large $n$, $f(n+1)\\geq f(n)$?\n\n\n\nThe function $f(n)$ is a reformulation of the Ramsey number $R(C_4,K_{1,n})$, in that\\[R(C_4,K_{1,n})=\\min\\{ m : f(m)\\leq m-n\\}\\]and\\[f(n)=\\min\\{ m : m\\geq R(C_4, K_{1,n-m})\\}.\\]The behaviour of this Ramsey number more generally is [552].\n\nA weaker version of the conjecture asks for some constant $c$ such that $f(m)>f(n)-c$ for all $m>n$. This question can be asked for other graphs than $C_4$.\n\nThe bounds in [552] imply in particular that $f(n)<\\sqrt{n}+1$ and\\[f(n)=(1+o(1))\\sqrt{n}.\\]It is easy to check that $f(4)=2$.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

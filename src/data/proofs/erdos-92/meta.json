@@ -1,0 +1,34 @@
+{
+  "id": "erdos-92",
+  "title": "Erdős Problem #92",
+  "slug": "erdos-92",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that there exists a set ... of ... points in ... in which every ... has at least ... points in ... eq...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/92",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos92Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 92,
+    "erdosUrl": "https://erdosproblems.com/92",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$500"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #92 from erdosproblems.com. Originally offered with a prize of $500.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be maximal such that there exists a set $A$ of $n$ points in $\\mathbb{R}^2$ in which every $x\\in A$ has at least $f(n)$ points in $A$ equidistant from $x$.\n\nIs it true that $f(n)\\leq n^{o(1)}$? Or even $f(n) < n^{O(1/\\log\\log n)}$?\n\n\n\nThis is a stronger form of the unit distance conjecture (see [90]).\n\nThe set of lattice points imply $f(n) > n^{c/\\log\\log n}$ for some constant $c>0$. Erd\\H{o}s offered \\$500 for a proof that $f(n) \\leq n^{o(1)}$ but only \\$100 for a counterexample. This latter prize is downgraded to \\$50 in \\cite{ErFi97}.\n\nIt is trivial that $f(n) \\ll n^{1/2}$. A result of Pach and Sharir (Theorem 4 of \\cite{PaSh92}) implies $f(n) \\ll n^{2/5}$. Hunter has observed that the circle-point incidence bound of Janzer, Janzer, Methuku, and Tardos \\cite{JJMT24} implies\\[f(n) \\ll n^{4/11}.\\]Fishburn (personal communication to Erd\\H{o}s, later published in \\cite{ErFi97}) proved that $6$ is the smallest $n$ such that $f(n)=3$ and $8$ is the smallest $n$ such that $f(n)=4$, and suggested that the lattice points may not be best example.\n\nSee also [754].\n\n\n\n\n\nReferences\n\n\n[ErFi97] Erd\\H{o}s, Paul and Fishburn, Peter, Minimum planar sets with maximum equidistance counts. Comput. Geom. (1997), 207--218.\n\n[JJMT24] B. Janzer, O. Janzer, A. Methuku, and G. Tardos, Tight bounds for intersection-reverse sequences, edge-ordered graphs\nand applications. arXiv:2411.07188 (2024).\n\n[PaSh92] Pach, J\\'anos and Sharir, Micha, Repeated angles in the plane and related problems. J. Combin. Theory Ser. A (1992), 12--22.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

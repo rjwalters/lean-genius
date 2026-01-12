@@ -1,0 +1,33 @@
+{
+  "id": "erdos-131",
+  "title": "Erdős Problem #131",
+  "slug": "erdos-131",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal size of ... such that no ... divides the sum of any distinct elements of .... Estimate .... In particu...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/131",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos131Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 131,
+    "erdosUrl": "https://erdosproblems.com/131",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #131 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $F(N)$ be the maximal size of $A\\subseteq\\{1,\\ldots,N\\}$ such that no $a\\in A$ divides the sum of any distinct elements of $A\\backslash\\{a\\}$. Estimate $F(N)$. In particular, is it true that\\[F(N) > N^{1/2-o(1)}?\\]\n\n\n\nThis was studied by Erd\\H{o}s, Lev, Rauzy, S\\'{a}ndor, and S\\'{a}rk\\\"{o}zy \\cite{ELRSS99}, where they call such a property 'non-dividing', and prove the explicit bound\\[F(N)<3N^{1/2}+1.\\]In \\cite{Er97b} Erd\\H{o}s credits Csaba with a construction that proves $F(N) \\gg N^{1/5}$. Such a construction was also given in \\cite{ELRSS99}, where it is linked to the problem of non-averaging sets (see [186]).\n\nIndeed, every such set is non-averaging, and hence the result of Pham and Zakharov \\cite{PhZa24} implies\\[F(N) \\leq N^{1/4+o(1)}.\\]This shows the answer to the original question is no, but the general question of the correct growth of $F(N)$ remains open.\n\nIn \\cite{Er75b} Erd\\H{o}s writes that he originally thought $F(N) <(\\log N)^{O(1)}$, but that Straus proved that\\[F(N) > \\exp((\\sqrt{\\tfrac{2}{\\log 2}}+o(1))\\sqrt{\\log N}).\\]See also [13].\n\nThis is discussed in problem C16 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[ELRSS99] Erd\\H{o}s, P. and Lev, V. and Rauzy, G. and S\\'andor, C. and\nS\\'ark\\\"ozy, A., Greedy algorithm, arithmetic progressions, subset sums and\ndivisibility. Discrete Math. (1999), 119--135.\n\n[Er75b] Erd\\H{o}s, Paul, Problems and results in combinatorial number theory. Journ\\'{e}es Arithm\\'{e}tiques de Bordeaux (Conf., Univ. Bordeaux, Bordeaux, 1974) (1975), 295-310.\n\n[Er97b] Erd\\H{o}s, Paul, Some old and new problems in various branches of combinatorics. Discrete Math. (1997), 227-231.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[PhZa24] Pham, H. T. and Zakharov, D., Sharp bound for the Erd\\H{o}s-Straus non-averaging set problem. arXiv:2410.14624 (2024).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

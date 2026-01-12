@@ -1,0 +1,33 @@
+{
+  "id": "erdos-63",
+  "title": "Erdős Problem #63",
+  "slug": "erdos-63",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph with infinite chromatic number contain a cycle of length ... for infinitely many ...?\n\n\n\nConjectured by Mih\\...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/63",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos63Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 63,
+    "erdosUrl": "https://erdosproblems.com/63",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #63 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph with infinite chromatic number contain a cycle of length $2^n$ for infinitely many $n$?\n\n\n\nConjectured by Mih\\'{o}k and Erd\\H{o}s. It is likely that $2^n$ can be replaced by any sufficiently quickly growing sequence (e.g. the squares).\n\nDavid Penman has observed that this is certainly true if the graph has uncountable chromatic number, since by a result of Erd\\H{o}s and Hajnal \\cite{ErHa66} such a graph must contain arbitrarily large finite complete bipartite graphs (see also Theorem 3.17 of Reiher \\cite{Re24}).\n\nZach Hunter has observed that this follows from the work of Liu and Montgomery \\cite{LiMo20}: if $G$ has infinite chromatic number then, for infinitely many $r$, it must contain some finite connected subgraph $G_r$ with chromatic number $r$ (via the de Bruijn-Erd\\H{os theorem} \\cite{dBEr51}). Each $G_r$ contains some subgraph $H_r$ with minimum degree at least $r-1$, and hence via Theorem 1.1 of \\cite{LiMo20} there exists some $\\ell_r\\geq r^{1-o(1)}$ such that $H_r$ contains a cycle of every even length in $[(\\log \\ell)^8,\\ell]$.\n\nSee also [64].\n\n\n\n\nReferences\n\n\n[ErHa66] Erd\\H{o}s, P. and Hajnal, A., On chromatic number of graphs and set-systems. Acta Math. Acad. Sci. Hungar. (1966), 61-99.\n\n[LiMo20] Liu, Hong and Montgomery, Richard, A solution to Erd\\H{o}s and Hajnal's odd cycle problem. arXiv:2010.15802 (2020).\n\n[Re24] C. Reiher, Graphs of large girth. arXiv:2403.13571 (2024).\n\n[dBEr51] de Bruijn, N. G. and Erd\\H{o}s, P., A colour problem for infinite graphs and a problem in the\ntheory of relations. Indag. Math. (1951), 369--373.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

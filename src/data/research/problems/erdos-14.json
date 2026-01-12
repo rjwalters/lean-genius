@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-14",
+  "title": "Erdős #14",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(LaTeX not available)",
+    "plain": "Let $A\\subseteq \\mathbb{N}$. Let $B\\subseteq \\mathbb{N}$ be the set of integers which are representable in exactly one way as the sum of two elements from $A$. Is it true that for all $\\epsilon>0$ and large $N$\\[\\lvert \\{1,\\ldots,N\\}\\backslash B\\rvert \\gg_\\epsilon N^{1/2-\\epsilon}?\\]Is it possible that\\[\\lvert \\{1,\\ldots,N\\}\\backslash B\\rvert =o(N^{1/2})?\\] Apparently originally considered by Erdős and Nathanson, although later Erdős attributes this to Erdős, Sárközy, and Szemerédi (but gives...",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T04:14:29.012Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #14 - Knowledge Base\n\n## Problem Statement\n\nLet $A\\subseteq \\mathbb{N}$. Let $B\\subseteq \\mathbb{N}$ be the set of integers which are representable in exactly one way as the sum of two elements from $A$. Is it true that for all $\\epsilon>0$ and large $N$\\[\\lvert \\{1,\\ldots,N\\}\\backslash B\\rvert \\gg_\\epsilon N^{1/2-\\epsilon}?\\]Is it possible that\\[\\lvert \\{1,\\ldots,N\\}\\backslash B\\rvert =o(N^{1/2})?\\] Apparently originally considered by Erdős and Nathanson, although later Erdős attributes this to Erdős, Sárközy, and Szemerédi (but gives no reference), and claims a construction of an $A$ such that for all $\\epsilon>0$ and all large $N$\\[\\lvert \\{1,\\ldots,N\\}\\backslash B\\rvert \\ll_\\epsilon N^{1/2+\\epsilon},\\]and yet there for all $\\epsilon>0$ there exist infinitely many $N$ where\\[\\lvert \\{1,\\ldots,N\\}\\backslash B\\rvert \\gg_\\epsilon N^{1/3-\\epsilon}.\\]Erdös and Freud investigated the finite analogue in [ErFr91], proving that there exists $A\\subseteq \\{1,\\ldots,N\\}$ such that the number of integers not representable in exactly one w\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #62\n- Problem #2\n- Problem #3\n- Problem #13\n- Problem #15\n- Problem #39\n- Problem #1\n\n## References\n\n- Er92c\n- Er97\n- Er97e\n- ErFr91\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T04:14:29.013Z",
+  "significance": 6,
+  "tractability": 4
+}

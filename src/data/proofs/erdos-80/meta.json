@@ -1,0 +1,33 @@
+{
+  "id": "erdos-80",
+  "title": "Erdős Problem #80",
+  "slug": "erdos-80",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... be the maximal ... such that every graph ... with ... vertices and at least ... edges, where each edge is...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/80",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos80Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 80,
+    "erdosUrl": "https://erdosproblems.com/80",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #80 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $c>0$ and let $f_c(n)$ be the maximal $m$ such that every graph $G$ with $n$ vertices and at least $cn^2$ edges, where each edge is contained in at least one triangle, must contain a book of size $m$, that is, an edge shared by at least $m$ different triangles.\n\nEstimate $f_c(n)$. In particular, is it true that $f_c(n)>n^{\\epsilon}$ for some $\\epsilon>0$? Or $f_c(n)\\gg \\log n$?\n\n\n\nA problem of Erd\\H{o}s and Rothschild. Alon and Trotter showed that, provided $c<1/4$, $f_c(n)\\ll_c n^{1/2}$. Szemer\\'{e}di observed that his regularity lemma implies that $f_c(n)\\to \\infty$.\n\nEdwards (unpublished) and Khadziivanov and Nikiforov \\cite{KhNi79} proved independently that $f_c(n) \\geq n/6$ when $c>1/4$ (see [905]).\n\nFox and Loh \\cite{FoLo12} proved that\\[f_c(n) \\leq n^{O(1/\\log\\log n)}\\]for all $c<1/4$, disproving the first conjecture of Erd\\H{o}s.\n\nThe best known lower bounds for $f_c(n)$ are those from Szemer\\'{e}di's regularity lemma, and as such remain very poor.\n\nSee also [600] and the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[FoLo12] Fox, Jacob and Loh, Po-Shen, On a problem of Erd\\H{o}s and {R}othschild on edges in\ntriangles. Combinatorica (2012), 619--628.\n\n[KhNi79] Had\\v ziivanov, N. G. and Nikiforov, S. V., Solution of a problem of {P}. Erd\\H{o}s about the maximum\nnumber of triangles with a common edge in a graph. C. R. Acad. Bulgare Sci. (1979), 1315--1318.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}
