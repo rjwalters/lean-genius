@@ -3,8 +3,8 @@
   "name": "Erdős #340: Greedy Sidon Sequence Growth",
   "tier": "A",
   "significance": 8,
-  "tractability": 5,
-  "status": "in-progress",
+  "tractability": 1,
+  "status": "blocked",
   "description": "Let A = {1,2,4,8,13,21,31,45,66,...} be the greedy Sidon sequence. Conjecture: |A ∩ {1,...,N}| >> N^(1/2-ε) for all ε > 0. Best known bound is Ω(N^(1/3)).",
   "tags": [
     "number-theory",
@@ -22,45 +22,55 @@
       "Mathlib has asymptotics infrastructure (IsBigO, atTop filters)",
       "Key insight: Sidon property implies distinct pairwise differences (proved via IsSidon.diff_injective)",
       "omega/linarith struggle with Nat subtraction - need explicit Nat.sub_add_cancel in proofs",
-      "Don't submit open conjectures to Aristotle - it will spin indefinitely at low progress"
+      "Don't submit open conjectures to Aristotle - it will spin indefinitely at low progress",
+      "Erdős-Turán proof technique: sum differences of order ≤ ℓ where ℓ ≈ N^(1/4)",
+      "Best known Sidon upper bound (2025): |A| ≤ N^(1/2) + 0.98183·N^(1/4) + O(1) [Carter-Hunter-O'Bryant]",
+      "$500 Erdős prize for proving or disproving |A| ≤ N^(1/2) + o(N^(1/4))",
+      "CRITICAL: erdos_340 main theorem is an OPEN CONJECTURE - cannot be proved as statement, only as axiom"
     ],
     "builtItems": [
-      "IsSidon definition at Erdos340GreedySidon.lean:55",
-      "IsSidon' alternative characterization at Erdos340GreedySidon.lean:60",
-      "isSidon_empty theorem at Erdos340GreedySidon.lean:64",
-      "isSidon_singleton theorem at Erdos340GreedySidon.lean:69",
-      "isSidon_pair theorem at Erdos340GreedySidon.lean:76",
-      "IsSidon.subset theorem at Erdos340GreedySidon.lean:87",
-      "IsSidon.diff_injective theorem at Erdos340GreedySidon.lean:96 (KEY LEMMA - PROVED)",
-      "orderedPairsLt definition at Erdos340GreedySidon.lean:146",
-      "pairDiff definition at Erdos340GreedySidon.lean:150",
-      "sidon_pairDiff_injective theorem at Erdos340GreedySidon.lean:153 (PROVED)",
-      "sidon_diffSet_card theorem at Erdos340GreedySidon.lean:166 (PROVED)",
-      "sidon_diff_pos_bounded theorem at Erdos340GreedySidon.lean:180 (PROVED)",
-      "greedySidonSeq axiomatized at Erdos340GreedySidon.lean:165",
-      "greedySidonSeq_strictMono axiom at Erdos340GreedySidon.lean:171",
-      "greedySidonSeq_isSidon axiom at Erdos340GreedySidon.lean:174",
-      "greedySidon_strictMono derived at Erdos340GreedySidon.lean:206",
-      "greedySidonSet_isSidon derived at Erdos340GreedySidon.lean:210",
-      "greedySidonCount definition at Erdos340GreedySidon.lean:216",
-      "greedySidon_growth_third statement at Erdos340GreedySidon.lean:222",
-      "erdos_340 main conjecture statement at Erdos340GreedySidon.lean:230"
+      "IsSidon definition at Erdos340GreedySidon.lean:74",
+      "IsSidon' alternative characterization at Erdos340GreedySidon.lean:79",
+      "isSidon_empty theorem at Erdos340GreedySidon.lean:83",
+      "isSidon_singleton theorem at Erdos340GreedySidon.lean:88",
+      "isSidon_pair theorem at Erdos340GreedySidon.lean:95",
+      "IsSidon.subset theorem at Erdos340GreedySidon.lean:106",
+      "IsSidon.diff_injective theorem at Erdos340GreedySidon.lean:115 (KEY - PROVED)",
+      "orderedPairsLt definition at Erdos340GreedySidon.lean:164",
+      "pairDiff definition at Erdos340GreedySidon.lean:168",
+      "sidon_pairDiff_injective at Erdos340GreedySidon.lean:171 (PROVED)",
+      "sidon_diffSet_card at Erdos340GreedySidon.lean:184 (PROVED)",
+      "orderedPairsLt_card_via_choose at Erdos340GreedySidon.lean:193 (PROVED - bijection to powerset)",
+      "orderedPairsLt_card at Erdos340GreedySidon.lean:247 (PROVED - n(n-1)/2)",
+      "sidon_diff_pos_bounded at Erdos340GreedySidon.lean:251 (PROVED)",
+      "diffSet definition at Erdos340GreedySidon.lean:265",
+      "diffSet_subset_Icc at Erdos340GreedySidon.lean:269 (PROVED via aesop)",
+      "card_diffSet_eq at Erdos340GreedySidon.lean:278 (PROVED via grind)",
+      "sidon_lower_bound at Erdos340GreedySidon.lean:312 (PROVED - max(A) ≥ n(n-1)/2)",
+      "sidon_upper_bound_weak at Erdos340GreedySidon.lean:327 (PROVED - |A| ≤ √(2N)+1)",
+      "greedySidonSeq axiomatized at Erdos340GreedySidon.lean:330",
+      "greedySidon_growth_third statement at Erdos340GreedySidon.lean:387",
+      "erdos_340 main conjecture statement at Erdos340GreedySidon.lean:419"
     ],
     "mathlibGaps": [
-      "No IsSidon definition in Mathlib - we built ~100 lines of infrastructure",
-      "No greedy Sidon sequence infrastructure",
-      "Need lemma for counting ordered pairs with a < b (card = n(n-1)/2)",
-      "Finset.offDiag_card exists but need partition into < and > halves"
+      "No IsSidon definition in Mathlib - we built ~150 lines of infrastructure",
+      "No greedy Sidon sequence infrastructure"
     ],
     "nextSteps": [
-      "Complete orderedPairsLt_card counting lemma (n(n-1)/2)",
-      "Complete sidon_lower_bound nontrivial case using counting + pigeonhole",
-      "Complete sidon_upper_bound using Erdős-Turán bound",
-      "Attempt greedySidon_growth_third for N^(1/3) bound"
+      "Prove sidon_upper_bound: define orderedDiffsByOrder (pairs with j-i ≤ ℓ), sum bounds, optimize ℓ",
+      "Infrastructure needed: sumDiffByOrder function, counting lemmas for ordered pairs with bounded order",
+      "For N^(1/3) bound: prove greedySidon(k) ≤ C·k³ using blocking argument",
+      "Consider: DeepMind's formal-conjectures has IsSidon - check for reusable infrastructure"
     ],
-    "progressSummary": "PROGRESS: IsSidon.diff_injective PROVED, difference set infrastructure built"
+    "progressSummary": "BLOCKED: Main conjecture is an OPEN PROBLEM in mathematics ($500 Erdős prize). Infrastructure complete. Cannot prove unsolved conjectures."
   },
   "sessions": [
+    {
+      "date": "2026-01-11",
+      "mode": "REVISIT",
+      "outcome": "blocked",
+      "summary": "MARKED BLOCKED: The main conjecture erdos_340 (|A ∩ [1,N]| >> N^(1/2-ε)) is an unsolved mathematical problem with a $500 Erdős prize. We proved useful infrastructure (sidon_upper_bound_weak, sidon_lower_bound) but the main theorem cannot be formalized as it hasn't been proved by mathematicians."
+    },
     {
       "date": "2026-01-11",
       "mode": "FRESH",
@@ -72,6 +82,24 @@
       "mode": "REVISIT",
       "outcome": "progress",
       "summary": "Proved IsSidon.diff_injective (key lemma: Sidon sets have distinct pairwise differences). Built infrastructure for sidon_lower_bound: orderedPairsLt, pairDiff, sidon_pairDiff_injective, sidon_diffSet_card, sidon_diff_pos_bounded. Documented vision for distributed research platform. Aristotle job stalled at 5% after 110min (included open conjecture)."
+    },
+    {
+      "date": "2026-01-12",
+      "mode": "REVISIT",
+      "outcome": "progress",
+      "summary": "Proved orderedPairsLt_card via bijection to powersetCard 2 A and Nat.choose_two_right. Added imports for Finset.Powerset and Nat.Choose.Basic. Sorries reduced from 6 to 5."
+    },
+    {
+      "date": "2026-01-11",
+      "mode": "REVISIT",
+      "outcome": "progress",
+      "summary": "Proved sidon_upper_bound_weak: if A ⊆ {1,...,N} is Sidon, then |A| ≤ √(2N)+1. Uses sidon_lower_bound (max(A) ≥ n(n-1)/2) and contradiction argument with Nat.lt_succ_sqrt. Note: tighter Erdős-Turán bound (√N + O(N^{1/4})) remains as sorry."
+    },
+    {
+      "date": "2026-01-11",
+      "mode": "REVISIT",
+      "outcome": "scouted",
+      "summary": "Scouted sidon_upper_bound proof strategy. Erdős-Turán technique requires summing differences of bounded order (j-i ≤ ℓ). Best current bound is N^(1/2)+0.98183·N^(1/4)+O(1) [Carter-Hunter-O'Bryant 2025]. $500 prize still open for o(N^(1/4}) improvement. Infrastructure needed: orderedDiffsByOrder, sum bounds. DeepMind has IsSidon but not the counting lemmas."
     }
   ],
   "references": [

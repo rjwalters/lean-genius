@@ -6,7 +6,9 @@ Authors: LeanGenius AI Research
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Finset.Prod
+import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Nat.Basic
+import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Data.Set.Card
 import Mathlib.Analysis.Asymptotics.Defs
 import Mathlib.Analysis.Asymptotics.Lemmas
@@ -187,12 +189,64 @@ theorem sidon_diffSet_card {A : Finset ℕ} (hA : IsSidon A) :
   intro x hx y hy heq
   exact sidon_pairDiff_injective hA hx hy heq
 
+/-- Bijection: orderedPairsLt A ↔ powersetCard 2 A -/
+theorem orderedPairsLt_card_via_choose (A : Finset ℕ) :
+    (orderedPairsLt A).card = A.card.choose 2 := by
+  rw [← Finset.card_powersetCard 2 A]
+  apply Finset.card_bij (fun p _ => ({p.1, p.2} : Finset ℕ))
+  · -- i_mem: (a, b) ∈ orderedPairsLt A → {a, b} ∈ powersetCard 2 A
+    intro ⟨a, b⟩ hp
+    simp only [orderedPairsLt, Finset.mem_filter, Finset.mem_offDiag] at hp
+    obtain ⟨⟨ha, hb, hab⟩, hlt⟩ := hp
+    rw [Finset.mem_powersetCard]
+    constructor
+    · intro x hx
+      simp at hx
+      rcases hx with rfl | rfl <;> assumption
+    · rw [Finset.card_eq_two]
+      exact ⟨a, b, ne_of_lt hlt, rfl⟩
+  · -- i_inj: different pairs give different 2-subsets
+    intro ⟨a, b⟩ hp ⟨c, d⟩ hq heq
+    simp only [orderedPairsLt, Finset.mem_filter, Finset.mem_offDiag] at hp hq
+    obtain ⟨⟨_, _, _⟩, hlt_ab⟩ := hp
+    obtain ⟨⟨_, _, _⟩, hlt_cd⟩ := hq
+    have h : a = c ∧ b = d := by
+      simp only [Finset.ext_iff, Finset.mem_insert, Finset.mem_singleton] at heq
+      have ha_cd : a = c ∨ a = d := by simpa using (heq a).mp (by left; rfl)
+      have hb_cd : b = c ∨ b = d := by simpa using (heq b).mp (by right; rfl)
+      have hc_ab : c = a ∨ c = b := by simpa using (heq c).mpr (by left; rfl)
+      have hd_ab : d = a ∨ d = b := by simpa using (heq d).mpr (by right; rfl)
+      omega
+    obtain ⟨rfl, rfl⟩ := h
+    rfl
+  · -- surjective: every 2-element subset comes from some ordered pair
+    intro S hS
+    rw [Finset.mem_powersetCard] at hS
+    obtain ⟨hS_sub, hS_card⟩ := hS
+    rw [Finset.card_eq_two] at hS_card
+    obtain ⟨a, b, hab, hS_eq⟩ := hS_card
+    rcases lt_or_gt_of_ne hab with h | h
+    · use (a, b)
+      refine ⟨?_, ?_⟩
+      · simp only [orderedPairsLt, Finset.mem_filter, Finset.mem_offDiag]
+        refine ⟨⟨?_, ?_, ?_⟩, h⟩
+        · exact hS_sub (by simp [hS_eq])
+        · exact hS_sub (by simp [hS_eq])
+        · exact hab
+      · exact hS_eq.symm
+    · use (b, a)
+      refine ⟨?_, ?_⟩
+      · simp only [orderedPairsLt, Finset.mem_filter, Finset.mem_offDiag]
+        refine ⟨⟨?_, ?_, ?_⟩, h⟩
+        · exact hS_sub (by simp [hS_eq])
+        · exact hS_sub (by simp [hS_eq])
+        · exact hab.symm
+      · rw [hS_eq, Finset.pair_comm]
+
 /-- The number of ordered pairs (a, b) with a < b in A is n(n-1)/2. -/
 theorem orderedPairsLt_card (A : Finset ℕ) :
     (orderedPairsLt A).card = A.card * (A.card - 1) / 2 := by
-  -- The offDiag has n(n-1) pairs, half with a < b and half with a > b
-  -- On ℕ with linear order, this is exactly half
-  sorry -- Requires more Mathlib infrastructure about partitioning offDiag
+  rw [orderedPairsLt_card_via_choose, Nat.choose_two_right]
 
 /-- All differences in a Sidon set are positive and bounded by max - min. -/
 theorem sidon_diff_pos_bounded {A : Finset ℕ} (hne : A.Nonempty)
@@ -262,10 +316,70 @@ theorem sidon_lower_bound (A : Finset ℕ) (hA : IsSidon A) (hne : A.Nonempty) :
   have h_card_diffSet : (diffSet A).card = A.card * (A.card - 1) / 2 := card_diffSet_eq A hA
   exact h_card_diffSet ▸ le_trans (Finset.card_le_card (diffSet_subset_Icc A hne)) (by simp)
 
-/-- Upper bound: A Sidon subset of {1,...,N} has at most √N + O(N^(1/4)) elements. -/
+/-- Upper bound: A Sidon subset of {1,...,N} has at most √(2N) + 1 elements.
+
+    Proof: For a Sidon set with n elements, max(A) ≥ n(n-1)/2 by sidon_lower_bound.
+    If A ⊆ {1,...,N}, then N ≥ max(A) ≥ n(n-1)/2, so n(n-1) ≤ 2N.
+    This gives n ≤ (1 + √(1+8N))/2 < √(2N) + 1.
+
+    Note: The Erdős-Turán bound is actually √N + O(N^{1/4}), which is stronger.
+    That requires counting sums rather than differences. -/
+theorem sidon_upper_bound_weak (A : Finset ℕ) (hA : IsSidon A) (N : ℕ)
+    (hAN : ∀ a ∈ A, a ≤ N) : A.card ≤ Nat.sqrt (2 * N) + 1 := by
+  by_cases hempty : A.Nonempty
+  · -- Non-empty case: use sidon_lower_bound
+    have hmax_bound : A.max' hempty ≤ N := by
+      apply Finset.max'_le A hempty
+      intro a ha
+      exact hAN a ha
+    have hcard_bound : A.card * (A.card - 1) / 2 ≤ N :=
+      le_trans (sidon_lower_bound A hA hempty) hmax_bound
+    -- From n(n-1)/2 ≤ N we prove n ≤ √(2N) + 1
+    -- Key insight: if n ≥ √(2N) + 2, then n - 1 ≥ √(2N) + 1 > √(2N)
+    -- So (n-1)² > 2N, hence n(n-1) ≥ (n-1)² + (n-1) > 2N, contradicting n(n-1)/2 ≤ N
+    by_contra h
+    push_neg at h
+    have hn : A.card ≥ Nat.sqrt (2 * N) + 2 := h
+    have hcard_ge2 : A.card ≥ 2 := by omega
+    -- n - 1 ≥ √(2N) + 1 > √(2N), so (n-1)² > 2N
+    have h1 := Nat.lt_succ_sqrt (2 * N)
+    -- (√(2N)+1)² > 2N by definition of sqrt
+    -- Since A.card - 1 ≥ √(2N) + 1, we have (A.card - 1)² ≥ (√(2N)+1)² > 2N
+    have hn1_ge : A.card - 1 ≥ Nat.sqrt (2 * N) + 1 := by omega
+    have h_sq : (A.card - 1) * (A.card - 1) > 2 * N := by nlinarith
+    -- n(n-1) ≥ (n-1)² + (n-1) > 2N (using n ≥ (n-1) + 1)
+    have h_prod : A.card * (A.card - 1) > 2 * N := by
+      -- We have A.card ≥ 2, so A.card - 1 ≥ 1
+      -- A.card * (A.card - 1) ≥ (A.card - 1) * (A.card - 1) + (A.card - 1)
+      --                       ≥ (A.card - 1)² + 1 > 2N
+      have hge1 : A.card - 1 ≥ 1 := by omega
+      -- A.card * (A.card - 1) = (A.card - 1 + 1) * (A.card - 1) = (A.card - 1)² + (A.card - 1)
+      have h_eq : A.card * (A.card - 1) = (A.card - 1) * (A.card - 1) + (A.card - 1) := by
+        have : A.card = A.card - 1 + 1 := by omega
+        nlinarith [Nat.sub_add_cancel (by omega : 1 ≤ A.card)]
+      -- (A.card - 1)² > 2N and (A.card - 1) ≥ 1
+      linarith
+    -- n(n-1) > 2N means n(n-1)/2 > N (since for n(n-1) > 2N, n(n-1)/2 ≥ (2N+1)/2 > N for integer division)
+    -- Actually n(n-1)/2 ≥ ⌊n(n-1)/2⌋ and n(n-1) > 2N means n(n-1) ≥ 2N + 1, so n(n-1)/2 ≥ N + 1/2, so ⌊n(n-1)/2⌋ ≥ N
+    -- But we need > N, which requires n(n-1) ≥ 2N + 2
+    have h_prod2 : A.card * (A.card - 1) ≥ 2 * N + 2 := by
+      -- n(n-1) = (n-1)² + (n-1) ≥ (2N+1) + (√(2N)+1) ≥ 2N + 2 for N ≥ 0
+      have : A.card - 1 ≥ 1 := by omega
+      nlinarith
+    have h_div : A.card * (A.card - 1) / 2 ≥ N + 1 := Nat.le_div_iff_mul_le (by omega : 0 < 2) |>.mpr (by omega)
+    omega
+  · -- Empty set case
+    simp only [Finset.not_nonempty_iff_eq_empty] at hempty
+    simp [hempty]
+
+/-- The Erdős-Turán upper bound: A Sidon subset of {1,...,N} has ≤ √N + O(N^{1/4}) elements.
+
+    This uses counting sums (not differences) and is the optimal bound up to lower order terms.
+    The proof requires showing |A + A| ≤ 2N and |A + A| ≥ n(n+1)/2, giving n ≲ √(4N) = 2√N.
+    The actual bound √N + O(N^{1/4}) comes from a more careful analysis. -/
 theorem sidon_upper_bound (A : Finset ℕ) (hA : IsSidon A) (N : ℕ)
     (hAN : ∀ a ∈ A, a ≤ N) : A.card ≤ Nat.sqrt N + Nat.sqrt (Nat.sqrt N) + 1 := by
-  sorry -- Erdős-Turán bound
+  sorry -- Erdős-Turán bound requires more sophisticated counting
 
 /-! ## Part 3: Greedy Sidon Sequence Construction -/
 

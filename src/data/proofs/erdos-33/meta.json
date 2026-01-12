@@ -1,0 +1,33 @@
+{
+  "id": "erdos-33",
+  "title": "Erdős Problem #33",
+  "slug": "erdos-33",
+  "description": "Let ... be such that every large integer can be written as ... for some ... and .... What is the smallest possible value of\\[\\limsup \\rvert}{N^{1/2}}?\\]Is\\[\\liminf \\rvert}{N^{1/2}}>1?\\] Such a set ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/33",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos33Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 33,
+    "erdosUrl": "https://erdosproblems.com/33",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #33 from erdosproblems.com.",
+    "problemStatement": "Let $A\\subset\\mathbb{N}$ be such that every large integer can be written as $n^2+a$ for some $a\\in A$ and $n\\geq 0$. What is the smallest possible value of\\[\\limsup \\frac{\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert}{N^{1/2}}?\\]Is\\[\\liminf \\frac{\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert}{N^{1/2}}>1?\\] Such a set $A$ is called an additive complement of the set of squares. Erdős observed that there exist $A$ for which the $\\limsup$ is finite and $>1$. Moser [Mo65] proved that, for any such $A$,\\[\\liminf \\frac{\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert}{N^{1/2}}>1.06.\\]The best-known lower bound is\\[\\liminf \\frac{\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert}{N^{1/2}}\\geq\\frac{4}{\\pi}\\approx 1.273\\]proved by Cilleruelo [Ci93], Habsieger [Ha95], and Balasubramanian and Ramana [BaRa01]. The problem of minimising the $\\limsup$ appears to have been much less studied. van Doorn has a construction of such an $A$ in which, for all $N$,\\[\\frac{\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert}{N^{1/2}} View the LaTeX source This page was last edited 27 Dec",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

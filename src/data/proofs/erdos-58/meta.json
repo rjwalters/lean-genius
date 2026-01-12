@@ -1,0 +1,33 @@
+{
+  "id": "erdos-58",
+  "title": "Erdős Problem #58",
+  "slug": "erdos-58",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph which contains odd cycles of ... different lengths then ..., with equality if and only if ... contains .......",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/58",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos58Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 58,
+    "erdosUrl": "https://erdosproblems.com/58",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #58 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ is a graph which contains odd cycles of $\\leq k$ different lengths then $\\chi(G)\\leq 2k+2$, with equality if and only if $G$ contains $K_{2k+2}$.\n\n\n\nConjectured by Bollob\\'{a}s and Erd\\H{o}s. Bollob\\'{a}s and Shelah have confirmed this for $k=1$. Proved by Gy\\'{a}rf\\'{a}s \\cite{Gy92}, who proved the stronger result that, if $G$ is 2-connected, then $G$ is either $K_{2k+2}$ or contains a vertex of degree at most $2k$.\n\nA stronger form was established by Gao, Huo, and Ma \\cite{GaHuMa21}, who proved that if a graph $G$ has chromatic number $\\chi(G)\\geq 2k+3$ then $G$ contains cycles of $k+1$ consecutive odd lengths.\n\n\n\n\nReferences\n\n\n[GaHuMa21] Gao, Jun and Huo, Qingyi and Ma, Jie, A strengthening on odd cycles in graphs of given chromatic number. SIAM J. Discrete Math. (2021), 2317-2327.\n\n[Gy92] Gy\\'{a}rf\\'{a}s, A., Graphs with k odd cycle lengths. Discrete Math. (1992), 41-48.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

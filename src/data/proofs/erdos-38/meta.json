@@ -1,0 +1,33 @@
+{
+  "id": "erdos-38",
+  "title": "Erdős Problem #38",
+  "slug": "erdos-38",
+  "description": "Does there exist ... which is not an additive basis, but is such that for every set ... of Schnirelmann density ... and every ... there exists ... such that\\[\\lvert (A\\cup (A+b))\\cap \\{1,\\ldots,N\\}...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/38",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos38Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 38,
+    "erdosUrl": "https://erdosproblems.com/38",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #38 from erdosproblems.com.",
+    "problemStatement": "Does there exist $B\\subset\\mathbb{N}$ which is not an additive basis, but is such that for every set $A\\subseteq\\mathbb{N}$ of Schnirelmann density $\\alpha$ and every $N$ there exists $b\\in B$ such that\\[\\lvert (A\\cup (A+b))\\cap \\{1,\\ldots,N\\}\\rvert\\geq (\\alpha+f(\\alpha))N\\]where $f(\\alpha)>0$ for $0 View the LaTeX source This page was last edited 16 September 2025.",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

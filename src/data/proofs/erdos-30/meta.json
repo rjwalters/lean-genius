@@ -1,0 +1,34 @@
+{
+  "id": "erdos-30",
+  "title": "Erdős Problem #30",
+  "slug": "erdos-30",
+  "description": "Let ... be the maximum size of a Sidon set in .... Is it true that, for every ...,\\[h(N) = N^{1/2}+O_\\epsilon(N^\\epsilon)?\\]",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/30",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos30Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 30,
+    "erdosUrl": "https://erdosproblems.com/30",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$1000"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #30 from erdosproblems.com. Originally offered with a prize of $1000.",
+    "problemStatement": "Let $h(N)$ be the maximum size of a Sidon set in $\\{1,\\ldots,N\\}$. Is it true that, for every $\\epsilon>0$,\\[h(N) = N^{1/2}+O_\\epsilon(N^\\epsilon)?\\]",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

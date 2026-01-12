@@ -1,0 +1,34 @@
+{
+  "id": "erdos-67",
+  "title": "Erdős Problem #67",
+  "slug": "erdos-67",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... then is it true that for every ... there exist ... such that\\[\\left\\lvert \\sum_{1\\leq k\\leq m}f(kd)\\right\\rvert > C?\\]...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/67",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos67Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 67,
+    "erdosUrl": "https://erdosproblems.com/67",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$500"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #67 from erdosproblems.com. Originally offered with a prize of $500.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $f:\\mathbb{N}\\to \\{-1,+1\\}$ then is it true that for every $C>0$ there exist $d,m\\geq 1$ such that\\[\\left\\lvert \\sum_{1\\leq k\\leq m}f(kd)\\right\\rvert > C?\\]\n\n\n\nThe Erd\\H{o}s discrepancy problem. This is true, and was proved by Tao \\cite{Ta16}, who also proved the more general case when $f$ takes values on the unit sphere.\n\nIn several places (e.g. \\cite{Er64b}, \\cite{Er65b}, and \\cite{Er81}) Erd\\H{o}s further conjectured that\\[\\max_{md\\leq x}\\left\\lvert \\sum_{1\\leq k\\leq m}f(kd)\\right\\rvert \\gg \\log x.\\]In \\cite{Er85c} Erd\\H{o}s also asks about the special case when $f$ is multiplicative.\n\n\n\n\nReferences\n\n\n[Er64b] Erd\\H{o}s, P., Problems and results on diophantine approximations. Compositio Math. (1964), 52-65.\n\n[Er65b] Erd\\H{o}s, Paul, Some recent advances and current problems in number theory. Lectures on Modern Mathematics, Vol. III (1965), 196-244.\n\n[Er81] Erd\\H{o}s, P., On the combinatorial problems which I would most like to see solved. Combinatorica (1981), 25-42.\n\n[Er85c] Erd\\H{o}s, P., On some of my problems in number theory I would most like to see solved. Number theory (Ootacamund, 1984) (1985), 74-84.\n\n[Ta16] Tao, Terence, The Erd\\H{o}s discrepancy problem. Discrete Anal. (2016), Paper No. 1, 29.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

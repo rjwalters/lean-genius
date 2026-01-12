@@ -1,0 +1,34 @@
+{
+  "id": "erdos-32",
+  "title": "Erdős Problem #32",
+  "slug": "erdos-32",
+  "description": "Is there a set ... such that\\[\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert = o((\\log N)^2)\\]and such that every large integer can be written as ... for some prime ... and ...? Can the bound ... be achieved? Mu...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/32",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos32Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 32,
+    "erdosUrl": "https://erdosproblems.com/32",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$50"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #32 from erdosproblems.com. Originally offered with a prize of $50.",
+    "problemStatement": "Is there a set $A\\subset\\mathbb{N}$ such that\\[\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert = o((\\log N)^2)\\]and such that every large integer can be written as $p+a$ for some prime $p$ and $a\\in A$? Can the bound $O(\\log N)$ be achieved? Must such an $A$ satisfy\\[\\liminf \\frac{\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert}{\\log N}> 1?\\]",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

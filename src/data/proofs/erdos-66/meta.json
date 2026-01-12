@@ -1,0 +1,34 @@
+{
+  "id": "erdos-66",
+  "title": "Erdős Problem #66",
+  "slug": "erdos-66",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there ... such that\\[\\lim_{n\\to \\infty}{\\log n}\\]exists and is ...?\n\n\n\nA suitably constructed random set has this property...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/66",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos66Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 66,
+    "erdosUrl": "https://erdosproblems.com/66",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$500"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #66 from erdosproblems.com. Originally offered with a prize of $500.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there $A\\subseteq \\mathbb{N}$ such that\\[\\lim_{n\\to \\infty}\\frac{1_A\\ast 1_A(n)}{\\log n}\\]exists and is $\\neq 0$?\n\n\n\nA suitably constructed random set has this property if we are allowed to ignore an exceptional set of density zero. The challenge is obtaining this with no exceptional set. Erd\\H{o}s believed the answer should be no. Erd\\H{o}s and S\\'{a}rk\\\"{o}zy proved that\\[\\frac{\\lvert 1_A\\ast 1_A(n)-\\log n\\rvert}{\\sqrt{\\log n}}\\to 0\\]is impossible. Erd\\H{o}s suggests it may even be true that the $\\liminf$ and $\\limsup$ of $1_A\\ast 1_A(n)/\\log n$ are always separated by some absolute constant.\n\nHorv\\'{a}th \\cite{Ho07} proved that\\[\\lvert 1_A\\ast 1_A(n)-\\log n\\rvert \\leq (1-\\epsilon)\\sqrt{\\log n}\\]cannot hold for all large $n$.\n\n\n\n\nReferences\n\n\n[Ho07] G. Horv\\'{a}th, An improvement of a theorem of Erd\\H{o}s and S\\'{a}rk\\\"{o}zy. Pollack Periodica (2007), 155-161.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

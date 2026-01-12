@@ -4,6 +4,8 @@ import Mathlib.NumberTheory.LSeries.PrimesInAP
 import Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol
 import Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity
 import Mathlib.NumberTheory.Zsqrtd.Basic
+import Mathlib.MeasureTheory.Group.GeometryOfNumbers
+import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Tactic
 import Proofs.ZsqrtdNegTwo
 
@@ -505,7 +507,7 @@ This directly represents ANY n (not through factorization) by finding appropriat
 
 /-- **Dirichlet's Key Lemma** (Lemma 4.1, 1850)
 
-For n > 1 and d > 0, if -d is a quadratic residue modulo (dn - 1),
+For n > 1, d > 0, and p = dn - 1 a prime, if -d is a quadratic residue modulo p,
 then n can be expressed as a sum of three integer squares.
 
 **How this completes the proof**:
@@ -520,10 +522,94 @@ The 4^a factor is handled by scaling: if 4n = (2a)² + (2b)² + (2c)², then n =
 
 **Proof sketch**: Uses Minkowski's theorem on lattices (available in Mathlib as
 `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`) to find lattice points
-in a suitable ellipsoid. -/
-axiom dirichlet_key_lemma {n d : ℕ} (hn : n > 1) (hd : d > 0)
-    (hqr : legendreSym (d * n - 1) (-d : ℤ) = 1) :
+in a suitable ellipsoid.
+
+**Key insight**: The Jacobi symbol can be used instead of Legendre symbol, avoiding
+the prime requirement on p directly - but for the Minkowski construction, we need
+p prime anyway to get the right lattice structure.
+-/
+axiom dirichlet_key_lemma {n d p : ℕ} (hn : n > 1) (hd : d > 0) (hp : p = d * n - 1)
+    [Fact (Nat.Prime p)] (hqr : legendreSym p (-d : ℤ) = 1) :
     ∃ x y z : ℤ, x ^ 2 + y ^ 2 + z ^ 2 = n
+
+/-! ### Infrastructure for Minkowski's Theorem Application
+
+To prove `dirichlet_key_lemma`, we need:
+1. Define ℤ³ as an AddSubgroup of EuclideanSpace ℝ (Fin 3)
+2. Establish the unit cube as a fundamental domain with Haar measure 1
+3. Define ellipsoid E_d,n = {(x,y,z) | x² + dy² + dz² ≤ dn}
+4. Show vol(E_d,n) = (4π/3)·dn·√d > 8 for suitable parameters
+5. Apply Minkowski's theorem to extract a nonzero lattice point
+-/
+
+open MeasureTheory in
+/-- The standard integer lattice ℤ³ embedded in ℝ³. -/
+def intLattice3 : AddSubgroup (EuclideanSpace ℝ (Fin 3)) where
+  carrier := {v | ∀ i, ∃ n : ℤ, v i = n}
+  zero_mem' := fun i => ⟨0, by simp⟩
+  add_mem' := fun {a b} ha hb i => by
+    obtain ⟨na, hna⟩ := ha i
+    obtain ⟨nb, hnb⟩ := hb i
+    exact ⟨na + nb, by simp [hna, hnb]⟩
+  neg_mem' := fun {a} ha i => by
+    obtain ⟨na, hna⟩ := ha i
+    exact ⟨-na, by simp [hna]⟩
+
+/-- The lattice ℤ³ is countable. -/
+instance : Countable intLattice3 := by
+  -- The integer lattice is countable since ℤ is countable and we have finitely many coordinates
+  sorry -- Would need to show injection into ℤ × ℤ × ℤ
+
+/-- The standard fundamental domain: the unit cube [0,1)³. -/
+def unitCube3 : Set (EuclideanSpace ℝ (Fin 3)) :=
+  {v | ∀ i, 0 ≤ v i ∧ v i < 1}
+
+/-- The unit cube is measurable. -/
+theorem unitCube3_measurableSet : MeasurableSet unitCube3 := by
+  sorry -- Would use MeasurableSet.pi and Icc measurability
+
+/-- The unit cube is a fundamental domain for ℤ³.
+
+This establishes that every point in ℝ³ can be uniquely written as
+(lattice point) + (point in unit cube). -/
+theorem unitCube3_isAddFundamentalDomain :
+    MeasureTheory.IsAddFundamentalDomain intLattice3 unitCube3 MeasureTheory.volume := by
+  sorry -- Standard fundamental domain argument for integer lattice
+
+/-- The Haar measure of the unit cube is 1. -/
+theorem unitCube3_volume : MeasureTheory.volume unitCube3 = 1 := by
+  sorry -- Would use volume_pi and volume_Ico
+
+/-- Ellipsoid for Dirichlet's Key Lemma: {(x,y,z) | x² + dy² + dz² ≤ R}. -/
+def dirichletEllipsoid (d : ℕ) (R : ℝ) : Set (EuclideanSpace ℝ (Fin 3)) :=
+  {v | v 0 ^ 2 + d * (v 1) ^ 2 + d * (v 2) ^ 2 ≤ R}
+
+/-- The Dirichlet ellipsoid is convex. -/
+theorem dirichletEllipsoid_convex (d : ℕ) (R : ℝ) (hd : 0 < d) (hR : 0 ≤ R) :
+    Convex ℝ (dirichletEllipsoid d R) := by
+  sorry -- Standard convexity argument for sublevel sets of convex functions
+
+/-- The Dirichlet ellipsoid is symmetric. -/
+theorem dirichletEllipsoid_symmetric (d : ℕ) (R : ℝ) :
+    ∀ x ∈ dirichletEllipsoid d R, -x ∈ dirichletEllipsoid d R := by
+  intro x hx
+  unfold dirichletEllipsoid at hx ⊢
+  simp only [Set.mem_setOf_eq] at hx ⊢
+  -- (-x) i = -(x i), and (-(x i))² = (x i)², so the inequality is preserved
+  have h0 : (-x) 0 ^ 2 = x 0 ^ 2 := neg_sq (x 0)
+  have h1 : (-x) 1 ^ 2 = x 1 ^ 2 := neg_sq (x 1)
+  have h2 : (-x) 2 ^ 2 = x 2 ^ 2 := neg_sq (x 2)
+  simp only [h0, h1, h2]
+  exact hx
+
+/-- Volume of the Dirichlet ellipsoid: (4π/3) · R^(3/2) / √d.
+
+For the standard ellipsoid x²/a² + y²/b² + z²/c² ≤ 1, the volume is (4π/3)abc.
+Our ellipsoid x² + dy² + dz² ≤ R has a = √R, b = c = √(R/d).
+So volume = (4π/3) · √R · √(R/d) · √(R/d) = (4π/3) · R^(3/2) / √d. -/
+theorem dirichletEllipsoid_volume (d : ℕ) (R : ℝ) (hd : 0 < d) (hR : 0 < R) :
+    MeasureTheory.volume (dirichletEllipsoid d R) = ENNReal.ofReal ((4 * Real.pi / 3) * R ^ (3/2 : ℝ) / Real.sqrt d) := by
+  sorry -- Would require integration / ellipsoid volume formula
 
 /-- **Sufficiency Axiom**: Numbers NOT of excluded form ARE sums of three squares.
 

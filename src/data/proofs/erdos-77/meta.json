@@ -1,0 +1,34 @@
+{
+  "id": "erdos-77",
+  "title": "Erdős Problem #77",
+  "slug": "erdos-77",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is the Ramsey number for ..., the minimal ... such that every ...-colouring of the edges of ... contains a monochromat...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/77",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos77Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 77,
+    "erdosUrl": "https://erdosproblems.com/77",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$250"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #77 from erdosproblems.com. Originally offered with a prize of $250.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $R(k)$ is the Ramsey number for $K_k$, the minimal $n$ such that every $2$-colouring of the edges of $K_n$ contains a monochromatic copy of $K_k$, then find the value of\\[\\lim_{k\\to \\infty}R(k)^{1/k}.\\]\n\n\n\nErd\\H{o}s offered \\$100 for just a proof of the existence of this constant, without determining its value. He also offered \\$1000 for a proof that the limit does not exist, but says 'this is really a joke as [it] certainly exists'. (In \\cite{Er88} he raises this prize to \\$10000). Erd\\H{o}s proved\\[\\sqrt{2}\\leq \\liminf_{k\\to \\infty}R(k)^{1/k}\\leq \\limsup_{k\\to \\infty}R(k)^{1/k}\\leq 4.\\]The upper bound has been improved to $4-\\tfrac{1}{128}$ by Campos, Griffiths, Morris, and Sahasrabudhe \\cite{CGMS23}. This was improved to $3.7992\\cdots$ by Gupta, Ndiaye, Norin, and Wei \\cite{GNNW24}.\n\nA shorter and simpler proof of an upper bound of the strength $4-c$ for some constant $c>0$ (and a generalisation to the case of more than two colours) was given by Balister, Bollob\\'{a}s, Campos, Griffiths, Hurley, Morris, Sahasrabudhe, and Tiba \\cite{BBCGHMST24}.\n\nIn \\cite{Er93} Erd\\H{o}s writes 'I have no idea what the value of $\\lim R(k)^{1/k}$ should be, perhaps it is $2$ but we have no real evidence for this.'\n\nThis problem is #3 in Ramsey Theory in the graphs problem collection.\n\nSee also [1029] for a problem concerning a lower bound for $R(k)$ and discussion of lower bounds in general.\n\n\n\n\nReferences\n\n\n[BBCGHMST24] Balister, P. and Bollob\\'{a}s, B. and Campos, M. and Griffiths, S. and Hurley, E.\nand Morris, R. and Sahasrabudhe, J. and Tiba, M., Upper bounds for multicolour Ramsey numbers. arXiv:2410.17197 (2024).\n\n[CGMS23] Campos, Marcelo and Griffiths, Simon and Morris, Robert and Sahasrabudhe, Julian, An exponential improvement for diagonal Ramsey. arXiv:2303.09521 (2023).\n\n[Er88] Erd\\H{o}s, P, Problems and results in combinatorial analysis and graph theory. Discrete Math. (1988), 81-92.\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n[GNNW24] Gupta, P. and Ndiaye, N. and Norin, S. and Wei, L., Optimizing the CGMS upper bound on Ramsey numbers. arXiv:2407.19026 (2024).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

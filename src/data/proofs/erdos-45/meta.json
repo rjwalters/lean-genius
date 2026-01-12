@@ -1,0 +1,33 @@
+{
+  "id": "erdos-45",
+  "title": "Erdős Problem #45",
+  "slug": "erdos-45",
+  "description": "Let .... Is there an integer ... such that, if ... (simply taking ... to be the lowest common multiple of some interval ...). Sawhney has observed that there is also a doubly exponential lower boun...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/45",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos45Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 45,
+    "erdosUrl": "https://erdosproblems.com/45",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #45 from erdosproblems.com.",
+    "problemStatement": "Let $k\\geq 2$. Is there an integer $n_k$ such that, if $D=\\{ 11$ (simply taking $n_k$ to be the lowest common multiple of some interval $[1,C^k]$). Sawhney has observed that there is also a doubly exponential lower bound, and hence this bound is essentially sharp. Indeed, we must trivially have $\\sum_{d|n_k}1/d \\geq k$, or else there is a greedy colouring as a counterexample. Since $\\prod_{p}(1+1/p^2)$ is finite we must have $\\prod_{p|n_k}(1+1/p)\\gg k$. To achieve the minimal $\\prod_{p|n_k}p$ we take the product of primes up to $T$ where $\\prod_{p\\leq T}(1+1/p)\\gg k$; by Mertens theorems this implies $T\\geq C^{k}$ for some constant $C>1$, and hence $n_k\\geq \\prod_{p\\mid n_k}p\\geq \\exp(cC^k)$ for some $c>0$. The existence of such an $n_k$ is mentioned in problem B2 of Guy's collection [Gu04]. View the LaTeX source This page was last edited 28 September 2025.",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -24,7 +24,11 @@
       },
       "outcome": "Proved sidon_lower_bound with diffSet approach. Failed on axiomatized greedySidonSeq (type errors). erdos_340 is OPEN - cannot be proven.",
       "integrated": "2026-01-11",
-      "theorems_proven": ["sidon_lower_bound", "diffSet_subset_Icc", "card_diffSet_eq"]
+      "theorems_proven": [
+        "sidon_lower_bound",
+        "diffSet_subset_Icc",
+        "card_diffSet_eq"
+      ]
     }
   ],
   "completed": [],
@@ -40,40 +44,157 @@
   ],
   "pending_candidates": [
     {
-      "problemId": "erdos-24",
-      "erdosNumber": 24,
+      "problemId": "erdos-64",
+      "erdosNumber": 64,
       "source": "erdosproblems.com scrape",
       "tractabilityScore": 9,
       "reason": "Solved problem - known proof exists for Aristotle to formalize",
-      "suggestedFile": "proofs/Proofs/Erdos24.lean",
+      "suggestedFile": "proofs/Proofs/Erdos64.lean",
       "notes": "Tractability: 9/10. solved (formalization target); moderate statement"
     },
     {
-      "problemId": "erdos-21",
-      "erdosNumber": 21,
+      "problemId": "erdos-70",
+      "erdosNumber": 70,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 9,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos70.lean",
+      "notes": "Tractability: 9/10. solved (formalization target); moderate statement"
+    },
+    {
+      "problemId": "erdos-58",
+      "erdosNumber": 58,
       "source": "erdosproblems.com scrape",
       "tractabilityScore": 8,
       "reason": "Solved problem - known proof exists for Aristotle to formalize",
-      "suggestedFile": "proofs/Proofs/Erdos21.lean",
+      "suggestedFile": "proofs/Proofs/Erdos58.lean",
       "notes": "Tractability: 8/10. solved (formalization target)"
     },
     {
-      "problemId": "erdos-22",
-      "erdosNumber": 22,
+      "problemId": "erdos-59",
+      "erdosNumber": 59,
       "source": "erdosproblems.com scrape",
       "tractabilityScore": 8,
       "reason": "Solved problem - known proof exists for Aristotle to formalize",
-      "suggestedFile": "proofs/Proofs/Erdos22.lean",
+      "suggestedFile": "proofs/Proofs/Erdos59.lean",
       "notes": "Tractability: 8/10. solved (formalization target)"
     },
     {
-      "problemId": "erdos-23",
-      "erdosNumber": 23,
+      "problemId": "erdos-60",
+      "erdosNumber": 60,
       "source": "erdosproblems.com scrape",
       "tractabilityScore": 8,
       "reason": "Solved problem - known proof exists for Aristotle to formalize",
-      "suggestedFile": "proofs/Proofs/Erdos23.lean",
+      "suggestedFile": "proofs/Proofs/Erdos60.lean",
       "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-61",
+      "erdosNumber": 61,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos61.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-62",
+      "erdosNumber": 62,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos62.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-65",
+      "erdosNumber": 65,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos65.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-66",
+      "erdosNumber": 66,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos66.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-67",
+      "erdosNumber": 67,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos67.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-69",
+      "erdosNumber": 69,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos69.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-71",
+      "erdosNumber": 71,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos71.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-72",
+      "erdosNumber": 72,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos72.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-73",
+      "erdosNumber": 73,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos73.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-74",
+      "erdosNumber": 74,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos74.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-76",
+      "erdosNumber": 76,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos76.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-77",
+      "erdosNumber": 77,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 7,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos77.lean",
+      "notes": "Tractability: 7/10. solved (formalization target); long statement"
     }
   ],
   "notes": [

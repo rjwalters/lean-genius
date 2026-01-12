@@ -1,0 +1,33 @@
+{
+  "id": "erdos-35",
+  "title": "Erdős Problem #35",
+  "slug": "erdos-35",
+  "description": "Let ... be an additive basis of order ... with .... Is it true that for every ... we have\\[d_s(A+B)\\geq \\alpha+{k},\\]where ... and\\[d_s(A) = \\inf \\rvert}{N}\\]is the Schnirelmann density? Erdős [Er3...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/35",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos35Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 35,
+    "erdosUrl": "https://erdosproblems.com/35",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #35 from erdosproblems.com.",
+    "problemStatement": "Let $B\\subseteq\\mathbb{N}$ be an additive basis of order $k$ with $0\\in B$. Is it true that for every $A\\subseteq\\mathbb{N}$ we have\\[d_s(A+B)\\geq \\alpha+\\frac{\\alpha(1-\\alpha)}{k},\\]where $\\alpha=d_s(A)$ and\\[d_s(A) = \\inf \\frac{\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert}{N}\\]is the Schnirelmann density? Erdős [Er36c] proved this is true with $k$ replaced by $2k$ in the denominator (in a stronger form that only considers $A\\cup (A+b)$ for some $b\\in B$, see [38]). Ruzsa has observed that this follows immediately from the stronger fact proved by Plünnecke [Pl70] that (under the same assumptions)\\[d_S(A+B)\\geq \\alpha^{1-1/k}.\\] View the LaTeX source",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

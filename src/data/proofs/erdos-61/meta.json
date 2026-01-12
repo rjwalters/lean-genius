@@ -1,0 +1,33 @@
+{
+  "id": "erdos-61",
+  "title": "Erdős Problem #61",
+  "slug": "erdos-61",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any graph ... is there some ... such that every graph ... on ... vertices that does not contain ... as an induced subgrap...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/61",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos61Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 61,
+    "erdosUrl": "https://erdosproblems.com/61",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #61 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any graph $H$ is there some $c=c(H)>0$ such that every graph $G$ on $n$ vertices that does not contain $H$ as an induced subgraph contains either a complete graph or independent set on $\\geq n^c$ vertices?\n\n\n\nConjectured by Erd\\H{o}s and Hajnal \\cite{ErHa89}, who proved that a complete graph or independent set must exist on\\[\\geq \\exp(c_H\\sqrt{\\log n})\\]many vertices, where $c_H>0$ is some constant. This was improved by Buci\\'{c}, Nguyen, Scott, and Seymour \\cite{BNSS23} to\\[\\geq \\exp(c_H\\sqrt{\\log n\\log\\log n}).\\]See also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[BNSS23] Buci\\'C, M. and Nguyen, T. and Scott, A. and Seymour, P., A loglog step towards Erdos-Hajnal. arXiv:2301.10147 (2023).\n\n[ErHa89] Erd\\H{o}s, P. and Hajnal, A., Ramsey-type theorems. Discrete Appl. Math. (1989), 37-52.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

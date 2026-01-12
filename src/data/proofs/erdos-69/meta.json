@@ -1,0 +1,33 @@
+{
+  "id": "erdos-69",
+  "title": "Erdős Problem #69",
+  "slug": "erdos-69",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs\\[\\sum_{n\\geq 2}{2^n}\\]irrational? (Here ... counts the number of distinct prime divisors of ....)\n\n\n\nErds  proved that ......",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/69",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos69Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 69,
+    "erdosUrl": "https://erdosproblems.com/69",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #69 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs\\[\\sum_{n\\geq 2}\\frac{\\omega(n)}{2^n}\\]irrational? (Here $\\omega(n)$ counts the number of distinct prime divisors of $n$.)\n\n\n\nErd\\H{o}s \\cite{Er48} proved that $\\sum_n \\frac{d(n)}{2^n}$ is irrational, where $d(n)$ is the divisor function.\n\nPratt \\cite{Pr24} has proved this is irrational, conditional on a uniform version of the prime $k$-tuples conjecture.\n\nTao has observed that this is a special case of [257], since\\[\\sum_{n\\geq 2}\\frac{\\omega(n)}{2^n}=\\sum_p \\frac{1}{2^p-1}.\\]This sum was proved to be irrational unconditionally by Tao and Ter\\\"{a}v\\\"{a}inen \\cite{TaTe25}.\n\n\n\n\nReferences\n\n\n[Er48] Erd\\H{o}s, P., On arithmetical properties of Lambert series. J. Indian Math. Soc. (N.S.) (1948), 63-66.\n\n[Pr24] Pratt, K., The irrationality of a prime factor series under a prime tuples conjecture. arXiv:2409.15185 (2024).\n\n[TaTe25] T. Tao and J. Ter\\\"{a}v\\\"{a}inen, Quantitative correlations and some problems on prime factors of consecutive integers. arXiv:2512.01739 (2025).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

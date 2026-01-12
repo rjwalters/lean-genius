@@ -1,0 +1,34 @@
+{
+  "id": "erdos-55",
+  "title": "Erdős Problem #55",
+  "slug": "erdos-55",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA set of integers ... is Ramsey ...-complete if, whenever ... is ...-coloured, all sufficiently large integers can be written...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/55",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos55Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 55,
+    "erdosUrl": "https://erdosproblems.com/55",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$250"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #55 from erdosproblems.com. Originally offered with a prize of $250.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA set of integers $A$ is Ramsey $r$-complete if, whenever $A$ is $r$-coloured, all sufficiently large integers can be written as a monochromatic sum of elements of $A$. Prove any non-trivial bounds about the growth rate of such an $A$ for $r>2$.\n\n\n\nA paper of Burr and Erd\\H{o}s \\cite{BuEr85} proves both upper and lower bounds for $r=2$, showing that there exists some $c>0$ such that it cannot be true that\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\leq c(\\log N)^2\\]for all large $N$, and also constructing a Ramsey $2$-complete $A$ such that for all large $N$\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\ll (\\log N)^3.\\]Burr has shown that the sequence of $k$th powers is Ramsey $r$-complete for every $r,k\\geq 1$.\n\nSolved by Conlon, Fox, and Pham \\cite{CFP21}, who constructed for every $r\\geq 2$ an $r$-Ramsey complete $A$ such that for all large $N$\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\ll r(\\log N)^2,\\]and showed that this is best possible, in that there exists some constant $c>0$ such that if $A\\subset \\mathbb{N}$ satisfies\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\leq cr(\\log N)^2\\]for all large $N$ then $A$ cannot be $r$-Ramsey complete.\n\nSee also [54] and [843].\n\n\n\n\nReferences\n\n\n[BuEr85] Burr, S. A. and Erd\\H{o}s, P., A {R}amsey-type property in additive number theory. Glasgow Math. J. (1985), 5--10.\n\n[CFP21] Conlon, D. and Fox, J. and Pham, H. T., Subset sums, completeness and colorings. arXiv:2104.14766 (2021).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-57",
+  "title": "Erdős Problem #57",
+  "slug": "erdos-57",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph with infinite chromatic number and ... are lengths of the odd cycles of ... then ....\n\n\n\nConjectured by Erd...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/57",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos57Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 57,
+    "erdosUrl": "https://erdosproblems.com/57",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #57 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ is a graph with infinite chromatic number and $a_1<a_2<\\cdots $ are lengths of the odd cycles of $G$ then $\\sum \\frac{1}{a_i}=\\infty$.\n\n\n\nConjectured by Erd\\H{o}s and Hajnal \\cite{ErHa66}, and solved by Liu and Montgomery \\cite{LiMo20}. In \\cite{Er81} Erd\\H{o}s asks whether the $a_i$ must in fact have positive upper density, and in \\cite{Er95d} and \\cite{Er96} he speculates whether the upper density (or even upper logarithmic density) must be $\\geq 1/2$.\n\nThe lower density of the set can be $0$ since there are graphs of arbitrarily large chromatic number and girth.\n\nSee also [65].\n\n\n\n\nReferences\n\n\n[Er81] Erd\\H{o}s, P., On the combinatorial problems which I would most like to see solved. Combinatorica (1981), 25-42.\n\n[Er95d] Erd\\H{o}s, Paul, On some problems in combinatorial set theory. Publ. Inst. Math. (Beograd) (N.S.) (1995), 61-65.\n\n[Er96] Erd\\H{o}s, Paul, Some of my favourite problems on cycles and colourings. Tatra Mt. Math. Publ. (1996), 7-9.\n\n[ErHa66] Erd\\H{o}s, P. and Hajnal, A., On chromatic number of graphs and set-systems. Acta Math. Acad. Sci. Hungar. (1966), 61-99.\n\n[LiMo20] Liu, Hong and Montgomery, Richard, A solution to Erd\\H{o}s and Hajnal's odd cycle problem. arXiv:2010.15802 (2020).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}
