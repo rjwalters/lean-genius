@@ -138,17 +138,33 @@ theorem primeGap_one : primeGap 1 = 2 := by
   unfold primeGap nthPrime
   simp [Nat.nth_prime_one_eq_three, Nat.nth_prime_two_eq_five]
 
-/-- The nth prime is at least n + 2. -/
-theorem nthPrime_ge (n : ℕ) : nthPrime n ≥ n + 2 := by
+/-- The nth prime is prime. -/
+lemma nthPrime_prime (n : ℕ) : Nat.Prime (nthPrime n) := by
   unfold nthPrime
-  -- The nth prime is at least n + 2 (since 2 is the 0th prime)
-  sorry
+  exact Nat.nth_mem_of_infinite Nat.infinite_setOf_prime n
+
+/-- The nth prime is at least 2. -/
+lemma nthPrime_ge_two (n : ℕ) : nthPrime n ≥ 2 :=
+  (nthPrime_prime n).two_le
 
 /-- Primes grow at least linearly. -/
 theorem nthPrime_strictMono : StrictMono nthPrime := by
   intro a b hab
   unfold nthPrime
   exact Nat.nth_strictMono Nat.infinite_setOf_prime hab
+
+/-- The nth prime is at least n + 2. -/
+theorem nthPrime_ge (n : ℕ) : nthPrime n ≥ n + 2 := by
+  induction n with
+  | zero =>
+    -- p_0 = 2 ≥ 0 + 2 = 2 ✓
+    simp [nthPrime, Nat.nth_prime_zero_eq_two]
+  | succ k ih =>
+    -- ih: p_k ≥ k + 2
+    -- Want: p_{k+1} ≥ k + 3
+    -- We have: p_{k+1} > p_k (strict monotonicity)
+    have hlt : nthPrime k < nthPrime (k + 1) := nthPrime_strictMono (Nat.lt_succ_self k)
+    omega
 
 /-! ## Part VI: Gap Distribution -/
 

@@ -90,8 +90,26 @@ theorem sidon_all_unique (A : Set ℕ) (hS : IsSidon A) :
   intro n hn
   obtain ⟨a, b, ha, hb, heq⟩ := hn
   unfold uniqueSums repCount
-  -- There's exactly one pair (min, max) that sums to n
-  sorry
+  simp only [Set.mem_setOf_eq]
+  -- Normalize to a ≤ b form
+  wlog hab : a ≤ b generalizing a b
+  · push_neg at hab
+    have hab' : b ≤ a := le_of_lt hab
+    have heq' : n = b + a := by omega
+    exact this b a hb ha heq' hab'
+  -- Now a ≤ b and n = a + b; the set is exactly {(a, b)} by Sidon property
+  have hset : {p : ℕ × ℕ | p.1 ≤ p.2 ∧ p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 + p.2 = n} = {(a, b)} := by
+    ext ⟨c, d⟩
+    simp only [Set.mem_setOf_eq, Prod.mk.injEq, Set.mem_singleton_iff]
+    constructor
+    · intro ⟨hcd, hcA, hdA, hsum⟩
+      have hsum' : c + d = a + b := by omega
+      exact hS c d a b hcA hdA ha hb hcd hab hsum'
+    · intro ⟨hc, hd⟩
+      subst hc hd
+      exact ⟨hab, ha, hb, heq.symm⟩
+  rw [hset]
+  simp
 
 /-- Sidon sets have size at most O(√N) in {1,...,N}.
     This is a fundamental result in additive combinatorics. -/
@@ -161,15 +179,34 @@ theorem singleton_uniqueSums (k : ℕ) :
     uniqueSums {k} = {2 * k} := by
   ext n
   unfold uniqueSums repCount
+  simp only [Set.mem_singleton_iff, Set.mem_setOf_eq]
   constructor
   · intro h
-    -- The only pair (a, b) with a ≤ b in {k} is (k, k), giving sum 2k
-    sorry
+    -- If n ≠ 2k, no pair (a, b) with a, b ∈ {k} and a + b = n exists
+    by_contra hne
+    push_neg at hne
+    have hempty : {p : ℕ × ℕ | p.1 ≤ p.2 ∧ p.1 = k ∧ p.2 = k ∧ p.1 + p.2 = n} = ∅ := by
+      ext ⟨a, b⟩
+      simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+      intro ⟨_, ha, hb, hab⟩
+      rw [ha, hb] at hab
+      omega
+    rw [hempty] at h
+    simp at h
   · intro hn
-    simp only [Set.mem_singleton_iff] at hn
     subst hn
-    -- repCount {k} (2*k) = 1
-    sorry
+    -- When n = 2k, the only pair is (k, k)
+    have hset : {p : ℕ × ℕ | p.1 ≤ p.2 ∧ p.1 = k ∧ p.2 = k ∧ p.1 + p.2 = 2 * k} = {(k, k)} := by
+      ext ⟨a, b⟩
+      simp only [Set.mem_setOf_eq, Prod.mk.injEq, Set.mem_singleton_iff]
+      constructor
+      · intro ⟨_, ha, hb, _⟩
+        exact ⟨ha, hb⟩
+      · intro ⟨ha, hb⟩
+        subst ha hb
+        omega
+    rw [hset]
+    simp
 
 /-- Consecutive integers {1, 2, ..., n} - most sums are NOT unique. -/
 theorem consecutive_many_nonunique (n : ℕ) (hn : n ≥ 3) :
@@ -178,7 +215,25 @@ theorem consecutive_many_nonunique (n : ℕ) (hn : n ≥ 3) :
   use 4
   constructor
   · exact ⟨1, 3, by simp [Set.mem_Icc]; omega, by simp [Set.mem_Icc]; omega, rfl⟩
-  · sorry
+  · -- Show repCount (Icc 1 n) 4 ≥ 2 using pairs (1,3) and (2,2)
+    unfold repCount
+    have h13 : (1, 3) ∈ {p : ℕ × ℕ | p.1 ≤ p.2 ∧ p.1 ∈ Set.Icc 1 n ∧ p.2 ∈ Set.Icc 1 n ∧ p.1 + p.2 = 4} := by
+      simp [Set.mem_Icc]; omega
+    have h22 : (2, 2) ∈ {p : ℕ × ℕ | p.1 ≤ p.2 ∧ p.1 ∈ Set.Icc 1 n ∧ p.2 ∈ Set.Icc 1 n ∧ p.1 + p.2 = 4} := by
+      simp [Set.mem_Icc]; omega
+    have hne : (1, 3) ≠ (2, 2) := by decide
+    have hfin : {p : ℕ × ℕ | p.1 ≤ p.2 ∧ p.1 ∈ Set.Icc 1 n ∧ p.2 ∈ Set.Icc 1 n ∧ p.1 + p.2 = 4}.Finite := by
+      apply Set.Finite.subset
+      · exact (Set.finite_Icc 1 n).prod (Set.finite_Icc 1 n)
+      · intro ⟨a, b⟩ ⟨_, ha, hb, _⟩
+        exact ⟨ha, hb⟩
+    calc Set.ncard _ ≥ Set.ncard {(1, 3), (2, 2)} := by
+           apply Set.ncard_le_ncard
+           · intro x hx
+             simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx
+             rcases hx with rfl | rfl <;> assumption
+           · exact hfin
+         _ = 2 := by simp [hne]
 
 /-! ## Part VII: Perfect Sidon Sets -/
 

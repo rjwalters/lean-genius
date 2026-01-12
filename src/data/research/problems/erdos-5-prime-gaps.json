@@ -29,11 +29,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "IN-PROGRESS: Definitions complete, basic lemmas proved. Core conjecture is OPEN (S = [0,∞] for limit points).",
+    "builtItems": [
+      "nthPrime, primeGap, normalizedGap definitions (Erdos5PrimeGaps.lean:49-58)",
+      "IsLimitPoint, limitPointSet definitions (Erdos5PrimeGaps.lean:64-68)",
+      "nthPrime_prime - nth prime is prime PROVED (Erdos5PrimeGaps.lean:142)",
+      "nthPrime_ge_two - nth prime ≥ 2 PROVED (Erdos5PrimeGaps.lean:147)",
+      "nthPrime_strictMono - strict monotonicity PROVED (Erdos5PrimeGaps.lean:151)",
+      "nthPrime_ge - p_n ≥ n + 2 PROVED via induction (Erdos5PrimeGaps.lean:157)",
+      "primeGap_pos, primeGap_zero, primeGap_one PROVED (Erdos5PrimeGaps.lean:124-139)"
+    ],
+    "insights": [
+      "Erdős #5 is an OPEN problem - no proof exists to formalize",
+      "Known partial results: 0 ∈ S (GPY), ∞ ∈ S (Westzynthius), S has density ≥ 1/3 (Merikoski)",
+      "zhang_implies_zero_limit proof requires extracting subsequence from Frequently predicate",
+      "Key infrastructure: Nat.nth_mem_of_infinite, Nat.nth_strictMono for prime properties",
+      "twin_prime_implies_zero_limit follows from fixed gap / log(n) → 0"
+    ],
+    "mathlibGaps": [
+      "No direct lemma for extracting StrictMono subsequence from Filter.Frequently",
+      "Real.tendsto_log_nat_atTop doesn't exist - need to compose Real.tendsto_log_atTop with cast"
+    ],
+    "nextSteps": [
+      "Prove zhang_implies_zero_limit using squeeze theorem (0 ≤ gap/log(n) ≤ H/log(n) → 0)",
+      "Prove twin_prime_implies_zero_limit similarly",
+      "Research: Check for new results on S = [0,∞] conjecture"
+    ]
   },
   "approaches": [],
   "tags": [

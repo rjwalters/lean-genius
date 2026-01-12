@@ -548,7 +548,7 @@
       "significance": 7,
       "tractability": 6,
       "status": "in-progress",
-      "notes": "PROGRESS: Created Erdos5PrimeGaps.lean with definitions, conjecture, basic proofs",
+      "notes": "PROGRESS: Proved nthPrime_ge (p_n ≥ n+2), nthPrime_strictMono, nthPrime_prime. 2 sorries remain: zhang/twin prime implications. Core conjecture is OPEN.",
       "tags": [
         "number-theory",
         "primes",
@@ -564,7 +564,7 @@
       "significance": 7,
       "tractability": 6,
       "status": "in-progress",
-      "notes": "IN-PROGRESS: Created Erdos10PrimePlusPowers.lean. Defined representations, proved n=3-10 as p+2^a. Conjecture likely FALSE (Grechuk counterexample).",
+      "notes": "PROGRESS: Proved not_262_primePlus2Pow (axiom → theorem). k=1 insufficiency fully proved. 2 axioms remain (k=2,3 counterexamples). 1 sorry in filter lemma.",
       "tags": [
         "number-theory",
         "primes",

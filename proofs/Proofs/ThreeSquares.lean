@@ -5,6 +5,7 @@ import Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol
 import Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity
 import Mathlib.NumberTheory.Zsqrtd.Basic
 import Mathlib.MeasureTheory.Group.GeometryOfNumbers
+import Mathlib.Algebra.Module.ZLattice.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Tactic
 import Proofs.ZsqrtdNegTwo
@@ -534,63 +535,63 @@ axiom dirichlet_key_lemma {n d p : ℕ} (hn : n > 1) (hd : d > 0) (hp : p = d * 
 
 /-! ### Infrastructure for Minkowski's Theorem Application
 
-To prove `dirichlet_key_lemma`, we need:
-1. Define ℤ³ as an AddSubgroup of EuclideanSpace ℝ (Fin 3)
-2. Establish the unit cube as a fundamental domain with Haar measure 1
-3. Define ellipsoid E_d,n = {(x,y,z) | x² + dy² + dz² ≤ dn}
-4. Show vol(E_d,n) = (4π/3)·dn·√d > 8 for suitable parameters
-5. Apply Minkowski's theorem to extract a nonzero lattice point
+The key infrastructure is provided by Mathlib's `ZSpan` module:
+- `ZSpan.fundamentalDomain` gives us the unit cube [0,1)³ as a fundamental domain
+- `ZSpan.isAddFundamentalDomain` proves it IS a fundamental domain for the ℤ-lattice
+- `Mathlib.MeasureTheory.Group.GeometryOfNumbers` provides Minkowski's theorem
+
+Our approach:
+1. Use `Pi.basisFun ℝ (Fin 3)` as the standard basis of ℝ³
+2. The ℤ-span of this basis is exactly ℤ³
+3. Apply `ZSpan.isAddFundamentalDomain` to get the fundamental domain result
+4. Use `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure` for Minkowski
 -/
 
-open MeasureTheory in
-/-- The standard integer lattice ℤ³ embedded in ℝ³. -/
-def intLattice3 : AddSubgroup (EuclideanSpace ℝ (Fin 3)) where
-  carrier := {v | ∀ i, ∃ n : ℤ, v i = n}
-  zero_mem' := fun i => ⟨0, by simp⟩
-  add_mem' := fun {a b} ha hb i => by
-    obtain ⟨na, hna⟩ := ha i
-    obtain ⟨nb, hnb⟩ := hb i
-    exact ⟨na + nb, by simp [hna, hnb]⟩
-  neg_mem' := fun {a} ha i => by
-    obtain ⟨na, hna⟩ := ha i
-    exact ⟨-na, by simp [hna]⟩
+/-- The standard basis for ℝ³ as Fin 3 → ℝ. -/
+noncomputable abbrev stdBasis3 : Module.Basis (Fin 3) ℝ (Fin 3 → ℝ) := Pi.basisFun ℝ (Fin 3)
 
-/-- The lattice ℤ³ is countable via injection to (Fin 3 → ℤ). -/
-instance : Countable intLattice3 := by
-  -- Use Function.Injective.countable: if f : A → B is injective and B is countable, then A is countable
-  have h : Function.Injective (fun (v : intLattice3) i => (v.2 i).choose) := by
-    intro ⟨v, hv⟩ ⟨w, hw⟩ heq
-    simp only [Subtype.mk.injEq]
-    ext i
-    have hvi : v i = ↑((hv i).choose) := (hv i).choose_spec
-    have hwi : w i = ↑((hw i).choose) := (hw i).choose_spec
-    have heqi : (hv i).choose = (hw i).choose := congr_fun heq i
-    rw [hvi, hwi, heqi]
-  exact h.countable
+open MeasureTheory ZSpan in
+/-- The standard ℤ³ lattice is the ℤ-span of the standard basis of ℝ³.
+We work with `Fin 3 → ℝ` directly rather than `EuclideanSpace` since we don't need
+the L2 norm structure for lattice point arguments. -/
+def stdLattice3 : Submodule ℤ (Fin 3 → ℝ) :=
+  Submodule.span ℤ (Set.range stdBasis3)
 
-/-- The standard fundamental domain: the unit cube [0,1)³. -/
-def unitCube3 : Set (EuclideanSpace ℝ (Fin 3)) :=
-  {v | ∀ i, 0 ≤ v i ∧ v i < 1}
+/-- The standard fundamental domain [0,1)³ for ℤ³. -/
+def stdFundamentalDomain3 : Set (Fin 3 → ℝ) :=
+  ZSpan.fundamentalDomain stdBasis3
 
-/-- The unit cube is measurable. -/
-theorem unitCube3_measurableSet : MeasurableSet unitCube3 := by
-  -- The unit cube [0,1)³ is measurable as a product of measurable intervals
-  sorry -- Technical: requires showing the product structure is compatible with PiLp measurability
+/-- The fundamental domain [0,1)³ is a measurable set. -/
+theorem stdFundamentalDomain3_measurableSet :
+    MeasurableSet stdFundamentalDomain3 :=
+  ZSpan.fundamentalDomain_measurableSet stdBasis3
 
-/-- The unit cube is a fundamental domain for ℤ³.
+/-- The unit cube is a fundamental domain for the ℤ³ lattice.
+This follows from `ZSpan.isAddFundamentalDomain`. -/
+theorem stdLattice3_isAddFundamentalDomain :
+    MeasureTheory.IsAddFundamentalDomain stdLattice3 stdFundamentalDomain3 MeasureTheory.volume :=
+  ZSpan.isAddFundamentalDomain stdBasis3 MeasureTheory.volume
 
-This establishes that every point in ℝ³ can be uniquely written as
-(lattice point) + (point in unit cube). -/
-theorem unitCube3_isAddFundamentalDomain :
-    MeasureTheory.IsAddFundamentalDomain intLattice3 unitCube3 MeasureTheory.volume := by
-  sorry -- Standard fundamental domain argument for integer lattice
+/-- The covolume of ℤ³ is 1 (the fundamental domain has volume 1). -/
+theorem stdLattice3_covolume :
+    MeasureTheory.volume stdFundamentalDomain3 = 1 := by
+  -- Use the volume_fundamentalDomain theorem from ZSpan
+  unfold stdFundamentalDomain3 stdBasis3
+  rw [ZSpan.volume_fundamentalDomain]
+  -- The matrix of the standard basis is the identity, so det = 1
+  have h : (Matrix.of (Pi.basisFun ℝ (Fin 3))).det = 1 := by
+    have : Matrix.of (Pi.basisFun ℝ (Fin 3)) = 1 := by
+      ext i j
+      simp only [Matrix.of_apply, Matrix.one_apply, Pi.basisFun_apply, Pi.single_apply]
+      by_cases hij : i = j
+      · simp [hij]
+      · simp [hij, Ne.symm hij]
+    simp [this]
+  simp [h]
 
-/-- The Haar measure of the unit cube is 1. -/
-theorem unitCube3_volume : MeasureTheory.volume unitCube3 = 1 := by
-  sorry -- Would use volume_pi and volume_Ico
-
-/-- Ellipsoid for Dirichlet's Key Lemma: {(x,y,z) | x² + dy² + dz² ≤ R}. -/
-def dirichletEllipsoid (d : ℕ) (R : ℝ) : Set (EuclideanSpace ℝ (Fin 3)) :=
+/-- Ellipsoid for Dirichlet's Key Lemma: {(x,y,z) | x² + dy² + dz² ≤ R}.
+We use `Fin 3 → ℝ` to match the lattice type. -/
+def dirichletEllipsoid (d : ℕ) (R : ℝ) : Set (Fin 3 → ℝ) :=
   {v | v 0 ^ 2 + d * (v 1) ^ 2 + d * (v 2) ^ 2 ≤ R}
 
 /-- The Dirichlet ellipsoid is convex.
@@ -620,11 +621,8 @@ theorem dirichletEllipsoid_convex (d : ℕ) (R : ℝ) (_hd : 0 < d) (_hR : 0 ≤
   have h1 := sq_convex (x 1) (y 1)
   have h2 := sq_convex (x 2) (y 2)
   have hd' : (0 : ℝ) ≤ d := Nat.cast_nonneg d
-  -- Calculate using PiLp structure: (a • x + b • y) i = a * x i + b * y i
-  have heq : (a • x + b • y) 0 ^ 2 + ↑d * (a • x + b • y) 1 ^ 2 + ↑d * (a • x + b • y) 2 ^ 2
-           = (a * x 0 + b * y 0) ^ 2 + d * (a * x 1 + b * y 1) ^ 2 + d * (a * x 2 + b * y 2) ^ 2 := by
-    simp only [PiLp.add_apply, PiLp.smul_apply, smul_eq_mul]
-  rw [heq]
+  -- For Pi types: (a • x + b • y) i = a * x i + b * y i
+  simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]
   calc (a * x 0 + b * y 0) ^ 2 + d * (a * x 1 + b * y 1) ^ 2 + d * (a * x 2 + b * y 2) ^ 2
       ≤ (a * (x 0)^2 + b * (y 0)^2) + d * (a * (x 1)^2 + b * (y 1)^2) + d * (a * (x 2)^2 + b * (y 2)^2) := by
         gcongr
@@ -638,11 +636,7 @@ theorem dirichletEllipsoid_symmetric (d : ℕ) (R : ℝ) :
   intro x hx
   unfold dirichletEllipsoid at hx ⊢
   simp only [Set.mem_setOf_eq] at hx ⊢
-  -- (-x) i = -(x i), and (-(x i))² = (x i)², so the inequality is preserved
-  have h0 : (-x) 0 ^ 2 = x 0 ^ 2 := neg_sq (x 0)
-  have h1 : (-x) 1 ^ 2 = x 1 ^ 2 := neg_sq (x 1)
-  have h2 : (-x) 2 ^ 2 = x 2 ^ 2 := neg_sq (x 2)
-  simp only [h0, h1, h2]
+  simp only [Pi.neg_apply, neg_sq]
   exact hx
 
 /-- Volume of the Dirichlet ellipsoid: (4π/3) · R^(3/2) / √d.
@@ -653,6 +647,27 @@ So volume = (4π/3) · √R · √(R/d) · √(R/d) = (4π/3) · R^(3/2) / √d.
 theorem dirichletEllipsoid_volume (d : ℕ) (R : ℝ) (hd : 0 < d) (hR : 0 < R) :
     MeasureTheory.volume (dirichletEllipsoid d R) = ENNReal.ofReal ((4 * Real.pi / 3) * R ^ (3/2 : ℝ) / Real.sqrt d) := by
   sorry -- Would require integration / ellipsoid volume formula
+
+/-- **Minkowski Application**: When the ellipsoid is large enough, it contains a nonzero integer point.
+
+By Minkowski's convex body theorem, if vol(E) > 2³ · covolume(ℤ³) = 8, then E ∩ ℤ³ ≠ {0}.
+
+For the Dirichlet ellipsoid with vol = (4π/3) · R^(3/2) / √d, the condition 8 < vol gives:
+  R^(3/2) > 6√d / π  ⟺  R > (6√d / π)^(2/3)
+
+The key role this plays:
+- Given n and d with p = dn - 1 prime and -d a QR mod p
+- Choose R appropriately (using n and d) so that volume > 8
+- Minkowski gives integer point (x, y, z) ≠ 0 in ellipsoid
+- The quadratic residue condition allows extracting n = x² + y² + z²
+-/
+theorem minkowski_ellipsoid_has_lattice_point (d : ℕ) (R : ℝ) (hd : 0 < d) (hR : 0 < R)
+    (hvol : 8 < (4 * Real.pi / 3) * R ^ (3/2 : ℝ) / Real.sqrt d) :
+    ∃ v : Fin 3 → ℤ, v ≠ 0 ∧ (v 0 : ℝ) ^ 2 + d * (v 1 : ℝ) ^ 2 + d * (v 2 : ℝ) ^ 2 ≤ R := by
+  -- Apply Minkowski's theorem via ZSpan infrastructure
+  -- This requires: volume(ellipsoid) > 2^3 · volume(fundamental domain)
+  -- Since covolume = 1, condition is vol(E) > 8
+  sorry
 
 /-- **Sufficiency Axiom**: Numbers NOT of excluded form ARE sums of three squares.
 

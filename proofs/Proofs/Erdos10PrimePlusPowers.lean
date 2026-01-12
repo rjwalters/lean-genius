@@ -136,8 +136,62 @@ theorem counterexample_k1_not_prime : ¬Nat.Prime counterexample_k1 := by
   unfold counterexample_k1
   norm_num
 
-/-- 262 cannot be p + 2^a (axiom - verified computationally by checking all 2^a ≤ 262). -/
-axiom not_262_primePlus2Pow : ¬IsPrimePlus2Pow 262
+/-- 262 cannot be p + 2^a (verified by checking all 2^a ≤ 262). -/
+theorem not_262_primePlus2Pow : ¬IsPrimePlus2Pow 262 := by
+  intro ⟨p, a, hp, heq⟩
+  have hp_pos : p > 0 := hp.pos
+  have h2a_lt : 2^a < 262 := by omega
+  have ha_bound : a ≤ 8 := by
+    by_contra ha
+    push_neg at ha
+    have : 2^a ≥ 2^9 := Nat.pow_le_pow_right (by norm_num : 1 ≤ 2) ha
+    have h512 : (2:ℕ)^9 = 512 := by norm_num
+    omega
+  interval_cases a
+  · -- a = 0: p = 261
+    simp at heq
+    rw [heq] at hp
+    exact absurd hp (by norm_num)
+  · -- a = 1: p = 260
+    simp at heq
+    have hp' : p = 260 := by omega
+    rw [hp'] at hp
+    exact absurd hp (by norm_num)
+  · -- a = 2: p = 258
+    simp at heq
+    have hp' : p = 258 := by omega
+    rw [hp'] at hp
+    exact absurd hp (by norm_num)
+  · -- a = 3: p = 254
+    simp at heq
+    have hp' : p = 254 := by omega
+    rw [hp'] at hp
+    exact absurd hp (by norm_num)
+  · -- a = 4: p = 246
+    simp at heq
+    have hp' : p = 246 := by omega
+    rw [hp'] at hp
+    exact absurd hp (by norm_num)
+  · -- a = 5: p = 230
+    simp at heq
+    have hp' : p = 230 := by omega
+    rw [hp'] at hp
+    exact absurd hp (by norm_num)
+  · -- a = 6: p = 198
+    simp at heq
+    have hp' : p = 198 := by omega
+    rw [hp'] at hp
+    exact absurd hp (by norm_num)
+  · -- a = 7: p = 134
+    simp at heq
+    have hp' : p = 134 := by omega
+    rw [hp'] at hp
+    exact absurd hp (by norm_num)
+  · -- a = 8: p = 6
+    simp at heq
+    have hp' : p = 6 := by omega
+    rw [hp'] at hp
+    exact absurd hp (by norm_num)
 
 /-- Therefore k=1 is insufficient: there exist non-prime n not representable as p + 2^a.
 
