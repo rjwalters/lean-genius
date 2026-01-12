@@ -487,11 +487,55 @@ lemma odd_prime_not_7_mod_8_is_sum_three_sq {p : ℕ} (hp : Nat.Prime p) (hodd :
   · exact prime_five_mod_eight_is_sum_three_sq hp h
   · omega  -- contradicts hne7
 
+/-! ## Dirichlet's Key Lemma (Bridge to Sufficiency)
+
+**The Real Gap**: All PRIMES ≢ 7 (mod 8) are already proved to be sums of three squares:
+- p ≡ 1 (mod 8): `prime_one_mod_eight_is_sum_three_sq`
+- p ≡ 3 (mod 8): `prime_three_mod_eight_is_sum_three_sq` (via ℤ[√-2])
+- p ≡ 5 (mod 8): `prime_five_mod_eight_is_sum_three_sq`
+
+**Why composites aren't automatic**: Sums of 3 squares are NOT multiplicatively closed!
+Example: 3 = 1² + 1² + 1² and 5 = 1² + 2² + 0², but 3 × 5 = 15 is EXCLUDED (= 8×1 + 7).
+
+**Dirichlet's Key Lemma** (1850): The bridge for arbitrary n.
+> If n > 1, d > 0, and -d is a quadratic residue mod (dn - 1), then n = x² + y² + z².
+
+This directly represents ANY n (not through factorization) by finding appropriate d based on n mod 8.
+-/
+
+/-- **Dirichlet's Key Lemma** (Lemma 4.1, 1850)
+
+For n > 1 and d > 0, if -d is a quadratic residue modulo (dn - 1),
+then n can be expressed as a sum of three integer squares.
+
+**How this completes the proof**:
+For each n ≢ 0 (mod 4) that is not excluded:
+- n ≡ 1 (mod 8): Use d = 1, need -1 QR mod (n-1). Since n ≡ 1 (mod 8), n-1 ≡ 0 (mod 8).
+- n ≡ 2 (mod 8): Use d = 2, need -2 QR mod (2n-1).
+- n ≡ 3 (mod 8): Use d = 2, find suitable prime factor.
+- n ≡ 5 (mod 8): Similar to n ≡ 1.
+- n ≡ 6 (mod 8): Similar to n ≡ 2.
+
+The 4^a factor is handled by scaling: if 4n = (2a)² + (2b)² + (2c)², then n = a² + b² + c².
+
+**Proof sketch**: Uses Minkowski's theorem on lattices (available in Mathlib as
+`exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`) to find lattice points
+in a suitable ellipsoid. -/
+axiom dirichlet_key_lemma {n d : ℕ} (hn : n > 1) (hd : d > 0)
+    (hqr : legendreSym (d * n - 1) (-d : ℤ) = 1) :
+    ∃ x y z : ℤ, x ^ 2 + y ^ 2 + z ^ 2 = n
+
 /-- **Sufficiency Axiom**: Numbers NOT of excluded form ARE sums of three squares.
 
-This requires Dirichlet's theorem on primes in arithmetic progressions or
-ternary quadratic form theory. The remaining gap after partial results above
-is proving that primes ≡ 3 (mod 8) are sums of 3 squares. -/
+**Current status**: All PRIMES are proved. Composites need Dirichlet's Key Lemma above.
+
+To complete this proof, implement:
+1. Case analysis on n mod 8 to choose appropriate d
+2. Use Dirichlet's theorem (PrimesInAP, now available) to find suitable primes
+3. Apply `dirichlet_key_lemma` for each case
+4. Handle small cases (n ≤ 6) directly
+
+**Estimated remaining work**: ~150-200 lines using the Key Lemma framework above. -/
 axiom not_excluded_form_is_sum_three_sq {n : ℕ} (h : ¬IsExcludedForm n) :
     ∃ a b c : ℤ, a ^ 2 + b ^ 2 + c ^ 2 = n
 
