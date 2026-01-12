@@ -1,0 +1,34 @@
+{
+  "id": "erdos-1",
+  "title": "Erdős Problem #1",
+  "slug": "erdos-1",
+  "description": "If ... with ... is such that the subset sums ... are distinct for all ... then\\[N \\gg 2^{n}.\\]",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1,
+    "erdosUrl": "https://erdosproblems.com/1",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$500"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1 from erdosproblems.com. Originally offered with a prize of $500.",
+    "problemStatement": "If $A\\subseteq \\{1,\\ldots,N\\}$ with $\\lvert A\\rvert=n$ is such that the subset sums $\\sum_{a\\in S}a$ are distinct for all $S\\subseteq A$ then\\[N \\gg 2^{n}.\\]",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

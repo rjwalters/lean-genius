@@ -284,6 +284,57 @@ export function getCacheStats(config: CacheConfig = defaultConfig): {
 }
 
 /**
+ * Get list of cached problem numbers
+ */
+export function getCachedProblemNumbers(config: CacheConfig = defaultConfig): number[] {
+  const manifest = loadManifest(config)
+  return Object.keys(manifest.entries).map(n => parseInt(n)).sort((a, b) => a - b)
+}
+
+/**
+ * Find the next batch of uncached problems
+ * Returns array of problem numbers that haven't been cached yet
+ */
+export function getNextUncachedBatch(
+  batchSize: number,
+  maxProblem = 1200,
+  config: CacheConfig = defaultConfig
+): number[] {
+  const cached = new Set(getCachedProblemNumbers(config))
+  const batch: number[] = []
+
+  for (let i = 1; i <= maxProblem && batch.length < batchSize; i++) {
+    if (!cached.has(i)) {
+      batch.push(i)
+    }
+  }
+
+  return batch
+}
+
+/**
+ * Get progress summary
+ */
+export function getProgressSummary(maxProblem = 1200, config: CacheConfig = defaultConfig): {
+  cached: number
+  remaining: number
+  total: number
+  percentComplete: number
+  nextBatch: number[]
+} {
+  const cached = getCachedProblemNumbers(config)
+  const nextBatch = getNextUncachedBatch(10, maxProblem, config)
+
+  return {
+    cached: cached.length,
+    remaining: maxProblem - cached.length,
+    total: maxProblem,
+    percentComplete: Math.round((cached.length / maxProblem) * 100),
+    nextBatch,
+  }
+}
+
+/**
  * Clear expired cache entries
  */
 export function clearExpiredCache(config: CacheConfig = defaultConfig): number {

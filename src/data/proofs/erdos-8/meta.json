@@ -1,0 +1,33 @@
+{
+  "id": "erdos-8",
+  "title": "Erdős Problem #8",
+  "slug": "erdos-8",
+  "description": "For any finite colouring of the integers is there a covering system all of whose moduli are monochromatic? Conjectured by Erdős and Graham, who also ask about a density-type version: for example, i...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/8",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos8Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 8,
+    "erdosUrl": "https://erdosproblems.com/8",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #8 from erdosproblems.com.",
+    "problemStatement": "For any finite colouring of the integers is there a covering system all of whose moduli are monochromatic? Conjectured by Erdős and Graham, who also ask about a density-type version: for example, is\\[\\sum_{\\substack{a\\in A\\\\ a>N}}\\frac{1}{a}\\gg \\log N\\]a sufficient condition for $A$ to contain the moduli of a covering system? The answer (to both colouring and density versions) is no, due to the result of Hough [Ho15] on the minimum size of a modulus in a covering system - in particular one could colour all integers $ View the LaTeX source This page was last edited 28 December 2025.",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

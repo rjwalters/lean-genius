@@ -405,6 +405,48 @@ export async function scrapeProblem(
 }
 
 /**
+ * Scrape a list of specific problem numbers
+ */
+export async function scrapeProblems(
+  numbers: number[],
+  config?: CacheConfig,
+  useCache = true,
+  onProgress?: (current: number, total: number, problem: ScrapedProblem | null) => void
+): Promise<ScrapedProblem[]> {
+  const problems: ScrapedProblem[] = []
+  const total = numbers.length
+
+  if (total === 0) {
+    console.log('No problems to scrape.')
+    return problems
+  }
+
+  console.log(`Scraping ${total} problems: #${numbers[0]}-${numbers[numbers.length - 1]}...`)
+
+  for (let i = 0; i < numbers.length; i++) {
+    const num = numbers[i]
+    const problem = await scrapeProblem(num, config, useCache)
+
+    if (problem) {
+      problems.push(problem)
+    }
+
+    if (onProgress) {
+      onProgress(i + 1, total, problem)
+    }
+
+    // Progress indicator every 10 problems
+    if ((i + 1) % 10 === 0) {
+      const pct = Math.round(((i + 1) / total) * 100)
+      console.log(`  Progress: ${i + 1}/${total} (${pct}%)`)
+    }
+  }
+
+  console.log(`Scraped ${problems.length} problems successfully`)
+  return problems
+}
+
+/**
  * Scrape a range of problems
  */
 export async function scrapeRange(
@@ -414,31 +456,11 @@ export async function scrapeRange(
   useCache = true,
   onProgress?: (current: number, total: number, problem: ScrapedProblem | null) => void
 ): Promise<ScrapedProblem[]> {
-  const problems: ScrapedProblem[] = []
-  const total = end - start + 1
-
-  console.log(`Scraping problems ${start} to ${end} (${total} total)...`)
-
+  const numbers: number[] = []
   for (let i = start; i <= end; i++) {
-    const problem = await scrapeProblem(i, config, useCache)
-
-    if (problem) {
-      problems.push(problem)
-    }
-
-    if (onProgress) {
-      onProgress(i - start + 1, total, problem)
-    }
-
-    // Progress indicator every 10 problems
-    if ((i - start + 1) % 10 === 0) {
-      const pct = Math.round(((i - start + 1) / total) * 100)
-      console.log(`  Progress: ${i - start + 1}/${total} (${pct}%)`)
-    }
+    numbers.push(i)
   }
-
-  console.log(`Scraped ${problems.length} problems successfully`)
-  return problems
+  return scrapeProblems(numbers, config, useCache, onProgress)
 }
 
 /**

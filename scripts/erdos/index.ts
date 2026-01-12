@@ -13,6 +13,8 @@
  * Options:
  *   --dry-run         Preview without writing files
  *   --range 1-100     Process subset of problems (e.g., 1-100)
+ *   --batch 10        Process next N uncached problems (default: 10)
+ *   --continue        Continue from where we left off (alias for --batch 10)
  *   --refresh         Ignore cache, fetch fresh
  *   --gallery-only    Only generate gallery stubs
  *   --research-only   Only generate research entries
@@ -22,8 +24,8 @@
  */
 
 import type { CliOptions, PipelineStats, TransformedProblem } from './types'
-import { getCacheStats, ensureCacheDir } from './cache'
-import { scrapeRange, getScrapeStats } from './scrape'
+import { getCacheStats, ensureCacheDir, getProgressSummary, getNextUncachedBatch } from './cache'
+import { scrapeRange, scrapeProblems, getScrapeStats } from './scrape'
 import { transformProblems, getTransformStats } from './transform'
 import { filterDuplicates, printDedupeReport } from './dedupe'
 import { generateGalleryEntries, getGalleryStats } from './generate-gallery'
@@ -38,6 +40,7 @@ function parseArgs(): CliOptions {
   const options: CliOptions = {
     dryRun: false,
     range: undefined,
+    batch: undefined,
     refresh: false,
     galleryOnly: false,
     researchOnly: false,
@@ -54,6 +57,12 @@ function parseArgs(): CliOptions {
         break
       case '--range':
         options.range = args[++i]
+        break
+      case '--batch':
+        options.batch = parseInt(args[++i]) || 10
+        break
+      case '--continue':
+        options.batch = 10
         break
       case '--refresh':
         options.refresh = true
@@ -98,27 +107,29 @@ Usage:
   npx tsx scripts/erdos/index.ts [options]
 
 Options:
+  --batch N         Process next N uncached problems (default: 10)
+  --continue        Continue from where we left off (same as --batch 10)
+  --range 1-100     Process specific range of problems
   --dry-run         Preview without writing files
-  --range 1-100     Process subset of problems (e.g., 1-100)
   --refresh         Ignore cache, fetch fresh
   --gallery-only    Only generate gallery stubs (solved problems)
   --research-only   Only generate research entries (open problems)
-  --status          Show status without processing
+  --status          Show progress and status
   --verbose, -v     Verbose output
   --help, -h        Show this help
 
 Examples:
-  # Full scrape and generation
-  npx tsx scripts/erdos/index.ts
+  # Process next 10 problems (incremental)
+  npx tsx scripts/erdos/index.ts --continue
 
-  # Preview first 100 problems
-  npx tsx scripts/erdos/index.ts --range 1-100 --dry-run
+  # Process next 20 problems
+  npx tsx scripts/erdos/index.ts --batch 20
 
-  # Only generate gallery stubs
-  npx tsx scripts/erdos/index.ts --gallery-only
-
-  # Check status
+  # Check progress
   npx tsx scripts/erdos/index.ts --status
+
+  # Process specific range
+  npx tsx scripts/erdos/index.ts --range 1-100
 `)
 }
 
@@ -143,24 +154,31 @@ function parseRange(range: string): { start: number; end: number } {
 function showStatus(): void {
   console.log('=== Erdős Problems Pipeline Status ===\n')
 
-  // Cache status
-  const cacheStats = getCacheStats()
-  console.log('Cache Status:')
-  console.log(`  Total cached: ${cacheStats.totalCached} problems`)
-  console.log(`  With LaTeX: ${cacheStats.withLatex}`)
-  if (cacheStats.oldestEntry) {
-    console.log(`  Oldest entry: ${cacheStats.oldestEntry}`)
+  // Progress summary
+  const progress = getProgressSummary()
+  const bar = '█'.repeat(Math.floor(progress.percentComplete / 5)) + '░'.repeat(20 - Math.floor(progress.percentComplete / 5))
+  console.log('Progress:')
+  console.log(`  [${bar}] ${progress.percentComplete}%`)
+  console.log(`  Cached: ${progress.cached} / ${progress.total}`)
+  console.log(`  Remaining: ${progress.remaining}`)
+
+  if (progress.nextBatch.length > 0) {
+    console.log(`\n  Next batch: #${progress.nextBatch[0]}-${progress.nextBatch[progress.nextBatch.length - 1]}`)
   }
+
+  // Cache details
+  const cacheStats = getCacheStats()
   if (cacheStats.newestEntry) {
-    console.log(`  Newest entry: ${cacheStats.newestEntry}`)
+    console.log(`  Last scraped: ${new Date(cacheStats.newestEntry).toLocaleString()}`)
   }
 
   // Deduplication status
   printDedupeReport()
 
-  console.log('\nTo run the pipeline:')
-  console.log('  npx tsx scripts/erdos/index.ts --range 1-100 --dry-run  # Preview')
-  console.log('  npx tsx scripts/erdos/index.ts --range 1-100            # Execute')
+  console.log('\nNext steps:')
+  console.log('  npx tsx scripts/erdos/index.ts --continue     # Process next 10')
+  console.log('  npx tsx scripts/erdos/index.ts --batch 20     # Process next 20')
+  console.log('  npx tsx scripts/erdos/index.ts --dry-run      # Preview only')
 }
 
 /**
@@ -186,21 +204,33 @@ async function runPipeline(options: CliOptions): Promise<PipelineStats> {
     console.log('** DRY RUN MODE - No files will be written **\n')
   }
 
-  // Determine range
-  let start = 1
-  let end = 1200
-  if (options.range) {
-    const range = parseRange(options.range)
-    start = range.start
-    end = range.end
-  }
-
   // Ensure cache directory exists
   ensureCacheDir()
 
-  // Step 1: Scrape problems
-  console.log(`Step 1: Scraping problems ${start}-${end}...`)
-  const scraped = await scrapeRange(start, end, undefined, !options.refresh)
+  // Determine which problems to scrape
+  let scraped: Awaited<ReturnType<typeof scrapeProblems>>
+
+  if (options.batch) {
+    // Batch mode: get next N uncached problems
+    const batchNumbers = getNextUncachedBatch(options.batch)
+    if (batchNumbers.length === 0) {
+      console.log('All problems have been cached!')
+      const progress = getProgressSummary()
+      console.log(`  Total cached: ${progress.cached}/${progress.total}\n`)
+      return stats
+    }
+    console.log(`Step 1: Scraping batch of ${batchNumbers.length} uncached problems...`)
+    scraped = await scrapeProblems(batchNumbers, undefined, !options.refresh)
+  } else if (options.range) {
+    // Range mode: scrape specific range
+    const range = parseRange(options.range)
+    console.log(`Step 1: Scraping problems ${range.start}-${range.end}...`)
+    scraped = await scrapeRange(range.start, range.end, undefined, !options.refresh)
+  } else {
+    // Default: scrape all (1-1200)
+    console.log('Step 1: Scraping all problems 1-1200...')
+    scraped = await scrapeRange(1, 1200, undefined, !options.refresh)
+  }
   stats.totalScraped = scraped.length
 
   const scrapeStats = getScrapeStats(scraped)

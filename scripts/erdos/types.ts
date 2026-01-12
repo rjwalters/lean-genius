@@ -165,6 +165,8 @@ export interface CliOptions {
   dryRun: boolean
   /** Range of problems to process (e.g., "1-100") */
   range?: string
+  /** Process next N uncached problems */
+  batch?: number
   /** Ignore cache, fetch fresh */
   refresh: boolean
   /** Only generate gallery */

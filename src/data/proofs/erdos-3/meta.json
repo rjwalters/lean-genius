@@ -1,0 +1,34 @@
+{
+  "id": "erdos-3",
+  "title": "Erdős Problem #3",
+  "slug": "erdos-3",
+  "description": "If ... has ... then must ... contain arbitrarily long arithmetic progressions?",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/3",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos3Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 3,
+    "erdosUrl": "https://erdosproblems.com/3",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$5000"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #3 from erdosproblems.com. Originally offered with a prize of $5000.",
+    "problemStatement": "If $A\\subseteq \\mathbb{N}$ has $\\sum_{n\\in A}\\frac{1}{n}=\\infty$ then must $A$ contain arbitrarily long arithmetic progressions?",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

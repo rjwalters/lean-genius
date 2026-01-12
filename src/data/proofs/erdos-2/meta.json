@@ -1,0 +1,34 @@
+{
+  "id": "erdos-2",
+  "title": "Erdős Problem #2",
+  "slug": "erdos-2",
+  "description": "Can the smallest modulus of a covering system be arbitrarily large? Described by Erdős as 'perhaps my favourite problem'. Hough [Ho15], building on work of Filaseta, Ford, Konyagin, Pomerance, and ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/2",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos2Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 2,
+    "erdosUrl": "https://erdosproblems.com/2",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$1000"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #2 from erdosproblems.com. Originally offered with a prize of $1000.",
+    "problemStatement": "Can the smallest modulus of a covering system be arbitrarily large? Described by Erdős as 'perhaps my favourite problem'. Hough [Ho15], building on work of Filaseta, Ford, Konyagin, Pomerance, and Yu [FFKPY07], has shown (contrary to Erdős' expectations) that the answer is no: the smallest modulus must be at most $10^{16}$. An alternative, simpler, proof was given by Balister, Bollobás, Morris, Sahasrabudhe, and Tiba [BBMST22], who improved the upper bound on the smallest modulus to $616000$. The best known lower bound is a covering system whose minimum modulus is $42$, due to Owens [Ow14]. View the LaTeX source This page was last edited 28 December 2025.",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

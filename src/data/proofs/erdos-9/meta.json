@@ -1,0 +1,33 @@
+{
+  "id": "erdos-9",
+  "title": "Erdős Problem #9",
+  "slug": "erdos-9",
+  "description": "Let ... be the set of all odd integers not of the form ... (where ... and ... is prime). Is the upper density of ... positive? In [Er77c] Erdős credits Schinzel with proving that there are infinite...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/9",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos9Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 9,
+    "erdosUrl": "https://erdosproblems.com/9",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #9 from erdosproblems.com.",
+    "problemStatement": "Let $A$ be the set of all odd integers not of the form $p+2^{k}+2^l$ (where $k,l\\geq 0$ and $p$ is prime). Is the upper density of $A$ positive? In [Er77c] Erdős credits Schinzel with proving that there are infinitely many odd integers not of this form, but gives no reference. Crocker [Cr71] has proved there are $\\gg\\log\\log N$ such integers in $\\{1,\\ldots,N\\}$. Pan [Pa11] improved this to $\\gg_\\epsilon N^{1-\\epsilon}$ for any $\\epsilon>0$. Erdős believed this cannot be proved by covering systems, i.e. integers of the form $p+2^k+2^l$ exist in every infinite arithmetic progression. The sequence of such numbers is A006286 in the OEIS. See also [10], [11], and [16]. This is discussed in problem A19 of Guy's collection [Gu04]. View the LaTeX source This page was last edited 28 December 2025.",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

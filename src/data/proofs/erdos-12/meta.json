@@ -1,0 +1,33 @@
+{
+  "id": "erdos-12",
+  "title": "Erdős Problem #12",
+  "slug": "erdos-12",
+  "description": "Let ... be an infinite set such that there are no distinct ... such that ... and .... Is there such an ... with\\[\\liminf \\rvert}{N^{1/2}}>0?\\]Does there exist some absolute constant ... such that t...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/12",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos12Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 12,
+    "erdosUrl": "https://erdosproblems.com/12",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #12 from erdosproblems.com.",
+    "problemStatement": "Let $A$ be an infinite set such that there are no distinct $a,b,c\\in A$ such that $a\\mid (b+c)$ and $b,c>a$. Is there such an $A$ with\\[\\liminf \\frac{\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert}{N^{1/2}}>0?\\]Does there exist some absolute constant $c>0$ such that there are always infinitely many $N$ with\\[\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert<N^{1-c}?\\]Is it true that\\[\\sum_{n\\in A}\\frac{1}{n}<\\infty?\\]",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}
