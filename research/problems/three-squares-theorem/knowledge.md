@@ -607,3 +607,63 @@ The Mathlib upgrade resolved the primary blocker. This is now tractable with ~20
 
 - [PrimesInAP docs](https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/LSeries/PrimesInAP.html)
 - [Ankeny 1957](https://www.ams.org/journals/proc/1957-008-02/S0002-9939-1957-0085275-8/S0002-9939-1957-0085275-8.pdf)
+
+---
+
+## Session 2026-01-11 - DIRICHLET KEY LEMMA FRAMEWORK
+
+### Mode
+REVISIT - Making concrete progress on sufficiency gap
+
+### Key Insight Documented
+
+**CRITICAL CORRECTION**: The old documentation suggested the gap was "proving primes ≡ 3 (mod 8)".
+This was WRONG - all primes are already proved:
+- `prime_one_mod_eight_is_sum_three_sq` ✓
+- `prime_three_mod_eight_is_sum_three_sq` ✓ (via ℤ[√-2])
+- `prime_five_mod_eight_is_sum_three_sq` ✓
+
+**The real gap**: COMPOSITES. Sums of 3 squares are NOT multiplicatively closed!
+- 3 = 1² + 1² + 1² (sum of 3 squares)
+- 5 = 1² + 2² + 0² (sum of 3 squares)
+- 3 × 5 = 15 = 8×1 + 7 is EXCLUDED!
+
+### What Was Added
+
+**Dirichlet's Key Lemma** (axiom, Lemma 4.1 from 1850 paper):
+```lean
+axiom dirichlet_key_lemma {n d : ℕ} (hn : n > 1) (hd : d > 0)
+    (hqr : legendreSym (d * n - 1) (-d : ℤ) = 1) :
+    ∃ x y z : ℤ, x ^ 2 + y ^ 2 + z ^ 2 = n
+```
+
+This is the BRIDGE for arbitrary n (not through factorization):
+- For each n mod 8, choose appropriate d
+- Find prime p = dn - 1 with -d QR mod p (using Dirichlet's theorem on primes in AP)
+- Apply lattice/Minkowski argument
+
+### Updated Proof Strategy
+
+**To remove the axiom**:
+1. Prove `dirichlet_key_lemma` using Minkowski's theorem (~100 lines)
+   - Available: `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`
+2. Case analysis on n mod 8 to choose d (~50 lines per case)
+3. Use `Nat.infinite_setOf_prime_and_modEq` to find required primes
+4. Connect to `not_excluded_form_is_sum_three_sq` (~30 lines)
+
+**Estimated total**: 150-200 lines remaining
+
+### Status
+
+**Before this session**: 2 axioms (Key Lemma implicit in sufficiency axiom)
+**After this session**: 2 axioms (Key Lemma now explicit, structure clearer)
+
+Progress: Clarified the actual gap and structured the remaining work.
+
+### Files Modified
+
+- `proofs/Proofs/ThreeSquares.lean`:
+  - Added Dirichlet Key Lemma section
+  - Added explicit `dirichlet_key_lemma` axiom
+  - Updated `not_excluded_form_is_sum_three_sq` documentation
+

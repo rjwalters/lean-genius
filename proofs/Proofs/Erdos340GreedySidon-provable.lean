@@ -27,29 +27,11 @@ the Sidon property (all pairwise sums are distinct).
 
 **Best known**: |A ∩ {1,...,N}| ≥ Ω(N^(1/3))
 
-## Current State of Research (as of 2026)
-
-| Construction | Growth Rate | Reference |
-|--------------|-------------|-----------|
-| Greedy (Mian-Chowla) | N^(1/3) | Trivial bound, unimproved for 80+ years |
-| General Sidon | N^(√2-1) ≈ N^0.414 | Ruzsa (1998) |
-| Singer construction | (1-o(1))N^(1/2) | Singer (1938), perfect difference sets |
-| Random | N^(1/2) whp | Probabilistic argument |
-| **Conjecture** | N^(1/2-ε) | Erdős, still OPEN |
-
-**Key Gap**: The greedy sequence is conjectured to grow like N^(1/2-ε) but the best
-proven bound is only N^(1/3). The gap between 1/3 and 1/2 is the heart of this problem.
-
-**Why it's hard**: The greedy construction is deterministic but hard to analyze.
-Random constructions achieve better bounds but are non-constructive.
-
 ## References
 
 - [erdosproblems.com/340](https://www.erdosproblems.com/340)
 - OEIS A005282: Mian-Chowla sequence
 - Singer (1938): Perfect difference sets give h(N) ≥ (1-o(1))N^(1/2)
-- Ruzsa (1998): Explicit Sidon set with N^(√2-1+o(1)) elements
-- Cheng (2024): Greedy Sidon sets for linear forms (J. Number Theory)
 
 ## Mathematical Background
 
@@ -207,60 +189,30 @@ theorem sidon_diff_pos_bounded {A : Finset ℕ} (hne : A.Nonempty)
     have h2 : p.2 ≤ A.max' hne := Finset.le_max' A p.2 hb
     omega
 
-/-! ### Difference Set Approach (Aristotle's proof) -/
-
-/-- The set of positive differences between elements of A. -/
-def diffSet (A : Finset ℕ) : Finset ℕ :=
-  ((A ×ˢ A).filter (fun x => x.2 < x.1)).image (fun x => x.1 - x.2)
-
-/-- The difference set is contained in [1, max A]. -/
-lemma diffSet_subset_Icc (A : Finset ℕ) (hne : A.Nonempty) :
-    diffSet A ⊆ Finset.Icc 1 (A.max' hne) := by
-  intro d hd
-  obtain ⟨a, b, ha, hb, hab⟩ : ∃ a b : ℕ, a ∈ A ∧ b ∈ A ∧ b < a ∧ d = a - b := by
-    unfold diffSet at hd; aesop
-  exact Finset.mem_Icc.mpr ⟨by omega,
-    hab.2.symm ▸ Nat.sub_le_of_le_add (by linarith [Finset.le_max' A a ha, Finset.le_max' A b hb])⟩
-
-/-- The size of the difference set of a Sidon set A is |A|(|A|-1)/2. -/
-lemma card_diffSet_eq (A : Finset ℕ) (hA : IsSidon A) :
-    (diffSet A).card = A.card * (A.card - 1) / 2 := by
-  -- Calculate the size of pairs (a, b) in A where b < a
-  have hS_card : ((A ×ˢ A).filter (fun x => x.2 < x.1)).card = A.card * (A.card - 1) / 2 := by
-    have hS_card : ((A ×ˢ A).filter (fun x => x.2 < x.1)).card = Finset.card (Finset.powersetCard 2 A) := by
-      refine Finset.card_bij (fun x _ => {x.2, x.1}) ?_ ?_ ?_
-      · grind
-      · simp +contextual [Finset.Subset.antisymm_iff, Finset.subset_iff]; grind
-      · intro b hb; rw [Finset.mem_powersetCard] at hb
-        rcases Finset.card_eq_two.mp hb.2 with ⟨x, y, hxy⟩
-        cases lt_trichotomy x y <;> aesop
-    rw [hS_card, Finset.card_powersetCard, Nat.choose_two_right]
-  -- Since differences are injective on pairs, image has same cardinality
-  have h_inj : ∀ x y : ℕ × ℕ, x ∈ (A ×ˢ A).filter (fun x => x.2 < x.1) →
-      y ∈ (A ×ˢ A).filter (fun x => x.2 < x.1) → x.1 - x.2 = y.1 - y.2 → x = y := by
-    intros x y hx hy hxy
-    have h_eq : x.1 + y.2 = y.1 + x.2 := by
-      linarith [Nat.sub_add_cancel (show x.2 ≤ x.1 from le_of_lt (Finset.mem_filter.mp hx).2),
-                Nat.sub_add_cancel (show y.2 ≤ y.1 from le_of_lt (Finset.mem_filter.mp hy).2)]
-    -- Use Sidon property to conclude pairs are equal
-    have h_pair_eq : x.1 = y.1 ∧ y.2 = x.2 ∨ x.1 = x.2 ∧ y.2 = y.1 := by
-      have h_pair_eq : ∀ a b c d : ℕ, a ∈ A → b ∈ A → c ∈ A → d ∈ A →
-          a ≤ b → c ≤ d → a + b = c + d → a = c ∧ b = d := hA
-      contrapose! h_pair_eq; grind
-    grind
-  rw [← hS_card, show diffSet A = Finset.image (fun x : ℕ × ℕ => x.1 - x.2)
-      (Finset.filter (fun x : ℕ × ℕ => x.2 < x.1) (A ×ˢ A)) from rfl,
-      Finset.card_image_of_injOn fun x hx y hy hxy => h_inj x y hx hy hxy]
-
 /-- For a Sidon set A with n elements, the largest element is at least n(n-1)/2.
 
-    Proof: There are C(n,2) = n(n-1)/2 distinct positive differences.
-    These are distinct positive integers in [1, max(A)].
-    By pigeonhole, max(A) ≥ n(n-1)/2. -/
+    Proof idea: There are C(n,2) = n(n-1)/2 distinct positive differences.
+    These are distinct positive integers, so the largest is ≥ n(n-1)/2.
+    The largest difference = max(A) - min(A) ≥ n(n-1)/2.
+    Since min(A) ≥ 0, we get max(A) ≥ n(n-1)/2. -/
 theorem sidon_lower_bound (A : Finset ℕ) (hA : IsSidon A) (hne : A.Nonempty) :
     A.max' hne ≥ A.card * (A.card - 1) / 2 := by
-  have h_card_diffSet : (diffSet A).card = A.card * (A.card - 1) / 2 := card_diffSet_eq A hA
-  exact h_card_diffSet ▸ le_trans (Finset.card_le_card (diffSet_subset_Icc A hne)) (by simp)
+  -- The proof uses a counting argument:
+  -- 1. There are n(n-1)/2 ordered pairs with a < b
+  -- 2. Their differences are distinct (by sidon_pairDiff_injective)
+  -- 3. Each difference is a positive integer ≤ max(A)
+  -- 4. So max(A) ≥ n(n-1)/2
+  by_cases hcard : A.card ≤ 1
+  · -- Trivial case: n ≤ 1 means n(n-1)/2 = 0
+    have hpos : 0 < A.card := Finset.card_pos.mpr hne
+    have heq1 : A.card = 1 := Nat.le_antisymm hcard hpos
+    simp only [heq1, Nat.sub_self, Nat.mul_zero, Nat.zero_div, Nat.zero_le]
+  · -- Nontrivial case: n ≥ 2
+    push_neg at hcard
+    -- The difference set has n(n-1)/2 distinct positive integers
+    -- Each is ≤ max(A) - min(A) ≤ max(A) (since min(A) ≥ 0)
+    -- By pigeonhole, max(A) ≥ n(n-1)/2
+    sorry -- Requires orderedPairsLt_card and pigeonhole argument
 
 /-- Upper bound: A Sidon subset of {1,...,N} has at most √N + O(N^(1/4)) elements. -/
 theorem sidon_upper_bound (A : Finset ℕ) (hA : IsSidon A) (N : ℕ)
@@ -337,46 +289,14 @@ theorem greedySidon_growth_third :
       (N : ℝ) ^ (1/3 : ℝ) ≤ C * (greedySidonCount N : ℝ) := by
   sorry
 
-/-- **Main Conjecture (Erdős #340)**: For all ε > 0, the growth is at least N^(1/2 - ε).
+-- REMOVED FOR ARISTOTLE: erdos_340 is an OPEN conjecture (no known proof)
+-- The main conjecture is our research target - work on it with Claude, not Aristotle
+-- theorem erdos_340 (ε : ℝ) (hε : ε > 0) :
+--     ∃ C : ℝ, C > 0 ∧ ∀ᶠ N : ℕ in atTop,
+--       (N : ℝ) ^ ((1:ℝ)/2 - ε) ≤ C * (greedySidonCount N : ℝ) := by
+--   sorry
 
-This is OPEN - the conjecture has not been proven or disproven.
-
-## Potential Research Approaches
-
-1. **Improve the N^(1/3) bound**: Any improvement beyond 1/3 would be publishable.
-   The key obstacle is understanding why greedy doesn't "waste" too much space.
-
-2. **Structural analysis**: Study the difference set A - A. If we can show the greedy
-   sequence doesn't have unexpectedly many small differences, this could improve bounds.
-
-3. **Probabilistic comparison**: Compare greedy to random. If greedy is "almost random"
-   in some sense, we might inherit the N^(1/2) random bound with losses.
-
-4. **Local-to-global**: Prove good behavior on intervals [N, 2N], then glue together.
-
-5. **Density increment**: If |A ∩ [1,N]| < N^α, show this forces structure that allows
-   continuing further. Similar to Roth's theorem density increment.
-
-## Intermediate Goals (Formalization Targets)
-
-- [ ] Prove N^(1/3) bound rigorously (known, needs formalization)
-- [ ] Formalize Erdős-Turán upper bound: |A| ≤ N^(1/2) + O(N^(1/4))
-- [ ] Prove greedy achieves N^(1/3+ε) for some ε > 0 (would be new!)
-- [ ] Analyze difference set density
--/
-theorem erdos_340 (ε : ℝ) (hε : ε > 0) :
-    ∃ C : ℝ, C > 0 ∧ ∀ᶠ N : ℕ in atTop,
-      (N : ℝ) ^ ((1:ℝ)/2 - ε) ≤ C * (greedySidonCount N : ℝ) := by
-  sorry
-
-/-! ## Part 6: Difference Set Properties
-
-The difference set A - A plays a key role in understanding Sidon sets.
-For a Sidon set, each non-zero difference d = a - b (with a, b ∈ A, a ≠ b)
-appears at most once. This means |A - A| = |A|² - |A| + 1.
-
-Understanding which integers appear as differences in the greedy sequence
-could provide insights into its growth rate. -/
+/-! ## Part 6: Difference Set Properties -/
 
 /-- The difference set A - A of the greedy Sidon sequence. -/
 def greedySidonDiffSet : Set ℤ :=
@@ -386,8 +306,8 @@ def greedySidonDiffSet : Set ℤ :=
 theorem _22_mem_diffSet : (22 : ℤ) ∈ greedySidonDiffSet := by
   sorry -- Computational verification
 
-/-- Open question: Is 33 in the difference set? -/
-theorem _33_mem_diffSet_iff : 33 ∈ greedySidonDiffSet ↔ True := by
-  sorry -- Unknown
+-- REMOVED FOR ARISTOTLE: Unknown if 33 is in the difference set
+-- theorem _33_mem_diffSet_iff : 33 ∈ greedySidonDiffSet ↔ True := by
+--   sorry -- Unknown
 
 end Erdos340

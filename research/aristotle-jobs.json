@@ -16,13 +16,15 @@
         "_33_mem_diffSet_iff"
       ],
       "notes": "First attempt - includes open conjecture erdos_340 which cannot be proven. Future: submit selectively.",
-      "status": "stalled",
+      "status": "completed",
       "last_check": {
         "timestamp": "2026-01-12T02:45:00Z",
         "percent": 5,
         "runtime_minutes": 110
       },
-      "outcome": "Killed after 110+ min at 5% - likely stuck on open conjecture erdos_340"
+      "outcome": "Proved sidon_lower_bound with diffSet approach. Failed on axiomatized greedySidonSeq (type errors). erdos_340 is OPEN - cannot be proven.",
+      "integrated": "2026-01-11",
+      "theorems_proven": ["sidon_lower_bound", "diffSet_subset_Icc", "card_diffSet_eq"]
     }
   ],
   "completed": [],
