@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-e56-header",
+    "proofId": "erdos-56",
+    "range": {
+      "startLine": 1,
+      "endLine": 15
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #56** asks about the maximum size of a set where no k+1 elements are pairwise coprime. The natural candidate is the set of all multiples of the first k primes, but surprisingly this is NOT always optimal.\n\nAhlswede and Khachatrian found a counterexample at k=212 in 1994, disproving Erdős's conjecture. However, they later proved the conjecture IS true when N is large enough.",
+    "mathContext": "The problem connects to extremal combinatorics and Turán-type problems. The phase transition between 'conjecture fails' and 'conjecture holds' depends on the relationship between N and p_k.",
+    "significance": "key",
+    "relatedConcepts": ["erdos", "coprimality", "extremal-combinatorics"]
+  },
+  {
+    "id": "ann-e56-imports",
+    "proofId": "erdos-56",
+    "range": {
+      "startLine": 17,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Mathlib Dependencies",
+    "content": "We import several Mathlib modules:\n\n- **Prime.Basic**: Definition of prime numbers\n- **Finset.Powerset**: Working with subsets of a given size\n- **Finset.Card**: Cardinality of finite sets\n- **Nat.Nth**: The n-th element satisfying a predicate (for p_k, the k-th prime)",
+    "mathContext": "The `open scoped Finset` line enables notation for finset operations without prefixing everything with `Finset.`",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "finset", "primes"]
+  },
+  {
+    "id": "ann-e56-weakly-divisible",
+    "proofId": "erdos-56",
+    "range": {
+      "startLine": 34,
+      "endLine": 43
+    },
+    "type": "definition",
+    "title": "k-Weakly Divisible Sets",
+    "content": "A set A is **k-weakly divisible** if among any k+1 elements, at least two share a common factor (are not coprime).\n\nIntuitively: you can't find k+1 numbers in A that are all mutually coprime.\n\n**Example**: The even numbers {2, 4, 6, 8, ...} are 1-weakly divisible because any two even numbers share factor 2.",
+    "mathContext": "Formally: `∀ s ∈ A.powersetCard (k + 1), ¬Set.Pairwise s Nat.Coprime`\n\nThis says: for every subset s of A with exactly k+1 elements, it's NOT the case that all pairs in s are coprime.",
+    "significance": "critical",
+    "relatedConcepts": ["coprime", "finset", "pigeonhole"]
+  },
+  {
+    "id": "ann-e56-empty-singleton",
+    "proofId": "erdos-56",
+    "range": {
+      "startLine": 45,
+      "endLine": 57
+    },
+    "type": "lemma",
+    "title": "Boundary Cases for Weak Divisibility",
+    "content": "Three basic lemmas establish the behavior at boundaries:\n\n1. **Empty set**: Always k-weakly divisible (vacuously true)\n2. **Singleton**: k-weakly divisible when k ≥ 1 (can't pick k+1 elements)\n3. **k = 0**: Only the empty set works (every single element trivially satisfies 'pairwise coprime')",
+    "mathContext": "These lemmas use `simp` to reduce to logical trivialities. The k=0 case is interesting: a set is 0-weakly divisible iff it's empty, because any 1-element 'pairwise coprime' subset exists in any nonempty set.",
+    "significance": "supporting",
+    "relatedConcepts": ["vacuous-truth", "boundary-cases"]
+  },
+  {
+    "id": "ann-e56-max-weakly-divisible",
+    "proofId": "erdos-56",
+    "range": {
+      "startLine": 59,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "Maximum Weakly Divisible Size",
+    "content": "**MaxWeaklyDivisible N k** is the maximum cardinality of any k-weakly divisible subset of {1, 2, ..., N}.\n\nThis is THE quantity Erdős asked about: given the constraint 'no k+1 pairwise coprimes', how large can your set be?",
+    "mathContext": "Defined as `sSup {#A | A ⊆ Finset.Icc 1 N ∧ WeaklyDivisible k A}`\n\nThe supremum (sSup) is taken over cardinalities of all valid subsets. This is noncomputable because finding the actual maximum requires checking exponentially many subsets.",
+    "significance": "critical",
+    "relatedConcepts": ["supremum", "optimization", "extremal"]
+  },
+  {
+    "id": "ann-e56-first-primes-multiples",
+    "proofId": "erdos-56",
+    "range": {
+      "startLine": 68,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "The Conjectured Optimal Set",
+    "content": "**FirstPrimesMultiples N k** is the set of numbers in {1,...,N} divisible by at least one of the first k primes (2, 3, 5, 7, ...).\n\n**Why it's k-weakly divisible**: Any k+1 numbers from this set must include two divisible by the same prime (pigeonhole), so they share a common factor.\n\nErdős conjectured this was always the largest such set.",
+    "mathContext": "Defined using `Nat.nth Nat.Prime j` to get the j-th prime. The filter selects numbers divisible by p_0, p_1, ..., or p_{k-1}.\n\nThis is also noncomputable because `Nat.nth` requires searching for primes.",
+    "significance": "critical",
+    "relatedConcepts": ["primes", "inclusion-exclusion", "pigeonhole"]
+  },
+  {
+    "id": "ann-e56-main-axiom",
+    "proofId": "erdos-56",
+    "range": {
+      "startLine": 84,
+      "endLine": 103
+    },
+    "type": "theorem",
+    "title": "The Disproved Conjecture (Main Result)",
+    "content": "**Erdős's conjecture was FALSE.** The axiom states the negation of:\n\n'For all k > 0 and N ≥ p_{k-1}, the maximum equals |FirstPrimesMultiples N k|'\n\nAhlswede and Khachatrian found that at k=212, you can construct a larger k-weakly divisible set than the prime multiples.\n\n**Why an axiom?** The counterexample construction is highly technical, involving careful analysis of which numbers can be added to the prime multiples without creating k+1 pairwise coprimes.",
+    "mathContext": "The condition `N ≥ (k-1).nth Nat.Prime` ensures N is at least as large as the (k-1)-th prime, so there are enough numbers to work with.\n\nThe `¬(∀ ...)` form states the conjecture is false—there exist k, N where the equality fails.",
+    "significance": "critical",
+    "relatedConcepts": ["axiom", "counterexample", "erdos"]
+  },
+  {
+    "id": "ann-e56-boundary-theorems",
+    "proofId": "erdos-56",
+    "range": {
+      "startLine": 111,
+      "endLine": 121
+    },
+    "type": "theorem",
+    "title": "Verified Boundary Cases",
+    "content": "Two boundary theorems that we can prove:\n\n1. **N = 0**: MaxWeaklyDivisible 0 k = 0 (empty interval, only empty set exists)\n2. **k = 0**: MaxWeaklyDivisible N 0 = 0 (only empty set is 0-weakly divisible)\n\nThese confirm our definitions behave correctly at edge cases.",
+    "mathContext": "The N=0 case uses `Nat.sSup_def` to evaluate the supremum of the empty set. The k=0 case uses our earlier lemma `not_weaklyDivisible_zero` to show only ∅ qualifies.",
+    "significance": "supporting",
+    "relatedConcepts": ["boundary-cases", "verification"]
+  },
+  {
+    "id": "ann-e56-examples",
+    "proofId": "erdos-56",
+    "range": {
+      "startLine": 123,
+      "endLine": 132
+    },
+    "type": "example",
+    "title": "Concrete Verification: Even Numbers",
+    "content": "We verify concretely that **2 and 4 are not coprime** (their gcd is 2, not 1).\n\nThis illustrates the key idea: even numbers share factor 2, so they can never be pairwise coprime. This is why multiples of primes form weakly divisible sets.\n\n**gcd(2, 4) = 2** is computed by `native_decide`, which evaluates the expression directly in the kernel.",
+    "mathContext": "Using `native_decide` for concrete computations is efficient—Lean compiles the expression and runs it natively rather than building a proof term.\n\n`Nat.Coprime a b` is defined as `Nat.gcd a b = 1`.",
+    "significance": "supporting",
+    "relatedConcepts": ["native-decide", "gcd", "coprime"]
+  }
+]

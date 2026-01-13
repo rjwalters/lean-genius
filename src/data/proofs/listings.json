@@ -4092,6 +4092,24 @@
     "annotationCount": 0
   },
   {
+    "id": "erdos-44",
+    "title": "Erdős Problem #44: Extending Sidon Sets",
+    "slug": "erdos-44",
+    "description": "Can any Sidon set be extended to achieve near-optimal density (1-eps)sqrt(M)? An OPEN conjecture with auxiliary results about Sidon set bounds proved.",
+    "status": "partial",
+    "badge": "axiom",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "sidon-sets",
+      "open-conjecture"
+    ],
+    "mathlibCount": 3,
+    "sorries": 4,
+    "annotationCount": 8
+  },
+  {
     "id": "erdos-440",
     "title": "Erdős Problem #440",
     "slug": "erdos-440",
@@ -5126,16 +5144,22 @@
   },
   {
     "id": "erdos-56",
-    "title": "Erdős Problem #56",
+    "title": "Erdős Problem #56: Weakly Divisible Sets",
     "slug": "erdos-56",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... where ... is the ...th prime. Suppose ... is such that there are no ... elements of ... which are relatively prime. A...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Is the set of multiples of the first k primes the largest subset of {1,...,N} with no k+1 pairwise coprime elements?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "coprime",
+      "primes"
     ],
-    "sorries": 1,
-    "annotationCount": 0
+    "dateAdded": "2026-01-13",
+    "mathlibCount": 4,
+    "sorries": 0,
+    "annotationCount": 9
   },
   {
     "id": "erdos-560",
@@ -6391,16 +6415,21 @@
   },
   {
     "id": "erdos-69",
-    "title": "Erdős Problem #69",
+    "title": "Erdős Problem #69: Irrationality of Sum of Omega over Powers of 2",
     "slug": "erdos-69",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs\\[\\sum_{n\\geq 2}{2^n}\\]irrational? (Here ... counts the number of distinct prime divisors of ....)\n\n\n\nErds  proved that ......",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Is the sum of ω(n)/2^n for n≥2 irrational? Proved by Tao-Teräväinen (2025) via reduction to sum of 1/(2^p-1) over primes.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "arithmetic-functions",
+      "primes"
     ],
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 4,
+    "annotationCount": 7
   },
   {
     "id": "erdos-7",

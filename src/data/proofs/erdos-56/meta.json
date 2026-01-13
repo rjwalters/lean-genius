@@ -1,33 +1,100 @@
 {
   "id": "erdos-56",
-  "title": "Erdős Problem #56",
+  "title": "Erdős Problem #56: Weakly Divisible Sets",
   "slug": "erdos-56",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... where ... is the ...th prime. Suppose ... is such that there are no ... elements of ... which are relatively prime. A...",
+  "description": "Is the set of multiples of the first k primes the largest subset of {1,...,N} with no k+1 pairwise coprime elements?",
   "meta": {
-    "author": "Unknown",
+    "author": "Ahlswede, Khachatrian (1994, 1995)",
     "sourceUrl": "https://erdosproblems.com/56",
-    "date": "",
-    "status": "pending",
+    "date": "1994",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos56Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "wip",
-    "sorries": 1,
+    "tags": ["erdos", "number-theory", "combinatorics", "coprime", "primes"],
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 56,
     "erdosUrl": "https://erdosproblems.com/56",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-13",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for natural numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.powersetCard",
+        "description": "Subsets of a fixed cardinality",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality (gcd = 1) for natural numbers",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.nth",
+        "description": "The n-th element satisfying a predicate",
+        "module": "Mathlib.Data.Nat.Nth"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of k-weakly divisible sets in Lean 4",
+      "Definition of MaxWeaklyDivisible as supremum over valid subsets",
+      "Verified boundary cases: empty sets, k=0, N=0",
+      "Concrete verification that gcd(2,4) = 2 (even numbers share factors)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #56 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N\\geq p_k$ where $p_k$ is the $k$th prime. Suppose $A\\subseteq \\{1,\\ldots,N\\}$ is such that there are no $k+1$ elements of $A$ which are relatively prime. An example is the set of all multiples of the first $k$ primes. Is this the largest such set?\n\n\n\nThis was disproved for $k=212$ by Ahlswede and Khachatrian \\cite{AhKh94}, who suggest that their methods can disprove this for arbitrarily large $k$.\n\nErd\\H{o}s later asked (\\cite{Er92b} and \\cite{Er95}) if the conjecture remains true provided $N\\geq (1+o(1))p_k^2$ (or, in a weaker form, whether it is true for $N$ sufficiently large depending on $k$).\n\nAhlswede and Khachatrian \\cite{AhKh95} proved this latter claim: in other words, for any fixed $k$, if $N$ is sufficiently large depending on $k$ then the largest such set is the set of all multiples of the first $k$ primes.\n\nSee also [534].\n\nThis is discussed in problem B26 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[AhKh94] Ahlswede, Rudolf and Khachatrian, Levon H., On extremal sets without coprimes. Acta Arith. (1994), 89-99.\n\n[AhKh95] Ahlswede, Rudolf and Khachatrian, Levon H., Maximal sets of numbers not containing {$k+1$} pairwise\ncoprime integers. Acta Arith. (1995), 77--100.\n\n[Er92b] Erd\\H{o}s, Paul, Some of my favourite problems in various branches of combinatorics. Matematiche (Catania) (1992), 231-240.\n\n[Er95] Erd\\H{o}s, Paul, Some of my favourite problems in number theory, combinatorics, and geometry. Resenhas (1995), 165-186.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #56 addresses a fundamental question in combinatorial number theory: how large can a subset of {1,...,N} be if we forbid too many pairwise coprime elements?\n\nThe conjecture seemed natural: take all multiples of the first k primes (2, 3, 5, ..., p_k). Any k+1 numbers from this set must include two that share a prime factor, so they can't all be pairwise coprime. Erdős conjectured this construction was optimal.\n\nSurprisingly, Ahlswede and Khachatrian disproved this in 1994, finding a counterexample at k=212. However, they later proved (1995) that Erdős's conjecture IS true when N is sufficiently large relative to k. This reveals a subtle phase transition in the problem's behavior.",
+    "problemStatement": "Let $N \\geq p_k$ where $p_k$ is the $k$-th prime. Define a set $A \\subseteq \\{1,\\ldots,N\\}$ to be **$k$-weakly divisible** if no $k+1$ elements of $A$ are pairwise coprime.\n\nThe natural example is $M_k(N)$ = multiples of the first $k$ primes in $\\{1,\\ldots,N\\}$.\n\n**Conjecture**: $M_k(N)$ has maximum cardinality among all $k$-weakly divisible subsets.\n\n**Answer**: FALSE in general (disproved for $k=212$), but TRUE for $N$ sufficiently large.",
+    "proofStrategy": "We formalize the definitions and state the main result as an axiom. The key components are:\n\n1. **WeaklyDivisible k A**: For every (k+1)-subset of A, at least two elements share a common factor\n\n2. **MaxWeaklyDivisible N k**: The supremum of cardinalities over all valid subsets\n\n3. **FirstPrimesMultiples N k**: The conjectured optimal set\n\nThe axiom states Erdős's conjecture is false. The counterexample construction by Ahlswede-Khachatrian involves careful analysis of which numbers in {1,...,N} can be added beyond the prime multiples while maintaining the coprimality constraint.",
+    "keyInsights": [
+      "**Weakly divisible sets**: A set where any k+1 elements must include two with a common factor. This generalizes the idea that multiples of a prime can't be mutually coprime.",
+      "**The prime multiples construction**: Taking all multiples of p_1, p_2, ..., p_k gives a k-weakly divisible set, since any k+1 numbers must hit some prime twice by pigeonhole.",
+      "**Why the conjecture fails**: For certain k and N near the boundary (N close to p_k), one can carefully add numbers coprime to all first k primes without creating k+1 pairwise coprimes.",
+      "**The large-N regime**: When N >> p_k^2, there are so many multiples of each prime that the boundary effects disappear, and the conjecture holds.",
+      "**Connection to extremal combinatorics**: This is a Turán-type problem asking for the maximum size of a set avoiding a forbidden configuration (k+1 pairwise coprimes)."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Module documentation explaining the problem and Mathlib imports for primes, finsets, and coprimality."
+    },
+    {
+      "id": "definitions",
+      "title": "Key Definitions",
+      "startLine": 27,
+      "endLine": 75,
+      "summary": "Defines WeaklyDivisible, MaxWeaklyDivisible, and FirstPrimesMultiples with doc comments."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Result (Disproved)",
+      "startLine": 77,
+      "endLine": 103,
+      "summary": "States Erdős's conjecture and its negation as an axiom, with justification."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 105,
+      "endLine": 134,
+      "summary": "Boundary cases and concrete verification that even numbers share factors."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #56, which asks whether the set of multiples of the first k primes is the largest k-weakly divisible subset of {1,...,N}. The answer is NO in general—Ahlswede and Khachatrian found counterexamples—but YES when N is sufficiently large. We state the disproof as an axiom and verify basic properties of the definitions.",
+    "implications": "This result illustrates how combinatorial extremal problems can have surprising phase transitions. The 'obvious' construction isn't always optimal, especially near boundaries. The techniques developed by Ahlswede and Khachatrian connect to intersection theorems in combinatorics (Erdős-Ko-Rado type results).",
+    "openQuestions": [
+      "What is the smallest k for which the conjecture fails?",
+      "Can we characterize exactly when M_k(N) is optimal?",
+      "What is the asymptotic behavior of Max/|M_k(N)| for fixed k as N grows?"
+    ]
   }
 }
