@@ -41,26 +41,6 @@
     "tractability": 9
   },
   {
-    "slug": "three-squares-theorem",
-    "title": "Legendre's Three Squares Theorem",
-    "description": "n is sum of 3 squares iff n ≠ 4^a(8b+7).",
-    "phase": "NEW",
-    "status": "active",
-    "tier": "A",
-    "path": "full",
-    "tags": [
-      "number-theory",
-      "squares",
-      "classical"
-    ],
-    "started": "2026-01-01T19:54:13.472Z",
-    "lastUpdate": "2026-01-01T19:54:13.472Z",
-    "attemptCount": 0,
-    "approachCount": 0,
-    "significance": 7,
-    "tractability": 6
-  },
-  {
     "slug": "riemann-hypothesis",
     "title": "Riemann Hypothesis",
     "description": "MILLENNIUM PRIZE: All non-trivial zeros of ζ(s) have Re(s)=1/2.",
@@ -434,113 +414,1822 @@
     "tractability": 1
   },
   {
-    "slug": "erdos-5-prime-gaps",
-    "title": "Erdős #5: Prime Gap Limit Points",
-    "description": "PROGRESS: Created Erdos5PrimeGaps.",
-    "phase": "NEW",
-    "status": "active",
-    "tier": "A",
-    "path": "full",
-    "tags": [
-      "number-theory",
-      "primes",
-      "prime-gaps",
-      "erdos-problem",
-      "open-conjecture"
-    ],
-    "started": "2026-01-12T09:10:09.148Z",
-    "lastUpdate": "2026-01-12T09:10:09.148Z",
-    "attemptCount": 0,
-    "approachCount": 0,
-    "significance": 7,
-    "tractability": 6
-  },
-  {
-    "slug": "erdos-10-prime-powers-of-2",
-    "title": "Erdős #10: Prime Plus Powers of 2",
-    "description": "IN-PROGRESS: Created Erdos10PrimePlusPowers.",
-    "phase": "NEW",
-    "status": "active",
-    "tier": "A",
-    "path": "full",
-    "tags": [
-      "number-theory",
-      "primes",
-      "additive",
-      "erdos-problem",
-      "open-conjecture"
-    ],
-    "started": "2026-01-12T09:10:09.148Z",
-    "lastUpdate": "2026-01-12T09:10:09.148Z",
-    "attemptCount": 0,
-    "approachCount": 0,
-    "significance": 7,
-    "tractability": 6
-  },
-  {
-    "slug": "erdos-14-unique-sums",
-    "title": "Erdős #14: Unique Representation Sums",
-    "description": "PROGRESS: Created Erdos14UniqueSums.",
+    "slug": "erdos-151",
+    "title": "Erdős #151",
+    "description": "Forum",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
     "path": "full",
     "tags": [
-      "number-theory",
-      "additive-combinatorics",
-      "sidon-sets",
-      "erdos-problem",
-      "open-conjecture"
+      "erdos"
     ],
-    "started": "2026-01-12T09:10:09.148Z",
-    "lastUpdate": "2026-01-12T09:10:09.148Z",
+    "started": "2026-01-12T09:56:05.234Z",
     "attemptCount": 0,
     "approachCount": 0,
     "significance": 6,
     "tractability": 4
   },
   {
-    "slug": "erdos-25-number-theory",
-    "title": "Erdős #25: Sequence Divisibility",
-    "description": "PROGRESS: Created Erdos25LogDensity.",
+    "slug": "erdos-152",
+    "title": "Erdős #152",
+    "description": "Forum",
     "phase": "NEW",
     "status": "active",
     "tier": "A",
     "path": "full",
     "tags": [
-      "number-theory",
-      "sequences",
-      "erdos-problem",
-      "open-conjecture"
+      "erdos"
     ],
-    "started": "2026-01-12T09:10:09.149Z",
-    "lastUpdate": "2026-01-12T09:10:09.149Z",
+    "started": "2026-01-12T09:56:05.235Z",
     "attemptCount": 0,
     "approachCount": 0,
     "significance": 7,
-    "tractability": 6
+    "tractability": 5
   },
   {
-    "slug": "erdos-28-additive-bases",
-    "title": "Erdős #28: Erdős-Turán Additive Bases ($500)",
-    "description": "PROGRESS: Created Erdos28AdditiveBases.",
+    "slug": "erdos-153",
+    "title": "Erdős #153",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T09:56:05.235Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-155",
+    "title": "Erdős #155",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T09:56:05.235Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-156",
+    "title": "Erdős #156",
+    "description": "Forum",
     "phase": "NEW",
     "status": "active",
     "tier": "B",
     "path": "full",
     "tags": [
-      "number-theory",
-      "additive-combinatorics",
-      "additive-bases",
-      "erdos-problem",
-      "open-conjecture",
-      "prize-problem"
+      "erdos"
     ],
-    "started": "2026-01-12T09:10:09.149Z",
-    "lastUpdate": "2026-01-12T09:10:09.149Z",
+    "started": "2026-01-12T09:56:05.235Z",
     "attemptCount": 0,
     "approachCount": 0,
     "significance": 6,
     "tractability": 4
+  },
+  {
+    "slug": "erdos-159",
+    "title": "Erdős #159",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T09:56:05.236Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-160",
+    "title": "Erdős #160",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T09:56:05.236Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-162",
+    "title": "Erdős #162",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T09:56:05.236Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-180",
+    "title": "Erdős #180",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T10:00:45.598Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-181",
+    "title": "Erdős #181",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T10:00:45.598Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-183",
+    "title": "Erdős #183",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T10:00:45.598Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 5,
+    "tractability": 3
+  },
+  {
+    "slug": "erdos-200",
+    "title": "Erdős #200",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T10:06:12.675Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-201",
+    "title": "Erdős #201",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T10:06:12.675Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-190",
+    "title": "Erdős #190",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T16:01:50.836Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-193",
+    "title": "Erdős #193",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T16:01:50.836Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-196",
+    "title": "Erdős #196",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T16:01:50.837Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-197",
+    "title": "Erdős #197",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T16:01:50.837Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-203",
+    "title": "Erdős #203",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T16:01:50.837Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-218",
+    "title": "Erdős #218",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T16:05:28.188Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-234",
+    "title": "Erdős #234",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T16:08:36.613Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-238",
+    "title": "Erdős #238",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T16:08:36.613Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-241",
+    "title": "Erdős #241",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T16:21:33.088Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-249",
+    "title": "Erdős #249",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T22:27:32.550Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-261",
+    "title": "Erdős #261",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T22:30:27.389Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 5,
+    "tractability": 3
+  },
+  {
+    "slug": "erdos-265",
+    "title": "Erdős #265",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T22:30:27.389Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-269",
+    "title": "Erdős #269",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T22:30:27.390Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-273",
+    "title": "Erdős #273",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T22:33:22.718Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-276",
+    "title": "Erdős #276",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T22:33:22.719Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-278",
+    "title": "Erdős #278",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T22:33:22.719Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-279",
+    "title": "Erdős #279",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T22:33:22.719Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-281",
+    "title": "Erdős #281",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T22:33:22.720Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-282",
+    "title": "Erdős #282",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T22:33:22.720Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 5,
+    "tractability": 3
+  },
+  {
+    "slug": "erdos-288",
+    "title": "Erdős #288",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T22:42:54.055Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-289",
+    "title": "Erdős #289",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T22:42:54.055Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-301",
+    "title": "Erdős #301",
+    "description": "Let f(N)\" role=\"presentation\" style=\"position: relative;\">f(N)f(N)f(N) be the size of the largest A&#x2286;{1,&#x2026;,N}\" role=\"presentation\" style=\"position: relative;\">A⊆{1,…,N}A⊆{1,…,N}A\\subseteq \\{1,\\ldots,N\\} such that there are no solutions to1a&#x2260;1b1+&#x22EF;+1bk\" role=\"presentation\" style=\"text-align: center; position: relative;\">1a≠1b1+⋯+1bk1a≠1b1+⋯+1bk",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T23:48:29.416Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-311",
+    "title": "Erdős #311",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T23:51:53.284Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-313",
+    "title": "Erdős #313",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T23:51:53.284Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-317",
+    "title": "Erdős #317",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T23:51:53.285Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-319",
+    "title": "Erdős #319",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T23:51:53.285Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-312",
+    "title": "Erdős #312",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T23:55:09.603Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-321",
+    "title": "Erdős #321",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T23:55:09.603Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-323",
+    "title": "Erdős #323",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T23:55:09.603Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-324",
+    "title": "Erdős #324",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T23:55:09.604Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-327",
+    "title": "Erdős #327",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T23:55:09.604Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-330",
+    "title": "Erdős #330",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T23:55:09.604Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-332",
+    "title": "Erdős #332",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-12T23:55:09.604Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-335",
+    "title": "Erdős #335",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T00:04:50.018Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-341",
+    "title": "Erdős #341",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T00:04:50.019Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-342",
+    "title": "Erdős #342",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T00:04:50.019Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-345",
+    "title": "Erdős #345",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T00:53:52.153Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-346",
+    "title": "Erdős #346",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T00:53:52.153Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-347",
+    "title": "Erdős #347",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T00:53:52.153Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-349",
+    "title": "Erdős #349",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T00:53:52.154Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-358",
+    "title": "Erdős #358",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T00:53:52.154Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 5,
+    "tractability": 3
+  },
+  {
+    "slug": "erdos-348",
+    "title": "Erdős #348",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T00:56:39.043Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-361",
+    "title": "Erdős #361",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T00:56:39.043Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-369",
+    "title": "Erdős #369",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T00:56:39.044Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-367",
+    "title": "Erdős #367",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T00:59:36.242Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-374",
+    "title": "Erdős #374",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T00:59:36.242Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-380",
+    "title": "Erdős #380",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T00:59:36.242Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-382",
+    "title": "Erdős #382",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T00:59:36.242Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-383",
+    "title": "Erdős #383",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T00:59:36.243Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-385",
+    "title": "Erdős #385",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T00:59:36.243Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-386",
+    "title": "Erdős #386",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T00:59:36.244Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-389",
+    "title": "Erdős #389",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T01:10:23.917Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-390",
+    "title": "Erdős #390",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T01:10:23.917Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-388",
+    "title": "Erdős #388",
+    "description": "Can one classify all solutions of&#x220F;1&#x2264;i&#x2264;k1(m1+i)=&#x220F;1&#x2264;j&#x2264;k2(m2+j)\" role=\"presentation\" style=\"text-align: center; position: relative;\">∏1≤i≤k1(m1+i)=∏1≤j≤k2(m2+j)∏1≤i≤k1(m1+i)=∏1≤j≤k2(m2+j)",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T02:35:40.568Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-396",
+    "title": "Erdős #396",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T02:35:40.568Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-400",
+    "title": "Erdős #400",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T02:35:40.569Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-404",
+    "title": "Erdős #404",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T02:35:40.569Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-406",
+    "title": "Erdős #406",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T02:35:40.574Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-409",
+    "title": "Erdős #409",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T02:38:27.586Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-410",
+    "title": "Erdős #410",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T02:38:27.587Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-411",
+    "title": "Erdős #411",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T02:38:27.587Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 5,
+    "tractability": 3
+  },
+  {
+    "slug": "erdos-414",
+    "title": "Erdős #414",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T02:38:27.587Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-417",
+    "title": "Erdős #417",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T02:38:27.587Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-421",
+    "title": "Erdős #421",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T02:38:27.587Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-413",
+    "title": "Erdős #413",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T02:41:06.675Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 5,
+    "tractability": 3
+  },
+  {
+    "slug": "erdos-422",
+    "title": "Erdős #422",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T02:41:06.676Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-423",
+    "title": "Erdős #423",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T02:41:06.676Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-424",
+    "title": "Erdős #424",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T02:41:06.676Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-428",
+    "title": "Erdős #428",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T02:41:06.676Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-430",
+    "title": "Erdős #430",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T02:41:06.677Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-432",
+    "title": "Erdős #432",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T02:41:06.677Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-477",
+    "title": "Erdős #477",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T03:37:39.478Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-478",
+    "title": "Erdős #478",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T03:37:39.479Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 5,
+    "tractability": 3
+  },
+  {
+    "slug": "erdos-483",
+    "title": "Erdős #483",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T03:37:39.479Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 5,
+    "tractability": 3
+  },
+  {
+    "slug": "erdos-488",
+    "title": "Erdős #488",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T03:37:39.479Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-450",
+    "title": "Erdős #450",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T04:11:10.511Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-451",
+    "title": "Erdős #451",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T04:11:10.511Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-456",
+    "title": "Erdős #456",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T04:11:10.511Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-457",
+    "title": "Erdős #457",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T04:11:10.512Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-460",
+    "title": "Erdős #460",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T04:11:10.512Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-461",
+    "title": "Erdős #461",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T04:11:10.512Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-462",
+    "title": "Erdős #462",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T04:11:10.512Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-463",
+    "title": "Erdős #463",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T04:11:10.513Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-467",
+    "title": "Erdős #467",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T04:11:10.513Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-468",
+    "title": "Erdős #468",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T04:11:10.513Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-469",
+    "title": "Erdős #469",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T04:11:10.513Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-472",
+    "title": "Erdős #472",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T04:11:10.513Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
+  },
+  {
+    "slug": "erdos-513",
+    "title": "Erdős #513",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T04:39:49.622Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-524",
+    "title": "Erdős #524",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T04:39:49.622Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-530",
+    "title": "Erdős #530",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T04:39:49.623Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 5,
+    "tractability": 3
+  },
+  {
+    "slug": "erdos-533",
+    "title": "Erdős #533",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T04:39:49.623Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-536",
+    "title": "Erdős #536",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T04:39:49.623Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-538",
+    "title": "Erdős #538",
+    "description": "Forum",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T04:39:49.623Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-544",
+    "title": "Erdős #544",
+    "description": "Show that\\[R(3,k+1)-R(3,k)\\to\\infty\\]as $k\\to \\infty$. Similarly, prove or disprove that\\[R(3,k+1)-R(3,k)=o(k).\\] A problem of Erdős and Sós. This problem is #8 in Ramsey Theory in the graphs problem collection. See also [165] and [1014]. View the LaTeX source",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "A",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-13T06:07:05.459Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 7,
+    "tractability": 5
   }
 ]

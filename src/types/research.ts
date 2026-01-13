@@ -221,6 +221,16 @@ export interface KnowledgeItem {
 }
 
 /**
+ * An archived research session
+ */
+export interface ArchivedSession {
+  filename: string      // e.g., "2026-01-01-s01.md"
+  date: string          // e.g., "2026-01-01"
+  sessionNumber: number // e.g., 1
+  markdown: string      // Full session content
+}
+
+/**
  * Accumulated knowledge from research
  */
 export interface ResearchKnowledge {
@@ -230,6 +240,7 @@ export interface ResearchKnowledge {
   mathlibGaps: string[]
   nextSteps: string[]
   markdown?: string  // Full knowledge.md content for rich rendering
+  archivedSessions?: ArchivedSession[]  // Older sessions archived to sessions/ directory
 }
 
 /**

@@ -65,6 +65,13 @@ interface ResearchListing {
   tractability?: number
 }
 
+interface ArchivedSession {
+  filename: string
+  date: string
+  sessionNumber: number
+  markdown: string
+}
+
 interface ResearchProblem {
   slug: string
   title: string
@@ -103,6 +110,7 @@ interface ResearchProblem {
     mathlibGaps: string[]
     nextSteps: string[]
     markdown?: string  // Full knowledge.md content for rich rendering
+    archivedSessions?: ArchivedSession[]  // Older sessions from sessions/ directory
   }
   approaches: {
     id: string
@@ -449,6 +457,44 @@ function parseApproaches(approachesDir: string): ResearchProblem['approaches'] {
 }
 
 /**
+ * Read archived sessions from sessions/ subdirectory
+ */
+function readArchivedSessions(sessionsDir: string): ArchivedSession[] {
+  if (!fs.existsSync(sessionsDir)) return []
+
+  const sessions: ArchivedSession[] = []
+  const files = fs.readdirSync(sessionsDir)
+    .filter(f => f.endsWith('.md'))
+    .sort()  // Sort chronologically by filename
+
+  for (const filename of files) {
+    const filePath = path.join(sessionsDir, filename)
+    const content = fs.readFileSync(filePath, 'utf-8')
+
+    // Parse filename: 2026-01-01-s01.md -> date=2026-01-01, sessionNumber=1
+    const match = filename.match(/^(\d{4}-\d{2}-\d{2})-s(\d+)\.md$/)
+    if (match) {
+      sessions.push({
+        filename,
+        date: match[1],
+        sessionNumber: parseInt(match[2], 10),
+        markdown: content
+      })
+    } else {
+      // Fallback for files without standard naming
+      sessions.push({
+        filename,
+        date: 'unknown',
+        sessionNumber: sessions.length + 1,
+        markdown: content
+      })
+    }
+  }
+
+  return sessions
+}
+
+/**
  * Infer value tier from tractability and significance
  */
 function inferTier(significance?: number, tractability?: number): ValueTier {
@@ -497,6 +543,14 @@ function processProblem(slug: string, entry: RegistryEntry): ResearchProblem | n
 
   const currentState = parseState(stateMd, entry)
   const knowledge = parseKnowledge(knowledgeMd)
+
+  // Read archived sessions from sessions/ subdirectory
+  const sessionsDir = path.join(problemDir, 'sessions')
+  const archivedSessions = readArchivedSessions(sessionsDir)
+  if (archivedSessions.length > 0) {
+    knowledge.archivedSessions = archivedSessions
+  }
+
   const approaches = parseApproaches(path.join(problemDir, 'approaches'))
 
   return {

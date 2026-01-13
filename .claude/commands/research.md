@@ -32,6 +32,27 @@ jq -r '.candidates | group_by(.status) | map({status: .[0].status, count: length
 
 ---
 
+## Session Preamble (MANDATORY)
+
+**Before ANY other work, complete these steps:**
+
+### Step 0: Check Aristotle Results
+
+```
+Use the aristotle_check_results MCP tool to:
+- Retrieve any completed proofs from previous sessions
+- See what's still pending
+- Avoid duplicating work Aristotle already did
+```
+
+If completed proofs are found:
+1. Read the retrieved solutions
+2. Integrate them into the proof files
+3. Update knowledge.json with the progress
+4. THEN proceed to problem selection
+
+---
+
 ## Knowledge-Based Prioritization (MANDATORY)
 
 **Problems with weak knowledge accumulation get priority.** Before selecting any problem, assess its knowledge score.
@@ -169,12 +190,30 @@ fi
 | **BLOCKED** | Needs > 1000 lines foundational work (after BUILD assessment) | `blocked` |
 | **SKIP** | Not worth pursuing | `skipped` |
 
-### Step 5: Implement & Release Lock
+### Step 5: Implement with Aristotle Support
+
+**During implementation, use Aristotle strategically:**
+
+1. **Classify each sorry** as TRIVIAL, HARD, or OPEN
+2. **For HARD sorries:**
+   - If stuck > 10 min → `aristotle_submit` async
+   - Continue working on other sorries while Aristotle runs
+   - Check `aristotle_status` every 5-10 min
+3. **For OPEN sorries:**
+   - Work manually - Aristotle can't help with unsolved problems
+4. **For TRIVIAL sorries:**
+   - Try manually first (should be quick)
+   - Use `aristotle_prove` sync if you want instant answer
+
+### Step 6: Release Lock & Submit Overnight Jobs
 
 ```bash
 # Update pool, release lock
 jq '(.candidates[] | select(.id == "PROBLEM_ID")).status = "STATUS"' research/candidate-pool.json > tmp.json && mv tmp.json research/candidate-pool.json
 rm -rf "research/claims/${PROBLEM_ID}.lock"
+
+# If HARD sorries remain, submit for overnight processing
+./research/scripts/aristotle-submit.sh proofs/Proofs/File.lean problem-id "End of session"
 ```
 
 ---
@@ -217,12 +256,46 @@ Search for new knowledge:
 
 1. Propose NEW approach (different from previous attempts)
 2. Apply Pre-Work Assessment
-3. Implement meaningful work
-4. Document outcome in knowledge.md
+3. **Classify sorries and delegate to Aristotle:**
+   - HARD sorries → `aristotle_submit` async, work on OPEN ones
+   - OPEN sorries → Work manually (Aristotle can't help)
+   - Check `aristotle_status` periodically
+4. Implement meaningful work
+5. Document outcome in knowledge.md
+6. Submit remaining HARD sorries for overnight if session ends
 
 ---
 
 ## Documentation
+
+### Hierarchical Knowledge Structure
+
+**Problem knowledge is stored hierarchically to manage large histories:**
+
+```
+research/problems/<id>/
+├── knowledge.md          # Summary + recent sessions (≤5)
+├── sessions/             # Archived session files
+│   ├── 2026-01-01-s01.md
+│   ├── 2026-01-01-s02.md
+│   └── ...
+└── state.md              # Current proof state (optional)
+```
+
+**Rules:**
+1. `knowledge.md` keeps only the **last 5 sessions** + problem summary
+2. Older sessions are archived to `sessions/` subdirectory
+3. Archive when knowledge.md exceeds **500 lines** or **10 sessions**
+4. Use `.loom/scripts/archive-sessions.sh <problem-id>` to archive
+
+### Archive Sessions
+
+```bash
+# Archive old sessions for a problem (keeps last 5)
+.loom/scripts/archive-sessions.sh pnp-barriers
+
+# Manual archive: move session block to sessions/YYYY-MM-DD-sNN.md
+```
 
 ### Update Problem Knowledge (MANDATORY)
 
@@ -259,24 +332,33 @@ jq '.knowledge.progressSummary = "PROGRESS: Proved necessity direction"' "$FILE"
 | `nextSteps` | Concrete next actions for future sessions |
 | `progressSummary` | One-line status: BLOCKED, PROGRESS, COMPLETE |
 
-### Update knowledge.md
+### Session File Format
+
+**For main knowledge.md (recent sessions):**
 
 ```markdown
-## Session [DATE]
+## Session [DATE] (Session N) - [Title]
 
 **Mode**: FRESH | REVISIT
 **Outcome**: [completed | progress | blocked | scouted]
 
 ### What I Did
-[Concrete actions]
+[Concrete actions - bullet points]
 
 ### Key Findings
 - [insight 1]
 - [insight 2]
 
+### Files Modified
+- [paths]
+
 ### Next Steps
 [What to try next]
 ```
+
+**For archived sessions (sessions/YYYY-MM-DD-sNN.md):**
+
+Same format, but standalone file with full context.
 
 ### End-of-Session Report
 
@@ -349,9 +431,9 @@ When Mathlib lacks something, assess before blocking:
 
 ---
 
-## Aristotle Integration (Overnight Runs)
+## Aristotle Integration
 
-Aristotle can prove HARD theorems given enough time (e.g., Erdős #728 took 6 hours for 1416 lines of proof).
+Aristotle is a powerful proof search tool. Use it strategically alongside manual proof work.
 
 ### Tool Roles
 
@@ -364,60 +446,135 @@ Aristotle can prove HARD theorems given enough time (e.g., Erdős #728 took 6 ho
 - Aristotle formalizes KNOWN mathematics (proof exists somewhere)
 - Claude attempts UNKNOWN mathematics (creative work needed)
 
-### Sorry Classification (for Aristotle submission)
+### Sorry Classification
 
 | Classification | Description | Send to Aristotle? |
 |----------------|-------------|-------------------|
-| **TRIVIAL** | Direct computation | Yes (fast) |
-| **HARD** | Known result, needs formalization | Yes (overnight OK) |
-| **OPEN** | Unsolved conjecture | No - work on it ourselves! |
+| **TRIVIAL** | Direct computation | Yes (fast, 1-5 min) |
+| **HARD** | Known result, needs formalization | Yes (may take hours) |
+| **OPEN** | Unsolved conjecture | **NEVER** - work on it ourselves! |
 
-### Why OPEN Problems Shouldn't Go to Aristotle
+---
 
-Aristotle does **proof search** - it looks for proofs that exist. For OPEN problems:
-- No proof exists to find
-- Aristotle will spin forever at low progress
-- Our time is better spent with Claude attempting creative approaches
+## Session Start: Check Aristotle Results (MANDATORY)
 
-```lean
--- OPEN: Send to Claude for creative work, not Aristotle
-theorem erdos_340 (ε : ℝ) (hε : ε > 0) :
-    ∃ C, ∀ᶠ N in atTop, N^(1/2 - ε) ≤ C * greedySidonCount N := by sorry
+**Every research session MUST begin by checking for completed Aristotle jobs:**
 
--- HARD: Perfect for Aristotle - known result needs formalization
-theorem sidon_lower_bound (A : Finset ℕ) (hA : IsSidon A) :
-    A.max' hne ≥ A.card * (A.card - 1) / 2 := by sorry
+```
+Use aristotle_check_results to:
+1. Auto-retrieve any completed proofs from overnight/previous sessions
+2. See status of pending jobs
+3. Plan around what Aristotle is working on
 ```
 
-### Overnight Submission Workflow
+This prevents duplicate work and integrates overnight progress immediately.
+
+---
+
+## Real-Time Aristotle Usage
+
+### When to Submit During Active Work
+
+| Situation | Action |
+|-----------|--------|
+| Stuck on a proof goal > 10 min | Submit async, continue other work |
+| Multiple independent HARD sorries | Submit all in parallel |
+| Need a helper lemma | Let Aristotle prove it while you work on main theorem |
+| Blocked by tedious case analysis | Perfect for Aristotle |
+| Creative/novel approach needed | Work manually - Aristotle can't innovate |
+
+### Async Workflow (Recommended)
+
+```
+1. Identify HARD sorry that's blocking progress
+2. Use aristotle_submit → get project_id
+3. Continue working on other parts of the proof
+4. Check aristotle_status periodically (every 5-10 min)
+5. When COMPLETE, use aristotle_retrieve
+6. Integrate solution and continue
+```
+
+This keeps you productive while Aristotle grinds on tactical proofs.
+
+### Sync Workflow (Quick Proofs)
+
+For TRIVIAL sorries or when you need an immediate answer:
+
+```
+Use aristotle_prove directly:
+- Waits for completion (typically 1-5 minutes)
+- Returns the solved proof immediately
+- Good for simple lemmas you expect to be fast
+```
+
+---
+
+## Available MCP Tools
+
+| Tool | Use Case | Blocking? |
+|------|----------|-----------|
+| `aristotle_prove` | Quick proofs, need answer now | Yes |
+| `aristotle_submit` | Long proofs, want to continue working | No |
+| `aristotle_status` | Check progress on async job | No |
+| `aristotle_retrieve` | Get completed solution | No |
+| `aristotle_check_results` | Session start, batch retrieval | No |
+| `aristotle_informal` | Natural language → Lean | Yes |
+| `aristotle_list` | See all your projects | No |
+
+---
+
+## Strategic Delegation Checklist
+
+Before attempting a sorry manually, ask:
+
+1. **Is this OPEN or HARD?**
+   - OPEN → Work on it manually (Aristotle can't help)
+   - HARD → Consider Aristotle
+
+2. **How long will manual proof take?**
+   - < 5 min → Do it yourself
+   - 5-15 min → Your call
+   - > 15 min → Submit to Aristotle, work on something else
+
+3. **Is this on the critical path?**
+   - Yes → Maybe work manually for immediate progress
+   - No → Submit async, prioritize critical work
+
+4. **Do I have other productive work?**
+   - Yes → Submit async, do other work
+   - No → Try manually first, submit if stuck
+
+---
+
+## Parallel Workflow Example
+
+```
+Session starts:
+1. aristotle_check_results → Found 2 completed proofs from last night!
+2. Integrate those solutions
+3. Identify 3 HARD sorries in current file
+4. Submit all 3 with aristotle_submit (get 3 project_ids)
+5. Work on the 1 OPEN sorry manually
+6. Every 10 min: check aristotle_status on the 3 jobs
+7. As jobs complete: retrieve and integrate
+8. End session: any still pending will continue overnight
+```
+
+---
+
+## Overnight Submissions
+
+For complex proofs expected to take hours:
 
 ```bash
-# 1. Review sorries and classify
-grep -n "sorry" proofs/Proofs/YourFile.lean
+# Submit via script for logging
+./research/scripts/aristotle-submit.sh proofs/Proofs/File.lean problem-id "Notes"
 
-# 2. Create provable-only version if needed (exclude OPEN conjectures)
-cp YourFile.lean YourFile-provable.lean
-# Edit to remove/comment OPEN theorems
+# Or via MCP tool
+Use aristotle_submit with the file path
 
-# 3. Submit for overnight processing
-./research/scripts/aristotle-submit.sh proofs/Proofs/YourFile-provable.lean problem-id "Notes"
-
-# 4. Check status next morning
-./research/scripts/aristotle-status.sh
-
-# 5. Retrieve completed solutions
-./research/scripts/aristotle-status.sh --retrieve
+# Next morning: aristotle_check_results auto-retrieves completed work
 ```
-
-### When to Use Aristotle
-
-| Scenario | Action |
-|----------|--------|
-| Multiple HARD sorries | Submit overnight |
-| Stuck on proof search | Let Aristotle try |
-| Simple computations | Submit (fast) |
-| OPEN conjectures | **NEVER submit** |
-| Need result tomorrow | Submit tonight |
 
 ### Success Example: Erdős #728
 
@@ -426,4 +583,14 @@ cp YourFile.lean YourFile-provable.lean
 - **Output:** 1,416 lines of complete proof
 - **Result:** Zero sorries, builds successfully
 
-This demonstrates that patience with HARD problems pays off!
+---
+
+## Anti-Patterns
+
+| Pattern | Why Wrong | Do Instead |
+|---------|-----------|------------|
+| Submit OPEN problems | Aristotle spins forever, wastes API | Work manually |
+| Wait for sync proofs > 5 min | Blocks your session | Use async submit |
+| Never check results | Miss completed work | Check at session start |
+| Submit everything | Wastes resources on easy stuff | Triage first |
+| Manual proof search for hours | Aristotle is better at this | Submit after 10-15 min stuck |

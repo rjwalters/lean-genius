@@ -18,7 +18,8 @@ import {
   Lightbulb,
   BookOpen,
   Beaker,
-  FileText
+  FileText,
+  Archive
 } from 'lucide-react'
 
 export function ResearchProblemPage() {
@@ -27,6 +28,8 @@ export function ResearchProblemPage() {
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState<'overview' | 'approaches' | 'knowledge'>('overview')
   const [expandedApproaches, setExpandedApproaches] = useState<string[]>([])
+  const [expandedSessions, setExpandedSessions] = useState<string[]>([])
+  const [showArchived, setShowArchived] = useState(false)
 
   useEffect(() => {
     if (!slug) return
@@ -46,6 +49,12 @@ export function ResearchProblemPage() {
   const toggleApproach = (id: string) => {
     setExpandedApproaches((prev) =>
       prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id]
+    )
+  }
+
+  const toggleSession = (filename: string) => {
+    setExpandedSessions((prev) =>
+      prev.includes(filename) ? prev.filter((s) => s !== filename) : [...prev, filename]
     )
   }
 
@@ -435,7 +444,73 @@ export function ResearchProblemPage() {
                   <section className="prose prose-invert prose-sm max-w-none">
                     <MarkdownMath>{problem.knowledge.markdown}</MarkdownMath>
                   </section>
-                ) : (
+                ) : null}
+
+                {/* Archived Sessions */}
+                {problem.knowledge.archivedSessions && problem.knowledge.archivedSessions.length > 0 && (
+                  <section className="mt-8 border-t border-border pt-6">
+                    <button
+                      onClick={() => setShowArchived(!showArchived)}
+                      className="w-full flex items-center justify-between p-3 bg-card border border-border rounded-lg hover:bg-muted/50 transition-colors"
+                    >
+                      <div className="flex items-center gap-3">
+                        <Archive className="h-5 w-5 text-muted-foreground" />
+                        <span className="font-medium">Archived Sessions</span>
+                        <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">
+                          {problem.knowledge.archivedSessions.length} older session{problem.knowledge.archivedSessions.length !== 1 ? 's' : ''}
+                        </span>
+                      </div>
+                      {showArchived ? (
+                        <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                      ) : (
+                        <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                      )}
+                    </button>
+
+                    {showArchived && (
+                      <div className="mt-3 space-y-2">
+                        {problem.knowledge.archivedSessions.map((session) => {
+                          const isExpanded = expandedSessions.includes(session.filename)
+                          return (
+                            <div
+                              key={session.filename}
+                              className="bg-card/50 border border-border rounded-lg overflow-hidden"
+                            >
+                              <button
+                                onClick={() => toggleSession(session.filename)}
+                                className="w-full px-4 py-2 flex items-center justify-between hover:bg-muted/30 transition-colors"
+                              >
+                                <div className="flex items-center gap-3">
+                                  <span className="text-sm font-mono text-muted-foreground">
+                                    #{session.sessionNumber}
+                                  </span>
+                                  <span className="text-sm">{session.date}</span>
+                                  <span className="text-xs text-muted-foreground">
+                                    {session.filename}
+                                  </span>
+                                </div>
+                                {isExpanded ? (
+                                  <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                                ) : (
+                                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                                )}
+                              </button>
+                              {isExpanded && (
+                                <div className="px-4 pb-4 border-t border-border/50 pt-3">
+                                  <div className="prose prose-invert prose-sm max-w-none">
+                                    <MarkdownMath>{session.markdown}</MarkdownMath>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          )
+                        })}
+                      </div>
+                    )}
+                  </section>
+                )}
+
+                {!problem.knowledge.markdown && (
                   <>
                     {/* Fallback to structured data */}
                     {problem.knowledge.progressSummary && (
