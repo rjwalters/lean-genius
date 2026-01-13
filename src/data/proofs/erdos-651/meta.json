@@ -1,0 +1,33 @@
+{
+  "id": "erdos-651",
+  "title": "Erdős Problem #651",
+  "slug": "erdos-651",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the smallest integer such that any ... points in general position in ... contain ... which determine a convex ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/651",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos651Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 651,
+    "erdosUrl": "https://erdosproblems.com/651",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #651 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_k(n)$ denote the smallest integer such that any $f_k(n)$ points in general position in $\\mathbb{R}^k$ contain $n$ which determine a convex polyhedron. Is it true that\\[f_k(n) > (1+c_k)^n\\]for some constant $c_k>0$?\n\n\n\nThe function when $k=2$ is the subject of the Erd\\H{o}s-Klein-Szekeres conjecture, see [107]. One can show that\\[f_2(n)>f_3(n)>\\cdots.\\]The answer is no, even for $k=3$: Pohoata and Zakharov \\cite{PoZa22} have proved that\\[f_3(n)\\leq 2^{o(n)}.\\]\n\n\n\n\nReferences\n\n\n[PoZa22] Pohoata, C. and Zakharov, D., Convex polytopes from fewer points. arXiv:2208.04878 (2022).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-669",
+  "title": "Erdős Problem #669",
+  "slug": "erdos-669",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that for any ... points in ... there exist at most ... many distinct lines passing through at least ....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/669",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos669Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 669,
+    "erdosUrl": "https://erdosproblems.com/669",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #669 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $F_k(n)$ be minimal such that for any $n$ points in $\\mathbb{R}^2$ there exist at most $F_k(n)$ many distinct lines passing through at least $k$ of the points, and $f_k(n)$ similarly but with lines passing through exactly $k$ points.\n\nEstimate $f_k(n)$ and $F_k(n)$ - in particular, determine $\\lim F_k(n)/n^2$ and $\\lim f_k(n)/n^2$.\n\n\n\nTrivially $f_k(n)\\leq F_k(n)$ and $f_2(n)=F_2(n)=\\binom{n}{2}$. The problem with $k=3$ is the classical 'Orchard problem' of Sylvester. Burr, Gr\\\"{u}nbaum, and Sloane \\cite{BGS74} have proved that\\[f_3(n)=\\frac{n^2}{6}-O(n)\\]and\\[F_3(n)=\\frac{n^2}{6}-O(n).\\]There is a trivial upper bound of $F_k(n) \\leq \\binom{n}{2}/\\binom{k}{2}$, and hence\\[\\lim F_k(n)/n^2 \\leq \\frac{1}{k(k-1)}.\\]See also [101].\n\n\n\n\nReferences\n\n\n[BGS74] Burr, Stefan A. and Gr\\\"{u}nbaum, Branko and Sloane, N. J. A., The orchard problem. Geometriae Dedicata (1974), 397-424.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

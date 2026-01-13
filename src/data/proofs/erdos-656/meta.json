@@ -1,0 +1,33 @@
+{
+  "id": "erdos-656",
+  "title": "Erdős Problem #656",
+  "slug": "erdos-656",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set with positive upper density. Must there exist an infinite set ... and integer ... such that\\[B+B+t\\subseteq ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/656",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos656Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 656,
+    "erdosUrl": "https://erdosproblems.com/656",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #656 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset \\mathbb{N}$ be a set with positive upper density. Must there exist an infinite set $B$ and integer $t$ such that\\[B+B+t\\subseteq A?\\]\n\n\n\nErd\\H{o}s \\cite{Er75b} posed this as a candidate for a density version of Hindman's theorem (see [172]).\n\nThis is true, and was proved by Kra, Moreira, Richter, and Robertson \\cite{KMRR24}.\n\nSee also [109].\n\n\n\n\nReferences\n\n\n[Er75b] Erd\\H{o}s, Paul, Problems and results in combinatorial number theory. Journ\\'{e}es Arithm\\'{e}tiques de Bordeaux (Conf., Univ. Bordeaux, Bordeaux, 1974) (1975), 295-310.\n\n[KMRR24] Kra, Bryna and Moreira, Joel and Richter, Florian K. and\nRobertson, Donald, A proof of {E}rd\\H{o}s's {$B+B+t$} conjecture. Commun. Am. Math. Soc. (2024), 480--494.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

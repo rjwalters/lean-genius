@@ -10,6 +10,24 @@ This skill orchestrates:
 3. **Gallery processing** - Add solved problems to proof gallery with annotations
 4. **Research processing** - Add open problems to research queue
 
+## Critical: Scraping → Processing Dependency
+
+**Gallery candidates MUST be scraped before processing.** The `--list` command shows candidates by Erdős number, but if a number is above your current scraping progress, you must scrape it first.
+
+Example: If scraping is at 54% (650 problems) and candidate #822 appears in the list, you cannot process it until you scrape up to 822:
+
+```bash
+# Check current progress
+npx tsx scripts/erdos/index.ts --status
+# Shows: Cached: 650 / 1200
+
+# Candidate #822 is above 650, so scrape it first
+npx tsx scripts/erdos/index.ts --range 822-822 --playwright --slow
+
+# Now you can process it
+npx tsx scripts/erdos/process-gallery-candidate.ts 822
+```
+
 ## Quick Status Check
 
 First, always assess current state:
@@ -64,31 +82,57 @@ For each SOLVED problem, create a complete gallery entry:
 
 **Step A: Find candidates**
 ```bash
-# List solved problems with Lean formalizations ready
-cat scripts/erdos/data/gallery-candidates.json | jq '.[] | select(.status == "proved") | .number'
+# List unprocessed candidates with Lean formalizations
+npx tsx scripts/erdos/process-gallery-candidate.ts --list
 ```
 
-**Step B: For each candidate, create gallery entry**
+**Step B: Ensure candidate is scraped** (see "Critical: Scraping → Processing Dependency" above)
 
-1. **Check if formal-conjectures has Lean code:**
-   ```bash
-   ls external/formal-conjectures/FormalConjectures/ErdosProblems/{NUMBER}.lean
-   ```
+**Step C: Run processor (creates scaffolding)**
+```bash
+npx tsx scripts/erdos/process-gallery-candidate.ts {NUMBER}
+```
 
-2. **If Lean exists, adapt it:**
-   - Copy to `proofs/Proofs/Erdos{NUMBER}.lean`
-   - Remove `sorry` placeholders (fill with actual proofs or axioms)
-   - Add educational annotations explaining the proof
-   - Verify it builds: `lake build Proofs.Erdos{NUMBER}`
+**Important:** The processor creates **stubs**, not complete entries. The scraper generates gallery entries with:
+- Placeholder Lean files (`theorem X : True := trivial`)
+- Meta.json with possible scraping artifacts
+- Empty annotations.json
 
-3. **Create gallery metadata:**
-   - `src/data/proofs/erdos-{number}/metadata.json`
-   - `src/data/proofs/erdos-{number}/annotations.json` (or `.source.json`)
+**Step D: Manual enhancement required**
+
+1. **Rewrite the Lean proof file** (`proofs/Proofs/Erdos{NUMBER}Problem.lean`):
+   - Start from `external/formal-conjectures/.../ErdosProblems/{NUMBER}.lean`
+   - Add proper imports, documentation, and educational comments
+   - Replace `sorry` with axioms (with justification) or actual proofs
+   - Verify: `lake build Proofs.Erdos{NUMBER}Problem`
+
+2. **Rewrite meta.json** (`src/data/proofs/erdos-{number}/meta.json`):
+   - Fix description (may contain HTML scraping artifacts)
+   - Add proper historicalContext, proofStrategy, keyInsights
+   - See Quality Guidelines below
+
+3. **Create annotations.json** from scratch:
+   - One annotation per definition/theorem/key concept
+   - Minimum 5 annotations, 100+ total lines
+   - See annotations.json Requirements below
 
 4. **Verify integration:**
    ```bash
    pnpm build
    ```
+
+**Troubleshooting: "Entry already exists"**
+
+If `process-gallery-candidate.ts` says entry exists, it means a **stub** was created (likely by the scraper). Check quality:
+```bash
+# Check if it's a stub (look for placeholder content)
+cat src/data/proofs/erdos-{number}/meta.json | jq '.description'
+# If description contains "Forum\nFavourites" or similar garbage, it's a stub
+
+cat proofs/Proofs/Erdos{NUMBER}Problem.lean | grep -c "True := by"
+# If > 0, it's a placeholder proof
+```
+Stubs need the full Step D manual enhancement.
 
 ### 4. Process Open Problems into Research
 
@@ -272,41 +316,56 @@ Create **one annotation per significant element**:
 
 ## Workflow Example
 
-**Process Erdős #494 (proved, has Lean):**
+**Complete workflow for Erdős #659 (proved, has Lean):**
 
 ```bash
-# Option A: Use the helper script (recommended)
-npx tsx scripts/erdos/process-gallery-candidate.ts 494
-
-# Option B: Process next unprocessed candidate automatically
-npx tsx scripts/erdos/process-gallery-candidate.ts --next
-
-# Option C: List all candidates to choose from
+# 1. Check status and find candidates
+npx tsx scripts/erdos/index.ts --status
 npx tsx scripts/erdos/process-gallery-candidate.ts --list
+# Shows #659 as candidate, but scraping is at 650
+
+# 2. Scrape the problem first (it's above current progress)
+npx tsx scripts/erdos/index.ts --range 659-659 --playwright --slow
+
+# 3. Check what was created (stub quality)
+cat src/data/proofs/erdos-659/meta.json | jq '.description'
+# Shows garbage: "Forum\nFavourites\nTags..."
+
+# 4. Read the formal-conjectures source
+cat external/formal-conjectures/FormalConjectures/ErdosProblems/659.lean
+
+# 5. Manually enhance the Lean file
+# Edit proofs/Proofs/Erdos659Problem.lean:
+#   - Add proper imports
+#   - Add documentation header
+#   - Replace placeholder with real formalization
+#   - Add axioms for results beyond Mathlib
+
+# 6. Build Lean
+lake build Proofs.Erdos659Problem
+
+# 7. Manually rewrite meta.json
+# Edit src/data/proofs/erdos-659/meta.json:
+#   - Fix description
+#   - Add historicalContext, proofStrategy, keyInsights
+#   - Update badge, sorries count, dependencies
+
+# 8. Create annotations.json from scratch
+# Write src/data/proofs/erdos-659/annotations.json:
+#   - 5+ annotations covering definitions, theorems, concepts
+#   - Each with content, mathContext, significance
+
+# 9. Full build and verify
+pnpm build
 ```
 
-**Manual workflow (if needed):**
+**Scraping multiple candidates at once:**
 
 ```bash
-# 1. Check formal-conjectures
-cat external/formal-conjectures/FormalConjectures/ErdosProblems/494.lean
-
-# 2. Copy and adapt
-cp external/formal-conjectures/FormalConjectures/ErdosProblems/494.lean \
-   proofs/Proofs/Erdos494Problem.lean
-
-# 3. Edit to remove sorry, add imports, add annotations
-# ... manual editing ...
-
-# 4. Build and verify
-cd proofs && lake build Proofs.Erdos494Problem
-
-# 5. Create gallery entry
-mkdir -p src/data/proofs/erdos-494
-# ... create metadata.json and annotations ...
-
-# 6. Full build
-pnpm build
+# If candidates are 659, 822, 899 - scrape ranges efficiently
+npx tsx scripts/erdos/index.ts --range 659-670 --playwright --slow
+npx tsx scripts/erdos/index.ts --range 820-830 --playwright --slow
+npx tsx scripts/erdos/index.ts --range 895-905 --playwright --slow
 ```
 
 ## Cross-Reference Data
@@ -330,6 +389,26 @@ A typical `/erdos` session:
 4. **Process** - Pick 3-5 gallery candidates to complete
 5. **Verify** - Build and test
 6. **Commit** - Save progress
+
+## Autonomous Decision Making
+
+When operating autonomously, prioritize actions in this order:
+
+1. **If gallery candidates exist below scraping progress** → Process them to quality
+2. **If all candidates are above scraping progress** → Scrape to reach the lowest candidate
+3. **If no candidates but scraping < 100%** → Continue batch scraping
+4. **If scraping complete but stubs need enhancement** → Pick oldest stub to enhance
+
+**Choosing which candidate to process:**
+- Prefer lower Erdős numbers (more foundational)
+- Prefer "proved" over "disproved" (simpler narratives)
+- Prefer problems with shorter formal-conjectures files (less complexity)
+
+**Time estimates for autonomous operation:**
+- Scraping 10 problems (slow mode): ~10 minutes
+- Enhancing one stub to quality: ~15-30 minutes
+- Full Lake build: ~3 minutes
+- Full pnpm build: ~10 seconds
 
 ## Notes
 

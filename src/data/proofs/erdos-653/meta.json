@@ -1,0 +1,33 @@
+{
+  "id": "erdos-653",
+  "title": "Erdős Problem #653",
+  "slug": "erdos-653",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ..., where the points are ordered such that\\[R(x_1)\\leq \\cdots \\leq R(x_n).\\]Let ... be the maximum number of...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/653",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos653Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 653,
+    "erdosUrl": "https://erdosproblems.com/653",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #653 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $x_1,\\ldots,x_n\\in \\mathbb{R}^2$ and let $R(x_i)=\\#\\{ \\lvert x_j-x_i\\rvert : j\\neq i\\}$, where the points are ordered such that\\[R(x_1)\\leq \\cdots \\leq R(x_n).\\]Let $g(n)$ be the maximum number of distinct values the $R(x_i)$ can take. Is it true that $g(n) \\geq (1-o(1))n$?\n\n\n\nErd\\H{o}s and Fishburn proved $g(n)>\\frac{3}{8}n$ and Csizmadia proved $g(n)>\\frac{7}{10}n$. Both groups proved $g(n) < n-cn^{2/3}$ for some constant $c>0$.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

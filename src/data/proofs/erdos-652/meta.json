@@ -1,0 +1,33 @@
+{
+  "id": "erdos-652",
+  "title": "Erdős Problem #652",
+  "slug": "erdos-652",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ..., where the points are ordered such that\\[R(x_1)\\leq \\cdots \\leq R(x_n).\\]Let ... be minimal such that, fo...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/652",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos652Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 652,
+    "erdosUrl": "https://erdosproblems.com/652",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #652 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $x_1,\\ldots,x_n\\in \\mathbb{R}^2$ and let $R(x_i)=\\#\\{ \\lvert x_j-x_i\\rvert : j\\neq i\\}$, where the points are ordered such that\\[R(x_1)\\leq \\cdots \\leq R(x_n).\\]Let $\\alpha_k$ be minimal such that, for all large enough $n$, there exists a set of $n$ points with $R(x_k)<\\alpha_kn^{1/2}$. Is it true that $\\alpha_k\\to \\infty$ as $k\\to \\infty$?\n\n\n\nIt is trivial that $R(x_1)=1$ is possible, and that $R(x_2) \\ll n^{1/2}$ is also possible, but we always have\\[R(x_1)R(x_2)\\gg n.\\]Erd\\H{o}s originally conjectured that $R(x_3)/n^{1/2}\\to \\infty$ as $n\\to \\infty$, but Elekes proved that for every $k$ and $n$ sufficiently large there exists some set of $n$ points with $R(x_k)\\ll_k n^{1/2}$.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

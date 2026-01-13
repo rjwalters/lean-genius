@@ -1,0 +1,33 @@
+{
+  "id": "erdos-657",
+  "title": "Erdős Problem #657",
+  "slug": "erdos-657",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that if ... is a set of ... points such that every subset of ... points determines ... distinct distances (i.e. .....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/657",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos657Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 657,
+    "erdosUrl": "https://erdosproblems.com/657",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #657 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that if $A\\subset \\mathbb{R}^2$ is a set of $n$ points such that every subset of $3$ points determines $3$ distinct distances (i.e. $A$ has no isosceles triangles) then $A$ must determine at least $f(n)n$ distinct distances, for some $f(n)\\to \\infty$?\n\n\n\nIn \\cite{Er73} Erd\\H{o}s attributes this problem (more generally in $\\mathbb{R}^k$) to himself and Davies. In \\cite{Er97e} he does not mention Davis, but says this problem was investigated by himself, F\\\"{u}redi, Ruzsa, and Pach.\n\nIn \\cite{Er73} Erd\\H{o}s says it is not even known in $\\mathbb{R}$ whether $f(n)\\to \\infty$. Sarosh Adenwalla has observed that this is equivalent to minimising the number of distinct differences in a set $A\\subset \\mathbb{R}$ of size $n$ without three-term arithmetic progressions. Dumitrescu \\cite{Du08} proved that, in these terms,\\[(\\log n)^c \\leq f(n) \\leq 2^{O(\\sqrt{\\log n})}\\]for some constant $c>0$.\n\nHunter observed in the comments that a result of Ruzsa coupled with standard tools of additive combinatorics (with details given by Alfaiz and Tang) allow recent progress on the size of subsets without three-term arithmetic progression (see \\cite{BlSi23} which improves slightly on the bounds due to Kelley and Meka \\cite{KeMe23}) yield\\[2^{c(\\log n)^{1/9}}\\leq f(n)\\]for some constant $c>0$.\n\nStraus has observed that if $2^k\\geq n$ then there exist $n$ points in $\\mathbb{R}^k$ which contain no isosceles triangle and determine at most $n-1$ distances.\n\nSee also [135].\n\n\n\n\nReferences\n\n\n[BlSi23] T. F. Bloom and O. Sisask, An improvement to the Kelley-Meka bounds on three-term arithmetic progressions. arXiv:2309.02353 (2023).\n\n[Du08] Dumitrescu, Adrian, On distinct distances and {$\\lambda$}-free point sets. Discrete Math. (2008), 6533--6538.\n\n[Er73] Erd\\H{o}s, P., Problems and results on combinatorial number theory. A survey of combinatorial theory (Proc. Internat. Sympos., Colorado State Univ., Fort Collins, Colo., 1971) (1973), 117-138.\n\n[Er97e] Erd\\H{o}s, Paul, Some of my favourite unsolved problems. Math. Japon. (1997), 527-537.\n\n[KeMe23] Kelley, Z. and Meka, R., Strong Bounds for 3-Progressions. arXiv:2302.05537 (2023).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

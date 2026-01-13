@@ -1,0 +1,33 @@
+{
+  "id": "erdos-670",
+  "title": "Erdős Problem #670",
+  "slug": "erdos-670",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set of ... points such that all pairwise distances differ by at least .... Is the diameter of ... at least ...?\n...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/670",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos670Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 670,
+    "erdosUrl": "https://erdosproblems.com/670",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #670 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{R}^d$ be a set of $n$ points such that all pairwise distances differ by at least $1$. Is the diameter of $A$ at least $(1+o(1))n^2$?\n\n\n\nThe lower bound of $\\binom{n}{2}$ for the diameter is trivial. Erd\\H{o}s \\cite{Er97f} proved the claim when $d=1$.\n\n\n\n\nReferences\n\n\n[Er97f] Erd\\H{o}s, Paul, Some unsolved problems. Combinatorics, geometry and probability (Cambridge, 1993) (1997), 1-10.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

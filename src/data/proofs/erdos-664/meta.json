@@ -1,0 +1,33 @@
+{
+  "id": "erdos-664",
+  "title": "Erdős Problem #664",
+  "slug": "erdos-664",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be some constant and ... be such that ... for all ... and ... for all ....\n\nMust there exist some set ... such that ....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/664",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos664Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 664,
+    "erdosUrl": "https://erdosproblems.com/664",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #664 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $c<1$ be some constant and $A_1,\\ldots,A_m\\subseteq \\{1,\\ldots,n\\}$ be such that $\\lvert A_i\\rvert >c\\sqrt{n}$ for all $i$ and $\\lvert A_i\\cap A_j\\rvert\\leq 1$ for all $i\\neq j$.\n\nMust there exist some set $B$ such that $B\\cap A_i\\neq \\emptyset$ and $\\lvert B\\cap A_i\\rvert \\ll_c 1$ for all $i$?\n\n\n\nThis would imply in particular that in a finite geometry there is always a blocking set which meets every line in $O(1)$ many points.\n\nIn \\cite{Er81} the condition $\\lvert A_i\\cap A_j\\rvert\\leq 1$ for all $i\\neq j$ is replaced by every two points in $\\{1,\\ldots,n\\}$ being contained in exactly one $A_i$, that is, $A_1,\\ldots,A_m$ is a pairwise balanced block design (and the condition $c<1$ is omitted).\n\nAlon has proved that the answer is no: if $q$ is a large prime power and $n=m=q^2+q+1$ then there exist $A_1,\\ldots,A_m\\subseteq \\{1,\\ldots,n\\}$ such that $\\lvert A_i\\rvert \\geq \\tfrac{2}{5}\\sqrt{n}$ for all $i$ and $\\lvert A_i\\cap A_j\\rvert\\leq 1$ for all $i\\neq j$, and yet if $B$ has non-empty intersection with all $A_i$ then there exists $A_j$ such that $\\lvert B\\cap A_j\\rvert \\gg \\log n$. (The construction is to take random subsets of the lines of a projective plane.)\n\nThe weaker version that Erd\\H{o}s posed in \\cite{Er81} remains open, although Alon conjectures the answer there to also be no.\n\n\n\n\nReferences\n\n\n[Er81] Erd\\H{o}s, P., On the combinatorial problems which I would most like to see solved. Combinatorica (1981), 25-42.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,100 @@
+[
+  {
+    "id": "ann-e659-imports",
+    "proofId": "erdos-659",
+    "range": {
+      "startLine": 24,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Mathlib Dependencies",
+    "content": "We import several Mathlib modules:\n- **Log.Basic**: Natural logarithm function, needed for the O(n/√log n) bound\n- **Sqrt**: Square root on reals, for distance calculations\n- **Finset.Card**: Cardinality of finite sets\n- **MetricSpace.Basic**: The `dist` function for Euclidean distance",
+    "mathContext": "These imports provide the mathematical infrastructure for formalizing distance geometry in ℝ². The `dist` function gives us the Euclidean metric automatically.",
+    "significance": "supporting",
+    "relatedConcepts": ["metric-spaces", "real-analysis"]
+  },
+  {
+    "id": "ann-e659-distinct-distances",
+    "proofId": "erdos-659",
+    "range": {
+      "startLine": 44,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Distinct Distances",
+    "content": "The **distinct distances** of a point set S is the number of different positive distances that occur between pairs of points. We compute this by:\n1. Taking all ordered pairs (p, q) from S\n2. Computing dist(p, q) for each pair\n3. Filtering out zero distances (same point)\n4. Counting the distinct values",
+    "mathContext": "This is Δ(S) in the discrete geometry literature. For n points in general position, Δ(S) can be as large as n(n-1)/2, but special configurations like lattices have much smaller Δ(S).",
+    "significance": "key",
+    "relatedConcepts": ["erdos-distance-problem", "point-configurations"]
+  },
+  {
+    "id": "ann-e659-four-point",
+    "proofId": "erdos-659",
+    "range": {
+      "startLine": 48,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "The 4-Point Property",
+    "content": "A point set has the **4-point property** if every subset of exactly 4 points determines at least 3 distinct distances. This rules out degenerate configurations where 4 points are \"too regular\" (like vertices of a square, which has only 2 distances).",
+    "mathContext": "This is a local constraint that forces point sets to avoid certain regular patterns. The tension between this local constraint and wanting few global distances is what makes the problem interesting.",
+    "significance": "critical",
+    "relatedConcepts": ["regularity", "erdos-ko-rado"]
+  },
+  {
+    "id": "ann-e659-lattice",
+    "proofId": "erdos-659",
+    "range": {
+      "startLine": 53,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Moree-Osburn Lattice",
+    "content": "The **Moree-Osburn lattice** is the set of points {(a, b√2) : a, b ∈ ℤ}. Think of it as the integer grid 'stretched' by factor √2 in the y-direction.\n\nThis seemingly simple construction has remarkable properties:\n- It avoids squares and equilateral triangles\n- Distances are always √(x² + 2y²) for integers x, y\n- The number of distinct distances up to N grows slowly",
+    "mathContext": "The construction is marked `sorry` here because the actual finite truncation requires care to ensure exactly n points. The key is that any reasonable truncation (e.g., points with |a|, |b| ≤ √n) works.",
+    "significance": "critical",
+    "relatedConcepts": ["integer-lattices", "irrational-stretching"]
+  },
+  {
+    "id": "ann-e659-axiom",
+    "proofId": "erdos-659",
+    "range": {
+      "startLine": 70,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "Main Axiom: Lattice Works",
+    "content": "We take as an axiom that the Moree-Osburn lattice achieves all three required properties:\n1. Can be truncated to have exactly n points\n2. Satisfies the 4-point property\n3. Has at most n/√(log n) distinct distances\n\nThis is axiomatic because the proof requires deep results from analytic number theory (Landau's theorem on quadratic forms).",
+    "mathContext": "Landau's theorem states that the number of integers ≤ N representable as x² + Dy² (for fixed D) is asymptotic to CN/√(log N) for an explicit constant C depending on D. For D=2, this controls our distance count.",
+    "significance": "critical",
+    "relatedConcepts": ["landau-theorem", "quadratic-forms", "axiom-usage"]
+  },
+  {
+    "id": "ann-e659-main-theorem",
+    "proofId": "erdos-659",
+    "range": {
+      "startLine": 81,
+      "endLine": 94
+    },
+    "type": "theorem",
+    "title": "Erdős #659: Answer is Yes",
+    "content": "The main theorem states that point sets with the 4-point property and few distances **do exist**. We prove this by exhibiting the Moree-Osburn lattice as a witness.\n\nThe proof is straightforward given the axiom: we use the lattice family, and the axiom guarantees it has the required properties with constant C = 1.",
+    "mathContext": "The existential is witnessed by `moreeOsburnLattice`. The proof uses `omega` to handle the inequality n > 0 → n > 1 and `norm_num` to verify C = 1 > 0.",
+    "significance": "critical",
+    "relatedConcepts": ["constructive-existence", "witness-proofs"]
+  },
+  {
+    "id": "ann-e659-configs",
+    "proofId": "erdos-659",
+    "range": {
+      "startLine": 96,
+      "endLine": 105
+    },
+    "type": "concept",
+    "title": "The Six Two-Distance Configurations",
+    "content": "There are exactly **6 ways** to place 4 points with only 2 distinct distances:\n\n1. **Square**: 4 vertices (distances: side, diagonal)\n2. **Rhombus**: 60° angles, contains equilateral triangle\n3-4. **Isosceles trapezoids**: Two types\n5. **Kite**: Symmetric quadrilateral\n6. **Pentagon subset**: 4 vertices of regular pentagon\n\nThe Moree-Osburn lattice avoids all six by its irrational stretching.",
+    "mathContext": "Five of these configurations contain either a square or equilateral triangle, which are impossible in the √2-stretched lattice. The pentagon case requires explicit verification that no 4 lattice points form this pattern.",
+    "significance": "key",
+    "relatedConcepts": ["configuration-spaces", "forbidden-substructures"]
+  }
+]

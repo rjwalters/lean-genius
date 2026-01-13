@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-655",
+  "title": "Erdős #655",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $x_1,\\ldots,x_n\\in \\mathbb{R}^2$ be such that no circle whose centre is one of the $x_i$ contains three other points. Are there at least\\[(1+c)\\frac{n}{2}\\]distinct distances determined between the $x_i$, for some constant $c>0$ and all $n$ sufficiently large?\n\n\n\nA problem of Erd\\H{o}s and Pach. It is easy to see that this assumption implies that there are at least $\\frac{n-1}{2}$ distinct distances determined by every point.\n\nZach Hunter has observed that taking $n$ points equally spaced on a circle disproves this conjecture. In the spirit of related conjectures of Erd\\H{o}s and others, presumably some kind of assumption that the points are in general position (e.g. no three on a line and no four on a circle) was intended.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T18:22:04.304Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #655 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $x_1,\\ldots,x_n\\in \\mathbb{R}^2$ be such that no circle whose centre is one of the $x_i$ contains three other points. Are there at least\\[(1+c)\\frac{n}{2}\\]distinct distances determined between the $x_i$, for some constant $c>0$ and all $n$ sufficiently large?\n\n\n\nA problem of Erd\\H{o}s and Pach. It is easy to see that this assumption implies that there are at least $\\frac{n-1}{2}$ distinct distances determined by every point.\n\nZach Hunter has observed that taking $n$ points equally spaced on a circle disproves this conjecture. In the spirit of related conjectures of Erd\\H{o}s and others, presumably some kind of assumption that the points are in general position (e.g. no three on a line and no four on a circle) was intended.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #654\n- Problem #656\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er97e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T18:22:04.304Z",
+  "significance": 6,
+  "tractability": 4
+}

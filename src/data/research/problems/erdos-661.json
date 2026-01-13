@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-661",
+  "title": "Erdős #661",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there, for all large $n$, some points $x_1,\\ldots,x_n,y_1,\\ldots,y_n\\in \\mathbb{R}^2$ such that the number of distinct distances $d(x_i,y_j)$ is\\[o\\left(\\frac{n}{\\sqrt{\\log n}}\\right)?\\]\n\n\n\nOne can also ask this for points in $\\mathbb{R}^3$. In $\\mathbb{R}^4$ Lenz observed that there are $x_1,\\ldots,x_n,y_1,\\ldots,y_n\\in \\mathbb{R}^4$ such that $d(x_i,y_j)=1$ for all $i,j$, taking the points on two orthogonal circles.\n\nMore generally, if $F(2n)$ is the minimal number of such distances, and $f(2n)$ is minimal number of distinct distances between any $2n$ points in $\\mathbb{R}^2$, then is $F =o(f)$?\n\nSee also [89].\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T18:22:04.304Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #661 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there, for all large $n$, some points $x_1,\\ldots,x_n,y_1,\\ldots,y_n\\in \\mathbb{R}^2$ such that the number of distinct distances $d(x_i,y_j)$ is\\[o\\left(\\frac{n}{\\sqrt{\\log n}}\\right)?\\]\n\n\n\nOne can also ask this for points in $\\mathbb{R}^3$. In $\\mathbb{R}^4$ Lenz observed that there are $x_1,\\ldots,x_n,y_1,\\ldots,y_n\\in \\mathbb{R}^4$ such that $d(x_i,y_j)=1$ for all $i,j$, taking the points on two orthogonal circles.\n\nMore generally, if $F(2n)$ is the minimal number of such distances, and $f(2n)$ is minimal number of distinct distances between any $2n$ points in $\\mathbb{R}^2$, then is $F =o(f)$?\n\nSee also [89].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Prize**: $50\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #89\n- Problem #660\n- Problem #662\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErPa90\n- Er92e\n- Er97e\n- Er97f\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T18:22:04.304Z",
+  "significance": 6,
+  "tractability": 4
+}

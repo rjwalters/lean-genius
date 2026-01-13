@@ -1,0 +1,33 @@
+{
+  "id": "erdos-658",
+  "title": "Erdős Problem #658",
+  "slug": "erdos-658",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be sufficiently large depending on .... Is it true that if ... has ... then ... must contain the vertices of ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/658",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos658Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 658,
+    "erdosUrl": "https://erdosproblems.com/658",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #658 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\delta>0$ and $N$ be sufficiently large depending on $\\delta$. Is it true that if $A\\subseteq \\{1,\\ldots,N\\}^2$ has $\\lvert A\\rvert \\geq \\delta N^2$ then $A$ must contain the vertices of a square?\n\n\n\nA problem of Graham, if the square is restricted to be axis-aligned. (It is unclear whether in \\cite{Er97e} had this restriction in mind.)\n\nThis qualitative statement follows from the density Hales-Jewett theorem proved by Furstenberg and Katznelson \\cite{FuKa91}. A quantitative proof (yet with very poor bounds) was given by Solymosi \\cite{So04}.\n\n\n\n\nReferences\n\n\n[Er97e] Erd\\H{o}s, Paul, Some of my favourite unsolved problems. Math. Japon. (1997), 527-537.\n\n[FuKa91] Furstenberg, H. and Katznelson, Y., A density version of the Hales-Jewett Theorem. Journal d'Analyse Math\\'{e}matique (1991), 64-119.\n\n[So04] Solymosi, J., A Note on a Question of Erd\\H{o}s and Graham. Combinatorics, Probability and Computing (2004), 263–267.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}
