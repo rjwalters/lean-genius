@@ -11,6 +11,7 @@ const MANIFEST_FILE = 'manifest.json'
 const DEFAULT_MAX_AGE_HOURS = 24
 const DEFAULT_REQUEST_DELAY_MS = 5000  // 5 seconds between requests
 const SLOW_REQUEST_DELAY_MS = 60000   // 60 seconds for slow/polite mode
+const VERY_SLOW_REQUEST_DELAY_MS = 180000  // 3 minutes for very slow/glacial mode
 const DEFAULT_MAX_RETRIES = 5
 const BATCH_SIZE = 10
 
@@ -35,11 +36,23 @@ const slowConfig: CacheConfig = {
   requestDelayMs: SLOW_REQUEST_DELAY_MS,
 }
 
+const verySlowConfig: CacheConfig = {
+  ...defaultConfig,
+  requestDelayMs: VERY_SLOW_REQUEST_DELAY_MS,
+}
+
 /**
- * Get config for slow/polite mode
+ * Get config for slow/polite mode (60s between requests)
  */
 export function getSlowConfig(): CacheConfig {
   return slowConfig
+}
+
+/**
+ * Get config for very slow/glacial mode (3 min between requests)
+ */
+export function getVerySlowConfig(): CacheConfig {
+  return verySlowConfig
 }
 
 /**
@@ -205,15 +218,19 @@ export async function fetchWithRetry(
 ): Promise<Response> {
   let lastError: Error | null = null
 
+  // Base delay for rate limit recovery scales with config
+  // Default: 10s, Slow: 30s, Very slow: 60s
+  const baseRateLimitDelay = Math.max(10000, config.requestDelayMs / 3)
+
   for (let attempt = 0; attempt < config.maxRetries; attempt++) {
     try {
       const response = await fetch(url)
 
       // Handle rate limiting (429) with exponential backoff
       if (response.status === 429) {
-        // Start at 10s and double each time: 10s, 20s, 40s, 80s, 160s
-        const delay = 10000 * Math.pow(2, attempt)
-        console.log(`  Rate limited (429), waiting ${delay / 1000}s before retry...`)
+        // Start at base delay and double each time
+        const delay = baseRateLimitDelay * Math.pow(2, attempt)
+        console.log(`  Rate limited (429), waiting ${Math.round(delay / 1000)}s before retry...`)
         await sleep(delay)
         continue
       }
@@ -222,7 +239,7 @@ export async function fetchWithRetry(
     } catch (error) {
       lastError = error as Error
       const delay = config.requestDelayMs * Math.pow(2, attempt)
-      console.log(`  Retry ${attempt + 1}/${config.maxRetries} after ${delay}ms...`)
+      console.log(`  Retry ${attempt + 1}/${config.maxRetries} after ${Math.round(delay / 1000)}s...`)
       await sleep(delay)
     }
   }

@@ -169,6 +169,8 @@ export interface CliOptions {
   batch?: number
   /** Slow/polite mode - 60s between requests */
   slow: boolean
+  /** Very slow/glacial mode - 3 min between requests */
+  verySlow: boolean
   /** Use Playwright browser instead of fetch */
   playwright: boolean
   /** Ignore cache, fetch fresh */

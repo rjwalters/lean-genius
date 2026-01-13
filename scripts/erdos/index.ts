@@ -24,7 +24,7 @@
  */
 
 import type { CliOptions, PipelineStats, TransformedProblem } from './types'
-import { getCacheStats, ensureCacheDir, getProgressSummary, getNextUncachedBatch, getSlowConfig } from './cache'
+import { getCacheStats, ensureCacheDir, getProgressSummary, getNextUncachedBatch, getSlowConfig, getVerySlowConfig } from './cache'
 import { scrapeRange, scrapeProblems, getScrapeStats } from './scrape'
 import { transformProblems, getTransformStats } from './transform'
 import { filterDuplicates, printDedupeReport } from './dedupe'
@@ -42,6 +42,7 @@ function parseArgs(): CliOptions {
     range: undefined,
     batch: undefined,
     slow: false,
+    verySlow: false,
     playwright: false,
     refresh: false,
     galleryOnly: false,
@@ -68,6 +69,10 @@ function parseArgs(): CliOptions {
         break
       case '--slow':
         options.slow = true
+        break
+      case '--very-slow':
+      case '--glacial':
+        options.verySlow = true
         break
       case '--playwright':
         options.playwright = true
@@ -118,6 +123,7 @@ Options:
   --batch N         Process next N uncached problems (default: 10)
   --continue        Continue from where we left off (same as --batch 10)
   --slow            Polite mode - 60s between requests
+  --very-slow       Glacial mode - 3 min between requests (safest)
   --playwright      Use browser (avoids rate limiting, recommended)
   --range 1-100     Process specific range of problems
   --dry-run         Preview without writing files
@@ -211,7 +217,9 @@ async function runPipeline(options: CliOptions): Promise<PipelineStats> {
     console.log('** DRY RUN MODE - No files will be written **\n')
   }
 
-  if (options.slow) {
+  if (options.verySlow) {
+    console.log('** VERY SLOW MODE - 3 min between requests **\n')
+  } else if (options.slow) {
     console.log('** SLOW MODE - 60s between requests **\n')
   }
 
@@ -222,8 +230,8 @@ async function runPipeline(options: CliOptions): Promise<PipelineStats> {
   // Ensure cache directory exists
   ensureCacheDir()
 
-  // Get config (slow mode uses 60s delay)
-  const config = options.slow ? getSlowConfig() : undefined
+  // Get config (slow modes use longer delays)
+  const config = options.verySlow ? getVerySlowConfig() : options.slow ? getSlowConfig() : undefined
 
   // Determine which problems to scrape
   let scraped: Awaited<ReturnType<typeof scrapeProblems>>
