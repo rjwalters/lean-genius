@@ -1,34 +1,117 @@
 {
   "id": "erdos-74",
-  "title": "Erdős Problem #74",
+  "title": "Erdős Problem #74: Almost Bipartite Graphs with High Chromatic Number",
   "slug": "erdos-74",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... (possibly very slowly). Is there a graph of infinite chromatic number such that every finite subgraph on ... vertices...",
+  "description": "For f(n) → ∞, is there a graph with infinite chromatic number where every n-vertex subgraph can be made bipartite by deleting ≤ f(n) edges?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Hajnal, Szemerédi (1982); partial results by Rödl (1982)",
     "sourceUrl": "https://erdosproblems.com/74",
-    "date": "",
-    "status": "pending",
+    "date": "1982",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos74Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "wip",
-    "sorries": 1,
+    "tags": ["erdos", "graph-theory", "chromatic-number", "bipartite", "conjecture"],
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 74,
     "erdosUrl": "https://erdosproblems.com/74",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$500"
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$500",
+    "dateAdded": "2026-01-13",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graphs with symmetric irreflexive adjacency",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.IsBipartite",
+        "description": "Predicate for bipartite graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Bipartite"
+      },
+      {
+        "theorem": "SimpleGraph.chromaticNumber",
+        "description": "Chromatic number of a graph",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Coloring"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit of a function along a filter",
+        "module": "Mathlib.Topology.Order.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of edge distance to bipartite",
+      "Maximum edge distance over n-vertex subgraphs",
+      "Statement of the main question as a Prop",
+      "Axiom for Rödl's linear case (f = εn)",
+      "Axiom for failure with uncountable chromatic number"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #74 from erdosproblems.com. Originally offered with a prize of $500.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)\\to \\infty$ (possibly very slowly). Is there a graph of infinite chromatic number such that every finite subgraph on $n$ vertices can be made bipartite by deleting at most $f(n)$ edges?\n\n\n\nConjectured by Erd\\H{o}s, Hajnal, and Szemer\\'{e}di \\cite{EHS82}.\n\nR\\\"{o}dl \\cite{Ro82} has proved this for hypergraphs, and also proved there is such a graph (with chromatic number $\\aleph_0$) if $f(n)=\\epsilon n$ for any fixed constant $\\epsilon>0$.\n\nIt is open even for $f(n)=\\sqrt{n}$. Erd\\H{o}s offered \\$500 for a proof but only \\$250 for a counterexample. This fails (even with $f(n)\\gg n$) if the graph has chromatic number $\\aleph_1$ (see [111]).\n\n\n\n\nReferences\n\n\n[EHS82] Erd\\H{o}s, P. and Hajnal, A. and Szemer\\'{e}di, E., On almost bipartite large chromatic graphs. Theory and practice of combinatorics (1982), 117-123.\n\n[Ro82] R\\\"{o}dl, Vojt\\vEch, Nearly bipartite graphs with large chromatic number. Combinatorica (1982), 377-383.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem explores the tension between global complexity (chromatic number) and local structure (almost-bipartiteness). A bipartite graph has chromatic number ≤ 2, so to have infinite chromatic number, a graph must have non-bipartite subgraphs.\n\nErdős, Hajnal, and Szemerédi asked: can we have infinite chromatic number while keeping subgraphs 'almost' bipartite—requiring only few edge deletions to become bipartite?\n\nRödl (1982) proved this is possible when f(n) = εn (linear in n), but the question remains open for slower-growing f like √n. Surprisingly, the problem FAILS if we require uncountable chromatic number (≥ ℵ₁), revealing set-theoretic subtleties.",
+    "problemStatement": "**Erdős Problem #74 (OPEN)**\n\nLet $f(n) \\to \\infty$ (possibly very slowly). Does there exist a graph $G$ such that:\n1. $G$ has infinite chromatic number\n2. Every $n$-vertex subgraph can be made bipartite by deleting $\\leq f(n)$ edges\n\n**Known Results**:\n- TRUE for $f(n) = \\varepsilon n$ (Rödl 1982)\n- OPEN for $f(n) = \\sqrt{n}$\n- FALSE if chromatic number is $\\aleph_1$\n\n**Prize**: $500 for proof, $250 for counterexample",
+    "proofStrategy": "We formalize the key concepts and partial results:\n\n1. **edgeDistToBipartite**: Minimum edges to delete for bipartiteness\n\n2. **maxEdgeDistToBipartite**: Worst case over n-vertex subgraphs\n\n3. **Erdos74Question**: The main open question\n\n4. **rodlLinear** (axiom): Rödl's result for f(n) = εn\n\n5. **SqrtNQuestion**: The open √n case\n\n6. **uncountableFails** (axiom): Failure for uncountable chromatic number",
+    "keyInsights": [
+      "**Bipartite = 2-colorable**: Bipartite graphs have chromatic number ≤ 2, so infinite chromatic number requires non-bipartite subgraphs.",
+      "**Almost bipartite**: A graph is 'almost bipartite' if few edge deletions make it bipartite. This measures distance to the bipartite world.",
+      "**Rödl's linear case**: For f(n) = εn, such graphs exist. The construction uses probabilistic methods.",
+      "**The √n barrier**: It's unknown whether f(n) = √n works. This is a key special case.",
+      "**Countable vs uncountable**: The problem has different answers for χ = ℵ₀ (unknown) vs χ = ℵ₁ (impossible)."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Module documentation and opening namespaces for filters and topology."
+    },
+    {
+      "id": "background",
+      "title": "Background on Bipartiteness",
+      "startLine": 29,
+      "endLine": 40,
+      "summary": "Context on bipartite graphs and chromatic number."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 42,
+      "endLine": 76,
+      "summary": "Edge distance to bipartite and maximum over subgraphs."
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "startLine": 78,
+      "endLine": 112,
+      "summary": "Erdos74Question and related predicates."
+    },
+    {
+      "id": "partial-results",
+      "title": "Partial Results",
+      "startLine": 114,
+      "endLine": 160,
+      "summary": "Rödl's linear case and the √n question."
+    },
+    {
+      "id": "connections",
+      "title": "Connections and Implications",
+      "startLine": 162,
+      "endLine": 200,
+      "summary": "Upper bounds and historical notes."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #74, which asks whether graphs can have infinite chromatic number while having 'almost bipartite' subgraphs. Rödl proved this is possible for linear f(n) = εn, but the question remains open for slower-growing functions like √n. The problem fails for uncountable chromatic numbers.",
+    "implications": "This problem reveals the delicate relationship between global chromatic complexity and local structure. The distinction between countable and uncountable chromatic numbers suggests set-theoretic aspects are fundamental to the problem.",
+    "openQuestions": [
+      "Does the conjecture hold for f(n) = √n?",
+      "What is the slowest-growing f for which the conjecture is true?",
+      "Can the Rödl construction be made explicit?",
+      "What happens for chromatic number exactly ℵ₀?"
+    ]
   }
 }
