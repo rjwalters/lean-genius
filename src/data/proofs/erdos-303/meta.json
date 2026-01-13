@@ -1,0 +1,33 @@
+{
+  "id": "erdos-303",
+  "title": "Erdős Problem #303",
+  "slug": "erdos-303",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that in any finite colouring of the integers there exists a monochromatic solution to\\[{a}={b}+{c}\\]with distinct ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/303",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos303Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 303,
+    "erdosUrl": "https://erdosproblems.com/303",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #303 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that in any finite colouring of the integers there exists a monochromatic solution to\\[\\frac{1}{a}=\\frac{1}{b}+\\frac{1}{c}\\]with distinct $a,b,c$?\n\n\n\nThe density version of this is [302]. This colouring version is true, as proved by Brown and R\\\"{o}dl \\cite{BrRo91}.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[BrRo91] Brown, Tom C. and R\\\"{o}dl, Voijtech, Monochromatic solutions to equations with unit fractions. Bull. Austral. Math. Soc. (1991), 387-392.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

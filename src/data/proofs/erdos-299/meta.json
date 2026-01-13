@@ -1,0 +1,33 @@
+{
+  "id": "erdos-299",
+  "title": "Erdős Problem #299",
+  "slug": "erdos-299",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite sequence ... such that ... and no finite sum of ... is equal to ...?\n\n\n\nThere does not exist such a sequ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/299",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos299Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 299,
+    "erdosUrl": "https://erdosproblems.com/299",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #299 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite sequence $a_1<a_2<\\cdots $ such that $a_{i+1}-a_i=O(1)$ and no finite sum of $\\frac{1}{a_i}$ is equal to $1$?\n\n\n\nThere does not exist such a sequence, which follows from the positive solution to [298] by Bloom \\cite{Bl21}.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Bl21] Bloom, T. F., On a density conjecture about unit fractions. arXiv:2112.03726 (2021).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

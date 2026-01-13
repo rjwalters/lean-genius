@@ -1,0 +1,33 @@
+{
+  "id": "erdos-302",
+  "title": "Erdős Problem #302",
+  "slug": "erdos-302",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the size of the largest ... such that there are no solutions to\\[{a}= {b}+{c}\\]with distinct ...?\n\nEstimate .... I...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/302",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos302Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 302,
+    "erdosUrl": "https://erdosproblems.com/302",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #302 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(N)$ be the size of the largest $A\\subseteq \\{1,\\ldots,N\\}$ such that there are no solutions to\\[\\frac{1}{a}= \\frac{1}{b}+\\frac{1}{c}\\]with distinct $a,b,c\\in A$?\n\nEstimate $f(N)$. In particular, is $f(N)=(\\tfrac{1}{2}+o(1))N$?\n\n\n\n\nThe colouring version of this is [303], which was solved by Brown and R\\\"{o}dl \\cite{BrRo91}. One can take either $A$ to be all odd integers in $[1,N]$ or all integers in $[N/2,N]$ to show $f(N)\\geq (1/2+o(1))N$.\n\nWouter van Doorn has proved (see this note) that\\[f(N) \\leq (9/10+o(1))N.\\]Stijn Cambie has observed that\\[f(N)\\geq (5/8+o(1))N,\\]taking $A$ to be all odd integers $\\leq N/4$ and all integers in $[N/2,N]$.\n\nStijn Cambie has also observed that, if we allow $b=c$, then there is a solution to this equation when $\\lvert A\\rvert \\geq (\\tfrac{2}{3}+o(1))N$, since then there must exist some $n,2n\\in A$.\n\nSee also [301] and [327].\n\n\n\n\nReferences\n\n\n[BrRo91] Brown, Tom C. and R\\\"{o}dl, Voijtech, Monochromatic solutions to equations with unit fractions. Bull. Austral. Math. Soc. (1991), 387-392.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

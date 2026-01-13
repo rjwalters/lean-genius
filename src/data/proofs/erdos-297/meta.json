@@ -1,0 +1,33 @@
+{
+  "id": "erdos-297",
+  "title": "Erdős Problem #297",
+  "slug": "erdos-297",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... How many ... are there such that ...?\n\n\n\nIt was not even known for a long time whether this is ... for some ... or ....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/297",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos297Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 297,
+    "erdosUrl": "https://erdosproblems.com/297",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #297 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N\\geq 1$. How many $A\\subseteq \\{1,\\ldots,N\\}$ are there such that $\\sum_{n\\in A}\\frac{1}{n}=1$?\n\n\n\nIt was not even known for a long time whether this is $2^{cN}$ for some $c<1$ or $2^{(1+o(1))N}$. In fact the former is true, and the correct value of $c$ is now known.\n{UL}\n{LI}Steinerberger \\cite{St24} proved the relevant count is at most $2^{0.93N}$;{/LI}\n{LI}Independently, Liu and Sawhney \\cite{LiSa24} gave both upper and lower bounds, proving that the count is\\[2^{(0.91\\cdots+o(1))N},\\]where $0.91\\cdots$ is an explicit number defined as the solution to a certain integral equation;{/LI}\n{LI}Again independently this same asymptotic was proved (with a different proof) by Conlon, Fox, He, Mubayi, Pham, Suk, and Verstra\\\"{e}te \\cite{CFHMPSV24}, who prove more generally, for any $x\\in \\mathbb{Q}_{>0}$, a similar expression for the number of $A\\subseteq \\{1,\\ldots,N\\}$ such that $\\sum_{n\\in A}\\frac{1}{n}=x$;{/LI}\n{LI}The above papers all appeared within weeks of each other in 2024; in 2017 a similar question (with $\\leq 1$ rather than $=1$) was asked on MathOverflow by Mikhail Tikhomirov and proofs of the correct asymptotic were sketched by Lucia, RaphaelB4, and js21.{/LI}\n{/UL}\n\nSee also [362].\n\n\n\n\nReferences\n\n\n[CFHMPSV24] Conlon, D. and Fox, J. and He, X. and Mubayi, D. and Pham, H. T. and Suk, A. and Verstra\\\"{e}te, J., A question of Erd\\H{o}s and Graham on Egyptian fractions. arXiv:2404.16016 (2024).\n\n[LiSa24] Liu, Y. and Sawhney, M., On further questions regarding unit fractions. arXiv:2404.07113 (2024).\n\n[St24] S. Steinerberger, On a problem involving unit fractions. arXiv:2403.17041 (2024).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

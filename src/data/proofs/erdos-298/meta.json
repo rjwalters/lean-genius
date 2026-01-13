@@ -1,0 +1,33 @@
+{
+  "id": "erdos-298",
+  "title": "Erdős Problem #298",
+  "slug": "erdos-298",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every set ... of positive density contain some finite ... such that ...?\n\n\n\nThe answer is yes, proved by Bloom .\n\nSee al...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/298",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos298Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 298,
+    "erdosUrl": "https://erdosproblems.com/298",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #298 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every set $A\\subseteq \\mathbb{N}$ of positive density contain some finite $S\\subset A$ such that $\\sum_{n\\in S}\\frac{1}{n}=1$?\n\n\n\nThe answer is yes, proved by Bloom \\cite{Bl21}.\n\nSee also [46] and [47].\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Bl21] Bloom, T. F., On a density conjecture about unit fractions. arXiv:2112.03726 (2021).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

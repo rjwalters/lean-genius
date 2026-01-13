@@ -1,0 +1,33 @@
+{
+  "id": "erdos-294",
+  "title": "Erdős Problem #294",
+  "slug": "erdos-294",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... be the least integer ... such that there is no solution to\\[1={n_1}+\\cdots+{n_k}\\]with .... Estimate .......",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/294",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos294Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 294,
+    "erdosUrl": "https://erdosproblems.com/294",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #294 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N\\geq 1$ and let $t(N)$ be the least integer $t$ such that there is no solution to\\[1=\\frac{1}{n_1}+\\cdots+\\frac{1}{n_k}\\]with $t=n_1<\\cdots <n_k\\leq N$. Estimate $t(N)$.\n\n\n\nErd\\H{o}s and Graham \\cite{ErGr80} could show\\[t(N)\\ll\\frac{N}{\\log N},\\]but had no idea of the true value of $t(N)$.\n\nSolved by Liu and Sawhney \\cite{LiSa24} (up to $(\\log\\log N)^{O(1)}$), who proved that\\[\\frac{N}{(\\log N)(\\log\\log N)^3(\\log\\log\\log N)^{O(1)}}\\ll t(N) \\ll \\frac{N}{\\log N}.\\]\n\n\n\n\nReferences\n\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[LiSa24] Liu, Y. and Sawhney, M., On further questions regarding unit fractions. arXiv:2404.07113 (2024).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

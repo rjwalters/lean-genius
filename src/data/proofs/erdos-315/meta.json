@@ -1,0 +1,33 @@
+{
+  "id": "erdos-315",
+  "title": "Erdős Problem #315",
+  "slug": "erdos-315",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and .... Let ... be any other sequence with .... Is it true that\\[\\liminf a_n^{1/2^n}<\\lim u_n^{1/2^n}=c_0=1.264085\\c...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/315",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos315Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 315,
+    "erdosUrl": "https://erdosproblems.com/315",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #315 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $u_1=2$ and $u_{n+1}=u_n^2-u_n+1$. Let $a_1<a_2<\\cdots $ be any other sequence with $\\sum \\frac{1}{a_k}=1$. Is it true that\\[\\liminf a_n^{1/2^n}<\\lim u_n^{1/2^n}=c_0=1.264085\\cdots?\\]\n\n\n\n$c_0$ is called the Vardi constant and the sequence $u_n$ is Sylvester's sequence.\n\nIn \\cite{ErGr80} this problem is stated with the sequence $u_1=1$ and $u_{n+1}=u_n(u_n+1)$, but Quanyu Tang has pointed out this is probably an error (since with that choice we do not have $\\sum \\frac{1}{u_n}=1$). This question with Sylvester's sequence is the most natural interpretation of what they meant to ask.\n\nThis is true, and was proved independently by Kamio \\cite{Ka25} and Li and Tang \\cite{LiTa25}.\n\n\n\n\nReferences\n\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[Ka25] Y. Kamio, Asymptotic analysis of infinite decompositions of a unit fraction into unit fractions. arXiv:2503.02317 (2025).\n\n[LiTa25] Z. Li and Q. Tang, On a conjecture of Erd\\H{o}s and Graham about the Sylvester's sequence. arXiv:2503.12277 (2025).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

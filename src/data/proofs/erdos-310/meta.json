@@ -1,0 +1,33 @@
+{
+  "id": "erdos-310",
+  "title": "Erdős Problem #310",
+  "slug": "erdos-310",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and .... Is it true that for any ... with ... there exists some ... such that\\[{b}=\\sum_{n\\in S}{n}\\]with ...?\n\n\n\nLiu...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/310",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos310Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 310,
+    "erdosUrl": "https://erdosproblems.com/310",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #310 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\alpha >0$ and $N\\geq 1$. Is it true that for any $A\\subseteq \\{1,\\ldots,N\\}$ with $\\lvert A\\rvert \\geq \\alpha N$ there exists some $S\\subseteq A$ such that\\[\\frac{a}{b}=\\sum_{n\\in S}\\frac{1}{n}\\]with $a\\leq b =O_\\alpha(1)$?\n\n\n\nLiu and Sawhney \\cite{LiSa24} observed that the main result of Bloom \\cite{Bl21} implies a positive solution to this conjecture. They prove a more precise version, that if $(\\log N)^{-1/7+o(1)}\\leq \\alpha \\leq 1/2$ then there is some $S\\subseteq A$ such that\\[\\frac{a}{b}=\\sum_{n\\in S}\\frac{1}{n}\\]with $a\\leq b \\leq \\exp(O(1/\\alpha))$. They also observe that the dependence $b\\leq \\exp(O(1/\\alpha))$ is sharp.\n\n\n\n\nReferences\n\n\n[Bl21] Bloom, T. F., On a density conjecture about unit fractions. arXiv:2112.03726 (2021).\n\n[LiSa24] Liu, Y. and Sawhney, M., On further questions regarding unit fractions. arXiv:2404.07113 (2024).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

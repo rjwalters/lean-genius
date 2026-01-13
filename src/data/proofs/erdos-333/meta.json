@@ -1,0 +1,33 @@
+{
+  "id": "erdos-333",
+  "title": "Erdős Problem #333",
+  "slug": "erdos-333",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set of density zero. Does there exist a ... such that ... and\\[\\lvert B\\cap \\{1,\\ldots,N\\}\\rvert =o(N^{1/2})\\]fo...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/333",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos333Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 333,
+    "erdosUrl": "https://erdosproblems.com/333",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #333 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ be a set of density zero. Does there exist a $B$ such that $A\\subseteq B+B$ and\\[\\lvert B\\cap \\{1,\\ldots,N\\}\\rvert =o(N^{1/2})\\]for all large $N$?\n\n\n\nErd\\H{o}s and Newman \\cite{ErNe77} have proved this is true when $A$ is the set of squares. In fact, Theorem 2 of \\cite{ErNe77} already implies a negative answer to this problem, but this seems to have been overlooked by Erd\\H{o}s and Graham.\n\nSee also [806].\n\n\n\n\nReferences\n\n\n[ErNe77] Erd\\H{o}s, P. and Newman, D. J., Bases for sets of integers. J. Number Theory (1977), 420-425.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

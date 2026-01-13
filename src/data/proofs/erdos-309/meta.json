@@ -1,0 +1,33 @@
+{
+  "id": "erdos-309",
+  "title": "Erdős Problem #309",
+  "slug": "erdos-309",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... How many integers can be written as the sum of distinct unit fractions with denominators from ...? Are there ... suc...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/309",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos309Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 309,
+    "erdosUrl": "https://erdosproblems.com/309",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #309 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N\\geq 1$. How many integers can be written as the sum of distinct unit fractions with denominators from $\\{1,\\ldots,N\\}$? Are there $o(\\log N)$ such integers?\n\n\n\nIf the number of such integers is $N(n)$ then it is trivial that $N(n)\\leq \\log n+O(1)$. Yokota \\cite{Yo97} proved that $N(n)\\geq \\log n-O(\\log\\log n)$.\n\nCroot \\cite{Cr99} proved that every integer at most\\[\\leq \\sum_{n\\leq N}\\frac{1}{n}-(\\tfrac{9}{2}+o(1))\\frac{(\\log\\log N)^2}{\\log N}\\]can be so represented.\n\nIf $F(N)$ counts the number of integers which can be represented in this fashion, then the current best lower bound known is\\[F(N) \\geq \\log N+\\gamma -\\left(\\frac{\\pi^2}{3}+o(1)\\right)\\frac{(\\log\\log N)^2}{\\log N}\\]due to Yokota \\cite{Yo02}.\n\n\n\n\nReferences\n\n\n[Cr99] Croot, III, Ernest S., On some questions of Erd\\H{o}s and Graham about Egyptian fractions. Mathematika (1999), 359-372.\n\n[Yo02] Yokota, Hisashi, On the number of integers representable as sums of unit\nfractions. {III}. J. Number Theory (2002), 351--372.\n\n[Yo97] Yokota, Hisashi, On number of integers representable as a sum of unit\nfractions. {II}. J. Number Theory (1997), 162--169.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

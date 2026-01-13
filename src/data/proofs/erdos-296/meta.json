@@ -1,0 +1,33 @@
+{
+  "id": "erdos-296",
+  "title": "Erdős Problem #296",
+  "slug": "erdos-296",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... be maximal such that there are ... disjoint ... with ... for all .... Estimate .... Is it true that ...?\n...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/296",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos296Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 296,
+    "erdosUrl": "https://erdosproblems.com/296",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #296 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N\\geq 1$ and let $k(N)$ be maximal such that there are $k$ disjoint $A_1,\\ldots,A_k\\subseteq \\{1,\\ldots,N\\}$ with $\\sum_{n\\in A_i}\\frac{1}{n}=1$ for all $i$. Estimate $k(N)$. Is it true that $k(N)=o(\\log N)$?\n\n\n\nMore generally, how many disjoint $A_i$ can be found in $\\{1,\\ldots,N\\}$ such that the sums $\\sum_{n\\in A_i}\\frac{1}{n}$ are all equal? Using sunflowers it can be shown that there are at least $N\\exp(-O(\\sqrt{\\log N}))$ such sets.\n\nHunter and Sawhney have observed that Theorem 3 of Bloom \\cite{Bl21} (coupled with the trivial greedy approach) implies that $k(N)=(1-o(1))\\log N$.\n\n\n\n\nReferences\n\n\n[Bl21] Bloom, T. F., On a density conjecture about unit fractions. arXiv:2112.03726 (2021).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

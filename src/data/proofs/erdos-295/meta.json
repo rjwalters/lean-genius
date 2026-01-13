@@ -1,0 +1,33 @@
+{
+  "id": "erdos-295",
+  "title": "Erdős Problem #295",
+  "slug": "erdos-295",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... denote the smallest ... such that there exist ... with\\[1={n_1}+\\cdots+{n_k}.\\]Is it true that\\[\\lim_{N\\t...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/295",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos295Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 295,
+    "erdosUrl": "https://erdosproblems.com/295",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #295 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N\\geq 1$ and let $k(N)$ denote the smallest $k$ such that there exist $N\\leq n_1<\\cdots <n_k$ with\\[1=\\frac{1}{n_1}+\\cdots+\\frac{1}{n_k}.\\]Is it true that\\[\\lim_{N\\to \\infty} k(N)-(e-1)N=\\infty?\\]\n\n\n\nErd\\H{o}s and Straus \\cite{ErSt71b} have proved the existence of some constant $c>0$ such that\\[-c < k(N)-(e-1)N \\ll \\frac{N}{\\log N}.\\]\n\n\n\n\nReferences\n\n\n[ErSt71b] Erd\\H{o}s, P. and Straus, E. G., Solution to Problem. Amer. Math. Monthly (1971), 302-303.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

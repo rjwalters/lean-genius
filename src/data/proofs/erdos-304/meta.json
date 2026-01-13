@@ -1,0 +1,33 @@
+{
+  "id": "erdos-304",
+  "title": "Erdős Problem #304",
+  "slug": "erdos-304",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor integers ... let ... denote the minimal ... such that there exist integers ... with\\[{b}={n_1}+\\cdots+{n_k}.\\]Estimate .....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/304",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos304Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 304,
+    "erdosUrl": "https://erdosproblems.com/304",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #304 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor integers $1\\leq a<b$ let $N(a,b)$ denote the minimal $k$ such that there exist integers $1<n_1<\\cdots<n_k$ with\\[\\frac{a}{b}=\\frac{1}{n_1}+\\cdots+\\frac{1}{n_k}.\\]Estimate $N(b)=\\max_{1\\leq a<b}N(a,b)$. Is it true that $N(b) \\ll \\log\\log b$?\n\n\n\nErd\\H{o}s \\cite{Er50c} proved that\\[\\log\\log b \\ll N(b) \\ll \\frac{\\log b}{\\log\\log b}.\\]The upper bound was improved by Vose \\cite{Vo85} to\\[N(b) \\ll \\sqrt{\\log b}.\\]One can also investigate the average of $N(a,b)$ for fixed $b$, and it is known that\\[\\frac{1}{b}\\sum_{1\\leq a<b}N(a,b) \\gg \\log\\log b.\\]Related to [18]. There is also a close connection to [293] (particularly with $N(b-1,b)$), as elucidated by van Doorn and Tang \\cite{vDTa25b}.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Er50c] Erd\\H{o}s, P., Az $1/x_1 + 1/x_2 + \\ldots + 1/x_n =A/B$ egyenlet eg\\'{e}sz sz\\'{a}m\\'{u} megold\\'{a}sair\\'{o}l. Mat. Lapok (1950), 192-210.\n\n[Vo85] Vose, Michael D., Egyptian fractions. Bull. London Math. Soc. (1985), 21-24.\n\n[vDTa25b] W. van Doorn and Q. Tang, The smallest denominator not contained in a unit fraction decomposition of 1 with fixed length. arXiv:2512.22083 (2025).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

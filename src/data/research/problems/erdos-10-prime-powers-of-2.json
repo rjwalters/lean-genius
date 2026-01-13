@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "IN-PROGRESS: Counterexamples proven for k=1. Core conjecture likely FALSE (Grechuk counterexample for k=3).",
+    "progressSummary": "CORRECTED: Fixed false axiom! 128 IS expressible as 127+2^0. k=2 insufficiency now OPEN for our definition.",
     "builtItems": [
       "IsPrimePlus2Pow, IsPrimePlusKPowers definitions (Erdos10PrimePlusPowers.lean:39-50)",
       "primePlus2Pow_of_k_ge_one - monotonicity PROVED (Erdos10PrimePlusPowers.lean:55)",
@@ -38,21 +38,23 @@
       "Small cases n=3-10 as p + 2^a PROVED (Erdos10PrimePlusPowers.lean:85-114)",
       "not_262_primePlus2Pow - 262 counterexample PROVED via interval_cases (Erdos10PrimePlusPowers.lean:140)",
       "k_one_insufficient - ∃ n not prime and not p+2^a PROVED (Erdos10PrimePlusPowers.lean:196)",
-      "k_two_insufficient, k_three_insufficient - using axioms (Erdos10PrimePlusPowers.lean:224,235)"
+      "can_128_primePlus1Power - 128=127+2^0 PROVED (Erdos10PrimePlusPowers.lean:237)",
+      "k_three_insufficient - using grechuk axiom (Erdos10PrimePlusPowers.lean:252)"
     ],
     "insights": [
       "Erdős #10 is likely FALSE - no universal k exists",
-      "Counterexamples: 262 (k=1), 128 (k=2), 1117175146 (k=3 Grechuk)",
+      "CRITICAL: 128 is NOT counterexample for AT MOST 2 powers (128=127+2^0, 127 prime)",
+      "OEIS A006286 is EXACTLY 2 powers, our def is AT MOST k powers - key distinction!",
+      "Counterexamples: 262 (k=1), k=2 OPEN, 1117175146 (k=3 Grechuk axiom)",
       "Proof pattern: bound a ≤ 8 since 2^9 > 262, then interval_cases + norm_num",
       "Romanoff (1934): positive density are p + 2^k",
       "Gallagher (1975): for any ε, some k gives density ≥ 1-ε"
     ],
     "mathlibGaps": [
-      "not_128_primePlus2Powers axiom - could prove similarly to 262 but more cases",
       "grechuk_not_3_powers axiom - too large for direct computation in Lean"
     ],
     "nextSteps": [
-      "Prove not_128_primePlus2Powers via interval_cases (need a ≤ 6 bound)",
+      "Find true counterexample for k=2 (composite n with no prime n-2^a and no prime n-2^a-2^b)",
       "Prove erdos_10_pos_implies_not_neg using filter contradiction",
       "Consider Decidable instance for IsPrimePlusKPowers"
     ]

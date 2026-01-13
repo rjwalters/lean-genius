@@ -1,0 +1,33 @@
+{
+  "id": "erdos-329",
+  "title": "Erdős Problem #329",
+  "slug": "erdos-329",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose ... is a Sidon set. How large can\\[\\limsup_{N\\to \\infty}\\rvert}{N^{1/2}}\\]be?\n\n\n\nErds proved that ... is possible and...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/329",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos329Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 329,
+    "erdosUrl": "https://erdosproblems.com/329",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #329 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose $A\\subseteq \\mathbb{N}$ is a Sidon set. How large can\\[\\limsup_{N\\to \\infty}\\frac{\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert}{N^{1/2}}\\]be?\n\n\n\nErd\\H{o}s proved that $1/2$ is possible and Kr\\\"{u}ckeberg \\cite{Kr61} proved $1/\\sqrt{2}$ is possible. Erd\\H{o}s and Tur\\'{a}n \\cite{ErTu41} have proved this $\\limsup$ is always $\\leq 1$.\n\nThe fact that $1$ is possible would follow if any finite Sidon set is a subset of a perfect difference set (see [44] and [707]).\n\nThis question can also be asked for $B_2[g]$ sequences (i.e. where the number of solutions to $n=a_1+a_2$ with $a_1\\leq a_2$ is at most $g$ for all $n$, so that a $B_2[1]$ set is a Sidon set). Kolountzakis \\cite{Ko96} constructed a $B_2[2]$ sequence where the $\\limsup$ is $1$, and for larger $g$ constructions were provided by Cilleruelo and Trujillo \\cite{CiTr01}.\n\n\n\n\nReferences\n\n\n[CiTr01] Cilleruelo, Javier and Trujillo, Carlos, Infinite {$B_2[g]$} sequences. Israel J. Math. (2001), 263--267.\n\n[ErTu41] Erd\\H{o}s, P. and Tur\\'{a}n, P., On a problem of Sidon in additive number theory, and on some related problems. J. London Math. Soc. (1941), 212-215.\n\n[Ko96] Kolountzakis, Mihail N., On the additive complements of the primes and sets of similar\ngrowth. Acta Arith. (1996), 1--8.\n\n[Kr61] Kr\\\"{u}ckeberg, Fritz, $B\\sb{2}$-Folgen und verwandte Zahlenfolgen. J. Reine Angew. Math. (1961), 53-60.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

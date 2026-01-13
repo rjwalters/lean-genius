@@ -216,32 +216,30 @@ theorem k_one_insufficient : ∃ n : ℕ, ¬n.Prime ∧ ¬IsPrimePlusKPowers 1 n
       simp only [ha, Multiset.map_singleton, Multiset.sum_singleton] at heq
       exact not_262_primePlus2Pow ⟨p, a, hp, heq⟩
 
-/-- **Counterexample to k=2: 128**
+/-! ## Note on k=2
 
-    128 = 2^7 cannot be written as p + 2^a + 2^b.
+OEIS A006286 lists numbers not of form p + 2^x + 2^y (EXACTLY 2 powers).
+128 is in A006286, but our IsPrimePlusKPowers allows AT MOST k powers.
 
-    Proof sketch: For 128 = p + 2^a + 2^b, we'd need p = 128 - 2^a - 2^b.
-    Since 128 is even and 2^a + 2^b is even, p must be even, so p = 2.
-    Then 126 = 2^a + 2^b, but 126 = 2 × 63 and we can't write 126 as
-    a sum of two powers of 2:
-    - 64 + 62 (62 not power of 2)
-    - 32 + 94 (94 not power of 2)
+Since 128 = 127 + 2^0 and 127 is prime, we have IsPrimePlusKPowers 1 128.
+Therefore 128 is NOT a counterexample to k=2 for our definition.
 
-    From OEIS A006286: Numbers not of form p + 2^x + 2^y.
-    Crocker (1971) proved infinitely many such numbers exist. -/
-def counterexample_k2 : ℕ := 128
+For k=2 insufficiency, we would need a composite n such that:
+- n - 2^a is never prime (for any a)
+- n - 2^a - 2^b is never prime (for any a, b)
 
-/-- 128 is not prime. -/
-theorem counterexample_k2_not_prime : ¬Nat.Prime counterexample_k2 := by
-  unfold counterexample_k2
-  norm_num
+This is a much stronger condition. The Crocker (1971) result about
+EXACTLY 2 powers doesn't directly apply to our AT MOST 2 definition.
 
-/-- 128 cannot be p + 2^a + 2^b (axiom - verified computationally via OEIS A006286). -/
-axiom not_128_primePlus2Powers : ¬IsPrimePlusKPowers 2 128
+Current status: k=2 insufficiency is OPEN for our definition. -/
 
-/-- Therefore k=2 is insufficient. -/
-theorem k_two_insufficient : ∃ n : ℕ, ¬n.Prime ∧ ¬IsPrimePlusKPowers 2 n := by
-  exact ⟨128, counterexample_k2_not_prime, not_128_primePlus2Powers⟩
+/-- 128 can be written as 127 + 2^0, where 127 is prime. -/
+theorem can_128_primePlus1Power : IsPrimePlusKPowers 1 128 := by
+  use 127, {0}
+  refine ⟨?_, ?_, ?_⟩
+  · native_decide
+  · simp
+  · simp
 
 /-- The Grechuk counterexample: 1,117,175,146 cannot be p + (≤3 powers of 2).
     This suggests the conjecture is likely FALSE for even integers with k=3. -/
@@ -259,13 +257,13 @@ theorem k_three_insufficient : ∃ n : ℕ, ¬n.Prime ∧ ¬IsPrimePlusKPowers 3
     norm_num
   · exact grechuk_not_3_powers
 
-/-- Summary: k = 1, 2, 3 are ALL insufficient.
+/-- Summary: k = 1 is insufficient, and k = 3 is likely insufficient (Grechuk).
+    k = 2 insufficiency for our AT MOST definition is OPEN.
     The pattern suggests Erdős was right that no universal k exists. -/
-theorem first_three_k_insufficient :
+theorem summary_known_insufficient :
     (∃ n, ¬n.Prime ∧ ¬IsPrimePlusKPowers 1 n) ∧
-    (∃ n, ¬n.Prime ∧ ¬IsPrimePlusKPowers 2 n) ∧
     (∃ n, ¬n.Prime ∧ ¬IsPrimePlusKPowers 3 n) :=
-  ⟨k_one_insufficient, k_two_insufficient, k_three_insufficient⟩
+  ⟨k_one_insufficient, k_three_insufficient⟩
 
 /-! ## Part V: Density Results (Statements) -/
 

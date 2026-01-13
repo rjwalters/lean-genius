@@ -1,0 +1,33 @@
+{
+  "id": "erdos-338",
+  "title": "Erdős Problem #338",
+  "slug": "erdos-338",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe restricted order of a basis is the least integer ... (if it exists) such that every large integer is the sum of at most ....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/338",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos338Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 338,
+    "erdosUrl": "https://erdosproblems.com/338",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #338 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe restricted order of a basis is the least integer $t$ (if it exists) such that every large integer is the sum of at most $t$ distinct summands from $A$. What are necessary and sufficient conditions that this exists? Can it be bounded (when it exists) in terms of the order of the basis? What are necessary and sufficient conditions that this is equal to the order of the basis?\n\n\n\nBateman has observed that for $h\\geq 3$ there is a basis of order $h$ with no restricted order, taking\\[A=\\{1\\}\\cup \\{x>0 : h\\mid x\\}.\\]Kelly \\cite{Ke57} has shown that any basis of order $2$ has restricted order at most $4$ and conjectured it always has restricted order at most $3$ (which he proved under the additional assumption that the basis has positive lower density). Kelly's conjecture was disproved by Hennecart \\cite{He05}, who constructed a basis of order $2$ with restricted order $4$.\n\nThe set of squares has order $4$ and restricted order $5$ (see \\cite{Pa33}) and the set of triangular numbers has order $3$ and restricted order $3$ (see \\cite{Sc54}).\n\nIs it true that if $A\\backslash F$ is a basis for all finite sets $F$ then $A$ must have a restricted order? What if they are all bases of the same order?\n\nHegyv\\'{a}ri, Hennecart, and Plagne \\cite{HHP07} have shown that for all $k\\geq2$ there exists a basis of order $k$ which has restricted order at least\\[2^{k-2}+k-1.\\]\n\n\n\n\nReferences\n\n\n[HHP07] Hegyv\\'ari, Norbert and Hennecart, Fran\\c cois and Plagne,\nAlain, Answer to a question by {B}urr and {E}rd\\H{o}s on restricted\naddition, and related results. Combin. Probab. Comput. (2007), 747--756.\n\n[He05] Hennecart, Fran\\c cois, On the restricted order of asymptotic bases of order two. Ramanujan J. (2005), 123--130.\n\n[Ke57] Kelly, John B., Restricted bases. Amer. J. Math. (1957), 258-264.\n\n[Pa33] Pall, Gordon, On Sums of Squares. Amer. Math. Monthly (1933), 10-18.\n\n[Sc54] Schinzel, A., Sur la d\\'{e}composition des nombres naturels en sommes de nombres triangulaires distincts. Bull. Acad. Polon. Sci. Cl. III. (1954), 409-410.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

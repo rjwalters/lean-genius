@@ -1,0 +1,33 @@
+{
+  "id": "erdos-308",
+  "title": "Erdős Problem #308",
+  "slug": "erdos-308",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... What is the smallest integer not representable as the sum of distinct unit fractions with denominators from ...? Is ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/308",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos308Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 308,
+    "erdosUrl": "https://erdosproblems.com/308",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #308 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N\\geq 1$. What is the smallest integer not representable as the sum of distinct unit fractions with denominators from $\\{1,\\ldots,N\\}$? Is it true that the set of integers representable as such has the shape $\\{1,\\ldots,m\\}$ for some $m$?\n\n\n\nThis was essentially solved by Croot \\cite{Cr99}, who proved that if $f(N)$ is the smallest integer not representable then\\[\\left\\lfloor\\sum_{n\\leq N}\\frac{1}{n}-\\frac{9}{2}(1+o(1))\\frac{(\\log\\log N)^2}{\\log N}\\right\\rfloor\\leq f(N)\\]and\\[f(N)\\leq \\left\\lfloor\\sum_{n\\leq N}\\frac{1}{n}-\\frac{1}{2}(1+o(1))\\frac{(\\log\\log N)^2}{\\log N}\\right\\rfloor.\\]It follows that, if $m_N=\\lfloor \\sum_{n\\leq N}\\frac{1}{n}\\rfloor$, then the set of integers representable is, for all $N$ sufficiently large, either $\\{1,\\ldots,m_N-1\\}$ or $\\{1,\\ldots,m_N\\}$.\n\n\n\n\nReferences\n\n\n[Cr99] Croot, III, Ernest S., On some questions of Erd\\H{o}s and Graham about Egyptian fractions. Mathematika (1999), 359-372.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-326",
+  "title": "Erdős Problem #326",
+  "slug": "erdos-326",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an additive basis of order .... Must there exist ... which is also a basis such that\\[\\lim_{k\\to \\infty}{k^2}\\]doe...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/326",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos326Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 326,
+    "erdosUrl": "https://erdosproblems.com/326",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #326 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset \\mathbb{N}$ be an additive basis of order $2$. Must there exist $B=\\{b_1<b_2<\\cdots\\}\\subseteq A$ which is also a basis such that\\[\\lim_{k\\to \\infty}\\frac{b_k}{k^2}\\]does not exist?\n\n\n\nErd\\H{o}s originally asked whether this was true with $A=B$, but this was disproved by Cassels \\cite{Ca57}.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Ca57] Cassels, J. W. S., \\\"{U}ber Basen der nat\\\"{u}rlichen Zahlenreihe. Abh. Math. Sem. Univ. Hamburg (1957), 247-257.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

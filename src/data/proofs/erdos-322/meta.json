@@ -1,0 +1,33 @@
+{
+  "id": "erdos-322",
+  "title": "Erdős Problem #322",
+  "slug": "erdos-322",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be the set of ...th powers. What is the order of growth of ..., i.e. the number of representations of ... as ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/322",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos322Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 322,
+    "erdosUrl": "https://erdosproblems.com/322",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #322 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 3$ and $A\\subset \\mathbb{N}$ be the set of $k$th powers. What is the order of growth of $1_A^{(k)}(n)$, i.e. the number of representations of $n$ as the sum of $k$ many $k$th powers? Does there exist some $c>0$ and infinitely many $n$ such that\\[1_A^{(k)}(n) >n^c?\\]\n\n\n\nConnected to Waring's problem. The famous Hypothesis $K$ of Hardy and Littlewood was that $1_A^{(k)}(n)\\leq n^{o(1)}$, but this was disproved by Mahler \\cite{Ma36} for $k=3$, who constructed infinitely many $n$ such that\\[1_A^{(3)}(n)\\gg n^{1/12}\\](where $A$ is the set of cubes). Erd\\H{o}s believed Hypothesis $K$ fails for all $k\\geq 4$, but this is unknown. Hardy and Littlewood made the weaker Hypothesis $K^*$ that for all $N$ and $\\epsilon>0$\\[\\sum_{n\\leq N}1_A^{(k)}(n)^2 \\ll_\\epsilon N^{1+\\epsilon}.\\]Erd\\H{o}s and Graham remark: 'This is probably true but no doubt very deep. However, it would suffice for most applications.'\n\nIndependently Erd\\H{o}s \\cite{Er36} and Chowla proved that for all $k\\geq 3$ and infinitely many $n$\\[1_A^{(k)}(n) \\gg n^{c/\\log\\log n}\\]for some constant $c>0$ (depending on $k$). In \\cite{Er65b} Erd\\H{o}s claims an unpublished proof that, if $B$ is the set of $k$th powers of any set of positive density, then\\[\\limsup 1_B^{(k)}(n)=\\infty.\\]This is discussed in problem D4 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er36] Erd\\\"{o}s, Paul, On the Representation of an Integer as the Sum of k k-th\nPowers. J. London Math. Soc. (1936), 133-136.\n\n[Er65b] Erd\\H{o}s, Paul, Some recent advances and current problems in number theory. Lectures on Modern Mathematics, Vol. III (1965), 196-244.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Ma36] Mahler, Kurt, Note on Hypothesis K of Hardy and Littlewood. J. London Math. Soc. (1936), 136-138.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

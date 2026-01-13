@@ -1,0 +1,33 @@
+{
+  "id": "erdos-331",
+  "title": "Erdős Problem #331",
+  "slug": "erdos-331",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... such that for all large ...\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\gg N^{1/2}\\]and\\[\\lvert B\\cap \\{1,\\ldots,N\\}\\rvert \\g...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/331",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos331Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 331,
+    "erdosUrl": "https://erdosproblems.com/331",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #331 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A,B\\subseteq \\mathbb{N}$ such that for all large $N$\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\gg N^{1/2}\\]and\\[\\lvert B\\cap \\{1,\\ldots,N\\}\\rvert \\gg N^{1/2}.\\]Is it true that there are infinitely many solutions to $a_1-a_2=b_1-b_2\\neq 0$ with $a_1,a_2\\in A$ and $b_1,b_2\\in B$?\n\n\n\nRuzsa has observed that there is a simple counterexample: take $A$ to be the set of numbers whose binary representation has only non-zero digits in even places, and $B$ similarly but with non-zero digits only in odd places. It is easy to see $A$ and $B$ both grow like $\\gg N^{1/2}$ and yet for any $n\\geq 1$ there is exactly one solution to $n=a+b$ with $a\\in A$ and $b\\in B$.\n\nRuzsa suggests that a non-trivial variant of this problem arises if one imposes the stronger condition that\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\sim c_AN^{1/2}\\]for some constant $c_A>0$ as $N\\to \\infty$, and similarly for $B$.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-318",
+  "title": "Erdős Problem #318",
+  "slug": "erdos-318",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite arithmetic progression and ... be a non-constant function. Must there exist a finite non-empty ... suc...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/318",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos318Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 318,
+    "erdosUrl": "https://erdosproblems.com/318",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #318 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ be an infinite arithmetic progression and $f:A\\to \\{-1,1\\}$ be a non-constant function. Must there exist a finite non-empty $S\\subset A$ such that\\[\\sum_{n\\in S}\\frac{f(n)}{n}=0?\\]What about if $A$ is an arbitrary set of positive density? What if $A$ is the set of squares excluding $1$?\n\n\n\nErd\\H{o}s and Straus \\cite{ErSt75} proved this when $A=\\mathbb{N}$. Sattler \\cite{Sa75} proved this when $A$ is the set of odd numbers. For the squares $1$ must be excluded or the result is trivially false, since\\[\\sum_{k\\geq 2}\\frac{1}{k^2}<1.\\]This is false for some sets $A$ of positive density - indeed, it fails for any set $A$ containing exactly one even number. (Sattler \\cite{Sa82} credits this observation to Erd\\H{o}s, who presumably found this after \\cite{ErGr80}.)\n\nSattler \\cite{Sa82b} proved the answer to the original question is yes, in that any arithmetic progression has this property.\n\nThe final question of the set of squares excluding $1$ appears to be open - Sattler announced a proof in \\cite{Sa82} and \\cite{Sa82b}, but this never appeared.\n\n\n\n\nReferences\n\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[ErSt75] Erd\\H{o}s, P. and Straus, E. G., Solution to Problem 387. Nieuw Arch. Wisk. (1975), 183.\n\n[Sa75] Sattler, R., Solution to Problem 387. Nieuw Arch. Wisk. (1975), 184-189.\n\n[Sa82] Sattler, R., On {E}rd\\H{o}s property {${\\rm P}\\sb{1}$}\\ for the sequence of\nsquarefree numbers. Nederl. Akad. Wetensch. Indag. Math. (1982), 341--346.\n\n[Sa82b] Sattler, R., On {E}rd\\H{o}s property {${\\rm P}\\sb{1}$}\\ for the arithmetical\nsequence. Nederl. Akad. Wetensch. Indag. Math. (1982), 347--352.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

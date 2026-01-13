@@ -1,0 +1,33 @@
+{
+  "id": "erdos-334",
+  "title": "Erdős Problem #334",
+  "slug": "erdos-334",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFind the best function ... such that every ... can be written as ... where both ... are ...-smooth (that is, are not divisibl...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/334",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos334Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 334,
+    "erdosUrl": "https://erdosproblems.com/334",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #334 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFind the best function $f(n)$ such that every $n$ can be written as $n=a+b$ where both $a,b$ are $f(n)$-smooth (that is, are not divisible by any prime $p>f(n)$.)\n\n\n\nErd\\H{o}s originally asked if even $f(n)\\leq n^{1/3}$ is true. This is known, and the best bound is due to Balog \\cite{Ba89} who proved that\\[f(n) \\ll_\\epsilon n^{\\frac{4}{9\\sqrt{e}}+\\epsilon}\\]for all $\\epsilon>0$. (Note $\\frac{4}{9\\sqrt{e}}=0.2695\\ldots$.)\n\nIt is likely that $f(n)\\leq n^{o(1)}$, or even $f(n)\\leq e^{O(\\sqrt{\\log n})}$.\n\nSee also Problem 59 on Green's open problems list.\n\n\n\n\nReferences\n\n\n[Ba89] Balog, A., On additive representation of integers. Acta Math. Hungar. (1989), 297-301.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

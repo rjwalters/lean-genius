@@ -1,0 +1,33 @@
+{
+  "id": "erdos-316",
+  "title": "Erdős Problem #316",
+  "slug": "erdos-316",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that if ... is a finite set with ... then there is a partition ... such that\\[\\sum_{n\\in A_i}{n}<1\\]for ...?\n\n\n\nTh...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/316",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos316Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 316,
+    "erdosUrl": "https://erdosproblems.com/316",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #316 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that if $A\\subset \\mathbb{N}\\backslash\\{1\\}$ is a finite set with $\\sum_{n\\in A}\\frac{1}{n}<2$ then there is a partition $A=A_1\\sqcup A_2$ such that\\[\\sum_{n\\in A_i}\\frac{1}{n}<1\\]for $i=1,2$?\n\n\n\nThis is not true if $A$ is a multiset, for example $2,3,3,5,5,5,5$.\n\nThis is not true in general, as shown by S\\'{a}ndor \\cite{Sa97}, who observed that the proper divisors of $120$ form a counterexample. More generally, S\\'{a}ndor shows that for any $n\\geq 2$ there exists a finite set $A\\subseteq \\mathbb{N}\\backslash\\{1\\}$ with $\\sum_{k\\in A}\\frac{1}{k}<n$ and no partition into $n$ parts each of which has $\\sum_{k\\in A_i}\\frac{1}{k}<1$.\n\nThe minimal counterexample is $\\{2,3,4,5,6,7,10,11,13,14,15\\}$, found by Tom Stobart.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Sa97] S\\'{a}ndor, Csaba, On a problem of Erd\\H{o}s. J. Number Theory (1997), 203-210.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

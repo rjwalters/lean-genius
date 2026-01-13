@@ -1,0 +1,33 @@
+{
+  "id": "erdos-306",
+  "title": "Erdős Problem #306",
+  "slug": "erdos-306",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... with ... squarefree. Are there integers ..., each the product of two distinct primes, such that\\[{b}={n_1}+\\cdots+{n_...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/306",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos306Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 306,
+    "erdosUrl": "https://erdosproblems.com/306",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #306 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a/b\\in \\mathbb{Q}_{>0}$ with $b$ squarefree. Are there integers $1<n_1<\\cdots<n_k$, each the product of two distinct primes, such that\\[\\frac{a}{b}=\\frac{1}{n_1}+\\cdots+\\frac{1}{n_k}?\\]\n\n\n\nFor $n_i$ the product of three distinct primes, this is true when $b=1$, as proved by Butler, Erd\\H{o}s and Graham \\cite{BEG15} (this paper is perhaps Erd\\H{o}s' last paper, appearing 19 years after his death).\n\n\n\n\nReferences\n\n\n[BEG15] Butler, Steve and Erd\\H{o}s, Paul and Graham, Ron, Egyptian fractions with each denominator having three distinct\nprime divisors. Integers (2015), Paper No. A51, 9.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

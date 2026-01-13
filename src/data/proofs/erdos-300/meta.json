@@ -1,0 +1,33 @@
+{
+  "id": "erdos-300",
+  "title": "Erdős Problem #300",
+  "slug": "erdos-300",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the maximal cardinality of ... such that ... for all .... Estimate ....\n\n\n\nErds and Graham believe the answer ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/300",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos300Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 300,
+    "erdosUrl": "https://erdosproblems.com/300",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #300 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A(N)$ denote the maximal cardinality of $A\\subseteq \\{1,\\ldots,N\\}$ such that $\\sum_{n\\in S}\\frac{1}{n}\\neq 1$ for all $S\\subseteq A$. Estimate $A(N)$.\n\n\n\nErd\\H{o}s and Graham believe the answer is $A(N)=(1+o(1))N$. Croot \\cite{Cr03} disproved this, showing the existence of some constant $c<1$ such that $A(N)<cN$ for all large $N$. It is trivial that $A(N)\\geq (1-\\frac{1}{e}+o(1))N$.\n\nLiu and Sawhney \\cite{LiSa24} have proved that $A(N)=(1-1/e+o(1))N$.\n\n\n\n\nReferences\n\n\n[Cr03] Croot, III, Ernest S., On a coloring conjecture about unit fractions. Ann. of Math. (2) (2003), 545-556.\n\n[LiSa24] Liu, Y. and Sawhney, M., On further questions regarding unit fractions. arXiv:2404.07113 (2024).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

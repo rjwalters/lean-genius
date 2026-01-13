@@ -1,0 +1,33 @@
+{
+  "id": "erdos-328",
+  "title": "Erdős Problem #328",
+  "slug": "erdos-328",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose ... and ... is such that ... for all .... Can ... be partitioned into ... many subsets ... (where ... depends only on...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/328",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos328Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 328,
+    "erdosUrl": "https://erdosproblems.com/328",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #328 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose $A\\subseteq\\mathbb{N}$ and $C>0$ is such that $1_A\\ast 1_A(n)\\leq C$ for all $n\\in\\mathbb{N}$. Can $A$ be partitioned into $t$ many subsets $A_1,\\ldots,A_t$ (where $t=t(C)$ depends only on $C$) such that $1_{A_i}\\ast 1_{A_i}(n)<C$ for all $1\\leq i\\leq t$ and $n\\in \\mathbb{N}$?\n\n\n\nAsked by Erd\\H{o}s and Newman. Ne\\v{s}et\\v{r}il and R\\\"{o}dl \\cite{NeRo85} have shown the answer is no for all $C$ (even if $t$ is also allowed to depend on $A$).\n\nErd\\H{o}s \\cite{Er80e} had previously shown the answer is no for $C=3,4$ and infinitely many other values of $C$.\n\nSee also [774].\n\n\n\n\nReferences\n\n\n[Er80e] Erd\\H{o}s, P., Some applications of Ramsey's theorem to additive number\ntheory. European J. Combin. (1980), 43-46.\n\n[NeRo85] J. Ne\\v{s}et\\v{r}il and V. R\\\"{o}dl, Two proofs in combinatorial number theory. Proc. Amer. Math. Soc. (1985), 185-188.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}
