@@ -241,7 +241,7 @@ theorem erdos_ko_rado {n k : ℕ} (hn : n ≥ 2 * k) (hk : 0 < k)
   have hk_factorial : k.factorial = k * (k - 1).factorial := by
     cases k with
     | zero => omega  -- contradicts hk
-    | succ k' => simp [Nat.factorial_succ, Nat.succ_sub_one]
+    | succ k' => simp [Nat.factorial_succ]
 
   -- The key algebraic identity for choose
   -- C(n-1, k-1) = (n-1)! / ((k-1)! * (n-k)!)
@@ -276,13 +276,62 @@ The star consists of all k-sets containing x. This is equivalent to
 choosing k-1 elements from the remaining n-1 elements, giving exactly
 C(n-1, k-1) sets.
 
-**Proof sketch**: Use a bijection s ↦ s.erase x from k-sets containing x
-to (k-1)-sets in univ \ {x}. The bijection API changed in Mathlib 4.26,
-so we sorry this pending API updates. -/
-theorem star_achieves_bound {n k : ℕ} (_hn : n ≥ 2 * k) (_hk : 0 < k) (x : Fin n) :
+**Proof**: We use the bijection s ↦ s.erase x from k-sets containing x
+to (k-1)-sets in univ \ {x}. -/
+theorem star_achieves_bound {n k : ℕ} (_hn : n ≥ 2 * k) (hk : 0 < k) (x : Fin n) :
     (Star x k).card = (n - 1).choose (k - 1) := by
-  -- The bijection proof needs updating for Mathlib 4.26 API changes
-  sorry
+  -- We establish a bijection from Star x k to (k-1)-subsets of (univ \ {x})
+  -- The bijection is s ↦ s.erase x
+  unfold Star
+  -- Target: (k-1)-subsets of (univ.erase x)
+  let target := powersetCard (k - 1) (univ.erase x)
+  -- Show target has the right cardinality
+  have h_target_card : target.card = (n - 1).choose (k - 1) := by
+    simp only [target, card_powersetCard]
+    congr 1
+    simp [card_erase_of_mem (mem_univ x)]
+  rw [← h_target_card]
+  -- Define the bijection
+  apply Finset.card_bij (fun s _ => s.erase x)
+  -- (1) The function maps into the target
+  · intro s hs
+    simp only [mem_filter, mem_powersetCard_univ] at hs
+    simp only [target, mem_powersetCard]
+    constructor
+    · -- s.erase x ⊆ univ.erase x
+      intro y hy
+      simp only [mem_erase] at hy ⊢
+      constructor
+      · exact hy.1
+      · exact mem_univ y
+    · -- card (s.erase x) = k - 1
+      rw [card_erase_of_mem hs.2, hs.1]
+  -- (2) Injectivity: if s.erase x = t.erase x and both contain x, then s = t
+  · intro s₁ hs₁ s₂ hs₂ heq
+    simp only [mem_filter, mem_powersetCard_univ] at hs₁ hs₂
+    -- s₁ = insert x (s₁.erase x) = insert x (s₂.erase x) = s₂
+    have h1 : s₁ = insert x (s₁.erase x) := (insert_erase hs₁.2).symm
+    have h2 : s₂ = insert x (s₂.erase x) := (insert_erase hs₂.2).symm
+    rw [h1, h2, heq]
+  -- (3) Surjectivity: for any t in target, t.insert x maps back to t
+  · intro t ht
+    simp only [target, mem_powersetCard] at ht
+    -- x ∉ t since t ⊆ univ.erase x
+    have hx_notin : x ∉ t := by
+      intro hx
+      have hmem := ht.1 hx
+      rw [mem_erase] at hmem
+      exact hmem.1 rfl
+    use insert x t
+    refine ⟨?_, erase_insert hx_notin⟩
+    -- insert x t ∈ Star
+    rw [mem_filter, mem_powersetCard_univ]
+    constructor
+    · -- card (insert x t) = k
+      rw [card_insert_of_notMem hx_notin, ht.2]
+      omega
+    · -- x ∈ insert x t
+      exact mem_insert_self x t
 
 /-- The star is an intersecting family -/
 theorem star_is_intersecting {n k : ℕ} (_hk : 0 < k) (x : Fin n) :

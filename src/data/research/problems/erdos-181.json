@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-181",
+  "title": "Erdős #181",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $Q_n$ be the $n$-dimensional hypercube graph (so that $Q_n$ has $2^n$ vertices and $n2^{n-1}$ edges). Prove that\\[R(Q_n) \\ll 2^n.\\]\n\n\n\nConjectured by Burr and Erd\\H{o}s, althouhg in \\cite{Er93} Erd\\H{o}s says the behaviour of $R(Q_n)$ was considered by himself and S\\'{o}s, who could not decide whether $R(Q_n)/2^n\\to \\infty$ or not.\n\nThe trivial bound is\\[R(Q_n) \\leq R(K_{2^n})\\leq C^{2^n}\\]for some constant $C>1$. This was improved a number of times; the current best bound due to Tikhomirov \\cite{Ti22} is\\[R(Q_n)\\ll 2^{(2-c)n}\\]for some small constant $c>0$. (In fact $c\\approx 0.03656$ is permissible.)\n\nThis problem is #20 in Ramsey Theory in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n[Ti22] Tikhomirov, K., A remark on the Ramsey number of the hypercube. arXiv:2208.14568 (2022).\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T10:00:45.598Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #181 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $Q_n$ be the $n$-dimensional hypercube graph (so that $Q_n$ has $2^n$ vertices and $n2^{n-1}$ edges). Prove that\\[R(Q_n) \\ll 2^n.\\]\n\n\n\nConjectured by Burr and Erd\\H{o}s, althouhg in \\cite{Er93} Erd\\H{o}s says the behaviour of $R(Q_n)$ was considered by himself and S\\'{o}s, who could not decide whether $R(Q_n)/2^n\\to \\infty$ or not.\n\nThe trivial bound is\\[R(Q_n) \\leq R(K_{2^n})\\leq C^{2^n}\\]for some constant $C>1$. This was improved a number of times; the current best bound due to Tikhomirov \\cite{Ti22} is\\[R(Q_n)\\ll 2^{(2-c)n}\\]for some small constant $c>0$. (In fact $c\\approx 0.03656$ is permissible.)\n\nThis problem is #20 in Ramsey Theory in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n[Ti22] Tikhomirov, K., A remark on the Ramsey number of the hypercube. arXiv:2208.14568 (2022).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #20\n- Problem #180\n- Problem #182\n- Problem #39\n- Problem #1\n\n## References\n\n- BuEr75\n- Er93\n- Ti22\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T10:00:45.598Z",
+  "significance": 6,
+  "tractability": 4
+}

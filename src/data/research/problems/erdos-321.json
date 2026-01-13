@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-321",
+  "title": "Erdős #321",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest $A\\subseteq \\{1,\\ldots,N\\}$ such that all sums $\\sum_{n\\in S}\\frac{1}{n}$ are distinct for $S\\subseteq A$?\n\n\n\nLet $R(N)$ be the maximal such size. Results of Bleicher and Erd\\H{o}s from \\cite{BlEr75} and \\cite{BlEr76b} imply that\\[\\frac{N}{\\log N}\\prod_{i=3}^k\\log_iN\\leq R(N)\\leq \\frac{1}{\\log 2}\\log_r N\\left(\\frac{N}{\\log N} \\prod_{i=3}^r \\log_iN\\right),\\]valid for any $k\\geq 4$ with $\\log_kN\\geq k$ and any $r\\geq 1$ with $\\log_{2r}N\\geq 1$. (In these bounds $\\log_in$ denotes the $i$-fold iterated logarithm.)\n\nSee also [320].\n\n\n\n\n\n\nReferences\n\n\n[BlEr75] Bleicher, M. N. and Erd\\H{o}s, P., The number of distinct subsums of $\\sum \\sb{1}\\spN\\,1/i$. Math. Comp. (1975), 29-42.\n\n[BlEr76b] Bleicher, Michael N. and Erd\\H{o}s, Paul, Denominators of Egyptian fractions. II. Illinois J. Math. (1976), 598-613.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T23:55:09.603Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #321 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest $A\\subseteq \\{1,\\ldots,N\\}$ such that all sums $\\sum_{n\\in S}\\frac{1}{n}$ are distinct for $S\\subseteq A$?\n\n\n\nLet $R(N)$ be the maximal such size. Results of Bleicher and Erd\\H{o}s from \\cite{BlEr75} and \\cite{BlEr76b} imply that\\[\\frac{N}{\\log N}\\prod_{i=3}^k\\log_iN\\leq R(N)\\leq \\frac{1}{\\log 2}\\log_r N\\left(\\frac{N}{\\log N} \\prod_{i=3}^r \\log_iN\\right),\\]valid for any $k\\geq 4$ with $\\log_kN\\geq k$ and any $r\\geq 1$ with $\\log_{2r}N\\geq 1$. (In these bounds $\\log_in$ denotes the $i$-fold iterated logarithm.)\n\nSee also [320].\n\n\n\n\n\n\nReferences\n\n\n[BlEr75] Bleicher, M. N. and Erd\\H{o}s, P., The number of distinct subsums of $\\sum \\sb{1}\\spN\\,1/i$. Math. Comp. (1975), 29-42.\n\n[BlEr76b] Bleicher, Michael N. and Erd\\H{o}s, Paul, Denominators of Egyptian fractions. II. Illinois J. Math. (1976), 598-613.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #320\n- Problem #322\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- BlEr75\n- BlEr76b\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T23:55:09.603Z",
+  "significance": 6,
+  "tractability": 4
+}

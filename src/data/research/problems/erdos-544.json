@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-544",
+  "title": "Erdős #544",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(LaTeX not available)",
+    "plain": "Show that\\[R(3,k+1)-R(3,k)\\to\\infty\\]as $k\\to \\infty$. Similarly, prove or disprove that\\[R(3,k+1)-R(3,k)=o(k).\\] A problem of Erdős and Sós. This problem is #8 in Ramsey Theory in the graphs problem collection. See also [165] and [1014]. View the LaTeX source",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T06:07:05.459Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #544 - Knowledge Base\n\n## Problem Statement\n\nShow that\\[R(3,k+1)-R(3,k)\\to\\infty\\]as $k\\to \\infty$. Similarly, prove or disprove that\\[R(3,k+1)-R(3,k)=o(k).\\] A problem of Erdős and Sós. This problem is #8 in Ramsey Theory in the graphs problem collection. See also [165] and [1014]. View the LaTeX source\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #8\n- Problem #165\n- Problem #1014\n- Problem #543\n- Problem #545\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er81c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T06:07:05.459Z",
+  "significance": 7,
+  "tractability": 5
+}

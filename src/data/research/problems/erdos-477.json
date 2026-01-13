@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-477",
+  "title": "Erdős #477",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a polynomial $f:\\mathbb{Z}\\to \\mathbb{Z}$ of degree at least $2$ and a set $A\\subset \\mathbb{Z}$ such that for any $n\\in \\mathbb{Z}$ there is exactly one $a\\in A$ and $b\\in \\{ f(n) : n\\in\\mathbb{Z}\\}$ such that $n=a+b$?\n\n\n\nA question of Erd\\H{o}s and Graham, who thought the answer was negative.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T03:37:39.478Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #477 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a polynomial $f:\\mathbb{Z}\\to \\mathbb{Z}$ of degree at least $2$ and a set $A\\subset \\mathbb{Z}$ such that for any $n\\in \\mathbb{Z}$ there is exactly one $a\\in A$ and $b\\in \\{ f(n) : n\\in\\mathbb{Z}\\}$ such that $n=a+b$?\n\n\n\nA question of Erd\\H{o}s and Graham, who thought the answer was negative.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #476\n- Problem #478\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T03:37:39.478Z",
+  "significance": 7,
+  "tractability": 5
+}

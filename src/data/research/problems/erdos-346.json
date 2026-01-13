@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-346",
+  "title": "Erdős #346",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{1\\leq a_1< a_2<\\cdots\\}$ be a set of integers such that\n{UL}\n{LI} $A\\backslash B$ is complete for any finite subset $B$ and {/LI}\n{LI} $A\\backslash B$ is not complete for any infinite subset $B$.{/LI}\n{/UL}\n(Here 'complete' means all sufficiently large integers can be written as a sum of distinct members of the sequence.)\n\nIs it true that if $a_{n+1}/a_n \\geq 1+\\epsilon$ for some $\\epsilon>0$ and all $n$ then\\[\\lim_n \\frac{a_{n+1}}{a_n}=\\frac{1+\\sqrt{5}}{2}?\\]\n\n\n\nGraham \\cite{Gr64d} has shown that the sequence $a_n=F_n-(-1)^{n}$, where $F_n$ is the $n$th Fibonacci number, has these properties. Erd\\H{o}s and Graham \\cite{ErGr80} remark that it is easy to see that if $a_{n+1}/a_n>\\frac{1+\\sqrt{5}}{2}$ then the second property is automatically satisfied, and that it is not hard to construct very irregular sequences satisfying both properties.\n\n\n\n\nReferences\n\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[Gr64d] Graham, R. L., A property of Fibonacci numbers. Fibonacci Quart. (1964), 1-10.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T00:53:52.153Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #346 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{1\\leq a_1< a_2<\\cdots\\}$ be a set of integers such that\n{UL}\n{LI} $A\\backslash B$ is complete for any finite subset $B$ and {/LI}\n{LI} $A\\backslash B$ is not complete for any infinite subset $B$.{/LI}\n{/UL}\n(Here 'complete' means all sufficiently large integers can be written as a sum of distinct members of the sequence.)\n\nIs it true that if $a_{n+1}/a_n \\geq 1+\\epsilon$ for some $\\epsilon>0$ and all $n$ then\\[\\lim_n \\frac{a_{n+1}}{a_n}=\\frac{1+\\sqrt{5}}{2}?\\]\n\n\n\nGraham \\cite{Gr64d} has shown that the sequence $a_n=F_n-(-1)^{n}$, where $F_n$ is the $n$th Fibonacci number, has these properties. Erd\\H{o}s and Graham \\cite{ErGr80} remark that it is easy to see that if $a_{n+1}/a_n>\\frac{1+\\sqrt{5}}{2}$ then the second property is automatically satisfied, and that it is not hard to construct very irregular sequences satisfying both properties.\n\n\n\n\nReferences\n\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[Gr64d] Graham, R. L., A property of Fibonacci numbers. Fibonacci Quart. (1964), 1-10.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #345\n- Problem #347\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gr64d\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T00:53:52.153Z",
+  "significance": 6,
+  "tractability": 4
+}

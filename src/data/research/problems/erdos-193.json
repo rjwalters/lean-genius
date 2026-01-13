@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-193",
+  "title": "Erdős #193",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $S\\subseteq \\mathbb{Z}^3$ be a finite set and let $A=\\{a_1,a_2,\\ldots,\\}\\subset \\mathbb{Z}^3$ be an infinite $S$-walk, so that $a_{i+1}-a_i\\in S$ for all $i$. Must $A$ contain three collinear points?\n\n\n\nOriginally conjectured by Gerver and Ramsey \\cite{GeRa79}, who showed that the answer is yes for $\\mathbb{Z}^2$, and for $\\mathbb{Z}^3$ that the largest number of collinear points can be bounded.\n\n\n\n\nReferences\n\n\n[GeRa79] Gerver, Joseph L. and Ramsey, L. Thomas, On certain sequences of lattice points. Pacific J. Math. (1979), 357-363.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T16:01:50.836Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #193 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $S\\subseteq \\mathbb{Z}^3$ be a finite set and let $A=\\{a_1,a_2,\\ldots,\\}\\subset \\mathbb{Z}^3$ be an infinite $S$-walk, so that $a_{i+1}-a_i\\in S$ for all $i$. Must $A$ contain three collinear points?\n\n\n\nOriginally conjectured by Gerver and Ramsey \\cite{GeRa79}, who showed that the answer is yes for $\\mathbb{Z}^2$, and for $\\mathbb{Z}^3$ that the largest number of collinear points can be bounded.\n\n\n\n\nReferences\n\n\n[GeRa79] Gerver, Joseph L. and Ramsey, L. Thomas, On certain sequences of lattice points. Pacific J. Math. (1979), 357-363.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #192\n- Problem #194\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr79\n- ErGr80\n- GeRa79\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T16:01:50.836Z",
+  "significance": 6,
+  "tractability": 4
+}

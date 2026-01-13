@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-180",
+  "title": "Erdős #180",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $\\mathcal{F}$ is a finite set of finite graphs then $\\mathrm{ex}(n;\\mathcal{F})$ is the maximum number of edges a graph on $n$ vertices can have without containing any subgraphs from $\\mathcal{F}$. Note that it is trivial that $\\mathrm{ex}(n;\\mathcal{F})\\leq \\mathrm{ex}(n;G)$ for every $G\\in\\mathcal{F}$.\n\nIs it true that, for every $\\mathcal{F}$, there exists $G\\in\\mathcal{F}$ such that\\[\\mathrm{ex}(n;G)\\ll_{\\mathcal{F}}\\mathrm{ex}(n;\\mathcal{F})?\\]\n\n\n\nA problem of Erd\\H{o}s and Simonovits.\n\nThis is trivially true if $\\mathcal{F}$ does not contain any bipartite graphs, since by the Erd\\H{o}s-Stone theorem if $H\\in\\mathcal{F}$ has minimal chromatic number $r\\geq 2$ then\\[\\mathrm{ex}(n;H)=\\mathrm{ex}(n;\\mathcal{F})=\\left(\\frac{r-2}{r-1}+o(1)\\right)\\binom{n}{2}.\\]Erd\\H{o}s and Simonovits observe that this is false for infinite families $\\mathcal{F}$, e.g. the family of all cycles.\n\n\nHunter has provided the following 'folklore counterexample': if $\\mathcal{F}=\\{H_1,H_2\\}$ where $H_1$ is a star and $H_2$ is a matching, both with at least two edges, then $\\mathrm{ex}(n;\\mathcal{F})\\ll 1$, but $\\mathrm{ex}(n;H_i)\\asymp n$ for $1\\leq i\\leq 2$. This conjecture may still hold for all other $\\mathcal{F}$.\n\nSee also [575] and the entry in the graphs problem collection.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T10:00:45.598Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #180 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $\\mathcal{F}$ is a finite set of finite graphs then $\\mathrm{ex}(n;\\mathcal{F})$ is the maximum number of edges a graph on $n$ vertices can have without containing any subgraphs from $\\mathcal{F}$. Note that it is trivial that $\\mathrm{ex}(n;\\mathcal{F})\\leq \\mathrm{ex}(n;G)$ for every $G\\in\\mathcal{F}$.\n\nIs it true that, for every $\\mathcal{F}$, there exists $G\\in\\mathcal{F}$ such that\\[\\mathrm{ex}(n;G)\\ll_{\\mathcal{F}}\\mathrm{ex}(n;\\mathcal{F})?\\]\n\n\n\nA problem of Erd\\H{o}s and Simonovits.\n\nThis is trivially true if $\\mathcal{F}$ does not contain any bipartite graphs, since by the Erd\\H{o}s-Stone theorem if $H\\in\\mathcal{F}$ has minimal chromatic number $r\\geq 2$ then\\[\\mathrm{ex}(n;H)=\\mathrm{ex}(n;\\mathcal{F})=\\left(\\frac{r-2}{r-1}+o(1)\\right)\\binom{n}{2}.\\]Erd\\H{o}s and Simonovits observe that this is false for infinite families $\\mathcal{F}$, e.g. the family of all cycles.\n\n\nHunter has provided the following 'folklore counterexample': if $\\mathcal{F}=\\{H_1,H_2\\}$ where $H_1$ is a star and $H_2$ is a matching, both with at least two edges, then $\\mathrm{ex}(n;\\mathcal{F})\\ll 1$, but $\\mathrm{ex}(n;H_i)\\asymp n$ for $1\\leq i\\leq 2$. This conjecture may still hold for all other $\\mathcal{F}$.\n\nSee also [575] and the entry in the graphs problem collection.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #575\n- Problem #179\n- Problem #181\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErSi82\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T10:00:45.598Z",
+  "significance": 6,
+  "tractability": 4
+}

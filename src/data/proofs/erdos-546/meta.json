@@ -1,0 +1,33 @@
+{
+  "id": "erdos-546",
+  "title": "Erdős Problem #546",
+  "slug": "erdos-546",
+  "description": "Let ... be a graph with no isolated vertices and ... edges. Is it true that\\[R(G) \\leq 2^{O(m^{1/2})}?\\] This is true, and was proved by Sudakov [Su11]. The analogous question for ... colours is st...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/546",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos546Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 546,
+    "erdosUrl": "https://erdosproblems.com/546",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #546 from erdosproblems.com.",
+    "problemStatement": "Let $G$ be a graph with no isolated vertices and $m$ edges. Is it true that\\[R(G) \\leq 2^{O(m^{1/2})}?\\] This is true, and was proved by Sudakov [Su11]. The analogous question for $\\geq 3$ colours is still open. Alon, Krivelevich, and Sudakov [AKS03] had earlier given a short proof of this when $G$ is bipartite. A more precise question is [545]. This problem is #11 in Ramsey Theory in the graphs problem collection. View the LaTeX source This page was last edited 18 November 2025.",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

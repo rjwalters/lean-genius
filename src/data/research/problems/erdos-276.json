@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-276",
+  "title": "Erdős #276",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite Lucas sequence $a_0,a_1,\\ldots$ where $a_{n+2}=a_{n+1}+a_n$ for $n\\geq 0$ such that all $a_k$ are composite, and yet no integer has a common factor with every term of the sequence?\n\n\n\nWhether such a composite Lucas sequence even exists was open for a while, but using covering systems Graham \\cite{Gr64} showed that\\[a_0 = 1786772701928802632268715130455793\\]and\\[a_1 = 1059683225053915111058165141686995\\]generate such a sequence. This problem asks whether one can have a composite Lucas sequence without 'an underlying system of covering congruences responsible'.\n\nThis problem has been 'conjecturally solved' by Ismailescu and Son \\cite{IsSo14}, in that they provide an explicit infinite Lucas sequence in which all the terms are composite, and believe that no covering system is responsible for this. See the comment by van Doorn below for more details.\n\nSee also [1113] for another problem in which the question is whether covering systems are always responsible.\n\n\n\n\nReferences\n\n\n[Gr64] Graham, R. L., A Fibonacci-Like Sequence of Composite Numbers. Math. Mag. (1964), 322-324.\n\n[IsSo14] Ismailescu, Dan and Son, Jaesung, A new kind of {F}ibonacci-like sequence of composite numbers. J. Integer Seq. (2014), Article 14.8.2, 9.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T22:33:22.719Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #276 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an infinite Lucas sequence $a_0,a_1,\\ldots$ where $a_{n+2}=a_{n+1}+a_n$ for $n\\geq 0$ such that all $a_k$ are composite, and yet no integer has a common factor with every term of the sequence?\n\n\n\nWhether such a composite Lucas sequence even exists was open for a while, but using covering systems Graham \\cite{Gr64} showed that\\[a_0 = 1786772701928802632268715130455793\\]and\\[a_1 = 1059683225053915111058165141686995\\]generate such a sequence. This problem asks whether one can have a composite Lucas sequence without 'an underlying system of covering congruences responsible'.\n\nThis problem has been 'conjecturally solved' by Ismailescu and Son \\cite{IsSo14}, in that they provide an explicit infinite Lucas sequence in which all the terms are composite, and believe that no covering system is responsible for this. See the comment by van Doorn below for more details.\n\nSee also [1113] for another problem in which the question is whether covering systems are always responsible.\n\n\n\n\nReferences\n\n\n[Gr64] Graham, R. L., A Fibonacci-Like Sequence of Composite Numbers. Math. Mag. (1964), 322-324.\n\n[IsSo14] Ismailescu, Dan and Son, Jaesung, A new kind of {F}ibonacci-like sequence of composite numbers. J. Integer Seq. (2014), Article 14.8.2, 9.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1113\n- Problem #275\n- Problem #277\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gr64\n- IsSo14\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T22:33:22.719Z",
+  "significance": 6,
+  "tractability": 4
+}

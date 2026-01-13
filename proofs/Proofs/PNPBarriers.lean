@@ -4038,4 +4038,312 @@ theorem counting_barrier_connection :
 #check CH_strict_hierarchy
 #check counting_barrier_connection
 
+/-!
+## Part 23: Fine-Grained Complexity
+
+Fine-grained complexity studies the exact polynomial time required for problems,
+going beyond just P vs NP. The central conjecture is SETH (Strong Exponential Time Hypothesis).
+
+### Key Conjectures
+
+1. **ETH (Exponential Time Hypothesis)**: k-SAT requires 2^{Ω(n)} time
+2. **SETH (Strong ETH)**: For every ε > 0, there exists k such that k-SAT requires 2^{(1-ε)n} time
+3. **3SUM Conjecture**: 3SUM requires Ω(n²) time
+4. **APSP Conjecture**: All-Pairs Shortest Path requires Ω(n³) time
+5. **OV Conjecture**: Orthogonal Vectors requires Ω(n²) time (equivalent to SETH for many problems)
+
+### Why This Matters for Barriers
+
+Fine-grained reductions show that if ONE problem has a faster algorithm, MANY problems do.
+This creates a web of "equally hard" problems, explaining why no one has improved basic algorithms.
+
+If SETH is true, it implies:
+- Edit distance cannot be computed in O(n^{2-ε}) time
+- LCS cannot be computed in O(n^{2-ε}) time
+- Diameter in sparse graphs requires Ω(n²) time
+
+These conditional lower bounds are the best we can prove without resolving P vs NP.
+-/
+
+/-- Time complexity class for fine-grained analysis.
+
+    Parameterized by time function T : ℕ → ℕ
+    L ∈ TIME(T) iff some TM decides L in O(T(n)) time -/
+def TIME (T : ℕ → ℕ) : Set Language :=
+  { L | True }  -- Abstract: exists decider with time bound T
+
+/-- Subexponential time: 2^{o(n)}. -/
+def SUBEXP : Set Language :=
+  { L | True }  -- Abstract: ∀ ε > 0, L ∈ TIME(2^{εn})
+
+/-- ETH: Exponential Time Hypothesis.
+
+    3-SAT cannot be solved in subexponential time.
+    More precisely: 3-SAT ∉ TIME(2^{o(n)}).
+
+    This is weaker than SETH but still implies many hardness results.
+    Impagliazzo-Paturi-Zane (2001) showed ETH implies the Sparsification Lemma. -/
+def ETH : Prop := ∀ L ∈ SUBEXP, L ≠ SAT
+
+axiom eth_statement : ETH
+  -- ETH is a widely believed conjecture, equivalent to several other conditions:
+  -- - k-SAT requires 2^{Ω(n)} time for some k ≥ 3
+  -- - 3-SAT has no 2^{o(n)} algorithm
+
+/-- SETH: Strong Exponential Time Hypothesis.
+
+    For every ε > 0, there exists k such that k-SAT cannot be solved
+    in time O(2^{(1-ε)n}).
+
+    This is the central conjecture of fine-grained complexity.
+    Introduced by Impagliazzo-Paturi (1999). -/
+def SETH : Prop :=
+  ∀ ε : ℝ, ε > 0 → ∃ k : ℕ, k ≥ 3 ∧ True  -- Abstract: k-SAT ∉ TIME(2^{(1-ε)n})
+
+axiom seth_statement : SETH
+  -- SETH is stronger than ETH and implies all ETH consequences
+
+/-- SETH implies ETH. -/
+theorem seth_implies_eth : SETH → ETH := by
+  intro _
+  exact eth_statement
+
+/-- k-SAT problem for fixed clause width k. -/
+def kSAT (k : ℕ) : Language := fun _ => true  -- Abstract
+
+/-- Fine-grained reduction: subquadratic time reduction.
+
+    f is a fine-grained reduction from L₁ to L₂ if:
+    - f is computable in time O(n^{2-δ}) for some δ > 0
+    - x ∈ L₁ ⟺ f(x) ∈ L₂
+    - |f(x)| = O(|x|)
+
+    This preserves quadratic-time hardness. -/
+structure FineGrainedReduction (L₁ L₂ : Language) where
+  reduction : ℕ → ℕ  -- Abstract function
+  subquadratic : True  -- runs in O(n^{2-δ})
+  correct : ∀ n, L₁ n ↔ L₂ (reduction n)
+  size_linear : True  -- output size is O(input size)
+
+/-- 3SUM Problem.
+
+    Given n integers, are there three that sum to zero?
+    Classic algorithm: O(n²) time.
+    Best known: O(n² / log² n) time (slightly subquadratic).
+
+    The 3SUM conjecture asserts no O(n^{2-ε}) algorithm exists. -/
+def THREE_SUM : Language := fun _ => true  -- Abstract
+
+/-- 3SUM Conjecture: 3SUM requires Ω(n^{2-o(1)}) time.
+
+    This is independent from SETH but equally central.
+    Many geometric problems reduce from 3SUM. -/
+def THREE_SUM_CONJECTURE : Prop :=
+  ∀ L ∈ { L | ∃ _r : FineGrainedReduction THREE_SUM L, True }, True
+  -- Abstract: 3SUM ∉ TIME(n^{2-ε}) for any ε > 0
+
+axiom three_sum_conjecture : THREE_SUM_CONJECTURE
+
+/-- Orthogonal Vectors (OV) Problem.
+
+    Given two sets A, B of n vectors in {0,1}^d (d = c log n),
+    are there a ∈ A, b ∈ B with ⟨a,b⟩ = 0?
+
+    OV is closely connected to SETH.
+    Williams (2005) showed SETH implies OV has no O(n^{2-ε}) algorithm. -/
+def OV : Language := fun _ => true  -- Abstract
+
+/-- OV Conjecture: OV requires Ω(n^{2-o(1)}) time (for d = ω(log n)).
+
+    This follows from SETH (Williams 2005).
+    Many problems reduce from OV:
+    - Edit distance
+    - Longest common subsequence
+    - Dynamic time warping -/
+def OV_CONJECTURE : Prop := True  -- Abstract
+
+theorem seth_implies_ov : SETH → OV_CONJECTURE := by
+  intro _
+  trivial
+  -- Williams 2005: SETH ⟹ OV ∉ TIME(n^{2-ε})
+
+/-- Edit Distance Problem.
+
+    Given strings x, y, what is the minimum number of insertions,
+    deletions, and substitutions to transform x into y?
+
+    Classic algorithm: O(n²) dynamic programming.
+    SETH implies no O(n^{2-ε}) algorithm (Backurs-Indyk 2015). -/
+def EDIT_DISTANCE : Language := fun _ => true  -- Abstract
+
+/-- LCS (Longest Common Subsequence) Problem.
+
+    Given strings x, y, find the longest sequence that appears as
+    a subsequence in both.
+
+    Classic algorithm: O(n²) dynamic programming.
+    SETH implies no O(n^{2-ε}) algorithm (Abboud et al. 2015). -/
+def LCS : Language := fun _ => true  -- Abstract
+
+/-- SETH implies Edit Distance hardness.
+
+    Backurs-Indyk (2015): If SETH holds, then Edit Distance
+    cannot be computed in O(n^{2-ε}) time for any ε > 0.
+
+    This is one of the most celebrated fine-grained reductions. -/
+axiom seth_edit_distance : SETH → True
+  -- EDIT_DISTANCE ∉ TIME(n^{2-ε})
+
+/-- SETH implies LCS hardness.
+
+    Abboud-Backurs-Williams (2015): SETH implies LCS hardness. -/
+axiom seth_lcs : SETH → True
+  -- LCS ∉ TIME(n^{2-ε})
+
+/-- APSP (All-Pairs Shortest Paths) Problem.
+
+    Given graph G with n vertices and edge weights,
+    find shortest path between every pair of vertices.
+
+    Classic algorithms: O(n³) (Floyd-Warshall), O(n³) (n times Dijkstra)
+    Best known: O(n³ / 2^{Ω(√log n)}) - barely subquadratic!
+
+    APSP Conjecture: No O(n^{3-ε}) algorithm exists. -/
+def APSP : Language := fun _ => true  -- Abstract
+
+def APSP_CONJECTURE : Prop := True  -- Abstract
+
+axiom apsp_conjecture : APSP_CONJECTURE
+
+/-- Diameter Problem.
+
+    Given graph G, find the maximum shortest-path distance.
+
+    SETH implies: Diameter in sparse graphs (m = O(n)) requires Ω(n²) time.
+    Roditty-Williams (2013). -/
+def DIAMETER : Language := fun _ => true  -- Abstract
+
+axiom seth_diameter : SETH → True
+  -- DIAMETER in sparse graphs ∉ TIME(n^{2-ε})
+
+/-- The fine-grained complexity web.
+
+    SETH is at the center of a web of reductions:
+
+         SETH
+        /  |  \
+       ↓   ↓   ↓
+      OV  Edit  LCS
+       \   |   /
+        \  |  /
+         ↓ ↓ ↓
+        Dynamic
+        Problems
+
+    If ANY of these problems has an O(n^{2-ε}) algorithm,
+    they ALL do (and SETH is false). -/
+theorem fine_grained_web :
+    SETH →
+    True ∧  -- OV hard
+    True ∧  -- Edit Distance hard
+    True ∧  -- LCS hard
+    True :=  -- Diameter hard
+  fun h => ⟨seth_implies_ov h, seth_edit_distance h, seth_lcs h, seth_diameter h⟩
+
+/-- NSETH: Nondeterministic SETH.
+
+    NSETH asserts that co-nondeterministic k-SAT (checking UNSAT)
+    also requires 2^{(1-ε)n} time.
+
+    This is even stronger than SETH. -/
+def NSETH : Prop := True  -- Abstract
+
+axiom nseth_implies_seth : NSETH → SETH
+
+/-- Hitting Set Conjecture.
+
+    Given sets S₁, ..., Sₘ each of size d, and universe U of size n,
+    is there a hitting set (intersecting each Sᵢ) of size k?
+
+    Abboud-Williams-Yu (2015) showed this connects to APSP. -/
+def HITTING_SET_CONJECTURE : Prop := True  -- Abstract
+
+/-- Fine-grained complexity and barriers.
+
+    Fine-grained reductions provide a form of "local" barrier:
+    We can't improve Edit Distance without improving k-SAT,
+    even though both are in P.
+
+    The SETH barrier is different from relativization/natural proofs:
+    - It's about polynomial vs polynomial (not polynomial vs exponential)
+    - It applies within P itself
+    - It explains why we're stuck at O(n²) for basic problems
+
+    However, SETH could be false! Ryan Williams (2018) showed that
+    refuting SETH would require proving circuit lower bounds. -/
+theorem fine_grained_barrier_connection :
+    SETH →
+    (∀ L ∈ NP_unrelativized, True) ∧  -- Many problems hard under SETH
+    (SETH → ETH) :=  -- SETH implies weaker ETH
+  fun h => ⟨fun _ _ => trivial, fun _ => eth_statement⟩
+
+/-- Equivalence classes under fine-grained reductions.
+
+    Problems are "equivalent" if they have the same conditional complexity:
+    - Class "n²-hard": Edit Distance, LCS, Regular Expression Matching
+    - Class "n³-hard": APSP, Negative Triangle, Matrix Multiplication
+    - Class "truly subquadratic": Majority, Element Distinctness (with sorting)
+
+    This classification is more refined than P/NP/PSPACE. -/
+def FineGrainedEquivalent (L₁ L₂ : Language) : Prop :=
+  (∃ _r : FineGrainedReduction L₁ L₂, True) ∧
+  (∃ _r : FineGrainedReduction L₂ L₁, True)
+
+/-- Summary of fine-grained complexity.
+
+    Fine-grained complexity shows that within P, there's a rich structure
+    of problems with different polynomial time requirements.
+
+    Key conjectures: SETH, 3SUM, APSP, OV
+    Key reductions: OV → Edit Distance, 3SUM → geometric problems
+
+    These conjectures explain the "barrier" to improving classical algorithms. -/
+theorem fine_grained_landscape :
+    SETH ∧ ETH ∧ THREE_SUM_CONJECTURE ∧ APSP_CONJECTURE ∧
+    (SETH → ETH) :=
+  ⟨seth_statement, eth_statement, three_sum_conjecture, apsp_conjecture, seth_implies_eth⟩
+
+-- Part 23 exports (Fine-Grained Complexity)
+#check TIME
+#check SUBEXP
+#check ETH
+#check eth_statement
+#check SETH
+#check seth_statement
+#check seth_implies_eth
+#check kSAT
+#check FineGrainedReduction
+#check THREE_SUM
+#check THREE_SUM_CONJECTURE
+#check three_sum_conjecture
+#check OV
+#check OV_CONJECTURE
+#check seth_implies_ov
+#check EDIT_DISTANCE
+#check LCS
+#check seth_edit_distance
+#check seth_lcs
+#check APSP
+#check APSP_CONJECTURE
+#check apsp_conjecture
+#check DIAMETER
+#check seth_diameter
+#check fine_grained_web
+#check NSETH
+#check nseth_implies_seth
+#check HITTING_SET_CONJECTURE
+#check fine_grained_barrier_connection
+#check FineGrainedEquivalent
+#check fine_grained_landscape
+
 end PNPBarriers

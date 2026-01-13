@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-196",
+  "title": "Erdős #196",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nMust every permutation of $\\mathbb{N}$ contain a monotone 4-term arithmetic progression? In other words, given a permutation $x$ of $\\mathbb{N}$ must there be indices with either $i<j<k<l$ or $i>j>k>l$ such that $x_i,x_j,x_k,x_l$ are an arithmetic progression?\n\n\n\nDavis, Entringer, Graham, and Simmons \\cite{DEGS77} have shown that there must exist a monotone 3-term arithmetic progression and need not contain a 5-term arithmetic progression.\n\nSee also [194] and [195].\n\n\n\n\nReferences\n\n\n[DEGS77] Davis, J. A. and Entringer, R. C. and Graham, R. L. and\nSimmons, G. J., On permutations containing no long arithmetic progressions. Acta Arith. (1977/78), 81-90.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T16:01:50.837Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #196 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nMust every permutation of $\\mathbb{N}$ contain a monotone 4-term arithmetic progression? In other words, given a permutation $x$ of $\\mathbb{N}$ must there be indices with either $i<j<k<l$ or $i>j>k>l$ such that $x_i,x_j,x_k,x_l$ are an arithmetic progression?\n\n\n\nDavis, Entringer, Graham, and Simmons \\cite{DEGS77} have shown that there must exist a monotone 3-term arithmetic progression and need not contain a 5-term arithmetic progression.\n\nSee also [194] and [195].\n\n\n\n\nReferences\n\n\n[DEGS77] Davis, J. A. and Entringer, R. C. and Graham, R. L. and\nSimmons, G. J., On permutations containing no long arithmetic progressions. Acta Arith. (1977/78), 81-90.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #194\n- Problem #195\n- Problem #197\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr79\n- ErGr80\n- DEGS77\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T16:01:50.837Z",
+  "significance": 6,
+  "tractability": 4
+}

@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-159",
+  "title": "Erdős #159",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThere exists some constant $c>0$ such that",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T09:56:05.235Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #159 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThere exists some constant $c>0$ such that\n\n$$R(C_4,K_n) \\ll n^{2-c}.$$\n\n\n\nThe current bounds are\\[ \\frac{n^{3/2}}{(\\log n)^{3/2}}\\ll R(C_4,K_n)\\ll \\frac{n^2}{(\\log n)^2}.\\]The upper bound is due to Szemer\\'{e}di (mentioned in \\cite{EFRS78}), and the lower bound is due to Spencer \\cite{Sp77}.\n\nThis problem is #17 in Ramsey Theory in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[EFRS78] Erd\\H{o}s, Paul and Faudree, R. J. and Rousseau, C. C. and Schelp, R. H., On cycle-complete graph Ramsey numbers. J. Graph Theory (1978), 53-64.\n\n[Sp77] Spencer, J., Asymptotic lower bounds for Ramsey functions. Discrete Math. (1977), 69-76.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #17\n- Problem #158\n- Problem #160\n- Problem #39\n- Problem #1\n\n## References\n\n- Er81\n- Er84d\n- EFRS78\n- Sp77\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T09:56:05.236Z",
+  "significance": 6,
+  "tractability": 4
+}

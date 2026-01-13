@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-335",
+  "title": "Erdős #335",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $d(A)$ denote the density of $A\\subseteq \\mathbb{N}$. Characterise those $A,B\\subseteq \\mathbb{N}$ with positive density such that\\[d(A+B)=d(A)+d(B).\\]\n\n\n\nOne way this can happen is if there exists $\\theta>0$ such that\\[A=\\{ n>0 : \\{ n\\theta\\} \\in X_A\\}\\textrm{ and }B=\\{ n>0 : \\{n\\theta\\} \\in X_B\\}\\]where $\\{x\\}$ denotes the fractional part of $x$ and $X_A,X_B\\subseteq \\mathbb{R}/\\mathbb{Z}$ are such that $\\mu(X_A+X_B)=\\mu(X_A)+\\mu(X_B)$. Are all possible $A$ and $B$ generated in a similar way (using other groups)?\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T00:04:50.018Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #335 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $d(A)$ denote the density of $A\\subseteq \\mathbb{N}$. Characterise those $A,B\\subseteq \\mathbb{N}$ with positive density such that\\[d(A+B)=d(A)+d(B).\\]\n\n\n\nOne way this can happen is if there exists $\\theta>0$ such that\\[A=\\{ n>0 : \\{ n\\theta\\} \\in X_A\\}\\textrm{ and }B=\\{ n>0 : \\{n\\theta\\} \\in X_B\\}\\]where $\\{x\\}$ denotes the fractional part of $x$ and $X_A,X_B\\subseteq \\mathbb{R}/\\mathbb{Z}$ are such that $\\mu(X_A+X_B)=\\mu(X_A)+\\mu(X_B)$. Are all possible $A$ and $B$ generated in a similar way (using other groups)?\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #334\n- Problem #336\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T00:04:50.018Z",
+  "significance": 6,
+  "tractability": 4
+}

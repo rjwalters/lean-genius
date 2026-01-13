@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-319",
+  "title": "Erdős #319",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest $A\\subseteq \\{1,\\ldots,N\\}$ such that there is a function $\\delta:A\\to \\{-1,1\\}$ such that\\[\\sum_{n\\in A}\\frac{\\delta_n}{n}=0\\]and\\[\\sum_{n\\in A'}\\frac{\\delta_n}{n}\\neq 0\\]for all non-empty $A'\\subsetneq A$?\n\n\n\nAdenwalla has observed that a lower bound of\\[\\lvert A\\rvert\\geq (1-\\tfrac{1}{e}+o(1))N\\]follows from the main result of Croot \\cite{Cr01}, which states that there exists some set of integers $B\\subset [(\\frac{1}{e}-o(1))N,N]$ such that $\\sum_{b\\in B}\\frac{1}{b}=1$. Since the sum of $\\frac{1}{m}$ for $m\\in [c_1N,c_2N]$ is asymptotic to $\\log(c_2/c_1)$ we must have $\\lvert B\\rvert \\geq (1-\\tfrac{1}{e}+o(1))N$.\n\nWe may then let $A=B\\cup\\{1\\}$ and choose $\\delta(n)=-1$ for all $n\\in B$ and $\\delta(1)=1$.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Cr01] Croot, III, Ernest S., On unit fractions with denominators in short intervals. Acta Arith. (2001), 99-114.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T23:51:53.285Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #319 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest $A\\subseteq \\{1,\\ldots,N\\}$ such that there is a function $\\delta:A\\to \\{-1,1\\}$ such that\\[\\sum_{n\\in A}\\frac{\\delta_n}{n}=0\\]and\\[\\sum_{n\\in A'}\\frac{\\delta_n}{n}\\neq 0\\]for all non-empty $A'\\subsetneq A$?\n\n\n\nAdenwalla has observed that a lower bound of\\[\\lvert A\\rvert\\geq (1-\\tfrac{1}{e}+o(1))N\\]follows from the main result of Croot \\cite{Cr01}, which states that there exists some set of integers $B\\subset [(\\frac{1}{e}-o(1))N,N]$ such that $\\sum_{b\\in B}\\frac{1}{b}=1$. Since the sum of $\\frac{1}{m}$ for $m\\in [c_1N,c_2N]$ is asymptotic to $\\log(c_2/c_1)$ we must have $\\lvert B\\rvert \\geq (1-\\tfrac{1}{e}+o(1))N$.\n\nWe may then let $A=B\\cup\\{1\\}$ and choose $\\delta(n)=-1$ for all $n\\in B$ and $\\delta(1)=1$.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Cr01] Croot, III, Ernest S., On unit fractions with denominators in short intervals. Acta Arith. (2001), 99-114.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #318\n- Problem #320\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n- Cr01\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T23:51:53.285Z",
+  "significance": 6,
+  "tractability": 4
+}

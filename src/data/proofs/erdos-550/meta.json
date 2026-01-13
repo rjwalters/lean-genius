@@ -1,0 +1,33 @@
+{
+  "id": "erdos-550",
+  "title": "Erdős Problem #550",
+  "slug": "erdos-550",
+  "description": "Let ... and ... be sufficiently large. If ... is a tree on ... vertices and ... is the complete multipartite graph with vertex class sizes ... then prove that\\[R(T,G)\\leq (\\chi(G)-1)(R(T,K_{m_1,m_2...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/550",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos550Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 550,
+    "erdosUrl": "https://erdosproblems.com/550",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #550 from erdosproblems.com.",
+    "problemStatement": "Let $m_1\\leq\\cdots\\leq m_k$ and $n$ be sufficiently large. If $T$ is a tree on $n$ vertices and $G$ is the complete multipartite graph with vertex class sizes $m_1,\\ldots,m_k$ then prove that\\[R(T,G)\\leq (\\chi(G)-1)(R(T,K_{m_1,m_2})-1)+m_1.\\] Chvátal [Ch77] proved that $R(T,K_m)=(m-1)(n-1)+1$. This problem is #16 in Ramsey Theory in the graphs problem collection. View the LaTeX source",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-543",
+  "title": "Erdős Problem #543",
+  "slug": "erdos-543",
+  "description": "Define ... be the minimal ... such that the following holds: if ... is an abelian group of size ... and ... is a random set of size ... then, with probability ..., all elements of ... can be writte...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/543",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos543Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 543,
+    "erdosUrl": "https://erdosproblems.com/543",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #543 from erdosproblems.com.",
+    "problemStatement": "Define $f(N)$ be the minimal $k$ such that the following holds: if $G$ is an abelian group of size $N$ and $A\\subseteq G$ is a random set of size $k$ then, with probability $\\geq 1/2$, all elements of $G$ can be written as $\\sum_{x\\in S}x$ for some $S\\subseteq A$. Is\\[f(N) \\leq \\log_2 N+o(\\log\\log N)?\\] Erdős and Rényi [ErRe65] proved that\\[f(N) \\leq \\log_2N+O(\\log\\log N).\\]Erdős believed improving this to $o(\\log\\log N)$ is impossible. View the LaTeX source",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

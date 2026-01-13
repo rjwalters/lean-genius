@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-327",
+  "title": "Erdős #327",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose $A\\subseteq \\{1,\\ldots,N\\}$ is such that if $a,b\\in A$ and $a\\neq b$ then $a+b\\nmid ab$. Can $A$ be 'substantially more' than the odd numbers?\n\nWhat if $a,b\\in A$ with $a\\neq b$ implies $a+b\\nmid 2ab$? Must $\\lvert A\\rvert=o(N)$?\n\n\n\nThe connection to unit fractions comes from the observation that $\\frac{1}{a}+\\frac{1}{b}$ is a unit fraction if and only if $a+b\\mid ab$.\n\nWouter van Doorn has given an elementary argument that proves that if $A\\subseteq \\{1,\\ldots,N\\}$ has $\\lvert A\\rvert \\geq (25/28+o(1))N$ then $A$ must contain $a\\neq b$ with $a+b\\mid ab$ (see the discussion in [301]).\n\nSee also [302].\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T23:55:09.604Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #327 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose $A\\subseteq \\{1,\\ldots,N\\}$ is such that if $a,b\\in A$ and $a\\neq b$ then $a+b\\nmid ab$. Can $A$ be 'substantially more' than the odd numbers?\n\nWhat if $a,b\\in A$ with $a\\neq b$ implies $a+b\\nmid 2ab$? Must $\\lvert A\\rvert=o(N)$?\n\n\n\nThe connection to unit fractions comes from the observation that $\\frac{1}{a}+\\frac{1}{b}$ is a unit fraction if and only if $a+b\\mid ab$.\n\nWouter van Doorn has given an elementary argument that proves that if $A\\subseteq \\{1,\\ldots,N\\}$ has $\\lvert A\\rvert \\geq (25/28+o(1))N$ then $A$ must contain $a\\neq b$ with $a+b\\mid ab$ (see the discussion in [301]).\n\nSee also [302].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #28\n- Problem #301\n- Problem #302\n- Problem #326\n- Problem #328\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T23:55:09.604Z",
+  "significance": 6,
+  "tractability": 4
+}

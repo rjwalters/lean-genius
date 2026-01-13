@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-301",
+  "title": "Erdős #301",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(LaTeX not available)",
+    "plain": "Let f(N)\" role=\"presentation\" style=\"position: relative;\">f(N)f(N)f(N) be the size of the largest A&#x2286;{1,&#x2026;,N}\" role=\"presentation\" style=\"position: relative;\">A⊆{1,…,N}A⊆{1,…,N}A\\subseteq \\{1,\\ldots,N\\} such that there are no solutions to1a&#x2260;1b1+&#x22EF;+1bk\" role=\"presentation\" style=\"text-align: center; position: relative;\">1a≠1b1+⋯+1bk1a≠1b1+⋯+1bk",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T23:48:29.416Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #301 - Knowledge Base\n\n## Problem Statement\n\nLet f(N)\" role=\"presentation\" style=\"position: relative;\">f(N)f(N)f(N) be the size of the largest A&#x2286;{1,&#x2026;,N}\" role=\"presentation\" style=\"position: relative;\">A⊆{1,…,N}A⊆{1,…,N}A\\subseteq \\{1,\\ldots,N\\} such that there are no solutions to1a&#x2260;1b1+&#x22EF;+1bk\" role=\"presentation\" style=\"text-align: center; position: relative;\">1a≠1b1+⋯+1bk1a≠1b1+⋯+1bk\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #28\n- Problem #12\n- Problem #6\n- Problem #302\n- Problem #327\n- Problem #300\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T23:48:29.416Z",
+  "significance": 7,
+  "tractability": 5
+}

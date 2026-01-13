@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-404",
+  "title": "Erdős #404",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor which integers $a\\geq 1$ and primes $p$ is there a finite upper bound on those $k$ such that there are $a=a_1<\\cdots<a_n$ with\\[p^k \\mid (a_1!+\\cdots+a_n!)?\\]If $f(a,p)$ is the greatest such $k$, how does this function behave?\n\nIs there a prime $p$ and an infinite sequence $a_1<a_2<\\cdots$ such that if $p^{m_k}$ is the highest power of $p$ dividing $\\sum_{i\\leq k}a_i!$ then $m_k\\to \\infty$?\n\n\n\nSee also [403]. Lin \\cite{Li76} has shown that $f(2,2) \\leq 254$.\n\n\n\n\nReferences\n\n\n[Li76] Lin, S., On two problems of Erd\\H{o}s concerning sums of distinct factorials. Bell Laboratories internal memorandum (1960).\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T02:35:40.569Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #404 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor which integers $a\\geq 1$ and primes $p$ is there a finite upper bound on those $k$ such that there are $a=a_1<\\cdots<a_n$ with\\[p^k \\mid (a_1!+\\cdots+a_n!)?\\]If $f(a,p)$ is the greatest such $k$, how does this function behave?\n\nIs there a prime $p$ and an infinite sequence $a_1<a_2<\\cdots$ such that if $p^{m_k}$ is the highest power of $p$ dividing $\\sum_{i\\leq k}a_i!$ then $m_k\\to \\infty$?\n\n\n\nSee also [403]. Lin \\cite{Li76} has shown that $f(2,2) \\leq 254$.\n\n\n\n\nReferences\n\n\n[Li76] Lin, S., On two problems of Erd\\H{o}s concerning sums of distinct factorials. Bell Laboratories internal memorandum (1960).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #403\n- Problem #405\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Li76\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T02:35:40.569Z",
+  "significance": 6,
+  "tractability": 4
+}

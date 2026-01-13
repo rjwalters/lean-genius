@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-155",
+  "title": "Erdős #155",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $F(N)$ be the size of the largest Sidon subset of $\\{1,\\ldots,N\\}$. Is it true that for every $k\\geq 1$ we have\\[F(N+k)\\leq F(N)+1\\]for all sufficiently large $N$?\n\n\n\nThis may even hold with $k\\approx \\epsilon N^{1/2}$.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T09:56:05.235Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #155 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $F(N)$ be the size of the largest Sidon subset of $\\{1,\\ldots,N\\}$. Is it true that for every $k\\geq 1$ we have\\[F(N+k)\\leq F(N)+1\\]for all sufficiently large $N$?\n\n\n\nThis may even hold with $k\\approx \\epsilon N^{1/2}$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #154\n- Problem #156\n- Problem #39\n- Problem #1\n\n## References\n\n- Er92c\n- ESS94\n- Er94b\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T09:56:05.235Z",
+  "significance": 7,
+  "tractability": 5
+}

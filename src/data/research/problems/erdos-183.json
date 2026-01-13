@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-183",
+  "title": "Erdős #183",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $R(3;k)$ be the minimal $n$ such that if the edges of $K_n$ are coloured with $k$ colours then there must exist a monochromatic triangle. Determine\\[\\lim_{k\\to \\infty}R(3;k)^{1/k}.\\]\n\n\n\nErd\\H{o}s offers \\$100 for showing that this limit is finite. An easy pigeonhole argument shows that\\[R(3;k)\\leq 2+k(R(3;k-1)-1),\\]from which $R(3;k)\\leq \\lceil e k!\\rceil$ immediately follows. The best-known upper bounds are all of the form $ck!+O(1)$, and arise from this type of inductive relationship and computational bounds for $R(3;k)$ for small $k$. The best-known lower bound (coming from lower bounds for Schur numbers) is\\[R(3,k)\\geq (380)^{k/5}-O(1),\\]due to Ageron, Casteras, Pellerin, Portella, Rimmel, and Tomasik \\cite{ACPPRT21} (improving previous bounds of Exoo \\cite{Ex94} and Fredricksen and Sweet \\cite{FrSw00}). Note that $380^{1/5}\\approx 3.2806$.\n\nSee also [483].\n\nThis problem is #21 in Ramsey Theory in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[ACPPRT21] R. Ageron, P. Casteras, T. Pellerin, Y. Portella, A. Rimmel, and J. Tomasik, New lower bounds for Schur and weak Schur numbers. arXiv:2112.03175 (2021).\n\n[Ex94] Exoo, G., A lower bound for Schur numbers and multicolor Ramsey numbers. Electronic J. of Combinatorics (1994).\n\n[FrSw00] Fredricksen, Harold and Sweet, Melvin M., Symmetric sum-free partitions and lower bounds for {S}chur\nnumbers. Electron. J. Combin. (2000), Research Paper 32, 9.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T10:00:45.598Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #183 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $R(3;k)$ be the minimal $n$ such that if the edges of $K_n$ are coloured with $k$ colours then there must exist a monochromatic triangle. Determine\\[\\lim_{k\\to \\infty}R(3;k)^{1/k}.\\]\n\n\n\nErd\\H{o}s offers \\$100 for showing that this limit is finite. An easy pigeonhole argument shows that\\[R(3;k)\\leq 2+k(R(3;k-1)-1),\\]from which $R(3;k)\\leq \\lceil e k!\\rceil$ immediately follows. The best-known upper bounds are all of the form $ck!+O(1)$, and arise from this type of inductive relationship and computational bounds for $R(3;k)$ for small $k$. The best-known lower bound (coming from lower bounds for Schur numbers) is\\[R(3,k)\\geq (380)^{k/5}-O(1),\\]due to Ageron, Casteras, Pellerin, Portella, Rimmel, and Tomasik \\cite{ACPPRT21} (improving previous bounds of Exoo \\cite{Ex94} and Fredricksen and Sweet \\cite{FrSw00}). Note that $380^{1/5}\\approx 3.2806$.\n\nSee also [483].\n\nThis problem is #21 in Ramsey Theory in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[ACPPRT21] R. Ageron, P. Casteras, T. Pellerin, Y. Portella, A. Rimmel, and J. Tomasik, New lower bounds for Schur and weak Schur numbers. arXiv:2112.03175 (2021).\n\n[Ex94] Exoo, G., A lower bound for Schur numbers and multicolor Ramsey numbers. Electronic J. of Combinatorics (1994).\n\n[FrSw00] Fredricksen, Harold and Sweet, Melvin M., Symmetric sum-free partitions and lower bounds for {S}chur\nnumbers. Electron. J. Combin. (2000), Research Paper 32, 9.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Prize**: $250\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #5\n- Problem #483\n- Problem #21\n- Problem #182\n- Problem #184\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er61\n- ACPPRT21\n- Ex94\n- FrSw00\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T10:00:45.598Z",
+  "significance": 5,
+  "tractability": 3
+}

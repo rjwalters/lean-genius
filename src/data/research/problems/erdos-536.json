@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-536",
+  "title": "Erdős #536",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\epsilon>0$ and $N$ be sufficiently large. Is it true that if $A\\subseteq \\{1,\\ldots,N\\}$ has size at least $\\epsilon N$ then there must be distinct $a,b,c\\in A$ such that\\[[a,b]=[b,c]=[a,c],\\]where $[a,b]$ denotes the least common multiple?\n\n\n\nThis is false if we ask for four elements with the same pairwise least common multiple, as shown by Erd\\H{o}s \\cite{Er62} (with a proof given in \\cite{Er70}).\n\nThis was also asked by Erd\\H{o}s at the 1991 problem session of West Coast Number Theory.\n\nIn the comments Weisenberg sketches a construction of a set $A\\subseteq [1,N]$ without this property such that\\[\\lvert A\\rvert \\gg (\\log\\log N)^{f(N)}\\frac{N}{\\log N}\\]for some $f(N)\\to \\infty$. Weisenberg also sketches a proof of the main problem when $\\epsilon>\\frac{221}{225}$.\n\nSee also [535], [537], and [856]. A related combinatorial problem is asked at [857].\n\n\n\n\nReferences\n\n\n[Er62] Erd\\H{o}s, P\\'{a}l, Remarks on number theory. IV. Extremal problems in number theory. I. Mat. Lapok (1962), 228-255.\n\n[Er70] Erd\\H{o}s, Paul, Some extremal problems in combinatorial number theory. Mathematical Essays Dedicated to A. J. Macintyre (1970), 123-133.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T04:39:49.623Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #536 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\epsilon>0$ and $N$ be sufficiently large. Is it true that if $A\\subseteq \\{1,\\ldots,N\\}$ has size at least $\\epsilon N$ then there must be distinct $a,b,c\\in A$ such that\\[[a,b]=[b,c]=[a,c],\\]where $[a,b]$ denotes the least common multiple?\n\n\n\nThis is false if we ask for four elements with the same pairwise least common multiple, as shown by Erd\\H{o}s \\cite{Er62} (with a proof given in \\cite{Er70}).\n\nThis was also asked by Erd\\H{o}s at the 1991 problem session of West Coast Number Theory.\n\nIn the comments Weisenberg sketches a construction of a set $A\\subseteq [1,N]$ without this property such that\\[\\lvert A\\rvert \\gg (\\log\\log N)^{f(N)}\\frac{N}{\\log N}\\]for some $f(N)\\to \\infty$. Weisenberg also sketches a proof of the main problem when $\\epsilon>\\frac{221}{225}$.\n\nSee also [535], [537], and [856]. A related combinatorial problem is asked at [857].\n\n\n\n\nReferences\n\n\n[Er62] Erd\\H{o}s, P\\'{a}l, Remarks on number theory. IV. Extremal problems in number theory. I. Mat. Lapok (1962), 228-255.\n\n[Er70] Erd\\H{o}s, Paul, Some extremal problems in combinatorial number theory. Mathematical Essays Dedicated to A. J. Macintyre (1970), 123-133.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #535\n- Problem #537\n- Problem #856\n- Problem #857\n- Problem #39\n- Problem #1\n\n## References\n\n- Er62\n- Er70\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T04:39:49.623Z",
+  "significance": 6,
+  "tractability": 4
+}

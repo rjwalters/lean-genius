@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-524",
+  "title": "Erdős #524",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any $t\\in (0,1)$ let $t=\\sum_{k=1}^\\infty \\epsilon_k(t)2^{-k}$ (where $\\epsilon_k(t)\\in \\{0,1\\}$). What is the correct order of magnitude (for almost all $t\\in(0,1)$) for\\[M_n(t)=\\max_{x\\in [-1,1]}\\left\\lvert \\sum_{k\\leq n}(-1)^{\\epsilon_k(t)}x^k\\right\\rvert?\\]\n\n\n\nA problem of Salem and Zygmund \\cite{SaZy54}. Chung showed that, for almost all $t$, there exist infinitely many $n$ such that\\[M_n(t) \\ll \\left(\\frac{n}{\\log\\log n}\\right)^{1/2}.\\]Erd\\H{o}s (unpublished) showed that for almost all $t$ and every $\\epsilon>0$ we have $\\lim_{n\\to \\infty}M_n(t)/n^{1/2-\\epsilon}=\\infty$.\n\n\n\n\nReferences\n\n\n[SaZy54] Salem, R. and Zygmund, A., Some properties of trigonometric series whose terms have\nrandom signs. Acta Math. (1954), 245-301.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T04:39:49.622Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #524 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any $t\\in (0,1)$ let $t=\\sum_{k=1}^\\infty \\epsilon_k(t)2^{-k}$ (where $\\epsilon_k(t)\\in \\{0,1\\}$). What is the correct order of magnitude (for almost all $t\\in(0,1)$) for\\[M_n(t)=\\max_{x\\in [-1,1]}\\left\\lvert \\sum_{k\\leq n}(-1)^{\\epsilon_k(t)}x^k\\right\\rvert?\\]\n\n\n\nA problem of Salem and Zygmund \\cite{SaZy54}. Chung showed that, for almost all $t$, there exist infinitely many $n$ such that\\[M_n(t) \\ll \\left(\\frac{n}{\\log\\log n}\\right)^{1/2}.\\]Erd\\H{o}s (unpublished) showed that for almost all $t$ and every $\\epsilon>0$ we have $\\lim_{n\\to \\infty}M_n(t)/n^{1/2-\\epsilon}=\\infty$.\n\n\n\n\nReferences\n\n\n[SaZy54] Salem, R. and Zygmund, A., Some properties of trigonometric series whose terms have\nrandom signs. Acta Math. (1954), 245-301.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #523\n- Problem #525\n- Problem #39\n- Problem #1\n\n## References\n\n- SaZy54\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T04:39:49.622Z",
+  "significance": 6,
+  "tractability": 4
+}
