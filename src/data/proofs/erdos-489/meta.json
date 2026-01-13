@@ -1,0 +1,33 @@
+{
+  "id": "erdos-489",
+  "title": "Erdős Problem #489",
+  "slug": "erdos-489",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set such that .... Let\\[B=\\{ n\\geq 1 : a\\nmid na\\in A\\}.\\]If ... then is it true that\\[\\lim {x}\\sum_{b_i<x}(b_{i...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/489",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos489Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 489,
+    "erdosUrl": "https://erdosproblems.com/489",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #489 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ be a set such that $\\lvert A\\cap [1,x]\\rvert=o(x^{1/2})$. Let\\[B=\\{ n\\geq 1 : a\\nmid n\\textrm{ for all }a\\in A\\}.\\]If $B=\\{b_1<b_2<\\cdots\\}$ then is it true that\\[\\lim \\frac{1}{x}\\sum_{b_i<x}(b_{i+1}-b_i)^2\\]exists (and is finite)?\n\n\n\nFor example, when $A=\\{p^2: p\\textrm{ prime}\\}$ then $B$ is the set of squarefree numbers, and the existence of this limit was proved by Erd\\H{o}s.\n\nSee also [208].\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

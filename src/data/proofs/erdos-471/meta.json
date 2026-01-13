@@ -1,0 +1,33 @@
+{
+  "id": "erdos-471",
+  "title": "Erdős Problem #471",
+  "slug": "erdos-471",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven a finite set of primes ..., define a sequence of sets ... by letting ... be ... together with all primes formed by addi...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/471",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos471Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 471,
+    "erdosUrl": "https://erdosproblems.com/471",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #471 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven a finite set of primes $Q=Q_0$, define a sequence of sets $Q_i$ by letting $Q_{i+1}$ be $Q_i$ together with all primes formed by adding three distinct elements of $Q_i$. Is there some initial choice of $Q$ such that the $Q_i$ become arbitrarily large?\n\n\n\nA problem of Ulam. In particular, what about $Q=\\{3,5,7,11\\}$?\n\nMrazovi\\'{c} and Kova\\v{c}, and independently Alon, have observed that the existence of some valid choice of $Q$ follows easily from Vinogradov's theorem that every large odd integer is the sum of three distinct primes. In particular, there exists some $N$ such that every prime $>N$ is the sum of three distinct (smaller) primes. We may then take $Q_0$ to be the set of all primes $\\leq N$ (in which case all primes are eventually in some $Q_i$).\n\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

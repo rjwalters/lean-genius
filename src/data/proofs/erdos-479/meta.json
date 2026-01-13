@@ -1,0 +1,33 @@
+{
+  "id": "erdos-479",
+  "title": "Erdős Problem #479",
+  "slug": "erdos-479",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for all ..., there are infinitely many ... such that ...?\n\n\n\nA conjecture of Graham. It is easy to see that ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/479",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos479Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 479,
+    "erdosUrl": "https://erdosproblems.com/479",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #479 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for all $k\\neq 1$, there are infinitely many $n$ such that $2^n\\equiv k\\pmod{n}$?\n\n\n\nA conjecture of Graham. It is easy to see that $2^n\\not\\equiv 1\\mod{n}$ for all $n>1$, so the restriction $k\\neq 1$ is necessary. Erd\\H{o}s and Graham report that Graham, Lehmer, and Lehmer have proved this for $k=2^i$ for $i\\geq 1$, or if $k=-1$, but I cannot find such a paper. Tang has written a short note giving a proof for this case.\n\nAs an indication of the difficulty, when $k=3$ the smallest $n$ such that $2^n\\equiv 3\\pmod{n}$ is $n=4700063497$.\n\nThe minimal such $n$ for each $k$ is A036236 in the OEIS.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

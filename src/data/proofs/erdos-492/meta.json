@@ -1,0 +1,33 @@
+{
+  "id": "erdos-492",
+  "title": "Erdős Problem #492",
+  "slug": "erdos-492",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be infinite such that .... For any ... let\\[f(x) = {a_{i+1}-a_i}\\in [0,1),\\]where .... Is it true that, for almost al...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/492",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos492Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 492,
+    "erdosUrl": "https://erdosproblems.com/492",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #492 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{a_1<a_2<\\cdots\\}\\subseteq \\mathbb{N}$ be infinite such that $a_{i+1}/a_i\\to 1$. For any $x\\geq a_1$ let\\[f(x) = \\frac{x-a_i}{a_{i+1}-a_i}\\in [0,1),\\]where $x\\in [a_i,a_{i+1})$. Is it true that, for almost all $\\alpha$, the sequence $f(\\alpha n)$ is uniformly distributed in $[0,1)$?\n\n\n\nFor example if $A=\\mathbb{N}$ then $f(x)=\\{x\\}$ is the usual fractional part operator.\n\nA problem due to Le Veque \\cite{LV53}, who proved it in some special cases. Davenport and LeVeque \\cite{DaLe63} proved this under the assumption that $a_n-a_{n-1}$ is monotonic. Davenport and Erd\\H{o}s \\cite{DaEr63} proved it is true if $a_n \\gg n^{1/2+\\epsilon}$ for some $\\epsilon>0$.\n\nThe general conjecture is false, as shown by Schmidt \\cite{Sc69}.\n\n\n\n\nReferences\n\n\n[DaEr63] Davenport, H. and Erd\\H{o}s, P., A theorem on uniform distribution. Magyar Tud. Akad. Mat. Kutat\\'o{} Int. K\\\"ozl. (1963), 3--11.\n\n[DaLe63] Davenport, H. and LeVeque, W. J., Uniform distribution relative to a fixed sequence. Michigan Math. J. (1963), 315--319.\n\n[LV53] Le Veque, W. J., On uniform distribution modulo a subdivision. Pacific J. of Math. (1953), 757-771.\n\n[Sc69] Schmidt, W. M., Disproof of some conjectures on Diophantine approximations. Studia Sci. Math. Hungar. (1969), 137-144.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

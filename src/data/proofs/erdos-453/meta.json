@@ -1,0 +1,33 @@
+{
+  "id": "erdos-453",
+  "title": "Erdős Problem #453",
+  "slug": "erdos-453",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for all sufficiently large ..., there exists some ... such that\\[p_n^2  p_{n+i}p_{n-i}\\]for all .... Pomeran...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/453",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos453Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 453,
+    "erdosUrl": "https://erdosproblems.com/453",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #453 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for all sufficiently large $n$, there exists some $i<n$ such that\\[p_n^2 < p_{n+i}p_{n-i},\\]where $p_k$ is the $k$th prime?\n\n\n\nAsked by Erd\\H{o}s and Straus. Selfridge conjectured the answer is no, contrary to Erd\\H{o}s and Straus. The answer is no, as shown by Pomerance \\cite{Po79}, who proved there are infinitely many $n$ such that\\[p_n^2 > p_{n+i}p_{n-i}\\]for all $i<n$. Pomerance's proof is short enough to reproduce here:\n\nLet $0<a_1<a_2<\\cdots$ be any sequence with $a_n=o(n)$. Consider the boundary of the convex hull of the points $(n,a_n)$. The fact that $a_n/n\\to 0$ implies that the non-horizontal portion of the boundary of the convex hull is concave and has infinitely many vertices. Considering these vertices as $(n,a_n)$ produces infinitely many $n$ such that $2a_n > a_{n-i}+a_{n+i}$ for all $i<n$. We may then choose $a_n=\\log p_n$.\n\nThis is the topic of problem A14 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Po79] Pomerance, Carl, The prime number graph. Math. Comp. (1979), 399-408.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

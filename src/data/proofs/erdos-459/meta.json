@@ -1,0 +1,33 @@
+{
+  "id": "erdos-459",
+  "title": "Erdős Problem #459",
+  "slug": "erdos-459",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the largest ... such that no ... is composed entirely of primes dividing .... Estimate ....\n\n\n\nAn equivalent defin...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/459",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos459Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 459,
+    "erdosUrl": "https://erdosproblems.com/459",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #459 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(u)$ be the largest $v$ such that no $m\\in (u,v)$ is composed entirely of primes dividing $uv$. Estimate $f(u)$.\n\n\n\nAn equivalent definition is that $v$ is the smallest number $>u$ such that all prime factors of $v$ are factors of $u$. In particular, we trivially have\\[u+2\\leq f(u)\\leq u^2.\\]Cambie has noted that when $u=p$ is a prime, $f(p)=p^2$, and if $u$ is even then $f(u)\\leq 2^k$, where $2^k$ is the smallest power of $2$ which is $>u$. In particular, $f(u)=u+2$ whenever $u=2^k-2$ for $k\\geq 2$.\n\nIn particular the function $f(u)$ does not exhibit any regular growth, since there are infinitely many $u$ such that $f(u)=u+2$ and infinitely many $u$ such that $f(u)=u^2$. Cambie can also show that $f(n)=(1+o(1))n$ for almost all $n$. It is not clear what kind of estimates Erd\\H{o}s and Graham had in mind. Since Cambie's observations seem to settle the most obvious questions, I will mark this as solved.\n\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

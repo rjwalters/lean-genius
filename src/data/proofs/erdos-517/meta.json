@@ -1,0 +1,33 @@
+{
+  "id": "erdos-517",
+  "title": "Erdős Problem #517",
+  "slug": "erdos-517",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an entire function (with ... for all ...). Is it true that if ... then ... assumes every value infinitely often?\n\n...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/517",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos517Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 517,
+    "erdosUrl": "https://erdosproblems.com/517",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #517 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(z)=\\sum_{k=1}^\\infty a_kz^{n_k}$ be an entire function (with $a_k\\neq 0$ for all $k\\geq 1$). Is it true that if $n_k/k\\to \\infty$ then $f(z)$ assumes every value infinitely often?\n\n\n\nA conjecture of Fej\\'{e}r and P\\'{o}lya.\n\nFej\\'{e}r \\cite{Fe08} proved that if $\\sum\\frac{1}{n_k}<\\infty$ then $f(z)$ assumes every value at least once, and Biernacki \\cite{Bi28} proved that if $\\sum\\frac{1}{n_k}<\\infty$ then $f(z)$ assumes every value infinitely often.\n\nP\\'{o}lya \\cite{Po29} proved that if $f$ has finite order then $f(z)$ assumes every value infinitely often under the assumption that $\\limsup (n_{k+1}-n_k)=\\infty$.\n\n\n\n\n\nReferences\n\n\n[Bi28] Biernacki, Mi\\'{e}cislas, Sur les \\'{e}quations alg\\'{e}briques contenant des param\\'{e}tres arbitraires. (1928), 145.\n\n[Fe08] Fej\\'{e}r, Leopold, \\\"{U}ber die Wurzel vom kleinsten absoluten Betrage einer algebraischen Gleichung. Math. Ann. (1908), 413-423.\n\n[Po29] P\\'olya, G., Untersuchungen \\\"uber {L}\\\"ucken und {S}ingularit\\\"{a}ten von\n{P}otenzreihen. Math. Z. (1929), 549--640.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

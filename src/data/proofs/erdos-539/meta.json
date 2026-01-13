@@ -1,0 +1,33 @@
+{
+  "id": "erdos-539",
+  "title": "Erdős Problem #539",
+  "slug": "erdos-539",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that, for any set ... of size ..., the set\\[\\left\\{ {(a,b)}: a,b\\in A\\right\\}\\]has size at least .... Estimat...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/539",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos539Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 539,
+    "erdosUrl": "https://erdosproblems.com/539",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #539 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h(n)$ be such that, for any set $A\\subseteq \\mathbb{N}$ of size $n$, the set\\[\\left\\{ \\frac{a}{(a,b)}: a,b\\in A\\right\\}\\]has size at least $h(n)$. Estimate $h(n)$.\n\n\n\nErd\\H{o}s and Szemer\\'{e}di proved that\\[n^{1/2} \\ll h(n) \\ll n^{1-c}\\]for some constant $c>0$.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-511",
+  "title": "Erdős Problem #511",
+  "slug": "erdos-511",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a monic polynomial of degree .... Is it true that, for every ..., the set\\[\\{ z\\in  : \\lvert f(z)\\rvert< 1\\}\\]has ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/511",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos511Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 511,
+    "erdosUrl": "https://erdosproblems.com/511",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #511 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(z)\\in \\mathbb{C}[z]$ be a monic polynomial of degree $n$. Is it true that, for every $c>1$, the set\\[\\{ z\\in \\mathbb{C} : \\lvert f(z)\\rvert< 1\\}\\]has at most $O_c(1)$ many connected components of diameter $>c$ (where the implied constant is in particular independent of $n$)?\n\n\n\nThis is Problem 4.9 in \\cite{Ha74}, where it is attributed to Erd\\H{o}s.\n\nA problem of Erd\\H{o}s, Herzog, and Piranien \\cite{EHP58}, who ask more generally whether\\[\\sum_C \\mathrm{diam}(C) \\leq n2^{1/n}\\]and\\[\\sum_{C}\\max(0, \\mathrm{diam}(C)-1)\\ll 1\\]for all such $f$, where $C$ ranges over the connected components of the set in question. The example $f(z)=z^n-1$ has $\\sum_C \\mathrm{diam}(C)=(1+o(1))n2^{1/n}$.\n\nThey also asked whether, if the roots of $f$ are all in the disc $\\{\\lvert z\\rvert\\leq 1\\}$, the total number of connected components with diameter $>1$ is absolutely bounded, but noted in an addendum that the answer is no: consider $z^n+1$ and move the zeros $e^{i\\pi/n}$ and $e^{-i\\pi/n}$ a short distance along the circle towards $1$. The set $\\{z: \\lvert f(z)\\rvert \\leq 1\\}$ for $f(z)=z^n+1$ looks like $n$ 'leaves' joined at $0$, and this moving of two roots makes $\\approx n/2$ of the leaves become disconnected at $0$. Each of the resulting components has diameter $>2^{1/n}-\\epsilon$, and hence there are $\\gg n$ components of diameter $>1$.\n\nIn \\cite{Er61} Erd\\H{o}s asks the weaker question given here, with the definition of the set altered so that $<1$ is replaced by $\\leq 1$.\n\nPommerenke \\cite{Po61} proved that the answer is no to most of these questions, by showing that, for any $0<d<4$ and $k\\geq 1$ there exist monic polynomials $f\\in \\mathbb{C}[x]$ such that $\\{z: \\lvert f(z)\\rvert\\leq 1\\}$ has at least $k$ connected components of diameter $\\geq d$.\n\nThis was independently proved by Huang \\cite{Hu25} (unaware of the previous work of Pommerenke). P\\'{o}lya \\cite{Po28} showed that $4$ is the best possible here, in that no connected component can have diameter $>4$.\n\nA picture of the set in question for $z^5-1$ is {IMAGE=511petals,here}.\n\n\n\n\nReferences\n\n\n[EHP58] Erd\\H{o}s, P. and Herzog, F. and Piranian, G., Metric properties of polynomials. J. Analyse Math. (1958), 125-148.\n\n[Er61] Erd\\H{o}s, Paul, Some unsolved problems. Magyar Tud. Akad. Mat. Kutat\\'{o} Int. K\\\"{o}zl. (1961), 221-254.\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n[Hu25] L. Huang, Many leminscates with large diameter. arXiv:2509.11597 (2025).\n\n[Po28] G. P\\'{o}lya, Beitrag zue Verallgemeinerung des Verzerrungssatzes auf mehrfach zusammenh\\\"{a}ngende Gebiete. S-B. Akad. Wiss. (1928), 228-232 and 280-282.\n\n[Po61] Pommerenke, Ch., On metric properties of complex polynomials. Michigan Math. J. (1961), 97-115.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

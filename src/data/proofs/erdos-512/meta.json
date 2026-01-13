@@ -1,0 +1,33 @@
+{
+  "id": "erdos-512",
+  "title": "Erdős Problem #512",
+  "slug": "erdos-512",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, if ... is a finite set of size ..., then\\[\\int_0^1 \\left\\lvert \\sum_{n\\in A}e(n\\theta)\\right\\rvert \\theta \\g...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/512",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos512Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 512,
+    "erdosUrl": "https://erdosproblems.com/512",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #512 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, if $A\\subset \\mathbb{Z}$ is a finite set of size $N$, then\\[\\int_0^1 \\left\\lvert \\sum_{n\\in A}e(n\\theta)\\right\\rvert \\mathrm{d}\\theta \\gg \\log N,\\]where $e(x)=e^{2\\pi ix }$?\n\n\n\nLittlewood's conjecture, proved independently by Konyagin \\cite{Ko81} and McGehee, Pigno, and Smith \\cite{MPS81}.\n\n\n\n\nReferences\n\n\n[Ko81] Konyagin, S. V., On the Littlewood problem. Izv. Akad. Nauk SSSR Ser. Mat. (1981), 243-265, 463.\n\n[MPS81] McGehee, O. Carruth and Pigno, Louis and Smith, Brent, Hardy's inequality and the {$L\\sp{1}$} norm of exponential\nsums. Ann. of Math. (2) (1981), 613-618.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

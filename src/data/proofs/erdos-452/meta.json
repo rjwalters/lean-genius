@@ -1,0 +1,33 @@
+{
+  "id": "erdos-452",
+  "title": "Erdős Problem #452",
+  "slug": "erdos-452",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of distinct prime factors of .... What is the size of the largest interval ... such that ... for all...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/452",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos452Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 452,
+    "erdosUrl": "https://erdosproblems.com/452",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #452 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\omega(n)$ count the number of distinct prime factors of $n$. What is the size of the largest interval $I\\subseteq [x,2x]$ such that $\\omega(n)>\\log\\log n$ for all $n\\in I$?\n\n\n\nErd\\H{o}s \\cite{Er37} proved that the density of integers $n$ with $\\omega(n)>\\log\\log n$ is $1/2$. The Chinese remainder theorem implies that there is such an interval with\\[\\lvert I\\rvert \\geq (1+o(1))\\frac{\\log x}{(\\log\\log x)^2}.\\]It could be true that there is such an interval of length $(\\log x)^{k}$ for arbitrarily large $k$.\n\n\n\n\nReferences\n\n\n[Er37] Erd\\\"{o}s, Paul, Note on the number of prime divisors of integers. J. London Math. Soc. (1937), 308-314.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

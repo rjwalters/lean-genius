@@ -1,0 +1,33 @@
+{
+  "id": "erdos-491",
+  "title": "Erdős Problem #491",
+  "slug": "erdos-491",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an additive function (i.e. ... whenever ...). If there is a constant ... such that ... for all ... then must there...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/491",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos491Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 491,
+    "erdosUrl": "https://erdosproblems.com/491",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #491 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f:\\mathbb{N}\\to \\mathbb{R}$ be an additive function (i.e. $f(ab)=f(a)+f(b)$ whenever $(a,b)=1$). If there is a constant $c$ such that $\\lvert f(n+1)-f(n)\\rvert <c$ for all $n$ then must there exist some $c'$ such that\\[f(n)=c'\\log n+O(1)?\\]\n\n\n\nErd\\H{o}s \\cite{Er46} proved that if $f(n+1)-f(n)=o(1)$ or $f(n+1)\\geq f(n)$ then $f(n)=c\\log n$ for some constant $c$.\n\nThis is true, and was proved by Wirsing \\cite{Wi70}.\n\nSee also [897] and [1122].\n\n\n\n\nReferences\n\n\n[Er46] Erd\\H{o}s, P., On the distribution function of additive functions. Annals of Math. (1946), 1-20.\n\n[Wi70] Wirsing, E., A characterization of $\\log n$ as an additive arthemetic function. Symposia Math. (1970), 45-47.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-525",
+  "title": "Erdős Problem #525",
+  "slug": "erdos-525",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that all except at most ... many degree ... polynomials with ...-valued coefficients ... have ... for some ...?\nWh...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/525",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos525Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 525,
+    "erdosUrl": "https://erdosproblems.com/525",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #525 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that all except at most $o(2^n)$ many degree $n$ polynomials with $\\pm 1$-valued coefficients $f(z)$ have $\\lvert f(z)\\rvert <1$ for some $\\lvert z\\rvert=1$?\nWhat is the behaviour of\\[m(f)=\\min_{\\lvert z\\rvert=1}\\lvert f(z)\\rvert?\\]\n\n\n\nRandom polynomials with independently identically distributed coefficients are sometimes called Kac polynomials - this problem considers the case of Rademacher coefficients, i.e. independent uniform $\\pm 1$ values. The first problem asks whether $m(f)<1$ almost surely. Littlewood \\cite{Li66} conjectured that the stronger $m(f)=o(1)$ holds almost surely.\n\nThe answer to both questions is yes: Littlewood's conjecture was solved by Kashin \\cite{Ka87}, and Konyagin \\cite{Ko94} improved this to show that $m(f)\\leq n^{-1/2+o(1)}$ almost surely. This is essentially best possible, since Konyagin and Schlag \\cite{KoSc99} proved that for any $\\epsilon>0$\\[\\limsup_{n\\to \\infty} \\mathbb\n(m(f) \\leq \\epsilon n^{-1/2})\\ll \\epsilon.\\]Cook and Nguyen \\cite{CoNg21} have identified the limiting distribution, proving that for any $\\epsilon>0$\\[\\lim_{n\\to \\infty} \\mathbb\n(m(f) > \\epsilon n^{-1/2}) = e^{-\\epsilon \\lambda}\\]where $\\lambda$ is an explicit constant.\n\n\n\n\nReferences\n\n\n[CoNg21] Cook, Nicholas A. and Nguyen, Hoi H., Universality of the minimum modulus for random trigonometric\npolynomials. Discrete Anal. (2021), Paper No. 20, 46.\n\n[Ka87] Kashin, B. S., The properties of random trigonometric polynomials with {$\\pm 1$} coefficients. Vestnik Moskov. Univ. Ser. I Mat. Mekh. (1987), 40-46, 105.\n\n[Ko94] Konyagin, S. V., On the minimum modulus of random trigonometric polynomials with coefficients {$\\pm1$}. Mat. Zametki (1994), 80-101, 158.\n\n[KoSc99] Konyagin, S. V. and Schlag, W., Lower bounds for the absolute value of random polynomials on a\nneighborhood of the unit circle. Trans. Amer. Math. Soc. (1999), 4963-4980.\n\n[Li66] Littlewood, J. E., On polynomials {$\\sum \\sp{n}\\pm z\\spM$}, {$\\sum\n\\sp{n}e\\sp{\\alpha \\sbMi}z\\spM$}, {$z=e\\sp{\\theta\n\\sbI}$}. J. London Math. Soc. (1966), 367-376.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

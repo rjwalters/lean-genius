@@ -1,0 +1,33 @@
+{
+  "id": "erdos-484",
+  "title": "Erdős Problem #484",
+  "slug": "erdos-484",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nProve that there exists an absolute constant ... such that, whenever ... is ...-coloured (and ... is large enough depending o...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/484",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos484Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 484,
+    "erdosUrl": "https://erdosproblems.com/484",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #484 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nProve that there exists an absolute constant $c>0$ such that, whenever $\\{1,\\ldots,N\\}$ is $k$-coloured (and $N$ is large enough depending on $k$) then there are at least $cN$ many integers in $\\{1,\\ldots,N\\}$ which are representable as a monochromatic sum (that is, $a+b$ where $a,b\\in \\{1,\\ldots,N\\}$ are in the same colour class and $a\\neq b$).\n\n\n\nA conjecture of Roth.\n\nSolved by Erd\\H{o}s, S\\'{a}rk\\\"{o}zy, and S\\'{o}s \\cite{ESS89}, who in fact prove that there are at least\\[\\frac{N}{2}-O(N^{1-1/2^{k+1}})\\]many even numbers which are of this form. They also prove that if $k=2$ then there are at least\\[\\frac{N}{2}-O(\\log N)\\]many even numbers which are of this form, and that $O(\\log N)$ is best possible, since there is a $2$-colouring such that no power of $2$ is representable as a monochromatic sum.\n\nA refinement of this problem appears as Problem 25 on the open problems list of Ben Green.\n\n\n\n\nReferences\n\n\n[ESS89] Erd\\H{o}s, P. and S\\'{a}rk\\\"ozy, A. and S\\'{o}s, V. T., On a conjecture of {R}oth and some related problems. I. (1989), 47--59.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

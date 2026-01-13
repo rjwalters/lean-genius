@@ -143,14 +143,60 @@ def IsSidon (A : Set ℕ) : Prop :=
   ∀ a b c d, a ∈ A → b ∈ A → c ∈ A → d ∈ A →
     a + b = c + d → ({a, b} : Set ℕ) = {c, d}
 
-/-- Sidon sets have bounded representation. -/
+/-- Sidon sets have bounded representation.
+    Proof: For Sidon sets, if a + b = c + d then {a,b} = {c,d}.
+    So at most one unordered pair sums to n, giving at most 2 ordered pairs. -/
 theorem sidon_repFunc_bounded (A : Set ℕ) (hS : IsSidon A) :
     ∀ n, repFunc A n ≤ 2 := by
   intro n
-  -- For Sidon sets, if a + b = c + d then {a,b} = {c,d}
-  -- So there's at most one unordered pair summing to n
-  -- Ordered pairs: at most 2 (the pair and its reversal, or 1 if a = b)
-  sorry
+  unfold repFunc
+  set S := {p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 + p.2 = n} with hS_def
+  have hfin : S.Finite := pairs_summing_finite A n
+  by_cases hne : S.Nonempty
+  · -- S is nonempty, pick an element (a, b)
+    obtain ⟨⟨a, b⟩, ha_mem, hb_mem, hab⟩ := hne
+    -- Any other element (c, d) must satisfy {c,d} = {a,b}
+    have hS_sub : S ⊆ {(a, b), (b, a)} := by
+      intro ⟨c, d⟩ ⟨hc_mem, hd_mem, hcd⟩
+      have heq : ({c, d} : Set ℕ) = {a, b} := by
+        apply hS c d a b hc_mem hd_mem ha_mem hb_mem
+        omega
+      simp only [Set.mem_insert_iff, Prod.mk.injEq]
+      -- From {c, d} = {a, b}, either (c,d) = (a,b) or (c,d) = (b,a)
+      have hc_in : c ∈ ({a, b} : Set ℕ) := by rw [← heq]; exact Set.mem_insert c {d}
+      have hd_in : d ∈ ({a, b} : Set ℕ) := by rw [← heq]; exact Set.mem_insert_of_mem c rfl
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hc_in hd_in
+      -- c ∈ {a, b} and d ∈ {a, b} with c + d = a + b = n
+      cases hc_in with
+      | inl hca =>
+        cases hd_in with
+        | inl hda => left; refine ⟨hca, ?_⟩; subst hca hda; omega
+        | inr hdb => left; exact ⟨hca, hdb⟩
+      | inr hcb =>
+        cases hd_in with
+        | inl hda =>
+          -- c = b, d = a
+          right; simp only [Set.mem_singleton_iff, Prod.mk.injEq]
+          exact ⟨hcb, hda⟩
+        | inr hdb =>
+          -- c = b, d = b: c + d = 2b = n and a + b = n, so a = b
+          left; subst hcb hdb; constructor <;> omega
+    have hcard : S.ncard ≤ ({(a, b), (b, a)} : Set (ℕ × ℕ)).ncard :=
+      Set.ncard_le_ncard hS_sub (Set.toFinite _)
+    have htwo : ({(a, b), (b, a)} : Set (ℕ × ℕ)).ncard ≤ 2 := by
+      have h1 : ({(a, b), (b, a)} : Set (ℕ × ℕ)).ncard ≤ 1 + 1 := by
+        rw [Set.insert_eq]
+        calc ({(a, b)} ∪ {(b, a)} : Set (ℕ × ℕ)).ncard
+            ≤ ({(a, b)} : Set (ℕ × ℕ)).ncard + ({(b, a)} : Set (ℕ × ℕ)).ncard :=
+              Set.ncard_union_le _ _
+          _ = 1 + 1 := by simp only [Set.ncard_singleton]
+      omega
+    exact hcard.trans htwo
+  · -- S is empty
+    simp only [Set.not_nonempty_iff_eq_empty] at hne
+    have hS_empty : S = ∅ := by rw [hS_def]; exact hne
+    rw [hS_empty]
+    simp only [Set.ncard_empty, Nat.zero_le]
 
 /-! ## Part IV: The Main Conjecture -/
 
@@ -206,11 +252,52 @@ theorem evens_sumset : sumset evens = evens := by
     · exact ⟨0, rfl⟩
     · ring
 
-/-- For evens, r_{evens}(2n) = n + 1 for n ≥ 0.
-    Pairs: (0,2n), (2,2n-2), ..., (2n,0). -/
-theorem evens_repFunc (n : ℕ) : repFuncUnordered evens (2*n) = n + 1 := by
-  -- The pairs are (2k, 2(n-k)) for k = 0, 1, ..., n
-  sorry
+/-- For evens, r_{evens}(2n) = n/2 + 1 for unordered pairs.
+    Pairs: (2k, 2(n-k)) for k ∈ {0, ..., n/2} where 2k ≤ 2(n-k). -/
+theorem evens_repFunc (n : ℕ) : repFuncUnordered evens (2*n) = n / 2 + 1 := by
+  unfold repFuncUnordered evens
+  -- The pairs are (2k, 2(n-k)) for k = 0, 1, ..., n/2 with k ≤ n - k
+  have hS_eq : {p : ℕ × ℕ | p.1 ∈ {m | Even m} ∧ p.2 ∈ {m | Even m} ∧ p.1 ≤ p.2 ∧ p.1 + p.2 = 2*n} =
+      (fun k => (2*k, 2*(n - k))) '' (Finset.range (n / 2 + 1) : Set ℕ) := by
+    ext ⟨a, b⟩
+    simp only [Set.mem_setOf_eq, Set.mem_image, Finset.coe_range, Set.mem_Iio, Prod.mk.injEq]
+    constructor
+    · intro ⟨⟨ka, hka⟩, ⟨kb, hkb⟩, hab, hadd⟩
+      -- a = 2*ka, b = 2*kb, a + b = 2n, a ≤ b
+      use ka
+      constructor
+      · -- ka < n/2 + 1
+        -- From a ≤ b: 2*ka ≤ 2*kb, so ka ≤ kb
+        -- From a + b = 2n: 2*ka + 2*kb = 2n, so ka + kb = n
+        -- Thus 2*ka ≤ n, so ka ≤ n/2
+        have hsum : ka + kb = n := by omega
+        have hle : ka ≤ kb := by omega
+        omega
+      · constructor
+        · omega
+        · -- b = 2*(n-ka) since ka + kb = n
+          have hsum : ka + kb = n := by omega
+          omega
+    · intro ⟨k, hk, hak, hbk⟩
+      subst hak hbk
+      constructor
+      · -- Even (2*k) uses definition ∃ m, 2*k = m + m
+        exact ⟨k, by ring⟩
+      constructor
+      · -- Even (2*(n-k)) uses definition ∃ m, 2*(n-k) = m + m
+        exact ⟨n - k, by ring⟩
+      constructor
+      · -- 2k ≤ 2(n-k) means k ≤ n - k
+        omega
+      · -- 2k + 2(n-k) = 2n (need omega for ℕ subtraction)
+        omega
+  rw [hS_eq]
+  have hinj : Function.Injective (fun k : ℕ => (2*k, 2*(n - k))) := by
+    intro k1 k2 h
+    simp only [Prod.mk.injEq] at h
+    omega
+  rw [Set.ncard_image_of_injective _ hinj]
+  rw [Set.ncard_coe_finset, Finset.card_range]
 
 /-- The natural numbers ℕ form a basis (trivially). -/
 theorem nat_is_basis : IsAsymptoticBasis (Set.univ : Set ℕ) := by
@@ -218,18 +305,69 @@ theorem nat_is_basis : IsAsymptoticBasis (Set.univ : Set ℕ) := by
   intro n _
   exact ⟨0, n, trivial, trivial, by ring⟩
 
-/-- For ℕ, r_ℕ(n) = n + 1 (pairs (0,n), (1,n-1), ..., (n,0)). -/
+/-- For ℕ, r_ℕ(n) = n/2 + 1 (unordered pairs (k, n-k) with k ≤ n-k). -/
 theorem nat_repFunc (n : ℕ) : repFuncUnordered (Set.univ : Set ℕ) n = n / 2 + 1 := by
-  sorry
+  unfold repFuncUnordered
+  -- The pairs are (k, n-k) for k ∈ {0, 1, ..., n/2}
+  have hS_eq : {p : ℕ × ℕ | p.1 ∈ (Set.univ : Set ℕ) ∧ p.2 ∈ Set.univ ∧ p.1 ≤ p.2 ∧ p.1 + p.2 = n} =
+      {p : ℕ × ℕ | p.1 ≤ p.2 ∧ p.1 + p.2 = n} := by
+    ext p
+    simp only [Set.mem_setOf_eq, Set.mem_univ, true_and]
+  rw [hS_eq]
+  -- Characterize the set as image of {0, ..., n/2}
+  have hS_eq2 : {p : ℕ × ℕ | p.1 ≤ p.2 ∧ p.1 + p.2 = n} =
+      (fun k => (k, n - k)) '' (Finset.range (n / 2 + 1) : Set ℕ) := by
+    ext ⟨a, b⟩
+    simp only [Set.mem_setOf_eq, Set.mem_image, Finset.coe_range, Set.mem_Iio, Prod.mk.injEq]
+    constructor
+    · intro ⟨hab, hadd⟩
+      use a
+      constructor
+      · -- a < n/2 + 1, i.e., a ≤ n/2
+        -- From a ≤ b and a + b = n: 2a ≤ n, so a ≤ n/2
+        omega
+      · constructor
+        · rfl
+        · omega
+    · intro ⟨k, hk, hak, hbk⟩
+      subst hak hbk
+      constructor
+      · -- k ≤ n - k
+        omega
+      · -- k + (n - k) = n
+        omega
+  rw [hS_eq2]
+  -- The image of an injective function on a finite set
+  have hinj : Function.Injective (fun k : ℕ => (k, n - k)) := by
+    intro k1 k2 h
+    simp only [Prod.mk.injEq] at h
+    exact h.1
+  rw [Set.ncard_image_of_injective _ hinj]
+  rw [Set.ncard_coe_finset, Finset.card_range]
 
 /-! ## Part VII: Connection to Sidon Sets -/
 
-/-- Sidon sets (B₂ sequences) are NOT asymptotic bases.
-    This shows the conjecture is not trivially false. -/
+/-- **Known Result (Erdős-Turán)**: Sidon sets have at most √(2N) + 1 elements in {1,...,N}.
+    This is proved in Erdos340GreedySidon.lean as sidon_upper_bound_weak. -/
+axiom sidon_density_bound (A : Finset ℕ) (hS : IsSidon (A : Set ℕ)) (N : ℕ)
+    (hAN : ∀ a ∈ A, a ≤ N) : A.card ≤ Nat.sqrt (2 * N) + 1
+
+/-- **Known Result**: Sidon sets are NOT asymptotic bases.
+
+    Mathematical argument:
+    - Sidon sets satisfy |A ∩ [1,N]| ≤ √(2N) + 1 (density bound)
+    - The sumset A+A of A ∩ [1,N] has at most |A|(|A|+1)/2 elements
+      (since a+b = c+d implies {a,b} = {c,d} for Sidon sets)
+    - This gives |(A+A) ∩ [2, 2N]| ≤ (√(2N)+1)(√(2N)+2)/2 ≈ N + O(√N)
+    - But an asymptotic basis must cover all n ≥ N₀, requiring ~2N elements in [N₀, 2N]
+    - This density gap means A+A misses infinitely many integers
+
+    This is a HARD result (known math, needs formalization), not OPEN.
+    The full proof requires careful counting and asymptotic analysis. -/
 theorem sidon_not_basis (A : Set ℕ) (hS : IsSidon A) (hInf : A.Infinite) :
     ¬IsAsymptoticBasis A := by
-  -- Sidon sets have density at most N^{1/2}, so A+A has density at most N
-  -- which means A+A cannot contain all large integers
+  -- Axiomatized: requires density argument combining sidon_density_bound
+  -- with sumset counting to show A+A is too sparse
   sorry
 
 #check erdos_28

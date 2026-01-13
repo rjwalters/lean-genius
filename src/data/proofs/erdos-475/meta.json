@@ -1,0 +1,33 @@
+{
+  "id": "erdos-475",
+  "title": "Erdős Problem #475",
+  "slug": "erdos-475",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a prime. Given any finite set ..., is there always a rearrangement ... such that all partial sums ... are distinct...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/475",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos475Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 475,
+    "erdosUrl": "https://erdosproblems.com/475",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #475 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $p$ be a prime. Given any finite set $A\\subseteq \\mathbb{F}_p\\backslash \\{0\\}$, is there always a rearrangement $A=\\{a_1,\\ldots,a_t\\}$ such that all partial sums $\\sum_{1\\leq k\\leq m}a_{k}$ are distinct, for all $1\\leq m\\leq t$?\n\n\n\nA problem of Graham, who proved it when $t=p-1$. A similar conjecture was made for arbitrary abelian groups by Alspach. Such an ordering is often called a valid ordering.\n\nThis has been proved for $t\\leq 12$ (see Costa and Pellegrini \\cite{CoPe20} and the references therein) and for $p-3\\leq t\\leq p-1$ (see Hicks, Ollis, and Schmitt \\cite{HOS19} and the references therein). Kravitz \\cite{Kr24} has proved this for\\[t \\leq \\frac{\\log p}{\\log\\log p}.\\](This was independently earlier observed by Will Sawin in a MathOverflow post.)\n\nBedert and Kravitz \\cite{BeKr24} have now proved this conjecture for\\[t \\leq e^{(\\log p)^{1/4}}.\\]\n\n\n\n\nReferences\n\n\n[BeKr24] B. Bedert and N. Kravitz, Graham's rearrangement conjecture beyond the rectification barrier. arXiv:2409.07403 (2024).\n\n[CoPe20] Costa, S. and Pellegrini, M. A., Some new results about a conjecture by Brian Alspach. Arch. Math. (Basel) (2020), 479-488.\n\n[HOS19] Hicks, Jacob and Ollis, M. A. and Schmitt, John R., Distinct partial sums in cyclic groups: polynomial method and\nconstructive approaches. J. Combin. Des. (2019), 369-385.\n\n[Kr24] N. Kravitz, Rearranging small sets for distinct partial sums. arXiv:2407.01835 (2024).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

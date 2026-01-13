@@ -1,0 +1,33 @@
+{
+  "id": "erdos-526",
+  "title": "Erdős Problem #526",
+  "slug": "erdos-526",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... with ... and .... Find a necessary and sufficient condition on the ... such that, if we choose (independently and uni...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/526",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos526Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 526,
+    "erdosUrl": "https://erdosproblems.com/526",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #526 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_n\\geq 0$ with $a_n\\to 0$ and $\\sum a_n=\\infty$. Find a necessary and sufficient condition on the $a_n$ such that, if we choose (independently and uniformly) random arcs on the unit circle of length $a_n$, then all the circle is covered with probability $1$.\n\n\n\nA problem of Dvoretzky \\cite{Dv56}. It is easy to see that (under the given conditions alone) almost all the circle is covered with probability $1$.\n\nKahane \\cite{Ka59} showed that $a_n=\\frac{1+c}{n}$ with $c>0$ has this property, which Erd\\H{o}s (unpublished) improved to $a_n=\\frac{1}{n}$. Erd\\H{o}s also showed that $a_n=\\frac{1-c}{n}$ with $c>0$ does not have this property.\n\nSolved by Shepp \\cite{Sh72}, who showed that a necessary and sufficient condition is that\\[\\sum_n \\frac{e^{a_1+\\cdots+a_n}}{n^2}=\\infty.\\]\n\n\n\n\nReferences\n\n\n[Dv56] Dvoretzky, Aryeh, On covering a circle by randomly placed arcs. Proc. Nat. Acad. Sci. U.S.A. (1956), 199-203.\n\n[Ka59] Kahane, Jean-Pierre, Sur le recouvrement d'un cercle par des arcs dispos\\'{e}s au\nhasard. C. R. Acad. Sci. Paris (1959), 184-186.\n\n[Sh72] Shepp, L. A., Covering the circle with random arcs. Israel J. Math. (1972), 328-345.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

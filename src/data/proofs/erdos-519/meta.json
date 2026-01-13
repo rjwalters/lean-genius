@@ -1,0 +1,33 @@
+{
+  "id": "erdos-519",
+  "title": "Erdős Problem #519",
+  "slug": "erdos-519",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... with .... Must there exist an absolute constant ... such that\\[\\max_{1\\leq k\\leq n}\\left\\lvert \\sum_{i}z_i^k\\right\\rv...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/519",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos519Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 519,
+    "erdosUrl": "https://erdosproblems.com/519",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #519 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $z_1,\\ldots,z_n\\in \\mathbb{C}$ with $z_1=1$. Must there exist an absolute constant $c>0$ such that\\[\\max_{1\\leq k\\leq n}\\left\\lvert \\sum_{i}z_i^k\\right\\rvert>c?\\]\n\n\n\nA problem of Tur\\'{a}n, who proved that this maximum is $\\gg 1/n$. This was solved by Atkinson \\cite{At61b}, who showed that $c=1/6$ suffices. This has been improved by Bir\\'{o}, first to $c=1/2$ \\cite{Bi94}, and later to an absolute constant $c>1/2$ \\cite{Bi00}. Based on computational evidence it is likely that the optimal value of $c$ is $\\approx 0.7$.\n\nSee also [973].\n\n\n\n\nReferences\n\n\n[At61b] Atkinson, F. V., On sums of powers of complex numbers. Acta Math. Acad. Sci. Hungar. (1961), 185-188.\n\n[Bi00] Bir\\'{o}, Andr\\'{a}s, An improved estimate in a power sum problem of Tur\\'{a}n. Indag. Math. (N.S.) (2000), 343-358.\n\n[Bi94] Bir\\'{o}, A., On a problem of Tur\\'{a}n concerning sums of powers of complex numbers. Acta Math. Hungar. (1994), 209-216.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

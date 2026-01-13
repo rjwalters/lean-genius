@@ -1,0 +1,33 @@
+{
+  "id": "erdos-480",
+  "title": "Erdős Problem #480",
+  "slug": "erdos-480",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence. Is it true that\\[\\inf_n \\liminf_{m\\to \\infty} n \\lvert x_{m+n}-x_m\\rvert\\leq 5^{-1/2}\\approx...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/480",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos480Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 480,
+    "erdosUrl": "https://erdosproblems.com/480",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #480 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $x_1,x_2,\\ldots\\in [0,1]$ be an infinite sequence. Is it true that\\[\\inf_n \\liminf_{m\\to \\infty} n \\lvert x_{m+n}-x_m\\rvert\\leq 5^{-1/2}\\approx 0.447?\\]\n\n\n\nA conjecture of Newman. This was proved by Chung and Graham \\cite{ChGr84}, who in fact prove that\\[\\inf_n \\liminf_{m\\to \\infty} n \\lvert x_{m+n}-x_m\\rvert\\leq \\frac{1}{c}\\approx 0.3944\\]where\\[c=1+\\sum_{k\\geq 1}\\frac{1}{F_{2k}}=2.535\\cdots\\]and $F_m$ is the $m$th Fibonacci number. They also prove that this constant is best possible (van Doorn discusses their construction in the comments).\n\n\n\n\nReferences\n\n\n[ChGr84] Chung, F. R. K. and Graham, R. L., On irregularities of distribution. (1984), 181--222.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

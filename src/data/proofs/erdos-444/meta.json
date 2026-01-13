@@ -1,0 +1,33 @@
+{
+  "id": "erdos-444",
+  "title": "Erdős Problem #444",
+  "slug": "erdos-444",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be infinite and ... count the number of ... which divide .... Is it true that, for every ...,\\[\\limsup_{x\\to \\infty} ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/444",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos444Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 444,
+    "erdosUrl": "https://erdosproblems.com/444",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #444 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq\\mathbb{N}$ be infinite and $d_A(n)$ count the number of $a\\in A$ which divide $n$. Is it true that, for every $k$,\\[\\limsup_{x\\to \\infty} \\frac{\\max_{n<x}d_A(n)}{\\left(\\sum_{n\\in A\\cap[1,x)}\\frac{1}{n}\\right)^k}=\\infty?\\]\n\n\n\nThe answer is yes, proved by Erd\\H{o}s and S\\'{a}rk\\H{o}zy \\cite{ErSa80}.\n\n\n\n\nReferences\n\n\n[ErSa80] Erd\\H{o}s, P. and S\\'{a}rk\\\"{o}zy, A., Some asymptotic formulas on generalized divisor functions.\nIV. Studia Sci. Math. Hungar. (1980), 467-479.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

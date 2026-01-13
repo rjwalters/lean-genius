@@ -1,0 +1,33 @@
+{
+  "id": "erdos-490",
+  "title": "Erdős Problem #490",
+  "slug": "erdos-490",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that all the products ... with ... and ... are distinct. Is it true that\\[\\lvert A\\rvert \\lvert B\\rvert \\ll {...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/490",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos490Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 490,
+    "erdosUrl": "https://erdosproblems.com/490",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #490 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A,B\\subseteq \\{1,\\ldots,N\\}$ be such that all the products $ab$ with $a\\in A$ and $b\\in B$ are distinct. Is it true that\\[\\lvert A\\rvert \\lvert B\\rvert \\ll \\frac{N^2}{\\log N}?\\]\n\n\n\nThis would be best possible, for example letting $A=[1,N/2]\\cap \\mathbb{N}$ and $B=\\{ N/2<p\\leq N: p\\textrm{ prime}\\}$.\n\nThis is true, and was proved by Szemer\\'{e}di \\cite{Sz76}.\n\nIn \\cite{Er72} Erd\\H{o}s goes on to ask whether\\[\\lim_{N\\to \\infty}\\max_{A,B\\subseteq [N]}\\frac{\\lvert A\\rvert\\lvert B\\rvert\\log N}{N^2}\\]exists, where the maximum is over $A$ and $B$ with all the products $ab$ distinct, and to determine its value. As noted in the comments to [896] by van Doorn, if the limit exists it must be $\\geq 1$.\n\nSee also [425] and [896].\n\n\n\n\nReferences\n\n\n[Er72] Erd\\H{o}s, Paul, Extremal problems in number theory. Proceedings of the 1972 Number Theory Conference\n(Univ. Colorado, Boulder, Colo.) (1972), 80-86.\n\n[Sz76] Szemer\\'{e}di, E., On a problem of P. Erd\\H{o}s. J. Number Theory (1976), 264-270.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

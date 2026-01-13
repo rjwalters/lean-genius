@@ -1,0 +1,33 @@
+{
+  "id": "erdos-514",
+  "title": "Erdős Problem #514",
+  "slug": "erdos-514",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an entire function. Does there exist a path ... so that, for every ...,\\[\\lvert f(z)/z^n\\rvert \\to \\infty\\]as ... ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/514",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos514Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 514,
+    "erdosUrl": "https://erdosproblems.com/514",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #514 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(z)$ be an entire function. Does there exist a path $L$ so that, for every $n$,\\[\\lvert f(z)/z^n\\rvert \\to \\infty\\]as $z\\to \\infty$ along $L$?\n\nCan the length of this path be estimated in terms of $M(r)=\\max_{\\lvert z\\rvert=r}\\lvert f(z)\\rvert$? Does there exist a path along which $\\lvert f(z)\\rvert$ tends to $\\infty$ faster than a fixed function of $M(r)$ (such that $M(r)^\\epsilon$)?\n\n\n\nBoas (unpublished) has proved the first part, that such a path must exist.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-455",
+  "title": "Erdős Problem #455",
+  "slug": "erdos-455",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence of primes such that\\[q_{n+1}-q_n\\geq q_n-q_{n-1}.\\]Must\\[\\lim_n {n^2}=\\infty?\\]\n\n\n\nRichter  proved that...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/455",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos455Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 455,
+    "erdosUrl": "https://erdosproblems.com/455",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #455 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $q_1<q_2<\\cdots$ be a sequence of primes such that\\[q_{n+1}-q_n\\geq q_n-q_{n-1}.\\]Must\\[\\lim_n \\frac{q_n}{n^2}=\\infty?\\]\n\n\n\nRichter \\cite{Ri76} proved that\\[\\liminf_n \\frac{q_n}{n^2}>0.352\\cdots.\\]\n\n\n\n\nReferences\n\n\n[Ri76] Richter, Bernd, \\\"{U}ber die Monotonie von Differenzenfolgen. Acta Arith. (1976), 225-227.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

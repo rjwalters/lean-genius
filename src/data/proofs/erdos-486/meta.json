@@ -1,0 +1,33 @@
+{
+  "id": "erdos-486",
+  "title": "Erdős Problem #486",
+  "slug": "erdos-486",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., and for each ... choose some .... Let\\[B = \\{ m\\in  : m\\not\\in X_nn\\in Am>n\\}.\\]Must ... have a logarithmic density,...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/486",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos486Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 486,
+    "erdosUrl": "https://erdosproblems.com/486",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #486 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$, and for each $n\\in A$ choose some $X_n\\subseteq \\mathbb{Z}/n\\mathbb{Z}$. Let\\[B = \\{ m\\in \\mathbb{N} : m\\not\\in X_n\\pmod{n}\\textrm{ for all }n\\in A\\textrm{ with }m>n\\}.\\]Must $B$ have a logarithmic density, i.e. is it true that\\[\\lim_{x\\to \\infty} \\frac{1}{\\log x}\\sum_{\\substack{m\\in B\\\\ m<x}}\\frac{1}{m}\\]exists?\n\n\n\nDavenport and Erd\\H{o}s \\cite{DaEr36} proved that the answer is yes when $X_n=\\{0\\}$ for all $n\\in A$. An alternative elementary proof was later given by Davenport and Erd\\H{o}s in \\cite{DaEr51}.\n\nThe problem considers logarithmic density since Besicovitch \\cite{Be34} showed examples exist without a natural density, even when $X_n=\\{0\\}$ for all $n\\in A$.\n\nThis is a generalisation of [25] (which is the case when $\\lvert X_n\\rvert=1$ for all $n\\in A$).\n\n\n\n\nReferences\n\n\n[Be34] Besicovitch, A., On the density of certain sequences of integers. Math. Annalen (1934), 336-341.\n\n[DaEr36] Davenport, H. and Erd\\H{o}s, P., On sequences of positive integers. Acta Arithmetica (1936), 147-151.\n\n[DaEr51] Davenport, H. and Erd\\H{o}s, P., On sequences of positive integers. J. Indian Math. Soc. (N.S.) (1951), 19--24.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

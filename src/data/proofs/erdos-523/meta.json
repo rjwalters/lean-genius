@@ -1,0 +1,33 @@
+{
+  "id": "erdos-523",
+  "title": "Erdős Problem #523",
+  "slug": "erdos-523",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a random polynomial, where ... independently uniformly at random for ....\n\nDoes there exist some constant ... such...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/523",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos523Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 523,
+    "erdosUrl": "https://erdosproblems.com/523",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #523 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(z)=\\sum_{0\\leq k\\leq n} \\epsilon_k z^k$ be a random polynomial, where $\\epsilon_k\\in \\{-1,1\\}$ independently uniformly at random for $0\\leq k\\leq n$.\n\nDoes there exist some constant $C>0$ such that, almost surely,\\[\\max_{\\lvert z\\rvert=1}\\left\\lvert \\sum_{k\\leq n}\\epsilon_k(t)z^k\\right\\rvert=(C+o(1))\\sqrt{n\\log n}?\\]\n\n\n\nSalem and Zygmund \\cite{SZ54} proved that $\\sqrt{n\\log n}$ is the right order of magnitude, but not an asymptotic.\n\nThis was settled by Hal\\'{a}sz \\cite{Ha73}, who proved this is true with $C=1$.\n\n\n\n\nReferences\n\n\n[Ha73] Hal\\'{a}sz, G., On a result of {S}alem and {Z}ygmund concerning random\npolynomials. Studia Sci. Math. Hungar. (1973), 369--377.\n\n[SZ54] No reference found.\n\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

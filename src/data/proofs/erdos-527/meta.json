@@ -1,0 +1,33 @@
+{
+  "id": "erdos-527",
+  "title": "Erdős Problem #527",
+  "slug": "erdos-527",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that ... and .... Is it true that, for almost all ..., there exists some ... with ... (depending on the choic...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/527",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos527Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 527,
+    "erdosUrl": "https://erdosproblems.com/527",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #527 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_n\\in \\mathbb{R}$ be such that $\\sum_n \\lvert a_n\\rvert^2=\\infty$ and $\\lvert a_n\\rvert=o(1/\\sqrt{n})$. Is it true that, for almost all $\\epsilon_n=\\pm 1$, there exists some $z$ with $\\lvert z\\rvert=1$ (depending on the choice of signs) such that\\[\\sum_n \\epsilon_n a_n z^n\\]converges?\n\n\n\nIt is unclear to me whether Erd\\H{o}s also intended to assume that $\\lvert a_{n+1}\\rvert\\leq \\lvert a_n\\rvert$.\n\nIt is 'well known' that, for almost all $\\epsilon_n=\\pm 1$, the series diverges for almost all $\\lvert z\\rvert=1$ (assuming only $\\sum \\lvert a_n\\rvert^2=\\infty$).\n\nDvoretzky and Erd\\H{o}s \\cite{DE59} showed that if $\\lvert a_n\\rvert >c/\\sqrt{n}$ then, for almost all $\\epsilon_n=\\pm 1$, the series diverges for all $\\lvert z\\rvert=1$.\n\nThis is true, and was proved by Michelen and Sawhney \\cite{MiSa25}, who in fact proved that the set of such $z$ has Hausdorff dimension $1$.\n\n\n\n\nReferences\n\n\n[DE59] Dvoretzky, A. and Erd\\H{o}s, P., Divergence of random power series. Michigan Math. J. (1959), 343-347.\n\n[MiSa25] No reference found.\n\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

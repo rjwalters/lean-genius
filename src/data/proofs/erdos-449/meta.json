@@ -1,0 +1,33 @@
+{
+  "id": "erdos-449",
+  "title": "Erdős Problem #449",
+  "slug": "erdos-449",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of ... such that ... and ... and .... Is it true that, for every ...,\\[r(n) < \\epsilon \\tau(n)\\]for ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/449",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos449Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 449,
+    "erdosUrl": "https://erdosproblems.com/449",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #449 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r(n)$ count the number of $d_1,d_2$ such that $d_1\\mid n$ and $d_2\\mid n$ and $d_1<d_2<2d_1$. Is it true that, for every $\\epsilon>0$,\\[r(n) < \\epsilon \\tau(n)\\]for almost all $n$, where $\\tau(n)$ is the number of divisors of $n$?\n\n\n\nThis is false - indeed, for any constant $K>0$ we have $r(n)>K\\tau(n)$ for a positive density set of $n$. Kevin Ford has observed this follows from the negative solution to [448]: the Cauchy-Schwarz inequality implies\\[r(n)+\\tau(n)\\geq \\tau(n)^2/\\tau^+(n)\\]where $\\tau^+(n)$ is as defined in [448], and the negative solution to [448] implies the right-hand side is at least $(K+1)\\tau(n)$ for a positive density set of $n$. (This argument is given for an essentially identical problem by Hall and Tenenbaum \\cite{HaTe88}, Section 4.6.)\n\nSee also [448].\n\n\n\n\nReferences\n\n\n[HaTe88] Hall, Richard R. and Tenenbaum, G\\'{e}rald, Divisors. (1988), xvi+167.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

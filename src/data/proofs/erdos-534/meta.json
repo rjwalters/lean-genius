@@ -1,0 +1,33 @@
+{
+  "id": "erdos-534",
+  "title": "Erdős Problem #534",
+  "slug": "erdos-534",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the largest possible subset ... which contains ... such that ... for all ...?\n\n\n\nA problem of Erds and Graham (in  it...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/534",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos534Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 534,
+    "erdosUrl": "https://erdosproblems.com/534",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #534 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the largest possible subset $A\\subseteq\\{1,\\ldots,N\\}$ which contains $N$ such that $\\mathrm{gcd}(a,b)>1$ for all $a\\neq b\\in A$?\n\n\n\nA problem of Erd\\H{o}s and Graham (in \\cite{Er73} it was stated with $(a,b)=1$ instead but this is clearly a typo). They conjecture that this maximum is either $N/p$ (where $p$ is the smallest prime factor of $N$) or it is the number of integers $\\{2t: t\\leq N/2\\textrm{ and }(2t,N)> 1\\}$.\n\nAhlswede and Khachatrian \\cite{AhKh96} observe that it is 'easy' to find a counterexample to this conjecture, which they informed Erd\\H{o}s about in 1992. Erd\\H{o}s then gave a refined conjecture, that if $N=q_1^{k_1}\\cdots q_r^{k_r}$ (where $q_1<\\cdots <q_r$ are distinct primes) then the maximum is achieved by, for some $1\\leq j\\leq r$, those integers in $[1,N]$ which are a multiple of at least one of\\[\\{2q_1,\\ldots,2q_j,q_1\\cdots q_j\\}.\\]This conjecture was proved by Ahlswede and Khachatrian \\cite{AhKh96}.\n\nSee also [56].\n\n\n\n\nReferences\n\n\n[AhKh96] Ahlswede, Rudolf and Khachatrian, Levon H., Sets of integers with pairwise common divisor and a factor\nfrom a specified set of primes. Acta Arith. (1996), 259--276.\n\n[Er73] Erd\\H{o}s, P., Problems and results on combinatorial number theory. A survey of combinatorial theory (Proc. Internat. Sympos., Colorado State Univ., Fort Collins, Colo., 1971) (1973), 117-138.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

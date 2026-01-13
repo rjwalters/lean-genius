@@ -1,0 +1,33 @@
+{
+  "id": "erdos-522",
+  "title": "Erdős Problem #522",
+  "slug": "erdos-522",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a random polynomial, where ... independently uniformly at random for ....\n\nIs it true that, if ... is the number o...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/522",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos522Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 522,
+    "erdosUrl": "https://erdosproblems.com/522",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #522 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(z)=\\sum_{0\\leq k\\leq n} \\epsilon_k z^k$ be a random polynomial, where $\\epsilon_k\\in \\{-1,1\\}$ independently uniformly at random for $0\\leq k\\leq n$.\n\nIs it true that, if $R_n$ is the number of roots of $f(z)$ in $\\{ z\\in \\mathbb{C} : \\lvert z\\rvert \\leq 1\\}$, then\\[\\frac{R_n}{n/2}\\to 1\\]almost surely?\n\n\n\nRandom polynomials with independently identically distributed coefficients are sometimes called Kac polynomials - this problem considers the case of Rademacher coefficients, i.e. independent uniform $\\pm 1$ values. Erd\\H{o}s and Offord \\cite{EO56} showed that the number of real roots of a random degree $n$ polynomial with $\\pm 1$ coefficients is $(\\frac{2}{\\pi}+o(1))\\log n$.\n\nThere is some ambiguity whether Erd\\H{o}s intended the coefficients to be in $\\{-1,1\\}$ or $\\{0,1\\}$ - see the comments section.\n\nA weaker version of this was solved by Yakir \\cite{Ya21}, who proved that\\[\\frac{R_n}{n/2}\\to 1\\]in probability. (This weaker claim was also asked by Erd\\H{o}s, and also appears in a book of Hayman \\cite{Ha67}.) More precisely,\\[\\lim_{n\\to \\infty} \\mathbb{P}(\\lvert R_n-n/2\\rvert \\geq n^{9/10}) =0.\\]See also [521].\n\n\n\n\nReferences\n\n\n[EO56] Erd\\\"{o}s, Paul and Offord, A. C., On the number of real roots of a random algebraic equation. Proc. London Math. Soc. (3) (1956), 139-160.\n\n[Ha67] Hayman, W. K., Research problems in function theory. (1967), vii+56.\n\n[Ya21] Yakir, Oren, Approximately half of the roots of a random {L}ittlewood\npolynomial are inside the disk. Studia Math. (2021), 227--240.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

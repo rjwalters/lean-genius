@@ -1,0 +1,33 @@
+{
+  "id": "erdos-532",
+  "title": "Erdős Problem #532",
+  "slug": "erdos-532",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $...A\\subseteq ...S...A...\\mathbbN$. J. Combinatorial Theory Ser. A (1974), 1-11.\n\n\nBack to the problem",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/532",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos532Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 532,
+    "erdosUrl": "https://erdosproblems.com/532",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #532 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $\\mathbb{N}$ is 2-coloured then is there some infinite set $A\\subseteq \\mathbb{N}$ such that all finite subset sums\\[ \\sum_{n\\in S}n\\](as $S$ ranges over all non-empty finite subsets of $A$) are monochromatic?\n\n\n\nIn other words, must some colour class be an IP set. Asked by Graham and Rothschild. See also [531].\n\nProved by Hindman \\cite{Hi74} (for any number of colours).\n\nSee also [948].\n\n\n\n\nReferences\n\n\n[Hi74] Hindman, Neil, Finite sums from sequences within cells of a partition of $\\mathbbN$. J. Combinatorial Theory Ser. A (1974), 1-11.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

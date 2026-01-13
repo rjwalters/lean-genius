@@ -1,0 +1,33 @@
+{
+  "id": "erdos-458",
+  "title": "Erdős Problem #458",
+  "slug": "erdos-458",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the least common multiple of .... Is it true that, for all ...,\\[[1,\\ldots,p_{k+1}-1]< p_k[1,\\ldots,p_k]?\\]\n\n\n...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/458",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos458Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 458,
+    "erdosUrl": "https://erdosproblems.com/458",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #458 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $[1,\\ldots,n]$ denote the least common multiple of $\\{1,\\ldots,n\\}$. Is it true that, for all $k\\geq 1$,\\[[1,\\ldots,p_{k+1}-1]< p_k[1,\\ldots,p_k]?\\]\n\n\n\nErd\\H{o}s and Graham write this is 'almost certainly' true, but the proof is beyond our ability, for (at least) two reasons:\n{UL}\n{LI}Firstly, one has to rule out the possibility of many primes $q$ such that $p_k<q^2<p_{k+1}$. There should be at most one such $q$, which would follow from $p_{k+1}-p_k<p_k^{1/2}$, which is essentially the notorious Legendre's conjecture.{/LI}\n{LI} The small primes also cause trouble.{/LI}\n{/UL}\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-540",
+  "title": "Erdős Problem #540",
+  "slug": "erdos-540",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that if ... has size ... then there exists some non-empty ... such that ...?\n\n\n\nA conjecture of Erds and Heilbronn...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/540",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos540Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 540,
+    "erdosUrl": "https://erdosproblems.com/540",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #540 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that if $A\\subseteq \\mathbb{Z}/N\\mathbb{Z}$ has size $\\gg N^{1/2}$ then there exists some non-empty $S\\subseteq A$ such that $\\sum_{n\\in S}n\\equiv 0\\pmod{N}$?\n\n\n\nA conjecture of Erd\\H{o}s and Heilbronn \\cite{ErHe64}. The answer is yes. This was proved for $N$ prime by Olson \\cite{Ol68}, and for all $N$ by Szemer\\'{e}di \\cite{Sz70} (in fact for arbitrary finite abelian groups).\n\nErd\\H{o}s speculated that perhaps the correct threshold is $(2N)^{1/2}$; this is also a conjecture of Selfridge, and has been proved when $N$ is prime by Balandraud \\cite{Ba12}.\n\nHamidoune and Z\\'{e}mor \\cite{HaZe96} proved the bound $(1+o(1))\\sqrt{2N}$ for arbitrary abelian groups of order $N$.\n\nThis is discussed in problem C15 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Ba12] Balandraud, \\'{e}ric, An addition theorem and maximal zero-sum free sets in {${\\Bbb\nZ}/p{\\Bbb Z}$}. Israel J. Math. (2012), 405-429.\n\n[ErHe64] Erd\\H{o}s, P. and Heilbronn, H., On the addition of residue classes {${\\rm mod}\\ p$}. Acta Arith. (1964), 149--159.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[HaZe96] Hamidoune, Yahya Ould and Z\\'{e}mor, Gilles, On zero-free subset sums. Acta Arith. (1996), 143--152.\n\n[Ol68] Olson, John E., An addition theorem modulo {$p$}. J. Combinatorial Theory (1968), 45--52.\n\n[Sz70] Szemer\\'{e}di, E., On a conjecture of Erd\\H{o}s and Heilbronn. Acta Arith. (1970), 227-229.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

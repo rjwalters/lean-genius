@@ -1,0 +1,33 @@
+{
+  "id": "erdos-520",
+  "title": "Erdős Problem #520",
+  "slug": "erdos-520",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a Rademacher multiplicative function: a random ...-valued multiplicative function, where for each prime ... we ind...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/520",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos520Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 520,
+    "erdosUrl": "https://erdosproblems.com/520",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #520 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f$ be a Rademacher multiplicative function: a random $\\{-1,0,1\\}$-valued multiplicative function, where for each prime $p$ we independently choose $f(p)\\in \\{-1,1\\}$ uniformly at random, and for square-free integers $n$ we extend $f(p_1\\cdots p_r)=f(p_1)\\cdots f(p_r)$ (and $f(n)=0$ if $n$ is not squarefree). Does there exist some constant $c>0$ such that, almost surely,\\[\\limsup_{N\\to \\infty}\\frac{\\sum_{m\\leq N}f(m)}{\\sqrt{N\\log\\log N}}=c?\\]\n\n\n\nNote that if we drop the multiplicative assumption, and simply assign $f(m)=\\pm 1$ at random, then this statement is true (with $c=\\sqrt{2}$), the law of the iterated logarithm.\n\nWintner \\cite{Wi44} proved that, almost surely,\\[\\sum_{m\\leq N}f(m)\\ll N^{1/2+o(1)},\\]and Erd\\H{o}s improved the right-hand side to $N^{1/2}(\\log N)^{O(1)}$. Lau, Tenenbaum, and Wu \\cite{LTW13} have shown that, almost surely,\\[\\sum_{m\\leq N}f(m)\\ll N^{1/2}(\\log\\log N)^{2+o(1)}.\\]Caich \\cite{Ca24b} has improved this to\\[\\sum_{m\\leq N}f(m)\\ll N^{1/2}(\\log\\log N)^{3/4+o(1)}.\\]Harper \\cite{Ha13} has shown that the sum is almost surely not $O(N^{1/2}/(\\log\\log N)^{5/2+o(1)})$, and conjectured that in fact Erd\\H{o}s' conjecture is false, and almost surely\\[\\sum_{m\\leq N}f(m) \\ll N^{1/2}(\\log\\log N)^{1/4+o(1)}.\\]\n\n\n\n\nReferences\n\n\n[Ca24b] R. Caich, Almost sure upper bound for random multiplicative functions. arXiv:2304.00943 (2024).\n\n[Ha13] Harper, Adam J., Bounds on the suprema of Gaussian processes, and omega\nresults for the sum of a random multiplicative function. Ann. Appl. Probab. (2013), 584-616.\n\n[LTW13] Lau, Yuk-Kam and Tenenbaum, G\\'{e}rald and Wu, Jie, On mean values of random multiplicative functions. Proc. Amer. Math. Soc. (2013), 409-420.\n\n[Wi44] Wintner, Aurel, Random factorizations and Riemann's hypothesis. Duke Math. J. (1944), 267-275.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

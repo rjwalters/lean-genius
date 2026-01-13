@@ -1,0 +1,33 @@
+{
+  "id": "erdos-528",
+  "title": "Erdős Problem #528",
+  "slug": "erdos-528",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of self-avoiding walks of ... steps (beginning at the origin) in ... (i.e. those walks which do not ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/528",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos528Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 528,
+    "erdosUrl": "https://erdosproblems.com/528",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #528 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n,k)$ count the number of self-avoiding walks of $n$ steps (beginning at the origin) in $\\mathbb{Z}^k$ (i.e. those walks which do not intersect themselves). Determine\\[C_k=\\lim_{n\\to\\infty}f(n,k)^{1/n}.\\]\n\n\n\nThe constant $C_k$ is sometimes known as the connective constant. Hammersley and Morton \\cite{HM54} showed that this limit exists, and it is trivial that $k\\leq C_k\\leq 2k-1$.\n\nKesten \\cite{Ke63} proved that $C_k=2k-1-1/2k+O(1/k^2)$, and more precise asymptotics are given by Clisby, Liang, and Slade \\cite{CLS07}.\n\nConway and Guttmann \\cite{CG93} showed that $C_2\\geq 2.62$ and Alm \\cite{Al93} showed that $C_2\\leq 2.696$. Jacobsen, Scullard, and Guttmann \\cite{JSG16} have computed the first few decimal places of $C_2$, showing that\\[C_2 = 2.6381585303279\\cdots.\\]See also [529].\n\n\n\n\nReferences\n\n\n[Al93] Alm, Sven Erick, Upper bounds for the connective constant of self-avoiding\nwalks. Combin. Probab. Comput. (1993), 115-136.\n\n[CG93] Conway, A. R. and Guttmann, A. J., Lower bound on the connective constant for square lattice\nself-avoiding walks. J. Phys. A (1993), 3719-3724.\n\n[CLS07] Clisby, Nathan and Liang, Richard and Slade, Gordon, Self-avoiding walk enumeration via the lace expansion. J. Phys. A (2007), 10973-11017.\n\n[HM54] Hammersley, J. M. and Morton, K. W., Poor man's Monte Carlo. J. Roy. Statist. Soc. Ser. B (1954), 23-38; discussion 61-75.\n\n[JSG16] Jacobsen, Jesper Lykke and Scullard, Christian R. and\nGuttmann, Anthony J., On the growth constant for square-lattice self-avoiding walks. J. Phys. A (2016), 494004, 18.\n\n[Ke63] Kesten, Harry, On the number of self-avoiding walks. J. Mathematical Phys. (1963), 960-969.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

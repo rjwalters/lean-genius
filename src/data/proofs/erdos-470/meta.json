@@ -1,0 +1,33 @@
+{
+  "id": "erdos-470",
+  "title": "Erdős Problem #470",
+  "slug": "erdos-470",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall ... weird if ... and ... is not pseudoperfect, that is, it is not the sum of any set of its divisors.\n\nAre there any odd...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/470",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos470Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 470,
+    "erdosUrl": "https://erdosproblems.com/470",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #470 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall $n$ weird if $\\sigma(n)\\geq 2n$ and $n$ is not pseudoperfect, that is, it is not the sum of any set of its divisors.\n\nAre there any odd weird numbers? Are there infinitely many primitive weird numbers, i.e. those such that no proper divisor of $n$ is weird?\n\n\n\nWeird numbers were investigated by Benkoski and Erd\\H{o}s \\cite{BeEr74}, who proved that the set of weird numbers has positive density. The smallest weird number is $70$.\n\nMelfi \\cite{Me15} has proved that there are infinitely many primitive weird numbers, conditional on the fact that $p_{n+1}-p_n<\\frac{1}{10}p_n^{1/2}$ for all large $n$, which in turn would follow from well-known conjectures concerning prime gaps.\n\nThe sequence of weird numbers is A006037 in the OEIS. Fang \\cite{Fa22} has shown there are no odd weird numbers below $10^{21}$, and Liddy and Riedl \\cite{LiRi18} have shown that an odd weird number must have at least 6 prime divisors.\n\nIf there are no odd weird numbers then every weird number has abundancy index $<4$ (see [825]).\n\nSee also [825].\n\nThis is problem B2 in Guy's collection \\cite{Gu04} (the \\$10 is reported by Guy, offered by Erd\\H{o}s for a solution to the question of whether any odd weird numbers exist).\n\n\n\n\nReferences\n\n\n[BeEr74] Benkoski, S. J. and Erd\\H{o}s, P., On weird and pseudoperfect numbers. Math. Comp. (1974), 617-623.\n\n[Fa22] Searching on the boundary of abundance for odd weird numbers, W. Fang. arXiv:2207.12906 (2022).\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[LiRi18] J. Liddy and J. Riedl, An algorithm to determine all odd primitive abundant numbers with $d$ prime divisors. Honors Research Projects. 728 (2018).\n\n[Me15] Melfi, Giuseppe, On the conditional infiniteness of primitive weird numbers. J. Number Theory (2015), 508-514.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

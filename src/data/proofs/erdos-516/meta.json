@@ -1,0 +1,33 @@
+{
+  "id": "erdos-516",
+  "title": "Erdős Problem #516",
+  "slug": "erdos-516",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an entire function of finite order such that .... Let ... and .... Is it true that\\[\\limsup{\\log M(r)}=1?\\]\n\n\n\nA p...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/516",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos516Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 516,
+    "erdosUrl": "https://erdosproblems.com/516",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #516 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(z)=\\sum_{k\\geq 1}a_k z^{n_k}$ be an entire function of finite order such that $\\lim n_k/k=\\infty$. Let $M(r)=\\max_{\\lvert z\\rvert=r}\\lvert f(z)\\rvert$ and $m(r)=\\min_{\\lvert z\\rvert=r}\\lvert f(z)\\rvert$. Is it true that\\[\\limsup\\frac{\\log m(r)}{\\log M(r)}=1?\\]\n\n\n\nA problem of P\\'{o}lya \\cite{Po29}. Results of Wiman \\cite{Wi14} imply that if $(n_{k+1}-n_k)^2>n_k$ then $\\limsup \\frac{m(r)}{M(r)}=1$. Erd\\H{o}s and Macintyre \\cite{ErMa54} proved this under the assumption that\\[\\sum_{k\\geq 2}\\frac{1}{n_{k+1}-n_k}<\\infty.\\]This was solved in the affirmative by Fuchs \\cite{Fu63}, who proved that in fact for any $\\epsilon>0$\\[\\log m(r)> (1-\\epsilon)\\log M(r)\\]holds outside a set of logarithmic density $0$.\n\nKovari \\cite{Ko65} has shown that the $\\limsup$ is also $1$ for an arbitrary entire function given the stronger assumption that $n_k>k(\\log k)^{2+c}$ for some $c>0$. It is conjectured that this condition can be replaced with $\\sum \\frac{1}{n_k}<\\infty$. This would be best possible, as Macintyre \\cite{Ma52} has shown that, given any $n_k$ with $\\sum \\frac{1}{n_k}=\\infty$, there is a corresponding entire function which tends to zero along the positive real axis.\n\nIn \\cite{Er61} this is asked with $m(r)=\\max_n \\lvert a_nr^n\\rvert$, but with this definition the desired equality is a simple consequence of \\cite{Wi14} (see the comment by Quanyu Tang).\n\n\n\n\nReferences\n\n\n[Er61] Erd\\H{o}s, Paul, Some unsolved problems. Magyar Tud. Akad. Mat. Kutat\\'{o} Int. K\\\"{o}zl. (1961), 221-254.\n\n[ErMa54] Erd\\\"{o}s, P. and Macintyre, A. J., Integral functions with gap power series. Proc. Edinburgh Math. Soc. (2) (1954), 62-70.\n\n[Fu63] Fuchs, W. H. J., Proof of a conjecture of {G}. {P}\\'olya concerning gap series. Illinois J. Math. (1963), 661--667.\n\n[Ko65] K\\\"ovari, Thomas, A gap-theorem for entire functions of infinite order. Michigan Math. J. (1965), 133--140.\n\n[Ma52] Macintyre, A. J., Asymptotic paths of integral functions with gap power series. Proc. London Math. Soc. (3) (1952), 286--296.\n\n[Po29] P\\'olya, G., Untersuchungen \\\"uber {L}\\\"ucken und {S}ingularit\\\"{a}ten von\n{P}otenzreihen. Math. Z. (1929), 549--640.\n\n[Wi14] Wiman, A., \\\"{U}ber den Zusammenhang Zwischen dem Maximalbetrage Einer Analytischen Funktion und dem Gr\\\"{o}ssten Gliede der Zugeh\\\"{o}rigen Taylor'schen Reihe. Acta Math. (1914), 305-326.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

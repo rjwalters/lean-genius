@@ -304,15 +304,18 @@ def erdos_10_negative : Prop :=
 def erdos_10_positive : Prop :=
   ∃ k : ℕ, ∀ n : ℕ, n ≥ 2 → IsPrimePlusKPowers k n
 
-/-- The two formulations are related (sketch - full proof needs more filter work). -/
+/-- The two formulations are related: positive implies not negative. -/
 theorem erdos_10_pos_implies_not_neg : erdos_10_positive → ¬erdos_10_negative := by
   intro ⟨k, hk⟩ hneg
-  -- If universal k exists, then for that k, eventually all n are representable
-  -- This contradicts frequently having non-representable n
+  -- From negative: for our witness k, frequently there are non-representable n
   have hfreq := hneg k
-  -- The full proof requires showing the contradiction between
-  -- "frequently not representable" and "all ≥ 2 are representable"
-  sorry
+  -- Frequently means: for all N, there exists n ≥ N with ¬IsPrimePlusKPowers k n
+  rw [Filter.Frequently, Filter.Eventually, Filter.mem_atTop_sets] at hfreq
+  push_neg at hfreq
+  -- Get a counterexample ≥ 2
+  obtain ⟨n, hn2, hnot⟩ := hfreq 2
+  -- But hk says all n ≥ 2 are representable
+  exact hnot (hk n hn2)
 
 /-! ## Part VII: Odd vs Even Analysis -/
 

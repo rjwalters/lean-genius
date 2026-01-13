@@ -1,0 +1,33 @@
+{
+  "id": "erdos-481",
+  "title": "Erdős Problem #481",
+  "slug": "erdos-481",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... such that .... For any finite sequence of ... (not necessarily distinct) integers ... let ... denote the sequence of ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/481",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos481Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 481,
+    "erdosUrl": "https://erdosproblems.com/481",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #481 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_1,\\ldots,a_r,b_1,\\ldots,b_r\\in \\mathbb{N}$ such that $\\sum_{i}\\frac{1}{a_i}>1$. For any finite sequence of $n$ (not necessarily distinct) integers $A=(x_1,\\ldots,x_n)$ let $T(A)$ denote the sequence of length $rn$ given by\\[(a_ix_j+b_i)_{1\\leq j\\leq n, 1\\leq i\\leq r}.\\]Prove that, if $A_1=(1)$ and $A_{i+1}=T(A_i)$, then there must be some $A_k$ with repeated elements.\n\n\n\nErd\\H{o}s and Graham write that 'it is surprising that [this problem] offers difficulty'.\n\nThe original formulation of this problem had an extra condition on the minimal element of the sequence $A_k$ being large, but Ryan Alweiss has pointed out that is trivially always satisfied since the minimal element of the sequence must grow by at least $1$ at each stage.\n\nThis is true. This appears to have first been shown by Klarner \\cite{Kl82}, with a generalisation given by Kolpakov and Talambutsa \\cite{KoTa22}. Essentially the same proof was found independently by Barreto in the comment section.\n\n\n\n\nReferences\n\n\n[Kl82] Klarner, David A., A sufficient condition for certain semigroups to be free. J. Algebra (1982), 140--148.\n\n[KoTa22] Kolpakov, Alexander and Talambutsa, Alexey, On free semigroups of affine maps on the real line. Proc. Amer. Math. Soc. (2022), 2301--2307.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

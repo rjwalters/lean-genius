@@ -1,0 +1,33 @@
+{
+  "id": "erdos-445",
+  "title": "Erdős Problem #445",
+  "slug": "erdos-445",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for any ..., if ... is a sufficiently large prime then, for any ..., there exist ... such that ...?\n\n\n\nHeilb...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/445",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos445Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 445,
+    "erdosUrl": "https://erdosproblems.com/445",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #445 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for any $c>1/2$, if $p$ is a sufficiently large prime then, for any $n\\geq 0$, there exist $a,b\\in(n,n+p^c)$ such that $ab\\equiv 1\\pmod{p}$?\n\n\n\nHeilbronn (unpublished) proved this for $c$ sufficiently close to $1$. Heath-Brown \\cite{He00} used Kloosterman sums to prove this for all $c>3/4$.\n\nThis is discussed in this MathOverflow question.\n\n\n\n\nReferences\n\n\n[He00] Heath-Brown, D. R., Arithmetic applications of {K}loosterman sums. Nieuw Arch. Wiskd. (5) (2000), 380--384.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

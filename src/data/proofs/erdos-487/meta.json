@@ -1,0 +1,33 @@
+{
+  "id": "erdos-487",
+  "title": "Erdős Problem #487",
+  "slug": "erdos-487",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... have positive density. Must there exist distinct ... such that ... (where ... is the least common multiple of ... and...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/487",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos487Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 487,
+    "erdosUrl": "https://erdosproblems.com/487",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #487 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ have positive density. Must there exist distinct $a,b,c\\in A$ such that $[a,b]=c$ (where $[a,b]$ is the least common multiple of $a$ and $b$)?\n\n\n\nDavenport and Erd\\H{o}s \\cite{DaEr37} showed that there must exist an infinite sequence $a_1<a_2\\cdots$ in $A$ such that $a_i\\mid a_j$ for all $i\\leq j$.\n\nThis is true, a consequence of the positive solution to [447] by Kleitman \\cite{Kl71}.\n\n\n\n\nReferences\n\n\n[DaEr37] No reference found.\n\n\n[Kl71] Kleitman, Daniel, Collections of subsets containing no two sets and their union. Proceedings of the LA Meeting AMS (1971), 153-155.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

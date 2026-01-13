@@ -1,0 +1,33 @@
+{
+  "id": "erdos-443",
+  "title": "Erdős Problem #443",
+  "slug": "erdos-443",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... What is\\[\\# \\{ k(m-k) : 1\\leq k\\leq m/2\\} \\cap \\{ l(n-l) : 1\\leq l\\leq n/2\\}?\\]Can it be arbitrarily large? Is it .....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/443",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos443Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 443,
+    "erdosUrl": "https://erdosproblems.com/443",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #443 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $m,n\\geq 1$. What is\\[\\# \\{ k(m-k) : 1\\leq k\\leq m/2\\} \\cap \\{ l(n-l) : 1\\leq l\\leq n/2\\}?\\]Can it be arbitrarily large? Is it $\\leq (mn)^{o(1)}$ for all sufficiently large $m,n$?\n\n\n\nThis was solved independently by Hegyv\\'{a}ri \\cite{He25} and Cambie (unpublished), who show that if $m>n$ then the set in question has size\\[\\leq m^{O(1/\\log\\log m)},\\]and that for any integer $s$ there exist infinitely many pairs $(m,n)$ such that the set in question has size $s$.\n\n\n\n\nReferences\n\n\n[He25] N. Hegyv\\'{a}ri, An elementary question of Erd\\H{o}s and Graham. arXiv:2503.24201 (2025).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

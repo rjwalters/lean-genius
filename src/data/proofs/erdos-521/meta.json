@@ -1,0 +1,33 @@
+{
+  "id": "erdos-521",
+  "title": "Erdős Problem #521",
+  "slug": "erdos-521",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be independently uniformly chosen at random from .... If ... counts the number of real roots of ... then is it true t...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/521",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos521Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 521,
+    "erdosUrl": "https://erdosproblems.com/521",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #521 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $(\\epsilon_k)_{k\\geq 0}$ be independently uniformly chosen at random from $\\{-1,1\\}$. If $R_n$ counts the number of real roots of $f_n(z)=\\sum_{0\\leq k\\leq n}\\epsilon_k z^k$ then is it true that, almost surely,\\[\\lim_{n\\to \\infty}\\frac{R_n}{\\log n}=\\frac{2}{\\pi}?\\]\n\n\n\nErd\\H{o}s and Offord \\cite{EO56} showed that the number of real roots of a random degree $n$ polynomial with $\\pm 1$ coefficients is $(\\frac{2}{\\pi}+o(1))\\log n$.\n\nIt is ambiguous in \\cite{Er61} whether Erd\\H{o}s intended the coefficients to be uniformly chosen from $\\{-1,1\\}$ or $\\{0,1\\}$. In the latter case, the constant $\\frac{2}{\\pi}$ should be $\\frac{1}{\\pi}$ (see the discussion in the comments).\n\nIn the case of $\\{-1,1\\}$ Do \\cite{Do24} proved that, if $R_n[-1,1]$ counts the number of roots in $[-1,1]$, then, almost surely,\\[\\lim_{n\\to \\infty}\\frac{R_n[-1,1]}{\\log n}=\\frac{1}{\\pi}.\\]See also [522].\n\n\n\n\nReferences\n\n\n[Do24] Y. Do, A strong law of large numbers for real roots of random polynomials. arXiv:2403.06353 (2024).\n\n[EO56] Erd\\\"{o}s, Paul and Offord, A. C., On the number of real roots of a random algebraic equation. Proc. London Math. Soc. (3) (1956), 139-160.\n\n[Er61] Erd\\H{o}s, Paul, Some unsolved problems. Magyar Tud. Akad. Mat. Kutat\\'{o} Int. K\\\"{o}zl. (1961), 221-254.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

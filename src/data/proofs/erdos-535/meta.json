@@ -1,0 +1,33 @@
+{
+  "id": "erdos-535",
+  "title": "Erdős Problem #535",
+  "slug": "erdos-535",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., and let ... denote the size of the largest subset of ... such that no subset of size ... has the same pairwise great...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/535",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos535Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 535,
+    "erdosUrl": "https://erdosproblems.com/535",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #535 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 3$, and let $f_r(N)$ denote the size of the largest subset of $\\{1,\\ldots,N\\}$ such that no subset of size $r$ has the same pairwise greatest common divisor between all elements. Estimate $f_r(N)$.\n\n\n\nErd\\H{o}s \\cite{Er64} proved that\\[f_r(N) \\leq N^{\\frac{3}{4}+o(1)},\\]and Abbott and Hanson \\cite{AbHa70} improved this exponent to $1/2$. Erd\\H{o}s \\cite{Er64} proved the lower bound\\[f_3(N) > N^{\\frac{c}{\\log\\log N}}\\]for some constant $c>0$, and conjectured this should also be an upper bound.\n\nErd\\H{o}s writes this is 'intimately connected' with the sunflower problem [20]. Indeed, the conjectured upper bound would follow from the following stronger version of the sunflower problem: estimate the size of the largest set of integers $A$ such that $\\omega(n)=k$ for all $n\\in A$ and there does not exist $a_1,\\ldots,a_r\\in A$ and an integer $d$ such that $(a_i,a_j)=d$ for all $i\\neq j$ and $(a_i/d,d)=1$ for all $i$. The conjectured upper bound for $f_r(N)$ would follow if the size of such an $A$ must be at most $c_r^k$. The original sunflower proof of Erd\\H{o}s and Rado gives the upper bound $c_r^kk!$.\n\nSee also [536].\n\n\n\n\nReferences\n\n\n[AbHa70] Abbott, H. L. and Hanson, D., An extremal problem in number theory. Bull. London Math. Soc. (1970), 324-326.\n\n[Er64] Erd\\H{o}s, P., On a problem in elementary number theory and a combinatorial problem. Math. Comp. (1964), 644-646.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

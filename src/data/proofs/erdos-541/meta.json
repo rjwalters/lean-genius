@@ -1,0 +1,33 @@
+{
+  "id": "erdos-541",
+  "title": "Erdős Problem #541",
+  "slug": "erdos-541",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be (not necessarily distinct) residues modulo ..., such that there exists some ... so that if ... is non-empty and\\[\\...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/541",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos541Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 541,
+    "erdosUrl": "https://erdosproblems.com/541",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #541 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_1,\\ldots,a_p$ be (not necessarily distinct) residues modulo $p$, such that there exists some $r$ so that if $S\\subseteq [p]$ is non-empty and\\[\\sum_{i\\in S}a_i\\equiv 0\\pmod{p}\\]then $\\lvert S\\rvert=r$. Must there be at most two distinct residues amongst the $a_i$?\n\n\n\nA question of Graham. This was proved by Erd\\H{o}s and Szemer\\'{e}di \\cite{ErSz76} for $p$ sufficiently large and by Gao, Hamidoune, and Wang \\cite{GHW10} for all moduli (not necessarily prime).\n\n\n\n\nReferences\n\n\n[ErSz76] Erd\\H{o}s, E. and Szemer\\'{e}di, E., On a problem of Graham. Publ. Math. Debrecen (1976), 123--127.\n\n[GHW10] Gao, Weidong and Hamidoune, Yahya Ould and Wang, Guoqing, Distinct length modular zero-sum subsequences: a proof of\nGraham's conjecture. J. Number Theory (2010), 1425--1431.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

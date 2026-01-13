@@ -1,0 +1,33 @@
+{
+  "id": "erdos-476",
+  "title": "Erdős Problem #476",
+  "slug": "erdos-476",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Let\\[AA = \\{ a+b : a\\neq b \\in A\\}.\\]Is it true that\\[\\lvert AA\\rvert \\geq \\min(2\\lvert A\\rvert-3,p)?\\]\n\n\n\nA questio...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/476",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos476Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 476,
+    "erdosUrl": "https://erdosproblems.com/476",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #476 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{F}_p$. Let\\[A\\hat{+}A = \\{ a+b : a\\neq b \\in A\\}.\\]Is it true that\\[\\lvert A\\hat{+}A\\rvert \\geq \\min(2\\lvert A\\rvert-3,p)?\\]\n\n\n\nA question of Erd\\H{o}s and Heilbronn. Solved in the affirmative by da Silva and Hamidoune \\cite{dSHa94}.\n\nIn \\cite{Er65b} Erd\\H{o}s mentions the more general conjecture that the number of $x\\in \\mathbb{F}_p$ which are the sum of at most $r$ many distinct elements of $A$ is at least\\[\\min(r\\lvert A\\rvert-r^2+1,p).\\]This is discussed in problem C15 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er65b] Erd\\H{o}s, Paul, Some recent advances and current problems in number theory. Lectures on Modern Mathematics, Vol. III (1965), 196-244.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[dSHa94] Dias da Silva, J. A. and Hamidoune, Y. O., Cyclic spaces for Grassmann derivatives and additive theory. Bull. London Math. Soc. (1994), 140-146.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

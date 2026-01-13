@@ -1,0 +1,33 @@
+{
+  "id": "erdos-465",
+  "title": "Erdős Problem #465",
+  "slug": "erdos-465",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the maximum number of points ... which can be chosen in a circle of radius ... such that\\[\\| \\lvert P_i-P_j\\rv...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/465",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos465Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 465,
+    "erdosUrl": "https://erdosproblems.com/465",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #465 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N(X,\\delta)$ denote the maximum number of points $P_1,\\ldots,P_n$ which can be chosen in a circle of radius $X$ such that\\[\\| \\lvert P_i-P_j\\rvert \\| \\geq \\delta\\]for all $1\\leq i<j\\leq n$. (Here $\\|x\\|$ is the distance from $x$ to the nearest integer.)\n\nIs it true that, for any $0<\\delta<1/2$, we have\\[N(X,\\delta)=o(X)?\\]In fact, is it true that (for any fixed $\\delta>0$)\\[N(X,\\delta)<X^{1/2+o(1)}?\\]\n\n\n\nThe first conjecture was proved by S\\'{a}rk\\\"{o}zy \\cite{Sa76}, who in fact proved\\[N(X,\\delta) \\ll \\delta^{-3}\\frac{X}{\\log\\log X}.\\]Konyagin \\cite{Ko01} proved the strong upper bound\\[N(X,\\delta) \\ll_\\delta N^{1/2}.\\]See also [466] for lower bounds and [953] for a similar problem.\n\n\n\n\nReferences\n\n\n[Ko01] Konyagin, S. V., On the distances between points on the plane. Mat. Zametki (2001), 630-633.\n\n[Sa76] S\\'{a}rk\\\"{o}zy, A., On distances near integers. I, II. Studia Sci. Math. Hungar. (1976), 37-50, 105-111.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

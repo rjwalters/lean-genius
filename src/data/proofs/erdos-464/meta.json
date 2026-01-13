@@ -1,0 +1,33 @@
+{
+  "id": "erdos-464",
+  "title": "Erdős Problem #464",
+  "slug": "erdos-464",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a lacunary sequence (so there exists some ... with ... for all ...). Must there exist an irrational ... such that\\...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/464",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos464Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 464,
+    "erdosUrl": "https://erdosproblems.com/464",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #464 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{n_1<n_2<\\cdots\\}\\subset \\mathbb{N}$ be a lacunary sequence (so there exists some $\\epsilon>0$ with $n_{k+1}\\geq (1+\\epsilon)n_k$ for all $k$). Must there exist an irrational $\\theta$ such that\\[\\{ \\|\\theta n_k\\| : k\\geq 1\\}\\]is not dense in $[0,1]$ (where $\\| x\\|$ is the distance to the nearest integer)?\n\n\n\nSolved independently by de Mathan \\cite{dM80} and Pollington \\cite{Po79b}, who showed that, given any such $A$, there exists such a $\\theta$, with\\[\\inf_{k\\geq 1}\\| \\theta n_k\\| \\gg \\frac{\\epsilon^4}{\\log(1/\\epsilon)}.\\]This bound was improved by Katznelson \\cite{Ka01}, Akhunzhanov and Moshchevitin \\cite{AkMo04}, and Dubickas \\cite{Du06}, before Peres and Schlag \\cite{PeSc10} improved it to\\[\\inf_{k\\geq 1}\\| \\theta n_k\\| \\gg \\frac{\\epsilon}{\\log(1/\\epsilon)},\\]and note that the best bound possible here would be $\\gg \\epsilon$.\n\nThis problem has consequences for [894].\n\n\n\n\nReferences\n\n\n[AkMo04] Akhunzhanov, R. K. and Moshchevitin, N. G., On the chromatic number of a distance graph associated with a\nlacunary sequence. Dokl. Akad. Nauk (2004), 295--296.\n\n[Du06] Dubickas, Art\\=uras, On the fractional parts of lacunary sequences. Math. Scand. (2006), 136--146.\n\n[Ka01] Katznelson, Y., Chromatic numbers of Cayley graphs on {$\\Bbb Z$} and\nrecurrence. Combinatorica (2001), 211--219.\n\n[PeSc10] Peres, Yuval and Schlag, Wilhelm, Two Erd\\H{o}s problems on lacunary sequences: chromatic\nnumber and Diophantine approximation. Bull. Lond. Math. Soc. (2010), 295--300.\n\n[Po79b] Pollington, A. D., On the density of sequence {$\\{n\\sbK\\xi \\}$}. Illinois J. Math. (1979), 511--515.\n\n[dM80] de Mathan, B., Numbers contravening a condition in density modulo {$1$}. Acta Math. Acad. Sci. Hungar. (1980), 237--241 (1981).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

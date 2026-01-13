@@ -1,0 +1,33 @@
+{
+  "id": "erdos-448",
+  "title": "Erdős Problem #448",
+  "slug": "erdos-448",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the divisors of ... and ... count the number of ... such that ... has a divisor in .... Is it true that, for al...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/448",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos448Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 448,
+    "erdosUrl": "https://erdosproblems.com/448",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #448 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\tau(n)$ count the divisors of $n$ and $\\tau^+(n)$ count the number of $k$ such that $n$ has a divisor in $[2^k,2^{k+1})$. Is it true that, for all $\\epsilon>0$,\\[\\tau^+(n) < \\epsilon \\tau(n)\\]for almost all $n$?\n\n\n\nThis is false, and was disproved by Erd\\H{o}s and Tenenbaum \\cite{ErTe81}, who showed that in fact the upper density of the set of such $n$ is $\\asymp \\epsilon^{1-o(1)}$ (where the $o(1)$ in the exponent $\\to 0$ as $\\epsilon \\to 0$).\n\nA more precise result was proved by Hall and Tenenbaum \\cite{HaTe88} (see Section 4.6), who showed that the upper density is $\\ll\\epsilon \\log(2/\\epsilon)$. Hall and Tenenbaum further prove that $\\tau^+(n)/\\tau(n)$ has a distribution function.\n\n\n\nErd\\H{o}s and Graham also asked whether there is a good inequality known for $\\sum_{n\\leq x}\\tau^+(n)$. This was provided by Ford \\cite{Fo08} who proved\\[\\sum_{n\\leq x}\\tau^+(n)\\asymp x\\frac{(\\log x)^{1-\\alpha}}{(\\log\\log x)^{3/2}}\\]where\\[\\alpha=1-\\frac{1+\\log\\log 2}{\\log 2}=0.08607\\cdots.\\]See also [446] and [449].\n\n\n\n\nReferences\n\n\n[ErTe81] Erd\\H{o}s, P. and Tenenbaum, G., Sur la structure de la suite des diviseurs d'un entier. Ann. Inst. Fourier (Grenoble) (1981), ix, 17-37.\n\n[Fo08] Ford, Kevin, The distribution of integers with a divisor in a given\ninterval. Ann. of Math. (2) (2008), 367-433.\n\n[HaTe88] Hall, Richard R. and Tenenbaum, G\\'{e}rald, Divisors. (1988), xvi+167.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

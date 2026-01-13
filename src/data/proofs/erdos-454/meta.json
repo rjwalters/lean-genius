@@ -1,0 +1,33 @@
+{
+  "id": "erdos-454",
+  "title": "Erdős Problem #454",
+  "slug": "erdos-454",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[f(n) = \\min_{i<n} (p_{n+i}+p_{n-i}),\\]where ... is the ...th prime. Is it true that\\[\\limsup_n (f(n)-2p_n)=\\infty?\\]\n\n\n\n...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/454",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos454Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 454,
+    "erdosUrl": "https://erdosproblems.com/454",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #454 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[f(n) = \\min_{i<n} (p_{n+i}+p_{n-i}),\\]where $p_k$ is the $k$th prime. Is it true that\\[\\limsup_n (f(n)-2p_n)=\\infty?\\]\n\n\n\nPomerance \\cite{Po79} has proved the $\\limsup$ is at least $2$.\n\n\n\n\nReferences\n\n\n[Po79] Pomerance, Carl, The prime number graph. Math. Comp. (1979), 399-408.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}
