@@ -1,0 +1,33 @@
+{
+  "id": "erdos-578",
+  "title": "Erdős Problem #578",
+  "slug": "erdos-578",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a random graph on ... vertices, including each edge with probability ..., then ... almost surely contains a copy of...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/578",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos578Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 578,
+    "erdosUrl": "https://erdosproblems.com/578",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #578 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ is a random graph on $2^d$ vertices, including each edge with probability $1/2$, then $G$ almost surely contains a copy of $Q_d$ (the $d$-dimensional hypercube with $2^d$ vertices and $d2^{d-1}$ many edges).\n\n\n\nA conjecture of Erd\\H{o}s and Bollob\\'{a}s. Solved by Riordan \\cite{Ri00}, who in fact proved this with any edge-probability $>1/4$, and proves that the number of copies of $Q_d$ is normally distributed.\n\nSee also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[Ri00] Riordan, Oliver, Spanning subgraphs of random graphs. Combin. Probab. Comput. (2000), 125-148.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

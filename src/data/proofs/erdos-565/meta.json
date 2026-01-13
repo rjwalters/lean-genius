@@ -1,0 +1,33 @@
+{
+  "id": "erdos-565",
+  "title": "Erdős Problem #565",
+  "slug": "erdos-565",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the induced Ramsey number: the minimal ... such that there is a graph ... on ... vertices such that any ...-colour...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/565",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos565Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 565,
+    "erdosUrl": "https://erdosproblems.com/565",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #565 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $R^*(G)$ be the induced Ramsey number: the minimal $m$ such that there is a graph $H$ on $m$ vertices such that any $2$-colouring of the edges of $H$ contains an induced monochromatic copy of $G$.\n\nIs it true that\\[R^*(G) \\leq 2^{O(n)}\\]for any graph $G$ on $n$ vertices?\n\n\n\nA problem of Erd\\H{o}s and R\\\"{o}dl. Even the existence of $R^*(G)$ is not obvious, but was proved independently by Deuber \\cite{De75}, Erd\\H{o}s, Hajnal, and P\\'{o}sa \\cite{EHP75}, and R\\\"{o}dl \\cite{Ro73}.\n\nR\\\"{o}dl \\cite{Ro73} proved this when $G$ is bipartite. Kohayakawa, Pr\\\"{o}mel, and R\\\"{o}dl \\cite{KPR98} have proved that\\[R^*(G) < 2^{O(n(\\log n)^2)}.\\]An alternative (and more explicit) proof was given by Fox and Sudakov \\cite{FoSu08}. Conlon, Fox, and Sudakov \\cite{CFS12} have improved this to\\[R^*(G) < 2^{O(n\\log n)}.\\]This is true, and an upper bound of\\[R^*(G) < 2^{O(n)}\\]was proved by Arag\\~{a}o, Campos, Dahia, Filipe, and Marciano \\cite{ACDFM25}.\n\nSee also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[ACDFM25] L. Aragao, M. Campos, G. Dahia, R. Filipe, and J. P. Marciano, An exponential upper bound for induced Ramsey numbers. arXiv:2509.22629 (2025).\n\n[CFS12] Conlon, David and Fox, Jacob and Sudakov, Benny, On two problems in graph Ramsey theory. Combinatorica (2012), 513-535.\n\n[De75] Deuber, W., Generalizations of Ramsey's theorem. Infinite and finite sets (Colloq., Keszthely, 1973;\ndedicated to P. Erd\\H{o}s on his 60th birthday), Vols.\nI, II, III (1975), 323-332.\n\n[EHP75] Erd\\H{o}s, P. and Hajnal, A. and P\\'{o}sa, L., Strong embeddings of graphs into colored graphs. Infinite and finite sets (Colloq., Keszthely, 1973;\ndedicated to P. Erd\\H{o}s on his 60th birthday), Vols.\nI, II, III (1975), 585-595.\n\n[FoSu08] Fox, Jacob and Sudakov, Benny, Induced Ramsey-type theorems. Adv. Math. (2008), 1771-1800.\n\n[KPR98] Kohayakawa, Y. and Pr\\\"{o}mel, H. J. and R\\\"{o}dl, V., Induced Ramsey numbers. Combinatorica (1998), 373-404.\n\n[Ro73] R\\\"{o}dl, V., The dimension of a graph and generalized Ramsey theorems. thesis (1973).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

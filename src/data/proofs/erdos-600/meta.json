@@ -1,0 +1,33 @@
+{
+  "id": "erdos-600",
+  "title": "Erdős Problem #600",
+  "slug": "erdos-600",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that every graph on ... vertices with at least ... edges, each edge contained in at least one triangl...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/600",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos600Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 600,
+    "erdosUrl": "https://erdosproblems.com/600",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #600 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $e(n,r)$ be minimal such that every graph on $n$ vertices with at least $e(n,r)$ edges, each edge contained in at least one triangle, must have an edge contained in at least $r$ triangles. Let $r\\geq 2$. Is it true that\\[e(n,r+1)-e(n,r)\\to \\infty\\]as $n\\to \\infty$? Is it true that\\[\\frac{e(n,r+1)}{e(n,r)}\\to 1\\]as $n\\to \\infty$?\n\n\n\nRuzsa and Szemer\\'{e}di \\cite{RuSz78} proved that $e(n,r)=o(n^2)$ for any fixed $r$.\n\nSee also [80].\n\n\n\n\nReferences\n\n\n[RuSz78] Ruzsa, I. Z. and Szemer\\'{e}di, E., Triple systems with no six points carrying three triangles. Combinatorics (Proc. Fifth Hungarian Colloq.,\nKeszthely, 1976), Vol. II (1978), 939-945.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

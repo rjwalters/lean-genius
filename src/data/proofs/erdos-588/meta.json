@@ -1,0 +1,34 @@
+{
+  "id": "erdos-588",
+  "title": "Erdős Problem #588",
+  "slug": "erdos-588",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that if ... points in ... have no ... points on a line then there must be at most ... many lines cont...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/588",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos588Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 588,
+    "erdosUrl": "https://erdosproblems.com/588",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$100"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #588 from erdosproblems.com. Originally offered with a prize of $100.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_k(n)$ be minimal such that if $n$ points in $\\mathbb{R}^2$ have no $k+1$ points on a line then there must be at most $f_k(n)$ many lines containing at least $k$ points. Is it true that\\[f_k(n)=o(n^2)\\]for $k\\geq 4$?\n\n\n\nA generalisation of [101] (which asks about $k=4$).\n\nThe restriction to $k\\geq 4$ is necessary since Sylvester has shown that $f_3(n)= n^2/6+O(n)$. (See also Burr, Gr\\\"{u}nbaum, and Sloane \\cite{BGS74} and F\\\"{u}redi and Pal\\'{a}sti \\cite{FuPa84} for constructions which show that $f_3(n)\\geq(1/6+o(1))n^2$.)\n\nFor $k\\geq 4$, K\\'{a}rteszi \\cite{Ka63} proved\\[f_k(n)\\gg_k n\\log n\\](resolving a conjecture of Erd\\H{o}s that $f_k(n)/n\\to \\infty$). Gr\\\"{u}nbaum \\cite{Gr76} proved\\[f_k(n) \\gg_k n^{1+\\frac{1}{k-2}}.\\]Erd\\H{o}s speculated this may be the correct order of magnitude, but Solymosi and Stojakovi\\'{c} \\cite{SoSt13} give a construction which shows\\[f_k(n)\\gg_k n^{2-O_k(1/\\sqrt{\\log n})}\\]\n\n\n\n\nReferences\n\n\n[BGS74] Burr, Stefan A. and Gr\\\"{u}nbaum, Branko and Sloane, N. J. A., The orchard problem. Geometriae Dedicata (1974), 397-424.\n\n[FuPa84] F\\\"{u}redi, Z. and Pal\\'{a}sti, I., Arrangements of lines with a large number of triangles. Proc. Amer. Math. Soc. (1984), 561-566.\n\n[Gr76] Gr\\\"{u}nbaum, Branko, New views on some old questions of combinatorial geometry. Colloquio Internazionale sulle Teorie Combinatorie\n(Roma, 1973), Tomo I (1976), 451-468.\n\n[Ka63] F. K\\'{a}rteszi, Sylvester egy t\\'{e}tel\\'{e}r\\H{o}l \\'{e}s Erd\\H{o}s egy sejt\\'{e}s\\'{e}r\\H{o}l. Matematikai Lapok (1963), 3-10.\n\n[SoSt13] Solymosi, J\\'{o}zsef and Stojakovi\\'C, Milo\\vS, Many collinear {$k$}-tuples with no {$k+1$} collinear points. Discrete Comput. Geom. (2013), 811-820.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

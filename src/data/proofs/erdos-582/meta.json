@@ -1,0 +1,34 @@
+{
+  "id": "erdos-582",
+  "title": "Erdős Problem #582",
+  "slug": "erdos-582",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist a graph ... which contains no ..., and yet any ...-colouring of the edges produces a monochromatic ...?\n\n\n\nE...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/582",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos582Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 582,
+    "erdosUrl": "https://erdosproblems.com/582",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$100"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #582 from erdosproblems.com. Originally offered with a prize of $100.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist a graph $G$ which contains no $K_4$, and yet any $2$-colouring of the edges produces a monochromatic $K_3$?\n\n\n\nErd\\H{o}s and Hajnal \\cite{ErHa67} first asked for the existence of any such graph. Existence was proved by Folkman \\cite{Fo70}, but with very poor quantitative bounds. (As a result these quantities are often called Folkman numbers.) Let this particular Folkman number be denoted by $N$.\n\nFrankl and R\\\"{o}dl \\cite{FrRo86} proved $N\\leq 7\\times 10^{11}$, which Spencer \\cite{Sp88} improved to $\\leq 3\\times 10^{9}$. This resolved the challenge of Erd\\H{o}s \\cite{Er75d} to find such a graph with less than $10^{10}$ vertices.\n\nLu \\cite{Lu07} proved $N\\leq 9697$ vertices. The current record is due to Dudek and R\\\"{o}dl \\cite{DuRo08} who proved $N\\leq 941$ vertices. For further information we refer to a paper of Radziszowski and Xu \\cite{RaXu07}, who prove that $N\\geq 19$ and speculate that $N\\leq 127$.\n\nSee also the entry in the graphs problem collection and [924] for the general case.\n\n\n\n\nReferences\n\n\n[DuRo08] Dudek, Andrzej and R\\\"{o}dl, Vojt\\vEch, On the Folkman number {$f(2,3,4)$}. Experiment. Math. (2008), 63-67.\n\n[Er75d] Erd\\H{o}s, Paul, Problems and results on finite and infinite graphs. Recent advances in graph theory (Proc. Second\nCzechoslovak Sympos., Prague, 1974) (1975), 183-192. (loose errata).\n\n[ErHa67] Erd\\H{o}s, P. and Hajnal, A., Research Problem 2.5. J. Comb. Theory (1967).\n\n[Fo70] Folkman, Jon, Graphs with monochromatic complete subgraphs in every edge\ncoloring. SIAM J. Appl. Math. (1970), 19-24.\n\n[FrRo86] Frankl, P. and R\\\"{o}dl, V., Large triangle-free subgraphs in graphs without {$K_4$}. Graphs Combin. (1986), 135-144.\n\n[Lu07] Lu, Linyuan, Explicit construction of small Folkman graphs. SIAM J. Discrete Math. (2007), 1053-1060.\n\n[RaXu07] Radziszowski, Stanis\\l aw P. and Xu, Xiaodong, On the most wanted Folkman graph. Geombinatorics (2007), 367-381.\n\n[Sp88] Spencer, Joel, Three hundred million points suffice. J. Combin. Theory Ser. A (1988), 210-217.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

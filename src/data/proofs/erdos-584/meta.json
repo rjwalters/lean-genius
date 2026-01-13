@@ -1,0 +1,33 @@
+{
+  "id": "erdos-584",
+  "title": "Erdős Problem #584",
+  "slug": "erdos-584",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with ... vertices and ... edges. Are there subgraphs ... such that\n{UL}\n{LI}... has ... edges and every tw...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/584",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos584Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 584,
+    "erdosUrl": "https://erdosproblems.com/584",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #584 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph with $n$ vertices and $\\delta n^{2}$ edges. Are there subgraphs $H_1,H_2\\subseteq G$ such that\n{UL}\n{LI}$H_1$ has $\\gg \\delta^3n^2$ edges and every two edges in $H_1$ are contained in a cycle of length at most $6$, and furthermore if two edges share a vertex they are on a cycle of length $4$, and\n{LI}$H_2$ has $\\gg \\delta^2n^2$ edges and every two edges in $H_2$ are contained in a cycle of length at most $8$.\n{/UL}\n\n\n\nA problem of Erd\\H{o}s, Duke, and R\\\"{o}dl. Duke and Erd\\H{o}s \\cite{DuEr83}, who proved the first if $n$ is sufficiently large depending on $\\delta$. The real challenge is to prove this when $\\delta=n^{-c}$ for some $c>0$. Duke, Erd\\H{o}s, and R\\\"{o}dl \\cite{DER84} proved the first statement with a $\\delta^5$ in place of a $\\delta^3$.\n\nFox and Sudakov \\cite{FoSu08b} have proved the second statement when $\\delta >n^{-1/5}$.\n\nSee also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[DER84] Duke, Richard and Erd\\H{o}s, Paul and R\\\"{o}dl, Vojt\\vEch, More results on subgraphs with many short cycles. Proceedings of the fifteenth Southeastern conference on\ncombinatorics, graph theory and computing (Baton Rouge,\nLa., 1984) (1984), 295-300.\n\n[DuEr83] No reference found.\n\n\n[FoSu08b] Fox, Jacob and Sudakov, Benny, On a problem of Duke-Erd\\H{o}s-R\\\"{o}dl on cycle-connected subgraphs. J. Combin. Theory Ser. B (2008), 1056-1062.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

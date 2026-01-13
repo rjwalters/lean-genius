@@ -1,0 +1,33 @@
+{
+  "id": "erdos-573",
+  "title": "Erdős Problem #573",
+  "slug": "erdos-573",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that\\[(n;\\{C_3,C_4\\})\\sim (n/2)^{3/2}?\\]\n\n\n\nA problem of Erds and Simonovits, who proved that\\[(n;\\{C_4,C_5\\})=(n/...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/573",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos573Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 573,
+    "erdosUrl": "https://erdosproblems.com/573",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #573 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that\\[\\mathrm{ex}(n;\\{C_3,C_4\\})\\sim (n/2)^{3/2}?\\]\n\n\n\nA problem of Erd\\H{o}s and Simonovits, who proved that\\[\\mathrm{ex}(n;\\{C_4,C_5\\})=(n/2)^{3/2}+O(n).\\]K\\\"{o}v\\'{a}ri, S\\'{o}s, and Tur\\'{a}n \\cite{KST54} proved that the extremal number of edges for containing either $C_4$ or an odd cycle of any length is $\\sim (n/2)^{3/2}$. This problem is therefore asking whether the threshold is the same if we just forbid odd cycles of length $3$.\n\nSee also [574] for the general case, and [765] for $\\mathrm{ex}(n;C_4)$.\n\nSee also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[KST54] K\\\"{o}vari, T. and S\\'{o}s, V. T. and Tur\\'{a}n, P., On a problem of K. Zarankiewicz. Colloq. Math. (1954), 50-57.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-631",
+  "title": "Erdős Problem #631",
+  "slug": "erdos-631",
+  "description": "The list chromatic number &#x03C7;L(G)\" role=\"presentation\" style=\"position: relative;\">χL(G)χL(G)\\chi_L(G) is defined to be the minimal k\" role=\"presentation\" style=\"position: relative;\">kkk such ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/631",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos631Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 631,
+    "erdosUrl": "https://erdosproblems.com/631",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #631 from erdosproblems.com.",
+    "problemStatement": "The list chromatic number &#x03C7;L(G)\" role=\"presentation\" style=\"position: relative;\">χL(G)χL(G)\\chi_L(G) is defined to be the minimal k\" role=\"presentation\" style=\"position: relative;\">kkk such that for any assignment of a list of k\" role=\"presentation\" style=\"position: relative;\">kkk colours to each vertex of G\" role=\"presentation\" style=\"position: relative;\">GGG (perhaps different lists for different vertices) a colouring of each vertex by a colour on its list can be chosen such that adjacent vertices receive distinct colours. Does every planar graph G\" role=\"presentation\" style=\"position: relative;\">GGG have &#x03C7;L(G)&#x2264;5\" role=\"presentation\" style=\"position: relative;\">χL(G)≤5χL(G)≤5\\chi_L(G)\\leq 5? Is this best possible?",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

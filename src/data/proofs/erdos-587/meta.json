@@ -1,0 +1,33 @@
+{
+  "id": "erdos-587",
+  "title": "Erdős Problem #587",
+  "slug": "erdos-587",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest ... such that, for all ..., ... is not a square?\n\n\n\nErds observed that ... is possible, takin...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/587",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos587Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 587,
+    "erdosUrl": "https://erdosproblems.com/587",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #587 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest $A\\subseteq \\{1,\\ldots,N\\}$ such that, for all $\\emptyset\\neq S\\subseteq A$, $\\sum_{n\\in S}n$ is not a square?\n\n\n\nErd\\H{o}s observed that $\\lvert A\\rvert \\gg N^{1/3}$ is possible, taking the first $\\approx N^{1/3}$ multiples of some prime $p\\approx N^{2/3}$.\n\nEssentially solved by Nguyen and Vu \\cite{NgVu10}, who proved that $\\lvert A\\rvert\\ll N^{1/3}(\\log N)^{O(1)}$.\n\nSee also [438].\n\nThis question was {IMAGE=587Picture,asked by Erd\\H{o}s to a young Terence Tao in 1985}. We thank Tao for sharing this memory and a {IMAGE=587Letter,letter of Erd\\H{o}s describing the problem}.\n\n\n\n\nReferences\n\n\n[NgVu10] Nguyen, Hoi H. and Vu, Van H., Squares in sumsets. An irregular mind (2010), 491-524.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

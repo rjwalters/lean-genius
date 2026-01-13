@@ -1,0 +1,33 @@
+{
+  "id": "erdos-559",
+  "title": "Erdős Problem #559",
+  "slug": "erdos-559",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the size Ramsey number, the minimal number of edges ... such that there is a graph ... with ... edges that is ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/559",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos559Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 559,
+    "erdosUrl": "https://erdosproblems.com/559",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #559 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\hat{R}(G)$ denote the size Ramsey number, the minimal number of edges $m$ such that there is a graph $H$ with $m$ edges that is Ramsey for $G$.\n\nIf $G$ has $n$ vertices and maximum degree $d$ then prove that\\[\\hat{R}(G)\\ll_d n.\\]\n\n\n\nA problem of Beck, and perhaps also Erd\\H{o}s, although I cannot now find a reference in which Erd\\H{o}s himself discusses this problem - it is asked by Beck in \\cite{Be83b}, a paper which answers a related question of Erd\\H{o}s [720].\n\nBeck \\cite{Be83b} proved this when $G$ is a path. Friedman and Pippenger \\cite{FrPi87} proved this when $G$ is a tree. Haxell, Kohayakawa, and Luczak \\cite{HKL95} proved this when $G$ is a cycle. An alternative proof when $G$ is a cycle (with better constants) was given by Javadi, Khoeini, Omidi, and Pokrovskiy \\cite{JKOP19}.\n\nThis was disproved for $d=3$ by R\\\"{o}dl and Szemer\\'{e}di \\cite{RoSz00}, who constructed a graph on $n$ vertices with maximum degree $3$ such that\\[\\hat{R}(G)\\gg n(\\log n)^{c}\\]for some absolute constant $c>0$. Tikhomirov \\cite{Ti22b} has improved this to\\[\\hat{R}(G)\\gg n\\exp(c\\sqrt{\\log n}).\\]It is an interesting question how large $\\hat{R}(G)$ can be if $G$ has maximum degree $3$. Kohayakawa, R\\\"{o}dl, Schacht, and Szemer\\'{e}di \\cite{KRSS11} proved an upper bound of $\\leq n^{5/3+o(1)}$ and Conlon, Nenadov, and Truji\\'{c} \\cite{CNT22} proved $\\ll n^{8/5}$. The best known upper bound of $\\leq n^{3/2+o(1)}$ is due to Dragani\\'{c} and Petrova \\cite{DrPe22}.\n\nSee also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[Be83b] Beck, J\\'{o}zsef, On size Ramsey number of paths, trees, and circuits. I. J. Graph Theory (1983), 115-129.\n\n[CNT22] Conlon, David and Nenadov, Rajko and Truji\\'C, Milo\\vS, The size-Ramsey number of cubic graphs. Bull. Lond. Math. Soc. (2022), 2135-2150.\n\n[DrPe22] N. Dragani\\'C and K. Petrova, Size-Ramsey numbers of graphs with maximum degree three. arXiv:2207.05048 (2022).\n\n[FrPi87] Friedman, J. and Pippenger, N., Expanding graphs contain all small trees. Combinatorica (1987), 71-76.\n\n[HKL95] Haxell, P. E. and Kohayakawa, Y. and \\L uczak, T., The induced size-Ramsey number of cycles. Combin. Probab. Comput. (1995), 217-239.\n\n[JKOP19] Javadi, R. and Khoeini, F. and Omidi, G. R. and Pokrovskiy, A., On the size-Ramsey number of cycles. Combin. Probab. Comput. (2019), 871-880.\n\n[KRSS11] Kohayakawa, Yoshiharu and R\\\"{o}dl, Vojt\\vEch and Schacht,\nMathias and Szemer\\'{e}di, Endre, Sparse partition universal graphs for graphs of bounded\ndegree. Adv. Math. (2011), 5041-5065.\n\n[RoSz00] R\\\"{o}dl, Vojt\\vEch and Szemer\\'{e}di, Endre, On size Ramsey numbers of graphs with bounded degree. Combinatorica (2000), 257-262.\n\n[Ti22b] Tikhomirov, K., On bounded degree graphs with large size-Ramsey numbers. arXiv:2210.05818 (2022).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-556",
+  "title": "Erdős Problem #556",
+  "slug": "erdos-556",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the minimal ... such that if the edges of ... are ...-coloured then there must be a monochromatic copy of .......",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/556",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos556Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 556,
+    "erdosUrl": "https://erdosproblems.com/556",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #556 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $R(G;3)$ denote the minimal $m$ such that if the edges of $K_m$ are $3$-coloured then there must be a monochromatic copy of $G$. Show that\\[R(C_n;3) \\leq 4n-3.\\]\n\n\n\nA problem of Bondy and Erd\\H{o}s. This inequality is best possible for odd $n$.\n\nLuczak \\cite{Lu99} has shown that $R(C_n;3)\\leq (4+o(1))n$ for all $n$, and in fact $R(C_n;3)\\leq 3n+o(n)$ for even $n$.\n\nKohayakawa, Simonovits, and Skokan \\cite{KSS05} proved this conjecture when $n$ is sufficiently large and odd. Benevides and Skokan \\cite{BeSk09} proved that if $n$ is sufficiently large and even then $R(C_n;3)=2n$.\n\nThis problem is #25 in Ramsey Theory in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[BeSk09] Benevides, Fabricio Siqueira and Skokan, Jozef, The 3-colored Ramsey number of even cycles. J. Combin. Theory Ser. B (2009), 690-708.\n\n[KSS05] Kohayakawa, Yoshiharu and Simonovits, Mikl\\'{o}s and Skokan, Jozef, The 3-colored Ramsey number of odd cycles. Proceedings of {GRACO}2005 (2005), 397-402.\n\n[Lu99] \\L uczak, Tomasz, {$R(C_n,C_n,C_n)\\leq(4+o(1))n$}. J. Combin. Theory Ser. B (1999), 174-187.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

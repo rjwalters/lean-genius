@@ -1,0 +1,34 @@
+{
+  "id": "erdos-590",
+  "title": "Erdős Problem #590",
+  "slug": "erdos-590",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the infinite ordinal .... Is it true that in any red/blue colouring of the edges of ... there is either a red ... ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/590",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos590Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 590,
+    "erdosUrl": "https://erdosproblems.com/590",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$250"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #590 from erdosproblems.com. Originally offered with a prize of $250.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\alpha$ be the infinite ordinal $\\omega^\\omega$. Is it true that in any red/blue colouring of the edges of $K_\\alpha$ there is either a red $K_\\alpha$ or a blue $K_3$?\n\n\n\nA problem of Erd\\H{o}s and Rado. For comparison, Specker \\cite{Sp57} proved this property holds when $\\alpha=\\omega^2$ and false when $\\alpha=\\omega^n$ for $3\\leq n<\\omega$ (a question of Erd\\H{o}s for which he offered \\$20).\n\nThis is true, and was proved by Chang \\cite{Ch72}. Milner modified Chang's proof to prove that this remains true if we replace $K_3$ by $K_m$ for all finite $m<\\omega$ (a shorter proof was found by Larson \\cite{La73}).\n\nSee also [591] and [592].\n\n\n\n\nReferences\n\n\n[Ch72] Chang, C. C., A partition theorem for the complete graph on {$\\omega\\sp{\\omega }$}. J. Combinatorial Theory Ser. A (1972), 396-452.\n\n[La73] Larson, Jean A., A short proof of a partition theorem for the ordinal {$\\omega\n\\sp{\\omega }$}. Ann. Math. Logic (1973/74), 129-145.\n\n[Sp57] Specker, Ernst, Teilmengen von Mengen mit Relationen. Comment. Math. Helv. (1957), 302-314.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

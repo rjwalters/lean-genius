@@ -1,0 +1,33 @@
+{
+  "id": "erdos-599",
+  "title": "Erdős Problem #599",
+  "slug": "erdos-599",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a (possibly infinite) graph and ... be disjoint independent sets of vertices. Must there exist a family ... of dis...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/599",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos599Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 599,
+    "erdosUrl": "https://erdosproblems.com/599",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #599 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a (possibly infinite) graph and $A,B$ be disjoint independent sets of vertices. Must there exist a family $P$ of disjoint paths between $A$ and $B$ and a set $S$ which contains exactly one vertex from each path in $P$, and such that every path between $A$ and $B$ contains at least one vertex from $S$?\n\n\n\nSometimes known as the Erd\\H{o}s-Menger conjecture. When $G$ is finite this is equivalent to Menger's theorem. Erd\\H{o}s was interested in the case when $G$ is infinite.\n\nThis was proved by Aharoni and Berger \\cite{AhBe09}.\n\n\n\n\nReferences\n\n\n[AhBe09] Aharoni, Ron and Berger, Eli, Menger's theorem for infinite graphs. Invent. Math. (2009), 1-62.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

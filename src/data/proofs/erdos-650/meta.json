@@ -1,0 +1,33 @@
+{
+  "id": "erdos-650",
+  "title": "Erdős Problem #650",
+  "slug": "erdos-650",
+  "description": "Let f(m)\" role=\"presentation\" style=\"position: relative;\">f(m)f(m)f(m) be such that if A&#x2286;{1,&#x2026;,N}\" role=\"presentation\" style=\"position: relative;\">A⊆{1,…,N}A⊆{1,…,N}A\\subseteq \\{1,\\ldo...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/650",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos650Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 650,
+    "erdosUrl": "https://erdosproblems.com/650",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #650 from erdosproblems.com.",
+    "problemStatement": "Let f(m)\" role=\"presentation\" style=\"position: relative;\">f(m)f(m)f(m) be such that if A&#x2286;{1,&#x2026;,N}\" role=\"presentation\" style=\"position: relative;\">A⊆{1,…,N}A⊆{1,…,N}A\\subseteq \\{1,\\ldots,N\\} has &#x007C;A&#x007C;=m\" role=\"presentation\" style=\"position: relative;\">|A|=m|A|=m\\lvert A\\rvert=m then every interval in [1,&#x221E;)\" role=\"presentation\" style=\"position: relative;\">[1,∞)[1,∞)[1,\\infty) of length 2N\" role=\"presentation\" style=\"position: relative;\">2N2N2N contains &#x2265;f(m)\" role=\"presentation\" style=\"position: relative;\">≥f(m)≥f(m)\\geq f(m) many distinct integers b1,&#x2026;,br\" role=\"presentation\" style=\"position: relative;\">b1,…,brb1,…,brb_1,\\ldots,b_r where each bi\" role=\"presentation\" style=\"position: relative;\">bibib_i is divisible by some ai&#x2208;A\" role=\"presentation\" style=\"position: relative;\">ai∈Aai∈Aa_i\\in A, where a1,&#x2026;,ar\" role=\"presentation\" style=\"position: relative;\">a1,…,ara1,…,ara_1,\\ldots,a_r are distinct. Estimate f(m)\" role=\"presentat",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

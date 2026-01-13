@@ -1,0 +1,33 @@
+{
+  "id": "erdos-589",
+  "title": "Erdős Problem #589",
+  "slug": "erdos-589",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that in any set of ... points in ... with no four points on a line there exists a subset on ... point...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/589",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos589Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 589,
+    "erdosUrl": "https://erdosproblems.com/589",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #589 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $g(n)$ be maximal such that in any set of $n$ points in $\\mathbb{R}^2$ with no four points on a line there exists a subset on $g(n)$ points with no three points on a line. Estimate $g(n)$.\n\n\n\nThe trivial greedy algorithm gives $g(n)\\gg n^{1/2}$. A similar question can be asked for a set with no $k$ points on a line, searching for a subset with no $l$ points on a line, for any $3\\leq l<k$.\n\nErd\\H{o}s thought that $g(n) \\gg n$, but in fact $g(n)=o(n)$, which follows from the density Hales-Jewett theorem proved by Furstenberg and Katznelson \\cite{FuKa91} (see [185]).\n\nF\\\"{u}eredi \\cite{Fu91b} proved\\[n^{1/2}\\log n\\ll g(n)=o(n).\\]Balogh and Solymosi \\cite{BaSo18} improved the upper bound to\\[g(n) \\ll n^{5/6+o(1)}.\\]\n\n\n\n\nReferences\n\n\n[BaSo18] Balogh, J\\'{o}zsef and Solymosi, J\\'{o}zsef, On the number of points in general position in the plane. Discrete Anal. (2018), Paper No. 16, 20.\n\n[Fu91b] F\\\"{u}redi, Zolt\\'an, Maximal independent subsets in {S}teiner systems and in planar\nsets. SIAM J. Discrete Math. (1991), 196--199.\n\n[FuKa91] Furstenberg, H. and Katznelson, Y., A density version of the Hales-Jewett Theorem. Journal d'Analyse Math\\'{e}matique (1991), 64-119.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

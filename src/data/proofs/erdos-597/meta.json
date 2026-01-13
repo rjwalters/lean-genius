@@ -1,0 +1,33 @@
+{
+  "id": "erdos-597",
+  "title": "Erdős Problem #597",
+  "slug": "erdos-597",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on at most ... vertices which contains no ... and no ... (the complete bipartite graph with ... vertices i...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/597",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos597Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 597,
+    "erdosUrl": "https://erdosproblems.com/597",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #597 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph on at most $\\aleph_1$ vertices which contains no $K_4$ and no $K_{\\aleph_0,\\aleph_0}$ (the complete bipartite graph with $\\aleph_0$ vertices in each class). Is it true that\\[\\omega_1^2 \\to (\\omega_1\\omega, G)^2?\\]What about finite $G$?\n\n\n\nErd\\H{o}s and Hajnal proved that $\\omega_1^2 \\to (\\omega_1\\omega,3)^2$. Erd\\H{o}s originally asked this with just the assumption that $G$ is $K_4$-free, but Baumgartner proved that $\\omega_1^2 \\not\\to (\\omega_1\\omega, K_{\\aleph_0,\\aleph_0})^2$.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

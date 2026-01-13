@@ -1,0 +1,33 @@
+{
+  "id": "erdos-571",
+  "title": "Erdős Problem #571",
+  "slug": "erdos-571",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nShow that for any rational ... there exists a bipartite graph ... such that\\[(n;G)\\asymp n^{\\alpha}.\\]\n\n\n\nA problem of Erds a...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/571",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos571Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 571,
+    "erdosUrl": "https://erdosproblems.com/571",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #571 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nShow that for any rational $\\alpha \\in [1,2)$ there exists a bipartite graph $G$ such that\\[\\mathrm{ex}(n;G)\\asymp n^{\\alpha}.\\]\n\n\n\nA problem of Erd\\H{o}s and Simonovits.\n\nBukh and Conlon \\cite{BuCo18} proved that this holds if we weaken asking for the extremal number of a single graph to asking for the extremal number of a finite family of graphs.\n\nA rational $\\alpha\\in [1,2)$ for which this holds is known as a Tur\\'{a}n exponent. Known Tur\\'{a}n exponents are:\n{UL}\n{LI} $\\frac{3}{2}-\\frac{1}{2s}$ for $s\\geq 2$ (Conlon, Janzer, and Lee \\cite{CJL21}).{/LI}\n{LI} $\\frac{4}{3}-\\frac{1}{3s}$ and $\\frac{5}{4}-\\frac{1}{4s}$ for $s\\geq 2$ (Jiang and Qiu \\cite{JiQi20}).{/LI}\n{LI} $2-\\frac{a}{b}$ for $\\lfloor b/a\\rfloor^3 \\leq a\\leq \\frac{b}{\\lfloor b/a\\rfloor+1}+1$ (Jiang, Jiang, and Ma \\cite{JJM20}).{/LI}\n{LI} $2-\\frac{a}{b}$ with $b>a\\geq 1$ and $b\\equiv \\pm 1\\pmod{a}$ (Kang, Kim, and Liu \\cite{KKL21}).{/LI}\n{LI} $1+a/b$ with $b>a^2$ (Jiang and Qiu \\cite{JiQi23}),{/LI}\n{LI} $2-\\frac{2}{2b+1}$ for $b\\geq 2$ or $7/5$ (Jiang, Ma, and Yepremyan \\cite{JMY22}).{/LI}\n{LI} $2-a/b$ with $b\\geq (a-1)^2$ (Conlon and Janzer \\cite{CoJa22}).{/LI}\n{/UL}\n\nSee also [713] and the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[BuCo18] Bukh, Boris and Conlon, David, Rational exponents in extremal graph theory. J. Eur. Math. Soc. (JEMS) (2018), 1747-1757.\n\n[CJL21] Conlon, David and Janzer, Oliver and Lee, Joonkyung, More on the extremal number of subdivisions. Combinatorica (2021), 465-494.\n\n[CoJa22] Conlon, David and Janzer, Oliver, Rational exponents near two. Adv. Comb. (2022), Paper No. 9, 10.\n\n[JJM20] Jiang, Tao and Jiang, Zilin and Ma, Jie, Negligible obstructions and Tur\\'{a}n exponents. arXiv:2007.02975 (2020).\n\n[JMY22] Jiang, Tao and Ma, Jie and Yepremyan, Liana, On Tur\\'{a}n exponents of bipartite graphs. Combin. Probab. Comput. (2022), 333-344.\n\n[JiQi20] Jiang, Tao and Qiu, Yu, Tur\\'{a}n numbers of bipartite subdivisions. SIAM J. Discrete Math. (2020), 556-570.\n\n[JiQi23] Jiang, Tao and Qiu, Yu, Many Tur\\'{a}n exponents via subdivisions. Combin. Probab. Comput. (2023), 134-150.\n\n[KKL21] Kang, Dong Yeap and Kim, Jaehoon and Liu, Hong, On the rational Tur\\'{a}n exponents conjecture. J. Combin. Theory Ser. B (2021), 149-172.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

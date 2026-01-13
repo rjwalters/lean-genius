@@ -1,0 +1,33 @@
+{
+  "id": "erdos-583",
+  "title": "Erdős Problem #583",
+  "slug": "erdos-583",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nEvery connected graph on ... vertices can be partitioned into at most ... edge-disjoint paths.\n\n\n\nA problem of Erds and Galla...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/583",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos583Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 583,
+    "erdosUrl": "https://erdosproblems.com/583",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #583 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nEvery connected graph on $n$ vertices can be partitioned into at most $\\lceil n/2\\rceil$ edge-disjoint paths.\n\n\n\nA problem of Erd\\H{o}s and Gallai. Lov\\'{a}sz \\cite{Lo68} proved that every graph on $n$ vertices can be partitioned into at most $\\lfloor n/2\\rfloor$ edge-disjoint paths and cycles, which implies that every graph can be partitioned into at most $n-1$ paths.\n\nChung \\cite{Ch78} proved that every connected graph on $n$ vertices can be partitioned into at most $\\lceil n/2\\rceil$ edge-disjoint trees. Pyber \\cite{Py96} has shown that every connected graph on $n$ vertices can be covered by at most $n/2+O(n^{3/4})$ paths.\n\nIf we drop the edge-disjoint condition then this conjecture was proved by Fan \\cite{Fa02}.\n\nHajos \\cite{Lo68} has conjectured that if $G$ has all degrees even then $G$ can be partitioned into at most $\\lfloor n/2\\rfloor$ edge-disjoint cycles.\n\nSee also [184] for an analogous problem decomposing into edges and cycles and [1017] for decomposing into complete graphs. See also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[Ch78] Chung, F. R. K., On partitions of graphs into trees. Discrete Math. (1978), 23-30.\n\n[Fa02] Fan, Genghua, Subgraph coverings and edge switchings. J. Combin. Theory Ser. B (2002), 54-83.\n\n[Lo68] Lov\\'{a}sz, L., On covering of graphs. Theory of Graphs (Proc. Colloq., Tihany, 1966) (1968), 231-236.\n\n[Py96] Pyber, L., Covering the edges of a connected graph by paths. J. Combin. Theory Ser. B (1996), 152-159.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

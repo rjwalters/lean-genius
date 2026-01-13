@@ -1,0 +1,33 @@
+{
+  "id": "erdos-576",
+  "title": "Erdős Problem #576",
+  "slug": "erdos-576",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the ...-dimensional hypercube graph (so that ... has ... vertices and ... edges). Determine the behaviour of\\[(n;Q...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/576",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos576Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 576,
+    "erdosUrl": "https://erdosproblems.com/576",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #576 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $Q_k$ be the $k$-dimensional hypercube graph (so that $Q_k$ has $2^k$ vertices and $k2^{k-1}$ edges). Determine the behaviour of\\[\\mathrm{ex}(n;Q_k).\\]\n\n\n\nErd\\H{o}s and Simonovits \\cite{ErSi70} proved that\\[(\\tfrac{1}{2}+o(1))n^{3/2}\\leq \\mathrm{ex}(n;Q_3) \\ll n^{8/5}.\\](In \\cite{ErSi70} they mention that Erd\\H{o}s had originally conjectured that $ \\mathrm{ex}(n;Q_3)\\gg n^{5/3}$.) Erd\\H{o}s and Simonovits also proved that, if $G$ is the graph $Q_3$ with a missing edge, then $\\mathrm{ex}(n;G)\\asymp n^{3/2}$.\n\nIn \\cite{Er74c}, \\cite{Er81}, and \\cite{Er93} Erd\\H{o}s asked whether it is $\\mathrm{ex}(n;Q_3)\\asymp n^{8/5}$.\n\nA theorem of Sudakov and Tomon \\cite{SuTo22} implies\\[\\mathrm{ex}(n;Q_k)=o(n^{2-\\frac{1}{k}}).\\]Janzer and Sudakov \\cite{JaSu22} have improved this to\\[\\mathrm{ex}(n;Q_k)\\ll_k n^{2-\\frac{1}{k-1}+\\frac{1}{(k-1)2^{k-1}}}.\\]See also the entry in the graphs problem collection and [1035].\n\n\n\n\nReferences\n\n\n[Er74c] Erd\\H{o}s, Paul, Extremal problems on graphs and hypergraphs. (1974), 75-84.\n\n[Er81] Erd\\H{o}s, P., On the combinatorial problems which I would most like to see solved. Combinatorica (1981), 25-42.\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n[ErSi70] Erd\\H{o}s, P. and Simonovits, M., Some extremal problems in graph theory. Combinatorial theory and its applications, I-III (Proc. Colloq., Balatonf\\\"{u}red, 1969) (1970), 377-390.\n\n[JaSu22] Janzer, O. and Sudakov, B., On the Tur\\'{a}n number of the hypercube. arXiv:2211.02015 (2024).\n\n[SuTo22] Sudakov, Benny and Tomon, Istv\\'{a}n, The extremal number of tight cycles. Int. Math. Res. Not. IMRN (2022), 9663-9684.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

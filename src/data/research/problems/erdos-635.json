@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-635",
+  "title": "Erdős #635",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(LaTeX not available)",
+    "plain": "Let t&#x2265;1\" role=\"presentation\" style=\"position: relative;\">t≥1t≥1t\\geq 1 and A&#x2286;{1,&#x2026;,N}\" role=\"presentation\" style=\"position: relative;\">A⊆{1,…,N}A⊆{1,…,N}A\\subseteq \\{1,\\ldots,N\\} be such that whenever a,b&#x2208;A\" role=\"presentation\" style=\"position: relative;\">a,b∈Aa,b∈Aa,b\\in A with b&#x2212;a&#x2265;t\" role=\"presentation\" style=\"position: relative;\">b−a≥tb−a≥tb-a\\geq t we have b&#x2212;a&#x2224;b\" role=\"presentation\" style=\"position: relative;\">b−a∤bb−a∤bb-a\\nmid b. Ho...",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T17:14:37.756Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #635 - Knowledge Base\n\n## Problem Statement\n\nLet t&#x2265;1\" role=\"presentation\" style=\"position: relative;\">t≥1t≥1t\\geq 1 and A&#x2286;{1,&#x2026;,N}\" role=\"presentation\" style=\"position: relative;\">A⊆{1,…,N}A⊆{1,…,N}A\\subseteq \\{1,\\ldots,N\\} be such that whenever a,b&#x2208;A\" role=\"presentation\" style=\"position: relative;\">a,b∈Aa,b∈Aa,b\\in A with b&#x2212;a&#x2265;t\" role=\"presentation\" style=\"position: relative;\">b−a≥tb−a≥tb-a\\geq t we have b&#x2212;a&#x2224;b\" role=\"presentation\" style=\"position: relative;\">b−a∤bb−a∤bb-a\\nmid b. How large can &#x007C;A&#x007C;\" role=\"presentation\" style=\"position: relative;\">|A||A|\\lvert A\\rvert be? Is it true that&#x007C;A&#x007C;&#x2264;(12+ot(1))N?\" role=\"presentation\" style=\"text-align: center; position: relative;\">|A|≤(12+ot(1))N?|A|≤(12+ot(1))N?\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #634\n- Problem #636\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu83\n- Ru99\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T17:14:37.756Z",
+  "significance": 6,
+  "tractability": 4
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-618",
+  "title": "Erdős Problem #618",
+  "slug": "erdos-618",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor a triangle-free graph ... let ... be the smallest number of edges that need to be added to ... so that it has diameter .....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/618",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos618Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 618,
+    "erdosUrl": "https://erdosproblems.com/618",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #618 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor a triangle-free graph $G$ let $h_2(G)$ be the smallest number of edges that need to be added to $G$ so that it has diameter $2$ and is still triangle-free. Is it true that if $G$ has maximum degree $o(n^{1/2})$ then $h(G)=o(n^2)$?\n\n\n\nA problem of Erd\\H{o}s, Gy\\'{a}rf\\'{a}s, and Ruszink\\'{o} \\cite{EGR98}. Simonovits showed that there exist graphs $G$ with maximum degree $\\gg n^{1/2}$ and $h_2(G)\\gg n^2$.\n\nErd\\H{o}s, Gy\\'{a}rf\\'{a}s, and Ruszink\\'{o} \\cite{EGR98} proved that if $G$ has no isolated vertices and maximum degree $O(1)$ then $h_2(G)\\ll n\\log n$.\n\nAlon has observed this problem is essentially identical to [134], and his solution in this note also solves this problem in the affirmative.\n\nSee also [619].\n\n\n\n\nReferences\n\n\n[EGR98] Erd\\H{o}s, Paul and Gy\\'{a}rf\\'{a}s, Andr\\'{a}s and\nRuszink\\'{o}, Mikl\\'{o}s, How to decrease the diameter of triangle-free graphs. Combinatorica (1998), 493-501.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

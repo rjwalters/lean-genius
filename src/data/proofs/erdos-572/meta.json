@@ -1,0 +1,33 @@
+{
+  "id": "erdos-572",
+  "title": "Erdős Problem #572",
+  "slug": "erdos-572",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nShow that for ...\\[(n;C_{2k})\\gg n^{1+{k}}.\\]\n\n\n\nIt is easy to see that ... for any ... (and ...) (since no bipartite graph c...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/572",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos572Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 572,
+    "erdosUrl": "https://erdosproblems.com/572",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #572 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nShow that for $k\\geq 3$\\[\\mathrm{ex}(n;C_{2k})\\gg n^{1+\\frac{1}{k}}.\\]\n\n\n\nIt is easy to see that $\\mathrm{ex}(n;C_{2k+1})=\\lfloor n^2/4\\rfloor$ for any $k\\geq 1$ (and $n>2k+1$) (since no bipartite graph contains an odd cycle). Erd\\H{o}s and Klein \\cite{Er38} proved $\\mathrm{ex}(n;C_4)\\asymp n^{3/2}$.\n\nErd\\H{o}s \\cite{Er64c} and Bondy and Simonovits \\cite{BoSi74} showed that\\[\\mathrm{ex}(n;C_{2k})\\ll kn^{1+\\frac{1}{k}}.\\]Benson \\cite{Be66} has proved this conjecture for $k=3$ and $k=5$. Lazebnik, Ustimenko, and Woldar \\cite{LUW95} have shown that, for arbitrary $k\\geq 3$,\\[\\mathrm{ex}(n;C_{2k})\\gg n^{1+\\frac{2}{3k-3+\\nu}},\\]where $\\nu=0$ if $k$ is odd and $\\nu=1$ if $k$ is even. See \\cite{LUW99} for further history and references.\n\nSee also [765] and the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[Be66] Benson, Clark T., Minimal regular graphs of girths eight and twelve. Canadian J. Math. (1966), 1091-1094.\n\n[BoSi74] Bondy, J. A. and Simonovits, M., Cycles of even length in graphs. J. Combinatorial Theory Ser. B (1974), 97-105.\n\n[Er38] P. Erd\\H{o}s, On sequences of integers no one of which divides the product of two others and on related problems. Tomsk. Gos. Univ. Ucen Zap. (1938), 74-82.\n\n[Er64c] Erd\\H{o}s, P., Extremal problems in graph theory. Theory of Graphs and its Applications (Proc. Sympos. Smolenice, 1963) (1964), 29-36.\n\n[LUW95] Lazebnik, F. and Ustimenko, V. A. and Woldar, A. J., A new series of dense graphs of high girth. Bull. Amer. Math. Soc. (N.S.) (1995), 73-79.\n\n[LUW99] Lazebnik, Felix and Ustimenko, Vasiliy A. and Woldar, Andrew\nJ., Polarities and $2k$-cycle-free graphs. Discrete Math. (1999), 503-513.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

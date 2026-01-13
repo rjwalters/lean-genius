@@ -1,0 +1,33 @@
+{
+  "id": "erdos-619",
+  "title": "Erdős Problem #619",
+  "slug": "erdos-619",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor a triangle-free graph ... let ... be the smallest number of edges that need to be added to ... so that it has diameter .....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/619",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos619Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 619,
+    "erdosUrl": "https://erdosproblems.com/619",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #619 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor a triangle-free graph $G$ let $h_r(G)$ be the smallest number of edges that need to be added to $G$ so that it has diameter $r$ (while preserving the property of being triangle-free).\n\nIs it true that there exists a constant $c>0$ such that if $G$ is a connected graph on $n$ vertices then $h_4(G)<(1-c)n$?\n\n\n\nA problem of Erd\\H{o}s, Gy\\'{a}rf\\'{a}s, and Ruszink\\'{o} \\cite{EGR98} who proved that $h_3(G)\\leq n$ and $h_5(G) \\leq \\frac{n-1}{2}$ and there exist connected graphs $G$ on $n$ vertices with $h_3(G)\\geq n-c$ for some constant $c>0$.\n\nIf we omit the condition that the graph must remain triangle-free then Alon, Gy\\'{a}rf\\'{a}s, and Ruszink\\'{o} \\cite{AGR00} have proved that adding $n/2$ edges always suffices to obtain diameter at most $4$.\n\nSee also [134] and [618].\n\n\n\n\nReferences\n\n\n[AGR00] Alon, Noga and Gy\\'{a}rf\\'{a}s, Andr\\'{a}s and Ruszink\\'{o}, Mikl\\'{o}s, Decreasing the diameter of bounded degree graphs. J. Graph Theory (2000), 161--172.\n\n[EGR98] Erd\\H{o}s, Paul and Gy\\'{a}rf\\'{a}s, Andr\\'{a}s and\nRuszink\\'{o}, Mikl\\'{o}s, How to decrease the diameter of triangle-free graphs. Combinatorica (1998), 493-501.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

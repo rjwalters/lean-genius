@@ -1,0 +1,33 @@
+{
+  "id": "erdos-560",
+  "title": "Erdős Problem #560",
+  "slug": "erdos-560",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the size Ramsey number, the minimal number of edges ... such that there is a graph ... with ... edges such tha...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/560",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos560Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 560,
+    "erdosUrl": "https://erdosproblems.com/560",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #560 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\hat{R}(G)$ denote the size Ramsey number, the minimal number of edges $m$ such that there is a graph $H$ with $m$ edges such that in any $2$-colouring of the edges of $H$ there is a monochromatic copy of $G$.\n\nDetermine\\[\\hat{R}(K_{n,n}),\\]where $K_{n,n}$ is the complete bipartite graph with $n$ vertices in each component.\n\n\n\nWe know that\\[\\frac{1}{60}n^22^n<\\hat{R}(K_{n,n})< \\frac{3}{2}n^32^n.\\]The lower bound (which holds for $n\\geq 6$) was proved by Erd\\H{o}s and Rousseau \\cite{ErRo93}. The upper bound was proved by Erd\\H{o}s, Faudree, Rousseau, and Schelp \\cite{EFRS78b} and Ne\\v{s}et\\v{r}il and R\\\"{o}dl \\cite{NeRo78}.\n\nConlon, Fox, and Wigderson \\cite{CFW23} have proved that, for any $s\\leq t$,\\[\\hat{R}(K_{s,t})\\gg s^{2-\\frac{s}{t}}t2^s,\\]and prove that when $t\\gg s\\log s$ we have $\\hat{R}(K_{s,t})\\asymp s^2t2^s$. They conjecture that this should hold for all $s\\leq t$, and so in particular we should have $\\hat{R}(K_{n,n})\\asymp n^32^n$.\n\nSee also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[CFW23] Conlon, David and Fox, Jacob and Wigderson, Yuval, Three early problems on size Ramsey numbers. Combinatorica (2023), 743-768.\n\n[EFRS78b] Erd\\H{o}s, P. and Faudree, R. J. and Rousseau, C. C. and Schelp, R. H., The size Ramsey number. Period. Math. Hungar. (1978), 145-161.\n\n[ErRo93] Erd\\H{o}s, P. and Rousseau, C. C., The size Ramsey number of a complete bipartite graph. Discrete Math. (1993), 259-262.\n\n[NeRo78] Ne\\vSet\\v{r}il, J. and R\\\"{o}dl, V., The structure of critical Ramsey graphs. Acta Math. Acad. Sci. Hungar. (1978), 295-300.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

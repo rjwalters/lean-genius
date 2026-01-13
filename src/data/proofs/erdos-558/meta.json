@@ -1,0 +1,33 @@
+{
+  "id": "erdos-558",
+  "title": "Erdős Problem #558",
+  "slug": "erdos-558",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the minimal ... such that if the edges of ... are ...-coloured then there is a monochromatic copy of .... Dete...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/558",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos558Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 558,
+    "erdosUrl": "https://erdosproblems.com/558",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #558 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $R(G;k)$ denote the minimal $m$ such that if the edges of $K_m$ are $k$-coloured then there is a monochromatic copy of $G$. Determine\\[R(K_{s,t};k)\\]where $K_{s,t}$ is the complete bipartite graph with $s$ vertices in one component and $t$ in the other.\n\n\n\nChung and Graham \\cite{ChGr75} prove the general bounds\\[(2\\pi\\sqrt{st})^{\\frac{1}{s+t}}\\left(\\frac{s+t}{e^2}\\right)k^{\\frac{st-1}{s+t}}\\leq R(K_{s,t};k)\\leq (t-1)(k+k^{1/s})^s\\]and determined\\[R(K_{2,2},k)=(1+o(1))k^2.\\]Alon, R\\'{o}nyai, and Szab\\'{o} \\cite{ARS99} have proved that\\[R(K_{3,3},k)=(1+o(1))k^3\\]and that if $s\\geq (t-1)!+1$ then\\[R(K_{s,t},k)\\asymp k^t.\\]This problem is #27 in Ramsey Theory in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[ARS99] Alon, Noga and R\\'{o}nyai, Lajos and Szab\\'{o}, Tibor, Norm-graphs: variations and applications. J. Combin. Theory Ser. B (1999), 280-290.\n\n[ChGr75] Chung, Fan R. K. and Graham, R. L., On multicolor Ramsey numbers for complete bipartite graphs. J. Combinatorial Theory Ser. B (1975), 164-169.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

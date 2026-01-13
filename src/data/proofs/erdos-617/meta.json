@@ -1,0 +1,33 @@
+{
+  "id": "erdos-617",
+  "title": "Erdős Problem #617",
+  "slug": "erdos-617",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... If the edges of ... are ...-coloured then there exist ... vertices with at least one colour missing on the edges of ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/617",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos617Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 617,
+    "erdosUrl": "https://erdosproblems.com/617",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #617 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 3$. If the edges of $K_{r^2+1}$ are $r$-coloured then there exist $r+1$ vertices with at least one colour missing on the edges of the induced $K_{r+1}$.\n\n\n\nIn other words, there is no balanced colouring. A conjecture of Erd\\H{o}s and Gy\\'{a}rf\\'{a}s \\cite{ErGy99}, who proved it for $r=3$ and $r=4$ (and observered it is false for $r=2$), and showed this property fails for infinitely many $r$ if we replace $r^2+1$ by $r^2$.\n\n\n\n\nReferences\n\n\n[ErGy99] Erd\\H{o}s, Paul and Gy\\'{a}rf\\'{a}s, Andr\\'{a}s, Split and balanced colorings of complete graphs. Discrete Math. (1999), 79-86.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

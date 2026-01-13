@@ -1,0 +1,34 @@
+{
+  "id": "erdos-625",
+  "title": "Erdős Problem #625",
+  "slug": "erdos-625",
+  "description": "The cochromatic number of G\" role=\"presentation\" style=\"position: relative;\">GGG, denoted by &#x03B6;(G)\" role=\"presentation\" style=\"position: relative;\">ζ(G)ζ(G)\\zeta(G), is the minimum number of ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/625",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos625Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 625,
+    "erdosUrl": "https://erdosproblems.com/625",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$1000"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #625 from erdosproblems.com. Originally offered with a prize of $1000.",
+    "problemStatement": "The cochromatic number of G\" role=\"presentation\" style=\"position: relative;\">GGG, denoted by &#x03B6;(G)\" role=\"presentation\" style=\"position: relative;\">ζ(G)ζ(G)\\zeta(G), is the minimum number of colours needed to colour the vertices of G\" role=\"presentation\" style=\"position: relative;\">GGG such that each colour class induces either a complete graph or empty graph. Let &#x03C7;(G)\" role=\"presentation\" style=\"position: relative;\">χ(G)χ(G)\\chi(G) denote the chromatic number. If G\" role=\"presentation\" style=\"position: relative;\">GGG is a random graph with n\" role=\"presentation\" style=\"position: relative;\">nnn vertices and each edge included independently with probability 1/2\" role=\"presentation\" style=\"position: relative;\">1/21/21/2 then is it true that almost surely&#x03C7;(G)&#x2212;&#x03B6;(G)&#x2192;&#x221E;\" role=\"presentation\" style=\"text-align: center; position: relative;\">χ(G)−ζ(G)→∞χ(G)−ζ(G)→∞",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

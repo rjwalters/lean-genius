@@ -1,0 +1,33 @@
+{
+  "id": "erdos-561",
+  "title": "Erdős Problem #561",
+  "slug": "erdos-561",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the size Ramsey number, the minimal number of edges ... such that there is a graph ... with ... edges such tha...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/561",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos561Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 561,
+    "erdosUrl": "https://erdosproblems.com/561",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #561 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\hat{R}(G)$ denote the size Ramsey number, the minimal number of edges $m$ such that there is a graph $H$ with $m$ edges such that in any $2$-colouring of the edges of $H$ there is a monochromatic copy of $G$.\n\nLet $F_1$ and $F_2$ be the union of stars. More precisely, let $F_1=\\cup_{i\\leq s} K_{1,n_i}$ and $F_2=\\cup_{j\\leq t} K_{1,m_j}$. Prove that\\[\\hat{R}(F_1,F_2) = \\sum_{2\\leq k\\leq s+2}\\max\\{n_i+m_j-1 : i+j=k\\}.\\]\n\n\n\nBurr, Erd\\H{o}s, Faudree, Rousseau, and Schelp \\cite{BEFRS78} proved this when all the $n_i$ are identical and all the $m_i$ are identical.\n\n\nSee also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[BEFRS78] Burr, S. A. and Erd\\H{o}s, P. and Faudree, R. J. and Rousseau,\nC. C. and Schelp, R. H., Ramsey-minimal graphs for multiple copies. Nederl. Akad. Wetensch. Indag. Math. (1978), 187-195.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

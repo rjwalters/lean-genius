@@ -1,0 +1,33 @@
+{
+  "id": "erdos-580",
+  "title": "Erdős Problem #580",
+  "slug": "erdos-580",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on ... vertices such that at least ... vertices have degree at least .... Must ... contain every tree on a...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/580",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos580Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 580,
+    "erdosUrl": "https://erdosproblems.com/580",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #580 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph on $n$ vertices such that at least $n/2$ vertices have degree at least $n/2$. Must $G$ contain every tree on at most $n/2$ vertices?\n\n\n\nA conjecture of Erd\\H{o}s, F\\\"{u}redi, Loebl, and S\\'{o}s. Ajtai, Koml\\'{o}s, and Szemer\\'{e}di \\cite{AKS95} proved an asymptotic version, where at least $(1+\\epsilon)n/2$ vertices have degree at least $(1+\\epsilon)n/2$ (and $n$ is sufficiently large depending on $\\epsilon$).\n\nZhao \\cite{Zh11} has proved this conjecture holds for all sufficiently large $n$.\n\nKoml\\'{o}s and S\\'{o}s conjectured the generalisation that if at least $n/2$ vertices have degree at least $k$ then $G$ contains any tree with $k$ vertices.\n\nSee also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[AKS95] Ajtai, Mikl\\'{o}s and Koml\\'{o}s, J\\'{a}nos and Szemer\\'{e}di, Endre, On a conjecture of Loebl. Graph theory, combinatorics, and algorithms, Vol. 1, 2 (Kalamazoo, MI, 1992) (1995), 1135-1146.\n\n[Zh11] Zhao, Yi, Proof of the {$(n/2-n/2-n/2)$} conjecture for large {$n$}. Electron. J. Combin. (2011), Paper 27, 61.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

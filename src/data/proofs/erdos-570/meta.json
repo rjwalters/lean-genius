@@ -1,0 +1,33 @@
+{
+  "id": "erdos-570",
+  "title": "Erdős Problem #570",
+  "slug": "erdos-570",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is it true that, for any graph ... on ... edges without isolated vertices,\\[R(C_k,H) \\leq 2m+\\left\\lceil{2}\\right\\rc...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/570",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos570Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 570,
+    "erdosUrl": "https://erdosproblems.com/570",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #570 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 3$. Is it true that, for any graph $H$ on $m$ edges without isolated vertices,\\[R(C_k,H) \\leq 2m+\\left\\lceil\\frac{k-1}{2}\\right\\rceil?\\]\n\n\n\nThis was proved for even $k$ by Erd\\H{o}s, Faudree, Rousseau, and Schelp \\cite{EFRS93}. It was proved for $k=3$ by Sidorenko \\cite{Si93}.\n\n\nSee also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[EFRS93] Erd\\H{o}s, Paul and Faudree, R. J. and Rousseau, C. C. and Schelp, R. H., Ramsey size linear graphs. Combin. Probab. Comput. (1993), 389-399.\n\n[Si93] Sidorenko, A. F., The Ramsey number of an {$n$}-edge graph versus triangle is\nat most {$2n+1$}. J. Combin. Theory Ser. B (1993), 185-196.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

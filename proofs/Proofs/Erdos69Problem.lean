@@ -73,6 +73,29 @@ lemma geometric_sum_over_multiples (p : ℕ) (hp : 2 ≤ p) :
 lemma omega_eq_card_prime_divisors (n : ℕ) :
     ω n = (n.primeFactors).card := rfl
 
+/-! ## Summability lemmas -/
+
+/-- The sum ∑_n 1/2^n is summable -/
+lemma summable_one_div_two_pow : Summable fun n : ℕ => (1 : ℝ) / 2 ^ n := by
+  have : Summable fun n : ℕ => ((1 : ℝ) / 2) ^ n :=
+    summable_geometric_of_lt_one (by positivity) (by norm_num)
+  convert this using 1
+  ext n
+  simp only [one_div, inv_pow]
+
+/-- The sum ∑_n ω(n)/2^n is summable.
+    This follows from comparison with ∑ n/2^n which converges. -/
+lemma summable_omega_div_pow : Summable fun n : ℕ => ω n / (2 : ℝ) ^ n := by
+  -- ω(n) ≤ log₂(n) ≤ n for all n ≥ 2, so comparison with ∑ n/2^n works
+  -- For a full proof, we'd compare with the convergent series ∑ n * (1/2)^n
+  sorry
+
+/-- The sum over primes ∑_p 1/(2^p - 1) is summable.
+    This follows from comparison with ∑_p 1/2^p (geometric decay). -/
+lemma summable_prime_sum : Summable fun p : {n : ℕ | n.Prime} => (1 : ℝ) / (2 ^ p.1 - 1) := by
+  -- For p ≥ 2: 1/(2^p - 1) ≤ 2/2^p, and ∑_p 1/2^p converges
+  sorry
+
 /-! ## Main identity (Tao's observation) -/
 
 /--

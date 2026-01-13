@@ -1,0 +1,33 @@
+{
+  "id": "erdos-616",
+  "title": "Erdős Problem #616",
+  "slug": "erdos-616",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... For an ...-uniform hypergraph ... let ... denote the covering number (or transversal number), the minimum size of a ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/616",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos616Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 616,
+    "erdosUrl": "https://erdosproblems.com/616",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #616 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 3$. For an $r$-uniform hypergraph $G$ let $\\tau(G)$ denote the covering number (or transversal number), the minimum size of a set of vertices which includes at least one from each edge in $G$.\n\nDetermine the best possible $t$ such that, if $G$ is an $r$-uniform hypergraph $G$ where every subgraph $G'$ on at most $3r-3$ vertices has $\\tau(G')\\leq 1$, we have $\\tau(G)\\leq t$.\n\n\n\nErd\\H{o}s, Hajnal, and Tuza \\cite{EHT91} proved that this $t$ satisfies\\[\\frac{3}{16}r+\\frac{7}{8}\\leq t \\leq \\frac{1}{5}r.\\]\n\n\n\n\nReferences\n\n\n[EHT91] Erd\\H{o}s, Paul and Hajnal, Andr\\'{a}s and Tuza, Zsolt, Local constraints ensuring small representing sets. J. Combin. Theory Ser. A (1991), 78-84.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

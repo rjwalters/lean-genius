@@ -1,0 +1,33 @@
+{
+  "id": "erdos-644",
+  "title": "Erdős Problem #644",
+  "slug": "erdos-644",
+  "description": "Let f(k,r)\" role=\"presentation\" style=\"position: relative;\">f(k,r)f(k,r)f(k,r) be minimal such that if A1,A2,&#x2026;\" role=\"presentation\" style=\"position: relative;\">A1,A2,…A1,A2,…A_1,A_2,\\ldots i...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/644",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos644Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 644,
+    "erdosUrl": "https://erdosproblems.com/644",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #644 from erdosproblems.com.",
+    "problemStatement": "Let f(k,r)\" role=\"presentation\" style=\"position: relative;\">f(k,r)f(k,r)f(k,r) be minimal such that if A1,A2,&#x2026;\" role=\"presentation\" style=\"position: relative;\">A1,A2,…A1,A2,…A_1,A_2,\\ldots is a family of sets, all of size k\" role=\"presentation\" style=\"position: relative;\">kkk, such that for every collection of r\" role=\"presentation\" style=\"position: relative;\">rrr of the Ais\" role=\"presentation\" style=\"position: relative;\">AisAisA_is there is some pair {x,y}\" role=\"presentation\" style=\"position: relative;\">{x,y}{x,y}\\{x,y\\} which intersects all of the Aj\" role=\"presentation\" style=\"position: relative;\">AjAjA_j, then there is some set of size f(k,r)\" role=\"presentation\" style=\"position: relative;\">f(k,r)f(k,r)f(k,r) which intersects all of the sets Ai\" role=\"presentation\" style=\"position: relative;\">AiAiA_i. Is it true thatf(k,7)=(1+o(1))34k?\" role=\"presentation\" style=\"text-align: center; position: relative;\">f(k,7)=(1+o(1))34k?f(k,7)=(1+o(1))34k?",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

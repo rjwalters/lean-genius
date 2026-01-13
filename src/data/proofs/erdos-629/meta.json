@@ -1,0 +1,33 @@
+{
+  "id": "erdos-629",
+  "title": "Erdős Problem #629",
+  "slug": "erdos-629",
+  "description": "The list chromatic number &#x03C7;L(G)\" role=\"presentation\" style=\"position: relative;\">χL(G)χL(G)\\chi_L(G) is defined to be the minimal k\" role=\"presentation\" style=\"position: relative;\">kkk such ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/629",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos629Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 629,
+    "erdosUrl": "https://erdosproblems.com/629",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #629 from erdosproblems.com.",
+    "problemStatement": "The list chromatic number &#x03C7;L(G)\" role=\"presentation\" style=\"position: relative;\">χL(G)χL(G)\\chi_L(G) is defined to be the minimal k\" role=\"presentation\" style=\"position: relative;\">kkk such that for any assignment of a list of k\" role=\"presentation\" style=\"position: relative;\">kkk colours to each vertex of G\" role=\"presentation\" style=\"position: relative;\">GGG (perhaps different lists for different vertices) a colouring of each vertex by a colour on its list can be chosen such that adjacent vertices receive distinct colours. Determine the minimal number of vertices n(k)\" role=\"presentation\" style=\"position: relative;\">n(k)n(k)n(k) of a bipartite graph G\" role=\"presentation\" style=\"position: relative;\">GGG such that &#x03C7;L(G)&gt;k\" role=\"presentation\" style=\"position: relative;\">χL(G)>kχL(G)>k\\chi_L(G)>k.",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

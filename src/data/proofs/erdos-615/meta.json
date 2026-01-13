@@ -1,0 +1,33 @@
+{
+  "id": "erdos-615",
+  "title": "Erdős Problem #615",
+  "slug": "erdos-615",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist some constant ... such that if ... is a graph with ... vertices and ... edges then ... must contain either a...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/615",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos615Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 615,
+    "erdosUrl": "https://erdosproblems.com/615",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #615 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist some constant $c>0$ such that if $G$ is a graph with $n$ vertices and $\\geq (1/8-c)n^2$ edges then $G$ must contain either a $K_4$ or an independent set on at least $n/\\log n$ vertices?\n\n\n\nA problem of Erd\\H{o}s, Hajnal, Simonovits, S\\'{o}s, and Szemer\\'{e}di \\cite{EHSSS93}. In other words, if $\\mathrm{rt}(n;k,\\ell)$ is the Ramsey-Tur\\'{a}n number then is it true that\\[\\mathrm{rt}(n; 4,n/\\log n)< (1/8-c)n^2?\\]Erd\\H{o}s, Hajnal, S\\'{o}s, and Szemer\\'{e}di \\cite{EHSS83} proved that for any fixed $\\epsilon>0$\\[\\mathrm{rt}(n; 4,\\epsilon n)< (1/8+o(1))n^2.\\]Sudakov \\cite{Su03} proved that\\[\\mathrm{rt}(n; 4,ne^{-f(n)})=o(n^2)\\]whenever $f(n)/\\sqrt{\\log n}\\to \\infty$.\n\n\nResolved by Fox, Loh, and Zhao \\cite{FLZ15} who showed that the answer is no; in fact they prove that\\[\\mathrm{rt}(n; 4, ne^{-f(n)})\\geq (1/8-o(1))n^2\\]whenever $f(n) =o(\\sqrt{\\log n/\\log\\log n})$.\n\nSee also [22] and the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[EHSS83] Erd\\H{o}s, P. and Hajnal, A. and S\\'{o}s, Vera T. and Szemer\\'{e}di, E., More results on Ramsey-Tur\\'{a}n type problems. Combinatorica (1983), 69-81.\n\n[EHSSS93] Erd\\H{o}s, P. and Hajnal, A. and Simonovits, M. and S\\'{o}s,\nV. T. and Szemer\\'{e}di, E., Tur\\'{a}n-Ramsey theorems and simple asymptotically extremal\nstructures. Combinatorica (1993), 31-56.\n\n[FLZ15] Fox, Jacob and Loh, Po-Shen and Zhao, Yufei, The critical window for the classical Ramsey-Tur\\'{a}n\nproblem. Combinatorica (2015), 435-476.\n\n[Su03] Sudakov, Benny, A few remarks on Ramsey-Tur\\'{a}n-type problems. J. Combin. Theory Ser. B (2003), 99-106.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}
