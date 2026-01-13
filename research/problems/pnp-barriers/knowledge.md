@@ -5,6 +5,76 @@
 
 > **Note**: 5 older sessions archived to `sessions/` directory.
 
+## Session 2026-01-13 (Session 20) - Communication Complexity
+
+**Mode**: REVISIT
+**Problem**: pnp-barriers
+**Prior Status**: surveyed
+
+**What we did**:
+1. Literature search confirmed no communication complexity formalization in Mathlib
+2. Searched for recent developments - found UCB course CS 294-268 (Spring 2026) may cover complexity theory
+3. Added Part 24: Communication Complexity (~360 lines)
+4. Defined `TwoPartyFunction` for two-party communication problems
+5. Defined `DetCommProtocol` and `RandCommProtocol` structures
+6. Defined `D_comm`, `R_comm`, `N_comm` - deterministic, randomized, nondeterministic complexity
+7. Defined `EQ` (Equality function) - canonical easy-with-randomness example
+8. Proved `eq_deterministic_upper` - D(EQ) ≤ n (trivial protocol)
+9. Stated `eq_deterministic_lower` - D(EQ) ≥ n (fooling set axiom)
+10. Defined `eq_randomized_constant` - R(EQ) = O(1) (Rabin-Yao fingerprinting)
+11. Proved `eq_deterministic_vs_randomized_gap` - exponential gap theorem
+12. Defined `DISJ` (Set Disjointness) - central hard problem
+13. Stated `disj_randomized_lower` - R(DISJ) = Ω(n) [Kalyanasundaram-Schnitger]
+14. Defined `IP_func` (Inner Product mod 2)
+15. Stated `ip_randomized_lower` - R(IP) = Ω(n) [Chor-Goldreich]
+16. Defined `CCLowerBoundTechnique` enum (foolingSet, rectangle, discrepancy, etc.)
+17. Proved `n_le_d_comm` - N(f) ≤ D(f)
+18. Defined `LogRankConjecture` - major open problem
+19. Stated `lovett_logrank` - best progress D(f) ≤ O(√rank)
+20. Defined `KWGame` - Karchmer-Wigderson game connecting circuit depth to comm
+21. Stated `karchmer_wigderson` - circuit depth = D(KW game)
+22. Defined `StreamingReduction` and `DataStructureReduction` - applications
+23. Stated `streaming_lower_bounds` and `patrascu_data_structure_bounds`
+24. Defined `MultiPartyProtocol` and `MultiPartyFunction`
+25. Proved `communication_complexity_landscape` - summary theorem
+
+**Key insight**:
+Communication complexity studies the bits needed to compute f(x,y) when Alice has x and Bob has y. The classic gap EQ: D(EQ) = Θ(n) but R(EQ) = O(1) shows randomization can help exponentially. However, for DISJ (Set Disjointness), even randomization requires Ω(n) bits - this is the central hard result [Kalyanasundaram-Schnitger 1992, Razborov 1992]. The Karchmer-Wigderson theorem connects communication complexity to circuit depth, providing a path toward circuit lower bounds needed for P vs NP.
+
+**New definitions/theorems**:
+- `TwoPartyFunction`, `DetCommProtocol`, `RandCommProtocol` - core structures
+- `D_comm`, `R_comm`, `N_comm`, `inD_comm`, `inR_comm`, `inN_comm` - complexity measures
+- `EQ` - equality function
+- `eq_deterministic_upper`, `eq_deterministic_lower` - EQ complexity bounds
+- `eq_randomized_constant`, `eq_deterministic_vs_randomized_gap` - randomization gap
+- `DISJ`, `disj_randomized_lower` - set disjointness and Ω(n) bound
+- `IP_func`, `ip_randomized_lower` - inner product hardness
+- `CCLowerBoundTechnique` - lower bound methods
+- `n_le_d_comm` - proved: N ≤ D
+- `LogRankConjecture`, `lovett_logrank` - open problem and progress
+- `KWGame`, `karchmer_wigderson` - circuit-communication connection
+- `StreamingReduction`, `DataStructureReduction` - applications
+- `streaming_lower_bounds`, `patrascu_data_structure_bounds`
+- `MultiPartyProtocol`, `MultiPartyFunction` - k-party extensions
+- `communication_complexity_landscape` - summary theorem
+
+**Outcome**:
+- PNPBarriers.lean: **4709 lines**, **0 sorries** (up from 4349 lines)
+- Added 25+ new definitions/theorems
+- Complete communication complexity framework
+- Applications to streaming and data structures formalized
+
+**Files Modified**:
+- `proofs/Proofs/PNPBarriers.lean` (+360 lines)
+- `research/problems/pnp-barriers/knowledge.md` - this file
+
+**Next steps**:
+1. Add derandomization (Nisan-Wigderson PRG)
+2. Add average-case complexity (Levin's theory)
+3. Add zero-knowledge proofs (ZK)
+
+---
+
 ## Session 2026-01-01 (Session 12) - PCP Theorem
 
 **Mode**: REVISIT
