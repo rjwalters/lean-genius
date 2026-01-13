@@ -1,34 +1,124 @@
 {
   "id": "erdos-66",
-  "title": "Erdős Problem #66",
+  "title": "Erdős Problem #66: Representation Function Asymptotics",
   "slug": "erdos-66",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there ... such that\\[\\lim_{n\\to \\infty}{\\log n}\\]exists and is ...?\n\n\n\nA suitably constructed random set has this property...",
+  "description": "Is there a set A ⊆ ℕ such that the representation function r_A(n) = |{(a,b) ∈ A² : a+b=n}| satisfies lim r_A(n)/log(n) = c ≠ 0?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős; partial results by Erdős-Sárközy, Horváth (2007)",
     "sourceUrl": "https://erdosproblems.com/66",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos66Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "wip",
-    "sorries": 1,
+    "tags": ["erdos", "number-theory", "additive-combinatorics", "representation-function", "conjecture"],
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 66,
     "erdosUrl": "https://erdosproblems.com/66",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$500"
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$500",
+    "dateAdded": "2026-01-13",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of a set as a natural number",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit of a function along a filter",
+        "module": "Mathlib.Topology.Order.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm on real numbers",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Filter.limsup",
+        "description": "Limit superior along a filter",
+        "module": "Mathlib.Order.LiminfLimsup"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of the representation function in Lean 4",
+      "Statement of Problem 66 as a Prop without asserting truth",
+      "Axiom for Erdős-Sárközy theorem on error bounds",
+      "Axiom for Horváth's 2007 improvement",
+      "Proof that the stronger conjecture implies the original"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #66 from erdosproblems.com. Originally offered with a prize of $500.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there $A\\subseteq \\mathbb{N}$ such that\\[\\lim_{n\\to \\infty}\\frac{1_A\\ast 1_A(n)}{\\log n}\\]exists and is $\\neq 0$?\n\n\n\nA suitably constructed random set has this property if we are allowed to ignore an exceptional set of density zero. The challenge is obtaining this with no exceptional set. Erd\\H{o}s believed the answer should be no. Erd\\H{o}s and S\\'{a}rk\\\"{o}zy proved that\\[\\frac{\\lvert 1_A\\ast 1_A(n)-\\log n\\rvert}{\\sqrt{\\log n}}\\to 0\\]is impossible. Erd\\H{o}s suggests it may even be true that the $\\liminf$ and $\\limsup$ of $1_A\\ast 1_A(n)/\\log n$ are always separated by some absolute constant.\n\nHorv\\'{a}th \\cite{Ho07} proved that\\[\\lvert 1_A\\ast 1_A(n)-\\log n\\rvert \\leq (1-\\epsilon)\\sqrt{\\log n}\\]cannot hold for all large $n$.\n\n\n\n\nReferences\n\n\n[Ho07] G. Horv\\'{a}th, An improvement of a theorem of Erd\\H{o}s and S\\'{a}rk\\\"{o}zy. Pollack Periodica (2007), 155-161.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The representation function r_A(n) counts how many ways we can write n as a sum of two elements from a set A. This is a fundamental object in additive combinatorics, connected to problems like Goldbach's conjecture (where A is the primes).\n\nFor many natural sets, r_A(n) grows roughly like log(n). Erdős asked whether this growth can be EXACTLY logarithmic—whether r_A(n)/log(n) can converge to a nonzero limit.\n\nRandom constructions suggest the answer might be yes: if you choose A with probability c/√n for each n, then E[r_A(n)] ~ c²log(n). However, these constructions always have an exceptional set of density zero where the limit fails.\n\nThe challenge is eliminating this exceptional set. Erdős believed it cannot be done, conjecturing the answer is NO. The problem carries a $500 prize.",
+    "problemStatement": "**Erdős Problem #66 (OPEN)**\n\nIs there a set $A \\subseteq \\mathbb{N}$ such that\n$$\\lim_{n\\to\\infty} \\frac{r_A(n)}{\\log n} = c \\neq 0$$\nwhere $r_A(n) = |\\{(a,b) \\in A^2 : a + b = n\\}|$ is the representation function?\n\n**Erdős's Conjecture**: The answer is NO.\n\n**Prize**: $500",
+    "proofStrategy": "We formalize the problem and its partial results:\n\n1. **representationFunction**: Counts ordered pairs (a,b) ∈ A² with a+b=n\n\n2. **Erdos66Question**: The statement that such an A exists (open)\n\n3. **ErdosConjecture66**: The negation (Erdős's belief)\n\n4. **Partial results as axioms**:\n   - Erdős-Sárközy: Error cannot be o(√log n)\n   - Horváth (2007): Error exceeds (1-ε)√log n infinitely often\n\n5. **ErdosStrongerConjecture**: Limsup and liminf are universally separated",
+    "keyInsights": [
+      "**Representation function**: r_A(n) counts ordered pairs summing to n. For primes, r_P(n) > 0 for even n is Goldbach's conjecture.",
+      "**Logarithmic scale**: Many natural sets have r_A(n) ~ c·log(n). The question is whether the ratio can have a definite limit.",
+      "**Random sets almost work**: With the right density, random A gives E[r_A(n)] ~ log(n), but variance creates exceptions.",
+      "**Erdős-Sárközy obstruction**: The error |r_A(n) - log(n)| cannot shrink faster than √log(n). Fluctuations are inherent.",
+      "**The stronger conjecture**: Erdős suggested limsup and liminf of r_A(n)/log(n) are always separated by an absolute constant."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Module documentation explaining the problem and opening namespaces for filters and topology."
+    },
+    {
+      "id": "background",
+      "title": "Background on Representation Functions",
+      "startLine": 28,
+      "endLine": 39,
+      "summary": "Context on representation functions and their connection to additive problems."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 41,
+      "endLine": 57,
+      "summary": "The representation function and its alternative notation."
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "startLine": 59,
+      "endLine": 91,
+      "summary": "States Erdos66Question and ErdosConjecture66 as Props."
+    },
+    {
+      "id": "partial-results",
+      "title": "Partial Results",
+      "startLine": 93,
+      "endLine": 128,
+      "summary": "Axioms for Erdős-Sárközy and Horváth's theorems."
+    },
+    {
+      "id": "random-sets",
+      "title": "Random Set Behavior",
+      "startLine": 130,
+      "endLine": 159,
+      "summary": "Why random constructions almost solve the problem."
+    },
+    {
+      "id": "stronger-conjecture",
+      "title": "The Stronger Conjecture",
+      "startLine": 161,
+      "endLine": 197,
+      "summary": "Erdős's stronger statement and its implication."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #66, which asks whether the representation function can have exactly logarithmic growth with a definite nonzero limit. Erdős conjectured the answer is NO. We include axioms for the known partial results (Erdős-Sárközy and Horváth) and prove that a stronger conjecture would imply the original.",
+    "implications": "This problem connects to fundamental questions in additive combinatorics about how 'random-like' behavior can be achieved by explicit constructions. The gap between random sets (which almost have the property) and explicit sets (which cannot) illustrates deep structural constraints in number theory.",
+    "openQuestions": [
+      "Is Erdős's conjecture true? (The main open question, $500 prize)",
+      "Can the Erdős-Sárközy bound be improved?",
+      "Is the stronger conjecture (universal limsup-liminf gap) true?",
+      "For which sets A is the asymptotic behavior of r_A(n) well-understood?"
+    ]
   }
 }

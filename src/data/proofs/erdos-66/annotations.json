@@ -1,1 +1,142 @@
-[]
+[
+  {
+    "id": "ann-e66-header",
+    "proofId": "erdos-66",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #66** asks whether the representation function can have exactly logarithmic growth.\n\nThe representation function r_A(n) counts ways to write n = a + b with a,b ∈ A. Many natural sets have r_A(n) ~ c·log(n), but can the RATIO r_A(n)/log(n) converge to a nonzero limit?\n\n**Status**: OPEN ($500 prize)\n**Erdős's Conjecture**: The answer is NO",
+    "mathContext": "This is a fundamental question in additive combinatorics. Random sets 'almost' have this property, but always fail on an exceptional set of density zero.",
+    "significance": "critical",
+    "relatedConcepts": ["erdos", "additive-combinatorics", "representation-function"]
+  },
+  {
+    "id": "ann-e66-background",
+    "proofId": "erdos-66",
+    "range": {
+      "startLine": 28,
+      "endLine": 39
+    },
+    "type": "concept",
+    "title": "Representation Functions in Additive Combinatorics",
+    "content": "The representation function r_A(n) = |{(a,b) ∈ A×A : a+b=n}| counts ordered pairs from A summing to n.\n\n**Connection to Goldbach**: For the primes P, asking whether r_P(n) > 0 for all even n > 2 is exactly the Goldbach conjecture.\n\n**Why logarithmic scale?** For many 'random-like' sets with density ~ c/√n, we get r_A(n) ~ c²·log(n). This is the natural scale for comparison.",
+    "mathContext": "The representation function is the discrete convolution 1_A ∗ 1_A evaluated at n. It's central to additive number theory.",
+    "significance": "key",
+    "relatedConcepts": ["goldbach", "convolution", "additive-number-theory"]
+  },
+  {
+    "id": "ann-e66-rep-function",
+    "proofId": "erdos-66",
+    "range": {
+      "startLine": 41,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "The Representation Function",
+    "content": "**representationFunction A n** counts ordered pairs (a,b) with a,b ∈ A and a+b=n.\n\nWe use Set.ncard to count elements of the set {a : a ≤ n, a ∈ A, n-a ∈ A}.\n\nThis is marked noncomputable because Set.ncard requires classical logic for infinite sets.",
+    "mathContext": "Formally: `Set.ncard {a : ℕ | a ≤ n ∧ a ∈ A ∧ n - a ∈ A}`\n\nThe condition a ≤ n ensures a and n-a are both natural numbers. Each valid a contributes one representation (a, n-a).",
+    "significance": "critical",
+    "relatedConcepts": ["ncard", "set-builder", "ordered-pairs"]
+  },
+  {
+    "id": "ann-e66-main-question",
+    "proofId": "erdos-66",
+    "range": {
+      "startLine": 66,
+      "endLine": 82
+    },
+    "type": "definition",
+    "title": "The Main Question (OPEN)",
+    "content": "**Erdos66Question** asks: Does there exist A ⊆ ℕ and c ≠ 0 such that r_A(n)/log(n) → c?\n\nThis is stated as a Prop without asserting its truth value. We don't know if such an A exists.\n\n**Why this is hard**: Random constructions get arbitrarily close but always fail on exceptional sets. Explicit constructions have not succeeded.",
+    "mathContext": "Using Filter.Tendsto with atTop captures the limit as n → ∞. The neighborhood 𝓝 c means the ratio gets arbitrarily close to c.",
+    "significance": "critical",
+    "relatedConcepts": ["tendsto", "limit", "existence"]
+  },
+  {
+    "id": "ann-e66-conjecture",
+    "proofId": "erdos-66",
+    "range": {
+      "startLine": 83,
+      "endLine": 91
+    },
+    "type": "definition",
+    "title": "Erdős's Conjecture",
+    "content": "**ErdosConjecture66** is the negation of Erdos66Question: NO such set A exists.\n\nErdős believed this based on the inherent fluctuations in representation functions. The partial results (Erdős-Sárközy, Horváth) support this intuition by showing the error cannot be too small.",
+    "mathContext": "Defined simply as `¬Erdos66Question`. This states the existence claim is false, but we don't prove it—we just name the conjecture.",
+    "significance": "key",
+    "relatedConcepts": ["conjecture", "negation", "erdos"]
+  },
+  {
+    "id": "ann-e66-erdos-sarkozy",
+    "proofId": "erdos-66",
+    "range": {
+      "startLine": 100,
+      "endLine": 114
+    },
+    "type": "theorem",
+    "title": "Erdős-Sárközy Theorem",
+    "content": "**erdosSarkozy** states that for any A, the error |r_A(n) - log(n)| cannot shrink to o(√log n).\n\nIn other words: the representation function cannot approximate log(n) with error smaller than √log(n) eventually.\n\n**Why this matters**: Even if r_A(n) ~ log(n), the fluctuations must remain significant. You can't 'smooth out' the representation function to exactly match log(n).",
+    "mathContext": "The statement says there is NO set A with `|r_A(n) - log n| / √(log n) → 0`. This is a universal negative—a strong constraint on all possible sets.",
+    "significance": "key",
+    "relatedConcepts": ["axiom", "error-bound", "sqrt-log"]
+  },
+  {
+    "id": "ann-e66-horvath",
+    "proofId": "erdos-66",
+    "range": {
+      "startLine": 115,
+      "endLine": 128
+    },
+    "type": "theorem",
+    "title": "Horváth's Improvement (2007)",
+    "content": "**horvath2007** strengthens Erdős-Sárközy: the error exceeds (1-ε)√log(n) for infinitely many n.\n\nFor any ε > 0 and any set A, there are arbitrarily large n where |r_A(n) - log(n)| > (1-ε)√log(n).\n\n**The improvement**: This gives a quantitative lower bound on the limsup of the error, not just that it doesn't go to zero.",
+    "mathContext": "Using `∀ᶠ n in atTop` means 'for all sufficiently large n'. Combined with the universal quantifier over ε, this says the error cannot stay below √log(n) for long.",
+    "significance": "key",
+    "relatedConcepts": ["axiom", "quantitative-bound", "limsup"]
+  },
+  {
+    "id": "ann-e66-random-sets",
+    "proofId": "erdos-66",
+    "range": {
+      "startLine": 130,
+      "endLine": 159
+    },
+    "type": "concept",
+    "title": "Random Sets and the Exceptional Set",
+    "content": "**randomSetHasLimitAlmostEverywhere** captures why random constructions don't solve the problem.\n\nA random set with density c/√n has:\n- Expected representation E[r_A(n)] ~ c²·log(n)\n- The ratio r_A(n)/log(n) → c² for 'most' n\n- But an exceptional set E of density zero where the limit fails\n\n**The challenge**: Eliminating this exceptional set seems impossible.",
+    "mathContext": "The exceptional set E has natural density zero but is non-empty. For n ∈ E, the variance causes the ratio to deviate from the limit.",
+    "significance": "supporting",
+    "relatedConcepts": ["random-construction", "density-zero", "variance"]
+  },
+  {
+    "id": "ann-e66-stronger",
+    "proofId": "erdos-66",
+    "range": {
+      "startLine": 165,
+      "endLine": 177
+    },
+    "type": "definition",
+    "title": "Erdős's Stronger Conjecture",
+    "content": "**ErdosStrongerConjecture** claims: There exists δ > 0 such that for ALL sets A, the limsup and liminf of r_A(n)/log(n) differ by at least δ.\n\nThis is much stronger than saying the limit doesn't exist—it says the oscillations are bounded away from zero universally.",
+    "mathContext": "If true, this would immediately imply ErdosConjecture66, since a convergent sequence has limsup = liminf.",
+    "significance": "key",
+    "relatedConcepts": ["limsup", "liminf", "universal-constant"]
+  },
+  {
+    "id": "ann-e66-implication",
+    "proofId": "erdos-66",
+    "range": {
+      "startLine": 178,
+      "endLine": 197
+    },
+    "type": "theorem",
+    "title": "Stronger Implies Original",
+    "content": "**stronger_implies_original** proves that ErdosStrongerConjecture → ErdosConjecture66.\n\nThe proof: If r_A(n)/log(n) → c, then both limsup and liminf equal c, so their difference is 0. But the stronger conjecture says the difference is ≥ δ > 0. Contradiction!\n\nThis is a genuine Lean proof (no axiom), showing the logical relationship between the two conjectures.",
+    "mathContext": "Uses `Tendsto.limsup_eq` and `Tendsto.liminf_eq` from Mathlib to show convergence implies equal limsup and liminf. Then `linarith` derives the contradiction from 0 ≥ δ > 0.",
+    "significance": "supporting",
+    "relatedConcepts": ["implication", "proof", "linarith"]
+  }
+]
