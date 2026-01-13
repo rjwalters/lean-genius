@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-451",
+  "title": "Erdős #451",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nEstimate $n_k$, the smallest integer $>2k$ such that $\\prod_{1\\leq i\\leq k}(n_k-i)$ has no prime factor in $(k,2k)$.\n\n\n\nErd\\H{o}s and Graham write 'we can prove $n_k>k^{1+c}$ but no doubt much more is true'.\n\nIn \\cite{Er79d} Erd\\H{o}s writes that probably $n_k<e^{o(k)}$ but $n_k>k^d$ for all constant $d$.\n\nAdenwalla observes that an easy upper bound is $n_k\\leq \\prod_{k<p<2k}p=e^{O(k)}$.\n\n\n\n\nReferences\n\n\n[Er79d] Erd\\H{o}s, P., Some unconventional problems in number theory. Acta Math. Acad. Sci. Hungar. (1979), 71-80.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T04:11:10.511Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #451 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nEstimate $n_k$, the smallest integer $>2k$ such that $\\prod_{1\\leq i\\leq k}(n_k-i)$ has no prime factor in $(k,2k)$.\n\n\n\nErd\\H{o}s and Graham write 'we can prove $n_k>k^{1+c}$ but no doubt much more is true'.\n\nIn \\cite{Er79d} Erd\\H{o}s writes that probably $n_k<e^{o(k)}$ but $n_k>k^d$ for all constant $d$.\n\nAdenwalla observes that an easy upper bound is $n_k\\leq \\prod_{k<p<2k}p=e^{O(k)}$.\n\n\n\n\nReferences\n\n\n[Er79d] Erd\\H{o}s, P., Some unconventional problems in number theory. Acta Math. Acad. Sci. Hungar. (1979), 71-80.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #450\n- Problem #452\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T04:11:10.511Z",
+  "significance": 6,
+  "tractability": 4
+}

@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-348",
+  "title": "Erdős #348",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor what values of $0\\leq m<n$ is there a complete sequence $A=\\{a_1\\leq a_2\\leq \\cdots\\}$ of integers such that\n{UL}\n{LI} $A$ remains complete after removing any $m$ elements, but {/LI}\n{LI} $A$ is not complete after removing any $n$ elements? {/LI}\n{/UL}\n\n\n\n\nThe Fibonacci sequence $1,1,2,3,5,\\ldots$ shows that $m=1$ and $n=2$ is possible. The sequence of powers of $2$ shows that $m=0$ and $n=1$ is possible. The case $m=2$ and $n=3$ is not known.\n\nvan Doorn has shown that no such sequence exists for $2\\leq m<n$ if we interpret complete in the strong sense that\\[\\left\\{ \\sum_{n\\in B}n : \\textrm{ for all finite }B\\subset A\\right\\}=\\mathbb{N}.\\]Erd\\H{o}s and Graham most likely meant the weaker notion of completeness which allows finitely many exceptions, however.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T00:56:39.043Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #348 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor what values of $0\\leq m<n$ is there a complete sequence $A=\\{a_1\\leq a_2\\leq \\cdots\\}$ of integers such that\n{UL}\n{LI} $A$ remains complete after removing any $m$ elements, but {/LI}\n{LI} $A$ is not complete after removing any $n$ elements? {/LI}\n{/UL}\n\n\n\n\nThe Fibonacci sequence $1,1,2,3,5,\\ldots$ shows that $m=1$ and $n=2$ is possible. The sequence of powers of $2$ shows that $m=0$ and $n=1$ is possible. The case $m=2$ and $n=3$ is not known.\n\nvan Doorn has shown that no such sequence exists for $2\\leq m<n$ if we interpret complete in the strong sense that\\[\\left\\{ \\sum_{n\\in B}n : \\textrm{ for all finite }B\\subset A\\right\\}=\\mathbb{N}.\\]Erd\\H{o}s and Graham most likely meant the weaker notion of completeness which allows finitely many exceptions, however.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #347\n- Problem #349\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T00:56:39.043Z",
+  "significance": 6,
+  "tractability": 4
+}

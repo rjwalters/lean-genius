@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-278",
+  "title": "Erdős #278",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{n_1<\\cdots<n_r\\}$ be a finite set of integers. What is the maximum density of integers covered by a suitable choice of congruences $a_i\\pmod{n_i}$?\n\nIs the minimum density achieved when all the $a_i$ are equal?\n\n\n\nSimpson \\cite{Si86} has observed that the density of integers covered is at least\\[\\sum_i \\frac{1}{n_i}-\\sum_{i<j}\\frac{1}{[n_i,n_j]}+\\sum_{i<j<k}\\frac{1}{[n_i,n_j,n_k]}-\\cdot\\](where $[\\cdots]$ denotes the least common multiple) which is achieved when all $a_i$ are equal, settling the second question.\n\n\n\n\nReferences\n\n\n[Si86] Simpson, R. J., Exact coverings of the integers by arithmetic progressions. Discrete Math. (1986), 181--190.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T22:33:22.719Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #278 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{n_1<\\cdots<n_r\\}$ be a finite set of integers. What is the maximum density of integers covered by a suitable choice of congruences $a_i\\pmod{n_i}$?\n\nIs the minimum density achieved when all the $a_i$ are equal?\n\n\n\nSimpson \\cite{Si86} has observed that the density of integers covered is at least\\[\\sum_i \\frac{1}{n_i}-\\sum_{i<j}\\frac{1}{[n_i,n_j]}+\\sum_{i<j<k}\\frac{1}{[n_i,n_j,n_k]}-\\cdot\\](where $[\\cdots]$ denotes the least common multiple) which is achieved when all $a_i$ are equal, settling the second question.\n\n\n\n\nReferences\n\n\n[Si86] Simpson, R. J., Exact coverings of the integers by arithmetic progressions. Discrete Math. (1986), 181--190.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #277\n- Problem #279\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Si86\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T22:33:22.719Z",
+  "significance": 6,
+  "tractability": 4
+}

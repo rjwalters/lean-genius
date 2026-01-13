@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-323",
+  "title": "Erdős #323",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $1\\leq m\\leq k$ and $f_{k,m}(x)$ denote the number of integers $\\leq x$ which are the sum of $m$ many nonnegative $k$th powers. Is it true that\\[f_{k,k}(x) \\gg_\\epsilon x^{1-\\epsilon}\\]for all $\\epsilon>0$? Is it true that if $m<k$ then\\[f_{k,m}(x) \\gg x^{m/k}\\]for sufficiently large $x$?\n\n\n\nThis would have significant applications to Waring's problem. Erd\\H{o}s and Graham describe this as 'unattackable by the methods at our disposal'. The case $k=2$ was resolved by Landau, who showed\\[f_{2,2}(x) \\sim \\frac{cx}{\\sqrt{\\log x}}\\]for some constant $c>0$.\n\nFor $k>2$ it is not known if $f_{k,k}(x)=o(x)$.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T23:55:09.603Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #323 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $1\\leq m\\leq k$ and $f_{k,m}(x)$ denote the number of integers $\\leq x$ which are the sum of $m$ many nonnegative $k$th powers. Is it true that\\[f_{k,k}(x) \\gg_\\epsilon x^{1-\\epsilon}\\]for all $\\epsilon>0$? Is it true that if $m<k$ then\\[f_{k,m}(x) \\gg x^{m/k}\\]for sufficiently large $x$?\n\n\n\nThis would have significant applications to Waring's problem. Erd\\H{o}s and Graham describe this as 'unattackable by the methods at our disposal'. The case $k=2$ was resolved by Landau, who showed\\[f_{2,2}(x) \\sim \\frac{cx}{\\sqrt{\\log x}}\\]for some constant $c>0$.\n\nFor $k>2$ it is not known if $f_{k,k}(x)=o(x)$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #322\n- Problem #324\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T23:55:09.603Z",
+  "significance": 6,
+  "tractability": 4
+}

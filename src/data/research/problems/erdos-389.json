@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-389",
+  "title": "Erdős #389",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every $n\\geq 1$ there is a $k$ such that\\[n(n+1)\\cdots(n+k-1)\\mid (n+k)\\cdots (n+2k-1)?\\]\n\n\n\nAsked by Erd\\H{o}s and Straus.\nFor example when $n=2$ we have $k=5$:\\[2\\times 3 \\times 4 \\times 5\\times 6 \\mid 7 \\times 8 \\times 9\\times 10\\times 11.\\]and when $n=3$ we have $k=4$:\\[3\\times 4\\times 5\\times 6 \\mid 7\\times 8\\times 9\\times 10.\\]Bhavik Mehta has computed the minimal such $k$ for $1\\leq n\\leq 18$ (now available as A375071 on the OEIS).\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T01:10:23.917Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #389 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every $n\\geq 1$ there is a $k$ such that\\[n(n+1)\\cdots(n+k-1)\\mid (n+k)\\cdots (n+2k-1)?\\]\n\n\n\nAsked by Erd\\H{o}s and Straus.\nFor example when $n=2$ we have $k=5$:\\[2\\times 3 \\times 4 \\times 5\\times 6 \\mid 7 \\times 8 \\times 9\\times 10\\times 11.\\]and when $n=3$ we have $k=4$:\\[3\\times 4\\times 5\\times 6 \\mid 7\\times 8\\times 9\\times 10.\\]Bhavik Mehta has computed the minimal such $k$ for $1\\leq n\\leq 18$ (now available as A375071 on the OEIS).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #388\n- Problem #390\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T01:10:23.917Z",
+  "significance": 6,
+  "tractability": 4
+}

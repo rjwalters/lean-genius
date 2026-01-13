@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-400",
+  "title": "Erdős #400",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any $k\\geq 2$ let $g_k(n)$ denote the maximum value of\\[(a_1+\\cdots+a_k)-n\\]where $a_1,\\ldots,a_k$ are integers such that $a_1!\\cdots a_k! \\mid n!$. Can one show that\\[\\sum_{n\\leq x}g_k(n) \\sim c_k x\\log x\\]for some constant $c_k$? Is it true that there is a constant $c_k$ such that for almost all $n<x$ we have\\[g_k(n)=c_k\\log x+o(\\log x)?\\]\n\n\n\nErd\\H{o}s and Graham write that it is easy to show that $g_k(n) \\ll_k \\log n$ always, but the best possible constant is unknown.\n\nSee also [401].\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T02:35:40.568Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #400 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any $k\\geq 2$ let $g_k(n)$ denote the maximum value of\\[(a_1+\\cdots+a_k)-n\\]where $a_1,\\ldots,a_k$ are integers such that $a_1!\\cdots a_k! \\mid n!$. Can one show that\\[\\sum_{n\\leq x}g_k(n) \\sim c_k x\\log x\\]for some constant $c_k$? Is it true that there is a constant $c_k$ such that for almost all $n<x$ we have\\[g_k(n)=c_k\\log x+o(\\log x)?\\]\n\n\n\nErd\\H{o}s and Graham write that it is easy to show that $g_k(n) \\ll_k \\log n$ always, but the best possible constant is unknown.\n\nSee also [401].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #401\n- Problem #399\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T02:35:40.569Z",
+  "significance": 6,
+  "tractability": 4
+}

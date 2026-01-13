@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-342",
+  "title": "Erdős #342",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWith $a_1=1$ and $a_2=2$ let $a_{n+1}$ for $n\\geq 2$ be the least integer $>a_n$ which can be expressed uniquely as $a_i+a_j$ for $i<j\\leq n$.\n\nWhat can be said about this sequence? Do infinitely many pairs $a,a+2$ occur? Does this sequence eventually have periodic differences? Is the density $0$?\n\n\n\nA problem of Ulam. The sequence is\\[1,2,3,4,6,8,11,13,16,18,26,28,\\ldots\\]at OEIS A002858.\n\nSee also Problem 7 of Green's open problems list.\n\nThis is problem C4 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T00:04:50.019Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #342 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWith $a_1=1$ and $a_2=2$ let $a_{n+1}$ for $n\\geq 2$ be the least integer $>a_n$ which can be expressed uniquely as $a_i+a_j$ for $i<j\\leq n$.\n\nWhat can be said about this sequence? Do infinitely many pairs $a,a+2$ occur? Does this sequence eventually have periodic differences? Is the density $0$?\n\n\n\nA problem of Ulam. The sequence is\\[1,2,3,4,6,8,11,13,16,18,26,28,\\ldots\\]at OEIS A002858.\n\nSee also Problem 7 of Green's open problems list.\n\nThis is problem C4 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #341\n- Problem #343\n- Problem #2\n- Problem #39\n- Problem #1\n- Problem #7\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T00:04:50.019Z",
+  "significance": 6,
+  "tractability": 4
+}

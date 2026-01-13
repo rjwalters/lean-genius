@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-380",
+  "title": "Erdős #380",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe call an interval $[u,v]$ 'bad' if the greatest prime factor of $\\prod_{u\\leq m\\leq v}m$ occurs with an exponent greater than $1$. Let $B(x)$ count the number of $n\\leq x$ which are contained in at least one bad interval. Is it true that\\[B(x)\\sim \\#\\{ n\\leq x: P(n)^2\\mid n\\},\\]where $P(n)$ is the largest prime factor of $n$?\n\n\n\nErd\\H{o}s and Graham only knew that $B(x) > x^{1-o(1)}$. Similarly, we call an interval $[u,v]$ 'very bad' if $\\prod_{u\\leq m\\leq v}m$ is powerful. The number of integers $n\\leq x$ contained in at least one very bad interval should be $\\ll x^{1/2}$. In fact, it should be asymptotic to the number of powerful numbers $\\leq x$.\n\nWe have\\[\\#\\{ n\\leq x: P(n)^2\\mid n\\}=\\frac{x}{\\exp((c+o(1))\\sqrt{\\log x\\log\\log x})}\\]for some constant $c>0$.\n\nTao notes in the comments that if $[u,v]$ is bad then it cannot contain any primes, and hence certainly $v<2u$, and in general $v-u$ must be small (for example, assuming Cramer's conjecture, $v-u\\ll (\\log u)^2$).\n\nSee also [382].\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T00:59:36.242Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #380 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe call an interval $[u,v]$ 'bad' if the greatest prime factor of $\\prod_{u\\leq m\\leq v}m$ occurs with an exponent greater than $1$. Let $B(x)$ count the number of $n\\leq x$ which are contained in at least one bad interval. Is it true that\\[B(x)\\sim \\#\\{ n\\leq x: P(n)^2\\mid n\\},\\]where $P(n)$ is the largest prime factor of $n$?\n\n\n\nErd\\H{o}s and Graham only knew that $B(x) > x^{1-o(1)}$. Similarly, we call an interval $[u,v]$ 'very bad' if $\\prod_{u\\leq m\\leq v}m$ is powerful. The number of integers $n\\leq x$ contained in at least one very bad interval should be $\\ll x^{1/2}$. In fact, it should be asymptotic to the number of powerful numbers $\\leq x$.\n\nWe have\\[\\#\\{ n\\leq x: P(n)^2\\mid n\\}=\\frac{x}{\\exp((c+o(1))\\sqrt{\\log x\\log\\log x})}\\]for some constant $c>0$.\n\nTao notes in the comments that if $[u,v]$ is bad then it cannot contain any primes, and hence certainly $v<2u$, and in general $v-u$ must be small (for example, assuming Cramer's conjecture, $v-u\\ll (\\log u)^2$).\n\nSee also [382].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #382\n- Problem #379\n- Problem #381\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T00:59:36.242Z",
+  "significance": 6,
+  "tractability": 4
+}

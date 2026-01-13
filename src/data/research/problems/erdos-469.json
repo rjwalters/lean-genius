@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-469",
+  "title": "Erdős #469",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A$ be the set of all $n$ such that $n=d_1+\\cdots+d_k$ with $d_i$ distinct proper divisors of $n$, but this is not true for any $m\\mid n$ with $m<n$. Does\\[\\sum_{n\\in A}\\frac{1}{n}\\]converge?\n\n\n\nThe integers in $A$ are also known as primitive pseudoperfect numbers and are listed as A006036 in the OEIS.\n\nThe same question can be asked for those $n$ which do not have distinct sums of sets of divisors, but any proper divisor of $n$ does (which are listed as A119425 in the OEIS).\n\nBenkoski and Erd\\H{o}s \\cite{BeEr74} ask about these two sets, and also about the set of $n$ that have a divisor expressible as a distinct sum of other divisors of $n$, but where no proper divisor of $n$ has this property.\n\n\n\n\nReferences\n\n\n[BeEr74] Benkoski, S. J. and Erd\\H{o}s, P., On weird and pseudoperfect numbers. Math. Comp. (1974), 617-623.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T04:11:10.513Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #469 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A$ be the set of all $n$ such that $n=d_1+\\cdots+d_k$ with $d_i$ distinct proper divisors of $n$, but this is not true for any $m\\mid n$ with $m<n$. Does\\[\\sum_{n\\in A}\\frac{1}{n}\\]converge?\n\n\n\nThe integers in $A$ are also known as primitive pseudoperfect numbers and are listed as A006036 in the OEIS.\n\nThe same question can be asked for those $n$ which do not have distinct sums of sets of divisors, but any proper divisor of $n$ does (which are listed as A119425 in the OEIS).\n\nBenkoski and Erd\\H{o}s \\cite{BeEr74} ask about these two sets, and also about the set of $n$ that have a divisor expressible as a distinct sum of other divisors of $n$, but where no proper divisor of $n$ has this property.\n\n\n\n\nReferences\n\n\n[BeEr74] Benkoski, S. J. and Erd\\H{o}s, P., On weird and pseudoperfect numbers. Math. Comp. (1974), 617-623.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #468\n- Problem #470\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- BeEr74\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T04:11:10.513Z",
+  "significance": 6,
+  "tractability": 4
+}

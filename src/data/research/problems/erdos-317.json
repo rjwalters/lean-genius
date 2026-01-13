@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-317",
+  "title": "Erdős #317",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some constant $c>0$ such that for every $n\\geq 1$ there exists some $\\delta_k\\in \\{-1,0,1\\}$ for $1\\leq k\\leq n$ with\\[0< \\left\\lvert \\sum_{1\\leq k\\leq n}\\frac{\\delta_k}{k}\\right\\rvert < \\frac{c}{2^n}?\\]Is it true that for sufficiently large $n$, for any $\\delta_k\\in \\{-1,0,1\\}$,\\[\\left\\lvert \\sum_{1\\leq k\\leq n}\\frac{\\delta_k}{k}\\right\\rvert > \\frac{1}{[1,\\ldots,n]}\\]whenever the left-hand side is not zero?\n\n\n\nInequality is obvious for the second claim, the problem is strict inequality. This fails for small $n$, for example\\[\\frac{1}{2}-\\frac{1}{3}-\\frac{1}{4}=-\\frac{1}{12}.\\]Arguments of Kovac and van Doorn in the comment section prove a weak version of the first question, with an upper bound of\\[2^{-n\\frac{(\\log\\log\\log n)^{1+o(1)}}{\\log n}},\\]and van Doorn gives a heuristic that suggests this may be the true order of magnitude.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T23:51:53.285Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #317 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some constant $c>0$ such that for every $n\\geq 1$ there exists some $\\delta_k\\in \\{-1,0,1\\}$ for $1\\leq k\\leq n$ with\\[0< \\left\\lvert \\sum_{1\\leq k\\leq n}\\frac{\\delta_k}{k}\\right\\rvert < \\frac{c}{2^n}?\\]Is it true that for sufficiently large $n$, for any $\\delta_k\\in \\{-1,0,1\\}$,\\[\\left\\lvert \\sum_{1\\leq k\\leq n}\\frac{\\delta_k}{k}\\right\\rvert > \\frac{1}{[1,\\ldots,n]}\\]whenever the left-hand side is not zero?\n\n\n\nInequality is obvious for the second claim, the problem is strict inequality. This fails for small $n$, for example\\[\\frac{1}{2}-\\frac{1}{3}-\\frac{1}{4}=-\\frac{1}{12}.\\]Arguments of Kovac and van Doorn in the comment section prove a weak version of the first question, with an upper bound of\\[2^{-n\\frac{(\\log\\log\\log n)^{1+o(1)}}{\\log n}},\\]and van Doorn gives a heuristic that suggests this may be the true order of magnitude.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #316\n- Problem #318\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T23:51:53.285Z",
+  "significance": 6,
+  "tractability": 4
+}

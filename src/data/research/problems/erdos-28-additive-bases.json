@@ -29,46 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "IN-PROGRESS: 1 sorry (sidon_not_basis). Added sidon_density_bound axiom and documented full proof sketch. HARD, not OPEN.",
-    "builtItems": [
-      "repFunc definition (ordered pairs) (Erdos28AdditiveBases.lean:50-51)",
-      "repFuncUnordered definition (Erdos28AdditiveBases.lean:54-55)",
-      "repFuncFinset for finite sets (Erdos28AdditiveBases.lean:58-59)",
-      "sumset definition (Erdos28AdditiveBases.lean:64-65)",
-      "IsAsymptoticBasis definition (Erdos28AdditiveBases.lean:68-69)",
-      "IsAsymptoticBasis' (finite complement) (Erdos28AdditiveBases.lean:72-73)",
-      "isAsymptoticBasis_iff PROVED (Erdos28AdditiveBases.lean:78-107)",
-      "pairs_summing_finite PROVED (Erdos28AdditiveBases.lean:111-118)",
-      "repFunc_pos_of_mem_sumset PROVED (Erdos28AdditiveBases.lean:121-133)",
-      "repFunc_pos_of_zero_mem PROVED (Erdos28AdditiveBases.lean:136-138)",
-      "IsSidon definition (Erdos28AdditiveBases.lean:141-143)",
-      "sidon_repFunc_bounded PROVED (Erdos28AdditiveBases.lean:149-199)",
-      "erdos_turan_weak, erdos_turan_strong, erdos_28 definitions",
-      "evens_sumset PROVED (Erdos28AdditiveBases.lean:241-253)",
-      "evens_repFunc PROVED (Erdos28AdditiveBases.lean:257-298)",
-      "nat_is_basis PROVED (Erdos28AdditiveBases.lean:300-303)",
-      "nat_repFunc PROVED (Erdos28AdditiveBases.lean:306-343)",
-      "sidon_density_bound axiom added (Erdos28AdditiveBases.lean:352-353)"
-    ],
-    "insights": [
-      "Erdős-Turán conjecture ($500): asymptotic bases have unbounded representation",
-      "Key finiteness lemma: pairs summing to n are bounded by Iio(n+1) × Iio(n+1)",
-      "Equivalence: IsAsymptoticBasis ↔ finite complement (uses sSup for bounded sets)",
-      "ncard_pos requires Finite instance - prove via product of Iio sets",
-      "Sidon sets have r_A(n) ≤ 2 but are NOT asymptotic bases (density too low)",
-      "Known: Grekos r_A(n) ≥ 6, Borwein r_A(n) ≥ 8 infinitely often",
-      "Sidon bounded proof: {c,d}={a,b} from Sidon property → S ⊆ {(a,b),(b,a)} → ncard ≤ 2",
-      "Counting formula: characterize set as image of Finset.range, prove injectivity, use ncard_image_of_injective",
-      "Even definition: Even n ↔ ∃ k, n = k + k (not 2*k), so use ⟨k, by ring⟩ for 2*k case",
-      "ℕ subtraction needs omega not ring: k * 2 + (n - k) * 2 = n * 2 requires omega due to truncation",
-      "sidon_not_basis proof: density gap shows Sidon A+A has ~N elements but needs ~2N for basis",
-      "sidon_density_bound already proved in Erdos340GreedySidon.lean as sidon_upper_bound_weak"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Complete sidon_not_basis by combining density bound with sumset counting (HARD)",
-      "Consider submitting to Aristotle for overnight proof search"
-    ]
+    "nextSteps": []
   },
   "approaches": [],
   "tags": [

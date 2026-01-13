@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-382",
+  "title": "Erdős #382",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $u\\leq v$ be such that the largest prime dividing $\\prod_{u\\leq m\\leq v}m$ appears with exponent at least $2$. Is it true that $v-u=v^{o(1)}$? Can $v-u$ be arbitrarily large?\n\n\n\nErd\\H{o}s and Graham report it follows from results of Ramachandra that $v-u\\leq v^{1/2+o(1)}$.\n\nCambie has observed that the first question boils down to some old conjectures on prime gaps.\nBy Cram\\'{er's conjecture}, for every $\\epsilon>0,$ for every $u$ sufficiently large there is a prime between $u$ and $u+u^\\epsilon$.\nThus for $u+u^\\epsilon<v$, the largest prime divisor of \\( \\prod_{u \\leq m \\leq v} m \\) appears with exponent $1$.\nSince this is not the case in the question, \\( v - u = v^{o(1)} \\).\n\nCambie also gives the following heuristic for the second question. The 'probability' that the largest prime divisor of $n$ is $<n^{1/2}$ is $1-\\log 2>0$. For any fixed $k$, there is therefore a positive 'probability' that there are $k$ consecutive integers around $q^2$ (for a prime $q$) all of whose prime divisors are bounded above by $q$, when $v-u\\geq k$. See [383] for a conjecture along these lines. A similar argument applies if we replace multiplicity $2$ with multiplicity $r$, for any fixed $r\\geq 2$.\n\nSee also [380].\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T00:59:36.242Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #382 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $u\\leq v$ be such that the largest prime dividing $\\prod_{u\\leq m\\leq v}m$ appears with exponent at least $2$. Is it true that $v-u=v^{o(1)}$? Can $v-u$ be arbitrarily large?\n\n\n\nErd\\H{o}s and Graham report it follows from results of Ramachandra that $v-u\\leq v^{1/2+o(1)}$.\n\nCambie has observed that the first question boils down to some old conjectures on prime gaps.\nBy Cram\\'{er's conjecture}, for every $\\epsilon>0,$ for every $u$ sufficiently large there is a prime between $u$ and $u+u^\\epsilon$.\nThus for $u+u^\\epsilon<v$, the largest prime divisor of \\( \\prod_{u \\leq m \\leq v} m \\) appears with exponent $1$.\nSince this is not the case in the question, \\( v - u = v^{o(1)} \\).\n\nCambie also gives the following heuristic for the second question. The 'probability' that the largest prime divisor of $n$ is $<n^{1/2}$ is $1-\\log 2>0$. For any fixed $k$, there is therefore a positive 'probability' that there are $k$ consecutive integers around $q^2$ (for a prime $q$) all of whose prime divisors are bounded above by $q$, when $v-u\\geq k$. See [383] for a conjecture along these lines. A similar argument applies if we replace multiplicity $2$ with multiplicity $r$, for any fixed $r\\geq 2$.\n\nSee also [380].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #383\n- Problem #380\n- Problem #381\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T00:59:36.242Z",
+  "significance": 6,
+  "tractability": 4
+}

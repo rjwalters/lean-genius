@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-533",
+  "title": "Erdős #533",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\delta>0$. If $n$ is sufficiently large and $G$ is a graph on $n$ vertices with no $K_5$ and at least $\\delta n^2$ edges then $G$ contains a set of $\\gg_\\delta n$ vertices containing no triangle.\n\n\n\n\nA problem of Erd\\H{o}s, Hajnal, Simonovits, S\\'{o}s, and Szemer\\'{e}di, who could prove this is true for $\\delta>1/16$, and could further prove it for $\\delta>0$ if we replace $K_5$ with $K_4$.\n\nThey further observed that it fails for $\\delta =1/4$ if we replace $K_5$ with $K_7$: by a construction of Erd\\H{o}s and Rogers \\cite{ErRo62} (see [620]) there exists some constant $c>0$ such that, for all large $n$, there is a graph on $n$ vertices which contains no $K_4$ and every set of at least $n^{1-c}$ vertices contains a triangle. If we take two vertex disjoint copies of this graph and add all edges between the two copies then this yields a graph on $2n$ vertices with $\\geq n^2$ edges, which contains no $K_7$, yet every set of at least $2n^{1-c}$ vertices contains a triangle.\n\n\nSee also [579] and the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[ErRo62] Erd\\H{o}s, P. and Rogers, C. A., The construction of certain graphs. Canadian J. Math. (1962), 702-707.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T04:39:49.623Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #533 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\delta>0$. If $n$ is sufficiently large and $G$ is a graph on $n$ vertices with no $K_5$ and at least $\\delta n^2$ edges then $G$ contains a set of $\\gg_\\delta n$ vertices containing no triangle.\n\n\n\n\nA problem of Erd\\H{o}s, Hajnal, Simonovits, S\\'{o}s, and Szemer\\'{e}di, who could prove this is true for $\\delta>1/16$, and could further prove it for $\\delta>0$ if we replace $K_5$ with $K_4$.\n\nThey further observed that it fails for $\\delta =1/4$ if we replace $K_5$ with $K_7$: by a construction of Erd\\H{o}s and Rogers \\cite{ErRo62} (see [620]) there exists some constant $c>0$ such that, for all large $n$, there is a graph on $n$ vertices which contains no $K_4$ and every set of at least $n^{1-c}$ vertices contains a triangle. If we take two vertex disjoint copies of this graph and add all edges between the two copies then this yields a graph on $2n$ vertices with $\\geq n^2$ edges, which contains no $K_7$, yet every set of at least $2n^{1-c}$ vertices contains a triangle.\n\n\nSee also [579] and the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[ErRo62] Erd\\H{o}s, P. and Rogers, C. A., The construction of certain graphs. Canadian J. Math. (1962), 702-707.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #16\n- Problem #4\n- Problem #620\n- Problem #579\n- Problem #532\n- Problem #534\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er91\n- EHSSS94\n- ErRo62\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T04:39:49.623Z",
+  "significance": 6,
+  "tractability": 4
+}

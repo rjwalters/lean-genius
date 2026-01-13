@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-162",
+  "title": "Erdős #162",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\alpha>0$ and $n\\geq 1$. Let $F(n,\\alpha)$ be the largest $k$ such that there exists some 2-colouring of the edges of $K_n$ in which any induced subgraph $H$ on at least $k$ vertices contains more than $\\alpha\\binom{\\lvert H\\rvert}{2}$ many edges of each colour.\n\nProve that for every fixed $0\\leq \\alpha \\leq 1/2$, as $n\\to\\infty$,\\[F(n,\\alpha)\\sim c_\\alpha \\log n\\]for some constant $c_\\alpha$.\n\n\n\nIt is easy to show with the probabilistic method that there exist $c_1(\\alpha),c_2(\\alpha)$ such that\\[c_1(\\alpha)\\log n < F(n,\\alpha) < c_2(\\alpha)\\log n.\\]\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T09:56:05.236Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #162 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\alpha>0$ and $n\\geq 1$. Let $F(n,\\alpha)$ be the largest $k$ such that there exists some 2-colouring of the edges of $K_n$ in which any induced subgraph $H$ on at least $k$ vertices contains more than $\\alpha\\binom{\\lvert H\\rvert}{2}$ many edges of each colour.\n\nProve that for every fixed $0\\leq \\alpha \\leq 1/2$, as $n\\to\\infty$,\\[F(n,\\alpha)\\sim c_\\alpha \\log n\\]for some constant $c_\\alpha$.\n\n\n\nIt is easy to show with the probabilistic method that there exist $c_1(\\alpha),c_2(\\alpha)$ such that\\[c_1(\\alpha)\\log n < F(n,\\alpha) < c_2(\\alpha)\\log n.\\]\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #161\n- Problem #163\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T09:56:05.236Z",
+  "significance": 6,
+  "tractability": 4
+}

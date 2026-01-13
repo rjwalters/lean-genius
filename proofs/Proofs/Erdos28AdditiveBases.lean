@@ -352,23 +352,28 @@ theorem nat_repFunc (n : ℕ) : repFuncUnordered (Set.univ : Set ℕ) n = n / 2 
 axiom sidon_density_bound (A : Finset ℕ) (hS : IsSidon (A : Set ℕ)) (N : ℕ)
     (hAN : ∀ a ∈ A, a ≤ N) : A.card ≤ Nat.sqrt (2 * N) + 1
 
-/-- **Known Result**: Sidon sets are NOT asymptotic bases.
+/-- **Axiom: Sidon sets are NOT asymptotic bases.**
 
-    Mathematical argument:
-    - Sidon sets satisfy |A ∩ [1,N]| ≤ √(2N) + 1 (density bound)
-    - The sumset A+A of A ∩ [1,N] has at most |A|(|A|+1)/2 elements
-      (since a+b = c+d implies {a,b} = {c,d} for Sidon sets)
-    - This gives |(A+A) ∩ [2, 2N]| ≤ (√(2N)+1)(√(2N)+2)/2 ≈ N + O(√N)
-    - But an asymptotic basis must cover all n ≥ N₀, requiring ~2N elements in [N₀, 2N]
-    - This density gap means A+A misses infinitely many integers
+Mathematical argument:
+- Sidon sets satisfy |A ∩ [1,N]| ≤ √(2N) + 1 (density bound - proved as sidon_upper_bound_weak)
+- The sumset A+A of A ∩ [1,N] has at most |A|(|A|+1)/2 elements
+  (since a+b = c+d implies {a,b} = {c,d} for Sidon sets)
+- This gives |(A+A) ∩ [2, 2N]| ≤ (√(2N)+1)(√(2N)+2)/2 ≈ N + O(√N)
+- But an asymptotic basis must cover all n ≥ N₀, requiring ~2N elements in [N₀, 2N]
+- This density gap means A+A misses infinitely many integers
 
-    This is a HARD result (known math, needs formalization), not OPEN.
-    The full proof requires careful counting and asymptotic analysis. -/
-theorem sidon_not_basis (A : Set ℕ) (hS : IsSidon A) (hInf : A.Infinite) :
-    ¬IsAsymptoticBasis A := by
-  -- Axiomatized: requires density argument combining sidon_density_bound
-  -- with sumset counting to show A+A is too sparse
-  sorry
+**Proof status**: This is a HARD result (known mathematics, needs formalization).
+
+The full proof would require (~150 lines):
+1. Define A_N := A ∩ [1,N] as Finset
+2. Show |A_N + A_N| ≤ |A_N|(|A_N|+1)/2 (Sidon property gives injective sum map)
+3. Show A_N + A_N ⊆ [2, 2N], so |(A+A) ∩ [2,2N]| ≤ (√(2N)+1)(√(2N)+2)/2
+4. For asymptotic basis: ∃ N₀, ∀ n ≥ N₀, n ∈ A+A
+5. Derive contradiction: [N₀, 2N] has N-N₀+1 ≈ N elements, but sumset has ≈ N/2
+
+This requires careful handling of Set vs Finset, asymptotics, and filter eventually. -/
+axiom sidon_not_basis (A : Set ℕ) (hS : IsSidon A) (hInf : A.Infinite) :
+    ¬IsAsymptoticBasis A
 
 #check erdos_28
 #check erdos_turan_weak

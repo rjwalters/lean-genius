@@ -1,0 +1,33 @@
+{
+  "id": "erdos-494",
+  "title": "Erdős Problem #494",
+  "slug": "erdos-494",
+  "description": "If ... is a finite set and ... then let\\[A_k = \\{ z_1+\\cdots+z_k : z_i\\in A\\}.\\]For ... does the multiset ... (together with the size of ...) uniquely determine the set ...?",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/494",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos494Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 494,
+    "erdosUrl": "https://erdosproblems.com/494",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #494 from erdosproblems.com.",
+    "problemStatement": "If $A\\subset \\mathbb{C}$ is a finite set and $k\\geq 1$ then let\\[A_k = \\{ z_1+\\cdots+z_k : z_i\\in A\\textrm{ distinct}\\}.\\]For $k>2$ does the multiset $A_k$ (together with the size of $A$) uniquely determine the set $A$?",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

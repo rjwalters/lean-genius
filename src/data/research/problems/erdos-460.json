@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-460",
+  "title": "Erdős #460",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_0=n$ and $a_1=1$, and in general $a_k$ is the least integer $>a_{k-1}$ for which $(n-a_k,n-a_i)=1$ for all $1\\leq i<k$. Does\\[\\sum_{i}\\frac{1}{a_i}\\to \\infty\\]as $n\\to \\infty$? What about if we restrict the sum to those $i$ such that $n-a_j$ is divisible by some prime $\\leq a_j$, or the complement of such $i$?\n\n\n\nThis question arose in work of Eggleton, Erd\\H{o}s, and Selfridge, who could prove that $a_k <k^{2+o(1)}$ for $k$ large enough depending on $n$, but conjectured that in fact $a_k\\ll k\\log k$ is true.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T04:11:10.512Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #460 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_0=n$ and $a_1=1$, and in general $a_k$ is the least integer $>a_{k-1}$ for which $(n-a_k,n-a_i)=1$ for all $1\\leq i<k$. Does\\[\\sum_{i}\\frac{1}{a_i}\\to \\infty\\]as $n\\to \\infty$? What about if we restrict the sum to those $i$ such that $n-a_j$ is divisible by some prime $\\leq a_j$, or the complement of such $i$?\n\n\n\nThis question arose in work of Eggleton, Erd\\H{o}s, and Selfridge, who could prove that $a_k <k^{2+o(1)}$ for $k$ large enough depending on $n$, but conjectured that in fact $a_k\\ll k\\log k$ is true.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #459\n- Problem #461\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T04:11:10.512Z",
+  "significance": 6,
+  "tractability": 4
+}

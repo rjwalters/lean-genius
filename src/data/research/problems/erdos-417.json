@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-417",
+  "title": "Erdős #417",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[V'(x)=\\#\\{\\phi(m) : 1\\leq m\\leq x\\}\\]and\\[V(x)=\\#\\{\\phi(m) \\leq x : 1\\leq m\\}.\\]Does $\\lim V(x)/V'(x)$ exist? Is it $>1$?\n\n\n\nIt is trivial that $V'(x) \\leq V(x)$. In \\cite{Er98} Erd\\H{o}s suggests the limit may be infinite. See also [416].\n\n\n\n\nReferences\n\n\n[Er98] Erd\\H{o}s, Paul, Some of my new and almost new problems and results in combinatorial number theory. Number theory (Eger, 1996) (1998), 169-180.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T02:38:27.587Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #417 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[V'(x)=\\#\\{\\phi(m) : 1\\leq m\\leq x\\}\\]and\\[V(x)=\\#\\{\\phi(m) \\leq x : 1\\leq m\\}.\\]Does $\\lim V(x)/V'(x)$ exist? Is it $>1$?\n\n\n\nIt is trivial that $V'(x) \\leq V(x)$. In \\cite{Er98} Erd\\H{o}s suggests the limit may be infinite. See also [416].\n\n\n\n\nReferences\n\n\n[Er98] Erd\\H{o}s, Paul, Some of my new and almost new problems and results in combinatorial number theory. Number theory (Eger, 1996) (1998), 169-180.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #416\n- Problem #418\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79e\n- ErGr80\n- Er98\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T02:38:27.587Z",
+  "significance": 6,
+  "tractability": 4
+}

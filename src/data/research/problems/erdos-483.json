@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-483",
+  "title": "Erdős #483",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(k)$ be the minimal $N$ such that if $\\{1,\\ldots,N\\}$ is $k$-coloured then there is a monochromatic solution to $a+b=c$. Estimate $f(k)$. In particular, is it true that $f(k) < c^k$ for some constant $c>0$?\n\n\n\nThe values of $f(k)$ are known as Schur numbers. The best-known bounds for large $k$ are\\[(380)^{k/5}-O(1)\\leq f(k) \\leq \\lfloor(e-\\tfrac{1}{24}) k!\\rfloor-1.\\]The lower bound is due to Ageron, Casteras, Pellerin, Portella, Rimmel, and Tomasik \\cite{ACPPRT21} (improving previous bounds of Exoo \\cite{Ex94} and Fredricksen and Sweet \\cite{FrSw00}) and the upper bound is due to Whitehead \\cite{Wh73}. Note that $380^{1/5}\\approx 3.2806$.\n\nThe known values of $f$ are $f(1)=2$, $f(2)=5$, $f(3)=14$, $f(4)=45$, and $f(5)=161$ (see A030126). (The equality $f(5)=161$ was established by Heule \\cite{He17}).\n\nSee also [183] (in particular a folklore observation gives $f(k)\\leq R(3;k)-1$).\n\n\n\n\nReferences\n\n\n[ACPPRT21] R. Ageron, P. Casteras, T. Pellerin, Y. Portella, A. Rimmel, and J. Tomasik, New lower bounds for Schur and weak Schur numbers. arXiv:2112.03175 (2021).\n\n[Ex94] Exoo, G., A lower bound for Schur numbers and multicolor Ramsey numbers. Electronic J. of Combinatorics (1994).\n\n[FrSw00] Fredricksen, Harold and Sweet, Melvin M., Symmetric sum-free partitions and lower bounds for {S}chur\nnumbers. Electron. J. Combin. (2000), Research Paper 32, 9.\n\n[He17] M. Heuele, Schur Number Five. arXiv:1711.08076 (2017).\n\n[Wh73] Whitehead, Jr., Earl Glen, The {R}amsey number {$N(3,\\,3,\\,3,\\,3;\\,2)$}. Discrete Math. (1973), 389--396.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T03:37:39.479Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #483 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(k)$ be the minimal $N$ such that if $\\{1,\\ldots,N\\}$ is $k$-coloured then there is a monochromatic solution to $a+b=c$. Estimate $f(k)$. In particular, is it true that $f(k) < c^k$ for some constant $c>0$?\n\n\n\nThe values of $f(k)$ are known as Schur numbers. The best-known bounds for large $k$ are\\[(380)^{k/5}-O(1)\\leq f(k) \\leq \\lfloor(e-\\tfrac{1}{24}) k!\\rfloor-1.\\]The lower bound is due to Ageron, Casteras, Pellerin, Portella, Rimmel, and Tomasik \\cite{ACPPRT21} (improving previous bounds of Exoo \\cite{Ex94} and Fredricksen and Sweet \\cite{FrSw00}) and the upper bound is due to Whitehead \\cite{Wh73}. Note that $380^{1/5}\\approx 3.2806$.\n\nThe known values of $f$ are $f(1)=2$, $f(2)=5$, $f(3)=14$, $f(4)=45$, and $f(5)=161$ (see A030126). (The equality $f(5)=161$ was established by Heule \\cite{He17}).\n\nSee also [183] (in particular a folklore observation gives $f(k)\\leq R(3;k)-1$).\n\n\n\n\nReferences\n\n\n[ACPPRT21] R. Ageron, P. Casteras, T. Pellerin, Y. Portella, A. Rimmel, and J. Tomasik, New lower bounds for Schur and weak Schur numbers. arXiv:2112.03175 (2021).\n\n[Ex94] Exoo, G., A lower bound for Schur numbers and multicolor Ramsey numbers. Electronic J. of Combinatorics (1994).\n\n[FrSw00] Fredricksen, Harold and Sweet, Melvin M., Symmetric sum-free partitions and lower bounds for {S}chur\nnumbers. Electron. J. Combin. (2000), Research Paper 32, 9.\n\n[He17] M. Heuele, Schur Number Five. arXiv:1711.08076 (2017).\n\n[Wh73] Whitehead, Jr., Earl Glen, The {R}amsey number {$N(3,\\,3,\\,3,\\,3;\\,2)$}. Discrete Math. (1973), 389--396.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #5\n- Problem #183\n- Problem #482\n- Problem #484\n- Problem #2\n- Problem #39\n- Problem #1\n- Problem #20\n\n## References\n\n- ACPPRT21\n- Ex94\n- FrSw00\n- Wh73\n- He17\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T03:37:39.479Z",
+  "significance": 5,
+  "tractability": 3
+}

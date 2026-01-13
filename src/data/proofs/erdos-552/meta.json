@@ -1,0 +1,34 @@
+{
+  "id": "erdos-552",
+  "title": "Erdős Problem #552",
+  "slug": "erdos-552",
+  "description": "Determine the Ramsey number\\[R(C_4,S_n),\\]where ... is the star on ... vertices. In particular, is it true that, for any ..., there are infinitely many ... such that\\[R(C_4,S_n)\\leq n+-c?\\]",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/552",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos552Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 552,
+    "erdosUrl": "https://erdosproblems.com/552",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$100"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #552 from erdosproblems.com. Originally offered with a prize of $100.",
+    "problemStatement": "Determine the Ramsey number\\[R(C_4,S_n),\\]where $S_n=K_{1,n}$ is the star on $n+1$ vertices. In particular, is it true that, for any $c>0$, there are infinitely many $n$ such that\\[R(C_4,S_n)\\leq n+\\sqrt{n}-c?\\]",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

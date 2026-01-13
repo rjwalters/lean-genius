@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-374",
+  "title": "Erdős #374",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any $m\\in \\mathbb{N}$, let $F(m)$ be the minimal $k\\geq 2$ (if it exists) such that there are $a_1<\\cdots <a_k=m$ with $a_1!\\cdots a_k!$ a square. Let $D_k=\\{ m : F(m)=k\\}$. What is the order of growth of $\\lvert D_k\\cap\\{1,\\ldots,n\\}\\rvert$ for $3\\leq k\\leq 6$? For example, is it true that $\\lvert D_6\\cap \\{1,\\ldots,n\\}\\rvert \\gg n$?\n\n\n\nStudied by Erd\\H{o}s and Graham \\cite{ErGr76} (see also \\cite{LSS14}). It is known, for example, that:\n{UL}\n{LI}no $D_k$ contains a prime,{/LI}\n{LI}$D_2=\\{ n^2 : n>1\\}$,{/LI}\n{LI} $\\lvert D_3\\cap \\{1,\\ldots,n\\}\\rvert = o(\\lvert D_4\\cap \\{1,\\ldots,n\\}\\rvert)$,{/LI}\n{LI} the least element of $D_6$ is $527$, and{/LI}\n{LI} $D_k=\\emptyset$ for $k>6$.{/LI}\n{/UL}\n\n\n\n\nReferences\n\n\n[ErGr76] Erd\\H{o}s, P. and Graham, R. L., On products of factorials. Bull. Inst. Math. Acad. Sinica (1976), 337-355.\n\n[LSS14] Luca, F. and Saradha, N. and Shorey, T. N., Squares and factorials in products of factorials. Monatsh. Math. (2014), 385-400.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T00:59:36.242Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #374 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any $m\\in \\mathbb{N}$, let $F(m)$ be the minimal $k\\geq 2$ (if it exists) such that there are $a_1<\\cdots <a_k=m$ with $a_1!\\cdots a_k!$ a square. Let $D_k=\\{ m : F(m)=k\\}$. What is the order of growth of $\\lvert D_k\\cap\\{1,\\ldots,n\\}\\rvert$ for $3\\leq k\\leq 6$? For example, is it true that $\\lvert D_6\\cap \\{1,\\ldots,n\\}\\rvert \\gg n$?\n\n\n\nStudied by Erd\\H{o}s and Graham \\cite{ErGr76} (see also \\cite{LSS14}). It is known, for example, that:\n{UL}\n{LI}no $D_k$ contains a prime,{/LI}\n{LI}$D_2=\\{ n^2 : n>1\\}$,{/LI}\n{LI} $\\lvert D_3\\cap \\{1,\\ldots,n\\}\\rvert = o(\\lvert D_4\\cap \\{1,\\ldots,n\\}\\rvert)$,{/LI}\n{LI} the least element of $D_6$ is $527$, and{/LI}\n{LI} $D_k=\\emptyset$ for $k>6$.{/LI}\n{/UL}\n\n\n\n\nReferences\n\n\n[ErGr76] Erd\\H{o}s, P. and Graham, R. L., On products of factorials. Bull. Inst. Math. Acad. Sinica (1976), 337-355.\n\n[LSS14] Luca, F. and Saradha, N. and Shorey, T. N., Squares and factorials in products of factorials. Monatsh. Math. (2014), 385-400.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #373\n- Problem #375\n- Problem #2\n- Problem #39\n- Problem #1\n- Problem #14\n\n## References\n\n- ErGr76\n- ErGr80\n- LSS14\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T00:59:36.242Z",
+  "significance": 6,
+  "tractability": 4
+}

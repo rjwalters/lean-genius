@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-386",
+  "title": "Erdős #386",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $2\\leq k\\leq n-2$. Can $\\binom{n}{k}$ be the product of consecutive primes infinitely often? For example\\[\\binom{21}{2}=2\\cdot 3\\cdot 5\\cdot 7.\\]\n\n\n\nErd\\H{o}s and Graham write that 'a proof that this cannot happen infinitely often for $\\binom{n}{2}$ seems hopeless; probably this can never happen for $\\binom{n}{k}$ if $3\\leq k\\leq n-3$.'\n\nWeisenberg has provided four easy examples that show Erd\\H{o}s and Graham were too optimistic here:\\[\\binom{7}{3}=5\\cdot 7,\\]\\[\\binom{10}{4}= 2\\cdot 3\\cdot 5\\cdot 7,\\]\\[\\binom{14}{4} = 7\\cdot 11\\cdot 13,\\]and\\[\\binom{15}{6}=5\\cdot 7\\cdot 11\\cdot 13.\\]The known values of $n$ for which $\\binom{n}{2}$ is the product of consecutive primes are $4,6,15,21,715$ (see A280992).\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T00:59:36.243Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #386 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $2\\leq k\\leq n-2$. Can $\\binom{n}{k}$ be the product of consecutive primes infinitely often? For example\\[\\binom{21}{2}=2\\cdot 3\\cdot 5\\cdot 7.\\]\n\n\n\nErd\\H{o}s and Graham write that 'a proof that this cannot happen infinitely often for $\\binom{n}{2}$ seems hopeless; probably this can never happen for $\\binom{n}{k}$ if $3\\leq k\\leq n-3$.'\n\nWeisenberg has provided four easy examples that show Erd\\H{o}s and Graham were too optimistic here:\\[\\binom{7}{3}=5\\cdot 7,\\]\\[\\binom{10}{4}= 2\\cdot 3\\cdot 5\\cdot 7,\\]\\[\\binom{14}{4} = 7\\cdot 11\\cdot 13,\\]and\\[\\binom{15}{6}=5\\cdot 7\\cdot 11\\cdot 13.\\]The known values of $n$ for which $\\binom{n}{2}$ is the product of consecutive primes are $4,6,15,21,715$ (see A280992).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #385\n- Problem #387\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T00:59:36.244Z",
+  "significance": 6,
+  "tractability": 4
+}

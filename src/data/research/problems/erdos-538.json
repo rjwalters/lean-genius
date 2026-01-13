@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-538",
+  "title": "Erdős #538",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 2$ and suppose that $A\\subseteq\\{1,\\ldots,N\\}$ is such that, for any $m$, there are at most $r$ solutions to $m=pa$ where $p$ is prime and $a\\in A$. Give the best possible upper bound for\\[\\sum_{n\\in A}\\frac{1}{n}.\\]\n\n\n\nErd\\H{o}s observed that\\[\\sum_{n\\in A}\\frac{1}{n}\\sum_{p\\leq N}\\frac{1}{p}\\leq r\\sum_{m\\leq N^2}\\frac{1}{m}\\ll r\\log N,\\]and hence\\[\\sum_{n\\in A}\\frac{1}{n} \\ll r\\frac{\\log N}{\\log\\log N}.\\]See also [536] and [537].\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T04:39:49.623Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #538 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 2$ and suppose that $A\\subseteq\\{1,\\ldots,N\\}$ is such that, for any $m$, there are at most $r$ solutions to $m=pa$ where $p$ is prime and $a\\in A$. Give the best possible upper bound for\\[\\sum_{n\\in A}\\frac{1}{n}.\\]\n\n\n\nErd\\H{o}s observed that\\[\\sum_{n\\in A}\\frac{1}{n}\\sum_{p\\leq N}\\frac{1}{p}\\leq r\\sum_{m\\leq N^2}\\frac{1}{m}\\ll r\\log N,\\]and hence\\[\\sum_{n\\in A}\\frac{1}{n} \\ll r\\frac{\\log N}{\\log\\log N}.\\]See also [536] and [537].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #536\n- Problem #537\n- Problem #539\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er73\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T04:39:49.623Z",
+  "significance": 6,
+  "tractability": 4
+}

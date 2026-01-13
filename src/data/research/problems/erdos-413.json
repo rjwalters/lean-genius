@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-413",
+  "title": "Erdős #413",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\omega(n)$ count the number of distinct primes dividing $n$. Are there infinitely many $n$ such that, for all $m<n$, we have $m+\\omega(m) \\leq n$?\n\nCan one show that there exists an $\\epsilon>0$ such that there are infinitely many $n$ where $m+\\epsilon \\omega(m)\\leq n$ for all $m<n$?\n\n\n\nIn \\cite{Er79} Erd\\H{o}s calls such an $n$ a 'barrier' for $\\omega$. Some other natural number theoretic functions (such as $\\phi$ and $\\sigma$) have no barriers because they increase too rapidly. Erd\\H{o}s believed that $\\omega$ should have infinitely many barriers. In \\cite{Er79d} he proves that $F(n)=\\prod k_i$, where $n=\\prod p_i^{k_i}$, has infinitely many barriers (in fact the set of barriers has positive density in the integers).\n\nErd\\H{o}s also believed that $\\Omega$, the count of the number of prime factors with multiplicity), should have infinitely many barriers. Selfridge found the largest barrier for $\\Omega$ which is $<10^5$ is $99840$.\n\nIn \\cite{ErGr80} this problem is suggested as a way of showing that the iterated behaviour of $n\\mapsto n+\\omega(n)$ eventually settles into a single sequence, regardless of the starting value of $n$ (see also [412] and [414]).\n\nErd\\H{o}s and Graham report it could be attacked by sieve methods, but 'at present these methods are not strong enough'.\n\nSee also [647] and [679].\n\nThe sequence of barriers for $\\omega$ is A005236 in the OEIS.\n\nThis is discussed in problem B8 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er79] Erd\\H{o}s, Paul, Some unconventional problems in number theory. Math. Mag. (1979), 67-70.\n\n[Er79d] Erd\\H{o}s, P., Some unconventional problems in number theory. Acta Math. Acad. Sci. Hungar. (1979), 71-80.\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T02:41:06.675Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #413 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\omega(n)$ count the number of distinct primes dividing $n$. Are there infinitely many $n$ such that, for all $m<n$, we have $m+\\omega(m) \\leq n$?\n\nCan one show that there exists an $\\epsilon>0$ such that there are infinitely many $n$ where $m+\\epsilon \\omega(m)\\leq n$ for all $m<n$?\n\n\n\nIn \\cite{Er79} Erd\\H{o}s calls such an $n$ a 'barrier' for $\\omega$. Some other natural number theoretic functions (such as $\\phi$ and $\\sigma$) have no barriers because they increase too rapidly. Erd\\H{o}s believed that $\\omega$ should have infinitely many barriers. In \\cite{Er79d} he proves that $F(n)=\\prod k_i$, where $n=\\prod p_i^{k_i}$, has infinitely many barriers (in fact the set of barriers has positive density in the integers).\n\nErd\\H{o}s also believed that $\\Omega$, the count of the number of prime factors with multiplicity), should have infinitely many barriers. Selfridge found the largest barrier for $\\Omega$ which is $<10^5$ is $99840$.\n\nIn \\cite{ErGr80} this problem is suggested as a way of showing that the iterated behaviour of $n\\mapsto n+\\omega(n)$ eventually settles into a single sequence, regardless of the starting value of $n$ (see also [412] and [414]).\n\nErd\\H{o}s and Graham report it could be attacked by sieve methods, but 'at present these methods are not strong enough'.\n\nSee also [647] and [679].\n\nThe sequence of barriers for $\\omega$ is A005236 in the OEIS.\n\nThis is discussed in problem B8 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er79] Erd\\H{o}s, Paul, Some unconventional problems in number theory. Math. Mag. (1979), 67-70.\n\n[Er79d] Erd\\H{o}s, P., Some unconventional problems in number theory. Acta Math. Acad. Sci. Hungar. (1979), 71-80.\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #412\n- Problem #414\n- Problem #647\n- Problem #679\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79\n- Er79d\n- Er92e\n- Er95c\n- ErGr80\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T02:41:06.675Z",
+  "significance": 5,
+  "tractability": 3
+}

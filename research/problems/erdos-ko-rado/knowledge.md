@@ -1,5 +1,30 @@
 # Erdős-Ko-Rado Theorem - Knowledge Base
 
+## Session 2026-01-12 (star_achieves_bound Proof)
+
+**Mode**: REVISIT
+**Prior Status**: completed (with axioms)
+**New Status**: **COMPLETED** (star_achieves_bound fully proved)
+
+**What we did**:
+1. Identified that `star_achieves_bound` still had a sorry at line 285
+2. Proved the theorem using `Finset.card_bij` to establish a bijection
+3. The bijection: `s ↦ s.erase x` from k-sets containing x to (k-1)-subsets of univ \ {x}
+4. Proved injectivity: if s.erase x = t.erase x and both contain x, then s = t
+5. Proved surjectivity: for t ∈ powersetCard (k-1) (univ.erase x), insert x t maps back to t
+6. Fixed deprecation warnings (`card_insert_of_not_mem` → `card_insert_of_notMem`)
+7. Removed stale comment about "bijection API changed in Mathlib 4.26"
+
+**Build verification**:
+- ErdosKoRado.lean: **0 sorries** (true now!)
+- No warnings
+
+**Files Modified**:
+- `proofs/Proofs/ErdosKoRado.lean` - star_achieves_bound proof (~20 lines)
+- `research/problems/erdos-ko-rado/knowledge.md` - this session
+
+---
+
 ## Session 2026-01-01 (Sorry Removal - COMPLETED)
 
 **Mode**: REVISIT

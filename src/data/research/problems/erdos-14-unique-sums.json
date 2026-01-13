@@ -29,36 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "RESOLVED: Formalization analyzed. Added omega_sqrt_implies_not_little_o PROVED. Original erdos_14a/14b are genuinely independent!",
-    "builtItems": [
-      "repCount, uniqueSums, sumset definitions (Erdos14UniqueSums.lean:46-63)",
-      "IsSidon definition (Erdos14UniqueSums.lean:83)",
-      "sidon_all_unique - Sidon sets have all unique sums PROVED (Erdos14UniqueSums.lean:88)",
-      "empty_repCount - empty set has 0 reps PROVED (Erdos14UniqueSums.lean:173)",
-      "singleton_uniqueSums - {k} has uniqueSums = {2k} PROVED (Erdos14UniqueSums.lean:178)",
-      "consecutive_many_nonunique - {1..n} has non-unique sums PROVED (Erdos14UniqueSums.lean:212)",
-      "omega_sqrt_implies_not_little_o PROVED (Erdos14UniqueSums.lean:169-213)",
-      "sidon_size_bound - Sidon sets have O(√N) elements (AXIOM, Erdős-Turán)",
-      "erdos_upper_construction, erdos_lower_infinitely_often, erdos_freud_finite (AXIOMS)"
-    ],
-    "insights": [
-      "Erdős #14 asks two related questions about uniquely representable sums",
-      "Sidon sets (B₂ sequences) have ALL sums unique, but are sparse (O(√N))",
-      "Key technique: wlog for a ≤ b normalization in pair counting",
-      "CONFIRMED: erdos_14a and erdos_14b are GENUINELY INDEPENDENT as formalized!",
-      "Example: U(N) = √N/log(N) satisfies BOTH 14a (for each ε) AND 14b (o(√N))",
-      "The ≫_ε notation allows C to depend on ε - this is standard mathematical usage",
-      "TRUE implication requires Ω(√N) lower bound, proved in omega_sqrt_implies_not_little_o",
-      "Removed invalid sorry - the original erdos_14a_implies_not_14b was unprovable by design"
-    ],
-    "mathlibGaps": [
-      "No direct lemma for counting pairs with property in finite product sets"
-    ],
-    "nextSteps": [
-      "Prove sidon_size_bound from first principles (Erdős-Turán theorem)",
-      "Build Decidable instance for repCount on finite sets",
-      "Consider adding erdos_14a_stronger with uniform C for reference"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
   "approaches": [],
   "tags": [
