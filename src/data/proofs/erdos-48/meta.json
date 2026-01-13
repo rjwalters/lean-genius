@@ -2,7 +2,7 @@
   "id": "erdos-48",
   "title": "Erdős Problem #48: φ(n) = σ(m)",
   "slug": "erdos-48",
-  "description": "Are there infinitely many integers n, m such that φ(n) = σ(m)?",
+  "description": "Are there infinitely many integers n, m such that Euler's totient φ(n) equals the sum of divisors σ(m)?",
   "meta": {
     "author": "Ford, Luca, Pomerance (2010)",
     "sourceUrl": "https://erdosproblems.com/48",
@@ -12,28 +12,84 @@
     "tags": [
       "erdos",
       "number-theory",
-      "arithmetic-functions"
+      "arithmetic-functions",
+      "totient",
+      "divisors"
     ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 48,
     "erdosUrl": "https://erdosproblems.com/48",
-    "erdosProblemStatus": "proved"
-  },
-  "overview": {
-    "historicalContext": "Erdős Problem #48 asks whether there are infinitely many pairs (n,m) where Euler's totient φ(n) equals the sum of divisors σ(m). This was proved by Ford, Luca, and Pomerance in 2010 using analytic number theory.",
-    "problemStatement": "Are there infinitely many integers $n, m$ such that $\\varphi(n) = \\sigma(m)$?",
-    "proofStrategy": "The proof uses deep results about the distribution of values of arithmetic functions. We formalize the statement and verify concrete examples like φ(5) = σ(3) = 4.",
-    "keyInsights": [
-      "The answer is YES - infinitely many such pairs exist",
-      "Example: φ(5) = 4 = σ(3) since divisors of 3 are {1,3}",
-      "The full proof requires analytic methods beyond current Mathlib"
+    "erdosProblemStatus": "proved",
+    "dateAdded": "2026-01-13",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function φ(n)",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.divisors",
+        "description": "The set of divisors of a natural number",
+        "module": "Mathlib.NumberTheory.Divisors"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of the Erdős problem in Lean 4",
+      "Custom definition of sum of divisors using Finset.sum",
+      "Verified concrete example: φ(5) = σ(3) = 4"
     ]
   },
-  "sections": [],
+  "overview": {
+    "historicalContext": "Erdős Problem #48 connects two of the most fundamental functions in number theory: Euler's totient function φ(n), which counts integers coprime to n, and the sum of divisors function σ(n). These functions have been studied since antiquity—σ(n) relates to perfect numbers (known to the Greeks), while φ(n) is central to modular arithmetic and RSA cryptography.\n\nErdős posed this problem asking whether the ranges of these two functions intersect infinitely often in a specific way. The question is surprisingly deep because φ and σ have very different behaviors: φ(n) < n for n > 1 (always shrinks), while σ(n) > n for n > 1 (always grows).\n\nThe problem was solved affirmatively by Kevin Ford, Florian Luca, and Carl Pomerance in 2010, using sophisticated analytic methods.",
+    "problemStatement": "Are there infinitely many pairs of positive integers $(n, m)$ such that\n$$\\varphi(n) = \\sigma(m)$$\nwhere $\\varphi$ is Euler's totient function and $\\sigma$ is the sum of divisors?\n\n**Answer**: YES — proved by Ford, Luca, and Pomerance (2010).",
+    "proofStrategy": "The proof by Ford-Luca-Pomerance uses analytic number theory to show:\n\n1. For infinitely many primes p, the value p-1 is in the range of σ\n2. For such primes, p = φ(p) (since φ(p) = p-1 for prime p... wait, φ(p) = p-1)\n3. The key is finding m with σ(m) = p-1, then n = p gives φ(n) = p-1 = σ(m)\n\nThe actual proof requires estimates on how often values appear in the ranges of arithmetic functions.\n\nWe formalize the statement and verify a concrete example: φ(5) = 4 and σ(3) = 1 + 3 = 4, so (5, 3) is such a pair.",
+    "keyInsights": [
+      "**Totient function**: φ(n) counts integers from 1 to n that share no common factor with n. For prime p, φ(p) = p-1.",
+      "**Sum of divisors**: σ(n) = Σ_{d|n} d. For prime p, σ(p) = 1 + p. For example, σ(6) = 1+2+3+6 = 12.",
+      "**The connection is non-obvious**: φ tends to be 'small' (< n) while σ tends to be 'large' (> n), yet their ranges overlap infinitely often.",
+      "**Concrete example**: φ(5) = 4 (coprime to 5: 1,2,3,4) and σ(3) = 4 (divisors: 1,3), so the pair (5,3) works.",
+      "**The full proof is analytic**: It requires understanding the distribution of values of multiplicative functions, beyond current Mathlib formalization."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Module documentation explaining the problem and Mathlib imports for totient and divisors."
+    },
+    {
+      "id": "definitions",
+      "title": "Key Definitions",
+      "startLine": 24,
+      "endLine": 29,
+      "summary": "Define sum of divisors σ(n) and the set of pairs (n,m) with φ(n) = σ(m)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 31,
+      "endLine": 40,
+      "summary": "State Erdős Problem #48 as an axiom: infinitely many pairs exist."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 42,
+      "endLine": 57,
+      "summary": "Compute concrete values and prove (5,3) satisfies the condition."
+    }
+  ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #48 and verify the statement with concrete examples. The main theorem is stated as an axiom since the full proof requires analytic number theory.",
-    "implications": "This connects two fundamental arithmetic functions (totient and sum of divisors) in an unexpected way.",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #48, which asks whether φ(n) = σ(m) has infinitely many solutions. The answer is YES, proved by Ford, Luca, and Pomerance in 2010. We state the main theorem as an axiom (the analytic proof is beyond current formalization) and verify a concrete example: φ(5) = σ(3) = 4.",
+    "implications": "This result connects two fundamental arithmetic functions in an unexpected way. It shows that despite φ and σ having opposite growth tendencies, their ranges share infinitely many values. The proof technique (analytic estimates on value distributions) is a powerful method in multiplicative number theory.",
+    "openQuestions": [
+      "Can we find an elementary proof avoiding analytic methods?",
+      "What is the density of such pairs among all (n,m)?",
+      "Can we characterize which values appear as both φ(n) and σ(m) for some n,m?"
+    ]
   }
 }

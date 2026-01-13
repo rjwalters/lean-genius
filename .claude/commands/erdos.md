@@ -150,6 +150,126 @@ For each problem added to gallery:
 - [ ] Tags are appropriate
 - [ ] `pnpm build` succeeds
 
+## Quality Guidelines
+
+Compare every gallery entry to the exemplar: `src/data/proofs/sqrt2-irrational/`
+
+### meta.json Requirements
+
+**Required fields:**
+```json
+{
+  "id": "erdos-{number}",
+  "title": "Erdős Problem #{number}: {short title}",
+  "slug": "erdos-{number}",
+  "description": "One-sentence problem statement",
+  "meta": {
+    "author": "Solver Name (Year)",
+    "sourceUrl": "https://erdosproblems.com/{number}",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos{Number}Problem.lean",
+    "tags": ["erdos", "topic1", "topic2"],
+    "badge": "axiom|theorem|verified",
+    "sorries": 0,
+    "erdosNumber": {number},
+    "erdosUrl": "https://erdosproblems.com/{number}",
+    "erdosProblemStatus": "proved|disproved|open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib.Name",
+        "description": "What it provides",
+        "module": "Mathlib.Module.Path"
+      }
+    ],
+    "originalContributions": [
+      "What we added beyond formal-conjectures",
+      "Educational value we provide"
+    ]
+  },
+  "overview": {
+    "historicalContext": "2-3 paragraphs on the problem's history and significance",
+    "problemStatement": "LaTeX-formatted mathematical statement with answer",
+    "proofStrategy": "High-level proof approach explanation",
+    "keyInsights": [
+      "**Concept name**: Explanation",
+      "**Another concept**: Explanation"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "What this section does"
+    }
+  ],
+  "conclusion": {
+    "summary": "What we proved and how",
+    "implications": "Why this matters",
+    "openQuestions": ["Related unsolved questions"]
+  }
+}
+```
+
+### annotations.json Requirements
+
+Create **one annotation per significant element**:
+
+1. **Import annotations** (type: "concept") - Explain Mathlib dependencies
+2. **Definition annotations** (type: "definition") - Explain custom definitions
+3. **Main theorem** (type: "theorem", significance: "critical") - The problem statement
+4. **Key lemmas** (type: "lemma", significance: "key") - Supporting results
+5. **Examples** (type: "example" or "theorem") - Concrete instances
+
+**Annotation structure:**
+```json
+{
+  "id": "ann-e{number}-{element}",
+  "proofId": "erdos-{number}",
+  "range": {
+    "startLine": 24,
+    "endLine": 25
+  },
+  "type": "definition|theorem|lemma|concept|example|insight",
+  "title": "Short descriptive title",
+  "content": "**Markdown** explanation for general audience",
+  "mathContext": "Technical Lean/math details for advanced readers",
+  "significance": "critical|key|supporting",
+  "relatedConcepts": ["concept1", "concept2"]
+}
+```
+
+**Quality targets (compare to sqrt2-irrational):**
+- sqrt2-irrational: 15 annotations, 334 lines
+- Minimum for Erdős entries: 5+ annotations, 100+ lines
+- Every definition and theorem should have an annotation
+
+### Content Guidelines
+
+**historicalContext should explain:**
+- When was this problem posed?
+- Who solved it and when?
+- What mathematical significance does it have?
+- Connections to other areas of mathematics
+
+**proofStrategy should explain:**
+- The high-level approach (contradiction, induction, construction, etc.)
+- Why axioms are used (if applicable)
+- What concrete examples we verify
+
+**keyInsights should be educational:**
+- Define key terms for non-experts
+- Explain the "aha moment" of the proof
+- Connect to familiar concepts when possible
+
+### Badge Selection
+
+- `"badge": "verified"` - Full constructive proof, no axioms
+- `"badge": "theorem"` - Proof uses Mathlib theorems only
+- `"badge": "axiom"` - Uses axiom for results beyond Mathlib (e.g., analytic number theory)
+
 ## Workflow Example
 
 **Process Erdős #494 (proved, has Lean):**

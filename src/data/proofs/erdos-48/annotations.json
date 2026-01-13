@@ -1,1 +1,107 @@
-[]
+[
+  {
+    "id": "ann-e48-imports",
+    "proofId": "erdos-48",
+    "range": {
+      "startLine": 17,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import `Data.Nat.Totient` for Euler's totient function φ(n), which counts integers from 1 to n that are coprime to n. We also import `NumberTheory.Divisors` for the divisors function.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "arithmetic functions"
+    ]
+  },
+  {
+    "id": "ann-e48-sum-divisors",
+    "proofId": "erdos-48",
+    "range": {
+      "startLine": 24,
+      "endLine": 25
+    },
+    "type": "definition",
+    "title": "Sum of Divisors Function σ(n)",
+    "content": "The **sum of divisors** function σ(n) adds up all positive divisors of n. For example, σ(6) = 1 + 2 + 3 + 6 = 12. This is one of the most studied arithmetic functions.",
+    "mathContext": "In Lean, we define `sumDivisors n` as `(n.divisors).sum id`, which sums over the Finset of divisors.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisors",
+      "arithmetic functions",
+      "perfect numbers"
+    ]
+  },
+  {
+    "id": "ann-e48-totient-sigma-pairs",
+    "proofId": "erdos-48",
+    "range": {
+      "startLine": 27,
+      "endLine": 29
+    },
+    "type": "definition",
+    "title": "The Set of (n,m) Pairs",
+    "content": "We define the set of all pairs (n,m) where Euler's totient φ(n) equals the sum of divisors σ(m). Erdős asked: is this set infinite?",
+    "mathContext": "In Lean, this is a set comprehension: `{p : ℕ × ℕ | p.1.totient = sumDivisors p.2}`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "set theory",
+      "arithmetic functions"
+    ]
+  },
+  {
+    "id": "ann-e48-main-axiom",
+    "proofId": "erdos-48",
+    "range": {
+      "startLine": 31,
+      "endLine": 40
+    },
+    "type": "theorem",
+    "title": "Main Theorem (Axiom)",
+    "content": "**Erdős Problem #48**: There are infinitely many pairs (n,m) with φ(n) = σ(m). This was proved by Ford, Luca, and Pomerance in 2010 using analytic number theory techniques involving the distribution of values of multiplicative functions.",
+    "mathContext": "We state this as an axiom because the full proof requires deep results about arithmetic function distributions that are beyond current Mathlib formalization. The proof shows that for infinitely many primes p, both p-1 is in the range of σ and p is in the range of φ.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "analytic number theory",
+      "multiplicative functions",
+      "prime distribution"
+    ]
+  },
+  {
+    "id": "ann-e48-sigma-examples",
+    "proofId": "erdos-48",
+    "range": {
+      "startLine": 42,
+      "endLine": 47
+    },
+    "type": "lemma",
+    "title": "Computing σ(n) Examples",
+    "content": "We verify σ(1) = 1 (the only divisor of 1 is itself) and σ(3) = 4 (divisors are 1 and 3). These computations use `native_decide`, which evaluates concrete expressions at compile time.",
+    "mathContext": "The `native_decide` tactic compiles the decidable proposition to native code and evaluates it, giving a verified certificate of the result.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decidability",
+      "native_decide",
+      "computation"
+    ]
+  },
+  {
+    "id": "ann-e48-example-pair",
+    "proofId": "erdos-48",
+    "range": {
+      "startLine": 52,
+      "endLine": 55
+    },
+    "type": "theorem",
+    "title": "Concrete Example: (5, 3)",
+    "content": "We prove that (5, 3) is in our set: φ(5) = 4 (since 1,2,3,4 are all coprime to 5) and σ(3) = 1+3 = 4. This gives a verified example of a pair satisfying the Erdős condition.",
+    "mathContext": "This demonstrates that the set is non-empty. The infinite family proven by Ford-Luca-Pomerance includes infinitely many such pairs, but finding them requires sophisticated number theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "totient function",
+      "sum of divisors",
+      "verification"
+    ]
+  }
+]
