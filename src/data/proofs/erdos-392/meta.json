@@ -1,0 +1,33 @@
+{
+  "id": "erdos-392",
+  "title": "Erdős Problem #392",
+  "slug": "erdos-392",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the least value of ... such that\\[n!=a_1\\cdots a_t\\]with .... Is it true that\\[A(n)={2}-{2\\log n}+o\\left({\\log...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/392",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos392Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 392,
+    "erdosUrl": "https://erdosproblems.com/392",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #392 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A(n)$ denote the least value of $t$ such that\\[n!=a_1\\cdots a_t\\]with $a_1\\leq \\cdots \\leq a_t\\leq n^2$. Is it true that\\[A(n)=\\frac{n}{2}-\\frac{n}{2\\log n}+o\\left(\\frac{n}{\\log n}\\right)?\\]\n\n\n\nIf we change the condition to $a_t\\leq n$ it can be shown that\\[A(n)=n-\\frac{n}{\\log n}+o\\left(\\frac{n}{\\log n}\\right)\\]via a greedy decomposition (use $n$ as often as possible, then $n-1$, and so on). Other questions can be asked for other restrictions on the sizes of the $a_t$.\n\nCambie has observed that a positive answer follows from the result above with $a_t\\leq n$, simply by pairing variables together, e.g. taking $a_i'=a_{2i-1}a_{2i}$ (and the lower bound follows from Stirling's approximation).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

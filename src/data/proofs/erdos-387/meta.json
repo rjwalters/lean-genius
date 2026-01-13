@@ -1,0 +1,33 @@
+{
+  "id": "erdos-387",
+  "title": "Erdős Problem #387",
+  "slug": "erdos-387",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an absolute constant ... such that, for all ..., the binomial coefficient ... has a divisor in ...?\n\n\n\nErds once con...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/387",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos387Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 387,
+    "erdosUrl": "https://erdosproblems.com/387",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #387 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an absolute constant $c>0$ such that, for all $1\\leq k< n$, the binomial coefficient $\\binom{n}{k}$ has a divisor in $(cn,n]$?\n\n\n\nErd\\H{o}s once conjectured that $\\binom{n}{k}$ must always have a divisor in $(n-k,n]$, but this was disproved by Schinzel and Erd\\H{o}s \\cite{Sc58}. A counterexample is given by $n=99215$ and $k=15$. Schinzel conjectured (see problem B34 of \\cite{Gu04}) that, for all sufficiently large $k$ which are not prime powers, there exists an $n$ such that $\\binom{n}{k}$ is not divisible by any integer in $(n-k,n]$.\n\nIt is easy to see that $\\binom{n}{k}$ always has a divisor in $[n/k,n]$.\n\nFaulkner \\cite{Fa66} proved that, if $p$ is the least prime $>2k$ and $n\\geq p$, then $\\binom{n}{k}$ has a prime divisor $\\geq p$ (except $\\binom{9}{2}$ and $\\binom{10}{3}$).\n\nThis is discussed in problems B33 and B34 of Guy's collection \\cite{Gu04}, who says that Erd\\H{o}s conjectured this is true for any $c<1$ (if $n$ is sufficiently large).\n\n\n\n\nReferences\n\n\n[Fa66] Faulkner, M., On a theorem of {S}ylvester and {S}chur. J. London Math. Soc. (1966), 107--110.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Sc58] Schinzel, A., Sur un probl\\`eme de {P}. {E}rd\\H{o}s. Colloq. Math. (1958), 198--204.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

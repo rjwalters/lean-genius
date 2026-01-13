@@ -1,0 +1,33 @@
+{
+  "id": "erdos-373",
+  "title": "Erdős Problem #373",
+  "slug": "erdos-373",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nShow that the equation\\[n! = a_1!a_2!\\cdots a_k!,\\]with ..., has only finitely many solutions.\n\n\n\nThis would follow if ..., w...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/373",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos373Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 373,
+    "erdosUrl": "https://erdosproblems.com/373",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #373 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nShow that the equation\\[n! = a_1!a_2!\\cdots a_k!,\\]with $n-1>a_1\\geq a_2\\geq \\cdots \\geq a_k\\geq 2$, has only finitely many solutions.\n\n\n\nThis would follow if $P(n(n+1))/\\log n\\to \\infty$, where $P(m)$ denotes the largest prime factor of $m$ (see Problem [368]). Erd\\H{o}s \\cite{Er76d} proved that this problem would also follow from showing that $P(n(n-1))>4\\log n$.\n\nThe condition $a_1<n-1$ is necessary to rule out the trivial solutions when $n=a_2!\\cdots a_k!$.\n\nSur\\'{a}nyi was the first to conjecture that the only non-trivial solution to $a!b!=n!$ is $6!7!=10!$. More generally, Hickerson (as reported in \\cite{Er76d}) conjectured that the only non-trivial solutions to the equation in the problem statement are\\[9!=2!3!3!7!,\\]\\[10!=6!7!,\\]\\[10!=3!5!7!,\\]and\\[16!=14!5!2!.\\]Luca \\cite{Lu07b} has shown that there are only finitely many solutions, conditional on the ABC conjecture, and proved unconditionally that the number of $n\\leq x$ which admit a non-trivial solution is\\[\\leq \\exp \\bigg(f(x)\\frac{\\log (x)}{\\log\\log (x)}\\bigg)\\]for any function $f(x)$ which tends to infinity.\n\nThis is discussed in problem B23 of Guy's collection \\cite{Gu04}.\n\nIn the case when $k=2$, Erd\\H{o}s \\cite{Er93} proved that if $n!=a_1!a_2!$ with $n-1>a_1\\geq a_2$ then\\[a_1\\geq n-5\\log\\log n,\\]and says it 'would be nice' to prove $a_1\\geq n-o(\\log\\log n)$. Bhat and Ramachandra \\cite{BhRa10} replace the $5$ with $(1+o(1))\\frac{1}{\\log 2}$, and also prove that the same bound holds for arbitrary $k\\geq 2$.\n\nNumerical investigations on solutions to $n!=a_1!a_2!$ have been carried out by Caldwell \\cite{Ca94} and Habsieger \\cite{Ha}, and it is known that there are no solutions aside from $10!=6!7!$ for $n\\leq 10^{3000}$.\n\n\n\n\nReferences\n\n\n[BhRa10] Bhat, K. Dzh. and Ramachandra, K., A remark on factorials that are products of factorials. Mat. Zametki (2010), 350--354.\n\n[Ca94] C. Caldwell, The Diophantine equation $A!B!=C!$. J. Recreat. Math. (1994), 128-133.\n\n[Er76d] Erd\\H{o}s, P., Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics (Univ. Manitoba, Winnipeg, Man., 1975) (1976), 25-44.\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Ha] Haight, J. A., Metric Diophantine approximation and related topics. PhD thesis ().\n\n[Lu07b] Luca, Florian, On factorials which are products of factorials. Math. Proc. Cambridge Philos. Soc. (2007), 533--542.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

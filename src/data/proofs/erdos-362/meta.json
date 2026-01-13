@@ -1,0 +1,33 @@
+{
+  "id": "erdos-362",
+  "title": "Erdős Problem #362",
+  "slug": "erdos-362",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a finite set of size .... Is it true that, for any fixed ..., there are\\[\\ll {N^{3/2}}\\]many ... such that ...?\n\nI...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/362",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos362Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 362,
+    "erdosUrl": "https://erdosproblems.com/362",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #362 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ be a finite set of size $N$. Is it true that, for any fixed $t$, there are\\[\\ll \\frac{2^N}{N^{3/2}}\\]many $S\\subseteq A$ such that $\\sum_{n\\in S}n=t$?\n\nIf we further ask that $\\lvert S\\rvert=l$ (for any fixed $l$) then is the number of solutions\\[\\ll \\frac{2^N}{N^2},\\]with the implied constant independent of $l$ and $t$?\n\n\n\nErd\\H{o}s and Moser \\cite{Er65} proved the first bound with an additional factor of $(\\log n)^{3/2}$. This was removed by S\\'{a}rk\\\"{o}zy and Szemer\\'{e}di \\cite{SaSz65}, thereby answering the first question in the affirmative. Stanley \\cite{St80} has shown that this quantity is maximised when $A=\\{-\\lfloor \\frac{N-1}{2}\\rfloor,\\ldots,\\lfloor\\frac{N}{2}\\rfloor\\}$.\n\nThe second question was answered in the affirmative by Hal\\'{a}sz \\cite{Ha77}, as a consequence of a more general multi-dimensional result.\n\n\n\n\nReferences\n\n\n[Er65] Erd\\H{o}s, P., Extremal problems in number theory. Proc. Sympos. Pure Math., Vol. VIII (1965), 181-189.\n\n[Ha77] Hal\\'{a}sz, G., Estimates for the concentration function of combinatorial\nnumber theory and probability. Period. Math. Hungar. (1977), 197--211.\n\n[SaSz65] S\\'{a}rk\\\"{o}zi, A. and Szemer\\'{e}di, E., \\\"{U}ber ein Problem von Erd\\H{o}s und Moser. Acta Arith. (1965), 205-208.\n\n[St80] Stanley, Richard P., Weyl groups, the hard Lefschetz theorem, and the Sperner property. SIAM J. Algebraic Discrete Methods (1980), 168-184.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-378",
+  "title": "Erdős Problem #378",
+  "slug": "erdos-378",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Does the density of integers ... for which ... is squarefree for at least ... values of ... exist? Is this density ....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/378",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos378Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 378,
+    "erdosUrl": "https://erdosproblems.com/378",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #378 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 0$. Does the density of integers $n$ for which $\\binom{n}{k}$ is squarefree for at least $r$ values of $1\\leq k<n$ exist? Is this density $>0$?\n\n\n\nErd\\H{o}s and Graham state they can prove that, for $k$ fixed and large, the density of $n$ such that $\\binom{n}{k}$ is squarefree is $o_k(1)$. They can also prove that there are infinitely many $n$ such that $\\binom{n}{k}$ is not squarefree for $1\\leq k<n$, and expect that the density of such $n$ is positive.\n\nAggarwal and Cambie have observed this problem is resolved by the results of Granville and Ramar\\'{e} \\cite{GrRa96}, who in particular show that the density of the set of those $n$ such that $\\binom{n}{k}$ is squarefree for exactly $2m+2$ many values of $k$ exists. If this density is $\\eta_m$, then the density in the original question is simply\\[1-\\sum_{0\\leq m\\leq \\frac{r-1}{2}}\\eta_m.\\]This density is positive since $\\eta_{r+1}>0$.\n\n\n\n\nReferences\n\n\n[GrRa96] Granville, Andrew and Ramar\\'{e}, Olivier, Explicit bounds on exponential sums and the scarcity of\nsquarefree binomial coefficients. Mathematika (1996), 73--107.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

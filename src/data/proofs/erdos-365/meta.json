@@ -1,0 +1,33 @@
+{
+  "id": "erdos-365",
+  "title": "Erdős Problem #365",
+  "slug": "erdos-365",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDo all pairs of consecutive powerful numbers ... and ... come from solutions to Pell equations? In other words, must either ....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/365",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos365Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 365,
+    "erdosUrl": "https://erdosproblems.com/365",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #365 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDo all pairs of consecutive powerful numbers $n$ and $n+1$ come from solutions to Pell equations? In other words, must either $n$ or $n+1$ be a square?\n\nIs the number of such $n\\leq x$ bounded by $(\\log x)^{O(1)}$?\n\n\n\nErd\\H{o}s originally asked Mahler whether there are infinitely many pairs of consecutive powerful numbers, but Mahler immediately observed that the answer is yes from the infinitely many solutions to the Pell equation $x^2=2^3y^2+1$.\n\nThe list of $n$ such that $n$ and $n+1$ are both powerful is A060355 in the OEIS.\n\nThe answer to the first question is no: Golomb \\cite{Go70} observed that both $12167=23^3$ and $12168=2^33^213^2$ are powerful. Walker \\cite{Wa76} proved that the equation\\[7^3x^2=3^3y^2+1\\]has infinitely many solutions, giving infinitely many counterexamples.\n\nSee also [364].\n\nThis is discussed in problem B16 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Go70] Golomb, S. W., Powerful numbers. Amer. Math. Monthly (1970), 848-855.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Wa76] Walker, David T., Consecutive integer pairs of powerful numbers and related\nDiophantine equations. Fibonacci Quart. (1976), 111-116.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

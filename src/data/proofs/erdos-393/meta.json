@@ -1,0 +1,33 @@
+{
+  "id": "erdos-393",
+  "title": "Erdős Problem #393",
+  "slug": "erdos-393",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the minimal ... such that\\[n! = a_1\\cdots a_t\\]with .... What is the behaviour of ...?\n\n\n\nErds and Graham writ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/393",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos393Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 393,
+    "erdosUrl": "https://erdosproblems.com/393",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #393 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ denote the minimal $m\\geq 1$ such that\\[n! = a_1\\cdots a_t\\]with $a_1<\\cdots <a_t=a_1+m$. What is the behaviour of $f(n)$?\n\n\n\nErd\\H{o}s and Graham write that they do not even know whether $f(n)=1$ infinitely often (i.e. whether a factorial is the product of two consecutive integers infinitely often).\n\nLet $F_m(N)$ count the number of $n\\leq N$ such that $f(n)=m$. Berend and Osgood \\cite{BeOs92} proved that, for each fixed $m$, $F_m(N)=o(N)$. Bui, Pratt, and Zaharescu \\cite{BPZ23} have shown that\\[F_m(N)\\ll_m N^{33/34}.\\]A result of Luca \\cite{Lu02} implies that $f(n)\\to \\infty$ as $n\\to \\infty$, conditional on the ABC conjecture.\n\n\n\n\nReferences\n\n\n[BPZ23] Bui, Hung M. and Pratt, Kyle and Zaharescu, Alexandru, Power savings for counting solutions to polynomial-factorial\nequations. Adv. Math. (2023), Paper No. 109021, 32.\n\n[BeOs92] Berend, Daniel and Osgood, Charles F., On the equation {$P(x)=n!$} and a question of {E}rd\\H{o}s. J. Number Theory (1992), 189--193.\n\n[Lu02] Luca, Florian, The {D}iophantine equation {$P(x)=n!$} and a result of {M}.\n{O}verholt. Glas. Mat. Ser. III (2002), 269--273.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-355",
+  "title": "Erdős Problem #355",
+  "slug": "erdos-355",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a lacunary sequence ... (so that ... and there exists some ... such that ... for all ...) such that\\[\\left\\{ \\sum_{a...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/355",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos355Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 355,
+    "erdosUrl": "https://erdosproblems.com/355",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #355 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a lacunary sequence $A\\subseteq \\mathbb{N}$ (so that $A=\\{a_1<a_2<\\cdots\\}$ and there exists some $\\lambda>1$ such that $a_{n+1}/a_n\\geq \\lambda$ for all $n\\geq 1$) such that\\[\\left\\{ \\sum_{a\\in A'}\\frac{1}{a} : A'\\subseteq A\\textrm{ finite}\\right\\}\\]contains all rationals in some open interval?\n\n\n\nBleicher and Erd\\H{o}s conjectured the answer is no.\n\nIn fact the answer is yes, with any lacunarity constant $\\lambda\\in (1,2)$ (though not $\\lambda=2$), as proved by van Doorn and Kova\\v{c} \\cite{DoKo25}.\n\n\n\n\nReferences\n\n\n[DoKo25] W. van Doorn and V. Kova\\v{c}, Lacunary sequences whose reciprocal sums represent all rationals in an interval. arXiv:2509.24971 (2025).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

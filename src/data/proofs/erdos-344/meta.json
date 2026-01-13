@@ -1,0 +1,33 @@
+{
+  "id": "erdos-344",
+  "title": "Erdős Problem #344",
+  "slug": "erdos-344",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a set of integers such that\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert\\gg N^{1/2}\\]for all ... then must ... be subcomplete...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/344",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos344Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 344,
+    "erdosUrl": "https://erdosproblems.com/344",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #344 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $A\\subseteq \\mathbb{N}$ is a set of integers such that\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert\\gg N^{1/2}\\]for all $N$ then must $A$ be subcomplete? That is, must\\[P(A) = \\left\\{\\sum_{n\\in B}n : B\\subseteq A\\textrm{ finite }\\right\\}\\]contain an infinite arithmetic progression?\n\n\n\nFolkman proved this under the stronger assumption that\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert\\gg N^{1/2+\\epsilon}\\]for some $\\epsilon>0$.\n\nThis is true, and was proved by Szemer\\'{e}di and Vu \\cite{SzVu06}. The stronger conjecture that this is true under\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert\\geq (2N)^{1/2}\\]seems to be still open (this would be best possible as shown by \\cite{Er61b}).\n\n\n\n\nReferences\n\n\n[Er61b] Erd\\H{o}s, P., On the representation of large integers as sums of distinct summands taken from a fixed set. Acta Arith. (1961/62), 345-354.\n\n[SzVu06] Szemer\\'{e}di, E. and Vu, V., Long arithmetic progressions in sumsets: thresholds and bounds. J. Amer. Math. Soc. (2006), 119-169.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

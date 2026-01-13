@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "IN-PROGRESS: Core Sidon infrastructure proved. The erdos_14a_implies_not_14b theorem may need reformulation.",
+    "progressSummary": "RESOLVED: Formalization analyzed. Added omega_sqrt_implies_not_little_o PROVED. Original erdos_14a/14b are genuinely independent!",
     "builtItems": [
       "repCount, uniqueSums, sumset definitions (Erdos14UniqueSums.lean:46-63)",
       "IsSidon definition (Erdos14UniqueSums.lean:83)",
@@ -37,6 +37,7 @@
       "empty_repCount - empty set has 0 reps PROVED (Erdos14UniqueSums.lean:173)",
       "singleton_uniqueSums - {k} has uniqueSums = {2k} PROVED (Erdos14UniqueSums.lean:178)",
       "consecutive_many_nonunique - {1..n} has non-unique sums PROVED (Erdos14UniqueSums.lean:212)",
+      "omega_sqrt_implies_not_little_o PROVED (Erdos14UniqueSums.lean:169-213)",
       "sidon_size_bound - Sidon sets have O(√N) elements (AXIOM, Erdős-Turán)",
       "erdos_upper_construction, erdos_lower_infinitely_often, erdos_freud_finite (AXIOMS)"
     ],
@@ -44,19 +45,19 @@
       "Erdős #14 asks two related questions about uniquely representable sums",
       "Sidon sets (B₂ sequences) have ALL sums unique, but are sparse (O(√N))",
       "Key technique: wlog for a ≤ b normalization in pair counting",
-      "ncard of singleton set = 1, enabling clean repCount proofs",
-      "Consecutive integers {1,...,n} always have non-unique sums (e.g., 4 = 1+3 = 2+2)",
-      "FORMALIZATION ISSUE: erdos_14a as stated (∃C>0, U(N)≥C·N^{1/2-ε}) may be too weak",
-      "The current erdos_14a allows C(ε)→0 as ε→0, which doesn't contradict erdos_14b",
-      "Stronger formulation needed: U(N)/N^{1/2-ε}→∞ for all ε>0 (Tendsto atTop atTop)"
+      "CONFIRMED: erdos_14a and erdos_14b are GENUINELY INDEPENDENT as formalized!",
+      "Example: U(N) = √N/log(N) satisfies BOTH 14a (for each ε) AND 14b (o(√N))",
+      "The ≫_ε notation allows C to depend on ε - this is standard mathematical usage",
+      "TRUE implication requires Ω(√N) lower bound, proved in omega_sqrt_implies_not_little_o",
+      "Removed invalid sorry - the original erdos_14a_implies_not_14b was unprovable by design"
     ],
     "mathlibGaps": [
       "No direct lemma for counting pairs with property in finite product sets"
     ],
     "nextSteps": [
-      "Consider reformulating erdos_14a with stronger Tendsto atTop atTop",
       "Prove sidon_size_bound from first principles (Erdős-Turán theorem)",
-      "Build Decidable instance for repCount on finite sets"
+      "Build Decidable instance for repCount on finite sets",
+      "Consider adding erdos_14a_stronger with uniform C for reference"
     ]
   },
   "approaches": [],

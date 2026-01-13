@@ -1,0 +1,33 @@
+{
+  "id": "erdos-364",
+  "title": "Erdős Problem #364",
+  "slug": "erdos-364",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there any triples of consecutive positive integers all of which are powerful (i.e. if ... then ...)?\n\n\n\nErds originally a...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/364",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos364Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 364,
+    "erdosUrl": "https://erdosproblems.com/364",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #364 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there any triples of consecutive positive integers all of which are powerful (i.e. if $p\\mid n$ then $p^2\\mid n$)?\n\n\n\nErd\\H{o}s originally asked Mahler whether there are infinitely many pairs of consecutive powerful numbers, but Mahler immediately observed that the answer is yes from the infinitely many solutions to the Pell equation $x^2=8y^2+1$.\n\nThis conjecture was also made by Mollin and Walsh \\cite{MoWa86}. Erd\\H{o}s \\cite{Er76d} believed the answer to this question is no, and in fact if $n_k$ is the $k$th powerful number then\\[n_{k+2}-n_k > n_k^c\\]for some constant $c>0$. The abc conjecture implies there are only finitely many such triples.\n\nIt is trivial that there are no quadruples of consecutive powerful numbers since one must be $2\\pmod{4}$.\n\nChan \\cite{Ch25} has shown there are no triples $n-1,n,n+1$ of powerful numbers with $n$ a cube.\n\nBy OEIS A060355 there are no such $n$ for $n<10^{22}$.\n\nSee also [137], [365], and [938].\n\n\n\n\nReferences\n\n\n[Ch25] Chan, Tsz Ho, A note on three consecutive powerful numbers. Integers (2025), Paper No. A7, 7.\n\n[Er76d] Erd\\H{o}s, P., Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics (Univ. Manitoba, Winnipeg, Man., 1975) (1976), 25-44.\n\n[MoWa86] Mollin, R. A. and Walsh, P. G., On powerful numbers. Internat. J. Math. Math. Sci. (1986), 801--806.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

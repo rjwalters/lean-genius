@@ -1,0 +1,33 @@
+{
+  "id": "erdos-371",
+  "title": "Erdős Problem #371",
+  "slug": "erdos-371",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the largest prime factor of .... Show that the set of ... with ... has density ....\n\n\n\nConjectured by Erds and...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/371",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos371Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 371,
+    "erdosUrl": "https://erdosproblems.com/371",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #371 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $P(n)$ denote the largest prime factor of $n$. Show that the set of $n$ with $P(n)<P(n+1)$ has density $1/2$.\n\n\n\nConjectured by Erd\\H{o}s and Pomerance \\cite{ErPo78}, who proved that this set and its complement both have positive upper density. The best unconditional lower bound available is due to L\\\"{u} and Wang \\cite{LuWa25}, who prove that\\[\\#\\{ n<x :P(n)<P(n+1)\\} > (0.2017-o(1))x,\\]and the same lower bound for the complement.\n\nIn \\cite{Er79e} Erd\\H{o}s also asks whether, for every $\\alpha$, the density of the set of $n$ where\\[P(n+1)>P(n)n^\\alpha\\]exists.\n\nTer\\\"{a}v\\\"{a}inen \\cite{Te18} has proved that the logarithmic density of the set of $n$ for which $P(n)<P(n+1)$ is $1/2$. Tao and Ter\\\"{a}v\\\"{a}inen \\cite{TaTe19} have proved that the asymptotic density is $1/2$ at 'almost all scales'.\n\nMore generally, for any $0\\leq \\alpha \\leq1$, Ter\\\"{a}v\\\"{a}inen \\cite{Te18} proved that the logarithmic density of the set of $n$ for which $P(n+1)>P(n)n^\\alpha$ exists and is equal to\\[\\int_{[0,1]^2}1_{y\\geq x+\\alpha}u(x)u(y)\\mathrm{d}x\\mathrm{d}y\\]where $u(x)=x^{-1}\\rho(x^{-1}-1)$ and $\\rho$ is the Dickman function. Wang \\cite{Wa21} has proved the same value holds for the asymptotic density (and in particular provided an affirmative answer to the original question) conditional on the Elliott-Halberstam conjecture for friable integers.\n\nThe sequence of such $n$ is A070089 in the OEIS.\n\nSee also [372] and [928].\n\n\n\n\nReferences\n\n\n[Er79e] Erd\\H{o}s, Paul, Some unconventional problems in number theory. Ast\\'{e}risque (1979), 73-82.\n\n[ErPo78] Erd\\H{o}s, Paul and Pomerance, Carl, On the largest prime factors of {$n$} and {$n+1$}. Aequationes Math. (1978), 311-321.\n\n[LuWa25] L\\\"u, Xiaodong and Wang, Zhiwei, On the largest prime factors of consecutive integers. Monatsh. Math. (2025), 403--418.\n\n[TaTe19] Tao, Terence and Ter\\\"{a}v\\\"{a}inen, Joni, The structure of correlations of multiplicative functions at\nalmost all scales, with applications to the {C}howla and\n{E}lliott conjectures. Algebra Number Theory (2019), 2103--2150.\n\n[Te18] Ter\\\"{a}v\\\"{a}inen, Joni, On binary correlations of multiplicative functions. Forum Math. Sigma (2018), Paper No. e10, 41.\n\n[Wa21] Wang, Zhiwei, Three conjectures on {$P^+(n)$} and {$P^+(n+1)$} hold under\nthe {E}lliott-{H}alberstam conjecture for friable integers. J. Number Theory (2021), 1--11.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

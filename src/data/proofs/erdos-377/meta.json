@@ -1,0 +1,33 @@
+{
+  "id": "erdos-377",
+  "title": "Erdős Problem #377",
+  "slug": "erdos-377",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some absolute constant ... such that\\[\\sum_{p\\leq n}1_{p\\nmid {n}}{p}\\leq C\\]for all ... (where the summation is res...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/377",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos377Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 377,
+    "erdosUrl": "https://erdosproblems.com/377",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #377 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some absolute constant $C>0$ such that\\[\\sum_{p\\leq n}1_{p\\nmid \\binom{2n}{n}}\\frac{1}{p}\\leq C\\]for all $n$ (where the summation is restricted to primes $p\\leq n$)?\n\n\n\nA question of Erd\\H{o}s, Graham, Ruzsa, and Straus \\cite{EGRS75}, who proved that if $f(n)$ is the sum in question then\\[\\lim_{x\\to \\infty}\\frac{1}{x}\\sum_{n\\leq x}f(n) = \\sum_{k=2}^\\infty \\frac{\\log k}{2^k}=\\gamma_0\\]and\\[\\lim_{x\\to \\infty}\\frac{1}{x}\\sum_{n\\leq x}f(n)^2 = \\gamma_0^2,\\]so that for almost all integers $f(m)=\\gamma_0+o(1)$. They also prove that, for all large $n$,\\[f(n) \\leq c\\log\\log n\\]for some constant $c<1$. (It is trivial from Mertens estimates that $f(n)\\leq (1+o(1))\\log\\log n$.)\n\nA positive answer would imply that\\[\\sum_{p\\leq n}1_{p\\mid \\binom{2n}{n}}\\frac{1}{p}=(1-o(1))\\log\\log n,\\]and Erd\\H{o}s, Graham, Ruzsa, and Straus say there is 'no doubt' this latter claim is true.\n\nThis is mentioned in problem B33 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[EGRS75] Erd\\H{o}s, P. and Graham, R. L. and Ruzsa, I. Z. and Straus, E. G., On the prime factors of $(\\sp{2n}\\sb{n})$. Math. Comp. (1975), 83-92.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

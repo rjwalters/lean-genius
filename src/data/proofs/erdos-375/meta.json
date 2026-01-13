@@ -1,0 +1,33 @@
+{
+  "id": "erdos-375",
+  "title": "Erdős Problem #375",
+  "slug": "erdos-375",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for any ..., if ... are all composite then there are distinct primes ... such that ... for ...?\n\n\n\nNote this ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/375",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos375Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 375,
+    "erdosUrl": "https://erdosproblems.com/375",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #375 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for any $n,k\\geq 1$, if $n+1,\\ldots,n+k$ are all composite then there are distinct primes $p_1,\\ldots,p_k$ such that $p_i\\mid n+i$ for $1\\leq i\\leq k$?\n\n\n\nNote this is trivial when $k\\leq 2$. Originally conjectured by Grimm \\cite{Gr69}. This is a very difficult problem, since it in particular implies $p_{n+1}-p_n <p_n^{1/2-c}$ for some constant $c>0$, in particular resolving Legendre's conjecture.\n\nGrimm proved that this is true if $k\\ll \\log n/\\log\\log n$. Erd\\H{o}s and Selfridge improved this to $k\\leq (1+o(1))\\log n$. Ramachandra, Shorey, and Tijdeman \\cite{RST75} have improved this to\\[k\\ll\\left(\\frac{\\log n}{\\log\\log n}\\right)^3.\\]This is problem B32 in Guy's collection \\cite{Gu04}.\n\nSee also [860].\n\n\n\n\nReferences\n\n\n[Gr69] Grimm, C. A., A conjecture on consecutive composite numbers. Amer. Math. Monthly (1969), 1126--1128.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[RST75] Ramachandra, K. and Shorey, T. N. and Tijdeman, R., On Grimm's problem relating to factorisation of a block of consecutive integers. J. Reine Angew. Math. (1975), 109-124.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

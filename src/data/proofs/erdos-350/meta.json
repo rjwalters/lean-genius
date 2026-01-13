@@ -1,0 +1,33 @@
+{
+  "id": "erdos-350",
+  "title": "Erdős Problem #350",
+  "slug": "erdos-350",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a finite set of integers which is dissociated (that is, all of the subset sums are distinct) then\\[\\sum_{n\\in A}{n}...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/350",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos350Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 350,
+    "erdosUrl": "https://erdosproblems.com/350",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #350 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $A\\subset\\mathbb{N}$ is a finite set of integers which is dissociated (that is, all of the subset sums are distinct) then\\[\\sum_{n\\in A}\\frac{1}{n}<2.\\]\n\n\n\nThis was proved by Ryavec, who did not appear to ever publish the proof. Ryavec's proof is reproduced in \\cite{BeEr74}. More generally, Ryavec's proof delivers that\\[\\sum_{n\\in A}\\frac{1}{n}\\leq 2-2^{1-\\lvert A\\rvert},\\]with equality if and only if $A=\\{1,2,\\ldots,2^k\\}$.\n\nThe stronger statement that, for all $s\\geq 0$,\\[\\sum_{n\\in A}\\frac{1}{n^s} <\\frac{1}{1-2^{-s}},\\]was proved by Hanson, Steele, and Stenger \\cite{HSS77}.\n\nSee also [1].\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[BeEr74] Benkoski, S. J. and Erd\\H{o}s, P., On weird and pseudoperfect numbers. Math. Comp. (1974), 617-623.\n\n[HSS77] Hanson, F. and Steele, J. M. and Stenger, F., Distinct sums over subsets. Proc. Amer. Math. Soc. (1977), 179-180.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

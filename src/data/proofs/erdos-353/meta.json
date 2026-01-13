@@ -1,0 +1,33 @@
+{
+  "id": "erdos-353",
+  "title": "Erdős Problem #353",
+  "slug": "erdos-353",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a measurable set with infinite measure. Must ... contain the vertices of an isosceles trapezoid of area ...? What ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/353",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos353Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 353,
+    "erdosUrl": "https://erdosproblems.com/353",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #353 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{R}^2$ be a measurable set with infinite measure. Must $A$ contain the vertices of an isosceles trapezoid of area $1$? What about an isosceles triangle, or a right-angled triangle, or a cyclic quadrilateral, or a polygon with congruent sides?\n\n\n\nErd\\H{o}s and Mauldin (unpublished) claim that this is true for trapezoids in general, but fails for parallelograms (a construction showing this fails for parallelograms was provided by Kova\\v{c}) \\cite{Ko23}.\n\nKova\\v{c} and Predojevi\\'{c} \\cite{KoPr24} have proved that this is true for cyclic quadrilaterals - that is, every set with infinite measure contains four distinct points on a circle such that the quadrilateral determined by these four points has area $1$. They also prove that there exists a set of infinite measure such that every convex polygon with congruent sides and all vertices in the set has area $<1$.\n\nKoizumi \\cite{Ko25} has resolved this question, proving that any set with infinite measure must contain the vertices of an isosceles trapezoid, an isosceles triangle, and a right-angled triangle, all of area $1$.\n\n\n\n\nReferences\n\n\n[Ko23] Kova\\vC, V., Coloring and density theorems for configurations of a given volume. arXiv:2309.09973 (2023).\n\n[Ko25] J. Koizumi, Isosceles trapezoids of unit area with vertices in sets of infinite planar measure. arXiv:2501.01914 (2025).\n\n[KoPr24] Kova\\vC, V. and B. Predojevi\\'C, Polygons of unit area with vertices in sets of infinite planar measure. arXiv:2412.11725 (2024).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

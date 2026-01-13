@@ -1,0 +1,33 @@
+{
+  "id": "erdos-352",
+  "title": "Erdős Problem #352",
+  "slug": "erdos-352",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some ... such that every measurable ... of measure ... contains the vertices of a triangle of area 1?\n\n\n\nErds (unpub...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/352",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos352Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 352,
+    "erdosUrl": "https://erdosproblems.com/352",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #352 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some $c>0$ such that every measurable $A\\subseteq \\mathbb{R}^2$ of measure $\\geq c$ contains the vertices of a triangle of area 1?\n\n\n\nErd\\H{o}s (unpublished) proved that this is true if $A$ has infinite measure, or if $A$ is an unbounded set of positive measure (stating in \\cite{Er78d} and \\cite{Er83d} it 'follows easily from the Lebesgue density theorem').\n\nIn \\cite{Er78d} and \\cite{Er83d} he speculated that perhaps $C=4\\pi/\\sqrt{27}\\approx 2.418$ works, which would be the best possible, as witnessed by a circle of radius $<2\\cdot 3^{-3/4}$.\n\nFurther evidence for this is given by a result of Freiling and Mauldin \\cite{Ma02}, who proved that if $A$ has outer measure $>4\\pi/\\sqrt{27}$ then $A$ contains the vertices of a triangle with area $>1$. This also proves the same threshold for the original problem under the assumption that $A$ is a compact convex set.\n\nMauldin also discusses this problem in \\cite{Ma13}, in which he notes that it suffices to prove this under the assumption that $A$ is the union of the interiors of $n<\\infty$ many compact convex sets. Freiling and Mauldin (see \\cite{Ma13}) have proved this conjecture if $1\\leq n\\leq 3$.\n\n\n\n\nReferences\n\n\n[Er78d] Erd\\H{o}s, P., Set-theoretic, measure-theoretic, combinatorial, and\nnumber-theoretic problems concerning point sets in Euclidean\nspace. Real Anal. Exchange (1978/79), 113-138.\n\n[Er83d] Erd\\H{o}s, Paul, Some combinatorial, geometric and set theoretic problems in measure theory. Measure Theory, Oberwolfach 1983: Proceedings of the Conference held at Oberwolfach, June 26-July 2, 1983 (1984), 321-327.\n\n[Ma02] Mauldin, R. D., Some problems in set theory, analysis and geometry. (2002), 493--506.\n\n[Ma13] Mauldin, R. Daniel, Some problems and ideas of {E}rd\\H{o}s in analysis and\ngeometry. (2013), 365--376.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

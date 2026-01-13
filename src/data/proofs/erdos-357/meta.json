@@ -1,0 +1,33 @@
+{
+  "id": "erdos-357",
+  "title": "Erdős Problem #357",
+  "slug": "erdos-357",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be integers such that all sums of the shape ... are distinct. Let ... be the maximal such ....\n\nHow does ... grow? Is...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/357",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos357Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 357,
+    "erdosUrl": "https://erdosproblems.com/357",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #357 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $1\\leq a_1<\\cdots <a_k\\leq n$ be integers such that all sums of the shape $\\sum_{u\\leq i\\leq v}a_i$ are distinct. Let $f(n)$ be the maximal such $k$.\n\nHow does $f(n)$ grow? Is $f(n)=o(n)$?\n\n\n\nAsked by Erd\\H{o}s and Harzheim. In \\cite{Er77c} Erd\\H{o}s asks about an infinite such set of integers, and whether such a set must have density $0$. He notes that a simple averaging process implies $a_k \\gg k\\log k$ for infinitely many $k$, and so the lower density is $0$. He also asks whether $\\sum\\frac{1}{a_k}$ must converge.\n\nWeisenberg in the comments observes that any set which satisfies [874] also has this property, which implies $f(n)\\geq (2+o(1))n^{1/2}$.\n\nIf $g(n)$ is the maximal $k$ such that there are $1\\leq a_1,\\ldots,a_k\\leq n$ with all consecutive sums distinct (i.e. we drop the monotonicity assumption in the definition of $f$) then Hegyv\\'{a}ri \\cite{He86} has proved that\\[\\left(\\frac{1}{3}+o(1)\\right) n\\leq g(n)\\leq \\left(\\frac{2}{3}+o(1)\\right)n.\\]The upper bound of Coppersmith and Phillips in [867] implies\\[g(n) \\leq \\left(\\frac{2}{3}-\\frac{1}{512}+o(1)\\right)n.\\]A similar question can be asked if we replace strict monotonicity with weak monotonicity (i.e. we allow $a_i=a_j$).\n\nErd\\H{o}s and Harzheim also ask what is the least $m$ which is not a sum of the given form? Can it be much larger than $n$? Erd\\H{o}s and Harzheim can show that $\\sum_{x<a_i<x^2}\\frac{1}{a_i}\\ll 1$. Is it true that $\\sum_i \\frac{1}{a_i}\\ll 1$?\n\nSee also [34], [356], [670], and [867]. The multiplicative analogue is [421].\n\n\n\n\nReferences\n\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n[He86] Hegyv\\'ari, N., On consecutive sums in sequences. Acta Math. Hungar. (1986), 193--200.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

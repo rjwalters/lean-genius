@@ -1,0 +1,33 @@
+{
+  "id": "erdos-379",
+  "title": "Erdős Problem #379",
+  "slug": "erdos-379",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the largest integer such that, for all ..., the binomial coefficient ... is divisible by ... for some prime .....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/379",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos379Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 379,
+    "erdosUrl": "https://erdosproblems.com/379",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #379 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $S(n)$ denote the largest integer such that, for all $1\\leq k<n$, the binomial coefficient $\\binom{n}{k}$ is divisible by $p^{S(n)}$ for some prime $p$ (depending on $k$). Is it true that\\[\\limsup S(n)=\\infty?\\]\n\n\n\nIf $s(n)$ denotes the largest integer such that $\\binom{n}{k}$ is divisible by $p^{s(n)}$ for some prime $p$ for at least one $1\\leq k<n$ then it is easy to see that $s(n)\\to \\infty$ as $n\\to \\infty$ (and in fact that $s(n) \\asymp \\log n$).\n\nThis problem was solved in the affirmative by Cambie, Kova\\v{c}, and Tao (see the comment section). A Lean formalisation of their proof is available here.\n\nThere are other simpler constructions: for example, $3^{2^k}$ for arbitrarily large $k$ (see this discussion).\n\nSee also [175].\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

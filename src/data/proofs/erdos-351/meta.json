@@ -1,0 +1,33 @@
+{
+  "id": "erdos-351",
+  "title": "Erdős Problem #351",
+  "slug": "erdos-351",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is it true that\\[A=\\{ p(n)+1/n : n\\in \\}\\]is strongly complete, in the sense that, for any finite set ...,\\[\\left\\{\\...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/351",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos351Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 351,
+    "erdosUrl": "https://erdosproblems.com/351",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #351 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $p(x)\\in \\mathbb{Q}[x]$. Is it true that\\[A=\\{ p(n)+1/n : n\\in \\mathbb{N}\\}\\]is strongly complete, in the sense that, for any finite set $B$,\\[\\left\\{\\sum_{n\\in X}n : X\\subseteq A\\backslash B\\textrm{ finite }\\right\\}\\]contains all sufficiently large integers?\n\n\n\n\nGraham \\cite{Gr63} proved this is true when $p(n)=n$. Erd\\H{o}s and Graham also ask which rational functions $r(x)\\in\\mathbb{Z}(x)$ force $\\{ r(n) : n\\in\\mathbb{N}\\}$ to be complete?\n\nGraham \\cite{Gr64f} gave a complete characterisation of which polynomials $r\\in \\mathbb{R}[x]$ are such that $\\{ r(n) : n\\in \\mathbb{N}\\}$ is complete.\n\nIn the comments van Doorn has noted that a positive solution for $p(n)=n^2$ follows from \\cite{Gr63} together with result of Alekseyev \\cite{Al19} mentioned in [283].\n\n\n\n\nReferences\n\n\n[Al19] Alekseyev, Max A., On partitions into squares of distinct integers whose\nreciprocals sum to 1. (2019), 213--221.\n\n[Gr63] Graham, R. L., A theorem on partitions. J. Austral. Math. Soc. (1963), 435-441.\n\n[Gr64f] Graham, R. L., Complete sequences of polynomial values. Duke Math. J. (1964), 275-285.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

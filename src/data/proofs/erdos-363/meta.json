@@ -1,0 +1,33 @@
+{
+  "id": "erdos-363",
+  "title": "Erdős Problem #363",
+  "slug": "erdos-363",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that there are only finitely many collections of disjoint intervals ... of size ... for ... such that\\[\\prod_{1\\le...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/363",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos363Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 363,
+    "erdosUrl": "https://erdosproblems.com/363",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #363 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that there are only finitely many collections of disjoint intervals $I_1,\\ldots,I_n$ of size $\\lvert I_i\\rvert \\geq 4$ for $1\\leq i\\leq n$ such that\\[\\prod_{1\\leq i\\leq n}\\prod_{m\\in I_i}m\\]is a square?\n\n\n\n\nErd\\H{o}s and Selfridge have proved that the product of consecutive integers is never a power. The condition $\\lvert I_i\\rvert \\geq 4$ is necessary here, since Pomerance has observed that the product of\\[(2^{n-1}-1)2^{n-1}(2^{n-1}+1),\\]\\[(2^n-1)2^n(2^n+1),\\]\\[(2^{2n-1}-2)(2^{2n-1}-1)2^{2n-1},\\]and\\[(2^{2n}-2)(2^{2n}-1)2^{2n}\\]is always a square.\n\nThis is false: Ulas \\cite{Ul05} has proved there are infinitely many solutions when $n=4$ or $n\\geq 6$ and $\\lvert I_i\\rvert=4$ for $1\\leq i\\leq n$. Bauer and Bennett \\cite{BaBe07} proved there are infinitely many solutions when $n=3$ or $n=5$ and $\\lvert I_i\\rvert=4$ for $1\\leq i\\leq n$. Furthermore, Bennett and Van Luijk \\cite{BeVL12} have found infinitely many solutions when $n\\geq 5$ and $\\lvert I_i\\rvert=5$ for $1\\leq i\\leq n$.\n\nIn general, Ulas conjectures there are infinitely many solutions for any fixed size of $\\lvert I_i\\rvert$, provided $n$ is sufficiently large.\n\nSee also [930] for a more general question.\n\n\n\n\nReferences\n\n\n[BaBe07] Bauer, Mark and Bennett, Michael A., On a question of Erd\\H{o}s and Graham. Enseign. Math. (2) (2007), 259--264.\n\n[BeVL12] Bennett, Michael A. and Van Luijk, Ronald, Squares from blocks of consecutive integers: a problem of\nErd\\H{o}s and Graham. Indag. Math. (N.S.) (2012), 123--127.\n\n[Ul05] Ulas, Maciej, On products of disjoint blocks of consecutive integers. Enseign. Math. (2) (2005), 331--334.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

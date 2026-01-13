@@ -1,0 +1,33 @@
+{
+  "id": "erdos-366",
+  "title": "Erdős Problem #366",
+  "slug": "erdos-366",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there any 2-full ... such that ... is 3-full? That is, if ... then ... and if ... then ....\n\n\n\nErds originally asked Mahl...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/366",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos366Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 366,
+    "erdosUrl": "https://erdosproblems.com/366",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #366 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there any 2-full $n$ such that $n+1$ is 3-full? That is, if $p\\mid n$ then $p^2\\mid n$ and if $p\\mid n+1$ then $p^3\\mid n+1$.\n\n\n\nErd\\H{o}s originally asked Mahler whether there are infinitely many pairs of consecutive powerful numbers, but Mahler immediately observed that the answer is yes from the infinitely many solutions to the Pell equation $x^2=8y^2+1$.\n\nNote that $8$ is 3-full and $9$ is 2-full. Erd\\H{o}s and Graham asked if this is the only pair of such consecutive integers. Stephan has observed that $12167=23^3$ and $12168=2^33^213^2$ (a pair already known to Golomb \\cite{Go70}) is another example, but (by OEIS A060355) there are no other examples for $n<10^{22}$.\n\nIn \\cite{Er76d} Erd\\H{o}s asks the weaker question of whether there are any consecutive pairs of $3$-full integers (which is also discussed in problem B16 of Guy's collection \\cite{Gu04}).\n\n\n\n\nReferences\n\n\n[Er76d] Erd\\H{o}s, P., Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics (Univ. Manitoba, Winnipeg, Man., 1975) (1976), 25-44.\n\n[Go70] Golomb, S. W., Powerful numbers. Amer. Math. Monthly (1970), 848-855.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

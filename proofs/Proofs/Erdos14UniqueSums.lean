@@ -142,11 +142,75 @@ def erdos_14b : Prop :=
   ∃ A : Set ℕ,
     Tendsto (fun N => (nonUniqueCount A N : ℝ) / Real.sqrt N) atTop (nhds 0)
 
-/-- The two questions are related: if 14a is YES, then 14b is NO. -/
-theorem erdos_14a_implies_not_14b : erdos_14a → ¬erdos_14b := by
-  intro h14a ⟨A, hsmallo⟩
-  -- If all A have U(N) ≥ C · N^{1/2-ε}, then U(N) can't be o(N^{1/2})
-  sorry
+/-! ### Relationship Between 14a and 14b
+
+**Important Formalization Note:**
+
+The natural intuition is that if 14a holds (lower bound N^{1/2-ε}), then 14b fails
+(no o(√N) sets exist). However, with the current formulation where C depends on ε,
+this implication is NOT directly provable.
+
+**Analysis:** Consider U(N) = √N / log(N) = o(√N).
+For any ε > 0: U(N)/N^{1/2-ε} = N^ε/log(N) → ∞.
+So ∃ C > 0 with U(N) ≥ C · N^{1/2-ε} eventually.
+This U(N) satisfies BOTH condition_a (for each ε separately) AND condition_b!
+
+**The issue:** erdos_14a allows C to depend on ε, potentially shrinking as ε → 0.
+For the implication to hold, we would need a UNIFORM lower bound like:
+  ∃ C > 0, ∀ ε > 0, ∀ᶠ N, U(N) ≥ C · N^{1/2-ε}
+which is equivalent to: U(N) = Ω(√N).
+
+The original Erdős problem uses "≫" notation which typically means "for some constant
+depending on the subscripted parameter" - matching our current formulation.
+The two questions (14a and 14b) are genuinely independent as stated. -/
+
+/-- A true contradiction requires a lower bound of Ω(√N).
+    If U(N) ≥ C · √N for some C > 0 and all large N, then U(N) ≠ o(√N). -/
+theorem omega_sqrt_implies_not_little_o :
+    (∀ A : Set ℕ, ∃ C : ℝ, C > 0 ∧
+      ∀ᶠ N in atTop, (nonUniqueCount A N : ℝ) ≥ C * Real.sqrt N) →
+    ¬erdos_14b := by
+  intro h_omega ⟨A, hsmallo⟩
+  obtain ⟨C, hC, h_bound⟩ := h_omega A
+  -- h_bound: eventually U(N) ≥ C · √N
+  -- hsmallo: U(N)/√N → 0
+  -- These are directly contradictory for C > 0
+  rw [Metric.tendsto_atTop] at hsmallo
+  obtain ⟨N₁, hN₁⟩ := hsmallo (C/2) (by linarith)
+  rw [Filter.Eventually, Filter.mem_atTop_sets] at h_bound
+  obtain ⟨N₂, hN₂⟩ := h_bound
+  -- For N ≥ max(N₁, N₂) with N > 0:
+  set N := max N₁ N₂ + 1 with hN_def
+  have hN1' : N ≥ N₁ := le_trans (le_max_left _ _) (by omega : max N₁ N₂ + 1 ≥ max N₁ N₂)
+  have hN2' : N ≥ N₂ := le_trans (le_max_right _ _) (by omega : max N₁ N₂ + 1 ≥ max N₁ N₂)
+  specialize hN₁ N hN1'
+  have hN₂' : (nonUniqueCount A N : ℝ) ≥ C * Real.sqrt N := by
+    simp only [Set.mem_setOf_eq] at hN₂
+    exact hN₂ N hN2'
+  simp only [dist_zero_right] at hN₁
+  have hN_pos : (0 : ℝ) < N := by simp [hN_def]; positivity
+  have hsqrt_pos : 0 < Real.sqrt N := Real.sqrt_pos.mpr hN_pos
+  have h2 : (nonUniqueCount A N : ℝ) / Real.sqrt N < C / 2 := by
+    have := hN₁
+    rw [Real.norm_of_nonneg] at this
+    · exact this
+    · apply div_nonneg
+      · exact Nat.cast_nonneg _
+      · exact le_of_lt hsqrt_pos
+  have h3 : (nonUniqueCount A N : ℝ) < C / 2 * Real.sqrt N := by
+    have := (div_lt_iff₀ hsqrt_pos).mp h2
+    linarith
+  -- hN₂': U(N) ≥ C · √N
+  -- h3: U(N) < C/2 · √N
+  -- Contradiction: C · √N ≤ U(N) < C/2 · √N with C > 0
+  have h4 : C * Real.sqrt N < C / 2 * Real.sqrt N := by linarith
+  have h5 : C < C / 2 := by
+    have hsqrt_ne : Real.sqrt N ≠ 0 := ne_of_gt hsqrt_pos
+    calc C = C * Real.sqrt N / Real.sqrt N := by field_simp
+      _ < C / 2 * Real.sqrt N / Real.sqrt N := by
+        apply div_lt_div_of_pos_right h4 hsqrt_pos
+      _ = C / 2 := by field_simp
+  linarith
 
 /-! ## Part V: Known Constructions -/
 

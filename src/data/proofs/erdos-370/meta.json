@@ -1,0 +1,33 @@
+{
+  "id": "erdos-370",
+  "title": "Erdős Problem #370",
+  "slug": "erdos-370",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many ... such that the largest prime factor of ... is ... and the largest prime factor of ... is ...?\n\n\n...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/370",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos370Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 370,
+    "erdosUrl": "https://erdosproblems.com/370",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #370 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many $n$ such that the largest prime factor of $n$ is $<n^{1/2}$ and the largest prime factor of $n+1$ is $<(n+1)^{1/2}$?\n\n\n\nPomerance has observed that if we replace $1/2$ in the exponent by $1/\\sqrt{e}-\\epsilon$ for any $\\epsilon>0$ then this is true for density reasons (since the density of integers $n$ whose greatest prime factor is $\\leq n^{1/\\sqrt{e}}$ is $1/2$).\n\nSteinerberger has pointed out this problem has a trivial solution: take $n=m^2-1$, and then it is obvious that the largest prime factor of $n$ is $\\leq m+1\\ll n^{1/2}$ and the largest prime factor of $n+1$ is $\\leq m\\ll (n+1)^{1/2}$ (these $\\ll$ can be replaced by $<$ if we choose $m$ such that $m,m+1$ are both composite).\n\nGiven that Erd\\H{o}s and Graham describe the above observation of Pomerance and explicitly say about this problem that 'we know very little about this', it is strange that such a trivial obstruction was overlooked. Perhaps the problem they intended was subtly different, and the problem in this form was the result of a typographical error, but I have no good guess what was intended here.\n\nSee also [369] and [928].\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

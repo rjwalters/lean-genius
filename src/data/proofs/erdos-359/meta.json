@@ -1,0 +1,33 @@
+{
+  "id": "erdos-359",
+  "title": "Erdős Problem #359",
+  "slug": "erdos-359",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence of integers such that ... and ... is the least integer which is not a sum of consecutive earl...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/359",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos359Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 359,
+    "erdosUrl": "https://erdosproblems.com/359",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #359 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_1<a_2<\\cdots$ be an infinite sequence of integers such that $a_1=n$ and $a_{i+1}$ is the least integer which is not a sum of consecutive earlier $a_j$s. What can be said about the density of this sequence?\n\nIn particular, in the case $n=1$, can one prove that $a_k/k\\to \\infty$ and $a_k/k^{1+c}\\to 0$ for any $c>0$?\n\n\n\nA problem of MacMahon, studied by Andrews \\cite{An75}. When $n=1$ this sequence begins\\[1,2,4,5,8,10,14,15,\\ldots.\\]This sequence is A002048 in the OEIS. Andrews conjectures\\[a_k\\sim \\frac{k\\log k}{\\log\\log k}.\\]Porubsky \\cite{Po77} proved that, for any $\\epsilon>0$, there are infinitely many $k$ such that\\[a_k < (\\log k)^\\epsilon \\frac{k\\log k}{\\log\\log k},\\]and also that if $A(x)$ counts the number of $a_i\\leq x$ then\\[\\limsup \\frac{A(x)}{\\pi(x)}\\geq \\frac{1}{\\log 2}\\]where $\\pi(x)$ counts the number of primes $\\leq x$.\n\nSee also [839].\n\n\n\n\nReferences\n\n\n[An75] Andrews, George E., Research Problems: Mac Mahon's Prime Numbers of Measurement. Amer. Math. Monthly (1975), 922-923.\n\n[Po77] Porubsk\\'y, \\v S., On {M}ac{M}ahon's segmented numbers and related sequences. Nieuw Arch. Wisk. (3) (1977), 403--408.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

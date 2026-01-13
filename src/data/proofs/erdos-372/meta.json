@@ -1,0 +1,33 @@
+{
+  "id": "erdos-372",
+  "title": "Erdős Problem #372",
+  "slug": "erdos-372",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the largest prime factor of .... There are infinitely many ... such that ....\n\n\n\n\n\nConjectured by Erds and Pom...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/372",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos372Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 372,
+    "erdosUrl": "https://erdosproblems.com/372",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #372 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $P(n)$ denote the largest prime factor of $n$. There are infinitely many $n$ such that $P(n)>P(n+1)>P(n+2)$.\n\n\n\n\n\nConjectured by Erd\\H{o}s and Pomerance \\cite{ErPo78}, who proved the analogous result for $P(n)<P(n+1)<P(n+2)$. Solved by Balog \\cite{Ba01}, who proved that this is true for $\\gg \\sqrt{x}$ many $n\\leq x$ (for all large $x$). Balog suggests the natural conjecture that the density of such $n$ is $1/6$. A generalised form of this conjecture was presented by De Koninck and Doyon \\cite{DeDo11}.\n\n\n\n\nReferences\n\n\n[Ba01] Balog, A., On triplets with descending largest prime factors. Studia Sci. Math. Hungar. (2001), 45-50.\n\n[DeDo11] De Koninck, Jean-Marie and Doyon, Nicolas, On the distance between smooth numbers. Integers (2011), A25, 22.\n\n[ErPo78] Erd\\H{o}s, Paul and Pomerance, Carl, On the largest prime factors of {$n$} and {$n+1$}. Aequationes Math. (1978), 311-321.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}
