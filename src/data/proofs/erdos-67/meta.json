@@ -1,34 +1,124 @@
 {
   "id": "erdos-67",
-  "title": "Erdős Problem #67",
+  "title": "Erdős Problem #67: The Erdős Discrepancy Problem",
   "slug": "erdos-67",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... then is it true that for every ... there exist ... such that\\[\\left\\lvert \\sum_{1\\leq k\\leq m}f(kd)\\right\\rvert > C?\\]...",
+  "description": "For any ±1 sequence f: ℕ → {-1,+1}, must the partial sums along some arithmetic progression be unbounded? (Solved: YES, by Tao 2015)",
   "meta": {
-    "author": "Unknown",
+    "author": "Terence Tao (2015)",
     "sourceUrl": "https://erdosproblems.com/67",
-    "date": "",
-    "status": "pending",
+    "date": "2015",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos67Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "wip",
-    "sorries": 1,
+    "tags": ["erdos", "number-theory", "discrepancy", "arithmetic-progressions", "tao"],
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 67,
     "erdosUrl": "https://erdosproblems.com/67",
     "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$500"
+    "erdosPrizeValue": "$500",
+    "dateAdded": "2026-01-13",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.Icc",
+        "description": "Closed interval as a finite set",
+        "module": "Mathlib.Data.Finset.LocallyFinite"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over a finite set",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Complex.norm",
+        "description": "Norm on complex numbers",
+        "module": "Mathlib.Analysis.Complex.Basic"
+      },
+      {
+        "theorem": "abs",
+        "description": "Absolute value on integers",
+        "module": "Mathlib.Algebra.Order.Group.Abs"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of discrepancy along arithmetic progressions",
+      "Statement of Tao's theorem as an axiom",
+      "Complex variant for unit circle values",
+      "Erdős's stronger logarithmic conjecture (open)",
+      "Multiplicative function case"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #67 from erdosproblems.com. Originally offered with a prize of $500.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $f:\\mathbb{N}\\to \\{-1,+1\\}$ then is it true that for every $C>0$ there exist $d,m\\geq 1$ such that\\[\\left\\lvert \\sum_{1\\leq k\\leq m}f(kd)\\right\\rvert > C?\\]\n\n\n\nThe Erd\\H{o}s discrepancy problem. This is true, and was proved by Tao \\cite{Ta16}, who also proved the more general case when $f$ takes values on the unit sphere.\n\nIn several places (e.g. \\cite{Er64b}, \\cite{Er65b}, and \\cite{Er81}) Erd\\H{o}s further conjectured that\\[\\max_{md\\leq x}\\left\\lvert \\sum_{1\\leq k\\leq m}f(kd)\\right\\rvert \\gg \\log x.\\]In \\cite{Er85c} Erd\\H{o}s also asks about the special case when $f$ is multiplicative.\n\n\n\n\nReferences\n\n\n[Er64b] Erd\\H{o}s, P., Problems and results on diophantine approximations. Compositio Math. (1964), 52-65.\n\n[Er65b] Erd\\H{o}s, Paul, Some recent advances and current problems in number theory. Lectures on Modern Mathematics, Vol. III (1965), 196-244.\n\n[Er81] Erd\\H{o}s, P., On the combinatorial problems which I would most like to see solved. Combinatorica (1981), 25-42.\n\n[Er85c] Erd\\H{o}s, P., On some of my problems in number theory I would most like to see solved. Number theory (Ootacamund, 1984) (1985), 74-84.\n\n[Ta16] Tao, Terence, The Erd\\H{o}s discrepancy problem. Discrete Anal. (2016), Paper No. 1, 29.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The Erdős Discrepancy Problem, posed in the 1930s, asks whether every ±1 sequence must have unbounded partial sums along some arithmetic progression. For over 80 years, this remained one of the most famous open problems in combinatorics.\n\nIn 2010, the Polymath5 project—a massive collaborative effort—attempted to solve it but fell short. In September 2015, Terence Tao announced a complete solution, earning the $500 prize. His proof uses deep connections to multiplicative number theory, particularly a variant of the Elliott conjecture.\n\nTao's breakthrough came from realizing that the problem reduces to studying completely multiplicative functions, where techniques from analytic number theory become available.",
+    "problemStatement": "**The Erdős Discrepancy Problem** (Solved by Tao 2015)\n\nFor any function $f: \\mathbb{N} \\to \\{-1, +1\\}$ and any $C > 0$, do there exist $d, m \\geq 1$ such that\n$$\\left|\\sum_{k=1}^{m} f(kd)\\right| > C?$$\n\n**Answer**: YES. No ±1 sequence has bounded discrepancy.\n\n**Prize**: $500 (collected by Tao)",
+    "proofStrategy": "We formalize the theorem and its variants:\n\n1. **discrepancy**: The absolute value of the sum along {d, 2d, ..., md}\n\n2. **erdosDiscrepancy** (axiom): Tao's main theorem—no bounded discrepancy\n\n3. **noBoundedDiscrepancy**: Derived theorem showing the negation\n\n4. **Complex variant**: Tao also proved this for f: ℕ → S¹\n\n5. **Stronger conjecture** (open): Discrepancy should grow ≥ c·log(x)\n\n6. **Multiplicative case**: The easier special case",
+    "keyInsights": [
+      "**Discrepancy**: Measures imbalance of ±1s along arithmetic progressions. Can you balance them to keep all sums bounded?",
+      "**The answer is NO**: No matter how cleverly you assign ±1s, some progression will have arbitrarily large imbalance.",
+      "**Tao's key insight**: The problem reduces to multiplicative functions, where analytic number theory applies.",
+      "**The Elliott connection**: Tao proved a variant of the Elliott conjecture to handle multiplicative functions.",
+      "**Complex generalization**: The result holds even for f taking values anywhere on the unit circle, not just ±1."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Module documentation and opening namespaces for finsets and big operators."
+    },
+    {
+      "id": "background",
+      "title": "Background on Discrepancy",
+      "startLine": 28,
+      "endLine": 41,
+      "summary": "Explanation of what discrepancy measures and Erdős's question."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 43,
+      "endLine": 65,
+      "summary": "Discrepancy function, bounded discrepancy, and ±1 sequences."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Tao's Theorem",
+      "startLine": 67,
+      "endLine": 96,
+      "summary": "The main result and its equivalent formulation."
+    },
+    {
+      "id": "complex-variant",
+      "title": "Complex Variant",
+      "startLine": 98,
+      "endLine": 127,
+      "summary": "The more general version for unit circle values."
+    },
+    {
+      "id": "stronger-conjecture",
+      "title": "Stronger Conjecture (Open)",
+      "startLine": 129,
+      "endLine": 151,
+      "summary": "Erdős's conjecture about logarithmic growth."
+    },
+    {
+      "id": "multiplicative",
+      "title": "Multiplicative Case",
+      "startLine": 153,
+      "endLine": 195,
+      "summary": "The special case of multiplicative functions and historical notes."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize the Erdős Discrepancy Problem, one of the most famous problems in combinatorics, solved by Terence Tao in 2015. The theorem states that no ±1 sequence can have bounded discrepancy—some arithmetic progression will always have arbitrarily large partial sums. Tao's proof uses deep connections to multiplicative number theory.",
+    "implications": "Tao's solution introduced new connections between combinatorics and analytic number theory. The techniques developed—particularly the use of the Elliott conjecture—have applications to other problems about multiplicative functions and arithmetic sequences.",
+    "openQuestions": [
+      "Does the discrepancy grow at least logarithmically? (Erdős's stronger conjecture)",
+      "What is the optimal growth rate of the discrepancy?",
+      "Can Tao's methods be simplified or made more elementary?",
+      "Are there effective bounds on d and m for given C?"
+    ]
   }
 }
