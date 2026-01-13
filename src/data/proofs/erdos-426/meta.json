@@ -1,0 +1,34 @@
+{
+  "id": "erdos-426",
+  "title": "Erdős Problem #426",
+  "slug": "erdos-426",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe say ... is a unique subgraph of ... if there is exactly one way to find ... as a subgraph (not necessarily induced) of ......",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/426",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos426Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 426,
+    "erdosUrl": "https://erdosproblems.com/426",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$25"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #426 from erdosproblems.com. Originally offered with a prize of $25.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe say $H$ is a unique subgraph of $G$ if there is exactly one way to find $H$ as a subgraph (not necessarily induced) of $G$. Is there a graph on $n$ vertices with\\[\\gg \\frac{2^{\\binom{n}{2}}}{n!}\\]many distinct unique subgraphs?\n\n\n\nA problem of Erd\\H{o}s and Entringer \\cite{EnEr72}, who constructed a graph with\\[\\gg 2^{\\binom{n}{2}-O(n^{3/2+o(1)})}\\]many unique subgraphs. This was improved by Harary and Schwenk \\cite{HaSc73} and then by Brouwer \\cite{Br75}, who constructed a graph with\\[\\gg \\frac{2^{\\binom{n}{2}-O(n)}}{n!}\\]many unique subgraphs.\n\nNote that there are $\\sim 2^{\\binom{n}{2}}/n!$ many non-isomorphic graphs on $n$ vertices (folklore, often attributed to P\\'{o}lya), and hence the bound in the problem statement is trivially best possible.\n\nErd\\H{o}s believed Brouwer's construction was essentially best possible, but Spencer suggested that $\\gg \\frac{2^{\\binom{n}{2}}}{n!}$ may be possible. Erd\\H{o}s offered \\$100 for such a construction and \\$25 for a proof that no such construction is possible.\n\nBrada\\v{c} and Christoph \\cite{BrCh24} have proved the answer is no: if $f(n)$ is the maximum number of unique subgraphs in a graph on $n$ vertices then\\[f(n) = o\\left(\\frac{2^{\\binom{n}{2}}}{n!}\\right).\\](Quantitatively the $o(1)$ in their argument can be taken to be $O(\\frac{\\log\\log\\log n}{\\log\\log n})$.)\n\n\n\n\nReferences\n\n\n[Br75] Brouwer, A. E., Note: ``On the number of unique subgraphs of a graph'' (J.\nCombinatorial Theory Ser. B {\\bf 13} (1972), 112-115)\nby R. C. Entringer and P. Erd\\H{o}s. J. Combinatorial Theory Ser. B (1975), 184-185.\n\n[BrCh24] Brada\\vC, D. and Christoph, M., Unique subgraphs are rare. arXiv:2410.16233 (2024).\n\n[EnEr72] Entringer, R. C. and Erd\\H{o}s, Paul, On the number of unique subgraphs of a graph. J. Combinatorial Theory Ser. B (1972), 112-115.\n\n[HaSc73] Harary, Frank and Schwenk, Allen J., On the number of unique subgraphs. J. Combinatorial Theory Ser. B (1973), 156-160.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

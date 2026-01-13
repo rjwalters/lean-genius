@@ -1,0 +1,33 @@
+{
+  "id": "erdos-402",
+  "title": "Erdős Problem #402",
+  "slug": "erdos-402",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nProve that, for any finite set ..., there exist ... such that\\[(a,b)\\leq a/\\lvert A\\rvert.\\]\n\n\n\nA conjecture of Graham , who ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/402",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos402Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 402,
+    "erdosUrl": "https://erdosproblems.com/402",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #402 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nProve that, for any finite set $A\\subset\\mathbb{N}$, there exist $a,b\\in A$ such that\\[\\mathrm{gcd}(a,b)\\leq a/\\lvert A\\rvert.\\]\n\n\n\nA conjecture of Graham \\cite{Gr70}, who also conjectured that (assuming $A$ itself has no common divisor) the only cases where equality is achieved are when $A=\\{1,\\ldots,n\\}$ or $\\{L/1,\\ldots,L/n\\}$ (where $L=\\mathrm{lcm}(1,\\ldots,n)$) or $\\{2,3,4,6\\}$.\n\nProved for all sufficiently large sets (including the sharper version which characterises the case of equality) independently by Szegedy \\cite{Sz86} and Zaharescu \\cite{Za87}.\n\nProved for all sets by Balasubramanian and Soundararajan \\cite{BaSo96}.\n\n\n\n\nReferences\n\n\n[BaSo96] Balasubramanian, R. and Soundararajan, K., On a conjecture of R. L. Graham. Acta Arith. (1996), 1-38.\n\n[Gr70] Graham, R., Unsolved problem 5749. Amer. Math. Monthly (1970), 775.\n\n[Sz86] Szegedy, M., The solution of Graham's greatest common divisor problem. Combinatorica (1986), 67-71.\n\n[Za87] Zaharescu, Alexandru, On a conjecture of Graham. J. Number Theory (1987), 33-40.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-425",
+  "title": "Erdős Problem #425",
+  "slug": "erdos-425",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximum possible size of a subset ... such that the products ... are distinct for all .... Is there a constant...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/425",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos425Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 425,
+    "erdosUrl": "https://erdosproblems.com/425",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #425 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $F(n)$ be the maximum possible size of a subset $A\\subseteq\\{1,\\ldots,N\\}$ such that the products $ab$ are distinct for all $a<b$. Is there a constant $c$ such that\\[F(n)=\\pi(n)+(c+o(1))n^{3/4}(\\log n)^{-3/2}?\\]If $A\\subseteq \\{1,\\ldots,n\\}$ is such that all products $a_1\\cdots a_r$ are distinct for $a_1<\\cdots <a_r$ then is it true that\\[\\lvert A\\rvert \\leq \\pi(n)+O(n^{\\frac{r+1}{2r}})?\\]\n\n\n\nErd\\H{o}s \\cite{Er68} proved that there exist some constants $0<c_1\\leq c_2$ such that\\[\\pi(n)+c_1 n^{3/4}(\\log n)^{-3/2}\\leq F(n)\\leq \\pi(n)+c_2 n^{3/4}(\\log n)^{-3/2}.\\]This problem can also be considered in the real numbers: that is, what is the size of the the largest $A\\subset [1,x]$ such that for any distinct $a,b,c,d\\in A$ we have $\\lvert ab-cd\\rvert \\geq 1$? Erd\\H{o}s had conjectured (see \\cite{Er73} and \\cite{Er77c}) that $\\lvert A\\rvert=o(x)$.\n\nIn \\cite{ErGr80} Erd\\H{o}s and Graham report that Alexander had given a construction disproving this conjecture, establishing that $\\lvert A\\rvert\\gg x$ is possible. Alexander's construction is given in \\cite{Er80}, and we sketch a simplified version. Let $B\\subseteq [1,X^2]$ be a Sidon set of integers of size $\\gg X$ and\\[A=\\{ X e^{b/X^2} : b\\in B\\}.\\]It is easy to check that\\[\\lvert ab-cd\\rvert \\geq X^2\\lvert 1-e^{1/X^2}\\rvert \\gg 1\\]for distinct $a,b,c,d\\in A$, and (after rescaling $A$ by some constant factor) this produces a set of size $\\gg X$ with the desired property in the interval $[X,O(X)]$. Furthermore, a simple modification allows for $A$ to also be $1$-separated.\n\nIn \\cite{Er77c} Erd\\H{o}s considers a similar generalisation for sets of complex numbers or complex integers.\n\n\nSee also [490], [793], and [796].\n\n\n\n\nReferences\n\n\n[Er68] Erd\\H{o}s, P., On some applications of graph theory to number theoretic problems. Publ. Ramanujan Inst. (1968/69), 131-136.\n\n[Er73] Erd\\H{o}s, P., Problems and results on combinatorial number theory. A survey of combinatorial theory (Proc. Internat. Sympos., Colorado State Univ., Fort Collins, Colo., 1971) (1973), 117-138.\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n[Er80] Erd\\H{o}s, Paul, A survey of problems in combinatorial number theory. Ann. Discrete Math. (1980), 89-115.\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

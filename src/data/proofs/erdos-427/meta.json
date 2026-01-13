@@ -1,0 +1,33 @@
+{
+  "id": "erdos-427",
+  "title": "Erdős Problem #427",
+  "slug": "erdos-427",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every ... and ..., there exists ... such that\\[d \\mid p_{n+1}+\\cdots+p_{n+k},\\]where ... denotes the ......",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/427",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos427Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 427,
+    "erdosUrl": "https://erdosproblems.com/427",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #427 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every $n$ and $d$, there exists $k$ such that\\[d \\mid p_{n+1}+\\cdots+p_{n+k},\\]where $p_r$ denotes the $r$th prime?\n\n\n\nCedric Pilatte has observed that a positive solution to this follows from a result of Shiu \\cite{Sh00}: for any $k\\geq 1$ and $(a,q)=1$ there exist infinitely many $k$-tuples of consecutive primes $p_m,\\ldots,p_{m+{k-1}}$ all of which are congruent to $a$ modulo $q$.\n\nIndeed, we apply this with $k=q=d$ and $a=1$ and let $p_m,\\ldots,p_{m+{d-1}}$ be consecutive primes all congruent to $1$ modulo $d$, with $m>n+1$. If $p_{n+1}+\\cdots+p_{m-1}\\equiv r\\pmod{d}$ with $1\\leq r\\leq d$ then\\[d \\mid p_{n+1}+\\cdots +p_m+\\cdots+p_{m+d+r-1}.\\]\n\n\n\n\nReferences\n\n\n[Sh00] Shiu, D. K. L., Strings of congruent primes. J. London Math. Soc. (2) (2000), 359-373.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

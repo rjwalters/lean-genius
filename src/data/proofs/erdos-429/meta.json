@@ -1,0 +1,33 @@
+{
+  "id": "erdos-429",
+  "title": "Erdős Problem #429",
+  "slug": "erdos-429",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, if ... is sparse enough and does not cover all residue classes modulo ... for any prime ..., then there exis...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/429",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos429Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 429,
+    "erdosUrl": "https://erdosproblems.com/429",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #429 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, if $A\\subseteq \\mathbb{N}$ is sparse enough and does not cover all residue classes modulo $p$ for any prime $p$, then there exists some $n$ such that $n+a$ is prime for all $a\\in A$?\n\n\n\nWeisenberg \\cite{We24} has shown the answer is no: $A$ can be arbitrarily sparse and missing at least one residue class modulo every prime $p$, and yet $A+n$ is not contained in the primes for any $n\\in \\mathbb{Z}$. (Weisenberg gives several constructions of such an $A$.)\n\n\n\n\nReferences\n\n\n[We24] D. Weisenberg, Sparse Admissible Sets and a Problem of Erd\\H{o}s and Graham. Integers (2024).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

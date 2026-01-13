@@ -1,0 +1,33 @@
+{
+  "id": "erdos-397",
+  "title": "Erdős Problem #397",
+  "slug": "erdos-397",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there only finitely many solutions to\\[\\prod_i {m_i}=\\prod_j {n_j}\\]with the ... distinct?\n\n\n\nSomani, using ChatGPT, has ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/397",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos397Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 397,
+    "erdosUrl": "https://erdosproblems.com/397",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #397 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there only finitely many solutions to\\[\\prod_i \\binom{2m_i}{m_i}=\\prod_j \\binom{2n_j}{n_j}\\]with the $m_i,n_j$ distinct?\n\n\n\nSomani, using ChatGPT, has given a negative answer. In fact, for any $a\\geq 2$, if $c=8a^2+8a+1$,\\[\\binom{2a}{a}\\binom{4a+4}{2a+2}\\binom{2c}{c}= \\binom{2a+2}{a+1}\\binom{4a}{2a}\\binom{2c+2}{c+1}.\\]Further families of solutions are given in the comments by SharkyKesa.\n\nThis was earlier asked about in a MathOverflow question, in response to which Elkies also gave an alternative construction which produces solutions - at the moment it is not clear whether Elkies' argument gives infinitely many solutions (although I believe it can).\n\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-408",
+  "title": "Erdős Problem #408",
+  "slug": "erdos-408",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the Euler totient function and ... be the iterated ... function, so that ... and .... Let\\[f(n) = \\min \\{ k : \\phi...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/408",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos408Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 408,
+    "erdosUrl": "https://erdosproblems.com/408",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #408 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\phi(n)$ be the Euler totient function and $\\phi_k(n)$ be the iterated $\\phi$ function, so that $\\phi_1(n)=\\phi(n)$ and $\\phi_k(n)=\\phi(\\phi_{k-1}(n))$. Let\\[f(n) = \\min \\{ k : \\phi_k(n)=1\\}.\\]Does $f(n)/\\log n$ have a distribution function? Is $f(n)/\\log n$ almost always constant? What can be said about the largest prime factor of $\\phi_k(n)$ when, say, $k=\\log\\log n$?\n\n\n\nPillai \\cite{Pi29} was the first to investigate this function, and proved\\[\\log_3 n < f(n) < \\log_2 n\\]for all large $n$. Shapiro \\cite{Sh50} proved that $f(n)$ is essentially multiplicative.\n\nErd\\H{o}s, Granville, Pomerance, and Spiro \\cite{EGPS90} have proved that the answer to the first two questions is yes, conditional on a form of the Elliott-Halberstam conjecture.\n\nIt is likely true that, if $k\\to \\infty$ however slowly with $n$, then for almost all $n$ the largest prime factor of $\\phi_k(n)$ is $\\leq n^{o(1)}$.\n\nThis is discussed in problem B41 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[EGPS90] Erd\\H{o}s, P. and Granville, A. and Pomerance, C. and Spiro, C., On the normal behavior of the iterates of some arithmetic functions. Analytic number theory (Allerton Park, IL, 1989) (1990), 165-204.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Pi29] Pillai, S. Sivasankaranarayana, On some functions connected with {$\\phi(n)$}. Bull. Amer. Math. Soc. (1929), 832-836.\n\n[Sh50] Shapiro, Harold N., On the iterates of a certain class of arithmetic functions. Comm. Pure Appl. Math. (1950), 259-272.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

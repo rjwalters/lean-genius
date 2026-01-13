@@ -1,0 +1,33 @@
+{
+  "id": "erdos-405",
+  "title": "Erdős Problem #405",
+  "slug": "erdos-405",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an odd prime. Is it true that the equation\\[(p-1)!+a^{p-1}=p^k\\]has only finitely many solutions?\n\n\n\nErds and Grah...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/405",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos405Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 405,
+    "erdosUrl": "https://erdosproblems.com/405",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #405 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $p$ be an odd prime. Is it true that the equation\\[(p-1)!+a^{p-1}=p^k\\]has only finitely many solutions?\n\n\n\nErd\\H{o}s and Graham remark that it is probably true that in general $(p-1)!+a^{p-1}$ is rarely a power at all (although this can happen, for example $6!+2^6=28^2$).\n\nErd\\H{o}s and Graham ask this allowing the case $p=2$, but this is presumably an oversight, since clearly there are infinitely many solutions to this equation when $p=2$.\n\nBrindza and Erd\\H{o}s \\cite{BrEr91} proved that there are finitely many such solutions. Yu and Liu \\cite{YuLi96} showed that the only solutions are\\[2!+1^2=3\\]\\[2!+5^2=3^3\\]and\\[4!+1^4=5^2.\\]\n\n\n\n\nReferences\n\n\n[BrEr91] Brindza, B. and Erd\\H{o}s, P., On some {D}iophantine problems involving powers and\nfactorials. J. Austral. Math. Soc. Ser. A (1991), 1--7.\n\n[YuLi96] Yu, Kunrui and Liu, Dehua, A complete resolution of a problem of {E}rd\\H{o}s and {G}raham. Rocky Mountain J. Math. (1996), 1235--1244.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

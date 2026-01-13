@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "MILESTONE: Proved zhang_implies_zero_limit! 2→1 sorries. Key lemma strictly_increasing_from_frequently extracts monotone subsequence from Frequently.",
+    "progressSummary": "COMPLETE: ZERO SORRIES! Both zhang_implies_zero_limit and twin_prime_implies_zero_limit PROVED. All conditional theorems proven; only axioms for known results remain.",
     "builtItems": [
       "nthPrime, primeGap, normalizedGap definitions (Erdos5PrimeGaps.lean:49-58)",
       "IsLimitPoint, limitPointSet definitions (Erdos5PrimeGaps.lean:64-68)",
@@ -38,8 +38,9 @@
       "nthPrime_strictMono - strict monotonicity PROVED (Erdos5PrimeGaps.lean:151)",
       "nthPrime_ge - p_n ≥ n + 2 PROVED via induction (Erdos5PrimeGaps.lean:157)",
       "primeGap_pos, primeGap_zero, primeGap_one PROVED (Erdos5PrimeGaps.lean:124-139)",
-      "strictly_increasing_from_frequently PROVED (Erdos5PrimeGaps.lean:194-219)",
-      "zhang_implies_zero_limit PROVED (Erdos5PrimeGaps.lean:221-286)"
+      "strictly_increasing_from_frequently PROVED (Erdos5PrimeGaps.lean:182-207)",
+      "twin_prime_implies_zero_limit PROVED (Erdos5PrimeGaps.lean:211-265)",
+      "zhang_implies_zero_limit PROVED (Erdos5PrimeGaps.lean:271-338)"
     ],
     "insights": [
       "Erdős #5 is an OPEN problem - no proof exists to formalize",
@@ -47,16 +48,17 @@
       "Key: Filter.Frequently can be converted to ∀N,∃n≥N,P(n) by contraposition",
       "Subsequence extraction: use choose on hfreq' then Nat.rec for recursive definition",
       "Squeeze theorem pattern: 0 ≤ gap/log(n) ≤ H/log(n) → 0 via Metric.tendsto_atTop",
-      "Composing Tendsto: log(f k) → ∞ needs Real.tendsto_log_atTop ∘ tendsto_natCast_atTop_atTop ∘ f→∞"
+      "Composing Tendsto: log(f k) → ∞ needs Real.tendsto_log_atTop ∘ tendsto_natCast_atTop_atTop ∘ f→∞",
+      "Type coercion: ↑2 (from ℕ) vs 2 (ℝ literal) - use simp only [Nat.cast_ofNat] to normalize"
     ],
     "mathlibGaps": [
       "No direct lemma for extracting StrictMono subsequence from Filter.Frequently",
       "Real.tendsto_log_nat_atTop doesn't exist - need to compose Real.tendsto_log_atTop with cast"
     ],
     "nextSteps": [
-      "Prove twin_prime_implies_zero_limit using same subsequence extraction technique",
       "Research: Check for new results on S = [0,∞] conjecture",
-      "Consider: Can we prove InfinityIsLimitPoint from westzynthius_large_gaps axiom?"
+      "Consider adding more conditional theorems (e.g., from specific gap hypotheses)",
+      "File is essentially complete - only axioms for known results (Zhang, GPY, Westzynthius)"
     ]
   },
   "approaches": [],

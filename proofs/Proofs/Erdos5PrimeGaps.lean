@@ -179,18 +179,6 @@ def cramer_conjecture : Prop :=
 
 /-! ## Part VII: Connections -/
 
-/-- The twin prime conjecture would imply 0 is a limit point (with specific
-    subsequence of twin prime locations). -/
-theorem twin_prime_implies_zero_limit (h : ∃ᶠ n in atTop, primeGap n = 2) :
-    IsLimitPoint 0 := by
-  -- If there are infinitely many twin primes, the gaps of 2 divided by
-  -- log(n) → 0 as n → ∞
-  sorry
-
-/-- Zhang's theorem (2013): There are infinitely many gaps ≤ 70,000,000.
-    This was later improved to gaps ≤ 246 by the Polymath project. -/
-axiom zhang_bounded_gaps : ∃ H : ℕ, ∃ᶠ n in atTop, primeGap n ≤ H
-
 /-- Extract a strictly increasing subsequence from a frequently-true predicate. -/
 lemma strictly_increasing_from_frequently {P : ℕ → Prop} (h : ∃ᶠ n in atTop, P n) :
     ∃ f : ℕ → ℕ, StrictMono f ∧ ∀ i, P (f i) := by
@@ -217,6 +205,68 @@ lemma strictly_increasing_from_frequently {P : ℕ → Prop} (h : ∃ᶠ n in at
     induction i with
     | zero => exact hg_P 0
     | succ k _ => exact hg_P (f k)
+
+/-- The twin prime conjecture would imply 0 is a limit point (with specific
+    subsequence of twin prime locations). -/
+theorem twin_prime_implies_zero_limit (h : ∃ᶠ n in atTop, primeGap n = 2) :
+    IsLimitPoint 0 := by
+  -- Extract strictly increasing subsequence where primeGap = 2
+  obtain ⟨f, hf_mono, hf_gap⟩ := strictly_increasing_from_frequently h
+  use f, hf_mono
+  rw [Metric.tendsto_atTop]
+  intro ε hε
+  -- Along the subsequence, normalizedGap (f k) = 2 / log (f k)
+  -- This tends to 0 since log (f k) → ∞
+  have h_f_tends : Tendsto f atTop atTop := StrictMono.tendsto_atTop hf_mono
+  have h_log_tends : Tendsto (fun k => Real.log (f k : ℝ)) atTop atTop := by
+    apply Tendsto.comp Real.tendsto_log_atTop
+    exact Tendsto.comp tendsto_natCast_atTop_atTop h_f_tends
+  -- Eventually log (f k) > 2 / ε
+  have h_log_bound : ∀ᶠ k in atTop, Real.log (f k : ℝ) > 2 / ε := by
+    rw [Filter.tendsto_atTop_atTop] at h_log_tends
+    obtain ⟨N, hN⟩ := h_log_tends (2 / ε + 1)
+    filter_upwards [Filter.eventually_ge_atTop N] with k hk
+    linarith [hN k hk]
+  -- Eventually f k > 1 (so log is positive)
+  have h_f_pos : ∀ᶠ k in atTop, 1 < f k := by
+    filter_upwards [Filter.eventually_ge_atTop 2] with k hk
+    have hf01 : f 0 < f 1 := hf_mono (Nat.zero_lt_one)
+    have hf1k : f 1 < f k := hf_mono (by omega : 1 < k)
+    omega
+  -- Combine conditions
+  obtain ⟨N, hN⟩ := (h_log_bound.and h_f_pos).exists_forall_of_atTop
+  use N
+  intro k hk
+  obtain ⟨h_log_k, h_fk_gt1⟩ := hN k hk
+  simp only [Function.comp_apply, dist_zero_right]
+  -- Compute normalizedGap
+  unfold normalizedGap
+  have h_fk_ne : f k ≠ 0 := by omega
+  simp only [h_fk_ne, ↓reduceIte]
+  -- The gap is exactly 2
+  have h_gap_eq : primeGap (f k) = 2 := hf_gap k
+  rw [h_gap_eq]
+  -- Compute: |2 / log (f k)| < ε
+  have h_log_pos : 0 < Real.log (f k : ℝ) := by
+    apply Real.log_pos
+    exact_mod_cast h_fk_gt1
+  have h_nonneg : 0 ≤ ((2 : ℕ) : ℝ) / Real.log (f k : ℝ) := by
+    apply div_nonneg
+    · norm_num
+    · exact le_of_lt h_log_pos
+  rw [Real.norm_of_nonneg h_nonneg]
+  -- 2 / log (f k) < ε since log (f k) > 2 / ε
+  rw [div_lt_iff₀ h_log_pos]
+  -- Normalize the ↑2 to 2
+  simp only [Nat.cast_ofNat]
+  have h1 : ε * Real.log (f k : ℝ) > ε * (2 / ε) := by
+    apply mul_lt_mul_of_pos_left h_log_k hε
+  have h2 : ε * (2 / ε) = 2 := by field_simp
+  linarith
+
+/-- Zhang's theorem (2013): There are infinitely many gaps ≤ 70,000,000.
+    This was later improved to gaps ≤ 246 by the Polymath project. -/
+axiom zhang_bounded_gaps : ∃ H : ℕ, ∃ᶠ n in atTop, primeGap n ≤ H
 
 /-- Zhang's theorem implies 0 is a limit point. -/
 theorem zhang_implies_zero_limit : IsLimitPoint 0 := by

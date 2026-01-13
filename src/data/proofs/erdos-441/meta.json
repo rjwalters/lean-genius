@@ -1,0 +1,33 @@
+{
+  "id": "erdos-441",
+  "title": "Erdős Problem #441",
+  "slug": "erdos-441",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... What is the size of the largest ... such that ... for all ..., where ... is the least common multiple of ... and ......",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/441",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos441Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 441,
+    "erdosUrl": "https://erdosproblems.com/441",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #441 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N\\geq 1$. What is the size of the largest $A\\subset \\{1,\\ldots,N\\}$ such that $[a,b]\\leq N$ for all $a,b\\in A$, where $[a,b]$ is the least common multiple of $a$ and $b$?\n\nIs it attained by choosing all integers in $[1,(N/2)^{1/2}]$ together with all even integers in $[(N/2)^{1/2},(2N)^{1/2}]$?\n\n\n\nLet $g(N)$ denote the size of the largest such $A$. The construction mentioned proves that\\[g(N) \\geq \\left(\\tfrac{9}{8}n\\right)^{1/2}+O(1).\\]Erd\\H{o}s \\cite{Er51b} proved $g(N) \\leq (4n)^{1/2}+O(1)$, which was improved by Choi \\cite{Ch72b}. Chen \\cite{Ch98} established the asymptotic\\[g(N) \\sim \\left(\\tfrac{9}{8}n\\right)^{1/2}.\\]Chen and Dai \\cite{DaCh06} proved that\\[g(N)\\leq \\left(\\tfrac{9}{8}n\\right)^{1/2}+O\\left(\\left(\\frac{N}{\\log N}\\right)^{1/2}\\log\\log N\\right).\\]In \\cite{ChDa07} the same authors prove that, infinitely often, Erd\\H{o}s' construction is not optimal: if $B$ is that construction and $A$ is such that $\\lvert A\\rvert=g(N)$ then, for infinitely many $N$,\\[\\lvert A\\rvert\\geq \\lvert B\\rvert+t,\\]where $t\\geq 0$ is defined such that the $t$-fold iterated logarithm of $N$ is in $[0,1)$.\n\nThis is discussed in problems B26 and E2 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Ch72b] Choi, S. L. G., The largest subset in {$[1,$} {$n]$} whose integers have\npairwise {L}.C.{M}. not exceeding {$n$}. Mathematika (1972), 221--230.\n\n[Ch98] Chen, Yong-Gao, Sequences with bounded l.c.m. of each pair of terms. Acta Arith. (1998), 71-95.\n\n[ChDa07] Chen, Yong-Gao and Dai, Li-Xia, Sequences with bounded l.c.m. of each pair of terms. {III}. Acta Arith. (2007), 125-133.\n\n[DaCh06] Dai, Li-Xia and Chen, Yong-Gao, Sequences with bounded l.c.m. of each pair of terms. {II}. Acta Arith. (2006), 315-326.\n\n[Er51b] P. Erd\\H{o}s, Problem. Mat. Lapok (1951), 233.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

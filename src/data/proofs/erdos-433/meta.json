@@ -1,0 +1,33 @@
+{
+  "id": "erdos-433",
+  "title": "Erdős Problem #433",
+  "slug": "erdos-433",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a finite set then let ... denote the greatest integer which is not expressible as a finite sum of elements from ......",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/433",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos433Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 433,
+    "erdosUrl": "https://erdosproblems.com/433",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #433 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $A\\subset \\mathbb{N}$ is a finite set then let $G(A)$ denote the greatest integer which is not expressible as a finite sum of elements from $A$ (with repetitions allowed). Let\\[g(k,n)=\\max G(A)\\]where the maximum is taken over all $A\\subseteq \\{1,\\ldots,n\\}$ of size $\\lvert A\\rvert=k$ which has no common divisor. Is it true that\\[g(k,n)\\sim \\frac{n^2}{k-1}?\\]\n\n\n\nThis type of problem is associated with Frobenius (see also [434]). Erd\\H{o}s and Graham \\cite{ErGr72} proved $g(k,n)<2n^2/k$, and there are examples which show that\\[g(k,n) \\geq \\frac{n^2}{k-1}-5n\\]for $k\\geq 2$.\n\nThe problem is written as Erd\\H{o}s and Graham describe it, but presumably they had in mind the regime where $k$ is fixed and $n\\to \\infty$.\n\nThis is true, and was proved by Dixmier \\cite{Di90}, who proved that in fact, for all $2\\leq k<n$,\\[\\left\\lfloor\\frac{n-2}{k-1}\\right\\rfloor(n-k+1)-1\\leq g(k,n) \\leq \\left(\\left\\lfloor\\frac{n-1}{k-1}\\right\\rfloor-1\\right)n-1,\\]and determined $g(k,n)$ exactly when $k-1$ divides any of $n,n-1,n-2$.\n\n\n\n\nReferences\n\n\n[Di90] Dixmier, Jacques, Proof of a conjecture by {E}rd\\H{o}s and {G}raham concerning\nthe problem of {F}robenius. J. Number Theory (1990), 198--209.\n\n[ErGr72] Erd\\H{o}s, P. and Graham, R. L., On a linear diophantine problem of Frobenius. Acta Arith. (1972), 399-408.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

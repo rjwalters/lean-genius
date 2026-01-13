@@ -1,0 +1,33 @@
+{
+  "id": "erdos-440",
+  "title": "Erdős Problem #440",
+  "slug": "erdos-440",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be infinite and let ... count the number of indices for which .... Is it true that ...?\n\nHow large can\\[\\liminf {x^{1...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/440",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos440Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 440,
+    "erdosUrl": "https://erdosproblems.com/440",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #440 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{a_1<a_2<\\cdots\\}\\subseteq \\mathbb{N}$ be infinite and let $A(x)$ count the number of indices for which $\\mathrm{lcm}(a_i,a_{i+1})\\leq x$. Is it true that $A(x) \\ll x^{1/2}$?\n\nHow large can\\[\\liminf \\frac{A(x)}{x^{1/2}}\\]be?\n\n\n\nTaking $A=\\mathbb{N}$ shows that\\[\\liminf \\frac{A(x)}{x^{1/2}}=1\\]is possible. Erd\\H{o}s and Szemer\\'{e}di \\cite{ErSz80} proved that it is always $\\leq 1$.\n\nTao in the comments has given a simple proof that $A(x) \\ll x^{1/2}$. van Doorn has proved that $A(x) \\leq (c+o(1))x^{1/2}$ where\\[c=\\sum_{n\\geq 1}\\frac{1}{n^{1/2}(n+1)}\\approx 1.86.\\]This was already proved by Erd\\H{o}s and Szemer\\'{e}di \\cite{ErSz80}, who showed that this constant is the best possible.\n\nThere are more related results (particularly for the more general case of $\\mathrm{lcm}(a_i,a_{i+1},\\ldots,a_{i+k})$) in \\cite{ErSz80}.\n\n\n\n\n\nReferences\n\n\n[ErSz80] Erd\\H{o}s, P\\'{a}l and Szemer\\'{e}di, Endre, Remarks on a problem of the American Mathematical Monthly. Mat. Lapok (1980), 121-124.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

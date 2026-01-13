@@ -1,0 +1,33 @@
+{
+  "id": "erdos-438",
+  "title": "Erdős Problem #438",
+  "slug": "erdos-438",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nHow large can ... be if ... contains no square numbers?\n\n\n\nTaking all integers ... shows that ... is possible. This can be im...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/438",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos438Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 438,
+    "erdosUrl": "https://erdosproblems.com/438",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #438 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nHow large can $A\\subseteq \\{1,\\ldots,N\\}$ be if $A+A$ contains no square numbers?\n\n\n\nTaking all integers $\\equiv 1\\pmod{3}$ shows that $\\lvert A\\rvert\\geq N/3$ is possible. This can be improved to $\\tfrac{11}{32}N$ by taking all integers $\\equiv 1,5,9,13,14,17,21,25,26,29,30\\pmod{32}$, as observed by Massias.\n\nLagarias, Odlyzko, and Shearer \\cite{LOS83} proved this is sharp for the modular version of the problem; that is, if $A\\subseteq \\mathbb{Z}/N\\mathbb{Z}$ is such that $A+A$ contains no squares then $\\lvert A\\rvert\\leq \\tfrac{11}{32}N$. They also prove the general upper bound of $\\lvert A\\rvert\\leq 0.475N$ for the integer problem.\n\nIn fact $\\frac{11}{32}$ is sharp in general, as shown by Khalfalah, Lodha, and Szemer\\'{e}di \\cite{KLS02}, who proved that the maximal such $A$ satisfies $\\lvert A\\rvert\\leq (\\tfrac{11}{32}+o(1))N$.\n\nSee also [439] and [587].\n\n\n\n\nReferences\n\n\n[KLS02] Khalfalah, A. and Lodha, S. and Szemer\\'{e}di, E., Tight bound for the density of sequence of integers the sum of no two of which is a perfect square. Discrete Math. (2002), 243-255.\n\n[LOS83] Lagarias, J. C. and Odlyzko, A. M. and Shearer, J. B., On the density of sequences of integers the sum of no two of\nwhich is a square. II. General sequences. J. Combin. Theory Ser. A (1983), 123-139.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

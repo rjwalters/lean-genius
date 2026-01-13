@@ -1,0 +1,33 @@
+{
+  "id": "erdos-418",
+  "title": "Erdős Problem #418",
+  "slug": "erdos-418",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many positive integers not of the form ...?\n\n\n\nAsked by Erds and Sierpi\\'{n}ski. Numbers not of the form...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/418",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos418Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 418,
+    "erdosUrl": "https://erdosproblems.com/418",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #418 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many positive integers not of the form $n-\\phi(n)$?\n\n\n\nAsked by Erd\\H{o}s and Sierpi\\'{n}ski. Numbers not of the form we call non-cototients. It follows from the Goldbach conjecture that every odd number can be written as $n-\\phi(n)$. What happens for even numbers?\n\nBrowkin and Schinzel \\cite{BrSc95} provided an affirmative answer to this question, proving that any integer of the shape $2^{k}\\cdot 509203$ for $k\\geq 1$ is a non-cototient. It is open whether the set of non-cototients has positive density.\n\nErd\\H{o}s \\cite{Er73b} has shown that a positive density set of natural numbers cannot be written as $\\sigma(n)-n$ (numbers not of this form are called nonaliquot, or sometimes untouchable). Banks and Luca \\cite{BaLu05} have proved that the set of nonaliquots has lower density $\\geq 1/48$. This bound was improved to $0.06$ by Chen and Zhao \\cite{ChZh11}. Pollack and Pomerance \\cite{PoPo16} give a heuristic that predicts the density exactly (with a value of $\\approx 0.17$).\n\nThis is discussed in problem B36 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[BaLu05] Banks, William D. and Luca, Florian, Nonaliquots and {R}obbins numbers. Colloq. Math. (2005), 27--32.\n\n[BrSc95] Browkin, J. and Schinzel, A., On integers not of the form {$n-\\phi(n)$}. Colloq. Math. (1995), 55-58.\n\n[ChZh11] Chen, Yong-Gao and Zhao, Qing-Qing, Nonaliquot numbers. Publ. Math. Debrecen (2011), 439--442.\n\n[Er73b] Erd\\H{o}s, P., \\\"{U}ber die Zahlen der Form $\\sigma (n)-n$ und $n-\\phi(n)$. Elem. Math. (1973), 83-86.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[PoPo16] Pollack, Paul and Pomerance, Carl, Some problems of Erd\\H{o}s on the sum-of-divisors function. Trans. Amer. Math. Soc. Ser. B (2016), 1-26.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

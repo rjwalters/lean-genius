@@ -1,0 +1,33 @@
+{
+  "id": "erdos-419",
+  "title": "Erdős Problem #419",
+  "slug": "erdos-419",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... counts the number of divisors of ..., then what is the set of limit points of\\[{\\tau(n!)}?\\]\n\n\n\nErds and Graham noted ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/419",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos419Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 419,
+    "erdosUrl": "https://erdosproblems.com/419",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #419 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $\\tau(n)$ counts the number of divisors of $n$, then what is the set of limit points of\\[\\frac{\\tau((n+1)!)}{\\tau(n!)}?\\]\n\n\n\nErd\\H{o}s and Graham noted that any number of the shape $1+1/k$ for $k\\geq 1$ is a limit point (and thus so too is $1$), but knew of no others.\n\nMehtaab Sawhney has shared the following simple argument that proves that the above limit points are in fact the only ones.\n\nIf $v_p(m)$ is the largest $k$ such that $p^k\\mid m$ then $\\tau(m)=\\prod_p (v_p(m)+1)$ and so\\[\\frac{\\tau((n+1)!)}{\\tau(n!)} = \\prod_{p|n+1}\\left(1+\\frac{v_p(n+1)}{v_p(n!)+1}\\right).\\]Note that $v_p(n!)\\geq n/p$, and furthermore $n+1$ has $<\\log n$ prime divisors, each of which satisfy $v_p(n+1)<\\log n$. It follows that the contribution from $p\\leq n^{2/3}$ is at most\\[\\left(1+\\frac{\\log n}{n^{1/3}}\\right)^{\\log n}\\leq 1+o(1).\\]There is at most one $p\\mid n+1$ with $p\\geq n^{2/3}$ which (if present) contributes exactly\\[\\left(1+\\frac{1}{\\frac{n+1}{p}}\\right).\\]We have proved the claim, since these two facts combined show that the ratio in question is either $1+o(1)$ or $1+1/k+o(1)$, the latter occurring if $n+1=pk$ for some $p>n^{2/3}$.\n\nAfter receiving Sawhney's argument I found that this had already been proved, with essentially the same argument, by Erd\\H{o}s, Graham, Ivi\\'{c}, and Pomerance \\cite{EGIP96}.\n\n\n\n\n\n\nReferences\n\n\n[EGIP96] Erd\\H{o}s, Paul and Graham, S. W. and Ivi\\'c, Aleksandar and\nPomerance, Carl, On the number of divisors of {$n!$}. (1996), 337--355.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

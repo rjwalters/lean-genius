@@ -1,0 +1,33 @@
+{
+  "id": "erdos-415",
+  "title": "Erdős Problem #415",
+  "slug": "erdos-415",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any ... let ... be the largest ... such that any of the ... possible ordering patterns appears in some sequence of ... wi...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/415",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos415Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 415,
+    "erdosUrl": "https://erdosproblems.com/415",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #415 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any $n$ let $F(n)$ be the largest $k$ such that any of the $k!$ possible ordering patterns appears in some sequence of $\\phi(m+1),\\ldots,\\phi(m+k)$ with $m+k\\leq n$. Is it true that\\[F(n)=(c+o(1))\\log\\log\\log n\\]for some constant $c$? Is the first pattern which fails to appear always\\[\\phi(m+1)>\\phi(m+2)>\\cdots \\phi(m+k)?\\]Is it true that 'natural' ordering which mimics what happens to $\\phi(1),\\ldots,\\phi(k)$ is the most likely to appear?\n\n\n\nErd\\H{o}s \\cite{Er36b} proved that\\[F(n)\\asymp \\log\\log\\log n,\\]and similarly if we replace $\\phi$ with $\\sigma$ or $\\tau$ or $\\nu$ or any 'decent' additive or multiplicative function.\n\nWeisenberg has observed that the same questions could be asked for ordering patterns which allow equality (indeed, the final problem only makes sense if we allow equality).\n\n\n\n\nReferences\n\n\n[Er36b] Erd\\H{o}s, P., On a problem of Chowla and some related problems. Proc. Cambridge Philos. Soc. (1936), 530-540.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

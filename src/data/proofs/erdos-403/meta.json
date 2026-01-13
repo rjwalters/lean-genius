@@ -1,0 +1,33 @@
+{
+  "id": "erdos-403",
+  "title": "Erdős Problem #403",
+  "slug": "erdos-403",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes the equation\\[2^m=a_1!+\\cdots+a_k!\\]with ... have only finitely many solutions?\n\n\n\nAsked by Burr and Erds. Frankl and Li...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/403",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos403Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 403,
+    "erdosUrl": "https://erdosproblems.com/403",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #403 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes the equation\\[2^m=a_1!+\\cdots+a_k!\\]with $a_1<a_2<\\cdots <a_k$ have only finitely many solutions?\n\n\n\nAsked by Burr and Erd\\H{o}s. Frankl and Lin \\cite{Li76} independently showed that the answer is yes, and the largest solution is\\[2^7=2!+3!+5!.\\]In fact Lin showed that the largest power of $2$ which can divide a sum of distinct factorials containing $2$ is $2^{254}$, and that there are only 5 solutions to $3^m=a_1!+\\cdots+a_k!$ (when $m=0,1,2,3,6$).\n\nSee also [404].\n\n\n\n\nReferences\n\n\n[Li76] Lin, S., On two problems of Erd\\H{o}s concerning sums of distinct factorials. Bell Laboratories internal memorandum (1960).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

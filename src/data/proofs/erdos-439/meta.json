@@ -1,0 +1,33 @@
+{
+  "id": "erdos-439",
+  "title": "Erdős Problem #439",
+  "slug": "erdos-439",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, in any finite colouring of the integers, there must be two integers ... of the same colour such that ... is ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/439",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos439Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 439,
+    "erdosUrl": "https://erdosproblems.com/439",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #439 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, in any finite colouring of the integers, there must be two integers $x\\neq y$ of the same colour such that $x+y$ is a square? What about a $k$th power?\n\n\n\nA question of Roth, Erd\\H{o}s, S\\'{a}rk\\\"{o}zy, and S\\'{o}s \\cite{ESS89} (according to some reports, although in \\cite{Er80c} Erd\\H{o}s claims this arose in a conversation with Silverman in 1977). Erd\\H{o}s, S\\'{a}rk\\\"{o}zy, and S\\'{o}s \\cite{ESS89} proved this for $2$ or $3$ colours.\n\nIn other words, if $G$ is the infinite graph on $\\mathbb{N}$ where we connect $m,n$ by an edge if and only if $n+m$ is a square, then is the chromatic number of $G$ equal to $\\aleph_0$?\n\nThis is true, as proved by Khalfalah and Szemer\\'{e}di \\cite{KhSz06}, who in fact prove the general result with $x+y=z^2$ replaced by $x+y=f(z)$ for any non-constant $f(z)\\in \\mathbb{Z}[z]$ such that $2\\mid f(z)$ for some $z\\in \\mathbb{Z}$.\n\nSee also [438].\n\n\n\n\nReferences\n\n\n[ESS89] Erd\\H{o}s, P. and S\\'{a}rk\\\"ozy, A. and S\\'{o}s, V. T., On a conjecture of {R}oth and some related problems. I. (1989), 47--59.\n\n[Er80c] Erd\\H{o}s, Paul, Nine little known problems in combinatorial number theory. Normat (1980), 155-164, 180.\n\n[KhSz06] Khalfalah, Ayman and Szemer\\'{e}di, Endre, On the number of monochromatic solutions of {$x+y=z^2$}. Combin. Probab. Comput. (2006), 213-227.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-434",
+  "title": "Erdős Problem #434",
+  "slug": "erdos-434",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... What choice of ... (with ...) of size ... maximises the number of integers not representable as the sum of finitely ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/434",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos434Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 434,
+    "erdosUrl": "https://erdosproblems.com/434",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #434 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\leq n$. What choice of $A\\subseteq \\{1,\\ldots,n\\}$ (with $\\mathrm{gcd}(A)=1$) of size $\\lvert A\\rvert=k$ maximises the number of integers not representable as the sum of finitely many elements from $A$ (with repetitions allowed)? Is it $\\{n,n-1,\\ldots,n-k+1\\}$?\n\n\n\nAssociated with problems of Frobenius (see also [433]).\n\nThe maximal choice is indeed $\\{n,\\ldots,n-k+1\\}$, as proved by Kiss \\cite{Ki02}.\n\n\n\n\nReferences\n\n\n[Ki02] Kiss, G., On the extremal {F}robenius problem in a new aspect. Ann. Univ. Sci. Budapest. E\\\"otv\\\"os Sect. Math. (2002), 139--142.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-407",
+  "title": "Erdős Problem #407",
+  "slug": "erdos-407",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of solutions to\\[n=2^a+3^b+2^c3^d\\]with ... integers. Is it true that ... is bounded by some absolut...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/407",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos407Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 407,
+    "erdosUrl": "https://erdosproblems.com/407",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #407 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $w(n)$ count the number of solutions to\\[n=2^a+3^b+2^c3^d\\]with $a,b,c,d\\geq 0$ integers. Is it true that $w(n)$ is bounded by some absolute constant?\n\n\n\nA conjecture originally due to Newman.\n\nThis is true, and was proved by Evertse, Gy\\\"{o}ry, Stewart, and Tijdeman \\cite{EGST88}.\n\nQuantitative bounds were provided by Tijdeman and Wang \\cite{TiWa88}, who proved that (if $w(n)$ only counts distinct solutions, where we call two solutions distinct if the sets $\\{2^a,3^b,2^{c}3^d\\}$ are distinct) then $w(n) \\leq 4$ for all large $n$.\n\nThis was made effective by Bajpai and Bennett \\cite{BaBe24}, who proved that $w(n)\\leq 4$ if $n\\geq 131082$ and $w(n)\\leq 9$ for all $n$. (The largest $n$ for which $w(n)=9$ is $299$.) There are infinitely many $n$ with $w(n)=4$, given by the identities\n\\begin{align*}\n2^{a-1}+3^b+2^{a-1}3^0\n&= 2^{a-2}+3^b+2^{a-2}3^1\\\\\n&=2^a+3^{b-1}+2\\cdot 3^{b-1}\\\\\n&=2^a+3^{b-2}+2^33^{b-2}.\n\\end{align*}\n\n\n\n\nReferences\n\n\n[BaBe24] Bajpai, Prajeet and Bennett, Michael A., Effective {$S$}-unit equations beyond three terms: {N}ewman's\nconjecture. Acta Arith. (2024), 421--458.\n\n[EGST88] Evertse, J.-H. and Gy\\H{o}ry, K. and Stewart, C. L. and Tijdeman, R., {$S$}-unit equations and their applications. New advances in transcendence theory (Durham, 1986) (1988), 110-174.\n\n[TiWa88] Tijdeman, R. and Wang, Lian Xiang, Sums of products of powers of given prime numbers. Pacific J. Math. (1988), 177--193.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

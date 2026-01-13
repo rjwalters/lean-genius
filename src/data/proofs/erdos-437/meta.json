@@ -1,0 +1,33 @@
+{
+  "id": "erdos-437",
+  "title": "Erdős Problem #437",
+  "slug": "erdos-437",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... How many of the partial products ... can be squares? Is it true that, for any ..., there can be more than ... square...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/437",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos437Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 437,
+    "erdosUrl": "https://erdosproblems.com/437",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #437 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $1\\leq a_1<\\cdots<a_k\\leq x$. How many of the partial products $a_1,a_1a_2,\\ldots,a_1\\cdots a_k$ can be squares? Is it true that, for any $\\epsilon>0$, there can be more than $x^{1-\\epsilon}$ squares?\n\n\n\nErd\\H{o}s and Graham write it is 'trivial' that there are $o(x)$ many such squares, although this is not quite trivial, using Siegel's theorem.\n\nA positive answer follows from work of Bui, Pratt, and Zaharescu \\cite{BPZ24}, as noted by Tao in this blog post. In particular Tao shows that, if $L(x)$ is the maximal number of such squares possible, and $u(x)=(\\log x\\log\\log x)^{1/2}$, then\\[x\\exp(-(2^{1/2}+o(1))u(x)) \\leq L(x) \\leq x\\exp(-(2^{-1/2}+o(1))u(x)).\\]See also [841].\n\n\n\n\nReferences\n\n\n[BPZ24] Bui, Hung M. and Pratt, Kyle and Zaharescu, Alexandru, A problem of Erd\\H{o}s-Graham-Granville-{S}elfridge on\nintegral points on hyperelliptic curves. Math. Proc. Cambridge Philos. Soc. (2024), 309--323.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

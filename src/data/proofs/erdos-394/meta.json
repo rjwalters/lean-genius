@@ -1,0 +1,33 @@
+{
+  "id": "erdos-394",
+  "title": "Erdős Problem #394",
+  "slug": "erdos-394",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the least ... such that\\[n\\mid m(m+1)(m+2)\\cdots (m+k-1).\\]Is it true that\\[\\sum_{n\\leq x}t_2(n)\\ll {(\\log x)^...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/394",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos394Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 394,
+    "erdosUrl": "https://erdosproblems.com/394",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #394 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $t_k(n)$ denote the least $m$ such that\\[n\\mid m(m+1)(m+2)\\cdots (m+k-1).\\]Is it true that\\[\\sum_{n\\leq x}t_2(n)\\ll \\frac{x^2}{(\\log x)^c}\\]for some $c>0$?\n\nIs it true that, for $k\\geq 2$,\\[\\sum_{n\\leq x}t_{k+1}(n) =o\\left(\\sum_{n\\leq x}t_k(n)\\right)?\\]\n\n\n\nIn \\cite{ErGr80} they mention a conjecture of Erd\\H{o}s that the sum is $o(x^2)$. This was proved by Erd\\H{o}s and Hall \\cite{ErHa78}, who proved that in fact\\[\\sum_{n\\leq x}t_2(n)\\ll \\frac{\\log\\log\\log x}{\\log\\log x}x^2.\\]Erd\\H{o}s and Hall conjecture that the sum is $o(x^2/(\\log x)^c)$ for any $c<\\log 2$.\n\nSince $t_2(p)=p-1$ for prime $p$ it is trivial that\\[\\sum_{n\\leq x}t_2(n)\\gg \\frac{x^2}{\\log x}.\\]Erd\\H{o}s and Hall \\cite{ErHa78} also note that $t_{n-1}(n!)=2$ and $t_{n-2}(n!)\\ll n$, which $n=2^r$ shows is the best possible. They ask about the behaviour of $t_{n-3}(n!)$ and also ask ask whether, for infinitely many $n$,\\[t_k(n!)< t_{k-1}(n!)-1\\]for all $1\\leq k<n$. They proved (with Selfridge) that this holds for $n=10$.\n\n\n\n\nReferences\n\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[ErHa78] Erd\\H{o}s, P. and Hall, R. R., On some unconventional problems on the divisors of integers. J. Austral. Math. Soc. Ser. A (1978), 479--485.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

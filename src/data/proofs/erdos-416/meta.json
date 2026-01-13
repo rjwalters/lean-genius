@@ -1,0 +1,33 @@
+{
+  "id": "erdos-416",
+  "title": "Erdős Problem #416",
+  "slug": "erdos-416",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of ... such that ... is solvable. Does ...? Is there an asymptotic formula for ...?\n\n\n\nPillai  prove...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/416",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos416Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 416,
+    "erdosUrl": "https://erdosproblems.com/416",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #416 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $V(x)$ count the number of $n\\leq x$ such that $\\phi(m)=n$ is solvable. Does $V(2x)/V(x)\\to 2$? Is there an asymptotic formula for $V(x)$?\n\n\n\nPillai \\cite{Pi29} proved $V(x)=o(x)$. Erd\\H{o}s \\cite{Er35b} proved $V(x)=x(\\log x)^{-1+o(1)}$.\n\nThe behaviour of $V(x)$ is now almost completely understood. Maier and Pomerance \\cite{MaPo88} proved\\[V(x)=\\frac{x}{\\log x}e^{(C+o(1))(\\log\\log\\log x)^2},\\]for some explicit constant $C>0$. Ford \\cite{Fo98} improved this to\\[V(x)\\asymp\\frac{x}{\\log x}e^{C_1(\\log\\log\\log x-\\log\\log\\log\\log x)^2+C_2\\log\\log\\log x-C_3\\log\\log\\log\\log x}\\]for some explicit constants $C_1,C_2,C_3>0$. Unfortunately this falls just short of an asymptotic formula for $V(x)$ and determining whether $V(2x)/V(x)\\to 2$.\n\nIn \\cite{Er79e} Erd\\H{o}s asks further to estimate the number of $n\\leq x$ such that the smallest solution to $\\phi(m)=n$ satisfies $kx<m\\leq (k+1)x$.\n\nSee also [417] and [821].\n\nThis is discussed in problem B36 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er35b] Erd\\H{o}s, P., On the normal number of prime factors of $p-1$ and some related problems concerning Euler's $\\varphi$-function. Quart. J. Math. (1935), 205-213.\n\n[Er79e] Erd\\H{o}s, Paul, Some unconventional problems in number theory. Ast\\'{e}risque (1979), 73-82.\n\n[Fo98] Ford, Kevin, The distribution of totients. Ramanujan J. (1998), 67-151.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[MaPo88] Maier, Helmut and Pomerance, Carl, On the number of distinct values of Euler's $\\phi$-function. Acta Arith. (1988), 263-275.\n\n[Pi29] Pillai, S. Sivasankaranarayana, On some functions connected with {$\\phi(n)$}. Bull. Amer. Math. Soc. (1929), 832-836.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

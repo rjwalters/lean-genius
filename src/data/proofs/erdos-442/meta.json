@@ -1,0 +1,33 @@
+{
+  "id": "erdos-442",
+  "title": "Erdős Problem #442",
+  "slug": "erdos-442",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that if ... is such that\\[{\\log\\log x}\\sum_{n\\in A\\cap [1,x)}{n}\\to \\infty\\]then\\[\\left(\\sum_{n\\in A\\cap [1,x)}{n}...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/442",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos442Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 442,
+    "erdosUrl": "https://erdosproblems.com/442",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #442 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that if $A\\subseteq\\mathbb{N}$ is such that\\[\\frac{1}{\\log\\log x}\\sum_{n\\in A\\cap [1,x)}\\frac{1}{n}\\to \\infty\\]then\\[\\left(\\sum_{n\\in A\\cap [1,x)}\\frac{1}{n}\\right)^{-2} \\sum_{\\substack{a,b\\in A\\cap (1,x]\\\\ a<b}}\\frac{1}{\\mathrm{lcm}(a,b)}\\to \\infty?\\]\n\n\n\nTao \\cite{Ta24b} has shown this is false: there exists $A\\subset\\mathbb{N}$ such that\\[\\sum_{n\\in A\\cap [1,x)}\\frac{1}{n}\\gg \\exp((\\tfrac{1}{2}+o(1))\\sqrt{\\log\\log x}\\log\\log\\log x)\\]and\\[\\left(\\sum_{n\\in A\\cap [1,x)}\\frac{1}{n}\\right)^{-2} \\sum_{\\substack{a,b\\in A\\cap (1,x]\\\\ a<b}}\\frac{1}{\\mathrm{lcm}(a,b)}\\ll 1.\\]Moreover, Tao shows this is the best possible result, in that if $\\sum_{n\\in A\\cap [1,x)}\\frac{1}{n}$ grows faster than $\\exp(O(\\sqrt{\\log\\log x}\\log\\log\\log x))$ then\\[\\left(\\sum_{n\\in A\\cap [1,x)}\\frac{1}{n}\\right)^{-2} \\sum_{\\substack{a,b\\in A\\cap (1,x]\\\\ a<b}}\\frac{1}{\\mathrm{lcm}(a,b)}\\to \\infty.\\]\n\n\n\n\nReferences\n\n\n[Ta24b] Tao, T., Dense sets of natural numbers with unusually large least common multiples. arXiv:2407.04226 (2024).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}
