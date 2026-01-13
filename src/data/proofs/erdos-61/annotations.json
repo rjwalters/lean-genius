@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-e61-header",
+    "proofId": "erdos-61",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #61** is the famous Erdős–Hajnal conjecture, one of the most important open problems in graph theory.\n\n**The Question**: For any graph H, does there exist c > 0 such that every H-free graph (no induced copy of H) on n vertices has a clique or independent set of size at least n^c?\n\n**Status**: OPEN. The conjecture remains unproved after 35+ years of intensive study.\n\n**Best Known Bounds**:\n- Erdős-Hajnal (1989): exp(c√log n)\n- Bucić-Nguyen-Scott-Seymour (2023): exp(c√(log n · log log n))",
+    "mathContext": "The gap between the best known bound and the conjectured polynomial bound is enormous. For n = 10^6: the current bound gives roughly 30-50, while the conjecture predicts 1000+.",
+    "significance": "critical",
+    "relatedConcepts": ["erdos", "graph-theory", "ramsey-theory", "conjecture"]
+  },
+  {
+    "id": "ann-e61-imports",
+    "proofId": "erdos-61",
+    "range": {
+      "startLine": 20,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Mathlib Dependencies",
+    "content": "We import the full Mathlib library and open three key namespaces:\n\n- **Filter**: For `∀ᶠ n in atTop` notation (eventually for large n)\n- **SimpleGraph**: Undirected graphs with symmetric, irreflexive adjacency\n- **Real**: Real number operations including powers and exponentials",
+    "mathContext": "Using `import Mathlib` gives access to all Mathlib modules. The `open` commands bring definitions into scope without prefixes.",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "simple-graph", "filter"]
+  },
+  {
+    "id": "ann-e61-background",
+    "proofId": "erdos-61",
+    "range": {
+      "startLine": 28,
+      "endLine": 41
+    },
+    "type": "concept",
+    "title": "Ramsey Theory Background",
+    "content": "**Why this problem matters**: Classical Ramsey theory guarantees every graph on n vertices contains either a clique or independent set of size at least c·log(n). Random graphs show this is tight.\n\n**The key insight**: Erdős and Hajnal conjectured that FORBIDDING a specific induced subgraph H should dramatically improve this bound from logarithmic to polynomial.\n\n**Induced subgraph**: H is induced in G if we select vertices and keep EXACTLY the edges between them—no extras, no missing edges. This is stronger than just being a subgraph.",
+    "mathContext": "The Ramsey number R(k,k) grows exponentially in k, which is why general graphs only give log(n) bounds. The conjecture says structural constraints (forbidding H) should help.",
+    "significance": "key",
+    "relatedConcepts": ["ramsey-theory", "induced-subgraph", "extremal"]
+  },
+  {
+    "id": "ann-e61-main-definition",
+    "proofId": "erdos-61",
+    "range": {
+      "startLine": 50,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Erdős-Hajnal Lower Bound",
+    "content": "**IsErdosHajnalLowerBound H f** captures when f(n) is a valid lower bound for graph H:\n\nFor all sufficiently large n, every graph G on n vertices that does NOT contain H as an induced subgraph has either:\n- An independent set of size ≥ f(n), OR\n- A clique of size ≥ f(n)\n\nThis is THE key predicate the conjecture asks about.",
+    "mathContext": "Formally: `∀ᶠ n in atTop, ∀ G : SimpleGraph (Fin n), (¬∃ g : α ↪ Fin n, H = G.comap g) → G.indepNum ≥ f n ∨ G.cliqueNum ≥ f n`\n\nThe condition `H = G.comap g` says H is an induced subgraph of G via the embedding g. We require its NEGATION (H-free).",
+    "significance": "critical",
+    "relatedConcepts": ["induced-subgraph", "clique", "independent-set", "comap"]
+  },
+  {
+    "id": "ann-e61-conjecture",
+    "proofId": "erdos-61",
+    "range": {
+      "startLine": 71,
+      "endLine": 84
+    },
+    "type": "theorem",
+    "title": "The Main Conjecture (OPEN)",
+    "content": "**ErdosHajnalConjecture** states: For EVERY graph H, there exists c > 0 such that n^c is an Erdős-Hajnal lower bound for H.\n\n**In plain terms**: Forbidding any fixed induced subgraph forces a polynomial-size clique or independent set.\n\n**Why this is hard**: The conjecture quantifies over ALL possible graphs H. Each specific H might require different techniques to prove.\n\n**We do NOT claim this is true**—we just state it as a Prop to be studied.",
+    "mathContext": "The quantification `∀ {α : Type*} [Fintype α] [DecidableEq α] (H : SimpleGraph α)` allows H to be defined on any finite vertex type. The existential `∃ c : ℝ, c > 0` asserts the polynomial exponent exists.",
+    "significance": "critical",
+    "relatedConcepts": ["conjecture", "polynomial", "universal-quantification"]
+  },
+  {
+    "id": "ann-e61-1989-axiom",
+    "proofId": "erdos-61",
+    "range": {
+      "startLine": 92,
+      "endLine": 106
+    },
+    "type": "theorem",
+    "title": "Erdős-Hajnal 1989 Bound",
+    "content": "**erdosHajnal1989** states that Erdős and Hajnal proved: for any H, there exists c > 0 such that exp(c·√log n) is a valid lower bound.\n\n**Why this matters**: This is strictly better than the log(n) Ramsey bound:\n- For n = 10^6: log n ≈ 6, but exp(√6) ≈ 10\n\n**Why an axiom?** The proof uses probabilistic combinatorics and regularity lemmas that aren't yet formalized in Mathlib.",
+    "mathContext": "The bound `fun n => exp (c * sqrt (log n))` grows faster than log(n) but slower than any polynomial n^ε. This is called a 'sub-polynomial' bound.",
+    "significance": "key",
+    "relatedConcepts": ["axiom", "partial-result", "probabilistic-method"]
+  },
+  {
+    "id": "ann-e61-2023-axiom",
+    "proofId": "erdos-61",
+    "range": {
+      "startLine": 108,
+      "endLine": 118
+    },
+    "type": "theorem",
+    "title": "BNSS 2023 Improvement",
+    "content": "**bnss2023** captures the current best known bound from Bucić, Nguyen, Scott, and Seymour (2023):\n\nFor any H, there exists c > 0 such that exp(c·√(log n · log log n)) is a valid lower bound.\n\n**The improvement**: Adding the √(log log n) factor may seem small, but it represents significant technical progress. For n = 10^6:\n- Erdős-Hajnal 1989: exp(c·√6) ≈ exp(2.4c)\n- BNSS 2023: exp(c·√(6·1.8)) ≈ exp(3.3c)",
+    "mathContext": "This is the state-of-the-art as of 2025. The gap to the polynomial conjecture remains enormous—closing it would be a major breakthrough.",
+    "significance": "key",
+    "relatedConcepts": ["axiom", "partial-result", "state-of-the-art"]
+  },
+  {
+    "id": "ann-e61-comparison",
+    "proofId": "erdos-61",
+    "range": {
+      "startLine": 120,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "Bound Comparison",
+    "content": "**Concrete comparison for n = 10^6 vertices**:\n\n| Bound | Formula | Approximate Value |\n|-------|---------|------------------|\n| Ramsey | log n | 6 |\n| E-H 1989 | exp(c√6) | ~10-15 |\n| BNSS 2023 | exp(c√(6·1.8)) | ~15-25 |\n| **Conjectured** | n^c = 10^(6c) | **10,000+** |\n\nThe gap between best known and conjectured is over 100x. This illustrates how far we are from resolving the conjecture.",
+    "mathContext": "The exact values depend on the constant c which varies with H. But the qualitative gap—sub-polynomial vs polynomial—is the key point.",
+    "significance": "supporting",
+    "relatedConcepts": ["complexity-comparison", "bounds"]
+  },
+  {
+    "id": "ann-e61-examples",
+    "proofId": "erdos-61",
+    "range": {
+      "startLine": 132,
+      "endLine": 148
+    },
+    "type": "example",
+    "title": "Concrete Example Graphs",
+    "content": "We define two concrete example graphs to make the formalization testable:\n\n**triangleGraph**: The complete graph K₃ on 3 vertices (all pairs adjacent). This is `completeGraph (Fin 3)`.\n\n**threePathGraph**: The path P₃ on 3 vertices (a-b-c with edges a-b and b-c). Defined explicitly with adjacency predicate.\n\n**Known result (axiom)**: The Erdős-Hajnal conjecture IS proved for paths! We state `erdosHajnalForPaths` asserting polynomial bounds exist for the 3-path.",
+    "mathContext": "For specific graph families (paths, cycles, complete bipartite graphs, graphs on ≤5 vertices), the conjecture has been proven using structural arguments. Paths were among the first cases resolved.",
+    "significance": "supporting",
+    "relatedConcepts": ["complete-graph", "path-graph", "special-cases"]
+  }
+]

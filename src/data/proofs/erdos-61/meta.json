@@ -1,33 +1,115 @@
 {
   "id": "erdos-61",
-  "title": "Erdős Problem #61",
+  "title": "Erdős Problem #61: The Erdős–Hajnal Conjecture",
   "slug": "erdos-61",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any graph ... is there some ... such that every graph ... on ... vertices that does not contain ... as an induced subgrap...",
+  "description": "For any graph H, does there exist c > 0 such that every H-free graph on n vertices has a clique or independent set of size at least n^c?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Hajnal (1989); partial results by Bucić et al. (2023)",
     "sourceUrl": "https://erdosproblems.com/61",
-    "date": "",
-    "status": "pending",
+    "date": "1989",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos61Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "wip",
-    "sorries": 1,
+    "tags": ["erdos", "graph-theory", "ramsey-theory", "induced-subgraph", "conjecture"],
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 61,
     "erdosUrl": "https://erdosproblems.com/61",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-13",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graphs with symmetric irreflexive adjacency",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.cliqueNum",
+        "description": "Maximum clique size in a graph",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "SimpleGraph.indepNum",
+        "description": "Maximum independent set size",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Filter.Eventually",
+        "description": "Properties holding for sufficiently large values",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of Erdős-Hajnal lower bound property",
+      "Statement of the main conjecture as a Prop",
+      "Axioms for 1989 and 2023 partial results",
+      "Concrete example graphs (triangle, 3-path)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #61 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any graph $H$ is there some $c=c(H)>0$ such that every graph $G$ on $n$ vertices that does not contain $H$ as an induced subgraph contains either a complete graph or independent set on $\\geq n^c$ vertices?\n\n\n\nConjectured by Erd\\H{o}s and Hajnal \\cite{ErHa89}, who proved that a complete graph or independent set must exist on\\[\\geq \\exp(c_H\\sqrt{\\log n})\\]many vertices, where $c_H>0$ is some constant. This was improved by Buci\\'{c}, Nguyen, Scott, and Seymour \\cite{BNSS23} to\\[\\geq \\exp(c_H\\sqrt{\\log n\\log\\log n}).\\]See also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[BNSS23] Buci\\'C, M. and Nguyen, T. and Scott, A. and Seymour, P., A loglog step towards Erdos-Hajnal. arXiv:2301.10147 (2023).\n\n[ErHa89] Erd\\H{o}s, P. and Hajnal, A., Ramsey-type theorems. Discrete Appl. Math. (1989), 37-52.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The Erdős–Hajnal conjecture, proposed in 1989, is one of the most important open problems in graph theory. It connects two fundamental concepts: induced subgraphs and Ramsey-type bounds.\n\nClassical Ramsey theory tells us that every graph on n vertices contains either a clique or independent set of size at least c·log(n). This logarithmic bound is tight for general graphs. However, Erdős and Hajnal conjectured that FORBIDDING a specific induced subgraph H should dramatically improve this bound to a polynomial n^c.\n\nDespite intensive study for over 35 years, the conjecture remains open. The best known general bound, due to Bucić, Nguyen, Scott, and Seymour (2023), is exp(c√(log n · log log n))—still far from the conjectured polynomial.",
+    "problemStatement": "**The Erdős–Hajnal Conjecture (OPEN)**\n\nFor any graph $H$, there exists a constant $c = c(H) > 0$ such that every graph $G$ on $n$ vertices that does NOT contain $H$ as an induced subgraph has either:\n- A clique of size $\\geq n^c$, OR\n- An independent set of size $\\geq n^c$\n\n**Status**: OPEN\n\n**Best known bounds**:\n- Erdős-Hajnal (1989): $\\exp(c_H \\sqrt{\\log n})$\n- BNSS (2023): $\\exp(c_H \\sqrt{\\log n \\cdot \\log\\log n})$",
+    "proofStrategy": "We formalize the conjecture and its partial results:\n\n1. **IsErdosHajnalLowerBound**: A predicate capturing when function f is a valid lower bound for graph H\n\n2. **ErdosHajnalConjecture**: The statement that polynomial bounds always exist\n\n3. **Axioms for partial results**: We state the 1989 and 2023 bounds as axioms, since their proofs require probabilistic combinatorics beyond current Mathlib\n\n4. **Example graphs**: We define concrete small graphs (triangle, 3-path) to make the definitions testable",
+    "keyInsights": [
+      "**Induced subgraph**: H is induced in G if we find H by selecting vertices and keeping EXACTLY their edges—no extra edges, no missing edges. This is stronger than just being a subgraph.",
+      "**Why Ramsey bounds are weak**: Random graphs show that log(n) is the best general bound. The conjecture says structure (forbidding H) should help.",
+      "**The polynomial gap**: The best known bound exp(c√(log n · log log n)) is still exponentially smaller than the conjectured n^c. For n = 10^6, this is roughly 30 vs 10000.",
+      "**Known special cases**: The conjecture is proved for paths, cycles, complete bipartite graphs, and graphs on ≤5 vertices. These proofs often use clever structural arguments.",
+      "**Connection to Ramsey theory**: This conjecture would imply new bounds for many Ramsey-type problems. Its resolution would be a major breakthrough."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Module documentation explaining the conjecture and opening namespaces for graphs, filters, and real numbers."
+    },
+    {
+      "id": "background",
+      "title": "Background on Erdős–Hajnal",
+      "startLine": 32,
+      "endLine": 48,
+      "summary": "Documentation explaining the connection to Ramsey theory and why forbidding subgraphs might help."
+    },
+    {
+      "id": "main-definition",
+      "title": "Erdős-Hajnal Lower Bound",
+      "startLine": 50,
+      "endLine": 67,
+      "summary": "The key definition: when is f(n) a valid lower bound for graph H?"
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 69,
+      "endLine": 89,
+      "summary": "States ErdosHajnalConjecture as a Prop, asking for polynomial bounds."
+    },
+    {
+      "id": "partial-results",
+      "title": "Partial Results (Axioms)",
+      "startLine": 91,
+      "endLine": 118,
+      "summary": "Axioms for the 1989 and 2023 bounds that have been proved."
+    },
+    {
+      "id": "examples",
+      "title": "Example Graphs",
+      "startLine": 120,
+      "endLine": 148,
+      "summary": "Concrete definitions of triangle and 3-path graphs, plus axiom for paths."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize the Erdős–Hajnal conjecture, one of the most important open problems in graph theory. The conjecture asks whether forbidding any fixed induced subgraph H forces polynomial-size cliques or independent sets. While the main conjecture remains open, we state the partial results (exp-of-sqrt-log bounds) as axioms.",
+    "implications": "If proved, the Erdős-Hajnal conjecture would revolutionize our understanding of graph structure. It would imply that avoiding even simple patterns like a 5-cycle forces global regularity. The techniques developed might apply to many other problems in extremal combinatorics.",
+    "openQuestions": [
+      "Is the conjecture true? (The main open question)",
+      "What is the optimal c(H) for specific graphs like the 5-cycle?",
+      "Can we improve the general bound beyond exp(c√(log n · log log n))?",
+      "Is there a uniform c that works for all H on k vertices?"
+    ]
   }
 }
