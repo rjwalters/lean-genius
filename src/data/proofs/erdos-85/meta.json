@@ -1,33 +1,125 @@
 {
   "id": "erdos-85",
-  "title": "Erdős Problem #85",
+  "title": "Erdős Problem #85: Minimum Degree for 4-Cycles",
   "slug": "erdos-85",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be minimal such that every graph on ... vertices with minimal degree ... contains a .... Is it true that, for...",
+  "description": "Is the minimum degree threshold f(n) for forcing a 4-cycle monotone? That is, is f(n+1) ≥ f(n) for all large n?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/85",
-    "date": "",
-    "status": "pending",
+    "date": "1964",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos85Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "wip",
-    "sorries": 1,
+    "tags": ["erdos", "graph-theory", "extremal", "4-cycle", "minimum-degree", "conjecture"],
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 85,
     "erdosUrl": "https://erdosproblems.com/85",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-13",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graphs with symmetric irreflexive adjacency",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.minDegree",
+        "description": "Minimum degree of a graph",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Degree"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit of a function along a filter",
+        "module": "Mathlib.Topology.Order.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for eventually large natural numbers",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      }
+    ],
+    "originalContributions": [
+      "Definition of 4-cycle graph C₄",
+      "Definition of containsC4 predicate for graph embeddings",
+      "Definition of minDegreeForC4 threshold function f(n)",
+      "Erdos85Question as eventually monotone statement",
+      "Axioms for asymptotic behavior f(n) ~ √n",
+      "Connection to Ramsey numbers R(C₄, K_{1,n})",
+      "Kővári-Sós-Turán bound on C₄-free graphs"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #85 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n\\geq 4$ and $f(n)$ be minimal such that every graph on $n$ vertices with minimal degree $\\geq f(n)$ contains a $C_4$. Is it true that, for all large $n$, $f(n+1)\\geq f(n)$?\n\n\n\nThe function $f(n)$ is a reformulation of the Ramsey number $R(C_4,K_{1,n})$, in that\\[R(C_4,K_{1,n})=\\min\\{ m : f(m)\\leq m-n\\}\\]and\\[f(n)=\\min\\{ m : m\\geq R(C_4, K_{1,n-m})\\}.\\]The behaviour of this Ramsey number more generally is [552].\n\nA weaker version of the conjecture asks for some constant $c$ such that $f(m)>f(n)-c$ for all $m>n$. This question can be asked for other graphs than $C_4$.\n\nThe bounds in [552] imply in particular that $f(n)<\\sqrt{n}+1$ and\\[f(n)=(1+o(1))\\sqrt{n}.\\]It is easy to check that $f(4)=2$.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem concerns the extremal theory of even cycles in graphs. The 4-cycle (C₄) is the simplest even cycle and appears throughout graph theory, including the Kővári–Sós–Turán theorem and the Zarankiewicz problem.\n\nLet f(n) be the smallest integer such that every n-vertex graph with minimum degree at least f(n) contains a 4-cycle. It is known that f(n) = (1 + o(1))√n asymptotically.\n\nErdős asked whether f is eventually monotone: does f(n+1) ≥ f(n) hold for all sufficiently large n? This subtle question remains open. Adding vertices to a graph might create 'room' for high minimum-degree configurations that avoid 4-cycles.",
+    "problemStatement": "**Erdős Problem #85 (OPEN)**\n\nLet $f(n)$ be the minimum degree threshold such that every $n$-vertex graph with minimum degree $\\geq f(n)$ contains a 4-cycle.\n\n**Question**: Is $f(n+1) \\geq f(n)$ for all sufficiently large $n$?\n\n**Known Results**:\n- $f(n) = (1 + o(1))\\sqrt{n}$ asymptotically\n- $f(n) < \\sqrt{n} + 1$ for $n \\geq 4$\n- $f(4) = 2$\n- Connected to Ramsey number $R(C_4, K_{1,n})$",
+    "proofStrategy": "We formalize the key concepts and known results:\n\n1. **C4**: The 4-cycle graph on Fin 4\n\n2. **containsC4**: Predicate for C₄ appearing as a subgraph\n\n3. **minDegreeForC4**: The threshold function f(n)\n\n4. **Erdos85Question**: The open monotonicity question\n\n5. **Known bounds** (axioms): f(n) < √n + 1, f(n) ~ √n\n\n6. **Ramsey connection**: Relation to R(C₄, K_{1,n})\n\n7. **Kővári-Sós-Turán**: Upper bound on C₄-free graphs",
+    "keyInsights": [
+      "**Minimum degree forces structure**: High minimum degree in a graph forces certain subgraphs to appear. The threshold for C₄ is well-understood asymptotically.",
+      "**Monotonicity is subtle**: Adding vertices might create room for new C₄-avoiding configurations with high minimum degree.",
+      "**Asymptotic behavior**: f(n) = (1 + o(1))√n means the threshold grows like the square root of the number of vertices.",
+      "**Ramsey connection**: The problem is intimately connected to the Ramsey number R(C₄, K_{1,n}), linking degree thresholds to Ramsey theory.",
+      "**Weaker conjecture**: A weaker form asks if f can only decrease by a bounded constant, allowing f(m) > f(n) - c for some fixed c."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Module documentation and namespace setup with graph and filter imports."
+    },
+    {
+      "id": "background",
+      "title": "Background on 4-Cycles",
+      "startLine": 27,
+      "endLine": 37,
+      "summary": "Context on 4-cycles and minimum degree in graphs."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 39,
+      "endLine": 66,
+      "summary": "Definitions of C4 graph, containsC4 predicate, and minDegreeForC4 function."
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "startLine": 68,
+      "endLine": 90,
+      "summary": "Erdos85Question and its negation."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 91,
+      "endLine": 124,
+      "summary": "Axioms for asymptotic behavior and base case."
+    },
+    {
+      "id": "ramsey",
+      "title": "Ramsey Connection",
+      "startLine": 125,
+      "endLine": 155,
+      "summary": "Star graph and connection to Ramsey numbers."
+    },
+    {
+      "id": "weaker",
+      "title": "Weaker Conjecture",
+      "startLine": 156,
+      "endLine": 197,
+      "summary": "Almost-monotone conjecture and Kővári-Sós-Turán theorem."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #85, which asks whether the minimum degree threshold f(n) for forcing a 4-cycle is eventually monotone. The asymptotic behavior f(n) ~ √n is well-understood, but the monotonicity question remains open.",
+    "implications": "This problem connects extremal graph theory to Ramsey theory through the relationship between f(n) and R(C₄, K_{1,n}). Understanding monotonicity would shed light on how the structure of extremal C₄-free graphs changes with the number of vertices.",
+    "openQuestions": [
+      "Is f(n+1) ≥ f(n) for all large n?",
+      "Is f only 'almost monotone' (decreases by at most a constant)?",
+      "What is the exact relationship between f(n) and R(C₄, K_{1,n})?",
+      "Can we characterize extremal C₄-free graphs with high minimum degree?"
+    ]
   }
 }
