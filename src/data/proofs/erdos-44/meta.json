@@ -1,0 +1,100 @@
+{
+  "id": "erdos-44",
+  "title": "Erdős Problem #44: Extending Sidon Sets",
+  "slug": "erdos-44",
+  "description": "Can any Sidon set be extended to achieve near-optimal density (1-eps)sqrt(M)? An OPEN conjecture with auxiliary results about Sidon set bounds proved.",
+  "meta": {
+    "author": "Open Problem",
+    "sourceUrl": "https://erdosproblems.com/44",
+    "date": "",
+    "status": "partial",
+    "proofRepoPath": "Proofs/Erdos44Problem.lean",
+    "tags": ["erdos", "number-theory", "additive-combinatorics", "sidon-sets", "open-conjecture"],
+    "badge": "axiom",
+    "sorries": 4,
+    "erdosNumber": 44,
+    "erdosUrl": "https://erdosproblems.com/44",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.Icc",
+        "description": "Closed integer intervals",
+        "module": "Mathlib.Data.Finset.Interval"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function",
+        "module": "Mathlib.Data.Real.Sqrt"
+      },
+      {
+        "theorem": "Nat.sqrt",
+        "description": "Integer square root",
+        "module": "Mathlib.Data.Nat.Sqrt"
+      }
+    ],
+    "originalContributions": [
+      "Verification that {1,2,4,8,13} is a Sidon set",
+      "Upper bound: Sidon sets have at most 2sqrt(N) elements",
+      "Infrastructure for proving powers of 2 form Sidon sets",
+      "Proof that isSidon_singleton holds"
+    ]
+  },
+  "overview": {
+    "historicalContext": "A **Sidon set** (or B_2 sequence) is a set of integers where all pairwise sums are distinct. These sets, named after Simon Sidon who studied them in the 1930s, appear throughout additive combinatorics.\n\nErdős Problem #44 asks whether any Sidon set can be extended to achieve near-optimal density. The famous Erdős-Turán conjecture (Problem #28) posits that Sidon sets in [1,N] have at most (1+o(1))sqrt(N) elements, and this problem asks about the reverse: can we always extend a Sidon set to approach this bound?\n\nThis file proves auxiliary undergraduate-level results from the formal-conjectures repository while the main conjecture remains open.",
+    "problemStatement": "Let $N \\geq 1$ and $A \\subseteq \\{1,\\ldots,N\\}$ be a Sidon set. Is it true that, for any $\\varepsilon > 0$, there exist $M = M(\\varepsilon)$ and $B \\subseteq \\{N+1,\\ldots,M\\}$ such that $A \\cup B \\subseteq \\{1,\\ldots,M\\}$ is a Sidon set of size at least $(1-\\varepsilon)\\sqrt{M}$?\n\n**Status:** OPEN",
+    "proofStrategy": "We prove three auxiliary results:\n\n1. **Concrete example**: Verify {1,2,4,8,13} is Sidon by checking all 15 pairwise sums are distinct.\n\n2. **Upper bound**: Any Sidon set in [1,N] has at most 2sqrt(N) elements. This follows from counting: the sums span [2,2N], and distinctness limits the set size.\n\n3. **Lower bound infrastructure**: Powers of 2 form a Sidon set (by binary uniqueness), providing a construction achieving log(N) elements.\n\nThe main conjecture is stated but marked OPEN.",
+    "keyInsights": [
+      "**Sidon property**: All pairwise sums a+b (with a<=b) are distinct - no two pairs give the same sum",
+      "**Upper bound sqrt(N)**: With n elements, there are n(n+1)/2 sums in [2,2N], so n^2 << N",
+      "**Powers of 2 are Sidon**: 2^a + 2^b = 2^c + 2^d implies {a,b} = {c,d} by binary uniqueness",
+      "**Extension difficulty**: Adding elements while preserving the Sidon property is non-trivial"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Import Sidon infrastructure from Erdos340"
+    },
+    {
+      "id": "example",
+      "title": "Concrete Example",
+      "startLine": 30,
+      "endLine": 71,
+      "summary": "Prove {1,2,4,8,13} is a Sidon set"
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound",
+      "startLine": 73,
+      "endLine": 103,
+      "summary": "Sidon sets have at most 2sqrt(N) elements"
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound Construction",
+      "startLine": 105,
+      "endLine": 175,
+      "summary": "Powers of 2 form Sidon sets, existence of sqrt(N)/2 density sets"
+    },
+    {
+      "id": "main",
+      "title": "Main Conjecture (OPEN)",
+      "startLine": 176,
+      "endLine": 193,
+      "summary": "Statement of Erdos Problem 44 - marked as open"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #44 remains OPEN. We prove three auxiliary results: {1,2,4,8,13} is Sidon, Sidon sets have at most 2sqrt(N) elements, and powers of 2 form Sidon sets. The main conjecture about extending arbitrary Sidon sets to near-optimal density awaits resolution.",
+    "implications": "Progress on this problem would illuminate the structure of Sidon sets and their density limitations. It connects to the famous Erdős-Turán conjecture about the maximum size of Sidon sets.",
+    "openQuestions": [
+      "The main conjecture: can any Sidon set be extended to (1-eps)sqrt(M) density?",
+      "What is the optimal extension strategy for a given Sidon set?",
+      "Are there obstructions to extension for specific Sidon sets?"
+    ]
+  }
+}

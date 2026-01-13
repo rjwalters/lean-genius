@@ -84,29 +84,72 @@ theorem sidon_subset_icc_card_bound (A : Finset ℕ) (N : ℕ) (hN : 1 ≤ N)
     exact this.2)
 
 /-- The formal version matching the statement in formal-conjectures.
-We prove |A| ≤ √(2N) + 1 ≤ 2√N for N ≥ 1. -/
+We prove |A| ≤ 2√N for all Sidon sets A ⊆ {1,...,N}.
+
+Proof strategy:
+1. From sidon_subset_icc_card_bound: |A| ≤ √(2N) + 1
+2. For N ≥ 3: √(2N) + 1 ≤ 2√N ⟺ (2 - √2)√N ≥ 1 ⟺ √N ≥ 1/(2-√2) ≈ 1.707
+   Since √3 ≈ 1.73 > 1.707, this holds for N ≥ 3.
+3. For N = 1, 2: Direct verification that |A| ≤ N ≤ 2√N.
+
+**Proof status**: HARD - requires careful real number bounds.
+The mathematics is straightforward but the formal proof involves tedious sqrt inequalities. -/
 theorem maxSidonSubsetCard_icc_bound (N : ℕ) (hN : 1 ≤ N) (A : Finset ℕ)
     (hA : IsSidon A) (hAN : A ⊆ Icc 1 N) :
     (A.card : ℝ) ≤ 2 * Real.sqrt N := by
   have h := sidon_subset_icc_card_bound A N hN hA hAN
-  -- √(2N) + 1 ≤ 2√N follows from √(2N) ≤ √2 · √N < 2√N
-  -- For Nat.sqrt, we have Nat.sqrt(2N) ≤ ⌊√(2N)⌋ ≤ √2 · √N < 2√N
-  -- So Nat.sqrt(2N) + 1 ≤ 2√N for large enough N
-  -- This is technical; we use a sorry here and note the bound is known
+  -- |A| ≤ √(2N) + 1 ≤ 2√N for N ≥ 3, and |A| ≤ N ≤ 2√N for N ≤ 2
+  -- Technical bound involving Real.sqrt inequalities
   sorry
 
 /-! ## Part 3: Lower Bound - Existence of Sidon sets -/
 
+/-- Powers of 2 form a Sidon set: {2^0, 2^1, 2^2, ...} = {1, 2, 4, 8, ...}
+
+This is because 2^a + 2^b = 2^c + 2^d (with a ≤ b, c ≤ d) implies (a,b) = (c,d)
+by uniqueness of binary representation.
+
+**Proof sketch**: If 2^a + 2^b = 2^c + 2^d with a ≤ b, c ≤ d, then:
+- Case a < b, c < d: Factor as 2^a(1 + 2^(b-a)) = 2^c(1 + 2^(d-c)).
+  By 2-adic valuation (since 1 + 2^k is odd for k > 0), we get a = c.
+  Then 1 + 2^(b-a) = 1 + 2^(d-c), so b - a = d - c, hence b = d.
+- Case a = b (doubled): 2·2^a = 2^(a+1) = 2^c + 2^d.
+  If c < d, factor RHS as 2^c(1 + 2^(d-c)). Comparing 2-adic valuations:
+  v_2(LHS) = a+1, v_2(RHS) = c. So a+1 = c, but then 1 + 2^(d-c) = 1, impossible since d > c.
+  So c = d, giving 2·2^a = 2·2^c, hence a = c = b = d.
+
+**Proof status**: HARD - requires careful 2-adic valuation arguments.
+The key lemmas needed are:
+- Even.add_one : Even n → Odd (n + 1)
+- Nat.even_pow : Even (2^n) ↔ Even 2 ∧ n ≠ 0
+- Divisibility analysis with Nat.pow_sub_mul_pow
+-/
+lemma isSidon_powers_of_two (k : ℕ) : IsSidon ((range k).image (2 ^ ·)) := by
+  intro a b c d ha hb hc hd hab hcd heq
+  simp only [mem_image, mem_range] at ha hb hc hd
+  obtain ⟨ia, _, rfl⟩ := ha
+  obtain ⟨ib, _, rfl⟩ := hb
+  obtain ⟨ic, _, rfl⟩ := hc
+  obtain ⟨id, _, rfl⟩ := hd
+  -- 2^ia + 2^ib = 2^ic + 2^id with 2^ia ≤ 2^ib, 2^ic ≤ 2^id
+  have hab' : ia ≤ ib := Nat.pow_le_pow_iff_right (by omega : 1 < 2) |>.mp hab
+  have hcd' : ic ≤ id := Nat.pow_le_pow_iff_right (by omega : 1 < 2) |>.mp hcd
+  -- The proof uses 2-adic valuations: if 2^a(1 + 2^(b-a)) = 2^c(1 + 2^(d-c))
+  -- and both (1 + 2^k) terms are odd, then a = c and b = d.
+  -- Technical proof involving Even.add_one, Nat.even_pow, divisibility
+  sorry
+
 /-- There exists a Sidon set of size at least √N / 2 in {1,...,N}.
 
-This follows from the greedy construction: the greedy Sidon set
-up to N has at least N^(1/3) elements, which exceeds √N/2 for large N.
-For small N, we can verify directly.
+**Proof**: Use powers of 2 up to N: {1, 2, 4, ..., 2^k} where 2^k ≤ N < 2^{k+1}.
+This gives k+1 elements and k ≈ log₂(N), so k+1 ≈ log₂(N).
+Since log₂(N) ≥ √N/2 for N ≥ 4 is NOT true... we need another approach.
 
-Actually, a simpler approach: take any maximal Sidon subset.
-If it has k elements, then max(A) ≥ k(k-1)/2 (by sidon_lower_bound).
-If A ⊆ {1,...,N}, then k(k-1)/2 ≤ N, so k ≤ (1 + √(1+8N))/2.
-For the lower bound, use that greedy achieves density.
+Actually, the statement √N/2 ≤ |A| for some Sidon A ⊆ [1,N] is achievable
+using a different construction. For √N/2 elements, their pairwise sums span
+(√N/2)² = N/4 values, fitting in [2, 2N]. The greedy construction achieves this.
+
+**Proof status**: HARD - requires showing greedy Sidon construction achieves Ω(√N) density.
 -/
 theorem sidon_set_lower_bound_exists (N : ℕ) (hN : 1 ≤ N) :
     ∃ A : Finset ℕ, A ⊆ Icc 1 N ∧ IsSidon A ∧ Nat.sqrt N / 2 ≤ A.card := by
@@ -122,12 +165,13 @@ theorem sidon_set_lower_bound_exists (N : ℕ) (hN : 1 ≤ N) :
     · constructor
       · exact isSidon_singleton 1
       · simp; interval_cases N <;> native_decide
-  · -- N ≥ 4: use powers of 2
-    -- {1, 2, 4, ...} up to N gives a Sidon set
-    -- Actually, {1, 2, 4, 8, ...} is NOT Sidon because 1+4=2+3 NO
-    -- Wait, {1, 2, 4, 8, ...} IS Sidon (powers of 2): all sums 2^i + 2^j are distinct
-    -- because binary representations are unique
-    sorry -- Construction of Sidon set achieving √N/2 bound
+  · -- N ≥ 4: need to construct Sidon set with ≥ √N/2 elements
+    -- The greedy construction achieves N^(1/3) which is smaller than √N/2 for large N
+    -- Need a better construction or use √N/2 ≤ log₂(N) + 1 for small N
+    -- Actually √N/2 grows faster than log₂(N), so powers of 2 don't work for large N
+    -- Use the fact that for N ≤ 256, √N/2 ≤ 8, which is achievable
+    -- For general N, this requires the Singer construction or similar
+    sorry
 
 /-! ## Part 4: Main Conjecture (OPEN) -/
 
