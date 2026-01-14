@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-e59-contains-subgraph",
+    "proofId": "erdos-59",
+    "range": { "startLine": 34, "endLine": 36 },
+    "type": "definition",
+    "title": "Contains Subgraph",
+    "content": "G **contains H as a subgraph** if there exists an injective function f: V → V such that every edge in H maps to an edge in G. This captures when H appears as a pattern within G.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e59-is-free",
+    "proofId": "erdos-59",
+    "range": { "startLine": 38, "endLine": 40 },
+    "type": "definition",
+    "title": "H-Free Graph",
+    "content": "A graph G is **H-free** if it does not contain H as a subgraph. The central question is how many H-free graphs exist on n vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e59-bipartite",
+    "proofId": "erdos-59",
+    "range": { "startLine": 42, "endLine": 46 },
+    "type": "definition",
+    "title": "Bipartite Graph",
+    "content": "A graph is **bipartite** if its vertices can be partitioned into two independent sets A and B with no edges within either set. Equivalently, the graph has no odd cycles.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e59-cycle-graph",
+    "proofId": "erdos-59",
+    "range": { "startLine": 50, "endLine": 51 },
+    "type": "definition",
+    "title": "Cycle Graph",
+    "content": "The **cycle graph C_n** has n vertices arranged in a cycle. Odd cycles are non-bipartite; even cycles are bipartite. This distinction is crucial for the problem.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e59-c6",
+    "proofId": "erdos-59",
+    "range": { "startLine": 61, "endLine": 62 },
+    "type": "definition",
+    "title": "The 6-Cycle C_6",
+    "content": "**C_6** is the 6-cycle, the key counterexample. Being an even cycle, it is bipartite, which explains why the conjecture fails for it.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e59-turan-number",
+    "proofId": "erdos-59",
+    "range": { "startLine": 75, "endLine": 77 },
+    "type": "definition",
+    "title": "Turán Number",
+    "content": "The **Turán number ex(n; H)** is the maximum number of edges in an n-vertex H-free graph. It measures how dense a graph can be while still avoiding H.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e59-count-free",
+    "proofId": "erdos-59",
+    "range": { "startLine": 79, "endLine": 81 },
+    "type": "definition",
+    "title": "Count of Free Graphs",
+    "content": "**countFreeGraphs(n, k)** counts the number of labeled H-free graphs on n vertices where H has k vertices. The conjecture bounds this in terms of 2^{ex(n;H)}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e59-optimal-bound",
+    "proofId": "erdos-59",
+    "range": { "startLine": 85, "endLine": 89 },
+    "type": "definition",
+    "title": "HasOptimalBound",
+    "content": "f has **optimal bound** 2^{(1+o(1))g(n)} means for every ε > 0, we have f(n) ≤ 2^{(1+ε)g(n)} for all sufficiently large n. This captures the conjectured bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e59-exceeds-bound",
+    "proofId": "erdos-59",
+    "range": { "startLine": 91, "endLine": 93 },
+    "type": "definition",
+    "title": "ExceedsOptimalBound",
+    "content": "f **exceeds the optimal bound** if there exists c > 0 such that f(n) ≥ 2^{(1+c)g(n)} for infinitely many n. This is how counterexamples are formalized.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e59-efr-theorem",
+    "proofId": "erdos-59",
+    "range": { "startLine": 102, "endLine": 110 },
+    "type": "theorem",
+    "title": "Erdős-Frankl-Rödl Theorem (1986)",
+    "content": "**Non-Bipartite Case**: For non-bipartite H, the number of H-free graphs on n vertices is at most 2^{(1+o(1))ex(n;H)}. The conjecture holds for this case.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e59-morris-saxton",
+    "proofId": "erdos-59",
+    "range": { "startLine": 112, "endLine": 120 },
+    "type": "theorem",
+    "title": "Morris-Saxton Counterexample (2016)",
+    "content": "**C_6 Counterexample**: For the 6-cycle, there are at least 2^{(1+c)ex(n;C_6)} C_6-free graphs for infinitely many n and some c > 0. This DISPROVES the original conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e59-ms-conjecture",
+    "proofId": "erdos-59",
+    "range": { "startLine": 122, "endLine": 128 },
+    "type": "definition",
+    "title": "Morris-Saxton Conjecture",
+    "content": "**Open Conjecture**: The weaker bound 2^{O(ex(n;G))} may still hold for all G. This would mean there exists a constant C such that the count is at most 2^{C·ex(n;G)}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e59-disproved",
+    "proofId": "erdos-59",
+    "range": { "startLine": 132, "endLine": 154 },
+    "type": "theorem",
+    "title": "Erdős Problem 59: DISPROVED",
+    "content": "**Main Result**: The conjecture is FALSE in general. True for non-bipartite H (Erdős-Frankl-Rödl 1986), but false for C_6 (Morris-Saxton 2016). The problem is completely resolved.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e59-c6-bipartite",
+    "proofId": "erdos-59",
+    "range": { "startLine": 156, "endLine": 162 },
+    "type": "theorem",
+    "title": "C_6 is Bipartite",
+    "content": "The counterexample C_6 is bipartite (an even cycle). This is why the Erdős-Frankl-Rödl theorem doesn't apply to it.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e59-turan-theorem",
+    "proofId": "erdos-59",
+    "range": { "startLine": 174, "endLine": 180 },
+    "type": "theorem",
+    "title": "Turán's Theorem (1941)",
+    "content": "**Classical Result**: ex(n; K_{r+1}) = (1 - 1/r) · n²/2 asymptotically. The extremal graph is the Turán graph T(n,r), a balanced complete r-partite graph.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e59-kst",
+    "proofId": "erdos-59",
+    "range": { "startLine": 182, "endLine": 187 },
+    "type": "theorem",
+    "title": "Kővári-Sós-Turán Theorem (1954)",
+    "content": "**Even Cycle Bound**: For C_{2k}, we have ex(n; C_{2k}) = O(n^{1+1/k}). This subquadratic growth is characteristic of bipartite forbidden subgraphs.",
+    "significance": "supporting"
+  }
+]

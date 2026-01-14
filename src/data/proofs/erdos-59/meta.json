@@ -1,33 +1,96 @@
 {
   "id": "erdos-59",
-  "title": "Erdős Problem #59",
+  "title": "Erdős Problem #59: Counting G-Free Graphs",
   "slug": "erdos-59",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that the number of graphs on ... vertices which do not contain ... is\\[\\leq 2^{(1+o(1))(n;G)}?\\]\n\n\n\nIf ... is not ...",
+  "description": "Is the number of G-free graphs on n vertices at most 2^{(1+o(1))ex(n;G)}? Disproved by Morris-Saxton (2016) for C_6.",
   "meta": {
-    "author": "Unknown",
+    "author": "Morris-Saxton",
     "sourceUrl": "https://erdosproblems.com/59",
-    "date": "",
-    "status": "pending",
+    "date": "2016",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos59Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-graph-theory",
+      "turan-numbers",
+      "graph-counting"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "formalized",
+    "sorries": 3,
     "erdosNumber": 59,
     "erdosUrl": "https://erdosproblems.com/59",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #59 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that the number of graphs on $n$ vertices which do not contain $G$ is\\[\\leq 2^{(1+o(1))\\mathrm{ex}(n;G)}?\\]\n\n\n\nIf $G$ is not bipartite the answer is yes, proved by Erd\\H{o}s, Frankl, and R\\\"{o}dl \\cite{EFR86}. The answer is no for $G=C_6$, the cycle on 6 vertices. Morris and Saxton \\cite{MoSa16} have proved there are at least\\[2^{(1+c)\\mathrm{ex}(n;C_6)}\\]such graphs for infinitely many $n$, for some constant $c>0$. It is still possible (and conjectured by Morris and Saxton) that the weaker bound of\\[2^{O(\\mathrm{ex}(n;G))}\\]holds for all $G$.\n\n\n\n\nReferences\n\n\n[EFR86] Erd\\H{o}s, P. and Frankl, P. and R\\\"{o}dl, V., The asymptotic number of graphs not containing a fixed subgraph and a problem for hypergraphs having no exponent. Graphs Combin. (1986), 113-121.\n\n[MoSa16] Morris, Robert and Saxton, David, The number of $C_{2\\ell}$-free graphs. Adv. Math. (2016), 534-580.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem connects Turán-type extremal graph theory with graph enumeration. The question asks whether forbidding a subgraph H limits the number of labeled graphs to roughly 2^{ex(n;H)}. Erdős, Frankl, and Rödl (1986) proved this for non-bipartite H. Morris and Saxton (2016) found a striking counterexample: for the 6-cycle C_6, there are superpolynomially more C_6-free graphs than the conjecture predicts.",
+    "problemStatement": "Is it true that the number of graphs on n vertices which do not contain G is at most 2^{(1+o(1))ex(n;G)}?",
+    "proofStrategy": "The formalization defines subgraph containment, bipartiteness, and asymptotic bounds (HasOptimalBound, ExceedsOptimalBound). The Erdős-Frankl-Rödl theorem is stated as an axiom for non-bipartite graphs. The Morris-Saxton counterexample is axiomatized showing C_6 violates the bound. The main theorem derives that the conjecture is false in general.",
+    "keyInsights": [
+      "Non-bipartite case: Erdős-Frankl-Rödl (1986) proved the bound holds",
+      "Bipartite counterexample: C_6 has more free graphs than predicted (Morris-Saxton 2016)",
+      "Open: Whether the weaker bound 2^{O(ex(n;G))} holds for all G",
+      "Turán numbers measure maximum edges avoiding a subgraph",
+      "The gap between bipartite and non-bipartite cases is fundamental"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "summary": "Subgraph containment, H-free graphs, bipartiteness",
+      "startLine": 32,
+      "endLine": 46
+    },
+    {
+      "id": "constructions",
+      "title": "Graph Constructions",
+      "summary": "Cycle graphs C_n, C_6, K_3 with bipartiteness properties",
+      "startLine": 48,
+      "endLine": 65
+    },
+    {
+      "id": "counting",
+      "title": "Counting Functions",
+      "summary": "Turán number and free graph count (axiomatized)",
+      "startLine": 67,
+      "endLine": 81
+    },
+    {
+      "id": "asymptotic",
+      "title": "Asymptotic Bounds",
+      "summary": "HasOptimalBound, ExceedsOptimalBound, HasPolynomialBound",
+      "startLine": 83,
+      "endLine": 98
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "Erdős-Frankl-Rödl theorem and Morris-Saxton counterexample",
+      "startLine": 100,
+      "endLine": 128
+    },
+    {
+      "id": "resolution",
+      "title": "Problem Resolution",
+      "summary": "Erdős 59 disproved; special cases for C_6 and K_3",
+      "startLine": 130,
+      "endLine": 170
+    },
+    {
+      "id": "turan-bounds",
+      "title": "Turán Number Bounds",
+      "summary": "Turán's theorem and Kővári-Sós-Turán theorem",
+      "startLine": 172,
+      "endLine": 187
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #59, which asks whether the count of H-free graphs is bounded by 2^{(1+o(1))ex(n;H)}. The problem is DISPROVED: Morris and Saxton (2016) showed the 6-cycle C_6 violates this bound, while Erdős-Frankl-Rödl (1986) proved it holds for non-bipartite graphs.",
+    "implications": "The resolution reveals a fundamental dichotomy between bipartite and non-bipartite forbidden subgraphs. For non-bipartite H, the structure is rigid enough that Turán numbers essentially determine the count. Bipartite forbidden subgraphs allow more flexibility, leading to superpolynomially more graphs.",
+    "openQuestions": [
+      "Does the weaker bound 2^{O(ex(n;G))} hold for all G? (Morris-Saxton Conjecture)",
+      "What is the exact growth rate for C_{2k}-free graphs for k > 3?",
+      "Can we characterize which bipartite graphs satisfy the original bound?"
+    ]
   }
 }
