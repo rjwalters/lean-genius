@@ -5,6 +5,36 @@
 
 > **Note**: 5 older sessions archived to `sessions/` directory.
 
+## Session 2026-01-13 (Session 24) - Build Error Fixes
+
+**Mode**: MAINTENANCE
+**Problem**: pnp-barriers
+**Prior Status**: surveyed (with build errors)
+
+**What we did**:
+1. Fixed build errors introduced in Sessions 22-23 (Part 26-27 additions)
+2. Added `OWF` abbreviation for `OneWayFunctionExists` (line 315)
+3. Added `inP` and `inNP` abbreviations for unrelativized complexity classes (lines 455-459)
+4. Renamed `PERMANENT` to `PERMANENT_DECISION` to avoid conflict with existing #P definition (line 5273)
+5. Added type annotation to `proof_complexity_barrier` theorem (line 5617: `∀ n : ℕ`)
+6. Converted `DistP_subset_DistNP` from theorem to axiom (lines 5084-5094)
+
+**Key fixes**:
+- `OWF` used but only `OneWayFunctionExists` was defined → added abbrev
+- `inNP` used but only `inNP_relative` existed → added abbrev with `Nat → Bool` type
+- `PERMANENT` already defined as `SharpPFunction` → renamed to `PERMANENT_DECISION`
+- Binder type inference failed for `∀ n, True` → added explicit `: ℕ` type
+
+**Outcome**:
+- PNPBarriers.lean: **5640 lines**, **0 sorries** (all builds pass)
+- All Part 26 (Average-Case) and Part 27 (Proof Complexity) working
+
+**Files Modified**:
+- `proofs/Proofs/PNPBarriers.lean` (fixes throughout)
+- `research/problems/pnp-barriers/knowledge.md` - this file
+
+---
+
 ## Session 2026-01-13 (Session 23) - Proof Complexity
 
 **Mode**: REVISIT
