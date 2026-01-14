@@ -116,6 +116,7 @@ import Proofs.MathematicalInduction
 import Proofs.MeanValueTheorem
 import Proofs.MinkowskiFundamentalTheorem
 import Proofs.MorleysTheorem
+import Proofs.MotivicFlagMaps
 import Proofs.NavierStokes
 import Proofs.OnePlusOne
 import Proofs.PNPBarriers

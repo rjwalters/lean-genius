@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "last_updated": "2026-01-14T03:51:33.942Z",
+  "last_updated": "2026-01-14T16:13:40.970Z",
   "source": "auto-generated from research/db/knowledge.db",
   "candidates": [
     {
@@ -169,8 +169,8 @@
       "tier": "B",
       "significance": 7,
       "tractability": 6,
-      "status": "completed",
-      "notes": "COMPLETE: 0 sorries. Necessity FULLY PROVED. Sufficiency uses 3 axioms: dirichlet_key_lemma, dirichletEllipsoid_volume, minkowski_ellipsoid_has_lattice_point. Infrastructure for Minkowski approach built.",
+      "status": "in-progress",
+      "notes": "IN-PROGRESS: All primes proved (ℤ[√-2] for p≡3, Fermat for p≡1,5 mod 8). One axiom remains for composites. Lacks multiplicativity - needs Dirichlet Key Lemma with Minkowski.",
       "tags": [
         "number-theory",
         "squares",
@@ -189,21 +189,6 @@
         "number-theory",
         "analytic",
         "bounds"
-      ]
-    },
-    {
-      "id": "erdos-728-factorial-divisibility",
-      "name": "Erdős Problem #728: Factorial Divisibility",
-      "tier": "A",
-      "significance": 9,
-      "tractability": 10,
-      "status": "completed",
-      "notes": "COMPLETED: AI MILESTONE (Jan 2026): GPT-5.2 + Aristotle solved factorial divisibility: infinitely many (a,b,n) with a!b! | n!(a+b-n)! and gap C log n < a+b-n < C' log n. First genuinely novel AI math per Tao.",
-      "tags": [
-        "number-theory",
-        "factorial",
-        "ai-milestone",
-        "formalization"
       ]
     },
     {
@@ -409,7 +394,7 @@
       "significance": 7,
       "tractability": 7,
       "status": "completed",
-      "notes": "COMPLETED: ZERO SORRIES: SchursTheorem.lean proves S(1)=2, S(2)=5 exactly. General existence theorem proved using multicolor Ramsey axiom. 1 axiom (schur_from_ramsey_helper) for edge coloring trick. ~350 lines.",
+      "notes": "COMPLETED: COMPLETED: COMPLETED: SchursTheorem.lean proves S(1)=2, S(2)=5 exactly. General existence uses multicolor Ramsey axiom from RamseysTheorem.lean. ~335 lines, 1 sorry (edge coloring connection for r≥3).",
       "tags": [
         "combinatorics",
         "ramsey",
@@ -523,104 +508,7 @@
         "arithmetic-functions",
         "classical"
       ]
-    },
-    {
-      "id": "erdos-340-greedy-sidon",
-      "name": "Erdős #340: Greedy Sidon Sequence Growth",
-      "tier": "A",
-      "significance": 8,
-      "tractability": 1,
-      "status": "blocked",
-      "notes": "BLOCKED: OPEN CONJECTURE - The main theorem (|A ∩ [1,N]| >> N^(1/2-ε)) is an unsolved problem in mathematics. Best known bound is N^(1/3). $500 Erdős prize still open. Infrastructure built: IsSidon, basic lemmas, axiomatized sequence. Cannot prove an open conjecture.",
-      "tags": [
-        "number-theory",
-        "additive-combinatorics",
-        "sidon-sets",
-        "erdos-problem",
-        "open-conjecture",
-        "blocked-open-problem"
-      ]
-    },
-    {
-      "id": "erdos-5-prime-gaps",
-      "name": "Erdős #5: Prime Gap Limit Points",
-      "tier": "B",
-      "significance": 7,
-      "tractability": 6,
-      "status": "completed",
-      "notes": "COMPLETE: 0 sorries. Uses axioms: westzynthius_large_gaps, goldston_pintz_yildirim_small_gaps, zhang_bounded_gaps. Proved twin_prime_implies_zero_limit and zhang_implies_zero_limit. Core conjecture is OPEN.",
-      "tags": [
-        "number-theory",
-        "primes",
-        "prime-gaps",
-        "erdos-problem",
-        "open-conjecture"
-      ]
-    },
-    {
-      "id": "erdos-10-prime-powers-of-2",
-      "name": "Erdős #10: Prime Plus Powers of 2",
-      "tier": "B",
-      "significance": 7,
-      "tractability": 6,
-      "status": "completed",
-      "notes": "COMPLETE: 0 sorries, all build. Uses 2 axioms: grechuk_not_3_powers, romanoff/gallagher density (statements only). k=1 insufficiency fully proved with not_262_primePlus2Pow.",
-      "tags": [
-        "number-theory",
-        "primes",
-        "additive",
-        "erdos-problem",
-        "open-conjecture"
-      ]
-    },
-    {
-      "id": "erdos-14-unique-sums",
-      "name": "Erdős #14: Unique Representation Sums",
-      "tier": "C",
-      "significance": 6,
-      "tractability": 4,
-      "status": "completed",
-      "notes": "COMPLETE: 0 sorries, all build. Uses axioms: sidon_size_bound, erdos_upper_construction, erdos_lower_infinitely_often, erdos_freud_finite. Relationship theorem omega_sqrt_implies_not_little_o proved.",
-      "tags": [
-        "number-theory",
-        "additive-combinatorics",
-        "sidon-sets",
-        "erdos-problem",
-        "open-conjecture"
-      ]
-    },
-    {
-      "id": "erdos-25-number-theory",
-      "name": "Erdős #25: Sequence Divisibility",
-      "tier": "B",
-      "significance": 7,
-      "tractability": 6,
-      "status": "completed",
-      "notes": "COMPLETE: 0 sorries. Uses axioms for log density properties (limsup/liminf, bounds, examples, natural→log).",
-      "tags": [
-        "number-theory",
-        "sequences",
-        "erdos-problem",
-        "open-conjecture"
-      ]
-    },
-    {
-      "id": "erdos-28-additive-bases",
-      "name": "Erdős #28: Erdős-Turán Additive Bases ($500)",
-      "tier": "C",
-      "significance": 6,
-      "tractability": 4,
-      "status": "completed",
-      "notes": "COMPLETE: 0 sorries. Uses axioms for sidon_density_bound (proved in Erdos340) and sidon_not_basis (density argument).",
-      "tags": [
-        "number-theory",
-        "additive-combinatorics",
-        "additive-bases",
-        "erdos-problem",
-        "open-conjecture",
-        "prize-problem"
-      ]
     }
   ],
-  "lastUpdated": "2026-01-11T23:00:00Z"
+  "lastUpdated": "2026-01-02T16:53:43Z"
 }

@@ -124,6 +124,7 @@ const proofModules: Record<string, () => Promise<any>> = {
   'liouville-theorem': () => import('./liouville-theorem'),
   'minkowski-theorem': () => import('./minkowski-theorem'),
   'morleys-theorem': () => import('./morleys-theorem'),
+  'motivic-flag-maps': () => import('./motivic-flag-maps'),
   'parallel-postulate-independence': () => import('./parallel-postulate-independence'),
   'partition-theorem': () => import('./partition-theorem'),
   'pascals-hexagon': () => import('./pascals-hexagon'),
