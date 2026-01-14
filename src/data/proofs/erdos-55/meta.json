@@ -1,34 +1,83 @@
 {
   "id": "erdos-55",
-  "title": "Erdős Problem #55",
+  "title": "Erdős Problem #55: Ramsey r-Complete Sets",
   "slug": "erdos-55",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA set of integers ... is Ramsey ...-complete if, whenever ... is ...-coloured, all sufficiently large integers can be written...",
+  "description": "A set A is Ramsey r-complete if every r-coloring has a monochromatic subset whose sums cover all large integers. The optimal growth rate is Θ(r(log N)²).",
   "meta": {
-    "author": "Unknown",
+    "author": "Conlon-Fox-Pham",
     "sourceUrl": "https://erdosproblems.com/55",
-    "date": "",
-    "status": "pending",
+    "date": "2021",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos55Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "additive-combinatorics",
+      "number-theory"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "formalized",
+    "sorries": 0,
     "erdosNumber": 55,
     "erdosUrl": "https://erdosproblems.com/55",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$250"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #55 from erdosproblems.com. Originally offered with a prize of $250.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA set of integers $A$ is Ramsey $r$-complete if, whenever $A$ is $r$-coloured, all sufficiently large integers can be written as a monochromatic sum of elements of $A$. Prove any non-trivial bounds about the growth rate of such an $A$ for $r>2$.\n\n\n\nA paper of Burr and Erd\\H{o}s \\cite{BuEr85} proves both upper and lower bounds for $r=2$, showing that there exists some $c>0$ such that it cannot be true that\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\leq c(\\log N)^2\\]for all large $N$, and also constructing a Ramsey $2$-complete $A$ such that for all large $N$\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\ll (\\log N)^3.\\]Burr has shown that the sequence of $k$th powers is Ramsey $r$-complete for every $r,k\\geq 1$.\n\nSolved by Conlon, Fox, and Pham \\cite{CFP21}, who constructed for every $r\\geq 2$ an $r$-Ramsey complete $A$ such that for all large $N$\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\ll r(\\log N)^2,\\]and showed that this is best possible, in that there exists some constant $c>0$ such that if $A\\subset \\mathbb{N}$ satisfies\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\leq cr(\\log N)^2\\]for all large $N$ then $A$ cannot be $r$-Ramsey complete.\n\nSee also [54] and [843].\n\n\n\n\nReferences\n\n\n[BuEr85] Burr, S. A. and Erd\\H{o}s, P., A {R}amsey-type property in additive number theory. Glasgow Math. J. (1985), 5--10.\n\n[CFP21] Conlon, D. and Fox, J. and Pham, H. T., Subset sums, completeness and colorings. arXiv:2104.14766 (2021).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem connects Ramsey theory with additive number theory. Burr and Erdős (1985) established initial bounds for r=2, leaving a gap between (log N)² and (log N)³. The problem asked for non-trivial bounds for r > 2. Conlon, Fox, and Pham (2021) completely resolved the problem, showing the optimal growth is Θ(r(log N)²).",
+    "problemStatement": "A set of integers A is Ramsey r-complete if, whenever A is r-coloured, all sufficiently large integers can be written as a monochromatic sum of elements of A. Prove any non-trivial bounds about the growth rate of such an A for r > 2.",
+    "proofStrategy": "The formalization defines Ramsey r-completeness via colorings and monochromatic subsets. The main results (Burr-Erdős bounds, Conlon-Fox-Pham solution) are stated as axioms. Two theorems are proved from these axioms: the complete characterization and the special case r=2.",
+    "keyInsights": [
+      "Ramsey r-complete sets must have growth at least cr(log N)² for some universal c > 0",
+      "Growth rate r(log N)² is achievable for all r ≥ 2 (constructive)",
+      "For r=2, the optimal growth is Θ((log N)²), closing the Burr-Erdős gap",
+      "The k-th powers are Ramsey r-complete for all r,k ≥ 1 (Burr)",
+      "The linear dependence on r in the growth rate is optimal"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "description": "Colorings, monochromatic sets, finite sums, Ramsey r-completeness",
+      "lineStart": 33,
+      "lineEnd": 56
+    },
+    {
+      "id": "growth-bounds",
+      "title": "Growth Rate Bounds",
+      "description": "Definitions for asymptotic growth rate comparisons",
+      "lineStart": 58,
+      "lineEnd": 66
+    },
+    {
+      "id": "burr-erdos",
+      "title": "Burr-Erdős Results (1985)",
+      "description": "Original bounds for r=2: between (log N)² and (log N)³",
+      "lineStart": 68,
+      "lineEnd": 94
+    },
+    {
+      "id": "solution",
+      "title": "Conlon-Fox-Pham Solution (2021)",
+      "description": "Complete resolution: optimal growth is Θ(r(log N)²)",
+      "lineStart": 96,
+      "lineEnd": 142
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries",
+      "description": "Special case r=2 showing (log N)² is optimal",
+      "lineStart": 144,
+      "lineEnd": 172
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #55 on Ramsey r-complete sets. The problem is SOLVED: the optimal growth rate for r-Ramsey complete sets is Θ(r(log N)²). This was proved by Conlon, Fox, and Pham in 2021, resolving the problem for all r ≥ 2.",
+    "implications": "The solution establishes a tight connection between Ramsey-theoretic properties and the sparsity of sets in additive combinatorics. The linear dependence on r shows how the number of colors affects the minimum density required.",
+    "openQuestions": [
+      "What is the exact constant in the lower bound cr(log N)²?",
+      "Can explicit constructions match the probabilistic upper bound?",
+      "What happens for other monochromatic structures beyond sums?"
+    ]
   }
 }

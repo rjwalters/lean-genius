@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "coloring",
+    "lineStart": 35,
+    "lineEnd": 36,
+    "type": "definition",
+    "title": "r-Coloring",
+    "content": "An **r-coloring** of a set A assigns each element one of r colors (represented as Fin r). This is the standard Ramsey-theoretic setup for studying partition regularity.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "monochromatic",
+    "lineStart": 38,
+    "lineEnd": 41,
+    "type": "definition",
+    "title": "Monochromatic Subset",
+    "content": "A subset S ⊆ A is **monochromatic** under a coloring if all elements of S have the same color. The definition requires S ⊆ A and the existence of a single color assigned to all elements.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "finite-sums",
+    "lineStart": 43,
+    "lineEnd": 45,
+    "type": "definition",
+    "title": "Finite Sums",
+    "content": "**FiniteSums(S)** is the set of all finite sums of elements from S (with repetition allowed). An integer n is in FiniteSums(S) if n = ∑ᵢ f(i) for some function f: Fin k → S.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "ramsey-complete",
+    "lineStart": 47,
+    "lineEnd": 52,
+    "type": "definition",
+    "title": "Ramsey r-Complete",
+    "content": "A set A is **Ramsey r-complete** if for every r-coloring of A, there exists a monochromatic subset S whose finite sums cover all sufficiently large integers. This captures when additive structure survives arbitrary partitions.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "counting-function",
+    "lineStart": 54,
+    "lineEnd": 56,
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "The **counting function** |A ∩ [1,N]| measures the density of A up to N. Growth rate bounds are expressed in terms of this function's asymptotic behavior.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "burr-erdos-lower",
+    "lineStart": 70,
+    "lineEnd": 80,
+    "type": "theorem",
+    "title": "Burr-Erdős Lower Bound (1985)",
+    "content": "For r=2, if A is Ramsey 2-complete, then A cannot be too sparse. Specifically, there exists c > 0 such that |A ∩ [1,N]| cannot be bounded by c(log N)² for all large N. This gives a lower bound on required density.",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "burr-erdos-upper",
+    "lineStart": 82,
+    "lineEnd": 88,
+    "type": "theorem",
+    "title": "Burr-Erdős Upper Bound (1985)",
+    "content": "There exists a Ramsey 2-complete set A with |A ∩ [1,N]| ≪ (log N)³. This constructive result showed Ramsey 2-complete sets can be quite sparse, but left a gap with the (log N)² lower bound.",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "powers-complete",
+    "lineStart": 90,
+    "lineEnd": 94,
+    "type": "theorem",
+    "title": "Powers are Ramsey Complete",
+    "content": "**Burr's Theorem**: The set of k-th powers {1^k, 2^k, 3^k, ...} is Ramsey r-complete for all r,k ≥ 1. This shows natural arithmetic progressions have strong Ramsey properties.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "cfp-upper",
+    "lineStart": 98,
+    "lineEnd": 107,
+    "type": "theorem",
+    "title": "CFP Upper Bound (2021)",
+    "content": "**Conlon-Fox-Pham**: For every r ≥ 2, there exists an r-Ramsey complete set A with |A ∩ [1,N]| ≪ r(log N)². This constructs optimally sparse Ramsey r-complete sets, matching the lower bound up to constants.",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "cfp-lower",
+    "lineStart": 109,
+    "lineEnd": 120,
+    "type": "theorem",
+    "title": "CFP Lower Bound (2021)",
+    "content": "**Conlon-Fox-Pham**: There exists universal c > 0 such that if |A ∩ [1,N]| ≤ cr(log N)² for all large N, then A is not r-Ramsey complete. This proves the upper bound construction is optimal.",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "main-solution",
+    "lineStart": 122,
+    "lineEnd": 142,
+    "type": "theorem",
+    "title": "Erdős Problem 55 Solution",
+    "content": "**The Complete Solution**: The optimal growth rate for r-Ramsey complete sets is Θ(r(log N)²). The theorem combines upper and lower bounds from Conlon-Fox-Pham, fully resolving the problem for all r ≥ 2.",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "r2-optimal",
+    "lineStart": 146,
+    "lineEnd": 172,
+    "type": "theorem",
+    "title": "Optimal Growth for r=2",
+    "content": "For r=2, the optimal growth rate is Θ((log N)²). This closes the gap from Burr-Erdős (1985) who had bounds between (log N)² and (log N)³. The proof derives this as a corollary of the general CFP bounds.",
+    "difficulty": "intermediate"
+  }
+]
