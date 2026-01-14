@@ -1,1 +1,142 @@
-[]
+[
+  {
+    "id": "ann-e92-header",
+    "proofId": "erdos-92",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #92** asks about equidistant points in point sets.\n\n**Setup**: For a set A of n points, f(n) is the maximum k such that every point in A has at least k other points equidistant from it.\n\n**Questions**: Is f(n) ≤ n^{o(1)}? Or even f(n) < n^{c/log log n}?\n\n**Status**: OPEN\n\n**Prize**: $500",
+    "mathContext": "This is a 'stronger form' of the unit distance problem (#90). The lattice gives f(n) > n^{c/log log n}, while JJMT (2024) proved f(n) ≪ n^{4/11}.",
+    "significance": "critical",
+    "relatedConcepts": ["erdos", "equidistant", "incidence-geometry", "unit-distance"]
+  },
+  {
+    "id": "ann-e92-background",
+    "proofId": "erdos-92",
+    "range": {
+      "startLine": 27,
+      "endLine": 37
+    },
+    "type": "concept",
+    "title": "Equidistance in Point Sets",
+    "content": "For each point x in a set A, we consider how many other points lie on circles centered at x.\n\nThe function f(n) asks: what's the best equidistance guarantee we can achieve for ALL points simultaneously?\n\nThis is harder than just finding one point with many equidistant neighbors.",
+    "mathContext": "A point x has k equidistant neighbors if there's a distance d such that exactly k other points are at distance d from x.",
+    "significance": "key",
+    "relatedConcepts": ["circle", "distance", "universal-property"]
+  },
+  {
+    "id": "ann-e92-maxequidistant",
+    "proofId": "erdos-92",
+    "range": {
+      "startLine": 45,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Maximum Equidistant Points",
+    "content": "**maxEquidistantPoints x A** counts the largest number of points in A at the same distance from x.\n\nWe compute this by:\n1. Erasing x from A\n2. Grouping remaining points by distance to x\n3. Taking the maximum group size",
+    "mathContext": "Formally: for each distance d, count |{p ∈ A : dist(x,p) = d}|, then take the supremum.",
+    "significance": "key",
+    "relatedConcepts": ["supremum", "grouping", "distance"]
+  },
+  {
+    "id": "ann-e92-property",
+    "proofId": "erdos-92",
+    "range": {
+      "startLine": 57,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "k-Equidistant Property",
+    "content": "**hasEquidistantProperty k A** says every point x ∈ A has at least k other points equidistant from x.\n\nThis is a UNIVERSAL property: it must hold for ALL points in A, not just one.\n\nf(n) is the maximum k achievable by some n-point set.",
+    "mathContext": "Formally: A.Nonempty ∧ ∀ x ∈ A, k ≤ maxEquidistantPoints x A",
+    "significance": "critical",
+    "relatedConcepts": ["universal", "property", "achievable"]
+  },
+  {
+    "id": "ann-e92-f",
+    "proofId": "erdos-92",
+    "range": {
+      "startLine": 70,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "**f n** is the supremum of achievable k values for n-point sets.\n\nThis is THE function Erdős asked about: how fast does it grow?",
+    "mathContext": "Defined as sSup {k | ∃ A with |A| = n and hasEquidistantProperty k A}.",
+    "significance": "critical",
+    "relatedConcepts": ["extremal-function", "supremum", "achievable"]
+  },
+  {
+    "id": "ann-e92-weak",
+    "proofId": "erdos-92",
+    "range": {
+      "startLine": 82,
+      "endLine": 90
+    },
+    "type": "definition",
+    "title": "Weak Conjecture (OPEN)",
+    "content": "**WeakConjecture** asks: Is f(n) ≤ n^{o(1)}?\n\nThis means for ANY ε > 0, f(n) ≤ n^ε eventually.\n\nEquivalently: f(n) grows slower than any positive power of n.",
+    "mathContext": "Formally: ∀ ε > 0, ∀ᶠ n in atTop, f(n) ≤ n^ε",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "subpolynomial", "little-o"]
+  },
+  {
+    "id": "ann-e92-strong",
+    "proofId": "erdos-92",
+    "range": {
+      "startLine": 92,
+      "endLine": 101
+    },
+    "type": "definition",
+    "title": "Strong Conjecture (OPEN)",
+    "content": "**StrongConjecture** asks: Is f(n) < n^{c/log log n} for some c > 0?\n\nThis is more precise than the weak conjecture. It would match the lattice lower bound up to the constant.",
+    "mathContext": "The exponent c/log log n → 0 very slowly. For n = 10^10, log log n ≈ 3.4.",
+    "significance": "key",
+    "relatedConcepts": ["open-problem", "log-log", "precise-bound"]
+  },
+  {
+    "id": "ann-e92-jjmt",
+    "proofId": "erdos-92",
+    "range": {
+      "startLine": 131,
+      "endLine": 138
+    },
+    "type": "theorem",
+    "title": "JJMT Bound (2024)",
+    "content": "**jjmtBound** states: f(n) ≪ n^{4/11} ≈ n^{0.364}.\n\nThis is the best known upper bound, from Janzer, Janzer, Methuku, and Tardos (2024) using circle-point incidence bounds.\n\n**Why an axiom?** The proof uses sophisticated incidence geometry.",
+    "mathContext": "4/11 ≈ 0.364 is still far from o(1), but improves on the earlier 2/5 = 0.4 bound.",
+    "significance": "critical",
+    "relatedConcepts": ["axiom", "incidence-geometry", "upper-bound"]
+  },
+  {
+    "id": "ann-e92-lattice",
+    "proofId": "erdos-92",
+    "range": {
+      "startLine": 140,
+      "endLine": 147
+    },
+    "type": "theorem",
+    "title": "Lattice Lower Bound",
+    "content": "**latticeLowerBound** states: f(n) > n^{c/log log n} for some c > 0.\n\nThe √n × √n integer lattice achieves this. Points at distance √(a² + b²) for integers a, b have high multiplicity.\n\nThis is why the strong conjecture uses n^{c/log log n} as the target.",
+    "mathContext": "The lattice's equidistance structure comes from representing integers as sums of two squares.",
+    "significance": "key",
+    "relatedConcepts": ["axiom", "lattice", "lower-bound", "sums-of-squares"]
+  },
+  {
+    "id": "ann-e92-small",
+    "proofId": "erdos-92",
+    "range": {
+      "startLine": 155,
+      "endLine": 163
+    },
+    "type": "theorem",
+    "title": "Small Values (Fishburn)",
+    "content": "Fishburn computed:\n- **f(6) = 3**: 6 is the smallest n with f(n) = 3\n- **f(8) = 4**: 8 is the smallest n with f(n) = 4\n\nHe also suggested that lattice points may not be optimal for small n.",
+    "mathContext": "These computations help understand the behavior of f(n) for small values before asymptotics dominate.",
+    "significance": "supporting",
+    "relatedConcepts": ["axiom", "fishburn", "small-cases"]
+  }
+]

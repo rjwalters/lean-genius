@@ -1,34 +1,127 @@
 {
   "id": "erdos-92",
-  "title": "Erdős Problem #92",
+  "title": "Erdős Problem #92: Equidistant Points in the Plane",
   "slug": "erdos-92",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that there exists a set ... of ... points in ... in which every ... has at least ... points in ... eq...",
+  "description": "Is f(n) ≤ n^{o(1)}, where f(n) is the maximum k such that some n-point set has k equidistant points from every point?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős; bounds by Pach-Sharir (1992), JJMT (2024)",
     "sourceUrl": "https://erdosproblems.com/92",
-    "date": "",
-    "status": "pending",
+    "date": "1970s",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos92Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "wip",
-    "sorries": 1,
+    "tags": ["erdos", "combinatorial-geometry", "equidistant", "incidence-geometry", "conjecture"],
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 92,
     "erdosUrl": "https://erdosproblems.com/92",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$500"
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$500",
+    "dateAdded": "2026-01-13",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space ℝ^n with norm",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "Finset.erase",
+        "description": "Remove an element from a Finset",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.Eventually",
+        "description": "Eventually true along a filter",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm of real numbers",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of maxEquidistantPoints for a point in a set",
+      "Definition of hasEquidistantProperty for k-equidistant sets",
+      "Definition of f(n) as supremum over achievable values",
+      "WeakConjecture: f(n) ≤ n^{o(1)}",
+      "StrongConjecture: f(n) < n^{c/log log n}",
+      "Axioms for Pach-Sharir and JJMT bounds",
+      "Axiom for lattice lower bound",
+      "Fishburn's small value computations"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #92 from erdosproblems.com. Originally offered with a prize of $500.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be maximal such that there exists a set $A$ of $n$ points in $\\mathbb{R}^2$ in which every $x\\in A$ has at least $f(n)$ points in $A$ equidistant from $x$.\n\nIs it true that $f(n)\\leq n^{o(1)}$? Or even $f(n) < n^{O(1/\\log\\log n)}$?\n\n\n\nThis is a stronger form of the unit distance conjecture (see [90]).\n\nThe set of lattice points imply $f(n) > n^{c/\\log\\log n}$ for some constant $c>0$. Erd\\H{o}s offered \\$500 for a proof that $f(n) \\leq n^{o(1)}$ but only \\$100 for a counterexample. This latter prize is downgraded to \\$50 in \\cite{ErFi97}.\n\nIt is trivial that $f(n) \\ll n^{1/2}$. A result of Pach and Sharir (Theorem 4 of \\cite{PaSh92}) implies $f(n) \\ll n^{2/5}$. Hunter has observed that the circle-point incidence bound of Janzer, Janzer, Methuku, and Tardos \\cite{JJMT24} implies\\[f(n) \\ll n^{4/11}.\\]Fishburn (personal communication to Erd\\H{o}s, later published in \\cite{ErFi97}) proved that $6$ is the smallest $n$ such that $f(n)=3$ and $8$ is the smallest $n$ such that $f(n)=4$, and suggested that the lattice points may not be best example.\n\nSee also [754].\n\n\n\n\n\nReferences\n\n\n[ErFi97] Erd\\H{o}s, Paul and Fishburn, Peter, Minimum planar sets with maximum equidistance counts. Comput. Geom. (1997), 207--218.\n\n[JJMT24] B. Janzer, O. Janzer, A. Methuku, and G. Tardos, Tight bounds for intersection-reverse sequences, edge-ordered graphs\nand applications. arXiv:2411.07188 (2024).\n\n[PaSh92] Pach, J\\'anos and Sharir, Micha, Repeated angles in the plane and related problems. J. Combin. Theory Ser. A (1992), 12--22.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem concerns the equidistance structure of point sets in the plane. For each point x in a set A, we count how many other points lie on a single circle centered at x (i.e., are equidistant from x).\n\nThe function f(n) is the maximum k such that some n-point set has at least k equidistant points from EVERY point in the set. This is a 'stronger form' of the unit distance problem (#90).\n\nThe √n × √n integer lattice achieves f(n) > n^{c/log log n}, while the best upper bound is f(n) ≪ n^{4/11} from recent work by Janzer, Janzer, Methuku, and Tardos (2024).",
+    "problemStatement": "**Erdős Problem #92 (OPEN)**\n\nLet $f(n)$ be maximal such that there exists a set $A$ of $n$ points in $\\mathbb{R}^2$ where every $x \\in A$ has at least $f(n)$ points in $A$ equidistant from $x$.\n\n**Questions**:\n1. Is $f(n) \\leq n^{o(1)}$? (weak form)\n2. Is $f(n) < n^{c/\\log\\log n}$? (strong form)\n\n**Known Bounds**:\n- Lower: $f(n) > n^{c/\\log\\log n}$ (lattice)\n- Upper: $f(n) \\ll n^{4/11}$ (JJMT 2024)\n\n**Prize**: $500",
+    "proofStrategy": "We formalize the key concepts and known bounds:\n\n1. **maxEquidistantPoints**: Maximum points at same distance from x\n\n2. **hasEquidistantProperty**: k-equidistant property for a set\n\n3. **f**: The extremal function as supremum\n\n4. **WeakConjecture**: f(n) ≤ n^ε for all ε > 0\n\n5. **StrongConjecture**: f(n) < n^{c/log log n}\n\n6. **Known bounds** (axioms): Pach-Sharir, JJMT, lattice lower bound",
+    "keyInsights": [
+      "**Circle counting**: For each point, we count how many others lie on the same circle centered at that point.",
+      "**Universal property**: f(n) requires the k-equidistant property for ALL points in the set, not just one.",
+      "**Lattice construction**: The √n × √n integer grid gives the best known lower bound.",
+      "**Incidence geometry**: Upper bounds use sophisticated circle-point incidence theorems.",
+      "**Related to unit distances**: This is a 'stronger form' of Problem #90 (unit distance conjecture)."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Module documentation and namespace setup."
+    },
+    {
+      "id": "background",
+      "title": "Background",
+      "startLine": 27,
+      "endLine": 37,
+      "summary": "Context on equidistance in point sets."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 39,
+      "endLine": 74,
+      "summary": "Definitions of equidistance properties and f(n)."
+    },
+    {
+      "id": "conjectures",
+      "title": "The Main Conjectures",
+      "startLine": 76,
+      "endLine": 101,
+      "summary": "Weak and strong forms of the conjecture."
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "startLine": 103,
+      "endLine": 147,
+      "summary": "Axioms for upper and lower bounds."
+    },
+    {
+      "id": "small-values",
+      "title": "Small Values",
+      "startLine": 149,
+      "endLine": 163,
+      "summary": "Fishburn's computations for small n."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences",
+      "startLine": 165,
+      "endLine": 192,
+      "summary": "Relations between conjectures and historical notes."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #92, which asks about the growth rate of f(n), the maximum equidistance guarantee for point sets. The gap between the lattice lower bound n^{c/log log n} and the JJMT upper bound n^{4/11} remains wide.",
+    "implications": "This problem connects to incidence geometry and the unit distance problem. Progress on either would likely yield insights for the other.",
+    "openQuestions": [
+      "Is f(n) ≤ n^{o(1)}?",
+      "Is f(n) < n^{c/log log n}?",
+      "Can the JJMT bound n^{4/11} be improved?",
+      "Are lattice points optimal for the lower bound?"
+    ]
   }
 }
