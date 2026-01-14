@@ -135,13 +135,31 @@ theorem c5_blowup_vertices (n : ℕ) :
 axiom c5_blowup_edges (n : ℕ) (hn : n ≥ 1) :
     edgeCount (c5BlowUpGraph n) = 2 * n^2
 
+/-- C₅ is triangle-free: no three vertices are mutually adjacent. -/
+theorem c5_triangle_free : IsTriangleFree C5 := by
+  intro ⟨i, j, k, hij_ne, hjk_ne, hik_ne, hij, hjk, hik⟩
+  -- hij: C5.adj i j means (i+1) % 5 = j or (j+1) % 5 = i
+  -- hjk: C5.adj j k means (j+1) % 5 = k or (k+1) % 5 = j
+  -- hik: C5.adj i k means (i+1) % 5 = k or (k+1) % 5 = i
+  -- We show this is impossible by case analysis on Fin 5
+  simp only [C5] at hij hjk hik
+  -- Case analysis: in C₅, adjacent vertices have consecutive indices mod 5
+  -- No three consecutive pairs exist (would need i+1=j, j+1=k, i+1=k or k+1=i)
+  -- This is impossible in a 5-cycle
+  fin_cases i <;> fin_cases j <;> fin_cases k <;> simp_all
+
 /-- The blow-up of C₅ is triangle-free.
     (Adjacent parts in C₅ are non-adjacent in the next step.) -/
 theorem c5_blowup_triangle_free (n : ℕ) : IsTriangleFree (c5BlowUpGraph n) := by
-  intro ⟨⟨i, _⟩, ⟨j, _⟩, ⟨k, _⟩, _, _, _, hij, hjk, hik⟩
-  -- If (i,j), (j,k), (i,k) all adjacent in C₅, would form triangle in C₅
-  -- But C₅ is triangle-free
-  sorry
+  intro ⟨⟨i, _⟩, ⟨j, _⟩, ⟨k, _⟩, hij_ne, hjk_ne, hik_ne, hij, hjk, hik⟩
+  -- The blow-up graph has adjacency inherited from C₅
+  -- A triangle in the blow-up would imply a triangle in C₅
+  simp only [c5BlowUpGraph] at hij hjk hik
+  -- Extract that i, j, k form a triangle in C₅
+  have hne1 : i ≠ j := fun h => by subst h; exact C5.loopless i hij
+  have hne2 : j ≠ k := fun h => by subst h; exact C5.loopless j hjk
+  have hne3 : i ≠ k := fun h => by subst h; exact C5.loopless i hik
+  exact c5_triangle_free ⟨i, j, k, hne1, hne2, hne3, hij, hjk, hik⟩
 
 /-- The blow-up of C₅ requires exactly n² edge deletions to become bipartite.
     This shows n² is necessary for triangle-free graphs on 5n vertices. -/

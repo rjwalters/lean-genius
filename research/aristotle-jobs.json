@@ -439,8 +439,10 @@
         "theorem tree_ramsey_bound (T : SimpleGraph V) (hT : IsTree T) :"
       ],
       "notes": "Tree Ramsey bounds - Zhao et al",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "Aristotle processing errors. Most are OPEN problems - cannot prove.",
+      "integrated": "2026-01-14"
     },
     {
       "project_id": "928125ee-8d71-434d-b3d1-fdb1961fa495",
@@ -451,8 +453,10 @@
         ""
       ],
       "notes": "AP in dense sets - Szemeredi bound implication",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "Aristotle processing errors. Most are OPEN problems - cannot prove.",
+      "integrated": "2026-01-14"
     },
     {
       "project_id": "a6f2ce5b-20bd-4378-bf6d-8f8d08c2663d",
@@ -463,8 +467,10 @@
         "theorem improved_stronger (n : ℕ) (hn : n ≥ 100) :"
       ],
       "notes": "Prime gaps - technical inequality",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "Aristotle processing errors. Most are OPEN problems - cannot prove.",
+      "integrated": "2026-01-14"
     },
     {
       "project_id": "cf7852f2-cf1f-4b06-b4a6-3d957ca72c76",
@@ -475,8 +481,10 @@
         ""
       ],
       "notes": "Coverage problem",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "Aristotle processing errors. Most are OPEN problems - cannot prove.",
+      "integrated": "2026-01-14"
     },
     {
       "project_id": "7f6e1638-f769-4fb4-b5ce-8516686fb862",
@@ -487,8 +495,10 @@
         "theorem powersOfTwo_divisibility_free : IsDivisibilityFree powersOfTwo := by"
       ],
       "notes": "Number theory",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "Aristotle processing errors. Most are OPEN problems - cannot prove.",
+      "integrated": "2026-01-14"
     },
     {
       "project_id": "90c8b47f-ec7c-4f2b-8340-082f59fe9f68",
@@ -499,8 +509,10 @@
         "theorem sidon_is_b2 (A : Finset ℕ) : IsSidonSet A ↔ IsBhSet A 2 := by"
       ],
       "notes": "Covering systems",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "Aristotle processing errors. Most are OPEN problems - cannot prove.",
+      "integrated": "2026-01-14"
     }
   ],
   "completed": [],
@@ -3414,6 +3426,150 @@
       "notes": "Tractability: 8/10. solved (formalization target)"
     },
     {
+      "problemId": "erdos-682",
+      "erdosNumber": 682,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos682.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-683",
+      "erdosNumber": 683,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos683.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-692",
+      "erdosNumber": 692,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos692.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-694",
+      "erdosNumber": 694,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos694.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-696",
+      "erdosNumber": 696,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos696.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-697",
+      "erdosNumber": 697,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos697.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-698",
+      "erdosNumber": 698,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos698.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-699",
+      "erdosNumber": 699,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos699.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-702",
+      "erdosNumber": 702,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos702.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-704",
+      "erdosNumber": 704,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos704.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-709",
+      "erdosNumber": 709,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos709.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-710",
+      "erdosNumber": 710,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos710.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-711",
+      "erdosNumber": 711,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos711.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-712",
+      "erdosNumber": 712,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos712.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-714",
+      "erdosNumber": 714,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos714.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-715",
+      "erdosNumber": 715,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos715.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
       "problemId": "erdos-77",
       "erdosNumber": 77,
       "source": "erdosproblems.com scrape",
@@ -4383,6 +4539,42 @@
       "tractabilityScore": 7,
       "reason": "Solved problem - known proof exists for Aristotle to formalize",
       "suggestedFile": "proofs/Proofs/Erdos1102.lean",
+      "notes": "Tractability: 7/10. solved (formalization target); long statement"
+    },
+    {
+      "problemId": "erdos-701",
+      "erdosNumber": 701,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 7,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos701.lean",
+      "notes": "Tractability: 7/10. solved (formalization target); long statement"
+    },
+    {
+      "problemId": "erdos-703",
+      "erdosNumber": 703,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 7,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos703.lean",
+      "notes": "Tractability: 7/10. solved (formalization target); long statement"
+    },
+    {
+      "problemId": "erdos-707",
+      "erdosNumber": 707,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 7,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos707.lean",
+      "notes": "Tractability: 7/10. solved (formalization target); long statement"
+    },
+    {
+      "problemId": "erdos-713",
+      "erdosNumber": 713,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 7,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos713.lean",
       "notes": "Tractability: 7/10. solved (formalization target); long statement"
     }
   ],

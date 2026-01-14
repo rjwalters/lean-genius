@@ -5,6 +5,71 @@
 
 > **Note**: 5 older sessions archived to `sessions/` directory.
 
+## Session 2026-01-14 (Session 25) - Kolmogorov Complexity
+
+**Mode**: REVISIT
+**Problem**: pnp-barriers
+**Prior Status**: surveyed
+
+**What we did**:
+1. Literature search on Kolmogorov complexity in Mathlib - found Substrate Theory (5300+ lines physics application) but no complexity theory version
+2. Confirmed UC Berkeley CS 294-268 (Spring 2026) may produce relevant formalizations
+3. Added Part 28: Kolmogorov Complexity (~261 lines)
+4. Defined `K` - Kolmogorov complexity (abstract)
+5. Defined `K_cond` - conditional Kolmogorov complexity
+6. Defined `H` - prefix-free (Chaitin) complexity
+7. Stated `kolmogorov_invariance` - K is well-defined up to O(1)
+8. Stated `K_upper_bound`, proved `K_nonneg`
+9. Stated `K_chain_rule`, `K_symmetry` - fundamental properties
+10. Defined `Incompressible`, `IsRandom` - incompressibility predicates
+11. Stated `incompressibility_lemma`, `random_strings_exist`
+12. Defined `Kt` - time-bounded Kolmogorov complexity
+13. Stated `Kt_ge_K`, `Kt_upper_semicomputable`
+14. Defined `MCSC` - minimum circuit size of x
+15. Defined `MCSP` - Minimum Circuit Size Problem
+16. Stated `MCSP_in_NP` - MCSP is in NP
+17. Defined `MCSP_NP_complete_open` - NP-completeness is open
+18. Stated `kabanets_cai_theorem` - MCSP in P implies breakthroughs
+19. Stated `hirahara_santhanam` - MCSP not NP-complete under m-reductions
+20. Defined `AllendersProgram` - use K for circuit lower bounds
+21. Stated `L_KT_in_NP`, `comm_kolmogorov_bound`, `disj_via_kolmogorov`
+22. Defined `MartinLofRandom`, `SchnorrRandom` - algorithmic randomness
+23. Stated `ml_random_iff_incompressible`
+24. Proved `kolmogorov_complexity_barrier`, `kolmogorov_complexity_landscape`
+
+**Key insight**:
+Kolmogorov complexity (algorithmic information theory) measures the inherent information in individual objects. Key results: (1) K is invariant up to O(1), (2) most strings are incompressible, (3) time-bounded Kt connects to MCSP (Minimum Circuit Size Problem). The Kabanets-Cai theorem shows MCSP in P implies either exponential circuit lower bounds OR NP ⊆ BPP - either would be a major breakthrough! This provides another perspective on P vs NP barriers: understanding K-complexity of truth tables connects to circuit complexity.
+
+**New definitions/theorems**:
+- `UniversalLanguage`, `K`, `K_cond`, `H` - core complexity measures
+- `kolmogorov_invariance` - K well-defined up to O(1)
+- `K_upper_bound`, `K_nonneg`, `K_chain_rule`, `K_symmetry`
+- `Incompressible`, `IsRandom` - incompressibility predicates
+- `incompressibility_lemma`, `random_strings_exist`
+- `Kt`, `Kt_ge_K`, `Kt_upper_semicomputable` - time-bounded
+- `MCSC`, `MCSP`, `MCSP_in_NP` - circuit size problem
+- `MCSP_NP_complete_open`, `kabanets_cai_theorem`, `hirahara_santhanam`
+- `AllendersProgram`, `L_KT_in_NP`
+- `comm_kolmogorov_bound`, `disj_via_kolmogorov` - applications
+- `MartinLofRandom`, `SchnorrRandom`, `ml_random_iff_incompressible`
+- `kolmogorov_complexity_barrier`, `kolmogorov_complexity_landscape`
+
+**Outcome**:
+- PNPBarriers.lean: **5901 lines**, **0 sorries** (up from 5640 lines)
+- Added 30+ new definitions/theorems
+- Complete Kolmogorov complexity framework with MCSP connection
+
+**Files Modified**:
+- `proofs/Proofs/PNPBarriers.lean` (+261 lines)
+- `research/problems/pnp-barriers/knowledge.md` - this file
+
+**Next steps**:
+1. Add resource-bounded Kolmogorov complexity (poly-time bounds)
+2. Add more connections to circuit complexity
+3. Explore MKTP (distinguishing high from low K-complexity)
+
+---
+
 ## Session 2026-01-13 (Session 24) - Build Error Fixes
 
 **Mode**: MAINTENANCE
