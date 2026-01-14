@@ -1,33 +1,82 @@
 {
   "id": "erdos-57",
-  "title": "Erdős Problem #57",
+  "title": "Erdős Problem #57: Odd Cycles in Graphs with Infinite Chromatic Number",
   "slug": "erdos-57",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph with infinite chromatic number and ... are lengths of the odd cycles of ... then ....\n\n\n\nConjectured by Erd...",
+  "description": "If G has infinite chromatic number and a₁ < a₂ < ⋯ are its odd cycle lengths, then ∑ 1/aᵢ = ∞. Solved by Liu-Montgomery (2020).",
   "meta": {
-    "author": "Unknown",
+    "author": "Liu-Montgomery",
     "sourceUrl": "https://erdosproblems.com/57",
-    "date": "",
-    "status": "pending",
+    "date": "2020",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos57Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "cycles"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "formalized",
+    "sorries": 3,
     "erdosNumber": 57,
     "erdosUrl": "https://erdosproblems.com/57",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #57 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ is a graph with infinite chromatic number and $a_1<a_2<\\cdots $ are lengths of the odd cycles of $G$ then $\\sum \\frac{1}{a_i}=\\infty$.\n\n\n\nConjectured by Erd\\H{o}s and Hajnal \\cite{ErHa66}, and solved by Liu and Montgomery \\cite{LiMo20}. In \\cite{Er81} Erd\\H{o}s asks whether the $a_i$ must in fact have positive upper density, and in \\cite{Er95d} and \\cite{Er96} he speculates whether the upper density (or even upper logarithmic density) must be $\\geq 1/2$.\n\nThe lower density of the set can be $0$ since there are graphs of arbitrarily large chromatic number and girth.\n\nSee also [65].\n\n\n\n\nReferences\n\n\n[Er81] Erd\\H{o}s, P., On the combinatorial problems which I would most like to see solved. Combinatorica (1981), 25-42.\n\n[Er95d] Erd\\H{o}s, Paul, On some problems in combinatorial set theory. Publ. Inst. Math. (Beograd) (N.S.) (1995), 61-65.\n\n[Er96] Erd\\H{o}s, Paul, Some of my favourite problems on cycles and colourings. Tatra Mt. Math. Publ. (1996), 7-9.\n\n[ErHa66] Erd\\H{o}s, P. and Hajnal, A., On chromatic number of graphs and set-systems. Acta Math. Acad. Sci. Hungar. (1966), 61-99.\n\n[LiMo20] Liu, Hong and Montgomery, Richard, A solution to Erd\\H{o}s and Hajnal's odd cycle problem. arXiv:2010.15802 (2020).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Conjectured by Erdős and Hajnal in 1966, this problem connects chromatic number to the structure of odd cycles. Erdős later asked (1981) whether the odd cycle lengths must have positive upper density, and speculated (1995-96) it might be at least 1/2. Liu and Montgomery solved the original conjecture in 2020.",
+    "problemStatement": "If G is a graph with infinite chromatic number and a₁ < a₂ < ⋯ are the lengths of the odd cycles of G, then ∑ 1/aᵢ = ∞.",
+    "proofStrategy": "The formalization uses Mathlib's SimpleGraph and Walk.IsCycle. The main result is stated as an axiom, with a corollary proving infinite chromatic number implies infinitely many odd cycle lengths. Related open questions about density are also formalized.",
+    "keyInsights": [
+      "Infinite chromatic number forces divergent reciprocal sum of odd cycle lengths",
+      "This implies infinitely many distinct odd cycle lengths",
+      "Bipartite graphs have no odd cycles (χ ≤ 2)",
+      "Lower density of odd cycle lengths can be 0 (high girth graphs)",
+      "Open: Does infinite χ imply positive upper density of odd cycle lengths?"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "description": "Cycle lengths, odd cycle lengths, colorability, infinite chromatic number",
+      "lineStart": 28,
+      "lineEnd": 52
+    },
+    {
+      "id": "harmonic-sum",
+      "title": "Harmonic Sum",
+      "description": "Definition of ∑ 1/aᵢ over odd cycle lengths using ENNReal",
+      "lineStart": 54,
+      "lineEnd": 58
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result (Liu-Montgomery 2020)",
+      "description": "The solved conjecture and its corollary",
+      "lineStart": 60,
+      "lineEnd": 72
+    },
+    {
+      "id": "open-questions",
+      "title": "Related Open Questions",
+      "description": "Density conjectures from Erdős (1981, 1995-96)",
+      "lineStart": 74,
+      "lineEnd": 94
+    },
+    {
+      "id": "bipartite",
+      "title": "Bipartite Characterization",
+      "description": "Connection between 2-colorability and odd cycles",
+      "lineStart": 96,
+      "lineEnd": 109
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #57, solved by Liu and Montgomery in 2020. The result shows that graphs with infinite chromatic number must have 'many' odd cycles in a precise sense: the reciprocal sum of their lengths diverges.",
+    "implications": "This establishes a fundamental quantitative connection between chromatic number and odd cycle structure, going beyond the classical fact that bipartite graphs have no odd cycles.",
+    "openQuestions": [
+      "Must odd cycle lengths have positive upper density?",
+      "Is the upper density at least 1/2 (Erdős 1995-96)?",
+      "What is the relationship to problem [65] on general cycle lengths?"
+    ]
   }
 }
