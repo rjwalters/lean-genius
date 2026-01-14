@@ -1,1 +1,142 @@
-[]
+[
+  {
+    "id": "ann-e11-squarefree-def",
+    "proofId": "erdos-11",
+    "range": { "startLine": 23, "endLine": 24 },
+    "type": "definition",
+    "title": "Squarefree Numbers",
+    "content": "A natural number n is **squarefree** if no prime square divides it. Equivalently, in the prime factorization n = p1^a1 * ... * pk^ak, all exponents are 0 or 1.\n\nExamples: 1, 2, 3, 5, 6, 7, 10, 11, 13, 14, 15...\nNon-examples: 4, 8, 9, 12, 16, 18, 20...",
+    "mathContext": "Uses Mathlib's `Squarefree` predicate from `Mathlib.NumberTheory.Squarefree`.",
+    "significance": "critical",
+    "relatedConcepts": ["Prime factorization", "Mobius function"]
+  },
+  {
+    "id": "ann-e11-pow2-def",
+    "proofId": "erdos-11",
+    "range": { "startLine": 26, "endLine": 27 },
+    "type": "definition",
+    "title": "Powers of 2",
+    "content": "The **powers of 2** are {1, 2, 4, 8, 16, 32, ...} = {2^k : k >= 0}. These form a geometric sequence with ratio 2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e11-representation",
+    "proofId": "erdos-11",
+    "range": { "startLine": 29, "endLine": 31 },
+    "type": "definition",
+    "title": "Squarefree + Power of 2",
+    "content": "A number n has this representation if n = s + 2^k for some squarefree s and non-negative k. This is the core property in Erdos Problem #11.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e11-basic-props",
+    "proofId": "erdos-11",
+    "range": { "startLine": 35, "endLine": 46 },
+    "type": "theorem",
+    "title": "Basic Properties",
+    "content": "Elementary facts:\n- 1 is squarefree (vacuously: no primes divide 1)\n- 1 = 2^0 is a power of 2\n- 2 = 2^1 is a power of 2\n- Every prime is squarefree (only divided by itself to the first power)",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e11-examples",
+    "proofId": "erdos-11",
+    "range": { "startLine": 50, "endLine": 64 },
+    "type": "theorem",
+    "title": "Small Examples",
+    "content": "Verified representations for small odd numbers:\n- 3 = 1 + 2 (1 squarefree, 2 = 2^1)\n- 5 = 1 + 4 (1 squarefree, 4 = 2^2)\n- 7 = 5 + 2 (5 squarefree prime, 2 = 2^1)\n- 9 = 1 + 8 (1 squarefree, 8 = 2^3)\n\nThese are fully proved in Lean using `decide` and `rfl`.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e11-wieferich-def",
+    "proofId": "erdos-11",
+    "range": { "startLine": 68, "endLine": 70 },
+    "type": "definition",
+    "title": "Wieferich Primes",
+    "content": "A prime p is a **Wieferich prime** if 2^(p-1) = 1 (mod p^2). By Fermat's little theorem, 2^(p-1) = 1 (mod p) for any prime p, but the condition mod p^2 is much stronger.\n\nOnly two Wieferich primes are known: 1093 and 3511.",
+    "mathContext": "Wieferich primes are extremely rare. Despite searches up to 2^64, no others have been found.",
+    "significance": "critical",
+    "relatedConcepts": ["Fermat's little theorem", "Fermat quotient"]
+  },
+  {
+    "id": "ann-e11-known-wieferich",
+    "proofId": "erdos-11",
+    "range": { "startLine": 72, "endLine": 74 },
+    "type": "axiom",
+    "title": "Known Wieferich Primes",
+    "content": "The only known Wieferich primes are **1093** (found by Meissner, 1913) and **3511** (found by Beeger, 1922). No others exist below 2^64.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e11-non-wieferich",
+    "proofId": "erdos-11",
+    "range": { "startLine": 76, "endLine": 78 },
+    "type": "definition",
+    "title": "Infinitely Many Non-Wieferich",
+    "content": "The statement that infinitely many primes are NOT Wieferich primes. This is widely believed but unproven. The Granville-Soundararajan connection shows Erdos #11 would imply this.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e11-conjecture",
+    "proofId": "erdos-11",
+    "range": { "startLine": 82, "endLine": 84 },
+    "type": "definition",
+    "title": "Erdos Problem #11 (OPEN)",
+    "content": "**Main Conjecture:** Every odd integer n > 1 can be written as n = s + 2^k where s is squarefree.\n\nThis remains OPEN despite verification up to 2^50 and a proof that it holds for almost all n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e11-weak",
+    "proofId": "erdos-11",
+    "range": { "startLine": 86, "endLine": 88 },
+    "type": "definition",
+    "title": "Weaker Conjecture",
+    "content": "Erdos also asked the weaker version: every n > 1 not divisible by 4 has the representation. This allows some even numbers (those = 2 mod 4).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e11-two-pow2",
+    "proofId": "erdos-11",
+    "range": { "startLine": 90, "endLine": 92 },
+    "type": "definition",
+    "title": "Two Powers of 2",
+    "content": "Variant: n = s + 2^j + 2^k for squarefree s. Erdos thought this might be easier to prove. Allows more flexibility in the representation.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e11-granville",
+    "proofId": "erdos-11",
+    "range": { "startLine": 96, "endLine": 98 },
+    "type": "axiom",
+    "title": "Granville-Soundararajan (1998)",
+    "content": "**Deep Connection:** If Erdos Problem #11 is true, then infinitely many primes are non-Wieferich.\n\nThis remarkable result shows the conjecture has implications for the distribution of Wieferich primes, connecting additive and multiplicative number theory.",
+    "mathContext": "Published in 'A binary additive problem of Erdos and the order of 2 mod p^2'.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e11-hercher",
+    "proofId": "erdos-11",
+    "range": { "startLine": 102, "endLine": 104 },
+    "type": "axiom",
+    "title": "Hercher Verification (2024)",
+    "content": "**Computational Result:** All odd integers from 3 to 2^50 (approx 1.12 x 10^15) satisfy the conjecture.\n\nHercher used GPU parallelization to extend verification by a factor of 800,000 over previous bounds.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e11-odlyzko",
+    "proofId": "erdos-11",
+    "range": { "startLine": 106, "endLine": 108 },
+    "type": "axiom",
+    "title": "Odlyzko Verification",
+    "content": "Earlier computational verification up to 10^7. This was the state of the art before Hercher's massive extension.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e11-density",
+    "proofId": "erdos-11",
+    "range": { "startLine": 112, "endLine": 117 },
+    "type": "axiom",
+    "title": "Density Result",
+    "content": "**Erdos proved:** The conjecture holds for almost all odd n, meaning the set of exceptions (if any) has density 0.\n\nThis probabilistic result suggests the conjecture is 'morally true' even if a complete proof remains elusive.",
+    "significance": "key"
+  }
+]

@@ -851,17 +851,22 @@
   },
   {
     "id": "erdos-11",
-    "title": "Erdős Problem #11",
+    "title": "Erdős Problem #11: Squarefree + Power of 2",
     "slug": "erdos-11",
-    "description": "Is every odd ... the sum of a squarefree number and a power of 2? Odlyzko has checked this up to .... Hercher [He24b] has verified this is true for all odd integers up to .... Granville and Soundar...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Is every odd n > 1 the sum of a squarefree number and a power of 2? OPEN problem with deep connections to Wieferich primes. Verified up to 2^50.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "squarefree",
+      "additive-combinatorics",
+      "wieferich-primes"
     ],
     "erdosNumber": 11,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 15
   },
   {
     "id": "erdos-110",

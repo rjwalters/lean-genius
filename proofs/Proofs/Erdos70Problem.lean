@@ -192,10 +192,7 @@ axiom partition_arrow_mono_size (κ : Cardinal) (α : Ordinal) (m n : ℕ)
 /-- ω + n is countable for any n. -/
 theorem omega0_plus_n_countable (n : ℕ) : IsCountableOrdinal (Ordinal.omega0 + n) := by
   unfold IsCountableOrdinal
-  calc (Ordinal.omega0 + n).card
-      = Ordinal.omega0.card + (n : Ordinal).card := Ordinal.card_add _ _
-    _ = Cardinal.aleph0 + n := by simp [Ordinal.card_omega0, Ordinal.card_nat]
-    _ = Cardinal.aleph0 := Cardinal.aleph0_add_nat n
+  rw [Ordinal.card_add, Ordinal.card_omega0, Ordinal.card_nat, Cardinal.aleph0_add_nat]
 
 /-- ω * ω is countable. -/
 theorem omega0_squared_countable : IsCountableOrdinal (Ordinal.omega0 * Ordinal.omega0) := by
