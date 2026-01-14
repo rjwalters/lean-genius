@@ -1,1 +1,159 @@
-[]
+[
+  {
+    "id": "ann-e9-form-def",
+    "proofId": "erdos-9",
+    "range": { "startLine": 38, "endLine": 39 },
+    "type": "definition",
+    "title": "Prime + Two Powers Form",
+    "content": "An integer n has the form **p + 2^k + 2^l** if there exist a prime p and non-negative integers k, l such that n equals their sum.\n\nThis is the representation we're studying - most odd integers have it.",
+    "significance": "critical",
+    "relatedConcepts": ["Prime numbers", "Powers of 2", "Additive representation"]
+  },
+  {
+    "id": "ann-e9-set-s",
+    "proofId": "erdos-9",
+    "range": { "startLine": 42, "endLine": 42 },
+    "type": "definition",
+    "title": "Set S",
+    "content": "S is the set of all positive integers WITH the form p + 2^k + 2^l.\n\nMost odd integers belong to S.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e9-set-a",
+    "proofId": "erdos-9",
+    "range": { "startLine": 46, "endLine": 46 },
+    "type": "definition",
+    "title": "Exceptional Set A",
+    "content": "**A** is the set of odd positive integers WITHOUT the form p + 2^k + 2^l.\n\nThis is the central object of Erdős Problem #9. The question is whether A has positive upper density.",
+    "mathContext": "First elements: 1, 127, 149, 251, 331, 337, 373, ... (OEIS A006286)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e9-count",
+    "proofId": "erdos-9",
+    "range": { "startLine": 71, "endLine": 72 },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "countA(N) counts exceptional odd integers up to N.\n\nThe question is whether countA(N)/N has a positive limit.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e9-upper-density",
+    "proofId": "erdos-9",
+    "range": { "startLine": 75, "endLine": 76 },
+    "type": "definition",
+    "title": "Upper Density",
+    "content": "The **upper density** of a set A is lim sup of |A ∩ {1,...,N}| / N.\n\nPositive upper density means a positive proportion of integers are in A asymptotically.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e9-question",
+    "proofId": "erdos-9",
+    "range": { "startLine": 92, "endLine": 93 },
+    "type": "definition",
+    "title": "Erdős Problem #9 (OPEN)",
+    "content": "**Main Question:** Does the set A of odd integers not of the form p + 2^k + 2^l have positive upper density?\n\nThis is equivalent to asking if there exists δ > 0 such that countA(N) ≥ δN for large N.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e9-schinzel",
+    "proofId": "erdos-9",
+    "range": { "startLine": 106, "endLine": 106 },
+    "type": "axiom",
+    "title": "Schinzel's Result",
+    "content": "**Schinzel:** There are infinitely many exceptional odd integers.\n\nCredited by Erdős in 1977, but no reference given. This is the starting point.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e9-unbounded",
+    "proofId": "erdos-9",
+    "range": { "startLine": 109, "endLine": 112 },
+    "type": "theorem",
+    "title": "A is Unbounded",
+    "content": "For every N, there exists an exceptional odd integer greater than N.\n\nThis follows immediately from Schinzel's result.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e9-crocker",
+    "proofId": "erdos-9",
+    "range": { "startLine": 120, "endLine": 121 },
+    "type": "axiom",
+    "title": "Crocker's Bound (1971)",
+    "content": "**Crocker (1971):** countA(N) ≫ log log N.\n\nThe first quantitative lower bound. Very slow growth - doubly logarithmic.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e9-pan",
+    "proofId": "erdos-9",
+    "range": { "startLine": 129, "endLine": 130 },
+    "type": "axiom",
+    "title": "Pan's Bound (2011)",
+    "content": "**Pan (2011):** For any ε > 0, countA(N) ≫ N^{1-ε}.\n\nMassive improvement over Crocker - from log log N to almost linear! But still not positive density.",
+    "mathContext": "The gap from N^{1-ε} to linear N is what remains to be closed.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e9-covering",
+    "proofId": "erdos-9",
+    "range": { "startLine": 156, "endLine": 157 },
+    "type": "axiom",
+    "title": "Covering Systems Fail",
+    "content": "**Erdős's Observation:** Integers of the form p + 2^k + 2^l exist in EVERY arithmetic progression.\n\nThis means covering system methods cannot prove positive density for A.",
+    "mathContext": "Covering systems work by finding arithmetic progressions that miss the target set. But every AP meets S.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e9-intersects",
+    "proofId": "erdos-9",
+    "range": { "startLine": 160, "endLine": 163 },
+    "type": "theorem",
+    "title": "S Meets All Progressions",
+    "content": "For any arithmetic progression {a, a+d, a+2d, ...}, there exists n in S with n ≡ a (mod d).\n\nThis formalizes why covering systems are insufficient.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e9-one",
+    "proofId": "erdos-9",
+    "range": { "startLine": 188, "endLine": 201 },
+    "type": "theorem",
+    "title": "1 is Exceptional",
+    "content": "1 ∈ A: 1 is odd and cannot be p + 2^k + 2^l.\n\nProof: Any prime p ≥ 2, and 2^k, 2^l ≥ 1, so p + 2^k + 2^l ≥ 4 > 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e9-three",
+    "proofId": "erdos-9",
+    "range": { "startLine": 204, "endLine": 214 },
+    "type": "theorem",
+    "title": "3 is Exceptional",
+    "content": "3 ∈ A: 3 is odd and cannot be p + 2^k + 2^l.\n\nProof: Similar to 1 - the minimum is p + 2^0 + 2^0 = 2 + 1 + 1 = 4 > 3.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e9-five",
+    "proofId": "erdos-9",
+    "range": { "startLine": 217, "endLine": 221 },
+    "type": "theorem",
+    "title": "5 is Representable",
+    "content": "5 ∈ S: 5 = 3 + 2^0 + 2^0 = 3 + 1 + 1.\n\nSo 5 is NOT exceptional.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e9-nine",
+    "proofId": "erdos-9",
+    "range": { "startLine": 224, "endLine": 228 },
+    "type": "theorem",
+    "title": "9 is Representable",
+    "content": "9 ∈ S: 9 = 5 + 2^1 + 2^1 = 5 + 2 + 2.\n\nSo 9 is NOT exceptional.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e9-improvement",
+    "proofId": "erdos-9",
+    "range": { "startLine": 243, "endLine": 248 },
+    "type": "theorem",
+    "title": "Linear Bound Would Solve",
+    "content": "If we could prove countA(N) ≥ cN for some c > 0, the problem would be solved.\n\nThis is equivalent to positive upper density.",
+    "significance": "key"
+  }
+]

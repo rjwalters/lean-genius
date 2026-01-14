@@ -1,33 +1,129 @@
 {
   "id": "erdos-9",
-  "title": "Erdős Problem #9",
+  "title": "Erdős Problem #9: Odd Integers Not of the Form p + 2^k + 2^l",
   "slug": "erdos-9",
-  "description": "Let ... be the set of all odd integers not of the form ... (where ... and ... is prime). Is the upper density of ... positive? In [Er77c] Erdős credits Schinzel with proving that there are infinite...",
+  "description": "Is the upper density of odd integers not expressible as p + 2^k + 2^l positive? OPEN problem. Pan (2011) proved N^{1-ε} growth but positive density remains unresolved.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/9",
-    "date": "",
-    "status": "pending",
+    "date": "1977",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos9Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "density",
+      "primes",
+      "covering-systems"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 9,
     "erdosUrl": "https://erdosproblems.com/9",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.limsup",
+        "description": "Limit superior for filters",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of prime + two powers representation",
+      "Upper density definition and positive density question",
+      "Axiomatization of Schinzel, Crocker, and Pan bounds",
+      "Covering systems insufficiency argument",
+      "Proved small examples: 1, 3 are exceptional; 5, 9 are representable"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #9 from erdosproblems.com.",
-    "problemStatement": "Let $A$ be the set of all odd integers not of the form $p+2^{k}+2^l$ (where $k,l\\geq 0$ and $p$ is prime). Is the upper density of $A$ positive? In [Er77c] Erdős credits Schinzel with proving that there are infinitely many odd integers not of this form, but gives no reference. Crocker [Cr71] has proved there are $\\gg\\log\\log N$ such integers in $\\{1,\\ldots,N\\}$. Pan [Pa11] improved this to $\\gg_\\epsilon N^{1-\\epsilon}$ for any $\\epsilon>0$. Erdős believed this cannot be proved by covering systems, i.e. integers of the form $p+2^k+2^l$ exist in every infinite arithmetic progression. The sequence of such numbers is A006286 in the OEIS. See also [10], [11], and [16]. This is discussed in problem A19 of Guy's collection [Gu04]. View the LaTeX source This page was last edited 28 December 2025.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem concerns the representation of odd integers as p + 2^k + 2^l where p is prime. Erdős asked whether the set A of odd integers WITHOUT such a representation has positive upper density.\n\nSchinzel proved A is infinite (credited by Erdős in 1977). Crocker (1971) showed at least log log N such integers exist up to N. Pan (2011) dramatically improved this to N^{1-ε} for any ε > 0.\n\nErdős made the key observation that covering systems cannot resolve this problem - integers of the form p + 2^k + 2^l exist in every arithmetic progression.",
+    "problemStatement": "**Question (Erdős, OPEN):** Let A be the set of odd integers not of the form p + 2^k + 2^l. Is the upper density of A positive?\n\n**Known bounds:**\n- Schinzel: A is infinite\n- Crocker (1971): |A ∩ {1,...,N}| ≫ log log N\n- Pan (2011): |A ∩ {1,...,N}| ≫ N^{1-ε} for any ε > 0\n- Question: |A ∩ {1,...,N}| ≫ N (positive density)?\n\n**First elements of A (OEIS A006286):** 1, 127, 149, 251, 331, 337, 373, ...",
+    "proofStrategy": "The formalization defines:\n\n1. `HasPrimePlusTwoPowersForm n`: n = p + 2^k + 2^l for some prime p\n2. `A`: odd integers without such representation\n3. `upperDensity A`: the upper asymptotic density\n4. `erdos_9_question`: is upperDensity A > 0?\n\nWe axiomatize:\n- Schinzel's result: A is infinite\n- Crocker (1971): ≫ log log N bound\n- Pan (2011): ≫ N^{1-ε} bound\n- Erdős's observation on covering systems",
+    "keyInsights": [
+      "**Covering systems fail:** Erdős observed that p + 2^k + 2^l hits every arithmetic progression, so covering system methods cannot prove positive density.",
+      "**Pan's near-linear bound:** The N^{1-ε} bound is tantalizingly close to linear but doesn't prove positive density. The gap between N^{1-ε} and N is the key difficulty.",
+      "**Small exceptions are rare:** Only 1, 127, 149, ... are exceptional. Most odd integers CAN be written as p + 2^k + 2^l, making exceptions sparse.",
+      "**Related to Romanoff's theorem:** Romanoff (1934) proved a positive proportion of integers are p + 2^k. This problem extends to p + 2^k + 2^l for odd integers.",
+      "**OEIS A006286:** The sequence of exceptional odd integers is catalogued and grows very slowly."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "summary": "Prime + two powers form, set A, counting function",
+      "startLine": 35,
+      "endLine": 72
+    },
+    {
+      "id": "density",
+      "title": "Density Definitions",
+      "summary": "Upper density and positive density",
+      "startLine": 68,
+      "endLine": 80
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős Question",
+      "summary": "OPEN: Does A have positive upper density?",
+      "startLine": 82,
+      "endLine": 97
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "summary": "Schinzel, Crocker, and Pan bounds",
+      "startLine": 99,
+      "endLine": 145
+    },
+    {
+      "id": "covering",
+      "title": "Covering Systems",
+      "summary": "Why covering systems cannot resolve this",
+      "startLine": 147,
+      "endLine": 179
+    },
+    {
+      "id": "examples",
+      "title": "Small Examples",
+      "summary": "1, 3 are exceptional; 5, 9 are representable",
+      "startLine": 181,
+      "endLine": 228
+    },
+    {
+      "id": "status",
+      "title": "Problem Status",
+      "summary": "Summary and open status",
+      "startLine": 265,
+      "endLine": 292
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #9, asking whether odd integers not of the form p + 2^k + 2^l have positive upper density. Pan's 2011 result gives N^{1-ε} growth, but positive density remains open. The formalization includes Erdős's key insight that covering systems are insufficient.",
+    "implications": "This problem connects several areas:\n\n1. **Additive number theory:** Representations of integers as sums involving primes\n2. **Covering systems:** Erdős's observation shows their limitations\n3. **Density theory:** The gap between N^{1-ε} and linear growth\n4. **Computational number theory:** OEIS A006286 catalogs exceptional integers\n5. **Related Erdős problems:** #10, #11, #16 form a family",
+    "openQuestions": [
+      "Does A have positive upper density?",
+      "Can Pan's N^{1-ε} bound be improved to any power closer to 1?",
+      "Is there a structural characterization of exceptional odd integers?",
+      "What is the relationship to problems #10, #11, #16?"
+    ]
   }
 }
