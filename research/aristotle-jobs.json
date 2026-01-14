@@ -67,6 +67,55 @@
       "notes": "Tao identity: double sum manipulation for ∑ω(n)/2^n = ∑1/(2^p-1)",
       "status": "submitted",
       "last_check": null
+    },
+    {
+      "project_id": "45ee038b-8713-414d-ad30-972dcd94f870",
+      "file": "proofs/Proofs/Erdos44Problem.lean",
+      "problem_id": "erdos-44",
+      "submitted": "2026-01-13T18:43:22Z",
+      "sorries": [
+        ""
+      ],
+      "notes": "HARD sorries: isSidon_powers_of_two, maxSidonSubsetCard_icc_bound, sidon_set_lower_bound_exists. Excluding OPEN erdos_44.",
+      "status": "submitted",
+      "last_check": null
+    },
+    {
+      "project_id": "4f27e40c-90a0-40d0-8d9f-881dd5483fe2",
+      "file": "proofs/Proofs/Erdos659Problem.lean",
+      "problem_id": "erdos-659",
+      "submitted": "2026-01-13T18:46:10Z",
+      "sorries": [
+        "def isConfiguration : Finset (ℝ × ℝ) → TwoDistanceConfig → Prop := fun _ _ => sorry"
+      ],
+      "notes": "Definition sorries: moreeOsburnLattice, isConfiguration. Testing concurrent job limits.",
+      "status": "submitted",
+      "last_check": null
+    },
+    {
+      "project_id": "87e63545-a1dd-40d6-9ac4-e89dd584f5d3",
+      "file": "proofs/Proofs/Erdos44Problem.lean",
+      "problem_id": "erdos-44",
+      "submitted": "2026-01-13T23:28:38Z",
+      "sorries": [
+        ""
+      ],
+      "notes": "HARD sorries: isSidon_powers_of_two, sidon_set_lower_bound_exists. SKIP erdos_44 (OPEN conjecture)",
+      "status": "submitted",
+      "last_check": null
+    },
+    {
+      "project_id": "9f389403-8837-4d95-988c-3bee2a8197ff",
+      "file": "proofs/Proofs/Erdos74Problem.lean",
+      "problem_id": "erdos-74",
+      "submitted": "2026-01-13T23:56:56Z",
+      "sorries": [
+        "theorem bipartite_chromaticNumber_le_two (V : Type*) (G : SimpleGraph V)",
+        "theorem edgeDistUpperBound (V : Type*) [Fintype V] [DecidableEq V]"
+      ],
+      "notes": "HARD sorries: isBipartiteIffDistZero, edgeDistUpperBound, bipartite_chromaticNumber_le_two - all graph theory infrastructure",
+      "status": "submitted",
+      "last_check": null
     }
   ],
   "completed": [],

@@ -99,8 +99,61 @@ theorem maxSidonSubsetCard_icc_bound (N : ℕ) (hN : 1 ≤ N) (A : Finset ℕ)
     (A.card : ℝ) ≤ 2 * Real.sqrt N := by
   have h := sidon_subset_icc_card_bound A N hN hA hAN
   -- |A| ≤ √(2N) + 1 ≤ 2√N for N ≥ 3, and |A| ≤ N ≤ 2√N for N ≤ 2
-  -- Technical bound involving Real.sqrt inequalities
-  sorry
+  have hcard_le_N : A.card ≤ N := by
+    calc A.card ≤ (Icc 1 N).card := card_le_card hAN
+      _ = N := by simp [Nat.card_Icc]
+  -- Case split on N: small cases N ∈ {1, 2} vs N ≥ 3
+  by_cases hN3 : N < 3
+  · -- N < 3, so N ∈ {1, 2}
+    interval_cases N
+    · -- N = 1: |A| ≤ 1 and 2√1 = 2
+      simp only [Nat.cast_one, Real.sqrt_one, mul_one]
+      have hle : A.card ≤ 1 := hcard_le_N
+      calc (A.card : ℝ) ≤ 1 := by exact_mod_cast hle
+        _ ≤ 2 := by norm_num
+    · -- N = 2: |A| ≤ 2 and 2√2 ≈ 2.83
+      calc (A.card : ℝ) ≤ 2 := by exact_mod_cast hcard_le_N
+        _ ≤ 2 * Real.sqrt 2 := by
+          have h1 : (1 : ℝ) ≤ Real.sqrt 2 := Real.one_le_sqrt.mpr (by norm_num)
+          linarith
+  · -- N ≥ 3: use √(2N) + 1 ≤ 2√N
+    push_neg at hN3
+    have hNR : (N : ℝ) ≥ 3 := by exact_mod_cast hN3
+    calc (A.card : ℝ)
+        ≤ Nat.sqrt (2 * N) + 1 := by exact_mod_cast h
+      _ ≤ Real.sqrt (2 * N) + 1 := by
+          have hsqrt : (Nat.sqrt (2 * N) : ℝ) ≤ Real.sqrt (2 * N) := by
+            have := @Real.nat_sqrt_le_real_sqrt (2 * N)
+            simp only [Nat.cast_mul, Nat.cast_ofNat] at this
+            exact this
+          linarith
+      _ ≤ 2 * Real.sqrt N := by
+          -- Need: √(2N) + 1 ≤ 2√N ⟺ 1 ≤ (2 - √2)√N
+          have hsqrtN_pos : Real.sqrt N > 0 := Real.sqrt_pos_of_pos (by linarith)
+          -- Rewrite √(2N) = √2 · √N
+          rw [Real.sqrt_mul (by norm_num : (2 : ℝ) ≥ 0) N]
+          -- Need: √2 · √N + 1 ≤ 2 · √N, i.e., 1 ≤ (2 - √2) · √N
+          -- Since √2 < 1.415 and √N ≥ √3 > 1.732, we have (2-√2)√N > 0.585 * 1.732 > 1.01
+          have h_sqrt2_bound : Real.sqrt 2 < 1.415 := by
+            -- √2 < 1.415 ⟺ 2 < 1.415^2 = 2.002225
+            rw [Real.sqrt_lt' (by norm_num : (0 : ℝ) < 1.415)]
+            norm_num
+          have h_sqrt3_bound : Real.sqrt 3 > 1.732 := by
+            -- 1.732 < √3 ⟺ 1.732^2 < 3
+            have h3 : (1.732 : ℝ) ^ 2 < 3 := by norm_num
+            exact (Real.lt_sqrt (by norm_num : (0 : ℝ) ≤ 1.732)).mpr h3
+          have h_sqrtN_bound : Real.sqrt N ≥ Real.sqrt 3 := Real.sqrt_le_sqrt (by linarith)
+          have h_sqrtN_lower : Real.sqrt N > 1.732 := lt_of_lt_of_le h_sqrt3_bound h_sqrtN_bound
+          have h_coeff : 2 - Real.sqrt 2 > 0.585 := by linarith
+          have h_prod : (2 - Real.sqrt 2) * Real.sqrt N > 0.585 * 1.732 := by
+            have hle : (1.732 : ℝ) ≤ Real.sqrt N := le_of_lt h_sqrtN_lower
+            calc (2 - Real.sqrt 2) * Real.sqrt N > 0.585 * Real.sqrt N := by
+                  apply mul_lt_mul_of_pos_right h_coeff hsqrtN_pos
+              _ ≥ 0.585 * 1.732 := by apply mul_le_mul_of_nonneg_left hle (by norm_num)
+          have h_prod_ge_1 : (2 - Real.sqrt 2) * Real.sqrt N > 1 := by
+            calc (2 - Real.sqrt 2) * Real.sqrt N > 0.585 * 1.732 := h_prod
+              _ > 1 := by norm_num
+          linarith
 
 /-! ## Part 3: Lower Bound - Existence of Sidon sets -/
 
@@ -135,8 +188,8 @@ lemma isSidon_powers_of_two (k : ℕ) : IsSidon ((range k).image (2 ^ ·)) := by
   have hab' : ia ≤ ib := Nat.pow_le_pow_iff_right (by omega : 1 < 2) |>.mp hab
   have hcd' : ic ≤ id := Nat.pow_le_pow_iff_right (by omega : 1 < 2) |>.mp hcd
   -- The proof uses 2-adic valuations: if 2^a(1 + 2^(b-a)) = 2^c(1 + 2^(d-c))
-  -- and both (1 + 2^k) terms are odd, then a = c and b = d.
-  -- Technical proof involving Even.add_one, Nat.even_pow, divisibility
+  -- and both (1 + 2^k) terms are odd (for k > 0), then a = c and b = d.
+  -- Technical proof involving divisibility and 2-adic valuations.
   sorry
 
 /-- There exists a Sidon set of size at least √N / 2 in {1,...,N}.

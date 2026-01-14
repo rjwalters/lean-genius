@@ -4,6 +4,8 @@ import Mathlib.Algebra.Polynomial.Eval.Defs
 import Mathlib.Algebra.Polynomial.Coeff
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
+import Mathlib.Analysis.Calculus.LocalExtr.Polynomial
+import Mathlib.Analysis.Calculus.LocalExtr.Rolle
 
 /-!
 # Descartes' Rule of Signs
@@ -294,20 +296,30 @@ theorem alternating_signs_max_roots (p : ℝ[X]) (hp : p ≠ 0)
 The proof of Descartes' rule relies on Rolle's theorem from calculus.
 -/
 
-/-- **Axiom: Rolle's theorem for polynomials**
+/-- **Rolle's theorem for polynomials**
 
-This follows from the Mean Value Theorem / Rolle's Theorem applied
-to the polynomial as a continuous differentiable function. -/
-axiom rolle_polynomial_axiom (p : ℝ[X]) (a b : ℝ) (hab : a < b)
-    (ha : p.eval a = 0) (hb : p.eval b = 0) :
-    ∃ c, a < c ∧ c < b ∧ (derivative p).eval c = 0
+Between two distinct roots of p, there exists a root of p'.
+This follows from Mathlib's `exists_deriv_eq_zero` applied to polynomial evaluation.
 
-/-- Between two distinct roots of p, there exists a root of p'.
-    This is a key lemma for proving Descartes' rule. -/
+The proof structure:
+1. Use Polynomial.continuous for continuity on [a,b]
+2. Apply exists_deriv_eq_zero (Rolle's theorem) to get c with deriv(p.eval) c = 0
+3. Use Polynomial.deriv to connect deriv(p.eval) to (derivative p).eval -/
 theorem rolle_polynomial (p : ℝ[X]) (a b : ℝ) (hab : a < b)
     (ha : p.eval a = 0) (hb : p.eval b = 0) :
-    ∃ c, a < c ∧ c < b ∧ (derivative p).eval c = 0 :=
-  rolle_polynomial_axiom p a b hab ha hb
+    ∃ c, a < c ∧ c < b ∧ (derivative p).eval c = 0 := by
+  -- Use Mathlib's Rolle's theorem for real functions
+  have hcont : ContinuousOn (fun x => p.eval x) (Set.Icc a b) :=
+    p.continuous.continuousOn
+  have heq : p.eval a = p.eval b := ha.trans hb.symm
+  -- Apply Rolle's theorem to get c where deriv(eval p) c = 0
+  obtain ⟨c, ⟨hac, hcb⟩, hderiv⟩ := exists_deriv_eq_zero hab hcont heq
+  use c
+  refine ⟨hac, hcb, ?_⟩
+  -- Need: deriv (fun x => p.eval x) c = (derivative p).eval c
+  -- This is Polynomial.deriv from Mathlib
+  simp only [Polynomial.deriv] at hderiv
+  exact hderiv
 
 /-- **Axiom: Derivative reduces or preserves sign changes**
 

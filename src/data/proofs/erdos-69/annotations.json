@@ -1,1 +1,100 @@
-[]
+[
+  {
+    "id": "ann-e69-omega",
+    "proofId": "erdos-69",
+    "range": {
+      "startLine": 25,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Prime Omega Function",
+    "content": "The function **omega(n)** counts the number of *distinct* prime divisors of n. For example, omega(12) = 2 since 12 = 2^2 * 3 has only two distinct primes (2 and 3), regardless of their multiplicity.",
+    "mathContext": "Uses Mathlib's `ArithmeticFunction.omega` from the arithmetic functions library. This is distinct from `Omega` (capital) which counts prime factors with multiplicity.",
+    "significance": "key",
+    "relatedConcepts": ["prime factorization", "divisor function", "arithmetic functions"]
+  },
+  {
+    "id": "ann-e69-omegasum",
+    "proofId": "erdos-69",
+    "range": {
+      "startLine": 32,
+      "endLine": 33
+    },
+    "type": "definition",
+    "title": "The Omega Sum",
+    "content": "The sum **sum(omega(n)/2^n)** for n >= 2 adds up contributions from each integer weighted by its number of distinct prime factors and exponentially decaying denominators. This converges because omega(n) grows slowly (at most log n) while 2^n grows rapidly.",
+    "mathContext": "Defined as `tsum` (infinite sum) with index shift: `\\sum' n : Nat, omega(n + 2) / 2^(n + 2)`. The shift avoids n=0,1 where omega is trivial.",
+    "significance": "critical",
+    "relatedConcepts": ["infinite series", "convergence", "prime omega"]
+  },
+  {
+    "id": "ann-e69-primesum",
+    "proofId": "erdos-69",
+    "range": {
+      "startLine": 35,
+      "endLine": 36
+    },
+    "type": "definition",
+    "title": "The Prime Sum",
+    "content": "The equivalent sum **sum(1/(2^p - 1))** over all primes p. For each prime, 2^p - 1 is a Mersenne-type number. The sum starts at p=2 with 1/3, then p=3 with 1/7, p=5 with 1/31, etc.",
+    "mathContext": "Summed over the subtype `{n : Nat | n.Prime}`. The term `1/(2^p - 1)` is well-defined since `2^p > 1` for primes p >= 2.",
+    "significance": "critical",
+    "relatedConcepts": ["Mersenne numbers", "prime sums", "geometric series"]
+  },
+  {
+    "id": "ann-e69-geometric",
+    "proofId": "erdos-69",
+    "range": {
+      "startLine": 46,
+      "endLine": 70
+    },
+    "type": "lemma",
+    "title": "Geometric Series Over Multiples",
+    "content": "For any prime p, the sum **sum(1/2^(pk))** over k >= 1 equals exactly **1/(2^p - 1)**. This is a geometric series with ratio r = 1/2^p, giving r/(1-r) = 1/(2^p - 1).",
+    "mathContext": "Uses Mathlib's `tsum_geometric_of_lt_one` for the convergence and formula. Key calculation: `sum r^(k+1) = r * sum r^k = r * 1/(1-r) = r/(1-r)`.",
+    "significance": "key",
+    "relatedConcepts": ["geometric series", "convergence", "ratio test"]
+  },
+  {
+    "id": "ann-e69-tao-identity",
+    "proofId": "erdos-69",
+    "range": {
+      "startLine": 101,
+      "endLine": 115
+    },
+    "type": "theorem",
+    "title": "Tao's Identity",
+    "content": "**Tao's key observation**: The omega sum equals the prime sum. This follows by writing omega(n) = sum_{p|n} 1, then swapping the order of summation. Summing over all n divisible by p gives a geometric series.",
+    "mathContext": "The double sum interchange requires careful justification of absolute convergence. The identity `omega(n) = sum_{p|n} 1` is definitional from `primeFactors.card`.",
+    "significance": "critical",
+    "relatedConcepts": ["double sums", "Fubini's theorem", "summation interchange"]
+  },
+  {
+    "id": "ann-e69-irrationality",
+    "proofId": "erdos-69",
+    "range": {
+      "startLine": 119,
+      "endLine": 128
+    },
+    "type": "theorem",
+    "title": "Prime Sum Irrationality",
+    "content": "The sum **sum(1/(2^p - 1))** over primes is **irrational**. This deep result was proved by Tao and Teräväinen in December 2025 using correlations of arithmetic functions and sieve methods.",
+    "mathContext": "This is stated as an `axiom` since the proof uses analytic number theory far beyond Mathlib's current scope. It's a special case of Erdos Problem 257.",
+    "significance": "critical",
+    "relatedConcepts": ["irrationality", "analytic number theory", "Erdos 257"]
+  },
+  {
+    "id": "ann-e69-main",
+    "proofId": "erdos-69",
+    "range": {
+      "startLine": 130,
+      "endLine": 138
+    },
+    "type": "theorem",
+    "title": "Erdos 69 Solution",
+    "content": "**Main theorem**: The sum omega(n)/2^n is irrational. The proof is just two lines: rewrite via Tao's identity, then apply the irrationality result for the prime sum.",
+    "mathContext": "The proof is `rw [tao_identity]; exact primeSum_irrational`. This elegant structure shows the power of finding the right transformation.",
+    "significance": "critical",
+    "relatedConcepts": ["irrationality", "proof by reduction"]
+  }
+]

@@ -1,0 +1,34 @@
+{
+  "id": "erdos-607",
+  "title": "Erdős Problem #607",
+  "slug": "erdos-607",
+  "description": "For a set of n\" role=\"presentation\" style=\"position: relative;\">nnn points P&#x2282;R2\" role=\"presentation\" style=\"position: relative;\">P⊂ℝ2P⊂R2P\\subset ^2 let &#x2113;1,&#x2026;,&#x2113;m\" role=\"p...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/607",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos607Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 607,
+    "erdosUrl": "https://erdosproblems.com/607",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$250"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #607 from erdosproblems.com. Originally offered with a prize of $250.",
+    "problemStatement": "For a set of n\" role=\"presentation\" style=\"position: relative;\">nnn points P&#x2282;R2\" role=\"presentation\" style=\"position: relative;\">P⊂ℝ2P⊂R2P\\subset \\mathbb{R}^2 let &#x2113;1,&#x2026;,&#x2113;m\" role=\"presentation\" style=\"position: relative;\">ℓ1,…,ℓmℓ1,…,ℓm\\ell_1,\\ldots,\\ell_m be the lines determined by P\" role=\"presentation\" style=\"position: relative;\">PPP, and let A={&#x007C;&#x2113;1&#x2229;P&#x007C;,&#x2026;,&#x007C;&#x2113;m&#x2229;P&#x007C;}\" role=\"presentation\" style=\"position: relative;\">A={|ℓ1∩P|,…,|ℓm∩P|}A={|ℓ1∩P|,…,|ℓm∩P|}A=\\{\\lvert \\ell_1\\cap P\\rvert,\\ldots,\\lvert \\ell_m\\cap P\\rvert\\}. Let F(n)\" role=\"presentation\" style=\"position: relative;\">F(n)F(n)F(n) count the number of possible sets A\" role=\"presentation\" style=\"position: relative;\">AAA that can be constructed this way. Is it true thatF(n)&#x2264;exp&#x2061;(O(n))?\" role=\"presentation\" style=\"text-align: center; position: relative;\">F(n)≤exp(O(n‾√))?F(n)≤exp⁡(O(n))? Erdős writes it is 'easy to see' that this boun",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

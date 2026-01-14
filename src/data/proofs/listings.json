@@ -237,7 +237,7 @@
     "wiedijkNumber": 93,
     "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 7
+    "annotationCount": 6
   },
   {
     "id": "borsuk-ulam",
@@ -5670,16 +5670,22 @@
   },
   {
     "id": "erdos-61",
-    "title": "Erdős Problem #61",
+    "title": "Erdős Problem #61: The Erdős–Hajnal Conjecture",
     "slug": "erdos-61",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any graph ... is there some ... such that every graph ... on ... vertices that does not contain ... as an induced subgrap...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "For any graph H, does there exist c > 0 such that every H-free graph on n vertices has a clique or independent set of size at least n^c?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "induced-subgraph",
+      "conjecture"
     ],
-    "sorries": 1,
-    "annotationCount": 0
+    "dateAdded": "2026-01-13",
+    "mathlibCount": 4,
+    "sorries": 0,
+    "annotationCount": 9
   },
   {
     "id": "erdos-610",
@@ -6311,16 +6317,22 @@
   },
   {
     "id": "erdos-66",
-    "title": "Erdős Problem #66",
+    "title": "Erdős Problem #66: Representation Function Asymptotics",
     "slug": "erdos-66",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there ... such that\\[\\lim_{n\\to \\infty}{\\log n}\\]exists and is ...?\n\n\n\nA suitably constructed random set has this property...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Is there a set A ⊆ ℕ such that the representation function r_A(n) = |{(a,b) ∈ A² : a+b=n}| satisfies lim r_A(n)/log(n) = c ≠ 0?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "representation-function",
+      "conjecture"
     ],
-    "sorries": 1,
-    "annotationCount": 0
+    "dateAdded": "2026-01-13",
+    "mathlibCount": 4,
+    "sorries": 0,
+    "annotationCount": 10
   },
   {
     "id": "erdos-660",
@@ -6389,16 +6401,22 @@
   },
   {
     "id": "erdos-67",
-    "title": "Erdős Problem #67",
+    "title": "Erdős Problem #67: The Erdős Discrepancy Problem",
     "slug": "erdos-67",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... then is it true that for every ... there exist ... such that\\[\\left\\lvert \\sum_{1\\leq k\\leq m}f(kd)\\right\\rvert > C?\\]...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "For any ±1 sequence f: ℕ → {-1,+1}, must the partial sums along some arithmetic progression be unbounded? (Solved: YES, by Tao 2015)",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "discrepancy",
+      "arithmetic-progressions",
+      "tao"
     ],
-    "sorries": 1,
-    "annotationCount": 0
+    "dateAdded": "2026-01-13",
+    "mathlibCount": 4,
+    "sorries": 0,
+    "annotationCount": 11
   },
   {
     "id": "erdos-670",
@@ -6519,16 +6537,22 @@
   },
   {
     "id": "erdos-74",
-    "title": "Erdős Problem #74",
+    "title": "Erdős Problem #74: Almost Bipartite Graphs with High Chromatic Number",
     "slug": "erdos-74",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... (possibly very slowly). Is there a graph of infinite chromatic number such that every finite subgraph on ... vertices...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "For f(n) → ∞, is there a graph with infinite chromatic number where every n-vertex subgraph can be made bipartite by deleting ≤ f(n) edges?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "bipartite",
+      "conjecture"
     ],
-    "sorries": 1,
-    "annotationCount": 0
+    "dateAdded": "2026-01-13",
+    "mathlibCount": 4,
+    "sorries": 3,
+    "annotationCount": 10
   },
   {
     "id": "erdos-76",
@@ -6636,16 +6660,23 @@
   },
   {
     "id": "erdos-85",
-    "title": "Erdős Problem #85",
+    "title": "Erdős Problem #85: Minimum Degree for 4-Cycles",
     "slug": "erdos-85",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be minimal such that every graph on ... vertices with minimal degree ... contains a .... Is it true that, for...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Is the minimum degree threshold f(n) for forcing a 4-cycle monotone? That is, is f(n+1) ≥ f(n) for all large n?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal",
+      "4-cycle",
+      "minimum-degree",
+      "conjecture"
     ],
-    "sorries": 1,
-    "annotationCount": 0
+    "dateAdded": "2026-01-13",
+    "mathlibCount": 4,
+    "sorries": 0,
+    "annotationCount": 10
   },
   {
     "id": "erdos-86",

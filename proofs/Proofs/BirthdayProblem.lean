@@ -38,7 +38,7 @@ For n = 23, P(23) > 0.5 (the famous "23 people" threshold).
 - [x] Uses Mathlib for main results
 - [x] Proves the probability formula
 - [x] Pedagogical examples
-- [x] Complete (axioms for n=22,23 thresholds - large integer arithmetic)
+- [x] Complete (all theorems fully proven with native_decide for large integers)
 
 ## Mathlib Dependencies
 - `Fintype.card` : Cardinality of finite types
@@ -186,11 +186,10 @@ theorem prob_certain (n : ℕ) (h : n > numDays) :
 The famous result: with 23 people, the probability exceeds 1/2.
 This counterintuitive result is why it's called the "Birthday Paradox".
 
-We state this as an axiom since computing the exact values involves
-large integer arithmetic that native_decide cannot handle efficiently.
+We prove these using native_decide for the large integer comparisons.
 -/
 
-/-- **The 23-Person Threshold (Axiom)**
+/-- **The 23-Person Threshold**
 
 With 23 people, the probability of at least two sharing a birthday
 exceeds 1/2. This is verified by computing the exact ratio.
@@ -201,14 +200,51 @@ Computation:
 - descFactorial 365 23 ≈ 4.22 × 10^53
 - 365^23 ≈ 8.56 × 10^58
 - Ratio ≈ 0.4927 (probability all distinct)
-- 1 - 0.4927 ≈ 0.5073 > 0.5 ✓ -/
-axiom birthday_23_exceeds_half : prob_shared_birthday 23 > (1 : ℚ) / 2
+- 1 - 0.4927 ≈ 0.5073 > 0.5 ✓
+
+Proof strategy: prob_shared > 1/2 ⟺ 1 - desc/total > 1/2
+⟺ desc/total < 1/2 ⟺ 2*desc < total (for positive total).
+We verify the integer inequality 365^23 > 2 * descFactorial(365, 23). -/
+theorem birthday_23_exceeds_half : prob_shared_birthday 23 > (1 : ℚ) / 2 := by
+  simp only [prob_shared_birthday, prob_all_distinct, numDays]
+  -- Goal: 1 - descFactorial 365 23 / 365^23 > 1/2
+  -- Equivalent to: 1/2 < 1 - desc/total
+  -- Equivalent to: desc/total < 1/2
+  -- Equivalent to: 2*desc < total (since total > 0)
+  have h_total_pos : (0 : ℚ) < (365 : ℕ) ^ 23 := by positivity
+  have h_ineq : (365 : ℕ) ^ 23 > 2 * Nat.descFactorial 365 23 := by native_decide
+  -- Use that desc/total < 1/2 ⟺ 2*desc < total
+  have h_frac_lt : ((Nat.descFactorial 365 23 : ℕ) : ℚ) / ((365 : ℕ) ^ 23 : ℚ) < 1 / 2 := by
+    have h : (2 : ℚ) * (Nat.descFactorial 365 23 : ℕ) < (365 : ℕ) ^ 23 := by exact_mod_cast h_ineq
+    have h2 : (Nat.descFactorial 365 23 : ℚ) < ((365 : ℕ) ^ 23 : ℚ) / 2 := by linarith
+    calc ((Nat.descFactorial 365 23 : ℕ) : ℚ) / ((365 : ℕ) ^ 23 : ℚ)
+        < ((365 : ℕ) ^ 23 : ℚ) / 2 / ((365 : ℕ) ^ 23 : ℚ) := by apply div_lt_div_of_pos_right h2 h_total_pos
+      _ = 1 / 2 := by field_simp
+  linarith
 
 /-- With 22 people, the probability is still below 1/2.
 
 For n=22: P(shared) ≈ 0.4757 < 0.5
-For n=23: P(shared) ≈ 0.5073 > 0.5 -/
-axiom birthday_22_below_half : prob_shared_birthday 22 < (1 : ℚ) / 2
+For n=23: P(shared) ≈ 0.5073 > 0.5
+
+Proof: prob_shared < 1/2 ⟺ 2*desc > total. -/
+theorem birthday_22_below_half : prob_shared_birthday 22 < (1 : ℚ) / 2 := by
+  simp only [prob_shared_birthday, prob_all_distinct, numDays]
+  -- Goal: 1 - descFactorial 365 22 / 365^22 < 1/2
+  -- Equivalent to: 1 - 1/2 < desc/total
+  -- Equivalent to: 1/2 < desc/total
+  -- Equivalent to: total < 2*desc (since total > 0)
+  have h_total_pos : (0 : ℚ) < (365 : ℕ) ^ 22 := by positivity
+  have h_ineq : (365 : ℕ) ^ 22 < 2 * Nat.descFactorial 365 22 := by native_decide
+  -- Use that 1/2 < desc/total ⟺ total < 2*desc
+  have h_frac_gt : ((Nat.descFactorial 365 22 : ℕ) : ℚ) / ((365 : ℕ) ^ 22 : ℚ) > 1 / 2 := by
+    have h : ((365 : ℕ) ^ 22 : ℚ) < 2 * (Nat.descFactorial 365 22 : ℕ) := by exact_mod_cast h_ineq
+    have h2 : ((365 : ℕ) ^ 22 : ℚ) / 2 < (Nat.descFactorial 365 22 : ℚ) := by linarith
+    calc 1 / 2
+        = ((365 : ℕ) ^ 22 : ℚ) / 2 / ((365 : ℕ) ^ 22 : ℚ) := by field_simp
+      _ < ((Nat.descFactorial 365 22 : ℕ) : ℚ) / ((365 : ℕ) ^ 22 : ℚ) := by
+          apply div_lt_div_of_pos_right h2 h_total_pos
+  linarith
 
 /-! ## Part VI: Relationship to Combinatorics
 
@@ -239,7 +275,7 @@ theorem prob_in_unit_interval (n : ℕ) (_hn : n ≤ numDays) :
       exact Nat.descFactorial_le_pow numDays n
     have h1 : prob_all_distinct n ≤ 1 := by
       simp only [prob_all_distinct]
-      exact div_le_one_of_le hdesc (le_of_lt hpos)
+      exact div_le_one_of_le₀ hdesc (le_of_lt hpos)
     linarith
   · -- prob_shared_birthday n = 1 - prob_all_distinct n ≤ 1
     -- This holds because prob_all_distinct n ≥ 0

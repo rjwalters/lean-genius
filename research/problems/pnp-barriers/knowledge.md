@@ -5,6 +5,69 @@
 
 > **Note**: 5 older sessions archived to `sessions/` directory.
 
+## Session 2026-01-13 (Session 21) - Derandomization and PRGs
+
+**Mode**: REVISIT
+**Problem**: pnp-barriers
+**Prior Status**: surveyed
+
+**What we did**:
+1. Literature search confirmed ZK already covered in Part 19 (350+ lines)
+2. Added Part 25: Derandomization and Pseudorandom Generators (~270 lines)
+3. Defined `PRG` structure with seed_length, output_length, stretch property
+4. Defined `foolsCircuits` predicate for PRG security
+5. Defined `CombDesign` - combinatorial designs for NW construction
+6. Stated `design_exists` - optimal parameter designs exist
+7. Defined `NWGenerator` - the Nisan-Wigderson generator structure
+8. Stated `nw_theorem` - NW yields PRG from design + hard function
+9. Defined `HardnessAssumption` inductive type (ExpNotInPpoly, ENotInSubexp, etc.)
+10. Defined `EXP_not_in_Ppoly`, `NP_not_in_Ppoly` as Props
+11. Defined complexity classes `E`, `SUBEXP_time`
+12. Stated `IW_theorem_structure` - hardness → PRG existence
+13. Stated `circuit_lower_implies_derandom` - EXP ⊄ P/poly → P = BPP (IW theorem)
+14. Stated `BFNW_theorem` - EXP ⊄ P/poly → EXP = MA
+15. Stated `KvM_theorem` - NP ⊄ P/poly → AM = MA
+16. Defined `UnconditionalDerand` - AKS, PIT, k-wise independence, expanders
+17. Stated `AKS_theorem` - PRIMES ∈ P unconditionally
+18. Defined `PIT` - Polynomial Identity Testing language
+19. Stated `KI_theorem` - PIT derandomization implies lower bounds
+20. Defined `CryptoPRG` - cryptographic PRG (fools all poly-size circuits)
+21. Stated `HILL_theorem` - OWF ↔ CryptoPRG
+22. Stated `GGM_PRG_to_PRF` - PRG → PRF construction
+23. Proved `derandomization_landscape` - summary theorem
+
+**Key insight**:
+Derandomization connects circuit lower bounds to BPP = P via pseudorandom generators. The Nisan-Wigderson generator uses combinatorial designs to stretch seeds while maintaining pseudorandomness. The hardness-randomness tradeoff (IW theorem) shows: if EXP has hard problems for circuits, then randomness is computationally unnecessary (BPP = P). This connects to P vs NP: proving P ≠ NP would require circuit lower bounds, which by IW would derandomize BPP.
+
+**New definitions/theorems**:
+- `PRG`, `foolsCircuits` - pseudorandom generator structure
+- `CombDesign`, `design_exists` - combinatorial designs
+- `NWGenerator`, `nw_theorem` - Nisan-Wigderson construction
+- `HardnessAssumption`, `EXP_not_in_Ppoly`, `NP_not_in_Ppoly`
+- `E`, `SUBEXP_time` - complexity classes
+- `IW_theorem_structure`, `circuit_lower_implies_derandom` - Impagliazzo-Wigderson
+- `BFNW_theorem`, `KvM_theorem` - AM/MA collapse results
+- `UnconditionalDerand`, `AKS_theorem`, `PIT`, `KI_theorem`
+- `CryptoPRG`, `HILL_theorem`, `GGM_PRG_to_PRF`
+- `derandomization_landscape` - summary theorem
+
+**Outcome**:
+- PNPBarriers.lean: **4976 lines**, **0 sorries** (up from 4709 lines)
+- Added 23+ new definitions/theorems
+- Complete derandomization and PRG framework
+- Hardness-randomness tradeoff formalized
+
+**Files Modified**:
+- `proofs/Proofs/PNPBarriers.lean` (+267 lines)
+- `research/problems/pnp-barriers/knowledge.md` - this file
+
+**Next steps**:
+1. Add average-case complexity (Levin's theory)
+2. Add pseudorandom constructions from hardness
+3. Add explicit PRG constructions (Reed-Solomon based)
+
+---
+
 ## Session 2026-01-13 (Session 20) - Communication Complexity
 
 **Mode**: REVISIT

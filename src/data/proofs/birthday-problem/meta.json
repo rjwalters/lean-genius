@@ -38,7 +38,7 @@
     "originalContributions": [
       "Complete formalization of the birthday probability formula",
       "Proofs for special cases (n=0, n=1, n=2, n>365)",
-      "Statement of the 23-person threshold (axiomatized due to large integer arithmetic)",
+      "Full proof of the 23-person threshold using native_decide for large integer arithmetic",
       "Connection to injective function counting"
     ],
     "dateAdded": "12/26/25",
@@ -101,7 +101,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The Birthday Problem is formalized using Mathlib's combinatorics. We prove the probability formula and establish boundary cases, with the 23-person threshold stated as an axiom due to computational constraints on large integer arithmetic.",
+    "summary": "The Birthday Problem is formalized using Mathlib's combinatorics. We prove the probability formula, establish boundary cases, and fully prove the 23-person threshold using native_decide for large integer comparisons (53+ digit numbers).",
     "implications": "The Birthday Problem has practical implications beyond probability theory:\n\n**1. Cryptography**\nBirthday attacks can break hash functions in O(sqrt(n)) rather than O(n) time.\n\n**2. Database systems**\nHash collision probabilities follow the same mathematics.\n\n**3. Statistical sampling**\nUnderstanding coincidences in random samples.\n\n**4. Teaching probability**\nA perfect example of how intuition can mislead.",
     "openQuestions": [
       "What is the expected number of shared pairs in a group of n people?",

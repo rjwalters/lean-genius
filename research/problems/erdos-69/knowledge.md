@@ -28,7 +28,57 @@ This reduces Problem 69 to a special case of Problem 257.
 
 ## Session History
 
-### Session 2026-01-13
+### Session 2026-01-13 (Session 2) - Summability Complete
+
+**Mode**: REVISIT (continuation)
+**Outcome**: Major progress - 4 sorries → 1 sorry
+
+#### What I Did
+
+1. **Proved `omega_le_self`**: ω(n) ≤ n for all n
+   - Case n=0,1: trivial (ω=0)
+   - Case n≥2: primeFactors(n) ⊆ Finset.Icc 2 n, card ≤ n-1 < n
+   - Uses `Nat.card_Icc`, `Nat.le_of_mem_primeFactors`
+
+2. **Proved `summable_omega_div_pow`**: ∑ω(n)/2^n converges
+   - Comparison with ∑n/2^n using `omega_le_self`
+   - Uses `Summable.of_norm_bounded`, `summable_pow_mul_geometric_of_norm_lt_one`
+
+3. **Proved `summable_prime_sum`**: ∑_p 1/(2^p-1) converges
+   - Comparison: 1/(2^p-1) ≤ 2/2^p (proved as `one_div_two_pow_sub_one_le`)
+   - Uses subseries of geometric: `summable_one_div_two_pow.subtype _`
+
+4. **Axiomatized `primeSum_irrational`**:
+   - Converted to axiom citing Tao-Teräväinen 2025
+   - Deep analytic number theory beyond current Mathlib
+
+5. **Documented `tao_identity`**:
+   - Added detailed proof requirements
+   - Needs Fubini-type exchange (Summable.tsum_comm)
+   - Infrastructure exists but bijection setup is complex
+
+#### Current State
+
+| Component | Status |
+|-----------|--------|
+| `omega_le_self` | PROVED |
+| `summable_one_div_two_pow` | PROVED |
+| `summable_omega_div_pow` | PROVED |
+| `summable_prime_sum` | PROVED |
+| `one_div_two_pow_sub_one_le` | PROVED |
+| `geometric_sum_over_multiples` | PROVED |
+| `tao_identity` | 1 SORRY (HARD) |
+| `primeSum_irrational` | AXIOM (Tao-Teräväinen 2025) |
+
+#### Next Steps
+
+1. Attempt `tao_identity` using `Summable.tsum_comm`
+2. Key challenge: expressing (n, p|n) ↔ (p, k≥1) bijection in Lean
+3. Alternative: submit to Aristotle for overnight processing
+
+---
+
+### Session 2026-01-13 (Session 1)
 
 **Mode**: REVISIT (pool empty)
 **Outcome**: Progress - added infrastructure lemmas
@@ -76,14 +126,14 @@ This reduces Problem 69 to a special case of Problem 257.
    - May need to axiomatize if proof is too deep
    - Or find elementary alternative
 
-#### Classification
+#### Classification (Original - Now Updated)
 
-| Sorry | Classification | Notes |
-|-------|---------------|-------|
-| summable_omega_div_pow | HARD | Comparison with ∑n/2^n |
-| summable_prime_sum | HARD | Comparison with ∑1/2^p |
-| tao_identity | HARD | Double sum manipulation |
-| primeSum_irrational | OPEN | Tao-Teräväinen 2025 |
+| Sorry | Classification | Status |
+|-------|---------------|--------|
+| summable_omega_div_pow | HARD | **PROVED** (Session 2) |
+| summable_prime_sum | HARD | **PROVED** (Session 2) |
+| tao_identity | HARD | REMAINING (1 sorry) |
+| primeSum_irrational | OPEN | **AXIOM** (cited result) |
 
 ## References
 

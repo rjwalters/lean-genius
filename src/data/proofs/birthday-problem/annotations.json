@@ -69,23 +69,6 @@
     ]
   },
   {
-    "id": "ann-23-threshold",
-    "proofId": "birthday-problem",
-    "range": {
-      "startLine": 193,
-      "endLine": 205
-    },
-    "type": "theorem",
-    "title": "The 23-Person Threshold",
-    "content": "**The Famous Result**: With 23 people, P(shared birthday) > 50%.\n\nNumerically:\n- $P(22) \\approx 0.4757 < 0.5$\n- $P(23) \\approx 0.5073 > 0.5$\n\nSo 23 is the exact threshold where shared birthdays become more likely than not.\n\n**Note**: This is stated as an axiom in Lean because computing the exact rational requires arithmetic on ~50-digit numbers, which native_decide cannot handle efficiently.",
-    "mathContext": "$P(23) \\approx 50.73\\% > 50\\%$",
-    "significance": "critical",
-    "relatedConcepts": [
-      "threshold",
-      "probability"
-    ]
-  },
-  {
     "id": "ann-crypto",
     "proofId": "birthday-problem",
     "range": {

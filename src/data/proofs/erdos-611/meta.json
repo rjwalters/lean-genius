@@ -1,0 +1,33 @@
+{
+  "id": "erdos-611",
+  "title": "Erdős Problem #611",
+  "slug": "erdos-611",
+  "description": "For a graph G\" role=\"presentation\" style=\"position: relative;\">GGG let &#x03C4;(G)\" role=\"presentation\" style=\"position: relative;\">τ(G)τ(G)\\tau(G) denote the minimal number of vertices that includ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/611",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos611Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 611,
+    "erdosUrl": "https://erdosproblems.com/611",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #611 from erdosproblems.com.",
+    "problemStatement": "For a graph G\" role=\"presentation\" style=\"position: relative;\">GGG let &#x03C4;(G)\" role=\"presentation\" style=\"position: relative;\">τ(G)τ(G)\\tau(G) denote the minimal number of vertices that include at least one from each maximal clique of G\" role=\"presentation\" style=\"position: relative;\">GGG (sometimes called the clique transversal number). Is it true that if all maximal cliques in G\" role=\"presentation\" style=\"position: relative;\">GGG have at least cn\" role=\"presentation\" style=\"position: relative;\">cncncn vertices then &#x03C4;(G)=oc(n)\" role=\"presentation\" style=\"position: relative;\">τ(G)=oc(n)τ(G)=oc(n)\\tau(G)=o_c(n)? Similarly, estimate for c&gt;0\" role=\"presentation\" style=\"position: relative;\">c>0c>0c>0 the minimal kc(n)\" role=\"presentation\" style=\"position: relative;\">kc(n)kc(n)k_c(n) such that if every maximal clique in G\" role=\"presentation\" style=\"position: relative;\">GGG has at least kc(n)\" role=\"presentation\" style=\"position: relative;\">kc(n)kc(n)k_c(n) vertices then &#x",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

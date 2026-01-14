@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-603",
+  "title": "Erdős #603",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(LaTeX not available)",
+    "plain": "Let (Ai)\" role=\"presentation\" style=\"position: relative;\">(Ai)(Ai)(A_i) be a family of countably infinite sets such that &#x007C;Ai&#x2229;Aj&#x007C;&#x2260;2\" role=\"presentation\" style=\"position: relative;\">|Ai∩Aj|≠2|Ai∩Aj|≠2\\lvert A_i\\cap A_j\\rvert \\neq 2 for all i&#x2260;j\" role=\"presentation\" style=\"position: relative;\">i≠ji≠ji\\neq j. Find the smallest cardinal C\" role=\"presentation\" style=\"position: relative;\">CCC such that &#x222A;Ai\" role=\"presentation\" style=\"position: relative;\">∪Ai∪...",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T18:05:31.779Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #603 - Knowledge Base\n\n## Problem Statement\n\nLet (Ai)\" role=\"presentation\" style=\"position: relative;\">(Ai)(Ai)(A_i) be a family of countably infinite sets such that &#x007C;Ai&#x2229;Aj&#x007C;&#x2260;2\" role=\"presentation\" style=\"position: relative;\">|Ai∩Aj|≠2|Ai∩Aj|≠2\\lvert A_i\\cap A_j\\rvert \\neq 2 for all i&#x2260;j\" role=\"presentation\" style=\"position: relative;\">i≠ji≠ji\\neq j. Find the smallest cardinal C\" role=\"presentation\" style=\"position: relative;\">CCC such that &#x222A;Ai\" role=\"presentation\" style=\"position: relative;\">∪Ai∪Ai\\cup A_i can always be coloured with at most C\" role=\"presentation\" style=\"position: relative;\">CCC colours so that no Ai\" role=\"presentation\" style=\"position: relative;\">AiAiA_i is monochromatic.\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #602\n- Problem #604\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er87\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T18:05:31.780Z",
+  "significance": 6,
+  "tractability": 4
+}
