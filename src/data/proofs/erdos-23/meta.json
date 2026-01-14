@@ -1,33 +1,48 @@
 {
   "id": "erdos-23",
-  "title": "Erdős Problem #23",
+  "title": "Erdős Problem #23: Triangle-Free Graphs and Bipartiteness",
   "slug": "erdos-23",
-  "description": "Can every triangle-free graph on ... vertices be made bipartite by deleting at most ... edges? The blow-up of ... shows that this would be the best possible. The best known bound is due to Balogh, ...",
+  "description": "Can every triangle-free graph on 5n vertices be made bipartite by deleting at most n² edges?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/23",
-    "date": "",
-    "status": "pending",
+    "date": "1971",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos23Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "bipartite-graphs",
+      "triangle-free",
+      "extremal-combinatorics"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 4,
     "erdosNumber": 23,
     "erdosUrl": "https://erdosproblems.com/23",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #23 from erdosproblems.com.",
-    "problemStatement": "Can every triangle-free graph on $5n$ vertices be made bipartite by deleting at most $n^2$ edges? The blow-up of $C_5$ shows that this would be the best possible. The best known bound is due to Balogh, Clemen, and Lidicky [BCL21], who proved that deleting at most $1.064n^2$ edges suffices. In [Er92b] Erdős asks, more generally, if a graph on $(2k+1)n$ vertices in which every odd cycle has size $\\geq 2k+1$ can be made bipartite by deleting at most $n^2$ edges. See also the entry in the graphs problem collection. View the LaTeX source",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Posed by Erdős in 1971, with a generalization in 1992. The problem asks how close triangle-free graphs are to being bipartite, measured by edge deletions. The blow-up of C₅ shows n² deletions can be necessary; the conjecture is that n² always suffices.",
+    "problemStatement": "Can every triangle-free graph on $5n$ vertices be made bipartite by deleting at most $n^2$ edges? The blow-up of $C_5$ shows this bound would be tight if true.",
+    "proofStrategy": "Current approaches use regularity lemma techniques, flag algebras, and probabilistic methods. Balogh-Clemen-Lidický (2021) achieved the best known bound of 1.064n² using flag algebra computations.",
+    "keyInsights": [
+      "Triangle-freeness (no 3-cycles) is local; bipartiteness (no odd cycles) is global",
+      "The blow-up of C₅ is the extremal example showing n² is necessary",
+      "The gap between n² (conjectured) and 1.064n² (proved) remains open",
+      "Generalized conjecture: odd girth ≥ 2k+1 on (2k+1)n vertices needs ≤ n² deletions",
+      "Problem is falsifiable: could be disproved by finite counterexample"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #23 remains open. The best known bound is 1.064n² (Balogh-Clemen-Lidický 2021), while the conjecture claims n² suffices. The blow-up of C₅ shows n² is necessary, making the conjecture tight if true.",
+    "implications": "The problem quantifies the relationship between triangle-freeness and bipartiteness, with applications to graph partitioning and extremal graph theory.",
+    "openQuestions": [
+      "Close the gap between n² and 1.064n²",
+      "Resolve the generalized conjecture for higher odd girth",
+      "Determine if the conjecture is true or find a counterexample",
+      "Find algorithmic applications of optimal edge deletion bounds"
+    ]
   }
 }
