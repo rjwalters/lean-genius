@@ -1,33 +1,129 @@
 {
   "id": "erdos-11",
-  "title": "Erdős Problem #11",
+  "title": "Erdős Problem #11: Squarefree + Power of 2",
   "slug": "erdos-11",
-  "description": "Is every odd ... the sum of a squarefree number and a power of 2? Odlyzko has checked this up to .... Hercher [He24b] has verified this is true for all odd integers up to .... Granville and Soundar...",
+  "description": "Is every odd n > 1 the sum of a squarefree number and a power of 2? OPEN problem with deep connections to Wieferich primes. Verified up to 2^50.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/11",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos11Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "squarefree",
+      "additive-combinatorics",
+      "wieferich-primes"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 11,
     "erdosUrl": "https://erdosproblems.com/11",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Squarefree",
+        "description": "Predicate for squarefree numbers",
+        "module": "Mathlib.NumberTheory.Squarefree"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Convergence in topological spaces",
+        "module": "Mathlib.Topology.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of squarefree + power of 2 representation",
+      "Definition of Wieferich primes in Lean",
+      "Statement of Granville-Soundararajan connection",
+      "Axiomatization of computational verification bounds"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #11 from erdosproblems.com.",
-    "problemStatement": "Is every odd $n$ the sum of a squarefree number and a power of 2? Odlyzko has checked this up to $10^7$. Hercher [He24b] has verified this is true for all odd integers up to $2^{50}\\approx 1.12\\times 10^{15}$. Granville and Soundararajan [GrSo98] have proved that this is very related to the problem of finding Wieferich primes, which are $p$ for which $2^{p-1}\\equiv 1\\pmod{p^2}$ - for example, if every odd integer is the sum of a squarefree number and a power of $2$ then a positive proportion of primes are non-Wieferich primes. Erdős often asked this under the weaker assumption that $n$ is not divisible by $4$. Erdős thought that proving this with two powers of 2 is perhaps easy, and could prove that it is true (with a single power of two) for almost all $n$. See also [9], [10], and [16]. This is mentioned in problem A19 of Guy's collection [Gu04]. View the LaTeX source This page was last edited 07 October 2025.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #11 asks whether every odd integer greater than 1 can be written as the sum of a squarefree number and a power of 2. A number is **squarefree** if no prime square divides it (e.g., 1, 2, 3, 5, 6, 7, 10, ...).\n\nThis seemingly simple question has profound connections to one of the deepest mysteries in number theory: **Wieferich primes**. These are primes p where 2^(p-1) ≡ 1 (mod p²). Only two are known: 1093 and 3511, despite searches up to 2^64.",
+    "problemStatement": "**Conjecture (Erdős):** Every odd integer n > 1 can be written as n = s + 2^k where s is squarefree and k >= 0.\n\nExamples:\n- 3 = 1 + 2\n- 5 = 1 + 4\n- 7 = 5 + 2\n- 9 = 1 + 8\n\n**Status:** OPEN. Verified computationally up to 2^50 ≈ 10^15 by Hercher (2024).",
+    "proofStrategy": "The formalization defines:\n\n1. `IsSquarefree n`: n has no prime square divisors\n2. `IsPowerOfTwo n`: n = 2^k for some k\n3. `IsSquarefreePlusPow2 n`: n = s + p for squarefree s and power of 2 p\n4. `Erdos11Conjecture`: the main statement\n5. `IsWieferichPrime p`: 2^(p-1) ≡ 1 (mod p²)\n\nWe prove small examples (3, 5, 7, 9) and axiomatize the computational verification and the Granville-Soundararajan connection.",
+    "keyInsights": [
+      "**Wieferich connection:** Granville-Soundararajan (1998) proved that if the conjecture holds, infinitely many primes are non-Wieferich.",
+      "**Only two Wieferich primes known:** 1093 and 3511. No others found up to 2^64 despite massive computation.",
+      "**Computational verification:** Hercher (2024) verified all odd n up to 2^50 ≈ 1.12 × 10^15.",
+      "**Almost all n work:** Erdős proved the conjecture holds for density-1 of odd integers.",
+      "**Weaker version:** Erdős also asked about n not divisible by 4 (allows some even numbers)."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "summary": "Squarefree, power of 2, and the representation property",
+      "startLine": 21,
+      "endLine": 31
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "Elementary facts about squarefree numbers and powers of 2",
+      "startLine": 33,
+      "endLine": 46
+    },
+    {
+      "id": "examples",
+      "title": "Small Examples",
+      "summary": "Verified representations for 3, 5, 7, 9",
+      "startLine": 48,
+      "endLine": 64
+    },
+    {
+      "id": "wieferich",
+      "title": "Wieferich Primes",
+      "summary": "Definition and known examples (1093, 3511)",
+      "startLine": 66,
+      "endLine": 78
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "summary": "Erdős Problem #11 and variants",
+      "startLine": 80,
+      "endLine": 92
+    },
+    {
+      "id": "connection",
+      "title": "Granville-Soundararajan Connection",
+      "summary": "Link between conjecture and Wieferich primes",
+      "startLine": 94,
+      "endLine": 98
+    },
+    {
+      "id": "verification",
+      "title": "Computational Verification",
+      "summary": "Hercher and Odlyzko verification bounds",
+      "startLine": 100,
+      "endLine": 108
+    },
+    {
+      "id": "density",
+      "title": "Density Result",
+      "summary": "Erdős's proof that almost all n satisfy the conjecture",
+      "startLine": 110,
+      "endLine": 117
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #11, an OPEN conjecture asking whether every odd n > 1 is the sum of a squarefree number and a power of 2. The formalization includes the Wieferich prime connection, computational verification bounds, and Erdős's density result.",
+    "implications": "This problem sits at a fascinating intersection:\n\n1. **Additive number theory:** Representing integers as constrained sums\n2. **Multiplicative structure:** Squarefree numbers avoid prime squares\n3. **Fermat quotients:** Wieferich primes relate to 2^(p-1) mod p²\n4. **Computational number theory:** Verification requires efficient algorithms",
+    "openQuestions": [
+      "Prove the conjecture for all odd n > 1",
+      "Are there infinitely many Wieferich primes?",
+      "What is the density of odd n requiring large powers of 2?",
+      "Prove the weaker version with two powers of 2"
+    ]
   }
 }
