@@ -4072,17 +4072,20 @@
   },
   {
     "id": "erdos-4",
-    "title": "Erdős Problem #4",
+    "title": "Erdős Problem #4: Large Prime Gaps",
     "slug": "erdos-4",
-    "description": "Is it true that, for any ..., there are infinitely many ... such that\\[p_{n+1}-p_n> C{(\\log\\log \\log n)^2}\\log n?\\]",
-    "status": "pending",
-    "badge": "wip",
+    "description": "For any C > 0, are there infinitely many n with p_{n+1} - p_n > C·f(n) where f(n) involves iterated logs? SOLVED: YES.",
+    "status": "formalized",
+    "badge": "formalized",
     "tags": [
-      "erdos"
+      "erdos",
+      "prime-gaps",
+      "number-theory",
+      "analytic-number-theory"
     ],
     "erdosNumber": 4,
     "sorries": 1,
-    "annotationCount": 0
+    "annotationCount": 21
   },
   {
     "id": "erdos-401",
@@ -6005,15 +6008,21 @@
   },
   {
     "id": "erdos-6",
-    "title": "Erdős Problem #6",
+    "title": "Erdős Problem #6: Monotone Prime Gap Sequences",
     "slug": "erdos-6",
-    "description": "Let .... Are there infinitely many ... such that $d_n d_{n+1}>\\cdots >d_{n+m}.\\]This is discussed in problem A11 of Guy's collection [Gu04]. View the LaTeX source This page was last edited 28 Septe...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Are there infinitely many n with d_n < d_{n+1} < d_{n+2}? Proved affirmatively by Banks-Freiberg-Turnage-Butterbaugh (2015) using Maynard-Tao machinery.",
+    "status": "verified",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-gaps",
+      "maynard-tao",
+      "solved"
     ],
+    "dateAdded": "01/14/25",
     "erdosNumber": 6,
+    "mathlibCount": 2,
     "sorries": 1,
     "annotationCount": 0
   },
