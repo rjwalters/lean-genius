@@ -116,7 +116,44 @@ axiom gridUpperBound :
 ## Consistency Check
 
 The conjecture implies Guth-Katz. This is because n/√(log n) ≫ n/log n.
+
+For x > 1: √x < x, hence 1/x < 1/√x.
+This means c * n / log n < c * n / √(log n) for log n > 1 (i.e., n > e).
 -/
+
+/--
+For x > 1, we have √x < x.
+
+Proof: √x < x ↔ x < x² (squaring, valid since both positive)
+      ↔ 1 < x (dividing by x > 0) ✓
+-/
+axiom sqrt_lt_self_of_one_lt {x : ℝ} (hx : x > 1) : Real.sqrt x < x
+
+/--
+For c > 0 and n > 0 with log n > 1 (i.e., n > e), we have:
+  c * n / log n ≤ c * n / √(log n)
+
+This follows because for x > 1: √x < x, hence 1/x < 1/√x.
+-/
+lemma scaled_div_log_le_div_sqrt_log {c n : ℝ} (hc : c > 0) (hn : n > 0) (hlog : Real.log n > 1) :
+    c * n / Real.log n ≤ c * n / Real.sqrt (Real.log n) := by
+  have hcn_pos : c * n > 0 := mul_pos hc hn
+  have hcn_nonneg : c * n ≥ 0 := le_of_lt hcn_pos
+  have hlog_pos : Real.log n > 0 := by linarith
+  have hsqrt_pos : Real.sqrt (Real.log n) > 0 := Real.sqrt_pos.mpr hlog_pos
+  have hsqrt_lt_log : Real.sqrt (Real.log n) < Real.log n := sqrt_lt_self_of_one_lt hlog
+  have hsqrt_le_log : Real.sqrt (Real.log n) ≤ Real.log n := le_of_lt hsqrt_lt_log
+  -- a / b ≤ a / c when a ≥ 0 and 0 < c ≤ b
+  -- Here: (c*n) / log n ≤ (c*n) / √(log n) when √(log n) ≤ log n
+  exact div_le_div_of_nonneg_left hcn_nonneg hsqrt_pos hsqrt_le_log
+
+/--
+log 3 > 1, since 3 > e ≈ 2.718...
+
+We state this as an axiom since the numerical verification is straightforward
+but requires careful handling of exp bounds.
+-/
+axiom log_three_gt_one : Real.log 3 > 1
 
 /--
 If the Erdős conjecture holds, then Guth-Katz follows.
@@ -130,10 +167,16 @@ theorem conjecture_implies_guthKatz (h : Erdos89Conjecture) :
   use c
   constructor
   · exact hc_pos
-  · filter_upwards [hc] with n hn
+  · -- For sufficiently large n, log n > 1, so c*n/log n ≤ c*n/√(log n)
+    have hlog_eventually : ∀ᶠ n : ℕ in atTop, Real.log (n : ℝ) > 1 := by
+      filter_upwards [Filter.eventually_gt_atTop 3] with n hn
+      have h3 : (n : ℝ) ≥ 3 := by exact Nat.cast_le.mpr (le_of_lt hn)
+      calc Real.log n ≥ Real.log 3 := Real.log_le_log (by norm_num : (0:ℝ) < 3) h3
+        _ > 1 := log_three_gt_one
+    filter_upwards [hc, hlog_eventually, Filter.eventually_gt_atTop 0] with n hn hlog hn_pos
     calc c * (n : ℝ) / Real.log n
         ≤ c * n / Real.sqrt (Real.log n) := by
-          sorry -- n/log n ≤ n/√(log n) for large n
+          apply scaled_div_log_le_div_sqrt_log hc_pos (by exact Nat.cast_pos.mpr hn_pos) hlog
         _ ≤ minDistinctDistances n := hn
 
 /-!

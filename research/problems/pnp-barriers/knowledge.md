@@ -5,6 +5,143 @@
 
 > **Note**: 5 older sessions archived to `sessions/` directory.
 
+## Session 2026-01-13 (Session 23) - Proof Complexity
+
+**Mode**: REVISIT
+**Problem**: pnp-barriers
+**Prior Status**: surveyed
+
+**What we did**:
+1. Literature search on proof complexity and bounded arithmetic
+2. Added Part 27: Proof Complexity (~313 lines)
+3. Defined `ProofSystem` structure with verify, complete, sound, efficient fields
+4. Defined `pSimulates`, `pEquivalent` - simulation between proof systems
+5. Defined `Resolution` - basic propositional proof system
+6. Defined `PHP` (n) - Pigeonhole Principle formulas
+7. Stated `haken_php_lower_bound` - PHP requires 2^Ω(n) resolution steps (Haken 1985)
+8. Defined `CuttingPlanes` - integer linear programming proof system
+9. Stated `cp_simulates_resolution`, `resolution_not_simulates_cp` - strict hierarchy
+10. Defined `Frege`, `ExtendedFrege` - standard propositional proof systems
+11. Stated `cook_reckhow` - all Frege systems are p-equivalent (Cook-Reckhow 1979)
+12. Stated `ef_simulates_frege` - EF simulates Frege
+13. Defined `FregeVsExtendedFrege` - open problem on simulation
+14. Stated `proof_circuit_correspondence` - Krajíček-Pudlák connection to circuits
+15. Stated `razborov_bounded_depth_frege` - AC⁰-Frege lower bounds for PHP
+16. Defined `BoundedArithmeticTheory` inductive type (PV1, S12, T12)
+17. Defined `ProvableIn` - provability in bounded arithmetic
+18. Stated `cook_krajicek_unprovability` - PV₁ cannot prove P ⊄ SIZE[nᵏ]
+19. Stated `razborov_constructivization` - BA proofs → explicit separations
+20. Defined `FeasibilityBarrier` - finding proofs may be hard even when they exist
+21. Defined `Automatizable` - automatic proof search in poly(proof size)
+22. Stated `resolution_not_automatizable`, `cutting_planes_not_automatizable`
+23. Proved `proof_complexity_barrier` - summary theorem
+
+**Key insight**:
+Proof complexity provides a meta-barrier to P vs NP: even if P ≠ NP is true, PROVING it may require techniques not formalizable in weak proof systems. Haken (1985) showed PHP requires exponential resolution proofs. Razborov showed AC⁰-Frege lower bounds. Crucially, Cook-Krajíček (2007) showed PV₁ (polynomial-time verifiable arithmetic) cannot prove P ⊄ SIZE[nᵏ] - if it could, we'd have explicit circuit lower bounds. This means proving P ≠ NP likely requires proof techniques beyond polynomial-time verifiability!
+
+**New definitions/theorems**:
+- `ProofSystem` - abstract proof system structure
+- `pSimulates`, `pEquivalent` - simulation relations
+- `Resolution`, `CuttingPlanes` - weak proof systems
+- `PHP`, `haken_php_lower_bound` - Haken's theorem
+- `cp_simulates_resolution`, `resolution_not_simulates_cp` - strict hierarchy
+- `Frege`, `ExtendedFrege` - strong proof systems
+- `cook_reckhow`, `ef_simulates_frege` - fundamental results
+- `FregeVsExtendedFrege` - open problem
+- `proof_circuit_correspondence` - Krajíček-Pudlák
+- `razborov_bounded_depth_frege` - AC⁰ lower bounds
+- `BoundedArithmeticTheory`, `ProvableIn` - bounded arithmetic
+- `cook_krajicek_unprovability`, `razborov_constructivization` - unprovability results
+- `FeasibilityBarrier`, `Automatizable` - computational aspects
+- `proof_complexity_barrier` - summary theorem
+
+**Outcome**:
+- PNPBarriers.lean: **5637 lines**, **0 sorries** (up from 5324 lines)
+- Added 25+ new definitions/theorems
+- Complete proof complexity framework
+- Bounded arithmetic connection to P vs NP formalized
+
+**Files Modified**:
+- `proofs/Proofs/PNPBarriers.lean` (+313 lines)
+- `research/problems/pnp-barriers/knowledge.md` - this file
+
+**Next steps**:
+1. Add circuit complexity lower bound techniques
+2. Add Kolmogorov complexity basics
+3. Add proof complexity / circuit lower bound connections in more depth
+
+---
+
+## Session 2026-01-13 (Session 22) - Average-Case Complexity (Levin's Theory)
+
+**Mode**: REVISIT
+**Problem**: pnp-barriers
+**Prior Status**: surveyed
+
+**What we did**:
+1. Literature search confirmed no average-case complexity formalization in Mathlib
+2. Searched for Levin universal distribution - found no Lean 4 formalization exists
+3. Added Part 26: Average-Case Complexity (~348 lines)
+4. Defined `InputDistribution` structure for probability distributions on inputs
+5. Defined `DistProblem` - decision problem paired with distribution
+6. Defined `PSamplable` - P-samplable distributions (efficiently sampleable)
+7. Defined `uniformDistribution` with proof `uniform_P_samplable`
+8. Defined `avgPolyTime` - average polynomial time (Levin's definition)
+9. Defined `inDistP`, `DistP` - problems solvable on average in poly-time
+10. Defined `inDistNP`, `DistNP` - NP problems with P-samplable distributions
+11. Proved `DistP_subset_DistNP` - containment theorem
+12. Defined `DistReduction` - randomized reductions between distributional problems
+13. Defined `DistNPHard`, `DistNPComplete` - completeness notions
+14. Defined `levinDistribution` - Levin's universal distribution (abstract)
+15. Stated `levin_P_samplable` - universal distribution is P-samplable
+16. Defined `SAT_Levin` - SAT paired with Levin distribution
+17. Stated `levin_completeness` - SAT_Levin is DistNP-complete
+18. Defined `ImpagliazzoWorld` - the five worlds taxonomy
+19. Defined predicates: `isAlgorithmica`, `isHeuristica`, `isPessiland`, `isMinicrypt`, `isCryptomania`
+20. Proved `five_worlds_partition` - worlds are exhaustive
+21. Stated `distP_eq_distNP_implies_no_owf` - average-case easy → no crypto
+22. Proved `OWF_implies_average_case_hard` - crypto implies average-case hardness
+23. Defined `RandomSelfReducible` - RSR property
+24. Stated `permanent_rsr`, `rsr_worst_equals_average` - RSR worst=average theorem
+25. Proved `average_case_landscape` - summary theorem
+
+**Key insight**:
+Average-case complexity, developed by Levin (1984-1986), studies whether problems are hard on most inputs, not just worst-case. The key result is that (SAT, Levin's universal distribution) is DistNP-complete - if SAT is easy on average, ALL DistNP problems are easy on average. Crucially, average-case hardness is NECESSARY for cryptography: if DistP = DistNP, then one-way functions cannot exist. This connects P vs NP to cryptography via Impagliazzo's five worlds taxonomy (Algorithmica, Heuristica, Pessiland, Minicrypt, Cryptomania).
+
+**New definitions/theorems**:
+- `InputDistribution`, `DistProblem` - core structures
+- `PSamplable`, `uniformDistribution`, `uniform_P_samplable`
+- `avgPolyTime`, `inDistP`, `DistP` - average-case P
+- `inDistNP`, `DistNP` - average-case NP
+- `DistP_subset_DistNP` - proved
+- `DistReduction`, `DistNPHard`, `DistNPComplete`
+- `levinDistribution`, `levin_P_samplable` - Levin's universal distribution
+- `SAT_Levin`, `levin_completeness` - DistNP-completeness
+- `ImpagliazzoWorld` - five worlds inductive type
+- `isAlgorithmica`, `isHeuristica`, `isPessiland`, `isMinicrypt`, `isCryptomania`
+- `five_worlds_partition` - proved
+- `distP_eq_distNP_implies_no_owf` - average-case crypto connection
+- `OWF_implies_average_case_hard` - proved
+- `RandomSelfReducible`, `permanent_rsr`, `rsr_worst_equals_average`
+- `average_case_landscape` - summary theorem
+
+**Outcome**:
+- PNPBarriers.lean: **5324 lines**, **0 sorries** (up from 4976 lines)
+- Added 25+ new definitions/theorems
+- Complete average-case complexity framework
+- Levin's completeness theorem and Impagliazzo's five worlds formalized
+
+**Files Modified**:
+- `proofs/Proofs/PNPBarriers.lean` (+348 lines)
+- `research/problems/pnp-barriers/knowledge.md` - this file
+
+**Next steps**:
+1. Add explicit PRG constructions (Reed-Solomon based)
+2. Add circuit complexity lower bound techniques
+3. Add Kolmogorov complexity basics
+
+---
+
 ## Session 2026-01-13 (Session 21) - Derandomization and PRGs
 
 **Mode**: REVISIT

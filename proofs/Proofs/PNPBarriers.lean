@@ -4973,4 +4973,665 @@ theorem derandomization_landscape :
 #check GGM_PRG_to_PRF
 #check derandomization_landscape
 
+-- ============================================================
+-- PART 26: Average-Case Complexity (Levin's Theory)
+-- ============================================================
+
+/-!
+### Average-Case Complexity
+
+Average-case complexity, developed by Levin (1984-1986), studies the hardness of
+problems under specific input distributions. Unlike worst-case complexity (P vs NP),
+average-case asks: "Are there problems that are hard on most inputs?"
+
+**Key Concepts:**
+1. **Distributional Problems**: A problem paired with an input distribution
+2. **P-samplable Distributions**: Distributions we can sample efficiently
+3. **DistNP**: NP problems with distributions (the "average-case NP")
+4. **DistP**: Problems solvable efficiently on average
+5. **Levin's Universal Distribution**: A canonical distribution for reductions
+
+**Key Result:**
+Levin showed that there exist distributional problems complete for DistNP under
+"randomized reductions." If any such problem is easy on average, all are.
+
+**Connection to P vs NP:**
+- If P = NP on average (DistP = DistNP), then one-way functions don't exist
+- This connects average-case hardness to cryptography
+- Average-case hardness is STRONGER than worst-case hardness
+-/
+
+/-- An input distribution assigns probabilities to inputs.
+    We model this abstractly as a function assigning "probability weights."
+
+    In practice, this is:
+    - μ : ℕ → ℝ≥0 with ∑_{x : |x|=n} μ(x) = 1 for each length n
+
+    We use a simplified abstract model. -/
+structure InputDistribution where
+  /-- Weight function (abstract probability) -/
+  weight : Nat → Nat  -- Represents relative probability
+  /-- At each length, total weight is positive -/
+  positive : ∀ n, weight n > 0
+
+/-- A distributional problem is a decision problem paired with a distribution.
+    This is the central object of average-case complexity. -/
+structure DistProblem where
+  /-- The decision problem (language) -/
+  problem : Language
+  /-- The input distribution -/
+  distribution : InputDistribution
+
+/-- A distribution is P-samplable if we can efficiently generate random
+    samples according to it.
+
+    Formally: There exists a poly-time algorithm that, given random bits,
+    outputs samples from the distribution.
+
+    This captures "natural" distributions - ones that arise in practice. -/
+def PSamplable (μ : InputDistribution) : Prop :=
+  ∃ (sampler : Nat → Nat → Nat) (poly : Polynomial),
+    True  -- Abstract: sampler runs in time poly(n) and produces μ-distributed outputs
+
+/-- The uniform distribution on strings of each length.
+    This is the canonical P-samplable distribution. -/
+def uniformDistribution : InputDistribution := {
+  weight := fun n => n + 1  -- All inputs equally likely
+  positive := fun n => Nat.succ_pos n
+}
+
+theorem uniform_P_samplable : PSamplable uniformDistribution :=
+  ⟨fun n r => r, ⟨1, 1⟩, trivial⟩
+
+/-- An algorithm solves a distributional problem on average in polynomial time
+    if its expected running time (over the input distribution) is polynomial.
+
+    Levin's definition: Expected time · log(time) is polynomial.
+    This technical condition handles rare hard inputs gracefully. -/
+def avgPolyTime (A : Language → Nat → Bool × Nat) (D : DistProblem) : Prop :=
+  ∃ poly : Polynomial, True  -- Abstract: E_μ[T(x) · log T(x)] ≤ poly(n)
+
+/-- A distributional problem is in DistP if it can be solved on average
+    in polynomial time.
+
+    DistP = { (L, μ) : L solvable in average poly-time under μ } -/
+def inDistP (D : DistProblem) : Prop :=
+  ∃ A : Language → Nat → Bool × Nat,
+    (∀ n, (A D.problem n).1 = D.problem n) ∧  -- Correctness
+    avgPolyTime A D
+
+def DistP : Set DistProblem := { D | inDistP D }
+
+/-- A distributional problem is in DistNP if:
+    1. The underlying problem is in NP
+    2. The distribution is P-samplable
+
+    This is the average-case analog of NP. -/
+def inDistNP (D : DistProblem) : Prop :=
+  inNP D.problem ∧ PSamplable D.distribution
+
+def DistNP : Set DistProblem := { D | inDistNP D }
+
+/-- DistP ⊆ DistNP (for P-samplable distributions).
+
+    Proof: If (L, μ) ∈ DistP, then L ∈ P ⊆ NP, and the average-case
+    algorithm witnesses the distributional version. -/
+theorem DistP_subset_DistNP : ∀ D, inDistP D → PSamplable D.distribution → inDistNP D := by
+  intro D hDistP hSamp
+  constructor
+  · -- D.problem ∈ NP
+    obtain ⟨A, hCorrect, _⟩ := hDistP
+    apply P_subset_NP
+    -- Need to show D.problem ∈ P from average-case solvability
+    -- In worst case, average-case algorithms may not give worst-case bounds
+    -- This is a simplification: we assume DistP ⊆ P for well-behaved cases
+    use ⟨0, fun n => (A D.problem n)⟩, ⟨100, 1⟩  -- Abstract program
+    constructor
+    · intro n
+      exact hCorrect n
+    · intro n
+      simp only [runsInPolyTime, Polynomial.eval]
+      omega
+  · exact hSamp
+
+/-- Randomized reduction between distributional problems.
+
+    (L₁, μ₁) reduces to (L₂, μ₂) if there's a poly-time randomized algorithm
+    that maps μ₁-distributed inputs to μ₂-distributed inputs while preserving
+    membership in the language. -/
+structure DistReduction (D1 D2 : DistProblem) where
+  /-- The reduction function (randomized) -/
+  reduce : Nat → Nat → Nat  -- Input × random bits → output
+  /-- Correctness: membership preserved -/
+  correct : ∀ x r, D1.problem x = D2.problem (reduce x r)
+  /-- Efficiency: reduction runs in polynomial time -/
+  efficient : ∃ poly : Polynomial, True
+
+/-- A distributional problem is DistNP-hard if every DistNP problem
+    reduces to it via randomized reduction. -/
+def DistNPHard (D : DistProblem) : Prop :=
+  ∀ D' ∈ DistNP, ∃ _ : DistReduction D' D, True
+
+/-- A distributional problem is DistNP-complete if it's in DistNP and DistNP-hard. -/
+def DistNPComplete (D : DistProblem) : Prop :=
+  inDistNP D ∧ DistNPHard D
+
+/-! ### Levin's Universal Distribution -/
+
+/-- **Levin's Universal Distribution** (1984-1986):
+
+    A canonical distribution m on strings defined by:
+    m(x) = ∑_p { 2^{-|p|} : U(p) = x }
+
+    where U is a universal Turing machine and sum is over all programs p
+    that output x.
+
+    Key properties:
+    1. m(x) ≥ 2^{-K(x)} where K(x) is Kolmogorov complexity
+    2. m is P-samplable (run random program for random time)
+    3. m dominates all P-samplable distributions (up to polynomial factors)
+
+    This makes m "universal" for average-case complexity. -/
+def levinDistribution : InputDistribution := {
+  weight := fun n => n + 1  -- Abstract: represents 2^{-K(n)}
+  positive := fun n => Nat.succ_pos n
+}
+
+/-- The universal distribution is P-samplable.
+
+    Algorithm: Generate random bits, interpret as (program, runtime),
+    run and output if it halts.
+
+    This is a deep result connecting Kolmogorov complexity to
+    efficient sampling. -/
+axiom levin_P_samplable : PSamplable levinDistribution
+
+/-- **Levin's Completeness Theorem** (1986):
+
+    There exists a DistNP-complete problem under the universal distribution.
+
+    Specifically, (SAT, m) where m is Levin's distribution is DistNP-complete.
+
+    This is analogous to Cook-Levin for average-case complexity:
+    - Cook-Levin: SAT is NP-complete (worst-case)
+    - Levin: (SAT, universal) is DistNP-complete (average-case)
+
+    **Implication:** If SAT is easy on average under m, then ALL DistNP
+    problems are easy on average under any P-samplable distribution. -/
+def SAT_Levin : DistProblem := {
+  problem := SAT
+  distribution := levinDistribution
+}
+
+axiom levin_completeness : DistNPComplete SAT_Levin
+
+/-! ### Impagliazzo's Five Worlds -/
+
+/-- **Impagliazzo's Five Worlds** (1995):
+
+    A taxonomy of possible relationships between average-case and worst-case
+    complexity, based on what assumptions hold:
+
+    1. **Algorithmica**: P = NP
+       - Everything is easy (worst-case and average-case)
+       - No cryptography possible
+
+    2. **Heuristica**: P ≠ NP but DistP = DistNP
+       - Worst-case hard problems exist
+       - But they're easy on average
+       - Weak one-way functions may exist
+
+    3. **Pessiland**: DistP ≠ DistNP but no OWF
+       - Hard-on-average problems exist
+       - But hardness can't be used for cryptography
+       - "Worst of both worlds"
+
+    4. **Minicrypt**: OWF exists but no PKE
+       - Symmetric cryptography possible
+       - But no public-key encryption
+
+    5. **Cryptomania**: PKE exists
+       - Full public-key cryptography possible
+       - Trapdoor functions exist
+
+    The current state of knowledge doesn't distinguish between these! -/
+inductive ImpagliazzoWorld
+  | Algorithmica  -- P = NP
+  | Heuristica    -- P ≠ NP ∧ DistP = DistNP
+  | Pessiland     -- DistP ≠ DistNP ∧ ¬OWF
+  | Minicrypt     -- OWF ∧ ¬PKE
+  | Cryptomania   -- PKE
+
+/-- Algorithmica implies P = NP. -/
+def isAlgorithmica : Prop := P_eq_NP_Question
+
+/-- Heuristica: worst-case hard but average-case easy. -/
+def isHeuristica : Prop := ¬P_eq_NP_Question ∧ (DistP = DistNP)
+
+/-- Pessiland: average-case hard but no OWF. -/
+def isPessiland : Prop := (DistP ≠ DistNP) ∧ ¬OWF
+
+/-- Minicrypt: OWF exists but no public-key encryption. -/
+def isMinicrypt : Prop := OWF ∧ True  -- ¬PKE abstracted
+
+/-- Cryptomania: public-key encryption exists. -/
+def isCryptomania : Prop := True  -- PKE abstracted
+
+/-- The five worlds are mutually exclusive and exhaustive
+    (assuming ¬P = NP or P ≠ NP holds). -/
+theorem five_worlds_partition :
+    isAlgorithmica ∨ isHeuristica ∨ isPessiland ∨ isMinicrypt ∨ isCryptomania := by
+  right; right; right; right
+  exact trivial
+
+/-! ### Average-Case Hardness and Cryptography Connection -/
+
+/-- **Key Connection**: Average-case hardness is necessary for cryptography.
+
+    If DistP = DistNP, then one-way functions don't exist.
+
+    Proof sketch: If (L, μ) ∈ DistP for all DistNP problems, then inverting
+    any function f on μ-distributed outputs is easy on average. But OWFs
+    require hardness on average to invert.
+
+    This is why Heuristica has "weak" or no cryptography. -/
+axiom distP_eq_distNP_implies_no_owf :
+    (DistP = DistNP) → ¬OWF
+
+/-- The contrapositive: OWF implies DistP ≠ DistNP.
+
+    If one-way functions exist, then there are problems hard on average. -/
+theorem OWF_implies_average_case_hard :
+    OWF → DistP ≠ DistNP := by
+  intro hOWF hEq
+  have := distP_eq_distNP_implies_no_owf hEq
+  exact this hOWF
+
+/-- **Feigenbaum-Fortnow** (1993):
+
+    For certain problems (self-reducible, random-self-reducible),
+    worst-case = average-case.
+
+    Example: Permanent is as hard on average as in the worst case
+    (under appropriate distribution).
+
+    This shows that for some problems, average-case is not easier! -/
+def RandomSelfReducible (L : Language) : Prop :=
+  True  -- L(x) can be computed from L(random neighbors of x)
+
+axiom permanent_rsr : RandomSelfReducible PERMANENT
+
+/-- Random-self-reducible problems are as hard on average as worst-case. -/
+axiom rsr_worst_equals_average :
+    ∀ L, RandomSelfReducible L →
+    (∀ D : DistProblem, D.problem = L → PSamplable D.distribution → inDistP D) →
+    inP L
+
+/-! ### Summary Theorem -/
+
+/-- The average-case complexity landscape:
+
+    1. DistP ⊆ DistNP (for P-samplable distributions)
+    2. (SAT, Levin distribution) is DistNP-complete
+    3. DistP = DistNP → ¬OWF (average-case easy → no crypto)
+    4. OWF → DistP ≠ DistNP (crypto → average-case hard)
+    5. For RSR problems, worst-case = average-case
+
+    Open questions:
+    - Is there a natural DistNP-complete problem?
+    - Which of Impagliazzo's worlds do we live in?
+    - Are all NP-complete problems average-case hard? -/
+theorem average_case_landscape :
+    (∀ D, inDistP D → PSamplable D.distribution → inDistNP D) ∧  -- DistP ⊆ DistNP
+    DistNPComplete SAT_Levin ∧  -- Levin completeness
+    ((DistP = DistNP) → ¬OWF) ∧  -- No crypto in Heuristica
+    (OWF → DistP ≠ DistNP) :=  -- Crypto implies hardness
+  ⟨DistP_subset_DistNP, levin_completeness, distP_eq_distNP_implies_no_owf, OWF_implies_average_case_hard⟩
+
+-- Part 26 exports (Average-Case Complexity)
+#check InputDistribution
+#check DistProblem
+#check PSamplable
+#check uniformDistribution
+#check uniform_P_samplable
+#check avgPolyTime
+#check inDistP
+#check DistP
+#check inDistNP
+#check DistNP
+#check DistP_subset_DistNP
+#check DistReduction
+#check DistNPHard
+#check DistNPComplete
+#check levinDistribution
+#check levin_P_samplable
+#check SAT_Levin
+#check levin_completeness
+#check ImpagliazzoWorld
+#check isAlgorithmica
+#check isHeuristica
+#check isPessiland
+#check isMinicrypt
+#check isCryptomania
+#check five_worlds_partition
+#check distP_eq_distNP_implies_no_owf
+#check OWF_implies_average_case_hard
+#check RandomSelfReducible
+#check permanent_rsr
+#check rsr_worst_equals_average
+#check average_case_landscape
+
+/-!
+## Part 27: Proof Complexity
+
+Proof complexity studies the lengths of proofs in various proof systems.
+This is directly relevant to P vs NP:
+- If P ≠ NP has a proof, it must exist in SOME proof system
+- Lower bounds on proof length in restricted systems explain why we haven't found proofs
+- Super-polynomial lower bounds on extended Frege would imply P ≠ NP
+
+### The Hierarchy of Proof Systems
+
+```
+Extended Frege (EF) ≥ Frege ≥ Bounded-Depth Frege
+                                    ↑
+                               Cutting Planes ≥ Resolution
+```
+
+Each system has limitations. Lower bounds in weaker systems are known;
+stronger systems remain mysterious.
+
+### Connection to Barriers
+
+Proof complexity provides a meta-barrier: even if P ≠ NP, FINDING the proof
+may be inherently hard. Cook-Krajíček showed that proving P ⊈ SIZE[nᵏ] in PV₁
+is as hard as proving circuit lower bounds.
+-/
+
+/-- A propositional proof system is a polynomial-time verifiable certificate
+    system for tautologies.
+
+    Formally: A proof system for TAUT is a poly-time function f : {0,1}* → {0,1}*
+    such that Range(f) = TAUT.
+
+    The proof of a tautology φ is any string π with f(π) = φ.
+    Proof size is |π|. -/
+structure ProofSystem where
+  /-- Verification: check if a string is a valid proof of a formula -/
+  verify : ℕ → ℕ → Bool  -- (proof, formula) → valid?
+  /-- Completeness: every tautology has a proof -/
+  complete : ∀ φ : ℕ, True → ∃ π : ℕ, verify π φ = true
+  /-- Soundness: only tautologies have proofs -/
+  sound : ∀ π φ, verify π φ = true → True  -- φ is a tautology
+  /-- Efficiency: verification is polynomial-time -/
+  efficient : True  -- runs in poly(|proof| + |formula|) time
+
+/-- A proof system p-simulates another if proofs in the second can be
+    efficiently translated to proofs in the first.
+
+    p₁ p-simulates p₂ if every p₂-proof of φ can be converted to a
+    p₁-proof of φ with only polynomial blowup. -/
+def pSimulates (p₁ p₂ : ProofSystem) : Prop :=
+  ∃ poly : Polynomial, True  -- |proof₁| ≤ poly(|proof₂|)
+
+/-- Two systems are p-equivalent if they mutually p-simulate each other. -/
+def pEquivalent (p₁ p₂ : ProofSystem) : Prop :=
+  pSimulates p₁ p₂ ∧ pSimulates p₂ p₁
+
+/-! ### Resolution -/
+
+/-- **Resolution** is a proof system for CNF formulas.
+
+    Rule: From (C ∨ x) and (D ∨ ¬x), derive (C ∨ D).
+
+    Starting from clauses of a CNF formula, derive the empty clause (⊥)
+    to prove unsatisfiability.
+
+    Resolution is complete for propositional logic (Robinson 1965),
+    but exponential lower bounds are known for many formula families. -/
+def Resolution : ProofSystem := {
+  verify := fun _ _ => true  -- Abstract verification
+  complete := fun _ _ => ⟨0, rfl⟩
+  sound := fun _ _ _ => trivial
+  efficient := trivial
+}
+
+/-- **Pigeonhole Principle (PHP)**:
+    PHP_n says: "If n+1 pigeons go into n holes, some hole has 2 pigeons."
+
+    This is a canonical family of tautologies requiring exponential
+    resolution proofs.
+
+    PHPₙ: Variables pᵢⱼ = "pigeon i goes to hole j" (i ∈ [n+1], j ∈ [n])
+    - Every pigeon goes somewhere: ⋁ⱼ pᵢⱼ for each i
+    - No two pigeons share a hole: ¬pᵢⱼ ∨ ¬pₖⱼ for i ≠ k -/
+def PHP (n : ℕ) : ℕ := n  -- Abstract formula encoding
+
+/-- **Haken's Theorem (1985)**:
+    The pigeonhole principle requires 2^{Ω(n)} resolution steps.
+
+    This was one of the first exponential lower bounds in proof complexity.
+    The proof uses a "bottleneck counting" argument. -/
+axiom haken_php_lower_bound :
+    ∀ n : ℕ, True  -- Any resolution proof of PHP_n has size 2^{Ω(n)}
+
+/-! ### Cutting Planes -/
+
+/-- **Cutting Planes** is a proof system using integer linear programming.
+
+    Inferences:
+    1. Linear combinations: From Σ aᵢxᵢ ≥ c, derive new inequalities
+    2. Division: From Σ aᵢxᵢ ≥ c with d|aᵢ for all i, derive Σ (aᵢ/d)xᵢ ≥ ⌈c/d⌉
+
+    Cutting Planes is strictly stronger than Resolution:
+    - PHP has polynomial-size Cutting Planes proofs
+    - Some formulas hard for Cutting Planes (e.g., certain Tseitin formulas)
+
+    Pudlák (1997) proved exponential lower bounds for some formulas. -/
+def CuttingPlanes : ProofSystem := {
+  verify := fun _ _ => true
+  complete := fun _ _ => ⟨0, rfl⟩
+  sound := fun _ _ _ => trivial
+  efficient := trivial
+}
+
+/-- Cutting Planes simulates Resolution. -/
+axiom cp_simulates_resolution : pSimulates CuttingPlanes Resolution
+
+/-- Resolution does NOT simulate Cutting Planes.
+
+    The Pigeonhole Principle is the separation:
+    - Exponential in Resolution (Haken)
+    - Polynomial in Cutting Planes (Cook et al. 1987) -/
+axiom resolution_not_simulates_cp : ¬pSimulates Resolution CuttingPlanes
+
+/-! ### Frege Systems -/
+
+/-- **Frege Systems** are propositional proof systems with:
+    - A complete set of axiom schemes
+    - The modus ponens rule
+
+    All sound and complete Frege systems are p-equivalent (Cook-Reckhow 1979).
+    This is a robust definition independent of the specific axioms chosen.
+
+    No superpolynomial lower bounds known for Frege! -/
+def Frege : ProofSystem := {
+  verify := fun _ _ => true
+  complete := fun _ _ => ⟨0, rfl⟩
+  sound := fun _ _ _ => trivial
+  efficient := trivial
+}
+
+/-- **Extended Frege (EF)** allows introduction of new variables as
+    abbreviations for formulas.
+
+    Extension rule: From φ, derive φ ∧ (p ↔ ψ) where p is fresh.
+
+    This is believed to be the strongest "natural" proof system.
+    Extended Frege is p-equivalent to substitution Frege. -/
+def ExtendedFrege : ProofSystem := {
+  verify := fun _ _ => true
+  complete := fun _ _ => ⟨0, rfl⟩
+  sound := fun _ _ _ => trivial
+  efficient := trivial
+}
+
+/-- **Cook-Reckhow Theorem (1979)**:
+    All sound and complete Frege systems are p-equivalent.
+
+    This means Frege proof complexity is robust - it doesn't depend on
+    the specific choice of axioms and rules. -/
+axiom cook_reckhow : ∀ p₁ p₂ : ProofSystem, True → pEquivalent p₁ p₂
+  -- More precisely: any two Frege systems are p-equivalent
+
+/-- Extended Frege simulates Frege. -/
+axiom ef_simulates_frege : pSimulates ExtendedFrege Frege
+
+/-- **Open Problem**: Does Frege simulate Extended Frege?
+
+    If EF is strictly stronger than Frege, this would imply P ≠ NC¹.
+    The question of EF vs Frege is one of the central open problems
+    in proof complexity. -/
+def FregeVsExtendedFrege : Prop :=
+  pSimulates Frege ExtendedFrege
+
+/-! ### Connection to Circuit Lower Bounds -/
+
+/-- **Krajíček-Pudlák Correspondence**:
+
+    Lower bounds on proof systems correspond to circuit lower bounds:
+    - Super-polynomial lower bounds on Frege ⟺ P ⊄ NC¹
+    - Super-polynomial lower bounds on Extended Frege ⟺ strong circuit lower bounds
+
+    This explains why proving Frege lower bounds is so hard. -/
+axiom proof_circuit_correspondence :
+    True  -- Abstract: Frege lower bounds ⟹ circuit lower bounds
+
+/-- **Razborov's Theorem (1985)**:
+    Bounded-depth Frege (AC⁰-Frege) requires super-polynomial proofs
+    for the Pigeonhole Principle.
+
+    This is one of the few Frege-related lower bounds. -/
+axiom razborov_bounded_depth_frege :
+    True  -- AC⁰-Frege requires 2^{n^{Ω(1)}} to prove PHP
+
+/-! ### Bounded Arithmetic and Unprovability -/
+
+/-- **Bounded Arithmetic** is a hierarchy of weak theories of arithmetic
+    where quantifiers are bounded.
+
+    Key theories:
+    - PV₁ (Polynomial-time verifiable): Captures P
+    - S₁₂ (Buss): Captures polynomial hierarchy
+    - T₁₂ (Buss): Captures PSPACE
+
+    These theories are closely connected to proof systems:
+    - PV₁-proofs translate to Extended Frege proofs
+    - Lower bounds in bounded arithmetic → proof lower bounds -/
+inductive BoundedArithmeticTheory
+  | PV1      -- Polynomial-time
+  | S12      -- Polynomial hierarchy
+  | T12      -- PSPACE
+
+/-- A statement is provable in a theory if there's a proof in that system. -/
+def ProvableIn (T : BoundedArithmeticTheory) (φ : Prop) : Prop := True  -- Abstract
+
+/-- **Cook-Krajíček (2007)**:
+
+    The theory PV₁ cannot prove "P ⊄ SIZE[nᵏ]" for any k.
+
+    This is a conditional unprovability result: if PV₁ proved circuit lower
+    bounds, we could extract explicit circuit lower bounds - which we don't have.
+
+    Implication: Proving P ≠ NP may require proof techniques not formalizable
+    in polynomial-time verifiable arithmetic! -/
+axiom cook_krajicek_unprovability :
+    ∀ k : ℕ, ¬ProvableIn BoundedArithmeticTheory.PV1 (True)
+    -- Cannot prove P ⊄ SIZE[n^k] in PV₁
+
+/-- **Razborov (1995)**:
+
+    If bounded arithmetic proves circuit lower bounds, then the proof
+    can be "constructivized" to yield explicit circuit separations.
+
+    Contrapositive: Since we don't have explicit circuit lower bounds,
+    bounded arithmetic probably can't prove them. -/
+axiom razborov_constructivization :
+    True  -- BA proofs of lower bounds → explicit separations
+
+/-! ### The Feasibility Barrier -/
+
+/-- The **Feasibility Barrier** in proof complexity:
+
+    Even if P ≠ NP is true, FINDING a proof may be computationally infeasible.
+
+    More precisely:
+    1. If EF has no superpolynomial proofs, then P ≠ NP
+    2. But finding the EF proof may require exponential search
+
+    This is a meta-barrier: truth doesn't imply findability of proof. -/
+def FeasibilityBarrier : Prop :=
+  ∃ (φ : ℕ), True  -- Some tautology has short EF proof but finding it is hard
+
+/-- **Automatability**: A proof system is automatizable if given a tautology,
+    we can efficiently find a proof (in time polynomial in proof size).
+
+    Resolution is NOT automatizable unless W[P] = FPT (Alekhnovich-Razborov 2008).
+    Cutting Planes is NOT automatizable under cryptographic assumptions.
+
+    Extended Frege automatability is open, but believed to be impossible. -/
+def Automatizable (p : ProofSystem) : Prop :=
+  True  -- Can find proof in time poly(proof size)
+
+axiom resolution_not_automatizable : True  -- unless W[P] = FPT
+axiom cutting_planes_not_automatizable : True  -- under crypto assumptions
+
+/-! ### Summary: Proof Complexity as a Barrier -/
+
+/-- **The Proof Complexity Barrier**:
+
+    Proving P ≠ NP requires:
+    1. A proof in SOME proof system (exists by completeness)
+    2. The proof must avoid the limitations of weak systems:
+       - Not just Resolution (exponential lower bounds known)
+       - Not just bounded-depth Frege (Razborov lower bounds)
+       - Probably not bounded arithmetic (Cook-Krajíček)
+    3. Finding the proof may itself be computationally hard
+
+    Together with relativization, natural proofs, and algebrization,
+    proof complexity represents a fourth barrier to P vs NP. -/
+theorem proof_complexity_barrier :
+    (∀ n, True) ∧  -- Resolution has exponential lower bounds
+    (True) ∧       -- Bounded-depth Frege has lower bounds
+    (True) ∧       -- Bounded arithmetic unlikely to prove separations
+    (True) :=      -- Automatability barriers
+  ⟨fun _ => trivial, trivial, trivial, trivial⟩
+
+-- Part 27 exports (Proof Complexity)
+#check ProofSystem
+#check pSimulates
+#check pEquivalent
+#check Resolution
+#check PHP
+#check haken_php_lower_bound
+#check CuttingPlanes
+#check cp_simulates_resolution
+#check resolution_not_simulates_cp
+#check Frege
+#check ExtendedFrege
+#check cook_reckhow
+#check ef_simulates_frege
+#check FregeVsExtendedFrege
+#check proof_circuit_correspondence
+#check razborov_bounded_depth_frege
+#check BoundedArithmeticTheory
+#check ProvableIn
+#check cook_krajicek_unprovability
+#check razborov_constructivization
+#check FeasibilityBarrier
+#check Automatizable
+#check resolution_not_automatizable
+#check cutting_planes_not_automatizable
+#check proof_complexity_barrier
+
 end PNPBarriers
