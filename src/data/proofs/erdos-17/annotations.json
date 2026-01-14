@@ -1,1 +1,219 @@
-[]
+[
+  {
+    "id": "ann-e17-primes-upto",
+    "proofId": "erdos-17",
+    "range": {
+      "startLine": 53,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Primes Up To n",
+    "content": "`primesUpTo n` constructs the finite set of all primes up to n using `Finset.filter` on the range.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.filter", "prime enumeration"]
+  },
+  {
+    "id": "ann-e17-prime-diff",
+    "proofId": "erdos-17",
+    "range": {
+      "startLine": 57,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "Prime Differences",
+    "content": "`primeDifferences p` computes all differences q_1 - q_2 for primes q_1, q_2 <= p. This uses the Cartesian product of `primesUpTo p` with itself.",
+    "mathContext": "The cluster property requires ALL even numbers up to p-3 to appear in this set.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.image", "Cartesian product"]
+  },
+  {
+    "id": "ann-e17-cluster-def",
+    "proofId": "erdos-17",
+    "range": {
+      "startLine": 61,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "Cluster Prime Definition",
+    "content": "**IsClusterPrime p**: A prime p is a cluster prime if every even n with 2 <= n <= p-3 is a difference of two primes <= p.",
+    "mathContext": "This definition captures when primes are 'dense enough' that their pairwise differences cover all small even numbers.",
+    "significance": "critical",
+    "relatedConcepts": ["prime distribution", "OEIS A038134"]
+  },
+  {
+    "id": "ann-e17-two-cluster",
+    "proofId": "erdos-17",
+    "range": {
+      "startLine": 73,
+      "endLine": 79
+    },
+    "type": "theorem",
+    "title": "2 is Cluster Prime",
+    "content": "`two_is_cluster`: 2 is trivially a cluster prime because the range [2, p-3] = [2, -1] is empty (using natural number subtraction).",
+    "significance": "supporting",
+    "relatedConcepts": ["vacuous truth", "omega tactic"]
+  },
+  {
+    "id": "ann-e17-three-cluster",
+    "proofId": "erdos-17",
+    "range": {
+      "startLine": 81,
+      "endLine": 86
+    },
+    "type": "theorem",
+    "title": "3 is Cluster Prime",
+    "content": "`three_is_cluster`: 3 is a cluster prime because the range [2, 0] is empty. No even numbers need to be covered.",
+    "significance": "supporting",
+    "relatedConcepts": ["small primes"]
+  },
+  {
+    "id": "ann-e17-seven-cluster",
+    "proofId": "erdos-17",
+    "range": {
+      "startLine": 91,
+      "endLine": 92
+    },
+    "type": "theorem",
+    "title": "7 is Cluster Prime",
+    "content": "`seven_is_cluster`: 7 is a cluster prime. Must cover {2, 4}: we have 2 = 5-3 and 4 = 7-3.",
+    "mathContext": "This is the first non-trivial example showing the cluster property in action.",
+    "significance": "key",
+    "relatedConcepts": ["concrete verification"]
+  },
+  {
+    "id": "ann-e17-97-not-cluster",
+    "proofId": "erdos-17",
+    "range": {
+      "startLine": 102,
+      "endLine": 106
+    },
+    "type": "theorem",
+    "title": "97 Not Cluster Prime",
+    "content": "**`ninety_seven_not_cluster`**: 97 is the FIRST non-cluster prime. Some even number <= 94 cannot be written as a difference of primes <= 97.",
+    "mathContext": "The prize of $97 cleverly references this fact. All odd primes from 3 to 89 are cluster primes.",
+    "significance": "critical",
+    "relatedConcepts": ["OEIS A038133", "first counterexample"]
+  },
+  {
+    "id": "ann-e17-all-below-97",
+    "proofId": "erdos-17",
+    "range": {
+      "startLine": 108,
+      "endLine": 110
+    },
+    "type": "theorem",
+    "title": "All Primes Below 97 are Cluster",
+    "content": "`primes_below_97_are_cluster`: Every prime p < 97 is a cluster prime. The first 23 odd primes all satisfy the cluster property.",
+    "significance": "key",
+    "relatedConcepts": ["exhaustive verification"]
+  },
+  {
+    "id": "ann-e17-minimal",
+    "proofId": "erdos-17",
+    "range": {
+      "startLine": 112,
+      "endLine": 120
+    },
+    "type": "theorem",
+    "title": "97 is Minimal Non-Cluster",
+    "content": "`minimal_non_cluster_is_97`: Combines the facts that 97 is prime, 97 is not cluster, and all primes below 97 are cluster.",
+    "significance": "key",
+    "relatedConcepts": ["minimality", "threshold"]
+  },
+  {
+    "id": "ann-e17-conjecture",
+    "proofId": "erdos-17",
+    "range": {
+      "startLine": 129,
+      "endLine": 131
+    },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "**InfinitelyManyClusterPrimes**: The main open question - is the set of cluster primes infinite?",
+    "mathContext": "This is Erdos Problem #17. Despite strong upper bounds showing rarity, infinitude is unknown.",
+    "significance": "critical",
+    "relatedConcepts": ["Set.Infinite", "open problem"]
+  },
+  {
+    "id": "ann-e17-bes-bound",
+    "proofId": "erdos-17",
+    "range": {
+      "startLine": 143,
+      "endLine": 150
+    },
+    "type": "theorem",
+    "title": "Blecksmith-Erdos-Selfridge Bound",
+    "content": "**BES (1999)**: The count of cluster primes up to x is O(x/(log x)^A) for ANY A > 0. This is a very strong bound - faster decay than any polynomial in log x.",
+    "mathContext": "This shows cluster primes are extremely sparse, but doesn't prove finiteness.",
+    "significance": "critical",
+    "relatedConcepts": ["asymptotic bounds", "prime counting"]
+  },
+  {
+    "id": "ann-e17-elsholtz",
+    "proofId": "erdos-17",
+    "range": {
+      "startLine": 152,
+      "endLine": 158
+    },
+    "type": "theorem",
+    "title": "Elsholtz's Improved Bound",
+    "content": "**Elsholtz (2003)**: count <= C * x * exp(-c(log log x)^2) for c < 1/8. This double-logarithmic decay is even stronger than BES.",
+    "mathContext": "This bound shows cluster primes are among the rarest special primes, but still possibly infinite.",
+    "significance": "critical",
+    "relatedConcepts": ["double logarithm", "exponential decay"]
+  },
+  {
+    "id": "ann-e17-density-zero",
+    "proofId": "erdos-17",
+    "range": {
+      "startLine": 166,
+      "endLine": 170
+    },
+    "type": "theorem",
+    "title": "Density Zero",
+    "content": "`cluster_prime_density_zero`: The density of cluster primes among ALL primes is 0. As x -> infinity, the proportion vanishes.",
+    "significance": "key",
+    "relatedConcepts": ["density", "Filter.Tendsto"]
+  },
+  {
+    "id": "ann-e17-rarer-than-ap",
+    "proofId": "erdos-17",
+    "range": {
+      "startLine": 172,
+      "endLine": 176
+    },
+    "type": "theorem",
+    "title": "Rarer Than Arithmetic Progressions",
+    "content": "`cluster_rarer_than_AP`: Cluster primes are rarer than primes in any arithmetic progression a (mod d) with gcd(a,d)=1.",
+    "mathContext": "By Dirichlet's theorem, primes in AP have positive density ~1/phi(d). Cluster primes have density 0.",
+    "significance": "key",
+    "relatedConcepts": ["Dirichlet's theorem", "arithmetic progressions"]
+  },
+  {
+    "id": "ann-e17-gap-connection",
+    "proofId": "erdos-17",
+    "range": {
+      "startLine": 185,
+      "endLine": 192
+    },
+    "type": "theorem",
+    "title": "Prime Gap Connection",
+    "content": "Small gaps help: If all prime gaps up to p are bounded by log p, then p is likely a cluster prime.",
+    "mathContext": "Cluster primes are connected to how uniformly primes are distributed. Large gaps create 'holes' in the difference set.",
+    "significance": "key",
+    "relatedConcepts": ["prime gaps", "uniform distribution"]
+  },
+  {
+    "id": "ann-e17-oeis",
+    "proofId": "erdos-17",
+    "range": {
+      "startLine": 203,
+      "endLine": 205
+    },
+    "type": "definition",
+    "title": "Known Cluster Primes",
+    "content": "`knownClusterPrimes`: The list [2, 3, 5, 7, 11, 13, ..., 89] contains all cluster primes up to 89 (OEIS A038134).",
+    "significance": "supporting",
+    "relatedConcepts": ["OEIS A038134", "computational data"]
+  }
+]

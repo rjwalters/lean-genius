@@ -1,34 +1,122 @@
 {
   "id": "erdos-17",
-  "title": "Erdős Problem #17",
+  "title": "Erdős Problem #17: Cluster Primes",
   "slug": "erdos-17",
-  "description": "Are there infinitely many primes ... such that every even number ... can be written as a difference of primes ... where ...? The first prime without this property is .... The sequence of such prime...",
+  "description": "Are there infinitely many cluster primes? A prime p is a cluster prime if every even n ≤ p-3 can be expressed as a difference of primes ≤ p. First non-cluster prime: 97.",
   "meta": {
     "author": "Unknown",
     "sourceUrl": "https://erdosproblems.com/17",
     "date": "",
-    "status": "pending",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos17Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "primes",
+      "cluster-primes",
+      "number-theory",
+      "open-problem"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 17,
     "erdosUrl": "https://erdosproblems.com/17",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$97"
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$97",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for natural numbers",
+        "module": "Mathlib.Data.Nat.Prime.Defs"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filter elements satisfying a predicate",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsClusterPrime predicate formalizing the cluster property",
+      "primeDifferences set construction using Finset operations",
+      "Blecksmith-Erdős-Selfridge upper bound axiomatized",
+      "Elsholtz improved bound with double-log decay axiomatized",
+      "Minimal non-cluster prime theorem for 97",
+      "Connection to prime gaps formalized",
+      "OEIS A038133 cluster prime sequence listed"
+    ],
+    "dateAdded": "01/14/25"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #17 from erdosproblems.com. Originally offered with a prize of $97.",
-    "problemStatement": "Are there infinitely many primes $p$ such that every even number $n\\leq p-3$ can be written as a difference of primes $n=q_1-q_2$ where $q_1,q_2\\leq p$? The first prime without this property is $97$. The sequence of such primes is A038133 in the OEIS. These are called cluster primes. Blecksmith, Erdős, and Selfridge [BES99] proved that the number of such primes is\\[\\ll_A \\frac{x}{(\\log x)^A}\\]for every $A>0$, and Elsholtz [El03] improved this to\\[\\ll x\\exp(-c(\\log\\log x)^2)\\]for every $c View the LaTeX source This page was last edited 28 December 2025.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Erdős and has remained open for decades. The concept of cluster primes captures when the primes up to p are 'dense enough' that their pairwise differences cover all small even numbers.\n\nThe prize of $97 cleverly matches the first non-cluster prime. Blecksmith, Erdős, and Selfridge (1999) established strong upper bounds showing cluster primes are very sparse, and Elsholtz (2003) further improved these bounds. Terence Tao has identified this problem as 'difficult'.",
+    "problemStatement": "**Definition**: A prime p is a **cluster prime** if every even positive integer n with 2 ≤ n ≤ p-3 can be written as a difference of two primes q₁ - q₂ where q₁, q₂ ≤ p.\n\n**Question**: Are there infinitely many cluster primes?\n\n**Example**: 7 is a cluster prime because:\n- Primes ≤ 7: {2, 3, 5, 7}\n- Even numbers to cover: {2, 4}\n- 2 = 5 - 3 and 4 = 7 - 3\n\n**First failure**: 97 is the smallest non-cluster prime.",
+    "proofStrategy": "The formalization defines cluster primes using Finset operations to construct the set of prime differences. Key results axiomatized:\n\n1. **Concrete Examples**: Verified that small primes (2, 3, 5, 7) are cluster primes\n2. **First Non-Cluster**: 97 is the minimal non-cluster prime\n3. **Upper Bounds**:\n   - Blecksmith-Erdős-Selfridge: count ≪ x/(log x)^A for all A > 0\n   - Elsholtz: count ≪ x·exp(-c(log log x)²) for c < 1/8\n4. **Density Results**: Cluster primes have density 0 among all primes",
+    "keyInsights": [
+      "Cluster primes are extremely sparse but possibly infinite",
+      "First non-cluster prime is 97 (the prize amount!)",
+      "All primes up to 89 are cluster primes",
+      "Upper bounds show rarity but don't resolve finiteness",
+      "Related to twin prime conjecture and prime gaps",
+      "Cannot be resolved by finite computation"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "summary": "primesUpTo, primeDifferences, IsClusterPrime",
+      "startLine": 49,
+      "endLine": 67
+    },
+    {
+      "id": "small-primes",
+      "title": "Small Examples",
+      "summary": "Verification that 2, 3, 5, 7 are cluster primes",
+      "startLine": 69,
+      "endLine": 92
+    },
+    {
+      "id": "first-non-cluster",
+      "title": "First Non-Cluster Prime",
+      "summary": "97 is the minimal non-cluster prime",
+      "startLine": 94,
+      "endLine": 120
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "InfinitelyManyClusterPrimes conjecture",
+      "startLine": 122,
+      "endLine": 131
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "summary": "Blecksmith-Erdős-Selfridge and Elsholtz bounds",
+      "startLine": 133,
+      "endLine": 158
+    },
+    {
+      "id": "density",
+      "title": "Density Results",
+      "summary": "Cluster primes have density 0 among primes",
+      "startLine": 160,
+      "endLine": 176
+    },
+    {
+      "id": "prime-gaps",
+      "title": "Connection to Prime Gaps",
+      "summary": "Relationship between gaps and cluster property",
+      "startLine": 178,
+      "endLine": 192
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #17 remains OPEN. It asks whether there are infinitely many cluster primes - primes p where every even n ≤ p-3 is a difference of primes ≤ p. The first non-cluster prime is 97. Strong upper bounds show cluster primes are very sparse, but sparsity doesn't imply finiteness.",
+    "implications": "**Mathematical Significance:**\n\n1. **Prime Distribution**: Cluster primes measure how 'well-distributed' primes are locally\n\n2. **Collective vs Individual**: Unlike twin primes (gaps), this concerns ALL prime differences simultaneously\n\n3. **Computational Limits**: Cannot be resolved by checking finite cases - requires structural insight\n\n4. **Related Problems**: Connected to Goldbach conjecture, twin primes, and prime gap questions",
+    "openQuestions": [
+      "Are there infinitely many cluster primes?",
+      "What is the true order of magnitude of the cluster prime count?",
+      "Is there a structural characterization of cluster primes?",
+      "How do cluster primes relate to prime k-tuples conjectures?"
+    ]
   }
 }
