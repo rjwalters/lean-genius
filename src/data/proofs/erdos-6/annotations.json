@@ -1,1 +1,233 @@
-[]
+[
+  {
+    "id": "ann-e6-nth-prime",
+    "proofId": "erdos-6",
+    "range": {
+      "startLine": 34,
+      "endLine": 35
+    },
+    "type": "definition",
+    "title": "The n-th Prime Function",
+    "content": "We define `nthPrime` using Mathlib's `Nat.nth Nat.Prime`, which enumerates primes: p_0 = 2, p_1 = 3, p_2 = 5, etc.",
+    "mathContext": "Mathlib provides a well-defined enumeration of primes with properties like strict monotonicity via `Nat.nth_strictMono`.",
+    "significance": "supporting",
+    "relatedConcepts": ["prime enumeration", "Nat.nth"]
+  },
+  {
+    "id": "ann-e6-prime-gap",
+    "proofId": "erdos-6",
+    "range": {
+      "startLine": 37,
+      "endLine": 38
+    },
+    "type": "definition",
+    "title": "Prime Gap d_n",
+    "content": "The **prime gap** $d_n = p_{n+1} - p_n$ measures the distance between consecutive primes. The sequence of gaps begins: 1, 2, 2, 4, 2, 4, 2, 4, 6, ...",
+    "mathContext": "Prime gaps are the central object of study. By the Prime Number Theorem, the average gap near n is approximately ln(n).",
+    "significance": "critical",
+    "relatedConcepts": ["prime distribution", "twin primes", "bounded gaps"]
+  },
+  {
+    "id": "ann-e6-primes-infinite",
+    "proofId": "erdos-6",
+    "range": {
+      "startLine": 45,
+      "endLine": 46
+    },
+    "type": "theorem",
+    "title": "Primes Are Infinite",
+    "content": "**Euclid's Theorem**: The set of prime numbers is infinite. This fundamental result from `Nat.infinite_setOf_prime` is needed for the nth prime to be well-defined for all n.",
+    "significance": "supporting",
+    "relatedConcepts": ["Euclid's theorem", "infinitude of primes"]
+  },
+  {
+    "id": "ann-e6-strict-mono",
+    "proofId": "erdos-6",
+    "range": {
+      "startLine": 48,
+      "endLine": 50
+    },
+    "type": "theorem",
+    "title": "Strict Monotonicity",
+    "content": "`nthPrime_strictMono`: The prime enumeration is strictly increasing. This follows from `Nat.nth_strictMono` applied to the infinite set of primes.",
+    "significance": "key",
+    "relatedConcepts": ["strict monotonicity", "StrictMono"]
+  },
+  {
+    "id": "ann-e6-gap-pos",
+    "proofId": "erdos-6",
+    "range": {
+      "startLine": 52,
+      "endLine": 57
+    },
+    "type": "theorem",
+    "title": "Prime Gaps Are Positive",
+    "content": "Since primes are strictly increasing (p_{n+1} > p_n for all n), all prime gaps d_n are positive. The proof uses strict monotonicity and omega.",
+    "significance": "supporting",
+    "relatedConcepts": ["strict monotonicity", "omega tactic"]
+  },
+  {
+    "id": "ann-e6-first-gaps",
+    "proofId": "erdos-6",
+    "range": {
+      "startLine": 59,
+      "endLine": 65
+    },
+    "type": "theorem",
+    "title": "First Prime Gaps",
+    "content": "`primeGap_zero = 1` (gap between 2 and 3) and `primeGap_one = 2` (gap between 3 and 5). These are proved using Mathlib's concrete values for small primes.",
+    "significance": "supporting",
+    "relatedConcepts": ["concrete computation", "simp"]
+  },
+  {
+    "id": "ann-e6-increasing-gaps",
+    "proofId": "erdos-6",
+    "range": {
+      "startLine": 69,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "Increasing Gap Sequences",
+    "content": "`HasIncreasingGaps n m` means the m consecutive gaps starting at n form a strictly increasing sequence: d_n < d_{n+1} < ... < d_{n+m}.",
+    "mathContext": "This captures the local behavior we're interested in: when do prime gaps form monotone runs?",
+    "significance": "key",
+    "relatedConcepts": ["monotone sequences", "prime gap patterns"]
+  },
+  {
+    "id": "ann-e6-decreasing-gaps",
+    "proofId": "erdos-6",
+    "range": {
+      "startLine": 73,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "Decreasing Gap Sequences",
+    "content": "`HasDecreasingGaps n m` means the m consecutive gaps starting at n form a strictly decreasing sequence: d_n > d_{n+1} > ... > d_{n+m}.",
+    "significance": "key",
+    "relatedConcepts": ["monotone sequences"]
+  },
+  {
+    "id": "ann-e6-infinitely-many",
+    "proofId": "erdos-6",
+    "range": {
+      "startLine": 77,
+      "endLine": 83
+    },
+    "type": "definition",
+    "title": "Infinitely Many Occurrences",
+    "content": "`InfinitelyManyIncreasing m` asserts that for any N, we can find n > N with an increasing run of length m. This is the standard formalization of 'infinitely many'.",
+    "mathContext": "Logically: ∀ N, ∃ n > N, HasIncreasingGaps n m. No matter how far out we go, we can always find more examples.",
+    "significance": "key",
+    "relatedConcepts": ["infinite sets", "cofinality"]
+  },
+  {
+    "id": "ann-e6-conjecture",
+    "proofId": "erdos-6",
+    "range": {
+      "startLine": 87,
+      "endLine": 94
+    },
+    "type": "definition",
+    "title": "The Original Conjecture",
+    "content": "**Erdős Problem 6**: Are there infinitely many n with d_n < d_{n+1} < d_{n+2}? This is precisely `InfinitelyManyIncreasing 2` (runs of length 2 means 3 consecutive gaps).",
+    "mathContext": "Erdős and Turán posed this in 1948. Erdős was so confident it was true that he only offered money for a disproof.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős problems", "prime gap conjecture"]
+  },
+  {
+    "id": "ann-e6-bftb-theorem",
+    "proofId": "erdos-6",
+    "range": {
+      "startLine": 98,
+      "endLine": 109
+    },
+    "type": "theorem",
+    "title": "Banks-Freiberg-Turnage-Butterbaugh Theorem",
+    "content": "**The Main Result (2015)**: For any m ≥ 1, there are infinitely many n with d_n < d_{n+1} < ... < d_{n+m}. This completely resolves and generalizes Erdős Problem 6.",
+    "mathContext": "The proof uses the Maynard-Tao sieve machinery developed for the bounded gaps conjecture. This allows controlling the distribution of primes in short intervals with remarkable precision.",
+    "significance": "critical",
+    "relatedConcepts": ["Maynard-Tao", "sieve methods", "bounded gaps"]
+  },
+  {
+    "id": "ann-e6-decreasing-axiom",
+    "proofId": "erdos-6",
+    "range": {
+      "startLine": 111,
+      "endLine": 113
+    },
+    "type": "theorem",
+    "title": "Decreasing Version",
+    "content": "The decreasing analogue also holds: infinitely many n have d_n > d_{n+1} > ... > d_{n+m} for any m. Prime gaps oscillate in both directions.",
+    "significance": "key",
+    "relatedConcepts": ["oscillation", "gap patterns"]
+  },
+  {
+    "id": "ann-e6-solved",
+    "proofId": "erdos-6",
+    "range": {
+      "startLine": 117,
+      "endLine": 119
+    },
+    "type": "theorem",
+    "title": "Problem Resolved",
+    "content": "**erdos_6_solved**: The conjecture is TRUE. This follows by applying Banks-Freiberg-Turnage-Butterbaugh with m = 2.",
+    "mathContext": "A 67-year-old problem solved by the bounded gaps revolution.",
+    "significance": "critical",
+    "relatedConcepts": ["theorem derivation"]
+  },
+  {
+    "id": "ann-e6-maynard-tao",
+    "proofId": "erdos-6",
+    "range": {
+      "startLine": 126,
+      "endLine": 136
+    },
+    "type": "theorem",
+    "title": "Maynard-Tao Bounded Gaps",
+    "content": "**Key Tool**: The Maynard-Tao theorem guarantees that for any m, there exists H such that infinitely often, an interval of length H contains at least m primes.",
+    "mathContext": "Maynard (2015) and independently Tao developed powerful sieve methods showing primes cluster in ways previously thought impossible to prove. This revolutionized prime gap research.",
+    "significance": "key",
+    "relatedConcepts": ["sieve theory", "prime clusters", "GPY method"]
+  },
+  {
+    "id": "ann-e6-zhang",
+    "proofId": "erdos-6",
+    "range": {
+      "startLine": 138,
+      "endLine": 146
+    },
+    "type": "theorem",
+    "title": "Zhang's Breakthrough",
+    "content": "**Zhang (2013)**: There exists H such that infinitely many prime pairs differ by at most H. Zhang proved H = 70,000,000 initially; this has been reduced to H = 246.",
+    "mathContext": "Zhang's proof was the first to show bounded gaps unconditionally, a landmark in analytic number theory. It opened the floodgates for subsequent improvements.",
+    "significance": "key",
+    "relatedConcepts": ["twin prime conjecture", "bounded gaps", "polymath project"]
+  },
+  {
+    "id": "ann-e6-long-runs",
+    "proofId": "erdos-6",
+    "range": {
+      "startLine": 150,
+      "endLine": 158
+    },
+    "type": "theorem",
+    "title": "Arbitrarily Long Monotone Runs",
+    "content": "A beautiful corollary: not just triples, but arbitrarily long increasing (or decreasing) sequences of prime gaps exist. There are infinitely many runs of length 10, 100, or any m.",
+    "significance": "key",
+    "relatedConcepts": ["generalization", "prime gap patterns"]
+  },
+  {
+    "id": "ann-e6-oscillation",
+    "proofId": "erdos-6",
+    "range": {
+      "startLine": 162,
+      "endLine": 168
+    },
+    "type": "theorem",
+    "title": "Prime Gaps Oscillate Forever",
+    "content": "`prime_gaps_oscillate`: Both increasing and decreasing patterns occur infinitely often. Prime gaps never settle into monotone behavior - they oscillate forever.",
+    "mathContext": "This rules out any eventual regularity in prime gaps. The primes remain 'random-looking' at all scales.",
+    "significance": "key",
+    "relatedConcepts": ["oscillation theorems", "prime randomness"]
+  }
+]
