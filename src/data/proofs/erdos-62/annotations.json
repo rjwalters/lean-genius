@@ -1,1 +1,155 @@
-[]
+[
+  {
+    "id": "ann-e62-infgraph",
+    "proofId": "erdos-62",
+    "range": { "startLine": 33, "endLine": 37 },
+    "type": "definition",
+    "title": "Infinite Graph",
+    "content": "**InfGraph V** is an infinite simple graph on vertex set V. It has symmetric adjacency (Adj u v → Adj v u) and no self-loops (¬Adj v v). Unlike SimpleGraph, this works naturally with arbitrary types V.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e62-coloring",
+    "proofId": "erdos-62",
+    "range": { "startLine": 41, "endLine": 42 },
+    "type": "definition",
+    "title": "Graph Coloring",
+    "content": "**IsColoring G C f** means f : V → C is a proper coloring: adjacent vertices get different colors. This definition works for any color type C (finite, ℕ, or larger).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e62-k-colorable",
+    "proofId": "erdos-62",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "definition",
+    "title": "k-Colorable",
+    "content": "**IsColorable G k** means G admits a proper k-coloring using colors from Fin k. This is the standard finite colorability condition.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e62-countably-colorable",
+    "proofId": "erdos-62",
+    "range": { "startLine": 48, "endLine": 50 },
+    "type": "definition",
+    "title": "Countably Colorable",
+    "content": "**IsCountablyColorable G** means G admits a proper coloring using ℕ as colors. A graph with χ = ℵ₀ is countably colorable but not finitely colorable.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e62-chromatic-k",
+    "proofId": "erdos-62",
+    "range": { "startLine": 54, "endLine": 56 },
+    "type": "definition",
+    "title": "Chromatic Number k",
+    "content": "**HasChromaticNumber G k** means G is k-colorable but not (k-1)-colorable. This captures the exact finite chromatic number.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e62-chromatic-aleph0",
+    "proofId": "erdos-62",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "definition",
+    "title": "Chromatic Number ℵ₀",
+    "content": "**HasChromaticAleph0 G** means G is countably colorable but not finitely colorable. Such graphs have 'infinite but countable' chromatic number.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e62-chromatic-aleph1",
+    "proofId": "erdos-62",
+    "range": { "startLine": 62, "endLine": 64 },
+    "type": "definition",
+    "title": "Chromatic Number ℵ₁",
+    "content": "**HasChromaticAleph1 G** means G is NOT countably colorable—it requires uncountably many colors. This is the class of graphs relevant to Erdős Problem 62.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e62-embeds",
+    "proofId": "erdos-62",
+    "range": { "startLine": 68, "endLine": 70 },
+    "type": "definition",
+    "title": "Subgraph Embedding",
+    "content": "**EmbedsInto H G** means H is a subgraph of G: there exists an injective function f : V → W preserving edges (H.Adj u v → G.Adj (f u) (f v)).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e62-conjecture-strong",
+    "proofId": "erdos-62",
+    "range": { "startLine": 74, "endLine": 86 },
+    "type": "theorem",
+    "title": "Erdős Problem 62 - Strong Version (OPEN)",
+    "content": "**Strong Conjecture**: Any two graphs with χ = ℵ₁ share a common subgraph H with χ = 4. This is the strongest form of the conjecture and remains OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e62-conjecture-weak",
+    "proofId": "erdos-62",
+    "range": { "startLine": 88, "endLine": 93 },
+    "type": "theorem",
+    "title": "Erdős Problem 62 - Weak Version (OPEN)",
+    "content": "**Weak Conjecture**: Any two graphs with χ = ℵ₁ share a common subgraph H with χ = ℵ₀. Even this weaker form remains OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e62-generalized",
+    "proofId": "erdos-62",
+    "range": { "startLine": 97, "endLine": 107 },
+    "type": "theorem",
+    "title": "Generalized Conjecture",
+    "content": "**Erdős (1987) Generalization**: Any finite collection of graphs with χ = ℵ₁ should share a common subgraph with χ = 4 or χ = ℵ₀. Extends the two-graph case.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e62-odd-cycle",
+    "proofId": "erdos-62",
+    "range": { "startLine": 111, "endLine": 116 },
+    "type": "definition",
+    "title": "Odd Cycles",
+    "content": "**oddCycle k** is the odd cycle of length 2k+1 (for k ≥ 1). Odd cycles have chromatic number exactly 3—they need 3 colors but no more.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e62-ehs",
+    "proofId": "erdos-62",
+    "range": { "startLine": 118, "endLine": 125 },
+    "type": "theorem",
+    "title": "Erdős-Hajnal-Shelah Theorem",
+    "content": "**EHS Theorem**: Every graph with χ = ℵ₁ contains all sufficiently large odd cycles. There exists N such that all odd cycles of length ≥ N embed into G.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e62-odd-common",
+    "proofId": "erdos-62",
+    "range": { "startLine": 127, "endLine": 141 },
+    "type": "theorem",
+    "title": "Odd Cycles are Common Subgraphs",
+    "content": "**Proved Result**: Any two graphs with χ = ℵ₁ share large odd cycles (χ = 3) as common subgraphs. This follows from EHS by taking k = max(N₁, N₂) + 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e62-chi-gap",
+    "proofId": "erdos-62",
+    "range": { "startLine": 143, "endLine": 156 },
+    "type": "definition",
+    "title": "The χ = 3 to χ = 4 Gap",
+    "content": "**Key Open Question**: Can we improve from χ = 3 (odd cycles) to χ = 4? The chi_gap_problem asks for common subgraphs with χ > 3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e62-finite-countable",
+    "proofId": "erdos-62",
+    "range": { "startLine": 165, "endLine": 172 },
+    "type": "theorem",
+    "title": "Finite Implies Countable",
+    "content": "**Monotonicity**: Finite chromatic number implies countably colorable. The coloring f : V → Fin k lifts to f : V → ℕ by composing with Fin.val.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e62-embed-colorable",
+    "proofId": "erdos-62",
+    "range": { "startLine": 176, "endLine": 183 },
+    "type": "theorem",
+    "title": "Embedding Preserves Colorability",
+    "content": "**Monotonicity**: If H embeds into G and G is k-colorable, then H is k-colorable. The coloring c ∘ f restricted to H is still proper.",
+    "significance": "supporting"
+  }
+]

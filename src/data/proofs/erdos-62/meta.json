@@ -1,33 +1,111 @@
 {
   "id": "erdos-62",
-  "title": "Erdős Problem #62",
+  "title": "Erdős Problem #62: Common Subgraphs of Graphs with Chromatic Number ℵ₁",
   "slug": "erdos-62",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... are two graphs with chromatic number ... then must there exist a graph ... whose chromatic number is ... (or even ...)...",
+  "description": "If G₁, G₂ both have chromatic number ℵ₁, must they share a common subgraph with χ = 4 (or ℵ₀)? OPEN problem.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/62",
     "date": "",
-    "status": "pending",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos62Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "infinite-combinatorics",
+      "chromatic-number",
+      "graph-theory"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "formalized",
+    "sorries": 0,
     "erdosNumber": 62,
     "erdosUrl": "https://erdosproblems.com/62",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #62 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G_1,G_2$ are two graphs with chromatic number $\\aleph_1$ then must there exist a graph $G$ whose chromatic number is $4$ (or even $\\aleph_0$) which is a subgraph of both $G_1$ and $G_2$?\n\n\n\n\nErd\\H{o}s also asked \\cite{Er87} about finding a common subgraph $H$ (with chromatic number either $4$ or $\\aleph_0$) in any finite collection of graphs with chromatic number $\\aleph_1$.\n\nEvery graph with chromatic number $\\aleph_1$ contains all sufficiently large odd cycles (which have chromatic number $3$), see [594]. This was proved by Erd\\H{o}s, Hajnal, and Shelah \\cite{EHS74}. Erd\\H{o}s wrote \\cite{Er87} that 'probably' every graph with chromatic number $\\aleph_1$ contains as subgraphs all graphs with chromatic number $4$ with sufficiently large girth.\n\n\n\n\nReferences\n\n\n[EHS74] Erd\\H{o}s, P. and Hajnal, A. and Shelah, S., On some general properties of chromatic numbers. Topics in topology (Proc. Colloq., Keszthely, 1972) (1974), 243-255.\n\n[Er87] Erd\\H{o}s, P., Some problems on finite and infinite graphs. Logic and combinatorics (Arcata, Calif., 1985) (1987), 223-228.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem sits at the intersection of infinite combinatorics and graph theory. Graphs with uncountable chromatic number (χ = ℵ₁) have rich subgraph structure. Erdős asked whether any two such graphs must share a 'significant' common subgraph—one with chromatic number at least 4 or even ℵ₀. The Erdős-Hajnal-Shelah theorem establishes that all large odd cycles (χ = 3) are common subgraphs, but the gap to χ = 4 remains open.",
+    "problemStatement": "If G₁ and G₂ are two graphs with chromatic number ℵ₁, must there exist a graph H with chromatic number 4 (or even ℵ₀) which is a subgraph of both G₁ and G₂?",
+    "proofStrategy": "The formalization defines infinite graphs, colorings (finite, countable, uncountable), and subgraph embeddings. The main conjecture is stated in two versions: strong (χ = 4) and weak (χ = ℵ₀). The Erdős-Hajnal-Shelah theorem is axiomatized, and we prove that any two graphs with χ = ℵ₁ share odd cycles as common subgraphs (χ = 3).",
+    "keyInsights": [
+      "Graphs with χ = ℵ₁ cannot be properly colored with countably many colors",
+      "Erdős-Hajnal-Shelah: All sufficiently large odd cycles embed in graphs with χ = ℵ₁",
+      "We prove odd cycles (χ = 3) are common subgraphs of any two graphs with χ = ℵ₁",
+      "The gap between χ = 3 and χ = 4 for common subgraphs is the key open question",
+      "Generalizes to finite collections of graphs with uncountable chromatic number"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "infinite-graphs",
+      "title": "Infinite Graph Setup",
+      "summary": "InfGraph structure for infinite simple graphs",
+      "startLine": 30,
+      "endLine": 37
+    },
+    {
+      "id": "colorings",
+      "title": "Graph Colorings",
+      "summary": "Finite, countable, and colorability definitions",
+      "startLine": 39,
+      "endLine": 51
+    },
+    {
+      "id": "chromatic-classes",
+      "title": "Chromatic Number Classes",
+      "summary": "HasChromaticNumber, HasChromaticAleph0, HasChromaticAleph1",
+      "startLine": 52,
+      "endLine": 64
+    },
+    {
+      "id": "embeddings",
+      "title": "Subgraph Embeddings",
+      "summary": "EmbedsInto relation via injective homomorphisms",
+      "startLine": 66,
+      "endLine": 70
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture (OPEN)",
+      "summary": "Strong and weak versions of Erdős Problem 62",
+      "startLine": 72,
+      "endLine": 93
+    },
+    {
+      "id": "generalization",
+      "title": "Finite Collections",
+      "summary": "Generalized conjecture for n graphs",
+      "startLine": 95,
+      "endLine": 108
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "summary": "Erdős-Hajnal-Shelah theorem on odd cycles",
+      "startLine": 109,
+      "endLine": 141
+    },
+    {
+      "id": "chi-gap",
+      "title": "The χ = 3 to χ = 4 Gap",
+      "summary": "The key open question: improving from χ = 3",
+      "startLine": 143,
+      "endLine": 157
+    },
+    {
+      "id": "properties",
+      "title": "Auxiliary Properties",
+      "summary": "Finite chromatic number and monotonicity results",
+      "startLine": 158,
+      "endLine": 184
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #62, an OPEN problem asking whether any two graphs with chromatic number ℵ₁ must share a common subgraph with chromatic number 4 (or ℵ₀). The Erdős-Hajnal-Shelah theorem shows they share odd cycles (χ = 3), but the gap to χ = 4 remains open.",
+    "implications": "This problem probes the structure of graphs with uncountable chromatic number. A positive answer would reveal deep constraints on such graphs; a negative answer would exhibit surprisingly different infinite graphs with the same uncountable chromatic number.",
+    "openQuestions": [
+      "Does there exist a common subgraph with χ = 4?",
+      "Does there exist a common subgraph with χ = ℵ₀?",
+      "What is the structure of graphs with χ = ℵ₁?",
+      "Can the Erdős-Hajnal-Shelah bound N be made explicit?"
+    ]
   }
 }
