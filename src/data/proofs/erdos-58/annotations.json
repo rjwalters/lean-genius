@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "cycle-lengths",
+    "lineStart": 28,
+    "lineEnd": 30,
+    "type": "definition",
+    "title": "Cycle Lengths",
+    "content": "The set of all **cycle lengths** in a graph G, using Mathlib's Walk.IsCycle predicate. A cycle is a closed walk with no repeated vertices except endpoints.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "odd-cycle-lengths",
+    "lineStart": 32,
+    "lineEnd": 34,
+    "type": "definition",
+    "title": "Odd Cycle Lengths",
+    "content": "The set of all **odd cycle lengths** in G. These are the key objects relating to chromatic number bounds in this problem.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "num-odd-cycles",
+    "lineStart": 36,
+    "lineEnd": 38,
+    "type": "definition",
+    "title": "Number of Odd Cycle Lengths",
+    "content": "The count of distinct odd cycle lengths in G, denoted k in the theorem statements. Uses Set.ncard for cardinality of potentially infinite sets.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "colorable",
+    "lineStart": 42,
+    "lineEnd": 44,
+    "type": "definition",
+    "title": "k-Colorable",
+    "content": "A graph is **k-colorable** if there exists f: V → Fin k with adjacent vertices receiving different colors. Standard graph coloring definition.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "chromatic-number",
+    "lineStart": 46,
+    "lineEnd": 52,
+    "type": "definition",
+    "title": "Chromatic Number",
+    "content": "The **chromatic number** χ(G) is the minimum k for which G is k-colorable. Axiomatized here for simplicity, with specification given separately.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "contains-clique",
+    "lineStart": 56,
+    "lineEnd": 58,
+    "type": "definition",
+    "title": "Contains Clique",
+    "content": "G **contains K_n** if there exists a set S of n vertices that are pairwise adjacent. This characterizes when equality holds in Gyárfás' bound.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "gyarfas-upper",
+    "lineStart": 62,
+    "lineEnd": 66,
+    "type": "theorem",
+    "title": "Gyárfás Upper Bound (1992)",
+    "content": "**Main Result**: If G has at most k distinct odd cycle lengths, then χ(G) ≤ 2k+2. This is the core of the solved conjecture.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "gyarfas-equality",
+    "lineStart": 68,
+    "lineEnd": 73,
+    "type": "theorem",
+    "title": "Gyárfás Equality Characterization",
+    "content": "**Equality Case**: χ(G) = 2k+2 with ≤k odd cycle lengths iff G contains K_{2k+2}. Complete graphs are the extremal examples.",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "gyarfas-structural",
+    "lineStart": 75,
+    "lineEnd": 84,
+    "type": "theorem",
+    "title": "Gyárfás Structural Result",
+    "content": "**2-Connected Case**: If G is 2-connected with ≤k odd cycle lengths, then G contains K_{2k+2} or has a vertex of degree ≤2k. Powerful structural dichotomy.",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "bollobas-shelah",
+    "lineStart": 88,
+    "lineEnd": 93,
+    "type": "theorem",
+    "title": "Bollobás-Shelah (k=1)",
+    "content": "**Special Case**: At most 1 odd cycle length implies χ ≤ 4. This was proved before Gyárfás' general result and motivated the conjecture.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "bipartite-case",
+    "lineStart": 95,
+    "lineEnd": 101,
+    "type": "theorem",
+    "title": "Bipartite Case (k=0)",
+    "content": "**k=0 Case**: No odd cycles implies χ ≤ 2 (bipartite). This is the classical result that odd-cycle-free graphs are 2-colorable.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "consecutive-odd",
+    "lineStart": 105,
+    "lineEnd": 107,
+    "type": "definition",
+    "title": "Consecutive Odd Lengths",
+    "content": "A set of **consecutive odd integers** {2m+1, 2m+3, ...}. Used in the Gao-Huo-Ma strengthening.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": "gao-huo-ma",
+    "lineStart": 109,
+    "lineEnd": 117,
+    "type": "theorem",
+    "title": "Gao-Huo-Ma Theorem (2021)",
+    "content": "**Strengthening**: If χ(G) ≥ 2k+3, then G has k+1 consecutive odd cycle lengths. High chromatic number forces very structured odd cycles.",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "chi-5-corollary",
+    "lineStart": 121,
+    "lineEnd": 128,
+    "type": "theorem",
+    "title": "χ ≥ 5 Corollary",
+    "content": "If χ(G) ≥ 5, then G has at least 2 distinct odd cycle lengths. Derived by contrapositive from Gyárfás' bound with k=1.",
+    "difficulty": "intermediate"
+  }
+]

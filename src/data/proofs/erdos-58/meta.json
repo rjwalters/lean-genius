@@ -1,33 +1,82 @@
 {
   "id": "erdos-58",
-  "title": "Erdős Problem #58",
+  "title": "Erdős Problem #58: Chromatic Number vs Odd Cycle Lengths",
   "slug": "erdos-58",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph which contains odd cycles of ... different lengths then ..., with equality if and only if ... contains .......",
+  "description": "If G has at most k distinct odd cycle lengths, then χ(G) ≤ 2k+2, with equality iff G contains K_{2k+2}. Solved by Gyárfás (1992).",
   "meta": {
-    "author": "Unknown",
+    "author": "Gyárfás",
     "sourceUrl": "https://erdosproblems.com/58",
-    "date": "",
-    "status": "pending",
+    "date": "1992",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos58Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "cycles"
     ],
-    "badge": "wip",
+    "badge": "formalized",
     "sorries": 1,
     "erdosNumber": 58,
     "erdosUrl": "https://erdosproblems.com/58",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #58 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ is a graph which contains odd cycles of $\\leq k$ different lengths then $\\chi(G)\\leq 2k+2$, with equality if and only if $G$ contains $K_{2k+2}$.\n\n\n\nConjectured by Bollob\\'{a}s and Erd\\H{o}s. Bollob\\'{a}s and Shelah have confirmed this for $k=1$. Proved by Gy\\'{a}rf\\'{a}s \\cite{Gy92}, who proved the stronger result that, if $G$ is 2-connected, then $G$ is either $K_{2k+2}$ or contains a vertex of degree at most $2k$.\n\nA stronger form was established by Gao, Huo, and Ma \\cite{GaHuMa21}, who proved that if a graph $G$ has chromatic number $\\chi(G)\\geq 2k+3$ then $G$ contains cycles of $k+1$ consecutive odd lengths.\n\n\n\n\nReferences\n\n\n[GaHuMa21] Gao, Jun and Huo, Qingyi and Ma, Jie, A strengthening on odd cycles in graphs of given chromatic number. SIAM J. Discrete Math. (2021), 2317-2327.\n\n[Gy92] Gy\\'{a}rf\\'{a}s, A., Graphs with k odd cycle lengths. Discrete Math. (1992), 41-48.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Conjectured by Bollobás and Erdős, this problem quantifies the relationship between chromatic number and the diversity of odd cycle lengths. Bollobás and Shelah confirmed k=1. Gyárfás proved the full result in 1992, also showing that 2-connected graphs either contain K_{2k+2} or have a low-degree vertex. Gao-Huo-Ma (2021) strengthened this to show high chromatic number forces consecutive odd cycle lengths.",
+    "problemStatement": "If G is a graph which contains odd cycles of ≤ k different lengths, then χ(G) ≤ 2k+2, with equality if and only if G contains K_{2k+2}.",
+    "proofStrategy": "The formalization defines odd cycle lengths and chromatic number, then states Gyárfás' theorem as axioms. Special cases k=0 (bipartite) and k=1 (Bollobás-Shelah) are derived. The Gao-Huo-Ma strengthening about consecutive odd lengths is also formalized.",
+    "keyInsights": [
+      "k=0: No odd cycles implies bipartite (χ ≤ 2)",
+      "k=1: At most one odd cycle length implies χ ≤ 4 (Bollobás-Shelah)",
+      "Equality χ = 2k+2 characterizes graphs containing K_{2k+2}",
+      "2-connected case: either K_{2k+2} or low-degree vertex exists",
+      "Gao-Huo-Ma: High χ forces k+1 consecutive odd cycle lengths"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "summary": "Cycle lengths, odd cycle lengths, chromatic number, cliques",
+      "startLine": 26,
+      "endLine": 62
+    },
+    {
+      "id": "main-results",
+      "title": "Gyárfás' Theorem (1992)",
+      "summary": "Upper bound, equality characterization, structural result",
+      "startLine": 64,
+      "endLine": 88
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "Bollobás-Shelah (k=1) and bipartite case (k=0)",
+      "startLine": 90,
+      "endLine": 108
+    },
+    {
+      "id": "gao-huo-ma",
+      "title": "Gao-Huo-Ma Strengthening (2021)",
+      "summary": "High chromatic number forces consecutive odd cycle lengths",
+      "startLine": 110,
+      "endLine": 126
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries",
+      "summary": "Derived results from the main theorems",
+      "startLine": 128,
+      "endLine": 145
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #58, solved by Gyárfás in 1992. The result establishes a tight relationship between chromatic number and the number of distinct odd cycle lengths: χ(G) ≤ 2k+2 with equality characterizing the presence of K_{2k+2}.",
+    "implications": "This provides a powerful tool for bounding chromatic number by analyzing odd cycle structure. The Gao-Huo-Ma strengthening shows that high chromatic number forces very specific cycle structures.",
+    "openQuestions": [
+      "Can the structural result be strengthened further?",
+      "What about even cycle lengths?",
+      "Connections to Problem #57 on harmonic sums of odd cycle lengths"
+    ]
   }
 }
