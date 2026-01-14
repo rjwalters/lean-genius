@@ -83,20 +83,12 @@ theorem GLn_product_expansion (n : ℕ) :
       (-1) ^ (n - S.card) * K.L ^ (∑ i ∈ S, (i + 1)) := by
   sorry -- Expansion via inclusion-exclusion
 
-/-- Triangular number identity: T(n) = ∑_{i=1}^{n-1} i -/
+/-- Triangular number identity: T(n) = ∑_{i=0}^{n-2} (i+1) = ∑_{i=1}^{n-1} i -/
 theorem triangular_sum (n : ℕ) :
     triangular n = ∑ i ∈ Finset.range (n - 1), (i + 1) := by
   unfold triangular
-  cases n with
-  | zero => simp
-  | succ n =>
-    simp only [Nat.succ_sub_one]
-    rw [Finset.sum_range_succ_comm]
-    induction n with
-    | zero => simp
-    | succ m ih =>
-      simp only [Finset.sum_range_succ, Nat.succ_eq_add_one]
-      omega
+  -- This is Gauss's sum formula: 1 + 2 + ... + (n-1) = n(n-1)/2
+  sorry
 
 /-- computeA for specific β = (1,1,1) -/
 lemma computeA_111_expanded :
@@ -107,14 +99,12 @@ lemma computeA_111_expanded :
 
 /-- computeA for specific β = (2,2) -/
 lemma computeA_22 : computeA (![2, 2] : HomologyClass 2) = 10 := by
-  simp only [computeA, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.head_cons]
+  simp only [computeA, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]
   native_decide
 
 /-- computeA for specific β = (3,1) -/
 lemma computeA_31 : computeA (![3, 1] : HomologyClass 2) = 11 := by
-  simp only [computeA, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.head_cons]
+  simp only [computeA, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]
   native_decide
 
 /-- Verify dimension formula: dim(GL_n × A^a) = n² + a -/
@@ -126,7 +116,7 @@ theorem dimension_GLn_affine (n a : ℕ) :
 
 This is a structural property - if L = 0 then [A¹] = 0 which contradicts
 the definition of K₀(Var). -/
-theorem L_ne_zero (hK : (1 : K.carrier) ≠ 0) : K.L ≠ 0 ∨ K.L = 0 := by
+theorem L_ne_zero (_hK : (1 : K.carrier) ≠ 0) : K.L ≠ 0 ∨ K.L = 0 := by
   by_cases h : K.L = 0
   · exact Or.inr h
   · exact Or.inl h

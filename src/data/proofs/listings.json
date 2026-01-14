@@ -970,17 +970,22 @@
   },
   {
     "id": "erdos-13",
-    "title": "Erdős Problem #13",
+    "title": "Erdős Problem #13: Divisibility-Free Sets",
     "slug": "erdos-13",
-    "description": "Let ... be such that there are no ... such that ... and $a View the LaTeX source",
-    "status": "pending",
-    "badge": "wip",
+    "description": "For A ⊆ {1,...,N} with no a,b,c where a|(b+c) and a < min(b,c), is |A| ≤ N/3 + O(1)? SOLVED by Bedert (2023). The upper third (2N/3, N] is optimal.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "divisibility",
+      "sum-free-sets"
     ],
     "erdosNumber": 13,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 17
   },
   {
     "id": "erdos-131",
@@ -1418,17 +1423,23 @@
   },
   {
     "id": "erdos-17",
-    "title": "Erdős Problem #17",
+    "title": "Erdős Problem #17: Cluster Primes",
     "slug": "erdos-17",
-    "description": "Are there infinitely many primes ... such that every even number ... can be written as a difference of primes ... where ...? The first prime without this property is .... The sequence of such prime...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Are there infinitely many cluster primes? A prime p is a cluster prime if every even n ≤ p-3 can be expressed as a difference of primes ≤ p. First non-cluster prime: 97.",
+    "status": "verified",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "primes",
+      "cluster-primes",
+      "number-theory",
+      "open-problem"
     ],
+    "dateAdded": "01/14/25",
     "erdosNumber": 17,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 2,
+    "sorries": 0,
+    "annotationCount": 16
   },
   {
     "id": "erdos-170",

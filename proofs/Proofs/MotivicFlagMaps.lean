@@ -356,7 +356,60 @@ def lefschetzMotive : K.carrier := K.L
 theorem L_pow_affine (n : ℕ) : K.L ^ n = K.affineClass n := rfl
 
 /-!
-## Part VIII: Remarks on AI Collaboration
+## Part VIII: Connection to Mathlib's GL_n
+-/
+
+/-- Mathlib's general linear group GL n R consists of invertible matrices.
+    Our GLn type is equivalent but defined more directly for motivic purposes. -/
+def GLn_to_matrix (n : ℕ) (M : GLn (k := k) n) : Matrix (Fin n) (Fin n) k := M.val
+
+/-- The determinant of an element of GLn is nonzero by definition -/
+theorem GLn_det_ne_zero (n : ℕ) (M : GLn (k := k) n) : (GLn_to_matrix n M).det ≠ 0 := M.property
+
+/-!
+## Part VIII-B: Explicit Fiber Class Computations
+
+These verify the fiber class formula (Corollary 2.5) for specific inputs.
+-/
+
+/-- Fiber class for k=3 -/
+theorem fiber_class_k3 (d₃ d₄ : ℤ) :
+    fiberClass K 3 d₃ d₄ = K.L ^ (4 * d₃ - 3 * d₄ - 3).toNat * (K.L ^ 3 - 1) := by
+  unfold fiberClass
+  ring_nf
+
+/-- Verify fiber class matches expected structure for minimal case k=1, d=(1,1) -/
+theorem fiber_class_k1_minimal :
+    fiberClass K 1 1 1 = K.L ^ 0 * (K.L - 1) := by
+  unfold fiberClass
+  norm_num
+
+/-- For degree (1,1) in n=2, the total exponent from fibers -/
+theorem total_exponent_11 :
+    (2 * 1 - 1 * 1 - 1 : ℤ) + (1 * 1 - 0 * 0 - 0 : ℤ) = 1 := by
+  norm_num
+
+/-!
+## Part VIII-C: Verification of Dimension Formula
+
+The formula a = ∑ᵢ dᵢ(dᵢ+1)/2 + (n-1)∑ᵢ dᵢ can be verified for specific cases.
+-/
+
+/-- Gauss sum formula: 1 + 2 + ... + d = d(d+1)/2
+    This matches the dimension of degree-d maps P¹ → P¹ fixing ∞ -/
+theorem dim_formula_gauss_sum (d : ℕ) :
+    ∑ i ∈ Finset.range d, i = d * (d - 1) / 2 := Finset.sum_range_id d
+
+/-- Shifted Gauss sum: (0+1) + (1+1) + ... + ((d-1)+1) = d + d(d-1)/2 -/
+theorem dim_formula_shifted_sum (d : ℕ) :
+    ∑ i ∈ Finset.range d, (i + 1) = d + d * (d - 1) / 2 := by
+  have h1 : ∑ i ∈ Finset.range d, (i + 1) = ∑ i ∈ Finset.range d, i + d := by
+    rw [← Finset.sum_add_distrib]
+    simp [Finset.card_range]
+  rw [h1, Finset.sum_range_id]
+
+/-!
+## Part VIII-D: Remarks on AI Collaboration
 
 This theorem represents a milestone: the authors explicitly credit AI assistance.
 
