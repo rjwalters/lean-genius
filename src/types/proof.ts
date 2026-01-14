@@ -45,6 +45,7 @@ export type ProofBadge =
   | 'fallacy'            // ⚠️ Demonstrates a mathematical fallacy or invalid argument
   | 'wip'                // 🚧 Has sorries or incomplete sections
   | 'ai-solved'          // 🤖 Open problem solved by AI
+  | 'axiom'              // 📜 States key results as axioms (axiomatized formalization)
 
 /**
  * Display information for proof badges
@@ -91,6 +92,12 @@ export const BADGE_INFO: Record<ProofBadge, { emoji: string; label: string; colo
     label: 'AI-Solved',
     color: '#06B6D4',
     description: 'Open problem solved by AI'
+  },
+  'axiom': {
+    emoji: '📜',
+    label: 'Axiomatized',
+    color: '#A855F7',
+    description: 'States key results as axioms for formalization'
   }
 }
 
