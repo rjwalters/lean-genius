@@ -21,6 +21,11 @@
     "sorries": 0,
     "mathlibDependencies": [
       {
+        "theorem": "mul_geom_sum",
+        "description": "Geometric series formula: (x-1) * sum x^i = x^n - 1",
+        "module": "Mathlib.Algebra.Ring.GeomSum"
+      },
+      {
         "theorem": "Matrix.det",
         "description": "Determinant of matrices",
         "module": "Mathlib.LinearAlgebra.Matrix.Determinant"
@@ -40,12 +45,13 @@
       "Grothendieck ring K_0(Var) as CommRing with Lefschetz motive L",
       "Explicit GL_n motivic formula: [GL_n] = prod(L^i - 1) * L^{n(n-1)/2}",
       "GL_1 and GL_2 class theorems proved from formula",
-      "Projective space class [P^n] = sum L^i definition",
-      "Flag variety class [Fl_n] = prod [P^i] definition",
+      "Projective space class [P^n] = sum L^i with geometric series proved via mul_geom_sum",
+      "Flag variety class [Fl_n] = prod [P^i] with Fl_1, Fl_2 cases proved",
       "Complete flag variety type definition",
-      "Homology class representation with computeA formula",
+      "Homology class representation with computeA formula (n=1, n=2 lemmas proved)",
       "Main theorem axiomatized with explicit L-expansion",
-      "Special cases n=1 and n=2 derived from main axiom"
+      "Special cases n=1 and n=2 derived from main axiom",
+      "Only 2 axioms: moduli space class definition and main theorem (deep algebraic geometry)"
     ],
     "dateAdded": "01/14/25"
   },
@@ -113,7 +119,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This enhanced formalization presents a structured approach to the motivic flag maps theorem. Key improvements: (1) K_0(Var) defined as a proper CommRing with Lefschetz motive, (2) explicit GL_n formula via Bruhat decomposition with GL_1/GL_2 cases proved, (3) projective and flag variety class definitions, (4) main theorem expressed in terms of L with n=1 and n=2 cases derived. The formalization includes a roadmap for further development.",
+    "summary": "This enhanced formalization presents a structured approach to the motivic flag maps theorem. Key improvements: (1) K_0(Var) defined as a proper CommRing with Lefschetz motive, (2) explicit GL_n formula via Bruhat decomposition with GL_1/GL_2 cases proved, (3) projective class geometric series formula proved via Mathlib's mul_geom_sum, (4) flag variety classes Fl_1 and Fl_2 proved, (5) main theorem expressed in terms of L with n=1 and n=2 cases derived. Only 2 axioms remain: the moduli space class definition and the main theorem (which requires algebraic geometry not yet in Mathlib).",
     "implications": "**Theoretical Significance:**\n\n**1. Motivic Purity**\nThe clean formula suggests deep structural properties of these moduli spaces - they are \"motivically equivalent\" to much simpler algebraic varieties.\n\n**2. AI in Mathematics**\nThis result marks a milestone in human-AI collaboration in mathematical research. The authors' transparent acknowledgment of AI assistance sets a precedent for future work.\n\n**3. Connections to Physics**\nModuli spaces of rational curves appear in string theory and Gromov-Witten theory. Motivic formulas can inform enumerative calculations.\n\n**4. K-Theoretic Methods**\nDemonstrates the power of working in the Grothendieck ring, where complex geometric questions reduce to algebraic identities.\n\n**5. Flag Variety Geometry**\nExtends our understanding of the rich geometry of flag varieties and their associated moduli spaces.",
     "openQuestions": [
       "Can the proof be fully formalized in a proof assistant like Lean?",

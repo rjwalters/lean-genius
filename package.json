@@ -16,7 +16,10 @@
     "research:sync": "tsx scripts/research/sync-data.ts",
     "research:build": "pnpm research:sync && tsx scripts/research/build.ts",
     "db:export": "tsx scripts/research/db-export.ts",
-    "db:rebuild": "tsx scripts/research/db-rebuild.ts"
+    "db:rebuild": "tsx scripts/research/db-rebuild.ts",
+    "aristotle": "./research/scripts/aristotle-status.sh",
+    "aristotle:retrieve": "./research/scripts/aristotle-status.sh --retrieve",
+    "aristotle:json": "./research/scripts/aristotle-status.sh --json"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",

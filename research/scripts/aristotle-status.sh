@@ -3,14 +3,11 @@
 # aristotle-status.sh - Check status of all Aristotle jobs
 #
 # Usage:
-#   ./aristotle-status.sh           # Check all pending jobs
-#   ./aristotle-status.sh --retrieve # Also retrieve completed solutions
+#   ./aristotle-status.sh              # Check all pending jobs
+#   ./aristotle-status.sh --retrieve   # Also retrieve completed solutions
+#   ./aristotle-status.sh --json       # Output as JSON (for scripts)
 #
-# This script:
-#   1. Reads jobs from research/aristotle-jobs.json
-#   2. Checks status of each pending job via Aristotle API
-#   3. Updates the jobs file with current status
-#   4. Optionally retrieves completed solutions
+# Requires: ARISTOTLE_API_KEY environment variable
 #
 
 set -e
@@ -18,6 +15,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 JOBS_FILE="$PROJECT_ROOT/research/aristotle-jobs.json"
+RESULTS_DIR="$PROJECT_ROOT/aristotle-results/new"
 
 # Colors
 RED='\033[0;31m'
@@ -28,160 +26,169 @@ CYAN='\033[0;36m'
 NC='\033[0m'
 
 RETRIEVE=false
-if [ "$1" = "--retrieve" ]; then
-    RETRIEVE=true
-fi
+JSON_OUTPUT=false
 
-log_info() {
-    echo -e "${BLUE}[INFO]${NC} $1"
-}
-
-log_success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1"
-}
-
-log_warn() {
-    echo -e "${YELLOW}[WARN]${NC} $1"
-}
-
-log_error() {
-    echo -e "${RED}[ERROR]${NC} $1"
-}
-
-# Check jobs file exists
-if [ ! -f "$JOBS_FILE" ]; then
-    log_error "No jobs file found at $JOBS_FILE"
-    echo "Submit a job first with: ./aristotle-submit.sh <file>"
-    exit 1
-fi
+for arg in "$@"; do
+    case $arg in
+        --retrieve) RETRIEVE=true ;;
+        --json) JSON_OUTPUT=true ;;
+    esac
+done
 
 # Check ARISTOTLE_API_KEY
 if [ -z "$ARISTOTLE_API_KEY" ]; then
-    log_error "ARISTOTLE_API_KEY not set"
+    # Try to load from common locations
+    if [ -f "$HOME/.aristotle_key" ]; then
+        export ARISTOTLE_API_KEY=$(cat "$HOME/.aristotle_key")
+    elif grep -q "ARISTOTLE_API_KEY" "$HOME/.zshrc" 2>/dev/null; then
+        export ARISTOTLE_API_KEY=$(grep ARISTOTLE_API_KEY "$HOME/.zshrc" | cut -d'=' -f2 | tr -d '"')
+    fi
+fi
+
+if [ -z "$ARISTOTLE_API_KEY" ]; then
+    echo -e "${RED}ERROR: ARISTOTLE_API_KEY not set${NC}" >&2
     exit 1
 fi
 
-echo ""
-echo "============================================"
-echo -e "${CYAN}Aristotle Job Status Report${NC}"
-echo "============================================"
-echo ""
+# Create results directory if needed
+mkdir -p "$RESULTS_DIR"
 
-# Get pending jobs
-PENDING_JOBS=$(jq -r '.jobs[] | select(.status == "submitted" or .status == "in_progress") | .project_id' "$JOBS_FILE")
+# Python script to check all jobs
+PYTHON_SCRIPT='
+import asyncio
+import json
+import sys
+import os
+from aristotlelib import Project
 
-if [ -z "$PENDING_JOBS" ]; then
-    log_info "No pending jobs found."
+async def check_all():
+    jobs_file = sys.argv[1]
+    retrieve = sys.argv[2] == "true"
+    results_dir = sys.argv[3]
 
-    # Show summary of completed/failed
-    COMPLETED=$(jq -r '.completed | length' "$JOBS_FILE")
-    FAILED=$(jq -r '.failed | length' "$JOBS_FILE")
+    with open(jobs_file) as f:
+        data = json.load(f)
 
-    echo ""
-    echo "Summary:"
-    echo "  Completed: $COMPLETED"
-    echo "  Failed:    $FAILED"
+    # Get submitted jobs
+    submitted = [j for j in data.get("jobs", []) if j.get("status") == "submitted"]
+
+    if not submitted:
+        print(json.dumps({"submitted": [], "results": []}))
+        return
+
+    # Check status via API
+    try:
+        projects, _ = await Project.list_projects()
+        project_map = {p.project_id: p for p in projects}
+    except Exception as e:
+        print(json.dumps({"error": str(e)}))
+        return
+
+    results = []
+    for job in submitted:
+        pid = job.get("project_id")
+        problem_id = job.get("problem_id", "unknown")
+
+        if pid in project_map:
+            p = project_map[pid]
+            status = p.status.name
+            percent = p.percent_complete or 0
+
+            result = {
+                "problem_id": problem_id,
+                "project_id": pid[:8],
+                "status": status,
+                "percent": percent,
+                "file_name": p.file_name
+            }
+
+            # Retrieve if complete and requested
+            if status == "COMPLETE" and retrieve:
+                try:
+                    base = os.path.basename(p.file_name or f"{problem_id}.lean")
+                    output = os.path.join(results_dir, base.replace(".lean", "-solved.lean"))
+                    await p.get_solution(output)
+                    result["retrieved"] = output
+                except Exception as e:
+                    result["retrieve_error"] = str(e)
+
+            results.append(result)
+        else:
+            results.append({
+                "problem_id": problem_id,
+                "project_id": pid[:8] if pid else "unknown",
+                "status": "NOT_FOUND",
+                "percent": 0
+            })
+
+    print(json.dumps({"submitted": len(submitted), "results": results}))
+
+asyncio.run(check_all())
+'
+
+# Run the Python script
+OUTPUT=$(uvx --from aristotlelib python3 -c "$PYTHON_SCRIPT" "$JOBS_FILE" "$RETRIEVE" "$RESULTS_DIR" 2>&1)
+
+# Check for errors
+if echo "$OUTPUT" | grep -q '"error"'; then
+    ERROR=$(echo "$OUTPUT" | jq -r '.error')
+    echo -e "${RED}API Error: $ERROR${NC}" >&2
+    exit 1
+fi
+
+# JSON output mode
+if [ "$JSON_OUTPUT" = true ]; then
+    echo "$OUTPUT"
     exit 0
 fi
 
-TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+# Pretty print results
+echo ""
+echo "============================================"
+echo -e "${CYAN}Aristotle Job Status${NC}"
+echo "============================================"
+echo ""
 
-echo "$PENDING_JOBS" | while read -r PROJECT_ID; do
-    if [ -z "$PROJECT_ID" ]; then
-        continue
-    fi
+SUBMITTED=$(echo "$OUTPUT" | jq -r '.submitted')
+if [ "$SUBMITTED" = "0" ] || [ "$SUBMITTED" = "[]" ]; then
+    echo -e "${GREEN}No pending jobs.${NC}"
+    echo ""
+    # Show completed count
+    COMPLETED=$(jq '.jobs | map(select(.status == "completed")) | length' "$JOBS_FILE")
+    echo "Completed jobs: $COMPLETED"
+    exit 0
+fi
 
-    # Get job info
-    JOB_INFO=$(jq -r ".jobs[] | select(.project_id == \"$PROJECT_ID\")" "$JOBS_FILE")
-    PROBLEM_ID=$(echo "$JOB_INFO" | jq -r '.problem_id')
-    FILE=$(echo "$JOB_INFO" | jq -r '.file')
-    SUBMITTED=$(echo "$JOB_INFO" | jq -r '.submitted')
+echo "$OUTPUT" | jq -r '.results[] | "\(.problem_id)|\(.project_id)|\(.status)|\(.percent)|\(.retrieved // "")"' | while IFS='|' read -r problem_id project_id status percent retrieved; do
+    echo -e "${BLUE}$problem_id${NC} ($project_id...)"
 
-    echo -e "${BLUE}Job: $PROJECT_ID${NC}"
-    echo "  Problem:   $PROBLEM_ID"
-    echo "  File:      $FILE"
-    echo "  Submitted: $SUBMITTED"
-
-    # Check status via Aristotle
-    STATUS_OUTPUT=$(cd "$PROJECT_ROOT/proofs" && uvx --from aristotlelib aristotle status "$PROJECT_ID" 2>&1 || true)
-
-    # Parse status
-    STATUS=$(echo "$STATUS_OUTPUT" | grep -i "status:" | head -1 | sed 's/.*status: *//i' | tr '[:lower:]' '[:upper:]' | tr -d '[:space:]')
-    PERCENT=$(echo "$STATUS_OUTPUT" | grep -i "percent" | grep -oE "[0-9]+" | head -1 || echo "0")
-
-    if [ -z "$STATUS" ]; then
-        STATUS="UNKNOWN"
-    fi
-
-    # Color code status
-    case "$STATUS" in
-        COMPLETE|COMPLETED)
-            echo -e "  Status:    ${GREEN}COMPLETE${NC}"
-            STATUS="COMPLETE"
+    case "$status" in
+        COMPLETE)
+            if [ -n "$retrieved" ]; then
+                echo -e "  Status: ${GREEN}COMPLETE${NC} - Retrieved to $retrieved"
+            else
+                echo -e "  Status: ${GREEN}COMPLETE${NC} - Ready to retrieve (use --retrieve)"
+            fi
+            ;;
+        IN_PROGRESS)
+            echo -e "  Status: ${YELLOW}IN_PROGRESS${NC} ($percent%)"
+            ;;
+        QUEUED|NOT_STARTED)
+            echo -e "  Status: ${CYAN}QUEUED${NC}"
             ;;
         FAILED)
-            echo -e "  Status:    ${RED}FAILED${NC}"
+            echo -e "  Status: ${RED}FAILED${NC}"
             ;;
-        IN_PROGRESS|INPROGRESS)
-            echo -e "  Status:    ${YELLOW}IN_PROGRESS${NC} (${PERCENT}%)"
-            STATUS="in_progress"
-            ;;
-        QUEUED)
-            echo -e "  Status:    ${CYAN}QUEUED${NC}"
-            STATUS="submitted"
+        NOT_FOUND)
+            echo -e "  Status: ${RED}NOT_FOUND${NC} (job may have expired)"
             ;;
         *)
-            echo -e "  Status:    ${YELLOW}$STATUS${NC}"
+            echo -e "  Status: $status ($percent%)"
             ;;
     esac
-
-    # Update jobs file with current status
-    jq --arg pid "$PROJECT_ID" \
-       --arg status "$STATUS" \
-       --arg ts "$TIMESTAMP" \
-       --arg percent "$PERCENT" \
-       '(.jobs[] | select(.project_id == $pid)) |= . + {
-         "status": ($status | ascii_downcase),
-         "last_check": {
-           "timestamp": $ts,
-           "percent": ($percent | tonumber)
-         }
-       }' "$JOBS_FILE" > "${JOBS_FILE}.tmp" && mv "${JOBS_FILE}.tmp" "$JOBS_FILE"
-
-    # Handle completed jobs
-    if [ "$STATUS" = "COMPLETE" ]; then
-        if [ "$RETRIEVE" = true ]; then
-            OUTPUT_FILE="${PROJECT_ROOT}/${FILE%.lean}-solved.lean"
-            log_info "Retrieving solution to $OUTPUT_FILE..."
-
-            if cd "$PROJECT_ROOT/proofs" && uvx --from aristotlelib aristotle retrieve "$PROJECT_ID" --output-file "$OUTPUT_FILE" 2>/dev/null; then
-                log_success "Solution saved!"
-
-                # Move to completed
-                jq --arg pid "$PROJECT_ID" \
-                   '(.completed += [(.jobs[] | select(.project_id == $pid))]) |
-                    (.jobs |= map(select(.project_id != $pid)))' "$JOBS_FILE" > "${JOBS_FILE}.tmp" && mv "${JOBS_FILE}.tmp" "$JOBS_FILE"
-            else
-                log_warn "Failed to retrieve solution"
-            fi
-        else
-            echo -e "  ${GREEN}Ready to retrieve!${NC} Run with --retrieve"
-        fi
-    fi
-
-    # Handle failed jobs
-    if [ "$STATUS" = "FAILED" ]; then
-        # Move to failed
-        jq --arg pid "$PROJECT_ID" \
-           '(.failed += [(.jobs[] | select(.project_id == $pid))]) |
-            (.jobs |= map(select(.project_id != $pid)))' "$JOBS_FILE" > "${JOBS_FILE}.tmp" && mv "${JOBS_FILE}.tmp" "$JOBS_FILE"
-
-        log_warn "Job failed. Consider breaking into smaller lemmas."
-    fi
-
     echo ""
 done
 
 echo "============================================"
-echo "Updated: $TIMESTAMP"
+echo "Run with --retrieve to download completed solutions"
 echo "============================================"

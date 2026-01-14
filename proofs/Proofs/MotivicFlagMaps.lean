@@ -33,9 +33,11 @@ This formalization takes a structured axiomatic approach:
 ## Status
 - [x] K₀(Var) as CommRing with Lefschetz motive
 - [x] Explicit GL_n motivic class formula (definition + lemmas)
+- [x] Projective class formula proved via Mathlib's mul_geom_sum
+- [x] Flag variety class theorems proved (Fl_1, Fl_2)
 - [x] Flag variety definitions
 - [x] Main theorem with special cases derived
-- [x] No sorries - uses well-documented axioms
+- [x] Only 2 axioms remain (unavoidable: moduli space class definition, main theorem)
 
 ## References
 - Bryan, Elek, Manners, Salafatinos, Vakil (2025): arXiv:2601.07222
@@ -86,10 +88,11 @@ noncomputable def projectiveClass (n : ℕ) : K.carrier :=
 
 /-- The projective class satisfies (L-1) · [P^n] = L^{n+1} - 1
 
-This is the geometric series formula. We state it as an axiom since the
-ring_nf proof is complex for abstract CommRings. -/
-axiom projective_class_formula (n : ℕ) :
-    (K.L - 1) * K.projectiveClass n = K.L ^ (n + 1) - 1
+This is the geometric series formula, proved using Mathlib's mul_geom_sum. -/
+theorem projective_class_formula (n : ℕ) :
+    (K.L - 1) * K.projectiveClass n = K.L ^ (n + 1) - 1 := by
+  unfold projectiveClass
+  exact mul_geom_sum K.L (n + 1)
 
 end GrothendieckRingVar
 
@@ -146,10 +149,17 @@ noncomputable def FlagVarietyClass (n : ℕ) : K.carrier :=
   ∏ i ∈ Finset.range n, K.projectiveClass i
 
 /-- [Fl_1] = [P⁰] = 1 -/
-axiom Fl1_class : FlagVarietyClass K 1 = 1
+theorem Fl1_class : FlagVarietyClass K 1 = 1 := by
+  unfold FlagVarietyClass GrothendieckRingVar.projectiveClass
+  simp only [Finset.prod_range_one]
+  norm_num
 
 /-- [Fl_2] = [P⁰] · [P¹] = 1 · (1 + L) = 1 + L -/
-axiom Fl2_class : FlagVarietyClass K 2 = 1 + K.L
+theorem Fl2_class : FlagVarietyClass K 2 = 1 + K.L := by
+  unfold FlagVarietyClass GrothendieckRingVar.projectiveClass
+  simp only [Finset.prod_range_succ, Finset.range_one, Finset.prod_singleton]
+  norm_num
+  ring
 
 /-!
 ## Part IV: Homology Classes

@@ -169,14 +169,53 @@
       ]
     },
     {
-      "project_id": "1a5c92c1-edd4-4696-82c7-2fc571c42a28",
+      "project_id": "0dd8aa1c-85c4-428a-8f88-15690a9b1fda",
       "file": "proofs/Proofs/Erdos97Problem.lean",
       "problem_id": "erdos-97",
-      "submitted": "2026-01-13T23:59:05Z",
+      "submitted": "2026-01-14T17:10:00Z",
       "sorries": [
         "theorem kEquidistant_implies_unitDistance_bound (k : ℕ)"
       ],
-      "notes": "HARD sorry: kEquidistant_implies_unitDistance_bound (counting argument). danzerPoints is a construction, not suitable for proof search.",
+      "notes": "Resubmitted after previous job expired. HARD sorry: kEquidistant_implies_unitDistance_bound (counting argument). danzerPoints is a construction.",
+      "status": "submitted",
+      "last_check": null
+    },
+    {
+      "project_id": "a3c19e5a-dc0a-4bb4-baac-200c7d650834",
+      "file": "proofs/Proofs/Erdos59Problem.lean",
+      "problem_id": "erdos-59",
+      "submitted": "2026-01-14T17:15:00Z",
+      "sorries": [
+        "turanNumber",
+        "countFreeGraphs",
+        "theorem sorry"
+      ],
+      "notes": "Counting G-free graphs. Definition sorries + theorem sorries.",
+      "status": "submitted",
+      "last_check": null
+    },
+    {
+      "project_id": "7602a683-b598-440f-b374-1f546d757b19",
+      "file": "proofs/Proofs/Erdos60Problem.lean",
+      "problem_id": "erdos-60",
+      "submitted": "2026-01-14T17:15:00Z",
+      "sorries": [
+        "exC4",
+        "theorem sorry"
+      ],
+      "notes": "Supersaturation of 4-cycles. Definition + theorem sorries.",
+      "status": "submitted",
+      "last_check": null
+    },
+    {
+      "project_id": "b523ace4-e218-40db-ab27-63c6dc904576",
+      "file": "proofs/Proofs/Erdos58Problem.lean",
+      "problem_id": "erdos-58",
+      "submitted": "2026-01-14T17:15:00Z",
+      "sorries": [
+        "chromaticNumber"
+      ],
+      "notes": "Chromatic number vs odd cycle lengths. Definition sorry.",
       "status": "submitted",
       "last_check": null
     }
