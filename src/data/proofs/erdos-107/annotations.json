@@ -1,92 +1,132 @@
 [
   {
-    "id": "general-position",
-    "lineStart": 32,
-    "lineEnd": 36,
+    "id": "ann-e107-general-position",
+    "proofId": "erdos-107",
+    "range": {
+      "startLine": 32,
+      "endLine": 36
+    },
     "type": "definition",
     "title": "General Position",
     "content": "A finite set of points in ℝ² is in **general position** if no three points are collinear. This is formalized using Mathlib's `Collinear` predicate: for any three distinct points p, q, r in the set, {p, q, r} is not collinear.",
-    "difficulty": "intermediate"
+    "significance": "key",
+    "relatedConcepts": ["collinearity", "general-position", "point-sets"]
   },
   {
-    "id": "convex-ngon",
-    "lineStart": 38,
-    "lineEnd": 41,
+    "id": "ann-e107-convex-ngon",
+    "proofId": "erdos-107",
+    "range": {
+      "startLine": 38,
+      "endLine": 41
+    },
     "type": "definition",
     "title": "Convex n-gon",
     "content": "A set of n points forms a **convex n-gon** if the set has exactly n points and each point is a vertex of the convex hull (i.e., no point lies in the convex hull of the others). This elegant characterization avoids dealing with edge orderings.",
-    "difficulty": "intermediate"
+    "significance": "critical",
+    "relatedConcepts": ["convex-hull", "polygon", "vertex"]
   },
   {
-    "id": "f-definition",
-    "lineStart": 54,
-    "lineEnd": 56,
+    "id": "ann-e107-f-definition",
+    "proofId": "erdos-107",
+    "range": {
+      "startLine": 54,
+      "endLine": 56
+    },
     "type": "definition",
     "title": "The Function f(n)",
     "content": "**f(n)** is defined as the infimum of CardSet(n), the set of N values such that any N points in general position must contain a convex n-gon. This is the central object of study in the Happy Ending Problem.",
-    "difficulty": "intermediate"
+    "significance": "critical",
+    "relatedConcepts": ["ramsey-type", "extremal-function", "convex-polygon"]
   },
   {
-    "id": "klein-result",
-    "lineStart": 60,
-    "lineEnd": 66,
+    "id": "ann-e107-klein-result",
+    "proofId": "erdos-107",
+    "range": {
+      "startLine": 60,
+      "endLine": 66
+    },
     "type": "theorem",
     "title": "Klein's Result (1931)",
     "content": "**f(4) = 5**: Any 5 points in general position contain 4 points forming a convex quadrilateral. The proof involves case analysis on the convex hull: if the hull has 4+ points, we're done; if it has 3 points, the 2 interior points with 2 hull vertices form a quad.",
-    "difficulty": "intermediate"
+    "significance": "key",
+    "relatedConcepts": ["convex-hull", "quadrilateral", "case-analysis"]
   },
   {
-    "id": "ersz-lower",
-    "lineStart": 88,
-    "lineEnd": 95,
+    "id": "ann-e107-ersz-lower",
+    "proofId": "erdos-107",
+    "range": {
+      "startLine": 88,
+      "endLine": 95
+    },
     "type": "theorem",
     "title": "Erdős-Szekeres Lower Bound",
-    "content": "**2^{n-2}+1 ≤ f(n)**: There exist 2^{n-2} points in general position with no convex n-gon. The construction uses a recursive \"double sequence\" that carefully avoids creating convex n-gons while maximizing point count.",
-    "difficulty": "advanced"
+    "content": "**2^{n-2}+1 ≤ f(n)**: There exist 2^{n-2} points in general position with no convex n-gon. The construction uses a recursive 'double sequence' that carefully avoids creating convex n-gons while maximizing point count.",
+    "significance": "critical",
+    "relatedConcepts": ["lower-bound", "construction", "recursive"]
   },
   {
-    "id": "ersz-upper",
-    "lineStart": 97,
-    "lineEnd": 104,
+    "id": "ann-e107-ersz-upper",
+    "proofId": "erdos-107",
+    "range": {
+      "startLine": 97,
+      "endLine": 104
+    },
     "type": "theorem",
     "title": "Erdős-Szekeres Upper Bound (1935)",
     "content": "**f(n) ≤ C(2n-4, n-2)+1**: The original upper bound uses Ramsey-theoretic arguments. This grows roughly as 4^n, much larger than the conjectured 2^{n-2}+1.",
-    "difficulty": "advanced"
+    "significance": "key",
+    "relatedConcepts": ["upper-bound", "ramsey-theory", "binomial"]
   },
   {
-    "id": "suk-bound",
-    "lineStart": 106,
-    "lineEnd": 114,
+    "id": "ann-e107-suk-bound",
+    "proofId": "erdos-107",
+    "range": {
+      "startLine": 106,
+      "endLine": 114
+    },
     "type": "theorem",
     "title": "Suk's Breakthrough (2017)",
-    "content": "**f(n) ≤ 2^{(1+o(1))n}**: A major breakthrough that reduced the exponential base from 4 to 2. The proof uses a novel \"cups and caps\" argument with improved counting.",
-    "difficulty": "advanced"
+    "content": "**f(n) ≤ 2^{(1+o(1))n}**: A major breakthrough that reduced the exponential base from 4 to 2. The proof uses a novel 'cups and caps' argument with improved counting.",
+    "significance": "critical",
+    "relatedConcepts": ["breakthrough", "cups-caps", "upper-bound"]
   },
   {
-    "id": "hmpt-bound",
-    "lineStart": 116,
-    "lineEnd": 124,
+    "id": "ann-e107-hmpt-bound",
+    "proofId": "erdos-107",
+    "range": {
+      "startLine": 116,
+      "endLine": 124
+    },
     "type": "theorem",
     "title": "HMPT Bound (2020)",
     "content": "**f(n) ≤ 2^{n+O(√(n log n))}**: The current best upper bound, due to Holmsen, Mojarrad, Pach, and Tardos. The gap to the conjectured 2^{n-2}+1 is now only O(√(n log n)) in the exponent.",
-    "difficulty": "advanced"
+    "significance": "critical",
+    "relatedConcepts": ["current-best", "upper-bound", "hmpt"]
   },
   {
-    "id": "main-conjecture",
-    "lineStart": 128,
-    "lineEnd": 138,
-    "type": "conjecture",
+    "id": "ann-e107-main-conjecture",
+    "proofId": "erdos-107",
+    "range": {
+      "startLine": 128,
+      "endLine": 138
+    },
+    "type": "concept",
     "title": "The Happy Ending Conjecture",
-    "content": "**Conjecture**: f(n) = 2^{n-2}+1 for all n ≥ 3. This is stated as a Prop without asserting truth value since it remains OPEN. Erdős offered $500 for a proof, $100 for a counterexample. The name \"Happy Ending\" comes from Szekeres and Klein's marriage.",
-    "difficulty": "advanced"
+    "content": "**Conjecture**: f(n) = 2^{n-2}+1 for all n ≥ 3. This is stated as a Prop without asserting truth value since it remains OPEN. Erdős offered $500 for a proof, $100 for a counterexample. The name 'Happy Ending' comes from Szekeres and Klein's marriage.",
+    "significance": "critical",
+    "relatedConcepts": ["conjecture", "open-problem", "erdos-prize"]
   },
   {
-    "id": "existence",
-    "lineStart": 142,
-    "lineEnd": 152,
+    "id": "ann-e107-existence",
+    "proofId": "erdos-107",
+    "range": {
+      "startLine": 142,
+      "endLine": 152
+    },
     "type": "theorem",
     "title": "Existence of f(n)",
     "content": "**Erdős-Szekeres (1935)**: For every n ≥ 3, f(n) is finite - i.e., CardSet(n) is nonempty. This fundamental result shows that the problem is well-defined: there always exists some N forcing a convex n-gon.",
-    "difficulty": "intermediate"
+    "significance": "key",
+    "relatedConcepts": ["existence", "well-defined", "finiteness"]
   }
 ]

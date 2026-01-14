@@ -38,30 +38,30 @@
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "description": "Definitions for general position, convex n-gons, and the function f(n)",
-      "lineStart": 30,
-      "lineEnd": 57
+      "summary": "Definitions for general position, convex n-gons, and the function f(n)",
+      "startLine": 30,
+      "endLine": 57
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
-      "description": "Known values f(3)=3, f(4)=5, f(5)=9",
-      "lineStart": 58,
-      "lineEnd": 85
+      "summary": "Known values f(3)=3, f(4)=5, f(5)=9",
+      "startLine": 58,
+      "endLine": 85
     },
     {
       "id": "main-bounds",
       "title": "Main Bounds",
-      "description": "Erdős-Szekeres, Suk, and HMPT bounds on f(n)",
-      "lineStart": 86,
-      "lineEnd": 125
+      "summary": "Erdős-Szekeres, Suk, and HMPT bounds on f(n)",
+      "startLine": 86,
+      "endLine": 125
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture (OPEN)",
-      "description": "The Happy Ending conjecture: f(n) = 2^{n-2}+1",
-      "lineStart": 126,
-      "lineEnd": 153
+      "summary": "The Happy Ending conjecture: f(n) = 2^{n-2}+1",
+      "startLine": 126,
+      "endLine": 153
     }
   ],
   "conclusion": {
