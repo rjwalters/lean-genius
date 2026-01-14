@@ -1,0 +1,33 @@
+{
+  "id": "erdos-721",
+  "title": "Erdős Problem #721",
+  "slug": "erdos-721",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the van der Waerden number defined as the minimum ... such that in any red/blue colouring of ... there exists eith...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/721",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos721Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 721,
+    "erdosUrl": "https://erdosproblems.com/721",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #721 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $W(3,k)$ be the van der Waerden number defined as the minimum $n$ such that in any red/blue colouring of $\\{1,\\ldots,n\\}$ there exists either a red $3$-term arithmetic progression or a blue $k$-term arithmetic progression.\n\nGive reasonable bounds for $W(3,k)$. In particular, give any non-trivial lower bounds for $W(3,k)$ and prove that $W(3,k) < \\exp(k^c)$ for some constant $c<1$.\n\n\n\nWhile we do not have a full understanding of the growth of $W(3,k)$, both of the specific challenges of Erd\\H{o}s have been met.\nGreen \\cite{Gr22} established the superpolynomial lower bound\\[W(3,k) \\geq \\exp\\left( c\\frac{(\\log k)^{4/3}}{(\\log\\log k)\n^{1/3}}\\right)\\]for some constant $c>0$ (in particular disproving a conjecture of Graham that $W(3,k)\\ll k^2$). Hunter \\cite{Hu22} improved this to\\[W(3,k) \\geq \\exp\\left( c\\frac{(\\log k)^{2}}{\\log\\log k}\\right).\\]The first to show that $W(3,k) < \\exp(k^c)$ for some $c<1$ was Schoen \\cite{Sc21}. The best upper bound currently known is\\[W(3,k) \\ll \\exp\\left( O((\\log k)^9)\\right),\\]which follows from the best bounds known for sets without three-term arithmetic progressions (see \\cite{BlSi23} which improves slightly on the bounds due to Kelley and Meka \\cite{KeMe23}).\n\n\n\n\nReferences\n\n\n[BlSi23] T. F. Bloom and O. Sisask, An improvement to the Kelley-Meka bounds on three-term arithmetic progressions. arXiv:2309.02353 (2023).\n\n[Gr22] Green, Ben, New lower bounds for van der {W}aerden numbers. Forum Math. Pi (2022), Paper No. e18, 51.\n\n[Hu22] Hunter, Zach, Improved lower bounds for van der {W}aerden numbers. Combinatorica (2022), 1231-1252.\n\n[KeMe23] Kelley, Z. and Meka, R., Strong Bounds for 3-Progressions. arXiv:2302.05537 (2023).\n\n[Sc21] Schoen, Tomasz, A subexponential upper bound for van der {W}aerden numbers\n{$W(3, k)$}. Electron. J. Combin. (2021), Paper No. 2.34, 10.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

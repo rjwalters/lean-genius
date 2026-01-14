@@ -1,0 +1,33 @@
+{
+  "id": "erdos-694",
+  "title": "Erdős Problem #694",
+  "slug": "erdos-694",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the largest ... such that ..., and ... be the smallest such ..., where ... is Euler's totient function. Investigat...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/694",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos694Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 694,
+    "erdosUrl": "https://erdosproblems.com/694",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #694 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_{\\max}(n)$ be the largest $m$ such that $\\phi(m)=n$, and $f_{\\min}(n)$ be the smallest such $m$, where $\\phi$ is Euler's totient function. Investigate\\[\\max_{n\\leq x}\\frac{f_{\\max}(n)}{f_{\\min}(n)}.\\]\n\n\n\nCarmichael has asked whether there is an integer $n$ for which $\\phi(m)=n$ has exactly one solution, that is, $\\frac{f_{\\max}(n)}{f_{\\min}(n)}=1$. Erd\\H{o}s has proved that if such an $n$ exists then there must be infinitely many such $n$.\n\nSee also [51].\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

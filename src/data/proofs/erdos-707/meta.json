@@ -1,0 +1,34 @@
+{
+  "id": "erdos-707",
+  "title": "Erdős Problem #707",
+  "slug": "erdos-707",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a finite Sidon set. Is there some set ... with ... which is perfect difference set modulo ... for some prime ...?\n...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/707",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos707Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 707,
+    "erdosUrl": "https://erdosproblems.com/707",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$1000"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #707 from erdosproblems.com. Originally offered with a prize of $1000.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset \\mathbb{N}$ be a finite Sidon set. Is there some set $B$ with $A\\subseteq B$ which is perfect difference set modulo $p^2+p+1$ for some prime $p$?\n\n\n\nSee also [44] and [329] (indeed a positive solution to this problem implies a positive solution to [44], and thence also to [329]).\n\nThis is discussed in problems C9 and C10 of Guy's collection \\cite{Gu04}, and was also asked by Erd\\H{o}s in the 1991 problem session of Great Western Number Theory. The prize of \\$1000 was offered in \\cite{Er80} for a proof or disproof of this conjecture. In some sources (such as \\cite{Er77c}) Erd\\H{o}s weakens this to whether any finite Sidon set can be contained in the perfect difference set modulo $m^2+m+1$ for some (not necessarily prime) $m$. In \\cite{Er97c} he admits this conjecture is 'perhaps too optimistic'.\n\nAlexeev and Mixon \\cite{AlMi25} have disproved this conjecture, proving that $\\{1,2,4,8\\}$ cannot be extended to a perfect difference set modulo $p^2+p+1$ for any prime $p$, and also that $\\{1,2,4,8,13\\}$ cannot be extended to any perfect difference set. Their proof has been formalised in Lean with the assistance of ChatGPT.\n\nSurprisingly, they discovered that this conjecture was actually first disproved by Hall in 1947 \\cite{Ha47}, long before Erd\\H{o}s asked this question. Hall proved that $\\{1,3,9,10,13\\}$ cannot be extended to any perfect difference set.\n\nIt is trivial that any Sidon set of size $2$ can be extended to a perfect difference set. In a discussion on MathOverflow, Sawin has proved that any Sidon set of size $3$ can also be extended. It remains open whether any Sidon set of size $4$ can be extended to a perfect difference set, but in the same MathOverflow discussion Mueller has shown that $\\{0,1,3,11\\}$ is a candidate counterexample, in that all the known ways to construct perfect difference sets cannot succeed.\n\n\n\n\nReferences\n\n\n[AlMi25] B. Alexeev and D. G. Mixon, Forbidden Sidon subsets of perfect difference sets, featuring a human-assisted proof. arXiv:2510.19804 (2025).\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n[Er80] Erd\\H{o}s, Paul, A survey of problems in combinatorial number theory. Ann. Discrete Math. (1980), 89-115.\n\n[Er97c] Erd\\H{o}s, Paul, Some of my favorite problems and results. The mathematics of Paul Erd\\H{o}s, I (1997), 47-67.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Ha47] Hall, Jr., Marshall, Cyclic projective planes. Duke Math. J. (1947), 1079--1090.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

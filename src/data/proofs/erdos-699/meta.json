@@ -1,0 +1,33 @@
+{
+  "id": "erdos-699",
+  "title": "Erdős Problem #699",
+  "slug": "erdos-699",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every ... there exists some prime ... such that\\[p\\mid \\left({i}, {j}\\right)?\\]\n\n\n\nA problem of Erds and ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/699",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos699Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 699,
+    "erdosUrl": "https://erdosproblems.com/699",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #699 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every $1\\leq i<j\\leq n/2$ there exists some prime $p\\geq i$ such that\\[p\\mid \\textrm{gcd}\\left(\\binom{n}{i}, \\binom{n}{j}\\right)?\\]\n\n\n\nA problem of Erd\\H{o}s and Szekeres. A theorem of Sylvester and Schur says that for any $1\\leq i\\leq n/2$ there exists some prime $p>i$ which divides $\\binom{n}{i}$.\n\nErd\\H{o}s and Szekeres further conjectured that $p\\geq i$ can be improved to $p>i$ except in a few special cases. In particular this fails when $i=2$ and $n$ being some particular powers of $2$. They also found some counterexamples when $i=3$, but only one counterexample when $i\\geq 4$:\\[\\textrm{gcd}\\left(\\binom{28}{5},\\binom{28}{14}\\right)=2^3\\cdot 3^3\\cdot 5.\\]This is mentioned in problem B31 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

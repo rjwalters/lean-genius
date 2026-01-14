@@ -1,0 +1,33 @@
+{
+  "id": "erdos-732",
+  "title": "Erdős Problem #732",
+  "slug": "erdos-732",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall a sequence ... block-compatible if there is a pairwise balanced block design ... such that ... for .... (A pairwise bloc...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/732",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos732Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 732,
+    "erdosUrl": "https://erdosproblems.com/732",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #732 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall a sequence $1< X_1\\leq \\cdots \\leq X_m\\leq n$ block-compatible if there is a pairwise balanced block design $A_1,\\ldots,A_m\\subseteq \\{1,\\ldots,n\\}$ such that $\\lvert A_i\\rvert=X_i$ for $1\\leq i\\leq m$. (A pairwise block design means that every pair in $\\{1,\\ldots,n\\}$ is contained in exactly one of the $A_i$.)\n\nAre there necessary and sufficient conditions for $(X_i)$ to be block-compatible?\n\nIs there some constant $c>0$ such that for all large $n$ there are\\[\\geq \\exp(c n^{1/2}\\log n)\\]many block-compatible sequences for $\\{1,\\ldots,n\\}$?\n\n\n\nErd\\H{o}s noted that a trivial necessary condition is $\\sum_i \\binom{X_i}{2}=\\binom{n}{2}$, but wasn't sure if there would be a reasonable necessary and sufficient condition.\n\nHe could prove that there are\\[\\leq \\exp(O(n^{1/2}\\log n))\\]many block-compatible sequences for $\\{1,\\ldots,n\\}$.\n\nAlon has proved there are at least\\[2^{(\\frac{1}{2}+o(1))n^{1/2}\\log n}\\]many sequences which are block-compatible for $n$.\nSee also [733].\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

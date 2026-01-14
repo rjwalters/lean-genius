@@ -1,0 +1,33 @@
+{
+  "id": "erdos-736",
+  "title": "Erdős Problem #736",
+  "slug": "erdos-736",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with chromatic number .... Is there, for every cardinal number ..., some graph ... of chromatic number ......",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/736",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos736Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 736,
+    "erdosUrl": "https://erdosproblems.com/736",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #736 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph with chromatic number $\\aleph_1$. Is there, for every cardinal number $m$, some graph $G_m$ of chromatic number $m$ such that every finite subgraph of $G_m$ is a subgraph of $G$?\n\n\n\nA conjecture of Walter Taylor. The more general problem replaces $\\aleph_1$ with any uncountable cardinal $\\kappa$.\n\nMore generally, Erd\\H{o}s asks to characterise families $\\mathcal{F}_\\alpha$ of finite graphs such that there is a graph of chromatic number $\\aleph_\\alpha$ all of whose finite subgraphs are in $\\mathcal{F}_\\alpha$.\n\nKomj\\'{a}th \\cite{KoSh05} proved that it is consistent that the answer is no, in that there exists a graph $G$ with chromatic number $\\aleph_1$ such that if $H$ is any graph all of whose finite subgraphs are subgraphs of $G$ then $H$ has chromatic number $\\leq \\aleph_2$.\n\n\n\n\nReferences\n\n\n[KoSh05] Komj\\'ath, P\\'{e}ter and Shelah, Saharon, Finite subgraphs of uncountably chromatic graphs. J. Graph Theory (2005), 28--38.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

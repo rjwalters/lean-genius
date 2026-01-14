@@ -1,0 +1,33 @@
+{
+  "id": "erdos-698",
+  "title": "Erdős Problem #698",
+  "slug": "erdos-698",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some ... such that for all ...\\[\\left( {i},{j}\\right) \\geq h(n)?\\]\n\n\n\nA problem of Erds and Szekeres, who observed t...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/698",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos698Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 698,
+    "erdosUrl": "https://erdosproblems.com/698",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #698 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some $h(n)\\to \\infty$ such that for all $2\\leq i<j\\leq n/2$\\[\\textrm{gcd}\\left( \\binom{n}{i},\\binom{n}{j}\\right) \\geq h(n)?\\]\n\n\n\nA problem of Erd\\H{o}s and Szekeres, who observed that\\[\\textrm{gcd}\\left( \\binom{n}{i},\\binom{n}{j}\\right) \\geq \\frac{\\binom{n}{i}}{\\binom{j}{i}}\\geq 2^i\\](in particular the greatest common divisor is always $>1$). This inequality is sharp for $i=1$, $j=p$, and $n=2p$.\n\nThis was resolved by Bergman \\cite{Be11}, who proved that for any $2\\leq i<j\\leq n/2$\\[\\textrm{gcd}\\left( \\binom{n}{i},\\binom{n}{j}\\right) \\gg n^{1/2}\\frac{2^i}{i^{3/2}},\\]where the implied constant is absolute.\n\n\n\n\nReferences\n\n\n[Be11] Bergman, George M., On common divisors of multinomial coefficients. Bull. Aust. Math. Soc. (2011), 138--157.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

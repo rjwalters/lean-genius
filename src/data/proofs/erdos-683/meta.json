@@ -1,0 +1,33 @@
+{
+  "id": "erdos-683",
+  "title": "Erdős Problem #683",
+  "slug": "erdos-683",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every ... the largest prime divisor of ..., say ..., satisfies\\[P\\left({k}\\right)\\geq \\min(n-k+1, k^{1+c}...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/683",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos683Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 683,
+    "erdosUrl": "https://erdosproblems.com/683",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #683 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every $1\\leq k\\leq n$ the largest prime divisor of $\\binom{n}{k}$, say $P(\\binom{n}{k})$, satisfies\\[P\\left(\\binom{n}{k}\\right)\\geq \\min(n-k+1, k^{1+c})\\]for some constant $c>0$?\n\n\n\nA theorem of Sylvester and Schur (see \\cite{Er34}) states that $P(\\binom{n}{k})>k$ if $k\\leq n/2$. Erd\\H{o}s \\cite{Er55d} proved that there exists some $c>0$ such that, whenever $k\\leq n/2$,\\[P\\left(\\binom{n}{k}\\right)\\gg k\\log k.\\]Erd\\H{o}s \\cite{Er79d} writes it 'seems certain' that this holds for every $c>0$, with only a finite number of exceptions (depending on $c$). Standard heuristics on prime gaps suggest that the largest prime divisor of $\\binom{n}{k}$ is, for $k\\leq n/2$, in fact\\[>e^{c\\sqrt{k}}\\]for some constant $c>0$.\n\nThis is essentially equivalent to [961].\n\n\n\n\nReferences\n\n\n[Er34] Erd\\H{o}s, Paul, A {T}heorem of {S}ylvester and {S}chur. J. London Math. Soc. (1934), 282--288.\n\n[Er55d] Erd\\H{o}s, P., On consecutive integers. Nieuw Arch. Wisk. (3) (1955), 124--128.\n\n[Er79d] Erd\\H{o}s, P., Some unconventional problems in number theory. Acta Math. Acad. Sci. Hungar. (1979), 71-80.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

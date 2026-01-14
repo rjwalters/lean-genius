@@ -54,8 +54,35 @@ def HasPositiveLowerDensity (A : Set ℕ) : Prop :=
 theorem lowerDensity_le_upperDensity (A : Set ℕ) :
     lowerDensity A ≤ upperDensity A := by
   unfold lowerDensity upperDensity
-  -- liminf ≤ limsup for any bounded sequence
-  sorry
+  -- liminf ≤ limsup for any bounded sequence in [0, 1]
+  apply Filter.liminf_le_limsup
+  · -- Bounded above: density ≤ 1
+    use 1
+    simp only [Filter.eventually_map, Filter.eventually_atTop]
+    use 1
+    intro N hN
+    simp only [countingFn]
+    have hN_pos : (0 : ℝ) < N := by positivity
+    rw [div_le_one hN_pos]
+    have h1 : (A ∩ Set.Icc 1 N).ncard ≤ N := by
+      have hsub : A ∩ Set.Icc 1 N ⊆ Set.Icc 1 N := Set.inter_subset_right
+      have hfin : (Set.Icc 1 N).Finite := Set.finite_Icc 1 N
+      calc (A ∩ Set.Icc 1 N).ncard
+          ≤ (Set.Icc 1 N).ncard := Set.ncard_le_ncard hsub hfin
+        _ ≤ N := by
+            rw [Set.ncard_eq_toFinset_card']
+            simp only [Set.toFinset_Icc]
+            simp only [Nat.card_Icc]
+            omega
+    exact_mod_cast h1
+  · -- Bounded below: density ≥ 0
+    use 0
+    simp only [Filter.eventually_map, ge_iff_le, Filter.eventually_atTop]
+    use 1
+    intro N _
+    apply div_nonneg
+    · exact Nat.cast_nonneg _
+    · exact Nat.cast_nonneg _
 
 /-- Positive lower density implies positive upper density. -/
 theorem posLowerDensity_implies_posUpperDensity (A : Set ℕ) :
@@ -131,7 +158,17 @@ theorem sumset_infinite_implies_superset_infinite (A B C : Set ℕ)
   have hinf : Set.Infinite { n | ∃ c ∈ C, n = b + c } := by
     -- The map c ↦ b + c is an injection from C to this set
     -- Since C is infinite, so is this set
-    sorry
+    have heq : { n | ∃ c ∈ C, n = b + c } = (fun c => b + c) '' C := by
+      ext n
+      simp only [Set.mem_setOf_eq, Set.mem_image]
+      constructor
+      · intro ⟨c, hc, hn⟩; exact ⟨c, hc, hn.symm⟩
+      · intro ⟨c, hc, hn⟩; exact ⟨c, hc, hn.symm⟩
+    rw [heq]
+    apply hC.image
+    intro a _ c _ h
+    have : b + a = b + c := h
+    exact Nat.add_left_cancel this
   have hsub : { n | ∃ c ∈ C, n = b + c } ⊆ (B +ₛ C) := by
     intro n ⟨c, hc, hn⟩
     simp only [Sumset, Set.mem_setOf_eq]
@@ -183,15 +220,27 @@ def evenNumbers : Set ℕ := { n | Even n }
 theorem even_has_pos_density : HasPositiveUpperDensity evenNumbers := by
   sorry
 
+/-- The even numbers form an infinite set. -/
+theorem evenNumbers_infinite : evenNumbers.Infinite := by
+  have h : (Set.range (fun n : ℕ => 2 * n)).Infinite := by
+    apply Set.infinite_range_of_injective
+    intro a b hab
+    have : 2 * a = 2 * b := hab
+    exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2) this
+  convert h using 1
+  ext n
+  simp only [evenNumbers, Set.mem_setOf_eq, Set.mem_range, Even]
+  constructor
+  · intro ⟨k, hk⟩; use k; linarith
+  · intro ⟨k, hk⟩; use k; linarith
+
 /-- For even numbers, we can take B = C = {0, 2, 4, ...}. -/
 theorem even_sumset_example :
     ∃ B C : Set ℕ, B.Infinite ∧ C.Infinite ∧ (B +ₛ C) ⊆ evenNumbers := by
   use evenNumbers, evenNumbers
   refine ⟨?_, ?_, ?_⟩
-  · -- Even numbers are infinite (2n for n ∈ ℕ)
-    sorry
-  · -- Same as above
-    sorry
+  · exact evenNumbers_infinite
+  · exact evenNumbers_infinite
   · -- evenNumbers + evenNumbers ⊆ evenNumbers
     intro n hn
     simp only [Sumset, Set.mem_setOf_eq] at hn

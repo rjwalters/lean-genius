@@ -1,0 +1,33 @@
+{
+  "id": "erdos-696",
+  "title": "Erdős Problem #696",
+  "slug": "erdos-696",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the largest ... such that there is a sequence of primes ... all dividing ... with .... Let ... be the largest ... ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/696",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos696Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 696,
+    "erdosUrl": "https://erdosproblems.com/696",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #696 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h(n)$ be the largest $\\ell$ such that there is a sequence of primes $p_1<\\cdots < p_\\ell$ all dividing $n$ with $p_{i+1}\\equiv 1\\pmod{p_i}$. Let $H(n)$ be the largest $u$ such that there is a sequence of integers $d_1<\\cdots < d_u$ all dividing $n$ with $d_{i+1}\\equiv 1\\pmod{d_i}$.\n\nEstimate $h(n)$ and $H(n)$. Is it true that $H(n)/h(n)\\to \\infty$ for almost all $n$?\n\n\n\nErd\\H{o}s writes it is 'easy to see' that $h(n)\\to \\infty$ for almost all $n$ (which is proved in the comments by van Doorn), and believed he could show that the normal order of $h(n)$ is $\\log_*(n)$ (the iterated logarithm).\n\nSee also [695].\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

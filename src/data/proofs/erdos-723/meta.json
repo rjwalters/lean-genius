@@ -1,0 +1,33 @@
+{
+  "id": "erdos-723",
+  "title": "Erdős Problem #723",
+  "slug": "erdos-723",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf there is a finite projective plane of order ... then must ... be a prime power?\n\nA finite projective plane of order ... is...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/723",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos723Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 723,
+    "erdosUrl": "https://erdosproblems.com/723",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #723 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf there is a finite projective plane of order $n$ then must $n$ be a prime power?\n\nA finite projective plane of order $n$ is a collection of subsets of $\\{1,\\ldots,n^2+n+1\\}$ of size $n+1$ such that every pair of elements is contained in exactly one set.\n\n\n\nThese always exist if $n$ is a prime power. This conjecture has been proved for $n\\leq 11$, but it is open whether there exists a projective plane of order $12$.\n\nBruck and Ryser \\cite{BrRy49} have proved that if $n\\equiv 1\\pmod{4}$ or $n\\equiv 2\\pmod{4}$ then $n$ must be the sum of two squares. For example, this rules out $n=6$ or $n=14$. The case $n=10$ was ruled out by computer search \\cite{La97}.\n\n\n\n\nReferences\n\n\n[BrRy49] Bruck, R. H. and Ryser, H. J., The nonexistence of certain finite projective planes. Canad. J. Math. (1949), 88-93.\n\n[La97] Lam, C. W. H., The search for a finite projective plane of order {$10$}\n[{MR}1103185 (92b:51013)]. (1997), 335-355.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

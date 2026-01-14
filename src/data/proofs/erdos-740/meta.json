@@ -1,0 +1,33 @@
+{
+  "id": "erdos-740",
+  "title": "Erdős Problem #740",
+  "slug": "erdos-740",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $...G......r\\geq 1...G......\\leq r...=\\aleph_0...r=3......r...f_r()...\\geq f_r()......\\leq r...r=3......\\leq C$).\n\n\n\n\nRef...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/740",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos740Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 740,
+    "erdosUrl": "https://erdosproblems.com/740",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #740 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\mathfrak{m}$ be an infinite cardinal and $G$ be a graph with chromatic number $\\mathfrak{m}$. Let $r\\geq 1$. Must $G$ contain a subgraph of chromatic number $\\mathfrak{m}$ which does not contain any odd cycle of length $\\leq r$?\n\n\n\nA question of Erd\\H{o}s and Hajnal. R\\\"{o}dl proved this is true if $\\mathfrak{m}=\\aleph_0$ and $r=3$ (see [108] for the finitary version).\n\nMore generally, Erd\\H{o}s and Hajnal asked must there exist (for every cardinal $\\mathfrak{m}$ and integer $r$) some $f_r(\\mathfrak{m})$ such that every graph with chromatic number $\\geq f_r(\\mathfrak{m})$ contains a subgraph with chromatic number $\\mathfrak{m}$ with no odd cycle of length $\\leq r$?\n\nErd\\H{o}s \\cite{Er95d} claimed that even the $r=3$ case of this is open: must every graph with sufficiently large chromatic number contain a triangle free graph with chromatic number $\\mathfrak{m}$?\n\nIn \\cite{Er81} Erd\\H{o}s also asks the same question but with girth (i.e. the subgraph does not contain any cycle at all of length $\\leq C$).\n\n\n\n\nReferences\n\n\n[Er81] Erd\\H{o}s, P., On the combinatorial problems which I would most like to see solved. Combinatorica (1981), 25-42.\n\n[Er95d] Erd\\H{o}s, Paul, On some problems in combinatorial set theory. Publ. Inst. Math. (Beograd) (N.S.) (1995), 61-65.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

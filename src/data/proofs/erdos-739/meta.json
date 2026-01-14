@@ -1,0 +1,33 @@
+{
+  "id": "erdos-739",
+  "title": "Erdős Problem #739",
+  "slug": "erdos-739",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $...G......< ...G......=\\aleph_0...2^{}<2^{}...<...=\\aleph_2...=\\aleph_1...=\\aleph_2...=\\aleph_1$.\n\nIt remains open wheth...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/739",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos739Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 739,
+    "erdosUrl": "https://erdosproblems.com/739",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #739 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\mathfrak{m}$ be an infinite cardinal and $G$ be a graph with chromatic number $\\mathfrak{m}$. Is it true that, for every infinite cardinal $\\mathfrak{n}< \\mathfrak{m}$, there exists a subgraph of $G$ with chromatic number $\\mathfrak{n}$?\n\n\n\nA question of Galvin \\cite{Ga73}, who proved that this is true with $\\mathfrak{m}=\\aleph_0$. Galvin also proved that the stronger version of this statement, in which the subgraph is induced, implies $2^{\\mathfrak{k}}<2^{\\mathfrak{n}}$ for all cardinals $\\mathfrak{k}<\\mathfrak{n}$.\n\nKomj\\'{a}th \\cite{Ko88b} proved it is consistent that\\[2^{\\aleph_0}=2^{\\aleph_1}=2^{\\aleph_2}=\\aleph_3\\]and that there exist graphs which fail this property (with $\\mathfrak{m}=\\aleph_2$ and $\\mathfrak{n}=\\aleph_1$).\n\nShelah \\cite{Sh90} proved that, assuming the axiom of constructibility, the answer is yes with $\\mathfrak{m}=\\aleph_2$ and $\\mathfrak{n}=\\aleph_1$.\n\nIt remains open whether the answer to this question is yes assuming the Generalized Continuum Hypothesis, for example.\n\n\n\n\nReferences\n\n\n[Ga73] Galvin, F., Chromatic numbers of subgraphs. Period. Math. Hungar. (1973), 117--119.\n\n[Ko88b] Komj\\'ath, P\\'{e}ter, Consistency results on infinite graphs. Israel J. Math. (1988), 285--294.\n\n[Sh90] Shelah, Saharon, Incompactness for chromatic numbers of graphs. (1990), 361--371.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

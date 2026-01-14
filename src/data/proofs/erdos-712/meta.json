@@ -1,0 +1,34 @@
+{
+  "id": "erdos-712",
+  "title": "Erdős Problem #712",
+  "slug": "erdos-712",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDetermine, for any ..., the value of\\[_r(n,K_k^r)}{{r}},\\]where ... is the largest number of ...-edges which can placed on .....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/712",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos712Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 712,
+    "erdosUrl": "https://erdosproblems.com/712",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$500"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #712 from erdosproblems.com. Originally offered with a prize of $500.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDetermine, for any $k>r>2$, the value of\\[\\frac{\\mathrm{ex}_r(n,K_k^r)}{\\binom{n}{r}},\\]where $\\mathrm{ex}_r(n,K_k^r)$ is the largest number of $r$-edges which can placed on $n$ vertices so that there exists no set of $k$ vertices which is covered by all $\\binom{k}{r}$ possible $r$-edges.\n\n\n\nTur\\'{an proved} that, when $r=2$, this limit is\\[\\frac{1}{2}\\left(1-\\frac{1}{k-1}\\right).\\]Erd\\H{o}s \\cite{Er81} offered \\$500 for the determination of this value for any fixed $k>r>2$, and \\$1000 for 'clearing up the whole set of problems'.\n\nSee also [500] for the case $r=3$ and $k=4$.\n\n\n\n\nReferences\n\n\n[Er81] Erd\\H{o}s, P., On the combinatorial problems which I would most like to see solved. Combinatorica (1981), 25-42.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

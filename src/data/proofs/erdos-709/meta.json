@@ -1,0 +1,33 @@
+{
+  "id": "erdos-709",
+  "title": "Erdős Problem #709",
+  "slug": "erdos-709",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that, for any ... of size ..., in any interval ... of ... consecutive integers there exist distinct ....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/709",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos709Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 709,
+    "erdosUrl": "https://erdosproblems.com/709",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #709 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be minimal such that, for any $A=\\{a_1,\\ldots,a_n\\}\\subseteq [2,\\infty)\\cap\\mathbb{N}$ of size $n$, in any interval $I$ of $f(n)\\max(A)$ consecutive integers there exist distinct $x_1,\\ldots,x_n\\in I$ such that $a_i\\mid x_i$.\n\nObtain good bounds for $f(n)$, or even an asymptotic formula.\n\n\n\nA problem of Erd\\H{o}s and Sur\\'{a}nyi \\cite{ErSu59}, who proved\\[(\\log n)^c \\ll f(n) \\ll n^{1/2}\\]for some constant $c>0$.\n\nSee also [708].\n\n\n\n\nReferences\n\n\n[ErSu59] Erd\\H{o}s, P\\'{a}l and Sur\\'{a}nyi, J\\'{a}nos, Bemerkungen zu einer Aufgabe eines mathematischen\n{W}ettbewerbs. Mat. Lapok (1959), 39-48.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

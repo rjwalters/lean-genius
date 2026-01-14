@@ -1,0 +1,33 @@
+{
+  "id": "erdos-733",
+  "title": "Erdős Problem #733",
+  "slug": "erdos-733",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall a sequence ... line-compatible if there is a set of ... points in ... such that there are ... lines ... containing at le...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/733",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos733Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 733,
+    "erdosUrl": "https://erdosproblems.com/733",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #733 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall a sequence $1<X_1\\leq\\cdots X_m\\leq n$ line-compatible if there is a set of $n$ points in $\\mathbb{R}^2$ such that there are $m$ lines $\\ell_1,\\ldots,\\ell_m$ containing at least two points, and the number of points on $\\ell_i$ is exactly $X_i$.\n\nProve that there are at most\\[\\exp(O(n^{1/2}))\\]many line-compatible sequences.\n\n\n\nThis problem is essentially the same as [607], but with multiplicities.\n\nErd\\H{o}s writes that it is 'easy' to prove there are at least\\[\\exp(cn^{1/2})\\]many such sequences for some constant $c>0$, but expected proving the upper bound to be difficult. Once it is done, he asked for the existence and value of\\[\\lim_{n\\to \\infty}\\frac{\\log f(n)}{n^{1/2}},\\]where $f(n)$ counts the number of line-compatible sequences.\n\nThis is true, and was proved by Szemer\\'{e}di and Trotter \\cite{SzTr83}.\n\nSee also [732].\n\n\n\n\nReferences\n\n\n[SzTr83] Szemer\\'{e}di, Endre and Trotter, Jr., William T., Extremal problems in discrete geometry. Combinatorica (1983), 381-392.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}
