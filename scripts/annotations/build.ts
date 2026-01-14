@@ -179,6 +179,7 @@ function generateListings(proofs: ProofConfig[]): void {
     wiedijkNumber?: number;
     hilbertNumber?: number;
     millenniumProblem?: string;
+    erdosNumber?: number;
     mathlibCount?: number;
     sorries?: number;
     annotationCount: number;
@@ -213,6 +214,7 @@ function generateListings(proofs: ProofConfig[]): void {
       wiedijkNumber: meta.meta?.wiedijkNumber,
       hilbertNumber: meta.meta?.hilbertNumber,
       millenniumProblem: meta.meta?.millenniumProblem,
+      erdosNumber: meta.meta?.erdosNumber,
       mathlibCount: meta.meta?.mathlibDependencies?.length,
       sorries: meta.meta?.sorries,
       annotationCount,
