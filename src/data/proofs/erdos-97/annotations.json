@@ -1,1 +1,142 @@
-[]
+[
+  {
+    "id": "ann-e97-header",
+    "proofId": "erdos-97",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #97** asks about equidistant vertices in convex polygons.\n\n**Question**: Does every convex polygon have a vertex with no other 4 vertices equidistant from it?\n\n**Status**: OPEN (for k = 4)\n\n**Solved Variants**:\n- k = 3: NO (Danzer 1987)\n- k = 3 unit distance: NO (Fishburn-Reeds 1992)\n\n**Prize**: $100",
+    "mathContext": "Erdős originally conjectured k = 3, but Danzer found a 9-point counterexample. The corrected conjecture for k = 4 remains open.",
+    "significance": "critical",
+    "relatedConcepts": ["erdos", "convex-polygon", "equidistant", "danzer"]
+  },
+  {
+    "id": "ann-e97-background",
+    "proofId": "erdos-97",
+    "range": {
+      "startLine": 27,
+      "endLine": 37
+    },
+    "type": "concept",
+    "title": "Equidistance in Convex Polygons",
+    "content": "For each vertex of a convex polygon, we ask: how many other vertices can be at the same distance from it?\n\nErdős conjectured this should be bounded. Danzer's surprise: even for k = 3, a counterexample exists!\n\nThe 9-point Danzer polygon has exactly 3 vertices equidistant from EVERY vertex.",
+    "mathContext": "The key is that the equidistance radius can vary by vertex in Danzer's construction.",
+    "significance": "key",
+    "relatedConcepts": ["convex", "equidistant", "vertex"]
+  },
+  {
+    "id": "ann-e97-equidistant-def",
+    "proofId": "erdos-97",
+    "range": {
+      "startLine": 45,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "k-Equidistant Property",
+    "content": "**hasKEquidistantAt k A p** says point p has k points in A at some common distance r > 0.\n\n**hasKEquidistantProperty k A** says EVERY point in A has k equidistant neighbors.\n\nThis is the key property that Erdős asked about.",
+    "mathContext": "Formally: ∃ r > 0, k ≤ |{q ∈ A : dist(p,q) = r}|",
+    "significance": "critical",
+    "relatedConcepts": ["equidistant", "filter", "cardinality"]
+  },
+  {
+    "id": "ann-e97-unit-def",
+    "proofId": "erdos-97",
+    "range": {
+      "startLine": 60,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "k-Unit-Distance Property",
+    "content": "**hasKUnitDistanceAt k A p** says p has k points in A at distance exactly 1.\n\n**hasKUnitDistanceProperty k A** says every point has k unit-distance neighbors.\n\nThis is STRONGER than equidistance: the distance is fixed at 1, not just equal.",
+    "mathContext": "Fishburn-Reeds' 20-gon satisfies this for k = 3, not just the weaker equidistant property.",
+    "significance": "key",
+    "relatedConcepts": ["unit-distance", "fixed-distance"]
+  },
+  {
+    "id": "ann-e97-convex-def",
+    "proofId": "erdos-97",
+    "range": {
+      "startLine": 75,
+      "endLine": 80
+    },
+    "type": "definition",
+    "title": "Convex Position",
+    "content": "**isConvexPosition A** says the points form a convex polygon: no point is inside the convex hull of the others.\n\nThis is crucial: without convexity, hypercube embeddings give arbitrarily high equidistance.",
+    "mathContext": "Formally: ∀ p ∈ A, p ∉ convexHull(A \\ {p})",
+    "significance": "key",
+    "relatedConcepts": ["convex-hull", "polygon", "vertices"]
+  },
+  {
+    "id": "ann-e97-question",
+    "proofId": "erdos-97",
+    "range": {
+      "startLine": 89,
+      "endLine": 100
+    },
+    "type": "definition",
+    "title": "The Main Question (OPEN)",
+    "content": "**Erdos97Question** asks: Does every convex polygon have a vertex with no 4 equidistant vertices?\n\nEquivalently: no convex polygon has the 4-equidistant property.\n\nThis remains OPEN after decades.",
+    "mathContext": "The k = 3 case was disproved by Danzer, so Erdős raised the k = 4 case.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "convex", "equidistant"]
+  },
+  {
+    "id": "ann-e97-danzer",
+    "proofId": "erdos-97",
+    "range": {
+      "startLine": 109,
+      "endLine": 128
+    },
+    "type": "theorem",
+    "title": "Danzer's Counterexample (1987)",
+    "content": "**danzerCounterexample** is Danzer's famous 9-point construction.\n\nThere exists a convex 9-gon where EVERY vertex has exactly 3 other vertices equidistant from it.\n\n**Why an axiom?** The explicit coordinates involve √3 and specific rational multiples. See formal-conjectures for details.",
+    "mathContext": "The construction uses 3 groups of 3 points arranged around an equilateral triangle core.",
+    "significance": "critical",
+    "relatedConcepts": ["axiom", "danzer", "counterexample", "9-gon"]
+  },
+  {
+    "id": "ann-e97-fishburn",
+    "proofId": "erdos-97",
+    "range": {
+      "startLine": 137,
+      "endLine": 155
+    },
+    "type": "theorem",
+    "title": "Fishburn-Reeds Result (1992)",
+    "content": "**fishburnReedsExample** is stronger than Danzer: a convex 20-gon where every vertex has 3 vertices at UNIT distance.\n\n**fishburnReedsMinimal** proves 20 is the minimum for this property.\n\nThis uses a fixed distance (1), not just equidistance at varying radii.",
+    "mathContext": "The construction involves a careful arrangement ensuring all relevant distances are exactly 1.",
+    "significance": "key",
+    "relatedConcepts": ["axiom", "fishburn-reeds", "unit-distance", "20-gon"]
+  },
+  {
+    "id": "ann-e97-general",
+    "proofId": "erdos-97",
+    "range": {
+      "startLine": 164,
+      "endLine": 174
+    },
+    "type": "definition",
+    "title": "General k Conjecture (OPEN)",
+    "content": "**GeneralKConjecture** asks: Is there ANY k that works for all convex polygons?\n\nEven this weaker form is unknown! Erdős once claimed Danzer proved no k works, but this was never confirmed.",
+    "mathContext": "The question: ∃ k, ∀ convex A, ¬hasKEquidistantProperty k A",
+    "significance": "key",
+    "relatedConcepts": ["open-problem", "universal", "existence"]
+  },
+  {
+    "id": "ann-e97-hypercube",
+    "proofId": "erdos-97",
+    "range": {
+      "startLine": 202,
+      "endLine": 209
+    },
+    "type": "theorem",
+    "title": "Non-Convex Case: No Bound",
+    "content": "**hypercubeEmbedding** shows that without convexity, there's no bound.\n\nThe d-dimensional hypercube graph (2^d vertices, each with d neighbors) can be embedded in ℝ² with all edges having length 1.\n\nThis gives a (non-convex) polygon where every vertex has d unit-distance neighbors, for any d.",
+    "mathContext": "This is why convexity is essential to the problem.",
+    "significance": "supporting",
+    "relatedConcepts": ["axiom", "hypercube", "non-convex", "embedding"]
+  }
+]

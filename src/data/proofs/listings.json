@@ -6706,16 +6706,22 @@
   },
   {
     "id": "erdos-89",
-    "title": "Erdős Problem #89",
+    "title": "Erdős Problem #89: Distinct Distances in the Plane",
     "slug": "erdos-89",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every set of ... distinct points in ... determine ... many distinct distances?\n\n\n\nA ... integer grid shows that this wou...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Does every set of n distinct points in ℝ² determine ≫ n/√(log n) many distinct distances?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-geometry",
+      "distinct-distances",
+      "extremal",
+      "conjecture"
     ],
+    "dateAdded": "2026-01-13",
+    "mathlibCount": 4,
     "sorries": 1,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-9",
@@ -6745,16 +6751,22 @@
   },
   {
     "id": "erdos-92",
-    "title": "Erdős Problem #92",
+    "title": "Erdős Problem #92: Equidistant Points in the Plane",
     "slug": "erdos-92",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that there exists a set ... of ... points in ... in which every ... has at least ... points in ... eq...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Is f(n) ≤ n^{o(1)}, where f(n) is the maximum k such that some n-point set has k equidistant points from every point?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-geometry",
+      "equidistant",
+      "incidence-geometry",
+      "conjecture"
     ],
-    "sorries": 1,
-    "annotationCount": 0
+    "dateAdded": "2026-01-13",
+    "mathlibCount": 4,
+    "sorries": 2,
+    "annotationCount": 10
   },
   {
     "id": "erdos-93",
@@ -6810,16 +6822,22 @@
   },
   {
     "id": "erdos-97",
-    "title": "Erdős Problem #97",
+    "title": "Erdős Problem #97: Equidistant Vertices in Convex Polygons",
     "slug": "erdos-97",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every convex polygon have a vertex with no other ... vertices equidistant from it?\n\n\n\nErds originally conjectured this (...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Does every convex polygon have a vertex with no other 4 vertices equidistant from it?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "convex-polygon",
+      "equidistant",
+      "unit-distance",
+      "conjecture"
     ],
-    "sorries": 1,
-    "annotationCount": 0
+    "dateAdded": "2026-01-13",
+    "mathlibCount": 3,
+    "sorries": 2,
+    "annotationCount": 10
   },
   {
     "id": "erdos-99",
