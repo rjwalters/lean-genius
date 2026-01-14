@@ -1,34 +1,131 @@
 {
   "id": "erdos-3",
-  "title": "Erdős Problem #3",
+  "title": "Erdős Problem #3: Arithmetic Progressions in Large Sets",
   "slug": "erdos-3",
-  "description": "If ... has ... then must ... contain arbitrarily long arithmetic progressions?",
+  "description": "If A ⊆ ℕ has divergent reciprocal sum, must A contain arbitrarily long arithmetic progressions? OPEN with $5,000 prize. Connected to Szemerédi's theorem and Green-Tao.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/3",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos3Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "szemeredi"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 1,
     "erdosNumber": 3,
     "erdosUrl": "https://erdosproblems.com/3",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$5000"
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$5000",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for eventually properties",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Summable",
+        "description": "Summability of series",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "Finset.sup",
+        "description": "Supremum over finite sets",
+        "module": "Mathlib.Data.Finset.Lattice"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of arithmetic progression containment",
+      "Definition of Roth number r_k(N)",
+      "Axiomatization of major results (Szemerédi, Gowers, Kelley-Meka, Leng-Sah-Sawhney)",
+      "Connection to Green-Tao theorem on primes",
+      "Behrend and Elkin constructions"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #3 from erdosproblems.com. Originally offered with a prize of $5000.",
-    "problemStatement": "If $A\\subseteq \\mathbb{N}$ has $\\sum_{n\\in A}\\frac{1}{n}=\\infty$ then must $A$ contain arbitrarily long arithmetic progressions?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #3 is one of the most important problems in additive combinatorics. It asks whether sets with 'large' reciprocal sum must contain arbitrarily long arithmetic progressions.\n\nThe problem is deeply connected to Szemerédi's theorem (1975), which earned Szemerédi the Abel Prize. Erdős believed solving Problem #3 would lead to proving the primes contain arbitrarily long APs - this was eventually achieved by Green-Tao (2008) through different methods.\n\nThe $5,000 prize remains unclaimed despite 80+ years of progress.",
+    "problemStatement": "**Conjecture (Erdős):** If A ⊆ ℕ has Σ(1/n : n ∈ A) = ∞, then A contains arbitrarily long arithmetic progressions.\n\n**Equivalent formulation:** For all k ≥ 3, is r_k(N) = o(N / log N)?\n\nHere r_k(N) is the maximum size of a subset of {1,...,N} without a k-term arithmetic progression.\n\n**Status:** OPEN. The best bounds fall short of the required threshold.",
+    "proofStrategy": "The formalization defines:\n\n1. `ArithProg a d k`: the k-term AP {a, a+d, a+2d, ..., a+(k-1)d}\n2. `ContainsAP A k`: set A contains some k-term AP\n3. `rothNumber k N`: maximum AP-free subset size (r_k(N))\n4. `HasDivergentSum A`: the reciprocal sum diverges\n5. `Erdos3Conjecture`: the main statement\n\nWe axiomatize the major milestones:\n- Szemerédi's theorem: r_k(N) = o(N)\n- Gowers' bounds: r_k(N) ≪ N / (log log N)^c\n- Kelley-Meka (2023): r_3(N) ≪ N / exp((log N)^{1/11})\n- Leng-Sah-Sawhney (2024): current best general bound",
+    "keyInsights": [
+      "**The gap:** Current bounds give r_k(N) = o(N / exp((log log N)^c)), but we need o(N / log N). This gap seems insurmountable with current methods.",
+      "**Szemerédi → Green-Tao:** Szemerédi's theorem shows positive density implies APs. Green-Tao extended this to primes (density 0 but pseudorandom).",
+      "**Construction vs bound:** Behrend (1946) gives AP-free sets of size N/exp(√log N). The conjecture asks if this can reach N/log N.",
+      "**Kelley-Meka breakthrough:** Their 2023 result r_3(N) ≪ N/exp((log N)^{1/11}) was a massive improvement, but still far from the goal.",
+      "**Why $5,000?** Erdős valued this highly because it bridges additive combinatorics, number theory, and harmonic analysis."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "summary": "Arithmetic progressions, AP-freeness, reciprocal sums",
+      "startLine": 33,
+      "endLine": 57
+    },
+    {
+      "id": "roth-number",
+      "title": "Roth Number r_k(N)",
+      "summary": "Maximum size of AP-free subsets",
+      "startLine": 59,
+      "endLine": 69
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "summary": "Erdős Problem #3 statement and threshold",
+      "startLine": 71,
+      "endLine": 80
+    },
+    {
+      "id": "historical",
+      "title": "Historical Results",
+      "summary": "Roth, Szemerédi, Gowers, Kelley-Meka, Leng-Sah-Sawhney",
+      "startLine": 82,
+      "endLine": 113
+    },
+    {
+      "id": "gap",
+      "title": "The Critical Gap",
+      "summary": "Why the conjecture remains open",
+      "startLine": 115,
+      "endLine": 134
+    },
+    {
+      "id": "constructions",
+      "title": "AP-Free Constructions",
+      "summary": "Behrend and Elkin lower bounds",
+      "startLine": 136,
+      "endLine": 154
+    },
+    {
+      "id": "green-tao",
+      "title": "Green-Tao Connection",
+      "summary": "Primes contain arbitrarily long APs",
+      "startLine": 156,
+      "endLine": 171
+    },
+    {
+      "id": "status",
+      "title": "Problem Status",
+      "summary": "Summary and open status",
+      "startLine": 184,
+      "endLine": 212
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #3, an OPEN $5,000 conjecture asking whether sets with divergent reciprocal sums must contain arbitrarily long arithmetic progressions. The formalization includes the full history from Roth (1953) to Leng-Sah-Sawhney (2024), showing why the problem remains stubbornly open despite 70+ years of progress.",
+    "implications": "This problem sits at the heart of additive combinatorics:\n\n1. **Szemerédi theory:** Extensions of Szemerédi's theorem to sparse sets\n2. **Harmonic analysis:** Gowers' proof uses higher-order Fourier analysis\n3. **Number theory:** Connection to primes via Green-Tao\n4. **Ergodic theory:** Furstenberg's proof uses dynamical systems\n5. **Probabilistic methods:** Random constructions and the probabilistic lens",
+    "openQuestions": [
+      "Can we prove r_k(N) = o(N / log N) for any k ≥ 3?",
+      "Is there a counterexample: a set with divergent sum avoiding some k-AP?",
+      "Can Kelley-Meka methods extend to k > 3?",
+      "What is the true order of magnitude of r_3(N)?"
+    ]
   }
 }

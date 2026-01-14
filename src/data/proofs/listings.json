@@ -1754,17 +1754,20 @@
   },
   {
     "id": "erdos-2",
-    "title": "Erdős Problem #2",
+    "title": "Erdős Problem #2: Covering Systems",
     "slug": "erdos-2",
-    "description": "Can the smallest modulus of a covering system be arbitrarily large? Described by Erdős as 'perhaps my favourite problem'. Hough [Ho15], building on work of Filaseta, Ford, Konyagin, Pomerance, and ...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Can the smallest modulus of a covering system be arbitrarily large? SOLVED: NO (Hough 2015, Balister et al. 2022).",
+    "status": "formalized",
+    "badge": "formalized",
     "tags": [
-      "erdos"
+      "erdos",
+      "covering-systems",
+      "number-theory",
+      "modular-arithmetic"
     ],
     "erdosNumber": 2,
-    "sorries": 1,
-    "annotationCount": 0
+    "sorries": 0,
+    "annotationCount": 20
   },
   {
     "id": "erdos-20",
@@ -3014,17 +3017,22 @@
   },
   {
     "id": "erdos-3",
-    "title": "Erdős Problem #3",
+    "title": "Erdős Problem #3: Arithmetic Progressions in Large Sets",
     "slug": "erdos-3",
-    "description": "If ... has ... then must ... contain arbitrarily long arithmetic progressions?",
-    "status": "pending",
-    "badge": "wip",
+    "description": "If A ⊆ ℕ has divergent reciprocal sum, must A contain arbitrarily long arithmetic progressions? OPEN with $5,000 prize. Connected to Szemerédi's theorem and Green-Tao.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "szemeredi"
     ],
     "erdosNumber": 3,
+    "mathlibCount": 3,
     "sorries": 1,
-    "annotationCount": 0
+    "annotationCount": 17
   },
   {
     "id": "erdos-30",

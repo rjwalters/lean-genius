@@ -1,1 +1,162 @@
-[]
+[
+  {
+    "id": "ann-e3-arithprog-def",
+    "proofId": "erdos-3",
+    "range": { "startLine": 36, "endLine": 37 },
+    "type": "definition",
+    "title": "Arithmetic Progression",
+    "content": "A **k-term arithmetic progression** starting at a with common difference d is the set {a, a+d, a+2d, ..., a+(k-1)d}.\n\nImplemented as a Finset using Finset.map over the range {0, 1, ..., k-1}.",
+    "mathContext": "The injectivity proof uses omega to show a + i*d = a + j*d implies i = j.",
+    "significance": "critical",
+    "relatedConcepts": ["Szemerédi's theorem", "Van der Waerden numbers"]
+  },
+  {
+    "id": "ann-e3-containsap",
+    "proofId": "erdos-3",
+    "range": { "startLine": 40, "endLine": 41 },
+    "type": "definition",
+    "title": "Contains k-AP",
+    "content": "A set **contains a k-term AP** if there exist a, d with d > 0 such that the entire arithmetic progression {a, a+d, ..., a+(k-1)d} is contained in A.\n\nThe condition d > 0 excludes trivial constant sequences.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e3-arbitrarily-long",
+    "proofId": "erdos-3",
+    "range": { "startLine": 44, "endLine": 45 },
+    "type": "definition",
+    "title": "Arbitrarily Long APs",
+    "content": "A set contains **arbitrarily long APs** if for every k, it contains some k-term arithmetic progression.\n\nThis is the key property asked about in Erdos Problem #3.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e3-divergent-sum",
+    "proofId": "erdos-3",
+    "range": { "startLine": 56, "endLine": 57 },
+    "type": "definition",
+    "title": "Divergent Reciprocal Sum",
+    "content": "A set A has **divergent reciprocal sum** if the sum of 1/n over n in A is infinite (not summable).\n\nExamples: primes (Euler 1737), integers, any set with positive density.",
+    "mathContext": "Formalized using Mathlib's Summable predicate (negated).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e3-roth-number",
+    "proofId": "erdos-3",
+    "range": { "startLine": 62, "endLine": 65 },
+    "type": "definition",
+    "title": "Roth Number r_k(N)",
+    "content": "The **Roth number** r_k(N) is the maximum size of a subset of {1,...,N} that avoids k-term arithmetic progressions.\n\nThis is the central quantity in Szemerédi-type problems. The conjecture is equivalent to r_k(N) = o(N / log N).",
+    "significance": "critical",
+    "relatedConcepts": ["Szemerédi's theorem", "Density Hales-Jewett"]
+  },
+  {
+    "id": "ann-e3-conjecture",
+    "proofId": "erdos-3",
+    "range": { "startLine": 79, "endLine": 80 },
+    "type": "definition",
+    "title": "Erdos Problem #3 (OPEN)",
+    "content": "**Main Conjecture:** Every set A with divergent reciprocal sum contains arbitrarily long arithmetic progressions.\n\nThis remains OPEN despite 80+ years of progress and a $5,000 prize.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e3-roth-theorem",
+    "proofId": "erdos-3",
+    "range": { "startLine": 86, "endLine": 88 },
+    "type": "axiom",
+    "title": "Roth's Theorem (1953)",
+    "content": "**First breakthrough:** Sets with positive upper density contain 3-term APs.\n\nRoth proved r_3(N) = o(N), the first non-trivial bound. This won him the Fields Medal.",
+    "mathContext": "Original bound: r_3(N) = O(N / log log N). Improved many times since.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e3-szemeredi",
+    "proofId": "erdos-3",
+    "range": { "startLine": 93, "endLine": 95 },
+    "type": "axiom",
+    "title": "Szemeredi's Theorem (1975)",
+    "content": "**Landmark result:** r_k(N) = o(N) for all k. Sets with positive density contain arbitrarily long APs.\n\nSzemeredi won the Abel Prize (2012) for this theorem and his regularity lemma.",
+    "mathContext": "Original proof was combinatorial. Furstenberg gave ergodic proof (1977), Gowers gave Fourier-analytic proof (2001).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e3-gowers",
+    "proofId": "erdos-3",
+    "range": { "startLine": 99, "endLine": 101 },
+    "type": "axiom",
+    "title": "Gowers' Bounds (2001)",
+    "content": "**Quantitative Szemeredi:** r_k(N) << N / (log log N)^{c_k} for explicit constants c_k.\n\nGowers' proof introduced higher-order Fourier analysis and won him the Fields Medal.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e3-kelley-meka",
+    "proofId": "erdos-3",
+    "range": { "startLine": 105, "endLine": 107 },
+    "type": "axiom",
+    "title": "Kelley-Meka (2023)",
+    "content": "**Breakthrough for k=3:** r_3(N) << N / exp((log N)^{1/11}).\n\nThis was a massive improvement over previous bounds, nearly reaching the Behrend barrier.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e3-leng-sah-sawhney",
+    "proofId": "erdos-3",
+    "range": { "startLine": 111, "endLine": 113 },
+    "type": "axiom",
+    "title": "Leng-Sah-Sawhney (2024)",
+    "content": "**Current best:** r_k(N) << N / exp((log log N)^{c_k}).\n\nThis extends Kelley-Meka methods to general k, but still falls short of the required N / log N.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e3-required-bound",
+    "proofId": "erdos-3",
+    "range": { "startLine": 123, "endLine": 125 },
+    "type": "definition",
+    "title": "Required Bound",
+    "content": "**The threshold:** r_k(N) = o(N / log N).\n\nIf we could prove this for all k, Erdos Problem #3 would be solved. But current bounds only give o(N / exp((log log N)^c)), which is much weaker.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e3-behrend",
+    "proofId": "erdos-3",
+    "range": { "startLine": 142, "endLine": 146 },
+    "type": "axiom",
+    "title": "Behrend Construction (1946)",
+    "content": "**Lower bound:** There exist 3-AP-free sets of size N / exp(c * sqrt(log N)).\n\nBehrend's construction uses spheres in high-dimensional integer lattices. It shows r_3(N) cannot be too small.",
+    "mathContext": "The construction maps points on a sphere to integers, avoiding collinear triples.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e3-green-tao",
+    "proofId": "erdos-3",
+    "range": { "startLine": 160, "endLine": 161 },
+    "type": "axiom",
+    "title": "Green-Tao Theorem (2008)",
+    "content": "**Primes contain arbitrarily long APs.** This confirms that the primes, despite having density 0, contain k-APs for all k.\n\nErdos believed solving Problem #3 would lead to this result.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e3-euler",
+    "proofId": "erdos-3",
+    "range": { "startLine": 164, "endLine": 165 },
+    "type": "axiom",
+    "title": "Euler's Prime Sum (1737)",
+    "content": "**The sum of 1/p over all primes p diverges.** This fundamental result shows primes satisfy the hypothesis of Erdos Problem #3.\n\nIf the conjecture were true, Green-Tao would follow as a corollary.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e3-implies-gt",
+    "proofId": "erdos-3",
+    "range": { "startLine": 168, "endLine": 171 },
+    "type": "theorem",
+    "title": "Erdos #3 Implies Green-Tao",
+    "content": "**Connection:** If Erdos Problem #3 is true, then the primes contain arbitrarily long APs.\n\nProof: Primes have divergent reciprocal sum (Euler), so by the conjecture, they contain all APs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e3-open",
+    "proofId": "erdos-3",
+    "range": { "startLine": 211, "endLine": 212 },
+    "type": "theorem",
+    "title": "Problem Status: OPEN",
+    "content": "**Erdos Problem #3 remains OPEN** with a $5,000 prize.\n\nThe law of excluded middle gives us Erdos3Conjecture or not Erdos3Conjecture, but we don't know which!",
+    "significance": "critical"
+  }
+]
