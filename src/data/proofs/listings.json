@@ -694,17 +694,21 @@
   },
   {
     "id": "erdos-1",
-    "title": "Erdős Problem #1",
+    "title": "Erdős Problem #1: Distinct Subset Sums",
     "slug": "erdos-1",
-    "description": "If ... with ... is such that the subset sums ... are distinct for all ... then\\[N \\gg 2^{n}.\\]",
-    "status": "pending",
-    "badge": "wip",
+    "description": "If A is a subset of {1,...,N} with n elements and all 2^n subset sums are distinct, then N >> 2^n. Erdős's 'first serious problem' (1931). OPEN with $500 prize.",
+    "status": "complete",
+    "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "subset-sums",
+      "extremal-combinatorics"
     ],
     "erdosNumber": 1,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 6
   },
   {
     "id": "erdos-100",
@@ -6558,17 +6562,20 @@
   },
   {
     "id": "erdos-64",
-    "title": "Erdős Problem #64",
+    "title": "Erdős Problem #64: Power of Two Cycles in Min Degree 3 Graphs",
     "slug": "erdos-64",
-    "description": "Does every finite graph with minimum degree at least 3 contain a cycle of length 2k\" role=\"presentation\" style=\"position: relative;\">2k2k2^k for some k&#x2265;2\" role=\"presentation\" style=\"position...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Does every finite graph with minimum degree ≥ 3 contain a cycle of length 2^k for some k ≥ 2? OPEN ($1000 prize).",
+    "status": "formalized",
+    "badge": "formalized",
     "tags": [
-      "erdos"
+      "erdos",
+      "cycles",
+      "minimum-degree",
+      "graph-theory"
     ],
     "erdosNumber": 64,
-    "sorries": 1,
-    "annotationCount": 0
+    "sorries": 0,
+    "annotationCount": 15
   },
   {
     "id": "erdos-641",

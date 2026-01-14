@@ -1,1 +1,64 @@
-[]
+[
+  {
+    "id": "ann-e1-imports",
+    "proofId": "erdos-1",
+    "range": { "startLine": 43, "endLine": 43 },
+    "type": "concept",
+    "title": "Mathlib Import",
+    "content": "Imports the full Mathlib library, giving access to `Finset`, `Function.Injective`, and the algebra of finite sums needed for this formalization.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1-distinct-sums-def",
+    "proofId": "erdos-1",
+    "range": { "startLine": 48, "endLine": 50 },
+    "type": "definition",
+    "title": "Distinct Subset Sums Property",
+    "content": "A finite set A has **distinct subset sums** if the function mapping each subset S to its sum is injective. Formally: different subsets must have different sums.\n\nThis is equivalent to saying all 2^n subset sums are distinct, where n = |A|.",
+    "mathContext": "The definition uses `Function.Injective` on the composition: filter elements in A, then sum. This captures 'S.filter (in A)' which extracts the intersection S cap A.",
+    "significance": "critical",
+    "relatedConcepts": ["Sidon sets", "B_h sequences", "Additive combinatorics"]
+  },
+  {
+    "id": "ann-e1-main-theorem",
+    "proofId": "erdos-1",
+    "range": { "startLine": 52, "endLine": 65 },
+    "type": "theorem",
+    "title": "Erdos Lower Bound: N >= 2^(n-1)",
+    "content": "**Main Result**: If A is a subset of {1,...,N} has n elements with distinct subset sums, then N >= 2^(n-1).\n\nThis is the basic lower bound for Erdos Problem #1. The full conjecture (N >> 2^n without the 1/n factor) remains OPEN with a $500 prize.",
+    "mathContext": "The proof uses a counting argument: if all 2^n subset sums are distinct and bounded by the sum of elements in A, then the maximum element must be large enough to spread out these sums.",
+    "significance": "critical",
+    "relatedConcepts": ["Pigeonhole principle", "Counting arguments"]
+  },
+  {
+    "id": "ann-e1-card-subsets",
+    "proofId": "erdos-1",
+    "range": { "startLine": 58, "endLine": 62 },
+    "type": "tactic",
+    "title": "Counting Subsets Bound",
+    "content": "**Key Step**: Show that |P(A)| <= 2N by using injectivity. Since distinct subset sums give an injection from subsets to [0, sum(A)], and sum(A) <= n*N, we get constraints on the cardinality.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1-max-element",
+    "proofId": "erdos-1",
+    "range": { "startLine": 67, "endLine": 75 },
+    "type": "theorem",
+    "title": "Maximum Element Bound",
+    "content": "**Corollary**: The maximum element of A must be at least 2^(n-1).\n\nThis follows directly from the main theorem: if max(A) < 2^(n-1), then taking N = max(A) would contradict the lower bound.",
+    "mathContext": "Uses `Finset.max'` to extract the maximum element of a nonempty finite set, then applies the main theorem with N = max(A).",
+    "significance": "key",
+    "relatedConcepts": ["Extremal element", "Reduction to main theorem"]
+  },
+  {
+    "id": "ann-e1-spacing",
+    "proofId": "erdos-1",
+    "range": { "startLine": 77, "endLine": 83 },
+    "type": "theorem",
+    "title": "Subset Sum Spacing (Sidon-like)",
+    "content": "**Sidon Property**: For any two different subsets S != T of A, their sums must differ: sum(S) != sum(T).\n\nThis is essentially the definition of distinct subset sums repackaged as a more usable statement.",
+    "mathContext": "The proof unfolds the definition of `hasDistinctSubsetSums` and uses the filter properties to show that distinct subsets produce distinct filtered sums.",
+    "significance": "supporting",
+    "relatedConcepts": ["Sidon sets", "Sum-free sets"]
+  }
+]
