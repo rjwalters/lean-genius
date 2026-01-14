@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-e63-succmod",
+    "proofId": "erdos-63",
+    "range": { "startLine": 36, "endLine": 38 },
+    "type": "definition",
+    "title": "Cyclic Successor",
+    "content": "**Fin.succMod** maps i to (i+1) mod k in Fin k. This is used to define cycle adjacency: vertex i is adjacent to vertex (i+1) mod k.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e63-cycle",
+    "proofId": "erdos-63",
+    "range": { "startLine": 40, "endLine": 44 },
+    "type": "definition",
+    "title": "Cycle Containment",
+    "content": "**ContainsCycleLength G k** means G contains a cycle of length k ≥ 3: an injective function vs : Fin k → V where vs(i) is adjacent to vs((i+1) mod k) for all i.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e63-inf-chi",
+    "proofId": "erdos-63",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "definition",
+    "title": "Infinite Chromatic Number",
+    "content": "**HasInfiniteChromaticNumber G** means G cannot be properly colored with finitely many colors: for all k, there's no proper k-coloring.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e63-min-deg",
+    "proofId": "erdos-63",
+    "range": { "startLine": 55, "endLine": 58 },
+    "type": "definition",
+    "title": "Minimum Degree",
+    "content": "**minDegree G** is the minimum over all vertices v of deg(v). High minimum degree forces the presence of cycles.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e63-high-deg",
+    "proofId": "erdos-63",
+    "range": { "startLine": 68, "endLine": 73 },
+    "type": "theorem",
+    "title": "High Degree Implies Even Cycles",
+    "content": "If G has minimum degree d ≥ 2, then G contains an even cycle of length at most 2d. This is the key observation connecting degree to cycle lengths.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e63-bondy",
+    "proofId": "erdos-63",
+    "range": { "startLine": 75, "endLine": 82 },
+    "type": "theorem",
+    "title": "Bondy-Simonovits Theorem",
+    "content": "**Bondy-Simonovits**: If G has minimum degree d ≥ 2, then G contains cycles of all even lengths from 4 up to some threshold depending on d.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e63-infgraph",
+    "proofId": "erdos-63",
+    "range": { "startLine": 87, "endLine": 91 },
+    "type": "definition",
+    "title": "Infinite Graph",
+    "content": "**InfGraph V** is an infinite simple graph structure: symmetric adjacency (Adj u v → Adj v u) and no self-loops (¬Adj v v).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e63-debruijn",
+    "proofId": "erdos-63",
+    "range": { "startLine": 106, "endLine": 115 },
+    "type": "theorem",
+    "title": "de Bruijn-Erdős Theorem",
+    "content": "**de Bruijn-Erdős**: If an infinite graph has infinite chromatic number, then for every k, it contains a finite induced subgraph with χ > k. This is the key compactness result.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e63-liu-mont",
+    "proofId": "erdos-63",
+    "range": { "startLine": 120, "endLine": 127 },
+    "type": "theorem",
+    "title": "Liu-Montgomery Theorem (2020)",
+    "content": "**Liu-Montgomery**: Every graph with chromatic number > k contains a subgraph with minimum degree > k/2. This bridges high χ to high degree, enabling the cycle argument.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e63-erdos-hajnal",
+    "proofId": "erdos-63",
+    "range": { "startLine": 132, "endLine": 139 },
+    "type": "theorem",
+    "title": "Erdős-Hajnal for Uncountable χ",
+    "content": "**Erdős-Hajnal**: Every graph with uncountable chromatic number contains arbitrarily large complete bipartite subgraphs K_{m,m}. These contain all even cycles.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e63-power-even",
+    "proofId": "erdos-63",
+    "range": { "startLine": 152, "endLine": 157 },
+    "type": "theorem",
+    "title": "Powers of 2 are Even",
+    "content": "**power_of_two_even**: 2^n is even for n ≥ 1. Combined with Bondy-Simonovits, this shows powers of 2 can appear as cycle lengths.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e63-main",
+    "proofId": "erdos-63",
+    "range": { "startLine": 163, "endLine": 186 },
+    "type": "theorem",
+    "title": "Erdős Problem 63 (SOLVED)",
+    "content": "**Main Result**: Every graph with infinite chromatic number contains a cycle of length 2^n for infinitely many n. Proved by Liu-Montgomery (2020).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e63-corollary",
+    "proofId": "erdos-63",
+    "range": { "startLine": 189, "endLine": 198 },
+    "type": "theorem",
+    "title": "Infinitely Many Power Cycles",
+    "content": "**Corollary**: For any N, there exists n ≥ N such that the graph contains a cycle of length 2^n. Direct consequence of the main theorem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e63-penman",
+    "proofId": "erdos-63",
+    "range": { "startLine": 200, "endLine": 207 },
+    "type": "theorem",
+    "title": "Penman's Observation",
+    "content": "**Penman**: For uncountable chromatic number, the result follows from Erdős-Hajnal (K_{m,m} subgraphs contain all even cycles up to 2m).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e63-generalized",
+    "proofId": "erdos-63",
+    "range": { "startLine": 213, "endLine": 221 },
+    "type": "definition",
+    "title": "Generalized Conjecture",
+    "content": "**Conjectured**: The sequence 2^n can likely be replaced by any sufficiently fast-growing sequence, such as squares (n+2)². This remains open.",
+    "significance": "key"
+  }
+]

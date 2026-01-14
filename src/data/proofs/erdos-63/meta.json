@@ -1,33 +1,110 @@
 {
   "id": "erdos-63",
-  "title": "Erdős Problem #63",
+  "title": "Erdős Problem #63: Cycles of Length 2^n in Infinite Chromatic Graphs",
   "slug": "erdos-63",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph with infinite chromatic number contain a cycle of length ... for infinitely many ...?\n\n\n\nConjectured by Mih\\...",
+  "description": "Every graph with infinite chromatic number contains a cycle of length 2^n for infinitely many n. SOLVED by Liu-Montgomery (2020).",
   "meta": {
-    "author": "Unknown",
+    "author": "Mihók-Erdős",
     "sourceUrl": "https://erdosproblems.com/63",
     "date": "",
-    "status": "pending",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos63Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "chromatic-number",
+      "cycles",
+      "infinite-graphs"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "formalized",
+    "sorries": 0,
     "erdosNumber": 63,
     "erdosUrl": "https://erdosproblems.com/63",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #63 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph with infinite chromatic number contain a cycle of length $2^n$ for infinitely many $n$?\n\n\n\nConjectured by Mih\\'{o}k and Erd\\H{o}s. It is likely that $2^n$ can be replaced by any sufficiently quickly growing sequence (e.g. the squares).\n\nDavid Penman has observed that this is certainly true if the graph has uncountable chromatic number, since by a result of Erd\\H{o}s and Hajnal \\cite{ErHa66} such a graph must contain arbitrarily large finite complete bipartite graphs (see also Theorem 3.17 of Reiher \\cite{Re24}).\n\nZach Hunter has observed that this follows from the work of Liu and Montgomery \\cite{LiMo20}: if $G$ has infinite chromatic number then, for infinitely many $r$, it must contain some finite connected subgraph $G_r$ with chromatic number $r$ (via the de Bruijn-Erd\\H{os theorem} \\cite{dBEr51}). Each $G_r$ contains some subgraph $H_r$ with minimum degree at least $r-1$, and hence via Theorem 1.1 of \\cite{LiMo20} there exists some $\\ell_r\\geq r^{1-o(1)}$ such that $H_r$ contains a cycle of every even length in $[(\\log \\ell)^8,\\ell]$.\n\nSee also [64].\n\n\n\n\nReferences\n\n\n[ErHa66] Erd\\H{o}s, P. and Hajnal, A., On chromatic number of graphs and set-systems. Acta Math. Acad. Sci. Hungar. (1966), 61-99.\n\n[LiMo20] Liu, Hong and Montgomery, Richard, A solution to Erd\\H{o}s and Hajnal's odd cycle problem. arXiv:2010.15802 (2020).\n\n[Re24] C. Reiher, Graphs of large girth. arXiv:2403.13571 (2024).\n\n[dBEr51] de Bruijn, N. G. and Erd\\H{o}s, P., A colour problem for infinite graphs and a problem in the\ntheory of relations. Indag. Math. (1951), 369--373.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Conjectured by Mihók and Erdős (1993-1997). Penman observed the result holds for uncountable chromatic number via Erdős-Hajnal. Liu-Montgomery (2020) proved it in full generality using the de Bruijn-Erdős theorem and their result connecting high chromatic number to high minimum degree subgraphs.",
+    "problemStatement": "Does every graph with infinite chromatic number contain a cycle of length 2^n for infinitely many n?",
+    "proofStrategy": "The formalization defines cycle containment, infinite chromatic number, and axiomatizes key theorems: de Bruijn-Erdős (infinite χ implies finite high-χ subgraphs), Liu-Montgomery (high χ implies high minimum degree), Bondy-Simonovits (high degree implies even cycles). The main theorem is axiomatized, with a proved corollary.",
+    "keyInsights": [
+      "de Bruijn-Erdős: Infinite chromatic number implies finite subgraphs with arbitrarily high χ",
+      "Liu-Montgomery (2020): High χ implies high minimum degree subgraphs",
+      "Bondy-Simonovits: High minimum degree implies cycles of all even lengths up to 2d",
+      "For uncountable χ, follows from Erdős-Hajnal (K_{m,m} subgraphs)",
+      "Conjectured generalization: 2^n can be replaced by n² or other fast-growing sequences"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "summary": "Cyclic successor, cycle containment, infinite chromatic number",
+      "startLine": 34,
+      "endLine": 51
+    },
+    {
+      "id": "minimum-degree",
+      "title": "Minimum Degree",
+      "summary": "minDegree definition and ContainsMinDegreeSubgraph",
+      "startLine": 53,
+      "endLine": 64
+    },
+    {
+      "id": "key-lemmas",
+      "title": "Key Lemmas",
+      "summary": "High degree implies even cycles, Bondy-Simonovits",
+      "startLine": 66,
+      "endLine": 83
+    },
+    {
+      "id": "de-bruijn-erdos",
+      "title": "de Bruijn-Erdős Theorem",
+      "summary": "Infinite graphs and finite high-χ subgraphs",
+      "startLine": 85,
+      "endLine": 116
+    },
+    {
+      "id": "liu-montgomery",
+      "title": "Liu-Montgomery Theorem",
+      "summary": "High χ implies high minimum degree subgraphs",
+      "startLine": 118,
+      "endLine": 127
+    },
+    {
+      "id": "erdos-hajnal",
+      "title": "Erdős-Hajnal for Uncountable χ",
+      "summary": "Complete bipartite subgraphs and even cycles",
+      "startLine": 129,
+      "endLine": 144
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "summary": "Erdős Problem 63 statement and theorem",
+      "startLine": 146,
+      "endLine": 187
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries",
+      "summary": "Infinitely many power cycles, Penman's observation",
+      "startLine": 189,
+      "endLine": 209
+    },
+    {
+      "id": "generalization",
+      "title": "Generalization",
+      "summary": "Conjectured extensions to other sequences",
+      "startLine": 211,
+      "endLine": 228
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #63, which asks whether every graph with infinite chromatic number contains cycles of length 2^n for infinitely many n. Liu-Montgomery (2020) proved this affirmatively using the de Bruijn-Erdős theorem and their result on high-χ graphs having high minimum degree subgraphs.",
+    "implications": "This result connects chromatic number theory to cycle structure. It shows that infinite chromatic number graphs have rich cycle structure, specifically containing cycles whose lengths grow exponentially.",
+    "openQuestions": [
+      "Can 2^n be replaced by n² or other fast-growing sequences?",
+      "What is the optimal growth rate for guaranteed cycle lengths?",
+      "Can the Liu-Montgomery bound be improved?"
+    ]
   }
 }
