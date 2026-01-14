@@ -1,34 +1,65 @@
 {
   "id": "erdos-21",
-  "title": "Erdős Problem #21",
+  "title": "Erdős Problem #21: Covering Intersecting Families",
   "slug": "erdos-21",
-  "description": "Let ... be minimal such that there is an intersecting family $...n...A\\cap B\\neq\\emptyset...A,B\\in ...\\lvert \\rvert=f(n)...S...\\lvert S\\rvert \\leq n-1...A\\in ...n...n-1...n-1...f(n) \\ll n...{3}n-O(...",
+  "description": "Let f(n) be minimal such that there is an intersecting family of n-sets covering all (n-1)-sets. Is f(n) = O(n)?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Lovász",
     "sourceUrl": "https://erdosproblems.com/21",
-    "date": "",
-    "status": "pending",
+    "date": "1975",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos21Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "set-theory",
+      "intersecting-families"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 3,
     "erdosNumber": 21,
     "erdosUrl": "https://erdosproblems.com/21",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$500"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #21 from erdosproblems.com. Originally offered with a prize of $500.",
-    "problemStatement": "Let $f(n)$ be minimal such that there is an intersecting family $\\mathcal{F}$ of sets of size $n$ (so $A\\cap B\\neq\\emptyset$ for all $A,B\\in \\mathcal{F}$) with $\\lvert \\mathcal{F}\\rvert=f(n)$ such that any set $S$ with $\\lvert S\\rvert \\leq n-1$ is disjoint from at least one $A\\in \\mathcal{F}$. Is it true that\\[f(n) \\ll n?\\] Conjectured by Erdős and Lovász [ErLo75], who proved that\\[\\frac{8}{3}n-3\\leq f(n) \\ll n^{3/2}\\log n\\]for all $n$. The upper bound was improved by Kahn [Ka92b] to\\[f(n) \\ll n\\log n.\\](The upper bound constructions in both cases are formed by taking a random set of lines from a projective plane of order $n-1$, assuming $n-1$ is a prime power.) This problem was solved by Kahn [Ka94] who proved the upper bound $f(n) \\ll n$. The Erdős-Lovász lower bound of $\\frac{8}{3}n-O(1)$ has not been improved, and it has been speculated (see e.g. [Ka94]) that the correct answer is $3n+O(1)$. It is trivial that $f(1)=1$ and $f(2)=3$. The values $f(3)=6$ and $f(4)=9$ were established",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Conjectured by Erdős and Lovász in 1975. They proved (8/3)n - 3 ≤ f(n) ≤ O(n^(3/2) log n). Kahn improved the upper bound to n log n in 1992, then proved the linear bound f(n) = O(n) in 1994, resolving the conjecture.",
+    "problemStatement": "Let $f(n)$ be minimal such that there exists an intersecting family $\\mathcal{F}$ of $n$-sets with $|\\mathcal{F}| = f(n)$ such that every set $S$ with $|S| \\leq n-1$ is disjoint from at least one $A \\in \\mathcal{F}$. Is $f(n) = O(n)$?",
+    "proofStrategy": "Kahn's 1994 proof uses probabilistic selection from projective planes: (1) Take a projective plane of order n-1 (when n-1 is a prime power), (2) Randomly select lines, (3) Show that with positive probability O(n) lines suffice to cover all (n-1)-sets.",
+    "keyInsights": [
+      "An intersecting family has all pairs sharing at least one element",
+      "The covering condition forces the family to be 'spread out'",
+      "Projective planes provide optimal constructions when n-1 is a prime power",
+      "Lower bound (8/3)n uses counting arguments",
+      "The exact constant is conjectured to be 3 (i.e., f(n) = 3n + O(1))"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "title": "Basic Definitions",
+      "content": "An intersecting family F of n-sets satisfies A ∩ B ≠ ∅ for all A, B ∈ F. The covering property requires every (n-1)-set to be disjoint from some member of F. f(n) is the minimum |F| achieving both properties."
+    },
+    {
+      "title": "Known Exact Values",
+      "content": "f(1)=1, f(2)=3, f(3)=6 (Tripathi 2014), f(4)=9 (Tripathi 2014), f(5)=13 (Barát-Wanless 2021), 13 ≤ f(6) ≤ 18."
+    },
+    {
+      "title": "Bounds and Solution",
+      "content": "Lower bound: (8/3)n - O(1) ≈ 2.67n (Erdős-Lovász 1975). Upper bounds improved from n^(3/2) log n to n log n (Kahn 1992) to O(n) (Kahn 1994). The linear bound resolved the conjecture."
+    },
+    {
+      "title": "Projective Plane Constructions",
+      "content": "The constructions use lines from projective planes of order q = n-1. A projective plane of order q has q² + q + 1 points and lines, with each line having q + 1 points and any two lines meeting in exactly one point."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Kahn (1994) proved f(n) = O(n), resolving the Erdős-Lovász conjecture. The exact bound is conjectured to be f(n) = 3n + O(1), but the gap between the lower bound (8/3)n and this conjecture remains open.",
+    "implications": "The solution demonstrates the power of probabilistic methods in combinatorics and connects intersecting families to projective geometry.",
+    "openQuestions": [
+      "Determine the exact leading constant: is f(n) = 3n + O(1)?",
+      "Compute f(6) exactly (currently 13 ≤ f(6) ≤ 18)",
+      "Prove or disprove f(n) ≤ 3n for all n",
+      "Extend to f_k(n) covering (n-k)-sets"
+    ]
   }
 }

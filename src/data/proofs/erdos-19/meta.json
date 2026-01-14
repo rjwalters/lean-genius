@@ -1,34 +1,64 @@
 {
   "id": "erdos-19",
-  "title": "Erdős Problem #19",
+  "title": "Erdős Problem #19: Erdős-Faber-Lovász Conjecture",
   "slug": "erdos-19",
-  "description": "If ... is an edge-disjoint union of ... copies of ... then is ...?",
+  "description": "If G is an edge-disjoint union of n copies of K_n, then χ(G) = n.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Faber, Lovász",
     "sourceUrl": "https://erdosproblems.com/19",
-    "date": "",
-    "status": "pending",
+    "date": "1972",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos19Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "combinatorics"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 19,
     "erdosUrl": "https://erdosproblems.com/19",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$500"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #19 from erdosproblems.com. Originally offered with a prize of $500.",
-    "problemStatement": "If $G$ is an edge-disjoint union of $n$ copies of $K_n$ then is $\\chi(G)=n$?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The Erdős-Faber-Lovász Conjecture was posed at a party in Boulder, Colorado in September 1972. It became one of the most famous problems in combinatorics, resisting proof for nearly 50 years until Kang, Kelly, Kühn, Methuku, and Osthus resolved it for all sufficiently large n in 2021.",
+    "problemStatement": "If $G$ is an edge-disjoint union of $n$ copies of $K_n$ (the complete graph on $n$ vertices), then $\\chi(G) = n$.",
+    "proofStrategy": "The 2021 proof uses the absorbing method: (1) construct a small absorbing structure that can incorporate leftover vertices, (2) greedily color most vertices, (3) use absorption to handle the remainder. Kahn's earlier asymptotic result χ(G) ≤ (1+o(1))n earned the $100 consolation prize.",
+    "keyInsights": [
+      "Lower bound χ(G) ≥ n is easy: each K_n clique requires n colors",
+      "Upper bound χ(G) ≤ n is the hard part requiring global coordination",
+      "Equivalent to: linear hypergraphs have chromatic index ≤ n",
+      "Equivalent to: nearly disjoint sets admit rainbow partitions",
+      "The absorbing method handles irregular configurations"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "title": "Graph Theory Setup",
+      "content": "The conjecture concerns the chromatic number of union graphs. An EFL family consists of n cliques (copies of K_n) where any two cliques share at most one vertex (edge-disjointness). The union graph has an edge between x and y if they belong to some common clique."
+    },
+    {
+      "title": "Historical Progress",
+      "content": "Hindman proved the conjecture for n < 10. Kahn (1992) proved χ(G) ≤ (1+o(1))n, earning the $100 consolation prize. Various special cases were resolved, including projective planes and Steiner systems. The full resolution came from Kang, Kelly, Kühn, Methuku, and Osthus in 2021."
+    },
+    {
+      "title": "Equivalent Formulations",
+      "content": "The EFL conjecture has several equivalent forms: (1) Linear hypergraph chromatic index bound, (2) Rainbow partition of nearly disjoint sets, (3) Edge-coloring of certain incidence structures. These equivalences connect graph coloring, hypergraph theory, and combinatorial set theory."
+    },
+    {
+      "title": "The Absorbing Method",
+      "content": "The 2021 proof uses the absorbing method, a powerful technique also used to resolve the Ringel conjecture. The key insight is constructing a small absorbing structure that can incorporate any small leftover vertices, allowing greedy coloring to succeed despite irregular configurations."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "The Erdős-Faber-Lovász Conjecture, posed in 1972, was resolved for all sufficiently large n in 2021 using the absorbing method. Combined with Hindman's verification of small cases, the conjecture is now fully proven: every edge-disjoint union of n copies of K_n is n-colorable.",
+    "implications": "The resolution demonstrates the power of the absorbing method in extremal combinatorics and settles a 50-year-old question about graph coloring and hypergraph chromatic indices.",
+    "openQuestions": [
+      "Explicit bounds on the threshold N where the asymptotic proof takes over",
+      "Extensions to k-wise intersections (Erdős-Füredi generalization)",
+      "Algorithmic aspects: finding optimal colorings efficiently"
+    ]
   }
 }

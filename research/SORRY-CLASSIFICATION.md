@@ -145,6 +145,78 @@ Sorries:
 Action: Create Erdos340-provable.lean without erdos_340
 ```
 
+## Critical: Definition Sorries vs Theorem Sorries
+
+**Aristotle only handles theorem/lemma sorries. It skips definition sorries entirely.**
+
+### What Aristotle Can Prove
+
+```lean
+-- ✅ THEOREM SORRY - Aristotle will attempt this
+theorem sidon_lower_bound (A : Finset ℕ) : A.max' hne ≥ A.card * (A.card - 1) / 2 := by
+  sorry
+
+-- ✅ LEMMA SORRY - Aristotle will attempt this
+lemma computeA_22 : computeA (![2, 2] : HomologyClass 2) = 10 := by
+  sorry
+```
+
+### What Aristotle Skips
+
+```lean
+-- ❌ DEFINITION SORRY - Aristotle skips, blocks dependent theorems
+noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ := by sorry
+
+-- ❌ DEF SORRY - Aristotle skips
+def danzerPoints : Finset (EuclideanSpace ℝ (Fin 2)) := sorry
+
+-- ❌ PLACEHOLDER THEOREM - No real content to prove
+theorem erdos_39 : True := by sorry
+```
+
+### Why This Matters
+
+When a definition has a sorry, any theorem using it cannot be proved meaningfully:
+
+```lean
+-- Definition has sorry
+noncomputable def turanNumber : ℕ → ℕ → ℕ := by sorry
+
+-- Theorem depends on undefined definition - Aristotle can't help
+theorem turan_bound (n k : ℕ) : turanNumber n k ≤ ... := by
+  sorry  -- Would need turanNumber to be defined first
+```
+
+### Pre-Submission Checklist (Updated)
+
+Before running `./research/scripts/aristotle-submit.sh`:
+
+1. **Check for definition sorries:**
+   ```bash
+   grep -n "def.*:=.*sorry\|def.*:= by.*sorry" your-file.lean
+   ```
+
+2. **If definition sorries exist:**
+   - Either provide the actual definition
+   - Or use an axiom with clear documentation
+   - Or don't submit (Aristotle won't make progress)
+
+3. **Check for placeholder theorems:**
+   ```bash
+   grep -n "theorem.*: True" your-file.lean
+   ```
+   These provide no value to Aristotle.
+
+### Runtime Expectations (Updated)
+
+| Sorry Type | Aristotle Behavior | Success Rate |
+|------------|-------------------|--------------|
+| Theorem sorry (TRIVIAL) | Attempts, ~1-10 min | ~95% |
+| Theorem sorry (HARD) | Attempts, ~10 min - 6 hr | ~60-80% |
+| Theorem sorry (OPEN) | Spins forever | 0% |
+| **Definition sorry** | **SKIPS entirely** | **0%** |
+| **Placeholder True** | Marks complete, no value | N/A |
+
 ## Success Story: Erdős #728
 
 Aristotle successfully proved Erdős #728 in 6 hours:
@@ -153,3 +225,25 @@ Aristotle successfully proved Erdős #728 in 6 hours:
 - Result: Zero sorries, builds successfully
 
 This demonstrates that HARD problems are worth overnight runs!
+
+## Success Story: MotivicFlagMapsProvable
+
+Aristotle proved ALL 10 theorems in an overnight run:
+- Input: File with complete definitions, only theorem sorries
+- Theorems: GL5_class, Fl5_class, GLn_product_expansion, computeA cases
+- Result: Zero sorries, builds successfully
+
+**Key**: All definitions were complete. Only theorems had sorries.
+
+## Failure Patterns (January 2026)
+
+Jobs that returned "complete" but made no progress:
+
+| Problem | Issue | Outcome |
+|---------|-------|---------|
+| erdos-58 | `chromaticNumber` definition sorry | Theorems axiomatized |
+| erdos-59 | `turanNumber`, `countFreeGraphs` def sorries | No proofs |
+| erdos-97 | `danzerPoints` definition sorry | Construction skipped |
+| erdos-39/494/605/645/650 | Placeholder `True` theorems | No meaningful work |
+
+**Lesson**: Only submit files where definitions are complete.

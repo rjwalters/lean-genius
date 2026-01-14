@@ -483,6 +483,91 @@ lake build Proofs.OnePlusOne
 3. Run `./proofs/scripts/safe-build.sh` to verify
 4. Run `pnpm build` to verify gallery integration
 
+## Aristotle (Proof Search)
+
+Aristotle is an external proof search tool for Lean 4. It can automatically prove theorem sorries by searching for proofs.
+
+### When to Use Aristotle
+
+| Tool | Strength | Use For |
+|------|----------|---------|
+| **Claude** | Creative reasoning | OPEN problems, proof architecture |
+| **Aristotle** | Proof search | KNOWN results needing formalization |
+
+### Key Limitations
+
+**Aristotle only proves theorem/lemma sorries. It skips definition sorries.**
+
+```lean
+-- ✅ Aristotle CAN prove:
+theorem sidon_bound : A.card ≤ n := by sorry
+lemma computeA_22 : computeA β = 10 := by sorry
+
+-- ❌ Aristotle SKIPS:
+def chromaticNumber (G : SimpleGraph V) : ℕ := by sorry
+def danzerPoints : Finset Point := sorry
+theorem placeholder : True := by sorry  -- No value
+```
+
+### Pre-Submission Checklist
+
+1. **No definition sorries** - Aristotle will skip these and dependent theorems fail
+2. **No placeholder True theorems** - Provide real mathematical content
+3. **No OPEN conjectures** - Aristotle searches for existing proofs, can't discover new ones
+
+```bash
+# Check for problems
+grep -n "def.*:=.*sorry" your-file.lean          # Definition sorries
+grep -n "theorem.*: True" your-file.lean         # Placeholder theorems
+grep -n "theorem erdos_[0-9]*\s*:" your-file.lean # Potential OPEN problems
+```
+
+### Workflow
+
+```bash
+# Submit file for overnight processing
+./research/scripts/aristotle-submit.sh proofs/Proofs/MyProof.lean my-problem "Notes"
+
+# Check status of all jobs
+./research/scripts/aristotle-status.sh
+
+# Retrieve completed solutions
+./research/scripts/aristotle-status.sh --retrieve
+```
+
+### Job Tracking
+
+Jobs are tracked in `research/aristotle-jobs.json`:
+
+```bash
+# View active jobs
+cat research/aristotle-jobs.json | jq '.jobs[] | select(.status == "submitted")'
+
+# Count by status
+cat research/aristotle-jobs.json | jq '[.jobs[] | .status] | group_by(.) | map({status: .[0], count: length})'
+```
+
+### Success Patterns
+
+- **MotivicFlagMapsProvable**: 10/10 theorems proved (all definitions complete)
+- **Erdős #728**: 6-hour overnight run, 1416 lines of proof
+- **Erdős #1**: 3/3 theorems proved in 44 minutes
+
+### Failure Patterns
+
+| Problem | Issue | Result |
+|---------|-------|--------|
+| erdos-58 | `chromaticNumber` def sorry | Theorems axiomatized |
+| erdos-97 | `danzerPoints` def sorry | Construction skipped |
+| erdos-39 | Placeholder `True` theorem | No progress |
+
+**Lesson**: Only submit files where all definitions are complete.
+
+### Documentation
+
+- `research/SORRY-CLASSIFICATION.md` - Classification guide
+- `research/aristotle-jobs.json` - Job history and learnings
+
 ## Troubleshooting
 
 ### Common Issues

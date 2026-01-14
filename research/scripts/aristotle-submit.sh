@@ -100,6 +100,43 @@ echo "$SORRIES" | while read -r name; do
     fi
 done
 
+# Check for definition sorries (Aristotle skips these entirely)
+DEF_SORRIES=$(grep -E "^(noncomputable )?def.*:=.*sorry|^(noncomputable )?def.*:= by.*sorry" "$LEAN_FILE" 2>/dev/null || true)
+if [ -n "$DEF_SORRIES" ]; then
+    log_warn "Definition sorries detected (Aristotle will SKIP these):"
+    echo "$DEF_SORRIES" | while read -r line; do
+        name=$(echo "$line" | sed 's/.*def \([a-zA-Z0-9_]*\).*/\1/')
+        echo -e "  ${YELLOW}def $name${NC} - Aristotle cannot define data, only prove theorems"
+    done
+    echo ""
+    echo -e "${RED}WARNING:${NC} Aristotle skips definition sorries entirely."
+    echo "         Theorems depending on these definitions cannot be proved."
+    echo ""
+    echo "Options:"
+    echo "  1. Provide actual definitions (best)"
+    echo "  2. Convert to axioms with proof sketches"
+    echo "  3. Submit anyway (dependent theorems will fail)"
+    echo ""
+    read -p "Send to Aristotle anyway? (y/N) " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        log_info "Tip: Complete definitions before submission for best results."
+        exit 0
+    fi
+    log_warn "Proceeding - definition sorries will be skipped."
+fi
+
+# Check for placeholder True theorems
+PLACEHOLDER_THEOREMS=$(grep -E "theorem.*: True :=" "$LEAN_FILE" 2>/dev/null || true)
+if [ -n "$PLACEHOLDER_THEOREMS" ]; then
+    log_warn "Placeholder 'True' theorems detected (no value to Aristotle):"
+    echo "$PLACEHOLDER_THEOREMS" | while read -r line; do
+        name=$(echo "$line" | sed 's/.*theorem \([a-zA-Z0-9_]*\).*/\1/')
+        echo -e "  ${YELLOW}$name : True${NC} - trivial, provides no formalization value"
+    done
+    echo ""
+fi
+
 # Check for potential OPEN conjectures (heuristic: names containing 'erdos_' followed by number only)
 OPEN_CONJECTURES=$(echo "$SORRIES" | grep -E "^erdos_[0-9]+$" || true)
 if [ -n "$OPEN_CONJECTURES" ]; then

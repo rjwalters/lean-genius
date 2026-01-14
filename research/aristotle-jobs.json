@@ -177,8 +177,14 @@
         "theorem kEquidistant_implies_unitDistance_bound (k : ℕ)"
       ],
       "notes": "Resubmitted after previous job expired. HARD sorry: kEquidistant_implies_unitDistance_bound (counting argument). danzerPoints is a construction.",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": {
+        "timestamp": "2026-01-14T14:30:00Z",
+        "percent": 100,
+        "runtime_minutes": 0
+      },
+      "outcome": "Definition sorries skipped (danzerPoints). No theorems proved - needs explicit construction.",
+      "theorems_proven": []
     },
     {
       "project_id": "a3c19e5a-dc0a-4bb4-baac-200c7d650834",
@@ -191,8 +197,14 @@
         "theorem sorry"
       ],
       "notes": "Counting G-free graphs. Definition sorries + theorem sorries.",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": {
+        "timestamp": "2026-01-14T14:30:00Z",
+        "percent": 100,
+        "runtime_minutes": 0
+      },
+      "outcome": "Definition sorries skipped (turanNumber, countFreeGraphs). Theorem sorries remain.",
+      "theorems_proven": []
     },
     {
       "project_id": "7602a683-b598-440f-b374-1f546d757b19",
@@ -216,8 +228,14 @@
         "chromaticNumber"
       ],
       "notes": "Chromatic number vs odd cycle lengths. Definition sorry.",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": {
+        "timestamp": "2026-01-14T14:30:00Z",
+        "percent": 100,
+        "runtime_minutes": 0
+      },
+      "outcome": "Definition sorry skipped (chromaticNumber). Main theorems axiomatized instead of proved.",
+      "theorems_proven": []
     },
     {
       "project_id": "fa978701-5c8f-487c-b695-be2bb5785a24",
@@ -234,8 +252,26 @@
         "theorem triangular_sum (n : ℕ) :"
       ],
       "notes": "GL5, Fl5, computeA cases - overnight run",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": {
+        "timestamp": "2026-01-14T14:30:00Z",
+        "percent": 100,
+        "runtime_minutes": 0
+      },
+      "outcome": "ALL 10 THEOREMS PROVED. GL5_class, Fl5_class, GLn_product_expansion, triangular_sum, computeA_111/22/31, dimension_GLn_affine, L_ne_zero, flag_variety_dimension",
+      "integrated": "2026-01-14",
+      "theorems_proven": [
+        "GL5_class",
+        "Fl5_class",
+        "GLn_product_expansion",
+        "triangular_sum",
+        "computeA_111_expanded",
+        "computeA_22",
+        "computeA_31",
+        "dimension_GLn_affine",
+        "L_ne_zero",
+        "flag_variety_dimension"
+      ]
     },
     {
       "project_id": "e51523ca-5b2d-4052-a390-f17dcb415c05",
@@ -246,8 +282,14 @@
         "theorem erdos_39 : True := by"
       ],
       "notes": "Sidon sets growth rate -  prize",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": {
+        "timestamp": "2026-01-14T14:30:00Z",
+        "percent": 100,
+        "runtime_minutes": 0
+      },
+      "outcome": "Placeholder True theorem - no meaningful progress.",
+      "theorems_proven": []
     },
     {
       "project_id": "72e3d02b-bce4-492d-a9a4-1230155b1dcf",
@@ -258,8 +300,14 @@
         "theorem erdos_605 : True := by"
       ],
       "notes": "Sphere point distances",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": {
+        "timestamp": "2026-01-14T14:30:00Z",
+        "percent": 100,
+        "runtime_minutes": 0
+      },
+      "outcome": "Placeholder True theorem - no meaningful progress.",
+      "theorems_proven": []
     },
     {
       "project_id": "800addf2-2717-4da4-b935-1a2f90cc3513",
@@ -270,8 +318,14 @@
         "theorem erdos_494 : True := by"
       ],
       "notes": "Sum multisets determine sets",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": {
+        "timestamp": "2026-01-14T14:30:00Z",
+        "percent": 100,
+        "runtime_minutes": 0
+      },
+      "outcome": "Placeholder True theorem - no meaningful progress.",
+      "theorems_proven": []
     },
     {
       "project_id": "5e479629-8e9d-4472-a84f-1adbeaef3612",
@@ -282,8 +336,14 @@
         "theorem erdos_645 : True := by"
       ],
       "notes": "Monochromatic AP with d>x",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": {
+        "timestamp": "2026-01-14T14:30:00Z",
+        "percent": 100,
+        "runtime_minutes": 0
+      },
+      "outcome": "Placeholder True theorem - no meaningful progress.",
+      "theorems_proven": []
     },
     {
       "project_id": "9089602b-d0ea-49ec-8258-b8f6b9636391",
@@ -294,8 +354,14 @@
         "theorem erdos_650 : True := by"
       ],
       "notes": "Interval representation",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": {
+        "timestamp": "2026-01-14T14:30:00Z",
+        "percent": 100,
+        "runtime_minutes": 0
+      },
+      "outcome": "Placeholder True theorem - no meaningful progress.",
+      "theorems_proven": []
     }
   ],
   "completed": [],

@@ -404,9 +404,8 @@ theorem dim_formula_gauss_sum (d : ℕ) :
 theorem dim_formula_shifted_sum (d : ℕ) :
     ∑ i ∈ Finset.range d, (i + 1) = d + d * (d - 1) / 2 := by
   have h1 : ∑ i ∈ Finset.range d, (i + 1) = ∑ i ∈ Finset.range d, i + d := by
-    rw [← Finset.sum_add_distrib]
-    simp [Finset.card_range]
-  rw [h1, Finset.sum_range_id]
+    simp only [Finset.sum_add_distrib, Finset.sum_const, Finset.card_range, smul_eq_mul, mul_one]
+  rw [h1, Finset.sum_range_id, add_comm]
 
 /-!
 ## Part VIII-D: Remarks on AI Collaboration
