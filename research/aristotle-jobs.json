@@ -391,6 +391,112 @@
       "notes": "Happy Ending Problem - small cases f(3), f(4) bounds",
       "status": "submitted",
       "last_check": null
+    },
+    {
+      "project_id": "3836c8b3-652d-4e50-9e16-25cec962702a",
+      "file": "proofs/Proofs/Erdos45Problem.lean",
+      "problem_id": "erdos-45",
+      "submitted": "2026-01-14T19:34:08Z",
+      "sorries": [
+        "lemma egyptian_fraction_bound (D' : Finset ℕ) (hsum : reciprocalSum D' = 1)",
+        "theorem croot_existence (k : ℕ) (hk : k ≥ 2) :"
+      ],
+      "notes": "Monochromatic divisor sums - Croot theorem",
+      "status": "submitted",
+      "last_check": null
+    },
+    {
+      "project_id": "bd1d02a6-a276-4d4f-9059-d03322d9ff20",
+      "file": "proofs/Proofs/Erdos157Problem.lean",
+      "problem_id": "erdos-157",
+      "submitted": "2026-01-14T19:34:20Z",
+      "sorries": [
+        "def exampleSidonSet : Finset ℕ := {1, 2, 5, 10, 11, 13}",
+        "def IsSidonAlt (A : Set ℕ) : Prop :=",
+        "theorem example_is_sidon : IsSidon (↑exampleSidonSet : Set ℕ) := by",
+        "theorem pilatte_existence : Erdos157Conjecture := by",
+        "theorem powers_of_two_sidon : IsSidon { n | ∃ k : ℕ, n = 2^k } := by",
+        "theorem sidon_iff_sidon_alt (A : Set ℕ) : IsSidon A ↔ IsSidonAlt A := by",
+        "theorem sidon_not_basis_2 (A : Set ℕ) (hA : A.Infinite) (hSidon : IsSidon A) :"
+      ],
+      "notes": "Sidon asymptotic basis - Pilatte theorem",
+      "status": "submitted",
+      "last_check": null
+    },
+    {
+      "project_id": "53360f82-31b2-45ac-b1c7-a08905f9d093",
+      "file": "proofs/Proofs/Erdos547Problem.lean",
+      "problem_id": "erdos-547",
+      "submitted": "2026-01-14T19:34:23Z",
+      "sorries": [
+        "theorem bound_is_tight :",
+        "theorem chvatal_bound (T : SimpleGraph V) (hT : IsTree T) :",
+        "theorem tree_iff_tree_alt (G : SimpleGraph V) (hconn : G.Connected) :",
+        "theorem tree_ramsey_bound (T : SimpleGraph V) (hT : IsTree T) :"
+      ],
+      "notes": "Tree Ramsey bounds - Zhao et al",
+      "status": "submitted",
+      "last_check": null
+    },
+    {
+      "project_id": "928125ee-8d71-434d-b3d1-fdb1961fa495",
+      "file": "proofs/Proofs/Erdos3Problem.lean",
+      "problem_id": "erdos-3",
+      "submitted": "2026-01-14T19:34:40Z",
+      "sorries": [
+        ""
+      ],
+      "notes": "AP in dense sets - Szemeredi bound implication",
+      "status": "submitted",
+      "last_check": null
+    },
+    {
+      "project_id": "a6f2ce5b-20bd-4378-bf6d-8f8d08c2663d",
+      "file": "proofs/Proofs/Erdos4Problem.lean",
+      "problem_id": "erdos-4",
+      "submitted": "2026-01-14T19:34:44Z",
+      "sorries": [
+        "theorem improved_stronger (n : ℕ) (hn : n ≥ 100) :"
+      ],
+      "notes": "Prime gaps - technical inequality",
+      "status": "submitted",
+      "last_check": null
+    },
+    {
+      "project_id": "cf7852f2-cf1f-4b06-b4a6-3d957ca72c76",
+      "file": "proofs/Proofs/Erdos8Problem.lean",
+      "problem_id": "erdos-8",
+      "submitted": "2026-01-14T19:35:01Z",
+      "sorries": [
+        ""
+      ],
+      "notes": "Coverage problem",
+      "status": "submitted",
+      "last_check": null
+    },
+    {
+      "project_id": "7f6e1638-f769-4fb4-b5ce-8516686fb862",
+      "file": "proofs/Proofs/Erdos12Problem.lean",
+      "problem_id": "erdos-12",
+      "submitted": "2026-01-14T19:35:11Z",
+      "sorries": [
+        "theorem powersOfTwo_divisibility_free : IsDivisibilityFree powersOfTwo := by"
+      ],
+      "notes": "Number theory",
+      "status": "submitted",
+      "last_check": null
+    },
+    {
+      "project_id": "90c8b47f-ec7c-4f2b-8340-082f59fe9f68",
+      "file": "proofs/Proofs/Erdos30Problem.lean",
+      "problem_id": "erdos-30",
+      "submitted": "2026-01-14T19:35:14Z",
+      "sorries": [
+        "theorem sidon_is_b2 (A : Finset ℕ) : IsSidonSet A ↔ IsBhSet A 2 := by"
+      ],
+      "notes": "Covering systems",
+      "status": "submitted",
+      "last_check": null
     }
   ],
   "completed": [],

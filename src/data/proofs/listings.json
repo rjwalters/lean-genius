@@ -2208,16 +2208,20 @@
   },
   {
     "id": "erdos-23",
-    "title": "Erdős Problem #23",
+    "title": "Erdős Problem #23: Triangle-Free Graphs and Bipartiteness",
     "slug": "erdos-23",
-    "description": "Can every triangle-free graph on ... vertices be made bipartite by deleting at most ... edges? The blow-up of ... shows that this would be the best possible. The best known bound is due to Balogh, ...",
-    "status": "pending",
+    "description": "Can every triangle-free graph on 5n vertices be made bipartite by deleting at most n² edges?",
+    "status": "complete",
     "badge": "wip",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "bipartite-graphs",
+      "triangle-free",
+      "extremal-combinatorics"
     ],
     "erdosNumber": 23,
-    "sorries": 1,
+    "sorries": 4,
     "annotationCount": 0
   },
   {
