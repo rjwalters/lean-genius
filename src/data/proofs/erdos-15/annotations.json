@@ -1,1 +1,173 @@
-[]
+[
+  {
+    "id": "ann-e15-nthprime",
+    "proofId": "erdos-15",
+    "range": { "startLine": 52, "endLine": 55 },
+    "type": "definition",
+    "title": "n-th Prime",
+    "content": "**nthPrime n** is the n-th prime (1-indexed). Uses Nat.nth to enumerate elements satisfying Nat.Prime.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e15-term",
+    "proofId": "erdos-15",
+    "range": { "startLine": 57, "endLine": 60 },
+    "type": "definition",
+    "title": "Alternating Prime Term",
+    "content": "**alternatingPrimeTerm n** = (-1)^n · n / p_n. The n-th term of the alternating series.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e15-partialsum",
+    "proofId": "erdos-15",
+    "range": { "startLine": 62, "endLine": 64 },
+    "type": "definition",
+    "title": "Partial Sums",
+    "content": "**alternatingPrimePartialSum N** = Σ_{n=0}^N alternatingPrimeTerm(n). The N-th partial sum.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e15-converges",
+    "proofId": "erdos-15",
+    "range": { "startLine": 66, "endLine": 68 },
+    "type": "definition",
+    "title": "Convergence Definition",
+    "content": "**AlternatingPrimeSeriesConverges**: The series converges if partial sums tend to a limit L.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e15-pnt",
+    "proofId": "erdos-15",
+    "range": { "startLine": 76, "endLine": 80 },
+    "type": "axiom",
+    "title": "Prime Number Theorem",
+    "content": "**prime_number_theorem**: p_n / (n log n) → 1 as n → ∞. Fundamental result in analytic number theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e15-terms0",
+    "proofId": "erdos-15",
+    "range": { "startLine": 82, "endLine": 86 },
+    "type": "axiom",
+    "title": "Terms Tend to Zero",
+    "content": "**terms_tend_to_zero**: n/p_n → 0 as n → ∞. Follows from PNT: n/p_n ~ 1/log n → 0.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e15-altterms0",
+    "proofId": "erdos-15",
+    "range": { "startLine": 88, "endLine": 93 },
+    "type": "axiom",
+    "title": "Alternating Terms to Zero",
+    "content": "**alternating_terms_to_zero**: |a_n| → 0. Necessary but not sufficient for alternating series convergence.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e15-notmono",
+    "proofId": "erdos-15",
+    "range": { "startLine": 105, "endLine": 116 },
+    "type": "axiom",
+    "title": "Not Monotone Decreasing",
+    "content": "**not_monotone_decreasing**: n/p_n is NOT decreasing. Around twin primes, the ratio can increase (e.g., 5/11 < 6/13).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e15-hl",
+    "proofId": "erdos-15",
+    "range": { "startLine": 125, "endLine": 132 },
+    "type": "definition",
+    "title": "Hardy-Littlewood Conjecture",
+    "content": "**HardyLittlewoodConjecture**: Predicts asymptotic counts for prime constellations. A deep unsolved conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e15-tao",
+    "proofId": "erdos-15",
+    "range": { "startLine": 134, "endLine": 139 },
+    "type": "axiom",
+    "title": "Tao's Conditional Result (2023)",
+    "content": "**tao_conditional_convergence**: Assuming Hardy-Littlewood, the series converges. The best known result.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e15-gap",
+    "proofId": "erdos-15",
+    "range": { "startLine": 148, "endLine": 150 },
+    "type": "definition",
+    "title": "Prime Gap",
+    "content": "**primeGap n** = p_{n+1} - p_n. The gap between consecutive primes.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e15-conj1",
+    "proofId": "erdos-15",
+    "range": { "startLine": 152, "endLine": 156 },
+    "type": "definition",
+    "title": "Erdős Gap Conjecture 1",
+    "content": "**ErdosGapConjecture1**: Σ(-1)^n/(n · g_n) converges. Still open.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e15-conj2",
+    "proofId": "erdos-15",
+    "range": { "startLine": 158, "endLine": 164 },
+    "type": "definition",
+    "title": "Erdős Gap Conjecture 2 (PROVED)",
+    "content": "**ErdosGapConjecture2**: Σ(-1)^n/g_n diverges. Proved via Zhang's bounded gaps theorem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e15-zhang",
+    "proofId": "erdos-15",
+    "range": { "startLine": 166, "endLine": 170 },
+    "type": "axiom",
+    "title": "Zhang's Bounded Gaps (2014)",
+    "content": "**zhang_bounded_gaps**: Infinitely many prime gaps ≤ H for some H. Revolutionary breakthrough, later improved to H ≤ 246.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e15-conj2true",
+    "proofId": "erdos-15",
+    "range": { "startLine": 172, "endLine": 176 },
+    "type": "axiom",
+    "title": "Gap Conjecture 2 is True",
+    "content": "**erdos_gap_conjecture2_true**: Bounded gaps imply Σ(-1)^n/g_n has infinitely many large terms, so diverges.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e15-notfinite",
+    "proofId": "erdos-15",
+    "range": { "startLine": 194, "endLine": 203 },
+    "type": "axiom",
+    "title": "Not Finitely Resolvable",
+    "content": "**not_finitely_resolvable**: No finite computation can determine convergence. The tail behavior is unpredictable.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e15-noabs",
+    "proofId": "erdos-15",
+    "range": { "startLine": 211, "endLine": 219 },
+    "type": "axiom",
+    "title": "No Absolute Convergence",
+    "content": "**no_absolute_convergence**: Σ n/p_n diverges since n/p_n ~ 1/log n and Σ 1/log n diverges.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e15-harmlog",
+    "proofId": "erdos-15",
+    "range": { "startLine": 221, "endLine": 225 },
+    "type": "axiom",
+    "title": "Harmonic-Log Diverges",
+    "content": "**harmonic_log_diverges**: Σ 1/log n diverges (faster than harmonic series).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e15-empirical",
+    "proofId": "erdos-15",
+    "range": { "startLine": 234, "endLine": 239 },
+    "type": "axiom",
+    "title": "Empirical Limit",
+    "content": "**empirical_limit_around_minus_one**: Partial sums appear to oscillate around -1. Numerical evidence only, not a proof.",
+    "significance": "supporting"
+  }
+]

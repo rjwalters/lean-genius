@@ -1,33 +1,107 @@
 {
   "id": "erdos-15",
-  "title": "Erdős Problem #15",
+  "title": "Erdős Problem #15: Alternating Prime Series",
   "slug": "erdos-15",
-  "description": "Is it true that\\[\\sum_{n=1}^\\infty(-1)^n{p_n}\\]converges, where ... is the sequence of primes?",
+  "description": "Does the alternating series Σ(-1)^n · n/p_n converge? OPEN problem, conditionally proved by Tao (2023) assuming Hardy-Littlewood.",
   "meta": {
-    "author": "Unknown",
+    "author": "Tao (2023, conditional)",
     "sourceUrl": "https://erdosproblems.com/15",
-    "date": "",
-    "status": "pending",
+    "date": "2023",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos15Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "analytic-number-theory",
+      "primes",
+      "series-convergence",
+      "open-problem"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "formalized",
+    "sorries": 0,
     "erdosNumber": 15,
     "erdosUrl": "https://erdosproblems.com/15",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #15 from erdosproblems.com.",
-    "problemStatement": "Is it true that\\[\\sum_{n=1}^\\infty(-1)^n\\frac{n}{p_n}\\]converges, where $p_n$ is the sequence of primes?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem asks about the convergence of an alternating series involving primes. The Prime Number Theorem gives p_n ~ n log n, so n/p_n ~ 1/log n → 0. However, the Alternating Series Test requires monotonicity, which fails here due to irregular prime gaps. Tao (2023) proved conditional convergence assuming Hardy-Littlewood.",
+    "problemStatement": "Is it true that Σ_{n=1}^∞ (-1)^n · n/p_n converges, where p_n is the n-th prime?",
+    "proofStrategy": "The formalization defines nthPrime via Nat.nth, the alternating term (-1)^n · n/p_n, and partial sums. The Prime Number Theorem implies terms → 0, but non-monotonicity prevents direct application of Leibniz test. Tao's conditional result and related Erdős conjectures about prime gap series are axiomatized. Zhang's bounded gaps theorem resolves one related conjecture.",
+    "keyInsights": [
+      "Status: OPEN - cannot be resolved by finite computation",
+      "Tao (2023): Converges conditionally assuming Hardy-Littlewood prime tuples conjecture",
+      "Alternating Series Test fails: n/p_n is NOT monotonically decreasing (irregular prime gaps)",
+      "No absolute convergence: Σ n/p_n ~ Σ 1/log n diverges",
+      "Zhang (2014): Bounded gaps imply Σ(-1)^n/g_n diverges (related Erdős conjecture proved)",
+      "Empirical evidence: partial sums oscillate around ≈ -1"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "background",
+      "title": "Background",
+      "summary": "Why the problem is hard - PNT and non-monotonicity",
+      "startLine": 32,
+      "endLine": 46
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "summary": "nthPrime, alternatingPrimeTerm, partial sums",
+      "startLine": 48,
+      "endLine": 68
+    },
+    {
+      "id": "pnt-consequences",
+      "title": "Prime Number Theorem Consequences",
+      "summary": "Terms tend to zero but not monotonically",
+      "startLine": 70,
+      "endLine": 116
+    },
+    {
+      "id": "tao-result",
+      "title": "Tao's Conditional Result (2023)",
+      "summary": "Convergence assuming Hardy-Littlewood",
+      "startLine": 118,
+      "endLine": 139
+    },
+    {
+      "id": "related-series",
+      "title": "Related Series",
+      "summary": "Erdős's conjectures about prime gap series",
+      "startLine": 141,
+      "endLine": 176
+    },
+    {
+      "id": "difficulty",
+      "title": "Why This Problem is Hard",
+      "summary": "Non-monotonicity, subtle cancellation, conditional results only",
+      "startLine": 178,
+      "endLine": 203
+    },
+    {
+      "id": "absolute-convergence",
+      "title": "Absolute Convergence",
+      "summary": "Series does NOT converge absolutely",
+      "startLine": 205,
+      "endLine": 225
+    },
+    {
+      "id": "numerical-evidence",
+      "title": "Numerical Evidence",
+      "summary": "Partial sums oscillate around -1",
+      "startLine": 227,
+      "endLine": 239
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #15, an OPEN problem asking whether Σ(-1)^n · n/p_n converges. Tao (2023) proved conditional convergence assuming Hardy-Littlewood. The main difficulty is that n/p_n is not monotonically decreasing due to irregular prime gaps, so the Alternating Series Test doesn't apply.",
+    "implications": "This problem lies at the intersection of analytic number theory and series convergence. Its resolution requires understanding the fine structure of prime distribution. The conditional nature of Tao's result highlights how many open problems in number theory are interconnected through deep conjectures.",
+    "openQuestions": [
+      "Does the series converge unconditionally?",
+      "Can Hardy-Littlewood be weakened while preserving convergence?",
+      "What is the exact limit if the series converges? (Empirically ≈ -1)",
+      "Does Σ(-1)^n/(n · g_n) converge? (Erdős's other conjecture)"
+    ]
   }
 }
