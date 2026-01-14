@@ -1,33 +1,129 @@
 {
   "id": "erdos-12",
-  "title": "Erdős Problem #12",
+  "title": "Erdős Problem #12: Divisibility-Free Sets",
   "slug": "erdos-12",
-  "description": "Let ... be an infinite set such that there are no distinct ... such that ... and .... Is there such an ... with\\[\\liminf \\rvert}{N^{1/2}}>0?\\]Does there exist some absolute constant ... such that t...",
+  "description": "How large can a set A be if no element a divides the sum b+c of two larger elements? Three OPEN questions about density, sparseness, and reciprocal sums.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Sárközy (1970)",
     "sourceUrl": "https://erdosproblems.com/12",
-    "date": "",
-    "status": "pending",
+    "date": "1970",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos12Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisibility",
+      "density",
+      "additive-combinatorics"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 1,
     "erdosNumber": 12,
     "erdosUrl": "https://erdosproblems.com/12",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite sets",
+        "module": "Mathlib.Data.Set.Finite"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Convergence in filters",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Summable",
+        "description": "Summability of series",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of divisibility-free set property",
+      "Statement of all three Erdős questions",
+      "Axiomatization of Erdős-Sárközy density-zero result",
+      "Elsholtz-Planitzer construction bound"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #12 from erdosproblems.com.",
-    "problemStatement": "Let $A$ be an infinite set such that there are no distinct $a,b,c\\in A$ such that $a\\mid (b+c)$ and $b,c>a$. Is there such an $A$ with\\[\\liminf \\frac{\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert}{N^{1/2}}>0?\\]Does there exist some absolute constant $c>0$ such that there are always infinitely many $N$ with\\[\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert<N^{1-c}?\\]Is it true that\\[\\sum_{n\\in A}\\frac{1}{n}<\\infty?\\]",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #12 concerns sets with a divisibility constraint: no element can divide the sum of two larger elements. Erdős and Sárközy (1970) proved such sets must have density 0, yet they can still be surprisingly large.\n\nThe problem asks three increasingly strong questions about how sparse these sets must be. Despite 50+ years of work, all three remain OPEN.",
+    "problemStatement": "Let A be an infinite set of positive integers such that for all distinct a, b, c in A with b, c > a, we have a does NOT divide (b + c).\n\n**Question 1:** Can |A ∩ {1,...,N}| / √N have positive liminf?\n\n**Question 2:** Must |A ∩ {1,...,N}| < N^(1-c) for infinitely many N (some fixed c > 0)?\n\n**Question 3:** Must the sum of 1/n over n in A converge?\n\n**Status:** All three questions are OPEN.",
+    "proofStrategy": "The formalization defines:\n\n1. `IsDivisibilityFree A`: the constraint a ∤ (b+c) for a < b,c in A\n2. `countingFunction A N`: cardinality of A ∩ {1,...,N}\n3. The three questions as separate propositions\n4. Known results: Erdős-Sárközy (density 0), Elsholtz-Planitzer (best construction), Schoen-Baier (coprime case)\n\nExamples like powers of 2 and prime squares mod 4 illustrate the property.",
+    "keyInsights": [
+      "**Density zero is forced:** Erdős-Sárközy (1970) proved all such sets have density 0, but the decay rate is unknown.",
+      "**Best construction:** Elsholtz-Planitzer (2017) achieved ~√N / (√log N · (log log N)²), close to √N.",
+      "**Powers of 2 work:** {2, 4, 8, 16, ...} is divisibility-free since 2^a can't divide 2^b + 2^c for a < b,c.",
+      "**Coprime case solved:** When elements are pairwise coprime, the bound is O(N^(2/3) / log N).",
+      "**Three questions hierarchy:** Q3 (convergent sum) ⟹ Q2 (sparse i.o.) ⟹ Q1 (no √N density)."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Core Definition",
+      "summary": "The divisibility-free property and counting function",
+      "startLine": 23,
+      "endLine": 33
+    },
+    {
+      "id": "examples",
+      "title": "Basic Examples",
+      "summary": "Powers of 2 and prime squares mod 4",
+      "startLine": 35,
+      "endLine": 50
+    },
+    {
+      "id": "density",
+      "title": "Density Results",
+      "summary": "Erdős-Sárközy: divisibility-free sets have density 0",
+      "startLine": 52,
+      "endLine": 60
+    },
+    {
+      "id": "question1",
+      "title": "Question 1: √N Density",
+      "summary": "Can we achieve positive liminf for |A|/√N?",
+      "startLine": 62,
+      "endLine": 77
+    },
+    {
+      "id": "question2",
+      "title": "Question 2: Sparse Infinitely Often",
+      "summary": "Must |A| < N^(1-c) infinitely often?",
+      "startLine": 79,
+      "endLine": 85
+    },
+    {
+      "id": "question3",
+      "title": "Question 3: Convergent Sum",
+      "summary": "Must Σ(1/n) converge over A?",
+      "startLine": 87,
+      "endLine": 96
+    },
+    {
+      "id": "coprime",
+      "title": "Coprime Case",
+      "summary": "Schoen-Baier upper bound for pairwise coprime sets",
+      "startLine": 98,
+      "endLine": 108
+    },
+    {
+      "id": "main",
+      "title": "Main Problem",
+      "summary": "Combined statement of all three questions",
+      "startLine": 110,
+      "endLine": 116
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #12, which asks three OPEN questions about divisibility-free sets: sets where no element divides the sum of two larger elements. Despite knowing such sets have density 0, the precise growth rate remains mysterious.",
+    "implications": "This problem connects several areas:\n\n1. **Additive combinatorics:** Structure of constrained sumsets\n2. **Analytic number theory:** Density and counting arguments\n3. **Sieve methods:** The coprime case uses sieve techniques\n4. **Extremal combinatorics:** Finding optimal constructions",
+    "openQuestions": [
+      "Can any divisibility-free set achieve √N density?",
+      "Must such sets be sparse infinitely often?",
+      "Must the reciprocal sum always converge?",
+      "What is the optimal construction for non-coprime case?"
+    ]
   }
 }

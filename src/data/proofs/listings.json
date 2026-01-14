@@ -931,17 +931,22 @@
   },
   {
     "id": "erdos-12",
-    "title": "Erdős Problem #12",
+    "title": "Erdős Problem #12: Divisibility-Free Sets",
     "slug": "erdos-12",
-    "description": "Let ... be an infinite set such that there are no distinct ... such that ... and .... Is there such an ... with\\[\\liminf \\rvert}{N^{1/2}}>0?\\]Does there exist some absolute constant ... such that t...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "How large can a set A be if no element a divides the sum b+c of two larger elements? Three OPEN questions about density, sparseness, and reciprocal sums.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisibility",
+      "density",
+      "additive-combinatorics"
     ],
     "erdosNumber": 12,
+    "mathlibCount": 3,
     "sorries": 1,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-124-complete-sequences",
@@ -6997,17 +7002,21 @@
   },
   {
     "id": "erdos-70",
-    "title": "Erdős Problem #70",
+    "title": "Erdős Problem #70: Partition Calculus for the Continuum",
     "slug": "erdos-70",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $...\\beta...2\\leq n<\\omega...\\to (\\beta, n)_2^3...\\to (\\omega+n,4)_2^3...2\\leq n<\\omega$.\n\n\nBack to the problem",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Let 𝔠 be the cardinality of the continuum, β be any countable ordinal, and 2 ≤ n < ω. Is it true that 𝔠 → (β, n)₂³? OPEN.",
+    "status": "formalized",
+    "badge": "formalized",
     "tags": [
-      "erdos"
+      "erdos",
+      "partition-calculus",
+      "set-theory",
+      "ramsey-theory",
+      "ordinals"
     ],
     "erdosNumber": 70,
-    "sorries": 1,
-    "annotationCount": 0
+    "sorries": 0,
+    "annotationCount": 20
   },
   {
     "id": "erdos-71",

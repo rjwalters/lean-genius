@@ -1,1 +1,139 @@
-[]
+[
+  {
+    "id": "ann-e12-div-free-def",
+    "proofId": "erdos-12",
+    "range": { "startLine": 25, "endLine": 29 },
+    "type": "definition",
+    "title": "Divisibility-Free Property",
+    "content": "A set A is **divisibility-free** if for all distinct a, b, c in A with a < b and a < c, we have a does NOT divide (b + c).\n\nThis constraint prevents small elements from 'capturing' sums of larger elements.",
+    "mathContext": "The condition requires checking all triples (a,b,c) with a being the smallest. This is a multiplicative constraint on an additive structure.",
+    "significance": "critical",
+    "relatedConcepts": ["Sum-free sets", "Sidon sets", "Primitive sets"]
+  },
+  {
+    "id": "ann-e12-counting",
+    "proofId": "erdos-12",
+    "range": { "startLine": 31, "endLine": 33 },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "The **counting function** |A ∩ {1,...,N}| measures how many elements of A are at most N. The growth rate of this function is the central question.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e12-powers2",
+    "proofId": "erdos-12",
+    "range": { "startLine": 37, "endLine": 46 },
+    "type": "theorem",
+    "title": "Powers of 2 Example",
+    "content": "The set {2, 4, 8, 16, ...} = {2^k : k >= 1} is divisibility-free.\n\n**Proof sketch:** If 2^a | (2^b + 2^c) with a < b,c, then 2^a divides 2^min(b,c) * (1 + 2^|b-c|). But 1 + 2^|b-c| is odd, so we need 2^a | 2^min(b,c), meaning a <= min(b,c). Since a < b and a < c, we have a < min(b,c), contradiction.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e12-primes3mod4",
+    "proofId": "erdos-12",
+    "range": { "startLine": 48, "endLine": 50 },
+    "type": "definition",
+    "title": "Prime Squares mod 4",
+    "content": "The squares of primes p = 3 (mod 4) form a large divisibility-free set. This construction achieves |A ∩ {1,...,N}| / √N * log N > 0.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e12-density-zero",
+    "proofId": "erdos-12",
+    "range": { "startLine": 54, "endLine": 56 },
+    "type": "definition",
+    "title": "Density Zero",
+    "content": "A set has **density 0** if |A ∩ {1,...,N}| / N tends to 0 as N approaches infinity. This means the set becomes increasingly sparse relative to all integers.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e12-sarkozy",
+    "proofId": "erdos-12",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "axiom",
+    "title": "Erdos-Sarkozy (1970)",
+    "content": "**Fundamental Result:** Every infinite divisibility-free set has density 0.\n\nThis rules out sets with positive density but leaves open how slowly the density can decay. The three questions probe this decay rate.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e12-sqrt-density",
+    "proofId": "erdos-12",
+    "range": { "startLine": 64, "endLine": 67 },
+    "type": "definition",
+    "title": "√N Density",
+    "content": "A set has **positive √N density** if liminf |A ∩ {1,...,N}| / √N > 0. This is the threshold asked about in Question 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e12-q1",
+    "proofId": "erdos-12",
+    "range": { "startLine": 69, "endLine": 71 },
+    "type": "definition",
+    "title": "Question 1 (OPEN)",
+    "content": "**Can a divisibility-free set achieve √N density?**\n\nNo construction has achieved this, but no proof rules it out. The gap between best constructions and this threshold remains.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e12-elsholtz",
+    "proofId": "erdos-12",
+    "range": { "startLine": 73, "endLine": 77 },
+    "type": "axiom",
+    "title": "Elsholtz-Planitzer (2017)",
+    "content": "**Best Known Construction:** There exists a divisibility-free set with\n\n|A ∩ {1,...,N}| >= √N / (√log N * (log log N)²)\n\nThis is tantalizingly close to √N but falls short by logarithmic factors.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e12-q2",
+    "proofId": "erdos-12",
+    "range": { "startLine": 81, "endLine": 85 },
+    "type": "definition",
+    "title": "Question 2 (OPEN)",
+    "content": "**Must divisibility-free sets be sparse infinitely often?**\n\nIs there c > 0 such that |A ∩ {1,...,N}| < N^(1-c) for infinitely many N? This asks if the set must dip below polynomial growth infinitely often.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e12-reciprocal",
+    "proofId": "erdos-12",
+    "range": { "startLine": 89, "endLine": 91 },
+    "type": "definition",
+    "title": "Reciprocal Sum",
+    "content": "The **reciprocal sum** is the sum of 1/n over all n in A. Convergence of this sum implies the set is quite sparse (e.g., primes have divergent reciprocal sum).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e12-q3",
+    "proofId": "erdos-12",
+    "range": { "startLine": 93, "endLine": 96 },
+    "type": "definition",
+    "title": "Question 3 (OPEN)",
+    "content": "**Must the reciprocal sum converge?**\n\nThis is the strongest sparseness condition. If true, it would imply positive answers to Q1 and Q2. The sum of 1/n over squares converges (pi²/6), so this is plausible.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e12-coprime-def",
+    "proofId": "erdos-12",
+    "range": { "startLine": 100, "endLine": 102 },
+    "type": "definition",
+    "title": "Pairwise Coprime",
+    "content": "A set is **pairwise coprime** if any two distinct elements share no common factor > 1. This is a strong constraint that enables better bounds.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e12-coprime-bound",
+    "proofId": "erdos-12",
+    "range": { "startLine": 104, "endLine": 108 },
+    "type": "axiom",
+    "title": "Schoen-Baier Bound",
+    "content": "**Coprime Case:** If A is both divisibility-free and pairwise coprime, then\n\n|A ∩ {1,...,N}| = O(N^(2/3) / log N)\n\nProved by Schoen (2001) and Baier (2004) using sieve methods.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e12-main",
+    "proofId": "erdos-12",
+    "range": { "startLine": 112, "endLine": 116 },
+    "type": "definition",
+    "title": "Combined Problem Statement",
+    "content": "**Erdos Problem #12** combines all three questions. Resolving any one would be a significant advance. The logical structure is: Q3 implies Q2 implies (negation of Q1).",
+    "significance": "critical"
+  }
+]
