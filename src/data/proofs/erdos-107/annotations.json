@@ -1,1 +1,92 @@
-[]
+[
+  {
+    "id": "general-position",
+    "lineStart": 32,
+    "lineEnd": 36,
+    "type": "definition",
+    "title": "General Position",
+    "content": "A finite set of points in ℝ² is in **general position** if no three points are collinear. This is formalized using Mathlib's `Collinear` predicate: for any three distinct points p, q, r in the set, {p, q, r} is not collinear.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "convex-ngon",
+    "lineStart": 38,
+    "lineEnd": 41,
+    "type": "definition",
+    "title": "Convex n-gon",
+    "content": "A set of n points forms a **convex n-gon** if the set has exactly n points and each point is a vertex of the convex hull (i.e., no point lies in the convex hull of the others). This elegant characterization avoids dealing with edge orderings.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "f-definition",
+    "lineStart": 54,
+    "lineEnd": 56,
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "**f(n)** is defined as the infimum of CardSet(n), the set of N values such that any N points in general position must contain a convex n-gon. This is the central object of study in the Happy Ending Problem.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "klein-result",
+    "lineStart": 60,
+    "lineEnd": 66,
+    "type": "theorem",
+    "title": "Klein's Result (1931)",
+    "content": "**f(4) = 5**: Any 5 points in general position contain 4 points forming a convex quadrilateral. The proof involves case analysis on the convex hull: if the hull has 4+ points, we're done; if it has 3 points, the 2 interior points with 2 hull vertices form a quad.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": "ersz-lower",
+    "lineStart": 88,
+    "lineEnd": 95,
+    "type": "theorem",
+    "title": "Erdős-Szekeres Lower Bound",
+    "content": "**2^{n-2}+1 ≤ f(n)**: There exist 2^{n-2} points in general position with no convex n-gon. The construction uses a recursive \"double sequence\" that carefully avoids creating convex n-gons while maximizing point count.",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "ersz-upper",
+    "lineStart": 97,
+    "lineEnd": 104,
+    "type": "theorem",
+    "title": "Erdős-Szekeres Upper Bound (1935)",
+    "content": "**f(n) ≤ C(2n-4, n-2)+1**: The original upper bound uses Ramsey-theoretic arguments. This grows roughly as 4^n, much larger than the conjectured 2^{n-2}+1.",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "suk-bound",
+    "lineStart": 106,
+    "lineEnd": 114,
+    "type": "theorem",
+    "title": "Suk's Breakthrough (2017)",
+    "content": "**f(n) ≤ 2^{(1+o(1))n}**: A major breakthrough that reduced the exponential base from 4 to 2. The proof uses a novel \"cups and caps\" argument with improved counting.",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "hmpt-bound",
+    "lineStart": 116,
+    "lineEnd": 124,
+    "type": "theorem",
+    "title": "HMPT Bound (2020)",
+    "content": "**f(n) ≤ 2^{n+O(√(n log n))}**: The current best upper bound, due to Holmsen, Mojarrad, Pach, and Tardos. The gap to the conjectured 2^{n-2}+1 is now only O(√(n log n)) in the exponent.",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "main-conjecture",
+    "lineStart": 128,
+    "lineEnd": 138,
+    "type": "conjecture",
+    "title": "The Happy Ending Conjecture",
+    "content": "**Conjecture**: f(n) = 2^{n-2}+1 for all n ≥ 3. This is stated as a Prop without asserting truth value since it remains OPEN. Erdős offered $500 for a proof, $100 for a counterexample. The name \"Happy Ending\" comes from Szekeres and Klein's marriage.",
+    "difficulty": "advanced"
+  },
+  {
+    "id": "existence",
+    "lineStart": 142,
+    "lineEnd": 152,
+    "type": "theorem",
+    "title": "Existence of f(n)",
+    "content": "**Erdős-Szekeres (1935)**: For every n ≥ 3, f(n) is finite - i.e., CardSet(n) is nonempty. This fundamental result shows that the problem is well-defined: there always exists some N forcing a convex n-gon.",
+    "difficulty": "intermediate"
+  }
+]

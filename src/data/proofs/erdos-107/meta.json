@@ -1,34 +1,76 @@
 {
   "id": "erdos-107",
-  "title": "Erdős Problem #107",
+  "title": "Erdős Problem #107: The Happy Ending Problem",
   "slug": "erdos-107",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that any ... points in ..., no three on a line, contain ... points which form the vertices of a conve...",
+  "description": "Let f(n) be minimal such that any f(n) points in ℝ², no three collinear, contain n points forming a convex n-gon. The conjecture f(n) = 2^{n-2} + 1 remains OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Szekeres",
     "sourceUrl": "https://erdosproblems.com/107",
-    "date": "",
-    "status": "pending",
+    "date": "1935",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos107Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-geometry",
+      "ramsey-theory",
+      "convex-geometry"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "formalized",
+    "sorries": 5,
     "erdosNumber": 107,
     "erdosUrl": "https://erdosproblems.com/107",
-    "erdosProblemStatus": "solved",
+    "erdosProblemStatus": "open",
     "erdosPrizeValue": "$500"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #107 from erdosproblems.com. Originally offered with a prize of $500.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be minimal such that any $f(n)$ points in $\\mathbb{R}^2$, no three on a line, contain $n$ points which form the vertices of a convex $n$-gon. Prove that $f(n)=2^{n-2}+1$.\n\n\n\nThe Erd\\H{o}s-Klein-Szekeres 'Happy Ending' problem. The problem originated in 1931 when Klein observed that $f(4)=5$. Tur\\'{a}n and Makai showed $f(5)=9$. Erd\\H{o}s and Szekeres proved the bounds\\[2^{n-2}+1\\leq f(n)\\leq \\binom{2n-4}{n-2}+1.\\](\\cite{ErSz60} and \\cite{ErSz35} respectively). There were several improvements of the upper bound, but all of the form $4^{(1+o(1))n}$, until Suk \\cite{Su17} proved\\[f(n) \\leq 2^{(1+o(1))n}.\\]The current best bound is due to Holmsen, Mojarrad, Pach, and Tardos \\cite{HMPT20}, who prove\\[f(n) \\leq 2^{n+O(\\sqrt{n\\log n})}.\\]In \\cite{Er97e} Erd\\H{o}s clarifies that the \\$500 is for a proof, and only offers \\$100 for a disproof.\n\nThis problem is #1 in Ramsey Theory in the graphs problem collection.\n\nSee also [216], [651], and [838].\n\n\n\n\nReferences\n\n\n[Er97e] Erd\\H{o}s, Paul, Some of my favourite unsolved problems. Math. Japon. (1997), 527-537.\n\n[ErSz35] Erd\\H{o}s, P. and Szekeres, G., A combinatorial problem in geometry. Compos. Math. (1935), 463-470.\n\n[ErSz60] Erd\\H{o}s, P. and Szekeres, G., On some extremum problems in elementary geometry. Ann. Univ. Sci. Budapest. E\\\"{o}tv\\\"{o}s Sect. Math. (1960/61), 53-62.\n\n[HMPT20] Holmsen, Andreas F. and Mojarrad, Hossein Nassajian and Pach, J\\'{a}nos and Tardos, G\\'{a}bor, Two extensions of the Erd\\H{o}s-Szekeres problem. J. Eur. Math. Soc. (JEMS) (2020), 3981-3995.\n\n[Su17] Suk, Andrew, On the Erd\\H{o}s-Szekeres convex polygon problem. J. Amer. Math. Soc. (2017), 1047-1053.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The 'Happy Ending Problem' was so named because Szekeres and Klein, who worked on it together, ended up getting married. Klein observed f(4)=5 in 1931. Erdős and Szekeres established foundational bounds in 1935 and 1960. The conjecture that f(n) = 2^{n-2}+1 remains one of the most famous open problems in combinatorial geometry.",
+    "problemStatement": "Let f(n) be minimal such that any f(n) points in ℝ², no three on a line, contain n points which form the vertices of a convex n-gon. Prove that f(n) = 2^{n-2} + 1.",
+    "proofStrategy": "The formalization defines convex n-gons via the convex hull property (each point is a vertex of the hull), states the known bounds as axioms (Erdős-Szekeres lower/upper, Suk 2017, HMPT 2020), and expresses the main conjecture as a Prop without asserting its truth value since it remains open.",
+    "keyInsights": [
+      "Erdős-Szekeres (1960) proved the lower bound 2^{n-2}+1 ≤ f(n) via explicit construction",
+      "Erdős-Szekeres (1935) proved upper bound f(n) ≤ C(2n-4,n-2)+1 using Ramsey theory",
+      "Suk (2017) breakthrough: f(n) ≤ 2^{(1+o(1))n}",
+      "HMPT (2020) current best: f(n) ≤ 2^{n+O(√(n log n))}",
+      "Gap between 2^{n-2}+1 and 2^{n+O(√(n log n))} remains open"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "description": "Definitions for general position, convex n-gons, and the function f(n)",
+      "lineStart": 30,
+      "lineEnd": 57
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "description": "Known values f(3)=3, f(4)=5, f(5)=9",
+      "lineStart": 58,
+      "lineEnd": 85
+    },
+    {
+      "id": "main-bounds",
+      "title": "Main Bounds",
+      "description": "Erdős-Szekeres, Suk, and HMPT bounds on f(n)",
+      "lineStart": 86,
+      "lineEnd": 125
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture (OPEN)",
+      "description": "The Happy Ending conjecture: f(n) = 2^{n-2}+1",
+      "lineStart": 126,
+      "lineEnd": 153
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #107 (Happy Ending Problem) with core definitions for convex n-gons in general position, state the known bounds as axioms, and express the main conjecture f(n) = 2^{n-2}+1 as a Prop. The conjecture remains open with a $500 prize.",
+    "implications": "Resolution would settle one of the most famous problems in combinatorial geometry and complete our understanding of convex polygon containment in point sets.",
+    "openQuestions": [
+      "Is f(n) = 2^{n-2}+1 for all n ≥ 3?",
+      "Can the HMPT upper bound be improved to match the lower bound?",
+      "What is f(6)? (Currently unknown)"
+    ]
   }
 }
