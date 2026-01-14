@@ -87,10 +87,10 @@
     "id": "ann-e66-horvath",
     "proofId": "erdos-66",
     "range": {
-      "startLine": 115,
-      "endLine": 128
+      "startLine": 117,
+      "endLine": 130
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Horváth's Improvement (2007)",
     "content": "**horvath2007** strengthens Erdős-Sárközy: the error exceeds (1-ε)√log(n) for infinitely many n.\n\nFor any ε > 0 and any set A, there are arbitrarily large n where |r_A(n) - log(n)| > (1-ε)√log(n).\n\n**The improvement**: This gives a quantitative lower bound on the limsup of the error, not just that it doesn't go to zero.",
     "mathContext": "Using `∀ᶠ n in atTop` means 'for all sufficiently large n'. Combined with the universal quantifier over ε, this says the error cannot stay below √log(n) for long.",
@@ -101,8 +101,8 @@
     "id": "ann-e66-random-sets",
     "proofId": "erdos-66",
     "range": {
-      "startLine": 130,
-      "endLine": 159
+      "startLine": 131,
+      "endLine": 160
     },
     "type": "concept",
     "title": "Random Sets and the Exceptional Set",
@@ -129,8 +129,8 @@
     "id": "ann-e66-implication",
     "proofId": "erdos-66",
     "range": {
-      "startLine": 178,
-      "endLine": 197
+      "startLine": 182,
+      "endLine": 196
     },
     "type": "theorem",
     "title": "Stronger Implies Original",

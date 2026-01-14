@@ -45,8 +45,8 @@
     "id": "ann-e74-max-dist",
     "proofId": "erdos-74",
     "range": {
-      "startLine": 68,
-      "endLine": 76
+      "startLine": 102,
+      "endLine": 110
     },
     "type": "definition",
     "title": "Maximum Edge Distance over Subgraphs",
@@ -59,8 +59,8 @@
     "id": "ann-e74-almost-bipartite",
     "proofId": "erdos-74",
     "range": {
-      "startLine": 84,
-      "endLine": 89
+      "startLine": 120,
+      "endLine": 125
     },
     "type": "definition",
     "title": "Almost Bipartite Subgraphs",
@@ -73,8 +73,8 @@
     "id": "ann-e74-main-question",
     "proofId": "erdos-74",
     "range": {
-      "startLine": 100,
-      "endLine": 112
+      "startLine": 136,
+      "endLine": 148
     },
     "type": "definition",
     "title": "The Main Question (OPEN)",
@@ -87,10 +87,10 @@
     "id": "ann-e74-rodl",
     "proofId": "erdos-74",
     "range": {
-      "startLine": 120,
-      "endLine": 132
+      "startLine": 156,
+      "endLine": 168
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Rödl's Linear Case (1982)",
     "content": "**rodlLinear** states: For any ε > 0, there exists a graph with infinite chromatic number where every n-vertex subgraph needs at most εn edge deletions to become bipartite.\n\nThis shows the conjecture is TRUE for linear f(n) = εn. Rödl's construction uses probabilistic methods.\n\n**Why an axiom?** The construction is complex and not yet formalized in Mathlib.",
     "mathContext": "The bound ⌈εn⌉₊ is linear in n. The construction works for any positive ε, no matter how small.",
@@ -101,8 +101,8 @@
     "id": "ann-e74-sqrt",
     "proofId": "erdos-74",
     "range": {
-      "startLine": 134,
-      "endLine": 145
+      "startLine": 170,
+      "endLine": 181
     },
     "type": "definition",
     "title": "The √n Question (OPEN)",
@@ -115,10 +115,10 @@
     "id": "ann-e74-uncountable",
     "proofId": "erdos-74",
     "range": {
-      "startLine": 147,
-      "endLine": 160
+      "startLine": 183,
+      "endLine": 196
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Uncountable Chromatic Number Fails",
     "content": "**uncountableFails** states: If we require chromatic number ≥ ℵ₁ (uncountable), then NO such graph exists for any unbounded f.\n\nThis is a surprising dichotomy:\n- χ = ℵ₀ (countable infinite): Open question\n- χ = ℵ₁ (uncountable): Impossible!\n\nThe set-theoretic distinction is crucial to the problem.",
     "mathContext": "The proof uses that uncountably-chromatic graphs must contain certain unavoidable non-bipartite configurations.",
@@ -129,10 +129,10 @@
     "id": "ann-e74-bounds",
     "proofId": "erdos-74",
     "range": {
-      "startLine": 169,
-      "endLine": 184
+      "startLine": 205,
+      "endLine": 224
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Basic Bounds",
     "content": "**edgeDistUpperBound**: Any n-vertex graph has at most n(n-1)/2 edges, so edge distance to bipartite is at most this.\n\n**bipartite_chromaticNumber_le_two**: Bipartite graphs have χ ≤ 2.\n\nThese are marked with `sorry` as they require straightforward but detailed proofs.",
     "mathContext": "The upper bound shows the problem is well-posed—edge distance is always finite for finite graphs.",

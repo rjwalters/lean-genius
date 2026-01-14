@@ -76,7 +76,7 @@
       "startLine": 127,
       "endLine": 140
     },
-    "type": "lemma",
+    "type": "theorem",
     "title": "Powers of 2 are Sidon",
     "content": "The set {1, 2, 4, 8, 16, ...} (powers of 2) forms a Sidon set. If 2^a + 2^b = 2^c + 2^d with a<=b, c<=d, then a=c and b=d by uniqueness of binary representation.",
     "mathContext": "Proof uses 2-adic valuation: if 2^a(1 + 2^(b-a)) = 2^c(1 + 2^(d-c)), comparing valuations gives a=c (since 1+2^k is odd for k>0), then b=d follows.",

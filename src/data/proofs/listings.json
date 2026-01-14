@@ -237,7 +237,7 @@
     "wiedijkNumber": 93,
     "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 6
+    "annotationCount": 7
   },
   {
     "id": "borsuk-ulam",
@@ -5882,17 +5882,20 @@
   },
   {
     "id": "erdos-59",
-    "title": "Erdős Problem #59",
+    "title": "Erdős Problem #59: Counting G-Free Graphs",
     "slug": "erdos-59",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that the number of graphs on ... vertices which do not contain ... is\\[\\leq 2^{(1+o(1))(n;G)}?\\]\n\n\n\nIf ... is not ...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Is the number of G-free graphs on n vertices at most 2^{(1+o(1))ex(n;G)}? Disproved by Morris-Saxton (2016) for C_6.",
+    "status": "formalized",
+    "badge": "formalized",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-graph-theory",
+      "turan-numbers",
+      "graph-counting"
     ],
     "erdosNumber": 59,
-    "sorries": 1,
-    "annotationCount": 0
+    "sorries": 3,
+    "annotationCount": 16
   },
   {
     "id": "erdos-590",
@@ -5994,17 +5997,20 @@
   },
   {
     "id": "erdos-60",
-    "title": "Erdős Problem #60",
+    "title": "Erdős Problem #60: Supersaturation of 4-Cycles",
     "slug": "erdos-60",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph on ... vertices with ... edges contain ... many copies of ...?\n\n\n\nConjectured by Erds and Simonovits, who co...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Does every graph on n vertices with > ex(n; C_4) edges contain Ω(n^{1/2}) copies of C_4? OPEN problem.",
+    "status": "formalized",
+    "badge": "formalized",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-graph-theory",
+      "supersaturation",
+      "cycles"
     ],
     "erdosNumber": 60,
-    "sorries": 1,
-    "annotationCount": 0
+    "sorries": 2,
+    "annotationCount": 15
   },
   {
     "id": "erdos-600",
@@ -6266,17 +6272,20 @@
   },
   {
     "id": "erdos-62",
-    "title": "Erdős Problem #62",
+    "title": "Erdős Problem #62: Common Subgraphs of Graphs with Chromatic Number ℵ₁",
     "slug": "erdos-62",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... are two graphs with chromatic number ... then must there exist a graph ... whose chromatic number is ... (or even ...)...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "If G₁, G₂ both have chromatic number ℵ₁, must they share a common subgraph with χ = 4 (or ℵ₀)? OPEN problem.",
+    "status": "formalized",
+    "badge": "formalized",
     "tags": [
-      "erdos"
+      "erdos",
+      "infinite-combinatorics",
+      "chromatic-number",
+      "graph-theory"
     ],
     "erdosNumber": 62,
-    "sorries": 1,
-    "annotationCount": 0
+    "sorries": 0,
+    "annotationCount": 17
   },
   {
     "id": "erdos-620",
@@ -6420,17 +6429,20 @@
   },
   {
     "id": "erdos-63",
-    "title": "Erdős Problem #63",
+    "title": "Erdős Problem #63: Cycles of Length 2^n in Infinite Chromatic Graphs",
     "slug": "erdos-63",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph with infinite chromatic number contain a cycle of length ... for infinitely many ...?\n\n\n\nConjectured by Mih\\...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Every graph with infinite chromatic number contains a cycle of length 2^n for infinitely many n. SOLVED by Liu-Montgomery (2020).",
+    "status": "formalized",
+    "badge": "formalized",
     "tags": [
-      "erdos"
+      "erdos",
+      "chromatic-number",
+      "cycles",
+      "infinite-graphs"
     ],
     "erdosNumber": 63,
-    "sorries": 1,
-    "annotationCount": 0
+    "sorries": 0,
+    "annotationCount": 15
   },
   {
     "id": "erdos-630",
@@ -7170,7 +7182,7 @@
     "erdosNumber": 822,
     "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 10
+    "annotationCount": 7
   },
   {
     "id": "erdos-83",
@@ -8784,7 +8796,7 @@
     "slug": "motivic-flag-maps",
     "description": "The motivic class of based rational maps from P¹ to flag varieties equals the class of GL_n times affine space in the Grothendieck ring of varieties.",
     "status": "verified",
-    "badge": "wip",
+    "badge": "formalized",
     "tags": [
       "algebraic-geometry",
       "moduli-spaces",
@@ -8794,8 +8806,8 @@
       "advanced"
     ],
     "dateAdded": "01/14/25",
-    "mathlibCount": 3,
-    "sorries": 4,
+    "mathlibCount": 4,
+    "sorries": 0,
     "annotationCount": 0
   },
   {

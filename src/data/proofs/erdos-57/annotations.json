@@ -2,7 +2,7 @@
   {
     "id": "ann-e57-cycle-lengths",
     "proofId": "erdos-57",
-    "range": { "startLine": 30, "endLine": 32 },
+    "range": { "startLine": 34, "endLine": 35 },
     "type": "definition",
     "title": "Cycle Lengths",
     "content": "The set of all **cycle lengths** in a graph G. A cycle is a closed walk with no repeated vertices except the endpoints. Uses Mathlib's Walk.IsCycle predicate.",
@@ -11,7 +11,7 @@
   {
     "id": "ann-e57-odd-cycle-lengths",
     "proofId": "erdos-57",
-    "range": { "startLine": 34, "endLine": 36 },
+    "range": { "startLine": 38, "endLine": 39 },
     "type": "definition",
     "title": "Odd Cycle Lengths",
     "content": "The set of all **odd cycle lengths** in G: the subset of cycleLengths where the length is odd. These are the key objects in the Erdős-Hajnal conjecture.",
@@ -20,7 +20,7 @@
   {
     "id": "ann-e57-colorable",
     "proofId": "erdos-57",
-    "range": { "startLine": 40, "endLine": 42 },
+    "range": { "startLine": 44, "endLine": 45 },
     "type": "definition",
     "title": "k-Colorable",
     "content": "A graph is **k-colorable** if there exists a function f: V → Fin k such that adjacent vertices get different colors. This is the standard graph coloring property.",
@@ -29,7 +29,7 @@
   {
     "id": "ann-e57-infinite-chromatic",
     "proofId": "erdos-57",
-    "range": { "startLine": 44, "endLine": 46 },
+    "range": { "startLine": 48, "endLine": 49 },
     "type": "definition",
     "title": "Infinite Chromatic Number",
     "content": "A graph has **infinite chromatic number** if it's not k-colorable for any finite k. Such graphs require infinitely many colors to properly color.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-e57-harmonic-sum",
     "proofId": "erdos-57",
-    "range": { "startLine": 50, "endLine": 52 },
+    "range": { "startLine": 54, "endLine": 55 },
     "type": "definition",
     "title": "Odd Cycle Harmonic Sum",
     "content": "The sum **∑ 1/aᵢ** where aᵢ are the odd cycle lengths. Uses ENNReal to allow the value ∞ (⊤). This is the central quantity in the Erdős-Hajnal conjecture.",
@@ -47,8 +47,8 @@
   {
     "id": "ann-e57-main-axiom",
     "proofId": "erdos-57",
-    "range": { "startLine": 56, "endLine": 61 },
-    "type": "theorem",
+    "range": { "startLine": 63, "endLine": 64 },
+    "type": "axiom",
     "title": "Erdős-Hajnal Conjecture (SOLVED)",
     "content": "**Liu-Montgomery (2020)**: If G has infinite chromatic number, then the harmonic sum of odd cycle lengths equals ⊤ (infinity). This quantifies how 'many' odd cycles such graphs must have.",
     "significance": "critical"
@@ -56,7 +56,7 @@
   {
     "id": "ann-e57-corollary",
     "proofId": "erdos-57",
-    "range": { "startLine": 63, "endLine": 72 },
+    "range": { "startLine": 111, "endLine": 119 },
     "type": "theorem",
     "title": "Infinitely Many Odd Cycle Lengths",
     "content": "**Corollary**: Graphs with infinite chromatic number have infinitely many distinct odd cycle lengths. Proof: if finitely many, the harmonic sum would be finite, contradicting erdos_57.",
@@ -65,7 +65,7 @@
   {
     "id": "ann-e57-upper-density",
     "proofId": "erdos-57",
-    "range": { "startLine": 76, "endLine": 78 },
+    "range": { "startLine": 124, "endLine": 125 },
     "type": "definition",
     "title": "Upper Density",
     "content": "The **upper density** of S ⊆ ℕ is limsup of |S ∩ [1,N]|/N as N → ∞. Measures the 'proportion' of integers in S in the limit.",
@@ -74,8 +74,8 @@
   {
     "id": "ann-e57-density-conjecture",
     "proofId": "erdos-57",
-    "range": { "startLine": 80, "endLine": 84 },
-    "type": "concept",
+    "range": { "startLine": 131, "endLine": 133 },
+    "type": "definition",
     "title": "Upper Density Conjecture (OPEN)",
     "content": "**Erdős (1981)**: If G has infinite chromatic number, must the odd cycle lengths have positive upper density? This is OPEN and stronger than the solved problem.",
     "significance": "supporting"
@@ -83,8 +83,8 @@
   {
     "id": "ann-e57-half-density",
     "proofId": "erdos-57",
-    "range": { "startLine": 86, "endLine": 90 },
-    "type": "concept",
+    "range": { "startLine": 139, "endLine": 141 },
+    "type": "definition",
     "title": "Half Density Conjecture (OPEN)",
     "content": "**Erdős (1995-96)**: If G has infinite chromatic number, is the upper density of odd cycle lengths at least 1/2? Even stronger speculation, still OPEN.",
     "significance": "supporting"
@@ -92,7 +92,7 @@
   {
     "id": "ann-e57-bipartite-char",
     "proofId": "erdos-57",
-    "range": { "startLine": 94, "endLine": 97 },
+    "range": { "startLine": 146, "endLine": 148 },
     "type": "theorem",
     "title": "Bipartite Characterization",
     "content": "A graph is **bipartite** iff it has no odd cycles. This is equivalent to χ(G) ≤ 2. Classical result connecting parity of cycles to chromatic structure.",

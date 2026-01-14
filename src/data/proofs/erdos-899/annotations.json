@@ -17,8 +17,8 @@
     "id": "ann-e899-counting",
     "proofId": "erdos-899",
     "range": {
-      "startLine": 52,
-      "endLine": 54
+      "startLine": 49,
+      "endLine": 51
     },
     "type": "definition",
     "title": "Counting Function",
@@ -31,8 +31,8 @@
     "id": "ann-e899-diffset",
     "proofId": "erdos-899",
     "range": {
-      "startLine": 56,
-      "endLine": 58
+      "startLine": 53,
+      "endLine": 55
     },
     "type": "definition",
     "title": "Difference Set A - A",
@@ -45,8 +45,8 @@
     "id": "ann-e899-zero-density",
     "proofId": "erdos-899",
     "range": {
-      "startLine": 64,
-      "endLine": 66
+      "startLine": 61,
+      "endLine": 63
     },
     "type": "definition",
     "title": "Zero Density",
@@ -59,10 +59,10 @@
     "id": "ann-e899-zero-mem",
     "proofId": "erdos-899",
     "range": {
-      "startLine": 70,
-      "endLine": 73
+      "startLine": 67,
+      "endLine": 70
     },
-    "type": "lemma",
+    "type": "theorem",
     "title": "Zero in Difference Set",
     "content": "If A is nonempty, then 0 ∈ A - A. This is because for any a ∈ A, we have a - a = 0.",
     "mathContext": "This is a trivial but useful observation. The difference set is always symmetric around 0: if d ∈ A - A, then -d ∈ A - A.",
@@ -87,8 +87,8 @@
     "id": "ann-e899-diff-examples",
     "proofId": "erdos-899",
     "range": {
-      "startLine": 96,
-      "endLine": 112
+      "startLine": 93,
+      "endLine": 109
     },
     "type": "example",
     "title": "Differences of Powers of 2",
@@ -129,8 +129,8 @@
     "id": "ann-e899-sumset",
     "proofId": "erdos-899",
     "range": {
-      "startLine": 140,
-      "endLine": 141
+      "startLine": 137,
+      "endLine": 138
     },
     "type": "definition",
     "title": "Sumset A + A",

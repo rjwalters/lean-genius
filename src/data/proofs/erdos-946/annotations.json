@@ -4,7 +4,7 @@
     "proofId": "erdos-946",
     "range": {
       "startLine": 1,
-      "endLine": 4
+      "endLine": 1
     },
     "type": "concept",
     "title": "Mathlib Imports",
@@ -17,8 +17,8 @@
     "id": "ann-e946-tau-def",
     "proofId": "erdos-946",
     "range": {
-      "startLine": 57,
-      "endLine": 59
+      "startLine": 52,
+      "endLine": 54
     },
     "type": "definition",
     "title": "The Divisor Function τ",
@@ -31,8 +31,8 @@
     "id": "ann-e946-consec-set",
     "proofId": "erdos-946",
     "range": {
-      "startLine": 61,
-      "endLine": 62
+      "startLine": 56,
+      "endLine": 57
     },
     "type": "definition",
     "title": "Consecutive Equal Divisors Set",
@@ -45,8 +45,8 @@
     "id": "ann-e946-examples",
     "proofId": "erdos-946",
     "range": {
-      "startLine": 66,
-      "endLine": 91
+      "startLine": 61,
+      "endLine": 86
     },
     "type": "example",
     "title": "Divisor Count Examples",
@@ -59,12 +59,12 @@
     "id": "ann-e946-counting",
     "proofId": "erdos-946",
     "range": {
-      "startLine": 95,
-      "endLine": 97
+      "startLine": 113,
+      "endLine": 125
     },
-    "type": "definition",
+    "type": "concept",
     "title": "The Counting Function",
-    "content": "We define the counting function that gives the number of n ≤ x with τ(n) = τ(n+1). This is the quantity whose growth rate is studied.",
+    "content": "The counting function N(x) gives the number of n ≤ x with τ(n) = τ(n+1). This is the quantity whose growth rate is studied in the comments.",
     "mathContext": "The bounds show this count is roughly x/√(log log x). For x = 10⁶, log log x ≈ 2.6, so about 600,000/1.6 ≈ 375,000 such n.",
     "significance": "key",
     "relatedConcepts": ["counting", "asymptotics"]
@@ -73,8 +73,8 @@
     "id": "ann-e946-heath-brown",
     "proofId": "erdos-946",
     "range": {
-      "startLine": 101,
-      "endLine": 105
+      "startLine": 90,
+      "endLine": 94
     },
     "type": "theorem",
     "title": "Axiom: Heath-Brown's Theorem",
@@ -87,8 +87,8 @@
     "id": "ann-e946-main",
     "proofId": "erdos-946",
     "range": {
-      "startLine": 107,
-      "endLine": 113
+      "startLine": 96,
+      "endLine": 102
     },
     "type": "theorem",
     "title": "Main Theorem: Erdős Problem 946",
@@ -101,8 +101,8 @@
     "id": "ann-e946-spiro",
     "proofId": "erdos-946",
     "range": {
-      "startLine": 117,
-      "endLine": 122
+      "startLine": 106,
+      "endLine": 111
     },
     "type": "theorem",
     "title": "Spiro's Precursor Result",
@@ -115,10 +115,10 @@
     "id": "ann-e946-lower-bound",
     "proofId": "erdos-946",
     "range": {
-      "startLine": 124,
-      "endLine": 134
+      "startLine": 117,
+      "endLine": 119
     },
-    "type": "theorem",
+    "type": "concept",
     "title": "Quantitative Lower Bounds",
     "content": "Heath-Brown showed the count is ≫ x/(log x)⁷. Hildebrand improved this to ≫ x/(log log x)³. These show such n are relatively common.",
     "mathContext": "The notation f = O(g) means f is bounded by a constant times g. The improved bound x/(log log x)³ is much larger than x/(log x)⁷.",
@@ -129,10 +129,10 @@
     "id": "ann-e946-upper-bound",
     "proofId": "erdos-946",
     "range": {
-      "startLine": 136,
-      "endLine": 139
+      "startLine": 121,
+      "endLine": 125
     },
-    "type": "theorem",
+    "type": "concept",
     "title": "Upper Bound",
     "content": "Erdős-Pomerance-Sárközy (1987) proved the count is ≪ x/√(log log x). Combined with the lower bound, this pins down the growth rate.",
     "mathContext": "The gap between x/(log log x)³ and x/√(log log x) suggests the true answer is closer to the upper bound. Tao-Teräväinen confirmed this.",

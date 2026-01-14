@@ -2,7 +2,7 @@
   {
     "id": "ann-e58-cycle-lengths",
     "proofId": "erdos-58",
-    "range": { "startLine": 28, "endLine": 30 },
+    "range": { "startLine": 31, "endLine": 33 },
     "type": "definition",
     "title": "Cycle Lengths",
     "content": "The set of all **cycle lengths** in a graph G, using Mathlib's Walk.IsCycle predicate. A cycle is a closed walk with no repeated vertices except endpoints.",
@@ -11,7 +11,7 @@
   {
     "id": "ann-e58-odd-cycle-lengths",
     "proofId": "erdos-58",
-    "range": { "startLine": 32, "endLine": 34 },
+    "range": { "startLine": 35, "endLine": 37 },
     "type": "definition",
     "title": "Odd Cycle Lengths",
     "content": "The set of all **odd cycle lengths** in G. These are the key objects relating to chromatic number bounds in this problem.",
@@ -20,7 +20,7 @@
   {
     "id": "ann-e58-num-odd-cycles",
     "proofId": "erdos-58",
-    "range": { "startLine": 36, "endLine": 38 },
+    "range": { "startLine": 39, "endLine": 41 },
     "type": "definition",
     "title": "Number of Odd Cycle Lengths",
     "content": "The count of distinct odd cycle lengths in G, denoted k in the theorem statements. Uses Set.ncard for cardinality of potentially infinite sets.",
@@ -29,79 +29,79 @@
   {
     "id": "ann-e58-colorable",
     "proofId": "erdos-58",
-    "range": { "startLine": 42, "endLine": 44 },
+    "range": { "startLine": 45, "endLine": 47 },
     "type": "definition",
     "title": "k-Colorable",
-    "content": "A graph is **k-colorable** if there exists f: V → Fin k with adjacent vertices receiving different colors. Standard graph coloring definition.",
+    "content": "A graph is **k-colorable** if there exists f: V -> Fin k with adjacent vertices receiving different colors. Standard graph coloring definition.",
     "significance": "supporting"
   },
   {
     "id": "ann-e58-chromatic-number",
     "proofId": "erdos-58",
-    "range": { "startLine": 46, "endLine": 52 },
+    "range": { "startLine": 49, "endLine": 55 },
     "type": "definition",
     "title": "Chromatic Number",
-    "content": "The **chromatic number** χ(G) is the minimum k for which G is k-colorable. Axiomatized here for simplicity, with specification given separately.",
+    "content": "The **chromatic number** chi(G) is the minimum k for which G is k-colorable. Axiomatized here for simplicity, with specification given separately.",
     "significance": "key"
   },
   {
     "id": "ann-e58-contains-clique",
     "proofId": "erdos-58",
-    "range": { "startLine": 56, "endLine": 58 },
+    "range": { "startLine": 59, "endLine": 61 },
     "type": "definition",
     "title": "Contains Clique",
-    "content": "G **contains K_n** if there exists a set S of n vertices that are pairwise adjacent. This characterizes when equality holds in Gyárfás' bound.",
+    "content": "G **contains K_n** if there exists a set S of n vertices that are pairwise adjacent. This characterizes when equality holds in Gyarfas' bound.",
     "significance": "supporting"
   },
   {
     "id": "ann-e58-gyarfas-upper",
     "proofId": "erdos-58",
-    "range": { "startLine": 62, "endLine": 66 },
-    "type": "theorem",
-    "title": "Gyárfás Upper Bound (1992)",
-    "content": "**Main Result**: If G has at most k distinct odd cycle lengths, then χ(G) ≤ 2k+2. This is the core of the solved conjecture.",
+    "range": { "startLine": 65, "endLine": 70 },
+    "type": "axiom",
+    "title": "Gyarfas Upper Bound (1992)",
+    "content": "**Main Result**: If G has at most k distinct odd cycle lengths, then chi(G) <= 2k+2. This is the core of the solved conjecture.",
     "significance": "critical"
   },
   {
     "id": "ann-e58-gyarfas-equality",
     "proofId": "erdos-58",
-    "range": { "startLine": 68, "endLine": 73 },
-    "type": "theorem",
-    "title": "Gyárfás Equality Characterization",
-    "content": "**Equality Case**: χ(G) = 2k+2 with ≤k odd cycle lengths iff G contains K_{2k+2}. Complete graphs are the extremal examples.",
+    "range": { "startLine": 72, "endLine": 78 },
+    "type": "axiom",
+    "title": "Gyarfas Equality Characterization",
+    "content": "**Equality Case**: chi(G) = 2k+2 with <=k odd cycle lengths iff G contains K_{2k+2}. Complete graphs are the extremal examples.",
     "significance": "critical"
   },
   {
     "id": "ann-e58-gyarfas-structural",
     "proofId": "erdos-58",
-    "range": { "startLine": 75, "endLine": 84 },
-    "type": "theorem",
-    "title": "Gyárfás Structural Result",
-    "content": "**2-Connected Case**: If G is 2-connected with ≤k odd cycle lengths, then G contains K_{2k+2} or has a vertex of degree ≤2k. Powerful structural dichotomy.",
+    "range": { "startLine": 80, "endLine": 89 },
+    "type": "axiom",
+    "title": "Gyarfas Structural Result",
+    "content": "**2-Connected Case**: If G is 2-connected with <=k odd cycle lengths, then G contains K_{2k+2} or has a vertex of degree <=2k. Powerful structural dichotomy.",
     "significance": "key"
   },
   {
     "id": "ann-e58-bollobas-shelah",
     "proofId": "erdos-58",
-    "range": { "startLine": 88, "endLine": 93 },
+    "range": { "startLine": 93, "endLine": 101 },
     "type": "theorem",
-    "title": "Bollobás-Shelah (k=1)",
-    "content": "**Special Case**: At most 1 odd cycle length implies χ ≤ 4. This was proved before Gyárfás' general result and motivated the conjecture.",
+    "title": "Bollobas-Shelah (k=1)",
+    "content": "**Special Case**: At most 1 odd cycle length implies chi <= 4. This was proved before Gyarfas' general result and motivated the conjecture.",
     "significance": "key"
   },
   {
     "id": "ann-e58-bipartite-case",
     "proofId": "erdos-58",
-    "range": { "startLine": 95, "endLine": 101 },
+    "range": { "startLine": 103, "endLine": 111 },
     "type": "theorem",
     "title": "Bipartite Case (k=0)",
-    "content": "**k=0 Case**: No odd cycles implies χ ≤ 2 (bipartite). This is the classical result that odd-cycle-free graphs are 2-colorable.",
+    "content": "**k=0 Case**: No odd cycles implies chi <= 2 (bipartite). This is the classical result that odd-cycle-free graphs are 2-colorable.",
     "significance": "supporting"
   },
   {
     "id": "ann-e58-consecutive-odd",
     "proofId": "erdos-58",
-    "range": { "startLine": 105, "endLine": 107 },
+    "range": { "startLine": 115, "endLine": 117 },
     "type": "definition",
     "title": "Consecutive Odd Lengths",
     "content": "A set of **consecutive odd integers** {2m+1, 2m+3, ...}. Used in the Gao-Huo-Ma strengthening.",
@@ -110,19 +110,19 @@
   {
     "id": "ann-e58-gao-huo-ma",
     "proofId": "erdos-58",
-    "range": { "startLine": 109, "endLine": 117 },
-    "type": "theorem",
+    "range": { "startLine": 119, "endLine": 128 },
+    "type": "axiom",
     "title": "Gao-Huo-Ma Theorem (2021)",
-    "content": "**Strengthening**: If χ(G) ≥ 2k+3, then G has k+1 consecutive odd cycle lengths. High chromatic number forces very structured odd cycles.",
+    "content": "**Strengthening**: If chi(G) >= 2k+3, then G has k+1 consecutive odd cycle lengths. High chromatic number forces very structured odd cycles.",
     "significance": "key"
   },
   {
     "id": "ann-e58-chi-5-corollary",
     "proofId": "erdos-58",
-    "range": { "startLine": 121, "endLine": 128 },
+    "range": { "startLine": 132, "endLine": 139 },
     "type": "theorem",
-    "title": "χ ≥ 5 Corollary",
-    "content": "If χ(G) ≥ 5, then G has at least 2 distinct odd cycle lengths. Derived by contrapositive from Gyárfás' bound with k=1.",
+    "title": "chi >= 5 Corollary",
+    "content": "If chi(G) >= 5, then G has at least 2 distinct odd cycle lengths. Derived by contrapositive from Gyarfas' bound with k=1.",
     "significance": "key"
   }
 ]

@@ -12,7 +12,7 @@
   {
     "id": "ann-sign-changes",
     "proofId": "descartes-rule-of-signs",
-    "range": {"startLine": 59, "endLine": 106},
+    "range": {"startLine": 68, "endLine": 107},
     "type": "definition",
     "title": "Sign Change Definitions",
     "content": "**Sign of a Real Number**:\n```lean\nnoncomputable def realSign (x : ℝ) : ℤ :=\n  if x > 0 then 1 else if x < 0 then -1 else 0\n```\n\n**Opposite Signs**: $x \\cdot y < 0$\n\n**Sign Change Between Indices**:\n```lean\ndef SignChangeBetween (f : Fin n → ℝ) (i j : Fin n) : Prop :=\n  i < j ∧ f i ≠ 0 ∧ f j ≠ 0 ∧\n  (∀ k, i < k → k < j → f k = 0) ∧\n  oppositeSign (f i) (f j)\n```\n\n**Key**: Zeros are **skipped** when counting sign changes. We look for consecutive non-zero terms with opposite signs.",
@@ -34,8 +34,8 @@
   {
     "id": "ann-main-theorem",
     "proofId": "descartes-rule-of-signs",
-    "range": {"startLine": 125, "endLine": 186},
-    "type": "theorem",
+    "range": {"startLine": 148, "endLine": 187},
+    "type": "axiom",
     "title": "Main Theorem",
     "content": "**Descartes' Rule of Signs** (Wiedijk #100):\n\n**Upper Bound**:\n```lean\ntheorem descartes_upper_bound (p : ℝ[X]) (hp : p ≠ 0) :\n    countPositiveRoots p ≤ signChangesInCoeffs p\n```\n\n**Parity**:\n```lean\ntheorem descartes_parity (p : ℝ[X]) (hp : p ≠ 0) :\n    Even (signChangesInCoeffs p - countPositiveRoots p)\n```\n\n**Combined Form**: $\\exists k, \\text{pos roots} + 2k = \\text{sign changes}$\n\n**Proof Sketch**:\n1. Induction on degree\n2. Base case: constant has no positive roots\n3. Inductive: Rolle's theorem — between roots of $p$, there's a root of $p'$\n4. Sign changes decrease by at most 1 per differentiation",
     "mathContext": "pos roots ≤ sign changes, difference even",
@@ -56,8 +56,8 @@
   {
     "id": "ann-examples",
     "proofId": "descartes-rule-of-signs",
-    "range": {"startLine": 225, "endLine": 253},
-    "type": "note",
+    "range": {"startLine": 234, "endLine": 255},
+    "type": "axiom",
     "title": "Sign Change Examples",
     "content": "**Example 1**: $x^2 - 1$ has coefficients $[1, 0, -1]$\n- Sign changes: 1 (from $+1$ to $-1$, skipping 0)\n- Positive roots: 1 (namely $x = 1$) ✓\n\n**Example 2**: $x^2 + 1$ has coefficients $[1, 0, 1]$\n- Sign changes: 0 (no sign change)\n- Positive roots: 0 (roots are $\\pm i$) ✓\n\n**Example 3**: $x^3 - x$ has coefficients $[1, 0, -1, 0]$\n- Sign changes: 1\n- Positive roots: 1 (namely $x = 1$; also $x = 0, -1$) ✓\n\nThe rule correctly bounds the positive root count!",
     "mathContext": "concrete coefficient sequences",
