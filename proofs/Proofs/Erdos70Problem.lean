@@ -197,10 +197,7 @@ theorem omega0_plus_n_countable (n : ℕ) : IsCountableOrdinal (Ordinal.omega0 +
 /-- ω * ω is countable. -/
 theorem omega0_squared_countable : IsCountableOrdinal (Ordinal.omega0 * Ordinal.omega0) := by
   unfold IsCountableOrdinal
-  calc (Ordinal.omega0 * Ordinal.omega0).card
-      = Ordinal.omega0.card * Ordinal.omega0.card := Ordinal.card_mul _ _
-    _ = Cardinal.aleph0 * Cardinal.aleph0 := by simp [Ordinal.card_omega0]
-    _ = Cardinal.aleph0 := Cardinal.aleph0_mul_aleph0
+  rw [Ordinal.card_mul, Ordinal.card_omega0, Cardinal.aleph0_mul_aleph0]
 
 /-! ## Summary
 

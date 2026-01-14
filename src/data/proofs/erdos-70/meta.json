@@ -1,33 +1,140 @@
 {
   "id": "erdos-70",
-  "title": "Erdős Problem #70",
+  "title": "Erdős Problem #70: Partition Calculus for the Continuum",
   "slug": "erdos-70",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $...\\beta...2\\leq n<\\omega...\\to (\\beta, n)_2^3...\\to (\\omega+n,4)_2^3...2\\leq n<\\omega$.\n\n\nBack to the problem",
+  "description": "Let 𝔠 be the cardinality of the continuum, β be any countable ordinal, and 2 ≤ n < ω. Is it true that 𝔠 → (β, n)₂³? OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Rado",
     "sourceUrl": "https://erdosproblems.com/70",
     "date": "",
-    "status": "pending",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos70Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "partition-calculus",
+      "set-theory",
+      "ramsey-theory",
+      "ordinals"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "formalized",
+    "sorries": 0,
     "erdosNumber": 70,
     "erdosUrl": "https://erdosproblems.com/70",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #70 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\mathfrak{c}$ be the ordinal of the real numbers, $\\beta$ be any countable ordinal, and $2\\leq n<\\omega$. Is it true that $\\mathfrak{c}\\to (\\beta, n)_2^3$?\n\n\n\nErd\\H{o}s and Rado proved that $\\mathfrak{c}\\to (\\omega+n,4)_2^3$ for any $2\\leq n<\\omega$.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem is part of partition calculus, a branch of combinatorial set theory pioneered by Erdős and Rado. The notation κ → (α, β)ₖⁿ describes Ramsey-type properties for infinite cardinals. Erdős and Rado proved 𝔠 → (ω+n, 4)₂³ for 2 ≤ n < ω, but the general case for arbitrary countable ordinals β remains OPEN.",
+    "problemStatement": "Let 𝔠 be the cardinality of the continuum (= 2^ℵ₀), β be any countable ordinal, and 2 ≤ n < ω. Is it true that 𝔠 → (β, n)₂³? That is, for any 2-coloring of 3-element subsets of a continuum-sized set, is there either a homogeneous set of order type β for color 0 or a homogeneous set of size n for color 1?",
+    "proofStrategy": "The formalization defines colorings of n-element subsets, homogeneous sets, order types, and the partition arrow notation. The main conjecture is stated for all countable ordinals β. Special cases for β = ω, ω², and ω^ω are defined. The Erdős-Rado partial result is axiomatized. Monotonicity properties and countability proofs for ordinal arithmetic are provided.",
+    "keyInsights": [
+      "Erdős-Rado proved 𝔠 → (ω+n, 4)₂³ for all 2 ≤ n < ω",
+      "The general case for arbitrary countable β remains OPEN",
+      "Partition arrows are monotonic in both the ordinal and size parameters",
+      "Ordinal arithmetic: ω + n, ω², ω^ω are all countable ordinals",
+      "Finite Ramsey theory provides the finite analogue of this problem"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Colorings of n-element subsets",
+      "startLine": 33,
+      "endLine": 41
+    },
+    {
+      "id": "homogeneous-sets",
+      "title": "Homogeneous Sets",
+      "summary": "Definitions of homogeneity for sets and finsets",
+      "startLine": 43,
+      "endLine": 53
+    },
+    {
+      "id": "order-types",
+      "title": "Order Types",
+      "summary": "Cardinal-based order type comparison",
+      "startLine": 55,
+      "endLine": 60
+    },
+    {
+      "id": "partition-arrow",
+      "title": "Partition Arrow",
+      "summary": "The notation κ → (α, m)₂³",
+      "startLine": 62,
+      "endLine": 74
+    },
+    {
+      "id": "continuum",
+      "title": "The Continuum",
+      "summary": "Cardinality 𝔠 = 2^ℵ₀",
+      "startLine": 76,
+      "endLine": 82
+    },
+    {
+      "id": "countable-ordinals",
+      "title": "Countable Ordinals",
+      "summary": "Definition and examples of countable ordinals",
+      "startLine": 84,
+      "endLine": 98
+    },
+    {
+      "id": "erdos-rado",
+      "title": "Erdős-Rado Theorem",
+      "summary": "Partial result: 𝔠 → (ω+n, 4)₂³",
+      "startLine": 100,
+      "endLine": 111
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture (OPEN)",
+      "summary": "The full Erdős Problem 70 statement",
+      "startLine": 113,
+      "endLine": 124
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "Conjectures for β = ω, ω², ω^ω",
+      "startLine": 126,
+      "endLine": 138
+    },
+    {
+      "id": "finite-ramsey",
+      "title": "Finite Ramsey Theory",
+      "summary": "Finite Ramsey theorem and R(3,3) = 6",
+      "startLine": 140,
+      "endLine": 159
+    },
+    {
+      "id": "negative-results",
+      "title": "Negative Results",
+      "summary": "Counterexample structure and mutual exclusivity",
+      "startLine": 161,
+      "endLine": 177
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity",
+      "summary": "Monotonicity of partition arrows",
+      "startLine": 179,
+      "endLine": 187
+    },
+    {
+      "id": "ordinal-arithmetic",
+      "title": "Ordinal Arithmetic",
+      "summary": "Countability proofs for ω+n and ω*ω",
+      "startLine": 189,
+      "endLine": 199
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #70, an OPEN problem in partition calculus asking whether 𝔠 → (β, n)₂³ holds for all countable ordinals β and 2 ≤ n < ω. Erdős-Rado proved the special case 𝔠 → (ω+n, 4)₂³, but the general conjecture remains open.",
+    "implications": "This problem connects infinite Ramsey theory to the structure of the continuum. A positive answer would establish strong partition properties for the continuum. The problem may depend on set-theoretic axioms beyond ZFC, particularly the Continuum Hypothesis.",
+    "openQuestions": [
+      "Does 𝔠 → (ω², n)₂³ hold?",
+      "Does 𝔠 → (ω^ω, n)₂³ hold?",
+      "What is the relationship to CH (Continuum Hypothesis)?",
+      "Can the Erdős-Rado bound of 4 be improved?"
+    ]
   }
 }

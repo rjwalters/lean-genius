@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-e70-coloring",
+    "proofId": "erdos-70",
+    "range": { "startLine": 35, "endLine": 37 },
+    "type": "definition",
+    "title": "Coloring Definition",
+    "content": "**Coloring S n k** is a function from n-element subsets of S to k colors (Fin k). Used to formalize partition calculus.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e70-homogeneous",
+    "proofId": "erdos-70",
+    "range": { "startLine": 45, "endLine": 48 },
+    "type": "definition",
+    "title": "Homogeneous Set",
+    "content": "**IsHomogeneous H n c i** means all n-subsets of H receive color i. This is the Ramsey-theoretic notion of monochromatic sets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e70-ordertype",
+    "proofId": "erdos-70",
+    "range": { "startLine": 57, "endLine": 60 },
+    "type": "definition",
+    "title": "Order Type Bound",
+    "content": "**HasOrderTypeAtLeast S H α** means H has cardinality at least α.card. Simplified from full order type comparison for this formalization.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e70-partition-arrow",
+    "proofId": "erdos-70",
+    "range": { "startLine": 63, "endLine": 74 },
+    "type": "definition",
+    "title": "Partition Arrow",
+    "content": "**PartitionArrow κ α m** means κ → (α, m)₂³: for any 2-coloring of 3-subsets of a κ-sized set, either there's a homogeneous set of order type α for color 0, or size m for color 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e70-continuum",
+    "proofId": "erdos-70",
+    "range": { "startLine": 78, "endLine": 82 },
+    "type": "definition",
+    "title": "Continuum Cardinal",
+    "content": "**continuum_card = 2^ℵ₀** is the cardinality of the real numbers. The problem asks about partition properties of this cardinal.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e70-countable-ord",
+    "proofId": "erdos-70",
+    "range": { "startLine": 86, "endLine": 87 },
+    "type": "definition",
+    "title": "Countable Ordinal",
+    "content": "**IsCountableOrdinal α** means α.card ≤ ℵ₀. The problem concerns partition relations for all such ordinals.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e70-omega-countable",
+    "proofId": "erdos-70",
+    "range": { "startLine": 89, "endLine": 92 },
+    "type": "theorem",
+    "title": "ω is Countable",
+    "content": "The first infinite ordinal ω (omega0) has cardinality exactly ℵ₀, making it countable.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e70-erdos-rado",
+    "proofId": "erdos-70",
+    "range": { "startLine": 101, "endLine": 111 },
+    "type": "theorem",
+    "title": "Erdős-Rado Theorem",
+    "content": "**Partial Result**: 𝔠 → (ω+n, 4)₂³ for all 2 ≤ n < ω. This is the strongest known result toward the full conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e70-conjecture",
+    "proofId": "erdos-70",
+    "range": { "startLine": 114, "endLine": 124 },
+    "type": "definition",
+    "title": "Erdős Problem 70 (OPEN)",
+    "content": "**Main Conjecture**: For all countable β and 2 ≤ n < ω, does 𝔠 → (β, n)₂³ hold? The general case beyond ω+n remains OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e70-special-omega",
+    "proofId": "erdos-70",
+    "range": { "startLine": 128, "endLine": 130 },
+    "type": "definition",
+    "title": "Case β = ω",
+    "content": "**conjecture_omega n** asks whether 𝔠 → (ω, n)₂³. This follows from Erdős-Rado by monotonicity.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e70-special-omega2",
+    "proofId": "erdos-70",
+    "range": { "startLine": 132, "endLine": 134 },
+    "type": "definition",
+    "title": "Case β = ω²",
+    "content": "**conjecture_omega_squared n** asks whether 𝔠 → (ω², n)₂³. This case is strictly stronger than Erdős-Rado.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e70-special-omega-tower",
+    "proofId": "erdos-70",
+    "range": { "startLine": 136, "endLine": 138 },
+    "type": "definition",
+    "title": "Case β = ω^ω",
+    "content": "**conjecture_omega_tower n** asks whether 𝔠 → (ω^ω, n)₂³. ω^ω is the first epsilon number limit.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e70-finite-ramsey",
+    "proofId": "erdos-70",
+    "range": { "startLine": 141, "endLine": 150 },
+    "type": "theorem",
+    "title": "Finite Ramsey Theorem",
+    "content": "For any r, k, n there exists N such that any k-coloring of n-subsets of an N-set has a homogeneous r-set. The finite analogue of partition calculus.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e70-ramsey33",
+    "proofId": "erdos-70",
+    "range": { "startLine": 151, "endLine": 159 },
+    "type": "theorem",
+    "title": "R(3,3) = 6",
+    "content": "**Ramsey's Theorem**: Any 2-coloring of 3-subsets of a 6-element set has a monochromatic 3-subset. Classic result in finite Ramsey theory.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e70-counterexample",
+    "proofId": "erdos-70",
+    "range": { "startLine": 162, "endLine": 170 },
+    "type": "definition",
+    "title": "Counterexample Form",
+    "content": "**erdos_70_counterexample** describes what a counterexample would look like: some countable β and n ≥ 2 with 𝔠 ↛ (β, n)₂³.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e70-xor",
+    "proofId": "erdos-70",
+    "range": { "startLine": 172, "endLine": 177 },
+    "type": "theorem",
+    "title": "Mutual Exclusivity",
+    "content": "The conjecture and counterexample are mutually exclusive and exhaustive: exactly one must hold.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e70-mono-ord",
+    "proofId": "erdos-70",
+    "range": { "startLine": 180, "endLine": 183 },
+    "type": "theorem",
+    "title": "Ordinal Monotonicity",
+    "content": "If κ → (β, m)₂³ and α ≤ β, then κ → (α, m)₂³. Smaller ordinals are easier to find as homogeneous sets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e70-mono-size",
+    "proofId": "erdos-70",
+    "range": { "startLine": 185, "endLine": 187 },
+    "type": "theorem",
+    "title": "Size Monotonicity",
+    "content": "If κ → (α, n)₂³ and m ≤ n, then κ → (α, m)₂³. Smaller finite sets are easier to find.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e70-omega-plus-n",
+    "proofId": "erdos-70",
+    "range": { "startLine": 191, "endLine": 193 },
+    "type": "theorem",
+    "title": "ω + n is Countable",
+    "content": "For any n, ω + n has cardinality ℵ₀ + n = ℵ₀, so it's countable. Uses ordinal addition and cardinal absorption.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e70-omega-squared",
+    "proofId": "erdos-70",
+    "range": { "startLine": 195, "endLine": 199 },
+    "type": "theorem",
+    "title": "ω² is Countable",
+    "content": "ω * ω has cardinality ℵ₀ * ℵ₀ = ℵ₀, making ω² countable. Ordinal multiplication maps to cardinal multiplication.",
+    "significance": "supporting"
+  }
+]
