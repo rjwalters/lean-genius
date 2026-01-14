@@ -1,33 +1,104 @@
 {
   "id": "erdos-60",
-  "title": "Erdős Problem #60",
+  "title": "Erdős Problem #60: Supersaturation of 4-Cycles",
   "slug": "erdos-60",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph on ... vertices with ... edges contain ... many copies of ...?\n\n\n\nConjectured by Erds and Simonovits, who co...",
+  "description": "Does every graph on n vertices with > ex(n; C_4) edges contain Ω(n^{1/2}) copies of C_4? OPEN problem.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Simonovits",
     "sourceUrl": "https://erdosproblems.com/60",
     "date": "",
-    "status": "pending",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos60Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-graph-theory",
+      "supersaturation",
+      "cycles"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "formalized",
+    "sorries": 2,
     "erdosNumber": 60,
     "erdosUrl": "https://erdosproblems.com/60",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #60 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph on $n$ vertices with $>\\mathrm{ex}(n;C_4)$ edges contain $\\gg n^{1/2}$ many copies of $C_4$?\n\n\n\nConjectured by Erd\\H{o}s and Simonovits, who could not even prove that at least $2$ copies of $C_4$ are guaranteed.\n\nThe behaviour of $\\mathrm{ex}(n;C_4)$ is the subject of [765].\n\nHe, Ma, and Yang \\cite{HeMaYa21} have proved this conjecture when $n=q^2+q+1$ for some even integer $q$.\n\n\n\n\nReferences\n\n\n[HeMaYa21] He, J. and Ma, J. and Yang, T., Some extremal results on 4-cycles. Journal of Combinatorial Theory B (2021).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This is a supersaturation problem conjectured by Erdős and Simonovits. Once a graph exceeds the Turán number ex(n; C_4), it must contain at least one 4-cycle. The question asks for a quantitative bound: how many 4-cycles are forced? The conjecture is that at least Ω(n^{1/2}) copies appear. Remarkably, Erdős and Simonovits couldn't even prove that ≥ 2 copies are guaranteed.",
+    "problemStatement": "Does every graph on n vertices with > ex(n; C_4) edges contain ≫ n^{1/2} many copies of C_4?",
+    "proofStrategy": "The formalization defines 4-cycle copies as ordered 4-tuples, the Turán number ex(n; C_4) with its asymptotic bounds, and the supersaturation conjecture. Partial results (He-Ma-Yang 2021 for projective plane orders) are axiomatized. The two-copies conjecture is stated as a weaker open problem.",
+    "keyInsights": [
+      "ex(n; C_4) ≈ (1/2)n^{3/2} from incidence geometry (Reiman 1958)",
+      "Projective plane polarity graphs achieve the Turán number exactly",
+      "He-Ma-Yang (2021): Conjecture holds for n = q² + q + 1, q even",
+      "Even proving ≥ 2 copies are guaranteed remains open",
+      "General Erdős-Simonovits supersaturation gives some (weaker) bound"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "summary": "4-cycle copies, counting function",
+      "startLine": 31,
+      "endLine": 46
+    },
+    {
+      "id": "turan",
+      "title": "Turán Number for C_4",
+      "summary": "ex(n; C_4) definition and asymptotic bounds",
+      "startLine": 48,
+      "endLine": 62
+    },
+    {
+      "id": "supersaturation",
+      "title": "Supersaturation",
+      "summary": "ExceedsTuranC4 definition",
+      "startLine": 64,
+      "endLine": 68
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture (OPEN)",
+      "summary": "Erdős Problem 60: Ω(n^{1/2}) copies of C_4",
+      "startLine": 70,
+      "endLine": 83
+    },
+    {
+      "id": "partial-results",
+      "title": "Partial Results",
+      "summary": "He-Ma-Yang theorem for projective plane orders",
+      "startLine": 85,
+      "endLine": 103
+    },
+    {
+      "id": "weaker-results",
+      "title": "Weaker Results",
+      "summary": "At least one C_4, two-copies conjecture",
+      "startLine": 105,
+      "endLine": 117
+    },
+    {
+      "id": "general-supersaturation",
+      "title": "General Supersaturation",
+      "summary": "Erdős-Simonovits supersaturation theorem",
+      "startLine": 119,
+      "endLine": 132
+    },
+    {
+      "id": "extremal-graphs",
+      "title": "Extremal Graphs",
+      "summary": "Polarity graphs from projective planes",
+      "startLine": 134,
+      "endLine": 140
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #60, an OPEN supersaturation problem asking whether exceeding ex(n; C_4) forces Ω(n^{1/2}) copies of C_4. The conjecture remains unproven in general, with partial results for projective plane orders (He-Ma-Yang 2021).",
+    "implications": "Supersaturation problems quantify how 'far' a graph is from being extremal. For C_4, the conjectured n^{1/2} bound would be tight: polarity graphs show you can be arbitrarily close to ex(n; C_4) with zero 4-cycles.",
+    "openQuestions": [
+      "Prove the full Ω(n^{1/2}) bound for all n",
+      "Prove even ≥ 2 copies are guaranteed (open!)",
+      "Determine the exact constant in the lower bound",
+      "Extend He-Ma-Yang to all projective plane orders"
+    ]
   }
 }

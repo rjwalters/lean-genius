@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-e60-c4-copy",
+    "proofId": "erdos-60",
+    "range": { "startLine": 33, "endLine": 37 },
+    "type": "definition",
+    "title": "C_4 Copy",
+    "content": "A **copy of C_4** in G is a set of 4 distinct vertices (a, b, c, d) forming a 4-cycle: a-b-c-d-a with all edges present. The vertices must be distinct and non-adjacent pairs (a,c) and (b,d) must differ.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e60-c4-copies",
+    "proofId": "erdos-60",
+    "range": { "startLine": 39, "endLine": 41 },
+    "type": "definition",
+    "title": "C_4 Copies Set",
+    "content": "**C4Copies(G)** is the set of all ordered 4-tuples forming 4-cycles in G. Each unlabeled C_4 corresponds to 8 labeled copies (4 rotations × 2 reflections).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e60-count-c4",
+    "proofId": "erdos-60",
+    "range": { "startLine": 43, "endLine": 46 },
+    "type": "definition",
+    "title": "Count C_4",
+    "content": "**countC4(G)** counts the number of distinct (unlabeled) 4-cycles in G by dividing the labeled count by 8. This is the quantity the conjecture bounds.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e60-ex-c4",
+    "proofId": "erdos-60",
+    "range": { "startLine": 50, "endLine": 52 },
+    "type": "definition",
+    "title": "Turán Number ex(n; C_4)",
+    "content": "**ex(n; C_4)** is the maximum number of edges in an n-vertex graph containing no 4-cycles. This is the threshold for the supersaturation problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e60-ex-asymptotic",
+    "proofId": "erdos-60",
+    "range": { "startLine": 54, "endLine": 56 },
+    "type": "theorem",
+    "title": "ex(n; C_4) Asymptotics",
+    "content": "**Reiman-KST**: ex(n; C_4) = (1/2 + o(1))n^{3/2}. The lower bound comes from projective plane polarity graphs; the upper bound from Kővári-Sós-Turán.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e60-exceeds-turan",
+    "proofId": "erdos-60",
+    "range": { "startLine": 66, "endLine": 68 },
+    "type": "definition",
+    "title": "Exceeds Turán",
+    "content": "A graph **exceeds the Turán number** for C_4 if it has more than ex(n; C_4) edges. Such graphs must contain at least one 4-cycle.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e60-conjecture",
+    "proofId": "erdos-60",
+    "range": { "startLine": 72, "endLine": 83 },
+    "type": "theorem",
+    "title": "Erdős Problem 60 (OPEN)",
+    "content": "**Supersaturation Conjecture**: If G has > ex(n; C_4) edges, then G contains at least Ω(n^{1/2}) copies of C_4. This remains OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e60-proj-plane",
+    "proofId": "erdos-60",
+    "range": { "startLine": 87, "endLine": 89 },
+    "type": "definition",
+    "title": "Projective Plane Order",
+    "content": "**Projective plane orders** are numbers of the form n = q² + q + 1. For prime powers q, projective planes exist and yield extremal C_4-free graphs.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e60-even-proj",
+    "proofId": "erdos-60",
+    "range": { "startLine": 91, "endLine": 93 },
+    "type": "definition",
+    "title": "Even Projective Plane Order",
+    "content": "n = q² + q + 1 for **even q**. He-Ma-Yang proved the conjecture for these special values of n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e60-he-ma-yang",
+    "proofId": "erdos-60",
+    "range": { "startLine": 95, "endLine": 103 },
+    "type": "theorem",
+    "title": "He-Ma-Yang Theorem (2021)",
+    "content": "**Partial Result**: For n = q² + q + 1 with q even, exceeding ex(n; C_4) forces Ω(n^{1/2}) copies of C_4. This confirms the conjecture for these specific n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e60-at-least-one",
+    "proofId": "erdos-60",
+    "range": { "startLine": 107, "endLine": 109 },
+    "type": "theorem",
+    "title": "At Least One C_4",
+    "content": "By definition of ex(n; C_4), exceeding the Turán number guarantees at least one 4-cycle. This is the trivial lower bound.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e60-two-copies",
+    "proofId": "erdos-60",
+    "range": { "startLine": 111, "endLine": 117 },
+    "type": "definition",
+    "title": "Two-Copies Conjecture (OPEN)",
+    "content": "**Weaker Open Problem**: Even proving ≥ 2 copies of C_4 are guaranteed remains open! Erdős and Simonovits noted this remarkable gap in knowledge.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e60-es-supersaturation",
+    "proofId": "erdos-60",
+    "range": { "startLine": 121, "endLine": 132 },
+    "type": "theorem",
+    "title": "Erdős-Simonovits Supersaturation",
+    "content": "**General Supersaturation**: Exceeding ex(n; H) by a constant factor (1+ε) forces a positive density of H-copies. This gives some bound but weaker than Ω(n^{1/2}).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e60-polarity-graph",
+    "proofId": "erdos-60",
+    "range": { "startLine": 136, "endLine": 140 },
+    "type": "theorem",
+    "title": "Polarity Graph Existence",
+    "content": "**Extremal Construction**: For prime power q, the polarity graph of PG(2,q) is C_4-free with exactly ex(n; C_4) edges for n = q² + q + 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e60-partial-result",
+    "proofId": "erdos-60",
+    "range": { "startLine": 144, "endLine": 147 },
+    "type": "theorem",
+    "title": "Partial Result for Even q",
+    "content": "For any even q, n = q² + q + 1 is a valid projective plane order for which He-Ma-Yang applies.",
+    "significance": "supporting"
+  }
+]
