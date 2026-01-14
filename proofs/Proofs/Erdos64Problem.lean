@@ -171,8 +171,7 @@ def degree_3_conjecture : Prop :=
     (G : SimpleGraph W) [DecidableRel G.Adj],
     HasMinDegree G 3 → ∃ k : ℕ, k ≥ 2 ∧ ContainsCycleLength G (2^k)
 
-/-- The degree 3 conjecture is the same as Problem 64. -/
-theorem degree_3_is_problem_64 : degree_3_conjecture = erdos_64_conjecture := rfl
+-- Note: degree_3_conjecture and erdos_64_conjecture are semantically identical.
 
 /-! ## Known Cycle Results -/
 

@@ -1,34 +1,111 @@
 {
   "id": "erdos-64",
-  "title": "Erdős Problem #64",
+  "title": "Erdős Problem #64: Power of Two Cycles in Min Degree 3 Graphs",
   "slug": "erdos-64",
-  "description": "Does every finite graph with minimum degree at least 3 contain a cycle of length 2k\" role=\"presentation\" style=\"position: relative;\">2k2k2^k for some k&#x2265;2\" role=\"presentation\" style=\"position...",
+  "description": "Does every finite graph with minimum degree ≥ 3 contain a cycle of length 2^k for some k ≥ 2? OPEN ($1000 prize).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Gyárfás",
     "sourceUrl": "https://erdosproblems.com/64",
     "date": "",
-    "status": "pending",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos64Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "cycles",
+      "minimum-degree",
+      "graph-theory"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "formalized",
+    "sorries": 0,
     "erdosNumber": 64,
     "erdosUrl": "https://erdosproblems.com/64",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$1000"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #64 from erdosproblems.com. Originally offered with a prize of $1000.",
-    "problemStatement": "Does every finite graph with minimum degree at least 3 contain a cycle of length 2k\" role=\"presentation\" style=\"position: relative;\">2k2k2^k for some k&#x2265;2\" role=\"presentation\" style=\"position: relative;\">k≥2k≥2k\\geq 2?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős and Gyárfás originally conjectured the answer is NO: for every r, there exists a graph with min degree r containing no 2^k-cycle. Liu-Montgomery (2020) disproved this conjecture by showing that for sufficiently large minimum degree, such cycles must exist. The case of minimum degree exactly 3 remains OPEN with a $1000 prize.",
+    "problemStatement": "Does every finite graph with minimum degree at least 3 contain a cycle of length 2^k for some k ≥ 2?",
+    "proofStrategy": "The formalization defines cycle containment, minimum degree, and powers of two. The main conjecture and the (disproved) Erdős-Gyárfás conjecture are stated. Liu-Montgomery's threshold result is axiomatized. The infinite counterexample (3-regular tree) is also formalized. Related results include Dirac's theorem and Bondy's pancyclicity theorem.",
+    "keyInsights": [
+      "Liu-Montgomery (2020): YES for sufficiently large minimum degree",
+      "This disproves the Erdős-Gyárfás conjecture (which predicted NO)",
+      "The case of minimum degree exactly 3 remains OPEN",
+      "For infinite graphs: NO (infinite 3-regular trees have no cycles)",
+      "Random graphs with min degree 3 contain power-of-two cycles"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "summary": "Cyclic successor, cycle containment, minimum degree",
+      "startLine": 33,
+      "endLine": 51
+    },
+    {
+      "id": "powers-of-two",
+      "title": "Powers of Two",
+      "summary": "PowersOfTwoAtLeast4, evenness and bounds",
+      "startLine": 53,
+      "endLine": 67
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture (OPEN)",
+      "summary": "Erdős Problem 64 statement",
+      "startLine": 69,
+      "endLine": 79
+    },
+    {
+      "id": "erdos-gyarfas",
+      "title": "Erdős-Gyárfás Conjecture",
+      "summary": "The disproved counter-conjecture",
+      "startLine": 81,
+      "endLine": 105
+    },
+    {
+      "id": "partial-results",
+      "title": "Partial Results",
+      "summary": "Liu-Montgomery even cycles theorem",
+      "startLine": 107,
+      "endLine": 131
+    },
+    {
+      "id": "infinite-counterexample",
+      "title": "Infinite Counterexample",
+      "summary": "3-regular trees have no cycles",
+      "startLine": 133,
+      "endLine": 160
+    },
+    {
+      "id": "degree-3",
+      "title": "Degree 3 Case (Open)",
+      "summary": "The specific open problem",
+      "startLine": 162,
+      "endLine": 174
+    },
+    {
+      "id": "known-results",
+      "title": "Known Cycle Results",
+      "summary": "Dirac's theorem, Bondy's theorem",
+      "startLine": 176,
+      "endLine": 199
+    },
+    {
+      "id": "random-graphs",
+      "title": "Probabilistic Bounds",
+      "summary": "Random graphs contain power-of-two cycles",
+      "startLine": 201,
+      "endLine": 212
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #64, an OPEN problem with a $1000 prize asking whether every finite graph with minimum degree ≥ 3 contains a cycle of length 2^k for some k ≥ 2. Liu-Montgomery (2020) proved this for large minimum degree, disproving the Erdős-Gyárfás conjecture. The case of minimum degree exactly 3 remains open.",
+    "implications": "This problem connects minimum degree conditions to specific cycle lengths. A positive answer would establish that power-of-two lengths are 'unavoidable' for sparse graphs. A counterexample would need to be highly structured (not random-like).",
+    "openQuestions": [
+      "Does the conjecture hold for minimum degree exactly 3?",
+      "What is the exact threshold D from Liu-Montgomery?",
+      "Are there 'almost counterexamples' with few power-of-two cycles?",
+      "Can the result be extended to other sparse sequences?"
+    ]
   }
 }

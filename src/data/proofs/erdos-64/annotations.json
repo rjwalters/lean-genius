@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-e64-succmod",
+    "proofId": "erdos-64",
+    "range": { "startLine": 35, "endLine": 37 },
+    "type": "definition",
+    "title": "Cyclic Successor",
+    "content": "**Fin.succMod** maps i to (i+1) mod k in Fin k. Used to define cycle adjacency where vertex i connects to vertex (i+1) mod k.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e64-cycle",
+    "proofId": "erdos-64",
+    "range": { "startLine": 39, "endLine": 42 },
+    "type": "definition",
+    "title": "Cycle Containment",
+    "content": "**ContainsCycleLength G k** means G contains a k-cycle: an injective vs : Fin k → V where vs(i) is adjacent to vs((i+1) mod k).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e64-min-deg",
+    "proofId": "erdos-64",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "definition",
+    "title": "Minimum Degree",
+    "content": "**HasMinDegree G d** means every vertex in G has at least d neighbors. The conjecture concerns d = 3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e64-powers",
+    "proofId": "erdos-64",
+    "range": { "startLine": 55, "endLine": 56 },
+    "type": "definition",
+    "title": "Powers of Two ≥ 4",
+    "content": "**PowersOfTwoAtLeast4** = {4, 8, 16, 32, ...} = {2^k | k ≥ 2}. These are the cycle lengths in question.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e64-conjecture",
+    "proofId": "erdos-64",
+    "range": { "startLine": 71, "endLine": 79 },
+    "type": "theorem",
+    "title": "Erdős Problem 64 (OPEN)",
+    "content": "**Main Conjecture**: Every finite graph with minimum degree ≥ 3 contains a cycle of length 2^k for some k ≥ 2. Prize: $1000.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e64-eg-conj",
+    "proofId": "erdos-64",
+    "range": { "startLine": 83, "endLine": 94 },
+    "type": "definition",
+    "title": "Erdős-Gyárfás Conjecture (DISPROVED)",
+    "content": "**Erdős-Gyárfás Conjecture**: For every r, there exists a graph with min degree r having no 2^k-cycle. This was DISPROVED by Liu-Montgomery (2020).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e64-liu-mont",
+    "proofId": "erdos-64",
+    "range": { "startLine": 96, "endLine": 105 },
+    "type": "theorem",
+    "title": "Liu-Montgomery Theorem (2020)",
+    "content": "**Liu-Montgomery**: There exists D such that every graph with min degree ≥ D contains a 2^k-cycle. This disproves Erdős-Gyárfás for large d.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e64-even-cycles",
+    "proofId": "erdos-64",
+    "range": { "startLine": 109, "endLine": 121 },
+    "type": "theorem",
+    "title": "Liu-Montgomery Even Cycles",
+    "content": "**Stronger Result**: Graphs with large min degree contain cycles of every even length in a range [(log L)^8, L]. This range includes some 2^k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e64-range-power",
+    "proofId": "erdos-64",
+    "range": { "startLine": 123, "endLine": 131 },
+    "type": "theorem",
+    "title": "Range Contains Power of Two",
+    "content": "Any range [4, L] with L ≥ 16 contains 2^k = 4. This connects Liu-Montgomery's even cycle result to the conjecture.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e64-infgraph",
+    "proofId": "erdos-64",
+    "range": { "startLine": 135, "endLine": 152 },
+    "type": "definition",
+    "title": "Infinite Graph Structures",
+    "content": "**InfGraph** for infinite graphs, with **IsRegular d** (every vertex has d neighbors) and **IsTree** (no cycles). Used for counterexample.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e64-tree",
+    "proofId": "erdos-64",
+    "range": { "startLine": 154, "endLine": 160 },
+    "type": "theorem",
+    "title": "Infinite 3-Regular Tree",
+    "content": "**Counterexample for Infinite Graphs**: There exists an infinite 3-regular tree (no cycles but min degree 3). The finiteness condition is essential.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e64-degree3",
+    "proofId": "erdos-64",
+    "range": { "startLine": 164, "endLine": 172 },
+    "type": "definition",
+    "title": "Degree 3 Conjecture",
+    "content": "**Open Problem**: Same as Problem 64, explicitly stating the minimum degree 3 case that remains unresolved.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e64-dirac",
+    "proofId": "erdos-64",
+    "range": { "startLine": 178, "endLine": 185 },
+    "type": "theorem",
+    "title": "Dirac's Theorem (1952)",
+    "content": "**Dirac**: A graph on n ≥ 3 vertices with min degree ≥ n/2 is Hamiltonian. Shows high degree forces long cycles.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e64-bondy",
+    "proofId": "erdos-64",
+    "range": { "startLine": 187, "endLine": 199 },
+    "type": "theorem",
+    "title": "Bondy's Theorem (1971)",
+    "content": "**Bondy Pancyclicity**: Graphs with n²/4 edges are either bipartite or contain cycles of all lengths 3 to n. Shows dense graphs have all cycle lengths.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e64-random",
+    "proofId": "erdos-64",
+    "range": { "startLine": 203, "endLine": 212 },
+    "type": "theorem",
+    "title": "Random Graphs",
+    "content": "**Probabilistic Argument**: Random graphs G(n,p) with p ≈ c/n have min degree 3 and contain 2^k-cycles. Counterexamples must be highly structured.",
+    "significance": "supporting"
+  }
+]
