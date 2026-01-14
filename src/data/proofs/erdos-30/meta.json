@@ -1,34 +1,145 @@
 {
   "id": "erdos-30",
-  "title": "Erdős Problem #30",
+  "title": "Erdős Problem #30: Sidon Sets",
   "slug": "erdos-30",
-  "description": "Let ... be the maximum size of a Sidon set in .... Is it true that, for every ...,\\[h(N) = N^{1/2}+O_\\epsilon(N^\\epsilon)?\\]",
+  "description": "Is h(N) = N^{1/2} + O_ε(N^ε) where h(N) is the maximum Sidon set size in {1,...,N}? OPEN with $1,000 prize. Best upper bound has N^{1/4} error term.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Turán",
     "sourceUrl": "https://erdosproblems.com/30",
-    "date": "",
-    "status": "pending",
+    "date": "1941",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos30Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "sidon-sets",
+      "b2-sequences"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 30,
     "erdosUrl": "https://erdosproblems.com/30",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$1000"
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$1000",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Finset.sup",
+        "description": "Supremum over finite sets",
+        "module": "Mathlib.Data.Finset.Lattice"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of Sidon set definition",
+      "Equivalence of two Sidon characterizations",
+      "Definition of Sidon number h(N)",
+      "Axiomatization of historical bounds (Erdős-Turán to Carter-Hunter-O'Bryant)",
+      "Perfect difference set connection"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #30 from erdosproblems.com. Originally offered with a prize of $1000.",
-    "problemStatement": "Let $h(N)$ be the maximum size of a Sidon set in $\\{1,\\ldots,N\\}$. Is it true that, for every $\\epsilon>0$,\\[h(N) = N^{1/2}+O_\\epsilon(N^\\epsilon)?\\]",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "A Sidon set (or B₂ sequence) is a set of integers where all pairwise sums are distinct. Named after Simon Sidon who studied these in the context of Fourier series.\n\nErdős and Turán (1941) proved h(N) ≤ N^{1/2} + N^{1/4} + 1, where h(N) is the maximum size of a Sidon set in {1,...,N}. This bound stood for 80 years with only minor improvements to the constant.\n\nIn 2021, Balogh-Füredi-Roy finally improved the coefficient of N^{1/4} to 0.998. Carter-Hunter-O'Bryant (2025) further reduced it to 0.98183. But the N^{1/4} exponent itself remains stubbornly fixed.",
+    "problemStatement": "**Conjecture (Erdős-Turán, OPEN):** For every ε > 0,\n\nh(N) = N^{1/2} + O_ε(N^ε)\n\n**Current best:**\n- Upper: N^{1/2} + 0.98183·N^{1/4} + O(1) (Carter-Hunter-O'Bryant 2025)\n- Lower: (1-o(1))·N^{1/2} (Singer 1938)\n\n**The prize:** $1,000 for proving or disproving.",
+    "proofStrategy": "The formalization defines:\n\n1. `IsSidonSet A`: all pairwise sums are distinct\n2. `HasDistinctSums A`: equivalent characterization\n3. `sidonNumber N`: maximum size h(N)\n4. `Erdos30Conjecture`: h(N) = N^{1/2} + O_ε(N^ε)\n\nWe axiomatize:\n- Erdős-Turán (1941): N^{1/2} + N^{1/4} + 1\n- Lindström (1969): slight improvement\n- Balogh-Füredi-Roy (2021): 0.998 coefficient\n- Carter-Hunter-O'Bryant (2025): 0.98183 coefficient\n- Singer (1938): lower bound via perfect difference sets",
+    "keyInsights": [
+      "**The N^{1/4} barrier:** Despite 80+ years of work, the error term exponent 1/4 hasn't been improved. The conjecture asks if it can be any ε > 0.",
+      "**Perfect difference sets:** Singer's construction uses finite projective geometry to build near-optimal Sidon sets, giving the lower bound.",
+      "**Counting argument limit:** The N^{1/4} comes from counting collisions among sums. Breaking this requires new structural insights.",
+      "**B_h generalization:** Sidon sets are B₂ sets. The problem generalizes to B_h sets where all h-wise sums are distinct.",
+      "**Even stronger conjecture:** Erdős speculated h(N) = N^{1/2} + O(1) might be true, but considered this 'too optimistic'."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "summary": "Sidon set, distinct sums characterization",
+      "startLine": 29,
+      "endLine": 71
+    },
+    {
+      "id": "sidon-number",
+      "title": "The Sidon Number h(N)",
+      "summary": "Maximum size of Sidon sets in {1,...,N}",
+      "startLine": 73,
+      "endLine": 86
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Turán Conjecture",
+      "summary": "OPEN: Is h(N) = N^{1/2} + O_ε(N^ε)?",
+      "startLine": 88,
+      "endLine": 102
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "summary": "Historical progression from 1941 to 2025",
+      "startLine": 104,
+      "endLine": 125
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "summary": "Singer's construction and explicit bounds",
+      "startLine": 127,
+      "endLine": 140
+    },
+    {
+      "id": "gap",
+      "title": "The Gap",
+      "summary": "Why N^{1/4} seems stuck",
+      "startLine": 142,
+      "endLine": 166
+    },
+    {
+      "id": "perfect-difference",
+      "title": "Perfect Difference Sets",
+      "summary": "Connection to finite projective geometry",
+      "startLine": 168,
+      "endLine": 183
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Concrete Sidon sets and computed values",
+      "startLine": 185,
+      "endLine": 205
+    },
+    {
+      "id": "bh-sets",
+      "title": "B_h Sets",
+      "summary": "Generalization to h-wise distinct sums",
+      "startLine": 207,
+      "endLine": 219
+    },
+    {
+      "id": "status",
+      "title": "Problem Status",
+      "summary": "Summary and open status",
+      "startLine": 221,
+      "endLine": 246
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #30, an OPEN $1,000 problem asking whether the maximum Sidon set size h(N) equals N^{1/2} up to an error of N^ε for any ε > 0. The current best bound has an N^{1/4} error term that has resisted improvement for 80+ years.",
+    "implications": "Sidon sets connect multiple areas:\n\n1. **Fourier analysis:** Originally studied for lacunary series\n2. **Finite geometry:** Perfect difference sets from projective planes\n3. **Coding theory:** Error-correcting codes with similar constraints\n4. **Additive combinatorics:** B_h sequences and sumset problems\n5. **Number theory:** Connections to prime gaps and additive bases",
+    "openQuestions": [
+      "Can the N^{1/4} exponent be reduced to any ε < 1/4?",
+      "Is h(N) = N^{1/2} + O(1) true (the 'optimistic' conjecture)?",
+      "What is h(N) exactly for small N?",
+      "What is the correct generalization for B_h sets?"
+    ]
   }
 }

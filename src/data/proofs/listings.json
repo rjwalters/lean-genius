@@ -3041,17 +3041,22 @@
   },
   {
     "id": "erdos-30",
-    "title": "Erdős Problem #30",
+    "title": "Erdős Problem #30: Sidon Sets",
     "slug": "erdos-30",
-    "description": "Let ... be the maximum size of a Sidon set in .... Is it true that, for every ...,\\[h(N) = N^{1/2}+O_\\epsilon(N^\\epsilon)?\\]",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Is h(N) = N^{1/2} + O_ε(N^ε) where h(N) is the maximum Sidon set size in {1,...,N}? OPEN with $1,000 prize. Best upper bound has N^{1/4} error term.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "sidon-sets",
+      "b2-sequences"
     ],
     "erdosNumber": 30,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 2,
+    "annotationCount": 20
   },
   {
     "id": "erdos-300",
@@ -6029,7 +6034,7 @@
     "erdosNumber": 6,
     "mathlibCount": 2,
     "sorries": 1,
-    "annotationCount": 14
+    "annotationCount": 17
   },
   {
     "id": "erdos-60",
@@ -6990,6 +6995,90 @@
     "annotationCount": 0
   },
   {
+    "id": "erdos-671",
+    "title": "Erdős Problem #671",
+    "slug": "erdos-671",
+    "description": "Given ... for all $1\\leq i\\leq n View the LaTeX source This page was last edited 06 December 2025.",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 671,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-672",
+    "title": "Erdős Problem #672",
+    "slug": "erdos-672",
+    "description": "Can the product of an arithmetic progression of positive integers ... of length ... (with ...) be a perfect power?",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 672,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-673",
+    "title": "Erdős Problem #673",
+    "slug": "erdos-673",
+    "description": "Let $1=d_1 View the LaTeX source",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 673,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-674",
+    "title": "Erdős Problem #674",
+    "slug": "erdos-674",
+    "description": "Are there any integer solutions to ... with ...?",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 674,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-678",
+    "title": "Erdős Problem #678",
+    "slug": "erdos-678",
+    "description": "Let ... be the least common multiple of .... Are there infinitely many ... and ... with ... such that\\[M(n,k)>M(m,k+1)?\\]",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 678,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-679",
+    "title": "Erdős Problem #679",
+    "slug": "erdos-679",
+    "description": "Let ... and ... count the number of distinct prime factors of .... Are there infinitely many values of ... such that\\[\\omega(n-k) 0$. View the LaTeX source This page was last edited 12 January 2026.",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 679,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
     "id": "erdos-69",
     "title": "Erdős Problem #69: Irrationality of Sum of Omega over Powers of 2",
     "slug": "erdos-69",
@@ -7010,17 +7099,21 @@
   },
   {
     "id": "erdos-7",
-    "title": "Erdős Problem #7",
+    "title": "Erdős Problem #7: Odd Covering Systems",
     "slug": "erdos-7",
-    "description": "Is there a covering system all of whose moduli are odd?",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Is there a covering system all of whose moduli are odd? Also known as the Erdős-Selfridge Conjecture. OPEN with significant partial results.",
+    "status": "formalized",
+    "badge": "formalized",
     "tags": [
-      "erdos"
+      "erdos",
+      "covering-systems",
+      "number-theory",
+      "combinatorics",
+      "open-problem"
     ],
     "erdosNumber": 7,
-    "sorries": 1,
-    "annotationCount": 0
+    "sorries": 0,
+    "annotationCount": 23
   },
   {
     "id": "erdos-70",
@@ -7168,15 +7261,21 @@
   },
   {
     "id": "erdos-8",
-    "title": "Erdős Problem #8",
+    "title": "Erdős Problem #8: Monochromatic Covering Systems",
     "slug": "erdos-8",
-    "description": "For any finite colouring of the integers is there a covering system all of whose moduli are monochromatic? Conjectured by Erdős and Graham, who also ask about a density-type version: for example, i...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "For any finite coloring of integers, must there exist a covering system with monochromatic moduli? DISPROVED by Hough (2015) using the minimum modulus bound.",
+    "status": "verified",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "covering-systems",
+      "combinatorics",
+      "coloring",
+      "disproved"
     ],
+    "dateAdded": "01/14/25",
     "erdosNumber": 8,
+    "mathlibCount": 2,
     "sorries": 1,
     "annotationCount": 0
   },

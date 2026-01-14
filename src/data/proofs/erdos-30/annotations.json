@@ -1,1 +1,185 @@
-[]
+[
+  {
+    "id": "ann-e30-sidon-def",
+    "proofId": "erdos-30",
+    "range": { "startLine": 33, "endLine": 35 },
+    "type": "definition",
+    "title": "Sidon Set",
+    "content": "A **Sidon set** (B_2 sequence) is a set where all pairwise sums a + b with a <= b are distinct.\n\nEquivalently: a + b = c + d implies {a,b} = {c,d}.",
+    "mathContext": "Named after Simon Sidon who studied these for Fourier series.",
+    "significance": "critical",
+    "relatedConcepts": ["B_2 sequence", "Distinct sums", "Additive combinatorics"]
+  },
+  {
+    "id": "ann-e30-distinct-sums",
+    "proofId": "erdos-30",
+    "range": { "startLine": 38, "endLine": 40 },
+    "type": "definition",
+    "title": "Distinct Sums Characterization",
+    "content": "Alternative definition: a + b = c + d implies {a,b} = {c,d} (as unordered pairs).\n\nThis is the symmetric version without the ordering constraint.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e30-equiv",
+    "proofId": "erdos-30",
+    "range": { "startLine": 43, "endLine": 71 },
+    "type": "theorem",
+    "title": "Equivalence of Definitions",
+    "content": "The two Sidon definitions are equivalent. This is proved by careful case analysis on orderings.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e30-sidon-number",
+    "proofId": "erdos-30",
+    "range": { "startLine": 76, "endLine": 79 },
+    "type": "definition",
+    "title": "Sidon Number h(N)",
+    "content": "h(N) = maximum size of a Sidon set in {1,...,N}.\n\nThis is the central quantity in the Erdos-Turan conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e30-exists",
+    "proofId": "erdos-30",
+    "range": { "startLine": 82, "endLine": 86 },
+    "type": "theorem",
+    "title": "Sidon Sets Exist",
+    "content": "Sidon sets exist for any N - the empty set is trivially Sidon.\n\nMore interesting: singletons and arithmetic-progression-free sets work.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e30-conjecture",
+    "proofId": "erdos-30",
+    "range": { "startLine": 95, "endLine": 98 },
+    "type": "definition",
+    "title": "Erdos Problem #30 (OPEN)",
+    "content": "**Main Conjecture:** For every epsilon > 0, h(N) = N^{1/2} + O_epsilon(N^epsilon).\n\nThis asks if the error term can be arbitrarily small powers of N. Prize: $1,000.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e30-stronger",
+    "proofId": "erdos-30",
+    "range": { "startLine": 101, "endLine": 102 },
+    "type": "definition",
+    "title": "Stronger Conjecture",
+    "content": "**Optimistic version:** h(N) = N^{1/2} + O(1).\n\nErdos considered this 'possibly too optimistic' but didn't rule it out.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e30-erdos-turan",
+    "proofId": "erdos-30",
+    "range": { "startLine": 108, "endLine": 109 },
+    "type": "axiom",
+    "title": "Erdos-Turan (1941)",
+    "content": "**Original bound:** h(N) <= N^{1/2} + N^{1/4} + 1.\n\nThe starting point for all subsequent work. The N^{1/4} term has resisted improvement.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e30-lindstrom",
+    "proofId": "erdos-30",
+    "range": { "startLine": 113, "endLine": 114 },
+    "type": "axiom",
+    "title": "Lindstrom (1969)",
+    "content": "Slight improvement: h(N) <= N^{1/2} + N^{1/4} + 1/2.\n\nMinor refinement of the constant term.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e30-bfr",
+    "proofId": "erdos-30",
+    "range": { "startLine": 118, "endLine": 119 },
+    "type": "axiom",
+    "title": "Balogh-Furedi-Roy (2021)",
+    "content": "**80-year breakthrough:** h(N) <= N^{1/2} + 0.998 * N^{1/4}.\n\nFirst improvement to the N^{1/4} coefficient since 1941!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e30-cho",
+    "proofId": "erdos-30",
+    "range": { "startLine": 123, "endLine": 125 },
+    "type": "axiom",
+    "title": "Carter-Hunter-O'Bryant (2025)",
+    "content": "**Current best:** h(N) <= N^{1/2} + 0.98183 * N^{1/4} + O(1).\n\nState of the art upper bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e30-singer",
+    "proofId": "erdos-30",
+    "range": { "startLine": 131, "endLine": 133 },
+    "type": "axiom",
+    "title": "Singer (1938)",
+    "content": "**Lower bound:** h(N) >= (1-o(1)) * N^{1/2}.\n\nConstructed using perfect difference sets from finite projective geometry.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e30-explicit-lower",
+    "proofId": "erdos-30",
+    "range": { "startLine": 139, "endLine": 140 },
+    "type": "axiom",
+    "title": "Explicit Lower Bound",
+    "content": "For infinitely many N: h(N) >= N^{1/2} - N^{0.525}.\n\nQuantitative version of Singer's bound.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e30-required",
+    "proofId": "erdos-30",
+    "range": { "startLine": 152, "endLine": 154 },
+    "type": "definition",
+    "title": "Required Upper Bound",
+    "content": "To prove the conjecture, we need h(N) <= N^{1/2} + C * N^epsilon for any epsilon > 0.\n\nCurrently stuck at epsilon = 1/4.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e30-perfect-diff",
+    "proofId": "erdos-30",
+    "range": { "startLine": 172, "endLine": 174 },
+    "type": "definition",
+    "title": "Perfect Difference Set",
+    "content": "A set D mod n where every non-zero residue appears exactly once as a difference d1 - d2.\n\nThese exist for n = q^2 + q + 1 where q is a prime power.",
+    "mathContext": "From finite projective planes: lines in PG(2,q) give perfect difference sets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e30-perfect-sidon",
+    "proofId": "erdos-30",
+    "range": { "startLine": 177, "endLine": 178 },
+    "type": "axiom",
+    "title": "Perfect Difference Sets are Sidon",
+    "content": "Perfect difference sets are automatically Sidon sets.\n\nThis is why Singer's construction works.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e30-singer-constr",
+    "proofId": "erdos-30",
+    "range": { "startLine": 182, "endLine": 183 },
+    "type": "axiom",
+    "title": "Singer Construction",
+    "content": "For prime power q, there's a perfect difference set of size q+1 mod q^2+q+1.\n\nThis gives Sidon sets of size about sqrt(N) for infinitely many N.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e30-example",
+    "proofId": "erdos-30",
+    "range": { "startLine": 188, "endLine": 196 },
+    "type": "theorem",
+    "title": "Example Sidon Set",
+    "content": "{1, 2, 5, 10} is a Sidon set.\n\nSums: 3, 6, 7, 11, 12, 15 - all distinct. Proved by exhaustive case analysis.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e30-bh",
+    "proofId": "erdos-30",
+    "range": { "startLine": 211, "endLine": 215 },
+    "type": "definition",
+    "title": "B_h Sets",
+    "content": "A **B_h set** has all h-wise sums distinct. Sidon sets are B_2 sets.\n\nGeneralizes to higher orders with similar questions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e30-open",
+    "proofId": "erdos-30",
+    "range": { "startLine": 245, "endLine": 246 },
+    "type": "theorem",
+    "title": "Problem Status: OPEN",
+    "content": "**Erdos Problem #30 remains OPEN** with a $1,000 prize.\n\nThe N^{1/4} barrier has stood for 80+ years.",
+    "significance": "critical"
+  }
+]
