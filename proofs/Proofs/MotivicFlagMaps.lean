@@ -40,7 +40,7 @@ This formalization takes a structured axiomatic approach:
 - [x] Only 2 axioms remain (unavoidable: moduli space class definition, main theorem)
 - [x] Tower decomposition structure with fiber class formula
 - [x] Cell decomposition infrastructure for future Bruhat formalization
-- [x] Dimension formula special cases (n=1,2,3) and specific β values
+- [x] Dimension formula special cases (n=1,2) and specific β values ((1,1), (2,1))
 
 ## References
 - Bryan, Elek, Manners, Salafatinos, Vakil (2025): arXiv:2601.07222
@@ -137,14 +137,14 @@ theorem GL2_class : GLnClass K 2 = (K.L - 1) * (K.L ^ 2 - 1) * K.L := by
 theorem GL3_class : GLnClass K 3 = (K.L - 1) * (K.L ^ 2 - 1) * (K.L ^ 3 - 1) * K.L ^ 3 := by
   simp only [GLnClass, triangular]
   simp only [Nat.reduceSub, Nat.reduceMul, Nat.reduceDiv]
-  simp only [Finset.prod_range_succ, Finset.prod_range_zero, one_mul, pow_one]
+  simp only [Finset.prod_range_succ, Finset.prod_range_zero, one_mul]
   ring
 
 /-- [GL_4] = (L - 1)(L² - 1)(L³ - 1)(L⁴ - 1) · L⁶ -/
 theorem GL4_class : GLnClass K 4 = (K.L - 1) * (K.L ^ 2 - 1) * (K.L ^ 3 - 1) * (K.L ^ 4 - 1) * K.L ^ 6 := by
   simp only [GLnClass, triangular]
   simp only [Nat.reduceSub, Nat.reduceMul, Nat.reduceDiv]
-  simp only [Finset.prod_range_succ, Finset.prod_range_zero, one_mul, pow_one]
+  simp only [Finset.prod_range_succ, Finset.prod_range_zero, one_mul]
   ring
 
 /-!

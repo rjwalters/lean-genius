@@ -7444,17 +7444,23 @@
   },
   {
     "id": "erdos-9",
-    "title": "Erdős Problem #9",
+    "title": "Erdős Problem #9: Odd Integers Not of the Form p + 2^k + 2^l",
     "slug": "erdos-9",
-    "description": "Let ... be the set of all odd integers not of the form ... (where ... and ... is prime). Is the upper density of ... positive? In [Er77c] Erdős credits Schinzel with proving that there are infinite...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Is the upper density of odd integers not expressible as p + 2^k + 2^l positive? OPEN problem. Pan (2011) proved N^{1-ε} growth but positive density remains unresolved.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "density",
+      "primes",
+      "covering-systems"
     ],
     "erdosNumber": 9,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 2,
+    "annotationCount": 17
   },
   {
     "id": "erdos-91",

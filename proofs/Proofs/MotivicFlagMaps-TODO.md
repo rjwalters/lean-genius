@@ -108,7 +108,12 @@ Sorries that may be amenable to automated proof search:
 2. **Finset computations** — `Fl3_class`, `Fl4_class` involve `simp` + `ring`
 3. **Arithmetic** — `computeA` special cases
 
-Create `MotivicFlagMaps-provable.lean` with these sorries for Aristotle submission.
+Created `MotivicFlagMapsProvable.lean` with these sorries for Aristotle submission.
+
+To submit:
+```bash
+./research/scripts/aristotle-submit.sh proofs/Proofs/MotivicFlagMapsProvable.lean motivic-flag-maps "GL5, Fl5, computeA cases"
+```
 
 ## References
 
