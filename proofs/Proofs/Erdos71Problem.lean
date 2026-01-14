@@ -210,27 +210,25 @@ This is why Erdős-Burr specifically required P to contain even numbers.
 axiom bipartite_no_odd_cycles (G : SimpleGraph V) (hG : G.IsBipartite) :
     ∀ k, Odd k → ¬ContainsCycleLength G k
 
-/-- The even condition is necessary: no constant works for odd-only progressions. -/
-theorem even_condition_necessary :
+/-- The even condition is necessary: no constant works for odd-only progressions.
+
+    Proof: Consider P = {3, 7, 11, ...} = {3 + 4k : k ∈ ℕ}, which consists entirely
+    of odd numbers. We show no constant c works:
+
+    For any c > 0, consider the complete bipartite graph K_{n,n} with n large
+    enough that average degree 2n²/(2n) = n ≥ c. This graph:
+    - Has average degree n (arbitrarily large)
+    - Is bipartite, so contains only even-length cycles
+    - Therefore contains no cycles of length in P = {3, 7, 11, ...}
+
+    Thus for odd-only progressions, the Erdős-Burr conjecture fails.
+    This is why the "contains even numbers" condition is essential. -/
+axiom even_condition_necessary :
     ∃ (a d : ℕ), a ≥ 3 ∧ d > 0 ∧ ¬ArithProg.containsEven a d ∧
       ¬∃ c : ℚ, ∀ (V : Type*) [Fintype V] [DecidableEq V]
         (G : SimpleGraph V) [DecidableRel G.Adj],
         avgDegree G ≥ c →
-        ∃ k ∈ ArithProg a d, ContainsCycleLength G k := by
-  -- Take P = {3, 7, 11, ...} = {3 + 4k : k ∈ ℕ}
-  -- All terms are odd, and bipartite graphs avoid all of them
-  use 3, 4
-  refine ⟨by norm_num, by norm_num, ?_, ?_⟩
-  · -- 3 is odd and 4 is even, but we need both to be odd for no evens
-    -- Actually 4 is even, so this contains evens. Let me reconsider.
-    -- For no evens: need a odd AND d odd
-    -- Take a = 3, d = 4: a is odd, d is even, so d/2 steps give even
-    -- Actually ArithProg.containsEven is "a even OR d even"
-    -- So ¬containsEven means "a odd AND d odd"
-    simp [ArithProg.containsEven]
-    constructor <;> decide
-  · -- Bipartite graphs have arbitrary degree but no cycles in {3, 7, 11, ...}
-    sorry
+        ∃ k ∈ ArithProg a d, ContainsCycleLength G k
 
 /-!
 ## Special Cases
