@@ -1,4 +1,16 @@
 /-
+This file was edited by Aristotle.
+
+Lean version: leanprover/lean4:v4.24.0
+Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
+This project request had uuid: 07447536-f94a-409e-87eb-de15f0868c09
+
+The following was proved by Aristotle:
+
+- theorem tao_identity : omegaSum = primeSum
+-/
+
+/-
   Erdős Problem #69: Irrationality of ∑ω(n)/2^n
 
   Source: https://erdosproblems.com/69
@@ -22,7 +34,10 @@
 
 import Mathlib
 
+set_option maxHeartbeats 800000
+
 open scoped ArithmeticFunction.omega
+
 open BigOperators Finset
 
 namespace Erdos69
@@ -73,95 +88,6 @@ lemma geometric_sum_over_multiples (p : ℕ) (hp : 2 ≤ p) :
 lemma omega_eq_card_prime_divisors (n : ℕ) :
     ω n = (n.primeFactors).card := rfl
 
-/-! ## Summability lemmas -/
-
-/-- The sum ∑_n 1/2^n is summable -/
-lemma summable_one_div_two_pow : Summable fun n : ℕ => (1 : ℝ) / 2 ^ n := by
-  have : Summable fun n : ℕ => ((1 : ℝ) / 2) ^ n :=
-    summable_geometric_of_lt_one (by positivity) (by norm_num)
-  convert this using 1
-  ext n
-  simp only [one_div, inv_pow]
-
-/-- ω(n) ≤ n for all n.
-    Proof: For n = 0, 1: ω(n) = 0 ≤ n trivially. For n ≥ 2, if n has k distinct prime divisors,
-    each prime p satisfies p ≤ n (since p divides n), so primeFactors(n) ⊆ {1,...,n},
-    giving ω(n) = |primeFactors(n)| ≤ n. -/
-lemma omega_le_self (n : ℕ) : ω n ≤ n := by
-  rcases n with _ | _ | n
-  · -- n = 0: ω(0) = 0
-    simp
-  · -- n = 1: ω(1) = 0
-    simp
-  · -- n ≥ 2: Each prime factor p satisfies p ≤ n+2, and there are at most n+2 primes ≤ n+2
-    -- More precisely: primeFactors(n+2) ⊆ Finset.Icc 2 (n+2)
-    -- The cardinality of Finset.Icc 2 (n+2) is n+1, so ω(n+2) ≤ n+1 ≤ n+2
-    have h : (n + 2).primeFactors ⊆ Finset.Icc 2 (n + 2) := by
-      intro p hp
-      simp only [Finset.mem_Icc]
-      exact ⟨(Nat.prime_of_mem_primeFactors hp).two_le, Nat.le_of_mem_primeFactors hp⟩
-    calc ω (n + 2)
-        = (n + 2).primeFactors.card := rfl
-      _ ≤ (Finset.Icc 2 (n + 2)).card := Finset.card_le_card h
-      _ = n + 1 := by simp [Nat.card_Icc]
-      _ ≤ n + 2 := Nat.le_succ _
-
-/-- The sum ∑_n ω(n)/2^n is summable.
-    This follows from comparison with ∑ n/2^n which converges. -/
-lemma summable_omega_div_pow : Summable fun n : ℕ => ω n / (2 : ℝ) ^ n := by
-  -- ω(n) ≤ n for all n, so comparison with ∑ n/2^n works
-  -- The series ∑ n/2^n converges (standard result for n * r^n type series)
-  have hbound : Summable fun n : ℕ => (n : ℝ) / 2 ^ n := by
-    have h : Summable fun n : ℕ => (n : ℝ) ^ 1 * (1/2 : ℝ) ^ n :=
-      summable_pow_mul_geometric_of_norm_lt_one 1 (by norm_num : ‖(1/2 : ℝ)‖ < 1)
-    simp only [pow_one] at h
-    convert h using 1
-    ext n
-    simp only [one_div, inv_pow]
-    ring
-  refine .of_norm_bounded hbound fun n => ?_
-  calc ‖ω n / (2 : ℝ) ^ n‖
-      = |ω n / (2 : ℝ) ^ n| := Real.norm_eq_abs _
-    _ = ω n / 2 ^ n := by rw [abs_of_nonneg (by positivity)]
-    _ ≤ n / 2 ^ n := by
-        apply div_le_div_of_nonneg_right _ (le_of_lt (by positivity : (2 : ℝ) ^ n > 0))
-        exact_mod_cast omega_le_self n
-
-/-- For prime p ≥ 2: 1/(2^p - 1) ≤ 2/2^p -/
-lemma one_div_two_pow_sub_one_le (p : ℕ) (hp : 2 ≤ p) :
-    (1 : ℝ) / (2 ^ p - 1) ≤ 2 / 2 ^ p := by
-  have h2p : (2 : ℝ) ^ p ≥ 4 := by
-    calc (2 : ℝ) ^ p ≥ 2 ^ 2 := pow_le_pow_right₀ (by norm_num) hp
-      _ = 4 := by norm_num
-  have hpos : (2 : ℝ) ^ p - 1 > 0 := by linarith
-  have hpos2 : (2 : ℝ) ^ p > 0 := by positivity
-  -- 1/(2^p - 1) ≤ 2/2^p ⟺ 2^p ≤ 2*(2^p - 1)
-  rw [div_le_div_iff₀ hpos hpos2, one_mul]
-  -- Need: 2^p ≤ 2 * (2^p - 1) = 2^(p+1) - 2
-  linarith
-
-/-- The sum over primes ∑_p 1/(2^p - 1) is summable.
-    This follows from comparison with ∑_p 1/2^p (geometric decay). -/
-lemma summable_prime_sum : Summable fun p : {n : ℕ | n.Prime} => (1 : ℝ) / (2 ^ p.1 - 1) := by
-  -- Compare with ∑_p 2/2^p ≤ 2 * ∑_n 1/2^n which converges
-  have hbound : Summable fun p : {n : ℕ | n.Prime} => (2 : ℝ) / 2 ^ p.1 := by
-    -- ∑_p 2/2^p is summable (bounded by 2 * ∑_n 1/2^n)
-    have hgeo : Summable fun n : ℕ => (1 : ℝ) / 2 ^ n := summable_one_div_two_pow
-    have hgeo2 : Summable fun n : ℕ => (2 : ℝ) / 2 ^ n := by
-      convert hgeo.mul_left 2 using 1
-      ext n; ring
-    -- Summable on primes (subseries of summable series)
-    exact hgeo2.subtype _
-  refine .of_norm_bounded hbound fun ⟨p, hp⟩ => ?_
-  calc ‖(1 : ℝ) / (2 ^ p - 1)‖
-      = |1 / (2 ^ p - 1)| := Real.norm_eq_abs _
-    _ = 1 / (2 ^ p - 1) := by
-        rw [abs_of_nonneg]
-        apply div_nonneg (by norm_num)
-        have := two_pow_gt_one p (Nat.Prime.two_le hp)
-        linarith
-    _ ≤ 2 / 2 ^ p := one_div_two_pow_sub_one_le p (Nat.Prime.two_le hp)
-
 /-! ## Main identity (Tao's observation) -/
 
 /--
@@ -174,40 +100,81 @@ The proof swaps the order of summation:
                = ∑_p ∑_{n: p|n} 1/2^n
                = ∑_p ∑_{k≥1} 1/2^(pk)
                = ∑_p 1/(2^p - 1)
-
-## Proof requirements:
-1. Express ω(n) = |{p prime : p | n}| as a finite sum
-2. Apply Fubini/Tonelli theorem (tsum_comm) to swap summation order
-3. For each prime p, collect terms where p | n, i.e., n = pk for k ≥ 1
-4. Apply geometric_sum_over_multiples to evaluate each inner sum
-
-## Infrastructure needed:
-- Summability of the double sum (proved via summable_omega_div_pow)
-- Fubini-type exchange for real-valued tsum (Summable.tsum_comm)
-- Bijection between (n, p | n) pairs and (p, k ≥ 1) pairs
 -/
 theorem tao_identity : omegaSum = primeSum := by
-  -- TODO: Requires Fubini-type argument for swapping order of summation
-  -- The geometric_sum_over_multiples lemma handles the inner sum evaluation
-  -- Key challenge: expressing the index change (n, p|n) ↔ (p, k≥1) cleanly
-  sorry
+  -- This requires careful handling of the double sum
+  -- and convergence arguments
+  -- Let's rewrite the sum using the definition of omega in terms of prime factors.
+  have h_sum : ∑' n : ℕ, (ω (n + 2)) / (2 : ℝ) ^ (n + 2) = ∑' n : ℕ, (∑ p ∈ Nat.primeFactors (n + 2), (1 : ℝ) / (2 : ℝ) ^ (n + 2)) := by
+    simp +decide [ div_eq_mul_inv, Finset.sum_mul _ _ _, omega_eq_card_prime_divisors ];
+  -- By Fubini's theorem, we can interchange the order of summation.
+  have h_fubini : ∑' n : ℕ, (∑ p ∈ Nat.primeFactors (n + 2), (1 : ℝ) / (2 : ℝ) ^ (n + 2)) = ∑' p : {n : ℕ | n.Prime}, (∑' n : ℕ, if p.val ∣ (n + 2) then (1 : ℝ) / (2 : ℝ) ^ (n + 2) else 0) := by
+    have h_fubini : Summable (fun (n : ℕ × {n : ℕ | n.Prime}) => if n.2.val ∣ (n.1 + 2) then (1 : ℝ) / (2 : ℝ) ^ (n.1 + 2) else 0) := by
+      have h_fubini : Summable (fun (n : ℕ) => (∑ p ∈ Nat.primeFactors (n + 2), (1 : ℝ) / (2 : ℝ) ^ (n + 2))) := by
+        -- We'll use the fact that if the series $\sum_{n=2}^{\infty} \frac{\omega(n)}{2^n}$ converges, then the series $\sum_{n=2}^{\infty} \frac{1}{2^n}$ also converges.
+        have h_summable : Summable (fun n : ℕ => (Nat.primeFactors (n + 2)).card / (2 : ℝ) ^ (n + 2)) := by
+          have : ∀ n : ℕ, (Nat.primeFactors (n + 2)).card ≤ n + 2 := by
+            exact fun n => le_trans ( Finset.card_le_card ( show Nat.primeFactors ( n + 2 ) ⊆ Finset.Icc 1 ( n + 2 ) from fun p hp => Finset.mem_Icc.mpr ⟨ Nat.pos_of_mem_primeFactors hp, Nat.le_of_mem_primeFactors hp ⟩ ) ) ( by simp +arith +decide )
+          have h_summable : Summable (fun n : ℕ => (n + 2 : ℝ) / (2 : ℝ) ^ (n + 2)) := by
+            refine' summable_of_ratio_norm_eventually_le _ _;
+            exact 3 / 4;
+            · norm_num;
+            · filter_upwards [ Filter.eventually_gt_atTop 0 ] with n hn using by rw [ Real.norm_of_nonneg ( by positivity ), Real.norm_of_nonneg ( by positivity ) ] ; rw [ div_mul_eq_mul_div, div_le_iff₀ ] <;> ring_nf <;> norm_num ; induction hn <;> norm_num [ pow_succ' ] at * ; nlinarith;
+          exact Summable.of_nonneg_of_le ( fun n => div_nonneg ( Nat.cast_nonneg _ ) ( pow_nonneg ( by norm_num ) _ ) ) ( fun n => div_le_div_of_nonneg_right ( mod_cast this n ) ( pow_nonneg ( by norm_num ) _ ) ) h_summable;
+        aesop;
+      rw [ summable_prod_of_nonneg ];
+      · refine' ⟨ _, _ ⟩;
+        · intro n;
+          refine' summable_of_ne_finset_zero _;
+          exact Finset.filter ( fun p => p.val ∣ n + 2 ) ( Finset.subtype ( fun p => Nat.Prime p ) ( Nat.divisors ( n + 2 ) ) );
+          aesop;
+        · refine' h_fubini.congr fun n => _;
+          rw [ tsum_eq_sum ];
+          any_goals exact Finset.filter ( fun p : { n : ℕ | Nat.Prime n } => p.val ∣ n + 2 ) ( Finset.subtype ( fun p : ℕ => Nat.Prime p ) ( Nat.primeFactors ( n + 2 ) ) );
+          · refine' Finset.sum_bij ( fun p hp => ⟨ p, Nat.prime_of_mem_primeFactors hp ⟩ ) _ _ _ _ <;> aesop;
+          · aesop;
+      · exact fun _ => by positivity;
+    rw [ ← Summable.tsum_comm ];
+    · refine' tsum_congr fun n => _;
+      rw [ tsum_eq_sum ];
+      any_goals exact Finset.filter ( fun p => p.val ∣ n + 2 ) ( Finset.subtype ( fun p => Nat.Prime p ) ( Nat.primeFactors ( n + 2 ) ) );
+      · refine' Finset.sum_bij ( fun p hp => ⟨ p, Nat.prime_of_mem_primeFactors hp ⟩ ) _ _ _ _ <;> aesop;
+      · aesop;
+    · convert h_fubini.comp_injective ( Prod.swap_injective ) using 1;
+  -- Let's simplify the inner sum $\sum_{n=0}^{\infty} \frac{1}{2^{n+2}}$ if $p \mid (n+2)$.
+  have h_inner : ∀ p : {n : ℕ | n.Prime}, ∑' n : ℕ, (if p.val ∣ (n + 2) then (1 : ℝ) / (2 : ℝ) ^ (n + 2) else 0) = 1 / (2 ^ p.val - 1) := by
+    -- Let's simplify the inner sum $\sum_{n=0}^{\infty} \frac{1}{2^{n+2}}$ if $p \mid (n+2)$ using the formula for the sum of a geometric series.
+    intro p
+    have h_geo_series : ∑' n : ℕ, (if p.val ∣ (n + 2) then (1 : ℝ) / (2 : ℝ) ^ (n + 2) else 0) = ∑' k : ℕ, (1 : ℝ) / (2 : ℝ) ^ (p.val * (k + 1)) := by
+      -- Let's simplify the inner sum $\sum_{n=0}^{\infty} \frac{1}{2^{n+2}}$ if $p \mid (n+2)$ by considering the multiples of $p$.
+      have h_multiples : {n : ℕ | p.val ∣ (n + 2)} = {n : ℕ | ∃ k : ℕ, n = p.val * (k + 1) - 2} := by
+        ext n; simp [Set.mem_setOf_eq];
+        constructor <;> intro h;
+        · exact ⟨ ( n + 2 ) / p - 1, eq_tsub_of_add_eq <| by nlinarith [ Nat.div_mul_cancel h, Nat.sub_add_cancel ( show 1 ≤ ( n + 2 ) / p from Nat.div_pos ( Nat.le_of_dvd ( Nat.succ_pos _ ) h ) p.2.pos ) ] ⟩;
+        · rcases h with ⟨ k, rfl ⟩ ; exact ⟨ k + 1, by rw [ Nat.sub_add_cancel ( by nlinarith [ p.2.two_le ] ) ] ⟩;
+      rw [ Set.ext_iff ] at h_multiples;
+      rw [ tsum_eq_tsum_of_ne_zero_bij ];
+      use fun x => p.val * ( x + 1 ) - 2;
+      · norm_num [ Function.Injective ];
+        intro a b h; rw [ tsub_left_inj ] at h <;> nlinarith [ p.2.two_le ] ;
+      · intro n hn; specialize h_multiples n; aesop;
+      · intro x; rw [ Nat.sub_add_cancel ( show 2 ≤ ( p : ℕ ) * ( x + 1 ) from by nlinarith only [ p.2.two_le ] ) ] ; aesop;
+    convert geometric_sum_over_multiples p.val p.prop.two_le using 1;
+  unfold Erdos69.omegaSum Erdos69.primeSum; aesop;
 
 /-! ## Irrationality (from Problem 257) -/
 
+/- Aristotle failed to find a proof. -/
 /--
-**Axiom (Tao-Teräväinen 2025)**: The sum ∑_{p prime} 1/(2^p - 1) is irrational.
+The sum ∑_{p prime} 1/(2^p - 1) is irrational.
 
 This is a special case of Erdős Problem 257, which was proved
-unconditionally by Tao and Teräväinen (2025). The proof uses
-deep analytic number theory methods (sieve methods, exponential sums)
-that are beyond current Mathlib infrastructure.
-
-Reference: Tao, T. and Teräväinen, J. (2025). "On the irrationality of
-∑_{p prime} 1/(2^p - 1)". arXiv:2501.XXXXX
+unconditionally by Tao and Teräväinen (2025).
 -/
-axiom primeSum_irrational_axiom : Irrational primeSum
-
-theorem primeSum_irrational : Irrational primeSum := primeSum_irrational_axiom
+theorem primeSum_irrational : Irrational primeSum := by
+  -- This follows from Tao-Teräväinen 2025
+  -- The proof uses analytic number theory beyond elementary methods
+  sorry
 
 /--
 **Erdős Problem 69**: ∑_{n≥2} ω(n)/2^n is irrational.
