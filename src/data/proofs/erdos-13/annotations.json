@@ -1,1 +1,159 @@
-[]
+[
+  {
+    "id": "ann-e13-bad-triple",
+    "proofId": "erdos-13",
+    "range": { "startLine": 51, "endLine": 52 },
+    "type": "definition",
+    "title": "Bad Triple",
+    "content": "A triple (a,b,c) is **bad** if a | (b+c) and a < min(b,c).\n\nThe second condition prevents trivial cases like a = b = c.",
+    "significance": "key",
+    "relatedConcepts": ["Divisibility", "Sum constraints"]
+  },
+  {
+    "id": "ann-e13-div-free",
+    "proofId": "erdos-13",
+    "range": { "startLine": 55, "endLine": 56 },
+    "type": "definition",
+    "title": "Divisibility-Free Set",
+    "content": "A set A is **divisibility-free** if it contains no bad triples.\n\nThis is the central condition of Erdős Problem #13.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e13-div-free-iff",
+    "proofId": "erdos-13",
+    "range": { "startLine": 59, "endLine": 67 },
+    "type": "theorem",
+    "title": "Alternative Characterization",
+    "content": "Equivalently: for all a,b,c ∈ A with a < min(b,c), we have a ∤ (b+c).\n\nThis unpacks the definition into a more usable form.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e13-upper-third",
+    "proofId": "erdos-13",
+    "range": { "startLine": 76, "endLine": 77 },
+    "type": "definition",
+    "title": "Upper Third",
+    "content": "**upperThird(N)** = the interval (2N/3, N] ∩ ℕ.\n\nThis is the optimal divisibility-free set achieving size N/3.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e13-upper-div-free",
+    "proofId": "erdos-13",
+    "range": { "startLine": 89, "endLine": 89 },
+    "type": "axiom",
+    "title": "Upper Third is Divisibility-Free",
+    "content": "The upper third contains no bad triples.\n\nProof: If a,b,c ∈ (2N/3, N] with a < b,c and a | (b+c), then b+c ≥ 2a. But b+c > 4N/3 and a > 2N/3 leads to contradiction.",
+    "mathContext": "This is the key property that makes the construction work.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e13-upper-card",
+    "proofId": "erdos-13",
+    "range": { "startLine": 96, "endLine": 96 },
+    "type": "axiom",
+    "title": "Size of Upper Third",
+    "content": "|upperThird(N)| = N - 2N/3 ≈ N/3.\n\nThe upper third achieves the conjectured bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e13-achieves",
+    "proofId": "erdos-13",
+    "range": { "startLine": 99, "endLine": 100 },
+    "type": "axiom",
+    "title": "Achieves N/3 Bound",
+    "content": "For N ≥ 3: |upperThird(N)| ≥ N/3.\n\nThis shows the N/3 bound is tight.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e13-bedert",
+    "proofId": "erdos-13",
+    "range": { "startLine": 112, "endLine": 116 },
+    "type": "axiom",
+    "title": "Bedert's Theorem (2023)",
+    "content": "**Bedert (2023):** Any divisibility-free A ⊆ {1,...,N} has |A| ≤ N/3 + O(1).\n\nThis solved Erdős Problem #13 and earned the $100 prize.",
+    "mathContext": "The O(1) is an absolute constant independent of N.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e13-optimal",
+    "proofId": "erdos-13",
+    "range": { "startLine": 122, "endLine": 126 },
+    "type": "axiom",
+    "title": "Upper Third is Optimal",
+    "content": "The upper third construction is essentially optimal: |A| ≤ |upperThird(N)| + C.\n\nNo divisibility-free set can be significantly larger.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e13-r-div-free",
+    "proofId": "erdos-13",
+    "range": { "startLine": 136, "endLine": 139 },
+    "type": "definition",
+    "title": "r-Divisibility-Free",
+    "content": "A set is **r-divisibility-free** if for all a, b₁,...,bᵣ ∈ A with a < min(bᵢ), we have a ∤ (b₁+...+bᵣ).\n\nThis generalizes the original condition to r-element sums.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e13-r-two",
+    "proofId": "erdos-13",
+    "range": { "startLine": 142, "endLine": 154 },
+    "type": "theorem",
+    "title": "r=2 Recovers Original",
+    "content": "2-divisibility-free is equivalent to divisibility-free.\n\nThis shows the generalization is consistent.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e13-upper-frac",
+    "proofId": "erdos-13",
+    "range": { "startLine": 161, "endLine": 162 },
+    "type": "definition",
+    "title": "Upper Fraction",
+    "content": "**upperFraction(r, N)** = elements k with rN < (r+1)k.\n\nFor r=2: upper 2/3. For r=3: upper 3/4. Etc.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e13-r-conj",
+    "proofId": "erdos-13",
+    "range": { "startLine": 165, "endLine": 169 },
+    "type": "definition",
+    "title": "r-Sum Conjecture",
+    "content": "**Erdős Conjecture:** For r-divisibility-free sets, |A| ≤ N/(r+1) + O(1).\n\nOPEN for r ≥ 3. The r=2 case is Bedert's theorem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e13-r-two-proved",
+    "proofId": "erdos-13",
+    "range": { "startLine": 172, "endLine": 179 },
+    "type": "theorem",
+    "title": "r=2 Case Proved",
+    "content": "The r=2 case of the r-sum conjecture is exactly Bedert's theorem.\n\nThis connects the general conjecture to the solved case.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e13-mem-iff",
+    "proofId": "erdos-13",
+    "range": { "startLine": 196, "endLine": 204 },
+    "type": "theorem",
+    "title": "Membership Characterization",
+    "content": "k ∈ upperThird(N) iff k ≤ N and 2N < 3k.\n\nThis gives an explicit criterion for membership.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e13-sum-free-def",
+    "proofId": "erdos-13",
+    "range": { "startLine": 219, "endLine": 220 },
+    "type": "definition",
+    "title": "Sum-Free Set",
+    "content": "A set is **sum-free** if a + b ≠ c for all a,b,c in the set.\n\nThis is a different but related constraint to divisibility-free.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e13-upper-sum-free",
+    "proofId": "erdos-13",
+    "range": { "startLine": 226, "endLine": 226 },
+    "type": "axiom",
+    "title": "Upper Third is Sum-Free",
+    "content": "The upper third is ALSO sum-free: for a,b,c ∈ (2N/3, N], we have a + b > 4N/3 > N ≥ c.\n\nSo a + b > c, hence a + b ≠ c.",
+    "mathContext": "This is a bonus property - the same construction works for two different problems!",
+    "significance": "key"
+  }
+]
