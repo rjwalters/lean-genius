@@ -75,18 +75,21 @@ lemma finite_reciprocal_sum_ne_top (S : Set ℕ) (hS : S.Finite) (hpos : ∀ n �
     rw [tsum_eq_sum (s := hS.toFinset)]
     · apply Finset.sum_congr rfl
       intro n hn
-      simp only [Set.indicator_apply, Set.Finite.mem_toFinset] at hn ⊢
+      simp only [Set.Finite.mem_toFinset] at hn ⊢
       simp [hn]
     · intro n hn
       simp only [Set.Finite.mem_toFinset] at hn
-      simp [Set.indicator_apply, hn]
+      simp [hn]
   rw [h_sum]
   -- Each term is finite, and finite sum of finite terms is finite
   have h_lt : ∑ n ∈ hS.toFinset, (1 : ENNReal) / n < ⊤ := by
     rw [ENNReal.sum_lt_top]
     intro n hn
+    simp only [Set.Finite.mem_toFinset] at hn
+    have hn_pos : 0 < n := hpos n hn
     apply ENNReal.div_lt_top (by norm_num)
-    simp only [ne_eq, ENNReal.natCast_ne_top, not_false_eq_true]
+    simp only [ne_eq, Nat.cast_eq_zero]
+    omega
   exact h_lt.ne
 
 /--
@@ -94,7 +97,7 @@ All odd cycle lengths are positive (≥ 3 actually, since minimum odd cycle is a
 -/
 lemma oddCycleLengths_pos (G : SimpleGraph V) : ∀ n ∈ oddCycleLengths G, 0 < n := by
   intro n hn
-  simp only [oddCycleLengths, Set.mem_sep_iff, cycleLengths, Set.mem_setOf_eq] at hn
+  simp only [oddCycleLengths, cycleLengths, Set.mem_setOf_eq] at hn
   obtain ⟨⟨u, p, hp, hlen⟩, hodd⟩ := hn
   rw [← hlen]
   -- A cycle has length ≥ 3, and odd cycles are at least 3
