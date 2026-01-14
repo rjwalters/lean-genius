@@ -1,34 +1,127 @@
 {
   "id": "erdos-2",
-  "title": "Erdős Problem #2",
+  "title": "Erdős Problem #2: Covering Systems",
   "slug": "erdos-2",
-  "description": "Can the smallest modulus of a covering system be arbitrarily large? Described by Erdős as 'perhaps my favourite problem'. Hough [Ho15], building on work of Filaseta, Ford, Konyagin, Pomerance, and ...",
+  "description": "Can the smallest modulus of a covering system be arbitrarily large? SOLVED: NO (Hough 2015, Balister et al. 2022).",
   "meta": {
-    "author": "Unknown",
+    "author": "Hough, Balister-Bollobás-Morris-Sahasrabudhe-Tiba",
     "sourceUrl": "https://erdosproblems.com/2",
-    "date": "",
-    "status": "pending",
+    "date": "2015, 2022",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos2Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "covering-systems",
+      "number-theory",
+      "modular-arithmetic"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "formalized",
+    "sorries": 0,
     "erdosNumber": 2,
     "erdosUrl": "https://erdosproblems.com/2",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$1000"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #2 from erdosproblems.com. Originally offered with a prize of $1000.",
-    "problemStatement": "Can the smallest modulus of a covering system be arbitrarily large? Described by Erdős as 'perhaps my favourite problem'. Hough [Ho15], building on work of Filaseta, Ford, Konyagin, Pomerance, and Yu [FFKPY07], has shown (contrary to Erdős' expectations) that the answer is no: the smallest modulus must be at most $10^{16}$. An alternative, simpler, proof was given by Balister, Bollobás, Morris, Sahasrabudhe, and Tiba [BBMST22], who improved the upper bound on the smallest modulus to $616000$. The best known lower bound is a covering system whose minimum modulus is $42$, due to Owens [Ow14]. View the LaTeX source This page was last edited 28 December 2025.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős described this as 'perhaps my favourite problem.' He conjectured the answer would be YES (minimum modulus can be arbitrarily large), but was proven wrong. Hough (2015) showed the answer is NO with bound 10^16. Balister et al. (2022) improved this to 616,000 with a simpler proof. Owens (2014) constructed a covering system with minimum modulus 42.",
+    "problemStatement": "Can the smallest modulus of a covering system be arbitrarily large? A covering system is a finite collection of arithmetic progressions {a₁ mod n₁, ..., aₖ mod nₖ} with distinct moduli ≥ 2 that cover all integers.",
+    "proofStrategy": "The formalization defines congruence classes, covering systems, and minimum modulus. The original (disproved) conjecture and the solution are stated. Key results are axiomatized: Hough's bound (10^16), Balister et al.'s bound (616,000), and Owens' construction (min modulus 42). The density argument via reciprocal sums is sketched.",
+    "keyInsights": [
+      "Answer: NO - minimum modulus is bounded above",
+      "Hough (2015): Upper bound of 10^16",
+      "Balister et al. (2022): Improved bound of 616,000",
+      "Owens (2014): Lower bound of 42 (construction exists)",
+      "Gap: Exact maximum minimum modulus is between 42 and 616,000",
+      "Key insight: Sum of reciprocals of moduli must be ≥ 1"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Arithmetic progressions and congruence classes",
+      "startLine": 34,
+      "endLine": 48
+    },
+    {
+      "id": "covering-systems",
+      "title": "Covering Systems",
+      "summary": "Structure definition and properties",
+      "startLine": 50,
+      "endLine": 72
+    },
+    {
+      "id": "original-conjecture",
+      "title": "Erdős' Original Conjecture",
+      "summary": "The disproved conjecture",
+      "startLine": 74,
+      "endLine": 81
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result (SOLVED)",
+      "summary": "The answer is NO - minimum modulus is bounded",
+      "startLine": 83,
+      "endLine": 106
+    },
+    {
+      "id": "hough-theorem",
+      "title": "Hough's Theorem (2015)",
+      "summary": "Upper bound of 10^16",
+      "startLine": 108,
+      "endLine": 124
+    },
+    {
+      "id": "balister-theorem",
+      "title": "Balister et al. (2022)",
+      "summary": "Improved bound of 616,000",
+      "startLine": 126,
+      "endLine": 140
+    },
+    {
+      "id": "owens-construction",
+      "title": "Owens' Construction (2014)",
+      "summary": "Lower bound of 42",
+      "startLine": 142,
+      "endLine": 160
+    },
+    {
+      "id": "simple-examples",
+      "title": "Simple Covering Systems",
+      "summary": "Even/odd partition example",
+      "startLine": 162,
+      "endLine": 185
+    },
+    {
+      "id": "properties",
+      "title": "Properties",
+      "summary": "Basic properties of covering systems",
+      "startLine": 187,
+      "endLine": 202
+    },
+    {
+      "id": "density-argument",
+      "title": "Density Argument",
+      "summary": "Reciprocal sum constraint",
+      "startLine": 204,
+      "endLine": 229
+    },
+    {
+      "id": "related-problems",
+      "title": "Related Problems",
+      "summary": "Exact bound and Erdős-Selfridge conjecture",
+      "startLine": 231,
+      "endLine": 247
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #2, a SOLVED problem asking whether the minimum modulus of a covering system can be arbitrarily large. The answer is NO: every covering system has a modulus at most 616,000 (Balister et al.), while constructions exist with minimum modulus 42 (Owens).",
+    "implications": "This resolves one of Erdős' favorite problems, contrary to his expectation. The exact maximum possible minimum modulus remains unknown, lying between 42 and 616,000. The result connects to density arguments: the sum of reciprocals of distinct moduli starting from m grows slowly, constraining m.",
+    "openQuestions": [
+      "What is the exact maximum possible minimum modulus?",
+      "Does every covering system have an even modulus? (Erdős-Selfridge)",
+      "Can the Balister et al. bound of 616,000 be improved?",
+      "What is the structure of covering systems with large minimum modulus?"
+    ]
   }
 }

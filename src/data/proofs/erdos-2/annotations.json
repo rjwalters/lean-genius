@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-e2-arith-prog",
+    "proofId": "erdos-2",
+    "range": { "startLine": 36, "endLine": 38 },
+    "type": "definition",
+    "title": "Arithmetic Progression",
+    "content": "**ArithmeticProgression a n** is the set of integers congruent to a modulo n. These form the building blocks of covering systems.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e2-cong-class",
+    "proofId": "erdos-2",
+    "range": { "startLine": 40, "endLine": 48 },
+    "type": "definition",
+    "title": "Congruence Class",
+    "content": "**CongruenceClass** pairs a residue with a modulus (≥ 2). The toSet method gives the corresponding set of integers.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e2-covering-sys",
+    "proofId": "erdos-2",
+    "range": { "startLine": 52, "endLine": 58 },
+    "type": "definition",
+    "title": "Covering System",
+    "content": "**CoveringSystem** is a nonempty list of congruence classes that cover all integers. Every integer belongs to at least one class.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e2-distinct-moduli",
+    "proofId": "erdos-2",
+    "range": { "startLine": 60, "endLine": 62 },
+    "type": "definition",
+    "title": "Distinct Moduli",
+    "content": "**hasDistinctModuli** requires all moduli in the system to be different. Classical covering systems have this property.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e2-min-modulus",
+    "proofId": "erdos-2",
+    "range": { "startLine": 68, "endLine": 72 },
+    "type": "definition",
+    "title": "Minimum Modulus",
+    "content": "**minModulus** is the smallest modulus in the covering system. **hasMinModulusAtLeast m** means all moduli are ≥ m.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e2-original-conj",
+    "proofId": "erdos-2",
+    "range": { "startLine": 76, "endLine": 81 },
+    "type": "definition",
+    "title": "Erdős' Original Conjecture (DISPROVED)",
+    "content": "**erdos_original_conjecture**: For any N, there exists a covering system with min modulus ≥ N. Erdős believed this was true.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e2-solution",
+    "proofId": "erdos-2",
+    "range": { "startLine": 85, "endLine": 91 },
+    "type": "definition",
+    "title": "Erdős Problem 2 Solution",
+    "content": "**erdos_2_solution**: There exists N such that every covering system has some modulus ≤ N. The answer is NO - min modulus is bounded.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e2-solution-implies",
+    "proofId": "erdos-2",
+    "range": { "startLine": 93, "endLine": 100 },
+    "type": "theorem",
+    "title": "Solution Implies Conjecture False",
+    "content": "If there's an upper bound N on min modulus, then the conjecture fails for N+1. Direct logical consequence.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e2-hough",
+    "proofId": "erdos-2",
+    "range": { "startLine": 104, "endLine": 117 },
+    "type": "theorem",
+    "title": "Hough's Theorem (2015)",
+    "content": "**Hough**: Every covering system has a modulus ≤ 10^16. First proof that the conjecture is false.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e2-hough-implies",
+    "proofId": "erdos-2",
+    "range": { "startLine": 119, "endLine": 121 },
+    "type": "theorem",
+    "title": "Hough Implies Solution",
+    "content": "Hough's bound of 10^16 immediately gives erdos_2_solution. The conjecture is disproved.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e2-balister",
+    "proofId": "erdos-2",
+    "range": { "startLine": 125, "endLine": 138 },
+    "type": "theorem",
+    "title": "Balister et al. (2022)",
+    "content": "**Balister-Bollobás-Morris-Sahasrabudhe-Tiba**: Every covering system has a modulus ≤ 616,000. Simpler proof, much better bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e2-owens",
+    "proofId": "erdos-2",
+    "range": { "startLine": 142, "endLine": 154 },
+    "type": "theorem",
+    "title": "Owens' Construction (2014)",
+    "content": "**Owens**: There exists a covering system with minimum modulus 42. Best known lower bound on the maximum possible min modulus.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e2-bounds-summary",
+    "proofId": "erdos-2",
+    "range": { "startLine": 156, "endLine": 160 },
+    "type": "theorem",
+    "title": "Bounds Summary",
+    "content": "Current knowledge: min modulus is between 42 (Owens construction) and 616,000 (Balister et al. bound).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e2-mod2",
+    "proofId": "erdos-2",
+    "range": { "startLine": 164, "endLine": 166 },
+    "type": "definition",
+    "title": "Even/Odd Classes",
+    "content": "**mod2_even** and **mod2_odd** are the simplest congruence classes: 0 mod 2 (evens) and 1 mod 2 (odds).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e2-even-odd-cover",
+    "proofId": "erdos-2",
+    "range": { "startLine": 168, "endLine": 175 },
+    "type": "theorem",
+    "title": "Even/Odd Partition",
+    "content": "Every integer is either even or odd. This is the simplest example of a covering (with min modulus 2).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e2-trivial-cover",
+    "proofId": "erdos-2",
+    "range": { "startLine": 178, "endLine": 185 },
+    "type": "theorem",
+    "title": "Trivial Covering System",
+    "content": "The even/odd partition gives a covering system with min modulus 2. Shows the definition is satisfiable.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e2-reciprocal-sum",
+    "proofId": "erdos-2",
+    "range": { "startLine": 207, "endLine": 221 },
+    "type": "definition",
+    "title": "Reciprocal Sum",
+    "content": "**reciprocalSum**: Sum of 1/n over all moduli n. Key insight: this sum must be ≥ 1 for a covering system.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e2-reciprocal-ge-one",
+    "proofId": "erdos-2",
+    "range": { "startLine": 223, "endLine": 224 },
+    "type": "theorem",
+    "title": "Reciprocal Sum ≥ 1",
+    "content": "Every covering system has reciprocal sum ≥ 1. This density argument constrains how large min modulus can be.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e2-exact-max",
+    "proofId": "erdos-2",
+    "range": { "startLine": 228, "endLine": 235 },
+    "type": "definition",
+    "title": "Exact Maximum (Open)",
+    "content": "**exact_maximum_min_modulus**: The exact value of the maximum possible min modulus remains unknown (between 42 and 616,000).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e2-selfridge",
+    "proofId": "erdos-2",
+    "range": { "startLine": 237, "endLine": 243 },
+    "type": "definition",
+    "title": "Erdős-Selfridge Conjecture",
+    "content": "**erdos_selfridge_conjecture**: Every covering system has an even modulus. This remains OPEN.",
+    "significance": "key"
+  }
+]
