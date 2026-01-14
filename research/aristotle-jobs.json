@@ -36,9 +36,9 @@
       "problem_id": "erdos-1",
       "submitted": "2026-01-12T09:31:03Z",
       "sorries": [
-        "theorem erdos_1_lower_bound {A : Finset ℕ} {N : ℕ}",
-        "theorem max_element_bound {A : Finset ℕ} (hA : A.Nonempty)",
-        "theorem subset_sums_spacing {A : Finset ℕ} (hA_pos : ∀ a ∈ A, 0 < a)"
+        "theorem erdos_1_lower_bound {A : Finset \u2115} {N : \u2115}",
+        "theorem max_element_bound {A : Finset \u2115} (hA : A.Nonempty)",
+        "theorem subset_sums_spacing {A : Finset \u2115} (hA_pos : \u2200 a \u2208 A, 0 < a)"
       ],
       "notes": "Distinct subset sums - tractability 9/10",
       "status": "completed",
@@ -64,9 +64,18 @@
         "theorem primeSum_irrational : Irrational primeSum := by",
         "theorem tao_identity : omegaSum = primeSum := by"
       ],
-      "notes": "Tao identity: double sum manipulation for ∑ω(n)/2^n = ∑1/(2^p-1)",
-      "status": "submitted",
-      "last_check": null
+      "notes": "Tao identity: double sum manipulation for \u2211\u03c9(n)/2^n = \u22111/(2^p-1)",
+      "status": "completed",
+      "last_check": {
+        "timestamp": "2026-01-14T05:21:20Z",
+        "percent": 100,
+        "runtime_minutes": 0
+      },
+      "outcome": "PROVED tao_identity. primeSum_irrational requires Tao-Ter\u00e4v\u00e4inen 2025 (beyond Aristotle scope).",
+      "integrated": "2026-01-13",
+      "theorems_proven": [
+        "tao_identity"
+      ]
     },
     {
       "project_id": "45ee038b-8713-414d-ad30-972dcd94f870",
@@ -86,7 +95,7 @@
       "problem_id": "erdos-659",
       "submitted": "2026-01-13T18:46:10Z",
       "sorries": [
-        "def isConfiguration : Finset (ℝ × ℝ) → TwoDistanceConfig → Prop := fun _ _ => sorry"
+        "def isConfiguration : Finset (\u211d \u00d7 \u211d) \u2192 TwoDistanceConfig \u2192 Prop := fun _ _ => sorry"
       ],
       "notes": "Definition sorries: moreeOsburnLattice, isConfiguration. Testing concurrent job limits.",
       "status": "submitted",
@@ -123,7 +132,7 @@
       "problem_id": "erdos-92",
       "submitted": "2026-01-13T23:59:00Z",
       "sorries": [
-        "theorem f_le_n_minus_one (n : ℕ) (hn : n ≥ 1) : f n ≤ n - 1 := by",
+        "theorem f_le_n_minus_one (n : \u2115) (hn : n \u2265 1) : f n \u2264 n - 1 := by",
         "theorem strong_implies_weak (h : StrongConjecture) : WeakConjecture := by"
       ],
       "notes": "HARD sorries: f_le_n_minus_one (trivial bound from definitions), strong_implies_weak (limits analysis). Both are provable!",
@@ -136,7 +145,7 @@
       "problem_id": "erdos-97",
       "submitted": "2026-01-13T23:59:05Z",
       "sorries": [
-        "theorem kEquidistant_implies_unitDistance_bound (k : ℕ)"
+        "theorem kEquidistant_implies_unitDistance_bound (k : \u2115)"
       ],
       "notes": "HARD sorry: kEquidistant_implies_unitDistance_bound (counting argument). danzerPoints is a construction, not suitable for proof search.",
       "status": "submitted",
@@ -149,7 +158,7 @@
     "Aristotle = proof search (known results), Claude = creative work (OPEN problems)",
     "Don't send OPEN conjectures to Aristotle - no proof exists to find",
     "DO attempt OPEN problems ourselves - that's our mission!",
-    "ALLOW OVERNIGHT RUNS - Erdős #728 took 6 hours and succeeded with 1416 lines!",
+    "ALLOW OVERNIGHT RUNS - Erd\u0151s #728 took 6 hours and succeeded with 1416 lines!",
     "Aristotle can formalize hard theorems if a proof exists somewhere",
     "Use --no-wait for async workflow, check status next morning",
     "Classify sorries: TRIVIAL (fast), HARD (overnight OK), OPEN (Claude only)"
@@ -3976,6 +3985,6 @@
     "2026-01-11: Verified problems via erdosproblems.com directly",
     "REMOVED as OPEN: erdos-17, erdos-18, erdos-19, erdos-20",
     "erdos-205 and erdos-333 already have Lean proofs (check codebase)",
-    "erdos-69 (Tao-Teräväinen 2025) omitted - analytic proof may be hard to formalize"
+    "erdos-69 (Tao-Ter\u00e4v\u00e4inen 2025) omitted - analytic proof may be hard to formalize"
   ]
 }
