@@ -105,12 +105,44 @@ def StrongConjecture : Prop :=
 -/
 
 /--
+The maximum equidistant points from x in A is bounded by the size of A minus 1.
+
+This is because `maxEquidistantPoints x A` counts points in `A.erase x`, which has
+at most `A.card - 1` elements. The sSup of cardinalities of filtered subsets of
+A.erase x is bounded by (A.erase x).card = A.card - 1.
+-/
+axiom maxEquidistantPoints_le_card_sub_one (x : EuclideanSpace ℝ (Fin 2))
+    (A : Finset (EuclideanSpace ℝ (Fin 2))) (hx : x ∈ A) :
+    maxEquidistantPoints x A ≤ A.card - 1
+
+/--
+For any point set A of n points, the k-equidistant property implies k ≤ n - 1.
+-/
+lemma hasEquidistantProperty_le (k : ℕ) (A : Finset (EuclideanSpace ℝ (Fin 2)))
+    (hA : hasEquidistantProperty k A) : k ≤ A.card - 1 := by
+  obtain ⟨hne, hk⟩ := hA
+  obtain ⟨x, hx⟩ := hne
+  exact le_trans (hk x hx) (maxEquidistantPoints_le_card_sub_one x A hx)
+
+/--
+The achievable k values form a nonempty set (0 is always achievable for any n ≥ 1).
+-/
+axiom achievableValues_nonempty (n : ℕ) (hn : n ≥ 1) :
+    (achievableValues n).Nonempty
+
+/--
 **Trivial Upper Bound**
 
 f(n) ≤ n - 1 since any point can have at most n - 1 other points equidistant.
 -/
 theorem f_le_n_minus_one (n : ℕ) (hn : n ≥ 1) : f n ≤ n - 1 := by
-  sorry
+  unfold f
+  apply csSup_le (achievableValues_nonempty n hn)
+  intro k hk
+  simp only [achievableValues, Set.mem_setOf_eq] at hk
+  obtain ⟨A, hAn, hAprop⟩ := hk
+  rw [← hAn]
+  exact hasEquidistantProperty_le k A hAprop
 
 /--
 **Square Root Bound**
@@ -169,14 +201,34 @@ The weak conjecture would imply strong bounds on unit distance graphs.
 -/
 
 /--
-If the weak conjecture holds, then the strong conjecture is strictly stronger
-(it gives a more precise bound).
+c / log log n → 0 as n → ∞, so eventually c / log log n ≤ ε for any ε > 0.
+-/
+axiom eventually_exponent_small (c ε : ℝ) (hc : c > 0) (hε : ε > 0) :
+    ∀ᶠ n : ℕ in atTop, c / Real.log (Real.log n) ≤ ε
+
+/--
+For n > 1, if α ≤ β, then n^α ≤ n^β.
+-/
+lemma rpow_le_rpow_of_exponent_le' {n : ℕ} (hn : 1 < n) {α β : ℝ}
+    (hαβ : α ≤ β) : (n : ℝ)^α ≤ (n : ℝ)^β := by
+  have hn_ge : (1 : ℝ) ≤ n := by exact mod_cast Nat.one_le_of_lt hn
+  exact Real.rpow_le_rpow_of_exponent_le hn_ge hαβ
+
+/--
+If the strong conjecture holds, then the weak conjecture holds.
+(The strong conjecture gives a more precise bound.)
 -/
 theorem strong_implies_weak (h : StrongConjecture) : WeakConjecture := by
   intro ε hε
   obtain ⟨c, hc_pos, hc⟩ := h
-  filter_upwards [hc] with n hn
-  sorry -- need: c/log log n ≤ ε eventually
+  -- Eventually, both: (1) f(n) ≤ n^(c/log log n), and (2) c/log log n ≤ ε
+  have h_exp_small := eventually_exponent_small c ε hc_pos hε
+  have h_n_large : ∀ᶠ n : ℕ in atTop, 1 < n := by
+    filter_upwards [Filter.eventually_gt_atTop 1] with n hn using hn
+  filter_upwards [hc, h_exp_small, h_n_large] with n hn hexp hn_large
+  -- f(n) ≤ n^(c/log log n) ≤ n^ε
+  calc (f n : ℝ) ≤ (n : ℝ)^(c / Real.log (Real.log n)) := hn
+    _ ≤ (n : ℝ)^ε := rpow_le_rpow_of_exponent_le' hn_large hexp
 
 /-!
 ## Historical Notes
