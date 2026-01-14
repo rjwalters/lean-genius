@@ -1,0 +1,106 @@
+{
+  "id": "erdos-822",
+  "title": "Erdős Problem #822: Positive Density of n + φ(n)",
+  "slug": "erdos-822",
+  "description": "Does the set of integers expressible as n + φ(n) have positive lower density? Gabdullin, Iudelevich, and Luca proved this is true in 2024.",
+  "meta": {
+    "author": "Gabdullin, Iudelevich, Luca (2024)",
+    "sourceUrl": "https://erdosproblems.com/822",
+    "date": "2024",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos822Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "totient-function",
+      "density",
+      "arithmetic-functions"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 822,
+    "erdosUrl": "https://erdosproblems.com/822",
+    "erdosProblemStatus": "proved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function φ(n)",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction"
+      },
+      {
+        "theorem": "Nat.totient_pos",
+        "description": "φ(n) ≥ 1 for n ≥ 1",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction"
+      },
+      {
+        "theorem": "Set.range",
+        "description": "Range of a function as a set",
+        "module": "Mathlib.Data.Set.Function"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of Erdős Problem 822 in Lean 4",
+      "Concrete computational verification of small cases",
+      "Basic bounds on n + φ(n) values",
+      "Educational documentation of the problem's context"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem 822 asks about the density of integers that can be written in the form n + φ(n), where φ is Euler's totient function. This question connects to deep problems in analytic number theory about the distribution of values of multiplicative functions.\n\nThe totient function φ(n) counts the positive integers up to n that are relatively prime to n. For example, φ(6) = 2 since only 1 and 5 are coprime to 6. The function n + φ(n) combines n with its totient, and the question is whether \"enough\" integers can be represented this way.\n\nThis was resolved in 2024 by Gabdullin, Iudelevich, and Luca, who proved that the set {n + φ(n) : n ∈ ℕ} indeed has positive lower density. They also extended this result to other arithmetic functions including σ (sum of divisors), τ (divisor count), and ω (number of distinct prime factors).",
+    "problemStatement": "Does the set of integers of the form $n + \\varphi(n)$ have positive (lower) density?\n\n$$\\text{Does } \\liminf_{N \\to \\infty} \\frac{|\\{k \\leq N : k = n + \\varphi(n) \\text{ for some } n\\}|}{N} > 0?$$\n\nThe answer is **yes**, proved by Gabdullin, Iudelevich, and Luca (2024).",
+    "proofStrategy": "The proof by Gabdullin–Iudelevich–Luca uses sophisticated techniques from analytic number theory. The key challenges include:\n\n1. **Understanding the range of n + φ(n):** Since φ(n) < n for n > 1, we have n < n + φ(n) < 2n, so the function roughly doubles its input.\n\n2. **Counting representations:** The proof shows that sufficiently many integers have at least one representation as n + φ(n).\n\n3. **Density estimates:** Using tools from multiplicative number theory and sieve methods to establish the positive density result.\n\nOur formalization states the main theorem as an axiom (since the full analytic proof is beyond current Mathlib) and verifies concrete examples computationally.",
+    "keyInsights": [
+      "**Euler's totient function:** φ(n) counts integers from 1 to n that are coprime to n. For prime p, φ(p) = p - 1.",
+      "**The function n + φ(n):** This always exceeds n and is at most 2n - 1 for n ≥ 2, providing natural bounds.",
+      "**Positive density:** A set S ⊆ ℕ has positive density if approximately a constant fraction of integers belong to S.",
+      "**Related problems:** The same result holds for n + σ(n), n + τ(n), and n + ω(n), showing a general phenomenon."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 56,
+      "endLine": 63,
+      "summary": "Definition of the function n + φ(n) and the set of its values."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 65,
+      "endLine": 94,
+      "summary": "Computational verification of specific values like 1+φ(1)=2, 2+φ(2)=3, etc."
+    },
+    {
+      "id": "properties",
+      "title": "Basic Properties",
+      "startLine": 96,
+      "endLine": 113,
+      "summary": "Bounds on n + φ(n): it's at least n, at least 2 for positive n, and at most 2n-1."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 115,
+      "endLine": 139,
+      "summary": "The axiom encoding the Gabdullin–Iudelevich–Luca result and the main theorem statement."
+    },
+    {
+      "id": "related",
+      "title": "Related Questions",
+      "startLine": 141,
+      "endLine": 151,
+      "summary": "Definitions for analogous problems with σ and τ functions."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem 822, which asks about the density of integers representable as n + φ(n). The affirmative answer, proved by Gabdullin, Iudelevich, and Luca in 2024, shows that a positive fraction of all integers can be written in this form. We formalize the statement and verify concrete examples, while the main theorem relies on an axiom encoding the published result.",
+    "implications": "The resolution of this problem has implications for understanding the distribution of arithmetic functions:\n\n1. **Range of arithmetic functions:** Understanding which integers can be represented as combinations of n and arithmetic functions of n.\n\n2. **Multiplicative function theory:** The techniques developed connect to broader questions about how multiplicative functions behave on average.\n\n3. **Generalizations:** The same authors proved analogous results for other functions (σ, τ, ω), suggesting a unified phenomenon.",
+    "openQuestions": [
+      "What is the exact density of integers representable as n + φ(n)?",
+      "Can the density be computed for n + f(n) for other arithmetic functions f?",
+      "What is the density of integers with exactly k representations as n + φ(n)?"
+    ]
+  }
+}

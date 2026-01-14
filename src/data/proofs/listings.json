@@ -758,6 +758,24 @@
     "annotationCount": 0
   },
   {
+    "id": "erdos-1064",
+    "title": "Erdős Problem #1064: Comparing φ(n) and φ(n - φ(n))",
+    "slug": "erdos-1064",
+    "description": "Is φ(n) > φ(n - φ(n)) for almost all n? Yes (density 1), but the reverse holds infinitely often. Solved by Luca-Pomerance and Grytczuk-Luca-Wójtowicz.",
+    "status": "complete",
+    "badge": "axiom",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "totient-function",
+      "density",
+      "arithmetic-functions"
+    ],
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 8
+  },
+  {
     "id": "erdos-107",
     "title": "Erdős Problem #107",
     "slug": "erdos-107",
@@ -769,6 +787,24 @@
     ],
     "sorries": 1,
     "annotationCount": 0
+  },
+  {
+    "id": "erdos-1077",
+    "title": "Erdős Problem #1077: Balanced Subgraphs in Dense Graphs",
+    "slug": "erdos-1077",
+    "description": "Must dense graphs contain large balanced subgraphs? Jiang-Longbrake (2025) showed the optimal size is Θ(n^α) vertices, resolving ambiguities in the original problem.",
+    "status": "complete",
+    "badge": "axiom",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "balanced-graphs",
+      "degree-regularity"
+    ],
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 8
   },
   {
     "id": "erdos-108",
@@ -821,6 +857,24 @@
     ],
     "sorries": 1,
     "annotationCount": 0
+  },
+  {
+    "id": "erdos-1102",
+    "title": "Erdős Problem #1102: Squarefree Properties P and Q",
+    "slug": "erdos-1102",
+    "description": "How fast must sequences with squarefree properties P or Q grow? van Doorn-Tao (2025) resolved this: P-sequences have density 0, Q-sequences have upper density at most 6/π².",
+    "status": "complete",
+    "badge": "axiom",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "squarefree",
+      "density",
+      "analytic-number-theory"
+    ],
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 10
   },
   {
     "id": "erdos-111",
@@ -6633,6 +6687,24 @@
     "annotationCount": 0
   },
   {
+    "id": "erdos-822",
+    "title": "Erdős Problem #822: Positive Density of n + φ(n)",
+    "slug": "erdos-822",
+    "description": "Does the set of integers expressible as n + φ(n) have positive lower density? Gabdullin, Iudelevich, and Luca proved this is true in 2024.",
+    "status": "complete",
+    "badge": "axiom",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "totient-function",
+      "density",
+      "arithmetic-functions"
+    ],
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 10
+  },
+  {
     "id": "erdos-83",
     "title": "Erdős Problem #83",
     "slug": "erdos-83",
@@ -6724,6 +6796,24 @@
     "annotationCount": 10
   },
   {
+    "id": "erdos-899",
+    "title": "Erdős Problem #899: Growth of Difference Sets",
+    "slug": "erdos-899",
+    "description": "If A ⊆ ℕ has zero density, must the difference set A - A grow much faster than A? Ruzsa proved yes in 1978.",
+    "status": "complete",
+    "badge": "axiom",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "additive-combinatorics",
+      "difference-sets",
+      "density"
+    ],
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 10
+  },
+  {
     "id": "erdos-9",
     "title": "Erdős Problem #9",
     "slug": "erdos-9",
@@ -6793,6 +6883,24 @@
     ],
     "sorries": 1,
     "annotationCount": 0
+  },
+  {
+    "id": "erdos-946",
+    "title": "Erdős Problem #946: Consecutive Integers with Equal Divisor Count",
+    "slug": "erdos-946",
+    "description": "Are there infinitely many n with τ(n) = τ(n+1)? Heath-Brown proved yes in 1984, with quantitative bounds by Hildebrand and Erdős-Pomerance-Sárközy.",
+    "status": "complete",
+    "badge": "axiom",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisor-function",
+      "consecutive-integers",
+      "arithmetic-functions"
+    ],
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 10
   },
   {
     "id": "erdos-95",

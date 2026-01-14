@@ -1,0 +1,142 @@
+[
+  {
+    "id": "ann-e822-imports",
+    "proofId": "erdos-822",
+    "range": {
+      "startLine": 1,
+      "endLine": 3
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import `Mathlib.NumberTheory.ArithmeticFunction` for Euler's totient function and related arithmetic functions. The `Tactic` import provides proof automation.",
+    "mathContext": "The `ArithmeticFunction` module contains definitions and theorems about multiplicative functions like φ (totient), σ (sum of divisors), and τ (divisor count).",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "arithmetic functions", "totient"]
+  },
+  {
+    "id": "ann-e822-totient-def",
+    "proofId": "erdos-822",
+    "range": {
+      "startLine": 58,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "The Function n + φ(n)",
+    "content": "We define `nPlusTotient n = n + Nat.totient n`. This is the central function in Problem 822. Euler's **totient function** φ(n) counts how many integers from 1 to n are coprime to n (share no common factors with n).",
+    "mathContext": "For example: φ(1) = 1, φ(2) = 1, φ(3) = 2, φ(4) = 2, φ(6) = 2, φ(p) = p-1 for prime p. The function n + φ(n) thus ranges from 2 (when n=1) upward.",
+    "significance": "critical",
+    "relatedConcepts": ["Euler's totient", "coprimality", "arithmetic functions"]
+  },
+  {
+    "id": "ann-e822-values-set",
+    "proofId": "erdos-822",
+    "range": {
+      "startLine": 62,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "The Set of Values",
+    "content": "We define `nPlusTotientValues` as the range of the function n ↦ n + φ(n). This is the set whose density we want to understand: {2, 3, 5, 6, 8, 9, ...}.",
+    "mathContext": "Using `Set.range` creates the set {n + φ(n) : n ∈ ℕ}. Note that not every integer appears: for instance, 4 = n + φ(n) has no solution (we'd need φ(n) = 4-n, but φ(3) = 2 ≠ 1 and φ(2) = 1 ≠ 2).",
+    "significance": "key",
+    "relatedConcepts": ["range of function", "set theory", "density"]
+  },
+  {
+    "id": "ann-e822-examples",
+    "proofId": "erdos-822",
+    "range": {
+      "startLine": 69,
+      "endLine": 94
+    },
+    "type": "example",
+    "title": "Computational Verification",
+    "content": "We verify specific values computationally: 1+φ(1)=2, 2+φ(2)=3, 3+φ(3)=5, 4+φ(4)=6, 5+φ(5)=9, 6+φ(6)=8. These examples show which integers appear early in the range.",
+    "mathContext": "The tactic `native_decide` uses Lean's computational kernel to verify these numerical facts. This provides high confidence in the definitions without formal proof.",
+    "significance": "supporting",
+    "relatedConcepts": ["decidability", "computation", "verification"]
+  },
+  {
+    "id": "ann-e822-lower-bound",
+    "proofId": "erdos-822",
+    "range": {
+      "startLine": 98,
+      "endLine": 101
+    },
+    "type": "lemma",
+    "title": "Lower Bound: n + φ(n) ≥ n",
+    "content": "Since φ(n) ≥ 0, we always have n + φ(n) ≥ n. This trivial observation shows the function is at least as large as the identity.",
+    "mathContext": "The `omega` tactic handles this linear arithmetic automatically once we unfold the definition.",
+    "significance": "supporting",
+    "relatedConcepts": ["bounds", "totient positivity"]
+  },
+  {
+    "id": "ann-e822-pos-bound",
+    "proofId": "erdos-822",
+    "range": {
+      "startLine": 103,
+      "endLine": 107
+    },
+    "type": "lemma",
+    "title": "Positive Lower Bound",
+    "content": "For n ≥ 1, we have n + φ(n) ≥ 2. This uses the fact that φ(n) ≥ 1 for all positive n (since 1 is always coprime to n).",
+    "mathContext": "We invoke `Nat.totient_pos` from Mathlib, which states φ(n) > 0 for n > 0. Combined with n ≥ 1, we get the bound.",
+    "significance": "supporting",
+    "relatedConcepts": ["totient positivity", "coprimality"]
+  },
+  {
+    "id": "ann-e822-upper-bound",
+    "proofId": "erdos-822",
+    "range": {
+      "startLine": 109,
+      "endLine": 113
+    },
+    "type": "lemma",
+    "title": "Upper Bound: n + φ(n) ≤ 2n - 1",
+    "content": "For n ≥ 2, we have φ(n) ≤ n - 1 (since n itself is not counted), giving n + φ(n) ≤ 2n - 1. This shows the function roughly doubles its input.",
+    "mathContext": "The bound φ(n) < n for n ≥ 2 is `Nat.totient_lt_self`. Combined with the lower bound, we see n + φ(n) lies in the interval [n+1, 2n-1] for n ≥ 2.",
+    "significance": "key",
+    "relatedConcepts": ["totient bounds", "density implications"]
+  },
+  {
+    "id": "ann-e822-axiom",
+    "proofId": "erdos-822",
+    "range": {
+      "startLine": 120,
+      "endLine": 130
+    },
+    "type": "theorem",
+    "title": "Axiom: Positive Density Result",
+    "content": "We state the main result as an **axiom**, encoding the theorem of Gabdullin, Iudelevich, and Luca (2024). The full proof uses deep analytic number theory techniques beyond current Mathlib.",
+    "mathContext": "The axiom states that `nPlusTotientValues.HasPosDensity`, meaning the lower asymptotic density is positive. The published proof uses estimates on the distribution of totient values and sieve methods.",
+    "significance": "critical",
+    "relatedConcepts": ["axioms in formalization", "analytic number theory", "density"]
+  },
+  {
+    "id": "ann-e822-main-theorem",
+    "proofId": "erdos-822",
+    "range": {
+      "startLine": 132,
+      "endLine": 139
+    },
+    "type": "theorem",
+    "title": "Main Theorem: Erdős Problem 822",
+    "content": "**Erdős Problem 822 (Solved):** The set of integers of the form n + φ(n) has positive lower density. This is the formal statement matching the original problem, confirmed by the 2024 result.",
+    "mathContext": "The theorem `erdos_822` simply invokes the axiom. In a complete formalization, this would be a substantive proof using the analytic techniques from the published paper.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős problems", "density", "totient function"]
+  },
+  {
+    "id": "ann-e822-related",
+    "proofId": "erdos-822",
+    "range": {
+      "startLine": 145,
+      "endLine": 149
+    },
+    "type": "concept",
+    "title": "Related Problems",
+    "content": "Similar questions can be asked for other arithmetic functions. We define sets for n + σ(n) (sum of divisors) and n + τ(n) (number of divisors). Gabdullin et al. proved positive density for these too.",
+    "mathContext": "The divisor sum σ(n) = Σ_{d|n} d and divisor count τ(n) = |{d : d|n}| are fundamental multiplicative functions. The same density phenomenon holds for n + f(n) where f is any of these.",
+    "significance": "supporting",
+    "relatedConcepts": ["sum of divisors", "divisor function", "multiplicative functions"]
+  }
+]

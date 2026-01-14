@@ -1,0 +1,114 @@
+[
+  {
+    "id": "ann-e1064-imports",
+    "proofId": "erdos-1064",
+    "range": {
+      "startLine": 1,
+      "endLine": 4
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import `ArithmeticFunction` for the totient function and `Asymptotics` for the generalized o(n) statement.",
+    "mathContext": "Euler's totient φ(n) = |{1 ≤ k ≤ n : gcd(k,n) = 1}| is available as `Nat.totient` in Mathlib.",
+    "significance": "supporting",
+    "relatedConcepts": ["totient", "asymptotics"]
+  },
+  {
+    "id": "ann-e1064-sets",
+    "proofId": "erdos-1064",
+    "range": {
+      "startLine": 57,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "The Three Sets A₊, A₋, A₌",
+    "content": "We partition ℕ into three sets based on how φ(n) compares to φ(n - φ(n)): **A₊** where φ(n) > φ(n-φ(n)), **A₋** where φ(n) < φ(n-φ(n)), and **A₌** where they're equal.",
+    "mathContext": "Note n - φ(n) counts integers ≤ n sharing a factor with n. For n = 12: φ(12) = 4, so n - φ(n) = 8, and φ(8) = 4 = φ(12).",
+    "significance": "critical",
+    "relatedConcepts": ["totient", "comparison", "partition"]
+  },
+  {
+    "id": "ann-e1064-examples-greater",
+    "proofId": "erdos-1064",
+    "range": {
+      "startLine": 85,
+      "endLine": 89
+    },
+    "type": "example",
+    "title": "Typical Case: φ(n) > φ(n - φ(n))",
+    "content": "For n = 15: φ(15) = 8, n - φ(n) = 7, φ(7) = 6, so 8 > 6. This is the \"typical\" situation that holds for almost all n.",
+    "mathContext": "The `native_decide` tactic computes these values directly and verifies membership in A₊.",
+    "significance": "supporting",
+    "relatedConcepts": ["computation", "typical behavior"]
+  },
+  {
+    "id": "ann-e1064-examples-less",
+    "proofId": "erdos-1064",
+    "range": {
+      "startLine": 93,
+      "endLine": 100
+    },
+    "type": "example",
+    "title": "Exceptional Case: φ(n) < φ(n - φ(n))",
+    "content": "For n = 30: φ(30) = 8, n - φ(n) = 22, φ(22) = 10, so 8 < 10. These exceptional cases form an infinite set of density 0.",
+    "mathContext": "The sequence A₋ begins 30, 60, 66, 120, ... All multiples 15·2^k are in A₋.",
+    "significance": "key",
+    "relatedConcepts": ["counterexamples", "exceptional cases"]
+  },
+  {
+    "id": "ann-e1064-pattern",
+    "proofId": "erdos-1064",
+    "range": {
+      "startLine": 104,
+      "endLine": 109
+    },
+    "type": "theorem",
+    "title": "The Pattern: 15·2^k ∈ A₋",
+    "content": "For n = 15·2^k with k ≥ 1, we have φ(n) < φ(n - φ(n)). This gives an explicit infinite family of counterexamples.",
+    "mathContext": "Calculation: φ(15·2^k) = 4·2^k, n - φ(n) = 11·2^k, φ(11·2^k) = 5·2^k > 4·2^k. The key is that 11 has higher \"totient ratio\" than 15.",
+    "significance": "key",
+    "relatedConcepts": ["multiplicativity", "explicit construction"]
+  },
+  {
+    "id": "ann-e1064-part1",
+    "proofId": "erdos-1064",
+    "range": {
+      "startLine": 118,
+      "endLine": 135
+    },
+    "type": "theorem",
+    "title": "Part 1: A₊ Has Density 1",
+    "content": "**Luca-Pomerance (2002):** The set of n with φ(n) > φ(n - φ(n)) has natural density 1. \"Almost all\" integers satisfy this inequality.",
+    "mathContext": "The proof uses analytic methods to show n - φ(n) typically has a smaller totient. The stronger result: φ(n) > φ(n-φ(n)) + f(n) for any f = o(n).",
+    "significance": "critical",
+    "relatedConcepts": ["density", "almost all", "analytic methods"]
+  },
+  {
+    "id": "ann-e1064-part2",
+    "proofId": "erdos-1064",
+    "range": {
+      "startLine": 125,
+      "endLine": 141
+    },
+    "type": "theorem",
+    "title": "Part 2: A₋ Is Infinite",
+    "content": "**Grytczuk-Luca-Wójtowicz (2001):** The set of n with φ(n) < φ(n - φ(n)) is infinite. The pattern 15·2^k provides explicit witnesses.",
+    "mathContext": "This was the first breakthrough. They also showed A₊ has lower density ≥ 0.54, later improved to density 1.",
+    "significance": "critical",
+    "relatedConcepts": ["infinitude", "explicit construction"]
+  },
+  {
+    "id": "ann-e1064-generalization",
+    "proofId": "erdos-1064",
+    "range": {
+      "startLine": 148,
+      "endLine": 156
+    },
+    "type": "theorem",
+    "title": "Generalization: f(n) = o(n)",
+    "content": "For any function f(n) = o(n), the inequality φ(n) > φ(n - φ(n)) + f(n) holds for almost all n. This strengthens part 1.",
+    "mathContext": "This means φ(n) - φ(n-φ(n)) grows like Ω(n/log n) on average, which is quite large.",
+    "significance": "key",
+    "relatedConcepts": ["little-o", "generalization", "gap growth"]
+  }
+]

@@ -1,0 +1,142 @@
+[
+  {
+    "id": "ann-e899-imports",
+    "proofId": "erdos-899",
+    "range": {
+      "startLine": 1,
+      "endLine": 4
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import `Set.Pointwise.Basic` for pointwise set operations (like A - A), `Filter.Basic` for defining limits and tendsto, and `Topology.Basic` for topological concepts.",
+    "mathContext": "Pointwise operations allow treating sets algebraically: A - A = {a - b : a ∈ A, b ∈ A}. Filters generalize limits beyond sequences.",
+    "significance": "supporting",
+    "relatedConcepts": ["pointwise operations", "filters", "limits"]
+  },
+  {
+    "id": "ann-e899-counting",
+    "proofId": "erdos-899",
+    "range": {
+      "startLine": 52,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "The **counting function** `countingFn A N` gives the number of elements of A up to N. This is |A ∩ {0, 1, ..., N}|, the key quantity for measuring density.",
+    "mathContext": "We use `ncard` (natural cardinality) which returns a natural number. For finite sets, this equals the cardinality; for infinite sets, it returns 0.",
+    "significance": "key",
+    "relatedConcepts": ["density", "cardinality", "counting"]
+  },
+  {
+    "id": "ann-e899-diffset",
+    "proofId": "erdos-899",
+    "range": {
+      "startLine": 56,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Difference Set A - A",
+    "content": "The **difference set** A - A consists of all integers a - b where a, b ∈ A. We define it as a set of integers (ℤ) since differences can be negative.",
+    "mathContext": "The difference set captures the \"additive structure\" of A. If A has special structure (like an arithmetic progression), A - A reflects this.",
+    "significance": "critical",
+    "relatedConcepts": ["additive combinatorics", "sumsets", "structure"]
+  },
+  {
+    "id": "ann-e899-zero-density",
+    "proofId": "erdos-899",
+    "range": {
+      "startLine": 64,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "Zero Density",
+    "content": "A set has **zero density** if |A ∩ {1,...,N}| / N → 0 as N → ∞. This means A contains a vanishingly small fraction of all integers.",
+    "mathContext": "Examples of zero-density sets: primes (~N/log N elements up to N), perfect squares (~√N), powers of 2 (~log N). These are all \"sparse\" in different ways.",
+    "significance": "key",
+    "relatedConcepts": ["natural density", "sparse sets", "asymptotic density"]
+  },
+  {
+    "id": "ann-e899-zero-mem",
+    "proofId": "erdos-899",
+    "range": {
+      "startLine": 70,
+      "endLine": 73
+    },
+    "type": "lemma",
+    "title": "Zero in Difference Set",
+    "content": "If A is nonempty, then 0 ∈ A - A. This is because for any a ∈ A, we have a - a = 0.",
+    "mathContext": "This is a trivial but useful observation. The difference set is always symmetric around 0: if d ∈ A - A, then -d ∈ A - A.",
+    "significance": "supporting",
+    "relatedConcepts": ["symmetry", "difference sets"]
+  },
+  {
+    "id": "ann-e899-powers-of-two",
+    "proofId": "erdos-899",
+    "range": {
+      "startLine": 84,
+      "endLine": 94
+    },
+    "type": "example",
+    "title": "Powers of Two",
+    "content": "The set of powers of 2: {1, 2, 4, 8, 16, ...} is a classic example of a zero-density set. Up to N, there are only about log₂(N) powers of 2.",
+    "mathContext": "For powers of 2, the difference set contains {2^k - 2^j : k, j ∈ ℕ}. This includes many values like 1 = 2-1, 2 = 4-2, 3 = 4-1, etc.",
+    "significance": "key",
+    "relatedConcepts": ["exponential growth", "sparse sequences"]
+  },
+  {
+    "id": "ann-e899-diff-examples",
+    "proofId": "erdos-899",
+    "range": {
+      "startLine": 96,
+      "endLine": 112
+    },
+    "type": "example",
+    "title": "Differences of Powers of 2",
+    "content": "We verify that 1 and 2 are in the difference set of powers of 2: 1 = 2 - 1, and 2 = 4 - 2. These concrete examples illustrate how the difference set is computed.",
+    "mathContext": "The proof uses existential witnesses and simple arithmetic. The `ring` tactic handles the numerical equality.",
+    "significance": "supporting",
+    "relatedConcepts": ["existential proofs", "computation"]
+  },
+  {
+    "id": "ann-e899-axiom",
+    "proofId": "erdos-899",
+    "range": {
+      "startLine": 118,
+      "endLine": 124
+    },
+    "type": "theorem",
+    "title": "Axiom: Ruzsa's Theorem",
+    "content": "We state Ruzsa's 1978 result as an **axiom**: for any infinite zero-density set A, the ratio |(A-A) ∩ [1,N]| / |A ∩ [1,N]| tends to infinity.",
+    "mathContext": "The full proof uses counting arguments and the pigeonhole principle. If A - A were bounded relative to A, too many pairs (a,b) would collide, forcing A to have structure.",
+    "significance": "critical",
+    "relatedConcepts": ["Ruzsa", "additive combinatorics", "structure theorems"]
+  },
+  {
+    "id": "ann-e899-main-theorem",
+    "proofId": "erdos-899",
+    "range": {
+      "startLine": 126,
+      "endLine": 134
+    },
+    "type": "theorem",
+    "title": "Main Theorem: Erdős Problem 899",
+    "content": "**Erdős Problem 899 (Solved):** For infinite sets A with zero density, the limsup of |A - A| / |A| is infinite. Sparse sets have \"large\" difference sets relative to their size.",
+    "mathContext": "This is the formal statement matching the problem. The proof invokes the axiom encoding Ruzsa's published result.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős problems", "difference sets", "growth rates"]
+  },
+  {
+    "id": "ann-e899-sumset",
+    "proofId": "erdos-899",
+    "range": {
+      "startLine": 140,
+      "endLine": 141
+    },
+    "type": "definition",
+    "title": "Sumset A + A",
+    "content": "The **sumset** A + A = {a + b : a, b ∈ A} is the analogous construction with addition. Similar questions about growth lead to Problem 245.",
+    "mathContext": "Sumsets and difference sets have different properties. For example, |A + A| ≥ 2|A| - 1 always, but |A - A| can be smaller (when A is an arithmetic progression).",
+    "significance": "supporting",
+    "relatedConcepts": ["sumsets", "additive combinatorics", "Problem 245"]
+  }
+]

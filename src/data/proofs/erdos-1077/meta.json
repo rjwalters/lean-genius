@@ -1,0 +1,99 @@
+{
+  "id": "erdos-1077",
+  "title": "Erdős Problem #1077: Balanced Subgraphs in Dense Graphs",
+  "slug": "erdos-1077",
+  "description": "Must dense graphs contain large balanced subgraphs? Jiang-Longbrake (2025) showed the optimal size is Θ(n^α) vertices, resolving ambiguities in the original problem.",
+  "meta": {
+    "author": "Jiang, Longbrake (2025)",
+    "sourceUrl": "https://erdosproblems.com/1077",
+    "date": "2025",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1077Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "balanced-graphs",
+      "degree-regularity"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1077,
+    "erdosUrl": "https://erdosproblems.com/1077",
+    "erdosProblemStatus": "disproved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Subgraph",
+        "description": "Subgraph of a simple graph",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph"
+      },
+      {
+        "theorem": "SimpleGraph.degree",
+        "description": "Degree of a vertex in a graph",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of D-balanced (almost-regular) graphs",
+      "Clarification of the ambiguous original problem statement",
+      "Statement of the Jiang-Longbrake resolution",
+      "Connection to extremal graph theory"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem 1077 was posed by Erdős and Simonovits (1970) in the context of extremal graph theory. A graph is D-balanced if the ratio of maximum to minimum degree is at most D. The question asks: given a dense graph (one with n^{1+α} edges), how large a balanced subgraph can we guarantee?\n\nThe original statement had ambiguities: the exponent 1-α suggested in [ErSi70] decreases as α increases, which is counterintuitive. The erdosproblems.com entry clarifies that this was likely a typo.\n\nJiang and Longbrake (2025) provided a complete resolution: the optimal number of vertices is Θ(n^α). They proved every such graph has a 6-balanced subgraph on Ω(n^α) vertices, and complete bipartite graphs show this is tight.",
+    "problemStatement": "A graph is **D-balanced** if max_degree ≤ D · min_degree.\n\nLet $\\alpha > 0$. If $G$ has $n$ vertices and at least $n^{1+\\alpha}$ edges, how large a D-balanced subgraph can we guarantee?\n\n**Answer:** The optimal size is $\\Theta(n^\\alpha)$ vertices (Jiang-Longbrake 2025).",
+    "proofStrategy": "The resolution has two parts:\n\n**Upper Bound:** Complete bipartite graphs K_{n^α, n^{1-α}} have n^{1+α-α} = n edges from the small side. Any balanced subgraph can only use O(n^α) vertices from the small side.\n\n**Lower Bound:** Jiang-Longbrake show that iterative regularization produces a 6-balanced subgraph on Ω(n^α) vertices. The key is that removing high-degree vertices while preserving edges eventually produces regularity.",
+    "keyInsights": [
+      "**D-balanced graphs:** Graphs where degree variation is bounded by factor D. 1-balanced = regular.",
+      "**Dense graphs:** Having n^{1+α} edges means average degree ≈ n^α, which is superlinear.",
+      "**Complete bipartite:** K_{a,b} is the extremal example showing we can't do better than n^α.",
+      "**The constant 6:** Jiang-Longbrake's 6-balanced result is explicit and likely not optimal."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 50,
+      "endLine": 71,
+      "summary": "D-balanced property and min/max degree definitions."
+    },
+    {
+      "id": "properties",
+      "title": "Basic Properties",
+      "startLine": 73,
+      "endLine": 87,
+      "summary": "1-balanced graphs are regular."
+    },
+    {
+      "id": "original-question",
+      "title": "The Original Question",
+      "startLine": 89,
+      "endLine": 100,
+      "summary": "Discussion of ambiguities in Erdős-Simonovits formulation."
+    },
+    {
+      "id": "resolution",
+      "title": "The Resolution",
+      "startLine": 102,
+      "endLine": 154,
+      "summary": "Jiang-Longbrake's Θ(n^α) answer and the main theorem."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem 1077 about balanced subgraphs in dense graphs. The original conjecture (as literally stated) was false due to a likely typo. Jiang and Longbrake (2025) resolved the corrected question, showing the optimal number of vertices in a guaranteed D-balanced subgraph is Θ(n^α).",
+    "implications": "The resolution has implications for extremal graph theory:\n\n1. **Regularity methods:** Finding balanced subgraphs is key to many regularity-based arguments.\n\n2. **Bipartite extremality:** Complete bipartite graphs are extremal for this problem.\n\n3. **Explicit constants:** The constant 6 in the lower bound may be improvable.",
+    "openQuestions": [
+      "What is the optimal value of D in the lower bound (is 6 best possible)?",
+      "How does the answer change for hypergraphs?",
+      "Can we find balanced subgraphs with better edge density?"
+    ]
+  }
+}

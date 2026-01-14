@@ -1,0 +1,106 @@
+{
+  "id": "erdos-1064",
+  "title": "Erdős Problem #1064: Comparing φ(n) and φ(n - φ(n))",
+  "slug": "erdos-1064",
+  "description": "Is φ(n) > φ(n - φ(n)) for almost all n? Yes (density 1), but the reverse holds infinitely often. Solved by Luca-Pomerance and Grytczuk-Luca-Wójtowicz.",
+  "meta": {
+    "author": "Luca-Pomerance (2002), Grytczuk-Luca-Wójtowicz (2001)",
+    "sourceUrl": "https://erdosproblems.com/1064",
+    "date": "2002",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1064Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "totient-function",
+      "density",
+      "arithmetic-functions"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1064,
+    "erdosUrl": "https://erdosproblems.com/1064",
+    "erdosProblemStatus": "proved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function φ(n)",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction"
+      },
+      {
+        "theorem": "Set.HasDensity",
+        "description": "Natural density predicate for sets",
+        "module": "Mathlib.NumberTheory.Density"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Predicate for infinite sets",
+        "module": "Mathlib.Data.Set.Finite"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of both parts of Erdős Problem 1064",
+      "Explicit counterexamples (30, 60, 66) verified computationally",
+      "The pattern 15·2^k for the reverse inequality",
+      "Generalized statement for f(n) = o(n)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem 1064 concerns the comparison of φ(n) with φ(n - φ(n)), a natural iteration of Euler's totient function. The problem asks whether φ(n) is usually larger, and whether the reverse ever happens.\n\nGrytczuk, Luca, and Wójtowicz (2001) made initial progress, showing A₊ (where φ(n) > φ(n-φ(n))) has lower density at least 0.54 and A₋ is infinite. They gave the explicit pattern: n = 15·2^k gives n ∈ A₋.\n\nLuca and Pomerance (2002) completed the solution, proving A₊ has density 1. Their stronger result: for any f(n) = o(n), we have φ(n) > φ(n - φ(n)) + f(n) for almost all n.",
+    "problemStatement": "Prove that $\\phi(n) > \\phi(n - \\phi(n))$ for almost all $n$, but that $\\phi(n) < \\phi(n - \\phi(n))$ for infinitely many $n$.\n\n**Part 1:** The set $A_> = \\{n : \\phi(n) > \\phi(n - \\phi(n))\\}$ has density 1.\n\n**Part 2:** The set $A_< = \\{n : \\phi(n) < \\phi(n - \\phi(n))\\}$ is infinite.\n\nBoth parts are now proved.",
+    "proofStrategy": "The two parts require different approaches:\n\n**Part 1 (Density 1):** Luca-Pomerance use analytic methods to show that for typical n, the value n - φ(n) has a smaller totient than n. This uses properties of the distribution of φ values.\n\n**Part 2 (Infinitude):** The explicit construction n = 15·2^k works because:\n- φ(15·2^k) = φ(15)·φ(2^k) = 8·2^(k-1) = 4·2^k\n- n - φ(n) = 15·2^k - 4·2^k = 11·2^k\n- φ(11·2^k) = φ(11)·φ(2^k) = 10·2^(k-1) = 5·2^k > 4·2^k",
+    "keyInsights": [
+      "**The iteration n ↦ n - φ(n):** This maps n to the count of integers ≤ n sharing a factor with n.",
+      "**Typical behavior:** For most n, φ(n) dominates φ(n - φ(n)) because n - φ(n) is typically smaller.",
+      "**Exceptional n:** The pattern 15·2^k gives counterexamples because 11 has larger relative totient than 15.",
+      "**Density vs infinitude:** A set can have density 0 yet be infinite—A₋ has density 0 but is infinite."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 52,
+      "endLine": 64,
+      "summary": "The sets A₊, A₋, A₌ based on comparing φ(n) with φ(n - φ(n))."
+    },
+    {
+      "id": "examples-greater",
+      "title": "Examples of the Greater Case",
+      "startLine": 83,
+      "endLine": 89,
+      "summary": "n = 10 and n = 15 where φ(n) > φ(n - φ(n))."
+    },
+    {
+      "id": "examples-less",
+      "title": "Examples of the Less Case",
+      "startLine": 91,
+      "endLine": 109,
+      "summary": "n = 30, 60, 66 where φ(n) < φ(n - φ(n)), and the 15·2^k pattern."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Main Theorems",
+      "startLine": 116,
+      "endLine": 141,
+      "summary": "Both parts: density 1 for A₊ and infinitude of A₋."
+    },
+    {
+      "id": "generalization",
+      "title": "Generalization",
+      "startLine": 143,
+      "endLine": 158,
+      "summary": "For any f(n) = o(n), φ(n) > φ(n - φ(n)) + f(n) almost always."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures both parts of Erdős Problem 1064. Luca-Pomerance showed φ(n) > φ(n - φ(n)) has density 1, while Grytczuk-Luca-Wójtowicz showed the reverse inequality holds for infinitely many n (including all n = 15·2^k). We state both results as axioms and verify concrete examples.",
+    "implications": "The resolution has implications for understanding iterated arithmetic functions:\n\n1. **Typical vs exceptional:** Density-1 sets can have infinite complements with special structure.\n\n2. **Multiplicative structure:** The pattern 15·2^k exploits multiplicativity of φ.\n\n3. **Related problems:** Similar questions for σ(n) vs σ(n - σ(n)) lead to different behavior.",
+    "openQuestions": [
+      "What is the density of A₌ where φ(n) = φ(n - φ(n))?",
+      "Can we characterize all n with φ(n) < φ(n - φ(n))?",
+      "What happens for higher iterates: φ(n) vs φ(n - φ(n - φ(n)))?"
+    ]
+  }
+}

@@ -1,0 +1,142 @@
+[
+  {
+    "id": "ann-e946-imports",
+    "proofId": "erdos-946",
+    "range": {
+      "startLine": 1,
+      "endLine": 4
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import `ArithmeticFunction` for the divisor function, `Asymptotics` for big-O bounds, and `Filter.Basic` for limit definitions.",
+    "mathContext": "Mathlib represents τ(n) as `σ 0 n`, the sum of 0th powers of divisors: σ₀(n) = Σ_{d|n} d⁰ = Σ_{d|n} 1 = τ(n).",
+    "significance": "supporting",
+    "relatedConcepts": ["arithmetic functions", "asymptotics", "filters"]
+  },
+  {
+    "id": "ann-e946-tau-def",
+    "proofId": "erdos-946",
+    "range": {
+      "startLine": 57,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "The Divisor Function τ",
+    "content": "The **divisor function** τ(n) counts the positive divisors of n. For n = p₁^a₁ · ... · pₖ^aₖ, we have τ(n) = (a₁+1)(a₂+1)...(aₖ+1).",
+    "mathContext": "In Mathlib, τ = σ 0 where σ_k(n) = Σ_{d|n} d^k. Setting k=0 gives the count of divisors. This is a multiplicative function: τ(mn) = τ(m)τ(n) when gcd(m,n)=1.",
+    "significance": "critical",
+    "relatedConcepts": ["divisors", "multiplicative functions", "prime factorization"]
+  },
+  {
+    "id": "ann-e946-consec-set",
+    "proofId": "erdos-946",
+    "range": {
+      "startLine": 61,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Consecutive Equal Divisors Set",
+    "content": "We define the set of n where τ(n) = τ(n+1). The question is whether this set is infinite.",
+    "mathContext": "This set includes n = 2 (both 2 and 3 are prime with τ = 2), n = 14 (τ(14) = τ(15) = 4), and many others.",
+    "significance": "key",
+    "relatedConcepts": ["consecutive integers", "set membership"]
+  },
+  {
+    "id": "ann-e946-examples",
+    "proofId": "erdos-946",
+    "range": {
+      "startLine": 66,
+      "endLine": 91
+    },
+    "type": "example",
+    "title": "Divisor Count Examples",
+    "content": "We verify τ(1)=1, τ(2)=2, τ(3)=2, τ(4)=3, τ(6)=4, τ(12)=6 computationally. We also verify that 2, 14, and 21 are in our target set.",
+    "mathContext": "The `native_decide` tactic computes these values directly. For instance, divisors of 12 are {1,2,3,4,6,12}, so τ(12) = 6.",
+    "significance": "supporting",
+    "relatedConcepts": ["computation", "decidability"]
+  },
+  {
+    "id": "ann-e946-counting",
+    "proofId": "erdos-946",
+    "range": {
+      "startLine": 95,
+      "endLine": 97
+    },
+    "type": "definition",
+    "title": "The Counting Function",
+    "content": "We define the counting function that gives the number of n ≤ x with τ(n) = τ(n+1). This is the quantity whose growth rate is studied.",
+    "mathContext": "The bounds show this count is roughly x/√(log log x). For x = 10⁶, log log x ≈ 2.6, so about 600,000/1.6 ≈ 375,000 such n.",
+    "significance": "key",
+    "relatedConcepts": ["counting", "asymptotics"]
+  },
+  {
+    "id": "ann-e946-heath-brown",
+    "proofId": "erdos-946",
+    "range": {
+      "startLine": 101,
+      "endLine": 105
+    },
+    "type": "theorem",
+    "title": "Axiom: Heath-Brown's Theorem",
+    "content": "We state Heath-Brown's 1984 result as an **axiom**: there are infinitely many n with τ(n) = τ(n+1).",
+    "mathContext": "Heath-Brown improved Spiro's method which only worked for gap 5040. His proof uses sieve methods and properties of highly composite numbers.",
+    "significance": "critical",
+    "relatedConcepts": ["Heath-Brown", "sieve methods", "infinitude"]
+  },
+  {
+    "id": "ann-e946-main",
+    "proofId": "erdos-946",
+    "range": {
+      "startLine": 107,
+      "endLine": 113
+    },
+    "type": "theorem",
+    "title": "Main Theorem: Erdős Problem 946",
+    "content": "**Erdős Problem 946 (Solved):** There are infinitely many consecutive integers with equal divisor counts. This is Heath-Brown's theorem applied.",
+    "mathContext": "The theorem `erdos_946` simply invokes the axiom. A full formalization would require the sieve theory underlying Heath-Brown's proof.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős problems", "divisor function"]
+  },
+  {
+    "id": "ann-e946-spiro",
+    "proofId": "erdos-946",
+    "range": {
+      "startLine": 117,
+      "endLine": 122
+    },
+    "type": "theorem",
+    "title": "Spiro's Precursor Result",
+    "content": "Spiro (1981) proved τ(n) = τ(n + 5040) infinitely often. The gap 5040 = 7! was chosen because it has many divisors (60), creating more chances for coincidence.",
+    "mathContext": "A highly composite number like 5040 has many factorizations, making it easier to find n where n and n+5040 have similar divisor counts.",
+    "significance": "key",
+    "relatedConcepts": ["highly composite", "factorial", "gap"]
+  },
+  {
+    "id": "ann-e946-lower-bound",
+    "proofId": "erdos-946",
+    "range": {
+      "startLine": 124,
+      "endLine": 134
+    },
+    "type": "theorem",
+    "title": "Quantitative Lower Bounds",
+    "content": "Heath-Brown showed the count is ≫ x/(log x)⁷. Hildebrand improved this to ≫ x/(log log x)³. These show such n are relatively common.",
+    "mathContext": "The notation f = O(g) means f is bounded by a constant times g. The improved bound x/(log log x)³ is much larger than x/(log x)⁷.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic bounds", "big-O notation"]
+  },
+  {
+    "id": "ann-e946-upper-bound",
+    "proofId": "erdos-946",
+    "range": {
+      "startLine": 136,
+      "endLine": 139
+    },
+    "type": "theorem",
+    "title": "Upper Bound",
+    "content": "Erdős-Pomerance-Sárközy (1987) proved the count is ≪ x/√(log log x). Combined with the lower bound, this pins down the growth rate.",
+    "mathContext": "The gap between x/(log log x)³ and x/√(log log x) suggests the true answer is closer to the upper bound. Tao-Teräväinen confirmed this.",
+    "significance": "key",
+    "relatedConcepts": ["upper bounds", "asymptotic tightness"]
+  }
+]

@@ -1,0 +1,101 @@
+{
+  "id": "erdos-1102",
+  "title": "Erdős Problem #1102: Squarefree Properties P and Q",
+  "slug": "erdos-1102",
+  "description": "How fast must sequences with squarefree properties P or Q grow? van Doorn-Tao (2025) resolved this: P-sequences have density 0, Q-sequences have upper density at most 6/π².",
+  "meta": {
+    "author": "van Doorn, Tao (2025)",
+    "sourceUrl": "https://erdosproblems.com/1102",
+    "date": "2025",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1102Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "squarefree",
+      "density",
+      "analytic-number-theory"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1102,
+    "erdosUrl": "https://erdosproblems.com/1102",
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Squarefree",
+        "description": "Predicate for squarefree numbers",
+        "module": "Mathlib.NumberTheory.Squarefree"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for limits at infinity",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Tendsto",
+        "description": "Convergence in topological spaces",
+        "module": "Mathlib.Topology.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of properties P and Q for sequences",
+      "Formalization of squarefree density bounds",
+      "Statement of van Doorn-Tao results as axioms",
+      "Connection between squarefree numbers and π"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem 1102 was posed in 1981 and concerns the interplay between sequences and squarefree numbers. A number is squarefree if no prime square divides it—equivalently, all prime exponents in its factorization are 0 or 1.\n\nErdős defined two properties based on squarefree translates:\n- **Property P:** For every n ≥ 1, only finitely many elements a ∈ A have n + a squarefree\n- **Property Q:** Infinitely many n have n + a squarefree for all a < n in A\n\nThe density of squarefree numbers is 6/π² ≈ 0.608 (this equals 1/ζ(2)), and this constant plays a central role in the resolution.\n\nvan Doorn and Tao (2025) provided complete answers to Erdős's questions about growth rates, using techniques from analytic number theory and the distribution of squarefree numbers.",
+    "problemStatement": "A number is **squarefree** if not divisible by any perfect square > 1.\n\n**Property P:** For every n ≥ 1, only finitely many a ∈ A have n + a squarefree.\n\n**Property Q:** Infinitely many n have n + a squarefree for all a < n in A.\n\nHow fast must sequences A = {a₁ < a₂ < ···} with properties P or Q grow?\n\n**Answer (van Doorn-Tao 2025):**\n- P-sequences have density 0, but can decay arbitrarily slowly\n- Q-sequences have upper density ≤ 6/π², with equality achievable",
+    "proofStrategy": "The resolution uses deep results from analytic number theory:\n\n**Property P:** van Doorn-Tao show that aⱼ/j → ∞ for any P-sequence. The key is that for fixed n, the density of a with n + a squarefree is positive (close to 6/π²), so P-sequences must be sparse. However, for any function f → ∞, there exist P-sequences with aⱼ/j ≤ f(j).\n\n**Property Q:** The squarefree numbers themselves form an optimal Q-sequence with density 6/π². For any Q-sequence, considering random n shows the upper density cannot exceed 6/π² (the probability that n + a is squarefree for random a < n).\n\n**Special Sequences:** The sequences 2ⁿ ± 1 and n! ± 1 grow fast enough to have property Q. Whether they have property P remains open.",
+    "keyInsights": [
+      "**The magic constant 6/π²:** This is 1/ζ(2), the density of squarefree numbers, and appears as the optimal bound for Q-sequences.",
+      "**Squarefree numbers:** Numbers not divisible by any square > 1. The sequence 1, 2, 3, 5, 6, 7, 10, 11, 13, 14, ... forms the canonical Q-sequence.",
+      "**Property duality:** P means 'eventually few squarefree translates,' Q means 'often all translates are squarefree.' These capture opposite extremes.",
+      "**Slow decay:** P-sequences must have density 0, but can approach density 0 arbitrarily slowly—a subtle existence result.",
+      "**Open questions:** Do 2ⁿ - 1 or n! + 1 have property P? The fast growth makes this hard to determine."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 53,
+      "endLine": 67,
+      "summary": "Properties P and Q formalized as set predicates."
+    },
+    {
+      "id": "squarefree-set",
+      "title": "The Squarefree Numbers",
+      "startLine": 69,
+      "endLine": 90,
+      "summary": "The set of squarefree numbers with examples."
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results (van Doorn-Tao)",
+      "startLine": 92,
+      "endLine": 136,
+      "summary": "Density bounds for P and Q sequences stated as axioms."
+    },
+    {
+      "id": "special-sequences",
+      "title": "Special Sequences",
+      "startLine": 144,
+      "endLine": 161,
+      "summary": "Results for 2ⁿ ± 1 and n! ± 1."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem 1102 about growth rates of sequences defined by squarefree properties. van Doorn and Tao's 2025 resolution shows P-sequences have density 0 (but can decay arbitrarily slowly) and Q-sequences have upper density at most 6/π² (achieved by the squarefree numbers themselves).",
+    "implications": "The resolution connects several areas of number theory:\n\n1. **Squarefree density:** The constant 6/π² = 1/ζ(2) appears naturally as the optimal bound.\n\n2. **Analytic techniques:** The proofs use sieve methods and probabilistic arguments about squarefree numbers.\n\n3. **Existence vs. explicit construction:** P-sequences with slow decay exist but may be hard to construct explicitly.",
+    "openQuestions": [
+      "Do the sequences 2ⁿ - 1 have property P?",
+      "Do n! ± 1 have property P?",
+      "What can be said about properties P' and P'∞ for specific sequences?",
+      "Are there algebraic conditions that guarantee property P?"
+    ]
+  }
+}

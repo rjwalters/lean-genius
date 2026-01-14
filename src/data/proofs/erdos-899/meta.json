@@ -1,0 +1,106 @@
+{
+  "id": "erdos-899",
+  "title": "Erdős Problem #899: Growth of Difference Sets",
+  "slug": "erdos-899",
+  "description": "If A ⊆ ℕ has zero density, must the difference set A - A grow much faster than A? Ruzsa proved yes in 1978.",
+  "meta": {
+    "author": "Ruzsa (1978)",
+    "sourceUrl": "https://erdosproblems.com/899",
+    "date": "1978",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos899Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "additive-combinatorics",
+      "difference-sets",
+      "density"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 899,
+    "erdosUrl": "https://erdosproblems.com/899",
+    "erdosProblemStatus": "proved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.Pointwise",
+        "description": "Pointwise operations on sets",
+        "module": "Mathlib.Data.Set.Pointwise.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit behavior of functions",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of sets as natural numbers",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of Erdős Problem 899 in Lean 4",
+      "Definition of difference sets and counting functions",
+      "Examples with powers of 2",
+      "Connection to additive combinatorics"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem 899 concerns the growth rate of difference sets, a fundamental question in additive combinatorics. Given a set A of natural numbers, the difference set A - A consists of all integers of the form a - b where a, b ∈ A.\n\nThe question asks: if A is sparse (has zero density), can A - A also be sparse relative to A? Intuitively, if A has large gaps, the differences should spread out, forcing A - A to be much larger than A.\n\nImre Ruzsa proved in 1978 that the answer is no—the ratio |A - A| / |A| must tend to infinity. This result is foundational in additive combinatorics and connects to the study of sumsets, Freiman's theorem, and the structure of sets with small doubling.",
+    "problemStatement": "Let $A \\subseteq \\mathbb{N}$ be an infinite set such that $|A \\cap \\{1, \\ldots, N\\}| = o(N)$. Is it true that\n$$\\limsup_{N \\to \\infty} \\frac{|(A - A) \\cap \\{1, \\ldots, N\\}|}{|A \\cap \\{1, \\ldots, N\\}|} = \\infty?$$\n\nThe answer is **yes**, proved by Ruzsa (1978).",
+    "proofStrategy": "Ruzsa's proof uses sophisticated combinatorial arguments. The key ideas include:\n\n1. **Counting pairs:** If A has k elements up to N, there are roughly k² pairs (a, b) with a, b ∈ A.\n\n2. **Pigeonhole principle:** These pairs produce differences in a bounded range, so many must collide if A - A is small.\n\n3. **Structure theory:** Too many collisions forces A to have additive structure, contradicting zero density.\n\nOur formalization states the theorem as an axiom and provides definitions and examples to illustrate the concepts.",
+    "keyInsights": [
+      "**Difference sets:** A - A = {a - b : a, b ∈ A} captures the \"additive structure\" of A.",
+      "**Zero density:** A set has density 0 if |A ∩ [1,N]| / N → 0. Examples: primes, perfect squares, powers of 2.",
+      "**Growth dichotomy:** Dense sets have bounded |A-A|/|A|; sparse sets have unbounded ratio.",
+      "**Connection to sumsets:** Similar questions for A + A lead to Problem 245."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 50,
+      "endLine": 66,
+      "summary": "Counting functions and the difference set A - A."
+    },
+    {
+      "id": "properties",
+      "title": "Basic Properties",
+      "startLine": 68,
+      "endLine": 78,
+      "summary": "0 ∈ A - A for nonempty A; differences of elements are in A - A."
+    },
+    {
+      "id": "examples",
+      "title": "Example: Powers of 2",
+      "startLine": 80,
+      "endLine": 112,
+      "summary": "Powers of 2 as a concrete example of a zero-density set."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 114,
+      "endLine": 134,
+      "summary": "The axiom encoding Ruzsa's result and the main theorem."
+    },
+    {
+      "id": "sumsets",
+      "title": "Connection to Sumsets",
+      "startLine": 136,
+      "endLine": 143,
+      "summary": "Definition of sumsets and reference to Problem 245."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem 899, which asks about the growth rate of difference sets for sparse sets. Ruzsa's 1978 theorem shows that if A has zero density, the difference set A - A must grow much faster than A itself. This is a fundamental result in additive combinatorics with connections to Freiman's theorem and the structure of sets with small doubling.",
+    "implications": "Ruzsa's result has significant implications:\n\n1. **Structure of sparse sets:** Sparse sets cannot have concentrated difference sets.\n\n2. **Inverse problems:** If A - A is small relative to A, then A must have positive density (i.e., be \"large\").\n\n3. **Foundation for Freiman:** This connects to Freiman's theorem characterizing sets with small sumsets.",
+    "openQuestions": [
+      "What is the optimal growth rate of |A - A| / |A| for sets of given density?",
+      "How does the answer change for A + A instead of A - A? (Problem 245)",
+      "Can we characterize sets achieving the minimal growth rate?"
+    ]
+  }
+}
