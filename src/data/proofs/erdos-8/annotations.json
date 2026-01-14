@@ -1,1 +1,204 @@
-[]
+[
+  {
+    "id": "ann-e8-congruence",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 36,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "Congruence Class",
+    "content": "An arithmetic progression defined by residue r mod m. The structure includes `residue`, `modulus`, and validity constraints (modulus ≥ 2, residue < modulus).",
+    "significance": "supporting",
+    "relatedConcepts": ["arithmetic progression", "residue class"]
+  },
+  {
+    "id": "ann-e8-covering",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 47,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Covering System",
+    "content": "A **covering system** is a finite collection of congruence classes that covers every integer. For all x ∈ ℤ, some class contains x.",
+    "mathContext": "Covering systems are a central object in combinatorial number theory, connecting to Erdős problems #2, #7, and #8.",
+    "significance": "critical",
+    "relatedConcepts": ["covering systems", "modular arithmetic"]
+  },
+  {
+    "id": "ann-e8-coloring",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 63,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "k-Coloring",
+    "content": "A **k-coloring** assigns one of k colors to each positive integer: `Coloring k = ℕ → Fin k`.",
+    "significance": "key",
+    "relatedConcepts": ["graph coloring", "Ramsey theory"]
+  },
+  {
+    "id": "ann-e8-monochromatic",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 66,
+      "endLine": 72
+    },
+    "type": "definition",
+    "title": "Monochromatic Sets",
+    "content": "A set is **monochromatic** if all its elements have the same color. `IsMonochromatic c S` means ∃ color, ∀ n ∈ S, c(n) = color.",
+    "mathContext": "Ramsey theory studies when monochromatic structures must exist. This problem asks about monochromatic moduli sets.",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey theory", "homogeneous sets"]
+  },
+  {
+    "id": "ann-e8-conjecture",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 81,
+      "endLine": 90
+    },
+    "type": "definition",
+    "title": "Erdős-Graham Conjecture",
+    "content": "**Original Conjecture (DISPROVED)**: For any finite coloring, there exists a covering system whose moduli are all the same color. Erdős and Graham expected this to be TRUE.",
+    "mathContext": "This would have been a Ramsey-type result for covering systems. The counterexample shows covering systems don't have this Ramsey property.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Erdős-Graham"]
+  },
+  {
+    "id": "ann-e8-disproved",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 92,
+      "endLine": 95
+    },
+    "type": "definition",
+    "title": "Negation Statement",
+    "content": "`erdos_8_disproved`: There exists a coloring such that NO covering system has monochromatic moduli. This is what Hough proved.",
+    "significance": "key",
+    "relatedConcepts": ["counterexample", "existential statement"]
+  },
+  {
+    "id": "ann-e8-min-modulus",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 99,
+      "endLine": 106
+    },
+    "type": "definition",
+    "title": "Minimum Modulus",
+    "content": "The **minimum modulus** of a covering system is the smallest modulus appearing. Defined using `Finset.min'` on the set of moduli.",
+    "significance": "key",
+    "relatedConcepts": ["extremal values", "Finset operations"]
+  },
+  {
+    "id": "ann-e8-hough-theorem",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 108,
+      "endLine": 115
+    },
+    "type": "theorem",
+    "title": "Hough's Minimum Modulus Bound",
+    "content": "**Hough (2015)**: Every covering system with distinct moduli has minimum modulus ≤ 616,000. This is THE key result enabling the counterexample.",
+    "mathContext": "This bound shows covering systems must 'start small' - they can't avoid small moduli. This structural constraint is exploited in the coloring counterexample.",
+    "significance": "critical",
+    "relatedConcepts": ["minimum modulus problem", "covering system structure"]
+  },
+  {
+    "id": "ann-e8-counterexample",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 126,
+      "endLine": 141
+    },
+    "type": "theorem",
+    "title": "Counterexample Coloring",
+    "content": "**Hough's Construction**: Color each n < 10^18 with a distinct color. Any covering system needs a small modulus (≤ 616,000), so its moduli span multiple colors - never monochromatic.",
+    "mathContext": "The gap 10^18 >> 616,000 ensures enough colors for all small integers while forcing any covering's moduli to use different colors.",
+    "significance": "critical",
+    "relatedConcepts": ["explicit construction", "pigeonhole principle"]
+  },
+  {
+    "id": "ann-e8-resolution",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 143,
+      "endLine": 147
+    },
+    "type": "theorem",
+    "title": "Problem Resolution",
+    "content": "`erdos_8_resolution`: The Erdős-Graham conjecture is FALSE. Axiomatized since the full proof requires Hough's detailed analysis.",
+    "significance": "critical",
+    "relatedConcepts": ["axiomatization", "resolution"]
+  },
+  {
+    "id": "ann-e8-false",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 149,
+      "endLine": 154
+    },
+    "type": "theorem",
+    "title": "Conjecture Falsified",
+    "content": "`erdos_8_false`: Derived theorem showing ¬erdos_graham_conjecture. Uses the resolution axiom to obtain a contradiction with the conjecture.",
+    "significance": "key",
+    "relatedConcepts": ["proof by contradiction", "derived theorem"]
+  },
+  {
+    "id": "ann-e8-density",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 158,
+      "endLine": 164
+    },
+    "type": "definition",
+    "title": "Density Condition",
+    "content": "**Logarithmic tail density**: A set A has this property if ∑_{a ∈ A, a > N} 1/a ≫ log N. This measures how 'thick' the set is at infinity.",
+    "mathContext": "Erdős and Graham asked if this density condition guarantees containing covering moduli. The answer is NO.",
+    "significance": "key",
+    "relatedConcepts": ["harmonic series", "density", "tail sums"]
+  },
+  {
+    "id": "ann-e8-density-false",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 170,
+      "endLine": 180
+    },
+    "type": "theorem",
+    "title": "Density Version Disproved",
+    "content": "`density_conjecture_false`: Logarithmic tail density is NOT sufficient for containing covering moduli. Also disproved by Hough.",
+    "significance": "key",
+    "relatedConcepts": ["density conditions", "counterexample"]
+  },
+  {
+    "id": "ann-e8-insight",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 184,
+      "endLine": 208
+    },
+    "type": "insight",
+    "title": "Why the Counterexample Works",
+    "content": "**The Bottleneck Argument**: (1) Coverings must include small moduli (≤ 616,000). (2) Color small numbers distinctly. (3) Any covering's moduli span multiple colors. (4) No monochromatic covering possible.",
+    "mathContext": "The minimum modulus bound creates structural rigidity that prevents certain 'spread out' colorings from being defeated.",
+    "significance": "key",
+    "relatedConcepts": ["structural argument", "bottleneck"]
+  },
+  {
+    "id": "ann-e8-historical",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 218,
+      "endLine": 230
+    },
+    "type": "insight",
+    "title": "Historical Significance",
+    "content": "Hough's 2015 paper resolved multiple Erdős problems simultaneously: #2 (minimum modulus bound), #8 (monochromatic coverings), and related density questions - all using the same core technique.",
+    "significance": "supporting",
+    "relatedConcepts": ["Erdős problems", "unified resolution"]
+  }
+]

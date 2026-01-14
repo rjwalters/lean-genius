@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-675",
+  "title": "Erdős #675",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(LaTeX not available)",
+    "plain": "We say that $A\\subset \\mathbb{N}$ has the translation property if, for every $n$, there exists some integer $t_n\\geq 1$ such that, for all $1\\leq a\\leq n$,\\[a\\in A\\quad\\textrm{ if and only if }\\quad a+t_n\\in A.\\] Does the set of the sums of two squares have the translation property? If we partition all primes into $P\\sqcup Q$, such that each set contains $\\gg x/\\log x$ many primes $\\leq x$ for all large $x$, then can the set of integers only divisible by primes from $P$ have the translation p...",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-14T18:07:47.337Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #675 - Knowledge Base\n\n## Problem Statement\n\nWe say that $A\\subset \\mathbb{N}$ has the translation property if, for every $n$, there exists some integer $t_n\\geq 1$ such that, for all $1\\leq a\\leq n$,\\[a\\in A\\quad\\textrm{ if and only if }\\quad a+t_n\\in A.\\] Does the set of the sums of two squares have the translation property? If we partition all primes into $P\\sqcup Q$, such that each set contains $\\gg x/\\log x$ many primes $\\leq x$ for all large $x$, then can the set of integers only divisible by primes from $P$ have the translation property? If $A$ is the set of squarefree numbers then how fast does the minimal such $t_n$ grow? Is it true that $t_n>\\exp(n^c)$ for some constant $c>0$? Elementary sieve theory implies that the set of squarefree numbers has the translation property. More generally, Brun's sieve can be used to prove that if $B\\subseteq \\mathbb{N}$ is a set of pairwise coprime integers with $\\sum_{b View the LaTeX source\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #674\n- Problem #676\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-14T18:07:47.343Z",
+  "significance": 6,
+  "tractability": 4
+}

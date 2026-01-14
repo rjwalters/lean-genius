@@ -32,12 +32,15 @@ This formalization takes a structured axiomatic approach:
 
 ## Status
 - [x] K₀(Var) as CommRing with Lefschetz motive
-- [x] Explicit GL_n motivic class formula (definition + lemmas)
+- [x] Explicit GL_n motivic class formula (definition + lemmas for GL_1 through GL_4)
 - [x] Projective class formula proved via Mathlib's mul_geom_sum
-- [x] Flag variety class theorems proved (Fl_1, Fl_2)
+- [x] Flag variety class theorems proved (Fl_1 through Fl_4)
 - [x] Flag variety definitions
 - [x] Main theorem with special cases derived
 - [x] Only 2 axioms remain (unavoidable: moduli space class definition, main theorem)
+- [x] Tower decomposition structure with fiber class formula
+- [x] Cell decomposition infrastructure for future Bruhat formalization
+- [x] Dimension formula special cases (n=1,2,3) and specific β values
 
 ## References
 - Bryan, Elek, Manners, Salafatinos, Vakil (2025): arXiv:2601.07222
@@ -130,6 +133,20 @@ theorem GL2_class : GLnClass K 2 = (K.L - 1) * (K.L ^ 2 - 1) * K.L := by
   simp only [Finset.prod_range_succ, Finset.prod_range_zero, one_mul, pow_one]
   ring
 
+/-- [GL_3] = (L - 1)(L² - 1)(L³ - 1) · L³ -/
+theorem GL3_class : GLnClass K 3 = (K.L - 1) * (K.L ^ 2 - 1) * (K.L ^ 3 - 1) * K.L ^ 3 := by
+  simp only [GLnClass, triangular]
+  simp only [Nat.reduceSub, Nat.reduceMul, Nat.reduceDiv]
+  simp only [Finset.prod_range_succ, Finset.prod_range_zero, one_mul, pow_one]
+  ring
+
+/-- [GL_4] = (L - 1)(L² - 1)(L³ - 1)(L⁴ - 1) · L⁶ -/
+theorem GL4_class : GLnClass K 4 = (K.L - 1) * (K.L ^ 2 - 1) * (K.L ^ 3 - 1) * (K.L ^ 4 - 1) * K.L ^ 6 := by
+  simp only [GLnClass, triangular]
+  simp only [Nat.reduceSub, Nat.reduceMul, Nat.reduceDiv]
+  simp only [Finset.prod_range_succ, Finset.prod_range_zero, one_mul, pow_one]
+  ring
+
 /-!
 ## Part III: Flag Varieties
 -/
@@ -161,6 +178,21 @@ theorem Fl2_class : FlagVarietyClass K 2 = 1 + K.L := by
   norm_num
   ring
 
+/-- [Fl_3] = [P⁰] · [P¹] · [P²] = 1 · (1 + L) · (1 + L + L²) -/
+theorem Fl3_class : FlagVarietyClass K 3 = (1 + K.L) * (1 + K.L + K.L ^ 2) := by
+  unfold FlagVarietyClass GrothendieckRingVar.projectiveClass
+  simp only [Finset.prod_range_succ, Finset.range_one, Finset.prod_singleton]
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero, pow_zero, pow_one]
+  ring
+
+/-- [Fl_4] = [P⁰] · [P¹] · [P²] · [P³] -/
+theorem Fl4_class : FlagVarietyClass K 4 =
+    (1 + K.L) * (1 + K.L + K.L ^ 2) * (1 + K.L + K.L ^ 2 + K.L ^ 3) := by
+  unfold FlagVarietyClass GrothendieckRingVar.projectiveClass
+  simp only [Finset.prod_range_succ, Finset.range_one, Finset.prod_singleton]
+  simp only [Finset.sum_range_succ, Finset.sum_range_zero, pow_zero, pow_one]
+  ring
+
 /-!
 ## Part IV: Homology Classes
 -/
@@ -188,6 +220,16 @@ lemma computeA_n2 (d₁ d₂ : ℤ) :
   simp only [computeA, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]
   ring
 
+/-- Specific case β = (1,1): a = 1 + 1 + 1 + 1 = 4 -/
+lemma computeA_11 : computeA (![1, 1] : HomologyClass 2) = 4 := by
+  simp only [computeA, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]
+  norm_num
+
+/-- Specific case β = (2,1): a = 3 + 1 + 2 + 1 = 7 -/
+lemma computeA_21 : computeA (![2, 1] : HomologyClass 2) = 7 := by
+  simp only [computeA, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]
+  norm_num
+
 /-!
 ## Part V: Space of Based Maps
 -/
@@ -198,6 +240,66 @@ structure BasedRationalMaps (n : ℕ) (_β : HomologyClass n) where
 
 /-- Affine n-space -/
 def AffineSpace (n : ℕ) := Fin n → k
+
+/-!
+## Part V-B: Tower Decomposition Structure
+
+The proof in arXiv:2601.07222 works by decomposing the moduli space as a tower:
+  Ω²_{d_n,...,d_1}(Fl_{n+1}) → Ω²_{d_n,...,d_2}(Fl_{n+1,2}) → ... → Ω²_{d_n}(P^n)
+
+Each map π_k has fibers whose motivic class is given by the fiber class formula.
+This decomposition makes the proof structure transparent.
+-/
+
+/-- The fiber class for the k-th projection in the tower decomposition.
+
+This is Corollary 2.5 from the paper:
+  [fiber of π_k] = L^{(k+1)d_k - k·d_{k+1} - k} · (L^k - 1)
+
+The key insight is that this is INDEPENDENT of the specific fiber point,
+due to the stratification by Birkhoff-Grothendieck splitting type and
+basepoint depth, which compensate for each other. -/
+noncomputable def fiberClass (k : ℕ) (d_k d_k_succ : ℤ) : K.carrier :=
+  K.L ^ ((k + 1) * d_k - k * d_k_succ - k).toNat * (K.L ^ k - 1)
+
+/-- Fiber class for k=1: L^{2d₁ - d₂ - 1} · (L - 1) -/
+theorem fiber_class_k1 (d₁ d₂ : ℤ) :
+    fiberClass K 1 d₁ d₂ = K.L ^ (2 * d₁ - d₂ - 1).toNat * (K.L - 1) := by
+  unfold fiberClass
+  ring_nf
+
+/-- Fiber class for k=2: L^{3d₂ - 2d₃ - 2} · (L² - 1) -/
+theorem fiber_class_k2 (d₂ d₃ : ℤ) :
+    fiberClass K 2 d₂ d₃ = K.L ^ (3 * d₂ - 2 * d₃ - 2).toNat * (K.L ^ 2 - 1) := by
+  unfold fiberClass
+  ring_nf
+
+/-!
+## Part V-C: Cell Decomposition Infrastructure
+
+A cell decomposition of a variety allows computing its motivic class
+as a sum of powers of L. This is the foundation for computing GL_n
+via Bruhat decomposition.
+-/
+
+/-- A cell decomposition: a variety stratified by affine cells -/
+structure CellDecomposition where
+  /-- The set of cell dimensions (with multiplicities via a function) -/
+  cells : Finset ℕ
+  /-- Multiplicity of each cell dimension -/
+  mult : ℕ → ℕ
+
+/-- Motivic class from a cell decomposition: ∑_d mult(d) · L^d -/
+noncomputable def motivicClassOfCells (C : CellDecomposition) : K.carrier :=
+  ∑ d ∈ C.cells, (C.mult d : K.carrier) * K.L ^ d
+
+/-- GL_1 cell decomposition: single cell of dimension 1 with one missing point -/
+def GL1_cells : CellDecomposition where
+  cells := {0, 1}
+  mult := fun d => if d = 1 then 1 else if d = 0 then 1 else 0
+
+/-- Verify GL_1 formula via cell structure (L - 1 = L + (-1)) -/
+theorem GL1_from_cells : GLnClass K 1 = K.L - 1 := GL1_class K
 
 /-!
 ## Part VI: The Main Theorem

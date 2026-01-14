@@ -2452,5 +2452,73 @@
     "approachCount": 0,
     "significance": 6,
     "tractability": 4
+  },
+  {
+    "slug": "erdos-675",
+    "title": "Erdős #675",
+    "description": "We say that $A\\subset \\mathbb{N}$ has the translation property if, for every $n$, there exists some integer $t_n\\geq 1$ such that, for all $1\\leq a\\leq n$,\\[a\\in A\\quad\\textrm{ if and only if }\\quad a+t_n\\in A.\\] Does the set of the sums of two squares have the translation property? If we partition all primes into $P\\sqcup Q$, such that each set contains $\\gg x/\\log x$ many primes $\\leq x$ for all large $x$, then can the set of integers only divisible by primes from $P$ have the translation p...",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-14T18:07:47.343Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-676",
+    "title": "Erdős #676",
+    "description": "Is every sufficiently large integer of the form\\[ap^2+b\\]for some prime $p$ and integer $a\\geq 1$ and $0\\leq b0$. Erdős [Er79] believed it is 'rather unlikely' that all large integers are of this form. What if the condition that $p$ is prime is omitted? Selfridge and Wagstaff made a 'preliminary computer search' and suggested that there are infinitely many $n$ not of this form even without the condition that $p$ is prime. It should be true that the number of exceptions in $[1,x]$ is $ View th...",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-14T18:07:47.344Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-677",
+    "title": "Erdős #677",
+    "description": "Let $M(n,k)=[n+1,\\ldots,n+k]$ be the least common multiple of $\\{n+1,\\ldots,n+k\\}$. Is it true that for all $m\\geq n+k$\\[M(n,k) \\neq M(m,k)?\\] The Thue-Siegel theorem implies that, for fixed $k$, there are only finitely many $m,n$ such that $m\\geq n+k$ and $M(n,k)=M(m,k)$. In general, how many solutions does $M(n,k)=M(m,l)$ have when $m\\geq n+k$ and $l>1$? Erdős expects very few (and none when $l\\geq k$). The only solutions Erdős knew were $M(4,3)=M(13,2)$ and $M(3,4)=M(19,2)$. In [Er79d] Erd...",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-14T18:07:47.344Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
+  },
+  {
+    "slug": "erdos-680",
+    "title": "Erdős #680",
+    "description": "Is it true that, for all sufficiently large $n$, there exists some $k$ such that\\[p(n+k)>k^2+1,\\]where $p(m)$ denotes the least prime factor of $m$? Can one prove this is false if we replace $k^2+1$ by $e^{(1+\\epsilon)\\sqrt{k}}+C_\\epsilon$, for all $\\epsilon>0$, where $C_\\epsilon>0$ is some constant? This follows from 'plausible assumptions on the distribution of primes' (as does the question with $k^2$ replaced by $k^d$ for any $d$); the challenge is to prove this unconditionally. Erdős obse...",
+    "phase": "NEW",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "tags": [
+      "erdos"
+    ],
+    "started": "2026-01-14T18:07:47.345Z",
+    "attemptCount": 0,
+    "approachCount": 0,
+    "significance": 6,
+    "tractability": 4
   }
 ]

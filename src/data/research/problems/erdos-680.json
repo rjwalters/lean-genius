@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-680",
+  "title": "Erdős #680",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(LaTeX not available)",
+    "plain": "Is it true that, for all sufficiently large $n$, there exists some $k$ such that\\[p(n+k)>k^2+1,\\]where $p(m)$ denotes the least prime factor of $m$? Can one prove this is false if we replace $k^2+1$ by $e^{(1+\\epsilon)\\sqrt{k}}+C_\\epsilon$, for all $\\epsilon>0$, where $C_\\epsilon>0$ is some constant? This follows from 'plausible assumptions on the distribution of primes' (as does the question with $k^2$ replaced by $k^d$ for any $d$); the challenge is to prove this unconditionally. Erdős obse...",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-14T18:07:47.345Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #680 - Knowledge Base\n\n## Problem Statement\n\nIs it true that, for all sufficiently large $n$, there exists some $k$ such that\\[p(n+k)>k^2+1,\\]where $p(m)$ denotes the least prime factor of $m$? Can one prove this is false if we replace $k^2+1$ by $e^{(1+\\epsilon)\\sqrt{k}}+C_\\epsilon$, for all $\\epsilon>0$, where $C_\\epsilon>0$ is some constant? This follows from 'plausible assumptions on the distribution of primes' (as does the question with $k^2$ replaced by $k^d$ for any $d$); the challenge is to prove this unconditionally. Erdős observed that Cramer's conjecture\\[\\limsup_{k\\to \\infty} \\frac{p_{k+1}-p_k}{(\\log k)^2}=1\\]implies that for all $\\epsilon>0$ and all sufficiently large $n$ there exists some $k$ such that\\[p(n+k)>e^{(1-\\epsilon)\\sqrt{k}}.\\]There is now evidence, however, that Cramer's conjecture is false; a more refined heuristic by Granville [Gr95] suggests this $\\limsup$ is $2e^{-\\gamma}\\approx 1.119\\cdots$, and so perhaps the $1+\\epsilon$ in the second question should be replaced by $2e^{-\\gamma}+\\epsilon$. See also\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #62\n- Problem #681\n- Problem #682\n- Problem #679\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79d\n- Gr95\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-14T18:07:47.345Z",
+  "significance": 6,
+  "tractability": 4
+}
