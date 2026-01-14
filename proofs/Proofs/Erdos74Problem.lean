@@ -50,14 +50,54 @@ noncomputable def edgeDistToBipartite (V : Type*) (G : SimpleGraph V) : ℕ :=
   sInf {k : ℕ | ∃ (E : Set (Sym2 V)), E.ncard = k ∧
     E ⊆ G.edgeSet ∧ (G.deleteEdges E).IsBipartite}
 
-/-- A graph is bipartite iff its edge distance to bipartite is 0.
+/-!
+## Important Note: edgeDistToBipartite and Infinite Graphs
 
-    Forward: Deleting 0 edges from a bipartite graph keeps it bipartite.
-    Backward: If sInf of deletion sizes is 0, there exists E with ncard 0
-    (i.e., E = ∅ or infinite), and deleteEdges E is bipartite.
-    For E = ∅, deleteEdges ∅ = G, so G is bipartite. -/
-axiom isBipartiteIffDistZero (V : Type*) (G : SimpleGraph V) :
-    G.IsBipartite ↔ edgeDistToBipartite V G = 0
+**Aristotle Discovery (2026-01-14)**: The naive equivalence "G is bipartite iff
+edgeDistToBipartite = 0" is FALSE for infinite graphs!
+
+Counterexample: The complete graph on ℕ:
+- NOT bipartite (any 2-coloring has monochromatic edges)
+- Yet edgeDistToBipartite ℕ K_ℕ = 0
+
+Why? Because Set.ncard of an infinite set is 0. If we delete all (infinitely many)
+edges from K_ℕ, we get the empty graph (bipartite), and ncard(all edges) = 0.
+
+The equivalence holds only for FINITE graphs.
+-/
+
+/-- For finite graphs, bipartite iff edge distance to bipartite is 0.
+
+The forward direction always holds. The backward direction requires finiteness
+to ensure that ncard = 0 implies the set is empty (not infinite).
+-/
+theorem isBipartiteIffDistZero_finite (V : Type*) [Fintype V] (G : SimpleGraph V) :
+    G.IsBipartite ↔ edgeDistToBipartite V G = 0 := by
+  constructor
+  · intro h
+    simp only [edgeDistToBipartite]
+    have : 0 ∈ {k : ℕ | ∃ E, E.ncard = k ∧ E ⊆ G.edgeSet ∧ (G.deleteEdges E).IsBipartite} := by
+      use ∅
+      simp [h]
+    exact Nat.sInf_eq_zero.mpr (Or.inl this)
+  · intro h
+    -- For finite graphs, ncard = 0 implies finite set is empty
+    sorry -- Requires showing that the witnessing E must be empty for finite V
+
+/-- Counterexample: The complete graph on ℕ is NOT bipartite but has
+    edgeDistToBipartite = 0 (discovered by Aristotle 2026-01-14).
+
+**Proof sketch**:
+- K_ℕ is not bipartite: any 2-coloring of ℕ has two vertices of the same color,
+  which are adjacent in K_ℕ (by pigeonhole on {0, 1, 2}).
+- edgeDistToBipartite = 0: Delete all edges (infinitely many). The resulting
+  empty graph is bipartite, and Set.ncard of an infinite set is 0.
+
+This shows the naive equivalence "bipartite ⟺ edgeDistToBipartite = 0" fails
+for infinite graphs. -/
+axiom completeGraph_nat_counterexample :
+    ¬(SimpleGraph.completeGraph ℕ).IsBipartite ∧
+    edgeDistToBipartite ℕ (SimpleGraph.completeGraph ℕ) = 0
 
 /--
 For a graph G and size n, the **maximum edge distance to bipartite** over
@@ -166,8 +206,9 @@ local structure (bipartiteness of subgraphs).
 The trivial upper bound: any n-vertex graph has at most n(n-1)/2 edges,
 so edge distance to bipartite is at most this.
 
-**Proof sketch**: Delete all edges to get the empty graph, which is bipartite
-(2-colorable with any constant coloring). The number of edges is at most n(n-1)/2.
+**Proof sketch (Aristotle 2026-01-14)**: Delete all edges to get the empty graph,
+which is bipartite (2-colorable with any constant coloring). The number of edges
+in a finite graph is at most n(n-1)/2.
 -/
 axiom edgeDistUpperBound (V : Type*) [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] :

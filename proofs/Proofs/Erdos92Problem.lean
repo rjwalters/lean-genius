@@ -108,8 +108,10 @@ def StrongConjecture : Prop :=
 The maximum equidistant points from x in A is bounded by the size of A minus 1.
 
 This is because `maxEquidistantPoints x A` counts points in `A.erase x`, which has
-at most `A.card - 1` elements. The sSup of cardinalities of filtered subsets of
-A.erase x is bounded by (A.erase x).card = A.card - 1.
+at most `A.card - 1` elements.
+
+**Proof sketch (Aristotle 2026-01-14)**: The sSup of cardinalities of filtered
+subsets of A.erase x is bounded by (A.erase x).card ≤ A.card - 1.
 -/
 axiom maxEquidistantPoints_le_card_sub_one (x : EuclideanSpace ℝ (Fin 2))
     (A : Finset (EuclideanSpace ℝ (Fin 2))) (hx : x ∈ A) :
@@ -126,9 +128,10 @@ lemma hasEquidistantProperty_le (k : ℕ) (A : Finset (EuclideanSpace ℝ (Fin 2
 
 /--
 The achievable k values form a nonempty set (0 is always achievable for any n ≥ 1).
+
+**Proof sketch**: Any n-point set trivially satisfies the 0-equidistant property.
 -/
-axiom achievableValues_nonempty (n : ℕ) (hn : n ≥ 1) :
-    (achievableValues n).Nonempty
+axiom achievableValues_nonempty (n : ℕ) (hn : n ≥ 1) : (achievableValues n).Nonempty
 
 /--
 **Trivial Upper Bound**
