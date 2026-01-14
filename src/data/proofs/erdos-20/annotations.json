@@ -1,1 +1,149 @@
-[]
+[
+  {
+    "id": "ann-e20-uniform",
+    "proofId": "erdos-20",
+    "range": { "startLine": 37, "endLine": 38 },
+    "type": "definition",
+    "title": "n-Uniform Family",
+    "content": "A family F of sets is **n-uniform** if every set in F has exactly n elements.\n\nThis is the standard setting for sunflower problems.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e20-sunflower",
+    "proofId": "erdos-20",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "definition",
+    "title": "k-Sunflower (Delta-System)",
+    "content": "A **k-sunflower** is a collection of k sets where all pairwise intersections are identical. This common intersection is called the **core**.\n\nExample: {1,2,3}, {1,4,5}, {1,6,7} form a 3-sunflower with core {1}.",
+    "mathContext": "Also called a delta-system. The petals are the sets minus the core.",
+    "significance": "critical",
+    "relatedConcepts": ["Delta-system", "Intersection patterns"]
+  },
+  {
+    "id": "ann-e20-contains",
+    "proofId": "erdos-20",
+    "range": { "startLine": 52, "endLine": 53 },
+    "type": "definition",
+    "title": "Contains Sunflower",
+    "content": "A family **contains a k-sunflower** if some subset of k sets forms a sunflower.\n\nThe Sunflower Lemma guarantees large families always contain sunflowers.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e20-sunflower-number",
+    "proofId": "erdos-20",
+    "range": { "startLine": 59, "endLine": 59 },
+    "type": "definition",
+    "title": "Sunflower Number f(n,k)",
+    "content": "f(n,k) = minimum m such that every n-uniform family of size m contains a k-sunflower.\n\nThis is the central quantity in the Sunflower Conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e20-finite",
+    "proofId": "erdos-20",
+    "range": { "startLine": 62, "endLine": 64 },
+    "type": "axiom",
+    "title": "Sunflower Number is Finite",
+    "content": "f(n,k) exists and is finite for all n and k >= 2.\n\nThis is the content of the Erdős-Rado Sunflower Lemma.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e20-erdos-rado",
+    "proofId": "erdos-20",
+    "range": { "startLine": 73, "endLine": 74 },
+    "type": "axiom",
+    "title": "Erdős-Rado Lemma (1960)",
+    "content": "**Original bound:** f(n,k) <= (k-1)^n * n!\n\nThis was the first quantitative sunflower result. The n! factor is what the conjecture aims to eliminate.",
+    "mathContext": "Proved by induction on n. The key insight is that either we find a sunflower or we can reduce to smaller sets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e20-conjecture",
+    "proofId": "erdos-20",
+    "range": { "startLine": 85, "endLine": 87 },
+    "type": "definition",
+    "title": "Sunflower Conjecture (OPEN)",
+    "content": "**Main Conjecture:** For each k >= 3, there exists c_k > 0 such that f(n,k) < c_k^n.\n\nThis asks if the n! factor in Erdős-Rado can be completely removed. Prize: $1,000.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e20-k3",
+    "proofId": "erdos-20",
+    "range": { "startLine": 90, "endLine": 91 },
+    "type": "definition",
+    "title": "The k=3 Case",
+    "content": "Erdős said 'the whole difficulty' is in k=3. The $1,000 prize is specifically for this case.\n\nSolving k=3 would likely give techniques for general k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e20-kostochka",
+    "proofId": "erdos-20",
+    "range": { "startLine": 97, "endLine": 99 },
+    "type": "axiom",
+    "title": "Kostochka (1997)",
+    "content": "**First improvement:** f(n,k) = o(n!) * (k-1)^n.\n\nKostochka won a $100 consolation prize for being the first to improve on Erdős-Rado.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e20-alwz",
+    "proofId": "erdos-20",
+    "range": { "startLine": 103, "endLine": 105 },
+    "type": "axiom",
+    "title": "ALWZ Bound (2020)",
+    "content": "**Major breakthrough:** f(n,k) <= (Ck log n log log n)^n.\n\nAlweiss, Lovett, Wu, and Zhang reduced the bound from n! to (log n)^n growth - a massive 60-year improvement.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e20-rao",
+    "proofId": "erdos-20",
+    "range": { "startLine": 109, "endLine": 111 },
+    "type": "axiom",
+    "title": "Rao Bound (2020)",
+    "content": "**Current best:** f(n,k) <= (Ck log n)^n.\n\nRao removed one log factor from ALWZ using coding-theoretic ideas. This is the state of the art.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e20-required",
+    "proofId": "erdos-20",
+    "range": { "startLine": 119, "endLine": 120 },
+    "type": "definition",
+    "title": "Required Bound",
+    "content": "The conjecture requires f(n,k) <= c^n for some constant c.\n\nCurrent best has (log n)^n extra factor. Removing this factor is 'the last barrier'.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e20-gap",
+    "proofId": "erdos-20",
+    "range": { "startLine": 123, "endLine": 131 },
+    "type": "theorem",
+    "title": "Gap Description",
+    "content": "**Equivalence:** The sunflower conjecture is equivalent to achieving the required bound for all k >= 3.\n\nThis formalizes what remains to be proved.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e20-k2",
+    "proofId": "erdos-20",
+    "range": { "startLine": 136, "endLine": 136 },
+    "type": "axiom",
+    "title": "k=2 Case",
+    "content": "f(n,2) = n+1 exactly. Any n+2 sets of size n must have two that overlap.\n\nThis easy case shows the difficulty is in k >= 3.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e20-lower",
+    "proofId": "erdos-20",
+    "range": { "startLine": 142, "endLine": 143 },
+    "type": "axiom",
+    "title": "Lower Bound",
+    "content": "f(n,k) >= (k-1)^n. There exist n-uniform families of size (k-1)^n with no k-sunflower.\n\nThe conjecture asks if this lower bound is essentially tight.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e20-open",
+    "proofId": "erdos-20",
+    "range": { "startLine": 203, "endLine": 204 },
+    "type": "theorem",
+    "title": "Problem Status: OPEN",
+    "content": "**Erdős Problem #20 remains OPEN** with a $1,000 prize.\n\nThe law of excluded middle gives us SunflowerConjecture or its negation, but we don't know which!",
+    "significance": "critical"
+  }
+]

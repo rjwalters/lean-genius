@@ -1,34 +1,138 @@
 {
   "id": "erdos-20",
-  "title": "Erdős Problem #20",
+  "title": "Erdős Problem #20: The Sunflower Conjecture",
   "slug": "erdos-20",
-  "description": "Let ... be minimal such that every family $...n...\\lvert \\rvert \\geq f(n,k)...k...?",
+  "description": "Is f(n,k) < c_k^n where f(n,k) is the minimum family size guaranteeing a k-sunflower? OPEN with $1,000 prize. Major progress by ALWZ (2020) and Rao (2020).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Rado",
     "sourceUrl": "https://erdosproblems.com/20",
-    "date": "",
-    "status": "pending",
+    "date": "1960",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos20Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "extremal-combinatorics",
+      "sunflower",
+      "delta-systems"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 1,
     "erdosNumber": 20,
     "erdosUrl": "https://erdosproblems.com/20",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$1000"
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$1000",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of sunflower (delta-system) definition",
+      "Definition of sunflower number f(n,k)",
+      "Axiomatization of Erdős-Rado lemma and modern bounds",
+      "Statement of sunflower conjecture and k=3 special case",
+      "Examples of sunflowers with non-empty and empty cores"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #20 from erdosproblems.com. Originally offered with a prize of $1000.",
-    "problemStatement": "Let $f(n,k)$ be minimal such that every family $\\mathcal{F}$ of $n$-uniform sets with $\\lvert \\mathcal{F}\\rvert \\geq f(n,k)$ contains a $k$-sunflower. Is it true that\\[f(n,k) 0$?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The Sunflower Conjecture is one of the most famous open problems in combinatorics. A sunflower (or delta-system) is a collection of sets where all pairwise intersections are identical - this common part is called the 'core'.\n\nErdős and Rado (1960) proved the Sunflower Lemma: any sufficiently large family of n-element sets contains a k-sunflower. Their bound was (k-1)^n · n!, but they conjectured that the n! factor is unnecessary.\n\nAfter 60 years of little progress, the 2020 breakthrough by Alweiss-Lovett-Wu-Zhang dramatically improved the bound. Rao further refined it to (Ck log n)^n - tantalizingly close to the conjectured c_k^n.",
+    "problemStatement": "**Conjecture (Erdős-Rado, OPEN):** For each k ≥ 3, there exists c_k > 0 such that f(n,k) < c_k^n.\n\nHere f(n,k) is the minimum size such that every family of f(n,k) sets, each of size n, contains a k-sunflower.\n\n**Current best:**\n- Upper bound: (Ck log n)^n (Rao 2020)\n- Lower bound: (k-1)^n\n- Conjectured: c_k^n\n\n**The $1,000 prize** is specifically for the k=3 case.",
+    "proofStrategy": "The formalization defines:\n\n1. `IsUniform F n`: family F has all sets of size n\n2. `IsSunflower petals k`: k sets with identical pairwise intersections\n3. `ContainsSunflower F k`: family F has a k-sunflower\n4. `sunflowerNumber n k`: minimum m guaranteeing sunflower (f(n,k))\n5. `SunflowerConjecture`: f(n,k) < c_k^n for all k ≥ 3\n\nWe axiomatize:\n- Erdős-Rado (1960): f(n,k) ≤ (k-1)^n · n!\n- Kostochka (1997): o(n!) improvement\n- ALWZ (2020): (Ck log n log log n)^n\n- Rao (2020): (Ck log n)^n (current best)",
+    "keyInsights": [
+      "**The k=3 case:** Erdős said 'the whole difficulty' is in k=3. Solving this special case would be a major breakthrough.",
+      "**2020 revolution:** After 60 years of stagnation, ALWZ reduced the bound from n! to (log n)^n - a massive improvement.",
+      "**The remaining gap:** Current best is (Ck log n)^n. The conjecture asks for c_k^n. This (log n)^n factor is the last barrier.",
+      "**Lower bound is tight:** f(n,k) ≥ (k-1)^n is achieved by constructions avoiding sunflowers.",
+      "**Applications everywhere:** Sunflower bounds matter for matrix multiplication, circuit complexity, and property testing."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "summary": "Uniform families, sunflowers, and containment",
+      "startLine": 34,
+      "endLine": 53
+    },
+    {
+      "id": "sunflower-number",
+      "title": "Sunflower Number f(n,k)",
+      "summary": "The minimum size guaranteeing sunflowers",
+      "startLine": 55,
+      "endLine": 64
+    },
+    {
+      "id": "erdos-rado",
+      "title": "Erdős-Rado Lemma (1960)",
+      "summary": "Original bound: (k-1)^n · n!",
+      "startLine": 66,
+      "endLine": 77
+    },
+    {
+      "id": "conjecture",
+      "title": "The Sunflower Conjecture",
+      "summary": "OPEN: Is f(n,k) < c_k^n?",
+      "startLine": 79,
+      "endLine": 91
+    },
+    {
+      "id": "progress",
+      "title": "Progress on the Conjecture",
+      "summary": "Kostochka, ALWZ, and Rao bounds",
+      "startLine": 93,
+      "endLine": 111
+    },
+    {
+      "id": "gap",
+      "title": "The Remaining Gap",
+      "summary": "Why the conjecture is still open",
+      "startLine": 113,
+      "endLine": 131
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "k=2 and small values",
+      "startLine": 133,
+      "endLine": 143
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Sunflowers with non-empty and empty cores",
+      "startLine": 145,
+      "endLine": 165
+    },
+    {
+      "id": "status",
+      "title": "Problem Status",
+      "summary": "Summary and open status",
+      "startLine": 176,
+      "endLine": 204
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #20, the OPEN Sunflower Conjecture asking whether the sunflower number f(n,k) grows at most exponentially in n. The formalization includes the original Erdős-Rado bound, the 2020 breakthroughs, and examples of sunflowers.",
+    "implications": "The Sunflower Conjecture has broad implications:\n\n1. **Matrix multiplication:** Bounds relate to the exponent of matrix multiplication\n2. **Circuit complexity:** Used in proving lower bounds for ACC circuits\n3. **Property testing:** Algorithms for testing set properties\n4. **Coding theory:** Rao's bound uses coding-theoretic ideas\n5. **Probabilistic combinatorics:** The proof techniques are highly influential",
+    "openQuestions": [
+      "Is f(n,k) < c_k^n for some constant c_k depending only on k?",
+      "Can the log n factor in Rao's bound be removed?",
+      "What is f(n,3) exactly for small n?",
+      "Are there applications to other problems in TCS?"
+    ]
   }
 }

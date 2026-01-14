@@ -1771,17 +1771,22 @@
   },
   {
     "id": "erdos-20",
-    "title": "Erdős Problem #20",
+    "title": "Erdős Problem #20: The Sunflower Conjecture",
     "slug": "erdos-20",
-    "description": "Let ... be minimal such that every family $...n...\\lvert \\rvert \\geq f(n,k)...k...?",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Is f(n,k) < c_k^n where f(n,k) is the minimum family size guaranteeing a k-sunflower? OPEN with $1,000 prize. Major progress by ALWZ (2020) and Rao (2020).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "extremal-combinatorics",
+      "sunflower",
+      "delta-systems"
     ],
     "erdosNumber": 20,
+    "mathlibCount": 3,
     "sorries": 1,
-    "annotationCount": 0
+    "annotationCount": 16
   },
   {
     "id": "erdos-202",
@@ -6024,7 +6029,7 @@
     "erdosNumber": 6,
     "mathlibCount": 2,
     "sorries": 1,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-60",
