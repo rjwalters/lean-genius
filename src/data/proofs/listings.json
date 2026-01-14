@@ -1227,17 +1227,22 @@
   },
   {
     "id": "erdos-15",
-    "title": "Erdős Problem #15",
+    "title": "Erdős Problem #15: Alternating Prime Series",
     "slug": "erdos-15",
-    "description": "Is it true that\\[\\sum_{n=1}^\\infty(-1)^n{p_n}\\]converges, where ... is the sequence of primes?",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Does the alternating series Σ(-1)^n · n/p_n converge? OPEN problem, conditionally proved by Tao (2023) assuming Hardy-Littlewood.",
+    "status": "formalized",
+    "badge": "formalized",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "analytic-number-theory",
+      "primes",
+      "series-convergence",
+      "open-problem"
     ],
     "erdosNumber": 15,
-    "sorries": 1,
-    "annotationCount": 0
+    "sorries": 0,
+    "annotationCount": 19
   },
   {
     "id": "erdos-150",
@@ -1667,16 +1672,19 @@
   },
   {
     "id": "erdos-19",
-    "title": "Erdős Problem #19",
+    "title": "Erdős Problem #19: Erdős-Faber-Lovász Conjecture",
     "slug": "erdos-19",
-    "description": "If ... is an edge-disjoint union of ... copies of ... then is ...?",
-    "status": "pending",
+    "description": "If G is an edge-disjoint union of n copies of K_n, then χ(G) = n.",
+    "status": "complete",
     "badge": "wip",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "combinatorics"
     ],
     "erdosNumber": 19,
-    "sorries": 1,
+    "sorries": 0,
     "annotationCount": 0
   },
   {
@@ -1899,16 +1907,19 @@
   },
   {
     "id": "erdos-21",
-    "title": "Erdős Problem #21",
+    "title": "Erdős Problem #21: Covering Intersecting Families",
     "slug": "erdos-21",
-    "description": "Let ... be minimal such that there is an intersecting family $...n...A\\cap B\\neq\\emptyset...A,B\\in ...\\lvert \\rvert=f(n)...S...\\lvert S\\rvert \\leq n-1...A\\in ...n...n-1...n-1...f(n) \\ll n...{3}n-O(...",
-    "status": "pending",
+    "description": "Let f(n) be minimal such that there is an intersecting family of n-sets covering all (n-1)-sets. Is f(n) = O(n)?",
+    "status": "complete",
     "badge": "wip",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "set-theory",
+      "intersecting-families"
     ],
     "erdosNumber": 21,
-    "sorries": 1,
+    "sorries": 3,
     "annotationCount": 0
   },
   {

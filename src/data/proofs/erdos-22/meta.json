@@ -1,16 +1,20 @@
 {
   "id": "erdos-22",
-  "title": "Erdős Problem #22",
+  "title": "Erdős Problem #22: Ramsey-Turán Numbers for K₄",
   "slug": "erdos-22",
-  "description": "Let ... and ... be sufficiently large depending on .... Is there a graph on ... vertices with ... many edges which contains no ... such that the largest independent set has size at most ...? In oth...",
+  "description": "Is rt(n; 4, εn) ≥ n²/8? Can K₄-free graphs have n²/8 edges with sublinear independence number?",
   "meta": {
-    "author": "Unknown",
+    "author": "Bollobás, Erdős",
     "sourceUrl": "https://erdosproblems.com/22",
-    "date": "",
-    "status": "pending",
+    "date": "1976",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos22Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "turan-theory",
+      "extremal-combinatorics"
     ],
     "badge": "wip",
     "sorries": 1,
@@ -19,15 +23,25 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #22 from erdosproblems.com.",
-    "problemStatement": "Let $\\epsilon>0$ and $n$ be sufficiently large depending on $\\epsilon$. Is there a graph on $n$ vertices with $\\geq n^2/8$ many edges which contains no $K_4$ such that the largest independent set has size at most $\\epsilon n$? In other words, if $\\mathrm{rt}(n;k,\\ell)$ is the Ramsey-Turán number then is it true that (for sufficiently large $n$)\\[\\mathrm{rt}(n; 4,\\epsilon n)\\geq n^2/8?\\]Conjectured by Bollobás and Erdős [BoEr76], who proved the existence of such a graph with $(1/8+o(1))n^2$ many edges. Solved by Fox, Loh, and Zhao [FLZ15], who proved that for every $n\\geq 1$ there exists a graph on $n$ vertices with $\\geq n^2/8$ many edges, containing no $K_4$, whose largest independent set has size at most\\[ \\ll \\frac{(\\log\\log n)^{3/2}}{(\\log n)^{1/2}}n.\\]See also [615]. View the LaTeX source",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Conjectured by Bollobás and Erdős in 1976 as part of their systematic study of Ramsey-Turán problems. They proved existence of K₄-free graphs with (1/8 + o(1))n² edges and small independence number. Fox, Loh, and Zhao resolved the conjecture in 2015.",
+    "problemStatement": "Let $\\epsilon > 0$ and $n$ be sufficiently large. Is there a K₄-free graph on $n$ vertices with $\\geq n^2/8$ edges such that the largest independent set has size at most $\\epsilon n$? Equivalently: Is $\\mathrm{rt}(n; 4, \\epsilon n) \\geq n^2/8$?",
+    "proofStrategy": "Fox-Loh-Zhao use pseudorandom Cayley graph constructions over finite fields. They show that random subgraphs of certain algebraic graphs achieve the desired properties: K₄-free, ~n²/8 edges, and independence number only (log log n)^(3/2)/(log n)^(1/2) · n.",
+    "keyInsights": [
+      "Turán graph T(n,3) has n²/3 edges but linear independence number n/3",
+      "Ramsey-Turán asks: can we keep many edges with sublinear independence?",
+      "The answer is yes, but we lose edges: n²/8 vs n²/3",
+      "The bound n²/8 corresponds to Ramsey-Turán density ρ₄ = 1/4",
+      "Pseudorandom constructions achieve much better than εn independence"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Fox, Loh, and Zhao (2015) proved that K₄-free graphs can have ≥ n²/8 edges with independence number only (log log n)^(3/2)/(log n)^(1/2) · n, which is much smaller than any εn. This resolves the Bollobás-Erdős conjecture affirmatively.",
+    "implications": "The result establishes ρ₄ = 1/4 as the Ramsey-Turán density for K₄, showing the precise tradeoff between edge density and independence number in K₄-free graphs.",
+    "openQuestions": [
+      "Determine Ramsey-Turán densities ρ_r for larger cliques",
+      "Find optimal constructions with explicit constants",
+      "Understand the structure of extremal graphs achieving the bound"
+    ]
   }
 }

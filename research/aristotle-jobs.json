@@ -362,6 +362,35 @@
       },
       "outcome": "Placeholder True theorem - no meaningful progress.",
       "theorems_proven": []
+    },
+    {
+      "project_id": "bafccb94-b270-4ed2-805c-8cda7fbbe0a2",
+      "file": "proofs/Proofs/Erdos57Problem.lean",
+      "problem_id": "erdos-57",
+      "submitted": "2026-01-14T19:09:24Z",
+      "sorries": [
+        "theorem bipartite_iff_no_odd_cycles (G : SimpleGraph V) :",
+        "theorem colorable_two_no_odd_cycles (G : SimpleGraph V)"
+      ],
+      "notes": "Bipartite characterization theorems - known results",
+      "status": "submitted",
+      "last_check": null
+    },
+    {
+      "project_id": "33e1e733-6e9a-41e3-8149-dfdd9992bceb",
+      "file": "proofs/Proofs/Erdos107Problem.lean",
+      "problem_id": "erdos-107",
+      "submitted": "2026-01-14T19:09:40Z",
+      "sorries": [
+        "theorem f_3_value : f 3 = 3 := by",
+        "theorem f_4_lb : 4 < f 4 := by",
+        "theorem f_4_ub : f 4 ≤ 5 := by",
+        "theorem f_finite (n : ℕ) (hn : 3 ≤ n) : (CardSet n).Nonempty := by",
+        "theorem f_three_eq : f 3 = 3 := by"
+      ],
+      "notes": "Happy Ending Problem - small cases f(3), f(4) bounds",
+      "status": "submitted",
+      "last_check": null
     }
   ],
   "completed": [],

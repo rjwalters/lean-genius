@@ -34,24 +34,7 @@
       "The exact constant is conjectured to be 3 (i.e., f(n) = 3n + O(1))"
     ]
   },
-  "sections": [
-    {
-      "title": "Basic Definitions",
-      "content": "An intersecting family F of n-sets satisfies A ∩ B ≠ ∅ for all A, B ∈ F. The covering property requires every (n-1)-set to be disjoint from some member of F. f(n) is the minimum |F| achieving both properties."
-    },
-    {
-      "title": "Known Exact Values",
-      "content": "f(1)=1, f(2)=3, f(3)=6 (Tripathi 2014), f(4)=9 (Tripathi 2014), f(5)=13 (Barát-Wanless 2021), 13 ≤ f(6) ≤ 18."
-    },
-    {
-      "title": "Bounds and Solution",
-      "content": "Lower bound: (8/3)n - O(1) ≈ 2.67n (Erdős-Lovász 1975). Upper bounds improved from n^(3/2) log n to n log n (Kahn 1992) to O(n) (Kahn 1994). The linear bound resolved the conjecture."
-    },
-    {
-      "title": "Projective Plane Constructions",
-      "content": "The constructions use lines from projective planes of order q = n-1. A projective plane of order q has q² + q + 1 points and lines, with each line having q + 1 points and any two lines meeting in exactly one point."
-    }
-  ],
+  "sections": [],
   "conclusion": {
     "summary": "Kahn (1994) proved f(n) = O(n), resolving the Erdős-Lovász conjecture. The exact bound is conjectured to be f(n) = 3n + O(1), but the gap between the lower bound (8/3)n and this conjecture remains open.",
     "implications": "The solution demonstrates the power of probabilistic methods in combinatorics and connects intersecting families to projective geometry.",

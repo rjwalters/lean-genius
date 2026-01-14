@@ -34,24 +34,7 @@
       "The absorbing method handles irregular configurations"
     ]
   },
-  "sections": [
-    {
-      "title": "Graph Theory Setup",
-      "content": "The conjecture concerns the chromatic number of union graphs. An EFL family consists of n cliques (copies of K_n) where any two cliques share at most one vertex (edge-disjointness). The union graph has an edge between x and y if they belong to some common clique."
-    },
-    {
-      "title": "Historical Progress",
-      "content": "Hindman proved the conjecture for n < 10. Kahn (1992) proved χ(G) ≤ (1+o(1))n, earning the $100 consolation prize. Various special cases were resolved, including projective planes and Steiner systems. The full resolution came from Kang, Kelly, Kühn, Methuku, and Osthus in 2021."
-    },
-    {
-      "title": "Equivalent Formulations",
-      "content": "The EFL conjecture has several equivalent forms: (1) Linear hypergraph chromatic index bound, (2) Rainbow partition of nearly disjoint sets, (3) Edge-coloring of certain incidence structures. These equivalences connect graph coloring, hypergraph theory, and combinatorial set theory."
-    },
-    {
-      "title": "The Absorbing Method",
-      "content": "The 2021 proof uses the absorbing method, a powerful technique also used to resolve the Ringel conjecture. The key insight is constructing a small absorbing structure that can incorporate any small leftover vertices, allowing greedy coloring to succeed despite irregular configurations."
-    }
-  ],
+  "sections": [],
   "conclusion": {
     "summary": "The Erdős-Faber-Lovász Conjecture, posed in 1972, was resolved for all sufficiently large n in 2021 using the absorbing method. Combined with Hindman's verification of small cases, the conjecture is now fully proven: every edge-disjoint union of n copies of K_n is n-colorable.",
     "implications": "The resolution demonstrates the power of the absorbing method in extremal combinatorics and settles a 50-year-old question about graph coloring and hypergraph chromatic indices.",
