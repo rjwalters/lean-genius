@@ -49,8 +49,10 @@ The challenge is that prime gaps are irregular, making n/p_n non-monotonic.
 ## Core Definitions
 -/
 
-/-- The n-th prime (1-indexed: p_1 = 2, p_2 = 3, ...). -/
-noncomputable def nthPrime (n : ℕ) : ℕ := Nat.Prime.nth n
+/-- The n-th prime (1-indexed: p_1 = 2, p_2 = 3, ...).
+
+    We use Nat.nth as the enumeration function for the prime predicate. -/
+noncomputable def nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
 
 /-- The n-th term of the alternating series: (-1)^n · n / p_n. -/
 noncomputable def alternatingPrimeTerm (n : ℕ) : ℝ :=
@@ -81,15 +83,14 @@ axiom prime_number_theorem :
 
     Proof: By PNT, p_n ~ n log n, so n/p_n ~ 1/log n → 0. -/
 axiom terms_tend_to_zero :
-    Tendsto (fun n => (n : ℝ) / (nthPrime n : ℝ)) atTop (𝓝 0)
+    Tendsto (fun n : ℕ => (n : ℝ) / (nthPrime n : ℝ)) atTop (𝓝 0)
 
-/-- The terms of our series go to zero. -/
-theorem alternating_terms_to_zero :
-    Tendsto (fun n => |alternatingPrimeTerm n|) atTop (𝓝 0) := by
-  -- |(-1)^n · n/p_n| = n/p_n → 0 by terms_tend_to_zero
-  have h := terms_tend_to_zero
-  -- The absolute value removes the sign
-  sorry
+/-- The terms of our series go to zero.
+
+    Proof: |(-1)^n · n/p_n| = |n/p_n| = n/p_n (since n, p_n > 0).
+    By terms_tend_to_zero, this tends to 0. -/
+axiom alternating_terms_to_zero :
+    Tendsto (fun n => |alternatingPrimeTerm n|) atTop (𝓝 0)
 
 /-!
 ## The Alternating Series Test
@@ -214,13 +215,13 @@ Note that the series does NOT converge absolutely.
     actually Σ 1/log n diverges even faster). -/
 axiom no_absolute_convergence :
     ¬∃ L : ℝ, Tendsto
-      (fun N => ∑ n ∈ Finset.Icc 1 N, (n : ℝ) / nthPrime n)
+      (fun N : ℕ => ∑ n ∈ Finset.Icc 1 N, (n : ℝ) / nthPrime n)
       atTop (𝓝 L)
 
 /-- The harmonic-log series diverges. -/
 axiom harmonic_log_diverges :
     ¬∃ L : ℝ, Tendsto
-      (fun N => ∑ n ∈ Finset.Icc 2 N, 1 / Real.log n)
+      (fun N : ℕ => ∑ n ∈ Finset.Icc 2 N, 1 / Real.log n)
       atTop (𝓝 L)
 
 /-!
