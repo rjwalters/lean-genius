@@ -38,37 +38,37 @@
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "description": "Colorings, monochromatic sets, finite sums, Ramsey r-completeness",
-      "lineStart": 33,
-      "lineEnd": 56
+      "summary": "Colorings, monochromatic sets, finite sums, Ramsey r-completeness",
+      "startLine": 33,
+      "endLine": 56
     },
     {
       "id": "growth-bounds",
       "title": "Growth Rate Bounds",
-      "description": "Definitions for asymptotic growth rate comparisons",
-      "lineStart": 58,
-      "lineEnd": 66
+      "summary": "Definitions for asymptotic growth rate comparisons",
+      "startLine": 58,
+      "endLine": 66
     },
     {
       "id": "burr-erdos",
       "title": "Burr-Erdős Results (1985)",
-      "description": "Original bounds for r=2: between (log N)² and (log N)³",
-      "lineStart": 68,
-      "lineEnd": 94
+      "summary": "Original bounds for r=2: between (log N)² and (log N)³",
+      "startLine": 68,
+      "endLine": 94
     },
     {
       "id": "solution",
       "title": "Conlon-Fox-Pham Solution (2021)",
-      "description": "Complete resolution: optimal growth is Θ(r(log N)²)",
-      "lineStart": 96,
-      "lineEnd": 142
+      "summary": "Complete resolution: optimal growth is Θ(r(log N)²)",
+      "startLine": 96,
+      "endLine": 142
     },
     {
       "id": "corollaries",
       "title": "Corollaries",
-      "description": "Special case r=2 showing (log N)² is optimal",
-      "lineStart": 144,
-      "lineEnd": 172
+      "summary": "Special case r=2 showing (log N)² is optimal",
+      "startLine": 144,
+      "endLine": 172
     }
   ],
   "conclusion": {

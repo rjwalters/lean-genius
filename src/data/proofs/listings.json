@@ -5739,17 +5739,20 @@
   },
   {
     "id": "erdos-58",
-    "title": "Erdős Problem #58",
+    "title": "Erdős Problem #58: Chromatic Number vs Odd Cycle Lengths",
     "slug": "erdos-58",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph which contains odd cycles of ... different lengths then ..., with equality if and only if ... contains .......",
-    "status": "pending",
-    "badge": "wip",
+    "description": "If G has at most k distinct odd cycle lengths, then χ(G) ≤ 2k+2, with equality iff G contains K_{2k+2}. Solved by Gyárfás (1992).",
+    "status": "formalized",
+    "badge": "formalized",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "cycles"
     ],
     "erdosNumber": 58,
     "sorries": 1,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-580",
