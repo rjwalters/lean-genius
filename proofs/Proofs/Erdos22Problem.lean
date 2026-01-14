@@ -1,21 +1,21 @@
 /-
-Erdős Problem #22: Ramsey-Turán Numbers for K₄
+  Erdős Problem #22
 
-Let ε > 0 and n be sufficiently large. Is there a graph on n vertices with
-≥ n²/8 edges which contains no K₄ such that the largest independent set
-has size at most εn?
+  Source: https://erdosproblems.com/22
+  Status: SOLVED
+  Prize: Not specified
 
-Equivalently: Is rt(n; 4, εn) ≥ n²/8?
+  Statement:
+  Let ε > 0 and n be sufficiently large. Is there a graph on n vertices with
+  ≥ n²/8 edges which contains no K₄ such that the largest independent set
+  has size at most εn? Equivalently: Is rt(n; 4, εn) ≥ n²/8?
 
-**Status**: SOLVED
-**Prize**: Not specified
+  History:
+  - Bollobás-Erdős (1976): Conjectured, proved existence with (1/8 + o(1))n² edges
+  - Fox-Loh-Zhao (2015): Proved rt(n; 4, εn) ≥ n²/8 with independence number
+    ≪ (log log n)^(3/2) / (log n)^(1/2) · n
 
-**History**:
-- Bollobás-Erdős (1976): Conjectured, proved existence with (1/8 + o(1))n² edges
-- Fox-Loh-Zhao (2015): Proved rt(n; 4, εn) ≥ n²/8 with independence number
-  ≪ (log log n)^(3/2) / (log n)^(1/2) · n
-
-Reference: https://erdosproblems.com/22
+  Tags: Ramsey-Turán, graph theory, extremal combinatorics
 -/
 
 import Mathlib
@@ -105,9 +105,11 @@ axiom rt_maximal (n k ℓ : ℕ) :
 /-- The Turán number ex(n, K_r) is the maximum edges in a K_r-free graph on n vertices. -/
 axiom turanNumber (n r : ℕ) : ℕ
 
-/-- Turán's theorem: ex(n, K_{r+1}) = (1 - 1/r) · n²/2 + O(1). -/
+/-- Turán's theorem: ex(n, K_{r+1}) ≈ (1 - 1/r) · n²/2.
+    The exact formula involves floor functions for the partition. -/
 axiom turan_theorem (n r : ℕ) (hr : r ≥ 1) :
-    (turanNumber n (r + 1) : ℚ) = (1 - 1/r) * n^2 / 2 + O(1)
+    (turanNumber n (r + 1) : ℚ) ≤ (1 - 1/r) * n^2 / 2 + r ∧
+    (turanNumber n (r + 1) : ℚ) ≥ (1 - 1/r) * n^2 / 2 - r
 
 /-- For K₄-free graphs: ex(n, K₄) ≈ n²/3. -/
 axiom turan_K4 (n : ℕ) (hn : n ≥ 3) :

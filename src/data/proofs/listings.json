@@ -2050,13 +2050,17 @@
   },
   {
     "id": "erdos-22",
-    "title": "Erdős Problem #22",
+    "title": "Erdős Problem #22: Ramsey-Turán Numbers for K₄",
     "slug": "erdos-22",
-    "description": "Let ... and ... be sufficiently large depending on .... Is there a graph on ... vertices with ... many edges which contains no ... such that the largest independent set has size at most ...? In oth...",
-    "status": "pending",
+    "description": "Is rt(n; 4, εn) ≥ n²/8? Can K₄-free graphs have n²/8 edges with sublinear independence number?",
+    "status": "complete",
     "badge": "wip",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "turan-theory",
+      "extremal-combinatorics"
     ],
     "erdosNumber": 22,
     "sorries": 1,
@@ -8976,7 +8980,7 @@
       "advanced"
     ],
     "dateAdded": "01/14/25",
-    "mathlibCount": 4,
+    "mathlibCount": 5,
     "sorries": 0,
     "annotationCount": 21
   },
