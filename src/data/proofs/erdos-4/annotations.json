@@ -1,1 +1,191 @@
-[]
+[
+  {
+    "id": "ann-e4-nthprime",
+    "proofId": "erdos-4",
+    "range": { "startLine": 33, "endLine": 34 },
+    "type": "definition",
+    "title": "n-th Prime",
+    "content": "**nthPrime n** is the n-th prime (0-indexed). Uses Nat.nth to enumerate elements satisfying Nat.Prime.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e4-primegap",
+    "proofId": "erdos-4",
+    "range": { "startLine": 36, "endLine": 37 },
+    "type": "definition",
+    "title": "Prime Gap",
+    "content": "**primeGap n** = p_{n+1} - p_n, the gap between consecutive primes. The problem concerns large gaps.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e4-lg",
+    "proofId": "erdos-4",
+    "range": { "startLine": 41, "endLine": 42 },
+    "type": "definition",
+    "title": "Natural Logarithm",
+    "content": "**lg x** = log(x), the natural logarithm. Foundation for iterated logs.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e4-lg234",
+    "proofId": "erdos-4",
+    "range": { "startLine": 44, "endLine": 51 },
+    "type": "definition",
+    "title": "Iterated Logarithms",
+    "content": "**lg2, lg3, lg4** are log(log(x)), log(log(log(x))), etc. These appear in the Erdős bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e4-erdosfunc",
+    "proofId": "erdos-4",
+    "range": { "startLine": 55, "endLine": 62 },
+    "type": "definition",
+    "title": "Erdős Function",
+    "content": "**erdosFunction n** = (lg2·lg4)/(lg3)²·lg n. This is the target lower bound for prime gaps.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e4-rankinfunc",
+    "proofId": "erdos-4",
+    "range": { "startLine": 64, "endLine": 69 },
+    "type": "definition",
+    "title": "Rankin Function",
+    "content": "**rankinFunction n** = (lg2)/(lg3)·lg n. Simplified version without the lg4 term.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e4-conjecture",
+    "proofId": "erdos-4",
+    "range": { "startLine": 73, "endLine": 80 },
+    "type": "definition",
+    "title": "Erdős Problem 4 (SOLVED)",
+    "content": "**erdos_4_conjecture**: For any C > 0, infinitely many n have primeGap n > C · erdosFunction n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e4-rankin",
+    "proofId": "erdos-4",
+    "range": { "startLine": 84, "endLine": 93 },
+    "type": "theorem",
+    "title": "Rankin's Theorem (1938)",
+    "content": "**Rankin**: There exists some C > 0 achieving the bound. First quantitative result on large prime gaps.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e4-maynard",
+    "proofId": "erdos-4",
+    "range": { "startLine": 100, "endLine": 107 },
+    "type": "theorem",
+    "title": "Maynard's Theorem (2016)",
+    "content": "**Maynard**: Proved for ALL C > 0. This solves Erdős Problem 4 affirmatively.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e4-fgkt",
+    "proofId": "erdos-4",
+    "range": { "startLine": 109, "endLine": 113 },
+    "type": "theorem",
+    "title": "Ford-Green-Konyagin-Tao (2016)",
+    "content": "**FGKT**: Independent proof of the same result as Maynard. Two teams solved it simultaneously.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e4-solved",
+    "proofId": "erdos-4",
+    "range": { "startLine": 115, "endLine": 116 },
+    "type": "theorem",
+    "title": "Problem Solved",
+    "content": "**erdos_4_solved**: The conjecture is true, witnessed by Maynard's theorem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e4-improved",
+    "proofId": "erdos-4",
+    "range": { "startLine": 120, "endLine": 132 },
+    "type": "theorem",
+    "title": "FGKMT Improved Bound (2018)",
+    "content": "**Ford-Green-Konyagin-Maynard-Tao**: All five authors proved a stronger bound with lg3(n) instead of lg3(n)².",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e4-bhp",
+    "proofId": "erdos-4",
+    "range": { "startLine": 136, "endLine": 147 },
+    "type": "theorem",
+    "title": "Baker-Harman-Pintz (2001)",
+    "content": "**BHP Upper Bound**: primeGap n ≤ n^{0.525} for large n. Best known upper bound on prime gaps.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e4-cramer",
+    "proofId": "erdos-4",
+    "range": { "startLine": 151, "endLine": 160 },
+    "type": "definition",
+    "title": "Cramér's Conjecture (OPEN)",
+    "content": "**Cramér (1936)**: p_{n+1} - p_n = O((log p_n)²). The conjectured true upper bound, still OPEN.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e4-cramergranville",
+    "proofId": "erdos-4",
+    "range": { "startLine": 162, "endLine": 166 },
+    "type": "definition",
+    "title": "Cramér-Granville Constant",
+    "content": "**Refined conjecture**: lim sup of gaps/(log p)² is 2e^{-γ} ≈ 1.1229, not 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e4-gap0",
+    "proofId": "erdos-4",
+    "range": { "startLine": 170, "endLine": 171 },
+    "type": "theorem",
+    "title": "First Prime Gap",
+    "content": "**gap_0**: primeGap 0 = 1 (i.e., 3 - 2 = 1). The smallest prime gap.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e4-gappos",
+    "proofId": "erdos-4",
+    "range": { "startLine": 173, "endLine": 175 },
+    "type": "theorem",
+    "title": "Gaps are Positive",
+    "content": "Prime gaps are always positive since primes are strictly increasing.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e4-average",
+    "proofId": "erdos-4",
+    "range": { "startLine": 177, "endLine": 179 },
+    "type": "theorem",
+    "title": "Average Gap Asymptotic",
+    "content": "The average gap near n is approximately log n (Prime Number Theorem).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e4-growth",
+    "proofId": "erdos-4",
+    "range": { "startLine": 183, "endLine": 185 },
+    "type": "theorem",
+    "title": "Erdős Function Growth",
+    "content": "**erdosFunction** grows slower than (log n)^{1+ε} for any ε > 0.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e4-stronger",
+    "proofId": "erdos-4",
+    "range": { "startLine": 196, "endLine": 205 },
+    "type": "definition",
+    "title": "Stronger Conjecture ($10,000)",
+    "content": "**erdos_stronger_conjecture**: gaps > (log n)^{1+c} for some c > 0. Erdős offered $10,000 for this.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e4-firoozbakht",
+    "proofId": "erdos-4",
+    "range": { "startLine": 207, "endLine": 215 },
+    "type": "definition",
+    "title": "Firoozbakht's Conjecture (OPEN)",
+    "content": "**Firoozbakht (1982)**: p_n^{1/n} is strictly decreasing. Implies gaps < (log p)² - log p.",
+    "significance": "key"
+  }
+]

@@ -1,18 +1,21 @@
 {
   "id": "erdos-4",
-  "title": "Erdős Problem #4",
+  "title": "Erdős Problem #4: Large Prime Gaps",
   "slug": "erdos-4",
-  "description": "Is it true that, for any ..., there are infinitely many ... such that\\[p_{n+1}-p_n> C{(\\log\\log \\log n)^2}\\log n?\\]",
+  "description": "For any C > 0, are there infinitely many n with p_{n+1} - p_n > C·f(n) where f(n) involves iterated logs? SOLVED: YES.",
   "meta": {
-    "author": "Unknown",
+    "author": "Ford-Green-Konyagin-Maynard-Tao",
     "sourceUrl": "https://erdosproblems.com/4",
-    "date": "",
-    "status": "pending",
+    "date": "2016-2018",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos4Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "prime-gaps",
+      "number-theory",
+      "analytic-number-theory"
     ],
-    "badge": "wip",
+    "badge": "formalized",
     "sorries": 1,
     "erdosNumber": 4,
     "erdosUrl": "https://erdosproblems.com/4",
@@ -20,15 +23,111 @@
     "erdosPrizeValue": "$10000"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #4 from erdosproblems.com. Originally offered with a prize of $10000.",
-    "problemStatement": "Is it true that, for any $C>0$, there are infinitely many $n$ such that\\[p_{n+1}-p_n> C\\frac{\\log\\log n\\log\\log\\log\\log n}{(\\log\\log \\log n)^2}\\log n?\\]",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem asks about the largest gaps between consecutive primes. Rankin (1938) proved for some specific C > 0. Maynard (2016) and independently Ford-Green-Konyagin-Tao (2016) proved it for ALL C > 0. The five authors then improved the bound in 2018.",
+    "problemStatement": "Is it true that for any C > 0, there are infinitely many n such that p_{n+1} - p_n > C · (log log n · log log log log n) / (log log log n)² · log n?",
+    "proofStrategy": "The formalization defines the n-th prime via Nat.nth, iterated logarithms (lg, lg2, lg3, lg4), and the Erdős function. The main conjecture and its solution are stated. Historical results from Rankin, Maynard, and FGKT are axiomatized. Upper bounds (Baker-Harman-Pintz) and related conjectures (Cramér, Firoozbakht) are included.",
+    "keyInsights": [
+      "Answer: YES - proved by Maynard (2016) and FGKT (2016) independently",
+      "Rankin (1938): First proved for some specific C > 0",
+      "Ford-Green-Konyagin-Maynard-Tao (2018): Improved bound with lg3(n) instead of lg3(n)²",
+      "Upper bound: p_{n+1} - p_n ≤ n^{0.525} (Baker-Harman-Pintz)",
+      "Cramér's conjecture: gaps are O((log p_n)²) - still OPEN"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "prime-notation",
+      "title": "Prime Notation",
+      "summary": "Definition of n-th prime and prime gaps",
+      "startLine": 31,
+      "endLine": 37
+    },
+    {
+      "id": "iterated-logs",
+      "title": "Iterated Logarithms",
+      "summary": "lg, lg2, lg3, lg4 definitions",
+      "startLine": 39,
+      "endLine": 51
+    },
+    {
+      "id": "erdos-function",
+      "title": "The Erdős Function",
+      "summary": "f(n) = (lg2·lg4)/(lg3)²·lg n",
+      "startLine": 53,
+      "endLine": 69
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős Conjecture",
+      "summary": "Main problem statement",
+      "startLine": 71,
+      "endLine": 80
+    },
+    {
+      "id": "historical-results",
+      "title": "Historical Results",
+      "summary": "Rankin's theorem (1938)",
+      "startLine": 82,
+      "endLine": 96
+    },
+    {
+      "id": "breakthrough-2016",
+      "title": "2016 Breakthrough",
+      "summary": "Maynard and FGKT theorems",
+      "startLine": 98,
+      "endLine": 116
+    },
+    {
+      "id": "improved-bounds",
+      "title": "Improved Bounds (2018)",
+      "summary": "FGKMT stronger result",
+      "startLine": 118,
+      "endLine": 132
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "summary": "Baker-Harman-Pintz theorem",
+      "startLine": 134,
+      "endLine": 147
+    },
+    {
+      "id": "cramer-conjecture",
+      "title": "Cramér's Conjecture",
+      "summary": "Open conjecture on gap upper bounds",
+      "startLine": 149,
+      "endLine": 166
+    },
+    {
+      "id": "simple-properties",
+      "title": "Simple Properties",
+      "summary": "Basic facts about prime gaps",
+      "startLine": 168,
+      "endLine": 179
+    },
+    {
+      "id": "comparison",
+      "title": "Comparison of Bounds",
+      "summary": "Growth rate comparisons",
+      "startLine": 181,
+      "endLine": 192
+    },
+    {
+      "id": "related-conjectures",
+      "title": "Related Conjectures",
+      "summary": "Stronger conjecture and Firoozbakht",
+      "startLine": 194,
+      "endLine": 215
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #4, a SOLVED problem asking whether for any C > 0, there are infinitely many large prime gaps exceeding C times a specific function of iterated logarithms. The answer is YES, proved independently by Maynard and Ford-Green-Konyagin-Tao in 2016.",
+    "implications": "This result shows that prime gaps can be much larger than the average gap of log n. The Erdős function grows slower than (log n)^(1+ε) for any ε > 0, but large gaps exceeding it occur infinitely often. The exact growth rate of maximal prime gaps remains unknown.",
+    "openQuestions": [
+      "Cramér's conjecture: Is p_{n+1} - p_n = O((log p_n)²)?",
+      "Does p_{n+1} - p_n > (log n)^{1+c} hold for some c > 0? ($10,000 prize)",
+      "What is the exact growth rate of maximal prime gaps?",
+      "Is Firoozbakht's conjecture true?"
+    ]
   }
 }
