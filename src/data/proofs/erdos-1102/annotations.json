@@ -4,11 +4,11 @@
     "proofId": "erdos-1102",
     "range": {
       "startLine": 1,
-      "endLine": 4
+      "endLine": 1
     },
     "type": "concept",
     "title": "Mathlib Imports",
-    "content": "We import `Squarefree` from NumberTheory for the squarefree predicate, and Filter/Topology for asymptotic statements.",
+    "content": "We import the full Mathlib library which provides `Squarefree`, filters, and topology for asymptotic statements.",
     "mathContext": "Squarefree n means no prime p has p² | n. Equivalently, in the prime factorization n = p₁^{e₁} ⋯ pₖ^{eₖ}, all exponents eᵢ ≤ 1.",
     "significance": "supporting",
     "relatedConcepts": ["squarefree", "filters", "asymptotics"]
@@ -17,8 +17,8 @@
     "id": "ann-e1102-property-p",
     "proofId": "erdos-1102",
     "range": {
-      "startLine": 55,
-      "endLine": 60
+      "startLine": 52,
+      "endLine": 57
     },
     "type": "definition",
     "title": "Property P Definition",
@@ -31,8 +31,8 @@
     "id": "ann-e1102-property-q",
     "proofId": "erdos-1102",
     "range": {
-      "startLine": 62,
-      "endLine": 67
+      "startLine": 59,
+      "endLine": 64
     },
     "type": "definition",
     "title": "Property Q Definition",
@@ -45,8 +45,8 @@
     "id": "ann-e1102-squarefree-set",
     "proofId": "erdos-1102",
     "range": {
-      "startLine": 69,
-      "endLine": 72
+      "startLine": 68,
+      "endLine": 69
     },
     "type": "definition",
     "title": "The Squarefree Set",
@@ -59,8 +59,8 @@
     "id": "ann-e1102-examples",
     "proofId": "erdos-1102",
     "range": {
-      "startLine": 74,
-      "endLine": 90
+      "startLine": 71,
+      "endLine": 84
     },
     "type": "example",
     "title": "Squarefree Examples",
@@ -73,10 +73,10 @@
     "id": "ann-e1102-density-constant",
     "proofId": "erdos-1102",
     "range": {
-      "startLine": 92,
-      "endLine": 97
+      "startLine": 90,
+      "endLine": 91
     },
-    "type": "concept",
+    "type": "definition",
     "title": "The Magic Constant 6/π²",
     "content": "The density of squarefree numbers is **6/π² ≈ 0.6079**. This equals 1/ζ(2) where ζ is the Riemann zeta function.",
     "mathContext": "By the Euler product, 1/ζ(2) = ∏_p (1 - 1/p²), which counts the probability that a random integer is not divisible by p² for any prime p. This is the squarefree density.",
@@ -87,10 +87,10 @@
     "id": "ann-e1102-p-density-zero",
     "proofId": "erdos-1102",
     "range": {
-      "startLine": 101,
-      "endLine": 107
+      "startLine": 95,
+      "endLine": 101
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Property P Implies Density Zero",
     "content": "**van Doorn-Tao:** Any sequence with property P has density 0, meaning aⱼ/j → ∞ as j → ∞.",
     "mathContext": "The proof shows that for any P-sequence, the counting function A(x) = |{a ∈ A : a ≤ x}| satisfies A(x)/x → 0.",
@@ -101,10 +101,10 @@
     "id": "ann-e1102-p-slow-decay",
     "proofId": "erdos-1102",
     "range": {
-      "startLine": 109,
-      "endLine": 117
+      "startLine": 103,
+      "endLine": 111
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Arbitrarily Slow Decay for P",
     "content": "**van Doorn-Tao:** For any function f → ∞, there exists a P-sequence with aⱼ/j ≤ f(j). P-sequences can have density going to 0 arbitrarily slowly.",
     "mathContext": "This is an existence result using probabilistic or greedy construction. The sequence is not given explicitly.",
@@ -115,10 +115,10 @@
     "id": "ann-e1102-q-upper-density",
     "proofId": "erdos-1102",
     "range": {
-      "startLine": 119,
-      "endLine": 125
+      "startLine": 113,
+      "endLine": 119
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Property Q Upper Density Bound",
     "content": "**van Doorn-Tao:** Any Q-sequence has upper density at most 6/π². The squarefree numbers achieve this bound exactly.",
     "mathContext": "For random n, the probability that n + a is squarefree for all small a depends on the density of A. Optimizing gives the 6/π² bound.",
@@ -130,9 +130,9 @@
     "proofId": "erdos-1102",
     "range": {
       "startLine": 148,
-      "endLine": 161
+      "endLine": 154
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Special Sequences Have Property Q",
     "content": "The sequences 2ⁿ ± 1 and n! ± 1 have property Q. These grow fast enough that infinitely many n have all translates squarefree. Whether they have property P remains open.",
     "mathContext": "Fast growth ensures the sequence is sparse, making it easier to find n where all a ∈ A ∩ [1,n) give n + a squarefree.",

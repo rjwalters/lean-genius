@@ -4,21 +4,21 @@
     "proofId": "erdos-1064",
     "range": {
       "startLine": 1,
-      "endLine": 4
+      "endLine": 1
     },
     "type": "concept",
     "title": "Mathlib Imports",
-    "content": "We import `ArithmeticFunction` for the totient function and `Asymptotics` for the generalized o(n) statement.",
+    "content": "We import the full Mathlib library which provides `Nat.totient` (Euler's totient function).",
     "mathContext": "Euler's totient φ(n) = |{1 ≤ k ≤ n : gcd(k,n) = 1}| is available as `Nat.totient` in Mathlib.",
     "significance": "supporting",
-    "relatedConcepts": ["totient", "asymptotics"]
+    "relatedConcepts": ["totient", "mathlib"]
   },
   {
     "id": "ann-e1064-sets",
     "proofId": "erdos-1064",
     "range": {
-      "startLine": 57,
-      "endLine": 64
+      "startLine": 54,
+      "endLine": 61
     },
     "type": "definition",
     "title": "The Three Sets A₊, A₋, A₌",
@@ -31,13 +31,13 @@
     "id": "ann-e1064-examples-greater",
     "proofId": "erdos-1064",
     "range": {
-      "startLine": 85,
-      "endLine": 89
+      "startLine": 80,
+      "endLine": 86
     },
     "type": "example",
     "title": "Typical Case: φ(n) > φ(n - φ(n))",
     "content": "For n = 15: φ(15) = 8, n - φ(n) = 7, φ(7) = 6, so 8 > 6. This is the \"typical\" situation that holds for almost all n.",
-    "mathContext": "The `native_decide` tactic computes these values directly and verifies membership in A₊.",
+    "mathContext": "The `native_decide` tactic computes these values directly and verifies the inequality.",
     "significance": "supporting",
     "relatedConcepts": ["computation", "typical behavior"]
   },
@@ -45,8 +45,8 @@
     "id": "ann-e1064-examples-less",
     "proofId": "erdos-1064",
     "range": {
-      "startLine": 93,
-      "endLine": 100
+      "startLine": 88,
+      "endLine": 97
     },
     "type": "example",
     "title": "Exceptional Case: φ(n) < φ(n - φ(n))",
@@ -56,27 +56,13 @@
     "relatedConcepts": ["counterexamples", "exceptional cases"]
   },
   {
-    "id": "ann-e1064-pattern",
-    "proofId": "erdos-1064",
-    "range": {
-      "startLine": 104,
-      "endLine": 109
-    },
-    "type": "theorem",
-    "title": "The Pattern: 15·2^k ∈ A₋",
-    "content": "For n = 15·2^k with k ≥ 1, we have φ(n) < φ(n - φ(n)). This gives an explicit infinite family of counterexamples.",
-    "mathContext": "Calculation: φ(15·2^k) = 4·2^k, n - φ(n) = 11·2^k, φ(11·2^k) = 5·2^k > 4·2^k. The key is that 11 has higher \"totient ratio\" than 15.",
-    "significance": "key",
-    "relatedConcepts": ["multiplicativity", "explicit construction"]
-  },
-  {
     "id": "ann-e1064-part1",
     "proofId": "erdos-1064",
     "range": {
-      "startLine": 118,
-      "endLine": 135
+      "startLine": 101,
+      "endLine": 109
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Part 1: A₊ Has Density 1",
     "content": "**Luca-Pomerance (2002):** The set of n with φ(n) > φ(n - φ(n)) has natural density 1. \"Almost all\" integers satisfy this inequality.",
     "mathContext": "The proof uses analytic methods to show n - φ(n) typically has a smaller totient. The stronger result: φ(n) > φ(n-φ(n)) + f(n) for any f = o(n).",
@@ -87,10 +73,10 @@
     "id": "ann-e1064-part2",
     "proofId": "erdos-1064",
     "range": {
-      "startLine": 125,
-      "endLine": 141
+      "startLine": 111,
+      "endLine": 115
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Part 2: A₋ Is Infinite",
     "content": "**Grytczuk-Luca-Wójtowicz (2001):** The set of n with φ(n) < φ(n - φ(n)) is infinite. The pattern 15·2^k provides explicit witnesses.",
     "mathContext": "This was the first breakthrough. They also showed A₊ has lower density ≥ 0.54, later improved to density 1.",
@@ -98,17 +84,31 @@
     "relatedConcepts": ["infinitude", "explicit construction"]
   },
   {
-    "id": "ann-e1064-generalization",
+    "id": "ann-e1064-resolution",
     "proofId": "erdos-1064",
     "range": {
-      "startLine": 148,
-      "endLine": 156
+      "startLine": 117,
+      "endLine": 123
     },
     "type": "theorem",
-    "title": "Generalization: f(n) = o(n)",
-    "content": "For any function f(n) = o(n), the inequality φ(n) > φ(n - φ(n)) + f(n) holds for almost all n. This strengthens part 1.",
-    "mathContext": "This means φ(n) - φ(n-φ(n)) grows like Ω(n/log n) on average, which is quite large.",
+    "title": "Problem Resolution",
+    "content": "**Erdős Problem 1064 (Solved):** Part 1 shows φ(n) > φ(n - φ(n)) for almost all n (density 1). Part 2 shows φ(n) < φ(n - φ(n)) for infinitely many n.",
+    "mathContext": "The theorem statement confirms A₋ is infinite, referencing the Grytczuk-Luca-Wójtowicz axiom.",
+    "significance": "critical",
+    "relatedConcepts": ["resolution", "both parts"]
+  },
+  {
+    "id": "ann-e1064-pattern",
+    "proofId": "erdos-1064",
+    "range": {
+      "startLine": 125,
+      "endLine": 131
+    },
+    "type": "note",
+    "title": "The Pattern: 15·2^k ∈ A₋",
+    "content": "For n = 15·2^k with k ≥ 1, we have φ(n) < φ(n - φ(n)). This gives an explicit infinite family of counterexamples.",
+    "mathContext": "Calculation: φ(15·2^k) = 4·2^k, n - φ(n) = 11·2^k, φ(11·2^k) = 5·2^k > 4·2^k. The key is that 11 has higher \"totient ratio\" than 15.",
     "significance": "key",
-    "relatedConcepts": ["little-o", "generalization", "gap growth"]
+    "relatedConcepts": ["multiplicativity", "explicit construction"]
   }
 ]
