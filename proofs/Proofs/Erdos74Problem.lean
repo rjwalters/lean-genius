@@ -81,8 +81,42 @@ theorem isBipartiteIffDistZero_finite (V : Type*) [Fintype V] (G : SimpleGraph V
       simp [h]
     exact Nat.sInf_eq_zero.mpr (Or.inl this)
   · intro h
-    -- For finite graphs, ncard = 0 implies finite set is empty
-    sorry -- Requires showing that the witnessing E must be empty for finite V
+    -- edgeDistToBipartite = 0 means sInf = 0
+    -- Since the set is nonempty (we can always delete all edges to get bipartite),
+    -- there must be an element achieving the infimum 0
+    simp only [edgeDistToBipartite] at h
+    -- The infimum being 0 means 0 is in the set (since the set is bounded below by 0)
+    have hmem : 0 ∈ {k : ℕ | ∃ E, E.ncard = k ∧ E ⊆ G.edgeSet ∧ (G.deleteEdges E).IsBipartite} := by
+      rw [Nat.sInf_eq_zero] at h
+      rcases h with hmem | hset_empty
+      · exact hmem
+      · -- The set can't be empty: we can delete all edges to get a bipartite graph
+        exfalso
+        have hne : {k : ℕ | ∃ E, E.ncard = k ∧ E ⊆ G.edgeSet ∧ (G.deleteEdges E).IsBipartite}.Nonempty := by
+          use G.edgeSet.ncard
+          use G.edgeSet
+          constructor
+          · rfl
+          constructor
+          · exact Set.Subset.rfl
+          · -- G.deleteEdges G.edgeSet is the empty graph, which is bipartite
+            have hempty_bip : (G.deleteEdges G.edgeSet).IsBipartite := by
+              unfold SimpleGraph.IsBipartite SimpleGraph.Colorable
+              use fun _ => 0
+              intro v w hadj
+              simp only [SimpleGraph.deleteEdges_adj] at hadj
+              exact absurd hadj.1 hadj.2
+            exact hempty_bip
+        exact Set.not_nonempty_empty (hset_empty ▸ hne)
+    -- Now we have 0 in the set, so there's E with ncard = 0 and G.deleteEdges E is bipartite
+    obtain ⟨E, hncard, hEsub, hbip⟩ := hmem
+    -- For a subset of finite type, ncard = 0 means the set is empty
+    have hEempty : E = ∅ := by
+      have hfin : E.Finite := Set.Finite.subset (Set.toFinite G.edgeSet) hEsub
+      exact (Set.ncard_eq_zero hfin).mp hncard
+    -- G.deleteEdges ∅ = G
+    rw [hEempty, SimpleGraph.deleteEdges_empty] at hbip
+    exact hbip
 
 /-- Counterexample: The complete graph on ℕ is NOT bipartite but has
     edgeDistToBipartite = 0 (discovered by Aristotle 2026-01-14).

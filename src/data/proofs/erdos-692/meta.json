@@ -1,0 +1,33 @@
+{
+  "id": "erdos-692",
+  "title": "Erdős Problem #692",
+  "slug": "erdos-692",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the density of the set of integers with exactly one divisor in .... Is ... unimodular for ... (i.e. increases unti...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/692",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos692Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 692,
+    "erdosUrl": "https://erdosproblems.com/692",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #692 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\delta_1(n,m)$ be the density of the set of integers with exactly one divisor in $(n,m)$. Is $\\delta_1(n,m)$ unimodular for $m>n+1$ (i.e. increases until some $m$ then decreases thereafter)? For fixed $n$, where does $\\delta_1(n,m)$ achieve its maximum?\n\n\n\nThis was asked by Erd\\H{o}s in 1986 at Oberwolfach.\n\nErd\\H{o}s proved that\\[\\delta_1(n,m) \\ll \\frac{1}{(\\log n)^c}\\]for all $m$, for some constant $c>0$. Sharper bounds (for various ranges of $n$ and $m$) were given by Ford \\cite{Fo08}.\n\nCambie has calculated that unimodularity fails even for $n=2$ and $n=3$. For example,\\[\\delta_1(3,6)= 0.35\\quad \\delta_1(3,7)\\approx 0.33\\quad \\delta_1(3,8)\\approx 0.3619.\\]Furthermore, Cambie \\cite{Ca25} has shown that, for fixed $n$, the sequence $\\delta_1(n,m)$ has superpolynomially many local maxima $m$.\n\nSee also [446].\n\n\n\n\nReferences\n\n\n[Ca25] S. Cambie, Resolution of Erd\\H{o}s' problems about unimodularity. arXiv:2501.10333 (2025).\n\n[Fo08] Ford, Kevin, The distribution of integers with a divisor in a given\ninterval. Ann. of Math. (2) (2008), 367-433.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

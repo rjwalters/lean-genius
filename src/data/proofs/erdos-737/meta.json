@@ -1,0 +1,33 @@
+{
+  "id": "erdos-737",
+  "title": "Erdős Problem #737",
+  "slug": "erdos-737",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with chromatic number .... Must there exist an edge ... such that, for all large ..., ... contains a cycle...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/737",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos737Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 737,
+    "erdosUrl": "https://erdosproblems.com/737",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #737 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph with chromatic number $\\aleph_1$. Must there exist an edge $e$ such that, for all large $n$, $G$ contains a cycle of length $n$ containing $e$?\n\n\n\nA problem of Erd\\H{o}s, Hajnal, and Shelah \\cite{EHS74}, who proved that $G$ must contain all sufficiently large cycles (see [594]).\n\nThis is true, and was proved by Thomassen \\cite{Th83}.\n\n\n\n\n\nReferences\n\n\n[EHS74] Erd\\H{o}s, P. and Hajnal, A. and Shelah, S., On some general properties of chromatic numbers. Topics in topology (Proc. Colloq., Keszthely, 1972) (1974), 243-255.\n\n[Th83] Thomassen, Carsten, Cycles in graphs of uncountable chromatic number. Combinatorica (1983), 133--134.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "id": "erdos-703",
+  "title": "Erdős Problem #703",
+  "slug": "erdos-703",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and define ... to be maximal such that there exists a family $...\\{1,\\ldots,n\\}...T(n,r)...\\lvert A\\cap B\\rvert\\neq r...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/703",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos703Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 703,
+    "erdosUrl": "https://erdosproblems.com/703",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$250"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #703 from erdosproblems.com. Originally offered with a prize of $250.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 1$ and define $T(n,r)$ to be maximal such that there exists a family $\\mathcal{F}$ of subsets of $\\{1,\\ldots,n\\}$ of size $T(n,r)$ such that $\\lvert A\\cap B\\rvert\\neq r$ for all $A,B\\in \\mathcal{F}$.\n\nEstimate $T(n,r)$ for $r\\geq 2$. In particular, is it true that for every $\\epsilon>0$ there exists $\\delta>0$ such that for all $\\epsilon n<r<(1/2-\\epsilon) n$ we have\\[T(n,r)<(2-\\delta)^n?\\]\n\n\n\nIt is trivial that $T(n,0)=2^{n-1}$. Frankl and F\\\"{u}redi \\cite{FrFu84b} proved that, for fixed $r$ and $n$ sufficiently large in terms of $r$, the maximal $T(n,r)$ is achieved by taking\\[\\mathcal{F} = \\left\\{ A\\subseteq \\{1,\\ldots,n\\} : \\lvert A\\rvert> \\frac{n+r}{2}\\textrm{ or }\\lvert A\\rvert < r\\right\\}\\]when $n+r$ is odd, and\\[\\mathcal{F} = \\left\\{ A\\subseteq \\{1,\\ldots,n\\} : \\lvert A\\backslash \\{1\\}\\rvert\\geq \\frac{n+r}{2}\\textrm{ or }\\lvert A\\rvert < r\\right\\}\\]when $n+r$ is even. (Frankl \\cite{Fr77b} had earlier proved this for $r=1$ and all $n$.)\n\nAn affirmative answer to the second question implies that the chromatic number of the unit distance graph in $\\mathbb{R}^n$ (with two points joined by an edge if the distance between them is $1$) grows exponentially in $n$, which was proved by alternative methods by Frankl and Wilson \\cite{FrWi81} - see [704].\n\nThe answer to the second question is yes, proved by Frankl and R\\\"{o}dl \\cite{FrRo87}.\n\nSee also [702].\n\n\n\n\nReferences\n\n\n[Fr77b] Frankl, P., An intersection problem for finite sets. Acta Math. Acad. Sci. Hungar. (1977), 371-373.\n\n[FrFu84b] Frankl, P. and F\\\"{u}redi, Z., On hypergraphs without two edges intersecting in a given\nnumber of vertices. J. Combin. Theory Ser. A (1984), 230-236.\n\n[FrRo87] Frankl, Peter and R\\\"{o}dl, Vojtech, Forbidden intersections. Trans. Amer. Math. Soc. (1987), 259-286.\n\n[FrWi81] Frankl, P. and Wilson, R. M., Intersection theorems with geometric consequences. Combinatorica (1981), 357-368.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

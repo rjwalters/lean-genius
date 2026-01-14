@@ -1,0 +1,33 @@
+{
+  "id": "erdos-722",
+  "title": "Erdős Problem #722",
+  "slug": "erdos-722",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be sufficiently large in terms of ... and .... Does there always exist a block ... design (or Steiner system ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/722",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos722Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 722,
+    "erdosUrl": "https://erdosproblems.com/722",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #722 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k>r$ and $n$ be sufficiently large in terms of $k$ and $r$. Does there always exist a block $r-(n,k,1)$ design (or Steiner system with parameters $(n,k,r)$), provided the trivial necessary divisibility conditions $\\binom{k-i}{r-i}\\mid \\binom{n-i}{r-i}$ are satisfied for every $0\\leq i<r$?\n\nThat is, can one find a family of $\\binom{n}{k}\\binom{k}{r}^{-1}$ many subsets of $\\{1,\\ldots,n\\}$, all of size $k$, such that any $A\\subseteq \\{1,\\ldots,n\\}$ of size $r$ is contained in exactly one set in the family?\n\n\n\nThis was proved for $(r,k)$ by:\n{UL}\n{LI}Kirkman for $(2,3)$;{/LI}\n{LI}Hanani \\cite{Ha61} for $(3,4)$, $(2,4)$, and $(2,5)$;{/LI}\n{LI}Wilson \\cite{Wi72} for $(2,k)$ for any $k$;{/LI}\n{LI}Keevash \\cite{Ke14} for all $(r,k)$.\n{/UL}\n\n\n\n\nReferences\n\n\n[Ha61] Hanani, Haim, The existence and construction of balanced incomplete block\ndesigns. Ann. Math. Statist. (1961), 361-386.\n\n[Ke14] P. Keevash, The existence of designs. arXiv:1401.3665 (2014).\n\n[Wi72] Wilson, Richard M., An existence theory for pairwise balanced designs. {II}. The\nstructure of {PBD}-closed sets and the existence conjectures. J. Combinatorial Theory Ser. A (1972), 246-273.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

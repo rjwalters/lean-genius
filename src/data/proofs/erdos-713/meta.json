@@ -1,0 +1,34 @@
+{
+  "id": "erdos-713",
+  "title": "Erdős Problem #713",
+  "slug": "erdos-713",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every bipartite graph ..., there exists some ... and ... such that\\[(n;G)\\sim cn^\\alpha?\\]Must ... be ra...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/713",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos713Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 713,
+    "erdosUrl": "https://erdosproblems.com/713",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$500"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #713 from erdosproblems.com. Originally offered with a prize of $500.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every bipartite graph $G$, there exists some $\\alpha\\in [1,2)$ and $c>0$ such that\\[\\mathrm{ex}(n;G)\\sim cn^\\alpha?\\]Must $\\alpha$ be rational?\n\n\n\nA problem of Erd\\H{o}s and Simonovits. Erd\\H{o}s sometimes asked this in the weaker version with just\\[\\mathrm{ex}(n;G)\\asymp n^{\\alpha}.\\]Erd\\H{o}s \\cite{Er67d} had initially conjectured that, for any bipartite graph $G$, $\\mathrm{ex}(n;G)\\sim cn^{\\alpha}$ for some constant $c>0$ and $\\alpha$ of the shape $1+\\frac{1}{k}$ or $2-\\frac{1}{k}$ for some integer $k\\geq 2$. This was disproved by Erd\\H{o}s and Simonovits \\cite{ErSi70}.\n\nThe analogous statement is not true for hypergraphs, as shown by Frankl and F\\\"{u}redi \\cite{FrFu87}, who proved that if $G$ is the $5$-uniform hypergraph on $8$ vertices with edges $\\{12346,12457,12358\\}$ then $\\mathrm{ex}(n;G)=o(n^5)$ but $\\mathrm{ex}(n;G)\\neq O(n^c)$ for any $c<5$.\n\nA simplified proof was given by F\\\"{u}redi and Gerbner \\cite{FuGe21}, who extended it to a counterexample for all $k\\geq 5$. It remains open whether it is true for $k=3$ and $k=4$ (though F\\\"{u}redi and Gerbner conjecture it is not).\n\nSee also [571].\n\n\n\n\nReferences\n\n\n[Er67d] Erd\\H{o}s, P., Some recent results on extremal problems in graph theory.\n{R}esults. (1967), 117--123 (English); pp. 124--130 (French).\n\n[ErSi70] Erd\\H{o}s, P. and Simonovits, M., Some extremal problems in graph theory. Combinatorial theory and its applications, I-III (Proc. Colloq., Balatonf\\\"{u}red, 1969) (1970), 377-390.\n\n[FrFu87] Frankl, P. and F\\\"uredi, Z., Exact solution of some {T}ur\\'an-type problems. J. Combin. Theory Ser. A (1987), 226--262.\n\n[FuGe21] F\\\"uredi, Zolt\\'an and Gerbner, D\\'aniel, Hypergraphs without exponents. J. Combin. Theory Ser. A (2021), Paper No. 105517, 9.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

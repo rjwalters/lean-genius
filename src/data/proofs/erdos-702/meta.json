@@ -1,0 +1,33 @@
+{
+  "id": "erdos-702",
+  "title": "Erdős Problem #702",
+  "slug": "erdos-702",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... If $...\\{1,\\ldots,n\\}...\\lvert A\\rvert=k...A\\in ...\\lvert \\rvert >{k-2}...A,B\\in...\\lvert A\\cap B\\rvert=1...k=4...k\\...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/702",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos702Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 702,
+    "erdosUrl": "https://erdosproblems.com/702",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #702 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 4$. If $\\mathcal{F}$ is a family of subsets of $\\{1,\\ldots,n\\}$ with $\\lvert A\\rvert=k$ for all $A\\in \\mathcal{F}$ and $\\lvert \\mathcal{F}\\rvert >\\binom{n-2}{k-2}$ then there are $A,B\\in\\mathcal{F}$ such that $\\lvert A\\cap B\\rvert=1$.\n\n\n\nA conjecture of Erd\\H{o}s and S\\'{o}s. Katona (unpublished) proved this when $k=4$, and Frankl \\cite{Fr77} proved this for all $k\\geq 4$.\n\nSee also [703].\n\n\n\n\nReferences\n\n\n[Fr77] Frankl, P\\'{e}ter, On families of finite sets no two of which intersect in a\nsingleton. Bull. Austral. Math. Soc. (1977), 125-134.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

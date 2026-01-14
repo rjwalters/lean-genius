@@ -1,0 +1,33 @@
+{
+  "id": "erdos-727",
+  "title": "Erdős Problem #727",
+  "slug": "erdos-727",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Does\\[(n+k)!^2 \\mid (2n)!\\]for infinitely many ...?\n\n\n\nA conjecture of Erds, Graham, Ruzsa, and Straus . It is open ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/727",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos727Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 727,
+    "erdosUrl": "https://erdosproblems.com/727",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #727 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$. Does\\[(n+k)!^2 \\mid (2n)!\\]for infinitely many $n$?\n\n\n\nA conjecture of Erd\\H{o}s, Graham, Ruzsa, and Straus \\cite{EGRS75}. It is open even for $k=2$.\n\nBalakran \\cite{Ba29} proved this holds for $k=1$ - that is, $(n+1)^2\\mid \\binom{2n}{n}$ for infinitely many $n$. It is a classical fact that $(n+1)\\mid \\binom{2n}{n}$ for all $n$ (see Catalan numbers).\n\nErd\\H{o}s, Graham, Ruzsa, and Straus observe that the method of Balakran can be further used to prove that there are infinitely many $n$ such that\\[(n+k)!(n+1)! \\mid (2n)!\\](in fact this holds whenever $k<c \\log n$ for some small constant $c>0$).\n\nErd\\H{o}s \\cite{Er68c} proved that if $a!b!\\mid n!$ then $a+b\\leq n+O(\\log n)$.\n\n\n\n\nReferences\n\n\n[Ba29] H. Balakran, On the values of $n$ which make $(2n)!/(n+1)!(n+1)!$ an integer. J. Indian Math. Soc. (1929), 97-100.\n\n[EGRS75] Erd\\H{o}s, P. and Graham, R. L. and Ruzsa, I. Z. and Straus, E. G., On the prime factors of $(\\sp{2n}\\sb{n})$. Math. Comp. (1975), 83-92.\n\n[Er68c] P. Erd\\H{o}s, Aufgabe 557. Elemente Math. (1968), 111-113.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

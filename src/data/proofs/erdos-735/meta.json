@@ -1,0 +1,33 @@
+{
+  "id": "erdos-735",
+  "title": "Erdős Problem #735",
+  "slug": "erdos-735",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven any ... points in ... when can one give positive weights to the points such that the sum of the weights of the points a...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/735",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos735Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 735,
+    "erdosUrl": "https://erdosproblems.com/735",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #735 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven any $n$ points in $\\mathbb{R}^2$ when can one give positive weights to the points such that the sum of the weights of the points along every line containing at least two points is the same?\n\n\n\nA problem of Murty, who conjectured this is only possible in one of four cases: all points on a line, no three points on a line, $n-1$ on a line, and a triangle, the angle bisectors, and the incentre (or a projective equivalence).\n\nThe previous configurations are the only examples, as proved by Ackerman, Buchin, Knauer, Pinchasi, and Rote \\cite{ABKPR08}.\n\n\n\n\nReferences\n\n\n[ABKPR08] Ackerman, Eyal and Buchin, Kevin and Knauer, Christian and\nPinchasi, Rom and Rote, G\\\"{u}nter, There are not too many magic configurations. Discrete Comput. Geom. (2008), 3-16.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

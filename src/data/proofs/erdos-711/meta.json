@@ -1,0 +1,34 @@
+{
+  "id": "erdos-711",
+  "title": "Erdős Problem #711",
+  "slug": "erdos-711",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that in ... there exist distinct integers ... such that ... for all .... Prove that\\[\\max_m f(n,m) \\l...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/711",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos711Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 711,
+    "erdosUrl": "https://erdosproblems.com/711",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$78"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #711 from erdosproblems.com. Originally offered with a prize of $78.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n,m)$ be minimal such that in $(m,m+f(n,m))$ there exist distinct integers $a_1,\\ldots,a_n$ such that $k\\mid a_k$ for all $1\\leq k\\leq n$. Prove that\\[\\max_m f(n,m) \\leq n^{1+o(1)}\\]and that\\[\\max_m (f(n,m)-f(n,n))\\to \\infty.\\]\n\n\n\nA problem of Erd\\H{o}s and Pomerance \\cite{ErPo80}, who proved that\\[\\max_m f(n,m) \\ll n^{3/2}\\]and\\[n\\left(\\frac{\\log n}{\\log\\log n}\\right)^{1/2} \\ll f(n,n)\\ll n(\\log n)^{1/2}.\\]In \\cite{Er92c} Erd\\H{o}s offered 1000 rupees for a proof of either; for uniform comparison across prizes I have converted this using the 1992 exchange rates.\n\nvan Doorn \\cite{vD26} has provided an affirmative answer to the second question, proving that, for all large $n$, there exists $m=m(n)$ such that\\[f(n,m)-f(n,n) \\gg \\frac{\\log n}{\\log\\log n}n.\\]See also [710].\n\n\n\n\nReferences\n\n\n[Er92c] Erd\\\"{o}s, P., Some of my forgotten problems in number theory. Hardy-Ramanujan J. (1992), 34-50.\n\n[ErPo80] P. Erd\\H{o}s and C. Pomerance, Matching the natural numbers up to $n$ with distinct multiples of another interval. Indigationes Math. (1980), 147-151.\n\n[vD26] W. van Doorn, On the length of an interval that contains distinct multiples of the first $n$ positive integers. Integers (2026), #A7.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

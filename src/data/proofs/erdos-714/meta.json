@@ -1,0 +1,33 @@
+{
+  "id": "erdos-714",
+  "title": "Erdős Problem #714",
+  "slug": "erdos-714",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that\\[(n; K_{r,r}) \\gg n^{2-1/r}?\\]\n\n\n\nK\\\"{o}v\\'{a}ri, S\\'{o}s, and Tur\\'{a}n  proved\\[(n; K_{r,r}) \\ll n^{2-1/r}\\...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/714",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos714Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 714,
+    "erdosUrl": "https://erdosproblems.com/714",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #714 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that\\[\\mathrm{ex}(n; K_{r,r}) \\gg n^{2-1/r}?\\]\n\n\n\nK\\\"{o}v\\'{a}ri, S\\'{o}s, and Tur\\'{a}n \\cite{KST54} proved\\[\\mathrm{ex}(n; K_{r,r}) \\ll n^{2-1/r}\\]for all $r\\geq 2$. Brown \\cite{Br66} and, independently, Erd\\H{o}s, R\\'{e}nyi, and S\\'{o}s \\cite{ERS66}, proved the conjectured lower bound when $r=3$.\n\nWhen $r=2$ it is known that\\[\\mathrm{ex}(n;K_{2,2})=\\left(\\frac{1}{2}+o(1)\\right)n^{3/2}\\](see [768], since $K_{2,2}=C_4$).\n\nSee also [147].\n\n\n\n\nReferences\n\n\n[Br66] Brown, W. G., On graphs that do not contain a Thomsen graph. Canad. Math. Bull. (1966), 281-285.\n\n[ERS66] Erd\\H{o}s, P. and R\\'{e}nyi, A. and S\\'os, V. T., On a problem of graph theory. Studia Sci. Math. Hungar. (1966), 215--235.\n\n[KST54] K\\\"{o}vari, T. and S\\'{o}s, V. T. and Tur\\'{a}n, P., On a problem of K. Zarankiewicz. Colloq. Math. (1954), 50-57.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

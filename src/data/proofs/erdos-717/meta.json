@@ -1,0 +1,33 @@
+{
+  "id": "erdos-717",
+  "title": "Erdős Problem #717",
+  "slug": "erdos-717",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on ... vertices with chromatic number ... and let ... be the maximal ... such that ... contains a subdivis...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/717",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos717Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 717,
+    "erdosUrl": "https://erdosproblems.com/717",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #717 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph on $n$ vertices with chromatic number $\\chi(G)$ and let $\\sigma(G)$ be the maximal $k$ such that $G$ contains a subdivision of $K_k$. Is it true that\\[\\chi(G) \\ll \\frac{n^{1/2}}{\\log n}\\sigma(G)?\\]\n\n\n\nHaj\\'{o}s originally conjectured that $\\chi(G)\\leq \\sigma(G)$, which was proved by Dirac \\cite{Di52} when $\\chi(G)=4$. Catlin \\cite{Ca74} disproved Haj\\'{o}s' conjecture for all $\\chi(G)\\geq 7$, and Erd\\H{o}s and Fajtlowicz \\cite{ErFa81} disproved it in a strong form, showing that in fact for almost all graphs on $n$ vertices,\\[\\chi(G) \\gg \\frac{n^{1/2}}{\\log n}\\sigma(G).\\]The answer is yes, proved by Fox, Lee, and Sudakov \\cite{FLS13}.\n\n\n\n\nReferences\n\n\n[Ca74] Catlin, Paul A., Subgraphs of graphs. I. Discrete Math. (1974), 225-233.\n\n[Di52] Dirac, G. A., A property of {$4$}-chromatic graphs and some remarks on\ncritical graphs. J. London Math. Soc. (1952), 85-92.\n\n[ErFa81] Erd\\H{o}s, Paul and Fajtlowicz, Siemion, On the conjecture of Haj\\'{o}s. Combinatorica (1981), 141-143.\n\n[FLS13] Fox, Jacob and Lee, Choongbum and Sudakov, Benny, Chromatic number, clique subdivisions, and the conjectures of\nHaj\\'{o}s and Erd\\H{o}s-Fajtlowicz. Combinatorica (2013), 181-197.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

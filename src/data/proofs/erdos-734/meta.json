@@ -1,0 +1,33 @@
+{
+  "id": "erdos-734",
+  "title": "Erdős Problem #734",
+  "slug": "erdos-734",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFind, for all large ..., a non-trivial pairwise balanced block design ... such that, for all ..., there are ... many ... such...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/734",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos734Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 734,
+    "erdosUrl": "https://erdosproblems.com/734",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #734 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFind, for all large $n$, a non-trivial pairwise balanced block design $A_1,\\ldots,A_m\\subseteq \\{1,\\ldots,n\\}$ such that, for all $t$, there are $O(n^{1/2})$ many $i$ such that $\\lvert A_i\\rvert=t$.\n\n\n\n$A_1,\\ldots,A_m$ is a pairwise balanced block design if every pair in $\\{1,\\ldots,n\\}$ is contained in exactly one of the $A_i$.\n\nErd\\H{o}s \\cite{Er81} writes 'this will be probably not be very difficult to prove but so far I was not successful'.\n\nErd\\H{o}s and de Bruijn \\cite{dBEr48} proved that if $A_1,\\ldots,A_m\\subseteq \\{1,\\ldots,n\\}$ is a pairwise balanced block design then $m\\geq n$, and this implies there must be some $t$ such that there are $\\gg n^{1/2}$ many $t$ with $\\lvert A_i\\rvert=t$.\n\n\n\n\nReferences\n\n\n[Er81] Erd\\H{o}s, P., On the combinatorial problems which I would most like to see solved. Combinatorica (1981), 25-42.\n\n[dBEr48] de Bruijn, N. G. and Erd\\H{o}s, P., On a combinatorial problem. Nederl. Akad. Wetensch., Proc. (1948), 1277--1279 = Indagationes Math. 10, 421--423.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

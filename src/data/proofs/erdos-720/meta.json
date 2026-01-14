@@ -1,0 +1,34 @@
+{
+  "id": "erdos-720",
+  "title": "Erdős Problem #720",
+  "slug": "erdos-720",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the size Ramsey number, the minimal number of edges ... such that there is a graph ... with ... edges such tha...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/720",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos720Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 720,
+    "erdosUrl": "https://erdosproblems.com/720",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$100"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #720 from erdosproblems.com. Originally offered with a prize of $100.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\hat{R}(G)$ denote the size Ramsey number, the minimal number of edges $m$ such that there is a graph $H$ with $m$ edges such that in any $2$-colouring of the edges of $H$ there is a monochromatic copy of $G$.\n\nIs it true that, if $P_n$ is the path of length $n$, then\\[\\hat{R}(P_n)/n\\to \\infty\\]and\\[\\hat{R}(P_n)/n^2 \\to 0?\\]Is it true that, if $C_n$ is the cycle with $n$ edges, then\\[\\hat{R}(C_n) =o(n^2)?\\]\n\n\n\nA problem of Erd\\H{o}s, Faudree, Rousseau, and Schelp \\cite{EFRS78b}.\n\nAnswered by Beck \\cite{Be83b}, who proved that in fact $\\hat{R}(P_n)\\ll n$ and $\\hat{R}(C_n)\\ll n$.\n\nA more general problem concerning the size Ramsey number of graphs with bounded maximum degree is [559].\n\n\n\n\nReferences\n\n\n[Be83b] Beck, J\\'{o}zsef, On size Ramsey number of paths, trees, and circuits. I. J. Graph Theory (1983), 115-129.\n\n[EFRS78b] Erd\\H{o}s, P. and Faudree, R. J. and Rousseau, C. C. and Schelp, R. H., The size Ramsey number. Period. Math. Hungar. (1978), 145-161.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

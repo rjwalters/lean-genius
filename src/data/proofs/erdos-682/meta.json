@@ -1,0 +1,33 @@
+{
+  "id": "erdos-682",
+  "title": "Erdős Problem #682",
+  "slug": "erdos-682",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for almost all ... there exists some ... such that\\[p(m) \\geq p_{n+1}-p_n,\\]where ... denotes the least prime...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/682",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos682Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 682,
+    "erdosUrl": "https://erdosproblems.com/682",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #682 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for almost all $n$ there exists some $m\\in (p_n,p_{n+1})$ such that\\[p(m) \\geq p_{n+1}-p_n,\\]where $p(m)$ denotes the least prime factor of $m$?\n\n\n\nErd\\H{o}s first thought this should be true for all large $n$, but found a (conditional) counterexample: Dickson's conjecture says there are infinitely many $d$ such that\\[2183+30030d\\textrm{ and }2201+30030d\\]are both prime, and then they must necessarily be consecutive primes. These give a counterexample since $30030=2\\cdot 3 \\cdot 5\\cdot 7\\cdot 11\\cdot 13$ and every integer in $[2184,2200]$ is divisible by at least one of these primes.\n\nThis was solved in the affirmative by Gafni and Tao \\cite{GaTa25}, who proved that the number of exceptional $n\\in [1,X]$ is\\[\\ll \\frac{X}{(\\log X)^2},\\]and proved, conditional on a form of the prime tuples conjecture, that the number of exceptional $n\\in[1,X]$ satisifes\\[\\sim c\\frac{X}{(\\log X)^2}\\]for some explicit $c>0$.\n\nSee also [680] and [681].\n\n\n\n\nReferences\n\n\n[GaTa25] A. Gafni and T. Tao, Rough numbers between consecutive primes. arXiv:2508.06463 (2025).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

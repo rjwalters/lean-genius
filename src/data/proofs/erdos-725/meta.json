@@ -1,0 +1,33 @@
+{
+  "id": "erdos-725",
+  "title": "Erdős Problem #725",
+  "slug": "erdos-725",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGive an asymptotic formula for the number of ... Latin rectangles.\n\n\n\nErds and Kaplansky  proved the count is\\[\\sim e^{-{2}}(...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/725",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos725Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 725,
+    "erdosUrl": "https://erdosproblems.com/725",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #725 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGive an asymptotic formula for the number of $k\\times n$ Latin rectangles.\n\n\n\nErd\\H{o}s and Kaplansky \\cite{ErKa46} proved the count is\\[\\sim e^{-\\binom{k}{2}}(n!)^k\\]when $k=o((\\log n)^{3/2-\\epsilon})$. Yamamoto \\cite{Ya51} extended this to $k\\leq n^{1/3-o(1)}$.\n\nThe count of such Latin rectangles is A001009 in the OEIS.\n\n\n\n\nReferences\n\n\n[ErKa46] Erd\\\"{o}s, Paul and Kaplansky, Irving, The asymptotic number of Latin rectangles. Amer. J. Math. (1946), 230-236.\n\n[Ya51] Yamamoto, Koichi, On the asymptotic number of Latin rectangles. Jpn. J. Math. (1951), 113-119.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

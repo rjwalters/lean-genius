@@ -1,0 +1,33 @@
+{
+  "id": "erdos-716",
+  "title": "Erdős Problem #716",
+  "slug": "erdos-716",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $...3...6...3...3...3...k...k-3...3......r_{k-3}(n)...\\{1,\\ldots,n\\}...k-3...k=6,7,8...r$}-graphs. (1973), 53--63.\n\n[Er75...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/716",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos716Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 716,
+    "erdosUrl": "https://erdosproblems.com/716",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #716 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\mathcal{F}$ be the family of all $3$-uniform hypergraphs with $6$ vertices and $3$ $3$-edges. Is it true that\\[\\mathrm{ex}_3(n,\\mathcal{F})=o(n^2)?\\]\n\n\n\nA conjecture of Brown, Erd\\H{o}s, and S\\'{o}s \\cite{BES73}. The answer is yes, proved by Ruzsa and Szemer\\'{e}di \\cite{RuSz78} (this is known as the Ruzsa-Szemer\\'{edi problem}).\n\nIn \\cite{Er75b} and \\cite{Er81} Erd\\H{o}s asks whether the same is true for the collection of all $3$-uniform hypergraph on $k$ vertices with $k-3$ $3$-edges. In \\cite{Er75b} he even asks whether, for such $\\mathcal{F}$,\\[\\mathrm{ex}_3(n,\\mathcal{F})\\asymp n r_{k-3}(n),\\]where $r_{k-3}(n)$ is the maximal size of a subset of $\\{1,\\ldots,n\\}$ that does not contain a non-trivial arithmetic progression of length $k-3$. He states that Ruzsa has proved the lower bound for $k=6,7,8$.\n\n\n\n\nReferences\n\n\n[BES73] Brown, W. G. and Erd\\H{o}s, P. and S\\'os, V. T., Some extremal problems on {$r$}-graphs. (1973), 53--63.\n\n[Er75b] Erd\\H{o}s, Paul, Problems and results in combinatorial number theory. Journ\\'{e}es Arithm\\'{e}tiques de Bordeaux (Conf., Univ. Bordeaux, Bordeaux, 1974) (1975), 295-310.\n\n[Er81] Erd\\H{o}s, P., On the combinatorial problems which I would most like to see solved. Combinatorica (1981), 25-42.\n\n[RuSz78] Ruzsa, I. Z. and Szemer\\'{e}di, E., Triple systems with no six points carrying three triangles. Combinatorics (Proc. Fifth Hungarian Colloq.,\nKeszthely, 1976), Vol. II (1978), 939-945.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

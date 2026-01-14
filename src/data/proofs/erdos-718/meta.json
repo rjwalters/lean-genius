@@ -1,0 +1,33 @@
+{
+  "id": "erdos-718",
+  "title": "Erdős Problem #718",
+  "slug": "erdos-718",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some constant ... such that any graph on ... vertices with ... edges contains a subdivision of ...?\n\n\n\nA conjecture ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/718",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos718Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 718,
+    "erdosUrl": "https://erdosproblems.com/718",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #718 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some constant $C>0$ such that any graph on $n$ vertices with $\\geq Cr^2n$ edges contains a subdivision of $K_r$?\n\n\n\nA conjecture of Erd\\H{o}s, Hajnal, and Mader. Dirac \\cite{Di60} proved that every graph on $n$ vertices with at least $2n-2$ edges contains a subdivision of $K_4$, and conjectured that $3n-5$ edges forces a subdivision of $K_5$.\n\nMader \\cite{Ma67} proved that $\\geq 2^{\\binom{r}{2}}n$ edges suffices.\n\nThe answer is yes, proved independently by Koml\\'{o}s and Szemer\\'{e}di \\cite{KoSz96} and Bollob\\'{a}s and Thomason \\cite{BoTh96}.\n\n\n\n\nReferences\n\n\n[BoTh96] Bollob\\'{a}s, B\\'{e}la and Thomason, Andrew, Highly linked graphs. Combinatorica (1996), 313-320.\n\n[Di60] Dirac, Gabriel Andrew, In abstrakten Graphen vorhandene vollst\\\"{a}ndige 4-Graphen und ihre Unterteilungen. Math. Nachr. (1960), 61-85.\n\n[KoSz96] Koml\\'{o}s, J\\'{a}nos and Szemer\\'{e}di, Endre, Topological cliques in graphs. {II}. Combin. Probab. Comput. (1996), 79-90.\n\n[Ma67] Mader, W., Homomorphieeigenschaften und mittlere Kantendichte von Graphen. Math. Ann. (1967), 265-268.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

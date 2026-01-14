@@ -1,0 +1,33 @@
+{
+  "id": "erdos-724",
+  "title": "Erdős Problem #724",
+  "slug": "erdos-724",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximum number of mutually orthogonal Latin squares of order .... Is it true that\\[f(n) \\gg n^{1/2}?\\]\n\n\n\nEule...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/724",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos724Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 724,
+    "erdosUrl": "https://erdosproblems.com/724",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #724 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be the maximum number of mutually orthogonal Latin squares of order $n$. Is it true that\\[f(n) \\gg n^{1/2}?\\]\n\n\n\nEuler conjectured that $f(n)=1$ when $n\\equiv 2\\pmod{4}$, but this was disproved by Bose, Parker, and Shrikhande \\cite{BPS60} who proved $f(n)\\geq 2$ for $n\\geq 7$.\n\nChowla, Erd\\H{o}s, and Straus \\cite{CES60} proved $f(n) \\gg n^{1/91}$. Wilson \\cite{Wi74} proved $f(n) \\gg n^{1/17}$. Beth \\cite{Be83c} proved $f(n) \\gg n^{1/14.8}$.\n\nThe sequence of $f(n)$ is A001438 in the OEIS.\n\n\n\n\nReferences\n\n\n[BPS60] Bose, R. C. and Shrikhande, S. S. and Parker, E. T., Further results on the construction of mutually orthogonal\nLatin squares and the falsity of Euler's conjecture. Canadian J. Math. (1960), 189-203.\n\n[Be83c] Beth, Thomas, Eine Bemerkung zur Absch\\\"{a}tzung der Anzahl orthogonaler\nlateinischer Quadrate mittels Siebverfahren. Abh. Math. Sem. Univ. Hamburg (1983), 284-288.\n\n[CES60] Chowla, S. and Erd\\H{o}s, P. and Straus, E. G., On the maximal number of pairwise orthogonal Latin squares\nof a given order. Canadian J. Math. (1960), 204-208.\n\n[Wi74] Wilson, Richard M., Concerning the number of mutually orthogonal Latin squares. Discrete Math. (1974), 181-198.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

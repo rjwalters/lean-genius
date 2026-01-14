@@ -1,0 +1,33 @@
+{
+  "id": "erdos-704",
+  "title": "Erdős Problem #704",
+  "slug": "erdos-704",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the unit distance graph in ..., with two vertices joined by an edge if and only if the distance between them is .....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/704",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos704Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 704,
+    "erdosUrl": "https://erdosproblems.com/704",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #704 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G_n$ be the unit distance graph in $\\mathbb{R}^n$, with two vertices joined by an edge if and only if the distance between them is $1$.\n\nEstimate the chromatic number $\\chi(G_n)$. Does it grow exponentially in $n$? Does\\[\\lim_{n\\to \\infty}\\chi(G_n)^{1/n}\\]exist?\n\n\n\nA generalisation of the Hadwiger-Nelson problem (which addresses $n=2$). Frankl and Wilson \\cite{FrWi81} proved exponential growth:\\[\\chi(G_n) \\geq (1+o(1))1.2^n.\\]The trivial colouring (by tiling with cubes) gives\\[\\chi(G_n) \\leq (2+\\sqrt{n})^n.\\]Larman and Rogers \\cite{LaRo72} improved this to\\[\\chi(G_n) \\leq (3+o(1))^n,\\]and conjecture the truth may be $(2^{3/2}+o(1))^n$. Prosanov \\cite{Pr20} has given an alternative proof of this upper bound.\n\n\nSee also [508], [705], and [706].\n\n\n\n\nReferences\n\n\n[FrWi81] Frankl, P. and Wilson, R. M., Intersection theorems with geometric consequences. Combinatorica (1981), 357-368.\n\n[LaRo72] Larman, D. G. and Rogers, C. A., The realization of distances within sets in Euclidean space. Mathematika (1972), 1-24.\n\n[Pr20] Prosanov, Roman, A new proof of the Larman-Rogers upper bound for the\nchromatic number of the Euclidean space. Discrete Appl. Math. (2020), 115-120.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}
