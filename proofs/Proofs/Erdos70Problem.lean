@@ -122,21 +122,21 @@ countable ordinals, not just ω + n.
 -/
 def erdos_70_conjecture : Prop :=
   ∀ (β : Ordinal.{0}) (n : ℕ), IsCountableOrdinal β → 2 ≤ n →
-    PartitionArrow 𝔠 β n
+    PartitionArrow continuum_card β n
 
 /-! ## Special Cases -/
 
 /-- The conjecture for β = ω. -/
 def conjecture_omega (n : ℕ) : Prop :=
-  PartitionArrow 𝔠 Ordinal.omega0 n
+  PartitionArrow continuum_card Ordinal.omega0 n
 
 /-- The conjecture for β = ω². -/
 def conjecture_omega_squared (n : ℕ) : Prop :=
-  PartitionArrow 𝔠 (Ordinal.omega0 * Ordinal.omega0) n
+  PartitionArrow continuum_card (Ordinal.omega0 * Ordinal.omega0) n
 
 /-- The conjecture for β = ω^ω. -/
 def conjecture_omega_tower (n : ℕ) : Prop :=
-  PartitionArrow 𝔠 (Ordinal.omega0 ^ Ordinal.omega0) n
+  PartitionArrow continuum_card (Ordinal.omega0 ^ Ordinal.omega0) n
 
 /-! ## Finite Ramsey Theory -/
 
@@ -168,7 +168,7 @@ This would give a 2-coloring with no large homogeneous sets.
 -/
 def erdos_70_counterexample : Prop :=
   ∃ (β : Ordinal.{0}) (n : ℕ), IsCountableOrdinal β ∧ 2 ≤ n ∧
-    ¬PartitionArrow 𝔠 β n
+    ¬PartitionArrow continuum_card β n
 
 /-- The conjecture and counterexample are mutually exclusive. -/
 theorem conjecture_xor_counterexample :
