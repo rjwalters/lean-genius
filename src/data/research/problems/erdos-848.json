@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-848",
+  "title": "Erdős #848",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs the maximum size of a set $A\\subseteq \\{1,\\ldots,N\\}$ such that $ab+1$ is never squarefree (for all $a,b\\in A$) achieved by taking those $n\\equiv 7\\pmod{25}$?\n\n\n\nA problem of Erd\\H{o}s and S\\'{a}rk\\\"{o}zy.\n\nvan Doorn has sent the following argument which shows\\[\\lvert A\\rvert \\leq (0.108\\cdots+o(1))N.\\]The condition implies, in particular, that $a^2+1$ is divisible by $p^2$ for some prime $p$ for all $a\\in A$. Furthermore, $a^2+1\\equiv 0\\pmod{p^2}$ has either $2$ or $0$ solutions, according to whether $p\\equiv 1\\pmod{4}$ or $p\\equiv 3\\pmod{4}$. It follows that every $a\\in A$ belongs to one of $2$ residue classes for some prime $p\\equiv 1\\pmod{4}$, and hence, as $N\\to \\infty$,\\[\\frac{\\lvert A\\rvert}{N}\\leq 2\\sum_{p\\equiv 1\\pmod{4}}\\frac{1}{p^2}\\approx 0.108.\\]Weisenberg has noted that this proof in fact gives the slightly better constant of $\\approx 0.105$ (see the comments section).\n\nThis was solved for all sufficiently large $N$ by Sawhney in this note. In fact, Sawhney proves something slightly stronger, that there exists some constant $c>0$ such that if $\\lvert A\\rvert \\geq (\\frac{1}{25}-c)N$ and $N$ is large then $A$ is contained in either $\\{ n\\equiv 7\\pmod{25}\\}$ or $\\{n\\equiv 18\\pmod{25}\\}$.\n\nSee also [844].\n\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T10:25:45.155Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #848 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs the maximum size of a set $A\\subseteq \\{1,\\ldots,N\\}$ such that $ab+1$ is never squarefree (for all $a,b\\in A$) achieved by taking those $n\\equiv 7\\pmod{25}$?\n\n\n\nA problem of Erd\\H{o}s and S\\'{a}rk\\\"{o}zy.\n\nvan Doorn has sent the following argument which shows\\[\\lvert A\\rvert \\leq (0.108\\cdots+o(1))N.\\]The condition implies, in particular, that $a^2+1$ is divisible by $p^2$ for some prime $p$ for all $a\\in A$. Furthermore, $a^2+1\\equiv 0\\pmod{p^2}$ has either $2$ or $0$ solutions, according to whether $p\\equiv 1\\pmod{4}$ or $p\\equiv 3\\pmod{4}$. It follows that every $a\\in A$ belongs to one of $2$ residue classes for some prime $p\\equiv 1\\pmod{4}$, and hence, as $N\\to \\infty$,\\[\\frac{\\lvert A\\rvert}{N}\\leq 2\\sum_{p\\equiv 1\\pmod{4}}\\frac{1}{p^2}\\approx 0.108.\\]Weisenberg has noted that this proof in fact gives the slightly better constant of $\\approx 0.105$ (see the comments section).\n\nThis was solved for all sufficiently large $N$ by Sawhney in this note. In fact, Sawhney proves something slightly stronger, that there exists some constant $c>0$ such that if $\\lvert A\\rvert \\geq (\\frac{1}{25}-c)N$ and $N$ is large then $A$ is contained in either $\\{ n\\equiv 7\\pmod{25}\\}$ or $\\{n\\equiv 18\\pmod{25}\\}$.\n\nSee also [844].\n\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #844\n- Problem #847\n- Problem #849\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T10:25:45.155Z",
+  "significance": 6,
+  "tractability": 4
+}

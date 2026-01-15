@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-1084",
+  "title": "Erdős #1084",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_d(n)$ be minimal such that in any collection of $n$ points in $\\mathbb{R}^d$, all of distance at least $1$ apart, there are at most $f_d(n)$ many pairs of points which are distance $1$ apart. Estimate $f_d(n)$.\n\n\n\nIt is easy to see that $f_1(n)=n-1$ and $f_2(n)<3n$ (since there can be at most $6$ points of distance $1$ from any point). Erd\\H{o}s \\cite{Er46b} showed\\[f_2(n)<3n-cn^{1/2}\\]for some constant $c>0$, which the triangular lattice shows is the best possible up to the value of $c$. In \\cite{Er75f} he speculated that the triangular lattice is exactly the best possible, and in particular\\[f_2(3n^2+3n+1)=9n^2+6n.\\]In \\cite{Er75f} he claims the existence of $c_1,c_2>0$ such that\\[6n-c_1n^{2/3}< f_3(n) < 6n-c_2n^{2/3}.\\]See [223] for the analogous problem with maximal distance $1$.\n\n\n\n\nReferences\n\n\n[Er46b] Erd\\H{o}s, P., On sets of distances of {$n$} points. Amer. Math. Monthly (1946), 248--250.\n\n[Er75f] Erd\\H{o}s, Paul, On some problems of elementary and combinatorial geometry. Ann. Mat. Pura Appl. (4) (1975), 99-108.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T14:52:37.979Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1084 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_d(n)$ be minimal such that in any collection of $n$ points in $\\mathbb{R}^d$, all of distance at least $1$ apart, there are at most $f_d(n)$ many pairs of points which are distance $1$ apart. Estimate $f_d(n)$.\n\n\n\nIt is easy to see that $f_1(n)=n-1$ and $f_2(n)<3n$ (since there can be at most $6$ points of distance $1$ from any point). Erd\\H{o}s \\cite{Er46b} showed\\[f_2(n)<3n-cn^{1/2}\\]for some constant $c>0$, which the triangular lattice shows is the best possible up to the value of $c$. In \\cite{Er75f} he speculated that the triangular lattice is exactly the best possible, and in particular\\[f_2(3n^2+3n+1)=9n^2+6n.\\]In \\cite{Er75f} he claims the existence of $c_1,c_2>0$ such that\\[6n-c_1n^{2/3}< f_3(n) < 6n-c_2n^{2/3}.\\]See [223] for the analogous problem with maximal distance $1$.\n\n\n\n\nReferences\n\n\n[Er46b] Erd\\H{o}s, P., On sets of distances of {$n$} points. Amer. Math. Monthly (1946), 248--250.\n\n[Er75f] Erd\\H{o}s, Paul, On some problems of elementary and combinatorial geometry. Ann. Mat. Pura Appl. (4) (1975), 99-108.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #3\n- Problem #223\n- Problem #1083\n- Problem #1085\n- Problem #39\n- Problem #1\n\n## References\n\n- Er46b\n- Er75f\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T14:52:37.979Z",
+  "significance": 6,
+  "tractability": 4
+}

@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-761",
+  "title": "Erdős #761",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe cochromatic number of $G$, denoted by $\\zeta(G)$, is the minimum number of colours needed to colour the vertices of $G$ such that each colour class induces either a complete graph or empty graph. The dichromatic number of $G$, denoted by $\\delta(G)$, is the minimum number $k$ of colours required such that, in any orientation of the edges of $G$, there is a $k$-colouring of the vertices of $G$ such that there are no monochromatic oriented cycles.\n\nMust a graph with large chromatic number have large dichromatic number? Must a graph with large cochromatic number contain a graph with large dichromatic number?\n\n\n\nThe first question is due to Erd\\H{o}s and Neumann-Lara. The second question is due to Erd\\H{o}s and Gimbel. A positive answer to the second question implies a positive answer to the first via the bound mentioned in [760].\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T08:25:36.657Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #761 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe cochromatic number of $G$, denoted by $\\zeta(G)$, is the minimum number of colours needed to colour the vertices of $G$ such that each colour class induces either a complete graph or empty graph. The dichromatic number of $G$, denoted by $\\delta(G)$, is the minimum number $k$ of colours required such that, in any orientation of the edges of $G$, there is a $k$-colouring of the vertices of $G$ such that there are no monochromatic oriented cycles.\n\nMust a graph with large chromatic number have large dichromatic number? Must a graph with large cochromatic number contain a graph with large dichromatic number?\n\n\n\nThe first question is due to Erd\\H{o}s and Neumann-Lara. The second question is due to Erd\\H{o}s and Gimbel. A positive answer to the second question implies a positive answer to the first via the bound mentioned in [760].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #760\n- Problem #762\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGi93\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T08:25:36.657Z",
+  "significance": 6,
+  "tractability": 4
+}

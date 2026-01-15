@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-935",
+  "title": "Erdős #935",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any integer $n=\\prod p^{k_p}$ let $Q_2(n)$ be the powerful part of $n$, so that\\[Q_2(n) = \\prod_{\\substack{p\\\\ k_p\\geq 2}}p^{k_p}.\\]Is it true that, for every $\\epsilon>0$ and $\\ell\\geq 1$, if $n$ is sufficiently large then\\[Q_2(n(n+1)\\cdots(n+\\ell))<n^{2+\\epsilon}?\\]If $\\ell\\geq 2$ then is\\[\\limsup_{n\\to \\infty}\\frac{Q_2(n(n+1)\\cdots(n+\\ell))}{n^2}\\]infinite?\n\nIf $\\ell\\geq 2$ then is\\[\\lim_{n\\to \\infty}\\frac{Q_2(n(n+1)\\cdots(n+\\ell))}{n^{\\ell+1}}=0?\\]\n\n\n\nErd\\H{o}s \\cite{Er76d} writes that if this is true then it 'seems very difficult to prove'.\n\nA result of Mahler implies, for every $\\ell\\geq 1$,\\[\\limsup_{n\\to \\infty}\\frac{Q_2(n(n+1)\\cdots(n+\\ell))}{n^2}\\geq 1.\\]All these questions can be asked replacing $Q_2$ by $Q_r$ for $r>2$, only keeping those prime powers with exponent $\\geq r$.\n\n\n\n\nReferences\n\n\n[Er76d] Erd\\H{o}s, P., Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics (Univ. Manitoba, Winnipeg, Man., 1975) (1976), 25-44.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T11:50:52.408Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #935 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any integer $n=\\prod p^{k_p}$ let $Q_2(n)$ be the powerful part of $n$, so that\\[Q_2(n) = \\prod_{\\substack{p\\\\ k_p\\geq 2}}p^{k_p}.\\]Is it true that, for every $\\epsilon>0$ and $\\ell\\geq 1$, if $n$ is sufficiently large then\\[Q_2(n(n+1)\\cdots(n+\\ell))<n^{2+\\epsilon}?\\]If $\\ell\\geq 2$ then is\\[\\limsup_{n\\to \\infty}\\frac{Q_2(n(n+1)\\cdots(n+\\ell))}{n^2}\\]infinite?\n\nIf $\\ell\\geq 2$ then is\\[\\lim_{n\\to \\infty}\\frac{Q_2(n(n+1)\\cdots(n+\\ell))}{n^{\\ell+1}}=0?\\]\n\n\n\nErd\\H{o}s \\cite{Er76d} writes that if this is true then it 'seems very difficult to prove'.\n\nA result of Mahler implies, for every $\\ell\\geq 1$,\\[\\limsup_{n\\to \\infty}\\frac{Q_2(n(n+1)\\cdots(n+\\ell))}{n^2}\\geq 1.\\]All these questions can be asked replacing $Q_2$ by $Q_r$ for $r>2$, only keeping those prime powers with exponent $\\geq r$.\n\n\n\n\nReferences\n\n\n[Er76d] Erd\\H{o}s, P., Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics (Univ. Manitoba, Winnipeg, Man., 1975) (1976), 25-44.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #934\n- Problem #936\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er76d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T11:50:52.409Z",
+  "significance": 6,
+  "tractability": 4
+}

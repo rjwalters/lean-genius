@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-936",
+  "title": "Erdős #936",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre\\[2^n\\pm 1\\]and\\[n!\\pm 1\\]powerful (i.e. if $p\\mid m$ then $p^2\\mid m$) for only finitely many $n$?\n\n\n\nCushing and Pascoe \\cite{CuPa16} have shown the answer to the second question is yes assuming the abc conjecture - in fact, for any fixed $k\\geq 0$, there are only finitely many $n$ and powerful $x$ such that $\\lvert x-n!\\rvert \\leq k$.\n\nCrowdMath \\cite{Cr20} has shown that the answer to the first question is yes, again assuming the abc conjecture.\n\n\n\n\nReferences\n\n\n[Cr20] P. A. CrowdMath, Applications of the abc conjecture to powerful numbers. arXiv:2005.07321 (2020).\n\n[CuPa16] D. Cushing and J. E. Pascoe, Powerful numbers and the ABC-conjecture. arXiv:1611.01192 (2016).\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T11:50:52.409Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #936 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre\\[2^n\\pm 1\\]and\\[n!\\pm 1\\]powerful (i.e. if $p\\mid m$ then $p^2\\mid m$) for only finitely many $n$?\n\n\n\nCushing and Pascoe \\cite{CuPa16} have shown the answer to the second question is yes assuming the abc conjecture - in fact, for any fixed $k\\geq 0$, there are only finitely many $n$ and powerful $x$ such that $\\lvert x-n!\\rvert \\leq k$.\n\nCrowdMath \\cite{Cr20} has shown that the answer to the first question is yes, again assuming the abc conjecture.\n\n\n\n\nReferences\n\n\n[Cr20] P. A. CrowdMath, Applications of the abc conjecture to powerful numbers. arXiv:2005.07321 (2020).\n\n[CuPa16] D. Cushing and J. E. Pascoe, Powerful numbers and the ABC-conjecture. arXiv:1611.01192 (2016).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #935\n- Problem #937\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- CuPa16\n- Cr20\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T11:50:52.409Z",
+  "significance": 6,
+  "tractability": 4
+}

@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-782",
+  "title": "Erdős #782",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDo the squares contain arbitrarily long quasi-progressions? That is, does there exist some constant $C>0$ such that, for any $k$, the squares contain a sequence $x_1,\\ldots,x_k$ where, for some $d$ and all $1\\leq i<k$,\\[x_i+d\\leq x_{i+1}\\leq x_i+d+C.\\]Do the squares contain arbitrarily large cubes\\[a+\\left\\{ \\sum_i \\epsilon_ib_i : \\epsilon_i\\in \\{0,1\\}\\right\\}?\\]\n\n\n\nA question of Brown, Erd\\H{o}s, and Freedman \\cite{BEF90}. It is a classical fact that the squares do not contain arithmetic progressions of length $4$.\n\nAn affirmative answer to the first question implies an affirmative answer to the second.\n\nSolymosi \\cite{So07} conjectured the answer to the second question is no. Cilleruelo and Granville \\cite{CiGr07} have observed that the answer to the second question is no conditional on the Bombieri-Lang conjecture.\n\n\n\n\nReferences\n\n\n[BEF90] Brown, T. C. and Erd\\H{o}s, P. and Freedman, A. R., Quasi-progressions and descending waves. J. Combin. Theory Ser. A (1990), 81-95.\n\n[CiGr07] Cilleruelo, Javier and Granville, Andrew, Lattice points on circles, squares in arithmetic progressions\nand sumsets of squares. (2007), 241-262.\n\n[So07] Solymosi, J\\'{o}zsef, Elementary additive combinatorics. (2007), 29-38.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T08:39:26.858Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #782 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDo the squares contain arbitrarily long quasi-progressions? That is, does there exist some constant $C>0$ such that, for any $k$, the squares contain a sequence $x_1,\\ldots,x_k$ where, for some $d$ and all $1\\leq i<k$,\\[x_i+d\\leq x_{i+1}\\leq x_i+d+C.\\]Do the squares contain arbitrarily large cubes\\[a+\\left\\{ \\sum_i \\epsilon_ib_i : \\epsilon_i\\in \\{0,1\\}\\right\\}?\\]\n\n\n\nA question of Brown, Erd\\H{o}s, and Freedman \\cite{BEF90}. It is a classical fact that the squares do not contain arithmetic progressions of length $4$.\n\nAn affirmative answer to the first question implies an affirmative answer to the second.\n\nSolymosi \\cite{So07} conjectured the answer to the second question is no. Cilleruelo and Granville \\cite{CiGr07} have observed that the answer to the second question is no conditional on the Bombieri-Lang conjecture.\n\n\n\n\nReferences\n\n\n[BEF90] Brown, T. C. and Erd\\H{o}s, P. and Freedman, A. R., Quasi-progressions and descending waves. J. Combin. Theory Ser. A (1990), 81-95.\n\n[CiGr07] Cilleruelo, Javier and Granville, Andrew, Lattice points on circles, squares in arithmetic progressions\nand sumsets of squares. (2007), 241-262.\n\n[So07] Solymosi, J\\'{o}zsef, Elementary additive combinatorics. (2007), 29-38.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #781\n- Problem #783\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- BEF90\n- So07\n- CiGr07\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T08:39:26.859Z",
+  "significance": 6,
+  "tractability": 4
+}

@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-1063",
+  "title": "Erdős #1063",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$ and define $n_k\\geq 2k$ to be the least value of $n$ such that $n-i$ divides $\\binom{n}{k}$ for all but one $0\\leq i<k$. Estimate $n_k$.\n\n\n\nA problem of Erd\\H{o}s and Selfridge posed in \\cite{ErSe83}. Erd\\H{o}s and Selfridge noted (and a proof can be found in \\cite{Mo85}) that if $n\\geq 2k$ then there must exist at least one $0\\leq i<k$ such that $n-i$ does not divide $\\binom{n}{k}$.\n\nWe have $n_2=4$, $n_3=6$, $n_4=9$, and $n_5=12$. Monier \\cite{Mo85} observed that $n_k\\leq k!$ for $k\\geq 3$, since $\\binom{k!}{k}$ is divisible by $k!-i$ for $1\\leq i<k$. Cambie observes in the comments that this can be improved to\\[n_k\\leq k[2,3,\\ldots,k-1]\\leq e^{(1+o(1))k},\\]where $[\\cdots]$ is the least common multiple.\n\nThis is discussed in problem B31 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[ErSe83] Erdos, P. and Selfridge, J. L., Problem 6447. Amer. Math. Monthly (1983), 710.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Mo85] No reference found.\n\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T14:38:41.571Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1063 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$ and define $n_k\\geq 2k$ to be the least value of $n$ such that $n-i$ divides $\\binom{n}{k}$ for all but one $0\\leq i<k$. Estimate $n_k$.\n\n\n\nA problem of Erd\\H{o}s and Selfridge posed in \\cite{ErSe83}. Erd\\H{o}s and Selfridge noted (and a proof can be found in \\cite{Mo85}) that if $n\\geq 2k$ then there must exist at least one $0\\leq i<k$ such that $n-i$ does not divide $\\binom{n}{k}$.\n\nWe have $n_2=4$, $n_3=6$, $n_4=9$, and $n_5=12$. Monier \\cite{Mo85} observed that $n_k\\leq k!$ for $k\\geq 3$, since $\\binom{k!}{k}$ is divisible by $k!-i$ for $1\\leq i<k$. Cambie observes in the comments that this can be improved to\\[n_k\\leq k[2,3,\\ldots,k-1]\\leq e^{(1+o(1))k},\\]where $[\\cdots]$ is the least common multiple.\n\nThis is discussed in problem B31 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[ErSe83] Erdos, P. and Selfridge, J. L., Problem 6447. Amer. Math. Monthly (1983), 710.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Mo85] No reference found.\n\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1062\n- Problem #1064\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErSe73\n- ErSe83\n- Mo85\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T14:38:41.571Z",
+  "significance": 6,
+  "tractability": 4
+}

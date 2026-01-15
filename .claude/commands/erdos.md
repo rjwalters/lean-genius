@@ -115,9 +115,17 @@ Edit `proofs/Proofs/Erdos{NUMBER}Problem.lean`:
 
 ### Step 4: Build and Verify Lean
 
+**CRITICAL: NEVER run `lake build` directly - it can crash the host!**
+
 ```bash
-lake build Proofs.Erdos{NUMBER}Problem
+# ALWAYS use Docker for Lean builds (enforces memory limits)
+./proofs/scripts/docker-build.sh Proofs.Erdos{NUMBER}Problem
+
+# Alternative: skip Lean verification, just verify pnpm build works
+# (Lean syntax errors will still be caught on CI)
 ```
+
+The Docker build enforces a 32GB memory limit via cgroups. Direct `lake build` can consume unlimited memory and crash the system.
 
 ### Step 5: Rewrite meta.json
 
@@ -309,7 +317,8 @@ Compare every entry to the exemplar: `src/data/proofs/erdos-48/`
 
 Before marking a stub as enhanced:
 
-- [ ] Lean proof builds: `lake build Proofs.Erdos{N}Problem`
+- [ ] Lean proof builds via Docker: `./proofs/scripts/docker-build.sh Proofs.Erdos{N}Problem`
+      **NEVER use `lake build` directly - can crash host!**
 - [ ] No placeholder (`True := trivial`) in Lean
 - [ ] `meta.json` description is clean (no scraping garbage)
 - [ ] `meta.json` has historicalContext, proofStrategy, keyInsights

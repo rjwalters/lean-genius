@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-959",
+  "title": "Erdős #959",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset \\mathbb{R}^2$ be a set of size $n$ and let $\\{d_1,\\ldots,d_k\\}$ be the set of distinct distances determined by $A$. Let $f(d)$ be the number of times the distance $d$ is determined, and suppose the $d_i$ are ordered such that\\[f(d_1)\\geq f(d_2)\\geq \\cdots \\geq f(d_k).\\]Estimate\\[\\max (f(d_1)-f(d_2)),\\]where the maximum is taken over all $A$ of size $n$.\n\n\n\nMore generally, one can ask about\\[\\max (f(d_r)-f(d_{r+1})).\\]Clemen, Dumitrescu, and Liu \\cite{CDL25}, have shown that\\[\\max (f(d_1)-f(d_2))\\gg n\\log n.\\]More generally, for any $1\\leq k\\leq \\log n$, there exists a set $A$ of $n$ points such that\\[f(d_r)-f(d_{r+1})\\gg \\frac{n\\log n}{r}.\\]They conjecture that $n\\log n$ can be improved to $n^{1+c/\\log\\log n}$ for some constant $c>0$.\n\n\n\n\nReferences\n\n\n[CDL25] F. Clemen, A. Dumitrescu, and D. Liu, On multiplicities of interpoint distances. arXiv:2505.04283 (2025).\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T12:36:36.407Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #959 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset \\mathbb{R}^2$ be a set of size $n$ and let $\\{d_1,\\ldots,d_k\\}$ be the set of distinct distances determined by $A$. Let $f(d)$ be the number of times the distance $d$ is determined, and suppose the $d_i$ are ordered such that\\[f(d_1)\\geq f(d_2)\\geq \\cdots \\geq f(d_k).\\]Estimate\\[\\max (f(d_1)-f(d_2)),\\]where the maximum is taken over all $A$ of size $n$.\n\n\n\nMore generally, one can ask about\\[\\max (f(d_r)-f(d_{r+1})).\\]Clemen, Dumitrescu, and Liu \\cite{CDL25}, have shown that\\[\\max (f(d_1)-f(d_2))\\gg n\\log n.\\]More generally, for any $1\\leq k\\leq \\log n$, there exists a set $A$ of $n$ points such that\\[f(d_r)-f(d_{r+1})\\gg \\frac{n\\log n}{r}.\\]They conjecture that $n\\log n$ can be improved to $n^{1+c/\\log\\log n}$ for some constant $c>0$.\n\n\n\n\nReferences\n\n\n[CDL25] F. Clemen, A. Dumitrescu, and D. Liu, On multiplicities of interpoint distances. arXiv:2505.04283 (2025).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #958\n- Problem #960\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er84d\n- CDL25\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T12:36:36.407Z",
+  "significance": 6,
+  "tractability": 4
+}

@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-929",
+  "title": "Erdős #929",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$ be large and let $S(k)$ be the minimal $x$ such that there is a positive density set of $n$ where\\[n+1,n+2,\\ldots,n+k\\]are all divisible by primes $\\leq x$.\n\nEstimate $S(k)$ - in particular, is it true that $S(k)\\geq k^{1-o(1)}$?\n\n\n\nIt follows from Rosser's sieve that $S(k)> k^{1/2-o(1)}$.\n\nIt is trivial that $S(k)\\leq k+1$ since, for example, one can take $n\\equiv 1\\pmod{(k+1)!}$. The best bound on large gaps between primes due to Ford, Green, Konyagin, Maynard, and Tao \\cite{FGKMT18} (see [4]) implies\\[S(k) \\ll k \\frac{\\log\\log\\log k}{\\log\\log k\\log\\log\\log\\log k}.\\]\n\n\n\n\nReferences\n\n\n[FGKMT18] Ford, Kevin and Green, Ben and Konyagin, Sergei and Maynard, James and Tao, Terence, Long gaps between primes. J. Amer. Math. Soc. (2018), 65-105.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T11:43:50.649Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #929 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$ be large and let $S(k)$ be the minimal $x$ such that there is a positive density set of $n$ where\\[n+1,n+2,\\ldots,n+k\\]are all divisible by primes $\\leq x$.\n\nEstimate $S(k)$ - in particular, is it true that $S(k)\\geq k^{1-o(1)}$?\n\n\n\nIt follows from Rosser's sieve that $S(k)> k^{1/2-o(1)}$.\n\nIt is trivial that $S(k)\\leq k+1$ since, for example, one can take $n\\equiv 1\\pmod{(k+1)!}$. The best bound on large gaps between primes due to Ford, Green, Konyagin, Maynard, and Tao \\cite{FGKMT18} (see [4]) implies\\[S(k) \\ll k \\frac{\\log\\log\\log k}{\\log\\log k\\log\\log\\log\\log k}.\\]\n\n\n\n\nReferences\n\n\n[FGKMT18] Ford, Kevin and Green, Ben and Konyagin, Sergei and Maynard, James and Tao, Terence, Long gaps between primes. J. Amer. Math. Soc. (2018), 65-105.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #4\n- Problem #928\n- Problem #930\n- Problem #39\n- Problem #1\n\n## References\n\n- Er76d\n- FGKMT18\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T11:43:50.650Z",
+  "significance": 6,
+  "tractability": 4
+}

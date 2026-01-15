@@ -9,6 +9,7 @@
 # Environment variables:
 #   LEAN_MEMORY_LIMIT  - Memory limit in MB (default: 32768 = 32GB)
 #   LEAN_BUILD_TIMEOUT - Build timeout (default: 60m)
+#   LEAN_SKIP_CACHE    - Skip Mathlib cache download (default: false)
 #
 set -euo pipefail
 
@@ -19,8 +20,10 @@ REPO_ROOT="$(dirname "$PROOFS_DIR")"
 # Configuration
 MEMORY_LIMIT="${LEAN_MEMORY_LIMIT:-32768}"  # 32GB default
 TIMEOUT="${LEAN_BUILD_TIMEOUT:-60m}"
+SKIP_CACHE="${LEAN_SKIP_CACHE:-false}"
 TARGET="${1:-}"
 IMAGE="lean4-arm64:v4.26.0"
+CACHE_VOLUME="lean-mathlib-cache"
 
 echo "=== Docker Lean Build ==="
 echo "Memory limit: ${MEMORY_LIMIT}MB (hard enforced via cgroups)"
@@ -48,10 +51,23 @@ if ! docker image inspect "$IMAGE" &>/dev/null; then
     echo ""
 fi
 
+# Create persistent volume for Mathlib cache if it doesn't exist
+if ! docker volume inspect "$CACHE_VOLUME" &>/dev/null 2>&1; then
+    echo "Creating persistent Mathlib cache volume..."
+    docker volume create "$CACHE_VOLUME"
+fi
+
+# Build command - download cache first if not skipped
+if [ "$SKIP_CACHE" = "true" ]; then
+    BUILD_CMD="lake build ${TARGET}"
+else
+    BUILD_CMD="lake exe cache get && lake build ${TARGET}"
+fi
+
 echo "Starting Docker build..."
 echo ""
 
-# Run in Docker with hard memory limit
+# Run in Docker with hard memory limit and persistent cache volume
 CONTAINER_NAME="lean-build-$$"
 
 docker run --rm \
@@ -59,10 +75,11 @@ docker run --rm \
     --memory-swap="${MEMORY_LIMIT}m" \
     --cpus="$(( $(sysctl -n hw.ncpu) / 2 ))" \
     -v "${REPO_ROOT}:/workspace:delegated" \
+    -v "${CACHE_VOLUME}:/workspace/proofs/.lake/build:delegated" \
     -w /workspace/proofs \
     --name "$CONTAINER_NAME" \
     "$IMAGE" \
-    /bin/bash -c "lake build ${TARGET}" 2>&1 &
+    /bin/bash -c "$BUILD_CMD" 2>&1 &
 
 BUILD_PID=$!
 

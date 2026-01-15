@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-1120",
+  "title": "Erdős #1120",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f\\in \\mathbb{C}[z]$ be a monic polynomial of degree $n$, all of whose roots satisfy $\\lvert z\\rvert\\leq 1$. Let\\[E= \\{ z : \\lvert f(z)\\rvert \\leq 1\\}.\\]What is the shortest length of a path in $E$ joining $z=0$ to $\\lvert z\\rvert =1$?\n\n\n\nThis is Problem 4.22 in \\cite{Ha74}, where it is attributed to Erd\\H{o}s. In \\cite{Ha74} it is reported that Clunie and Netanyahu (personal communication) showed that a path always exists which joins $z=0$ to $\\lvert z\\rvert=1$ in $A$.\n\nErd\\H{o}s wrote 'presumably this tends to infinity with $n$, but not too fast'.\n\nThe trivial lower bound for the length of this path is $1$, which is achieved for $f(z)=z^n$. The interesting side of this question is what the worst case behaviour is (as a function of $n$).\n\nSee also [1041].\n\n\n\n\nReferences\n\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T15:45:30.817Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1120 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f\\in \\mathbb{C}[z]$ be a monic polynomial of degree $n$, all of whose roots satisfy $\\lvert z\\rvert\\leq 1$. Let\\[E= \\{ z : \\lvert f(z)\\rvert \\leq 1\\}.\\]What is the shortest length of a path in $E$ joining $z=0$ to $\\lvert z\\rvert =1$?\n\n\n\nThis is Problem 4.22 in \\cite{Ha74}, where it is attributed to Erd\\H{o}s. In \\cite{Ha74} it is reported that Clunie and Netanyahu (personal communication) showed that a path always exists which joins $z=0$ to $\\lvert z\\rvert=1$ in $A$.\n\nErd\\H{o}s wrote 'presumably this tends to infinity with $n$, but not too fast'.\n\nThe trivial lower bound for the length of this path is $1$, which is achieved for $f(z)=z^n$. The interesting side of this question is what the worst case behaviour is (as a function of $n$).\n\nSee also [1041].\n\n\n\n\nReferences\n\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1041\n- Problem #1119\n- Problem #1121\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Ha74\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T15:45:30.818Z",
+  "significance": 6,
+  "tractability": 4
+}

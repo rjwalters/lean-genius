@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-931",
+  "title": "Erdős #931",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k_1\\geq k_2\\geq 3$. Are there only finitely many $n_2\\geq n_1+k_1$ such that\\[\\prod_{1\\leq i\\leq k_1}(n_1+i)\\textrm{ and }\\prod_{1\\leq j\\leq k_2}(n_2+j)\\]have the same prime factors?\n\n\n\nTijdeman gave the example\\[19,20,21,22\\textrm{ and }54,55,56,57.\\]Erd\\H{o}s \\cite{Er76d} was unsure of this conjecture, and thought perhaps if the two products have the same prime factors then $n_2>2(n_1+k_1)$. It is not clear but it is possible that he meant to ask this question also permitting finitely many counterexamples. Indeed, without this caveat it is false - AlphaProof has found the counterexample\\[10! = 2^8\\cdot 3^4\\cdot 5^2\\cdot 7\\]and\\[14\\cdot 15\\cdot 16 = 2^5\\cdot 3\\cdot 5\\cdot 7,\\]so that $n_1=0$, $k_1=10$, $n_2=13$, and $k_2=3$.\n\nSee also [388].\n\nThis is discussed in problem B35 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er76d] Erd\\H{o}s, P., Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics (Univ. Manitoba, Winnipeg, Man., 1975) (1976), 25-44.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T11:43:50.650Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #931 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k_1\\geq k_2\\geq 3$. Are there only finitely many $n_2\\geq n_1+k_1$ such that\\[\\prod_{1\\leq i\\leq k_1}(n_1+i)\\textrm{ and }\\prod_{1\\leq j\\leq k_2}(n_2+j)\\]have the same prime factors?\n\n\n\nTijdeman gave the example\\[19,20,21,22\\textrm{ and }54,55,56,57.\\]Erd\\H{o}s \\cite{Er76d} was unsure of this conjecture, and thought perhaps if the two products have the same prime factors then $n_2>2(n_1+k_1)$. It is not clear but it is possible that he meant to ask this question also permitting finitely many counterexamples. Indeed, without this caveat it is false - AlphaProof has found the counterexample\\[10! = 2^8\\cdot 3^4\\cdot 5^2\\cdot 7\\]and\\[14\\cdot 15\\cdot 16 = 2^5\\cdot 3\\cdot 5\\cdot 7,\\]so that $n_1=0$, $k_1=10$, $n_2=13$, and $k_2=3$.\n\nSee also [388].\n\nThis is discussed in problem B35 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er76d] Erd\\H{o}s, P., Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics (Univ. Manitoba, Winnipeg, Man., 1975) (1976), 25-44.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #388\n- Problem #930\n- Problem #932\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er76d\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T11:43:50.650Z",
+  "significance": 6,
+  "tractability": 4
+}

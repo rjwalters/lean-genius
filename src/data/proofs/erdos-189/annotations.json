@@ -1,1 +1,142 @@
-[]
+[
+  {
+    "id": "ann-e189-plane",
+    "proofId": "erdos-189",
+    "range": {
+      "startLine": 33,
+      "endLine": 34
+    },
+    "type": "definition",
+    "title": "The Euclidean Plane",
+    "content": "We define the **plane** as `EuclideanSpace ℝ (Fin 2)`, Mathlib's standard representation of ℝ². This gives us access to the inner product, norm, and distance functions needed for geometric reasoning.",
+    "mathContext": "`EuclideanSpace ℝ (Fin 2)` is the 2-dimensional real Euclidean space with the standard inner product.",
+    "significance": "supporting",
+    "relatedConcepts": ["euclidean-geometry", "plane", "mathlib"]
+  },
+  {
+    "id": "ann-e189-coloring",
+    "proofId": "erdos-189",
+    "range": {
+      "startLine": 36,
+      "endLine": 37
+    },
+    "type": "definition",
+    "title": "Finite Coloring",
+    "content": "A **finite coloring** using n colors is simply a function from the plane to `Fin n`. Every point gets assigned one of n colors (0 through n-1). This is the standard way to formalize coloring problems in combinatorics.",
+    "mathContext": "`FiniteColoring n := Plane → Fin n` assigns each point in ℝ² a color from {0, 1, ..., n-1}.",
+    "significance": "key",
+    "relatedConcepts": ["ramsey-theory", "coloring", "partition"]
+  },
+  {
+    "id": "ann-e189-rectangle",
+    "proofId": "erdos-189",
+    "range": {
+      "startLine": 39,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Rectangle Definition",
+    "content": "Four points form a **rectangle** if they have three consecutive right angles: a-b perpendicular to b-c and b-c perpendicular to c-d. The fourth angle is automatically right. We also require the quadrilateral to be non-degenerate (distinct consecutive vertices).",
+    "mathContext": "Perpendicularity is expressed via the inner product: `inner (a - b) (c - b) = 0` means a-b is perpendicular to b-c.",
+    "significance": "critical",
+    "relatedConcepts": ["rectangle", "perpendicularity", "inner-product"]
+  },
+  {
+    "id": "ann-e189-area",
+    "proofId": "erdos-189",
+    "range": {
+      "startLine": 48,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Rectangle Area",
+    "content": "The **area** of a rectangle is the product of two perpendicular side lengths: ||a - b|| * ||b - c||. For a proper rectangle (where a-b is perpendicular to b-c), this gives the standard area formula.",
+    "mathContext": "Using the norm for Euclidean distance, the area is width times height.",
+    "significance": "key",
+    "relatedConcepts": ["area", "norm", "geometry"]
+  },
+  {
+    "id": "ann-e189-statement",
+    "proofId": "erdos-189",
+    "range": {
+      "startLine": 64,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "The Erdos Problem Statement",
+    "content": "**Erdos189Statement** formalizes the question: For ANY finite coloring of the plane, does SOME color class contain rectangles of EVERY positive area? This is a universal-existential statement: for all n, for all n-colorings, exists a color such that for all A > 0, that color has a rectangle of area A.",
+    "mathContext": "The statement quantifies over the number of colors n, the coloring function, and requires existence of a 'universal' color.",
+    "significance": "critical",
+    "relatedConcepts": ["erdos-problem", "ramsey-type", "universality"]
+  },
+  {
+    "id": "ann-e189-kovac",
+    "proofId": "erdos-189",
+    "range": {
+      "startLine": 72,
+      "endLine": 87
+    },
+    "type": "theorem",
+    "title": "Kovac's Counterexample (2023)",
+    "content": "**Kovac's breakthrough**: There exists a 25-coloring of the plane such that NO color class contains rectangle vertices of area 1. This is axiomatized since the construction involves partitioning the plane into Jordan measurable regions with specific properties.",
+    "mathContext": "The axiom states: there exists a coloring with 25 colors such that for all colors, there is no rectangle of area 1 in that color class.",
+    "significance": "critical",
+    "relatedConcepts": ["counterexample", "kovac", "25-coloring"]
+  },
+  {
+    "id": "ann-e189-main-theorem",
+    "proofId": "erdos-189",
+    "range": {
+      "startLine": 89,
+      "endLine": 99
+    },
+    "type": "theorem",
+    "title": "Main Theorem: The Answer is NO",
+    "content": "**erdos_189_is_false** proves that the Erdos statement is false. The proof is a clean derivation from Kovac's counterexample: if the statement were true, the 25-coloring would have some color with rectangles of every area, including area 1. But Kovac showed no color has area-1 rectangles. Contradiction!",
+    "mathContext": "The proof uses the 25-coloring to instantiate the universal quantifiers, then applies Kovac's result for the contradiction.",
+    "significance": "critical",
+    "relatedConcepts": ["disproof", "contradiction", "main-result"]
+  },
+  {
+    "id": "ann-e189-graham",
+    "proofId": "erdos-189",
+    "range": {
+      "startLine": 103,
+      "endLine": 114
+    },
+    "type": "theorem",
+    "title": "Graham's Triangle Theorem",
+    "content": "**Contrast with triangles**: Graham (1980) proved that for RIGHT-ANGLED TRIANGLES, the answer is YES - any finite coloring has a color class containing triangles of every area. This shows rectangles and triangles behave fundamentally differently in this Ramsey-type question.",
+    "mathContext": "For triangles, the area formula uses (1/2) times base times height with a right angle at one vertex.",
+    "significance": "key",
+    "relatedConcepts": ["graham", "triangle", "positive-result"]
+  },
+  {
+    "id": "ann-e189-parallelogram",
+    "proofId": "erdos-189",
+    "range": {
+      "startLine": 129,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "Open Parallelogram Question",
+    "content": "**Still unsolved**: What about parallelograms? If we drop the right-angle constraint and only require opposite sides parallel, does every finite coloring have a color with parallelograms of every area? This remains open as of 2025.",
+    "mathContext": "Parallelograms are defined by a - b = d - c (opposite sides equal as vectors). Area uses the determinant formula.",
+    "significance": "key",
+    "relatedConcepts": ["parallelogram", "open-problem", "future-work"]
+  },
+  {
+    "id": "ann-e189-historical",
+    "proofId": "erdos-189",
+    "range": {
+      "startLine": 143,
+      "endLine": 159
+    },
+    "type": "concept",
+    "title": "Historical Context",
+    "content": "The problem was open for **43 years** (1980-2023). Graham's original paper showed interesting dichotomies: triangles YES, rhombuses NO, rectangles unknown. Kovac's resolution came via an elegant construction using Jordan measurable regions - the coloring is surprisingly 'nice' despite being a counterexample.",
+    "mathContext": "Jordan measurable means the topological boundary has Lebesgue measure zero - a regularity condition.",
+    "significance": "supporting",
+    "relatedConcepts": ["history", "graham-1980", "kovac-2023"]
+  }
+]

@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-913",
+  "title": "Erdős #913",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many $n$ such that if\\[n(n+1) = \\prod_i p_i^{k_i}\\]is the factorisation into distinct primes then all exponents $k_i$ are distinct?\n\n\n\nIt is likely that there are infinitely many primes $p$ such that $8p^2-1$ is also prime, in which case this is true with exponents $\\{1,2,3\\}$, letting $n=8p^2-1$.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T11:36:40.862Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #913 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many $n$ such that if\\[n(n+1) = \\prod_i p_i^{k_i}\\]is the factorisation into distinct primes then all exponents $k_i$ are distinct?\n\n\n\nIt is likely that there are infinitely many primes $p$ such that $8p^2-1$ is also prime, in which case this is true with exponents $\\{1,2,3\\}$, letting $n=8p^2-1$.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #912\n- Problem #914\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T11:36:40.863Z",
+  "significance": 6,
+  "tractability": 4
+}

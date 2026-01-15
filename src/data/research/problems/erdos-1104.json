@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-1104",
+  "title": "Erdős #1104",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be the maximum possible chromatic number of a triangle-free graph on $n$ vertices. Estimate $f(n)$.\n\n\n\nThe bounds $R(3,k)\\asymp k^2/\\log k$ (see [165]) imply $f(n) \\asymp (n/\\log n)^{1/2}$. The best bounds available are\\[(1-o(1))(n/\\log n)^{1/2}\\leq f(n) \\leq (2+o(1))(n/\\log n)^{1/2}.\\]The upper bound is due to Davies and Illingworth \\cite{DaIl22}, the lower bound follows from a construction of Hefty, Horn, King, and Pfender \\cite{HHKP25}.\n\nOne can ask a similar question for the maximum possible chromatic number of a triangle-free graph on $m$ edges. Let this be $g(m)$. Davies and Illingworth \\cite{DaIl22} prove\\[g(m) \\leq (3^{5/3}+o(1))\\left(\\frac{m}{(\\log m)^2}\\right)^{1/3}.\\]Kim \\cite{Ki95} gave a construction which implies $g(m) \\gg (m/(\\log m)^2)^{1/3}$.\n\n\n\n\nReferences\n\n\n[DaIl22] Davies, Ewan and Illingworth, Freddie, The {$\\chi$}-{R}amsey problem for triangle-free graphs. SIAM J. Discrete Math. (2022), 1124--1134.\n\n[HHKP25] Z. Hefty, P. Horn, D. King, and F. Pfender, Improving $R(3,k)$ in just two bites. arXiv:2510.19718 (2025).\n\n[Ki95] Kim, J. H., The Ramsey number $R(3,t)$ has order of magnitude $t^2/\\log t$. Random Structures and Algorithms (1995), 173-207.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T15:24:14.877Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1104 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be the maximum possible chromatic number of a triangle-free graph on $n$ vertices. Estimate $f(n)$.\n\n\n\nThe bounds $R(3,k)\\asymp k^2/\\log k$ (see [165]) imply $f(n) \\asymp (n/\\log n)^{1/2}$. The best bounds available are\\[(1-o(1))(n/\\log n)^{1/2}\\leq f(n) \\leq (2+o(1))(n/\\log n)^{1/2}.\\]The upper bound is due to Davies and Illingworth \\cite{DaIl22}, the lower bound follows from a construction of Hefty, Horn, King, and Pfender \\cite{HHKP25}.\n\nOne can ask a similar question for the maximum possible chromatic number of a triangle-free graph on $m$ edges. Let this be $g(m)$. Davies and Illingworth \\cite{DaIl22} prove\\[g(m) \\leq (3^{5/3}+o(1))\\left(\\frac{m}{(\\log m)^2}\\right)^{1/3}.\\]Kim \\cite{Ki95} gave a construction which implies $g(m) \\gg (m/(\\log m)^2)^{1/3}$.\n\n\n\n\nReferences\n\n\n[DaIl22] Davies, Ewan and Illingworth, Freddie, The {$\\chi$}-{R}amsey problem for triangle-free graphs. SIAM J. Discrete Math. (2022), 1124--1134.\n\n[HHKP25] Z. Hefty, P. Horn, D. King, and F. Pfender, Improving $R(3,k)$ in just two bites. arXiv:2510.19718 (2025).\n\n[Ki95] Kim, J. H., The Ramsey number $R(3,t)$ has order of magnitude $t^2/\\log t$. Random Structures and Algorithms (1995), 173-207.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #165\n- Problem #2\n- Problem #3\n- Problem #1103\n- Problem #1105\n- Problem #39\n- Problem #1\n\n## References\n\n- Er67c\n- DaIl22\n- HHKP25\n- Ki95\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T15:24:14.877Z",
+  "significance": 6,
+  "tractability": 4
+}

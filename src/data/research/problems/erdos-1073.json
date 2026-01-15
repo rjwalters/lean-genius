@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-1073",
+  "title": "Erdős #1073",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A(x)$ count the number of composite $u<x$ such that $n!+1\\equiv 0\\pmod{u}$ for some $n$. Is it true that $A(x)\\leq x^{o(1)}$?\n\n\n\nA question of Erd\\H{o}s raised in discussions with Hardy and Subbarao \\cite{HaSu02}. The sequence of such $u$ begins\\[25,121,169,437,\\ldots\\]and is A256519 in the OEIS.\n\nWilson's theorem states that $u$ is prime if and only if $(u-1)!+1\\equiv 0\\pmod{u}$.\n\nThis is mentioned in problem A2 of Guy's collection.\n\n\n\n\nReferences\n\n\n[HaSu02] Hardy, G. E. and Subbarao, M. V., A modified problem of Pillai and some related questions. Amer. Math. Monthly (2002), 554--559.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T14:45:40.351Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1073 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A(x)$ count the number of composite $u<x$ such that $n!+1\\equiv 0\\pmod{u}$ for some $n$. Is it true that $A(x)\\leq x^{o(1)}$?\n\n\n\nA question of Erd\\H{o}s raised in discussions with Hardy and Subbarao \\cite{HaSu02}. The sequence of such $u$ begins\\[25,121,169,437,\\ldots\\]and is A256519 in the OEIS.\n\nWilson's theorem states that $u$ is prime if and only if $(u-1)!+1\\equiv 0\\pmod{u}$.\n\nThis is mentioned in problem A2 of Guy's collection.\n\n\n\n\nReferences\n\n\n[HaSu02] Hardy, G. E. and Subbarao, M. V., A modified problem of Pillai and some related questions. Amer. Math. Monthly (2002), 554--559.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1072\n- Problem #1074\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- HaSu02\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T14:45:40.351Z",
+  "significance": 6,
+  "tractability": 4
+}

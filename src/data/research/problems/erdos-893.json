@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-893",
+  "title": "Erdős #893",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $\\tau(n)$ counts the divisors of $n$ then let\\[f(n)=\\sum_{1\\leq k\\leq n}\\tau(2^k-1).\\]Does $f(2n)/f(n)$ tend to a limit?\n\n\n\nErd\\H{o}s \\cite{Er98} says that 'probably there is no simple asymptotic formula for $f(n)$ since $f(n)$ increases too fast'.\n\nKova\\v{c} and Luca \\cite{KoLu25} (building on a heuristic independently found by Cambie (personal communication)) have shown that there is no finite limit, in that\\[\\limsup_{n\\to \\infty}\\frac{f(2n)}{f(n)}=\\infty,\\]and provide both theoretical and numerical evidence that suggests $\\lim \\frac{f(2n)}{f(n)}=\\infty$.\n\n\n\n\nReferences\n\n\n[Er98] Erd\\H{o}s, Paul, Some of my new and almost new problems and results in combinatorial number theory. Number theory (Eger, 1996) (1998), 169-180.\n\n[KoLu25] V. Kova\\v{c} and F. Luca, On the number of divisors of Mersenne numbers. arXiv:2506.04883 (2025).\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T11:22:53.229Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #893 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $\\tau(n)$ counts the divisors of $n$ then let\\[f(n)=\\sum_{1\\leq k\\leq n}\\tau(2^k-1).\\]Does $f(2n)/f(n)$ tend to a limit?\n\n\n\nErd\\H{o}s \\cite{Er98} says that 'probably there is no simple asymptotic formula for $f(n)$ since $f(n)$ increases too fast'.\n\nKova\\v{c} and Luca \\cite{KoLu25} (building on a heuristic independently found by Cambie (personal communication)) have shown that there is no finite limit, in that\\[\\limsup_{n\\to \\infty}\\frac{f(2n)}{f(n)}=\\infty,\\]and provide both theoretical and numerical evidence that suggests $\\lim \\frac{f(2n)}{f(n)}=\\infty$.\n\n\n\n\nReferences\n\n\n[Er98] Erd\\H{o}s, Paul, Some of my new and almost new problems and results in combinatorial number theory. Number theory (Eger, 1996) (1998), 169-180.\n\n[KoLu25] V. Kova\\v{c} and F. Luca, On the number of divisors of Mersenne numbers. arXiv:2506.04883 (2025).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #892\n- Problem #894\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er98\n- KoLu25\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T11:22:53.229Z",
+  "significance": 6,
+  "tractability": 4
+}

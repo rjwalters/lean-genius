@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-846",
+  "title": "Erdős #846",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset \\mathbb{R}^2$ be an infinite set for which there exists some $\\epsilon>0$ such that in any subset of $A$ of size $n$ there are always at least $\\epsilon n$ with no three on a line.\n\nIs it true that $A$ is the union of a finite number of sets where no three are on a line?\n\n\n\nA problem of Erd\\H{o}s, Ne\\v{s}et\\v{r}il, and R\\\"{o}dl.\n\nSee also [774] and [847].\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T10:25:45.154Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #846 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset \\mathbb{R}^2$ be an infinite set for which there exists some $\\epsilon>0$ such that in any subset of $A$ of size $n$ there are always at least $\\epsilon n$ with no three on a line.\n\nIs it true that $A$ is the union of a finite number of sets where no three are on a line?\n\n\n\nA problem of Erd\\H{o}s, Ne\\v{s}et\\v{r}il, and R\\\"{o}dl.\n\nSee also [774] and [847].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #774\n- Problem #847\n- Problem #845\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er92b\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T10:25:45.155Z",
+  "significance": 7,
+  "tractability": 5
+}

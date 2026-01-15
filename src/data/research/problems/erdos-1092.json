@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-1092",
+  "title": "Erdős #1092",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_r(n)$ be maximal such that, if a graph $G$ has the property that every subgraph $H$ on $m$ vertices is the union of a graph with chromatic number $r$ and a graph with $\\leq f_r(m)$ edges, then $G$ has chromatic number $\\leq r+1$.\n\nIs it true that $f_2(n) \\gg n$? More generally, is $f_r(n)\\gg_r n$?\n\n\n\nA conjecture of Erd\\H{o}s, Hajnal, and Szemer\\'{e}di. This seems to be closely related to, but distinct from, [744].\n\nTang notes in the comments that a construction of R\\\"{o}dl \\cite{Ro82} disproves the first question, so that $f_2(n)\\not\\gg n$.\n\n\n\n\nReferences\n\n\n[Ro82] R\\\"{o}dl, Vojt\\vEch, Nearly bipartite graphs with large chromatic number. Combinatorica (1982), 377-383.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T14:52:37.979Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1092 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_r(n)$ be maximal such that, if a graph $G$ has the property that every subgraph $H$ on $m$ vertices is the union of a graph with chromatic number $r$ and a graph with $\\leq f_r(m)$ edges, then $G$ has chromatic number $\\leq r+1$.\n\nIs it true that $f_2(n) \\gg n$? More generally, is $f_r(n)\\gg_r n$?\n\n\n\nA conjecture of Erd\\H{o}s, Hajnal, and Szemer\\'{e}di. This seems to be closely related to, but distinct from, [744].\n\nTang notes in the comments that a construction of R\\\"{o}dl \\cite{Ro82} disproves the first question, so that $f_2(n)\\not\\gg n$.\n\n\n\n\nReferences\n\n\n[Ro82] R\\\"{o}dl, Vojt\\vEch, Nearly bipartite graphs with large chromatic number. Combinatorica (1982), 377-383.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #744\n- Problem #1091\n- Problem #1093\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Ro82\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T14:52:37.979Z",
+  "significance": 6,
+  "tractability": 4
+}

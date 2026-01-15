@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-750",
+  "title": "Erdős #750",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(m)$ be some function such that $f(m)\\to \\infty$ as $m\\to \\infty$. Does there exist a graph $G$ of infinite chromatic number such that every subgraph on $m$ vertices contains an independent set of size at least $\\frac{m}{2}-f(m)$?\n\n\n\nIn \\cite{Er69b} Erd\\H{o}s conjectures this for $f(m)=\\epsilon m$ for any fixed $\\epsilon>0$. This follows from a result of Erd\\H{o}s, Hajnal, and Szemer\\'{e}di \\cite{EHS82}, as described by msellke in the comments.\n\nIn \\cite{ErHa67b} Erd\\H{o}s and Hajnal prove this for $f(m)\\geq cm$ for all $c>1/4$.\n\nSee also [75].\n\n\n\n\nReferences\n\n\n[EHS82] Erd\\H{o}s, P. and Hajnal, A. and Szemer\\'{e}di, E., On almost bipartite large chromatic graphs. Theory and practice of combinatorics (1982), 117-123.\n\n[Er69b] Erd\\H{o}s, P., Problems and results in chromatic graph theory. Proof Techniques in Graph Theory (Proc. Second Ann\nArbor Graph Theory Conf., Ann Arbor, Mich.,\n1968) (1969), 27-35.\n\n[ErHa67b] Erd\\H{o}s, P. and Hajnal, Andr\\'as, On chromatic graphs. Mat. Lapok (1967), 1--4.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T08:18:33.645Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #750 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(m)$ be some function such that $f(m)\\to \\infty$ as $m\\to \\infty$. Does there exist a graph $G$ of infinite chromatic number such that every subgraph on $m$ vertices contains an independent set of size at least $\\frac{m}{2}-f(m)$?\n\n\n\nIn \\cite{Er69b} Erd\\H{o}s conjectures this for $f(m)=\\epsilon m$ for any fixed $\\epsilon>0$. This follows from a result of Erd\\H{o}s, Hajnal, and Szemer\\'{e}di \\cite{EHS82}, as described by msellke in the comments.\n\nIn \\cite{ErHa67b} Erd\\H{o}s and Hajnal prove this for $f(m)\\geq cm$ for all $c>1/4$.\n\nSee also [75].\n\n\n\n\nReferences\n\n\n[EHS82] Erd\\H{o}s, P. and Hajnal, A. and Szemer\\'{e}di, E., On almost bipartite large chromatic graphs. Theory and practice of combinatorics (1982), 117-123.\n\n[Er69b] Erd\\H{o}s, P., Problems and results in chromatic graph theory. Proof Techniques in Graph Theory (Proc. Second Ann\nArbor Graph Theory Conf., Ann Arbor, Mich.,\n1968) (1969), 27-35.\n\n[ErHa67b] Erd\\H{o}s, P. and Hajnal, Andr\\'as, On chromatic graphs. Mat. Lapok (1967), 1--4.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #4\n- Problem #75\n- Problem #749\n- Problem #751\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er94b\n- Er95d\n- Er69b\n- EHS82\n- ErHa67b\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T08:18:33.645Z",
+  "significance": 6,
+  "tractability": 4
+}

@@ -1,33 +1,85 @@
 {
   "id": "erdos-189",
-  "title": "Erdős Problem #189",
+  "title": "Erdős Problem #189: Rectangles of Every Area in Colored Planes",
   "slug": "erdos-189",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is finitely coloured then must there exist some colour class which contains the vertices of a rectangle of every area?...",
+  "description": "If the plane is finitely colored, must some color class contain rectangle vertices of every area? Disproved by Kovač (2023) with a 25-coloring.",
   "meta": {
-    "author": "Unknown",
+    "author": "Kovač (2023)",
     "sourceUrl": "https://erdosproblems.com/189",
-    "date": "",
-    "status": "pending",
+    "date": "2023",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos189Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "combinatorial-geometry",
+      "coloring"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 189,
     "erdosUrl": "https://erdosproblems.com/189",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space ℝ² for point geometry",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "inner",
+        "description": "Inner product for perpendicularity",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Clean formalization of the rectangle coloring problem",
+      "Statement of Kovač's counterexample as axiom with full derivation",
+      "Related results: Graham's triangle theorem, square/parallelogram variants"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #189 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $\\mathbb{R}^2$ is finitely coloured then must there exist some colour class which contains the vertices of a rectangle of every area?\n\n\n\nGraham \\cite{Gr80} has shown that this is true if we replace rectangle by right-angled triangle. The same question can be asked for parallelograms. It is not true for rhombuses.\n\nThis is false; Kova\\v{c} \\cite{Ko23} provides an explicit (and elegantly simple) colouring using 25 colours such that no colour class contains the vertices of a rectangle of area $1$. The question for parallelograms remains open.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Gr80] Graham, R. L., On partitions of ${\\bf E}^{n}$. J. Combin. Theory Ser. A (1980), 89-97.\n\n[Ko23] Kova\\vC, V., Coloring and density theorems for configurations of a given volume. arXiv:2309.09973 (2023).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Graham in his 1980 paper 'On partitions of Eⁿ'. Graham had shown that for right-angled triangles, the answer is YES: any finite coloring of ℝ² has a color class containing right-angled triangle vertices of every area. He asked whether the same holds for rectangles.\n\nThe problem remained open for over 40 years until Kovač's elegant resolution in 2023. Using a surprisingly simple construction, Kovač provided an explicit 25-coloring of ℝ² such that no single color class contains the vertices of any rectangle with area 1. This definitively answers the question: NO, rectangles do not have this property.\n\nThe analogous question for parallelograms remains open as of 2025.",
+    "problemStatement": "**Question**: If $\\mathbb{R}^2$ is finitely coloured, must there exist some colour class which contains the vertices of a rectangle of every area?\n\n**Answer**: NO (Kovač 2023)\n\nKovač constructed an explicit 25-coloring where no color class contains rectangle vertices of area 1.",
+    "proofStrategy": "The formalization defines the key concepts (finite coloring, rectangle, area) and states the Erdős problem as a Prop. We then axiomatize Kovač's counterexample: there exists a 25-coloring with no monochromatic rectangle of area 1. From this axiom, we derive that the Erdős statement is false. The actual construction is not formalized since it requires measure-theoretic machinery for Jordan measurable sets.",
+    "keyInsights": [
+      "**Rectangles vs Triangles**: Graham showed triangles have the 'every area' property, but rectangles do not. The extra constraint of perpendicular sides matters.",
+      "**25 colors suffice**: Kovač's counterexample uses 25 colors - remarkably few for such a strong negative result.",
+      "**Jordan measurable regions**: Each color class in Kovač's construction forms a Jordan measurable set, showing the counterexample is quite 'nice' topologically.",
+      "**Open parallelogram case**: Whether parallelograms (without the right angle constraint) have this property remains unsolved."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 31,
+      "endLine": 68,
+      "summary": "Definitions for finite coloring, rectangle, area, and the problem statement"
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result (Disproof)",
+      "startLine": 70,
+      "endLine": 99,
+      "summary": "Kovač's counterexample and derivation that the statement is false"
+    },
+    {
+      "id": "related",
+      "title": "Related Results",
+      "startLine": 101,
+      "endLine": 141,
+      "summary": "Graham's triangle theorem, squares, and the open parallelogram case"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #189 and its resolution: Kovač (2023) disproved the conjecture by constructing a 25-coloring of ℝ² where no color class contains rectangle vertices of area 1. The theorem `erdos_189_is_false` derives this from the axiomatized counterexample.",
+    "implications": "This result shows a fundamental asymmetry between triangles and rectangles in Ramsey-type coloring problems. The geometric constraint of perpendicularity significantly affects which area-universality properties hold.",
+    "openQuestions": [
+      "Does the analogous statement hold for parallelograms?",
+      "What is the minimum number of colors needed for a counterexample?",
+      "Can the counterexample be made with simpler (e.g., polygonal) color regions?"
+    ]
   }
 }

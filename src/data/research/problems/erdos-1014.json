@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-1014",
+  "title": "Erdős #1014",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $R(k,l)$ be the Ramsey number, so the minimal $n$ such that every graph on at least $n$ vertices contains either a $K_k$ or an independent set on $l$ vertices.\n\nProve, for fixed $k\\geq 3$, that\\[\\lim_{l\\to \\infty}\\frac{R(k,l+1)}{R(k,l)}=1.\\]\n\n\n\nThis is open even for $k=3$.\n\nSee also [544] for other behaviour of $R(3,k)$, and [1030] for the diagonal version of this question.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T13:43:13.293Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1014 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $R(k,l)$ be the Ramsey number, so the minimal $n$ such that every graph on at least $n$ vertices contains either a $K_k$ or an independent set on $l$ vertices.\n\nProve, for fixed $k\\geq 3$, that\\[\\lim_{l\\to \\infty}\\frac{R(k,l+1)}{R(k,l)}=1.\\]\n\n\n\nThis is open even for $k=3$.\n\nSee also [544] for other behaviour of $R(3,k)$, and [1030] for the diagonal version of this question.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #544\n- Problem #1030\n- Problem #1013\n- Problem #1015\n- Problem #2\n- Problem #39\n- Problem #1\n- Problem #9\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T13:43:13.293Z",
+  "significance": 7,
+  "tractability": 5
+}

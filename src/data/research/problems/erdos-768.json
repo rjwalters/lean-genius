@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-768",
+  "title": "Erdős #768",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset\\mathbb{N}$ be the set of $n$ such that for every prime $p\\mid n$ there exists some $d\\mid n$ with $d>1$ such that $d\\equiv 1\\pmod{p}$. Is it true that there exists some constant $c>0$ such that for all large $N$\\[\\frac{\\lvert A\\cap [1,N]\\rvert}{N}=\\exp(-(c+o(1))\\sqrt{\\log N}\\log\\log N).\\]\n\n\n\nErd\\H{o}s could prove that there exists some constant $c>0$ such that for all large $N$\\[\\exp(-c\\sqrt{\\log N}\\log\\log N)\\leq \\frac{\\lvert A\\cap [1,N]\\rvert}{N}\\]and\\[\\frac{\\lvert A\\cap [1,N]\\rvert}{N}\\leq \\exp(-(1+o(1))\\sqrt{\\log N\\log\\log N}).\\]Erd\\H{o}s asked about this because $\\lvert A\\cap [1,N]\\rvert$ provides an upper bound for the number of integers $n\\leq N$ for which there is a non-cyclic simple group of order $n$.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T08:32:32.166Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #768 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset\\mathbb{N}$ be the set of $n$ such that for every prime $p\\mid n$ there exists some $d\\mid n$ with $d>1$ such that $d\\equiv 1\\pmod{p}$. Is it true that there exists some constant $c>0$ such that for all large $N$\\[\\frac{\\lvert A\\cap [1,N]\\rvert}{N}=\\exp(-(c+o(1))\\sqrt{\\log N}\\log\\log N).\\]\n\n\n\nErd\\H{o}s could prove that there exists some constant $c>0$ such that for all large $N$\\[\\exp(-c\\sqrt{\\log N}\\log\\log N)\\leq \\frac{\\lvert A\\cap [1,N]\\rvert}{N}\\]and\\[\\frac{\\lvert A\\cap [1,N]\\rvert}{N}\\leq \\exp(-(1+o(1))\\sqrt{\\log N\\log\\log N}).\\]Erd\\H{o}s asked about this because $\\lvert A\\cap [1,N]\\rvert$ provides an upper bound for the number of integers $n\\leq N$ for which there is a non-cyclic simple group of order $n$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #767\n- Problem #769\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er74b\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T08:32:32.167Z",
+  "significance": 6,
+  "tractability": 4
+}

@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-1052",
+  "title": "Erdős #1052",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA unitary divisor of $n$ is $d\\mid n$ such that $(d,n/d)=1$. A number $n\\geq 1$ is a unitary perfect number if it is the sum of its unitary divisors (aside from $n$ itself).\n\nAre there only finite many unitary perfect numbers?\n\n\n\nGuy \\cite{Gu04} reports that Carlitz, Erd\\H{o}s, and Subbarao offer \\$10 for settling this question, and that Subbarao offers 10 cents for each new example.\n\nThere are no odd unitary perfect numbers. There are five known unitary perfect numbers (A002827 in the OEIS):\\[6, 60, 90, 87360, 146361946186458562560000.\\]This is problem B3 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T14:31:40.057Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1052 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA unitary divisor of $n$ is $d\\mid n$ such that $(d,n/d)=1$. A number $n\\geq 1$ is a unitary perfect number if it is the sum of its unitary divisors (aside from $n$ itself).\n\nAre there only finite many unitary perfect numbers?\n\n\n\nGuy \\cite{Gu04} reports that Carlitz, Erd\\H{o}s, and Subbarao offer \\$10 for settling this question, and that Subbarao offers 10 cents for each new example.\n\nThere are no odd unitary perfect numbers. There are five known unitary perfect numbers (A002827 in the OEIS):\\[6, 60, 90, 87360, 146361946186458562560000.\\]This is problem B3 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1051\n- Problem #1053\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T14:31:40.057Z",
+  "significance": 6,
+  "tractability": 4
+}

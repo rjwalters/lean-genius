@@ -438,6 +438,19 @@ If setup fails, it's usually due to:
 
 This repository contains formal mathematical proofs in Lean 4. Building Lean proofs can be memory-intensive.
 
+### DANGER: Memory Safety
+
+```
++======================================================================+
+|  NEVER RUN `lake build` DIRECTLY - USE DOCKER WRAPPER INSTEAD        |
+|                                                                      |
+|  Direct `lake build` can consume 100GB+ memory in seconds and        |
+|  crash the host system before any monitoring can react.              |
+|                                                                      |
+|  ALWAYS USE: ./proofs/scripts/docker-build.sh Proofs.YourProof       |
++======================================================================+
+```
+
 ### Building Proofs Safely
 
 **NEVER run `lake build` directly** - always use Docker or the safe-build script. Tactics like `grind` can consume all system memory before external monitoring can react.
@@ -470,6 +483,29 @@ The first run will build a native ARM64 Lean Docker image (~1 min).
 # Builds all proofs EXCEPT known memory-intensive ones
 ./proofs/scripts/build-safe-subset.sh
 ```
+
+### Safety Wrapper (Automatic Protection)
+
+This repository includes a `lake` wrapper script in `proofs/bin/` that **automatically intercepts** `lake build` commands and shows safe alternatives. When activated:
+
+```bash
+$ lake build Proofs.Something
+# Output:
+# +======================================================================+
+# |  BLOCKED: Direct 'lake build' can crash your system                 |
+# +======================================================================+
+#
+# Safe alternative:
+#   ./proofs/scripts/docker-build.sh Proofs.Something
+```
+
+**Activation methods:**
+
+1. **direnv (automatic)**: Run `direnv allow` in project root
+2. **Manual**: `source ./proofs/scripts/activate-safety.sh`
+3. **Shell profile**: Add `export PATH="/path/to/lean-genius/proofs/bin:$PATH"`
+
+**Bypass (dangerous)**: `LAKE_UNSAFE=1 lake build ...`
 
 ### Proof Organization
 
