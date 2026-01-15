@@ -76,6 +76,12 @@ lemma neg_one_not_square_mod_three_mod_four (p : ℕ) [hp : Fact p.Prime] (h3 : 
   rw [ZMod.exists_sq_eq_neg_one_iff]
   omega
 
+/-- If p ∤ n, then p² ∤ n (simple helper) -/
+lemma sq_not_dvd_of_not_dvd {p n : ℕ} (_hp : p.Prime) (h : ¬(p ∣ n)) : ¬(p^2 ∣ n) := by
+  intro hdiv
+  have : p ∣ p^2 := ⟨p, by ring⟩
+  exact h (Nat.dvd_trans this hdiv)
+
 /-- If p,q,r are distinct primes ≡ 3 (mod 4) with p < q and p < r, then p ∤ (q² + r²).
 
     The proof uses the first supplementary law of quadratic reciprocity:
@@ -89,9 +95,9 @@ lemma neg_one_not_square_mod_three_mod_four (p : ℕ) [hp : Fact p.Prime] (h3 : 
 -/
 lemma prime_3mod4_not_div_sum_squares {p q r : ℕ}
     (hp : Nat.Prime p) (hq : Nat.Prime q) (hr : Nat.Prime r)
-    (hp3 : p % 4 = 3) (hq3 : q % 4 = 3) (hr3 : r % 4 = 3)
-    (hpq : p ≠ q) (hpr : p ≠ r) (hqr : q ≠ r)
-    (hpltq : p < q) (hpltr : p < r) :
+    (hp3 : p % 4 = 3) (_hq3 : q % 4 = 3) (_hr3 : r % 4 = 3)
+    (hpq : p ≠ q) (hpr : p ≠ r) (_hqr : q ≠ r)
+    (_hpltq : p < q) (_hpltr : p < r) :
     ¬(p ∣ q^2 + r^2) := by
   intro hdiv
   haveI : Fact p.Prime := ⟨hp⟩
@@ -133,6 +139,53 @@ lemma prime_3mod4_not_div_sum_squares {p q r : ℕ}
       _ = -1 := by rw [neg_mul, mul_inv_cancel₀ hq2_ne]
   -- But -1 is not a square mod p when p ≡ 3 (mod 4)
   exact neg_one_not_square_mod_three_mod_four p hp3 hsq
+
+/-- **Main theorem**: Squares of primes ≡ 3 (mod 4) form a divisibility-free set.
+
+    If p², q², r² are distinct squares of primes ≡ 3 (mod 4) with p² < q², r²,
+    then p² ∤ (q² + r²).
+
+    **Proof**: Since p < q and p < r (as distinct primes with p² < q², r²),
+    we have p ∤ (q² + r²) by `prime_3mod4_not_div_sum_squares`.
+    Since p ∤ (q² + r²), certainly p² ∤ (q² + r²).
+-/
+theorem primeSquares3mod4_divisibility_free : IsDivisibilityFree primeSquares3mod4 := by
+  intro a b c ha hb hc hab hac hbc haltb haltc
+  -- Unpack: a = p², b = q², c = r² for primes p, q, r ≡ 3 (mod 4)
+  obtain ⟨p, hp, hp3, rfl⟩ := ha
+  obtain ⟨q, hq, hq3, rfl⟩ := hb
+  obtain ⟨r, hr, hr3, rfl⟩ := hc
+  -- Since p² ≠ q² and both are squares of primes, p ≠ q
+  have hpq : p ≠ q := by
+    intro heq
+    subst heq
+    exact hab rfl
+  have hpr : p ≠ r := by
+    intro heq
+    subst heq
+    exact hac rfl
+  have hqr : q ≠ r := by
+    intro heq
+    subst heq
+    exact hbc rfl
+  -- From p² < q² and p² < r², get p < q and p < r
+  have hpltq : p < q := by
+    have h : p^2 < q^2 := haltb
+    by_contra hle
+    push_neg at hle
+    have : q^2 ≤ p^2 := Nat.pow_le_pow_left hle 2
+    omega
+  have hpltr : p < r := by
+    have h : p^2 < r^2 := haltc
+    by_contra hle
+    push_neg at hle
+    have : r^2 ≤ p^2 := Nat.pow_le_pow_left hle 2
+    omega
+  -- By prime_3mod4_not_div_sum_squares: p ∤ (q² + r²)
+  have hndiv : ¬(p ∣ q^2 + r^2) :=
+    prime_3mod4_not_div_sum_squares hp hq hr hp3 hq3 hr3 hpq hpr hqr hpltq hpltr
+  -- Since p ∤ (q² + r²), we have p² ∤ (q² + r²)
+  exact sq_not_dvd_of_not_dvd hp hndiv
 
 /-! ## Density Results -/
 

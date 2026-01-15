@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-e39-header",
+    "proofId": "erdos-39",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This header documents **Erdős Problem #39**, one of the central open questions in additive combinatorics. The problem asks whether an infinite Sidon set can have counting function growing nearly as fast as √N.",
+    "mathContext": "A Sidon set (B₂ sequence) has all pairwise sums distinct. The counting function A(N) = |A ∩ {1,...,N}| measures density. The problem asks if A(N) >> N^{1/2-ε} is achievable for infinite Sidon sets.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "additive combinatorics",
+      "Sidon sets",
+      "counting functions"
+    ]
+  },
+  {
+    "id": "ann-e39-sidon-def",
+    "proofId": "erdos-39",
+    "range": {
+      "startLine": 34,
+      "endLine": 38
+    },
+    "type": "definition",
+    "title": "Sidon Set Definition",
+    "content": "A **Sidon set** (named after mathematician Simon Sidon) is a set where all pairwise sums are distinct. If you pick any two elements a ≤ b and c ≤ d from the set, and a + b = c + d, then a = c and b = d. This prevents 'collisions' like 1 + 6 = 2 + 5.",
+    "mathContext": "Formally: A is Sidon if ∀ a,b,c,d ∈ A, a ≤ b, c ≤ d, a + b = c + d implies a = c and b = d. This is equivalent to requiring the sumset A + A has no repeated elements (except trivial ones).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "B₂ sequences",
+      "sum-free sets",
+      "additive combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e39-counting",
+    "proofId": "erdos-39",
+    "range": {
+      "startLine": 40,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "The **counting function** A(N) tells us how many elements of A are at most N. For analyzing infinite sets, this is the key measure of 'density' - a set with A(N) ≈ √N is much denser than one with A(N) ≈ log N.",
+    "mathContext": "We define countingFunction A N as the cardinality of A ∩ [1,N], using Set.ncard for natural-valued cardinality of potentially infinite intersections with finite intervals.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic density",
+      "growth rate",
+      "cardinality"
+    ]
+  },
+  {
+    "id": "ann-e39-conjecture",
+    "proofId": "erdos-39",
+    "range": {
+      "startLine": 46,
+      "endLine": 55
+    },
+    "type": "theorem",
+    "title": "The Main Conjecture",
+    "content": "**Erdős Problem #39** (OPEN, $500 prize): Does there exist an infinite Sidon set A such that for every ε > 0, the counting function satisfies A(N) ≥ C_ε · N^{1/2-ε} for all sufficiently large N? This would be optimal since √N growth is impossible.",
+    "mathContext": "The statement uses big-Ω notation: A(N) = Ω(N^{1/2-ε}) for all ε > 0. This is formalized as: for all ε > 0, there exist C > 0 and N₀ such that A(N) ≥ C · N^{1/2-ε} for all N ≥ N₀.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open problem",
+      "Erdős prizes",
+      "asymptotic growth"
+    ]
+  },
+  {
+    "id": "ann-e39-upper-bound",
+    "proofId": "erdos-39",
+    "range": {
+      "startLine": 59,
+      "endLine": 66
+    },
+    "type": "theorem",
+    "title": "Erdős's Upper Bound",
+    "content": "Erdős proved a fundamental limit: for any infinite Sidon set, the limit inferior of A(N)/√N equals zero. This means that while A(N) might occasionally approach √N, it cannot *stay* above c√N for any constant c. The target N^{1/2-ε} is thus the best we could hope for.",
+    "mathContext": "Formally: liminf_{N→∞} A(N)/√N = 0. This follows from counting arguments on the sumset. If A(N) ≥ c√N for all large N, there would be too many sums in [1, 2N], leading to collisions.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "limit inferior",
+      "upper bounds",
+      "counting arguments"
+    ]
+  },
+  {
+    "id": "ann-e39-greedy",
+    "proofId": "erdos-39",
+    "range": {
+      "startLine": 76,
+      "endLine": 82
+    },
+    "type": "theorem",
+    "title": "Greedy Construction",
+    "content": "The simplest construction: start with {1}, and add the smallest integer that doesn't create a sum collision. This **greedy Sidon sequence** grows like N^{1/3}. The greedy sequence begins: 1, 2, 4, 8, 13, 21, 31, 45, ...",
+    "mathContext": "The N^{1/3} bound comes from: if A has k elements up to N, there are about k² sums, which must fit in [2, 2N]. So k² ≤ 2N, giving k ≤ √(2N). More careful analysis gives k ≈ N^{1/3}.",
+    "significance": "key",
+    "relatedConcepts": [
+      "greedy algorithm",
+      "constructive bounds",
+      "lower bounds"
+    ]
+  },
+  {
+    "id": "ann-e39-ruzsa",
+    "proofId": "erdos-39",
+    "range": {
+      "startLine": 92,
+      "endLine": 98
+    },
+    "type": "theorem",
+    "title": "Ruzsa's Construction (1998)",
+    "content": "**Imre Ruzsa** achieved the current best construction: an infinite Sidon set with A(N) >> N^{√2-1} ≈ N^{0.414}. This broke the 1/3 barrier and earned $100 from Erdős. The construction uses algebraic techniques from finite fields.",
+    "mathContext": "Ruzsa's approach: For prime p, consider {(a, a²) mod p : a ∈ F_p} in F_p × F_p. Lifting to integers and careful analysis gives growth N^{√2-1}. The exponent √2 - 1 ≈ 0.41421 arises from optimization.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "finite fields",
+      "algebraic constructions",
+      "current records"
+    ]
+  },
+  {
+    "id": "ann-e39-gap",
+    "proofId": "erdos-39",
+    "range": {
+      "startLine": 120,
+      "endLine": 132
+    },
+    "type": "theorem",
+    "title": "The Gap (Verified)",
+    "content": "We verify in Lean that √2 - 1 < 1/2, quantifying the gap between Ruzsa's construction (~0.414) and the target (~0.5-ε). This gap has remained open since 1998 - no one has improved the exponent in over 25 years!",
+    "mathContext": "The proof uses √2 < 1.5 (since 2 < 2.25 = 1.5²), hence √2 - 1 < 0.5. The actual gap is about 0.086 in the exponent, which translates to significant differences in counting function.",
+    "significance": "key",
+    "relatedConcepts": [
+      "verified computation",
+      "square roots",
+      "gap analysis"
+    ]
+  },
+  {
+    "id": "ann-e39-erdos-renyi",
+    "proofId": "erdos-39",
+    "range": {
+      "startLine": 136,
+      "endLine": 149
+    },
+    "type": "theorem",
+    "title": "Erdős-Rényi Construction",
+    "content": "A tantalizing related result: Erdős and Rényi showed that if we relax the Sidon condition to allow bounded collision count (r(n) ≤ C instead of r(n) ≤ 1), then N^{1/2-ε} IS achievable. This highlights that the strict Sidon requirement is the essential difficulty.",
+    "mathContext": "The representation number r(n) = #{(a,b) ∈ A² : a + b = n}. Sidon requires r(n) ≤ 1. Erdős-Rényi achieves A(N) >> N^{1/2-ε} with r(n) ≤ C for some constant C. Reducing C to 1 is the open problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "representation numbers",
+      "relaxed conditions",
+      "probabilistic method"
+    ]
+  },
+  {
+    "id": "ann-e39-examples",
+    "proofId": "erdos-39",
+    "range": {
+      "startLine": 176,
+      "endLine": 184
+    },
+    "type": "lemma",
+    "title": "Verified Sidon Example",
+    "content": "We prove that {1, 2, 5, 10} is a Sidon set by exhaustive case analysis. The pairwise sums are: 3, 6, 7, 11, 12, 15 - all distinct! This demonstrates the Sidon property concretely.",
+    "mathContext": "The proof uses Lean's omega tactic to handle the 256 cases (4⁴ choices of elements). Each case either shows distinctness or derives a contradiction from a ≤ b and c ≤ d constraints.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "concrete examples",
+      "exhaustive verification",
+      "omega tactic"
+    ]
+  }
+]

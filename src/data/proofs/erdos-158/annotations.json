@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-e158-header",
+    "proofId": "erdos-158",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This header documents **Erdős Problem #158**, which concerns the counting function of B₂[g] sets. The problem generalizes a known result about Sidon sets to a broader class of sets with bounded representation.",
+    "mathContext": "A B₂[g] set A is one where each sum n has at most g representations a + b = n with a ≤ b. The counting function A(N) = |A ∩ {1,...,N}| measures the density. The question is whether liminf A(N)/√N = 0 must hold.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "additive combinatorics",
+      "Sidon sets",
+      "counting functions"
+    ]
+  },
+  {
+    "id": "ann-e158-b2g-def",
+    "proofId": "erdos-158",
+    "range": {
+      "startLine": 29,
+      "endLine": 36
+    },
+    "type": "definition",
+    "title": "B₂[g] Set Definition",
+    "content": "A **B₂[g] set** is a set where each sum has at most g ordered representations. When g = 1, this is exactly a Sidon set. When g = 2, each sum can appear at most twice - the case that remains open.",
+    "mathContext": "Formally: A is B₂[g] if for all n, |{(a,b) : a + b = n, a ≤ b, a,b ∈ A}| ≤ g. We use encard (extended cardinality) to handle potentially infinite representation sets.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Sidon sets",
+      "representation function",
+      "sumsets"
+    ]
+  },
+  {
+    "id": "ann-e158-counting",
+    "proofId": "erdos-158",
+    "range": {
+      "startLine": 37,
+      "endLine": 43
+    },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "The **counting function** A(N) measures how many elements of A lie in {1,...,N}. The **normalized** version divides by √N, which is the natural scale for these sets.",
+    "mathContext": "countingFn A N = |A ∩ [0, N)|, and normalizedCount A N = A(N) · N^{-1/2}. The √N normalization comes from the fact that finite Sidon subsets of {1,...,N} have size at most ~√N.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density",
+      "growth rate",
+      "normalization"
+    ]
+  },
+  {
+    "id": "ann-e158-sidon-equiv",
+    "proofId": "erdos-158",
+    "range": {
+      "startLine": 44,
+      "endLine": 52
+    },
+    "type": "lemma",
+    "title": "B₂[1] = Sidon",
+    "content": "The equivalence between B₂[1] and Sidon sets is fundamental. A Sidon set requires all pairwise sums to be distinct, which is exactly the condition that each sum has at most one representation.",
+    "mathContext": "Axiomatized because the proof requires working with Mathlib's IsSidon definition and the set-theoretic B2 definition. The equivalence is straightforward but technical.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon sets",
+      "B₂ sequences",
+      "unique representation"
+    ]
+  },
+  {
+    "id": "ann-e158-ess94",
+    "proofId": "erdos-158",
+    "range": {
+      "startLine": 53,
+      "endLine": 67
+    },
+    "type": "theorem",
+    "title": "ESS94 Log Bound",
+    "content": "**Erdős-Sárközy-Sós (1994)** proved a stronger bound for Sidon sets: liminf A(N)/√N · (log N)^{1/2} < ∞. This implies the weaker result that liminf A(N)/√N = 0.",
+    "mathContext": "The log factor is crucial - it provides the 'room' that makes the limit inferior finite rather than requiring it to be zero directly. This uses sieve methods and probabilistic arguments from the ESS94 paper.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "logarithmic bounds",
+      "sieve theory",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-e158-sidon-liminf",
+    "proofId": "erdos-158",
+    "range": {
+      "startLine": 68,
+      "endLine": 77
+    },
+    "type": "theorem",
+    "title": "Sidon Sets: liminf = 0",
+    "content": "For any **infinite Sidon set**, the counting function must dip below c√N infinitely often. You cannot have A(N) ≥ c√N for all large N - uniform density is impossible.",
+    "mathContext": "This follows from the log bound: if liminf A(N)/√N = c > 0, then liminf A(N)/√N · (log N)^{1/2} would be infinite (since log N → ∞), contradicting ESS94.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "limit inferior",
+      "density bounds",
+      "Sidon sets"
+    ]
+  },
+  {
+    "id": "ann-e158-conjecture",
+    "proofId": "erdos-158",
+    "range": {
+      "startLine": 78,
+      "endLine": 89
+    },
+    "type": "theorem",
+    "title": "The Open Conjecture",
+    "content": "**Erdős Problem #158** asks if the same conclusion holds for B₂[2] sets. Allowing two representations per sum is a significant relaxation - does it still force liminf A(N)/√N = 0?",
+    "mathContext": "Formally: ∀ A, A.Infinite → B2 2 A → liminf (normalizedCount A) atTop = 0. The Sidon case is solved but this remains open.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open problem",
+      "B₂[2] sets",
+      "density"
+    ]
+  },
+  {
+    "id": "ann-e158-hierarchy",
+    "proofId": "erdos-158",
+    "range": {
+      "startLine": 90,
+      "endLine": 105
+    },
+    "type": "lemma",
+    "title": "B₂[g] Hierarchy",
+    "content": "Every Sidon set (B₂[1]) is automatically a B₂[2] set. So if the conjecture holds for B₂[2], it would generalize the known Sidon result.",
+    "mathContext": "The proof sidon_implies_b2_hierarchy uses that 1 ≤ 2. This shows the conjecture is a true generalization - proving it for B₂[2] would give a new proof for Sidon sets as a corollary.",
+    "significance": "key",
+    "relatedConcepts": [
+      "set containment",
+      "generalization",
+      "proof structure"
+    ]
+  },
+  {
+    "id": "ann-e158-sqrt-bound",
+    "proofId": "erdos-158",
+    "range": {
+      "startLine": 106,
+      "endLine": 118
+    },
+    "type": "theorem",
+    "title": "The √N Barrier",
+    "content": "For finite Sidon sets in {1,...,N}, the size is bounded by √N + o(√N). This explains the √N normalization - it's the natural scale for measuring density of these sets.",
+    "mathContext": "If A ⊆ {1,...,N} is Sidon, the sums a + b are distinct and lie in {2,...,2N}. There are |A|·(|A|+1)/2 such sums, bounded by 2N-1. So |A|² ≤ O(N), giving |A| ≤ O(√N).",
+    "significance": "key",
+    "relatedConcepts": [
+      "counting argument",
+      "upper bound",
+      "finite Sidon sets"
+    ]
+  },
+  {
+    "id": "ann-e158-examples",
+    "proofId": "erdos-158",
+    "range": {
+      "startLine": 119,
+      "endLine": 127
+    },
+    "type": "lemma",
+    "title": "Example: Perfect Squares",
+    "content": "The set of **perfect squares** {1, 4, 9, 16, ...} forms a Sidon set. This follows from unique factorization in the Gaussian integers ℤ[i].",
+    "mathContext": "If a² + b² = c² + d² as sums of two squares, the factorization in ℤ[i] is (a + bi)(a - bi) = (c + di)(c - di). Unique factorization implies {a², b²} = {c², d²}.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "perfect squares",
+      "Gaussian integers",
+      "unique factorization"
+    ]
+  }
+]

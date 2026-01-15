@@ -2570,31 +2570,42 @@
   },
   {
     "id": "erdos-141",
-    "title": "Erdős Problem #141",
+    "title": "Erdős Problem #141: Consecutive Primes in Arithmetic Progression",
     "slug": "erdos-141",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Are there ... consecutive primes in arithmetic progression?\n\n\n\nGreen and Tao  have proved that there must always exi...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Are there k consecutive primes in arithmetic progression for every k >= 3?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "primes",
+      "arithmetic-progressions",
+      "number-theory",
+      "additive-combinatorics"
     ],
+    "dateAdded": "2026-01-15",
     "erdosNumber": 141,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 9
   },
   {
     "id": "erdos-143",
-    "title": "Erdős Problem #143",
+    "title": "Erdős Problem #143: Sparseness of Dilation-Avoiding Sets",
     "slug": "erdos-143",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a countably infinite set such that for all ... and integers ... we have\\[ \\lvert kx -y\\rvert \\geq 1.\\]Does this im...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "If A ⊂ (1,∞) satisfies |kx - y| ≥ 1 for all distinct x,y ∈ A and k ≥ 1, must A be sparse?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "primitive-sets",
+      "density"
     ],
     "erdosNumber": 143,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 10
   },
   {
     "id": "erdos-144",
@@ -2612,17 +2623,23 @@
   },
   {
     "id": "erdos-145",
-    "title": "Erdős Problem #145",
+    "title": "Erdős Problem #145: Moments of Squarefree Gaps",
     "slug": "erdos-145",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the sequence of squarefree numbers. Is it true that, for any ...,\\[\\lim_{x\\to \\infty}{x}\\sum_{s_n\\leq x}(s_{n+1}-s...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Let s₁ < s₂ < ... be the sequence of squarefree numbers. Does the limit of (1/x) ∑_{sₙ≤x} (s_{n+1} - sₙ)^α exist for all α ≥ 0?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "squarefree",
+      "gaps",
+      "limits",
+      "moments"
     ],
     "erdosNumber": 145,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 12
   },
   {
     "id": "erdos-146",
@@ -2729,17 +2746,23 @@
   },
   {
     "id": "erdos-158",
-    "title": "Erdős Problem #158",
+    "title": "Erdős Problem #158: B₂[g] Sets and Counting Function Growth",
     "slug": "erdos-158",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite set such that, for any ..., there are most ... solutions to ... with .... Must\\[\\liminf_{N\\to\\infty}\\r...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "For an infinite B₂[2] set A (at most 2 representations per sum), must liminf |A ∩ {1,...,N}|/√N = 0?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "sidon-sets",
+      "counting-functions",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-15",
     "erdosNumber": 158,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 10
   },
   {
     "id": "erdos-16",
@@ -5451,17 +5474,23 @@
   },
   {
     "id": "erdos-39",
-    "title": "Erdős Problem #39",
+    "title": "Erdős Problem #39: Infinite Sidon Set Growth",
     "slug": "erdos-39",
-    "description": "Is there an infinite Sidon set ... such that\\[\\lvert A\\cap \\{1\\ldots,N\\}\\rvert \\gg_\\epsilon N^{1/2-\\epsilon}\\]for all ...? The trivial greedy construction achieves .... The first improvement on thi...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Does there exist an infinite Sidon set with counting function approaching N^{1/2}?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "sidon-sets",
+      "infinite-sequences",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-15",
     "erdosNumber": 39,
+    "mathlibCount": 3,
     "sorries": 1,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-391",

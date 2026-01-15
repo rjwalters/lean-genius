@@ -1,33 +1,122 @@
 {
   "id": "erdos-158",
-  "title": "Erdős Problem #158",
+  "title": "Erdős Problem #158: B₂[g] Sets and Counting Function Growth",
   "slug": "erdos-158",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite set such that, for any ..., there are most ... solutions to ... with .... Must\\[\\liminf_{N\\to\\infty}\\r...",
+  "description": "For an infinite B₂[2] set A (at most 2 representations per sum), must liminf |A ∩ {1,...,N}|/√N = 0?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Sárközy, Sós (1994) - Sidon case; OPEN for B₂[2]",
     "sourceUrl": "https://erdosproblems.com/158",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos158Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "sidon-sets",
+      "counting-functions",
+      "open-problem"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 158,
     "erdosUrl": "https://erdosproblems.com/158",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "IsSidon",
+        "description": "Sidon set predicate from Mathlib",
+        "module": "Mathlib.Combinatorics.Additive.SidonSet"
+      },
+      {
+        "theorem": "Set.encard",
+        "description": "Extended natural cardinality",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Filter.liminf",
+        "description": "Limit inferior for filters",
+        "module": "Mathlib.Order.LiminfLimsup"
+      }
+    ],
+    "originalContributions": [
+      "Clear formalization distinguishing B₂[1] (solved) from B₂[2] (open)",
+      "Connection between B₂[g] hierarchy and Sidon sets",
+      "Educational explanation of the √N counting barrier"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #158 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset \\mathbb{N}$ be an infinite set such that, for any $n$, there are most $2$ solutions to $a+b=n$ with $a\\leq b$. Must\\[\\liminf_{N\\to\\infty}\\frac{\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert}{N^{1/2}}=0?\\]\n\n\n\nIf we replace $2$ by $1$ then $A$ is a Sidon set, for which Erd\\H{o}s proved this is true.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem concerns B₂[g] sets, a generalization of Sidon sets (B₂ sequences). A Sidon set has all pairwise sums distinct - equivalently, each sum n has at most 1 representation a + b = n with a ≤ b. B₂[g] sets allow up to g representations per sum.\n\nErdős proved a fundamental result for Sidon sets: any infinite Sidon set A must have liminf A(N)/√N = 0. This means the counting function cannot stay uniformly above c√N. While finite Sidon subsets of {1,...,N} can have ~√N elements, infinite ones must thin out.\n\nErdős, Sárközy, and Sós (1994) strengthened this to show liminf A(N)/√N · (log N)^{1/2} < ∞. Problem #158 asks if the same conclusion (liminf = 0) holds when we relax to B₂[2] sets.",
+    "problemStatement": "**Problem**: Let $A \\subset \\mathbb{N}$ be an infinite B₂[2] set (each sum $n$ has at most 2 representations $a + b = n$ with $a \\leq b$). Must\n$$\\liminf_{N \\to \\infty} \\frac{|A \\cap \\{1,...,N\\}|}{N^{1/2}} = 0?$$\n\n**Status**: OPEN for B₂[2]; SOLVED for B₂[1] (Sidon sets)\n\n**Known**: For Sidon sets, Erdős proved the answer is YES.",
+    "proofStrategy": "Since the problem is open for B₂[2], we formalize:\n\n1. **B₂[g] definition**: A set where each sum has at most g representations\n2. **B₂[1] = Sidon**: The equivalence with Mathlib's IsSidon\n3. **ESS94 theorem**: Axiomatized result for Sidon sets\n4. **The conjecture**: Formal statement for B₂[2]\n5. **Relationships**: Sidon ⊂ B₂[2], so the conjecture would generalize the Sidon result\n\nThe proofs that work for Sidon sets rely on unique representation. With 2 representations allowed, the counting arguments break down.",
+    "keyInsights": [
+      "**B₂[g] sets**: Sets where the sumset A + A has at most g representations per element. B₂[1] = Sidon.",
+      "**The √N barrier**: Finite Sidon sets in {1,...,N} have size ≤ √N + o(√N). For infinite sets, you can't maintain this density.",
+      "**Why liminf = 0?**: The counting function must dip below c√N infinitely often - uniform density is impossible.",
+      "**The gap**: B₂[1] is solved but B₂[2] remains open. The extra representation destroys the unique sum property.",
+      "**ESS94 log bound**: The stronger result liminf A(N) · N^{-1/2} · (log N)^{1/2} < ∞ implies liminf A(N)/√N = 0."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 25,
+      "endLine": 43,
+      "summary": "Define B₂[g] sets using extended cardinality and the normalized counting function."
+    },
+    {
+      "id": "sidon-equiv",
+      "title": "B₂[1] = Sidon Sets",
+      "startLine": 44,
+      "endLine": 52,
+      "summary": "Axiom establishing that B₂[1] sets are exactly Sidon sets."
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "startLine": 53,
+      "endLine": 77,
+      "summary": "The ESS94 theorem (log bound) and its consequence (liminf = 0) for Sidon sets."
+    },
+    {
+      "id": "open-problem",
+      "title": "The Open Problem",
+      "startLine": 78,
+      "endLine": 89,
+      "summary": "Formal statement of Problem #158: does liminf = 0 hold for B₂[2]?"
+    },
+    {
+      "id": "relations",
+      "title": "Implications and Relations",
+      "startLine": 90,
+      "endLine": 105,
+      "summary": "Sidon ⊂ B₂[2] inclusion and how the conjecture generalizes the known result."
+    },
+    {
+      "id": "context",
+      "title": "Why √N?",
+      "startLine": 106,
+      "endLine": 118,
+      "summary": "Upper bound on Sidon set size explaining the √N normalization."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 119,
+      "endLine": 127,
+      "summary": "Perfect squares form a Sidon set."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #158, which asks whether infinite B₂[2] sets must have liminf A(N)/√N = 0. The answer is known for Sidon sets (B₂[1]) by Erdős-Sárközy-Sós (1994), but remains open for B₂[2]. The formalization captures the B₂[g] hierarchy, the solved Sidon case, and the open conjecture.",
+    "implications": "This problem lies at the heart of additive combinatorics. Understanding how representation constraints affect counting function growth could illuminate the structure of sumsets and lead to new density bounds for sets with arithmetic restrictions.",
+    "openQuestions": [
+      "Does the B₂[2] conjecture hold?",
+      "What happens for general B₂[g]? Is there a threshold g₀ where behavior changes?",
+      "Can probabilistic methods provide bounds even without exact resolution?",
+      "Are there explicit constructions of B₂[2] sets with counting functions approaching √N?"
+    ]
   }
 }

@@ -562,8 +562,10 @@
         "theorem lower_bound_simplified (n : ℕ) (hn : n ≥ 2) :"
       ],
       "notes": "Covering intersecting families - Kahn 1994 resolution",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": "2026-01-15T10:00:00Z",
+      "outcome": "No improvement - 3 sorries remain. Aristotle found no proofs for the remaining theorems.",
+      "integrated": null
     },
     {
       "project_id": "388a6cbc-c62f-455a-a6cc-a71e76544f58",
@@ -599,8 +601,10 @@
         "theorem trivial_distance_bound (A : Finset Point) :"
       ],
       "notes": "Four points five distances - Tao 2024 counterexample",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": "2026-01-15T10:00:00Z",
+      "outcome": "No improvement - 6 sorries remain. Proof search found no resolutions.",
+      "integrated": null
     },
     {
       "project_id": "6bccce95-558c-4e97-9a1c-37999b700f72",
@@ -636,8 +640,10 @@
         "theorem ramsey_two_left (t : ℕ) (ht : t ≥ 2) : R(2, t) = t := by"
       ],
       "notes": "Ramsey R(4,k) lower bound - Mattheus-Verstraete 2023",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": "2026-01-15T10:00:00Z",
+      "outcome": "No improvement - file already had 0 sorries. Solution retrieved but not needed.",
+      "integrated": null
     },
     {
       "project_id": "ca7f39bc-1229-4946-9f19-2e69b1f4d79b",
@@ -650,8 +656,10 @@
         "theorem trivial_bound (G : SimpleGraph V) :"
       ],
       "notes": "Tuza triangle covering conjecture",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": "2026-01-15T10:00:00Z",
+      "outcome": "No improvement - file already had 0 sorries. Solution retrieved but not needed.",
+      "integrated": null
     },
     {
       "project_id": "87f4a8fd-13dd-4b8d-b61e-57a07f099bf6",
@@ -665,8 +673,10 @@
         "theorem simple_lower_bound (N : ℕ) (hN : N ≥ 1) :"
       ],
       "notes": "n 2n 3n free sets - GSW 1977",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": "2026-01-15T10:00:00Z",
+      "outcome": "No improvement - file already had 0 sorries. Solution retrieved but not needed.",
+      "integrated": null
     },
     {
       "project_id": "d3f84def-456b-4b70-9230-42e7cfe4bf8b",
@@ -680,8 +690,10 @@
         "theorem zarankiewicz_known (s : ℕ) (hs : (s - 1).Prime) :"
       ],
       "notes": "Bipartite Turan numbers - KST 1954",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": "2026-01-15T10:00:00Z",
+      "outcome": "No improvement - 4 sorries remain. Proof search found no resolutions.",
+      "integrated": null
     },
     {
       "project_id": "d9945fb1-a3f1-4263-9ab3-acacaac683e9",
@@ -693,8 +705,10 @@
         "theorem trivial_upper (n : ℕ) : maxChromaticSegments n ≤ n := by"
       ],
       "notes": "Segment intersection chromatic - Pawlik 2014",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": "2026-01-15T10:00:00Z",
+      "outcome": "No improvement - file already had 0 sorries. Solution retrieved but not needed.",
+      "integrated": null
     },
     {
       "project_id": "4dd922fe-2d3d-4f78-8170-5834d42282eb",
@@ -708,8 +722,10 @@
         "theorem no_4_clique :"
       ],
       "notes": "Unit distance chromatic - de Grey 2018",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": "2026-01-15T10:00:00Z",
+      "outcome": "No improvement - 2 sorries remain. Proof search found no resolutions.",
+      "integrated": null
     }
   ],
   "completed": [],

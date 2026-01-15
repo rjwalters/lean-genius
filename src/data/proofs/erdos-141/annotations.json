@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-e141-imports",
+    "proofId": "erdos-141",
+    "range": {
+      "startLine": 1,
+      "endLine": 34
+    },
+    "type": "concept",
+    "title": "Problem Overview and Imports",
+    "content": "This module formalizes Erdős Problem #141, which asks whether k consecutive primes in arithmetic progression exist for every k >= 3. The problem was posed by Erdős in 1975, who called it 'completely hopeless.' We import all of Mathlib for access to prime number theory.",
+    "mathContext": "The key distinction is between 'consecutive primes' (no prime between them) and 'primes in AP' (which Green-Tao shows exist in arbitrary length).",
+    "significance": "supporting",
+    "relatedConcepts": ["erdos", "primes", "arithmetic-progressions"]
+  },
+  {
+    "id": "ann-e141-nth-prime",
+    "proofId": "erdos-141",
+    "range": {
+      "startLine": 38,
+      "endLine": 40
+    },
+    "type": "definition",
+    "title": "The n-th Prime Function",
+    "content": "We define `nthPrime n` as the n-th prime number (0-indexed), using Mathlib's `Nat.nth` function which returns the n-th element satisfying a predicate. So `nthPrime 0 = 2`, `nthPrime 1 = 3`, etc.",
+    "mathContext": "Mathlib's `Nat.nth Nat.Prime n` gives the n-th prime. This is noncomputable because it requires searching through naturals until finding n+1 primes.",
+    "significance": "key",
+    "relatedConcepts": ["primes", "mathlib", "nth-element"]
+  },
+  {
+    "id": "ann-e141-consecutive-def",
+    "proofId": "erdos-141",
+    "range": {
+      "startLine": 42,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Consecutive Primes and Prime Sequences",
+    "content": "**Consecutive primes** p and q means both are prime, p < q, and there's no prime between them. A **consecutive prime sequence** of length k starting at prime n is the list [prime_n, prime_{n+1}, ..., prime_{n+k-1}].",
+    "mathContext": "The `ConsecutivePrimeSequence n k` maps over range k, adding each index to n and taking the nth prime. This gives exactly k consecutive primes starting from the n-th prime.",
+    "significance": "critical",
+    "relatedConcepts": ["primes", "sequences", "consecutive"]
+  },
+  {
+    "id": "ann-e141-ap-def",
+    "proofId": "erdos-141",
+    "range": {
+      "startLine": 50,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "Arithmetic Progressions",
+    "content": "An **arithmetic progression (AP)** is a sequence where each term differs from the next by a constant **common difference** d. We define `IsArithmeticProgression L d` to mean L[i+1] = L[i] + d for all valid indices.",
+    "mathContext": "The main predicate `ExistsConsecutivePrimesInAP k` says there exist starting index n and common difference d > 0 such that the k consecutive primes starting at n form an AP with difference d.",
+    "significance": "key",
+    "relatedConcepts": ["arithmetic-progressions", "sequences", "common-difference"]
+  },
+  {
+    "id": "ann-e141-small-primes",
+    "proofId": "erdos-141",
+    "range": {
+      "startLine": 66,
+      "endLine": 87
+    },
+    "type": "lemma",
+    "title": "Computing Small Primes",
+    "content": "We verify the first few primes: `nthPrime 0 = 2`, `nthPrime 1 = 3`, `nthPrime 2 = 5`, `nthPrime 3 = 7`. These use `Nat.nth_count` which relates the nth prime to prime counting.",
+    "mathContext": "The proofs use `Nat.nth_count` which says that if count(p) = n (meaning exactly n primes <= p), then nth(n) = p. We apply this to known primes 2, 3, 5, 7.",
+    "significance": "supporting",
+    "relatedConcepts": ["primes", "verification", "decidability"]
+  },
+  {
+    "id": "ann-e141-357-example",
+    "proofId": "erdos-141",
+    "range": {
+      "startLine": 88,
+      "endLine": 99
+    },
+    "type": "theorem",
+    "title": "The (3, 5, 7) Example",
+    "content": "We prove that (3, 5, 7) forms an arithmetic progression with common difference 2. This is the simplest example of 3 consecutive primes in AP, satisfying Erdős #141 for k=3.",
+    "mathContext": "The proof verifies that 5 = 3 + 2 and 7 = 5 + 2 by checking both indices directly. Since 3, 5, 7 are consecutive primes (4 and 6 are composite), this gives a verified example.",
+    "significance": "key",
+    "relatedConcepts": ["examples", "verification", "arithmetic-progressions"]
+  },
+  {
+    "id": "ann-e141-conjecture",
+    "proofId": "erdos-141",
+    "range": {
+      "startLine": 100,
+      "endLine": 127
+    },
+    "type": "theorem",
+    "title": "The Main Conjecture (OPEN)",
+    "content": "**Erdős Problem #141**: For every k >= 3, do there exist k consecutive primes in arithmetic progression? This is OPEN. We state `Erdos141Conjecture` as a definition, with computational verification for k <= 10 as an axiom.",
+    "mathContext": "The status quo: k = 3-10 are verified computationally. k >= 11 is unknown. We state `small_cases_verified` as an axiom since the verification is computational (too large for formal proof).",
+    "significance": "critical",
+    "relatedConcepts": ["erdos", "open-problem", "conjecture"]
+  },
+  {
+    "id": "ann-e141-infinite-question",
+    "proofId": "erdos-141",
+    "range": {
+      "startLine": 128,
+      "endLine": 146
+    },
+    "type": "theorem",
+    "title": "Related Open Questions",
+    "content": "Even for k = 3, it's unknown whether **infinitely many** such progressions exist. We formalize `InfinitelyManyConsecutiveAP k` asking if for every bound N, there's a larger starting index giving k consecutive primes in AP.",
+    "mathContext": "The infinitude question is independent of the existence question. Even if we knew k consecutive primes in AP exist for all k, we might not know if infinitely many exist for each fixed k.",
+    "significance": "key",
+    "relatedConcepts": ["infinitude", "open-problems", "number-theory"]
+  },
+  {
+    "id": "ann-e141-green-tao",
+    "proofId": "erdos-141",
+    "range": {
+      "startLine": 147,
+      "endLine": 172
+    },
+    "type": "theorem",
+    "title": "Green-Tao Theorem (Does NOT Solve This)",
+    "content": "The **Green-Tao theorem** (2008) proves primes contain arbitrarily long arithmetic progressions. However, these primes need NOT be consecutive! Example: (7, 13, 19) are primes in AP with d=6, but 11 lies between 7 and 13.",
+    "mathContext": "We state Green-Tao as an axiom and prove a concrete counterexample: 7, 13, 19 are primes forming an AP, but they're not consecutive since 11 (also prime) is between 7 and 13. This shows why Erdős #141 is harder.",
+    "significance": "critical",
+    "relatedConcepts": ["green-tao", "distinction", "consecutive-vs-any"]
+  }
+]

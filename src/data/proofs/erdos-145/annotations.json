@@ -1,1 +1,134 @@
-[]
+[
+  {
+    "id": "ann-e145-header",
+    "proofId": "erdos-145",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "context",
+    "title": "Problem Overview",
+    "content": "This header documents Erdős Problem #145, which asks about the existence of limits for moments of gaps between consecutive squarefree numbers.\n\nThe problem has been partially solved over 70+ years through increasingly sophisticated techniques. The full resolution depends on the ABC conjecture!",
+    "mathContext": "A number n is squarefree if for no prime p does p² divide n. The sequence 1, 2, 3, 5, 6, 7, 10, 11, 13, 14, 15, ... lists all squarefree numbers.",
+    "significance": "critical",
+    "relatedConcepts": ["erdos", "number-theory", "squarefree"]
+  },
+  {
+    "id": "ann-e145-infinitude",
+    "proofId": "erdos-145",
+    "range": { "startLine": 35, "endLine": 39 },
+    "type": "theorem",
+    "title": "Squarefrees are Infinite",
+    "content": "This is a genuine Lean proof, not an axiom! Every prime p is squarefree (no square > 1 divides a prime), and there are infinitely many primes.\n\nThe proof uses Set.Infinite.mono to transfer infinitude from primes to squarefrees.",
+    "mathContext": "We show {n : ℕ | Squarefree n} ⊇ {p : ℕ | Prime p} (since primes are squarefree), and the latter is infinite by Euclid's theorem.",
+    "significance": "supporting",
+    "relatedConcepts": ["primes", "infinite-sets", "squarefree"]
+  },
+  {
+    "id": "ann-e145-sequence",
+    "proofId": "erdos-145",
+    "range": { "startLine": 43, "endLine": 44 },
+    "type": "definition",
+    "title": "Squarefree Sequence",
+    "content": "The function **squarefreeSeq** gives the nth squarefree number using Mathlib's `Nat.nth` function, which indexes into infinite sets.\n\nExamples: squarefreeSeq(0) = 1, squarefreeSeq(1) = 2, squarefreeSeq(2) = 3, squarefreeSeq(3) = 5 (skipping 4 = 2²).",
+    "mathContext": "Nat.nth P n returns the nth element of {n : ℕ | P n} when enumerated in increasing order. Requires proof that the set is infinite.",
+    "significance": "critical",
+    "relatedConcepts": ["enumeration", "nth-element", "squarefree"]
+  },
+  {
+    "id": "ann-e145-gap",
+    "proofId": "erdos-145",
+    "range": { "startLine": 51, "endLine": 53 },
+    "type": "definition",
+    "title": "Squarefree Gaps",
+    "content": "The **squarefreeGap** function computes s_{n+1} - s_n, the gap between consecutive squarefree numbers.\n\nGaps are always ≥ 1 and can occasionally be large (e.g., gap of 4 after 6: the numbers 6, 7, 10 have gap 1, then gap 3).",
+    "mathContext": "The average gap is π²/6 ≈ 1.64, matching the reciprocal of squarefree density 6/π². Large gaps occur around multiples of small primes' squares.",
+    "significance": "critical",
+    "relatedConcepts": ["gaps", "consecutive-terms", "distribution"]
+  },
+  {
+    "id": "ann-e145-momentsum",
+    "proofId": "erdos-145",
+    "range": { "startLine": 55, "endLine": 57 },
+    "type": "definition",
+    "title": "Moment Sum",
+    "content": "The **momentSum** is the key quantity: (1/x) ∑_{sₙ≤x} (s_{n+1} - sₙ)^α.\n\nFor α = 1, this is the average gap. For α = 2, this measures variance. Higher α emphasizes rare large gaps.",
+    "mathContext": "We normalize by 1/x (not by count) to get a well-behaved limit. The sum grows roughly like x times the limit value.",
+    "significance": "critical",
+    "relatedConcepts": ["moments", "average", "normalization"]
+  },
+  {
+    "id": "ann-e145-fullconj",
+    "proofId": "erdos-145",
+    "range": { "startLine": 61, "endLine": 64 },
+    "type": "theorem",
+    "title": "The Full Conjecture",
+    "content": "The **FullConjecture** asks: does the limit of momentSum(α, x) exist as x → ∞ for all α ≥ 0?\n\nThis remains open for α > 3.75, but is known to follow from the ABC conjecture.",
+    "mathContext": "The key challenge is controlling the contribution of rare large gaps. As α increases, even a few large gaps dominate the sum.",
+    "significance": "critical",
+    "relatedConcepts": ["conjecture", "limit-existence", "moments"]
+  },
+  {
+    "id": "ann-e145-erdos1951",
+    "proofId": "erdos-145",
+    "range": { "startLine": 68, "endLine": 75 },
+    "type": "theorem",
+    "title": "Erdős 1951",
+    "content": "**Erdős's original result**: The limit exists for 0 ≤ α ≤ 2.\n\nThis was proven using elementary sieve methods. The case α = 2 (variance) is the hardest - it requires careful control of gap distribution.",
+    "mathContext": "The second moment (α = 2) equals the variance of gaps plus the square of the mean. Erdős showed both quantities have limits.",
+    "significance": "critical",
+    "relatedConcepts": ["erdos", "sieve-methods", "1951"]
+  },
+  {
+    "id": "ann-e145-hooley",
+    "proofId": "erdos-145",
+    "range": { "startLine": 77, "endLine": 83 },
+    "type": "theorem",
+    "title": "Hooley 1973",
+    "content": "**Hooley extended to α ≤ 3** using exponential sum techniques.\n\nExponential sums provide sharper estimates on how numbers distribute in arithmetic progressions, enabling control of the third moment.",
+    "mathContext": "Exponential sum bounds like |∑ e(nθ)| can detect when integers cluster or spread in residue classes.",
+    "significance": "supporting",
+    "relatedConcepts": ["hooley", "exponential-sums", "1973"]
+  },
+  {
+    "id": "ann-e145-ghh",
+    "proofId": "erdos-145",
+    "range": { "startLine": 85, "endLine": 91 },
+    "type": "theorem",
+    "title": "Greaves-Harman-Huxley 1997",
+    "content": "**GHH pushed to α ≤ 11/3 ≈ 3.67** combining sieve methods with sophisticated exponential sum bounds.\n\nTheir chapter on gaps between squarefrees became a standard reference in analytic number theory.",
+    "mathContext": "The fractional bound 11/3 arises from optimizing competing error terms in sieve and exponential sum estimates.",
+    "significance": "supporting",
+    "relatedConcepts": ["sieve-methods", "exponential-sums", "1997"]
+  },
+  {
+    "id": "ann-e145-chan",
+    "proofId": "erdos-145",
+    "range": { "startLine": 93, "endLine": 98 },
+    "type": "theorem",
+    "title": "Chan 2023",
+    "content": "**Chan achieved α ≤ 3.75**, the current unconditional record.\n\nThis modest improvement (from 3.67 to 3.75) required significant new ideas and shows how hard further progress is becoming.",
+    "mathContext": "The improvement of 0.08 took 26 years of analytic number theory development!",
+    "significance": "critical",
+    "relatedConcepts": ["current-record", "2023", "moments"]
+  },
+  {
+    "id": "ann-e145-granville",
+    "proofId": "erdos-145",
+    "range": { "startLine": 100, "endLine": 109 },
+    "type": "theorem",
+    "title": "Granville's Conditional Result",
+    "content": "**Assuming the ABC conjecture**, Granville proved the limit exists for ALL α ≥ 0.\n\nABC provides strong bounds on how squarefree parts of numbers can behave, controlling even the largest gaps.",
+    "mathContext": "The ABC conjecture states: for coprime a + b = c, rad(abc)^(1+ε) ≥ c for all ε > 0 and large c. This implies consecutive squarefrees can't be too far apart.",
+    "significance": "critical",
+    "relatedConcepts": ["abc-conjecture", "conditional", "granville"]
+  },
+  {
+    "id": "ann-e145-properties",
+    "proofId": "erdos-145",
+    "range": { "startLine": 122, "endLine": 136 },
+    "type": "concept",
+    "title": "Basic Properties",
+    "content": "These theorems establish that the squarefree sequence is **strictly increasing** and all gaps are **positive**.\n\nThese properties are proven in Lean, not axiomatized - they follow from Nat.nth_strictMono.",
+    "mathContext": "For any infinite set S ⊆ ℕ, the function Nat.nth S is strictly monotone. Since gaps = differences of monotone sequence, they're positive.",
+    "significance": "supporting",
+    "relatedConcepts": ["monotonicity", "positivity", "sequence-properties"]
+  }
+]
