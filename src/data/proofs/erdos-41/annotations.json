@@ -1,1 +1,156 @@
-[]
+[
+  {
+    "id": "ann-e41-header",
+    "proofId": "erdos-41",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This module formalizes Erdos Problem #41, which asks about the density of B_h sequences - sets where all h-element sums are distinct. The main open case is h=3 (triple sums), while h=2 (Sidon sets) and all even h have been solved.",
+    "mathContext": "The problem appears in Guy's collection [Gu04] as Problem C11. Erdos offered $500 for the general conjecture.",
+    "significance": "critical",
+    "relatedConcepts": ["erdos", "sidon-sets", "additive-combinatorics"]
+  },
+  {
+    "id": "ann-e41-bh-def",
+    "proofId": "erdos-41",
+    "range": {
+      "startLine": 36,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "B_h Sets",
+    "content": "A set A is a **B_h set** (or has the B_h property) if all h-element subset sums are distinct. That is, for any two h-element subsets I, J of A, if sum(I) = sum(J) then I = J.\n\nFor h=2, this gives Sidon sets (distinct pairwise sums). For h=3, we get sets with distinct triple sums.",
+    "mathContext": "IsBhSet A h := for all Finsets I, J of cardinality h with I, J subseteq A, sum(I) = sum(J) implies I = J.\n\nThe definition uses Finset.sum for the sum of elements in a finite set.",
+    "significance": "critical",
+    "relatedConcepts": ["sidon-sets", "distinct-sums", "finset"]
+  },
+  {
+    "id": "ann-e41-counting",
+    "proofId": "erdos-41",
+    "range": {
+      "startLine": 46,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Counting and Density Functions",
+    "content": "The **counting function** |A ∩ {1,...,N}| measures how many elements of A lie up to N. The **density ratio** divides this by N^(1/h), giving the natural scale for B_h sets.",
+    "mathContext": "countingFn uses Set.ncard for possibly infinite intersections. densityRatio divides by N^(1/h) using real exponents.",
+    "significance": "supporting",
+    "relatedConcepts": ["density", "counting-function", "ncard"]
+  },
+  {
+    "id": "ann-e41-conjecture",
+    "proofId": "erdos-41",
+    "range": {
+      "startLine": 54,
+      "endLine": 65
+    },
+    "type": "theorem",
+    "title": "The General B_h Conjecture",
+    "content": "**Erdos's General Conjecture**: For all h >= 2, if A is an infinite B_h set, then liminf |A cap {1,...,N}| / N^(1/h) = 0.\n\nThis says B_h sets must have 'density zero at order 1/h' infinitely often - they can't maintain high density forever.",
+    "mathContext": "ErdosBhConjecture h is a Prop: for all infinite B_h sets A, the liminf of the density ratio is 0.\n\nThe liminf condition allows the set to be dense sometimes, but forces it to be sparse infinitely often.",
+    "significance": "critical",
+    "relatedConcepts": ["liminf", "density", "conjecture"]
+  },
+  {
+    "id": "ann-e41-erdos-theorem",
+    "proofId": "erdos-41",
+    "range": {
+      "startLine": 69,
+      "endLine": 76
+    },
+    "type": "theorem",
+    "title": "Erdos's Theorem (h=2)",
+    "content": "**Erdos proved the h=2 case**: If A is an infinite Sidon set (all pairwise sums distinct), then liminf |A cap {1,...,N}| / sqrt(N) = 0.\n\nThis is the classical result that motivated the general conjecture.",
+    "mathContext": "Axiomatized as erdos_b2_theorem : ErdosBhConjecture 2. The proof uses analytic methods not in Mathlib.",
+    "significance": "key",
+    "relatedConcepts": ["erdos", "sidon-sets", "solved"]
+  },
+  {
+    "id": "ann-e41-nash-theorem",
+    "proofId": "erdos-41",
+    "range": {
+      "startLine": 78,
+      "endLine": 82
+    },
+    "type": "theorem",
+    "title": "Nash's Theorem (h=4)",
+    "content": "**Nash (1989)** proved the conjecture for h=4 using Fourier-analytic methods. This was a major breakthrough, showing that larger h values were tractable.",
+    "mathContext": "Axiomatized as nash_b4_theorem : ErdosBhConjecture 4. Nash's proof introduced techniques that Chen later generalized.",
+    "significance": "key",
+    "relatedConcepts": ["nash", "fourier-analysis", "solved"]
+  },
+  {
+    "id": "ann-e41-chen-theorem",
+    "proofId": "erdos-41",
+    "range": {
+      "startLine": 84,
+      "endLine": 93
+    },
+    "type": "theorem",
+    "title": "Chen's Theorem (all even h)",
+    "content": "**Chen (1996)** proved the conjecture for all even h >= 2, extending Nash's Fourier-analytic approach. This completely resolves the even case!\n\nThe combined result: for all even h, infinite B_h sets have density o(N^(1/h)).",
+    "mathContext": "chen_even_h_theorem : for all h >= 2, Even h implies ErdosBhConjecture h.\n\nThe `solved_even_cases` theorem applies this directly.",
+    "significance": "critical",
+    "relatedConcepts": ["chen", "even-h", "fourier-analysis"]
+  },
+  {
+    "id": "ann-e41-open-case",
+    "proofId": "erdos-41",
+    "range": {
+      "startLine": 95,
+      "endLine": 109
+    },
+    "type": "theorem",
+    "title": "The Open h=3 Case ($500 Prize)",
+    "content": "**Erdos Problem #41 proper**: The h=3 case remains OPEN. Is liminf |A cap {1,...,N}| / N^(1/3) = 0 for all infinite B_3 sets?\n\nThis is the main unsolved case, with a $500 prize. Odd h >= 3 resists Fourier methods.",
+    "mathContext": "Erdos41Conjecture := ErdosBhConjecture 3. This is a *definition*, not an axiom - we don't assert it's true.\n\nerdos_41_classical just says it's either true or false (excluded middle).",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "prize", "triple-sums"]
+  },
+  {
+    "id": "ann-e41-sidon-connection",
+    "proofId": "erdos-41",
+    "range": {
+      "startLine": 111,
+      "endLine": 119
+    },
+    "type": "concept",
+    "title": "Connection to Sidon Sets",
+    "content": "A **Sidon set** is exactly a B_2 set - a set where all pairwise sums a+b are distinct. Our IsSidonSet is defined as IsBhSet A 2.\n\nThe sidon_density_bound theorem applies Erdos's h=2 result to Sidon sets directly.",
+    "mathContext": "IsSidonSet A := IsBhSet A 2. This connects to Erdos #30 and classical Sidon set theory.",
+    "significance": "supporting",
+    "relatedConcepts": ["sidon-sets", "b2", "erdos-30"]
+  },
+  {
+    "id": "ann-e41-examples",
+    "proofId": "erdos-41",
+    "range": {
+      "startLine": 121,
+      "endLine": 150
+    },
+    "type": "lemma",
+    "title": "Examples of B_h Sets",
+    "content": "We verify three basic examples:\n\n1. **Empty set**: Vacuously B_h for any h (no subsets to compare)\n2. **Singleton {a}**: B_h for h > 1 (can't have two distinct h-subsets of a singleton)\n3. **Powers of 2**: {1, 2, 4, 8, ...} form a B_2 (Sidon) set because binary representations are unique",
+    "mathContext": "empty_is_bh and singleton_is_bh are fully proved. powers_of_two_sidon_property is axiomatized since the uniqueness of binary representation requires some setup.",
+    "significance": "supporting",
+    "relatedConcepts": ["examples", "verification", "powers-of-two"]
+  },
+  {
+    "id": "ann-e41-summary",
+    "proofId": "erdos-41",
+    "range": {
+      "startLine": 152,
+      "endLine": 170
+    },
+    "type": "concept",
+    "title": "Summary of Known Results",
+    "content": "**What's proven about B_h density bounds:**\n\n| h | Status | Who |\n|---|--------|-----|\n| 2 | SOLVED | Erdos |\n| 3 | OPEN | $500 prize |\n| 4 | SOLVED | Nash 1989 |\n| even h>=2 | SOLVED | Chen 1996 |\n| odd h>=3 | OPEN | - |",
+    "mathContext": "The summary_even_h_solved theorem provides a unified statement for all even h using Chen's result.",
+    "significance": "key",
+    "relatedConcepts": ["summary", "status", "open-problems"]
+  }
+]

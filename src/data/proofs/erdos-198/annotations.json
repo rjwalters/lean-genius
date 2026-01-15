@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-e198-header",
+    "proofId": "erdos-198",
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This header documents **Erdős Problem #198**, which asks about the relationship between Sidon sets and arithmetic progressions. The question is whether Sidon sets must be 'sparse' enough to leave room for an infinite AP in their complement.",
+    "mathContext": "A Sidon set has all pairwise sums distinct. An infinite AP has the form {a, a+d, a+2d, ...}. The question is whether these two notions of 'structure' are incompatible.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Sidon sets",
+      "arithmetic progressions",
+      "complement"
+    ]
+  },
+  {
+    "id": "ann-e198-sidon-def",
+    "proofId": "erdos-198",
+    "range": {
+      "startLine": 39,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Sidon Set Definition",
+    "content": "A **Sidon set** (B₂ sequence) is a set where all pairwise sums are distinct. If a₁ + a₂ = b₁ + b₂ with a₁ ≤ a₂ and b₁ ≤ b₂, then a₁ = b₁ and a₂ = b₂.",
+    "mathContext": "This is equivalent to requiring the sumset A + A to have no repeated elements (except trivial ones). Sidon sets are fundamental in additive combinatorics.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "B₂ sequences",
+      "additive combinatorics",
+      "sumsets"
+    ]
+  },
+  {
+    "id": "ann-e198-ap-def",
+    "proofId": "erdos-198",
+    "range": {
+      "startLine": 44,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Arithmetic Progression",
+    "content": "An **arithmetic progression** is a sequence of the form {a, a+d, a+2d, ...} with common difference d > 0. We formalize this as arithmeticProg a d = {n | ∃ k, n = a + k*d}.",
+    "mathContext": "Infinite APs are central objects in additive combinatorics. Szemerédi's theorem, van der Waerden's theorem, and Green-Tao theorem all concern APs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "van der Waerden",
+      "Szemerédi",
+      "additive structure"
+    ]
+  },
+  {
+    "id": "ann-e198-intersects",
+    "proofId": "erdos-198",
+    "range": {
+      "startLine": 52,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Intersects All APs",
+    "content": "A set A **intersects all infinite APs** if for every AP, there is at least one element of A in that AP. Equivalently, the complement Aᶜ contains no infinite AP.",
+    "mathContext": "This is a strong density property. Most 'thin' sets like primes or squares do not satisfy this - there are APs entirely in their complements.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density",
+      "complement",
+      "coverage"
+    ]
+  },
+  {
+    "id": "ann-e198-main",
+    "proofId": "erdos-198",
+    "range": {
+      "startLine": 59,
+      "endLine": 72
+    },
+    "type": "theorem",
+    "title": "The Main Result",
+    "content": "**Erdős Problem #198** (DISPROVED): The answer is NO. There exist Sidon sets that intersect every infinite AP. This means the complement of such a Sidon set contains no infinite AP.",
+    "mathContext": "Axiomatized as erdos_198_answer : ¬Erdos198_Question. The proof is non-constructive in Baumgartner's version, but AlphaProof gives an explicit example.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "disproof",
+      "counterexample",
+      "Sidon vs AP"
+    ]
+  },
+  {
+    "id": "ann-e198-factorial",
+    "proofId": "erdos-198",
+    "range": {
+      "startLine": 76,
+      "endLine": 98
+    },
+    "type": "theorem",
+    "title": "AlphaProof Construction",
+    "content": "**AlphaProof's discovery**: The set A = {n! + n : n ≥ 0} = {1, 2, 4, 9, 28, ...} is both a Sidon set AND intersects every infinite AP. This is an explicit counterexample to Erdős's question.",
+    "mathContext": "Why it intersects all APs: For AP with first term a and difference d, the element (a+d+1)! + (a+d) is in A and is ≡ a (mod d) since d divides (a+d+1)!.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "AlphaProof",
+      "factorial",
+      "explicit construction"
+    ]
+  },
+  {
+    "id": "ann-e198-counterexample",
+    "proofId": "erdos-198",
+    "range": {
+      "startLine": 100,
+      "endLine": 103
+    },
+    "type": "lemma",
+    "title": "Factorial Counterexample",
+    "content": "The theorem factorial_counterexample combines the two properties: the factorial set is Sidon AND it intersects all APs. This directly disproves Erdős's conjecture.",
+    "mathContext": "This is the main result: IsSidonSet factorialSidon ∧ IntersectsAllAPs factorialSidon.",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjunction",
+      "counterexample",
+      "proof structure"
+    ]
+  },
+  {
+    "id": "ann-e198-lacunary",
+    "proofId": "erdos-198",
+    "range": {
+      "startLine": 107,
+      "endLine": 117
+    },
+    "type": "definition",
+    "title": "Lacunary Sets",
+    "content": "A set is **lacunary** if consecutive elements satisfy aₙ₊₁ > 2aₙ - the gaps grow exponentially. Lacunary sets are automatically Sidon because different pairs give sums in disjoint intervals.",
+    "mathContext": "If a < b are consecutive in A and b > 2a, then for any c < d with d consecutive after c, we have a + b < 2b < d ≤ c + d, so sums don't collide.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exponential growth",
+      "automatic Sidon",
+      "gap condition"
+    ]
+  },
+  {
+    "id": "ann-e198-baumgartner",
+    "proofId": "erdos-198",
+    "range": {
+      "startLine": 119,
+      "endLine": 129
+    },
+    "type": "theorem",
+    "title": "Baumgartner's Construction",
+    "content": "**Baumgartner (1975)**: Enumerate all infinite APs as P₁, P₂, ... Choose aₙ from Pₙ with aₙ > 2aₙ₋₁. The result is lacunary (hence Sidon) and hits every AP by construction.",
+    "mathContext": "This is non-constructive - it uses the axiom of choice to enumerate all APs. The factorial construction is a concrete realization of this idea.",
+    "significance": "key",
+    "relatedConcepts": [
+      "enumeration",
+      "greedy algorithm",
+      "Baumgartner"
+    ]
+  },
+  {
+    "id": "ann-e198-examples",
+    "proofId": "erdos-198",
+    "range": {
+      "startLine": 138,
+      "endLine": 157
+    },
+    "type": "theorem",
+    "title": "Verified Examples",
+    "content": "We verify the first factorial values using native_decide: 0! + 0 = 1, 1! + 1 = 2, 2! + 2 = 4, 3! + 3 = 9, 4! + 4 = 28. These are the first elements of the AlphaProof Sidon set.",
+    "mathContext": "The native_decide tactic uses Lean's kernel evaluation to verify these numeric facts. This provides machine-checked confirmation of the construction.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "computation",
+      "verification"
+    ]
+  }
+]

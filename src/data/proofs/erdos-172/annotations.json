@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-e172-header",
+    "proofId": "erdos-172",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This header documents **Erdős Problem #172**, a beautiful question at the intersection of Ramsey theory and arithmetic. The problem asks whether the additive and multiplicative structures of ℕ can be simultaneously exploited to find monochromatic configurations.",
+    "mathContext": "First asked by Hindman, this combines partition regularity (Ramsey theory) with the arithmetic structure of natural numbers. The question is whether colorings can always be defeated by both sums AND products simultaneously.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "partition regularity",
+      "arithmetic combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e172-coloring",
+    "proofId": "erdos-172",
+    "range": {
+      "startLine": 28,
+      "endLine": 29
+    },
+    "type": "definition",
+    "title": "Coloring Definition",
+    "content": "A **k-coloring** of ℕ assigns one of k colors to each natural number. We represent this as a function ℕ → Fin k, where Fin k is the type of naturals less than k.",
+    "mathContext": "Colorings are the central objects in Ramsey theory. The finite coloring requirement is essential - with infinitely many colors, trivial counterexamples exist.",
+    "significance": "key",
+    "relatedConcepts": [
+      "partition",
+      "Ramsey theory",
+      "Fin type"
+    ]
+  },
+  {
+    "id": "ann-e172-monochromatic",
+    "proofId": "erdos-172",
+    "range": {
+      "startLine": 31,
+      "endLine": 37
+    },
+    "type": "definition",
+    "title": "Sum-Product Monochromatic",
+    "content": "A set A is **sum-product monochromatic** if for every nonempty subset S ⊆ A, both the sum Σ S and product Π S have the same color. This is a very strong condition - not just pairwise sums/products, but ALL subset sums and products.",
+    "mathContext": "The definition uses Finset.sum and Finset.prod with the identity function. For S = {a, b}, this requires c(a+b) = c(a·b) = c₀.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "monochromatic sets",
+      "subset sums",
+      "subset products"
+    ]
+  },
+  {
+    "id": "ann-e172-conjecture",
+    "proofId": "erdos-172",
+    "range": {
+      "startLine": 46,
+      "endLine": 53
+    },
+    "type": "theorem",
+    "title": "The Main Conjecture",
+    "content": "**Erdős Problem #172** (OPEN): For any k-coloring and any target size m, there exists a set A with |A| ≥ m that is sum-product monochromatic. In other words, arbitrarily large such sets exist regardless of the coloring.",
+    "mathContext": "Formally: ∀ k ≥ 1, ∀ c : ℕ → Fin k, ∀ m, ∃ A with |A| ≥ m and ∃ c₀ such that all subset sums and products of A have color c₀.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open problem",
+      "Ramsey theory",
+      "partition regularity"
+    ]
+  },
+  {
+    "id": "ann-e172-moreira",
+    "proofId": "erdos-172",
+    "range": {
+      "startLine": 61,
+      "endLine": 69
+    },
+    "type": "theorem",
+    "title": "Moreira (2017)",
+    "content": "**Joel Moreira's breakthrough**: In any finite coloring of ℕ, there exist x, y such that {x, x+y, xy} are all the same color. This was the first non-trivial case (|A| = 2) of the conjecture.",
+    "mathContext": "Published in Annals of Mathematics, this resolved a long-standing question. The proof uses ergodic theory and the structure of ultrafilters on ℕ.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "ergodic theory",
+      "partial progress",
+      "Annals of Mathematics"
+    ]
+  },
+  {
+    "id": "ann-e172-alweiss",
+    "proofId": "erdos-172",
+    "range": {
+      "startLine": 71,
+      "endLine": 82
+    },
+    "type": "theorem",
+    "title": "Alweiss (2023)",
+    "content": "**Ryan Alweiss's extension**: The full conjecture holds over ℚ\\{0}. For any finite coloring of nonzero rationals and any m, there exist arbitrarily large sum-product monochromatic sets.",
+    "mathContext": "This suggests the conjecture may be true for ℕ as well. The rational case allows more algebraic flexibility (inverses exist), but the core difficulty of combining sums and products is the same.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rationals",
+      "algebraic structure",
+      "generalization"
+    ]
+  },
+  {
+    "id": "ann-e172-hindman",
+    "proofId": "erdos-172",
+    "range": {
+      "startLine": 86,
+      "endLine": 93
+    },
+    "type": "theorem",
+    "title": "Hindman (1980) Counterexample",
+    "content": "**The infinite version fails**: Hindman proved that with 7 colors, there exists a coloring of ℕ such that NO infinite set has all its sums and products monochromatic. This shows the finite requirement is essential.",
+    "mathContext": "The counterexample uses 7 colors specifically. It's unknown whether 7 is optimal or if fewer colors suffice.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample",
+      "infinite sets",
+      "7 colors"
+    ]
+  },
+  {
+    "id": "ann-e172-variants",
+    "proofId": "erdos-172",
+    "range": {
+      "startLine": 97,
+      "endLine": 111
+    },
+    "type": "definition",
+    "title": "Sum-Only and Product-Only",
+    "content": "We also define **sum-only monochromatic** and **product-only monochromatic** variants. These are strictly weaker than sum-product monochromatic. Classical results like Schur's theorem guarantee sum-only monochromatic sets.",
+    "mathContext": "The theorem sum_product_implies_both shows that sum-product monochromatic implies both individual properties. The converse is false - having monochromatic sums AND products separately doesn't give sum-product monochromatic.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Schur's theorem",
+      "separate conditions",
+      "implication"
+    ]
+  },
+  {
+    "id": "ann-e172-singleton",
+    "proofId": "erdos-172",
+    "range": {
+      "startLine": 115,
+      "endLine": 121
+    },
+    "type": "lemma",
+    "title": "Singleton Example",
+    "content": "Any singleton {n} is trivially sum-product monochromatic with color c(n). The only nonempty subset is {n} itself, and n = Σ{n} = Π{n}.",
+    "mathContext": "The proof uses Finset.eq_singleton_iff_nonempty_unique_mem to show S ⊆ {n} with S nonempty implies S = {n}.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "trivial case",
+      "singleton",
+      "base case"
+    ]
+  },
+  {
+    "id": "ann-e172-empty",
+    "proofId": "erdos-172",
+    "range": {
+      "startLine": 123,
+      "endLine": 130
+    },
+    "type": "lemma",
+    "title": "Empty Set Example",
+    "content": "The empty set satisfies the property **vacuously** - there are no nonempty subsets, so the condition is trivially true for any color c₀.",
+    "mathContext": "This is a standard vacuous truth argument. The proof uses that S ⊆ ∅ and S.Nonempty lead to a contradiction.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "vacuous truth",
+      "empty set",
+      "logical implication"
+    ]
+  }
+]

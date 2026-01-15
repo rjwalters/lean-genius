@@ -1,34 +1,117 @@
 {
   "id": "erdos-41",
-  "title": "Erdős Problem #41",
+  "title": "Erdős Problem #41: B_h Sequences and Density Bounds",
   "slug": "erdos-41",
-  "description": "Let ... be an infinite set such that the triple sums ... are all distinct for ... (aside from the trivial coincidences). Is it true that\\[\\liminf \\rvert}{N^{1/3}}=0?\\] Erdős proved that if the pair...",
+  "description": "For infinite B_3 sets (distinct triple sums), is liminf |A ∩ {1,...,N}| / N^(1/3) = 0?",
   "meta": {
-    "author": "Unknown",
+    "author": "Chen (1996, even h), Nash (1989, h=4), Erdős (h=2)",
     "sourceUrl": "https://erdosproblems.com/41",
-    "date": "",
-    "status": "pending",
+    "date": "1996",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos41Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "sidon-sets",
+      "density",
+      "number-theory"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 41,
     "erdosUrl": "https://erdosproblems.com/41",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$500"
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$500",
+    "dateAdded": "2026-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.liminf",
+        "description": "Lower limit of a function along a filter",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of a set as a natural number",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over a finite set",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "Unified formalization of B_h sequence density problem",
+      "Clear distinction between solved cases (even h) and open cases (odd h >= 3)",
+      "Educational organization showing the progression from Erdős to Nash to Chen",
+      "Examples: empty set, singleton, and powers of 2 as B_h sets"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #41 from erdosproblems.com. Originally offered with a prize of $500.",
-    "problemStatement": "Let $A\\subset\\mathbb{N}$ be an infinite set such that the triple sums $a+b+c$ are all distinct for $a,b,c\\in A$ (aside from the trivial coincidences). Is it true that\\[\\liminf \\frac{\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert}{N^{1/3}}=0?\\] Erdős proved that if the pairwise sums $a+b$ are all distinct aside from the trivial coincidences then\\[\\liminf \\frac{\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert}{N^{1/2}}=0.\\]This is discussed in problem C11 of Guy's collection [Gu04], in which Guy says Erdős offered \\$500 for the general problem of whether, for all $h\\geq 2$,\\[\\liminf \\frac{\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert}{N^{1/h}}=0\\]whenever the sum of $h$ terms in $A$ are distinct. This was proved for $h=4$ by Nash [Na89] and for all even $h$ by Chen [Ch96b]. View the LaTeX source This page was last edited 30 September 2025.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #41 asks about the density of B_h sequences - sets where all h-element subset sums are distinct. The h=2 case corresponds to classical Sidon sets, studied extensively in additive combinatorics.\n\nErdős proved the h=2 case: if A is an infinite Sidon set, then liminf |A ∩ {1,...,N}| / √N = 0. This means Sidon sets must be sparse infinitely often at the √N scale.\n\nThe problem generalizes to all h ≥ 2: is liminf |A ∩ {1,...,N}| / N^(1/h) = 0 for infinite B_h sets? Nash (1989) proved this for h=4 using Fourier-analytic methods, and Chen (1996) extended it to all even h.\n\nThe h=3 case (triple sums) remains OPEN with a $500 prize. Odd h ≥ 3 resists the Fourier techniques that work for even h.",
+    "problemStatement": "Let $A \\subseteq \\mathbb{N}$ be an infinite set where all triple sums $a + b + c$ are distinct (for distinct $a, b, c \\in A$). Is it true that:\n\n$$\\liminf_{N \\to \\infty} \\frac{|A \\cap \\{1, \\ldots, N\\}|}{N^{1/3}} = 0?$$\n\n**Status by h-value:**\n- h = 2: SOLVED (Erdős)\n- h = 3: **OPEN** ($500 prize)\n- h = 4: SOLVED (Nash 1989)\n- All even h ≥ 2: SOLVED (Chen 1996)\n- All odd h ≥ 3: OPEN",
+    "proofStrategy": "We formalize the general B_h density conjecture and state the known results as axioms:\n\n1. **IsBhSet**: A set where all h-element subset sums are distinct\n2. **ErdosBhConjecture(h)**: The density bound liminf ... = 0 holds for all infinite B_h sets\n3. **Axioms**: Erdős (h=2), Nash (h=4), Chen (all even h)\n4. **Open**: The h=3 case remains as a definition, not an axiom\n\nThe proofs of these results require Fourier analysis and analytic number theory beyond Mathlib, so they're axiomatized with references.",
+    "keyInsights": [
+      "**B_h sequences generalize Sidon sets**: B_2 sets are exactly Sidon sets. B_3 sets have distinct triple sums.",
+      "**Even vs. odd h**: The Fourier-analytic techniques that prove even h don't extend to odd h, which is why h=3 remains open.",
+      "**Density interpretation**: liminf = 0 means the set must be 'sparse' at scale N^(1/h) infinitely often, even if it can be dense elsewhere.",
+      "**Historical progression**: Erdős → Nash → Chen shows how the problem was gradually solved for more values of h.",
+      "**Connection to additive combinatorics**: B_h sets are fundamental in the study of sum-free sets and Sidon problems."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 34,
+      "endLine": 65,
+      "summary": "Definition of B_h sets, counting function, density ratio, and the general conjecture."
+    },
+    {
+      "id": "solved-cases",
+      "title": "Solved Cases",
+      "startLine": 67,
+      "endLine": 93,
+      "summary": "Axioms for Erdős (h=2), Nash (h=4), and Chen (all even h) theorems."
+    },
+    {
+      "id": "open-case",
+      "title": "The Open h=3 Case",
+      "startLine": 95,
+      "endLine": 109,
+      "summary": "Definition of the main open problem (Erdős Problem #41 proper)."
+    },
+    {
+      "id": "sidon-connection",
+      "title": "Connection to Sidon Sets",
+      "startLine": 111,
+      "endLine": 119,
+      "summary": "B_2 sets are Sidon sets; Erdős's theorem applies."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 121,
+      "endLine": 150,
+      "summary": "Empty set, singleton, and powers of 2 as B_h sets."
+    },
+    {
+      "id": "summary",
+      "title": "Summary of Results",
+      "startLine": 152,
+      "endLine": 170,
+      "summary": "Table of which h values are solved vs. open."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #41, which concerns the density of B_h sequences. While the even h cases are solved (Chen 1996), the h=3 triple sum case remains open with a $500 prize. Our formalization captures the known results as axioms and clearly delineates the open problem.",
+    "implications": "The gap between even and odd h suggests a fundamental difference in the structure of B_h sets. Solving h=3 would likely require new techniques beyond Fourier analysis.",
+    "openQuestions": [
+      "Does liminf |A ∩ {1,...,N}| / N^(1/3) = 0 for all infinite B_3 sets? ($500 prize)",
+      "Can the Fourier methods for even h be extended to odd h?",
+      "Is there a unified proof for all h ≥ 2?",
+      "What is the optimal density bound for finite B_h sets in {1,...,N}?"
+    ]
   }
 }

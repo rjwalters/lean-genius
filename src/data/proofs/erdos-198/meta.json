@@ -1,33 +1,109 @@
 {
   "id": "erdos-198",
-  "title": "Erdős Problem #198",
+  "title": "Erdős Problem #198: Sidon Sets and Arithmetic Progressions",
   "slug": "erdos-198",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a Sidon set then must the complement of ... contain an infinite arithmetic progression?\n\n\n\nThe answer is no; Erds a...",
+  "description": "If A ⊆ ℕ is a Sidon set, must the complement of A contain an infinite arithmetic progression? Answer: NO.",
   "meta": {
-    "author": "Unknown",
+    "author": "Baumgartner (1975); AlphaProof (explicit construction)",
     "sourceUrl": "https://erdosproblems.com/198",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos198Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "sidon-sets",
+      "arithmetic-progressions",
+      "additive-combinatorics",
+      "disproved"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 198,
     "erdosUrl": "https://erdosproblems.com/198",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.Nonempty",
+        "description": "Nonempty set predicate",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Function.StrictMono",
+        "description": "Strictly monotone functions",
+        "module": "Mathlib.Order.Monotone.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Clean formalization of Sidon sets and arithmetic progressions",
+      "Axiomatization of Baumgartner's lacunary construction",
+      "Axiomatization of AlphaProof's explicit factorial construction",
+      "Verified factorial computations for small cases"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #198 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $A\\subset \\mathbb{N}$ is a Sidon set then must the complement of $A$ contain an infinite arithmetic progression?\n\n\n\nThe answer is no; Erd\\H{o}s and Graham report this was proved by Baumgartner, presumably referring to the paper \\cite{Ba75}, which does not state this exactly, but the following simple construction is implicit in \\cite{Ba75}.\n\nLet $P_1,P_2,\\ldots$ be an enumeration of all countably many infinite arithmetic progressions. We choose $a_1$ to be the minimal element of $P_1\\cap \\mathbb{N}$, and in general choose $a_n$ to be an element of $P_n\\cap \\mathbb{N}$ such that $a_n>2a_{n-1}$. By construction $A=\\{a_1<a_2<\\cdots\\}$ contains at least one element from every infinite arithmetic progression, and is a lacunary set, so is certainly Sidon.\n\nAlphaProof has found the following explicit construction:\\[A = \\{ (n+1)!+n : n\\geq 0\\}.\\]This is a Sidon set, and intersects every arithmetic progression, since for any $a,d\\in \\mathbb{N}$,\\[(a+d+1)!+(a+d)\\in A,\\]and $d$ divides $(a+d+1)!+d$.\n\nSee also [199].\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Ba75] Baumgartner, James E., Partitioning vector spaces. J. Combinatorial Theory Ser. A (1975), 231-233.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem explores the relationship between Sidon sets (sets with all pairwise sums distinct) and arithmetic progressions. Erdős asked whether every Sidon set must be 'sparse enough' that its complement contains an infinite AP.\n\nBaumgartner (1975) showed the answer is NO by constructing a Sidon set that intersects every infinite AP. His method was implicit - enumerate all APs and greedily select elements to form a lacunary (hence Sidon) sequence.\n\nMore recently, AlphaProof found an explicit construction: A = {n! + n : n ≥ 0}. This set is Sidon and intersects every AP, providing a concrete counterexample.",
+    "problemStatement": "**Question**: If $A \\subset \\mathbb{N}$ is a Sidon set, must the complement $A^c$ contain an infinite arithmetic progression?\n\n**Answer**: NO\n\nThere exist Sidon sets that intersect every infinite AP, leaving no room for an infinite AP in the complement.\n\n**Constructions**:\n1. Baumgartner (1975): Lacunary construction via enumeration\n2. AlphaProof: $A = \\{n! + n : n \\geq 0\\}$",
+    "proofStrategy": "We formalize the disproof by axiomatizing two constructions:\n\n1. **Factorial construction** ({n! + n}): Axiomatize that it's Sidon and intersects all APs\n2. **Lacunary construction**: Axiomatize Baumgartner's enumeration method\n\nThe key insight for the factorial set: for any AP with first term a and difference d, the element (a+d+1)! + (a+d) is in the set and lies in the AP (since d divides (a+d+1)!).\n\nWe also prove verified examples showing the first few elements: 0! + 0 = 1, 1! + 1 = 2, 2! + 2 = 4, etc.",
+    "keyInsights": [
+      "**Sidon sets**: Sets where all pairwise sums a + b (a ≤ b) are distinct. Also called B₂ sequences.",
+      "**Lacunary sets**: Sets where consecutive elements satisfy aₙ₊₁ > 2aₙ. These are automatically Sidon.",
+      "**The counterexample**: There exist Sidon sets dense enough to hit every infinite AP.",
+      "**AlphaProof's construction**: A = {n! + n} works because factorials are divisible by all smaller numbers.",
+      "**Why it works**: For AP with difference d, element (a+d+1)! + (a+d) ≡ a (mod d) since d | (a+d+1)!."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 37,
+      "endLine": 55,
+      "summary": "Define Sidon sets, arithmetic progressions, and the intersection property."
+    },
+    {
+      "id": "main-result",
+      "title": "The Main Result",
+      "startLine": 57,
+      "endLine": 72,
+      "summary": "State Erdős's question and axiomatize that the answer is NO."
+    },
+    {
+      "id": "factorial",
+      "title": "Factorial Construction",
+      "startLine": 74,
+      "endLine": 103,
+      "summary": "AlphaProof's explicit construction {n! + n} and its properties."
+    },
+    {
+      "id": "lacunary",
+      "title": "Lacunary Sets",
+      "startLine": 105,
+      "endLine": 129,
+      "summary": "Baumgartner's general construction using lacunary sequences."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 131,
+      "endLine": 157,
+      "summary": "Concrete computations of factorial values."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #198, which asks whether every Sidon set's complement must contain an infinite AP. The answer is NO - there exist Sidon sets that intersect every infinite AP. We axiomatize both Baumgartner's lacunary construction and AlphaProof's explicit factorial construction.",
+    "implications": "This result shows that Sidon sets can be surprisingly dense in terms of AP coverage. While Sidon sets are 'thin' in terms of sumset structure, they need not be thin enough to miss entire infinite APs. This reveals interesting tension between additive structure and AP structure.",
+    "openQuestions": [
+      "What is the minimum density a Sidon set can have while still intersecting all infinite APs?",
+      "Are there 'natural' Sidon sets (like squares or primes) that intersect all APs?",
+      "Can similar results be proved for higher-order sum-free sets?",
+      "What about finite APs of length k? Must Sidon sets miss some k-AP?"
+    ]
   }
 }

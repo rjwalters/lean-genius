@@ -2940,17 +2940,23 @@
   },
   {
     "id": "erdos-172",
-    "title": "Erdős Problem #172",
+    "title": "Erdős Problem #172: Monochromatic Sums and Products",
     "slug": "erdos-172",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that in any finite colouring of $...A...A...A...A...2......x,y...\\{x,x+y,xy\\}...\\backslash \\{0\\}...A...A...\\lvert ...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "In any finite coloring of ℕ, do there exist arbitrarily large sets A with all sums and products of elements monochromatic?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "combinatorics",
+      "coloring",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-15",
     "erdosNumber": 172,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 10
   },
   {
     "id": "erdos-173",
@@ -3213,17 +3219,23 @@
   },
   {
     "id": "erdos-198",
-    "title": "Erdős Problem #198",
+    "title": "Erdős Problem #198: Sidon Sets and Arithmetic Progressions",
     "slug": "erdos-198",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a Sidon set then must the complement of ... contain an infinite arithmetic progression?\n\n\n\nThe answer is no; Erds a...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "If A ⊆ ℕ is a Sidon set, must the complement of A contain an infinite arithmetic progression? Answer: NO.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "sidon-sets",
+      "arithmetic-progressions",
+      "additive-combinatorics",
+      "disproved"
     ],
+    "dateAdded": "2026-01-15",
     "erdosNumber": 198,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 10
   },
   {
     "id": "erdos-199",
@@ -5707,17 +5719,23 @@
   },
   {
     "id": "erdos-41",
-    "title": "Erdős Problem #41",
+    "title": "Erdős Problem #41: B_h Sequences and Density Bounds",
     "slug": "erdos-41",
-    "description": "Let ... be an infinite set such that the triple sums ... are all distinct for ... (aside from the trivial coincidences). Is it true that\\[\\liminf \\rvert}{N^{1/3}}=0?\\] Erdős proved that if the pair...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "For infinite B_3 sets (distinct triple sums), is liminf |A ∩ {1,...,N}| / N^(1/3) = 0?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "sidon-sets",
+      "density",
+      "number-theory"
     ],
+    "dateAdded": "2026-01-15",
     "erdosNumber": 41,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 11
   },
   {
     "id": "erdos-412",
