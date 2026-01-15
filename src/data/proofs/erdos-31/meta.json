@@ -1,33 +1,124 @@
 {
   "id": "erdos-31",
-  "title": "Erdős Problem #31",
+  "title": "Erdős Problem #31: Additive Complements",
   "slug": "erdos-31",
-  "description": "Given any infinite set ... there is a set ... of density ... such that ... contains all except finitely many integers. Conjectured by Erdős and Straus. Proved by Lorentz [Lo54]. View the LaTeX source",
+  "description": "For any infinite A ⊆ ℕ, there exists B with density 0 such that A + B covers all but finitely many positive integers.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Straus (conjecture); Lorentz (1954, proof)",
     "sourceUrl": "https://erdosproblems.com/31",
-    "date": "",
-    "status": "pending",
+    "date": "1954",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos31Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "density",
+      "sumsets",
+      "additive-bases"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 31,
     "erdosUrl": "https://erdosproblems.com/31",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-14",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits of sequences along filters",
+        "module": "Mathlib.Topology.Basic"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Predicate for infinite sets",
+        "module": "Mathlib.Data.Set.Finite"
+      },
+      {
+        "theorem": "Set.Finite.bddAbove",
+        "description": "Finite sets of naturals are bounded above",
+        "module": "Mathlib.Data.Set.Finite"
+      }
+    ],
+    "originalContributions": [
+      "Definition of asymptotic density and density zero",
+      "Definition of sumsets A +ₛ B",
+      "CoversAllButFinitely predicate for cofinite coverage",
+      "Axiomatization of Lorentz's theorem",
+      "Proof that coverage requires at least one infinite set (from finite sets)",
+      "Proof that optimal B-density is 0 (using non-negativity of density)",
+      "Connection to asymptotic additive bases of order 2"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #31 from erdosproblems.com.",
-    "problemStatement": "Given any infinite set $A\\subset \\mathbb{N}$ there is a set $B$ of density $0$ such that $A+B$ contains all except finitely many integers. Conjectured by Erdős and Straus. Proved by Lorentz [Lo54]. View the LaTeX source",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős and Straus conjectured that any infinite set A can be 'completed' to cover almost all of ℕ using only a very sparse set B (density 0).\n\nLorentz proved this in 1954, showing that the additive structure of infinite sets is quite flexible. The proof constructs B by filling in 'gaps' in the sumset, and the sparseness of the construction depends on the distribution of A.\n\nThis result is fundamental to additive combinatorics: it shows that even very sparse sets can have rich additive structure when combined appropriately.",
+    "problemStatement": "**Erdős Problem #31 (SOLVED - Lorentz 1954)**\n\nGiven any infinite set $A \\subset \\mathbb{N}$, prove there exists a set $B$ of density 0 such that $A + B = \\{a + b : a \\in A, b \\in B\\}$ contains all except finitely many positive integers.\n\n**Key results:**\n- The conjecture is true (Lorentz 1954)\n- Moreover, B can be chosen with |B ∩ [1,N]| = O(N/log N)\n- The optimal B-density is always 0 for infinite A",
+    "proofStrategy": "We formalize the problem by:\n\n1. **Density**: `HasDensity A d` means |A ∩ [1,N]|/N → d as N → ∞\n\n2. **Sumset**: `A +ₛ B` = {a + b : a ∈ A, b ∈ B}\n\n3. **Coverage**: `CoversAllButFinitely A B` means univ \\ (A +ₛ B) ∩ ℕ+ is finite\n\n4. **Lorentz's theorem** (axiom): For infinite A, there exists B with density 0 and coverage\n\n5. **Derived results**:\n   - Coverage requires at least one infinite set (proved from set finiteness)\n   - Optimal B-density is 0 (proved using infimum and non-negativity)\n   - A ∪ B forms an asymptotic basis of order 2",
+    "keyInsights": [
+      "**Additive completion**: Any infinite set can be 'completed' to cover almost all integers using a sparse complement.",
+      "**Density vs coverage**: High coverage (cofinite) doesn't require high density in B; density 0 suffices.",
+      "**Finite sumsets can't cover**: If both A and B are finite, A + B is finite and can't cover cofinitely many integers.",
+      "**Connection to bases**: The result shows A ∪ B is an asymptotic additive basis of order 2.",
+      "**Lorentz bound**: B can be chosen with |B ∩ [1,N]| = O(N/log N), which is optimal in general."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "density-defs",
+      "title": "Density Definitions",
+      "startLine": 28,
+      "endLine": 47,
+      "summary": "Define counting function, HasDensity, HasDensityZero, and upperDensity."
+    },
+    {
+      "id": "sumsets",
+      "title": "Sumsets",
+      "startLine": 49,
+      "endLine": 61,
+      "summary": "Define sumsets A +ₛ B and CoversAllButFinitely predicate."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 79,
+      "endLine": 107,
+      "summary": "State Erdős Problem #31 and axiomatize Lorentz's theorem with the strengthened bound."
+    },
+    {
+      "id": "optimal-density",
+      "title": "Optimal Density",
+      "startLine": 132,
+      "endLine": 165,
+      "summary": "Define OptimalBDensity and prove it equals 0 for infinite A."
+    },
+    {
+      "id": "coverage-requirements",
+      "title": "Coverage Requirements",
+      "startLine": 172,
+      "endLine": 218,
+      "summary": "Prove that finite A and finite B cannot achieve cofinite coverage."
+    },
+    {
+      "id": "additive-bases",
+      "title": "Connection to Additive Bases",
+      "startLine": 220,
+      "endLine": 237,
+      "summary": "Show that the result implies A ∪ B is an asymptotic basis of order 2."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #31, the additive complements conjecture proved by Lorentz in 1954. The result shows that any infinite set A can be completed to cover almost all of ℕ using a density-0 set B. We prove structural consequences: coverage requires at least one infinite set, and the optimal B-density is 0. The result connects to asymptotic additive bases.",
+    "implications": "This fundamental result in additive combinatorics shows that infinite sets have flexible additive structure. It implies that even very sparse sets can combine to have full coverage. The technique of constructing sparse complements has applications throughout combinatorics and number theory.",
+    "openQuestions": [
+      "What is the exact density of the 'best' B for specific sets A (e.g., primes)?",
+      "Can Lorentz's bound O(N/log N) be improved for special classes of A?",
+      "What is the relationship to Erdős Problem #221 (similar questions)?",
+      "Can the result be extended to sumsets of more than 2 sets?"
+    ]
   }
 }

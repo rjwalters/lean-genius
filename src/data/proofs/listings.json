@@ -823,31 +823,44 @@
   },
   {
     "id": "erdos-108",
-    "title": "Erdős Problem #108",
+    "title": "Erdős Problem #108: High Chromatic Subgraphs with Large Girth",
     "slug": "erdos-108",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor every ... and ... is there some finite ... such that every graph of chromatic number ... contains a subgraph of girth ......",
-    "status": "pending",
-    "badge": "wip",
+    "description": "For every r >= 4 and k >= 2, does there exist f(k,r) such that every graph with chromatic number >= f(k,r) contains a subgraph of girth >= r and chromatic number >= k?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "girth",
+      "ramsey-theory"
     ],
+    "dateAdded": "2026-01-14",
     "erdosNumber": 108,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 8
   },
   {
     "id": "erdos-109",
-    "title": "Erdős Problem #109",
+    "title": "Erdős Problem #109: The Sumset Conjecture",
     "slug": "erdos-109",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAny ... of positive upper density contains a sumset ... where both ... and ... are infinite.\n\n\n\nThe Erd. Proved by Moreira, R...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Any subset A of natural numbers with positive upper density contains a sumset B + C where both B and C are infinite.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "additive-combinatorics",
+      "density",
+      "sumsets",
+      "ergodic-theory"
     ],
+    "dateAdded": "2026-01-14",
     "erdosNumber": 109,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 10
   },
   {
     "id": "erdos-11",
@@ -1073,45 +1086,59 @@
   },
   {
     "id": "erdos-137",
-    "title": "Erdős Problem #137",
+    "title": "Erdős Problem #137: Powerful Products of Consecutive Integers",
     "slug": "erdos-137",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Can the product of any ... consecutive integers ... ever be powerful? That is, must there always exist a prime ... s...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "For k ≥ 3, can the product of k consecutive integers ever be powerful? Conjectured: NO.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "powerful-numbers",
+      "consecutive-integers",
+      "prime-factorization"
     ],
+    "dateAdded": "2026-01-14",
     "erdosNumber": 137,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 10
   },
   {
     "id": "erdos-138",
-    "title": "Erdős Problem #138",
+    "title": "Van der Waerden Numbers Growth Rate",
     "slug": "erdos-138",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet the van der Waerden number ... be such that whenever ... and ... is ...-coloured there must exist a monochromatic ...-ter...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Erdős Problem #138 asks whether W(k)^{1/k} → ∞, where W(k) is the van der Waerden number - the minimum N such that any 2-coloring of {1,...,N} contains a monochromatic k-term arithmetic progression. This remains OPEN with a $500 prize.",
+    "status": "axiomatized",
+    "badge": "axiomatized",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "combinatorics",
+      "van-der-waerden",
+      "arithmetic-progressions"
     ],
     "erdosNumber": 138,
-    "sorries": 1,
-    "annotationCount": 0
+    "sorries": 5,
+    "annotationCount": 14
   },
   {
     "id": "erdos-139",
-    "title": "Erdős Problem #139",
+    "title": "Erdős #139: Szemerédi's Theorem",
     "slug": "erdos-139",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the size of the largest subset of ... which does not contain a non-trivial ...-term arithmetic progression. Prove ...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Szemerédi's theorem states that any subset of natural numbers with positive upper density contains arbitrarily long arithmetic progressions. This formalization covers the equivalent density formulation: r_k(N) = o(N), where r_k(N) is the maximum size of a k-AP-free subset of {1,...,N}.",
+    "status": "axiomatized",
+    "badge": "axiomatized",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "arithmetic-progressions",
+      "density",
+      "szemerédi"
     ],
     "erdosNumber": 139,
-    "sorries": 1,
-    "annotationCount": 0
+    "sorries": 4,
+    "annotationCount": 11
   },
   {
     "id": "erdos-140",
@@ -1124,7 +1151,7 @@
       "erdos"
     ],
     "erdosNumber": 140,
-    "sorries": 1,
+    "sorries": 3,
     "annotationCount": 0
   },
   {
@@ -2604,17 +2631,23 @@
   },
   {
     "id": "erdos-26",
-    "title": "Erdős Problem #26",
+    "title": "Erdős Problem #26: Thick Sequences and Behrend Sets",
     "slug": "erdos-26",
-    "description": "Let ... be infinite. Must there exist some ... such that almost all integers have a divisor of the form ... for some ...? Asked by Erdős and Tenenbaum. Ruzsa gave the following simple counterexampl...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "If A is a thick sequence (divergent reciprocal sum), must some shift A+k have density 1 coverage?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "density",
+      "thick-sequences",
+      "behrend-sets",
+      "disproved"
     ],
     "erdosNumber": 26,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 15
   },
   {
     "id": "erdos-260",
@@ -3216,16 +3249,22 @@
   },
   {
     "id": "erdos-31",
-    "title": "Erdős Problem #31",
+    "title": "Erdős Problem #31: Additive Complements",
     "slug": "erdos-31",
-    "description": "Given any infinite set ... there is a set ... of density ... such that ... contains all except finitely many integers. Conjectured by Erdős and Straus. Proved by Lorentz [Lo54]. View the LaTeX source",
-    "status": "pending",
-    "badge": "wip",
+    "description": "For any infinite A ⊆ ℕ, there exists B with density 0 such that A + B covers all but finitely many positive integers.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "density",
+      "sumsets",
+      "additive-bases"
     ],
+    "dateAdded": "2026-01-14",
     "erdosNumber": 31,
-    "sorries": 1,
+    "mathlibCount": 4,
+    "sorries": 4,
     "annotationCount": 0
   },
   {
@@ -3398,17 +3437,21 @@
   },
   {
     "id": "erdos-33",
-    "title": "Erdős Problem #33",
+    "title": "Erdős #33: Additive Complements of Squares",
     "slug": "erdos-33",
-    "description": "Let ... be such that every large integer can be written as ... for some ... and .... What is the smallest possible value of\\[\\limsup \\rvert}{N^{1/2}}?\\]Is\\[\\liminf \\rvert}{N^{1/2}}>1?\\] Such a set ...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "For sets A such that every integer is n² + a for some a ∈ A, what is the minimum possible density? Best known: liminf ≥ 4/π ≈ 1.273 and limsup ≤ 2φ^(5/2) ≈ 6.66.",
+    "status": "axiomatized",
+    "badge": "axiomatized",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "squares",
+      "density",
+      "number-theory"
     ],
     "erdosNumber": 33,
-    "sorries": 1,
-    "annotationCount": 0
+    "sorries": 0,
+    "annotationCount": 10
   },
   {
     "id": "erdos-331",
@@ -7109,6 +7152,34 @@
     "annotationCount": 0
   },
   {
+    "id": "erdos-682",
+    "title": "Erdős Problem #682",
+    "slug": "erdos-682",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for almost all ... there exists some ... such that\\[p(m) \\geq p_{n+1}-p_n,\\]where ... denotes the least prime...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 682,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-683",
+    "title": "Erdős Problem #683",
+    "slug": "erdos-683",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every ... the largest prime divisor of ..., say ..., satisfies\\[P\\left({k}\\right)\\geq \\min(n-k+1, k^{1+c}...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 683,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
     "id": "erdos-69",
     "title": "Erdős Problem #69: Irrationality of Sum of Omega over Powers of 2",
     "slug": "erdos-69",
@@ -7126,6 +7197,90 @@
     "mathlibCount": 3,
     "sorries": 4,
     "annotationCount": 7
+  },
+  {
+    "id": "erdos-692",
+    "title": "Erdős Problem #692",
+    "slug": "erdos-692",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the density of the set of integers with exactly one divisor in .... Is ... unimodular for ... (i.e. increases unti...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 692,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-694",
+    "title": "Erdős Problem #694",
+    "slug": "erdos-694",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the largest ... such that ..., and ... be the smallest such ..., where ... is Euler's totient function. Investigat...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 694,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-696",
+    "title": "Erdős Problem #696",
+    "slug": "erdos-696",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the largest ... such that there is a sequence of primes ... all dividing ... with .... Let ... be the largest ... ...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 696,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-697",
+    "title": "Erdős Problem #697",
+    "slug": "erdos-697",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the density of the set of integers which are divisible by some ... with .... Does there exist some ... such th...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 697,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-698",
+    "title": "Erdős Problem #698",
+    "slug": "erdos-698",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some ... such that for all ...\\[\\left( {i},{j}\\right) \\geq h(n)?\\]\n\n\n\nA problem of Erds and Szekeres, who observed t...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 698,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-699",
+    "title": "Erdős Problem #699",
+    "slug": "erdos-699",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every ... there exists some prime ... such that\\[p\\mid \\left({i}, {j}\\right)?\\]\n\n\n\nA problem of Erds and ...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 699,
+    "sorries": 1,
+    "annotationCount": 0
   },
   {
     "id": "erdos-7",
@@ -7164,6 +7319,104 @@
     "annotationCount": 20
   },
   {
+    "id": "erdos-701",
+    "title": "Erdős Problem #701",
+    "slug": "erdos-701",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $...B\\subseteq A\\in...B\\in ...x...'\\subseteq ......\\{1,\\ldots,n\\}...A\\in ...f:B\\to A...x\\leq f(x)...x\\in B...B\\in ..........",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 701,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-702",
+    "title": "Erdős Problem #702",
+    "slug": "erdos-702",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... If $...\\{1,\\ldots,n\\}...\\lvert A\\rvert=k...A\\in ...\\lvert \\rvert >{k-2}...A,B\\in...\\lvert A\\cap B\\rvert=1...k=4...k\\...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 702,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-703",
+    "title": "Erdős Problem #703",
+    "slug": "erdos-703",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and define ... to be maximal such that there exists a family $...\\{1,\\ldots,n\\}...T(n,r)...\\lvert A\\cap B\\rvert\\neq r...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 703,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-704",
+    "title": "Erdős Problem #704",
+    "slug": "erdos-704",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the unit distance graph in ..., with two vertices joined by an edge if and only if the distance between them is .....",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 704,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-707",
+    "title": "Erdős Problem #707",
+    "slug": "erdos-707",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a finite Sidon set. Is there some set ... with ... which is perfect difference set modulo ... for some prime ...?\n...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 707,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-708",
+    "title": "Erdős Problem #708",
+    "slug": "erdos-708",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that for any ... with ... and any set ... of ... consecutive integers there exists some ... with ... ...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 708,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-709",
+    "title": "Erdős Problem #709",
+    "slug": "erdos-709",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that, for any ... of size ..., in any interval ... of ... consecutive integers there exist distinct ....",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 709,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
     "id": "erdos-71",
     "title": "Erdős Problem #71",
     "slug": "erdos-71",
@@ -7178,6 +7431,132 @@
     "annotationCount": 0
   },
   {
+    "id": "erdos-710",
+    "title": "Erdős Problem #710",
+    "slug": "erdos-710",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that in ... there exist distinct integers ... such that ... for all .... Obtain an asymptotic formula...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 710,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-711",
+    "title": "Erdős Problem #711",
+    "slug": "erdos-711",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that in ... there exist distinct integers ... such that ... for all .... Prove that\\[\\max_m f(n,m) \\l...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 711,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-712",
+    "title": "Erdős Problem #712",
+    "slug": "erdos-712",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDetermine, for any ..., the value of\\[_r(n,K_k^r)}{{r}},\\]where ... is the largest number of ...-edges which can placed on .....",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 712,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-713",
+    "title": "Erdős Problem #713",
+    "slug": "erdos-713",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every bipartite graph ..., there exists some ... and ... such that\\[(n;G)\\sim cn^\\alpha?\\]Must ... be ra...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 713,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-714",
+    "title": "Erdős Problem #714",
+    "slug": "erdos-714",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that\\[(n; K_{r,r}) \\gg n^{2-1/r}?\\]\n\n\n\nK\\\"{o}v\\'{a}ri, S\\'{o}s, and Tur\\'{a}n  proved\\[(n; K_{r,r}) \\ll n^{2-1/r}\\...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 714,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-715",
+    "title": "Erdős Problem #715",
+    "slug": "erdos-715",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every regular graph of degree ... contain a regular subgraph of degree ...? Is there any ... such that every regular gra...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 715,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-716",
+    "title": "Erdős Problem #716",
+    "slug": "erdos-716",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $...3...6...3...3...3...k...k-3...3......r_{k-3}(n)...\\{1,\\ldots,n\\}...k-3...k=6,7,8...r$}-graphs. (1973), 53--63.\n\n[Er75...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 716,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-717",
+    "title": "Erdős Problem #717",
+    "slug": "erdos-717",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on ... vertices with chromatic number ... and let ... be the maximal ... such that ... contains a subdivis...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 717,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-718",
+    "title": "Erdős Problem #718",
+    "slug": "erdos-718",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some constant ... such that any graph on ... vertices with ... edges contains a subdivision of ...?\n\n\n\nA conjecture ...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 718,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
     "id": "erdos-72",
     "title": "Erdős Problem #72",
     "slug": "erdos-72",
@@ -7188,6 +7567,104 @@
       "erdos"
     ],
     "erdosNumber": 72,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-720",
+    "title": "Erdős Problem #720",
+    "slug": "erdos-720",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the size Ramsey number, the minimal number of edges ... such that there is a graph ... with ... edges such tha...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 720,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-721",
+    "title": "Erdős Problem #721",
+    "slug": "erdos-721",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the van der Waerden number defined as the minimum ... such that in any red/blue colouring of ... there exists eith...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 721,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-722",
+    "title": "Erdős Problem #722",
+    "slug": "erdos-722",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be sufficiently large in terms of ... and .... Does there always exist a block ... design (or Steiner system ...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 722,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-723",
+    "title": "Erdős Problem #723",
+    "slug": "erdos-723",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf there is a finite projective plane of order ... then must ... be a prime power?\n\nA finite projective plane of order ... is...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 723,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-724",
+    "title": "Erdős Problem #724",
+    "slug": "erdos-724",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximum number of mutually orthogonal Latin squares of order .... Is it true that\\[f(n) \\gg n^{1/2}?\\]\n\n\n\nEule...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 724,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-725",
+    "title": "Erdős Problem #725",
+    "slug": "erdos-725",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGive an asymptotic formula for the number of ... Latin rectangles.\n\n\n\nErds and Kaplansky  proved the count is\\[\\sim e^{-{2}}(...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 725,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-727",
+    "title": "Erdős Problem #727",
+    "slug": "erdos-727",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Does\\[(n+k)!^2 \\mid (2n)!\\]for infinitely many ...?\n\n\n\nA conjecture of Erds, Graham, Ruzsa, and Straus . It is open ...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 727,
     "sorries": 1,
     "annotationCount": 0
   },
@@ -7214,6 +7691,20 @@
     "annotationCount": 19
   },
   {
+    "id": "erdos-729",
+    "title": "Erdős Problem #729",
+    "slug": "erdos-729",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a constant. Are there infinitely many integers ... with ... such that the denominator of\\[{a!b!}\\]contains only pr...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 729,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
     "id": "erdos-73",
     "title": "Erdős Problem #73",
     "slug": "erdos-73",
@@ -7224,6 +7715,104 @@
       "erdos"
     ],
     "erdosNumber": 73,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-732",
+    "title": "Erdős Problem #732",
+    "slug": "erdos-732",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall a sequence ... block-compatible if there is a pairwise balanced block design ... such that ... for .... (A pairwise bloc...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 732,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-733",
+    "title": "Erdős Problem #733",
+    "slug": "erdos-733",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall a sequence ... line-compatible if there is a set of ... points in ... such that there are ... lines ... containing at le...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 733,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-734",
+    "title": "Erdős Problem #734",
+    "slug": "erdos-734",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFind, for all large ..., a non-trivial pairwise balanced block design ... such that, for all ..., there are ... many ... such...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 734,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-735",
+    "title": "Erdős Problem #735",
+    "slug": "erdos-735",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven any ... points in ... when can one give positive weights to the points such that the sum of the weights of the points a...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 735,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-736",
+    "title": "Erdős Problem #736",
+    "slug": "erdos-736",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with chromatic number .... Is there, for every cardinal number ..., some graph ... of chromatic number ......",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 736,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-737",
+    "title": "Erdős Problem #737",
+    "slug": "erdos-737",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with chromatic number .... Must there exist an edge ... such that, for all large ..., ... contains a cycle...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 737,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-739",
+    "title": "Erdős Problem #739",
+    "slug": "erdos-739",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $...G......< ...G......=\\aleph_0...2^{}<2^{}...<...=\\aleph_2...=\\aleph_1...=\\aleph_2...=\\aleph_1$.\n\nIt remains open wheth...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 739,
     "sorries": 1,
     "annotationCount": 0
   },
@@ -7246,6 +7835,48 @@
     "mathlibCount": 4,
     "sorries": 0,
     "annotationCount": 10
+  },
+  {
+    "id": "erdos-740",
+    "title": "Erdős Problem #740",
+    "slug": "erdos-740",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $...G......r\\geq 1...G......\\leq r...=\\aleph_0...r=3......r...f_r()...\\geq f_r()......\\leq r...r=3......\\leq C$).\n\n\n\n\nRef...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 740,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-742",
+    "title": "Erdős Problem #742",
+    "slug": "erdos-742",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on ... vertices with diameter ..., such that deleting any edge increases the diameter of .... Is it true t...",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 742,
+    "sorries": 1,
+    "annotationCount": 0
+  },
+  {
+    "id": "erdos-743",
+    "title": "Erdős Problem #743",
+    "slug": "erdos-743",
+    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a collection of trees such that ... has ... vertices. Can we always write ... as the edge disjoint union of the .....",
+    "status": "pending",
+    "badge": "wip",
+    "tags": [
+      "erdos"
+    ],
+    "erdosNumber": 743,
+    "sorries": 1,
+    "annotationCount": 0
   },
   {
     "id": "erdos-76",

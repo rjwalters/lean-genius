@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-700",
+  "title": "Erdős #700",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[f(n)=\\min_{1<k\\leq n/2}\\textrm{gcd}\\left(n,\\binom{n}{k}\\right).\\]{UL}\n{LI}Characterise those composite $n$ such that $f(n)=n/P(n)$, where $P(n)$ is the largest prime dividing $n$.{/LI}\n{LI}Are there infinitely many composite $n$ such that $f(n)>n^{1/2}$?{/LI}\n{LI} Is it true that, for every composite $n$,\\[f(n) \\ll_A \\frac{n}{(\\log n)^A}\\]for every $A>0$?{/LI}\n{/UL}\n\n\n\nA problem of Erd\\H{o}s and Szekeres. It is easy to see that $f(n)\\leq n/P(n)$ for composite $n$, since if $j=p^k$ where $p^k\\mid n$ and $p^{k+1}\\nmid n$ then $\\textrm{gcd}\\left(n,\\binom{n}{j}\\right)=n/p^k$. This implies\\[f(n) \\leq (1+o(1))\\frac{n}{\\log n}.\\]It is known that $f(n)=n/P(n)$ when $n$ is the product of two primes. Another example is $n=30$.\n\nFor the second problem, it is easy to see that for any $n$ we have $f(n)\\geq p(n)$, where $p(n)$ is the smallest prime dividing $n$, and hence there are infinitely many $n$ (those $=p^2)$ such that $f(n)\\geq n^{1/2}$.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-14T21:07:11.724Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #700 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[f(n)=\\min_{1<k\\leq n/2}\\textrm{gcd}\\left(n,\\binom{n}{k}\\right).\\]{UL}\n{LI}Characterise those composite $n$ such that $f(n)=n/P(n)$, where $P(n)$ is the largest prime dividing $n$.{/LI}\n{LI}Are there infinitely many composite $n$ such that $f(n)>n^{1/2}$?{/LI}\n{LI} Is it true that, for every composite $n$,\\[f(n) \\ll_A \\frac{n}{(\\log n)^A}\\]for every $A>0$?{/LI}\n{/UL}\n\n\n\nA problem of Erd\\H{o}s and Szekeres. It is easy to see that $f(n)\\leq n/P(n)$ for composite $n$, since if $j=p^k$ where $p^k\\mid n$ and $p^{k+1}\\nmid n$ then $\\textrm{gcd}\\left(n,\\binom{n}{j}\\right)=n/p^k$. This implies\\[f(n) \\leq (1+o(1))\\frac{n}{\\log n}.\\]It is known that $f(n)=n/P(n)$ when $n$ is the product of two primes. Another example is $n=30$.\n\nFor the second problem, it is easy to see that for any $n$ we have $f(n)\\geq p(n)$, where $p(n)$ is the smallest prime dividing $n$, and hence there are infinitely many $n$ (those $=p^2)$ such that $f(n)\\geq n^{1/2}$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #699\n- Problem #701\n- Problem #39\n- Problem #1\n\n## References\n\n- ErSz78\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-14T21:07:11.724Z",
+  "significance": 6,
+  "tractability": 4
+}

@@ -1,34 +1,84 @@
 {
   "id": "erdos-139",
-  "title": "Erdős Problem #139",
+  "title": "Erdős #139: Szemerédi's Theorem",
   "slug": "erdos-139",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the size of the largest subset of ... which does not contain a non-trivial ...-term arithmetic progression. Prove ...",
+  "description": "Szemerédi's theorem states that any subset of natural numbers with positive upper density contains arbitrarily long arithmetic progressions. This formalization covers the equivalent density formulation: r_k(N) = o(N), where r_k(N) is the maximum size of a k-AP-free subset of {1,...,N}.",
   "meta": {
-    "author": "Unknown",
+    "author": "Endre Szemerédi (solver), Erdős-Turán (conjecture)",
     "sourceUrl": "https://erdosproblems.com/139",
-    "date": "",
-    "status": "pending",
+    "date": "1975",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos139Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "arithmetic-progressions",
+      "density",
+      "szemerédi"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiomatized",
+    "sorries": 4,
     "erdosNumber": 139,
     "erdosUrl": "https://erdosproblems.com/139",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$1000"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #139 from erdosproblems.com. Originally offered with a prize of $1000.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r_k(N)$ be the size of the largest subset of $\\{1,\\ldots,N\\}$ which does not contain a non-trivial $k$-term arithmetic progression. Prove that $r_k(N)=o(N)$.\n\n\n\nA conjecture of Erd\\H{o}s and Tur\\'{a}n. Proved by Szemer\\'{e}di \\cite{Sz75}. The best known bounds are due to Kelley and Meka \\cite{KeMe23} for $k=3$ (with further slight improvements in \\cite{BlSi23}), Green and Tao \\cite{GrTa17} for $k=4$, and Leng, Sah, and Sawhney \\cite{LSS24} for $k\\geq 5$.\n\nIn \\cite{Er80} Erd\\H{o}s reports that Rothe-Ille was given the problem of estimating $r_k(n)$ by Schur in the 1930s, and so 'perhaps Schur conjectured $r_k(N)=o(N)$ before Tur\\'{a}n and myself'.\n\nSee also [3].\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[BlSi23] T. F. Bloom and O. Sisask, An improvement to the Kelley-Meka bounds on three-term arithmetic progressions. arXiv:2309.02353 (2023).\n\n[Er80] Erd\\H{o}s, Paul, A survey of problems in combinatorial number theory. Ann. Discrete Math. (1980), 89-115.\n\n[GrTa17] Green, Ben and Tao, Terence, New bounds for Szemer\\'{e}di's theorem, III: a polylogarithmic bound for $r_4(N)$. Mathematika (2017), 944-1040.\n\n[KeMe23] Kelley, Z. and Meka, R., Strong Bounds for 3-Progressions. arXiv:2302.05537 (2023).\n\n[LSS24] Leng, J., Sah, A. and Sawhney, M., Improved bounds for Szemer\\'{e}di's theorem. arXiv:2402.17995 (2024).\n\n[Sz75] Szemer\\'{e}di, E., On sets of integers containing no {$k$} elements in arithmetic\nprogression. Acta Arith. (1975), 199--245.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Conjectured by Erdős and Turán in 1936, Szemerédi's theorem is one of the most celebrated results in combinatorics. Endre Szemerédi proved it in 1975 using a groundbreaking combinatorial approach. Furstenberg gave an ergodic theory proof in 1977. The $1000 prize from Erdős was awarded to Szemerédi. Modern quantitative bounds have been improved by Gowers (2001), Green-Tao (2017), and Kelley-Meka (2023).",
+    "problemStatement": "Let r_k(N) be the size of the largest subset of {1,...,N} which does not contain a non-trivial k-term arithmetic progression. Prove that r_k(N) = o(N). Equivalently: any subset of integers with positive upper density contains arbitrarily long arithmetic progressions.",
+    "proofStrategy": "The formalization defines k-AP-free sets and the r_k(N) function, then states Szemerédi's theorem in density formulation. For k=3 (Roth's theorem), we prove it using Mathlib's corners theorem chain: Regularity Lemma → Triangle Removal → Corners Theorem → Roth's Theorem. The general case k≥4 requires hypergraph regularity lemma (not yet in Mathlib) and is axiomatized.",
+    "keyInsights": [
+      "k=3 case (Roth's theorem) is fully proved in Mathlib via corners theorem",
+      "Our IsKAPFree definition is equivalent to Mathlib's ThreeAPFree for k=3",
+      "k≥4 requires hypergraph regularity lemma, not available in Mathlib",
+      "Quantitative bounds: Kelley-Meka (2023) gives r₃(N) ≤ N·exp(-c(log N)^{1/12})",
+      "Lower bound: Behrend (1946) shows r₃(N) ≥ N·exp(-c√(log N))"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Arithmetic Progression Definitions",
+      "startLine": 35,
+      "endLine": 56,
+      "summary": "Core definitions for k-term arithmetic progressions and AP-free sets"
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem Statement",
+      "startLine": 58,
+      "endLine": 92,
+      "summary": "Erdős #139: r_k(N)/N → 0 as N → ∞"
+    },
+    {
+      "id": "trivial-cases",
+      "title": "Trivial Cases",
+      "startLine": 94,
+      "endLine": 127,
+      "summary": "k=1 and k=2 cases proved directly"
+    },
+    {
+      "id": "roth-theorem",
+      "title": "Roth's Theorem (k=3)",
+      "startLine": 128,
+      "endLine": 186,
+      "summary": "Connection to Mathlib's ThreeAPFree and proof via corners theorem"
+    },
+    {
+      "id": "bounds",
+      "title": "Quantitative Bounds",
+      "startLine": 188,
+      "endLine": 223,
+      "summary": "Axiomatized bounds from Kelley-Meka, Gowers, and Behrend"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Szemerédi's theorem is one of the landmark results in combinatorics. Our formalization captures the density formulation and proves the equivalence between our definitions and Mathlib's for k=3. Roth's theorem (k=3) is fully proved using Mathlib's corners theorem chain. The general k≥4 case awaits hypergraph regularity formalization in Mathlib.",
+    "implications": "This theorem has profound implications for additive combinatorics, ergodic theory, and theoretical computer science. It implies that pseudorandom sets must contain long arithmetic progressions, which has applications in PCP constructions and property testing.",
+    "openQuestions": [
+      "Formalize hypergraph regularity lemma for k≥4 proof",
+      "Connect to Furstenberg's ergodic theory proof",
+      "Formalize the Kelley-Meka quantitative bounds"
+    ]
   }
 }

@@ -1,33 +1,110 @@
 {
   "id": "erdos-109",
-  "title": "Erdős Problem #109",
+  "title": "Erdős Problem #109: The Sumset Conjecture",
   "slug": "erdos-109",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAny ... of positive upper density contains a sumset ... where both ... and ... are infinite.\n\n\n\nThe Erd. Proved by Moreira, R...",
+  "description": "Any subset A of natural numbers with positive upper density contains a sumset B + C where both B and C are infinite.",
   "meta": {
-    "author": "Unknown",
+    "author": "Moreira, Richter, Robertson (2019)",
     "sourceUrl": "https://erdosproblems.com/109",
-    "date": "",
-    "status": "pending",
+    "date": "2019",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos109Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "additive-combinatorics",
+      "density",
+      "sumsets",
+      "ergodic-theory"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 109,
     "erdosUrl": "https://erdosproblems.com/109",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "proved",
+    "dateAdded": "2026-01-14",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.limsup",
+        "description": "Limit superior for filter-indexed sequences",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Predicate for infinite sets",
+        "module": "Mathlib.Data.Set.Finite"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of finite sets as natural numbers",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "Complete density framework (upper/lower density with proofs)",
+      "Custom sumset definition with basic properties",
+      "Axiomatization of the Moreira-Richter-Robertson theorem",
+      "Derived consequences including infinity of positive density sets",
+      "Verified example for even numbers"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #109 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAny $A\\subseteq \\mathbb{N}$ of positive upper density contains a sumset $B+C$ where both $B$ and $C$ are infinite.\n\n\n\nThe Erd\\H{os sumset conjecture}. Proved by Moreira, Richter, and Robertson \\cite{MRR19}.\n\nSee also [656].\n\n\n\n\nReferences\n\n\n[MRR19] Moreira, Joel and Richter, Florian K. and Robertson, Donald, A proof of a sumset conjecture of Erd\\H{o}s. Ann. of Math. (2) (2019), 605-652.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The Erdős Sumset Conjecture was a longstanding open problem connecting density and additive structure. Erdős asked whether sets of positive upper density must contain rich additive structure in the form of infinite sumsets.\n\nThe conjecture was proved in 2019 by Joel Moreira, Florian Richter, and Donald Robertson in their paper 'A proof of a sumset conjecture of Erdős' published in the Annals of Mathematics. This was a major breakthrough in additive combinatorics, establishing a fundamental connection between asymptotic density and additive structure.\n\nThe proof uses sophisticated techniques from ergodic theory, including the Furstenberg correspondence principle and recurrence along polynomial sequences. This connects to Szemerédi's theorem (arithmetic progressions in dense sets) but establishes a different kind of additive structure.",
+    "problemStatement": "Let $A \\subseteq \\mathbb{N}$ have positive upper density, meaning\n$$\\limsup_{N \\to \\infty} \\frac{|A \\cap \\{1,\\ldots,N\\}|}{N} > 0$$\n\nMust $A$ contain a sumset $B + C = \\{b + c : b \\in B, c \\in C\\}$ where both $B$ and $C$ are infinite?\n\n**Answer**: YES — proved by Moreira, Richter, and Robertson (2019).",
+    "proofStrategy": "We formalize the problem by defining:\n\n1. **Upper density**: Using limsup of the counting function ratio\n2. **Lower density**: Using liminf, with a proof that lower ≤ upper\n3. **Sumsets**: Custom definition B +ₛ C with commutativity proof\n4. **Main theorem**: Axiomatized as the Moreira-Richter-Robertson theorem\n\nThe actual proof (not formalized) uses:\n- Furstenberg correspondence: Convert density to measure theory\n- IP-sets and recurrence along polynomial sequences\n- Sophisticated ergodic-theoretic arguments\n\nWe derive consequences including that positive density sets are infinite, and provide the even numbers as a concrete example.",
+    "keyInsights": [
+      "**Upper density**: The proportion of A in {1,...,N} may fluctuate; upper density captures the 'best case' via limsup.",
+      "**Sumsets are structured**: B + C contains all pairwise sums, giving rich additive structure when B and C are infinite.",
+      "**Density vs structure**: High density forces additive structure—this parallels Szemerédi (APs) but gives sumsets instead.",
+      "**Ergodic theory connection**: The proof uses dynamics to translate the combinatorial problem to measure theory.",
+      "**Consequences**: A corollary shows positive density sets are necessarily infinite (since they contain infinite sumsets)."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "density-defs",
+      "title": "Density Definitions",
+      "startLine": 31,
+      "endLine": 93,
+      "summary": "Define counting function, upper/lower density, and prove lower ≤ upper density."
+    },
+    {
+      "id": "sumset-defs",
+      "title": "Sumset Definitions",
+      "startLine": 95,
+      "endLine": 116,
+      "summary": "Define sumsets B + C with notation, prove zero membership and commutativity."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Erdős Sumset Conjecture",
+      "startLine": 118,
+      "endLine": 143,
+      "summary": "State the conjecture as ErdosSumsetConjecture and axiomatize the Moreira-Richter-Robertson theorem."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences",
+      "startLine": 145,
+      "endLine": 182,
+      "summary": "Prove that sets containing infinite sumsets are infinite, and that positive density sets are infinite."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 208,
+      "endLine": 282,
+      "summary": "Verify that ℕ has full density, define even numbers, and prove even + even ⊆ even."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #109, the Sumset Conjecture, which asks whether positive density sets contain infinite sumsets B + C. The answer is YES, proved by Moreira-Richter-Robertson in 2019. We provide a complete density framework, axiomatize the main theorem, derive key consequences, and verify concrete examples.",
+    "implications": "This result establishes a deep connection between asymptotic density and additive structure. It shows that positive density is not just about 'being large'—it forces specific algebraic structure (infinite sumsets). The ergodic-theoretic proof technique has broad applications in combinatorics.",
+    "openQuestions": [
+      "Can we strengthen to find B, C with specific gap conditions?",
+      "What is the minimal density threshold for various sumset structures?",
+      "Can the proof be made more elementary (avoiding ergodic theory)?"
+    ]
   }
 }

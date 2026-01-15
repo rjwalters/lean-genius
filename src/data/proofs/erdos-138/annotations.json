@@ -1,1 +1,254 @@
-[]
+[
+  {
+    "id": "ann-header",
+    "proofId": "erdos-138",
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Problem Overview and History",
+    "content": "Erdős Problem #138 asks whether the van der Waerden numbers W(k) grow faster than any exponential function. Specifically, does W(k)^{1/k} → ∞ as k → ∞?\n\nVan der Waerden proved his theorem in 1927: for any k, there exists N such that any 2-coloring of {1,...,N} contains a monochromatic k-term arithmetic progression. The van der Waerden number W(k) is the minimum such N.\n\nThe $500 prize reflects the difficulty: despite decades of work, the growth rate of W(k) remains poorly understood.",
+    "mathContext": "Known bounds:\n- Lower: W(k) ≫ 2^k (Kozik-Shabanov 2016)\n- Upper: W(k) ≤ tower of height 5 (Gowers 2001)\n- At primes: W(p+1) ≥ p · 2^p (Berlekamp 1968)",
+    "significance": "critical",
+    "relatedConcepts": [
+      "van der Waerden's theorem",
+      "Ramsey theory",
+      "arithmetic progressions"
+    ]
+  },
+  {
+    "id": "ann-coloring-def",
+    "proofId": "erdos-138",
+    "range": {
+      "startLine": 38,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "Coloring Definition",
+    "content": "A coloring of {1, ..., N} using r colors is a function from Finset.Icc 1 N to Fin r. This captures the standard setup in Ramsey theory where we assign one of r colors to each integer in a range.\n\nFor the van der Waerden problem, we typically consider 2-colorings (r = 2), often thought of as coloring integers 'red' or 'blue'.",
+    "mathContext": "def Coloring (N r : ℕ) := Finset.Icc 1 N → Fin r\n\nUsing Finset.Icc rather than Fin N allows natural arithmetic on elements.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "proper coloring",
+      "hypergraph coloring",
+      "Finset"
+    ]
+  },
+  {
+    "id": "ann-monochromatic-ap",
+    "proofId": "erdos-138",
+    "range": {
+      "startLine": 41,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Monochromatic Arithmetic Progression",
+    "content": "A monochromatic k-term arithmetic progression in a coloring is a sequence a, a+d, a+2d, ..., a+(k-1)d where all terms have the same color and d > 0.\n\nThe requirement d > 0 excludes trivial single-point progressions. The condition that all terms lie in the range {1,...,N} is explicitly stated.",
+    "mathContext": "∃ a d : ℕ, d > 0 ∧ (∀ i : Fin k, a + i.val * d ∈ Finset.Icc 1 N) ∧\n  (∀ i j : Fin k, c(a + i*d) = c(a + j*d))\n\nExample: In {1,...,9}, the sequence 1, 4, 7 is a 3-term AP with a=1, d=3.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "arithmetic progression",
+      "Szemerédi's theorem",
+      "density conditions"
+    ]
+  },
+  {
+    "id": "ann-vdw-theorem",
+    "proofId": "erdos-138",
+    "range": {
+      "startLine": 48,
+      "endLine": 55
+    },
+    "type": "theorem",
+    "title": "Van der Waerden's Theorem",
+    "content": "Van der Waerden's theorem (1927) is the foundational result: for any number of colors r ≥ 1 and progression length k ≥ 1, there exists N such that every r-coloring of {1,...,N} contains a monochromatic k-term arithmetic progression.\n\nThis is axiomatized because a full proof requires Ramsey-theoretic arguments involving double induction on r and k, which would be substantial to formalize.",
+    "mathContext": "axiom van_der_waerden_theorem :\n  ∀ r k : ℕ, r ≥ 1 → k ≥ 1 → ∃ N : ℕ, ∀ c : Coloring N r, HasMonochromaticAP c k",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "compactness argument",
+      "finite unions theorem"
+    ]
+  },
+  {
+    "id": "ann-guarantee-set",
+    "proofId": "erdos-138",
+    "range": {
+      "startLine": 57,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "Guarantee Set",
+    "content": "The guarantee set for parameters (r, k) is the set of all N such that every r-coloring of {1,...,N} contains a monochromatic k-term AP.\n\nBy van der Waerden's theorem, this set is non-empty. The van der Waerden number W(r,k) is defined as the infimum of this set.",
+    "mathContext": "def GuaranteeSet (r k : ℕ) : Set ℕ :=\n  { N | ∀ c : Coloring N r, HasMonochromaticAP c k }\n\nThe set is upward-closed: if N ∈ GuaranteeSet, then N+1 ∈ GuaranteeSet.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "threshold function",
+      "upward closed set",
+      "infimum"
+    ]
+  },
+  {
+    "id": "ann-vdw-number",
+    "proofId": "erdos-138",
+    "range": {
+      "startLine": 61,
+      "endLine": 67
+    },
+    "type": "definition",
+    "title": "Van der Waerden Number W(k)",
+    "content": "The van der Waerden number W(r, k) is the minimum N guaranteeing a monochromatic k-term AP in any r-coloring of {1,...,N}.\n\nFor 2-colorings, we write W(k) = W(2, k). This is the notation used in Erdős's problem statement.\n\nThe function is noncomputable because finding the exact minimum requires exhaustive search or deep combinatorial analysis.",
+    "mathContext": "noncomputable def vanDerWaerden (r k : ℕ) : ℕ := sInf (GuaranteeSet r k)\nnoncomputable abbrev W (k : ℕ) : ℕ := vanDerWaerden 2 k\n\nKnown values: W(3)=9, W(4)=35, W(5)=178, W(6)=1132",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Ramsey number",
+      "threshold function",
+      "extremal combinatorics"
+    ]
+  },
+  {
+    "id": "ann-berlekamp",
+    "proofId": "erdos-138",
+    "range": {
+      "startLine": 71,
+      "endLine": 74
+    },
+    "type": "theorem",
+    "title": "Berlekamp's Lower Bound",
+    "content": "Berlekamp (1968) proved that for prime p, W(p+1) ≥ p · 2^p. This is the strongest known lower bound at specific values.\n\nThe proof uses finite field constructions: color the integers 1 to p·2^p by their discrete logarithm mod p. Avoiding APs of length p+1 requires avoiding complete cosets in the multiplicative group.",
+    "mathContext": "axiom berlekamp_lower_bound (p : ℕ) (hp : p.Prime) :\n  p * (2 ^ p) ≤ W (p + 1)\n\nExamples:\n- p=2: W(3) ≥ 8 (actual: W(3)=9)\n- p=3: W(4) ≥ 24 (actual: W(4)=35)\n- p=5: W(6) ≥ 160 (actual: W(6)=1132)",
+    "significance": "critical",
+    "relatedConcepts": [
+      "discrete logarithm",
+      "finite field",
+      "multiplicative group"
+    ]
+  },
+  {
+    "id": "ann-gowers",
+    "proofId": "erdos-138",
+    "range": {
+      "startLine": 76,
+      "endLine": 80
+    },
+    "type": "theorem",
+    "title": "Gowers' Upper Bound",
+    "content": "Gowers (2001) proved W(k) ≤ 2^{2^{2^{2^{2^{k+9}}}}} - a tower of height 5. This comes from his celebrated analytic proof of Szemerédi's theorem.\n\nWhile this is an enormous bound, it was the first primitive recursive upper bound. Earlier bounds from the original van der Waerden proof and Shelah's improvements involved Ackermann-like functions.",
+    "mathContext": "axiom gowers_upper_bound (k : ℕ) :\n  W k ≤ 2 ^ (2 ^ (2 ^ (2 ^ (2 ^ (k + 9)))))\n\nEven for k=3, this gives an astronomically large bound, far exceeding the true value W(3)=9.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "tower function",
+      "Szemerédi's theorem",
+      "Gowers uniformity norms"
+    ]
+  },
+  {
+    "id": "ann-kozik-shabanov",
+    "proofId": "erdos-138",
+    "range": {
+      "startLine": 82,
+      "endLine": 85
+    },
+    "type": "theorem",
+    "title": "Kozik-Shabanov Lower Bound",
+    "content": "Kozik and Shabanov (2016) proved the best general lower bound: W(k) ≫ 2^k for some absolute constant c.\n\nUnlike Berlekamp's bound which is strong at primes, this holds for all k. The proof uses the Lovász Local Lemma and hypergraph coloring techniques.",
+    "mathContext": "axiom kozik_shabanov_lower_bound :\n  ∃ c : ℝ, c > 0 ∧ ∀ k : ℕ, k ≥ 1 → (c * 2^k : ℝ) ≤ W k\n\nThis says W(k) grows at least exponentially, but the main conjecture asks if it grows faster than ANY exponential.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Lovász Local Lemma",
+      "probabilistic method",
+      "hypergraph coloring"
+    ]
+  },
+  {
+    "id": "ann-small-values",
+    "proofId": "erdos-138",
+    "range": {
+      "startLine": 87,
+      "endLine": 107
+    },
+    "type": "concept",
+    "title": "Computed Small Values",
+    "content": "Exact values of W(k) are known for small k:\n- W(1) = 1 (trivial: any single element is a 1-term AP)\n- W(2) = 3 (any two distinct elements form a 2-term AP)\n- W(3) = 9 (first non-trivial case, many proofs exist)\n- W(4) = 35 (computed exhaustively)\n- W(5) = 178 (Landman-Robertson 2014)\n- W(6) = 1132 (Kouril-Paul 2008, using SAT solvers)\n\nBeyond k=6, exact values are unknown. The computational difficulty grows super-exponentially.",
+    "mathContext": "The rapid growth:\nW(3) = 9\nW(4) = 35 (×3.9)\nW(5) = 178 (×5.1)\nW(6) = 1132 (×6.4)\n\nEach step requires increasingly sophisticated computation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "SAT solving",
+      "exhaustive search",
+      "computational complexity"
+    ]
+  },
+  {
+    "id": "ann-main-conjecture",
+    "proofId": "erdos-138",
+    "range": {
+      "startLine": 109,
+      "endLine": 118
+    },
+    "type": "theorem",
+    "title": "The Main Conjecture (OPEN)",
+    "content": "Erdős Problem #138 with $500 prize: Does W(k)^{1/k} → ∞ as k → ∞?\n\nThis asks whether the van der Waerden numbers grow faster than any exponential function c^k. If true, it would mean that for any constant c, eventually W(k) > c^k.\n\nThe conjecture is formalized using Filter.Tendsto to atTop, the standard Mathlib way to express divergence to infinity.",
+    "mathContext": "def Erdos138Conjecture : Prop :=\n  Tendsto (fun k => (W k : ℝ) ^ (1 / (k : ℝ))) atTop atTop\n\nEquivalently: lim_{k→∞} W(k)^{1/k} = ∞",
+    "significance": "critical",
+    "relatedConcepts": [
+      "growth rate",
+      "exponential growth",
+      "Filter.Tendsto"
+    ]
+  },
+  {
+    "id": "ann-related-questions",
+    "proofId": "erdos-138",
+    "range": {
+      "startLine": 120,
+      "endLine": 135
+    },
+    "type": "concept",
+    "title": "Related Questions from Erdős",
+    "content": "Erdős posed several related questions in 1980-1981:\n\n1. Does W(k+1)/W(k) → ∞? (unbounded ratio of consecutive terms)\n2. Does W(k+1) - W(k) → ∞? (unbounded difference of consecutive terms)\n3. Does W(k)/2^k → ∞? (growth faster than 2^k)\n\nThese form a hierarchy: the main conjecture W(k)^{1/k} → ∞ implies W(k)/2^k → ∞, which in turn implies the ratio and difference questions.",
+    "mathContext": "def QuotientDiverges : Prop :=\n  Tendsto (fun k => ((W (k + 1) : ℚ) / (W k))) atTop atTop\n\ndef DifferenceDiverges : Prop :=\n  Tendsto (fun k => (W (k + 1) - W k : ℤ)) atTop atTop\n\ndef ExponentialDiverges : Prop :=\n  Tendsto (fun k => ((W k : ℚ) / (2 ^ k))) atTop atTop",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "growth comparison",
+      "consecutive ratios",
+      "divergence"
+    ]
+  },
+  {
+    "id": "ann-implication",
+    "proofId": "erdos-138",
+    "range": {
+      "startLine": 137,
+      "endLine": 146
+    },
+    "type": "theorem",
+    "title": "Implication Between Conjectures",
+    "content": "The theorem states that the main conjecture implies ExponentialDiverges: if W(k)^{1/k} → ∞, then W(k)/2^k → ∞.\n\nThe proof idea: if W(k)^{1/k} → ∞, then for any c > 0, eventually W(k)^{1/k} > c, so W(k) > c^k. Choosing c = 2 gives W(k) > 2^k eventually, hence W(k)/2^k → ∞.\n\nThis shows the main conjecture is strictly stronger than asking whether W(k) beats 2^k.",
+    "mathContext": "theorem conjecture_implies_exponential :\n    Erdos138Conjecture → ExponentialDiverges := by\n  intro hconj\n  sorry\n\nThe sorry reflects that formalizing the limit argument requires careful filter manipulation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "limit comparison",
+      "growth rate hierarchy",
+      "contrapositive"
+    ]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "erdos-138",
+    "range": {
+      "startLine": 148,
+      "endLine": 174
+    },
+    "type": "concept",
+    "title": "Summary and Open Status",
+    "content": "Erdős Problem #138 remains OPEN with a $500 prize. The vast gap between known bounds - exponential below, tower above - reflects our limited understanding of van der Waerden numbers.\n\nImproving either bound would be major progress:\n- Better lower bound: Show W(k) grows faster than 2^k by more than a constant factor\n- Better upper bound: Reduce the tower height or prove polynomial/exponential bounds\n\nThe problem sits at the intersection of Ramsey theory, additive combinatorics, and extremal graph theory.",
+    "mathContext": "Current state of knowledge:\n- Lower: W(k) ≥ c · 2^k (exponential)\n- Upper: W(k) ≤ tower of 5 (hyper-exponential)\n- Gap: Vast unknown region\n\nAny progress on either bound is publishable research.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open problem",
+      "research frontier",
+      "Erdős prize"
+    ]
+  }
+]

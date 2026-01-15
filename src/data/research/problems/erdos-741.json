@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-741",
+  "title": "Erdős #741",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ be such that $A+A$ has positive density. Can one always decompose $A=A_1\\sqcup A_2$ such that $A_1+A_1$ and $A_2+A_2$ both have positive density?\n\nIs there a basis $A$ of order $2$ such that if $A=A_1\\sqcup A_2$ then $A_1+A_1$ and $A_2+A_2$ cannot both have bounded gaps?\n\n\n\nA problem of Burr and Erd\\H{o}s. Erd\\H{o}s \\cite{Er94b} thought he could construct a basis as in the second question, but 'could never quite finish the proof'.\n\n\n\n\nReferences\n\n\n[Er94b] Erd\\H{o}s, Paul, Some problems in number theory, combinatorics and combinatorial geometry. Math. Pannon. (1994), 261-269.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-14T21:33:35.591Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #741 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ be such that $A+A$ has positive density. Can one always decompose $A=A_1\\sqcup A_2$ such that $A_1+A_1$ and $A_2+A_2$ both have positive density?\n\nIs there a basis $A$ of order $2$ such that if $A=A_1\\sqcup A_2$ then $A_1+A_1$ and $A_2+A_2$ cannot both have bounded gaps?\n\n\n\nA problem of Burr and Erd\\H{o}s. Erd\\H{o}s \\cite{Er94b} thought he could construct a basis as in the second question, but 'could never quite finish the proof'.\n\n\n\n\nReferences\n\n\n[Er94b] Erd\\H{o}s, Paul, Some problems in number theory, combinatorics and combinatorial geometry. Math. Pannon. (1994), 261-269.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #740\n- Problem #742\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er94b\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-14T21:33:35.592Z",
+  "significance": 6,
+  "tractability": 4
+}

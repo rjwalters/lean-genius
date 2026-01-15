@@ -440,6 +440,16 @@ This repository contains formal mathematical proofs in Lean 4. Building Lean pro
 
 ### Building Proofs Safely
 
+**NEVER run `lake build` directly** - always use Docker or the safe-build script. Tactics like `grind` can consume all system memory before external monitoring can react.
+
+```bash
+# ALWAYS use this:
+./proofs/scripts/docker-build.sh Proofs.YourProof
+
+# NEVER use this directly:
+# lake build Proofs.YourProof  # DANGEROUS - no memory limits
+```
+
 **CRITICAL**: Some proofs can consume memory faster than external monitoring can detect. Use Docker for hard memory enforcement:
 
 **Option 1: Docker Build (Recommended)**
@@ -460,14 +470,6 @@ The first run will build a native ARM64 Lean Docker image (~1 min).
 # Builds all proofs EXCEPT known memory-intensive ones
 ./proofs/scripts/build-safe-subset.sh
 ```
-
-**Option 3: Direct Lake (safe proofs only)**
-```bash
-lake build Proofs.GeometricSeries
-lake build Proofs.OnePlusOne
-```
-
-**Never run `lake build` directly without memory limits** - tactics like `grind` can consume all system memory before external monitoring can react.
 
 ### Proof Organization
 

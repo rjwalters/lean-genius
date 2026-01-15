@@ -1,34 +1,85 @@
 {
   "id": "erdos-138",
-  "title": "Erdős Problem #138",
+  "title": "Van der Waerden Numbers Growth Rate",
   "slug": "erdos-138",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet the van der Waerden number ... be such that whenever ... and ... is ...-coloured there must exist a monochromatic ...-ter...",
+  "description": "Erdős Problem #138 asks whether W(k)^{1/k} → ∞, where W(k) is the van der Waerden number - the minimum N such that any 2-coloring of {1,...,N} contains a monochromatic k-term arithmetic progression. This remains OPEN with a $500 prize.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős and Hajnal",
     "sourceUrl": "https://erdosproblems.com/138",
-    "date": "",
-    "status": "pending",
+    "date": "1980",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos138Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "combinatorics",
+      "van-der-waerden",
+      "arithmetic-progressions"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiomatized",
+    "sorries": 5,
     "erdosNumber": 138,
     "erdosUrl": "https://erdosproblems.com/138",
-    "erdosProblemStatus": "solved",
+    "erdosProblemStatus": "open",
     "erdosPrizeValue": "$500"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #138 from erdosproblems.com. Originally offered with a prize of $500.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet the van der Waerden number $W(k)$ be such that whenever $N\\geq W(k)$ and $\\{1,\\ldots,N\\}$ is $2$-coloured there must exist a monochromatic $k$-term arithmetic progression. Improve the bounds for $W(k)$ - for example, prove that $W(k)^{1/k}\\to \\infty$.\n\n\n\nWhen $p$ is prime Berlekamp \\cite{Be68} has proved $W(p+1)\\geq p2^p$. Gowers \\cite{Go01} has proved\\[W(k) \\leq 2^{2^{2^{2^{2^{k+9}}}}}.\\]The best general lower bound is $W(k)\\gg 2^k$, due to Kozik and Shabanov \\cite{KoSh16}.\n\nIn \\cite{Er81} Erd\\H{o}s further asks whether $W(k+1)/W(k)\\to \\infty$, or $W(k+1)-W(k)\\to \\infty$.\n\nIn \\cite{Er80} Erd\\H{o}s asks whether $W(k)/2^k\\to \\infty$, and offers \\$500 for a proof or disproof of $W(k)^{1/k}\\to \\infty$.\n\n\n\n\nReferences\n\n\n[Be68] Berlekamp, E. R., A construction for partitions which avoid long arithmetic progressions. Canad. Math. Bull. (1968), 409-414.\n\n[Er80] Erd\\H{o}s, Paul, A survey of problems in combinatorial number theory. Ann. Discrete Math. (1980), 89-115.\n\n[Er81] Erd\\H{o}s, P., On the combinatorial problems which I would most like to see solved. Combinatorica (1981), 25-42.\n\n[Go01] Gowers, W. T., A new proof of Szemer\\'{e}di's theorem. Geom. Funct. Anal. (2001), 465-588.\n\n[KoSh16] Kozik, Jakub and Shabanov, Dmitry, Improved algorithms for colorings of simple hypergraphs and\napplications. J. Combin. Theory Ser. B (2016), 312--332.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Van der Waerden's theorem (1927) guarantees that for any k ≥ 1, there exists N such that any 2-coloring of {1,...,N} contains a monochromatic k-term arithmetic progression. The van der Waerden number W(k) is the minimum such N. Erdős posed this problem in 1980, asking whether W(k) grows faster than any exponential function. The problem connects to fundamental questions in Ramsey theory about the tradeoff between chromatic complexity and arithmetic structure.",
+    "problemStatement": "Does W(k)^{1/k} → ∞ as k → ∞? Equivalently, do the van der Waerden numbers grow faster than any exponential c^k?",
+    "proofStrategy": "The formalization defines van der Waerden numbers using Mathlib's Finset infrastructure. Known bounds are axiomatized: Berlekamp's lower bound W(p+1) ≥ p·2^p for primes p, Gowers' tower-type upper bound from his Szemerédi proof, and the Kozik-Shabanov general lower bound W(k) ≫ 2^k. The main conjecture is stated using Filter.Tendsto. Related questions from Erdős (1980-1981) about W(k+1)/W(k), W(k+1)-W(k), and W(k)/2^k are also formalized.",
+    "keyInsights": [
+      "The gap between exponential lower bounds and tower-type upper bounds remains vast",
+      "Berlekamp's 1968 construction using finite field techniques gives strong lower bounds at prime values",
+      "Gowers' 2001 analytic proof of Szemerédi's theorem yields the current best upper bound",
+      "The main conjecture W(k)^{1/k} → ∞ would imply W(k)/2^k → ∞ but is strictly stronger"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Van der Waerden Numbers",
+      "startLine": 36,
+      "endLine": 67,
+      "summary": "Core definitions: colorings, monochromatic arithmetic progressions, and the van der Waerden function W(k)"
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 69,
+      "endLine": 85,
+      "summary": "Axiomatized bounds: Berlekamp (1968), Gowers (2001), Kozik-Shabanov (2016)"
+    },
+    {
+      "id": "small-values",
+      "title": "Computed Values",
+      "startLine": 87,
+      "endLine": 107,
+      "summary": "Known exact values: W(3)=9, W(4)=35, W(5)=178, W(6)=1132"
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 109,
+      "endLine": 118,
+      "summary": "Erdős Problem #138: Does W(k)^{1/k} → ∞?"
+    },
+    {
+      "id": "related-questions",
+      "title": "Related Questions",
+      "startLine": 120,
+      "endLine": 146,
+      "summary": "Additional questions from Erdős (1980-1981) about growth rates"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures the structure of Erdős Problem #138, an OPEN problem with $500 prize. The van der Waerden numbers W(k) measure the threshold for guaranteed monochromatic arithmetic progressions. Known bounds leave a vast gap between W(k) ≫ 2^k and tower-type upper bounds. The main conjecture that W(k)^{1/k} → ∞ remains unresolved.",
+    "implications": "A proof would establish that van der Waerden numbers grow faster than any exponential, providing fundamental insight into Ramsey-theoretic thresholds. A disproof would show W(k) ≤ c^k for some c, constraining the growth rate.",
+    "openQuestions": [
+      "Does W(k)^{1/k} → ∞? (Main conjecture, $500 prize)",
+      "Does W(k+1)/W(k) → ∞?",
+      "Does W(k+1) - W(k) → ∞?",
+      "Does W(k)/2^k → ∞?",
+      "Can the tower bound be reduced to a simpler function?"
+    ]
   }
 }

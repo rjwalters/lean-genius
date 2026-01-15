@@ -1,13 +1,13 @@
 {
   "slug": "erdos-196",
-  "title": "Erdős #196",
+  "title": "Erdos #196",
   "phase": "NEW",
   "status": "active",
-  "tier": "B",
+  "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nMust every permutation of $\\mathbb{N}$ contain a monotone 4-term arithmetic progression? In other words, given a permutation $x$ of $\\mathbb{N}$ must there be indices with either $i<j<k<l$ or $i>j>k>l$ such that $x_i,x_j,x_k,x_l$ are an arithmetic progression?\n\n\n\nDavis, Entringer, Graham, and Simmons \\cite{DEGS77} have shown that there must exist a monotone 3-term arithmetic progression and need not contain a 5-term arithmetic progression.\n\nSee also [194] and [195].\n\n\n\n\nReferences\n\n\n[DEGS77] Davis, J. A. and Entringer, R. C. and Graham, R. L. and\nSimmons, G. J., On permutations containing no long arithmetic progressions. Acta Arith. (1977/78), 81-90.\n\n\nBack to the problem",
-    "plain": "Forum",
+    "formal": "\\forall x : \\mathbb{N} \\to \\mathbb{N} \\text{ bijection}, \\exists i,j,k,l \\in \\mathbb{N}:\n(i < j < k < l \\lor i > j > k > l) \\land (x_j - x_i = x_k - x_j = x_l - x_k)",
+    "plain": "Must every permutation of the natural numbers contain a monotone 4-term arithmetic progression?",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,16 +16,19 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T16:01:50.837Z",
+    "phase": "EXPLORATION",
+    "since": "2026-01-14T00:00:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Formalization complete. Problem is OPEN - k=4 threshold between proved k=3 and disproved k=5.",
+    "activeApproach": "Full formalization with axiomatized known results (DEGS 1977).",
+    "blockers": [
+      "Problem is OPEN - no proof strategy available."
+    ],
+    "nextAction": "Consider explicit DEGS counterexample construction for k=5.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -34,11 +37,14 @@
     "insights": [],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #196 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nMust every permutation of $\\mathbb{N}$ contain a monotone 4-term arithmetic progression? In other words, given a permutation $x$ of $\\mathbb{N}$ must there be indices with either $i<j<k<l$ or $i>j>k>l$ such that $x_i,x_j,x_k,x_l$ are an arithmetic progression?\n\n\n\nDavis, Entringer, Graham, and Simmons \\cite{DEGS77} have shown that there must exist a monotone 3-term arithmetic progression and need not contain a 5-term arithmetic progression.\n\nSee also [194] and [195].\n\n\n\n\nReferences\n\n\n[DEGS77] Davis, J. A. and Entringer, R. C. and Graham, R. L. and\nSimmons, G. J., On permutations containing no long arithmetic progressions. Acta Arith. (1977/78), 81-90.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #194\n- Problem #195\n- Problem #197\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr79\n- ErGr80\n- DEGS77\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "markdown": "# Erdos #196 - Knowledge Base\n\n## Problem Statement\n\nMust every permutation of the natural numbers contain a monotone 4-term arithmetic progression?\n\n## Status\n\n**Erdos Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No (OPEN problem)\n\n## Key Definitions Built\n\n| Name | Type | Description | Location |\n|------|------|-------------|----------|\n| Permutation | def | Bijection N -> N | Erdos196Problem.lean:33 |\n| IsAP3 | def | 3-term AP predicate | Erdos196Problem.lean:70 |\n| IsAP4 | def | 4-term AP predicate | Erdos196Problem.lean:50 |\n| IsAP5 | def | 5-term AP predicate | Erdos196Problem.lean:74 |\n| HasMonotone3AP | def | Permutation has monotone 3-AP | Erdos196Problem.lean:86 |\n| HasMonotone4AP | def | Permutation has monotone 4-AP | Erdos196Problem.lean:92 |\n| HasMonotone5AP | def | Permutation has monotone 5-AP | Erdos196Problem.lean:98 |\n| Erdos196Conjecture | def | Main conjecture statement | Erdos196Problem.lean:106 |\n\n## Key Results Built\n\n| Name | Status | Description |\n|------|--------|-------------|\n| ap4_iff_ap4' | PROVED | Two AP4 definitions equivalent |\n| conjecture_implies_3ap | PROVED | 4-AP conjecture implies 3-AP theorem |\n| degs_3ap_theorem | AXIOM | DEGS 1977: every perm has monotone 3-AP |\n| degs_5ap_counterexample | AXIOM | DEGS 1977: exists perm avoiding monotone 5-AP |\n| finite_3ap_threshold | AXIOM | Finite version threshold N <= 9 |\n| erdos_szekeres_theorem | AXIOM | Related monotone subsequence theorem |\n\n## Insights\n\n1. **Boundary Case**: k=4 is the critical threshold - k=3 proved, k=5 disproved\n2. **Implication Structure**: 4-AP conjecture would imply 3-AP theorem as corollary\n3. **DEGS Construction**: Counterexample for k=5 uses interleaving increasing/decreasing segments\n4. **Erdos-Szekeres Connection**: Guarantees long monotone subsequences but not AP structure\n\n## Tags\n\n- erdos\n- combinatorics\n- permutations\n- arithmetic-progressions\n\n## Related Problems\n\n- Problem #194\n- Problem #195\n\n## References\n\n- Davis, Entringer, Graham, Simmons (1977): \"Monotone subsequences and arithmetic progressions\"\n\n## Sessions\n\n### Session 2026-01-14\n\n**Focus**: Initial formalization\n**Outcome**: Complete formalization with 230+ lines, 4 axioms for known results, 2 proved theorems\n**Next**: Consider explicit DEGS counterexample construction\n\n---\n\n*Generated on 2026-01-14*\n"
   },
   "approaches": [],
   "tags": [
-    "erdos"
+    "erdos",
+    "combinatorics",
+    "permutations",
+    "arithmetic-progressions"
   ],
   "relatedProofs": [
     "Relevance"
@@ -49,6 +55,6 @@
     "mathlib": []
   },
   "started": "2026-01-12T16:01:50.837Z",
-  "significance": 6,
-  "tractability": 4
+  "significance": 7,
+  "tractability": 5
 }

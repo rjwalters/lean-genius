@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-730",
+  "title": "Erdős #730",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many pairs of integers $n\\neq m$ such that $\\binom{2n}{n}$ and $\\binom{2m}{m}$ have the same set of prime divisors?\n\n\n\nA problem of Erd\\H{o}s, Graham, Ruzsa, and Straus \\cite{EGRS75}, who believed there is 'no doubt' that the answer is yes.\n\nFor example $(87,88)$ and $(607,608)$. Those $n$ such that there exists some suitable $m>n$ are listed as A129515 in the OEIS.\n\nA triple of such $n$ for which $\\binom{2n}{n}$ all share the same set of prime divisors is $(10003,10004,10005)$. It is not known whether there are such pairs of the shape $(n,n+k)$ for every $k\\geq 1$.\n\n\n\n\nReferences\n\n\n[EGRS75] Erd\\H{o}s, P. and Graham, R. L. and Ruzsa, I. Z. and Straus, E. G., On the prime factors of $(\\sp{2n}\\sb{n})$. Math. Comp. (1975), 83-92.\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-14T21:29:39.410Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #730 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many pairs of integers $n\\neq m$ such that $\\binom{2n}{n}$ and $\\binom{2m}{m}$ have the same set of prime divisors?\n\n\n\nA problem of Erd\\H{o}s, Graham, Ruzsa, and Straus \\cite{EGRS75}, who believed there is 'no doubt' that the answer is yes.\n\nFor example $(87,88)$ and $(607,608)$. Those $n$ such that there exists some suitable $m>n$ are listed as A129515 in the OEIS.\n\nA triple of such $n$ for which $\\binom{2n}{n}$ all share the same set of prime divisors is $(10003,10004,10005)$. It is not known whether there are such pairs of the shape $(n,n+k)$ for every $k\\geq 1$.\n\n\n\n\nReferences\n\n\n[EGRS75] Erd\\H{o}s, P. and Graham, R. L. and Ruzsa, I. Z. and Straus, E. G., On the prime factors of $(\\sp{2n}\\sb{n})$. Math. Comp. (1975), 83-92.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #729\n- Problem #731\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- EGRS75\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-14T21:29:39.410Z",
+  "significance": 6,
+  "tractability": 4
+}

@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-706",
+  "title": "Erdős #706",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $L(r)$ be such that if $G$ is a graph formed by taking a finite set of points $P$ in $\\mathbb{R}^2$ and some set $A\\subset (0,\\infty)$ of size $r$, where the vertex set is $P$ and there is an edge between two points if and only if their distance is a member of $A$, then $\\chi(G)\\leq L(r)$.\n\nEstimate $L(r)$. In particular, is it true that $L(r)\\leq r^{O(1)}$?\n\n\n\nThe case $r=1$ is the Hadwiger-Nelson problem, for which it is known that $5\\leq L(1)\\leq 7$.\n\n\nSee also [508], [704], and [705].\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-14T21:11:01.533Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #706 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $L(r)$ be such that if $G$ is a graph formed by taking a finite set of points $P$ in $\\mathbb{R}^2$ and some set $A\\subset (0,\\infty)$ of size $r$, where the vertex set is $P$ and there is an edge between two points if and only if their distance is a member of $A$, then $\\chi(G)\\leq L(r)$.\n\nEstimate $L(r)$. In particular, is it true that $L(r)\\leq r^{O(1)}$?\n\n\n\nThe case $r=1$ is the Hadwiger-Nelson problem, for which it is known that $5\\leq L(1)\\leq 7$.\n\n\nSee also [508], [704], and [705].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #508\n- Problem #704\n- Problem #705\n- Problem #707\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er81\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-14T21:11:01.534Z",
+  "significance": 6,
+  "tractability": 4
+}

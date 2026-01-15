@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-681",
+  "title": "Erdős #681",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for all large $n$ there exists $k$ such that $n+k$ is composite and\\[p(n+k)>k^2,\\]where $p(m)$ is the least prime factor of $m$?\n\n\n\nRelated to questions of Erd\\H{o}s, Eggleton, and Selfridge. This may be true with $k^2$ replaced by $k^d$ for any $d$.\n\nSee also [680] and [682].\n\n\nBack to the problem",
+    "plain": "Forum",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-14T19:46:33.193Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #681 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for all large $n$ there exists $k$ such that $n+k$ is composite and\\[p(n+k)>k^2,\\]where $p(m)$ is the least prime factor of $m$?\n\n\n\nRelated to questions of Erd\\H{o}s, Eggleton, and Selfridge. This may be true with $k^2$ replaced by $k^d$ for any $d$.\n\nSee also [680] and [682].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #680\n- Problem #682\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er7d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-14T19:46:33.194Z",
+  "significance": 7,
+  "tractability": 5
+}

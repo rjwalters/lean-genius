@@ -1,0 +1,89 @@
+{
+  "slug": "erdos-12",
+  "title": "Erdős #12: Divisibility-Free Sets",
+  "phase": "PROGRESS",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Let } A \\subseteq \\mathbb{N} \\text{ infinite with no } a,b,c \\in A \\text{ distinct s.t. } a | (b+c), b,c > a",
+    "plain": "Let A be an infinite set with no distinct a,b,c ∈ A such that a | (b+c) and b,c > a. Three questions: (1) Can A achieve √N density? (2) Must A be sparse infinitely often? (3) Must Σ1/n converge?",
+    "whyMatters": [
+      "Fundamental divisibility constraint",
+      "Density questions about arithmetic sets",
+      "Connection to additive combinatorics"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Erdős-Sárközy (1970): Divisibility-free sets have density 0",
+      "Schoen (2001), Baier (2004): Coprime case is O(N^(2/3)/log N)",
+      "Elsholtz-Planitzer (2017): Construction achieving √N/(√log N · (log log N)²)"
+    ],
+    "open": [
+      "Question 1: √N density?",
+      "Question 2: Sparse infinitely often?",
+      "Question 3: Convergent reciprocal sum?"
+    ],
+    "goal": "Formalize known results and provide correct examples"
+  },
+  "currentState": {
+    "phase": "PROGRESS",
+    "since": "2026-01-14T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Correcting erroneous theorem about powers of 2",
+    "blockers": [],
+    "nextAction": "Prove that squares of primes ≡ 3 (mod 4) ARE divisibility-free",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Fixed incorrect theorem - powers of 2 are NOT divisibility-free",
+    "builtItems": [
+      "powersOfTwo_not_divisibility_free theorem in Erdos12Problem.lean:51",
+      "Concrete counterexample: a=2, b=4, c=8"
+    ],
+    "insights": [
+      "Powers of 2 do NOT satisfy divisibility-free property",
+      "Counterexample: 2 | (4 + 8) = 2 | 12 = True",
+      "The sum 2^j + 2^k = 2^min(j,k) * (1 + 2^|j-k|), and 2^i divides this whenever i ≤ min(j,k)",
+      "Squares of primes ≡ 3 (mod 4) is the correct example to use"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove primeSquares3mod4 IS divisibility-free",
+      "Formalize the Elsholtz-Planitzer construction density bound"
+    ],
+    "markdown": "# Erdős #12 - Knowledge Base\n\n## Problem Statement\n\nLet A be an infinite set with no distinct a,b,c ∈ A such that a | (b+c) and b,c > a.\n\n**Questions:**\n1. Can A achieve liminf |A ∩ {1,...,N}| / √N > 0?\n2. Is there c > 0 with |A| < N^(1-c) infinitely often?\n3. Must Σ(1/n : n ∈ A) < ∞?\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n## Session Log\n\n### Session 2026-01-14 - Bug Fix\n\n**Mode**: REVISIT\n**Outcome**: PROGRESS\n\n#### Key Discovery\n\nThe theorem `powersOfTwo_divisibility_free` was **FALSE**. Powers of 2 do NOT form a divisibility-free set!\n\n**Counterexample**: a=2, b=4, c=8\n- 2 ∈ {2,4,8,...} ✓\n- 4 ∈ {2,4,8,...} ✓\n- 8 ∈ {2,4,8,...} ✓\n- 2 ≠ 4, 2 ≠ 8, 4 ≠ 8 ✓\n- 4 > 2 and 8 > 2 ✓\n- 2 | (4 + 8) = 2 | 12 = True ✗ (violates divisibility-free property)\n\n**Mathematical reason**: 2^j + 2^k = 2^min(j,k) * (1 + 2^|j-k|). Since i < j and i < k implies i < min(j,k), we have i ≤ min(j,k), so 2^i always divides 2^min(j,k) which divides 2^j + 2^k.\n\n#### What I Did\n1. Identified the incorrect theorem\n2. Constructed explicit counterexample\n3. Replaced with `powersOfTwo_not_divisibility_free` theorem proving the negation\n4. Fixed unrelated `countingFunction` definition to use `Set.ncard`\n\n#### Files Modified\n- proofs/Proofs/Erdos12Problem.lean\n\n#### Next Steps\n- Prove that `primeSquares3mod4` IS divisibility-free (correct example from literature)\n"
+  },
+  "approaches": [
+    {
+      "name": "Correct example verification",
+      "status": "in-progress",
+      "description": "Prove squares of primes ≡ 3 (mod 4) satisfy divisibility-free property"
+    }
+  ],
+  "tags": [
+    "erdos",
+    "divisibility",
+    "density"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [
+      "Erdős-Sárközy (1970): Divisibility-free sets have density 0",
+      "Elsholtz-Planitzer (2017): Dense construction"
+    ],
+    "urls": [
+      "https://erdosproblems.com/12"
+    ],
+    "mathlib": []
+  },
+  "started": "2026-01-14T00:00:00.000Z",
+  "lastUpdate": "2026-01-14T00:00:00.000Z",
+  "significance": 7,
+  "tractability": 6
+}

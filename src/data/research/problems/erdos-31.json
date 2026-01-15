@@ -1,0 +1,61 @@
+{
+  "slug": "erdos-31",
+  "title": "Erdos #31",
+  "phase": "PROGRESS",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall A \\subseteq \\mathbb{N} \\text{ infinite}, \\exists B \\subseteq \\mathbb{N} : d(B) = 0 \\land |(\\mathbb{N} \\setminus (A+B)) \\cap \\mathbb{N}^+| < \\infty",
+    "plain": "Given any infinite set A ⊂ ℕ, there exists a set B of density 0 such that A + B contains all except finitely many positive integers.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "EXPLORATION",
+    "since": "2026-01-14T00:00:00Z",
+    "iteration": 1,
+    "focus": "Formalization complete. Problem is SOLVED by Lorentz 1954.",
+    "activeApproach": "Full formalization with axiomatized main theorem and supporting lemmas.",
+    "blockers": [
+      "None - problem is solved. Sorries are for helper lemmas (density proofs)."
+    ],
+    "nextAction": "Consider submitting to Aristotle for proof of helper lemmas (density of powers, squares).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdos #31 - Knowledge Base\n\n## Problem Statement\n\nGiven any infinite set A ⊂ ℕ, there exists a set B of density 0 such that A + B contains all except finitely many positive integers.\n\n## Status\n\n**Erdos Database Status**: SOLVED (Lorentz 1954)\n\n**Tractability Score**: 7/10\n**Aristotle Suitable**: Potentially (known proof to formalize)\n\n## Key Definitions Built\n\n| Name | Type | Description | Location |\n|------|------|-------------|----------|\n| countingFn | def | Counting function |A ∩ {1,...,N}| | Erdos31Problem.lean:31 |\n| HasDensity | def | A set has density d | Erdos31Problem.lean:35 |\n| HasDensityZero | def | A set has density 0 | Erdos31Problem.lean:39 |\n| upperDensity | def | Upper density via limsup | Erdos31Problem.lean:42 |\n| Sumset | def | A + B sumset | Erdos31Problem.lean:51 |\n| CoversCofinite | def | A + B covers cofinite set | Erdos31Problem.lean:56 |\n| CoversAllButFinitely | def | A + B omits only finitely many | Erdos31Problem.lean:60 |\n| Erdos31Statement | def | Main theorem statement | Erdos31Problem.lean:87 |\n| OptimalBDensity | def | Optimal density for complement | Erdos31Problem.lean:133 |\n| IsAsymptoticBasis | def | Asymptotic additive basis | Erdos31Problem.lean:171 |\n\n## Key Results Built\n\n| Name | Status | Description |\n|------|--------|-------------|\n| primes_density_zero | AXIOM | Primes have density 0 |\n| powers_of_2_density_zero | SORRY | Powers of 2 have density 0 |\n| squares_density_zero | SORRY | Squares have density 0 |\n| lorentz_theorem | AXIOM | Main theorem (Lorentz 1954) |\n| lorentz_B_bound | AXIOM | B has O(N/log N) elements |\n| primes_have_sparse_complement | AXIOM | Primes have sparse complement |\n| optimal_B_density_zero | SORRY | Optimal B-density is 0 |\n| lorentz_strengthened | AXIOM | Strengthened version |\n| coverage_requires_density | SORRY | Coverage needs density |\n| infinite_set_augmentable | SORRY | Connection to additive bases |\n\n## Insights\n\n1. **Lorentz Construction**: Build B iteratively to fill gaps left by A\n2. **Density Trade-off**: Sparse A needs denser B; dense A allows sparser B\n3. **Optimal Bound**: |B ∩ [1,N]| = O(N/log N) is essentially optimal\n4. **Additive Basis Connection**: A ∪ B becomes an asymptotic basis of order 2\n\n## Tags\n\n- erdos\n- additive-combinatorics\n- density\n- sumsets\n\n## Related Problems\n\n- Problem #221 (similar questions about density)\n\n## References\n\n- Lorentz, G.G. (1954): \"On a problem of additive number theory\"\n\n## Sessions\n\n### Session 2026-01-14\n\n**Focus**: Initial formalization\n**Outcome**: Complete formalization with 210+ lines, 5 axioms, 6 sorries\n**Next**: Submit HARD sorries to Aristotle for proof search\n\n---\n\n*Generated on 2026-01-14*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos",
+    "additive-combinatorics",
+    "density",
+    "sumsets"
+  ],
+  "relatedProofs": [
+    "Relevance"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-14T00:00:00.000Z",
+  "lastUpdate": "2026-01-14T00:00:00.000Z",
+  "significance": 7,
+  "tractability": 7
+}

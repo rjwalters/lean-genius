@@ -1,33 +1,121 @@
 {
   "id": "erdos-26",
-  "title": "Erdős Problem #26",
+  "title": "Erdős Problem #26: Thick Sequences and Behrend Sets",
   "slug": "erdos-26",
-  "description": "Let ... be infinite. Must there exist some ... such that almost all integers have a divisor of the form ... for some ...? Asked by Erdős and Tenenbaum. Ruzsa gave the following simple counterexampl...",
+  "description": "If A is a thick sequence (divergent reciprocal sum), must some shift A+k have density 1 coverage?",
   "meta": {
-    "author": "Unknown",
+    "author": "Ruzsa (counterexample), Van Doorn (thick variant)",
     "sourceUrl": "https://erdosproblems.com/26",
-    "date": "",
-    "status": "pending",
+    "date": "2026-01-14",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos26Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "wip",
-    "sorries": 1,
+    "tags": ["erdos", "number-theory", "density", "thick-sequences", "behrend-sets", "disproved"],
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 26,
     "erdosUrl": "https://erdosproblems.com/26",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Summable",
+        "description": "Summability of infinite series",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits and convergence",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Filter.liminf",
+        "description": "Lower limits of sequences",
+        "module": "Mathlib.Order.Filter.Liminf"
+      }
+    ],
+    "originalContributions": [
+      "Complete formalization of the disproof with axiomatized counterexamples",
+      "Custom natural density infrastructure",
+      "Educational documentation of thick/Behrend sequence concepts"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #26 from erdosproblems.com.",
-    "problemStatement": "Let $A\\subset\\mathbb{N}$ be infinite. Must there exist some $k\\geq 1$ such that almost all integers have a divisor of the form $a+k$ for some $a\\in A$? Asked by Erdős and Tenenbaum. Ruzsa gave the following simple counterexample: let $A=\\{n_10$ there is some $k=k(\\epsilon)$ such that at least $1-\\epsilon$ density of all integers have a divisor of the form $a+k$ for some $a\\in A$. View the LaTeX source This page was last edited 07 December 2025.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #26 was posed by Erdős and Tenenbaum and concerns the relationship between \"thick\" sequences (those with divergent reciprocal sums) and \"Behrend\" sequences (those whose multiples cover almost all integers).\n\nThe Davenport-Erdős theorem (1951) established that every Behrend sequence must be thick, but the converse was unknown: if A is thick, must some shift A+k be Behrend?\n\nRuzsa provided the first counterexample using a clever construction involving prime residues. His sequence was not thick, so Van Doorn later modified the construction to produce a thick counterexample, definitively disproving the conjecture.",
+    "problemStatement": "Let $A \\subset \\mathbb{N}$ be infinite with $\\sum_{a \\in A} \\frac{1}{a} = \\infty$ (a \"thick\" sequence). Must there exist some $k \\geq 1$ such that almost all integers have a divisor of the form $a + k$ for some $a \\in A$?\n\n**Answer: NO** — Van Doorn constructed a thick sequence where no shift achieves density 1 coverage.",
+    "proofStrategy": "The formalization takes an axiomatic approach:\n\n1. **Define key concepts**: Thick sequences (divergent reciprocal sums), Behrend sequences (density 1 multiples), and weakly Behrend (density ≥ 1-ε)\n\n2. **Axiomatize results**: The Davenport-Erdős theorem (Behrend ⇒ thick), Ruzsa's counterexample (non-thick, no Behrend shift), and Van Doorn's modification (thick, no Behrend shift)\n\n3. **Derive disproof**: From Van Doorn's counterexample, we show ¬Erdos26Conjecture by exhibiting a thick sequence with no Behrend shift",
+    "keyInsights": [
+      "**Thick sequences**: A sequence A is thick if Σ(1/a) = ∞. This is a measure of how \"dense\" the sequence is — thicker sequences have more elements per interval.",
+      "**Behrend sequences**: A sequence is Behrend if almost all integers are multiples of some element. The set of multiples has natural density 1.",
+      "**The gap**: Davenport-Erdős showed Behrend ⇒ thick, but the converse fails. Thickness is necessary but not sufficient for density 1 coverage.",
+      "**Ruzsa's construction**: Uses n_l ≡ -(k-1) (mod p_k) for primes p_k, ensuring each shift avoids some prime's multiples.",
+      "**Open variant**: Tenenbaum's weaker question (density ≥ 1-ε for any ε > 0) remains open."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "density",
+      "title": "Natural Density Infrastructure",
+      "startLine": 44,
+      "endLine": 58,
+      "summary": "Definitions of partial density, natural density, and lower density for sets of natural numbers."
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 59,
+      "endLine": 79,
+      "summary": "Thick sequences (divergent reciprocal sums), MultiplesOf (set of all multiples), and Behrend/weakly Behrend predicates."
+    },
+    {
+      "id": "thick-properties",
+      "title": "Properties of Thick Sequences",
+      "startLine": 80,
+      "endLine": 94,
+      "summary": "Basic theorems: finite sequences aren't thick, geometric sequences aren't thick, constant sequences are thick."
+    },
+    {
+      "id": "davenport-erdos",
+      "title": "Davenport-Erdős Theorem",
+      "startLine": 95,
+      "endLine": 107,
+      "summary": "The key structural result that Behrend sequences must be thick."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős Conjecture",
+      "startLine": 108,
+      "endLine": 118,
+      "summary": "Formal statement of Problem 26: thick sequences should have some Behrend shift."
+    },
+    {
+      "id": "counterexamples",
+      "title": "Counterexamples",
+      "startLine": 119,
+      "endLine": 142,
+      "summary": "Ruzsa's non-thick counterexample and Van Doorn's thick counterexample, with the main disproof theorem."
+    },
+    {
+      "id": "tenenbaum-variant",
+      "title": "Tenenbaum's Weaker Variant",
+      "startLine": 143,
+      "endLine": 154,
+      "summary": "The open question: can we achieve density ≥ 1-ε for any ε > 0?"
+    },
+    {
+      "id": "supporting-lemmas",
+      "title": "Supporting Lemmas",
+      "startLine": 155,
+      "endLine": 179,
+      "summary": "Auxiliary results about multiples of sequences containing 1 and edge cases for weakly Behrend."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #26 asked whether thick sequences necessarily have some shift with density 1 coverage. The answer is NO: Van Doorn constructed a thick sequence where no shift A+k is Behrend. This formalization axiomatizes the key results and derives the disproof.",
+    "implications": "The result shows a subtle gap between being \"dense enough\" (thick) and having \"uniform coverage\" (Behrend). Thickness captures asymptotic density of the sequence itself, while Behrend captures coverage of all integers through multiples — related but distinct properties.",
+    "openQuestions": [
+      "Tenenbaum's weaker variant: For thick A and any ε > 0, does some k achieve density ≥ 1-ε?",
+      "What is the minimum growth rate of Σ(1/a) needed to guarantee some Behrend shift exists?",
+      "Can the Ruzsa/Van Doorn construction be made effective with explicit bounds?"
+    ]
   }
 }

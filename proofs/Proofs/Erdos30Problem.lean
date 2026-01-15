@@ -216,7 +216,56 @@ def IsBhSet (A : Finset ℕ) (h : ℕ) : Prop :=
 
 /-- Sidon sets are B₂ sets. -/
 theorem sidon_is_b2 (A : Finset ℕ) : IsSidonSet A ↔ IsBhSet A 2 := by
-  sorry -- Technical but true
+  constructor
+  · -- IsSidonSet → IsBhSet 2
+    intro hSidon s₁ s₂ hs₁ hs₂ hcard₁ hcard₂ hsum
+    -- s₁ and s₂ are multisets of size 2 from A with equal sums
+    -- Need to show s₁ = s₂
+    -- A multiset of size 2 is either {a, a} or {a, b} with a ≠ b
+    obtain ⟨a₁, b₁, rfl⟩ : ∃ a b, s₁ = {a, b} := by
+      have : s₁.card = 2 := hcard₁
+      exact Multiset.card_eq_two.mp this
+    obtain ⟨a₂, b₂, rfl⟩ : ∃ a b, s₂ = {a, b} := by
+      have : s₂.card = 2 := hcard₂
+      exact Multiset.card_eq_two.mp this
+    -- Now we have {a₁, b₁} and {a₂, b₂} with a₁ + b₁ = a₂ + b₂
+    simp only [Multiset.mem_insert, Multiset.mem_singleton] at hs₁ hs₂
+    have ha₁ : a₁ ∈ A := by
+      rcases hs₁ a₁ (by simp) with h
+      exact h
+    have hb₁ : b₁ ∈ A := by
+      rcases hs₁ b₁ (by simp) with h
+      exact h
+    have ha₂ : a₂ ∈ A := by
+      rcases hs₂ a₂ (by simp) with h
+      exact h
+    have hb₂ : b₂ ∈ A := by
+      rcases hs₂ b₂ (by simp) with h
+      exact h
+    simp only [Multiset.insert_eq_cons, Multiset.sum_cons, Multiset.sum_singleton] at hsum
+    -- Use HasDistinctSums (equivalent to IsSidonSet)
+    rw [sidon_iff_distinct_sums] at hSidon
+    have := hSidon a₁ b₁ a₂ b₂ ha₁ hb₁ ha₂ hb₂ hsum
+    rcases this with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+    · rfl
+    · simp only [Multiset.insert_eq_cons, Multiset.cons_eq_cons]
+      right
+      exact ⟨rfl, Multiset.singleton_eq_singleton.mpr rfl⟩
+  · -- IsBhSet 2 → IsSidonSet
+    intro hBh a b c d ha hb hc hd hab hcd heq
+    -- Need to show a = c ∧ b = d from a + b = c + d with a ≤ b, c ≤ d
+    have hs₁ : ∀ x ∈ ({a, b} : Multiset ℕ), x ∈ A := by simp [ha, hb]
+    have hs₂ : ∀ x ∈ ({c, d} : Multiset ℕ), x ∈ A := by simp [hc, hd]
+    have hcard₁ : ({a, b} : Multiset ℕ).card = 2 := by simp
+    have hcard₂ : ({c, d} : Multiset ℕ).card = 2 := by simp
+    have hsum : ({a, b} : Multiset ℕ).sum = ({c, d} : Multiset ℕ).sum := by simp [heq]
+    have := hBh {a, b} {c, d} hs₁ hs₂ hcard₁ hcard₂ hsum
+    simp only [Multiset.insert_eq_cons, Multiset.cons_eq_cons, Multiset.singleton_eq_singleton,
+               Multiset.singleton_inj] at this
+    rcases this with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+    · exact ⟨rfl, rfl⟩
+    · -- a = d, b = c, combined with a ≤ b and c ≤ d means a = c and b = d
+      constructor <;> omega
 
 /-! ## Problem Status -/
 

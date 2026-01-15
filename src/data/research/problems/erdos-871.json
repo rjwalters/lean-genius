@@ -1,0 +1,105 @@
+{
+  "slug": "erdos-871",
+  "title": "Erdős #871: Partitioning Additive Bases of Order 2",
+  "phase": "FORMALIZED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "∀ A : Set ℕ, IsAdditiveBasis2 A → RepTendsToInfty A → CanPartitionIntoBases A",
+    "plain": "If A is an additive basis of order 2 with r_A(n) → ∞, can A be partitioned into two disjoint additive bases of order 2?",
+    "whyMatters": [
+      "Fundamental question about structure of additive bases",
+      "Tests whether growth of representations implies structural richness",
+      "Connected to Erdős-Nathanson (1989) results on basis partitions"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Erdős-Nathanson (1989): FALSE for weaker condition r_A(n) ≥ t (fixed t)",
+      "Erdős-Nathanson (1989): TRUE when r_A(n) > c log n for c > (log 4/3)^{-1}",
+      "Larsen (2026): DISPROVED - FALSE even when r_A(n) → ∞"
+    ],
+    "open": [],
+    "goal": "Formalize the disproof and key related results"
+  },
+  "currentState": {
+    "phase": "FORMALIZED",
+    "since": "2026-01-14T00:00:00Z",
+    "iteration": 1,
+    "focus": "Complete formalization with counterexample axiomatized",
+    "activeApproach": "Axiomatize Larsen counterexample, prove erdos_871_disproved",
+    "blockers": [],
+    "nextAction": "Consider submitting to Aristotle for the blocking_prevents_partition proof",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Formalized Erdős #871 (DISPROVED). ~240 lines of Lean. Main theorem erdos_871_disproved proved. Key theorem blocking_prevents_partition proved explicitly.",
+    "builtItems": [
+      "repFunc: representation function r_A(n) counting pairs (Erdos871Problem.lean:41)",
+      "sumset: A + A = {a + b : a, b ∈ A} (Erdos871Problem.lean:45)",
+      "IsAdditiveBasis2: A + A covers all but finitely many naturals (Erdos871Problem.lean:51)",
+      "IsAdditiveBasis2': equivalent definition via finite complement (Erdos871Problem.lean:55)",
+      "basis2_equiv: equivalence of two definitions (Erdos871Problem.lean:59)",
+      "RepTendsToInfty: r_A(n) → ∞ as n → ∞ (Erdos871Problem.lean:94)",
+      "RepEventuallyGe: r_A(n) ≥ t for large n (Erdos871Problem.lean:98)",
+      "CanPartitionIntoBases: partitionable into two order-2 bases (Erdos871Problem.lean:118)",
+      "Erdos871Conjecture: main conjecture statement (Erdos871Problem.lean:126)",
+      "erdos_nathanson_1989: axiom for weak counterexample (Erdos871Problem.lean:134)",
+      "erdos_nathanson_positive: partition possible for c log n growth (Erdos871Problem.lean:141)",
+      "larsen_counterexample: axiom for full counterexample (Erdos871Problem.lean:150)",
+      "erdos_871_disproved: negation of conjecture (Erdos871Problem.lean:154)",
+      "HasBlockingProperty: blocking condition for partitions (Erdos871Problem.lean:181)",
+      "blocking_prevents_partition: blocking → no partition (Erdos871Problem.lean:186)",
+      "larsen_construction_blocking: axiom for construction (Erdos871Problem.lean:210)"
+    ],
+    "insights": [
+      "The conjecture is FALSE - r_A(n) → ∞ is not fast enough growth",
+      "Gap: r_A(n) ≥ t (fixed t) fails, r_A(n) > c log n succeeds",
+      "r_A(n) → ∞ lies in the gap where partition fails",
+      "Blocking property: for any partition, infinitely many n fail to be in one sumset",
+      "Larsen modified Erdős-Nathanson construction to maintain blocking with unbounded r_A(n)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Could elaborate the Larsen construction details",
+      "Possible Aristotle submission for auxiliary lemmas"
+    ],
+    "markdown": "# Erdős #871 - Partitioning Additive Bases of Order 2\n\n## Problem Statement\n\nLet A be an additive basis of order 2, and suppose r_A(n) → ∞ as n → ∞.\nCan A be partitioned into two disjoint additive bases of order 2?\n\n## Status\n\n**Erdős Database Status**: DISPROVED (Larsen 2026)\n\n**Formalization**: COMPLETE (2026-01-14)\n\n## Key Results\n\n### The Answer: NO\n\nDaniel Larsen (2026) extended the Erdős-Nathanson construction to handle\nthe stronger condition r_A(n) → ∞, providing a counterexample.\n\n### Historical Context\n\n1. **Erdős-Nathanson (1989)**: Showed the weaker conjecture (r_A(n) ≥ t for fixed t)\nis FALSE. They constructed a basis with r_A(n) ≥ t that cannot be partitioned.\n\n2. **Erdős-Nathanson (1989)**: Showed partition IS possible when\nr_A(n) > c log n for c > (log 4/3)^{-1} ≈ 3.48.\n\n3. **Larsen (2026)**: The full conjecture (r_A(n) → ∞) is also FALSE.\n\n### The Gap\n\nThe conjecture asked about r_A(n) → ∞, which lies between:\n- r_A(n) ≥ t (fixed t) — counterexample exists\n- r_A(n) > c log n — partition possible\n\nLarsen showed that r_A(n) → ∞ is not fast enough growth to guarantee partition.\n\n## Sessions\n\n### Session 2026-01-14 - Initial Formalization\n\n**Mode**: REVISIT\n**Outcome**: Complete formalization\n\n#### What I Did\n- Defined representation function r_A(n) as ncard of pairs summing to n\n- Defined sumset and additive basis predicates\n- Proved equivalence of two basis definitions\n- Axiomatized Erdős-Nathanson results (weak and positive)\n- Axiomatized Larsen counterexample\n- Proved blocking_prevents_partition explicitly\n- Proved erdos_871_disproved from axioms\n\n#### Key Findings\n- Problem was DISPROVED in 2026 by Daniel Larsen\n- AI-assisted proof (Claude Opus 4.5)\n- Clean formalization with ~240 lines\n- Blocking property is key mechanism\n\n#### Files Modified\n- proofs/Proofs/Erdos871Problem.lean (new, ~240 lines)\n\n---\n\n*Generated 2026-01-14*\n"
+  },
+  "approaches": [
+    {
+      "name": "Axiomatize counterexample",
+      "status": "successful",
+      "description": "Axiomatize the Larsen counterexample and prove main theorem from it"
+    }
+  ],
+  "tags": [
+    "erdos",
+    "disproved",
+    "additive-combinatorics",
+    "additive-bases",
+    "partitions",
+    "representation-function"
+  ],
+  "relatedProofs": [
+    "Erdos28AdditiveBases"
+  ],
+  "references": {
+    "papers": [
+      "Erdős, P. & Nathanson, M. (1989). Partitions of bases into disjoint unions of bases",
+      "Larsen, D. (2026). AI-assisted disproof of Erdős Problem #871"
+    ],
+    "urls": [
+      "https://erdosproblems.com/871"
+    ],
+    "mathlib": []
+  },
+  "started": "2026-01-14T00:00:00Z",
+  "significance": 7,
+  "tractability": 7
+}

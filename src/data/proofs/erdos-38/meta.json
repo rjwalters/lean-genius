@@ -1,33 +1,83 @@
 {
   "id": "erdos-38",
-  "title": "Erdős Problem #38",
+  "title": "Erdős #38: Essential Components and Density Boosting",
   "slug": "erdos-38",
-  "description": "Does there exist ... which is not an additive basis, but is such that for every set ... of Schnirelmann density ... and every ... there exists ... such that\\[\\lvert (A\\cup (A+b))\\cap \\{1,\\ldots,N\\}...",
+  "description": "Does there exist a set B that is NOT an additive basis but still has the density-boosting property: for any set A with Schnirelmann density α, some translate A ∪ (A+b) achieves density ≥ α + f(α)?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (posed), OPEN",
     "sourceUrl": "https://erdosproblems.com/38",
-    "date": "",
-    "status": "pending",
+    "date": "1936",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos38Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "schnirelmann-density",
+      "additive-basis",
+      "number-theory"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiomatized",
+    "sorries": 0,
     "erdosNumber": 38,
     "erdosUrl": "https://erdosproblems.com/38",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #38 from erdosproblems.com.",
-    "problemStatement": "Does there exist $B\\subset\\mathbb{N}$ which is not an additive basis, but is such that for every set $A\\subseteq\\mathbb{N}$ of Schnirelmann density $\\alpha$ and every $N$ there exists $b\\in B$ such that\\[\\lvert (A\\cup (A+b))\\cap \\{1,\\ldots,N\\}\\rvert\\geq (\\alpha+f(\\alpha))N\\]where $f(\\alpha)>0$ for $0 View the LaTeX source This page was last edited 16 September 2025.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem connects two fundamental concepts in additive combinatorics: Schnirelmann density and additive bases. Schnirelmann density σ(A) = inf_{N≥1} |A ∩ {1,...,N}|/N is a worst-case density measure, crucial in the study of additive number theory.\n\nErdős proved in 1936 that additive bases of order k have a specific density-boosting property with factor α(1-α)/(2k). Linnik in 1942 constructed an 'essential component' - a set that increases Schnirelmann density when added - that is NOT an additive basis.\n\nThis problem asks whether the stronger density-boosting property (improving counts for specific translates) can exist without being a basis. It probes the gap between 'essential components' and 'additive bases'.",
+    "problemStatement": "Does there exist B ⊆ ℕ which is NOT an additive basis, but for every set A with Schnirelmann density α and every N, there exists b ∈ B such that |(A ∪ (A+b)) ∩ {1,...,N}| ≥ (α + f(α))·N where f(α) > 0 for 0 < α < 1?\n\n**Status**: OPEN - neither existence nor non-existence proven.",
+    "proofStrategy": "The formalization defines:\n1. **Schnirelmann density** as the infimum of |A ∩ {1,...,N}|/N\n2. **Additive bases** of order k (every n is a sum of ≤k elements from B)\n3. **Density-boosting property** for translates A ∪ (A+b)\n\nWe axiomatize known results: Erdős's 1936 theorem (bases have the property), Linnik's 1942 construction (essential components exist that aren't bases), and the optimality of α(1-α) for B = ℕ.",
+    "keyInsights": [
+      "**Schnirelmann density**: Unlike asymptotic density, it's the INFIMUM over initial segments - sensitive to early gaps",
+      "**Additive basis**: B is a basis of order k if every integer is a sum of ≤k elements from B (e.g., squares are order 4)",
+      "**Essential component**: Weaker than basis - just needs to increase density when added to any set",
+      "**The gap**: Erdős asks if the density-boost property (even stronger than essential) can hold without being a basis",
+      "**Known**: Bases have density-boost; some non-bases are essential components; unknown if non-bases can have density-boost"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "schnirelmann",
+      "title": "Schnirelmann Density",
+      "startLine": 36,
+      "endLine": 55,
+      "summary": "Defines counting function and Schnirelmann density as infimum"
+    },
+    {
+      "id": "bases",
+      "title": "Additive Bases",
+      "startLine": 57,
+      "endLine": 69,
+      "summary": "Defines additive bases of order k and general bases"
+    },
+    {
+      "id": "essential",
+      "title": "Essential Components",
+      "startLine": 71,
+      "endLine": 87,
+      "summary": "Defines translates and the density-boosting property"
+    },
+    {
+      "id": "main-problem",
+      "title": "Main Problem",
+      "startLine": 89,
+      "endLine": 101,
+      "summary": "States Erdős Problem #38 formally"
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 103,
+      "endLine": 137,
+      "summary": "Erdős 1936, Linnik 1942, and random set optimality"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #38, which asks whether the density-boosting property for translates can exist without being an additive basis. The problem probes the gap between 'essential components' (which can fail to be bases) and the stronger translate-based density improvement.",
+    "implications": "This problem is fundamental to understanding the structure of additive bases. A positive answer would show that density-boosting is genuinely weaker than being a basis. A negative answer would give a new characterization of additive bases.",
+    "openQuestions": [
+      "Does the density-boosting property imply being an additive basis?",
+      "What is the optimal function f(α) for additive bases?",
+      "Are there natural examples of essential components that fail density-boosting?"
+    ]
   }
 }

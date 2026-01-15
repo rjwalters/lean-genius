@@ -1,1 +1,167 @@
-[]
+[
+  {
+    "id": "ann-e26-header",
+    "proofId": "erdos-26",
+    "range": { "startLine": 1, "endLine": 36 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #26** asks about the relationship between \"thick\" sequences (those whose reciprocal sums diverge) and \"Behrend\" sequences (those whose multiples cover almost all integers).\n\nThe key question: If a sequence A is thick, must some shifted version A+k be Behrend? The answer is **NO** - counterexamples exist.",
+    "mathContext": "A sequence A is thick if $\\sum_{a \\in A} 1/a = \\infty$. It is Behrend if almost all integers are divisible by some element of A. The conjecture asked whether thick implies some shift is Behrend.",
+    "significance": "critical",
+    "relatedConcepts": ["erdos", "thick-sequences", "behrend-sets", "disproved"]
+  },
+  {
+    "id": "ann-e26-imports",
+    "proofId": "erdos-26",
+    "range": { "startLine": 37, "endLine": 42 },
+    "type": "concept",
+    "title": "Imports and Namespace",
+    "content": "**Mathlib imports** provide foundational mathematics. We open several namespaces for convenient access to sets, filters, summations, and real numbers.",
+    "mathContext": "The `Filter` namespace provides tools for limits and convergence, essential for defining natural density.",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "imports"]
+  },
+  {
+    "id": "ann-e26-density-defs",
+    "proofId": "erdos-26",
+    "range": { "startLine": 44, "endLine": 58 },
+    "type": "definition",
+    "title": "Natural Density Infrastructure",
+    "content": "**Natural density** measures how \"common\" a set of integers is. For a set S, we compute the proportion of integers up to n that belong to S, then take the limit as n approaches infinity.\n\n- `partialDensity S n` = |S intersection {0,...,n-1}| / n\n- `HasNaturalDensity S d` means this ratio converges to d\n- `lowerDensity S` is the liminf (conservative lower bound)",
+    "mathContext": "The natural density $d(S) = \\lim_{n\\to\\infty} |S \\cap [0,n)| / n$ when the limit exists. The lower density $\\underline{d}(S)$ is the liminf, always well-defined.",
+    "significance": "critical",
+    "relatedConcepts": ["density", "limits", "liminf"]
+  },
+  {
+    "id": "ann-e26-isthick",
+    "proofId": "erdos-26",
+    "range": { "startLine": 61, "endLine": 65 },
+    "type": "definition",
+    "title": "Thick Sequences",
+    "content": "**A thick sequence** has a divergent sum of reciprocals. This is a strong density condition - thick sequences must have \"many\" elements in every interval.\n\nExamples:\n- Primes are thick (sum of 1/p diverges)\n- Powers of 2 are NOT thick (geometric series converges)",
+    "mathContext": "A sequence $(a_n)$ is thick if $\\sum_n 1/a_n = \\infty$. By comparison, the primes satisfy $\\sum_p 1/p = \\infty$ (Euler), but $\\sum_n 1/2^n < \\infty$.",
+    "significance": "critical",
+    "relatedConcepts": ["thick-sequences", "summability", "primes"]
+  },
+  {
+    "id": "ann-e26-multiplesof",
+    "proofId": "erdos-26",
+    "range": { "startLine": 66, "endLine": 69 },
+    "type": "definition",
+    "title": "Multiples of a Sequence",
+    "content": "**MultiplesOf A** is the set of all integers that are multiples of some element of A. This is the \"coverage\" of A - which integers can be reached by multiplying elements of A.",
+    "mathContext": "For a sequence $(a_i)$, the set of multiples is $\\{n \\cdot a_i : n \\in \\mathbb{N}, i \\in I\\}$. If 1 is in A, then MultiplesOf A equals all natural numbers.",
+    "significance": "supporting",
+    "relatedConcepts": ["multiples", "divisibility"]
+  },
+  {
+    "id": "ann-e26-isbehrend",
+    "proofId": "erdos-26",
+    "range": { "startLine": 70, "endLine": 79 },
+    "type": "definition",
+    "title": "Behrend and Weakly Behrend",
+    "content": "**A Behrend sequence** has density 1 coverage: almost all integers are multiples of some element. A **weakly Behrend** sequence achieves at least (1-epsilon) coverage.\n\nThese measure how \"well-distributed\" a sequence is - can its multiples reach most integers?",
+    "mathContext": "A is Behrend if $d(\\text{MultiplesOf } A) = 1$. It is weakly Behrend with parameter $\\varepsilon$ if $\\underline{d}(\\text{MultiplesOf } A) \\geq 1 - \\varepsilon$.",
+    "significance": "critical",
+    "relatedConcepts": ["behrend-sets", "density", "coverage"]
+  },
+  {
+    "id": "ann-e26-thick-props",
+    "proofId": "erdos-26",
+    "range": { "startLine": 80, "endLine": 94 },
+    "type": "theorem",
+    "title": "Properties of Thick Sequences",
+    "content": "**Basic thickness results:**\n\n1. **Finite sequences aren't thick** - finite sums always converge\n2. **Geometric sequences aren't thick** - sum(1/r^n) is finite for r > 1\n3. **Constant sequences are thick** - sum(1/c) diverges over infinite index",
+    "mathContext": "These establish the boundary between thick and non-thick. The key insight: growth rate matters. Sequences growing faster than linear have convergent reciprocal sums.",
+    "significance": "supporting",
+    "relatedConcepts": ["thick-sequences", "convergence", "geometric-series"]
+  },
+  {
+    "id": "ann-e26-davenport-erdos",
+    "proofId": "erdos-26",
+    "range": { "startLine": 95, "endLine": 107 },
+    "type": "theorem",
+    "title": "Davenport-Erdos Theorem",
+    "content": "**Davenport-Erdos (1951)**: Every Behrend sequence must be thick.\n\nThis gives us Behrend implies thick. The Erdos conjecture asked about the converse: thick implies Behrend shift? The answer turns out to be NO.",
+    "mathContext": "If A has density 1 coverage, then $\\sum_{a \\in A} 1/a = \\infty$. Intuitively: to cover almost all integers as multiples, you need \"enough\" elements - quantified by divergent reciprocal sum.",
+    "significance": "critical",
+    "relatedConcepts": ["davenport-erdos", "behrend-implies-thick"]
+  },
+  {
+    "id": "ann-e26-conjecture",
+    "proofId": "erdos-26",
+    "range": { "startLine": 108, "endLine": 118 },
+    "type": "definition",
+    "title": "The Erdos Conjecture",
+    "content": "**Erdos Problem #26** (Erdos-Tenenbaum): For any thick sequence A, does some shift A+k have density 1 coverage?\n\nFormally: If sum(1/a) diverges and A is strictly increasing, does there exist k >= 1 such that A+k is Behrend?",
+    "mathContext": "The shift A+k means the sequence $(a_n + k)$. The conjecture asks whether thickness guarantees existence of a \"good\" shift with full coverage.",
+    "significance": "critical",
+    "relatedConcepts": ["erdos-conjecture", "shift", "coverage"]
+  },
+  {
+    "id": "ann-e26-ruzsa",
+    "proofId": "erdos-26",
+    "range": { "startLine": 119, "endLine": 129 },
+    "type": "theorem",
+    "title": "Ruzsa's Counterexample",
+    "content": "**Ruzsa's construction**: A strictly increasing sequence where NO shift is Behrend.\n\nThe trick: Choose elements n_l such that n_l is congruent to -(k-1) mod p_k for all k <= l, where p_k is the k-th prime. This ensures each shift A+k misses all multiples of p_k for large enough elements.",
+    "mathContext": "By Chinese Remainder Theorem, we can construct n_l satisfying all congruences simultaneously. For any k, the shift A+k has elements divisible by p_k for only finitely many terms.",
+    "significance": "critical",
+    "relatedConcepts": ["counterexample", "chinese-remainder-theorem", "primes"]
+  },
+  {
+    "id": "ann-e26-van-doorn",
+    "proofId": "erdos-26",
+    "range": { "startLine": 130, "endLine": 135 },
+    "type": "theorem",
+    "title": "Van Doorn's Thick Counterexample",
+    "content": "**Van Doorn's modification**: Ruzsa's original wasn't thick. Van Doorn modified the construction to make sum(1/a) diverge while preserving the blocking property.\n\nThis definitively disproves Problem #26: even thick sequences can fail to have any Behrend shift.",
+    "mathContext": "The modification carefully balances two requirements: (1) make the sequence thick enough, (2) maintain the prime-blocking structure that prevents Behrend shifts.",
+    "significance": "critical",
+    "relatedConcepts": ["counterexample", "thick-sequences", "disproof"]
+  },
+  {
+    "id": "ann-e26-disproof",
+    "proofId": "erdos-26",
+    "range": { "startLine": 136, "endLine": 142 },
+    "type": "theorem",
+    "title": "Main Disproof",
+    "content": "**erdos_26_disproved**: The conjecture is FALSE.\n\nProof: Van Doorn's counterexample provides a thick, strictly increasing sequence A with no Behrend shift. If the conjecture held, A would have some k with A+k Behrend - contradiction.",
+    "mathContext": "This is a simple proof by contradiction using the axiomatized counterexample. The real mathematical work is in constructing Van Doorn's sequence.",
+    "significance": "critical",
+    "relatedConcepts": ["disproof", "contradiction", "counterexample"]
+  },
+  {
+    "id": "ann-e26-tenenbaum",
+    "proofId": "erdos-26",
+    "range": { "startLine": 143, "endLine": 154 },
+    "type": "definition",
+    "title": "Tenenbaum's Weaker Variant",
+    "content": "**Open question** (Tenenbaum): For thick A and any epsilon > 0, does some k achieve at least (1-epsilon) density?\n\nThis relaxes \"density 1\" to \"density arbitrarily close to 1.\" The answer is unknown as of 2025.",
+    "mathContext": "The weaker variant asks: for all epsilon > 0, does there exist k such that the lower density of MultiplesOf(A+k) is at least 1 - epsilon. This may or may not be achievable.",
+    "significance": "supporting",
+    "relatedConcepts": ["open-problem", "tenenbaum", "weak-behrend"]
+  },
+  {
+    "id": "ann-e26-supporting",
+    "proofId": "erdos-26",
+    "range": { "startLine": 155, "endLine": 179 },
+    "type": "lemma",
+    "title": "Supporting Lemmas",
+    "content": "**Auxiliary results:**\n\n1. If 1 is in A, then MultiplesOf A equals all natural numbers (everything is a multiple of 1)\n2. Sequences containing 1 are trivially Behrend\n3. Edge cases for weakly Behrend with extreme epsilon values",
+    "mathContext": "These handle degenerate cases and establish basic properties used elsewhere. The key insight: the \"interesting\" cases are when A doesn't contain small elements.",
+    "significance": "supporting",
+    "relatedConcepts": ["auxiliary", "edge-cases"]
+  },
+  {
+    "id": "ann-e26-summary",
+    "proofId": "erdos-26",
+    "range": { "startLine": 180, "endLine": 209 },
+    "type": "concept",
+    "title": "Summary and References",
+    "content": "**Key takeaways:**\n\n1. Thick sequences have divergent reciprocal sums\n2. Behrend sequences have density 1 coverage\n3. Behrend implies thick (Davenport-Erdos)\n4. Thick implies Behrend shift: **FALSE** (Van Doorn)\n\nThe gap shows that thickness is necessary but not sufficient for full coverage.",
+    "mathContext": "The hierarchy is: Behrend is a subset of thick, but there's no reverse containment even allowing shifts. Tenenbaum's weakening remains open.",
+    "significance": "supporting",
+    "relatedConcepts": ["summary", "references", "open-questions"]
+  }
+]

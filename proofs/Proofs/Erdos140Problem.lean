@@ -46,13 +46,35 @@ def Finset3APFree (A : Finset ℕ) : Prop :=
 /-! ## The Roth Number r₃(N) -/
 
 /-- r₃(N) = maximum size of a 3-AP-free subset of {1,...,N}.
-    This is axiomatized as computing the maximum is not decidable in general. -/
-noncomputable def r3 (N : ℕ) : ℕ := sorry
+    We define this as the supremum over all 3-AP-free subsets. -/
+noncomputable def r3 (N : ℕ) : ℕ :=
+  sSup { k : ℕ | ∃ A : Finset ℕ, A ⊆ Finset.range (N + 1) ∧ Finset3APFree A ∧ A.card = k }
 
 /-- r₃(N) is well-defined and achieved by some set. -/
 theorem r3_achieved (N : ℕ) :
     ∃ A : Finset ℕ, A ⊆ Finset.range (N + 1) ∧ Finset3APFree A ∧ A.card = r3 N := by
-  sorry
+  -- The set { k | ∃ A... } is nonempty (contains 0 from ∅) and bounded by N+1
+  -- So the supremum is achieved
+  let S := { k : ℕ | ∃ A : Finset ℕ, A ⊆ Finset.range (N + 1) ∧ Finset3APFree A ∧ A.card = k }
+  have hne : S.Nonempty := by
+    use 0
+    use ∅
+    refine ⟨Finset.empty_subset _, ?_, Finset.card_empty⟩
+    intro a b c ha _ _
+    exact absurd ha (Finset.not_mem_empty a)
+  have hfin : S.Finite := by
+    apply Set.Finite.subset (Set.finite_Icc 0 (N + 1))
+    intro k ⟨A, hAsub, _, hcard⟩
+    simp only [Set.mem_Icc]
+    constructor
+    · exact Nat.zero_le k
+    · calc k = A.card := hcard.symm
+           _ ≤ (Finset.range (N + 1)).card := Finset.card_le_card hAsub
+           _ = N + 1 := Finset.card_range (N + 1)
+  -- In a finite nonempty set of ℕ, sSup is in the set
+  have hmem : sSup S ∈ S := hne.csSup_mem hfin
+  obtain ⟨A, hAsub, hAP, hcard⟩ := hmem
+  exact ⟨A, hAsub, hAP, hcard⟩
 
 /-! ## Historical Upper Bounds -/
 
@@ -174,19 +196,47 @@ axiom greedy_is_3APFree : ∀ n : ℕ,
 
 /-! ## k-term AP Generalization -/
 
+/-- A k-term arithmetic progression: k values a, a+d, a+2d, ..., a+(k-1)d with d ≠ 0. -/
+def IsAPk (k : ℕ) (vals : Fin k → ℕ) : Prop :=
+  k ≥ 2 ∧ ∃ a d : ℕ, d ≠ 0 ∧ ∀ i : Fin k, vals i = a + i.val * d
+
+/-- A set is k-AP-free if it contains no k-term arithmetic progression. -/
+def FinsetkAPFree (k : ℕ) (A : Finset ℕ) : Prop :=
+  ∀ vals : Fin k → ℕ, (∀ i, vals i ∈ A) → ¬IsAPk k vals
+
 /-- The Roth number for k-term progressions: r_k(N). -/
-noncomputable def rk (k N : ℕ) : ℕ := sorry
+noncomputable def rk (k N : ℕ) : ℕ :=
+  sSup { m : ℕ | ∃ A : Finset ℕ, A ⊆ Finset.range (N + 1) ∧ FinsetkAPFree k A ∧ A.card = m }
 
 /-- Erdős conjectured: For all k ≥ 3 and all C > 0, r_k(N) = O(N / (log N)^C).
     This is OPEN for k ≥ 4. -/
 def ErdosAPConjecture : Prop :=
   ∀ k ≥ 3, ∀ C > 0, ∃ K > 0, ∀ N ≥ 3, (rk k N : ℝ) ≤ K * N / (Real.log N)^C
 
+/-- Finset3APFree is equivalent to FinsetkAPFree 3 (modulo formulation details). -/
+axiom finset3APFree_eq_finsetkAPFree_3 : ∀ A : Finset ℕ,
+    Finset3APFree A ↔ FinsetkAPFree 3 A
+
+/-- r3 equals rk 3 (the Roth numbers are the same for both formulations). -/
+theorem r3_eq_rk_3 (N : ℕ) : r3 N = rk 3 N := by
+  unfold r3 rk
+  congr 1
+  ext k
+  constructor
+  · intro ⟨A, hAsub, hAP, hcard⟩
+    exact ⟨A, hAsub, (finset3APFree_eq_finsetkAPFree_3 A).mp hAP, hcard⟩
+  · intro ⟨A, hAsub, hAP, hcard⟩
+    exact ⟨A, hAsub, (finset3APFree_eq_finsetkAPFree_3 A).mpr hAP, hcard⟩
+
 /-- The k=3 case is resolved by Kelley-Meka. -/
-theorem erdos_ap_conjecture_k3 : ∀ C > 0, ∃ K > 0, ∀ N ≥ 3,
+theorem erdos_ap_conjecture_k3 : ∀ C : ℝ, C > 0 → ∃ K > 0, ∀ N ≥ 3,
     (rk 3 N : ℝ) ≤ K * N / (Real.log N)^C := by
-  -- This follows from Kelley-Meka once we show rk 3 = r3
-  sorry
+  intro C hC
+  obtain ⟨K, hK, hbound⟩ := kelley_meka C hC
+  use K, hK
+  intro N hN
+  rw [← r3_eq_rk_3]
+  exact hbound N hN
 
 /-! ## Summary
 

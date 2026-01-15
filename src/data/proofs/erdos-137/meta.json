@@ -1,33 +1,110 @@
 {
   "id": "erdos-137",
-  "title": "Erdős Problem #137",
+  "title": "Erdős Problem #137: Powerful Products of Consecutive Integers",
   "slug": "erdos-137",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Can the product of any ... consecutive integers ... ever be powerful? That is, must there always exist a prime ... s...",
+  "description": "For k ≥ 3, can the product of k consecutive integers ever be powerful? Conjectured: NO.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős and Selfridge (conjecture); Erdős-Selfridge (1975, perfect power case)",
     "sourceUrl": "https://erdosproblems.com/137",
-    "date": "",
-    "status": "pending",
+    "date": "1975",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos137Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "powerful-numbers",
+      "consecutive-integers",
+      "prime-factorization"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 137,
     "erdosUrl": "https://erdosproblems.com/137",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-14",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for natural numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Squarefree",
+        "description": "Predicate for squarefree numbers",
+        "module": "Mathlib.Algebra.Squarefree.Basic"
+      },
+      {
+        "theorem": "Finset.prod",
+        "description": "Product over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "Definition of powerful numbers with verified properties",
+      "Proof that 1 is powerful and perfect squares are powerful",
+      "Proof that squarefree numbers > 1 are not powerful",
+      "Axiomatization of the Erdős-Selfridge theorem (perfect powers)",
+      "Axiomatization of the main conjecture (powerful products)",
+      "Verified counterexample: 72 = 8 × 9 is powerful for k=2"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #137 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 3$. Can the product of any $k$ consecutive integers $N$ ever be powerful? That is, must there always exist a prime $p\\mid N$ such that $p^2\\nmid N$?\n\n\n\nConjectured by Erd\\H{o}s and Selfridge. There are infinitely many $n$ such that $n(n+1)$ is powerful (see [364]). Erd\\H{o}s and Selfridge \\cite{ErSe75} proved that $N$ can never be a perfect power. Erd\\H{o}s remarked that this 'seems hopeless at present'.\n\nIn \\cite{Er82c} he further conjectures that, if $k$ is fixed and $n$ is sufficiently large, then, for all $m$, there must be at least $k$ distinct primes $p$ such that\\[p\\mid m(m+1)\\cdots (m+n)\\]and yet $p^2$ does not divide the right-hand side.\n\nSee also [364].\n\n\n\n\nReferences\n\n\n[Er82c] Erd\\H{o}s, P., Miscellaneous problems in number theory. Congr. Numer. (1982), 25-45.\n\n[ErSe75] Erd\\H{o}s, P. and Selfridge, J. L., The product of consecutive integers is never a power. Illinois J. Math. (1975), 292-301.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #137 concerns the arithmetic structure of products of consecutive integers. A number n is **powerful** if every prime p dividing n also satisfies p² | n. Equivalently, n = a²b³ for some positive integers.\n\nThe related **Erdős-Selfridge Theorem** (1975) proves that the product of k ≥ 2 consecutive positive integers is never a perfect power (like m² or m³). This is a landmark result in number theory.\n\nThe powerful version is strictly weaker: perfect powers are powerful, but not vice versa. The conjecture that products of k ≥ 3 consecutive integers are never powerful remains OPEN. For k = 2, counterexamples exist: n(n+1) can be powerful for infinitely many n (e.g., 8 × 9 = 72 = 2³ × 3²).",
+    "problemStatement": "Let $k \\geq 3$. Can the product of $k$ consecutive positive integers $(n+1)(n+2)\\cdots(n+k)$ ever be **powerful**?\n\nA number is powerful if every prime in its factorization appears with exponent $\\geq 2$.\n\n**Conjecture**: NO — for $k \\geq 3$, the product is never powerful.\n\n**Known result**: Erdős-Selfridge (1975) proved the product is never a perfect power for $k \\geq 2$.\n\n**Counterexample for k=2**: $8 \\times 9 = 72 = 2^3 \\times 3^2$ is powerful.",
+    "proofStrategy": "We formalize the problem by:\n\n1. **Defining powerful numbers**: `Powerful n` means n ≠ 0 and every prime p | n satisfies p² | n.\n\n2. **Basic properties**: Prove 1 is powerful (vacuously), perfect squares are powerful, and squarefree numbers > 1 are NOT powerful.\n\n3. **Erdős-Selfridge theorem**: Axiomatize that products of k ≥ 2 consecutive integers are never perfect powers.\n\n4. **Main conjecture**: Axiomatize the open conjecture for k ≥ 3 and powerful products.\n\n5. **Counterexample**: Prove 72 = 8 × 9 is powerful, showing k = 2 case fails.",
+    "keyInsights": [
+      "**Powerful numbers**: Characterized by having no 'singleton' primes in factorization. Numbers like 72 = 2³ × 3² are powerful because both 2² and 3² divide it.",
+      "**Consecutive coprimality**: Adjacent integers gcd(n, n+1) = 1, so factors spread across consecutive integers don't combine.",
+      "**Erdős-Selfridge gap**: Perfect powers form a strict subclass of powerful numbers. The powerful conjecture is weaker but still open.",
+      "**k=2 counterexamples**: Infinitely many n exist with n(n+1) powerful (related to Erdős Problem #364).",
+      "**The barrier at k=3**: While 2 consecutive integers can combine to be powerful, 3 or more cannot (conjectured)."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "powerful-def",
+      "title": "Powerful Numbers",
+      "startLine": 53,
+      "endLine": 96,
+      "summary": "Define powerful numbers and prove basic properties: 1 is powerful, squares are powerful, squarefree > 1 are not."
+    },
+    {
+      "id": "consecutive-product",
+      "title": "Products of Consecutive Integers",
+      "startLine": 98,
+      "endLine": 114,
+      "summary": "Define consecutiveProduct and prove gcd(n, n+1) = 1."
+    },
+    {
+      "id": "erdos-selfridge",
+      "title": "The Erdős-Selfridge Theorem",
+      "startLine": 116,
+      "endLine": 142,
+      "summary": "Axiomatize the 1975 theorem: products of consecutive integers are never perfect powers. Derive corollaries for squares and cubes."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 144,
+      "endLine": 170,
+      "summary": "State and axiomatize the open conjecture: for k ≥ 3, products are never powerful."
+    },
+    {
+      "id": "counterexample",
+      "title": "Counterexample for k = 2",
+      "startLine": 172,
+      "endLine": 212,
+      "summary": "Prove 72 = 8 × 9 is powerful, showing the k = 2 case fails. Verify 8 × 9 = consecutiveProduct 7 2."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #137 on whether products of k ≥ 3 consecutive integers can be powerful. The conjecture says NO, but this remains OPEN. We prove foundational facts about powerful numbers, axiomatize the Erdős-Selfridge theorem (perfect powers), and demonstrate the k=2 counterexample 72 = 8 × 9.",
+    "implications": "The problem illuminates the arithmetic structure of consecutive products. While the Erdős-Selfridge theorem resolves the perfect power question, the powerful version is more subtle. Understanding why k ≥ 3 might prevent powerful products requires deep analysis of how prime factors distribute across consecutive integers.",
+    "openQuestions": [
+      "Prove the main conjecture: products of k ≥ 3 consecutive integers are never powerful.",
+      "Characterize all n where n(n+1) is powerful (related to Problem #364).",
+      "Find effective bounds: how large must primes be in the factorization of consecutive products?"
+    ]
   }
 }

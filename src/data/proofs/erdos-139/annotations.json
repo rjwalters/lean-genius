@@ -1,1 +1,199 @@
-[]
+[
+  {
+    "id": "ann-e139-imports",
+    "proofId": "erdos-139",
+    "range": {
+      "startLine": 25,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Mathlib Imports for Additive Combinatorics",
+    "content": "We import key Mathlib modules: `Combinatorics.Additive.AP.Three.Defs` provides `ThreeAPFree` predicate and `rothNumberNat`, while `Combinatorics.Additive.Corner.Roth` contains the full proof of Roth's theorem via the corners theorem chain.",
+    "mathContext": "Mathlib's proof of Roth's theorem follows the chain: Szemerédi Regularity Lemma → Triangle Removal Lemma → Corners Theorem → Roth's Theorem. This is one of the most sophisticated proof chains in Mathlib.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "additive combinatorics",
+      "regularity lemma"
+    ]
+  },
+  {
+    "id": "ann-e139-ap-def",
+    "proofId": "erdos-139",
+    "range": {
+      "startLine": 41,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "k-term Arithmetic Progressions",
+    "content": "A **k-term arithmetic progression (k-AP)** is a sequence a, a+d, a+2d, ..., a+(k-1)d where d > 0 (non-trivial). A set is **k-AP-free** if it contains no such sequence.",
+    "mathContext": "The requirement d > 0 excludes the trivial case of k copies of the same element. Our definition `HasAPOfLength S k` captures when S contains such a progression, and `IsKAPFree S k` is its negation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic progression",
+      "additive combinatorics",
+      "Szemerédi"
+    ]
+  },
+  {
+    "id": "ann-e139-r-function",
+    "proofId": "erdos-139",
+    "range": {
+      "startLine": 48,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "The r_k(N) Function",
+    "content": "**r_k(N)** is the maximum cardinality of a k-AP-free subset of {1,...,N}. This is the central object in Erdős #139: we want to prove r_k(N) = o(N), meaning r_k(N)/N → 0 as N → ∞.",
+    "mathContext": "We define r using supremum over all valid sets: `sSup {m | ∃ S : Finset ℕ, S.card = m ∧ S ⊆ Icc 1 N ∧ IsKAPFree S k}`. The function is noncomputable because it involves supremum over an infinite search space.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "extremal combinatorics",
+      "density",
+      "Ramsey theory"
+    ]
+  },
+  {
+    "id": "ann-e139-main-theorem",
+    "proofId": "erdos-139",
+    "range": {
+      "startLine": 68,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "Erdős #139: Main Statement",
+    "content": "**Szemerédi's Theorem (Erdős #139)**: For any k ≥ 2, the ratio r_k(N)/N tends to 0 as N → ∞. This means that k-AP-free subsets of {1,...,N} become asymptotically negligible compared to N.",
+    "mathContext": "Using Filter.Tendsto, we express this as: `Tendsto (fun N => (r k N / N : ℝ)) atTop (𝓝 0)`. The hypothesis `1 < k` excludes the trivial case k=1 where every nonempty set contains a 1-AP.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Szemerédi's theorem",
+      "density",
+      "limits"
+    ]
+  },
+  {
+    "id": "ann-e139-density-form",
+    "proofId": "erdos-139",
+    "range": {
+      "startLine": 79,
+      "endLine": 92
+    },
+    "type": "definition",
+    "title": "Density Formulation",
+    "content": "**SzemerediDensity k** states: for any δ > 0, there exists N₀ such that any subset of {1,...,N} with at least δN elements contains a k-AP. This is equivalent to r_k(N) = o(N).",
+    "mathContext": "The density formulation captures the contrapositive: if a set has positive density (≥ δ fraction of [N]), it cannot be k-AP-free for sufficiently large N. We also define `SzemerediTheorem` as the statement that this holds for all k ≥ 2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density",
+      "combinatorics",
+      "uniformity"
+    ]
+  },
+  {
+    "id": "ann-e139-trivial-cases",
+    "proofId": "erdos-139",
+    "range": {
+      "startLine": 102,
+      "endLine": 127
+    },
+    "type": "lemma",
+    "title": "Trivial Cases: k=1 and k=2",
+    "content": "**k=1**: Any nonempty set contains a 1-AP (a single element). **k=2**: Any set with ≥2 elements contains a 2-AP (two distinct elements form a 2-term AP with common difference their gap).",
+    "mathContext": "For k=1, we witness `⟨a, 1, Nat.one_pos, ...⟩` with any element a. For k=2, given distinct a,b with a < b, the progression is a, b with common difference b-a. The `interval_cases i` tactic handles the two cases i=0,1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "base cases",
+      "trivial bounds"
+    ]
+  },
+  {
+    "id": "ann-e139-threeapfree-equiv",
+    "proofId": "erdos-139",
+    "range": {
+      "startLine": 134,
+      "endLine": 173
+    },
+    "type": "theorem",
+    "title": "Equivalence with Mathlib's ThreeAPFree",
+    "content": "**isKAPFree_iff_threeAPFree**: Our `IsKAPFree S 3` is equivalent to Mathlib's `ThreeAPFree S`. This is crucial for connecting to Mathlib's Roth theorem.",
+    "mathContext": "Mathlib's `ThreeAPFree S` says: ∀ a,b,c ∈ S, a+c = b+b implies a=b. This captures 'no non-trivial 3-APs' differently—by requiring that arithmetic mean b equals the endpoint a when they satisfy the AP condition. The proof carefully handles the case analysis for both directions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ThreeAPFree",
+      "definition equivalence",
+      "Mathlib"
+    ]
+  },
+  {
+    "id": "ann-e139-roth-theorem",
+    "proofId": "erdos-139",
+    "range": {
+      "startLine": 175,
+      "endLine": 186
+    },
+    "type": "theorem",
+    "title": "Roth's Theorem via Mathlib",
+    "content": "**Roth's Theorem (k=3)**: Proved completely using Mathlib's `roth_3ap_theorem_nat`. For any δ > 0 and sufficiently large N, any subset of {0,...,N-1} with ≥δN elements contains a 3-AP.",
+    "mathContext": "The proof uses `cornersTheoremBound (δ/3)` as the threshold N₀. Mathlib's proof chain is: Szemerédi Regularity → Triangle Removal → Corners → Roth. The bound is tower-type exponential, making it huge in practice, but the theorem is fully proved.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Roth's theorem",
+      "corners theorem",
+      "regularity lemma"
+    ]
+  },
+  {
+    "id": "ann-e139-kelley-meka",
+    "proofId": "erdos-139",
+    "range": {
+      "startLine": 195,
+      "endLine": 198
+    },
+    "type": "axiom",
+    "title": "Kelley-Meka Bound (2023)",
+    "content": "**Kelley-Meka (2023)**: The current best upper bound for k=3: r₃(N) ≤ N·exp(-c(log N)^{1/12}) for some constant c > 0. This is a major breakthrough, exponentially improving previous bounds.",
+    "mathContext": "This is axiomatized because the proof involves sophisticated harmonic analysis and density increment arguments far beyond current Mathlib capabilities. The exponent 1/12 comes from iteration of Bogolyubov-type arguments.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quantitative bounds",
+      "analytic number theory",
+      "density increment"
+    ]
+  },
+  {
+    "id": "ann-e139-behrend",
+    "proofId": "erdos-139",
+    "range": {
+      "startLine": 210,
+      "endLine": 213
+    },
+    "type": "axiom",
+    "title": "Behrend's Lower Bound (1946)",
+    "content": "**Behrend (1946)**: The lower bound r₃(N) ≥ N·exp(-c√(log N)) shows that 3-AP-free sets can be surprisingly dense. This is achieved by taking integers whose base-d representation lies on a sphere.",
+    "mathContext": "Behrend's construction uses the fact that points on a sphere in ℤᵈ (with fixed L²-norm) form a 3-AP-free set, then encodes these as base-d integers. The gap between upper and lower bounds (exp(-log^{1/12}) vs exp(-√log)) remains a major open problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "construction",
+      "lower bounds",
+      "geometric sets"
+    ]
+  },
+  {
+    "id": "ann-e139-full-szemeredi",
+    "proofId": "erdos-139",
+    "range": {
+      "startLine": 215,
+      "endLine": 221
+    },
+    "type": "axiom",
+    "title": "Full Szemerédi Theorem Axiom",
+    "content": "**szemeredi_theorem**: We axiomatize the full Szemerédi theorem for all k ≥ 2. While k=3 is proved in Mathlib, k≥4 requires hypergraph regularity lemma which is not yet formalized.",
+    "mathContext": "Szemerédi's original 1975 proof used a complex combinatorial argument. Furstenberg's 1977 proof used ergodic theory (correspondence principle). Gowers' 2001 proof introduced higher-order Fourier analysis. None of these approaches are fully in Mathlib for k≥4.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "hypergraph regularity",
+      "ergodic theory",
+      "Gowers norms"
+    ]
+  }
+]

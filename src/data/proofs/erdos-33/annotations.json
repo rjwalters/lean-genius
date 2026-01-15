@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-e33-imports",
+    "proofId": "erdos-33",
+    "range": {
+      "startLine": 31,
+      "endLine": 34
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import the full Mathlib library which provides `Real.sqrt`, `Filter.limsup`, `Filter.liminf`, and `Set.ncard` for cardinality of finite sets within an infinite set.",
+    "mathContext": "The `open scoped Topology` allows Filter notation. `open Nat Set Filter Real` brings common namespaces into scope.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "filters",
+      "topology"
+    ]
+  },
+  {
+    "id": "ann-e33-complement-def",
+    "proofId": "erdos-33",
+    "range": {
+      "startLine": 40,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Additive Complement of Squares",
+    "content": "A set A ⊆ ℕ is an **additive complement of the squares** if every natural number k can be written as k = a + n² for some a ∈ A and n ≥ 0. Such sets 'fill in the gaps' left by squares.",
+    "mathContext": "Formally: `∀ k : ℕ, ∃ n a : ℕ, a ∈ A ∧ k = a + n^2`. The original problem says 'every large integer' but this is equivalent since finitely many exceptions can be handled by adding finitely many elements.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "additive combinatorics",
+      "squares",
+      "covering sets"
+    ]
+  },
+  {
+    "id": "ann-e33-counting",
+    "proofId": "erdos-33",
+    "range": {
+      "startLine": 48,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Counting and Density Functions",
+    "content": "The **counting function** |A ∩ {1,...,N}| measures how many elements of A lie in the interval [1,N]. The **normalized density** divides by √N, which is the natural scale since there are ~√N squares up to N.",
+    "mathContext": "We use `Set.ncard` for the cardinality of the intersection A ∩ [1,N]. The √N normalization means that if A had density comparable to squares, the ratio would be ~1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density",
+      "counting function",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-e33-existence",
+    "proofId": "erdos-33",
+    "range": {
+      "startLine": 61,
+      "endLine": 69
+    },
+    "type": "axiom",
+    "title": "Erdős Existence Result",
+    "content": "**Erdős observed** that additive complements of squares exist with finite limsup > 1. This shows the problem is non-trivial: you can't achieve density approaching 0, but you also don't need density approaching ∞.",
+    "mathContext": "The axiom states: ∃ A with the complement property and ∃ c > 1 such that limsup of normalized density equals c. The construction uses careful selection to cover all residue classes not covered by squares.",
+    "significance": "key",
+    "relatedConcepts": [
+      "existence",
+      "limsup",
+      "construction"
+    ]
+  },
+  {
+    "id": "ann-e33-moser",
+    "proofId": "erdos-33",
+    "range": {
+      "startLine": 73,
+      "endLine": 79
+    },
+    "type": "axiom",
+    "title": "Moser's Lower Bound (1965)",
+    "content": "**Moser (1965)** proved the first quantitative lower bound: for ANY additive complement A of squares, liminf |A ∩ {1,...,N}|/√N > 1.06. This means you can't be too sparse.",
+    "mathContext": "This was groundbreaking as the first proof that additive complements must have substantial density. The proof analyzes how many elements are needed to cover all integers in each interval.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lower bound",
+      "liminf",
+      "Moser"
+    ]
+  },
+  {
+    "id": "ann-e33-cilleruelo",
+    "proofId": "erdos-33",
+    "range": {
+      "startLine": 81,
+      "endLine": 90
+    },
+    "type": "axiom",
+    "title": "Best Known Lower Bound: 4/π",
+    "content": "The **best known lower bound** is liminf ≥ 4/π ≈ 1.273, proved independently by Cilleruelo (1993), Habsieger (1995), and Balasubramanian-Ramana (2001).",
+    "mathContext": "The constant 4/π arises from Fourier analysis on ℤ/nℤ. The proof uses properties of the Jacobi theta function and the distribution of quadratic residues. The appearance of π suggests deep analytic structure.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Fourier analysis",
+      "quadratic residues",
+      "theta function"
+    ]
+  },
+  {
+    "id": "ann-e33-golden-ratio",
+    "proofId": "erdos-33",
+    "range": {
+      "startLine": 97,
+      "endLine": 105
+    },
+    "type": "theorem",
+    "title": "Golden Ratio Identity",
+    "content": "We define the **golden ratio** φ = (1 + √5)/2 ≈ 1.618 and prove its characteristic property: **φ² = φ + 1**. This identity is fundamental to Fibonacci sequences and appears in Van Doorn's construction.",
+    "mathContext": "The proof uses `ring_nf` to normalize, then `sq_sqrt` to handle √5² = 5, and `ring` to complete the algebraic verification. The golden ratio satisfies x² - x - 1 = 0.",
+    "significance": "key",
+    "relatedConcepts": [
+      "golden ratio",
+      "Fibonacci",
+      "algebraic identity"
+    ]
+  },
+  {
+    "id": "ann-e33-vandoorn",
+    "proofId": "erdos-33",
+    "range": {
+      "startLine": 107,
+      "endLine": 119
+    },
+    "type": "axiom",
+    "title": "Van Doorn's Upper Bound",
+    "content": "**Van Doorn constructed** an additive complement A with limsup ≤ 2φ^(5/2) ≈ 6.66. This is the best known upper bound - there EXISTS a set achieving this density.",
+    "mathContext": "The construction uses a greedy algorithm with Fibonacci-like patterns. The constant 2φ^(5/2) = 2·(1.618...)^2.5 ≈ 6.66 arises from the optimal balance between coverage and density.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "upper bound",
+      "construction",
+      "greedy algorithm"
+    ]
+  },
+  {
+    "id": "ann-e33-open-minimum",
+    "proofId": "erdos-33",
+    "range": {
+      "startLine": 124,
+      "endLine": 135
+    },
+    "type": "definition",
+    "title": "Open Question: Minimum Limsup",
+    "content": "**What is the exact minimum** value of limsup |A ∩ {1,...,N}|/√N over all additive complements A? We only know: it's between 1 (from liminf bounds) and 2φ^(5/2) ≈ 6.66 (Van Doorn).",
+    "mathContext": "We define `minLimsup` as the set of achievable limsup values. This is the 'harder' direction of Problem 33 - finding the infimum of this set remains open.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open problem",
+      "optimization",
+      "extremal"
+    ]
+  },
+  {
+    "id": "ann-e33-derived-theorem",
+    "proofId": "erdos-33",
+    "range": {
+      "startLine": 150,
+      "endLine": 156
+    },
+    "type": "theorem",
+    "title": "Derived Result: liminf > 1",
+    "content": "We **prove** that liminf > 1 for any additive complement by combining the 4/π lower bound with the fact that 4/π > 1. This uses the axioms to derive a concrete consequence.",
+    "mathContext": "The proof is: from `cilleruelo_habsieger_lower_bound` we get liminf ≥ 4/π, and from `four_over_pi_gt_one` we know 4/π > 1. By `linarith`, we conclude liminf > 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "derived result",
+      "linarith",
+      "transitivity"
+    ]
+  }
+]
