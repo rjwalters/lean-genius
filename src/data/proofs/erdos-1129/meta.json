@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1129",
+  "title": "Erdős Problem #1129",
+  "slug": "erdos-1129",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor ... let\\[l_k(x)=(x-x_i)}{\\prod_{i\\neq k}(x_k-x_i)},\\]which are such that ... and ... for ....\n\nDescribe which choice of ....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1129",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1129Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1129,
+    "erdosUrl": "https://erdosproblems.com/1129",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1129 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor $x_1,\\ldots,x_n\\in [-1,1]$ let\\[l_k(x)=\\frac{\\prod_{i\\neq k}(x-x_i)}{\\prod_{i\\neq k}(x_k-x_i)},\\]which are such that $l_k(x_k)=1$ and $l_k(x_i)=0$ for $i\\neq k$.\n\nDescribe which choice of $x_i$ minimise\\[\\Lambda(x_1,\\ldots,x_n)=\\max_{x\\in [-1,1]} \\sum_k \\lvert l_k(x)\\rvert.\\]\n\n\n\nThe functions $l_k(x)$ are sometimes called the fundamental functions of Lagrange interpolation, and $\\Lambda$ is sometimes called the Lebesgue constant.\n\nFaber \\cite{Fa14} proved\\[\\Lambda(x_1,\\ldots,x_n)\\gg \\log n\\]for all choices of $x_i$, and Bernstein \\cite{Be31} proved it is $>(\\frac{2}{\\pi}-o(1))\\log n$. Erd\\H{o}s \\cite{Er61c} improved this to\\[\\Lambda(x_1,\\ldots,x_n)> \\frac{2}{\\pi}\\log n-O(1).\\]This is best possible, since taking the $x_i$ as the roots of the $n$th Chebyshev polynomial yields\\[\\Lambda(x_1,\\ldots,x_n)< \\frac{2}{\\pi}\\log n+O(1).\\]Erd\\H{o}s thought that the minimising choice is characterised by the property that the sums\\[\\max_{x\\in [x_i,x_{i+1}]}\\sum_k \\lvert l_k(x)\\rvert\\]are all equal for $0\\leq i\\leq n$ (where $x_0=-1$ and $x_{n+1}=1$).\n\nIf $x_1=-1$ and $x_n=1$ then there is a unique minimising set of $x_i$, which are symmetric around $0$. (Such a choice is called canonical.)\n\nThe minimising canonical choice is known only for $n\\leq 4$. For $n=2$ the points are $-1,1$ (with $\\Lambda=1$). For $n=3$ the points are $-1,0,1$ (with $\\Lambda=1.25$), as shown by Bernstein \\cite{Be31}. Rack and Vajda \\cite{RaVa15} have shown that for $n=4$ the points are $-1,-t,t,1$ where $t\\approx 0.4177$ is an explicit algebraic constant (with $\\Lambda \\approx 1.4229$).\n\nIn \\cite{Er67} Erd\\H{o}s suggests that an easier variant might be to have the $x_i\\in \\mathbb{C}$ with $\\lvert x_i\\rvert=1$, and seek to minimise $\\max_{\\lvert z\\rvert=1}\\sum_{k}\\lvert l_k(z)\\rvert$, adding it 'seems certain' that the minimising $x_i$ are the $n$th roots of unity. This was proved by Brutman \\cite{Br80} for odd $n$ and by Brutman and Pinkus \\cite{BrPi80} for even $n$.\n\nSee also [1130] and [1132].\n\n\n\n\nReferences\n\n\n[Be31] S. Bernstein, Sur la limitation des valeurs d'un polynome $P_n(x)$ de degr\\'{e} n sur tout un segment par ses valeurs en $(n+1)$ points du segment. Izv. Akad. Nauk. SSSR (1931), 1025-1050.\n\n[Br80] Brutman, L., On the polynomial and rational projections in the complex\nplane. SIAM J. Numer. Anal. (1980), 366--372.\n\n[BrPi80] Brutman, L. and Pinkus, A., On the {E}rd\\H{o}s conjecture concerning minimal norm\ninterpolation on the unit circle. SIAM J. Numer. Anal. (1980), 373--375.\n\n[Er61c] Erd\\H{o}s, P., Problems and results on the theory of interpolation. II. Acta Math. Acad. Sci. Hungar. (1961), 235-244.\n\n[Er67] Erd\\H{o}s, P., Problems and results on the convergence and divergence properties of the Lagrange interpolation polynomials and some extremal problems. Mathematica (Cluj) (1967), 65-73.\n\n[Fa14] G. Faber, \\\"{U}ber die interpolatorische Darstellung stetiger Funktionen. Jahresb. der Deutschen Math. Ver. (1914), 190-210.\n\n[RaVa15] Rack, Heinz-Joachim and Vajda, Robert, Optimal cubic {L}agrange interpolation: extremal node systems\nwith minimal {L}ebesgue constant. Stud. Univ. Babe\\c s-Bolyai Math. (2015), 151--171.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

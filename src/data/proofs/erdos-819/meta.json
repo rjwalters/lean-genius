@@ -1,0 +1,33 @@
+{
+  "id": "erdos-819",
+  "title": "Erdős Problem #819",
+  "slug": "erdos-819",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that there exists ... with ... such that .... Estimate ....\n\n\n\nErds and Freud  proved\\[\\left({8}-o(1)...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/819",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos819Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 819,
+    "erdosUrl": "https://erdosproblems.com/819",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #819 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(N)$ be maximal such that there exists $A\\subseteq \\{1,\\ldots,N\\}$ with $\\lvert A\\rvert=\\lfloor N^{1/2}\\rfloor$ such that $\\lvert (A+A)\\cap [1,N]\\rvert=f(N)$. Estimate $f(N)$.\n\n\n\nErd\\H{o}s and Freud \\cite{ErFr91} proved\\[\\left(\\frac{3}{8}-o(1)\\right)N \\leq f(N) \\leq \\left(\\frac{1}{2}+o(1)\\right)N,\\]and note that it is closely connected to the size of the largest quasi-Sidon set (see [840]).\n\n\n\n\nReferences\n\n\n[ErFr91] Erd\\H{o}s, P. and Freud, R., On sums of a {S}idon-sequence. J. Number Theory (1991), 196--205.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

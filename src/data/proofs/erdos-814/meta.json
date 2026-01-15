@@ -1,0 +1,33 @@
+{
+  "id": "erdos-814",
+  "title": "Erdős Problem #814",
+  "slug": "erdos-814",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be a graph with ... vertices and\\[(k-1)(n-k+2)+{2}+1\\]edges. Does there exist some ... such that ... must con...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/814",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos814Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 814,
+    "erdosUrl": "https://erdosproblems.com/814",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #814 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$ and $G$ be a graph with $n\\geq k-1$ vertices and\\[(k-1)(n-k+2)+\\binom{k-2}{2}+1\\]edges. Does there exist some $c_k>0$ such that $G$ must contain an induced subgraph on at most $(1-c_k)n$ vertices with minimum degree at least $k$?\n\n\n\nThe case $k=3$ was a problem of Erd\\H{o}s and Hajnal \\cite{Er91}. The question for general $k$ was a conjecture of Erd\\H{o}s, Faudree, Rousseau, and Schelp \\cite{EFRS90}, who proved that such a subgraph exists with at most $n-c_k\\sqrt{n}$ vertices. Mousset, Noever, and Skori\\'{c} \\cite{MNS17} improved this to\\[n-c_k\\frac{n}{\\log n}.\\]The full conjecture was proved by Sauermann \\cite{Sa19}, who proved this with $c_k \\gg 1/k^3$.\n\n\n\n\nReferences\n\n\n[EFRS90] Erd\\H{o}s, P. and Faudree, R. J. and Rousseau, C. C. and\nSchelp, R. H., Subgraphs of minimal degree {$k$}. Discrete Math. (1990), 53--58.\n\n[Er91] Erd\\\"{o}s, P., Problems and results in combinatorial analysis and combinatorial number theory. Graph theory, combinatorics, and applications, Vol. 1 (Kalamazoo, MI, 1988) (1991), 397-406.\n\n[MNS17] Mousset, Frank and Noever, Andreas and \\v Skori\\'c, Nemanja, Smaller subgraphs of minimum degree {$k$}. Electron. J. Combin. (2017), Paper No. 4.9, 8.\n\n[Sa19] Sauermann, Lisa, A proof of a conjecture of Erd\\H{o}s, Faudree, {R}ousseau\nand {S}chelp on subgraphs of minimum degree {$k$}. J. Combin. Theory Ser. B (2019), 36--75.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

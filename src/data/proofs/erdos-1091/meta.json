@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1091",
+  "title": "Erdős Problem #1091",
+  "slug": "erdos-1091",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a ...-free graph with chromatic number .... Must ... contain an odd cycle with at least two diagonals?\n\nMore gener...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1091",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1091Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1091,
+    "erdosUrl": "https://erdosproblems.com/1091",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1091 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a $K_4$-free graph with chromatic number $4$. Must $G$ contain an odd cycle with at least two diagonals?\n\nMore generally, is there some $f(r)\\to \\infty$ such that every graph with chromatic number $4$, in which every subgraph on $\\leq r$ vertices has chromatic number $\\leq 3$, contains an odd cycle with at least $f(r)$ diagonals?\n\n\n\nErd\\H{o}s originally asked about the existence of just one diagonal, which is true, and was proved by Larson \\cite{La79}. In fact Larson proved the following stronger conjecture of Bollob\\'{a}s and Erd\\H{o}s: if $G$ is a $K_4$-free graph containing no odd cycle with a diagonal then either $G$ is bipartite, or $G$ contains a cut vertex, or $G$ contains a vertex with degree $\\leq 2$.\n\nThe pentagonal wheel shows that three diagonals are not guaranteed.\n\nThe first question was solved in the affirmative by Voss \\cite{Vo82}.\n\n\n\n\nReferences\n\n\n[La79] Larson, Jean A., Some graphs with chromatic number three. J. Combin. Theory Ser. B (1979), 317--322.\n\n[Vo82] Voss, Heinz-J\\\"urgen, Graphs having circuits with at least two chords. J. Combin. Theory Ser. B (1982), 264--285.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

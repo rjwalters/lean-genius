@@ -1,0 +1,33 @@
+{
+  "id": "erdos-777",
+  "title": "Erdős Problem #777",
+  "slug": "erdos-777",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $...\\{1,\\ldots,n\\}...G_{}......A\\sim B...A...B...A\\subseteq B...\\epsilon>0...n...m\\leq (2-\\epsilon)2^{n/2}...G_...0...\\del...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/777",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos777Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 777,
+    "erdosUrl": "https://erdosproblems.com/777",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #777 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $\\mathcal{F}$ is a family of subsets of $\\{1,\\ldots,n\\}$ then we write $G_{\\mathcal{F}}$ for the graph on $\\mathcal{F}$ where $A\\sim B$ if $A$ and $B$ are comparable - that is, $A\\subseteq B$ or vice versa.\n\nIs it true that, if $\\epsilon>0$ and $n$ is sufficiently large, whenever $m\\leq (2-\\epsilon)2^{n/2}$ the graph $G_\\mathcal{F}$ has $<2^{n}$ many edges?\n\nIs it true that if $G_{\\mathcal{F}}$ has $\\geq cm^2$ edges then $m\\ll_c 2^{n/2}$?\n\nIs it true that, for any $\\epsilon>0$, there exists some $\\delta>0$ such that if there are $>m^{2-\\delta}$ edges then $m<(2+\\epsilon)^{n/2}$?\n\n\n\nA problem of Daykin and Erd\\H{o}s. Daykin and Frankl proved that if there are $(1+o(1))\\binom{m}{2}$ edges then $m^{1/n}\\to 1$ as $n\\to \\infty$.\n\nFor the first question we need to take $\\epsilon>0$ since since if $n$ is even and $m=2^{n/2+1}$ one could take $\\mathcal{F}$ to be all subsets of $\\{1,\\ldots,n/2\\}$ together with $\\{1,\\ldots,n/2\\}$ union all subsets of $\\{n/2+1,\\ldots,n\\}$, which produces $2^{n}$ edges.\n\nThe third question was answered in the affirmative by Alon and Frankl \\cite{AlFr85}, who proved that, for every $k\\geq 1$, if $m=2^{(\\frac{1}{k+1}+\\delta)n}$ for some $\\delta>0$ then the number of edges is\\[< \\left(1-\\frac{1}{k}\\right)\\binom{m}{2}+O(m^{2-\\Omega_k(\\delta^{k+1})}).\\]They also answer the second question in the negative, noting that if $\\mathcal{F}$ is the family of sets which either intersect $\\{n/2+1,\\ldots,n\\}$ in at most $1$ element or intersect $\\{1,\\ldots,n/2\\}$ in at least $n/2-1$ elements then $m \\gg n2^{n/2}$ and there are at least $2^{-5}\\binom{m}{2}$ edges.\n\nFinally, an affirmative answer to the first question follows from Theorem 1.4 and Corollary 1.5 of Alon, Das, Glebov, and Sudakov \\cite{ADGS15}.\n\n\n\n\nReferences\n\n\n[ADGS15] Alon, Noga and Das, Shagnik and Glebov, Roman and Sudakov,\nBenny, Comparable pairs in families of sets. J. Combin. Theory Ser. B (2015), 164-185.\n\n[AlFr85] Alon, N. and Frankl, P., The maximum number of disjoint pairs in a family of subsets. Graphs Combin. (1985), 13-21.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

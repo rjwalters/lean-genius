@@ -1,0 +1,33 @@
+{
+  "id": "erdos-878",
+  "title": "Erdős Problem #878",
+  "slug": "erdos-878",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is the factorisation of ... into distinct primes then let\\[f(n)=\\sum p_i^{\\ell_i},\\]where ... is chosen such that .......",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/878",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos878Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 878,
+    "erdosUrl": "https://erdosproblems.com/878",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #878 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $n=\\prod_{1\\leq i\\leq t} p_i^{k_i}$ is the factorisation of $n$ into distinct primes then let\\[f(n)=\\sum p_i^{\\ell_i},\\]where $\\ell_i$ is chosen such that $n\\in [p_i^{\\ell_i},p_i^{\\ell_i+1})$. Furthermore, let\\[F(n)=\\max \\sum_{i=1}^t a_i\\]where the maximum is taken over all $a_1,\\ldots,a_t\\leq n$ such that $(a_i,a_j)=1$ for $i\\neq j$ and all prime factors of each $a_i$ are prime factors of $n$.\n\nIs it true that, for almost all $n$,\\[f(n)=o(n\\log\\log n)\\]and\\[F(n) \\gg n\\log\\log n?\\]Is it true that\\[\\max_{n\\leq x}f(n)\\sim \\frac{x\\log x}{\\log\\log x}?\\]Is it true that (for all $x$, or perhaps just for all large $x$)\\[\\max_{n\\leq x}f(n)=\\max_{n\\leq x}F(n)?\\]Find an asymptotic formula for the number of $n<x$ such that $f(n)=F(n)$. Find an asymptotic formula for\\[H(x)=\\sum_{n<x}\\frac{f(n)}{n}.\\]Is it true that\\[H(x) \\ll x\\log\\log\\log\\log x?\\]\n\n\n\nErd\\H{o}s \\cite{Er84e} proved that\\[\\max_{n\\leq x}f(n)\\sim \\frac{x\\log x}{\\log\\log x}\\]for a sequence of $x\\to \\infty$.\n\nIt is trivial that $f(n)\\leq F(n)$ for all $n$. It may be true that, for almost all $n$,\\[F(n)\\sim \\frac{1}{2}n\\log\\log n.\\]Erd\\H{o}s notes that $f(n)/n$ 'almost behaves as a conventional additive function', but unusually $f(n)/n$ does not have a mean value - indeed,\\[\\limsup \\frac{1}{x}\\sum_{n<x}\\frac{f(n)}{n}=\\infty\\]but\\[\\liminf \\frac{1}{x}\\sum_{n<x}\\frac{f(n)}{n}<\\infty.\\]Erd\\H{o}s \\cite{Er84e} proved that\\[x\\log\\log\\log\\log x\\ll H(x) \\ll x\\log\\log\\log x.\\]See also [879].\n\n\n\n\nReferences\n\n\n[Er84e] Erd\\H{o}s, P., On two unconventional number theoretic functions and on some\nrelated problems. (1984), 113--121.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

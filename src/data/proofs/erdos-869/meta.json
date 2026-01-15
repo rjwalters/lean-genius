@@ -1,0 +1,33 @@
+{
+  "id": "erdos-869",
+  "title": "Erdős Problem #869",
+  "slug": "erdos-869",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... are disjoint additive bases of order ... (i.e. ... contains all large integers) then must ... contain a minimal additi...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/869",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos869Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 869,
+    "erdosUrl": "https://erdosproblems.com/869",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #869 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $A_1,A_2$ are disjoint additive bases of order $2$ (i.e. $A_i+A_i$ contains all large integers) then must $A=A_1\\cup A_2$ contain a minimal additive basis of order $2$ (one such that deleting any element creates infinitely many $n\\not\\in A+A$)?\n\n\n\nA question of Erd\\H{o}s and Nathanson \\cite{ErNa88}.\n\nHärtter \\cite{Ha56} and Nathanson \\cite{Na74} proved that there exist additive bases which do not contain any minimal additive bases.\n\n\n\n\nReferences\n\n\n[ErNa88] Erd\\H{o}s, Paul and Nathanson, Melvyn B., Partitions of bases into disjoint unions of bases. J. Number Theory (1988), 1--9.\n\n[Ha56] H\\\"{a}rtter, Erich, Ein Beitrag zur {T}heorie der {M}inimalbasen. J. Reine Angew. Math. (1956), 170--204.\n\n[Na74] Nathanson, Melvyn B., Minimal bases and maximal nonbases in additive number theory. J. Number Theory (1974), 324--333.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

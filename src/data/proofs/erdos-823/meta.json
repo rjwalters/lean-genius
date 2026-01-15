@@ -1,0 +1,33 @@
+{
+  "id": "erdos-823",
+  "title": "Erdős Problem #823",
+  "slug": "erdos-823",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is there a sequence of integers ... such that ... and ... for all ..., where ... is the sum of divisors function?\n\n\n...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/823",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos823Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 823,
+    "erdosUrl": "https://erdosproblems.com/823",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #823 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\alpha\\geq 1$. Is there a sequence of integers $n_k,m_k$ such that $n_k/m_k\\to \\alpha$ and $\\sigma(n_k)=\\sigma(m_k)$ for all $k\\geq 1$, where $\\sigma$ is the sum of divisors function?\n\n\n\nErd\\H{o}s \\cite{Er74b} writes it is 'easy to prove the analogous result for $\\phi(n)$'.\n\nThe answer is yes, proved by Pollack \\cite{Po15b}.\n\n\n\n\nReferences\n\n\n[Er74b] Erd\\H{o}s, P., Remarks on some problems in number theory. Math. Balkanica (1974), 197-202.\n\n[Po15b] Pollack, Paul, Remarks on fibers of the sum-of-divisors function. (2015), 305-320.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

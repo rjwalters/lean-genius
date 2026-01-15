@@ -1,0 +1,33 @@
+{
+  "id": "erdos-914",
+  "title": "Erdős Problem #914",
+  "slug": "erdos-914",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and .... Every graph with ... vertices and minimum degree at least ... contains ... vertex disjoint copies of ....\n\n\n...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/914",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos914Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 914,
+    "erdosUrl": "https://erdosproblems.com/914",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #914 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 2$ and $m\\geq 1$. Every graph with $rm$ vertices and minimum degree at least $m(r-1)$ contains $m$ vertex disjoint copies of $K_r$.\n\n\n\nWhen $r=2$ this follows from Dirac's theorem. Corr\\'{a}di and Hajnal \\cite{CoHa63} proved this when $r=3$. Hajnal and Szemer\\'{e}di \\cite{HaSz70} proved this for all $r\\geq 4$.\n\n\n\n\nReferences\n\n\n[CoHa63] Corradi, K. and Hajnal, A., On the maximal number of independent circuits in a graph. Acta Math. Acad. Sci. Hungar. (1963), 423--439.\n\n[HaSz70] Hajnal, A. and Szemer\\'{e}di, E., Proof of a conjecture of {P}. {E}rd\\H{o}s. (1970), 601--623.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1078",
+  "title": "Erdős Problem #1078",
+  "slug": "erdos-1078",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an ...-partite graph with ... vertices in each part. If ... has minimum degree ... then ... must contain a ....\n\n\n...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1078",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1078Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1078,
+    "erdosUrl": "https://erdosproblems.com/1078",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1078 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be an $r$-partite graph with $n$ vertices in each part. If $G$ has minimum degree $\\geq (r-\\frac{3}{2}-o(1))n$ then $G$ must contain a $K_r$.\n\n\n\nA conjecture of Bollob\\'{a}s, Erd\\H{o}s, and Szemer\\'{e}di \\cite{BES75b}, who proved that $r-\\frac{3}{2}$ would be the best possible here.\n\nThis is true, and was proved by Haxell \\cite{Ha01}. The sharp threshold of\\[(r-1)n-\\left\\lceil \\frac{sn}{2s-1}\\right\\rceil\\]where $s=\\lfloor r/2\\rfloor$ was proved by Haxell and Szab\\'{o} \\cite{HaSz06}.\n\n\n\n\nReferences\n\n\n[BES75b] Bollob\\'as, B. and Erd\\H{o}s, P. and Szemer\\'{e}di, E., On complete subgraphs of {$r$}-chromatic graphs. Discrete Math. (1975), 97--107.\n\n[Ha01] Haxell, P. E., A note on vertex list colouring. Combin. Probab. Comput. (2001), 345--347.\n\n[HaSz06] Haxell, Penny and Szab\\'o, Tibor, Odd independent transversals are odd. Combin. Probab. Comput. (2006), 193--211.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

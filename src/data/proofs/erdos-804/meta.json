@@ -1,0 +1,33 @@
+{
+  "id": "erdos-804",
+  "title": "Erdős Problem #804",
+  "slug": "erdos-804",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that any graph on ... vertices in which every induced subgraph on ... vertices has an independent set...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/804",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos804Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 804,
+    "erdosUrl": "https://erdosproblems.com/804",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #804 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(m,n)$ be maximal such that any graph on $n$ vertices in which every induced subgraph on $m$ vertices has an independent set of size at least $\\log n$ must contain an independent set of size at least $f(n)$.\n\nEstimate $f(n)$. In particular, is it true that $f((\\log n)^2,n) \\geq n^{1/2-o(1)}$? Is it true that $f((\\log n)^3,n)\\gg (\\log n)^3$?\n\n\n\nA question of Erd\\H{o}s and Hajnal. Alon and Sudakov \\cite{AlSu07} proved that in fact\\[\\frac{(\\log n)^2}{\\log\\log n}\\ll f((\\log n)^2,n) \\ll (\\log n)^2\\]and\\[f((\\log n)^3,n)\\asymp \\frac{(\\log n)^2}{\\log\\log n}.\\]See also [805].\n\n\n\n\nReferences\n\n\n[AlSu07] Alon, Noga and Sudakov, Benny, On graphs with subgraphs having large independence numbers. J. Graph Theory (2007), 149-157.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1079",
+  "title": "Erdős Problem #1079",
+  "slug": "erdos-1079",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... If ... is a graph on ... vertices with at least ... edges then must ... contain a vertex with degree ... whose neigh...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1079",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1079Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1079,
+    "erdosUrl": "https://erdosproblems.com/1079",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1079 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 4$. If $G$ is a graph on $n$ vertices with at least $\\mathrm{ex}(n;K_r)$ edges then must $G$ contain a vertex with degree $d\\gg_r n$ whose neighbourhood contains at least $\\mathrm{ex}(d;K_{r-1})$ edges?\n\n\n\nAs Erd\\H{o}s \\cite{Er75} says 'if true this would be a nice generalisation of Tur\\'{a}n's theorem'.\n\nThis is true (unless $G$ it itself the Tur\\'{a}n graph), and was proved by Bollob\\'{a}s and Thomason \\cite{BoTh81}. Bondy \\cite{Bo83b} showed that if $G$ has $>\\mathrm{ex}(n;K_r)$ edges then the corresponding vertex can be chosen to be of maximum degree in $G$.\n\n\n\n\nReferences\n\n\n[Bo83b] Bondy, J. A., Large dense neighbourhoods and {T}ur\\'an's theorem. J. Combin. Theory Ser. B (1983), 109--111.\n\n[BoTh81] Bollob\\'as, B\\'{e}la and Thomason, Andrew, Dense neighbourhoods and {T}ur\\'an's theorem. J. Combin. Theory Ser. B (1981), 111--114.\n\n[Er75] Erd\\H{o}s, P., Some recent progress on extremal problems in graph theory. Congr. Numer. (1975), 3-14.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

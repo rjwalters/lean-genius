@@ -1,0 +1,33 @@
+{
+  "id": "erdos-830",
+  "title": "Erdős Problem #830",
+  "slug": "erdos-830",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe say that ... are an amicable pair if .... Are there infinitely many amicable pairs? If ... counts the number of amicable ....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/830",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos830Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 830,
+    "erdosUrl": "https://erdosproblems.com/830",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #830 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe say that $a,b\\in \\mathbb{N}$ are an amicable pair if $\\sigma(a)=\\sigma(b)=a+b$. Are there infinitely many amicable pairs? If $A(x)$ counts the number of amicable $1\\leq a\\leq b\\leq x$ then is it true that\\[A(x)>x^{1-o(1)}?\\]\n\n\n\nFor example $220$ and $284$. Erd\\H{o}s \\cite{Er55b} proved that $A(x)=o(x)$, and Pomerance \\cite{Po81} improved this to\\[A(x) \\leq x \\exp(-(\\log x)^{1/3})\\]and later \\cite{Po15} to\\[A(x) \\leq x \\exp(-(\\tfrac{1}{2}+o(1))(\\log x\\log\\log x)^{1/2}).\\]This is problem B4 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er55b] Erd\\\"{o}s, P., On amicable numbers. Publ. Math. Debrecen (1955), 108-111.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Po15] Pomerance, Carl, On amicable numbers. (2015), 321-327.\n\n[Po81] Pomerance, Carl, On the distribution of amicable numbers. {II}. J. Reine Angew. Math. (1981), 183-188.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

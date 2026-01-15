@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1119",
+  "title": "Erdős Problem #1119",
+  "slug": "erdos-1119",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $...\\aleph_0\\aleph_1...\\{f_\\alpha\\}...=\\aleph_1...^+<...^+=...=\\aleph_2...=\\aleph_1...=\\aleph_2$.\n\n\n\n\nReferences\n\n\n[Er64g...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1119",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1119Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1119,
+    "erdosUrl": "https://erdosproblems.com/1119",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1119 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\mathfrak{m}$ be an infinite cardinal with $\\aleph_0<\\mathfrak{m}<\\mathfrak{c}=2^{\\aleph_0}$. Let $\\{f_\\alpha\\}$ be a family of entire functions such that, for every $z_0\\in \\mathbb{C}$, there are at most $\\mathfrak{m}$ distinct values of $f_\\alpha(z_0)$. Must $\\{f_\\alpha\\}$ have cardinality at most $\\mathfrak{m}$?\n\n\n\nThis is Problem 2.46 in \\cite{Ha74}, where it is attributed to Erd\\H{o}s.\n\nErd\\H{o}s \\cite{Er64g} proved (answering a question of Wetzel) that if there are only countably many distinct values for each $f_\\alpha(z_0)$ then, if $\\mathfrak{c}>\\aleph_1$, the family $\\{f_\\alpha\\}$ is itself countable, and also showed this is false if $\\mathfrak{c}=\\aleph_1$.\n\nIn \\cite{Ha74} it is written that it is 'easy to see' the answer is yes if $\\mathfrak{m}^+<\\mathfrak{c}$, and also that it is possible that the question is undecidable.\n\nIndeed, it has been shown that this is undecidable if $\\mathfrak{m}^+=\\mathfrak{c}$: Kumar and Shelah \\cite{KuSh17} have shown that there is a model in which $\\mathfrak{c}=\\aleph_2$ such that the answer is yes (with $\\mathfrak{m}=\\aleph_1$), while Schilhan and Weinert \\cite{ScWe24} have shown the answer can be no, in a different model with $\\mathfrak{c}=\\aleph_2$.\n\n\n\n\nReferences\n\n\n[Er64g] Erd\\H{o}s, P., An interpolation problem associated with the continuum\nhypothesis. Michigan Math. J. (1964), 9--10.\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n[KuSh17] Kumar, Ashutosh and Shelah, Saharon, On a question about families of entire functions. Fund. Math. (2017), 279--288.\n\n[ScWe24] Schilhan, Jonathan and Weinert, Thilo, Wetzel families and the continuum. J. Lond. Math. Soc. (2) (2024), Paper No. e12918, 27.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

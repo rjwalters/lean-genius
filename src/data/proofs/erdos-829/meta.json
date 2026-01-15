@@ -1,0 +1,33 @@
+{
+  "id": "erdos-829",
+  "title": "Erdős Problem #829",
+  "slug": "erdos-829",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the set of cubes. Is it true that\\[1_A\\ast 1_A(n) \\ll (\\log n)^{O(1)}?\\]\n\n\n\nMordell proved that\\[\\limsup_{n\\to \\in...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/829",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos829Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 829,
+    "erdosUrl": "https://erdosproblems.com/829",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #829 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset\\mathbb{N}$ be the set of cubes. Is it true that\\[1_A\\ast 1_A(n) \\ll (\\log n)^{O(1)}?\\]\n\n\n\nMordell proved that\\[\\limsup_{n\\to \\infty} 1_A\\ast 1_A(n)=\\infty\\]and Mahler \\cite{Ma35b} proved\\[1_A\\ast 1_A(n) \\gg (\\log n)^{1/4}\\]for infinitely many $n$. Stewart \\cite{St08} improved this to\\[1_A\\ast 1_A(n) \\gg (\\log n)^{11/13}.\\]\n\n\n\n\nReferences\n\n\n[Ma35b] Mahler, Kurt, On the Lattice Points on Curves of Genus 1. Proc. London Math. Soc. (2) (1935), 431-466.\n\n[St08] Stewart, Cameron L., Cubic {T}hue equations with many solutions. Int. Math. Res. Not. IMRN (2008), Art. ID rnn040, 11.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

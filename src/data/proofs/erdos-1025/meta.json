@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1025",
+  "title": "Erdős Problem #1025",
+  "slug": "erdos-1025",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a function from all pairs of elements in ... to ... such that ... and ... for all .... We call ... independent if ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1025",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1025Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1025,
+    "erdosUrl": "https://erdosproblems.com/1025",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1025 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f$ be a function from all pairs of elements in $\\{1,\\ldots,n\\}$ to $\\{1,\\ldots,n\\}$ such that $f(x,y)\\neq x$ and $\\neq y$ for all $x,y$. We call $X\\subseteq \\{1,\\ldots,n\\}$ independent if whenever $x,y\\in X$ we have $f(x,y)\\not\\in X$.\n\nLet $g(n)$ be such that, in every function $f$, there is an independent set of size at least $g(n)$. Estimate $g(n)$.\n\n\n\nA question of Erd\\H{o}s and Hajnal \\cite{ErHa58}, who could prove\\[n^{1/3} \\ll g(n) \\ll (n\\log n)^{1/2}.\\]Spencer \\cite{Sp72} proved $g(n)\\gg n^{1/2}$. Conlon, Fox, and Sudakov \\cite{CFS16} proved $g(n)\\ll n^{1/2}$.\n\n\n\n\nReferences\n\n\n[CFS16] Conlon, David and Fox, Jacob and Sudakov, Benny, Short proofs of some extremal results {II}. J. Combin. Theory Ser. B (2016), 173--196.\n\n[ErHa58] Erd\\H{o}s, P. and Hajnal, A., On the structure of set mappings. Acta Math. Acad. Sci. Hungar. (1958), 111-133.\n\n[Sp72] Spencer, Joel, Tur\\'an's theorem for {$k$}-graphs. Discrete Math. (1972), 183--186.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

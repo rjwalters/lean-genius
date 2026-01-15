@@ -1,0 +1,33 @@
+{
+  "id": "erdos-876",
+  "title": "Erdős Problem #876",
+  "slug": "erdos-876",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sum-free set - that is, there are no solutions to\\[a=b_1+\\cdots+b_r\\]with .... How small can ... be? I...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/876",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos876Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 876,
+    "erdosUrl": "https://erdosproblems.com/876",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #876 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{a_1<a_2<\\cdots\\}\\subset \\mathbb{N}$ be an infinite sum-free set - that is, there are no solutions to\\[a=b_1+\\cdots+b_r\\]with $b_1<\\cdots<b_r<a\\in A$. How small can $a_{n+1}-a_n$ be? Is it possible that $a_{n+1}-a_n<n$?\n\n\n\nErd\\H{o}s \\cite{Er98} writes that Graham 'recently proved' that there is such a sequence for which $a_{n+1}-a_n<n^{1+o(1)}$, and that Melfi proved a somewhat weaker result.\n\nErd\\H{o}s \\cite{Er62c} proved that a sum-free set has density zero. Deshouillers, Erd\\H{o}s, and Melfi \\cite{DEM99} constructed a sum-free set that grows like $a_n\\sim n^{3+o(1)}$.\n\nLuczak and Schoen \\cite{LuSc00} have proved that, for all large $N$,\\[\\lvert A\\cap [1,N]\\rvert\\ll (N\\log N)^{1/2},\\]and that there exists a sum-free set $B$ such that\\[\\lvert B\\cap [1,N]\\rvert \\gg \\frac{N^{1/2}}{(\\log N)^{1/2+o(1)}}\\]for all large $N$.\n\nIn \\cite{Er75b} and \\cite{Er77c} Erd\\H{o}s asks to determine the maximum possible value of $\\sum_{n\\in A}\\frac{1}{n}$. Erd\\H{o}s had proved this is $<100$, and Sullivan had shown that this is $<4$, and Sullivan conjectured the maximum is slightly larger than $2$.\n\nSee also [790].\n\n\n\n\nReferences\n\n\n[DEM99] Deshouillers, Jean-Marc and Erd\\H{o}s, Paul and Melfi,\nGiuseppe, On a question about sum-free sequences. Discrete Math. (1999), 49--54.\n\n[Er62c] Erd\\H{o}s, P\\'{a}l, Some remarks on number theory. {III}. Mat. Lapok (1962), 28--38.\n\n[Er75b] Erd\\H{o}s, Paul, Problems and results in combinatorial number theory. Journ\\'{e}es Arithm\\'{e}tiques de Bordeaux (Conf., Univ. Bordeaux, Bordeaux, 1974) (1975), 295-310.\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n[Er98] Erd\\H{o}s, Paul, Some of my new and almost new problems and results in combinatorial number theory. Number theory (Eger, 1996) (1998), 169-180.\n\n[LuSc00] \\L uczak, Tomasz and Schoen, Tomasz, On the maximal density of sum-free sets. Acta Arith. (2000), 225--229.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

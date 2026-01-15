@@ -1,0 +1,33 @@
+{
+  "id": "erdos-973",
+  "title": "Erdős Problem #973",
+  "slug": "erdos-973",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist a constant ... such that, for every ..., there exists a sequence ... with ... and ... for all ... with\\[\\max...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/973",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos973Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 973,
+    "erdosUrl": "https://erdosproblems.com/973",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #973 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist a constant $C>1$ such that, for every $n\\geq 2$, there exists a sequence $z_i\\in \\mathbb{C}$ with $z_1=1$ and $\\lvert z_i\\rvert \\geq 1$ for all $1\\leq i\\leq n$ with\\[\\max_{2\\leq k\\leq n+1}\\left\\lvert \\sum_{1\\leq i\\leq n}z_i^k\\right\\rvert < C^{-n}?\\]\n\n\n\nThis is Problem 7.3 in \\cite{Ha74}, where it is attributed to Erd\\H{o}s.\n\nErd\\H{o}s proved (as described on p.35 of \\cite{Tu84b}) that such a sequence does exist with $\\lvert z_i\\rvert\\leq 1$. Indeed, Erd\\H{o}s' construction gives a value of $C\\approx 1.32$.\n\nIn \\cite{Er92f} (a different) Erd\\H{o}s refines this analysis, proving that if\\[M_2=\\min_{z_j} \\max_{2\\leq k\\leq n+1} \\left\\lvert \\sum_{1\\leq j\\leq n}z_j^k\\right\\rvert,\\]where the minimum is take over all $z_j\\in \\mathbb{C}$ with $\\max \\lvert z_j\\rvert=1$, then\\[(1.746)^{-n} < M_2 < (1.745)^{-n}.\\]Tang notes in the comments that Theorem 6.1 of \\cite{Tu84b} implies that, if $\\lvert z_i\\rvert \\geq 1$ for all $i$, then\\[\\max_{2\\leq k\\leq n+1}\\left\\lvert \\sum_{1\\leq i\\leq n}z_i^k\\right\\rvert \\geq (2e)^{-(1+o(1))n}.\\]See also [519].\n\n\n\n\nReferences\n\n\n[Er92f] Erd\\H{o}s, L., On some problems of {P}. {T}ur\\'an concerning power sums of\ncomplex numbers. Acta Math. Hungar. (1992), 11--24.\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n[Tu84b] Tur\\'an, Paul, On a new method of analysis and its applications. (1984), xvi+584.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

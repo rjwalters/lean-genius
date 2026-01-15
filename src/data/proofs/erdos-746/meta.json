@@ -1,0 +1,33 @@
+{
+  "id": "erdos-746",
+  "title": "Erdős Problem #746",
+  "slug": "erdos-746",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, almost surely, a random graph on ... vertices with ... edges is Hamiltonian?\n\n\n\nA conjecture of Erds and R\\'...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/746",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos746Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 746,
+    "erdosUrl": "https://erdosproblems.com/746",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #746 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, almost surely, a random graph on $n$ vertices with $\\geq (\\tfrac{1}{2}+\\epsilon)n\\log n$ edges is Hamiltonian?\n\n\n\nA conjecture of Erd\\H{o}s and R\\'{e}nyi \\cite{ErRe66}, who proved that almost surely such a graph has a perfect matching (when $n$ is even).\n\nThis is true. P\\'{o}sa \\cite{Po76} proved that almost surely a random graph with $\\geq Cn\\log n$ edges is Hamiltonian for some large constant $C$, and Korshunov \\cite{Ko77} proved that\\[\\geq \\frac{1}{2}n\\log n+\\frac{1}{2}n\\log\\log n+w(n)n\\]edges suffices, for any function $w$ which $\\to \\infty$ as $n\\to \\infty$.\n\nKoml\\'{o}s and Szemer\\'{e}di \\cite{KoSz83} proved the stronger result that with\\[\\frac{1}{2}n\\log n+\\frac{1}{2}n\\log\\log n+cn\\]edges the probability that the graph is Hamiltonian tends to $e^{-e^{-2c}}$ as $n\\to \\infty$.\n\n\n\n\nReferences\n\n\n[ErRe66] Erd\\H{o}s, P. and R\\'{e}nyi, A., On the existence of a factor of degree one of a connected\nrandom graph. Acta Math. Acad. Sci. Hungar. (1966), 359-368.\n\n[Ko77] Kor\\v sunov, A. D., Solution of a problem of {P}. {E}rd\\H{o}s and {A}. {R}\\'{e}nyi on\n{H}amiltonian cycles in nonoriented graphs. Diskret. Analiz (1977), 17--56, 90.\n\n[KoSz83] Koml\\'{o}s, J\\'{a}nos and Szemer\\'{e}di, Endre, Limit distribution for the existence of Hamiltonian cycles\nin a random graph. Discrete Math. (1983), 55-63.\n\n[Po76] P\\'{o}sa, L., Hamiltonian circuits in random graphs. Discrete Math. (1976), 359-364.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

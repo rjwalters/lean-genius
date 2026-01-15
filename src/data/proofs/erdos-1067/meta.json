@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1067",
+  "title": "Erdős Problem #1067",
+  "slug": "erdos-1067",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph with chromatic number ... contain an infinitely connected subgraph with chromatic number ...?\n\n\n\nA question ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1067",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1067Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1067,
+    "erdosUrl": "https://erdosproblems.com/1067",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1067 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph with chromatic number $\\aleph_1$ contain an infinitely connected subgraph with chromatic number $\\aleph_1$?\n\n\n\nA question of Erd\\H{o}s and Hajnal. We say a graph is infinitely connected if any two vertices are connected by infinitely many pairwise disjoint paths.\n\nKomj\\'{a}th \\cite{Ko13} proved that it is consistent that the answer is no. This was improved by Soukup \\cite{So15}, who constructed a counterexample using no extra set-theoretical assumptions. A simpler elementary example was given by Bowler and Pitz \\cite{BoPi24}.\n\nThomassen \\cite{Th17} constructed a counterexample to the version which asks for infinite edge-connectivity (that is, to disconnect the graph requires deleting infinitely many edges).\n\nIn \\cite{ErHa66} Erd\\H{o}s and Hajnal asked the same question under the additional assumption that the graph has $\\aleph_1$ many vertices. Komj\\'{a}th \\cite{Ko13} proved that the answer is independent of ZFC.\n\nSee also [1068].\n\n\n\n\nReferences\n\n\n[BoPi24] N. Bowler and M. Pitz, A note on uncountably chromatic graphs. arXiv:2402.05984 (2024).\n\n[ErHa66] Erd\\H{o}s, P. and Hajnal, A., On chromatic number of graphs and set-systems. Acta Math. Acad. Sci. Hungar. (1966), 61-99.\n\n[Ko13] Komj\\'ath, P\\'{e}ter, A note on chromatic number and connectivity of infinite\ngraphs. Israel J. Math. (2013), 499--506.\n\n[So15] Soukup, D\\'aniel T., Trees, ladders and graphs. J. Combin. Theory Ser. B (2015), 96--116.\n\n[Th17] Thomassen, Carsten, Infinitely connected subgraphs in graphs of uncountable\nchromatic number. Combinatorica (2017), 785--793.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

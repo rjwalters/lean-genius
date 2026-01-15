@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1080",
+  "title": "Erdős Problem #1080",
+  "slug": "erdos-1080",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a bipartite graph on ... vertices such that one part has ... vertices. Is there a constant ... such that if ... ha...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1080",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1080Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1080,
+    "erdosUrl": "https://erdosproblems.com/1080",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1080 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a bipartite graph on $n$ vertices such that one part has $\\lfloor n^{2/3}\\rfloor$ vertices. Is there a constant $c>0$ such that if $G$ has at least $cn$ edges then $G$ must contain a $C_6$?\n\n\n\nErd\\H{o}s \\cite{Er75} says 'it is easy to see that it contains a $C_8$'.\n\nThe answer is no, as shown by De Caen and Sz\\'{e}kely \\cite{DeSz92}, who in fact show a stronger result. Let $f(n,m)$ be the maximum number of edges of a bipartite graph between $n$ and $m$ vertices which does not contain either a $C_4$ or $C_6$. A positive answer to this question would then imply $f(n,\\lfloor n^{2/3}\\rfloor)\\ll n$. De Caen and Sz\\'{e}kely prove\\[n^{10/9}\\gg f(n,\\lfloor n^{2/3}\\rfloor) \\gg n^{58/57+o(1)}\\]for $m\\sim n^{2/3}$. They also prove more generally that, for $n^{1/2}\\leq m\\leq n$,\\[f(n,m) \\ll (nm)^{2/3},\\]which was also proved by Faudree and Simonovits.\n\nLazebnik, Ustimenko, and Woldar \\cite{LUW94} improved the lower bound to\\[f(n,\\lfloor n^{2/3}\\rfloor) \\gg n^{16/15+o(1)}\\]\n\n\n\n\nReferences\n\n\n[DeSz92] de Caen, D. and Sz\\'{e}kely, L. A., The maximum size of {$4$}- and {$6$}-cycle free bipartite\ngraphs on {$m,n$} vertices. (1992), 135--142.\n\n[Er75] Erd\\H{o}s, P., Some recent progress on extremal problems in graph theory. Congr. Numer. (1975), 3-14.\n\n[LUW94] Lazebnik, F. and Ustimenko, V. A. and Woldar, A. J., New constructions of bipartite graphs on {$m,n$} vertices with\nmany edges and without small cycles. J. Combin. Theory Ser. B (1994), 111--117.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

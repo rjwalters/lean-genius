@@ -1,0 +1,33 @@
+{
+  "id": "erdos-984",
+  "title": "Erdős Problem #984",
+  "slug": "erdos-984",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCan $...2...k...k\\ll_\\epsilon a^\\epsilon...\\epsilon>0...3...a^\\epsilon...h(a)...k\\ll a^{1-c}...c>0$. He knew no non-trivial l...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/984",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos984Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 984,
+    "erdosUrl": "https://erdosproblems.com/984",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #984 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCan $\\mathbb{N}$ be $2$-coloured such that if\\[\\{a,a+d,\\ldots,a+(k-1)d\\}\\]is a $k$-term monochromatic arithmetic progression then $k\\ll_\\epsilon a^\\epsilon$ for all $\\epsilon>0$?\n\n\n\n\nA question of Spencer, who proved that this is possible with $3$ colours, with $a^\\epsilon$ replaced by a very slowly growing function $h(a)$ (the inverse of the van der Waerden function). Erd\\H{o}s reports that he can construct such a colouring with the bound $k\\ll a^{1-c}$ for some absolute constant $c>0$. He knew no non-trivial lower bound.\n\nZach Hunter has proved the answer is yes (see the comments).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

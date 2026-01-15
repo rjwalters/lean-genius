@@ -1,0 +1,33 @@
+{
+  "id": "erdos-747",
+  "title": "Erdős Problem #747",
+  "slug": "erdos-747",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nHow large should ... be such that, almost surely, a random ...-uniform hypergraph on ... vertices with ... edges must contain...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/747",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos747Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 747,
+    "erdosUrl": "https://erdosproblems.com/747",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #747 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nHow large should $\\ell(n)$ be such that, almost surely, a random $3$-uniform hypergraph on $3n$ vertices with $\\ell(n)$ edges must contain $n$ vertex-disjoint edges?\n\n\n\nAsked to Erd\\H{o}s by Shamir in 1979. This is often known as Shamir's problem. Erd\\H{o}s writes: 'Many of the problems on random hypergraphs can be settled by the same methods as used for ordinary graphs and usually one can guess the answer almost immediately. Here we have no idea of the answer.'\n\nThis is now essentially completely understood: Johansson, Kahn, and Vu \\cite{JKV08} proved that the threshold is $\\ell(n)\\asymp n\\log n$. The precise asymptotic was given by Kahn \\cite{Ka23}, proving that the threshold is $\\sim n\\log n$ (also for the general problem over $r$-uniform hypergraphs).\n\n\n\n\nReferences\n\n\n[JKV08] Johansson, Anders and Kahn, Jeff and Vu, Van, Factors in random graphs. Random Structures Algorithms (2008), 1-28.\n\n[Ka23] Kahn, Jeff, Asymptotics for Shamir's problem. Adv. Math. (2023), Paper No. 109019, 39.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

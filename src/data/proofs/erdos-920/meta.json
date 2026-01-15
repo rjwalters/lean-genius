@@ -1,0 +1,33 @@
+{
+  "id": "erdos-920",
+  "title": "Erdős Problem #920",
+  "slug": "erdos-920",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the largest possible chromatic number of a graph with ... vertices which contains no ....\n\nIs it true that, fo...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/920",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos920Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 920,
+    "erdosUrl": "https://erdosproblems.com/920",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #920 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $g_k(n)$ denote the largest possible chromatic number of a graph with $n$ vertices which contains no $K_k$.\n\nIs it true that, for $k\\geq 4$,\\[g_k(n) \\gg \\frac{n^{1-\\frac{1}{k-1}}}{(\\log n)^c}\\]for some constant $c>0$?\n\n\n\nGraver and Yackel \\cite{GrYa68} proved that\\[g_k(n) \\ll \\left(n\\frac{\\log\\log n}{\\log n}\\right)^{1-\\frac{1}{k-1}}.\\]Erd\\H{o}s \\cite{Er59b} proved that\\[g_3(n) \\gg \\frac{n^{1/2}}{\\log n},\\]by proving $R(3,m)\\gg (m/\\log m)^2$. Shearer's lower bound for $R(3,m)$ (see [165]) improves this to\\[g_3(n) \\gg \\left(\\frac{n}{\\log n}\\right)^{1/2}.\\]The lower bound $R(4,m) \\gg m^3/(\\log m)^4$ of Mattheus and Verstraete \\cite{MaVe23} (see [166]) implies\\[g_4(n) \\gg \\frac{n^{2/3}}{(\\log n)^{4/3}}.\\]In general it is known (see [986]) that\\[R(k,m)\\gg (\\log m)^{-O_k(1)}m^{\\frac{k+1}{2}}\\]which implies\\[g_k(n) \\gg \\frac{n^{1-\\frac{2}{k+1}}}{(\\log n)^{c_k}}.\\]See [1013] for the case $k=3$.\n\n\n\n\nReferences\n\n\n[Er59b] Erd\\H{o}s, P., Graph theory and probability. Canadian J. Math. (1959), 34-38.\n\n[GrYa68] Graver, Jack E. and Yackel, James, Some graph theoretic results associated with {R}amsey's\ntheorem. J. Combinatorial Theory (1968), 125--175.\n\n[MaVe23] Mattheus, S. and Verstraete, J., The asymptotics of $r(4,t)$. arXiv:2306.04007 (2023).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1058",
+  "title": "Erdős Problem #1058",
+  "slug": "erdos-1058",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the sequence of prime numbers. Are there only finitely many ... such that ... and the only primes dividing ... are...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1058",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1058Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1058,
+    "erdosUrl": "https://erdosproblems.com/1058",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1058 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $2=p_1<p_2<\\cdots$ be the sequence of prime numbers. Are there only finitely many $n$ such that $n\\in [p_{k-1},p_k)$ and the only primes dividing $n!+1$ are $p_{k}$ and $p_{k+1}$?\n\n\n\nA conjecture of Erd\\H{o}s and Stewart, as reported in problem A2 of Guy's collection \\cite{Gu04}. The only known cases are $n=1,2,3,4,5$.\n\nLuca \\cite{Lu01} proved that indeed these are the only solutions.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Lu01] Luca, Florian, On a conjecture of {E}rd\\H{o}s and {S}tewart. Math. Comp. (2001), 893--896.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

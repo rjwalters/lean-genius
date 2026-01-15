@@ -1,0 +1,33 @@
+{
+  "id": "erdos-857",
+  "title": "Erdős Problem #857",
+  "slug": "erdos-857",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that in any collection of sets ... there must exist a sunflower of size ... - that is, some collectio...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/857",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos857Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 857,
+    "erdosUrl": "https://erdosproblems.com/857",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #857 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $m=m(n,k)$ be minimal such that in any collection of sets $A_1,\\ldots,A_m\\subseteq \\{1,\\ldots,n\\}$ there must exist a sunflower of size $k$ - that is, some collection of $k$ of the $A_i$ which pairwise have the same intersection.\n\nEstimate $m(n,k)$, or even better, give an asymptotic formula.\n\n\n\nRelated to [536] and [856]. In \\cite{Er70} Erd\\H{o}s asks this in the equivalent formulation with intersection replaced by union.\n\nThis is sometimes known as the weak sunflower problem (see [20] for the strong sunflower problem).\n\nWhen $k=3$ this is strongly connected to the cap set problem (finding the maximal size of subsets of $\\mathbb{F}_3^n$ with no three-term arithmetic progressions), as observed by Alon, Shpilka, and Umans \\cite{ASU13}). Naslund and Sawin \\cite{NaSa17} have proved that\\[m(n,3) \\leq (3/2^{2/3})^{(1+o(1))n}.\\]\n\n\n\n\nReferences\n\n\n[ASU13] Alon, Noga and Shpilka, Amir and Umans, Christopher, On sunflowers and matrix multiplication. Comput. Complexity (2013), 219--243.\n\n[Er70] Erd\\H{o}s, Paul, Some extremal problems in combinatorial number theory. Mathematical Essays Dedicated to A. J. Macintyre (1970), 123-133.\n\n[NaSa17] Naslund, Eric and Sawin, Will, Upper bounds for sunflower-free sets. Forum Math. Sigma (2017), Paper No. e15, 10.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

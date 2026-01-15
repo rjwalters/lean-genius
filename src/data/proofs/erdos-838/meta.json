@@ -1,0 +1,33 @@
+{
+  "id": "erdos-838",
+  "title": "Erdős Problem #838",
+  "slug": "erdos-838",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that any ... points in ..., with no three on a line, determine at least ... different convex subsets....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/838",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos838Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 838,
+    "erdosUrl": "https://erdosproblems.com/838",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #838 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be maximal such that any $n$ points in $\\mathbb{R}^2$, with no three on a line, determine at least $f(n)$ different convex subsets. Estimate $f(n)$ - in particular, does there exist a constant $c$ such that\\[\\lim \\frac{\\log f(n)}{(\\log n)^2}=c?\\]\n\n\n\nA question of Erd\\H{o}s and Hammer. Erd\\H{o}s proved in \\cite{Er78c} that there exist constants $c_1,c_2>0$ such that\\[n^{c_1\\log n}<f(n)< n^{c_2\\log n}.\\]See also [107].\n\n\n\n\nReferences\n\n\n[Er78c] Erd\\H{o}s, P., Some more problems on elementary geometry. Austral. Math. Soc. Gaz. (1978), 52-54.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

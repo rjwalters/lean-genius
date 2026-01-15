@@ -1,0 +1,33 @@
+{
+  "id": "erdos-879",
+  "title": "Erdős Problem #879",
+  "slug": "erdos-879",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall a set ... admissible if ... for all .... Let\\[G(n) = \\max_{S\\subseteq \\{1,\\ldots,n\\}} \\sum_{a\\in S}a\\]and\\[H(n)=\\sum_{pH...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/879",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos879Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 879,
+    "erdosUrl": "https://erdosproblems.com/879",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #879 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall a set $S\\subseteq \\{1,\\ldots,n\\}$ admissible if $(a,b)=1$ for all $a\\neq b\\in S$. Let\\[G(n) = \\max_{S\\subseteq \\{1,\\ldots,n\\}} \\sum_{a\\in S}a\\]and\\[H(n)=\\sum_{p<n}p+ n\\pi(n^{1/2}).\\]Is it true that\\[G(n) >H(n)-n^{1+o(1)}?\\]Is it true that, for every $k\\geq 2$, if $n$ is sufficiently large then the admissible set which maximises $G(n)$ contains at least one integer with at least $k$ prime factors?\n\n\n\nErd\\H{o}s and Van Lint proved that\\[H(n)-n^{3/2-o(1)}<G(n)<H(n)\\]and\\[\\frac{H(n)-G(n)}{n}\\to \\infty.\\]They proved that $G(n)>H(n)-n^{1+o(1)}$ assuming 'plausible (but hopeless) assumptions about the distribution of primes'. They also prove the second claim when $k=2$.\n\nSee also [878].\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

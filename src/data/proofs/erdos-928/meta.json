@@ -1,0 +1,33 @@
+{
+  "id": "erdos-928",
+  "title": "Erdős Problem #928",
+  "slug": "erdos-928",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... denote the largest prime divisor of .... Does the density of integers ... such that ... and ... exist?\n\n\n...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/928",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos928Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 928,
+    "erdosUrl": "https://erdosproblems.com/928",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #928 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\alpha,\\beta\\in (0,1)$ and let $P(n)$ denote the largest prime divisor of $n$. Does the density of integers $n$ such that $P(n)<n^{\\alpha}$ and $P(n+1)<(n+1)^\\beta$ exist?\n\n\n\n\nDickman \\cite{Di30} showed the density of smooth $n$, with largest prime factor $<n^\\alpha$, is $\\rho(1/\\alpha)$ where $\\rho$ is the Dickman function.\n\nErd\\H{o}s also asked whether infinitely many such $n$ even exist, but Meza has observed that this follows immediately from Schinzel's result \\cite{Sc67b} that for infinitely many $n$ the largest prime factor of $n(n+1)$ is at most $n^{O(1/\\log\\log n)}$.\n\nErd\\H{o}s asked whether the events $P(n)<n^\\alpha$ and $P(n+1)<(n+1)^\\beta$ are independent, in the sense that the density of $n$ satisfying both conditions is equal to $\\rho(1/\\alpha)\\rho(1/\\beta)$.\n\nTer\\\"{a}v\\\"{a}inen \\cite{Te18} has proved the logarithmic density exists and is equal to $\\rho(1/\\alpha)\\rho(1/\\beta)$.\n\nWang \\cite{Wa21} has proved the density is $\\rho(1/\\alpha)\\rho(1/\\beta)$ assuming the Elliott-Halberstam conjecture for friable integers.\n\nSee also [370].\n\n\n\n\nReferences\n\n\n[Di30] K. Dickman, On the frequency of numbers containing prime factors of a certain relative magnitude. Ark. Mat. Astr. Fys. (1930), 1-14.\n\n[Sc67b] Schinzel, A., On two theorems of Gelfond and some of their applications. Acta Arith. (1967/68), 177-236.\n\n[Te18] Ter\\\"{a}v\\\"{a}inen, Joni, On binary correlations of multiplicative functions. Forum Math. Sigma (2018), Paper No. e10, 41.\n\n[Wa21] Wang, Zhiwei, Three conjectures on {$P^+(n)$} and {$P^+(n+1)$} hold under\nthe {E}lliott-{H}alberstam conjecture for friable integers. J. Number Theory (2021), 1--11.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

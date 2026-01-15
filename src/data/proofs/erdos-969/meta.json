@@ -1,0 +1,33 @@
+{
+  "id": "erdos-969",
+  "title": "Erdős Problem #969",
+  "slug": "erdos-969",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of squarefree integers in .... Determine the order of magnitude in the error term in the asymptotic\\...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/969",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos969Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 969,
+    "erdosUrl": "https://erdosproblems.com/969",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #969 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $Q(x)$ count the number of squarefree integers in $[1,x]$. Determine the order of magnitude in the error term in the asymptotic\\[Q(x)=\\frac{6}{\\pi^2}x+E(x).\\]\n\n\n\nIt is elementary to prove $E(x)\\ll x^{1/2}$, and the prime number theorem implies $o(x^{1/2})$. The best known unconditional upper bound is of the shape $x^{1/2-o(1)}$, due to Walfisz \\cite{Wa63}. Evelyn and Linfoot \\cite{EvLi31} proved that\\[E(x) \\gg x^{1/4},\\]and this is likely the true order of magnitude. The Riemann Hypothesis would follow from $E(x)\\ll x^{1/4}$.\n\nThe true order of magnitude is unknown even assuming the Riemann Hypothesis. Conditional on this assumption, the best known upper bound is\\[E(x)\\ll x^{\\frac{11}{35}+o(1)},\\]due to Liu \\cite{Li16}.\n\n\n\n\nReferences\n\n\n[EvLi31] Evelyn, C. J. A. and Linfoot, E. H., On a problem in the additive theory of numbers. Ann. of Math. (2) (1931), 261--270.\n\n[Li16] Liu, H.-Q., On the distribution of squarefree numbers. J. Number Theory (2016), 202--222.\n\n[Wa63] Walfisz, Arnold, Weylsche {E}xponentialsummen in der neueren {Z}ahlentheorie. (1963), 231.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

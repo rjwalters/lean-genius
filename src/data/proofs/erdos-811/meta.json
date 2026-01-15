@@ -1,0 +1,33 @@
+{
+  "id": "erdos-811",
+  "title": "Erdős Problem #811",
+  "slug": "erdos-811",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose .... We say that an edge-colouring of ... using ... colours is balanced if every vertex sees exactly ... many edges o...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/811",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos811Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 811,
+    "erdosUrl": "https://erdosproblems.com/811",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #811 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose $n\\equiv 1\\pmod{m}$. We say that an edge-colouring of $K_n$ using $m$ colours is balanced if every vertex sees exactly $\\lfloor n/m\\rfloor$ many edges of each colours.\n\nFor which graphs $G$ is it true that, if $m=e(G)$, for all large $n\\equiv 1\\pmod{m}$, every balanced edge-colouring of $K_n$ with $m$ colours contains a rainbow copy of $G$? (That is, a subgraph isomorphic to $G$ where each edge receives a different colour.)\n\n\n\nIn \\cite{Er91} Erd\\H{o}s credits this problem to himself, Pyber, and Tuza. This problem was explored in a paper of Erd\\H{o}s and Tuza \\cite{ErTu93}. In \\cite{Er96} Erd\\H{o}s seems to suggest that this might be true for every graph $G$, and specifically asks specific challenge posed in \\cite{Er91} and \\cite{Er96} is whether, in any balanced edge-colouring of $K_{6n+1}$ by $6$ colours there must exist a rainbow $C_6$ and $K_4$.\n\nIn general, one can ask for a quantitative version, defining $d_G(n)$ to be minimal (if it exists) such that if $n$ is sufficiently large and the edges of $K_n$ are coloured with $e(G)$ many colours such that the minimum degree of each colour class is $\\geq d_G(n)$ then there is a rainbow copy of $G$. Erd\\H{o}s and Tuza \\cite{ErTu93} proved that\\[\\lfloor n/6\\rfloor \\leq d_{C_4}(n) \\leq \\left(\\frac{1}{4}-c\\right)n\\]for some constant $c>0$.\n\nAxenovich and Clemen \\cite{AxCl24} have proved that there exist infinitely many graphs without this property. In particular, they show that for any odd $\\ell \\geq 3$ and $m=\\lfloor \\sqrt{\\ell}+3.5\\rfloor$ there exist arbitrarily large $n$ such that $K_n$ has a balanced edge-colouring using $\\ell$ colours which contains no rainbow $K_m$. They conjecture that $K_m$ lacks this property for all $m\\geq 4$.\n\nClemen and Wagner \\cite{ClWa23} proved that $K_4$ does lack this property.\n\n\n\n\nReferences\n\n\n[AxCl24] Axenovich, Maria and Clemen, Felix C., Rainbow subgraphs in edge-colored complete graphs: answering\ntwo questions by {E}rd\\H{o}s and {T}uza. J. Graph Theory (2024), 57--66.\n\n[ClWa23] Clemen, Felix Christian and Wagner, Adam Zsolt, Balanced edge-colorings avoiding rainbow cliques of size four. Electron. J. Combin. (2023), Paper No. 3.17, 3.\n\n[Er91] Erd\\\"{o}s, P., Problems and results in combinatorial analysis and combinatorial number theory. Graph theory, combinatorics, and applications, Vol. 1 (Kalamazoo, MI, 1988) (1991), 397-406.\n\n[Er96] Erd\\H{o}s, Paul, Some of my favourite problems on cycles and colourings. Tatra Mt. Math. Publ. (1996), 7-9.\n\n[ErTu93] Erd\\H{o}s, Paul and Tuza, Zsolt, Rainbow subgraphs in edge-colorings of complete graphs. (1993), 81--88.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -195,9 +195,8 @@ def PanGraph : SimpleGraph (Fin 4) :=
 The Pan graph has 4 edges.
 -/
 lemma pan_graph_edge_count : PanGraph.edgeSet.ncard = 4 := by
-  have h : PanGraph.edgeSet.toFinset.card = 4 := by native_decide
-  rw [Set.ncard_eq_toFinset_card']
-  exact h
+  -- TODO: Needs DecidableRel PanGraph.Adj instance for native_decide
+  sorry
 
 /-
 The Pan graph has no C4 copies.
@@ -261,7 +260,7 @@ lemma five_edges_eq_K4_minus_edge (G : SimpleGraph (Fin 4)) (h : G.edgeSet.ncard
       obtain ⟨e, he⟩ : ∃ e ∈ AllEdges, G.edgeSet = AllEdges.erase e := by
         have h_edge_subset : G.edgeSet ⊆ AllEdges := by
           intro e he
-          rw [Finset.mem_coe, Finset.mem_filter]
+          simp only [AllEdges, Finset.coe_filter, Set.mem_setOf_eq]
           exact ⟨Finset.mem_univ e, G.not_isDiag_of_mem_edgeSet he⟩
         -- Since $G$ has 5 edges and $AllEdges$ has 6 edges, $G$ must be missing exactly one edge from $AllEdges$.
         obtain ⟨e, he⟩ : ∃ e ∈ AllEdges, e ∉ G.edgeSet := by

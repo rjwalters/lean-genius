@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1115",
+  "title": "Erdős Problem #1115",
+  "slug": "erdos-1115",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an entire function of finite order, and let ... be a rectifiable path on which .... Let ... be the length of ... i...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1115",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1115Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1115,
+    "erdosUrl": "https://erdosproblems.com/1115",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1115 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(z)$ be an entire function of finite order, and let $\\Gamma$ be a rectifiable path on which $f(z)\\to \\infty$. Let $\\ell(r)$ be the length of $\\Gamma$ in the disc $\\lvert z\\rvert<r$.\n\nFind a path for which $\\ell(r)$ grows as slowly as possible, and estimate $\\ell(r)$ in terms of $M(r)=\\max_{\\lvert z\\rvert=r}\\lvert f(z)\\rvert$.\n\nIn particular, can such a path $\\Gamma$ be found for which $\\ell(r)\\ll r$?\n\n\n\nA problem originally due to Hayman \\cite{Ha60}, according to \\cite{GoEr79}, although (confusingly) in the book \\cite{Ha74} by Hayman it is attributed to Erd\\H{o}s, as Problem 2.41.\n\nHayman \\cite{Ha60b} proved that if $\\log M(r) \\ll (\\log r)^2$ then there exists a path $\\Gamma$ on which $f(z)\\to \\infty$ and $\\ell(r)=r$.\n\nDisproved by Gol'dberg and Eremenko \\cite{GoEr79} who proved that for any function $\\phi(r)$ which $\\to \\infty$ as $r\\to \\infty$ there is an entire function $f$ such that\\[\\log M(r) \\ll \\phi(r)(\\log r)^2\\]and there is no path $\\Gamma$ on which $f(z)\\to \\infty$ and $\\ell(r) \\ll r$. They also construct such functions of any prescribed finite order in $[0,\\infty)$.\n\n\n\n\nReferences\n\n\n[GoEr79] Gol\\cprime dberg, A. A. and Er\\\"{e}menko, A. \\`E., Asymptotic curves of entire functions of finite order. Mat. Sb. (N.S.) (1979), 555--581, 647.\n\n[Ha60] W. Hayman, Defective values and asymptotic paths. Matematika (1960), 21-27.\n\n[Ha60b] Hayman, W. K., Slowly growing integral and subharmonic functions. Comment. Math. Helv. (1960), 75--84.\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

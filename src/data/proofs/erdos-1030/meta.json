@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1030",
+  "title": "Erdős Problem #1030",
+  "slug": "erdos-1030",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is the Ramsey number then prove the existence of some ... such that\\[\\lim_k {R(k,k)}> 1+c.\\]\n\n\n\nA problem of Erds and ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1030",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1030Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1030,
+    "erdosUrl": "https://erdosproblems.com/1030",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1030 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $R(k,l)$ is the Ramsey number then prove the existence of some $c>0$ such that\\[\\lim_k \\frac{R(k+1,k)}{R(k,k)}> 1+c.\\]\n\n\n\nA problem of Erd\\H{o}s and S\\'{o}s, who could not even prove whether $R(k+1,k)-R(k,k)>k^c$ for any $c>1$.\n\nIt is trivial that $R(k+1,k)-R(k,k)\\geq k-2$. Burr, Erd\\H{o}s, Faudree, and Schelp \\cite{BEFS89} proved\\[R(k+1,k)-R(k,k)\\geq 2k-5.\\]See also [544] for a similar question concerning $R(3,k)$, and [1014] for the general off-diagonal case.\n\n\n\n\nReferences\n\n\n[BEFS89] Burr, S. A. and Erd\\H{o}s, P. and Faudree, R. J. and Schelp, R.\nH., On the difference between consecutive {R}amsey numbers. Utilitas Math. (1989), 115--118.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

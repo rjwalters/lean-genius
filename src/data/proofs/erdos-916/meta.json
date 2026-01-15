@@ -1,0 +1,33 @@
+{
+  "id": "erdos-916",
+  "title": "Erdős Problem #916",
+  "slug": "erdos-916",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph with ... vertices and ... edges contain a cycle and another vertex adjacent to three vertices on the cycle?\n...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/916",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos916Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 916,
+    "erdosUrl": "https://erdosproblems.com/916",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #916 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph with $n$ vertices and $2n-2$ edges contain a cycle and another vertex adjacent to three vertices on the cycle?\n\n\n\nThis would be a stronger form of the result of Dirac \\cite{Di60} that every such graph contains a subgraph homeomorphic to $K_4$.\n\nThe answer is yes, as proved by Thomassen \\cite{Th74}.\n\n\n\n\nReferences\n\n\n[Di60] Dirac, Gabriel Andrew, In abstrakten Graphen vorhandene vollst\\\"{a}ndige 4-Graphen und ihre Unterteilungen. Math. Nachr. (1960), 61-85.\n\n[Th74] Thomassen, Carsten, A minimal condition implying a special {$K\\sb{4}$}-subdivision\nin a graph. Arch. Math. (Basel) (1974), 210--215.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

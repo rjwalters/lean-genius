@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1108",
+  "title": "Erdős Problem #1108",
+  "slug": "erdos-1108",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[A = \\left\\{ \\sum_{n\\in S}n! : S\\subset \\right\\}.\\]If ..., then does ... contain only finitely many ...th powers? Does it...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1108",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1108Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1108,
+    "erdosUrl": "https://erdosproblems.com/1108",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1108 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[A = \\left\\{ \\sum_{n\\in S}n! : S\\subset \\mathbb{N}\\textrm{ finite}\\right\\}.\\]If $k\\geq 2$, then does $A$ contain only finitely many $k$th powers? Does it contain only finitely many powerful numbers?\n\n\n\nAsked by Erd\\H{o}s at Oberwolfach in 1988. It is open even whether there are infinitely many squares of the form $1+n!$ (see [398]).\n\nThis was motivated in part by a problem of Mahler which he discussed with Erd\\H{o}s a few days before his death in 1988: if $k\\geq 5$ and\\[A_k= \\left\\{ \\sum_{n\\in S}k^n : S\\subset \\mathbb{N}\\textrm{ finite}\\right\\}\\]then does $A_k$ contain only finitely many squares? Mahler showed that there are infinitely many squares in $A_k$ for $k\\leq 4$, and found only one square for $k\\geq 5$, namely\\[1+7+7^2+7^3=400.\\]Brindza and Erd\\H{o}s \\cite{BrEr91} proved that, for any $r$, if $n_1!+\\cdots+n_r!$ is powerful then $n_1\\ll_r 1$.\n\n\n\n\nReferences\n\n\n[BrEr91] Brindza, B. and Erd\\H{o}s, P., On some {D}iophantine problems involving powers and\nfactorials. J. Austral. Math. Soc. Ser. A (1991), 1--7.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

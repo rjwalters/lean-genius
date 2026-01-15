@@ -1,0 +1,33 @@
+{
+  "id": "erdos-886",
+  "title": "Erdős Problem #886",
+  "slug": "erdos-886",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is it true that, for all large ..., the number of divisors of ... in ... is ...?\n\n\n\nErds attributes this conjecture ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/886",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos886Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 886,
+    "erdosUrl": "https://erdosproblems.com/886",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #886 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\epsilon>0$. Is it true that, for all large $n$, the number of divisors of $n$ in $(n^{1/2},n^{1/2}+n^{1/2-\\epsilon})$ is $O_\\epsilon(1)$?\n\n\n\nErd\\H{o}s attributes this conjecture to Ruzsa. Erd\\H{o}s and Rosenfeld \\cite{ErRo97} proved that there are infinitely many $n$ such that there are four divisors of $n$ in $(n^{1/2},n^{1/2}+n^{1/4})$.\n\nSee also [887].\n\n\n\n\nReferences\n\n\n[ErRo97] Erd\\H{o}s, Paul and Rosenfeld, Moshe, The factor-difference set of integers. Acta Arith. (1997), 353--359.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

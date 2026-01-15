@@ -1,0 +1,33 @@
+{
+  "id": "erdos-775",
+  "title": "Erdős Problem #775",
+  "slug": "erdos-775",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a ...-uniform hypergraph on ... vertices which contains at least ... different sizes of cliques (maximal complete su...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/775",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos775Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 775,
+    "erdosUrl": "https://erdosproblems.com/775",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #775 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a $3$-uniform hypergraph on $n$ vertices which contains at least $n-O(1)$ different sizes of cliques (maximal complete subgraphs)\n\n\n\nErd\\H{o}s constructed such a hypergraph with cliques of at least $n-\\log_*n$ different sizes. For graphs, Spencer \\cite{Sp71} constructed a graph which contains cliques of at least $n-\\log_2n+O(1)$ different sizes, which Moon and Moser \\cite{MoMo65} showed to be best possible.\n\nThe answer is no, as proved by Gao \\cite{Ga25}: more generally, for any $k\\geq 3$, every $k$-uniform hypergraph on $n$ vertices contains at most $n-f_k(n)$ different sizes of cliques, where $f_k(n)\\to \\infty$ as $n\\to \\infty$.\n\nSee also [927].\n\n\n\n\nReferences\n\n\n[Ga25] J. Gao, On cliques in hypergraphs. arXiv:2510.14804 (2025).\n\n[MoMo65] Moon, J. W. and Moser, L., On cliques in graphs. Israel J. Math. (1965), 23-28.\n\n[Sp71] Spencer, J. H., On cliques in graphs. Israel J. Math. (1971), 419-421.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

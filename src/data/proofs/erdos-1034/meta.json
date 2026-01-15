@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1034",
+  "title": "Erdős Problem #1034",
+  "slug": "erdos-1034",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on ... vertices with ... many edges. Must there be a triangle ... in ... and vertices ..., where ..., such...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1034",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1034Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1034,
+    "erdosUrl": "https://erdosproblems.com/1034",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1034 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph on $n$ vertices with $>n^2/4$ many edges. Must there be a triangle $T$ in $G$ and vertices $y_1,\\ldots,y_t$, where $t>(\\frac{1}{2}-o(1))n$, such that every vertex is joined to at least two vertices of $T$?\n\n\n\nA conjecture of Erd\\H{o}s and Faudree; a stronger version of [905].\n\nErd\\H{o}s \\cite{Er93} says 'perhaps this conjecture is a bit too optimistic', and in general asks how large $t$ can be, and suggested the answer is different if $G$ has no $K_4$.\n\nThis has been solved in the negative by Ma and Tang (see their note here, and also the comments), who construct a graph with $n$ vertices and $>n^2/4$ edges in which every triangle has at most\\[(2-(5/2)^{1/2}+o(1))n\\]vertices adjacent to at least two of its vertices (note that $2-(5/2)^{1/2}\\approx 0.4189$).\n\nIn general, Erd\\H{o}s and Faudree asked about the threshold $h(n)$ such that every graph with $n$ vertices and $>n^2/4$ edges contained a triangle and $h(n)$ other vertices which are connected to at least two vertices of the triangle. The above contruction of Ma and Tang, combined with the fact that every graph with $>n^2/4$ edges contains a book of size $n/6$, shows that\\[(1/6-o(1))n \\leq h(n) \\leq (2-(5/2)^{1/2}+o(1))n.\\]In the comments Ma and Tang sketch a proof that the conjecture remains false even if we assume that $G$ contains no $K_4$, constructing a graph with $n$ vertices, $>n^2/4$ edges, and no $K_4$, in which every triangle has at most\\[(2\\sqrt{3}-3+o(1))n\\]vertices adjacent to at least two of its vertices (note that $2\\sqrt{3}-3\\approx 0.464$).\n\n\n\n\nReferences\n\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

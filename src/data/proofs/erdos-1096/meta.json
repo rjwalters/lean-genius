@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1096",
+  "title": "Erdős Problem #1096",
+  "slug": "erdos-1096",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and consider the set of numbers of the shape ... (for all finite ...), ordered by size as ....\n\nIs it true that, prov...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1096",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1096Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1096,
+    "erdosUrl": "https://erdosproblems.com/1096",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1096 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $1<q<1+\\epsilon$ and consider the set of numbers of the shape $\\sum_{i\\in S}q^i$ (for all finite $S$), ordered by size as $0=x_1<x_2<\\cdots$.\n\nIs it true that, provided $\\epsilon>0$ is sufficiently small, $x_{k+1}-x_k \\to 0$?\n\n\n\nA problem of Erd\\H{o}s and Jo\\'{o} posed in the 1991 problem session of Great Western Number Theory.\n\nThey speculate that the threshold may be $q_0$, where $q_0\\approx 1.3247$ is the real root of $x^3=x+1$, and is the smallest Pisot-Vijayaraghavan number.\n\nIn \\cite{EJK90} Erd\\H{o}, Jo\\'{o}, and Komornik prove that any Pisot-Vijayaraghavan number cannot have this property, and also prove that, for any $1<q\\leq 2$, $x_{k+1}-x_k\\leq 1$ for all $k$.\n\nThe sequence always begins $0,1,q$.\n\nBugeaud \\cite{Bu96} proved that $1<q\\leq 2$ is a Pisot-Vijayaraghavan number if and only if\\[\\liminf (x_{k+1}^m-x_k^m)>0\\]for all $m\\geq 1$, where $x_k^m$ is the set of those numbers which can be written as a finite sum $\\sum_{n\\geq 0}c_nq^n$ for some $c_n\\in \\{0,\\ldots,m\\}$ (so that the sequence in the question is $x_k^1$). Erd\\H{o}s, Jo\\'{o}, and Schnitzer \\cite{EJS96} improved this to show that, if $1<q<(1+\\sqrt{5})/2$, then $q$ is a Pisot-Vijayaraghavan number if and only if\\[\\liminf (x_{k+1}^2-x_k^2)>0.\\]\n\n\n\n\nReferences\n\n\n[Bu96] Bugeaud, Y., On a property of {P}isot numbers and related questions. Acta Math. Hungar. (1996), 33--39.\n\n[EJK90] Erd\\H{o}s, P\\'al and Jo\\'o, Istv\\'an and Komornik, Vilmos, Characterization of the unique expansions\n{$1=\\sum^\\infty_{i=1}q^{-n_i}$} and related problems. Bull. Soc. Math. France (1990), 377--390.\n\n[EJS96] Erd\\H{o}s, P. and Jo\\'o, I. and Schnitzer, F. J., On {P}isot numbers. Ann. Univ. Sci. Budapest. E\\\"otv\\\"os Sect. Math. (1996), 95--99.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

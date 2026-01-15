@@ -1,0 +1,33 @@
+{
+  "id": "erdos-843",
+  "title": "Erdős Problem #843",
+  "slug": "erdos-843",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre the squares Ramsey ...-complete?\n\nThat is, is it true that, in any 2-colouring of the square numbers, every sufficiently ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/843",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos843Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 843,
+    "erdosUrl": "https://erdosproblems.com/843",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #843 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre the squares Ramsey $2$-complete?\n\nThat is, is it true that, in any 2-colouring of the square numbers, every sufficiently large $n\\in \\mathbb{N}$ can be written as a monochromatic sum of distinct squares?\n\n\n\nA problem of Burr and Erd\\H{o}s. A similar question can be asked for the set of $k$th powers for any $k\\geq 3$.\n\nIn \\cite{Er95} Erd\\H{o}s reported that Burr had proved that the set of $k$th powers is Ramsey $r$ complete for all $r,k\\geq 2$, but this result was never published. A stronger version was proved by Conlon, Fox, and Pham \\cite{CFP21}, who proved that in fact the set of $k$th powers contains a sparse Ramsey $r$-complete subsequence, again for every $r,k\\geq 2$.\n\nSee also [54] and [55].\n\n\n\n\nReferences\n\n\n[CFP21] Conlon, D. and Fox, J. and Pham, H. T., Subset sums, completeness and colorings. arXiv:2104.14766 (2021).\n\n[Er95] Erd\\H{o}s, Paul, Some of my favourite problems in number theory, combinatorics, and geometry. Resenhas (1995), 165-186.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

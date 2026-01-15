@@ -1,0 +1,33 @@
+{
+  "id": "erdos-865",
+  "title": "Erdős Problem #865",
+  "slug": "erdos-865",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThere exists a constant ... such that, for all large ..., if ... has size at least ... then there are distinct ... such that ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/865",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos865Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 865,
+    "erdosUrl": "https://erdosproblems.com/865",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #865 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThere exists a constant $C>0$ such that, for all large $N$, if $A\\subseteq \\{1,\\ldots,N\\}$ has size at least $\\frac{5}{8}N+C$ then there are distinct $a,b,c\\in A$ such that $a+b,a+c,b+c\\in A$.\n\n\n\nA problem of Erd\\H{o}s and S\\'{o}s (also earlier considered by Choi, Erd\\H{o}s, and Szemer\\'{e}di \\cite{CES75}, but Erd\\H{o}s had forgotten this). Taking all integers in $[N/8,N/4]$ and $[N/2,N]$ shows that $\\frac{5}{8}$ would be best possible here.\n\nIt is a classical folklore fact that if $A\\subseteq \\{1,\\ldots,2N\\}$ has size $\\geq N+2$ then there are distinct $a,b\\in A$ such that $a+b\\in A$, which establishes the $k=2$ case.\n\nIn general, one can define $f_k(N)$ to be minimal such that if $A\\subseteq \\{1,\\ldots,N\\}$ has size at least $f_k(N)$ then there are $k$ distinct $a_i\\in A$ such that all $\\binom{k}{2}$ pairwise sums are elements of $A$. Erd\\H{o}s and S\\'{o}s conjectured that\\[f_k(N)\\sim \\frac{1}{2}\\left(1+\\sum_{1\\leq r\\leq k-2}\\frac{1}{4^r}\\right) N,\\]and a similar example shows that this would be best possible.\n\nChoi, Erd\\H{o}s, and Szemer\\'{e}di \\cite{CES75} have proved that, for all $k\\geq 3$, there exists $\\epsilon_k>0$ such that (for large enough $N$)\\[f_k(N)\\leq \\left(\\frac{2}{3}-\\epsilon_k\\right)N.\\]\n\n\n\n\nReferences\n\n\n[CES75] Choi, S. L. G. and Erd\\H{o}s, P. and Szemer\\'{e}di, E., Some additive and multiplicative problems in number theory. Acta Arith. (1975), 37--50.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-992",
+  "title": "Erdős Problem #992",
+  "slug": "erdos-992",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence of integers. Is it true that, for almost all ..., the discrepancy\\[D(N)=\\max_{I\\subseteq [0,1...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/992",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos992Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 992,
+    "erdosUrl": "https://erdosproblems.com/992",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #992 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $x_1<x_2<\\cdots$ be an infinite sequence of integers. Is it true that, for almost all $\\alpha \\in [0,1]$, the discrepancy\\[D(N)=\\max_{I\\subseteq [0,1]} \\lvert \\#\\{ n\\leq N : \\{ \\alpha x_n\\}\\in I\\} - \\lvert I\\rvert N\\rvert\\]satisfies\\[D(N) \\ll N^{1/2}(\\log N)^{o(1)}?\\]Or even\\[D(N)\\ll N^{1/2}(\\log\\log N)^{O(1)}?\\]\n\n\n\nErd\\H{o}s and Koksma \\cite{ErKo49} and Cassels \\cite{Ca50} independently proved that, for any sequence $x_i$ and almost all $\\alpha$, the discrepancy satisfies\\[D(N)\\ll N^{1/2}(\\log N)^{5/2+o(1)}.\\]Baker \\cite{Ba81} improved this to\\[D(N)\\ll N^{1/2}(\\log N)^{3/2+o(1)}.\\]Erd\\H{o}s and G\\'{a}l (unpublished) proved $D(N) \\ll N^{1/2}(\\log\\log N)^{O(1)}$ for almost all $\\alpha$ if the sequence is lacunary - that is, $x_{i+1}/x_i > \\lambda>1$ for all $i$.\n\n\n\n\nReferences\n\n\n[Ba81] No reference found.\n\n\n[Ca50] Cassels, J. W. S., Some metrical theorems of {D}iophantine approximation. {III}. Proc. Cambridge Philos. Soc. (1950), 219--225.\n\n[ErKo49] Erd\\H{o}s, P. and Koksma, J. F., On the uniform distribution modulo {$1$} of sequences\n{$(f(n,\\theta))$}. Nederl. Akad. Wetensch., Proc. (1949), 851--854 = Indagationes Math. 11, 299--302.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

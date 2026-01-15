@@ -1,0 +1,33 @@
+{
+  "id": "erdos-767",
+  "title": "Erdős Problem #767",
+  "slug": "erdos-767",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal number of edges possible on a graph with ... vertices which does not contain a cycle with ... chords i...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/767",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos767Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 767,
+    "erdosUrl": "https://erdosproblems.com/767",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #767 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $g_k(n)$ be the maximal number of edges possible on a graph with $n$ vertices which does not contain a cycle with $k$ chords incident to a vertex on the cycle. Is it true that\\[g_k(n)=(k+1)n-(k+1)^2\\]for $n$ sufficiently large?\n\n\n\nCzipszer proved that $g_k(n)$ exists for all $k$, and in fact $g_k(n)\\leq (k+1)n$. Erd\\H{o}s wrote it is 'easy to see' that\\[g_k(n)\\geq (k+1)n-(k+1)^2.\\]P\\'{o}sa proved that $g_1(n)=2n-4$ for $n\\geq 4$. Erd\\H{o}s could prove the conjectured equality for $n\\geq 2k+2$ when $k=2$ or $k=3$.\n\nThe conjectured equality was proved for $n\\geq 3k+3$ by Jiang \\cite{Ji04}.\n\nCuriously, in \\cite{Er69b} Erd\\H{o}s mentions this problem, but states that his conjectured equality for $g_k(n)$ was disproved (for general $k$) by Lewin, citing oral communication. Perhaps Lewin only disproved this for small $n$, or perhaps Lewin's disproof was simply incorrect.\n\n\n\n\nReferences\n\n\n[Er69b] Erd\\H{o}s, P., Problems and results in chromatic graph theory. Proof Techniques in Graph Theory (Proc. Second Ann\nArbor Graph Theory Conf., Ann Arbor, Mich.,\n1968) (1969), 27-35.\n\n[Ji04] Jiang, Tao, A note on a conjecture about cycles with many incident chords. J. Graph Theory (2004), 180-182.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

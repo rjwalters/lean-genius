@@ -1,0 +1,33 @@
+{
+  "id": "erdos-751",
+  "title": "Erdős Problem #751",
+  "slug": "erdos-751",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with chromatic number .... If ... are the lengths of the cycles in ... then can ... be arbitrarily large? ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/751",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos751Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 751,
+    "erdosUrl": "https://erdosproblems.com/751",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #751 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph with chromatic number $\\chi(G)=4$. If $m_1<m_2<\\cdots$ are the lengths of the cycles in $G$ then can $\\min(m_{i+1}-m_i)$ be arbitrarily large? Can this happen if the girth of $G$ is large?\n\n\n\nThe answer is no: Bondy and Vince \\cite{BoVi98} proved that every graph with minimum degree at least $3$ has two cycles whose lengths differ by at most $2$, and hence the same is true for every graph with chromatic number $4$.\n\n\n\n\nReferences\n\n\n[BoVi98] Bondy, J. A. and Vince, A., Cycles in a graph whose lengths differ by one or two. J. Graph Theory (1998), 11--15.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

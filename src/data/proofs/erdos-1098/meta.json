@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1098",
+  "title": "Erdős Problem #1098",
+  "slug": "erdos-1098",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a group and ... be the non-commuting graph, with vertices the elements of ... and an edge between ... and ... if a...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1098",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1098Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1098,
+    "erdosUrl": "https://erdosproblems.com/1098",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1098 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a group and $\\Gamma=\\Gamma(G)$ be the non-commuting graph, with vertices the elements of $G$ and an edge between $g$ and $h$ if and only if $g$ and $h$ do not commute, $gh\\neq hg$.\n\nIf $\\Gamma$ contains no infinite complete subgraph, then is there a finite bound on the size of complete subgraphs of $\\Gamma$?\n\n\n\nNeumann \\cite{Ne76} reported this was asked by Erd\\H{o}s at the 15th Summer Research Institute of the Australian Mathematical Society in 1975.\n\nThis was solved by Neumann \\cite{Ne76}, who proved that $\\Gamma$ contains no infinite complete subgraph if and only if the centre of the group has finite index, and noted that if the centre has index $n$ then $\\Gamma$ contains no complete subgraph on $>n$ vertices.\n\n\n\n\nReferences\n\n\n[Ne76] Neumann, B. H., A problem of {P}aul {E}rd\\H{o}s on groups. J. Austral. Math. Soc. Ser. A (1976), 467--472.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

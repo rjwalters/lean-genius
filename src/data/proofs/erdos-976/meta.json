@@ -1,0 +1,33 @@
+{
+  "id": "erdos-976",
+  "title": "Erdős Problem #976",
+  "slug": "erdos-976",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an irreducible polynomial of degree .... Let ... be maximal such that there exists ... with ... is divisible by a ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/976",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos976Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 976,
+    "erdosUrl": "https://erdosproblems.com/976",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #976 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f\\in \\mathbb{Z}[x]$ be an irreducible polynomial of degree $d\\geq 2$. Let $F_f(n)$ be maximal such that there exists $1\\leq m\\leq n$ with $f(m)$ is divisible by a prime $\\geq F_f(n)$. Equivalently, $F_f(n)$ is the greatest prime divisor of\\[\\prod_{1\\leq m\\leq n}f(m).\\]Estimate $F_f(n)$. In particular, is it true that $F_f(n)\\gg n^{1+c}$ for some constant $c>0$? Or even $\\gg n^d$?\n\n\n\nNagell and Ricci \\cite{Na22} proved that\\[F_f(n) \\gg n\\log n,\\]which Erd\\H{o}s \\cite{Er52c} improved to\\[F_f(n) \\gg n(\\log n)^{\\log\\log\\log n}.\\]In \\cite{Er65b} he claimed a proof of\\[F_f(n) \\gg n\\exp((\\log n)^c)\\]for some constant $c>0$, but said he had never published the proof, which was 'fairly complicated'. This seems to have been flawed, since Erd\\H{o}s and Schinzel \\cite{ErSc90} later published a weaker bound. A proof of the stronger bound above was finally provided by Tenenbaum \\cite{Te90}.\n\n\n\n\nReferences\n\n\n[Er52c] Erd\\H{o}s, P., On the greatest prime factor of {$\\prod^x_{k=1}f(k)$}. J. London Math. Soc. (1952), 379--384.\n\n[Er65b] Erd\\H{o}s, Paul, Some recent advances and current problems in number theory. Lectures on Modern Mathematics, Vol. III (1965), 196-244.\n\n[ErSc90] Erd\\H{o}s, P. and Schinzel, A., On the greatest prime factor of {$\\prod^x_{k=1}f(k)$}. Acta Arith. (1990), 191--200.\n\n[Na22] No reference found.\n\n\n[Te90] Tenenbaum, G\\'{e}rald, Sur une question d'{E}rd\\H{o}s et {S}chinzel. (1990), 405--443.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

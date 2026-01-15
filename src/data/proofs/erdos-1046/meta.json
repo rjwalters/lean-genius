@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1046",
+  "title": "Erdős Problem #1046",
+  "slug": "erdos-1046",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a monic polynomial and\\[E=\\{ z: \\lvert f(z)\\rvert <1\\}.\\]If ... is connected then is ... contained in a disc of ra...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1046",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1046Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1046,
+    "erdosUrl": "https://erdosproblems.com/1046",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1046 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f\\in \\mathbb{C}[x]$ be a monic polynomial and\\[E=\\{ z: \\lvert f(z)\\rvert <1\\}.\\]If $E$ is connected then is $E$ contained in a disc of radius $2$?\n\n\n\nA problem of Erd\\H{o}s, Herzog, and Piranian \\cite{EHP58}, who also ask, if $\\{ z: \\lvert f(z)\\rvert\\leq 1\\}$ is connected, then what are the least possible diameter and greatest possible width of this set, and conjecture the answer is $2$ in both cases.\n\nTheir guess that the width is always at most $2$ is false, as Pommerenke \\cite{Po59} gave an example with width $>\\sqrt{3}2^{1/3}\\approx 2.18$.\n\nThe condition that $E$ is connected is equivalent to $E$ containing all zeros of $f'$.\n\nThe answer is yes, and in fact the centre of this disc can be taken to be $\\frac{z_1+\\cdots+z_n}{n}$, where the $z_i$ are the roots of $f$, as shown by Pommerenke \\cite{Po59}.\n\n\n\n\nReferences\n\n\n[EHP58] Erd\\H{o}s, P. and Herzog, F. and Piranian, G., Metric properties of polynomials. J. Analyse Math. (1958), 125-148.\n\n[Po59] Pommerenke, Ch., On some problems by Erd\\H{o}s, Herzog and Piranian. Michigan Math. J. (1959), 221-225.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

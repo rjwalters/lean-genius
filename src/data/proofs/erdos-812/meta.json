@@ -1,0 +1,33 @@
+{
+  "id": "erdos-812",
+  "title": "Erdős Problem #812",
+  "slug": "erdos-812",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that\\[{R(n)}\\geq 1+c\\]for some constant ..., for all large ...? Is it true that\\[R(n+1)-R(n) \\gg n^2?\\]\n\n\n\nBurr, E...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/812",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos812Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 812,
+    "erdosUrl": "https://erdosproblems.com/812",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #812 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that\\[\\frac{R(n+1)}{R(n)}\\geq 1+c\\]for some constant $c>0$, for all large $n$? Is it true that\\[R(n+1)-R(n) \\gg n^2?\\]\n\n\n\nBurr, Erd\\H{o}s, Faudree, and Schelp \\cite{BEFS89} proved that\\[R(n+1)-R(n) \\geq 4n-8\\]for all $n\\geq 2$. The lower bound of [165] implies that\\[R(n+2)-R(n) \\gg n^{2-o(1)}.\\]\n\n\n\n\nReferences\n\n\n[BEFS89] Burr, S. A. and Erd\\H{o}s, P. and Faudree, R. J. and Schelp, R.\nH., On the difference between consecutive {R}amsey numbers. Utilitas Math. (1989), 115--118.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

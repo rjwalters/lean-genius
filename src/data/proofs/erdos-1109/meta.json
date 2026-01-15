@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1109",
+  "title": "Erdős Problem #1109",
+  "slug": "erdos-1109",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the size of the largest subset ... such that every ... is squarefree. Estimate .... In particular, is it true that...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1109",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1109Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1109,
+    "erdosUrl": "https://erdosproblems.com/1109",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1109 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(N)$ be the size of the largest subset $A\\subseteq \\{1,\\ldots,N\\}$ such that every $n\\in A+A$ is squarefree. Estimate $f(N)$. In particular, is it true that $f(N)\\leq N^{o(1)}$, or even $f(N) \\leq (\\log N)^{O(1)}$?\n\n\n\nFirst studied by Erd\\H{o}s and S\\'{a}rk\\\"{o}zy \\cite{ErSa87}, who proved\\[\\log N \\ll f(N) \\ll N^{3/4}\\log N,\\]and guessed the lower bound is nearer the truth. S\\'{a}rk\\\"{o}zy \\cite{Sa92c} extended this to consider the case of $A+B$ and also looking for sumsets which are $k$-power-free.\n\nGyarmati \\cite{Gy01} gave an alternative proof of $f(N)\\gg \\log N$, and also gave new bounds for the case of $A+B$. Konyagin \\cite{Ko04} improved this to\\[ \\log\\log N(\\log N)^2\\ll f(N) \\ll N^{11/15+o(1)}.\\]The infinite analogue of this problem is [1103]. (In particular upper bounds for this $f(N)$ directly imply lower bounds for the size of the $a_j$ considered there.)\n\n\n\n\nReferences\n\n\n[ErSa87] Erd\\H{o}s, P. and S\\'ark\\\"ozy, A., On divisibility properties of integers of the form {$a+a'$}. Acta Math. Hungar. (1987), 117--122.\n\n[Gy01] Gyarmati, Katalin, On divisibility properties of integers of the form {$ab+1$}. Period. Math. Hungar. (2001), 71--79.\n\n[Ko04] Konyagin, S. V., Problems of the set of square-free numbers. Izv. Ross. Akad. Nauk Ser. Mat. (2004), 63--90.\n\n[Sa92c] S\\'ark\\\"ozy, G. N., On a problem of {P}. {E}rd\\H{o}s. Acta Math. Hungar. (1992), 271--282.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

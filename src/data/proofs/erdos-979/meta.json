@@ -1,0 +1,33 @@
+{
+  "id": "erdos-979",
+  "title": "Erdős Problem #979",
+  "slug": "erdos-979",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., and let ... count the number of solutions to\\[n=p_1^k+\\cdots+p_k^k,\\]where the ... are prime numbers. Is it true tha...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/979",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos979Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 979,
+    "erdosUrl": "https://erdosproblems.com/979",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #979 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$, and let $f_k(n)$ count the number of solutions to\\[n=p_1^k+\\cdots+p_k^k,\\]where the $p_i$ are prime numbers. Is it true that $\\limsup f_k(n)=\\infty$?\n\n\n\nErd\\H{o}s \\cite{Er37b} proved this is true when $k=2$, and also when $k=3$ (but this proof appears to be unpublished).\n\n\n\n\nReferences\n\n\n[Er37b] Erd\\H{o}s, Paul, On the {S}um and {D}ifference of {S}quares of {P}rimes. J. London Math. Soc. (1937), 133--136.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

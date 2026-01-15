@@ -1,0 +1,33 @@
+{
+  "id": "erdos-982",
+  "title": "Erdős Problem #982",
+  "slug": "erdos-982",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... distinct points in ... form a convex polygon then some vertex has at least ... different distances to other vertices.\n...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/982",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos982Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 982,
+    "erdosUrl": "https://erdosproblems.com/982",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #982 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $n$ distinct points in $\\mathbb{R}^2$ form a convex polygon then some vertex has at least $\\lfloor \\frac{n}{2}\\rfloor$ different distances to other vertices.\n\n\n\nThe regular polygon shows that $\\lfloor n/2\\rfloor$ is the best possible here.\n\nThis would be implied if there was a vertex such that no three vertices of the polygon are equally distant to it, which was originally also conjectured by Erd\\H{o}s \\cite{Er46b}, but this is false (see [97]).\n\nLet $f(n)$ be the maximal number of such distances that are guaranteed. Moser \\cite{Mo52} proved that\\[f(n) \\geq \\left\\lceil\\frac{n}{3}\\right\\rceil.\\]This was improved by Erd\\H{o}s and Fishburn \\cite{ErFi94} to\\[f(n) \\geq \\left\\lfloor \\frac{n}{3}+1\\right\\rfloor,\\]then\\[f(n) \\geq \\left\\lceil \\frac{13n-6}{36}\\right\\rceil\\]by Dumitrescu \\cite{Du06b}, and most recently\\[f(n) \\geq \\left(\\frac{13}{36}+\\frac{1}{22701}\\right)n-O(1)\\]by Nivasch, Pach, Pinchasi, and Zerbib \\cite{NPPZ13}.\n\nIn \\cite{Er46b} Erd\\H{o}s makes the even stronger conjecture that on every convex curve there exists a point $p$ such that every circle with centre $p$ intersects the curve in at most $2$ points. B\\'{a}r\\'{a}ny and Rold\\'{a}n-Pensado \\cite{BaRo13} noted that the boundary of any acute triangle is a counterexample.\n\nB\\'{a}r\\'{a}ny and Rold\\'{a}n-Pensado prove that, for any planar convex body, there is a point $p$ on the boundary such that every circle with centre $p$ intersects the boundary in at most $O(1)$ (where the implied constant depends on the convex body). They conjecture that there this can be bounded by an absolute constant - that is, Erd\\H{o}s's conjecture is true if we replace $2$ by some larger constant $C$.\n\nSee also [93].\n\n\n\n\nReferences\n\n\n[BaRo13] B\\'ar\\'any, Imre and Rold\\'an-Pensado, Edgardo, A question from a famous paper of {E}rd\\H{o}s. Discrete Comput. Geom. (2013), 253--261.\n\n[Du06b] Dumitrescu, Adrian, On distinct distances from a vertex of a convex polygon. Discrete Comput. Geom. (2006), 503--509.\n\n[Er46b] Erd\\H{o}s, P., On sets of distances of {$n$} points. Amer. Math. Monthly (1946), 248--250.\n\n[ErFi94] Erd\\H{o}s, Paul and Fishburn, Peter, A postscript on distances in convex {$n$}-gons. Discrete Comput. Geom. (1994), 111--117.\n\n[Mo52] Moser, Leo, On the different distances determined by {$n$} points. Amer. Math. Monthly (1952), 85--91.\n\n[NPPZ13] Nivasch, Gabriel and Pach, J\\'anos and Pinchasi, Rom and\nZerbib, Shira, The number of distinct distances from a vertex of a convex\npolygon. J. Comput. Geom. (2013), 1--12.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

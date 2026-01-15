@@ -1,0 +1,33 @@
+{
+  "id": "erdos-972",
+  "title": "Erdős Problem #972",
+  "slug": "erdos-972",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be irrational. Are there infinitely many primes ... such that ... is also prime?\n\n\n\nVinogradov  proved that the seque...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/972",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos972Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 972,
+    "erdosUrl": "https://erdosproblems.com/972",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #972 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\alpha>1$ be irrational. Are there infinitely many primes $p$ such that $\\lfloor p\\alpha\\rfloor$ is also prime?\n\n\n\nVinogradov \\cite{Vi48} proved that the sequence $\\{p\\alpha\\}$ is uniformly distributed for every irrational $\\alpha$, and hence there are infinitely many primes $p$ of the shape $p=\\lfloor n\\alpha\\rfloor$ for every irrational $\\alpha>1$. Indeed, this occurs if and only if\\[\\frac{p}{\\alpha}\\leq n<\\frac{p+1}{\\alpha},\\]which is true if and only if $\\{p\\alpha^{-1}\\}>1-\\alpha^{-1}$, which happens infinitely often by the uniform distribution of $\\{p\\alpha^{-1}\\}$.\n\n\n\n\nReferences\n\n\n[Vi48] Vinogradov, I. M., On an estimate of trigonometric sums with prime numbers. Izv. Akad. Nauk SSSR Ser. Mat. (1948), 225--248.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

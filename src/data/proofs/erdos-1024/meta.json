@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1024",
+  "title": "Erdős Problem #1024",
+  "slug": "erdos-1024",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that every ...-uniform linear hypergraph on ... vertices contains an independent set on ... vertices. Estimat...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1024",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1024Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1024,
+    "erdosUrl": "https://erdosproblems.com/1024",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1024 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be such that every $3$-uniform linear hypergraph on $n$ vertices contains an independent set on $f(n)$ vertices. Estimate $f(n)$.\n\n\n\nA hypergraph is linear if $\\lvert A\\cap B\\rvert\\leq 1$ for all edges $A$ and $B$. An independent set of vertices is one which contains no edges. A $3$-uniform linear hypergraph is sometimes called a partial Steiner triple system.\n\nErd\\H{o}s could prove\\[n^{1/2} \\ll f(n) \\ll n^{2/3}.\\]Phelps and R\\\"{o}dl \\cite{PhRo86} proved\\[f(n) \\asymp (n\\log n)^{1/2}.\\]\n\n\n\n\nReferences\n\n\n[PhRo86] Phelps, K. T. and R\\\"odl, V., Steiner triple systems with minimum independence number. Ars Combin. (1986), 167--172.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

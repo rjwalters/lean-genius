@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1074",
+  "title": "Erdős Problem #1074",
+  "slug": "erdos-1074",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the set of all ... such that there exists a prime ... such that .... Does\\[\\lim {x}\\]exist? What is it?\n\nSimilarly...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1074",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1074Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1074,
+    "erdosUrl": "https://erdosproblems.com/1074",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1074 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $S$ be the set of all $m\\geq 1$ such that there exists a prime $p\\not\\equiv 1\\pmod{m}$ such that $m!+1\\equiv 0\\pmod{p}$. Does\\[\\lim \\frac{\\lvert S\\cap [1,x]\\rvert}{x}\\]exist? What is it?\n\nSimilarly, if $P$ is the set of all primes $p$ such that there exists an $m$ with $p\\not\\equiv 1\\pmod{m}$ such that $m!+1\\equiv 0\\pmod{p}$, then does\\[\\lim \\frac{\\lvert P\\cap [1,x]\\rvert}{\\pi(x)}\\]exist? What is it?\n\n\n\nQuestions raised by Erd\\H{o}s, Hardy, and Subbarao, who called the set $S$ 'EHS numbers' and the set $P$ 'Pillai primes', and proved that both $S$ and $P$ are infinite. Pillai \\cite{Pi30} raised the question of whether there exist any primes in $P$. This was answered by Chowla, who noted that, for example,\\[14!+1\\equiv 18!+1\\equiv 0\\pmod{23}.\\]The sequence $S$ begins\\[8,9,13,14,15,16,17,\\ldots\\]and is A064164 in the OEIS. The sequence $P$ begins\\[23,29,59,61,67,71,\\ldots\\]and is A063980 in the OEIS.\n\nRegarding the first question, Hardy and Subbarao computed all EHS numbers up to $2^{10}$, and write '...if this trend conditions we expect [the limit] to be around $0.5$, if it exists. The frequency with which the EHS numbers occur - most often in long sequences of consecutive integers - makes us believe that their asymptotic density exists and is unity. Erd\\H{o}s, though initially hesitant, later agreed with this view.'\n\nRegarding the second question, they write '[from the data] it would appear that if the limit exists, it is perhaps between $0.5$ and $0.6$. But then there seems to be no reason why the ratio should not tend to $1$, even though very slowly and certainly not monotonically.'\n\nThis is discussed in problem A2 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Pi30] S. S. Pillai, Question 1490. J. Indian Math. Soc. (1930), 230.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

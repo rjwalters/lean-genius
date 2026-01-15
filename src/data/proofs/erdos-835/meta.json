@@ -1,0 +1,33 @@
+{
+  "id": "erdos-835",
+  "title": "Erdős Problem #835",
+  "slug": "erdos-835",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist a ... such that the ...-sized subsets of ... can be coloured with ... colours such that for every ... with ....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/835",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos835Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 835,
+    "erdosUrl": "https://erdosproblems.com/835",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #835 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist a $k>2$ such that the $k$-sized subsets of $\\{1,\\ldots,2k\\}$ can be coloured with $k+1$ colours such that for every $A\\subset \\{1,\\ldots,2k\\}$ with $\\lvert A\\rvert=k+1$ all $k+1$ colours appear among the $k$-sized subsets of $A$?\n\n\n\nA problem of Erd\\H{o}s and Rosenfeld. This is trivially possible for $k=2$. They were not sure about $k=6$.\n\nThis is equivalent to asking whether there exists $k>2$ such that the chromatic number of the Johnson graph $J(2k,k)$ is $k+1$ (it is always at least $k+1$ and at most $2k$). The chromatic numbers listed at this website show that this is false for $3\\leq k\\leq 8$.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

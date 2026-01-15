@@ -1,0 +1,33 @@
+{
+  "id": "erdos-762",
+  "title": "Erdős Problem #762",
+  "slug": "erdos-762",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe cochromatic number of ..., denoted by ..., is the minimum number of colours needed to colour the vertices of ... such tha...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/762",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos762Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 762,
+    "erdosUrl": "https://erdosproblems.com/762",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #762 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe cochromatic number of $G$, denoted by $\\zeta(G)$, is the minimum number of colours needed to colour the vertices of $G$ such that each colour class induces either a complete graph or empty graph.\n\nIs it true that if $G$ has no $K_5$ and $\\zeta(G)\\geq 4$ then $\\chi(G) \\leq \\zeta(G)+2$?\n\n\n\nA conjecture of Erd\\H{o}s, Gimbel, and Straight \\cite{EGS90}, who proved that for every $n>2$ there exists some $f(n)$ such that if $G$ contains no clique on $n$ vertices then $\\chi(G)\\leq \\zeta(G)+f(n)$.\n\nThis has been disproved by Steiner \\cite{St24b}, who constructed a graph $G$ with $\\omega(G)=4$, $\\zeta(G)=4$, and $\\chi(G)=7$.\n\n\n\n\nReferences\n\n\n[EGS90] Erd\\H{o}s, Paul and Gimbel, John and Straight, H. Joseph, Chromatic number versus cochromatic number in graphs with\nbounded clique number. European J. Combin. (1990), 235-240.\n\n[St24b] R. Steiner, On the difference between the chromatic and cochromatic number. arXiv:2408.02400 (2024).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

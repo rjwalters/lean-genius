@@ -1,0 +1,33 @@
+{
+  "id": "erdos-834",
+  "title": "Erdős Problem #834",
+  "slug": "erdos-834",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist a ...-critical ...-uniform hypergraph in which every vertex has degree ...?\n\n\n\nA problem of Erds and Lov\\'{a...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/834",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos834Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 834,
+    "erdosUrl": "https://erdosproblems.com/834",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #834 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist a $3$-critical $3$-uniform hypergraph in which every vertex has degree $\\geq 7$?\n\n\n\nA problem of Erd\\H{o}s and Lov\\'{a}sz.\n\nThey do not specify what is meant by $3$-critical. One definition in the literature is: a hypergraph is $3$-critical if there is a set of $3$ vertices which intersects every edge, but no such set of size $2$, and yet for any edge $e$ there is a pair of vertices which intersects every edge except $e$. Raphael Steiner observes that a $3$-critical hypergraph in this sense has bounded size, so this problem would be a finite computation, and perhaps is not what they meant.\n\nAn alternative definition is that a hypergraph is $3$-critical if it has chromatic number $3$, but its chromatic number becomes $2$ after deleting any edge or vertex.\n\nIn either case, this has been resolved by Li \\cite{Li25}. In the first formulation, the transversal notion of criticality, Li proves that a $3$-critical $3$-uniform hypergraph must have a vertex of degree $\\leq 6$.\n\nOn the other hand, in the second formulation, the chromatic notion of criticality, Li provides an explicit $3$-critical $3$-uniform hypergraph on $9$ vertices with minimum degree $7$.\n\n\n\n\nReferences\n\n\n[Li25] R. Li, On an Erd\\H{o}s-Lov\\'{a}sz problem: $3$-critical $3$-graphs of minimum degree $7$. arXiv:2512.24850 (2025).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

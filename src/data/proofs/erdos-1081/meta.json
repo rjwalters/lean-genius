@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1081",
+  "title": "Erdős Problem #1081",
+  "slug": "erdos-1081",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of ... which are the sum of two squarefull numbers (a number ... is squarefull if ... implies ...). ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1081",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1081Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1081,
+    "erdosUrl": "https://erdosproblems.com/1081",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1081 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A(x)$ count the number of $n\\leq x$ which are the sum of two squarefull numbers (a number $m$ is squarefull if $p\\mid m$ implies $p^2\\mid m$). Is it true that\\[A(x) \\sim c \\frac{x}{\\sqrt{\\log x}}\\]for some $c>0$?\n\n\n\nOdoni \\cite{Od81} proved this is false, and that\\[A(x) \\gg \\exp\\left(c\\frac{\\log\\log\\log x}{\\log\\log x}\\right)\\frac{x}{\\sqrt{\\log x}}\\]for some constant $c>0$. Estimates for $A(x)$ have been improved by Baker and Brudern \\cite{BaBr94}, Blomer \\cite{Bl04}, and most recently by Blomer and Granville \\cite{BlGr06}, who proved\\[A(x)= (\\log\\log x)^{O(1)}\\frac{x}{(\\log x)^{\\alpha}}\\]where $\\alpha=1-2^{-1/3}\\approx 0.206299$.\n\nSee also [940].\n\n\n\n\nReferences\n\n\n[BaBr94] Baker, R. C. and Br\\\"udern, J., On sums of two squarefull numbers. Math. Proc. Cambridge Philos. Soc. (1994), 1--5.\n\n[Bl04] Blomer, Valentin, Binary quadratic forms with large discriminants and sums of\ntwo squareful numbers. J. Reine Angew. Math. (2004), 213--234.\n\n[BlGr06] Blomer, Valentin and Granville, Andrew, Estimates for representation numbers of quadratic forms. Duke Math. J. (2006), 261--302.\n\n[Od81] Odoni, R. W. K., A problem of {E}rd\\H{o}s on sums of two squarefull numbers. Acta Arith. (1981), 145--162.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

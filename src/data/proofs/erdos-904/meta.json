@@ -1,0 +1,33 @@
+{
+  "id": "erdos-904",
+  "title": "Erdős Problem #904",
+  "slug": "erdos-904",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph with ... vertices and ... edges then it contains a triangle on ... such that\\[d(x)+d(y)+d(z) \\geq {2}n.\\]\n\n...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/904",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos904Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 904,
+    "erdosUrl": "https://erdosproblems.com/904",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #904 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ is a graph with $n$ vertices and $>n^2/4$ edges then it contains a triangle on $x,y,z$ such that\\[d(x)+d(y)+d(z) \\geq \\frac{3}{2}n.\\]\n\n\n\nA conjecture of Bollob\\'{a}s and Erd\\H{o}s. This was proved by Edwards \\cite{Ed78}.\n\n\n\n\nReferences\n\n\n[Ed78] Edwards, C. S., Complete subgraphs with largest sum of vertex degrees. (1978), 293--306.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

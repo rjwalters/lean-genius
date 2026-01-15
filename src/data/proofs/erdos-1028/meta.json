@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1028",
+  "title": "Erdős Problem #1028",
+  "slug": "erdos-1028",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[H(n)=\\min_f \\max_{X\\subseteq \\{1,\\ldots,n\\}} \\left\\lvert \\sum_{x\\neq y\\in X} f(x,y)\\right\\rvert,\\]where ... ranges over ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1028",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1028Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1028,
+    "erdosUrl": "https://erdosproblems.com/1028",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1028 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[H(n)=\\min_f \\max_{X\\subseteq \\{1,\\ldots,n\\}} \\left\\lvert \\sum_{x\\neq y\\in X} f(x,y)\\right\\rvert,\\]where $f$ ranges over all functions $f:X^2\\to \\{-1,1\\}$. Estimate $H(n)$.\n\n\n\nErd\\H{o}s \\cite{Er63d} proved\\[\\frac{n}{4}\\leq H(n) \\ll n^{3/2}.\\]Erd\\H{o}s and Spencer \\cite{ErSp71} proved that $H(n)\\gg n^{3/2}$.\n\n\n\n\nReferences\n\n\n[Er63d] Erd\\H{o}s, P\\'al, On combinatorial questions connected with a theorem of\n{R}amsey and van der {W}aerden. Mat. Lapok (1963), 29--37.\n\n[ErSp71] Erd\\H{o}s, P. and Spencer, J., Imbalances in {$k$}-colorations. Networks (1971/72), 379--385.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

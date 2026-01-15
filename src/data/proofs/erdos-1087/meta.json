@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1087",
+  "title": "Erdős Problem #1087",
+  "slug": "erdos-1087",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that every set of ... points in ... contains at most ... many sets of four points which are 'degenera...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1087",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1087Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1087,
+    "erdosUrl": "https://erdosproblems.com/1087",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1087 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be minimal such that every set of $n$ points in $\\mathbb{R}^2$ contains at most $f(n)$ many sets of four points which are 'degenerate' in the sense that some pair are the same distance apart. Estimate $f(n)$ - in particular, is it true that $f(n)\\leq n^{3+o(1)}$?\n\n\n\nA question of Erd\\H{o}s and Purdy \\cite{ErPu71}, who proved\\[n^3\\log n \\ll f(n) \\ll n^{7/2}.\\]\n\n\n\n\nReferences\n\n\n[ErPu71] Erd\\H{o}s, Paul and Purdy, George, Some extremal problems in geometry. J. Combinatorial Theory Ser. A (1971), 246--252.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

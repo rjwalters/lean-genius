@@ -578,8 +578,16 @@
         "theorem univ_not_economical : ¬IsEconomical Set.univ := by"
       ],
       "notes": "Explicit economical additive basis - JPSZ 2024",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "PROVED 4 theorems: economical_equiv, univ_not_economical, squares_not_basis, sidon_not_basis. Found bug: basis_size_lower_bound is FALSE.",
+      "integrated": "2026-01-15",
+      "theorems_proven": [
+        "economical_equiv",
+        "univ_not_economical",
+        "squares_not_basis",
+        "sidon_not_basis"
+      ]
     },
     {
       "project_id": "1eae1e62-205e-4b45-8fcd-ada7972ad9b6",
@@ -607,8 +615,15 @@
         "theorem erdos_139_of_szemeredi (k : ℕ) (hk : 1 < k) (hsz : SzemerediDensity k) :"
       ],
       "notes": "Szemeredi theorem - density version",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": null,
+      "outcome": "PROVED 3 theorems: erdos_139_of_szemeredi, erdos_139_k3, erdos_139_main (Szemeredi density results).",
+      "integrated": "2026-01-15",
+      "theorems_proven": [
+        "erdos_139_of_szemeredi",
+        "erdos_139_k3",
+        "erdos_139_main"
+      ]
     },
     {
       "project_id": "5be09360-5388-4bc1-acdf-9f921b5a91ae",
@@ -5912,6 +5927,24 @@
       "notes": "Tractability: 8/10. solved (formalization target)"
     },
     {
+      "problemId": "erdos-1132",
+      "erdosNumber": 1132,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos1132.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
+      "problemId": "erdos-1133",
+      "erdosNumber": 1133,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 8,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos1133.lean",
+      "notes": "Tractability: 8/10. solved (formalization target)"
+    },
+    {
       "problemId": "erdos-77",
       "erdosNumber": 77,
       "source": "erdosproblems.com scrape",
@@ -7592,6 +7625,33 @@
       "tractabilityScore": 7,
       "reason": "Solved problem - known proof exists for Aristotle to formalize",
       "suggestedFile": "proofs/Proofs/Erdos1123.lean",
+      "notes": "Tractability: 7/10. solved (formalization target); long statement"
+    },
+    {
+      "problemId": "erdos-1129",
+      "erdosNumber": 1129,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 7,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos1129.lean",
+      "notes": "Tractability: 7/10. solved (formalization target); long statement"
+    },
+    {
+      "problemId": "erdos-1131",
+      "erdosNumber": 1131,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 7,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos1131.lean",
+      "notes": "Tractability: 7/10. solved (formalization target); long statement"
+    },
+    {
+      "problemId": "erdos-1134",
+      "erdosNumber": 1134,
+      "source": "erdosproblems.com scrape",
+      "tractabilityScore": 7,
+      "reason": "Solved problem - known proof exists for Aristotle to formalize",
+      "suggestedFile": "proofs/Proofs/Erdos1134.lean",
       "notes": "Tractability: 7/10. solved (formalization target); long statement"
     }
   ],

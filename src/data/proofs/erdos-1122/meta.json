@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1122",
+  "title": "Erdős Problem #1122",
+  "slug": "erdos-1122",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an additive function (i.e. ... whenever ...). Let\\[A=\\{ n \\geq 1: f(n+1)< f(n)\\}.\\]If ... then must ... for some ....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1122",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1122Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1122,
+    "erdosUrl": "https://erdosproblems.com/1122",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1122 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f:\\mathbb{N}\\to \\mathbb{R}$ be an additive function (i.e. $f(ab)=f(a)+f(b)$ whenever $(a,b)=1$). Let\\[A=\\{ n \\geq 1: f(n+1)< f(n)\\}.\\]If $\\lvert A\\cap [1,X]\\rvert =o(X)$ then must $f(n)=c\\log n$ for some $c\\in \\mathbb{R}$?\n\n\n\nErd\\H{o}s proved that $f(n)=c\\log n$ for some $c\\in\\mathbb{R}$ if $A$ is empty, or if $f(n+1)-f(n)=o(1)$.\n\nPartial progress was made by Mangerel \\cite{Ma22}, who proved that this is true if\\[\\lvert A\\cap [1,X]\\rvert \\ll \\frac{X}{(\\log X)^{2+c}}\\]for some $c>0$, and if $g(p)$ does not have very large values (in a certain technical sense).\n\nSee also [491].\n\n\n\n\nReferences\n\n\n[Ma22] Mangerel, Alexander P., Additive functions in short intervals, gaps and a conjecture\nof {E}rd\\H{o}s. Ramanujan J. (2022), 1023--1090.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

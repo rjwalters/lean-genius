@@ -1,0 +1,33 @@
+{
+  "id": "erdos-787",
+  "title": "Erdős Problem #787",
+  "slug": "erdos-787",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that given any set ... with ... there exists some ... of size ... such that ... for all ....\n\nEstimat...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/787",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos787Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 787,
+    "erdosUrl": "https://erdosproblems.com/787",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #787 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $g(n)$ be maximal such that given any set $A\\subset \\mathbb{R}$ with $\\lvert A\\rvert=n$ there exists some $B\\subseteq A$ of size $\\lvert B\\rvert\\geq g(n)$ such that $b_1+b_2\\not\\in A$ for all $b_1\\neq b_2\\in B$.\n\nEstimate $g(n)$.\n\n\n\nThis function was considered by Erd\\H{o}s and Moser. Choi observed that, without loss of generality, one can assume that $A\\subset \\mathbb{Z}$.\n\nKlarner proved $g(n) \\gg \\log n$ (indeed, a greedy construction suffices). Choi \\cite{Ch71} proved $g(n) \\ll n^{2/5+o(1)}$. The current best bounds known are\\[(\\log n)^{1+c} \\ll g(n) \\ll \\exp(\\sqrt{\\log n})\\]for some constant $c>0$, the lower bound due to Sanders \\cite{Sa21} and the upper bound due to Ruzsa \\cite{Ru05}. Beker \\cite{Be25} has proved\\[(\\log n)^{1+\\tfrac{1}{68}+o(1)} \\ll g(n).\\]\n\n\n\n\nReferences\n\n\n[Be25] A. Beker, The Erd\\H{o}s-Moser sum-free set problem via improved bounds for $k$-configurations. arXiv:2501.10203 (2025).\n\n[Ch71] Choi, S. L. G., On a combinatorial problem in number theory. Proc. London Math. Soc. (3) (1971), 629-642.\n\n[Ru05] Ruzsa, Imre Z., Sum-avoiding subsets. Ramanujan J. (2005), 77-82.\n\n[Sa21] Sanders, Tom, The Erd\\H{o}s-Moser sum-free set problem. Canad. J. Math. (2021), 63-107.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

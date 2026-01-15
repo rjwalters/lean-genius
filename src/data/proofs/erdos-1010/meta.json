@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1010",
+  "title": "Erdős Problem #1010",
+  "slug": "erdos-1010",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Does every graph on ... vertices with ... edges contain at least ... triangles?\n\n\n\nRademacher proved that every grap...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1010",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1010Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1010,
+    "erdosUrl": "https://erdosproblems.com/1010",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1010 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $t<\\lfloor n/2\\rfloor$. Does every graph on $n$ vertices with $\\lfloor n^2/4\\rfloor+t$ edges contain at least $t\\lfloor n/2\\rfloor$ triangles?\n\n\n\nRademacher proved that every graph on $n$ vertices with $\\lfloor n^2/4\\rfloor+1$ edges contains at least $\\lfloor n/2\\rfloor$ triangles. Erd\\H{o}s \\cite{Er62d} proved that every graph on $n$ vertices with $\\lfloor n^2/4\\rfloor+t$ edges contains at least $t\\lfloor n/2\\rfloor$ triangles, for all $t<cn$, for some constant $c>0$.\n\nThis is true, and was proved independently by Lov\\'{a}sz and Simonovits \\cite{LoSi76} and Nikiforov and Khadzhiivanov \\cite{NiKh81}.\n\n\n\n\nReferences\n\n\n[Er62d] Erd\\H{o}s, P., On a theorem of {R}ademacher-{T}ur\\'an. Illinois J. Math. (1962), 122--127.\n\n[LoSi76] Lov\\'asz, L. and Simonovits, Mikl\\'os, On the number of complete subgraphs of a graph. (1976), 431--441.\n\n[NiKh81] Nikiforov, V. S. and Khadzhiivanov, N. G., Solution of the problem of {P}. {E}rd\\H{o}s on the number of\ntriangles in graphs with {$n$}\\ vertices and\n{$[n\\sp{2}/4]+l$}\\ edges. C. R. Acad. Bulgare Sci. (1981), 969--970.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

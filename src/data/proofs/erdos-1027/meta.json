@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1027",
+  "title": "Erdős Problem #1027",
+  "slug": "erdos-1027",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., and let ... be sufficiently large depending on .... Suppose that $...c2^n...n...X=\\cup_{A\\in }A...\\gg_c 2^{\\lvert X\\...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1027",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1027Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1027,
+    "erdosUrl": "https://erdosproblems.com/1027",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1027 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $c>0$, and let $n$ be sufficiently large depending on $c$. Suppose that $\\mathcal{F}$ is a family of at most $c2^n$ many finite sets of size $n$. Let $X=\\cup_{A\\in \\mathcal{F}}A$.\n\nMust there exist $\\gg_c 2^{\\lvert X\\rvert}$ many sets $B\\subset X$ which intersect every set in $\\mathcal{F}$, yet contain none of them?\n\n\n\nThe existence of a single such $B$ is equivalent to $\\mathcal{F}$ being $2$-chromatic (or having property B), see [901].\n\nThis is true, and a proof was given in the comment section by Koishi Chan.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

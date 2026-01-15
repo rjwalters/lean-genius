@@ -1,0 +1,33 @@
+{
+  "id": "erdos-793",
+  "title": "Erdős Problem #793",
+  "slug": "erdos-793",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximum possible size of a subset ... such that ... whenever ... with ... and .... Is there a constant ... suc...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/793",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos793Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 793,
+    "erdosUrl": "https://erdosproblems.com/793",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #793 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $F(n)$ be the maximum possible size of a subset $A\\subseteq\\{1,\\ldots,n\\}$ such that $a\\nmid bc$ whenever $a,b,c\\in A$ with $a\\neq b$ and $a\\neq c$. Is there a constant $C$ such that\\[F(n)=\\pi(n)+(C+o(1))n^{2/3}(\\log n)^{-2}?\\]\n\n\n\nErd\\H{o}s \\cite{Er38} proved there exist constants $0<c_1\\leq c_2$ such that\\[\\pi(n)+c_1n^{2/3}(\\log n)^{-2}\\leq F(n) \\leq \\pi(n)+c_2n^{2/3}(\\log n)^{-2}.\\]Erd\\H{o}s \\cite{Er69} gave a simple proof that $F(n) \\leq \\pi(n)+n^{2/3}$: define a graph with vertex set the union of those integers in $[1,n^{2/3}]$ with all primes $p\\in (n^{2/3},n]$. We have an edge $u\\sim v$ if and only if $uv\\in A$. It is easy to see that every $m\\leq n$ can be written as $uv$ where $u\\leq n^{2/3}$ and $v$ is either prime or $\\leq n^{2/3}$, and hence there are $\\geq \\lvert A\\rvert$ many edges. This graph contains no path of length $3$ and hence must be a tree and have fewer edges than vertices, and we are done. This can be improved to give the upper bound mentioned by using a subset of integers in $[1,n^{2/3}]$.\n\nMore generally, one can ask for such an asymptotic for the size of sets such that no $a\\in A$ divides the product of $r$ distinct other elements of $A$, with the exponent $2/3$ replaced by $\\frac{2}{r+1}$.\n\nFor further discussion and references concerning this generalisation to $r\\geq 3$ see the comment by Wouter van Doorn.\n\nSee also [425].\n\n\n\n\nReferences\n\n\n[Er38] P. Erd\\H{o}s, On sequences of integers no one of which divides the product of two others and on related problems. Tomsk. Gos. Univ. Ucen Zap. (1938), 74-82.\n\n[Er69] Erd\\H{o}s, Paul, Some applications of graph theory to number theory. The Many Facets of Graph Theory (Proc. Conf.,\nWestern Mich. Univ., Kalamazoo, Mich., 1968) (1969), 77-82.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1018",
+  "title": "Erdős Problem #1018",
+  "slug": "erdos-1018",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is there a constant ... such that, for all large ..., every graph on ... vertices with at least ... edges must conta...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1018",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1018Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1018,
+    "erdosUrl": "https://erdosproblems.com/1018",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1018 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\epsilon>0$. Is there a constant $C_\\epsilon$ such that, for all large $n$, every graph on $n$ vertices with at least $n^{1+\\epsilon}$ edges must contain a subgraph on at most $C_\\epsilon$ vertices which is non-planar?\n\n\n\nErd\\H{o}s \\cite{Er71} writes it is 'not difficult to see' that $C_\\epsilon\\to \\infty$ as $\\epsilon\\to 0$.\n\nThis was solved in the affirmative by Kostochka and Pyber \\cite{KoPy88}, who proved that $G$ must contain a subdivision of $K_5$ (which is non-planar) with $O_\\epsilon(1)$ many vertices.\n\n\n\n\nReferences\n\n\n[Er71] Erd\\H{o}s, P., Some unsolved problems in graph theory and combinatorial analysis. Combinatorial Mathematics and its Applications (Proc.\nConf., Oxford, 1969) (1971), 97-109.\n\n[KoPy88] Kostochka, A. and Pyber, L., Small topological complete subgraphs of ``dense'' graphs. Combinatorica (1988), 83--86.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

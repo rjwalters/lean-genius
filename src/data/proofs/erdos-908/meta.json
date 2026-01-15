@@ -1,0 +1,33 @@
+{
+  "id": "erdos-908",
+  "title": "Erdős Problem #908",
+  "slug": "erdos-908",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that ... is measurable for every .... Is it true that\\[f=g+h+r\\]where ... is continuous, ... is additive (so ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/908",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos908Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 908,
+    "erdosUrl": "https://erdosproblems.com/908",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #908 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f:\\mathbb{R}\\to \\mathbb{R}$ be such that $f(x+h)-f(x)$ is measurable for every $h>0$. Is it true that\\[f=g+h+r\\]where $g$ is continuous, $h$ is additive (so $h(x+y)=h(x)+h(y)$), and $r(x+h)-r(x)=0$ for every $h$ and almost all (depending on $h$) $x$?\n\n\n\nA conjecture of de Bruijn and Erd\\H{o}s. Answered in the affirmative by Laczkovich \\cite{La80}.\n\nSee also [907].\n\n\n\n\nReferences\n\n\n[La80] Laczkovich, M., Functions with measurable differences. Acta Math. Acad. Sci. Hungar. (1980), 217--235.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

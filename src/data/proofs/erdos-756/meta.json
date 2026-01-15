@@ -1,0 +1,33 @@
+{
+  "id": "erdos-756",
+  "title": "Erdős Problem #756",
+  "slug": "erdos-756",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set of ... points. Can there be ... many distinct distances each of which occurs for more than ... many pairs fr...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/756",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos756Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 756,
+    "erdosUrl": "https://erdosproblems.com/756",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #756 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset \\mathbb{R}^2$ be a set of $n$ points. Can there be $\\gg n$ many distinct distances each of which occurs for more than $n$ many pairs from $A$?\n\n\n\nAsked by Erd\\H{o}s and Pach in the stronger form of whether all distances (aside from the largest) can occur with multiplicity $>n$. Hopf and Pannowitz \\cite{HoPa34} proved that the largest distance between points of $A$ can occur at most $n$ times, but it is unknown whether a second such distance must occur (see [132]).\n\nThe answer is yes: Bhowmick \\cite{Bh24} constructs a set of $n$ points in $\\mathbb{R}^2$ such that $\\lfloor\\frac{n}{4}\\rfloor$ distances occur at least $n+1$ times. More generally, they construct, for any $m$ and large $n$, a set of $n$ points such that $\\lfloor \\frac{n}{2(m+1)}\\rfloor$ distances occur at least $n+m$ times.\n\nFurther investigations were undertaken by Clemen, Dumitrescu, and Liu \\cite{CDL25}, who proved, amongst other results, that if we take $A$ to be the square grid of $n$ points, then there are at least $n^{c/\\log\\log n}$ many distances which occur with multiplicity at least $n^{1+c/\\log\\log n}$ (for some constant $c>0$).\n\nSee also [132] and [957].\n\n\n\n\nReferences\n\n\n[Bh24] K. Bhowmick, A problem of Erd\\H{o}s about rich distances. arXiv:2407.01174 (2024).\n\n[CDL25] F. Clemen, A. Dumitrescu, and D. Liu, On multiplicities of interpoint distances. arXiv:2505.04283 (2025).\n\n[HoPa34] Hopf, H. and Pannwitz, E., Aufgabe 167. Jber. Deutsch. Math. Verein. (1934), 114.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

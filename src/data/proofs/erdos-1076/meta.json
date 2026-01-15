@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1076",
+  "title": "Erdős Problem #1076",
+  "slug": "erdos-1076",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... be the family of all ...-uniform hypergraphs with ... vertices and ... edges. Is it true that\\[_3(n,_k)\\s...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1076",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1076Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1076,
+    "erdosUrl": "https://erdosproblems.com/1076",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1076 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 5$ and let $\\mathcal{F}_k$ be the family of all $3$-uniform hypergraphs with $k$ vertices and $k-2$ edges. Is it true that\\[\\mathrm{ex}_3(n,\\mathcal{F}_k)\\sim \\frac{n^2}{6}?\\]\n\n\n\nA question of Brown, Erd\\H{o}s, and S\\'{o}s \\cite{BES73} who proved this is true for $k=4$, and that for all $k\\geq 4$\\[\\mathrm{ex}_3(n,\\mathcal{F}_k)\\asymp_k n^2.\\]In \\cite{Er74c} Erd\\H{o}s writes 'the only argument in favour of this conjecture (the conjecture may easily turn out to be nonsense) is the following theorem': every $3$-uniform hypergraph on $n$ vertices with $>\\frac{1}{3}\\binom{n}{2}$ edges contains either a graph on $5$ vertices with $3$ edges or a graph on $6$ vertices with $4$ edges. (This is proved in \\cite{Er74c}.)\n\nThis is essentially a weaker version of [207]. In particular, for $k$ satisfying the right divisibility conditions, the extremal number is known exactly. The asymptotic version asked for here was proved independently by Bohman and Warnke \\cite{BoWa19} and Glock, K\\\"{u}hn, Lo, and Osthus \\cite{GKLO20}.\n\n\n\n\nReferences\n\n\n[BES73] Brown, W. G. and Erd\\H{o}s, P. and S\\'os, V. T., Some extremal problems on {$r$}-graphs. (1973), 53--63.\n\n[BoWa19] Bohman, Tom and Warnke, Lutz, Large girth approximate {S}teiner triple systems. J. Lond. Math. Soc. (2) (2019), 895--913.\n\n[Er74c] Erd\\H{o}s, Paul, Extremal problems on graphs and hypergraphs. (1974), 75-84.\n\n[GKLO20] Glock, Stefan and K\\\"uhn, Daniela and Lo, Allan and Osthus,\nDeryk, On a conjecture of {E}rd\\H{o}s on locally sparse {S}teiner\ntriple systems. Combinatorica (2020), 363--403.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

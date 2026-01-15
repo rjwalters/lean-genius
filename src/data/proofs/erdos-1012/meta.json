@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1012",
+  "title": "Erdős Problem #1012",
+  "slug": "erdos-1012",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Let ... be such that every graph on ... vertices with at least ... edges contains a cycle on ... vertices. Determine...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1012",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1012Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1012,
+    "erdosUrl": "https://erdosproblems.com/1012",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1012 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 0$. Let $f(k)$ be such that every graph on $n\\geq f(k)$ vertices with at least $\\binom{n-k-1}{2}+\\binom{k+2}{2}+1$ edges contains a cycle on $n-k$ vertices. Determine or estimate $f(k)$.\n\n\n\nErd\\H{o}s \\cite{Er62e} proved that $f(k)$ exists for all $k\\geq 0$; this is not immediately stated in \\cite{Er62e}, but Cambie has in the comments explained why the existence of $f(k)$ follows from the result of \\cite{Er62e}.\n\nOre \\cite{Or61} proved that $f(0)=1$, in other words, every graph on $n\\geq 1$ vertices with at least $\\binom{n-1}{2}+2$ edges contains a Hamiltonian cycle on $n$ vertices.\n\nBondy \\cite{Bo71b} proved that $f(1)=1$.\n\nWoodall \\cite{Wo72} proved that every graph on $n\\geq 2k+3$ vertices with at least $\\binom{n-k-1}{2}+\\binom{k+2}{2}+1$ edges contains a cycle on $l$ vertices for all $3\\leq l\\leq n-k$. This settles this question completely.\n\n\n\n\nReferences\n\n\n[Bo71b] Bondy, J. A., Large cycles in graphs. Discrete Math. (1971/72), 121--132.\n\n[Er62e] Erd\\H{o}s, P., Remarks on a paper of {P}\\'osa. Magyar Tud. Akad. Mat. Kutat\\'o{} Int. K\\\"ozl. (1962), 227--229.\n\n[Or61] Ore, Oystein, Arc coverings of graphs. Ann. Mat. Pura Appl. (4) (1961), 315--321.\n\n[Wo72] Woodall, D. R., Sufficient conditions for circuits in graphs. Proc. London Math. Soc. (3) (1972), 739--755.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

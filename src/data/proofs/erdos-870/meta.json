@@ -1,0 +1,33 @@
+{
+  "id": "erdos-870",
+  "title": "Erdős Problem #870",
+  "slug": "erdos-870",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be an additive basis of order .... Does there exist a constant ... such that if ... for all large ... then .....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/870",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos870Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 870,
+    "erdosUrl": "https://erdosproblems.com/870",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #870 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 3$ and $A$ be an additive basis of order $k$. Does there exist a constant $c=c(k)>0$ such that if $r(n)\\geq c\\log n$ for all large $n$ then $A$ must contain a minimal basis of order $k$? (Here $r(n)$ counts the number of representations of $n$ as the sum of at most $k$ elements from $A$.)\n\n\n\nA question of Erd\\H{o}s and Nathanson \\cite{ErNa79}, who proved that this is true for $k=2$ if $1_A\\ast 1_A(n) > (\\log \\frac{4}{3})^{-1}\\log n$ for all large $n$.\n\nHärtter \\cite{Ha56} and Nathanson \\cite{Na74} proved that there exist additive bases which do not contain any minimal additive bases.\n\nSee also [868].\n\n\n\n\nReferences\n\n\n[ErNa79] Erd\\H{o}s, Paul and Nathanson, Melvyn B., Systems of distinct representatives and minimal bases in\nadditive number theory. (1979), 89--107.\n\n[Ha56] H\\\"{a}rtter, Erich, Ein Beitrag zur {T}heorie der {M}inimalbasen. J. Reine Angew. Math. (1956), 170--204.\n\n[Na74] Nathanson, Melvyn B., Minimal bases and maximal nonbases in additive number theory. J. Number Theory (1974), 324--333.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

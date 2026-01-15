@@ -159,11 +159,62 @@ theorem conjecture_from_small_epsilon :
   intro ⟨ε₀, hε₀_pos, hε₀_small, C, hC, hbound⟩
   intro ε hε
   by_cases h : ε ≤ ε₀
-  · -- Use the bound for ε₀ (works since N^ε₀ ≤ N^ε for large N when ε₀ ≤ ε)
-    sorry
+  · -- Case: ε ≤ ε₀. For N ≥ 1, N^ε₀ ≥ N^ε, so the bound works directly
+    use C
+    constructor
+    · exact hC
+    · use 1
+      intro N hN
+      have hN' : (N : ℝ) ≥ 1 := by exact_mod_cast hN
+      calc |(sidonNumber N : ℝ) - Real.sqrt N|
+        ≤ |((sidonNumber N : ℝ) - Real.sqrt N)| + 0 := by ring_nf
+        _ ≤ C * N^ε₀ := by
+            have := hbound N hN
+            linarith
+        _ ≤ C * N^ε := by
+            apply mul_le_mul_of_nonneg_left _ (le_of_lt hC)
+            exact Real.rpow_le_rpow_left_of_exponent hN' h
   · push_neg at h
-    -- For larger ε, N^ε₀ ≤ N^ε eventually
-    sorry
+    -- Case: ε > ε₀. For large N, C * N^ε₀ ≤ N^ε
+    use 1
+    constructor
+    · norm_num
+    · -- Need N₀ such that for N ≥ N₀, C * N^ε₀ ≤ N^ε
+      -- This holds for large enough N since ε > ε₀
+      use Nat.ceil (max 1 (C ^ (1 / (ε - ε₀)))) + 1
+      intro N hN
+      have hN' : (N : ℝ) ≥ 1 := by
+        have : N ≥ Nat.ceil (max 1 (C ^ (1 / (ε - ε₀)))) + 1 := hN
+        have : (N : ℝ) ≥ 1 := by
+          calc (N : ℝ) ≥ Nat.ceil (max 1 (C ^ (1 / (ε - ε₀)))) + 1 := by exact_mod_cast hN
+            _ ≥ 1 := by linarith [Nat.le_ceil (max 1 (C ^ (1 / (ε - ε₀))))]
+        exact this
+      calc |(sidonNumber N : ℝ) - Real.sqrt N|
+        ≤ C * N^ε₀ := by
+            have := hbound N (by linarith : N ≥ 1)
+            linarith
+        _ ≤ 1 * N^ε := by
+            rw [one_mul]
+            -- C * N^ε₀ ≤ N^ε iff C ≤ N^(ε - ε₀)
+            have key : C ≤ (N : ℝ) ^ (ε - ε₀) := by
+              have hN_bound : (N : ℝ) ≥ C ^ (1 / (ε - ε₀)) := by
+                calc (N : ℝ) ≥ Nat.ceil (max 1 (C ^ (1 / (ε - ε₀)))) + 1 := by exact_mod_cast hN
+                  _ ≥ Nat.ceil (C ^ (1 / (ε - ε₀))) := by
+                      have : max 1 (C ^ (1 / (ε - ε₀))) ≥ C ^ (1 / (ε - ε₀)) := le_max_right _ _
+                      linarith [Nat.le_ceil (max 1 (C ^ (1 / (ε - ε₀)))), Nat.le_ceil (C ^ (1 / (ε - ε₀)))]
+                  _ ≥ C ^ (1 / (ε - ε₀)) := Nat.le_ceil _
+              have hε_diff : ε - ε₀ > 0 := by linarith
+              calc C = (C ^ (1 / (ε - ε₀))) ^ (ε - ε₀) := by
+                      rw [← Real.rpow_natCast, ← Real.rpow_mul (le_of_lt hC)]
+                      · simp [div_mul_cancel₀ _ (ne_of_gt hε_diff)]
+                _ ≤ (N : ℝ) ^ (ε - ε₀) := by
+                    apply Real.rpow_le_rpow (Real.rpow_nonneg (le_of_lt hC) _) hN_bound (le_of_lt hε_diff)
+            calc C * (N : ℝ) ^ ε₀ = C * (N : ℝ) ^ ε₀ := rfl
+              _ ≤ (N : ℝ) ^ (ε - ε₀) * (N : ℝ) ^ ε₀ := by
+                  apply mul_le_mul_of_nonneg_right key (Real.rpow_nonneg (le_of_lt hN') _)
+              _ = (N : ℝ) ^ ε := by
+                  rw [← Real.rpow_add hN']
+                  ring_nf
 
 /-! ## Perfect Difference Sets -/
 

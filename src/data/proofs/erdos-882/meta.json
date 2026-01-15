@@ -1,0 +1,33 @@
+{
+  "id": "erdos-882",
+  "title": "Erdős Problem #882",
+  "slug": "erdos-882",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest ... such that in the set\\[\\left\\{ \\sum_{a\\in S} a : \\emptyset\\neq S\\subseteq A\\right\\}\\]no tw...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/882",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos882Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 882,
+    "erdosUrl": "https://erdosproblems.com/882",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #882 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest $A\\subseteq \\{1,\\ldots,n\\}$ such that in the set\\[\\left\\{ \\sum_{a\\in S} a : \\emptyset\\neq S\\subseteq A\\right\\}\\]no two distinct elements divide each other?\n\n\n\nA problem of Erd\\H{o}s and S\\'{a}rk\\H{o}zy. The greedy algorithm shows that\\[\\lvert A\\rvert\\geq (1-o(1))\\log_3 n\\]is possible, but Erd\\H{o}s and S\\'{a}rk\\H{o}zy speculated that $\\lvert A\\rvert=(1-o(1))\\log_2n$ is possible.\n\nIn \\cite{Er98} Erd\\H{o}s reports (but gives no reference) that S\\'{a}ndor has proved that $\\lvert A\\rvert=(1-o(1))\\log_2 n$ is achievable, taking $A=\\{ 2^i+m2^m : 0\\leq i<m\\}$ and $n=2^{m-1}+m2^m$.\n\nErd\\H{o}s, Lev, Rauzy, S\\'{a}ndor, and S\\'{a}rk\\\"{o}zy \\cite{ELRSS99} proved that\\[\\lvert A\\rvert > \\log_2 n -1\\]is achievable, taking $A=\\{2^m-2^{m-1},2^m-2^{m-2},\\ldots,2^m-1\\}$. This property also implies that $\\sum_{a\\in S}a$ are distinct for distinct subsets $S$, whence [1] implies\\[\\lvert A\\rvert \\leq \\log_2 n+\\tfrac{1}{2}\\log_2\\log n+O(1),\\]and likely $\\lvert A\\rvert\\leq \\log_2n+O(1)$.\n\nSee also [13].\n\n\n\n\nReferences\n\n\n[ELRSS99] Erd\\H{o}s, P. and Lev, V. and Rauzy, G. and S\\'andor, C. and\nS\\'ark\\\"ozy, A., Greedy algorithm, arithmetic progressions, subset sums and\ndivisibility. Discrete Math. (1999), 119--135.\n\n[Er98] Erd\\H{o}s, Paul, Some of my new and almost new problems and results in combinatorial number theory. Number theory (Eger, 1996) (1998), 169-180.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

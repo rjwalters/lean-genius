@@ -1,0 +1,33 @@
+{
+  "id": "erdos-866",
+  "title": "Erdős Problem #866",
+  "slug": "erdos-866",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be minimal such that if ... has ... then there exist integers ... such that all ... pairwise sums are in ... ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/866",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos866Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 866,
+    "erdosUrl": "https://erdosproblems.com/866",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #866 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 3$ and $g_k(N)$ be minimal such that if $A\\subseteq \\{1,\\ldots,2N\\}$ has $\\lvert A\\rvert \\geq N+g_k(N)$ then there exist integers $b_1,\\ldots,b_k$ such that all $\\binom{k}{2}$ pairwise sums are in $A$ (but the $b_i$ themselves need not be in $A$).\n\nEstimate $g_k(N)$.\n\n\n\nA problem of Choi, Erd\\H{o}s, and Szemer\\'{e}di. It is clear that, for the set of odd numbers in $\\{1,\\ldots,2N\\}$, no such $b_i$ exist, whence $g_k(N)\\geq 0$ always. Choi, Erd\\H{o}s, and Szemer\\'{e}di proved that $g_3(N)=2$ and $g_4(N) \\ll 1$. van Doorn has shown that $g_4(N)\\leq 2032$.\n\nChoi, Erd\\H{o}s, and Szemer\\'{e}di also proved that\\[g_5(N)\\asymp \\log N\\]and\\[g_6(N)\\asymp N^{1/2}.\\]In general they proved that\\[g_k(N) \\ll_k N^{1-2^{-k}}\\]and for every $\\epsilon>0$ if $k$ is sufficiently large then\\[g_k(N) > N^{1-\\epsilon}.\\]As an example, taking $A$ to be the set of all odd integers and the powers of $2$ shows that $g_5(N)\\gg \\log N$.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

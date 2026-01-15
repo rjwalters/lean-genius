@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1090",
+  "title": "Erdős Problem #1090",
+  "slug": "erdos-1090",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Does there exist a finite set ... such that, in any ...-colouring of ..., there exists a line which contains at leas...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1090",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1090Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1090,
+    "erdosUrl": "https://erdosproblems.com/1090",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1090 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 3$. Does there exist a finite set $A\\subset \\mathbb{R}^2$ such that, in any $2$-colouring of $A$, there exists a line which contains at least $k$ points from $A$, and all the points of $A$ on the line have the same colour?\n\n\n\nErd\\H{o}s \\cite{Er75f} says Graham and Selfridge proved the answer is yes when $k=3$.\n\nHunter has observed that, for sufficiently large $n$, a generic projection of $[k]^n$ into $\\mathbb{R}^2$ has this property, by the Hales-Jewett theorem.\n\n\n\n\nReferences\n\n\n[Er75f] Erd\\H{o}s, Paul, On some problems of elementary and combinatorial geometry. Ann. Mat. Pura Appl. (4) (1975), 99-108.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

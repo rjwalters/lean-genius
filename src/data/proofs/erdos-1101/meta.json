@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1101",
+  "title": "Erdős Problem #1101",
+  "slug": "erdos-1101",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a sequence of integers such that ... for all ... and ... then let ... be the sequence of integers which are not div...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1101",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1101Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1101,
+    "erdosUrl": "https://erdosproblems.com/1101",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1101 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $u=\\{u_1<u_2<\\cdots\\}$ is a sequence of integers such that $(u_i,u_j)=1$ for all $i\\neq j$ and $\\sum \\frac{1}{u_i}<\\infty$ then let $\\{a_1<a_2<\\cdots\\}$ be the sequence of integers which are not divisible by any of the $u_i$. For any $x$ define $t_x$ by\\[u_1\\cdots u_{t_x}\\leq x< u_1\\cdots u_{t_x}u_{t_x+1}.\\]We call such a sequence $u_i$ good if, for all $\\epsilon>0$, if $x$ is sufficiently large then\\[\\max_{a_k<x} (a_{k+1}-a_k) < (1+\\epsilon)t_x \\prod_{i}\\left(1-\\frac{1}{u_i}\\right)^{-1}.\\]Is there a good sequence such that $u_n< n^{O(1)}$? Is there a good sequence such that $u_n\\leq e^{o(n)}$?\n\n\n\nErd\\H{o}s \\cite{Er81h} believed the answer to the first question is no and the second question is yes. He proved the existence of some good sequence (in which all the $u_i$ are primes).\n\nAn easy sieve argument proves that we always have, for any sequence $u$ with those properties,\\[\\max_{a_k<x} (a_{k+1}-a_k)> (1+o(1))t_x \\prod_{i}\\left(1-\\frac{1}{u_i}\\right)^{-1}.\\]The strong form of [208] is asking whether if $u_i=p_i^2$, the sequence of prime squares, is good.\n\n\n\n\nReferences\n\n\n[Er81h] Erd\\H{o}s, P., Some problems and results on additive and multiplicative\nnumber theory. Analytic number theory (Philadelphia, Pa., 1980) (1981), 171-182.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

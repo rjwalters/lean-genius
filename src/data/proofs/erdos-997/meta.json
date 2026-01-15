@@ -1,0 +1,33 @@
+{
+  "id": "erdos-997",
+  "title": "Erdős Problem #997",
+  "slug": "erdos-997",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall ... well-distributed if, for every ..., if ... is sufficiently large then, for all ... and intervals ...,\\[\\lvert \\# \\{ ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/997",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos997Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 997,
+    "erdosUrl": "https://erdosproblems.com/997",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #997 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall $x_1,x_2,\\ldots \\in (0,1)$ well-distributed if, for every $\\epsilon>0$, if $k$ is sufficiently large then, for all $n>0$ and intervals $I\\subseteq [0,1]$,\\[\\lvert \\# \\{ n<m\\leq n+k : x_m\\in I\\} - \\lvert I\\rvert k\\rvert < \\epsilon k.\\]Is it true that, for every $\\alpha$, the sequence $\\{ \\alpha p_n\\}$ is not well-distributed, if $p_n$ is the sequence of primes?\n\n\n\nThe notion of a well-distributed sequence was introduced by Hlawka and Petersen \\cite{Hl55}.\n\nErd\\H{o}s proved that, if $n_k$ is a lacunary sequence, then the sequence $\\{ \\alpha n_k\\}$ is not well-distributed for almost all $\\alpha$.\n\nHe also claimed in \\cite{Er64b} to have proved that there exists an irrational $\\alpha$ for which $\\{\\alpha p_n\\}$ is not well-distributed. He later retracted this claim in \\cite{Er85e}, saying \"The theorem is no doubt correct and perhaps will not be difficult to prove but I never was able to reconstruct my 'proof' which perhaps never existed .\"\n\nThe existence of such an $\\alpha$ was established by Champagne, Le, Liu, and Wooley \\cite{CLLW24}.\n\n\n\n\nReferences\n\n\n[CLLW24] J. Champagne, T. Le, Y.-R. Liu, and T. D. Wooley, Well-distribution modulo one and the primes. arXiv:2406.19491 (2024).\n\n[Er64b] Erd\\H{o}s, P., Problems and results on diophantine approximations. Compositio Math. (1964), 52-65.\n\n[Er85e] Erd\\H{o}s, P., Some problems and results in number theory. Number theory and combinatorics. Japan 1984 (Tokyo,\nOkayama and Kyoto, 1984) (1985), 65-87.\n\n[Hl55] Hlawka, Edmund, Zur formalen {T}heorie der {G}leichverteilung in kompakten\n{G}ruppen. Rend. Circ. Mat. Palermo (2) (1955), 33--47.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

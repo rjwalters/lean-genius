@@ -1,0 +1,33 @@
+{
+  "id": "erdos-993",
+  "title": "Erdős Problem #993",
+  "slug": "erdos-993",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe independent set sequence of any tree or forest is unimodal.\n\nIn other words, if ... counts the number of independent sets...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/993",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos993Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 993,
+    "erdosUrl": "https://erdosproblems.com/993",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #993 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe independent set sequence of any tree or forest is unimodal.\n\nIn other words, if $i_k(G)$ counts the number of independent sets of vertices of size $k$ in a graph $G$, and $T$ is any tree or forest, then for some $m\\geq 0$\n$$i_{0}(T)\\leq i_{1}(T)\\leq\\cdots\\leq i_{m}(T)\\geq i_{m+1}(T)\\geq i_{m+2}(T)\\geq\\cdots.$$\n\n\n\nA question of Alavi, Erd\\H{o}s, Malde, and Schwenk \\cite{AEMS87}, who showed that this is false for general graphs $G$ (in fact every possible pattern of inequalities is achieved by some graph).\n\nThe sequence which counts the number of independent sets of edges of a given size was proved to be unimodal (for any graph) by Schwenk \\cite{Sc81}. In \\cite{AEMS87} they also ask whether every possible unimodal pattern of inequalities is achieved by some graph.\n\n\n\n\nReferences\n\n\n[AEMS87] No reference found.\n\n\n[Sc81] Schwenk, Allen J., On unimodal sequences of graphical invariants. J. Combin. Theory Ser. B (1981), 247--250.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

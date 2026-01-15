@@ -1,0 +1,33 @@
+{
+  "id": "erdos-784",
+  "title": "Erdős Problem #784",
+  "slug": "erdos-784",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Does there exist a ... (depending on ...) such that, for all sufficiently large ..., if ... has ... then\\[\\#\\{ m\\leq...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/784",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos784Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 784,
+    "erdosUrl": "https://erdosproblems.com/784",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #784 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $C>0$. Does there exist a $c>0$ (depending on $C$) such that, for all sufficiently large $x$, if $A\\subseteq [1,x]$ has $\\sum_{n\\in A}\\frac{1}{n}\\leq C$ then\\[\\#\\{ m\\leq x : a\\nmid m\\textrm{ for all }a\\in A\\}\\gg\\frac{x}{(\\log x)^c}?\\]\n\n\n\nAn example of Schinzel and Szekeres \\cite{ScSz59} shows that this would be best possible (up to the value of $c$).\n\nSee also [542].\n\nIn the comments jif has noted that the answer is trivially no for every $C\\geq 1$ with $A=\\{1\\}$. Presumably (as is usual in these kind of questions) the assumption that $1\\not\\in A$ is intended. jif also notes that a lower bound of $(1-C)x$ is trivial by the union bound if $0<C<1$.\n\nLet $H_C(x)$ be the minimum value of\\[\\#\\{ m\\leq x : a\\nmid m\\textrm{ for all }a\\in A\\}\\]as $A$ ranges over all subsets of $\\{2,\\ldots,\\lfloor x\\rfloor\\}$ with $\\sum_{n\\in A}\\frac{1}{n}\\leq C$, so that this question asks whether\\[H_C(x)\\gg \\frac{x}{(\\log x)^{O_C(1)}}\\]for all $C>0$.\n\nFor $C=1$ it is known that\\[H_1(x)\\asymp \\frac{x}{\\log x}.\\]The lower bound is due to Ruzsa \\cite{Ru82}, and the upper bound is due to Saias \\cite{Sa98}. More precise estimates (including a conjectured asymptotic formula of $\\sim c\\frac{x}{\\log x}$ for an explicit $c\\approx 0.878$) are given by Weingartner \\cite{We25}.\n\nFor fixed $C>1$ Ruzsa answered this question in the negative, and in fact\\[H_C(x)=x^{e^{1-C}+o(1)}.\\]This was improved by Weingartner \\cite{We25} who proved (for any fixed $C>1$)\\[H_C(x)\\asymp \\frac{x^{e^{1-C}}}{\\log x}.\\]Together these answer the given question (positively for $0<C\\leq 1$ and negatively for $C>1$).\n\n\n\n\nReferences\n\n\n[Ru82] Ruzsa, Imre Z., On the small sieve. {II}. {S}ifting by composite numbers. J. Number Theory (1982), 260--268.\n\n[Sa98] Saias, Eric, Applications des entiers \\`a{} diviseurs denses. Acta Arith. (1998), 225--240.\n\n[ScSz59] Schinzel, A. and Szekeres, G., Sur un probl\\`{e}me de M. Paul Erd\\H{o}s. Acta Sci. Math. (Szeged) (1959), 221-229.\n\n[We25] Weingartner, Andreas, The {S}chinzel-{S}zekeres function. Res. Number Theory (2025), Paper No. 63, 32.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1044",
+  "title": "Erdős Problem #1044",
+  "slug": "erdos-1044",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... where ... for all .... If ... is the maximum of the lengths of the boundaries of the connected components of\\[\\{ z: \\...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1044",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1044Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1044,
+    "erdosUrl": "https://erdosproblems.com/1044",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1044 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(z)=\\prod_{i=1}^n(z-z_i)\\in\\mathbb{C}[x]$ where $\\lvert z_i\\rvert\\leq 1$ for all $i$. If $\\Lambda(f)$ is the maximum of the lengths of the boundaries of the connected components of\\[\\{ z: \\lvert f(z)\\rvert<1\\}\\]then determine the infimum of $\\Lambda(f)$.\n\n\n\nA problem of Erd\\H{o}s, Herzog, and Piranian \\cite{EHP58}.\n\n\n\n\nReferences\n\n\n[EHP58] Erd\\H{o}s, P. and Herzog, F. and Piranian, G., Metric properties of polynomials. J. Analyse Math. (1958), 125-148.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

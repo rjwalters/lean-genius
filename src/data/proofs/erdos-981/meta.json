@@ -1,0 +1,33 @@
+{
+  "id": "erdos-981",
+  "title": "Erdős Problem #981",
+  "slug": "erdos-981",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be the smallest integer ... such that ... for all .... Prove that\\[\\sum_{p<x}f_\\epsilon(p)\\sim c_\\epsilon {\\l...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/981",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos981Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 981,
+    "erdosUrl": "https://erdosproblems.com/981",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #981 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\epsilon>0$ and $f_\\epsilon(p)$ be the smallest integer $m$ such that $\\sum_{n\\leq N}\n\\left(\\frac{n}{p}\\right)<\\epsilon N$ for all $N\\geq m$. Prove that\\[\\sum_{p<x}f_\\epsilon(p)\\sim c_\\epsilon \\frac{x}{\\log x}\\]for some $c_\\epsilon>0$.\n\n\n\nThis was proved by Elliott \\cite{El69}.\n\nAn earlier version of this problem on this site misstated the problem, defining $f_\\epsilon(p)$ instead as the smallest integer $m$ such that $\\sum_{n\\leq m}\\binom{n}{p}<\\epsilon m$ (thus a 'first-time' problem rather than the 'eventual-time' problem given above). An asymptotic for this alternate definition of $f_\\epsilon$ was proved by Tang and Zhang \\cite{TaZh25}.\n\n\n\n\nReferences\n\n\n[El69] Elliott, P. D. T. A., A conjecture of {E}rd\\H{o}s concerning character sums. Indag. Math. (1969), 164--171.\n\n[TaZh25] Q. Tang and H. Zhang, Average first-passage times for character sums. (2025).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

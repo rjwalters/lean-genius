@@ -1,0 +1,33 @@
+{
+  "id": "erdos-868",
+  "title": "Erdős Problem #868",
+  "slug": "erdos-868",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is an additive basis of order ..., and ... as ..., then must ... contain a minimal additive basis of order ...? (i.e. ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/868",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos868Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 868,
+    "erdosUrl": "https://erdosproblems.com/868",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #868 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $A$ is an additive basis of order $2$, and $1_A\\ast 1_A(n)\\to \\infty$ as $n\\to \\infty$, then must $A$ contain a minimal additive basis of order $2$? (i.e. such that deleting any element creates infinitely many $n\\not\\in A+A$)\n\nWhat if $1_A\\ast 1_A(n) >\\epsilon \\log n$ (for all large $n$, for arbitrary fixed $\\epsilon>0$)?\n\n\n\nA question of Erd\\H{o}s and Nathanson \\cite{ErNa79}, who proved that this is true if $1_A\\ast 1_A(n) > (\\log \\frac{4}{3})^{-1}\\log n$ for all large $n$.\n\nH\\\"{a}rtter \\cite{Ha56} and Nathanson \\cite{Na74} proved that there exist additive bases which do not contain any minimal additive bases.\n\nErd\\H{o}s and Nathanson \\cite{ErNa89} proved that, for any $t$, there exists $A$ such that $1_A\\ast 1_A(n)\\geq t$ for all large $n$ and yet $A$ does not contain a minimal asymptotic basis of order $2$.\n\nSee also [870].\n\n\n\n\nReferences\n\n\n[ErNa79] Erd\\H{o}s, Paul and Nathanson, Melvyn B., Systems of distinct representatives and minimal bases in\nadditive number theory. (1979), 89--107.\n\n[ErNa89] Erd\\H{o}s, Paul and Nathanson, Melvyn B., Additive bases with many representations. Acta Arith. (1989), 399--406.\n\n[Ha56] H\\\"{a}rtter, Erich, Ein Beitrag zur {T}heorie der {M}inimalbasen. J. Reine Angew. Math. (1956), 170--204.\n\n[Na74] Nathanson, Melvyn B., Minimal bases and maximal nonbases in additive number theory. J. Number Theory (1974), 324--333.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

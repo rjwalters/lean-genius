@@ -1,0 +1,33 @@
+{
+  "id": "erdos-758",
+  "title": "Erdős Problem #758",
+  "slug": "erdos-758",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe cochromatic number of ..., denoted by ..., is the minimum number of colours needed to colour the vertices of ... such tha...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/758",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos758Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 758,
+    "erdosUrl": "https://erdosproblems.com/758",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #758 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe cochromatic number of $G$, denoted by $\\zeta(G)$, is the minimum number of colours needed to colour the vertices of $G$ such that each colour class induces either a complete graph or empty graph. Let $z(n)$ be the maximum value of $\\zeta(G)$ over all graphs $G$ with $n$ vertices.\n\nDetermine $z(n)$ for small values of $z(n)$. In particular is it true that $z(12)=4$?\n\n\n\nA question of Erd\\H{o}s and Gimbel, who knew that $4\\leq z(12)\\leq 5$ and $5\\leq z(15)\\leq 6$. The equality $z(12)=4$ would follow from proving that if $G$ is a graph on $12$ vertices such that both $G$ and its complement are $K_4$-free then either $\\chi(G)\\leq 4$ or $\\chi(G^c)\\leq 4$.\n\nIn fact there do exist such graphs - Bhavik Mehta found computationally that there is exactly one (up to taking the complement) graph on $12$ vertices such that both $G$ and its complement are $K_4$-free with chromatic number $\\geq 5$. This graph was explicitly checked to have cochromatic number $4$, and hence this proves that indeed $z(12)=4$.\n\nThe values of $z(n)$ are now known for $1\\leq n\\leq 19$:\\[1,1,2,2,3,3,3,3,4,4,4,4,5,5,5,6,6,6,6.\\](The only significant difficulty here is proving $z(12)=4$ - the others follow from easy inductive arguments and the facts that $R(3)=6$ and $R(4)=18$.)\nIt is unknown whether $z(20)=6$ or $7$.\n\nGimbel \\cite{Gi86} has shown that $z(n) \\asymp \\frac{n}{\\log n}$.\n\n\n\n\nReferences\n\n\n[Gi86] Gimbel, John, Three extremal problems in cochromatic theory. Rostock. Math. Kolloq. (1986), 73-78.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

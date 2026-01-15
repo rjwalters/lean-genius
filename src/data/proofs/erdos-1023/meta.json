@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1023",
+  "title": "Erdős Problem #1023",
+  "slug": "erdos-1023",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal size of a family of subsets of ... such that no set in this family is the union of other members of th...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1023",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1023Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1023,
+    "erdosUrl": "https://erdosproblems.com/1023",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1023 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $F(n)$ be the maximal size of a family of subsets of $\\{1,\\ldots,n\\}$ such that no set in this family is the union of other members of the family. Is it true that there is a constant $c>0$ such that\\[F(n)\\sim c \\frac{2^n}{n^{1/2}}?\\]\n\n\n\nErd\\H{o}s and Kleitman proved in unpublished work that\\[F(n)\\asymp \\frac{2^n}{n^{1/2}}.\\](\\cite{Er71} has an exponent of $3/2$, but this is presumably a typo.)\n\nHunter observes in the comments that this follows from the solution to [447], which implies $F(n)\\sim \\binom{n}{n/2}$.\n\nIf we only rule out solutions to $A=B\\cup C$ (that is, forbid a set being the union of two other sets in the family) then this is the subject of [447].\n\n\n\n\nReferences\n\n\n[Er71] Erd\\H{o}s, P., Some unsolved problems in graph theory and combinatorial analysis. Combinatorial Mathematics and its Applications (Proc.\nConf., Oxford, 1969) (1971), 97-109.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

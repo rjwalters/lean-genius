@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1021",
+  "title": "Erdős Problem #1021",
+  "slug": "erdos-1021",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every ..., there is a constant ... such that\\[(n,G_k) \\ll n^{3/2-c_k},\\]where ... is the bipartite graph...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1021",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1021Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1021,
+    "erdosUrl": "https://erdosproblems.com/1021",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1021 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every $k\\geq 3$, there is a constant $c_k>0$ such that\\[\\mathrm{ex}(n,G_k) \\ll n^{3/2-c_k},\\]where $G_k$ is the bipartite graph between $\\{y_1,\\ldots,y_k\\}$ and $\\{z_1,\\ldots,z_{\\binom{k}{2}}\\}$, with each $z_j$ joined to a unique pair of $y_i$?\n\n\n\nA conjecture of Erd\\H{o}s and Simonovits, who proved (in unpublished work) that in such a result one must have $c_k\\to 0$ as $k\\to \\infty$. Erd\\H{o}s \\cite{Er71} could not even prove whether $\\mathrm{ex}(n,G_k)=o(n^{3/2})$.\n\nWhen $k=3$ the graph $G_3$ is the $6$-cycle $C_6$, for which Erd\\H{o}s \\cite{Er64c} and Bondy and Simonovits \\cite{BoSi74} proved $\\mathrm{ex}(n,C_6)\\ll n^{7/6}$ (see [572]).\n\nThe graph $G_k$ is the graph $H_k$ of [926] with the vertex $x$ omitted.\n\n\n\n\nReferences\n\n\n[BoSi74] Bondy, J. A. and Simonovits, M., Cycles of even length in graphs. J. Combinatorial Theory Ser. B (1974), 97-105.\n\n[Er64c] Erd\\H{o}s, P., Extremal problems in graph theory. Theory of Graphs and its Applications (Proc. Sympos. Smolenice, 1963) (1964), 29-36.\n\n[Er71] Erd\\H{o}s, P., Some unsolved problems in graph theory and combinatorial analysis. Combinatorial Mathematics and its Applications (Proc.\nConf., Oxford, 1969) (1971), 97-109.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

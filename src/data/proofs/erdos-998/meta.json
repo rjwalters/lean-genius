@@ -1,0 +1,33 @@
+{
+  "id": "erdos-998",
+  "title": "Erdős Problem #998",
+  "slug": "erdos-998",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an irrational number. Is it true that if, for all large ...,\\[\\#\\{ 1\\leq m\\leq n : \\{ \\alpha m\\} \\in [u,v)\\} = n(v...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/998",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos998Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 998,
+    "erdosUrl": "https://erdosproblems.com/998",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #998 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\alpha$ be an irrational number. Is it true that if, for all large $n$,\\[\\#\\{ 1\\leq m\\leq n : \\{ \\alpha m\\} \\in [u,v)\\} = n(v-u)+O(1)\\]then $u=\\{\\alpha k\\}$ and $v=\\{\\alpha \\ell\\}$ for some integers $k$ and $\\ell$?\n\n\n\nA problem of Erd\\H{o}s and Sz\\\"{u}sz. Hecke \\cite{He22} and Ostrowski (\\cite{Os27} and \\cite{Os30}) proved the converse.\n\nThis is true, and was proved by Kesten \\cite{Ke66}.\n\n\n\n\nReferences\n\n\n[He22] Hecke, E., \\\"Uber analytische {F}unktionen und die {V}erteilung von\n{Z}ahlen mod. eins. Abh. Math. Sem. Univ. Hamburg (1922), 54--76.\n\n[Ke66] Kesten, Harry, On a conjecture of {E}rd\\H{o}s and {S}z\\\"usz related to uniform\ndistribution {${\\rm mod}\\ 1$}. Acta Arith. (1966/67), 193--212.\n\n[Os27] Ostrowski, Alexander, Mathematische Miszellen. IX. Notiz zur Theorie der Diophantischen Approximationen. Jber. Deutsch. Math.-Verein. (1927), 178-180.\n\n[Os30] Ostrowski, Alexander, Mathematische Miszellen. XVI. Zur Theorie der linearen Diophantischen Approximationen. Jber. Deutsch. Math.-Verein. (1930), 34-46.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

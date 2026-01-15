@@ -1,0 +1,33 @@
+{
+  "id": "erdos-883",
+  "title": "Erdős Problem #883",
+  "slug": "erdos-883",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor ... let ... be the graph with vertex set ..., where two integers are joined by an edge if they are coprime.\n\nIs it true t...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/883",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos883Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 883,
+    "erdosUrl": "https://erdosproblems.com/883",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #883 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor $A\\subseteq \\{1,\\ldots,n\\}$ let $G(A)$ be the graph with vertex set $A$, where two integers are joined by an edge if they are coprime.\n\nIs it true that if\\[\\lvert A\\rvert >\\lfloor\\tfrac{n}{2}\\rfloor+\\lfloor\\tfrac{n}{3}\\rfloor-\\lfloor\\tfrac{n}{6}\\rfloor\\]then $G(A)$ contains all odd cycles of length $\\leq \\frac{n}{3}+1$?\n\nIs it true that, for every $\\ell\\geq 1$, if $n$ is sufficiently large and\\[\\lvert A\\rvert >\\lfloor\\tfrac{n}{2}\\rfloor+\\lfloor\\tfrac{n}{3}\\rfloor-\\lfloor\\tfrac{n}{6}\\rfloor\\]then $G(A)$ must contain a complete $(1,\\ell,\\ell)$ triparite graph on $2\\ell+1$ vertices?\n\n\n\nA problem of Erd\\H{o}s and S\\'{a}rk\\H{o}zy \\cite{ErSa97}, who prove that if\\[\\lvert A\\rvert >\\lfloor\\tfrac{n}{2}\\rfloor+\\lfloor\\tfrac{n}{3}\\rfloor-\\lfloor\\tfrac{n}{6}\\rfloor\\]then $G(A)$ contains all odd cycles of length $\\leq cn$ for some constant $c>0$.\n\nThis threshold is the best possible, since one could take $A$ to be the set of $m\\leq n$ which are divisible by either $2$ or $3$, in which case $G(A)$ contains no triangles.\n\nThe second question was solved by S\\'{a}rk\\\"{o}zy \\cite{Sa99} who proved that, for large $n$, if $\\lvert A\\rvert$ exceeds the given threshold then $G(A)$ contains a complete $(1,\\ell,\\ell)$ triparite graph with\\[\\ell \\gg \\frac{\\log n}{\\log\\log n}.\\]\n\n\n\n\nReferences\n\n\n[ErSa97] Erd\\H{o}s, Paul and Sarkozy, Gabor N., On cycles in the coprime graph of integers. Electron. J. Combin. (1997), Research Paper 8, approx. 11.\n\n[Sa99] S\\'ark\\\"ozy, G\\'abor N., Complete tripartite subgraphs in the coprime graph of\nintegers. Discrete Math. (1999), 227--238.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

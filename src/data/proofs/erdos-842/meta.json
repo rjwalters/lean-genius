@@ -1,0 +1,33 @@
+{
+  "id": "erdos-842",
+  "title": "Erdős Problem #842",
+  "slug": "erdos-842",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph on ... vertices formed by taking ... vertex disjoint triangles and adding a Hamiltonian cycle (with all ne...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/842",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos842Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 842,
+    "erdosUrl": "https://erdosproblems.com/842",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #842 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph on $3n$ vertices formed by taking $n$ vertex disjoint triangles and adding a Hamiltonian cycle (with all new edges) between these vertices. Does $G$ have chromatic number at most $3$?\n\n\n\nThe answer is yes, proved by Fleischner and Stiebitz \\cite{FlSt92}.\n\n\n\n\nReferences\n\n\n[FlSt92] Fleischner, Herbert and Stiebitz, Michael, A solution to a colouring problem of P. Erd\\H{o}s. Discrete Math. (1992), 39--48.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

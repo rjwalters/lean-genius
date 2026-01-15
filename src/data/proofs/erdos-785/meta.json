@@ -1,0 +1,33 @@
+{
+  "id": "erdos-785",
+  "title": "Erdős Problem #785",
+  "slug": "erdos-785",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be infinite sets such that ... contains all large integers. Let ... and similarly for .... Is it true that if ... the...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/785",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos785Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 785,
+    "erdosUrl": "https://erdosproblems.com/785",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #785 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A,B\\subseteq \\mathbb{N}$ be infinite sets such that $A+B$ contains all large integers. Let $A(x)=\\lvert A\\cap [1,x]\\rvert$ and similarly for $B(x)$. Is it true that if $A(x)B(x)\\sim x$ then\\[A(x)B(x)-x\\to \\infty\\]as $x\\to \\infty$?\n\n\n\nA conjecture of Erd\\H{o}s and Danzer. Such sets $A$ and $B$ (with all large integers in $A+B$ and $A(x)B(x)\\sim x$) are called exact additive complements. Danzer \\cite{Da64} proved that exact additive complements exist (Hanani had earlier conjectured they do not exist).\n\nThe answer is yes, proved by S\\'{a}rk\\\"{o}zy and Szemer\\'{e}di \\cite{SaSz94}. Ruzsa \\cite{Ru17} has constructed, for any function $w(x)\\to \\infty$, such a pair of sets with\\[A(x)B(x)-x<w(x)\\]for infinitely many $x$.\n\n\n\n\nReferences\n\n\n[Da64] Danzer, L., \\\"{U}ber eine Frage von G. Hanani aus der additiven\nZahlentheorie. J. Reine Angew. Math. (1964), 392-394.\n\n[Ru17] Ruzsa, Imre Z., Exact additive complements. Q. J. Math. (2017), 227-235.\n\n[SaSz94] S\\'{a}rk\\\"ozy, A. and Szemer\\'{e}di, E., On a problem in additive number theory. Acta Math. Hungar. (1994), 237-245.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

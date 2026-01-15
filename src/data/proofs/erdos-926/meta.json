@@ -1,0 +1,33 @@
+{
+  "id": "erdos-926",
+  "title": "Erdős Problem #926",
+  "slug": "erdos-926",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is it true that\\[(n;H_k) \\ll_k n^{3/2},\\]where ... is the graph on vertices ..., where ... is adjacent to all ... an...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/926",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos926Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 926,
+    "erdosUrl": "https://erdosproblems.com/926",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #926 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 4$. Is it true that\\[\\mathrm{ex}(n;H_k) \\ll_k n^{3/2},\\]where $H_k$ is the graph on vertices $x,y_1,\\ldots,y_k,z_1,\\ldots,z_{\\binom{k}{2}}$, where $x$ is adjacent to all $y_i$ and each pair of $y_i,y_j$ is adjacent to a unique $z_i$.\n\n\n\nIt is trivial that $\\mathrm{ex}(n;H_k)\\gg n^{3/2}$ since $H_k$ contians a $C_4$ for $k\\geq 3$. Erd\\H{o}s \\cite{Er71} claimed a proof for $k=3$.\n\nThe answer is yes, proved by F\\\"{u}redi \\cite{Fu91}, who proved that\\[\\mathrm{ex}(n;H_k) \\ll (kn)^{3/2}.\\]This was improved to\\[\\mathrm{ex}(n;H_k) \\ll kn^{3/2}\\]by Alon, Krivelevich, and Sudakov \\cite{AKS03}.\n\nSince each $H_k$ is 2-degenerate this is a special case of [146].\n\nThe extremal number of the graph $H_k$ with the vertex $x$ omitted is the subject of [1021].\n\n\n\n\nReferences\n\n\n[AKS03] Alon, Noga and Krivelevich, Michael and Sudakov, Benny, Tur\\'{a}n numbers of bipartite graphs and related\nRamsey-type questions. Combin. Probab. Comput. (2003), 477-494.\n\n[Er71] Erd\\H{o}s, P., Some unsolved problems in graph theory and combinatorial analysis. Combinatorial Mathematics and its Applications (Proc.\nConf., Oxford, 1969) (1971), 97-109.\n\n[Fu91] F\\\"{u}redi, Zolt\\'an, On a {T}ur\\'an type problem of {E}rd\\H{o}s. Combinatorica (1991), 75--79.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

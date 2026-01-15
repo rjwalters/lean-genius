@@ -1,0 +1,33 @@
+{
+  "id": "erdos-988",
+  "title": "Erdős Problem #988",
+  "slug": "erdos-988",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a subset of the unit sphere then define the discrepancy\\[D(P) = \\max_C \\lvert \\lvert C\\cap P\\rvert - \\alpha_C \\lver...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/988",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos988Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 988,
+    "erdosUrl": "https://erdosproblems.com/988",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #988 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $P\\subseteq S^2$ is a subset of the unit sphere then define the discrepancy\\[D(P) = \\max_C \\lvert \\lvert C\\cap P\\rvert - \\alpha_C \\lvert P\\rvert \\rvert,\\]where the maximum is taken over all spherical caps $C$, and $\\alpha_C$ is the appropriately normalised measure of $C$.\n\nIs it true that\\[\\min_{\\lvert P\\rvert=n}D(P)\\to \\infty\\]as $n\\to \\infty$?\n\n\n\nRoth \\cite{Ro54} proved that the answer is yes if we replace the sphere by a square.\n\nThis is true, and was proved (in any number of dimensions) by Schmidt \\cite{Sc69b}.\n\n\n\n\nReferences\n\n\n[Ro54] Roth, K. F., On irregularities of distribution. Mathematika (1954), 73--79.\n\n[Sc69b] Schmidt, Wolfgang M., Irregularities of distribution. {IV}. Invent. Math. (1969), 55--82.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

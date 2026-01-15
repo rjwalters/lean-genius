@@ -1,0 +1,33 @@
+{
+  "id": "erdos-859",
+  "title": "Erdős Problem #859",
+  "slug": "erdos-859",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... be the density of the set of integers ... for which ... can be represented as the sum of distinct divisor...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/859",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos859Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 859,
+    "erdosUrl": "https://erdosproblems.com/859",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #859 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $t\\geq 1$ and let $d_t$ be the density of the set of integers $n\\in\\mathbb{N}$ for which $t$ can be represented as the sum of distinct divisors of $n$.\n\nDo there exist constants $c_1,c_2>0$ such that\\[d_t \\sim \\frac{c_1}{(\\log t)^{c_2}}\\]as $t\\to \\infty$?\n\n\n\nErd\\H{o}s \\cite{Er70} proved that $d_t$ always exists, and that there exist some constants $c_3,c_4>0$ such that\\[\\frac{1}{(\\log t)^{c_3}} < d_t < \\frac{1}{(\\log t)^{c_4}}.\\]\n\n\n\n\nReferences\n\n\n[Er70] Erd\\H{o}s, Paul, Some extremal problems in combinatorial number theory. Mathematical Essays Dedicated to A. J. Macintyre (1970), 123-133.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-974",
+  "title": "Erdős Problem #974",
+  "slug": "erdos-974",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence such that .... Suppose that the sequence of\\[s_k=\\sum_{1\\leq i\\leq n}z_i^k\\]contains infinitely many .....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/974",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos974Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 974,
+    "erdosUrl": "https://erdosproblems.com/974",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #974 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $z_1,\\ldots,z_n\\in \\mathbb{C}$ be a sequence such that $z_1=1$. Suppose that the sequence of\\[s_k=\\sum_{1\\leq i\\leq n}z_i^k\\]contains infinitely many $(n-1)$-tuples of consecutive values of $s_k$ which are all $0$. Then (essentially)\\[z_j=e(j/n),\\]where $e(x)=e^{2\\pi ix}$.\n\n\n\nA conjecture of Tur\\'{a}n. Erd\\H{o}s speculates that this may be true if there are two distinct $(n-1)$-tuples of consecutive values of $s_k$ which are $0$. He does not elaborate on what the 'essentially' may mean precisely.\n\nThis is true (in the stronger form with only two such tuples) - in fact if $n$ is odd then the $z_i$ must be exactly the $n$th roots of unity, and if $n$ is even they must be the vertices of two regular $(n/2)$-gons with the same circumscribed circle centred at the origin. This was first proved by Tijdeman \\cite{Ti66}. An independent proof of this was given in the comments section by Hu, Tang, and Zhang.\n\n\n\n\nReferences\n\n\n[Ti66] Tijdeman, R., On a conjecture of {T}ur\\'an and {E}rd\\H{o}s. Indag. Math. (1966), 374--383.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

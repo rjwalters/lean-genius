@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1000",
+  "title": "Erdős Problem #1000",
+  "slug": "erdos-1000",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence of integers, and let ... count the number of ... such that the fraction ... does not have den...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1000",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1000Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1000,
+    "erdosUrl": "https://erdosproblems.com/1000",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1000 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{n_1<n_2<\\cdots\\}$ be an infinite sequence of integers, and let $\\phi_A(k)$ count the number of $1\\leq m\\leq n_k$ such that the fraction $\\frac{m}{n_k}$ does not have denominator $n_j$ for $j<k$ when written in lowest form; equivalently,\\[\\frac{n_k}{(m,n_k)}\\neq n_j\\]for all $1\\leq j<k$.\n\nIs there a sequence $A$ such that\\[\\lim_{N\\to \\infty}\\frac{1}{N}\\sum_{k\\leq N}\\frac{\\phi_A(k)}{n_k}=0?\\]\n\n\n\nIt is trivial that $\\phi_A(k)\\geq \\phi(n_k)$, where $\\phi$ is the Euler totient function. Equality is achieved when $A=\\mathbb{N}$.\n\nThe study of $\\phi_A$ was introduced by Cassels \\cite{Ca50b}, who proved that there exist sequences such that\\[\\liminf_{N\\to \\infty}\\frac{1}{N}\\sum_{k\\leq N}\\frac{\\phi_A(k)}{n_k}=0.\\]Cassels proved that the property of divergence of $\\sum_k \\frac{f(n_k)}{k}$ implying, for almost all $\\alpha$, \\[\\left\\lvert \\alpha-\\frac{m_k}{n_k}\\right\\rvert < \\frac{f(n_k)}{n_k^2},\\]is equivalent to the above $\\liminf$ being $>0$.\n\nErd\\H{o}s \\cite{Er64b} believed that a sequence with the property in the question does not exist. He could only prove that the limit of $\\frac{\\phi_A(k)}{n_k}$ as $k\\to \\infty$ cannot be $0$.\n\nIn fact he proved that if $\\liminf \\frac{\\phi_A(k)}{n_k}=0$ then $\\limsup \\frac{\\phi_A(k)}{n_k}=1$. Indeed, the hypothesis implies that for any $\\epsilon>0$ there are arbitrarily large $k$ such that $\\phi(n_k)<\\epsilon n_k$, and hence there are arbitrarily large primes $p$ such that $p$ divides some $n_i\\in A$. If $n_k$ is minimal such that $p\\mid n_k$ then every $1\\leq m\\leq n_k$ not divisible by $p$ has the required property, and hence $\\phi_A(k)/n_k\\geq 1-\\frac{1}{p}$.\n\nThis was solved by Haight \\cite{Ha} who proved that such a sequence does exist (contrary to Erd\\H{o}s' expectations).\n\n\n\n\nReferences\n\n\n[Ca50b] Cassels, J. W. S., Some metrical theorems in {D}iophantine approximation. {I}. Proc. Cambridge Philos. Soc. (1950), 209--218.\n\n[Er64b] Erd\\H{o}s, P., Problems and results on diophantine approximations. Compositio Math. (1964), 52-65.\n\n[Ha] Haight, J. A., Metric Diophantine approximation and related topics. PhD thesis ().\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

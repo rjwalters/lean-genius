@@ -1,0 +1,33 @@
+{
+  "id": "erdos-872",
+  "title": "Erdős Problem #872",
+  "slug": "erdos-872",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nConsider the two-player game in which players alternately choose integers from ... to be included in some set ... (the same s...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/872",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos872Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 872,
+    "erdosUrl": "https://erdosproblems.com/872",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #872 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nConsider the two-player game in which players alternately choose integers from $\\{2,3,\\ldots,n\\}$ to be included in some set $A$ (the same set for both players) such that no $a\\mid b$ for $a\\neq b\\in A$.\n\nThe game ends when no legal move is possible. One player wants the game to last as long as possible, the other wants the game to end quickly. How long can the game be guaranteed to last for?\n\nAt least $\\epsilon n$ moves? (For $\\epsilon>0$ and $n$ sufficiently large.) At least $(1-\\epsilon)\\frac{n}{2}$ moves?\n\n\n\nA number theoretic variant of a combinatorial game of Hajnal, in which players alternately add edges to a graph while keeping it triangle-free. This game must trivially end in at most $n^2/4$ moves, and F\\\"{u}redi and Seress \\cite{FuSe91} proved that it can be guaranteed to last for $\\gg n\\log n$ moves. Bir\\'{o}, Horn, and Wildstrom \\cite{BPW16} proved that it must end in at most $(\\frac{26}{121}+o(1))n^2$ moves.\n\nThis type of game is known as a saturation game.\n\nErd\\H{o}s does not specify which player goes first, which may result in different answers.\n\n\n\n\nReferences\n\n\n[BPW16] Bir\\'{o}, Csaba and Horn, Paul and Wildstrom, D. Jacob, An upper bound on the extremal version of Hajnal's\ntriangle-free game. Discrete Appl. Math. (2016), 20--28.\n\n[FuSe91] F\\\"{u}redi, Zolt\\'{a}n and Reimer, Dave and Seress, \\'{A}kos, Hajnal's triangle-free game and extremal graph problems. Congr. Numer. (1991), 123--128.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

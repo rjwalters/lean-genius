@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1089",
+  "title": "Erdős Problem #1089",
+  "slug": "erdos-1089",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that every collection of ... points in ... determines at least ... many distinct distances. Estimate ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1089",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1089Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1089,
+    "erdosUrl": "https://erdosproblems.com/1089",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1089 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $g_d(n)$ be minimal such that every collection of $g_d(n)$ points in $\\mathbb{R}^d$ determines at least $n$ many distinct distances. Estimate $g_d(n)$. In particular, does\\[\\lim_{d\\to \\infty}\\frac{g_d(n)}{d^{n-1}}\\]exist?\n\n\n\nA question of Kelly. Erd\\H{o}s \\cite{Er75f} writes it is 'easy' to see that $g_d(n)\\gg d^{n-1}$. Erd\\H{o}s and Straus proved (in unpublished work mentioned in \\cite{Er75f}) that\\[g_d(n) \\leq c^{d^{1-b_n}}\\]for some constants $c>0$ and $b_n>0$.\n\nIt is trivial that $g_1(3)=4$, and easy to see that $g_2(3)=6$. Croft \\cite{Cr62} proved $g_3(3)=7$. The vertices of a $d$-dimensional cube demonstrate that\\[g_d(d+1)>2^d.\\]The function $g_d(n)$ is essentially the inverse of the function $f_d(n)$ considered in [1083] - with our definitions, $g_d(n)>m$ if and only if $f_d(m)<n$. The emphasis in this problem is, however, on the behaviour for fixed $n$ as $d\\to\\infty$.\n\n\n\n\n\nReferences\n\n\n[Cr62] Croft, H. T., $9$-point and $7$-point configurations in $3$-space. Proc. London Math. Soc. (3) (1962), 400-424.\n\n[Er75f] Erd\\H{o}s, Paul, On some problems of elementary and combinatorial geometry. Ann. Mat. Pura Appl. (4) (1975), 99-108.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

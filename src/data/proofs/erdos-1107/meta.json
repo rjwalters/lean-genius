@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1107",
+  "title": "Erdős Problem #1107",
+  "slug": "erdos-1107",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... A number ... is ...-powerful if for every prime ... which divides ... we have .... Is every large integer the sum of...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1107",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1107Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1107,
+    "erdosUrl": "https://erdosproblems.com/1107",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1107 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 2$. A number $n$ is $r$-powerful if for every prime $p$ which divides $n$ we have $p^r\\mid n$. Is every large integer the sum of at most $r+1$ many $r$-powerful numbers?\n\n\n\nGiven in the 1986 Oberwolfach problem book as a problem of Erd\\H{o}s and Ivi\\'{c}.\n\nThis is true when $r=2$, as proved by Heath-Brown \\cite{He88} (see [941]).\n\nSee [940] for the problem of which integers are the sum of at most $r$ many $r$-powerful numbers.\n\n\n\n\nReferences\n\n\n[He88] Heath-Brown, D. R., Ternary quadratic forms and sums of three square-full numbers. (1988), 137--163.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-748",
+  "title": "Erdős Problem #748",
+  "slug": "erdos-748",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of sum-free ..., i.e. ... contains no solutions to ... with .... Is it true that\\[f(n)=2^{(1+o(1)){2...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/748",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos748Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 748,
+    "erdosUrl": "https://erdosproblems.com/748",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #748 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ count the number of sum-free $A\\subseteq \\{1,\\ldots,n\\}$, i.e. $A$ contains no solutions to $a=b+c$ with $a,b,c\\in A$. Is it true that\\[f(n)=2^{(1+o(1))\\frac{n}{2}}?\\]\n\n\n\nThe Cameron-Erd\\H{os conjecture}. It is trivial to see that $f(n) \\geq 2^{\\frac{n}{2}}$, considering all subsets of $[n/2,n]$.\n\nThis is true, and in fact $f(n) \\ll 2^{n/2}$, which was proved independently by Green \\cite{Gr04} and Sapozhenko \\cite{Sa03}. In fact, both papers prove the stronger asymptotic $f(n) \\sim c_n 2^{n/2}$, where $c_n$ takes on one of two values depending on the parity of $n$.\n\nSee [877] for the maximal case.\n\n\n\n\nReferences\n\n\n[Gr04] Green, Ben, The Cameron-Erd\\H{o}s conjecture. Bull. London Math. Soc. (2004), 769-778.\n\n[Sa03] Sapozhenko, A. A., The Cameron-Erd\\H{o}s conjecture. Dokl. Akad. Nauk (2003), 749-752.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

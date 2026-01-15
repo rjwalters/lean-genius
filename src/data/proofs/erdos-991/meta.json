@@ -1,0 +1,33 @@
+{
+  "id": "erdos-991",
+  "title": "Erdős Problem #991",
+  "slug": "erdos-991",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose ... maximises\\[\\prod_{i<j}\\lvert w_i-w_j\\rvert\\]over all possible sets of size ....\n\nIs it true that\\[\\max_C\\lvert \\l...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/991",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos991Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 991,
+    "erdosUrl": "https://erdosproblems.com/991",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #991 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose $A=\\{w_1,\\ldots,w_n\\}\\subset S^2$ maximises\\[\\prod_{i<j}\\lvert w_i-w_j\\rvert\\]over all possible sets of size $n$.\n\nIs it true that\\[\\max_C\\lvert \\lvert A\\cap C\\rvert - \\alpha_C n\\rvert =o(n),\\]where the maximum is taken over all spherical caps $C$ and $\\alpha_C$ is the area of $C$ (normalised so that the entire sphere has area $1$)?\n\n\n\nThis is certainly solved, although it is unclear exactly who to attribute this to. Brauchart \\cite{Br08} says that this qualitative result follows from 'classical potential theory', and proves a quantitative decay rate of\\[\\max_C\\lvert \\lvert A\\cap C\\rvert - \\alpha_C n\\rvert \\ll n^{3/4}.\\]Marzo and Mas \\cite{MaMa21} cite an improvement of $\\ll n^{2/3}$ due to Wolff in an unpublished manuscript, and themselves give a proof of $\\ll n^{2/3}$ (as a special case of a more general result).\n\nSee also [988].\n\n\n\n\n\nReferences\n\n\n[Br08] Brauchart, J. S., Optimal logarithmic energy points on the unit sphere. Math. Comp. (2008), 1599--1613.\n\n[MaMa21] Marzo, Jordi and Mas, Albert, Discrepancy of minimal {R}iesz energy points. Constr. Approx. (2021), 473--506.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

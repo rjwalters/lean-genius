@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1017",
+  "title": "Erdős Problem #1017",
+  "slug": "erdos-1017",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that every graph on ... vertices and ... edges can be partitioned into at most ... edge-disjoint complete gra...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1017",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1017Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1017,
+    "erdosUrl": "https://erdosproblems.com/1017",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1017 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n,k)$ be such that every graph on $n$ vertices and $k$ edges can be partitioned into at most $f(n,k)$ edge-disjoint complete graphs. Estimate $f(n,k)$ for $k>n^2/4$.\n\n\n\nThe function $f(n,k)$ is sometimes called the clique partition number.\n\nErd\\H{o}s, Goodman, and P\\'{o}sa \\cite{EGP66} proved that $f(n,k)\\leq n^2/4$ for all $k$ (and in fact the complete graphs can be taken to be edges and triangles), which is best possible in general, as witnessed for example by a complete bipartite graph. In \\cite{Er71} Erd\\H{o} asks vaguely whether this result can be 'sharpened' for $k>n^2/4$.\n\nLov\\'{a}sz \\cite{Lo68} proved that every graph on $n$ vertices and $k$ edges is the union of $\\binom{n}{2}-k+t$ complete graphs, where $t$ is maximal such that $t^2-t\\leq \\binom{n}{2}-k$, but without the assumption that the complete graphs are edge disjoint. Lov\\'{a}sz's result is sharp in many cases.\n\nIf $k>n^2/4$ and the graph contains no $K_4$ then this is equivalent to finding the minimum number of edge disjoint triangles. This special case was also asked about by Erd\\H{o}s. A complete answer was provided by Gy\\\"{o}ri and Keszegh \\cite{GyKe17}, who proved that every $K_4$-free graph with $n$ vertices and $\\lfloor n^2/4\\rfloor+m$ edges contins $m$ pairwise edge disjoint triangles.\n\nSee also [184] for an analogous problem decomposing into edges and cycles, and [583] for decomposing into paths. The clique partition problem for chordal graphs is the subject of [81].\n\n\n\n\nReferences\n\n\n[EGP66] Erd\\H{o}s, Paul and Goodman, A. W. and P\\'{o}sa, Lajos, The representation of a graph by set intersections. Canadian J. Math. (1966), 106-112.\n\n[Er71] Erd\\H{o}s, P., Some unsolved problems in graph theory and combinatorial analysis. Combinatorial Mathematics and its Applications (Proc.\nConf., Oxford, 1969) (1971), 97-109.\n\n[GyKe17] Gy\\H{o}ri, Ervin and Keszegh, Bal\\'azs, On the number of edge-disjoint triangles in {$K_4$}-free\ngraphs. Combinatorica (2017), 1113--1124.\n\n[Lo68] Lov\\'{a}sz, L., On covering of graphs. Theory of Graphs (Proc. Colloq., Tihany, 1966) (1968), 231-236.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

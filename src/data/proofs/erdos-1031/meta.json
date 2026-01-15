@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1031",
+  "title": "Erdős Problem #1031",
+  "slug": "erdos-1031",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph on ... vertices which contains no trivial (empty or complete) subgraph on ... many vertices, then must ... ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1031",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1031Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1031,
+    "erdosUrl": "https://erdosproblems.com/1031",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1031 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ is a graph on $n$ vertices which contains no trivial (empty or complete) subgraph on $\\geq 10\\log n$ many vertices, then must $G$ contain an induced non-trivial regular subgraph on $\\gg \\log n$ many vertices?\n\n\n\nA question of Erd\\H{o}s, Fajtlowicz, and Staton. Erd\\H{o}s \\cite{Er93} writes 'Perhaps very much more is true but we could not even prove this seemingly weak result'.\n\nBy Ramsey's theorem every graph on $n$ vertices contains a trivial subgraph on $\\gg \\log n$ many vertices.\n\nThis is true, and was proved by Pr\\\"{o}mel and R\\\"{o}dl \\cite{PrRo99}, in the strong sense that, for any $c>0$, if $G$ contains no trivial subgraph on $\\geq c\\log n$ vertices then $G$ contains all graphs with $O_c(\\log n)$ many vertices as induced subgraphs.\n\nSee also [82] for how large an induced regular subgraph a general graph must contain.\n\n\n\n\nReferences\n\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n[PrRo99] Pr\\\"omel, Hans J\\\"urgen and R\\\"odl, Vojt\\v ech, Non-{R}amsey graphs are {$c\\log n$}-universal. J. Combin. Theory Ser. A (1999), 379--384.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

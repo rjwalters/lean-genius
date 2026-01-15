@@ -1,0 +1,33 @@
+{
+  "id": "erdos-798",
+  "title": "Erdős Problem #798",
+  "slug": "erdos-798",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimum number of points in ... such that the ... lines determined by these points cover all points in ....\n\nE...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/798",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos798Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 798,
+    "erdosUrl": "https://erdosproblems.com/798",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #798 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $t(n)$ be the minimum number of points in $\\{1,\\ldots,n\\}^2$ such that the $\\binom{t}{2}$ lines determined by these points cover all points in $\\{1,\\ldots,n\\}^2$.\n\nEstimate $t(n)$. In particular, is it true that $t(n)=o(n)$?\n\n\n\nA problem of Erd\\H{o}s and Purdy, who proved $t(n) \\gg n^{2/3}$.\n\nResolved by Alon \\cite{Al91} who proved $t(n) \\ll n^{2/3}\\log n$.\n\n\n\n\nReferences\n\n\n[Al91] Alon, N., Economical coverings of sets of lattice points. Geom. Funct. Anal. (1991), 224-230.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1033",
+  "title": "Erdős Problem #1033",
+  "slug": "erdos-1033",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that every graph on ... vertices with ... many edges contains a triangle whose vertices have degrees summing ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1033",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1033Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1033,
+    "erdosUrl": "https://erdosproblems.com/1033",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1033 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h(n)$ be such that every graph on $n$ vertices with $>n^2/4$ many edges contains a triangle whose vertices have degrees summing to at least $h(n)$. Estimate $h(n)$. In particular, is it true that\\[h(n)\\geq (2(\\sqrt{3}-1)-o(1))n?\\]\n\n\n\nErd\\H{o}s and Laskar \\cite{ErLa85} proved\\[2(\\sqrt{3}-1)n \\geq h(n) \\geq (1+c)n\\]for some $c>0$. The lower bound was improved to $\\frac{21}{16}n$ by Fan \\cite{Fa88}.\n\n\n\n\nReferences\n\n\n[ErLa85] Erd\\H{o}s, Paul and Laskar, Renu, A note on the size of a chordal subgraph. Congr. Numer. (1985), 81--86.\n\n[Fa88] Fan, Genghua, Degree sum for a triangle in a graph. J. Graph Theory (1988), 249--263.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

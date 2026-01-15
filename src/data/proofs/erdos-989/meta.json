@@ -1,0 +1,33 @@
+{
+  "id": "erdos-989",
+  "title": "Erdős Problem #989",
+  "slug": "erdos-989",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is an infinite sequence then let\\[f(r)=\\max_C \\left\\lvert \\lvert A\\cap C\\rvert-\\pi r^2\\right\\rvert,\\]where the maximum...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/989",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos989Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 989,
+    "erdosUrl": "https://erdosproblems.com/989",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #989 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $A=\\{z_1,z_2,\\ldots \\}\\in \\mathbb{R}^2$ is an infinite sequence then let\\[f(r)=\\max_C \\left\\lvert \\lvert A\\cap C\\rvert-\\pi r^2\\right\\rvert,\\]where the maximum is taken over all circles $C$ of radius $r$.\n\nIs $f(r)$ unbounded for every $A$? How fast does $f(r)$ grow?\n\n\n\nThis was settled by Beck \\cite{Be87}, who proved that\\[f(r) \\gg r^{1/2}\\]for all $A$, and there exists $A$ such that\\[f(r) \\ll (r\\log r)^{1/2}.\\]\n\n\n\n\nReferences\n\n\n[Be87] Beck, J\\'ozsef, Irregularities of distribution. {I}. Acta Math. (1987), 1--49.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

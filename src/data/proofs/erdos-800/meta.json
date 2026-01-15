@@ -1,0 +1,33 @@
+{
+  "id": "erdos-800",
+  "title": "Erdős Problem #800",
+  "slug": "erdos-800",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph on ... vertices which has no two adjacent vertices of degree ... then\\[R(G)\\ll n,\\]where the implied consta...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/800",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos800Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 800,
+    "erdosUrl": "https://erdosproblems.com/800",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #800 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ is a graph on $n$ vertices which has no two adjacent vertices of degree $\\geq 3$ then\\[R(G)\\ll n,\\]where the implied constant is absolute.\n\n\n\nA problem of Burr and Erd\\H{o}s. Solved in the affirmative by Alon \\cite{Al94}. This is a special case of [163].\n\n\n\n\nReferences\n\n\n[Al94] Alon, Noga, Subdivided graphs have linear Ramsey numbers. J. Graph Theory (1994), 343-347.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

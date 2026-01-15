@@ -1,0 +1,33 @@
+{
+  "id": "erdos-773",
+  "title": "Erdős Problem #773",
+  "slug": "erdos-773",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest Sidon subset ...? Is it ...?\n\n\n\nA question of Alon and Erds , who proved ... is possible (via...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/773",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos773Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 773,
+    "erdosUrl": "https://erdosproblems.com/773",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #773 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest Sidon subset $A\\subseteq\\{1,2^2,\\ldots,N^2\\}$? Is it $N^{1-o(1)}$?\n\n\n\nA question of Alon and Erd\\H{o}s \\cite{AlEr85}, who proved $\\lvert A\\rvert \\geq N^{2/3-o(1)}$ is possible (via a random subset), and observed that\\[\\lvert A\\rvert \\ll \\frac{N}{(\\log N)^{1/4}},\\]since (as shown by Landau) the density of the sums of two squares decays like $(\\log N)^{-1/2}$. The lower bound was improved to\\[\\lvert A\\rvert \\gg N^{2/3}\\]by Lefmann and Thiele \\cite{LeTh95}.\n\n\n\n\nReferences\n\n\n[AlEr85] Alon, Noga and Erd\\H{o}s, P., An application of graph theory to additive number theory. European J. Combin. (1985), 201-203.\n\n[LeTh95] Lefmann, Hanno and Thiele, Torsten, Point sets with distinct distances. Combinatorica (1995), 379--408.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

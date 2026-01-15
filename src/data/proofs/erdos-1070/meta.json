@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1070",
+  "title": "Erdős Problem #1070",
+  "slug": "erdos-1070",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that, given any ... points in ..., there exist ... points such that no two are distance ... apart. Es...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1070",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1070Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1070,
+    "erdosUrl": "https://erdosproblems.com/1070",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1070 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be maximal such that, given any $n$ points in $\\mathbb{R}^2$, there exist $f(n)$ points such that no two are distance $1$ apart. Estimate $f(n)$. In particular, is it true that $f(n)\\geq n/4$?\n\n\n\nIn other words, estimate the minimal independence number of a unit distance graph with $n$ vertices. If $\\omega$ is the independence number and $\\chi$ is the chromatic number then $\\omega \\chi\\geq n$, and hence $f(n)\\geq n/\\chi$, where $\\chi$ is the answer to the Hadwiger-Nelson problem [508].\n\nThe Moser spindle shows $f(n)\\leq \\frac{2}{7}n\\approx 0.285n$. Larman and Rogers \\cite{LaRo72} noted that if $m_1$ is the supremum of the upper densities of measurable subsets of $\\mathbb{R}^2$ which have no unit distance pairs then\\[f(n)\\geq m_1n.\\]Croft \\cite{Cr67} gave the best-known lower bound of $m_1\\geq 0.22936$ and hence\\[0.22936n \\leq f(n) \\leq \\frac{2}{7}n\\approx 0.285n.\\]Ambrus, Csisz\\'{a}rik, Matolcsi, Varga, and Zs\\'{a}mboki \\cite{ACMVZ23} have proved that $m_1\\leq 0.247$, and hence this approach cannot achieve $f(n)\\geq n/4$. See [232] for more on $m_1$.\n\nIf we also insist that no two points are distance $<1$ apart then this is problem becomes [1066].\n\n\n\n\nReferences\n\n\n[ACMVZ23] G. Ambrus, A. Csisz\\'{a}rik, M. Matolcsi, D. Varga, and P. Zs\\'{a}mboki, The density of planar sets avoiding unit distances. arXiv:2207.14179 (2023).\n\n[Cr67] H. T. Croft, Incidence incidents. Eureka (1967), 22-26.\n\n[LaRo72] Larman, D. G. and Rogers, C. A., The realization of distances within sets in Euclidean space. Mathematika (1972), 1-24.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

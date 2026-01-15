@@ -1,0 +1,33 @@
+{
+  "id": "erdos-851",
+  "title": "Erdős Problem #851",
+  "slug": "erdos-851",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is there some ... such that the density of integers of the form ..., where ... and ... has at most ... prime divisor...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/851",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos851Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 851,
+    "erdosUrl": "https://erdosproblems.com/851",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #851 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\epsilon>0$. Is there some $r\\ll_\\epsilon 1$ such that the density of integers of the form $2^k+n$, where $k\\geq 0$ and $n$ has at most $r$ prime divisors, is at least $1-\\epsilon$?\n\n\n\nRomanoff \\cite{Ro34} proved that the set of integers of the form $2^k+p$ (where $p$ is prime) has positive lower density.\n\nSee also [205].\n\n\n\n\nReferences\n\n\n[Ro34] Romanoff, N. P., \\\"{U}ber einige S\\\"Atze der additiven Zahlentheorie. Math. Ann. (1934), 668-678.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

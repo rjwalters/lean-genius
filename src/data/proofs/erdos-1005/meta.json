@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1005",
+  "title": "Erdős Problem #1005",
+  "slug": "erdos-1005",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the Farey fractions of order .... Let ... be the largest integer such that if ... then ... and ... are similarly o...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1005",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1005Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1005,
+    "erdosUrl": "https://erdosproblems.com/1005",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1005 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\frac{a_1}{b_1},\\frac{a_2}{b_2},\\ldots$ be the Farey fractions of order $n\\geq 4$. Let $f(n)$ be the largest integer such that if $1\\leq k<l\\leq k+f(n)$ then $\\frac{a_k}{b_k}$ and $\\frac{a_l}{b_l}$ are similarly ordered - in other words,\\[(a_k-a_l)(b_k-b_l)\\geq 0.\\]Estimate $f(n)$ - in particular, is there a constant $c>0$ such that $f(n)=(c+o(1))n$ for all large $n$?\n\n\n\nThe function $f(n)$ was first considered by Mayer \\cite{Ma42}, who proved $f(n)\\to \\infty$ as $n\\to \\infty$. Erd\\H{o}s \\cite{Er43} proved $f(n)\\gg n$.\n\nvan Doorn \\cite{vD25b} has proved that\\[\\left(\\frac{1}{12}-o(1)\\right)n\\leq f(n) \\leq \\frac{1}{4}n+O(1),\\]and conjectures that the upper bound is optimal.\n\n\n\n\nReferences\n\n\n[Er43] Erd\\H{o}s, P., A note on {F}arey series. Quart. J. Math. Oxford Ser. (1943), 82--85.\n\n[Ma42] Mayer, A. E., A mean value theorem concerning {F}arey series. Quart. J. Math. Oxford Ser. (1942), 48--57.\n\n[vD25b] W. van Doorn, Improved bounds for the Mayer-Erd\\H{o}s phenomenon on similarly ordered Farey fractions. arXiv:2509.00121 (2025).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

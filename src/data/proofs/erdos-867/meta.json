@@ -1,0 +1,33 @@
+{
+  "id": "erdos-867",
+  "title": "Erdős Problem #867",
+  "slug": "erdos-867",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that if ... has no solutions to\\[a_i+a_{i+1}+\\cdots+a_j\\in A\\]then\\[\\lvert A\\rvert \\leq {2}+O(1)?\\]\n\n\n\nA finitary ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/867",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos867Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 867,
+    "erdosUrl": "https://erdosproblems.com/867",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #867 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that if $A=\\{a_1<\\cdots <a_t\\}\\subseteq \\{1,\\ldots,N\\}$ has no solutions to\\[a_i+a_{i+1}+\\cdots+a_j\\in A\\]then\\[\\lvert A\\rvert \\leq \\frac{N}{2}+O(1)?\\]\n\n\n\nA finitary version of [839]. Taking $A=(N/2,N]\\cap \\mathbb{N}$ shows $\\lvert A\\rvert \\geq N/2-O(1)$ is possible.\n\nAdenwalla has observed that\\[\\lvert A\\rvert \\leq (\\tfrac{2}{3}+o(1))N.\\]Indeed, if $\\lvert A\\cap [x,2x]\\rvert=t$ then there are $t-1$ distinct sums of consecutive pairs of elements in $(2x,4x]$, all of which are not in $A$ by assumption. It follows that\\[\\lvert A\\cap [x,4x]\\rvert \\leq t+(2x-(t-1))=2x+1.\\]It follows that\\[\\lvert A\\rvert \\leq \\sum_{i\\geq 1}\\lvert A\\cap [4^{-i}n, 4^{1-i}n]\\rvert \\leq \\frac{2}{3}n+O(\\log n).\\]In fact this problem is false. Freud \\cite{Fr93} constructed a sequence with density $\\geq 19/36$. The current best bounds are due to Coppersmith and Phillips \\cite{CoPh96}, who prove that the maximal size of such an $A$ satisfies\\[\\frac{13}{24}N -O(1)\\leq \\lvert A\\rvert \\leq \\left(\\frac{2}{3}-\\frac{1}{512}\\right)N+\\log N.\\]\n\n\n\n\nReferences\n\n\n[CoPh96] Coppersmith, Don and Phillips, Steven, On a question of {E}rd\\H{o}s on subsequence sums. SIAM J. Discrete Math. (1996), 173--177.\n\n[Fr93] R. Freud, Adding numbers - on a problem of P. Erd\\H{o}s. James Cook Mathematical Notes (1993), 6199-6202.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

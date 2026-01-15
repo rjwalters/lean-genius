@@ -1,0 +1,33 @@
+{
+  "id": "erdos-745",
+  "title": "Erdős Problem #745",
+  "slug": "erdos-745",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDescribe the size of the second largest component of the random graph on ... vertices, where each edge is included independen...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/745",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos745Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 745,
+    "erdosUrl": "https://erdosproblems.com/745",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #745 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDescribe the size of the second largest component of the random graph on $n$ vertices, where each edge is included independently with probability $1/n$.\n\n\n\nErd\\H{o}s believed that almost surely the second largest component has size $\\ll \\log n$. This is true, as proved by Koml\\'{o}s, Sulyok, and Szemer\\'{e}di \\cite{KSS80}.\n\n\n\n\nReferences\n\n\n[KSS80] Koml\\'{o}s, J. and Sulyok, M. and Szemer\\'{e}di, E., Second largest component in a random graph. Studia Sci. Math. Hungar. (1980), 391-395.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

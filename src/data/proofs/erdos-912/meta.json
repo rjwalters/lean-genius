@@ -1,0 +1,33 @@
+{
+  "id": "erdos-912",
+  "title": "Erdős Problem #912",
+  "slug": "erdos-912",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf\\[n! = \\prod_i p_i^{k_i}\\]is the factorisation into distinct primes then let ... count the number of distinct exponents ......",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/912",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos912Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 912,
+    "erdosUrl": "https://erdosproblems.com/912",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #912 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf\\[n! = \\prod_i p_i^{k_i}\\]is the factorisation into distinct primes then let $h(n)$ count the number of distinct exponents $k_i$.\n\nProve that there exists some $c>0$ such that\\[h(n) \\sim c \\left(\\frac{n}{\\log n}\\right)^{1/2}\\]as $n\\to \\infty$.\n\n\n\nA problem of Erd\\H{o}s and Selfridge, who proved (see \\cite{Er82c})\\[h(n) \\asymp \\left(\\frac{n}{\\log n}\\right)^{1/2}.\\]A heuristic of Tao using the Cram\\'{e}r model for the primes (detailed in the comments) suggests this is true with\\[c=\\sqrt{2\\pi}=2.506\\cdots.\\]\n\n\n\n\nReferences\n\n\n[Er82c] Erd\\H{o}s, P., Miscellaneous problems in number theory. Congr. Numer. (1982), 25-45.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

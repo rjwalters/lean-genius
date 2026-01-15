@@ -1,0 +1,34 @@
+{
+  "id": "erdos-1123",
+  "title": "Erdős Problem #1123",
+  "slug": "erdos-1123",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the Boolean algebra of sets of integers modulo sets of density ... (that is, in which two sets are equivalent if a...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1123",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1123Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1123,
+    "erdosUrl": "https://erdosproblems.com/1123",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$100"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1123 from erdosproblems.com. Originally offered with a prize of $100.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $B_1$ be the Boolean algebra of sets of integers modulo sets of density $0$ (that is, in which two sets are equivalent if and only if they differ by a set of density $0$) and let $B_2$ be the Boolean algebra of sets modulo sets of logarithmic density $0$.\n\nProve that $B_1$ and $B_2$ are not isomorphic.\n\n\n\nA question of Erd\\H{o}s and Ulam, who noted that the Boolean algebra modulo finite sets is not isomorphic to either of these two, because the former has no upper bound while the other two do.\n\nThey thought they had a proof of the main claim, but this was 'lost'. Erd\\H{o}s \\cite{Er81b} writes 'When I first visited Ulam in 1943 or 1944 in Madison we had the proof, then six months later we had forgotten the proof, and had to reconstruct it, so it seems that the proof should have been correct. Now the proof is gone and nobody can prove it. This problem should be settled; perhaps I should offer a hundred dollars for a proof (or a disproof) that these two Boolean algebras are not isomorphic. If it is trivial I well deserve to have to pay the hundred dollars.'\n\nIn fact Just and Krawczyk \\cite{JuKr84} proved, assuming the continuum hypothesis, that these two algebras are isomorphic. It is unclear whether this counts as a solution - in \\cite{JuKr84} they claim Erd\\H{o}s and Ulam asked about this only under the continuum hypothesis, but this is not mentioned in \\cite{Er81b}.\n\nOn the other hand, the question whether these two algebras are isomorphic appears in \\cite{VMR80} as Question 48, where it is attributed to Erd\\H{o}s, and there it is only asked about assuming the continuum hypothesis.\n\n\n\n\nReferences\n\n\n[Er81b] Erd\\H{o}s, P., My Scottish Book 'Problems'. The Scottish Book (1981), 27-35 (page numbers are given for the 2nd edition of The Scottish Book).\n\n[JuKr84] Just, Winfried and Krawczyk, Adam, On certain {B}oolean algebras {${\\scr P}(\\omega )/I$}. Trans. Amer. Math. Soc. (1984), 411--429.\n\n[VMR80] van Douwen, Eric K. and Monk, J. Donald and Rubin, Matatyahu, Some questions about {B}oolean algebras. Algebra Universalis (1980), 220--243.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

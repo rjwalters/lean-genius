@@ -1,0 +1,33 @@
+{
+  "id": "erdos-967",
+  "title": "Erdős Problem #967",
+  "slug": "erdos-967",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence of integers such that .... Is it true that, for every ...,\\[1+\\sum_{k}{a_k^{1+it}}\\neq 0?\\]\n\n\n\nA questi...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/967",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos967Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 967,
+    "erdosUrl": "https://erdosproblems.com/967",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #967 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $1<a_1<\\cdots $ be a sequence of integers such that $\\sum\\frac{1}{a_i}<\\infty$. Is it true that, for every $t\\in \\mathbb{R}$,\\[1+\\sum_{k}\\frac{1}{a_k^{1+it}}\\neq 0?\\]\n\n\n\nA question of Erd\\H{o}s and Ingham \\cite{ErIn64}. The simplest case they could not decide this question for was the finite sequence $\\{2,3,5\\}$.\n\nTheir interest in this problem arose from their proof that the statement that there are no such zeros is equivalent to the fact that, for any non-decreasing $f:\\mathbb{R}\\to \\mathbb{R}_{\\geq 0}$ which is bounded on every bounded interval and is $=0$ for $x<1$, the relationship\\[f(x)+\\sum_k f(x/a_k)=\\left(1+\\sum_k \\frac{1}{a_k}+o(1)\\right)x\\]implies $f(x)=(1+o(1))x$.\n\nA related question on MathOverflow concerns the vanishing of $2^{-1-it}+3^{-1-it}+5^{-1-it}$, and GH shows that the Four Exponentials conjecture implies this never vanishes.\n\nYip \\cite{Yi25} has proved that this is not always true - in fact, for any real $t\\neq 0$, there exists a sequence of integers $1<a_1<\\cdots$ such that $\\sum \\frac{1}{a_i}<\\infty$ and $1+\\sum_{k}\\frac{1}{a_k^{1+it}}=0$.\n\nIt remains open whether this is true for every finite sequence of integers.\n\n\n\n\nReferences\n\n\n[ErIn64] Erd\\H{o}s, P. and Ingham, A. E., Arithmetical {T}auberian theorems. Acta Arith. (1964), 341--356.\n\n[Yi25] F. Yip, On a problem of Erd\\H{o}s and Ingham. arXiv:2512.16528 (2025).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-815",
+  "title": "Erdős Problem #815",
+  "slug": "erdos-815",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be sufficiently large. Is it true that if ... is a graph with ... vertices and ... edges such that every prop...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/815",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos815Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 815,
+    "erdosUrl": "https://erdosproblems.com/815",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #815 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 3$ and $n$ be sufficiently large. Is it true that if $G$ is a graph with $n$ vertices and $2n-2$ edges such that every proper induced subgraph has minimum degree $\\leq 2$ then $G$ must contain a copy of $C_k$?\n\n\n\nIn \\cite{Er91} Erd\\H{o}s attributes this to himself and Hajnal, claiming they could prove it for $3\\leq k\\leq 6$, but it appears in an earlier paper of Erd\\H{o}s, Faudree, Gy\\'{a}rf\\'{a}s, and Schelp \\cite{EFGS88}, where they prove that such a graph on $n\\geq 5$ vertices contains cycles of length $3$, $4$, and $5$, and a cycle of length at least $\\lfloor \\log_2n\\rfloor$, and need not contain a cycle of length longer than $\\sqrt{n}$.\n\nSuch graphs are called degree $3$ critical. This conjecture was disproved by Narins, Pokrovskiy, and Szab\\'{o} \\cite{NPS17}, who proved that there are arbitrarily large such graphs with no cycle of length $23$.\n\nIt remains open whether this question has an affirmative answer if we restrict to even $k$.\n\n\n\n\nReferences\n\n\n[EFGS88] Erd\\H{o}s, P. and Faudree, R. and Gy\\'{a}rf\\'{a}s, A. and Schelp,\nR. H., Cycles in graphs without proper subgraphs of minimum degree\n{$3$}. Ars Combin. (1988), 195--201.\n\n[Er91] Erd\\\"{o}s, P., Problems and results in combinatorial analysis and combinatorial number theory. Graph theory, combinatorics, and applications, Vol. 1 (Kalamazoo, MI, 1988) (1991), 397-406.\n\n[NPS17] Narins, Lothar and Pokrovskiy, Alexey and Szab\\'{o}, Tibor, Graphs without proper subgraphs of minimum degree 3 and short\ncycles. Combinatorica (2017), 495--519.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

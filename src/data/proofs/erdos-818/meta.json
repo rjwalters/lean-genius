@@ -1,0 +1,33 @@
+{
+  "id": "erdos-818",
+  "title": "Erdős Problem #818",
+  "slug": "erdos-818",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a finite set of integers such that .... Is it true that\\[\\lvert AA\\rvert \\gg {(\\log \\lvert A\\rvert)^C}\\]for some c...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/818",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos818Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 818,
+    "erdosUrl": "https://erdosproblems.com/818",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #818 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A$ be a finite set of integers such that $\\lvert A+A\\rvert \\ll \\lvert A\\rvert$. Is it true that\\[\\lvert AA\\rvert \\gg \\frac{\\lvert A\\rvert^2}{(\\log \\lvert A\\rvert)^C}\\]for some constant $C>0$?\n\n\n\nThis was proved by Solymosi \\cite{So09d}, in the strong form\\[\\lvert AA\\rvert \\gg \\frac{\\lvert A\\rvert^2}{\\log \\lvert A\\rvert}.\\]See also [52].\n\n\n\n\nReferences\n\n\n[So09d] Solymosi, J\\'{o}zsef, Bounding multiplicative energy by the sumset. Adv. Math. (2009), 402-408.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

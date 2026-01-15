@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1066",
+  "title": "Erdős Problem #1066",
+  "slug": "erdos-1066",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph given by ... points in ..., where any two distinct points are at least distance ... apart, and we draw an ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1066",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1066Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1066,
+    "erdosUrl": "https://erdosproblems.com/1066",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1066 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph given by $n$ points in $\\mathbb{R}^2$, where any two distinct points are at least distance $1$ apart, and we draw an edge between two points if they are distance $1$ apart.\n\nLet $g(n)$ be maximal such that any such graph always has an independent set on at least $g(n)$ vertices. Estimate $g(n)$, or perhaps $\\lim \\frac{g(n)}{n}$.\n\n\n\nSuch graphs are always planar. Erd\\H{o}s initially thought that $g(n)=n/3$, but Chung and Graham, and independently Pach, gave a construction that shows $g(n)\\leq \\frac{6}{19}n$. Pach and Toth \\cite{PaTo96} improved this to $g(n)\\leq \\frac{5}{16}n$.\n\nPollack \\cite{Po85} noted that the Four colour theorem implies $g(n)\\geq n/4$, since the graph is planar. Pollack reports that Pach observed that this in for unit distance graphs the four colour theorem can be proved by a simple induction.\n\nThis lower bound has been improved to $\\frac{9}{35}n$ by Csizmadia \\cite{Cs98} and then $\\frac{8}{31}n$ by Swanepoel \\cite{Sw02}. The current record bounds are therefore\\[\\frac{8}{31}n \\approx 0.258n \\leq g(n) \\leq 0.3125n=\\frac{5}{16}n.\\]Pollack \\cite{Po85} also reports a letter from Erd\\H{o}s which poses the more general problem of, given $n$ points in $\\mathbb{R}^d$ with minimum distance $1$, let $g_d(n)$ be maximal such that there always exist at least $g_d(n)$ many points which have minimum distance $>1$. Is it true that $g_d(n) \\gg n/d$ in general? The upper bound $g_d(n) \\ll n/d$ is trivial, considering widely spaced unit simplices.\n\nSee [1070] for the general estimate of independence number of unit distance graphs.\n\n\n\n\nReferences\n\n\n[Cs98] Csizmadia, G., On the independence number of minimum distance graphs. Discrete Comput. Geom. (1998), 179--187.\n\n[PaTo96] Pach, J\\'anos and T\\'oth, G\\'{e}za, On the independence number of coin graphs. Geombinatorics (1996), 30--33.\n\n[Po85] Pollack, R., Increasing the minimum distance of a set of points. J. Combin. Theory Ser. A (1985), 450.\n\n[Sw02] Swanepoel, Konrad J., Independence numbers of planar contact graphs. Discrete Comput. Geom. (2002), 649--670.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

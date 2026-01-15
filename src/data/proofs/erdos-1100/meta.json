@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1100",
+  "title": "Erdős Problem #1100",
+  "slug": "erdos-1100",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... are the divisors of ..., then let ... count the number of ... for which ....\n\nIs it true that ... for almost all ...? ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1100",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1100Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1100,
+    "erdosUrl": "https://erdosproblems.com/1100",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1100 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $1=d_1<\\cdots<d_{\\tau(n)}=n$ are the divisors of $n$, then let $\\tau_\\perp(n)$ count the number of $i$ for which $(d_i,d_{i+1})=1$.\n\nIs it true that $\\tau_\\perp(n)/\\omega(n)\\to \\infty$ for almost all $n$? Is it true that\\[\\tau_\\perp(n)< \\exp((\\log n)^{o(1)})\\]for all $n$?\n\nLet\\[g(k) = \\max_{\\omega(n)=k}\\tau_\\perp(n),\\]where $\\omega(n)$ counts the number of distinct prime divisors of $n$, and $n$ is restricted to squarefree integers. Determine the growth of $g(k)$.\n\n\n\nThe function $\\tau_\\perp(n)$ was considered by Erd\\H{o}s and Hall \\cite{ErHa78}. It is trivial that $\\tau_\\perp(n)\\geq \\omega(n)$ (with equality for infinitely many $n$). Erd\\H{o}s and Hall prove, for all $\\epsilon>0$ and sufficiently large $x$,\\[\\max_{n<x} \\tau_\\perp(n) > \\exp((\\log\\log x)^{2-\\epsilon}).\\]Erd\\H{o}s and Simonovits (see \\cite{Er81h}) proved\\[(2^{1/2}+o(1))^k < g(k) < (2-c)^k\\]for some constant $c>0$.\n\n\n\n\nReferences\n\n\n[Er81h] Erd\\H{o}s, P., Some problems and results on additive and multiplicative\nnumber theory. Analytic number theory (Philadelphia, Pa., 1980) (1981), 171-182.\n\n[ErHa78] Erd\\H{o}s, P. and Hall, R. R., On some unconventional problems on the divisors of integers. J. Austral. Math. Soc. Ser. A (1978), 479--485.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

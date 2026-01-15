@@ -1,0 +1,33 @@
+{
+  "id": "erdos-781",
+  "title": "Erdős Problem #781",
+  "slug": "erdos-781",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimal ... such that any ...-colouring of ... contains a monochromatic ...-term descending wave: a sequence ....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/781",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos781Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 781,
+    "erdosUrl": "https://erdosproblems.com/781",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #781 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(k)$ be the minimal $n$ such that any $2$-colouring of $\\{1,\\ldots,n\\}$ contains a monochromatic $k$-term descending wave: a sequence $x_1<\\cdots <x_k$ such that, for $1<j<k$,\\[x_j \\geq \\frac{x_{j+1}+x_{j-1}}{2}.\\]Estimate $f(k)$. In particular is it true that $f(k)=k^2-k+1$ for all $k$?\n\n\n\nA question of Brown, Erd\\H{o}s, and Freedman \\cite{BEF90}, who proved\\[k^2-k+1\\leq f(k) \\leq \\frac{k^3-4k+9}{3}.\\]Resolved by Alon and Spencer \\cite{AlSp89} who proved that in fact $f(k) \\gg k^3$.\n\n\n\n\nReferences\n\n\n[AlSp89] Alon, N. and Spencer, Joel, Ascending waves. J. Combin. Theory Ser. A (1989), 275-287.\n\n[BEF90] Brown, T. C. and Erd\\H{o}s, P. and Freedman, A. R., Quasi-progressions and descending waves. J. Combin. Theory Ser. A (1990), 81-95.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

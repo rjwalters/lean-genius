@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1001",
+  "title": "Erdős Problem #1001",
+  "slug": "erdos-1001",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the measure of the set of those ... such that\\[\\left\\lvert \\alpha-{y}\\right\\rvert< {y^2}\\]for some ... and .... Do...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1001",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1001Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1001,
+    "erdosUrl": "https://erdosproblems.com/1001",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1001 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $S(N,A,c)$ be the measure of the set of those $\\alpha\\in (0,1)$ such that\\[\\left\\lvert \\alpha-\\frac{x}{y}\\right\\rvert< \\frac{A}{y^2}\\]for some $N\\leq y\\leq cN$ and $(x,y)=1$. Does\\[\\lim_{N\\to \\infty}S(N,A,c)=f(A,c)\\]exist? What is its explicit form?\n\n\n\nA problem of Erd\\H{o}s, Sz\\\"{u}sz, and Tur\\'{a}n \\cite{EST58}, who proved that\\[f(A,c)=\\frac{12 A\\log c}{\\pi^2}\\]when $0<A< \\frac{c}{1+c^2}$, and also that if $\\min(A,c)>10$ then $S(N,A,c)$ is bounded away from $0$ and $1$.\n\nThe existence of this limit was proved by Kesten and S\\'{o}s \\cite{KeSo66}, without a method to determine its value. Alternative, more explicit, proofs of the existence of this limit were provided independently by Boca \\cite{Bo08} and Xiong and Zaharescu \\cite{XiZa06}\n\n\n\n\nReferences\n\n\n[Bo08] Boca, Florin P., A problem of {E}rd\\H{o}s, {S}z\\\"usz and {T}ur\\'an concerning\n{D}iophantine approximations. Int. J. Number Theory (2008), 691--708.\n\n[EST58] Erd\\H{o}s, P. and Sz\\\"usz, P. and Tur\\'an, P., Remarks on the theory of diophantine approximation. Colloq. Math. (1958), 119--126.\n\n[KeSo66] Kesten, H. and S\\'os, V. T., On two problems of {E}rd\\H{o}s, {S}z\\\"usz and {T}ur\\'an\nconcerning diophantine approximations. Acta Arith. (1966/67), 183--192.\n\n[XiZa06] Xiong, Maosheng and Zaharescu, Alexandru, A problem of {E}rd\\H{o}s-{S}z\\\"usz-{T}ur\\'an on {D}iophantine\napproximation. Acta Arith. (2006), 163--177.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

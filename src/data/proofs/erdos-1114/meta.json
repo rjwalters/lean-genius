@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1114",
+  "title": "Erdős Problem #1114",
+  "slug": "erdos-1114",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a polynomial of degree ... whose roots ... are all real and form an arithmetic progression.\n\nThe differences betwe...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1114",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1114Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1114,
+    "erdosUrl": "https://erdosproblems.com/1114",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1114 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(x)\\in \\mathbb{R}[x]$ be a polynomial of degree $n$ whose roots $\\{a_0<\\cdots<a_n\\}$ are all real and form an arithmetic progression.\n\nThe differences between consecutive zeros of $f'(x)$, beginning from the midpoint of $(a_0,a_m)$ towards the endpoints, are monotonically increasing.\n\n\n\nAll the zeros of $f'(x)$ are all distinct real numbers in $(a_0,a_m)$ by Rolle's theorem.\n\nThis was proved by Balint \\cite{Ba60b}. Balint gives no source for the conjecture - presumably it was from Erd\\H{o}s in personal communication. Some generalisations of this were given by Lorch \\cite{Lo76}.\n\n\n\n\nReferences\n\n\n[Ba60b] B\\'alint, Elem\\'{e}r, Proof of a conjecture of {P}. {E}rd\\H{o}s. Mat. Lapok (1960), 33--40.\n\n[Lo76] Lorch, L., Some monotonicity properties of polynomials with equally\nspaced zeros. Acta Math. Acad. Sci. Hungar. (1976), 293--300.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

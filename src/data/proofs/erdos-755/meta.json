@@ -1,0 +1,33 @@
+{
+  "id": "erdos-755",
+  "title": "Erdős Problem #755",
+  "slug": "erdos-755",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe number of equilateral triangles of size ... formed by any set of ... points in ... is at most ....\n\n\n\nLet ... count the m...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/755",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos755Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 755,
+    "erdosUrl": "https://erdosproblems.com/755",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #755 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe number of equilateral triangles of size $1$ formed by any set of $n$ points in $\\mathbb{R}^6$ is at most $(\\frac{1}{27}+o(1))n^3$.\n\n\n\nLet $T_6^u(n)$ count the maximal number of equilateral triangles of size $1$ formed by $n$ points in $\\mathbb{R}^6$. The following construction (which \\cite{Er94b} attributes to Lenz, but appears in an earlier paper of Erd\\H{o}s and Purdy \\cite{ErPu75}) shows that\\[T_6^u(n)\\geq \\frac{n^3}{27}-O(n^2):\\]take three suitable orthogonal circles and take $n/3$ points on each of them which form $n/4$ inscribed squares.\n\nErd\\H{o}s believed this conjectured upper bound should hold even if we count equilateral triangles of any size.\n\nThis problem was solved in a strong form by Clemen, Dumitrescu, and Liu \\cite{CDL25b}, who in fact prove that if $T_6(n)$ is the maximal number of equilateral triangles of any size formed by $n$ points in $\\mathbb{R}^6$ then\\[T_6(n)=(\\tfrac{1}{27}+o(1))n^3.\\]Indeed, they give an exact formula for $T_d(n)$ for all even $d\\geq 6$ (and sufficiently large $n$).\n\nSee also [1086].\n\n\n\n\nReferences\n\n\n[CDL25b] F. Clemen, A. Dumitrescu, and D. Liu, The number of regular simplices in higher dimensions. arXiv:2507.19841 (2025).\n\n[Er94b] Erd\\H{o}s, Paul, Some problems in number theory, combinatorics and combinatorial geometry. Math. Pannon. (1994), 261-269.\n\n[ErPu75] Erd\\H{o}s, Paul and Purdy, George, Some extremal problems in geometry. {III}. (1975), 291--308.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

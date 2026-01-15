@@ -1,0 +1,33 @@
+{
+  "id": "erdos-796",
+  "title": "Erdős Problem #796",
+  "slug": "erdos-796",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... be the largest possible size of ... such that every ... has ... solutions to ... with ....\n\nIs it true th...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/796",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos796Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 796,
+    "erdosUrl": "https://erdosproblems.com/796",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #796 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$ and let $g_k(n)$ be the largest possible size of $A\\subseteq \\{1,\\ldots,n\\}$ such that every $m$ has $<k$ solutions to $m=a_1a_2$ with $a_1<a_2\\in A$.\n\nIs it true that\\[g_3(n)=\\frac{\\log\\log n}{\\log n}n+(c+o(1))\\frac{n}{(\\log n)^2}\\]for some constant $c$?\n\n\n\nErd\\H{o}s \\cite{Er64d} proved that if $2^{r-1}<k\\leq 2^r$ then\\[g_k(n) \\sim \\frac{(\\log\\log n)^{r-1}}{(r-1)!\\log n}n\\](which is the asymptotic count of those integers $\\leq n$ with $r$ distinct prime factors).\n\nIn particular the asymptotics of $g_k(n)$ are known; in \\cite{Er69b} Erd\\H{o}s discussed the second order terms, and this question is implicit (especially when compared to the explicit question [425] he asked on several occasions). For $k=3$ he could prove the existence of some $0<c_1\\leq c_2$ such that\\[\\frac{\\log\\log n}{\\log n}n+c_1\\frac{n}{(\\log n)^2}\\leq g_3(n)\\leq \\frac{\\log\\log n}{\\log n}n+c_2\\frac{n}{(\\log n)^2}.\\]The special case $k=2$ is the subject of [425].\n\n\n\n\nReferences\n\n\n[Er64d] P. Erd\\H{o}s, On the multiplicative representation of integers. Israel Journal of Mathematics (1964).\n\n[Er69b] Erd\\H{o}s, P., Problems and results in chromatic graph theory. Proof Techniques in Graph Theory (Proc. Second Ann\nArbor Graph Theory Conf., Ann Arbor, Mich.,\n1968) (1969), 27-35.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

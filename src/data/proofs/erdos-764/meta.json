@@ -1,0 +1,33 @@
+{
+  "id": "erdos-764",
+  "title": "Erdős Problem #764",
+  "slug": "erdos-764",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Can there exist some constant ... such that\\[\\sum_{n\\leq N} 1_A\\ast 1_A\\ast 1_A(n) = cN+O(1)?\\]\n\n\n\nThe case of ... i...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/764",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos764Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 764,
+    "erdosUrl": "https://erdosproblems.com/764",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #764 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$. Can there exist some constant $c>0$ such that\\[\\sum_{n\\leq N} 1_A\\ast 1_A\\ast 1_A(n) = cN+O(1)?\\]\n\n\n\nThe case of $1_A\\ast 1_A(n)$ is the subject of [763].\n\nThe answer is no, proved in a strong form by Vaughan \\cite{Va72}, who showed that in fact\\[\\sum_{n\\leq N} 1_A\\ast 1_A\\ast 1_A(n) = cN+o\\left(\\frac{N^{1/4}}{(\\log N)^{1/2}}\\right)\\]is impossible. Vaughan proves a more general result that applies to any $h$-fold convolution, with different main terms permitted.\n\n\n\n\nReferences\n\n\n[Va72] Vaughan, R. C., On the addition of sequences of integers. J. Number Theory (1972), 1--16.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

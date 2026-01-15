@@ -1,0 +1,33 @@
+{
+  "id": "erdos-995",
+  "title": "Erdős Problem #995",
+  "slug": "erdos-995",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a lacunary sequence of integers and .... Estimate the growth of, for almost all ...,\\[\\sum_{1\\leq k\\leq N}f(\\{ \\al...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/995",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos995Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 995,
+    "erdosUrl": "https://erdosproblems.com/995",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #995 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n_1<n_2<\\cdots$ be a lacunary sequence of integers and $f\\in L^2([0,1])$. Estimate the growth of, for almost all $\\alpha$,\\[\\sum_{1\\leq k\\leq N}f(\\{ \\alpha n_k\\}).\\]For example, is it true that, for almost all $\\alpha$,\\[\\sum_{1\\leq k\\leq N}f(\\{ \\alpha n_k\\})=o(N\\sqrt{\\log\\log N})?\\]\n\n\n\nErd\\H{o}s \\cite{Er49d} constructed a lacunary sequence and $f\\in L^2([0,1])$ such that, for every $\\epsilon>0$, for almost all $\\alpha$\\[\\limsup_{N\\to \\infty}\\frac{1}{N(\\log\\log N)^{\\frac{1}{2}-\\epsilon}}\\sum_{1\\leq k\\leq N}f(\\{\\alpha n_k\\})=\\infty.\\]Erd\\H{o}s also proved that, for every lacunary sequence and $f\\in L^2$, for every $\\epsilon>0$, for almost all $\\alpha$,\\[\\sum_{1\\leq k\\leq N}\\sum_{1\\leq k\\leq N}f(\\{\\alpha n_k\\})=o( N(\\log N)^{\\frac{1}{2}+\\epsilon}).\\]Erd\\H{o}s \\cite{Er64b} thought that his lower bound was closer to the truth.\n\n\n\n\nReferences\n\n\n[Er49d] Erd\\H{o}s, P., On the strong law of large numbers. Trans. Amer. Math. Soc. (1949), 51--56.\n\n[Er64b] Erd\\H{o}s, P., Problems and results on diophantine approximations. Compositio Math. (1964), 52-65.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

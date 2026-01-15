@@ -1,0 +1,33 @@
+{
+  "id": "erdos-849",
+  "title": "Erdős Problem #849",
+  "slug": "erdos-849",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every integer ..., there is some integer ... such that\\[{k}=a\\](with ...) has exactly ... solutions?\n\n\n\n...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/849",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos849Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 849,
+    "erdosUrl": "https://erdosproblems.com/849",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #849 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every integer $t\\geq 1$, there is some integer $a$ such that\\[\\binom{n}{k}=a\\](with $1\\leq k\\leq n/2$) has exactly $t$ solutions?\n\n\n\nErd\\H{o}s \\cite{Er96b} credits this to himself and Gordon 'many years ago', but it is more commonly known as Singmaster's conjecture. For $t=3$ one could take $a=120$, and for $t=4$ one could take $a=3003$. There are no known examples for $t\\geq 5$.\n\nBoth Erd\\H{o}s and Singmaster believed the answer to this question is no, and in fact that there exists an absolute upper bound on the number of solutions.\n\nMatomäki, Radziwill, Shao, Tao, and Teräväinen \\cite{MRSTT22} have proved that there are always at most two solutions if we restrict $k$ to\\[k\\geq \\exp((\\log n)^{2/3+\\epsilon}),\\]assuming $a$ is sufficiently large depending on $\\epsilon>0$.\n\n\n\n\nReferences\n\n\n[Er96b] Erd\\\"{o}s, Paul, Some problems I presented or planned to present in my short\ntalk. Analytic number theory, Vol. 1 (Allerton Park, IL, 1995) (1996), 333-335.\n\n[MRSTT22] Matom\\\"{a}ki, Kaisa and Radziwi\\l\\l, Maksym and Shao, Xuancheng\nand Tao, Terence and Ter\\\"{a}v\\\"{a}inen, Joni, Singmaster's conjecture in the interior of {P}ascal's\ntriangle. Q. J. Math. (2022), 1137--1177.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

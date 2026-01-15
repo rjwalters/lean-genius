@@ -1,0 +1,33 @@
+{
+  "id": "erdos-999",
+  "title": "Erdős Problem #999",
+  "slug": "erdos-999",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any function ... the property that, for almost all ...\\[\\left\\lvert \\alpha-{q}\\right\\rvert < {q}\\]has infinitely many sol...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/999",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos999Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 999,
+    "erdosUrl": "https://erdosproblems.com/999",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #999 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any function $f:\\mathbb{N}\\to \\mathbb{N}$ the property that, for almost all $\\alpha$\\[\\left\\lvert \\alpha-\\frac{p}{q}\\right\\rvert < \\frac{f(q)}{q}\\]has infinitely many solutions with $(p,q)=1$, is equivalent to\\[\\sum_{q\\geq 1}\\phi(q)\\frac{f(q)}{q}=\\infty.\\]\n\n\n\nThe Duffin-Schaeffer conjecture. It is easy to prove that the latter follows from the former. Erd\\H{o}s proved this in the special case when $f(q)q$ is bounded.\n\nThe full conjecture was proved by Koukoulopoulos and Maynard \\cite{KoMa20}.\n\n\n\n\nReferences\n\n\n[KoMa20] Koukoulopoulos, Dimitris and Maynard, James, On the {D}uffin-{S}chaeffer conjecture. Ann. of Math. (2) (2020), 251--307.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-983",
+  "title": "Erdős Problem #983",
+  "slug": "erdos-983",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and .... Let ... be the smallest integer ... such that in any ... of size ... there exist primes ... such that at lea...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/983",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos983Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 983,
+    "erdosUrl": "https://erdosproblems.com/983",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #983 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n\\geq 2$ and $\\pi(n)<k\\leq n$. Let $f(k,n)$ be the smallest integer $r$ such that in any $A\\subseteq \\{1,\\ldots,n\\}$ of size $\\lvert A\\rvert=k$ there exist primes $p_1,\\ldots,p_r$ such that at least $r$ many $a\\in A$ are only divisible by primes from $\\{p_1,\\ldots,p_r\\}$.\n\nIs it true that\\[2\\pi(n^{1/2})-f(\\pi(n)+1,n)\\to \\infty\\]as $n\\to \\infty$?\n\nIn general, estimate $f(k,n)$, particularly when $\\pi(n)+1<k=o(n)$.\n\n\n\nIt is trivial that $f(k,n)\\leq \\pi(n)$. Erd\\H{o}s and Straus \\cite{Er70b} proved that\\[f(\\pi(n)+1,n)=2\\pi(n^{1/2})+o_A\\left(\\frac{n^{1/2}}{(\\log n)^A}\\right)\\]for any $A>0$ and, for any constant $c>0$,\\[f(cn,n)=\\log\\log n+(c_1+o(1))\\sqrt{2\\log\\log n},\\]where\\[c=\\frac{1}{\\sqrt{2\\pi}}\\int_{-\\infty}^{c_1}e^{-x^2/2}\\mathrm{d}x.\\]\n\n\n\n\nReferences\n\n\n[Er70b] Erd\\H{o}s, P., Some applications of graph theory to number theory. Proc. Second Chapel Hill Conf. on Combinatorial Mathematics and its Applications (Univ. North Carolina, Chapel Hill, N.C., 1970) (1970), 136-145.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

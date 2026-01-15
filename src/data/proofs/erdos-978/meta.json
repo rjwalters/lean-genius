@@ -1,0 +1,33 @@
+{
+  "id": "erdos-978",
+  "title": "Erdős Problem #978",
+  "slug": "erdos-978",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an irreducible polynomial of degree ... (and suppose that ... for any ...).\n\nDoes the set of integers ... for whic...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/978",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos978Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 978,
+    "erdosUrl": "https://erdosproblems.com/978",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #978 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f\\in \\mathbb{Z}[x]$ be an irreducible polynomial of degree $k>2$ (and suppose that $k\\neq 2^l$ for any $l\\geq 1$).\n\nDoes the set of integers $n$ for which $f(n)$ is $(k-1)$-power-free have positive density?\n\nAre there infinitely many $n$ for which $f(n)$ is $(k-2)$-power-free?\n\nIn particular, does\\[n^4+2\\]represent infinitely many squarefree numbers?\n\n\n\nErd\\H{o}s \\cite{Er53} proved there are infinitely many $n$ for which $f(n)$ is $(k-1)$-power-free, except for possibly when $k=2^l$, when it may happen that $2^{l-1}\\mid f(n)$ for all $n$.\n\nHooley \\cite{Ho67} settled the first question, in fact providing a precise asymptotic for the number of such $n\\leq x$.\n\nHeath-Brown \\cite{He06} proved the answer to the second question is yes when $k\\geq 10$, and Browning \\cite{Br11} extended this to $k\\geq 9$ (in fact establishing an asymptotic formula for the number of such $n$).\n\nIn \\cite{Er65b} Erd\\H{o}s mentions the question of whether $2^n\\pm 1$ represents infinitely many $k$th power-free integers, or $n!\\pm 1$, but that these are 'intractable at present'. (See also [936].)\n\n\n\n\nReferences\n\n\n[Br11] Browning, T. D., Power-free values of polynomials. Arch. Math. (Basel) (2011), 139--150.\n\n[Er53] Erd\\H{o}s, P., Arithmetical properties of polynomials. J. London Math. Soc. (1953), 416--425.\n\n[Er65b] Erd\\H{o}s, Paul, Some recent advances and current problems in number theory. Lectures on Modern Mathematics, Vol. III (1965), 196-244.\n\n[He06] Heath-Brown, D. R., Counting rational points on algebraic varieties. (2006), 51--95.\n\n[Ho67] Hooley, C., On the power free values of polynomials. Mathematika (1967), 21--26.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

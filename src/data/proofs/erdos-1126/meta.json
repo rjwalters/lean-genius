@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1126",
+  "title": "Erdős Problem #1126",
+  "slug": "erdos-1126",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf\\[f(x+y)=f(x)+f(y)\\]for almost all ... then there exists a function ... such that\\[g(x+y)=g(x)+g(y)\\]for all ... such that ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1126",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1126Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1126,
+    "erdosUrl": "https://erdosproblems.com/1126",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1126 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf\\[f(x+y)=f(x)+f(y)\\]for almost all $x,y\\in \\mathbb{R}$ then there exists a function $g$ such that\\[g(x+y)=g(x)+g(y)\\]for all $x,y\\in\\mathbb{R}$ such that $f(x)=g(x)$ for almost all $x$.\n\n\n\nProved independently by de Bruijn \\cite{dB66} and Jurkat \\cite{Ju65}.\n\n\n\n\nReferences\n\n\n[Ju65] Jurkat, Wolfgang B., On {C}auchy's functional equation. Proc. Amer. Math. Soc. (1965), 683--686.\n\n[dB66] de Bruijn, N. G., On almost additive functions. Colloq. Math. (1966), 59--63.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

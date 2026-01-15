@@ -1,0 +1,33 @@
+{
+  "id": "erdos-944",
+  "title": "Erdős Problem #944",
+  "slug": "erdos-944",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA critical vertex, edge, or set of edges, is one whose deletion lowers the chromatic number.\n\nLet ... and .... Must there exi...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/944",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos944Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 944,
+    "erdosUrl": "https://erdosproblems.com/944",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #944 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA critical vertex, edge, or set of edges, is one whose deletion lowers the chromatic number.\n\nLet $k\\geq 4$ and $r\\geq 1$. Must there exist a graph $G$ with chromatic number $k$ such that every vertex is critical, yet every critical set of edges has size $>r$?\n\n\n\nA graph $G$ with chromatic number $k$ in which every vertex is critical is called $k$-vertex-critical.\n\nThis was conjectured by Dirac in 1970 for $k\\geq 4$ and $r=1$. Dirac's conjecture was proved, for $k=5$, by Brown \\cite{Br92}. Lattanzio \\cite{La02} proved there exist such graphs for all $k$ such that $k-1$ is not prime. Independently, Jensen \\cite{Je02} gave an alternative construction for all $k\\geq 5$. The case $k=4$ and $r=1$ remains open.\n\nMartinsson and Steiner \\cite{MaSt25} proved this is true for every $r\\geq 1$ if $k$ is sufficiently large, depending on $r$. Skottova and Steiner \\cite{SkSt25} have improved this, proving that such graphs exist for all $k\\geq 5$ and $r\\geq 1$. The only remaining open case is $k=4$ (even the case $k=4$ and $r=1$ remains open).\n\n\nErd\\H{o}s also asked a stronger quantitative form of this question: let $f_k(n)$ denote the largest $r\\geq 1$ such that there exists a $k$-vertex-critical graph on $n$ vertices such that no set of at most $r$ edges is critical. He then asks whether $f_k(n)\\to \\infty$ as $n\\to \\infty$. Skottova and Steiner \\cite{SkSt25} have proved this for $k\\geq 5$, establishing the bounds\\[n^{1/3}\\ll_k f_k(n) \\ll_k \\frac{n}{(\\log n)^C}\\]for all $k\\geq 5$, where $C>0$ is an absolute constant.\n\nThis is Problem 91 in the graph problems collection. See also [917] and [1032].\n\n\n\n\nReferences\n\n\n[Br92] Brown, Jason I., A vertex critical graph without critical edges. Discrete Math. (1992), 99--101.\n\n[Je02] Jensen, Tommy R., Dense critical and vertex-critical graphs. Discrete Math. (2002), 63--84.\n\n[La02] Lattanzio, John J., A note on a conjecture of {D}irac. Discrete Math. (2002), 323--330.\n\n[MaSt25] Martinsson, Anders and Steiner, Raphael, Vertex-critical graphs far from edge-criticality. Combin. Probab. Comput. (2025), 151--157.\n\n[SkSt25] E. Skottova and R. Steiner, Critical edge sets in vertex-critical graphs. arXiv:2508.08703 (2025).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-961",
+  "title": "Erdős Problem #961",
+  "slug": "erdos-961",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimal ... such that every set of ... consecutive integers ... contains an integer divisible by a prime .... ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/961",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos961Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 961,
+    "erdosUrl": "https://erdosproblems.com/961",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #961 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(k)$ be the minimal $n$ such that every set of $n$ consecutive integers $>k$ contains an integer divisible by a prime $>k$. Estimate $f(k)$.\n\n\n\nIn other words, how large can a consecutive set of $k$-smooth integers be? Sylvester and Schur (see \\cite{Er34}) proved $f(k)\\leq k$ and Erd\\H{o}s \\cite{Er55d} proved\\[f(k)<3\\frac{k}{\\log k}.\\]Jutila \\cite{Ju74} and Ramachandra, and Shorey \\cite{RaSh73} proved\\[f(k) \\ll \\frac{\\log\\log\\log k}{\\log \\log k}\\frac{k}{\\log k}.\\]It is likely that $f(k) \\ll (\\log k)^{O(1)}$.\n\nThis is essentially equivalent to [683].\n\n\n\n\nReferences\n\n\n[Er34] Erd\\H{o}s, Paul, A {T}heorem of {S}ylvester and {S}chur. J. London Math. Soc. (1934), 282--288.\n\n[Er55d] Erd\\H{o}s, P., On consecutive integers. Nieuw Arch. Wisk. (3) (1955), 124--128.\n\n[Ju74] Jutila, Matti, On numbers with a large prime factor. {II}. J. Indian Math. Soc. (N.S.) (1974), 125--130.\n\n[RaSh73] Ramachandra, K. and Shorey, T. N., On gaps between numbers with a large prime factor. Acta Arith. (1973), 99--111.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

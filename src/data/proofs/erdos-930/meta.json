@@ -1,0 +1,33 @@
+{
+  "id": "erdos-930",
+  "title": "Erdős Problem #930",
+  "slug": "erdos-930",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every ..., there is a ... such that if ... are disjoint intervals of consecutive integers, all of length...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/930",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos930Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 930,
+    "erdosUrl": "https://erdosproblems.com/930",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #930 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every $r$, there is a $k$ such that if $I_1,\\ldots,I_r$ are disjoint intervals of consecutive integers, all of length at least $k$, then\\[\\prod_{1\\leq i\\leq r}\\prod_{m\\in I_i}m\\]is not a perfect power?\n\n\n\nErd\\H{o}s and Selfridge \\cite{ErSe75} proved that the product of consecutive integers is never a power (establishing the case $r=1$). The condition that the intervals be large in terms of $r$ is necessary for $r=2$ - see the constructions in [363].\n\nSee also [363] for the case of squares.\n\n\n\n\nReferences\n\n\n[ErSe75] Erd\\H{o}s, P. and Selfridge, J. L., The product of consecutive integers is never a power. Illinois J. Math. (1975), 292-301.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1112",
+  "title": "Erdős Problem #1112",
+  "slug": "erdos-1112",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and .... Does there exist an integer ... such that if ... is a lacunary sequence of positive integers with ... then t...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1112",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1112Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1112,
+    "erdosUrl": "https://erdosproblems.com/1112",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1112 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $1\\leq d_1<d_2$ and $k\\geq 3$. Does there exist an integer $r$ such that if $B=\\{b_1<\\cdots\\}$ is a lacunary sequence of positive integers with $b_{i+1}\\geq rb_i$ then there exists a sequence of positive integers $A=\\{a_1<\\cdots\\}$ such that\\[d_1\\leq a_{i+1}-a_i\\leq d_2\\]for all $i\\geq 1$ and $(kA)\\cap B=\\emptyset$, where $kA$ is the $k$-fold sumset?\n\n\n\nErd\\H{o}s and Graham \\cite{ErGr80} noted that if $B=\\{b_1<b_2<\\cdots\\}$ with $b_1\\geq 5$ and $b_{i+1}\\geq 2b_i$ then there is a set $A=\\{a_1<a_2<\\cdots\\}$ with $2\\leq a_{k+1}-a_k\\leq 3$ for all $k$ such that $(A+A)\\cap B=\\emptyset$. Bollob\\'{a}s, Hegyv\\'{a}ri, and Jin \\cite{BHJ97} showed that such an $A$ must exist if $b_{i+1}\\geq 2b_i-O(1)$, and that this is best possible.\n\nErd\\H{o}s and Graham go on to say 'whether such behavior can hold for $A+A+A$ (or more summands) is not known'. The above question is my best interpretation of what they intended.\n\nBollob\\'{a}s, Hegyv\\'{a}ri, and Jin \\cite{BHJ97} provide a negative answer in that, for any sequence of integers $1\\leq r_1<r_2<\\cdots$, there is a $B$ as above with $b_{i+1}\\geq r_ib_i$ such that $(A+A+A)\\cap B\\neq\\emptyset$ for any $A$ with $2\\leq a_{i+1}-a_i\\leq 3$.\n\nThey define, more generally, $r_k(d_1,d_2)$ as the smallest $r$ (if it exists) such that if $b_{i+1}\\geq rb_i$ then there exists $A$ with $d_1\\leq a_{i+1}-a_i\\leq d_2$ such that $(kA)\\cap B=\\emptyset$, where $kA$ is the $k$-fold sumset.\n\nIt follows from the above results that $r_2(2,3)=2$ and that $r_3(2,3)$ does not exist. Chen \\cite{Ch00} proved that $r_2(a,b)\\leq 2$ for any integers $a<b$ with $b\\neq 2a$, and that $r_2(a,2a)\\geq 2$ for all integers $a$. The more general question of existence of $r_k(a,b)$ for $k\\geq 3$ remains open.\n\nSome further technical non-existence results are given by Tang and Yang \\cite{TaYa21}.\n\n[Note the stated problem is a generous interpretation of a very ambiguous remark in \\cite{ErGr80}, so it might be more appropriate to call this a problem 'inspired by Erd\\H{o}s and Graham'.]\n\n\n\n\n\nReferences\n\n\n[BHJ97] Bollob\\'as, B\\'{e}la and Hegyv\\'ari, Norbert and Jin, Guoping, On a problem of {E}rd\\H{o}s and {G}raham. Discrete Math. (1997), 253--257.\n\n[Ch00] Chen, Yong-Gao, On sums and intersects of sequences. Discrete Math. (2000), 351--354.\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[TaYa21] Tang, Min and Yang, Quan-Hui, On a problem of {E}rd\\H{o}s and {G}raham. Publ. Math. Debrecen (2021), 485--493.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-845",
+  "title": "Erdős Problem #845",
+  "slug": "erdos-845",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is it true that the set of integers of the form\\[n=b_1+\\cdots+b_tb_1<\\cdots<b_t\\]where ... for ... and ... has densi...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/845",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos845Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 845,
+    "erdosUrl": "https://erdosproblems.com/845",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #845 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $C>0$. Is it true that the set of integers of the form\\[n=b_1+\\cdots+b_t\\textrm{ with }b_1<\\cdots<b_t\\]where $b_i=2^{k_i}3^{l_i}$ for $1\\leq i\\leq t$ and $b_t\\leq Cb_1$ has density $0$?\n\n\n\nIn \\cite{Er92b} Erd\\H{o}s wrote 'last year I made the following silly conjecture': every integer $n$ can be written as the sum of distinct integers of the form $2^k3^l$, none of which divide any other. 'I mistakenly thought that this was a nice and difficult conjecture but Jansen and several others found a simple proof by induction.'\n\nIndeed, one proves (by induction) the stronger fact that such a representation always exists, and moreover if $n$ is even then all the summands can be taken to be even (this is actually not stronger, see the comment by marinov): if $n=2m$ we are done applying the inductive hypothesis to $m$. Otherwise if $n$ is odd then let $3^k$ be the largest power of $3$ which is $\\leq n$ and apply the inductive hypothesis to $n-3^k$ (which is even).\n\nvan Doorn and Everts \\cite{vDEv25} have disproved this with $C=6$ - in fact, they prove that all integers can be written as such a sum in which $b_t<6b_1$.\n\nIf $C$ is the smallest constant for which all large integers can be written as such a sum with $b_t<Cb_1$ then Erd\\H{o}s and Lewin \\cite{ErLe96} show that $C>2$, and van Doorn and Everts \\cite{vDEv25} show that $C\\geq 3$. In the comments Alexeev and Cambie give evidence that perhaps any $C>3^{10}/2^{14}\\approx 3.604$ suffices.\n\nSee also [123] and [1110].\n\n\n\n\nReferences\n\n\n[Er92b] Erd\\H{o}s, Paul, Some of my favourite problems in various branches of combinatorics. Matematiche (Catania) (1992), 231-240.\n\n[ErLe96] Erd\\H{o}s, P. and Lewin, Mordechai, $d$-complete sequences of integers. Math. Comp. (1996), 837-840.\n\n[vDEv25] W. van Doorn and A. Everts, Smooth sums with small spacings. arXiv:2511.04585 (2025).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

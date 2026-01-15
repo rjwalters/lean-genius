@@ -1,0 +1,33 @@
+{
+  "id": "erdos-753",
+  "title": "Erdős Problem #753",
+  "slug": "erdos-753",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe list chromatic number ... is defined to be the minimal ... such that for any assignment of a list of ... colours to each ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/753",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos753Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 753,
+    "erdosUrl": "https://erdosproblems.com/753",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #753 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe list chromatic number $\\chi_L(G)$ is defined to be the minimal $k$ such that for any assignment of a list of $k$ colours to each vertex of $G$ (perhaps different lists for different vertices) a colouring of each vertex by a colour on its list can be chosen such that adjacent vertices receive distinct colours.\n\nDoes there exist some constant $c>0$ such that\\[\\chi_L(G)+\\chi_L(G^c)> n^{1/2+c}\\]for every graph $G$ on $n$ vertices (where $G^c$ is the complement of $G$)?\n\n\n\nA problem of Erd\\H{o}s, Rubin, and Taylor.\n\nThe answer is no: Alon \\cite{Al92} proved that, for every $n$, there exists a graph $G$ on $n$ vertices such that\\[\\chi_L(G)+\\chi_L(G^c)\\ll (n\\log n)^{1/2},\\]where the implied constant is absolute.\n\n\n\n\nReferences\n\n\n[Al92] Alon, Noga, Choice numbers of graphs: a probabilistic approach. Combin. Probab. Comput. (1992), 107-114.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

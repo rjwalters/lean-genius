@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1099",
+  "title": "Erdős Problem #1099",
+  "slug": "erdos-1099",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the divisors of ..., and for ... let\\[h_\\alpha(n) = \\sum_i \\left( }{d_i}-1\\right)^\\alpha.\\]Is it true that\\[\\limin...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1099",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1099Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1099,
+    "erdosUrl": "https://erdosproblems.com/1099",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1099 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $1=d_1<\\cdots<d_{\\tau(n)}=n$ be the divisors of $n$, and for $\\alpha>1$ let\\[h_\\alpha(n) = \\sum_i \\left( \\frac{d_{i+1}}{d_i}-1\\right)^\\alpha.\\]Is it true that\\[\\liminf_{n\\to \\infty}h_\\alpha(n) \\ll_\\alpha 1?\\]\n\n\n\nErd\\H{o}s \\cite{Er81h} remarks that $n!$ or the least common multiple of $\\{1,\\ldots,n\\}$ would be good candidates for an infinite sequence of $n$ with $h_\\alpha(n)$ bounded.\n\nThe $\\liminf$ is trivially $\\geq 1$, just considering the term $i=1$. A positive answer to the main question was provided by Vose \\cite{Vo84} by constructing a specific sequence. It remains open whether the two explicit sequences mentioned above satisfy this property.\n\nErd\\H{o}s remarks that this problem occurred to him when considering $\\sum_i \\frac{d_{i+1}}{d_i}$. It is easy to see that\\[\\sum_{i} \\frac{d_{i+1}}{d_i}> \\tau(n)+\\log n,\\]and Erd\\H{o}s asked whether\\[\\liminf \\left(\\sum_{i} \\frac{d_{i+1}}{d_i}-\\tau(n)-\\log n\\right)<\\infty,\\]which would follow from an affirmative answer to the main question.\n\nThis resembles the function considered in [673].\n\n\n\n\nReferences\n\n\n[Er81h] Erd\\H{o}s, P., Some problems and results on additive and multiplicative\nnumber theory. Analytic number theory (Philadelphia, Pa., 1980) (1981), 171-182.\n\n[Vo84] Vose, Michael D., Integers with consecutive divisors in small ratio. J. Number Theory (1984), 233--238.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

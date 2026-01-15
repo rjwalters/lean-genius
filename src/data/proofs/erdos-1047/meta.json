@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1047",
+  "title": "Erdős Problem #1047",
+  "slug": "erdos-1047",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a monic polynomial with ... distinct roots, and let ... be a constant small enough such that ... has ... distinct ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1047",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1047Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1047,
+    "erdosUrl": "https://erdosproblems.com/1047",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1047 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f\\in \\mathbb{C}[x]$ be a monic polynomial with $m$ distinct roots, and let $c>0$ be a constant small enough such that $\\{ z: \\lvert f(z)\\rvert\\leq c\\}$ has $m$ distinct connected components.\n\nMust all these components be convex?\n\n\n\nA question of Grunsky, which was reported by Erd\\H{o}s, Herzog, and Piranian \\cite{EHP58}.\n\nThe answer is no, as shown by Pommerenke \\cite{Po61}, who showed that, if $k$ is sufficiently large, and $f(z)=z^k(z-a)$ where $a$ is sufficiently close to $(1+\\frac{1}{k})k^{\\frac{1}{k+1}}$, then $\\{ z: \\lvert f(z)\\rvert\\leq 1\\}$ has two components, and the component which contains $0$ is not convex.\n\nGoodman \\cite{Go66} proved that one of the three components of\\[\\{ z: \\lvert (z^2+1)(z-2)^2\\rvert < 5^{3/2}/4\\}\\]is not convex (depicted {IMAGE=1047Goodman,here}, and constructed an example with simple roots, of degree $4$. The referee of the paper also gave the example of $\\lvert z(z^5-1)\\rvert<5.6^{-6/5}$ (depicted {IMAGE=1047Ref,here}).\n\nGoodman raises the question of the maximum number of non-convex components that are possible as a function of the degree of $f$.\n\n\n\n\nReferences\n\n\n[EHP58] Erd\\H{o}s, P. and Herzog, F. and Piranian, G., Metric properties of polynomials. J. Analyse Math. (1958), 125-148.\n\n[Go66] Goodman, A. W., On the convexity of the level curves of a polynomial. Proc. Amer. Math. Soc. (1966), 358--361.\n\n[Po61] Pommerenke, Ch., On metric properties of complex polynomials. Michigan Math. J. (1961), 97-115.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

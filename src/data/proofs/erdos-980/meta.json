@@ -1,0 +1,33 @@
+{
+  "id": "erdos-980",
+  "title": "Erdős Problem #980",
+  "slug": "erdos-980",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... denote the least ...th power nonresidue of .... Is it true that\\[\\sum_{p<x} n_k(p)\\sim c_k {\\log x}\\]for some...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/980",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos980Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 980,
+    "erdosUrl": "https://erdosproblems.com/980",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #980 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$ and $n_k(p)$ denote the least $k$th power nonresidue of $p$. Is it true that\\[\\sum_{p<x} n_k(p)\\sim c_k \\frac{x}{\\log x}\\]for some constant $c_k>0$?\n\n\n\nErd\\H{o}s \\cite{Er61e} proved this when $k=2$, with\\[c_2=\\sum_{k=1}^\\infty \\frac{p_k}{2^k}.\\]The general case was proved by Elliott \\cite{El67b}.\n\n\n\n\nReferences\n\n\n[El67b] Elliott, P. D. T. A., A problem of {E}rd\\H{o}s concerning power residue sums. Acta Arith. (1967/68), 131--149.\n\n[Er61e] Erd\\H{o}s, P\\'al, Remarks on number theory. {I}. Mat. Lapok (1961), 10--17.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

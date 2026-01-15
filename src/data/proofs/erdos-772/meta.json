@@ -1,0 +1,33 @@
+{
+  "id": "erdos-772",
+  "title": "Erdős Problem #772",
+  "slug": "erdos-772",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be the maximal ... such that if ... has ... and ... then ... contains a Sidon set of size at least ....\n\nIs i...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/772",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos772Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 772,
+    "erdosUrl": "https://erdosproblems.com/772",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #772 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 1$ and $H_k(n)$ be the maximal $r$ such that if $A\\subset\\mathbb{N}$ has $\\lvert A\\rvert=n$ and $\\| 1_A\\ast 1_A\\|_\\infty \\leq k$ then $A$ contains a Sidon set of size at least $r$.\n\nIs it true that $H_k(n)/n^{1/2}\\to \\infty$? Or even $H_k(n) > n^{1/2+c}$ for some constant $c>0$?\n\n\n\nErd\\H{o}s \\cite{Er84d} proved that\\[H_k(n) \\ll n^{2/3}\\](where the implied constant is absolute). The lower bound $H_k(n)\\gg n^{1/2}$ follows from the fact that any set of size $n$ contains a Sidon set of size $\\gg n^{1/2}$ (see [530]).\n\nThe answer is yes, and in fact\\[H_k(n) \\gg_k n^{2/3},\\]proved by Alon and Erd\\H{o}s \\cite{AlEr85}. We sketch their proof as follows: take a random subset $A'\\subset A$, including each $n\\in A'$ with probability $\\asymp n^{-1/3}$. The number of non-trivial additive quadruples in $A$ is $\\ll n^2$ and hence only $\\ll n^{2/3}$ non-trivial additive quadruples remain in $A'$. Since the size of the random subset is $\\gg n^{2/3}$, all of the remaining non-trivial additive quadruples can be removed by removing at most $\\lvert A'\\rvert/2$ (choosing the constants suitably).\n\n\n\n\nReferences\n\n\n[AlEr85] Alon, Noga and Erd\\H{o}s, P., An application of graph theory to additive number theory. European J. Combin. (1985), 201-203.\n\n[Er84d] Erd\\H{o}s, P., Extremal problems in number theory, combinatorics and\ngeometry. Proceedings of the International Congress of\nMathematicians, Vol. 1, 2 (Warsaw, 1983) (1984), 51-70.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

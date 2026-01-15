@@ -1,0 +1,33 @@
+{
+  "id": "erdos-955",
+  "title": "Erdős Problem #955",
+  "slug": "erdos-955",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[s(n)=\\sigma(n)-n=\\sum_{}d\\]be the sum of proper divisors function.\n\nIf ... has density ... then ... must also have densi...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/955",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos955Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 955,
+    "erdosUrl": "https://erdosproblems.com/955",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #955 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[s(n)=\\sigma(n)-n=\\sum_{\\substack{d\\mid n\\\\ d<n}}d\\]be the sum of proper divisors function.\n\nIf $A\\subset \\mathbb{N}$ has density $0$ then $s^{-1}(A)$ must also have density $0$.\n\n\n\nA conjecture of Erd\\H{o}s, Granville, Pomerance, and Spiro \\cite{EGPS90}. It is possible for $s(A)$ to have positive density even if $A$ has zero density (for example taking $A$ to be the product of two distinct primes). Erd\\H{o}s \\cite{Er73b} proved that there are sets $A$ of positive density such that $s^{-1}(A)$ is empty.\n\nPollack \\cite{Po14b} has shown that this is true if $A$ is the set of primes. Troupe \\cite{Tr15} has shown that this is true if $A$ is the set of integers with unusually many prime factors. Troupe \\cite{Tr20} has also shown this is true if $A$ is the set of integers which are the sum of two squares.\n\nPollack, Pomerance, and Thompson \\cite{PPT18} prove that if $\\epsilon(x)=o(1)$ and $A\\subset \\mathbb{N}$ has size at most $x^{1/2+\\epsilon(x)}$ then\\[\\#\\{ n\\leq x: s(n)\\in A\\} =o(x)\\]as $x\\to \\infty$. It follows that (using $s(n)\\ll n\\log\\log n$) if $A$ grows like $\\lvert A\\cap [1,x]\\rvert\\leq x^{1/2+o(1)}$ then $s^{-1}(A)$ has density $0$.\n\nAlanen calls $k$ such that $s(n)=k$ has no solutions untouchable. These are discussed in problem B10 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[EGPS90] Erd\\H{o}s, P. and Granville, A. and Pomerance, C. and Spiro, C., On the normal behavior of the iterates of some arithmetic functions. Analytic number theory (Allerton Park, IL, 1989) (1990), 165-204.\n\n[Er73b] Erd\\H{o}s, P., \\\"{U}ber die Zahlen der Form $\\sigma (n)-n$ und $n-\\phi(n)$. Elem. Math. (1973), 83-86.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[PPT18] Pollack, Paul and Pomerance, Carl and Thompson, Lola, Divisor-sum fibers. Mathematika (2018), 330--342.\n\n[Po14b] Pollack, Paul, Some arithmetic properties of the sum of proper divisors and\nthe sum of prime divisors. Illinois J. Math. (2014), 125--147.\n\n[Tr15] Troupe, Lee, On the number of prime factors of values of the\nsum-of-proper-divisors function. J. Number Theory (2015), 120--135.\n\n[Tr20] Troupe, Lee, Divisor sums representable as the sum of two squares. Proc. Amer. Math. Soc. (2020), 4189--4202.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

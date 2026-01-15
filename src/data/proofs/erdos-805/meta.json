@@ -1,0 +1,33 @@
+{
+  "id": "erdos-805",
+  "title": "Erdős Problem #805",
+  "slug": "erdos-805",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor which functions ... with ... is there a graph on ... vertices in which every induced subgraph on ... vertices contains a ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/805",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos805Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 805,
+    "erdosUrl": "https://erdosproblems.com/805",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #805 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor which functions $g(n)$ with $n>g(n)\\geq (\\log n)^2$ is there a graph on $n$ vertices in which every induced subgraph on $g(n)$ vertices contains a clique of size $\\geq \\log n$ and an independent set of size $\\geq \\log n$?\n\nIn particular, is there such a graph for $g(n)=(\\log n)^3$?\n\n\n\nA problem of Erd\\H{o}s and Hajnal, who thought that there is no such graph for $g(n)=(\\log n)^3$. Alon and Sudakov \\cite{AlSu07} proved that there is no such graph with\\[g(n)=\\frac{c}{\\log\\log n}(\\log n)^3\\]for some constant $c>0$.\n\nAlon, Buci\\'{c}, and Sudakov \\cite{ABS21} construct such a graph with\\[g(n)\\leq 2^{2^{(\\log\\log n)^{1/2+o(1)}}}.\\]See also [804].\n\n\n\n\nReferences\n\n\n[ABS21] Alon, Noga and Buci\\'c, Matija and Sudakov, Benny, Large cliques and independent sets all over the place. Proc. Amer. Math. Soc. (2021), 3145-3157.\n\n[AlSu07] Alon, Noga and Sudakov, Benny, On graphs with subgraphs having large independence numbers. J. Graph Theory (2007), 149-157.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

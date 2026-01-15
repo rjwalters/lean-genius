@@ -1,0 +1,33 @@
+{
+  "id": "erdos-806",
+  "title": "Erdős Problem #806",
+  "slug": "erdos-806",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... with .... Must there exist some ... with ... such that ...?\n\n\n\nA problem of Erds and Newman , who proved that there e...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/806",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos806Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 806,
+    "erdosUrl": "https://erdosproblems.com/806",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #806 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\{1,\\ldots,n\\}$ with $\\lvert A\\rvert \\leq n^{1/2}$. Must there exist some $B\\subset\\mathbb{Z}$ with $\\lvert B\\rvert=o(n^{1/2})$ such that $A\\subseteq B+B$?\n\n\n\nA problem of Erd\\H{o}s and Newman \\cite{ErNe77}, who proved that there exist $A$ with $\\lvert A\\rvert\\asymp n^{1/2}$ such that if $A\\subseteq B+B$ then\\[\\lvert B\\rvert \\gg \\frac{\\log\\log n}{\\log n}n^{1/2}.\\]Resolved by Alon, Bukh, and Sudakov \\cite{ABS09}, who proved that for any $A\\subseteq \\{1,\\ldots,n\\}$ with $\\lvert A\\rvert \\leq n^{1/2}$ there exists some $B$ such that $A\\subseteq B+B$ and\\[\\lvert B\\rvert \\ll \\frac{\\log\\log n}{\\log n}n^{1/2}.\\]See also [333].\n\n\n\n\nReferences\n\n\n[ABS09] Alon, Noga and Bukh, Boris and Sudakov, Benny, Discrete Kakeya-type problems and small bases. Israel J. Math. (2009), 285-301.\n\n[ErNe77] Erd\\H{o}s, P. and Newman, D. J., Bases for sets of integers. J. Number Theory (1977), 420-425.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

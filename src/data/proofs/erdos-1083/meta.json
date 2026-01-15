@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1083",
+  "title": "Erdős Problem #1083",
+  "slug": "erdos-1083",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., and let ... be the minimal ... such that every set of ... points in ... determines at least ... distinct distances. ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1083",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1083Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1083,
+    "erdosUrl": "https://erdosproblems.com/1083",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1083 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $d\\geq 3$, and let $f_d(n)$ be the minimal $m$ such that every set of $n$ points in $\\mathbb{R}^d$ determines at least $m$ distinct distances. Estimate $f_d(n)$ - in particular, is it true that\\[f_d(n)=n^{\\frac{2}{d}-o(1)}?\\]\n\n\n\nA generalisation of the distinct distance problem [89] to higher dimensions. Erd\\H{o}s \\cite{Er46b} proved\\[n^{1/d}\\ll_d f_d(n)\\ll_d n^{2/d},\\]the upper bound construction being given by a set of lattice points.\n{UL}\n{LI} Clarkson, Edelsbrunner, Gubias, Sharir, and Welzl \\cite{CEGSW90} proved $f_3(n)\\gg n^{1/2}$.{/LI}\n{LI}Aronov, Pach, Sharir, and Tardos \\cite{APST04} proved $f_d(n)\\gg n^{\\frac{1}{d-90/77}-o(1)}$ for any $d\\geq 3$ (for example, $f_3(n)\\gg n^{0.546}$).{/LI}\n{LI}Solymosi and Vu \\cite{SoVu08} proved $f_3(n) \\gg n^{3/5}$ and\\[ f_d(n)\\gg_d n^{\\frac{2}{d}-\\frac{c}{d^2}}\\]for all $d\\geq 4$ for some constant $c>0$. (The result in their paper for $d=3$ is slightly weaker than stated here, but uses as a black box the bound for distinct distances in $2$ dimensions; we have recorded the consequence of combining their method with the work of Guth and Katz on [89].){/LI}\n{/UL}\n\nThe function $f_d(n)$ is essentially the inverse of the function $g_d(n)$ considered in [1089] - with our definitions, $g_d(n)>m$ if and only if $f_d(m)<n$. The emphasis in this problem is, however, on the behaviour as $d$ is fixed and $n\\to \\infty$.\n\n\n\n\nReferences\n\n\n[APST04] Aronov, Boris and Pach, J\\'anos and Sharir, Micha and Tardos,\nG\\'abor, Distinct distances in three and higher dimensions. Combin. Probab. Comput. (2004), 283--293.\n\n[CEGSW90] Clarkson, Kenneth L. and Edelsbrunner, Herbert and Guibas,\nLeonidas J. and Sharir, Micha and Welzl, Emo, Combinatorial complexity bounds for arrangements of curves and\nspheres. Discrete Comput. Geom. (1990), 99--160.\n\n[Er46b] Erd\\H{o}s, P., On sets of distances of {$n$} points. Amer. Math. Monthly (1946), 248--250.\n\n[SoVu08] Solymosi, J\\'ozsef and Vu, Van H., Near optimal bounds for the {E}rd\\H{o}s distinct distances\nproblem in high dimensions. Combinatorica (2008), 113--125.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

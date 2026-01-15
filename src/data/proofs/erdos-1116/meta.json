@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1116",
+  "title": "Erdős Problem #1116",
+  "slug": "erdos-1116",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor a meromorphic function ... let ... count the number of roots of ... in the disc .... Does there exist a meromorphic (or e...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1116",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1116Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1116,
+    "erdosUrl": "https://erdosproblems.com/1116",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1116 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor a meromorphic function $f$ let $n(r,a)$ count the number of roots of $f(z)=a$ in the disc $\\lvert z\\rvert <r$. Does there exist a meromorphic (or entire) $f$ such that for every $a\\neq b$\\[\\limsup_{r\\to \\infty}\\frac{n(r,a)}{n(r,b)}=\\infty?\\]\n\n\n\nThis is Problem 1.25 in \\cite{Ha74}, where it is attributed to Erd\\H{o}s.\n\nGol'dberg \\cite{Go78} and Toppila \\cite{To76} have constructed entire functions with this property.\n\n\n\n\nReferences\n\n\n[Go78] Gol\\cprime dberg, A. A., Counting functions of sequences of {$a$}-points for entire\nfunctions. Sibirsk. Mat. \\v Z. (1978), 28--36, 236.\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n[To76] Toppila, Sakari, On the counting function for the {$a$}-values of a meromorphic\nfunction. Ann. Acad. Sci. Fenn. Ser. A I Math. (1976), 565--572.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

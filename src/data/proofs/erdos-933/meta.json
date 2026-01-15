@@ -1,0 +1,33 @@
+{
+  "id": "erdos-933",
+  "title": "Erdős Problem #933",
+  "slug": "erdos-933",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ..., where ..., then is it true that\\[\\limsup_{n\\to \\infty} {n\\log n}=\\infty?\\]\n\n\n\nMahler proved (a more general result th...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/933",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos933Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 933,
+    "erdosUrl": "https://erdosproblems.com/933",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #933 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $n(n+1)=2^k3^lm$, where $(m,6)=1$, then is it true that\\[\\limsup_{n\\to \\infty} \\frac{2^k3^l}{n\\log n}=\\infty?\\]\n\n\n\nMahler proved (a more general result that implies in particular) that\\[2^k3^l<n^{1+o(1)}.\\]Erd\\H{o}s \\cite{Er76d} wrote 'it is easy to see' that for infinitely many $n$\\[2^k3^l>n\\log n.\\]Steinerberger has noted a simple proof of this fact follows from taking $n=2^{3^r}$ for any integer $r\\geq 1$, when $k=3^r$ and $l=r+1$.\n\n\n\n\nReferences\n\n\n[Er76d] Erd\\H{o}s, P., Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics (Univ. Manitoba, Winnipeg, Man., 1975) (1976), 25-44.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

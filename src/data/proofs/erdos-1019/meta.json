@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1019",
+  "title": "Erdős Problem #1019",
+  "slug": "erdos-1019",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA planar graph on ... vertices with ... edges (the maximum possible) is called saturated. Does every graph on ... vertices wi...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1019",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1019Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1019,
+    "erdosUrl": "https://erdosproblems.com/1019",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1019 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA planar graph on $n$ vertices with $3n-6$ edges (the maximum possible) is called saturated. Does every graph on $n$ vertices with $\\lfloor n^2/4\\rfloor+\\lfloor \\frac{n+1}{2}\\rfloor$ edges contain a saturated planar graph with $>3$ vertices?\n\n\n\nA saturated planar graph on $3$ vertices is a triangle, which by Tur\\'{a}n's theorem is contained in every graph on $n$ vertices with $\\lfloor n^2/4\\rfloor+1$ edges. Erd\\H{o}s \\cite{Er71} writes it is 'easy to construct' a graph on $n$ vertices with $\\lfloor n^2/4\\rfloor+\\lfloor\\frac{n-1}{2}\\rfloor$ edges which contains no saturated planar graph with $>3$ vertices.\n\nErd\\H{o}s \\cite{Er69c} proved that every graph with $n$ vertices and $\\lfloor n^2/4\\rfloor+k$ edges contains a saturated planar graph on $\\gg k/n$ vertices, answering a question of Dirac.\n\nThis was proved in the affirmative by Simonovits in his PhD thesis - indeed, it must contain either a $K_4$ or $C_l+2K_1$ for some $l\\geq 3$. The proof is given by Cambie in the comments.\n\n\n\n\nReferences\n\n\n[Er69c] Erd\\H{o}s, P., \\\"Uber die in {G}raphen enthaltenen saturierten planaren\n{G}raphen. Math. Nachr. (1969), 13--17.\n\n[Er71] Erd\\H{o}s, P., Some unsolved problems in graph theory and combinatorial analysis. Combinatorial Mathematics and its Applications (Proc.\nConf., Oxford, 1969) (1971), 97-109.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-752",
+  "title": "Erdős Problem #752",
+  "slug": "erdos-752",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with minimum degree ... and girth ... (i.e. ... contains no cycles of length ...). Must there be ... many ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/752",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos752Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 752,
+    "erdosUrl": "https://erdosproblems.com/752",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #752 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph with minimum degree $k$ and girth $>2s$ (i.e. $G$ contains no cycles of length $\\leq 2s$). Must there be $\\gg k^s$ many distinct cycle lengths in $G$?\n\n\n\nA question of Erd\\H{o}s, Faudree, and Schelp, who proved it when $s=2$.\n\nThe answer is yes, proved by Sudakov and Verstra\\\"{e}te \\cite{SuVe08}, who in fact proved that under the assumption of average degree $k$ and girth $>2s$ there are at least $\\gg k^s$ many consecutive even integers which are cycle lengths in $G$.\n\n\n\n\nReferences\n\n\n[SuVe08] Sudakov, Benny and Verstra\\\"{e}te, Jacques, Cycle lengths in sparse graphs. Combinatorica (2008), 357--372.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

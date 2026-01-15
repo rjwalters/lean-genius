@@ -1,0 +1,33 @@
+{
+  "id": "erdos-925",
+  "title": "Erdős Problem #925",
+  "slug": "erdos-925",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a constant ... such that, for all large ..., if ... is a graph on ... vertices which is not Ramsey for ... (i.e. the...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/925",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos925Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 925,
+    "erdosUrl": "https://erdosproblems.com/925",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #925 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a constant $\\delta>0$ such that, for all large $n$, if $G$ is a graph on $n$ vertices which is not Ramsey for $K_3$ (i.e. there exists a 2-colouring of the edges of $G$ with no monochromatic triangle) then $G$ contains an independent set of size $\\gg n^{1/3+\\delta}$?\n\n\n\nIt is easy to show that there exists an independent set of size $\\gg n^{1/3}$.\n\nIn other words, this question asks whether $R(3,3,m) \\ll m^{3-c}$ for some $c>0$. This was disproved by Alon and R\\\"{o}dl \\cite{AlRo05}, who proved that\\[\\frac{1}{(\\log m)^{4+o(1)}}m^3 \\ll R(3,3,m) \\ll \\frac{\\log\\log m}{(\\log m)^2}m^3.\\]As reported in \\cite{AlRo05} Sudakov has observed that the $\\log\\log m$ in the upper bound can be removed.\n\nSee also [553].\n\n\n\n\nReferences\n\n\n[AlRo05] Alon, Noga and R\\\"odl, Vojt\\v ech, Sharp bounds for some multicolor {R}amsey numbers. Combinatorica (2005), 125--141.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

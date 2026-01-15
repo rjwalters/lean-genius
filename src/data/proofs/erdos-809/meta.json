@@ -1,0 +1,33 @@
+{
+  "id": "erdos-809",
+  "title": "Erdős Problem #809",
+  "slug": "erdos-809",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and define ... to be the minimal ... such that there is a graph ... on ... vertices with ... many edges such that the...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/809",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos809Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 809,
+    "erdosUrl": "https://erdosproblems.com/809",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #809 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 3$ and define $F_k(n)$ to be the minimal $r$ such that there is a graph $G$ on $n$ vertices with $\\lfloor n^2/4\\rfloor+1$ many edges such that the edges can be $r$-coloured so that every subgraph isomorphic to $C_{2k+1}$ has no colour repeating on the edges.\n\nIs it true that\\[F_k(n)\\sim n^2/8?\\]\n\n\n\nA problem of Burr, Erd\\H{o}s, Graham, and S\\'{o}s, who proved that\\[F_k(n)\\gg n^2.\\]See also [810].\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-987",
+  "title": "Erdős Problem #987",
+  "slug": "erdos-987",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence and let\\[A_k=\\limsup_{n\\to \\infty}\\left\\lvert \\sum_{j\\leq n} e(kx_j)\\right\\rvert,\\]where .......",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/987",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos987Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 987,
+    "erdosUrl": "https://erdosproblems.com/987",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #987 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $x_1,x_2,\\ldots \\in (0,1)$ be an infinite sequence and let\\[A_k=\\limsup_{n\\to \\infty}\\left\\lvert \\sum_{j\\leq n} e(kx_j)\\right\\rvert,\\]where $e(x)=e^{2\\pi ix}$.\n\nIs it true that\\[\\limsup_{k\\to \\infty} A_k=\\infty?\\]Is it possible for $A_k=o(k)$?\n\n\n\nThis is Problem 7.21 in \\cite{Ha74}, where it is attributed to Erd\\H{o}s.\n\nErd\\H{o}s \\cite{Er64b} remarks it is 'easy to see' that\\[\\limsup_{k\\to \\infty}\\left(\\sup_n\\left\\lvert \\sum_{j\\leq n} e(kx_j)\\right\\rvert\\right)=\\infty.\\]Erd\\H{o}s \\cite{Er65b} later found a 'very easy' proof that $A_k\\gg \\log k$ for infinitely many $k$. Clunie \\cite{Cl67} proved that $A_k\\gg k^{1/2}$ infinitely often, and that there exist sequences with $A_k\\leq k$ for all $k$. Tao has independently found a proof that $A_k\\gg k^{1/2}$ infinitely often (see the comment section).\n\nLiu \\cite{Li69} showed that, for any $\\epsilon>0$, $A_k\\gg k^{1-\\epsilon}$ infinitely often, under the additional assumption that there are only a finite number of distinct points. Clunie observed in the Mathscinet review of \\cite{Li69}, however, that under this assumption in fact $A_k=\\infty$ infinitely often.\n\nThe question of whether $A_k=o(k)$ is possible (repeated in \\cite{Er65b} and \\cite{Ha74}) seems to still be open.\n\n\n\n\nReferences\n\n\n[Cl67] Clunie, J., On a problem of {E}rd\\H{o}s. J. London Math. Soc. (1967), 133--136.\n\n[Er64b] Erd\\H{o}s, P., Problems and results on diophantine approximations. Compositio Math. (1964), 52-65.\n\n[Er65b] Erd\\H{o}s, Paul, Some recent advances and current problems in number theory. Lectures on Modern Mathematics, Vol. III (1965), 196-244.\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n[Li69] Lindstr\\\"{o}m, B., An inequality for $B_2$-sequences. J. Combinatorial Theory (1969), 211-212.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

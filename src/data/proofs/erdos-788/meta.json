@@ -1,0 +1,33 @@
+{
+  "id": "erdos-788",
+  "title": "Erdős Problem #788",
+  "slug": "erdos-788",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that if ... there exists some ... such that ... for all ... and ....\n\nEstimate .... In particular is ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/788",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos788Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 788,
+    "erdosUrl": "https://erdosproblems.com/788",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #788 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be maximal such that if $B\\subset (2n,4n)\\cap \\mathbb{N}$ there exists some $C\\subset (n,2n)\\cap \\mathbb{N}$ such that $c_1+c_2\\not\\in B$ for all $c_1\\neq c_2\\in C$ and $\\lvert C\\rvert+\\lvert B\\rvert \\geq f(n)$.\n\nEstimate $f(n)$. In particular is it true that $f(n)\\leq n^{1/2+o(1)}$?\n\n\n\nA conjecture of Choi \\cite{Ch71}, who proved $f(n) \\ll n^{3/4}$. Adenwalla in the comments has provided a simple construction that proves $f(n) \\gg n^{1/2}$.\n\nHunter in the comments has sketched an argument that gives $f(n) \\ll n^{2/3+o(1)}$. The bound\\[f(n) \\ll (n\\log n)^{2/3}\\]was proved by Baltz, Schoen, and Srivastav \\cite{BSS00}.\n\n\n\n\nReferences\n\n\n[BSS00] Baltz, Andreas and Schoen, Tomasz and Srivastav, Anand, Probabilistic construction of small strongly sum-free sets via\nlarge {S}idon sets. Colloq. Math. (2000), 171--176.\n\n[Ch71] Choi, S. L. G., On a combinatorial problem in number theory. Proc. London Math. Soc. (3) (1971), 629-642.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

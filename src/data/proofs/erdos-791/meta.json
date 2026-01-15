@@ -1,0 +1,33 @@
+{
+  "id": "erdos-791",
+  "title": "Erdős Problem #791",
+  "slug": "erdos-791",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that there exists ... of size ... with .... Estimate .... In particular is it true that ...?\n\n\n\nSuch ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/791",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos791Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 791,
+    "erdosUrl": "https://erdosproblems.com/791",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #791 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $g(n)$ be minimal such that there exists $A\\subseteq \\{0,\\ldots,n\\}$ of size $g(n)$ with $\\{0,\\ldots,n\\}\\subseteq A+A$. Estimate $g(n)$. In particular is it true that $g(n)\\sim 2n^{1/2}$?\n\n\n\nSuch a set is often called a finite additive $2$-basis. A problem of Rohrbach, who proved in \\cite{Ro37}\\[(2+c)n \\leq g(n)^2 \\leq 4n\\]for some small constant $c>0$. The current best-known bounds are\\[(2.181\\cdots+o(1))n\\leq g(n)^2 \\leq (3.458\\cdots+o(1))n.\\]The lower bound is due to Yu \\cite{Yu15}, and the upper bound is due to Kohonen \\cite{Ko17}. (The disproof of $g(n)\\sim 2n^{1/2}$ was accomplished by Mrose \\cite{Mr79}, who gave a construction implying $g(n)^2 \\leq \\frac{7}{2}n$.)\n\n\n\n\nReferences\n\n\n[Ko17] Kohonen, Jukka, An improved lower bound for finite additive 2-bases. J. Number Theory (2017), 518--524.\n\n[Mr79] Mrose, Arnulf, Untere {S}chranken f\\\"ur die {R}eichweiten von {E}xtremalbasen\nfester {O}rdnung. Abh. Math. Sem. Univ. Hamburg (1979), 118--124.\n\n[Ro37] Rohrbach, Hans, Ein {B}eitrag zur additiven {Z}ahlentheorie. Math. Z. (1937), 1--30.\n\n[Yu15] Yu, Gang, A new upper bound for finite additive {$h$}-bases. J. Number Theory (2015), 95--104.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

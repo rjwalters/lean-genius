@@ -1,0 +1,33 @@
+{
+  "id": "erdos-766",
+  "title": "Erdős Problem #766",
+  "slug": "erdos-766",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., where ... ranges over all graphs with ... vertices and ... edges.\n\nGive good estimates for ... in the range .... For...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/766",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos766Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 766,
+    "erdosUrl": "https://erdosproblems.com/766",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #766 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n;k,l)=\\min \\mathrm{ex}(n;G)$, where $G$ ranges over all graphs with $k$ vertices and $l$ edges.\n\nGive good estimates for $f(n;k,l)$ in the range $k<l\\leq k^2/4$. For fixed $k$ and large $n$ is $f(n;k,l)$ a strictly monotone function of $l$?\n\n\n\nDirac and Erd\\H{o}s proved independently that when $l=\\lfloor k^2/4\\rfloor+1$\\[f(n;k,l)\\leq \\lfloor n^2/4\\rfloor+1.\\]\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1006",
+  "title": "Erdős Problem #1006",
+  "slug": "erdos-1006",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with girth ... (that is, it contains no cycles of length ... or ...). Can the edges of ... always be direc...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1006",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1006Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1006,
+    "erdosUrl": "https://erdosproblems.com/1006",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1006 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph with girth $>4$ (that is, it contains no cycles of length $3$ or $4$). Can the edges of $G$ always be directed such that there is no directed cycle, and reversing the direction of any edge also creates no directed cycle?\n\n\n\nIn \\cite{Er71} Erd\\H{o}s credits this problem to Ore, who gave an example of a graph without this property which has girth $4$. Gallai noted that the Gr\\\"{otzsch graph} also lacks this property.\n\nThis is false - Ne\\v{s}et\\v{r}il and R\\\"{o}dl \\cite{NeRo78b} proved that, for every integer $g$, there is a graph $G$ with girth $g$ such that every orientation of the edges in $G$ contains a directed cycle or a cycle obtained from a directed cycle by reversing one directed edge.\n\n\n\n\nReferences\n\n\n[Er71] Erd\\H{o}s, P., Some unsolved problems in graph theory and combinatorial analysis. Combinatorial Mathematics and its Applications (Proc.\nConf., Oxford, 1969) (1971), 97-109.\n\n[NeRo78b] Ne\\u set\\u ril, Jaroslav and R\\\"odl, Vojt\\v ech, On a probabilistic graph-theoretical method. Proc. Amer. Math. Soc. (1978), 417--421.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

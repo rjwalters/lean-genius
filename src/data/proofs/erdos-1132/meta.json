@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1132",
+  "title": "Erdős Problem #1132",
+  "slug": "erdos-1132",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor ... let\\[l_k(x)=(x-x_i)}{\\prod_{i\\neq k}(x_k-x_i)},\\]which are such that ... and ... for ....\n\nLet ... be an infinite seq...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1132",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1132Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1132,
+    "erdosUrl": "https://erdosproblems.com/1132",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1132 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor $x_1,\\ldots,x_n\\in [-1,1]$ let\\[l_k(x)=\\frac{\\prod_{i\\neq k}(x-x_i)}{\\prod_{i\\neq k}(x_k-x_i)},\\]which are such that $l_k(x_k)=1$ and $l_k(x_i)=0$ for $i\\neq k$.\n\nLet $x_1,x_2,\\ldots\\in [-1,1]$ be an infinite sequence, and let\\[L_n(x) = \\sum_{1\\leq k\\leq n}\\lvert l_k(x)\\rvert,\\]where each $l_k(x)$ is defined above with respect to $x_1,\\ldots,x_n$.\n\nMust there exist $x\\in (-1,1)$ such that\\[L_n(x) >\\frac{2}{\\pi}\\log n-O(1)\\]for infinitely many $n$?\n\nIs it true that\\[\\limsup_{n\\to \\infty}\\frac{L_n(x)}{\\log n}\\geq \\frac{2}{\\pi}\\]for almost all $x\\in (-1,1)$?\n\n\n\nA result of Bernstein \\cite{Be31} implies that the set of $x\\in(-1,1)$ for which\\[\\limsup_{n\\to \\infty}\\frac{L_n(x)}{\\log n}\\geq \\frac{2}{\\pi}\\]is everywhere dense.\n\nErd\\H{o}s \\cite{Er61c} proved that, for any fixed $x_1,\\ldots,x_n\\in [-1,1]$,\\[\\max_{x\\in [-1,1]}\\sum_{1\\leq k\\leq n}\\lvert l_k(x)\\rvert>\\frac{2}{\\pi}\\log n-O(1).\\]See also [1129] for more on $L_n(x)$.\n\n\n\n\nReferences\n\n\n[Be31] S. Bernstein, Sur la limitation des valeurs d'un polynome $P_n(x)$ de degr\\'{e} n sur tout un segment par ses valeurs en $(n+1)$ points du segment. Izv. Akad. Nauk. SSSR (1931), 1025-1050.\n\n[Er61c] Erd\\H{o}s, P., Problems and results on the theory of interpolation. II. Acta Math. Acad. Sci. Hungar. (1961), 235-244.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-923",
+  "title": "Erdős Problem #923",
+  "slug": "erdos-923",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every ..., there is some ... such that if ... has chromatic number ... then ... contains a triangle-free...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/923",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos923Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 923,
+    "erdosUrl": "https://erdosproblems.com/923",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #923 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every $k$, there is some $f(k)$ such that if $G$ has chromatic number $\\geq f(k)$ then $G$ contains a triangle-free subgraph with chromatic number $\\geq k$?\n\n\n\nThis is true, as shown by R\\\"{o}dl \\cite{Ro77}.\n\nSee [108] for a more general question.\n\n\n\n\nReferences\n\n\n[Ro77] R\\\"{o}dl, V., On the chromatic number of subgraphs of a given graph. Proc. Amer. Math. Soc. (1977), 370-371.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

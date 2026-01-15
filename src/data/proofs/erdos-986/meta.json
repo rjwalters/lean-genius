@@ -1,0 +1,33 @@
+{
+  "id": "erdos-986",
+  "title": "Erdős Problem #986",
+  "slug": "erdos-986",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any fixed ...,\\[R(k,n) \\gg }{(\\log n)^c}\\]for some constant ....\n\n\n\nSpencer  proved this for ... and Mattheus and Verstra...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/986",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos986Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 986,
+    "erdosUrl": "https://erdosproblems.com/986",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #986 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any fixed $k\\geq 3$,\\[R(k,n) \\gg \\frac{n^{k-1}}{(\\log n)^c}\\]for some constant $c=c(k)>0$.\n\n\n\nSpencer \\cite{Sp77} proved this for $k=3$ and Mattheus and Verstraete \\cite{MaVe23} proved this for $k=4$.\n\nThe best general bounds available are\\[\\frac{n^{\\frac{k+1}{2}}}{(\\log n)^{\\frac{1}{k-2}-\\frac{k+1}{2}}}\\ll_k R(k,n) \\ll_k \\frac{n^{k-1}}{(\\log n)^{k-2}}.\\]The lower bound was proved by Bohman and Keevash \\cite{BoKe10}. The upper bound was proved by Ajtai, Koml\\'{o}s, and Szemer\\'{e}di \\cite{AKS80}. Li, Rousseau, and Zang \\cite{LRZ01} have shown that $\\ll_k$ in the upper bound can be improved to $\\leq (1+o(1))$.\n\nThe special case $k=3$ is the topic of [165] and $k=4$ is the topic of [166].\n\nThis problem is #6 in Ramsey Theory in the graphs problem collection.\n\nSee also [920].\n\n\n\n\nReferences\n\n\n[AKS80] Ajtai, Mikl\\'{o}s and Koml\\'{o}s, J\\'{a}nos and Szemer\\'{e}di, Endre, A note on Ramsey numbers. J. Combin. Theory Ser. A (1980), 354-360.\n\n[BoKe10] Bohman, Tom and Keevash, Peter, The early evolution of the {$H$}-free process. Invent. Math. (2010), 291--336.\n\n[LRZ01] Li, Yusheng and Rousseau, Cecil C. and Zang, Wenan, Asymptotic upper bounds for {R}amsey functions. Graphs Combin. (2001), 123--128.\n\n[MaVe23] Mattheus, S. and Verstraete, J., The asymptotics of $r(4,t)$. arXiv:2306.04007 (2023).\n\n[Sp77] Spencer, J., Asymptotic lower bounds for Ramsey functions. Discrete Math. (1977), 69-76.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

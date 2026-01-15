@@ -1,0 +1,33 @@
+{
+  "id": "erdos-778",
+  "title": "Erdős Problem #778",
+  "slug": "erdos-778",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAlice and Bob play a game on the edges of ..., alternating colouring edges by red (Alice) and blue (Bob). Alice goes first, a...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/778",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos778Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 778,
+    "erdosUrl": "https://erdosproblems.com/778",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #778 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAlice and Bob play a game on the edges of $K_n$, alternating colouring edges by red (Alice) and blue (Bob). Alice goes first, and wins if at the end the largest red clique is larger than any of the blue cliques.\n\nDoes Bob have a winning strategy for $n\\geq 3$? (Erd\\H{o}s believed the answer is yes.)\n\nIf we change the game so that Bob colours two edges after each edge that Alice colours, but now require Bob's largest clique to be strictly larger than Alice's, then does Bob have a winning strategy for $n>3$?\n\nFinally, consider the game when Alice wins if the maximum degree of the red subgraph is larger than the maximum degree of the blue subgraph. Who wins?\n\n\n\nMalekshahian and Spiro \\cite{MaSp24} have proved that, for the first game, the set of $n$ for which Bob wins has density at least $3/4$ - in fact they prove that if Alice wins at $n$ then Bob wins at $n+1,n+2,n+3$.\n\nSimilarly, for the third game they prove that the set of $n$ for which Bob wins has density at least $2/3$, and prove the stronger statement that if Alice wins at $n$ then Bob wins at $n+1,n+2$.\n\n\n\n\nReferences\n\n\n[MaSp24] Malekshahian, A. and Spiro, S., On a clique-building game of Erd\\H{o}s. arXiv:2410.18304 (2024).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

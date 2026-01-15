@@ -1,0 +1,33 @@
+{
+  "id": "erdos-833",
+  "title": "Erdős Problem #833",
+  "slug": "erdos-833",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist an absolute constant ... such that, for all ..., in any ...-uniform hypergraph with chromatic number ... the...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/833",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos833Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 833,
+    "erdosUrl": "https://erdosproblems.com/833",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #833 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist an absolute constant $c>0$ such that, for all $r\\geq 2$, in any $r$-uniform hypergraph with chromatic number $3$ there is a vertex contained in at least $(1+c)^r$ many edges?\n\n\n\nIn general, determine the largest integer $f(r)$ such that every $r$-uniform hypergraph with chromatic number $3$ has a vertex contained in at least $f(r)$ many edges. It is easy to see that $f(2)=2$ and $f(3)=3$. Erd\\H{o}s did not know the value of $f(4)$.\n\nThis was solved by Erd\\H{o}s and Lov\\'{a}sz \\cite{ErLo75}, who proved in particular that there is a vertex contained in at least\\[\\frac{2^{r-1}}{4r}\\]many edges.\n\n\n\n\nReferences\n\n\n[ErLo75] Erd\\H{o}s, P. and Lov\\'{a}sz, L., Problems and results on {$3$}-chromatic hypergraphs and some\nrelated questions. (1975), 609--627.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

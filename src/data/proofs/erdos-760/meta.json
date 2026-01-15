@@ -1,0 +1,33 @@
+{
+  "id": "erdos-760",
+  "title": "Erdős Problem #760",
+  "slug": "erdos-760",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe cochromatic number of ..., denoted by ..., is the minimum number of colours needed to colour the vertices of ... such tha...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/760",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos760Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 760,
+    "erdosUrl": "https://erdosproblems.com/760",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #760 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe cochromatic number of $G$, denoted by $\\zeta(G)$, is the minimum number of colours needed to colour the vertices of $G$ such that each colour class induces either a complete graph or empty graph.\n\nIf $G$ is a graph with chromatic number $\\chi(G)=m$ then must $G$ contain a subgraph $H$ with\\[\\zeta(H) \\gg \\frac{m}{\\log m}?\\]\n\n\n\nA problem of Erd\\H{o}s and Gimbel, who proved that there must exist a subgraph $H$ with\\[\\zeta(H) \\gg \\left(\\frac{m}{\\log m}\\right)^{1/2}.\\]The proposed bound would be best possible, as shown by taking $G$ to be a complete graph.\n\nThe answer is yes, proved by Alon, Krivelevich, and Sudakov \\cite{AKS97}.\n\n\n\n\nReferences\n\n\n[AKS97] Alon, Noga and Krivelevich, Michael and Sudakov, Benny, Subgraphs with a large cochromatic number. J. Graph Theory (1997), 295-297.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-774",
+  "title": "Erdős Problem #774",
+  "slug": "erdos-774",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe call ... dissociated if ... for all finite ... with ....\n\nLet ... be an infinite set. We call ... proportionately dissocia...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/774",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos774Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 774,
+    "erdosUrl": "https://erdosproblems.com/774",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #774 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe call $A\\subset \\mathbb{N}$ dissociated if $\\sum_{n\\in X}n\\neq \\sum_{m\\in Y}m$ for all finite $X,Y\\subset A$ with $X\\neq Y$.\n\nLet $A\\subset \\mathbb{N}$ be an infinite set. We call $A$ proportionately dissociated if every finite $B\\subset A$ contains a dissociated set of size $\\gg \\lvert B\\rvert$.\n\nIs every proportionately dissociated set the union of a finite number of dissociated sets?\n\n\n\nThis question appears in a paper of Alon and Erd\\H{o}s \\cite{AlEr85}, although the general topic was first considered by Pisier \\cite{Pi83}, who observed that the converse holds, and proved that being proportionately dissociated is equivalent to being a 'Sidon set' in the harmonic analysis sense; that is, whenever $f:A\\to \\mathbb{C}$ there exists some $\\theta\\in [0,1]$ such that\\[\\| f\\|_1 \\ll \\left\\lvert\\sum_{n\\in A} f(n)e(n\\theta)\\right\\rvert,\\]where $e(x)=e^{2\\pi ix}$.\n\nAlon and Erd\\H{o}s write that it 'seems unlikely that [this] is also sufficient'. They also point out the same question can be asked replacing dissociated with Sidon (in the additive combinatorial sense) (see [328]). This latter question was resolved in the negative by Ne\\v{s}et\\v{r}il, R\\\"{o}dl, and Sales \\cite{NRS24}.\n\n\n\n\n\nReferences\n\n\n[AlEr85] Alon, Noga and Erd\\H{o}s, P., An application of graph theory to additive number theory. European J. Combin. (1985), 201-203.\n\n[NRS24] Ne\\v set\\v ril, Jaroslav and R\\\"odl, Vojt\\v ech and Sales,\nMarcelo, On {P}isier type theorems. Combinatorica (2024), 1211--1232.\n\n[Pi83] Pisier, Gilles, Arithmetic characterizations of Sidon sets. Bull. Amer. Math. Soc. (N.S.) (1983), 87-89.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

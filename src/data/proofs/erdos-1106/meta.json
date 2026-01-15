@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1106",
+  "title": "Erdős Problem #1106",
+  "slug": "erdos-1106",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the partition function of ... and let ... count the number of distinct prime factors of\\[\\prod_{1\\leq k\\leq n}...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1106",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1106Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1106,
+    "erdosUrl": "https://erdosproblems.com/1106",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1106 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $p(n)$ denote the partition function of $n$ and let $F(n)$ count the number of distinct prime factors of\\[\\prod_{1\\leq k\\leq n}p(k).\\]Does $F(n)\\to \\infty$ with $n$? Is $F(n)>n$ for all sufficiently large $n$?\n\n\n\nAsked by Erd\\H{o}s at Oberwolfach in 1986. Schinzel noted in the Oberwolfach problem book that $F(n)\\to \\infty$ follows from the asymptotic formula for $p(n)$ and a result of Tijdeman \\cite{Ti73}. This is not obvious; details are given in a paper of Erd\\H{o}s and Ivi\\'{c} (see page 69 of \\cite{ErIv90}).\n\nSchinzel and Wirsing \\cite{ScWi87} have proved $F(n) \\gg \\log n$.\n\nOno \\cite{On00} has proved that every prime divides $p(n)$ for some $n\\geq 1$ (indeed this holds, for any fixed prime, for a positive density set of $n$).\n\n\n\n\nReferences\n\n\n[ErIv90] Erd\\H{o}s, Paul and Ivi\\'c, Aleksandar, The distribution of values of a certain class of arithmetic\nfunctions at consecutive integers. (1990), 45--91.\n\n[On00] Ono, Ken, Distribution of the partition function modulo {$m$}. Ann. of Math. (2) (2000), 293--307.\n\n[ScWi87] Schinzel, A. and Wirsing, E., Multiplicative properties of the partition function. Proc. Indian Acad. Sci. Math. Sci. (1987), 297--303.\n\n[Ti73] Tijdeman, R., On integers with many small prime factors. Compositio Math. (1973), 319--330.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

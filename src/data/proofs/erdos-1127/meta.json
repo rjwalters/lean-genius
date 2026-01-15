@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1127",
+  "title": "Erdős Problem #1127",
+  "slug": "erdos-1127",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCan ... be decomposed into countably many sets, such that within each set all the pairwise distances are distinct?\n\n\n\nThis is...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1127",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1127Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1127,
+    "erdosUrl": "https://erdosproblems.com/1127",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1127 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCan $\\mathbb{R}^n$ be decomposed into countably many sets, such that within each set all the pairwise distances are distinct?\n\n\n\nThis is true (assuming the continuum hypothesis) when $n=1$, since Erd\\H{o}s and Kakutani \\cite{ErKa43} proved that in fact the continuum hypothesis is equivalent to the statemant that $\\mathbb{R}$ can be written as the union of countably many sets, each of which is linearly independent over $\\mathbb{Q}$.\n\nDavies \\cite{Da72} proved this true when $n=2$, and Kunen \\cite{Ku87} proved it is true for all $n$ (again, both assuming the continuum hypothesis).\n\nThe dependence on the continuum hypothesis is necessary, since Erd\\H{o}s and Hajnal proved that if the continuum hypothesis is false then e.g. in any decomposition of $\\mathbb{R}$ into finitely many sets there exist four points which determine only four distances.\n\n\n\n\nReferences\n\n\n[Da72] Davies, Roy O., Partitioning the plane into denumberably many sets without\nrepeated distances. Proc. Cambridge Philos. Soc. (1972), 179--183.\n\n[ErKa43] Erd\\H{o}s, P. and Kakutani, S., On non-denumerable graphs. Bull. Amer. Math. Soc. (1943), 457--461.\n\n[Ku87] Kunen, Kenneth, Partitioning {E}uclidean space. Math. Proc. Cambridge Philos. Soc. (1987), 379--383.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

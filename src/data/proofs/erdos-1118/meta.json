@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1118",
+  "title": "Erdős Problem #1118",
+  "slug": "erdos-1118",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a non-constant entire function such that, for some ..., the set ... has finite measure.\n\nWhat is the minimum growt...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1118",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1118Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1118,
+    "erdosUrl": "https://erdosproblems.com/1118",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1118 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(z)$ be a non-constant entire function such that, for some $c$, the set $E(c)=\\{ z: \\lvert f(z)\\rvert >c\\}$ has finite measure.\n\nWhat is the minimum growth rate of $f(z)$?\n\nIf $E(c)$ has finite measure then must there exist $c'<c$ such that $E(c')$ has finite measure?\n\n\n\nThis is Problem 2.40 in \\cite{Ha74} where it is attributed to Erd\\H{o}s. Hayman conjectured that\\[\\int_0^\\infty \\frac{r}{\\log\\log M(r)}\\mathrm{d}r<\\infty\\]is true, and best possible, where $M(r)=\\max_{\\lvert z\\rvert=r}\\lvert f(z)\\rvert$.\n\nHayman's strong conjecture was proved independently by Camera \\cite{Ca77} and Gol'dberg \\cite{Go79b}.\n\nThe second question was answered in the negative by Gol'dberg \\cite{Go79b}, who proved that if $T=\\{ c>0 : \\lvert E(c)\\rvert <\\infty\\}$ then for any $m>0$ there exist entire functions $f$ such that $T=[m,\\infty)$ or $T=(m,\\infty)$. (It is clear that $T=\\emptyset$ and $T=(0,\\infty)$ are also possible.)\n\n\n\n\nReferences\n\n\n[Ca77] G. Camera, On the minimum rate of growth of certain classes on integral and subharmonic functions, PhD Thesis. Imperial College, University of London (1977).\n\n[Go79b] Gol\\cprime dberg, A. A., Sets on which the modulus of an entire function has a lower\nbound. Sibirsk. Mat. Zh. (1979), 512--518, 691.\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

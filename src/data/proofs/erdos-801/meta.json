@@ -1,0 +1,33 @@
+{
+  "id": "erdos-801",
+  "title": "Erdős Problem #801",
+  "slug": "erdos-801",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph on ... vertices containing no independent set on ... vertices then there is a set of ... vertices containin...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/801",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos801Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 801,
+    "erdosUrl": "https://erdosproblems.com/801",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #801 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ is a graph on $n$ vertices containing no independent set on $>n^{1/2}$ vertices then there is a set of $\\leq n^{1/2}$ vertices containing $\\gg n^{1/2}\\log n$ edges.\n\n\n\nProved by Alon \\cite{Al96b}.\n\n\n\n\nReferences\n\n\n[Al96b] Alon, Noga, Independence numbers of locally sparse graphs and a Ramsey\ntype problem. Random Structures Algorithms (1996), 271-278.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

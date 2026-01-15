@@ -1,0 +1,33 @@
+{
+  "id": "erdos-907",
+  "title": "Erdős Problem #907",
+  "slug": "erdos-907",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that ... is continous for every .... Is it true that\\[f=g+h\\]for some continuous ... and additive ... (i.e. ....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/907",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos907Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 907,
+    "erdosUrl": "https://erdosproblems.com/907",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #907 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f:\\mathbb{R}\\to \\mathbb{R}$ be such that $f(x+h)-f(x)$ is continous for every $h>0$. Is it true that\\[f=g+h\\]for some continuous $g$ and additive $h$ (i.e. $h(x+y)=h(x)+h(y)$)?\n\n\n\nA conjecture of Erd\\H{o}s from the early 1950s. Answered in the affirmative by de Bruijn \\cite{dB51}.\n\nSee also [908].\n\n\n\n\nReferences\n\n\n[dB51] de Bruijn, N. G., Functions whose differences belong to a given class. Nieuw Arch. Wiskunde (2) (1951), 194--218.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1011",
+  "title": "Erdős Problem #1011",
+  "slug": "erdos-1011",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that every graph on ... vertices with ... edges and chromatic number ... contains a triangle. Determi...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1011",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1011Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1011,
+    "erdosUrl": "https://erdosproblems.com/1011",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1011 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_r(n)$ be minimal such that every graph on $n$ vertices with $\\geq f_r(n)$ edges and chromatic number $\\geq r$ contains a triangle. Determine $f_r(n)$.\n\n\n\nTur\\'{a}n's theorem implies $f_2(n)=\\lfloor n^2/4\\rfloor+1$. Erd\\H{o}s and Gallai \\cite{Er62d} proved $f_3(n)=\\lfloor \\frac{1}{4}(n-1)^2\\rfloor+2$.\n\nSimonovits showed in his PhD thesis (see the discussion on p. 358 of \\cite{Si74}) that\\[f_r(n)=\\frac{n^2}{4}-\\frac{g(r)}{2}{n}+O(1),\\]where $g(r)$ is the largest $m$ such that, for any triangle-free graph with chromatic number $\\geq r$, at least $m$ vertices of $G$ need to be removed to obtain a bipartite graph. Simonovits \\cite{Si74} notes\\[\\frac{\\log r}{\\log\\log r}r^2 \\ll g(r) \\ll (\\log r)^2r^2.\\]Hunter in the comments has noted that other results imply $g(r)\\asymp r^2\\log r$ - in fact\\[(1/2-o(1))r^2\\log r\\leq g(r)\\leq (2+o(1))r^2\\log r.\\]The lower bound follows from work of Davies and Illingworth \\cite{DaIl22} (see [1104]). The upper bound follows from work of Hefty, Horn, King, and Pfender \\cite{HHKP25} on $R(3,k)$.\n\nRen, Wang, Wang, and Yang \\cite{RWWY24} showed that, for $n\\geq 150$,\\[f_4(n)=\\left\\lfloor\\frac{(n-3)^2}{4}\\right\\rfloor+6.\\]\n\n\n\n\nReferences\n\n\n[DaIl22] Davies, Ewan and Illingworth, Freddie, The {$\\chi$}-{R}amsey problem for triangle-free graphs. SIAM J. Discrete Math. (2022), 1124--1134.\n\n[Er62d] Erd\\H{o}s, P., On a theorem of {R}ademacher-{T}ur\\'an. Illinois J. Math. (1962), 122--127.\n\n[HHKP25] Z. Hefty, P. Horn, D. King, and F. Pfender, Improving $R(3,k)$ in just two bites. arXiv:2510.19718 (2025).\n\n[RWWY24] S. Ren, J. Wang, S. Wang, and W. Yang, Extremal triangle-free graphs with chromatic number at least four. arXiv:2404.07486 (2024).\n\n[Si74] Simonovits, M., Extermal graph problems with symmetrical extremal graphs.\n{A}dditional chromatic conditions. Discrete Math. (1974), 349--376.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

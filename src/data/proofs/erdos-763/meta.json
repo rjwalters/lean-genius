@@ -1,0 +1,33 @@
+{
+  "id": "erdos-763",
+  "title": "Erdős Problem #763",
+  "slug": "erdos-763",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Can there exist some constant ... such that\\[\\sum_{n\\leq N} 1_A\\ast 1_A(n) = cN+O(1)?\\]\n\n\n\nA conjecture of Erds and ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/763",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos763Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 763,
+    "erdosUrl": "https://erdosproblems.com/763",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #763 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$. Can there exist some constant $c>0$ such that\\[\\sum_{n\\leq N} 1_A\\ast 1_A(n) = cN+O(1)?\\]\n\n\n\nA conjecture of Erd\\H{o}s and Tur\\'{a}n. Erd\\H{o}s and Fuchs \\cite{ErFu56} proved that the answer is no in a strong form: in fact even\\[\\sum_{n\\leq N} 1_A\\ast 1_A(n) = cN+o\\left(\\frac{N^{1/4}}{(\\log N)^{1/2}}\\right)\\]is impossible. The error term here was improved to $o(N^{1/4})$ by Jurkat (unpublished) and Montgomery and Vaughan \\cite{MoVa90}.\n\nSee also [764] for a generalisation to more summands.\n\n\n\n\nReferences\n\n\n[ErFu56] Erd\\H{o}s, P. and Fuchs, W. H. J., On a problem of additive number theory. J. London Math. Soc. (1956), 67-73.\n\n[MoVa90] Montgomery, H. L. and Vaughan, R. C., On the Erd\\H{o}s-Fuchs theorems. (1990), 331-338.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

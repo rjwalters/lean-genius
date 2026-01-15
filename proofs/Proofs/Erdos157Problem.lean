@@ -39,7 +39,21 @@ def IsSidonAlt (A : Set ℕ) : Prop :=
 
 /-- The two definitions are equivalent. -/
 theorem sidon_iff_sidon_alt (A : Set ℕ) : IsSidon A ↔ IsSidonAlt A := by
-  sorry
+  constructor <;> intro h
+  · intro s; by_contra! H
+    obtain ⟨ x, hx ⟩ := Set.nonempty_of_ncard_ne_zero ( ne_bot_of_gt H )
+    obtain ⟨ y, hy ⟩ := Set.exists_ne_of_one_lt_ncard H x
+    simp_all +decide [ Set.ncard_eq_toFinset_card' ]
+    have := h x.1 x.2 y.1 y.2 ; aesop
+  · intro a b c d ha hb hc hd hab hcd hsum
+    have := h ( a + b )
+    contrapose! this
+    have h_two_elements : { (a, b), (c, d) } ⊆ { x : ℕ × ℕ | x.1 ∈ A ∧ x.2 ∈ A ∧ x.1 ≤ x.2 ∧ x.1 + x.2 = a + b } := by
+      aesop_cat
+    have h_two_elements : Set.ncard { (a, b), (c, d) } ≤ Set.ncard { x : ℕ × ℕ | x.1 ∈ A ∧ x.2 ∈ A ∧ x.1 ≤ x.2 ∧ x.1 + x.2 = a + b } := by
+      apply_rules [ Set.ncard_le_ncard ]
+      exact Set.finite_iff_bddAbove.mpr ⟨ ⟨ a + b, a + b ⟩, by rintro ⟨ x, y ⟩ ⟨ hx, hy, hxy, h ⟩ ; exact ⟨ by linarith, by linarith ⟩ ⟩
+    rw [ Set.ncard_pair ] at h_two_elements <;> aesop
 
 /-! ## Asymptotic Bases -/
 
@@ -93,7 +107,7 @@ axiom sidon_counting_bound (A : Set ℕ) (hSidon : IsSidon A) :
 
 /-- Asymptotic bases of order k have counting function at least N^{1/k}. -/
 axiom basis_counting_lower (A : Set ℕ) (k : ℕ) (hk : k ≥ 1) (hBasis : IsAsymptoticBasis A k) :
-    ∃ c : ℝ, c > 0 ∧ ∀ᶠ N in Filter.atTop,
+    ∃ c : ℝ, c > 0 ∧ ∀ᶠ (N : ℕ) in Filter.atTop,
       c * (N : ℝ)^(1/k : ℝ) ≤ Set.ncard (A ∩ Set.Icc 1 N)
 
 /-! ## Construction Outline
@@ -114,12 +128,27 @@ References:
 
 /-- The set {1, 2, 4, 8, ...} (powers of 2) is a Sidon set. -/
 theorem powers_of_two_sidon : IsSidon { n | ∃ k : ℕ, n = 2^k } := by
-  sorry
+  intro a b c d
+  rintro ⟨k, rfl⟩ ⟨l, rfl⟩ ⟨m, rfl⟩ ⟨n, rfl⟩ hab hcd hsum
+  have h_factor : 2 ^ k * (1 + 2 ^ (l - k)) = 2 ^ m * (1 + 2 ^ (n - m)) := by
+    simp +decide [ mul_add, ← pow_add,
+      add_tsub_cancel_of_le ( show k ≤ l from le_of_not_gt fun h => by linarith [ pow_lt_pow_right₀ ( show 1 < 2 by decide ) h ] ),
+      add_tsub_cancel_of_le ( show m ≤ n from le_of_not_gt fun h => by linarith [ pow_lt_pow_right₀ ( show 1 < 2 by decide ) h ] ) ]
+    exact_mod_cast hsum
+  have := congr_arg ( ·.factorization 2 ) h_factor ; norm_num at this
+  rcases x : l - k with ( _ | _ | l' ) <;> rcases y : n - m with ( _ | _ | n' ) <;>
+    simp_all +decide [ Nat.factorization_eq_zero_of_not_dvd, ← even_iff_two_dvd, parity_simps ]
+  · subst_vars; ring_nf at h_factor; norm_num at h_factor
+  · subst this; ring_nf at *; aesop
+  · ring_nf at * ; aesop
+  · simp_all +decide [ pow_succ, mul_assoc ]
 
-/-- The set {1, 2, 5, 10, ...} (first few terms of a Sidon set). -/
-def exampleSidonSet : Finset ℕ := {1, 2, 5, 10, 11, 13}
+/-- A valid Sidon set (no repeated sums). -/
+def exampleSidonSet : Finset ℕ := {1, 2, 5, 11}
 
-/-- The example set is Sidon. -/
+/-- The example set is Sidon.
+    Note: The original set {1, 2, 5, 10, 11, 13} was NOT Sidon since 1+11 = 2+10 = 12.
+    Aristotle proof search discovered this bug. -/
 theorem example_is_sidon : IsSidon (↑exampleSidonSet : Set ℕ) := by
   sorry
 

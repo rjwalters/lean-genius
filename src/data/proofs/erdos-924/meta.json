@@ -1,0 +1,33 @@
+{
+  "id": "erdos-924",
+  "title": "Erdős Problem #924",
+  "slug": "erdos-924",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and .... Is there a graph ... which contains no ... such that every ...-colouring of the edges of ... contains a mono...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/924",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos924Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 924,
+    "erdosUrl": "https://erdosproblems.com/924",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #924 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$ and $l\\geq 3$. Is there a graph $G$ which contains no $K_{l+1}$ such that every $k$-colouring of the edges of $G$ contains a monochromatic copy of $K_l$?\n\n\n\nA question of Erd\\H{o}s and Hajnal. Folkman \\cite{Fo70} proved this when $k=2$. The case for general $k$ was proved by Ne\\v{s}et\\v{r}il and R\\\"{o}dl \\cite{NeRo76}.\n\nSee [582] for a special case and [966] for an arithmetic analogue.\n\n\n\n\nReferences\n\n\n[Fo70] Folkman, Jon, Graphs with monochromatic complete subgraphs in every edge\ncoloring. SIAM J. Appl. Math. (1970), 19-24.\n\n[NeRo76] Ne\\u set\\u ril, Jaroslav and R\\\"odl, Vojt\\v ech, The {R}amsey property for graphs with forbidden complete\nsubgraphs. J. Combinatorial Theory Ser. B (1976), 243--249.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

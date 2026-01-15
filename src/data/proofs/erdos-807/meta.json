@@ -1,0 +1,33 @@
+{
+  "id": "erdos-807",
+  "title": "Erdős Problem #807",
+  "slug": "erdos-807",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe bipartition number ... of a graph ... is the smallest number of pairwise edge disjoint complete bipartite graphs whose un...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/807",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos807Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 807,
+    "erdosUrl": "https://erdosproblems.com/807",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #807 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe bipartition number $\\tau(G)$ of a graph $G$ is the smallest number of pairwise edge disjoint complete bipartite graphs whose union is $G$. The independence number $\\alpha(G)$ is the size of the largest independent subset of $G$.\n\nIs it true that, if $G$ is a random graph on $n$ vertices with edge probability $1/2$, then\\[\\tau(G)=n-\\alpha(G)\\]almost surely?\n\n\n\nAlon \\cite{Al15} showed this is false: in fact almost surely $\\tau(G) \\leq n-\\alpha(G)-1$. Alon, Bohman, and Huang \\cite{ABH17} proved that in fact there is some absolute constant $c>0$ such that almost surely\\[\\tau(G) \\leq n-(1+c)\\alpha(G).\\]\n\n\n\n\nReferences\n\n\n[ABH17] Alon, Noga and Bohman, Tom and Huang, Hao, More on the bipartite decomposition of random graphs. J. Graph Theory (2017), 45-52.\n\n[Al15] Alon, Noga, Bipartite decomposition of random graphs. J. Combin. Theory Ser. B (2015), 220-235.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

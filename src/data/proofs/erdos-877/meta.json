@@ -1,0 +1,33 @@
+{
+  "id": "erdos-877",
+  "title": "Erdős Problem #877",
+  "slug": "erdos-877",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of maximal sum-free subsets ... - that is, there are no solutions to ... in ... and ... is maximal w...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/877",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos877Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 877,
+    "erdosUrl": "https://erdosproblems.com/877",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #877 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_m(n)$ count the number of maximal sum-free subsets $A\\subseteq\\{1,\\ldots,n\\}$ - that is, there are no solutions to $a=b+c$ in $A$ and $A$ is maximal with this property. Estimate $f(n)$ - is it true that $f_m(n)=o(2^{n/2})$?\n\n\n\nA problem of Cameron and Erd\\H{o}s, who proved that $f_m(n)>2^{n/4}$, and also asked whether\\[f_m(n)=o(f(n)),\\]where $f(n)$ counts the number of all (not necessarily maximal) sum-free sets. Luczak and Schoen \\cite{LuSc01} proved that there exists a constant $c<1/2$ such that\\[f_m(n)<2^{cn},\\]resolving these questions. Balogh, Liu, Sharifzadeh, and Treglown \\cite{BLST15} proved that\\[f_m(n)=2^{(\\frac{1}{4}+o(1))n},\\]which the same authors \\cite{BLST18} later improved to\\[f_m(n)=(C_n+o(1))2^{n/4},\\]where $C_n$ is some explicit constant depending only on $n\\pmod{4}$.\n\nSee [748] for the non-maximal case.\n\n\n\n\nReferences\n\n\n[BLST15] Balogh, J\\'{o}zsef and Liu, Hong and Sharifzadeh, Maryam and\nTreglown, Andrew, The number of maximal sum-free subsets of integers. Proc. Amer. Math. Soc. (2015), 4713--4721.\n\n[BLST18] Balogh, J\\'{o}zsef and Liu, Hong and Sharifzadeh, Maryam and\nTreglown, Andrew, Sharp bound on the number of maximal sum-free subsets of\nintegers. J. Eur. Math. Soc. (JEMS) (2018), 1885--1911.\n\n[LuSc01] \\L uczak, Tomasz and Schoen, Tomasz, On the number of maximal sum-free sets. Proc. Amer. Math. Soc. (2001), 2205--2207.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

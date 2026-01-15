@@ -72,18 +72,65 @@ axiom powers_of_2_count_bound (N : ℕ) :
 
 /-- (log N + 1) / N → 0 as N → ∞.
 
-**Proof status**: HARD (~30 lines) - requires relating Nat.log to Real.log and
-using Real.log N / N → 0 (from Real.tendsto_log_atTop). The core argument is:
-- Nat.log 2 N ≤ ⌊log N / log 2⌋ ≤ log N / log 2
-- So (Nat.log 2 N + 1) / N ≤ (log N / log 2 + 1) / N → 0
-
-Key Mathlib lemmas needed:
-- Real.tendsto_log_atTop : Real.log tends to ∞
-- tendsto_inv_atTop_zero : 1/x → 0 as x → ∞
-- tendsto_of_tendsto_of_tendsto_of_le_of_le' : squeeze theorem
+**Proof**: We use the squeeze theorem. Since Nat.log 2 N ≤ Real.log N / Real.log 2,
+we have (Nat.log 2 N + 1) / N ≤ (Real.log N / Real.log 2 + 1) / N → 0.
 -/
-axiom tendsto_log_add_one_div : Filter.Tendsto (fun N : ℕ => (Nat.log 2 N + 1 : ℝ) / N)
-    Filter.atTop (nhds 0)
+theorem tendsto_log_add_one_div : Filter.Tendsto (fun N : ℕ => (Nat.log 2 N + 1 : ℝ) / N)
+    Filter.atTop (nhds 0) := by
+  -- Use squeeze: 0 ≤ f(N) ≤ (log N / log 2 + 1) / N → 0
+  have h_upper : Filter.Tendsto (fun N : ℕ => (Real.log N / Real.log 2 + 1) / N)
+      Filter.atTop (nhds 0) := by
+    -- log N / N → 0 from tendsto_pow_log_div_mul_add_atTop
+    have h1 : Filter.Tendsto (fun x : ℝ => Real.log x / x) Filter.atTop (nhds 0) := by
+      simpa using Real.tendsto_pow_log_div_mul_add_atTop 1 0 1 one_ne_zero
+    have h2 : Filter.Tendsto (fun N : ℕ => Real.log N / N) Filter.atTop (nhds 0) :=
+      h1.comp tendsto_natCast_atTop_atTop
+    -- (log N / log 2) / N = (log N / N) / log 2 → 0 / log 2 = 0
+    have h3 : Filter.Tendsto (fun N : ℕ => Real.log N / Real.log 2 / N) Filter.atTop (nhds 0) := by
+      have hlog2 : Real.log 2 ≠ 0 := Real.log_ne_zero_of_pos_of_ne_one (by norm_num) (by norm_num)
+      have := h2.div_const (Real.log 2)
+      simp only [zero_div] at this
+      refine this.congr' ?_
+      filter_upwards with N
+      ring
+    -- 1/N → 0
+    have h4 : Filter.Tendsto (fun N : ℕ => (1 : ℝ) / N) Filter.atTop (nhds 0) := by
+      simp only [one_div]
+      exact tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop
+    -- Sum of limits
+    have h5 := h3.add h4
+    simp only [zero_add] at h5
+    refine h5.congr' ?_
+    filter_upwards with N
+    ring
+  apply tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds h_upper
+  · filter_upwards with N using div_nonneg (by positivity) (Nat.cast_nonneg _)
+  · filter_upwards [Filter.eventually_gt_atTop 1] with N hN
+    apply div_le_div_of_nonneg_right _ (by positivity : (0 : ℝ) ≤ N)
+    have hN_pos : (1 : ℝ) < N := Nat.one_lt_cast.mpr hN
+    have hN_pos' : (0 : ℝ) < N := by linarith
+    -- Nat.log 2 N ≤ Real.log N / Real.log 2
+    -- Using: 2^(Nat.log 2 N) ≤ N, so (Nat.log 2 N) * log 2 = log(2^(Nat.log 2 N)) ≤ log N
+    have h_log_bound : (Nat.log 2 N : ℝ) ≤ Real.log N / Real.log 2 := by
+      have hlog2_pos : Real.log 2 > 0 := Real.log_pos (by norm_num : (1 : ℝ) < 2)
+      rw [le_div_iff₀ hlog2_pos]
+      by_cases hN1 : N = 1
+      · simp [hN1, Real.log_one]
+      · have hN2 : N ≠ 0 := by omega
+        -- 2^(Nat.log 2 N) ≤ N
+        have hpow := Nat.pow_log_le_self 2 hN2
+        have hpow' : (((2 : ℕ) ^ Nat.log 2 N : ℕ) : ℝ) ≤ (N : ℝ) := Nat.cast_le.mpr hpow
+        calc (Nat.log 2 N : ℝ) * Real.log 2
+            = Real.log ((2 : ℝ) ^ Nat.log 2 N) := by rw [Real.log_pow]
+            _ = Real.log (((2 : ℕ) ^ Nat.log 2 N : ℕ) : ℝ) := by
+                congr 1
+                simp only [Nat.cast_pow, Nat.cast_ofNat]
+            _ ≤ Real.log (N : ℝ) := by
+              apply Real.log_le_log
+              · have : (1 : ℕ) ≤ 2 ^ Nat.log 2 N := Nat.one_le_pow _ _ (by norm_num)
+                exact Nat.cast_pos.mpr (Nat.lt_of_lt_of_le Nat.zero_lt_one this)
+              · exact hpow'
+    linarith
 
 /-- The powers of 2 form a set of density 0. -/
 theorem powers_of_2_density_zero : HasDensityZero {n : ℕ | ∃ k : ℕ, n = 2^k} := by
@@ -101,17 +148,62 @@ theorem powers_of_2_density_zero : HasDensityZero {n : ℕ | ∃ k : ℕ, n = 2^
 axiom squares_count_bound (N : ℕ) :
     ({n : ℕ | ∃ k, n = k^2} ∩ Set.Icc 1 N).ncard ≤ Nat.sqrt N + 1
 
-/-- 1/√N → 0 as N → ∞.
+/-- (√N + 1)/N → 0 as N → ∞.
 
-**Proof status**: HARD (~20 lines) - requires showing √N → ∞ faster than
-any bounded function, so 1/√N → 0.
-
-Key Mathlib lemmas needed:
-- Nat.sqrt_lt_sqrt : monotonicity of √
-- tendsto_inv_atTop_zero : 1/x → 0 as x → ∞
+**Proof**: We use √N ≤ N, so (√N + 1)/N ≤ 2√N/N = 2/√N → 0.
 -/
-axiom tendsto_sqrt_inv : Filter.Tendsto (fun N : ℕ => (Nat.sqrt N + 1 : ℝ) / N)
-    Filter.atTop (nhds 0)
+theorem tendsto_sqrt_inv : Filter.Tendsto (fun N : ℕ => (Nat.sqrt N + 1 : ℝ) / N)
+    Filter.atTop (nhds 0) := by
+  -- Use squeeze: 0 ≤ (√N + 1)/N ≤ 2/√N → 0 for N ≥ 1
+  have h_upper : Filter.Tendsto (fun N : ℕ => (2 : ℝ) / Real.sqrt N) Filter.atTop (nhds 0) := by
+    -- sqrt N = N^(1/2), and x^(1/2) → ∞ as x → ∞ (since 1/2 > 0)
+    have h1 : Filter.Tendsto (fun N : ℕ => Real.sqrt (N : ℝ)) Filter.atTop Filter.atTop := by
+      have hsqrt : Filter.Tendsto (fun x : ℝ => x ^ (1/2 : ℝ)) Filter.atTop Filter.atTop :=
+        tendsto_rpow_atTop (by norm_num : (0 : ℝ) < 1/2)
+      have hcast := tendsto_natCast_atTop_atTop
+      have := hsqrt.comp hcast
+      refine this.congr' ?_
+      filter_upwards [Filter.eventually_ge_atTop 0] with N _
+      simp only [Function.comp_apply]
+      rw [Real.sqrt_eq_rpow]
+      exact Nat.cast_nonneg N
+    have h2 : Filter.Tendsto (fun N : ℕ => (1 : ℝ) / Real.sqrt N) Filter.atTop (nhds 0) := by
+      simp only [one_div]
+      exact tendsto_inv_atTop_zero.comp h1
+    have h3 := h2.const_mul 2
+    simp only [mul_zero] at h3
+    refine h3.congr' ?_
+    filter_upwards with N
+    ring
+  apply tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds h_upper
+  · filter_upwards with N using div_nonneg (by positivity) (Nat.cast_nonneg _)
+  · filter_upwards [Filter.eventually_ge_atTop 1] with N hN
+    have hN_pos : (0 : ℝ) < N := Nat.cast_pos.mpr (Nat.lt_of_lt_of_le Nat.zero_lt_one hN)
+    have hN_pos' : (0 : ℝ) < Real.sqrt N := Real.sqrt_pos.mpr hN_pos
+    -- (√N + 1)/N ≤ 2/√N  iff  (√N + 1) * √N ≤ 2N  iff  N + √N ≤ 2N  iff  √N ≤ N
+    rw [div_le_div_iff₀ hN_pos hN_pos']
+    have hsqrt_le : (Nat.sqrt N : ℝ) ≤ Real.sqrt N := by
+      have h1 : (Nat.sqrt N : ℝ) ^ 2 = ((Nat.sqrt N)^2 : ℕ) := by simp
+      have h2 : ((Nat.sqrt N)^2 : ℕ) ≤ N := Nat.sqrt_le_self N
+      have h3 : (Nat.sqrt N : ℝ) ^ 2 ≤ N := by
+        rw [h1]
+        exact Nat.cast_le.mpr h2
+      rw [← Real.sqrt_sq (Nat.cast_nonneg _)]
+      exact Real.sqrt_le_sqrt h3
+    have hsqrt_le_N : Real.sqrt N ≤ N := by
+      rw [← Real.sqrt_sq (le_of_lt hN_pos)]
+      apply Real.sqrt_le_sqrt
+      have h : (1 : ℝ) ≤ N := Nat.one_le_cast.mpr hN
+      nlinarith
+    calc (Nat.sqrt N + 1 : ℝ) * Real.sqrt N
+        ≤ (Real.sqrt N + 1) * Real.sqrt N := by
+          apply mul_le_mul_of_nonneg_right
+          · linarith
+          · exact le_of_lt hN_pos'
+        _ = Real.sqrt N ^ 2 + Real.sqrt N := by ring
+        _ = N + Real.sqrt N := by rw [Real.sq_sqrt (le_of_lt hN_pos)]
+        _ ≤ N + N := by linarith
+        _ = 2 * N := by ring
 
 /-- Squares form a set of density 0. -/
 theorem squares_density_zero : HasDensityZero {n : ℕ | ∃ k : ℕ, n = k^2} := by

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-841",
+  "title": "Erdős Problem #841",
+  "slug": "erdos-841",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that ... contains a subset whose product with ... is a square number (and let ... if ... is itself sq...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/841",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos841Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 841,
+    "erdosUrl": "https://erdosproblems.com/841",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #841 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $t_n$ be minimal such that $\\{n+1,\\ldots,n+t_n\\}$ contains a subset whose product with $n$ is a square number (and let $t_n=0$ if $n$ is itself square). Estimate $t_n$.\n\n\n\nA problem of Erd\\H{o}s, Graham, and Selfridge. For example, $t_6=6$ since $6\\cdot 8\\cdot 12=24^2$. It is trivial that $t_n\\geq P(n)$, where $P(n)$ is the largest prime divisor of $n$.\n\nErd\\H{o}s originally asked whether the set with $t_n\\geq n^{1-o(1)}$ has density zero. Selfridge then proved that $t_n=P(n)$ if $P(n)>\\sqrt{2n}+1$, and $t_n \\ll n^{1/2}$ otherwise.\n\nBui, Pratt, and Zaharescu \\cite{BPZ24} proved that the distribution of $t_n$ continues to follow $P(n)$, in that for any fixed $c\\in (0,1]$\\[\\lim_{x\\to \\infty}\\frac{\\lvert \\{ n\\leq x : t_n\\leq n^c\\}\\rvert}{x} = \\lim_{x\\to \\infty}\\frac{\\lvert \\{ n\\leq x : P(n)\\leq n^c\\}\\rvert}{x}.\\]They also prove that for at least $x^{1-o(1)}$ many $n\\leq x$ we have\\[t_n \\leq \\exp(O(\\sqrt{\\log n\\log\\log n}))\\]and for all non-square $n$\\[t_n \\gg (\\log\\log n)^{6/5}(\\log\\log\\log n)^{-1/5}.\\]See also [437].\n\nThis is problem B30 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[BPZ24] Bui, Hung M. and Pratt, Kyle and Zaharescu, Alexandru, A problem of Erd\\H{o}s-Graham-Granville-{S}elfridge on\nintegral points on hyperelliptic curves. Math. Proc. Cambridge Philos. Soc. (2024), 309--323.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

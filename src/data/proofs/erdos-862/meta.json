@@ -1,0 +1,33 @@
+{
+  "id": "erdos-862",
+  "title": "Erdős Problem #862",
+  "slug": "erdos-862",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the number of maximal Sidon subsets of .... Is it true that\\[A_1(N)  2^{N^c}\\]for some constant ...?\n\n\n\nA problem ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/862",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos862Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 862,
+    "erdosUrl": "https://erdosproblems.com/862",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #862 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A_1(N)$ be the number of maximal Sidon subsets of $\\{1,\\ldots,N\\}$. Is it true that\\[A_1(N) < 2^{o(N^{1/2})}?\\]Is it true that\\[A_1(N) > 2^{N^c}\\]for some constant $c>0$?\n\n\n\nA problem of Cameron and Erd\\H{o}s.\n\nThis is resolved as a consequence of results of Saxton and Thomason \\cite{SaTh15} - they prove that there number of Sidon sets in $\\{1,\\ldots,N\\}$ is at least $2^{(1.16+o(1))N^{1/2}}$. Since each Sidon set is contained in a maximal Sidon set, and each maximal Sidon set contains at most $2^{(1+o(1))N^{1/2}}$ Sidon sets, it follows that\\[A_1(N) \\geq 2^{(0.16+o(1))N^{1/2}}.\\]See also [861].\n\n\n\n\nReferences\n\n\n[SaTh15] Saxton, David and Thomason, Andrew, Hypergraph containers. Invent. Math. (2015), 925--992.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

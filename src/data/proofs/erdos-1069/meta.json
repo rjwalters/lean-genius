@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1069",
+  "title": "Erdős Problem #1069",
+  "slug": "erdos-1069",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven any ... points in ..., the number of ...-rich lines (lines which contain ... of the points) is, provided ...,\\[\\ll {k^3...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1069",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1069Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1069,
+    "erdosUrl": "https://erdosproblems.com/1069",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1069 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven any $n$ points in $\\mathbb{R}^2$, the number of $k$-rich lines (lines which contain $\\geq k$ of the points) is, provided $k\\leq n^{1/2}$,\\[\\ll \\frac{n^2}{k^3}.\\]\n\n\n\nIn \\cite{Er87b} Erd\\H{o}s describes this as a conjecture of himself, Croft, and Purdy.\n\nThis is true, and was proved by Szemer\\'{e}di and Trotter \\cite{SzTr83}.\n\nThe best possible value of the implied constant is unknown. When $k=n^{1/2}$ the lattice points show that there can be $\\geq(2+o(1))n^{1/2}$ many $n^{1/2}$-rich lines. Erd\\H{o}s thought that perhaps this is best possible, but Sah \\cite{Sa87} gave a construction achieving $\\geq (3+o(1))n^{1/2}$ many $n^{1/2}$-rich lines.\n\n\n\n\nReferences\n\n\n[Er87b] Erd\\H{o}s, P., Some combinatorial and metric problems in geometry. Intuitive geometry (Si\\'{o}fok, 1985) (1987), 167-177.\n\n[Sa87] Sah, Chih-Han, The rich line problem of {P}.\\ {E}rd\\H{o}s. (1987), 123--125.\n\n[SzTr83] Szemer\\'{e}di, Endre and Trotter, Jr., William T., Extremal problems in discrete geometry. Combinatorica (1983), 381-392.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

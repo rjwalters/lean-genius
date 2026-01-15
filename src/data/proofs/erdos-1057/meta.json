@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1057",
+  "title": "Erdős Problem #1057",
+  "slug": "erdos-1057",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of Carmichael numbers in the interval .... Is it true that ...?\n\n\n\nErds  proved\\[C(x)  x^{0.33336704...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1057",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1057Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1057,
+    "erdosUrl": "https://erdosproblems.com/1057",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1057 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $C(x)$ count the number of Carmichael numbers in the interval $[1,x]$. Is it true that $C(x)=x^{1-o(1)}$?\n\n\n\nErd\\H{o}s \\cite{Er56c} proved\\[C(x) < x \\exp\\left(-c \\frac{\\log x\\log\\log\\log x}{\\log\\log x}\\right)\\]for some constant $c>0$. Pomerance \\cite{Po89} gave a heuristic suggesting that this is the true order of growth, and in fact\\[C(x)= x \\exp\\left(-(1+o(1))\\frac{\\log x\\log\\log\\log x}{\\log\\log x}\\right).\\]Alford, Granville, and Pomerance \\cite{AGP94} proved that $C(x)\\to \\infty$, and in fact $C(x)>x^{2/7}$ for large $x$. The best-known lower bound to date is\\[C(x)> x^{0.33336704},\\]due to Harman \\cite{Ha08}.\n\nKorselt observed that $n$ being a Carmichael number is equivalent to $n$ being squarefree and $p-1\\mid n-1$ for all primes $p\\mid n$.\n\nThis is discussed in problem A13 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[AGP94] Alford, W. R. and Granville, Andrew and Pomerance, Carl, There are infinitely many {C}armichael numbers. Ann. of Math. (2) (1994), 703--722.\n\n[Er56c] Erd\\H{o}s, P., On pseudoprimes and {C}armichael numbers. Publ. Math. Debrecen (1956), 201--206.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Ha08] Harman, Glyn, Watt's mean value theorem and {C}armichael numbers. Int. J. Number Theory (2008), 241--248.\n\n[Po89] Pomerance, Carl, Two methods in elementary analytic number theory. (1989), 135--161.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

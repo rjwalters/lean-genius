@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1088",
+  "title": "Erdős Problem #1088",
+  "slug": "erdos-1088",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimal ... such that any set of ... points in ... contains a set of ... points such that any two determined d...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1088",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1088Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1088,
+    "erdosUrl": "https://erdosproblems.com/1088",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1088 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_d(n)$ be the minimal $m$ such that any set of $m$ points in $\\mathbb{R}^d$ contains a set of $n$ points such that any two determined distances are distinct. Estimate $f_d(n)$. In particular, is it true that, for fixed $n\\geq 3$,\\[f_d(n)=2^{o(d)}?\\]\n\n\n\nIt is easy to prove that $f_d(n) \\leq n^{O_d(1)}$. Erd\\H{o}s \\cite{Er75f} claimed that he and Straus proved $f_d(n)\\leq c_n^d$ for some constant $c_n>0$.\n\nWhen $d=1$ this is the subject of [530], and $f_1(n)\\asymp n^2$.\n\nWhen $n=3$ this is the subject of [503]. Erd\\H{o}s could prove $f_2(3)=7$ and Croft \\cite{Cr62} proved $f_3(3)=9$. The results described at [503] demonstrate that $f_d(3)=d^2/2+O(d)$.\n\n\n\n\nReferences\n\n\n[Cr62] Croft, H. T., $9$-point and $7$-point configurations in $3$-space. Proc. London Math. Soc. (3) (1962), 400-424.\n\n[Er75f] Erd\\H{o}s, Paul, On some problems of elementary and combinatorial geometry. Ann. Mat. Pura Appl. (4) (1975), 99-108.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

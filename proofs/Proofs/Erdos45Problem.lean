@@ -1,4 +1,18 @@
 /-
+This file was edited by Aristotle.
+
+Lean version: leanprover/lean4:v4.24.0
+Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
+This project request had uuid: 3836c8b3-652d-4e50-9e16-25cec962702a
+
+The following was proved by Aristotle:
+
+- lemma egyptian_fraction_bound (D' : Finset ℕ) (hsum : reciprocalSum D' = 1)
+    (hpos : ∀ d ∈ D', d > 0) :
+    ∀ d ∈ D', d ≤ D'.prod id
+-/
+
+/-
   Erdős Problem #45: Monochromatic Divisor Sums
 
   Source: https://erdosproblems.com/45
@@ -20,6 +34,7 @@
 
 import Mathlib
 
+
 open Finset BigOperators
 
 namespace Erdos45
@@ -32,7 +47,9 @@ def properDivisors (n : ℕ) : Finset ℕ :=
 
 /-- A k-coloring of a finite set S. -/
 def IsColoring (k : ℕ) (S : Finset ℕ) (c : ℕ → Fin k) : Prop :=
-  ∀ s ∈ S, True  -- c is implicitly defined on S
+  ∀ s ∈ S, True
+
+-- c is implicitly defined on S
 
 /-- A subset is monochromatic under coloring c if all elements have the same color. -/
 def IsMonochromatic (c : ℕ → Fin k) (S : Finset ℕ) : Prop :=
@@ -56,6 +73,7 @@ def HasKEgyptianProperty (n k : ℕ) : Prop :=
 
 /-! ## Croot's Theorem (SOLVED) -/
 
+/- Aristotle failed to find a proof. -/
 /--
 **Croot's Theorem**:
 For every k ≥ 2, there exists n_k such that n_k has the k-Egyptian property.
@@ -64,6 +82,9 @@ theorem croot_existence (k : ℕ) (hk : k ≥ 2) :
     ∃ n : ℕ, HasKEgyptianProperty n k := by
   sorry
 
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Unexpected axioms were added during verification: ['Erdos45.sawhney_upper_bound', 'harmonicSorry403513']-/
 /--
 **Upper Bound (Sawhney)**:
 The minimal n_k is at most doubly exponential in k.
@@ -71,6 +92,9 @@ The minimal n_k is at most doubly exponential in k.
 axiom sawhney_upper_bound (k : ℕ) (hk : k ≥ 2) :
     ∃ C : ℝ, C > 0 ∧ ∃ n : ℕ, HasKEgyptianProperty n k ∧ (n : ℝ) ≤ Real.exp (C^k)
 
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Unexpected axioms were added during verification: ['Erdos45.sawhney_lower_bound', 'harmonicSorry94570']-/
 /--
 **Lower Bound (Sawhney)**:
 The minimal n_k is at least doubly exponential in k.
@@ -89,10 +113,13 @@ lemma divisor_reciprocal_sum (n : ℕ) (hn : n > 0) :
 lemma egyptian_fraction_bound (D' : Finset ℕ) (hsum : reciprocalSum D' = 1)
     (hpos : ∀ d ∈ D', d > 0) :
     ∀ d ∈ D', d ≤ D'.prod id := by
-  sorry
+  exact fun x hx => Nat.le_of_dvd ( Finset.prod_pos hpos ) ( Finset.dvd_prod_of_mem _ hx )
 
 /-! ## Small Cases -/
 
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Unexpected axioms were added during verification: ['harmonicSorry559689', 'Erdos45.case_k_2']-/
 /-- For k = 2, we can take n = 120 (has rich divisor structure). -/
 axiom case_k_2 : HasKEgyptianProperty 120 2
 

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-824",
+  "title": "Erdős Problem #824",
+  "slug": "erdos-824",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of integers ... such that ... and ..., where ... is the sum of divisors function.\n\nIs it true that ....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/824",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos824Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 824,
+    "erdosUrl": "https://erdosproblems.com/824",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #824 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h(x)$ count the number of integers $1\\leq a<b<x$ such that $(a,b)=1$ and $\\sigma(a)=\\sigma(b)$, where $\\sigma$ is the sum of divisors function.\n\nIs it true that $h(x)>x^{2-o(1)}$?\n\n\n\nErd\\H{o}s \\cite{Er74b} proved that $\\limsup h(x)/x= \\infty$, and claimed a similar proof for this problem. A complete proof that $h(x)/x\\to \\infty$ was provided by Pollack and Pomerance \\cite{PoPo16}.\n\nA similar question can be asked if we replace the condition $(a,b)=1$ with the condition that $a$ and $b$ are squarefree. Weisenberg suggests another variant, with the condition that there are no proper factors $u\\mid a$ and $v\\mid b$ such that $\\sigma(u)=\\sigma(v)$ and $(u,a/u)=(v,b/v)=1$, which is the weakest restriction one can impose that is still strong enough to eliminate trivial duplicates.\n\n\n\n\nReferences\n\n\n[Er74b] Erd\\H{o}s, P., Remarks on some problems in number theory. Math. Balkanica (1974), 197-202.\n\n[PoPo16] Pollack, Paul and Pomerance, Carl, Some problems of Erd\\H{o}s on the sum-of-divisors function. Trans. Amer. Math. Soc. Ser. B (2016), 1-26.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1121",
+  "title": "Erdős Problem #1121",
+  "slug": "erdos-1121",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... are circles in ... with radii ... such that no line disjoint from all the circles divides them into two non-empty sets...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1121",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1121Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1121,
+    "erdosUrl": "https://erdosproblems.com/1121",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1121 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $C_1,\\ldots,C_n$ are circles in $\\mathbb{R}^2$ with radii $r_1,\\ldots,r_n$ such that no line disjoint from all the circles divides them into two non-empty sets then the circles can be covered by a circle of radius $r=\\sum r_i$.\n\n\n\nThis was reported as a conjecture of Erd\\H{o}s in \\cite{GoGo45}.\n\nThis is true, and was proved by Goodman and Goodman \\cite{GoGo45} (whose proof also generalises to higher dimensions).\n\n\n\n\nReferences\n\n\n[GoGo45] Goodman, A. W. and Goodman, R. E., A circle covering theorem. Amer. Math. Monthly (1945), 494--498.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

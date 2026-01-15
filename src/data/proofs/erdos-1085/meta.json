@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1085",
+  "title": "Erdős Problem #1085",
+  "slug": "erdos-1085",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that, in any set of ... points in ..., there exist at most ... pairs of points which distance ... apa...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1085",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1085Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1085,
+    "erdosUrl": "https://erdosproblems.com/1085",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1085 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_d(n)$ be minimal such that, in any set of $n$ points in $\\mathbb{R}^d$, there exist at most $f_d(n)$ pairs of points which distance $1$ apart. Estimate $f_d(n)$.\n\n\n\nThe most difficult cases are $d=2$ and $d=3$. When $d=2$ this is the unit distance problem [90], and the best known bounds are\\[n^{1+\\frac{c}{\\log\\log n}}< f_2(n) \\ll n^{4/3}\\]for some constant $c>0$, the lower bound by Erd\\H{o}s \\cite{Er46b} and the upper bound by Spencer, Szemer\\'{e}di, and Trotter \\cite{SST84}.\n\nWhen $d=3$ the best known bounds are\\[n^{4/3}\\log\\log n \\ll f_3(n) \\ll n^{3/2}\\beta(n)\\]where $\\beta(n)$ is a very slowly growing function, the lower bound by Erd\\H{o}s \\cite{Er60b} and the upper bound by Clarkson, Edelsbrunner, Guibas, Sharir, and Welzl \\cite{CEGSW90}.\n\nA construction of Lenz (taking points on orthogonal circles) shows that, for $d\\geq 4$,\\[f_d(n)\\geq \\frac{p-1}{2p}n^2-O(1)\\]with $p=\\lfloor d/2\\rfloor$. Erd\\H{o}s \\cite{Er60b} showed that the Erd\\H{o}s-Stone theorem implies\\[f_d(n) \\leq \\left(\\frac{p-1}{2p}+o(1)\\right)n^2\\]for $d\\geq 4$.\n\nErd\\H{o}s \\cite{Er67e} determined $f_d(n)$ up to $O(1)$ for all even $d\\geq 4$. Brass \\cite{Br97} determined $f_4(n)$ exactly. Swanepoel \\cite{Sw09} determined $f_d(n)$ exactly for even $d\\geq 6$. For odd $d\\geq 5$ Erd\\H{o}s and Pach \\cite{ErPa90} proved that there exist constants $c_1(d),c_2(d)>0$ such that\\[\\frac{p-1}{2p}n^2 +c_1n^{4/3}\\leq f_d(n) \\leq \\frac{p-1}{2p}n^2 +c_2n^{4/3}.\\]\n\n\n\n\nReferences\n\n\n[Br97] Brass, P., On the maximum number of unit distances among {$n$} points in\ndimension four. (1997), 277--290.\n\n[CEGSW90] Clarkson, Kenneth L. and Edelsbrunner, Herbert and Guibas,\nLeonidas J. and Sharir, Micha and Welzl, Emo, Combinatorial complexity bounds for arrangements of curves and\nspheres. Discrete Comput. Geom. (1990), 99--160.\n\n[Er46b] Erd\\H{o}s, P., On sets of distances of {$n$} points. Amer. Math. Monthly (1946), 248--250.\n\n[Er60b] Erd\\H{o}s, P., On sets of distances of {$n$} points in {E}uclidean space. Magyar Tud. Akad. Mat. Kutat\\'o{} Int. K\\\"ozl. (1960), 165--169.\n\n[Er67e] Erd\\H{o}s, P., On some applications of graph theory to geometry. Canadian J. Math. (1967), 968--971.\n\n[ErPa90] Erd\\H{o}s, P. and Pach, J., Variations on the theme of repeated distances. Combinatorica (1990), 261--269.\n\n[SST84] Spencer, J. and Szemer\\'{e}di, E. and Trotter, Jr., W., Unit distances in the Euclidean plane. Graph theory and combinatorics (Cambridge, 1983) (1984), 293-303.\n\n[Sw09] Swanepoel, Konrad J., Unit distances and diameters in {E}uclidean spaces. Discrete Comput. Geom. (2009), 1--27.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

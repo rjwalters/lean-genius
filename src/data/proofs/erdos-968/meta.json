@@ -1,0 +1,33 @@
+{
+  "id": "erdos-968",
+  "title": "Erdős Problem #968",
+  "slug": "erdos-968",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., where ... is the ...th prime. Does the set of ... such that ... have positive density?\n\n\n\nErds and Prachar  proved t...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/968",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos968Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 968,
+    "erdosUrl": "https://erdosproblems.com/968",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #968 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $u_n=p_n/n$, where $p_n$ is the $n$th prime. Does the set of $n$ such that $u_n<u_{n+1}$ have positive density?\n\n\n\nErd\\H{o}s and Prachar \\cite{ErPr61} proved that\\[\\sum_{p_n<x} \\lvert u_{n+1}-u_n\\rvert \\asymp (\\log x)^2,\\]and that the set of $n$ such that $u_n>u_{n+1}$ has positive density.\n\nErd\\H{o}s also asks whether\\[u_n<u_{n+1}<u_{n+2}\\]or\\[u_n>u_{n+1}>u_{n+2}\\]have infinitely many solutions.\n\n\n\n\nReferences\n\n\n[ErPr61] Erd\\H{o}s, P. and Prachar, K., S\\\"{a}tze und {P}robleme \\\"{u}ber {$p\\sb{k}/k$}. Abh. Math. Sem. Univ. Hamburg (1961/62), 251--256.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

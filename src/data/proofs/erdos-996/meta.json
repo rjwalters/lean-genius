@@ -1,0 +1,33 @@
+{
+  "id": "erdos-996",
+  "title": "Erdős Problem #996",
+  "slug": "erdos-996",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a lacunary sequence of integers, and let .... Let ... be the ...th partial sum of the Fourier series of .... Is th...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/996",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos996Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 996,
+    "erdosUrl": "https://erdosproblems.com/996",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #996 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n_1<n_2<\\cdots$ be a lacunary sequence of integers, and let $f\\in L^2([0,1])$. Let $f_n$ be the $n$th partial sum of the Fourier series of $f(x)$. Is there an absolute constant $C>0$ such that, if\\[\\| f-f_n\\|_2 \\ll \\frac{1}{(\\log\\log\\log n)^{C}}\\]then\\[\\lim_{N\\to\\infty}\\frac{1}{N}\\sum_{k\\leq N}f(\\{\\alpha n_k\\})=\\int_0^1 f(x)\\mathrm{d}x\\]for almost every $\\alpha$?\n\n\n\nRaikov proved the conclusion always holds (for every $f\\in L^2([0,1])$, with no assumption on $\\| f-f_n\\|_2$) if $n_k=a^k$ for some integer $a\\geq 2$. Erd\\H{o}s \\cite{Er64b} also asked whether this is true for $n_k=\\lfloor a^k\\rfloor$ for some $a>1$.\n\nKac, Salem, and Zygmund \\cite{KSZ48} proved that the conclusion holds if\\[\\| f-f_n\\|_2 \\ll \\frac{1}{(\\log n)^{c}}\\]for some constant $c>1$. Erd\\H{o}s \\cite{Er49d} proved that the conclusion holds if\\[\\| f-f_n\\|_2 \\ll \\frac{1}{(\\log\\log n)^{c}}\\]for some constant $c>1$. Matsuyama \\cite{Ma66} improved this to $c>1/2$.\n\nIn \\cite{Er64b} Erd\\H{o}s asked whether the conclusion holds for all bounded functions $f$ and lacunary sequences $n_k$.\n\n\n\n\nReferences\n\n\n[Er49d] Erd\\H{o}s, P., On the strong law of large numbers. Trans. Amer. Math. Soc. (1949), 51--56.\n\n[Er64b] Erd\\H{o}s, P., Problems and results on diophantine approximations. Compositio Math. (1964), 52-65.\n\n[KSZ48] Kac, M. and Salem, R. and Zygmund, A., A gap theorem. Trans. Amer. Math. Soc. (1948), 235--243.\n\n[Ma66] Matsuyama, Noboru, On the strong law of large numbers. Tohoku Math. J. (2) (1966), 259--269.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

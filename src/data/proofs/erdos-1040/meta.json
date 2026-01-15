@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1040",
+  "title": "Erdős Problem #1040",
+  "slug": "erdos-1040",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a closed infinite set, and let ... be the infimum of\\[\\lvert \\{ z: \\lvert f(z)\\rvert < 1\\}\\rvert,\\]as ... ranges o...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1040",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1040Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1040,
+    "erdosUrl": "https://erdosproblems.com/1040",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1040 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $F\\subseteq \\mathbb{C}$ be a closed infinite set, and let $\\mu(F)$ be the infimum of\\[\\lvert \\{ z: \\lvert f(z)\\rvert < 1\\}\\rvert,\\]as $f$ ranges over all polynomials of the shape $\\prod (z-z_i)$ with $z_i\\in F$.\n\nIs $\\mu(F)$ determined by the transfinite diameter of $F$? In particular, is $\\mu(F)=0$ whenever the transfinite diameter of $F$ is $\\geq 1$?\n\n\n\nA problem of Erd\\H{o}s, Herzog, and Piranian \\cite{EHP58}, who show that the answer is yes if $F$ is a line segment or disc, and that if the transfinite diameter is $<1$ then $\\{ z: \\lvert f(z)\\rvert < 1\\}$ always contains a disc of radius $\\gg_F 1$.\n\nErd\\H{o}s and Netanyahu \\cite{ErNe73} proved that if $F$ is also bounded and connected, with transfinite diameter $0<c<1$, then $\\{ z: \\lvert f(z)\\rvert < 1\\}$ always contains a disc of radius $\\gg_c 1$.\n\nThe transfinite diameter of $F$, also known as the logarithmic capacity, is defined by\\[\\rho(F)=\\lim_{n\\to \\infty}\\sup_{z_1,\\ldots,z_n\\in F}\\left(\\prod_{i<j}\\lvert z_i-z_j\\rvert\\right)^{1/\\binom{n}{2}}.\\]\n\n\n\n\nReferences\n\n\n[EHP58] Erd\\H{o}s, P. and Herzog, F. and Piranian, G., Metric properties of polynomials. J. Analyse Math. (1958), 125-148.\n\n[ErNe73] Erd\\H{o}s, P. and Netanyahu, E., A remark on polynomials and the transfinite diameter. Israel J. Math. (1973), 23--25.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

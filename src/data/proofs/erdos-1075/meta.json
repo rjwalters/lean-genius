@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1075",
+  "title": "Erdős Problem #1075",
+  "slug": "erdos-1075",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... There exists ... such that, for any ..., if ... is sufficiently large, the following holds.\n\nAny ...-uniform hypergr...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1075",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1075Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1075,
+    "erdosUrl": "https://erdosproblems.com/1075",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1075 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 3$. There exists $c_r>r^{-r}$ such that, for any $\\epsilon>0$, if $n$ is sufficiently large, the following holds.\n\nAny $r$-uniform hypergraph on $n$ vertices with at least $(1+\\epsilon)(n/r)^r$ many edges contains a subgraph on $m$ vertices with at least $c_rm^r$ edges, where $m=m(n)\\to \\infty$ as $n\\to \\infty$.\n\n\n\nErd\\H{o}s \\cite{Er64f} proved that this is true with $c_r=r^{-r}$ whenever the graph has at least $\\epsilon n^r$ many edges.\n\n\n\n\nReferences\n\n\n[Er64f] Erd\\H{o}s, P., On extremal problems of graphs and generalized graphs. Israel J. Math. (1964), 183--190.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

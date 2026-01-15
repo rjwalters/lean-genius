@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1125",
+  "title": "Erdős Problem #1125",
+  "slug": "erdos-1125",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that\\[2f(x) \\leq f(x+h)+f(x+2h)\\]for every ... and .... Must ... be monotonic?\n\n\n\nA problem of Kemperman , wh...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1125",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1125Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1125,
+    "erdosUrl": "https://erdosproblems.com/1125",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1125 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f:\\mathbb{R}\\to \\mathbb{R}$ be such that\\[2f(x) \\leq f(x+h)+f(x+2h)\\]for every $x\\in \\mathbb{R}$ and $h>0$. Must $f$ be monotonic?\n\n\n\nA problem of Kemperman \\cite{Ke69}, who proved it is true if $f$ is measurable. Erd\\H{o}s \\cite{Er81b} wrote 'if it were my problem I would offer \\$500 for it'.\n\nThis was solved by Laczkovich \\cite{La84}.\n\n\n\n\nReferences\n\n\n[Er81b] Erd\\H{o}s, P., My Scottish Book 'Problems'. The Scottish Book (1981), 27-35 (page numbers are given for the 2nd edition of The Scottish Book).\n\n[Ke69] Kemperman, J. H. B., On the regularity of generalized convex functions. Trans. Amer. Math. Soc. (1969), 69--93.\n\n[La84] Laczkovich, M., On {K}emperman's inequality {$2f(x)\\leq f(x+h)+f(x+2h)$}. Colloq. Math. (1984), 109--115.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

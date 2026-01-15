@@ -1,0 +1,33 @@
+{
+  "id": "erdos-957",
+  "title": "Erdős Problem #957",
+  "slug": "erdos-957",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set of size ... and let ... be the set of distinct distances determined by .... Let ... be the number of times t...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/957",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos957Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 957,
+    "erdosUrl": "https://erdosproblems.com/957",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #957 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset \\mathbb{R}^2$ be a set of size $n$ and let $\\{d_1<\\ldots<d_k\\}$ be the set of distinct distances determined by $A$. Let $f(d)$ be the number of times the distance $d$ is determined. Is it true that\\[f(d_1)f(d_k) \\leq (\\tfrac{9}{8}+o(1))n^2?\\]\n\n\n\nA question of Erd\\H{o}s and Pach \\cite{ErPa90}, who write that an 'easy' unpublished construction of Makai shows that this would be the best possible, and that it is 'not difficult' to prove\\[f(d_1)+f(d_k) \\leq 3n -c\\sqrt{n}+o(\\sqrt{n})\\]for some $c>0$, and ask what the best possible value of $c$ is.\n\nA stronger version of this problem (which implies the inequality in the problem statement) is that\\[f(d_1)\\leq 3n-2m+o(\\sqrt{n}),\\]where $m$ is the number of vertices of the convex hull of $A$.\n\nThe odd regular polygon shows that it is possible for $f(d_i)\\geq n$ for all $i$.\n\nThe original problem was solved by Dumitrescu \\cite{Du19}, who proved that\\[f(d_1)f(d_k)\\leq \\frac{9}{8}n^2+O(n).\\]See also [132] and [756].\n\n\n\n\nReferences\n\n\n[Du19] Dumitrescu, Adrian, A product inequality for extreme distances. Comput. Geom. (2019), 101577, 10.\n\n[ErPa90] Erd\\H{o}s, P. and Pach, J., Variations on the theme of repeated distances. Combinatorica (1990), 261--269.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

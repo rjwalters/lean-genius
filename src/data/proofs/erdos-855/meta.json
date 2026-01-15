@@ -1,0 +1,33 @@
+{
+  "id": "erdos-855",
+  "title": "Erdős Problem #855",
+  "slug": "erdos-855",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... counts the number of primes in ... then is it true that (for large ... and ...)\\[\\pi(x+y) \\leq \\pi(x)+\\pi(y)?\\]\n\n\n\nCom...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/855",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos855Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 855,
+    "erdosUrl": "https://erdosproblems.com/855",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #855 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $\\pi(x)$ counts the number of primes in $[1,x]$ then is it true that (for large $x$ and $y$)\\[\\pi(x+y) \\leq \\pi(x)+\\pi(y)?\\]\n\n\n\nCommonly known as the second Hardy-Littlewood conjecture. In \\cite{Er85c} Erd\\H{o}s describes it as 'an old conjecture of mine which was probably already stated by Hardy and Littlewood'.\n\nThis is probably false, since Hensley and Richards \\cite{HeRi73} have shown that this is false assuming the Hardy-Littlewood prime tuples conjecture. Indeed, assuming this conjecture, they prove that for every large $y$ there are infinitely many $x$ such that\\[\\pi(x+y)>\\pi(x)+\\pi(y)+(\\log 2-o(1))\\frac{y}{(\\log y)^2},\\]where the $o(1)$ term tends to $0$ as $y\\to \\infty$.\n\nErd\\H{o}s \\cite{Er85c} reports Straus as remarking that the 'correct way' of stating this conjecture would have been\\[\\pi(x+y) \\leq \\pi(x)+2\\pi(y/2).\\]Clark and Jarvis \\cite{ClJa01} have shown this is also incompatible with the prime tuples conjecture.\n\nIn \\cite{Er85c} Erd\\H{o}s conjectures the weaker result (which in particular follows from the conjecture of Straus) that\\[\\pi(x+y) \\leq \\pi(x)+\\pi(y)+O\\left(\\frac{y}{(\\log y)^2}\\right),\\]which the Hensley and Richards result shows (conditionally) would be best possible. Richards conjectured that this is false.\n\nErd\\H{o}s and Richards further conjectured that the original inequality is true almost always - that is, the set of $x$ such that $\\pi(x+y)\\leq \\pi(x)+\\pi(y)$ for all $y<x$ has density $1$. They could only prove that this set has positive lower density.\n\nThey also conjectured that for every $x$ the inequality $\\pi(x+y)\\leq \\pi(x)+\\pi(y)$ is true provided $y \\gg (\\log x)^C$ for some large constant $C>0$.\n\nHardy and Littlewood proved\\[\\pi(x+y) \\leq \\pi(x)+O(\\pi(y)).\\]The best known in this direction is a result of Montgomery and Vaughan \\cite{MoVa73}, which shows\\[\\pi(x+y) \\leq \\pi(x)+2\\frac{y}{\\log y}.\\]This is discussed in problem A9 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[ClJa01] Clark, David A. and Jarvis, Norman C., Dense admissible sequences. Math. Comp. (2001), 1713--1718.\n\n[Er85c] Erd\\H{o}s, P., On some of my problems in number theory I would most like to see solved. Number theory (Ootacamund, 1984) (1985), 74-84.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[HeRi73] Hensley, Douglas and Richards, Ian, On the incompatibility of two conjectures concerning primes. (1973), 123--127.\n\n[MoVa73] Montgomery, H. L. and Vaughan, R. C., The large sieve. Mathematika (1973), 119--134.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

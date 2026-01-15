@@ -1,0 +1,33 @@
+{
+  "id": "erdos-918",
+  "title": "Erdős Problem #918",
+  "slug": "erdos-918",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a graph with ... vertices and chromatic number ... such that every subgraph on ... vertices has chromatic number ......",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/918",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos918Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 918,
+    "erdosUrl": "https://erdosproblems.com/918",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #918 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a graph with $\\aleph_2$ vertices and chromatic number $\\aleph_2$ such that every subgraph on $\\aleph_1$ vertices has chromatic number $\\leq\\aleph_0$?\n\nIs there a graph with $\\aleph_{\\omega+1}$ vertices and chromatic number $\\aleph_1$ such that every subgraph on $\\aleph_\\omega$ vertices has chromatic number $\\leq\\aleph_0$?\n\n\n\nA question of Erd\\H{o}s and Hajnal \\cite{ErHa68b}, who proved that for every finite $k$ there is a graph with chromatic number $\\aleph_1$ where each subgraph on less than $\\aleph_k$ vertices has chromatic number $\\leq \\aleph_0$.\n\nIn \\cite{Er69b} it is asked with chromatic number $=\\aleph_0$, but in the comments louisd observes this is (assuming subgraph and not induced subgraph was intended) trivially impossible, and hence presumably the problem was intended as written here (which is how it is posed in \\cite{ErHa68b}).\n\n\n\n\nReferences\n\n\n[Er69b] Erd\\H{o}s, P., Problems and results in chromatic graph theory. Proof Techniques in Graph Theory (Proc. Second Ann\nArbor Graph Theory Conf., Ann Arbor, Mich.,\n1968) (1969), 27-35.\n\n[ErHa68b] Erd\\H{o}s, P. and Hajnal, A., On chromatic number of infinite graphs. (1968), 83--98.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1009",
+  "title": "Erdős Problem #1009",
+  "slug": "erdos-1009",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every ..., there exists ... such that every graph on ... vertices with at least ... edges, where ..., co...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1009",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1009Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1009,
+    "erdosUrl": "https://erdosproblems.com/1009",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1009 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every $c>0$, there exists $f(c)$ such that every graph on $n$ vertices with at least $\\lfloor n^2/4\\rfloor+k$ edges, where $k<c n$, contains at least $k-f(c)$ many edge disjoint triangles?\n\n\n\nErd\\H{o}s proved this for $c<1/2$ using a theorem of Erd\\H{o}s and Gallai, which says that every graph on $n$ vertices with at least $(n-1)^2/4+2$ many edges, with chromatic number $3$, must contain a triangle.\n\nIn fact, Erd\\H{o}s proved this is true with $f(c)=0$ for $c<1/2$. At first Erd\\H{o}s thought $f(c)=0$ for larger values of $c$ but this is false: an example of Sauer proves that $f(2)\\geq 1$.\n\nSauer gave an example of a graph on $n$ vertices with $\\lfloor n^2/4\\rfloor+2n-6$ many edges which contains only $2n-7$ many edge disjoint triangles: if $n=2r+4$ then $G$ is the complete tripartite graph on $[r]\\times [r]\\times [4]$, with a $K_4$ on the $[4]$ vertices also.\n\nThis is true, and was proved by Gy\\\"{o}ri \\cite{Gy88} who proved that this is true with $f(c)\\ll c^2$, and also that $f(c)=0$ if $c<2$ for odd $n$ or $c<3/2$ for even $n$.\n\n\n\n\nReferences\n\n\n[Gy88] Gy\\H{o}ri, E., On the number of edge-disjoint triangles in graphs of given\nsize. (1988), 267--276.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

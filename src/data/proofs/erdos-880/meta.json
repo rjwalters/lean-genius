@@ -1,0 +1,33 @@
+{
+  "id": "erdos-880",
+  "title": "Erdős Problem #880",
+  "slug": "erdos-880",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an additive basis of order .... Let ... be the set of integers which are the sum of ... or fewer distinct .... Is ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/880",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos880Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 880,
+    "erdosUrl": "https://erdosproblems.com/880",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #880 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset\\mathbb{N}$ be an additive basis of order $k$. Let $B=\\{b_1<b_2<\\cdots\\}$ be the set of integers which are the sum of $k$ or fewer distinct $a\\in A$. Is it true that $b_{n+1}-b_n=O(1)$? (Where the implied constant may depend on both $A$ and $k$.)\n\n\n\nA problem of Burr and Erd\\H{o}s.\n\nHegyv\\'{a}ri, Hennecart, and Plagne \\cite{HHP07} showed the answer is yes for $k=2$ (in fact with $b_{n+1}-b_n\\leq 2$ for large $n$) but no for $k\\geq 3$.\n\nThe proof that $b_{n+1}-b_n\\leq 2$ for $k=2$ is trivial, since clearly all odd numbers in $A+A$ must be the sum of two distinct elements from $A$.\n\n\n\n\nReferences\n\n\n[HHP07] Hegyv\\'ari, Norbert and Hennecart, Fran\\c cois and Plagne,\nAlain, Answer to a question by {B}urr and {E}rd\\H{o}s on restricted\naddition, and related results. Combin. Probab. Comput. (2007), 747--756.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

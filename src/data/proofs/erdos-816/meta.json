@@ -1,0 +1,33 @@
+{
+  "id": "erdos-816",
+  "title": "Erdős Problem #816",
+  "slug": "erdos-816",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with ... vertices and ... edges. Must ... contain two vertices of the same degree which are joined by a pa...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/816",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos816Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 816,
+    "erdosUrl": "https://erdosproblems.com/816",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #816 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph with $2n+1$ vertices and $n^2+n+1$ edges. Must $G$ contain two vertices of the same degree which are joined by a path of length $3$?\n\n\n\nA problem of Erd\\H{o}s and Hajnal. The example of $K_{n,n+1}$ shows that this fails if we only have $n^2+n$ edges.\n\nThis is true, and was proved by Chen and Ma \\cite{ChMa25}, who prove the stronger statement that, provided $n\\geq 600$, all graphs with $2n+1$ vertices and at least $n^2+n$ edges contain two vertices of the same degree joined by a path of length $3$, except $K_{n,n+1}$.\n\n\n\n\nReferences\n\n\n[ChMa25] K. Chen and J. Ma, A problem of Erd\\H{o}s and Hajnal on paths with equal-degree endpoints. arXiv:2503.19569 (2025).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

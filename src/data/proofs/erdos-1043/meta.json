@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1043",
+  "title": "Erdős Problem #1043",
+  "slug": "erdos-1043",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a monic non-constant polynomial. Must there exist a straight line ... such that the projection of\\[\\{ z: \\lvert f(...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1043",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1043Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1043,
+    "erdosUrl": "https://erdosproblems.com/1043",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1043 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f\\in \\mathbb{C}[x]$ be a monic non-constant polynomial. Must there exist a straight line $\\ell$ such that the projection of\\[\\{ z: \\lvert f(z)\\rvert\\leq 1\\}\\]onto $\\ell$ has measure at most $2$?\n\n\n\nA problem of Erd\\H{o}s, Herzog, and Piranian \\cite{EHP58}.\n\nPommerenke \\cite{Po61} (using his previous work \\cite{Po59}) proved that the answer is no, and there exists such an $f$ for which the projection of this set onto every line has measure at least $2.386$. On the other hand, Pommerenke also proved there always exists a line such that the projection has measure at most $3.3$.\n\n\n\n\nReferences\n\n\n[EHP58] Erd\\H{o}s, P. and Herzog, F. and Piranian, G., Metric properties of polynomials. J. Analyse Math. (1958), 125-148.\n\n[Po59] Pommerenke, Ch., On some problems by Erd\\H{o}s, Herzog and Piranian. Michigan Math. J. (1959), 221-225.\n\n[Po61] Pommerenke, Ch., On metric properties of complex polynomials. Michigan Math. J. (1961), 97-115.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

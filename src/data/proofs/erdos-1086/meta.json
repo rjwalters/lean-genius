@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1086",
+  "title": "Erdős Problem #1086",
+  "slug": "erdos-1086",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that any set of ... points in ... contains the vertices of at most ... many triangles with the same a...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1086",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1086Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1086,
+    "erdosUrl": "https://erdosproblems.com/1086",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1086 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $g(n)$ be minimal such that any set of $n$ points in $\\mathbb{R}^2$ contains the vertices of at most $g(n)$ many triangles with the same area. Estimate $g(n)$.\n\n\n\nEquivalently, how many triangles of area $1$ can a set of $n$ points in $\\mathbb{R}^2$ determine? Erd\\H{o}s and Purdy attribute this question to Oppenheim. Erd\\H{o}s and Purdy \\cite{ErPu71} proved\\[n^2\\log\\log n \\ll g(n) \\ll n^{5/2},\\]and believed the lower bound to be closer to the truth. The upper bound has been improved a number of times - by Pach and Sharir \\cite{PaSh92}, Dumitrescu, Sharir, and T\\'{o}th \\cite{DST09}, Apfelbaum and Sharir \\cite{ApSh10}, and Apfaulbaum \\cite{Ap13}. The best known bound is\\[g(n) \\ll n^{20/9}\\]by Raz and Sharir \\cite{RaSh17}.\n\nErd\\H{o}s and Purdy also ask a similar question about the higher-dimensional generalisations - more generally, let $g_d^{r}(n)$ be minimal such that any set of $n$ points in $\\mathbb{R}^d$ contains the vertices of at most $g_d^{r}(n)$ many $r$-dimensional simplices with the same volume.\n\nErd\\H{o}s and Purdy \\cite{ErPu71} proved $g_3^2(n) \\ll n^{8/3}$, and Dumitrescu, Sharir, and T\\'{o}th \\cite{DST09} improved this to $g_3^2(n) \\ll n^{2.4286}$.\nErd\\H{o}s and Purdy \\cite{ErPu71} proved $g_6^2(n)\\gg n^3$. Purdy \\cite{Pu74} proved\\[g_4^2(n)\\leq g^2_5(n) \\ll n^{3-c}\\]for some constant $c>0$. An observation of Oppenheim (using a construction of Lenz) detailed in \\cite{ErPu71} shows that\\[g_{2k+2}^k(n)\\geq \\left(\\frac{1}{(k+1)^{k+1}}+o(1)\\right)n^{k+1}\\]and Erd\\H{o}s and Purdy conjecture this is the best possible.\n\nSee also [90] and [755].\n\n\n\n\nReferences\n\n\n[Ap13] R. Apfelbaum, Geometric Incidences and Repeated Configurations. Ph.D. Dissertation, School of Computer Science, Tel Aviv University (2013).\n\n[ApSh10] Apfelbaum, Roel and Sharir, Micha, An improved bound on the number of unit area triangles. Discrete Comput. Geom. (2010), 753--761.\n\n[DST09] Dumitrescu, Adrian and Sharir, Micha and T\\'oth, Csaba D., Extremal problems on triangle areas in two and three\ndimensions. J. Combin. Theory Ser. A (2009), 1177--1198.\n\n[ErPu71] Erd\\H{o}s, Paul and Purdy, George, Some extremal problems in geometry. J. Combinatorial Theory Ser. A (1971), 246--252.\n\n[PaSh92] Pach, J\\'anos and Sharir, Micha, Repeated angles in the plane and related problems. J. Combin. Theory Ser. A (1992), 12--22.\n\n[Pu74] Purdy, George, Some extremal problems in geometry. Discrete Math. (1974), 305--315.\n\n[RaSh17] Raz, Orit E. and Sharir, Micha, The number of unit-area triangles in the plane: theme and\nvariation. Combinatorica (2017), 1221--1240.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

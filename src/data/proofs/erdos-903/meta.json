@@ -1,0 +1,33 @@
+{
+  "id": "erdos-903",
+  "title": "Erdős Problem #903",
+  "slug": "erdos-903",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... for some prime power ..., and let ... be a block design (so that every pair ... is contained in exactly one ...).\n\nIs...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/903",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos903Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 903,
+    "erdosUrl": "https://erdosproblems.com/903",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #903 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n=p^2+p+1$ for some prime power $p$, and let $A_1,\\ldots,A_t\\subseteq \\{1,\\ldots,n\\}$ be a block design (so that every pair $x,y\\in \\{1,\\ldots,n\\}$ is contained in exactly one $A_i$).\n\nIs it true that if $t>n$ then $t\\geq n+p$?\n\n\n\nA conjecture of Erd\\H{o}s and S\\'{o}s. The classic finite geometry construction shows that $t=n$ is possible. A theorem of Erd\\H{o}s and de Bruijn \\cite{dBEr48} states that $t\\geq n$.\n\nThis is true, and was proved by Erd\\H{o}s, Fowler, S\\'{o}s, and Wilson \\cite{EFSW85}, who further show that unless the block design is obtained from a projective plane by 'breaking up' one of its lines then $t\\geq n+cp$ where $c\\approx 1.148$.\n\nIn general, one can ask what the possible values of $t$ are, for a given $n$.\n\n\n\n\nReferences\n\n\n[EFSW85] Erd\\H{o}s, P. and Fowler, Joel C. and S\\'os, Vera T. and\nWilson, Richard M., On {$2$}-designs. J. Combin. Theory Ser. A (1985), 131--142.\n\n[dBEr48] de Bruijn, N. G. and Erd\\H{o}s, P., On a combinatorial problem. Nederl. Akad. Wetensch., Proc. (1948), 1277--1279 = Indagationes Math. 10, 421--423.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

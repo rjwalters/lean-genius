@@ -1,0 +1,33 @@
+{
+  "id": "erdos-799",
+  "title": "Erdős Problem #799",
+  "slug": "erdos-799",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe list chromatic number ... is defined to be the minimal ... such that for any assignment of a list of ... colours to each ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/799",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos799Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 799,
+    "erdosUrl": "https://erdosproblems.com/799",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #799 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe list chromatic number $\\chi_L(G)$ is defined to be the minimal $k$ such that for any assignment of a list of $k$ colours to each vertex of $G$ (perhaps different lists for different vertices) a colouring of each vertex by a colour on its list can be chosen such that adjacent vertices receive distinct colours.\n\nIs it true that $\\chi_L(G)=o(n)$ for almost all graphs on $n$ vertices?\n\n\n\nA problem of Erd\\H{o}s, Rubin and Taylor.\n\nThe answer is yes: Alon \\cite{Al92} proved that in fact the random graph on $n$ vertices with edge probability $1/2$ has\\[\\chi_L(G) \\ll \\frac{\\log\\log n}{\\log n}n\\]almost surely. Alon, Krivelevich, and Sudakov \\cite{AKS99} improved this to\\[\\chi_L(G) \\asymp \\frac{n}{\\log n}\\]almost surely.\n\n\n\n\nReferences\n\n\n[AKS99] Alon, Noga and Krivelevich, Michael and Sudakov, Benny, List coloring of random and pseudo-random graphs. Combinatorica (1999), 453-472.\n\n[Al92] Alon, Noga, Choice numbers of graphs: a probabilistic approach. Combin. Probab. Comput. (1992), 107-114.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

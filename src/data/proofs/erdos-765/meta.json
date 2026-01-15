@@ -1,0 +1,33 @@
+{
+  "id": "erdos-765",
+  "title": "Erdős Problem #765",
+  "slug": "erdos-765",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGive an asymptotic formula for ....\n\n\n\nErds and Klein  proved .... Reiman  proved\\[{2}\\leq \\lim (n;C_4)}{n^{3/2}}\\leq {2}.\\]E...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/765",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos765Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 765,
+    "erdosUrl": "https://erdosproblems.com/765",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #765 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGive an asymptotic formula for $\\mathrm{ex}(n;C_4)$.\n\n\n\nErd\\H{o}s and Klein \\cite{Er38} proved $\\mathrm{ex}(n;C_4)\\asymp n^{3/2}$. Reiman \\cite{Re58} proved\\[\\frac{1}{2\\sqrt{2}}\\leq \\lim \\frac{\\mathrm{ex}(n;C_4)}{n^{3/2}}\\leq \\frac{1}{2}.\\]Erd\\H{o}s and R\\'{e}nyi, and independently Brown, gave a construction that proved if $n=q^2+q+1$, where $q$ is a prime power, then\\[\\mathrm{ex}(n;C_4)\\geq\\frac{1}{2}q(q+1)^2.\\]Coupled with the upper bound of Reiman this implies that $\\mathrm{ex}(n;C_4)\\sim\\frac{1}{2}n^{3/2}$ for all large $n$. F\\\"{u}redi \\cite{Fu83} proved that if $q>13$ then\\[\\mathrm{ex}(n;C_4)=\\frac{1}{2}q(q+1)^2.\\]In \\cite{Er93} Erd\\H{o}s makes the stronger conjecture that, for all $n$,\\[\\mathrm{ex}(n;C_4)=\\frac{n^{3/2}}{2}+\\frac{n}{4}+O(n^{1/2}),\\]although he said he 'never found any convincing evidence for [this] and would really be satisfied with\\[\\mathrm{ex}(n;C_4)=\\frac{n^{3/2}}{2}+O(n).'\\]Erd\\H{o}s \\cite{Er75} proved\\[\\mathrm{ex}(n;C_4)\\leq \\frac{n^{3/2}}{2}+\\frac{n}{4}+O(n^{1/2}).\\]Erd\\H{o}s's stronger conjecture was wrong - Ma and Yang \\cite{MaYa23} proved that, for some absolute constant $c>0$ and for a positive density set of $n$, in fact\\[\\mathrm{ex}(n;C_4)\\leq \\frac{n^{3/2}}{2}+\\left(\\frac{1}{4}-c\\right)n.\\]See also [572].\n\nIn \\cite{Er75} Erd\\H{o}s remarks that he first proved $\\mathrm{ex}(n;C_4)\\ll n^{3/2}$ while considering the number theoretic problem [425] in 1936, which predates Tur\\'{a}n's study of extremal numbers by 5 years. As Erd\\H{o}s wrote: 'Being struck by a curious blindness and lack of imagination, I did not at that time extend the problem from $C_4$ to other graphs and thus missed founding an interesting and fruitful new branch of graph theory.'\n\n\n\n\nReferences\n\n\n[Er38] P. Erd\\H{o}s, On sequences of integers no one of which divides the product of two others and on related problems. Tomsk. Gos. Univ. Ucen Zap. (1938), 74-82.\n\n[Er75] Erd\\H{o}s, P., Some recent progress on extremal problems in graph theory. Congr. Numer. (1975), 3-14.\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n[Fu83] F\\\"{u}redi, Z., Graphs without quadrilaterals. J. Combin. Theory Ser. B (1983), 187-190.\n\n[MaYa23] Ma, Jie and Yang, Tianchi, Upper bounds on the extremal number of the 4-cycle. Bull. Lond. Math. Soc. (2023), 1655--1667.\n\n[Re58] Reiman, I., \\\"{U}ber ein Problem von K. Zarankiewicz. Acta Math. Acad. Sci. Hungar. (1958), 269-273.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

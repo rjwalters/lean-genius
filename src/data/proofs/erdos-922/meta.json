@@ -1,0 +1,33 @@
+{
+  "id": "erdos-922",
+  "title": "Erdős Problem #922",
+  "slug": "erdos-922",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Let ... be a graph such that every subgraph ... contains an independent set of size ..., where ... is the number of ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/922",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos922Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 922,
+    "erdosUrl": "https://erdosproblems.com/922",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #922 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 0$. Let $G$ be a graph such that every subgraph $H$ contains an independent set of size $\\geq (n-k)/2$, where $n$ is the number of vertices of $H$. Must $G$ have chromatic number at most $k+2$?\n\n\n\nA question of Erd\\H{o}s and Hajnal \\cite{ErHa67b}. The case $k=0$ is trivial, but they could not prove this even for $k=1$.\n\nThis is true, and was proved by Folkman \\cite{Fo70b}.\n\nSee also [73].\n\n\n\n\nReferences\n\n\n[ErHa67b] Erd\\H{o}s, P. and Hajnal, Andr\\'as, On chromatic graphs. Mat. Lapok (1967), 1--4.\n\n[Fo70b] Folkman, J. H., An upper bound on the chromatic number of a graph. (1970), 437--457.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

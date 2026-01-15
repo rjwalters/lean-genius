@@ -1,0 +1,33 @@
+{
+  "id": "erdos-885",
+  "title": "Erdős Problem #885",
+  "slug": "erdos-885",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor integer ... we define the factor difference set of ... by\\[D(n) = \\{\\lvert a-b\\rvert : n=ab\\}.\\]Is it true that, for ever...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/885",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos885Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 885,
+    "erdosUrl": "https://erdosproblems.com/885",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #885 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor integer $n\\geq 1$ we define the factor difference set of $n$ by\\[D(n) = \\{\\lvert a-b\\rvert : n=ab\\}.\\]Is it true that, for every $k\\geq 1$, there exist integers $N_1<\\cdots<N_k$ such that\\[\\lvert \\cap_i D(N_i)\\rvert \\geq k?\\]\n\n\n\nA question of Erd\\H{o}s and Rosenfeld \\cite{ErRo97}, who proved this is true for $k=2$. Jim\\'{e}nez-Urroz \\cite{Ji99} proved this for $k=3$ and Bremner \\cite{Br19} proved this for $k=4$.\n\n\n\n\nReferences\n\n\n[Br19] Bremner, Andrew, On a problem of Erd\\H{o}s related to common factor\ndifferences. Int. J. Number Theory (2019), 1059--1068.\n\n[ErRo97] Erd\\H{o}s, Paul and Rosenfeld, Moshe, The factor-difference set of integers. Acta Arith. (1997), 353--359.\n\n[Ji99] Jim\\'{e}nez-Urroz, Jorge, A note on a conjecture of Erd\\H{o}s and {R}osenfeld. J. Number Theory (1999), 140--143.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

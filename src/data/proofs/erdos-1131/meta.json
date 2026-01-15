@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1131",
+  "title": "Erdős Problem #1131",
+  "slug": "erdos-1131",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor ... let\\[l_k(x)=(x-x_i)}{\\prod_{i\\neq k}(x_k-x_i)},\\]which are such that ... and ... for ....\n\nWhat is the minimal value ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1131",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1131Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1131,
+    "erdosUrl": "https://erdosproblems.com/1131",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1131 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor $x_1,\\ldots,x_n\\in [-1,1]$ let\\[l_k(x)=\\frac{\\prod_{i\\neq k}(x-x_i)}{\\prod_{i\\neq k}(x_k-x_i)},\\]which are such that $l_k(x_k)=1$ and $l_k(x_i)=0$ for $i\\neq k$.\n\nWhat is the minimal value of\\[I(x_1,\\ldots,x_n)=\\int_{-1}^1 \\sum_k \\lvert l_k(x)\\rvert^2\\mathrm{d}x?\\]In particular, is it true that\\[\\min I =2-(1+o(1))\\frac{1}{n}?\\]\n\n\n\nErd\\H{o}s first conjectured this minimum was achieved by taking the $x_i$ to be the roots of the integral of the Legendre polynomial, since Fejer \\cite{Fe32} had earlier shown these to be minimisers of\\[\\max_{x\\in [-1,1]}\\sum_k \\lvert l_k(x)\\rvert^2.\\]This was disproved by Szabados \\cite{Sz66} for every $n>3$.\n\nErd\\H{o}s, Szabados, Varma, and V\\'{e}rtesi \\cite{ESVV94} proved that\\[2-O\\left(\\frac{(\\log n)^2}{n}\\right)\\leq \\min I\\leq 2-\\frac{2}{2n-1}\\]where the upper bound is witnessed by the roots of the integral of the Legendre polynomial as above.\n\n\n\n\nReferences\n\n\n[ESVV94] Erd\\H{o}s, P. and Szabados, J. and Varma, A. K. and V\\'{e}rtesi,\nP., On an interpolation theoretical extremal problem. Studia Sci. Math. Hungar. (1994), 55--60.\n\n[Fe32] Fej\\'{e}r, Leopold, Bestimmung derjenigen {A}bszissen eines {I}ntervalles, f\\\"ur\nwelche die {Q}uadratsumme der {G}rundfunktionen der\n{L}agrangeschen {I}nterpolation im {I}ntervalle ein\n{M}\\\"oglichst kleines {M}aximum {B}esitzt. Ann. Scuola Norm. Super. Pisa Cl. Sci. (2) (1932), 263--276.\n\n[Sz66] Szabados, J., On a problem of {P}. {E}rd\\H{o}s. Acta Math. Acad. Sci. Hungar. (1966), 155--157.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

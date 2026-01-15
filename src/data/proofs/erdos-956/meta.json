@@ -1,0 +1,33 @@
+{
+  "id": "erdos-956",
+  "title": "Erdős Problem #956",
+  "slug": "erdos-956",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... then the distance between ... and ... is defined by\\[\\delta(C,D)=\\inf_{}\\| c-d\\|.\\]Let ... be the maximal number of un...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/956",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos956Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 956,
+    "erdosUrl": "https://erdosproblems.com/956",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #956 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $C,D\\subseteq \\mathbb{R}^2$ then the distance between $C$ and $D$ is defined by\\[\\delta(C,D)=\\inf_{\\substack{c\\in C\\\\ d\\in D}}\\| c-d\\|.\\]Let $h(n)$ be the maximal number of unit distances between disjoint convex translates. That is, the maximal $m$ such that there is a compact convex set $C\\subset \\mathbb{R}^2$ and a set $X$ of size $n$ such that all $(C+x)_{x\\in X}$ are disjoint and there are $m$ pairs $x_1,x_2\\in X$ such that\\[\\delta(C+x_1,C+x_2)=1.\\]Determine $h(n)$ - in particular, prove that there exists a constant $c>0$ such that $h(n)>n^{1+c}$ for all large $n$.\n\n\n\n\nA problem of Erd\\H{o}s and Pach \\cite{ErPa90}, who proved that $h(n) \\ll n^{4/3}$. They also consider the related function where we consider $n$ disjoint convex sets (not necessarily translates), for which they give an upper bound of $\\ll n^{7/5}$.\n\nIt is trivial that $h(n)\\geq f(n)$, where $f(n)$ is the maximal number of unit distances determined by $n$ points in $\\mathbb{R}^2$ (see [90]).\n\n\n\n\nReferences\n\n\n[ErPa90] Erd\\H{o}s, P. and Pach, J., Variations on the theme of repeated distances. Combinatorica (1990), 261--269.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

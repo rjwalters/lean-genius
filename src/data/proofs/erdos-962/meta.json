@@ -1,0 +1,33 @@
+{
+  "id": "erdos-962",
+  "title": "Erdős Problem #962",
+  "slug": "erdos-962",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal ... such that there exists ... such that each of the integers\\[m+1,\\ldots,m+k\\]are divisible by at lea...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/962",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos962Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 962,
+    "erdosUrl": "https://erdosproblems.com/962",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #962 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k(n)$ be the maximal $k$ such that there exists $m\\leq n$ such that each of the integers\\[m+1,\\ldots,m+k\\]are divisible by at least one prime $>k$. Estimate $k(n)$.\n\n\n\nErd\\H{o}s \\cite{Er65} wrote it is 'not hard to prove' that\\[k(n)\\gg_\\epsilon \\exp((\\log n)^{1/2-\\epsilon})\\]and it 'seems likely' that $k(n)=o(n^\\epsilon)$, but had no non-trivial upper bound for $k(n)$.\n\nIt is not clear what he meant by a non-trivial bound for this problem, but Tao in the comments has given a simple argument proving $k(n) \\leq (1+o(1))n^{1/2}$.\n\nTang has proved a lower bound of\\[k(n)\\geq \\exp\\left(\\left(\\frac{1}{\\sqrt{2}}-o(1)\\right)\\sqrt{\\log n\\log\\log n}\\right).\\]\n\n\n\n\nReferences\n\n\n[Er65] Erd\\H{o}s, P., Extremal problems in number theory. Proc. Sympos. Pure Math., Vol. VIII (1965), 181-189.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

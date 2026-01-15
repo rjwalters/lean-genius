@@ -1,0 +1,33 @@
+{
+  "id": "erdos-888",
+  "title": "Erdős Problem #888",
+  "slug": "erdos-888",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest ... such that if ... are such that ... is a square then ...?\n\n\n\nA question of Erds, S\\'{a}rk\\...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/888",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos888Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 888,
+    "erdosUrl": "https://erdosproblems.com/888",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #888 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest $A\\subseteq \\{1,\\ldots,n\\}$ such that if $a\\leq b\\leq c\\leq d\\in A$ are such that $abcd$ is a square then $ad=bc$?\n\n\n\nA question of Erd\\H{o}s, S\\'{a}rk\\\"{o}zy, and S\\'{o}s. Erd\\H{o}s claims that S\\'{a}rk\\\"{o}zy proved that $\\lvert A\\rvert =o(n)$. The primes show that $\\lvert A\\rvert \\gg n/\\log n$ is possible.\n\nSee also [121].\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

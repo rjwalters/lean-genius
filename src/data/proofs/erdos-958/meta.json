@@ -1,0 +1,33 @@
+{
+  "id": "erdos-958",
+  "title": "Erdős Problem #958",
+  "slug": "erdos-958",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a finite set of size ..., and let ... be the set of distances determined by .... Let ... be the multiplicity of .....",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/958",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos958Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 958,
+    "erdosUrl": "https://erdosproblems.com/958",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #958 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset \\mathbb{R}^2$ be a finite set of size $n$, and let $\\{d_1,\\ldots,d_k\\}$ be the set of distances determined by $A$. Let $f(d)$ be the multiplicity of $d$, that is, the number of ordered pairs from $A$ of distance $d$ apart.\n\nIs it true that $k=n-1$ and $\\{f(d_i)\\}=\\{n-1,\\ldots,1\\}$ if and only if $A$ is a set of equidistant points on a line or a circle?\n\n\n\nErd\\H{o}s conjectured that the answer is no, and other such configurations exist.\n\nThis was proved by Clemen, Dumitrescu, and Liu \\cite{CDL25}, who observed that equidistant points on a short circular arc on a circle of radius $1$, together with the centre, are also an example.\n\n\n\n\nReferences\n\n\n[CDL25] F. Clemen, A. Dumitrescu, and D. Liu, On multiplicities of interpoint distances. arXiv:2505.04283 (2025).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

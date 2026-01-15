@@ -1,0 +1,33 @@
+{
+  "id": "erdos-934",
+  "title": "Erdős Problem #934",
+  "slug": "erdos-934",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that every graph ... with ... edges and maximal degree ... contains two edges whose shortest path bet...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/934",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos934Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 934,
+    "erdosUrl": "https://erdosproblems.com/934",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #934 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h_t(d)$ be minimal such that every graph $G$ with $h_t(d)$ edges and maximal degree $\\leq d$ contains two edges whose shortest path between them has length $\\geq t$.\n\nEstimate $h_t(d)$.\n\n\n\nA problem of Erd\\H{o}s and Ne\\v{s}et\\v{r}il. Erd\\H{o}s \\cite{Er88} wrote 'This problem seems to be interesting only if there is a nice expression for $h_t(d)$.'\n\nIt is easy to see that $h_t(d)\\leq 2d^t$ always and $h_1(d)=d+1$.\n\nErd\\H{o}s and Ne\\v{s}et\\v{r}il and Bermond, Bond, Paoli, and Peyrat \\cite{BBPP83} independently conjectured that $h_2(d) \\leq \\tfrac{5}{4}d^2+1$, with equality for even $d$ (see [149]). This was proved by Chung, Gy\\'{a}rf\\'{a}s, Tuza, and Trotter \\cite{CGTT90}.\n\nCambie, Cames van Batenburg, de Joannis de Verclos, and Kang \\cite{CCJK22} conjectured that\\[h_3(d) \\leq d^3-d^2+d+2,\\]with equality if and only if $d=p^k+1$ for some prime power $p^k$, and proved that $h_3(3)=23$. They also conjecture that, for all $t\\geq 3$, $h_t(d)\\geq (1-o(1))d^t$ for infinitely many $d$ and $h_t(d)\\leq (1+o(1))d^t$ for all $d$ (where the $o(1)$ term $\\to 0$ as $d\\to \\infty$).\n\nThe same authors prove that, if $t$ is large, then there are infinitely many $d$ such that $h_t(d) \\geq 0.629^td^t$, and that for all $t\\geq 1$ we have\\[h_t(d) \\leq \\tfrac{3}{2}d^t+1.\\]\n\n\n\n\nReferences\n\n\n[BBPP83] Bermond, J.-C. and Bond, J. and Paoli, M. and Peyrat, C., Graphs and interconnection networks: diameter and\nvulnerability. (1983), 1--30.\n\n[CCJK22] Cambie, Stijn and Cames van Batenburg, Wouter and de Joannis\nde Verclos, R\\'{e}mi and Kang, Ross J., Maximizing line subgraphs of diameter at most {$t$}. SIAM J. Discrete Math. (2022), 939--950.\n\n[CGTT90] Chung, F. R. K. and Gy\\'arf\\'as, A. and Tuza, Z. and Trotter,\nW. T., The maximum number of edges in {$2K_2$}-free graphs of bounded\ndegree. Discrete Math. (1990), 129--135.\n\n[Er88] Erd\\H{o}s, P, Problems and results in combinatorial analysis and graph theory. Discrete Math. (1988), 81-92.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

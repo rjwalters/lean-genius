@@ -1,0 +1,33 @@
+{
+  "id": "erdos-994",
+  "title": "Erdős Problem #994",
+  "slug": "erdos-994",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a meaurable subset with Lebesgue measure .... Is it true that, for almost all ...,\\[\\lim_{n\\to \\infty}{n}\\sum_{1\\l...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/994",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos994Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 994,
+    "erdosUrl": "https://erdosproblems.com/994",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #994 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $E\\subseteq (0,1)$ be a meaurable subset with Lebesgue measure $\\lambda(E)$. Is it true that, for almost all $\\alpha$,\\[\\lim_{n\\to \\infty}\\frac{1}{n}\\sum_{1\\leq k\\leq n}1_{\\{k\\alpha \\}\\in E}=\\lambda(E)\\]for all $E$?\n\n\n\nA conjecture of Khintchine \\cite{Kh23}.\n\nIn fact this is false, and was disproved by Marstrand \\cite{Ma70}.\n\n\n\n\nReferences\n\n\n[Kh23] Khintchine, A., Ein {S}atz \\\"uber {K}ettenbr\\\"uche, mit arithmetischen\n{A}nwendungen. Math. Z. (1923), 289--306.\n\n[Ma70] Marstrand, J. M., On {K}hinchin's conjecture about strong uniform distribution. Proc. London Math. Soc. (3) (1970), 540--556.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

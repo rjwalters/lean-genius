@@ -1,0 +1,33 @@
+{
+  "id": "erdos-937",
+  "title": "Erdős Problem #937",
+  "slug": "erdos-937",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many four-term arithmetic progressions of coprime powerful numbers (i.e. if ... then ...)?\n\n\n\nA classic ...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/937",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos937Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 937,
+    "erdosUrl": "https://erdosproblems.com/937",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #937 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many four-term arithmetic progressions of coprime powerful numbers (i.e. if $p\\mid n$ then $p^2\\mid n$)?\n\n\n\nA classic theorem of Fermat states that there are no four squares in arithmetic progression.\n\nWithout the coprimality condition this is easy, since if $a,a+d,\\ldots,a+(k-1)d$ is an arithmetic progression of powerful numbers then so too is\\[a(a+kd)^2,\\ldots,(a+(k-1)d)(a+kd)^2,(a+kd)^3.\\]Beginning with $k=2$ and an arbitrary pair of powerful numbers one can construct arbitrarily long arithmetic progressions of powerful numbers.\n\nOne can similarly ask for coprime arithmetic progressions in the $r$-powerful numbers (i.e. if $p\\mid n$ then $p^r\\mid n$). Erd\\H{o}s \\cite{Er76d} conjectured that when $r\\geq 4$ there do not exist infinitely many such progressions of length $3$, and when $r=3$ there are infinitely many progressions of length $3$ but only finitely many of length $4$.\n\nBajpai, Bennett, and Chan \\cite{BBC24} proved that there are infinitely many four-term progressions of coprime powerful numbers, and infinitely many three-term progressions of coprime $3$-powerful numbers. They also show that there exist only finitely many three-term coprime progressions when $r\\geq 4$ assuming the ABC conjecture.\n\n\n\n\nReferences\n\n\n[BBC24] Bajpai, Prajeet and Bennett, Michael A. and Chan, Tsz Ho, Arithmetic progressions in squarefull numbers. Int. J. Number Theory (2024), 19--45.\n\n[Er76d] Erd\\H{o}s, P., Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics (Univ. Manitoba, Winnipeg, Man., 1975) (1976), 25-44.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

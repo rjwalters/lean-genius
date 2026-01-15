@@ -1,0 +1,33 @@
+{
+  "id": "erdos-795",
+  "title": "Erdős Problem #795",
+  "slug": "erdos-795",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal size of ... such that the products ... are distinct for all .... Is it true that\\[g(n) \\leq \\pi(n)+\\pi...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/795",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos795Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 795,
+    "erdosUrl": "https://erdosproblems.com/795",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #795 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $g(n)$ be the maximal size of $A\\subseteq \\{1,\\ldots,n\\}$ such that the products $\\prod_{n\\in S}n$ are distinct for all $S\\subseteq A$. Is it true that\\[g(n) \\leq \\pi(n)+\\pi(n^{1/2})+o\\left(\\frac{x^{1/2}}{\\log n}\\right)?\\]\n\n\n\nErd\\H{o}s proved \\cite{Er66}\\[g(n) \\leq \\pi(n)+O\\left(\\frac{x^{1/2}}{\\log n}\\right).\\]This upper bound would be essentially best possible, since one could take $A$ to be all primes and squares of primes.\n\nThis was solved by Raghavan \\cite{Ra25}, who proved that\\[g(n) \\leq \\pi(n)+\\pi(n^{1/2})+O(n^{5/12+o(1)}),\\]and also that\\[g(n) \\geq \\pi(n)+\\pi(n^{1/2})+\\pi(n^{1/3})/3-O(1).\\]See also [786].\n\n\n\n\nReferences\n\n\n[Er66] Erd\\H{o}s, P\\'al, Remarks on number theory. {V}. {E}xtremal problems in number\ntheory. {II}. Mat. Lapok (1966), 135--155.\n\n[Ra25] R. Raghavan, Sharp Bounds for Sets with Distinct Subset Products. arXiv:2501.02695 (2025).\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "erdos-754",
+  "title": "Erdős Problem #754",
+  "slug": "erdos-754",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be maximal such that there exists a set ... of ... points in ... in which every ... has at least ... points in ... eq...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/754",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos754Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 754,
+    "erdosUrl": "https://erdosproblems.com/754",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #754 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be maximal such that there exists a set $A$ of $n$ points in $\\mathbb{R}^4$ in which every $x\\in A$ has at least $f(n)$ points in $A$ equidistant from $x$.\n\nIs it true that $f(n)\\leq \\frac{n}{2}+O(1)$?\n\n\n\nAvis, Erd\\H{o}s, and Pach \\cite{AEP88} proved that\\[\\frac{n}{2}+2 \\leq f(n) \\leq (1+o(1))\\frac{n}{2}.\\]This was proved by Swanepoel \\cite{Sw13}, who in fact proved more generally that, in any finite set $A\\subset \\mathbb{R}^4$ of size $n$ and any choice of distance $d(x)$ for each $x\\in A$,\\[\\sum_{x\\in A}\\sum_{y\\in A}1_{\\lvert x-y\\rvert =d(x)}\\leq \\tfrac{1}{2}n^2+O(n),\\]and proved similar results for finite point sets in higher dimensional space.\n\n\n\n\nReferences\n\n\n[AEP88] Avis, David and Erd\\H{o}s, Paul and Pach, J\\'anos, Repeated distances in space. Graphs Combin. (1988), 207--217.\n\n[Sw13] Swanepoel, Konrad J., Favorite distances in high dimensions. (2013), 499--519.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

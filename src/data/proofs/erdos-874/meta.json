@@ -1,0 +1,33 @@
+{
+  "id": "erdos-874",
+  "title": "Erdős Problem #874",
+  "slug": "erdos-874",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the size of the largest set ... such that the sets\\[S_r = \\{ a_1+\\cdots +a_r : a_1<\\cdots<a_r\\in A\\}\\]are disj...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/874",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos874Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 874,
+    "erdosUrl": "https://erdosproblems.com/874",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #874 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k(N)$ denote the size of the largest set $A\\subseteq \\{1,\\ldots,N\\}$ such that the sets\\[S_r = \\{ a_1+\\cdots +a_r : a_1<\\cdots<a_r\\in A\\}\\]are disjoint for distinct $r\\geq 1$. Estimate $k(N)$ - in particular, is it true that $k(N)\\sim 2N^{1/2}$?\n\n\n\nStraus \\cite{St66} calls such sets admissible, and proved that\\[\\limsup \\frac{k(N)}{N^{1/2}}\\leq \\frac{4}{\\sqrt{3}}=2.309\\cdots,\\]and that $A=(N-k,N]\\cap \\mathbb{N}$ has this property for $k=2m-1$ if $N\\in [m^2,m^2+m)$ and for $k=2m$ if $N\\in [m^2+m,(m+1)^2)$, which implies that\\[\\liminf \\frac{k(N)}{N^{1/2}}\\geq 2.\\]Erd\\H{o}s, Nicolas, and S\\'{a}rk\\\"{o}zy \\cite{ENS91} improved the upper bound to\\[\\limsup \\frac{k(N)}{N^{1/2}}\\leq (143/27)^{1/2}=2.301\\cdots.\\]The conjecture was proved (for all large $N$) by Deshouillers and Freiman \\cite{DeFr99}, who further show that in some cases the largest such $A$ has the form $(N-k,N]\\cap \\mathbb{N}$ as above.\n\nSee also [186] and [789]. For an infinite version of this problem see [875].\n\n\n\n\nReferences\n\n\n[DeFr99] Deshouillers, Jean-Marc and Freiman, Gregory A., On an additive problem of Erd\\H{o}s and {S}traus. {II}. Ast\\'{e}risque (1999), xii, 141--148.\n\n[ENS91] Erd\\H{o}s, P. and Nicolas, J.-L. and S\\'{a}rk\\\"ozy, A., Sommes de sous-ensembles. S\\'{e}m. Th\\'{e}or. Nombres Bordeaux (2) (1991), 55--72.\n\n[St66] Straus, E. G., On a problem in combinatorial number theory. J. Math. Sci. (1966), 77--80.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

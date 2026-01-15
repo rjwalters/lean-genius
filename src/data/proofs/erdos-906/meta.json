@@ -1,0 +1,33 @@
+{
+  "id": "erdos-906",
+  "title": "Erdős Problem #906",
+  "slug": "erdos-906",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an entire non-zero function ... such that, for any infinite sequence ..., the set\\[\\{ z: f^{(n_k)}(z)=0 k\\geq 1\\}\\]i...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/906",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos906Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 906,
+    "erdosUrl": "https://erdosproblems.com/906",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #906 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an entire non-zero function $f:\\mathbb{C}\\to \\mathbb{C}$ such that, for any infinite sequence $n_1<n_2<\\cdots$, the set\\[\\{ z: f^{(n_k)}(z)=0 \\textrm{ for some }k\\geq 1\\}\\]is everywhere dense?\n\n\n\nErd\\H{o}s \\cite{Er82e} writes that this was solved in the affirmative 'more than ten years ago', but gives no reference or indication who solved it. From context he seems to attribute this to Barth and Schneider \\cite{BaSc72}, but this paper contains no such result.\n\nTang points out that the problem is trivial if we take $f$ to be a polynomial, so presumably it is intended the function $f$ is transcendental.\n\n\n\n\nReferences\n\n\n[BaSc72] Barth, K. F. and Schneider, W. J., On a problem of Erd\\H{o}s concerning the zeros of the\nderivatives of an entire function. Proc. Amer. Math. Soc. (1972), 229--232.\n\n[Er82e] Erd\\H{o}s, Paul, Some of my favourite problems which recently have been solved. (1982), 59--79.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

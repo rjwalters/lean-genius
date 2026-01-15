@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1015",
+  "title": "Erdős Problem #1015",
+  "slug": "erdos-1015",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that, in any two-colouring of the edges of ..., the edges can be partitioned into vertex disjoint mon...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1015",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1015Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1015,
+    "erdosUrl": "https://erdosproblems.com/1015",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1015 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(t)$ be minimal such that, in any two-colouring of the edges of $K_n$, the edges can be partitioned into vertex disjoint monochromatic copies of $K_t$ (not necessarily the same colour) with at most $f(t)$ vertices remaining.\n\nEstimate $f(t)$. In particular, is it true that $f(t)^{1/t}\\to 1$? Is it true that $f(t)\\ll t$?\n\n\n\nA question of Moon \\cite{Mo66b}, who proved that $f(3)=4$, at least for $n\\geq 8$.\n\nPresumably Erd\\H{o}s intended to only ask this question for $n$ sufficiently large depending on $t$. Erd\\H{o}s notes that $f(t)\\ll 4^t$, by comparing to the Ramsey number $R(t)$.\n\nBurr, Erd\\H{o}s, and Spencer \\cite{BES75} proved that, for $n$ sufficiently large depending on $t$,\\[f(t)=R(t,t-1)+x(t,n),\\]where $0\\leq x(t,n)<t$ is such that $n+1\\equiv R(t,t-1)+x\\pmod{t}$.\n\n\n\n\nReferences\n\n\n[BES75] Burr, S. A. and Erd\\H{o}s, P. and Spencer, J. H., Ramsey theorems for multiple copies of graphs. Trans. Amer. Math. Soc. (1975), 87--99.\n\n[Mo66b] Moon, J. W., Disjoint triangles in chromatic graphs. Math. Mag. (1966), 259--261.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

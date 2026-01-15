@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1110",
+  "title": "Erdős Problem #1110",
+  "slug": "erdos-1110",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be two coprime integers. We call ... representable if it is the sum of integers of the form ..., none of which divide...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1110",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1110Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1110,
+    "erdosUrl": "https://erdosproblems.com/1110",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1110 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $p>q\\geq 2$ be two coprime integers. We call $n$ representable if it is the sum of integers of the form $p^kq^l$, none of which divide each other.\n\nIf $\\{p,q\\}\\neq \\{2,3\\}$ then what can be said about the density of non-representable numbers? Are there infinitely many coprime non-representable numbers?\n\n\n\n\n\nA problem of Erd\\H{o}s and Lewin \\cite{ErLe96}, who proved that there are finitely many non-representable numbers if and only if $\\{p,q\\}=\\{2,3\\}$.\n\nIndeed, in \\cite{Er92b} Erd\\H{o}s wrote 'last year I made the following silly conjecture': every integer $n$ can be written as the sum of distinct integers of the form $2^k3^l$, none of which divide any other. He wrote 'I mistakenly thought that this was a nice and difficult conjecture but Jansen and several others found a simple proof by induction.'\n\nThis simple proof is as follows: one proves the stronger fact that such a representation always exists, and moreover if $n$ is even then all the summands can be taken to be even: if $n=2m$ we are done applying the inductive hypothesis to $m$. Otherwise if $n$ is odd then let $3^k$ be the largest power of $3$ which is $\\leq n$ and apply the inductive hypothesis to $n-3^k$ (which is even).\n\nYu and Chen \\cite{YuCh22} prove that the set of non-representable numbers has density zero whenever $q>3$ or $q=3$ and $p>6$ or $q=2$ and $p>10$. They also prove that there are infinitely many coprime non-representable numbers if $q>3$ or $q=3$ and $p\\neq 5$ or $q=2$ and $p\\not\\in \\{3,5,9\\}$.\n\nErd\\H{o}s and Lewin \\cite{ErLe96} also asked whether all large integers $n$ can be written as a sum of $2^k3^l$, none of which divide another, each of which is $>f(n)$ for some $f(n)\\to \\infty$. Let $f(n)$ be the fastest growing such $f(n)$. Yu and Chen \\cite{YuCh22} proved\\[\\frac{n}{(\\log n)^{\\log_23}}\\ll f(n) \\ll \\frac{n}{\\log n}.\\]Yang and Zhao \\cite{YaZh25} improved the lower bound to $f(n)\\gg n/\\log n$.\n\nThe case of three powers is the subject of [123], and see also [845] for more on the case $\\{p,q\\}=\\{2,3\\}$. The problem [246] addresses the topic without the non-divisibility condition.\n\n\n\n\nReferences\n\n\n[Er92b] Erd\\H{o}s, Paul, Some of my favourite problems in various branches of combinatorics. Matematiche (Catania) (1992), 231-240.\n\n[ErLe96] Erd\\H{o}s, P. and Lewin, Mordechai, $d$-complete sequences of integers. Math. Comp. (1996), 837-840.\n\n[YaZh25] Yang, Quan-Hui and Zhao, Lilu, A conjecture of {Y}u and {C}hen related to the {E}rd\\H\nos-{L}ewin theorem. Acta Arith. (2025), 277--286.\n\n[YuCh22] Yu, Wang-Xing and Chen, Yong-Gao, On a conjecture of {E}rd\\H{o}s and {L}ewin. J. Number Theory (2022), 763--778.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

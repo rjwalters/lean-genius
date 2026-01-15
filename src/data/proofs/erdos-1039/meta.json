@@ -1,0 +1,33 @@
+{
+  "id": "erdos-1039",
+  "title": "Erdős Problem #1039",
+  "slug": "erdos-1039",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... with ... for all .... Let ... be the radius of the largest disc which is contained in ....\n\nDetermine the behaviour o...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1039",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos1039Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 1039,
+    "erdosUrl": "https://erdosproblems.com/1039",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1039 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(z)=\\prod_{i=1}^n(z-z_i)\\in \\mathbb{C}[z]$ with $\\lvert z_i\\rvert \\leq 1$ for all $i$. Let $\\rho(f)$ be the radius of the largest disc which is contained in $\\{z: \\lvert f(z)\\rvert< 1\\}$.\n\nDetermine the behaviour of $\\rho(f)$. In particular, is it always true that $\\rho(f)\\gg 1/n$?\n\n\n\nA problem of Erd\\H{o}s, Herzog, and Piranian, who note that $f(z)=z^n-1$ has $\\rho(f) \\leq \\frac{\\pi/2}{n}$.\n\nPommerenke \\cite{Po61} proved that\\[\\rho(f) \\geq \\frac{1}{2en^2}.\\]Krishnapur, Lundberg, and Ramachandran \\cite{KLR25} proved\\[\\rho(f) \\gg \\frac{1}{n\\sqrt{\\log n}}.\\]\n\n\n\n\nReferences\n\n\n[KLR25] M. Krishnapur, E. Lundberg, and K. Ramachandran, On the area of polynomial lemniscates. arXiv:2503.18270 (2025).\n\n[Po61] Pommerenke, Ch., On metric properties of complex polynomials. Michigan Math. J. (1961), 97-115.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}

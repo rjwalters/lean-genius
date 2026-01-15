@@ -1,0 +1,33 @@
+{
+  "id": "erdos-803",
+  "title": "Erdős Problem #803",
+  "slug": "erdos-803",
+  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe call a graph ... ...-balanced (or ...-almost-regular) if the maximum degree of ... is at most ... times the minimum degree...",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/803",
+    "date": "",
+    "status": "pending",
+    "proofRepoPath": "Proofs/Erdos803Problem.lean",
+    "tags": [
+      "erdos"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "erdosNumber": 803,
+    "erdosUrl": "https://erdosproblems.com/803",
+    "erdosProblemStatus": "solved"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #803 from erdosproblems.com.",
+    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe call a graph $H$ $D$-balanced (or $D$-almost-regular) if the maximum degree of $H$ is at most $D$ times the minimum degree of $H$.\n\nIs it true that for every $m\\geq 1$, if $n$ is sufficiently large, any graph on $n$ vertices with $\\geq n\\log n$ edges contains a $O(1)$-balanced subgraph with $m$ vertices and $\\gg m\\log m$ edges (where the implied constants are absolute)?\n\n\n\nA problem of Erd\\H{o}s and Simonovits \\cite{ErSi70}, who proved a similar claim replacing $\\log n$ and $\\log m$ by $n^{c}$ and $m^c$ respectively, for any constant $c>0$ (where the balance parameter may depend on $c$). (See [1077].)\n\nAlon \\cite{Al08} proved this is false: for every $D>1$ and large $n$ there is a graph $G$ with $n$ vertices and $\\geq n\\log n$ edges such that if $H$ is a $D$-balanced subgraph then $H$ has $\\ll m\\sqrt{\\log m}+\\log D$ many edges.\n\nJanzer and Sudakov \\cite{JaSu23} have proved that, for any $k$, if $n$ is sufficiently large then any graph on $n$ vertices with at least $n\\log n$ edges contains a $O(1)$-balanced subgraph on $m\\geq k$ vertices with\\[\\gg_k \\frac{\\sqrt{\\log m}}{(\\log\\log m)^{3/2}}m\\]many edges.\n\nSee also [1077].\n\n\n\n\nReferences\n\n\n[Al08] Alon, Noga, Problems and results in extremal combinatorics. {II}. Discrete Math. (2008), 4460-4472.\n\n[ErSi70] Erd\\H{o}s, P. and Simonovits, M., Some extremal problems in graph theory. Combinatorial theory and its applications, I-III (Proc. Colloq., Balatonf\\\"{u}red, 1969) (1970), 377-390.\n\n[JaSu23] Janzer, Oliver and Sudakov, Benny, Resolution of the {E}rd\\H{o}s-{S}auer problem on regular\nsubgraphs. Forum Math. Pi (2023), Paper No. e19, 13.\n\n\nBack to the problem",
+    "proofStrategy": "TODO: Document proof strategy",
+    "keyInsights": []
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "TODO: Add proof summary",
+    "implications": "",
+    "openQuestions": []
+  }
+}
