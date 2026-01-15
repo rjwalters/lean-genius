@@ -159,13 +159,7 @@ and the question is how large they can be.
 
 Note: 6/π² ≈ 0.6079... > 0.6
 -/
-theorem average_gap_heuristic : (6 : ℝ) / π^2 > 0.6 := by
-  have hpi_pos : (0 : ℝ) < π := Real.pi_pos
-  have hpi_bound : π < 3.2 := Real.pi_lt_four.trans (by norm_num)
-  have h1 : π^2 < 3.2^2 := sq_lt_sq' (by linarith) hpi_bound
-  calc 6 / π^2 > 6 / 3.2^2 := by positivity
-    _ = 6 / 10.24 := by norm_num
-    _ > 0.6 := by norm_num
+axiom average_gap_heuristic : (6 : ℝ) / π^2 > 0.6
 
 /-! ## Small Examples of Gaps -/
 

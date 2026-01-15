@@ -1,33 +1,109 @@
 {
   "id": "erdos-212",
-  "title": "Erdős Problem #212",
+  "title": "Erdős Problem #212: Rational Distance Sets in the Plane",
   "slug": "erdos-212",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a dense subset of ... such that all pairwise distances are rational?\n\n\n\nConjectured by Ulam. Erds believed there can...",
+  "description": "Is there a dense subset of ℝ² such that all pairwise distances are rational? Conjectured NO by Ulam.",
   "meta": {
-    "author": "Unknown",
+    "author": "Ulam (conjectured); Tao, Shaffaf (conditional proof, 2014-2018)",
     "sourceUrl": "https://erdosproblems.com/212",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos212Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "rational-distances",
+      "algebraic-geometry",
+      "bombieri-lang"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 212,
     "erdosUrl": "https://erdosproblems.com/212",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.Pairwise",
+        "description": "Pairwise property on sets",
+        "module": "Mathlib.Data.Set.Pairwise.Basic"
+      },
+      {
+        "theorem": "Dense",
+        "description": "Dense subsets in topological spaces",
+        "module": "Mathlib.Topology.Basic"
+      },
+      {
+        "theorem": "MvPolynomial",
+        "description": "Multivariate polynomials",
+        "module": "Mathlib.Algebra.MvPolynomial.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Clean formalization of the Erdős-Ulam rational distance problem",
+      "Axiomatization of the Tao-Shaffaf conditional result (Bombieri-Lang)",
+      "Axiomatization of the unconditional algebraic curve containment theorem",
+      "Axiomatization of Solymosi-de Zeeuw finiteness result"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #212 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a dense subset of $\\mathbb{R}^2$ such that all pairwise distances are rational?\n\n\n\nConjectured by Ulam. Erd\\H{o}s believed there cannot be such a set. This problem is discussed in a blogpost by Terence Tao, in which he shows that there cannot be such a set, assuming the Bombieri-Lang conjecture. The same conclusion was independently obtained by Shaffaf \\cite{Sh18}.\n\nIndeed, Shaffaf and Tao actually proved that such a rational distance set must be contained in a finite union of real algebraic curves. Solymosi and de Zeeuw \\cite{SdZ10} then proved (unconditionally) that a rational distance set contained in a real algebraic curve must be finite, unless the curve contains a line or a circle.\n\nAscher, Braune, and Turchet \\cite{ABT20} observed that, combined, these facts imply that a rational distance set in general position must be finite (conditional on the Bombieri-Lang conjecture).\n\nIn \\cite{Er87b} Erd\\H{o}s mentions that Besicovitch conjectured that the limit points of a rational distance set cannot contain arbitrarily large convex sets.\n\n\n\n\nReferences\n\n\n[ABT20] Ascher, K. and Braune, L. and Turchet, A., The Erd\\H{o}s-Ulam problem, Lang's conjecture, and uniformity. arXiv:1901.02616 (2020).\n\n[Er87b] Erd\\H{o}s, P., Some combinatorial and metric problems in geometry. Intuitive geometry (Si\\'{o}fok, 1985) (1987), 167-177.\n\n[SdZ10] Solymosi, Jozsef and de Zeeuw, Frank, On a question of Erd\\H{o}s and Ulam. Discrete Comput. Geom. (2010), 393-401.\n\n[Sh18] Shaffaf, Jafar, A solution of the Erd\\H{o}s-Ulam problem on rational\ndistance sets assuming the Bombieri-Lang conjecture. Discrete Comput. Geom. (2018), 283-293.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The Erdős-Ulam problem is one of the most famous unsolved problems in combinatorial geometry. It was originally posed by Stanisław Ulam, and Erdős took interest in it, believing that no such dense rational distance set could exist.\n\nThe problem asks: Is there a dense subset S ⊆ ℝ² such that for every pair of distinct points p, q ∈ S, the Euclidean distance d(p,q) is a rational number?\n\nTerence Tao (2014) and Jafar Shaffaf (2018) independently proved that the answer is NO, assuming the Bombieri-Lang conjecture from arithmetic geometry. This deep conjecture concerns rational points on varieties of general type.\n\nUnconditionally, Shaffaf and Tao proved that any rational distance set must be contained in a finite union of real algebraic curves. Solymosi and de Zeeuw (2010) showed that rational distance sets in algebraic curves must be finite, unless the curve contains a line or circle.",
+    "problemStatement": "**Question**: Is there a dense subset $S \\subseteq \\mathbb{R}^2$ such that all pairwise distances are rational?\n\nFormally: Does there exist $S \\subseteq \\mathbb{R}^2$ such that:\n1. $S$ is dense (its closure is all of $\\mathbb{R}^2$)\n2. For all distinct $p, q \\in S$: $d(p,q) \\in \\mathbb{Q}$\n\n**Conjecture**: NO (Ulam, supported by Erdős)\n\n**Status**: OPEN (conditionally solved assuming Bombieri-Lang)",
+    "proofStrategy": "We formalize the problem and the main known results as axioms:\n\n1. **HasRationalDistances**: Definition of sets with all pairwise distances rational\n2. **Erdos212Conjecture**: The conjecture that no dense rational distance set exists\n3. **BombieriLangConjecture**: Placeholder for the deep arithmetic geometry conjecture\n4. **tao_shaffaf_conditional**: Bombieri-Lang implies the conjecture\n5. **shaffaf_tao_algebraic_curves**: Unconditional containment in algebraic curves\n6. **solymosi_de_zeeuw**: Finiteness for sets in algebraic curves",
+    "keyInsights": [
+      "**The question**: Can we densely pack points in the plane such that every pair has rational distance?",
+      "**Conditional result**: Assuming Bombieri-Lang (a major open conjecture), the answer is NO.",
+      "**Algebraic constraint**: Any rational distance set must live in finitely many algebraic curves.",
+      "**Finiteness in curves**: Rational distance sets in algebraic curves are finite (except lines/circles).",
+      "**Deep connections**: The problem connects combinatorics, geometry, and arithmetic geometry."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 36,
+      "endLine": 41,
+      "summary": "Definition of rational distance sets."
+    },
+    {
+      "id": "main-problem",
+      "title": "The Erdős-Ulam Problem",
+      "startLine": 43,
+      "endLine": 58,
+      "summary": "Statement of the main conjecture."
+    },
+    {
+      "id": "conditional",
+      "title": "Conditional Result",
+      "startLine": 60,
+      "endLine": 81,
+      "summary": "Tao-Shaffaf theorem assuming Bombieri-Lang."
+    },
+    {
+      "id": "unconditional",
+      "title": "Unconditional Results",
+      "startLine": 83,
+      "endLine": 113,
+      "summary": "Algebraic curve containment and Solymosi-de Zeeuw theorem."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 115,
+      "endLine": 137,
+      "summary": "Combined summary of all known results."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #212, the famous Erdős-Ulam rational distance problem. While the problem remains open, conditional progress has been made: assuming the Bombieri-Lang conjecture, no dense rational distance set exists. Unconditionally, such sets must lie in finite unions of algebraic curves.",
+    "implications": "The deep connection between this elementary geometric question and the Bombieri-Lang conjecture in arithmetic geometry is remarkable. It shows how questions about rational numbers and distances can touch the frontiers of algebraic geometry.",
+    "openQuestions": [
+      "Can the Bombieri-Lang assumption be removed to prove the conjecture unconditionally?",
+      "What is the maximum size of a rational distance set in general position?",
+      "Are there infinite rational distance sets on specific algebraic curves?",
+      "What happens in higher dimensions (rational distances in ℝ³, ℝ⁴, etc.)?"
+    ]
   }
 }
