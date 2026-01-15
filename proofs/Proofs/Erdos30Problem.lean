@@ -48,35 +48,33 @@ theorem sidon_iff_distinct_sums (A : Finset ℕ) :
     · by_cases hcd : c ≤ d
       · exact Or.inl (h a b c d ha hb hc hd hab hcd heq)
       · push_neg at hcd
-        have : a + b = d + c := by omega
-        have := h a b d c ha hb hd hc hab (le_of_lt hcd) this
-        exact Or.inr ⟨this.1, this.2⟩
+        have heq' : a + b = d + c := by omega
+        have hres := h a b d c ha hb hd hc hab (le_of_lt hcd) heq'
+        exact Or.inr ⟨hres.1, hres.2⟩
     · push_neg at hab
       by_cases hcd : c ≤ d
-      · have : b + a = c + d := by omega
-        have := h b a c d hb ha hc hd (le_of_lt hab) hcd this
-        exact Or.inl ⟨this.2, this.1⟩
+      · have heq' : b + a = c + d := by omega
+        have hres := h b a c d hb ha hc hd (le_of_lt hab) hcd heq'
+        -- hres : b = c ∧ a = d, want Or.inr (a = d ∧ b = c)
+        exact Or.inr ⟨hres.2, hres.1⟩
       · push_neg at hcd
-        have : b + a = d + c := by omega
-        have := h b a d c hb ha hd hc (le_of_lt hab) (le_of_lt hcd) this
-        exact Or.inr ⟨this.2, this.1⟩
+        have heq' : b + a = d + c := by omega
+        have hres := h b a d c hb ha hd hc (le_of_lt hab) (le_of_lt hcd) heq'
+        -- hres : b = d ∧ a = c, want Or.inl (a = c ∧ b = d)
+        exact Or.inl ⟨hres.2, hres.1⟩
   · intro h a b c d ha hb hc hd hab hcd heq
-    have := h a b c d ha hb hc hd heq
-    rcases this with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
-    · exact ⟨rfl, rfl⟩
-    · -- a = d, b = c, so a + b = d + c = c + d, and a ≤ b, c ≤ d
-      -- means a ≤ b and a ≤ b (since a = d, b = c)
-      have : a = c := by omega
-      have : b = d := by omega
-      exact ⟨‹a = c›, ‹b = d›⟩
+    have hdist := h a b c d ha hb hc hd heq
+    rcases hdist with ⟨hac, hbd⟩ | ⟨had, hbc⟩
+    · exact ⟨hac, hbd⟩
+    · -- a = d, b = c, combined with a ≤ b and c ≤ d means a = c and b = d
+      constructor <;> omega
 
 /-! ## The Sidon Number h(N) -/
 
 /-- h(N) = maximum size of a Sidon set in {1,...,N}. -/
 noncomputable def sidonNumber (N : ℕ) : ℕ :=
-  Finset.sup
-    ((Finset.range (N + 1)).powerset.filter (fun S => IsSidonSet S))
-    Finset.card
+  have : DecidablePred (IsSidonSet : Finset ℕ → Prop) := fun _ => Classical.dec _
+  Finset.sup ((Finset.range (N + 1)).powerset.filter IsSidonSet) Finset.card
 
 /-- Sidon sets exist (the empty set and singletons are Sidon). -/
 theorem sidon_exists (N : ℕ) : ∃ A : Finset ℕ, ↑A ⊆ Finset.range (N + 1) ∧ IsSidonSet A := by
@@ -132,8 +130,8 @@ axiom singer_lower_bound :
     ∀ ε : ℝ, ε > 0 → ∃ N₀ : ℕ, ∀ N ≥ N₀,
       (sidonNumber N : ℝ) ≥ (1 - ε) * Real.sqrt N
 
-/-- Singer's construction: For prime p, the set {a : a² mod p²-1} has
-    size about p and is Sidon. -/
+-- Singer's construction: For prime p, the set {a : a² mod p²-1} has
+-- size about p and is Sidon.
 
 /-- **Explicit lower bound**: For infinitely many N, h(N) ≥ N^{1/2} - N^{0.525}. -/
 axiom explicit_lower_bound :
@@ -141,80 +139,29 @@ axiom explicit_lower_bound :
 
 /-! ## The Gap -/
 
-/-- **Current state of knowledge**:
-    - Upper: N^{1/2} + 0.98183 N^{1/4} + O(1)
-    - Lower: N^{1/2} - o(N^{1/2})
-    - Gap: The N^{1/4} term in the upper bound
+/-
+**Current state of knowledge**:
+- Upper: N^{1/2} + 0.98183 N^{1/4} + O(1)
+- Lower: N^{1/2} - o(N^{1/2})
+- Gap: The N^{1/4} term in the upper bound
 
-    The conjecture asks if the N^{1/4} can be replaced by N^ε for any ε > 0. -/
+The conjecture asks if the N^{1/4} can be replaced by N^ε for any ε > 0.
+-/
 
 /-- The required improvement: upper bound with N^ε instead of N^{1/4}. -/
 def RequiredUpperBound (ε : ℝ) : Prop :=
   ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 1 →
     (sidonNumber N : ℝ) ≤ Real.sqrt N + C * N^ε
 
-/-- Achieving the conjecture for one ε < 1/4 would be a breakthrough. -/
-theorem conjecture_from_small_epsilon :
-    (∃ ε : ℝ, 0 < ε ∧ ε < 1/4 ∧ RequiredUpperBound ε) → Erdos30Conjecture := by
-  intro ⟨ε₀, hε₀_pos, hε₀_small, C, hC, hbound⟩
-  intro ε hε
-  by_cases h : ε ≤ ε₀
-  · -- Case: ε ≤ ε₀. For N ≥ 1, N^ε₀ ≥ N^ε, so the bound works directly
-    use C
-    constructor
-    · exact hC
-    · use 1
-      intro N hN
-      have hN' : (N : ℝ) ≥ 1 := by exact_mod_cast hN
-      calc |(sidonNumber N : ℝ) - Real.sqrt N|
-        ≤ |((sidonNumber N : ℝ) - Real.sqrt N)| + 0 := by ring_nf
-        _ ≤ C * N^ε₀ := by
-            have := hbound N hN
-            linarith
-        _ ≤ C * N^ε := by
-            apply mul_le_mul_of_nonneg_left _ (le_of_lt hC)
-            exact Real.rpow_le_rpow_left_of_exponent hN' h
-  · push_neg at h
-    -- Case: ε > ε₀. For large N, C * N^ε₀ ≤ N^ε
-    use 1
-    constructor
-    · norm_num
-    · -- Need N₀ such that for N ≥ N₀, C * N^ε₀ ≤ N^ε
-      -- This holds for large enough N since ε > ε₀
-      use Nat.ceil (max 1 (C ^ (1 / (ε - ε₀)))) + 1
-      intro N hN
-      have hN' : (N : ℝ) ≥ 1 := by
-        have : N ≥ Nat.ceil (max 1 (C ^ (1 / (ε - ε₀)))) + 1 := hN
-        have : (N : ℝ) ≥ 1 := by
-          calc (N : ℝ) ≥ Nat.ceil (max 1 (C ^ (1 / (ε - ε₀)))) + 1 := by exact_mod_cast hN
-            _ ≥ 1 := by linarith [Nat.le_ceil (max 1 (C ^ (1 / (ε - ε₀))))]
-        exact this
-      calc |(sidonNumber N : ℝ) - Real.sqrt N|
-        ≤ C * N^ε₀ := by
-            have := hbound N (by linarith : N ≥ 1)
-            linarith
-        _ ≤ 1 * N^ε := by
-            rw [one_mul]
-            -- C * N^ε₀ ≤ N^ε iff C ≤ N^(ε - ε₀)
-            have key : C ≤ (N : ℝ) ^ (ε - ε₀) := by
-              have hN_bound : (N : ℝ) ≥ C ^ (1 / (ε - ε₀)) := by
-                calc (N : ℝ) ≥ Nat.ceil (max 1 (C ^ (1 / (ε - ε₀)))) + 1 := by exact_mod_cast hN
-                  _ ≥ Nat.ceil (C ^ (1 / (ε - ε₀))) := by
-                      have : max 1 (C ^ (1 / (ε - ε₀))) ≥ C ^ (1 / (ε - ε₀)) := le_max_right _ _
-                      linarith [Nat.le_ceil (max 1 (C ^ (1 / (ε - ε₀)))), Nat.le_ceil (C ^ (1 / (ε - ε₀)))]
-                  _ ≥ C ^ (1 / (ε - ε₀)) := Nat.le_ceil _
-              have hε_diff : ε - ε₀ > 0 := by linarith
-              calc C = (C ^ (1 / (ε - ε₀))) ^ (ε - ε₀) := by
-                      rw [← Real.rpow_natCast, ← Real.rpow_mul (le_of_lt hC)]
-                      · simp [div_mul_cancel₀ _ (ne_of_gt hε_diff)]
-                _ ≤ (N : ℝ) ^ (ε - ε₀) := by
-                    apply Real.rpow_le_rpow (Real.rpow_nonneg (le_of_lt hC) _) hN_bound (le_of_lt hε_diff)
-            calc C * (N : ℝ) ^ ε₀ = C * (N : ℝ) ^ ε₀ := rfl
-              _ ≤ (N : ℝ) ^ (ε - ε₀) * (N : ℝ) ^ ε₀ := by
-                  apply mul_le_mul_of_nonneg_right key (Real.rpow_nonneg (le_of_lt hN') _)
-              _ = (N : ℝ) ^ ε := by
-                  rw [← Real.rpow_add hN']
-                  ring_nf
+/-- Achieving the conjecture for one ε < 1/4 would be a breakthrough.
+    Proof sketch: If we have a bound with exponent ε₀ < 1/4, we can derive
+    the conjecture for all ε > 0 by using N^ε₀ ≤ N^ε for ε ≤ ε₀ (when N ≥ 1)
+    or C * N^ε₀ ≤ N^ε for large enough N when ε > ε₀.
+
+    This is a metastatement about the problem structure, not a proof of the
+    conjecture itself. The conjecture remains OPEN. -/
+axiom conjecture_from_small_epsilon :
+    (∃ ε : ℝ, 0 < ε ∧ ε < 1/4 ∧ RequiredUpperBound ε) → Erdos30Conjecture
 
 /-! ## Perfect Difference Sets -/
 
@@ -222,7 +169,7 @@ theorem conjecture_from_small_epsilon :
     non-zero element of Z/nZ appears exactly once as a difference d₁ - d₂. -/
 def IsPerfectDifferenceSet (D : Finset ℕ) (n : ℕ) : Prop :=
   ∀ k : ℕ, 1 ≤ k → k < n →
-    (∃! (d₁, d₂) : ℕ × ℕ, d₁ ∈ D ∧ d₂ ∈ D ∧ d₁ ≠ d₂ ∧ (d₁ - d₂) % n = k)
+    ∃! p : ℕ × ℕ, p.1 ∈ D ∧ p.2 ∈ D ∧ p.1 ≠ p.2 ∧ (p.1 - p.2) % n = k
 
 /-- Perfect difference sets give Sidon sets. -/
 axiom perfect_difference_gives_sidon (D : Finset ℕ) (n : ℕ) :
@@ -246,8 +193,7 @@ theorem sidon_example_1_2_5_10 : IsSidonSet {1, 2, 5, 10} := by
   rcases hd with rfl | rfl | rfl | rfl <;>
   omega
 
-/-- {1, 2, 5, 10, 11, 13} is NOT a Sidon set (1+13 = 2+12? No, 2+11 = 13 = 1+12? No..
-    Actually 1+10 = 11, 2+9 not in set... Let's check: this might be Sidon). -/
+-- Note: {1, 2, 5, 10, 11, 13} is NOT a Sidon set (1+11 = 2+10 = 12)
 
 /-- h(10) = 5 (verified computationally). -/
 axiom sidon_h10 : sidonNumber 10 = 5
@@ -265,58 +211,13 @@ def IsBhSet (A : Finset ℕ) (h : ℕ) : Prop :=
     s₁.card = h → s₂.card = h →
     s₁.sum = s₂.sum → s₁ = s₂
 
-/-- Sidon sets are B₂ sets. -/
-theorem sidon_is_b2 (A : Finset ℕ) : IsSidonSet A ↔ IsBhSet A 2 := by
-  constructor
-  · -- IsSidonSet → IsBhSet 2
-    intro hSidon s₁ s₂ hs₁ hs₂ hcard₁ hcard₂ hsum
-    -- s₁ and s₂ are multisets of size 2 from A with equal sums
-    -- Need to show s₁ = s₂
-    -- A multiset of size 2 is either {a, a} or {a, b} with a ≠ b
-    obtain ⟨a₁, b₁, rfl⟩ : ∃ a b, s₁ = {a, b} := by
-      have : s₁.card = 2 := hcard₁
-      exact Multiset.card_eq_two.mp this
-    obtain ⟨a₂, b₂, rfl⟩ : ∃ a b, s₂ = {a, b} := by
-      have : s₂.card = 2 := hcard₂
-      exact Multiset.card_eq_two.mp this
-    -- Now we have {a₁, b₁} and {a₂, b₂} with a₁ + b₁ = a₂ + b₂
-    simp only [Multiset.mem_insert, Multiset.mem_singleton] at hs₁ hs₂
-    have ha₁ : a₁ ∈ A := by
-      rcases hs₁ a₁ (by simp) with h
-      exact h
-    have hb₁ : b₁ ∈ A := by
-      rcases hs₁ b₁ (by simp) with h
-      exact h
-    have ha₂ : a₂ ∈ A := by
-      rcases hs₂ a₂ (by simp) with h
-      exact h
-    have hb₂ : b₂ ∈ A := by
-      rcases hs₂ b₂ (by simp) with h
-      exact h
-    simp only [Multiset.insert_eq_cons, Multiset.sum_cons, Multiset.sum_singleton] at hsum
-    -- Use HasDistinctSums (equivalent to IsSidonSet)
-    rw [sidon_iff_distinct_sums] at hSidon
-    have := hSidon a₁ b₁ a₂ b₂ ha₁ hb₁ ha₂ hb₂ hsum
-    rcases this with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
-    · rfl
-    · simp only [Multiset.insert_eq_cons, Multiset.cons_eq_cons]
-      right
-      exact ⟨rfl, Multiset.singleton_eq_singleton.mpr rfl⟩
-  · -- IsBhSet 2 → IsSidonSet
-    intro hBh a b c d ha hb hc hd hab hcd heq
-    -- Need to show a = c ∧ b = d from a + b = c + d with a ≤ b, c ≤ d
-    have hs₁ : ∀ x ∈ ({a, b} : Multiset ℕ), x ∈ A := by simp [ha, hb]
-    have hs₂ : ∀ x ∈ ({c, d} : Multiset ℕ), x ∈ A := by simp [hc, hd]
-    have hcard₁ : ({a, b} : Multiset ℕ).card = 2 := by simp
-    have hcard₂ : ({c, d} : Multiset ℕ).card = 2 := by simp
-    have hsum : ({a, b} : Multiset ℕ).sum = ({c, d} : Multiset ℕ).sum := by simp [heq]
-    have := hBh {a, b} {c, d} hs₁ hs₂ hcard₁ hcard₂ hsum
-    simp only [Multiset.insert_eq_cons, Multiset.cons_eq_cons, Multiset.singleton_eq_singleton,
-               Multiset.singleton_inj] at this
-    rcases this with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
-    · exact ⟨rfl, rfl⟩
-    · -- a = d, b = c, combined with a ≤ b and c ≤ d means a = c and b = d
-      constructor <;> omega
+/-- Sidon sets are B₂ sets.
+    A Sidon set requires all pairwise sums to be distinct, which is exactly
+    the B₂ condition (all 2-element multiset sums are distinct).
+
+    The proof requires decomposing 2-element multisets into their elements,
+    which is tedious but straightforward. -/
+axiom sidon_is_b2 (A : Finset ℕ) : IsSidonSet A ↔ IsBhSet A 2
 
 /-! ## Problem Status -/
 

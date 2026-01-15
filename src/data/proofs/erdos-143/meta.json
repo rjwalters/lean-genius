@@ -1,34 +1,100 @@
 {
   "id": "erdos-143",
-  "title": "Erdős Problem #143",
+  "title": "Erdős Problem #143: Sparseness of Dilation-Avoiding Sets",
   "slug": "erdos-143",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a countably infinite set such that for all ... and integers ... we have\\[ \\lvert kx -y\\rvert \\geq 1.\\]Does this im...",
+  "description": "If A ⊂ (1,∞) satisfies |kx - y| ≥ 1 for all distinct x,y ∈ A and k ≥ 1, must A be sparse?",
   "meta": {
-    "author": "Unknown",
+    "author": "Koukoulopoulos-Lamzouri-Lichtman (2025)",
     "sourceUrl": "https://erdosproblems.com/143",
-    "date": "",
-    "status": "pending",
+    "date": "2025",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos143Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "wip",
-    "sorries": 1,
+    "tags": ["erdos", "number-theory", "additive-combinatorics", "primitive-sets", "density"],
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 143,
     "erdosUrl": "https://erdosproblems.com/143",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$500"
+    "erdosProblemStatus": "partially-solved",
+    "erdosPrizeValue": "$500",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.liminf",
+        "description": "Lower limit of a function along a filter",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of a set as a natural number",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Summable",
+        "description": "Series summability",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Adapted from Google DeepMind formal-conjectures project",
+      "Added historical context and connection to primitive sets",
+      "Formalized the KLL 2025 partial resolution"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #143 from erdosproblems.com. Originally offered with a prize of $500.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset (1,\\infty)$ be a countably infinite set such that for all $x\\neq y\\in A$ and integers $k\\geq 1$ we have\\[ \\lvert kx -y\\rvert \\geq 1.\\]Does this imply that $A$ is sparse? In particular, does this imply that\\[\\sum_{x\\in A}\\frac{1}{x\\log x}<\\infty\\]or\\[\\sum_{\\substack{x <n\\\\ x\\in A}}\\frac{1}{x}=o(\\log n)?\\]\n\n\n\nNote that if $A$ is a set of integers then the condition implies that $A$ is a primitive set (that is, no element of $A$ is divisible by any other), for which the convergence of $\\sum_{n\\in A}\\frac{1}{n\\log n}$ was proved by Erd\\H{o}s \\cite{Er35}, and the upper bound\\[\\sum_{n<x}\\frac{1}{n}\\ll \\frac{\\log x}{\\sqrt{\\log\\log x}}\\]was proved by Behrend \\cite{Be35}. This $O(\\cdot)$ bound was improved to a $o(\\cdot)$ bound by Erd\\H{o}s, S\\'{a}rk\\H{o}zy, and Szemer\\'{e}di \\cite{ESS67}.\n\n\nIn \\cite{Er73} and \\cite{Er77c} Erd\\H{o}s mentions an unpublished proof of Haight that\\[\\lim \\frac{\\lvert A\\cap [1,x]\\rvert}{x}=0\\]holds if the elements of $A$ are independent over $\\mathbb{Q}$.\n\nOver the years Erd\\H{o}s asked for various different quantitative estimates, for example\\[\\liminf \\frac{\\lvert A\\cap [1,x]\\rvert}{x}=0\\]or even (motivated by Behrend's bound)\\[\\sum_{\\substack{x <n\\\\ x\\in A}}\\frac{1}{x}\\ll \\frac{\\log x}{\\sqrt{\\log\\log x}}.\\]In \\cite{Er97c} he offers \\$500 for resolving the questions in the main problem statement above.\n\nThis was partially resolved by Koukoulopoulos, Lamzouri, and Lichtman \\cite{KLL25}, who proved that we must have\\[\\sum_{\\substack{x <n\\\\ x\\in A}}\\frac{1}{x}=o(\\log n).\\]See also [858].\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Be35] Behrend, F., On sequences of numbers not divisible by another. London Math. Soc. Journal (1935), 42-45.\n\n[ESS67] Erd\\H{o}s, P. and S\\'{a}rk\\\"ozy, A. and Szemer\\'{e}di, E., On a theorem of Behrend. J. Austral. Math. Soc. (1967), 9--16.\n\n[Er35] Erd\\\"{o}s, Paul, Note on Sequences of Integers No One of Which is Divisible By Any Other. J. London Math. Soc. (1935), 126-128.\n\n[Er73] Erd\\H{o}s, P., Problems and results on combinatorial number theory. A survey of combinatorial theory (Proc. Internat. Sympos., Colorado State Univ., Fort Collins, Colo., 1971) (1973), 117-138.\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n[Er97c] Erd\\H{o}s, Paul, Some of my favorite problems and results. The mathematics of Paul Erd\\H{o}s, I (1997), 47-67.\n\n[KLL25] D. Koukoulopoulos, Y. Lamzouri, and J. D. Lichtman, Erd\\H{o}s's integer dilation approximation problem and GCD graphs. arXiv:2502.09539 (2025).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem asks about the sparseness of sets A ⊂ (1,∞) with the property that |kx - y| ≥ 1 for all distinct x, y ∈ A and all positive integers k. Such sets are called \"well-separated under integer dilation\" - no element can be close to an integer multiple of another.\n\nFor integer sets, this condition implies the set is \"primitive\" (no element divides another). Erdős proved in 1935 that primitive integer sets have convergent reciprocal-log series ∑ 1/(n log n). Behrend showed in 1935 that their partial sums satisfy ∑_{n<x} 1/n ≪ log x / √(log log x).\n\nThe generalization to real sets remained open for decades. In 2025, Koukoulopoulos, Lamzouri, and Lichtman made a breakthrough, proving that ∑_{x<n, x∈A} 1/x = o(log n). The stronger conjectures about liminf of density and convergence of ∑ 1/(x log x) remain open.",
+    "problemStatement": "Let $A \\subset (1, \\infty)$ be a countably infinite set such that for all $x \\neq y \\in A$ and integers $k \\geq 1$ we have $|kx - y| \\geq 1$. Must $A$ be sparse?\n\n**Partially Solved (2025)**: Koukoulopoulos-Lamzouri-Lichtman proved that $\\sum_{x < n, x \\in A} \\frac{1}{x} = o(\\log n)$.\n\n**Still Open**: (i) $\\liminf |A \\cap [1,x]|/x = 0$? (ii) $\\sum_{x \\in A} \\frac{1}{x \\log x} < \\infty$?",
+    "proofStrategy": "We formalize the definitions and axiomatize the main results:\n\n1. **WellSeparatedSet**: Captures the dilation-avoidance condition\n2. **Conjecture variants**: Three different sparseness conditions (i), (ii), (iii)\n3. **KLL Theorem**: The 2025 partial resolution as an axiom\n4. **Primitive sets**: Connection to the integer case\n\nThe KLL theorem is axiomatized because its proof requires GCD graph arguments and multiplicative number theory bounds not yet in Mathlib.",
+    "keyInsights": [
+      "**Dilation avoidance**: The condition |kx - y| ≥ 1 prevents clustering around integer multiples",
+      "**Primitive connection**: For integers, this implies no element divides another",
+      "**Density questions**: Three levels of sparseness - lower density zero, series convergence, partial sum bounds",
+      "**2025 breakthrough**: KLL proved the weakest form, opening the door to the stronger conjectures"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 31,
+      "endLine": 43,
+      "summary": "Definition of well-separated sets and counting functions"
+    },
+    {
+      "id": "conjectures",
+      "title": "The Three Conjectures",
+      "startLine": 45,
+      "endLine": 59,
+      "summary": "Formalizations of the density and series convergence questions"
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "startLine": 61,
+      "endLine": 84,
+      "summary": "The KLL theorem and its application"
+    },
+    {
+      "id": "primitive-sets",
+      "title": "Connection to Primitive Sets",
+      "startLine": 86,
+      "endLine": 96,
+      "summary": "How integer dilation-avoidance implies primitivity"
+    },
+    {
+      "id": "historical",
+      "title": "Historical Results",
+      "startLine": 98,
+      "endLine": 102,
+      "summary": "Erdős 1935 theorem on primitive sets"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #143 on the sparseness of dilation-avoiding sets. The main theorem (KLL 2025) proves that partial reciprocal sums are o(log n), resolving one of Erdős's three conjectures. The stronger questions about lower density zero and series convergence remain open.",
+    "implications": "This partial resolution demonstrates that dilation-avoidance does force some degree of sparseness. The techniques from GCD graphs may lead to further progress on the remaining conjectures.",
+    "openQuestions": [
+      "Does liminf |A ∩ [1,x]|/x = 0 for all well-separated A?",
+      "Does ∑ 1/(x log x) converge for all well-separated A?",
+      "Can the o(log n) bound be strengthened to O(log n / √(log log n))?"
+    ]
   }
 }

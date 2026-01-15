@@ -1,1 +1,112 @@
-[]
+[
+  {
+    "id": "ann-e143-header",
+    "proofId": "erdos-143",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "context",
+    "title": "Problem Overview",
+    "content": "This header documents Erdős Problem #143, which asks about the sparseness of sets that avoid being close to integer multiples of each other. The problem was partially solved in 2025 by Koukoulopoulos, Lamzouri, and Lichtman.\n\nThe $500 prize remains partially unclaimed - the strongest conjectures are still open!",
+    "mathContext": "The condition |kx - y| ≥ 1 for all k ≥ 1 and distinct x, y means no element can be within distance 1 of any positive integer multiple of another element.",
+    "significance": "critical",
+    "relatedConcepts": ["erdos", "number-theory", "density"]
+  },
+  {
+    "id": "ann-e143-wellseparated",
+    "proofId": "erdos-143",
+    "range": { "startLine": 33, "endLine": 39 },
+    "type": "definition",
+    "title": "Well-Separated Sets",
+    "content": "A set is **well-separated under integer dilation** if for any two distinct elements x and y, and any positive integer k, the distance |kx - y| is at least 1.\n\nThis definition captures a strong separation property: not only are elements far from each other, but their integer multiples are also far from other elements.",
+    "mathContext": "Formally: A ⊆ (1, ∞), A is infinite and countable, and ∀ x ≠ y ∈ A, ∀ k ≥ 1: |kx - y| ≥ 1.\n\nThis generalizes the notion of primitive sets from integers to reals.",
+    "significance": "critical",
+    "relatedConcepts": ["primitive-sets", "density", "separation"]
+  },
+  {
+    "id": "ann-e143-counting",
+    "proofId": "erdos-143",
+    "range": { "startLine": 41, "endLine": 43 },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "The counting function counts how many elements of A lie in the interval [1, x]. This measures the \"density\" of A.\n\nFor sparse sets, the counting function grows slowly compared to x.",
+    "mathContext": "countingFn(A, x) = |A ∩ [1, x]| using Set.ncard for the cardinality of possibly infinite intersections.",
+    "significance": "supporting",
+    "relatedConcepts": ["density", "cardinality"]
+  },
+  {
+    "id": "ann-e143-conjecture-i",
+    "proofId": "erdos-143",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "theorem",
+    "title": "Conjecture (i): Lower Density Zero",
+    "content": "The **lower density** of A is the liminf of |A ∩ [1,x]|/x as x → ∞. If this is zero, there are arbitrarily long stretches where A is extremely sparse.\n\n**Status**: OPEN. This is the strongest form of the conjecture.",
+    "mathContext": "liminf_{x→∞} |A ∩ [1,x]|/x = 0 means: for any ε > 0, there are arbitrarily large x with |A ∩ [1,x]| < εx.",
+    "significance": "critical",
+    "relatedConcepts": ["liminf", "density", "asymptotic"]
+  },
+  {
+    "id": "ann-e143-conjecture-ii",
+    "proofId": "erdos-143",
+    "range": { "startLine": 51, "endLine": 53 },
+    "type": "theorem",
+    "title": "Conjecture (ii): Series Convergence",
+    "content": "Does the series ∑ 1/(x log x) converge when summed over A? This is a natural sparseness condition intermediate between (i) and (iii).\n\n**Status**: OPEN. For integer primitive sets, Erdős proved this in 1935.",
+    "mathContext": "The series ∑ 1/(n log n) over all integers diverges, but for sparse sets it may converge. The log x factor makes this stronger than asking about ∑ 1/x.",
+    "significance": "critical",
+    "relatedConcepts": ["summable", "convergence", "primitive-sets"]
+  },
+  {
+    "id": "ann-e143-conjecture-iii",
+    "proofId": "erdos-143",
+    "range": { "startLine": 55, "endLine": 59 },
+    "type": "theorem",
+    "title": "Conjecture (iii): Partial Sum Bound",
+    "content": "The partial reciprocal sum ∑_{x<n, x∈A} 1/x should be o(log n), meaning it grows slower than log n.\n\n**Status**: SOLVED by Koukoulopoulos-Lamzouri-Lichtman (2025)!\n\nThis is the weakest of the three conjectures, but its proof was a major breakthrough.",
+    "mathContext": "o(log n) means: for any ε > 0, eventually ∑_{x<n} 1/x < ε log n. Compare to the harmonic series where ∑_{k<n} 1/k ~ log n.",
+    "significance": "critical",
+    "relatedConcepts": ["little-o", "harmonic-series", "asymptotic"]
+  },
+  {
+    "id": "ann-e143-kll",
+    "proofId": "erdos-143",
+    "range": { "startLine": 63, "endLine": 75 },
+    "type": "theorem",
+    "title": "KLL Theorem (2025)",
+    "content": "The **Koukoulopoulos-Lamzouri-Lichtman Theorem** is the main result: for any well-separated set A, the partial sum ∑_{x<n, x∈A} 1/x = o(log n).\n\nThis is axiomatized because the proof uses advanced techniques from multiplicative number theory and GCD graphs that aren't yet in Mathlib.",
+    "mathContext": "The proof constructs a GCD graph where vertices are elements of A and edges connect elements whose GCD-like interactions are bounded. Graph-theoretic arguments then show the sum cannot grow too fast.",
+    "significance": "critical",
+    "relatedConcepts": ["axiom", "gcd-graphs", "number-theory"]
+  },
+  {
+    "id": "ann-e143-partial",
+    "proofId": "erdos-143",
+    "range": { "startLine": 82, "endLine": 84 },
+    "type": "theorem",
+    "title": "The Partial Resolution",
+    "content": "This theorem directly applies the KLL result: if A is well-separated, then Conjecture (iii) holds.\n\nThe proof is immediate from the axiom - the mathematical heavy lifting is in KLL's paper.",
+    "mathContext": "erdos_143_partial : WellSeparatedSet A → Conjecture_iii A follows directly from kll_theorem.",
+    "significance": "supporting",
+    "relatedConcepts": ["application", "kll-theorem"]
+  },
+  {
+    "id": "ann-e143-primitive",
+    "proofId": "erdos-143",
+    "range": { "startLine": 88, "endLine": 96 },
+    "type": "concept",
+    "title": "Connection to Primitive Sets",
+    "content": "A set of positive integers is **primitive** if no element divides another. For integers, well-separation implies primitivity!\n\nIf a divides b with b = ka, then |ka - b| = 0 < 1, violating well-separation. This connects the real problem to classical number theory.",
+    "mathContext": "IsPrimitiveSet A := ∀ a b ∈ A, a ≠ b → ¬(a | b).\n\nPrimitive sets were studied by Erdős, Behrend, and others in the 1930s.",
+    "significance": "supporting",
+    "relatedConcepts": ["divisibility", "primitive-sets", "integers"]
+  },
+  {
+    "id": "ann-e143-erdos1935",
+    "proofId": "erdos-143",
+    "range": { "startLine": 100, "endLine": 102 },
+    "type": "theorem",
+    "title": "Erdős 1935: Primitive Sets",
+    "content": "Erdős's 1935 result was the original motivation: for **integer** primitive sets, the series ∑ 1/(n log n) converges.\n\nThe open question is whether this extends to real well-separated sets - Conjecture (ii).",
+    "mathContext": "For primitive A ⊆ ℕ, Summable (λ n, 1/(n log n)) over n ∈ A. This was proven using elementary number theory.",
+    "significance": "supporting",
+    "relatedConcepts": ["erdos", "1935", "primitive-sets", "summable"]
+  }
+]

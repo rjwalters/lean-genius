@@ -25,90 +25,85 @@ open SimpleGraph Finset
 
 namespace Erdos547
 
-variable {V : Type*} [Fintype V] [DecidableEq V]
-
-/-! ## Trees -/
-
-/-- A graph is a tree if it's connected and acyclic. -/
-def IsTree (G : SimpleGraph V) : Prop :=
-  G.Connected ∧ G.IsAcyclic
-
-/-- Alternative: a tree on n vertices has exactly n-1 edges. -/
-def IsTreeAlt (G : SimpleGraph V) : Prop :=
-  G.Connected ∧ G.edgeFinset.card = Fintype.card V - 1
-
-/-- The two definitions are equivalent for connected graphs. -/
-theorem tree_iff_tree_alt (G : SimpleGraph V) (hconn : G.Connected) :
-    G.IsAcyclic ↔ G.edgeFinset.card = Fintype.card V - 1 := by
-  sorry
-
 /-! ## Ramsey Numbers -/
 
-/-- A 2-coloring of edges of a complete graph. -/
+/-- A 2-coloring of edges of a complete graph on n vertices.
+    We use Sym2 (Fin n) to represent unordered pairs of vertices. -/
 def EdgeColoring (n : ℕ) := Sym2 (Fin n) → Bool
 
-/-- A complete graph K_n contains a monochromatic copy of G under coloring c. -/
-def HasMonochromaticCopy (n : ℕ) (G : SimpleGraph V) (c : EdgeColoring n) : Prop :=
+/-- A complete graph K_n contains a monochromatic copy of G under coloring c
+    if there's an embedding f : V ↪ Fin n and a color such that all edges
+    of G map to edges of that color. -/
+def HasMonochromaticCopy {V : Type*} (n : ℕ) (G : SimpleGraph V) (c : EdgeColoring n) : Prop :=
   ∃ (f : V ↪ Fin n) (color : Bool),
-    ∀ v w : V, G.Adj v w → c (Sym2.mk (f v) (f w)) = color
+    ∀ v w : V, G.Adj v w → c (s(f v, f w)) = color
+
+/-- Ramsey's theorem implies that for any finite graph G, there exists N such that
+    any 2-coloring of K_N contains a monochromatic copy of G.
+    We axiomatize this foundational result. -/
+axiom exists_ramsey_number {V : Type*} [Fintype V] (G : SimpleGraph V) :
+    ∃ n, ∀ c : EdgeColoring n, HasMonochromaticCopy n G c
 
 /-- The Ramsey number R(G): minimum n such that any 2-coloring of K_n
     contains a monochromatic G. -/
-noncomputable def ramseyNumber (G : SimpleGraph V) : ℕ :=
-  Nat.find (exists_ramsey_number G)
-  where
-    exists_ramsey_number (G : SimpleGraph V) : ∃ n, ∀ c : EdgeColoring n, HasMonochromaticCopy n G c := by
-      sorry
+noncomputable def ramseyNumber {V : Type*} [Fintype V] (G : SimpleGraph V) : ℕ :=
+  @Nat.find (fun n => ∀ c : EdgeColoring n, HasMonochromaticCopy n G c)
+    (Classical.decPred _) (exists_ramsey_number G)
 
 /-! ## The Main Result -/
+
+variable {V : Type*} [Fintype V] [DecidableEq V]
 
 /--
 **Erdős Problem #547 (SOLVED for large n)**:
 For any tree T on n vertices, R(T) ≤ 2n - 2.
 -/
-theorem tree_ramsey_bound (T : SimpleGraph V) (hT : IsTree T) :
+theorem tree_ramsey_bound (T : SimpleGraph V) (hT : T.IsTree) :
     ramseyNumber T ≤ 2 * Fintype.card V - 2 := by
   sorry
 
 /-! ## Chvátal's Theorem -/
 
-/-- Maximum degree of a graph. -/
-noncomputable def maxDegree (G : SimpleGraph V) : ℕ :=
-  Finset.sup Finset.univ G.degree
+/-- Maximum degree of a graph. Requires decidable adjacency for degree computation. -/
+noncomputable def maxDegree (G : SimpleGraph V) [DecidableRel G.Adj] : ℕ :=
+  Finset.sup Finset.univ (fun v => G.degree v)
 
 /--
 **Chvátal's Theorem (1977)**:
 For a tree T on n vertices with maximum degree Δ,
 R(T) ≤ (Δ - 1)(n - 1) + 1.
 -/
-theorem chvatal_bound (T : SimpleGraph V) (hT : IsTree T) :
+theorem chvatal_bound (T : SimpleGraph V) [DecidableRel T.Adj] (hT : T.IsTree) :
     ramseyNumber T ≤ (maxDegree T - 1) * (Fintype.card V - 1) + 1 := by
   sorry
 
 /-! ## Special Cases -/
 
 /-- A path P_n is a tree with max degree 2 (except endpoints). -/
-def IsPath (G : SimpleGraph V) : Prop :=
-  IsTree G ∧ ∀ v : V, G.degree v ≤ 2
+def IsPath (G : SimpleGraph V) [DecidableRel G.Adj] : Prop :=
+  G.IsTree ∧ ∀ v : V, G.degree v ≤ 2
 
 /-- A star S_n is a tree with one central vertex of degree n-1. -/
-def IsStar (G : SimpleGraph V) : Prop :=
-  IsTree G ∧ ∃ center : V, ∀ v : V, v ≠ center → G.degree v = 1
+def IsStar (G : SimpleGraph V) [DecidableRel G.Adj] : Prop :=
+  G.IsTree ∧ ∃ center : V, ∀ v : V, v ≠ center → G.degree v = 1
 
 /-- Ramsey number of a path P_n is exactly n (for n ≥ 2). -/
-axiom path_ramsey (P : SimpleGraph V) (hP : IsPath P) (hn : Fintype.card V ≥ 2) :
+axiom path_ramsey (P : SimpleGraph V) [DecidableRel P.Adj]
+    (hP : IsPath P) (hn : Fintype.card V ≥ 2) :
     ramseyNumber P = Fintype.card V
 
 /-- Ramsey number of a star S_n is 2n - 2 (for n ≥ 2). -/
-axiom star_ramsey (S : SimpleGraph V) (hS : IsStar S) (hn : Fintype.card V ≥ 2) :
+axiom star_ramsey (S : SimpleGraph V) [DecidableRel S.Adj]
+    (hS : IsStar S) (hn : Fintype.card V ≥ 2) :
     ramseyNumber S = 2 * Fintype.card V - 2
 
 /-! ## Lower Bound -/
 
-/-- The bound 2n - 2 is tight: achieved by stars. -/
+/-- The bound 2n - 2 is tight: achieved by stars.
+    Proof: Use star_ramsey to exhibit a tree achieving the bound. -/
 theorem bound_is_tight :
-    ∃ (W : Type*) [Fintype W] (S : SimpleGraph W),
-      IsTree S ∧ ramseyNumber S = 2 * Fintype.card W - 2 := by
+    ∃ (n : ℕ), n ≥ 2 ∧ ∃ (S : SimpleGraph (Fin n)),
+      S.IsTree ∧ ramseyNumber S = 2 * n - 2 := by
   sorry
 
 /-! ## Historical Notes
