@@ -1,1 +1,156 @@
-[]
+[
+  {
+    "id": "ann-e975-header",
+    "proofId": "erdos-975",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This module formalizes **Erdős Problem #975** about divisor sums over polynomial values. The problem asks whether Σ τ(f(n)) has a precise asymptotic formula c·x·log(x) for irreducible polynomials f.",
+    "mathContext": "The divisor function τ(n) counts divisors. For irreducible f ∈ ℤ[x], van der Corput (1939) and Erdős (1952) showed Θ(x log x) bounds. The question is whether a specific limiting constant exists.",
+    "significance": "supporting",
+    "relatedConcepts": ["divisor function", "asymptotic analysis", "Erdős problems"]
+  },
+  {
+    "id": "ann-e975-imports",
+    "proofId": "erdos-975",
+    "range": {
+      "startLine": 32,
+      "endLine": 44
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "We import **Mathlib modules** for arithmetic functions, polynomials, asymptotics, filters, and special functions (logarithm, π).",
+    "mathContext": "The Asymptotics module provides Big-O notation. The filter `atTop` captures 'for all sufficiently large x'. The ArithmeticFunction module provides divisor-related definitions.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "asymptotics", "filters"]
+  },
+  {
+    "id": "ann-e975-divisorcount",
+    "proofId": "erdos-975",
+    "range": {
+      "startLine": 53,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "Divisor Count Function τ(n)",
+    "content": "The **divisor counting function** τ(n) counts how many positive integers divide n. For example, τ(12) = 6 since 12 has divisors {1, 2, 3, 4, 6, 12}.",
+    "mathContext": "We define `divisorCount n := n.divisors.card`. This is the same as σ₀(n) in the arithmetic function notation. For prime p, τ(p) = 2.",
+    "significance": "key",
+    "relatedConcepts": ["divisors", "arithmetic functions", "multiplicative functions"]
+  },
+  {
+    "id": "ann-e975-divisorsumpoly",
+    "proofId": "erdos-975",
+    "range": {
+      "startLine": 61,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "Divisor Sum over Polynomial Values",
+    "content": "The **divisor sum** Σ_{n≤x} τ(f(n)) sums the divisor counts of f(1), f(2), ..., f(⌊x⌋). This is the central object of Erdős Problem #975.",
+    "mathContext": "In Lean: `divisorSumPoly f x := Σ n ∈ Icc 1 ⌊x⌋, τ(|f(n)|)`. We take absolute values to handle polynomials that may be negative for some inputs.",
+    "significance": "critical",
+    "relatedConcepts": ["divisor sums", "polynomial evaluation"]
+  },
+  {
+    "id": "ann-e975-vandercorput",
+    "proofId": "erdos-975",
+    "range": {
+      "startLine": 77,
+      "endLine": 86
+    },
+    "type": "theorem",
+    "title": "Van der Corput's Lower Bound (1939)",
+    "content": "**Van der Corput** proved that Σ τ(f(n)) ≫ x log x, i.e., the divisor sum grows at least as fast as x log x.",
+    "mathContext": "This is stated as `(x * log x) =O[atTop] divisorSumPoly f`, meaning x log x is bounded by a constant times divisorSumPoly. This establishes the lower bound.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic bounds", "van der Corput"]
+  },
+  {
+    "id": "ann-e975-erdosbound",
+    "proofId": "erdos-975",
+    "range": {
+      "startLine": 88,
+      "endLine": 98
+    },
+    "type": "theorem",
+    "title": "Erdős's Upper Bound (1952)",
+    "content": "**Erdős** proved that Σ τ(f(n)) ≪ x log x using elementary (non-analytic) methods. Combined with van der Corput, this gives Θ(x log x) growth.",
+    "mathContext": "This is stated as `divisorSumPoly f =O[atTop] (x * log x)`. Erdős's proof is notable for avoiding complex analysis, using only elementary number theory.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic bounds", "Erdős", "elementary methods"]
+  },
+  {
+    "id": "ann-e975-mainconjecture",
+    "proofId": "erdos-975",
+    "range": {
+      "startLine": 107,
+      "endLine": 121
+    },
+    "type": "theorem",
+    "title": "Main Conjecture (Axiom)",
+    "content": "**Erdős Problem #975**: For every irreducible polynomial f, does there exist c > 0 such that Σ τ(f(n)) / (x log x) → c? This **remains OPEN** for general polynomials.",
+    "mathContext": "We use `Tendsto` to express that the ratio converges to a constant c. While Θ(x log x) bounds are known, proving a specific limit exists is much harder.",
+    "significance": "critical",
+    "relatedConcepts": ["open conjecture", "asymptotic formula", "limiting constant"]
+  },
+  {
+    "id": "ann-e975-hooley",
+    "proofId": "erdos-975",
+    "range": {
+      "startLine": 129,
+      "endLine": 139
+    },
+    "type": "theorem",
+    "title": "Hooley's Theorem for Quadratics (1963)",
+    "content": "**Christopher Hooley** resolved the conjecture for irreducible quadratic polynomials. The constant c depends on the discriminant and involves Hurwitz class numbers.",
+    "mathContext": "For quadratics f with deg(f) = 2, an asymptotic formula exists. The proof uses the theory of quadratic forms and L-functions. McKee later gave more explicit expressions for c.",
+    "significance": "critical",
+    "relatedConcepts": ["Hooley", "quadratic polynomials", "class numbers"]
+  },
+  {
+    "id": "ann-e975-n2plus1-def",
+    "proofId": "erdos-975",
+    "range": {
+      "startLine": 148,
+      "endLine": 152
+    },
+    "type": "definition",
+    "title": "The Polynomial n² + 1",
+    "content": "We define the polynomial **f(n) = n² + 1**, which is irreducible over ℤ. This is the most famous example for Erdős #975.",
+    "mathContext": "n² + 1 is irreducible because it has no integer roots (n² = -1 has no solutions in ℤ). This polynomial has deep connections to Gaussian primes.",
+    "significance": "key",
+    "relatedConcepts": ["irreducible polynomials", "Gaussian integers"]
+  },
+  {
+    "id": "ann-e975-n2plus1-asymp",
+    "proofId": "erdos-975",
+    "range": {
+      "startLine": 154,
+      "endLine": 168
+    },
+    "type": "theorem",
+    "title": "The 3/π Asymptotic",
+    "content": "The famous result: **Σ τ(n² + 1) ~ (3/π) x log x**. The constant 3/π ≈ 0.9549 arises from the distribution of primes dividing values of n² + 1.",
+    "mathContext": "This is a consequence of Hooley's theorem. The factor 3/π comes from analyzing which primes p can divide n² + 1 (those with p ≡ 1 mod 4 or p = 2).",
+    "significance": "critical",
+    "relatedConcepts": ["3/π constant", "Fermat's theorem on sums of squares"]
+  },
+  {
+    "id": "ann-e975-verified",
+    "proofId": "erdos-975",
+    "range": {
+      "startLine": 174,
+      "endLine": 198
+    },
+    "type": "lemma",
+    "title": "Verified Divisor Counts",
+    "content": "We computationally verify **τ(1) = 1, τ(2) = 2, τ(6) = 4, τ(12) = 6**, and prove **τ(p) = 2 for any prime p**.",
+    "mathContext": "These examples illustrate the divisor function. For 12 = 2² × 3, we have τ(12) = (2+1)(1+1) = 6 by multiplicativity. For prime p, only 1 and p divide p, so τ(p) = 2.",
+    "significance": "supporting",
+    "relatedConcepts": ["divisor function", "multiplicativity", "verification"]
+  }
+]

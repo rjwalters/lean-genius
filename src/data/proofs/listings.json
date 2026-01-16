@@ -4094,17 +4094,23 @@
   },
   {
     "id": "erdos-251",
-    "title": "Erdős Problem #251",
+    "title": "Erdős Problem #251: Irrationality of Σ pₙ/2ⁿ",
     "slug": "erdos-251",
-    "description": "Is&#x2211;pn2n\" role=\"presentation\" style=\"text-align: center; position: relative;\">∑pn2n∑pn2n",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is the sum Σ pₙ/2ⁿ irrational, where pₙ is the nth prime? This OPEN problem asks about the arithmetic nature of a beautiful constant involving primes and powers of 2.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "infinite-series",
+      "primes"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 251,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-252",
@@ -7720,17 +7726,24 @@
   },
   {
     "id": "erdos-591",
-    "title": "Erdős Problem #591",
+    "title": "Erdős Problem #591: Ordinal Ramsey Theory for ω^(ω²)",
     "slug": "erdos-591",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the infinite ordinal .... Is it true that in any red/blue colouring of the edges of ... there is either a red ... ...",
-    "status": "pending",
+    "description": "Does the ordinal Ramsey property ω^(ω²) → (ω^(ω²), 3)² hold? That is, must every 2-coloring of K_{ω^(ω²)} contain a red copy of itself or a blue triangle?",
+    "status": "complete",
     "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "set-theory",
+      "ramsey-theory",
+      "ordinals",
+      "combinatorics",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 591,
+    "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-594",
@@ -12357,17 +12370,23 @@
   },
   {
     "id": "erdos-975",
-    "title": "Erdős Problem #975",
+    "title": "Erdős Problem #975: Divisor Sums over Polynomial Values",
     "slug": "erdos-975",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an irreducible non-constant polynomial such that ... for all large .... Does there exist a constant ... such that\\...",
-    "status": "pending",
+    "description": "Does the sum of divisor counts over polynomial values have an asymptotic formula with a specific constant?",
+    "status": "complete",
     "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisor-function",
+      "analytic-number-theory",
+      "polynomials"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 975,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-976",

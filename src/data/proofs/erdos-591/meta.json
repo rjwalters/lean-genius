@@ -1,34 +1,121 @@
 {
   "id": "erdos-591",
-  "title": "Erdős Problem #591",
+  "title": "Erdős Problem #591: Ordinal Ramsey Theory for ω^(ω²)",
   "slug": "erdos-591",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the infinite ordinal .... Is it true that in any red/blue colouring of the edges of ... there is either a red ... ...",
+  "description": "Does the ordinal Ramsey property ω^(ω²) → (ω^(ω²), 3)² hold? That is, must every 2-coloring of K_{ω^(ω²)} contain a red copy of itself or a blue triangle?",
   "meta": {
-    "author": "Unknown",
+    "author": "Open Problem (Prize: $250)",
     "sourceUrl": "https://erdosproblems.com/591",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos591Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "set-theory",
+      "ramsey-theory",
+      "ordinals",
+      "combinatorics",
+      "open-problem"
     ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 591,
     "erdosUrl": "https://erdosproblems.com/591",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$250"
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$250",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Ordinal",
+        "description": "The type of ordinal numbers",
+        "module": "Mathlib.SetTheory.Ordinal.Arithmetic"
+      },
+      {
+        "theorem": "Ordinal.opow",
+        "description": "Ordinal exponentiation ω^α",
+        "module": "Mathlib.SetTheory.Ordinal.Exponential"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of the OPEN Erdős problem in Lean 4",
+      "Axiomatization of the ordinal Ramsey property α → (α, n)²",
+      "Formalization of Specker's theorem (ω² works, ω^n fails for n≥3)",
+      "Formalization of Chang's theorem (ω^ω works)",
+      "Verified ordinal arithmetic identities"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #591 from erdosproblems.com. Originally offered with a prize of $250.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\alpha$ be the infinite ordinal $\\omega^{\\omega^2}$. Is it true that in any red/blue colouring of the edges of $K_\\alpha$ there is either a red $K_\\alpha$ or a blue $K_3$?\n\n\n\nFor comparison, Specker \\cite{Sp57} proved this property holds when $\\alpha=\\omega^2$ and false when $\\alpha=\\omega^n$ for $3\\leq n<\\omega$. Chang proved this property holds when $\\alpha=\\omega^\\omega$ (see [590]).\n\nSee [592] for the general case.\n\n\n\n\nReferences\n\n\n[Sp57] Specker, Ernst, Teilmengen von Mengen mit Relationen. Comment. Math. Helv. (1957), 302-314.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Ordinal Ramsey theory extends the classical Ramsey theorem to infinite ordinals. The classical theorem guarantees monochromatic cliques in large finite graphs; ordinal Ramsey theory asks which infinite ordinals have analogous properties.\n\nSpecker (1957) made a surprising discovery: the Ramsey property α → (α, 3)² holds for α = ω² but FAILS for α = ω³, ω⁴, and all ω^n with n ≥ 3. This shows that larger ordinals can have worse Ramsey properties!\n\nChang later proved the property holds again for α = ω^ω, the first limit of limit ordinals. This suggests that 'limit' exponents might restore the Ramsey property. Problem #591 asks about the next natural case: α = ω^(ω²).\n\nErdős offered $250 for its resolution, reflecting the problem's difficulty and importance in infinitary combinatorics.",
+    "problemStatement": "Let $\\alpha = \\omega^{\\omega^2}$. Is it true that in any red/blue coloring of the edges of the complete graph $K_\\alpha$, there is either a red $K_\\alpha$ or a blue $K_3$?\n\nIn arrow notation: Does $\\omega^{\\omega^2} \\to (\\omega^{\\omega^2}, 3)^2$ hold?\n\n**Status**: OPEN — Prize $250\n\n**Known Results**:\n- $\\omega^2 \\to (\\omega^2, 3)^2$ holds (Specker 1957)\n- $\\omega^n \\to (\\omega^n, 3)^2$ FAILS for $n \\geq 3$ (Specker 1957)\n- $\\omega^\\omega \\to (\\omega^\\omega, 3)^2$ holds (Chang)",
+    "proofStrategy": "We formalize this OPEN problem by:\n\n1. **Axiomatizing the Ramsey property**: Define `OrdinalRamseyProperty α n` as the statement that every 2-coloring of pairs from α contains a monochromatic copy of order type α (color 1) or a monochromatic n-element set (color 2)\n\n2. **Stating known results as axioms**: Specker's positive result (ω²), Specker's negative results (ω^n for n≥3), and Chang's result (ω^ω)\n\n3. **Defining the open conjecture**: The proposition `OrdinalRamseyProperty (ω ^ (ω ^ 2)) 3` whose truth value is unknown\n\n4. **Proving ordinal identities**: We verify basic facts like ω² = ω·ω using Mathlib's ordinal arithmetic",
+    "keyInsights": [
+      "**Arrow notation**: α → (β, n)² means every 2-coloring of pairs from α contains a monochromatic order type β or a monochromatic n-set.",
+      "**The surprising failure**: Larger ordinals don't always have better Ramsey properties. ω³ is 'worse' than ω² for this property!",
+      "**Limit ordinal pattern**: The property holds for ω² (limit), fails for ω³, ω⁴, ... (successors of 2), then holds again for ω^ω (limit of limits).",
+      "**The key question**: Does the pattern continue? Is ω^(ω²) → (ω^(ω²), 3)² true because ω² is a limit ordinal?",
+      "**Ordinal arithmetic**: ω^(ω²) = ω^(ω·ω) is enormously larger than ω^ω, which is already vastly beyond any ω^n."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Problem statement, background, and references including the $250 prize."
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 22,
+      "endLine": 27,
+      "summary": "Mathlib imports for ordinal arithmetic and exponentiation."
+    },
+    {
+      "id": "background",
+      "title": "Ordinal Ramsey Theory Background",
+      "startLine": 29,
+      "endLine": 43,
+      "summary": "Documentation explaining Ramsey theory and arrow notation."
+    },
+    {
+      "id": "ramsey-property",
+      "title": "The Ordinal Ramsey Property",
+      "startLine": 45,
+      "endLine": 55,
+      "summary": "Axiomatization of the Ramsey property α → (α, n)²."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 57,
+      "endLine": 90,
+      "summary": "Specker's and Chang's theorems as axioms."
+    },
+    {
+      "id": "open-problem",
+      "title": "The Open Problem",
+      "startLine": 92,
+      "endLine": 121,
+      "summary": "Statement of Erdős Problem #591 and the $250 prize."
+    },
+    {
+      "id": "ordinal-hierarchy",
+      "title": "The Ordinal Hierarchy",
+      "startLine": 123,
+      "endLine": 184,
+      "summary": "Verified ordinal arithmetic and the pattern table."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #591, an OPEN question in ordinal Ramsey theory worth $250. The problem asks whether ω^(ω²) → (ω^(ω²), 3)² holds. We axiomatize the Ramsey property and state the known results by Specker and Chang that establish the boundary of current knowledge.",
+    "implications": "This problem lies at the frontier of infinitary combinatorics. A positive answer would suggest that limit ordinal exponents generally restore Ramsey properties. A negative answer (constructing a counterexample coloring) would show the pattern is more subtle. Either resolution would advance our understanding of partition calculus on ordinals.",
+    "openQuestions": [
+      "Does ω^(ω²) → (ω^(ω²), 3)² hold? (The main conjecture, prize $250)",
+      "More generally, for which ordinals α does α → (α, 3)² hold?",
+      "Is there a characterization in terms of Cantor normal form?",
+      "What about α → (α, n)² for larger n?"
+    ]
   }
 }

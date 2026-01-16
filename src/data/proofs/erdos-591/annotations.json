@@ -1,1 +1,226 @@
-[]
+[
+  {
+    "id": "ann-e591-header",
+    "proofId": "erdos-591",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #591** asks about ordinal Ramsey theory: Does every 2-coloring of the complete graph on ω^(ω²) vertices contain either a red copy of the whole graph or a blue triangle?\n\nThis problem carries a **$250 prize** from Erdős, reflecting its difficulty.",
+    "mathContext": "The problem is written in arrow notation as ω^(ω²) → (ω^(ω²), 3)². The superscript 2 indicates we're coloring pairs (edges), and (α, 3) means we seek either a monochromatic α or a monochromatic 3-element set.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "ordinals",
+      "partition calculus"
+    ]
+  },
+  {
+    "id": "ann-e591-imports",
+    "proofId": "erdos-591",
+    "range": {
+      "startLine": 22,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import **ordinal arithmetic** from Mathlib's set theory library. This gives us the ordinal ω and ordinal exponentiation ω^α.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "set theory",
+      "ordinals"
+    ]
+  },
+  {
+    "id": "ann-e591-background",
+    "proofId": "erdos-591",
+    "range": {
+      "startLine": 29,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "Ordinal Ramsey Theory Background",
+    "content": "**Ramsey theory** studies unavoidable patterns in large structures. The finite Ramsey theorem says: color the edges of a large enough complete graph with 2 colors, and you'll find a monochromatic clique.\n\n**Ordinal Ramsey theory** asks which infinite ordinals have similar properties. Surprisingly, the answer depends sensitively on the ordinal's structure!",
+    "mathContext": "The arrow notation α → (β, n)² means: for any 2-coloring of pairs from α, there exists either a monochromatic subset of order type β (using color 1) or a monochromatic n-element subset (using color 2).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey theorem",
+      "graph coloring",
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e591-ramsey-axiom",
+    "proofId": "erdos-591",
+    "range": {
+      "startLine": 45,
+      "endLine": 55
+    },
+    "type": "axiom",
+    "title": "The Ordinal Ramsey Property",
+    "content": "We axiomatize `OrdinalRamseyProperty α n` as the statement that every 2-coloring of pairs from ordinal α must contain either:\n- A monochromatic subset of order type α (color 1), or\n- A monochromatic n-element set (color 2)\n\nThis captures the partition relation α → (α, n)².",
+    "mathContext": "A full formalization would define colorings as functions from unordered pairs to Bool, and require order-preserving embeddings for the monochromatic subset. We axiomatize to focus on the mathematical content.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "partition relations",
+      "graph coloring",
+      "order types"
+    ]
+  },
+  {
+    "id": "ann-e591-specker-positive",
+    "proofId": "erdos-591",
+    "range": {
+      "startLine": 62,
+      "endLine": 71
+    },
+    "type": "axiom",
+    "title": "Specker's Positive Result (ω²)",
+    "content": "**Specker (1957)** proved that ω² → (ω², 3)² holds. Any 2-coloring of the complete graph on ω² vertices contains either a red copy of ω² or a blue triangle.\n\nThis is remarkable because ω² is already a large infinite ordinal (the order type of ℕ × ℕ under lexicographic order).",
+    "mathContext": "The ordinal ω² = ω · ω consists of ω copies of ω arranged in sequence. It's the first ordinal beyond the finite ordinals and ω that has interesting Ramsey behavior.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Specker",
+      "ω²",
+      "positive result"
+    ]
+  },
+  {
+    "id": "ann-e591-specker-negative",
+    "proofId": "erdos-591",
+    "range": {
+      "startLine": 73,
+      "endLine": 81
+    },
+    "type": "axiom",
+    "title": "Specker's Negative Results (ω^n fails)",
+    "content": "**Surprisingly**, Specker also showed that ω³ → (ω³, 3)² FAILS, and so does ω^n → (ω^n, 3)² for all finite n ≥ 3.\n\nThis is counterintuitive: larger ordinals can have WORSE Ramsey properties! There exist colorings of K_{ω³} avoiding both a red K_{ω³} and a blue K_3.",
+    "mathContext": "The failure occurs because the 'extra dimension' in ω³ allows for more complex colorings that avoid triangles while also avoiding large monochromatic subsets of the same order type.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexamples",
+      "successor ordinals",
+      "failure of Ramsey"
+    ]
+  },
+  {
+    "id": "ann-e591-chang",
+    "proofId": "erdos-591",
+    "range": {
+      "startLine": 83,
+      "endLine": 90
+    },
+    "type": "axiom",
+    "title": "Chang's Theorem (ω^ω works)",
+    "content": "**Chang** proved that ω^ω → (ω^ω, 3)² holds! Despite ω³, ω⁴, ... all failing, the limit ordinal ω^ω restores the Ramsey property.\n\nThis is Erdős Problem #590 and suggests a pattern: perhaps limit ordinal exponents restore the property that successor exponents destroy.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chang",
+      "limit ordinals",
+      "pattern restoration"
+    ]
+  },
+  {
+    "id": "ann-e591-open-problem",
+    "proofId": "erdos-591",
+    "range": {
+      "startLine": 92,
+      "endLine": 104
+    },
+    "type": "concept",
+    "title": "The Open Problem Context",
+    "content": "The known results create a tantalizing pattern:\n- ω² works (Specker)\n- ω³, ω⁴, ..., ω^n fail for n ≥ 3 (Specker)\n- ω^ω works (Chang)\n- ω^(ω²) = ? (**This problem**)\n\nThe question is whether the pattern continues: does having a 'limit' exponent always restore the Ramsey property?",
+    "significance": "critical",
+    "relatedConcepts": [
+      "pattern",
+      "limit vs successor",
+      "open problems"
+    ]
+  },
+  {
+    "id": "ann-e591-conjecture",
+    "proofId": "erdos-591",
+    "range": {
+      "startLine": 106,
+      "endLine": 115
+    },
+    "type": "definition",
+    "title": "The $250 Conjecture",
+    "content": "**Erdős Problem #591**: Does `OrdinalRamseyProperty (ω ^ (ω ^ 2)) 3` hold?\n\nIn words: Must every 2-coloring of K_{ω^(ω²)} contain either a red K_{ω^(ω²)} or a blue K_3?\n\nErdős offered **$250** for a resolution, reflecting the problem's difficulty and importance.",
+    "mathContext": "The ordinal ω^(ω²) = ω^(ω·ω) is vastly larger than ω^ω. If the property holds, it would support the conjecture that limit exponents always work.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Erdős prize",
+      "conjecture",
+      "ω^(ω²)"
+    ]
+  },
+  {
+    "id": "ann-e591-omega-squared",
+    "proofId": "erdos-591",
+    "range": {
+      "startLine": 129,
+      "endLine": 135
+    },
+    "type": "theorem",
+    "title": "ω² = ω · ω",
+    "content": "We verify that ω² equals ω · ω using Mathlib's `pow_two` lemma. This is the ordinal that Specker showed has the Ramsey property.\n\nIntuitively, ω² is the order type of pairs (a, b) of natural numbers ordered lexicographically.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ordinal arithmetic",
+      "lexicographic order"
+    ]
+  },
+  {
+    "id": "ann-e591-omega-cubed",
+    "proofId": "erdos-591",
+    "range": {
+      "startLine": 137,
+      "endLine": 141
+    },
+    "type": "theorem",
+    "title": "ω³ = ω · ω · ω",
+    "content": "We verify ω³ = ω · ω · ω. This is the **smallest ordinal** where Specker's negative result applies - the Ramsey property fails starting here.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ordinal arithmetic",
+      "first failure"
+    ]
+  },
+  {
+    "id": "ann-e591-omega-omega-pos",
+    "proofId": "erdos-591",
+    "range": {
+      "startLine": 143,
+      "endLine": 149
+    },
+    "type": "theorem",
+    "title": "ω^ω is Positive",
+    "content": "We prove 0 < ω^ω using Mathlib's `opow_pos` lemma. The ordinal ω^ω is the supremum of all ω^n for finite n - it's the first ordinal that 'escapes' the pattern of failures.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "limit ordinals",
+      "supremum"
+    ]
+  },
+  {
+    "id": "ann-e591-pattern-table",
+    "proofId": "erdos-591",
+    "range": {
+      "startLine": 164,
+      "endLine": 182
+    },
+    "type": "concept",
+    "title": "The Pattern Summary",
+    "content": "The documentation summarizes the known results in a table:\n\n| Ordinal | Property holds? |\n|---------|----------------|\n| ω² | Yes (Specker) |\n| ω^n (n≥3) | No (Specker) |\n| ω^ω | Yes (Chang) |\n| ω^(ω²) | ? (OPEN) |\n\nThe pattern suggests limit exponents might restore the property.",
+    "significance": "key",
+    "relatedConcepts": [
+      "summary",
+      "pattern recognition",
+      "research frontier"
+    ]
+  }
+]

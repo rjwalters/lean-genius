@@ -1,33 +1,123 @@
 {
   "id": "erdos-975",
-  "title": "Erdős Problem #975",
+  "title": "Erdős Problem #975: Divisor Sums over Polynomial Values",
   "slug": "erdos-975",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an irreducible non-constant polynomial such that ... for all large .... Does there exist a constant ... such that\\...",
+  "description": "Does the sum of divisor counts over polynomial values have an asymptotic formula with a specific constant?",
   "meta": {
-    "author": "Unknown",
+    "author": "Hooley (1963) for quadratics; general case open",
     "sourceUrl": "https://erdosproblems.com/975",
-    "date": "",
-    "status": "pending",
+    "date": "1952",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos975Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisor-function",
+      "analytic-number-theory",
+      "polynomials"
     ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 975,
     "erdosUrl": "https://erdosproblems.com/975",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "The set of divisors of a natural number",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "The filter of neighborhoods of infinity",
+        "module": "Mathlib.Order.Filter.AtTopBot.Basic"
+      },
+      {
+        "theorem": "Asymptotics.IsBigO",
+        "description": "Big-O notation for asymptotic bounds",
+        "module": "Mathlib.Analysis.Asymptotics.Defs"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of divisor sum over polynomial values",
+      "Statement of Van der Corput and Erdős bounds as axioms",
+      "Statement of Hooley's theorem for quadratics",
+      "The famous n² + 1 asymptotic with constant 3/π",
+      "Verified divisor counts: τ(1)=1, τ(2)=2, τ(6)=4, τ(12)=6, τ(p)=2 for prime p"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #975 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f\\in \\mathbb{Z}[x]$ be an irreducible non-constant polynomial such that $f(n)\\geq 1$ for all large $n\\in\\mathbb{N}$. Does there exist a constant $c=c(f)>0$ such that\\[\\sum_{n\\leq X} \\tau(f(n))\\sim cX\\log X,\\]where $\\tau$ is the divisor function?\n\n\n\nVan der Corput \\cite{Va39} proved that\\[\\sum_{n\\leq X} \\tau(f(n))\\gg_f X\\log X.\\]Erd\\H{o}s \\cite{Er52b} proved using elementary methods that\\[\\sum_{n\\leq X} \\tau(f(n))\\ll_f X\\log X.\\]Such an asymptotic formula is known whenever $f$ is an irreducible quadratic, as proved by Hooley \\cite{Ho63}. The form of $c$ depends on $f$ in a complicated fashion (see the work of McKee \\cite{Mc95}, \\cite{Mc97}, and \\cite{Mc99} for expressions for various types of quadratic $f$). For example,\\[\\sum_{n\\leq x}\\tau(n^2+1)=\\frac{3}{\\pi}x\\log x+O(x).\\]Tao has a blog post on this topic.\n\n\n\n\nReferences\n\n\n[Er52b] Erd\\H{o}s, P., On the sum {$\\sum^x_{k=1} d(f(k))$}. J. London Math. Soc. (1952), 7--15.\n\n[Ho63] Hooley, Christopher, On the number of divisors of a quadratic polynomial. Acta Math. (1963), 97--114.\n\n[Mc95] McKee, James, On the average number of divisors of quadratic polynomials. Math. Proc. Cambridge Philos. Soc. (1995), 389--392.\n\n[Mc97] McKee, James, A note on the number of divisors of quadratic polynomials. (1997), 275--281.\n\n[Mc99] McKee, James, The average number of divisors of an irreducible quadratic\npolynomial. Math. Proc. Cambridge Philos. Soc. (1999), 17--22.\n\n[Va39] van der Corput, J. G., Une in\\'{e}galit\\'{e}{} relative au nombre des diviseurs. Nederl. Akad. Wetensch., Proc. (1939), 547--553.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The divisor function τ(n) counts how many positive integers divide n. Erdős Problem #975 asks whether the sum Σ_{n≤x} τ(f(n)) for an irreducible polynomial f has a precise asymptotic formula of the form c·x·log(x) for some constant c > 0.\n\nVan der Corput (1939) established the lower bound, showing the sum grows at least as fast as x log x. Erdős (1952) proved the matching upper bound using elementary methods, establishing that the growth is Θ(x log x).\n\nChristopher Hooley (1963) resolved the problem for irreducible quadratic polynomials, showing that an asymptotic formula exists with an explicit (though complicated) constant. The general case for higher-degree polynomials remains open.",
+    "problemStatement": "Let $f \\in \\mathbb{Z}[x]$ be an irreducible non-constant polynomial with $f(n) \\geq 1$ for all sufficiently large $n$. Does there exist a constant $c = c(f) > 0$ such that\n$$\\sum_{n \\leq x} \\tau(f(n)) \\sim c \\cdot x \\cdot \\log x$$\nwhere $\\tau$ is the divisor counting function?\n\n**Status**:\n- **OPEN** for general polynomials\n- **SOLVED** for irreducible quadratics (Hooley, 1963)\n- **Known**: $x \\log x \\ll \\sum \\tau(f(n)) \\ll x \\log x$",
+    "proofStrategy": "We formalize:\n\n1. The divisor sum function over polynomial values\n2. Van der Corput's lower bound (1939) as an axiom\n3. Erdős's upper bound (1952) as an axiom\n4. The main conjecture as an axiom (open problem)\n5. Hooley's theorem for quadratics as an axiom\n6. The famous n² + 1 example with constant 3/π\n\nThe deep analytic methods required for these results are beyond current Mathlib formalization. We verify basic properties of the divisor function computationally.",
+    "keyInsights": [
+      "**Divisor function τ(n)**: Counts divisors of n. For prime p, τ(p) = 2. Highly multiplicative: τ(mn) relates to τ(m)τ(n) when gcd(m,n)=1.",
+      "**Why x log x?**: The average value of τ(n) for n ≤ x is approximately log x (Dirichlet). Summing over x terms gives x log x growth.",
+      "**The n² + 1 constant**: Σ τ(n² + 1) ~ (3/π) x log x. The constant 3/π ≈ 0.9549 arises from the distribution of primes dividing values of n² + 1.",
+      "**Hooley's breakthrough**: For quadratics, the constant c involves class numbers and the discriminant of the polynomial. McKee later gave more explicit formulas.",
+      "**Why is the general case hard?**: Higher-degree polynomials have more complicated prime factorization patterns. The analytic methods don't extend easily."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module documentation explaining the problem, its history, and Mathlib imports for arithmetic functions and asymptotics."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 46,
+      "endLine": 68,
+      "summary": "Define the divisor counting function τ(n) and the sum Σ τ(f(n)) over polynomial values."
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "startLine": 70,
+      "endLine": 98,
+      "summary": "State Van der Corput's lower bound and Erdős's upper bound as axioms."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 100,
+      "endLine": 121,
+      "summary": "State Erdős Problem #975 as an axiom: existence of asymptotic constant for general irreducible polynomials."
+    },
+    {
+      "id": "quadratic-case",
+      "title": "Quadratic Case (Hooley)",
+      "startLine": 123,
+      "endLine": 139,
+      "summary": "State Hooley's theorem resolving the conjecture for irreducible quadratics."
+    },
+    {
+      "id": "n2-plus-1",
+      "title": "The n² + 1 Example",
+      "startLine": 141,
+      "endLine": 168,
+      "summary": "The famous asymptotic Σ τ(n² + 1) ~ (3/π) x log x."
+    },
+    {
+      "id": "divisor-properties",
+      "title": "Divisor Count Properties",
+      "startLine": 170,
+      "endLine": 200,
+      "summary": "Verified examples of τ(n) for small values and the formula τ(p) = 2 for primes."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #975 about asymptotic formulas for divisor sums over polynomial values. While the general case remains open, we state known bounds (Van der Corput, Erdős), Hooley's resolution for quadratics, and the beautiful n² + 1 formula with constant 3/π.",
+    "implications": "This problem connects the multiplicative structure of divisors with the additive structure of polynomial values. Understanding these sums reveals deep connections between prime factorization patterns and polynomial arithmetic.",
+    "openQuestions": [
+      "Does an asymptotic constant exist for cubic and higher-degree irreducible polynomials?",
+      "Can the constant for n² + 1 be derived from first principles without heavy analytic machinery?",
+      "What is the relationship between the constant c(f) and algebraic properties of f?"
+    ]
   }
 }
