@@ -7,6 +7,7 @@ import { UserMenu } from '@/components/auth/UserMenu'
 import { Footer } from '@/components/Footer'
 import { ResearchCard, ContributeSection, RelatedToolsSection } from '@/components/research'
 import { PHASE_INFO, TIER_INFO } from '@/types/research'
+import { useDebouncedUrlState, useUrlState, serializers } from '@/hooks'
 import type { ResearchPhase, ValueTier, ResearchStatus, ResearchListing } from '@/types/research'
 import {
   FlaskConical,
@@ -16,18 +17,38 @@ import {
   Sparkles,
   Activity,
   Target,
-  Github
+  Github,
+  Share2
 } from 'lucide-react'
 
 type SortOption = 'newest' | 'activity' | 'significance' | 'alphabetical'
 
 export function ResearchPage() {
-  const [selectedPhases, setSelectedPhases] = useState<ResearchPhase[]>([])
-  const [selectedTiers, setSelectedTiers] = useState<ValueTier[]>([])
-  const [selectedStatus, setSelectedStatus] = useState<ResearchStatus[]>([])
+  // URL-synced state
+  const [searchQuery, setSearchQuery] = useDebouncedUrlState('q', '', serializers.string)
+  const [selectedPhases, setSelectedPhases] = useUrlState<ResearchPhase[]>(
+    'phases',
+    [],
+    serializers.stringArray as { parse: (v: string | null) => ResearchPhase[]; stringify: (v: ResearchPhase[]) => string | null }
+  )
+  const [selectedTiers, setSelectedTiers] = useUrlState<ValueTier[]>(
+    'tiers',
+    [],
+    serializers.stringArray as { parse: (v: string | null) => ValueTier[]; stringify: (v: ValueTier[]) => string | null }
+  )
+  const [selectedStatus, setSelectedStatus] = useUrlState<ResearchStatus[]>(
+    'status',
+    [],
+    serializers.stringArray as { parse: (v: string | null) => ResearchStatus[]; stringify: (v: ResearchStatus[]) => string | null }
+  )
+  const [sortBy, setSortBy] = useUrlState<SortOption>(
+    'sort',
+    'newest',
+    serializers.enum('newest', ['newest', 'activity', 'significance', 'alphabetical'])
+  )
+
+  // Local-only UI state (no URL persistence needed)
   const [showFilters, setShowFilters] = useState(false)
-  const [sortBy, setSortBy] = useState<SortOption>('newest')
-  const [searchQuery, setSearchQuery] = useState('')
 
   // Filter and sort problems
   const problems = useMemo(() => {
@@ -110,6 +131,26 @@ export function ResearchPage() {
   }
 
   const hasFilters = selectedPhases.length > 0 || selectedTiers.length > 0 || selectedStatus.length > 0 || searchQuery.trim()
+  const hasActiveFilters = hasFilters || sortBy !== 'newest'
+
+  const [copySuccess, setCopySuccess] = useState(false)
+  const handleShareView = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+      setCopySuccess(true)
+      setTimeout(() => setCopySuccess(false), 2000)
+    } catch {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea')
+      textArea.value = window.location.href
+      document.body.appendChild(textArea)
+      textArea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textArea)
+      setCopySuccess(true)
+      setTimeout(() => setCopySuccess(false), 2000)
+    }
+  }
 
   // Stats
   const activeCount = researchListings.filter(p => p.status === 'active').length
@@ -251,6 +292,17 @@ export function ResearchPage() {
                 </span>
               )}
             </button>
+            {/* Share View Button - only show when there are active filters */}
+            {hasActiveFilters && (
+              <button
+                onClick={handleShareView}
+                className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                title="Copy link to this view"
+              >
+                <Share2 className="h-4 w-4" />
+                <span className="hidden sm:inline">{copySuccess ? 'Copied!' : 'Share'}</span>
+              </button>
+            )}
           </div>
         </div>
 

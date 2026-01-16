@@ -1,1 +1,154 @@
-[]
+[
+  {
+    "id": "ann-e257-header",
+    "proofId": "erdos-257",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #257** asks about the irrationality of Lambert-type sums. The problem is partially solved: Erdős proved the A = ℕ case in 1948, and Tao-Teräväinen proved the prime case in 2025. The general case remains open.",
+    "mathContext": "The sum ∑_{n∈A} 1/(2^n - 1) connects to Lambert series, which have the form ∑ aₙ xⁿ/(1-xⁿ). These series appear in partition theory and the study of modular forms.",
+    "significance": "supporting",
+    "relatedConcepts": ["erdos", "lambert-series", "irrationality"]
+  },
+  {
+    "id": "ann-e257-imports",
+    "proofId": "erdos-257",
+    "range": {
+      "startLine": 22,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import **NumberTheory.Divisors** for the divisor function, **Data.Real.Irrational** for the irrationality predicate, and **InfiniteSum.Real** for infinite series over real numbers.",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "divisors", "infinite-sums"]
+  },
+  {
+    "id": "ann-e257-lambert-sum",
+    "proofId": "erdos-257",
+    "range": {
+      "startLine": 33,
+      "endLine": 37
+    },
+    "type": "definition",
+    "title": "Lambert Sum Definition",
+    "content": "The **Lambert sum** over a set A is ∑_{n∈A} 1/(2^n - 1). Each term 1/(2^n - 1) is small but positive, and the series converges rapidly due to exponential decay.",
+    "mathContext": "Defined as `∑' n : A, 1 / (2^(n:ℕ) - 1)` using Mathlib's topological sum. The sum converges absolutely since 1/(2^n - 1) ≤ 2/2^n for n ≥ 1.",
+    "significance": "key",
+    "relatedConcepts": ["infinite-series", "convergence", "lambert-series"]
+  },
+  {
+    "id": "ann-e257-divisor-sum",
+    "proofId": "erdos-257",
+    "range": {
+      "startLine": 39,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Divisor-Weighted Sum",
+    "content": "The **divisor sum** is ∑_n d(n)/2^n where d(n) counts the divisors of n. For example, d(6) = 4 since 6 has divisors {1, 2, 3, 6}.",
+    "mathContext": "Defined as `∑' n, n.divisors.card / 2^n`. This sum equals the Lambert sum over all of ℕ, a beautiful identity connecting two seemingly different series.",
+    "significance": "key",
+    "relatedConcepts": ["divisor-function", "number-theory", "arithmetic-functions"]
+  },
+  {
+    "id": "ann-e257-identity",
+    "proofId": "erdos-257",
+    "range": {
+      "startLine": 46,
+      "endLine": 59
+    },
+    "type": "theorem",
+    "title": "Lambert Series Identity",
+    "content": "**Key Identity**: ∑_n 1/(2^n - 1) = ∑_n d(n)/2^n. This transforms questions about the Lambert sum into questions about the divisor function.",
+    "mathContext": "The proof expands 1/(2^n - 1) = ∑_{k≥1} 1/2^{kn} (geometric series), then interchanges summation. Each 1/2^m appears once for each divisor of m, giving coefficient d(m). Rearrangement is valid since all terms are positive.",
+    "significance": "critical",
+    "relatedConcepts": ["geometric-series", "rearrangement", "divisor-function"]
+  },
+  {
+    "id": "ann-e257-erdos-1948",
+    "proofId": "erdos-257",
+    "range": {
+      "startLine": 63,
+      "endLine": 71
+    },
+    "type": "theorem",
+    "title": "Erdős's 1948 Irrationality Result",
+    "content": "**Erdős (1948)**: The sum ∑_n d(n)/2^n is irrational. This was the first major result on this problem, published in the Journal of the Indian Mathematical Society.",
+    "mathContext": "The proof uses properties of Lambert series and the arithmetic structure of the divisor function. We state this as an axiom since the full proof requires techniques beyond current Mathlib formalization.",
+    "significance": "critical",
+    "relatedConcepts": ["irrationality", "erdos", "analytic-number-theory"]
+  },
+  {
+    "id": "ann-e257-corollary",
+    "proofId": "erdos-257",
+    "range": {
+      "startLine": 73,
+      "endLine": 81
+    },
+    "type": "theorem",
+    "title": "Full Lambert Sum is Irrational",
+    "content": "**Corollary**: The full Lambert sum ∑_{n≥1} 1/(2^n - 1) is irrational. This follows immediately from combining the identity with Erdős's result.",
+    "mathContext": "The Lean proof is just two lines: rewrite using the identity, then apply the irrationality axiom. This demonstrates the power of the identity.",
+    "significance": "key",
+    "relatedConcepts": ["corollary", "rewriting", "irrationality"]
+  },
+  {
+    "id": "ann-e257-open",
+    "proofId": "erdos-257",
+    "range": {
+      "startLine": 85,
+      "endLine": 99
+    },
+    "type": "theorem",
+    "title": "The Open Problem",
+    "content": "**Open Conjecture**: Is ∑_{n∈A} 1/(2^n - 1) irrational for EVERY infinite set A? Solved cases: A = ℕ (1948), A = primes (2025), A = pairwise coprime with convergent reciprocal sum (1968).",
+    "mathContext": "We state this as an axiom representing the conjecture. The general case is wide open — even simple sets like A = squares or A = Fibonacci numbers are unknown.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "conjecture", "special-cases"]
+  },
+  {
+    "id": "ann-e257-divisor-examples",
+    "proofId": "erdos-257",
+    "range": {
+      "startLine": 103,
+      "endLine": 110
+    },
+    "type": "lemma",
+    "title": "Divisor Function Examples",
+    "content": "We verify small values of the divisor function: d(1)=1, d(2)=2, d(3)=2, d(4)=3, d(5)=2, d(6)=4. Note that d(n)=2 exactly when n is prime.",
+    "mathContext": "These are verified using `native_decide`, which computes the value and checks it at compile time. This gives certified concrete values.",
+    "significance": "supporting",
+    "relatedConcepts": ["divisor-function", "primes", "computation"]
+  },
+  {
+    "id": "ann-e257-perfect",
+    "proofId": "erdos-257",
+    "range": {
+      "startLine": 112,
+      "endLine": 114
+    },
+    "type": "lemma",
+    "title": "Divisors of 28",
+    "content": "The number 28 has exactly 6 divisors: {1, 2, 4, 7, 14, 28}. As a perfect number (28 = 1+2+4+7+14), it illustrates the divisor function on highly composite numbers.",
+    "significance": "supporting",
+    "relatedConcepts": ["perfect-numbers", "divisors", "highly-composite"]
+  },
+  {
+    "id": "ann-e257-mersenne",
+    "proofId": "erdos-257",
+    "range": {
+      "startLine": 116,
+      "endLine": 121
+    },
+    "type": "lemma",
+    "title": "Mersenne Numbers",
+    "content": "The denominators 2^n - 1 are **Mersenne numbers**. We verify: 2²-1=3, 2³-1=7, 2⁵-1=31, 2⁷-1=127. When n is prime, 2^n - 1 might be a Mersenne prime.",
+    "mathContext": "Mersenne primes are rare: only 51 are known as of 2024. The largest known prime is a Mersenne prime. The primality of 2^n - 1 requires n to be prime, but the converse fails (e.g., 2^{11} - 1 = 2047 = 23 × 89).",
+    "significance": "supporting",
+    "relatedConcepts": ["mersenne-numbers", "mersenne-primes", "prime-distribution"]
+  }
+]

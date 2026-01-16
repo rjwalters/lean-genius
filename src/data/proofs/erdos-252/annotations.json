@@ -1,1 +1,152 @@
-[]
+[
+  {
+    "id": "ann-252-1",
+    "proofId": "erdos-252",
+    "range": {"startLine": 1, "endLine": 29},
+    "type": "concept",
+    "title": "Header and Imports",
+    "content": "**Problem Overview**: The file formalizes Erdős Problem #252 about the irrationality of series involving divisor power sums. Imports include ArithmeticFunction from Mathlib (for the sigma divisor function) and Irrational (for irrationality proofs).",
+    "significance": "supporting",
+    "relatedConcepts": ["arithmetic functions", "mathlib", "imports"]
+  },
+  {
+    "id": "ann-252-2",
+    "proofId": "erdos-252",
+    "range": {"startLine": 36, "endLine": 48},
+    "type": "definition",
+    "title": "The Divisor Power Sum",
+    "content": "**divisorPowerSum(k)**: The infinite series Σ_{n=1}^∞ σₖ(n)/n! where σₖ(n) = Σ_{d|n} d^k is the sum of k-th powers of all divisors of n. Special cases: σ₀(n) = d(n) counts divisors; σ₁(n) = σ(n) is the classical sum of divisors.",
+    "significance": "critical",
+    "relatedConcepts": ["divisor function", "infinite series", "factorial"]
+  },
+  {
+    "id": "ann-252-3",
+    "proofId": "erdos-252",
+    "range": {"startLine": 57, "endLine": 59},
+    "type": "theorem",
+    "title": "Case k = 0",
+    "content": "**erdos_252_k0** (axiom): Σ σ₀(n)/n! = Σ d(n)/n! is irrational. Proved by Erdős-Straus in 1971. Here d(n) counts the number of divisors of n.",
+    "significance": "key",
+    "relatedConcepts": ["divisor counting function", "irrationality", "Erdős-Straus"]
+  },
+  {
+    "id": "ann-252-4",
+    "proofId": "erdos-252",
+    "range": {"startLine": 61, "endLine": 63},
+    "type": "theorem",
+    "title": "Case k = 1",
+    "content": "**erdos_252_k1** (axiom): Σ σ₁(n)/n! is irrational. Noted as 'reasonably straightforward' by Erdős in 1952. σ₁(n) is the classical sum of all divisors of n.",
+    "significance": "key",
+    "relatedConcepts": ["sum of divisors", "irrationality", "Erdős"]
+  },
+  {
+    "id": "ann-252-5",
+    "proofId": "erdos-252",
+    "range": {"startLine": 65, "endLine": 67},
+    "type": "theorem",
+    "title": "Case k = 2",
+    "content": "**erdos_252_k2** (axiom): Σ σ₂(n)/n! is irrational. Also noted by Erdős (1952). σ₂(n) sums the squares of all divisors.",
+    "significance": "key",
+    "relatedConcepts": ["sum of squares of divisors", "irrationality"]
+  },
+  {
+    "id": "ann-252-6",
+    "proofId": "erdos-252",
+    "range": {"startLine": 69, "endLine": 71},
+    "type": "theorem",
+    "title": "Case k = 3",
+    "content": "**erdos_252_k3** (axiom): Σ σ₃(n)/n! is irrational. Required significantly more sophisticated techniques. Independently proved by Schlage-Puchta (2006) and Friedlander-Luca-Stoiciu (2007).",
+    "significance": "key",
+    "relatedConcepts": ["irrationality", "Schlage-Puchta", "Friedlander-Luca-Stoiciu"]
+  },
+  {
+    "id": "ann-252-7",
+    "proofId": "erdos-252",
+    "range": {"startLine": 73, "endLine": 75},
+    "type": "theorem",
+    "title": "Case k = 4",
+    "content": "**erdos_252_k4** (axiom): Σ σ₄(n)/n! is irrational. The most recent breakthrough, proved by Pratt in 2022 using arithmetic density arguments.",
+    "significance": "key",
+    "relatedConcepts": ["irrationality", "Pratt", "arithmetic density"]
+  },
+  {
+    "id": "ann-252-8",
+    "proofId": "erdos-252",
+    "range": {"startLine": 77, "endLine": 84},
+    "type": "theorem",
+    "title": "All Known Cases",
+    "content": "**erdos_252_le_4**: Consolidation theorem proving irrationality for all k ≤ 4. Uses interval_cases tactic to dispatch each case to the corresponding axiom.",
+    "significance": "critical",
+    "relatedConcepts": ["consolidation", "case analysis", "interval_cases"]
+  },
+  {
+    "id": "ann-252-9",
+    "proofId": "erdos-252",
+    "range": {"startLine": 92, "endLine": 101},
+    "type": "definition",
+    "title": "The Open Problem",
+    "content": "**Erdos252Conjecture** and **Erdos252Open**: The full conjecture (all k ≥ 1) and the open part (k ≥ 5). Despite progress through k = 4, no unconditional proof exists for k ≥ 5.",
+    "significance": "critical",
+    "relatedConcepts": ["open problem", "conjecture", "k ≥ 5"]
+  },
+  {
+    "id": "ann-252-10",
+    "proofId": "erdos-252",
+    "range": {"startLine": 110, "endLine": 122},
+    "type": "definition",
+    "title": "Schinzel's Hypothesis H",
+    "content": "**SchinzelHypothesisH**: A major conjecture in analytic number theory stating that finite sets of irreducible integer polynomials (with no 'local obstruction') take simultaneous prime values infinitely often. This would resolve Erdős #252 for all k.",
+    "significance": "key",
+    "relatedConcepts": ["Schinzel", "prime values", "polynomials", "hypothesis H"]
+  },
+  {
+    "id": "ann-252-11",
+    "proofId": "erdos-252",
+    "range": {"startLine": 124, "endLine": 126},
+    "type": "theorem",
+    "title": "Schinzel Implication",
+    "content": "**schinzel_implies_all_k** (axiom): Schlage-Puchta (2006) proved that Schinzel's Hypothesis H implies irrationality of the divisor power sum for all k ≥ 1.",
+    "significance": "key",
+    "relatedConcepts": ["conditional result", "Schinzel", "Schlage-Puchta"]
+  },
+  {
+    "id": "ann-252-12",
+    "proofId": "erdos-252",
+    "range": {"startLine": 128, "endLine": 137},
+    "type": "definition",
+    "title": "Prime k-tuples Conjecture",
+    "content": "**PrimeKTuplesConjecture**: The Hardy-Littlewood prime k-tuples conjecture states that admissible linear forms take simultaneous prime values infinitely often. Friedlander-Luca-Stoiciu showed this implies irrationality for k ≥ 4.",
+    "significance": "key",
+    "relatedConcepts": ["Hardy-Littlewood", "prime tuples", "admissible forms"]
+  },
+  {
+    "id": "ann-252-13",
+    "proofId": "erdos-252",
+    "range": {"startLine": 144, "endLine": 154},
+    "type": "theorem",
+    "title": "Computational Examples",
+    "content": "**sigma_0_one**, **sigma_1_six**, **sigma_0_six**, **sigma_2_two**: Verified computations using native_decide. For example: σ₁(6) = 1+2+3+6 = 12 shows 6 is a perfect number; σ₀(6) = 4 shows 6 has four divisors.",
+    "significance": "supporting",
+    "relatedConcepts": ["computation", "verification", "native_decide", "perfect number"]
+  },
+  {
+    "id": "ann-252-14",
+    "proofId": "erdos-252",
+    "range": {"startLine": 156, "endLine": 161},
+    "type": "theorem",
+    "title": "Prime Divisor Sum",
+    "content": "**sigma_prime** (axiom): For prime p, σₖ(p) = 1 + p^k. Since the only divisors of p are 1 and p, we have σₖ(p) = 1^k + p^k = 1 + p^k.",
+    "significance": "supporting",
+    "relatedConcepts": ["prime", "divisor sum", "formula"]
+  },
+  {
+    "id": "ann-252-15",
+    "proofId": "erdos-252",
+    "range": {"startLine": 169, "endLine": 181},
+    "type": "theorem",
+    "title": "Convergence",
+    "content": "**sigma_le_pow** and **divisorPowerSum_summable** (axioms): The series converges because σₖ(n) ≤ n^(k+1) (at most n divisors, each ≤ n^k), and Σ n^(k+1)/n! converges since factorials grow faster than any polynomial.",
+    "significance": "supporting",
+    "relatedConcepts": ["convergence", "comparison test", "factorial growth"]
+  }
+]

@@ -1,33 +1,115 @@
 {
   "id": "erdos-257",
-  "title": "Erdős Problem #257",
+  "title": "Erdős Problem #257: Irrationality of Lambert Sums",
   "slug": "erdos-257",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite set. Is\\[\\sum_{n\\in A}{2^n-1}\\]irrational?\n\n\n\nIf ... then this series is ..., where ... is the number ...",
+  "description": "Is ∑_{n∈A} 1/(2^n - 1) irrational for every infinite set A? Solved for A = ℕ (Erdős 1948) and primes (Tao-Teräväinen 2025), open in general.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1948), Tao-Teräväinen (2025)",
     "sourceUrl": "https://erdosproblems.com/257",
-    "date": "",
-    "status": "pending",
+    "date": "1948",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos257Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "lambert-series",
+      "divisor-function"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 257,
     "erdosUrl": "https://erdosproblems.com/257",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "The finite set of divisors of a natural number",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Irrational",
+        "description": "Predicate for irrational real numbers",
+        "module": "Mathlib.Data.Real.Irrational"
+      },
+      {
+        "theorem": "tsum",
+        "description": "Infinite series (topological sum)",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Real"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of Erdős Problem #257 in Lean 4",
+      "Definition of Lambert sum over arbitrary sets",
+      "Lambert series identity connecting to divisor function",
+      "Verified examples of divisor function and Mersenne numbers"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #257 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ be an infinite set. Is\\[\\sum_{n\\in A}\\frac{1}{2^n-1}\\]irrational?\n\n\n\nIf $A=\\mathbb{N}$ then this series is $\\sum_{n}\\frac{d(n)}{2^n}$, where $d(n)$ is the number of divisors of $n$, which Erd\\H{o}s \\cite{Er48} proved is irrational. In general, if $f_A(n)$ counts the number of divisors of $n$ which are elements of $A$ then\\[\\sum_{n\\in A}\\frac{1}{2^n-1}=\\sum_n \\frac{f_A(n)}{2^n}.\\]The case when $A$ is the set of primes is [69]. This case (and when $A$ is the set of prime powers) was settled in the affirmative by Tao and Ter\\\"{a}v\\\"{a}inen \\cite{TaTe25}.\n\nErd\\H{o}s \\cite{Er68d} proved this sum is irrational whenever $(a,b)=1$ for all $a\\neq b\\in A$ and $\\sum_{n\\in A}\\frac{1}{n}<\\infty$ (and thought that the condition $(a,b)=1$ could be dropped by complicating his proof).\n\nThere is nothing special about $2$ here, and this sum is likely irrational with $2$ replaced by any integer $t\\geq 2$.\n\nIn \\cite{Er88c} Erd\\H{o}s goes further and speculates that $\\sum_{n\\in A}\\frac{1}{2^n-t_n}$ is irrational for every infinite set $A$ and bounded sequence $t_n$ (presumably of integers, and presumably excluding the case when $t_n=0$ for all $n$). This was disproved by Kova\\v{c} and Tao \\cite{KoTa24}, and in the comments Kova\\v{c} has sketched a proof that there exists some choice of $t_n$ with $1\\leq t_n\\leq 6$ such that this sum is rational.\n\n\n\n\nReferences\n\n\n[Er48] Erd\\H{o}s, P., On arithmetical properties of Lambert series. J. Indian Math. Soc. (N.S.) (1948), 63-66.\n\n[Er68d] Erd\\H{o}s, P., On the irrationality of certain series. Math. Student (1968), 222--226.\n\n[Er88c] Erd\\\"{o}s, P., On the irrationality of certain series: problems and results. New advances in transcendence theory (Durham, 1986) (1988), 102-109.\n\n[KoTa24] Kova\\vC, V. and Tao T., On several irrationality problems for Ahmes series. arXiv:2406.17593 (2024).\n\n[TaTe25] T. Tao and J. Ter\\\"{a}v\\\"{a}inen, Quantitative correlations and some problems on prime factors of consecutive integers. arXiv:2512.01739 (2025).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem connects to Lambert series, named after Johann Heinrich Lambert (1728-1777), which have the form ∑ aₙ xⁿ/(1-xⁿ). When x = 1/2, the term 1/(2ⁿ - 1) arises naturally.\n\nErdős proved the fundamental case A = ℕ in 1948, showing that ∑ d(n)/2ⁿ is irrational. The key insight is the beautiful identity: ∑ 1/(2ⁿ-1) = ∑ d(n)/2ⁿ, which transforms the problem into one about the divisor function.\n\nRecent progress by Tao and Teräväinen (2025) settled the prime case, showing ∑_{p prime} 1/(2ᵖ-1) is irrational. The general case for arbitrary infinite sets remains open, making this a partially solved problem with active research interest.",
+    "problemStatement": "Let $A \\subseteq \\mathbb{N}$ be an infinite set. Is\n$$\\sum_{n \\in A} \\frac{1}{2^n - 1}$$\nalways irrational?\n\n**Partial answers**:\n- $A = \\mathbb{N}$: YES (Erdős 1948)\n- $A = $ primes: YES (Tao-Teräväinen 2025)\n- General $A$: OPEN",
+    "proofStrategy": "We formalize three levels of this problem:\n\n1. **Lambert Series Identity**: The sum ∑ 1/(2ⁿ-1) equals ∑ d(n)/2ⁿ where d(n) counts divisors. This follows from expanding 1/(2ⁿ-1) as a geometric series and rearranging.\n\n2. **Erdős's 1948 Result**: We state as an axiom that ∑ d(n)/2ⁿ is irrational. The original proof uses properties of Lambert series.\n\n3. **The Open Conjecture**: For general infinite A, irrationality is conjectured but unproven. We state this as an axiom representing the open problem.\n\nConcrete examples verify divisor function values and Mersenne numbers.",
+    "keyInsights": [
+      "**Lambert series**: Series of the form ∑ aₙ xⁿ/(1-xⁿ) arise in number theory and have connections to modular forms and partitions.",
+      "**The divisor identity**: 1/(2ⁿ-1) = 1/2ⁿ + 1/2^{2n} + 1/2^{3n} + ⋯. Summing over n and rearranging gives each 1/2^m weighted by how many n divide m, i.e., d(m).",
+      "**Mersenne numbers**: The denominators 2ⁿ - 1 are Mersenne numbers. When n is prime, 2ⁿ - 1 might be a Mersenne prime (like 3, 7, 31, 127).",
+      "**Why the general case is hard**: Restricting to a subset A changes which terms contribute. The interplay between the choice of A and the arithmetic structure of 2ⁿ - 1 is subtle.",
+      "**Recent progress**: Tao and Teräväinen's 2025 result on primes uses advanced analytic number theory, showing continued interest in this circle of problems."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Module documentation explaining the problem's partial solution status and Mathlib imports for divisors, irrationality, and infinite sums."
+    },
+    {
+      "id": "definitions",
+      "title": "Key Definitions",
+      "startLine": 31,
+      "endLine": 42,
+      "summary": "Definitions of the Lambert sum over a set and the divisor-weighted sum."
+    },
+    {
+      "id": "identity",
+      "title": "Lambert Series Identity",
+      "startLine": 44,
+      "endLine": 59,
+      "summary": "The fundamental identity connecting 1/(2^n - 1) sums to divisor function sums."
+    },
+    {
+      "id": "erdos-1948",
+      "title": "Erdős's 1948 Result",
+      "startLine": 61,
+      "endLine": 81,
+      "summary": "Irrationality of the full Lambert sum, based on Erdős's 1948 proof."
+    },
+    {
+      "id": "open-problem",
+      "title": "The Open Problem",
+      "startLine": 83,
+      "endLine": 99,
+      "summary": "Statement of the general conjecture for arbitrary infinite sets."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 101,
+      "endLine": 123,
+      "summary": "Verified computations of divisor function values and Mersenne numbers."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #257, which asks whether ∑_{n∈A} 1/(2^n - 1) is irrational for every infinite set A. The case A = ℕ was proved by Erdős in 1948 via a beautiful identity with the divisor function. Recent work by Tao and Teräväinen settled the prime case in 2025. The general problem remains open.",
+    "implications": "This problem sits at the intersection of analytic number theory and irrationality proofs. The Lambert series identity demonstrates how seemingly different sums can be equivalent, and progress on special cases (primes, coprime sets) suggests deep connections to the distribution of prime factors.",
+    "openQuestions": [
+      "Is ∑_{n∈A} 1/(2^n - 1) irrational for EVERY infinite A ⊆ ℕ?",
+      "What structural properties of A guarantee irrationality?",
+      "Does the result generalize to ∑ 1/(t^n - 1) for other bases t ≥ 2?"
+    ]
   }
 }

@@ -1,33 +1,106 @@
 {
   "id": "erdos-253",
-  "title": "Erdős Problem #253",
+  "title": "Erdős Problem #253: Subset Sums in Arithmetic Progressions",
   "slug": "erdos-253",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence of integers such that .... If every arithmetic progression contains infinitely many integers ...",
+  "description": "If a slowly growing sequence has subset sums hitting every arithmetic progression infinitely often, must all large integers be subset sums? Disproved by Cassels.",
   "meta": {
-    "author": "Unknown",
+    "author": "J. W. S. Cassels (1960)",
     "sourceUrl": "https://erdosproblems.com/253",
-    "date": "",
-    "status": "pending",
+    "date": "1960",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos253Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "subset-sums",
+      "arithmetic-progressions"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 253,
     "erdosUrl": "https://erdosproblems.com/253",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit definition using filters",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Filter.cofinite",
+        "description": "Filter of sets with finite complement",
+        "module": "Mathlib.Order.Filter.Cofinite"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Predicate for infinite sets",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of Erdős Problem #253 in Lean 4",
+      "Definition of subset sums as sums over finite subsets",
+      "Definition of infinite arithmetic progressions",
+      "Verified examples: ℕ and even numbers as infinite APs"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #253 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_1<a_2<\\cdots $ be an infinite sequence of integers such that $a_{i+1}/a_i\\to 1$. If every arithmetic progression contains infinitely many integers which are the sum of distinct $a_i$ then every sufficiently large integer is the sum of distinct $a_i$.\n\n\n\nThis was disproved by Cassels \\cite{Ca60}.\n\n\n\n\nReferences\n\n\n[Ca60] Cassels, J. W. S., On the representation of integers as the sums of distinct summands taken from a fixed set. Acta Sci. Math. (Szeged) (1960), 111-124.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős posed this problem in the early 1960s as part of his extensive work on additive combinatorics. The question connects two classical topics: representation of integers as sums and the structure of arithmetic progressions.\n\nThe conjecture was natural: if a sequence is 'well-distributed' enough that its subset sums hit every arithmetic progression infinitely often, and the sequence grows slowly (ratio → 1), then perhaps all large integers should be representable.\n\nJ. W. S. Cassels disproved this in 1960 with an ingenious counterexample, showing that good coverage of arithmetic progressions does not imply universal representation. His construction demonstrated that even sequences satisfying strong distributional properties can have infinitely many 'gaps' in their subset sums.",
+    "problemStatement": "Let $a_1 < a_2 < \\cdots$ be an infinite sequence of positive integers such that $\\frac{a_{i+1}}{a_i} \\to 1$. If every arithmetic progression contains infinitely many integers which are sums of distinct $a_i$, must every sufficiently large integer be a sum of distinct $a_i$?\n\n**Answer**: NO — disproved by Cassels (1960). There exist sequences satisfying all hypotheses where infinitely many integers are not representable.",
+    "proofStrategy": "The formalization captures Cassels' result as a negation: we assert that there is NO universal implication from the hypotheses to cofinite representation.\n\nWe define:\n1. **Subset sums**: All finite sums of distinct terms from the sequence\n2. **AP representation property**: Every infinite AP contains infinitely many subset sums\n3. **Ratio condition**: Consecutive term ratios tend to 1\n4. **Cofinite representation**: All but finitely many integers are subset sums\n\nThe main axiom states: ¬(∀a, conditions → cofinite representation).\n\nWe also prove supporting lemmas showing 0 is always a subset sum, and verify that ℕ and the even numbers are infinite arithmetic progressions.",
+    "keyInsights": [
+      "**Subset sums**: For a set S, the subset sums are all values ∑_{i∈F} a_i where F is a finite subset of indices. For example, from {1,3,5}, the subset sums include 0, 1, 3, 4, 5, 6, 8, 9.",
+      "**Arithmetic progressions**: An infinite AP has the form {a, a+d, a+2d, ...} for some d > 0. The natural numbers form an AP with d=1; the evens form one with d=2.",
+      "**The ratio condition**: If a_{n+1}/a_n → 1, the sequence grows 'slowly' — consecutive terms become relatively close. Powers of 2 fail this (ratio = 2), but n^α for any α > 0 satisfies it.",
+      "**Why the conjecture seemed plausible**: Hitting every AP infinitely often means good 'spread' across residue classes. Slow growth means no large gaps in the sequence. Yet Cassels showed these don't combine to give complete representation.",
+      "**Cassels' insight**: Even with good AP coverage, one can arrange 'systematic gaps' in subset sums by carefully controlling which combinations of terms arise."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Module documentation explaining the problem and Mathlib imports for filters, topology, and finite sets."
+    },
+    {
+      "id": "definitions",
+      "title": "Key Definitions",
+      "startLine": 29,
+      "endLine": 51,
+      "summary": "Definitions of subset sums, infinite arithmetic progressions, the AP representation property, and the ratio condition."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Result (Axiom)",
+      "startLine": 53,
+      "endLine": 75,
+      "summary": "Statement of Erdős Problem #253 as an axiom asserting the conjecture is false."
+    },
+    {
+      "id": "supporting",
+      "title": "Supporting Lemmas",
+      "startLine": 77,
+      "endLine": 115,
+      "summary": "Basic results about subset sums and verified examples of infinite arithmetic progressions."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #253, which asked whether certain 'good distribution' properties of a sequence's subset sums imply universal representation of large integers. Cassels (1960) showed the answer is NO by constructing a counterexample. We state this as an axiom and provide the key definitions and supporting lemmas.",
+    "implications": "This result demonstrates a subtle distinction in additive combinatorics: hitting every arithmetic progression infinitely often is strictly weaker than representing all large integers. It shows that 'local' density properties (within APs) don't imply 'global' density (cofiniteness).",
+    "openQuestions": [
+      "What additional conditions would make the conjecture true?",
+      "What is the optimal growth rate threshold for guaranteed universal representation?",
+      "Can we characterize which sequences satisfy both AP coverage and cofinite representation?"
+    ]
   }
 }

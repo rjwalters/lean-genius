@@ -1,33 +1,115 @@
 {
   "id": "erdos-266",
-  "title": "Erdős Problem #266",
+  "title": "Erdős Problem #266: Shifted Sums and Irrationality",
   "slug": "erdos-266",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence of positive integers such that ... converges. There exists some integer ... such that\\[\\sum {...",
+  "description": "Stolarsky conjectured that for any convergent ∑1/aₙ, some shift t makes ∑1/(aₙ+t) irrational. Kovač-Tao (2024) disproved this: some sequences give rational sums for ALL rational shifts.",
   "meta": {
-    "author": "Unknown",
+    "author": "Kovač & Tao (2024)",
     "sourceUrl": "https://erdosproblems.com/266",
-    "date": "",
-    "status": "pending",
+    "date": "2024",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos266Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "shifted-sums",
+      "ahmes-series"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 266,
     "erdosUrl": "https://erdosproblems.com/266",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Irrational",
+        "description": "Predicate for irrational real numbers",
+        "module": "Mathlib.Data.Real.Irrational"
+      },
+      {
+        "theorem": "Summable",
+        "description": "Predicate for summable sequences",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Real"
+      },
+      {
+        "theorem": "tsum",
+        "description": "Infinite series (topological sum)",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Real"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of Stolarsky's conjecture in Lean 4",
+      "Statement of Kovač-Tao's disproof",
+      "Statement of the stronger all-rationals result",
+      "Connection to Erdős #264 on irrationality sequences"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #266 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_n$ be an infinite sequence of positive integers such that $\\sum \\frac{1}{a_n}$ converges. There exists some integer $t\\geq 1$ such that\\[\\sum \\frac{1}{a_n+t}\\]is irrational.\n\n\n\nThis conjecture is due to Stolarsky.\n\nA negative answer was proved by Kova\\v{c} and Tao \\cite{KoTa24}, who proved even more: there exists a strictly increasing sequence of positive integers $a_n$ such that\\[\\sum \\frac{1}{a_n+t}\\]converges to a rational number for every $t\\in \\mathbb{Q}$ (with $t\\neq -a_n$ for all $n$).\n\n\n\n\nReferences\n\n\n[KoTa24] Kova\\vC, V. and Tao T., On several irrationality problems for Ahmes series. arXiv:2406.17593 (2024).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This conjecture is due to Kenneth Stolarsky, who asked whether shifting a convergent series by an integer could always produce irrationality. The intuition was appealing: surely among infinitely many shifts, at least one should 'break' any rationality pattern.\n\nThe problem is closely related to Erdős #264 about irrationality sequences. Both explore how robust irrationality is under additive perturbations.\n\nKovač and Tao's 2024 paper on Ahmes series resolved this and several related Erdős problems, providing a unified counterexample framework.",
+    "problemStatement": "**Stolarsky's Conjecture**: Let $a_n$ be a sequence of positive integers with $\\sum \\frac{1}{a_n}$ convergent. Then there exists some integer $t \\geq 1$ such that\n$$\\sum \\frac{1}{a_n + t}$$\nis irrational.\n\n**Answer**: FALSE — disproved by Kovač and Tao (2024).\n\n**Stronger Result**: There exists a sequence $a_n$ such that $\\sum \\frac{1}{a_n + t}$ is RATIONAL for ALL $t \\in \\mathbb{Q}$ (where $t \\neq -a_n$).",
+    "proofStrategy": "We formalize:\n\n1. **Stolarsky's Conjecture**: The claim that some integer shift always produces irrationality\n\n2. **Kovač-Tao Disproof**: An axiom stating the conjecture is false — counterexamples exist\n\n3. **Stronger All-Rationals Result**: An axiom stating that some sequence gives rational sums for ALL rational shifts\n\nThe construction of the counterexample uses sophisticated techniques from Ahmes series theory (Egyptian fractions), which is beyond current Mathlib formalization.",
+    "keyInsights": [
+      "**The intuition fails**: It seems natural that some shift should produce irrationality, but Kovač-Tao constructed explicit counterexamples.",
+      "**Stronger than expected**: Not only do integer shifts all give rational sums, but ALL rational shifts do too. This is a remarkable rigidity property.",
+      "**Ahmes series connection**: The counterexample uses properties of Ahmes series (representations as sums of unit fractions), linking to ancient Egyptian mathematics.",
+      "**Related to #264**: Both problems ask about irrationality under additive perturbations. Kovač-Tao's paper resolved multiple Erdős problems with unified techniques.",
+      "**Existence vs. construction**: The proof shows counterexamples exist but the actual sequence is highly non-obvious and requires careful construction."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Module documentation and Mathlib imports for irrationality, summability, and infinite sums."
+    },
+    {
+      "id": "conjecture",
+      "title": "Stolarsky's Conjecture",
+      "startLine": 29,
+      "endLine": 42,
+      "summary": "Formal statement of Stolarsky's conjecture: some shift should produce irrationality."
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "startLine": 44,
+      "endLine": 55,
+      "summary": "Kovač-Tao's disproof: the conjecture is false."
+    },
+    {
+      "id": "stronger",
+      "title": "Stronger All-Rationals Result",
+      "startLine": 57,
+      "endLine": 72,
+      "summary": "The stronger result that ALL rational shifts give rational sums."
+    },
+    {
+      "id": "discussion",
+      "title": "Discussion and Relations",
+      "startLine": 74,
+      "endLine": 98,
+      "summary": "Understanding the counterexample and connections to Erdős #264."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 100,
+      "endLine": 118,
+      "summary": "Standard series examples: harmonic (diverges), Basel (converges), geometric."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #266, Stolarsky's conjecture that some integer shift should make a convergent series irrational. Kovač and Tao (2024) disproved this and showed even stronger: some sequences give rational sums for ALL rational shifts. This demonstrates surprising rigidity in how series can avoid irrationality.",
+    "implications": "The result shows that irrationality is not as 'generic' as one might expect. Even with infinitely many choices of shift, a carefully constructed sequence can maintain rationality everywhere. This has implications for understanding the structure of Egyptian fractions and unit fraction representations.",
+    "openQuestions": [
+      "Can we characterize which sequences have the all-rationals property?",
+      "What is the growth rate of the counterexample sequence?",
+      "Are there 'natural' sequences (like n² or prime-indexed) where some shift is irrational?"
+    ]
   }
 }

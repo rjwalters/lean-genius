@@ -1,4 +1,15 @@
 /-
+This file was edited by Aristotle.
+
+Lean version: leanprover/lean4:v4.24.0
+Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
+This project request had uuid: b3a72959-4453-4b5e-8bc0-26cc9b104c53
+
+To cite Aristotle, tag @Aristotle-Harmonic on GitHub PRs/issues, and add as co-author to commits:
+Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
+-/
+
+/-
   Erdős Problem #108: High Chromatic Subgraphs with Large Girth
 
   For every r ≥ 4 and k ≥ 2, is there some finite f(k,r) such that every
@@ -27,6 +38,10 @@ import Mathlib.Combinatorics.SimpleGraph.Subgraph
 import Mathlib.Combinatorics.SimpleGraph.Girth
 import Mathlib.Data.Nat.Basic
 
+
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Unexpected axioms were added during verification: ['Erdos108.erdos_hajnal_rodl_theorem', 'harmonicSorry372952']-/
 /-!
 # Erdős Problem #108: Chromatic Subgraphs with Large Girth
 

@@ -1,4 +1,15 @@
 /-
+This file was edited by Aristotle.
+
+Lean version: leanprover/lean4:v4.24.0
+Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
+This project request had uuid: 9499cc0f-7627-475a-ac2c-201dd1f242cf
+
+To cite Aristotle, tag @Aristotle-Harmonic on GitHub PRs/issues, and add as co-author to commits:
+Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
+-/
+
+/-
 Erdős Problem #109: The Erdős Sumset Conjecture
 
 Source: https://erdosproblems.com/109
@@ -24,6 +35,10 @@ Reference: Moreira, Richter, Robertson (2019) "A proof of a sumset conjecture of
 
 import Mathlib
 
+
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Unexpected axioms were added during verification: ['harmonicSorry48280', 'Erdos109.even_has_pos_density', 'Erdos109.moreira_richter_robertson']-/
 open Set Finset Filter BigOperators
 
 namespace Erdos109

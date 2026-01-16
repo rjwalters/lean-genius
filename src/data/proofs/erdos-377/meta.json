@@ -1,33 +1,114 @@
 {
   "id": "erdos-377",
-  "title": "Erdős Problem #377",
+  "title": "Erdős Problem #377: Primes Not Dividing Central Binomial",
   "slug": "erdos-377",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some absolute constant ... such that\\[\\sum_{p\\leq n}1_{p\\nmid {n}}{p}\\leq C\\]for all ... (where the summation is res...",
+  "description": "Is there an absolute constant C such that ∑_{p≤n, p∤C(2n,n)} 1/p ≤ C for all n? The main conjecture is OPEN, but EGRS75 proved f(n) averages to γ₀ = ∑log(k)/2^k and is ≤ c·log(log(n)) for c < 1.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Graham, Ruzsa, & Straus (1975)",
     "sourceUrl": "https://erdosproblems.com/377",
-    "date": "",
-    "status": "pending",
+    "date": "1975",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos377Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "central-binomial",
+      "prime-divisibility",
+      "analytic-number-theory"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 377,
     "erdosUrl": "https://erdosproblems.com/377",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.centralBinom",
+        "description": "Central binomial coefficient C(2n, n)",
+        "module": "Mathlib.Data.Nat.Choose.Central"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm on reals",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit along filters",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Real"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of the prime-sum function f(n)",
+      "Statement of the open boundedness conjecture",
+      "Four EGRS75 results: first moment, second moment, almost everywhere, upper bound",
+      "Definition of the constant γ₀"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #377 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some absolute constant $C>0$ such that\\[\\sum_{p\\leq n}1_{p\\nmid \\binom{2n}{n}}\\frac{1}{p}\\leq C\\]for all $n$ (where the summation is restricted to primes $p\\leq n$)?\n\n\n\nA question of Erd\\H{o}s, Graham, Ruzsa, and Straus \\cite{EGRS75}, who proved that if $f(n)$ is the sum in question then\\[\\lim_{x\\to \\infty}\\frac{1}{x}\\sum_{n\\leq x}f(n) = \\sum_{k=2}^\\infty \\frac{\\log k}{2^k}=\\gamma_0\\]and\\[\\lim_{x\\to \\infty}\\frac{1}{x}\\sum_{n\\leq x}f(n)^2 = \\gamma_0^2,\\]so that for almost all integers $f(m)=\\gamma_0+o(1)$. They also prove that, for all large $n$,\\[f(n) \\leq c\\log\\log n\\]for some constant $c<1$. (It is trivial from Mertens estimates that $f(n)\\leq (1+o(1))\\log\\log n$.)\n\nA positive answer would imply that\\[\\sum_{p\\leq n}1_{p\\mid \\binom{2n}{n}}\\frac{1}{p}=(1-o(1))\\log\\log n,\\]and Erd\\H{o}s, Graham, Ruzsa, and Straus say there is 'no doubt' this latter claim is true.\n\nThis is mentioned in problem B33 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[EGRS75] Erd\\H{o}s, P. and Graham, R. L. and Ruzsa, I. Z. and Straus, E. G., On the prime factors of $(\\sp{2n}\\sb{n})$. Math. Comp. (1975), 83-92.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem arose from studying the prime factorization of central binomial coefficients C(2n, n). The 1975 paper by Erdős, Graham, Ruzsa, and Straus (EGRS75) made significant progress on understanding the 'statistical' behavior of the prime divisibility pattern.\n\nThe central binomial C(2n, n) is highly composite — most primes p ≤ n divide it. By Kummer's theorem, p | C(2n,n) iff there's a carry when adding n + n in base p. The question asks whether the primes that 'miss' have bounded reciprocal sum.\n\nEGRS proved remarkable results about the average behavior but left the main conjecture (uniform boundedness) open. This is mentioned in Guy's 'Unsolved Problems in Number Theory' (Problem B33).",
+    "problemStatement": "**Definition**: Let $f(n) = \\sum_{p \\leq n, p \\nmid \\binom{2n}{n}} \\frac{1}{p}$\n\n**Conjecture (Open)**: Is there an absolute constant $C > 0$ such that $f(n) \\leq C$ for all $n$?\n\n**Known Results (EGRS 1975)**:\n1. $\\lim_{x\\to\\infty} \\frac{1}{x}\\sum_{n\\leq x} f(n) = \\gamma_0$ where $\\gamma_0 = \\sum_{k=2}^{\\infty} \\frac{\\log k}{2^k} \\approx 0.794$\n2. $\\lim_{x\\to\\infty} \\frac{1}{x}\\sum_{n\\leq x} f(n)^2 = \\gamma_0^2$\n3. For almost all $n$: $f(n) = \\gamma_0 + o(1)$\n4. For large $n$: $f(n) \\leq c \\log\\log n$ for some $c < 1$",
+    "proofStrategy": "We formalize:\n\n1. **The function f(n)**: Sum of 1/p over primes p ≤ n not dividing C(2n, n)\n\n2. **The open conjecture**: Whether f(n) is uniformly bounded\n\n3. **EGRS results as axioms**: Four theorems about average behavior:\n   - First moment: Cesàro mean → γ₀\n   - Second moment: Cesàro mean of squares → γ₀²\n   - Almost everywhere: f(n) ≈ γ₀ for almost all n\n   - Upper bound: f(n) ≤ c log(log n) for c < 1\n\n4. **The constant γ₀**: Defined as the infinite series ∑log(k)/2^k",
+    "keyInsights": [
+      "**Kummer's theorem connection**: p | C(2n,n) iff adding n+n in base p produces a carry. Primes NOT dividing are those where all base-p digits of n are 'small' (< p/2).",
+      "**Average vs pointwise**: EGRS showed f(n) is 'typically' about γ₀ ≈ 0.794, but the maximum could potentially be unbounded.",
+      "**Variance concentration**: First and second moments both converging to γ₀ and γ₀² implies variance → 0, so f(n) concentrates around γ₀.",
+      "**The trivial bound**: By Mertens' theorem, ∑_{p≤n} 1/p ~ log(log(n)), so f(n) ≤ log(log n) + O(1). EGRS improved this to c·log(log n) for c < 1.",
+      "**Complementary question**: A positive answer would imply ∑_{p|C(2n,n)} 1/p = (1-o(1))log(log n), which EGRS consider 'undoubtedly true'."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Module documentation and Mathlib imports for central binomials, primes, logarithms, and filters."
+    },
+    {
+      "id": "function",
+      "title": "The Main Function f(n)",
+      "startLine": 32,
+      "endLine": 42,
+      "summary": "Definition of sumInvPrimesNotDivCentralBinom — the key function measuring primes that miss."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Open Conjecture",
+      "startLine": 44,
+      "endLine": 61,
+      "summary": "Statement of the main boundedness conjecture that remains open."
+    },
+    {
+      "id": "egrs-results",
+      "title": "EGRS 1975 Results",
+      "startLine": 63,
+      "endLine": 110,
+      "summary": "Four axioms capturing the known results: first moment, second moment, almost everywhere, upper bound."
+    },
+    {
+      "id": "understanding",
+      "title": "Understanding the Problem",
+      "startLine": 112,
+      "endLine": 147,
+      "summary": "Discussion of Kummer's theorem, complementary sums, and implications."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #377 about primes not dividing central binomial coefficients. While the main boundedness conjecture remains open, EGRS75 proved remarkable statistical results: f(n) averages to γ₀ ≈ 0.794, concentrates around this value, and is bounded by c·log(log n) for c < 1.",
+    "implications": "Understanding which primes divide C(2n,n) connects to digit patterns (Kummer's theorem), asymptotic analysis (Mertens estimates), and the rich structure of central binomials. A positive answer would confirm that 'almost all' of the prime reciprocal sum comes from dividing primes.",
+    "openQuestions": [
+      "Is f(n) uniformly bounded? (The main open conjecture)",
+      "What is the maximum value of f(n)?",
+      "Can f(n) exceed 2γ₀ infinitely often?",
+      "What is the best constant c in the upper bound f(n) ≤ c log(log n)?"
+    ]
   }
 }

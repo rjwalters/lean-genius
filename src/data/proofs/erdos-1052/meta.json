@@ -1,0 +1,91 @@
+{
+  "id": "erdos-1052",
+  "title": "Erdős #1052: Unitary Perfect Numbers",
+  "slug": "erdos-1052",
+  "description": "A unitary perfect number equals the sum of its proper unitary divisors (where d is unitary if gcd(d, n/d)=1). All unitary perfect numbers are even; finiteness is OPEN.",
+  "meta": {
+    "author": "Wall",
+    "sourceUrl": "https://erdosproblems.com/1052",
+    "date": "1972",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1052Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisibility",
+      "perfect-numbers",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1052,
+    "erdosUrl": "https://erdosproblems.com/1052",
+    "erdosProblemStatus": "open"
+  },
+  "overview": {
+    "historicalContext": "A **unitary divisor** d of n satisfies gcd(d, n/d) = 1, meaning d and its complement share no common prime factors. A **unitary perfect number** equals the sum of its proper unitary divisors.\n\nWall (1972) found the fifth unitary perfect number. Only five are known: 6, 60, 90, 87360, and a 24-digit number discovered in 1975. It is conjectured there are only finitely many.\n\nThe evenness result follows from a parity argument: unitary divisors pair up (d ↔ n/d), and odd numbers produce odd divisor counts leading to contradiction.",
+    "problemStatement": "**OPEN CONJECTURE**: Are there only finitely many unitary perfect numbers?\n\n**SOLVED**: All unitary perfect numbers are even.\n\nKnown unitary perfect numbers:\n- 6 = 2 · 3\n- 60 = 2² · 3 · 5\n- 90 = 2 · 3² · 5\n- 87360 = 2⁶ · 3 · 5 · 7 · 13\n- 146361946186458562560000 = 2¹⁸ · 3 · 5⁴ · 7 · 11 · 13 · 19 · 37 · 79 · 109 · 157 · 313",
+    "proofStrategy": "For the evenness result:\n1. If n is odd and unitary perfect, all its unitary divisors are odd (if d were even, 2 | n)\n2. The sum equals n (odd), so the count of divisors must be odd (sum of odds is odd iff count is odd)\n3. But unitary divisors pair up: d ↔ n/d (since gcd(d, n/d) = 1 implies gcd(n/d, d) = 1)\n4. Pairs contribute even count; the only unpaired element would be √n if n is a perfect square\n5. Detailed analysis shows no odd n can satisfy the parity constraint",
+    "keyInsights": [
+      "**Unitary divisor**: d | n with gcd(d, n/d) = 1 (no shared prime factors)",
+      "**Pairing property**: If d is unitary, so is n/d, creating d ↔ n/d pairs",
+      "**Parity argument**: Odd unitary perfect numbers impossible due to divisor count parity",
+      "**Multiplicativity**: σ*(mn) = σ*(m)σ*(n) for coprime m, n",
+      "**Only 5 known examples**: Despite extensive search, very few exist"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 21,
+      "endLine": 32,
+      "summary": "properUnitaryDivisors: {d | d < n, d | n, gcd(d, n/d) = 1}; IsUnitaryPerfect: sum = n"
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 34,
+      "endLine": 60,
+      "summary": "1 ∈ properUnitaryDivisors for n > 1; odd n implies odd unitary divisors"
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: Even Unitary Perfect Numbers",
+      "startLine": 62,
+      "endLine": 100,
+      "summary": "even_of_isUnitaryPerfect: All unitary perfect numbers are even"
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 102,
+      "endLine": 132,
+      "summary": "isUnitaryPerfect_6, isUnitaryPerfect_60, isUnitaryPerfect_90"
+    },
+    {
+      "id": "conjecture",
+      "title": "Open Conjecture",
+      "startLine": 134,
+      "endLine": 154,
+      "summary": "erdos_1052_conjecture: { n | IsUnitaryPerfect n }.Finite"
+    },
+    {
+      "id": "properties",
+      "title": "Unitary Divisor Properties",
+      "startLine": 156,
+      "endLine": 236,
+      "summary": "unitary_iff_no_common_prime, unitaryDivisorSum, multiplicativity, complement theorem"
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize Erdős Problem #1052 about unitary perfect numbers. The main result proves that all unitary perfect numbers are even using a parity argument on the divisor pairing. The conjecture that there are only finitely many remains OPEN.",
+    "implications": "The unitary divisor structure provides a natural generalization of perfect numbers. The multiplicativity of σ* enables product formulas, while the pairing property (d ↔ n/d) underlies the evenness proof.",
+    "openQuestions": [
+      "Are there only finitely many unitary perfect numbers?",
+      "Is there a sixth unitary perfect number?",
+      "What constraints exist on the prime factorization of unitary perfect numbers?",
+      "Are there infinitely many odd abundant numbers (σ*(n) > 2n) that are squarefree?"
+    ]
+  }
+}

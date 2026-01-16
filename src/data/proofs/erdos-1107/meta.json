@@ -1,33 +1,108 @@
 {
   "id": "erdos-1107",
-  "title": "Erdős Problem #1107",
+  "title": "Erdős Problem #1107: Sums of r-Powerful Numbers",
   "slug": "erdos-1107",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... A number ... is ...-powerful if for every prime ... which divides ... we have .... Is every large integer the sum of...",
+  "description": "Is every sufficiently large integer expressible as the sum of at most r+1 many r-powerful numbers?",
   "meta": {
-    "author": "Unknown",
+    "author": "Heath-Brown (1988) for r=2; general case open",
     "sourceUrl": "https://erdosproblems.com/1107",
-    "date": "",
-    "status": "pending",
+    "date": "1986",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1107Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "powerful-numbers",
+      "additive-combinatorics"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1107,
     "erdosUrl": "https://erdosproblems.com/1107",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.primeFactors",
+        "description": "The set of prime factors of a natural number",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "The filter of neighborhoods of infinity",
+        "module": "Mathlib.Order.Filter.AtTopBot.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of r-powerful (r-full) numbers in Lean 4",
+      "Statement of the general conjecture using Filter.atTop",
+      "Heath-Brown's theorem for r=2 as separate axiom",
+      "Verified concrete examples: 13 = 4 + 9 and 17 = 8 + 9"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1107 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 2$. A number $n$ is $r$-powerful if for every prime $p$ which divides $n$ we have $p^r\\mid n$. Is every large integer the sum of at most $r+1$ many $r$-powerful numbers?\n\n\n\nGiven in the 1986 Oberwolfach problem book as a problem of Erd\\H{o}s and Ivi\\'{c}.\n\nThis is true when $r=2$, as proved by Heath-Brown \\cite{He88} (see [941]).\n\nSee [940] for the problem of which integers are the sum of at most $r$ many $r$-powerful numbers.\n\n\n\n\nReferences\n\n\n[He88] Heath-Brown, D. R., Ternary quadratic forms and sums of three square-full numbers. (1988), 137--163.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "A natural number n is called r-powerful (or r-full) if for every prime p dividing n, the r-th power p^r also divides n. For r=2, these are the squareful numbers: 1, 4, 8, 9, 16, 25, 27, 32, 36, ... The concept generalizes perfect powers to numbers where each prime factor appears with sufficient multiplicity.\n\nErdős Problem #1107 was posed by Erdős and Ivić in the 1986 Oberwolfach problem book. It asks whether every sufficiently large integer can be written as a sum of at most r+1 many r-powerful numbers.\n\nThe case r=2 was resolved by D.R. Heath-Brown in 1988 using the theory of ternary quadratic forms. He proved that every sufficiently large integer is the sum of at most three squareful numbers. The general case for r > 2 remains open.",
+    "problemStatement": "Let $r \\geq 2$. A positive integer $n$ is **$r$-powerful** (or **$r$-full**) if for every prime $p$ dividing $n$, we have $p^r \\mid n$.\n\n**Question**: Is every sufficiently large integer the sum of at most $r + 1$ many $r$-powerful numbers?\n\n**Status**:\n- **OPEN** for general $r \\geq 2$\n- **SOLVED** for $r = 2$ by Heath-Brown (1988)",
+    "proofStrategy": "We formalize:\n\n1. The definition of r-powerful numbers using prime factorization\n2. The general conjecture as an axiom (open problem)\n3. Heath-Brown's theorem for r=2 as a separate axiom\n\nThe proof for r=2 uses deep results about ternary quadratic forms and is beyond current Mathlib formalization. We verify concrete examples computationally.",
+    "keyInsights": [
+      "**r-Powerful numbers**: A number is r-powerful if every prime in its factorization appears at least r times. For example, 72 = 2^3 · 3^2 is 2-powerful since both 2^2 and 3^2 divide 72.",
+      "**Why r+1 terms?**: With r+1 terms, we have enough flexibility. With only r terms, not all large integers can be represented (see related Erdős Problem #940).",
+      "**Heath-Brown's breakthrough**: For r=2, the problem reduces to understanding which integers are represented by sums of three squareful numbers. This connects to classical questions about quadratic forms.",
+      "**Verified examples**: We prove 13 = 4 + 9 (two squareful numbers) and 17 = 8 + 9, demonstrating that the conjecture holds for small cases."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Module documentation explaining the problem, its history, and Mathlib imports for prime factorization and filters."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 34,
+      "endLine": 65,
+      "summary": "Define IsFull (r-powerful) and SumOfRPowerful predicates."
+    },
+    {
+      "id": "properties",
+      "title": "Basic Properties",
+      "startLine": 67,
+      "endLine": 94,
+      "summary": "Prove basic facts: 0 and 1 are r-powerful, every number is 0-powerful and 1-powerful, and the monotonicity lemma."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 96,
+      "endLine": 109,
+      "summary": "Verify that 4, 8, 9, and 36 are 2-powerful using native_decide."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Main Theorems",
+      "startLine": 111,
+      "endLine": 138,
+      "summary": "State the main conjecture (open) and Heath-Brown's theorem for r=2 as axioms."
+    },
+    {
+      "id": "verified-sums",
+      "title": "Verified Sum Examples",
+      "startLine": 140,
+      "endLine": 171,
+      "summary": "Prove that 13 and 17 can be written as sums of squareful numbers."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #1107 about sums of r-powerful numbers. The general conjecture remains open, but Heath-Brown proved the r=2 case in 1988. We provide formal definitions, state both theorems as axioms, and verify concrete computational examples.",
+    "implications": "This problem connects additive number theory with multiplicative structure. Understanding which integers are sums of powerful numbers reveals deep connections between prime factorization patterns and additive decomposition.",
+    "openQuestions": [
+      "Can Heath-Brown's methods for r=2 be extended to r=3 or larger?",
+      "What is the smallest N such that all integers n > N are sums of three squareful numbers?",
+      "Is there a unified approach that works for all r ≥ 2?"
+    ]
   }
 }

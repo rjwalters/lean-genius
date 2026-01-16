@@ -1,1 +1,120 @@
-[]
+[
+  {
+    "id": "ann-overview",
+    "proofId": "erdos-244",
+    "range": {"startLine": 1, "endLine": 32},
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #244** asks whether the set {p + floor(C^k) : p prime, k >= 0} has positive lower density for any C > 1.\n\nThe problem has a rich history:\n- Originally posed to Erdős by Kalmár\n- Erdős believed the answer is YES for all C > 1\n- Romanoff (1934) proved YES for integer C\n- Ding (2025) proved YES for almost all C > 1\n\nThe case C = 2 connects directly to Erdős Problem #10 about primes plus powers of 2.",
+    "significance": "critical",
+    "relatedConcepts": ["additive number theory", "prime distribution", "density"]
+  },
+  {
+    "id": "ann-representable-def",
+    "proofId": "erdos-244",
+    "range": {"startLine": 40, "endLine": 47},
+    "type": "definition",
+    "title": "Representability Definition",
+    "content": "A natural number n is **representable** if n = p + floor(C^k) for some prime p and non-negative integer k.\n\nThe floor function floor(C^k) is the natural number floor, denoted `⌊·⌋₊` in Mathlib. For integer C, this simplifies to C^k exactly.\n\nThe set `RepresentableSet(C)` collects all representable integers for a given C.",
+    "mathContext": "∃ (p k : ℕ), p.Prime ∧ n = p + ⌊C^k⌋₊",
+    "significance": "critical",
+    "relatedConcepts": ["floor function", "prime numbers", "set builder notation"]
+  },
+  {
+    "id": "ann-floor-simplification",
+    "proofId": "erdos-244",
+    "range": {"startLine": 49, "endLine": 53},
+    "type": "lemma",
+    "title": "Floor Simplification for Integers",
+    "content": "When C is a natural number, **floor(C^k) = C^k** exactly because C^k is already a natural number.\n\nThe proof uses `Nat.cast_pow` to rewrite `(C : ℝ)^k` as `((C^k : ℕ) : ℝ)`, then `Nat.floor_natCast` shows the floor of a natural cast to real is the original natural.\n\nThis simplification is why the integer case is easier to analyze.",
+    "mathContext": "⌊(C : ℝ)^k⌋₊ = C^k",
+    "significance": "key",
+    "relatedConcepts": ["type coercion", "floor function properties"]
+  },
+  {
+    "id": "ann-density-concepts",
+    "proofId": "erdos-244",
+    "range": {"startLine": 72, "endLine": 94},
+    "type": "definition",
+    "title": "Density Concepts",
+    "content": "**Lower density** captures the asymptotic proportion of integers in a set.\n\nFor S ⊆ ℕ, the lower density is:\n```\nlim inf_{N→∞} |S ∩ [0,N]| / N\n```\n\nWe define:\n- `countingFunction(S, N)`: number of elements of S up to N\n- `lowerDensity(S)`: the limit inferior of the counting proportion\n- `upperDensity(S)`: the limit superior\n- `HasPositiveDensity(S)`: when lowerDensity(S) > 0\n\nA set with positive lower density contains a positive fraction of all integers (asymptotically).",
+    "mathContext": "lim inf |S ∩ [0,N]| / N > 0",
+    "significance": "critical",
+    "relatedConcepts": ["asymptotic density", "limit inferior", "analytic number theory"]
+  },
+  {
+    "id": "ann-romanoff",
+    "proofId": "erdos-244",
+    "range": {"startLine": 97, "endLine": 125},
+    "type": "theorem",
+    "title": "Romanoff's Theorem (1934)",
+    "content": "**Romanoff's Theorem**: For any integer C ≥ 2, the set {p + C^k : p prime, k ≥ 0} has positive lower density.\n\nThis was a landmark result in additive number theory. The proof uses:\n1. **Sieve methods** to count primes in arithmetic progressions\n2. **Distribution analysis** of how powers of C behave modulo various numbers\n3. **Prime number theorem** applications\n\nThe result shows that primes and geometric progressions interact in a density-positive way.\n\nStated as an axiom because the full proof requires analytic techniques beyond basic Mathlib.",
+    "mathContext": "HasPositiveDensity(RepresentableSet(C)) for C : ℕ, C ≥ 2",
+    "significance": "critical",
+    "relatedConcepts": ["sieve theory", "prime number theorem", "additive number theory"],
+    "prerequisites": ["analytic number theory", "complex analysis"]
+  },
+  {
+    "id": "ann-base-2",
+    "proofId": "erdos-244",
+    "range": {"startLine": 122, "endLine": 138},
+    "type": "theorem",
+    "title": "The Base-2 Case",
+    "content": "As a direct corollary of Romanoff's theorem with C = 2:\n\n**The set {p + 2^k : p prime, k ≥ 0} has positive lower density.**\n\nThis connects to Erdős Problem #10, which asks whether EVERY integer can be written as p + (at most k powers of 2).\n\n**Key insight**: Problem #244 (density) has a positive answer, while Problem #10 (universality) likely has a negative answer. A set can have positive density without covering every integer!",
+    "significance": "key",
+    "relatedConcepts": ["Erdős Problem #10", "de Polignac numbers", "Goldbach conjecture"]
+  },
+  {
+    "id": "ann-conjecture",
+    "proofId": "erdos-244",
+    "range": {"startLine": 149, "endLine": 159},
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "`erdos_244_conjecture` states: For **ALL** real C > 1, the set {p + floor(C^k)} has positive lower density.\n\nThis is the **open problem**. Key challenges for non-integer C:\n1. The floor function creates irregularity in the sequence floor(C^k)\n2. Unlike powers of integers, floor(C^k) doesn't form a nice algebraic structure\n3. Modular arithmetic arguments become more delicate\n\nErdős predicted YES, but this remains unproven.",
+    "mathContext": "∀ C > 1, HasPositiveDensity(RepresentableSet(C))",
+    "significance": "critical",
+    "relatedConcepts": ["open problems", "floor function irregularity"]
+  },
+  {
+    "id": "ann-ding",
+    "proofId": "erdos-244",
+    "range": {"startLine": 161, "endLine": 172},
+    "type": "theorem",
+    "title": "Ding's Almost-All Result (2025)",
+    "content": "**Ding's Theorem (2025)**: There exists a set N of Lebesgue measure zero such that for all C > 1 with C ∉ N, the set {p + floor(C^k)} has positive density.\n\nThis is major progress:\n- Shows the conjecture fails for at most a **measure-zero** set of C values\n- Uses probabilistic arguments and measure theory\n- Doesn't identify which specific C values might be counterexamples\n\n**Reference**: Ding, Y., \"On a Romanoff type problem of Erdős and Kalmár.\" arXiv:2503.22700 (2025)",
+    "mathContext": "∃ N, μ(N) = 0 ∧ ∀ C > 1, C ∉ N → HasPositiveDensity(...)",
+    "significance": "critical",
+    "relatedConcepts": ["measure theory", "almost everywhere", "Lebesgue measure"],
+    "prerequisites": ["measure theory", "probability"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "erdos-244",
+    "range": {"startLine": 176, "endLine": 198},
+    "type": "concept",
+    "title": "Concrete Examples",
+    "content": "We verify representability for small numbers:\n\n1. **three_representable**: 3 = 2 + floor(C^0) = 2 + 1 for any C ≥ 1\n   (Using prime 2 and k = 0)\n\n2. **five_representable_C2**: 5 = 3 + 2^1 for C = 2\n   (Using prime 3 and k = 1)\n\n3. **ten_representable_C2**: 10 = 2 + 2^3 for C = 2\n   (Using prime 2 and k = 3)\n\nThese examples demonstrate the basic structure: find a prime p and power k such that n - floor(C^k) is prime.",
+    "significance": "supporting",
+    "relatedConcepts": ["constructive proofs", "witness examples"]
+  },
+  {
+    "id": "ann-density-vs-universality",
+    "proofId": "erdos-244",
+    "range": {"startLine": 200, "endLine": 213},
+    "type": "insight",
+    "title": "Density vs Universality",
+    "content": "A crucial distinction between Erdős Problems #10 and #244:\n\n**Problem #10**: Can EVERY integer be written as p + (at most k powers of 2)?\n- Answer: Likely **NO** (de Polignac counterexamples exist)\n- Some integers cannot be represented no matter how many powers we allow\n\n**Problem #244**: Does the set {p + 2^k} have POSITIVE DENSITY?\n- Answer: **YES** (Romanoff 1934)\n- A positive fraction of integers ARE representable\n\n**Key insight**: A set can have positive density without containing every integer. The non-representable integers in Problem #10 are rare enough that the representable set still has positive density.",
+    "significance": "key",
+    "relatedConcepts": ["Erdős Problem #10", "de Polignac numbers", "covering problems"]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "erdos-244",
+    "range": {"startLine": 217, "endLine": 227},
+    "type": "theorem",
+    "title": "Summary of Known Results",
+    "content": "`problem_244_summary` combines our main results:\n\n1. **Romanoff's Result (1934)**: For all natural C ≥ 2,\n   `HasPositiveDensity(RepresentableSet(C))`\n   - Proven for integer bases\n   - Uses sieve methods\n\n2. **Ding's Result (2025)**: For almost all C > 1,\n   `HasPositiveDensity(RepresentableSet(C))`\n   - \"Almost all\" in the sense of Lebesgue measure\n   - Exceptional set has measure zero\n\nThe general conjecture for ALL C > 1 remains **OPEN**.",
+    "significance": "key",
+    "relatedConcepts": ["mathematical progress", "partial results"]
+  }
+]

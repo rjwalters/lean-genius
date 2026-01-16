@@ -8,10 +8,12 @@
  * - Garbage meta.json description (contains scraping artifacts)
  *
  * Usage:
- *   npx tsx scripts/erdos/find-stubs.ts           # List all stubs
- *   npx tsx scripts/erdos/find-stubs.ts --next    # Show next stub to enhance
- *   npx tsx scripts/erdos/find-stubs.ts --json    # Output as JSON
+ *   npx tsx scripts/erdos/find-stubs.ts           # Random stub with source (DEFAULT)
+ *   npx tsx scripts/erdos/find-stubs.ts --next    # Highest priority stub (deterministic)
+ *   npx tsx scripts/erdos/find-stubs.ts --random  # Random stub (any, including no source)
+ *   npx tsx scripts/erdos/find-stubs.ts --list    # List all stubs
  *   npx tsx scripts/erdos/find-stubs.ts --stats   # Show statistics only
+ *   npx tsx scripts/erdos/find-stubs.ts --json    # Output as JSON
  */
 
 import * as fs from 'fs'
@@ -245,15 +247,27 @@ function formatStubList(stubs: StubInfo[], limit?: number): void {
   }
 }
 
-function showNextStub(stubs: StubInfo[]): void {
+function selectRandomStub(stubs: StubInfo[], sourceOnly: boolean = false): StubInfo | null {
+  const pool = sourceOnly ? stubs.filter(s => s.hasFormalConjecturesSource) : stubs
+  if (pool.length === 0) return null
+  const randomIndex = Math.floor(Math.random() * pool.length)
+  return pool[randomIndex]
+}
+
+function showNextStub(stubs: StubInfo[], stub?: StubInfo | null, isRandom: boolean = false): void {
   if (stubs.length === 0) {
     console.log('No stubs found! All gallery entries are quality.')
     return
   }
 
-  const next = stubs[0]
+  const next = stub || stubs[0]
+  if (!next) {
+    console.log('No matching stubs found!')
+    return
+  }
 
-  console.log('=== Next Stub to Enhance ===\n')
+  const header = isRandom ? '=== Random Stub to Enhance ===' : '=== Next Stub to Enhance ==='
+  console.log(`${header}\n`)
   console.log(`Erdős Problem #${next.erdosNumber}`)
   console.log(`Status: ${next.problemStatus || 'unknown'}`)
   console.log(`Priority Score: ${next.priorityScore}`)
@@ -337,8 +351,10 @@ Erdős Gallery Stub Finder
 Find gallery entries that need enhancement (stubs).
 
 Usage:
-  npx tsx scripts/erdos/find-stubs.ts           List all stubs (prioritized)
-  npx tsx scripts/erdos/find-stubs.ts --next    Show next stub to enhance
+  npx tsx scripts/erdos/find-stubs.ts           Random stub with source (DEFAULT, best for parallel agents)
+  npx tsx scripts/erdos/find-stubs.ts --next    Highest priority stub (deterministic, for single agent)
+  npx tsx scripts/erdos/find-stubs.ts --random  Random stub from ALL stubs (including those without sources)
+  npx tsx scripts/erdos/find-stubs.ts --list    List all stubs (prioritized)
   npx tsx scripts/erdos/find-stubs.ts --stats   Show statistics only
   npx tsx scripts/erdos/find-stubs.ts --json    Output as JSON
 
@@ -347,7 +363,11 @@ A stub has one or more of:
   - Empty annotations.json (<10 lines)
   - Garbage meta.json description (scraping artifacts)
 
-Priority order:
+Default Behavior:
+  Running without flags selects a RANDOM stub that has a formal-conjectures
+  source. This is optimal for parallel agents to avoid collisions.
+
+Priority order (for --next):
   1. Has formal-conjectures source (easier to fix)
   2. Status: proved > solved > disproved > open
   3. Lower Erdős number (more foundational)
@@ -359,13 +379,24 @@ if (args.includes('--json')) {
   console.log(JSON.stringify({ stats, stubs }, null, 2))
 } else if (args.includes('--stats')) {
   showStats(stats)
+} else if (args.includes('--list')) {
+  // Explicit list mode (old default behavior)
+  showStats(stats)
+  formatStubList(stubs, 30)
+  console.log('\nOther commands:')
+  console.log('  npx tsx scripts/erdos/find-stubs.ts           # Random stub with source (default)')
+  console.log('  npx tsx scripts/erdos/find-stubs.ts --next    # Highest priority stub')
+  console.log('  npx tsx scripts/erdos/find-stubs.ts --random  # Random stub (any)')
 } else if (args.includes('--next')) {
   showStats(stats)
   showNextStub(stubs)
-} else {
+} else if (args.includes('--random')) {
   showStats(stats)
-  formatStubList(stubs, 30)
-
-  console.log('\nNext steps:')
-  console.log('  npx tsx scripts/erdos/find-stubs.ts --next    # Get detailed enhancement guide')
+  const randomStub = selectRandomStub(stubs, false)
+  showNextStub(stubs, randomStub, true)
+} else {
+  // Default: random stub with source (best for parallel agents)
+  showStats(stats)
+  const randomStub = selectRandomStub(stubs, true)
+  showNextStub(stubs, randomStub, true)
 }

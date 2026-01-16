@@ -1,33 +1,96 @@
 {
   "id": "erdos-244",
-  "title": "Erdős Problem #244",
+  "title": "Erdos Problem #244: Prime Plus Powers of C",
   "slug": "erdos-244",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Does the set of integers of the form ..., for some prime ... and ..., have density ...?\n\n\n\nOriginally asked to Erds ...",
+  "description": "For any real C > 1, does the set of integers of the form p + floor(C^k), for some prime p and k >= 0, have positive lower density? Originally asked to Erdos by Kalmar. Romanoff (1934) proved the answer is yes when C is a positive integer. Ding (2025) proved this holds for almost all C > 1.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdos, Kalmar, Romanoff, Ding",
     "sourceUrl": "https://erdosproblems.com/244",
-    "date": "",
-    "status": "pending",
+    "date": "1934-2025",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos244Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "density",
+      "additive-combinatorics"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 244,
     "erdosUrl": "https://erdosproblems.com/244",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #244 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $C>1$. Does the set of integers of the form $p+\\lfloor C^k\\rfloor$, for some prime $p$ and $k\\geq 0$, have density $>0$?\n\n\n\nOriginally asked to Erd\\H{o}s by Kalm\\'{a}r. Erd\\H{o}s believed the answer is yes. Romanoff \\cite{Ro34} proved that the answer is yes if $C$ is an integer.\n\nDing \\cite{Di25} has proved that this is true for almost all $C>1$.\n\n\n\n\nReferences\n\n\n[Di25] Y. Ding, On a Romanoff type problem of Erd\\H{o}s and Kalm\\'{a}r. arXiv:2503.22700 (2025).\n\n[Ro34] Romanoff, N. P., \\\"{U}ber einige S\\\"Atze der additiven Zahlentheorie. Math. Ann. (1934), 668-678.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was originally asked to Erdos by Kalmar and explores the intersection of prime numbers with geometric progressions. Romanoff's 1934 paper established the foundational result for integer bases, showing that primes combined with powers of integers create sets of positive density. The problem remained open for non-integer C until Ding's 2025 breakthrough showing the result holds for almost all C > 1.",
+    "problemStatement": "Let C > 1. Does the set of integers of the form p + floor(C^k), for some prime p and k >= 0, have positive lower density? Erdos believed the answer is yes for all C > 1.",
+    "proofStrategy": "We formalize the problem statement using Mathlib's floor function and density concepts. Romanoff's theorem for integer C is stated as an axiom (the proof requires advanced sieve methods). Ding's almost-all result is similarly axiomatized. We prove several concrete examples and establish the connection to Erdos Problem #10.",
+    "keyInsights": [
+      "The integer case is simpler because floor(C^k) = C^k exactly, avoiding floor complications",
+      "Romanoff's proof uses sieve methods and careful counting arguments from analytic number theory",
+      "The set {p + 2^k} has positive density even though not every integer is representable (connecting to Problem #10)",
+      "Ding's 2025 result shows the conjecture holds for Lebesgue-almost-all C > 1"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 38,
+      "endLine": 70,
+      "summary": "Define representability as p + floor(C^k) and the associated set"
+    },
+    {
+      "id": "density-concepts",
+      "title": "Density Concepts",
+      "startLine": 71,
+      "endLine": 96,
+      "summary": "Define counting function, lower density, and positive density"
+    },
+    {
+      "id": "romanoff-theorem",
+      "title": "Romanoff's Theorem",
+      "startLine": 97,
+      "endLine": 140,
+      "summary": "State the 1934 result for integer C >= 2"
+    },
+    {
+      "id": "general-conjecture",
+      "title": "General Conjecture",
+      "startLine": 141,
+      "endLine": 175,
+      "summary": "State the open problem for all C > 1 and Ding's partial result"
+    },
+    {
+      "id": "examples",
+      "title": "Small Examples",
+      "startLine": 176,
+      "endLine": 201,
+      "summary": "Verify representability for specific numbers"
+    },
+    {
+      "id": "connection-to-10",
+      "title": "Connection to Problem #10",
+      "startLine": 202,
+      "endLine": 216,
+      "summary": "Explain the relationship between density and universality"
+    },
+    {
+      "id": "summary",
+      "title": "Summary of Results",
+      "startLine": 217,
+      "endLine": 235,
+      "summary": "Combines all known partial results into a summary theorem"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdos Problem #244, establishing the problem statement, known results (Romanoff 1934 for integers, Ding 2025 for almost all C), and the connection to Problem #10. The general conjecture for all C > 1 remains open.",
+    "implications": "This problem connects additive number theory (prime distribution) with geometric sequences (powers of C), illustrating how primes interact with multiplicative structures.",
+    "openQuestions": [
+      "Does the conjecture hold for ALL C > 1?",
+      "What specific values of C (if any) are counterexamples?",
+      "Can the density bounds be made explicit?"
+    ]
   }
 }

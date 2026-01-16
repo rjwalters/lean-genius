@@ -65,15 +65,50 @@ def CoversAllButFinitely (A B : Set ℕ) : Prop :=
 /-- The primes form an infinite set of density 0. -/
 axiom primes_density_zero : HasDensityZero {n : ℕ | n.Prime}
 
-/-- Helper: The number of powers of 2 up to N is at most log₂(N) + 1.
-    This is because 2^k ≤ N iff k ≤ log₂(N).
+/-- Bijection between powers of 2 in [1,N] and {0,...,log₂ N}.
+    The powers of 2 in [1,N] are exactly {2^0, 2^1, ..., 2^k} where k = ⌊log₂ N⌋. -/
+lemma powers_of_2_in_Icc_eq (N : ℕ) (hN : N ≥ 1) :
+    {n : ℕ | ∃ k, n = 2^k} ∩ Set.Icc 1 N = (Set.Icc 0 (Nat.log 2 N)).image (2 ^ ·) := by
+  ext n
+  simp only [Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_Icc, Set.mem_image]
+  constructor
+  · rintro ⟨⟨k, rfl⟩, h1, h2⟩
+    use k
+    constructor
+    · constructor
+      · omega
+      · rw [← Nat.log_pow (by norm_num : 1 < 2) k]
+        exact Nat.log_mono_right h2
+    · rfl
+  · rintro ⟨k, ⟨_, hklog⟩, rfl⟩
+    constructor
+    · exact ⟨k, rfl⟩
+    · constructor
+      · exact Nat.one_le_pow k 2 (by norm_num)
+      · calc 2^k ≤ 2^(Nat.log 2 N) := Nat.pow_le_pow_right (by norm_num) hklog
+          _ ≤ N := Nat.pow_log_le_self 2 (by omega)
 
-    **Proof sketch**: The powers of 2 in [1,N] are {2^0, 2^1, ..., 2^k} where k = ⌊log₂ N⌋.
-    This set injects into {0, 1, ..., k} via the map n ↦ log₂ n, giving at most k+1 elements.
-
-    Note: This is axiomatized due to mathlib ncard API complexity; could be submitted to Aristotle. -/
-axiom powers_of_2_count_bound (N : ℕ) :
-    ({n : ℕ | ∃ k, n = 2^k} ∩ Set.Icc 1 N).ncard ≤ Nat.log 2 N + 1
+/-- The number of powers of 2 up to N is at most log₂(N) + 1.
+    This is because 2^k ≤ N iff k ≤ log₂(N), so the set is {2^0, ..., 2^(log₂ N)}. -/
+theorem powers_of_2_count_bound (N : ℕ) :
+    ({n : ℕ | ∃ k, n = 2^k} ∩ Set.Icc 1 N).ncard ≤ Nat.log 2 N + 1 := by
+  by_cases hN : N = 0
+  · -- N = 0: Icc 1 0 is empty, so intersection is empty
+    subst hN
+    have h : Set.Icc 1 0 = (∅ : Set ℕ) := by
+      ext x; simp only [Set.mem_Icc, Set.mem_empty_iff_false, iff_false]; omega
+    simp only [h, Set.inter_empty, Set.ncard_empty, Nat.log_zero_right, zero_add]
+    decide
+  · -- N ≥ 1: use the bijection
+    have hN1 : N ≥ 1 := Nat.one_le_iff_ne_zero.mpr hN
+    rw [powers_of_2_in_Icc_eq N hN1]
+    have hfin : (Set.Icc 0 (Nat.log 2 N)).Finite := Set.finite_Icc 0 (Nat.log 2 N)
+    calc Set.ncard ((Set.Icc 0 (Nat.log 2 N)).image (2 ^ ·))
+        ≤ Set.ncard (Set.Icc 0 (Nat.log 2 N)) := Set.ncard_image_le hfin
+      _ = Nat.log 2 N + 1 := by
+          rw [Set.ncard_eq_toFinset_card']
+          simp only [Set.toFinset_Icc, Nat.card_Icc]
+          omega
 
 /-- (log N + 1) / N → 0 as N → ∞.
 
@@ -148,10 +183,57 @@ theorem powers_of_2_density_zero : HasDensityZero {n : ℕ | ∃ k : ℕ, n = 2^
     apply div_le_div_of_nonneg_right _ hN_pos
     exact_mod_cast powers_of_2_count_bound N
 
-/-- Helper: The number of perfect squares up to N is at most √N + 1.
-    This is because k² ≤ N iff k ≤ √N. -/
-axiom squares_count_bound (N : ℕ) :
-    ({n : ℕ | ∃ k, n = k^2} ∩ Set.Icc 1 N).ncard ≤ Nat.sqrt N + 1
+/-- Bijection between squares in [1,N] and {1,...,√N}.
+    The squares in [1,N] are exactly {1², 2², ..., k²} where k = ⌊√N⌋. -/
+lemma squares_in_Icc_eq (N : ℕ) (hN : N ≥ 1) :
+    {n : ℕ | ∃ k, n = k^2} ∩ Set.Icc 1 N = (Set.Icc 1 (Nat.sqrt N)).image (·^2) := by
+  ext n
+  simp only [Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_Icc, Set.mem_image]
+  constructor
+  · rintro ⟨⟨k, rfl⟩, h1, h2⟩
+    use k
+    constructor
+    · constructor
+      · -- k ≥ 1 from k² ≥ 1
+        by_contra hk
+        push_neg at hk
+        interval_cases k <;> omega
+      · -- k ≤ √N from k² ≤ N
+        rw [Nat.le_sqrt]
+        simp only [pow_two] at h2
+        exact h2
+    · rfl
+  · rintro ⟨k, ⟨hk1, hksqrt⟩, rfl⟩
+    constructor
+    · exact ⟨k, rfl⟩
+    · constructor
+      · nlinarith
+      · -- k² ≤ N from k ≤ √N
+        have hsqrt : k ≤ Nat.sqrt N := hksqrt
+        calc k^2 = k * k := by ring
+          _ ≤ Nat.sqrt N * Nat.sqrt N := Nat.mul_le_mul hsqrt hsqrt
+          _ ≤ N := Nat.sqrt_le N
+
+/-- The number of perfect squares up to N is at most √N + 1.
+    This is because k² ≤ N iff k ≤ √N, so the squares are {1², 2², ..., (√N)²}. -/
+theorem squares_count_bound (N : ℕ) :
+    ({n : ℕ | ∃ k, n = k^2} ∩ Set.Icc 1 N).ncard ≤ Nat.sqrt N + 1 := by
+  by_cases hN : N = 0
+  · subst hN
+    have h : Set.Icc 1 0 = (∅ : Set ℕ) := by
+      ext x; simp only [Set.mem_Icc, Set.mem_empty_iff_false, iff_false]; omega
+    simp only [h, Set.inter_empty, Set.ncard_empty, Nat.sqrt_zero, zero_add]
+    norm_num
+  · have hN1 : N ≥ 1 := Nat.one_le_iff_ne_zero.mpr hN
+    rw [squares_in_Icc_eq N hN1]
+    have hfin : (Set.Icc 1 (Nat.sqrt N)).Finite := Set.finite_Icc 1 (Nat.sqrt N)
+    calc Set.ncard ((Set.Icc 1 (Nat.sqrt N)).image (·^2))
+        ≤ Set.ncard (Set.Icc 1 (Nat.sqrt N)) := Set.ncard_image_le hfin
+      _ = Nat.sqrt N := by
+          rw [Set.ncard_eq_toFinset_card']
+          simp only [Set.toFinset_Icc, Nat.card_Icc]
+          omega
+      _ ≤ Nat.sqrt N + 1 := by omega
 
 /-- (√N + 1)/N → 0 as N → ∞.
 
@@ -255,14 +337,19 @@ axiom lorentz_B_bound (A : Set ℕ) (hA : A.Infinite) :
 
 /-! ## Special Cases -/
 
-/-- For A = {2^k : k ∈ ℕ}, we can take B = ℕ \ {1} (trivially works). -/
+/-- For A = {2^k : k ∈ ℕ}, Lorentz's theorem gives us a sparse B. -/
 example : ∃ B : Set ℕ, HasDensityZero B ∧
     CoversAllButFinitely {n : ℕ | ∃ k : ℕ, n = 2^k} B := by
-  -- Actually need a sparse B. For powers of 2, a good B is more complex.
-  -- The key observation: 2^k + b covers many values as k grows.
-  exact ⟨{n : ℕ | ∃ k : ℕ, n = 2^k - 1 ∨ n = 0},
-         by sorry, -- density 0 (same sparseness as powers of 2)
-         by sorry⟩ -- covers enough
+  -- Apply Lorentz's theorem to the infinite set of powers of 2
+  have hA_inf : {n : ℕ | ∃ k : ℕ, n = 2^k}.Infinite := by
+    have : Set.range (fun k : ℕ => 2^k) = {n : ℕ | ∃ k : ℕ, n = 2^k} := by
+      ext n
+      simp only [Set.mem_range, Set.mem_setOf_eq]
+      constructor <;> (intro ⟨k, hk⟩; exact ⟨k, hk.symm⟩)
+    rw [← this]
+    apply Set.infinite_range_of_injective
+    exact Nat.pow_right_injective (by norm_num : 1 < 2)
+  exact lorentz_theorem _ hA_inf
 
 /-- For A = primes, Lorentz's construction gives a very sparse B. -/
 axiom primes_have_sparse_complement :

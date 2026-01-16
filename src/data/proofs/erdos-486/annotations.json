@@ -1,1 +1,112 @@
-[]
+[
+  {
+    "id": "ann-e486-header",
+    "proofId": "erdos-486",
+    "range": { "startLine": 1, "endLine": 17 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #486** asks a fundamental question about integer sequences: if you forbid certain residue classes modulo each number n, must the remaining integers have a well-defined 'logarithmic density'?\n\nThis is an **open problem**—no one has proved or disproved it yet. The problem generalizes classical results about divisibility-defined sets.",
+    "mathContext": "The problem statement: for each n, choose forbidden residues X_n ⊆ Z/nZ. Let B be integers avoiding all forbidden classes. Does lim_{x→∞} (1/log x) Σ_{m∈B, m<x} 1/m exist?",
+    "significance": "critical",
+    "relatedConcepts": ["erdos", "density", "open-problem"]
+  },
+  {
+    "id": "ann-e486-imports",
+    "proofId": "erdos-486",
+    "range": { "startLine": 19, "endLine": 23 },
+    "type": "concept",
+    "title": "Imports and Classical Logic",
+    "content": "We import the full Mathlib library and enable **classical logic**. Classical logic provides the `Decidable` instances needed for set membership predicates—essential when working with arbitrary sets where decidability isn't constructively provable.",
+    "mathContext": "The `open scoped Classical` command makes all propositions decidable, allowing us to use operations like filtering sets by arbitrary predicates without constructive proofs of decidability.",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "classical-logic", "decidability"]
+  },
+  {
+    "id": "ann-e486-logsum",
+    "proofId": "erdos-486",
+    "range": { "startLine": 35, "endLine": 38 },
+    "type": "definition",
+    "title": "Logarithmic Sum",
+    "content": "The **logarithmic sum** of a set A up to x is the sum of 1/n for all n in A with 1 ≤ n ≤ x. This differs from counting (which sums 1s) by weighting smaller integers more heavily.\n\nFor example, if A = {1,2,3,4}, the logarithmic sum up to 4 is 1/1 + 1/2 + 1/3 + 1/4 ≈ 2.08.",
+    "mathContext": "logSum(A, x) = Σ_{n ∈ A, 0 < n ≤ x} 1/n. We filter the range [0,x] to elements in A with n > 0 (avoiding division by zero).",
+    "significance": "critical",
+    "relatedConcepts": ["harmonic-series", "summation", "finset"]
+  },
+  {
+    "id": "ann-e486-haslogdensity",
+    "proofId": "erdos-486",
+    "range": { "startLine": 40, "endLine": 43 },
+    "type": "definition",
+    "title": "Logarithmic Density",
+    "content": "A set A has **logarithmic density d** if the ratio of its logarithmic sum to log(x) approaches d as x→∞. Intuitively, if d = 1/2, then 'half' the harmonic weight belongs to A.\n\nLogarithmic density is **weaker** than natural density—more sets have logarithmic density than natural density.",
+    "mathContext": "HasLogDensity(A, d) ⟺ lim_{x→∞} logSum(A,x)/log(x) = d. Uses Filter.Tendsto for the limit definition.",
+    "significance": "critical",
+    "relatedConcepts": ["limit", "filter", "natural-density"]
+  },
+  {
+    "id": "ann-e486-avoidance",
+    "proofId": "erdos-486",
+    "range": { "startLine": 52, "endLine": 56 },
+    "type": "definition",
+    "title": "Modular Avoidance Set",
+    "content": "The **modular avoidance set** B consists of all natural numbers m that avoid every forbidden residue class. For each modulus n, we have a set X_n of 'forbidden' residues, and m is in B if m mod n is never in X_n.\n\nExample: If X_6 = {0,3}, then 1,2,4,5,7,8,10,11,... are in B (avoiding multiples of 3 and 6).",
+    "mathContext": "avoidanceSet(X) = {m ∈ ℕ : ∀n, (m : ZMod n) ∉ X_n}. Uses Lean's coercion from ℕ to ZMod n for the modular reduction.",
+    "significance": "critical",
+    "relatedConcepts": ["modular-arithmetic", "zmod", "residue-class"]
+  },
+  {
+    "id": "ann-e486-conjecture",
+    "proofId": "erdos-486",
+    "range": { "startLine": 67, "endLine": 76 },
+    "type": "theorem",
+    "title": "The Main Conjecture",
+    "content": "**Erdős Problem #486** (OPEN): For ANY choice of forbidden residue sets X_n, the modular avoidance set B has a logarithmic density.\n\nThis is stated as an `axiom` because it's unproven. Using axiom makes the open status explicit in the Lean formalization—we're asserting without proof.",
+    "mathContext": "∀X : (n:ℕ) → Set(ZMod n), ∃d:ℝ, HasLogDensity(avoidanceSet X, d). The conjecture quantifies over ALL possible choices of forbidden sets.",
+    "significance": "critical",
+    "relatedConcepts": ["erdos", "conjecture", "axiom"]
+  },
+  {
+    "id": "ann-e486-zeroavoid",
+    "proofId": "erdos-486",
+    "range": { "startLine": 85, "endLine": 88 },
+    "type": "definition",
+    "title": "Zero-Avoidance Set",
+    "content": "The **zero-avoidance set** for A is the special case where X_n = {0} for n in A. This means avoiding all integers divisible by any element of A.\n\nExample: If A = {2,3}, the zero-avoidance set is numbers not divisible by 2 or 3: {1,5,7,11,13,...}.",
+    "mathContext": "zeroAvoidanceSet(A) = {m ∈ ℕ : ∀n∈A, n∤m or n=0}. The n=0 case handles the edge case where 0 ∈ A.",
+    "significance": "supporting",
+    "relatedConcepts": ["divisibility", "sieve", "coprime"]
+  },
+  {
+    "id": "ann-e486-davenport",
+    "proofId": "erdos-486",
+    "range": { "startLine": 89, "endLine": 97 },
+    "type": "theorem",
+    "title": "Davenport-Erdős Theorem (1936)",
+    "content": "**Davenport and Erdős proved** that zero-avoidance sets always have logarithmic density. This is the foundational result that Problem #486 seeks to generalize.\n\nThe theorem was proved in 1936 with an elementary re-proof in 1951. It establishes that avoiding divisibility by any set of integers yields a set with well-defined logarithmic density.",
+    "mathContext": "∀A ⊆ ℕ, ∃d:ℝ, HasLogDensity(zeroAvoidanceSet A, d). Stated as axiom pending Mathlib formalization of the 1936 proof.",
+    "significance": "critical",
+    "relatedConcepts": ["davenport", "erdos", "divisibility"]
+  },
+  {
+    "id": "ann-e486-natural",
+    "proofId": "erdos-486",
+    "range": { "startLine": 105, "endLine": 109 },
+    "type": "definition",
+    "title": "Natural Density",
+    "content": "**Natural density** (or asymptotic density) counts what fraction of integers up to x are in A. It's stronger than logarithmic density—if natural density exists, so does logarithmic density, but not conversely.\n\nExample: Even numbers have natural density 1/2. Primes have natural density 0.",
+    "mathContext": "HasNaturalDensity(A, d) ⟺ lim_{n→∞} |A ∩ [1,n]|/n = d. This counts elements rather than summing 1/n.",
+    "significance": "supporting",
+    "relatedConcepts": ["density", "counting", "asymptotic"]
+  },
+  {
+    "id": "ann-e486-besicovitch",
+    "proofId": "erdos-486",
+    "range": { "startLine": 111, "endLine": 118 },
+    "type": "theorem",
+    "title": "Besicovitch Counterexample (1934)",
+    "content": "**Besicovitch showed** that natural density can fail to exist even for simple zero-avoidance sets. This is why logarithmic density is the right notion for these problems.\n\nThe counterexample demonstrates that requiring natural density would make the Davenport-Erdős theorem false, justifying the weaker logarithmic formulation.",
+    "mathContext": "∃A ⊆ ℕ such that zeroAvoidanceSet(A) has logarithmic density but NOT natural density. Proves logarithmic density is strictly weaker.",
+    "significance": "supporting",
+    "relatedConcepts": ["counterexample", "besicovitch", "density-gap"]
+  }
+]

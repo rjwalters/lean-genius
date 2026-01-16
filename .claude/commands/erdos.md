@@ -40,12 +40,14 @@ git submodule status
 
 ```
 1. ENHANCE STUBS WITH SOURCES
-   └─ Run: npx tsx scripts/erdos/find-stubs.ts --next
+   └─ Run: npx tsx scripts/erdos/find-stubs.ts
+   └─ (Default = random stub with source, safe for parallel agents)
    └─ These have formal-conjectures Lean to adapt (127 available)
    └─ ~15-30 min per stub
 
 2. ENHANCE STUBS WITHOUT SOURCES
    └─ Only if all sourced stubs are done
+   └─ Run: npx tsx scripts/erdos/find-stubs.ts --random
    └─ Requires writing Lean from scratch
    └─ More difficult, lower priority
 
@@ -58,19 +60,30 @@ git submodule status
    └─ Only when nothing else to do
 ```
 
+**Default behavior is random selection** - safe for parallel agents without extra flags.
+
 ## Primary Workflow: Enhance a Stub
 
-### Step 1: Find the Next Stub
+### Step 1: Find a Stub to Enhance
 
 ```bash
+# Default - random stub with source (best for parallel agents)
+npx tsx scripts/erdos/find-stubs.ts
+
+# Single agent - highest priority stub (deterministic)
 npx tsx scripts/erdos/find-stubs.ts --next
+
+# Random from ALL stubs (including those without sources)
+npx tsx scripts/erdos/find-stubs.ts --random
 ```
 
 This shows:
-- The highest-priority stub (has source, solved status, low number)
+- The selected stub (random by default, or by priority with --next)
 - All quality issues (placeholder proof, empty annotations, garbage description)
 - The formal-conjectures source path (if available)
 - Detailed enhancement steps
+
+**Default behavior is random selection** to avoid parallel agent collisions.
 
 ### Step 2: Read the Source Material
 
@@ -220,8 +233,10 @@ npx tsx scripts/erdos/index.ts --batch 10 --playwright --slow
 
 | Command | Purpose |
 |---------|---------|
-| `npx tsx scripts/erdos/find-stubs.ts` | List all stubs needing enhancement |
-| `npx tsx scripts/erdos/find-stubs.ts --next` | Get next stub with enhancement guide |
+| `npx tsx scripts/erdos/find-stubs.ts` | Random stub with source (DEFAULT) |
+| `npx tsx scripts/erdos/find-stubs.ts --next` | Highest-priority stub (deterministic) |
+| `npx tsx scripts/erdos/find-stubs.ts --random` | Random stub from ALL stubs |
+| `npx tsx scripts/erdos/find-stubs.ts --list` | List all stubs needing enhancement |
 | `npx tsx scripts/erdos/find-stubs.ts --stats` | Show quality statistics |
 | `npx tsx scripts/erdos/find-stubs.ts --json` | Output as JSON |
 | `npx tsx scripts/erdos/index.ts --status` | Show scraping progress |

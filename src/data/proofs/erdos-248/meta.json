@@ -1,33 +1,111 @@
 {
   "id": "erdos-248",
-  "title": "Erdős Problem #248",
+  "title": "Erdos Problem #248: Bounded Prime Factors of Consecutive Integers",
   "slug": "erdos-248",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many ... such that, for all ...,\\[ \\omega(n+k) \\ll k?\\](Here ... is the number of distinct prime divisor...",
+  "description": "Are there infinitely many n such that the number of distinct prime divisors of n+k grows at most linearly in k for all k >= 1?",
   "meta": {
-    "author": "Unknown",
+    "author": "Tao and Teräväinen (2025)",
     "sourceUrl": "https://erdosproblems.com/248",
-    "date": "",
-    "status": "pending",
+    "date": "2025",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos248Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-factors",
+      "sieve-theory",
+      "arithmetic-functions"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 248,
     "erdosUrl": "https://erdosproblems.com/248",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "proved",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.primeFactors",
+        "description": "The set of prime factors of a natural number",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Definition of infinite sets",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of Erdős #248 in Lean 4",
+      "Custom prime omega function definition using primeFactors",
+      "Verified examples: omega(1)=0, omega(2)=1, omega(6)=2, omega(30)=3",
+      "Proof that omega(p)=1 for any prime p"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #248 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many $n$ such that, for all $k\\geq 1$,\\[ \\omega(n+k) \\ll k?\\](Here $\\omega(n)$ is the number of distinct prime divisors of $n$.)\n\n\n\nRelated to [69]. Erd\\H{o}s and Graham \\cite{ErGr80} write 'we just know too little about sieves to be able to handle such a question (\"we\" here means not just us but the collective wisdom (?) of our poor struggling human race).'\n\nSee also [679] and [826].\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\nThis has been resolved by Tao and Ter\\\"{a}v\\\"{a}inen \\cite{TaTe25}, who have proved that there exists an absolute constant $C>0$ such that for infinitely many $n$, for all $k\\geq 1$,\\[\\omega(n+k)\\leq Ck.\\]\n\n\n\n\nReferences\n\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[TaTe25] T. Tao and J. Ter\\\"{a}v\\\"{a}inen, Quantitative correlations and some problems on prime factors of consecutive integers. arXiv:2512.01739 (2025).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #248 was posed by Erdős and Graham in their 1980 monograph 'Old and new problems and results in combinatorial number theory.' They asked whether there exist infinitely many integers n such that the prime omega function ω(n+k) grows at most linearly in k for all k >= 1.\n\nErdős and Graham famously wrote about this problem: 'we just know too little about sieves to be able to handle such a question' - referring to the collective knowledge of mathematics at the time. The problem remained open for 45 years.\n\nIn December 2025, Terence Tao and Joni Teräväinen resolved this problem affirmatively in their paper 'Quantitative correlations and some problems on prime factors of consecutive integers' (arXiv:2512.01739). They proved that there exists an absolute constant C > 0 such that for infinitely many n, ω(n+k) <= C*k for all k >= 1.",
+    "problemStatement": "**Problem**: Are there infinitely many integers $n$ such that for all $k \\geq 1$:\n$$\\omega(n+k) \\ll k$$\nwhere $\\omega(n)$ denotes the number of distinct prime divisors of $n$?\n\n**Answer**: YES — proved by Tao and Teräväinen (2025)\n\nMore precisely, there exists an absolute constant $C > 0$ such that the set\n$$\\{n \\in \\mathbb{N} : \\forall k \\geq 1, \\omega(n+k) \\leq Ck\\}$$\nis infinite.",
+    "proofStrategy": "We formalize the statement of Erdős #248 and state the main result as an axiom, since the proof requires:\n\n1. Deep results from sieve theory about correlations of multiplicative functions\n2. Quantitative bounds on how prime factors distribute among consecutive integers\n3. Sophisticated analytic techniques only recently developed\n\nThe proof by Tao-Teräväinen constructs infinitely many 'exceptional' starting points n where consecutive integers n+1, n+2, ... have unusually few prime factors. This is surprising because typically ω(n) ~ log log n for 'generic' integers.\n\nWe verify basic properties of the prime omega function and demonstrate small examples where the linear bound holds.",
+    "keyInsights": [
+      "**Prime omega function**: ω(n) counts distinct prime divisors. For example, ω(12) = 2 since 12 = 2² × 3 has primes {2, 3}.",
+      "**Typical behavior**: For most integers, ω(n) ~ log log n by the Hardy-Ramanujan theorem. The condition ω(n+k) <= Ck is thus highly restrictive.",
+      "**Sieve theory connection**: The problem connects to how prime factors distribute in arithmetic progressions and consecutive integers.",
+      "**45-year gap**: The time between Erdős-Graham posing this (1980) and Tao-Teräväinen solving it (2025) shows how difficult sieve-theoretic questions can be.",
+      "**Verified examples**: We prove ω(p) = 1 for primes and verify concrete values like ω(30) = 3 (primes 2, 3, 5)."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Module documentation explaining the problem, its history, and solution. Imports for prime numbers, factorization, and real numbers."
+    },
+    {
+      "id": "omega-function",
+      "title": "Prime Omega Function",
+      "startLine": 31,
+      "endLine": 59,
+      "summary": "Definition of ω(n) as the cardinality of prime factors. Verified examples for small values."
+    },
+    {
+      "id": "main-definition",
+      "title": "Smooth-Tail Integers",
+      "startLine": 61,
+      "endLine": 75,
+      "summary": "Definition of the set of integers n satisfying Erdős's linear growth condition."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem (Axiom)",
+      "startLine": 76,
+      "endLine": 92,
+      "summary": "Statement of Erdős #248: the set of smooth-tail integers is infinite. Axiomatized since proof requires deep sieve theory."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 93,
+      "endLine": 115,
+      "summary": "Proof that ω(p) = 1 for primes, and verification of the smooth-tail condition for n=1 with small k."
+    },
+    {
+      "id": "corollary",
+      "title": "Corollary and Historical Context",
+      "startLine": 116,
+      "endLine": 133,
+      "summary": "The nonemptiness corollary and historical remarks about the 45-year gap to solution."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #248, asking whether infinitely many integers n have the property that ω(n+k) grows at most linearly in k for all k >= 1. The answer is YES, proved by Tao and Teräväinen in 2025. We state this as an axiom since the proof requires sophisticated sieve methods, and verify basic properties including ω(p) = 1 for primes.",
+    "implications": "This result demonstrates that while 'typical' integers have about log log n distinct prime factors, there exist infinitely many exceptional starting points where consecutive integers remain unusually 'smooth' (have few prime factors). The resolution after 45 years highlights advances in understanding correlations between multiplicative functions.",
+    "openQuestions": [
+      "What is the optimal constant C in the bound ω(n+k) <= Ck?",
+      "Can we characterize the density of smooth-tail integers?",
+      "Are there effective bounds on how large n must be to satisfy the condition?",
+      "Can similar results be proved for the big omega function Ω(n) (counting prime factors with multiplicity)?"
+    ]
   }
 }

@@ -1,33 +1,115 @@
 {
   "id": "erdos-258",
-  "title": "Erdős Problem #258",
+  "title": "Erdős Problem #258: Irrationality of Divisor Sum Series",
   "slug": "erdos-258",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence of integers with .... Is\\[\\sum_{n} {a_1\\cdots a_n}\\]irrational, where ... is the number of divisors of ...",
+  "description": "Is the sum of τ(n)/(a₁·...·aₙ) irrational for sequences with aₙ → ∞? Solved for monotone sequences by Erdős-Straus (1971).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Straus (1971), Erdős (1948)",
     "sourceUrl": "https://erdosproblems.com/258",
-    "date": "",
-    "status": "pending",
+    "date": "1971",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos258Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "divisor-function",
+      "infinite-series"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 258,
     "erdosUrl": "https://erdosproblems.com/258",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "Finset of divisors of a natural number",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Irrational",
+        "description": "Predicate for irrational real numbers",
+        "module": "Mathlib.NumberTheory.Real.Irrational"
+      },
+      {
+        "theorem": "tsum",
+        "description": "Infinite sum over ℕ → ℝ",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Real"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of both solved variants of Erdős Problem #258",
+      "Definition of divisor function τ(n) and product prefixes",
+      "Statement of the open general case as a Prop",
+      "Verified computations of τ for small values"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #258 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_1,a_2,\\ldots$ be a sequence of integers with $a_n\\to \\infty$. Is\\[\\sum_{n} \\frac{\\tau(n)}{a_1\\cdots a_n}\\]irrational, where $\\tau(n)$ is the number of divisors of $n$?\n\n\n\nErd\\H{o}s and Straus \\cite{ErSt71} proved this is true if $a_n$ is monotone, i.e. $a_{n-1}\\leq a_n$ for all $n$. Erd\\H{o}s \\cite{Er48} proved that $\\sum_n \\frac{d(n)}{t^n}$ is irrational for any integer $t\\geq 2$.\n\nErd\\H{o}s and Straus further conjectured that if $a_{n-1}\\leq a_n$ for all $n$ then\\[\\sum_{n} \\frac{\\phi(n)}{a_1\\cdots a_n}\\]and\\[\\sum_{n} \\frac{\\sigma(n)}{a_1\\cdots a_n}\\]are both irrational.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Er48] Erd\\H{o}s, P., On arithmetical properties of Lambert series. J. Indian Math. Soc. (N.S.) (1948), 63-66.\n\n[ErSt71] Erd\\H{o}s, P. and Straus, E. G., Some number theoretic results. Pacific J. Math. (1971), 635-646.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #258 asks about the irrationality of certain infinite series involving the divisor function τ(n). The problem has a rich history spanning several decades of number theory research.\n\nThe general question (arbitrary sequences with aₙ → ∞) remains OPEN. However, two important special cases have been solved:\n\n1. **Monotone sequences** (Erdős-Straus, 1971): If the sequence (aₙ) is monotone increasing, then the sum is always irrational.\n\n2. **Constant/power case** (Erdős, 1948): The series Σ τ(n)/tⁿ is irrational for any integer t ≥ 2. This connects to Lambert series, which have applications throughout analytic number theory.\n\nThe problem was formalized in Lean as part of Google DeepMind's Formal Conjectures project.",
+    "problemStatement": "Let $a_1, a_2, \\ldots$ be a sequence of positive integers with $a_n \\to \\infty$. Is the sum\n$$\\sum_{n=1}^{\\infty} \\frac{\\tau(n)}{a_1 \\cdot a_2 \\cdots a_n}$$\nirrational, where $\\tau(n)$ denotes the number of positive divisors of $n$?\n\n**Status**: The general case is OPEN. Solved for monotone sequences (Erdős-Straus 1971) and for $\\sum \\tau(n)/t^n$ with $t \\geq 2$ (Erdős 1948).",
+    "proofStrategy": "We formalize the problem statement and both solved variants:\n\n1. **Define the divisor function** τ(n) = |{d : d divides n}|, using Mathlib's `Nat.divisors.card`.\n\n2. **Define product prefixes** a₁ · a₂ · ... · aₙ using Finset.prod.\n\n3. **State the monotone variant** as an axiom: if (aₙ) is monotone and tends to infinity, the sum is irrational.\n\n4. **State the power variant** as an axiom: Σ τ(n)/tⁿ is irrational for t ≥ 2.\n\n5. **Define the open conjecture** as a Prop for the general case.\n\nWe also verify τ(n) for small values using `native_decide`.",
+    "keyInsights": [
+      "**Divisor function τ(n)**: Counts divisors of n. For example: τ(1)=1, τ(6)=4, τ(p)=2 for prime p. It's multiplicative: τ(mn) = τ(m)τ(n) when gcd(m,n) = 1.",
+      "**Why monotonicity matters**: The Erdős-Straus proof for monotone sequences uses that the denominators grow predictably. Without monotonicity, the denominators can fluctuate wildly, making the analysis much harder.",
+      "**Connection to Lambert series**: The power case Σ τ(n)/tⁿ is related to Lambert series Σ xⁿ/(1-xⁿ), which generate many interesting arithmetic functions.",
+      "**The irrationality technique**: These proofs typically show that if the sum were rational p/q, then certain divisibility properties would be violated.",
+      "**Open problem status**: The general case without monotonicity remains open — removing this assumption introduces significant technical challenges."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Module documentation explaining the problem and Mathlib imports for divisors, irrationality, and infinite sums."
+    },
+    {
+      "id": "definitions",
+      "title": "Key Definitions",
+      "startLine": 26,
+      "endLine": 39,
+      "summary": "Definitions of the divisor function τ(n), product prefixes, and the general term of the series."
+    },
+    {
+      "id": "computations",
+      "title": "Verified Computations",
+      "startLine": 41,
+      "endLine": 58,
+      "summary": "Verified values of τ(n) for small n using native_decide."
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "startLine": 60,
+      "endLine": 93,
+      "summary": "The two solved variants: monotone (Erdős-Straus) and power case (Erdős), stated as axioms."
+    },
+    {
+      "id": "open-problem",
+      "title": "The Open Problem",
+      "startLine": 95,
+      "endLine": 110,
+      "summary": "Statement of the general open conjecture without the monotonicity assumption."
+    },
+    {
+      "id": "properties",
+      "title": "Properties of τ",
+      "startLine": 111,
+      "endLine": 119,
+      "summary": "Verified properties showing τ(n) is always positive for n ≥ 1."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #258, which asks about the irrationality of series involving the divisor function τ(n). While the general problem remains open, we capture both solved variants: the monotone case (Erdős-Straus 1971) and the power case (Erdős 1948). We also provide verified computations of τ for small values.",
+    "implications": "This problem connects divisor functions to questions of irrationality, linking classical number theory with transcendence theory. The techniques used in the solved cases — analysis of divisibility patterns in partial sums — are fundamental tools in analytic number theory.",
+    "openQuestions": [
+      "Does the irrationality hold for arbitrary (non-monotone) sequences with aₙ → ∞?",
+      "What about the analogous sums with φ(n) (Euler's totient) or σ(n) (sum of divisors)?",
+      "Can the proofs be made constructive or provide explicit irrationality measures?"
+    ]
   }
 }

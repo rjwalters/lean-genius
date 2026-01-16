@@ -1,4 +1,15 @@
 /-
+This file was edited by Aristotle.
+
+Lean version: leanprover/lean4:v4.24.0
+Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
+This project request had uuid: a1f58808-f59c-4d31-b2af-92f46974aac1
+
+To cite Aristotle, tag @Aristotle-Harmonic on GitHub PRs/issues, and add as co-author to commits:
+Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
+-/
+
+/-
 Erd≈ës Problem #172: Monochromatic Sums and Products
 
 Source: https://erdosproblems.com/172
@@ -19,6 +30,10 @@ This combines Ramsey theory with the additive and multiplicative structure of ‚Ñ
 
 import Mathlib
 
+
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Unexpected axioms were added during verification: ['Erdos172.alweiss_2023_rationals', 'Erdos172.moreira_2017', 'Erdos172.hindman_1980_counterexample', 'harmonicSorry666373']-/
 open Finset
 
 namespace Erdos172

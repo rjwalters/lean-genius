@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-e387-header",
+    "proofId": "erdos-387",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Problem Overview and Imports",
+    "content": "This module formalizes **Erdős Problem #387**, which asks about divisors of binomial coefficients. The question: Is there a constant c > 0 such that C(n,k) always has a divisor close to n (in the interval (cn, n])? The problem remains **OPEN**.",
+    "mathContext": "We import all of Mathlib with `import Mathlib`. The key functions used are `Nat.choose` for binomial coefficients, `Nat.gcd` for greatest common divisor, and `Set.Icc`/`Set.Ioc` for intervals.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "binomial coefficients",
+      "divisibility",
+      "Mathlib"
+    ]
+  },
+  {
+    "id": "ann-e387-counterexample-intro",
+    "proofId": "erdos-387",
+    "range": {
+      "startLine": 29,
+      "endLine": 38
+    },
+    "type": "concept",
+    "title": "Schinzel's Counterexample: Background",
+    "content": "Erdős originally conjectured that C(n,k) must always have a divisor in (n-k, n]. **Andrzej Schinzel disproved this in 1958** by finding n = 99215, k = 15 as a counterexample. None of the 15 integers from 99201 to 99215 divide C(99215, 15).",
+    "mathContext": "The interval (n-k, n] = (99215-15, 99215] = (99200, 99215] contains integers 99201, 99202, ..., 99215. We verify that none of these divide C(99215, 15).",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample",
+      "Schinzel",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-e387-counterexample-theorem",
+    "proofId": "erdos-387",
+    "range": {
+      "startLine": 40,
+      "endLine": 45
+    },
+    "type": "theorem",
+    "title": "Verified Counterexample",
+    "content": "We **computationally verify** that for i ∈ {0,1,...,14}, the integer 99215 - i does not divide C(99215, 15). This is a complete check of all 15 candidates in the interval (99200, 99215].",
+    "mathContext": "The proof uses `interval_cases i` to split into 15 cases (i = 0, 1, ..., 14), then `native_decide` to computationally verify each divisibility claim. Lean compiles these checks to native code for efficiency.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "native_decide",
+      "interval_cases",
+      "computational verification"
+    ]
+  },
+  {
+    "id": "ann-e387-easy-intro",
+    "proofId": "erdos-387",
+    "range": {
+      "startLine": 47,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "The Easy Bound: Background",
+    "content": "While the main conjecture is open, there's an **easy partial result**: C(n,k) always has a divisor in [n/k, n]. The key insight is that d = gcd(C(n,k), n) provides such a divisor.",
+    "mathContext": "The proof uses the identity n · C(n-1, k-1) = k · C(n,k). This implies n | k·C(n,k), so gcd(C(n,k), n) · k ≥ n, giving gcd(C(n,k), n) ≥ n/k.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binomial identity",
+      "gcd",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-e387-easy-theorem",
+    "proofId": "erdos-387",
+    "range": {
+      "startLine": 57,
+      "endLine": 70
+    },
+    "type": "theorem",
+    "title": "The Easy Divisor Bound",
+    "content": "**Theorem**: For any 1 ≤ n and k ≤ n, there exists a divisor d of C(n,k) with n/k ≤ d ≤ n. Specifically, d = gcd(C(n,k), n) works.",
+    "mathContext": "The proof has two parts: (1) Show gcd(C(n,k), n) ≥ n/k using the identity n·C(n-1,k-1) = k·C(n,k) (implemented as `Nat.add_one_mul_choose_eq`). (2) Show gcd(C(n,k), n) ≤ n since gcd divides n. The case k=0 is handled separately with `simp_all`.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "gcd properties",
+      "Nat.add_one_mul_choose_eq",
+      "interval membership"
+    ]
+  },
+  {
+    "id": "ann-e387-main-intro",
+    "proofId": "erdos-387",
+    "range": {
+      "startLine": 72,
+      "endLine": 82
+    },
+    "type": "concept",
+    "title": "The Main Open Problem",
+    "content": "The central question: Does some fixed constant c > 0 exist such that C(n,k) has a divisor in (cn, n] for ALL 1 ≤ k < n? The easy bound [n/k, n] **shrinks as k grows**, so it doesn't answer this question.",
+    "mathContext": "If k is close to n, then n/k is close to 1, so [n/k, n] ≈ [1, n] is large. But if k is small (like k=2), then n/k ≈ n/2, which is large. The problem is whether there's a **uniform** lower bound independent of k.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problem",
+      "uniform bounds",
+      "Erdős"
+    ]
+  },
+  {
+    "id": "ann-e387-axiom",
+    "proofId": "erdos-387",
+    "range": {
+      "startLine": 84,
+      "endLine": 89
+    },
+    "type": "theorem",
+    "title": "Main Conjecture (Axiom)",
+    "content": "We state Erdős's conjecture as an **axiom**: there exists c > 0 such that for all 1 ≤ k < n, C(n,k) has a divisor d with cn < d ≤ n. This remains **unproven** as of 2026.",
+    "mathContext": "The conjecture is stated formally as: ∃ c : ℝ, 0 < c ∧ ∀ n k : ℕ, 1 ≤ k → k < n → ∃ d : ℕ, d ∈ (c*n, n] ∧ d | C(n,k). We use `Set.Ioc` for the half-open interval (a, b].",
+    "significance": "critical",
+    "relatedConcepts": [
+      "axiom",
+      "open conjecture",
+      "Set.Ioc"
+    ]
+  },
+  {
+    "id": "ann-e387-related",
+    "proofId": "erdos-387",
+    "range": {
+      "startLine": 91,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Related Open Conjectures",
+    "content": "Two related conjectures remain open: (1) **Schinzel's conjecture**: For large non-prime-power k, counterexamples exist. (2) **Erdős's variant**: For any c < 1 and large enough n, a divisor in (cn, n] exists.",
+    "mathContext": "Schinzel's conjecture suggests the original conjecture fails badly for many k values. Erdős's variant weakens the requirement to large n only. Both appear in Guy's 'Unsolved Problems in Number Theory' (2004).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Schinzel's conjecture",
+      "Guy's collection",
+      "prime powers"
+    ]
+  }
+]

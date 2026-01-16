@@ -1,33 +1,101 @@
 {
   "id": "erdos-387",
-  "title": "Erdős Problem #387",
+  "title": "Erdős Problem #387: Divisors of Binomial Coefficients Near n",
   "slug": "erdos-387",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an absolute constant ... such that, for all ..., the binomial coefficient ... has a divisor in ...?\n\n\n\nErds once con...",
+  "description": "Is there an absolute constant c > 0 such that for all 1 ≤ k < n, the binomial coefficient C(n,k) has a divisor in the interval (cn, n]?",
   "meta": {
-    "author": "Unknown",
+    "author": "Open Problem (related results by Schinzel, Faulkner)",
     "sourceUrl": "https://erdosproblems.com/387",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos387Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "binomial-coefficients",
+      "divisibility"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 387,
     "erdosUrl": "https://erdosproblems.com/387",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficient C(n,k)",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.gcd",
+        "description": "Greatest common divisor",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Set.Icc",
+        "description": "Closed interval [a,b]",
+        "module": "Mathlib.Order.Interval.Set.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of the open Erdős conjecture in Lean 4",
+      "Verified Schinzel's counterexample: n=99215, k=15 has no divisor of C(n,k) in (n-k, n]",
+      "Proved the 'easy' result: C(n,k) always has a divisor in [n/k, n]"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #387 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an absolute constant $c>0$ such that, for all $1\\leq k< n$, the binomial coefficient $\\binom{n}{k}$ has a divisor in $(cn,n]$?\n\n\n\nErd\\H{o}s once conjectured that $\\binom{n}{k}$ must always have a divisor in $(n-k,n]$, but this was disproved by Schinzel and Erd\\H{o}s \\cite{Sc58}. A counterexample is given by $n=99215$ and $k=15$. Schinzel conjectured (see problem B34 of \\cite{Gu04}) that, for all sufficiently large $k$ which are not prime powers, there exists an $n$ such that $\\binom{n}{k}$ is not divisible by any integer in $(n-k,n]$.\n\nIt is easy to see that $\\binom{n}{k}$ always has a divisor in $[n/k,n]$.\n\nFaulkner \\cite{Fa66} proved that, if $p$ is the least prime $>2k$ and $n\\geq p$, then $\\binom{n}{k}$ has a prime divisor $\\geq p$ (except $\\binom{9}{2}$ and $\\binom{10}{3}$).\n\nThis is discussed in problems B33 and B34 of Guy's collection \\cite{Gu04}, who says that Erd\\H{o}s conjectured this is true for any $c<1$ (if $n$ is sufficiently large).\n\n\n\n\nReferences\n\n\n[Fa66] Faulkner, M., On a theorem of {S}ylvester and {S}chur. J. London Math. Soc. (1966), 107--110.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Sc58] Schinzel, A., Sur un probl\\`eme de {P}. {E}rd\\H{o}s. Colloq. Math. (1958), 198--204.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #387 concerns divisibility properties of binomial coefficients. The question asks whether there is a universal constant c > 0 such that C(n,k) always has a divisor 'close to n'—specifically in the interval (cn, n].\n\nErdős originally conjectured the stronger statement that C(n,k) must have a divisor in (n-k, n]. This was disproved by Andrzej Schinzel in 1958, who found the counterexample n = 99215, k = 15. None of the 15 integers from 99201 to 99215 divide C(99215, 15).\n\nThe weaker question—whether some fixed constant c works—remains open. Guy's 'Unsolved Problems in Number Theory' (2004) discusses this as problems B33-B34, noting that Erdős conjectured it holds for any c < 1 when n is sufficiently large.",
+    "problemStatement": "Is there an absolute constant $c > 0$ such that, for all $1 \\leq k < n$, the binomial coefficient $\\binom{n}{k}$ has a divisor $d$ with $cn < d \\leq n$?\n\n**Status**: OPEN — The main conjecture remains unresolved.\n\n**Related Results**:\n- Original conjecture with $c = 1 - k/n$ is FALSE (Schinzel's counterexample)\n- It is always true that $\\binom{n}{k}$ has a divisor in $[n/k, n]$ (easy result)",
+    "proofStrategy": "We formalize three components:\n\n1. **Schinzel's Counterexample**: We verify by computation that none of 99215-i for i ∈ {0,...,14} divides C(99215, 15). This uses `native_decide` to check divisibility for each case.\n\n2. **The Easy Bound**: We prove that gcd(C(n,k), n) always lies in [n/k, n]. The key is the identity n · C(n-1, k-1) = k · C(n,k), which implies n divides k · C(n,k). Therefore gcd(C(n,k), n) · k ≥ n, giving gcd ≥ n/k.\n\n3. **The Main Conjecture**: Stated as an axiom since it remains open.",
+    "keyInsights": [
+      "**Binomial coefficients**: C(n,k) = n!/(k!(n-k)!) counts ways to choose k items from n. These numbers have rich divisibility properties.",
+      "**The gcd trick**: The divisor d = gcd(C(n,k), n) always divides C(n,k) and satisfies n/k ≤ d ≤ n. This uses the identity n·C(n-1,k-1) = k·C(n,k).",
+      "**Schinzel's counterexample**: n=99215, k=15 shows the original conjecture fails. Computing C(99215,15) and checking divisibility for 15 values is feasible with `native_decide`.",
+      "**The open question**: Can we find a fixed lower bound cn (independent of k) such that C(n,k) always has a divisor above cn? The easy bound [n/k, n] shrinks as k grows.",
+      "**Related to prime factorization**: Large primes dividing C(n,k) come from the interval (k, n], which relates to theorems of Sylvester-Schur and results by Faulkner (1966)."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Documentation and Imports",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Module documentation explaining the problem, its history, and what we formalize. Single Mathlib import."
+    },
+    {
+      "id": "counterexample",
+      "title": "Schinzel's Counterexample",
+      "startLine": 29,
+      "endLine": 45,
+      "summary": "Section documentation and computational verification that 99215-i does not divide C(99215,15) for i < 15."
+    },
+    {
+      "id": "easy-bound",
+      "title": "The Easy Bound",
+      "startLine": 47,
+      "endLine": 76,
+      "summary": "Proof that C(n,k) always has a divisor d with n/k ≤ d ≤ n, using gcd(C(n,k), n)."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Open Problem",
+      "startLine": 78,
+      "endLine": 109,
+      "summary": "Statement of the open conjecture as an axiom, with discussion of related conjectures by Schinzel and Erdős."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #387 on divisors of binomial coefficients. The main conjecture—whether C(n,k) always has a divisor in (cn, n] for some absolute constant c—remains OPEN. We verify Schinzel's 1958 counterexample showing the original stronger conjecture is false, and prove the 'easy' result that a divisor always exists in [n/k, n].",
+    "implications": "This problem connects combinatorics (binomial coefficients) with number theory (divisibility). The existence of a universal constant c would give a strong structural result about how 'spread out' the prime factors of binomial coefficients must be. Faulkner's 1966 result on prime divisors provides partial progress.",
+    "openQuestions": [
+      "Does there exist any c > 0 making the conjecture true?",
+      "Is Erdős's variant (c < 1 works for large n) true?",
+      "Can Schinzel's conjecture (counterexamples exist for large non-prime-power k) be proved or disproved?",
+      "What is the largest c such that C(n,k) always has a divisor in (cn, n]?"
+    ]
   }
 }

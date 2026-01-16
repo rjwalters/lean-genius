@@ -1,4 +1,15 @@
 /-
+This file was edited by Aristotle.
+
+Lean version: leanprover/lean4:v4.24.0
+Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
+This project request had uuid: 84b1160b-f105-4d82-8a4e-84b295a52ee8
+
+To cite Aristotle, tag @Aristotle-Harmonic on GitHub PRs/issues, and add as co-author to commits:
+Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
+-/
+
+/-
   Erdős Problem #143: Sparseness of Integer-Dilation-Avoiding Sets
 
   Source: https://erdosproblems.com/143
@@ -23,7 +34,12 @@
 
 import Mathlib
 
+
+/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
+
+Unexpected axioms were added during verification: ['Erdos143.kll_theorem', 'harmonicSorry781341', 'Erdos143.well_separated_integers_primitive', 'Erdos143.erdos_1935_primitive']-/
 open Filter Set
+
 open scoped Topology
 
 namespace Erdos143

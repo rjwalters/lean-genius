@@ -1397,6 +1397,24 @@
     "annotationCount": 0
   },
   {
+    "id": "erdos-1052",
+    "title": "Erdős #1052: Unitary Perfect Numbers",
+    "slug": "erdos-1052",
+    "description": "A unitary perfect number equals the sum of its proper unitary divisors (where d is unitary if gcd(d, n/d)=1). All unitary perfect numbers are even; finiteness is OPEN.",
+    "status": "complete",
+    "badge": "axiom",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisibility",
+      "perfect-numbers",
+      "open-problem"
+    ],
+    "erdosNumber": 1052,
+    "sorries": 0,
+    "annotationCount": 15
+  },
+  {
     "id": "erdos-1054",
     "title": "Erdős Problem #1054",
     "slug": "erdos-1054",
@@ -1980,17 +1998,22 @@
   },
   {
     "id": "erdos-1107",
-    "title": "Erdős Problem #1107",
+    "title": "Erdős Problem #1107: Sums of r-Powerful Numbers",
     "slug": "erdos-1107",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... A number ... is ...-powerful if for every prime ... which divides ... we have .... Is every large integer the sum of...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is every sufficiently large integer expressible as the sum of at most r+1 many r-powerful numbers?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "powerful-numbers",
+      "additive-combinatorics"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 1107,
+    "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-1108",
@@ -2373,6 +2396,24 @@
     "erdosNumber": 12,
     "mathlibCount": 3,
     "sorries": 1,
+    "annotationCount": 15
+  },
+  {
+    "id": "erdos-123",
+    "title": "Erdős #123: d-Complete Sequences",
+    "slug": "erdos-123",
+    "description": "Is the set {a^i·b^j·c^k : i,j,k ≥ 0} d-complete for pairwise coprime a,b,c? OPEN in general; {2^k·3^l} case is SOLVED.",
+    "status": "complete",
+    "badge": "axiom",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "d-complete",
+      "additive-combinatorics",
+      "open-problem"
+    ],
+    "erdosNumber": 123,
+    "sorries": 3,
     "annotationCount": 15
   },
   {
@@ -3946,31 +3987,39 @@
   },
   {
     "id": "erdos-244",
-    "title": "Erdős Problem #244",
+    "title": "Erdos Problem #244: Prime Plus Powers of C",
     "slug": "erdos-244",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Does the set of integers of the form ..., for some prime ... and ..., have density ...?\n\n\n\nOriginally asked to Erds ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For any real C > 1, does the set of integers of the form p + floor(C^k), for some prime p and k >= 0, have positive lower density? Originally asked to Erdos by Kalmar. Romanoff (1934) proved the answer is yes when C is a positive integer. Ding (2025) proved this holds for almost all C > 1.",
+    "status": "verified",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "density",
+      "additive-combinatorics"
     ],
     "erdosNumber": 244,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-245",
-    "title": "Erdős Problem #245",
+    "title": "Erdos Problem #245: Sumset Growth Ratio",
     "slug": "erdos-245",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite set such that .... Is it true that\\[\\limsup_{N\\to \\infty}\\rvert}{\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert}\\ge...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For an infinite set A of natural numbers with zero density, the limsup of |A+A|/|A| is at least 3. Proved by Freiman (1973).",
+    "status": "verified",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "sumsets",
+      "freiman",
+      "density"
     ],
     "erdosNumber": 245,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-246",
@@ -3988,45 +4037,60 @@
   },
   {
     "id": "erdos-247",
-    "title": "Erdős Problem #247",
+    "title": "Transcendence of Lacunary Sums",
     "slug": "erdos-247",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence of integers such that\\[\\limsup {n}=\\infty.\\]Is\\[\\sum_{n=1}^\\infty {2^{a_n}}\\]transcendental?\n\n\n\nErds  p...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "A problem about the transcendence of infinite series with lacunary (rapidly growing) exponents. Erdős proved transcendence under strong growth conditions, but the general conjecture remains open.",
+    "status": "axiom",
+    "badge": "erdos",
     "tags": [
-      "erdos"
+      "erdos",
+      "transcendence",
+      "number-theory",
+      "lacunary-series",
+      "analysis"
     ],
     "erdosNumber": 247,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-248",
-    "title": "Erdős Problem #248",
+    "title": "Erdos Problem #248: Bounded Prime Factors of Consecutive Integers",
     "slug": "erdos-248",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many ... such that, for all ...,\\[ \\omega(n+k) \\ll k?\\](Here ... is the number of distinct prime divisor...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Are there infinitely many n such that the number of distinct prime divisors of n+k grows at most linearly in k for all k >= 1?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-factors",
+      "sieve-theory",
+      "arithmetic-functions"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 248,
+    "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 9
   },
   {
     "id": "erdos-250",
-    "title": "Erdős Problem #250",
+    "title": "Erdős Problem #250: Irrationality of the Sigma-Power Series",
     "slug": "erdos-250",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs\\[\\sum {2^n}\\]irrational? (Here ... is the sum of divisors function.)\n\n\n\nThe answer is yes, as shown by Nesterenko .\n\nThis ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is the sum Σ σ(n)/2^n irrational? Yes, proved by Nesterenko using modular functions.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "transcendence",
+      "irrationality",
+      "modular-forms"
     ],
     "erdosNumber": 250,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-251",
@@ -4044,31 +4108,43 @@
   },
   {
     "id": "erdos-252",
-    "title": "Erdős Problem #252",
+    "title": "Erdős #252: Irrationality of Divisor Power Sums",
     "slug": "erdos-252",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and .... Is\\[\\sum {n!}\\]irrational?\n\n\n\nThis is known now for .... The cases ... are reasonably straightforward, as ob...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For k ≥ 1, is the infinite sum Σ σₖ(n)/n! irrational? Proved for k ≤ 4; OPEN for k ≥ 5.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "arithmetic-functions",
+      "divisor-sum",
+      "open-problem"
     ],
     "erdosNumber": 252,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-253",
-    "title": "Erdős Problem #253",
+    "title": "Erdős Problem #253: Subset Sums in Arithmetic Progressions",
     "slug": "erdos-253",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence of integers such that .... If every arithmetic progression contains infinitely many integers ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If a slowly growing sequence has subset sums hitting every arithmetic progression infinitely often, must all large integers be subset sums? Disproved by Cassels.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "subset-sums",
+      "arithmetic-progressions"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 253,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-254",
@@ -4114,45 +4190,63 @@
   },
   {
     "id": "erdos-257",
-    "title": "Erdős Problem #257",
+    "title": "Erdős Problem #257: Irrationality of Lambert Sums",
     "slug": "erdos-257",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite set. Is\\[\\sum_{n\\in A}{2^n-1}\\]irrational?\n\n\n\nIf ... then this series is ..., where ... is the number ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is ∑_{n∈A} 1/(2^n - 1) irrational for every infinite set A? Solved for A = ℕ (Erdős 1948) and primes (Tao-Teräväinen 2025), open in general.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "lambert-series",
+      "divisor-function"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 257,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-258",
-    "title": "Erdős Problem #258",
+    "title": "Erdős Problem #258: Irrationality of Divisor Sum Series",
     "slug": "erdos-258",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence of integers with .... Is\\[\\sum_{n} {a_1\\cdots a_n}\\]irrational, where ... is the number of divisors of ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is the sum of τ(n)/(a₁·...·aₙ) irrational for sequences with aₙ → ∞? Solved for monotone sequences by Erdős-Straus (1971).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "divisor-function",
+      "infinite-series"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 258,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-259",
-    "title": "Erdős Problem #259",
+    "title": "Erdős Problem #259: Irrationality of Squarefree Sums",
     "slug": "erdos-259",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs the sum\\[\\sum_{n} \\mu(n)^2{2^n}\\]irrational?\n\n\n\nIn  Erds makes the stronger conjecture that any infinite subseries over sq...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is ∑_n μ(n)² · n/2^n irrational? Yes — proved by Chen and Ruzsa (1999). They showed any infinite subseries over squarefree numbers is irrational.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "moebius-function",
+      "squarefree"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 259,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-26",
@@ -4218,31 +4312,43 @@
   },
   {
     "id": "erdos-264",
-    "title": "Erdős Problem #264",
+    "title": "Erdős Problem #264: Irrationality Sequences",
     "slug": "erdos-264",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence of integers such that for every bounded sequence of integers ... (with ... and ... for all ...) the sum...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "A sequence aₙ is an 'irrationality sequence' if ∑1/(aₙ+bₙ) is irrational for all bounded bₙ. Is 2ⁿ or n! such a sequence? Kovač-Tao (2024) showed 2ⁿ is not; n! remains open.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "sequences",
+      "perturbation"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 264,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-266",
-    "title": "Erdős Problem #266",
+    "title": "Erdős Problem #266: Shifted Sums and Irrationality",
     "slug": "erdos-266",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence of positive integers such that ... converges. There exists some integer ... such that\\[\\sum {...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Stolarsky conjectured that for any convergent ∑1/aₙ, some shift t makes ∑1/(aₙ+t) irrational. Kovač-Tao (2024) disproved this: some sequences give rational sums for ALL rational shifts.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "shifted-sums",
+      "ahmes-series"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 266,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-267",
@@ -4414,17 +4520,23 @@
   },
   {
     "id": "erdos-285",
-    "title": "Erdős Problem #285",
+    "title": "Erdős Problem #285: Egyptian Fractions Asymptotics",
     "slug": "erdos-285",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimal value of ... such that there exist ... with\\[1={n_1}+\\cdots+{n_k}.\\]Is it true that\\[f(k)=(1+o(1)){e-1...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f(k) be the minimal largest denominator in a k-term Egyptian fraction representation of 1. Is f(k) = (1+o(1))·e/(e-1)·k? YES — proved by Martin (2000). The constant e/(e-1) ≈ 1.582 comes from harmonic series structure.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "asymptotics",
+      "harmonic-series"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 285,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 12
   },
   {
     "id": "erdos-286",
@@ -4540,17 +4652,24 @@
   },
   {
     "id": "erdos-295",
-    "title": "Erdős Problem #295",
+    "title": "Erdős Problem #295: Egyptian Fractions with Large Denominators",
     "slug": "erdos-295",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... denote the smallest ... such that there exist ... with\\[1={n_1}+\\cdots+{n_k}.\\]Is it true that\\[\\lim_{N\\t...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let k(N) be the smallest number of terms needed to write 1 as a sum of distinct unit fractions with denominators ≥ N. Is k(N) - (e-1)N → ∞?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "unit-fractions",
+      "harmonic-series",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 295,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-296",
@@ -5148,17 +5267,23 @@
   },
   {
     "id": "erdos-351",
-    "title": "Erdős Problem #351",
+    "title": "Erdős Problem #351: Strong Completeness of Polynomial-Reciprocal Sequences",
     "slug": "erdos-351",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is it true that\\[A=\\{ p(n)+1/n : n\\in \\}\\]is strongly complete, in the sense that, for any finite set ...,\\[\\left\\{\\...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is {p(n) + 1/n : n in N} strongly complete for all polynomials p(x)? General case open; solved for p(x) = x and p(x) = x².",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "completeness",
+      "polynomials"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 351,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-352",
@@ -5456,17 +5581,23 @@
   },
   {
     "id": "erdos-377",
-    "title": "Erdős Problem #377",
+    "title": "Erdős Problem #377: Primes Not Dividing Central Binomial",
     "slug": "erdos-377",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some absolute constant ... such that\\[\\sum_{p\\leq n}1_{p\\nmid {n}}{p}\\leq C\\]for all ... (where the summation is res...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is there an absolute constant C such that ∑_{p≤n, p∤C(2n,n)} 1/p ≤ C for all n? The main conjecture is OPEN, but EGRS75 proved f(n) averages to γ₀ = ∑log(k)/2^k and is ≤ c·log(log(n)) for c < 1.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "central-binomial",
+      "prime-divisibility",
+      "analytic-number-theory"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 377,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 12
   },
   {
     "id": "erdos-378",
@@ -5544,17 +5675,23 @@
   },
   {
     "id": "erdos-387",
-    "title": "Erdős Problem #387",
+    "title": "Erdős Problem #387: Divisors of Binomial Coefficients Near n",
     "slug": "erdos-387",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an absolute constant ... such that, for all ..., the binomial coefficient ... has a divisor in ...?\n\n\n\nErds once con...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is there an absolute constant c > 0 such that for all 1 ≤ k < n, the binomial coefficient C(n,k) has a divisor in the interval (cn, n]?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "binomial-coefficients",
+      "divisibility"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 387,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 8
   },
   {
     "id": "erdos-39",
@@ -5648,17 +5785,22 @@
   },
   {
     "id": "erdos-397",
-    "title": "Erdős Problem #397",
+    "title": "Erdős Problem #397: Products of Central Binomial Coefficients",
     "slug": "erdos-397",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there only finitely many solutions to\\[\\prod_i {m_i}=\\prod_j {n_j}\\]with the ... distinct?\n\n\n\nSomani, using ChatGPT, has ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Are there only finitely many solutions to products of central binomial coefficients being equal? Disproved by Somani (2026).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "binomial-coefficients"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 397,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-398",
@@ -5676,17 +5818,22 @@
   },
   {
     "id": "erdos-399",
-    "title": "Erdős Problem #399",
+    "title": "Erdős Problem #399: Factorial Diophantine Equations",
     "slug": "erdos-399",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that there are no solutions to\\[n! = x^k\\pm y^k\\]with ..., with ... and ...?\n\n\n\nErds and Obl\\'{a}th  proved this i...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is it true that there are no solutions to n! = x^k ± y^k with xy > 1 and k > 2? Disproved by Barfield: 10! = 48^4 - 36^4.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "diophantine-equations",
+      "factorials"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 399,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-4",
@@ -6536,17 +6683,22 @@
   },
   {
     "id": "erdos-486",
-    "title": "Erdős Problem #486",
+    "title": "Erdős Problem #486: Logarithmic Density for Modular Avoidance Sets",
     "slug": "erdos-486",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., and for each ... choose some .... Let\\[B = \\{ m\\in  : m\\not\\in X_nn\\in Am>n\\}.\\]Must ... have a logarithmic density,...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For any choice of forbidden residue classes modulo each n, must the set of integers avoiding all forbidden classes have a logarithmic density?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "density",
+      "modular-arithmetic",
+      "open-problem"
     ],
     "erdosNumber": 486,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-487",
@@ -10524,17 +10676,22 @@
   },
   {
     "id": "erdos-830",
-    "title": "Erdős Problem #830",
+    "title": "Erdős Problem #830: Amicable Pairs",
     "slug": "erdos-830",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe say that ... are an amicable pair if .... Are there infinitely many amicable pairs? If ... counts the number of amicable ....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Are there infinitely many amicable pairs? Two numbers are amicable if each is the sum of the other's proper divisors, like 220 and 284.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisors",
+      "amicable-numbers",
+      "open-problem"
     ],
     "erdosNumber": 830,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-832",

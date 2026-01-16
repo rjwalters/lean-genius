@@ -1,33 +1,120 @@
 {
   "id": "erdos-264",
-  "title": "Erdős Problem #264",
+  "title": "Erdős Problem #264: Irrationality Sequences",
   "slug": "erdos-264",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence of integers such that for every bounded sequence of integers ... (with ... and ... for all ...) the sum...",
+  "description": "A sequence aₙ is an 'irrationality sequence' if ∑1/(aₙ+bₙ) is irrational for all bounded bₙ. Is 2ⁿ or n! such a sequence? Kovač-Tao (2024) showed 2ⁿ is not; n! remains open.",
   "meta": {
-    "author": "Unknown",
+    "author": "Kovač & Tao (2024)",
     "sourceUrl": "https://erdosproblems.com/264",
-    "date": "",
-    "status": "pending",
+    "date": "2024",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos264Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "sequences",
+      "perturbation"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 264,
     "erdosUrl": "https://erdosproblems.com/264",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Irrational",
+        "description": "Predicate for irrational real numbers",
+        "module": "Mathlib.Data.Real.Irrational"
+      },
+      {
+        "theorem": "tsum",
+        "description": "Infinite series (topological sum)",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Real"
+      },
+      {
+        "theorem": "Filter.liminf",
+        "description": "Limit inferior using filters",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "BddAbove",
+        "description": "Bounded above predicate for sets",
+        "module": "Mathlib.Order.Bounds.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of irrationality sequences in Lean 4",
+      "Statement of Kovač-Tao negative criterion",
+      "Statement of Kovač-Tao positive criterion",
+      "Growth rate analysis for 2ⁿ, 2^(2ⁿ), and n!"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #264 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_n$ be a sequence of integers such that for every bounded sequence of integers $b_n$ (with $a_n+b_n\\neq 0$ and $b_n\\neq 0$ for all $n$) the sum\\[\\sum \\frac{1}{a_n+b_n}\\]is irrational. Are $a_n=2^n$ or $a_n=n!$ examples of such a sequence?\n\n\n\nA possible definition of an 'irrationality sequence' (see also [262] and [263]). One example is $a_n=2^{2^n}$. In \\cite{ErGr80} they also ask whether such a sequence can have polynomial growth, but Erd\\H{o}s later retracted this in \\cite{Er88c}, claiming 'It is not hard to show that it cannot increase slower than exponentially'.\n\nKova\\v{c} and Tao \\cite{KoTa24} have proved that $2^n$ is not such an irrationality sequence. More generally, they prove that any strictly increasing sequence of positive integers such that $\\sum\\frac{1}{a_n}$ converges and\\[\\liminf \\left(a_n^2\\sum_{k>n}\\frac{1}{a_k^2}\\right) >0 \\]is not such an irrationality sequence. In particular, any strictly increasing sequence with $\\limsup a_{n+1}/a_n <\\infty$ is not such an irrationality sequence.\n\nOn the other hand, Kova\\v{c} and Tao do prove that for any function $F$ with $\\lim F(n+1)/F(n)=\\infty$ there exists such an irrationality sequence with $a_n\\sim F(n)$.\n\n\n\n\nReferences\n\n\n[Er88c] Erd\\\"{o}s, P., On the irrationality of certain series: problems and results. New advances in transcendence theory (Durham, 1986) (1988), 102-109.\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[KoTa24] Kova\\vC, V. and Tao T., On several irrationality problems for Ahmes series. arXiv:2406.17593 (2024).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem explores the concept of 'irrationality sequences' — sequences so robust that perturbing them by any bounded amount still yields irrational sums. Erdős and Graham introduced this concept in 1980.\n\nErdős asked specifically about 2ⁿ and n!, and initially speculated that polynomial-growth sequences might work. He later retracted this, noting irrationality sequences must grow at least exponentially.\n\nIn 2024, Vjekoslav Kovač and Terence Tao made breakthrough progress, proving 2ⁿ is NOT an irrationality sequence and establishing precise criteria for when sequences can or cannot be irrationality sequences. Their paper unified many related Erdős problems about irrationality.",
+    "problemStatement": "**Definition**: A sequence $a_n$ is an **irrationality sequence** if for every bounded integer sequence $b_n$ (with $a_n + b_n \\neq 0$ and $b_n \\neq 0$), the sum\n$$\\sum_{n=1}^{\\infty} \\frac{1}{a_n + b_n}$$\nis irrational.\n\n**Questions**:\n1. Is $a_n = 2^n$ an irrationality sequence? **NO** (Kovač-Tao 2024)\n2. Is $a_n = n!$ an irrationality sequence? **OPEN**\n\n**Known Example**: $a_n = 2^{2^n}$ IS an irrationality sequence.",
+    "proofStrategy": "We formalize:\n\n1. **The definition**: IsIrrationalitySequence captures the universal quantification over bounded perturbations\n\n2. **Kovač-Tao negative criterion**: If aₙ is strictly increasing with convergent ∑1/aₙ and positive liminf condition, then NOT an irrationality sequence. This shows 2ⁿ fails.\n\n3. **Kovač-Tao positive criterion**: For any F with F(n+1)/F(n) → ∞, irrationality sequences exist at that growth rate.\n\n4. **Known example**: 2^(2ⁿ) is an irrationality sequence.\n\nThe criteria are stated as axioms since their proofs require sophisticated analysis.",
+    "keyInsights": [
+      "**Robustness condition**: An irrationality sequence must stay irrational under ALL bounded perturbations. This is much stronger than just being irrational for the original sequence.",
+      "**Growth rate boundary**: The Kovač-Tao criteria show the boundary is superexponential. Bounded ratio (like 2ⁿ) ⟹ fails. Ratio → ∞ (like 2^(2ⁿ)) ⟹ can succeed.",
+      "**Why 2ⁿ fails**: There exists a bounded bₙ making ∑ 1/(2ⁿ + bₙ) rational. The construction uses the negative criterion's liminf condition.",
+      "**Why n! is borderline**: The ratio (n+1)!/n! = n+1 grows, but not fast enough to apply the positive criterion. It also doesn't satisfy the negative criterion's conditions cleanly.",
+      "**Connection to Ahmes series**: Kovač-Tao's paper addresses multiple Erdős problems about 'Ahmes series' (Egyptian fractions), showing deep connections between irrationality questions."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Module documentation and Mathlib imports for irrationality, infinite sums, and filter limits."
+    },
+    {
+      "id": "definition",
+      "title": "Irrationality Sequence Definition",
+      "startLine": 28,
+      "endLine": 46,
+      "summary": "The formal definition of irrationality sequences with universal quantification over bounded perturbations."
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "startLine": 48,
+      "endLine": 75,
+      "summary": "The answers to Erdős's questions: 2ⁿ is NOT (Kovač-Tao), n! is OPEN."
+    },
+    {
+      "id": "positive-example",
+      "title": "Known Positive Example",
+      "startLine": 77,
+      "endLine": 87,
+      "summary": "The sequence 2^(2ⁿ) is an irrationality sequence."
+    },
+    {
+      "id": "criteria",
+      "title": "Kovač-Tao Criteria",
+      "startLine": 89,
+      "endLine": 118,
+      "summary": "The negative and positive criteria for when sequences are/aren't irrationality sequences."
+    },
+    {
+      "id": "examples",
+      "title": "Growth Rate Examples",
+      "startLine": 133,
+      "endLine": 155,
+      "summary": "Computations showing growth rates of 2ⁿ, 2^(2ⁿ), and n!."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #264 about irrationality sequences — sequences where perturbing by any bounded amount preserves irrationality of the sum. Kovač and Tao (2024) showed 2ⁿ is NOT such a sequence, while n! remains open. They established precise criteria: sequences with bounded ratio fail, while those with ratio → ∞ can succeed.",
+    "implications": "The Kovač-Tao criteria unify multiple Erdős problems about irrationality. The negative criterion provides a powerful tool for showing sequences are NOT irrationality sequences, while the positive criterion shows they exist at all superexponential growth rates.",
+    "openQuestions": [
+      "Is n! an irrationality sequence?",
+      "What is the exact boundary between irrationality and non-irrationality sequences?",
+      "Are there natural irrationality sequences besides the doubly-exponential examples?"
+    ]
   }
 }

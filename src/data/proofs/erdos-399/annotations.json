@@ -1,1 +1,183 @@
-[]
+[
+  {
+    "id": "ann-e399-header",
+    "proofId": "erdos-399",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Problem Documentation",
+    "content": "This header documents **Erdős Problem #399**, asking whether n! = x^k ± y^k has no solutions with xy > 1 and k > 2. Jonas Barfield disproved this with the counterexample 10! = 48^4 - 36^4.",
+    "mathContext": "The problem connects factorials with perfect power differences. Prior work by Erdős-Obláth (1937) and others assumed coprimality gcd(x,y) = 1. Barfield's example exploits the gap where gcd(48,36) = 12.",
+    "significance": "supporting",
+    "relatedConcepts": ["erdos", "diophantine-equations", "factorials", "disproof"]
+  },
+  {
+    "id": "ann-e399-imports",
+    "proofId": "erdos-399",
+    "range": {
+      "startLine": 20,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Imports and Namespace",
+    "content": "We import Mathlib and open the **Nat** namespace for convenient access to factorial, coprimality, and GCD functions.",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "namespace"]
+  },
+  {
+    "id": "ann-e399-factorial10",
+    "proofId": "erdos-399",
+    "range": {
+      "startLine": 28,
+      "endLine": 29
+    },
+    "type": "lemma",
+    "title": "10! = 3,628,800",
+    "content": "We verify that **10! = 3,628,800** using `native_decide`. This is the factorial value in Barfield's counterexample.",
+    "mathContext": "10! = 10 * 9 * 8 * 7 * 6 * 5 * 4 * 3 * 2 * 1 = 3,628,800. The computation is done natively in Lean.",
+    "significance": "supporting",
+    "relatedConcepts": ["factorial", "computation"]
+  },
+  {
+    "id": "ann-e399-powers",
+    "proofId": "erdos-399",
+    "range": {
+      "startLine": 31,
+      "endLine": 35
+    },
+    "type": "lemma",
+    "title": "Fourth Powers",
+    "content": "We verify **48^4 = 5,308,416** and **36^4 = 1,679,616**. These are the perfect fourth powers in Barfield's counterexample.",
+    "mathContext": "48^4 = (48^2)^2 = 2304^2 = 5,308,416 and 36^4 = (36^2)^2 = 1296^2 = 1,679,616. The difference is exactly 10!.",
+    "significance": "supporting",
+    "relatedConcepts": ["powers", "computation"]
+  },
+  {
+    "id": "ann-e399-counterexample",
+    "proofId": "erdos-399",
+    "range": {
+      "startLine": 37,
+      "endLine": 44
+    },
+    "type": "theorem",
+    "title": "Barfield's Counterexample",
+    "content": "**Barfield's counterexample**: 10! + 36^4 = 48^4, or equivalently 10! = 48^4 - 36^4. We also verify the conditions: 48 * 36 = 1728 > 1 and 4 > 2.",
+    "mathContext": "The equation is verified by native_decide. The conditions xy > 1 and k > 2 are checked by decide. This satisfies all requirements of the conjecture, disproving it.",
+    "significance": "critical",
+    "relatedConcepts": ["counterexample", "disproof", "native_decide"]
+  },
+  {
+    "id": "ann-e399-main",
+    "proofId": "erdos-399",
+    "range": {
+      "startLine": 48,
+      "endLine": 58
+    },
+    "type": "theorem",
+    "title": "Main Result: Conjecture Disproved",
+    "content": "**Erdős Problem #399** is DISPROVED: there exist n, x, y, k with 1 < xy, 2 < k, and n! + y^k = x^k. The witness is (10, 48, 36, 4).",
+    "mathContext": "We construct the existential witness explicitly. Note we use `Nat.factorial n` instead of `n!` notation due to Lean elaboration behavior with existentials. The proof uses `by decide` after providing all witness values.",
+    "significance": "critical",
+    "relatedConcepts": ["disproof", "existential", "witness"]
+  },
+  {
+    "id": "ann-e399-alt",
+    "proofId": "erdos-399",
+    "range": {
+      "startLine": 60,
+      "endLine": 61
+    },
+    "type": "lemma",
+    "title": "Integer Form",
+    "content": "Alternative form in integers: 10! = 48^4 - 36^4. Using integers allows direct subtraction without worrying about underflow.",
+    "mathContext": "In natural numbers, we write 10! + 36^4 = 48^4 (addition form). In integers, we can write the more natural 10! = 48^4 - 36^4 (subtraction form).",
+    "significance": "supporting",
+    "relatedConcepts": ["integers", "subtraction"]
+  },
+  {
+    "id": "ann-e399-erdos-oblath",
+    "proofId": "erdos-399",
+    "range": {
+      "startLine": 65,
+      "endLine": 74
+    },
+    "type": "theorem",
+    "title": "Erdős-Obláth Theorem (1937)",
+    "content": "**Erdős-Obláth (1937)**: When gcd(x,y) = 1 and k ≠ 4, there are no solutions to n! = x^k ± y^k. This is stated as an axiom.",
+    "mathContext": "The proof uses deep results from algebraic number theory, analyzing the Fermat equation in cyclotomic fields. The coprimality condition is essential. The exception k = 4 is precisely where Barfield found his counterexample.",
+    "significance": "critical",
+    "relatedConcepts": ["coprime", "algebraic-number-theory", "axiom"]
+  },
+  {
+    "id": "ann-e399-pollack-shapiro",
+    "proofId": "erdos-399",
+    "range": {
+      "startLine": 76,
+      "endLine": 82
+    },
+    "type": "theorem",
+    "title": "Pollack-Shapiro Theorem (1973)",
+    "content": "**Pollack-Shapiro (1973)**: There are no solutions to n! = x^4 - 1. This was called 'the next to last case' because it left open n! = x^4 - y^4 with y > 1.",
+    "mathContext": "Setting y = 1 gives the special case analyzed by Pollack and Shapiro. Barfield's example shows the general case y > 1 does have solutions.",
+    "significance": "key",
+    "relatedConcepts": ["special-case", "axiom"]
+  },
+  {
+    "id": "ann-e399-cambie",
+    "proofId": "erdos-399",
+    "range": {
+      "startLine": 84,
+      "endLine": 91
+    },
+    "type": "theorem",
+    "title": "Cambie's Observation",
+    "content": "**Cambie**: No solutions to n! = x^4 + y^4 with gcd(x,y) = 1 and xy > 1. This follows from considerations modulo 8.",
+    "mathContext": "Modular arithmetic constraints: x^4 + y^4 ≡ 0, 1, or 2 (mod 8), while n! for large n is divisible by 8. Combined with coprimality, this rules out solutions for the sum case.",
+    "significance": "key",
+    "relatedConcepts": ["modular-arithmetic", "sum-case", "axiom"]
+  },
+  {
+    "id": "ann-e399-sum-squares",
+    "proofId": "erdos-399",
+    "range": {
+      "startLine": 95,
+      "endLine": 114
+    },
+    "type": "theorem",
+    "title": "Sum of Two Squares",
+    "content": "The only solution to n! = x^2 + y^2 with xy > 1 is **6! = 12^2 + 24^2** (up to swapping x and y).",
+    "mathContext": "720 = 144 + 576 = 12^2 + 24^2. The proof uses Breusch's result that consecutive primes ≡ 3 (mod 4) satisfy q_{i+1} < 2q_i, combined with Fermat's two-square theorem.",
+    "significance": "key",
+    "relatedConcepts": ["sum-of-squares", "fermat", "breusch"]
+  },
+  {
+    "id": "ann-e399-gcd",
+    "proofId": "erdos-399",
+    "range": {
+      "startLine": 118,
+      "endLine": 125
+    },
+    "type": "lemma",
+    "title": "GCD Analysis",
+    "content": "**gcd(48, 36) = 12**, so 48 and 36 are NOT coprime. This is why Barfield's example escapes the Erdős-Obláth theorem.",
+    "mathContext": "48 = 16 * 3 = 2^4 * 3 and 36 = 4 * 9 = 2^2 * 3^2. The GCD is 2^2 * 3 = 12. The non-coprimality is crucial.",
+    "significance": "key",
+    "relatedConcepts": ["gcd", "coprimality", "gap"]
+  },
+  {
+    "id": "ann-e399-factored",
+    "proofId": "erdos-399",
+    "range": {
+      "startLine": 127,
+      "endLine": 134
+    },
+    "type": "lemma",
+    "title": "Algebraic Factorization",
+    "content": "48^4 - 36^4 = 12^4 * (4^4 - 3^4) = 12^4 * 175 = 20736 * 175 = 3,628,800. This reveals the structure of the counterexample.",
+    "mathContext": "Since 48 = 12 * 4 and 36 = 12 * 3, we have 48^4 - 36^4 = (12 * 4)^4 - (12 * 3)^4 = 12^4 * (4^4 - 3^4). And 4^4 - 3^4 = 256 - 81 = 175.",
+    "significance": "supporting",
+    "relatedConcepts": ["factorization", "algebraic-structure"]
+  }
+]

@@ -1,1 +1,141 @@
-[]
+[
+  {
+    "id": "ann-e397-header",
+    "proofId": "erdos-397",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Problem Documentation",
+    "content": "This header documents **Erdős Problem #397**, asking whether products of central binomial coefficients can match in only finitely many ways. The conjecture was disproved by Neel Somani in 2026.",
+    "mathContext": "Central binomial coefficients are C(2n,n) = (2n)!/(n!)². Erdős conjectured that ∏C(mᵢ) = ∏C(nⱼ) has finitely many solutions with distinct indices. Somani found an infinite parametric family.",
+    "significance": "supporting",
+    "relatedConcepts": ["erdos", "binomial-coefficients", "disproof"]
+  },
+  {
+    "id": "ann-e397-imports",
+    "proofId": "erdos-397",
+    "range": {
+      "startLine": 20,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Imports",
+    "content": "We import the full Mathlib library, which provides **Nat.centralBinom** for central binomial coefficients and **Finset** operations for working with finite sets and their products.",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "central-binomial", "finset"]
+  },
+  {
+    "id": "ann-e397-central-binom",
+    "proofId": "erdos-397",
+    "range": {
+      "startLine": 28,
+      "endLine": 31
+    },
+    "type": "definition",
+    "title": "Central Binomial Coefficient",
+    "content": "We define **C(n)** as an abbreviation for `Nat.centralBinom n`, the central binomial coefficient C(2n, n) = (2n)!/(n!)².",
+    "mathContext": "Central binomial coefficients have many combinatorial interpretations: they count lattice paths from (0,0) to (n,n), or balanced parentheses sequences of length 2n, or ways to distribute n identical items into n distinct boxes with at most one per box from the first pass.",
+    "significance": "key",
+    "relatedConcepts": ["binomial-coefficient", "combinatorics", "lattice-paths"]
+  },
+  {
+    "id": "ann-e397-solution-set",
+    "proofId": "erdos-397",
+    "range": {
+      "startLine": 33,
+      "endLine": 36
+    },
+    "type": "definition",
+    "title": "Central Binomial Solutions",
+    "content": "A **solution** to the central binomial equation is a pair (M, N) of disjoint finite sets of natural numbers where ∏_{m∈M} C(m) = ∏_{n∈N} C(n).",
+    "mathContext": "The disjointness requirement ensures the mᵢ and nⱼ are all distinct. Without it, trivial solutions like ({k}, {k}) would exist for any k. We ask: how many non-trivial solutions exist?",
+    "significance": "key",
+    "relatedConcepts": ["disjoint-sets", "product", "finiteness"]
+  },
+  {
+    "id": "ann-e397-somani-c",
+    "proofId": "erdos-397",
+    "range": {
+      "startLine": 38,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "Somani's Parameter c(a)",
+    "content": "Somani's key discovery was the parameter **c(a) = 8a² + 8a + 1**. This specific quadratic formula creates a delicate balance that makes the identity work.",
+    "mathContext": "For a=2: c(2) = 32 + 16 + 1 = 49. The choice of 8a² + 8a + 1 is not obvious—it emerged from searching for parametric families where the factorial structure of central binomials would align.",
+    "significance": "key",
+    "relatedConcepts": ["parametric-family", "quadratic-formula"]
+  },
+  {
+    "id": "ann-e397-main-axiom",
+    "proofId": "erdos-397",
+    "range": {
+      "startLine": 43,
+      "endLine": 55
+    },
+    "type": "theorem",
+    "title": "Main Result: Infinitely Many Solutions",
+    "content": "**Erdős Problem #397** is DISPROVED: the set of solutions is infinite. Somani's parametric family provides infinitely many distinct solutions, one for each a ≥ 2.",
+    "mathContext": "We state `CentralBinomSolutions.Infinite` as an axiom. The proof follows from Somani's family: for each a ≥ 2, we get a distinct solution, so there are at least countably infinitely many.",
+    "significance": "critical",
+    "relatedConcepts": ["disproof", "infinite-set", "counterexample"]
+  },
+  {
+    "id": "ann-e397-somani-lhs-rhs",
+    "proofId": "erdos-397",
+    "range": {
+      "startLine": 59,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Somani's Solution Sets",
+    "content": "For parameter a, the **left-hand side** is M = {a, 2a+2, c} and the **right-hand side** is N = {a+1, 2a, c+1} where c = 8a² + 8a + 1.",
+    "mathContext": "For a=2: LHS = {2, 6, 49} and RHS = {3, 4, 50}. The products C(2)·C(6)·C(49) and C(3)·C(4)·C(50) are equal. The sets are disjoint because a, 2a+2, c, a+1, 2a, c+1 are all distinct for a ≥ 2.",
+    "significance": "key",
+    "relatedConcepts": ["solution-family", "parametric"]
+  },
+  {
+    "id": "ann-e397-somani-identity",
+    "proofId": "erdos-397",
+    "range": {
+      "startLine": 65,
+      "endLine": 72
+    },
+    "type": "theorem",
+    "title": "Somani's Identity",
+    "content": "**Somani's Identity**: For a ≥ 2, C(a)·C(2a+2)·C(c) = C(a+1)·C(2a)·C(c+1) where c = 8a² + 8a + 1.",
+    "mathContext": "This identity is stated as an axiom because verifying it requires expanding the factorial expressions and showing the prime factorizations match. The identity was discovered computationally and verified algebraically.",
+    "significance": "critical",
+    "relatedConcepts": ["binomial-identity", "factorial", "prime-factorization"]
+  },
+  {
+    "id": "ann-e397-disjoint",
+    "proofId": "erdos-397",
+    "range": {
+      "startLine": 74,
+      "endLine": 75
+    },
+    "type": "lemma",
+    "title": "Disjointness of Somani's Sets",
+    "content": "For a ≥ 2, the sets {a, 2a+2, c} and {a+1, 2a, c+1} are disjoint—they share no common elements.",
+    "mathContext": "This requires checking six inequalities: a ≠ a+1, a ≠ 2a, a ≠ c+1, 2a+2 ≠ a+1, 2a+2 ≠ 2a, 2a+2 ≠ c+1, c ≠ a+1, c ≠ 2a, c ≠ c+1. All hold for a ≥ 2 by simple arithmetic.",
+    "significance": "supporting",
+    "relatedConcepts": ["disjoint", "arithmetic", "well-definedness"]
+  },
+  {
+    "id": "ann-e397-examples",
+    "proofId": "erdos-397",
+    "range": {
+      "startLine": 88,
+      "endLine": 101
+    },
+    "type": "lemma",
+    "title": "Verified Computations",
+    "content": "We verify concrete values: **C(0)=1, C(1)=2, C(2)=6, C(3)=20** and **c(2)=49**. These use `native_decide` for automatic verification.",
+    "mathContext": "C(n) grows rapidly: C(0)=1, C(1)=2, C(2)=6, C(3)=20, C(4)=70, C(5)=252. The formula C(2n,n) ~ 4ⁿ/√(πn) gives the asymptotic growth rate.",
+    "significance": "supporting",
+    "relatedConcepts": ["computation", "native_decide", "concrete-examples"]
+  }
+]

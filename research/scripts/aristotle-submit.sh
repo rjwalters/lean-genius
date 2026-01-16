@@ -82,19 +82,29 @@ LEAN_FILE="$(cd "$(dirname "$LEAN_FILE")" && pwd)/$(basename "$LEAN_FILE")"
 
 log_info "Analyzing $LEAN_FILE..."
 
-# Count sorries
-SORRY_COUNT=$(grep -c "sorry" "$LEAN_FILE" 2>/dev/null || echo "0")
-if [ "$SORRY_COUNT" -eq 0 ]; then
-    log_error "No sorries found in file - nothing to prove!"
+# Count sorries and axioms (Aristotle proves both)
+SORRY_COUNT=$(grep -c "sorry" "$LEAN_FILE" 2>/dev/null) || SORRY_COUNT=0
+AXIOM_COUNT=$(grep -c "^axiom " "$LEAN_FILE" 2>/dev/null) || AXIOM_COUNT=0
+TOTAL_COUNT=$((SORRY_COUNT + AXIOM_COUNT))
+
+if [ "$TOTAL_COUNT" -eq 0 ]; then
+    log_error "No sorries or axioms found in file - nothing to prove!"
     exit 1
 fi
 
-log_info "Found $SORRY_COUNT sorries"
+log_info "Found $SORRY_COUNT sorries and $AXIOM_COUNT axioms ($TOTAL_COUNT total targets)"
 
 # Extract sorry names (look for theorem/lemma declarations before sorry)
-SORRIES=$(grep -B5 "sorry" "$LEAN_FILE" | grep -E "^(theorem|lemma|def)" | sed 's/.*\(theorem\|lemma\|def\) \([a-zA-Z0-9_]*\).*/\2/' | sort -u)
-echo -e "${BLUE}Sorries to prove:${NC}"
-echo "$SORRIES" | while read -r name; do
+SORRIES=$(grep -B5 "sorry" "$LEAN_FILE" 2>/dev/null | grep -E "^(theorem|lemma|def)" | sed 's/.*\(theorem\|lemma\|def\) \([a-zA-Z0-9_]*\).*/\2/' | sort -u || true)
+
+# Extract axiom names
+AXIOMS=$(grep "^axiom " "$LEAN_FILE" 2>/dev/null | sed 's/^axiom \([a-zA-Z0-9_]*\).*/\1/' | sort -u || true)
+
+# Combine all targets
+ALL_TARGETS=$(printf "%s\n%s" "$SORRIES" "$AXIOMS" | grep -v '^$' | sort -u)
+
+echo -e "${BLUE}Targets to prove:${NC}"
+echo "$ALL_TARGETS" | while read -r name; do
     if [ -n "$name" ]; then
         echo "  - $name"
     fi
@@ -138,7 +148,7 @@ if [ -n "$PLACEHOLDER_THEOREMS" ]; then
 fi
 
 # Check for potential OPEN conjectures (heuristic: names containing 'erdos_' followed by number only)
-OPEN_CONJECTURES=$(echo "$SORRIES" | grep -E "^erdos_[0-9]+$" || true)
+OPEN_CONJECTURES=$(echo "$ALL_TARGETS" | grep -E "^erdos_[0-9]+$" || true)
 if [ -n "$OPEN_CONJECTURES" ]; then
     log_warn "Potential OPEN conjectures detected:"
     echo "$OPEN_CONJECTURES" | while read -r name; do
@@ -196,21 +206,21 @@ if [ ! -f "$JOBS_FILE" ]; then
 fi
 
 # Add new job using jq
-SORRIES_JSON=$(echo "$SORRIES" | jq -R . | jq -s .)
+TARGETS_JSON=$(echo "$ALL_TARGETS" | jq -R . | jq -s .)
 RELATIVE_FILE="${LEAN_FILE#$PROJECT_ROOT/}"
 
 jq --arg pid "$PROJECT_ID" \
    --arg file "$RELATIVE_FILE" \
    --arg problem "$PROBLEM_ID" \
    --arg ts "$TIMESTAMP" \
-   --argjson sorries "$SORRIES_JSON" \
+   --argjson targets "$TARGETS_JSON" \
    --arg notes "$NOTES" \
    '.jobs += [{
      "project_id": $pid,
      "file": $file,
      "problem_id": $problem,
      "submitted": $ts,
-     "sorries": $sorries,
+     "sorries": $targets,
      "notes": $notes,
      "status": "submitted",
      "last_check": null
@@ -225,7 +235,7 @@ echo "============================================"
 echo "Project ID:  $PROJECT_ID"
 echo "Problem:     $PROBLEM_ID"
 echo "File:        $RELATIVE_FILE"
-echo "Sorries:     $SORRY_COUNT"
+echo "Targets:     $TOTAL_COUNT ($SORRY_COUNT sorries, $AXIOM_COUNT axioms)"
 echo "Submitted:   $TIMESTAMP"
 echo ""
 echo "Check status with:"

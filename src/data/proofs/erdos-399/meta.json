@@ -1,33 +1,108 @@
 {
   "id": "erdos-399",
-  "title": "Erdős Problem #399",
+  "title": "Erdős Problem #399: Factorial Diophantine Equations",
   "slug": "erdos-399",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that there are no solutions to\\[n! = x^k\\pm y^k\\]with ..., with ... and ...?\n\n\n\nErds and Obl\\'{a}th  proved this i...",
+  "description": "Is it true that there are no solutions to n! = x^k ± y^k with xy > 1 and k > 2? Disproved by Barfield: 10! = 48^4 - 36^4.",
   "meta": {
-    "author": "Unknown",
+    "author": "Jonas Barfield",
     "sourceUrl": "https://erdosproblems.com/399",
-    "date": "",
-    "status": "pending",
+    "date": "2020s",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos399Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "diophantine-equations",
+      "factorials"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 399,
     "erdosUrl": "https://erdosproblems.com/399",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function on natural numbers",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality predicate",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.gcd",
+        "description": "Greatest common divisor",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal verification of Barfield's counterexample 10! = 48^4 - 36^4",
+      "Existential witness proving the conjecture is false",
+      "Axiomatized Erdős-Obláth, Pollack-Shapiro, and Cambie theorems",
+      "Verification that gcd(48,36) = 12 (not coprime)",
+      "Algebraic factorization 48^4 - 36^4 = 12^4 * 175"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #399 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that there are no solutions to\\[n! = x^k\\pm y^k\\]with $x,y,n\\in \\mathbb{N}$, with $xy>1$ and $k>2$?\n\n\n\nErd\\H{o}s and Obl\\'{a}th \\cite{ErOb37} proved this is true when $(x,y)=1$ and $k\\neq 4$. Pollack and Shapiro \\cite{PoSh73} proved there are no solutions to $n!=x^4-1$. The known methods break down without the condition $(x,y)=1$.\n\nJonas Barfield has found the solution\\[10! = 48^4 - 36^4=12^4\\cdot 175.\\]Erd\\H{o}s and Obl\\'{a}th observed that the Bertrand-style fact (first proved by Breusch \\cite{Br32}) that, if $q_i$ is the sequence of primes congruent to $3\\pmod{4}$ then $q_{i+1}<2q_i$ except for $q_1=3$, together with Fermat's theorem on the sums of two squares implies that the only solution to $n!=x^2+y^2$ is\\[6!=12^2+24^2.\\]Cambie has also observed that considerations modulo $8$ rule out any solutions to $n!=x^4+y^4$ with $(x,y)=1$ and $xy>1$.\n\nThis is discussed in problem D2 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Br32] Breusch, Robert, Zur Verallgemeinerung des Bertrandschen Postulates,\nda\\ss zwischen $x$ und 2 $x$ stets Primzahlen liegen. Math. Z. (1932), 505--526.\n\n[ErOb37] Erd\\H{o}s, P. and Obl\\'{a}th, R., \\\"{U}ber diophantische Gleichungen der Form $n!=x^p+y^p$ und $n!\\pmd m!=x^p$. Acta Litt. ac Sci. Reg. Univ. Hung. Fr.-Jos., Sect. Sci. Math. (1937), 241-255.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[PoSh73] Pollack, Richard M. and Shapiro, Harold N., The next to last case of a factorial diophantine equation. Comm. Pure Appl. Math. (1973), 313-325.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #399 concerns the equation n! = x^k ± y^k, asking whether there are any solutions with xy > 1 and k > 2. This is a classic Diophantine problem connecting factorials with perfect powers.\n\n**Historical Progress**:\n- Erdős-Obláth (1937): Proved no solutions exist when gcd(x,y) = 1 and k ≠ 4\n- Pollack-Shapiro (1973): Proved no solutions to n! = x^4 - 1 (called 'the next to last case')\n- Cambie: Showed no solutions to n! = x^4 + y^4 with gcd(x,y) = 1\n\nThe known methods all relied on the coprimality condition gcd(x,y) = 1. When x and y share a common factor, the analysis becomes more complex.\n\n**The Counterexample**: Jonas Barfield discovered that 10! = 48^4 - 36^4, which satisfies all the conditions (xy > 1, k > 2) but violates gcd(x,y) = 1 (since gcd(48,36) = 12). This disproves the conjecture.",
+    "problemStatement": "**Conjecture (Erdős)**: Are there no solutions to\n$$n! = x^k \\pm y^k$$\nwith $x, y, n \\in \\mathbb{N}$, $xy > 1$, and $k > 2$?\n\n**Answer**: NO — Disproved by Barfield.\n\n**Counterexample**: $10! = 48^4 - 36^4$\n\nVerification:\n- 10! = 3,628,800\n- 48^4 = 5,308,416\n- 36^4 = 1,679,616\n- 48^4 - 36^4 = 5,308,416 - 1,679,616 = 3,628,800 = 10!",
+    "proofStrategy": "We formalize the disproof by:\n\n1. **Verify the counterexample**: Use native_decide to confirm 10! + 36^4 = 48^4\n2. **Check the conditions**: 48 * 36 = 1728 > 1 and 4 > 2\n3. **Construct the existential witness**: (n,x,y,k) = (10,48,36,4) satisfies all conditions\n4. **Axiomatize historical results**: Erdős-Obláth, Pollack-Shapiro, Cambie theorems\n5. **Analyze the counterexample**: gcd(48,36) = 12, and 48^4 - 36^4 = 12^4 * 175\n\nThe key insight is that 48 = 12 * 4 and 36 = 12 * 3, so the factorization 48^4 - 36^4 = 12^4 * (4^4 - 3^4) = 12^4 * 175 reveals the algebraic structure.",
+    "keyInsights": [
+      "**The coprimality gap**: All prior methods assumed gcd(x,y) = 1. Barfield's example has gcd(48,36) = 12, exploiting this gap.",
+      "**Why k = 4**: The case k = 4 was special because Erdős-Obláth's methods don't apply. Barfield's example uses exactly this exponent.",
+      "**Algebraic structure**: 48 = 12 * 4 and 36 = 12 * 3, so 48^4 - 36^4 = 12^4 * (4^4 - 3^4) = 20736 * 175 = 3628800 = 10!",
+      "**The unique sum of squares**: Erdős-Obláth also proved the only solution to n! = x^2 + y^2 is 6! = 12^2 + 24^2.",
+      "**Breusch's prime gap theorem**: The sum of squares result uses the fact that consecutive primes ≡ 3 (mod 4) satisfy q_{i+1} < 2q_i."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "counterexample",
+      "title": "The Counterexample",
+      "startLine": 26,
+      "endLine": 44,
+      "summary": "Verify Barfield's counterexample: 10! = 48^4 - 36^4 with 48 * 36 > 1 and 4 > 2."
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result (Disproved)",
+      "startLine": 46,
+      "endLine": 61,
+      "summary": "State and prove that the conjecture is false by exhibiting the witness (10, 48, 36, 4)."
+    },
+    {
+      "id": "historical",
+      "title": "Historical Results",
+      "startLine": 63,
+      "endLine": 91,
+      "summary": "Axiomatize Erdős-Obláth (1937), Pollack-Shapiro (1973), and Cambie's theorems on coprime cases."
+    },
+    {
+      "id": "sum-squares",
+      "title": "Sum of Two Squares",
+      "startLine": 93,
+      "endLine": 114,
+      "summary": "The unique solution to n! = x^2 + y^2 is 6! = 12^2 + 24^2."
+    },
+    {
+      "id": "properties",
+      "title": "Properties of the Counterexample",
+      "startLine": 116,
+      "endLine": 136,
+      "summary": "Analyze why Barfield's example works: gcd(48,36) = 12 and the factorization structure."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #399, which asked whether n! = x^k ± y^k has no solutions with xy > 1 and k > 2. Barfield disproved this with the counterexample 10! = 48^4 - 36^4. The key is that gcd(48,36) = 12 ≠ 1, bypassing the coprimality condition that all previous methods required.",
+    "implications": "This result shows that factorial Diophantine equations can have unexpected solutions when coprimality is not assumed. The gap between coprime and non-coprime cases creates room for counterexamples.",
+    "openQuestions": [
+      "Are there other solutions to n! = x^k - y^k with gcd(x,y) > 1?",
+      "Is 10! = 48^4 - 36^4 the smallest such counterexample?",
+      "Can we characterize all solutions, or is the problem intractable?"
+    ]
   }
 }

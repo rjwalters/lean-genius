@@ -1,4 +1,19 @@
 /-
+This file was edited by Aristotle.
+
+Lean version: leanprover/lean4:v4.24.0
+Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
+This project request had uuid: ca10428e-8843-4e9d-90d6-4f2bc45d00d6
+
+To cite Aristotle, tag @Aristotle-Harmonic on GitHub PRs/issues, and add as co-author to commits:
+Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
+
+Aristotle encountered an error while processing imports for this file.
+Error:
+Axioms were added during init_sorries: ['Erdos340.greedySidon_growth_third', 'Erdos340.greedySidon_10', 'Erdos340.greedySidonSeq_strictMono', 'Erdos340.greedySidonSeq_zero', 'Erdos340.greedySidon_2', 'Erdos340.sidon_upper_bound', 'Erdos340.greedySidon_0', 'Erdos340.erdos_340', 'Erdos340.greedySidon_5', 'Erdos340.greedySidon_9', 'Erdos340.greedySidon_7', 'Erdos340._22_mem_diffSet', 'Erdos340.greedySidonSeq_isSidon', 'Erdos340.greedySidon_1', 'Erdos340.greedySidonSeq', 'Erdos340.greedySidonSeq_greedy', 'Erdos340.greedySidon_4', 'Erdos340.greedySidon_3', 'Erdos340.greedySidon_6', 'Erdos340._33_mem_diffSet_iff', 'Erdos340.greedySidon_8']
+-/
+
+/-
   Erdős Problem #44: Extending Sidon Sets
 
   Source: https://erdosproblems.com/44
@@ -172,10 +187,7 @@ by uniqueness of binary representation.
   So c = d, giving 2·2^a = 2·2^c, hence a = c = b = d.
 
 **Proof status**: HARD - requires careful 2-adic valuation arguments.
-The key lemmas needed are:
-- Even.add_one : Even n → Odd (n + 1)
-- Nat.even_pow : Even (2^n) ↔ Even 2 ∧ n ≠ 0
-- Divisibility analysis with Nat.pow_sub_mul_pow
+The key insight is comparing 2-adic valuations on both sides.
 -/
 axiom isSidon_powers_of_two (k : ℕ) : IsSidon ((range k).image (2 ^ ·))
 

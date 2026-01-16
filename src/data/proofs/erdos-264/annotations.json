@@ -1,1 +1,169 @@
-[]
+[
+  {
+    "id": "ann-e264-header",
+    "proofId": "erdos-264",
+    "range": {
+      "startLine": 1,
+      "endLine": 17
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #264** asks about 'irrationality sequences' — sequences so robust that any bounded perturbation still yields irrational sums. Kovač and Tao (2024) made major progress on this long-standing question.",
+    "mathContext": "The concept was introduced by Erdős and Graham in 1980. The key question: which sequences aₙ have the property that ∑ 1/(aₙ + bₙ) is irrational for ALL bounded integer sequences bₙ?",
+    "significance": "supporting",
+    "relatedConcepts": ["erdos", "irrationality", "robustness"]
+  },
+  {
+    "id": "ann-e264-imports",
+    "proofId": "erdos-264",
+    "range": {
+      "startLine": 19,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import **Data.Real.Irrational** for irrationality, **InfiniteSum.Real** for infinite series, **Filter.Basic** for liminf, and **Set.Function** for bounded sets.",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "filters", "infinite-sums"]
+  },
+  {
+    "id": "ann-e264-definition",
+    "proofId": "erdos-264",
+    "range": {
+      "startLine": 30,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Irrationality Sequence Definition",
+    "content": "A sequence aₙ is an **irrationality sequence** if for EVERY bounded integer sequence bₙ (with aₙ + bₙ ≠ 0 and bₙ ≠ 0), the sum ∑ 1/(aₙ + bₙ) is irrational.",
+    "mathContext": "The definition uses universal quantification over bounded perturbations: `∀ b, BddAbove (range b) → ... → Irrational (∑' n, 1/(a n + b n))`. This is a very strong condition — the sequence must be 'robust' against all bounded changes.",
+    "significance": "critical",
+    "relatedConcepts": ["universal-quantification", "boundedness", "robustness"]
+  },
+  {
+    "id": "ann-e264-powers-of-two",
+    "proofId": "erdos-264",
+    "range": {
+      "startLine": 50,
+      "endLine": 61
+    },
+    "type": "theorem",
+    "title": "2ⁿ is NOT an Irrationality Sequence",
+    "content": "**Kovač-Tao (2024)**: The sequence aₙ = 2ⁿ is NOT an irrationality sequence. There exists a bounded bₙ making ∑ 1/(2ⁿ + bₙ) rational.",
+    "mathContext": "This answered one of Erdős's specific questions negatively. The proof uses their negative criterion: 2ⁿ has bounded ratio (a_{n+1}/aₙ = 2), so it fails the superexponential growth requirement.",
+    "significance": "critical",
+    "relatedConcepts": ["kovac-tao", "exponential-growth", "negative-result"]
+  },
+  {
+    "id": "ann-e264-factorial",
+    "proofId": "erdos-264",
+    "range": {
+      "startLine": 63,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "Factorial Case is OPEN",
+    "content": "**Open Problem**: Is aₙ = n! an irrationality sequence? This remains unsolved despite the Kovač-Tao criteria.",
+    "mathContext": "The factorial is borderline: its ratio (n+1)!/n! = n+1 grows without bound (so the negative criterion doesn't apply), but grows polynomially (so the positive criterion doesn't apply either). This makes n! genuinely difficult.",
+    "significance": "critical",
+    "relatedConcepts": ["factorial", "open-problem", "borderline-case"]
+  },
+  {
+    "id": "ann-e264-double-exp",
+    "proofId": "erdos-264",
+    "range": {
+      "startLine": 79,
+      "endLine": 87
+    },
+    "type": "theorem",
+    "title": "2^(2ⁿ) IS an Irrationality Sequence",
+    "content": "**Known Example**: The doubly-exponential sequence aₙ = 2^(2ⁿ) IS an irrationality sequence. Its ratio 2^(2ⁿ) → ∞ fast enough to resist all bounded perturbations.",
+    "mathContext": "This provides a constructive example showing irrationality sequences exist. The key is superexponential growth: a_{n+1}/aₙ = 2^(2ⁿ·(2-1)) = 2^(2ⁿ) which diverges to infinity.",
+    "significance": "key",
+    "relatedConcepts": ["double-exponential", "positive-example", "growth-rate"]
+  },
+  {
+    "id": "ann-e264-negative-criterion",
+    "proofId": "erdos-264",
+    "range": {
+      "startLine": 91,
+      "endLine": 105
+    },
+    "type": "theorem",
+    "title": "Kovač-Tao Negative Criterion",
+    "content": "**Negative Criterion**: If aₙ is strictly increasing with convergent ∑1/aₙ and liminf(aₙ² · ∑_{k>n} 1/aₖ²) > 0, then aₙ is NOT an irrationality sequence.",
+    "mathContext": "The liminf condition captures when the 'tail' of the series doesn't decay fast enough relative to the terms. Sequences with bounded ratio (like 2ⁿ) always satisfy this condition, so they fail. The criterion provides a unified way to prove negative results.",
+    "significance": "critical",
+    "relatedConcepts": ["liminf", "tail-sum", "negative-criterion"]
+  },
+  {
+    "id": "ann-e264-positive-criterion",
+    "proofId": "erdos-264",
+    "range": {
+      "startLine": 107,
+      "endLine": 118
+    },
+    "type": "theorem",
+    "title": "Kovač-Tao Positive Criterion",
+    "content": "**Positive Criterion**: For any F with F(n+1)/F(n) → ∞, there EXISTS an irrationality sequence aₙ with aₙ ~ F(n) (asymptotically equivalent).",
+    "mathContext": "This existential result shows irrationality sequences exist at ANY superexponential growth rate. The ratio → ∞ condition is precisely what separates sequences that can be irrationality sequences from those that cannot.",
+    "significance": "critical",
+    "relatedConcepts": ["existence", "asymptotic-equivalence", "superexponential"]
+  },
+  {
+    "id": "ann-e264-growth-discussion",
+    "proofId": "erdos-264",
+    "range": {
+      "startLine": 120,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "Growth Rate Boundary",
+    "content": "Erdős originally thought polynomial-growth irrationality sequences might exist, but later retracted this. The Kovač-Tao criteria make the boundary precise: **superexponential growth is necessary and sufficient**.",
+    "mathContext": "Bounded ratio ⟹ NOT irrationality sequence (via negative criterion). Ratio → ∞ ⟹ irrationality sequences exist at that growth rate (via positive criterion). The factorial case n! is exactly at the boundary.",
+    "significance": "key",
+    "relatedConcepts": ["growth-rate", "boundary", "characterization"]
+  },
+  {
+    "id": "ann-e264-power-ratio",
+    "proofId": "erdos-264",
+    "range": {
+      "startLine": 135,
+      "endLine": 138
+    },
+    "type": "lemma",
+    "title": "Powers of 2 Growth Rate",
+    "content": "Powers of 2 have constant ratio: 2^{n+1}/2^n = 2. This bounded ratio is why 2ⁿ fails to be an irrationality sequence.",
+    "mathContext": "The proof simplifies `2^(n+1) / 2^n = 2^n · 2 / 2^n = 2` using basic exponent laws. Constant ratio means the negative criterion applies.",
+    "significance": "supporting",
+    "relatedConcepts": ["exponential", "constant-ratio", "computation"]
+  },
+  {
+    "id": "ann-e264-double-exp-ratio",
+    "proofId": "erdos-264",
+    "range": {
+      "startLine": 140,
+      "endLine": 147
+    },
+    "type": "lemma",
+    "title": "Double Exponential Growth Rate",
+    "content": "The double exponential 2^(2ⁿ) has ratio 2^(2^{n+1})/2^(2^n) = 2^(2^n), which grows without bound. This is why it IS an irrationality sequence.",
+    "mathContext": "Using 2^{n+1} = 2·2^n, we get 2^(2^{n+1}) = 2^(2·2^n) = (2^(2^n))². So the ratio is 2^(2^n), which → ∞.",
+    "significance": "supporting",
+    "relatedConcepts": ["double-exponential", "unbounded-ratio", "computation"]
+  },
+  {
+    "id": "ann-e264-factorial-ratio",
+    "proofId": "erdos-264",
+    "range": {
+      "startLine": 149,
+      "endLine": 153
+    },
+    "type": "lemma",
+    "title": "Factorial Growth Rate",
+    "content": "Factorial has ratio (n+1)!/n! = n+1, which grows but only polynomially. This puts n! exactly at the boundary of the criteria.",
+    "mathContext": "By definition, (n+1)! = (n+1) · n!, so the ratio is n+1. This grows to infinity (good for positive criterion) but polynomially (not captured by 'ratio → ∞' in the sense needed).",
+    "significance": "supporting",
+    "relatedConcepts": ["factorial", "polynomial-ratio", "borderline"]
+  }
+]

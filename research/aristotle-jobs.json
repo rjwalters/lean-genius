@@ -737,6 +737,226 @@
         "theorem r3_density_vanishes : ∀ C > 0, Filter.Tendsto"
       ],
       "notes": "Kelley-Meka theorem corollaries: r3_superlogarithmic, r3_density_vanishes. Definition sorry greedyAP3Free expected to skip.",
+      "status": "completed",
+      "last_check": null,
+      "outcome": "Aristotle had namespace/loading errors. 2 theorem sorries remain (r3_superlogarithmic, r3_density_vanishes). Definition sorry (greedyAP3Free) skipped as expected.",
+      "theorems_proven": []
+    },
+    {
+      "project_id": "ca10428e-8843-4e9d-90d6-4f2bc45d00d6",
+      "file": "proofs/Proofs/Erdos44Problem.lean",
+      "problem_id": "erdos-44",
+      "submitted": "2026-01-16T07:42:31Z",
+      "sorries": [
+        ""
+      ],
+      "notes": "2 HARD axioms: isSidon_powers_of_two (2-adic valuation approach), sidon_set_lower_bound_exists. Main erdos_44 is OPEN.",
+      "status": "integrated",
+      "last_check": null,
+      "integrated": "2026-01-16"
+    },
+    {
+      "project_id": "9499cc0f-7627-475a-ac2c-201dd1f242cf",
+      "file": "proofs/Proofs/Erdos109Problem.lean",
+      "problem_id": "erdos-109",
+      "submitted": "2026-01-16T08:02:10Z",
+      "sorries": [
+        ""
+      ],
+      "notes": "Sumset conjecture - solved 2019",
+      "status": "integrated",
+      "last_check": null,
+      "integrated": "2026-01-16"
+    },
+    {
+      "project_id": "a1f58808-f59c-4d31-b2af-92f46974aac1",
+      "file": "proofs/Proofs/Erdos172Problem.lean",
+      "problem_id": "erdos-172",
+      "submitted": "2026-01-16T08:02:19Z",
+      "sorries": [
+        ""
+      ],
+      "notes": "Sum-product monochromatic - Moreira 2017",
+      "status": "integrated",
+      "last_check": null,
+      "integrated": "2026-01-16"
+    },
+    {
+      "project_id": "15e0f000-9972-4c10-8e13-ef079343e01d",
+      "file": "proofs/Proofs/Erdos189Problem.lean",
+      "problem_id": "erdos-189",
+      "submitted": "2026-01-16T08:02:22Z",
+      "sorries": [
+        ""
+      ],
+      "notes": "Type errors in Aristotle proof - restored original",
+      "status": "build_failed",
+      "last_check": null
+    },
+    {
+      "project_id": "84b1160b-f105-4d82-8a4e-84b295a52ee8",
+      "file": "proofs/Proofs/Erdos143Problem.lean",
+      "problem_id": "erdos-143",
+      "submitted": "2026-01-16T08:02:24Z",
+      "sorries": [
+        ""
+      ],
+      "notes": "Integer dilation - KLL 2025",
+      "status": "integrated",
+      "last_check": null,
+      "integrated": "2026-01-16"
+    },
+    {
+      "project_id": "b3a72959-4453-4b5e-8bc0-26cc9b104c53",
+      "file": "proofs/Proofs/Erdos108Problem.lean",
+      "problem_id": "erdos-108",
+      "submitted": "2026-01-16T08:02:32Z",
+      "sorries": [
+        ""
+      ],
+      "notes": "Chromatic subgraphs - Rödl 1977",
+      "status": "integrated",
+      "last_check": null,
+      "integrated": "2026-01-16"
+    },
+    {
+      "project_id": "00e67903-15ec-4a74-8393-b60f8f718193",
+      "file": "proofs/Proofs/Erdos123Problem.lean",
+      "problem_id": "erdos-123",
+      "submitted": "2026-01-16T08:02:35Z",
+      "sorries": [
+        ""
+      ],
+      "notes": "d-complete sequences - powers23_repr",
+      "status": "integrated",
+      "last_check": null,
+      "integrated": "2026-01-16"
+    },
+    {
+      "project_id": "fedcdeca-3e86-428e-8ba9-f428d7102185",
+      "file": "proofs/Proofs/ThreeSquares.lean",
+      "problem_id": "three-squares-theorem",
+      "submitted": "2026-01-16T08:11:30Z",
+      "sorries": [
+        "dirichlet_key_lemma",
+        "dirichletEllipsoid_volume",
+        "minkowski_ellipsoid_has_lattice_point",
+        "not_excluded_form_is_sum_three_sq"
+      ],
+      "notes": "Aristotle failed to load code into environment - axioms remain unproved",
+      "status": "build_failed",
+      "last_check": null
+    },
+    {
+      "project_id": "af6bce87-f49e-4b25-a53e-145734471072",
+      "file": "proofs/Proofs/Erdos123Problem.lean",
+      "problem_id": "erdos-123",
+      "submitted": "2026-01-16T08:29:22Z",
+      "sorries": [
+        "erdos_123_conjecture",
+        "erdos_lewin_357",
+        "powers23_repr"
+      ],
+      "notes": "Aristotle failed to load code into environment - axioms remain unproved",
+      "status": "build_failed",
+      "last_check": null
+    },
+    {
+      "project_id": "c1d915fe-e537-430f-b40f-ac5f704d15ba",
+      "file": "proofs/Proofs/Erdos205Problem.lean",
+      "problem_id": "erdos-205",
+      "submitted": "2026-01-16T08:35:16Z",
+      "sorries": [
+        "average_omega_asymptotic",
+        "barreto_leeham_counterexample",
+        "bigOmega_mul_ax",
+        "bigOmega_prime_pow_ax",
+        "erdos_covering_obstruction",
+        "loglog_mono_nat",
+        "omega_concentration",
+        "remainder_achieves_min",
+        "romanoff_positive_density",
+        "threshold_dominates_loglog"
+      ],
+      "notes": "Aristotle failed to load code into environment - axioms remain unproved",
+      "status": "build_failed",
+      "last_check": null
+    },
+    {
+      "project_id": "669537a8-67fb-4473-a1e9-6685a1f8bbcd",
+      "file": "proofs/Proofs/Erdos65Problem.lean",
+      "problem_id": "erdos-65",
+      "submitted": "2026-01-16T08:41:34Z",
+      "sorries": [
+        "bipartite_only_even_cycles",
+        "bipartiteCycleSum_eq",
+        "complete_bipartite_cycle_lengths",
+        "density_one_has_cycle",
+        "gks_theorem",
+        "high_avg_to_min_degree",
+        "kovari_sos_turan",
+        "min_degree_implies_short_cycle",
+        "triangle_free_larger_sum"
+      ],
+      "notes": "Aristotle failed to load code into environment - axioms remain unproved",
+      "status": "build_failed",
+      "last_check": null
+    },
+    {
+      "project_id": "a1859ff3-4928-4af2-8243-a7a1b22005c4",
+      "file": "proofs/Proofs/Erdos208Problem.lean",
+      "problem_id": "erdos-208",
+      "submitted": "2026-01-16T17:21:18Z",
+      "sorries": [
+        "abc_implies_q1",
+        "average_gap_heuristic",
+        "erdos_lower_bound",
+        "filaseta_trifonov_bound",
+        "max_gap_sqrt_bound",
+        "pandey_bound",
+        "squarefree_density",
+        "squarefree_double_odd",
+        "squarefree_one"
+      ],
+      "notes": "REVISIT: 9 axioms. Main conjectures OPEN. Supporting axioms HARD (Filaseta-Trifonov 1992, Pandey 2024, Erdős 1951, Granville 1998). Build verified.",
+      "status": "submitted",
+      "last_check": null
+    },
+    {
+      "project_id": "cae50a4a-cab0-4100-8798-a1b3a9e402ac",
+      "file": "proofs/Proofs/Erdos63Problem.lean",
+      "problem_id": "erdos-63",
+      "submitted": "2026-01-16T17:25:25Z",
+      "sorries": [
+        "bondy_simonovits",
+        "complete_bipartite_even_cycles",
+        "de_bruijn_erdos",
+        "erdos_63_theorem",
+        "erdos_hajnal_uncountable_bipartite",
+        "high_degree_implies_even_cycles",
+        "liu_montgomery",
+        "penman_uncountable"
+      ],
+      "notes": "REVISIT: 8 axioms. SOLVED (Liu-Montgomery 2020). Axioms include de Bruijn-Erdős, Bondy-Simonovits, high degree cycle results. Build verified.",
+      "status": "submitted",
+      "last_check": null
+    },
+    {
+      "project_id": "9470e5ac-2d9d-4a64-8eed-3044d6ccc713",
+      "file": "proofs/Proofs/Erdos213Problem.lean",
+      "problem_id": "erdos-213",
+      "submitted": "2026-01-16T17:28:35Z",
+      "sorries": [
+        "abt_conditional_bound",
+        "anning_erdos_finite",
+        "erdos_213_status_open",
+        "exists_four",
+        "exists_six",
+        "gip_sparsity_bound",
+        "harborth_five",
+        "kreisel_kurz_seven"
+      ],
+      "notes": "REVISIT: 8 axioms. OPEN for general case, n=7 best known. Axioms include Anning-Erdős, Harborth n=5, Kreisel-Kurz n=7, GIP sparsity. Build verified.",
       "status": "submitted",
       "last_check": null
     }

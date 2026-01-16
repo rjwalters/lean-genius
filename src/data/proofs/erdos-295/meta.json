@@ -1,33 +1,131 @@
 {
   "id": "erdos-295",
-  "title": "Erdős Problem #295",
+  "title": "Erdős Problem #295: Egyptian Fractions with Large Denominators",
   "slug": "erdos-295",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... denote the smallest ... such that there exist ... with\\[1={n_1}+\\cdots+{n_k}.\\]Is it true that\\[\\lim_{N\\t...",
+  "description": "Let k(N) be the smallest number of terms needed to write 1 as a sum of distinct unit fractions with denominators ≥ N. Is k(N) - (e-1)N → ∞?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Straus (1971, partial bounds)",
     "sourceUrl": "https://erdosproblems.com/295",
-    "date": "",
-    "status": "pending",
+    "date": "1971",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos295Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "unit-fractions",
+      "harmonic-series",
+      "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 295,
     "erdosUrl": "https://erdosproblems.com/295",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.exp",
+        "description": "The exponential function, used for e ≈ 2.718",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm, used in asymptotic bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits and convergence at infinity",
+        "module": "Mathlib.Order.Filter.AtTopBot.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of the OPEN Erdős problem in Lean 4",
+      "Axiomatization of k(N) function with existence and minimality",
+      "Formalization of Erdős-Straus bounds: -c < k(N) - (e-1)N < O(N/log N)",
+      "Verified concrete Egyptian fraction examples summing to 1"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #295 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $N\\geq 1$ and let $k(N)$ denote the smallest $k$ such that there exist $N\\leq n_1<\\cdots <n_k$ with\\[1=\\frac{1}{n_1}+\\cdots+\\frac{1}{n_k}.\\]Is it true that\\[\\lim_{N\\to \\infty} k(N)-(e-1)N=\\infty?\\]\n\n\n\nErd\\H{o}s and Straus \\cite{ErSt71b} have proved the existence of some constant $c>0$ such that\\[-c < k(N)-(e-1)N \\ll \\frac{N}{\\log N}.\\]\n\n\n\n\nReferences\n\n\n[ErSt71b] Erd\\H{o}s, P. and Straus, E. G., Solution to Problem. Amer. Math. Monthly (1971), 302-303.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Egyptian fractions—representations of rationals as sums of distinct unit fractions—date back to ancient Egypt's Rhind Mathematical Papyrus (c. 1650 BCE). The Egyptians exclusively used unit fractions (except 2/3), and finding efficient representations became a rich mathematical problem.\n\nThis problem asks about the minimum number of unit fractions needed to represent 1 when all denominators must be at least N. As N grows larger, the available fractions (1/N, 1/(N+1), ...) become smaller, so more terms are needed.\n\nErdős and Graham posed this problem in their influential 1980 book 'Old and New Problems and Results in Combinatorial Number Theory.' In 1971, Erdős and Straus established that k(N) ≈ (e-1)N, proving tight bounds around this value. The question of whether the difference k(N) - (e-1)N tends to infinity remains OPEN.",
+    "problemStatement": "Let $N \\geq 1$ and let $k(N)$ denote the smallest $k$ such that there exist integers $N \\leq n_1 < n_2 < \\cdots < n_k$ with\n$$1 = \\frac{1}{n_1} + \\frac{1}{n_2} + \\cdots + \\frac{1}{n_k}$$\n\nIs it true that $\\displaystyle\\lim_{N \\to \\infty} \\left(k(N) - (e-1)N\\right) = \\infty$?\n\n**Status**: OPEN — The main conjecture is unsolved as of 2024.\n\n**Known Result**: Erdős and Straus (1971) proved there exist constants $c > 0$ and $O > 0$ such that\n$$-c < k(N) - (e-1)N < O \\cdot \\frac{N}{\\log N}$$",
+    "proofStrategy": "We formalize this OPEN problem by:\n\n1. **Axiomatizing k(N)**: Define k(N) as the minimal number of terms in an Egyptian fraction representation of 1 with all denominators ≥ N\n\n2. **Stating the Erdős-Straus bounds**: The known result that -c < k(N) - (e-1)N ≪ N/log N is stated as an axiom, since proving it requires deep analytic number theory\n\n3. **Stating the open conjecture**: The question of whether k(N) - (e-1)N → ∞ is defined as a proposition, whose truth value is unknown\n\n4. **Verifying concrete examples**: We prove specific Egyptian fraction identities like 1/2 + 1/3 + 1/6 = 1 using rational arithmetic",
+    "keyInsights": [
+      "**Egyptian fractions**: Sums of distinct unit fractions like 1 = 1/2 + 1/3 + 1/6. Every positive rational has infinitely many such representations.",
+      "**Why e-1?**: For large N, the minimum number of terms is approximately (e-1)N ≈ 1.718N. This comes from the harmonic series: ∑_{n=N}^{M} 1/n ≈ ln(M/N), and we need ln(M/N) ≈ 1 to sum to 1, giving M ≈ eN.",
+      "**The gap question**: Erdős-Straus proved k(N) lies between (e-1)N - c and (e-1)N + O(N/log N). The upper bound grows slowly, but does k(N) actually track it upward?",
+      "**Concrete example**: 1 = 1/2 + 1/3 + 1/6 shows k(2) ≤ 3. Finding k(N) exactly for small N is computationally tractable; understanding asymptotic behavior is hard.",
+      "**The greedy algorithm**: One can always find an Egyptian fraction representation by repeatedly taking the largest possible unit fraction. This proves existence but doesn't minimize the number of terms."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 19,
+      "summary": "Problem statement and references documenting the OPEN status and Erdős-Straus bounds."
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 21,
+      "endLine": 31,
+      "summary": "Mathlib imports for real analysis, filters, and big operators."
+    },
+    {
+      "id": "background",
+      "title": "Egyptian Fractions Background",
+      "startLine": 33,
+      "endLine": 43,
+      "summary": "Documentation explaining Egyptian fractions and the problem context."
+    },
+    {
+      "id": "existence",
+      "title": "Existence of Representations",
+      "startLine": 45,
+      "endLine": 62,
+      "summary": "Axiom stating that for each N, a representation of 1 exists with denominators ≥ N."
+    },
+    {
+      "id": "k-definition",
+      "title": "The Function k(N)",
+      "startLine": 64,
+      "endLine": 86,
+      "summary": "Axioms defining k(N) as the minimal number of terms, with existence and minimality properties."
+    },
+    {
+      "id": "erdos-straus",
+      "title": "Erdős-Straus Bounds",
+      "startLine": 88,
+      "endLine": 106,
+      "summary": "The known 1971 result: -c < k(N) - (e-1)N < O(N/log N)."
+    },
+    {
+      "id": "open-problem",
+      "title": "The Open Problem",
+      "startLine": 108,
+      "endLine": 127,
+      "summary": "Statement of the main conjecture: does k(N) - (e-1)N → ∞?"
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 129,
+      "endLine": 164,
+      "summary": "Verified Egyptian fraction identities and significance of e-1."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #295, an OPEN question about Egyptian fractions. The problem asks whether k(N) - (e-1)N → ∞, where k(N) is the minimum number of distinct unit fractions with denominators ≥ N that sum to 1. We state the Erdős-Straus bounds as an axiom and define the open conjecture as a proposition.",
+    "implications": "This problem connects ancient Egyptian mathematics to modern analytic number theory. The appearance of Euler's number e in the asymptotic behavior k(N) ≈ (e-1)N reveals a deep connection between Egyptian fractions and the harmonic series. A resolution either way would advance our understanding of representations of rationals.",
+    "openQuestions": [
+      "Does k(N) - (e-1)N → ∞? (The main conjecture)",
+      "Can one compute k(N) exactly for small N by exhaustive search?",
+      "What is the true order of growth of k(N) - (e-1)N?",
+      "Are there other natural number-theoretic functions with similar e-dependent asymptotics?"
+    ]
   }
 }

@@ -1,33 +1,100 @@
 {
   "id": "erdos-486",
-  "title": "Erdős Problem #486",
+  "title": "Erdős Problem #486: Logarithmic Density for Modular Avoidance Sets",
   "slug": "erdos-486",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., and for each ... choose some .... Let\\[B = \\{ m\\in  : m\\not\\in X_nn\\in Am>n\\}.\\]Must ... have a logarithmic density,...",
+  "description": "For any choice of forbidden residue classes modulo each n, must the set of integers avoiding all forbidden classes have a logarithmic density?",
   "meta": {
-    "author": "Unknown",
+    "author": "Open Problem",
     "sourceUrl": "https://erdosproblems.com/486",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos486Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "mathlib",
+    "tags": ["erdos", "number-theory", "density", "modular-arithmetic", "open-problem"],
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 486,
     "erdosUrl": "https://erdosproblems.com/486",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit definition for sequences and functions",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "ZMod",
+        "description": "Integers modulo n",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets by predicates",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of logarithmic density as a limit",
+      "Modular avoidance set formalization using ZMod",
+      "Connection to Davenport-Erdős theorem as a special case",
+      "Reference to Besicovitch counterexample for natural density"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #486 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$, and for each $n\\in A$ choose some $X_n\\subseteq \\mathbb{Z}/n\\mathbb{Z}$. Let\\[B = \\{ m\\in \\mathbb{N} : m\\not\\in X_n\\pmod{n}\\textrm{ for all }n\\in A\\textrm{ with }m>n\\}.\\]Must $B$ have a logarithmic density, i.e. is it true that\\[\\lim_{x\\to \\infty} \\frac{1}{\\log x}\\sum_{\\substack{m\\in B\\\\ m<x}}\\frac{1}{m}\\]exists?\n\n\n\nDavenport and Erd\\H{o}s \\cite{DaEr36} proved that the answer is yes when $X_n=\\{0\\}$ for all $n\\in A$. An alternative elementary proof was later given by Davenport and Erd\\H{o}s in \\cite{DaEr51}.\n\nThe problem considers logarithmic density since Besicovitch \\cite{Be34} showed examples exist without a natural density, even when $X_n=\\{0\\}$ for all $n\\in A$.\n\nThis is a generalisation of [25] (which is the case when $\\lvert X_n\\rvert=1$ for all $n\\in A$).\n\n\n\n\nReferences\n\n\n[Be34] Besicovitch, A., On the density of certain sequences of integers. Math. Annalen (1934), 336-341.\n\n[DaEr36] Davenport, H. and Erd\\H{o}s, P., On sequences of positive integers. Acta Arithmetica (1936), 147-151.\n\n[DaEr51] Davenport, H. and Erd\\H{o}s, P., On sequences of positive integers. J. Indian Math. Soc. (N.S.) (1951), 19--24.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Paul Erdős as a generalization of earlier work on sets of integers defined by divisibility conditions. The foundational result is the Davenport-Erdős theorem (1936), which proved that sets of integers avoiding divisibility by elements of any set A always have a logarithmic density.\n\nBesicovitch (1934) demonstrated that natural density is too strong a requirement—there exist sets with logarithmic density but no natural density. This justified the focus on logarithmic density for such problems.\n\nProblem #486 asks whether the Davenport-Erdős result extends to the far more general setting where we forbid arbitrary residue classes modulo each n, not just the class 0 (divisibility). This remains one of the outstanding open problems in the theory of integer sequences and density.",
+    "problemStatement": "For each $n \\in \\mathbb{N}$, choose some $X_n \\subseteq \\mathbb{Z}/n\\mathbb{Z}$. Define the **modular avoidance set**:\n$$B = \\{m \\in \\mathbb{N} : m \\not\\equiv x \\pmod{n} \\text{ for all } n \\in \\mathbb{N}, x \\in X_n\\}$$\n\n**Conjecture**: $B$ must have a **logarithmic density**, i.e.,\n$$\\lim_{x \\to \\infty} \\frac{1}{\\log x} \\sum_{\\substack{m \\in B \\\\ m < x}} \\frac{1}{m}$$\nexists.\n\n**Status**: OPEN",
+    "proofStrategy": "Since this is an open conjecture, we cannot provide a proof. Our formalization:\n\n1. **Defines logarithmic density** precisely using Mathlib's Filter.Tendsto for limits\n2. **Formalizes the avoidance set** B using ZMod for modular arithmetic\n3. **States the conjecture** as an axiom, making the open status explicit\n4. **Records partial results** (Davenport-Erdős theorem) and context (Besicovitch counterexample)\n\nThe key insight is that logarithmic density is weaker than natural density, and this problem asks whether the Davenport-Erdős result—that divisibility-based avoidance sets have logarithmic density—extends to the much broader class of modular avoidance sets.",
+    "keyInsights": [
+      "**Logarithmic vs Natural Density**: Logarithmic density weights smaller integers more heavily (by 1/n), making it more likely to exist. Besicovitch showed natural density can fail even in simple cases.",
+      "**Modular Avoidance**: Forbidding residue classes {0} mod n is just divisibility avoidance. The general case allows forbidding any residues, a strictly more complex condition.",
+      "**Davenport-Erdős Foundation**: The 1936 theorem proves the special case X_n = {0}, establishing logarithmic density for non-divisibility sets.",
+      "**Generalization Hierarchy**: This problem (#486) generalizes #25 (single forbidden class per modulus), which in turn generalizes divisibility avoidance."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "density-definitions",
+      "title": "Logarithmic Density Definitions",
+      "startLine": 25,
+      "endLine": 43,
+      "summary": "Defines the logarithmic sum and logarithmic density using limits"
+    },
+    {
+      "id": "avoidance-set",
+      "title": "Modular Avoidance Set",
+      "startLine": 45,
+      "endLine": 56,
+      "summary": "Formalizes the set B of integers avoiding all forbidden residue classes"
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Erdős Conjecture #486",
+      "startLine": 57,
+      "endLine": 76,
+      "summary": "States the open conjecture that all modular avoidance sets have logarithmic density"
+    },
+    {
+      "id": "special-case",
+      "title": "Davenport-Erdős Theorem",
+      "startLine": 77,
+      "endLine": 97,
+      "summary": "The proven special case when forbidden classes are {0}"
+    },
+    {
+      "id": "related-results",
+      "title": "Besicovitch Counterexample",
+      "startLine": 98,
+      "endLine": 118,
+      "summary": "Why logarithmic density is needed—natural density may not exist"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #486, an open conjecture in analytic number theory about the existence of logarithmic densities for modular avoidance sets. We define the key concepts precisely and state the conjecture as an axiom, documenting its relationship to the proven Davenport-Erdős theorem and the Besicovitch counterexample that motivates the use of logarithmic density.",
+    "implications": "A positive resolution would unify and extend the theory of integer density under modular constraints. A negative answer would reveal surprising pathological behavior in seemingly natural sets of integers.",
+    "openQuestions": [
+      "Does the conjecture hold when X_n is finite for all n?",
+      "What is the relationship between the density d and the 'size' of the forbidden sets X_n?",
+      "Can we characterize which choices of X_n lead to density 0?"
+    ]
   }
 }

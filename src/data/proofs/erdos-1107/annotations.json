@@ -1,1 +1,156 @@
-[]
+[
+  {
+    "id": "ann-e1107-header",
+    "proofId": "erdos-1107",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This module formalizes **Erdős Problem #1107**, which asks about representing integers as sums of r-powerful numbers. The problem was posed by Erdős and Ivić in 1986 and connects additive number theory with multiplicative structure.",
+    "mathContext": "An r-powerful (or r-full) number is one where every prime factor p appears with multiplicity at least r. The question asks if every large enough integer can be written as a sum of at most r+1 such numbers.",
+    "significance": "supporting",
+    "relatedConcepts": ["powerful numbers", "additive number theory", "Erdős problems"]
+  },
+  {
+    "id": "ann-e1107-imports",
+    "proofId": "erdos-1107",
+    "range": {
+      "startLine": 26,
+      "endLine": 32
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "We import **Mathlib's prime factorization** module to work with prime factors of natural numbers, and the **filter module** to express 'eventually' statements (for all sufficiently large n).",
+    "mathContext": "The `primeFactors` function gives us the set of prime divisors of n. The `atTop` filter captures the notion of 'for all large enough integers'.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "prime factorization", "filters"]
+  },
+  {
+    "id": "ann-e1107-isfull-def",
+    "proofId": "erdos-1107",
+    "range": {
+      "startLine": 41,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "r-Powerful Numbers (IsFull)",
+    "content": "A number n is **r-powerful** (or r-full) if for every prime p dividing n, the r-th power p^r also divides n. For example, 72 = 2³ × 3² is 2-powerful because both 2² and 3² divide 72.",
+    "mathContext": "In Lean: `IsFull r n := ∀ p ∈ n.primeFactors, p ^ r ∣ n`. This is equivalent to saying the exponent of each prime in the factorization is at least r.",
+    "significance": "critical",
+    "relatedConcepts": ["powerful numbers", "squareful numbers", "prime factorization"]
+  },
+  {
+    "id": "ann-e1107-decidable",
+    "proofId": "erdos-1107",
+    "range": {
+      "startLine": 55,
+      "endLine": 58
+    },
+    "type": "lemma",
+    "title": "Decidability Instance",
+    "content": "We prove that `IsFull r n` is **decidable** for concrete values. This allows us to use `native_decide` to verify examples computationally.",
+    "mathContext": "Since `primeFactors` is a finite set and divisibility is decidable, checking whether all prime factors satisfy the condition is decidable.",
+    "significance": "supporting",
+    "relatedConcepts": ["decidability", "native_decide", "computation"]
+  },
+  {
+    "id": "ann-e1107-sumdef",
+    "proofId": "erdos-1107",
+    "range": {
+      "startLine": 60,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Sum of r-Powerful Numbers",
+    "content": "We define when a number n can be written as a sum of at most r+1 many r-powerful numbers. This is the core predicate for the Erdős conjecture.",
+    "mathContext": "In Lean: we require a list s of length ≤ r+1 where each element is r-powerful and the sum equals n. This existential definition captures 'can be represented as'.",
+    "significance": "key",
+    "relatedConcepts": ["additive representation", "sum decomposition"]
+  },
+  {
+    "id": "ann-e1107-basic-props",
+    "proofId": "erdos-1107",
+    "range": {
+      "startLine": 71,
+      "endLine": 94
+    },
+    "type": "lemma",
+    "title": "Basic Properties of r-Powerful Numbers",
+    "content": "We establish foundational facts: **0 and 1 are r-powerful** for all r (vacuously, they have no prime factors). Every number is **0-powerful and 1-powerful**. If n is k-powerful and m ≤ k, then n is also m-powerful (monotonicity).",
+    "mathContext": "These lemmas follow from basic properties of divisibility and the empty prime factorization of 0 and 1. The monotonicity uses that p^m divides p^k when m ≤ k.",
+    "significance": "supporting",
+    "relatedConcepts": ["vacuous truth", "divisibility", "monotonicity"]
+  },
+  {
+    "id": "ann-e1107-examples",
+    "proofId": "erdos-1107",
+    "range": {
+      "startLine": 100,
+      "endLine": 110
+    },
+    "type": "lemma",
+    "title": "Verified Squareful Numbers",
+    "content": "We verify computationally that **4, 8, 9, and 36 are 2-powerful** (squareful). These are verified using `native_decide`, which evaluates the predicate directly.",
+    "mathContext": "4 = 2², 8 = 2³, 9 = 3², and 36 = 2² × 3². Each prime factor appears with exponent ≥ 2, satisfying the 2-powerful condition.",
+    "significance": "supporting",
+    "relatedConcepts": ["squareful numbers", "native_decide", "verification"]
+  },
+  {
+    "id": "ann-e1107-main-conjecture",
+    "proofId": "erdos-1107",
+    "range": {
+      "startLine": 120,
+      "endLine": 128
+    },
+    "type": "theorem",
+    "title": "Main Conjecture (Axiom)",
+    "content": "**Erdős Problem #1107**: For all r ≥ 2, every sufficiently large integer is the sum of at most r+1 many r-powerful numbers. This general conjecture **remains OPEN**.",
+    "mathContext": "We state this as an axiom using `∀ᶠ n in atTop`, meaning 'for all sufficiently large n'. The techniques that work for r=2 do not extend to larger r.",
+    "significance": "critical",
+    "relatedConcepts": ["open conjecture", "Erdős problems", "asymptotic statements"]
+  },
+  {
+    "id": "ann-e1107-heathbrown",
+    "proofId": "erdos-1107",
+    "range": {
+      "startLine": 130,
+      "endLine": 139
+    },
+    "type": "theorem",
+    "title": "Heath-Brown's Theorem (r=2)",
+    "content": "**Heath-Brown (1988)** proved the r=2 case: every sufficiently large integer is the sum of at most **three squareful numbers**. This resolves Erdős #1107 for the most important case.",
+    "mathContext": "The proof uses the theory of ternary quadratic forms and deep analytic results. A ternary quadratic form is a polynomial like ax² + by² + cz², and Heath-Brown's work shows connections between these forms and squareful sums.",
+    "significance": "critical",
+    "relatedConcepts": ["Heath-Brown", "ternary quadratic forms", "squareful numbers"]
+  },
+  {
+    "id": "ann-e1107-example-13",
+    "proofId": "erdos-1107",
+    "range": {
+      "startLine": 147,
+      "endLine": 159
+    },
+    "type": "theorem",
+    "title": "Verified Example: 13 = 4 + 9",
+    "content": "We prove that **13 can be written as 4 + 9**, the sum of two squareful numbers. This is a concrete witness demonstrating the conjecture for small cases.",
+    "mathContext": "The proof constructs the list [4, 9], verifies its length is ≤ 3, checks that 4 and 9 are both 2-powerful, and confirms the sum is 13. All checks use `native_decide` for computational verification.",
+    "significance": "key",
+    "relatedConcepts": ["witness", "computational proof", "verification"]
+  },
+  {
+    "id": "ann-e1107-example-17",
+    "proofId": "erdos-1107",
+    "range": {
+      "startLine": 161,
+      "endLine": 170
+    },
+    "type": "theorem",
+    "title": "Verified Example: 17 = 8 + 9",
+    "content": "We prove that **17 = 8 + 9**, another sum of two squareful numbers. Both 8 = 2³ and 9 = 3² are 2-powerful.",
+    "mathContext": "This example shows that even prime numbers (17) can be represented as sums of squareful numbers, which is not obvious since primes themselves are not squareful (except trivially 1).",
+    "significance": "key",
+    "relatedConcepts": ["prime representation", "computational proof"]
+  }
+]

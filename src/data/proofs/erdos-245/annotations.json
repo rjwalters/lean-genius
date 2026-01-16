@@ -1,1 +1,142 @@
-[]
+[
+  {
+    "id": "ann-overview",
+    "proofId": "erdos-245",
+    "range": {"startLine": 1, "endLine": 33},
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #245** asks about the growth rate of sumsets for sparse sequences.\n\nFor an infinite set A with **zero density** (meaning |A ∩ {1,...,N}| grows slower than N), how much bigger is the sumset A+A compared to A?\n\nThe answer: at least 3 times as big (asymptotically).\n\nThis was proved by G.A. Freiman in 1973 as part of his foundational work on additive combinatorics.",
+    "significance": "critical",
+    "relatedConcepts": ["additive combinatorics", "Freiman's theorem", "sumsets"]
+  },
+  {
+    "id": "ann-counting-func",
+    "proofId": "erdos-245",
+    "range": {"startLine": 42, "endLine": 46},
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "The **counting function** `countingFunc A N` counts how many elements of A are at most N.\n\nThis is the key tool for measuring the 'density' of a set. For example:\n- For A = all naturals: countingFunc A N = N\n- For A = primes: countingFunc A N ≈ N/log(N)\n- For A = powers of 2: countingFunc A N ≈ log₂(N)\n\nWe use `Nat.card` for the cardinality of a subtype.",
+    "mathContext": "|A ∩ {1,...,N}|",
+    "significance": "critical",
+    "relatedConcepts": ["cardinality", "density", "Nat.card"]
+  },
+  {
+    "id": "ann-zero-density",
+    "proofId": "erdos-245",
+    "range": {"startLine": 52, "endLine": 54},
+    "type": "definition",
+    "title": "Zero Density Condition",
+    "content": "A set has **zero density** if `|A ∩ {1,...,N}| / N → 0` as N → ∞.\n\nThis means the set is 'sparse' - its elements become increasingly rare among all natural numbers.\n\n**Examples of zero-density sets:**\n- Prime numbers (density ~ 1/log N → 0)\n- Perfect squares (density ~ 1/√N → 0)\n- Powers of 2 (density ~ log₂N / N → 0)\n- Any finite set (eventually 0)\n\nThe condition is expressed using Mathlib's `Tendsto` and `atTop` filter.",
+    "mathContext": "Tendsto (λ N => |A ∩ {1,...,N}| / N) atTop (𝓝 0)",
+    "significance": "critical",
+    "relatedConcepts": ["asymptotic density", "sparse sets", "Filter.Tendsto"]
+  },
+  {
+    "id": "ann-sumset-def",
+    "proofId": "erdos-245",
+    "range": {"startLine": 56, "endLine": 57},
+    "type": "definition",
+    "title": "Sumset Definition",
+    "content": "The **sumset** `A + A` is the set of all pairwise sums:\n```\nA + A = {a + b : a ∈ A, b ∈ A}\n```\n\nUsing Mathlib's pointwise operations, this is simply `A + A` with the `Pointwise` scope open.\n\nFor example, if A = {1, 2, 4}:\n- A + A = {2, 3, 4, 5, 6, 8}\n\nNote: The sumset includes both `a + a` terms (diagonal) and `a + b` terms (off-diagonal).",
+    "mathContext": "A + A with Pointwise notation",
+    "significance": "key",
+    "relatedConcepts": ["Pointwise operations", "additive combinatorics"]
+  },
+  {
+    "id": "ann-growth-ratio",
+    "proofId": "erdos-245",
+    "range": {"startLine": 59, "endLine": 68},
+    "type": "definition",
+    "title": "Growth Ratio",
+    "content": "The **growth ratio** measures how much bigger A+A is compared to A:\n\n```\ngrowthRatio A N = |A+A ∩ {1,...,N}| / |A ∩ {1,...,N}|\n```\n\nThe **asymptotic growth ratio** is the limsup of this as N → ∞.\n\nWe use `EReal` (extended reals with ±∞) to handle division by zero gracefully when |A ∩ {1,...,N}| = 0 for small N.",
+    "mathContext": "limsup_{N→∞} |A+A ∩ {1,...,N}| / |A ∩ {1,...,N}|",
+    "significance": "critical",
+    "relatedConcepts": ["limsup", "EReal", "Filter.limsup"]
+  },
+  {
+    "id": "ann-mann-bound",
+    "proofId": "erdos-245",
+    "range": {"startLine": 70, "endLine": 87},
+    "type": "theorem",
+    "title": "Mann's Bound (1960)",
+    "content": "**Mann's Theorem**: For any infinite zero-density set A, the asymptotic growth ratio is at least **2**.\n\nErdos wrote this is 'easy to see', but the proof actually requires careful density arguments from Mann's 1960 paper.\n\nThe intuition: when you add two sparse sets together, you get at least twice as many distinct sums because most pairs (a, b) with a < b give distinct values a + b.\n\nThis is stated as an axiom because the proof requires advanced techniques from additive number theory.",
+    "mathContext": "2 ≤ asymptoticGrowthRatio A",
+    "significance": "key",
+    "relatedConcepts": ["density arguments", "sumset lower bounds"],
+    "prerequisites": ["analytic number theory"]
+  },
+  {
+    "id": "ann-freiman-theorem",
+    "proofId": "erdos-245",
+    "range": {"startLine": 89, "endLine": 113},
+    "type": "theorem",
+    "title": "Freiman's Theorem (1973)",
+    "content": "**Freiman's Theorem - The Main Result**\n\nFor any infinite zero-density set A, the asymptotic growth ratio is at least **3**.\n\nThis is the **sharp bound** - it cannot be improved because powers of 2 achieve exactly 3.\n\nFreiman proved this in his 1973 monograph 'Foundations of a structural theory of set addition', which founded the field now known as additive combinatorics.\n\nThe proof uses structural arguments about how elements of A can combine to form sums, showing that sparse sets must have significant sumset growth.",
+    "mathContext": "3 ≤ asymptoticGrowthRatio A",
+    "significance": "critical",
+    "relatedConcepts": ["Freiman's structure theorem", "additive combinatorics", "small doubling"],
+    "prerequisites": ["additive combinatorics"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "erdos-245",
+    "range": {"startLine": 110, "endLine": 113},
+    "type": "theorem",
+    "title": "Positive Answer to Problem #245",
+    "content": "The main theorem `erdos_245_positive_answer` states:\n\n**For all infinite sets A with zero density, the asymptotic growth ratio is ≥ 3.**\n\nThis is a direct application of Freiman's theorem, affirming Erdos's conjecture.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdos problems"]
+  },
+  {
+    "id": "ann-powers-infinite",
+    "proofId": "erdos-245",
+    "range": {"startLine": 120, "endLine": 126},
+    "type": "lemma",
+    "title": "Powers of 2 are Infinite",
+    "content": "We prove that {2^k : k ∈ ℕ} is an infinite set.\n\nThe proof uses `Set.infinite_of_injective_forall_mem`:\n1. The function k ↦ 2^k is injective (different exponents give different powers)\n2. Every value 2^k is in the set\n\nTherefore the set is infinite.\n\nThe injectivity uses `Nat.pow_right_injective` with base 2 > 1.",
+    "mathContext": "{n : ℕ | ∃ k, n = 2^k}.Infinite",
+    "significance": "supporting",
+    "relatedConcepts": ["Set.Infinite", "injectivity"]
+  },
+  {
+    "id": "ann-optimality",
+    "proofId": "erdos-245",
+    "range": {"startLine": 132, "endLine": 152},
+    "type": "insight",
+    "title": "Optimality: Why 3 is Best Possible",
+    "content": "The bound 3 is **optimal** - it cannot be improved.\n\n**The optimal example: Powers of 2**\n\nConsider A = {1, 2, 4, 8, 16, ...} = {2^k : k ∈ ℕ}\n\nUp to N = 2^n:\n- |A ∩ {1,...,N}| = n elements\n- |A+A ∩ {1,...,N}| ≈ n(n+1)/2 elements (distinct binary sums)\n\nThe sumset A+A contains:\n- All 2^k (when a = b, giving 2^(k+1))\n- All 2^a + 2^b for a ≠ b (distinct by unique binary representation)\n\nThe ratio approaches 3 as we analyze at the right scale.",
+    "significance": "key",
+    "relatedConcepts": ["geometric progressions", "binary representation"]
+  },
+  {
+    "id": "ann-powers-sumset",
+    "proofId": "erdos-245",
+    "range": {"startLine": 148, "endLine": 152},
+    "type": "lemma",
+    "title": "Sumset of Powers of 2",
+    "content": "We prove that for any a, b ∈ ℕ, the sum 2^a + 2^b belongs to the sumset of powers of 2.\n\nThis is a simple application of the sumset definition:\n- 2^a ∈ powersOfTwo (witnessed by a)\n- 2^b ∈ powersOfTwo (witnessed by b)\n- Therefore 2^a + 2^b ∈ powersOfTwo + powersOfTwo",
+    "mathContext": "2^a + 2^b ∈ sumset powersOfTwo",
+    "significance": "supporting",
+    "relatedConcepts": ["sumset membership"]
+  },
+  {
+    "id": "ann-diff-sets",
+    "proofId": "erdos-245",
+    "range": {"startLine": 154, "endLine": 167},
+    "type": "concept",
+    "title": "Connection to Problem #899",
+    "content": "**Erdos Problem #899** asks the analogous question for **difference sets** A - A instead of sumsets A + A.\n\nThe difference set A - A = {a - b : a, b ∈ A} lives in ℤ (integers) to allow negatives.\n\nThe growth behavior of difference sets is related but different from sumsets. The key difference:\n- Sumsets only go 'up' (sums are positive)\n- Difference sets go both ways (can be negative)\n\nThis creates different counting behavior near zero.",
+    "significance": "supporting",
+    "relatedConcepts": ["Erdos Problem #899", "difference sets"]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "erdos-245",
+    "range": {"startLine": 169, "endLine": 187},
+    "type": "theorem",
+    "title": "Summary of Known Results",
+    "content": "`problem_245_summary` combines all our results:\n\n1. **Freiman (1973)**: Growth ratio ≥ 3 for all zero-density sets\n   - The sharp bound\n   - Part of foundational additive combinatorics\n\n2. **Mann (1960)**: Growth ratio ≥ 2 for all zero-density sets\n   - The weaker bound\n   - 'Easy to see' according to Erdos\n\nBoth are stated as axioms and combined into a single summary theorem.",
+    "significance": "key",
+    "relatedConcepts": ["mathematical progress", "sharp bounds"]
+  }
+]

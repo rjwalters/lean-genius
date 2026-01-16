@@ -1,1 +1,169 @@
-[]
+[
+  {
+    "id": "ann-e259-header",
+    "proofId": "erdos-259",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #259** asks whether ∑ μ(n)² · n/2ⁿ is irrational. Since μ(n)² = 1 iff n is squarefree, this is really asking about sums over squarefree numbers. Chen and Ruzsa proved it in 1999.",
+    "mathContext": "The Möbius function μ(n) is central to analytic number theory, appearing in the prime number theorem and Möbius inversion. The condition μ(n)² = 1 characterizes squarefree numbers.",
+    "significance": "supporting",
+    "relatedConcepts": ["erdos", "moebius-function", "irrationality"]
+  },
+  {
+    "id": "ann-e259-moebius-abbrev",
+    "proofId": "erdos-259",
+    "range": {
+      "startLine": 28,
+      "endLine": 28
+    },
+    "type": "definition",
+    "title": "Möbius Function Abbreviation",
+    "content": "We define `moebiusFn` as an abbreviation for `ArithmeticFunction.moebius`, the Möbius function from Mathlib.",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "moebius-function"]
+  },
+  {
+    "id": "ann-e259-moebius-one",
+    "proofId": "erdos-259",
+    "range": {
+      "startLine": 57,
+      "endLine": 58
+    },
+    "type": "theorem",
+    "title": "μ(1) = 1",
+    "content": "The Möbius function satisfies μ(1) = 1. This is the base case for the multiplicative function.",
+    "mathContext": "By definition, μ(1) = 1 since 1 has zero prime factors (k=0, so (-1)^0 = 1).",
+    "significance": "supporting",
+    "relatedConcepts": ["moebius-function", "multiplicative"]
+  },
+  {
+    "id": "ann-e259-moebius-examples",
+    "proofId": "erdos-259",
+    "range": {
+      "startLine": 60,
+      "endLine": 79
+    },
+    "type": "theorem",
+    "title": "Möbius Function Examples",
+    "content": "Computed examples: μ(2) = μ(3) = μ(5) = -1 (primes), μ(4) = μ(9) = 0 (have squared factors), μ(6) = μ(10) = 1 (products of 2 distinct primes).",
+    "mathContext": "These verify the Möbius function definition using `native_decide`, which evaluates decidable propositions at compile time.",
+    "significance": "supporting",
+    "relatedConcepts": ["moebius-function", "native-decide", "verification"]
+  },
+  {
+    "id": "ann-e259-squarefree-one",
+    "proofId": "erdos-259",
+    "range": {
+      "startLine": 90,
+      "endLine": 91
+    },
+    "type": "theorem",
+    "title": "1 is Squarefree",
+    "content": "The number 1 is squarefree. This is a base case — no prime squared can divide 1.",
+    "mathContext": "Proved using Mathlib's `squarefree_one` lemma directly.",
+    "significance": "supporting",
+    "relatedConcepts": ["squarefree", "base-case"]
+  },
+  {
+    "id": "ann-e259-squarefree-iff",
+    "proofId": "erdos-259",
+    "range": {
+      "startLine": 93,
+      "endLine": 96
+    },
+    "type": "theorem",
+    "title": "Squarefree ↔ μ(n) ≠ 0",
+    "content": "**Key characterization**: n is squarefree if and only if μ(n) ≠ 0. This connects the Möbius function to squarefreeness.",
+    "mathContext": "Uses Mathlib's `moebius_ne_zero_iff_squarefree`. When n has a squared prime factor, μ(n) = 0; otherwise μ(n) = ±1.",
+    "significance": "critical",
+    "relatedConcepts": ["moebius-function", "squarefree", "characterization"]
+  },
+  {
+    "id": "ann-e259-moebius-sq",
+    "proofId": "erdos-259",
+    "range": {
+      "startLine": 98,
+      "endLine": 104
+    },
+    "type": "theorem",
+    "title": "μ(n)² as Indicator",
+    "content": "**Indicator property**: μ(n)² equals 1 if n is squarefree, 0 otherwise. This makes μ(n)² the indicator function for squarefree numbers.",
+    "mathContext": "The sum ∑ μ(n)² · n/2ⁿ therefore equals ∑_{squarefree n} n/2ⁿ.",
+    "significance": "critical",
+    "relatedConcepts": ["indicator-function", "squarefree", "filtering"]
+  },
+  {
+    "id": "ann-e259-series-term",
+    "proofId": "erdos-259",
+    "range": {
+      "startLine": 120,
+      "endLine": 122
+    },
+    "type": "definition",
+    "title": "Series Term Definition",
+    "content": "The n-th term of the series is μ(n)² · n / 2ⁿ. This is nonzero only when n is squarefree.",
+    "mathContext": "Defined as `(moebiusFn n : ℝ)² * n / 2^n`. The cast to ℝ is needed for the irrationality statement.",
+    "significance": "key",
+    "relatedConcepts": ["series-definition", "type-coercion"]
+  },
+  {
+    "id": "ann-e259-summable",
+    "proofId": "erdos-259",
+    "range": {
+      "startLine": 128,
+      "endLine": 132
+    },
+    "type": "theorem",
+    "title": "Series Convergence",
+    "content": "The series converges absolutely. Since |μ(n)²| ≤ 1 and n/2ⁿ → 0 exponentially, the sum ≤ ∑ n/2ⁿ = 2.",
+    "mathContext": "Stated as an axiom since we focus on the irrationality result, not the convergence proof.",
+    "significance": "supporting",
+    "relatedConcepts": ["convergence", "comparison-test"]
+  },
+  {
+    "id": "ann-e259-chen-ruzsa",
+    "proofId": "erdos-259",
+    "range": {
+      "startLine": 149,
+      "endLine": 156
+    },
+    "type": "theorem",
+    "title": "Chen-Ruzsa Theorem",
+    "content": "**Chen-Ruzsa (1999)**: The sum ∑ μ(n)² · n/2ⁿ is irrational. More strongly, ANY infinite subseries over squarefree numbers is irrational.",
+    "mathContext": "Stated as an axiom since the proof uses transcendence theory techniques beyond current Mathlib formalization.",
+    "significance": "critical",
+    "relatedConcepts": ["irrationality", "transcendence-theory", "chen-ruzsa"]
+  },
+  {
+    "id": "ann-e259-main",
+    "proofId": "erdos-259",
+    "range": {
+      "startLine": 158,
+      "endLine": 163
+    },
+    "type": "theorem",
+    "title": "Erdős Problem #259",
+    "content": "**Main Result**: The sum ∑ μ(n)² · n/2ⁿ is irrational. This follows directly from the Chen-Ruzsa theorem.",
+    "mathContext": "The statement `Irrational (∑' n, (moebiusFn n)² * n / 2^n)` is exactly Erdős's original question.",
+    "significance": "critical",
+    "relatedConcepts": ["erdos", "irrationality", "main-result"]
+  },
+  {
+    "id": "ann-e259-alt",
+    "proofId": "erdos-259",
+    "range": {
+      "startLine": 165,
+      "endLine": 167
+    },
+    "type": "theorem",
+    "title": "Alternative Statement",
+    "content": "Alternative formulation using tsum notation: directly states the tsum is irrational.",
+    "mathContext": "Uses `series_summable.hasSum` to convert between HasSum and tsum formulations.",
+    "significance": "supporting",
+    "relatedConcepts": ["tsum", "hassum"]
+  }
+]

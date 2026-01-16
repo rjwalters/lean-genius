@@ -1,1 +1,169 @@
-[]
+[
+  {
+    "id": "ann-e377-header",
+    "proofId": "erdos-377",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #377** asks if the sum of 1/p over primes p ≤ n that DON'T divide C(2n, n) is uniformly bounded. EGRS75 proved statistical results but the main conjecture is OPEN.",
+    "mathContext": "The central binomial coefficient C(2n,n) = (2n)!/(n!)² is highly composite. Most primes p ≤ n divide it, so the question is whether the 'exceptional' primes have bounded reciprocal sum.",
+    "significance": "supporting",
+    "relatedConcepts": ["erdos", "central-binomial", "prime-divisibility"]
+  },
+  {
+    "id": "ann-e377-imports",
+    "proofId": "erdos-377",
+    "range": {
+      "startLine": 21,
+      "endLine": 30
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import **Central** for central binomials, **ArithmeticFunction** for primality, **Log.Basic** for logarithms, **InfiniteSum.Real** for series, and **Cofinite** for 'almost all' statements.",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "central-binomial", "filters"]
+  },
+  {
+    "id": "ann-e377-function",
+    "proofId": "erdos-377",
+    "range": {
+      "startLine": 32,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "**sumInvPrimesNotDivCentralBinom n** computes ∑_{p ≤ n, p ∤ C(2n,n)} 1/p — the sum of reciprocals of primes that 'miss' the central binomial.",
+    "mathContext": "By Kummer's theorem, p | C(2n,n) iff there's a carry when adding n + n in base p. Primes NOT dividing are those where all base-p digits of n are < p/2.",
+    "significance": "critical",
+    "relatedConcepts": ["prime-sum", "kummer-theorem", "central-binomial"]
+  },
+  {
+    "id": "ann-e377-conjecture",
+    "proofId": "erdos-377",
+    "range": {
+      "startLine": 44,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "The Boundedness Conjecture",
+    "content": "**BoundedConjectureHolds**: ∃ C > 0, ∀ n, f(n) ≤ C. This asks whether the 'exceptional' primes have uniformly bounded reciprocal sum.",
+    "mathContext": "The conjecture remains OPEN. Intuitively, 'most' primes divide C(2n,n), so the complement should be small — but proving uniform boundedness is difficult.",
+    "significance": "critical",
+    "relatedConcepts": ["open-conjecture", "boundedness", "uniform-bound"]
+  },
+  {
+    "id": "ann-e377-main",
+    "proofId": "erdos-377",
+    "range": {
+      "startLine": 58,
+      "endLine": 61
+    },
+    "type": "theorem",
+    "title": "Main Theorem Statement",
+    "content": "**erdos_377**: States the main open question as an equivalence — BoundedConjectureHolds iff the explicit bound exists.",
+    "mathContext": "This is definitionally true (rfl) since BoundedConjectureHolds is exactly that condition. The theorem serves as the formal problem statement.",
+    "significance": "critical",
+    "relatedConcepts": ["main-theorem", "open-problem", "formalization"]
+  },
+  {
+    "id": "ann-e377-gamma0",
+    "proofId": "erdos-377",
+    "range": {
+      "startLine": 65,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "The Constant γ₀",
+    "content": "**gamma0** = ∑_{k=2}^∞ log(k)/2^k ≈ 0.7943. This constant appears throughout EGRS75's analysis of the average behavior of f(n).",
+    "mathContext": "The series converges rapidly. This constant measures the 'typical' value of f(n) for almost all n.",
+    "significance": "key",
+    "relatedConcepts": ["gamma-constant", "series", "average-behavior"]
+  },
+  {
+    "id": "ann-e377-first-moment",
+    "proofId": "erdos-377",
+    "range": {
+      "startLine": 71,
+      "endLine": 79
+    },
+    "type": "theorem",
+    "title": "EGRS First Moment",
+    "content": "**egrs_first_moment**: (1/x)∑_{n≤x} f(n) → γ₀ as x → ∞. The Cesàro mean of f(n) converges to γ₀.",
+    "mathContext": "This shows f(n) is 'typically' about γ₀ ≈ 0.794. But average convergence doesn't bound the maximum.",
+    "significance": "key",
+    "relatedConcepts": ["cesaro-mean", "convergence", "egrs75"]
+  },
+  {
+    "id": "ann-e377-second-moment",
+    "proofId": "erdos-377",
+    "range": {
+      "startLine": 81,
+      "endLine": 90
+    },
+    "type": "theorem",
+    "title": "EGRS Second Moment",
+    "content": "**egrs_second_moment**: (1/x)∑_{n≤x} f(n)² → γ₀² as x → ∞. The Cesàro mean of f(n)² equals the square of the first moment limit.",
+    "mathContext": "Combined with the first moment, this implies Var(f) = E[f²] - E[f]² → γ₀² - γ₀² = 0. So f(n) concentrates around γ₀.",
+    "significance": "key",
+    "relatedConcepts": ["second-moment", "variance", "concentration"]
+  },
+  {
+    "id": "ann-e377-ae",
+    "proofId": "erdos-377",
+    "range": {
+      "startLine": 92,
+      "endLine": 101
+    },
+    "type": "theorem",
+    "title": "Almost Everywhere Result",
+    "content": "**egrs_almost_everywhere**: For almost all n, f(n) = γ₀ + o(1). The function approaches γ₀ for 'most' integers.",
+    "mathContext": "This follows from the variance → 0 argument. The cofinite filter captures 'all but finitely many' integers.",
+    "significance": "key",
+    "relatedConcepts": ["almost-everywhere", "cofinite", "concentration"]
+  },
+  {
+    "id": "ann-e377-upper-bound",
+    "proofId": "erdos-377",
+    "range": {
+      "startLine": 103,
+      "endLine": 110
+    },
+    "type": "theorem",
+    "title": "EGRS Upper Bound",
+    "content": "**egrs_upper_bound**: f(n) ≤ c·log(log(n)) for some c < 1 and all large n. This improves the trivial Mertens bound.",
+    "mathContext": "Mertens' theorem gives ∑_{p≤n} 1/p ~ log(log n), so f(n) ≤ log(log n) trivially. EGRS improved the constant to c < 1.",
+    "significance": "key",
+    "relatedConcepts": ["upper-bound", "mertens", "improvement"]
+  },
+  {
+    "id": "ann-e377-complement",
+    "proofId": "erdos-377",
+    "range": {
+      "startLine": 122,
+      "endLine": 127
+    },
+    "type": "definition",
+    "title": "Complementary Sum",
+    "content": "**sumInvPrimesDividingCentralBinom** — the sum over primes that DO divide C(2n,n). This is the 'complement' of f(n).",
+    "mathContext": "The two functions partition ∑_{p≤n} 1/p. If f(n) is bounded, then the dividing primes contribute (1-o(1))log(log n).",
+    "significance": "supporting",
+    "relatedConcepts": ["complement", "partition", "prime-sum"]
+  },
+  {
+    "id": "ann-e377-complementary",
+    "proofId": "erdos-377",
+    "range": {
+      "startLine": 129,
+      "endLine": 135
+    },
+    "type": "lemma",
+    "title": "Complementary Sums Lemma",
+    "content": "**complementary_sums**: f(n) + g(n) = ∑_{p≤n} 1/p where g is the dividing-prime sum. The two functions partition all primes.",
+    "mathContext": "This is straightforward from definitions: each prime p ≤ n either divides C(2n,n) or doesn't, contributing to exactly one sum.",
+    "significance": "supporting",
+    "relatedConcepts": ["partition", "complementary", "prime-decomposition"]
+  }
+]

@@ -6,7 +6,8 @@ import { UserMenu } from '@/components/auth/UserMenu'
 import { Footer } from '@/components/Footer'
 import { ProofBadge, WiedijkBadge, ErdosBadge, BadgeFilter, MathlibIndicator } from '@/components/ui/proof-badge'
 import { WIEDIJK_BADGE_INFO, HILBERT_BADGE_INFO, MILLENNIUM_BADGE_INFO, ERDOS_BADGE_INFO } from '@/types/proof'
-import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, ArrowUpDown, Search, Github } from 'lucide-react'
+import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, ArrowUpDown, Search, Github, Share2 } from 'lucide-react'
+import { useDebouncedUrlState, useUrlState, serializers } from '@/hooks'
 import type { ProofBadge as ProofBadgeType, ProofListing } from '@/types/proof'
 
 type SortOption = 'newest' | 'oldest' | 'alphabetical'
@@ -20,14 +21,26 @@ function parseDateAdded(dateStr?: string): Date {
 
 export function HomePage() {
   const { isAuthenticated } = useAuth()
-  const [selectedBadges, setSelectedBadges] = useState<ProofBadgeType[]>([])
+
+  // URL-synced state
+  const [searchQuery, setSearchQuery] = useDebouncedUrlState('q', '', serializers.string)
+  const [selectedBadges, setSelectedBadges] = useUrlState<ProofBadgeType[]>(
+    'badges',
+    [],
+    serializers.stringArray as { parse: (v: string | null) => ProofBadgeType[]; stringify: (v: ProofBadgeType[]) => string | null }
+  )
+  const [sortBy, setSortBy] = useUrlState<SortOption>(
+    'sort',
+    'newest',
+    serializers.enum('newest', ['newest', 'oldest', 'alphabetical'])
+  )
+  const [showWiedijkOnly, setShowWiedijkOnly] = useUrlState('wiedijk', false, serializers.boolean)
+  const [showHilbertOnly, setShowHilbertOnly] = useUrlState('hilbert', false, serializers.boolean)
+  const [showMillenniumOnly, setShowMillenniumOnly] = useUrlState('millennium', false, serializers.boolean)
+  const [showErdosOnly, setShowErdosOnly] = useUrlState('erdos', false, serializers.boolean)
+
+  // Local-only UI state (no URL persistence needed)
   const [showFilters, setShowFilters] = useState(false)
-  const [sortBy, setSortBy] = useState<SortOption>('newest')
-  const [showWiedijkOnly, setShowWiedijkOnly] = useState(false)
-  const [showHilbertOnly, setShowHilbertOnly] = useState(false)
-  const [showMillenniumOnly, setShowMillenniumOnly] = useState(false)
-  const [showErdosOnly, setShowErdosOnly] = useState(false)
-  const [searchQuery, setSearchQuery] = useState('')
 
   // Filter and sort proofs
   const proofs = useMemo(() => {
@@ -109,6 +122,27 @@ export function HomePage() {
     setShowMillenniumOnly(false)
     setShowErdosOnly(false)
     setSearchQuery('')
+  }
+
+  const hasActiveFilters = searchQuery.trim() || selectedBadges.length > 0 || showWiedijkOnly || showHilbertOnly || showMillenniumOnly || showErdosOnly || sortBy !== 'newest'
+
+  const [copySuccess, setCopySuccess] = useState(false)
+  const handleShareView = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+      setCopySuccess(true)
+      setTimeout(() => setCopySuccess(false), 2000)
+    } catch {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea')
+      textArea.value = window.location.href
+      document.body.appendChild(textArea)
+      textArea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textArea)
+      setCopySuccess(true)
+      setTimeout(() => setCopySuccess(false), 2000)
+    }
   }
 
   return (
@@ -209,6 +243,17 @@ export function HomePage() {
                 </span>
               )}
             </button>
+            {/* Share View Button - only show when there are active filters */}
+            {hasActiveFilters && (
+              <button
+                onClick={handleShareView}
+                className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                title="Copy link to this view"
+              >
+                <Share2 className="h-4 w-4" />
+                <span className="hidden sm:inline">{copySuccess ? 'Copied!' : 'Share'}</span>
+              </button>
+            )}
           </div>
         </div>
 

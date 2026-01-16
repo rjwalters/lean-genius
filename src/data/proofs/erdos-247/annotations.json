@@ -1,1 +1,122 @@
-[]
+[
+  {
+    "id": "ann-247-1",
+    "proofId": "erdos-247",
+    "range": {"startLine": 36, "endLine": 38},
+    "type": "definition",
+    "title": "Lacunary Sum Definition",
+    "content": "**lacunarySum**: The infinite series Σ_{k=1}^∞ 1/2^{n_k} for a sequence n : ℕ → ℕ. In binary, this creates a number with 1s at positions n_k. The 'lacunary' (gappy) structure emerges when n_k grows quickly, making the 1s increasingly sparse.",
+    "significance": "critical",
+    "relatedConcepts": ["infinite series", "binary representation", "tsum"]
+  },
+  {
+    "id": "ann-247-2",
+    "proofId": "erdos-247",
+    "range": {"startLine": 42, "endLine": 45},
+    "type": "definition",
+    "title": "Weak Growth Condition",
+    "content": "**HasWeakGrowth**: For all C > 0, there exists k with n_k > C·k. This is equivalent to lim sup n_k/k = ∞, meaning the sequence eventually grows faster than any linear function. Example: k² satisfies this but k does not.",
+    "significance": "critical",
+    "relatedConcepts": ["limsup", "growth rate", "linear functions"]
+  },
+  {
+    "id": "ann-247-3",
+    "proofId": "erdos-247",
+    "range": {"startLine": 47, "endLine": 50},
+    "type": "definition",
+    "title": "Strong Growth Condition",
+    "content": "**HasStrongGrowth**: For ALL exponents t ≥ 1 and all C > 0, there exists k with n_k > C·k^t. This means the sequence grows faster than ANY polynomial. Factorial and exponential functions satisfy this; polynomial functions do not.",
+    "significance": "critical",
+    "relatedConcepts": ["polynomial growth", "superpolynomial", "limsup"]
+  },
+  {
+    "id": "ann-247-4",
+    "proofId": "erdos-247",
+    "range": {"startLine": 54, "endLine": 62},
+    "type": "definition",
+    "title": "The Open Conjecture",
+    "content": "**erdos_247_conjecture**: The full conjecture states that weak growth (faster than linear) suffices for transcendence. This remains OPEN - we only know that strong growth (faster than any polynomial) works. The gap between these conditions is where the difficulty lies.",
+    "significance": "critical",
+    "relatedConcepts": ["open problems", "transcendence", "Erdős problems"]
+  },
+  {
+    "id": "ann-247-5",
+    "proofId": "erdos-247",
+    "range": {"startLine": 66, "endLine": 79},
+    "type": "theorem",
+    "title": "Erdős's Theorem (1975)",
+    "content": "**erdos_transcendence_strong** (axiom): Under strong growth conditions, the lacunary sum is transcendental. The proof uses Liouville-type arguments: if α is algebraic of degree d, then |α - p/q| > c/q^d. But lacunary sums with superpolynomial growth can be approximated by their partial sums (rationals) with error smaller than any Liouville bound.",
+    "significance": "critical",
+    "relatedConcepts": ["Liouville theorem", "algebraic numbers", "approximation theory"]
+  },
+  {
+    "id": "ann-247-6",
+    "proofId": "erdos-247",
+    "range": {"startLine": 83, "endLine": 88},
+    "type": "theorem",
+    "title": "Factorial Strict Monotonicity",
+    "content": "**factorial_strictMono**: The sequence k ↦ (k+1)! is strictly increasing. This is needed to apply Erdős's theorem, which requires the index sequence to be strictly increasing. Proof uses Nat.factorial_lt_of_lt.",
+    "significance": "supporting",
+    "relatedConcepts": ["factorial", "StrictMono", "prerequisites"]
+  },
+  {
+    "id": "ann-247-7",
+    "proofId": "erdos-247",
+    "range": {"startLine": 90, "endLine": 93},
+    "type": "theorem",
+    "title": "Powers of 2 Strict Monotonicity",
+    "content": "**pow2_strictMono**: The sequence k ↦ 2^k is strictly increasing. Another example of a sequence with strong growth that can serve as the index for a transcendental lacunary sum.",
+    "significance": "supporting",
+    "relatedConcepts": ["exponential function", "StrictMono", "Nat.pow_lt_pow_right"]
+  },
+  {
+    "id": "ann-247-8",
+    "proofId": "erdos-247",
+    "range": {"startLine": 95, "endLine": 99},
+    "type": "definition",
+    "title": "Growth Axioms",
+    "content": "**factorial_strong_growth** and **pow2_strong_growth** (axioms): Both k! and 2^k grow faster than any polynomial. These facts are axiomatized here; proving them formally would require analysis of growth rates. Both k!/k^t → ∞ and 2^k/k^t → ∞ for any fixed t.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic analysis", "factorial growth", "exponential growth"]
+  },
+  {
+    "id": "ann-247-9",
+    "proofId": "erdos-247",
+    "range": {"startLine": 101, "endLine": 109},
+    "type": "theorem",
+    "title": "Transcendental Lacunary Sums",
+    "content": "**factorial_sum_transcendental** and **pow2_sum_transcendental**: As corollaries of Erdős's theorem, both Σ 1/2^{k!} and Σ 1/2^{2^k} are transcendental. These are famous examples of explicit transcendental numbers.",
+    "significance": "key",
+    "relatedConcepts": ["Liouville constant", "explicit transcendentals", "applications"]
+  },
+  {
+    "id": "ann-247-10",
+    "proofId": "erdos-247",
+    "range": {"startLine": 113, "endLine": 124},
+    "type": "concept",
+    "title": "The Gap: Quadratic Sequence",
+    "content": "**squareSeq** and **square_sum**: The sequence n_k = k² is the simplest example in the 'gap' between weak and strong growth. It grows faster than linear (satisfies weak growth) but NOT faster than quadratic (fails strong growth). Whether Σ 1/2^{k²} is transcendental remains OPEN.",
+    "significance": "key",
+    "relatedConcepts": ["open problems", "polynomial growth", "boundary cases"]
+  },
+  {
+    "id": "ann-247-11",
+    "proofId": "erdos-247",
+    "range": {"startLine": 117, "endLine": 121},
+    "type": "theorem",
+    "title": "Square Sequence Monotonicity",
+    "content": "**square_strictMono**: The sequence k ↦ (k+1)² is strictly increasing. This shows the square sequence is a valid index sequence for Erdős's problem, even though we can't prove transcendence of the resulting sum.",
+    "significance": "supporting",
+    "relatedConcepts": ["StrictMono", "Nat.pow_lt_pow_left", "quadratic growth"]
+  },
+  {
+    "id": "ann-247-12",
+    "proofId": "erdos-247",
+    "range": {"startLine": 128, "endLine": 137},
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**problem_247_summary**: Packages the main results: (1) Erdős's theorem for strong growth, (2) transcendence of the factorial sum, (3) transcendence of the double-exponential sum. This provides a clean interface to the file's main contributions.",
+    "significance": "key",
+    "relatedConcepts": ["API design", "theorem packaging", "main results"]
+  }
+]

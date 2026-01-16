@@ -1,33 +1,109 @@
 {
   "id": "erdos-351",
-  "title": "Erdős Problem #351",
+  "title": "Erdős Problem #351: Strong Completeness of Polynomial-Reciprocal Sequences",
   "slug": "erdos-351",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is it true that\\[A=\\{ p(n)+1/n : n\\in \\}\\]is strongly complete, in the sense that, for any finite set ...,\\[\\left\\{\\...",
+  "description": "Is {p(n) + 1/n : n in N} strongly complete for all polynomials p(x)? General case open; solved for p(x) = x and p(x) = x².",
   "meta": {
-    "author": "Unknown",
+    "author": "Graham (1963), Alekseyev (2019)",
     "sourceUrl": "https://erdosproblems.com/351",
-    "date": "",
-    "status": "pending",
+    "date": "1963",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos351Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "completeness",
+      "polynomials"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 351,
     "erdosUrl": "https://erdosproblems.com/351",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.eval",
+        "description": "Polynomial evaluation",
+        "module": "Mathlib.Algebra.Polynomial.Eval"
+      },
+      {
+        "theorem": "Filter.Eventually",
+        "description": "Eventually predicate for filters",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of strong completeness in Lean 4",
+      "Definition of polynomial-reciprocal image sets",
+      "Axiomatized Graham's theorem for p(x) = x",
+      "Axiomatized Graham-Alekseyev theorem for p(x) = x²",
+      "Verified bounds on n + 1/n"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #351 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $p(x)\\in \\mathbb{Q}[x]$. Is it true that\\[A=\\{ p(n)+1/n : n\\in \\mathbb{N}\\}\\]is strongly complete, in the sense that, for any finite set $B$,\\[\\left\\{\\sum_{n\\in X}n : X\\subseteq A\\backslash B\\textrm{ finite }\\right\\}\\]contains all sufficiently large integers?\n\n\n\n\nGraham \\cite{Gr63} proved this is true when $p(n)=n$. Erd\\H{o}s and Graham also ask which rational functions $r(x)\\in\\mathbb{Z}(x)$ force $\\{ r(n) : n\\in\\mathbb{N}\\}$ to be complete?\n\nGraham \\cite{Gr64f} gave a complete characterisation of which polynomials $r\\in \\mathbb{R}[x]$ are such that $\\{ r(n) : n\\in \\mathbb{N}\\}$ is complete.\n\nIn the comments van Doorn has noted that a positive solution for $p(n)=n^2$ follows from \\cite{Gr63} together with result of Alekseyev \\cite{Al19} mentioned in [283].\n\n\n\n\nReferences\n\n\n[Al19] Alekseyev, Max A., On partitions into squares of distinct integers whose\nreciprocals sum to 1. (2019), 213--221.\n\n[Gr63] Graham, R. L., A theorem on partitions. J. Austral. Math. Soc. (1963), 435-441.\n\n[Gr64f] Graham, R. L., Complete sequences of polynomial values. Duke Math. J. (1964), 275-285.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #351 concerns the additive structure of sequences of the form {p(n) + 1/n : n ∈ ℕ} where p(x) is a polynomial. The notion of 'strong completeness' is a robust form of additive completeness that survives removal of any finite set of elements.\n\nGraham (1963) proved the foundational case p(x) = x, showing that {n + 1/n : n ∈ ℕ} is strongly complete. This was a significant result in additive number theory.\n\nThe case p(x) = x² was resolved much later by combining Graham's work with Alekseyev's 2019 results on partitions into squares. The general question—whether ALL polynomials with positive leading coefficient yield strongly complete sets—remains open.",
+    "problemStatement": "**Problem (Erdős-Graham)**: Let $p(x) \\in \\mathbb{Q}[x]$ be a polynomial with positive leading coefficient. Is the set\n$$A = \\{p(n) + 1/n : n \\in \\mathbb{N}\\}$$\nstrongly complete?\n\n**Definition**: A set $A$ is *strongly complete* if for any finite $B$, the finite sums from $A \\setminus B$ contain all sufficiently large integers.\n\n**Status**:\n- General: OPEN\n- p(x) = x: PROVED (Graham 1963)\n- p(x) = x²: PROVED (Graham + Alekseyev)",
+    "proofStrategy": "We formalize the problem by:\n\n1. **Define the image set**: For polynomial P, the set {P(n) + 1/n : n ∈ ℕ}\n2. **Define strong completeness**: For any finite forbidden set B, eventually all integers are representable as sums from A \\ B\n3. **State solved cases as axioms**: Graham's theorem (p=x) and Graham-Alekseyev (p=x²)\n4. **Verify basic properties**: Elements n + 1/n lie strictly between n and n+1 (for n ≥ 2)\n\nThe proofs of the solved cases require deep results from partition theory and are stated as axioms.",
+    "keyInsights": [
+      "**Strong completeness**: Unlike ordinary completeness (all large integers are sums), strong completeness requires this even after removing any finite set. This is a much stronger property.",
+      "**The 1/n perturbation**: Adding 1/n to p(n) creates irrational-like spacing that helps with representability. The terms n + 1/n are 'almost integers' but distinct.",
+      "**Graham's partition theorem**: The case p(x) = x involves intricate partition arguments showing redundancy in the sequence.",
+      "**The x² case**: Surprisingly hard—required combining Graham's methods with Alekseyev's work on Egyptian fractions with squares.",
+      "**Why the general case is hard**: Higher-degree polynomials grow faster, making it harder to ensure the small perturbations 1/n provide enough coverage."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Module documentation explaining the problem, its partial resolution, and Mathlib imports for polynomials and filters."
+    },
+    {
+      "id": "definitions",
+      "title": "Key Definitions",
+      "startLine": 24,
+      "endLine": 41,
+      "summary": "Define the image set {p(n) + 1/n}, strong completeness, and the predicate for polynomials with strongly complete images."
+    },
+    {
+      "id": "main-problem",
+      "title": "Main Problem (Open)",
+      "startLine": 43,
+      "endLine": 54,
+      "summary": "State that the general Erdős Problem #351 remains open."
+    },
+    {
+      "id": "solved-cases",
+      "title": "Solved Cases",
+      "startLine": 56,
+      "endLine": 73,
+      "summary": "Axiomatize Graham's theorem (p=x) and Graham-Alekseyev theorem (p=x²)."
+    },
+    {
+      "id": "properties",
+      "title": "Basic Properties",
+      "startLine": 75,
+      "endLine": 115,
+      "summary": "Prove membership in image sets and bounds on n + 1/n."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #351, which asks whether {p(n) + 1/n} is strongly complete for all polynomials p(x). The general problem remains open, but we axiomatize the solved cases: Graham (1963) for p(x) = x and Graham-Alekseyev for p(x) = x². We prove basic properties of the image sets.",
+    "implications": "This problem connects polynomial growth rates with additive structure. The partial results suggest strong completeness may hold generally, but proving it requires understanding how polynomial growth interacts with the 1/n perturbation.",
+    "openQuestions": [
+      "Does strong completeness hold for all polynomials with positive leading coefficient?",
+      "What about p(x) = x³ or higher powers?",
+      "Are there rational functions r(x) for which {r(n)} is strongly complete?"
+    ]
   }
 }

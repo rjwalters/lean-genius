@@ -1,1 +1,169 @@
-[]
+[
+  {
+    "id": "ann-e285-header",
+    "proofId": "erdos-285",
+    "range": {
+      "startLine": 1,
+      "endLine": 15
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #285** asks about the asymptotic growth of f(k) — the minimal largest denominator in a k-term Egyptian fraction representation of 1. Martin (2000) proved f(k) = (1+o(1))·e/(e-1)·k.",
+    "mathContext": "Egyptian fractions date to ancient Egypt (Rhind papyrus ~1650 BCE). The question connects ancient mathematics to modern analytic number theory via harmonic series analysis.",
+    "significance": "supporting",
+    "relatedConcepts": ["erdos", "egyptian-fractions", "asymptotics"]
+  },
+  {
+    "id": "ann-e285-imports",
+    "proofId": "erdos-285",
+    "range": {
+      "startLine": 17,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import **Pow.Real** for the exponential function, **Asymptotics** for little-o notation, **BigOperators** for sums, and **Instances.Real** for real number topology.",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "exponential", "asymptotics"]
+  },
+  {
+    "id": "ann-e285-representation",
+    "proofId": "erdos-285",
+    "range": {
+      "startLine": 27,
+      "endLine": 37
+    },
+    "type": "definition",
+    "title": "Egyptian Fraction Representation",
+    "content": "**IsEgyptianRepresentation k n** holds when n is a strictly increasing sequence of k+1 positive integers whose reciprocals sum to 1.",
+    "mathContext": "The definition requires: (1) strict monotonicity n₀ < n₁ < ... < nₖ, (2) all nᵢ > 0, and (3) ∑ 1/nᵢ = 1. The k+1 count comes from Fin (k+1) indexing.",
+    "significance": "critical",
+    "relatedConcepts": ["egyptian-fractions", "unit-fractions", "strict-mono"]
+  },
+  {
+    "id": "ann-e285-valid",
+    "proofId": "erdos-285",
+    "range": {
+      "startLine": 39,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "Valid Lengths",
+    "content": "**ValidLengths** is the set of k for which k+1-term Egyptian fraction representations of 1 exist. Note that k ∈ ValidLengths iff representations with k+1 terms exist.",
+    "mathContext": "Representations exist for k ≥ 2: the classic 1 = 1/2 + 1/3 + 1/6 has 3 terms (k=2). For k=0 (1 term), only 1 = 1/1 which violates strictly increasing. For k=1 (2 terms), 1 = 1/a + 1/b has no integer solution with a < b.",
+    "significance": "key",
+    "relatedConcepts": ["existence", "representation-length", "combinatorics"]
+  },
+  {
+    "id": "ann-e285-f",
+    "proofId": "erdos-285",
+    "range": {
+      "startLine": 46,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "The Function f(k)",
+    "content": "**f k** is the infimum of the largest denominator nₖ over all k+1-term Egyptian fraction representations of 1.",
+    "mathContext": "f(k) measures 'how efficient' can a k+1-term representation be. Smaller f(k) means we can pack more terms into a smaller denominator range.",
+    "significance": "critical",
+    "relatedConcepts": ["minimization", "largest-denominator", "efficiency"]
+  },
+  {
+    "id": "ann-e285-constant",
+    "proofId": "erdos-285",
+    "range": {
+      "startLine": 55,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "The Egyptian Constant",
+    "content": "**egyptianConstant** = e/(e-1) ≈ 1.5819. This constant determines the asymptotic growth of f(k).",
+    "mathContext": "The constant arises from harmonic series: ∑_{e ≤ n ≤ eu} 1/n ≈ ln(eu) - ln(e) = 1 for any u. So the interval [e, eu] 'contributes' about 1 to the harmonic sum.",
+    "significance": "critical",
+    "relatedConcepts": ["euler-number", "harmonic-series", "asymptotic-constant"]
+  },
+  {
+    "id": "ann-e285-martin",
+    "proofId": "erdos-285",
+    "range": {
+      "startLine": 60,
+      "endLine": 68
+    },
+    "type": "theorem",
+    "title": "Martin's Theorem",
+    "content": "**martin_egyptian_fractions**: f(k) = (1 + o(1)) · e/(e-1) · k. The minimal largest denominator is asymptotically e/(e-1) times the number of terms.",
+    "mathContext": "Martin's 2000 paper 'Denser Egyptian Fractions' constructs explicit representations achieving this bound. The o(1) term goes to 0 as k → ∞.",
+    "significance": "critical",
+    "relatedConcepts": ["martin", "asymptotic-equality", "upper-bound"]
+  },
+  {
+    "id": "ann-e285-main",
+    "proofId": "erdos-285",
+    "range": {
+      "startLine": 70,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_285**: Restates Martin's result as the answer to Erdős's question. The asymptotic formula f(k) = (1+o(1))·e/(e-1)·k holds.",
+    "mathContext": "This directly follows from the axiom martin_egyptian_fractions, packaged as the main theorem for the problem.",
+    "significance": "critical",
+    "relatedConcepts": ["main-result", "erdos-problem", "solved"]
+  },
+  {
+    "id": "ann-e285-lower",
+    "proofId": "erdos-285",
+    "range": {
+      "startLine": 77,
+      "endLine": 90
+    },
+    "type": "theorem",
+    "title": "Trivial Lower Bound",
+    "content": "**egyptian_lower_bound**: f(k) ≥ (1 + o(1)) · e/(e-1) · k. The lower bound is 'trivial' from harmonic series considerations.",
+    "mathContext": "If nₖ ≈ eu, then primes in [e, eu] contribute ~1 to the sum. There are ~(e-1)u integers in this interval, so k ≤ (e-1)u. Thus nₖ ≥ eu ≥ e/(e-1) · k.",
+    "significance": "key",
+    "relatedConcepts": ["lower-bound", "harmonic-series", "counting-argument"]
+  },
+  {
+    "id": "ann-e285-gt-one",
+    "proofId": "erdos-285",
+    "range": {
+      "startLine": 103,
+      "endLine": 110
+    },
+    "type": "lemma",
+    "title": "Constant > 1",
+    "content": "**egyptianConstant_gt_one**: e/(e-1) > 1. This shows f(k) > k — we always need a largest denominator larger than the number of terms.",
+    "mathContext": "Since e > 1, we have e - 1 > 0 and e/(e-1) = 1 + 1/(e-1) > 1. The proof uses exp(1) > 1.",
+    "significance": "supporting",
+    "relatedConcepts": ["inequality", "constant-bounds", "proof"]
+  },
+  {
+    "id": "ann-e285-lt-two",
+    "proofId": "erdos-285",
+    "range": {
+      "startLine": 112,
+      "endLine": 114
+    },
+    "type": "lemma",
+    "title": "Constant < 2",
+    "content": "**egyptianConstant_lt_two**: e/(e-1) < 2. This shows f(k) < 2k asymptotically — we can always do better than doubling.",
+    "mathContext": "Since e > 2, we have e - 1 > 1, so 1/(e-1) < 1 and e/(e-1) = 1 + 1/(e-1) < 2.",
+    "significance": "supporting",
+    "relatedConcepts": ["inequality", "upper-bound", "sorry"]
+  },
+  {
+    "id": "ann-e285-examples",
+    "proofId": "erdos-285",
+    "range": {
+      "startLine": 116,
+      "endLine": 127
+    },
+    "type": "concept",
+    "title": "Concrete Examples",
+    "content": "Three classic Egyptian fraction representations of 1: (1) 1/2 + 1/3 + 1/6 = 1, (2) 1/2 + 1/4 + 1/5 + 1/20 = 1, (3) 1/3 + 1/4 + 1/5 + 1/6 + 1/20 = 1.",
+    "mathContext": "These examples are verified by norm_num. The classic 1/2 + 1/3 + 1/6 has 3 terms with largest denominator 6. For 5 terms, we achieve largest denominator 20.",
+    "significance": "supporting",
+    "relatedConcepts": ["examples", "verification", "norm_num"]
+  }
+]

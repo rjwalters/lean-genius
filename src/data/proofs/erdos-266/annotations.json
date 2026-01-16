@@ -1,1 +1,155 @@
-[]
+[
+  {
+    "id": "ann-e266-header",
+    "proofId": "erdos-266",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #266** presents Stolarsky's conjecture: for any convergent ∑1/aₙ, some integer shift t should make ∑1/(aₙ+t) irrational. Kovač-Tao (2024) disproved this with a remarkable counterexample.",
+    "mathContext": "The conjecture seemed natural: with infinitely many shift choices, surely one should 'break' any rationality pattern. But the counterexample shows sequences can be constructed to maintain rationality under ALL shifts.",
+    "significance": "supporting",
+    "relatedConcepts": ["erdos", "stolarsky", "shifted-sums"]
+  },
+  {
+    "id": "ann-e266-imports",
+    "proofId": "erdos-266",
+    "range": {
+      "startLine": 21,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import **Data.Real.Irrational** for irrationality, **InfiniteSum.Real** for summability and tsum, and **Rat.Cast.Lemmas** for rational number coercions.",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "summability", "rationals"]
+  },
+  {
+    "id": "ann-e266-conjecture",
+    "proofId": "erdos-266",
+    "range": {
+      "startLine": 31,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Stolarsky's Conjecture",
+    "content": "**Stolarsky's Conjecture**: For any sequence aₙ of positive integers with convergent ∑1/aₙ, there exists some t ≥ 1 such that ∑1/(aₙ + t) is irrational.",
+    "mathContext": "Formally: `∀ a, (∀ n, 1 ≤ a n) → Summable (1/a) → ∃ t ≥ 1, Irrational (∑' 1/(a + t))`. The conjecture asks for existence of at least one 'irrationality-producing' shift.",
+    "significance": "critical",
+    "relatedConcepts": ["conjecture", "shifted-series", "existence"]
+  },
+  {
+    "id": "ann-e266-disproof",
+    "proofId": "erdos-266",
+    "range": {
+      "startLine": 46,
+      "endLine": 55
+    },
+    "type": "theorem",
+    "title": "Kovač-Tao Disproof",
+    "content": "**Kovač-Tao (2024)**: Stolarsky's conjecture is FALSE. There exist sequences where NO integer shift produces irrationality — all shifts give rational sums.",
+    "mathContext": "Stated as `¬StolarskyConjecture`. The proof constructs an explicit counterexample sequence using techniques from Ahmes series theory.",
+    "significance": "critical",
+    "relatedConcepts": ["kovac-tao", "counterexample", "disproof"]
+  },
+  {
+    "id": "ann-e266-stronger",
+    "proofId": "erdos-266",
+    "range": {
+      "startLine": 59,
+      "endLine": 72
+    },
+    "type": "theorem",
+    "title": "All-Rationals Result",
+    "content": "**Stronger Result**: There exists a strictly increasing sequence aₙ where ∑1/(aₙ + t) is RATIONAL for ALL t ∈ ℚ (avoiding poles). Not just integers — ALL rational shifts!",
+    "mathContext": "This extraordinary rigidity: `∃ a, StrictMono a ∧ ∀ t : ℚ, (valid) → ∃ q : ℚ, ∑' 1/(a + t) = q`. The sequence simultaneously avoids irrationality for uncountably many shifts.",
+    "significance": "critical",
+    "relatedConcepts": ["all-rationals", "rigidity", "stronger-result"]
+  },
+  {
+    "id": "ann-e266-construction",
+    "proofId": "erdos-266",
+    "range": {
+      "startLine": 76,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "Counterexample Construction",
+    "content": "The counterexample sequence is carefully constructed so that: (1) ∑1/aₙ converges, and (2) for any shift t, the sum telescopes or simplifies to a rational value.",
+    "mathContext": "The construction uses deep techniques from Ahmes series (Egyptian fractions). The sequence must balance convergence requirements with the algebraic structure needed for rational sums under all shifts.",
+    "significance": "key",
+    "relatedConcepts": ["ahmes-series", "egyptian-fractions", "construction"]
+  },
+  {
+    "id": "ann-e266-relation",
+    "proofId": "erdos-266",
+    "range": {
+      "startLine": 88,
+      "endLine": 98
+    },
+    "type": "concept",
+    "title": "Relation to Problem #264",
+    "content": "This problem is closely related to Erdős #264 (irrationality sequences). Both ask: how robust is irrationality under additive perturbations?",
+    "mathContext": "#264 asks about variable perturbations bₙ; #266 asks about constant shifts t. Kovač-Tao's unified approach resolved both: perturbations can always be found to maintain rationality.",
+    "significance": "key",
+    "relatedConcepts": ["erdos-264", "perturbations", "unified-approach"]
+  },
+  {
+    "id": "ann-e266-harmonic",
+    "proofId": "erdos-266",
+    "range": {
+      "startLine": 102,
+      "endLine": 104
+    },
+    "type": "theorem",
+    "title": "Harmonic Series Diverges",
+    "content": "The harmonic series ∑1/n diverges, so it doesn't satisfy the convergence hypothesis of Stolarsky's conjecture.",
+    "mathContext": "This is a prerequisite check: the conjecture only applies to convergent series. Divergent series like the harmonic one are excluded.",
+    "significance": "supporting",
+    "relatedConcepts": ["harmonic-series", "divergence", "prerequisite"]
+  },
+  {
+    "id": "ann-e266-basel",
+    "proofId": "erdos-266",
+    "range": {
+      "startLine": 106,
+      "endLine": 108
+    },
+    "type": "theorem",
+    "title": "Sum of Reciprocal Squares",
+    "content": "The series ∑1/n² converges (to π²/6 by the Basel problem), so sequences like aₙ = n² ARE candidates for Stolarsky's conjecture.",
+    "mathContext": "This shows non-trivial sequences satisfy the convergence hypothesis. For such 'natural' sequences, it's unknown whether some shift produces irrationality.",
+    "significance": "supporting",
+    "relatedConcepts": ["basel-problem", "convergence", "natural-sequences"]
+  },
+  {
+    "id": "ann-e266-geometric",
+    "proofId": "erdos-266",
+    "range": {
+      "startLine": 110,
+      "endLine": 112
+    },
+    "type": "lemma",
+    "title": "Geometric Series",
+    "content": "The geometric series ∑1/2ⁿ converges to 2. This is a basic example of a convergent series satisfying the hypothesis.",
+    "mathContext": "For geometric sequences, the shifted sum ∑1/(2ⁿ + t) also converges for any t ≥ 0. Whether some shift produces irrationality is related to Erdős #264's question about 2ⁿ.",
+    "significance": "supporting",
+    "relatedConcepts": ["geometric-series", "exponential", "convergence"]
+  },
+  {
+    "id": "ann-e266-shifted-geometric",
+    "proofId": "erdos-266",
+    "range": {
+      "startLine": 114,
+      "endLine": 116
+    },
+    "type": "lemma",
+    "title": "Shifted Geometric Series",
+    "content": "The shifted geometric ∑1/(2ⁿ + 1) also converges, by comparison with the unshifted geometric series.",
+    "mathContext": "Since 2ⁿ + 1 > 2ⁿ, we have 1/(2ⁿ + 1) < 1/2ⁿ, so the shifted series is dominated by the convergent geometric series.",
+    "significance": "supporting",
+    "relatedConcepts": ["comparison-test", "shifted-series", "summability"]
+  }
+]

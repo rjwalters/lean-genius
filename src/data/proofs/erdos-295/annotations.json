@@ -1,1 +1,244 @@
-[]
+[
+  {
+    "id": "ann-e295-header",
+    "proofId": "erdos-295",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #295** asks about the efficiency of representing 1 as a sum of Egyptian fractions when all denominators must be large. The function k(N) counts the minimum number of terms needed, and the question is whether k(N) grows faster than (e-1)N by an unbounded amount.",
+    "mathContext": "The problem was posed by Erdős and Graham in 1980. Erdős and Straus (1971) proved tight bounds showing k(N) ≈ (e-1)N, but the precise limiting behavior of the difference remains unknown.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Egyptian fractions",
+      "Euler's number",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-e295-imports",
+    "proofId": "erdos-295",
+    "range": {
+      "startLine": 21,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import **real analysis** modules for the exponential function Real.exp (giving us e ≈ 2.718) and logarithms. We also import **filter theory** for expressing limits like 'tends to infinity' (atTop) and **big operators** for summing over finite sets.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "real analysis",
+      "filters"
+    ]
+  },
+  {
+    "id": "ann-e295-background",
+    "proofId": "erdos-295",
+    "range": {
+      "startLine": 34,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "Egyptian Fractions Background",
+    "content": "**Egyptian fractions** are sums of distinct unit fractions (fractions with numerator 1). The ancient Egyptians represented all fractions this way—their notation only allowed 1/n. For example, instead of 2/5, they would write 1/3 + 1/15.\n\nEvery positive rational has infinitely many Egyptian fraction representations. The challenge is finding *efficient* ones with few terms or with special properties.",
+    "mathContext": "The Rhind Papyrus (c. 1650 BCE) contains extensive tables of Egyptian fraction decompositions. Fibonacci's Liber Abaci (1202) studied the greedy algorithm for finding such representations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit fractions",
+      "rational arithmetic",
+      "history of mathematics"
+    ]
+  },
+  {
+    "id": "ann-e295-existence",
+    "proofId": "erdos-295",
+    "range": {
+      "startLine": 45,
+      "endLine": 62
+    },
+    "type": "axiom",
+    "title": "Existence of Egyptian Representations",
+    "content": "This axiom asserts that for any N ≥ 1, we can write 1 as a sum of distinct unit fractions 1/n₁ + 1/n₂ + ... + 1/nₖ where all denominators are at least N.\n\n**Examples**:\n- N = 2: 1 = 1/2 + 1/3 + 1/6\n- N = 3: 1 = 1/3 + 1/4 + 1/5 + 1/6 + 1/20",
+    "mathContext": "The existence follows from the **greedy algorithm**: repeatedly subtract the largest possible unit fraction 1/⌈1/r⌉ from the remaining sum r. This always terminates because the denominator increases at each step.",
+    "significance": "key",
+    "relatedConcepts": [
+      "greedy algorithm",
+      "constructive existence",
+      "unit fractions"
+    ]
+  },
+  {
+    "id": "ann-e295-k-definition",
+    "proofId": "erdos-295",
+    "range": {
+      "startLine": 64,
+      "endLine": 70
+    },
+    "type": "definition",
+    "title": "The Function k(N)",
+    "content": "**k(N)** is the central object of study: the *minimum* number of distinct unit fractions with denominators ≥ N that sum to 1.\n\nAs N increases, the available fractions (1/N, 1/(N+1), ...) become smaller, so more terms are needed. The question is: exactly how fast does k(N) grow?",
+    "mathContext": "We axiomatize k(N) as a function ℕ → ℕ rather than defining it constructively, since computing k(N) requires solving an optimization problem.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "minimum",
+      "optimization",
+      "growth rate"
+    ]
+  },
+  {
+    "id": "ann-e295-k-achieves",
+    "proofId": "erdos-295",
+    "range": {
+      "startLine": 72,
+      "endLine": 80
+    },
+    "type": "axiom",
+    "title": "k(N) Achieves a Representation",
+    "content": "This axiom states that k(N) is not just a theoretical minimum—there actually exists a sequence of k(N) distinct integers n₁ < n₂ < ... < nₖ, all at least N, whose reciprocals sum to exactly 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "existence",
+      "achievability"
+    ]
+  },
+  {
+    "id": "ann-e295-k-minimal",
+    "proofId": "erdos-295",
+    "range": {
+      "startLine": 82,
+      "endLine": 86
+    },
+    "type": "axiom",
+    "title": "Minimality of k(N)",
+    "content": "This axiom captures that k(N) is truly the *minimum*: any other representation of 1 using unit fractions with denominators ≥ N must use at least k(N) terms.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "minimality",
+      "lower bound"
+    ]
+  },
+  {
+    "id": "ann-e295-erdos-straus",
+    "proofId": "erdos-295",
+    "range": {
+      "startLine": 88,
+      "endLine": 106
+    },
+    "type": "theorem",
+    "title": "Erdős-Straus Bounds (1971)",
+    "content": "The **Erdős-Straus theorem** establishes that k(N) grows like (e-1)N, with an error term bounded above by O(N/log N) and bounded below by a constant:\n\n**-c < k(N) - (e-1)N < O · N/log N**\n\nThis means k(N) is squeezed between (e-1)N - c and (e-1)N + O(N/log N).",
+    "mathContext": "The appearance of **e - 1 ≈ 1.718** comes from harmonic series asymptotics. The sum ∑_{n=N}^{M} 1/n ≈ ln(M/N). To sum to 1, we need ln(M/N) ≈ 1, so M ≈ eN, meaning we use about (e-1)N terms from the range [N, eN].",
+    "significance": "critical",
+    "relatedConcepts": [
+      "harmonic series",
+      "Euler's number",
+      "asymptotic bounds",
+      "analytic number theory"
+    ]
+  },
+  {
+    "id": "ann-e295-conjecture",
+    "proofId": "erdos-295",
+    "range": {
+      "startLine": 108,
+      "endLine": 121
+    },
+    "type": "definition",
+    "title": "The Open Conjecture",
+    "content": "**THE MAIN QUESTION**: Does k(N) - (e-1)N tend to infinity as N → ∞?\n\nThe Erdős-Straus bounds show this difference lies in (-c, O·N/log N). The lower bound is constant, but the upper bound grows (slowly). The conjecture asks whether the actual value tracks the upper bound upward, or stays bounded.",
+    "mathContext": "In Lean, this is expressed using `Filter.Tendsto`: the function N ↦ k(N) - (e-1)N tends to +∞ in the filter topology.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open problem",
+      "limits",
+      "filter topology"
+    ]
+  },
+  {
+    "id": "ann-e295-is-open",
+    "proofId": "erdos-295",
+    "range": {
+      "startLine": 123,
+      "endLine": 127
+    },
+    "type": "theorem",
+    "title": "Status: OPEN",
+    "content": "We include a trivial theorem `erdos_295_is_open : True` as documentation that the main conjecture remains **unsolved as of 2024**. Neither a proof nor a disproof is known.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "open problems",
+      "research frontiers"
+    ]
+  },
+  {
+    "id": "ann-e295-example-n2",
+    "proofId": "erdos-295",
+    "range": {
+      "startLine": 135,
+      "endLine": 139
+    },
+    "type": "lemma",
+    "title": "Example: N = 2",
+    "content": "We verify the classic Egyptian fraction identity **1 = 1/2 + 1/3 + 1/6**.\n\nThis shows that k(2) ≤ 3: we can represent 1 using 3 unit fractions with all denominators ≥ 2.",
+    "mathContext": "The proof uses `norm_num`, which handles rational arithmetic computations automatically. The computation: 1/2 + 1/3 + 1/6 = 3/6 + 2/6 + 1/6 = 6/6 = 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "norm_num",
+      "rational arithmetic",
+      "concrete examples"
+    ]
+  },
+  {
+    "id": "ann-e295-example-n2-alt",
+    "proofId": "erdos-295",
+    "range": {
+      "startLine": 141,
+      "endLine": 145
+    },
+    "type": "lemma",
+    "title": "Alternative Example: N = 2",
+    "content": "Another representation: **1 = 1/2 + 1/4 + 1/5 + 1/20**.\n\nThis uses 4 terms instead of 3, showing that Egyptian fraction representations are not unique. The k(N) function finds the *minimum* number of terms.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "non-uniqueness",
+      "alternative representations"
+    ]
+  },
+  {
+    "id": "ann-e295-example-n3",
+    "proofId": "erdos-295",
+    "range": {
+      "startLine": 147,
+      "endLine": 151
+    },
+    "type": "lemma",
+    "title": "Example: N = 3",
+    "content": "For larger N, we need more terms: **1 = 1/3 + 1/4 + 1/5 + 1/6 + 1/20**.\n\nWith denominators restricted to ≥ 3, we can't use 1/2, so more smaller fractions are needed to reach 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "constraint satisfaction",
+      "larger N behavior"
+    ]
+  },
+  {
+    "id": "ann-e295-e-positive",
+    "proofId": "erdos-295",
+    "range": {
+      "startLine": 153,
+      "endLine": 162
+    },
+    "type": "theorem",
+    "title": "e - 1 is Positive",
+    "content": "We prove **e - 1 > 0**, a basic fact ensuring the coefficient (e-1) in the asymptotic k(N) ≈ (e-1)N is positive.\n\nSince e ≈ 2.718 > 1, this is obvious mathematically. In Lean, we derive it from `Real.one_lt_exp_iff`: e^x > 1 when x > 0.",
+    "mathContext": "This uses the monotonicity of the exponential function. Since exp(0) = 1 and exp is strictly increasing, exp(1) > 1, so e - 1 > 0.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "exponential function",
+      "Euler's number",
+      "basic inequalities"
+    ]
+  }
+]

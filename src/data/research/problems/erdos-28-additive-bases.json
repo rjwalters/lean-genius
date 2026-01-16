@@ -1,59 +1,109 @@
 {
   "slug": "erdos-28-additive-bases",
   "title": "Erdős #28: Erdős-Turán Additive Bases ($500)",
-  "phase": "NEW",
+  "phase": "PROGRESS",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "PROGRESS: Created Erdos28AdditiveBases.",
-    "whyMatters": []
+    "formal": "\\forall A \\subseteq \\mathbb{N}, \\text{if } A+A \\supseteq \\mathbb{N} \\setminus F \\text{ for finite } F, \\text{ then } \\limsup_{n \\to \\infty} r_A(n) = \\infty",
+    "plain": "If A ⊆ ℕ is such that A + A contains all but finitely many integers, then lim sup r_A(n) = ∞, where r_A(n) = |{(a,b) ∈ A×A : a + b = n}|.",
+    "whyMatters": [
+      "Fundamental question about the structure of additive bases",
+      "Connects density and representation theory",
+      "$500 prize problem from Erdős"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Grekos et al. (2003): r_A(n) ≥ 6 for infinitely many n",
+      "Borwein et al.: r_A(n) ≥ 8 for infinitely many n",
+      "Sidon sets have bounded representation (r ≤ 2) and are NOT bases"
+    ],
+    "open": [
+      "The main conjecture: is lim sup r_A(n) = ∞?",
+      "Strong form: is lim sup r_A(n) / log(n) > 0?"
+    ],
+    "goal": "Prove or disprove: every asymptotic basis has unbounded representation function"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T09:10:09.149Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "PROGRESS",
+    "since": "2026-01-16T00:00:00Z",
+    "iteration": 2,
+    "focus": "Comprehensive formalization complete. 383 lines with core definitions and known partial results.",
+    "activeApproach": "Full formalization with axiomatized main theorem and proven helper results.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Consider Aristotle submission for sidon_not_basis axiom (HARD but provable)",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "Complete formalization with definitions, examples, and partial results axiomatized",
+    "builtItems": [
+      "repFunc: representation function r_A(n)",
+      "repFuncUnordered: unordered representation count",
+      "sumset: A + A sumset definition",
+      "IsAsymptoticBasis: basis definition",
+      "erdos_turan_weak: weak form of conjecture",
+      "erdos_turan_strong: strong form (r/log n)",
+      "IsSidon: Sidon set definition"
+    ],
+    "insights": [
+      "Sidon sets have r_A(n) ≤ 2 for all n (proved)",
+      "ℕ itself has r_ℕ(n) = n/2 + 1 (proved)",
+      "Even numbers sumset = even numbers (proved)",
+      "Sidon sets cannot be asymptotic bases (axiom - density gap argument)",
+      "The gap between r ≥ 8 (known) and r → ∞ (conjectured) is wide"
+    ],
+    "mathlibGaps": [
+      "No direct sumset API for Set ℕ",
+      "No representation function in additive combinatorics"
+    ],
+    "nextSteps": [
+      "Submit sidon_not_basis to Aristotle - requires ~150 lines formalizing density gap",
+      "Consider formalizing Grekos et al. result (r ≥ 6)",
+      "Main conjecture is OPEN - cannot be proved without new mathematics"
+    ],
+    "markdown": "# Erdős #28 - Knowledge Base\n\n## Problem Statement\n\nIf A ⊆ ℕ is such that A + A contains all but finitely many integers, then lim sup r_A(n) = ∞, where r_A(n) = |{(a,b) ∈ A×A : a + b = n}|.\n\n## Status\n\n**Erdős Database Status**: OPEN ($500 prize)\n\n**Tractability Score**: 4/10 (main conjecture is OPEN)\n**Aristotle Suitable**: Partial (some axioms are HARD but provable)\n\n## Key Definitions Built\n\n| Name | Type | Description | Location |\n|------|------|-------------|----------|\n| repFunc | def | Representation function r_A(n) | Erdos28AdditiveBases.lean:50 |\n| repFuncUnordered | def | Unordered representation count | Erdos28AdditiveBases.lean:54 |\n| sumset | def | A + A sumset | Erdos28AdditiveBases.lean:64 |\n| IsAsymptoticBasis | def | A+A covers cofinite set | Erdos28AdditiveBases.lean:68 |\n| IsAsymptoticBasis' | def | Complement of A+A is finite | Erdos28AdditiveBases.lean:72 |\n| erdos_turan_weak | def | Weak conjecture statement | Erdos28AdditiveBases.lean:209 |\n| erdos_turan_strong | def | Strong conjecture (r/log n) | Erdos28AdditiveBases.lean:216 |\n| IsSidon | def | Sidon set definition | Erdos28AdditiveBases.lean:142 |\n| IsBhSet | def | Generalized B_h sets | Erdos28AdditiveBases.lean:208 |\n\n## Key Results Built\n\n| Name | Status | Description |\n|------|--------|-------------|\n| isAsymptoticBasis_iff | PROVEN | Two definitions equivalent |\n| pairs_summing_finite | PROVEN | Set of pairs summing to n is finite |\n| repFunc_pos_of_mem_sumset | PROVEN | n ∈ A+A implies r_A(n) ≥ 1 |\n| sidon_repFunc_bounded | PROVEN | Sidon sets have r_A(n) ≤ 2 |\n| evens_sumset | PROVEN | Even numbers sumset = evens |\n| evens_repFunc | PROVEN | r_evens(2n) = n/2 + 1 |\n| nat_is_basis | PROVEN | ℕ is a basis |\n| nat_repFunc | PROVEN | r_ℕ(n) = n/2 + 1 |\n| grekos_lower_bound | AXIOM | r_A(n) ≥ 6 infinitely often |\n| borwein_lower_bound | AXIOM | r_A(n) ≥ 8 infinitely often |\n| sidon_density_bound | AXIOM | Sidon sets have ≤ √(2N) + 1 elements |\n| sidon_not_basis | AXIOM | Infinite Sidon sets are not bases |\n\n## Sorry Classification\n\n| Sorry | Classification | Reason |\n|-------|---------------|--------|\n| sidon_not_basis | HARD | Requires density gap argument (~150 lines) |\n| grekos_lower_bound | LITERATURE | Known result, complex proof |\n| borwein_lower_bound | LITERATURE | Known result, complex proof |\n| erdos_28 | OPEN | Main unsolved conjecture |\n\n## Insights\n\n1. **Sidon Constraint**: Sidon sets have r ≤ 2, so they can't be bases (density too low)\n2. **Natural Numbers**: ℕ has r(n) = n/2 + 1, growing linearly\n3. **Density Trade-off**: Dense sets have many representations; sparse sets can't cover\n4. **The Gap**: We know r ≥ 8 infinitely often, but not r → ∞\n\n## Tags\n\n- erdos\n- additive-combinatorics\n- representation-function\n- asymptotic-basis\n- prize-problem\n\n## Related Problems\n\n- Erdős #30 (Sidon sets)\n- Erdős #31 (additive complements)\n\n## References\n\n- Erdős, Turán (1941): Original conjecture\n- Grekos et al. (2003): r ≥ 6 result\n- Borwein et al.: r ≥ 8 improvement\n\n## Sessions\n\n### Session 2026-01-12\n\n**Focus**: Initial creation\n**Outcome**: Created 383-line formalization with full structure\n\n### Session 2026-01-16\n\n**Focus**: REVISIT - verify build and document knowledge\n**Outcome**: Docker build verified. Knowledge base documented.\n**Key finding**: sidon_not_basis is HARD but provable (~150 lines needed)\n\n---\n\n*Last updated: 2026-01-16*\n"
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Full formalization with axiomatized results",
+      "status": "active",
+      "description": "Define all core concepts, prove helper lemmas, axiomatize known results and main conjecture"
+    }
+  ],
   "tags": [
+    "erdos",
     "number-theory",
     "additive-combinatorics",
     "additive-bases",
-    "erdos-problem",
-    "open-conjecture",
+    "representation-function",
     "prize-problem"
   ],
   "relatedProofs": [
-    "Relevance"
+    "Erdos30Problem.lean",
+    "Erdos31Problem.lean"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Erdős-Turán (1941): On a problem of Sidon",
+      "Grekos et al. (2003): Lower bound on representations"
+    ],
+    "urls": [
+      "https://erdosproblems.com/28"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Order.Filter.Basic"
+    ]
   },
   "started": "2026-01-12T09:10:09.149Z",
-  "lastUpdate": "2026-01-12T09:10:09.149Z",
-  "significance": 6,
+  "lastUpdate": "2026-01-16T00:00:00.000Z",
+  "significance": 7,
   "tractability": 4
 }

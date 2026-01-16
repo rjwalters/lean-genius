@@ -1,1 +1,123 @@
-[]
+[
+  {
+    "id": "ann-e830-header",
+    "proofId": "erdos-830",
+    "range": { "startLine": 1, "endLine": 17 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #830** asks one of the oldest questions in number theory: are there infinitely many amicable pairs?\n\nTwo numbers are **amicable** if each is the sum of the other's proper divisors. The classic example is (220, 284), known since ancient times. Despite finding over a billion pairs computationally, we still don't know if the supply is infinite.",
+    "mathContext": "Amicable pair (a,b): σ(a) = σ(b) = a+b where σ(n) is the sum of ALL divisors of n (including n itself).",
+    "significance": "critical",
+    "relatedConcepts": ["erdos", "amicable-numbers", "open-problem"]
+  },
+  {
+    "id": "ann-e830-imports",
+    "proofId": "erdos-830",
+    "range": { "startLine": 19, "endLine": 24 },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "We import Mathlib and enable classical logic. The `open Filter Real` brings filter-based limits and real analysis into scope, needed for asymptotic bounds like o(x) and the counting function.",
+    "mathContext": "Filter.atTop is the neighborhood of +∞, used to express 'for all sufficiently large x' in statements about A(x).",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "filter", "asymptotics"]
+  },
+  {
+    "id": "ann-e830-sigma",
+    "proofId": "erdos-830",
+    "range": { "startLine": 34, "endLine": 35 },
+    "type": "definition",
+    "title": "Sum of Divisors Function",
+    "content": "The **sum of divisors** σ(n) adds up all positive divisors of n, including 1 and n itself.\n\nExamples:\n- σ(6) = 1 + 2 + 3 + 6 = 12\n- σ(220) = 504\n- σ(284) = 504\n\nNote: proper divisors exclude n itself. For amicable pairs, σ(a) - a = b and σ(b) - b = a.",
+    "mathContext": "In Mathlib, ArithmeticFunction.sigma k n = Σ_{d|n} d^k. We use k=1 for the sum of divisors.",
+    "significance": "critical",
+    "relatedConcepts": ["divisors", "arithmetic-function", "mathlib"]
+  },
+  {
+    "id": "ann-e830-amicable",
+    "proofId": "erdos-830",
+    "range": { "startLine": 37, "endLine": 43 },
+    "type": "definition",
+    "title": "Amicable Pairs Definition",
+    "content": "Two numbers a and b are **amicable** if σ(a) = σ(b) = a + b. This elegant condition means:\n- The proper divisors of a sum to b\n- The proper divisors of b sum to a\n\nThey form a 'friendship' through their divisors—each number 'points to' the other.",
+    "mathContext": "IsAmicable a b ⟺ σ(a) = a+b ∧ σ(b) = a+b. The structure captures both conditions.",
+    "significance": "critical",
+    "relatedConcepts": ["amicable", "divisors", "structure"]
+  },
+  {
+    "id": "ann-e830-example220",
+    "proofId": "erdos-830",
+    "range": { "startLine": 53, "endLine": 60 },
+    "type": "theorem",
+    "title": "The Classic Pair: 220 and 284",
+    "content": "The pair (220, 284) is the **smallest amicable pair**, known to Pythagoras around 500 BCE.\n\n**Verification:**\n- Divisors of 220: 1, 2, 4, 5, 10, 11, 20, 22, 44, 55, 110, 220 → sum = 504\n- Divisors of 284: 1, 2, 4, 71, 142, 284 → sum = 504\n- Both equal 220 + 284 = 504 ✓\n\nThe proof uses `native_decide` to compute σ(220) and σ(284) directly.",
+    "mathContext": "sigma_220 : sumDivisors 220 = 504 proves σ(220) = 504 by direct computation.",
+    "significance": "critical",
+    "relatedConcepts": ["native-decide", "verification", "pythagoras"]
+  },
+  {
+    "id": "ann-e830-counting",
+    "proofId": "erdos-830",
+    "range": { "startLine": 70, "endLine": 72 },
+    "type": "definition",
+    "title": "Counting Function A(x)",
+    "content": "**A(x)** counts how many amicable pairs (a,b) exist with both a ≤ b ≤ x. This function measures the 'density' of amicable pairs among natural numbers.\n\nThe key questions are:\n1. Does A(x) → ∞? (infinitely many pairs)\n2. How fast does A(x) grow?",
+    "mathContext": "A(x) = |{(a,b) : 1 ≤ a ≤ b ≤ x, IsAmicable a b}|. Uses floor function ⌊x⌋₊ to convert real x to natural bound.",
+    "significance": "critical",
+    "relatedConcepts": ["counting-function", "density", "finset"]
+  },
+  {
+    "id": "ann-e830-infinite",
+    "proofId": "erdos-830",
+    "range": { "startLine": 82, "endLine": 89 },
+    "type": "theorem",
+    "title": "Open Conjecture: Infinitely Many Pairs",
+    "content": "**Are there infinitely many amicable pairs?** This is perhaps the central question.\n\nOver 1.2 billion amicable pairs have been found by computer search, but this doesn't prove infinitude. The pattern could theoretically stop at some astronomically large number.\n\nStated as an `axiom` because it remains unproven.",
+    "mathContext": "The set {(a,b) | IsAmicable a b} is conjectured to be infinite. No proof or disproof exists.",
+    "significance": "critical",
+    "relatedConcepts": ["infinity", "conjecture", "axiom"]
+  },
+  {
+    "id": "ann-e830-lowerbound",
+    "proofId": "erdos-830",
+    "range": { "startLine": 91, "endLine": 100 },
+    "type": "theorem",
+    "title": "Open Conjecture: Lower Bound",
+    "content": "Is **A(x) > x^{1-o(1)}**? This asks whether amicable pairs have positive 'logarithmic density'—that A(x) grows almost as fast as x itself.\n\nThis is weaker than asking for linear density A(x) ~ cx, but still unproven. Current upper bounds suggest this may be false.",
+    "mathContext": "x^{1-o(1)} means x^{1-ε(x)} where ε(x) → 0 as x → ∞. Equivalently: log A(x) / log x → 1.",
+    "significance": "supporting",
+    "relatedConcepts": ["lower-bound", "density", "little-o"]
+  },
+  {
+    "id": "ann-e830-erdos",
+    "proofId": "erdos-830",
+    "range": { "startLine": 109, "endLine": 113 },
+    "type": "theorem",
+    "title": "Erdős Upper Bound (1955)",
+    "content": "**Erdős proved A(x) = o(x)**: amicable pairs are 'negligible' compared to all integers. This was the first result showing they're genuinely rare, not just hard to find.\n\nMathematically: A(x)/x → 0 as x → ∞.",
+    "mathContext": "A =o[atTop] id means lim_{x→∞} A(x)/x = 0. The pairs have zero natural density.",
+    "significance": "critical",
+    "relatedConcepts": ["erdos", "upper-bound", "little-o"]
+  },
+  {
+    "id": "ann-e830-pomerance",
+    "proofId": "erdos-830",
+    "range": { "startLine": 115, "endLine": 128 },
+    "type": "theorem",
+    "title": "Pomerance Upper Bounds (1981, 2015)",
+    "content": "**Carl Pomerance** dramatically improved on Erdős's bound:\n\n**1981**: A(x) ≤ x · exp(-(log x)^{1/3})\n**2015**: A(x) ≤ x · exp(-(1/2+o(1))√(log x · log log x))\n\nThese show amicable pairs are *extremely* rare. At x = 10^{100}, the 2015 bound gives roughly x/10^{150}—essentially zero compared to x.",
+    "mathContext": "The 2015 bound is currently the best known. The exp(-√(log x · log log x)) factor decays faster than any polynomial in 1/log x.",
+    "significance": "critical",
+    "relatedConcepts": ["pomerance", "upper-bound", "exponential-decay"]
+  },
+  {
+    "id": "ann-e830-paganini",
+    "proofId": "erdos-830",
+    "range": { "startLine": 140, "endLine": 147 },
+    "type": "theorem",
+    "title": "Paganini's Discovery (1866)",
+    "content": "The pair **(1184, 1210)** was discovered by **Nicolo Paganini** (the musician's son, not the violinist himself) at age 16 in 1866—over 2000 years after (220, 284)!\n\nThis shows how rare amicable pairs are: even small ones evaded mathematicians for millennia.",
+    "mathContext": "σ(1184) = σ(1210) = 2394 = 1184 + 1210. Verified by native_decide.",
+    "significance": "supporting",
+    "relatedConcepts": ["paganini", "history", "verification"]
+  }
+]

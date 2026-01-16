@@ -1,1 +1,142 @@
-[]
+[
+  {
+    "id": "ann-e258-header",
+    "proofId": "erdos-258",
+    "range": {
+      "startLine": 1,
+      "endLine": 15
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #258 asks about the **irrationality of a specific infinite series** involving the divisor function τ(n). The general case remains OPEN, but two important variants have been solved.",
+    "mathContext": "The series is Σ τ(n)/(a₁·...·aₙ) where τ(n) counts divisors and (aₙ) is a sequence tending to infinity. The solved cases are: monotone sequences (Erdős-Straus 1971) and constant t^n denominators (Erdős 1948).",
+    "significance": "critical",
+    "relatedConcepts": ["irrationality", "divisor-function", "infinite-series"]
+  },
+  {
+    "id": "ann-e258-imports",
+    "proofId": "erdos-258",
+    "range": {
+      "startLine": 17,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import **Divisors** for the divisor function, **InfiniteSum.Real** for the tsum notation (infinite sums over ℕ → ℝ), and **Irrational** for the irrationality predicate.",
+    "mathContext": "The `Irrational` predicate in Mathlib is defined as a real number not being the cast of any rational. The `tsum` notation allows writing Σ' n, f(n) for infinite sums.",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "infinite-sums", "irrationality"]
+  },
+  {
+    "id": "ann-e258-tau-def",
+    "proofId": "erdos-258",
+    "range": {
+      "startLine": 29,
+      "endLine": 31
+    },
+    "type": "definition",
+    "title": "Divisor Function τ(n)",
+    "content": "The **divisor function** τ(n) counts the positive divisors of n. For example: τ(1)=1, τ(6)=4 (divisors: 1,2,3,6), τ(p)=2 for any prime p.",
+    "mathContext": "We define `tau n := n.divisors.card`, using Mathlib's Finset of divisors. This function is multiplicative: τ(mn) = τ(m)·τ(n) when gcd(m,n)=1.",
+    "significance": "key",
+    "relatedConcepts": ["divisors", "multiplicative-functions", "number-theory"]
+  },
+  {
+    "id": "ann-e258-product-prefix",
+    "proofId": "erdos-258",
+    "range": {
+      "startLine": 33,
+      "endLine": 35
+    },
+    "type": "definition",
+    "title": "Product Prefix",
+    "content": "The **product prefix** computes a₁ · a₂ · ... · aₙ, the product of the first n terms of a sequence. This forms the denominator in our series.",
+    "mathContext": "We use `Finset.prod` over the interval [1, n] to compute the product. This gives the denominator that grows as we add more terms.",
+    "significance": "key",
+    "relatedConcepts": ["products", "sequences", "factorials"]
+  },
+  {
+    "id": "ann-e258-general-term",
+    "proofId": "erdos-258",
+    "range": {
+      "startLine": 37,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "General Term of Series",
+    "content": "The **general term** τ(n)/(a₁·...·aₙ) is the n-th term of our infinite series. This must be cast to ℝ for the sum.",
+    "mathContext": "Marked `noncomputable` because real division is noncomputable in Lean (real numbers are defined via Cauchy sequences/Dedekind cuts).",
+    "significance": "key",
+    "relatedConcepts": ["series-terms", "real-numbers", "division"]
+  },
+  {
+    "id": "ann-e258-tau-examples",
+    "proofId": "erdos-258",
+    "range": {
+      "startLine": 43,
+      "endLine": 58
+    },
+    "type": "lemma",
+    "title": "Verified Values of τ",
+    "content": "We verify τ(n) for several small values: τ(1)=1, τ(2)=2, τ(6)=4, τ(12)=6. We also check that primes like 5 and 7 have exactly 2 divisors.",
+    "mathContext": "These are proved by `native_decide`, which computes the actual values and verifies the equalities at compile time. This provides certified examples.",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide", "computation", "verification"]
+  },
+  {
+    "id": "ann-e258-monotone-axiom",
+    "proofId": "erdos-258",
+    "range": {
+      "startLine": 62,
+      "endLine": 79
+    },
+    "type": "theorem",
+    "title": "Monotone Variant (Erdős-Straus)",
+    "content": "**Solved (1971)**: If (aₙ) is a monotone increasing sequence of positive integers tending to infinity, then the sum Σ τ(n)/(a₁·...·aₙ) is **irrational**.",
+    "mathContext": "This is stated as an `axiom` because the Erdős-Straus proof uses analytic techniques beyond current Mathlib. The key is that monotonicity ensures the denominators grow predictably.",
+    "significance": "critical",
+    "relatedConcepts": ["monotone-sequences", "erdos-straus", "irrationality-proofs"]
+  },
+  {
+    "id": "ann-e258-power-axiom",
+    "proofId": "erdos-258",
+    "range": {
+      "startLine": 81,
+      "endLine": 93
+    },
+    "type": "theorem",
+    "title": "Power Variant (Erdős 1948)",
+    "content": "**Solved (1948)**: For any integer t ≥ 2, the sum Σ τ(n)/tⁿ is **irrational**. This is the special case where all aₙ = t.",
+    "mathContext": "This connects to **Lambert series** Σ xⁿ/(1-xⁿ) which generate divisor-related functions. The proof uses divisibility analysis of partial sums.",
+    "significance": "critical",
+    "relatedConcepts": ["lambert-series", "power-series", "erdos-1948"]
+  },
+  {
+    "id": "ann-e258-open-conjecture",
+    "proofId": "erdos-258",
+    "range": {
+      "startLine": 95,
+      "endLine": 110
+    },
+    "type": "definition",
+    "title": "The Open General Case",
+    "content": "The **full conjecture** (still OPEN): for ANY sequence (aₙ) with aₙ → ∞ (not necessarily monotone), is the sum always irrational?",
+    "mathContext": "Defined as a `Prop` rather than an axiom, since we don't know if it's true. Removing monotonicity is the key difficulty — denominators can fluctuate unpredictably.",
+    "significance": "key",
+    "relatedConcepts": ["open-problems", "conjectures", "generalization"]
+  },
+  {
+    "id": "ann-e258-tau-positive",
+    "proofId": "erdos-258",
+    "range": {
+      "startLine": 113,
+      "endLine": 118
+    },
+    "type": "lemma",
+    "title": "τ(n) is Always Positive",
+    "content": "For any n ≥ 1, we have τ(n) ≥ 1 since every positive integer has at least one divisor (itself, or 1).",
+    "mathContext": "We verify this for specific values using `native_decide`. A general proof would use that 1 always divides n, so 1 ∈ divisors(n), so card ≥ 1.",
+    "significance": "supporting",
+    "relatedConcepts": ["positivity", "divisibility", "basic-properties"]
+  }
+]

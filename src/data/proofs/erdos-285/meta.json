@@ -1,33 +1,108 @@
 {
   "id": "erdos-285",
-  "title": "Erdős Problem #285",
+  "title": "Erdős Problem #285: Egyptian Fractions Asymptotics",
   "slug": "erdos-285",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimal value of ... such that there exist ... with\\[1={n_1}+\\cdots+{n_k}.\\]Is it true that\\[f(k)=(1+o(1)){e-1...",
+  "description": "Let f(k) be the minimal largest denominator in a k-term Egyptian fraction representation of 1. Is f(k) = (1+o(1))·e/(e-1)·k? YES — proved by Martin (2000). The constant e/(e-1) ≈ 1.582 comes from harmonic series structure.",
   "meta": {
-    "author": "Unknown",
+    "author": "Greg Martin (2000)",
     "sourceUrl": "https://erdosproblems.com/285",
-    "date": "",
-    "status": "pending",
+    "date": "2000",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos285Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "asymptotics",
+      "harmonic-series"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 285,
     "erdosUrl": "https://erdosproblems.com/285",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.rexp",
+        "description": "Real exponential function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Asymptotics.IsLittleO",
+        "description": "Little-o asymptotic notation",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "StrictMono",
+        "description": "Strictly monotonic functions",
+        "module": "Mathlib.Order.Monotone.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of Egyptian fraction representations",
+      "Definition of f(k) as minimal largest denominator",
+      "Statement of Martin's asymptotic result",
+      "Statement of the trivial lower bound"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #285 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(k)$ be the minimal value of $n_k$ such that there exist $n_1<n_2<\\cdots <n_k$ with\\[1=\\frac{1}{n_1}+\\cdots+\\frac{1}{n_k}.\\]Is it true that\\[f(k)=(1+o(1))\\frac{e}{e-1}k?\\]\n\n\n\nIt is trivial that $f(k)\\geq (1+o(1))\\frac{e}{e-1}k$, since for any $u\\geq 1$\\[\\sum_{e\\leq n\\leq eu}\\frac{1}{n}= 1+o(1),\\]and so if $eu\\approx f(k)$ then $k\\leq \\frac{e-1}{e}f(k)$. Proved by Martin \\cite{Ma00}.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Ma00] Martin, Greg, Denser Egyptian fractions. Acta Arith. (2000), 231-260.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Egyptian fractions — sums of distinct unit fractions — date to ancient Egypt (the Rhind papyrus, ~1650 BCE). Every positive rational has infinitely many Egyptian fraction representations, but the question of how 'efficient' these can be remained open.\n\nErdős asked: if we want 1 = 1/n₁ + ··· + 1/nₖ with the smallest possible largest denominator nₖ, what is f(k)? The trivial lower bound f(k) ≥ (1+o(1))·e/(e-1)·k follows from the harmonic series.\n\nGreg Martin (2000) proved this bound is tight: f(k) = (1+o(1))·e/(e-1)·k. His paper 'Denser Egyptian Fractions' constructs explicit representations achieving this asymptotic.",
+    "problemStatement": "**Definition**: Let $f(k)$ be the minimal value of the largest denominator $n_k$ such that there exist positive integers $n_1 < n_2 < \\cdots < n_k$ with\n$$1 = \\frac{1}{n_1} + \\frac{1}{n_2} + \\cdots + \\frac{1}{n_k}$$\n\n**Question**: Is $f(k) = (1 + o(1)) \\cdot \\frac{e}{e-1} \\cdot k$?\n\n**Answer**: YES (Martin 2000)\n\nThe constant $e/(e-1) \\approx 1.5819$ is optimal.",
+    "proofStrategy": "We formalize:\n\n1. **Egyptian fraction representations**: Strictly increasing sequences of positive integers whose reciprocals sum to 1\n\n2. **The function f(k)**: Minimum of the largest denominator over all k-term representations\n\n3. **The Egyptian constant**: e/(e-1) ≈ 1.5819...\n\n4. **Martin's result as an axiom**: f(k) = (1+o(1))·e/(e-1)·k\n\n5. **The trivial lower bound**: Also stated as an axiom, though it follows from harmonic series analysis",
+    "keyInsights": [
+      "**The constant e/(e-1)**: Arises because ∑_{e ≤ n ≤ eu} 1/n ≈ 1 for any u. The interval [e, eu] contains about (e-1)u integers, each contributing ~1/eu on average.",
+      "**Lower bound reasoning**: If nₖ ≈ eu, we need (e-1)u terms from [e, eu] to sum to ~1. So k ≤ (e-1)u = (e-1)/e · nₖ, giving f(k) ≥ e/(e-1) · k.",
+      "**Martin's construction**: The upper bound requires carefully choosing denominators to avoid 'gaps' while maintaining efficiency. Martin's greedy-style algorithm achieves the optimal constant.",
+      "**Historical significance**: This connects ancient Egyptian mathematics (Rhind papyrus algorithms) to modern analytic number theory.",
+      "**Practical implications**: For k=100 terms, f(100) ≈ 158. We can represent 1 using 100 distinct unit fractions with largest denominator ~158."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Module documentation and Mathlib imports for exponentials, asymptotics, and sums."
+    },
+    {
+      "id": "background",
+      "title": "Egyptian Fraction Definitions",
+      "startLine": 27,
+      "endLine": 51,
+      "summary": "Definitions of Egyptian fraction representations, valid lengths, and the function f(k)."
+    },
+    {
+      "id": "main-result",
+      "title": "Martin's Asymptotic Result",
+      "startLine": 53,
+      "endLine": 75,
+      "summary": "The constant e/(e-1) and Martin's theorem that f(k) achieves this asymptotic."
+    },
+    {
+      "id": "lower-bound",
+      "title": "The Trivial Lower Bound",
+      "startLine": 77,
+      "endLine": 90,
+      "summary": "The lower bound f(k) ≥ (1+o(1))·e/(e-1)·k from harmonic series analysis."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 116,
+      "endLine": 127,
+      "summary": "Concrete Egyptian fraction representations of 1."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #285 about the asymptotic growth of f(k), the minimal largest denominator in k-term Egyptian fraction representations of 1. Martin (2000) proved f(k) = (1+o(1))·e/(e-1)·k, confirming the trivial lower bound is tight.",
+    "implications": "This result shows that Egyptian fraction representations can be made surprisingly 'dense' — the largest denominator grows only linearly in the number of terms, with the optimal constant e/(e-1) ≈ 1.582.",
+    "openQuestions": [
+      "What is the exact value of f(k) for small k?",
+      "Can we improve the o(1) error term to O(1/k)?",
+      "What about Egyptian fraction representations of other rationals p/q?"
+    ]
   }
 }

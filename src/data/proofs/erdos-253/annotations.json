@@ -1,1 +1,155 @@
-[]
+[
+  {
+    "id": "ann-e253-header",
+    "proofId": "erdos-253",
+    "range": {
+      "startLine": 1,
+      "endLine": 16
+    },
+    "type": "concept",
+    "title": "Problem Documentation",
+    "content": "This header documents **Erdős Problem #253**, a conjecture about subset sums and arithmetic progressions. The conjecture was disproved by J. W. S. Cassels in 1960.",
+    "mathContext": "The problem asks: if a sequence grows slowly (consecutive ratios → 1) and its subset sums hit every arithmetic progression infinitely often, must all large integers be representable? Cassels showed the answer is NO.",
+    "significance": "supporting",
+    "relatedConcepts": ["erdos", "additive-combinatorics", "counterexample"]
+  },
+  {
+    "id": "ann-e253-imports",
+    "proofId": "erdos-253",
+    "range": {
+      "startLine": 18,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import several Mathlib modules: **Finset.Basic** for finite sets and sums, **Set.Finite** for finiteness predicates, **Real.Basic** for the ratio limit, and **Filter.Basic**/**Topology.Basic** for the filter-based limit definition.",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "filters", "topology"]
+  },
+  {
+    "id": "ann-e253-subset-sums",
+    "proofId": "erdos-253",
+    "range": {
+      "startLine": 31,
+      "endLine": 34
+    },
+    "type": "definition",
+    "title": "Subset Sums Definition",
+    "content": "The **subset sums** of a set S are all values that can be written as sums of finitely many distinct elements from S. This includes 0 (the empty sum).",
+    "mathContext": "Formally, `subsetSums S = {n | ∃ F : Finset ℕ, F ⊆ S ∧ F.sum id = n}`. For example, if S = {1, 2, 4}, then subsetSums S = {0, 1, 2, 3, 4, 5, 6, 7}. This concept is central to additive combinatorics and the study of sumsets.",
+    "significance": "key",
+    "relatedConcepts": ["finite-sums", "additive-combinatorics", "representation"]
+  },
+  {
+    "id": "ann-e253-infinite-ap",
+    "proofId": "erdos-253",
+    "range": {
+      "startLine": 36,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "Infinite Arithmetic Progression",
+    "content": "An **infinite arithmetic progression** is a set of the form {a, a+d, a+2d, a+3d, ...} where d > 0 is the common difference and a is the starting value.",
+    "mathContext": "We define `IsInfiniteAP L` to mean L = {n | ∃ k, n = a + k*d} for some a, d with d > 0. Examples: ℕ itself (d=1, a=0), the even numbers (d=2, a=0), and {3, 7, 11, 15, ...} (d=4, a=3).",
+    "significance": "key",
+    "relatedConcepts": ["arithmetic-progressions", "number-theory", "residue-classes"]
+  },
+  {
+    "id": "ann-e253-ap-property",
+    "proofId": "erdos-253",
+    "range": {
+      "startLine": 41,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "AP Representation Property",
+    "content": "A sequence has the **AP representation property** if it is strictly increasing AND every infinite arithmetic progression contains infinitely many of its subset sums.",
+    "mathContext": "This means for every AP L, the intersection `subsetSums(range a) ∩ L` is infinite. Intuitively, the subset sums are 'well-distributed' across all residue class patterns.",
+    "significance": "key",
+    "relatedConcepts": ["distribution", "density", "equidistribution"]
+  },
+  {
+    "id": "ann-e253-ratio-condition",
+    "proofId": "erdos-253",
+    "range": {
+      "startLine": 44,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Ratio Tending to One",
+    "content": "A sequence has **ratio tending to one** if consecutive term ratios approach 1: a_{n+1}/a_n → 1 as n → ∞. This means the sequence grows 'slowly' in a relative sense.",
+    "mathContext": "Using Mathlib's filter-based limits, this is `Tendsto (fun n => (a(n+1) : ℝ) / (a n)) atTop (nhds 1)`. Examples: n, n², n^α for any α > 0 all satisfy this. Powers of 2 do NOT (ratio = 2).",
+    "significance": "key",
+    "relatedConcepts": ["limits", "growth-rates", "filters"]
+  },
+  {
+    "id": "ann-e253-main-axiom",
+    "proofId": "erdos-253",
+    "range": {
+      "startLine": 55,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "Main Result: Conjecture is False",
+    "content": "**Erdős Problem #253** asked if the three conditions (strict increase, AP representation, ratio → 1) imply that all but finitely many integers are subset sums. We state as an axiom that this is FALSE.",
+    "mathContext": "The statement is: ¬∀a, (positive ∧ AP-property ∧ ratio → 1) → (subsetSums(range a))ᶜ.Finite. The complement being finite means 'cofinite' — all but finitely many integers are representable. Cassels' 1960 counterexample shows this implication fails.",
+    "significance": "critical",
+    "relatedConcepts": ["counterexample", "cofinite", "representation-theory"]
+  },
+  {
+    "id": "ann-e253-zero-sum",
+    "proofId": "erdos-253",
+    "range": {
+      "startLine": 74,
+      "endLine": 79
+    },
+    "type": "theorem",
+    "title": "Zero is Always a Subset Sum",
+    "content": "For any set S, the value 0 is always in subsetSums S, because the empty set is a valid finite subset with sum 0.",
+    "mathContext": "This is proved by exhibiting the witness F = ∅, which trivially satisfies ∅ ⊆ S and ∅.sum id = 0.",
+    "significance": "supporting",
+    "relatedConcepts": ["empty-sum", "base-case"]
+  },
+  {
+    "id": "ann-e253-singleton-sum",
+    "proofId": "erdos-253",
+    "range": {
+      "startLine": 81,
+      "endLine": 87
+    },
+    "type": "theorem",
+    "title": "Elements are Subset Sums",
+    "content": "Any element x ∈ S is automatically in subsetSums S, because we can take the singleton {x} as our finite subset.",
+    "mathContext": "The witness is F = {x} with {x} ⊆ S (from x ∈ S) and {x}.sum id = x. This shows subsetSums S ⊇ S for any S.",
+    "significance": "supporting",
+    "relatedConcepts": ["singleton", "subset-inclusion"]
+  },
+  {
+    "id": "ann-e253-nat-ap",
+    "proofId": "erdos-253",
+    "range": {
+      "startLine": 90,
+      "endLine": 98
+    },
+    "type": "theorem",
+    "title": "Natural Numbers as an AP",
+    "content": "The set of all natural numbers ℕ is an infinite arithmetic progression with a = 0 and d = 1.",
+    "mathContext": "Every n ∈ ℕ can be written as n = 0 + n·1, so ℕ = {0 + k·1 : k ∈ ℕ}. The proof uses `ring` to verify the arithmetic identity.",
+    "significance": "supporting",
+    "relatedConcepts": ["natural-numbers", "trivial-progression"]
+  },
+  {
+    "id": "ann-e253-evens-ap",
+    "proofId": "erdos-253",
+    "range": {
+      "startLine": 100,
+      "endLine": 113
+    },
+    "type": "theorem",
+    "title": "Even Numbers as an AP",
+    "content": "The set of even numbers {0, 2, 4, 6, ...} is an infinite arithmetic progression with a = 0 and d = 2.",
+    "mathContext": "A number n is even iff n = 2k for some k, which is equivalent to n = 0 + k·2. The proof uses `omega` to handle the arithmetic equivalences.",
+    "significance": "supporting",
+    "relatedConcepts": ["even-numbers", "residue-classes", "parity"]
+  }
+]
