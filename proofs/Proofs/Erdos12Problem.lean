@@ -245,6 +245,39 @@ axiom coprime_upper_bound :
     ∃ C : ℝ, C > 0 ∧ ∀ᶠ N in atTop,
       (countingFunction A N : ℝ) ≤ C * N^(2/3 : ℝ) / Real.log N
 
+/-! ## Properties of primeSquares3mod4 -/
+
+/-- There are infinitely many primes ≡ 3 (mod 4) (Dirichlet's theorem) -/
+axiom infinitely_many_primes_3mod4 :
+  Set.Infinite {p : ℕ | Nat.Prime p ∧ p % 4 = 3}
+
+/-- Primes ≡ 3 (mod 4) squared is an infinite set.
+
+    Proof idea: If primeSquares3mod4 = {p² | p prime, p ≡ 3 (mod 4)} is finite,
+    then the underlying set of primes must be finite (squaring is injective on ℕ).
+    But by Dirichlet's theorem (axiomatized), there are infinitely many such primes.
+-/
+axiom primeSquares3mod4_infinite : Set.Infinite primeSquares3mod4
+
+/-- The key example: primeSquares3mod4 is infinite and divisibility-free -/
+theorem primeSquares3mod4_is_good :
+    primeSquares3mod4.Infinite ∧ IsDivisibilityFree primeSquares3mod4 :=
+  ⟨primeSquares3mod4_infinite, primeSquares3mod4_divisibility_free⟩
+
+/-- Counting primes ≡ 3 (mod 4) up to x: asymptotically x / (2 log x) by Dirichlet -/
+noncomputable def primeCount3mod4 (N : ℕ) : ℕ :=
+  Set.ncard {p : ℕ | Nat.Prime p ∧ p % 4 = 3 ∧ p ≤ N}
+
+/-- The density bound: |primeSquares3mod4 ∩ [1,N]| ~ √N / (2 log √N) = √N / log N -/
+axiom primeSquares3mod4_density :
+  ∃ c : ℝ, c > 0 ∧ ∀ᶠ N in atTop,
+    (countingFunction primeSquares3mod4 N : ℝ) ≥ c * Real.sqrt N / Real.log N
+
+/-- The variant from formal-conjectures: liminf (count * log N / √N) > 0 -/
+axiom primeSquares3mod4_liminf_pos :
+  (0 : ℝ) < Filter.atTop.liminf
+    (fun N => (countingFunction primeSquares3mod4 N : ℝ) * Real.log N / Real.sqrt N)
+
 /-! ## Main Problem Statement -/
 
 /-- Erdős Problem #12: All three questions (OPEN) -/

@@ -47,7 +47,7 @@
   {
     "id": "ann-e2-original-conj",
     "proofId": "erdos-2",
-    "range": { "startLine": 76, "endLine": 81 },
+    "range": { "startLine": 77, "endLine": 84 },
     "type": "definition",
     "title": "Erdős' Original Conjecture (DISPROVED)",
     "content": "**erdos_original_conjecture**: For any N, there exists a covering system with min modulus ≥ N. Erdős believed this was true.",
@@ -56,7 +56,7 @@
   {
     "id": "ann-e2-solution",
     "proofId": "erdos-2",
-    "range": { "startLine": 85, "endLine": 91 },
+    "range": { "startLine": 88, "endLine": 94 },
     "type": "definition",
     "title": "Erdős Problem 2 Solution",
     "content": "**erdos_2_solution**: There exists N such that every covering system has some modulus ≤ N. The answer is NO - min modulus is bounded.",
@@ -65,7 +65,7 @@
   {
     "id": "ann-e2-solution-implies",
     "proofId": "erdos-2",
-    "range": { "startLine": 93, "endLine": 100 },
+    "range": { "startLine": 96, "endLine": 103 },
     "type": "theorem",
     "title": "Solution Implies Conjecture False",
     "content": "If there's an upper bound N on min modulus, then the conjecture fails for N+1. Direct logical consequence.",
@@ -74,8 +74,8 @@
   {
     "id": "ann-e2-hough",
     "proofId": "erdos-2",
-    "range": { "startLine": 104, "endLine": 117 },
-    "type": "theorem",
+    "range": { "startLine": 107, "endLine": 117 },
+    "type": "axiom",
     "title": "Hough's Theorem (2015)",
     "content": "**Hough**: Every covering system has a modulus ≤ 10^16. First proof that the conjecture is false.",
     "significance": "critical"
@@ -119,7 +119,7 @@
   {
     "id": "ann-e2-mod2",
     "proofId": "erdos-2",
-    "range": { "startLine": 164, "endLine": 166 },
+    "range": { "startLine": 161, "endLine": 163 },
     "type": "definition",
     "title": "Even/Odd Classes",
     "content": "**mod2_even** and **mod2_odd** are the simplest congruence classes: 0 mod 2 (evens) and 1 mod 2 (odds).",

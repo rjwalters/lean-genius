@@ -1,1 +1,218 @@
-[]
+[
+  {
+    "id": "ann-e208-header",
+    "proofId": "erdos-208",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This header documents **Erdős Problem #208**, which asks about the maximum size of gaps between consecutive squarefree numbers. A squarefree number has no perfect square divisors greater than 1.",
+    "mathContext": "The squarefree sequence is 1, 2, 3, 5, 6, 7, 10, 11, 13, ... (skipping 4, 8, 9, 12, ...). The problem asks how fast gaps can grow with the sequence index.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "squarefree numbers",
+      "gaps in sequences",
+      "ABC conjecture"
+    ]
+  },
+  {
+    "id": "ann-e208-squarefree-def",
+    "proofId": "erdos-208",
+    "range": {
+      "startLine": 39,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Squarefree Definition",
+    "content": "A number n is **squarefree** if it's not divisible by any perfect square greater than 1. Equivalently, in its prime factorization, each prime appears at most once.",
+    "mathContext": "In Lean, we use Mathlib's `Squarefree` predicate which characterizes this via the property that only units can be squared and still divide n.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "prime factorization",
+      "divisibility",
+      "Mathlib Squarefree"
+    ]
+  },
+  {
+    "id": "ann-e208-sequence",
+    "proofId": "erdos-208",
+    "range": {
+      "startLine": 44,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "The Squarefree Sequence",
+    "content": "We define **squarefreeSeq** using Nat.nth to enumerate all squarefree numbers in order: s₀ = 1, s₁ = 2, s₂ = 3, s₃ = 5, s₄ = 6, ...",
+    "mathContext": "Nat.nth extracts the n-th element satisfying a predicate, giving us an enumeration of all squarefree numbers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.nth",
+      "enumeration",
+      "infinite sequences"
+    ]
+  },
+  {
+    "id": "ann-e208-q1",
+    "proofId": "erdos-208",
+    "range": {
+      "startLine": 52,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Question 1: Subpolynomial Gaps",
+    "content": "**Erdős's first question**: Is it true that s_{n+1} - sₙ ≪_ε sₙ^ε for any ε > 0? This asks whether gaps are always subpolynomial - smaller than any fixed power of sₙ.",
+    "mathContext": "We formalize this using Mathlib's `IsBigO` (=O notation). The condition must hold for all positive ε, making this a strong requirement.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "big-O notation",
+      "subpolynomial growth",
+      "asymptotic bounds"
+    ]
+  },
+  {
+    "id": "ann-e208-q2",
+    "proofId": "erdos-208",
+    "range": {
+      "startLine": 64,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "Question 2: Precise Bound",
+    "content": "**Erdős's second question**: Is s_{n+1} - sₙ ≤ (1 + o(1)) · (π²/6) · log(sₙ)/log(log(sₙ))? This proposes a specific logarithmic bound on maximum gap size.",
+    "mathContext": "The constant π²/6 connects to the density of squarefree numbers (which is 6/π²). The log/log-log form appears in many gap problems.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "logarithmic bounds",
+      "little-o notation",
+      "optimal bounds"
+    ]
+  },
+  {
+    "id": "ann-e208-filaseta",
+    "proofId": "erdos-208",
+    "range": {
+      "startLine": 78,
+      "endLine": 85
+    },
+    "type": "axiom",
+    "title": "Filaseta-Trifonov Bound",
+    "content": "**Filaseta & Trifonov (1992)** proved that gaps satisfy s_{n+1} - sₙ ≪ sₙ^{1/5+o(1)}. This was the best unconditional bound for decades.",
+    "mathContext": "The exponent 1/5 comes from sieve methods. Improving below 1/5 requires fundamentally new techniques.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sieve methods",
+      "unconditional bounds",
+      "polynomial exponents"
+    ]
+  },
+  {
+    "id": "ann-e208-pandey",
+    "proofId": "erdos-208",
+    "range": {
+      "startLine": 87,
+      "endLine": 93
+    },
+    "type": "axiom",
+    "title": "Pandey's Improvement",
+    "content": "**Pandey (2024)** improved the exponent to 1/5 - c for some positive constant c. This is the current best unconditional result, breaking the 1/5 barrier.",
+    "mathContext": "While the specific value of c is not published, any improvement below 1/5 represents significant progress.",
+    "significance": "key",
+    "relatedConcepts": [
+      "recent progress",
+      "breaking barriers",
+      "state of the art"
+    ]
+  },
+  {
+    "id": "ann-e208-lower",
+    "proofId": "erdos-208",
+    "range": {
+      "startLine": 97,
+      "endLine": 106
+    },
+    "type": "axiom",
+    "title": "Erdős Lower Bound",
+    "content": "**Erdős (1951)** proved that infinitely many gaps achieve s_{n+1} - sₙ > (1 + o(1)) · (π²/6) · log(sₙ)/log(log(sₙ)). This shows Question 2's bound would be optimal.",
+    "mathContext": "The proof constructs intervals where many consecutive numbers are divisible by small squares, forcing large gaps.",
+    "significance": "key",
+    "relatedConcepts": [
+      "optimality",
+      "lower bounds",
+      "infinitely many"
+    ]
+  },
+  {
+    "id": "ann-e208-abc",
+    "proofId": "erdos-208",
+    "range": {
+      "startLine": 110,
+      "endLine": 119
+    },
+    "type": "axiom",
+    "title": "ABC Conjecture Connection",
+    "content": "**Granville (1998)** proved that Question 1 follows from the ABC conjecture. The ABC conjecture is one of the most important open problems in number theory.",
+    "mathContext": "ABC concerns coprime integers a + b = c and bounds c by the radical rad(abc). If true, it would resolve many open problems.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ABC conjecture",
+      "conditional results",
+      "Granville"
+    ]
+  },
+  {
+    "id": "ann-e208-density",
+    "proofId": "erdos-208",
+    "range": {
+      "startLine": 144,
+      "endLine": 149
+    },
+    "type": "axiom",
+    "title": "Density of Squarefree Numbers",
+    "content": "The **density of squarefree numbers** is 6/π² ≈ 0.6079. This classical result says about 60.8% of natural numbers are squarefree.",
+    "mathContext": "This follows from the product formula ∏_p (1 - 1/p²) = 6/π². It implies 'typical' gaps between squarefree numbers are small (about 1.6).",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural density",
+      "zeta function",
+      "product formulas"
+    ]
+  },
+  {
+    "id": "ann-e208-examples",
+    "proofId": "erdos-208",
+    "range": {
+      "startLine": 129,
+      "endLine": 142
+    },
+    "type": "lemma",
+    "title": "Squarefree Examples",
+    "content": "We verify small cases using **native_decide**: 2, 3, 5, 6 are squarefree, while 4 = 2² is not. These establish the basic structure of the sequence.",
+    "mathContext": "The native_decide tactic uses Lean's kernel to check decidable predicates. Squarefree has a decidable instance via factorization.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "decidability",
+      "concrete verification"
+    ]
+  },
+  {
+    "id": "ann-e208-gaps",
+    "proofId": "erdos-208",
+    "range": {
+      "startLine": 166,
+      "endLine": 182
+    },
+    "type": "lemma",
+    "title": "Small Gap Examples",
+    "content": "Concrete gap computations: gap of 1 (1→2, 2→3, 5→6, 6→7), gap of 2 (3→5, skipping 4=2²), gap of 3 (7→10, skipping 8=2³ and 9=3²).",
+    "mathContext": "Most gaps are 1 or 2. Larger gaps occur when multiple consecutive numbers are divisible by squares. The gap 7→10 is the first gap of 3.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "gap statistics",
+      "concrete examples",
+      "square divisibility"
+    ]
+  }
+]

@@ -1,33 +1,131 @@
 {
   "id": "erdos-228",
-  "title": "Erdős Problem #228",
+  "title": "Erdős Problem #228: Flat Littlewood Polynomials",
   "slug": "erdos-228",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist, for all large ..., a polynomial ... of degree ..., with coefficients ..., such that\\[ \\ll \\lvert P(z) \\rver...",
+  "description": "For all large n, does there exist a polynomial P of degree n with ±1 coefficients such that √n ≪ |P(z)| ≪ √n for all |z|=1? Answer: YES (BBMST 2019).",
   "meta": {
-    "author": "Unknown",
+    "author": "Balister-Bollobás-Morris-Sahasrabudhe-Tiba (2019)",
     "sourceUrl": "https://erdosproblems.com/228",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos228Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "polynomials",
+      "littlewood",
+      "harmonic-analysis",
+      "complex-analysis"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 228,
     "erdosUrl": "https://erdosproblems.com/228",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.eval",
+        "description": "Polynomial evaluation",
+        "module": "Mathlib.Algebra.Polynomial.Eval"
+      },
+      {
+        "theorem": "Complex.norm",
+        "description": "Complex number norm",
+        "module": "Mathlib.Analysis.Complex.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Eventually at infinity filter",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Real square root function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Clean formalization of Littlewood polynomials (±1 coefficients)",
+      "Definition of 'flatness' on the unit circle",
+      "Axiomatization of the BBMST theorem (2019)",
+      "Explicit formulation with universal constants",
+      "Related Hayman question on maximum magnitude",
+      "Proved √n > 0 for n ≥ 1 as basic heuristic"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #228 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist, for all large $n$, a polynomial $P$ of degree $n$, with coefficients $\\pm 1$, such that\\[\\sqrt{n} \\ll \\lvert P(z) \\rvert \\ll \\sqrt{n}\\]for all $\\lvert z\\rvert =1$, with the implied constants independent of $z$ and $n$?\n\n\n\nOriginally a conjecture of Littlewood. The answer is yes (for all $n\\geq 2$), proved by Balister, Bollob\\'{a}s, Morris, Sahasrabudhe, and Tiba \\cite{BBMST20}.\n\nIn Problem 4.31 of \\cite{Ha74} Erd\\H{o}s asks whether there exists a constant $c>0$ such that $\\max_{\\lvert z\\rvert=1}\\lvert P(z)\\rvert > (1+c)\\sqrt{n}$ for all large $n$.\n\nSee also [230].\n\n\n\n\nReferences\n\n\n[BBMST20] Balister, Paul and Bollob\\'as, B\\'{e}la and Morris, Robert and\nSahasrabudhe, Julian and Tiba, Marius, Flat {L}ittlewood polynomials exist. Ann. of Math. (2) (2020), 977--1004.\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem originates from J.E. Littlewood's 1966 work on polynomials with ±1 coefficients (Littlewood polynomials). He conjectured that 'flat' examples exist—polynomials where |P(z)| stays close to √n uniformly on the unit circle.\n\nThe conjecture remained open for over 50 years. In 2019, Balister, Bollobás, Morris, Sahasrabudhe, and Tiba proved that flat Littlewood polynomials exist, resolving the conjecture. Their paper 'Flat Littlewood Polynomials Exist' appeared in the Annals of Mathematics (2020).\n\nThe result is remarkable: despite the severe constraint of ±1 coefficients, the magnitude can be controlled to stay within constant factors of √n everywhere on the unit circle. This matches the 'random' behavior predicted by the central limit theorem.",
+    "problemStatement": "**Question**: For all large $n$, does there exist a polynomial $P$ of degree $n$ with coefficients $\\pm 1$ such that $\\sqrt{n} \\ll |P(z)| \\ll \\sqrt{n}$ for all $|z| = 1$?\n\n**Answer**: YES\n\nA **Littlewood polynomial** has all coefficients in $\\{-1, +1\\}$. A Littlewood polynomial is **flat** if $c_1\\sqrt{n} \\leq |P(z)| \\leq c_2\\sqrt{n}$ for all $|z| = 1$, where $c_1, c_2 > 0$ are absolute constants.\n\n**Theorem** (BBMST 2019): Flat Littlewood polynomials exist for every $n \\geq 2$.",
+    "proofStrategy": "We formalize the problem and main result:\n\n1. **IsLittlewoodPolynomial**: Define when a polynomial has ±1 coefficients\n2. **IsFlatOnUnitCircle**: Define flatness as magnitude bounded by c₁√n and c₂√n\n3. **Erdos228Question**: The existence question for all large n\n4. **bbmst_theorem**: Axiomatize the main result\n5. **bbmst_explicit**: Equivalent explicit formulation with constants\n6. **ErdosHaymanQuestion**: Related problem on maximum exceeding √n\n\nThe theorem itself requires sophisticated probabilistic and harmonic analysis techniques beyond Mathlib.",
+    "keyInsights": [
+      "**Littlewood polynomial**: A polynomial P(z) = Σᵢ aᵢzⁱ where all coefficients aᵢ ∈ {-1, +1}.",
+      "**Why √n?**: For random ±1 sums, the central limit theorem predicts magnitude ~√n. The question asks if this 'average' behavior can be achieved deterministically.",
+      "**Flatness constraint**: The polynomial must have |P(z)| ≈ √n for ALL z on the unit circle—not just on average, but uniformly.",
+      "**BBMST (2019)**: Resolved Littlewood's 50-year-old conjecture using probabilistic construction with derandomization.",
+      "**Hayman's question**: A related open problem asks if max|P(z)| must exceed (1+c)√n for some absolute c > 0."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 33,
+      "endLine": 46,
+      "summary": "Define Littlewood polynomials and flatness on the unit circle."
+    },
+    {
+      "id": "question",
+      "title": "Littlewood's Problem",
+      "startLine": 47,
+      "endLine": 61,
+      "summary": "Formalize the main existence question."
+    },
+    {
+      "id": "heuristic",
+      "title": "Why √n is Expected",
+      "startLine": 62,
+      "endLine": 76,
+      "summary": "Probabilistic intuition for the √n magnitude."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The BBMST Theorem",
+      "startLine": 77,
+      "endLine": 99,
+      "summary": "Axiomatize the main result proving flat polynomials exist."
+    },
+    {
+      "id": "explicit",
+      "title": "Explicit Formulation",
+      "startLine": 100,
+      "endLine": 113,
+      "summary": "Equivalent statement with explicit bounds."
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "startLine": 129,
+      "endLine": 143,
+      "summary": "Hayman's question on maximum magnitude."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 144,
+      "endLine": 160,
+      "summary": "Combined summary theorem."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #228 on the existence of flat Littlewood polynomials. The BBMST theorem (2019) proves they exist: for every n ≥ 2, there is a degree-n polynomial with ±1 coefficients whose magnitude on the unit circle is uniformly between c₁√n and c₂√n.",
+    "implications": "The resolution of Littlewood's conjecture is a major achievement in harmonic analysis and combinatorics. It shows that despite the binary constraint on coefficients, the 'random' magnitude behavior can be achieved deterministically. The techniques developed have applications to other problems in Fourier analysis and signal processing.",
+    "openQuestions": [
+      "What are the optimal constants c₁ and c₂?",
+      "Is max|P(z)| > (1+c)√n for some absolute c > 0? (Hayman's question)",
+      "Can explicit constructions be found, or must they be probabilistic?",
+      "What is the rate of convergence to the asymptotic bounds?",
+      "Are there generalizations to polynomials with other coefficient sets?"
+    ]
   }
 }

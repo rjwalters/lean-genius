@@ -1,1 +1,192 @@
-[]
+[
+  {
+    "id": "ann-e168-header",
+    "proofId": "erdos-168",
+    "range": {
+      "startLine": 1,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This header documents **Erdős Problem #168** about {n, 2n, 3n}-free sets. Let F(N) be the maximum size of a subset of {1,...,N} avoiding all such triples. What is the limiting density lim F(N)/N?",
+    "mathContext": "Graham-Spencer-Witsenhausen (1977) proved the limit exists. The limit ≈ 0.5564 involves 3-smooth numbers (2^a · 3^b). Erdős asked whether this limit is irrational—still open.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "extremal combinatorics",
+      "density",
+      "3-smooth numbers"
+    ]
+  },
+  {
+    "id": "ann-e168-triple-def",
+    "proofId": "erdos-168",
+    "range": {
+      "startLine": 54,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Contains Triple",
+    "content": "**ContainsTriple A** means A contains some {n, 2n, 3n} where n ≥ 1. This is a 'multiplicative' arithmetic progression with common ratio 2.",
+    "mathContext": "ContainsTriple A := ∃ n ≥ 1, n ∈ A ∧ 2*n ∈ A ∧ 3*n ∈ A. Note this is different from additive APs like {n, n+d, n+2d}.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "arithmetic progression",
+      "multiplicative structure"
+    ]
+  },
+  {
+    "id": "ann-e168-triple-free",
+    "proofId": "erdos-168",
+    "range": {
+      "startLine": 58,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "Triple-Free Sets",
+    "content": "**IsTripleFree A** means A contains NO {n, 2n, 3n} triple. This is the negation of ContainsTriple.",
+    "mathContext": "IsTripleFree A := ¬ContainsTriple A. The goal is to find the largest such sets within {1,...,N}.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "negation",
+      "avoidance"
+    ]
+  },
+  {
+    "id": "ann-e168-F-def",
+    "proofId": "erdos-168",
+    "range": {
+      "startLine": 61,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "The Function F(N)",
+    "content": "**F(N)** is the maximum cardinality of a triple-free subset of {1,...,N}. This is defined as a supremum over all valid sets.",
+    "mathContext": "F N := sSup { k | ∃ A ⊆ Icc 1 N, IsTripleFree A ∧ A.card = k }. The noncomputable definition uses sSup for the maximum.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "supremum",
+      "cardinality",
+      "extremal function"
+    ]
+  },
+  {
+    "id": "ann-e168-density-bounded",
+    "proofId": "erdos-168",
+    "range": {
+      "startLine": 67,
+      "endLine": 70
+    },
+    "type": "theorem",
+    "title": "Density Bounded",
+    "content": "**Proved**: The density F(N)/N is always between 0 and 1. This is trivial since F(N) ≤ N.",
+    "mathContext": "density_bounded : 0 ≤ F(N)/N ≤ 1. The proof uses positivity and that any subset has cardinality at most N.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density",
+      "bounds"
+    ]
+  },
+  {
+    "id": "ann-e168-monotone",
+    "proofId": "erdos-168",
+    "range": {
+      "startLine": 72,
+      "endLine": 82
+    },
+    "type": "theorem",
+    "title": "Monotonicity",
+    "content": "**Proved**: F is monotone: F(N) ≤ F(N+1). Any triple-free subset of {1,...,N} is also a subset of {1,...,N+1}.",
+    "mathContext": "F_monotone : F N ≤ F (N + 1). The proof uses that subsets of {1,...,N} inject into subsets of {1,...,N+1}.",
+    "significance": "key",
+    "relatedConcepts": [
+      "monotonicity",
+      "subset inclusion"
+    ]
+  },
+  {
+    "id": "ann-e168-3smooth",
+    "proofId": "erdos-168",
+    "range": {
+      "startLine": 86,
+      "endLine": 93
+    },
+    "type": "definition",
+    "title": "3-Smooth Numbers",
+    "content": "The **3-smooth numbers** are integers of the form 2^a · 3^b for a, b ≥ 0. These are: 1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, ...",
+    "mathContext": "ThreeSmooth := { n | ∃ a b : ℕ, n = 2^a * 3^b }. The limit formula involves summing 1/d_k over these numbers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "smooth numbers",
+      "prime factors",
+      "Hamming numbers"
+    ]
+  },
+  {
+    "id": "ann-e168-gsw",
+    "proofId": "erdos-168",
+    "range": {
+      "startLine": 95,
+      "endLine": 96
+    },
+    "type": "axiom",
+    "title": "GSW Limit Theorem",
+    "content": "**Graham-Spencer-Witsenhausen (1977)**: The limit lim_{N→∞} F(N)/N exists. This is axiomatized since the proof requires deep analysis.",
+    "mathContext": "axiom gsw_limit_exists : ∃ L, Tendsto (F N / N) atTop (nhds L). The limit is computed to be ≈ 0.5564.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "limit existence",
+      "density theorem"
+    ]
+  },
+  {
+    "id": "ann-e168-lower-bound",
+    "proofId": "erdos-168",
+    "range": {
+      "startLine": 113,
+      "endLine": 133
+    },
+    "type": "theorem",
+    "title": "Simple Lower Bound",
+    "content": "**Proved**: F(N) ≥ 2N/3 - 1. This follows from removing all multiples of 3 from {1,...,N}—the remaining set is triple-free.",
+    "mathContext": "simple_lower_bound : F(N) ≥ 2N/3 - 1. If we exclude {3, 6, 9, ...}, no {n, 2n, 3n} triple can exist since 3n would always be missing.",
+    "significance": "key",
+    "relatedConcepts": [
+      "construction",
+      "multiples of 3"
+    ]
+  },
+  {
+    "id": "ann-e168-irrationality",
+    "proofId": "erdos-168",
+    "range": {
+      "startLine": 143,
+      "endLine": 148
+    },
+    "type": "definition",
+    "title": "Irrationality Question",
+    "content": "**Open Problem**: Is the limit lim F(N)/N irrational? Erdős posed this question but it remains unsolved.",
+    "mathContext": "IrrationalityQuestion := Irrational limitDensity. The theorem irrationality_open just states it's either true or false (classical logic).",
+    "significance": "key",
+    "relatedConcepts": [
+      "irrationality",
+      "open problem"
+    ]
+  },
+  {
+    "id": "ann-e168-examples",
+    "proofId": "erdos-168",
+    "range": {
+      "startLine": 150,
+      "endLine": 163
+    },
+    "type": "theorem",
+    "title": "Small Examples",
+    "content": "We verify: {1, 2} is triple-free (no room for 3n), and {1, 2, 3} contains the triple {1, 2, 3} since 1, 2·1=2, 3·1=3 are all present.",
+    "mathContext": "The examples use explicit case analysis with omega tactic to verify membership and non-membership.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "examples",
+      "verification"
+    ]
+  }
+]

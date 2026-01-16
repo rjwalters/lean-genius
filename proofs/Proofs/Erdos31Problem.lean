@@ -66,7 +66,12 @@ def CoversAllButFinitely (A B : Set ℕ) : Prop :=
 axiom primes_density_zero : HasDensityZero {n : ℕ | n.Prime}
 
 /-- Helper: The number of powers of 2 up to N is at most log₂(N) + 1.
-    This is because 2^k ≤ N iff k ≤ log₂(N). -/
+    This is because 2^k ≤ N iff k ≤ log₂(N).
+
+    **Proof sketch**: The powers of 2 in [1,N] are {2^0, 2^1, ..., 2^k} where k = ⌊log₂ N⌋.
+    This set injects into {0, 1, ..., k} via the map n ↦ log₂ n, giving at most k+1 elements.
+
+    Note: This is axiomatized due to mathlib ncard API complexity; could be submitted to Aristotle. -/
 axiom powers_of_2_count_bound (N : ℕ) :
     ({n : ℕ | ∃ k, n = 2^k} ∩ Set.Icc 1 N).ncard ≤ Nat.log 2 N + 1
 
@@ -160,13 +165,12 @@ theorem tendsto_sqrt_inv : Filter.Tendsto (fun N : ℕ => (Nat.sqrt N + 1 : ℝ)
     have h1 : Filter.Tendsto (fun N : ℕ => Real.sqrt (N : ℝ)) Filter.atTop Filter.atTop := by
       have hsqrt : Filter.Tendsto (fun x : ℝ => x ^ (1/2 : ℝ)) Filter.atTop Filter.atTop :=
         tendsto_rpow_atTop (by norm_num : (0 : ℝ) < 1/2)
-      have hcast := tendsto_natCast_atTop_atTop
+      have hcast : Filter.Tendsto (fun n : ℕ => (n : ℝ)) Filter.atTop Filter.atTop :=
+        tendsto_natCast_atTop_atTop
       have := hsqrt.comp hcast
       refine this.congr' ?_
       filter_upwards [Filter.eventually_ge_atTop 0] with N _
-      simp only [Function.comp_apply]
-      rw [Real.sqrt_eq_rpow]
-      exact Nat.cast_nonneg N
+      simp only [Function.comp_apply, Real.sqrt_eq_rpow]
     have h2 : Filter.Tendsto (fun N : ℕ => (1 : ℝ) / Real.sqrt N) Filter.atTop (nhds 0) := by
       simp only [one_div]
       exact tendsto_inv_atTop_zero.comp h1
@@ -184,17 +188,20 @@ theorem tendsto_sqrt_inv : Filter.Tendsto (fun N : ℕ => (Nat.sqrt N + 1 : ℝ)
     rw [div_le_div_iff₀ hN_pos hN_pos']
     have hsqrt_le : (Nat.sqrt N : ℝ) ≤ Real.sqrt N := by
       have h1 : (Nat.sqrt N : ℝ) ^ 2 = ((Nat.sqrt N)^2 : ℕ) := by simp
-      have h2 : ((Nat.sqrt N)^2 : ℕ) ≤ N := Nat.sqrt_le_self N
+      have h2 : ((Nat.sqrt N)^2 : ℕ) ≤ N := by
+        exact Nat.sqrt_le' N
       have h3 : (Nat.sqrt N : ℝ) ^ 2 ≤ N := by
         rw [h1]
         exact Nat.cast_le.mpr h2
       rw [← Real.sqrt_sq (Nat.cast_nonneg _)]
       exact Real.sqrt_le_sqrt h3
     have hsqrt_le_N : Real.sqrt N ≤ N := by
-      rw [← Real.sqrt_sq (le_of_lt hN_pos)]
-      apply Real.sqrt_le_sqrt
-      have h : (1 : ℝ) ≤ N := Nat.one_le_cast.mpr hN
-      nlinarith
+      have h1 : (1 : ℝ) ≤ N := Nat.one_le_cast.mpr hN
+      have hN_sq : (N : ℝ) ≤ N ^ 2 := by
+        have : (1 : ℝ) ≤ N := h1
+        nlinarith
+      calc Real.sqrt N ≤ Real.sqrt (N ^ 2) := Real.sqrt_le_sqrt hN_sq
+        _ = N := Real.sqrt_sq (le_of_lt hN_pos)
     calc (Nat.sqrt N + 1 : ℝ) * Real.sqrt N
         ≤ (Real.sqrt N + 1) * Real.sqrt N := by
           apply mul_le_mul_of_nonneg_right

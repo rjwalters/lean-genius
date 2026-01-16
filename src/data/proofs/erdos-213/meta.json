@@ -1,33 +1,111 @@
 {
   "id": "erdos-213",
-  "title": "Erdős Problem #213",
+  "title": "Erdős Problem #213: Integer Distance Sets in General Position",
   "slug": "erdos-213",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Are there ... points in ..., no three on a line and no four on a circle, such that all pairwise distances are intege...",
+  "description": "For n ≥ 4, are there n points in ℝ², no three on a line and no four on a circle, with all pairwise distances integers?",
   "meta": {
-    "author": "Unknown",
+    "author": "Kreisel-Kurz (2008, best construction n=7); Anning-Erdős (1945, finiteness)",
     "sourceUrl": "https://erdosproblems.com/213",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos213Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "integer-distances",
+      "general-position",
+      "combinatorics"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 213,
     "erdosUrl": "https://erdosproblems.com/213",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Finite-dimensional Euclidean spaces",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of a set as a natural number",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Set.Pairwise",
+        "description": "Pairwise property on sets",
+        "module": "Mathlib.Data.Set.Pairwise.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Clean formalization of integer distance sets in general position",
+      "Definition of collinearity and concyclicity conditions",
+      "Axiomatization of Anning-Erdős finiteness theorem",
+      "Axiomatization of Harborth (n=5) and Kreisel-Kurz (n=7) constructions",
+      "Proved n=4,5,6,7 exist as theorems from base axioms",
+      "Axiomatization of Greenfeld-Iliopoulou-Peluse sparsity bound"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #213 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n\\geq 4$. Are there $n$ points in $\\mathbb{R}^2$, no three on a line and no four on a circle, such that all pairwise distances are integers?\n\n\n\nAnning and Erd\\H{o}s \\cite{AnEr45} proved there cannot exist an infinite such set. Harborth constructed such a set when $n=5$. The best construction to date, due to Kreisel and Kurz \\cite{KK08}, has $n=7$.\n\nAscher, Braune, and Turchet \\cite{ABT20} have shown that there is a uniform upper bound on the size of such a set, conditional on the Bombieri-Lang conjecture. Greenfeld, Iliopoulou, and Peluse \\cite{GIP24} have shown (unconditionally) that any such set must be very sparse, in that if $S\\subseteq [-N,N]^2$ has no three on a line and no four on a circle, and all pairwise distances integers, then\\[\\lvert S\\rvert \\ll (\\log N)^{O(1)}.\\]See also [130].\n\n\n\n\nReferences\n\n\n[ABT20] Ascher, K. and Braune, L. and Turchet, A., The Erd\\H{o}s-Ulam problem, Lang's conjecture, and uniformity. arXiv:1901.02616 (2020).\n\n[AnEr45] Anning, Norman H. and Erd\\H{o}s, Paul, Integral distances. Bull. Amer. Math. Soc. (1945), 598-600.\n\n[GIP24] Greenfeld, R. and Iliopoulou, M. and Peluse, S., On integer distance sets. arXiv:2401.10821 (2024).\n\n[KK08] Kreisel, Tobias and Kurz, Sascha, There are integral heptagons, no three points on a line, on four on a circle. Discrete Comput. Geom. (2008), 786-790.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem asks about integer distance sets in 'general position' - meaning no three points collinear and no four points concyclic. This rules out trivial infinite examples like points on a line or circle.\n\nAnning and Erdős (1945) proved that any set in the plane with no three collinear and all pairwise distances integers must be finite. This fundamental result shows such sets cannot be arbitrarily large.\n\nHarborth showed that n=5 is achievable. Kreisel and Kurz (2008) constructed a 7-point example, which remains the best known. Whether n=8 or larger is possible is open.\n\nRecent work by Greenfeld, Iliopoulou, and Peluse (2024) proved that such sets in [-N,N]² have size O((log N)^C), showing they must be extremely sparse.",
+    "problemStatement": "**Question**: For all $n \\geq 4$, do there exist $n$ points in $\\mathbb{R}^2$, no three collinear and no four concyclic, such that all pairwise distances are integers?\n\n**Status**: OPEN\n\n**Known constructions**:\n- $n = 5$: Harborth\n- $n = 7$: Kreisel-Kurz (2008) - best known\n\n**Key constraint**: Anning-Erdős (1945) proved such sets must be finite.",
+    "proofStrategy": "We formalize the problem and known results:\n\n1. **Definitions**: Point, collinearity, concyclicity, integer distances\n2. **IsIntegerDistanceSetGP**: Combined predicate for all conditions\n3. **anning_erdos_finite**: Axiom for finiteness\n4. **harborth_five, kreisel_kurz_seven**: Construction axioms\n5. **exists_four, exists_five, exists_six, exists_seven**: Theorems from axioms\n6. **gip_sparsity_bound**: Upper bound axiom\n\nThe theorems for n=4,5,6 follow by taking subsets of the n=7 construction.",
+    "keyInsights": [
+      "**General position**: No three collinear AND no four concyclic - rules out infinite examples.",
+      "**Anning-Erdős**: Even without the concyclic condition, integer distance sets with no three collinear are finite.",
+      "**Best known**: n=7 by Kreisel-Kurz (2008). Whether n=8 works is unknown.",
+      "**Sparsity**: In [-N,N]², such sets have size at most O((log N)^C) - very sparse!",
+      "**Subset trick**: n=4,5,6 follow from n=7 since subsets inherit the properties."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 24,
+      "endLine": 61,
+      "summary": "Point type, collinearity, concyclicity, and integer distance predicates."
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "startLine": 63,
+      "endLine": 87,
+      "summary": "Anning-Erdős finiteness and the main open question."
+    },
+    {
+      "id": "constructions",
+      "title": "Known Constructions",
+      "startLine": 89,
+      "endLine": 134,
+      "summary": "Harborth (n=5), Kreisel-Kurz (n=7), and derived theorems."
+    },
+    {
+      "id": "bounds",
+      "title": "Upper Bounds",
+      "startLine": 136,
+      "endLine": 155,
+      "summary": "Greenfeld-Iliopoulou-Peluse sparsity bound."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 157,
+      "endLine": 166,
+      "summary": "Combined summary of known constructions."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #213 on integer distance sets in general position. The Lean proof establishes all definitions, axiomatizes key results (Anning-Erdős finiteness, Harborth n=5, Kreisel-Kurz n=7, GIP sparsity), and proves existence for n=4,5,6,7 from the axioms.",
+    "implications": "The gap between the best construction (n=7) and the lack of proof that larger sets don't exist represents a fundamental open question in combinatorial geometry. The sparsity bounds suggest such sets must be rare, but don't preclude larger examples.",
+    "openQuestions": [
+      "Does an 8-point integer distance set in general position exist?",
+      "Is there a uniform upper bound on the size of such sets (without Bombieri-Lang)?",
+      "Can the Kreisel-Kurz construction be extended?",
+      "What is the optimal exponent in the sparsity bound O((log N)^C)?"
+    ]
   }
 }

@@ -40,7 +40,7 @@
   {
     "id": "ann-e12-density-zero",
     "proofId": "erdos-12",
-    "range": { "startLine": 54, "endLine": 56 },
+    "range": { "startLine": 192, "endLine": 194 },
     "type": "definition",
     "title": "Density Zero",
     "content": "A set has **density 0** if |A ∩ {1,...,N}| / N tends to 0 as N approaches infinity. This means the set becomes increasingly sparse relative to all integers.",
@@ -49,7 +49,7 @@
   {
     "id": "ann-e12-sarkozy",
     "proofId": "erdos-12",
-    "range": { "startLine": 58, "endLine": 60 },
+    "range": { "startLine": 196, "endLine": 198 },
     "type": "axiom",
     "title": "Erdos-Sarkozy (1970)",
     "content": "**Fundamental Result:** Every infinite divisibility-free set has density 0.\n\nThis rules out sets with positive density but leaves open how slowly the density can decay. The three questions probe this decay rate.",
@@ -85,7 +85,7 @@
   {
     "id": "ann-e12-q2",
     "proofId": "erdos-12",
-    "range": { "startLine": 81, "endLine": 85 },
+    "range": { "startLine": 219, "endLine": 223 },
     "type": "definition",
     "title": "Question 2 (OPEN)",
     "content": "**Must divisibility-free sets be sparse infinitely often?**\n\nIs there c > 0 such that |A ∩ {1,...,N}| < N^(1-c) for infinitely many N? This asks if the set must dip below polynomial growth infinitely often.",
@@ -112,7 +112,7 @@
   {
     "id": "ann-e12-coprime-def",
     "proofId": "erdos-12",
-    "range": { "startLine": 100, "endLine": 102 },
+    "range": { "startLine": 238, "endLine": 240 },
     "type": "definition",
     "title": "Pairwise Coprime",
     "content": "A set is **pairwise coprime** if any two distinct elements share no common factor > 1. This is a strong constraint that enables better bounds.",
@@ -121,7 +121,7 @@
   {
     "id": "ann-e12-coprime-bound",
     "proofId": "erdos-12",
-    "range": { "startLine": 104, "endLine": 108 },
+    "range": { "startLine": 242, "endLine": 246 },
     "type": "axiom",
     "title": "Schoen-Baier Bound",
     "content": "**Coprime Case:** If A is both divisibility-free and pairwise coprime, then\n\n|A ∩ {1,...,N}| = O(N^(2/3) / log N)\n\nProved by Schoen (2001) and Baier (2004) using sieve methods.",
@@ -130,7 +130,7 @@
   {
     "id": "ann-e12-main",
     "proofId": "erdos-12",
-    "range": { "startLine": 112, "endLine": 116 },
+    "range": { "startLine": 250, "endLine": 254 },
     "type": "definition",
     "title": "Combined Problem Statement",
     "content": "**Erdos Problem #12** combines all three questions. Resolving any one would be a significant advance. The logical structure is: Q3 implies Q2 implies (negation of Q1).",

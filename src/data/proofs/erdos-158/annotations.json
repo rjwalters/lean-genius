@@ -39,8 +39,8 @@
     "id": "ann-e158-counting",
     "proofId": "erdos-158",
     "range": {
-      "startLine": 37,
-      "endLine": 43
+      "startLine": 46,
+      "endLine": 51
     },
     "type": "definition",
     "title": "Counting Function",
@@ -57,10 +57,10 @@
     "id": "ann-e158-sidon-equiv",
     "proofId": "erdos-158",
     "range": {
-      "startLine": 44,
-      "endLine": 52
+      "startLine": 55,
+      "endLine": 60
     },
-    "type": "lemma",
+    "type": "axiom",
     "title": "B₂[1] = Sidon",
     "content": "The equivalence between B₂[1] and Sidon sets is fundamental. A Sidon set requires all pairwise sums to be distinct, which is exactly the condition that each sum has at most one representation.",
     "mathContext": "Axiomatized because the proof requires working with Mathlib's IsSidon definition and the set-theoretic B2 definition. The equivalence is straightforward but technical.",

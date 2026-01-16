@@ -1,33 +1,118 @@
 {
   "id": "erdos-219",
-  "title": "Erdős Problem #219",
+  "title": "Erdős Problem #219: Arbitrarily Long Arithmetic Progressions of Primes",
   "slug": "erdos-219",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there arbitrarily long arithmetic progressions of primes?\n\n\n\nThe answer is yes, proved by Green and Tao . The stronger cl...",
+  "description": "Are there arbitrarily long arithmetic progressions of primes? Answer: YES (Green-Tao 2008).",
   "meta": {
-    "author": "Unknown",
+    "author": "Green-Tao (2008)",
     "sourceUrl": "https://erdosproblems.com/219",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos219Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "prime-numbers",
+      "arithmetic-progressions",
+      "green-tao",
+      "number-theory"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 219,
     "erdosUrl": "https://erdosproblems.com/219",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime.Defs"
+      },
+      {
+        "theorem": "Finset.range",
+        "description": "Finite range of naturals",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "Clean formalization of arithmetic progressions of primes",
+      "Axiomatization of the Green-Tao theorem",
+      "Verified examples for k=3 ({3,5,7}) and k=5 ({5,11,17,23,29})",
+      "Record of longest known AP (k=23)",
+      "Statement of open consecutive prime AP question"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #219 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there arbitrarily long arithmetic progressions of primes?\n\n\n\nThe answer is yes, proved by Green and Tao \\cite{GrTa08}. The stronger claim that there are arbitrarily long arithmetic progressions of consecutive primes is still open.\n\nSee also [3] and [141].\n\nThis is discussed in problem A5 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[GrTa08] Green, Ben and Tao, Terence, The primes contain arbitrarily long arithmetic progressions. Ann. of Math. (2) (2008), 481-547.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This is one of the oldest and most natural questions about prime numbers: can we find arbitrarily long sequences of primes in arithmetic progression? The question appears as Problem A5 in Richard Guy's 'Unsolved Problems in Number Theory'.\n\nThe Green-Tao theorem (2008) provides a resounding YES. Ben Green and Terence Tao proved that for every k, there exists an arithmetic progression of k primes. Their proof, published in the Annals of Mathematics, is a landmark of 21st century mathematics, combining techniques from ergodic theory, combinatorics, and analytic number theory.\n\nThe result earned Tao and Green numerous accolades and opened new research directions in additive combinatorics.",
+    "problemStatement": "**Question**: Are there arbitrarily long arithmetic progressions of primes?\n\n**Answer**: YES\n\nFor every positive integer $k$, there exist primes $p, p+d, p+2d, \\ldots, p+(k-1)d$ forming an arithmetic progression of length $k$.\n\n**Examples**:\n- $k = 3$: $\\{3, 5, 7\\}$ (difference 2)\n- $k = 5$: $\\{5, 11, 17, 23, 29\\}$ (difference 6)\n- $k = 6$: $\\{7, 37, 67, 97, 127, 157\\}$ (difference 30)\n\n**Record**: The longest known AP of primes has 23 terms (Pritchard et al., 2019).",
+    "proofStrategy": "We formalize:\n\n1. **Arithmetic progressions of primes**: Define what it means for a finite set to be a prime AP\n2. **The Green-Tao theorem**: Axiomatize that for all k, such progressions exist\n3. **Verified examples**: Prove {3,5,7} and {5,11,17,23,29} are prime APs\n4. **Related open problem**: State the consecutive prime AP question\n\nThe Green-Tao theorem itself is axiomatized because its proof requires deep machinery from ergodic theory and harmonic analysis that goes far beyond Mathlib.",
+    "keyInsights": [
+      "**Arithmetic progression of primes**: A sequence p, p+d, p+2d, ..., p+(k-1)d where all terms are prime.",
+      "**Green-Tao (2008)**: For every k, there exists an AP of k primes. This resolved a longstanding conjecture.",
+      "**Szemerédi's theorem connection**: Green-Tao builds on Szemerédi's theorem about APs in dense sets.",
+      "**Current record**: k = 23 (as of 2019). Finding longer progressions is computationally intensive.",
+      "**Open problem**: Are there arbitrarily long APs of CONSECUTIVE primes? The longest known has 10 terms."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 32,
+      "endLine": 46,
+      "summary": "Define arithmetic progressions and when they consist of primes."
+    },
+    {
+      "id": "examples-k3",
+      "title": "Example: k = 3",
+      "startLine": 47,
+      "endLine": 71,
+      "summary": "Verify {3, 5, 7} is a prime AP of length 3."
+    },
+    {
+      "id": "examples-k5",
+      "title": "Example: k = 5",
+      "startLine": 72,
+      "endLine": 92,
+      "summary": "Verify {5, 11, 17, 23, 29} is a prime AP of length 5."
+    },
+    {
+      "id": "green-tao",
+      "title": "The Green-Tao Theorem",
+      "startLine": 93,
+      "endLine": 124,
+      "summary": "Axiomatize the main result and answer."
+    },
+    {
+      "id": "records",
+      "title": "Records and Computations",
+      "startLine": 125,
+      "endLine": 136,
+      "summary": "State the longest known AP (k = 23)."
+    },
+    {
+      "id": "open",
+      "title": "Related Open Problem",
+      "startLine": 137,
+      "endLine": 156,
+      "summary": "The consecutive prime AP question."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #219, which asks whether there exist arbitrarily long arithmetic progressions of primes. The Green-Tao theorem (2008) proves the answer is YES. We axiomatize this deep result and verify concrete examples for k = 3 and k = 5.",
+    "implications": "The Green-Tao theorem is a cornerstone of modern additive combinatorics. It shows that primes, despite being 'sparse' (density 1/log n), still contain enough structure to guarantee arbitrarily long arithmetic progressions. This has inspired significant research in ergodic methods for number theory.",
+    "openQuestions": [
+      "Are there arbitrarily long APs of CONSECUTIVE primes?",
+      "What is the smallest first term of a k-term prime AP?",
+      "What is the smallest common difference for a k-term prime AP?",
+      "Can we find explicit bounds on the growth of first terms?",
+      "Are there infinitely many twin prime pairs {p, p+2}? (Harder question)"
+    ]
   }
 }

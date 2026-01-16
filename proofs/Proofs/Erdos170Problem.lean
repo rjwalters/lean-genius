@@ -1,149 +1,184 @@
 /-
-This file was edited by Aristotle.
-
-Lean version: leanprover/lean4:v4.24.0
-Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
-This project request had uuid: d9945fb1-a3f1-4263-9ab3-acacaac683e9
-
-The following was proved by Aristotle:
-
-- theorem trivial_upper (n : ℕ) : maxChromaticSegments n ≤ n
-
-- theorem chromatic_ge_clique {V : Type*} [Fintype V] (G : SimpleGraph V) :
-    chromaticNumber G ≥ cliqueNumber G
--/
-
-/-
-  Erdős Problem #170: Intersection Graphs of Segments
+  Erdős Problem #170: Sparse Rulers (Perfect Difference Bases)
 
   Source: https://erdosproblems.com/170
-  Status: SOLVED
-  Prize: None specified
+  Status: PARTIALLY SOLVED (limit exists, bounds known)
 
-  Statement:
-  What is the maximum chromatic number of intersection graphs of n line segments
-  in the plane?
+  Question:
+  Let F(N) be the smallest size of A ⊆ {0,...,N} such that every integer
+  in {1,...,N} can be expressed as a difference a₁ - a₀ with a₀, a₁ ∈ A.
+  Find lim_{N→∞} F(N)/√N.
 
-  History:
-  - Erdős conjectured this grows polylogarithmically in n
-  - Pawlik et al. (2014): Proved it can be Ω(log log n)
-  - Stronger constructions followed
+  Known Results:
+  - Erdős-Gál (1948): The limit exists
+  - Leech (1956): Lower bound 1.56...
+  - Wichmann (1963): Upper bound √3 ≈ 1.732
 
-  Reference: Pawlik, R. et al. (2014)
+  The exact value remains open, but is known to be in [1.56, √3].
+
+  Reference:
+  - Erdős, Gál, "On the representation of 1,2,...,n by differences" (1948)
+  - Leech, J., "On the representation of 1,2,...,n by differences" (1956)
+  - Wichmann, B., "A note on restricted difference bases" (1963)
 -/
 
 import Mathlib
 
-
-open Set Finset
+open Set Nat Filter Finset
 
 namespace Erdos170
 
-/-! ## Line Segments -/
+/-! ## Core Definitions -/
 
-/-- A line segment in ℝ² represented by its endpoints. -/
-structure Segment where
-  p1 : ℝ × ℝ
-  p2 : ℝ × ℝ
-  distinct : p1 ≠ p2
+/-- A set A is an **N-perfect ruler** (or N-difference basis) if every
+    integer k in {1,...,N} can be expressed as a₁ - a₀ for some a₀, a₁ ∈ A. -/
+def IsPerfectRuler (N : ℕ) (A : Finset ℕ) : Prop :=
+  ∀ k : ℕ, 1 ≤ k → k ≤ N → ∃ a₀ ∈ A, ∃ a₁ ∈ A, k = a₁ - a₀
 
-/-- Two segments intersect (have a common point). -/
-def Segment.Intersects (s₁ s₂ : Segment) : Prop :=
-  ∃ t₁ t₂ : ℝ, 0 ≤ t₁ ∧ t₁ ≤ 1 ∧ 0 ≤ t₂ ∧ t₂ ≤ 1 ∧
-    (1 - t₁) • s₁.p1 + t₁ • s₁.p2 = (1 - t₂) • s₂.p1 + t₂ • s₂.p2
+/-- A **restricted** N-perfect ruler is contained in {0,...,N}. -/
+def IsRestrictedPerfectRuler (N : ℕ) (A : Finset ℕ) : Prop :=
+  A ⊆ Finset.range (N + 1) ∧ IsPerfectRuler N A
 
-/-! ## Intersection Graphs -/
+/-! ## The Trivial Ruler -/
 
-/-- The intersection graph of a finite set of segments.
-    Vertices are segments, edges connect intersecting segments. -/
-def intersectionGraph (S : Finset Segment) : SimpleGraph S :=
-  SimpleGraph.fromRel (fun s₁ s₂ => s₁.val.Intersects s₂.val)
+/-- The trivial ruler {0, 1, ..., N} with all marks. -/
+def trivialRuler (N : ℕ) : Finset ℕ := Finset.range (N + 1)
 
-/-- The chromatic number of a graph (axiomatized). -/
-noncomputable def chromaticNumber {V : Type*} [Fintype V] (G : SimpleGraph V) : ℕ :=
-  sInf { k : ℕ | ∃ c : V → Fin k, ∀ v w : V, G.Adj v w → c v ≠ c w }
+/-- The trivial ruler is a perfect ruler. -/
+theorem trivial_is_perfect (N : ℕ) : IsRestrictedPerfectRuler N (trivialRuler N) := by
+  constructor
+  · exact Subset.refl _
+  · intro k hk1 hkN
+    use 0
+    constructor
+    · simp [trivialRuler]
+    use k
+    constructor
+    · simp [trivialRuler]
+      omega
+    · omega
 
-/-! ## The Maximum Chromatic Number -/
+/-! ## The Minimum Size Function F(N) -/
 
-/-- The maximum chromatic number of segment intersection graphs on n segments. -/
-noncomputable def maxChromaticSegments (n : ℕ) : ℕ :=
-  sSup { k : ℕ | ∃ S : Finset Segment, S.card = n ∧ chromaticNumber (intersectionGraph S) = k }
+/-- F(N) is the minimum cardinality of a restricted N-perfect ruler. -/
+noncomputable def F (N : ℕ) : ℕ :=
+  sInf { m : ℕ | ∃ A : Finset ℕ, IsRestrictedPerfectRuler N A ∧ A.card = m }
 
-/-! ## Bounds -/
+/-- F(N) is well-defined: there exists at least one perfect ruler. -/
+theorem F_nonempty (N : ℕ) :
+    { m : ℕ | ∃ A : Finset ℕ, IsRestrictedPerfectRuler N A ∧ A.card = m }.Nonempty := by
+  use (trivialRuler N).card
+  exact ⟨trivialRuler N, trivial_is_perfect N, rfl⟩
 
-/-- Trivial upper bound: χ ≤ n. -/
-theorem trivial_upper (n : ℕ) : maxChromaticSegments n ≤ n := by
-  refine' csSup_le' _;
-  intro k hk;
-  obtain ⟨ S, hS₁, hS₂ ⟩ := hk;
-  refine' hS₂ ▸ csInf_le _ _;
-  · exact ⟨ 0, fun k hk => Nat.zero_le _ ⟩;
-  · have h_colorable : Nonempty (S ≃ Fin n) := by
-      exact ⟨ Fintype.equivOfCardEq <| by aesop ⟩;
-    exact ⟨ fun v => h_colorable.some v, fun v w hvw => by simpa [ h_colorable.some.injective.eq_iff ] using hvw.ne ⟩
+/-! ## Basic Bounds -/
 
-/-- **Pawlik et al. (2014)**: The chromatic number can be Ω(log log n). -/
-axiom pawlik_lower_bound :
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 3 →
-    (maxChromaticSegments n : ℝ) ≥ c * Real.log (Real.log n)
+/-- Trivial upper bound: F(N) ≤ N + 1. -/
+theorem F_upper_trivial (N : ℕ) : F N ≤ N + 1 := by
+  unfold F
+  apply Nat.sInf_le
+  use trivialRuler N
+  constructor
+  · exact trivial_is_perfect N
+  · simp [trivialRuler]
 
-/-- Known upper bound: χ = O(log n) for segment graphs. -/
-axiom segment_upper_bound :
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-    (maxChromaticSegments n : ℝ) ≤ C * Real.log n
+/-- Lower bound: F(N) ≥ 2 for N ≥ 1. -/
+theorem F_lower_two (N : ℕ) (hN : N ≥ 1) : F N ≥ 2 := by
+  unfold F
+  apply Nat.le_sInf (F_nonempty N)
+  intro m ⟨A, hA, hm⟩
+  by_contra h
+  push_neg at h
+  interval_cases m
+  · -- m = 0: empty set can't measure 1
+    simp only [Finset.card_eq_zero] at hm
+    subst hm
+    have := hA.2 1 (by omega) hN
+    simp at this
+  · -- m = 1: singleton can't measure any positive k
+    rw [Finset.card_eq_one] at hm
+    obtain ⟨a, ha⟩ := hm
+    have := hA.2 1 (by omega) hN
+    obtain ⟨a₀, ha₀, a₁, ha₁, heq⟩ := this
+    simp only [ha, Finset.mem_singleton] at ha₀ ha₁
+    subst ha₀ ha₁
+    omega
 
-/-! ## Triangle-Free Case -/
+/-! ## The Limit Theorem -/
 
-/-- For triangle-free segment graphs, the bound is even better. -/
-axiom triangle_free_bound :
-  ∃ C : ℝ, C > 0 ∧ ∀ (S : Finset Segment),
-    (∀ a b c : S, ¬(a.val.Intersects b.val ∧ b.val.Intersects c.val ∧ a.val.Intersects c.val ∧
-       a ≠ b ∧ b ≠ c ∧ a ≠ c)) →
-    (chromaticNumber (intersectionGraph S) : ℝ) ≤ C * Real.log (Real.log S.card)
+/-- **Erdős-Gál (1948)**: The limit lim_{N→∞} F(N)/√N exists. -/
+axiom erdos_gal_limit_exists :
+    ∃ L : ℝ, Tendsto (fun N => (F N : ℝ) / Real.sqrt N) atTop (nhds L)
 
-/-! ## Clique Number -/
+/-- The limit value (noncomputable). -/
+noncomputable def limitValue : ℝ := Classical.choose erdos_gal_limit_exists
 
-/-- The clique number ω(G) - size of largest clique. -/
-noncomputable def cliqueNumber {V : Type*} [Fintype V] (G : SimpleGraph V) : ℕ :=
-  sSup { k : ℕ | ∃ C : Finset V, C.card = k ∧ ∀ v ∈ C, ∀ w ∈ C, v ≠ w → G.Adj v w }
+/-- **Leech (1956)**: Lower bound L ≥ 1.56... -/
+axiom leech_lower_bound : limitValue ≥ 1.56
 
-/-- χ ≥ ω always holds. -/
-theorem chromatic_ge_clique {V : Type*} [Fintype V] (G : SimpleGraph V) :
-    chromaticNumber G ≥ cliqueNumber G := by
-  refine' le_csInf _ _;
-  · exact ⟨ Fintype.card V, ⟨ fun v => ⟨ Fintype.equivFin V v, Fintype.equivFin V v |>.2 ⟩, fun v w hvw => by simpa [ Fintype.equivFin ] using hvw.ne ⟩ ⟩;
-  · rintro k ⟨ c, hc ⟩;
-    refine' csSup_le' _;
-    rintro n ⟨ C, rfl, hC ⟩;
-    have h_card_C : Finset.card (Finset.image c C) ≤ k := by
-      exact le_trans ( Finset.card_le_univ _ ) ( by simp +decide );
-    rwa [ Finset.card_image_of_injOn fun v hv w hw h => Classical.not_not.1 fun h' => hc v w ( hC v hv w hw h' ) h ] at h_card_C
+/-- **Wichmann (1963)**: Upper bound L ≤ √3 ≈ 1.732. -/
+axiom wichmann_upper_bound : limitValue ≤ Real.sqrt 3
 
-/-- For segment graphs, the gap between χ and ω can be arbitrarily large. -/
-axiom segment_chi_omega_gap :
-  ∀ k : ℕ, ∃ S : Finset Segment,
-    cliqueNumber (intersectionGraph S) = 2 ∧
-    chromaticNumber (intersectionGraph S) ≥ k
+/-- The limit is in the interval [1.56, √3]. -/
+theorem limit_in_interval : 1.56 ≤ limitValue ∧ limitValue ≤ Real.sqrt 3 :=
+  ⟨leech_lower_bound, wichmann_upper_bound⟩
+
+/-! ## Known Constructions -/
+
+/-- **Wichmann Rulers**: Achieve asymptotic density √3.
+    For certain N, the ruler {0, 1, 3, 6, ..., (k²+k)/2, ..., N} is optimal. -/
+axiom wichmann_construction :
+    ∀ ε > 0, ∃ N₀, ∀ N ≥ N₀, (F N : ℝ) / Real.sqrt N ≤ Real.sqrt 3 + ε
+
+/-- **Redei-Renyi Lower Bound**: Any perfect ruler needs at least ~√(2N) marks
+    to cover all differences. -/
+axiom redei_renyi_lower :
+    ∀ N : ℕ, N ≥ 1 → (F N : ℝ) ≥ Real.sqrt (2 * N) - 1
+
+/-! ## Unrestricted Version -/
+
+/-- The unrestricted version: A can be any finite subset of ℕ. -/
+def IsUnrestrictedPerfectRuler (N : ℕ) (A : Finset ℕ) : Prop :=
+  ∀ k : ℕ, 1 ≤ k → k ≤ N → ∃ a₀ ∈ A, ∃ a₁ ∈ A, k = a₁ - a₀
+
+/-- F'(N) for unrestricted rulers. -/
+noncomputable def F' (N : ℕ) : ℕ :=
+  sInf { m : ℕ | ∃ A : Finset ℕ, IsUnrestrictedPerfectRuler N A ∧ A.card = m }
+
+/-- Unrestricted rulers can be smaller: F'(N) ≤ F(N). -/
+axiom unrestricted_le_restricted : ∀ N, F' N ≤ F N
+
+/-! ## Examples -/
+
+/-- Example: {0, 1, 3} is a 3-perfect ruler.
+    Differences: 1-0=1, 3-0=3, 3-1=2. -/
+example : IsPerfectRuler 3 {0, 1, 3} := by
+  intro k hk1 hk3
+  interval_cases k
+  · use 0, by simp, 1, by simp; rfl
+  · use 1, by simp, 3, by simp; rfl
+  · use 0, by simp, 3, by simp; rfl
+
+/-- Example: {0, 1, 2, 6, 10, 14, 17, 21, 25, 27, 28, 29, 30} is a 30-perfect ruler
+    with only 13 marks (instead of 31). This is an optimal ruler for N=30. -/
+axiom example_30_ruler :
+    IsPerfectRuler 30 {0, 1, 2, 6, 10, 14, 17, 21, 25, 27, 28, 29, 30}
 
 /-! ## Summary
 
-**Problem Status: SOLVED**
+**Problem Status: PARTIALLY SOLVED**
 
-Erdős Problem #170 asks about the maximum chromatic number of intersection
-graphs of n line segments in the plane.
+Erdős Problem #170 (Sparse Rulers) asks for the limit of F(N)/√N where F(N)
+is the minimum size of a set A ⊆ {0,...,N} such that every 1 ≤ k ≤ N is
+a difference of elements in A.
 
 **Main Results:**
-- Lower bound (Pawlik et al. 2014): Ω(log log n)
-- Upper bound: O(log n)
-- The gap shows segment graphs can have χ >> ω
+- Erdős-Gál (1948): The limit exists
+- Leech (1956): Lower bound ≈ 1.56
+- Wichmann (1963): Upper bound √3 ≈ 1.732
 
-**Current Knowledge:**
-- log log n ≤ maxChromatic(n) ≤ O(log n)
-- Triangle-free case: O(log log n) upper bound
+**Current Knowledge:** The limit is in [1.56, √3], exact value unknown.
 
-References:
-- Pawlik, R. et al. (2014): "Triangle-free intersection graphs of segments"
-- Chalermsook (2015): Further bounds
+**Computational Evidence:** Suggests √3 may be the true limit.
 -/
 
 end Erdos170

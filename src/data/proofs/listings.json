@@ -2864,17 +2864,23 @@
   },
   {
     "id": "erdos-168",
-    "title": "Erdős Problem #168",
+    "title": "Erdős Problem #168: {n, 2n, 3n}-Free Sets",
     "slug": "erdos-168",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the size of the largest subset of ... which does not contain any set of the form .... What is\\[ \\lim_{N\\to \\infty}...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Let F(N) be the maximum size of a subset of {1,...,N} avoiding {n, 2n, 3n} triples. What is lim F(N)/N? Is it irrational?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "extremal-combinatorics",
+      "density",
+      "number-theory",
+      "3-smooth-numbers"
     ],
+    "dateAdded": "2026-01-15",
     "erdosNumber": 168,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 0,
+    "annotationCount": 11
   },
   {
     "id": "erdos-169",
@@ -3359,17 +3365,23 @@
   },
   {
     "id": "erdos-208",
-    "title": "Erdős Problem #208",
+    "title": "Erdős Problem #208: Gaps Between Squarefree Numbers",
     "slug": "erdos-208",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the sequence of squarefree numbers. Is it true that, for any ... and large ...,\\[s_{n+1}-s_n \\ll_\\epsilon s_n^{\\ep...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Let s₁ < s₂ < ... be the squarefree numbers. Is it true that for any ε > 0, the gap s_{n+1} - sₙ ≪ sₙ^ε?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "squarefree",
+      "gaps",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-15",
     "erdosNumber": 208,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 0,
+    "annotationCount": 12
   },
   {
     "id": "erdos-209",
@@ -3452,17 +3464,23 @@
   },
   {
     "id": "erdos-213",
-    "title": "Erdős Problem #213",
+    "title": "Erdős Problem #213: Integer Distance Sets in General Position",
     "slug": "erdos-213",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Are there ... points in ..., no three on a line and no four on a circle, such that all pairwise distances are intege...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "For n ≥ 4, are there n points in ℝ², no three on a line and no four on a circle, with all pairwise distances integers?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "integer-distances",
+      "general-position",
+      "combinatorics"
     ],
+    "dateAdded": "2026-01-15",
     "erdosNumber": 213,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 12
   },
   {
     "id": "erdos-214",
@@ -3522,17 +3540,23 @@
   },
   {
     "id": "erdos-219",
-    "title": "Erdős Problem #219",
+    "title": "Erdős Problem #219: Arbitrarily Long Arithmetic Progressions of Primes",
     "slug": "erdos-219",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there arbitrarily long arithmetic progressions of primes?\n\n\n\nThe answer is yes, proved by Green and Tao . The stronger cl...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Are there arbitrarily long arithmetic progressions of primes? Answer: YES (Green-Tao 2008).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "prime-numbers",
+      "arithmetic-progressions",
+      "green-tao",
+      "number-theory"
     ],
+    "dateAdded": "2026-01-15",
     "erdosNumber": 219,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 11
   },
   {
     "id": "erdos-22",
@@ -3666,31 +3690,43 @@
   },
   {
     "id": "erdos-228",
-    "title": "Erdős Problem #228",
+    "title": "Erdős Problem #228: Flat Littlewood Polynomials",
     "slug": "erdos-228",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist, for all large ..., a polynomial ... of degree ..., with coefficients ..., such that\\[ \\ll \\lvert P(z) \\rver...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "For all large n, does there exist a polynomial P of degree n with ±1 coefficients such that √n ≪ |P(z)| ≪ √n for all |z|=1? Answer: YES (BBMST 2019).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "polynomials",
+      "littlewood",
+      "harmonic-analysis",
+      "complex-analysis"
     ],
+    "dateAdded": "2026-01-15",
     "erdosNumber": 228,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 0,
+    "annotationCount": 10
   },
   {
     "id": "erdos-229",
-    "title": "Erdős Problem #229",
+    "title": "Erdős Problem #229: Zeros of Derivatives of Entire Functions",
     "slug": "erdos-229",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence of sets of complex numbers, none of which have a finite limit point. Does there exist an entire transce...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Given discrete sets (Sₙ) in ℂ, can we find a transcendental entire function whose derivatives vanish on each Sₙ? Answer: YES (Barth-Schneider 1972).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "derivatives",
+      "zeros"
     ],
+    "dateAdded": "2026-01-15",
     "erdosNumber": 229,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 12
   },
   {
     "id": "erdos-23",

@@ -1,1 +1,200 @@
-[]
+[
+  {
+    "id": "ann-e219-header",
+    "proofId": "erdos-219",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This header documents **Erdős Problem #219**, which asks whether there exist arbitrarily long arithmetic progressions of primes. The Green-Tao theorem (2008) proves the answer is YES.",
+    "mathContext": "An arithmetic progression of primes has the form p, p+d, p+2d, ..., p+(k-1)d where all terms are prime. The question is whether such progressions exist for arbitrarily large k.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Green-Tao theorem",
+      "prime numbers",
+      "arithmetic progressions"
+    ]
+  },
+  {
+    "id": "ann-e219-ap-def",
+    "proofId": "erdos-219",
+    "range": {
+      "startLine": 34,
+      "endLine": 36
+    },
+    "type": "definition",
+    "title": "Arithmetic Progression",
+    "content": "An **arithmetic progression** starting at a with common difference d and length k is the set {a, a+d, a+2d, ..., a+(k-1)d}. We represent this as a Finset using Finset.image.",
+    "mathContext": "The formula a + i * d for i in range(k) generates all elements. This is the standard representation allowing easy computation and membership testing.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.image",
+      "Finset.range",
+      "common difference"
+    ]
+  },
+  {
+    "id": "ann-e219-prime-ap",
+    "proofId": "erdos-219",
+    "range": {
+      "startLine": 38,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "Prime Arithmetic Progression",
+    "content": "A set is a **prime AP** if all its elements are prime AND it forms an arithmetic progression. This combines the structural requirement (AP form) with the number-theoretic requirement (primality).",
+    "mathContext": "The predicate IsPrimeAP requires: (1) ∀ p ∈ S, p.Prime, and (2) ∃ a d k, S = arithmeticProg a d k with k ≥ 1, d > 0.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "primality",
+      "structural properties",
+      "conjunctions"
+    ]
+  },
+  {
+    "id": "ann-e219-357",
+    "proofId": "erdos-219",
+    "range": {
+      "startLine": 45,
+      "endLine": 50
+    },
+    "type": "theorem",
+    "title": "Example: {3, 5, 7}",
+    "content": "The triple **{3, 5, 7}** is the simplest non-trivial example of a prime AP. It has first term 3, common difference 2, and length 3. All three are prime.",
+    "mathContext": "This is the unique 3-term prime AP with difference 2. For larger differences, many 3-term APs exist (e.g., {5, 11, 17} with difference 6).",
+    "significance": "key",
+    "relatedConcepts": [
+      "twin primes",
+      "prime gaps",
+      "verified examples"
+    ]
+  },
+  {
+    "id": "ann-e219-511172329",
+    "proofId": "erdos-219",
+    "range": {
+      "startLine": 52,
+      "endLine": 59
+    },
+    "type": "theorem",
+    "title": "Example: {5, 11, 17, 23, 29}",
+    "content": "The quintuple **{5, 11, 17, 23, 29}** is a 5-term prime AP with first term 5 and common difference 6. We verify each element is prime using norm_num.",
+    "mathContext": "The common difference 6 = 2·3 is the smallest possible for a 5-term prime AP. Differences must be divisible by 2·3 = 6 for progressions of length ≥ 5.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisibility constraints",
+      "primorials",
+      "longer progressions"
+    ]
+  },
+  {
+    "id": "ann-e219-question",
+    "proofId": "erdos-219",
+    "range": {
+      "startLine": 63,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "The Main Question",
+    "content": "**Erdős Problem #219**: For every k ≥ 1, does there exist a prime AP of length k? This asks whether we can find arbitrarily long prime APs, not just specific small examples.",
+    "mathContext": "Formally: ∀ k ≥ 1, ∃ S : Finset ℕ, S.card = k ∧ IsPrimeAP S. This is a universal statement about existence for ALL k.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "universal quantification",
+      "existence",
+      "asymptotic behavior"
+    ]
+  },
+  {
+    "id": "ann-e219-greentao",
+    "proofId": "erdos-219",
+    "range": {
+      "startLine": 73,
+      "endLine": 83
+    },
+    "type": "axiom",
+    "title": "The Green-Tao Theorem",
+    "content": "The **Green-Tao theorem** (2008) proves that primes contain arbitrarily long arithmetic progressions. This is one of the most celebrated results in 21st century mathematics.",
+    "mathContext": "The proof combines Szemerédi's theorem (APs in dense sets), ergodic theory, and a pseudorandomness argument to handle the sparseness of primes.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Szemerédi's theorem",
+      "ergodic theory",
+      "pseudorandomness"
+    ]
+  },
+  {
+    "id": "ann-e219-explicit",
+    "proofId": "erdos-219",
+    "range": {
+      "startLine": 85,
+      "endLine": 88
+    },
+    "type": "axiom",
+    "title": "Explicit Formulation",
+    "content": "An equivalent explicit formulation: for all k ≥ 1, there exist a, d with d > 0 such that a, a+d, a+2d, ..., a+(k-1)d are ALL prime.",
+    "mathContext": "This makes the constructive content clearer: we need specific numbers a and d, not just abstract existence. Finding such a, d is computationally hard for large k.",
+    "significance": "key",
+    "relatedConcepts": [
+      "constructive mathematics",
+      "computational search",
+      "explicit bounds"
+    ]
+  },
+  {
+    "id": "ann-e219-record",
+    "proofId": "erdos-219",
+    "range": {
+      "startLine": 95,
+      "endLine": 103
+    },
+    "type": "axiom",
+    "title": "Record: k = 23",
+    "content": "The **longest known** arithmetic progression of primes has 23 terms, found by Pritchard, Moran, and others in 2019. The first term and common difference are astronomically large.",
+    "mathContext": "The progression uses a = 56211383760397 and d involves the primorial 23# = 223092870. Finding k = 24 would require massive computational resources.",
+    "significance": "key",
+    "relatedConcepts": [
+      "computational records",
+      "primorial",
+      "distributed computing"
+    ]
+  },
+  {
+    "id": "ann-e219-consecutive",
+    "proofId": "erdos-219",
+    "range": {
+      "startLine": 107,
+      "endLine": 122
+    },
+    "type": "definition",
+    "title": "Open: Consecutive Prime APs",
+    "content": "An **open problem**: Are there arbitrarily long APs of CONSECUTIVE primes? That is, can we find p₁ < p₂ < ... < pₖ forming an AP where each pᵢ is the immediate next prime after pᵢ₋₁?",
+    "mathContext": "The longest known consecutive prime AP has 10 terms. This is much harder than arbitrary prime APs because we cannot skip primes.",
+    "significance": "key",
+    "relatedConcepts": [
+      "consecutive primes",
+      "prime gaps",
+      "open problems"
+    ]
+  },
+  {
+    "id": "ann-e219-summary",
+    "proofId": "erdos-219",
+    "range": {
+      "startLine": 126,
+      "endLine": 141
+    },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "The **summary** combines our main results: the Green-Tao theorem holds (axiomatized), {3, 5, 7} is verified as a prime AP, and {5, 11, 17, 23, 29} are all prime.",
+    "mathContext": "This conjunction packages the key verified facts for export and reference.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "conjunction",
+      "summary",
+      "verified facts"
+    ]
+  }
+]

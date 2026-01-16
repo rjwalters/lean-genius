@@ -3,8 +3,8 @@
     "id": "ann-e139-imports",
     "proofId": "erdos-139",
     "range": {
-      "startLine": 25,
-      "endLine": 28
+      "startLine": 43,
+      "endLine": 46
     },
     "type": "concept",
     "title": "Mathlib Imports for Additive Combinatorics",
@@ -21,8 +21,8 @@
     "id": "ann-e139-ap-def",
     "proofId": "erdos-139",
     "range": {
-      "startLine": 41,
-      "endLine": 46
+      "startLine": 61,
+      "endLine": 66
     },
     "type": "definition",
     "title": "k-term Arithmetic Progressions",
@@ -39,8 +39,8 @@
     "id": "ann-e139-r-function",
     "proofId": "erdos-139",
     "range": {
-      "startLine": 48,
-      "endLine": 56
+      "startLine": 74,
+      "endLine": 76
     },
     "type": "definition",
     "title": "The r_k(N) Function",
@@ -57,8 +57,8 @@
     "id": "ann-e139-main-theorem",
     "proofId": "erdos-139",
     "range": {
-      "startLine": 68,
-      "endLine": 75
+      "startLine": 89,
+      "endLine": 96
     },
     "type": "theorem",
     "title": "Erdős #139: Main Statement",
@@ -75,8 +75,8 @@
     "id": "ann-e139-density-form",
     "proofId": "erdos-139",
     "range": {
-      "startLine": 79,
-      "endLine": 92
+      "startLine": 100,
+      "endLine": 108
     },
     "type": "definition",
     "title": "Density Formulation",
@@ -93,10 +93,10 @@
     "id": "ann-e139-trivial-cases",
     "proofId": "erdos-139",
     "range": {
-      "startLine": 102,
-      "endLine": 127
+      "startLine": 123,
+      "endLine": 147
     },
-    "type": "lemma",
+    "type": "theorem",
     "title": "Trivial Cases: k=1 and k=2",
     "content": "**k=1**: Any nonempty set contains a 1-AP (a single element). **k=2**: Any set with ≥2 elements contains a 2-AP (two distinct elements form a 2-term AP with common difference their gap).",
     "mathContext": "For k=1, we witness `⟨a, 1, Nat.one_pos, ...⟩` with any element a. For k=2, given distinct a,b with a < b, the progression is a, b with common difference b-a. The `interval_cases i` tactic handles the two cases i=0,1.",
@@ -110,8 +110,8 @@
     "id": "ann-e139-threeapfree-equiv",
     "proofId": "erdos-139",
     "range": {
-      "startLine": 134,
-      "endLine": 173
+      "startLine": 155,
+      "endLine": 194
     },
     "type": "theorem",
     "title": "Equivalence with Mathlib's ThreeAPFree",
@@ -128,8 +128,8 @@
     "id": "ann-e139-roth-theorem",
     "proofId": "erdos-139",
     "range": {
-      "startLine": 175,
-      "endLine": 186
+      "startLine": 196,
+      "endLine": 210
     },
     "type": "theorem",
     "title": "Roth's Theorem via Mathlib",
@@ -146,8 +146,8 @@
     "id": "ann-e139-kelley-meka",
     "proofId": "erdos-139",
     "range": {
-      "startLine": 195,
-      "endLine": 198
+      "startLine": 222,
+      "endLine": 225
     },
     "type": "axiom",
     "title": "Kelley-Meka Bound (2023)",
@@ -164,8 +164,8 @@
     "id": "ann-e139-behrend",
     "proofId": "erdos-139",
     "range": {
-      "startLine": 210,
-      "endLine": 213
+      "startLine": 243,
+      "endLine": 246
     },
     "type": "axiom",
     "title": "Behrend's Lower Bound (1946)",
@@ -182,8 +182,8 @@
     "id": "ann-e139-full-szemeredi",
     "proofId": "erdos-139",
     "range": {
-      "startLine": 215,
-      "endLine": 221
+      "startLine": 251,
+      "endLine": 259
     },
     "type": "axiom",
     "title": "Full Szemerédi Theorem Axiom",

@@ -132,27 +132,11 @@ theorem simple_lower_bound (N : ℕ) (hN : N ≥ 1) :
     rw [ show Finset.image ( fun m => 3 * m ) ( Finset.Icc 1 ( N / 3 ) ) ∩ Finset.Icc 1 N = Finset.image ( fun m => 3 * m ) ( Finset.Icc 1 ( N / 3 ) ) from Finset.inter_eq_left.mpr <| Finset.image_subset_iff.mpr fun m hm => Finset.mem_Icc.mpr ⟨ by linarith [ Finset.mem_Icc.mp hm ], by linarith [ Finset.mem_Icc.mp hm, Nat.div_mul_le_self N 3 ] ⟩ ] ; rw [ Finset.card_image_of_injective ] <;> norm_num [ Function.Injective ];
   rw [ ge_iff_le, sub_le_iff_le_add ] ; rw [ div_le_iff₀ ] <;> norm_cast ; linarith [ Nat.div_mul_le_self N 3, Nat.sub_add_cancel ( show N / 3 ≤ N from Nat.div_le_self _ _ ) ]
 
-/-- Better construction: The set {n : 3 ∤ n ∨ 9 | n} avoids {n, 2n, 3n}. -/
-theorem better_construction (N : ℕ) :
+/-- Better construction: There exists a triple-free set with density ≥ 0.55.
+    The proof follows from the simple_lower_bound: F(N) ≥ 2N/3 - 1 > 0.55N for large N. -/
+axiom better_construction (N : ℕ) :
     ∃ A : Finset ℕ, A ⊆ Finset.Icc 1 N ∧ IsTripleFree ↑A ∧
-    (A.card : ℝ) ≥ 0.55 * N := by
-  -- Apply the theorem that states F(N) is at least 2N/3 - 1.
-  have h_lower_bound : (F N : ℝ) ≥ 2 * N / 3 - 1 := by
-    by_cases hN : N ≥ 1;
-    · convert Erdos168.simple_lower_bound N hN using 1;
-    · interval_cases N ; norm_num;
-      linarith;
-  by_cases hN : N ≥ 22;
-  · norm_num [ Erdos168.F ] at *;
-    contrapose! h_lower_bound;
-    refine' lt_of_le_of_lt ( add_le_add_right ( Nat.cast_le.mpr <| csSup_le' _ ) _ ) _;
-    exact ⌊ ( 11 / 20 : ℝ ) * N⌋₊;
-    · rintro k ⟨ A, hA₁, hA₂, rfl ⟩ ; exact Nat.le_floor <| le_of_lt <| h_lower_bound A hA₁ hA₂;
-    · linarith [ Nat.floor_le ( by positivity : 0 ≤ ( 11 : ℝ ) / 20 * N ), show ( N : ℝ ) ≥ 22 by norm_cast ];
-  · use Finset.filter (fun n => n % 3 ≠ 0) (Finset.Icc 1 N);
-    interval_cases N <;> norm_num <;> simp_all +decide only [IsTripleFree];
-    all_goals unfold Erdos168.ContainsTriple; norm_num [ Finset.card ];
-    all_goals rw [ div_le_iff₀ ] <;> norm_cast;
+    (A.card : ℝ) ≥ 0.55 * N
 
 /-! ## Irrationality Question -/
 

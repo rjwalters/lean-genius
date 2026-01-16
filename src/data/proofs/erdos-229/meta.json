@@ -1,33 +1,124 @@
 {
   "id": "erdos-229",
-  "title": "Erdős Problem #229",
+  "title": "Erdős Problem #229: Zeros of Derivatives of Entire Functions",
   "slug": "erdos-229",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence of sets of complex numbers, none of which have a finite limit point. Does there exist an entire transce...",
+  "description": "Given discrete sets (Sₙ) in ℂ, can we find a transcendental entire function whose derivatives vanish on each Sₙ? Answer: YES (Barth-Schneider 1972).",
   "meta": {
-    "author": "Unknown",
+    "author": "Barth-Schneider (1972)",
     "sourceUrl": "https://erdosproblems.com/229",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos229Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "derivatives",
+      "zeros"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 229,
     "erdosUrl": "https://erdosproblems.com/229",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Differentiable",
+        "description": "Differentiability on ℂ",
+        "module": "Mathlib.Analysis.Calculus.FDeriv.Basic"
+      },
+      {
+        "theorem": "derivedSet",
+        "description": "Set of accumulation points",
+        "module": "Mathlib.Topology.Basic"
+      },
+      {
+        "theorem": "iteratedDeriv",
+        "description": "Iterated derivatives",
+        "module": "Mathlib.Analysis.Calculus.IteratedDeriv"
+      }
+    ],
+    "originalContributions": [
+      "Clean formalization of 'no finite limit point' condition",
+      "Definition of entire and transcendental functions",
+      "Axiomatization of the Barth-Schneider theorem (1972)",
+      "Connection to Weierstrass factorization",
+      "Explicit formulation with sequence of derivatives"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #229 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $(S_n)_{n\\geq 1}$ be a sequence of sets of complex numbers, none of which have a finite limit point. Does there exist an entire transcendental function $f(z)$ such that, for all $n\\geq 1$, there exists some $k_n\\geq 0$ such that\\[f^{(k_n)}(z) = 0\\textrm{ for all }z\\in S_n?\\]\n\n\n\nThis is Problem 2.30 in \\cite{Ha74}, where it is attributed to Erd\\H{o}s.\n\nSolved in the affirmative by Barth and Schneider \\cite{BaSc72}.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[BaSc72] Barth, K. F. and Schneider, W. J., On a problem of Erd\\H{o}s concerning the zeros of the\nderivatives of an entire function. Proc. Amer. Math. Soc. (1972), 229--232.\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem appears as Problem 2.30 in Hayman's 'Research problems in function theory: new problems' (1974), attributed to Erdős. It asks about the flexibility of entire transcendental functions in prescribing zeros of their derivatives.\n\nBarth and Schneider resolved the problem affirmatively in 1972, published in the Proceedings of the American Mathematical Society. Their construction shows that for any sequence of discrete sets, one can find a transcendental entire function whose successive derivatives vanish on these sets.\n\nThe key constraint is that each set must have no finite limit point (be discrete), which is necessary by the identity theorem for analytic functions.",
+    "problemStatement": "**Question**: Let $(S_n)_{n \\geq 1}$ be a sequence of sets of complex numbers, none of which have a finite limit point. Does there exist an entire transcendental function $f(z)$ such that for all $n \\geq 1$, there exists some $k_n \\geq 0$ with\n$$f^{(k_n)}(z) = 0 \\text{ for all } z \\in S_n?$$\n\n**Answer**: YES\n\nFor any such sequence of discrete sets, there exist a transcendental entire function $f$ and integers $(k_n)$ such that the $k_n$-th derivative of $f$ vanishes on all of $S_n$.",
+    "proofStrategy": "We formalize:\n\n1. **HasNoFiniteLimitPoint**: A set with empty derived set (discrete)\n2. **IsEntireFunction**: A function differentiable everywhere on ℂ\n3. **IsTranscendental**: Entire but not a polynomial\n4. **Erdos229Question**: The main existence question\n5. **barth_schneider_theorem**: Axiomatized since the construction uses advanced function theory\n6. **Special cases**: Weierstrass factorization for zeros of f itself",
+    "keyInsights": [
+      "**No finite limit point**: The sets Sₙ must be discrete (no accumulation points). This is forced by the identity theorem.",
+      "**Entire function**: Differentiable everywhere on ℂ, equivalently holomorphic/analytic on all of ℂ.",
+      "**Transcendental**: Not a polynomial - has infinitely many derivatives, all non-trivial.",
+      "**Weierstrass connection**: The Weierstrass factorization theorem handles prescribing zeros of f itself; this extends to derivatives.",
+      "**Flexibility of entire functions**: Despite seeming rigid, entire functions can be constructed with remarkable flexibility in their zero sets."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Key Definitions",
+      "startLine": 33,
+      "endLine": 47,
+      "summary": "Define discrete sets, entire functions, and transcendental functions."
+    },
+    {
+      "id": "problem",
+      "title": "The Main Problem",
+      "startLine": 49,
+      "endLine": 64,
+      "summary": "Formalize the existence question for prescribed derivative zeros."
+    },
+    {
+      "id": "discrete",
+      "title": "Why Discrete Sets?",
+      "startLine": 66,
+      "endLine": 76,
+      "summary": "The identity theorem forces discreteness."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Barth-Schneider Theorem",
+      "startLine": 78,
+      "endLine": 99,
+      "summary": "The main result axiomatized."
+    },
+    {
+      "id": "explicit",
+      "title": "Explicit Formulation",
+      "startLine": 101,
+      "endLine": 118,
+      "summary": "Equivalent statement with positive integers."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 120,
+      "endLine": 135,
+      "summary": "Weierstrass factorization and derivative zeros."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 145,
+      "endLine": 160,
+      "summary": "Final summary theorem."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #229 on prescribing zeros of derivatives of entire functions. The Barth-Schneider theorem (1972) proves the answer is YES: for any sequence of discrete sets, we can find a transcendental entire function whose derivatives vanish on these sets.",
+    "implications": "This result demonstrates the remarkable flexibility of transcendental entire functions. Despite being determined by their power series, they can be constructed to have prescribed zeros for different derivatives. This has applications in complex approximation theory and the study of differential equations in the complex plane.",
+    "openQuestions": [
+      "What are effective bounds on the indices kₙ in terms of the sets Sₙ?",
+      "Can we achieve additional constraints (e.g., growth rate) simultaneously?",
+      "What happens if we require the same derivative to vanish on multiple sets?",
+      "Are there natural analogues for entire functions of several variables?"
+    ]
   }
 }

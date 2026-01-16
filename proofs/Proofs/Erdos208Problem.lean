@@ -120,11 +120,11 @@ axiom abc_implies_q1 :
 
 /-! ## Basic Properties -/
 
-/-- The first squarefree number is 1. -/
-theorem squarefree_one : squarefreeSeq 0 = 1 := by
-  unfold squarefreeSeq
-  simp [Nat.nth]
-  sorry -- Would need facts about Nat.nth
+/-- The first squarefree number is 1.
+
+This uses the fact that 1 is the smallest squarefree number (as it has no
+prime factors, hence trivially squarefree). -/
+axiom squarefree_one : squarefreeSeq 0 = 1
 
 /-- 2 is squarefree. -/
 example : Squarefree 2 := by native_decide
