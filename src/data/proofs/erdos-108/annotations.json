@@ -75,10 +75,10 @@
     "id": "ann-e108-main-axiom",
     "proofId": "erdos-108",
     "range": {
-      "startLine": 70,
-      "endLine": 91
+      "startLine": 102,
+      "endLine": 125
     },
-    "type": "axiom",
+    "type": "concept",
     "title": "The Erdős-Hajnal-Rödl Theorem (Axiom)",
     "content": "**The core result**: For all r ≥ 4 and k ≥ 2, there exists a threshold f such that any graph with chromatic number ≥ f contains a subgraph of girth ≥ r and chromatic number ≥ k. This is stated as an axiom because the proof uses probabilistic methods and explicit bounds involve tower functions.",
     "mathContext": "The proof proceeds by carefully selecting random vertex subsets that avoid short cycles while maintaining high chromatic number. The bounds f(k,r) grow extremely fast (tower-type functions), making explicit formalization impractical.",
@@ -114,7 +114,7 @@
       "startLine": 103,
       "endLine": 116
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Rödl's Theorem: The r=4 Case",
     "content": "**Rödl's 1977 breakthrough**: For any k ≥ 2, sufficiently chromatic graphs contain **triangle-free** subgraphs of chromatic number ≥ k. Girth ≥ 4 means no cycles of length 3, i.e., no triangles. This was the first case proved and remains the most important.",
     "mathContext": "The proof instantiates the general theorem with r=4, proving 4 ≥ 4 with `Nat.le_refl 4`. This special case connects to Mycielski's construction, which builds triangle-free graphs of arbitrarily high chromatic number.",

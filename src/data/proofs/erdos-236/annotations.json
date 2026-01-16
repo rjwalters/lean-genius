@@ -93,7 +93,7 @@
       "startLine": 82,
       "endLine": 100
     },
-    "type": "theorem",
+    "type": "definition",
     "title": "Small All-Prime Numbers",
     "content": "**Proved**: 4 and 7 have the all-prime property. For 4: only 4-2=2 (prime). For 7: 7-2=5, 7-4=3 (both prime).",
     "mathContext": "four_all_prime : HasAllPrimeProperty 4; seven_all_prime : HasAllPrimeProperty 7. Proved by case analysis on k.",
@@ -177,10 +177,10 @@
     "id": "ann-e236-connection",
     "proofId": "erdos-236",
     "range": {
-      "startLine": 155,
-      "endLine": 169
+      "startLine": 121,
+      "endLine": 135
     },
-    "type": "theorem",
+    "type": "concept",
     "title": "Connection to Problem #10",
     "content": "Problem #236 counts representations n = p + 2^k, while Problem #10 asks if every odd n has such a representation. f(n) = 0 means no representation exists.",
     "mathContext": "HasRepresentation n := f n > 0. Numbers with f(n) = 0 cannot be written as p + 2^k. Example: f(262) = 0.",

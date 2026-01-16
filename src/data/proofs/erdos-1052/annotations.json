@@ -2,151 +2,255 @@
   {
     "id": "ann-1052-1",
     "proofId": "erdos-1052",
-    "range": {"startLine": 26, "endLine": 30},
+    "range": {
+      "startLine": 26,
+      "endLine": 30
+    },
     "type": "definition",
     "title": "Proper Unitary Divisors",
     "content": "**properUnitaryDivisors**: The set of proper unitary divisors of n: {d | 1 ≤ d < n, d | n, gcd(d, n/d) = 1}. 'Unitary' means d and its complement n/d share no common prime factors.",
     "significance": "critical",
-    "relatedConcepts": ["unitary divisors", "coprimality", "gcd"]
+    "relatedConcepts": [
+      "unitary divisors",
+      "coprimality",
+      "gcd"
+    ]
   },
   {
     "id": "ann-1052-2",
     "proofId": "erdos-1052",
-    "range": {"startLine": 31, "endLine": 37},
+    "range": {
+      "startLine": 31,
+      "endLine": 37
+    },
     "type": "definition",
     "title": "Unitary Perfect Number",
     "content": "**IsUnitaryPerfect**: n is a unitary perfect number if the sum of its proper unitary divisors equals n and n > 0. Analogous to ordinary perfect numbers but using unitary divisors.",
     "significance": "critical",
-    "relatedConcepts": ["perfect numbers", "unitary divisors", "number classification"]
+    "relatedConcepts": [
+      "perfect numbers",
+      "unitary divisors",
+      "number classification"
+    ]
   },
   {
     "id": "ann-1052-3",
     "proofId": "erdos-1052",
-    "range": {"startLine": 38, "endLine": 51},
-    "type": "lemma",
+    "range": {
+      "startLine": 38,
+      "endLine": 51
+    },
+    "type": "theorem",
     "title": "One is Unitary Divisor",
     "content": "**one_mem_properUnitaryDivisors**: For n > 1, we have 1 ∈ properUnitaryDivisors n. Proof: 1 | n and gcd(1, n) = 1 always holds.",
     "significance": "supporting",
-    "relatedConcepts": ["unitary divisors", "basic properties"]
+    "relatedConcepts": [
+      "unitary divisors",
+      "basic properties"
+    ]
   },
   {
     "id": "ann-1052-4",
     "proofId": "erdos-1052",
-    "range": {"startLine": 52, "endLine": 68},
+    "range": {
+      "startLine": 52,
+      "endLine": 68
+    },
     "type": "theorem",
     "title": "Odd Unitary Divisors",
     "content": "**odd_of_unitaryDivisor_of_odd**: If n is odd and d is a unitary divisor of n, then d is odd. Proof: If d were even, 2 | d, hence 2 | n (since d | n), contradicting n odd.",
     "significance": "key",
-    "relatedConcepts": ["parity", "divisibility", "unitary divisors"]
+    "relatedConcepts": [
+      "parity",
+      "divisibility",
+      "unitary divisors"
+    ]
   },
   {
     "id": "ann-1052-5",
     "proofId": "erdos-1052",
-    "range": {"startLine": 69, "endLine": 99},
+    "range": {
+      "startLine": 69,
+      "endLine": 99
+    },
     "type": "theorem",
     "title": "Sum Parity Lemma",
     "content": "**sum_odd_parity** (axiom): Sum of odd numbers is odd iff the count is odd. This is the key parity lemma: ∑(odd numbers) ≡ count (mod 2).",
     "significance": "key",
-    "relatedConcepts": ["parity arguments", "modular arithmetic", "sum properties"]
+    "relatedConcepts": [
+      "parity arguments",
+      "modular arithmetic",
+      "sum properties"
+    ]
   },
   {
     "id": "ann-1052-6",
     "proofId": "erdos-1052",
-    "range": {"startLine": 100, "endLine": 115},
+    "range": {
+      "startLine": 100,
+      "endLine": 115
+    },
     "type": "theorem",
     "title": "Unitary Perfect Numbers are Even",
     "content": "**even_of_isUnitaryPerfect** (axiom): All unitary perfect numbers are even. The proof uses the divisor pairing d ↔ n/d and parity constraints to derive a contradiction for odd n.",
     "significance": "critical",
-    "relatedConcepts": ["parity", "even numbers", "main result"]
+    "relatedConcepts": [
+      "parity",
+      "even numbers",
+      "main result"
+    ]
   },
   {
     "id": "ann-1052-7",
     "proofId": "erdos-1052",
-    "range": {"startLine": 116, "endLine": 123},
+    "range": {
+      "startLine": 116,
+      "endLine": 123
+    },
     "type": "theorem",
     "title": "6 is Unitary Perfect",
     "content": "**isUnitaryPerfect_6** (axiom): 6 = 2·3 is unitary perfect. Proper unitary divisors: 1 (gcd(1,6)=1), 2 (gcd(2,3)=1), 3 (gcd(3,2)=1). Sum: 1+2+3=6.",
     "significance": "key",
-    "relatedConcepts": ["examples", "verification", "small cases"]
+    "relatedConcepts": [
+      "examples",
+      "verification",
+      "small cases"
+    ]
   },
   {
     "id": "ann-1052-8",
     "proofId": "erdos-1052",
-    "range": {"startLine": 124, "endLine": 131},
+    "range": {
+      "startLine": 124,
+      "endLine": 131
+    },
     "type": "theorem",
     "title": "60 is Unitary Perfect",
     "content": "**isUnitaryPerfect_60** (axiom): 60 = 2²·3·5 is unitary perfect. Proper unitary divisors: 1, 3, 4, 5, 12, 15, 20. Sum: 1+3+4+5+12+15+20=60.",
     "significance": "key",
-    "relatedConcepts": ["examples", "verification", "known cases"]
+    "relatedConcepts": [
+      "examples",
+      "verification",
+      "known cases"
+    ]
   },
   {
     "id": "ann-1052-9",
     "proofId": "erdos-1052",
-    "range": {"startLine": 132, "endLine": 139},
+    "range": {
+      "startLine": 132,
+      "endLine": 139
+    },
     "type": "theorem",
     "title": "90 is Unitary Perfect",
     "content": "**isUnitaryPerfect_90** (axiom): 90 = 2·3²·5 is unitary perfect. Proper unitary divisors: 1, 2, 5, 9, 10, 18, 45. Sum: 1+2+5+9+10+18+45=90.",
     "significance": "supporting",
-    "relatedConcepts": ["examples", "verification", "known cases"]
+    "relatedConcepts": [
+      "examples",
+      "verification",
+      "known cases"
+    ]
   },
   {
     "id": "ann-1052-10",
     "proofId": "erdos-1052",
-    "range": {"startLine": 154, "endLine": 157},
+    "range": {
+      "startLine": 154,
+      "endLine": 157
+    },
     "type": "definition",
     "title": "The Open Conjecture",
     "content": "**erdos_1052_conjecture** (OPEN): The set of unitary perfect numbers is finite. Only 5 are known despite extensive computational searches.",
     "significance": "critical",
-    "relatedConcepts": ["open problems", "finiteness", "Erdős problems"]
+    "relatedConcepts": [
+      "open problems",
+      "finiteness",
+      "Erdős problems"
+    ]
   },
   {
     "id": "ann-1052-11",
     "proofId": "erdos-1052",
-    "range": {"startLine": 158, "endLine": 173},
+    "range": {
+      "startLine": 158,
+      "endLine": 173
+    },
     "type": "theorem",
     "title": "Unitary Characterization",
     "content": "**unitary_iff_no_common_prime**: gcd(d, n/d) = 1 iff no prime divides both d and n/d. This is the prime-factorization characterization of unitary divisors.",
     "significance": "key",
-    "relatedConcepts": ["prime factorization", "characterization", "equivalence"]
+    "relatedConcepts": [
+      "prime factorization",
+      "characterization",
+      "equivalence"
+    ]
   },
   {
     "id": "ann-1052-12",
     "proofId": "erdos-1052",
-    "range": {"startLine": 174, "endLine": 184},
+    "range": {
+      "startLine": 174,
+      "endLine": 184
+    },
     "type": "definition",
     "title": "Unitary Divisor Sum",
     "content": "**unitaryDivisorSum**: σ*(n) = sum of all unitary divisors of n (including n itself). For unitary perfect n: σ*(n) = 2n.",
     "significance": "key",
-    "relatedConcepts": ["divisor functions", "sigma function", "sum notation"]
+    "relatedConcepts": [
+      "divisor functions",
+      "sigma function",
+      "sum notation"
+    ]
   },
   {
     "id": "ann-1052-13",
     "proofId": "erdos-1052",
-    "range": {"startLine": 185, "endLine": 198},
+    "range": {
+      "startLine": 185,
+      "endLine": 198
+    },
     "type": "theorem",
     "title": "Prime Power Divisors",
     "content": "**unitaryDivisors_primePow** (axiom): For prime power p^k, the only unitary divisors are 1 and p^k. If d = p^j with 0 < j < k, then gcd(p^j, p^(k-j)) = p > 1.",
     "significance": "key",
-    "relatedConcepts": ["prime powers", "structure theorem", "simple case"]
+    "relatedConcepts": [
+      "prime powers",
+      "structure theorem",
+      "simple case"
+    ]
   },
   {
     "id": "ann-1052-14",
     "proofId": "erdos-1052",
-    "range": {"startLine": 199, "endLine": 210},
+    "range": {
+      "startLine": 199,
+      "endLine": 210
+    },
     "type": "theorem",
     "title": "Multiplicativity",
     "content": "**unitaryDivisorSum_mul_coprime** (axiom): σ*(mn) = σ*(m)·σ*(n) for coprime m, n. This multiplicativity follows from the bijection between unitary divisors of mn and pairs of unitary divisors of m and n.",
     "significance": "key",
-    "relatedConcepts": ["multiplicative functions", "coprimality", "product formula"]
+    "relatedConcepts": [
+      "multiplicative functions",
+      "coprimality",
+      "product formula"
+    ]
   },
   {
     "id": "ann-1052-15",
     "proofId": "erdos-1052",
-    "range": {"startLine": 211, "endLine": 220},
+    "range": {
+      "startLine": 211,
+      "endLine": 220
+    },
     "type": "theorem",
     "title": "Unitary Complement",
     "content": "**unitary_complement**: If d is a unitary divisor of n (gcd(d, n/d) = 1), then n/d is also unitary since gcd(n/d, d) = gcd(d, n/d) = 1 by commutativity. This creates the pairing d ↔ n/d.",
     "significance": "supporting",
-    "relatedConcepts": ["symmetry", "pairing", "commutativity"]
+    "relatedConcepts": [
+      "symmetry",
+      "pairing",
+      "commutativity"
+    ]
   }
 ]

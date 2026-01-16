@@ -4041,7 +4041,7 @@
     "slug": "erdos-247",
     "description": "A problem about the transcendence of infinite series with lacunary (rapidly growing) exponents. Erdős proved transcendence under strong growth conditions, but the general conjecture remains open.",
     "status": "axiom",
-    "badge": "erdos",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "transcendence",
@@ -4090,7 +4090,7 @@
     "erdosNumber": 250,
     "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 13
+    "annotationCount": 12
   },
   {
     "id": "erdos-251",
@@ -4336,7 +4336,7 @@
     "slug": "erdos-266",
     "description": "Stolarsky conjectured that for any convergent ∑1/aₙ, some shift t makes ∑1/(aₙ+t) irrational. Kovač-Tao (2024) disproved this: some sequences give rational sums for ALL rational shifts.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -4347,7 +4347,7 @@
     "dateAdded": "2026-01-16",
     "erdosNumber": 266,
     "mathlibCount": 3,
-    "sorries": 0,
+    "sorries": 4,
     "annotationCount": 11
   },
   {
@@ -4356,7 +4356,7 @@
     "slug": "erdos-267",
     "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be the Fibonacci sequence. Let ... be an infinite sequence with .... Must\\[\\sum_k{F_{n_k}}\\]be irrational?\n\n\n...",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "axiom",
     "tags": [
       "erdos"
     ],
@@ -4524,7 +4524,7 @@
     "slug": "erdos-285",
     "description": "Let f(k) be the minimal largest denominator in a k-term Egyptian fraction representation of 1. Is f(k) = (1+o(1))·e/(e-1)·k? YES — proved by Martin (2000). The constant e/(e-1) ≈ 1.582 comes from harmonic series structure.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -4897,7 +4897,7 @@
     "slug": "erdos-31",
     "description": "For any infinite A ⊆ ℕ, there exists B with density 0 such that A + B covers all but finitely many positive integers.",
     "status": "complete",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -4908,7 +4908,7 @@
     "dateAdded": "2026-01-14",
     "erdosNumber": 31,
     "mathlibCount": 4,
-    "sorries": 2,
+    "sorries": 0,
     "annotationCount": 0
   },
   {
@@ -5025,17 +5025,23 @@
   },
   {
     "id": "erdos-325",
-    "title": "Erdős Problem #325",
+    "title": "Erdős Problem #325: Sums of Three k-th Powers",
     "slug": "erdos-325",
-    "description": "Let k&#x2265;3\" role=\"presentation\" style=\"position: relative;\">k≥3k≥3k\\geq 3 and fk,3(x)\" role=\"presentation\" style=\"position: relative;\">fk,3(x)fk,3(x)f_{k,3}(x) denote the number of integers &#x...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f_{k,3}(x) count integers ≤ x that are sums of three k-th powers. Is it true that f_{k,3}(x) ≫ x^{3/k} for k ≥ 3?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "power-sums",
+      "asymptotics"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 325,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 9
   },
   {
     "id": "erdos-326",
@@ -5585,7 +5591,7 @@
     "slug": "erdos-377",
     "description": "Is there an absolute constant C such that ∑_{p≤n, p∤C(2n,n)} 1/p ≤ C for all n? The main conjecture is OPEN, but EGRS75 proved f(n) averages to γ₀ = ∑log(k)/2^k and is ≤ c·log(log(n)) for c < 1.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -5789,7 +5795,7 @@
     "slug": "erdos-397",
     "description": "Are there only finitely many solutions to products of central binomial coefficients being equal? Disproved by Somani (2026).",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -5799,7 +5805,7 @@
     "dateAdded": "2026-01-16",
     "erdosNumber": 397,
     "mathlibCount": 3,
-    "sorries": 0,
+    "sorries": 1,
     "annotationCount": 10
   },
   {
@@ -7718,7 +7724,7 @@
     "slug": "erdos-591",
     "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the infinite ordinal .... Is it true that in any red/blue colouring of the edges of ... there is either a red ... ...",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "axiom",
     "tags": [
       "erdos"
     ],
@@ -9311,7 +9317,7 @@
     "slug": "erdos-723",
     "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf there is a finite projective plane of order ... then must ... be a prime power?\n\nA finite projective plane of order ... is...",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "axiom",
     "tags": [
       "erdos"
     ],
@@ -10067,7 +10073,7 @@
     "slug": "erdos-786",
     "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is there some set ... of density ... such that ... with ... can only hold when ...?\n\nSimilarly, can one always find ...",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "axiom",
     "tags": [
       "erdos"
     ],
@@ -12013,17 +12019,22 @@
   },
   {
     "id": "erdos-945",
-    "title": "Erdős Problem #945",
+    "title": "Erdős Problem #945: Consecutive Integers with Distinct Divisor Counts",
     "slug": "erdos-945",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal ... such that there exist ... with ... all distinct (where ... counts the divisors of ...). Estimate ....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "How long can a run of consecutive integers be where all have distinct numbers of divisors? Is the maximum length bounded by a polynomial in log x?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisors",
+      "consecutive-integers",
+      "open-problem"
     ],
     "erdosNumber": 945,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-946",
@@ -12350,7 +12361,7 @@
     "slug": "erdos-975",
     "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an irreducible non-constant polynomial such that ... for all large .... Does there exist a constant ... such that\\...",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "axiom",
     "tags": [
       "erdos"
     ],

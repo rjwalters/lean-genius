@@ -2,7 +2,7 @@
   {
     "id": "ann-1",
     "proofId": "erdos-123",
-    "range": {"startLine": 32, "endLine": 38},
+    "range": {"startLine": 46, "endLine": 52},
     "type": "definition",
     "title": "IsDComplete Definition",
     "content": "**IsDComplete**: A set A is d-complete if eventually all n are representable as sums of distinct antichain elements from A. The antichain condition means no element in the sum divides another.",
@@ -12,7 +12,7 @@
   {
     "id": "ann-2",
     "proofId": "erdos-123",
-    "range": {"startLine": 39, "endLine": 45},
+    "range": {"startLine": 54, "endLine": 55},
     "type": "definition",
     "title": "Powers23 Set",
     "content": "**Powers23**: The set {2^k · 3^l : k, l ≥ 0} = {1, 2, 3, 4, 6, 8, 9, 12, 16, 18, ...}. These are exactly the positive integers whose only prime factors are 2 and 3.",
@@ -22,8 +22,8 @@
   {
     "id": "ann-3",
     "proofId": "erdos-123",
-    "range": {"startLine": 60, "endLine": 70},
-    "type": "lemma",
+    "range": {"startLine": 75, "endLine": 78},
+    "type": "theorem",
     "title": "Closure Under Doubling",
     "content": "**double_mem_Powers23**: If n ∈ Powers23, then 2n ∈ Powers23. This is the key closure property used in the even case of induction: 2^k·3^l becomes 2^{k+1}·3^l.",
     "significance": "key",
@@ -32,7 +32,7 @@
   {
     "id": "ann-4",
     "proofId": "erdos-123",
-    "range": {"startLine": 83, "endLine": 100},
+    "range": {"startLine": 99, "endLine": 140},
     "type": "theorem",
     "title": "Divisibility Characterization",
     "content": "**Powers23_dvd_iff**: The divisibility characterization. For 2^k₁·3^l₁ to divide 2^k₂·3^l₂, we need BOTH k₁ ≤ k₂ AND l₁ ≤ l₂. This follows from unique factorization: the 2-adic and 3-adic valuations must both be compatible.",
@@ -42,7 +42,7 @@
   {
     "id": "ann-5",
     "proofId": "erdos-123",
-    "range": {"startLine": 127, "endLine": 145},
+    "range": {"startLine": 142, "endLine": 147},
     "type": "theorem",
     "title": "Antichain Pairs",
     "content": "**Powers23_antichain_pair**: When k₁ < k₂ but l₂ < l₁ (exponents 'cross'), neither element divides the other. This creates antichain pairs and is crucial for constructing d-complete representations.",
@@ -52,7 +52,7 @@
   {
     "id": "ann-6",
     "proofId": "erdos-123",
-    "range": {"startLine": 147, "endLine": 158},
+    "range": {"startLine": 162, "endLine": 173},
     "type": "definition",
     "title": "Largest Power of 3",
     "content": "**largestPow3**: Returns 3^(log_3 n), the largest power of 3 not exceeding n. Used in the odd case: subtracting this from an odd n gives an even number (odd - odd = even).",
@@ -62,8 +62,8 @@
   {
     "id": "ann-7",
     "proofId": "erdos-123",
-    "range": {"startLine": 160, "endLine": 168},
-    "type": "lemma",
+    "range": {"startLine": 175, "endLine": 181},
+    "type": "theorem",
     "title": "Powers of 3 are Odd",
     "content": "**pow_three_odd**: All powers of 3 are odd. Proof by induction: 3^0 = 1 is odd; odd × 3 = odd. This is essential for the parity argument in the main induction.",
     "significance": "supporting",
@@ -72,8 +72,8 @@
   {
     "id": "ann-8",
     "proofId": "erdos-123",
-    "range": {"startLine": 169, "endLine": 180},
-    "type": "lemma",
+    "range": {"startLine": 183, "endLine": 195},
+    "type": "theorem",
     "title": "Parity Argument",
     "content": "**odd_sub_largest_pow3_even**: For odd n > 1, n - largestPow3(n) is even. Since both n and 3^k are odd, their difference is even. This enables the recursive call in the odd case.",
     "significance": "key",
@@ -82,8 +82,8 @@
   {
     "id": "ann-9",
     "proofId": "erdos-123",
-    "range": {"startLine": 196, "endLine": 218},
-    "type": "theorem",
+    "range": {"startLine": 205, "endLine": 214},
+    "type": "axiom",
     "title": "Main Representation Axiom",
     "content": "**powers23_repr** (axiom): Every n ≥ 1 has a d-complete representation. The proof sketch uses strong induction with even/odd case split: double the representation of n/2 for even n; subtract largest 3^k and add it to the representation for odd n.",
     "significance": "critical",
@@ -92,7 +92,7 @@
   {
     "id": "ann-10",
     "proofId": "erdos-123",
-    "range": {"startLine": 219, "endLine": 228},
+    "range": {"startLine": 216, "endLine": 237},
     "type": "theorem",
     "title": "Main Theorem",
     "content": "**powers_2_3_dComplete**: The main theorem! The set {2^k · 3^l} is d-complete. This follows immediately from powers23_repr using the eventually_atTop filter characterization.",
@@ -102,18 +102,18 @@
   {
     "id": "ann-11",
     "proofId": "erdos-123",
-    "range": {"startLine": 230, "endLine": 245},
+    "range": {"startLine": 245, "endLine": 251},
     "type": "definition",
-    "title": "Pairwise Coprime",
-    "content": "**PairwiseCoprime**: Three integers a, b, c are pairwise coprime if gcd(a,b) = gcd(b,c) = gcd(a,c) = 1. This condition is essential for the general conjecture.",
+    "title": "Pairwise Coprime and PowersABC",
+    "content": "**PairwiseCoprime**: Three integers a, b, c are pairwise coprime if gcd(a,b) = gcd(b,c) = gcd(a,c) = 1. **PowersABC**: The generalized set {a^i · b^j · c^k}.",
     "significance": "key",
     "relatedConcepts": ["gcd", "coprimality"]
   },
   {
     "id": "ann-12",
     "proofId": "erdos-123",
-    "range": {"startLine": 246, "endLine": 254},
-    "type": "concept",
+    "range": {"startLine": 253, "endLine": 264},
+    "type": "axiom",
     "title": "General Conjecture",
     "content": "**erdos_123_conjecture** (OPEN): For any pairwise coprime a, b, c > 1, is {a^i · b^j · c^k} d-complete? This remains unsolved despite progress on specific cases like {3^i · 5^j · 7^k}.",
     "significance": "critical",
@@ -122,8 +122,8 @@
   {
     "id": "ann-13",
     "proofId": "erdos-123",
-    "range": {"startLine": 255, "endLine": 270},
-    "type": "theorem",
+    "range": {"startLine": 270, "endLine": 282},
+    "type": "axiom",
     "title": "Erdős-Lewin Result",
     "content": "**erdos_lewin_357** (axiom): Erdős-Lewin (1996) proved that {3^i · 5^j · 7^k} is d-complete. The proof is more complex than the {2, 3} case due to the lack of a simple parity argument.",
     "significance": "key",
@@ -132,8 +132,8 @@
   {
     "id": "ann-14",
     "proofId": "erdos-123",
-    "range": {"startLine": 284, "endLine": 290},
-    "type": "lemma",
+    "range": {"startLine": 297, "endLine": 303},
+    "type": "theorem",
     "title": "Scaling Preserves Divisibility",
     "content": "**dvd_iff_two_mul_dvd**: Divisibility is preserved by uniform scaling: a | b ⟺ 2a | 2b. This is the key to showing that doubling an antichain produces an antichain.",
     "significance": "supporting",
@@ -142,7 +142,7 @@
   {
     "id": "ann-15",
     "proofId": "erdos-123",
-    "range": {"startLine": 291, "endLine": 310},
+    "range": {"startLine": 305, "endLine": 316},
     "type": "theorem",
     "title": "Antichain Doubling",
     "content": "**antichain_double**: If S is a divisibility antichain, then {2s : s ∈ S} is also an antichain. Combined with double_mem_Powers23, this shows the doubling step preserves d-complete structure.",

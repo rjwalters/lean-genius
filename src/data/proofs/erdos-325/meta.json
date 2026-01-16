@@ -1,33 +1,117 @@
 {
   "id": "erdos-325",
-  "title": "Erdős Problem #325",
+  "title": "Erdős Problem #325: Sums of Three k-th Powers",
   "slug": "erdos-325",
-  "description": "Let k&#x2265;3\" role=\"presentation\" style=\"position: relative;\">k≥3k≥3k\\geq 3 and fk,3(x)\" role=\"presentation\" style=\"position: relative;\">fk,3(x)fk,3(x)f_{k,3}(x) denote the number of integers &#x...",
+  "description": "Let f_{k,3}(x) count integers ≤ x that are sums of three k-th powers. Is it true that f_{k,3}(x) ≫ x^{3/k} for k ≥ 3?",
   "meta": {
-    "author": "Unknown",
+    "author": "Open Problem (partial results by Wooley 2015)",
     "sourceUrl": "https://erdosproblems.com/325",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos325Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "power-sums",
+      "asymptotics"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 325,
     "erdosUrl": "https://erdosproblems.com/325",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Asymptotics.IsBigO",
+        "description": "Big-O asymptotic notation",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for limits as x → ∞",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of the open Erdős conjecture in Lean 4",
+      "Definition of IsSumThreePower and counting function",
+      "Verified examples: 0, 3, 29 as sums of three powers",
+      "Statement of Wooley's partial result for k=3",
+      "Context: Mahler-Erdős theorem for two-term sums"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #325 from erdosproblems.com.",
-    "problemStatement": "Let k&#x2265;3\" role=\"presentation\" style=\"position: relative;\">k≥3k≥3k\\geq 3 and fk,3(x)\" role=\"presentation\" style=\"position: relative;\">fk,3(x)fk,3(x)f_{k,3}(x) denote the number of integers &#x2264;x\" role=\"presentation\" style=\"position: relative;\">≤x≤x\\leq x which are the sum of three nonnegative k\" role=\"presentation\" style=\"position: relative;\">kkkth powers. Is it true thatfk,3(x)&#x226B;x3/k\" role=\"presentation\" style=\"text-align: center; position: relative;\">fk,3(x)≫x3/kfk,3(x)≫x3/k",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #325 concerns the density of integers that can be written as sums of three k-th powers. This is a natural extension of the classical Waring problem, which asks how many k-th powers are needed to represent ALL integers.\n\nFor sums of TWO k-th powers, Mahler and Erdős proved in 1938 that the count f_{k,2}(x) of such integers up to x satisfies f_{k,2}(x) ≫ x^{2/k}. The expected density for j terms is x^{j/k} (heuristically, there are about x^{1/k} k-th powers up to x, so about x^{j/k} ways to sum j of them).\n\nFor THREE k-th powers, the conjecture f_{k,3}(x) ≫ x^{3/k} remains open. The best known result for k=3 (cubes) is due to Wooley (2015): f_{3,3}(x) ≫ x^{0.917}, which falls short of the conjectured x^1.",
+    "problemStatement": "Let $k \\geq 3$ and let $f_{k,3}(x)$ denote the number of integers $\\leq x$ which can be written as sums of three nonnegative $k$-th powers. Is it true that\n$$f_{k,3}(x) \\gg x^{3/k}?$$\n\n**Status**: OPEN — The main conjecture is unresolved.\n\n**Best Known**: For $k=3$, Wooley proved $f_{3,3}(x) \\gg x^{0.917}$ (2015).",
+    "proofStrategy": "We formalize the problem using Mathlib's asymptotic notation:\n\n1. **Core Definitions**: Define `IsSumThreePower k n` as the predicate for n being a sum of three k-th powers, and `cardIsSumThreePowerBelow k x` as the counting function f_{k,3}(x).\n\n2. **Examples**: Verify concrete cases like 0 = 0^k + 0^k + 0^k and 3 = 1^3 + 1^3 + 1^3.\n\n3. **Main Conjecture**: State as an axiom that x^{3/k} = O(f_{k,3}(x)) in the `atTop` filter.\n\n4. **Partial Results**: Include Wooley's theorem for k=3 and the Mahler-Erdős theorem for two terms as context.",
+    "keyInsights": [
+      "**Waring's problem connection**: Every sufficiently large integer is a sum of at most g(k) k-th powers. Problem #325 asks about the density of those representable by exactly 3.",
+      "**The 3/k exponent**: Heuristically, there are ~x^{1/k} k-th powers up to x, so ~x^{3/k} potential sums of three. The conjecture says this heuristic is correct up to a constant.",
+      "**Wooley's gap**: For cubes (k=3), the conjecture predicts x^1 but Wooley only achieved x^{0.917}. Closing this gap is a major open problem.",
+      "**Two vs three terms**: The two-term case f_{k,2}(x) ≫ x^{2/k} was proved in 1938. Three terms is significantly harder.",
+      "**Asymptotic notation**: We use Mathlib's `IsBigO` to express f ≫ g as 'g = O(f)', meaning f grows at least as fast as g."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Documentation and Imports",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Module documentation explaining the problem, historical context, and Mathlib imports for asymptotics."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 30,
+      "endLine": 45,
+      "summary": "Definition of IsSumThreePower predicate and the counting function cardIsSumThreePowerBelow."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 47,
+      "endLine": 72,
+      "summary": "Computational verification that 0, 3, and 29 are sums of three powers."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 74,
+      "endLine": 91,
+      "summary": "Statement of Erdős Problem #325 as an axiom using asymptotic notation."
+    },
+    {
+      "id": "variants",
+      "title": "Variants and Partial Results",
+      "startLine": 93,
+      "endLine": 116,
+      "summary": "The weaker epsilon variant and Wooley's theorem for three cubes."
+    },
+    {
+      "id": "two-term",
+      "title": "The Two-Term Case",
+      "startLine": 118,
+      "endLine": 143,
+      "summary": "Context: definitions and the Mahler-Erdős theorem for sums of two k-th powers."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #325 on the density of sums of three k-th powers. The conjecture f_{k,3}(x) ≫ x^{3/k} remains OPEN. We define the counting function, verify concrete examples, state the main conjecture and its variants as axioms, and provide context via the solved two-term analogue.",
+    "implications": "This problem lies at the intersection of additive number theory and analytic methods. A proof would establish that sums of three powers have the 'expected' density, with implications for understanding the structure of power sums. Progress here often involves the Hardy-Littlewood circle method and mean value estimates.",
+    "openQuestions": [
+      "Can Wooley's x^{0.917} bound for three cubes be improved toward x^1?",
+      "Does the weaker form f_{k,3}(x) ≫_ε x^{3/k - ε} hold for all ε > 0?",
+      "What is the correct order of magnitude for f_{k,3}(x) when k is large?",
+      "Are there k where the conjecture is known to be false?"
+    ]
   }
 }

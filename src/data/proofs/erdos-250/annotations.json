@@ -13,7 +13,7 @@
   {
     "id": "ann-e250-imports",
     "proofId": "erdos-250",
-    "range": { "startLine": 17, "endLine": 24 },
+    "range": { "startLine": 18, "endLine": 25 },
     "type": "concept",
     "title": "Mathlib Imports",
     "content": "We import the entire Mathlib library and define an abbreviation `divisorSum` for the arithmetic function. This avoids naming conflicts with local variables.",
@@ -24,7 +24,7 @@
   {
     "id": "ann-e250-background",
     "proofId": "erdos-250",
-    "range": { "startLine": 25, "endLine": 43 },
+    "range": { "startLine": 27, "endLine": 51 },
     "type": "concept",
     "title": "The Sum of Divisors Function",
     "content": "**What is σ(n)?** The sum of divisors function adds up all positive divisors of n. For example:\n- σ(6) = 1 + 2 + 3 + 6 = 12\n- σ(12) = 1 + 2 + 3 + 4 + 6 + 12 = 28\n\nPerfect numbers satisfy σ(n) = 2n (like 6 and 28).",
@@ -35,7 +35,7 @@
   {
     "id": "ann-e250-examples",
     "proofId": "erdos-250",
-    "range": { "startLine": 44, "endLine": 69 },
+    "range": { "startLine": 53, "endLine": 69 },
     "type": "theorem",
     "title": "Verified Computations of σ(n)",
     "content": "We verify the values of σ(n) for small n using Lean's `native_decide` tactic. This provides computational evidence that our definition matches the mathematical one:\n- σ(1) = 1\n- σ(2) = 3\n- σ(3) = 4\n- σ(4) = 7\n- σ(6) = 12\n- σ(12) = 28",
@@ -46,7 +46,7 @@
   {
     "id": "ann-e250-partial-sums",
     "proofId": "erdos-250",
-    "range": { "startLine": 70, "endLine": 86 },
+    "range": { "startLine": 78, "endLine": 90 },
     "type": "definition",
     "title": "Partial Sums of the Series",
     "content": "**Partial sums** let us approximate the infinite series. The function `partialSum N` computes $\\sum_{n=0}^{N} \\frac{\\sigma(n)}{2^n}$. We verify that `partialSum 1 = 1/2`.\n\nThe series converges rapidly: partial sums approach the limit ≈3.31369 quickly.",
@@ -55,20 +55,9 @@
     "relatedConcepts": ["partial-sums", "convergence", "series"]
   },
   {
-    "id": "ann-e250-bound",
-    "proofId": "erdos-250",
-    "range": { "startLine": 87, "endLine": 90 },
-    "type": "theorem",
-    "title": "Upper Bound σ(n) ≤ n²",
-    "content": "This bound ensures series convergence. Since each divisor d of n satisfies d ≤ n, and there are at most n divisors, we get σ(n) ≤ n · n = n².\n\nWith this bound, the series terms satisfy $\\frac{\\sigma(n)}{2^n} \\leq \\frac{n^2}{2^n}$, and the latter series converges.",
-    "mathContext": "The actual growth is slower: $\\sigma(n) = O(n \\log \\log n)$ on average, but the crude bound suffices for convergence.",
-    "significance": "supporting",
-    "relatedConcepts": ["bounds", "convergence", "divisor-counting"]
-  },
-  {
     "id": "ann-e250-main-context",
     "proofId": "erdos-250",
-    "range": { "startLine": 92, "endLine": 120 },
+    "range": { "startLine": 92, "endLine": 109 },
     "type": "concept",
     "title": "The Proof Context",
     "content": "**Why is this hard?** Proving irrationality of specific numbers is notoriously difficult. The proof connects this series to **modular forms**—functions with special symmetry properties that appear throughout number theory.\n\nNesterenko showed the series can be expressed using Eisenstein series at q = 1/2, then applied his algebraic independence theorem.",
@@ -79,8 +68,8 @@
   {
     "id": "ann-e250-summable",
     "proofId": "erdos-250",
-    "range": { "startLine": 121, "endLine": 125 },
-    "type": "theorem",
+    "range": { "startLine": 111, "endLine": 113 },
+    "type": "axiom",
     "title": "Series Summability (Axiom)",
     "content": "We axiomatize that the series converges. This is straightforward by comparison with the geometric series, but we state it as an axiom to keep the formalization focused on the irrationality result.",
     "mathContext": "Mathlib's `Summable` predicate captures absolute convergence: $\\sum |a_n| < \\infty$.",
@@ -90,8 +79,8 @@
   {
     "id": "ann-e250-nesterenko",
     "proofId": "erdos-250",
-    "range": { "startLine": 127, "endLine": 137 },
-    "type": "theorem",
+    "range": { "startLine": 115, "endLine": 125 },
+    "type": "axiom",
     "title": "Nesterenko's Irrationality Theorem (Axiom)",
     "content": "**The core result**: Any value x that equals the sum of our series must be irrational. We axiomatize this because the proof requires deep techniques from transcendence theory:\n\n1. Express the series using quasi-modular forms\n2. Apply Nesterenko's algebraic independence theorem\n3. Conclude transcendence (which implies irrationality)",
     "mathContext": "Nesterenko's 1996 paper established algebraic independence results for values of modular functions. The sigma series fits into this framework via the connection to Eisenstein series.",
@@ -101,7 +90,7 @@
   {
     "id": "ann-e250-main",
     "proofId": "erdos-250",
-    "range": { "startLine": 139, "endLine": 143 },
+    "range": { "startLine": 127, "endLine": 131 },
     "type": "theorem",
     "title": "Main Theorem: Erdős #250",
     "content": "**The answer to Erdős's question is YES**. The theorem `erdos_250` states that the sum of the sigma series is irrational. The proof is immediate from Nesterenko's axiomatized result.",
@@ -112,7 +101,7 @@
   {
     "id": "ann-e250-numerical",
     "proofId": "erdos-250",
-    "range": { "startLine": 145, "endLine": 157 },
+    "range": { "startLine": 133, "endLine": 151 },
     "type": "concept",
     "title": "Numerical Approximation",
     "content": "The series converges rapidly. Early partial sums:\n- S₁ = 0.5\n- S₂ = 1.25\n- S₃ = 1.75\n- S₄ ≈ 2.19\n\nThe limit is approximately **3.313689...**",
@@ -123,7 +112,7 @@
   {
     "id": "ann-e250-related",
     "proofId": "erdos-250",
-    "range": { "startLine": 159, "endLine": 180 },
+    "range": { "startLine": 153, "endLine": 167 },
     "type": "concept",
     "title": "Related Deep Results",
     "content": "Nesterenko's work (1996) established far-reaching results:\n\n1. **Algebraic Independence**: π, e^π, and Γ(1/4) are algebraically independent over ℚ\n2. **Modular Function Values**: Values at algebraic points are typically transcendental\n3. **Lambert Series**: Many Lambert series yield transcendental sums\n\nOur sigma series is one instance of these broader phenomena.",
@@ -134,7 +123,7 @@
   {
     "id": "ann-e250-lambert",
     "proofId": "erdos-250",
-    "range": { "startLine": 182, "endLine": 185 },
+    "range": { "startLine": 169, "endLine": 173 },
     "type": "definition",
     "title": "Lambert Series Connection",
     "content": "The **Lambert series** gives an alternative representation: $\\sum \\sigma(n) q^n = \\sum \\frac{n q^n}{1 - q^n}$.\n\nThis identity connects the divisor sum to a series where each term counts divisibility patterns.",

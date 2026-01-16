@@ -11,7 +11,11 @@
     "content": "A **Sidon set** (B_2 sequence) is a set of integers where all pairwise sums are distinct. If a+b = c+d with a<=b and c<=d, then we must have a=c and b=d. These sets were introduced by Simon Sidon in the 1930s.",
     "mathContext": "Uses `IsSidon` predicate from Erdos340: `IsSidon A` means forall a b c d in A with a<=b, c<=d, if a+b=c+d then a=c and b=d.",
     "significance": "critical",
-    "relatedConcepts": ["additive combinatorics", "B_2 sequences", "sum-free sets"]
+    "relatedConcepts": [
+      "additive combinatorics",
+      "B_2 sequences",
+      "sum-free sets"
+    ]
   },
   {
     "id": "ann-e44-check-pair",
@@ -25,7 +29,11 @@
     "content": "A helper lemma for verifying specific small sets are Sidon. Given four elements from {1,2,4,8,13} with a+b = c+d and the ordering constraints, we prove a=c and b=d by exhaustive case analysis on all 625 possible combinations.",
     "mathContext": "Uses `rcases` for destructuring membership proofs into 5 cases each, then `omega` or `trivial` for arithmetic verification.",
     "significance": "supporting",
-    "relatedConcepts": ["decidability", "finite verification", "case analysis"]
+    "relatedConcepts": [
+      "decidability",
+      "finite verification",
+      "case analysis"
+    ]
   },
   {
     "id": "ann-e44-example",
@@ -34,12 +42,16 @@
       "startLine": 48,
       "endLine": 62
     },
-    "type": "theorem",
+    "type": "lemma",
     "title": "Example Sidon Set",
     "content": "**Theorem**: The set {1, 2, 4, 8, 13} is a Sidon set. All 15 pairwise sums (including doubles) are distinct: 2,3,4,5,6,8,9,10,12,14,15,16,17,21,26.",
     "mathContext": "Proved by applying `sidon_check_pair` to all input quadruples. The proof is essentially computational verification.",
     "significance": "key",
-    "relatedConcepts": ["verification", "concrete mathematics", "example construction"]
+    "relatedConcepts": [
+      "verification",
+      "concrete mathematics",
+      "example construction"
+    ]
   },
   {
     "id": "ann-e44-upper-bound",
@@ -53,7 +65,11 @@
     "content": "Any Sidon set A in {1,...,N} has at most sqrt(2N) + 1 elements. With n elements, the n(n+1)/2 distinct sums must fit in [2, 2N], giving n^2 < 4N, so n < 2sqrt(N).",
     "mathContext": "Uses `sidon_upper_bound_weak` from Erdos340. The tighter bound sqrt(N) + O(N^(1/4)) is known but harder to prove.",
     "significance": "key",
-    "relatedConcepts": ["counting argument", "pigeonhole", "density bounds"]
+    "relatedConcepts": [
+      "counting argument",
+      "pigeonhole",
+      "density bounds"
+    ]
   },
   {
     "id": "ann-e44-formal-bound",
@@ -67,7 +83,11 @@
     "content": "The formal statement: |A| <= 2*sqrt(N) for any Sidon A in [1,N]. This requires converting from the weaker sqrt(2N)+1 bound to the nicer 2sqrt(N) form.",
     "mathContext": "The proof needs sqrt(2N)+1 <= 2sqrt(N) for N >= 3, which involves Real.sqrt inequalities. Currently has sorry.",
     "significance": "key",
-    "relatedConcepts": ["real analysis", "sqrt bounds", "asymptotic"]
+    "relatedConcepts": [
+      "real analysis",
+      "sqrt bounds",
+      "asymptotic"
+    ]
   },
   {
     "id": "ann-e44-powers-sidon",
@@ -81,7 +101,11 @@
     "content": "The set {1, 2, 4, 8, 16, ...} (powers of 2) forms a Sidon set. If 2^a + 2^b = 2^c + 2^d with a<=b, c<=d, then a=c and b=d by uniqueness of binary representation.",
     "mathContext": "Proof uses 2-adic valuation: if 2^a(1 + 2^(b-a)) = 2^c(1 + 2^(d-c)), comparing valuations gives a=c (since 1+2^k is odd for k>0), then b=d follows.",
     "significance": "key",
-    "relatedConcepts": ["binary representation", "2-adic valuation", "uniqueness"]
+    "relatedConcepts": [
+      "binary representation",
+      "2-adic valuation",
+      "uniqueness"
+    ]
   },
   {
     "id": "ann-e44-lower-bound",
@@ -95,7 +119,11 @@
     "content": "There exists a Sidon set of size at least sqrt(N)/2 in {1,...,N}. For small N, explicit construction works. For larger N, this requires more sophisticated constructions like Singer's.",
     "mathContext": "Small cases (N<4) use singleton {1} since sqrt(N)/2 = 0. General case requires greedy or algebraic constructions.",
     "significance": "key",
-    "relatedConcepts": ["existence", "construction", "Singer difference sets"]
+    "relatedConcepts": [
+      "existence",
+      "construction",
+      "Singer difference sets"
+    ]
   },
   {
     "id": "ann-e44-main",
@@ -109,6 +137,10 @@
     "content": "**Erdős Problem #44**: Given any Sidon set A in [1,N] and eps > 0, there exists M > N and B in [N+1,M] such that A U B is Sidon with size >= (1-eps)*sqrt(M). This conjecture remains OPEN.",
     "mathContext": "Stated with sorry since it's an unsolved mathematical problem. No known counterexamples exist, but no proof either.",
     "significance": "critical",
-    "relatedConcepts": ["extension problem", "density", "open conjecture"]
+    "relatedConcepts": [
+      "extension problem",
+      "density",
+      "open conjecture"
+    ]
   }
 ]

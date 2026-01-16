@@ -193,6 +193,8 @@ theorem divisorCount_twelve : divisorCount 12 = 6 := by
 /-- For prime p, τ(p) = 2. -/
 theorem divisorCount_prime {p : ℕ} (hp : p.Prime) : divisorCount p = 2 := by
   simp only [divisorCount, Nat.Prime.divisors hp]
-  rw [Finset.card_insert_of_not_mem (by simp [hp.ne_one]), Finset.card_singleton]
+  rw [Finset.card_insert_of_not_mem, Finset.card_singleton]
+  simp only [Finset.mem_singleton]
+  exact hp.ne_one.symm
 
 end Erdos975

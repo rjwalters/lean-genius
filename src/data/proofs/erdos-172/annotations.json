@@ -132,7 +132,7 @@
       "startLine": 97,
       "endLine": 111
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Sum-Only and Product-Only",
     "content": "We also define **sum-only monochromatic** and **product-only monochromatic** variants. These are strictly weaker than sum-product monochromatic. Classical results like Schur's theorem guarantee sum-only monochromatic sets.",
     "mathContext": "The theorem sum_product_implies_both shows that sum-product monochromatic implies both individual properties. The converse is false - having monochromatic sums AND products separately doesn't give sum-product monochromatic.",
@@ -147,10 +147,10 @@
     "id": "ann-e172-singleton",
     "proofId": "erdos-172",
     "range": {
-      "startLine": 115,
-      "endLine": 121
+      "startLine": 113,
+      "endLine": 129
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "Singleton Example",
     "content": "Any singleton {n} is trivially sum-product monochromatic with color c(n). The only nonempty subset is {n} itself, and n = Σ{n} = Π{n}.",
     "mathContext": "The proof uses Finset.eq_singleton_iff_nonempty_unique_mem to show S ⊆ {n} with S nonempty implies S = {n}.",
@@ -168,7 +168,7 @@
       "startLine": 123,
       "endLine": 130
     },
-    "type": "lemma",
+    "type": "theorem",
     "title": "Empty Set Example",
     "content": "The empty set satisfies the property **vacuously** - there are no nonempty subsets, so the condition is trivially true for any color c₀.",
     "mathContext": "This is a standard vacuous truth argument. The proof uses that S ⊆ ∅ and S.Nonempty lead to a contradiction.",

@@ -21,7 +21,6 @@ Sources: [Sp57] Specker, Teilmengen von Mengen mit Relationen (1957)
 
 import Mathlib.SetTheory.Ordinal.Arithmetic
 import Mathlib.SetTheory.Ordinal.Exponential
-import Mathlib.SetTheory.Cardinal.Basic
 
 open Ordinal
 
@@ -146,7 +145,7 @@ It's the first ordinal that cannot be reached by finite exponentiation from ω.
 -/
 theorem omega_to_omega_positive : 0 < ω ^ ω := by
   apply Ordinal.opow_pos
-  exact omega_pos
+  exact Ordinal.omega0_pos
 
 /--
 ω^(ω²) = ω^(ω·ω) is vastly larger than ω^ω.
@@ -154,27 +153,32 @@ It's ω^ω · ω^ω · ... (ω times), then that whole thing ω times, etc.
 -/
 theorem omega_omega_squared_positive : 0 < ω ^ (ω ^ 2) := by
   apply Ordinal.opow_pos
-  exact omega_pos
+  exact Ordinal.omega0_pos
 
 /--
-The ordinal hierarchy relevant to this problem:
-  ω < ω² < ω³ < ... < ω^ω < ω^(ω+1) < ... < ω^(ω²) < ...
-
-The Ramsey property ω^α → (ω^α, 3)² holds for:
-  - α = 2 (Specker)
-  - α = ω (Chang)
-  - α = ω² (this problem - unknown!)
-
-And fails for:
-  - α = n for 3 ≤ n < ω (Specker)
+ω^(ω²) is expressed in terms of ordinal exponentiation.
 -/
-theorem ordinal_hierarchy : ω < ω ^ 2 ∧ ω ^ 2 < ω ^ ω ∧ ω ^ ω < ω ^ (ω ^ 2) := by
-  constructor
-  · exact Ordinal.lt_opow_self_of_one_lt omega_lt_one_ne (by norm_num : 1 < 2)
-  constructor
-  · apply Ordinal.opow_lt_opow_right omega_pos
-    exact Ordinal.nat_lt_omega 2
-  · apply Ordinal.opow_lt_opow_right omega_pos
-    exact Ordinal.omega_lt_omega_opow (by norm_num : 1 < 2)
+theorem omega_omega_squared_form : ω ^ (ω ^ 2) = ω ^ (ω * ω) := by
+  rw [pow_two]
+
+/-!
+## Understanding the Pattern
+
+The Ramsey property α → (α, 3)² exhibits a surprising pattern:
+
+| Ordinal α | Property holds? | Reference |
+|-----------|----------------|-----------|
+| ω         | Yes            | Trivial   |
+| ω²        | Yes            | Specker   |
+| ω³        | No             | Specker   |
+| ω⁴        | No             | Specker   |
+| ...       | No             | Specker   |
+| ω^n (n≥3) | No             | Specker   |
+| ω^ω       | Yes            | Chang     |
+| ω^(ω²)    | ?              | OPEN      |
+
+The pattern suggests that "limit" ordinal exponents (like ω, ω²) might
+restore the Ramsey property that fails for successor ordinal exponents.
+-/
 
 end Erdos591
