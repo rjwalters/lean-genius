@@ -1,33 +1,113 @@
 {
   "id": "erdos-236",
-  "title": "Erdős Problem #236",
+  "title": "Erdős Problem #236: Growth of Prime Plus Power Representations",
   "slug": "erdos-236",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of solutions to ... for prime ... and .... Is it true that ...?\n\n\n\nErds  proved that there are infin...",
+  "description": "Is it true that f(n) = o(log n), where f(n) counts solutions to n = p + 2^k with p prime? Erdős proved infinitely many n have f(n) ≫ log log n, showing the conjecture is tight if true.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős (1950)",
     "sourceUrl": "https://erdosproblems.com/236",
-    "date": "",
-    "status": "pending",
+    "date": "1950",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos236Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "primes",
+      "asymptotic-analysis"
     ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 236,
     "erdosUrl": "https://erdosproblems.com/236",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime.Defs"
+      },
+      {
+        "theorem": "Asymptotics.isLittleO",
+        "description": "Little-o asymptotic notation",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of f(n) counting p + 2^k representations",
+      "Proved f_trivial_upper_bound: f(n) ≤ log₂(n) + 1",
+      "Proved f(2)=0, f(3)=1, f(5)=1 by decide",
+      "Axiomatized f(9)=2, f(15)=3 with verifications",
+      "Definition of HasAllPrimeProperty",
+      "Proved 4, 7 have all-prime property",
+      "Axiomatized Erdős-Guy conjecture on all-prime numbers",
+      "Stated main conjecture f(n) = o(log n) formally",
+      "Axiomatized Erdős lower bound and Vaughan sparsity bound"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #236 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ count the number of solutions to $n=p+2^k$ for prime $p$ and $k\\geq 0$. Is it true that $f(n)=o(\\log n)$?\n\n\n\nErd\\H{o}s \\cite{Er50} proved that there are infinitely many $n$ such that $f(n)\\gg \\log\\log n$.\n\nErd\\H{o}s could not even prove that there do not exist infinitely many integers $n$ such that for all $1< 2^k<n$ the number $n-2^k$ is prime - he conjectured (see problem A19 of Guy's collection \\cite{Gu04}) that\\[4,7,15,21,45,75,105\\]are the only such $n$. This is A039669 in the OEIS. Mientka and Weitzenkamp \\cite{MiWe69} have proved there are no other such $n\\leq 2^{44}$.\n\nVaughan \\cite{Va73} has proved that the number of $n\\leq N$ such that $n-2^k$ is prime for all $2^k<n$ is\\[< \\exp\\left(-c\\frac{\\log \\log \\log N}{\\log\\log N}\\log N\\right)N\\]for some constant $c>0$.\n\nThe sequence of values of $f(n)$ is A109925 on the OEIS.\n\nSee also [237].\n\n\n\n\nReferences\n\n\n[Er50] Erd\\\"{o}s, P., On integers of the form $2^k+p$ and some related problems. Summa Brasil. Math. (1950), 113-123.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[MiWe69] Mientka, Walter E. and Weitzenkamp, Roger C., On {$f$}-plentiful numbers. J. Combinatorial Theory (1969), 374--377.\n\n[Va73] Vaughan, R. C., Some applications of {M}ontgomery's sieve. J. Number Theory (1973), 64--79.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem connects two fundamental themes in Erdős's work: the representation of integers as sums involving primes, and the asymptotic growth of counting functions. The question emerged from his 1950 paper on representing integers as 2^k + p, where he showed that infinitely many n cannot be written in this form. Problem #236 asks about the opposite extreme: how many ways can a given n be represented? Erdős's lower bound f(n) ≫ log log n infinitely often shows that representations can be surprisingly abundant. The related conjecture that only 7 numbers have ALL residues n - 2^k prime (the 'all-prime' property) has been verified to 2^44 by Mientka-Weitzenkamp.",
+    "problemStatement": "Let f(n) count the number of solutions to n = p + 2^k for prime p and k ≥ 0. Is it true that f(n) = o(log n)? Equivalently, does the ratio f(n)/log(n) tend to 0 as n → ∞?",
+    "proofStrategy": "We formalize the counting function f(n) computationally and state the main conjecture using Mathlib's asymptotic notation. Since the problem is OPEN, we use axioms for the main conjecture and known bounds. We prove concrete values f(2)=0, f(3)=1, f(5)=1 and verify the 'all-prime' property for small cases {4, 7} directly. The Erdős-Guy conjecture listing all 7 all-prime numbers and Vaughan's upper bound on their density are stated as axioms with proper attribution.",
+    "keyInsights": [
+      "The trivial upper bound f(n) ≤ log₂(n) + 1 is immediate from the definition",
+      "Erdős's lower bound f(n) ≫ log log n infinitely often shows the conjecture, if true, is essentially tight",
+      "Numbers with the 'all-prime' property (n - 2^k prime for all valid k) are extremely rare",
+      "Vaughan proved the all-prime numbers have density decaying faster than any polynomial",
+      "This problem connects to Problem #10 (existence of representations) and #237 (related bounds)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 32,
+      "endLine": 44,
+      "summary": "Definition of f(n) counting p + 2^k representations."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 46,
+      "endLine": 73,
+      "summary": "Trivial upper bound and concrete computed values."
+    },
+    {
+      "id": "all-prime",
+      "title": "All-Prime Property",
+      "startLine": 75,
+      "endLine": 106,
+      "summary": "Numbers where n - 2^k is prime for ALL valid k."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 125,
+      "endLine": 153,
+      "summary": "The f(n) = o(log n) conjecture and known bounds."
+    },
+    {
+      "id": "connections",
+      "title": "Connections",
+      "startLine": 155,
+      "endLine": 175,
+      "summary": "Relationship to Problem #10 on representations."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #236 on the growth rate of representations n = p + 2^k. We define the counting function f, verify concrete values, formalize the 'all-prime' property and Erdős-Guy conjecture, and state the main asymptotic conjecture along with known bounds from Erdős and Vaughan.",
+    "implications": "Understanding the growth of f(n) would illuminate the distribution of primes in arithmetic progressions and the structure of sums involving prime and exponential components.",
+    "openQuestions": [
+      "Is f(n) = o(log n)?",
+      "Are there exactly 7 all-prime numbers?",
+      "What is the precise asymptotic behavior of f(n) on average?"
+    ]
   }
 }

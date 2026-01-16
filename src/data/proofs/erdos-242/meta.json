@@ -1,33 +1,131 @@
 {
   "id": "erdos-242",
-  "title": "Erdős Problem #242",
+  "title": "Erdős Problem #242: The Erdős-Straus Conjecture",
   "slug": "erdos-242",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor every ... there exist distinct integers ... such that\\[{n} = {x}+{y}+{z}.\\]\n\n\n\nThe Erd. The existence of a representation...",
+  "description": "For every n > 2, can 4/n be expressed as a sum of three distinct unit fractions 1/x + 1/y + 1/z? This famous conjecture remains OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1948), Straus",
     "sourceUrl": "https://erdosproblems.com/242",
-    "date": "",
-    "status": "pending",
+    "date": "2026-01-15",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos242Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "egyptian-fractions",
+      "number-theory",
+      "diophantine-equations",
+      "unit-fractions"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 242,
     "erdosUrl": "https://erdosproblems.com/242",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Rat",
+        "description": "Rational number type for unit fractions",
+        "module": "Mathlib.Data.Rat.Defs"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Eventually quantifier for large n",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality for density statements",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "Complete formalization of the Erdős-Straus conjecture",
+      "Verified concrete examples for n=3, 5, 7",
+      "Definition of Egyptian fraction representation",
+      "Connection to Schinzel's generalization",
+      "Summary of computational verification status"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #242 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor every $n>2$ there exist distinct integers $1\\leq x<y<z$ such that\\[\\frac{4}{n} = \\frac{1}{x}+\\frac{1}{y}+\\frac{1}{z}.\\]\n\n\n\nThe Erd\\H{os-Straus conjecture}. The existence of a representation of $4/n$ as the sum of at most four distinct unit fractions follows trivially from a greedy algorithm.\n\nSchinzel conjectured the generalisation that, for any fixed $a$, if $n$ is sufficiently large in terms of $a$ then there exist distinct integers $1\\leq x<y<z$ such that\\[\\frac{a}{n} = \\frac{1}{x}+\\frac{1}{y}+\\frac{1}{z}.\\]This problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The Erdős-Straus conjecture was posed by Paul Erdős and Ernst Straus in 1948. It asks whether every fraction 4/n with n > 2 can be written as a sum of exactly three unit fractions with distinct denominators.\n\nThis is one of the most famous unsolved problems in elementary number theory. Despite its simple statement, it has resisted proof for over 75 years. The conjecture has been verified computationally for all n up to 10^17 (over 100 quadrillion values), yet no general proof exists.\n\nThe problem is related to ancient Egyptian mathematics, where fractions were always written as sums of distinct unit fractions. The conjecture essentially asks: can the Egyptians always express 4/n using exactly three unit fractions?",
+    "problemStatement": "**Conjecture (Erdős-Straus, 1948)**: For every integer $n > 2$, there exist distinct positive integers $x < y < z$ such that\n$$\\frac{4}{n} = \\frac{1}{x} + \\frac{1}{y} + \\frac{1}{z}.$$\n\n**Status:** OPEN\n\n**Verified:** For all $n \\leq 10^{17}$ (Swett, and others)\n\n**Examples:**\n- $4/3 = 1/1 + 1/4 + 1/12$\n- $4/5 = 1/2 + 1/4 + 1/20$\n- $4/7 = 1/2 + 1/15 + 1/210$",
+    "proofStrategy": "We formalize the conjecture and known partial results:\n\n1. **ErdosStrausConjecture**: The main statement as a universal quantifier\n2. **IsEgyptianFractionRep**: General Egyptian fraction representation\n3. **Concrete examples**: Verified for n=3, 5, 7 using norm_num\n4. **Partial results axiomatized**: Four fractions suffice, density 1, computational bounds\n5. **Schinzel's generalization**: For any a, a/n has a representation for large n\n\nThe conjecture itself remains axiomatized as open.",
+    "keyInsights": [
+      "**Unit fractions**: A unit fraction has numerator 1 (like 1/2, 1/7). The Egyptians used only these.",
+      "**The difficulty**: The 'distinct' requirement is crucial. Without it, 4/n = 1/n + 1/n + 1/n + 1/n is trivial.",
+      "**Why 4?**: The case a=3 (3/n as 3 unit fractions) is proved. The case a=4 remains open.",
+      "**Computational evidence**: 10^17 verified cases with no counterexample, yet no proof.",
+      "**Schinzel's generalization**: For any a, a/n works for sufficiently large n."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Overview",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Problem statement, known results, and references"
+    },
+    {
+      "id": "egyptian-fraction",
+      "title": "Egyptian Fraction Definition",
+      "startLine": 35,
+      "endLine": 43,
+      "summary": "General definition of Egyptian fraction representation"
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Straus Conjecture",
+      "startLine": 45,
+      "endLine": 61,
+      "summary": "Formal statement of the main conjecture"
+    },
+    {
+      "id": "partial-results",
+      "title": "Known Partial Results",
+      "startLine": 63,
+      "endLine": 92,
+      "summary": "Four fractions suffice, density results, computational verification"
+    },
+    {
+      "id": "specific-cases",
+      "title": "Specific Cases",
+      "startLine": 94,
+      "endLine": 112,
+      "summary": "Results for specific residue classes mod 4"
+    },
+    {
+      "id": "schinzel",
+      "title": "Schinzel's Generalization",
+      "startLine": 114,
+      "endLine": 136,
+      "summary": "Generalization to a/n for arbitrary a"
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 138,
+      "endLine": 159,
+      "summary": "Verified examples for n=3, 5, 7"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 161,
+      "endLine": 185,
+      "summary": "Current status and summary theorem"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize the Erdős-Straus conjecture, one of the most famous open problems in elementary number theory. The conjecture that 4/n can always be written as a sum of three distinct unit fractions remains unproved despite 75 years of effort and computational verification up to 10^17.",
+    "implications": "The problem illustrates how simple-sounding questions about integers can be extremely difficult. A proof would advance our understanding of Diophantine equations and Egyptian fraction decompositions. The extensive computational verification without proof shows the limits of empirical evidence in mathematics.",
+    "openQuestions": [
+      "Is the Erdős-Straus conjecture true for all n > 2?",
+      "Are there infinitely many n requiring the maximum denominator z > n²?",
+      "Does Schinzel's generalization hold for all a ≥ 1?",
+      "What is the growth rate of the smallest required z as a function of n?"
+    ]
   }
 }

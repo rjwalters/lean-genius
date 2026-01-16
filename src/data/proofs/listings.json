@@ -2901,7 +2901,7 @@
     "title": "Erdős Problem #17: Cluster Primes",
     "slug": "erdos-17",
     "description": "Are there infinitely many cluster primes? A prime p is a cluster prime if every even n ≤ p-3 can be expressed as a difference of primes ≤ p. First non-cluster prime: 97.",
-    "status": "verified",
+    "status": "complete",
     "badge": "axiom",
     "tags": [
       "erdos",
@@ -3829,17 +3829,23 @@
   },
   {
     "id": "erdos-236",
-    "title": "Erdős Problem #236",
+    "title": "Erdős Problem #236: Growth of Prime Plus Power Representations",
     "slug": "erdos-236",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of solutions to ... for prime ... and .... Is it true that ...?\n\n\n\nErds  proved that there are infin...",
-    "status": "pending",
+    "description": "Is it true that f(n) = o(log n), where f(n) counts solutions to n = p + 2^k with p prime? Erdős proved infinitely many n have f(n) ≫ log log n, showing the conjecture is tight if true.",
+    "status": "complete",
     "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "primes",
+      "asymptotic-analysis"
     ],
+    "dateAdded": "2026-01-15",
     "erdosNumber": 236,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-237",
@@ -3899,31 +3905,44 @@
   },
   {
     "id": "erdos-242",
-    "title": "Erdős Problem #242",
+    "title": "Erdős Problem #242: The Erdős-Straus Conjecture",
     "slug": "erdos-242",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor every ... there exist distinct integers ... such that\\[{n} = {x}+{y}+{z}.\\]\n\n\n\nThe Erd. The existence of a representation...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For every n > 2, can 4/n be expressed as a sum of three distinct unit fractions 1/x + 1/y + 1/z? This famous conjecture remains OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "egyptian-fractions",
+      "number-theory",
+      "diophantine-equations",
+      "unit-fractions"
     ],
+    "dateAdded": "2026-01-15",
     "erdosNumber": 242,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-243",
-    "title": "Erdős Problem #243",
+    "title": "Erdős Problem #243: Sylvester's Sequence Characterization",
     "slug": "erdos-243",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence of integers such that\\[\\lim_{n\\to \\infty}{a_{n-1}^2}=1\\]and .... Then, for all sufficiently large ...,\\...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If a strictly increasing integer sequence has quadratic growth (aₙ/aₙ₋₁² → 1) and rational reciprocal sum, must it eventually follow the Sylvester recurrence?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "sequences",
+      "sylvester",
+      "egyptian-fractions",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-15",
     "erdosNumber": 243,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-244",
@@ -4946,7 +4965,7 @@
     "title": "Erdős #33: Additive Complements of Squares",
     "slug": "erdos-33",
     "description": "For sets A such that every integer is n² + a for some a ∈ A, what is the minimum possible density? Best known: liminf ≥ 4/π ≈ 1.273 and limsup ≤ 2φ^(5/2) ≈ 6.66.",
-    "status": "axiomatized",
+    "status": "complete",
     "badge": "axiom",
     "tags": [
       "erdos",
@@ -5482,7 +5501,7 @@
     "title": "Erdős #38: Essential Components and Density Boosting",
     "slug": "erdos-38",
     "description": "Does there exist a set B that is NOT an additive basis but still has the density-boosting property: for any set A with Schnirelmann density α, some translate A ∪ (A+b) achieves density ≥ α + f(α)?",
-    "status": "axiomatized",
+    "status": "complete",
     "badge": "axiom",
     "tags": [
       "erdos",
@@ -6047,7 +6066,7 @@
     "title": "Erdős Problem #44: Extending Sidon Sets",
     "slug": "erdos-44",
     "description": "Can any Sidon set be extended to achieve near-optimal density (1-eps)sqrt(M)? An OPEN conjecture with auxiliary results about Sidon set bounds proved.",
-    "status": "partial",
+    "status": "complete",
     "badge": "axiom",
     "tags": [
       "erdos",
@@ -7616,7 +7635,7 @@
     "title": "Erdős Problem #6: Monotone Prime Gap Sequences",
     "slug": "erdos-6",
     "description": "Are there infinitely many n with d_n < d_{n+1} < d_{n+2}? Proved affirmatively by Banks-Freiberg-Turnage-Butterbaugh (2015) using Maynard-Tao machinery.",
-    "status": "verified",
+    "status": "complete",
     "badge": "axiom",
     "tags": [
       "erdos",
@@ -7628,7 +7647,7 @@
     "dateAdded": "01/14/25",
     "erdosNumber": 6,
     "mathlibCount": 2,
-    "sorries": 1,
+    "sorries": 0,
     "annotationCount": 17
   },
   {
@@ -8197,7 +8216,7 @@
     "title": "Erdős Problem #64: Power of Two Cycles in Min Degree 3 Graphs",
     "slug": "erdos-64",
     "description": "Does every finite graph with minimum degree ≥ 3 contain a cycle of length 2^k for some k ≥ 2? OPEN ($1000 prize).",
-    "status": "formalized",
+    "status": "complete",
     "badge": "axiom",
     "tags": [
       "erdos",

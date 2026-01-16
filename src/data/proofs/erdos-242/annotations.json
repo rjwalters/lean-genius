@@ -1,1 +1,156 @@
-[]
+[
+  {
+    "id": "ann-e242-header",
+    "proofId": "erdos-242",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**The Erdős-Straus Conjecture** (1948) is one of the most famous open problems in number theory. It asks: can every fraction 4/n (for n > 2) be written as a sum of exactly three distinct unit fractions?\n\nDespite being verified for all n up to 10^17, no general proof exists.",
+    "mathContext": "A unit fraction has the form 1/k. The conjecture asks: ∀n > 2, ∃ distinct x < y < z such that 4/n = 1/x + 1/y + 1/z.",
+    "significance": "critical",
+    "relatedConcepts": ["Unit fractions", "Egyptian fractions", "Diophantine equations"]
+  },
+  {
+    "id": "ann-e242-egyptian",
+    "proofId": "erdos-242",
+    "range": { "startLine": 35, "endLine": 43 },
+    "type": "definition",
+    "title": "Egyptian Fraction Representation",
+    "content": "An **Egyptian fraction** is a sum of distinct unit fractions. Ancient Egyptians wrote all fractions this way - they had no concept of fractions like 2/5, only 1/2 + 1/10.\n\nThis definition captures what it means for a/n to equal a sum of k distinct unit fractions.",
+    "mathContext": "IsEgyptianFractionRep(a, n, k, denoms) requires: (1) all denominators positive, (2) strictly increasing, (3) a/n = Σ 1/dᵢ.",
+    "significance": "key",
+    "relatedConcepts": ["Rhind papyrus", "Unit fractions", "Greedy algorithm"]
+  },
+  {
+    "id": "ann-e242-conjecture",
+    "proofId": "erdos-242",
+    "range": { "startLine": 47, "endLine": 61 },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "**The Erdős-Straus Conjecture**: For every n > 2, there exist distinct positive integers x < y < z such that:\n\n4/n = 1/x + 1/y + 1/z\n\nThe key constraint is **distinct denominators**. Without this, the problem is trivial: 4/n = 1/n + 1/n + 1/n + 1/n.",
+    "mathContext": "ErdosStrausConjecture := ∀ n, 2 < n → ∃ x y z, 1 ≤ x ∧ x < y ∧ y < z ∧ 4/n = 1/x + 1/y + 1/z.",
+    "significance": "critical",
+    "relatedConcepts": ["Open problem", "Number theory", "Existence proof"]
+  },
+  {
+    "id": "ann-e242-four-suffice",
+    "proofId": "erdos-242",
+    "range": { "startLine": 65, "endLine": 72 },
+    "type": "axiom",
+    "title": "Four Fractions Suffice",
+    "content": "**Four unit fractions always work.** The greedy algorithm (always take the largest unit fraction ≤ the remainder) guarantees that any proper fraction can be written as a sum of unit fractions.\n\nFor 4/n, at most 4 are needed. The conjecture asks: can we always do it with exactly 3?",
+    "mathContext": "Axiom: ∀ n > 2, ∃ x < y < z < w with 4/n = 1/x + 1/y + 1/z + 1/w. This is trivial; the conjecture asks about 3.",
+    "significance": "key",
+    "relatedConcepts": ["Greedy algorithm", "Sylvester sequence", "Upper bound"]
+  },
+  {
+    "id": "ann-e242-density",
+    "proofId": "erdos-242",
+    "range": { "startLine": 74, "endLine": 81 },
+    "type": "axiom",
+    "title": "Density Result",
+    "content": "**Almost all n satisfy the conjecture.** The set of n for which 4/n can be written as 3 unit fractions has natural density 1.\n\nThis means: as N → ∞, the fraction of integers n ≤ N satisfying the conjecture approaches 1. But 'almost all' isn't 'all'!",
+    "mathContext": "∃ S with density 1 such that ∀ n ∈ S with n > 2, the representation exists. The exceptions have density 0 but may be infinite.",
+    "significance": "key",
+    "relatedConcepts": ["Natural density", "Asymptotic density", "Almost all"]
+  },
+  {
+    "id": "ann-e242-computational",
+    "proofId": "erdos-242",
+    "range": { "startLine": 83, "endLine": 92 },
+    "type": "axiom",
+    "title": "Computational Verification",
+    "content": "**Verified for n ≤ 10^14** (and beyond). Multiple researchers have computationally checked the conjecture for astronomically large values:\n\n- Swett verified up to 10^14\n- Others have pushed to 10^17\n\nYet computational evidence isn't proof. There could still be a counterexample beyond our reach.",
+    "mathContext": "Axiom: ∀ n, 2 < n → n ≤ 10^14 → representation exists. This is trusted computational mathematics.",
+    "significance": "key",
+    "relatedConcepts": ["Computational verification", "Empirical evidence", "Large numbers"]
+  },
+  {
+    "id": "ann-e242-mod4",
+    "proofId": "erdos-242",
+    "range": { "startLine": 94, "endLine": 112 },
+    "type": "axiom",
+    "title": "Modular Arithmetic Cases",
+    "content": "**Special cases by residue class.** Different constructions work for different residue classes of n mod 4:\n\n- n ≡ 0 (mod 4): 4/(4k) = 1/k, easy to extend\n- n ≡ 1 (mod 4): Special constructions exist\n- n ≡ 2, 3 (mod 4): More elaborate methods\n\nThe difficulty lies in covering ALL cases uniformly.",
+    "mathContext": "Separate axioms for n = 4k and n = 4k+1 cases. The challenge is a unified proof.",
+    "significance": "supporting",
+    "relatedConcepts": ["Modular arithmetic", "Case analysis", "Number theory"]
+  },
+  {
+    "id": "ann-e242-schinzel",
+    "proofId": "erdos-242",
+    "range": { "startLine": 114, "endLine": 126 },
+    "type": "definition",
+    "title": "Schinzel's Generalization",
+    "content": "**Schinzel's conjecture** generalizes Erdős-Straus: for any fixed a, the fraction a/n can be written as 3 unit fractions for all sufficiently large n.\n\nErdős-Straus is the case a = 4. Notably, the case a = 3 has been proved: 3/n always works for n > 1.",
+    "mathContext": "SchinzelConjecture := ∀ a > 0, ∀ᶠ n in atTop, ∃ representation. 'Eventually' means for all n ≥ some N₀(a).",
+    "significance": "key",
+    "relatedConcepts": ["Schinzel", "Generalization", "Eventually"]
+  },
+  {
+    "id": "ann-e242-schinzel-implies",
+    "proofId": "erdos-242",
+    "range": { "startLine": 128, "endLine": 136 },
+    "type": "theorem",
+    "title": "Schinzel Implies Erdős-Straus Eventually",
+    "content": "**Schinzel's conjecture implies Erdős-Straus for large n.** If we knew Schinzel's conjecture for a = 4, we'd know Erdős-Straus holds eventually.\n\nBut Erdős-Straus claims it holds for ALL n > 2, not just large n. This is the gap.",
+    "mathContext": "Proof: Apply Schinzel with a = 4. This gives ∀ᶠ n, which is weaker than ∀ n > 2.",
+    "significance": "supporting",
+    "relatedConcepts": ["Implication", "Eventually vs. always", "Logical strength"]
+  },
+  {
+    "id": "ann-e242-example-3",
+    "proofId": "erdos-242",
+    "range": { "startLine": 140, "endLine": 144 },
+    "type": "theorem",
+    "title": "Example: n = 3",
+    "content": "**Concrete example**: 4/3 = 1/1 + 1/4 + 1/12\n\nVerification: 1 + 0.25 + 0.0833... = 1.333... = 4/3 ✓\n\nOr: 12/12 + 3/12 + 1/12 = 16/12 = 4/3 ✓",
+    "mathContext": "theorem example_n_3 : (4 : ℚ) / 3 = 1 / 1 + 1 / 4 + 1 / 12 := by norm_num",
+    "significance": "supporting",
+    "relatedConcepts": ["Concrete example", "Verification", "norm_num"]
+  },
+  {
+    "id": "ann-e242-example-5",
+    "proofId": "erdos-242",
+    "range": { "startLine": 146, "endLine": 150 },
+    "type": "theorem",
+    "title": "Example: n = 5",
+    "content": "**Concrete example**: 4/5 = 1/2 + 1/4 + 1/20\n\nVerification: 10/20 + 5/20 + 1/20 = 16/20 = 4/5 ✓\n\nNote: denominators 2, 4, 20 are distinct and increasing.",
+    "mathContext": "theorem example_n_5 : (4 : ℚ) / 5 = 1 / 2 + 1 / 4 + 1 / 20 := by norm_num",
+    "significance": "supporting",
+    "relatedConcepts": ["Concrete example", "Verification", "norm_num"]
+  },
+  {
+    "id": "ann-e242-example-7",
+    "proofId": "erdos-242",
+    "range": { "startLine": 152, "endLine": 159 },
+    "type": "theorem",
+    "title": "Example: n = 7",
+    "content": "**Concrete example**: 4/7 = 1/2 + 1/15 + 1/210\n\nVerification: 105/210 + 14/210 + 1/210 = 120/210 = 4/7 ✓\n\nThis example shows that denominators can get quite large even for small n.",
+    "mathContext": "theorem example_n_7 : (4 : ℚ) / 7 = 1 / 2 + 1 / 15 + 1 / 210 := by norm_num",
+    "significance": "supporting",
+    "relatedConcepts": ["Concrete example", "Large denominators", "norm_num"]
+  },
+  {
+    "id": "ann-e242-status",
+    "proofId": "erdos-242",
+    "range": { "startLine": 161, "endLine": 175 },
+    "type": "axiom",
+    "title": "Open Status",
+    "content": "**The conjecture remains OPEN.** We summarize what's known:\n\n| Statement | Status |\n|-----------|--------|\n| 4/n = 3 unit fractions ∀ n > 2 | OPEN |\n| Verified for n ≤ 10^17 | COMPUTED |\n| Holds for density 1 | PROVED |\n| 4 unit fractions suffice | TRIVIAL |",
+    "mathContext": "axiom erdos_straus_open : ErdosStrausConjecture ∨ ¬ErdosStrausConjecture. We don't know which.",
+    "significance": "critical",
+    "relatedConcepts": ["Open problem", "Law of excluded middle", "Unknown"]
+  },
+  {
+    "id": "ann-e242-summary",
+    "proofId": "erdos-242",
+    "range": { "startLine": 179, "endLine": 184 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**Summary**: We combine our verified examples with the open status.\n\nThe concrete examples (n = 3, 5, 7) are fully proved by Lean's norm_num tactic. The general conjecture is axiomatized as either true or false - we don't know which.",
+    "mathContext": "summary_erdos_242 proves the conjunction of the three examples and the classical statement (P ∨ ¬P).",
+    "significance": "supporting",
+    "relatedConcepts": ["Summary", "Conjunction", "What we know"]
+  }
+]

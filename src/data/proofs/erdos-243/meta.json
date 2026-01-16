@@ -1,33 +1,116 @@
 {
   "id": "erdos-243",
-  "title": "Erdős Problem #243",
+  "title": "Erdős Problem #243: Sylvester's Sequence Characterization",
   "slug": "erdos-243",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a sequence of integers such that\\[\\lim_{n\\to \\infty}{a_{n-1}^2}=1\\]and .... Then, for all sufficiently large ...,\\...",
+  "description": "If a strictly increasing integer sequence has quadratic growth (aₙ/aₙ₋₁² → 1) and rational reciprocal sum, must it eventually follow the Sylvester recurrence?",
   "meta": {
-    "author": "Unknown",
+    "author": "Open Problem",
     "sourceUrl": "https://erdosproblems.com/243",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos243Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "sequences",
+      "sylvester",
+      "egyptian-fractions",
+      "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 243,
     "erdosUrl": "https://erdosproblems.com/243",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit behavior of sequences",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "The filter of cofinite sets, for 'eventually' statements",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Finite sums over sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of Erdős conjecture #243 in Lean 4",
+      "Definition of Sylvester's sequence with verified first values",
+      "Clean predicates for growth condition and rational sum hypothesis",
+      "Educational presentation connecting to Egyptian fractions"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #243 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_1<a_2<\\cdots$ be a sequence of integers such that\\[\\lim_{n\\to \\infty}\\frac{a_n}{a_{n-1}^2}=1\\]and $\\sum\\frac{1}{a_n}\\in \\mathbb{Q}$. Then, for all sufficiently large $n\\geq 1$,\\[ a_n = a_{n-1}^2-a_{n-1}+1.\\]\n\n\n\nErd\\H{o}s and Straus \\cite{ErSt64} proved that if $\\lim a_n/a_{n-1}^2=1$ and $\\sum \\frac{1}{a_n}$ is rational, and $a_n$ does not satisfy the recurrence, then\\[\\limsup_{n\\to \\infty} \\frac{[a_1,\\ldots,a_n]}{a_{n+1}}\\left(\\frac{a_n^2}{a_{n+1}}-1\\right)>0.\\]A sequence satisfying the reucrrence $a_n = a_{n-1}^2-a_{n-1}+1$ is known as Sylvester's sequence.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[ErSt64] Erd\\H{o}s, P. and Straus, E. G., On the irrationality of certain {A}hmes series. J. Indian Math. Soc. (N.S.) (1964), 129--133.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Sylvester's sequence, introduced by James Joseph Sylvester in 1880, is one of the most remarkable integer sequences in mathematics. Starting with 2, each term is computed as sₙ₊₁ = sₙ² - sₙ + 1, giving the sequence 2, 3, 7, 43, 1807, 3263443, ... The terms grow doubly exponentially, yet the sum of reciprocals converges to exactly 1.\n\nThis property makes Sylvester's sequence central to the theory of Egyptian fractions—representations of rationals as sums of distinct unit fractions. The partial sums 1/2, 1/2 + 1/3 = 5/6, 1/2 + 1/3 + 1/7 = 41/42, etc., approach 1 faster than any other unit fraction series.\n\nErdős and Straus (1964) began investigating what makes Sylvester's sequence special. They proved partial results about sequences with similar growth rates. Badea (1993) showed that sequences summing to rationals with sufficiently fast growth must eventually follow the Sylvester recurrence. Problem #243 asks whether the specific growth condition aₙ/aₙ₋₁² → 1 combined with rational sum is enough to force Sylvester behavior.",
+    "problemStatement": "Let $a_1 < a_2 < \\cdots$ be a strictly increasing sequence of positive integers such that:\n$$\\lim_{n \\to \\infty} \\frac{a_n}{a_{n-1}^2} = 1$$\nand $\\sum_{n=1}^{\\infty} \\frac{1}{a_n} \\in \\mathbb{Q}$.\n\n**Conjecture**: For all sufficiently large $n$,\n$$a_n = a_{n-1}^2 - a_{n-1} + 1$$\n\n**Status**: OPEN",
+    "proofStrategy": "We formalize the conjecture precisely using Mathlib's filter framework for limits. The main components are:\n\n1. **Sylvester's sequence** is defined recursively and we verify its first values computationally\n\n2. **The growth predicate** `HasSylvesterGrowth` captures lim aₙ₊₁/aₙ² = 1 using `Filter.Tendsto`\n\n3. **The rationality predicate** `HasRationalReciprocalSum` states the partial sums converge to some q ∈ ℚ\n\n4. **The conclusion** `EventuallySylvester` uses `∀ᶠ n in atTop` to express 'eventually'\n\nThe main conjecture is stated as an axiom since no proof is known. We also state as an axiom that Sylvester's sequence sums to 1, since proving this requires establishing the doubly exponential growth bound.",
+    "keyInsights": [
+      "**Sylvester's sequence**: 2, 3, 7, 43, 1807, ... defined by sₙ₊₁ = sₙ² - sₙ + 1. Grows doubly exponentially: sₙ ≈ 1.264^(2^n).",
+      "**Sum of reciprocals equals 1**: The remarkable identity 1/2 + 1/3 + 1/7 + 1/43 + ... = 1 follows from 1/sₙ = 1/(sₙ-1) - 1/(sₙ₊₁-1), a telescoping series.",
+      "**Egyptian fraction connection**: Every rational has infinitely many Egyptian fraction representations. Sylvester's sequence gives the 'greedy' expansion of 1.",
+      "**The conjecture's depth**: It claims Sylvester's sequence is essentially UNIQUE among sequences with quadratic-type growth and rational reciprocal sum.",
+      "**Partial results exist**: Erdős-Straus (1964) and Badea (1993) proved related characterizations, but this specific formulation remains open."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and History",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Documentation explaining the conjecture, its history, and references."
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 25,
+      "endLine": 33,
+      "summary": "Mathlib imports for filters, topology, and summation."
+    },
+    {
+      "id": "sylvester-def",
+      "title": "Sylvester's Sequence Definition",
+      "startLine": 35,
+      "endLine": 56,
+      "summary": "Recursive definition of Sylvester's sequence with verified concrete values."
+    },
+    {
+      "id": "predicates",
+      "title": "Hypothesis Predicates",
+      "startLine": 58,
+      "endLine": 76,
+      "summary": "Definitions of EventuallySylvester, HasSylvesterGrowth, and HasRationalReciprocalSum."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture (Axiom)",
+      "startLine": 78,
+      "endLine": 103,
+      "summary": "The open conjecture stated as an axiom: growth + rational sum implies Sylvester."
+    },
+    {
+      "id": "verification",
+      "title": "Verification for Sylvester's Sequence",
+      "startLine": 105,
+      "endLine": 131,
+      "summary": "Proving that Sylvester's sequence satisfies the hypotheses of the conjecture."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #243, an open conjecture characterizing Sylvester's sequence. The conjecture states that any strictly increasing integer sequence with quadratic growth (aₙ/aₙ₋₁² → 1) and rational reciprocal sum must eventually follow the Sylvester recurrence aₙ = aₙ₋₁² - aₙ₋₁ + 1.",
+    "implications": "If true, this would show Sylvester's sequence is essentially unique among rapidly-growing sequences with rational reciprocal sums. This has implications for Egyptian fraction theory and understanding the structure of unit fraction sums.",
+    "openQuestions": [
+      "Can the growth condition be weakened further while preserving the conclusion?",
+      "Is there a constructive characterization of all sequences satisfying the hypotheses?",
+      "What happens if we require the sum to be a specific rational (like 1) rather than any rational?"
+    ]
   }
 }

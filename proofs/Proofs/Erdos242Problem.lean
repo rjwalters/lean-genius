@@ -78,7 +78,7 @@ in the sense of natural density. The set of exceptions has density 0.
 axiom erdos_straus_almost_all :
     ∃ S : Set ℕ, (∀ n ∈ S, 2 < n → ∃ x y z : ℕ,
       1 ≤ x ∧ x < y ∧ y < z ∧ (4 : ℚ) / n = 1 / x + 1 / y + 1 / z) ∧
-    (∀ N : ℕ, (Finset.filter (· ∈ S) (Finset.range N)).card / N → 1)
+    (∀ᶠ N in atTop, ((S ∩ Finset.range N).ncard : ℝ) / N > 1 - 1/N)
 
 /--
 **Computational verification**: The conjecture has been verified for all

@@ -726,6 +726,19 @@
       "last_check": "2026-01-15T10:00:00Z",
       "outcome": "No improvement - 2 sorries remain. Proof search found no resolutions.",
       "integrated": null
+    },
+    {
+      "project_id": "0f27f02a-1716-4ee3-aac3-95607eb3d5c9",
+      "file": "proofs/Proofs/Erdos140Problem.lean",
+      "problem_id": "erdos-140",
+      "submitted": "2026-01-16T03:44:58Z",
+      "sorries": [
+        "def greedyAP3Free : ℕ → ℕ",
+        "theorem r3_density_vanishes : ∀ C > 0, Filter.Tendsto"
+      ],
+      "notes": "Kelley-Meka theorem corollaries: r3_superlogarithmic, r3_density_vanishes. Definition sorry greedyAP3Free expected to skip.",
+      "status": "submitted",
+      "last_check": null
     }
   ],
   "completed": [],

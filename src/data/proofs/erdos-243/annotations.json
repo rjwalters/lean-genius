@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-e243-header",
+    "proofId": "erdos-243",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Problem Documentation",
+    "content": "The header explains **Erdős Problem #243**, an open conjecture about integer sequences. The problem asks: if a sequence grows like aₙ ≈ aₙ₋₁² and has a rational sum of reciprocals, must it eventually follow the Sylvester recurrence?",
+    "mathContext": "This is one of Erdős's many problems about the structure of integer sequences and their reciprocal sums. It connects to Egyptian fraction theory, where every positive rational can be written as a sum of distinct unit fractions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "erdos",
+      "open-problems",
+      "sequences"
+    ]
+  },
+  {
+    "id": "ann-e243-imports",
+    "proofId": "erdos-243",
+    "range": {
+      "startLine": 25,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import Mathlib modules for **real analysis**, **topology**, and **summation**. These provide the mathematical infrastructure for defining limits, convergence, and finite sums.",
+    "mathContext": "`Filter.Tendsto` expresses limits, `atTop` represents 'for sufficiently large n', and `Finset.sum` computes finite sums. Together they let us formalize statements like 'lim aₙ/aₙ₋₁² = 1' and 'Σ(1/aₙ) converges'.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "mathlib",
+      "filters",
+      "analysis"
+    ]
+  },
+  {
+    "id": "ann-e243-sylvester-def",
+    "proofId": "erdos-243",
+    "range": {
+      "startLine": 38,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "Sylvester's Sequence",
+    "content": "**Sylvester's sequence** is defined recursively: start with 2, and each term is sₙ₊₁ = sₙ² - sₙ + 1. This gives the sequence 2, 3, 7, 43, 1807, 3263443, ... which grows doubly exponentially.",
+    "mathContext": "The recurrence sₙ₊₁ = sₙ² - sₙ + 1 = sₙ(sₙ - 1) + 1 has a beautiful property: 1/sₙ = 1/(sₙ-1) - 1/(sₙ₊₁-1), making the sum of reciprocals telescope to exactly 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sylvester",
+      "recurrence",
+      "doubly-exponential"
+    ]
+  },
+  {
+    "id": "ann-e243-verified-values",
+    "proofId": "erdos-243",
+    "range": {
+      "startLine": 43,
+      "endLine": 52
+    },
+    "type": "theorem",
+    "title": "Verified Sequence Values",
+    "content": "We **computationally verify** the first five values of Sylvester's sequence: 2, 3, 7, 43, 1807. The `native_decide` tactic compiles these checks to native code for instant verification.",
+    "mathContext": "These concrete values let us sanity-check the definition. Note how quickly the sequence grows: s₄ = 1807 already, and s₅ = 3263443. By s₆ we exceed 10 trillion.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "computation",
+      "verification"
+    ]
+  },
+  {
+    "id": "ann-e243-eventually-sylvester",
+    "proofId": "erdos-243",
+    "range": {
+      "startLine": 62,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "Eventually Sylvester Predicate",
+    "content": "A sequence is **eventually Sylvester** if, for all sufficiently large n, it satisfies the Sylvester recurrence aₙ₊₁ = aₙ² - aₙ + 1. The conjecture claims any sequence meeting the hypotheses must be eventually Sylvester.",
+    "mathContext": "`∀ᶠ n in atTop` is Mathlib's way of saying 'for all sufficiently large n' or 'eventually'. This allows the sequence to differ from Sylvester for finitely many terms.",
+    "significance": "key",
+    "relatedConcepts": [
+      "eventually",
+      "filter",
+      "recurrence"
+    ]
+  },
+  {
+    "id": "ann-e243-growth-predicate",
+    "proofId": "erdos-243",
+    "range": {
+      "startLine": 66,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "Sylvester Growth Condition",
+    "content": "The **growth predicate** `HasSylvesterGrowth` captures the condition that aₙ₊₁/aₙ² → 1. This means the sequence grows 'almost quadratically' — each term is approximately the square of the previous.",
+    "mathContext": "For true Sylvester: sₙ₊₁ = sₙ² - sₙ + 1 ≈ sₙ² for large sₙ, so sₙ₊₁/sₙ² → 1. The conjecture asks if this growth rate alone (with rational sum) forces the exact Sylvester behavior.",
+    "significance": "key",
+    "relatedConcepts": [
+      "growth-rate",
+      "limits",
+      "quadratic"
+    ]
+  },
+  {
+    "id": "ann-e243-rational-sum",
+    "proofId": "erdos-243",
+    "range": {
+      "startLine": 70,
+      "endLine": 72
+    },
+    "type": "definition",
+    "title": "Rational Reciprocal Sum",
+    "content": "The **rationality condition** requires that Σ(1/aₙ) converges to some rational number q. This is a strong constraint — most rapidly growing sequences have irrational reciprocal sums.",
+    "mathContext": "Sylvester's sequence sums to 1 (rational). Erdős suspected that having BOTH quadratic growth AND rational sum is so restrictive that only Sylvester-like sequences can satisfy both.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rational",
+      "convergence",
+      "egyptian-fractions"
+    ]
+  },
+  {
+    "id": "ann-e243-main-conjecture",
+    "proofId": "erdos-243",
+    "range": {
+      "startLine": 82,
+      "endLine": 99
+    },
+    "type": "axiom",
+    "title": "Main Conjecture (Axiom)",
+    "content": "**Erdős Problem #243**: Any strictly increasing positive integer sequence with Sylvester-type growth (aₙ₊₁/aₙ² → 1) and rational reciprocal sum must eventually follow the Sylvester recurrence. This remains **OPEN**.",
+    "mathContext": "We state this as an `axiom` because no proof is known. Erdős-Straus (1964) and Badea (1993) proved related results, but this exact formulation is unresolved. The axiom captures the mathematical content without claiming we can prove it.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "erdos-conjecture",
+      "axiom",
+      "open-problem"
+    ]
+  },
+  {
+    "id": "ann-e243-sylvester-pos",
+    "proofId": "erdos-243",
+    "range": {
+      "startLine": 107,
+      "endLine": 114
+    },
+    "type": "theorem",
+    "title": "Sylvester Terms Are Positive",
+    "content": "We prove that every term of Sylvester's sequence is positive. This is needed to apply the conjecture to Sylvester's sequence itself (we need the hypotheses to hold).",
+    "mathContext": "The proof uses induction: s₀ = 2 > 0, and sₙ₊₁ = sₙ² - sₙ + 1 = sₙ(sₙ-1) + 1 > 0 since sₙ ≥ 2 for all n.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "induction",
+      "positivity",
+      "well-definedness"
+    ]
+  },
+  {
+    "id": "ann-e243-sum-to-one",
+    "proofId": "erdos-243",
+    "range": {
+      "startLine": 116,
+      "endLine": 126
+    },
+    "type": "theorem",
+    "title": "Sum of Reciprocals Equals 1",
+    "content": "The sum 1/2 + 1/3 + 1/7 + 1/43 + ... converges to exactly **1**. This is a classical result making Sylvester's sequence central to Egyptian fraction theory.",
+    "mathContext": "The telescoping identity 1/sₙ = 1/(sₙ-1) - 1/(sₙ₊₁-1) gives: Σᵢ₌₀ⁿ (1/sᵢ) = 1 - 1/(sₙ₊₁-1) → 1 as n → ∞. We state this as an axiom since the full proof requires establishing the growth bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "telescoping",
+      "egyptian-fractions",
+      "unit-fractions"
+    ]
+  }
+]
