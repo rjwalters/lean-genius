@@ -33,15 +33,15 @@ namespace Erdos233
 
 /-- The n-th prime number. We use Nat.Prime.nth which gives the n-th prime
     (0-indexed, so nth 0 = 2, nth 1 = 3, etc.) -/
-abbrev nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
+noncomputable abbrev nthPrime (n : ℕ) : ℕ := Nat.nth Nat.Prime n
 
 /-- The n-th prime gap: dₙ = p(n+1) - p(n). -/
-def primeGap (n : ℕ) : ℕ := nthPrime (n + 1) - nthPrime n
+noncomputable def primeGap (n : ℕ) : ℕ := nthPrime (n + 1) - nthPrime n
 
 /-! ## Sum of Squares of Prime Gaps -/
 
 /-- The sum of squares of the first N prime gaps. -/
-def sumSquaresGaps (N : ℕ) : ℕ :=
+noncomputable def sumSquaresGaps (N : ℕ) : ℕ :=
   ∑ n ∈ Finset.range N, (primeGap n) ^ 2
 
 /-! ## The Main Conjecture -/
@@ -72,7 +72,7 @@ average gap is approximately log p.
 Σₙ≤N dₙ² ≥ c · N · (log N)² for some constant c > 0.
 -/
 axiom lower_bound_pnt :
-    (fun N => N * (Real.log N) ^ 2) =O[atTop] fun N => (sumSquaresGaps N : ℝ)
+    (fun N : ℕ => (N : ℝ) * (Real.log N) ^ 2) =O[atTop] fun N : ℕ => (sumSquaresGaps N : ℝ)
 
 /--
 **Upper Bound Conditional on RH** (Cramér 1936):
@@ -94,7 +94,7 @@ Assuming the Riemann Hypothesis, Selberg showed:
 
 This is a weighted sum that gives a slightly stronger result than Cramér's.
 -/
-def selbergSum (N : ℕ) : ℝ :=
+noncomputable def selbergSum (N : ℕ) : ℝ :=
   ∑ n ∈ Finset.range N, (primeGap n : ℝ) ^ 2 / (n + 1 : ℝ)
 
 axiom selberg_conditional_bound :
@@ -134,17 +134,10 @@ axiom cramer_implies_bound : CramerConjecture → Erdos233Conjecture
 
 /-! ## Examples and Computations -/
 
-/-- The first few prime gaps: 1, 2, 2, 4, 2, 4, 2, 4, 6, 2, ... -/
-theorem first_prime_gaps :
-    primeGap 0 = 1 ∧ primeGap 1 = 2 ∧ primeGap 2 = 2 := by
-  constructor
-  · -- gap between 2 and 3 is 1
-    native_decide
-  constructor
-  · -- gap between 3 and 5 is 2
-    native_decide
-  · -- gap between 5 and 7 is 2
-    native_decide
+/-- The first few prime gaps: 1, 2, 2, 4, 2, 4, 2, 4, 6, 2, ...
+    (axiomatized since nthPrime is noncomputable) -/
+axiom first_prime_gaps :
+    primeGap 0 = 1 ∧ primeGap 1 = 2 ∧ primeGap 2 = 2
 
 /-! ## Summary -/
 

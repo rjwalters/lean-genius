@@ -1,1 +1,189 @@
-[]
+[
+  {
+    "id": "ann-e170-header",
+    "proofId": "erdos-170",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This header documents **Erdős Problem #170** (Sparse Rulers). The question: what is the minimum number of marks needed on a ruler of length N to measure every integer distance 1 through N?",
+    "mathContext": "F(N) = min{|A| : A ⊆ {0,...,N}, every k ∈ {1,...,N} is a₁-a₀ for some a₀,a₁ ∈ A}. The limit lim F(N)/√N exists and is in [1.56, √3].",
+    "significance": "critical",
+    "relatedConcepts": [
+      "difference bases",
+      "sparse rulers",
+      "asymptotic density"
+    ]
+  },
+  {
+    "id": "ann-e170-perfect-ruler",
+    "proofId": "erdos-170",
+    "range": {
+      "startLine": 33,
+      "endLine": 36
+    },
+    "type": "definition",
+    "title": "Perfect Ruler",
+    "content": "An **N-perfect ruler** is a set A such that every k ∈ {1,...,N} can be expressed as a difference a₁ - a₀ for some a₀, a₁ ∈ A.",
+    "mathContext": "IsPerfectRuler N A := ∀ k, 1 ≤ k → k ≤ N → ∃ a₀ ∈ A, ∃ a₁ ∈ A, k = a₁ - a₀. This is also called a 'difference basis' for {1,...,N}.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "difference sets",
+      "measurement"
+    ]
+  },
+  {
+    "id": "ann-e170-restricted",
+    "proofId": "erdos-170",
+    "range": {
+      "startLine": 38,
+      "endLine": 40
+    },
+    "type": "definition",
+    "title": "Restricted Perfect Ruler",
+    "content": "A **restricted** perfect ruler is contained in {0,...,N}. This constraint makes the problem harder—marks must fit within the ruler length.",
+    "mathContext": "IsRestrictedPerfectRuler N A := A ⊆ range(N+1) ∧ IsPerfectRuler N A. The unrestricted version allows marks outside {0,...,N}.",
+    "significance": "key",
+    "relatedConcepts": [
+      "restricted bases",
+      "containment"
+    ]
+  },
+  {
+    "id": "ann-e170-trivial",
+    "proofId": "erdos-170",
+    "range": {
+      "startLine": 44,
+      "endLine": 59
+    },
+    "type": "theorem",
+    "title": "Trivial Ruler",
+    "content": "The **trivial ruler** {0, 1, 2, ..., N} with all N+1 marks is always a perfect ruler. Every k is simply k - 0.",
+    "mathContext": "trivial_is_perfect : IsRestrictedPerfectRuler N (range(N+1)). This gives the trivial upper bound F(N) ≤ N+1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "upper bound",
+      "trivial construction"
+    ]
+  },
+  {
+    "id": "ann-e170-F-def",
+    "proofId": "erdos-170",
+    "range": {
+      "startLine": 63,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "The Function F(N)",
+    "content": "**F(N)** is the minimum cardinality of a restricted N-perfect ruler. This is the key quantity we want to understand asymptotically.",
+    "mathContext": "F N := sInf { m | ∃ A, IsRestrictedPerfectRuler N A ∧ A.card = m }. The infimum is taken over all valid ruler sizes.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "infimum",
+      "minimum"
+    ]
+  },
+  {
+    "id": "ann-e170-upper",
+    "proofId": "erdos-170",
+    "range": {
+      "startLine": 75,
+      "endLine": 82
+    },
+    "type": "theorem",
+    "title": "Trivial Upper Bound",
+    "content": "**Proved**: F(N) ≤ N + 1. The trivial ruler achieves this bound.",
+    "mathContext": "F_upper_trivial : F N ≤ N + 1. The proof uses that trivialRuler has exactly N+1 elements.",
+    "significance": "key",
+    "relatedConcepts": [
+      "upper bound"
+    ]
+  },
+  {
+    "id": "ann-e170-erdos-gal",
+    "proofId": "erdos-170",
+    "range": {
+      "startLine": 90,
+      "endLine": 95
+    },
+    "type": "axiom",
+    "title": "Erdős-Gál Theorem",
+    "content": "**Erdős-Gál (1948)**: The limit lim_{N→∞} F(N)/√N exists. This foundational result answers Rédei's question about whether sparse rulers have consistent asymptotic behavior.",
+    "mathContext": "axiom erdos_gal_limit_exists : ∃ L, Tendsto (F N / √N) atTop (nhds L). The limit is noncomputable but well-defined.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "limit existence",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-e170-leech",
+    "proofId": "erdos-170",
+    "range": {
+      "startLine": 97,
+      "endLine": 98
+    },
+    "type": "axiom",
+    "title": "Leech Lower Bound",
+    "content": "**Leech (1956)**: The limit L ≥ 1.56. This refined Rédei-Rényi's counting argument using Fourier analysis.",
+    "mathContext": "axiom leech_lower_bound : limitValue ≥ 1.56. The exact value involves maximizing 2(1 - sin θ/θ).",
+    "significance": "key",
+    "relatedConcepts": [
+      "lower bound",
+      "Fourier methods"
+    ]
+  },
+  {
+    "id": "ann-e170-wichmann",
+    "proofId": "erdos-170",
+    "range": {
+      "startLine": 100,
+      "endLine": 105
+    },
+    "type": "axiom",
+    "title": "Wichmann Upper Bound",
+    "content": "**Wichmann (1963)**: The limit L ≤ √3 ≈ 1.732. Achieved by explicit constructions using triangular numbers.",
+    "mathContext": "axiom wichmann_upper_bound : limitValue ≤ √3. Wichmann rulers use marks at triangular positions 0, 1, 3, 6, 10, ...",
+    "significance": "key",
+    "relatedConcepts": [
+      "upper bound",
+      "triangular numbers"
+    ]
+  },
+  {
+    "id": "ann-e170-interval",
+    "proofId": "erdos-170",
+    "range": {
+      "startLine": 103,
+      "endLine": 105
+    },
+    "type": "theorem",
+    "title": "Limit Interval",
+    "content": "The limit is in **[1.56, √3]**. The gap shows we don't know the exact value, though √3 is conjectured.",
+    "mathContext": "limit_in_interval : 1.56 ≤ limitValue ∧ limitValue ≤ √3. Computational evidence suggests √3 is optimal.",
+    "significance": "key",
+    "relatedConcepts": [
+      "interval bounds",
+      "conjecture"
+    ]
+  },
+  {
+    "id": "ann-e170-examples",
+    "proofId": "erdos-170",
+    "range": {
+      "startLine": 134,
+      "endLine": 141
+    },
+    "type": "axiom",
+    "title": "Example Rulers",
+    "content": "Examples: {0,1,3} measures 1,2,3 with 3 marks (optimal for N=3). The 30-ruler with 13 marks shows significant savings over the trivial 31.",
+    "mathContext": "example_3_ruler : IsPerfectRuler 3 {0, 1, 3}. Differences: 1-0=1, 3-1=2, 3-0=3.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "examples",
+      "optimal rulers"
+    ]
+  }
+]

@@ -317,7 +317,52 @@ theorem erdos_10_pos_implies_not_neg : erdos_10_positive → ¬erdos_10_negative
   -- But hk says all n ≥ 2 are representable
   exact hnot (hk n hn2)
 
-/-! ## Part VII: Odd vs Even Analysis -/
+/-! ## Part VII: Crocker's Theorem (1971) -/
+
+/-- The set of integers expressible as p + 2^a + 2^b for positive powers.
+    This is Crocker's original definition with a,b > 0. -/
+def IsPrimePlusTwoPositivePowers (n : ℕ) : Prop :=
+  ∃ (p a b : ℕ), p.Prime ∧ a > 0 ∧ b > 0 ∧ n = p + 2^a + 2^b
+
+/-- Crocker's Theorem I (1971):
+    "There is an infinity of distinct, positive odd integers not representable
+    as the sum of a prime and of two positive powers of 2."
+
+    Reference: Crocker, R., "On the sum of a prime and of two powers of two",
+    Pacific J. Math. 36 (1971), 103-107.
+    https://msp.org/pjm/1971/36-1/p09.xhtml
+
+    This is a known theorem - we axiomatize it. -/
+axiom crocker_theorem_odd :
+  Set.Infinite {n : ℕ | Odd n ∧ ¬IsPrimePlusTwoPositivePowers n}
+
+/-- Variant: Infinitely many even integers not p + (≤2 powers of 2).
+
+    From formal-conjectures: This follows from parity considerations combined
+    with the fact that many integers are not p + 2 powers.
+
+    Reference: erdosproblems.com/10 -/
+axiom infinite_even_not_two_powers :
+  Set.Infinite ({n : ℕ | Even n} \ {n | IsPrimePlusKPowers 2 n})
+
+/-- Corollary: k = 2 is insufficient for all even integers. -/
+theorem k_two_insufficient_even :
+    ∃ n : ℕ, Even n ∧ ¬n.Prime ∧ ¬IsPrimePlusKPowers 2 n := by
+  -- From infinitude, the set is nonempty
+  have h := infinite_even_not_two_powers
+  have hne : ({n : ℕ | Even n} \ {n | IsPrimePlusKPowers 2 n}).Nonempty :=
+    Set.Infinite.nonempty h
+  obtain ⟨n, hn_even, hn_not⟩ := hne
+  simp only [Set.mem_setOf_eq] at hn_even hn_not
+  use n
+  refine ⟨hn_even, ?_, hn_not⟩
+  -- n is not prime since n is even and > 2 (from infinitude, we get arbitrarily large n)
+  -- For a simpler proof, we note that primes satisfy IsPrimePlusKPowers 0
+  intro hp
+  apply hn_not
+  exact primePlusKPowers_mono (Nat.zero_le 2) (primePlusZeroPowers_iff.mpr hp)
+
+/-! ## Part VIII: Odd vs Even Analysis -/
 
 /-- For odd n ≥ 3: n - 2 might be prime (then n = (n-2) + 2^1). -/
 theorem odd_minus_two_strategy {n : ℕ} (hn : Odd n) (hn3 : n ≥ 3)

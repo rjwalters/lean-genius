@@ -1,33 +1,118 @@
 {
   "id": "erdos-170",
-  "title": "Erdős Problem #170",
+  "title": "Erdős Problem #170: Sparse Rulers (Perfect Difference Bases)",
   "slug": "erdos-170",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the smallest possible size of ... such that .... Find the value of\\[\\lim_{N\\to \\infty}{N^{1/2}}.\\]\n\n\n\nThe Sparse R...",
+  "description": "Let F(N) be the minimum size of A ⊆ {0,...,N} such that every k ∈ {1,...,N} is a difference of elements in A. Find lim F(N)/√N.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Gál (1948, limit exists); Leech (1956, lower); Wichmann (1963, upper)",
     "sourceUrl": "https://erdosproblems.com/170",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos170Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "difference-bases",
+      "sparse-rulers",
+      "limits"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 170,
     "erdosUrl": "https://erdosproblems.com/170",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.range",
+        "description": "Finite range of naturals",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit definition",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "sInf",
+        "description": "Infimum of a set",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Real square root",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Definition of N-perfect rulers (difference bases)",
+      "Definition of restricted perfect rulers (A ⊆ {0,...,N})",
+      "Proved trivial_is_perfect (full ruler works)",
+      "Proved F_upper_trivial (F(N) ≤ N+1)",
+      "Axiomatized F_lower_two (F(N) ≥ 2 for N ≥ 1)",
+      "Axiomatized Erdős-Gál limit existence theorem",
+      "Axiomatized Leech lower bound (≥1.56) and Wichmann upper bound (≤√3)",
+      "Example sparse rulers for N=3 and N=30"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #170 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $F(N)$ be the smallest possible size of $A\\subset \\{0,1,\\ldots,N\\}$ such that $\\{0,1,\\ldots,N\\}\\subset A-A$. Find the value of\\[\\lim_{N\\to \\infty}\\frac{F(N)}{N^{1/2}}.\\]\n\n\n\nThe Sparse Ruler problem. R\\'{e}dei asked whether this limit exists, which was proved by Erd\\H{o}s and G\\'{a}l \\cite{ErGa48}. Bounds on the limit were improved by Leech \\cite{Le56}. The limit is known to be in the interval $[1.56,\\sqrt{3}]$. The lower bound is due to Leech \\cite{Le56}, the upper bound is due to Wichmann \\cite{Wi63}. Computational evidence by Pegg \\cite{Pe20} suggests that the upper bound is the truth. A similar question can be asked without the restriction $A\\subset \\{0,1,\\ldots,N\\}$.\n\n\n\n\nReferences\n\n\n[ErGa48] Erd\\H{o}s, P. and G\\'{a}l, I., On the representation of $1,2,\\ldots,N$ by differences. Nederl. Akad. Wetensch., Proc. (1948), 1155-1158.\n\n[Le56] Leech, J., On the representation of $1,2,\\ldots,n$ by differences. J. London Math. Soc. (1956), 160-169.\n\n[Pe20] Pegg, E., Hitting All the Marks: Exploring New Bounds for Sparse Rulers and a Wolfram Language Proof. https://blog.wolfram.com/2020/02/12/hitting-all-the-marks-exploring-new-bounds-for-sparse-rulers-and-a-wolfram-language-proof/ (2020).\n\n[Wi63] Wichmann, B., A note on restricted difference bases. J. London Math. Soc. (1963), 465-466.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The Sparse Ruler problem asks: how few marks are needed on a ruler of length N to measure every integer distance from 1 to N?\n\nRédei first asked whether the limit lim F(N)/√N exists. Erdős and Gál (1948) proved it does exist. The challenge is determining the exact value.\n\nLeech (1956) refined Rédei-Rényi arguments to get the lower bound ≈ 1.56. Wichmann (1963) constructed sparse rulers achieving density √3 ≈ 1.732.\n\nThe exact value remains unknown, though computational evidence suggests √3 may be optimal.",
+    "problemStatement": "**Question**: Let $F(N)$ be the minimum size of $A \\subseteq \\{0, \\ldots, N\\}$ such that every $k \\in \\{1, \\ldots, N\\}$ can be expressed as $a_1 - a_0$ for some $a_0, a_1 \\in A$. Find $\\lim_{N \\to \\infty} F(N)/\\sqrt{N}$.\n\n**Status**: OPEN (exact value unknown)\n\n**Known bounds**:\n- Lower: $L \\geq 1.56$ (Leech 1956)\n- Upper: $L \\leq \\sqrt{3} \\approx 1.732$ (Wichmann 1963)\n\n**Example**: {0, 1, 3} measures 1,2,3 with only 3 marks instead of 4.",
+    "proofStrategy": "We formalize the problem and known results:\n\n1. **IsPerfectRuler**: A measures all differences 1,...,N\n2. **IsRestrictedPerfectRuler**: A ⊆ {0,...,N} and perfect\n3. **F(N)**: Minimum cardinality of restricted perfect ruler\n4. **trivial_is_perfect**: The full ruler {0,...,N} works\n5. **F_upper_trivial**: F(N) ≤ N+1\n6. **erdos_gal_limit_exists**: The limit exists\n7. **limit_in_interval**: 1.56 ≤ L ≤ √3",
+    "keyInsights": [
+      "**Perfect ruler**: A set A where every k ∈ {1,...,N} equals a₁ - a₀ for some a₀, a₁ ∈ A.",
+      "**Counting argument**: A of size m has at most m(m-1)/2 non-zero differences, so m ≥ √(2N).",
+      "**Wichmann rulers**: Constructed using triangular numbers, achieve density √3.",
+      "**Computational evidence**: Suggests √3 is the true limit (Pegg 2020).",
+      "**Unrestricted version**: Without A ⊆ {0,...,N}, even smaller rulers may exist."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 31,
+      "endLine": 40,
+      "summary": "Define perfect rulers and restricted perfect rulers."
+    },
+    {
+      "id": "trivial",
+      "title": "The Trivial Ruler",
+      "startLine": 42,
+      "endLine": 59,
+      "summary": "Define and verify the full ruler {0,...,N}."
+    },
+    {
+      "id": "F-def",
+      "title": "The Function F(N)",
+      "startLine": 61,
+      "endLine": 86,
+      "summary": "Define F(N) as minimum cardinality and prove basic bounds."
+    },
+    {
+      "id": "limit",
+      "title": "The Limit Theorem",
+      "startLine": 88,
+      "endLine": 123,
+      "summary": "Erdős-Gál limit existence and Leech/Wichmann bounds."
+    },
+    {
+      "id": "constructions",
+      "title": "Constructions",
+      "startLine": 125,
+      "endLine": 141,
+      "summary": "Wichmann construction and example sparse rulers."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #170 on sparse rulers. The Lean proof establishes the core definitions, proves basic properties, and axiomatizes the known bounds [1.56, √3] for the limit lim F(N)/√N.",
+    "implications": "Sparse rulers have applications in measurement, radar systems, and coding theory. The gap between 1.56 and √3 represents a fundamental question about optimal ruler designs.",
+    "openQuestions": [
+      "What is the exact value of lim F(N)/√N?",
+      "Is √3 the true limit (as computational evidence suggests)?",
+      "What is the best unrestricted ruler asymptotically?",
+      "Can Wichmann's construction be improved?"
+    ]
   }
 }

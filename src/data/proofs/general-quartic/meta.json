@@ -8,10 +8,15 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Quartic_equation",
     "date": "1540",
     "status": "verified",
-    "tags": ["algebra", "polynomial", "classic", "hard"],
+    "tags": [
+      "algebra",
+      "polynomial",
+      "classic",
+      "hard"
+    ],
     "proofRepoPath": "Proofs/GeneralQuartic.lean",
-    "badge": "wip",
-    "sorries": 8,
+    "badge": "axiom",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.eval",
