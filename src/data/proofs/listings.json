@@ -768,17 +768,24 @@
   },
   {
     "id": "erdos-1003",
-    "title": "Erdős Problem #1003",
+    "title": "Erdős Problem #1003: Consecutive Equal Totients",
     "slug": "erdos-1003",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many solutions to ..., where ... is the Euler totient function?\n\n\n\nErds  says that, presumably, for ever...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Are there infinitely many solutions to φ(n) = φ(n+1), where φ is the Euler totient function? Erdős conjectured yes, and made the stronger claim that φ(n) = φ(n+1) = ... = φ(n+k) has infinitely many solutions for every k ≥ 1.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "totient-function",
+      "consecutive-values",
+      "asymptotic-density",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 1003,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-1004",
@@ -1416,17 +1423,24 @@
   },
   {
     "id": "erdos-1054",
-    "title": "Erdős Problem #1054",
+    "title": "Erdős Problem #1054: Sum of Smallest Divisors",
     "slug": "erdos-1054",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimal integer ... such that ... is the sum of the ... smallest divisors of ... for some ....\n\nIs it true tha...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f(n) be the minimal integer m such that n equals the sum of the k smallest divisors of m for some k ≥ 1. Is f(n) = o(n)? Or is this true only for almost all n, with limsup f(n)/n = ∞?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisors",
+      "asymptotics",
+      "density",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 1054,
+    "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-1057",
@@ -3918,17 +3932,23 @@
   },
   {
     "id": "erdos-24",
-    "title": "Erdős Problem #24",
+    "title": "Erdős Problem #24: Pentagons in Triangle-Free Graphs",
     "slug": "erdos-24",
-    "description": "Does every triangle-free graph on ... vertices contain at most ... copies of ...? Győri proved this with ..., which has been improved by Füredi. The answer is yes, as proved independently by Grzesi...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does every triangle-free graph on 5n vertices contain at most n^5 copies of C5? Yes! Proved independently by Grzesik (2012) and Hatami et al. (2013) using flag algebras.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "flag-algebras",
+      "cycle-counting"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 24,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-240",
@@ -5998,17 +6018,21 @@
   },
   {
     "id": "erdos-416",
-    "title": "Erdős Problem #416",
+    "title": "Counting Totient Values",
     "slug": "erdos-416",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of ... such that ... is solvable. Does ...? Is there an asymptotic formula for ...?\n\n\n\nPillai  prove...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let V(x) count the number of n ≤ x such that φ(m) = n is solvable. Does V(2x)/V(x) → 2? Is there an asymptotic formula for V(x)? Despite remarkable progress by Pillai, Erdős, Maier-Pomerance, and Ford, both questions remain open.",
+    "status": "axiom",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "totient-function",
+      "asymptotics",
+      "open-problem"
     ],
     "erdosNumber": 416,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 9
   },
   {
     "id": "erdos-418",
@@ -6591,17 +6615,24 @@
   },
   {
     "id": "erdos-479",
-    "title": "Erdős Problem #479",
+    "title": "Erdős Problem #479: Powers of 2 Modulo n",
     "slug": "erdos-479",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for all ..., there are infinitely many ... such that ...?\n\n\n\nA conjecture of Graham. It is easy to see that ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is it true that, for all k ≠ 1, there are infinitely many n such that 2^n ≡ k (mod n)? This is Graham's conjecture.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "modular-arithmetic",
+      "exponential-congruences",
+      "fermat-little-theorem",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 479,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-48",
@@ -6784,17 +6815,23 @@
   },
   {
     "id": "erdos-494",
-    "title": "Erdős Problem #494",
+    "title": "Erdős Problem #494: Set Determination from k-Sums",
     "slug": "erdos-494",
-    "description": "If ... is a finite set and ... then let\\[A_k = \\{ z_1+\\cdots+z_k : z_i\\in A\\}.\\]For ... does the multiset ... (together with the size of ...) uniquely determine the set ...?",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Given a finite set A in the complex plane and k >= 1, does the multiset of k-sums (sums of k distinct elements) together with |A| uniquely determine A? For k > 2, yes for sufficiently large |A|.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "set-determination",
+      "multisets",
+      "complex-numbers"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 494,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-501",
@@ -7148,17 +7185,22 @@
   },
   {
     "id": "erdos-541",
-    "title": "Erdős Problem #541",
+    "title": "Erdős Problem #541: Graham's Conjecture on Zero-Sum Subsequences",
     "slug": "erdos-541",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be (not necessarily distinct) residues modulo ..., such that there exists some ... so that if ... is non-empty and\\[\\...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If a sequence of p residues modulo p has the property that all nonempty zero-sum subsets have the same cardinality r, must at most 2 distinct residues appear in the sequence? This was conjectured by Graham and proved by Erdős-Szemerédi (1976) for large primes, then by Gao-Hamidoune-Wang (2010) for all moduli.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "zero-sum",
+      "modular-arithmetic",
+      "additive-combinatorics"
     ],
     "erdosNumber": 541,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 2,
+    "annotationCount": 14
   },
   {
     "id": "erdos-543",
@@ -11948,17 +11990,22 @@
   },
   {
     "id": "erdos-939",
-    "title": "Erdős Problem #939",
+    "title": "Erdős Problem #939: r-Powerful Numbers and Sums",
     "slug": "erdos-939",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... An ...-powerful number ... is one such that if ... then ....\n\nIf ... then can the sum of ... coprime ...-powerful nu...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If r ≥ 4, can the sum of r-2 coprime r-powerful numbers ever be itself r-powerful? A number is r-powerful if every prime factor appears with exponent at least r.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "powerful-numbers",
+      "prime-factorization",
+      "open-problem"
     ],
     "erdosNumber": 939,
+    "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-94",

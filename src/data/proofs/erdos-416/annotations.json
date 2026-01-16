@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-e416-header",
+    "proofId": "erdos-416",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #416** asks about counting values in the range of Euler's totient function φ. Let V(x) count n ≤ x such that φ(m) = n is solvable. The problem asks: (i) Does V(2x)/V(x) → 2? (ii) Is there an asymptotic formula for V(x)?",
+    "mathContext": "V(x) = |{n ≤ x : ∃m, φ(m) = n}|. Not every integer is a totient value - e.g., 3 is never φ(m) since φ is even for inputs > 2.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "totient-function",
+      "asymptotics",
+      "counting"
+    ]
+  },
+  {
+    "id": "ann-e416-V-def",
+    "proofId": "erdos-416",
+    "range": {
+      "startLine": 34,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "The Counting Function V(x)",
+    "content": "**V(x)** counts positive integers n ≤ x that are **totient values** - meaning there exists m with φ(m) = n. The definition filters integers in [1, ⌊x⌋] for those that appear as totient values.",
+    "mathContext": "V(x) = |{n ∈ [1, ⌊x⌋] : ∃m ∈ ℕ, φ(m) = n}|. Examples: 1, 2, 4 are totient values; 3 is not.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "euler-totient",
+      "counting-function",
+      "image-set"
+    ]
+  },
+  {
+    "id": "ann-e416-basic",
+    "proofId": "erdos-416",
+    "range": {
+      "startLine": 48,
+      "endLine": 71
+    },
+    "type": "theorem",
+    "title": "Basic Properties",
+    "content": "We prove basic properties: V is nonnegative, V is monotone increasing, and verify that 1, 2, and 4 are totient values (with witnesses φ(1)=1, φ(3)=2, φ(5)=4).",
+    "mathContext": "These foundational results establish V is well-behaved. The witnesses for small totient values use native_decide for computation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotonicity",
+      "witnesses",
+      "computation"
+    ]
+  },
+  {
+    "id": "ann-e416-pillai",
+    "proofId": "erdos-416",
+    "range": {
+      "startLine": 73,
+      "endLine": 81
+    },
+    "type": "axiom",
+    "title": "Pillai's Bound (1929)",
+    "content": "**Pillai (1929)**: V(x) = o(x). The density of totient values is 0 - most integers are NOT in the range of φ. This was the first quantitative result about the sparsity of totient values.",
+    "mathContext": "V =o[atTop] id means V(x)/x → 0 as x → ∞. The totient range is sparse.",
+    "significance": "key",
+    "relatedConcepts": [
+      "little-o",
+      "density",
+      "pillai"
+    ]
+  },
+  {
+    "id": "ann-e416-erdos",
+    "proofId": "erdos-416",
+    "range": {
+      "startLine": 83,
+      "endLine": 90
+    },
+    "type": "axiom",
+    "title": "Erdős's Refinement (1935)",
+    "content": "**Erdős (1935)**: V(x) = x · (log x)^(-1+o(1)). This refines Pillai's result: V(x) behaves like x/log x up to sub-polynomial factors in the exponent.",
+    "mathContext": "The exponent -1+o(1) means V(x) is roughly x/log x but with a slowly varying correction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "erdos-1935",
+      "logarithmic-decay",
+      "refinement"
+    ]
+  },
+  {
+    "id": "ann-e416-maier-pomerance",
+    "proofId": "erdos-416",
+    "range": {
+      "startLine": 92,
+      "endLine": 100
+    },
+    "type": "axiom",
+    "title": "Maier-Pomerance (1988)",
+    "content": "**Maier-Pomerance (1988)**: V(x) = (x/log x) · e^((C+o(1))(log log log x)²) for an explicit constant C > 0. The correction factor is exponential in the square of the triple logarithm.",
+    "mathContext": "This shows the true growth rate has a doubly-exponentially small correction term in the exponent.",
+    "significance": "key",
+    "relatedConcepts": [
+      "maier-pomerance",
+      "explicit-constant",
+      "triple-logarithm"
+    ]
+  },
+  {
+    "id": "ann-e416-ford",
+    "proofId": "erdos-416",
+    "range": {
+      "startLine": 102,
+      "endLine": 115
+    },
+    "type": "axiom",
+    "title": "Ford's Tight Bounds (1998)",
+    "content": "**Ford (1998)**: The most precise bounds known. V(x) is determined up to constant factors with an intricate formula involving log log log x and log log log log x. Still falls short of an asymptotic formula.",
+    "mathContext": "V(x) ≍ G(x) where G involves C₁(log log log x - log log log log x)² + C₂ log log log x - C₃ log log log log x.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "ford-1998",
+      "theta-bounds",
+      "iterated-logarithms"
+    ]
+  },
+  {
+    "id": "ann-e416-open",
+    "proofId": "erdos-416",
+    "range": {
+      "startLine": 117,
+      "endLine": 146
+    },
+    "type": "definition",
+    "title": "The Open Questions",
+    "content": "**Part (i)**: Does V(2x)/V(x) → 2? This asks if doubling the range roughly doubles the count. **Part (ii)**: Is there an asymptotic formula V(x) ~ f(x)? Ford's Θ-bounds don't answer this. Both remain OPEN.",
+    "mathContext": "An asymptotic V(x) ~ cx/log x would imply the doubling ratio tends to 2. But Ford's formula is too complicated for this to be obvious.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open-problem",
+      "doubling-ratio",
+      "asymptotic-formula"
+    ]
+  },
+  {
+    "id": "ann-e416-three",
+    "proofId": "erdos-416",
+    "range": {
+      "startLine": 148,
+      "endLine": 156
+    },
+    "type": "theorem",
+    "title": "3 is Not a Totient Value",
+    "content": "We prove that 3 is NOT a totient value - no m exists with φ(m) = 3. This is because φ(m) is even for all m > 2, so odd totient values can only be 1.",
+    "mathContext": "The proof uses interval_cases to check small values exhaustively. For m > some threshold, φ(m) ≥ 4.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "non-totient",
+      "parity",
+      "exhaustive-check"
+    ]
+  }
+]

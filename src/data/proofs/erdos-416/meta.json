@@ -1,33 +1,68 @@
 {
   "id": "erdos-416",
-  "title": "Erdős Problem #416",
+  "title": "Counting Totient Values",
   "slug": "erdos-416",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of ... such that ... is solvable. Does ...? Is there an asymptotic formula for ...?\n\n\n\nPillai  prove...",
+  "description": "Let V(x) count the number of n ≤ x such that φ(m) = n is solvable. Does V(2x)/V(x) → 2? Is there an asymptotic formula for V(x)? Despite remarkable progress by Pillai, Erdős, Maier-Pomerance, and Ford, both questions remain open.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/416",
     "date": "",
-    "status": "pending",
+    "status": "axiom",
     "proofRepoPath": "Proofs/Erdos416Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "totient-function",
+      "asymptotics",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 416,
     "erdosUrl": "https://erdosproblems.com/416",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #416 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $V(x)$ count the number of $n\\leq x$ such that $\\phi(m)=n$ is solvable. Does $V(2x)/V(x)\\to 2$? Is there an asymptotic formula for $V(x)$?\n\n\n\nPillai \\cite{Pi29} proved $V(x)=o(x)$. Erd\\H{o}s \\cite{Er35b} proved $V(x)=x(\\log x)^{-1+o(1)}$.\n\nThe behaviour of $V(x)$ is now almost completely understood. Maier and Pomerance \\cite{MaPo88} proved\\[V(x)=\\frac{x}{\\log x}e^{(C+o(1))(\\log\\log\\log x)^2},\\]for some explicit constant $C>0$. Ford \\cite{Fo98} improved this to\\[V(x)\\asymp\\frac{x}{\\log x}e^{C_1(\\log\\log\\log x-\\log\\log\\log\\log x)^2+C_2\\log\\log\\log x-C_3\\log\\log\\log\\log x}\\]for some explicit constants $C_1,C_2,C_3>0$. Unfortunately this falls just short of an asymptotic formula for $V(x)$ and determining whether $V(2x)/V(x)\\to 2$.\n\nIn \\cite{Er79e} Erd\\H{o}s asks further to estimate the number of $n\\leq x$ such that the smallest solution to $\\phi(m)=n$ satisfies $kx<m\\leq (k+1)x$.\n\nSee also [417] and [821].\n\nThis is discussed in problem B36 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er35b] Erd\\H{o}s, P., On the normal number of prime factors of $p-1$ and some related problems concerning Euler's $\\varphi$-function. Quart. J. Math. (1935), 205-213.\n\n[Er79e] Erd\\H{o}s, Paul, Some unconventional problems in number theory. Ast\\'{e}risque (1979), 73-82.\n\n[Fo98] Ford, Kevin, The distribution of totients. Ramanujan J. (1998), 67-151.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[MaPo88] Maier, Helmut and Pomerance, Carl, On the number of distinct values of Euler's $\\phi$-function. Acta Arith. (1988), 263-275.\n\n[Pi29] Pillai, S. Sivasankaranarayana, On some functions connected with {$\\phi(n)$}. Bull. Amer. Math. Soc. (1929), 832-836.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem concerns the range of Euler's totient function φ. Not every positive integer is a totient value - for example, 3 is never φ(m) for any m, since φ(m) is even for m > 2. Pillai (1929) first showed totient values have density 0. Erdős refined this in 1935, and Maier-Pomerance (1988) and Ford (1998) obtained increasingly precise bounds, but an asymptotic formula remains elusive.",
+    "problemStatement": "Let V(x) count the number of n ≤ x such that φ(m) = n has a solution (i.e., n is in the range of the totient function). (i) Does V(2x)/V(x) → 2 as x → ∞? (ii) Is there an asymptotic formula for V(x)?",
+    "proofStrategy": "We formalize V(x) as the cardinality of {n ∈ [1, ⌊x⌋] : ∃m, φ(m) = n}. The known bounds are stated as axioms: Pillai's V(x) = o(x), Erdős's V(x) = x(log x)^(-1+o(1)), Maier-Pomerance's formula with explicit constant C, and Ford's tight bounds. The main conjectures are expressed as Prop definitions since they remain open.",
+    "keyInsights": [
+      "Most integers are NOT totient values - the density is 0",
+      "The only odd totient value is 1 (since φ(n) is even for n > 2)",
+      "Ford (1998) determined V(x) up to constant factors, but this is not enough for an asymptotic formula",
+      "The doubling ratio V(2x)/V(x) → 2 would follow from a simple asymptotic like V(x) ~ cx/log x"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "counting-function",
+      "title": "The Counting Function V(x)",
+      "startLine": 34,
+      "endLine": 48,
+      "summary": "V(x) counts n ≤ x that are in the range of Euler's totient function."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 75,
+      "endLine": 117,
+      "summary": "Pillai (1929): V(x) = o(x). Erdős (1935): V(x) = x(log x)^(-1+o(1)). Maier-Pomerance (1988) and Ford (1998) obtained increasingly precise bounds."
+    },
+    {
+      "id": "open-questions",
+      "title": "Open Questions",
+      "startLine": 119,
+      "endLine": 148,
+      "summary": "Part (i): Does V(2x)/V(x) → 2? Part (ii): Is there an asymptotic formula for V(x)? Both remain open."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #416 about counting totient values. While significant progress has been made on bounding V(x), the specific questions about the doubling ratio and asymptotic formula remain open after decades of research.",
+    "implications": "This connects to fundamental questions about the distribution of multiplicative functions and the structure of the totient function's range.",
+    "openQuestions": [
+      "Does V(2x)/V(x) → 2?",
+      "Can Ford's bounds be refined to an asymptotic formula?",
+      "What is the exact constant in the leading term?"
+    ]
   }
 }

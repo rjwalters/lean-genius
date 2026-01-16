@@ -959,6 +959,21 @@
       "notes": "REVISIT: 8 axioms. OPEN for general case, n=7 best known. Axioms include Anning-Erdős, Harborth n=5, Kreisel-Kurz n=7, GIP sparsity. Build verified.",
       "status": "submitted",
       "last_check": null
+    },
+    {
+      "project_id": "14c01117-45d3-4b2c-b978-4f91ee44393b",
+      "file": "proofs/Proofs/Erdos266Problem.lean",
+      "problem_id": "erdos-266",
+      "submitted": "2026-01-16T22:51:42Z",
+      "sorries": [
+        "kovac_tao_all_rationals",
+        "stolarsky_conjecture_false",
+        "theorem harmonic_diverges : ¬Summable (fun n : ℕ => (1 : ℝ) / (n + 1)) := by",
+        "theorem sum_reciprocal_squares_summable : Summable (fun n : ℕ => (1 : ℝ) / (n + 1)^2) := by"
+      ],
+      "notes": "Standard convergence/divergence results for series",
+      "status": "submitted",
+      "last_check": null
     }
   ],
   "completed": [],
