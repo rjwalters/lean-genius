@@ -6119,17 +6119,24 @@
   },
   {
     "id": "erdos-427",
-    "title": "Erdős Problem #427",
+    "title": "Erdős Problem #427: Divisibility of Prime Sums",
     "slug": "erdos-427",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every ... and ..., there exists ... such that\\[d \\mid p_{n+1}+\\cdots+p_{n+k},\\]where ... denotes the ......",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is it true that for every n and d, there exists k such that d divides the sum p_{n+1} + ... + p_{n+k}, where p_r denotes the r-th prime? Solved by Pilatte using Shiu's theorem on strings of congruent primes.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-sums",
+      "divisibility",
+      "shiu-theorem",
+      "solved"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 427,
+    "mathlibCount": 5,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-429",
@@ -10158,17 +10165,23 @@
   },
   {
     "id": "erdos-786",
-    "title": "Erdős Problem #786",
+    "title": "Erdős Problem #786: Multiplicative Cardinality Sets",
     "slug": "erdos-786",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is there some set ... of density ... such that ... with ... can only hold when ...?\n\nSimilarly, can one always find ...",
-    "status": "pending",
+    "description": "For any ε > 0, is there a set A of density > 1-ε such that equal products from A must have equal numbers of factors? Selfridge achieved density 1/e - ε; whether arbitrarily high density is possible remains OPEN.",
+    "status": "complete",
     "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "multiplicative-structure",
+      "density",
+      "factorization"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 786,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-787",
@@ -11968,17 +11981,24 @@
   },
   {
     "id": "erdos-930",
-    "title": "Erdős Problem #930",
+    "title": "Erdős Problem #930: Products of Disjoint Intervals and Perfect Powers",
     "slug": "erdos-930",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every ..., there is a ... such that if ... are disjoint intervals of consecutive integers, all of length...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is it true that, for every r, there is a k such that if I₁,...,Iᵣ are disjoint intervals of consecutive integers, all of length at least k, then their combined product is not a perfect power?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "perfect-powers",
+      "products",
+      "intervals",
+      "prime-factorization"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 930,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-933",

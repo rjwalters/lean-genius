@@ -1,1 +1,212 @@
-[]
+[
+  {
+    "id": "ann-e930-header",
+    "proofId": "erdos-930",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #930** asks whether products of integers from disjoint intervals can ever be perfect powers. The r=1 case (single interval of consecutive integers) was famously solved by Erdős and Selfridge in 1975. The general case remains **OPEN**.",
+    "mathContext": "A perfect power is n = m^l with l > 1. Examples: 4, 8, 9, 16, 25, 27, ...",
+    "significance": "critical",
+    "relatedConcepts": [
+      "perfect powers",
+      "consecutive integers",
+      "Erdős-Selfridge theorem"
+    ]
+  },
+  {
+    "id": "ann-e930-imports",
+    "proofId": "erdos-930",
+    "range": {
+      "startLine": 22,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "We import Mathlib and open the **Finset** namespace for interval operations and **Nat** for natural number arithmetic. Products over intervals use `Finset.prod` and `Finset.Icc`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "finite sets",
+      "intervals"
+    ]
+  },
+  {
+    "id": "ann-e930-ispower",
+    "proofId": "erdos-930",
+    "range": {
+      "startLine": 32,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "Perfect Power Definition",
+    "content": "**IsPower n** holds when n = m^l for some natural numbers m and l with l > 1.\n\nExamples of perfect powers: 4 = 2², 8 = 2³, 9 = 3², 16 = 2⁴, 27 = 3³.\n\nNote: 0 and 1 are technically perfect powers (0 = 0², 1 = 1²).",
+    "mathContext": "The condition l > 1 excludes trivial cases like n = n¹.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "squares",
+      "cubes",
+      "exponentiation"
+    ]
+  },
+  {
+    "id": "ann-e930-interval-helpers",
+    "proofId": "erdos-930",
+    "range": {
+      "startLine": 41,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Interval Helpers",
+    "content": "**intervalProduct a b** computes the product of all integers in [a, b], i.e., a·(a+1)·...·b.\n\n**intervalLength a b** gives the number of integers in [a, b], which is b - a + 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "products",
+      "intervals",
+      "factorials"
+    ]
+  },
+  {
+    "id": "ann-e930-main-conjecture",
+    "proofId": "erdos-930",
+    "range": {
+      "startLine": 56,
+      "endLine": 70
+    },
+    "type": "axiom",
+    "title": "The Main Conjecture (OPEN)",
+    "content": "**Erdős Problem #930**: For every r > 0, there exists k such that if I₁,...,Iᵣ are r disjoint intervals of consecutive integers, each of length at least k, then their combined product is **never** a perfect power.\n\nThe intervals are encoded by start/end functions, with conditions ensuring:\n1. Each interval has positive start and sufficient length\n2. Intervals are disjoint and ordered",
+    "mathContext": "The length constraint (≥ k) is necessary—without it, counterexamples exist for r=2.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open problem",
+      "disjoint intervals",
+      "product formula"
+    ]
+  },
+  {
+    "id": "ann-e930-selfridge",
+    "proofId": "erdos-930",
+    "range": {
+      "startLine": 79,
+      "endLine": 89
+    },
+    "type": "axiom",
+    "title": "Erdős-Selfridge Theorem (r=1 Solved)",
+    "content": "**Erdős-Selfridge Theorem (1975)**: The product of k ≥ 2 consecutive positive integers is **never** a perfect power.\n\nIn symbols: (n+1)(n+2)···(n+k) ≠ m^l for any m, l with l > 1.\n\nThis resolved a long-standing conjecture and is the r=1 case of Problem #930.",
+    "mathContext": "The proof uses sophisticated arguments about prime multiplicities in consecutive products.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "consecutive integers",
+      "solved case",
+      "Illinois J. Math."
+    ]
+  },
+  {
+    "id": "ann-e930-nextprime",
+    "proofId": "erdos-930",
+    "range": {
+      "startLine": 99,
+      "endLine": 101
+    },
+    "type": "definition",
+    "title": "Next Prime Function",
+    "content": "**nextPrime k** returns the smallest prime p ≥ k. This is used in the technical lemma to find primes within products of consecutive integers.",
+    "mathContext": "By the infinitude of primes, such a prime always exists.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "primes",
+      "infinitude",
+      "existence"
+    ]
+  },
+  {
+    "id": "ann-e930-technical-lemma",
+    "proofId": "erdos-930",
+    "range": {
+      "startLine": 103,
+      "endLine": 112
+    },
+    "type": "axiom",
+    "title": "Prime Multiplicity Lemma",
+    "content": "**Key Technical Result**: For k ≥ 3, l ≥ 2, and n + k ≥ nextPrime(k), there exists a prime p ≥ k such that l does NOT divide the multiplicity of p in (n+1)(n+2)···(n+k).\n\nThis is the heart of the Erdős-Selfridge proof—it shows that no consecutive product can be a perfect l-th power by finding a 'problematic' prime.",
+    "mathContext": "If every prime had multiplicity divisible by l, the product would be a perfect l-th power. This lemma shows such a prime always fails to divide evenly.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "prime factorization",
+      "multiplicity",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-e930-basic-powers",
+    "proofId": "erdos-930",
+    "range": {
+      "startLine": 118,
+      "endLine": 128
+    },
+    "type": "theorem",
+    "title": "Basic Perfect Power Facts",
+    "content": "We verify elementary facts about perfect powers:\n- **0** is a perfect power (0 = 0²)\n- **1** is a perfect power (1 = 1²)\n- Any **n²** is a perfect power\n- Any **n³** is a perfect power",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "squares",
+      "cubes",
+      "trivial cases"
+    ]
+  },
+  {
+    "id": "ann-e930-examples",
+    "proofId": "erdos-930",
+    "range": {
+      "startLine": 134,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "Verified Examples",
+    "content": "We verify specific perfect powers:\n- **4 = 2²** is a perfect power\n- **8 = 2³** is a perfect power\n- **27 = 3³** is a perfect power",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "examples",
+      "computation"
+    ]
+  },
+  {
+    "id": "ann-e930-non-powers",
+    "proofId": "erdos-930",
+    "range": {
+      "startLine": 143,
+      "endLine": 158
+    },
+    "type": "axiom",
+    "title": "Non-Power Examples",
+    "content": "**2** and **6** are NOT perfect powers.\n\nFor 2: If 2 = m^l with l > 1, then m ∈ {0,1} gives 0 or 1, and m ≥ 2 gives m^l ≥ 4.\n\nFor 6 = 2·3: The distinct prime factors each have exponent 1, preventing 6 from being any m^l.",
+    "mathContext": "Numbers with distinct prime factors of different multiplicities cannot be perfect powers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "non-powers",
+      "prime factorization",
+      "case analysis"
+    ]
+  },
+  {
+    "id": "ann-e930-product-example",
+    "proofId": "erdos-930",
+    "range": {
+      "startLine": 160,
+      "endLine": 164
+    },
+    "type": "theorem",
+    "title": "Product 2·3 = 6 Example",
+    "content": "We verify that the product of consecutive integers 2·3 = 6 is not a perfect power.\n\nThis is a concrete instance of the Erdős-Selfridge theorem with n=1, k=2: the product (1+1)(1+2) = 2·3 = 6 is not a perfect power.",
+    "mathContext": "The proof computes the product using native_decide and applies six_not_isPower.",
+    "significance": "key",
+    "relatedConcepts": [
+      "concrete example",
+      "Erdős-Selfridge instance"
+    ]
+  }
+]

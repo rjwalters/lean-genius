@@ -1,33 +1,146 @@
 {
   "id": "erdos-427",
-  "title": "Erdős Problem #427",
+  "title": "Erdős Problem #427: Divisibility of Prime Sums",
   "slug": "erdos-427",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every ... and ..., there exists ... such that\\[d \\mid p_{n+1}+\\cdots+p_{n+k},\\]where ... denotes the ......",
+  "description": "Is it true that for every n and d, there exists k such that d divides the sum p_{n+1} + ... + p_{n+k}, where p_r denotes the r-th prime? Solved by Pilatte using Shiu's theorem on strings of congruent primes.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/427",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos427Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-sums",
+      "divisibility",
+      "shiu-theorem",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 427,
     "erdosUrl": "https://erdosproblems.com/427",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.Ico",
+        "description": "Half-open integer intervals as finite sets",
+        "module": "Mathlib.Order.Interval.Finset.Nat"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Summing over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.ModEq",
+        "description": "Modular equivalence for natural numbers",
+        "module": "Mathlib.Data.Nat.ModEq"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Predicate for infinite sets",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Axiomatization of the nth prime function nthPrime",
+      "Definition of primeSum for consecutive prime sums",
+      "Formal statement of Erdős #427 as erdos_427_statement",
+      "Statement of Shiu's theorem on strings of congruent primes",
+      "Theorem connecting Shiu to Erdős #427 (erdos_427_of_shiu)",
+      "Verified examples: 2+3=5 divisible by 5, sum of first 9 primes = 100 divisible by 10",
+      "Connection to Dirichlet's theorem on primes in arithmetic progressions"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #427 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every $n$ and $d$, there exists $k$ such that\\[d \\mid p_{n+1}+\\cdots+p_{n+k},\\]where $p_r$ denotes the $r$th prime?\n\n\n\nCedric Pilatte has observed that a positive solution to this follows from a result of Shiu \\cite{Sh00}: for any $k\\geq 1$ and $(a,q)=1$ there exist infinitely many $k$-tuples of consecutive primes $p_m,\\ldots,p_{m+{k-1}}$ all of which are congruent to $a$ modulo $q$.\n\nIndeed, we apply this with $k=q=d$ and $a=1$ and let $p_m,\\ldots,p_{m+{d-1}}$ be consecutive primes all congruent to $1$ modulo $d$, with $m>n+1$. If $p_{n+1}+\\cdots+p_{m-1}\\equiv r\\pmod{d}$ with $1\\leq r\\leq d$ then\\[d \\mid p_{n+1}+\\cdots +p_m+\\cdots+p_{m+d+r-1}.\\]\n\n\n\n\nReferences\n\n\n[Sh00] Shiu, D. K. L., Strings of congruent primes. J. London Math. Soc. (2) (2000), 359-373.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #427 asks whether sums of consecutive primes can always be made divisible by any given modulus. Specifically: for any starting index n and any divisor d > 0, can we find k such that d divides p_n + p_{n+1} + ... + p_{n+k-1}?\n\nThe problem was **solved** by Cedric Pilatte, who observed that a positive answer follows from **Shiu's theorem** (2000). Shiu proved a remarkable strengthening of Dirichlet's theorem: not only do primes appear infinitely often in any arithmetic progression (mod q), but there are arbitrarily long consecutive runs of primes all in the same residue class.\n\nThe key reference is: Shiu, D. K. L., \"Strings of congruent primes\", J. London Math. Soc. (2) 61 (2000), 359-373.",
+    "problemStatement": "**Erdős Problem #427**: Is it true that for every $n$ and $d$, there exists $k$ such that\n$$d \\mid p_{n+1} + p_{n+2} + \\cdots + p_{n+k}$$\nwhere $p_r$ denotes the $r$th prime?\n\n**Status**: SOLVED\n\n**Solution**: YES. This follows from Shiu's theorem.\n\n**Examples**:\n- For $n = 0$, $d = 5$: $p_1 + p_2 = 2 + 3 = 5$, divisible by 5. So $k = 2$ works.\n- For $n = 0$, $d = 10$: $2+3+5+7+11+13+17+19+23 = 100$, divisible by 10. So $k = 9$ works.\n- For $n = 1$, $d = 3$: $3 + 5 + 7 = 15$, divisible by 3. So $k = 3$ works.",
+    "proofStrategy": "The proof proceeds via Shiu's theorem:\n\n1. **Shiu's Theorem**: For any $k \\geq 1$ and coprime $(a, q)$, there exist infinitely many indices $m$ such that the $k$ consecutive primes $p_m, p_{m+1}, \\ldots, p_{m+k-1}$ are all congruent to $a$ modulo $q$.\n\n2. **Apply Shiu with $k = q = d$ and $a = 1$**: We get infinitely many starting points $m$ where $d$ consecutive primes are all $\\equiv 1 \\pmod{d}$.\n\n3. **Choose $m > n$**: Let $S = p_n + p_{n+1} + \\cdots + p_{m-1}$ be the partial sum from $n$ to $m-1$. Then $S \\equiv r \\pmod{d}$ for some $0 \\leq r < d$.\n\n4. **Complete the divisibility**: If $r = 0$, we're done. Otherwise, add $(d - r)$ primes from the block starting at $m$. Since each is $\\equiv 1 \\pmod{d}$, their sum is $\\equiv d - r \\pmod{d}$.\n\n5. **Total is divisible by $d$**: The total sum $S + (d - r) \\equiv r + (d - r) \\equiv 0 \\pmod{d}$.",
+    "keyInsights": [
+      "**Shiu's theorem is the key**: This deep result about prime distribution shows that primes can appear in arbitrarily long consecutive runs within any arithmetic progression. It vastly strengthens Dirichlet's theorem.",
+      "**The 'steering' argument**: By finding a block of consecutive primes all congruent to 1 (mod d), we can add exactly the right number of them to make the total sum divisible by d. This is Pilatte's elegant observation.",
+      "**Why a = 1 works**: We use gcd(1, d) = 1 for any d, so Shiu applies. Primes congruent to 1 (mod d) are 'neutral' - adding k of them increases the sum by exactly k (mod d).",
+      "**Computational verification**: Small cases can be checked directly. For d = 5: 2+3 = 5. For d = 7: 2+3+5+7+11 = 28 = 4*7. For d = 10: first 9 primes sum to 100.",
+      "**Connection to Dirichlet**: Dirichlet's theorem (1837) showed infinitely many primes in each arithmetic progression. Shiu (2000) showed consecutive primes can cluster in progressions, a much stronger statement.",
+      "**The problem illustrates prime 'randomness'**: Primes behave sufficiently 'randomly' modulo d that their sums hit all residue classes, but proving this rigorously requires sophisticated tools like Shiu's theorem."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 19,
+      "summary": "Problem statement, status (SOLVED), and references to Shiu's paper."
+    },
+    {
+      "id": "nth-prime",
+      "title": "The nth Prime",
+      "startLine": 31,
+      "endLine": 59,
+      "summary": "Axiomatization of nthPrime and its basic properties."
+    },
+    {
+      "id": "prime-sum",
+      "title": "Consecutive Prime Sums",
+      "startLine": 60,
+      "endLine": 84,
+      "summary": "Definition of primeSum and basic lemmas."
+    },
+    {
+      "id": "main-statement",
+      "title": "The Main Statement",
+      "startLine": 85,
+      "endLine": 100,
+      "summary": "Erdős #427 formal statement: existence of k for any n, d."
+    },
+    {
+      "id": "shiu",
+      "title": "Shiu's Theorem",
+      "startLine": 101,
+      "endLine": 129,
+      "summary": "Statement of Shiu's theorem on strings of congruent primes."
+    },
+    {
+      "id": "pilatte",
+      "title": "Pilatte's Proof",
+      "startLine": 130,
+      "endLine": 171,
+      "summary": "How Shiu implies Erdős #427: the 'steering' argument."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 172,
+      "endLine": 203,
+      "summary": "Small cases: d = 5, 7, 10 with explicit k values."
+    },
+    {
+      "id": "corollaries",
+      "title": "Shiu's Power and Corollaries",
+      "startLine": 204,
+      "endLine": 281,
+      "summary": "Connection to Dirichlet's theorem and broader implications."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #427 and its solution via Shiu's theorem. The problem asks whether sums of consecutive primes can always be made divisible by any modulus, and Pilatte showed the answer is YES using Shiu's deep result about strings of congruent primes.",
+    "implications": "This problem illustrates how questions about prime sums often reduce to questions about prime distribution in arithmetic progressions. Shiu's theorem, a major advance in analytic number theory, has applications beyond this problem to constructing primes with specific properties.",
+    "openQuestions": [
+      "What is the minimal k for given n and d? (Depends on prime distribution)",
+      "Can explicit bounds on k be given in terms of n and d?",
+      "Are there elementary proofs not relying on Shiu's theorem?",
+      "What happens for other sequences beyond primes?",
+      "Can the density of solutions be quantified?"
+    ]
   }
 }

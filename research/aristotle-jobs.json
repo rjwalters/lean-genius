@@ -974,6 +974,42 @@
       "notes": "Standard convergence/divergence results for series",
       "status": "submitted",
       "last_check": null
+    },
+    {
+      "project_id": "3e75f530-57d6-4de6-98b7-0bc3243115f4",
+      "file": "proofs/Proofs/Erdos107Problem.lean",
+      "problem_id": "erdos-107",
+      "submitted": "2026-01-17T00:18:36Z",
+      "sorries": [
+        "ersz_lower_bound",
+        "ersz_upper_bound",
+        "f_five_eq",
+        "f_four_eq",
+        "hmpt_bound",
+        "suk_bound",
+        "theorem f_3_value : f 3 = 3 := by",
+        "theorem f_4_lb : 4 < f 4 := by",
+        "theorem f_4_ub : f 4 ≤ 5 := by",
+        "theorem f_finite (n : ℕ) (hn : 3 ≤ n) : (CardSet n).Nonempty := by",
+        "theorem f_three_eq : f 3 = 3 := by"
+      ],
+      "notes": "5 sorries: Happy Ending Problem - f_3_value, f_4_lb, f_4_ub, f_finite, f_three_eq",
+      "status": "submitted",
+      "last_check": null
+    },
+    {
+      "project_id": "8b31d342-bc5f-4f3f-ac6c-0350689e9599",
+      "file": "proofs/Proofs/Erdos57Problem.lean",
+      "problem_id": "erdos-57",
+      "submitted": "2026-01-17T00:18:57Z",
+      "sorries": [
+        "erdos_57",
+        "theorem bipartite_iff_no_odd_cycles (G : SimpleGraph V) :",
+        "theorem colorable_two_no_odd_cycles (G : SimpleGraph V)"
+      ],
+      "notes": "2 sorries: bipartite_iff_no_odd_cycles and colorable_two_no_odd_cycles - classic graph theory theorems",
+      "status": "submitted",
+      "last_check": null
     }
   ],
   "completed": [],

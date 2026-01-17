@@ -1,26 +1,27 @@
 /-
-  Erdős Problem #786: Multiplicative Cardinality Sets
+Erdős Problem #786: Multiplicative Cardinality Sets
 
-  **Question**: For any ε > 0, is there a set A ⊂ ℕ of density > 1 - ε such that
-  a₁···aᵣ = b₁···bₛ with aᵢ, bⱼ ∈ A implies r = s?
+**Question**: For any ε > 0, is there a set A ⊂ ℕ of density > 1 - ε such that
+a₁···aᵣ = b₁···bₛ with aᵢ, bⱼ ∈ A implies r = s?
 
-  **Status**: OPEN — the main questions remain unsolved.
+**Status**: OPEN — the main questions remain unsolved.
 
-  **Known Results**:
-  - Integers ≡ 2 (mod 4) form such a set with density 1/4
-  - Selfridge: consecutive prime construction achieves density 1/e - ε
-  - Ruzsa (unpublished): maximum size in {1,...,N} is ≤ (1-c)N for some c > 0
+**Known Results**:
+- Integers ≡ 2 (mod 4) form such a set with density 1/4
+- Selfridge: consecutive prime construction achieves density 1/e - ε
+- Ruzsa (unpublished): maximum size in {1,...,N} is ≤ (1-c)N for some c > 0
 
-  A "multiplicative cardinality set" is one where equal products must come from
-  equal numbers of factors.
+A "multiplicative cardinality set" is one where equal products must come from
+equal numbers of factors.
 
-  Reference: https://erdosproblems.com/786
+Reference: https://erdosproblems.com/786
 -/
 
-import Mathlib.NumberTheory.ArithmeticFunction
 import Mathlib.Data.Finset.Card
-import Mathlib.Analysis.Asymptotics.Asymptotics
-import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+import Mathlib.Data.Set.Card
+import Mathlib.Data.Real.Basic
+import Mathlib.Order.Filter.AtTopBot.Basic
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 namespace Erdos786
 
@@ -36,7 +37,7 @@ we must have r = s.
 
 In other words, equal products from elements of A must have equal numbers of factors.
 -/
-def Set.IsMulCardSet {α : Type*} [CommMonoid α] (A : Set α) : Prop :=
+def IsMulCardSet {α : Type*} [CommMonoid α] (A : Set α) : Prop :=
   ∀ (a b : Finset α), ↑a ⊆ A → ↑b ⊆ A → a.prod id = b.prod id → a.card = b.card
 
 /-! ## Natural Density -/
@@ -44,8 +45,8 @@ def Set.IsMulCardSet {α : Type*} [CommMonoid α] (A : Set α) : Prop :=
 /--
 A set A ⊂ ℕ has natural density δ if |A ∩ {1,...,n}| / n → δ as n → ∞.
 -/
-def Set.HasDensity (A : Set ℕ) (δ : ℝ) : Prop :=
-  Filter.Tendsto (fun n => (A ∩ Set.Icc 1 n).ncard / n) atTop (𝓝 δ)
+def HasNaturalDensity (A : Set ℕ) (δ : ℝ) : Prop :=
+  Filter.Tendsto (fun n : ℕ => ((A ∩ Set.Icc 1 n).ncard : ℝ) / n) atTop (𝓝 δ)
 
 /-! ## The Open Questions -/
 
@@ -57,7 +58,7 @@ Can we get arbitrarily close to density 1?
 -/
 def DensityConjecture : Prop :=
   ∀ ε > 0, ε ≤ 1 →
-    ∃ (A : Set ℕ) (δ : ℝ), 0 ∉ A ∧ 1 - ε < δ ∧ A.HasDensity δ ∧ A.IsMulCardSet
+    ∃ (A : Set ℕ) (δ : ℝ), 0 ∉ A ∧ 1 - ε < δ ∧ HasNaturalDensity A δ ∧ IsMulCardSet A
 
 /--
 **Erdős Problem #786 (Part II - Open)**: For each N, can we find
@@ -65,8 +66,8 @@ A ⊂ {1,...,N} of size ≥ (1-o(1))N that is a multiplicative cardinality set?
 -/
 def FiniteConjecture : Prop :=
   ∃ (A : ℕ → Set ℕ) (f : ℕ → ℝ),
-    Asymptotics.IsLittleO atTop f (fun _ : ℕ => (1 : ℝ)) ∧
-    ∀ N, A N ⊆ Set.Icc 1 (N + 1) ∧ (1 - f N) * N ≤ (A N).ncard ∧ (A N).IsMulCardSet
+    Tendsto f atTop (𝓝 0) ∧
+    ∀ N, A N ⊆ Set.Icc 1 (N + 1) ∧ (1 - f N) * N ≤ (A N).ncard ∧ IsMulCardSet (A N)
 
 /-! ## Known Examples -/
 
@@ -79,8 +80,8 @@ k factors from this set, it has exactly k factors of 2. So equal products from
 this set must have equal numbers of factors.
 -/
 axiom mod4_example :
-    let A := {n : ℕ | n % 4 = 2}
-    A.HasDensity (1 / 4) ∧ A.IsMulCardSet
+    let A : Set ℕ := {n | n % 4 = 2}
+    HasNaturalDensity A (1 / 4) ∧ IsMulCardSet A
 
 /-! ## Selfridge's Construction -/
 
@@ -103,7 +104,7 @@ Then A has density 1/e - ε (for large enough primes) and is a MulCardSet.
 -/
 axiom selfridge_construction :
     ∀ ε > 0, ε ≤ 1 →
-      ∃ (A : Set ℕ), A.HasDensity (1 / Real.exp 1 - ε) ∧ A.IsMulCardSet
+      ∃ (A : Set ℕ), HasNaturalDensity A (1 / Real.exp 1 - ε) ∧ IsMulCardSet A
 
 /-! ## Upper Bounds -/
 
@@ -115,7 +116,7 @@ This would show that density 1 is impossible, but the proof was never published.
 -/
 axiom ruzsa_upper_bound_unpublished :
     ∃ c > 0, ∀ᶠ N in atTop,
-      ∀ A : Set ℕ, A ⊆ Set.Icc 1 N → A.IsMulCardSet → A.ncard ≤ (1 - c) * N
+      ∀ A : Set ℕ, A ⊆ Set.Icc 1 N → IsMulCardSet A → (A.ncard : ℝ) ≤ (1 - c) * N
 
 /--
 A simple lower bound: integers with a prime factor > √N form a MulCardSet
@@ -124,11 +125,11 @@ of size ≥ (log 2)N.
 axiom log2_lower_bound :
     ∀ᶠ N in atTop,
       let A := {n ∈ Set.Icc 1 N | ∃ p : ℕ, p.Prime ∧ p > Nat.sqrt N ∧ p ∣ n}
-      A.IsMulCardSet ∧ (Real.log 2 : ℝ) * N ≤ A.ncard
+      IsMulCardSet A ∧ (Real.log 2 : ℝ) * N ≤ A.ncard
 
-/-! ## Why These Sets Work -/
+/-!
+## Why These Sets Work
 
-/--
 The key insight: in a MulCardSet, factorization patterns are unique.
 
 For mod 4 residues ≡ 2: each element has exactly one factor of 2.
@@ -153,5 +154,22 @@ example : (10 : ℕ) % 4 = 2 := by native_decide
 
 /-- Product example: 2 · 6 = 12 and we'd need 2 factors from the set -/
 example : (2 : ℕ) * 6 = 12 := by native_decide
+
+/-! ## Summary -/
+
+/-- **Erdős Problem #786** Summary:
+
+1. OPEN: Can we achieve density > 1 - ε for any ε > 0?
+2. OPEN: Can we achieve size ≥ (1-o(1))N in {1,...,N}?
+3. KNOWN: Density 1/4 is achievable (mod 4 residues)
+4. KNOWN: Density 1/e - ε is achievable (Selfridge)
+5. CLAIMED: Maximum ≤ (1-c)N for some c > 0 (Ruzsa, unpublished)
+-/
+theorem erdos_786_summary :
+    -- The mod 4 example exists
+    (∃ A : Set ℕ, HasNaturalDensity A (1/4) ∧ IsMulCardSet A) ∧
+    -- Selfridge's construction exists
+    (∀ ε > 0, ε ≤ 1 → ∃ A : Set ℕ, HasNaturalDensity A (1/Real.exp 1 - ε) ∧ IsMulCardSet A) :=
+  ⟨⟨_, mod4_example⟩, selfridge_construction⟩
 
 end Erdos786
