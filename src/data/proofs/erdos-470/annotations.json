@@ -1,1 +1,308 @@
-[]
+[
+  {
+    "id": "ann-e470-header",
+    "proofId": "erdos-470",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #470** concerns **weird numbers**: natural numbers that are abundant (sum of divisors exceeds 2n) but not pseudoperfect (cannot be expressed as the sum of any subset of proper divisors).\n\n**Two OPEN questions**:\n1. Are there any odd weird numbers?\n2. Are there infinitely many primitive weird numbers?\n\nThe smallest weird number is 70, and remarkably, all known weird numbers are even.",
+    "mathContext": "Weird numbers sit at the intersection of divisor theory and subset sum problems. They are 'abundant leftovers' - numbers with excess divisor sum that nevertheless can't achieve self-representation.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "divisor sum function",
+      "abundant numbers",
+      "pseudoperfect numbers",
+      "subset sum problem"
+    ]
+  },
+  {
+    "id": "ann-e470-imports",
+    "proofId": "erdos-470",
+    "range": {
+      "startLine": 24,
+      "endLine": 30
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import:\n- **NumberTheory.Divisors**: Provides `Nat.divisors` and `Nat.properDivisors`\n- **BigOperators.Group.Finset.Basic**: For summing over finite sets\n- **Set.Finite.Basic**: For the `Set.Infinite` predicate\n- **Finset.Powerset**: For subset enumeration (used conceptually)\n- **SpecialFunctions.Pow.Real**: For real exponentiation in density bounds",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "divisor functions",
+      "finite sets"
+    ]
+  },
+  {
+    "id": "ann-e470-sigma",
+    "proofId": "erdos-470",
+    "range": {
+      "startLine": 45,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "The Divisor Sum Function",
+    "content": "**sigma(n)** computes the sum of all divisors of n:\n\n```lean\ndef sigma (n : ℕ) : ℕ := (n.divisors).sum id\n```\n\nThis uses Mathlib's `Nat.divisors` which returns the finite set of divisors, then sums using `Finset.sum`.",
+    "mathContext": "The divisor sum function is multiplicative: for coprime m and n, we have sigma(mn) = sigma(m) * sigma(n). For prime powers, sigma(p^k) = 1 + p + p^2 + ... + p^k = (p^(k+1) - 1)/(p - 1).",
+    "significance": "key",
+    "relatedConcepts": [
+      "multiplicative function",
+      "divisor function",
+      "Finset.sum"
+    ]
+  },
+  {
+    "id": "ann-e470-abundant",
+    "proofId": "erdos-470",
+    "range": {
+      "startLine": 50,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Abundant Numbers",
+    "content": "**IsAbundant(n)** holds when sigma(n) > 2n:\n\n```lean\ndef IsAbundant (n : ℕ) : Prop := sigma n > 2 * n\n```\n\nSince sigma(n) includes n itself, this is equivalent to saying the sum of proper divisors exceeds n.",
+    "mathContext": "The smallest abundant number is 12: divisors {1,2,3,4,6,12} sum to 28 > 24. About 25% of natural numbers are abundant. Perfect numbers (sigma(n) = 2n) are the boundary case.",
+    "significance": "key",
+    "relatedConcepts": [
+      "perfect numbers",
+      "deficient numbers",
+      "abundancy index"
+    ]
+  },
+  {
+    "id": "ann-e470-pseudoperfect",
+    "proofId": "erdos-470",
+    "range": {
+      "startLine": 56,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Pseudoperfect (Semiperfect) Numbers",
+    "content": "**IsPseudoperfect(n)** holds when n equals the sum of some subset of its proper divisors:\n\n```lean\ndef IsPseudoperfect (n : ℕ) : Prop :=\n  ∃ S : Finset ℕ, S ⊆ n.properDivisors ∧ S.sum id = n\n```\n\nThis is an existential statement: we need to find at least one subset that works.",
+    "mathContext": "Every perfect number is pseudoperfect (use all proper divisors). Most abundant numbers are also pseudoperfect - the first abundant number 12 = 1+2+3+6. Weird numbers are the rare abundant numbers that fail pseudoperfectness.",
+    "significance": "key",
+    "relatedConcepts": [
+      "subset sum problem",
+      "proper divisors",
+      "existential quantifier"
+    ]
+  },
+  {
+    "id": "ann-e470-weird",
+    "proofId": "erdos-470",
+    "range": {
+      "startLine": 63,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "Weird Numbers",
+    "content": "**IsWeird(n)** combines abundance with the negation of pseudoperfectness:\n\n```lean\ndef IsWeird (n : ℕ) : Prop := IsAbundant n ∧ ¬IsPseudoperfect n\n```\n\nA weird number has 'extra' divisor sum (abundant) but can't use any subset of proper divisors to represent itself.",
+    "mathContext": "The definition captures numbers that are 'weird' in having excess that can't be used. The smallest is 70: sigma(70) = 144 > 140, but no subset of {1,2,5,7,10,14,35} sums to 70.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "conjunction",
+      "negation",
+      "OEIS A006037"
+    ]
+  },
+  {
+    "id": "ann-e470-seventy",
+    "proofId": "erdos-470",
+    "range": {
+      "startLine": 70,
+      "endLine": 100
+    },
+    "type": "axiom",
+    "title": "70 is the Smallest Weird Number",
+    "content": "We axiomatize three key facts about 70:\n\n1. **seventy_is_abundant**: sigma(70) = 144 > 140 = 2 * 70\n2. **seventy_not_pseudoperfect**: No subset of {1,2,5,7,10,14,35} sums to 70\n3. **no_weird_below_70**: For all n < 70, n is not weird\n\nThe theorem `smallest_weird_is_70` combines these.",
+    "mathContext": "Verifying 70 is not pseudoperfect requires checking all 2^7 = 128 subsets of its proper divisors. The key insight: 35 must be included (without it, max sum is 39 < 70), but then we need 35 from {1,2,5,7,10,14}, which is impossible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exhaustive search",
+      "subset enumeration",
+      "smallest example"
+    ]
+  },
+  {
+    "id": "ann-e470-oeis",
+    "proofId": "erdos-470",
+    "range": {
+      "startLine": 101,
+      "endLine": 119
+    },
+    "type": "axiom",
+    "title": "OEIS A006037: The Weird Number Sequence",
+    "content": "The sequence of weird numbers begins:\n\n**70, 836, 4030, 5830, 7192, 7912, 9272, 10430, 10570, ...**\n\nWe record the first several values as axioms:\n```lean\naxiom first_weird_numbers :\n  IsWeird 70 ∧ IsWeird 836 ∧ IsWeird 4030 ∧ IsWeird 5830 ∧ IsWeird 7192\n```\n\n**Crucial observation**: All known weird numbers are even!",
+    "mathContext": "The gaps between weird numbers are irregular. After 70, the next is 836 = 4 * 11 * 19. The parity pattern (all even) is unexplained and motivates Erdos's first question.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "OEIS",
+      "computational evidence",
+      "parity"
+    ]
+  },
+  {
+    "id": "ann-e470-odd-weird",
+    "proofId": "erdos-470",
+    "range": {
+      "startLine": 120,
+      "endLine": 140
+    },
+    "type": "definition",
+    "title": "Open Question 1: Odd Weird Numbers",
+    "content": "**Erdos Problem #470 (Part 1)**: Do any odd weird numbers exist?\n\n```lean\ndef erdos_470_part1 : Prop := ∃ n : ℕ, IsWeird n ∧ Odd n\n```\n\nThis question has a **$10 bounty** from Erdos! It remains OPEN despite extensive computation.",
+    "mathContext": "The absence of odd weird numbers is surprising. For odd n to be abundant requires specific prime structure, and then avoiding pseudoperfectness adds another constraint. The combination appears extremely rare.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open problem",
+      "parity",
+      "Erdos bounty"
+    ]
+  },
+  {
+    "id": "ann-e470-fang",
+    "proofId": "erdos-470",
+    "range": {
+      "startLine": 148,
+      "endLine": 153
+    },
+    "type": "axiom",
+    "title": "Fang's Computational Bound",
+    "content": "**Fang (2022)** proved: No odd weird numbers exist below 10^21.\n\n```lean\naxiom fang_bound : ∀ n : ℕ, n < 10^21 → Odd n → ¬IsWeird n\n```\n\nThis is an enormous search space - 10^21 is a sextillion!",
+    "mathContext": "The bound 10^21 represents state-of-the-art computation. Previous bounds were much smaller. Each increase requires clever algorithmic improvements, not just more computing power.",
+    "significance": "key",
+    "relatedConcepts": [
+      "computational bounds",
+      "exhaustive search",
+      "algorithmic number theory"
+    ]
+  },
+  {
+    "id": "ann-e470-liddy-riedl",
+    "proofId": "erdos-470",
+    "range": {
+      "startLine": 155,
+      "endLine": 164
+    },
+    "type": "axiom",
+    "title": "Liddy-Riedl: Prime Divisor Bound",
+    "content": "**Liddy and Riedl (2018)** proved: Any odd weird number must have at least 6 distinct prime divisors.\n\n```lean\naxiom liddy_riedl : ∀ n : ℕ, IsWeird n → Odd n → numPrimeDivisors n ≥ 6\n```\n\nThis structural constraint significantly narrows the search space.",
+    "mathContext": "The proof uses that odd abundant numbers with few prime factors tend to be pseudoperfect. With 6+ primes, the divisor structure becomes complex enough to potentially avoid all subset sums equaling n.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime factorization",
+      "structural constraints",
+      "omega function"
+    ]
+  },
+  {
+    "id": "ann-e470-primitive",
+    "proofId": "erdos-470",
+    "range": {
+      "startLine": 166,
+      "endLine": 191
+    },
+    "type": "definition",
+    "title": "Primitive Weird Numbers",
+    "content": "**IsPrimitiveWeird(n)** holds when n is weird and no proper divisor of n is weird:\n\n```lean\ndef IsPrimitiveWeird (n : ℕ) : Prop :=\n  IsWeird n ∧ ∀ d ∈ n.properDivisors, ¬IsWeird d\n```\n\n70 is trivially primitive weird since no number below 70 is weird. The second open question asks if infinitely many primitive weirds exist.",
+    "mathContext": "Non-primitive weirds can sometimes be constructed from smaller weirds. If w is weird, then 2w might also be weird (under certain conditions). Primitive weirds can't arise this way.",
+    "significance": "key",
+    "relatedConcepts": [
+      "primitive elements",
+      "proper divisors",
+      "generating weird numbers"
+    ]
+  },
+  {
+    "id": "ann-e470-part2",
+    "proofId": "erdos-470",
+    "range": {
+      "startLine": 198,
+      "endLine": 213
+    },
+    "type": "definition",
+    "title": "Open Question 2: Infinitely Many Primitive Weirds",
+    "content": "**Erdos Problem #470 (Part 2)**: Are there infinitely many primitive weird numbers?\n\n```lean\ndef erdos_470_part2 : Prop := PrimitiveWeirdSet.Infinite\n```\n\nwhere `PrimitiveWeirdSet = { n | IsPrimitiveWeird n }`.\n\nThis question also remains OPEN.",
+    "mathContext": "If only finitely many primitive weirds existed, all large weird numbers would be 'generated' from a finite set of primitives. This seems unlikely given the apparent randomness of the weird sequence.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Set.Infinite",
+      "open problem",
+      "primitive elements"
+    ]
+  },
+  {
+    "id": "ann-e470-melfi",
+    "proofId": "erdos-470",
+    "range": {
+      "startLine": 214,
+      "endLine": 245
+    },
+    "type": "axiom",
+    "title": "Melfi's Conditional Infinitude Result",
+    "content": "**Melfi (2015)** proved: If prime gaps satisfy p_{n+1} - p_n < sqrt(p_n)/10 for all large n, then infinitely many primitive weird numbers exist.\n\n```lean\naxiom melfi_conditional :\n  (∀ᶠ n in Filter.atTop, (primeGap n : ℝ) < Real.sqrt (nthPrime n) / 10) →\n  PrimitiveWeirdSet.Infinite\n```\n\nThis connects weird numbers to prime distribution!",
+    "mathContext": "The prime gap hypothesis would follow from Cramer's conjecture (gaps ~ (log p)^2). Melfi's construction builds primitive weirds using carefully chosen primes. The gap condition ensures suitable primes exist.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime gaps",
+      "Cramer's conjecture",
+      "conditional results"
+    ]
+  },
+  {
+    "id": "ann-e470-density",
+    "proofId": "erdos-470",
+    "range": {
+      "startLine": 246,
+      "endLine": 263
+    },
+    "type": "axiom",
+    "title": "Benkoski-Erdos: Positive Density",
+    "content": "**Benkoski and Erdos (1974)** proved: Weird numbers have positive asymptotic density.\n\n```lean\naxiom benkoski_erdos_density : ∃ c > 0,\n  ∀ᶠ N in Filter.atTop, (((WeirdSet ∩ {n | n ≤ N}).ncard) : ℝ) / N ≥ c\n```\n\nThis means a positive fraction of all natural numbers are weird!",
+    "mathContext": "The density is small but positive. This is counterintuitive - weird numbers seem rare from the sequence, but they're actually common. The proof uses probabilistic arguments about random subset sums.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic density",
+      "natural density",
+      "probabilistic number theory"
+    ]
+  },
+  {
+    "id": "ann-e470-abundancy",
+    "proofId": "erdos-470",
+    "range": {
+      "startLine": 264,
+      "endLine": 282
+    },
+    "type": "concept",
+    "title": "Abundancy Index Connection",
+    "content": "The **abundancy index** of n is sigma(n)/n. For weird numbers, this exceeds 2.\n\n```lean\nnoncomputable def abundancyIndex (n : ℕ) : ℚ := sigma n / n\n```\n\n**If no odd weird numbers exist**, then all weird numbers have abundancy index < 4.\n\nThis connects to Erdos Problem #825.",
+    "mathContext": "The abundancy constraint follows from the structure of even numbers. Higher abundancy requires specific prime structures that may force pseudoperfectness for odd numbers.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "abundancy index",
+      "Erdos #825",
+      "parity constraints"
+    ]
+  },
+  {
+    "id": "ann-e470-why-70",
+    "proofId": "erdos-470",
+    "range": {
+      "startLine": 302,
+      "endLine": 328
+    },
+    "type": "concept",
+    "title": "Why 70 is Weird: Detailed Analysis",
+    "content": "**Divisors of 70**: {1, 2, 5, 7, 10, 14, 35, 70}\n**Proper divisors**: {1, 2, 5, 7, 10, 14, 35}\n**Sum of proper divisors**: 1+2+5+7+10+14+35 = 74 > 70 (abundant)\n\n**Why no subset sums to 70**:\n- Without 35: max sum = 1+2+5+7+10+14 = 39 < 70. Need 35.\n- With 35: need remaining subset to sum to 35.\n- Subsets of {1,2,5,7,10,14} that sum to 35: NONE!\n  - Max with all: 1+2+5+7+10+14 = 39, not 35\n  - No combination works.\n\nTherefore 70 is not pseudoperfect.",
+    "mathContext": "This is the classic verification that shows both the structure of the problem and why computational approaches are needed for larger weird numbers.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "case analysis",
+      "subset sum",
+      "verification"
+    ]
+  }
+]

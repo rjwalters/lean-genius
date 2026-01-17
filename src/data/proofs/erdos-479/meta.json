@@ -1,33 +1,128 @@
 {
   "id": "erdos-479",
-  "title": "Erdős Problem #479",
+  "title": "Erdős Problem #479: Powers of 2 Modulo n",
   "slug": "erdos-479",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for all ..., there are infinitely many ... such that ...?\n\n\n\nA conjecture of Graham. It is easy to see that ...",
+  "description": "Is it true that, for all k ≠ 1, there are infinitely many n such that 2^n ≡ k (mod n)? This is Graham's conjecture.",
   "meta": {
-    "author": "Unknown",
+    "author": "Graham (conjecture)",
     "sourceUrl": "https://erdosproblems.com/479",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos479Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "modular-arithmetic",
+      "exponential-congruences",
+      "fermat-little-theorem",
+      "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 479,
     "erdosUrl": "https://erdosproblems.com/479",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.ModEq",
+        "description": "Modular equivalence for integers",
+        "module": "Mathlib.Data.Int.ModEq"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for natural numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Predicate for infinite sets",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of Graham's OPEN conjecture in Lean 4",
+      "Definition of SolutionSet(k) = { n | 2^n ≡ k (mod n) }",
+      "Axiomatization of why k = 1 is impossible (2^n ≢ 1 mod n for n > 1)",
+      "Statement of known partial results (powers of 2, k = -1)",
+      "Verified examples using decide tactic (2^3 ≡ 2 mod 3, etc.)",
+      "Documentation of the k = 3 difficulty (smallest n = 4700063497)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #479 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for all $k\\neq 1$, there are infinitely many $n$ such that $2^n\\equiv k\\pmod{n}$?\n\n\n\nA conjecture of Graham. It is easy to see that $2^n\\not\\equiv 1\\mod{n}$ for all $n>1$, so the restriction $k\\neq 1$ is necessary. Erd\\H{o}s and Graham report that Graham, Lehmer, and Lehmer have proved this for $k=2^i$ for $i\\geq 1$, or if $k=-1$, but I cannot find such a paper. Tang has written a short note giving a proof for this case.\n\nAs an indication of the difficulty, when $k=3$ the smallest $n$ such that $2^n\\equiv 3\\pmod{n}$ is $n=4700063497$.\n\nThe minimal such $n$ for each $k$ is A036236 in the OEIS.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem is a conjecture of Ronald Graham, reported by Erdős and Graham. The question asks whether for every residue k (except k = 1), there are infinitely many n such that 2^n ≡ k (mod n).\n\nThe restriction k ≠ 1 is necessary and easy to verify: for n > 1, we always have 2^n ≢ 1 (mod n). This is because for even n, 2^n ≡ 0 (mod 2), not 1; and for odd n > 1, more subtle arguments apply.\n\nGraham, Lehmer, and Lehmer proved the conjecture for special cases: when k is a power of 2, or when k = -1. Tang later gave a simplified proof for these cases.\n\nThe problem is computationally challenging. For k = 3, the smallest n with 2^n ≡ 3 (mod n) is n = 4700063497 — a 10-digit number! This illustrates how sparse solutions can be for certain residues. The OEIS sequence A036236 catalogs the smallest n for each k.",
+    "problemStatement": "Is it true that, for all $k \\neq 1$, there are infinitely many $n$ such that $2^n \\equiv k \\pmod{n}$?\n\n**Status**: OPEN — The general conjecture remains unproved.\n\n**Known Results**:\n- The case $k = 1$ is impossible: $2^n \\not\\equiv 1 \\pmod{n}$ for all $n > 1$\n- Graham, Lehmer, and Lehmer proved it for $k = 2^i$ (powers of 2) and $k = -1$\n- For $k = 2$: All odd primes work, since $2^p \\equiv 2 \\pmod{p}$ by Fermat\n- For $k = 3$: Smallest solution is $n = 4700063497$",
+    "proofStrategy": "We formalize this OPEN problem by:\n\n1. **Defining SolutionSet(k)**: The set { n > 0 | 2^n ≡ k (mod n) }\n\n2. **Stating the impossibility of k = 1**: Axiom that 2^n ≢ 1 (mod n) for n > 1\n\n3. **Graham's conjecture**: For all k > 1, SolutionSet(k) is infinite\n\n4. **Known partial results**: Axioms for powers of 2 and k = -1 cases\n\n5. **Computational examples**: Using `decide` to verify small cases like 2^3 ≡ 2 (mod 3)\n\n6. **The k = 3 phenomenon**: Documenting the enormous smallest solution",
+    "keyInsights": [
+      "**Why k = 1 fails**: For even n, 2^n ≡ 0 (mod 2) ≠ 1. For odd n > 1, more subtle number theory shows 2^n ≢ 1 (mod n).",
+      "**Fermat's Little Theorem**: For prime p, 2^p ≡ 2 (mod p). So every odd prime is in SolutionSet(2), proving that case is infinite.",
+      "**The k = 3 mystery**: The smallest n with 2^n ≡ 3 (mod n) is n = 4700063497. Why so large? The answer involves delicate divisibility conditions.",
+      "**OEIS A036236**: This sequence gives minimal n for each k. The values are highly irregular: A036236(2) = 3, A036236(3) = 4700063497, A036236(4) = 6.",
+      "**Chinese Remainder Theorem**: The congruence 2^n ≡ k (mod n) can be analyzed prime by prime, but the constraints from different primes interact in complex ways.",
+      "**Connection to Carmichael function**: The multiplicative order of 2 mod n is related to the Carmichael function λ(n), but the constraint that the modulus equals the exponent creates unique difficulties."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 17,
+      "summary": "Problem statement, status, and references including OEIS."
+    },
+    {
+      "id": "solution-set",
+      "title": "The Solution Set",
+      "startLine": 38,
+      "endLine": 66,
+      "summary": "Definition of SolutionSet(k) and why k = 1 is impossible."
+    },
+    {
+      "id": "partial-results",
+      "title": "Known Partial Results",
+      "startLine": 68,
+      "endLine": 87,
+      "summary": "Powers of 2 and k = -1 cases proved by Graham, Lehmer, and Lehmer."
+    },
+    {
+      "id": "conjecture",
+      "title": "Graham's Conjecture",
+      "startLine": 88,
+      "endLine": 108,
+      "summary": "Statement of the main open conjecture."
+    },
+    {
+      "id": "computational",
+      "title": "Computational Difficulty",
+      "startLine": 109,
+      "endLine": 134,
+      "summary": "The k = 3 case with smallest n = 4700063497."
+    },
+    {
+      "id": "structure",
+      "title": "Understanding the Structure",
+      "startLine": 135,
+      "endLine": 163,
+      "summary": "Fermat's Little Theorem and the infinitude of SolutionSet(2)."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 164,
+      "endLine": 214,
+      "summary": "Concrete verifications using decide tactic."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #479, also known as Graham's conjecture. The problem asks whether for every k ≠ 1, there are infinitely many n with 2^n ≡ k (mod n). While special cases have been proved (powers of 2, k = -1), the general conjecture remains open.",
+    "implications": "This problem connects exponential functions with modular arithmetic in a way that creates surprising computational difficulty. The huge minimal solution for k = 3 suggests deep number-theoretic structure that is not yet understood. A resolution would advance our understanding of the interplay between exponential growth and divisibility.",
+    "openQuestions": [
+      "Is SolutionSet(k) infinite for all k > 1? (The main conjecture)",
+      "What determines the minimal n for a given k?",
+      "Are there infinitely many k with small minimal n (say, n < 1000)?",
+      "What is the density of SolutionSet(k) for various k?",
+      "Can the Graham-Lehmer-Lehmer method extend to other cases?"
+    ]
   }
 }

@@ -1,33 +1,142 @@
 {
   "id": "erdos-1003",
-  "title": "Erdős Problem #1003",
+  "title": "Erdős Problem #1003: Consecutive Equal Totients",
   "slug": "erdos-1003",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many solutions to ..., where ... is the Euler totient function?\n\n\n\nErds  says that, presumably, for ever...",
+  "description": "Are there infinitely many solutions to φ(n) = φ(n+1), where φ is the Euler totient function? Erdős conjectured yes, and made the stronger claim that φ(n) = φ(n+1) = ... = φ(n+k) has infinitely many solutions for every k ≥ 1.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/1003",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1003Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "totient-function",
+      "consecutive-values",
+      "asymptotic-density",
+      "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1003,
     "erdosUrl": "https://erdosproblems.com/1003",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Predicate for infinite sets",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      },
+      {
+        "theorem": "Filter.Eventually",
+        "description": "Eventually quantifier for filters",
+        "module": "Mathlib.Order.Filter.AtTopBot.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of the OPEN Erdős conjecture in Lean 4",
+      "Definition of ConsecutiveEqualTotients set",
+      "Verification of small examples (n = 1, 3, 15, 104) using native_decide",
+      "Stronger conjecture for k consecutive equal values",
+      "Axiomatization of Erdős-Pomerance-Sárközy upper bound",
+      "Ford-Luca-Pomerance lower bound (implying infinitude)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1003 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many solutions to $\\phi(n)=\\phi(n+1)$, where $\\phi$ is the Euler totient function?\n\n\n\nErd\\H{o}s \\cite{Er85e} says that, presumably, for every $k\\geq 1$ the equation\\[\\phi(n)=\\phi(n+1)=\\cdots=\\phi(n+k)\\]has infinitely many solutions.\n\nErd\\H{o}s, Pomerance, and S\\'{a}rk\\\"{o}zy \\cite{EPS87} proved that the number of $n\\leq x$ with $\\phi(n)=\\phi(n+1)$ is at most\\[\\frac{x}{\\exp((\\log x)^{1/3})}.\\]See [946] for the analogous question with the divisor function.\n\n\n\n\nReferences\n\n\n[EPS87] Erd\\H{o}s, Paul and Pomerance, Carl and S\\'ark\\\"ozy, Andr\\'as, On locally repeated values of certain arithmetic functions.\n{III}. Proc. Amer. Math. Soc. (1987), 1--7.\n\n[Er85e] Erd\\H{o}s, P., Some problems and results in number theory. Number theory and combinatorics. Japan 1984 (Tokyo,\nOkayama and Kyoto, 1984) (1985), 65-87.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem asks whether the equation φ(n) = φ(n+1) has infinitely many solutions, where φ is the Euler totient function. The first examples are n = 1, 3, 15, 104, 164, 194, 255, ...\n\nErdős made an even stronger conjecture: for every k ≥ 1, the equation φ(n) = φ(n+1) = ... = φ(n+k) should have infinitely many solutions. Remarkably, triples of consecutive equal totients exist—for example, φ(5186) = φ(5187) = φ(5188) = 1728.\n\nErdős, Pomerance, and Sárközy [EPS87] proved an upper bound: the number of n ≤ x with φ(n) = φ(n+1) is at most x/exp((log x)^(1/3)). This shows solutions are sparse.\n\nFord, Luca, and Pomerance [FLP07] proved a lower bound showing at least x^(1-ε) solutions up to x for any ε > 0, which would imply the set is infinite. The question remains formally open.",
+    "problemStatement": "Are there infinitely many $n$ such that $\\phi(n) = \\phi(n+1)$?\n\n**Status**: OPEN\n\n**Stronger Conjecture**: For every $k \\geq 1$, there are infinitely many $n$ with $\\phi(n) = \\phi(n+1) = \\cdots = \\phi(n+k)$.\n\n**Known Results**:\n- OEIS A001274 lists first examples: 1, 3, 15, 104, 164, 194, 255, ...\n- EPS upper bound: Count ≤ x/exp((log x)^(1/3))\n- FLP lower bound: Count ≥ x^(1-ε) for any ε > 0",
+    "proofStrategy": "We formalize this OPEN problem by:\n\n1. **Defining the solution set**: ConsecutiveEqualTotients = { n | φ(n) = φ(n+1) }\n\n2. **Stating the main conjecture**: ConsecutiveEqualTotients.Infinite\n\n3. **Verifying small examples**: Using native_decide to confirm n = 1, 3, 15, 104\n\n4. **Generalizing to k consecutive**: ConsecutiveKEqualTotients(k) for the stronger conjecture\n\n5. **Recording known bounds**: EPS upper bound and FLP lower bound as axioms\n\n6. **Documenting the triple 5186, 5187, 5188**: Three consecutive integers with equal totient",
+    "keyInsights": [
+      "**Why consecutive coprime integers can match**: Although n and n+1 are coprime (so their prime factorizations are disjoint), the totient formula φ = Π(p-1)p^(k-1) can produce equal values from very different factorizations.",
+      "**The 15/16 pattern**: φ(15) = φ(16) = 8 because 15 = 3×5 gives 2×4 = 8 while 16 = 2⁴ gives 2³ = 8. Powers of 2 matching products of small primes is a common pattern.",
+      "**The 104/105 coincidence**: φ(104) = φ(105) = 48 from 104 = 2³×13 → 4×12 = 48 and 105 = 3×5×7 → 2×4×6 = 48.",
+      "**Sparsity from EPS**: The bound x/exp((log x)^(1/3)) shows that among the first x integers, very few satisfy φ(n) = φ(n+1). This is much sparser than 1/√x or even 1/log x.",
+      "**Connection to Carmichael's conjecture**: The related Carmichael's Totient Conjecture asks whether every value of φ is achieved at least twice. This is also open and would impact the likelihood of consecutive matches.",
+      "**OEIS A001274**: The sequence of solutions begins 1, 3, 15, 104, 164, 194, 255, 495, 584, 975, 2204, 2625, 2834, 3255, 3705, 5186, 5187, ..."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 18,
+      "summary": "Problem statement, status, references, and OEIS link."
+    },
+    {
+      "id": "background",
+      "title": "Euler Totient Background",
+      "startLine": 28,
+      "endLine": 55,
+      "summary": "Properties of φ and when φ(n) = φ(n+1) can hold."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 57,
+      "endLine": 79,
+      "summary": "Definition of ConsecutiveEqualTotients and the open conjecture."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 80,
+      "endLine": 116,
+      "summary": "Small cases verified with native_decide: n = 1, 3, 15, 104."
+    },
+    {
+      "id": "k-consecutive",
+      "title": "Consecutive k Equal Values",
+      "startLine": 117,
+      "endLine": 136,
+      "summary": "The stronger conjecture about k consecutive equal totients."
+    },
+    {
+      "id": "eps-bound",
+      "title": "EPS Upper Bound",
+      "startLine": 137,
+      "endLine": 163,
+      "summary": "The Erdős-Pomerance-Sárközy sparsity result."
+    },
+    {
+      "id": "examples-detail",
+      "title": "Understanding the Examples",
+      "startLine": 202,
+      "endLine": 237,
+      "summary": "Why φ(15) = φ(16) and φ(104) = φ(105)."
+    },
+    {
+      "id": "triple",
+      "title": "The Consecutive Triple",
+      "startLine": 238,
+      "endLine": 260,
+      "summary": "Three consecutive integers 5186, 5187, 5188 with equal totient."
+    },
+    {
+      "id": "flp-bound",
+      "title": "FLP Lower Bound",
+      "startLine": 261,
+      "endLine": 280,
+      "summary": "Ford-Luca-Pomerance result suggesting infinitude."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #1003, an OPEN question about whether φ(n) = φ(n+1) has infinitely many solutions. The formalization includes the main conjecture, verified small examples, the stronger k-consecutive conjecture, and known asymptotic bounds.",
+    "implications": "This problem connects to fundamental questions about the distribution of totient values and the structure of the integers. A resolution would illuminate how often multiplicatively defined functions (like φ) can produce equal consecutive values. The connection to Carmichael's Totient Conjecture suggests deep arithmetic structure.",
+    "openQuestions": [
+      "Is ConsecutiveEqualTotients infinite? (The main OPEN question)",
+      "For each k ≥ 1, is ConsecutiveKEqualTotients(k) infinite?",
+      "What is the true asymptotic density of solutions?",
+      "Are there four consecutive integers with equal totient?",
+      "Is Carmichael's Totient Conjecture true?"
+    ]
   }
 }

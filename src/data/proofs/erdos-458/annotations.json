@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-e458-header",
+    "proofId": "erdos-458",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #458** asks about the growth rate of the LCM function between consecutive primes. Is it true that lcm(1,...,p_{k+1}-1) < p_k · lcm(1,...,p_k) for all k ≥ 1? Erdős and Graham call this 'almost certainly' true, but proving it requires something close to Legendre's conjecture.",
+    "mathContext": "The LCM function lcm(1,...,n) grows roughly like e^n. The conjecture controls growth between consecutive primes p_k and p_{k+1}.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "lcm",
+      "primes",
+      "legendre-conjecture"
+    ]
+  },
+  {
+    "id": "ann-e458-lcm-def",
+    "proofId": "erdos-458",
+    "range": {
+      "startLine": 34,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "The LCM Function",
+    "content": "**lcm_upto(n)** is the least common multiple of {1, 2, ..., n}, defined using Finset.lcm over the interval [1,n]. This fundamental function has deep connections to prime distribution via Chebyshev's ψ function.",
+    "mathContext": "lcm_upto n = lcm{1,2,...,n}. Asymptotically, log(lcm_upto n) ~ n, so lcm_upto n ~ e^n.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "finset-lcm",
+      "chebyshev-psi",
+      "prime-distribution"
+    ]
+  },
+  {
+    "id": "ann-e458-basic",
+    "proofId": "erdos-458",
+    "range": {
+      "startLine": 46,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "Basic Properties",
+    "content": "We verify basic properties: lcm_upto 1 = 1, lcm_upto is always positive, and compute small values like lcm(1,...,5) = 60. Monotonicity is also established.",
+    "mathContext": "Small values verified by native_decide: lcm_upto 2 = 2, lcm_upto 3 = 6, lcm_upto 4 = 12, lcm_upto 5 = 60, lcm_upto 6 = 60.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native-decide",
+      "monotonicity",
+      "computation"
+    ]
+  },
+  {
+    "id": "ann-e458-growth",
+    "proofId": "erdos-458",
+    "range": {
+      "startLine": 77,
+      "endLine": 91
+    },
+    "type": "axiom",
+    "title": "Growth Properties",
+    "content": "**Axioms about LCM growth**: When crossing a prime p, the LCM multiplies by exactly p. Between primes, the LCM only grows by powers of smaller primes.",
+    "mathContext": "lcm_upto(p) = p · lcm_upto(p-1) for prime p. This captures how primes contribute to LCM growth.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime-factors",
+      "lcm-growth",
+      "multiplicativity"
+    ]
+  },
+  {
+    "id": "ann-e458-nthprime",
+    "proofId": "erdos-458",
+    "range": {
+      "startLine": 93,
+      "endLine": 116
+    },
+    "type": "definition",
+    "title": "The nth Prime",
+    "content": "**nthPrime(k)** is the k-th prime (0-indexed: p_0 = 2, p_1 = 3, etc.), defined using Nat.nth. We verify p_0 = 2, p_1 = 3, and establish that primes are strictly increasing.",
+    "mathContext": "nthPrime k = Nat.nth Nat.Prime k. Uses Nat.infinite_setOf_prime to guarantee existence.",
+    "significance": "key",
+    "relatedConcepts": [
+      "nat-nth",
+      "prime-enumeration",
+      "strict-monotonicity"
+    ]
+  },
+  {
+    "id": "ann-e458-conjecture",
+    "proofId": "erdos-458",
+    "range": {
+      "startLine": 118,
+      "endLine": 135
+    },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "**Erdős Problem #458**: For all k ≥ 1, lcm(1,...,p_{k+1}-1) < p_k · lcm(1,...,p_k). This asks whether LCM growth between consecutive primes is bounded by multiplication by the smaller prime.",
+    "mathContext": "Intuitively: between p_k and p_{k+1}, LCM only grows by composite factors (powers of smaller primes), bounded by p_k.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open-problem",
+      "prime-gaps",
+      "lcm-bounds"
+    ]
+  },
+  {
+    "id": "ann-e458-legendre",
+    "proofId": "erdos-458",
+    "range": {
+      "startLine": 137,
+      "endLine": 158
+    },
+    "type": "definition",
+    "title": "Connection to Legendre's Conjecture",
+    "content": "**Obstacle**: We need to control primes q with p_k < q² < p_{k+1}. **Legendre's Conjecture** (there's always a prime between n² and (n+1)²) would help by bounding prime gaps.",
+    "mathContext": "If Legendre holds, then p_{k+1} - p_k < √p_k + 1, which bounds the interval where problematic primes q could appear.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "legendre-conjecture",
+      "prime-gaps",
+      "conditional-result"
+    ]
+  },
+  {
+    "id": "ann-e458-small-cases",
+    "proofId": "erdos-458",
+    "range": {
+      "startLine": 160,
+      "endLine": 168
+    },
+    "type": "theorem",
+    "title": "Verified Small Cases",
+    "content": "**Small cases verified computationally**: k=1 (lcm(1,2,3,4)=12 < 3·6=18) and k=2 (lcm(1,...,6)=60 < 5·60=300). Both verified by native_decide.",
+    "mathContext": "These concrete examples show the conjecture holds for the first few primes, building confidence in the general statement.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native-decide",
+      "verification",
+      "small-cases"
+    ]
+  },
+  {
+    "id": "ann-e458-asymptotic",
+    "proofId": "erdos-458",
+    "range": {
+      "startLine": 170,
+      "endLine": 179
+    },
+    "type": "axiom",
+    "title": "Chebyshev's Asymptotic",
+    "content": "**Chebyshev's Result**: log(lcm_upto n) ~ n as n → ∞. This means lcm_upto n grows roughly like e^n. The conjecture asks about fine structure of this growth between consecutive primes.",
+    "mathContext": "There exist 0 < c₁ < 1 < c₂ such that c₁n < log(lcm_upto n) < c₂n for all n ≥ 2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "chebyshev-bounds",
+      "asymptotic-growth",
+      "prime-number-theorem"
+    ]
+  }
+]

@@ -1,33 +1,143 @@
 {
   "id": "erdos-470",
-  "title": "Erdős Problem #470",
+  "title": "Erdős Problem #470: Weird Numbers",
   "slug": "erdos-470",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall ... weird if ... and ... is not pseudoperfect, that is, it is not the sum of any set of its divisors.\n\nAre there any odd...",
+  "description": "A number n is called weird if σ(n) ≥ 2n (abundant) but n is not pseudoperfect (cannot be expressed as the sum of any subset of its proper divisors). Erdős asked two OPEN questions: (1) Are there any odd weird numbers? (2) Are there infinitely many primitive weird numbers?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/470",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos470Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisor-sum",
+      "weird-numbers",
+      "pseudoperfect",
+      "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 470,
     "erdosUrl": "https://erdosproblems.com/470",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "The set of divisors of a natural number",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Nat.properDivisors",
+        "description": "The set of proper divisors (excluding n itself)",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Predicate for infinite sets",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definitions of sigma, IsAbundant, IsPseudoperfect, and IsWeird",
+      "Statement of both OPEN Erdős questions in Lean 4",
+      "Definition of IsPrimitiveWeird and the primitive weird set",
+      "Axiomatization of Benkoski-Erdős positive density result",
+      "Axiomatization of Fang's computational bound (no odd weird below 10^21)",
+      "Axiomatization of Liddy-Riedl result (odd weird has ≥6 prime divisors)",
+      "Axiomatization of Melfi's conditional infinitude result",
+      "Theorem: 70 is the smallest weird number"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #470 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall $n$ weird if $\\sigma(n)\\geq 2n$ and $n$ is not pseudoperfect, that is, it is not the sum of any set of its divisors.\n\nAre there any odd weird numbers? Are there infinitely many primitive weird numbers, i.e. those such that no proper divisor of $n$ is weird?\n\n\n\nWeird numbers were investigated by Benkoski and Erd\\H{o}s \\cite{BeEr74}, who proved that the set of weird numbers has positive density. The smallest weird number is $70$.\n\nMelfi \\cite{Me15} has proved that there are infinitely many primitive weird numbers, conditional on the fact that $p_{n+1}-p_n<\\frac{1}{10}p_n^{1/2}$ for all large $n$, which in turn would follow from well-known conjectures concerning prime gaps.\n\nThe sequence of weird numbers is A006037 in the OEIS. Fang \\cite{Fa22} has shown there are no odd weird numbers below $10^{21}$, and Liddy and Riedl \\cite{LiRi18} have shown that an odd weird number must have at least 6 prime divisors.\n\nIf there are no odd weird numbers then every weird number has abundancy index $<4$ (see [825]).\n\nSee also [825].\n\nThis is problem B2 in Guy's collection \\cite{Gu04} (the \\$10 is reported by Guy, offered by Erd\\H{o}s for a solution to the question of whether any odd weird numbers exist).\n\n\n\n\nReferences\n\n\n[BeEr74] Benkoski, S. J. and Erd\\H{o}s, P., On weird and pseudoperfect numbers. Math. Comp. (1974), 617-623.\n\n[Fa22] Searching on the boundary of abundance for odd weird numbers, W. Fang. arXiv:2207.12906 (2022).\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[LiRi18] J. Liddy and J. Riedl, An algorithm to determine all odd primitive abundant numbers with $d$ prime divisors. Honors Research Projects. 728 (2018).\n\n[Me15] Melfi, Giuseppe, On the conditional infiniteness of primitive weird numbers. J. Number Theory (2015), 508-514.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "A number n is called **weird** if it is abundant (σ(n) > 2n, or equivalently the sum of proper divisors exceeds n) but not pseudoperfect (n cannot be written as the sum of any subset of its proper divisors). Weird numbers are the 'leftover' abundant numbers that can't achieve self-representation.\n\nWeird numbers were introduced and studied by Benkoski and Erdős [BeEr74], who proved that weird numbers have **positive asymptotic density**—a surprising result meaning a positive fraction of all integers are weird.\n\nThe smallest weird number is **70**:\n- Divisors of 70: 1, 2, 5, 7, 10, 14, 35, 70\n- σ(70) = 144 > 140 = 2×70 ✓ (abundant)\n- No subset of {1, 2, 5, 7, 10, 14, 35} sums to exactly 70 ✓ (not pseudoperfect)\n\nThe sequence of weird numbers (OEIS A006037) begins: 70, 836, 4030, 5830, 7192, 7912, 9272, ...\n\n**Remarkably, all known weird numbers are even!** This leads to Erdős's first question.",
+    "problemStatement": "**Two OPEN Questions from Erdős**:\n\n1. **Odd Weird Numbers**: Are there any odd weird numbers?\n   - All weird numbers found so far are even\n   - Fang (2022) showed: No odd weird below 10^21\n   - Liddy-Riedl (2018) showed: Any odd weird must have at least 6 prime divisors\n\n2. **Primitive Weird Numbers**: Are there infinitely many primitive weird numbers?\n   - A weird number is **primitive** if none of its proper divisors is weird\n   - 70 is trivially primitive (no weird numbers below it)\n   - Melfi (2015) proved infinitely many primitive weirds exist conditionally on a prime gap hypothesis\n\n**Status**: Both questions remain OPEN as of 2024.\n\n**Erdős offered $10 for solving the odd weird question.**",
+    "proofStrategy": "We formalize both open questions by:\n\n1. **Defining the divisor sum function**: σ(n) = Σ_{d|n} d using Mathlib's divisors\n\n2. **Defining abundance**: n is abundant iff σ(n) > 2n\n\n3. **Defining pseudoperfectness**: n is pseudoperfect iff some subset of its proper divisors sums to n\n\n4. **Defining weirdness**: n is weird iff n is abundant AND n is not pseudoperfect\n\n5. **Defining primitive weirdness**: n is primitive weird iff n is weird AND no proper divisor of n is weird\n\n6. **Stating the open questions**:\n   - erdos_470_part1: ∃ n, IsWeird n ∧ Odd n\n   - erdos_470_part2: PrimitiveWeirdSet.Infinite\n\n7. **Recording known results as axioms**: Benkoski-Erdős density, Fang bound, Liddy-Riedl, Melfi conditional",
+    "keyInsights": [
+      "**Why 70 is weird**: The proper divisors {1, 2, 5, 7, 10, 14, 35} sum to 74 > 70 (abundant), but no subset sums to exactly 70. Key observation: 35 is needed (without it, max sum is 39), but with 35 you need the remaining divisors to sum to 35, which is impossible from {1,2,5,7,10,14}.",
+      "**Positive density paradox**: Despite being unable to represent themselves as subset sums, weird numbers are actually common! Benkoski and Erdős proved they have positive density, meaning infinitely many exist with positive proportion.",
+      "**The parity mystery**: Every weird number found is even. If odd weird numbers exist, they must be astronomically large (>10^21) and have complex structure (≥6 prime divisors). This is problem B2 in Guy's UPINT.",
+      "**Primitive vs non-primitive**: A weird number n is non-primitive if some proper divisor d is also weird. In that case, n = 2^k × d for some k might preserve weirdness. Primitive weirds can't be 'generated' this way.",
+      "**Melfi's conditional result**: If prime gaps satisfy p_{n+1} - p_n < √p_n/10 (implied by Cramér's conjecture), then infinitely many primitive weird numbers exist. This connects weird numbers to prime distribution!",
+      "**Connection to abundancy**: The abundancy index σ(n)/n measures 'how abundant' n is. If no odd weirds exist, all weirds have abundancy < 4."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 45,
+      "endLine": 68,
+      "summary": "Definitions of sigma (σ), IsAbundant, IsPseudoperfect, and IsWeird."
+    },
+    {
+      "id": "smallest-weird",
+      "title": "The Smallest Weird Number: 70",
+      "startLine": 70,
+      "endLine": 100,
+      "summary": "Axioms establishing 70 as abundant, not pseudoperfect, and the smallest weird."
+    },
+    {
+      "id": "oeis-sequence",
+      "title": "The Weird Number Sequence",
+      "startLine": 101,
+      "endLine": 119,
+      "summary": "OEIS A006037 values: 70, 836, 4030, 5830, 7192, 7912, 9272, ..."
+    },
+    {
+      "id": "odd-weird",
+      "title": "Open Question 1: Odd Weird Numbers",
+      "startLine": 120,
+      "endLine": 165,
+      "summary": "Formal statement of the odd weird question with Fang and Liddy-Riedl bounds."
+    },
+    {
+      "id": "primitive-weird",
+      "title": "Primitive Weird Numbers",
+      "startLine": 166,
+      "endLine": 213,
+      "summary": "Definition of IsPrimitiveWeird and Open Question 2."
+    },
+    {
+      "id": "conditional-results",
+      "title": "Conditional Results: Prime Gaps",
+      "startLine": 214,
+      "endLine": 245,
+      "summary": "Melfi's conditional infinitude result based on prime gap hypothesis."
+    },
+    {
+      "id": "density",
+      "title": "Positive Density of Weird Numbers",
+      "startLine": 246,
+      "endLine": 263,
+      "summary": "Benkoski-Erdős theorem: weird numbers have positive asymptotic density."
+    },
+    {
+      "id": "detailed-analysis",
+      "title": "Why 70 is Weird: Detailed Analysis",
+      "startLine": 302,
+      "endLine": 328,
+      "summary": "Complete analysis of why no subset of 70's proper divisors sums to 70."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #470, presenting the two OPEN questions about weird numbers: the existence of odd weird numbers and the infinitude of primitive weird numbers. The formalization includes complete definitions using Mathlib's divisor functions, statements of both open conjectures, and axiomatization of all known partial results.",
+    "implications": "The weird number questions connect to deep issues in number theory: the structure of divisor sums, subset sum problems, and the distribution of primes (via Melfi's conditional result). A resolution of the odd weird question would illuminate fundamental constraints on how divisibility and abundance interact with parity.",
+    "openQuestions": [
+      "Do any odd weird numbers exist? (The $10 question)",
+      "Are there infinitely many primitive weird numbers?",
+      "What is the smallest odd weird number if one exists?",
+      "Can the Fang bound (10^21) be significantly improved?",
+      "Is there an odd weird with exactly 6 prime divisors (the minimum)?",
+      "Does Cramér's conjecture imply infinitely many primitive weirds (via Melfi)?"
+    ]
   }
 }

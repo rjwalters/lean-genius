@@ -1,33 +1,145 @@
 {
   "id": "erdos-251",
-  "title": "Erdős Problem #251",
+  "title": "Erdős Problem #251: Irrationality of Σ pₙ/2ⁿ",
   "slug": "erdos-251",
-  "description": "Is&#x2211;pn2n\" role=\"presentation\" style=\"text-align: center; position: relative;\">∑pn2n∑pn2n",
+  "description": "Is the sum Σ pₙ/2ⁿ irrational, where pₙ is the nth prime? This OPEN problem asks about the arithmetic nature of a beautiful constant involving primes and powers of 2.",
   "meta": {
-    "author": "Unknown",
+    "author": "Open Problem (Erdős 1958)",
     "sourceUrl": "https://erdosproblems.com/251",
-    "date": "",
-    "status": "pending",
+    "date": "1958",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos251Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "infinite-series",
+      "primes"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 251,
     "erdosUrl": "https://erdosproblems.com/251",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.nth",
+        "description": "The nth element satisfying a predicate (used for nth prime)",
+        "module": "Mathlib.NumberTheory.PrimeCounting"
+      },
+      {
+        "theorem": "Irrational",
+        "description": "Predicate for irrational real numbers",
+        "module": "Mathlib.NumberTheory.Real.Irrational"
+      },
+      {
+        "theorem": "tsum",
+        "description": "Infinite series summation",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Real"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of the Erdős sum Σ pₙ/2^(n+1)",
+      "Statement of the main conjecture as Irrational erdosSum",
+      "Axiomatization of Erdős's factorial irrationality result",
+      "Statement of the generalized conjecture for all powers k ≥ 1",
+      "Verified partial sums: first 5 terms = 101/32"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #251 from erdosproblems.com.",
-    "problemStatement": "Is&#x2211;pn2n\" role=\"presentation\" style=\"text-align: center; position: relative;\">∑pn2n∑pn2n",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #251 asks a deceptively simple question: is the sum Σ pₙ/2ⁿ irrational? Here pₙ denotes the nth prime: p₁ = 2, p₂ = 3, p₃ = 5, and so on.\n\nThe sum converges absolutely (since pₙ ~ n ln n by the prime number theorem and Σ n ln n / 2ⁿ converges). Its decimal expansion begins 3.59686... and is catalogued as OEIS A098990.\n\nErdős himself proved the related result that Σ pₙᵏ/n! is irrational for all k ≥ 1 (the factorial denominators make the problem tractable). He conjectured that Σ pₙᵏ/2ⁿ is also irrational for all k ≥ 1, which includes Problem #251 as the case k = 1.\n\nErdős also formulated a more general conjecture: if gₙ ≥ 2 for all n and gₙ = o(pₙ), then Σ pₙ/(g₁·g₂·...·gₙ) is irrational.",
+    "problemStatement": "Is the sum $\\sum_{n=1}^{\\infty} \\frac{p_n}{2^n}$ irrational, where $p_n$ is the $n$th prime?\n\n**Status**: OPEN\n\n**The Sum**: $\\frac{2}{2} + \\frac{3}{4} + \\frac{5}{8} + \\frac{7}{16} + \\frac{11}{32} + \\cdots \\approx 3.59686...$\n\n**Related Solved Result**: Erdős proved $\\sum \\frac{p_n^k}{n!}$ is irrational for all $k \\geq 1$.",
+    "proofStrategy": "We formalize the problem and related results:\n\n1. **Define the sum**: Using Mathlib's `Nat.nth Nat.Prime` to enumerate primes\n2. **State convergence**: The sum converges by comparison with Σ n ln n / 2ⁿ (axiom)\n3. **State the conjecture**: `erdos_251_conjecture := Irrational erdosSum`\n4. **State related results**: Erdős's factorial irrationality theorem as an axiom\n5. **Verify partial sums**: Prove first 1, 2, 3, 4, 5 terms sum to 1, 7/4, 19/8, 45/16, 101/32\n\nThe actual irrationality proof is unknown and cannot be formalized.",
+    "keyInsights": [
+      "**Why this is hard**: Proving irrationality of explicit series is notoriously difficult. Even whether e + π is irrational remains open! The irregularity of the prime sequence adds further complexity.",
+      "**The OEIS constant**: The sum ≈ 3.59686... (OEIS A098990). It's well-defined, but its arithmetic nature is unknown.",
+      "**Factorial vs exponential**: Erdős could prove Σ pₙᵏ/n! irrational because n! grows much faster than 2ⁿ, allowing tail analysis. The 2ⁿ case is harder.",
+      "**General conjecture**: Erdős conjectured that for any slowly-growing sequence gₙ ≥ 2 with gₙ = o(pₙ), the sum Σ pₙ/(g₁·...·gₙ) is irrational.",
+      "**Computational evidence**: The first 5 terms sum to 101/32 ≈ 3.15625, already within 0.5 of the limit."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Problem statement, status (OPEN), related results, and references."
+    },
+    {
+      "id": "nth-prime",
+      "title": "The nth Prime Function",
+      "startLine": 37,
+      "endLine": 55,
+      "summary": "Definition of nthPrime using Mathlib's Nat.nth and axiom for first few values."
+    },
+    {
+      "id": "main-sum",
+      "title": "The Main Sum",
+      "startLine": 57,
+      "endLine": 91,
+      "summary": "Definition of erdosTerm, erdosSum, and convergence axiom."
+    },
+    {
+      "id": "partial-sums",
+      "title": "Partial Sums",
+      "startLine": 93,
+      "endLine": 106,
+      "summary": "Definition and verification of the first 5-term partial sum."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture (OPEN)",
+      "startLine": 108,
+      "endLine": 121,
+      "summary": "Statement of erdos_251_conjecture: Irrational erdosSum."
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "startLine": 123,
+      "endLine": 146,
+      "summary": "Erdős's factorial irrationality theorem and the generalized conjecture."
+    },
+    {
+      "id": "difficulty",
+      "title": "Why This Is Hard",
+      "startLine": 148,
+      "endLine": 166,
+      "summary": "Discussion of the challenges in proving irrationality of explicit series."
+    },
+    {
+      "id": "general-conjecture",
+      "title": "Generalized Conjecture",
+      "startLine": 168,
+      "endLine": 182,
+      "summary": "Erdős's general conjecture about products of slowly-growing sequences."
+    },
+    {
+      "id": "oeis",
+      "title": "The OEIS Constant",
+      "startLine": 184,
+      "endLine": 195,
+      "summary": "Bounds on erdosSum: between 3 and 4, approximately 3.5968."
+    },
+    {
+      "id": "explicit-sums",
+      "title": "Explicit Partial Sums",
+      "startLine": 197,
+      "endLine": 218,
+      "summary": "Verified theorems for first 1, 2, 3, 4, 5 terms."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #251, which asks whether Σ pₙ/2ⁿ is irrational. The sum converges to approximately 3.59686 (OEIS A098990), but its arithmetic nature remains unknown. We state the conjecture formally, axiomatize related results by Erdős, and verify explicit partial sums.",
+    "implications": "This problem connects several areas of mathematics:\n\n1. **Transcendence theory**: Understanding the arithmetic nature of explicit constants\n2. **Prime distribution**: The irregularity of primes makes irrationality proofs difficult\n3. **Series analysis**: Comparing with factorial denominators where irrationality is provable\n4. **Computational number theory**: The constant is computed to high precision but remains mysterious",
+    "openQuestions": [
+      "Is Σ pₙ/2ⁿ irrational? (The main conjecture)",
+      "Is Σ pₙᵏ/2ⁿ irrational for all k ≥ 1? (Erdős's generalization)",
+      "Is there a closed form for the sum?",
+      "What are the best rational approximations to the sum?"
+    ]
   }
 }

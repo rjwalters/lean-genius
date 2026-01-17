@@ -1,1 +1,253 @@
-[]
+[
+  {
+    "id": "ann-e541-header",
+    "proofId": "erdos-541",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #541** asks about the structure of sequences with uniform zero-sum behavior.\n\nGiven p residues modulo a prime p, suppose every nonempty zero-sum subset has the SAME cardinality r. Graham conjectured this forces at most 2 distinct residues in the sequence.\n\nThis was proved for large primes by Erdős-Szemerédi (1976) and for all moduli by Gao-Hamidoune-Wang (2010).",
+    "mathContext": "If ∀S⊆[p], S≠∅, Σᵢ∈S aᵢ≡0 (mod p) ⟹ |S|=r, then |{a₁,...,aₚ}| ≤ 2.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "erdos",
+      "zero-sum",
+      "graham-conjecture"
+    ]
+  },
+  {
+    "id": "ann-e541-imports",
+    "proofId": "erdos-541",
+    "range": {
+      "startLine": 20,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "We import Mathlib and enable classical logic. The key types used are:\n\n- **Fin p**: indices 1 to p\n- **ZMod p**: integers modulo p as a ring\n- **Finset**: finite sets for subset operations",
+    "mathContext": "Classical logic allows us to work with arbitrary predicates on sets without explicit decidability proofs.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "mathlib",
+      "classical-logic",
+      "ZMod"
+    ]
+  },
+  {
+    "id": "ann-e541-uniquelength",
+    "proofId": "erdos-541",
+    "range": {
+      "startLine": 34,
+      "endLine": 40
+    },
+    "type": "definition",
+    "title": "HasUniqueZeroSumLength",
+    "content": "**HasUniqueZeroSumLength(p, a, r)** captures the key constraint: every nonempty subset S with Σᵢ∈S aᵢ = 0 has exactly |S| = r elements.\n\nThis is a very strong uniformity condition. Most sequences have zero-sum subsets of varying sizes; having them all be the same size r is highly restrictive.",
+    "mathContext": "∀S : Finset(Fin p), S ≠ ∅ → (Σᵢ∈S aᵢ = 0) → S.card = r",
+    "significance": "critical",
+    "relatedConcepts": [
+      "zero-sum",
+      "cardinality",
+      "uniformity"
+    ]
+  },
+  {
+    "id": "ann-e541-someunique",
+    "proofId": "erdos-541",
+    "range": {
+      "startLine": 38,
+      "endLine": 40
+    },
+    "type": "definition",
+    "title": "HasSomeUniqueZeroSumLength",
+    "content": "**HasSomeUniqueZeroSumLength(p, a)** asserts there EXISTS some r with the uniformity property.\n\nThis is the hypothesis for Graham's conjecture: we don't specify what r is, just that all zero-sum subsets have the same cardinality.",
+    "mathContext": "∃r, HasUniqueZeroSumLength(p, a, r)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "existential",
+      "hypothesis"
+    ]
+  },
+  {
+    "id": "ann-e541-distinctcount",
+    "proofId": "erdos-541",
+    "range": {
+      "startLine": 42,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "Distinct Count",
+    "content": "**distinctCount(p, a)** counts how many distinct residues appear in the sequence.\n\nWe use `Set.range a` to get all values taken by a, then `ncard` for the cardinality. This is noncomputable since it involves supremum over potentially infinite sets (though here the range is finite).",
+    "mathContext": "distinctCount(p, a) = |{a(i) : i ∈ Fin p}| = (Set.range a).ncard",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Set.range",
+      "ncard",
+      "noncomputable"
+    ]
+  },
+  {
+    "id": "ann-e541-graham",
+    "proofId": "erdos-541",
+    "range": {
+      "startLine": 56,
+      "endLine": 68
+    },
+    "type": "theorem",
+    "title": "Graham's Conjecture",
+    "content": "**The Main Result**: If all nonempty zero-sum subsets have the same cardinality, then at most 2 distinct residues appear in the sequence.\n\nIntuitively: the uniformity constraint is so strong that it forces the sequence to be 'almost constant'. With 3+ distinct values, one could construct zero-sum subsets of different sizes.\n\nMarked with `sorry` as the full proof is complex.",
+    "mathContext": "HasSomeUniqueZeroSumLength(p, a) → distinctCount(p, a) ≤ 2",
+    "significance": "critical",
+    "relatedConcepts": [
+      "graham",
+      "main-theorem",
+      "sorry"
+    ]
+  },
+  {
+    "id": "ann-e541-erdosszemeredi",
+    "proofId": "erdos-541",
+    "range": {
+      "startLine": 74,
+      "endLine": 77
+    },
+    "type": "axiom",
+    "title": "Erdős-Szemerédi (1976)",
+    "content": "**For sufficiently large primes p**, Graham's conjecture holds.\n\nErdős and Szemerédi proved this using combinatorial arguments that work when p exceeds some threshold. The exact threshold depends on the proof technique.",
+    "mathContext": "∀ᶠ p in atTop, p.Prime → (HasSomeUniqueZeroSumLength p a → distinctCount p a ≤ 2)",
+    "significance": "critical",
+    "relatedConcepts": [
+      "erdos-szemeredi",
+      "1976",
+      "large-primes"
+    ]
+  },
+  {
+    "id": "ann-e541-gaohamidounewang",
+    "proofId": "erdos-541",
+    "range": {
+      "startLine": 79,
+      "endLine": 83
+    },
+    "type": "axiom",
+    "title": "Gao-Hamidoune-Wang (2010)",
+    "content": "**The Full Result**: Graham's conjecture holds for ALL moduli n, not just primes!\n\nThis 2010 result generalized beyond the prime case, showing the phenomenon is arithmetic rather than purely prime-specific. The proof uses deep techniques from additive combinatorics.",
+    "mathContext": "∀n, HasSomeUniqueZeroSumLength(n, a) → distinctCount(n, a) ≤ 2",
+    "significance": "critical",
+    "relatedConcepts": [
+      "gao-hamidoune-wang",
+      "2010",
+      "generalization"
+    ]
+  },
+  {
+    "id": "ann-e541-constant-example",
+    "proofId": "erdos-541",
+    "range": {
+      "startLine": 91,
+      "endLine": 98
+    },
+    "type": "theorem",
+    "title": "Constant Sequence Example",
+    "content": "**The trivial case**: if a₁ = a₂ = ... = aₚ = c (all the same), then distinctCount ≤ 1.\n\nFor constant sequences, Σᵢ∈S aᵢ = |S|·c ≡ 0 iff |S| ≡ 0 mod ord(c). All zero-sum subsets have cardinality divisible by the order of c.",
+    "mathContext": "distinctCount(p, λ_ ↦ c) = |{c}| = 1 ≤ 1",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "constant",
+      "trivial-case",
+      "example"
+    ]
+  },
+  {
+    "id": "ann-e541-twovalue-example",
+    "proofId": "erdos-541",
+    "range": {
+      "startLine": 100,
+      "endLine": 118
+    },
+    "type": "theorem",
+    "title": "Two-Value Example",
+    "content": "**Two distinct values also work**: alternating between c and d gives distinctCount ≤ 2.\n\nThe proof shows the range is contained in {c, d}, then uses Set.ncard properties to bound the cardinality.\n\nNote: this doesn't prove the sequence HAS the unique zero-sum length property, just that if it did, distinctCount ≤ 2 would hold.",
+    "mathContext": "range(λi ↦ if i%2=0 then c else d) ⊆ {c,d} → ncard ≤ 2",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "two-values",
+      "alternating",
+      "ncard"
+    ]
+  },
+  {
+    "id": "ann-e541-keyinsight",
+    "proofId": "erdos-541",
+    "range": {
+      "startLine": 119,
+      "endLine": 132
+    },
+    "type": "concept",
+    "title": "Why 3+ Values Fail",
+    "content": "**The Key Insight**: With 3 or more distinct values {a, b, c}, one can construct zero-sum subsets of DIFFERENT cardinalities.\n\nThe argument involves:\n1. Using copies of a alone (if a·k ≡ 0)\n2. Mixing a's and b's in different proportions\n3. Introducing c's to create new combinations\n\nThese lead to zero-sums of varying sizes, contradicting the uniformity hypothesis.",
+    "mathContext": "3+ distinct values → ∃S,T with Σᵢ∈S aᵢ = Σᵢ∈T aᵢ = 0 but |S| ≠ |T|",
+    "significance": "critical",
+    "relatedConcepts": [
+      "combinatorics",
+      "contradiction",
+      "structure"
+    ]
+  },
+  {
+    "id": "ann-e541-zerosumexists",
+    "proofId": "erdos-541",
+    "range": {
+      "startLine": 134,
+      "endLine": 141
+    },
+    "type": "theorem",
+    "title": "Zero-Sum Existence (Olson)",
+    "content": "**Zero-sum subsequences always exist** in Z/pZ by the pigeonhole principle.\n\nConsider partial sums s₀=0, s₁=a₁, s₂=a₁+a₂, ..., sₚ=Σaᵢ. These p+1 values in Z/pZ (which has p elements) must have a collision: sᵢ = sⱼ for some i < j. Then Σₖ∈{i+1,...,j} aₖ = sⱼ - sᵢ = 0.\n\nMarked `sorry` as the detailed proof is nontrivial.",
+    "mathContext": "∃S ⊆ Fin(p), S ≠ ∅ ∧ Σᵢ∈S aᵢ = 0",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "olson",
+      "pigeonhole",
+      "partial-sums"
+    ]
+  },
+  {
+    "id": "ann-e541-historical",
+    "proofId": "erdos-541",
+    "range": {
+      "startLine": 143,
+      "endLine": 158
+    },
+    "type": "concept",
+    "title": "Historical Context",
+    "content": "**Zero-Sum Theory**: This problem belongs to additive combinatorics, studying when subsets of abelian groups must contain zero-sum subsequences.\n\n**Key Results**:\n- **Davenport constant**: minimum length ensuring zero-sum exists\n- **Erdős-Ginzburg-Ziv (1961)**: 2n-1 integers contain n with sum ≡ 0 (mod n)\n- **Olson's work**: bounds on zero-sum subsequence lengths\n\nGraham's question captures an extremal phenomenon: strong uniformity forces simplicity.",
+    "mathContext": "Zero-sum theory: when must subsets of (Z/nZ)^k contain zero-sum subsequences?",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "davenport-constant",
+      "additive-combinatorics",
+      "history"
+    ]
+  },
+  {
+    "id": "ann-e541-egz",
+    "proofId": "erdos-541",
+    "range": {
+      "startLine": 160,
+      "endLine": 162
+    },
+    "type": "axiom",
+    "title": "Erdős-Ginzburg-Ziv Theorem",
+    "content": "**The EGZ Theorem (1961)**: Among any 2n-1 integers, some n of them have sum divisible by n.\n\nThis is a foundational result in zero-sum theory. It's tight: 2n-2 integers may avoid having n sum to 0 mod n (e.g., n-1 copies of 0 and n-1 copies of 1).\n\nStated as an axiom since the proof is nontrivial.",
+    "mathContext": "∀a : Fin(2n-1) → ZMod(n), ∃S with |S|=n and Σᵢ∈S aᵢ = 0",
+    "significance": "critical",
+    "relatedConcepts": [
+      "egz",
+      "1961",
+      "fundamental"
+    ]
+  }
+]

@@ -1965,17 +1965,24 @@
   },
   {
     "id": "erdos-1101",
-    "title": "Erdős Problem #1101",
+    "title": "Erdős Problem #1101: Good Sequences and Gaps in Sieved Integers",
     "slug": "erdos-1101",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a sequence of integers such that ... for all ... and ... then let ... be the sequence of integers which are not div...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Given a pairwise coprime sequence u with convergent reciprocal series, when do the integers not divisible by any uᵢ have gaps bounded by the product formula?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "sieve-theory",
+      "sequences",
+      "gaps",
+      "asymptotics"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 1101,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-1102",
@@ -5009,17 +5016,23 @@
   },
   {
     "id": "erdos-32",
-    "title": "Erdős Problem #32",
+    "title": "Erdős Problem #32: Additive Complements of Primes",
     "slug": "erdos-32",
-    "description": "Is there a set ... such that\\[\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert = o((\\log N)^2)\\]and such that every large integer can be written as ... for some prime ... and ...? Can the bound ... be achieved? Mu...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is there a set A with |A ∩ [1,N]| = o((log N)²) such that every large integer is p + a for prime p and a ∈ A? Partially solved: Ruzsa proved O(ω(N)·log N) is achievable and Ω(e^γ·log N) is necessary. The $50 question of whether O(log N) is achievable remains OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "prime-number-theory",
+      "density-bounds"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 32,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 14
   },
   {
     "id": "erdos-320",
@@ -6475,17 +6488,21 @@
   },
   {
     "id": "erdos-458",
-    "title": "Erdős Problem #458",
+    "title": "LCM Inequality for Primes",
     "slug": "erdos-458",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the least common multiple of .... Is it true that, for all ...,\\[[1,\\ldots,p_{k+1}-1]< p_k[1,\\ldots,p_k]?\\]\n\n\n...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let lcm(1,...,n) denote the least common multiple of {1,...,n}. Is it true that for all k ≥ 1, lcm(1,...,p_{k+1}-1) < p_k · lcm(1,...,p_k)? Erdős and Graham call this 'almost certainly' true, but proving it requires something close to Legendre's conjecture.",
+    "status": "axiom",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "lcm",
+      "primes",
+      "open-problem"
     ],
     "erdosNumber": 458,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 9
   },
   {
     "id": "erdos-459",
@@ -6531,17 +6548,24 @@
   },
   {
     "id": "erdos-470",
-    "title": "Erdős Problem #470",
+    "title": "Erdős Problem #470: Weird Numbers",
     "slug": "erdos-470",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall ... weird if ... and ... is not pseudoperfect, that is, it is not the sum of any set of its divisors.\n\nAre there any odd...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "A number n is called weird if σ(n) ≥ 2n (abundant) but n is not pseudoperfect (cannot be expressed as the sum of any subset of its proper divisors). Erdős asked two OPEN questions: (1) Are there any odd weird numbers? (2) Are there infinitely many primitive weird numbers?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisor-sum",
+      "weird-numbers",
+      "pseudoperfect",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 470,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 17
   },
   {
     "id": "erdos-471",
@@ -8471,17 +8495,22 @@
   },
   {
     "id": "erdos-643",
-    "title": "Erdős Problem #643",
+    "title": "Erdős Problem #643: Crossed Pairs in Hypergraphs",
     "slug": "erdos-643",
-    "description": "Let f(n;t)\" role=\"presentation\" style=\"position: relative;\">f(n;t)f(n;t)f(n;t) be minimal such that if a t\" role=\"presentation\" style=\"position: relative;\">ttt-uniform hypergraph on n\" role=\"presen...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f(n;t) be the minimal number of edges such that any t-uniform hypergraph on n vertices must contain four edges A,B,C,D with A∪B = C∪D and A∩B = C∩D = ∅. Conjecture: f(n;t) = (1+o(1))·C(n,t-1) for t≥3.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "hypergraphs",
+      "extremal-combinatorics",
+      "open-problem"
     ],
     "erdosNumber": 643,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 10,
+    "annotationCount": 12
   },
   {
     "id": "erdos-644",
@@ -8527,17 +8556,22 @@
   },
   {
     "id": "erdos-647",
-    "title": "Erdős Problem #647",
+    "title": "Erdős Problem #647: Divisor Function Gap Problem",
     "slug": "erdos-647",
-    "description": "Let &#x03C4;(n)\" role=\"presentation\" style=\"position: relative;\">τ(n)τ(n)\\tau(n) count the number of divisors of n\" role=\"presentation\" style=\"position: relative;\">nnn. Is there some n&gt;24\" role=...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let τ(n) count divisors of n. Is there n > 24 such that max_{m<n}(m + τ(m)) ≤ n + 2? The case n = 24 works, but Erdős doubted any larger n exists. Prize: £25 (~$44).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisor-function",
+      "highly-composite",
+      "open-problem"
     ],
     "erdosNumber": 647,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 2,
+    "annotationCount": 12
   },
   {
     "id": "erdos-648",

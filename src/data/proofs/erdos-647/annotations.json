@@ -1,1 +1,217 @@
-[]
+[
+  {
+    "id": "ann-e647-header",
+    "proofId": "erdos-647",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #647** asks: Is there n > 24 such that max_{m<n}(m + τ(m)) ≤ n + 2?\n\nThe case n = 24 is known to work. Erdős offered £25 (~$44) for finding any larger n, while expressing doubt that one exists.\n\nThe problem connects the divisor function τ(n) to a subtle gap property.",
+    "mathContext": "τ(n) = |{d : d | n}|. The Erdős condition: ∀m<n, m + τ(m) ≤ n + 2.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "erdos",
+      "divisor-function",
+      "open-problem"
+    ]
+  },
+  {
+    "id": "ann-e647-tau",
+    "proofId": "erdos-647",
+    "range": {
+      "startLine": 28,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "The Divisor Function τ",
+    "content": "**τ(n)** counts the positive divisors of n. It's one of the most fundamental functions in number theory.\n\nExamples verified:\n- τ(1) = 1\n- τ(2) = 2 (prime)\n- τ(6) = 4 (1,2,3,6)\n- τ(12) = 6 (1,2,3,4,6,12)\n- τ(24) = 8 (highly composite)",
+    "mathContext": "For n = p₁^a₁ ⋯ pₖ^aₖ, we have τ(n) = (a₁+1)⋯(aₖ+1).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "divisors",
+      "multiplicative",
+      "native-decide"
+    ]
+  },
+  {
+    "id": "ann-e647-mplustau",
+    "proofId": "erdos-647",
+    "range": {
+      "startLine": 52,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "The Quantity m + τ(m)",
+    "content": "**mPlusTau(m)** = m + τ(m) is the key quantity being maximized.\n\nSome computed values:\n- mPlusTau(12) = 18\n- mPlusTau(20) = 26\n- mPlusTau(22) = 26\n- mPlusTau(23) = 25\n- mPlusTau(24) = 32",
+    "mathContext": "The problem asks when max_{m<n}(mPlusTau(m)) ≤ n + 2.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "maximum",
+      "native-decide"
+    ]
+  },
+  {
+    "id": "ann-e647-condition",
+    "proofId": "erdos-647",
+    "range": {
+      "startLine": 68,
+      "endLine": 93
+    },
+    "type": "definition",
+    "title": "The Erdős Condition",
+    "content": "**ErdosCondition(n)** holds iff for ALL m < n, m + τ(m) ≤ n + 2.\n\nTwo equivalent formulations:\n1. Universal: ∀m<n, mPlusTau(m) ≤ n+2\n2. Supremum: (range n).sup mPlusTau ≤ n+2\n\nWe prove these are equivalent for n > 0.",
+    "mathContext": "The condition is strong: every smaller m must have bounded m + τ(m).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "universal",
+      "supremum",
+      "finset"
+    ]
+  },
+  {
+    "id": "ann-e647-n24",
+    "proofId": "erdos-647",
+    "range": {
+      "startLine": 95,
+      "endLine": 113
+    },
+    "type": "theorem",
+    "title": "n = 24 Satisfies the Condition",
+    "content": "**Machine-verified**: For all m < 24, m + τ(m) ≤ 26.\n\nThe proof uses `interval_cases m` to enumerate all 24 cases, then `native_decide` to verify each inequality computationally.\n\nKey boundary cases:\n- m = 20: 20 + 6 = 26 ≤ 26 ✓\n- m = 22: 22 + 4 = 26 ≤ 26 ✓\n- m = 23: 23 + 2 = 25 ≤ 26 ✓",
+    "mathContext": "n = 24 is the largest known value satisfying the Erdős condition.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "interval-cases",
+      "native-decide",
+      "verification"
+    ]
+  },
+  {
+    "id": "ann-e647-fails",
+    "proofId": "erdos-647",
+    "range": {
+      "startLine": 115,
+      "endLine": 146
+    },
+    "type": "theorem",
+    "title": "Why n = 25 and n = 26 Fail",
+    "content": "**n = 25 fails**: m = 24 gives 24 + 8 = 32 > 27 = 25 + 2.\n\n**n = 26 fails**: Same obstruction, 32 > 28.\n\n**n = 7 fails**: m = 6 gives 6 + 4 = 10 > 9 = 7 + 2.\n\nThe highly composite number 24 with its large τ(24) = 8 creates an obstruction for all n in [25, 29].",
+    "mathContext": "mPlusTau(24) = 32 blocks all n with n + 2 < 32, i.e., n < 30.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "obstruction",
+      "highly-composite",
+      "omega"
+    ]
+  },
+  {
+    "id": "ann-e647-question",
+    "proofId": "erdos-647",
+    "range": {
+      "startLine": 148,
+      "endLine": 167
+    },
+    "type": "axiom",
+    "title": "The Main Open Question",
+    "content": "**Erdős Problem #647** (OPEN): Does there exist n > 24 satisfying the Erdős condition?\n\nErdős offered £25 for finding such an n, while describing it as 'extremely doubtful'.\n\nThe set of all solutions is defined, with 24 confirmed as a member.",
+    "mathContext": "Erdos647Question: ∃n>24, ErdosCondition(n). Status: OPEN.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open-problem",
+      "prize",
+      "axiom"
+    ]
+  },
+  {
+    "id": "ann-e647-asymptotic",
+    "proofId": "erdos-647",
+    "range": {
+      "startLine": 169,
+      "endLine": 188
+    },
+    "type": "theorem",
+    "title": "Erdős's Asymptotic Conjecture",
+    "content": "**Conjecture**: max_{m<n}(m + τ(m)) - n → ∞ as n → ∞.\n\nIf true, this implies only finitely many solutions exist (eventually the excess exceeds 2).\n\nThe excess function measures how much the maximum overshoots n.",
+    "mathContext": "excess(n) = (range n).sup mPlusTau - n. Conjecture: excess → ∞.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "asymptotic",
+      "tendsto",
+      "finite"
+    ]
+  },
+  {
+    "id": "ann-e647-hc",
+    "proofId": "erdos-647",
+    "range": {
+      "startLine": 190,
+      "endLine": 222
+    },
+    "type": "definition",
+    "title": "Highly Composite Numbers",
+    "content": "**IsHighlyComposite(n)** holds if n has more divisors than all smaller numbers.\n\nVerified examples: 1, 2, 4, 6, 12, 24 are all highly composite.\n\n24 is the 6th highly composite number with τ(24) = 8.\n\nThese numbers are the key obstructions—their large τ values create shadows blocking nearby n from satisfying the condition.",
+    "mathContext": "HC sequence: 1, 2, 4, 6, 12, 24, 36, 48, 60, 120, ...",
+    "significance": "critical",
+    "relatedConcepts": [
+      "highly-composite",
+      "obstruction",
+      "Ramanujan"
+    ]
+  },
+  {
+    "id": "ann-e647-obstruction",
+    "proofId": "erdos-647",
+    "range": {
+      "startLine": 224,
+      "endLine": 246
+    },
+    "type": "theorem",
+    "title": "The Obstruction Mechanism",
+    "content": "**Key Insight**: If m + τ(m) > n + 2 for some m < n, then ErdosCondition(n) fails.\n\nHighly composite numbers create 'shadows'—each HC number hc with large τ(hc) blocks all n in the range [hc+1, hc+τ(hc)-3].\n\n24 + τ(24) = 32 is the critical obstruction for n > 24.",
+    "mathContext": "Once mPlusTau(m) > n + 2, no recovery is possible for that n.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "obstruction",
+      "shadow",
+      "blocking"
+    ]
+  },
+  {
+    "id": "ann-e647-omega",
+    "proofId": "erdos-647",
+    "range": {
+      "startLine": 248,
+      "endLine": 271
+    },
+    "type": "definition",
+    "title": "The ω Function (Distinct Prime Factors)",
+    "content": "**ω(n)** counts the number of distinct prime factors of n.\n\nExamples:\n- ω(1) = 0\n- ω(6) = 2 (primes 2, 3)\n- ω(12) = 2 (primes 2, 3)\n- ω(24) = 2 (primes 2, 3)\n\nNote: τ(n) ≥ 2^ω(n) always, with equality when all exponents are 1.",
+    "mathContext": "ω(n) = |{p prime : p | n}|. Related: Ω(n) counts with multiplicity.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "prime-factors",
+      "omega",
+      "Omega"
+    ]
+  },
+  {
+    "id": "ann-e647-related",
+    "proofId": "erdos-647",
+    "range": {
+      "startLine": 270,
+      "endLine": 284
+    },
+    "type": "definition",
+    "title": "Connection to Problem #679",
+    "content": "**Problem #679** is stronger: uses 2^ω(m) instead of τ(m).\n\nSince τ(m) ≥ 2^ω(m), solutions to #679 automatically solve #647.\n\n**Problems #413 and #248** are weaker variants noted by Terence Tao.",
+    "mathContext": "τ(m) = Π(aᵢ+1) ≥ Π2 = 2^ω(m) since each aᵢ ≥ 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "erdos-679",
+      "implication",
+      "tao"
+    ]
+  }
+]

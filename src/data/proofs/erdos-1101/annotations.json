@@ -1,1 +1,193 @@
-[]
+[
+  {
+    "id": "ann-e1101-header",
+    "proofId": "erdos-1101",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdős Problem #1101 asks about 'good' sequences of pairwise coprime integers. Given such a sequence u with convergent reciprocal series, the integers not divisible by any uᵢ form a sparse set A. Erdős defined u as 'good' if gaps in A match the theoretical bound from sieve theory.\n\nThe two main questions:\n1. Can a good sequence have polynomial growth? (Conjectured NO)\n2. Can a good sequence have sub-exponential growth? (Conjectured YES)",
+    "mathContext": "This connects sieve theory with questions about multiplicative sequences. The 'density' of A is ∏(1-1/uᵢ), and sieve theory shows gaps are at least (1+o(1))·tₓ·∏(1-1/uᵢ)⁻¹.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "sieve theory",
+      "coprime sequences",
+      "gap bounds"
+    ]
+  },
+  {
+    "id": "ann-e1101-imports",
+    "proofId": "erdos-1101",
+    "range": {
+      "startLine": 26,
+      "endLine": 30
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import all of Mathlib for access to **Nat.nth** (enumerating elements satisfying a predicate), **Summable** (convergent series), **StrictMono** (strictly increasing functions), and **Nat.Coprime** (coprimality).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "enumeration",
+      "series"
+    ]
+  },
+  {
+    "id": "ann-e1101-aset",
+    "proofId": "erdos-1101",
+    "range": {
+      "startLine": 39,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "The Sieved Set A",
+    "content": "**ASet u** contains all positive integers not divisible by any term of u. This is the set of integers that 'survive' the sieve defined by u.\n\nFor example, if u = {2, 3, 5, ...} (all primes), then ASet u = {1} since every integer > 1 is divisible by some prime.",
+    "mathContext": "In formal notation: ASet(u) = {a ∈ ℕ : ∀i, uᵢ ∤ a}",
+    "significance": "key",
+    "relatedConcepts": [
+      "sieve",
+      "divisibility",
+      "survivor set"
+    ]
+  },
+  {
+    "id": "ann-e1101-enumeration",
+    "proofId": "erdos-1101",
+    "range": {
+      "startLine": 44,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "Enumeration Function A",
+    "content": "**A u n** gives the (n+1)-th element of ASet u in increasing order, using Mathlib's **Nat.nth** function.\n\nThis lets us talk about gaps between consecutive elements: the gap at position k is A(k+1) - A(k).",
+    "significance": "key",
+    "relatedConcepts": [
+      "enumeration",
+      "gaps",
+      "ordering"
+    ]
+  },
+  {
+    "id": "ann-e1101-index",
+    "proofId": "erdos-1101",
+    "range": {
+      "startLine": 49,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "The Product Index t",
+    "content": "The index **t u x** is the largest k such that u₀·u₁·...·u_{k-1} ≤ x. This measures how many terms of u have cumulative product at most x.\n\nIt appears in the gap bound formula and connects multiplicative structure (products) to additive structure (gaps).",
+    "mathContext": "Formally: t(x) = max{k : ∏ᵢ₌₀ᵏ⁻¹ uᵢ ≤ x}",
+    "significance": "key",
+    "relatedConcepts": [
+      "product index",
+      "cumulative product"
+    ]
+  },
+  {
+    "id": "ann-e1101-isgood",
+    "proofId": "erdos-1101",
+    "range": {
+      "startLine": 64,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "The Good Sequence Predicate",
+    "content": "A sequence u is **'good'** if it satisfies four conditions:\n1. Strictly increasing\n2. Pairwise coprime\n3. Convergent reciprocal series Σ1/uᵢ < ∞\n4. Gaps in A are bounded above by (1+ε)·t·∏(1-1/uᵢ)⁻¹ for any ε > 0 and large x\n\nThe fourth condition says gaps are essentially optimal—matching the sieve theory lower bound.",
+    "mathContext": "The gap bound formula connects the multiplicative structure of u (through the product formula) with the additive structure of A (through gaps).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "good sequence",
+      "gap bound",
+      "sieve theory"
+    ]
+  },
+  {
+    "id": "ann-e1101-no-polynomial",
+    "proofId": "erdos-1101",
+    "range": {
+      "startLine": 85,
+      "endLine": 90
+    },
+    "type": "axiom",
+    "title": "Conjecture 1: No Polynomial Growth",
+    "content": "Erdős conjectured that **NO good sequence can have polynomial growth** uₙ = O(n^k).\n\nThe intuition is that polynomial-growth sequences don't have enough 'room' between their terms to satisfy the gap bound. This is axiomatized because it remains an **OPEN problem**.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "polynomial growth",
+      "conjecture",
+      "open problem"
+    ]
+  },
+  {
+    "id": "ann-e1101-yes-subexp",
+    "proofId": "erdos-1101",
+    "range": {
+      "startLine": 92,
+      "endLine": 98
+    },
+    "type": "axiom",
+    "title": "Conjecture 2: Sub-exponential Growth Possible",
+    "content": "Erdős conjectured that there **IS** a good sequence with sub-exponential growth: log(uₙ) = o(n).\n\nThis means uₙ grows slower than any exponential e^(cn). The gap between polynomial (too slow) and sub-exponential (achievable) is the heart of the problem.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "sub-exponential",
+      "growth rate",
+      "conjecture"
+    ]
+  },
+  {
+    "id": "ann-e1101-existence",
+    "proofId": "erdos-1101",
+    "range": {
+      "startLine": 107,
+      "endLine": 111
+    },
+    "type": "axiom",
+    "title": "Erdős's Existence Theorem",
+    "content": "Erdős proved that **SOME good sequence exists**—specifically, the sequence of all primes works.\n\nThis establishes that the 'good' condition is not vacuous. However, the primes grow like n log n (slower than any polynomial n^(1+ε)), so this doesn't resolve the growth rate questions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "existence",
+      "primes",
+      "known result"
+    ]
+  },
+  {
+    "id": "ann-e1101-sieve-bound",
+    "proofId": "erdos-1101",
+    "range": {
+      "startLine": 113,
+      "endLine": 121
+    },
+    "type": "axiom",
+    "title": "Sieve Theory Lower Bound",
+    "content": "Classical sieve theory shows that gaps in A must be **at least** (1+o(1))·t·∏(1-1/uᵢ)⁻¹.\n\nThis is the lower bound matching the upper bound in the 'good' definition. The 'good' condition asks when this bound is essentially tight.",
+    "mathContext": "Sieve methods give lower bounds on gaps by counting integers in intervals that survive the sieve. The product formula gives the expected density.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sieve theory",
+      "lower bound",
+      "density"
+    ]
+  },
+  {
+    "id": "ann-e1101-prime-squares",
+    "proofId": "erdos-1101",
+    "range": {
+      "startLine": 131,
+      "endLine": 137
+    },
+    "type": "definition",
+    "title": "Connection to Problem #208",
+    "content": "**Problem #208** (strong form) asks whether the sequence of prime squares uᵢ = pᵢ² is good.\n\nSince pₙ ~ n log n, we have pₙ² ~ n² log² n, which is polynomial growth. If prime squares form a good sequence, **Conjecture 1 is FALSE**. This makes Problem #208 a key test case.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime squares",
+      "Problem #208",
+      "test case"
+    ]
+  }
+]

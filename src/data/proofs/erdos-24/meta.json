@@ -1,33 +1,125 @@
 {
   "id": "erdos-24",
-  "title": "Erdős Problem #24",
+  "title": "Erdős Problem #24: Pentagons in Triangle-Free Graphs",
   "slug": "erdos-24",
-  "description": "Does every triangle-free graph on ... vertices contain at most ... copies of ...? Győri proved this with ..., which has been improved by Füredi. The answer is yes, as proved independently by Grzesi...",
+  "description": "Does every triangle-free graph on 5n vertices contain at most n^5 copies of C5? Yes! Proved independently by Grzesik (2012) and Hatami et al. (2013) using flag algebras.",
   "meta": {
-    "author": "Unknown",
+    "author": "Grzesik (2012), Hatami-Hladký-Král-Norine-Razborov (2013)",
     "sourceUrl": "https://erdosproblems.com/24",
-    "date": "",
-    "status": "pending",
+    "date": "2012-2013",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos24Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "flag-algebras",
+      "cycle-counting"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 24,
     "erdosUrl": "https://erdosproblems.com/24",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graphs with symmetric, irreflexive adjacency",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "CliqueFree",
+        "description": "Predicate for graphs without cliques of given size",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Fintype.card_prod",
+        "description": "Cardinality of product types",
+        "module": "Mathlib.Data.Fintype.Card"
+      }
+    ],
+    "originalContributions": [
+      "Definition of IsTriangleFree as CliqueFree 3",
+      "Construction of cycleGraph5 (C5) with explicit adjacency",
+      "Definition of IsC5Copy for cycle embeddings",
+      "Construction of balancedBlowupC5: the extremal graph",
+      "Axiomatization of Grzesik-Hatami pentagon theorem",
+      "Statement of Erdős's general conjecture for odd r-cycles"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #24 from erdosproblems.com.",
-    "problemStatement": "Does every triangle-free graph on $5n$ vertices contain at most $n^5$ copies of $C_5$? Győri proved this with $1.03n^5$, which has been improved by Füredi. The answer is yes, as proved independently by Grzesik [Gr12] and Hatami, Hladky, Král, Norine, and Razborov [HHKNR13]. In [Er92b] and [Er97f] Erdős asks more generally: if $r\\geq 5$ is odd and a graph has $rn$ vertices and the smallest odd cycle has size $r$ then is the number of cycles of size $r$ at most $n^{r}$? View the LaTeX source",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #24, proposed in 1984, asks for the maximum number of 5-cycles (pentagons) in a triangle-free graph. The problem remained open for nearly three decades.\n\nEarly progress came from Győri, who proved an upper bound of 1.03n^5, later improved by Füredi. The breakthrough came in 2012 when Grzesik and independently Hatami, Hladký, Král, Norine, and Razborov proved the sharp bound using Razborov's flag algebras method.\n\nThe extremal graph is the balanced blow-up of C5: partition 5n vertices into 5 groups of n each, and connect groups according to the pentagon pattern. This construction achieves exactly n^5 copies of C5.\n\nErdős also asked a more general question: for odd r >= 5, if a graph on rn vertices has girth r (smallest odd cycle has length r), is the number of r-cycles at most n^r? This remains open for r > 5.",
+    "problemStatement": "Does every triangle-free graph on $5n$ vertices contain at most $n^5$ copies of $C_5$?\n\n**Status**: SOLVED (affirmative)\n\n**The Bound**: For any triangle-free graph $G$ on $5n$ vertices,\n$$|\\{\\text{copies of } C_5 \\text{ in } G\\}| \\leq n^5$$\n\n**Extremal Graph**: The balanced blow-up of $C_5$ achieves equality. This graph has 5 independent sets of $n$ vertices each, with edges following the pentagon pattern.",
+    "proofStrategy": "We formalize the problem and its solution:\n\n1. **Define triangle-free**: A graph is triangle-free if CliqueFree 3\n2. **Construct C5**: The 5-cycle with explicit adjacency relation\n3. **Define C5 copies**: Injective graph homomorphisms from C5 to G\n4. **Construct extremal graph**: balancedBlowupC5 n with 5n vertices\n5. **State main theorem**: countC5 G ≤ n^5 for triangle-free G on 5n vertices\n6. **Prove extremality**: balancedBlowupC5 achieves exactly n^5 copies\n7. **State generalization**: Erdős's conjecture for odd r-cycles",
+    "keyInsights": [
+      "**Flag algebras**: The proof uses Razborov's flag algebras, a powerful method that converts extremal graph theory problems into semidefinite programs. The computer-assisted verification made the proof possible.",
+      "**The extremal graph**: The balanced blow-up of C5 is the unique extremal graph. Vertices are partitioned into 5 groups following the pentagon adjacency pattern. Any deviation reduces the C5 count.",
+      "**Why triangle-free matters**: Triangles (K3) would create local density that interferes with the optimal pentagon structure. Triangle-freeness forces the graph toward the pentagon-like structure.",
+      "**The 10-fold symmetry**: Each C5 can be traced starting from any of 5 vertices, in either direction, giving 10 orderings. The count divides by 10 for unordered copies.",
+      "**Generalization remains open**: For r > 5, whether graphs of girth r on rn vertices have at most n^r copies of Cr is unknown. The flag algebras approach becomes more complex for larger cycles."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Problem statement, status (SOLVED), key results, and references."
+    },
+    {
+      "id": "core-defs",
+      "title": "Core Definitions",
+      "startLine": 41,
+      "endLine": 88,
+      "summary": "IsTriangleFree, cycleGraph5, IsC5Copy, and countC5 definitions."
+    },
+    {
+      "id": "blowup",
+      "title": "The Blow-Up Construction",
+      "startLine": 90,
+      "endLine": 131,
+      "summary": "balancedBlowupC5 extremal graph and its properties."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 133,
+      "endLine": 171,
+      "summary": "Grzesik-Hatami pentagon theorem and uniqueness of extremal."
+    },
+    {
+      "id": "historical",
+      "title": "Historical Progress",
+      "startLine": 173,
+      "endLine": 189,
+      "summary": "Győri's earlier 1.03n^5 bound."
+    },
+    {
+      "id": "generalization",
+      "title": "Erdős's Generalization",
+      "startLine": 191,
+      "endLine": 222,
+      "summary": "General conjecture for odd r-cycles (open for r > 5)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 224,
+      "endLine": 259,
+      "summary": "Main theorem statement and extremal existence."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #24, the pentagon problem in triangle-free graphs. The problem is SOLVED: every triangle-free graph on 5n vertices contains at most n^5 copies of C5. The bound is tight, achieved by the balanced blow-up of C5. The proof uses Razborov's flag algebras, a computer-assisted method for extremal combinatorics.",
+    "implications": "This result has several implications:\n\n1. **Flag algebras power**: Demonstrates that flag algebras can solve long-standing extremal problems\n2. **Unique extremal structure**: The pentagon blow-up is the only way to maximize C5 in triangle-free graphs\n3. **Template for generalizations**: Similar techniques may apply to other cycle-counting problems\n4. **Connection to Turán theory**: Extends classical extremal graph theory to subgraph counting",
+    "openQuestions": [
+      "For odd r > 5, does girth-r on rn vertices imply at most n^r copies of Cr?",
+      "What is the maximum C5 count for graphs with chromatic number k?",
+      "Can the flag algebras proof be simplified or made fully constructive?",
+      "What about weighted versions of the problem?"
+    ]
   }
 }

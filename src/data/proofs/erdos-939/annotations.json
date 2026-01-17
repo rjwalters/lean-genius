@@ -1,1 +1,250 @@
-[]
+[
+  {
+    "id": "ann-e939-header",
+    "proofId": "erdos-939",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #939** explores the additive structure of r-powerful numbers.\n\nA number n is **r-powerful** (or r-full) if whenever a prime p divides n, we have p^r dividing n. For example, 8 = 2³ is 3-powerful, and 32 = 2⁵ is 5-powerful.\n\nThe main question: for r ≥ 4, can r-2 coprime r-powerful numbers sum to another r-powerful number?",
+    "mathContext": "IsRPowerful(r,n) ⟺ ∀p prime, p|n → p^r|n. The question asks about existence of valid sums.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "erdos",
+      "powerful-numbers",
+      "open-problem"
+    ]
+  },
+  {
+    "id": "ann-e939-imports",
+    "proofId": "erdos-939",
+    "range": {
+      "startLine": 26,
+      "endLine": 30
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "We import Mathlib for number-theoretic definitions and enable classical logic for decidability in set operations.\n\nThe key Mathlib theorems used are `Nat.Prime.dvd_of_dvd_pow` (prime divisibility propagation) and `Finset.gcd` (GCD over finite sets).",
+    "mathContext": "Classical logic enables working with arbitrary propositions as if they were decidable.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "mathlib",
+      "classical-logic"
+    ]
+  },
+  {
+    "id": "ann-e939-rpowerful",
+    "proofId": "erdos-939",
+    "range": {
+      "startLine": 40,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "r-Powerful Numbers",
+    "content": "**IsRPowerful(r, n)** holds when every prime factor of n appears with exponent at least r.\n\nExamples:\n- 1 is r-powerful for all r (vacuously)\n- 8 = 2³ is 3-powerful (exponent 3 ≥ 3)\n- 12 = 2² × 3 is NOT 3-powerful (exponent 2 < 3)\n\nA **coprime finset** has GCD 1 across all elements.",
+    "mathContext": "IsRPowerful r n ⟺ ∀p, p.Prime → p∣n → p^r∣n. FinsetCoprime S ⟺ S.gcd id = 1.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "prime-factorization",
+      "divisibility",
+      "coprime"
+    ]
+  },
+  {
+    "id": "ann-e939-eight",
+    "proofId": "erdos-939",
+    "range": {
+      "startLine": 49,
+      "endLine": 57
+    },
+    "type": "theorem",
+    "title": "8 is 3-Powerful",
+    "content": "**8 = 2³** is 3-powerful because its only prime factor is 2, with exponent 3.\n\nThe proof works by showing any prime p dividing 8 must equal 2 (using divisibility bounds and primality), then noting 2³ = 8 divides itself.",
+    "mathContext": "If p|8 and p prime, then p|2 (since 8 = 2³), so p ≤ 2 and p ≥ 2, forcing p = 2.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "verification",
+      "omega",
+      "prime-divisibility"
+    ]
+  },
+  {
+    "id": "ann-e939-twentyseven",
+    "proofId": "erdos-939",
+    "range": {
+      "startLine": 59,
+      "endLine": 71
+    },
+    "type": "theorem",
+    "title": "27 is 3-Powerful",
+    "content": "**27 = 3³** is 3-powerful because its only prime factor is 3, with exponent 3.\n\nThe proof shows any prime p dividing 27 must equal 3 (by bounds and ruling out p = 2), then 3³ = 27 trivially divides itself.",
+    "mathContext": "If p|27 and p prime, then p|3, so p ≤ 3 and p ≥ 2, and p ≠ 2 (since 2∤3), so p = 3.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "verification",
+      "omega"
+    ]
+  },
+  {
+    "id": "ann-e939-thirtytwo",
+    "proofId": "erdos-939",
+    "range": {
+      "startLine": 73,
+      "endLine": 81
+    },
+    "type": "theorem",
+    "title": "32 is 5-Powerful",
+    "content": "**32 = 2⁵** is 5-powerful because its only prime factor is 2, with exponent 5 ≥ 5.\n\nSimilar proof structure: any prime dividing 32 must be 2, and 2⁵ divides 32.",
+    "mathContext": "The higher the r, the more 'concentrated' the factorization must be.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "verification",
+      "prime-powers"
+    ]
+  },
+  {
+    "id": "ann-e939-sums",
+    "proofId": "erdos-939",
+    "range": {
+      "startLine": 91,
+      "endLine": 99
+    },
+    "type": "definition",
+    "title": "Erdős-939 Sums",
+    "content": "**IsErdos939Sum(r, S)** captures a valid configuration:\n- S contains exactly r-2 elements\n- The elements are mutually coprime (GCD = 1)\n- Each element is r-powerful\n- Their sum is also r-powerful\n\n**Erdos939Sums(r)** is the set of all valid configurations for a given r.",
+    "mathContext": "For r=5: S has 3 elements, all coprime, all 5-powerful, summing to a 5-powerful number.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "finset",
+      "coprime",
+      "summation"
+    ]
+  },
+  {
+    "id": "ann-e939-existence",
+    "proofId": "erdos-939",
+    "range": {
+      "startLine": 108,
+      "endLine": 115
+    },
+    "type": "axiom",
+    "title": "Existence Conjecture",
+    "content": "**Does a valid sum exist for all r ≥ 4?**\n\nCambie found examples for r = 5, 7, 8, but the general existence question remains open. We state it as an axiom since no proof exists.\n\nIf true, it would show r-powerful numbers have rich additive structure.",
+    "mathContext": "Erdos939Existence: ∀r≥4, ∃S, IsErdos939Sum(r, S). Currently unproven for all r.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "conjecture",
+      "axiom",
+      "existence"
+    ]
+  },
+  {
+    "id": "ann-e939-infinite",
+    "proofId": "erdos-939",
+    "range": {
+      "startLine": 117,
+      "endLine": 123
+    },
+    "type": "axiom",
+    "title": "Infinitude Conjecture",
+    "content": "**Are there infinitely many valid sums for each r ≥ 4?**\n\nThis is even stronger than existence. We don't know if there's one solution for each r, let alone infinitely many.",
+    "mathContext": "Erdos939Infinite: ∀r≥4, Erdos939Sums(r).Infinite.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "infinity",
+      "conjecture"
+    ]
+  },
+  {
+    "id": "ann-e939-nitaj",
+    "proofId": "erdos-939",
+    "range": {
+      "startLine": 132,
+      "endLine": 140
+    },
+    "type": "axiom",
+    "title": "Nitaj's Result (1995)",
+    "content": "**3-Powerful Triples**: Nitaj proved there are infinitely many coprime 3-powerful numbers a, b, c with a + b = c.\n\nExample: 2³·3⁵·73³ + 271³ = 919³\n\nThis solves a related problem but doesn't directly answer the r ≥ 4 case.",
+    "mathContext": "Nitaj used elliptic curve methods. Cohn and Walsh gave alternative constructions.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "nitaj",
+      "3-powerful",
+      "elliptic-curves"
+    ]
+  },
+  {
+    "id": "ann-e939-cambie",
+    "proofId": "erdos-939",
+    "range": {
+      "startLine": 148,
+      "endLine": 166
+    },
+    "type": "axiom",
+    "title": "Cambie's Examples",
+    "content": "**Cambie found explicit solutions** for r = 5, 7, and 8!\n\nFor r = 5: 3761^5 = 2^8·3^{10}·5^7 + 2^{12}·23^6 + 11^5·13^5\n\nThe three summands are coprime and 5-powerful, and their sum is 5-powerful. Similar solutions exist for r = 7 and r = 8.",
+    "mathContext": "These examples show existence for specific r values but don't prove existence for all r ≥ 4.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "cambie",
+      "explicit-construction",
+      "verification"
+    ]
+  },
+  {
+    "id": "ann-e939-euler",
+    "proofId": "erdos-939",
+    "range": {
+      "startLine": 175,
+      "endLine": 178
+    },
+    "type": "definition",
+    "title": "Euler's Conjecture",
+    "content": "**Euler (1769)** conjectured that the sum of k-1 k-th powers is never a k-th power.\n\nThis would generalize Fermat's Last Theorem: for k=3, Euler's conjecture says a³ + b³ ≠ c³ (FLT for n=3).\n\nThe conjecture held for over 200 years before being disproved.",
+    "mathContext": "EulerConjecture: ∀k≥4, ∀S with |S|=k-1, ¬∃q, Σ_{s∈S} s^k = q^k.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "euler",
+      "fermat",
+      "powers"
+    ]
+  },
+  {
+    "id": "ann-e939-landerparkin",
+    "proofId": "erdos-939",
+    "range": {
+      "startLine": 180,
+      "endLine": 199
+    },
+    "type": "theorem",
+    "title": "Lander-Parkin Counterexample",
+    "content": "**Lander and Parkin (1967)** disproved Euler's conjecture by finding:\n\n27⁵ + 84⁵ + 110⁵ + 133⁵ = 144⁵\n\nThis was discovered by computer search—one of the first major mathematical results found by computer.\n\nThe proof uses `native_decide` for direct computation.",
+    "mathContext": "27^5 + 84^5 + 110^5 + 133^5 = 14348907 + 4182119424 + 16105100000 + 40725541933 = 61917364224 = 144^5.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "lander-parkin",
+      "counterexample",
+      "native-decide"
+    ]
+  },
+  {
+    "id": "ann-e939-perfect",
+    "proofId": "erdos-939",
+    "range": {
+      "startLine": 212,
+      "endLine": 222
+    },
+    "type": "theorem",
+    "title": "Perfect Powers are r-Powerful",
+    "content": "**n^r is always r-powerful** for any n.\n\nProof: If p|n^r and p is prime, then p|n (by primality). So n = p·m for some m, and n^r = p^r·m^r, meaning p^r|n^r.\n\nThis explains why the Lander-Parkin example (involving 5th powers) is relevant to r-powerful numbers.",
+    "mathContext": "The connection: k-th powers are trivially k-powerful, so sums of powers are sums of powerful numbers.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "perfect-power",
+      "prime-factorization",
+      "divisibility"
+    ]
+  }
+]

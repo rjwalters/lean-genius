@@ -1,34 +1,146 @@
 {
   "id": "erdos-32",
-  "title": "Erdős Problem #32",
+  "title": "Erdős Problem #32: Additive Complements of Primes",
   "slug": "erdos-32",
-  "description": "Is there a set ... such that\\[\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert = o((\\log N)^2)\\]and such that every large integer can be written as ... for some prime ... and ...? Can the bound ... be achieved? Mu...",
+  "description": "Is there a set A with |A ∩ [1,N]| = o((log N)²) such that every large integer is p + a for prime p and a ∈ A? Partially solved: Ruzsa proved O(ω(N)·log N) is achievable and Ω(e^γ·log N) is necessary. The $50 question of whether O(log N) is achievable remains OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1954), Kolountzakis (1996), Ruzsa (1998)",
     "sourceUrl": "https://erdosproblems.com/32",
-    "date": "",
-    "status": "pending",
+    "date": "1954-1998",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos32Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "prime-number-theory",
+      "density-bounds"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 32,
     "erdosUrl": "https://erdosproblems.com/32",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$50"
+    "erdosProblemStatus": "partially-solved",
+    "erdosPrizeValue": "$50",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Predicate for prime natural numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for 'eventually' and asymptotic statements",
+        "module": "Mathlib.Order.Filter.AtTopBot.Basic"
+      },
+      {
+        "theorem": "Tendsto",
+        "description": "Limits and convergence of functions",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of IsAdditiveComplement for sets covering p + a",
+      "Density conditions HasLogSquaredDensity, HasLogDensity, HasLogLogLogDensity",
+      "Axiomatization of Lorentz, Erdős, Kolountzakis upper bounds",
+      "Ruzsa's O(ω(N)·log N) upper bound with ω → ∞",
+      "Ruzsa's e^γ lower bound on liminf |A ∩ [1,N]|/log N",
+      "Statement of Erdős's $50 question on O(log N)",
+      "Connection to Goldbach's conjecture"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #32 from erdosproblems.com. Originally offered with a prize of $50.",
-    "problemStatement": "Is there a set $A\\subset\\mathbb{N}$ such that\\[\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert = o((\\log N)^2)\\]and such that every large integer can be written as $p+a$ for some prime $p$ and $a\\in A$? Can the bound $O(\\log N)$ be achieved? Must such an $A$ satisfy\\[\\liminf \\frac{\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert}{\\log N}> 1?\\]",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #32, proposed around 1954, asks about the sparsest possible 'additive complement' of the primes. A set A is an additive complement if every sufficiently large integer n can be written as p + a for some prime p and a ∈ A.\n\nThe problem has a rich history of progressive improvements:\n- **Lorentz**: First showed O((log N)³) is achievable\n- **Erdős (1954)**: Improved to O((log N)²)\n- **Wolke (1996)**: Achieved (log N)^(1+o(1)) for almost all integers\n- **Kolountzakis (1996)**: Achieved O((log N)(log log N))\n- **Ruzsa (1998)**: The breakthrough — O(ω(N)·log N) for any ω(N) → ∞\n- **Ruzsa (1998)**: Lower bound liminf ≥ e^γ ≈ 1.781 times log N\n\nThe gap between Ruzsa's upper bound (any function going to infinity times log N) and his lower bound (constant times log N) remains unresolved. Erdős offered $50 for determining whether O(log N) is achievable.",
+    "problemStatement": "**Erdős Problem #32**: Is there a set $A \\subset \\mathbb{N}$ such that\n$$|A \\cap \\{1,\\ldots,N\\}| = o((\\log N)^2)$$\nand every sufficiently large integer can be written as $p + a$ for some prime $p$ and $a \\in A$?\n\n**Status**: PARTIALLY SOLVED\n\n**Main Results**:\n1. YES - Erdős (1954) proved $O((\\log N)^2)$ works\n2. IMPROVED - Kolountzakis (1996) achieved $O((\\log N)(\\log\\log N))$\n3. BEST UPPER - Ruzsa (1998): $O(\\omega(N) \\cdot \\log N)$ for any $\\omega(N) \\to \\infty$\n4. LOWER BOUND - Ruzsa (1998): $\\liminf |A \\cap [1,N]|/\\log N \\geq e^\\gamma \\approx 1.781$\n\n**$50 Open Question**: Can $O(\\log N)$ be achieved?",
+    "proofStrategy": "We formalize the problem and its known results:\n\n1. **Define additive complement**: A set A such that ∃ N₀, ∀ n ≥ N₀, ∃ prime p, ∃ a ∈ A, n = p + a\n2. **Define density conditions**: HasLogSquaredDensity, HasLogDensity, etc.\n3. **State upper bounds**: Axioms for Lorentz, Erdős, Kolountzakis, Ruzsa results\n4. **State Ruzsa's lower bound**: liminf A(N)/log N ≥ e^γ using Filter.atTop\n5. **State the open question**: erdos_fifty_dollar_question as a Prop\n6. **Record Erdős's conjecture**: He believed O(log N) is NOT achievable\n7. **Connect to Goldbach**: Show how Goldbach implies partial complement structure",
+    "keyInsights": [
+      "**The density gap**: We can get arbitrarily close to O(log N) from above (via ω(N)·log N), but can't cross it. The lower bound e^γ·log N ≈ 1.781·log N says we can't go below a constant times log N infinitely often.",
+      "**Why primes need complements**: The Prime Number Theorem says π(N) ~ N/log N, so primes have density ~1/log N. But primes don't cover all residue classes mod small numbers — the complement A must 'fill the gaps'.",
+      "**Euler's constant appears**: The lower bound involves e^γ where γ ≈ 0.5772 is the Euler-Mascheroni constant. This constant arises from the distribution of prime gaps and Mertens' theorems.",
+      "**Ruzsa's contribution**: Both the best upper bound AND the fundamental lower bound came from Ruzsa in 1998. His construction for the upper bound uses probabilistic methods; the lower bound uses analytic number theory.",
+      "**Connection to Goldbach**: If Goldbach's conjecture holds, every even n ≥ 4 is p + q with both prime. This means primes are 'almost' self-complementing for even numbers, but odd numbers need explicit complement elements."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Problem statement, status (PARTIALLY SOLVED), key results timeline, and references."
+    },
+    {
+      "id": "core-defs",
+      "title": "Core Definitions",
+      "startLine": 41,
+      "endLine": 68,
+      "summary": "Primes set, countingFunction, IsAdditiveComplement, and IsStrongAdditiveComplement."
+    },
+    {
+      "id": "density-conditions",
+      "title": "Density Conditions",
+      "startLine": 70,
+      "endLine": 94,
+      "summary": "HasLogSquaredDensity, HasSubLogSquaredDensity, HasLogDensity, HasLogLogLogDensity."
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Known Upper Bounds",
+      "startLine": 96,
+      "endLine": 134,
+      "summary": "Axioms for Lorentz, Erdős, Kolountzakis, and Ruzsa upper bound results."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Ruzsa's Lower Bound",
+      "startLine": 136,
+      "endLine": 169,
+      "summary": "Euler's constant e^γ, Ruzsa's liminf lower bound, corollary on suboptimal density."
+    },
+    {
+      "id": "open-question",
+      "title": "The Main Open Question",
+      "startLine": 171,
+      "endLine": 190,
+      "summary": "Erdős's $50 question on O(log N), his negative conjecture."
+    },
+    {
+      "id": "optimal-constant",
+      "title": "The Optimal Constant",
+      "startLine": 192,
+      "endLine": 211,
+      "summary": "Definition of optimalConstant as infimum, lower bound axiom."
+    },
+    {
+      "id": "goldbach",
+      "title": "Connection to Goldbach",
+      "startLine": 213,
+      "endLine": 235,
+      "summary": "Theorem relating Goldbach's conjecture to prime self-complementing."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 237,
+      "endLine": 259,
+      "summary": "Main summary theorem combining solved parts."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #32, the question of how sparse an additive complement of the primes can be. The problem is PARTIALLY SOLVED: Ruzsa (1998) showed that O(ω(N)·log N) is achievable for any ω → ∞, but also that e^γ·log N is a fundamental lower bound. The $50 question of whether exactly O(log N) is achievable remains open, with Erdős conjecturing it is not.",
+    "implications": "This problem sits at the intersection of additive combinatorics and analytic number theory:\n\n1. **Sieve theory**: Understanding prime complements requires understanding prime gaps\n2. **Probabilistic methods**: Ruzsa's upper bound construction uses random sets\n3. **Mertens' theorems**: The appearance of e^γ connects to classical prime number theory\n4. **Approximation theory**: The ω(N) factor represents the 'almost but not quite' nature of current bounds",
+    "openQuestions": [
+      "Can O(log N) density be achieved? (Erdős's $50 prize)",
+      "Is the constant e^γ ≈ 1.781 sharp for the liminf?",
+      "What is the exact optimal constant if O(log N) is achievable?",
+      "Can the methods be extended to other sparse sets beyond primes?"
+    ]
   }
 }

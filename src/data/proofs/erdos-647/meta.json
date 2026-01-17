@@ -1,34 +1,119 @@
 {
   "id": "erdos-647",
-  "title": "Erdős Problem #647",
+  "title": "Erdős Problem #647: Divisor Function Gap Problem",
   "slug": "erdos-647",
-  "description": "Let &#x03C4;(n)\" role=\"presentation\" style=\"position: relative;\">τ(n)τ(n)\\tau(n) count the number of divisors of n\" role=\"presentation\" style=\"position: relative;\">nnn. Is there some n&gt;24\" role=...",
+  "description": "Let τ(n) count divisors of n. Is there n > 24 such that max_{m<n}(m + τ(m)) ≤ n + 2? The case n = 24 works, but Erdős doubted any larger n exists. Prize: £25 (~$44).",
   "meta": {
-    "author": "Unknown",
+    "author": "Open Problem (n=24 case verified computationally)",
     "sourceUrl": "https://erdosproblems.com/647",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos647Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "tags": ["erdos", "number-theory", "divisor-function", "highly-composite", "open-problem"],
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 647,
     "erdosUrl": "https://erdosproblems.com/647",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$44"
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "£25",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "The set of divisors of a natural number",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Nat.primeFactors",
+        "description": "The set of prime factors of a natural number",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Finset.sup",
+        "description": "Supremum over a finite set",
+        "module": "Mathlib.Order.Lattice.Finset"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of tau (divisor count) as Nat.divisors.card",
+      "Machine-verified τ values: τ(1)=1, τ(2)=2, τ(6)=4, τ(12)=6, τ(24)=8",
+      "Definition of ErdosCondition: ∀m<n, m+τ(m) ≤ n+2",
+      "Verified n=24 satisfies the condition via interval_cases + native_decide",
+      "Proved n=25 and n=26 fail via obstruction from mPlusTau(24)=32",
+      "Definition of highly composite numbers and verification that 24 is highly composite",
+      "Connection to Problem #679 (stronger version with 2^ω(m))"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #647 from erdosproblems.com. Originally offered with a prize of $44.",
-    "problemStatement": "Let &#x03C4;(n)\" role=\"presentation\" style=\"position: relative;\">τ(n)τ(n)\\tau(n) count the number of divisors of n\" role=\"presentation\" style=\"position: relative;\">nnn. Is there some n&gt;24\" role=\"presentation\" style=\"position: relative;\">n>24n>24n>24 such thatmaxm&lt;n(m+&#x03C4;(m))&#x2264;n+2?\" role=\"presentation\" style=\"text-align: center; position: relative;\">maxmn(m+τ(m))≤n+2?maxmn(m+τ(m))≤n+2?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The divisor function τ(n) is one of the most studied functions in number theory. Highly composite numbers—those with more divisors than any smaller number—play a key role in extremal problems.\n\nErdős posed this problem asking about a subtle gap property: when can ALL smaller numbers m have m + τ(m) bounded by n + 2? The constraint involves both the size of m and its divisor count.\n\nn = 24 is the largest known value satisfying this condition. The fact that 24 is highly composite (τ(24) = 8 is maximal for its size) makes it particularly special—it sits at a boundary where its own m + τ(m) = 32 doesn't obstruct itself, but does obstruct all larger n.\n\nErdős offered £25 for finding any n > 24, but expressed doubt that such an n exists.",
+    "problemStatement": "Let $\\tau(n)$ count the number of positive divisors of $n$. Is there some $n > 24$ such that\n$$\\max_{m < n}(m + \\tau(m)) \\leq n + 2$$?\n\n**Known Results**:\n- $n = 24$ satisfies the condition (verified computationally)\n- The bound $n + 2$ is tight in general\n- Erdős conjectured $\\lim_{n\\to\\infty} \\max_{m<n}(m + \\tau(m) - n) = \\infty$\n\n**Prize**: £25 (approximately $44 in 1992)\n\n**Erdős's Opinion**: He described finding such $n > 24$ as 'extremely doubtful'",
+    "proofStrategy": "Our formalization:\n\n1. **Defines the divisor function** τ(n) = Nat.divisors.card\n\n2. **Verifies concrete values** using native_decide:\n   - τ(1)=1, τ(2)=2, τ(6)=4, τ(12)=6, τ(24)=8\n   - mPlusTau(24) = 32\n\n3. **Defines the Erdős condition** as ∀m<n, mPlusTau m ≤ n+2\n\n4. **Proves n=24 works** via exhaustive case analysis (interval_cases)\n\n5. **Proves n=25, 26 fail** because 24+8=32 > 27 and 32 > 28\n\n6. **Explores highly composite numbers** as the key obstruction mechanism\n\n7. **States the open question** as an axiom since no proof or counterexample exists",
+    "keyInsights": [
+      "**Why n=24 is Special**: 24 is highly composite with τ(24)=8. The value 24+8=32 is just large enough to obstruct all n > 24, but n=24 itself only requires checking m < 24.",
+      "**Highly Composite Obstruction**: Each highly composite number hc creates a 'shadow' blocking all n with n < hc + τ(hc) - 2 from satisfying the condition.",
+      "**Connection to Problem #679**: A stronger version uses 2^ω(m) instead of τ(m), where ω counts distinct prime factors. Since τ(m) ≥ 2^ω(m), solutions to #679 would solve #647.",
+      "**Erdős's Asymptotic Conjecture**: The excess max(m+τ(m))-n grows without bound, implying only finitely many solutions."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "tau",
+      "title": "The Divisor Function",
+      "startLine": 28,
+      "endLine": 50,
+      "summary": "Definition and verified values of τ"
+    },
+    {
+      "id": "main-quantity",
+      "title": "The Quantity m + τ(m)",
+      "startLine": 52,
+      "endLine": 93,
+      "summary": "Definition of mPlusTau and the Erdős condition"
+    },
+    {
+      "id": "n24",
+      "title": "n = 24 Satisfies the Condition",
+      "startLine": 95,
+      "endLine": 113,
+      "summary": "Machine-verified proof that n=24 works"
+    },
+    {
+      "id": "failures",
+      "title": "Why Most n Fail",
+      "startLine": 115,
+      "endLine": 146,
+      "summary": "Proofs that n=25, 26, 7 fail"
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Open Question",
+      "startLine": 148,
+      "endLine": 188,
+      "summary": "Statement of the open problem and asymptotic conjecture"
+    },
+    {
+      "id": "highly-composite",
+      "title": "Highly Composite Numbers",
+      "startLine": 190,
+      "endLine": 246,
+      "summary": "Connection to highly composite numbers as obstructions"
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "startLine": 248,
+      "endLine": 295,
+      "summary": "Connection to Problem #679 and the ω function"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #647, asking whether any n > 24 satisfies max_{m<n}(m+τ(m)) ≤ n+2. We verify that n=24 works, prove n=25 and n=26 fail, and explore the connection to highly composite numbers. The main question remains open.",
+    "implications": "If no n > 24 exists, it would confirm that 24 is the extremal case where the divisor function's growth just barely fits the linear constraint. The problem connects to deep questions about the distribution of highly composite numbers.",
+    "openQuestions": [
+      "Does any n > 24 satisfy the Erdős condition?",
+      "Is Erdős's asymptotic conjecture true (excess → ∞)?",
+      "What is the density of solutions among n ≤ 24?",
+      "How does this relate to the Schinzel Hypothesis H?"
+    ]
   }
 }

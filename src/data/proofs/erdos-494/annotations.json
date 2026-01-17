@@ -1,1 +1,170 @@
-[]
+[
+  {
+    "id": "ann-e494-header",
+    "proofId": "erdos-494",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This module formalizes **Erdos Problem #494**: Given a finite set A in the complex plane and k >= 1, does the k-sum multiset uniquely determine A? The answer is **YES for sufficiently large |A|** when k > 2.",
+    "mathContext": "The k-sum multiset Ak contains all sums z_1 + ... + z_k where z_i are distinct elements of A. The question is whether knowing Ak and |A| is enough to reconstruct A. This is a problem in additive combinatorics with connections to polynomial methods.",
+    "significance": "supporting",
+    "relatedConcepts": ["additive combinatorics", "multisets", "set reconstruction"]
+  },
+  {
+    "id": "ann-e494-summultiset",
+    "proofId": "erdos-494",
+    "range": {
+      "startLine": 42,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "The k-Sum Multiset",
+    "content": "The **k-sum multiset** sumMultiset(A, k) contains all sums of k distinct elements from A. For example, if A = {1, 2, 3} and k = 2, then sumMultiset(A, 2) = {3, 4, 5}.",
+    "mathContext": "We use Finset.powersetCard k to get all k-element subsets, then map each to its sum. The result is a Multiset because the same sum can arise from different subsets (e.g., 1+4 = 2+3 in {1, 2, 3, 4}).",
+    "significance": "critical",
+    "relatedConcepts": ["Finset.powersetCard", "Multiset", "sums of subsets"]
+  },
+  {
+    "id": "ann-e494-ksumdetermines",
+    "proofId": "erdos-494",
+    "range": {
+      "startLine": 54,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "The Uniqueness Property",
+    "content": "**KSumDeterminesSet k card** says: if two sets A, B both have cardinality card and the same k-sum multiset, then A = B. This is the core question of Problem #494.",
+    "mathContext": "The definition is quantified over all Finset C of the given cardinality. Note that we need both |A| = |B| and sumMultiset A k = sumMultiset B k to conclude A = B.",
+    "significance": "critical",
+    "relatedConcepts": ["set determination", "injectivity", "reconstruction"]
+  },
+  {
+    "id": "ann-e494-k2case",
+    "proofId": "erdos-494",
+    "range": {
+      "startLine": 63,
+      "endLine": 82
+    },
+    "type": "theorem",
+    "title": "The k = 2 Case: Powers of 2",
+    "content": "**Selfridge-Straus (1958)** completely characterized k = 2: uniqueness holds iff |A| is NOT a power of 2. When |A| = 2^l, counterexamples exist.",
+    "mathContext": "The failure for powers of 2 relates to the structure of addition in characteristic 2. The pairwise sums can be encoded as a polynomial over F_2, and when |A| = 2^l, the polynomial has special symmetries.",
+    "significance": "key",
+    "relatedConcepts": ["Selfridge-Straus", "power of 2", "pairwise sums"]
+  },
+  {
+    "id": "ann-e494-k34cases",
+    "proofId": "erdos-494",
+    "range": {
+      "startLine": 84,
+      "endLine": 97
+    },
+    "type": "theorem",
+    "title": "Specific Bounds for k = 3, 4",
+    "content": "**Selfridge-Straus** also proved: for k = 3, uniqueness holds when |A| > 6; for k = 4, when |A| > 12. These give concrete thresholds.",
+    "mathContext": "The bounds 6 and 12 are not known to be sharp. They arise from analyzing when the k-sum multiset provides enough 'equations' to determine A. Smaller sets may have counterexamples due to symmetries.",
+    "significance": "key",
+    "relatedConcepts": ["threshold function", "small set counterexamples"]
+  },
+  {
+    "id": "ann-e494-primecriterion",
+    "proofId": "erdos-494",
+    "range": {
+      "startLine": 99,
+      "endLine": 109
+    },
+    "type": "theorem",
+    "title": "Prime Divisibility Criterion",
+    "content": "**Selfridge-Straus**: Uniqueness holds if |A| has a prime factor p > k. This powerful criterion explains many special cases instantly.",
+    "mathContext": "For example, |A| = 7 and k = 3: since 7 > 3 is prime dividing 7, uniqueness holds. The proof uses Newton's identities relating power sums to elementary symmetric polynomials.",
+    "significance": "key",
+    "relatedConcepts": ["prime factors", "Newton's identities", "symmetric polynomials"]
+  },
+  {
+    "id": "ann-e494-kruyt",
+    "proofId": "erdos-494",
+    "range": {
+      "startLine": 111,
+      "endLine": 125
+    },
+    "type": "axiom",
+    "title": "Kruyt Rotation Counterexample",
+    "content": "When |A| = k, uniqueness **FAILS**. The k-sum multiset has only one element (the total sum). Rotating A around its centroid gives a different set with the same sum.",
+    "mathContext": "If c = (sum of A)/k is the centroid, then A' = {2c - a : a in A} is A reflected through c. Both A and A' have the same k-sum (which equals k*c), but A != A' in general.",
+    "significance": "critical",
+    "relatedConcepts": ["rotation symmetry", "centroid", "reflection"]
+  },
+  {
+    "id": "ann-e494-tao",
+    "proofId": "erdos-494",
+    "range": {
+      "startLine": 127,
+      "endLine": 136
+    },
+    "type": "axiom",
+    "title": "Tao Negation Counterexample",
+    "content": "When |A| = 2k and sum(A) = 0, the set -A = {-a : a in A} has the same k-sum multiset as A. This gives counterexamples at |A| = 2k.",
+    "mathContext": "The key insight: if S is a k-subset of A with sum s, then A\\S has sum -s (since sum(A) = 0). The k-sums of -A correspond to negations of sums of (2k-k)=k-subsets of A, i.e., the same multiset.",
+    "significance": "critical",
+    "relatedConcepts": ["negation symmetry", "zero-sum sets", "complementation"]
+  },
+  {
+    "id": "ann-e494-gfs",
+    "proofId": "erdos-494",
+    "range": {
+      "startLine": 138,
+      "endLine": 151
+    },
+    "type": "theorem",
+    "title": "Gordon-Fraenkel-Straus Main Theorem",
+    "content": "**GFS (1962)**: For all k > 2, uniqueness holds for sufficiently large |A|. This is the main positive result, resolving Problem #494 affirmatively.",
+    "mathContext": "The statement uses Filter.atTop to express 'eventually'. The proof uses polynomial methods: the k-sum multiset encodes the elementary symmetric polynomial e_k, and for large enough sets, the full set of symmetric polynomials can be recovered.",
+    "significance": "critical",
+    "relatedConcepts": ["Filter.atTop", "eventually", "symmetric polynomials"]
+  },
+  {
+    "id": "ann-e494-products",
+    "proofId": "erdos-494",
+    "range": {
+      "startLine": 153,
+      "endLine": 171
+    },
+    "type": "axiom",
+    "title": "Product Version is FALSE",
+    "content": "Erdos also asked about **products** instead of sums. **Steinerberger** showed this version fails: using 6th roots of unity, he found sets A != B with the same 3-product multiset.",
+    "mathContext": "Counterexample: Let zeta_6 = e^(2*pi*i/6). Take A = {1, zeta_6, zeta_6^2, zeta_6^4} and B = {1, zeta_6^2, zeta_6^3, zeta_6^4}. Both have 4 elements, the same 3-product multisets, but A != B.",
+    "significance": "key",
+    "relatedConcepts": ["roots of unity", "product version", "counterexample"]
+  },
+  {
+    "id": "ann-e494-summary",
+    "proofId": "erdos-494",
+    "range": {
+      "startLine": 173,
+      "endLine": 190
+    },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_494_summary** combines the main positive results: (1) for k = 2, uniqueness iff |A| is not a power of 2; (2) for k > 2, uniqueness for large enough |A|.",
+    "mathContext": "This is a proved theorem (not an axiom) that simply packages the two main axioms into a conjunction. It summarizes the complete solution to Problem #494.",
+    "significance": "critical",
+    "relatedConcepts": ["summary", "conjunction", "main result"]
+  },
+  {
+    "id": "ann-e494-threshold",
+    "proofId": "erdos-494",
+    "range": {
+      "startLine": 211,
+      "endLine": 230
+    },
+    "type": "definition",
+    "title": "The Threshold Function N(k)",
+    "content": "For each k, there exists a minimal **N(k)** such that uniqueness holds for |A| > N(k). GFS give the explicit (but not sharp) bound N(k) <= k^2 - k + 2.",
+    "mathContext": "Known values: N(3) <= 6, N(4) <= 12 (Selfridge-Straus). The exact values of N(k) for k >= 5 are not known. The GFS bound gives N(5) <= 22, but the true value may be smaller.",
+    "significance": "key",
+    "relatedConcepts": ["threshold", "explicit bounds", "GFS bound"]
+  }
+]

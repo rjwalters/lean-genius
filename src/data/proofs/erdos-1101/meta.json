@@ -1,33 +1,123 @@
 {
   "id": "erdos-1101",
-  "title": "Erdős Problem #1101",
+  "title": "Erdős Problem #1101: Good Sequences and Gaps in Sieved Integers",
   "slug": "erdos-1101",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a sequence of integers such that ... for all ... and ... then let ... be the sequence of integers which are not div...",
+  "description": "Given a pairwise coprime sequence u with convergent reciprocal series, when do the integers not divisible by any uᵢ have gaps bounded by the product formula?",
   "meta": {
-    "author": "Unknown",
+    "author": "Open Problem (Erdős proved existence)",
     "sourceUrl": "https://erdosproblems.com/1101",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1101Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "sieve-theory",
+      "sequences",
+      "gaps",
+      "asymptotics"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1101,
     "erdosUrl": "https://erdosproblems.com/1101",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.nth",
+        "description": "The n-th element satisfying a predicate",
+        "module": "Mathlib.Data.Nat.Nth"
+      },
+      {
+        "theorem": "Summable",
+        "description": "Predicate for convergent series",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "StrictMono",
+        "description": "Strictly monotone functions",
+        "module": "Mathlib.Order.Monotone.Basic"
+      },
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality of natural numbers",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of the OPEN Erdős problem in Lean 4",
+      "Definition of 'good sequence' predicate with all four conditions",
+      "Axiomatization of both conjectures (no polynomial, yes subexponential)",
+      "Statement of Erdős's existence theorem and sieve lower bound",
+      "Connection to Problem #208 (prime squares conjecture)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1101 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $u=\\{u_1<u_2<\\cdots\\}$ is a sequence of integers such that $(u_i,u_j)=1$ for all $i\\neq j$ and $\\sum \\frac{1}{u_i}<\\infty$ then let $\\{a_1<a_2<\\cdots\\}$ be the sequence of integers which are not divisible by any of the $u_i$. For any $x$ define $t_x$ by\\[u_1\\cdots u_{t_x}\\leq x< u_1\\cdots u_{t_x}u_{t_x+1}.\\]We call such a sequence $u_i$ good if, for all $\\epsilon>0$, if $x$ is sufficiently large then\\[\\max_{a_k<x} (a_{k+1}-a_k) < (1+\\epsilon)t_x \\prod_{i}\\left(1-\\frac{1}{u_i}\\right)^{-1}.\\]Is there a good sequence such that $u_n< n^{O(1)}$? Is there a good sequence such that $u_n\\leq e^{o(n)}$?\n\n\n\nErd\\H{o}s \\cite{Er81h} believed the answer to the first question is no and the second question is yes. He proved the existence of some good sequence (in which all the $u_i$ are primes).\n\nAn easy sieve argument proves that we always have, for any sequence $u$ with those properties,\\[\\max_{a_k<x} (a_{k+1}-a_k)> (1+o(1))t_x \\prod_{i}\\left(1-\\frac{1}{u_i}\\right)^{-1}.\\]The strong form of [208] is asking whether if $u_i=p_i^2$, the sequence of prime squares, is good.\n\n\n\n\nReferences\n\n\n[Er81h] Erd\\H{o}s, P., Some problems and results on additive and multiplicative\nnumber theory. Analytic number theory (Philadelphia, Pa., 1980) (1981), 171-182.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem connects sieve theory with questions about the growth rates of multiplicative sequences. Given a sequence u = {u₁ < u₂ < ...} of pairwise coprime integers with Σ1/uᵢ < ∞, consider the integers A = {a₁ < a₂ < ...} not divisible by any uᵢ.\n\nThe 'density' of A is given by ∏(1 - 1/uᵢ), and sieve theory shows that gaps between consecutive elements of A are at least (1+o(1))·tₓ·∏(1-1/uᵢ)⁻¹. Erdős called u 'good' if the gaps are also bounded ABOVE by (1+ε)·tₓ·∏(1-1/uᵢ)⁻¹.\n\nErdős proved that SOME good sequence exists (using all primes), but the question of which growth rates are achievable remains open. He conjectured that polynomial growth is impossible but sub-exponential growth is achievable.",
+    "problemStatement": "Let $u = \\{u_1 < u_2 < \\cdots\\}$ be a sequence with $(u_i, u_j) = 1$ for $i \\neq j$ and $\\sum 1/u_i < \\infty$. Let $A = \\{a_1 < a_2 < \\cdots\\}$ be integers not divisible by any $u_i$. Define $t_x$ by $u_1 \\cdots u_{t_x} \\leq x < u_1 \\cdots u_{t_x+1}$.\n\nCall $u$ **good** if for all $\\epsilon > 0$ and large $x$:\n$$\\max_{a_k < x}(a_{k+1} - a_k) < (1+\\epsilon) t_x \\prod_i (1 - 1/u_i)^{-1}$$\n\n**Questions**:\n1. Is there a good sequence with $u_n < n^{O(1)}$? (Conjectured NO)\n2. Is there a good sequence with $u_n \\leq e^{o(n)}$? (Conjectured YES)\n\n**Status**: OPEN — Both questions remain unresolved.",
+    "proofStrategy": "We formalize this problem by:\n\n1. **Defining the sieved set**: `ASet u` is the set of integers not divisible by any uᵢ\n\n2. **Defining the enumeration**: `A u n` is the n-th element of the sieved set using `Nat.nth`\n\n3. **Defining the index function**: `t u x` is the largest k such that the product u₀·...·uₖ₋₁ ≤ x\n\n4. **Defining 'good'**: The predicate `IsGood u` combines strict monotonicity, pairwise coprimality, series convergence, and the gap bound\n\n5. **Stating conjectures as axioms**: Both the 'no polynomial' and 'yes subexponential' conjectures",
+    "keyInsights": [
+      "**Sieve theory connection**: The integers not divisible by coprime moduli form a natural sieved set. The density ∏(1-1/uᵢ) determines how sparse this set is.",
+      "**The gap bound**: Good sequences achieve gaps within a constant factor of the theoretical minimum from sieve theory.",
+      "**Polynomial growth fails**: Erdős conjectured that if uₙ = O(n^k), the sequence cannot be good—gaps must sometimes exceed the bound.",
+      "**Sub-exponential might work**: Sequences growing like uₙ = e^(n^α) for α < 1 might achieve the good property.",
+      "**Prime squares special case**: Problem #208 asks if uᵢ = pᵢ² (prime squares) is good. This has polynomial growth, so resolving it would resolve question 1."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Documentation and Imports",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Module documentation explaining the problem, its history, and Mathlib imports."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 32,
+      "endLine": 52,
+      "summary": "Definition of ASet (sieved set), A (enumeration), and t (product index)."
+    },
+    {
+      "id": "good-predicate",
+      "title": "The Good Sequence Predicate",
+      "startLine": 54,
+      "endLine": 75,
+      "summary": "Definition of IsGood combining all four conditions for a sequence to be good."
+    },
+    {
+      "id": "conjectures",
+      "title": "The Main Conjectures",
+      "startLine": 77,
+      "endLine": 98,
+      "summary": "Axioms stating no polynomial good sequence exists but subexponential does."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 100,
+      "endLine": 121,
+      "summary": "Erdős's existence theorem and the sieve theory lower bound."
+    },
+    {
+      "id": "prime-squares",
+      "title": "Related Problem: Prime Squares",
+      "startLine": 123,
+      "endLine": 139,
+      "summary": "Connection to Problem #208 about the sequence of prime squares."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #1101 on 'good sequences'—pairwise coprime sequences whose sieved integers have gaps matching the theoretical bound from sieve theory. Erdős proved such sequences exist but conjectured that polynomial growth is impossible while sub-exponential growth is achievable. Both conjectures remain OPEN.",
+    "implications": "This problem bridges combinatorial number theory and analytic methods. Understanding which growth rates allow 'good' sequences would illuminate the interplay between multiplicative structure (coprimality) and additive structure (gaps). Progress here could impact our understanding of prime gaps and sieve methods.",
+    "openQuestions": [
+      "Is there a good sequence with u_n = O(n^k) for some fixed k?",
+      "Is there a good sequence with u_n = e^(n^α) for some α < 1?",
+      "Is the sequence of prime squares good? (Problem #208 strong form)",
+      "What is the minimal growth rate for a good sequence?"
+    ]
   }
 }

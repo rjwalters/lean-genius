@@ -1,1 +1,198 @@
-[]
+[
+  {
+    "id": "ann-e32-header",
+    "proofId": "erdos-32",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This module formalizes **Erdos Problem #32**: Can the primes have a sparse additive complement? A set A is an additive complement if every large n = p + a for some prime p and a in A. The problem asks how sparse A can be.",
+    "mathContext": "The key metric is the counting function |A intersect [1,N]|. Erdos asked if o((log N)^2) is achievable. The answer is YES (Erdos 1954), but the $50 question of whether O(log N) is achievable remains OPEN.",
+    "significance": "supporting",
+    "relatedConcepts": ["additive combinatorics", "prime numbers", "density bounds"]
+  },
+  {
+    "id": "ann-e32-primes",
+    "proofId": "erdos-32",
+    "range": {
+      "startLine": 49,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "The Set of Primes",
+    "content": "We define **Primes** as the set of natural numbers satisfying Nat.Prime. This is the set we want to find an additive complement for.",
+    "mathContext": "The Prime Number Theorem tells us pi(N) ~ N/log N, so primes have density roughly 1/log N. This sparse distribution is what makes finding sparse complements possible.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.Prime", "prime counting function", "PNT"]
+  },
+  {
+    "id": "ann-e32-counting",
+    "proofId": "erdos-32",
+    "range": {
+      "startLine": 52,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "The **countingFunction** A N counts |A intersect {1,...,N}|. This is the key measure of how sparse a set A is.",
+    "mathContext": "We count elements up to N to measure density. A set with countingFunction O(log N) is very sparse; O((log N)^2) is still quite sparse. The counting function grows slowly for sparse sets.",
+    "significance": "critical",
+    "relatedConcepts": ["density", "asymptotic growth", "set cardinality"]
+  },
+  {
+    "id": "ann-e32-complement",
+    "proofId": "erdos-32",
+    "range": {
+      "startLine": 56,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Additive Complement",
+    "content": "**IsAdditiveComplement A** means every sufficiently large n can be written as p + a for some prime p and a in A. This is the core concept of the problem.",
+    "mathContext": "We allow finitely many exceptions (n < N_0) because small numbers have special structure. The 'sufficiently large' condition is typical in analytic number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["sumsets", "additive representation", "exceptional sets"]
+  },
+  {
+    "id": "ann-e32-log-squared",
+    "proofId": "erdos-32",
+    "range": {
+      "startLine": 76,
+      "endLine": 78
+    },
+    "type": "definition",
+    "title": "Log-Squared Density",
+    "content": "**HasLogSquaredDensity A** means |A intersect [1,N]| <= C*(log N)^2 for some constant C. This is the density Erdos achieved in 1954.",
+    "mathContext": "O((log N)^2) is quite sparse - for N = 10^6, this is roughly 400 elements. Erdos's original question asked if even sparser complements exist.",
+    "significance": "key",
+    "relatedConcepts": ["big-O notation", "asymptotic bounds", "Erdos 1954"]
+  },
+  {
+    "id": "ann-e32-log-density",
+    "proofId": "erdos-32",
+    "range": {
+      "startLine": 85,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "Log Density - The $50 Question",
+    "content": "**HasLogDensity A** means |A intersect [1,N]| <= C*log N. Erdos offered $50 to determine if such sparse complements exist.",
+    "mathContext": "O(log N) is the holy grail - for N = 10^6, this is only about 14 elements. The gap between O(omega(N)*log N) (achievable) and O(log N) (unknown) is the remaining mystery.",
+    "significance": "critical",
+    "relatedConcepts": ["$50 prize", "optimal density", "open problem"]
+  },
+  {
+    "id": "ann-e32-erdos-bound",
+    "proofId": "erdos-32",
+    "range": {
+      "startLine": 110,
+      "endLine": 115
+    },
+    "type": "axiom",
+    "title": "Erdos (1954): Log-Squared Works",
+    "content": "**erdos_log_squared**: There exists an additive complement with O((log N)^2) density. This was Erdos's own improvement over Lorentz's O((log N)^3).",
+    "mathContext": "Erdos's construction uses the greedy algorithm: include elements that cover the most uncovered integers. The analysis shows this achieves the quadratic bound.",
+    "significance": "key",
+    "relatedConcepts": ["greedy algorithm", "covering problems", "Erdos 1954"]
+  },
+  {
+    "id": "ann-e32-kolountzakis",
+    "proofId": "erdos-32",
+    "range": {
+      "startLine": 117,
+      "endLine": 123
+    },
+    "type": "axiom",
+    "title": "Kolountzakis (1996): Near-Optimal",
+    "content": "**kolountzakis_log_loglog**: There exists an additive complement with O((log N)(log log N)) density. This was a major improvement, getting very close to O(log N).",
+    "mathContext": "The log log N factor is tiny - for N = 10^10, log log N is about 3. Kolountzakis's result showed the quadratic bound was far from optimal.",
+    "significance": "key",
+    "relatedConcepts": ["Kolountzakis 1996", "log log factor", "near-optimal"]
+  },
+  {
+    "id": "ann-e32-ruzsa-upper",
+    "proofId": "erdos-32",
+    "range": {
+      "startLine": 125,
+      "endLine": 133
+    },
+    "type": "axiom",
+    "title": "Ruzsa (1998): Arbitrarily Close",
+    "content": "**ruzsa_omega_log**: For ANY function omega(N) -> infinity, there exists an additive complement with O(omega(N)*log N) density. This shows we can get arbitrarily close to O(log N).",
+    "mathContext": "Even omega(N) = log log log N works! Ruzsa's probabilistic construction shows the barrier is not in finding complements, but in proving O(log N) itself is achievable.",
+    "significance": "critical",
+    "relatedConcepts": ["Ruzsa 1998", "probabilistic method", "Tendsto"]
+  },
+  {
+    "id": "ann-e32-euler-gamma",
+    "proofId": "erdos-32",
+    "range": {
+      "startLine": 141,
+      "endLine": 145
+    },
+    "type": "definition",
+    "title": "Euler's Constant and the Lower Bound",
+    "content": "**eulerGamma** is approximately 0.5772, and **lowerBoundConstant** = e^gamma is approximately 1.781. This constant appears in Ruzsa's fundamental lower bound.",
+    "mathContext": "The Euler-Mascheroni constant appears throughout prime number theory. Its appearance here connects to Mertens' theorems about products over primes.",
+    "significance": "critical",
+    "relatedConcepts": ["Euler-Mascheroni constant", "Mertens theorem", "e^gamma"]
+  },
+  {
+    "id": "ann-e32-ruzsa-lower",
+    "proofId": "erdos-32",
+    "range": {
+      "startLine": 147,
+      "endLine": 156
+    },
+    "type": "axiom",
+    "title": "Ruzsa's Lower Bound: The Barrier",
+    "content": "**ruzsa_lower_bound**: ANY additive complement A must satisfy liminf |A intersect [1,N]|/log N >= e^gamma. You cannot have density less than 1.781*log N infinitely often.",
+    "mathContext": "This uses Filter.atTop and the 'frequently' quantifier. The proof analyzes the covering requirements using prime gap distribution and shows e^gamma is unavoidable.",
+    "significance": "critical",
+    "relatedConcepts": ["liminf", "Filter.atTop", "lower bounds"]
+  },
+  {
+    "id": "ann-e32-fifty-dollar",
+    "proofId": "erdos-32",
+    "range": {
+      "startLine": 176,
+      "endLine": 186
+    },
+    "type": "definition",
+    "title": "The $50 Question",
+    "content": "**erdos_fifty_dollar_question** is the Prop asking if an additive complement with O(log N) density exists. This remains OPEN.",
+    "mathContext": "The gap between omega(N)*log N (achievable for any omega -> infinity) and C*log N (unknown) represents the final frontier. Erdos conjectured it's impossible.",
+    "significance": "critical",
+    "relatedConcepts": ["open problem", "Erdos conjecture", "$50 prize"]
+  },
+  {
+    "id": "ann-e32-goldbach",
+    "proofId": "erdos-32",
+    "range": {
+      "startLine": 218,
+      "endLine": 234
+    },
+    "type": "theorem",
+    "title": "Connection to Goldbach",
+    "content": "**goldbach_gives_partial_complement**: If Goldbach's conjecture holds, every even n >= 4 can be written as p + (n-p) with both prime. This shows primes are 'almost' self-complementing.",
+    "mathContext": "Goldbach says every even n is p + q. Setting a = q, we have n = p + a with a prime. For even numbers, the primes themselves serve as complement. Odd numbers need more work.",
+    "significance": "key",
+    "relatedConcepts": ["Goldbach conjecture", "even numbers", "self-complementing"]
+  },
+  {
+    "id": "ann-e32-summary",
+    "proofId": "erdos-32",
+    "range": {
+      "startLine": 244,
+      "endLine": 257
+    },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_32_summary** combines the solved parts: (1) O((log N)^2) works, (2) O((log N)(log log N)) works, (3) liminf >= e^gamma * log N. The O(log N) question remains open.",
+    "mathContext": "This theorem packages the complete known state of Problem #32. The upper bounds are existence results (proved via constructions); the lower bound applies to all complements.",
+    "significance": "critical",
+    "relatedConcepts": ["summary", "complete picture", "state of the art"]
+  }
+]

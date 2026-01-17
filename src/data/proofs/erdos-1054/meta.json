@@ -1,33 +1,115 @@
 {
   "id": "erdos-1054",
-  "title": "Erdős Problem #1054",
+  "title": "Erdős Problem #1054: Sum of Smallest Divisors",
   "slug": "erdos-1054",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimal integer ... such that ... is the sum of the ... smallest divisors of ... for some ....\n\nIs it true tha...",
+  "description": "Let f(n) be the minimal integer m such that n equals the sum of the k smallest divisors of m for some k ≥ 1. Is f(n) = o(n)? Or is this true only for almost all n, with limsup f(n)/n = ∞?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (via Guy's collection)",
     "sourceUrl": "https://erdosproblems.com/1054",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1054Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisors",
+      "asymptotics",
+      "density",
+      "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1054,
     "erdosUrl": "https://erdosproblems.com/1054",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "The set of divisors of a natural number",
+        "module": "Mathlib.Data.Nat.Divisors"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering elements of a finite set",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of the OPEN Erdős problem in Lean 4",
+      "Axiomatization of the function f(n) and representability predicate",
+      "Statement of the three open questions (o(n), almost all, limsup)",
+      "Formalization of Tao's partial result disproving Part I",
+      "Analysis of exceptional values n = 2 and n = 5"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1054 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be the minimal integer $m$ such that $n$ is the sum of the $k$ smallest divisors of $m$ for some $k\\geq 1$.\n\nIs it true that $f(n)=o(n)$? Or is this true only for almost all $n$, and $\\limsup f(n)/n=\\infty$?\n\n\n\nA question of Erd\\H{o}s reported in problem B2 of Guy's collection \\cite{Gu04}. The function $f(n)$ is undefined for $n=2$ and $n=5$, but is likely well-defined for all $n\\geq 6$ (which would follow from a strong form of Goldbach's conjecture).\n\nThe sequence of values of $f(n)$ is given by A167485 in the OEIS.\n\nSee also [468].\n\nThe strong claim that $f(n)=o(n)$ was disproved by Tao in the comments to [468], in which he proves that the upper density of $\\{ n : f(n)\\leq \\delta n\\}$ is $\\ll \\delta^2$.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Erdős and appears as Problem B2 in Richard Guy's influential book 'Unsolved Problems in Number Theory' (2004). The function f(n) computes the minimal m such that n can be written as a sum of the k smallest divisors of m.\n\nThe function has a curious property: it is undefined for exactly two values, n = 2 and n = 5. These are the only positive integers that cannot be expressed as a partial sum of divisors. This follows from a careful analysis of divisor structure.\n\nTerry Tao made significant progress on this problem by showing that the strong conjecture f(n) = o(n) is FALSE. He proved that the density of {n : f(n) ≤ δn} is at most O(δ²), meaning there are many n where f(n) is at least a constant fraction of n.\n\nHowever, the weaker question—whether f(n) = o(n) for ALMOST ALL n—remains open, as does the question of whether limsup f(n)/n = ∞.",
+    "problemStatement": "Let $f(n)$ be the minimal integer $m$ such that $n$ is the sum of the $k$ smallest divisors of $m$ for some $k \\geq 1$.\n\n**Questions**:\n1. Is it true that $f(n) = o(n)$?\n2. Is it true that $f(n) = o(n)$ for almost all $n$?\n3. Is $\\limsup_{n \\to \\infty} f(n)/n = \\infty$?\n\n**Status**: OPEN — Tao disproved Part I, but Parts II and III remain unresolved.\n\n**Special Cases**: $f$ is undefined at $n = 2$ and $n = 5$ (returns 0 as junk value).",
+    "proofStrategy": "We formalize this OPEN problem by:\n\n1. **Axiomatizing f(n)**: Define the function f(n) as the minimal m whose k smallest divisors sum to n, returning 0 when undefined\n\n2. **Defining representability**: The predicate IsRepresentable(n) captures when n can be expressed as a partial divisor sum\n\n3. **Stating the three open questions**: Each as a precise mathematical proposition\n   - Part I: ∀ε > 0, ∃N, ∀n ≥ N: f(n) < εn\n   - Part II: The density 1 version of Part I\n   - Part III: ∀C, ∃n: f(n) ≥ Cn\n\n4. **Recording Tao's result**: Part I is false (axiom tao_disproves_part_i)\n\n5. **Proving undefined cases**: f(2) = 0 and f(5) = 0 follow from non-representability",
+    "keyInsights": [
+      "**Divisor sums are constrained**: The smallest divisor is always 1, so partial sums are 1, 1+d₂, 1+d₂+d₃, etc. This severely limits achievable values.",
+      "**Why 2 is impossible**: With k=1, sum=1. With k≥2, sum ≥ 1+2=3 (since smallest proper divisor is at least 2). So 2 is trapped between achievable sums.",
+      "**Why 5 is impossible**: Would need 1 + d₂ = 5, so d₂ = 4. But if 4|m, then 2|m, so 2 < 4 would be d₂ instead. Contradiction!",
+      "**Tao's density bound**: The set {n : f(n) ≤ δn} has density O(δ²), showing many 'hard' values exist where f(n) ≈ n.",
+      "**Connection to Goldbach**: If every even n ≥ 6 is a sum of two primes p + q, then f(n) might be achievable via m = pq with divisors {1, p, q, pq}.",
+      "**OEIS sequence**: Values of f(n) are recorded in A167485."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Problem statement, background, and references including Tao's partial result."
+    },
+    {
+      "id": "representability",
+      "title": "Representability",
+      "startLine": 43,
+      "endLine": 76,
+      "summary": "Definition of when n can be expressed as a partial divisor sum, and the axiomatized function f(n)."
+    },
+    {
+      "id": "undefined-cases",
+      "title": "Undefined Cases",
+      "startLine": 77,
+      "endLine": 118,
+      "summary": "Analysis of why n=2 and n=5 cannot be represented, with derived theorems f(2)=0 and f(5)=0."
+    },
+    {
+      "id": "examples",
+      "title": "Simple Examples",
+      "startLine": 120,
+      "endLine": 166,
+      "summary": "Concrete examples showing f(1)=1, f(3)=2, f(4)=3, f(6)=6."
+    },
+    {
+      "id": "open-problem",
+      "title": "The Open Problem",
+      "startLine": 167,
+      "endLine": 217,
+      "summary": "The three main questions and Tao's partial result disproving Part I."
+    },
+    {
+      "id": "understanding",
+      "title": "Understanding the Problem",
+      "startLine": 219,
+      "endLine": 302,
+      "summary": "Intuition about divisor structure and why certain values are achievable or not."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #1054, an OPEN question about the function f(n) that computes the minimal m whose k smallest divisors sum to n. The problem asks three related questions about the asymptotic behavior of f(n)/n. Tao disproved the strongest claim (Part I), but the 'almost all' version and limsup question remain unresolved.",
+    "implications": "This problem connects divisor structure to density questions in number theory. A full resolution would illuminate how efficiently divisor sums can 'target' arbitrary values. The connection to Goldbach's conjecture (via prime products) suggests deep arithmetic structure underlies the problem.",
+    "openQuestions": [
+      "Is f(n) = o(n) for almost all n? (Part II, OPEN)",
+      "Is limsup f(n)/n = ∞? (Part III, OPEN)",
+      "Are 2 and 5 the ONLY values where f is undefined?",
+      "Can we compute f(n) efficiently for a given n?",
+      "What is the exact density of {n : f(n) ≤ δn} as a function of δ?"
+    ]
   }
 }

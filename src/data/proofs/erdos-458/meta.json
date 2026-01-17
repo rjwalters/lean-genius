@@ -1,33 +1,75 @@
 {
   "id": "erdos-458",
-  "title": "Erdős Problem #458",
+  "title": "LCM Inequality for Primes",
   "slug": "erdos-458",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the least common multiple of .... Is it true that, for all ...,\\[[1,\\ldots,p_{k+1}-1]< p_k[1,\\ldots,p_k]?\\]\n\n\n...",
+  "description": "Let lcm(1,...,n) denote the least common multiple of {1,...,n}. Is it true that for all k ≥ 1, lcm(1,...,p_{k+1}-1) < p_k · lcm(1,...,p_k)? Erdős and Graham call this 'almost certainly' true, but proving it requires something close to Legendre's conjecture.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Graham",
     "sourceUrl": "https://erdosproblems.com/458",
     "date": "",
-    "status": "pending",
+    "status": "axiom",
     "proofRepoPath": "Proofs/Erdos458Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "lcm",
+      "primes",
+      "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 458,
     "erdosUrl": "https://erdosproblems.com/458",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #458 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $[1,\\ldots,n]$ denote the least common multiple of $\\{1,\\ldots,n\\}$. Is it true that, for all $k\\geq 1$,\\[[1,\\ldots,p_{k+1}-1]< p_k[1,\\ldots,p_k]?\\]\n\n\n\nErd\\H{o}s and Graham write this is 'almost certainly' true, but the proof is beyond our ability, for (at least) two reasons:\n{UL}\n{LI}Firstly, one has to rule out the possibility of many primes $q$ such that $p_k<q^2<p_{k+1}$. There should be at most one such $q$, which would follow from $p_{k+1}-p_k<p_k^{1/2}$, which is essentially the notorious Legendre's conjecture.{/LI}\n{LI} The small primes also cause trouble.{/LI}\n{/UL}\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem explores the growth rate of the LCM function between consecutive primes. The LCM function lcm(1,...,n) is closely related to Chebyshev's ψ function, with log(lcm(1,...,n)) ~ n. The conjecture asks whether the growth between primes p_k and p_{k+1} is bounded by multiplication by p_k. Erdős and Graham described this as 'almost certainly' true, but noted the proof requires controlling prime gaps - essentially requiring Legendre's conjecture.",
+    "problemStatement": "Let [1,...,n] denote the least common multiple of {1,...,n}. Let p_k be the k-th prime. Is it true that for all k ≥ 1: lcm(1,...,p_{k+1}-1) < p_k · lcm(1,...,p_k)?",
+    "proofStrategy": "We define lcm_upto using Finset.lcm and the nth prime using Nat.nth. The main conjecture is expressed as a Prop. We verify small cases (k=1,2) computationally. The connection to Legendre's conjecture is formalized: we need to control primes q with p_k < q² < p_{k+1}.",
+    "keyInsights": [
+      "Between consecutive primes, LCM only grows by composite factors (powers of smaller primes)",
+      "The key obstacle is controlling primes q where p_k < q² < p_{k+1}",
+      "Legendre's conjecture would imply at most one such q exists",
+      "Chebyshev's bounds give log(lcm(1,...,n)) ~ n asymptotically"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "lcm-function",
+      "title": "The LCM Function",
+      "startLine": 34,
+      "endLine": 91,
+      "summary": "Define lcm_upto and verify small values: lcm(1,...,5) = 60, etc."
+    },
+    {
+      "id": "nth-prime",
+      "title": "The nth Prime",
+      "startLine": 93,
+      "endLine": 116,
+      "summary": "Define nthPrime using Nat.nth and prove basic properties."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 118,
+      "endLine": 158,
+      "summary": "State the conjecture and explain the connection to Legendre's conjecture."
+    },
+    {
+      "id": "small-cases",
+      "title": "Verified Small Cases",
+      "startLine": 160,
+      "endLine": 179,
+      "summary": "Verify the conjecture holds for k=1,2 by computation, plus Chebyshev asymptotic."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #458 about the growth of LCM between consecutive primes. The conjecture remains open because proving it requires controlling prime gaps, essentially requiring Legendre's conjecture. Small cases are verified computationally.",
+    "implications": "This connects the fine structure of LCM growth to deep questions about prime distribution. A proof would have implications for understanding how composite numbers fill gaps between primes.",
+    "openQuestions": [
+      "Does Legendre's conjecture imply Erdős #458?",
+      "Can the conjecture be proved unconditionally for sufficiently large k?",
+      "What is the relationship to the Riemann Hypothesis?"
+    ]
   }
 }

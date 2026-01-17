@@ -1,1 +1,234 @@
-[]
+[
+  {
+    "id": "ann-e479-header",
+    "proofId": "erdos-479",
+    "range": {
+      "startLine": 1,
+      "endLine": 17
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #479** (Graham's Conjecture) asks: Is it true that for all k ≠ 1, there are infinitely many n such that 2^n ≡ k (mod n)?\n\nThis problem connects exponential functions with modular arithmetic in a surprising way: the modulus n appears both as the exponent of 2 and as the divisor.\n\n**Status**: OPEN — The general conjecture remains unproved, though important special cases have been resolved.",
+    "mathContext": "The restriction k ≠ 1 is necessary and easy to verify: for n > 1, we always have 2^n ≢ 1 (mod n). This is because for even n, 2^n ≡ 0 (mod 2) ≠ 1, and for odd n > 1, more subtle arguments apply.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "modular arithmetic",
+      "exponential congruences",
+      "Graham's conjecture"
+    ]
+  },
+  {
+    "id": "ann-e479-imports",
+    "proofId": "erdos-479",
+    "range": {
+      "startLine": 19,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import:\n- **Nat.Basic**: Fundamental natural number operations\n- **Nat.Prime.Basic**: Primality predicate for stating Fermat's Little Theorem\n- **Int.ModEq**: Modular equivalence for integers (the ZMOD notation)\n- **Set.Finite.Basic**: Predicates for finite and infinite sets",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "modular equivalence",
+      "infinite sets"
+    ]
+  },
+  {
+    "id": "ann-e479-solution-set",
+    "proofId": "erdos-479",
+    "range": {
+      "startLine": 38,
+      "endLine": 43
+    },
+    "type": "definition",
+    "title": "The Solution Set",
+    "content": "**SolutionSet(k)** is the set of positive integers n such that 2^n ≡ k (mod n).\n\n```\nSolutionSet (k : ℤ) : Set ℕ :=\n  { n : ℕ | n > 0 ∧ (2 : ℤ) ^ n ≡ k [ZMOD n] }\n```\n\nGraham's conjecture states that this set is infinite for every k ≠ 1.",
+    "mathContext": "We use integer modular equivalence (ZMOD) rather than natural number modular arithmetic to handle negative residues cleanly. The condition n > 0 excludes the trivial case n = 0.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "set builder notation",
+      "modular equivalence",
+      "ZMOD"
+    ]
+  },
+  {
+    "id": "ann-e479-why-k1-fails",
+    "proofId": "erdos-479",
+    "range": {
+      "startLine": 45,
+      "endLine": 61
+    },
+    "type": "axiom",
+    "title": "Why k = 1 is Impossible",
+    "content": "**Theorem**: For n > 1, we have 2^n ≢ 1 (mod n).\n\nThis explains why Graham's conjecture requires k ≠ 1.\n\n**Proof sketch**:\n- **Case n even**: 2^n ≡ 0 (mod 2), but 1 ≢ 0 (mod 2). Since n is even, n ≡ 0 (mod 2), so if 2^n ≡ 1 (mod n), we'd need 1 ≡ 0 (mod 2). Contradiction.\n- **Case n odd > 1**: More subtle number-theoretic arguments show 2^n ≢ 1 (mod n).",
+    "mathContext": "This result is elementary but requires careful case analysis. The key insight is that 2^n shares factors with n in ways that prevent the remainder from being 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "parity",
+      "divisibility",
+      "case analysis"
+    ]
+  },
+  {
+    "id": "ann-e479-partial-results",
+    "proofId": "erdos-479",
+    "range": {
+      "startLine": 68,
+      "endLine": 86
+    },
+    "type": "axiom",
+    "title": "Known Partial Results",
+    "content": "**Graham, Lehmer, and Lehmer** proved the conjecture for two important cases:\n\n1. **Powers of 2**: For k = 2^i (any i ≥ 1), SolutionSet(2^i) is infinite.\n\n2. **k = -1**: The set { n | 2^n ≡ -1 (mod n) } is infinite.\n\nTang later gave simplified proofs of these results.",
+    "mathContext": "The proof for powers of 2 leverages the structure of how 2^n relates to powers of 2 modulo composite numbers. The k = -1 case uses properties of the multiplicative order of 2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Graham-Lehmer-Lehmer theorem",
+      "multiplicative order",
+      "special cases"
+    ]
+  },
+  {
+    "id": "ann-e479-conjecture",
+    "proofId": "erdos-479",
+    "range": {
+      "startLine": 88,
+      "endLine": 107
+    },
+    "type": "definition",
+    "title": "Graham's Conjecture",
+    "content": "**Graham's Conjecture** (Erdős Problem #479):\n\n```\ndef grahams_conjecture : Prop :=\n  ∀ k : ℕ, k > 1 → (SolutionSet k).Infinite\n```\n\nFor all k > 1, the set of n with 2^n ≡ k (mod n) is infinite.\n\nWe state this for positive k. Negative residues can be handled by taking k mod n.",
+    "mathContext": "The conjecture remains open despite decades of work. The difficulty lies in the complex interaction between the exponential growth of 2^n and the divisibility conditions imposed by the modulus n.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open conjecture",
+      "asymptotic density",
+      "existence of solutions"
+    ]
+  },
+  {
+    "id": "ann-e479-k3-difficulty",
+    "proofId": "erdos-479",
+    "range": {
+      "startLine": 109,
+      "endLine": 133
+    },
+    "type": "axiom",
+    "title": "The k = 3 Computational Challenge",
+    "content": "**Remarkable fact**: For k = 3, the smallest n with 2^n ≡ 3 (mod n) is:\n\n**n = 4,700,063,497** (a 10-digit number!)\n\nThis illustrates the extreme computational difficulty of the problem. Despite k = 3 being small, solutions are incredibly sparse.\n\nThe same value n = 4700063497 also works for k = 5, showing that certain n satisfy multiple congruences.",
+    "mathContext": "The OEIS sequence A036236 catalogs minimal n for each k. The values are highly irregular: A036236(2) = 3, A036236(3) = 4700063497, A036236(4) = 6. This irregularity suggests deep arithmetic structure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "OEIS A036236",
+      "computational number theory",
+      "sparse solutions"
+    ]
+  },
+  {
+    "id": "ann-e479-fermat",
+    "proofId": "erdos-479",
+    "range": {
+      "startLine": 135,
+      "endLine": 162
+    },
+    "type": "axiom",
+    "title": "Fermat's Little Theorem Connection",
+    "content": "**Fermat's Little Theorem** provides a complete solution for k = 2:\n\nFor any prime p: 2^p ≡ 2 (mod p)\n\nThis means **every odd prime p** satisfies p ∈ SolutionSet(2).\n\nSince there are infinitely many odd primes, SolutionSet(2) is infinite. This is the simplest case of Graham's conjecture.",
+    "mathContext": "Fermat's Little Theorem states a^p ≡ a (mod p) for prime p. Setting a = 2 gives us 2^p ≡ 2 (mod p), which is exactly what we need for membership in SolutionSet(2).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fermat's Little Theorem",
+      "prime numbers",
+      "infinitude of primes"
+    ]
+  },
+  {
+    "id": "ann-e479-euler",
+    "proofId": "erdos-479",
+    "range": {
+      "startLine": 143,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "Why Euler's Theorem Doesn't Help",
+    "content": "**Euler's Theorem** states: 2^φ(n) ≡ 1 (mod n) when gcd(2,n) = 1.\n\nBut this doesn't directly help because:\n- We need 2^n ≡ k (mod n), not 2^φ(n) ≡ 1\n- The exponent n and the totient φ(n) don't align in general\n- The constraint that modulus = exponent creates unique difficulties",
+    "mathContext": "Euler's theorem gives information about 2^(φ(n)) mod n, but our problem asks about 2^n mod n. Since n ≠ φ(n) in general, we can't directly apply Euler's theorem.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euler's totient function",
+      "Euler's theorem",
+      "multiplicative order"
+    ]
+  },
+  {
+    "id": "ann-e479-examples",
+    "proofId": "erdos-479",
+    "range": {
+      "startLine": 164,
+      "endLine": 188
+    },
+    "type": "lemma",
+    "title": "Verified Examples",
+    "content": "The Lean `decide` tactic can verify small instances:\n\n| Computation | Verification |\n|-------------|-------------|\n| 2^3 = 8 ≡ 2 (mod 3) | `by decide` |\n| 2^6 = 64 ≡ 4 (mod 6) | `by decide` |\n| 2^4 = 16 ≡ 0 (mod 4) | `by decide` |\n\nThese confirm the OEIS data: A036236(2) = 3, A036236(4) = 6, A036236(0) = 4.",
+    "mathContext": "Decidable propositions about finite computations can be verified automatically by Lean's kernel. This provides machine-checked confirmation of the small cases.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decidability",
+      "computational verification",
+      "OEIS"
+    ]
+  },
+  {
+    "id": "ann-e479-oeis",
+    "proofId": "erdos-479",
+    "range": {
+      "startLine": 190,
+      "endLine": 204
+    },
+    "type": "concept",
+    "title": "OEIS A036236",
+    "content": "The **OEIS sequence A036236** gives the smallest n for each k:\n\n| k | A036236(k) | Verification |\n|---|------------|-------------|\n| 0 | 4 | 2^4 = 16 ≡ 0 (mod 4) |\n| 2 | 3 | 2^3 = 8 ≡ 2 (mod 3) |\n| 3 | 4700063497 | Enormous! |\n| 4 | 6 | 2^6 = 64 ≡ 4 (mod 6) |\n| 5 | 4700063497 | Same as k=3 |\n| 6 | 903 | 2^903 ≡ 6 (mod 903) |\n| 7 | 46 | 2^46 ≡ 7 (mod 46) |\n\nThe pattern is highly irregular and unpredictable.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "OEIS",
+      "minimal solutions",
+      "pattern irregularity"
+    ]
+  },
+  {
+    "id": "ann-e479-crt",
+    "proofId": "erdos-479",
+    "range": {
+      "startLine": 147,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "Chinese Remainder Theorem Approach",
+    "content": "The **Chinese Remainder Theorem** suggests analyzing 2^n ≡ k (mod n) by factoring n into prime powers.\n\nFor n = p₁^{a₁} · p₂^{a₂} · ... · pₘ^{aₘ}, the congruence 2^n ≡ k (mod n) holds iff:\n- 2^n ≡ k (mod p₁^{a₁})\n- 2^n ≡ k (mod p₂^{a₂})\n- ...\n\nBut the constraints from different prime powers **interact in complex ways** because n appears in the exponent too.",
+    "mathContext": "This prime-by-prime analysis is the standard approach, but the fact that n determines both the exponent and the modulus creates feedback loops that make the analysis extremely difficult.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Chinese Remainder Theorem",
+      "prime factorization",
+      "system of congruences"
+    ]
+  },
+  {
+    "id": "ann-e479-carmichael",
+    "proofId": "erdos-479",
+    "range": {
+      "startLine": 143,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "Carmichael Function Connection",
+    "content": "The **Carmichael function λ(n)** gives the smallest positive integer m such that a^m ≡ 1 (mod n) for all a coprime to n.\n\nThe multiplicative order of 2 modulo n divides λ(n). However, the constraint that the exponent equals the modulus (2^n mod n) creates unique difficulties:\n\n- We need information about 2^n, not 2^λ(n)\n- The relationship between n and λ(n) is complicated\n- For n with small prime factors, λ(n) is much smaller than n",
+    "mathContext": "Carmichael's theorem gives 2^λ(n) ≡ 1 (mod n) when gcd(2,n) = 1. But since λ(n) ≤ φ(n) < n for n > 1, we can't directly use this to determine 2^n mod n.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Carmichael function",
+      "multiplicative order",
+      "Euler's totient"
+    ]
+  }
+]

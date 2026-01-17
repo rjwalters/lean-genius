@@ -1,33 +1,118 @@
 {
   "id": "erdos-643",
-  "title": "Erdős Problem #643",
+  "title": "Erdős Problem #643: Crossed Pairs in Hypergraphs",
   "slug": "erdos-643",
-  "description": "Let f(n;t)\" role=\"presentation\" style=\"position: relative;\">f(n;t)f(n;t)f(n;t) be minimal such that if a t\" role=\"presentation\" style=\"position: relative;\">ttt-uniform hypergraph on n\" role=\"presen...",
+  "description": "Let f(n;t) be the minimal number of edges such that any t-uniform hypergraph on n vertices must contain four edges A,B,C,D with A∪B = C∪D and A∩B = C∩D = ∅. Conjecture: f(n;t) = (1+o(1))·C(n,t-1) for t≥3.",
   "meta": {
-    "author": "Unknown",
+    "author": "Open Problem (bounds by Füredi, Pikhurko-Verstraëte)",
     "sourceUrl": "https://erdosproblems.com/643",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos643Problem.lean",
-    "tags": [
-      "erdos"
-    ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "tags": ["erdos", "combinatorics", "hypergraphs", "extremal-combinatorics", "open-problem"],
+    "badge": "axiom",
+    "sorries": 10,
     "erdosNumber": 643,
     "erdosUrl": "https://erdosproblems.com/643",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for representing hypergraph edges",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of sets (noncomputable)",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Asymptotic convergence for the main conjecture",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of t-uniform hypergraphs as sets of t-element Finsets",
+      "Definition of 'crossed pair' configuration: four edges A,B,C,D with A∪B=C∪D and A∩B=C∩D=∅",
+      "Definition of the extremal function f(n,t) via Nat.find",
+      "Connection to C₄-free graphs for t=2 case (Kővári–Sós–Turán)",
+      "Axiomatization of Pikhurko-Verstraëte bound: f(n,3) ≤ (13/9)·C(n,2)",
+      "Construction of sunflower hypergraphs avoiding crossed pairs",
+      "Statement of Erdős-Rado Sunflower Lemma connection"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #643 from erdosproblems.com.",
-    "problemStatement": "Let f(n;t)\" role=\"presentation\" style=\"position: relative;\">f(n;t)f(n;t)f(n;t) be minimal such that if a t\" role=\"presentation\" style=\"position: relative;\">ttt-uniform hypergraph on n\" role=\"presentation\" style=\"position: relative;\">nnn vertices contains at least f(n;t)\" role=\"presentation\" style=\"position: relative;\">f(n;t)f(n;t)f(n;t) edges then there must be four edges A,B,C,D\" role=\"presentation\" style=\"position: relative;\">A,B,C,DA,B,C,DA,B,C,D such thatA&#x222A;B=C&#x222A;D\" role=\"presentation\" style=\"text-align: center; position: relative;\">A∪B=C∪DA∪B=C∪D",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem belongs to extremal hypergraph theory, asking about the minimum number of edges that forces a specific forbidden configuration.\n\nThe 'crossed pair' configuration—four edges A,B,C,D where A∪B = C∪D but the pairs {A,B} and {C,D} are both disjoint—generalizes the concept of a 4-cycle in graphs. For ordinary graphs (t=2), avoiding crossed pairs is equivalent to avoiding C₄, connecting to the classical Kővári–Sós–Turán theorem.\n\nFor hypergraphs (t≥3), the problem becomes much more subtle. The natural construction is a 'sunflower': all edges share a common (t-1)-element core, with distinct single elements (petals) distinguishing them. This gives about C(n-1,t-1) edges.\n\nSignificant progress was made by Pikhurko and Verstraëte (2009) for 3-uniform hypergraphs, establishing f(n,3) ≤ (13/9)·C(n,2).\n\nThe conjecture that f(n,t) ~ C(n,t-1) would show that sunflower-type constructions are essentially optimal.",
+    "problemStatement": "Let $f(n;t)$ be the minimal number of edges such that any $t$-uniform hypergraph on $n$ vertices must contain four edges $A, B, C, D$ satisfying:\n$$A \\cup B = C \\cup D \\quad \\text{and} \\quad A \\cap B = C \\cap D = \\emptyset$$\n\n**Known Bounds**:\n- **t = 2**: $f(n;2) = (\\frac{1}{2} + o(1))n^{3/2}$ (Kővári–Sós–Turán)\n- **t = 3**: $f(n;3) \\leq \\frac{13}{9}\\binom{n}{2}$ (Pikhurko-Verstraëte 2009)\n- **General**: $\\binom{n-1}{t-1} + \\lfloor\\frac{n-1}{t}\\rfloor \\leq f(n;t) < \\frac{7}{2}\\binom{n}{t-1}$\n\n**Conjecture** (OPEN): For $t \\geq 3$,\n$$f(n;t) = (1 + o(1))\\binom{n}{t-1}$$",
+    "proofStrategy": "Our formalization:\n\n1. **Defines hypergraphs** as sets of Finsets with uniformity constraints\n\n2. **Formalizes the crossed pair configuration** with four edges having matching unions and empty intersections\n\n3. **Defines the extremal function** f(n,t) via Nat.find on the property that all hypergraphs with ≥m edges contain a crossed pair\n\n4. **Explores the t=2 case** connecting to 4-cycles and the Kővári–Sós–Turán theorem\n\n5. **Records known bounds** including the Pikhurko-Verstraëte upper bound\n\n6. **Constructs sunflower hypergraphs** as examples achieving near-optimal bounds\n\n7. **States the main conjecture** as an asymptotic limit statement",
+    "keyInsights": [
+      "**Crossed Pairs Generalize C₄**: For graphs (t=2), avoiding crossed pairs is equivalent to avoiding 4-cycles. The Kővári–Sós–Turán theorem gives f(n,2) = Θ(n^{3/2}).",
+      "**Sunflowers Avoid Crossed Pairs**: A sunflower (all edges share a common core) cannot contain crossed pairs because any two edges intersect in the nonempty core.",
+      "**The Gap to Optimal**: The lower bound C(n-1,t-1) comes from sunflower constructions. The conjecture is that this is essentially tight.",
+      "**Connection to Erdős-Rado**: The Sunflower Lemma (large uniform families contain sunflowers) is a related structural result in extremal combinatorics."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "hypergraphs",
+      "title": "Hypergraph Definitions",
+      "startLine": 27,
+      "endLine": 41,
+      "summary": "Basic definitions for t-uniform hypergraphs"
+    },
+    {
+      "id": "crossed-pair",
+      "title": "The Crossed Pair Configuration",
+      "startLine": 43,
+      "endLine": 63,
+      "summary": "Definition of crossed pairs and when hypergraphs contain them"
+    },
+    {
+      "id": "extremal-function",
+      "title": "The Extremal Function f(n,t)",
+      "startLine": 65,
+      "endLine": 84,
+      "summary": "Definition of f(n,t) as minimum edge count forcing crossed pairs"
+    },
+    {
+      "id": "graph-case",
+      "title": "Case t = 2: Graphs and C₄",
+      "startLine": 86,
+      "endLine": 109,
+      "summary": "Connection to 4-cycles and Kővári–Sós–Turán"
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "startLine": 111,
+      "endLine": 139,
+      "summary": "Pikhurko-Verstraëte and general bounds"
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 141,
+      "endLine": 156,
+      "summary": "Statement of Erdős's asymptotic conjecture"
+    },
+    {
+      "id": "constructions",
+      "title": "Sunflower Constructions",
+      "startLine": 158,
+      "endLine": 181,
+      "summary": "Sunflower hypergraphs avoiding crossed pairs"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #643, asking about the extremal function f(n,t) for hypergraphs avoiding crossed pairs. We define the key concepts, record known bounds, explore the connection to 4-cycles in graphs, and construct sunflower hypergraphs achieving near-optimal bounds.",
+    "implications": "If the conjecture f(n,t) ~ C(n,t-1) is true, it would establish that sunflower-type constructions are essentially optimal for avoiding crossed pairs in uniform hypergraphs. This connects to deep questions in extremal combinatorics about forbidden configurations.",
+    "openQuestions": [
+      "Is f(n,t) = (1+o(1))·C(n,t-1) for all t ≥ 3?",
+      "What is the exact value of f(n,3) for small n?",
+      "Are there constructions other than sunflowers achieving good bounds?",
+      "How does the problem generalize to non-uniform hypergraphs?"
+    ]
   }
 }

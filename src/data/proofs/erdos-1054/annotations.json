@@ -1,1 +1,264 @@
-[]
+[
+  {
+    "id": "ann-e1054-header",
+    "proofId": "erdos-1054",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1054** asks about the function f(n) = the minimal m such that n equals the sum of the k smallest divisors of m for some k ≥ 1.\n\nThe main question: Does f(n) grow slower than n? Three variants are considered:\n1. Is f(n) = o(n) unconditionally?\n2. Is f(n) = o(n) for almost all n?\n3. Is limsup f(n)/n = ∞?",
+    "mathContext": "Terry Tao disproved Part I by showing the density of {n : f(n) ≤ δn} is O(δ²). This means many values n require f(n) ≈ n. Parts II and III remain open.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "divisor function",
+      "asymptotic analysis",
+      "natural density"
+    ]
+  },
+  {
+    "id": "ann-e1054-imports",
+    "proofId": "erdos-1054",
+    "range": {
+      "startLine": 25,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import **natural number basics** for divisibility, **real numbers** for asymptotic statements involving ratios like f(n)/n, and **Finset.Card** for counting elements in finite sets (needed for density statements).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "real analysis",
+      "finite sets"
+    ]
+  },
+  {
+    "id": "ann-e1054-background",
+    "proofId": "erdos-1054",
+    "range": {
+      "startLine": 33,
+      "endLine": 42
+    },
+    "type": "concept",
+    "title": "Divisor Sum Background",
+    "content": "For any m ≥ 1, its divisors can be sorted: d₁ = 1 < d₂ < d₃ < ... < dₖ = m.\n\nThe **partial sums** are 1, 1+d₂, 1+d₂+d₃, etc. The function f(n) asks: what's the smallest m that achieves n as one of these partial sums?\n\n**Example**: For m = 6, divisors are [1, 2, 3, 6], and partial sums are 1, 3, 6, 12.",
+    "mathContext": "The structure of divisors severely constrains achievable partial sums. The smallest divisor is always 1, and the second smallest is the smallest prime factor of m.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisor enumeration",
+      "partial sums",
+      "prime factors"
+    ]
+  },
+  {
+    "id": "ann-e1054-representable",
+    "proofId": "erdos-1054",
+    "range": {
+      "startLine": 43,
+      "endLine": 51
+    },
+    "type": "axiom",
+    "title": "Representability Predicate",
+    "content": "We axiomatize **IsRepresentable(n)**: the predicate that n can be written as a sum of the k smallest divisors of some m ≥ 1.\n\nThis predicate is true for most positive integers, but fails for exactly n = 2 and n = 5.",
+    "mathContext": "A constructive definition would enumerate divisors of all m and compute partial sums. We axiomatize to focus on the mathematical structure rather than implementation details.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "predicate",
+      "axiomatization",
+      "exceptional values"
+    ]
+  },
+  {
+    "id": "ann-e1054-f-axiom",
+    "proofId": "erdos-1054",
+    "range": {
+      "startLine": 59,
+      "endLine": 76
+    },
+    "type": "axiom",
+    "title": "The Function f(n)",
+    "content": "We axiomatize **f(n)** as the minimal m such that n is representable via m.\n\n**Properties**:\n- When n is representable: f(n) ≥ 1\n- When n is not representable: f(n) = 0 (junk value)\n\nThis mirrors the 'partial function' semantics from the original problem.",
+    "mathContext": "Using 0 as a junk value for undefined cases is a common pattern in formalization. It avoids dealing with Option types while still capturing the essential mathematics.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "partial functions",
+      "junk values",
+      "minimality"
+    ]
+  },
+  {
+    "id": "ann-e1054-why-2-impossible",
+    "proofId": "erdos-1054",
+    "range": {
+      "startLine": 77,
+      "endLine": 98
+    },
+    "type": "concept",
+    "title": "Why 2 is Impossible",
+    "content": "The sum 2 cannot be achieved as a partial divisor sum:\n\n- **k = 1**: Sum = 1 (always, since d₁ = 1)\n- **k ≥ 2**: Sum = 1 + d₂ + ... ≥ 1 + 2 = 3\n\nSince the smallest proper divisor of any m ≥ 2 is at least 2 (it's the smallest prime factor), we can't get a sum of exactly 2.\n\n**The value 2 is trapped** between the achievable sums 1 and 3.",
+    "mathContext": "This gap phenomenon—where certain values are unreachable—is a key feature of divisor sum problems. The gap between 1 and 3 exists because every number > 1 has a prime factor ≥ 2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime factors",
+      "gap analysis",
+      "unreachable values"
+    ]
+  },
+  {
+    "id": "ann-e1054-why-5-impossible",
+    "proofId": "erdos-1054",
+    "range": {
+      "startLine": 99,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "Why 5 is Impossible",
+    "content": "The sum 5 requires 1 + d₂ = 5, so d₂ = 4.\n\nBut if 4 | m (4 divides m) and 4 is the smallest divisor > 1, then 2 cannot divide m. However, if 4 | m, then 2 | m (since 2 | 4). Contradiction!\n\n**Therefore 5 is unreachable.**",
+    "mathContext": "This argument generalizes: if we need d₂ = 2k for k > 1, then 2 | m, so d₂ ≤ 2, contradicting d₂ = 2k > 2. This explains why the 'gaps' are rare.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisibility",
+      "contradiction",
+      "case analysis"
+    ]
+  },
+  {
+    "id": "ann-e1054-f-undefined-theorems",
+    "proofId": "erdos-1054",
+    "range": {
+      "startLine": 100,
+      "endLine": 118
+    },
+    "type": "theorem",
+    "title": "f(2) = 0 and f(5) = 0",
+    "content": "These theorems follow immediately from:\n1. The axioms `not_representable_2` and `not_representable_5`\n2. The axiom `f_undefined` that says f(n) = 0 when n is not representable\n\nThe proofs are one-liners applying the f_undefined axiom.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "modus ponens",
+      "axiom application"
+    ]
+  },
+  {
+    "id": "ann-e1054-examples",
+    "proofId": "erdos-1054",
+    "range": {
+      "startLine": 120,
+      "endLine": 166
+    },
+    "type": "lemma",
+    "title": "Concrete Examples",
+    "content": "We record specific values of f(n) as axioms:\n\n| n | f(n) | Explanation |\n|---|------|-------------|\n| 1 | 1 | divisors of 1 = {1}, sum = 1 |\n| 3 | 2 | divisors of 2 = {1,2}, 1+2 = 3 |\n| 4 | 3 | divisors of 3 = {1,3}, 1+3 = 4 |\n| 6 | 6 | divisors of 6 = {1,2,3,6}, 1+2+3 = 6 |\n\nThese examples illustrate how f(n) can sometimes be much smaller than n (f(3) = 2) and sometimes equal to n (f(6) = 6).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "concrete instances",
+      "verification"
+    ]
+  },
+  {
+    "id": "ann-e1054-part-i",
+    "proofId": "erdos-1054",
+    "range": {
+      "startLine": 170,
+      "endLine": 184
+    },
+    "type": "definition",
+    "title": "Open Question I: f(n) = o(n)?",
+    "content": "**erdos_1054_part_i** asks whether f(n)/n → 0 as n → ∞.\n\nIn formal terms: ∀ε > 0, ∃N, ∀n ≥ N: f(n) < εn\n\nThis would mean that for large n, f(n) is 'negligible' compared to n.\n\n**STATUS: FALSE** — Tao disproved this.",
+    "mathContext": "Tao showed the density of {n : f(n) ≤ δn} is O(δ²), meaning the set of 'easy' values (where f(n) is small) is sparse. Many values require f(n) ≈ n.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "little-o notation",
+      "asymptotics",
+      "disproof"
+    ]
+  },
+  {
+    "id": "ann-e1054-part-ii",
+    "proofId": "erdos-1054",
+    "range": {
+      "startLine": 186,
+      "endLine": 196
+    },
+    "type": "definition",
+    "title": "Open Question II: Almost All?",
+    "content": "**erdos_1054_part_ii** weakens Part I: Is f(n) = o(n) for **almost all** n?\n\n'Almost all' means the exceptional set has density 0. Formally, for any ε, δ > 0, eventually the fraction of n with f(n) ≥ εn is less than δ.\n\n**STATUS: OPEN**",
+    "mathContext": "Even though Part I fails (there are many 'hard' values), perhaps they form a density-0 set. This is a subtler question about the distribution of hard cases.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "natural density",
+      "almost all",
+      "exceptional sets"
+    ]
+  },
+  {
+    "id": "ann-e1054-part-iii",
+    "proofId": "erdos-1054",
+    "range": {
+      "startLine": 197,
+      "endLine": 204
+    },
+    "type": "definition",
+    "title": "Open Question III: limsup = ∞?",
+    "content": "**erdos_1054_part_iii** asks: Is limsup f(n)/n = ∞?\n\nThis means: for any constant C, there exist arbitrarily large n with f(n) ≥ Cn.\n\n**STATUS: OPEN** — Related to Part II; if true, it implies Part I fails (which we know) and gives information about the 'worst case' behavior.",
+    "significance": "key",
+    "relatedConcepts": [
+      "limsup",
+      "worst case",
+      "unboundedness"
+    ]
+  },
+  {
+    "id": "ann-e1054-tao",
+    "proofId": "erdos-1054",
+    "range": {
+      "startLine": 211,
+      "endLine": 223
+    },
+    "type": "axiom",
+    "title": "Tao's Partial Result",
+    "content": "**Terry Tao** disproved Part I by showing: the upper density of {n : f(n) ≤ δn} is O(δ²).\n\nThis means:\n- For small δ, very few n satisfy f(n) ≤ δn\n- Specifically, the fraction is bounded by Cδ² for some constant C\n- So f(n) ≥ δn for 'most' n in a density sense\n\nThis is formalized as `tao_disproves_part_i : ¬erdos_1054_part_i`.",
+    "mathContext": "Tao's proof appeared in comments to Erdős Problem #468. The O(δ²) bound is quite strong—it shows the 'hard' values are not just present but prevalent.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "density bounds",
+      "Tao",
+      "disproof"
+    ]
+  },
+  {
+    "id": "ann-e1054-understanding",
+    "proofId": "erdos-1054",
+    "range": {
+      "startLine": 225,
+      "endLine": 253
+    },
+    "type": "concept",
+    "title": "Understanding the Constraints",
+    "content": "The problem's difficulty stems from **divisor structure constraints**:\n\n1. **First divisor**: Always 1\n2. **Second divisor**: The smallest prime factor p of m\n3. **Third divisor**: Either p² (if p² | m) or the second smallest prime factor\n\nThis means partial sums follow predictable patterns based on prime factorization.\n\nFor n to be 'easy' (small f(n)), we need an m with divisors that sum nicely to n. This is hard to achieve for arbitrary n.",
+    "mathContext": "The connection to Goldbach's conjecture: if n = p + q for primes p, q, then m = pq has divisors {1, p, q, pq} and 1 + p + q = 1 + n. So achieving n-1 is 'easy' via prime products.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime factorization",
+      "divisor structure",
+      "Goldbach conjecture"
+    ]
+  },
+  {
+    "id": "ann-e1054-divisor-table",
+    "proofId": "erdos-1054",
+    "range": {
+      "startLine": 237,
+      "endLine": 253
+    },
+    "type": "concept",
+    "title": "Divisor Sum Table",
+    "content": "The documentation includes a table of partial sums for small m:\n\n| m | divisors | partial sums |\n|---|----------|-------------|\n| 1 | [1] | 1 |\n| 2 | [1,2] | 1, 3 |\n| 3 | [1,3] | 1, 4 |\n| 4 | [1,2,4] | 1, 3, 7 |\n| 5 | [1,5] | 1, 6 |\n| 6 | [1,2,3,6] | 1, 3, 6, 12 |\n\nNotice 2 and 5 never appear in the 'partial sums' column!",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "tabulation",
+      "pattern recognition"
+    ]
+  }
+]

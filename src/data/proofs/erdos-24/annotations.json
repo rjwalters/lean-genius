@@ -1,1 +1,170 @@
-[]
+[
+  {
+    "id": "ann-e24-header",
+    "proofId": "erdos-24",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This module formalizes **Erdos Problem #24**: Does every triangle-free graph on 5n vertices contain at most n^5 copies of C5? The answer is **YES**, proved independently by Grzesik (2012) and Hatami et al. (2013).",
+    "mathContext": "The problem asks for the maximum number of pentagons (5-cycles) in a triangle-free graph. The extremal graph is the balanced blow-up of C5, which achieves exactly n^5 copies. The proof uses Razborov's flag algebras.",
+    "significance": "supporting",
+    "relatedConcepts": ["extremal graph theory", "flag algebras", "cycle counting"]
+  },
+  {
+    "id": "ann-e24-trianglefree",
+    "proofId": "erdos-24",
+    "range": {
+      "startLine": 47,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Triangle-Free Graphs",
+    "content": "A graph is **triangle-free** if it contains no K3 (complete graph on 3 vertices). Equivalently, G.CliqueFree 3. This is the same as having girth >= 4.",
+    "mathContext": "Triangle-freeness is a fundamental constraint in extremal graph theory. It prevents local clustering and forces graphs toward specific structures. In our case, it forces pentagon-like patterns.",
+    "significance": "key",
+    "relatedConcepts": ["CliqueFree", "girth", "Mantel's theorem"]
+  },
+  {
+    "id": "ann-e24-cyclegraph5",
+    "proofId": "erdos-24",
+    "range": {
+      "startLine": 55,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "The 5-Cycle Graph C5",
+    "content": "The **5-cycle graph** C5 has vertices 0, 1, 2, 3, 4 with edges forming a cycle: 0--1--2--3--4--0. We define adjacency as (x+1) mod 5 = y or (y+1) mod 5 = x.",
+    "mathContext": "C5 is the smallest odd cycle that can exist in a triangle-free graph (since C3 = K3 is forbidden). The pentagon structure is central to this problem.",
+    "significance": "critical",
+    "relatedConcepts": ["cycle graphs", "pentagon", "odd cycles"]
+  },
+  {
+    "id": "ann-e24-c5copy",
+    "proofId": "erdos-24",
+    "range": {
+      "startLine": 73,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "C5 Copy Definition",
+    "content": "A **C5 copy** in graph G is an injective function f : Fin 5 -> V such that adjacent vertices in C5 map to adjacent vertices in G. This is an injective graph homomorphism.",
+    "mathContext": "Counting subgraph copies is central to extremal combinatorics. The injectivity ensures we count induced pentagons, not just homomorphic images.",
+    "significance": "key",
+    "relatedConcepts": ["graph homomorphism", "subgraph counting", "injectivity"]
+  },
+  {
+    "id": "ann-e24-countc5",
+    "proofId": "erdos-24",
+    "range": {
+      "startLine": 81,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "Counting C5 Copies",
+    "content": "The function **countC5** counts unordered C5 copies in a graph. We divide by 10 because each pentagon can be traced from 5 starting vertices in 2 directions.",
+    "mathContext": "The 10-fold symmetry (D5 dihedral group) means each unordered pentagon corresponds to 10 ordered copies. Using classical we sidestep decidability issues.",
+    "significance": "key",
+    "relatedConcepts": ["symmetry", "dihedral group", "classical logic"]
+  },
+  {
+    "id": "ann-e24-blowup",
+    "proofId": "erdos-24",
+    "range": {
+      "startLine": 96,
+      "endLine": 114
+    },
+    "type": "definition",
+    "title": "Balanced Blow-Up of C5",
+    "content": "The **balanced blow-up** replaces each vertex of C5 with an independent set of n vertices. Two vertices are adjacent iff their corresponding parts are adjacent in C5.",
+    "mathContext": "This construction has 5n vertices, is triangle-free (C5 has no K3), and achieves exactly n^5 copies of C5 (one choice per part). It's the unique extremal graph.",
+    "significance": "critical",
+    "relatedConcepts": ["graph blow-up", "extremal graph", "Turán-type"]
+  },
+  {
+    "id": "ann-e24-blowup-trianglefree",
+    "proofId": "erdos-24",
+    "range": {
+      "startLine": 116,
+      "endLine": 121
+    },
+    "type": "axiom",
+    "title": "Blow-Up is Triangle-Free",
+    "content": "The balanced blow-up of C5 is **triangle-free**. A triangle would require three mutually adjacent parts, but C5 contains no K3.",
+    "mathContext": "This follows directly from C5 being triangle-free. The blow-up inherits this property since adjacency only depends on part adjacency, not within-part structure.",
+    "significance": "key",
+    "relatedConcepts": ["hereditary properties", "blow-up properties"]
+  },
+  {
+    "id": "ann-e24-main-theorem",
+    "proofId": "erdos-24",
+    "range": {
+      "startLine": 139,
+      "endLine": 160
+    },
+    "type": "theorem",
+    "title": "Grzesik-Hatami Pentagon Theorem",
+    "content": "**Main Theorem**: Every triangle-free graph on 5n vertices contains at most n^5 copies of C5. The proof uses Razborov's flag algebras, a computer-assisted method.",
+    "mathContext": "Flag algebras convert extremal problems to semidefinite programs. The key is encoding graph constraints as polynomial inequalities and using SDP solvers to verify bounds.",
+    "significance": "critical",
+    "relatedConcepts": ["flag algebras", "SDP", "computer-assisted proofs"]
+  },
+  {
+    "id": "ann-e24-uniqueness",
+    "proofId": "erdos-24",
+    "range": {
+      "startLine": 162,
+      "endLine": 171
+    },
+    "type": "axiom",
+    "title": "Uniqueness of Extremal",
+    "content": "The balanced blow-up is the **unique extremal graph**. Any triangle-free graph on 5n vertices with exactly n^5 copies of C5 must be isomorphic to the blow-up.",
+    "mathContext": "Extremal uniqueness is a strong structural result. It says there's only one way to achieve the maximum, not just that a maximum exists.",
+    "significance": "key",
+    "relatedConcepts": ["extremal uniqueness", "graph isomorphism", "stability"]
+  },
+  {
+    "id": "ann-e24-gyori",
+    "proofId": "erdos-24",
+    "range": {
+      "startLine": 179,
+      "endLine": 189
+    },
+    "type": "axiom",
+    "title": "Gyori's Earlier Bound",
+    "content": "**Gyori** proved an earlier bound of 1.03n^5 before flag algebras. This was improved by Furedi, but neither achieved the sharp bound n^5.",
+    "mathContext": "The progression 1.03n^5 -> improved -> n^5 shows how extremal problems often require new techniques. Flag algebras were the breakthrough that gave the sharp answer.",
+    "significance": "supporting",
+    "relatedConcepts": ["historical progress", "approximate bounds"]
+  },
+  {
+    "id": "ann-e24-general",
+    "proofId": "erdos-24",
+    "range": {
+      "startLine": 197,
+      "endLine": 213
+    },
+    "type": "definition",
+    "title": "Erdos's General Conjecture",
+    "content": "**General Conjecture**: For odd r >= 5, if a graph on rn vertices has girth r, does it have at most n^r copies of Cr? This **remains OPEN** for r > 5.",
+    "mathContext": "The r = 5 case is exactly our pentagon theorem (triangle-free + no C4 = girth 5). For r = 7, 9, 11, ..., the conjecture is open. Flag algebras become more complex.",
+    "significance": "key",
+    "relatedConcepts": ["girth", "odd cycles", "open problems"]
+  },
+  {
+    "id": "ann-e24-summary",
+    "proofId": "erdos-24",
+    "range": {
+      "startLine": 230,
+      "endLine": 257
+    },
+    "type": "theorem",
+    "title": "Summary Theorems",
+    "content": "**erdos_24_pentagon_theorem**: The main result. **erdos_24_extremal_exists**: Proves the extremal graph exists and achieves the bound.",
+    "mathContext": "The existence theorem constructs the extremal graph explicitly using balancedBlowupC5, showing the bound is tight. This completes the solution to Problem #24.",
+    "significance": "critical",
+    "relatedConcepts": ["main result", "existence", "tightness"]
+  }
+]

@@ -1,33 +1,148 @@
 {
   "id": "erdos-494",
-  "title": "Erdős Problem #494",
+  "title": "Erdős Problem #494: Set Determination from k-Sums",
   "slug": "erdos-494",
-  "description": "If ... is a finite set and ... then let\\[A_k = \\{ z_1+\\cdots+z_k : z_i\\in A\\}.\\]For ... does the multiset ... (together with the size of ...) uniquely determine the set ...?",
+  "description": "Given a finite set A in the complex plane and k >= 1, does the multiset of k-sums (sums of k distinct elements) together with |A| uniquely determine A? For k > 2, yes for sufficiently large |A|.",
   "meta": {
-    "author": "Unknown",
+    "author": "Selfridge-Straus (1958), Gordon-Fraenkel-Straus (1962)",
     "sourceUrl": "https://erdosproblems.com/494",
-    "date": "",
-    "status": "pending",
+    "date": "1958-1962",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos494Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "set-determination",
+      "multisets",
+      "complex-numbers"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 494,
     "erdosUrl": "https://erdosproblems.com/494",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.powersetCard",
+        "description": "Subsets of a given cardinality",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Multiset",
+        "description": "Multisets (bags) with multiplicity",
+        "module": "Mathlib.Data.Multiset.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Eventually for sufficiently large values",
+        "module": "Mathlib.Order.Filter.AtTopBot.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of k-sum multiset for finite sets in Complex",
+      "Definition of KSumDeterminesSet: uniqueness property for cardinality n",
+      "Axiomatization of Selfridge-Straus k=2 characterization (power of 2)",
+      "Axiomatization of Selfridge-Straus k=3 (|A| > 6) and k=4 (|A| > 12) results",
+      "Axiomatization of Gordon-Fraenkel-Straus main theorem (eventually for k > 2)",
+      "Counterexamples: Kruyt (|A| = k rotation) and Tao (|A| = 2k negation)",
+      "Steinerberger's product version counterexample"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #494 from erdosproblems.com.",
-    "problemStatement": "If $A\\subset \\mathbb{C}$ is a finite set and $k\\geq 1$ then let\\[A_k = \\{ z_1+\\cdots+z_k : z_i\\in A\\textrm{ distinct}\\}.\\]For $k>2$ does the multiset $A_k$ (together with the size of $A$) uniquely determine the set $A$?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #494 asks about reconstructing finite sets from their k-sums. Given A = {z1, ..., zn} in the complex plane, the k-sum multiset Ak contains all sums z_i1 + ... + z_ik where the indices are distinct.\n\nThe problem was systematically studied by Selfridge and Straus in 1958, who completely solved the k=2 case and established results for k=3,4. They showed that for k=2, a set is determined by its pairwise sums if and only if |A| is not a power of 2.\n\nThe general case for k > 2 was resolved by Gordon, Fraenkel, and Straus in 1962, who proved that for each k > 2, uniqueness holds for all sufficiently large sets. However, small counterexamples exist: Kruyt showed |A| = k fails (rotation around centroid), and Tao showed |A| = 2k fails (negation of zero-sum sets).\n\nErdős also asked about products instead of sums. Steinerberger showed this version is FALSE with an explicit counterexample using 6th roots of unity.",
+    "problemStatement": "Given a finite set $A \\subset \\mathbb{C}$ and $k \\geq 1$, define the **k-sum multiset**\n$$A_k = \\{ z_1 + \\cdots + z_k : z_i \\in A \\text{ distinct} \\}$$\n\nFor $k > 2$, does the multiset $A_k$ (together with $|A|$) uniquely determine $A$?\n\n**Status**: SOLVED (affirmative for sufficiently large $|A|$)\n\n**Complete Answer**:\n- $k = 2$: Uniqueness holds iff $|A| \\neq 2^\\ell$ (Selfridge-Straus 1958)\n- $k > 2$: Uniqueness holds for $|A|$ sufficiently large (Gordon-Fraenkel-Straus 1962)\n- Counterexamples exist for $|A| = k$ (rotation) and $|A| = 2k$ (negation)",
+    "proofStrategy": "We formalize the problem and its solution:\n\n1. **Define the k-sum multiset**: Using Finset.powersetCard k and Multiset.map\n2. **Define uniqueness property**: KSumDeterminesSet k card means same k-sums implies equal sets\n3. **State the k=2 case**: Characterization by powers of 2 (Selfridge-Straus)\n4. **State specific bounds**: k=3 for |A| > 6, k=4 for |A| > 12 (Selfridge-Straus)\n5. **State general theorem**: For k > 2, eventually KSumDeterminesSet k card (GFS)\n6. **State counterexamples**: Kruyt rotation, Tao negation, Steinerberger products\n7. **Prove summary theorem**: Combining the main positive results",
+    "keyInsights": [
+      "**The power of 2 phenomenon**: For k=2, uniqueness fails exactly when |A| = 2^l. This is related to the structure of the XOR operation in characteristic 2.",
+      "**Rotation counterexample**: When |A| = k, the k-sum multiset contains only a single element (the total sum). Rotating A around its centroid preserves this sum but changes A.",
+      "**Negation counterexample**: When |A| = 2k and sum(A) = 0, the set -A = {-a : a in A} has the same k-sum multiset as A (by a complementation argument).",
+      "**Prime divisibility criterion**: Selfridge-Straus showed uniqueness holds if |A| has a prime factor > k. This explains many special cases.",
+      "**Products fail**: Unlike sums, the product version of the problem has counterexamples even for large sets (Steinerberger's roots of unity example).",
+      "**The threshold function**: For each k > 2, there exists N(k) such that uniqueness holds for |A| > N(k). GFS give N(k) <= k^2 - k + 2."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Problem statement, historical context, status (SOLVED), and references."
+    },
+    {
+      "id": "core-defs",
+      "title": "Core Definitions",
+      "startLine": 34,
+      "endLine": 60,
+      "summary": "sumMultiset, SameKSums, and KSumDeterminesSet definitions."
+    },
+    {
+      "id": "k2-case",
+      "title": "The k = 2 Case",
+      "startLine": 62,
+      "endLine": 81,
+      "summary": "Selfridge-Straus characterization: uniqueness iff |A| is not a power of 2."
+    },
+    {
+      "id": "k34-cases",
+      "title": "The k = 3 and k = 4 Cases",
+      "startLine": 83,
+      "endLine": 108,
+      "summary": "Specific bounds: k=3 for |A| > 6, k=4 for |A| > 12, prime criterion."
+    },
+    {
+      "id": "counterexamples",
+      "title": "Counterexamples for Small Sets",
+      "startLine": 110,
+      "endLine": 135,
+      "summary": "Kruyt rotation (|A| = k) and Tao negation (|A| = 2k) counterexamples."
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result (GFS 1962)",
+      "startLine": 137,
+      "endLine": 150,
+      "summary": "For all k > 2, uniqueness holds for sufficiently large |A|."
+    },
+    {
+      "id": "products",
+      "title": "Product Version (False!)",
+      "startLine": 152,
+      "endLine": 170,
+      "summary": "Steinerberger's counterexample using 6th roots of unity."
+    },
+    {
+      "id": "summary",
+      "title": "Summary Theorem",
+      "startLine": 172,
+      "endLine": 189,
+      "summary": "erdos_494_summary combining the main positive results."
+    },
+    {
+      "id": "examples",
+      "title": "Specific Examples",
+      "startLine": 191,
+      "endLine": 210,
+      "summary": "The set {0, 1, 2} and its properties."
+    },
+    {
+      "id": "threshold",
+      "title": "The Threshold Function",
+      "startLine": 212,
+      "endLine": 227,
+      "summary": "N(k) bounds and the GFS explicit bound k^2 - k + 2."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #494 on set determination from k-sums. The problem is SOLVED: for k > 2, a finite set A in the complex plane is uniquely determined (up to its cardinality) by its k-sum multiset, provided |A| is sufficiently large. The formalization includes the complete k=2 characterization, specific bounds for k=3,4, the general GFS theorem, and counterexamples showing the necessity of the size condition.",
+    "implications": "This result connects several areas:\n\n1. **Additive combinatorics**: Understanding when sumset information determines the underlying set\n2. **Polynomial methods**: The proofs use symmetric functions and Newton's identities\n3. **Algebraic number theory**: The counterexamples involve roots of unity and Gaussian integers\n4. **Inverse problems**: Reconstruction from incomplete information\n\nThe contrast between sums (determined for large sets) and products (never determined) highlights the special structure of addition.",
+    "openQuestions": [
+      "What is the exact threshold N(k) for each k?",
+      "Can the GFS bound k^2 - k + 2 be improved?",
+      "What happens for infinite sets or sets in other groups?",
+      "Are there efficient algorithms to reconstruct A from Ak?"
+    ]
   }
 }
