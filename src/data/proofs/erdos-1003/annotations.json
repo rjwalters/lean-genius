@@ -109,10 +109,10 @@
     "id": "ann-e1003-verified-examples",
     "proofId": "erdos-1003",
     "range": {
-      "startLine": 80,
+      "startLine": 82,
       "endLine": 116
     },
-    "type": "lemma",
+    "type": "concept",
     "title": "Verified Examples",
     "content": "We verify small solutions using **native_decide**:\n\n| n | φ(n) | φ(n+1) | Verification |\n|---|------|--------|-------------|\n| 1 | 1 | 1 | `native_decide` |\n| 3 | 2 | 2 | `native_decide` |\n| 15 | 8 | 8 | `native_decide` |\n| 104 | 48 | 48 | `native_decide` |\n\nThese confirm membership in ConsecutiveEqualTotients.",
     "mathContext": "The native_decide tactic computes φ using Mathlib's implementation and checks equality. This provides machine-verified confirmation of each example.",
@@ -127,7 +127,7 @@
     "id": "ann-e1003-k-consecutive",
     "proofId": "erdos-1003",
     "range": {
-      "startLine": 117,
+      "startLine": 119,
       "endLine": 136
     },
     "type": "definition",
@@ -145,7 +145,7 @@
     "id": "ann-e1003-eps-bound",
     "proofId": "erdos-1003",
     "range": {
-      "startLine": 137,
+      "startLine": 155,
       "endLine": 163
     },
     "type": "axiom",
@@ -163,7 +163,7 @@
     "id": "ann-e1003-oeis",
     "proofId": "erdos-1003",
     "range": {
-      "startLine": 164,
+      "startLine": 165,
       "endLine": 179
     },
     "type": "concept",
@@ -216,7 +216,7 @@
     "id": "ann-e1003-understanding-104-105",
     "proofId": "erdos-1003",
     "range": {
-      "startLine": 228,
+      "startLine": 230,
       "endLine": 237
     },
     "type": "concept",
@@ -233,7 +233,7 @@
     "id": "ann-e1003-triple",
     "proofId": "erdos-1003",
     "range": {
-      "startLine": 238,
+      "startLine": 251,
       "endLine": 260
     },
     "type": "axiom",

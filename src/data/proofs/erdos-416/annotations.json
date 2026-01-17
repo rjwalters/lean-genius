@@ -39,8 +39,8 @@
     "id": "ann-e416-basic",
     "proofId": "erdos-416",
     "range": {
-      "startLine": 48,
-      "endLine": 71
+      "startLine": 52,
+      "endLine": 73
     },
     "type": "theorem",
     "title": "Basic Properties",
@@ -57,8 +57,8 @@
     "id": "ann-e416-pillai",
     "proofId": "erdos-416",
     "range": {
-      "startLine": 73,
-      "endLine": 81
+      "startLine": 77,
+      "endLine": 83
     },
     "type": "axiom",
     "title": "Pillai's Bound (1929)",
@@ -129,8 +129,8 @@
     "id": "ann-e416-open",
     "proofId": "erdos-416",
     "range": {
-      "startLine": 117,
-      "endLine": 146
+      "startLine": 121,
+      "endLine": 148
     },
     "type": "definition",
     "title": "The Open Questions",
@@ -147,10 +147,10 @@
     "id": "ann-e416-three",
     "proofId": "erdos-416",
     "range": {
-      "startLine": 148,
+      "startLine": 152,
       "endLine": 156
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "3 is Not a Totient Value",
     "content": "We prove that 3 is NOT a totient value - no m exists with φ(m) = 3. This is because φ(m) is even for all m > 2, so odd totient values can only be 1.",
     "mathContext": "The proof uses interval_cases to check small values exhaustively. For m > some threshold, φ(m) ≥ 4.",
