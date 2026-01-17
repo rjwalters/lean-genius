@@ -247,3 +247,74 @@ Jobs that returned "complete" but made no progress:
 | erdos-39/494/605/645/650 | Placeholder `True` theorems | No meaningful work |
 
 **Lesson**: Only submit files where definitions are complete.
+
+## Syntax Compatibility Issues (January 2026)
+
+**Aristotle's parser differs from local Mathlib.** Files that compile locally may fail to load in Aristotle's environment.
+
+### Known Incompatibilities
+
+| Syntax | Problem | Workaround |
+|--------|---------|------------|
+| `/-!` docstrings | "unexpected token `/-!`" | Use `/-` instead |
+| Complex namespaces | "unexpected name after `end`" | Simplify namespace structure |
+| Some type inference | "function expected" errors | Add explicit type annotations |
+| Advanced Mathlib APIs | Version mismatch | Stick to stable, well-known APIs |
+
+### Failure Examples (January 2026)
+
+These files compiled locally but failed in Aristotle:
+
+| Problem | Failure Mode | Root Cause |
+|---------|--------------|------------|
+| erdos-208 | "Unexpected axioms added" | Environment load failure |
+| erdos-63 | "Unexpected axioms added" | Environment load failure |
+| erdos-107 | "function expected at `f`" | Type inference issues |
+| erdos-57 | "unexpected name after `end`" | Namespace parsing |
+| erdos-266 | "unexpected token `/-!`" | Docstring section syntax |
+| erdos-213 | "Unexpected axioms added" | Environment load failure |
+
+### Pre-Submission Syntax Check
+
+Before submitting, verify:
+
+```bash
+# Check for /-! docstring sections (may cause parsing errors)
+grep -n "/-!" your-file.lean
+
+# Check for complex namespace usage
+grep -n "^namespace\|^end " your-file.lean
+
+# Ensure imports are minimal and standard
+head -20 your-file.lean | grep "^import"
+```
+
+### Best Practices for Aristotle Compatibility
+
+1. **Use simple docstrings**: `/-` instead of `/-!`
+2. **Minimize namespace nesting**: Flat structure preferred
+3. **Explicit type annotations**: Don't rely heavily on inference
+4. **Standard imports only**: `import Mathlib` is safest
+5. **Test with simpler files first**: Submit incrementally
+
+### When Aristotle Fails to Load
+
+If you see "Aristotle failed to load this code into its environment":
+
+1. **Check the error messages** in the returned `-solved.lean` file
+2. **Simplify the syntax** based on the specific errors
+3. **Consider manual proof** if syntax issues persist
+4. **Report patterns** to improve future guidance
+
+### Recovery Strategy
+
+For files that fail to load:
+
+```bash
+# Move to failed directory for reference
+mv aristotle-results/new/ProblemX-solved.lean aristotle-results/failed/
+
+# Update job status in registry
+# Change status from "submitted" to "failed"
+# Add outcome describing the failure mode
+```

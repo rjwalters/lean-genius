@@ -552,13 +552,28 @@ theorem placeholder : True := by sorry  -- No value
 1. **No definition sorries** - Aristotle will skip these and dependent theorems fail
 2. **No placeholder True theorems** - Provide real mathematical content
 3. **No OPEN conjectures** - Aristotle searches for existing proofs, can't discover new ones
+4. **No `/-!` docstring sections** - Use `/-` instead (causes parsing errors)
+5. **Simple namespace structure** - Complex nesting may fail to load
 
 ```bash
 # Check for problems
 grep -n "def.*:=.*sorry" your-file.lean          # Definition sorries
 grep -n "theorem.*: True" your-file.lean         # Placeholder theorems
 grep -n "theorem erdos_[0-9]*\s*:" your-file.lean # Potential OPEN problems
+grep -n "/-!" your-file.lean                      # Docstring sections (may fail)
 ```
+
+### Syntax Compatibility
+
+**Aristotle's parser differs from local Mathlib.** Files that compile locally may fail to load.
+
+| Issue | Symptom | Fix |
+|-------|---------|-----|
+| `/-!` docstrings | "unexpected token" | Use `/-` |
+| Complex namespaces | "unexpected name after end" | Flatten structure |
+| Type inference | "function expected" | Add type annotations |
+
+See `research/SORRY-CLASSIFICATION.md` for full compatibility guide.
 
 ### Workflow
 
