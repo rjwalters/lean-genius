@@ -1,1 +1,154 @@
-[]
+[
+  {
+    "id": "ann-e1080-header",
+    "proofId": "erdos-1080",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1080:**\n\nDoes there exist a constant c > 0 such that bipartite graphs on n vertices with one part of size ⌊n^(2/3)⌋ and at least cn edges must contain a 6-cycle?\n\n**Answer: NO**\n\nDe Caen and Székely (1992) disproved this by showing that C_4,C_6-free bipartite graphs can have superlinearly many edges.",
+    "mathContext": "This is an extremal graph theory problem about forcing cycles in sparse bipartite graphs. The specific partition constraint ⌊n^(2/3)⌋ creates interesting threshold behavior.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal graph theory", "Bipartite graphs", "Cycle forcing"]
+  },
+  {
+    "id": "ann-e1080-bipartition",
+    "proofId": "erdos-1080",
+    "range": { "startLine": 49, "endLine": 57 },
+    "type": "definition",
+    "title": "Bipartition Definition",
+    "content": "**IsBipartition G X Y:**\n\nA bipartition of graph G into sets X and Y requires:\n1. X and Y are disjoint\n2. X ∪ Y covers all vertices\n3. Every edge goes between X and Y\n\n```lean\ndef IsBipartition (G : SimpleGraph V) (X Y : Set V) : Prop :=\n  Disjoint X Y ∧ X ∪ Y = Set.univ ∧ ∀ u v, G.Adj u v → (u ∈ X ↔ v ∈ Y)\n```",
+    "mathContext": "Bipartite graphs are fundamental in combinatorics. Many extremal problems have different behavior for bipartite vs general graphs.",
+    "significance": "critical",
+    "relatedConcepts": ["Bipartite graphs", "Graph partitions", "Two-coloring"]
+  },
+  {
+    "id": "ann-e1080-edges-between",
+    "proofId": "erdos-1080",
+    "range": { "startLine": 59, "endLine": 77 },
+    "type": "theorem",
+    "title": "Edges Between Parts",
+    "content": "**bipartition_edges_between:**\n\nIn a bipartite graph with bipartition (X, Y), every edge connects a vertex in X to a vertex in Y (or vice versa).\n\nThis is the defining property of bipartite graphs: there are no edges within X or within Y.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e1080-cycle-def",
+    "proofId": "erdos-1080",
+    "range": { "startLine": 89, "endLine": 94 },
+    "type": "definition",
+    "title": "Cycle Definition",
+    "content": "**HasCycleOfLength G k:**\n\nThe graph G contains a cycle of length k.\n\nA cycle is a closed walk that visits each vertex at most once (except the start/end vertex).\n\n```lean\ndef HasCycleOfLength (G : SimpleGraph V) (k : ℕ) : Prop :=\n  ∃ (v : V) (walk : G.Walk v v), walk.IsCycle ∧ walk.length = k\n```",
+    "mathContext": "Cycles are fundamental graph structures. In bipartite graphs, all cycles have even length.",
+    "significance": "key",
+    "relatedConcepts": ["Graph walks", "Paths", "Girth"]
+  },
+  {
+    "id": "ann-e1080-cycle-free",
+    "proofId": "erdos-1080",
+    "range": { "startLine": 96, "endLine": 112 },
+    "type": "definition",
+    "title": "Cycle-Free Predicates",
+    "content": "**C4Free, C6Free, C4C6Free:**\n\nPredicates for graphs avoiding specific short cycles.\n\n- **C4Free G:** G contains no 4-cycle (equivalently, no K_{2,2})\n- **C6Free G:** G contains no 6-cycle\n- **C4C6Free G:** G contains neither 4-cycles nor 6-cycles\n\nThese are central to the extremal function f(n,m) studied in this problem.",
+    "significance": "key",
+    "relatedConcepts": ["Girth", "Forbidden subgraphs", "Turan-type problems"]
+  },
+  {
+    "id": "ann-e1080-extremal-function",
+    "proofId": "erdos-1080",
+    "range": { "startLine": 118, "endLine": 137 },
+    "type": "definition",
+    "title": "Extremal Function f(n,m)",
+    "content": "**maxC4C6FreeEdges n m:**\n\nThe maximum number of edges in a bipartite graph with parts of size n and m that contains no C_4 or C_6.\n\nThis is denoted f(n,m) in the literature.\n\n**Key insight:** If f(n, ⌊n^(2/3)⌋) grows faster than O(n), then no constant c can force a C_6.",
+    "mathContext": "Extremal functions are central to Turan-type problems. For bipartite graphs, forbidding short cycles allows more edges than forbidding complete bipartite subgraphs.",
+    "significance": "critical",
+    "relatedConcepts": ["Turan numbers", "Extremal graph theory", "Zarankiewicz problem"]
+  },
+  {
+    "id": "ann-e1080-upper-bound",
+    "proofId": "erdos-1080",
+    "range": { "startLine": 145, "endLine": 153 },
+    "type": "axiom",
+    "title": "De Caen-Szekely Upper Bound",
+    "content": "**deCaen_szekely_upper_bound:**\n\nf(n, ⌊n^(2/3)⌋) = O(n^(10/9))\n\nMore generally, for n^(1/2) <= m <= n:\nf(n, m) = O((nm)^(2/3))\n\nThis establishes an upper limit on how many edges a C_4,C_6-free bipartite graph can have.",
+    "mathContext": "The proof uses probabilistic counting arguments and the structure of short cycles in bipartite graphs.",
+    "significance": "critical",
+    "relatedConcepts": ["Probabilistic method", "Double counting"]
+  },
+  {
+    "id": "ann-e1080-lower-bound",
+    "proofId": "erdos-1080",
+    "range": { "startLine": 155, "endLine": 163 },
+    "type": "axiom",
+    "title": "De Caen-Szekely Lower Bound",
+    "content": "**deCaen_szekely_lower_bound:**\n\nf(n, ⌊n^(2/3)⌋) = Omega(n^(58/57 + o(1)))\n\nSince 58/57 > 1, this shows f grows superlinearly.\n\n**Consequence:** There cannot exist a constant c such that cn edges guarantee a C_6.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1080-lazebnik",
+    "proofId": "erdos-1080",
+    "range": { "startLine": 179, "endLine": 187 },
+    "type": "axiom",
+    "title": "Lazebnik-Ustimenko-Woldar Improvement",
+    "content": "**lazebnik_ustimenko_woldar_bound:**\n\nf(n, ⌊n^(2/3)⌋) = Omega(n^(16/15 + o(1)))\n\nThis improves De Caen-Szekely's lower bound from 58/57 to 16/15.\n\nThe construction uses incidence graphs of algebraic structures related to generalized polygons.",
+    "mathContext": "Algebraic constructions from finite geometry often provide optimal or near-optimal extremal graphs.",
+    "significance": "critical",
+    "relatedConcepts": ["Algebraic graph constructions", "Generalized polygons", "Finite geometry"]
+  },
+  {
+    "id": "ann-e1080-disproof",
+    "proofId": "erdos-1080",
+    "range": { "startLine": 193, "endLine": 211 },
+    "type": "theorem",
+    "title": "Erdos's Conjecture is False",
+    "content": "**erdos_conjecture_false:**\n\nThe answer to Erdos's question is NO.\n\n**Proof idea:**\n1. Suppose constant c > 0 existed such that cn edges force a C_6\n2. Then any C_4,C_6-free graph has < cn edges\n3. So f(n, ⌊n^(2/3)⌋) < cn for all n\n4. But Lazebnik-Ustimenko-Woldar shows f >= c' * n^(16/15)\n5. For large n, c' * n^(16/15) > cn, contradiction",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1080-main-theorem",
+    "proofId": "erdos-1080",
+    "range": { "startLine": 213, "endLine": 233 },
+    "type": "theorem",
+    "title": "Erdos Problem #1080: DISPROVED",
+    "content": "**erdos_1080:**\n\nThe main theorem formalizing the negative answer to Erdos's question.\n\n```lean\ntheorem erdos_1080 :\n    answer(false) <->\n    exists c > (0 : R), forall G bipartite with ⌊n^(2/3)⌋ in one part,\n      |E(G)| >= cn -> G has a C_6\n```\n\nThe answer is NO because C_4,C_6-free graphs can have Omega(n^(16/15)) edges.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e1080-c8-observation",
+    "proofId": "erdos-1080",
+    "range": { "startLine": 239, "endLine": 250 },
+    "type": "axiom",
+    "title": "The C_8 Observation",
+    "content": "**erdos_c8_observation:**\n\nErdos noted that while C_6 cannot be forced with O(n) edges, C_8 CAN be.\n\nThere exists c > 0 such that bipartite graphs with ⌊n^(2/3)⌋ vertices in one part and cn edges must contain an 8-cycle.\n\nThis shows an interesting dichotomy: C_6 and C_8 have different forcing thresholds.",
+    "mathContext": "The gap between C_6 and C_8 thresholds reflects the structure of short cycles in bipartite graphs.",
+    "significance": "key",
+    "relatedConcepts": ["Cycle forcing", "Girth", "Even cycles in bipartite graphs"]
+  },
+  {
+    "id": "ann-e1080-kovari",
+    "proofId": "erdos-1080",
+    "range": { "startLine": 256, "endLine": 269 },
+    "type": "axiom",
+    "title": "Kovari-Sos-Turan Theorem",
+    "content": "**kovari_sos_turan:**\n\nThe classical theorem bounding edges in bipartite graphs avoiding complete bipartite subgraphs.\n\nFor a bipartite graph with parts of size n and m avoiding K_{s,t}:\n|E| <= (1/2)(t-1)^(1/s) * m * n^(1-1/s) + (s-1)n/2\n\nThis is relevant because C_4 = K_{2,2}, so C_4-free graphs avoid K_{2,2}.",
+    "mathContext": "The Kovari-Sos-Turan theorem (1954) is foundational in extremal graph theory and gives the Zarankiewicz bound.",
+    "significance": "key",
+    "relatedConcepts": ["Zarankiewicz problem", "Complete bipartite graphs", "Turan numbers"]
+  },
+  {
+    "id": "ann-e1080-c4-k22",
+    "proofId": "erdos-1080",
+    "range": { "startLine": 271, "endLine": 281 },
+    "type": "theorem",
+    "title": "C_4-Free Equivalence",
+    "content": "**c4_free_iff_no_K22:**\n\nA bipartite graph is C_4-free if and only if it contains no K_{2,2}.\n\nThis is because a 4-cycle in a bipartite graph is exactly a complete bipartite subgraph K_{2,2}:\n- Two vertices a_1, a_2 in one part\n- Two vertices b_1, b_2 in the other part\n- All four edges present: a_1-b_1, a_1-b_2, a_2-b_1, a_2-b_2",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e1080-summary",
+    "proofId": "erdos-1080",
+    "range": { "startLine": 287, "endLine": 308 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_1080_summary:**\n\nCombines the main results:\n\n1. **C_6 NOT forced:** No constant c makes cn edges guarantee a 6-cycle\n\n2. **C_8 IS forced:** There exists c such that cn edges guarantee an 8-cycle\n\n```lean\ntheorem erdos_1080_summary :\n    (not exists c > 0, cn edges -> C_6) and\n    (exists c > 0, cn edges -> C_8)\n```\n\nThis captures the complete picture of Erdos Problem #1080.",
+    "significance": "key"
+  }
+]

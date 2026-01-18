@@ -1905,17 +1905,25 @@
   },
   {
     "id": "erdos-1080",
-    "title": "Erdős Problem #1080",
+    "title": "Erdős Problem #1080: Six-Cycles in Sparse Bipartite Graphs",
     "slug": "erdos-1080",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a bipartite graph on ... vertices such that one part has ... vertices. Is there a constant ... such that if ... ha...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is there a constant c > 0 such that bipartite graphs with n vertices (one part of size ⌊n^(2/3)⌋) and cn edges must contain a C_6? NO, disproved by De Caen-Székely (1992).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "graph-theory",
+      "extremal-graph-theory",
+      "bipartite-graphs",
+      "cycles",
+      "disproved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 1080,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-1081",

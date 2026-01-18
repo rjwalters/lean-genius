@@ -1,33 +1,154 @@
 {
   "id": "erdos-1080",
-  "title": "Erdős Problem #1080",
+  "title": "Erdős Problem #1080: Six-Cycles in Sparse Bipartite Graphs",
   "slug": "erdos-1080",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a bipartite graph on ... vertices such that one part has ... vertices. Is there a constant ... such that if ... ha...",
+  "description": "Is there a constant c > 0 such that bipartite graphs with n vertices (one part of size ⌊n^(2/3)⌋) and cn edges must contain a C_6? NO, disproved by De Caen-Székely (1992).",
   "meta": {
-    "author": "Unknown",
+    "author": "De Caen-Székely (1992 disproof), Lazebnik-Ustimenko-Woldar (1994 improved bounds)",
     "sourceUrl": "https://erdosproblems.com/1080",
-    "date": "",
-    "status": "pending",
+    "date": "1992",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1080Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "graph-theory",
+      "extremal-graph-theory",
+      "bipartite-graphs",
+      "cycles",
+      "disproved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1080,
     "erdosUrl": "https://erdosproblems.com/1080",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure on a vertex type",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Walk",
+        "description": "Walks and paths in simple graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of sets",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Fintype.card",
+        "description": "Cardinality of finite types",
+        "module": "Mathlib.Data.Fintype.Card"
+      }
+    ],
+    "originalContributions": [
+      "IsBipartition definition: bipartition predicate for graphs",
+      "IsBipartite definition: existence of bipartition",
+      "HasCycleOfLength definition: cycle detection predicate",
+      "C4Free, C6Free, C4C6Free definitions: cycle-free predicates",
+      "maxC4C6FreeEdges: extremal function f(n,m)",
+      "deCaen_szekely_upper_bound: O(n^(10/9)) upper bound",
+      "deCaen_szekely_lower_bound: Ω(n^(58/57)) lower bound",
+      "lazebnik_ustimenko_woldar_bound: Ω(n^(16/15)) improved bound",
+      "erdos_conjecture_false: main disproof theorem",
+      "erdos_c8_observation: C_8 existence guarantee",
+      "kovari_sos_turan: classical extremal result",
+      "erdos_1080_summary: combined summary theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1080 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a bipartite graph on $n$ vertices such that one part has $\\lfloor n^{2/3}\\rfloor$ vertices. Is there a constant $c>0$ such that if $G$ has at least $cn$ edges then $G$ must contain a $C_6$?\n\n\n\nErd\\H{o}s \\cite{Er75} says 'it is easy to see that it contains a $C_8$'.\n\nThe answer is no, as shown by De Caen and Sz\\'{e}kely \\cite{DeSz92}, who in fact show a stronger result. Let $f(n,m)$ be the maximum number of edges of a bipartite graph between $n$ and $m$ vertices which does not contain either a $C_4$ or $C_6$. A positive answer to this question would then imply $f(n,\\lfloor n^{2/3}\\rfloor)\\ll n$. De Caen and Sz\\'{e}kely prove\\[n^{10/9}\\gg f(n,\\lfloor n^{2/3}\\rfloor) \\gg n^{58/57+o(1)}\\]for $m\\sim n^{2/3}$. They also prove more generally that, for $n^{1/2}\\leq m\\leq n$,\\[f(n,m) \\ll (nm)^{2/3},\\]which was also proved by Faudree and Simonovits.\n\nLazebnik, Ustimenko, and Woldar \\cite{LUW94} improved the lower bound to\\[f(n,\\lfloor n^{2/3}\\rfloor) \\gg n^{16/15+o(1)}\\]\n\n\n\n\nReferences\n\n\n[DeSz92] de Caen, D. and Sz\\'{e}kely, L. A., The maximum size of {$4$}- and {$6$}-cycle free bipartite\ngraphs on {$m,n$} vertices. (1992), 135--142.\n\n[Er75] Erd\\H{o}s, P., Some recent progress on extremal problems in graph theory. Congr. Numer. (1975), 3-14.\n\n[LUW94] Lazebnik, F. and Ustimenko, V. A. and Woldar, A. J., New constructions of bipartite graphs on {$m,n$} vertices with\nmany edges and without small cycles. J. Combin. Theory Ser. B (1994), 111--117.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #1080**\n\nThis problem explores the threshold for forcing six-cycles in bipartite graphs with an imbalanced partition.\n\n**Key History:**\n- Erdős [Er75]: Posed the problem; noted that C_8 is forced\n- De Caen & Székely [DeSz92]: Disproved the conjecture, established bounds on f(n,m)\n- Faudree & Simonovits: Independently proved the general upper bound\n- Lazebnik, Ustimenko & Woldar [LUW94]: Improved the lower bound using algebraic constructions\n\n**Mathematical Setting:**\nThe problem concerns bipartite graphs G = (X ∪ Y, E) where |X| = ⌊n^(2/3)⌋ and the total vertex count is n. The question asks whether O(n) edges suffice to guarantee a 6-cycle.",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet G be a bipartite graph on n vertices where one part has ⌊n^(2/3)⌋ vertices. Does there exist a constant c > 0 such that if G has at least cn edges, then G must contain a C_6 (6-cycle)?\n\n**Answer: NO**\n\nDe Caen and Székely (1992) showed no such constant exists. The extremal function f(n, ⌊n^(2/3)⌋) for C_4,C_6-free bipartite graphs satisfies:\n- Upper bound: O(n^(10/9))\n- Lower bound: Ω(n^(16/15)) (improved by Lazebnik-Ustimenko-Woldar)\n\nSince f grows superlinearly, no constant c works.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Structures:** Define bipartitions, bipartite graphs, and cycle predicates using Mathlib's SimpleGraph.\n\n2. **Extremal Function:** Define f(n,m) as the maximum edge count in C_4,C_6-free bipartite graphs.\n\n3. **Key Bounds:** Axiomatize De Caen-Székely and Lazebnik-Ustimenko-Woldar bounds.\n\n4. **Disproof:** Show that superlinear growth of f contradicts existence of constant c.\n\n5. **Contrast:** Note that C_8 IS forced by cn edges (Erdős's observation).\n\n6. **Related Results:** Include Kővári-Sós-Turán theorem connection.",
+    "keyInsights": [
+      "**Superlinear Growth:** f(n, ⌊n^(2/3)⌋) = Θ(n^α) for α ∈ (16/15, 10/9), so no linear bound exists",
+      "**C_6 vs C_8 Dichotomy:** C_6 cannot be forced with O(n) edges, but C_8 can",
+      "**Algebraic Constructions:** Lower bounds use incidence graphs of projective planes",
+      "**Partition Imbalance:** The ⌊n^(2/3)⌋ constraint creates specific extremal behavior",
+      "**Connection to K_{2,2}:** C_4-free graphs avoid K_{2,2} subgraphs",
+      "**Kővári-Sós-Turán:** Classical theorem bounds bipartite Turán numbers"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "bipartite-graphs",
+      "title": "Bipartite Graphs and Bipartitions",
+      "summary": "IsBipartition, bipartition_edges_between, IsBipartite definitions",
+      "startLine": 45,
+      "endLine": 83
+    },
+    {
+      "id": "cycles",
+      "title": "Cycles in Graphs",
+      "summary": "HasCycleOfLength, C4Free, C6Free, C4C6Free predicates",
+      "startLine": 85,
+      "endLine": 112
+    },
+    {
+      "id": "extremal-function",
+      "title": "The Extremal Function f(n,m)",
+      "summary": "maxC4C6FreeEdges definition and achievability axiom",
+      "startLine": 114,
+      "endLine": 137
+    },
+    {
+      "id": "decaen-szekely",
+      "title": "De Caen-Székely Bounds (1992)",
+      "summary": "Upper and lower bounds, Faudree-Simonovits general bound",
+      "startLine": 139,
+      "endLine": 173
+    },
+    {
+      "id": "lazebnik-improvement",
+      "title": "Lazebnik-Ustimenko-Woldar Improvement (1994)",
+      "summary": "Improved lower bound Ω(n^(16/15))",
+      "startLine": 175,
+      "endLine": 187
+    },
+    {
+      "id": "disproof",
+      "title": "Disproof of Erdős's Conjecture",
+      "summary": "erdos_conjecture_false and erdos_1080 main theorems",
+      "startLine": 189,
+      "endLine": 233
+    },
+    {
+      "id": "c8-observation",
+      "title": "The C_8 Observation",
+      "summary": "Erdős's observation that C_8 is guaranteed",
+      "startLine": 235,
+      "endLine": 250
+    },
+    {
+      "id": "related-results",
+      "title": "Related Extremal Results",
+      "summary": "Kővári-Sós-Turán theorem, C_4-free characterization",
+      "startLine": 252,
+      "endLine": 281
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_1080_summary combining main results",
+      "startLine": 283,
+      "endLine": 310
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1080 asked whether O(n) edges guarantee a C_6 in bipartite graphs with ⌊n^(2/3)⌋ vertices in one part. The answer is NO, as shown by De Caen and Székely in 1992. The extremal function f(n, ⌊n^(2/3)⌋) grows superlinearly: between Ω(n^(16/15)) and O(n^(10/9)). However, Erdős observed that C_8 IS guaranteed by O(n) edges.",
+    "implications": "**Extremal Graph Theory Connections**\n\n1. **Cycle Forcing Thresholds:** Different cycle lengths have different edge thresholds\n\n2. **Algebraic Constructions:** Incidence graphs of projective planes give optimal C_4,C_6-free graphs\n\n3. **Turán-Type Problems:** Generalizes classical forbidden subgraph questions\n\n4. **Partition Constraints:** Imbalanced bipartitions create distinct extremal behavior\n\n5. **Asymptotic Gaps:** The gap between upper and lower bounds (10/9 vs 16/15) remains open",
+    "openQuestions": [
+      "Determine the exact exponent for f(n, ⌊n^(2/3)⌋)",
+      "Characterize optimal C_4,C_6-free bipartite graphs",
+      "Extend to other cycle lengths (C_8, C_10, ...)",
+      "Understand the algebraic structure of extremal graphs",
+      "Close the gap between n^(16/15) and n^(10/9)"
+    ]
   }
 }
