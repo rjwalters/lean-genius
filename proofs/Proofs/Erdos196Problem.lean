@@ -196,6 +196,123 @@ axiom erdos_szekeres_theorem (n r s : ℕ) (hrs : n > (r - 1) * (s - 1))
     (∃ indices : Fin r → Fin n, StrictMono indices ∧ StrictMono (seq ∘ indices)) ∨
     (∃ indices : Fin s → Fin n, StrictMono indices ∧ StrictAnti (seq ∘ indices))
 
+/-! ## Approach: Non-Extendable 3-APs
+
+If a permutation avoids all monotone 4-APs, every 3-AP must be "non-extendable".
+This puts strong constraints on the permutation structure.
+-/
+
+/-- A 3-AP at increasing indices (i,j,k) can be extended forward if there exists
+    l > k such that (i,j,k,l) forms a monotone 4-AP. -/
+def CanExtendForward (x : Permutation) (i j k : ℕ) : Prop :=
+  i < j ∧ j < k ∧ IsAP3 (x.toFun i) (x.toFun j) (x.toFun k) →
+  ∃ l > k, IsAP4 (x.toFun i) (x.toFun j) (x.toFun k) (x.toFun l)
+
+/-- A 3-AP at increasing indices (i,j,k) can be extended backward if there exists
+    l < i such that (l,i,j,k) forms a monotone 4-AP. -/
+def CanExtendBackward (x : Permutation) (i j k : ℕ) : Prop :=
+  i < j ∧ j < k ∧ IsAP3 (x.toFun i) (x.toFun j) (x.toFun k) →
+  ∃ l < i, IsAP4 (x.toFun l) (x.toFun i) (x.toFun j) (x.toFun k)
+
+/-- A 3-AP is non-extendable if it cannot be extended in either direction. -/
+def IsNonExtendable3AP (x : Permutation) (i j k : ℕ) : Prop :=
+  i < j ∧ j < k ∧ IsAP3 (x.toFun i) (x.toFun j) (x.toFun k) ∧
+  ¬CanExtendForward x i j k ∧ ¬CanExtendBackward x i j k
+
+/-- Key lemma: If a permutation avoids all monotone 4-APs, then every
+    monotone 3-AP in it must be non-extendable. -/
+theorem no_4ap_implies_nonextendable (x : Permutation) (h : ¬HasMonotone4AP x)
+    (i j k : ℕ) (hijk : i < j ∧ j < k) (hap : IsAP3 (x.toFun i) (x.toFun j) (x.toFun k)) :
+    ¬CanExtendForward x i j k ∧ ¬CanExtendBackward x i j k := by
+  constructor
+  · -- Cannot extend forward
+    intro hext
+    have ⟨l, hl, hap4⟩ := hext ⟨hijk.1, hijk.2, hap⟩
+    apply h
+    use i, j, k, l
+    constructor
+    · left; exact ⟨hijk.1, hijk.2, hl⟩
+    · exact hap4
+  · -- Cannot extend backward
+    intro hext
+    have ⟨l, hl, hap4⟩ := hext ⟨hijk.1, hijk.2, hap⟩
+    apply h
+    use l, i, j, k
+    constructor
+    · left; exact ⟨hl, hijk.1, hijk.2⟩
+    · exact hap4
+
+/-- The "forbidden value" for forward extension: if (a,b,c) is a 3-AP with
+    common difference d, then the value c + d is "forbidden" at any index > k. -/
+def ForbiddenForwardValue (a b c : ℕ) : ℕ := c + (b - a)
+
+/-- The "forbidden value" for backward extension. -/
+def ForbiddenBackwardValue (a b _c : ℕ) : ℕ := a - (b - a)
+
+/-- Key structural constraint: if x avoids 4-APs and (i,j,k) is a 3-AP with
+    values (a,b,c), then for all l > k, x(l) ≠ c + d where d = b - a. -/
+theorem forbidden_value_constraint (x : Permutation) (h : ¬HasMonotone4AP x)
+    (i j k : ℕ) (hijk : i < j ∧ j < k) (hap : IsAP3 (x.toFun i) (x.toFun j) (x.toFun k)) :
+    ∀ l > k, x.toFun l ≠ ForbiddenForwardValue (x.toFun i) (x.toFun j) (x.toFun k) := by
+  intro l hl heq
+  apply h
+  use i, j, k, l
+  constructor
+  · left; exact ⟨hijk.1, hijk.2, hl⟩
+  · unfold IsAP4 IsAP3 ForbiddenForwardValue at *
+    omega
+
+/-! ## Density Argument Attempt
+
+The key question: Can the constraints from non-extendable 3-APs accumulate
+to force a contradiction?
+
+Observation: Each 3-AP (a, a+d, a+2d) forbids the value a+3d from appearing
+at any later index, and forbids a-d from appearing at any earlier index.
+
+If we have many 3-APs, we get many forbidden value constraints.
+Eventually, this might exhaust all possibilities.
+-/
+
+/-- IsAP3 is decidable for natural numbers. -/
+instance : DecidablePred (fun (abc : ℕ × ℕ × ℕ) => IsAP3 abc.1 abc.2.1 abc.2.2) :=
+  fun abc => by unfold IsAP3; infer_instance
+
+/-- Count of 3-APs in a finite permutation. -/
+noncomputable def count3APs (n : ℕ) (x : FinitePermutation n) : ℕ :=
+  Nat.card { ijk : Fin n × Fin n × Fin n //
+    (ijk.1 : ℕ) < ijk.2.1 ∧ (ijk.2.1 : ℕ) < ijk.2.2 ∧
+    IsAP3 (x.toFun ijk.1).val (x.toFun ijk.2.1).val (x.toFun ijk.2.2).val }
+
+/-- Conjecture: The number of 3-APs grows faster than the number of
+    "slots" available for forbidden values, forcing a 4-AP. -/
+def DensityConjecture : Prop :=
+  ∃ N : ℕ, ∀ n ≥ N, ∀ x : FinitePermutation n,
+    ∃ i j k l : Fin n, ((i : ℕ) < j ∧ (j : ℕ) < k ∧ (k : ℕ) < l ∨
+                        (i : ℕ) > j ∧ (j : ℕ) > k ∧ (k : ℕ) > l) ∧
+      IsAP4 (x.toFun i).val (x.toFun j).val (x.toFun k).val (x.toFun l).val
+
+/-! ## Finite Threshold Investigation
+
+For the k=3 case, the threshold is N ≤ 9.
+What is the threshold for k=4?
+-/
+
+/-- Conjecture: There exists a threshold N for 4-APs. -/
+def Finite4APThreshold : Prop :=
+  ∃ N : ℕ, ∀ n ≥ N, ∀ x : FinitePermutation n,
+    ∃ i j k l : Fin n, ((i : ℕ) < j ∧ (j : ℕ) < k ∧ (k : ℕ) < l ∨
+                        (i : ℕ) > j ∧ (j : ℕ) > k ∧ (k : ℕ) > l) ∧
+      IsAP4 (x.toFun i).val (x.toFun j).val (x.toFun k).val (x.toFun l).val
+
+/-- If there's a finite threshold, the infinite conjecture follows by compactness. -/
+theorem finite_threshold_implies_conjecture :
+    Finite4APThreshold → Erdos196Conjecture := by
+  intro ⟨N, hN⟩ x
+  -- For any permutation of ℕ, consider its restriction to [0, N-1]
+  -- This restriction must have a 4-AP, which is also a 4-AP in the full permutation
+  sorry
+
 /-! ## Summary
 
 **Problem Status: OPEN**
