@@ -1,33 +1,157 @@
 {
   "id": "erdos-646",
-  "title": "Erdős Problem #646",
+  "title": "Erdős Problem #646: Even Powers of Primes Dividing Factorials",
   "slug": "erdos-646",
-  "description": "Let p1,&#x2026;,pk\" role=\"presentation\" style=\"position: relative;\">p1,…,pkp1,…,pkp_1,\\ldots,p_k be distinct primes. Are there infinitely many n\" role=\"presentation\" style=\"position: relative;\">nnn...",
+  "description": "For distinct primes p₁,...,pₖ, are there infinitely many n where n! is divisible by an even power of each pᵢ? YES, proved by Berend (1997) with bounded gaps.",
   "meta": {
-    "author": "Unknown",
+    "author": "Berend (1997 proof), Erdős & Graham (1980 problem)",
     "sourceUrl": "https://erdosproblems.com/646",
-    "date": "",
-    "status": "pending",
+    "date": "1997",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos646Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "factorials",
+      "p-adic-valuation",
+      "density",
+      "solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 646,
     "erdosUrl": "https://erdosproblems.com/646",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlibDependencies": [
+      {
+        "theorem": "padicValNat",
+        "description": "p-adic valuation of natural numbers",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal.Basic"
+      },
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Even",
+        "description": "Even number predicate",
+        "module": "Mathlib.Algebra.Ring.Parity"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite set operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "hasEvenValuation predicate: Even(vₚ(n!))",
+      "hasAllEvenValuations for finite prime sets",
+      "Legendre's formula axiomatization",
+      "Digit sum connection to p-adic valuations",
+      "Berend existence theorem axiom",
+      "Berend bounded gaps theorem axiom",
+      "Concrete examples: v₂(7!)=4, v₃(8!)=2, n=31 works for {2,3}",
+      "ErdosConjecture646 formal statement",
+      "Main theorem erdos_646: ErdosConjecture646 is TRUE",
+      "Kummer's theorem on binomial coefficients",
+      "Related: odd valuations, prescribed parities"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #646 from erdosproblems.com.",
-    "problemStatement": "Let p1,&#x2026;,pk\" role=\"presentation\" style=\"position: relative;\">p1,…,pkp1,…,pkp_1,\\ldots,p_k be distinct primes. Are there infinitely many n\" role=\"presentation\" style=\"position: relative;\">nnn such that n!\" role=\"presentation\" style=\"position: relative;\">n!n!n! is divisible by an even power of each of the pi\" role=\"presentation\" style=\"position: relative;\">pipip_i? The answer is yes, proved by Berend [Be97], who further proved that the sequence of such n\" role=\"presentation\" style=\"position: relative;\">nnn has bounded gaps (where the bound depends on the initial set of primes). View the LaTeX source This page was last edited 28 December 2025.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #646**\n\nThis problem asks about the parity of prime exponents in factorial factorizations.\n\n**Key History:**\n- Erdős & Graham (1980, p. 77): Original problem statement\n- Berend (1997): Proved the affirmative answer\n- Additional result: sequence has bounded gaps\n\n**Mathematical Setting:**\nThe p-adic valuation vₚ(n!) counts how many times prime p divides n!.\nLegendre's formula: vₚ(n!) = ⌊n/p⌋ + ⌊n/p²⌋ + ...\n\nThe question is: when is vₚ(n!) even for all primes in a given set?",
+    "problemStatement": "**Problem Statement (Proved)**\n\nLet p₁, ..., pₖ be distinct primes.\n\nAre there infinitely many n such that n! is divisible by an **even power** of each pᵢ?\n\n**Answer: YES**\n\nBerend proved:\n1. Infinitely many such n exist\n2. The sequence has bounded gaps (bound depends on the primes)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **p-adic Valuation:** Use Mathlib's padicValNat\n\n2. **Even Valuation:** Define hasEvenValuation p n ↔ Even(vₚ(n!))\n\n3. **Multi-prime:** hasAllEvenValuations S n for all primes in set S\n\n4. **Examples:** Verify n=7 for p=2, n=8 for p=3, n=31 for {2,3}\n\n5. **Berend's Theorems:** Axiomatize existence and bounded gaps\n\n6. **Main Result:** ErdosConjecture646 follows from berend_existence\n\n7. **Extensions:** Kummer's theorem, digit sums, prescribed parities",
+    "keyInsights": [
+      "**Legendre's Formula:** vₚ(n!) = Σⱼ ⌊n/pʲ⌋ counts p's in n!",
+      "**Digit Sum Connection:** v₂(n!) = n - s₂(n) where s₂ is binary digit sum",
+      "**Density ~1/2:** For single prime, even valuations have density ≈ 1/2",
+      "**Bounded Gaps:** Not just infinitely many, but with bounded spacing",
+      "**n = 31 Works:** v₂(31!) = 26 (even), v₃(31!) = 14 (even)",
+      "**Generalizes:** Any prescribed parity pattern has infinitely many solutions"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "padic-valuation",
+      "title": "p-adic Valuation",
+      "summary": "padicVal, legendre_formula, factorial bound, periodic property",
+      "startLine": 39,
+      "endLine": 73
+    },
+    {
+      "id": "even-valuation",
+      "title": "Even Valuation Property",
+      "summary": "hasEvenValuation, hasEvenValuation_iff, hasAllEvenValuations",
+      "startLine": 75,
+      "endLine": 99
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Computations",
+      "summary": "v₂(4!), v₂(7!), v₃(8!), n=31 for {2,3}",
+      "startLine": 101,
+      "endLine": 169
+    },
+    {
+      "id": "berend",
+      "title": "Berend's Theorem",
+      "summary": "berend_existence, berend_bounded_gaps, positive_density",
+      "startLine": 171,
+      "endLine": 200
+    },
+    {
+      "id": "single-prime",
+      "title": "Single Prime Case",
+      "summary": "Density ~1/2, quasi-periodic parity",
+      "startLine": 202,
+      "endLine": 221
+    },
+    {
+      "id": "conjecture",
+      "title": "Erdős Conjecture",
+      "summary": "ErdosConjecture646, erdos_646 theorem",
+      "startLine": 223,
+      "endLine": 242
+    },
+    {
+      "id": "digit-sums",
+      "title": "Base-p Representations",
+      "summary": "Kummer's theorem, digit_sum_formula, val_2_digit_sum",
+      "startLine": 244,
+      "endLine": 271
+    },
+    {
+      "id": "strengthened",
+      "title": "Strengthened Results",
+      "summary": "explicit_bound_2_3, gap_bound_two_primes, CRT independence",
+      "startLine": 273,
+      "endLine": 304
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "summary": "Odd valuations, prescribed parities",
+      "startLine": 306,
+      "endLine": 333
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_646_summary, erdos_646_answer",
+      "startLine": 335,
+      "endLine": 386
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #646 asked whether for any finite set of primes, infinitely many n exist where n! is divisible by an even power of each prime. The answer is YES, proved by Berend (1997). The sequence of such n has bounded gaps, implying positive density. For example, n=31 satisfies this for primes 2 and 3.",
+    "implications": "**Number-Theoretic Connections**\n\n1. **Legendre's Formula:** Central to understanding factorial prime powers\n\n2. **Digit Sums:** vₚ(n!) = (n - sₚ(n))/(p-1) connects to base-p representations\n\n3. **Kummer's Theorem:** Carries in base-p addition count vₚ(C(m+n,n))\n\n4. **Bounded Gaps:** Stronger than mere infinitude\n\n5. **Arbitrary Parities:** Any assignment of even/odd to primes works",
+    "openQuestions": [
+      "Optimal gap bounds for specific prime sets",
+      "Exact density formula for multiple primes",
+      "Explicit characterization of n with all even valuations",
+      "Connection to smooth numbers and prime gaps",
+      "Generalization to prescribed divisibility patterns beyond parity"
+    ]
   }
 }
