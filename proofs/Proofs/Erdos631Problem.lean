@@ -71,7 +71,23 @@ theorem choosable_monotone (G : SimpleGraph V) (k : ℕ) :
 /-- k-choosability implies k-colorability -/
 theorem choosable_implies_colorable (G : SimpleGraph V) (k : ℕ) :
     IsKChoosable G k → IsKColorable G k := by
-  sorry
+  -- Proof by Aristotle (Harmonic)
+  intro h
+  contrapose! h
+  unfold IsKChoosable
+  simp +zetaDelta at *
+  refine' ⟨ULift (Fin (k + 1)), _, _, _, _⟩
+  · infer_instance
+  · exact fun v => Finset.univ.filter fun x => x.down.val < k
+  · intro v; rw [Finset.card_eq_of_bijective]
+    use fun i hi => ⟨⟨i, by linarith⟩⟩
+    · aesop
+    · aesop
+    · aesop
+  · intro f hf
+    refine' h ⟨fun v => ⟨f v |>.down.val, _⟩, _⟩
+    all_goals simp_all +decide [Fin.ext_iff, IsListColoring]
+    exact fun v w hvw => fun h => hf.2 v w hvw <| by aesop
 
 /-! ## Planar Graphs -/
 
