@@ -1,33 +1,164 @@
 {
   "id": "erdos-982",
-  "title": "Erdős Problem #982",
+  "title": "Erdos Problem #982: Distinct Distances from Convex Polygon Vertices",
   "slug": "erdos-982",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... distinct points in ... form a convex polygon then some vertex has at least ... different distances to other vertices.\n...",
+  "description": "If n distinct points in the plane form a convex polygon, then some vertex has at least floor(n/2) different distances to other vertices.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdos (1946), Moser (1952), Erdos-Fishburn (1994), Dumitrescu (2006), Nivasch-Pach-Pinchasi-Zerbib (2013)",
     "sourceUrl": "https://erdosproblems.com/982",
-    "date": "",
-    "status": "pending",
+    "date": "1946",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos982Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "convex",
+      "discrete-geometry",
+      "distances",
+      "open"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 982,
     "erdosUrl": "https://erdosproblems.com/982",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space as inner product space",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality for potentially infinite sets",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "dist",
+        "description": "Distance function in metric spaces",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Plane type abbreviation for 2D Euclidean space",
+      "distinctDistancesFrom function counting unique distances from a point",
+      "maxDistinctDistances function for maximum over all vertices",
+      "InConvexPosition predicate for convex polygon vertices",
+      "guaranteedDistinctDistances function f(n)",
+      "erdos982Conjecture formal statement",
+      "moser_bound axiom (1952 result)",
+      "erdos_fishburn_bound axiom (1994 result)",
+      "dumitrescu_bound axiom (2006 result)",
+      "nppz_bound axiom (2013 result)",
+      "regular_polygon_distances optimality",
+      "triangle_case, quadrilateral_case, pentagon_case small examples",
+      "strongerConjectureDisproved connecting to Problem #97",
+      "acute_triangle_counterexample for curve conjecture",
+      "barany_roldan_pensado weakened curve result",
+      "currentGap analysis of known vs conjectured bounds",
+      "erdos_982_status main theorem summarizing state of knowledge"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #982 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $n$ distinct points in $\\mathbb{R}^2$ form a convex polygon then some vertex has at least $\\lfloor \\frac{n}{2}\\rfloor$ different distances to other vertices.\n\n\n\nThe regular polygon shows that $\\lfloor n/2\\rfloor$ is the best possible here.\n\nThis would be implied if there was a vertex such that no three vertices of the polygon are equally distant to it, which was originally also conjectured by Erd\\H{o}s \\cite{Er46b}, but this is false (see [97]).\n\nLet $f(n)$ be the maximal number of such distances that are guaranteed. Moser \\cite{Mo52} proved that\\[f(n) \\geq \\left\\lceil\\frac{n}{3}\\right\\rceil.\\]This was improved by Erd\\H{o}s and Fishburn \\cite{ErFi94} to\\[f(n) \\geq \\left\\lfloor \\frac{n}{3}+1\\right\\rfloor,\\]then\\[f(n) \\geq \\left\\lceil \\frac{13n-6}{36}\\right\\rceil\\]by Dumitrescu \\cite{Du06b}, and most recently\\[f(n) \\geq \\left(\\frac{13}{36}+\\frac{1}{22701}\\right)n-O(1)\\]by Nivasch, Pach, Pinchasi, and Zerbib \\cite{NPPZ13}.\n\nIn \\cite{Er46b} Erd\\H{o}s makes the even stronger conjecture that on every convex curve there exists a point $p$ such that every circle with centre $p$ intersects the curve in at most $2$ points. B\\'{a}r\\'{a}ny and Rold\\'{a}n-Pensado \\cite{BaRo13} noted that the boundary of any acute triangle is a counterexample.\n\nB\\'{a}r\\'{a}ny and Rold\\'{a}n-Pensado prove that, for any planar convex body, there is a point $p$ on the boundary such that every circle with centre $p$ intersects the boundary in at most $O(1)$ (where the implied constant depends on the convex body). They conjecture that there this can be bounded by an absolute constant - that is, Erd\\H{o}s's conjecture is true if we replace $2$ by some larger constant $C$.\n\nSee also [93].\n\n\n\n\nReferences\n\n\n[BaRo13] B\\'ar\\'any, Imre and Rold\\'an-Pensado, Edgardo, A question from a famous paper of {E}rd\\H{o}s. Discrete Comput. Geom. (2013), 253--261.\n\n[Du06b] Dumitrescu, Adrian, On distinct distances from a vertex of a convex polygon. Discrete Comput. Geom. (2006), 503--509.\n\n[Er46b] Erd\\H{o}s, P., On sets of distances of {$n$} points. Amer. Math. Monthly (1946), 248--250.\n\n[ErFi94] Erd\\H{o}s, Paul and Fishburn, Peter, A postscript on distances in convex {$n$}-gons. Discrete Comput. Geom. (1994), 111--117.\n\n[Mo52] Moser, Leo, On the different distances determined by {$n$} points. Amer. Math. Monthly (1952), 85--91.\n\n[NPPZ13] Nivasch, Gabriel and Pach, J\\'anos and Pinchasi, Rom and\nZerbib, Shira, The number of distinct distances from a vertex of a convex\npolygon. J. Comput. Geom. (2013), 1--12.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdos Problem #982** is a fundamental question in discrete geometry about the structure of convex polygons.\n\n**Historical Development:**\n- **1946**: Erdos posed the original problem in \"On sets of distances of n points\"\n- **1952**: Moser proved the first lower bound f(n) >= ceil(n/3)\n- **1994**: Erdos and Fishburn improved this to f(n) >= floor(n/3 + 1)\n- **2006**: Dumitrescu pushed the bound to approximately 0.361n\n- **2013**: Nivasch, Pach, Pinchasi, and Zerbib achieved f(n) >= (13/36 + 1/22701)n - O(1)\n\n**Related Conjectures:**\nErdos originally conjectured something stronger: that every convex polygon has a vertex with no three equidistant vertices. This was disproved (see Problem #97). He also conjectured a continuous version for convex curves, which Barany and Roldan-Pensado showed is false as stated (acute triangle boundaries are counterexamples).",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $f(n)$ denote the largest integer $k$ such that every convex $n$-gon has at least one vertex with at least $k$ distinct distances to other vertices.\n\n**Conjecture:** $f(n) \\geq \\lfloor n/2 \\rfloor$\n\n**Best Known Bounds:**\n- Lower: $f(n) \\geq (13/36 + 1/22701)n - O(1) \\approx 0.361n$\n- Upper: $f(n) \\leq \\lceil n/2 \\rceil$ (regular polygon)\n\nThe gap between known bounds and the conjecture is approximately $0.139n$.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** We define the Euclidean plane, distinct distance counting functions, and convex position predicates.\n\n2. **Known Bounds as Axioms:** The published results of Moser, Erdos-Fishburn, Dumitrescu, and Nivasch et al. are stated as axioms since their proofs are beyond current Mathlib capabilities.\n\n3. **Small Cases:** We verify the conjecture for triangles, quadrilaterals, and pentagons using the known bounds.\n\n4. **Related Results:** We formalize the disproved stronger conjecture and the curve generalization counterexamples.\n\n5. **Gap Analysis:** We compute the numerical gap between known results and the full conjecture.\n\n**Note:** This is an OPEN problem - the main conjecture is neither proved nor disproved.",
+    "keyInsights": [
+      "**Regular Polygon Optimality:** The regular n-gon achieves exactly ceil(n/2) distinct distances from each vertex, showing the conjecture would be tight if true.",
+      "**Historical Progression:** Lower bounds improved from n/3 (Moser) to roughly 0.361n (Nivasch et al.) over 60 years.",
+      "**Stronger Conjecture Failed:** The \"no equidistant triples\" version is false (Problem #97).",
+      "**Continuous Generalization Failed:** Acute triangle boundaries disprove the curve version.",
+      "**Substantial Gap Remains:** The difference between 0.361n (known) and 0.5n (conjectured) represents significant open territory."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "Plane type, distinctDistancesFrom, maxDistinctDistances functions",
+      "startLine": 43,
+      "endLine": 68
+    },
+    {
+      "id": "convex-position",
+      "title": "Convex Polygons",
+      "summary": "InConvexPosition predicate, guaranteedDistinctDistances function f(n)",
+      "startLine": 70,
+      "endLine": 97
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "summary": "erdos982Conjecture and erdos982Conjecture' formal statements",
+      "startLine": 99,
+      "endLine": 124
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "summary": "moser_bound, erdos_fishburn_bound, dumitrescu_bound, nppz_bound axioms",
+      "startLine": 126,
+      "endLine": 168
+    },
+    {
+      "id": "regular-polygon",
+      "title": "Regular Polygon Optimality",
+      "summary": "regular_polygon_distances, upper_bound_on_f axioms",
+      "startLine": 170,
+      "endLine": 191
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "summary": "triangle_case, quadrilateral_case, pentagon_case theorems",
+      "startLine": 193,
+      "endLine": 235
+    },
+    {
+      "id": "related-problem",
+      "title": "Related Problem",
+      "summary": "strongerConjectureDisproved, connection to Problem #97",
+      "startLine": 237,
+      "endLine": 260
+    },
+    {
+      "id": "curve-generalization",
+      "title": "Convex Curve Generalization",
+      "summary": "acute_triangle_counterexample, barany_roldan_pensado results",
+      "startLine": 262,
+      "endLine": 292
+    },
+    {
+      "id": "gap-analysis",
+      "title": "Gap Analysis",
+      "summary": "currentGap definition, gap_value theorem",
+      "startLine": 294,
+      "endLine": 312
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_982_status, erdos_982_summary final theorems",
+      "startLine": 314,
+      "endLine": 359
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #982 asks whether every convex n-gon has a vertex with at least floor(n/2) distinct distances to other vertices. The problem remains OPEN. The best known lower bound is approximately 0.361n (Nivasch et al. 2013), while the regular polygon shows the conjecture would be tight at ceil(n/2). The gap of about 0.139n represents substantial open mathematical territory.",
+    "implications": "**Geometric Significance**\n\n1. **Distance Distribution:** Understanding how distances distribute from vertices in convex configurations.\n\n2. **Extremal Geometry:** The regular polygon appears optimal, suggesting deep connections to symmetry.\n\n3. **Combinatorial Geometry:** Part of broader questions about distinct distances (Erdos-Moser problem).\n\n4. **Continuous Analogues:** The curve generalization failures show the discrete and continuous settings differ fundamentally.",
+    "openQuestions": [
+      "Prove or disprove the conjecture f(n) >= floor(n/2)",
+      "Close the gap between 0.361n and 0.5n",
+      "Characterize which convex polygons achieve the minimum",
+      "Find better constructions with few distinct distances",
+      "Determine the exact constant in the Nivasch et al. bound"
+    ]
   }
 }
