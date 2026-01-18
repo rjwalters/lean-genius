@@ -8473,7 +8473,7 @@
     "id": "erdos-591",
     "title": "Erdős Problem #591: Ordinal Ramsey Theory for ω^(ω²)",
     "slug": "erdos-591",
-    "description": "Does the ordinal Ramsey property ω^(ω²) → (ω^(ω²), 3)² hold? That is, must every 2-coloring of K_{ω^(ω²)} contain a red copy of itself or a blue triangle?",
+    "description": "The ordinal Ramsey property ω^(ω²) → (ω^(ω²), 3)² holds. Proved independently by Schipperus (2010) and Darby.",
     "status": "complete",
     "badge": "axiom",
     "tags": [
@@ -8482,7 +8482,7 @@
       "ramsey-theory",
       "ordinals",
       "combinatorics",
-      "open-problem"
+      "solved"
     ],
     "dateAdded": "2026-01-16",
     "erdosNumber": 591,
@@ -12085,17 +12085,24 @@
   },
   {
     "id": "erdos-858",
-    "title": "Erdős Problem #858",
+    "title": "Erdos Problem #858: Primitive-Like Sets and Logarithmic Density",
     "slug": "erdos-858",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that there is no solution to ... with ... and the smallest prime factor of ... is .... Estimate the maximum o...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let A be a set where no at=b with smallest prime factor of t > a. The normalized log density (1/log N) * sum(1/n) is o(1). Proved by Alexander (1966) and Erdos-Sarkozy-Szemeredi (1968).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primitive-sets",
+      "logarithmic-density",
+      "prime-factors",
+      "density"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 858,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-859",

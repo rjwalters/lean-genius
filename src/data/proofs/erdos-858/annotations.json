@@ -1,1 +1,140 @@
-[]
+[
+  {
+    "id": "ann-e858-header",
+    "proofId": "erdos-858",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #858: Primitive-Like Sets**\n\nLet A be a subset of {1,...,N} such that there is no solution to at = b with a, b in A and the smallest prime factor of t is > a.\n\n**Question:** Estimate the maximum of (1/log N) * sum_{n in A} 1/n.\n\n**Answer:** Alexander (1966) and Erdos-Sarkozy-Szemeredi (1968) proved this is o(1).\n\nThe condition is a weaker form of \"primitive\" (no element divides another). It allows a | b as long as b/a has small prime factors.",
+    "mathContext": "This problem combines divisibility constraints with logarithmic density measures, connecting to sieve theory and the study of multiplicative structure of integers.",
+    "significance": "critical",
+    "relatedConcepts": ["Primitive sets", "Logarithmic density", "Prime factorization"]
+  },
+  {
+    "id": "ann-e858-smallestPrimeFactor",
+    "proofId": "erdos-858",
+    "range": { "startLine": 49, "endLine": 55 },
+    "type": "definition",
+    "title": "Smallest Prime Factor",
+    "content": "**smallestPrimeFactor:**\n\nFor n > 1, this is the smallest prime dividing n. Uses Mathlib's minFac.\n\n**Definition:**\n```lean\nnoncomputable def smallestPrimeFactor (n : N) : N :=\n  if h : n > 1 then n.minFac else 0\n```\n\n**Examples:**\n- smallestPrimeFactor(15) = 3\n- smallestPrimeFactor(17) = 17 (prime)\n- smallestPrimeFactor(1) = 0 (special case)",
+    "mathContext": "The smallest prime factor is fundamental in number theory. For any composite n, it is at most sqrt(n).",
+    "significance": "critical",
+    "relatedConcepts": ["Prime numbers", "Factorization", "minFac"]
+  },
+  {
+    "id": "ann-e858-spf-properties",
+    "proofId": "erdos-858",
+    "range": { "startLine": 57, "endLine": 79 },
+    "type": "theorem",
+    "title": "Properties of Smallest Prime Factor",
+    "content": "**Key Properties:**\n\n1. **smallestPrimeFactor_prime:** For n > 1, smallestPrimeFactor(n) is prime\n\n2. **smallestPrimeFactor_dvd:** It divides n\n\n3. **le_of_prime_dvd:** Any prime dividing n is >= the smallest\n\nThese are direct consequences of Mathlib's minFac properties.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e858-primitivelike",
+    "proofId": "erdos-858",
+    "range": { "startLine": 88, "endLine": 98 },
+    "type": "definition",
+    "title": "Primitive-Like Condition",
+    "content": "**IsPrimitiveLike:**\n\nA set A satisfies the primitive-like condition if whenever a | b with a, b in A and a < b, we have smallestPrimeFactor(b/a) <= a.\n\n**Definition:**\n```lean\ndef IsPrimitiveLike (A : Finset N) : Prop :=\n  forall a in A, forall b in A, a < b -> a | b ->\n    smallestPrimeFactor(b / a) <= a\n```\n\nThis is weaker than being primitive (no divisibility at all).",
+    "mathContext": "The condition restricts HOW one element can divide another, rather than forbidding it entirely.",
+    "significance": "critical",
+    "relatedConcepts": ["Divisibility", "Prime factors", "Primitive sets"]
+  },
+  {
+    "id": "ann-e858-primitive",
+    "proofId": "erdos-858",
+    "range": { "startLine": 107, "endLine": 111 },
+    "type": "definition",
+    "title": "Primitive Sets",
+    "content": "**IsPrimitive:**\n\nA set is primitive if no element divides another distinct element.\n\n**Definition:**\n```lean\ndef IsPrimitive (A : Finset N) : Prop :=\n  forall a in A, forall b in A, a != b -> NOT (a | b)\n```\n\nThis is the classical notion studied by Behrend and others.",
+    "significance": "key",
+    "relatedConcepts": ["Divisibility-free sets", "Antichain"]
+  },
+  {
+    "id": "ann-e858-implication",
+    "proofId": "erdos-858",
+    "range": { "startLine": 113, "endLine": 122 },
+    "type": "theorem",
+    "title": "Primitive Implies Primitive-Like",
+    "content": "**primitive_implies_primitiveLike:**\n\nEvery primitive set is automatically primitive-like.\n\n**Proof:** If A is primitive and a != b, then a does not divide b. So the condition \"if a | b then...\" is vacuously satisfied.\n\nThis shows primitive-like is genuinely weaker than primitive.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e858-logsum",
+    "proofId": "erdos-858",
+    "range": { "startLine": 146, "endLine": 151 },
+    "type": "definition",
+    "title": "Logarithmic Sum",
+    "content": "**logSum:**\n\nThe logarithmic sum of a set: sum_{n in A} 1/n.\n\n**Definition:**\n```lean\nnoncomputable def logSum (A : Finset N) : R :=\n  sum over n in A.filter (n > 0) of (1 / n)\n```\n\nThis is a finer measure than cardinality - it weights larger elements less.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e858-normalized",
+    "proofId": "erdos-858",
+    "range": { "startLine": 153, "endLine": 158 },
+    "type": "definition",
+    "title": "Normalized Logarithmic Density",
+    "content": "**normalizedLogDensity:**\n\nThe normalized density is logSum(A) / log(N).\n\n**Definition:**\n```lean\nnoncomputable def normalizedLogDensity (A : Finset N) (N : N) : R :=\n  if N > 1 then logSum(A) / Real.log(N) else 0\n```\n\nFor A = {1,...,N}, this approaches 1 as N -> infinity (harmonic series).",
+    "mathContext": "Dividing by log(N) normalizes so that the full set {1,...,N} has density ~1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e858-behrend",
+    "proofId": "erdos-858",
+    "range": { "startLine": 166, "endLine": 176 },
+    "type": "axiom",
+    "title": "Behrend's Theorem (1935)",
+    "content": "**behrend_primitive_bound:**\n\nFor primitive sets A in {1,...,N}:\n  normalizedLogDensity(A, N) <= C / sqrt(log log N)\n\nfor some constant C.\n\nThis quantitative bound is stronger than just o(1), showing primitive sets are quite sparse in logarithmic measure.",
+    "mathContext": "Published in \"On sequences of numbers not divisible by another\", London Math. Soc. Journal (1935).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e858-alexander",
+    "proofId": "erdos-858",
+    "range": { "startLine": 192, "endLine": 202 },
+    "type": "axiom",
+    "title": "Alexander's Theorem (1966)",
+    "content": "**alexander_theorem:**\n\nFor primitive-like sets, the normalized log density is o(1).\n\n```lean\naxiom alexander_theorem : forall eps > 0, exists N0,\n    forall N >= N0, forall A primitive-like in {1,...,N},\n    normalizedLogDensity(A, N) < eps\n```\n\nThis extends density bounds to the weaker primitive-like condition.",
+    "mathContext": "Published in \"Density and multiplicative structure of sets of integers\", Acta Arith. (1966/67).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e858-ess",
+    "proofId": "erdos-858",
+    "range": { "startLine": 204, "endLine": 211 },
+    "type": "axiom",
+    "title": "Erdos-Sarkozy-Szemeredi Theorem (1968)",
+    "content": "**erdos_sarkozy_szemeredi_theorem:**\n\nSame result as Alexander, proved independently.\n\nThe fact that two groups proved this independently around the same time shows it was a natural question to ask after Behrend's work.",
+    "mathContext": "Published in \"On the solvability of certain equations in sequences of positive upper logarithmic density\", J. London Math. Soc. (1968).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e858-exampleset",
+    "proofId": "erdos-858",
+    "range": { "startLine": 217, "endLine": 227 },
+    "type": "definition",
+    "title": "Example Construction",
+    "content": "**exampleSet:**\n\nIntegers in [sqrt(N), N] divisible by some prime > sqrt(N).\n\n```lean\ndef exampleSet (N : N) : Finset N :=\n  filter (n >= sqrt(N) and exists prime p > sqrt(N) with p | n)\n         from rangeFrom1(N)\n```\n\n**Why it works:** If a | b with a, b in this set, then t = b/a has all prime factors <= sqrt(N) <= a, so smallestPrimeFactor(t) <= a.",
+    "significance": "key",
+    "relatedConcepts": ["Smooth numbers", "Large prime factors"]
+  },
+  {
+    "id": "ann-e858-maintheorem",
+    "proofId": "erdos-858",
+    "range": { "startLine": 239, "endLine": 248 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_858:**\n\nThe main theorem, directly citing Alexander's result.\n\n```lean\ntheorem erdos_858 : forall eps > 0, exists N0, forall N >= N0,\n    forall A primitive-like in {1,...,N},\n    normalizedLogDensity(A, N) < eps :=\n  alexander_theorem\n```\n\nThe maximum normalized log density over primitive-like sets is o(1).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e858-summary",
+    "proofId": "erdos-858",
+    "range": { "startLine": 271, "endLine": 295 },
+    "type": "theorem",
+    "title": "Summary of Results",
+    "content": "**erdos_858_summary:**\n\nCombines all main results:\n\n1. **Main result:** normalizedLogDensity is o(1) for primitive-like sets\n2. **Hierarchy:** Primitive implies primitive-like\n3. **Behrend bound:** Primitive sets have density O(1/sqrt(log log N))\n\n**Comparison:**\n- Primitive: stronger condition, stronger bound\n- Primitive-like: weaker condition, weaker (but still nontrivial) bound",
+    "significance": "key"
+  }
+]

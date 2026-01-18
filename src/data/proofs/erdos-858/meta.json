@@ -1,33 +1,137 @@
 {
   "id": "erdos-858",
-  "title": "Erdős Problem #858",
+  "title": "Erdos Problem #858: Primitive-Like Sets and Logarithmic Density",
   "slug": "erdos-858",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that there is no solution to ... with ... and the smallest prime factor of ... is .... Estimate the maximum o...",
+  "description": "Let A be a set where no at=b with smallest prime factor of t > a. The normalized log density (1/log N) * sum(1/n) is o(1). Proved by Alexander (1966) and Erdos-Sarkozy-Szemeredi (1968).",
   "meta": {
-    "author": "Unknown",
+    "author": "Alexander (1966), Erdos-Sarkozy-Szemeredi (1968)",
     "sourceUrl": "https://erdosproblems.com/858",
-    "date": "",
-    "status": "pending",
+    "date": "1968",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos858Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primitive-sets",
+      "logarithmic-density",
+      "prime-factors",
+      "density"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 858,
     "erdosUrl": "https://erdosproblems.com/858",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.minFac",
+        "description": "Minimum prime factor of a natural number",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "smallestPrimeFactor definition using Nat.minFac",
+      "IsPrimitiveLike definition: weaker form of primitive condition",
+      "IsPrimitive definition: standard primitive set condition",
+      "primitive_implies_primitiveLike theorem",
+      "logSum and normalizedLogDensity definitions",
+      "behrend_primitive_bound axiom: C/sqrt(log log N) bound",
+      "alexander_theorem axiom: o(1) for primitive-like sets",
+      "erdos_sarkozy_szemeredi_theorem axiom: independent proof",
+      "exampleSet definition: integers in [sqrt(N), N] with large prime factor",
+      "erdos_858_summary combining all main results"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #858 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\{1,\\ldots,N\\}$ be such that there is no solution to $at=b$ with $a,b\\in A$ and the smallest prime factor of $t$ is $>a$. Estimate the maximum of\\[\\frac{1}{\\log N}\\sum_{n\\in A}\\frac{1}{n}.\\]\n\n\n\nAlexander \\cite{Al66} and Erd\\H{o}s, S\\'{a}rk\\\"{o}zi, and Szemer\\'{e}di \\cite{ESS68} proved that this maximum is $o(1)$ (as $N\\to \\infty$). This condition on $A$ is a weaker form of the usual primitive condition. If $A$ is primitive then Behrend \\cite{Be35} proved\\[\\frac{1}{\\log N}\\sum_{n\\in A}\\frac{1}{n}\\ll \\frac{1}{\\sqrt{\\log\\log N}}.\\]An example of such a set $A$ is the set of all integers in $[N^{1/2},N]$ divisible by some prime $>N^{1/2}$.\n\nSee also [143].\n\n\n\n\nReferences\n\n\n[Al66] Alexander, Ralph, Density and multiplicative structure of sets of integers. Acta Arith. (1966/67), 321--332.\n\n[Be35] Behrend, F., On sequences of numbers not divisible by another. London Math. Soc. Journal (1935), 42-45.\n\n[ESS68] Erd\\H{o}s, P. and S\\'{a}rk\\\"ozi, A. and Szemer\\'{e}di, E., On the solvability of certain equations in sequences of\npositive upper logarithmic density. J. London Math. Soc. (1968), 71--78.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdos Problem #858: Primitive-Like Sets**\n\nThis problem studies a weaker form of primitive sets and their logarithmic density.\n\n**Key History:**\n- Behrend (1935): For primitive sets, (1/log N) * sum(1/n) << 1/sqrt(log log N)\n- Alexander (1966): Proved the primitive-like condition also gives o(1) density\n- Erdos-Sarkozy-Szemeredi (1968): Independent proof of the same result\n\n**Mathematical Setting:**\n- A **primitive set** has no element dividing another (very restrictive)\n- The **primitive-like condition** allows a | b if t = b/a has smallest prime factor <= a\n- Both conditions limit how dense a set can be in logarithmic measure\n\n**Example:** The set of integers in [sqrt(N), N] divisible by some prime > sqrt(N) satisfies the primitive-like condition.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet A be a subset of {1,...,N} such that there is no solution to at = b with a, b in A and the smallest prime factor of t is > a.\n\nEstimate the maximum of (1/log N) * sum_{n in A} 1/n.\n\n**Answer:**\n\nAlexander (1966) and Erdos-Sarkozy-Szemeredi (1968) proved this maximum is **o(1)** as N -> infinity.\n\n**Comparison with Primitive Sets:**\n- Primitive sets: density <= C/sqrt(log log N) (Behrend 1935)\n- Primitive-like sets: density = o(1) (weaker bound, weaker condition)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Smallest Prime Factor:** Define smallestPrimeFactor using Nat.minFac, with properties showing it divides n and is minimal among prime divisors.\n\n2. **Primitive-Like Condition:** Define IsPrimitiveLike requiring that if a | b in A with a < b, then smallestPrimeFactor(b/a) <= a.\n\n3. **Primitive Sets:** Define IsPrimitive (no a | b for distinct elements) and prove primitive implies primitive-like.\n\n4. **Logarithmic Density:** Define logSum = sum(1/n) and normalizedLogDensity = logSum / log(N).\n\n5. **Main Results:** Axiomatize Alexander's theorem and ESS theorem showing the normalized density is o(1).\n\n6. **Example Set:** Define the example set [sqrt(N), N] with large prime factors.",
+    "keyInsights": [
+      "**Primitive-Like vs Primitive:** Primitive-like is weaker - allows a | b if b/a has small prime factors",
+      "**Smallest Prime Factor:** The key constraint is on minFac(t) where t = b/a",
+      "**Logarithmic Measure:** Using sum(1/n) instead of counting gives finer density information",
+      "**o(1) vs O(1/f(N)):** Primitive-like gives o(1), primitive gives O(1/sqrt(log log N))",
+      "**Example Construction:** Integers in [sqrt(N), N] with a large prime divisor satisfy the condition",
+      "**Related to Problem 143:** Part of a family of problems on primitive-type conditions"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "smallest-prime-factor",
+      "title": "Smallest Prime Factor",
+      "summary": "smallestPrimeFactor definition and basic properties",
+      "startLine": 43,
+      "endLine": 79
+    },
+    {
+      "id": "primitive-like-condition",
+      "title": "Primitive-Like Condition",
+      "summary": "IsPrimitiveLike, IsPrimitive definitions, primitive_implies_primitiveLike",
+      "startLine": 81,
+      "endLine": 122
+    },
+    {
+      "id": "logarithmic-density",
+      "title": "Logarithmic Density",
+      "summary": "rangeFrom1, logSum, normalizedLogDensity definitions",
+      "startLine": 124,
+      "endLine": 158
+    },
+    {
+      "id": "behrend-bound",
+      "title": "Behrend's Bound",
+      "summary": "behrend_primitive_bound axiom for primitive sets",
+      "startLine": 160,
+      "endLine": 176
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "alexander_theorem, erdos_sarkozy_szemeredi_theorem axioms",
+      "startLine": 178,
+      "endLine": 211
+    },
+    {
+      "id": "example-sets",
+      "title": "Example Sets",
+      "summary": "exampleSet definition and exampleSet_isPrimitiveLike",
+      "startLine": 213,
+      "endLine": 233
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "summary": "erdos_858 theorem and summary",
+      "startLine": 235,
+      "endLine": 297
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #858 asks about the logarithmic density of sets satisfying a primitive-like condition. Alexander (1966) and Erdos-Sarkozy-Szemeredi (1968) proved that the maximum of (1/log N) * sum(1/n) over such sets is o(1). This is weaker than Behrend's O(1/sqrt(log log N)) bound for primitive sets, but the primitive-like condition is also weaker.",
+    "implications": "**Number-Theoretic Connections**\n\n1. **Primitive Sets Theory:** Extends classical results on sets where no element divides another\n\n2. **Logarithmic Density:** Shows how divisibility constraints affect sum(1/n) type sums\n\n3. **Prime Factor Conditions:** The smallest prime factor plays a key role in density bounds\n\n4. **Asymptotic Analysis:** The o(1) result is weaker than explicit rates but still significant\n\n5. **Example Constructions:** The [sqrt(N), N] example shows the condition is non-trivial",
+    "openQuestions": [
+      "Exact rate at which the maximum density approaches 0",
+      "Optimal constants in asymptotic bounds",
+      "Characterization of extremal primitive-like sets",
+      "Generalizations to other prime factor conditions",
+      "Connection to sieve methods"
+    ]
   }
 }
