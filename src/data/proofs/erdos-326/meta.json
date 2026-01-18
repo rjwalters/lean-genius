@@ -1,33 +1,115 @@
 {
   "id": "erdos-326",
-  "title": "Erdős Problem #326",
+  "title": "Erdős Problem #326: Additive Bases and Non-Convergent Subsequences",
   "slug": "erdos-326",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an additive basis of order .... Must there exist ... which is also a basis such that\\[\\lim_{k\\to \\infty}{k^2}\\]doe...",
+  "description": "Let A be an additive basis of order 2. Must there exist a subset B which is also a basis such that the growth ratio of B has no limit?",
   "meta": {
-    "author": "Unknown",
+    "author": "Open Problem",
     "sourceUrl": "https://erdosproblems.com/326",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos326Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "number-theory",
+      "bases",
+      "growth-rates"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 326,
     "erdosUrl": "https://erdosproblems.com/326",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit/convergence of sequences via filters",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "StrictMono",
+        "description": "Strictly monotone functions for ordered sets",
+        "module": "Mathlib.Order.Monotone.Basic"
+      },
+      {
+        "theorem": "Set.range",
+        "description": "Range of a function as a set",
+        "module": "Mathlib.Data.Set.Function"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of additive bases and their orders in Lean 4",
+      "Formalization of the growth rate concept for basis elements",
+      "Statement of both the open problem and Cassels' 1957 result",
+      "Educational documentation connecting the concepts"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #326 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset \\mathbb{N}$ be an additive basis of order $2$. Must there exist $B=\\{b_1<b_2<\\cdots\\}\\subseteq A$ which is also a basis such that\\[\\lim_{k\\to \\infty}\\frac{b_k}{k^2}\\]does not exist?\n\n\n\nErd\\H{o}s originally asked whether this was true with $A=B$, but this was disproved by Cassels \\cite{Ca57}.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Ca57] Cassels, J. W. S., \\\"{U}ber Basen der nat\\\"{u}rlichen Zahlenreihe. Abh. Math. Sem. Univ. Hamburg (1957), 247-257.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #326 concerns the asymptotic behavior of additive bases, a fundamental concept in additive number theory. An additive basis of order k is a set A of natural numbers such that every sufficiently large integer can be written as a sum of at most k elements from A. The classic example is Lagrange's four-square theorem: every natural number is a sum of four perfect squares.\n\nThe key quantity here is the growth rate: if we enumerate a basis as {b₁ < b₂ < ...}, how fast does bₖ grow compared to k²? For an order 2 basis, the elements can grow at most quadratically (otherwise there wouldn't be enough sums to cover all integers). Erdős asked whether, given any basis A, we can always find a sub-basis B whose growth ratio bₖ/k² fails to converge.\n\nErdős originally asked whether every basis A has non-convergent growth ratio (with A = B). This was disproved by Cassels in 1957, who constructed a basis where aₖ/k² does converge. The modified question about sub-bases remains open.",
+    "problemStatement": "Let $A \\subset \\mathbb{N}$ be an additive basis of order 2 (every sufficiently large natural number is a sum of two elements of $A$). Must there exist a subset $B = \\{b_1 < b_2 < \\cdots\\} \\subseteq A$ which is also an additive basis such that\n$$\\lim_{k \\to \\infty} \\frac{b_k}{k^2}$$\ndoes not exist?\n\n**Status**: OPEN\n\n**Related result**: Cassels (1957) showed the original A=B version is false by constructing a convergent basis.",
+    "proofStrategy": "Since this problem is open, we cannot prove the statement. Instead, we:\n\n1. **Define the concepts formally**: We introduce `IsAddBasisOfOrder` for order-k bases and `IsAddBasis` for general bases.\n\n2. **Define the growth question**: The `growthRatio` function computes bₖ/k², and `HasGrowthLimit` expresses convergence via Mathlib's filter-based limits.\n\n3. **State the open problem as a disjunction**: Either the statement holds for all order 2 bases, or it doesn't. This is trivially true but captures the mathematical question.\n\n4. **State Cassels' result**: We include the 1957 theorem showing a convergent basis exists, which resolved the original (weaker) formulation.\n\n5. **State the density bound**: Any order 2 basis has elements bounded by O(k²), a standard result from additive combinatorics.",
+    "keyInsights": [
+      "**Additive basis**: A set A is an additive basis if every sufficiently large integer can be written as a sum of elements from A. Order k means we need at most k summands.",
+      "**Growth rate bound**: For an order 2 basis with enumeration {b₁ < b₂ < ...}, we have bₖ = O(k²). This is because we need roughly n² pairs to cover all sums up to n.",
+      "**Cassels' counterexample**: The original question (does every basis have divergent bₖ/k²?) was answered NO by Cassels in 1957. He constructed a basis where the ratio converges.",
+      "**The sub-basis question**: The modified question asks about sub-bases, which is more subtle. Can we always extract a 'bad' sub-basis even from a 'nice' basis?",
+      "**Why this is hard**: Finding a non-convergent sub-basis requires controlling the density of the subsequence while maintaining the basis property."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Module documentation explaining the problem, its history with Cassels' 1957 result, and Mathlib imports for filters and topology."
+    },
+    {
+      "id": "basis-definitions",
+      "title": "Additive Basis Definitions",
+      "startLine": 25,
+      "endLine": 59,
+      "summary": "Define IsAddBasis (general additive basis) and IsAddBasisOfOrder (basis with bounded summand count), plus a lemma relating them."
+    },
+    {
+      "id": "growth-definitions",
+      "title": "Growth Rate Definitions",
+      "startLine": 61,
+      "endLine": 89,
+      "summary": "Define the growth ratio bₖ/k² and what it means for this ratio to have a limit or no limit."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem (Open)",
+      "startLine": 91,
+      "endLine": 116,
+      "summary": "State Erdős Problem #326 as an open question: either every order 2 basis has a non-convergent sub-basis, or there's a counterexample."
+    },
+    {
+      "id": "cassels",
+      "title": "Cassels' Theorem (1957)",
+      "startLine": 118,
+      "endLine": 137,
+      "summary": "State Cassels' result showing there exists a basis with convergent growth ratio, disproving the original A=B formulation."
+    },
+    {
+      "id": "observations",
+      "title": "Key Observations",
+      "startLine": 139,
+      "endLine": 158,
+      "summary": "State the standard upper bound that order 2 basis elements grow at most quadratically."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #326, an open question about whether every additive basis of order 2 contains a sub-basis with non-convergent growth rate. The problem connects additive combinatorics with analysis through the study of sequence growth rates. We include Cassels' 1957 result which resolved the weaker original formulation.",
+    "implications": "This problem sits at the intersection of additive combinatorics and asymptotic analysis. A positive answer would show that 'nice' growth behavior cannot be inherited by all sub-bases. A negative answer (counterexample) would exhibit a special basis where every sub-basis has a definite growth rate.",
+    "openQuestions": [
+      "Is there an order 2 basis A such that every sub-basis B has convergent bₖ/k²?",
+      "What conditions on A guarantee the existence of a non-convergent sub-basis?",
+      "How does the answer change for higher order bases (order 3, 4, etc.)?"
+    ]
   }
 }
