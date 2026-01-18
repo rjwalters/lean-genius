@@ -21,8 +21,8 @@
     "id": "ann-e213-point",
     "proofId": "erdos-213",
     "range": {
-      "startLine": 26,
-      "endLine": 27
+      "startLine": 31,
+      "endLine": 32
     },
     "type": "definition",
     "title": "Point Type",
@@ -38,8 +38,8 @@
     "id": "ann-e213-collinear",
     "proofId": "erdos-213",
     "range": {
-      "startLine": 29,
-      "endLine": 36
+      "startLine": 34,
+      "endLine": 41
     },
     "type": "definition",
     "title": "Collinearity",
@@ -55,8 +55,8 @@
     "id": "ann-e213-concyclic",
     "proofId": "erdos-213",
     "range": {
-      "startLine": 38,
-      "endLine": 47
+      "startLine": 43,
+      "endLine": 52
     },
     "type": "definition",
     "title": "Concyclicity",
@@ -73,13 +73,13 @@
     "id": "ann-e213-integer-dist",
     "proofId": "erdos-213",
     "range": {
-      "startLine": 49,
-      "endLine": 56
+      "startLine": 54,
+      "endLine": 66
     },
     "type": "definition",
     "title": "Integer Distances",
     "content": "A set has **integer distances** if for every pair of distinct points, the Euclidean distance is an integer. Combined with general position, this is a severe constraint.",
-    "mathContext": "AllDistancesInteger S := S.Pairwise (fun p q => ∃ n : ℤ, dist p q = n). IsIntegerDistanceSetGP combines all three conditions.",
+    "mathContext": "AllDistancesInteger S := S.Pairwise (fun p q => ∃ n : ℤ, dist p q = n). IsIntegerDistanceSetGP combines all three conditions. ExistsIntDistSetGP n asserts existence of an n-point set.",
     "significance": "critical",
     "relatedConcepts": [
       "distance",
@@ -91,10 +91,10 @@
     "id": "ann-e213-anning",
     "proofId": "erdos-213",
     "range": {
-      "startLine": 65,
-      "endLine": 72
+      "startLine": 75,
+      "endLine": 77
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Anning-Erdős Theorem",
     "content": "**Anning-Erdős (1945)** proved a fundamental finiteness result: any set in the plane with no three collinear and all distances integers must be finite. This doesn't even need the concyclic condition!",
     "mathContext": "axiom anning_erdos_finite : ∀ S, NoThreeCollinear S → AllDistancesInteger S → S.Finite. This is why finding large examples is hard.",
@@ -109,8 +109,8 @@
     "id": "ann-e213-question",
     "proofId": "erdos-213",
     "range": {
-      "startLine": 74,
-      "endLine": 87
+      "startLine": 85,
+      "endLine": 92
     },
     "type": "definition",
     "title": "Main Question",
@@ -126,10 +126,10 @@
     "id": "ann-e213-harborth",
     "proofId": "erdos-213",
     "range": {
-      "startLine": 91,
-      "endLine": 95
+      "startLine": 99,
+      "endLine": 100
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Harborth's Construction",
     "content": "**Harborth** proved that n=5 is achievable by explicitly constructing 5 points in general position with integer distances.",
     "mathContext": "axiom harborth_five : ExistsIntDistSetGP 5. The explicit coordinates involve Pythagorean triples.",
@@ -144,10 +144,10 @@
     "id": "ann-e213-kreisel",
     "proofId": "erdos-213",
     "range": {
-      "startLine": 97,
-      "endLine": 104
+      "startLine": 108,
+      "endLine": 109
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Kreisel-Kurz Record",
     "content": "**Kreisel and Kurz (2008)** achieved the current record: n=7. Their 'integral heptagon' has no three collinear, no four concyclic, and all 21 pairwise distances are integers.",
     "mathContext": "axiom kreisel_kurz_seven : ExistsIntDistSetGP 7. This has been the record for over 15 years. n=8 remains unknown.",
@@ -162,13 +162,13 @@
     "id": "ann-e213-derived",
     "proofId": "erdos-213",
     "range": {
-      "startLine": 106,
-      "endLine": 116
+      "startLine": 114,
+      "endLine": 121
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Derived Existence Theorems",
     "content": "From the n=7 construction, we prove n=4,5,6 exist by taking subsets. A subset of a set in general position is still in general position, and inherits integer distances.",
-    "mathContext": "exists_four, exists_six : proved using Set.exists_subset_ncard_eq to extract subsets of the Kreisel-Kurz construction. The predicates are preserved under taking subsets.",
+    "mathContext": "exists_four, exists_six are axioms; exists_five, exists_seven are theorems referencing the axioms. The predicates are preserved under taking subsets.",
     "significance": "key",
     "relatedConcepts": [
       "subset",
@@ -180,10 +180,10 @@
     "id": "ann-e213-sparsity",
     "proofId": "erdos-213",
     "range": {
-      "startLine": 120,
-      "endLine": 129
+      "startLine": 130,
+      "endLine": 134
     },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Sparsity Bound",
     "content": "**Greenfeld-Iliopoulou-Peluse (2024)** proved that integer distance sets in general position in [-N,N]² have size at most O((log N)^C). This extreme sparsity shows such sets are rare.",
     "mathContext": "axiom gip_sparsity_bound : ∃ C > 0, for all S in [-N,N]² satisfying the conditions, |S| ≤ (log N)^C. This is an unconditional bound (no Bombieri-Lang needed).",
@@ -198,8 +198,8 @@
     "id": "ann-e213-summary",
     "proofId": "erdos-213",
     "range": {
-      "startLine": 139,
-      "endLine": 148
+      "startLine": 146,
+      "endLine": 149
     },
     "type": "theorem",
     "title": "Summary",
