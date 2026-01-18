@@ -2576,17 +2576,21 @@
   },
   {
     "id": "erdos-1128",
-    "title": "Erdős Problem #1128",
+    "title": "Erdős Problem #1128: Monochromatic Cubes in Cardinal Products",
     "slug": "erdos-1128",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be three sets of cardinality .... Is it true that, in any ...-colouring of ..., there must exist ..., ..., ..., all o...",
-    "status": "pending",
+    "description": "Let A, B, C have cardinality ℵ₁. Must any 2-coloring of A × B × C contain a countably infinite monochromatic cube A₁ × B₁ × C₁? DISPROVED by Prikry-Mills (1978): NO, such colorings exist with no ℵ₀ × ℵ₀ × ℵ₀ monochromatic cube.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "set-theory",
+      "ramsey-theory",
+      "partition-calculus",
+      "cardinals"
     ],
     "erdosNumber": 1128,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-1129",
