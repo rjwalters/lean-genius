@@ -1,33 +1,149 @@
 {
   "id": "erdos-626",
-  "title": "Erdős Problem #626",
+  "title": "Erdős Problem #626: Chromatic Number and Girth",
   "slug": "erdos-626",
-  "description": "Let k&#x2265;4\" role=\"presentation\" style=\"position: relative;\">k≥4k≥4k\\geq 4 and gk(n)\" role=\"presentation\" style=\"position: relative;\">gk(n)gk(n)g_k(n) denote the largest m\" role=\"presentation\" s...",
+  "description": "Let g_k(n) be the largest m such that there exists an n-vertex graph with chromatic number k and girth > m. Does lim_{n→∞} g_k(n)/log n exist? Bounds: (1/4 log k)·log n ≤ g_k(n) ≤ (2/log(k-2))·log n + 1.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (upper bound), Kostochka (lower bound)",
     "sourceUrl": "https://erdosproblems.com/626",
     "date": "",
-    "status": "pending",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos626Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "girth",
+      "probabilistic-method",
+      "asymptotics",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "conjecture",
+    "sorries": 18,
     "erdosNumber": 626,
     "erdosUrl": "https://erdosproblems.com/626",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple undirected graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits and convergence",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of g_k(n) function for chromatic-girth trade-off",
+      "Definition of chromatic number and girth",
+      "Statement of Kostochka's lower bound",
+      "Statement of Erdős's upper bound",
+      "Analysis of bound coefficients and their ratio",
+      "Dual problem h^(m)(n) formulation",
+      "Connection to Erdős's 1959 probabilistic method result",
+      "Limit existence question formalization"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #626 from erdosproblems.com.",
-    "problemStatement": "Let k&#x2265;4\" role=\"presentation\" style=\"position: relative;\">k≥4k≥4k\\geq 4 and gk(n)\" role=\"presentation\" style=\"position: relative;\">gk(n)gk(n)g_k(n) denote the largest m\" role=\"presentation\" style=\"position: relative;\">mmm such that there is a graph on n\" role=\"presentation\" style=\"position: relative;\">nnn vertices with chromatic number k\" role=\"presentation\" style=\"position: relative;\">kkk and girth &gt;m\" role=\"presentation\" style=\"position: relative;\">>m>m>m (i.e. contains no cycle of length &#x2264;m\" role=\"presentation\" style=\"position: relative;\">≤m≤m\\leq m). Doeslimn&#x2192;&#x221E;gk(n)log&#x2061;n\" role=\"presentation\" style=\"text-align: center; position: relative;\">limn→∞gk(n)lognlimn→∞gk(n)log⁡n",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem explores the fundamental tension between chromatic number and girth in graph theory. Erdős's seminal 1959 result showed that graphs with arbitrarily high chromatic number and girth exist, disproving the intuition that high chromatic number requires short cycles.\n\n**Historical Development:**\n- 1959: Erdős proved high-χ, high-girth graphs exist (probabilistic method)\n- Later: Kostochka established lower bound on g_k(n)\n- Erdős provided upper bound construction\n- The limit question remains OPEN\n\n**Known Bounds:**\n- Lower: g_k(n) ≥ (1/(4 log k)) · log n\n- Upper: g_k(n) ≤ (2/log(k-2)) · log n + 1",
+    "problemStatement": "**Setup:** Let k ≥ 4. Define g_k(n) as the largest m such that there exists an n-vertex graph with chromatic number exactly k and girth > m.\n\n**Question:** Does lim_{n→∞} g_k(n) / log n exist?\n\n**Status:** OPEN\n- Both g_k(n) and log n grow, but is the ratio convergent?\n- If the limit exists, it lies between 1/(4 log k) and 2/log(k-2)\n- The gap factor is approximately 8 · log k / log(k-2)",
+    "proofStrategy": "The formalization:\n\n1. Defines chromatic number and girth for graphs\n2. Defines g_k(n) as a supremum over graphs\n3. States Kostochka's lower bound as an axiom\n4. States Erdős's upper bound as an axiom\n5. Defines the ratio g_k(n)/log n and limit existence\n6. Analyzes the gap between bounds\n7. Introduces dual function h^(m)(n)\n8. References Erdős's 1959 probabilistic construction",
+    "keyInsights": [
+      "**Chromatic-girth tension:** High χ suggests dense local structure, but high girth forces sparse local structure.",
+      "**g_k(n) = Θ(log n):** Both bounds show logarithmic growth in n.",
+      "**Gap factor → 8:** As k → ∞, the ratio of upper to lower bound approaches 8.",
+      "**Probabilistic method:** Erdős's 1959 construction shows existence but doesn't give precise asymptotics.",
+      "**Dual problem:** h^(m)(n) asks for maximum χ given girth > m, related to g by duality."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Chromatic number, girth, colorability",
+      "startLine": 30,
+      "endLine": 46
+    },
+    {
+      "id": "g-function",
+      "title": "The g_k(n) Function",
+      "summary": "Definition and well-definedness",
+      "startLine": 48,
+      "endLine": 62
+    },
+    {
+      "id": "erdos-constructions",
+      "title": "Erdős's Constructions",
+      "summary": "High-chromatic, high-girth graphs exist",
+      "startLine": 64,
+      "endLine": 75
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound (Erdős)",
+      "summary": "g_k(n) ≤ (2/log(k-2))·log n + 1",
+      "startLine": 77,
+      "endLine": 92
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound (Kostochka)",
+      "summary": "g_k(n) ≥ (1/4 log k)·log n",
+      "startLine": 94,
+      "endLine": 109
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "Does the limit of g_k(n)/log n exist?",
+      "startLine": 111,
+      "endLine": 130
+    },
+    {
+      "id": "gap-analysis",
+      "title": "Gap Analysis",
+      "summary": "Ratio of bounds approaches 8",
+      "startLine": 132,
+      "endLine": 151
+    },
+    {
+      "id": "dual-problem",
+      "title": "The Dual Problem h^(m)(n)",
+      "summary": "Maximum chromatic number for given girth",
+      "startLine": 153,
+      "endLine": 170
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "k = 4 and triangle-free graphs",
+      "startLine": 172,
+      "endLine": 202
+    },
+    {
+      "id": "main-status",
+      "title": "Main Problem Status",
+      "summary": "Complete status summary",
+      "startLine": 217,
+      "endLine": 256
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #626 is OPEN. We know g_k(n) = Θ(log n) with explicit bounds, but whether the ratio g_k(n)/log n converges as n → ∞ remains unknown. The gap between Kostochka's lower bound and Erdős's upper bound is a factor of approximately 8·log k/log(k-2), which approaches 8 as k → ∞.",
+    "implications": "This problem connects to:\n\n1. **Probabilistic Method:** Erdős's 1959 result is foundational for random graph theory\n2. **Extremal Graph Theory:** Trade-offs between graph parameters\n3. **Ramsey Theory:** High-girth constructions relate to Ramsey numbers\n4. **Graph Coloring:** Understanding chromatic number bounds\n5. **Asymptotic Analysis:** Precise growth rates of combinatorial functions",
+    "openQuestions": [
+      "Does lim_{n→∞} g_k(n)/log n exist for any k ≥ 4?",
+      "Can the gap between upper and lower bounds be narrowed?",
+      "What is the optimal constant for each fixed k?",
+      "Is there a deterministic construction achieving the lower bound?",
+      "How does the answer depend on whether k is fixed or growing with n?"
+    ]
   }
 }

@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-626-header",
+    "proofId": "erdos-626",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős #626:** Chromatic number and girth trade-off.\n\n**Definition:** g_k(n) = largest m such that there exists an n-vertex graph with chromatic number k and girth > m.\n\n**Question:** Does lim_{n→∞} g_k(n)/log n exist?\n\n**Status:** OPEN\n\n**Bounds:**\n- Lower: (1/4 log k)·log n (Kostochka)\n- Upper: (2/log(k-2))·log n + 1 (Erdős)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-626-chromatic",
+    "proofId": "erdos-626",
+    "range": { "startLine": 32, "endLine": 38 },
+    "type": "definition",
+    "title": "Chromatic Number",
+    "content": "The **chromatic number** χ(G) is the minimum k such that G is k-colorable.\n\nA graph is **k-colorable** if vertices can be colored with k colors so that no edge connects same-colored vertices.\n\nHigh chromatic number suggests the graph has dense local structure (like cliques).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-626-girth",
+    "proofId": "erdos-626",
+    "range": { "startLine": 40, "endLine": 46 },
+    "type": "definition",
+    "title": "Girth",
+    "content": "The **girth** of a graph is the length of its shortest cycle.\n\nGirth > m means no cycle of length ≤ m exists.\n\nHigh girth forces the graph to be locally tree-like, which intuitively should make it easier to color.\n\n**Key tension:** High χ and high girth seem contradictory, but Erdős showed both can coexist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-626-g-function",
+    "proofId": "erdos-626",
+    "range": { "startLine": 50, "endLine": 53 },
+    "type": "definition",
+    "title": "The g_k(n) Function",
+    "content": "`g k n` = largest m such that there exists an n-vertex graph with:\n- Chromatic number exactly k\n- Girth > m (no cycles of length ≤ m)\n\nThis measures how 'spread out' a k-chromatic graph on n vertices can be.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-626-existence",
+    "proofId": "erdos-626",
+    "range": { "startLine": 55, "endLine": 62 },
+    "type": "axiom",
+    "title": "Well-Definedness",
+    "content": "For k ≥ 4 and n large enough, g_k(n) is well-defined.\n\nThis means such graphs exist — which is non-obvious! The famous 1959 Erdős result proves this using the probabilistic method.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-626-1959",
+    "proofId": "erdos-626",
+    "range": { "startLine": 66, "endLine": 70 },
+    "type": "axiom",
+    "title": "Erdős 1959: High-χ, High-Girth Graphs Exist",
+    "content": "**Erdős's landmark 1959 result:**\n\nFor any k ≥ 2 and g ≥ 3, there exist graphs with chromatic number ≥ k and girth > g.\n\nThis was a groundbreaking use of the **probabilistic method**: random graphs have these properties with positive probability, so such graphs must exist.\n\nBefore this, it was unclear whether high-χ high-girth graphs could exist at all!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-626-unbounded",
+    "proofId": "erdos-626",
+    "range": { "startLine": 72, "endLine": 75 },
+    "type": "theorem",
+    "title": "g_k(n) → ∞",
+    "content": "For fixed k ≥ 4, g_k(n) → ∞ as n → ∞.\n\nWith more vertices, we can achieve larger girth while maintaining chromatic number k.\n\nThis follows from Erdős's 1959 construction.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-626-upper",
+    "proofId": "erdos-626",
+    "range": { "startLine": 79, "endLine": 84 },
+    "type": "axiom",
+    "title": "Erdős's Upper Bound",
+    "content": "**Upper bound:** g_k(n) ≤ (2/log(k-2)) · log n + 1\n\nThis limits how large the girth can be. Even for n-vertex k-chromatic graphs, the girth cannot grow faster than O(log n).\n\nThe coefficient 2/log(k-2) approaches 0 as k → ∞, meaning higher chromatic number forces smaller girth.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-626-upper-coeff",
+    "proofId": "erdos-626",
+    "range": { "startLine": 86, "endLine": 92 },
+    "type": "definition",
+    "title": "Upper Bound Coefficient",
+    "content": "`upperCoeff k = 2 / log(k-2)`\n\nFor k = 4: 2/log(2) ≈ 2.89\nFor k = 10: 2/log(8) ≈ 0.96\nFor k = 100: 2/log(98) ≈ 0.44\n\nAs k increases, the coefficient shrinks — higher chromatic number restricts girth more severely.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-626-lower",
+    "proofId": "erdos-626",
+    "range": { "startLine": 96, "endLine": 101 },
+    "type": "axiom",
+    "title": "Kostochka's Lower Bound",
+    "content": "**Lower bound:** g_k(n) ≥ (1/(4 log k)) · log n\n\nThis guarantees k-chromatic graphs with reasonably large girth exist.\n\nThe coefficient 1/(4 log k) also shrinks as k → ∞, but more slowly than the upper bound coefficient.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-626-lower-coeff",
+    "proofId": "erdos-626",
+    "range": { "startLine": 103, "endLine": 109 },
+    "type": "definition",
+    "title": "Lower Bound Coefficient",
+    "content": "`lowerCoeff k = 1 / (4 · log k)`\n\nFor k = 4: 1/(4·log 4) ≈ 0.18\nFor k = 10: 1/(4·log 10) ≈ 0.11\nFor k = 100: 1/(4·log 100) ≈ 0.05\n\nThe lower bound coefficient is always smaller than the upper bound coefficient.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-626-ratio",
+    "proofId": "erdos-626",
+    "range": { "startLine": 113, "endLine": 115 },
+    "type": "definition",
+    "title": "The Ratio g_k(n)/log n",
+    "content": "`gRatio k n = g k n / log n`\n\nSince g_k(n) = Θ(log n), this ratio is bounded.\n\nThe main question: does this ratio converge as n → ∞?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-626-limit",
+    "proofId": "erdos-626",
+    "range": { "startLine": 117, "endLine": 119 },
+    "type": "definition",
+    "title": "Limit Existence",
+    "content": "`LimitExists k` means lim_{n→∞} g_k(n)/log n exists (and is finite).\n\nThis is the OPEN question: we know bounds on g_k(n), but do they determine a unique limit?\n\nThe limit, if it exists, lies between lowerCoeff k and upperCoeff k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-626-gap",
+    "proofId": "erdos-626",
+    "range": { "startLine": 139, "endLine": 141 },
+    "type": "definition",
+    "title": "Bound Ratio",
+    "content": "`boundRatio k = upperCoeff k / lowerCoeff k`\n\nThis measures the 'uncertainty' in g_k(n).\n\nThe ratio equals 8 · log k / log(k-2), which approaches 8 as k → ∞.\n\nSo even for large k, we don't know g_k(n) within a factor of 8.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-626-ratio-limit",
+    "proofId": "erdos-626",
+    "range": { "startLine": 148, "endLine": 151 },
+    "type": "theorem",
+    "title": "Ratio → 8",
+    "content": "As k → ∞, the ratio upperCoeff k / lowerCoeff k → 8.\n\nThis means the gap between upper and lower bounds stabilizes at a factor of 8 for large chromatic numbers.\n\nNarrowing this gap is an open problem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-626-dual",
+    "proofId": "erdos-626",
+    "range": { "startLine": 155, "endLine": 162 },
+    "type": "definition",
+    "title": "Dual Problem: h^(m)(n)",
+    "content": "`h m n` = largest chromatic number for n-vertex graph with girth > m.\n\nThis is the 'dual' of g_k(n): instead of maximizing girth for fixed χ, we maximize χ for fixed girth.\n\nRelationship: g_k(n) ≥ m ⟺ h_m(n) ≥ k",
+    "significance": "key"
+  },
+  {
+    "id": "ann-626-triangle-free",
+    "proofId": "erdos-626",
+    "range": { "startLine": 180, "endLine": 184 },
+    "type": "theorem",
+    "title": "Triangle-Free High-χ",
+    "content": "For any k, there exist triangle-free (girth > 3) graphs with chromatic number ≥ k.\n\nThis follows from Erdős's 1959 result and shows the chromatic-girth trade-off is less severe than naive intuition suggests.\n\nTriangle-free graphs can still require arbitrarily many colors!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-626-main",
+    "proofId": "erdos-626",
+    "range": { "startLine": 219, "endLine": 249 },
+    "type": "theorem",
+    "title": "Main Status",
+    "content": "**Erdős Problem #626: OPEN**\n\n1. **g_k(n) = Θ(log n):** Bounds established\n2. **Lower:** (1/4 log k)·log n (Kostochka)\n3. **Upper:** (2/log(k-2))·log n + 1 (Erdős)\n4. **Gap:** Factor of 8·log k/log(k-2) ≈ 8 for large k\n5. **Main question:** Does lim g_k(n)/log n exist? UNKNOWN\n6. **Existence:** High-χ, high-girth graphs exist (Erdős 1959)",
+    "significance": "critical"
+  }
+]
