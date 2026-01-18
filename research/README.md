@@ -1,5 +1,9 @@
 # Mathematical Research System
 
+> *"The Truth Mines were a honeycomb of abstract constructs, a vast, three-dimensional maze of crystallized theorems and conjectures. Every node, every tunnel, every chamber represented a different mathematical truth... The mines were inexhaustible."*
+>
+> — Greg Egan, *Diaspora*
+
 An agentic framework for autonomous mathematical research on formal proofs.
 
 ## Overview

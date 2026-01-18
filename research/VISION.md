@@ -278,6 +278,49 @@ The Erdős problems are our testbed. The methods we develop here apply to:
 3. Identify missing lemmas
 4. Connect to existing literature
 
+## The Ecosystem: Building Truth Mines Together
+
+> *"The Truth Mines were a honeycomb of truths, a vast three-dimensional maze of crystallized mathematics..."*
+> — Greg Egan, *Diaspora*
+
+We're not alone in this quest. Multiple projects are working to map the landscape of mathematical truth:
+
+### Primary Sources
+
+| Project | Focus | Link |
+|---------|-------|------|
+| **Erdős Problems** | Canonical database of 500+ Erdős problems | [erdosproblems.com](https://erdosproblems.com) |
+| **Mathlib** | Lean 4 mathematical library (1M+ lines) | [github.com/leanprover-community/mathlib4](https://github.com/leanprover-community/mathlib4) |
+
+### Related Efforts
+
+| Project | Approach | Link |
+|---------|----------|------|
+| **Erdosproblems-LLM-Hunter** | Tracking LLM solution attempts (informal) | [github.com/mehmetmars7/Erdosproblems-llm-hunter](https://github.com/mehmetmars7/Erdosproblems-llm-hunter) |
+| **MathOverflow** | Community-curated open problems | [mathoverflow.net](https://mathoverflow.net) |
+
+### Complementary Approaches
+
+Different projects take different angles:
+
+- **Informal LLM attempts** (Erdosproblems-LLM-Hunter): Tracks which frontier LLMs have attempted which problems, documenting exploratory reasoning without formal verification. Useful for identifying tractable subproblems and common pitfalls.
+
+- **Formal verification** (Lean Genius): Machine-checked proofs in Lean 4. Higher bar for "solved" but produces verified mathematics.
+
+- **Human-driven research** (erdosproblems.com): The canonical source, maintained by mathematicians, tracking the true state of knowledge.
+
+These approaches strengthen each other. Informal attempts suggest proof sketches. Formal verification confirms truth. Human oversight ensures quality.
+
+### Collaboration Philosophy
+
+We view all these efforts as building the same structure—Greg Egan's "Truth Mines"—from different entrances. Every marker left by any explorer makes the territory clearer for those who follow.
+
+If you're working on related efforts, we'd love to collaborate:
+- Share problem formalizations
+- Cross-reference progress
+- Pool insights on common obstacles
+- Coordinate on infrastructure (Mathlib contributions, etc.)
+
 ## Join the Quest
 
 Every unsolved Erdős problem is a challenge. Every formalized statement is progress. Every failed approach teaches us something.
