@@ -118,7 +118,9 @@ theorem S_irrational : Irrational S := by
     intro h
     -- We have -3 = -(2^n), so 3 = 2^n
     -- But 2^n ∈ {2, 4, 8, 16, ...}, never equals 3
-    have h2 : (3 : ℝ) = 2^n := by linarith
+    have h2 : (3 : ℝ) = (2 : ℝ)^n := by
+      have : (-3 : ℝ) = -((2 : ℝ)^n) := h
+      linarith
     -- For n ≥ 1, we have 2^n ∈ {2, 4, 8, ...}, never 3
     -- Case split: n = 1 gives 2; n ≥ 2 gives ≥ 4
     rcases Nat.lt_or_ge n 2 with hn2 | hn2
@@ -128,11 +130,11 @@ theorem S_irrational : Irrational S := by
       norm_num at h2
     · -- n ≥ 2, so 2^n ≥ 4 > 3
       have hnat : (2 : ℕ)^n ≥ 4 := by
-        calc (2 : ℕ)^n ≥ 2^2 := Nat.pow_le_pow_right (by omega) hn2
+        calc (2 : ℕ)^n ≥ 2^2 := Nat.pow_le_pow_right (by norm_num : 1 ≤ 2) hn2
           _ = 4 := by norm_num
       have hreal : (2 : ℝ)^n ≥ 4 := by
         have : ((2 : ℕ)^n : ℝ) ≥ 4 := by exact_mod_cast hnat
-        simp only [Nat.cast_pow, Nat.cast_ofNat] at this
+        simp only [Nat.cast_ofNat] at this
         exact this
       linarith
 
@@ -151,7 +153,9 @@ theorem sum_2n_minus_1_irrational : Irrational (T 2 (-1)) := by
     simp only [Rat.cast_neg, Rat.cast_one]
     intro h
     -- -1 = -(2^n) implies 1 = 2^n, but 2^n ≥ 2 for n ≥ 1
-    have h1 : (1 : ℝ) = 2^n := by linarith
+    have h1 : (1 : ℝ) = (2 : ℝ)^n := by
+      have : (-1 : ℝ) = -((2 : ℝ)^n) := h
+      linarith
     have hnat : (2 : ℕ)^n ≥ 2 := Nat.pow_le_pow_right (by norm_num : 1 ≤ 2) hn
     have hreal : (2 : ℝ)^n ≥ 2 := by
       have : ((2 : ℕ)^n : ℝ) ≥ 2 := by exact_mod_cast hnat
@@ -168,7 +172,9 @@ theorem sum_2n_plus_1_irrational : Irrational (T 2 1) := by
     simp only [Rat.cast_one]
     intro h
     -- 1 = -(2^n) implies 2^n = -1, but 2^n > 0
-    have hneg : (2 : ℝ)^n = -1 := by linarith
+    have hneg : (2 : ℝ)^n = -1 := by
+      have : (1 : ℝ) = -((2 : ℝ)^n) := h
+      linarith
     have hpos : (2 : ℝ)^n > 0 := pow_pos (by norm_num : (0 : ℝ) < 2) n
     linarith
 
@@ -181,7 +187,9 @@ theorem sum_3n_minus_1_irrational : Irrational (T 3 (-1)) := by
     simp only [Rat.cast_neg, Rat.cast_one]
     intro h
     -- -1 = -(3^n) implies 1 = 3^n, but 3^n ≥ 3 for n ≥ 1
-    have h1 : (1 : ℝ) = 3^n := by linarith
+    have h1 : (1 : ℝ) = (3 : ℝ)^n := by
+      have : (-1 : ℝ) = -((3 : ℝ)^n) := h
+      linarith
     have hnat : (3 : ℕ)^n ≥ 3 := by
       calc (3 : ℕ)^n ≥ 3^1 := Nat.pow_le_pow_right (by norm_num : 1 ≤ 3) hn
         _ = 3 := by norm_num
