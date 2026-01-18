@@ -13,7 +13,7 @@
   {
     "id": "ann-e1074-ehs-def",
     "proofId": "erdos-1074",
-    "range": { "startLine": 34, "endLine": 40 },
+    "range": { "startLine": 39, "endLine": 40 },
     "type": "definition",
     "title": "EHS Numbers",
     "content": "**EHSNumbers: The Main Object**\n\nNamed after Erdős, Hardy, and Subbarao who introduced and studied this set.\n\n**Definition:**\n```lean\ndef EHSNumbers : Set ℕ :=\n  {m | 1 ≤ m ∧ ∃ p, p.Prime ∧ ¬p ≡ 1 [MOD m] ∧ p ∣ m ! + 1}\n```\n\nAn integer m ≥ 1 is an EHS number if there exists a prime p such that:\n1. p divides m! + 1\n2. p is NOT congruent to 1 modulo m\n\n**First few EHS numbers:** 8, 9, 13, 14, 15, 16, 17, ... (OEIS A064164)",

@@ -26,7 +26,11 @@
   This file formalizes the definitions and known partial results.
 -/
 
-import Mathlib
+import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Set.Card
+import Mathlib.Order.Filter.AtTopBot
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Data.Nat.ModEq
 
 open Set Nat Filter
 

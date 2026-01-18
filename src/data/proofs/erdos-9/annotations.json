@@ -2,7 +2,7 @@
   {
     "id": "ann-e9-form-def",
     "proofId": "erdos-9",
-    "range": { "startLine": 38, "endLine": 39 },
+    "range": { "startLine": 42, "endLine": 43 },
     "type": "definition",
     "title": "Prime + Two Powers Form",
     "content": "An integer n has the form **p + 2^k + 2^l** if there exist a prime p and non-negative integers k, l such that n equals their sum.\n\nThis is the representation we're studying - most odd integers have it.",
@@ -105,7 +105,7 @@
   {
     "id": "ann-e9-intersects",
     "proofId": "erdos-9",
-    "range": { "startLine": 166, "endLine": 169 },
+    "range": { "startLine": 170, "endLine": 173 },
     "type": "theorem",
     "title": "S Meets All Progressions",
     "content": "For any arithmetic progression {a, a+d, a+2d, ...}, there exists n in S with n ≡ a (mod d).\n\nThis formalizes why covering systems are insufficient.",

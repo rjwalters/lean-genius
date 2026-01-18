@@ -15,7 +15,11 @@ such that all pairwise distances are integers?
 Reference: https://www.erdosproblems.com/213
 -/
 
-import Mathlib
+import Mathlib.Analysis.InnerProductSpace.EuclideanDist
+import Mathlib.Data.Set.Card
+import Mathlib.Data.Set.Pairwise.Basic
+import Mathlib.Analysis.Normed.Group.Basic
+import Mathlib.Data.Real.Basic
 
 open Set Function EuclideanSpace
 
@@ -144,7 +148,11 @@ theorem known_constructions :
     ExistsIntDistSetGP 6 ∧ ExistsIntDistSetGP 7 :=
   ⟨exists_four, exists_five, exists_six, exists_seven⟩
 
-/-- The gap: We know n ≤ 7 works but don't know if n = 8 or higher is possible. -/
-theorem open_question_n_eight : True := trivial -- n = 8 is the first unknown case
+/-- The gap: We know n ≤ 7 works but don't know if n = 8 or higher is possible.
+    n = 8 is the first unknown case. -/
+def bestKnownBound : ℕ := 7
+
+/-- Any construction with n > 7 would be a new record. -/
+theorem current_record : bestKnownBound = 7 := rfl
 
 end Erdos213
