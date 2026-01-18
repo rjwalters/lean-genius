@@ -1,1 +1,160 @@
-[]
+[
+  {
+    "id": "ann-e420-header",
+    "proofId": "erdos-420",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Overview: Divisor Ratios for Factorials",
+    "content": "**Erdős Problem #420**\n\nThis problem studies the ratio F(f,n) = τ((n+⌊f(n)⌋)!)/τ(n!), where τ counts divisors.\n\n**Key Questions:**\n1. Does lim F((log n)^C, n) = ∞ for large C?\n2. Is F(log n, n) dense in (1,∞)?\n3. More general density questions\n\n**Status:** Partially solved by EGIP96 paper.",
+    "mathContext": "The divisor function τ(n) counts divisors. For factorials, τ(n!) grows extremely fast. This problem studies how F changes with different growth rates of f.",
+    "significance": "critical",
+    "relatedConcepts": ["Divisor function", "Factorials", "Prime gaps", "Density"]
+  },
+  {
+    "id": "ann-e420-tau",
+    "proofId": "erdos-420",
+    "range": { "startLine": 46, "endLine": 51 },
+    "type": "definition",
+    "title": "Divisor Counting Function τ",
+    "content": "**tau (τ):**\n\nThe number of positive divisors of n.\n\n```lean\ndef tau (n : ℕ) : ℕ := n.divisors.card\n```\n\n**Examples:**\n- τ(1) = 1\n- τ(6) = 4 (divisors: 1,2,3,6)\n- τ(p) = 2 for prime p\n- τ(p^k) = k+1",
+    "mathContext": "The divisor function is multiplicative: τ(mn) = τ(m)τ(n) when gcd(m,n) = 1.",
+    "significance": "critical",
+    "relatedConcepts": ["Multiplicative functions", "Divisors"]
+  },
+  {
+    "id": "ann-e420-tau-factorial",
+    "proofId": "erdos-420",
+    "range": { "startLine": 77, "endLine": 81 },
+    "type": "definition",
+    "title": "Factorial Divisor Count",
+    "content": "**tauFactorial:**\n\nThe number of divisors of n!.\n\n```lean\ndef tauFactorial (n : ℕ) : ℕ := tau n.factorial\n```\n\n**Growth:** τ(n!) grows like exp(n · log 2 / log log n) - extremely fast!\n\n**Formula:** By Legendre, n! = ∏_p p^{e_p} where e_p = ⌊n/p⌋ + ⌊n/p²⌋ + ...\nSo τ(n!) = ∏_{p≤n} (1 + e_p)",
+    "significance": "critical",
+    "relatedConcepts": ["Legendre's formula", "Factorial", "Prime factorization"]
+  },
+  {
+    "id": "ann-e420-f-function",
+    "proofId": "erdos-420",
+    "range": { "startLine": 100, "endLine": 105 },
+    "type": "definition",
+    "title": "The F Function",
+    "content": "**F(f, n):**\n\nThe ratio of divisor counts for extended factorials.\n\n```lean\nnoncomputable def F (f : ℕ → ℝ) (n : ℕ) : ℝ :=\n  (tauFactorial (n + ⌊f n⌋.toNat) : ℝ) / (tauFactorial n : ℝ)\n```\n\n**Interpretation:** F measures how many \"new divisor factors\" appear when extending n! to (n+k)!.\n\n**Always ≥ 1:** Since (n+k)! is divisible by n!, we have τ((n+k)!) ≥ τ(n!).",
+    "significance": "critical",
+    "relatedConcepts": ["Factorial growth", "Ratio analysis"]
+  },
+  {
+    "id": "ann-e420-sqrt-result",
+    "proofId": "erdos-420",
+    "range": { "startLine": 116, "endLine": 126 },
+    "type": "axiom",
+    "title": "Easy Result: F(√n, n) → ∞",
+    "content": "**sqrt_gives_infinity:**\n\nWhen f(n) = √n, the ratio F grows without bound.\n\n**Statement:**\n```lean\naxiom sqrt_gives_infinity :\n    ∀ M : ℝ, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → F (√·) n > M\n```\n\nErdős and Graham note this is \"easy to show.\" The exponent 1/2 can even be reduced to 1/2 - c for some small c > 0.\n\n**Intuition:** √n new integers contribute many new prime factors to the factorial.",
+    "significance": "key",
+    "relatedConcepts": ["Polynomial growth", "Limit behavior"]
+  },
+  {
+    "id": "ann-e420-egip-liminf",
+    "proofId": "erdos-420",
+    "range": { "startLine": 142, "endLine": 151 },
+    "type": "axiom",
+    "title": "EGIP96: liminf F(c log n, n) = 1",
+    "content": "**liminf_log_equals_one:**\n\nFor any constant c > 0, F(c log n, n) can get arbitrarily close to 1 along subsequences.\n\n**Statement:**\n```lean\naxiom liminf_log_equals_one :\n    ∀ c : ℝ, c > 0 →\n      ∀ ε : ℝ, ε > 0 → ∃ᶠ n, F (c * log(·)) n < 1 + ε\n```\n\n**Meaning:** Even when f(n) = c log n, the ratio F doesn't always grow - it repeatedly returns close to 1.",
+    "mathContext": "This is proved in Erdős-Graham-Ivić-Pomerance (1996).",
+    "significance": "critical",
+    "relatedConcepts": ["liminf", "Subsequences", "EGIP96"]
+  },
+  {
+    "id": "ann-e420-four-ninths",
+    "proofId": "erdos-420",
+    "range": { "startLine": 153, "endLine": 160 },
+    "type": "axiom",
+    "title": "EGIP96: lim F(n^{4/9}, n) = ∞",
+    "content": "**four_ninths_gives_infinity:**\n\nWhen f(n) = n^{4/9}, the ratio F grows without bound.\n\n**Statement:**\n```lean\naxiom four_ninths_gives_infinity :\n    ∀ M : ℝ, ∃ N : ℕ, ∀ n ≥ N, F (·^{4/9}) n > M\n```\n\n**Note:** The exponent 4/9 ≈ 0.444 can be improved slightly. There's a gap between this and √n (exponent 1/2).",
+    "mathContext": "This establishes an upper bound on the \"critical exponent\" for F → ∞.",
+    "significance": "critical",
+    "relatedConcepts": ["Critical exponent", "EGIP96"]
+  },
+  {
+    "id": "ann-e420-almost-all",
+    "proofId": "erdos-420",
+    "range": { "startLine": 162, "endLine": 173 },
+    "type": "axiom",
+    "title": "EGIP96: F ≈ 1 for Almost All n",
+    "content": "**small_f_gives_one_almost_all:**\n\nIf f(n) = o((log n)²), then F(f,n) ≈ 1 for almost all n.\n\n**Meaning:** The exceptional set where F differs significantly from 1 has density 0.\n\n**Interpretation:** For slowly growing f, the divisor ratio is close to 1 \"most of the time,\" even though limsup can be large.",
+    "mathContext": "\"Almost all\" means density 1 - all but a negligible set of integers.",
+    "significance": "key",
+    "relatedConcepts": ["Natural density", "Almost all", "Exceptional sets"]
+  },
+  {
+    "id": "ann-e420-bounded-gaps",
+    "proofId": "erdos-420",
+    "range": { "startLine": 179, "endLine": 190 },
+    "type": "axiom",
+    "title": "Bounded Prime Gaps Implication",
+    "content": "**bounded_gaps_implies_limsup_infinity:**\n\nIf there exist infinitely many bounded prime gaps (which is now known!), then limsup F(g(n), n) = ∞ for any g(n) → ∞.\n\n**Connection:** When p and p+k are both prime with k bounded, the transition from p! to (p+k)! involves no new primes, affecting divisor structure.\n\n**Consequence:** Since Zhang proved bounded gaps exist, this applies!",
+    "mathContext": "Prime gaps directly affect how τ(n!) changes as n increases.",
+    "significance": "critical",
+    "relatedConcepts": ["Prime gaps", "Twin primes", "Zhang's theorem"]
+  },
+  {
+    "id": "ann-e420-zhang",
+    "proofId": "erdos-420",
+    "range": { "startLine": 192, "endLine": 198 },
+    "type": "axiom",
+    "title": "Zhang's Bounded Gaps Theorem",
+    "content": "**zhang_bounded_gaps:**\n\nThere exist infinitely many pairs of primes differing by at most 70,000,000.\n\n```lean\naxiom zhang_bounded_gaps : ∃ k : ℕ, k ≤ 70000000 ∧\n    ∃ᶠ p, p.Prime ∧ (p + k).Prime\n```\n\n**History:** Proved by Yitang Zhang in 2013, later improved to 246 by the Polymath project.\n\n**Impact:** This landmark result has consequences for Problem #420!",
+    "mathContext": "Zhang's theorem resolved a century-old question about bounded prime gaps.",
+    "significance": "critical",
+    "relatedConcepts": ["Zhang's theorem", "Polymath", "Prime distribution"]
+  },
+  {
+    "id": "ann-e420-consequence",
+    "proofId": "erdos-420",
+    "range": { "startLine": 200, "endLine": 211 },
+    "type": "theorem",
+    "title": "Corollary of Zhang's Theorem",
+    "content": "**bounded_gaps_consequence:**\n\nZhang's theorem implies limsup F(g(n), n) = ∞ for any g(n) → ∞.\n\n```lean\ntheorem bounded_gaps_consequence :\n    ∀ g : ℕ → ℝ, (∀ M, ∃ N, ∀ n ≥ N, g n > M) →\n      ∀ M : ℝ, ∃ᶠ n, F g n > M\n```\n\n**This is a theorem, not an axiom!** It follows from zhang_bounded_gaps and bounded_gaps_implies_limsup_infinity.",
+    "significance": "key",
+    "relatedConcepts": ["Consequence", "Modern results"]
+  },
+  {
+    "id": "ann-e420-cramer",
+    "proofId": "erdos-420",
+    "range": { "startLine": 213, "endLine": 223 },
+    "type": "axiom",
+    "title": "Cramér's Conjecture Implication",
+    "content": "**cramer_implies_limit_infinity:**\n\nIf Cramér's conjecture holds (prime gaps are O((log p)²)), then lim F(g(n)·(log n)², n) = ∞ for any g(n) → ∞.\n\n**Cramér's Conjecture:** The gap between consecutive primes p and q satisfies q - p = O((log p)²).\n\n**Implication:** This would pin down the critical threshold for F → ∞ much more precisely.",
+    "mathContext": "Cramér's conjecture remains unproved but is widely believed.",
+    "significance": "key",
+    "relatedConcepts": ["Cramér's conjecture", "Prime gap bounds"]
+  },
+  {
+    "id": "ann-e420-questions",
+    "proofId": "erdos-420",
+    "range": { "startLine": 229, "endLine": 255 },
+    "type": "concept",
+    "title": "Open Questions",
+    "content": "**Three Partially Open Questions:**\n\n1. **Question 1:** Does lim F((log n)^C, n) = ∞ for large C?\n   - Unknown for specific C values\n\n2. **Question 2:** Is F(log n, n) dense in (1, ∞)?\n   - We know liminf = 1, but density is open\n\n3. **Question 3:** For monotonic f ≤ log n with f → ∞, is F(f,n) dense in (1, ∞)?\n\nThe gap between (log n)^C and n^{4/9} remains mysterious.",
+    "significance": "key",
+    "relatedConcepts": ["Open problems", "Density questions"]
+  },
+  {
+    "id": "ann-e420-main",
+    "proofId": "erdos-420",
+    "range": { "startLine": 261, "endLine": 271 },
+    "type": "theorem",
+    "title": "Erdős Problem #420: Partially Solved",
+    "content": "**erdos_420:**\n\nThe problem is partially solved.\n\n**What's Known:**\n- liminf F(c log n, n) = 1 for any c > 0\n- lim F(n^{4/9}, n) = ∞\n- F ≈ 1 almost always for f = o((log n)²)\n\n**What's Open:**\n- Behavior for f between log n and n^{4/9}\n- Density questions",
+    "significance": "critical",
+    "relatedConcepts": ["Main theorem", "Partial results"]
+  },
+  {
+    "id": "ann-e420-significance",
+    "proofId": "erdos-420",
+    "range": { "startLine": 288, "endLine": 303 },
+    "type": "concept",
+    "title": "Mathematical Significance",
+    "content": "**Why This Problem Matters:**\n\n1. **Divisor Growth:** τ(n!) encodes deep prime factorization information\n\n2. **Prime Connection:** F behavior is tied to prime gap distribution\n\n3. **Density Questions:** Whether F takes all values in (1,∞) is subtle\n\n4. **Multiplicativity:** τ's multiplicative nature makes analysis tractable\n\nThe connection to prime gaps (via Zhang's theorem) shows how progress in one area impacts another.",
+    "significance": "supporting",
+    "relatedConcepts": ["Number theory connections", "Prime distribution"]
+  }
+]
