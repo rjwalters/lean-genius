@@ -1,1 +1,206 @@
-[]
+[
+  {
+    "id": "ann-880-1",
+    "proofId": "erdos-880",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #880 asks whether restricted additive bases have bounded gaps. If A is an additive basis of order k, are the gaps in k×A (sums of distinct elements) uniformly bounded? The answer splits: YES for k=2, NO for k≥3.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-880-2",
+    "proofId": "erdos-880",
+    "range": {
+      "startLine": 37,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "Additive Basis of Order k",
+    "content": "A set A ⊂ ℕ is an additive basis of order k if every sufficiently large natural number can be written as a sum of at most k elements from A (repetitions allowed). Notation: kA ~ ℕ means kA contains all large integers.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-880-3",
+    "proofId": "erdos-880",
+    "range": {
+      "startLine": 48,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "k-Fold Sumset kA",
+    "content": "The k-fold sumset kA contains all numbers expressible as sums of k or fewer elements from A, where repetitions are allowed. This is the unrestricted version - the restricted version k×A requires distinct elements.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-880-4",
+    "proofId": "erdos-880",
+    "range": {
+      "startLine": 61,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Restricted k-Fold Sumset k×A",
+    "content": "The restricted sumset k×A contains only sums of k or fewer DISTINCT elements from A. The Finset representation automatically ensures distinctness. This is the key object in Problem #880.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-880-5",
+    "proofId": "erdos-880",
+    "range": {
+      "startLine": 84,
+      "endLine": 86
+    },
+    "type": "definition",
+    "title": "Bounded Gaps Property",
+    "content": "A set B has bounded gaps if there exists a constant C such that consecutive elements differ by at most C. Formally: Δ(B) = sup{b_{n+1} - b_n} < ∞. This is what the Burr-Erdős question asks about k×A.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-880-6",
+    "proofId": "erdos-880",
+    "range": {
+      "startLine": 99,
+      "endLine": 100
+    },
+    "type": "definition",
+    "title": "The Burr-Erdős Question",
+    "content": "The formal question: does isAdditiveBasis A k imply hasBoundedGaps (k×A)? In other words, if kA ~ ℕ, must Δ(k×A) < ∞? The answer depends on k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-880-7",
+    "proofId": "erdos-880",
+    "range": {
+      "startLine": 113,
+      "endLine": 115
+    },
+    "type": "theorem",
+    "title": "k=2 Bounded Gaps",
+    "content": "The main positive result: if 2A ~ ℕ, then Δ(2×A) ≤ 2. The proof uses a parity argument: sums a+a are always even, so odd numbers in 2A must come from distinct pairs a+b. This forces 2×A to have bounded gaps.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-880-8",
+    "proofId": "erdos-880",
+    "range": {
+      "startLine": 117,
+      "endLine": 125
+    },
+    "type": "concept",
+    "title": "The Parity Argument",
+    "content": "Why k=2 works: 2A contains all large integers (both parities). But sums a+a = 2a are always even. Therefore odd numbers in 2A must be a+b with a≠b, which are in 2×A. Since odd numbers appear densely in 2A, they appear densely in 2×A, bounding gaps.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-880-9",
+    "proofId": "erdos-880",
+    "range": {
+      "startLine": 143,
+      "endLine": 145
+    },
+    "type": "theorem",
+    "title": "k≥3 Unbounded Gaps",
+    "content": "The main negative result: for every k≥3, there exists A with kA ~ ℕ but Δ(k×A) = ∞. The distinctness constraint becomes too restrictive to ensure bounded gaps.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-880-10",
+    "proofId": "erdos-880",
+    "range": {
+      "startLine": 147,
+      "endLine": 153
+    },
+    "type": "concept",
+    "title": "Counterexample Construction",
+    "content": "For k≥3, the counterexample is carefully constructed so that kA covers all large integers (basis property) but k×A has arbitrarily large gaps. The construction exploits the freedom available when k≥3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-880-11",
+    "proofId": "erdos-880",
+    "range": {
+      "startLine": 155,
+      "endLine": 160
+    },
+    "type": "concept",
+    "title": "Why k≥3 Differs from k=2",
+    "content": "For k≥3, there's no parity constraint. Sums of 3 distinct elements can have any parity, so the argument that forced bounded gaps for k=2 completely breaks down. This allows construction of counterexamples.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-880-12",
+    "proofId": "erdos-880",
+    "range": {
+      "startLine": 172,
+      "endLine": 188
+    },
+    "type": "theorem",
+    "title": "Complete Answer",
+    "content": "The burr_erdos_complete_answer theorem formalizes the full resolution: k=2 gives gaps ≤ 2, k≥3 allows unbounded gaps. This completely answers the Burr-Erdős question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-880-13",
+    "proofId": "erdos-880",
+    "range": {
+      "startLine": 194,
+      "endLine": 200
+    },
+    "type": "concept",
+    "title": "Relation to Classical Problems",
+    "content": "This problem differs from classical additive basis questions (like Erdős-Turán conjecture) by requiring distinct elements. The restriction from kA to k×A fundamentally changes the structure and behavior.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-880-14",
+    "proofId": "erdos-880",
+    "range": {
+      "startLine": 207,
+      "endLine": 207
+    },
+    "type": "definition",
+    "title": "Representation Function",
+    "content": "The representation function r_{k×A}(n) counts ways to write n as a sum of k distinct elements of A. The HHP paper studies this function alongside the gap question.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-880-15",
+    "proofId": "erdos-880",
+    "range": {
+      "startLine": 220,
+      "endLine": 229
+    },
+    "type": "concept",
+    "title": "Detailed Parity Analysis",
+    "content": "For k=2: (1) 2A ~ ℕ means 2A contains all large integers. (2) Sums a+a = 2a are even. (3) Odd numbers in 2A must be a+b with a≠b, hence in 2×A. (4) Since 2A has both parities densely, 2×A has both parities densely, giving Δ(2×A) ≤ 2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-880-16",
+    "proofId": "erdos-880",
+    "range": {
+      "startLine": 231,
+      "endLine": 237
+    },
+    "type": "concept",
+    "title": "Why Parity Fails for k≥3",
+    "content": "For k=3, sums a+b+c with all distinct can have either parity: (odd+odd+odd) or (even+even+even) are odd, (even+odd+odd) is even, etc. There's no forced structure like in k=2, allowing counterexamples.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-880-17",
+    "proofId": "erdos-880",
+    "range": {
+      "startLine": 260,
+      "endLine": 272
+    },
+    "type": "theorem",
+    "title": "Final Status Theorem",
+    "content": "The erdos_880_status theorem captures the dichotomous answer: burrErdosQuestion(2) is true (bounded gaps), while burrErdosQuestion(k) is false for k≥3 (unbounded gaps possible).",
+    "significance": "critical"
+  }
+]
