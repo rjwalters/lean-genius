@@ -1,33 +1,127 @@
 {
   "id": "erdos-620",
-  "title": "Erdős Problem #620",
+  "title": "Erdős Problem #620: The Erdős-Rogers Problem",
   "slug": "erdos-620",
-  "description": "If G\" role=\"presentation\" style=\"position: relative;\">GGG is a graph on n\" role=\"presentation\" style=\"position: relative;\">nnn vertices without a K4\" role=\"presentation\" style=\"position: relative;\"...",
+  "description": "In any K₄-free graph on n vertices, how large a triangle-free induced subgraph must exist? Current bounds: √n·√(log n)/log log n ≪ f(n) ≪ √n·log n. The gap represents fundamental uncertainty about extremal K₄-free graph structure.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Rogers (1962), bounds: Bollobás-Hind, Krivelevich, Mubayi-Verstraete",
     "sourceUrl": "https://erdosproblems.com/620",
-    "date": "",
-    "status": "pending",
+    "date": "1962",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos620Problem.lean",
     "tags": [
+      "graph-theory",
+      "ramsey-theory",
+      "induced-subgraphs",
+      "extremal-graph-theory",
       "erdos"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 6,
     "erdosNumber": 620,
     "erdosUrl": "https://erdosproblems.com/620",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #620 from erdosproblems.com.",
-    "problemStatement": "If G\" role=\"presentation\" style=\"position: relative;\">GGG is a graph on n\" role=\"presentation\" style=\"position: relative;\">nnn vertices without a K4\" role=\"presentation\" style=\"position: relative;\">K4K4K_4 then how large a triangle-free induced subgraph must G\" role=\"presentation\" style=\"position: relative;\">GGG contain?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**The Erdős-Rogers Problem**\n\nThis problem, first posed by Erdős and Rogers in 1962, asks a fundamental question at the intersection of Ramsey theory and extremal graph theory: in graphs that avoid K₄, how does avoiding triangles in induced subgraphs trade off against size?\n\n**Historical Progress on Upper Bounds**:\n- **1991**: Bollobás-Hind proved f(n) ≪ n^{7/10+o(1)}\n- **1994**: Krivelevich improved to n^{2/3}(log n)^{1/3}\n- **2013**: Wolfovitz achieved n^{1/2}(log n)^{120}\n- **2024**: Mubayi-Verstraete reached n^{1/2} log n (current best)\n\n**Lower Bounds**: The lower bound √n·√(log n)/log log n comes from Ramsey-theoretic arguments (Shearer's method).\n\n**The Gap**: The remaining gap of roughly (log n)^{1/2}·log log n between bounds is a major open problem.",
+    "problemStatement": "**Problem Statement**\n\nLet f(n) be the minimum, over all K₄-free graphs G on n vertices, of the maximum size of a triangle-free induced subgraph of G.\n\n**Equivalently**: What is the largest k such that EVERY K₄-free graph on n vertices contains a triangle-free induced subgraph on at least k vertices?\n\n**Current Bounds**:\n- Lower: f(n) ≫ √n · √(log n) / log log n\n- Upper: f(n) ≪ √n · log n\n\n**Status**: OPEN - the exact growth rate is unknown.",
+    "proofStrategy": "**Approach to Bounds**\n\n**Upper Bounds (Construction)**:\n- Build K₄-free graphs where every large induced subgraph contains a triangle\n- Uses probabilistic methods and explicit algebraic constructions\n- The Mubayi-Verstraete construction uses careful graph blowups\n\n**Lower Bounds (Ramsey)**:\n- Every K₄-free graph has an independent set of size Ω(√n)\n- Independent sets are triangle-free, giving trivial √n bound\n- Shearer's method improves this using dependent random choice\n\n**Key Technique**: The problem connects to R(3,k) ≈ k²/log k (Ramsey numbers for triangles vs independent sets).",
+    "keyInsights": [
+      "Triangle-free graphs are automatically K₄-free, so the problem has content",
+      "The trivial lower bound √n comes from independent sets in K₄-free graphs",
+      "Upper bound constructions use K₄-free graphs packed with triangles",
+      "Ramsey number R(3,k) ≈ k²/log k is closely related",
+      "The gap (log n)^{1/2}·log log n represents our uncertainty"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "cliques-forbidden",
+      "title": "Cliques and Forbidden Subgraphs",
+      "startLine": 45,
+      "endLine": 67,
+      "summary": "Definitions of triangles, K₄, and clique-free graphs"
+    },
+    {
+      "id": "induced-subgraphs",
+      "title": "Induced Subgraphs",
+      "startLine": 69,
+      "endLine": 86,
+      "summary": "Induced subgraphs and triangle-free property"
+    },
+    {
+      "id": "erdos-rogers-function",
+      "title": "The Erdős-Rogers Function",
+      "startLine": 88,
+      "endLine": 103,
+      "summary": "Definition of f(n) and alternative characterization"
+    },
+    {
+      "id": "main-problem",
+      "title": "Main Problem Statement",
+      "startLine": 105,
+      "endLine": 115,
+      "summary": "Formal statement of Erdős Problem #620"
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 117,
+      "endLine": 167,
+      "summary": "All historical bounds from 1991 to 2024"
+    },
+    {
+      "id": "current-state",
+      "title": "Current State of Knowledge",
+      "startLine": 169,
+      "endLine": 187,
+      "summary": "Gap analysis between lower and upper bounds"
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 189,
+      "endLine": 204,
+      "summary": "Sparse graphs and Turán graph T(n,3)"
+    },
+    {
+      "id": "ramsey-connection",
+      "title": "Ramsey Connection",
+      "startLine": 206,
+      "endLine": 224,
+      "summary": "Connection to Ramsey numbers R(3,k)"
+    },
+    {
+      "id": "probabilistic",
+      "title": "Probabilistic Bounds",
+      "startLine": 226,
+      "endLine": 242,
+      "summary": "Random graphs and dependent random choice"
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations",
+      "startLine": 244,
+      "endLine": 262,
+      "summary": "The function f_{s,t}(n) for general clique sizes"
+    },
+    {
+      "id": "open-status",
+      "title": "Open Status",
+      "startLine": 264,
+      "endLine": 278,
+      "summary": "The problem remains open"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #620 (the Erdős-Rogers problem) asks for the minimum guaranteed triangle-free induced subgraph size in K₄-free graphs. Current bounds place f(n) between √n·√(log n)/log log n and √n·log n, but the exact growth rate remains one of the major open problems in extremal graph theory.",
+    "implications": "**Theoretical Significance**\n\n1. **Ramsey Theory**: Connects to classical Ramsey numbers R(3,k)\n\n2. **Extremal Graph Theory**: Understanding K₄-free graph structure\n\n3. **Probabilistic Methods**: Both bounds use sophisticated probabilistic techniques\n\n4. **Induced Subgraph Problems**: Part of a broader family of Erdős-Rogers type questions",
+    "openQuestions": [
+      "Is f(n) closer to √n·log n or √n·√(log n)?",
+      "What is the structure of extremal K₄-free graphs?",
+      "Can the probabilistic constructions be derandomized?",
+      "What are the exact bounds for small n?",
+      "How does f_{s,t}(n) behave for other values of s and t?"
+    ]
   }
 }

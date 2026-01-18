@@ -1,1 +1,173 @@
-[]
+[
+  {
+    "id": "ann-620-header",
+    "proofId": "erdos-620",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "The Erdős-Rogers problem (1962): In any K₄-free graph on n vertices, how large a triangle-free induced subgraph must exist? Current bounds: √n·√(log n)/log log n ≪ f(n) ≪ √n·log n. The exact growth rate is unknown.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-620-triangle",
+    "proofId": "erdos-620",
+    "range": { "startLine": 47, "endLine": 52 },
+    "type": "definition",
+    "title": "Triangles and Triangle-Free",
+    "content": "A triangle (K₃) is three mutually adjacent vertices. A graph is triangle-free if it contains no triangle. Triangle-free graphs are the target: we want large induced subgraphs with no K₃.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-620-k4",
+    "proofId": "erdos-620",
+    "range": { "startLine": 54, "endLine": 60 },
+    "type": "definition",
+    "title": "K₄ and K₄-Free",
+    "content": "K₄ is the complete graph on 4 vertices (6 edges). A graph is K₄-free if it contains no K₄. This is the constraint on the host graph - we seek triangle-free induced subgraphs within K₄-free graphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-620-implies",
+    "proofId": "erdos-620",
+    "range": { "startLine": 62, "endLine": 67 },
+    "type": "theorem",
+    "title": "Triangle-Free Implies K₄-Free",
+    "content": "Every triangle-free graph is automatically K₄-free (K₄ contains triangles). This gives the problem content: we're asking how much of the K₄-free graph can avoid triangles.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-620-induced",
+    "proofId": "erdos-620",
+    "range": { "startLine": 71, "endLine": 86 },
+    "type": "definition",
+    "title": "Induced Subgraphs",
+    "content": "The induced subgraph on S ⊆ V keeps all edges between vertices in S. We measure the maximum size of a triangle-free induced subgraph - not just any subgraph, but one that inherits edges from G.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-620-function",
+    "proofId": "erdos-620",
+    "range": { "startLine": 90, "endLine": 96 },
+    "type": "definition",
+    "title": "The Erdős-Rogers Function",
+    "content": "f(n) = min over K₄-free graphs G on n vertices of max triangle-free induced subgraph size. This is the central quantity - the guaranteed minimum across ALL K₄-free graphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-620-statement",
+    "proofId": "erdos-620",
+    "range": { "startLine": 107, "endLine": 115 },
+    "type": "theorem",
+    "title": "Main Problem Statement",
+    "content": "Determine f(n) exactly, or at least its asymptotic growth rate. The problem asks for tight bounds that would reveal the true behavior of extremal K₄-free graphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-620-trivial",
+    "proofId": "erdos-620",
+    "range": { "startLine": 119, "endLine": 125 },
+    "type": "axiom",
+    "title": "Trivial Lower Bound",
+    "content": "Every K₄-free graph has an independent set of size Ω(√n). Independent sets are triangle-free, so f(n) ≥ c√n. This is the baseline that all lower bounds improve upon.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-620-shearer",
+    "proofId": "erdos-620",
+    "range": { "startLine": 127, "endLine": 133 },
+    "type": "axiom",
+    "title": "Shearer's Lower Bound",
+    "content": "f(n) ≫ √n · √(log n) / log log n. This improves the trivial √n bound by a factor of √(log n)/log log n using Ramsey-theoretic methods and dependent random choice.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-620-bollobas",
+    "proofId": "erdos-620",
+    "range": { "startLine": 135, "endLine": 141 },
+    "type": "axiom",
+    "title": "Bollobás-Hind (1991)",
+    "content": "The first non-trivial upper bound: f(n) ≪ n^{7/10+o(1)}. This showed that extremal K₄-free graphs can force triangle-free subgraphs to be much smaller than n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-620-krivelevich",
+    "proofId": "erdos-620",
+    "range": { "startLine": 143, "endLine": 149 },
+    "type": "axiom",
+    "title": "Krivelevich (1994)",
+    "content": "Improved upper bound to f(n) ≪ n^{2/3}(log n)^{1/3}. This was a significant improvement, bringing the exponent down from 7/10 to 2/3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-620-wolfovitz",
+    "proofId": "erdos-620",
+    "range": { "startLine": 151, "endLine": 157 },
+    "type": "axiom",
+    "title": "Wolfovitz (2013)",
+    "content": "Further improved to f(n) ≪ √n · (log n)^{120}. This achieved the optimal exponent 1/2 for n, though with a large logarithmic factor.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-620-mubayi",
+    "proofId": "erdos-620",
+    "range": { "startLine": 159, "endLine": 167 },
+    "type": "axiom",
+    "title": "Mubayi-Verstraete (2024)",
+    "content": "Current best upper bound: f(n) ≪ √n · log n. This reduced Wolfovitz's (log n)^{120} to just log n, representing major progress toward closing the gap.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-620-gap",
+    "proofId": "erdos-620",
+    "range": { "startLine": 171, "endLine": 187 },
+    "type": "theorem",
+    "title": "Current Gap Analysis",
+    "content": "The gap between √n·√(log n)/log log n and √n·log n is roughly (log n)^{1/2}·log log n. This factor represents our fundamental uncertainty about extremal K₄-free graph structure.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-620-turan",
+    "proofId": "erdos-620",
+    "range": { "startLine": 197, "endLine": 204 },
+    "type": "definition",
+    "title": "Turán Graph T(n,3)",
+    "content": "The Turán graph T(n,3) partitions vertices into 3 parts with all edges between parts. It's K₄-free and dense with triangles, making it a candidate for extremal behavior.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-620-ramsey",
+    "proofId": "erdos-620",
+    "range": { "startLine": 208, "endLine": 219 },
+    "type": "definition",
+    "title": "Ramsey Number R(3,k)",
+    "content": "R(3,k) is the minimum n such that every graph on n vertices has either a triangle or an independent set of size k. Kim proved R(3,k) ≈ k²/log k, which connects to the Erdős-Rogers problem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-620-probabilistic",
+    "proofId": "erdos-620",
+    "range": { "startLine": 228, "endLine": 242 },
+    "type": "axiom",
+    "title": "Probabilistic Methods",
+    "content": "Both upper and lower bounds use probabilistic techniques. Upper bounds construct random K₄-free graphs; lower bounds use dependent random choice to find large triangle-free subgraphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-620-generalized",
+    "proofId": "erdos-620",
+    "range": { "startLine": 246, "endLine": 262 },
+    "type": "definition",
+    "title": "Generalized Erdős-Rogers",
+    "content": "f_{s,t}(n) asks for minimum K_t-free induced subgraph size in K_s-free graphs. The original problem is f_{4,3}(n). The case f_{s,2}(n) is well-understood via Ramsey theory.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-620-open",
+    "proofId": "erdos-620",
+    "range": { "startLine": 266, "endLine": 278 },
+    "type": "insight",
+    "title": "Open Status",
+    "content": "The exact growth rate of f(n) is unknown. We don't know if the truth is closer to √n·log n (upper bound) or √n·√(log n) (lower bound). This is a major open problem in extremal graph theory.",
+    "significance": "critical"
+  }
+]
