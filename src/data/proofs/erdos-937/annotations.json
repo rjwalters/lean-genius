@@ -1,1 +1,135 @@
-[]
+[
+  {
+    "id": "ann-e937-header",
+    "proofId": "erdos-937",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #937: Arithmetic Progressions of Coprime Powerful Numbers**\n\nA number n is powerful (squarefull) if p|n implies p²|n.\n\n**The Question:** Are there infinitely many 4-term APs of pairwise coprime powerful numbers?\n\n**Answer: YES** (Bajpai-Bennett-Chan, 2024)\n\n**Key References:**\n- Fermat: No four squares in AP\n- Erdős (1976): Original problem\n- Bajpai-Bennett-Chan (2024): Solution",
+    "mathContext": "This problem connects arithmetic progressions, powerful numbers, and coprimality - three fundamental number-theoretic concepts.",
+    "significance": "critical",
+    "relatedConcepts": ["Powerful numbers", "Arithmetic progressions", "Coprimality", "Fermat's theorem"]
+  },
+  {
+    "id": "ann-e937-powerful",
+    "proofId": "erdos-937",
+    "range": { "startLine": 42, "endLine": 58 },
+    "type": "definition",
+    "title": "Powerful Numbers",
+    "content": "**IsPowerful:**\n\nA positive integer n is powerful if every prime factor appears with exponent at least 2.\n\n**Definition:**\n```lean\ndef IsPowerful (n : ℕ) : Prop :=\n  n ≥ 1 ∧ ∀ p : ℕ, p.Prime → p ∣ n → p^2 ∣ n\n```\n\n**Examples:**\n- 1 is powerful (vacuously)\n- 4 = 2², 8 = 2³, 9 = 3² are powerful\n- 72 = 2³ · 3² is powerful\n- 6 = 2 · 3 is NOT powerful",
+    "mathContext": "Powerful numbers are also called squarefull numbers. They can be written as a²b³ for integers a, b.",
+    "significance": "critical",
+    "relatedConcepts": ["Prime factorization", "Squarefree numbers", "Perfect powers"]
+  },
+  {
+    "id": "ann-e937-rpowerful",
+    "proofId": "erdos-937",
+    "range": { "startLine": 60, "endLine": 70 },
+    "type": "definition",
+    "title": "r-Powerful Numbers",
+    "content": "**IsRPowerful:**\n\nGeneralization: n is r-powerful if p|n implies p^r|n.\n\n**Definition:**\n```lean\ndef IsRPowerful (r : ℕ) (n : ℕ) : Prop :=\n  n ≥ 1 ∧ ∀ p : ℕ, p.Prime → p ∣ n → p^r ∣ n\n```\n\n- 2-powerful = powerful (squarefull)\n- 3-powerful = cubefull\n- r-powerful numbers become sparser as r increases",
+    "significance": "key",
+    "relatedConcepts": ["Powerful numbers", "Prime powers", "Density"]
+  },
+  {
+    "id": "ann-e937-examples",
+    "proofId": "erdos-937",
+    "range": { "startLine": 76, "endLine": 132 },
+    "type": "theorem",
+    "title": "Verified Examples",
+    "content": "**Concrete powerful number examples:**\n\n- **one_is_powerful:** 1 is powerful (vacuously, no prime divisors)\n- **four_is_powerful:** 4 = 2² is powerful\n- **eight_is_powerful:** 8 = 2³ is powerful\n- **nine_is_powerful:** 9 = 3² is powerful\n- **seventytwo_is_powerful:** 72 = 2³ · 3² is powerful\n\n**Key theorem:**\n```lean\ntheorem square_is_powerful (n : ℕ) (hn : n ≥ 1) : IsPowerful (n^2)\n```\n\nEvery perfect square is powerful.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e937-ap",
+    "proofId": "erdos-937",
+    "range": { "startLine": 137, "endLine": 159 },
+    "type": "definition",
+    "title": "Arithmetic Progressions",
+    "content": "**Arithmetic Progression Definitions:**\n\n**IsFourTermAP:** Four numbers a, b, c, d form an AP if b - a = c - b = d - c.\n```lean\ndef IsFourTermAP (a b c d : ℕ) : Prop :=\n  b > a ∧ c > b ∧ d > c ∧\n  (b : ℤ) - a = (c : ℤ) - b ∧ (c : ℤ) - b = (d : ℤ) - c\n```\n\n**IsThreeTermAP:** Three numbers a, b, c form an AP if b - a = c - b (i.e., 2b = a + c).\n\nThe problem asks about 4-term APs, which are harder than 3-term.",
+    "significance": "key",
+    "relatedConcepts": ["Arithmetic sequences", "Common difference"]
+  },
+  {
+    "id": "ann-e937-coprimality",
+    "proofId": "erdos-937",
+    "range": { "startLine": 165, "endLine": 188 },
+    "type": "definition",
+    "title": "Coprimality Conditions",
+    "content": "**Coprime AP Definitions:**\n\n**CoprimeFourTermAP:** Four numbers in AP where any two are coprime.\n```lean\ndef CoprimeFourTermAP (a b c d : ℕ) : Prop :=\n  IsFourTermAP a b c d ∧\n  Nat.Coprime a b ∧ Nat.Coprime a c ∧ Nat.Coprime a d ∧\n  Nat.Coprime b c ∧ Nat.Coprime b d ∧ Nat.Coprime c d\n```\n\nCoprimality is the key constraint that makes the problem hard.\n\nWithout coprimality, multiply any AP by a square to extend it. With coprimality, this trick doesn't work.",
+    "mathContext": "Coprimality (gcd = 1) ensures the numbers have no common structure that could be exploited for easy constructions.",
+    "significance": "critical",
+    "relatedConcepts": ["Coprimality", "GCD", "Pairwise coprime"]
+  },
+  {
+    "id": "ann-e937-main-sets",
+    "proofId": "erdos-937",
+    "range": { "startLine": 194, "endLine": 213 },
+    "type": "definition",
+    "title": "Main Theorem Sets",
+    "content": "**coprimePowerfulFourTermAPs:**\n\nThe set of 4-tuples (a,b,c,d) where:\n1. All four are powerful\n2. They form an arithmetic progression\n3. They are pairwise coprime\n\n```lean\ndef coprimePowerfulFourTermAPs : Set (ℕ × ℕ × ℕ × ℕ) :=\n  {t | IsPowerful t.1 ∧ IsPowerful t.2.1 ∧ IsPowerful t.2.2.1 ∧ \n       IsPowerful t.2.2.2 ∧ CoprimeFourTermAP t.1 t.2.1 t.2.2.1 t.2.2.2}\n```\n\nThe main theorem shows this set is infinite.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e937-fermat",
+    "proofId": "erdos-937",
+    "range": { "startLine": 219, "endLine": 228 },
+    "type": "axiom",
+    "title": "Fermat's Theorem on Squares",
+    "content": "**fermat_no_four_squares_in_AP:**\n\nThere are no four distinct squares in arithmetic progression.\n\n**Axiom:**\n```lean\naxiom fermat_no_four_squares_in_AP :\n    ¬∃ (a b c d : ℕ), a < b ∧ b < c ∧ c < d ∧\n      IsFourTermAP (a^2) (b^2) (c^2) (d^2)\n```\n\nThis classical result of Fermat shows that perfect squares are too sparse/structured to form 4-term APs.",
+    "mathContext": "Proved by Fermat using infinite descent. Related to the theory of elliptic curves.",
+    "significance": "key",
+    "relatedConcepts": ["Fermat's theorems", "Infinite descent", "Elliptic curves"]
+  },
+  {
+    "id": "ann-e937-easy",
+    "proofId": "erdos-937",
+    "range": { "startLine": 234, "endLine": 253 },
+    "type": "axiom",
+    "title": "Easy Construction (Without Coprimality)",
+    "content": "**extend_powerful_AP and arbitrarily_long_powerful_APs:**\n\nWithout coprimality, arbitrarily long APs of powerful numbers exist.\n\n**Construction:**\nIf a, a+d, ..., a+(k-1)d is an AP of powerful numbers, then:\na(a+kd)², (a+d)(a+kd)², ..., (a+(k-1)d)(a+kd)², (a+kd)³\n\nis an AP of powerful numbers with one more term.\n\nStarting from any two powerful numbers, we can extend indefinitely.",
+    "mathContext": "This shows why coprimality is essential - without it, the problem is trivial.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e937-bbc",
+    "proofId": "erdos-937",
+    "range": { "startLine": 259, "endLine": 275 },
+    "type": "axiom",
+    "title": "Bajpai-Bennett-Chan Theorem",
+    "content": "**bajpai_bennett_chan_four_term and bajpai_bennett_chan_three_term_3powerful:**\n\nThe main results from the 2024 paper:\n\n1. **Four-term powerful APs:**\n```lean\naxiom bajpai_bennett_chan_four_term :\n    coprimePowerfulFourTermAPs.Infinite\n```\n\n2. **Three-term 3-powerful APs:**\n```lean\naxiom bajpai_bennett_chan_three_term_3powerful :\n    coprime3PowerfulThreeTermAPs.Infinite\n```\n\nThese settle Erdős Problem #937 and part of his conjecture on r-powerful numbers.",
+    "mathContext": "The proof uses sophisticated techniques from analytic number theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Analytic number theory", "Infinite sets"]
+  },
+  {
+    "id": "ann-e937-abc",
+    "proofId": "erdos-937",
+    "range": { "startLine": 281, "endLine": 308 },
+    "type": "axiom",
+    "title": "ABC Conjecture Connection",
+    "content": "**erdosConjectureRPowerful and abc_implies_finite_rpowerful:**\n\nErdős's conjecture on r-powerful numbers:\n- r ≥ 4: Only finitely many 3-term coprime APs\n- r = 3: Infinitely many 3-term but finitely many 4-term\n\n**Conditional result:**\n```lean\naxiom abc_implies_finite_rpowerful (r : ℕ) (hr : r ≥ 4) :\n    True → -- ABC conjecture\n    ∃ (S : Finset (ℕ × ℕ × ℕ)), ∀ t, ... → t ∈ S\n```\n\nThe r ≥ 4 case is proved assuming the ABC conjecture.",
+    "mathContext": "The ABC conjecture is one of the most important open problems in number theory.",
+    "significance": "key",
+    "relatedConcepts": ["ABC conjecture", "Radical of an integer", "Masser-Oesterlé"]
+  },
+  {
+    "id": "ann-e937-main",
+    "proofId": "erdos-937",
+    "range": { "startLine": 314, "endLine": 323 },
+    "type": "theorem",
+    "title": "Main Result: Erdős #937 Solved",
+    "content": "**erdos_937:**\n\n```lean\ntheorem erdos_937 : coprimePowerfulFourTermAPs.Infinite :=\n  bajpai_bennett_chan_four_term\n```\n\n**Answer: YES**\n\nThere are infinitely many four-term arithmetic progressions of pairwise coprime powerful numbers.\n\nProved by Bajpai, Bennett, and Chan in 2024.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e937-contrast",
+    "proofId": "erdos-937",
+    "range": { "startLine": 337, "endLine": 348 },
+    "type": "theorem",
+    "title": "Contrast with Fermat",
+    "content": "**squares_vs_powerful:**\n\n```lean\ntheorem squares_vs_powerful :\n    (¬∃ (a b c d : ℕ), a < b ∧ b < c ∧ c < d ∧\n      IsFourTermAP (a^2) (b^2) (c^2) (d^2)) ∧\n    coprimePowerfulFourTermAPs.Infinite\n```\n\n**Contrast:**\n- **Squares:** No four in AP (Fermat)\n- **Powerful numbers:** Infinitely many coprime 4-term APs\n\nPowerful numbers are richer than perfect squares.",
+    "significance": "key",
+    "relatedConcepts": ["Fermat's theorems", "Set density"]
+  }
+]
