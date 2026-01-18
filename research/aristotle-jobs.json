@@ -1153,8 +1153,20 @@
         "theorem schnirelmannDensity_mem_Icc (A : Set ℕ) :"
       ],
       "notes": "DISPROVED: Essential components and lacunary sets. 2 theorem sorries for Ruzsa theorem.",
-      "status": "submitted",
-      "last_check": null
+      "status": "completed",
+      "last_check": {
+        "timestamp": "2026-01-18T06:15:00Z",
+        "percent": 100,
+        "runtime_minutes": 600
+      },
+      "outcome": "Aristotle proved schnirelmannDensity_mem_Icc, lacunary_counting_bound. Manual fix for lacunary_index_upper_bound sorry. Remaining items are axioms for deep theorems (Ruzsa 1987).",
+      "integrated": "2026-01-18",
+      "theorems_proven": [
+        "schnirelmannDensity_mem_Icc",
+        "lacunary_counting_bound",
+        "lacunary_index_upper_bound",
+        "erdos_37_answer"
+      ]
     },
     {
       "project_id": "902cbc85-4aed-4819-918b-8fbbbf60f71a",

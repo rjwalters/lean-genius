@@ -202,8 +202,12 @@ lemma lacunary_index_upper_bound {a : ℕ → ℕ} {r : ℝ} (h_lac : IsLacunary
         use (1 / Real.log r) + 1;
         obtain ⟨ N, hN ⟩ := Filter.eventually_atTop.mp h_n_le_log_plus_one;
         refine' ⟨ N + ⌈Real.exp 1⌉₊ + 1, fun b hb n hn => le_trans ( hN b ( by linarith ) n hn ) _ ⟩ ; ring_nf
-        -- The bound follows from log properties; Aristotle's tactic was fragile across Mathlib versions
-        sorry
+        -- Goal: 1 + log b * (log r)⁻¹ ≤ log b + log b * (log r)⁻¹, i.e., 1 ≤ log b
+        have hb_ge_e : (b : ℝ) ≥ Real.exp 1 := calc (b : ℝ) ≥ N + ⌈Real.exp 1⌉₊ + 1 := by exact_mod_cast hb
+            _ ≥ ⌈Real.exp 1⌉₊ := by linarith
+            _ ≥ Real.exp 1 := Nat.ceil_le.mp (le_refl _)
+        have hlogb_ge_1 : Real.log b ≥ 1 := by rw [ge_iff_le, ← Real.log_exp 1]; exact Real.log_le_log (Real.exp_pos 1) hb_ge_e
+        linarith
       · use 1 / Real.log r, a 0;
         -- By definition of $a$, we know that $a n \geq a 0 * r^n$ for all $n$.
         have h_an_ge : ∀ n, (a n : ℝ) ≥ a 0 * r ^ n := fun n => lacunary_sequence_growth h_lac n

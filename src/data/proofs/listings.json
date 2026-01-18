@@ -793,7 +793,7 @@
     "slug": "erdos-1004",
     "description": "For c > 0, if x is large, does there exist n ≤ x such that φ(n+1), ..., φ(n+⌊(log x)^c⌋) are all distinct? EPS (1987) proved K ≤ n/exp(c(log n)^{1/3}).",
     "status": "formalized",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -801,7 +801,7 @@
       "analytic-number-theory"
     ],
     "erdosNumber": 1004,
-    "sorries": 14,
+    "sorries": 9,
     "annotationCount": 19
   },
   {
@@ -824,7 +824,7 @@
     "slug": "erdos-1006",
     "description": "Can every graph with girth > 4 be oriented so that there is no directed cycle, and reversing any single edge also creates no directed cycle? Disproved by Nešetřil-Rödl (1978) for all girths.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "graph-theory",
@@ -843,7 +843,7 @@
     "slug": "erdos-1007",
     "description": "What is the smallest number of edges in a graph with dimension 4? The answer is 9, achieved uniquely by K_{3,3}. Graph dimension is the minimum Euclidean dimension for unit-distance embedding.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "graph-theory",
@@ -862,7 +862,7 @@
     "slug": "erdos-1008",
     "description": "Does every graph with m edges contain a C₄-free subgraph with ≫ m^{2/3} edges? Yes, proved by Conlon-Fox-Sudakov (2014). The exponent 2/3 is optimal, as shown by Folkman's counterexample K_{n,n²}.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "graph-theory",
@@ -881,7 +881,7 @@
     "slug": "erdos-1009",
     "description": "For every c > 0, does there exist f(c) such that every graph with ⌊n²/4⌋ + k edges (k < cn) contains at least k - f(c) edge-disjoint triangles? SOLVED: Györi (1988) proved this with f(c) ≪ c².",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "graph-theory",
@@ -900,7 +900,7 @@
     "slug": "erdos-1010",
     "description": "For t < ⌊n/2⌋, every graph on n vertices with ⌊n²/4⌋ + t edges contains at least t·⌊n/2⌋ triangles. This quantifies the supersaturation phenomenon: how many triangles are forced when exceeding the Turán threshold.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "graph-theory",
@@ -919,7 +919,7 @@
     "slug": "erdos-1011",
     "description": "Let f_r(n) be minimal such that every n-vertex graph with ≥ f_r(n) edges and χ ≥ r contains a triangle. Known: f_2(n) = ⌊n²/4⌋+1 (Turán), f_3(n) = ⌊(n-1)²/4⌋+2 (Erdős-Gallai). Asymptotic involves g(r) ~ r² log r. OPEN.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "graph-theory",
@@ -953,7 +953,7 @@
     "slug": "erdos-1015",
     "description": "What is f(t), the minimum leftover vertices when partitioning any 2-colored Kₙ into vertex-disjoint monochromatic Kₜ's? Burr-Erdős-Spencer (1975) proved f(t) = R(t, t-1) + x where 0 ≤ x < t, showing f(t)^{1/t} → 4 (not 1) and f(t) is not O(t).",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "graph-theory",
@@ -962,7 +962,7 @@
       "coloring"
     ],
     "erdosNumber": 1015,
-    "sorries": 3,
+    "sorries": 1,
     "annotationCount": 15
   },
   {
@@ -1013,7 +1013,7 @@
     "slug": "erdos-1020",
     "description": "Let f(n;r,k) be max edges in r-uniform hypergraph with no k independent edges. Conjecture: f(n;r,k) = max(C(rk-1,r), C(n,r)-C(n-k+1,r)). Solved for r=2,3. Upper bound: (k-1)C(n-1,r-1). OPEN for r≥4.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "hypergraph-theory",
@@ -1144,7 +1144,7 @@
     "slug": "erdos-1029",
     "description": "If R(k) is the diagonal Ramsey number, prove R(k)/(k·2^{k/2}) → ∞. Known bounds: (√2/e)·k·2^{k/2} ≤ R(k) ≤ C(2k-2,k-1). OPEN ($100 proof, $1000 disproof).",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "ramsey-theory",
@@ -1153,7 +1153,7 @@
       "open-problem"
     ],
     "erdosNumber": 1029,
-    "sorries": 2,
+    "sorries": 3,
     "annotationCount": 20
   },
   {
@@ -1242,17 +1242,22 @@
   },
   {
     "id": "erdos-1038",
-    "title": "Erdős Problem #1038",
+    "title": "Erdős Problem #1038: Sublevel Sets of Monic Polynomials",
     "slug": "erdos-1038",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDetermine the infimum and supremum of\\[\\lvert \\{ x\\in  : \\lvert f(x)\\rvert < 1\\}\\rvert\\]as ... ranges over all non-constant m...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Determine the infimum and supremum of the measure of {x : |f(x)| < 1} for monic polynomials with roots in [-1,1]. Supremum = 2√2 (Tao, 2025); infimum bounds: 1.519 ≤ inf ≤ 1.835.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "measure-theory",
+      "polynomials",
+      "potential-theory",
+      "real-analysis"
     ],
     "erdosNumber": 1038,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-1039",
@@ -1274,7 +1279,7 @@
     "slug": "erdos-104",
     "description": "Given n points in ℝ², how many unit circles contain at least 3 points? Known: Ω(n^{3/2}) ≤ answer ≤ O(n²). Conjecture: O(n^{3/2}). OPEN ($100 prize).",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "discrete-geometry",
@@ -1341,7 +1346,7 @@
     "slug": "erdos-1043",
     "description": "For a monic polynomial f, must some line's projection of {z : |f(z)| ≤ 1} have measure ≤ 2? NO (Pommerenke 1961): can be ≥ 2.386, but always ≤ 3.3.",
     "status": "formalized",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "complex-analysis",
@@ -1351,7 +1356,7 @@
     ],
     "erdosNumber": 1043,
     "mathlibCount": 3,
-    "sorries": 12,
+    "sorries": 8,
     "annotationCount": 25
   },
   {
@@ -1511,7 +1516,7 @@
     "slug": "erdos-1057",
     "description": "Let C(x) count Carmichael numbers in [1,x]. Is C(x) = x^{1-o(1)}? Known: x^{0.3389} < C(x) < x·exp(-c·log x·log log log x / log log x). OPEN.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -1544,7 +1549,7 @@
     "slug": "erdos-106",
     "description": "Pack n squares in the unit square with disjoint interiors. Let f(n) = max sum of side lengths. Is f(k²+1) = k? Known: f(k²) = k, f(2) = 1, f(5) = 2. Axis-parallel case solved (2024). OPEN.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "discrete-geometry",
@@ -1883,7 +1888,7 @@
     "slug": "erdos-1089",
     "description": "Let g_d(n) be minimal such that every g_d(n) points in ℝ^d determine at least n distinct distances. Does lim_{d→∞} g_d(n)/d^{n-1} exist? Known: g_d(n) ≫ d^{n-1}, but g_d(n) ≤ c^{d^{1-b_n}}. OPEN.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "discrete-geometry",
@@ -1893,7 +1898,7 @@
       "open-problem"
     ],
     "erdosNumber": 1089,
-    "sorries": 2,
+    "sorries": 3,
     "annotationCount": 27
   },
   {
@@ -1951,7 +1956,7 @@
     "slug": "erdos-1095",
     "description": "Let g(k) be the smallest n > k+1 such that all prime factors of C(n,k) exceed k. Estimate g(k). Known: exp(c·(log k)²) ≪ g(k) ≤ exp((1+o(1))k). Conjectured: log g(k) ~ k/log k. OPEN.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -2098,7 +2103,7 @@
     "slug": "erdos-1106",
     "description": "Let F(n) count distinct prime factors of ∏_{k=1}^n p(k) where p(k) is the partition function. Does F(n) → ∞? Is F(n) > n eventually? The first is proved; the second remains open.",
     "status": "formalized",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -2638,7 +2643,7 @@
     "slug": "erdos-135",
     "description": "If any 4 points from A ⊂ ℝ² determine at least 5 distinct distances, must A determine ≫ n² distances? DISPROVED by Tao (2024).",
     "status": "formalized",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "discrete-geometry",
@@ -2646,7 +2651,7 @@
       "disproved"
     ],
     "erdosNumber": 135,
-    "sorries": 1,
+    "sorries": 6,
     "annotationCount": 14
   },
   {
@@ -2725,7 +2730,7 @@
     "slug": "erdos-140",
     "description": "Let r₃(N) be the size of the largest subset of {1,...,N} with no 3-term arithmetic progression. Prove r₃(N) ≪ N/(log N)^C for every C > 0. SOLVED by Kelley-Meka (2023).",
     "status": "formalized",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -2905,7 +2910,7 @@
     "slug": "erdos-157",
     "description": "Does there exist an infinite Sidon set which is an asymptotic basis of order 3? YES (Pilatte 2023). Two theorems verified: sidon_iff_sidon_alt and powers_of_two_sidon.",
     "status": "complete",
-    "badge": "verified",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -3126,7 +3131,7 @@
     "slug": "erdos-171",
     "description": "What is the chromatic number χ(ℝ²) of the unit distance graph? The Hadwiger-Nelson problem. Nelson (1950): χ ≥ 4. Isbell (1950): χ ≤ 7. de Grey (2018): χ ≥ 5. Current knowledge: 5 ≤ χ(ℝ²) ≤ 7.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "combinatorial-geometry",
@@ -3505,7 +3510,7 @@
     "slug": "erdos-202",
     "description": "How many disjoint congruence classes can have moduli bounded by N? Bounds involve L(N) = exp(√(log N · log log N)).",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -3513,7 +3518,7 @@
       "combinatorics"
     ],
     "erdosNumber": 202,
-    "sorries": 13,
+    "sorries": 14,
     "annotationCount": 9
   },
   {
@@ -3864,7 +3869,7 @@
     "slug": "erdos-225",
     "description": "If a trigonometric polynomial has all roots on the unit circle and supremum norm 1, then its L¹ norm is at most 4.",
     "status": "axiom",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "analysis",
@@ -3874,7 +3879,7 @@
       "solved"
     ],
     "erdosNumber": 225,
-    "sorries": 3,
+    "sorries": 1,
     "annotationCount": 7
   },
   {
@@ -4456,7 +4461,7 @@
     "slug": "erdos-260",
     "description": "If a₁ < a₂ < ⋯ is increasing with aₙ/n → ∞, is ∑ aₙ/2^{aₙ} necessarily irrational?",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "analysis",
@@ -4488,7 +4493,7 @@
     "slug": "erdos-263",
     "description": "Is 2^{2^n} an irrationality sequence? Must such sequences have a_n^{1/n} → ∞? A sequence is an irrationality sequence if all perturbations give irrational reciprocal sums.",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -4564,7 +4569,7 @@
     "slug": "erdos-268",
     "description": "For X ⊆ ℝ^d of points (Σ 1/n, Σ 1/(n+1), ...) as A ranges over infinite sets with convergent harmonic sum, does X have nonempty interior? YES for all d ≥ 1 (Kovač 2024, Kovač-Tao 2024).",
     "status": "formalized",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "analysis",
@@ -4582,7 +4587,7 @@
     "slug": "erdos-27",
     "description": "Does there exist C > 1 such that ε-almost covering systems exist with moduli in [N, CN] for all ε, N? Answer: NO (disproved by FFKPY).",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -4590,7 +4595,7 @@
       "density"
     ],
     "erdosNumber": 27,
-    "sorries": 18,
+    "sorries": 12,
     "annotationCount": 19
   },
   {
@@ -4750,7 +4755,7 @@
     "slug": "erdos-286",
     "description": "For k ≥ 2, can 1 be expressed as a sum of k distinct unit fractions with denominators in an interval of width (e-1+o(1))k? Croot (2001) proved the answer is yes.",
     "status": "axiom",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -4782,7 +4787,7 @@
     "slug": "erdos-29",
     "description": "Is there an explicit construction of A ⊆ ℕ such that A + A = ℕ but r_A(n) = o(n^ε) for every ε > 0? SOLVED by Jain-Pham-Sawhney-Zakharov (2024).",
     "status": "formalized",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -5023,7 +5028,7 @@
     "slug": "erdos-303",
     "description": "In any finite colouring of the integers, does there exist a monochromatic solution to 1/a = 1/b + 1/c with distinct a, b, c? A Ramsey-theoretic problem solved affirmatively by Brown and Rödl (1991).",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "ramsey-theory",
@@ -5097,7 +5102,7 @@
     "slug": "erdos-307",
     "description": "Are there two finite sets of primes P, Q with (Σ 1/p)(Σ 1/q) = 1? Prime version: OPEN. Coprime version: SOLVED by Cambie with (1 + 1/5)(1/2 + 1/3) = 1.",
     "status": "formalized",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -5107,7 +5112,7 @@
     ],
     "erdosNumber": 307,
     "mathlibCount": 3,
-    "sorries": 8,
+    "sorries": 6,
     "annotationCount": 32
   },
   {
@@ -5206,7 +5211,7 @@
     "slug": "erdos-316",
     "description": "Can every finite set with reciprocal sum < 2 be partitioned into two parts each with sum < 1? Answer: NO - disproved by Sándor (1997).",
     "status": "complete",
-    "badge": "theorem",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "number-theory",
@@ -5239,7 +5244,7 @@
     "slug": "erdos-32",
     "description": "Is there a set A with |A ∩ [1,N]| = o((log N)²) such that every large integer is p + a for prime p and a ∈ A? Partially solved: Ruzsa proved O(ω(N)·log N) is achievable and Ω(e^γ·log N) is necessary. The $50 question of whether O(log N) is achievable remains OPEN.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -5477,7 +5482,7 @@
     "slug": "erdos-34",
     "description": "Is S(pi) = o(n^2) for all permutations? DISPROVED - there exist permutations with S(pi) >= n^2/4.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "combinatorics",
@@ -5524,7 +5529,7 @@
     "slug": "erdos-35",
     "description": "If B is an additive basis of order k, does d_s(A+B) ≥ α + α(1-α)/k hold for all A?",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -5532,7 +5537,7 @@
       "density"
     ],
     "erdosNumber": 35,
-    "sorries": 9,
+    "sorries": 8,
     "annotationCount": 15
   },
   {
@@ -5581,7 +5586,7 @@
     "slug": "erdos-352",
     "description": "Is there c > 0 such that every measurable set A in R^2 with measure >= c contains a triangle of area 1? Conjectured c = 4pi/sqrt(27). Open problem.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "geometric-measure-theory",
@@ -5592,7 +5597,7 @@
     "dateAdded": "2026-01-17",
     "erdosNumber": 352,
     "mathlibCount": 4,
-    "sorries": 0,
+    "sorries": 3,
     "annotationCount": 15
   },
   {
@@ -5663,7 +5668,7 @@
     "slug": "erdos-357",
     "description": "Let f(n) = max k for 1 ≤ a₁ < ... < aₖ ≤ n with all consecutive sums distinct. Is f(n) = o(n)? Known: f(n) ≥ (2+o(1))√n.",
     "status": "formalized",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "combinatorics",
@@ -5673,7 +5678,7 @@
     ],
     "erdosNumber": 357,
     "mathlibCount": 3,
-    "sorries": 18,
+    "sorries": 16,
     "annotationCount": 21
   },
   {
@@ -5828,7 +5833,7 @@
     "slug": "erdos-370",
     "description": "Are there infinitely many n such that both n and n+1 have their largest prime factor less than their square root? Steinerberger found an elegant solution using n = m² - 1.",
     "status": "axiom",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -5847,7 +5852,7 @@
     "slug": "erdos-371",
     "description": "Let P(n) be the largest prime factor of n. Show that {n : P(n) < P(n+1)} has density 1/2. Conditionally solved by Wang (2021); logarithmic density proved by Teräväinen (2018).",
     "status": "formalized",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -6075,7 +6080,7 @@
     "slug": "erdos-392",
     "description": "Let A(n) be the minimum number of factors needed to write n! = a₁...aₜ with each aᵢ ≤ n². Then A(n) = n/2 - n/(2 log n) + o(n/log n).",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "factorization",
@@ -6086,7 +6091,7 @@
     "dateAdded": "2026-01-17",
     "erdosNumber": 392,
     "mathlibCount": 5,
-    "sorries": 0,
+    "sorries": 3,
     "annotationCount": 12
   },
   {
@@ -6232,7 +6237,7 @@
     "slug": "erdos-402",
     "description": "For any finite set A ⊂ ℕ, there exist a, b ∈ A such that gcd(a, b) ≤ a/|A|. Graham's conjecture was proved by Balasubramanian and Soundararajan in 1996.",
     "status": "axiom",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -6505,7 +6510,7 @@
     "slug": "erdos-434",
     "description": "Which k-subset of {1,...,n} maximizes non-representable integers? Answer: {n-k+1,...,n} (Kiss 2002).",
     "status": "formalized",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -6514,7 +6519,7 @@
     ],
     "erdosNumber": 434,
     "mathlibCount": 3,
-    "sorries": 12,
+    "sorries": 8,
     "annotationCount": 27
   },
   {
@@ -6794,7 +6799,7 @@
     "slug": "erdos-454",
     "description": "Let f(n) = min_{i<n} (p_{n+i} + p_{n-i}). Is limsup(f(n) - 2p_n) = ∞? Pomerance (1979) proved limsup ≥ 2. The problem remains open.",
     "status": "formalized",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -6803,7 +6808,7 @@
     ],
     "erdosNumber": 454,
     "mathlibCount": 3,
-    "sorries": 10,
+    "sorries": 7,
     "annotationCount": 20
   },
   {
@@ -7080,7 +7085,7 @@
     "slug": "erdos-485",
     "description": "Let f(k) be the minimum number of terms in P(x)², where P ranges over polynomials with exactly k non-zero terms. Is f(k) → ∞ as k → ∞?",
     "status": "axiom",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "algebra",
@@ -7208,7 +7213,7 @@
     "slug": "erdos-501",
     "description": "For bounded sets A_x with outer measure < 1, must infinite independent sets exist? Answer depends on set-theoretic axioms!",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "set-theory",
@@ -7217,7 +7222,7 @@
       "independence"
     ],
     "erdosNumber": 501,
-    "sorries": 7,
+    "sorries": 5,
     "annotationCount": 18
   },
   {
@@ -7296,7 +7301,7 @@
     "slug": "erdos-517",
     "description": "Do entire functions with Fabry gaps (nₖ/k → ∞) assume every value infinitely often? The main conjecture is OPEN, but Biernacki proved the stronger Fejér gap case.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "complex-analysis",
@@ -7377,7 +7382,7 @@
     "slug": "erdos-522",
     "description": "For random polynomials with ±1 coefficients, does the number of roots in the unit disk converge to n/2 almost surely? Yakir (2021) proved convergence in probability.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "probability",
@@ -7579,7 +7584,7 @@
     "slug": "erdos-541",
     "description": "If a sequence of p residues modulo p has the property that all nonempty zero-sum subsets have the same cardinality r, must at most 2 distinct residues appear in the sequence? This was conjectured by Graham and proved by Erdős-Szemerédi (1976) for large primes, then by Gao-Hamidoune-Wang (2010) for all moduli.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -7598,7 +7603,7 @@
     "slug": "erdos-543",
     "description": "What is the minimal size k such that a random k-subset of an abelian group spans all elements via subset sums with probability ≥ 1/2?",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "combinatorics",
@@ -7616,7 +7621,7 @@
     "slug": "erdos-545",
     "description": "Is the Ramsey number R(G) maximized when G is 'as complete as possible' for a given number of edges?",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "graph-theory",
@@ -7624,7 +7629,7 @@
       "combinatorics"
     ],
     "erdosNumber": 545,
-    "sorries": 14,
+    "sorries": 13,
     "annotationCount": 18
   },
   {
@@ -7633,7 +7638,7 @@
     "slug": "erdos-546",
     "description": "For a graph G with no isolated vertices and m edges, is R(G) ≤ 2^{O(√m)}? Solved by Sudakov (2011). The ≥3 color version remains open.",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "graph-theory",
@@ -7709,7 +7714,7 @@
     "slug": "erdos-550",
     "description": "For T a tree on n vertices and G = K_{m₁,...,mₖ}, prove R(T,G) ≤ (χ(G)-1)(R(T,K_{m₁,m₂})-1)+m₁. Chvátal (1977): R(T,Kₘ) = (m-1)(n-1)+1 is the foundational result.",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "graph-theory",
@@ -7717,7 +7722,7 @@
       "trees"
     ],
     "erdosNumber": 550,
-    "sorries": 18,
+    "sorries": 12,
     "annotationCount": 17
   },
   {
@@ -7726,7 +7731,7 @@
     "slug": "erdos-551",
     "description": "Prove R(C_k, K_n) = (k-1)(n-1) + 1 for k ≥ n ≥ 3 (except n=k=3). Bondy-Erdős (1973): k > n²-2. Nikiforov (2005): k ≥ 4n+2. Keevash-Long-Skokan (2021): k ≥ C log n / log log n.",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "graph-theory",
@@ -7734,7 +7739,7 @@
       "cycles"
     ],
     "erdosNumber": 551,
-    "sorries": 26,
+    "sorries": 23,
     "annotationCount": 16
   },
   {
@@ -7743,7 +7748,7 @@
     "slug": "erdos-552",
     "description": "Determine R(C₄, Sₙ) for the 4-cycle and star graph. Is R(C₄, Sₙ) ≤ n + √n - c for infinitely many n? Connected to prime gaps.",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "graph-theory",
@@ -7751,7 +7756,7 @@
       "combinatorics"
     ],
     "erdosNumber": 552,
-    "sorries": 17,
+    "sorries": 12,
     "annotationCount": 19
   },
   {
@@ -7864,7 +7869,7 @@
     "slug": "erdos-564",
     "description": "Is there a constant c > 0 such that R₃(n) ≥ 2^{2^{cn}}? An open problem asking whether the lower bound for 3-uniform hypergraph Ramsey numbers can match the tower height of the upper bound.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "ramsey-theory",
@@ -8318,7 +8323,7 @@
     "slug": "erdos-601",
     "description": "For which limit ordinals α must every graph on α have infinite path OR independent set of order type α? Known for α < ω₁^{ω+2}. Prize: $500.",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "graph-theory",
@@ -8326,7 +8331,7 @@
       "ordinals"
     ],
     "erdosNumber": 601,
-    "sorries": 18,
+    "sorries": 14,
     "annotationCount": 16
   },
   {
@@ -8391,7 +8396,7 @@
     "slug": "erdos-608",
     "description": "Does G with > n²/4 edges have ≥ (2/9)n² edges in C₅? NO! The correct bound is c = (2 + √2)/16 ≈ 0.2134. Füredi-Maleki and Grzesik-Hu-Volec determined the exact value.",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "graph-theory",
@@ -8599,7 +8604,7 @@
     "slug": "erdos-621",
     "description": "For graph G on n vertices, is α₁(G) + τ₁(G) ≤ n²/4? Solved by Norin-Sun (2016) with the stronger result α₁(G) + τ_B(G) ≤ n²/4.",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "graph-theory",
@@ -8617,7 +8622,7 @@
     "slug": "erdos-622",
     "description": "Let G be a regular graph with 2n vertices and degree n+1. Must G have ≫ 2^{2n} subsets spanned by a cycle? Solved by Draganić-Keevash-Müyesser (2025): at least (1/2 + o(1))2^{2n} subsets.",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "graph-theory",
@@ -8635,7 +8640,7 @@
     "slug": "erdos-623",
     "description": "Let X have cardinality ℵ_ω and f: Finset(X) → X satisfy f(A) ∉ A. Must there exist an infinite independent set Y ⊆ X where f(B) ∉ Y for all finite B ⊆ Y? OPEN - possibly undecidable.",
     "status": "formalized",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "set-theory",
@@ -8644,7 +8649,7 @@
       "independence"
     ],
     "erdosNumber": 623,
-    "sorries": 8,
+    "sorries": 6,
     "annotationCount": 18
   },
   {
@@ -8653,7 +8658,7 @@
     "slug": "erdos-624",
     "description": "Let X be a finite set of size n. What is the minimum H(n) such that some function f: P(X) -> X covers all of X from any subset Y of size at least H(n)?",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "combinatorics",
@@ -8670,7 +8675,7 @@
     "slug": "erdos-625",
     "description": "For G(n, 1/2), does χ(G) - ζ(G) → ∞ almost surely? The cochromatic number ζ(G) allows color classes to be cliques or independent sets. Heckel/Steiner (2024) proved the difference is unbounded. Prize: $1000 (false) / $100 (true).",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "graph-theory",
@@ -8678,7 +8683,7 @@
       "coloring"
     ],
     "erdosNumber": 625,
-    "sorries": 24,
+    "sorries": 20,
     "annotationCount": 15
   },
   {
@@ -8729,7 +8734,7 @@
     "slug": "erdos-629",
     "description": "Find n(k) = minimal vertices in bipartite G with list chromatic number χ_L(G) > k. Surprisingly, χ_L can be arbitrarily large even though χ ≤ 2!",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "graph-theory",
@@ -8738,7 +8743,7 @@
       "bipartite-graphs"
     ],
     "erdosNumber": 629,
-    "sorries": 17,
+    "sorries": 14,
     "annotationCount": 19
   },
   {
@@ -8848,7 +8853,7 @@
     "slug": "erdos-637",
     "description": "If G on n vertices has no clique/independent set on ≫ log n vertices, then G contains an induced subgraph with ≫ √n distinct degrees. Bukh-Sudakov (2007) proved this; JKLY (2020) strengthened to ≫ n^{2/3} degrees.",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "graph-theory",
@@ -8856,7 +8861,7 @@
       "degrees"
     ],
     "erdosNumber": 637,
-    "sorries": 16,
+    "sorries": 10,
     "annotationCount": 14
   },
   {
@@ -8924,7 +8929,7 @@
     "slug": "erdos-643",
     "description": "Let f(n;t) be the minimal number of edges such that any t-uniform hypergraph on n vertices must contain four edges A,B,C,D with A∪B = C∪D and A∩B = C∩D = ∅. Conjecture: f(n;t) = (1+o(1))·C(n,t-1) for t≥3.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "combinatorics",
@@ -8934,7 +8939,7 @@
     ],
     "erdosNumber": 643,
     "mathlibCount": 3,
-    "sorries": 10,
+    "sorries": 8,
     "annotationCount": 12
   },
   {
@@ -8943,7 +8948,7 @@
     "slug": "erdos-644",
     "description": "Let f(k,r) be the minimum size of a covering set for k-uniform families where every r sets share a common pair. Known: f(k,3)=2k, f(k,4)=⌊3k/2⌋, f(k,5)=⌊5k/4⌋, f(k,6)=k. Is f(k,7)=(3/4+o(1))k?",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "combinatorics",
@@ -8951,7 +8956,7 @@
       "covering"
     ],
     "erdosNumber": 644,
-    "sorries": 22,
+    "sorries": 18,
     "annotationCount": 16
   },
   {
@@ -8996,7 +9001,7 @@
     "slug": "erdos-647",
     "description": "Let τ(n) count divisors of n. Is there n > 24 such that max_{m<n}(m + τ(m)) ≤ n + 2? The case n = 24 works, but Erdős doubted any larger n exists. Prize: £25 (~$44).",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -9060,7 +9065,7 @@
     "slug": "erdos-650",
     "description": "If A ⊆ {1,...,N} with |A| = m, every interval of length 2N contains ≥ f(m) integers divisible by distinct elements of A. Known: f(m) ≫ √m. Open: Is f(m) ≪ √m?",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -9068,7 +9073,7 @@
       "covering"
     ],
     "erdosNumber": 650,
-    "sorries": 21,
+    "sorries": 19,
     "annotationCount": 16
   },
   {
@@ -9303,7 +9308,7 @@
     "slug": "erdos-671",
     "description": "Can Lagrange interpolation L^n f(x) → f(x) even when the Lebesgue function λ_n(x) → ∞? Known: λ_n diverges somewhere (Bernstein), |L^n f| diverges a.e. for some f (Erdős-Vértesi). Prize: $250.",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "analysis",
@@ -9311,7 +9316,7 @@
       "approximation-theory"
     ],
     "erdosNumber": 671,
-    "sorries": 20,
+    "sorries": 23,
     "annotationCount": 14
   },
   {
@@ -9341,7 +9346,7 @@
     "slug": "erdos-673",
     "description": "For G(n) = Σ dᵢ/dᵢ₊₁ (consecutive divisor ratios), does G(n) → ∞ for almost all n? What is the asymptotic formula for Σ G(n)? Solved: Tao gave bounds τ(n/m)/m ≤ G(n) ≤ τ(n).",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -9358,7 +9363,7 @@
     "slug": "erdos-674",
     "description": "Are there integer solutions to x^x y^y = z^z with x, y, z > 1? Yes! Ko (1940) found infinitely many. Dem'janenko (1975) proved all solutions share the same prime factors.",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -9389,7 +9394,7 @@
     "slug": "erdos-679",
     "description": "Are there infinitely many n such that ω(n-k) < (1+ε) log k / log log k for all large k < n? The main question is OPEN; the stronger version with O(1) error is FALSE.",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -9529,7 +9534,7 @@
     "slug": "erdos-699",
     "description": "For 1 ≤ i < j ≤ n/2, does there exist a prime p ≥ i dividing gcd(C(n,i), C(n,j))? An open problem extending the Sylvester-Schur theorem from single binomial coefficients to their GCDs.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -9935,7 +9940,7 @@
     "slug": "erdos-727",
     "description": "For k ≥ 2, does ((n+k)!)² divide (2n)! for infinitely many n? The main problem is OPEN, but Balakran (1929) solved the k=1 case, and EGRS showed a weaker variant holds for all k ≥ 2.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -10307,7 +10312,7 @@
     "slug": "erdos-757",
     "description": "Let A ⊂ ℝ be a set of size n such that every 4-element subset B has |B - B| ≥ 11. Find the best constant c > 0 such that A must contain a Sidon set of size ≥ cn. Known: 1/2 < c < 3/5.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "combinatorics",
@@ -10599,7 +10604,7 @@
     "slug": "erdos-779",
     "description": "Given the primorial P = p₁·p₂·...·pₙ (product of first n primes), does there always exist a prime p with pₙ < p < P such that P + p is also prime? An open problem of Deaconescu verified for n ≤ 1000.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -10778,7 +10783,7 @@
     "slug": "erdos-793",
     "description": "Let F(n) = max size of A ⊆ {1,...,n} where a ∤ bc for distinct a,b,c ∈ A. Is F(n) = π(n) + (C+o(1))·n^{2/3}·(log n)^{-2} for some constant C? Known: bounds with different constants c₁, c₂. OPEN.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -11153,7 +11158,7 @@
     "slug": "erdos-817",
     "description": "Given a set A ⊆ {1,...,N} of size n, the subset sum set ⟨A⟩ consists of all possible sums of subsets of A. How large must N be for ⟨A⟩ to avoid non-trivial 3-term arithmetic progressions? An open problem asking whether g₃(n) ≫ 3ⁿ.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -11627,7 +11632,7 @@
     "slug": "erdos-859",
     "description": "Let dₜ be the density of n where t is a sum of distinct divisors. Is dₜ ~ c₁/(log t)^c₂? Known: 1/(log t)^c₃ < dₜ < 1/(log t)^c₄ (Erdős 1970).",
     "status": "formalized",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -11637,7 +11642,7 @@
     ],
     "erdosNumber": 859,
     "mathlibCount": 3,
-    "sorries": 8,
+    "sorries": 7,
     "annotationCount": 31
   },
   {
@@ -11749,7 +11754,7 @@
     "slug": "erdos-868",
     "description": "If A is an additive basis of order 2 with f(n) → ∞, must A contain a minimal additive basis of order 2?",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -11811,7 +11816,7 @@
     "slug": "erdos-873",
     "description": "Can the count of k-tuples with small LCM be made subpolynomial by choosing k large enough? An open problem of Erdős and Szemerédi on multiplicative structure of sequences.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -12161,7 +12166,7 @@
     "slug": "erdos-901",
     "description": "Find m(n) = minimum edges in an n-uniform hypergraph without Property B (not 2-colorable). Known: √(n/log n)·2^n ≪ m(n) ≪ n²·2^n.",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "hypergraph",
@@ -12170,7 +12175,7 @@
       "combinatorics"
     ],
     "erdosNumber": 901,
-    "sorries": 22,
+    "sorries": 19,
     "annotationCount": 16
   },
   {
@@ -12179,7 +12184,7 @@
     "slug": "erdos-902",
     "description": "Let f(n) be minimal such that there is a tournament on f(n) vertices such that every set of n vertices is dominated. Known: f(1)=3, f(2)=7, f(3)=19. Bounds: n·2^n ≪ f(n) ≪ n²·2^n.",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "combinatorics",
@@ -12187,7 +12192,7 @@
       "domination"
     ],
     "erdosNumber": 902,
-    "sorries": 22,
+    "sorries": 25,
     "annotationCount": 16
   },
   {
@@ -12314,7 +12319,7 @@
     "slug": "erdos-910",
     "description": "Does every connected set in ℝⁿ have a proper connected subset that isn't a point or homeomorphic to the whole? Does it have more than 2^ℵ₀ connected subsets? Both NO—Rudin (1958) constructed a counterexample under CH.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "topology",
@@ -12664,7 +12669,7 @@
     "slug": "erdos-94",
     "description": "For n points forming a convex polygon with distance multiplicities f(u), prove ∑ f(u)² = O(n³). Solved by Fishburn, strengthened by Lefmann-Theile.",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "geometry",
@@ -12673,7 +12678,7 @@
       "combinatorics"
     ],
     "erdosNumber": 94,
-    "sorries": 18,
+    "sorries": 13,
     "annotationCount": 18
   },
   {
@@ -12682,7 +12687,7 @@
     "slug": "erdos-940",
     "description": "For r ≥ 3, does the set of integers expressible as sums of at most r r-powerful numbers have density 0? Partial results by Baker-Brüdern (1994) and Heath-Brown (1988).",
     "status": "formalized",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -12891,7 +12896,7 @@
     "slug": "erdos-961",
     "description": "Let f(k) = minimal n such that any n consecutive integers > k contain a number with a prime factor > k. Bounds known; polylogarithmic conjecture is open.",
     "status": "formalized",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -13067,7 +13072,7 @@
     "slug": "erdos-972",
     "description": "For irrational α > 1, are there infinitely many primes p such that floor(pα) is also prime? An open problem of Erdős involving prime distribution under irrational scaling.",
     "status": "complete",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -13148,7 +13153,7 @@
     "slug": "erdos-977",
     "description": "Does P(2^n - 1)/n → ∞? Solved by Stewart (2013): P(2^n - 1) ≥ n^{1 + 1/(104 log log n)}. Schinzel (1962) proved P(2^n - 1) > 2n for n > 12.",
     "status": "formalized",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -13437,7 +13442,7 @@
     "slug": "erdos-996",
     "description": "For lacunary sequences and L² functions, if ‖f - fₙ‖₂ = O(1/(log log log n)^C), does the strong law hold? Open. Known: log log decay with c > 1/2 suffices (Matsuyama 1966).",
     "status": "formalized",
-    "badge": "axiom",
+    "badge": "wip",
     "tags": [
       "erdos",
       "harmonic-analysis",
@@ -13447,7 +13452,7 @@
     ],
     "erdosNumber": 996,
     "mathlibCount": 3,
-    "sorries": 4,
+    "sorries": 1,
     "annotationCount": 31
   },
   {

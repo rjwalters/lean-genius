@@ -1,1 +1,123 @@
-[]
+[
+  {
+    "id": "ann-e1038-header",
+    "proofId": "erdos-1038",
+    "range": { "startLine": 1, "endLine": 19 },
+    "type": "overview",
+    "title": "Problem Statement",
+    "content": "**Erdős Problem #1038** asks: for monic polynomials f with all roots in [-1,1], what are the minimum and maximum possible measures of the set {x : |f(x)| < 1}?\n\nThis \"sublevel set\" is where the polynomial stays small (absolute value less than 1). The answer reveals deep connections between polynomial structure and measure theory.",
+    "mathContext": "The problem was posed by Erdős, Herzog, and Piranian in 1958. They conjectured the supremum is 2√2, which Terence Tao proved in December 2025 using logarithmic potential theory.",
+    "significance": "critical",
+    "relatedConcepts": ["monic-polynomials", "measure-theory", "sublevel-sets"]
+  },
+  {
+    "id": "ann-e1038-imports",
+    "proofId": "erdos-1038",
+    "range": { "startLine": 21, "endLine": 26 },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "**We import Mathlib** for access to:\n- Polynomials over ℝ\n- Lebesgue measure (volume)\n- Extended non-negative reals (ℝ≥0∞)",
+    "mathContext": "The `open scoped Real ENNReal` enables notation like `Real.sqrt` and `ENNReal.ofReal`. We also open `MeasureTheory` and `Polynomial` namespaces for cleaner syntax.",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "imports", "namespaces"]
+  },
+  {
+    "id": "ann-e1038-monic-def",
+    "proofId": "erdos-1038",
+    "range": { "startLine": 35, "endLine": 37 },
+    "type": "definition",
+    "title": "Monic Polynomials with Constrained Roots",
+    "content": "**MonicRealRootedIn01** defines the class of polynomials we study: monic (leading coefficient 1) with all roots real and in [-1,1].\n\nThink of it like requiring all the \"zeros\" of the polynomial to be clustered in a small interval.",
+    "mathContext": "A polynomial f is monic if f = xⁿ + aₙ₋₁xⁿ⁻¹ + ... + a₀. The constraint `∀ r ∈ f.roots, r ∈ Set.Icc (-1) 1` ensures all roots lie in [-1,1].",
+    "significance": "critical",
+    "relatedConcepts": ["monic", "polynomial-roots", "interval"]
+  },
+  {
+    "id": "ann-e1038-sublevel",
+    "proofId": "erdos-1038",
+    "range": { "startLine": 39, "endLine": 41 },
+    "type": "definition",
+    "title": "Sublevel Set Definition",
+    "content": "**The sublevel set** is where |f(x)| < 1 — the region where the polynomial stays \"small.\"\n\nImagine graphing y = f(x). The sublevel set is the projection onto the x-axis of where the graph stays between y = -1 and y = 1.",
+    "mathContext": "Formally: sublevelSet(f) = {x ∈ ℝ : |f(x)| < 1}. This is a measurable set, so we can ask about its Lebesgue measure.",
+    "significance": "critical",
+    "relatedConcepts": ["sublevel-sets", "preimage", "measurable-sets"]
+  },
+  {
+    "id": "ann-e1038-measure",
+    "proofId": "erdos-1038",
+    "range": { "startLine": 43, "endLine": 45 },
+    "type": "definition",
+    "title": "Sublevel Measure",
+    "content": "**sublevelMeasure** computes the \"length\" of the sublevel set using Lebesgue measure (standard length on ℝ).\n\nIf the sublevel set is a union of intervals, this is their total length.",
+    "mathContext": "The return type `ℝ≥0∞` (extended non-negative reals) allows for infinite measures. For our polynomials, the measure is always finite and positive.",
+    "significance": "supporting",
+    "relatedConcepts": ["lebesgue-measure", "volume", "ennreal"]
+  },
+  {
+    "id": "ann-e1038-supremum",
+    "proofId": "erdos-1038",
+    "range": { "startLine": 55, "endLine": 63 },
+    "type": "theorem",
+    "title": "Supremum = 2√2 (Tao 2025)",
+    "content": "**The main result**: the largest possible sublevel measure is exactly 2√2 ≈ 2.828.\n\nThis is achieved (in the limit) by polynomials approaching (x-1)(x+1) = x² - 1. For this polynomial, the sublevel set is (-√2, 0) ∪ (0, √2), which has measure 2√2.",
+    "mathContext": "Tao's proof uses logarithmic potential theory and the connection between polynomial sublevel sets and equilibrium measures. The supremum is taken over all valid monic polynomials.",
+    "significance": "critical",
+    "relatedConcepts": ["supremum", "potential-theory", "tao-2025"]
+  },
+  {
+    "id": "ann-e1038-lower-bound",
+    "proofId": "erdos-1038",
+    "range": { "startLine": 73, "endLine": 79 },
+    "type": "theorem",
+    "title": "Infimum Lower Bound",
+    "content": "**The infimum is at least 2^(4/3) - 1 ≈ 1.519.**\n\nNo matter how you construct a valid polynomial, you cannot make the sublevel set smaller than this. The lower bound comes from potential-theoretic arguments.",
+    "mathContext": "The formula 2^(4/3) - 1 ≈ 1.5198 arises from analyzing logarithmic potentials and equilibrium measures on [-1,1].",
+    "significance": "critical",
+    "relatedConcepts": ["infimum", "lower-bound", "logarithmic-potential"]
+  },
+  {
+    "id": "ann-e1038-upper-bound",
+    "proofId": "erdos-1038",
+    "range": { "startLine": 81, "endLine": 86 },
+    "type": "theorem",
+    "title": "Infimum Upper Bound",
+    "content": "**The infimum is less than 1.835.**\n\nThis is witnessed by explicit polynomial constructions — specific polynomials that achieve sublevel measures close to this bound.",
+    "mathContext": "The gap between 1.519 and 1.835 represents our current uncertainty about the exact infimum. Closing this gap remains an open problem.",
+    "significance": "supporting",
+    "relatedConcepts": ["infimum", "upper-bound", "explicit-construction"]
+  },
+  {
+    "id": "ann-e1038-witness",
+    "proofId": "erdos-1038",
+    "range": { "startLine": 99, "endLine": 103 },
+    "type": "theorem",
+    "title": "Witness for Infimum < 2",
+    "content": "**The polynomial (x+1)(x-1)^m shows the infimum is less than 2.**\n\nFor m ≥ 3, this polynomial has roots at -1 and 1 (with multiplicity), and its sublevel set has measure less than 2.",
+    "mathContext": "This was observed in the original 1958 paper. The asymmetric root multiplicities create a smaller sublevel set than the symmetric x² - 1.",
+    "significance": "supporting",
+    "relatedConcepts": ["witness", "asymmetric-roots", "erdos-herzog-piranian"]
+  },
+  {
+    "id": "ann-e1038-quadratic",
+    "proofId": "erdos-1038",
+    "range": { "startLine": 105, "endLine": 107 },
+    "type": "theorem",
+    "title": "Quadratic Achieves Supremum",
+    "content": "**x² - 1 achieves the maximum sublevel measure 2√2.**\n\nThe sublevel set {x : |x² - 1| < 1} equals {x : 0 < x² < 2} = (-√2, 0) ∪ (0, √2), with total length 2√2.",
+    "mathContext": "This simple quadratic with roots at ±1 shows the supremum is achievable, not just a limit. It's the \"most spread out\" polynomial in our class.",
+    "significance": "critical",
+    "relatedConcepts": ["quadratic", "supremum-achiever", "explicit-example"]
+  },
+  {
+    "id": "ann-e1038-numerical",
+    "proofId": "erdos-1038",
+    "range": { "startLine": 109, "endLine": 117 },
+    "type": "concept",
+    "title": "Numerical Values",
+    "content": "**Key numerical bounds:**\n- 2^(4/3) - 1 ≈ 1.5198 (lower bound on infimum)\n- 2√2 ≈ 2.8284 (exact supremum)\n\nThese values help us understand the scale of the problem.",
+    "mathContext": "The gap between the infimum bounds (1.519 to 1.835) represents significant uncertainty. Finding the exact infimum would require new techniques.",
+    "significance": "supporting",
+    "relatedConcepts": ["numerical-bounds", "approximation", "open-problem"]
+  }
+]
