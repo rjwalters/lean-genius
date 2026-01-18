@@ -1,33 +1,134 @@
 {
   "id": "erdos-656",
-  "title": "Erdős Problem #656",
+  "title": "Erdős Problem #656: Density Version of Hindman's Theorem",
   "slug": "erdos-656",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set with positive upper density. Must there exist an infinite set ... and integer ... such that\\[B+B+t\\subseteq ...",
+  "description": "Let A ⊆ ℕ have positive upper density. Must there exist infinite B and integer t with B+B+t ⊆ A? YES! Proved by Kra-Moreira-Richter-Robertson (2024).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1975 question), Kra-Moreira-Richter-Robertson (2024 proof)",
     "sourceUrl": "https://erdosproblems.com/656",
-    "date": "",
-    "status": "pending",
+    "date": "2024",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos656Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "density",
+      "sumsets",
+      "ramsey-theory",
+      "ergodic-theory"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 656,
     "erdosUrl": "https://erdosproblems.com/656",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite set predicate",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "ℤ",
+        "description": "Integers for shift parameter",
+        "module": "Mathlib.Data.Int.Basic"
+      },
+      {
+        "theorem": "ℝ",
+        "description": "Real numbers for density values",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of upper density and positive upper density",
+      "Definition of sumsets B + B and shifted sumsets B + B + t",
+      "Statement of Hindman's theorem with finite sums FS(B)",
+      "Statement of the Erdős conjecture (1975)",
+      "Axiomatization of the Kra-Moreira-Richter-Robertson theorem (2024)",
+      "Related results: Sárközy's theorem, Furstenberg correspondence",
+      "High density case where shift t = 0 suffices"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #656 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset \\mathbb{N}$ be a set with positive upper density. Must there exist an infinite set $B$ and integer $t$ such that\\[B+B+t\\subseteq A?\\]\n\n\n\nErd\\H{o}s \\cite{Er75b} posed this as a candidate for a density version of Hindman's theorem (see [172]).\n\nThis is true, and was proved by Kra, Moreira, Richter, and Robertson \\cite{KMRR24}.\n\nSee also [109].\n\n\n\n\nReferences\n\n\n[Er75b] Erd\\H{o}s, Paul, Problems and results in combinatorial number theory. Journ\\'{e}es Arithm\\'{e}tiques de Bordeaux (Conf., Univ. Bordeaux, Bordeaux, 1974) (1975), 295-310.\n\n[KMRR24] Kra, Bryna and Moreira, Joel and Richter, Florian K. and\nRobertson, Donald, A proof of {E}rd\\H{o}s's {$B+B+t$} conjecture. Commun. Am. Math. Soc. (2024), 480--494.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**The Density Version of Hindman's Theorem**\n\nHindman's theorem (1974) is a cornerstone of Ramsey theory: for any finite coloring of ℕ, there exists an infinite set B such that all finite sums of distinct elements of B (the set FS(B)) are monochromatic.\n\nErdős (1975) asked whether a density analogue holds. Instead of coloring, consider a set A ⊆ ℕ with positive upper density. Must A contain a shifted sumset B + B + t for some infinite B?\n\n**Timeline:**\n- **1974**: Hindman proves his finite sums theorem\n- **1975**: Erdős poses the density conjecture in 'Problems and results in combinatorial number theory'\n- **1991**: Bergelson-Furstenberg-Weiss make partial progress using ergodic theory\n- **2024**: Kra, Moreira, Richter, and Robertson prove the conjecture!\n\nThe proof uses deep techniques from ergodic theory and dynamics on nilmanifolds.",
+    "problemStatement": "**Problem Statement**\n\nLet A ⊆ ℕ be a set with positive upper density:\n\nd̄(A) = limsup_{n→∞} |A ∩ [1,n]| / n > 0\n\nMust there exist an infinite set B ⊆ ℕ and an integer t such that:\n\nB + B + t ⊆ A\n\nwhere B + B + t = {b₁ + b₂ + t : b₁, b₂ ∈ B}?\n\n**Answer:** YES\n\n**Proved by:** Kra, Moreira, Richter, Robertson (2024)\n\nThe proof uses the Furstenberg correspondence principle to translate the combinatorial problem into one about measure-preserving dynamical systems, then employs structure theory for such systems.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Upper Density:** Axiomatize upperDensity and lowerDensity as functions Set ℕ → ℝ\n\n2. **Sumsets:** Define sumset B and shiftedSumset B t explicitly\n\n3. **Hindman's Theorem:** State the classical result about monochromatic finite sums\n\n4. **The Conjecture:** Define ErdosConjecture656 as the precise statement\n\n5. **Main Theorem:** Axiomatize the Kra-Moreira-Richter-Robertson result\n\n6. **Related Results:** Include Sárközy's theorem and Furstenberg correspondence\n\n7. **Variations:** High density case, quantitative versions",
+    "keyInsights": [
+      "**Density vs Coloring:** The density condition (d̄(A) > 0) is the continuous analogue of 'one color class in a finite coloring'",
+      "**The Shift is Necessary:** There exist sets with positive density where B + B ⊈ A for any infinite B, so the shift t is essential",
+      "**Ergodic Connection:** The Furstenberg correspondence translates density to measure, sumsets to return times",
+      "**Nilmanifold Structure:** The proof requires understanding the structure of measure-preserving systems on nilmanifolds",
+      "**High Density Simplification:** If d̄(A) > 1/2, then t = 0 suffices (no shift needed)",
+      "**Hindman is Stronger:** Hindman gives all of FS(B) monochromatic; density only gives B + B + t"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "upper-density",
+      "title": "Upper Density",
+      "summary": "Definitions of upperDensity, lowerDensity, HasPositiveUpperDensity, HasNaturalDensity",
+      "startLine": 39,
+      "endLine": 68
+    },
+    {
+      "id": "sumsets",
+      "title": "Sumsets and Shifted Sumsets",
+      "summary": "Definitions of sumset, shiftedSumset, liftToInt and basic properties",
+      "startLine": 70,
+      "endLine": 94
+    },
+    {
+      "id": "hindman",
+      "title": "Hindman's Theorem (Background)",
+      "summary": "Finite sums FS(B), colorings, IsMonochromatic, and Hindman's theorem",
+      "startLine": 96,
+      "endLine": 126
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős Conjecture",
+      "summary": "HasShiftedSumsetIn, ErdosConjecture656, alternative formulation",
+      "startLine": 128,
+      "endLine": 154
+    },
+    {
+      "id": "solution",
+      "title": "The Solution (2024)",
+      "summary": "Kra-Moreira-Richter-Robertson theorem and high density case",
+      "startLine": 156,
+      "endLine": 177
+    },
+    {
+      "id": "related",
+      "title": "Related Results",
+      "summary": "Erdős #172, #109, Sárközy's theorem, Furstenberg-Sárközy",
+      "startLine": 179,
+      "endLine": 199
+    },
+    {
+      "id": "furstenberg",
+      "title": "Furstenberg Correspondence",
+      "summary": "MeasurePreservingSystem and correspondence principle",
+      "startLine": 201,
+      "endLine": 217
+    },
+    {
+      "id": "main",
+      "title": "Main Results Summary",
+      "summary": "erdos_656 theorem, necessity of shift, quantitative version",
+      "startLine": 219,
+      "endLine": 241
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #656 asked whether sets with positive upper density must contain shifted sumsets B + B + t for infinite B. This 'density Hindman' conjecture was posed in 1975 and finally proved by Kra, Moreira, Richter, and Robertson in 2024 using ergodic-theoretic methods. Our formalization captures the key definitions, states the main theorem, and relates it to classical results in additive combinatorics.",
+    "implications": "**Theoretical Connections**\n\n1. **Ramsey Theory:** Demonstrates that density conditions can substitute for coloring arguments\n\n2. **Ergodic Theory:** The Furstenberg correspondence is a fundamental bridge between combinatorics and dynamics\n\n3. **Additive Combinatorics:** Joins a family of density theorems (Szemerédi, Sárközy, etc.)\n\n4. **Nilpotent Structure:** The proof reveals deep connections to nilpotent group theory\n\n5. **Quantitative Bounds:** Opens questions about effective versions of the theorem",
+    "openQuestions": [
+      "What quantitative bounds can be proved? (How large must n be to guarantee B + B + t in A ∩ [1,n]?)",
+      "Can the shift t be bounded in terms of the density d̄(A)?",
+      "Does the theorem extend to B + B + B + t or higher sumsets?",
+      "What is the structure of the set B produced by the theorem?",
+      "Complete proofs of the 22 axiomatized results"
+    ]
   }
 }

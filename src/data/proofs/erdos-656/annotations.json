@@ -1,1 +1,183 @@
-[]
+[
+  {
+    "id": "ann-e656-upper-density",
+    "proofId": "erdos-656",
+    "range": { "startLine": 46, "endLine": 51 },
+    "type": "definition",
+    "title": "Upper Density",
+    "content": "The **upper density** of A ⊆ ℕ is:\n\nd̄(A) = limsup_{n→∞} |A ∩ [1,n]| / n\n\nThis measures the 'proportion' of naturals in A, taking the limsup to capture asymptotic behavior even when the limit doesn't exist.",
+    "mathContext": "Axiomatized as a function Set ℕ → ℝ. The exact definition requires filter-theoretic machinery (limsup over atTop filter).",
+    "significance": "critical",
+    "relatedConcepts": ["Lower density", "Natural density", "Asymptotic density"]
+  },
+  {
+    "id": "ann-e656-lower-density",
+    "proofId": "erdos-656",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "definition",
+    "title": "Lower Density",
+    "content": "The **lower density** is:\n\nd̲(A) = liminf_{n→∞} |A ∩ [1,n]| / n\n\nWhen d̄(A) = d̲(A), the set has a well-defined **natural density**.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e656-positive-density",
+    "proofId": "erdos-656",
+    "range": { "startLine": 57, "endLine": 58 },
+    "type": "definition",
+    "title": "Positive Upper Density",
+    "content": "A set has **positive upper density** if d̄(A) > 0.\n\nThis is the key hypothesis in Erdős's conjecture. Examples:\n- Even numbers: d̄ = 1/2\n- Primes: d̄ = 0 (too sparse!)\n- {1, 2, ..., n, 2n, 2n+1, ..., 3n, ...}: d̄ = 1/2 but d̲ = 0",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e656-density-bounds",
+    "proofId": "erdos-656",
+    "range": { "startLine": 60, "endLine": 61 },
+    "type": "theorem",
+    "title": "Density Bounds",
+    "content": "For any A ⊆ ℕ:\n\n0 ≤ d̲(A) ≤ d̄(A) ≤ 1\n\nThe bounds follow from the definition: |A ∩ [1,n]| / n is always in [0,1].",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e656-sumset",
+    "proofId": "erdos-656",
+    "range": { "startLine": 77, "endLine": 79 },
+    "type": "definition",
+    "title": "Sumset",
+    "content": "The **sumset** B + B consists of all pairwise sums:\n\nB + B = {b₁ + b₂ : b₁, b₂ ∈ B}\n\nFor finite B = {1, 2, 3}, we get B + B = {2, 3, 4, 5, 6}.\n\nFor infinite B, the sumset is always infinite and has positive density.",
+    "mathContext": "Defined as a set comprehension: {n | ∃ b₁ b₂, b₁ ∈ B ∧ b₂ ∈ B ∧ n = b₁ + b₂}",
+    "significance": "critical",
+    "relatedConcepts": ["Shifted sumset", "Minkowski sum"]
+  },
+  {
+    "id": "ann-e656-shifted-sumset",
+    "proofId": "erdos-656",
+    "range": { "startLine": 81, "endLine": 83 },
+    "type": "definition",
+    "title": "Shifted Sumset",
+    "content": "The **shifted sumset** B + B + t adds a constant:\n\nB + B + t = {b₁ + b₂ + t : b₁, b₂ ∈ B}\n\nThe shift t ∈ ℤ can be negative! This is crucial: some sets with positive density require t ≠ 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e656-finite-sums",
+    "proofId": "erdos-656",
+    "range": { "startLine": 103, "endLine": 105 },
+    "type": "definition",
+    "title": "Finite Sums Set",
+    "content": "The **finite sums set** FS(B) consists of all sums of distinct elements:\n\nFS(B) = {Σᵢ∈I bᵢ : I finite nonempty, elements distinct}\n\nFor B = {1, 2, 4}, FS(B) = {1, 2, 4, 3, 5, 6, 7}.\n\nThis is much larger than B + B since it includes sums of any number of terms.",
+    "significance": "key",
+    "relatedConcepts": ["Hindman's theorem", "IP sets"]
+  },
+  {
+    "id": "ann-e656-coloring",
+    "proofId": "erdos-656",
+    "range": { "startLine": 107, "endLine": 108 },
+    "type": "definition",
+    "title": "Coloring",
+    "content": "A **k-coloring** of ℕ is a function c : ℕ → Fin k.\n\nIn Ramsey theory, we ask: given any coloring, must some structure be monochromatic?",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e656-monochromatic",
+    "proofId": "erdos-656",
+    "range": { "startLine": 110, "endLine": 112 },
+    "type": "definition",
+    "title": "Monochromatic Set",
+    "content": "A set S is **monochromatic** under coloring c if all elements have the same color:\n\n∃ color, ∀ n ∈ S, c(n) = color\n\nHindman's theorem guarantees monochromatic FS(B).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e656-hindman",
+    "proofId": "erdos-656",
+    "range": { "startLine": 114, "endLine": 122 },
+    "type": "theorem",
+    "title": "Hindman's Theorem",
+    "content": "**Hindman's Theorem (1974):**\n\nFor any finite coloring of ℕ, there exists an infinite set B such that FS(B) is monochromatic.\n\nThis is a cornerstone of Ramsey theory. The original proof was combinatorial (86 pages!); Furstenberg later gave an ergodic-theoretic proof.",
+    "mathContext": "Axiomatized as hindman_theorem. The proof requires sophisticated techniques from either combinatorics or dynamics.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Ergodic Ramsey theory"]
+  },
+  {
+    "id": "ann-e656-conjecture",
+    "proofId": "erdos-656",
+    "range": { "startLine": 138, "endLine": 148 },
+    "type": "definition",
+    "title": "The Erdős Conjecture",
+    "content": "**Erdős's Conjecture (1975):**\n\nIf A ⊆ ℕ has positive upper density, then there exists an infinite B ⊆ ℕ and integer t such that B + B + t ⊆ A.\n\nThis is a 'density version' of Hindman: instead of coloring, use density > 0.\n\nNote: We only get B + B + t, not all of FS(B). The density condition is weaker than 'one color class', so we get a weaker conclusion.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e656-kmrr",
+    "proofId": "erdos-656",
+    "range": { "startLine": 162, "endLine": 173 },
+    "type": "theorem",
+    "title": "Kra-Moreira-Richter-Robertson Theorem",
+    "content": "**The Erdős Conjecture is TRUE!**\n\nProved by Kra, Moreira, Richter, and Robertson in 2024.\n\nThe proof uses:\n1. Furstenberg correspondence (density → measure)\n2. Ergodic theory on nilmanifolds\n3. Structure theory for dynamical systems\n\nReference: 'A proof of Erdős's B+B+t conjecture', Commun. Am. Math. Soc. (2024)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e656-high-density",
+    "proofId": "erdos-656",
+    "range": { "startLine": 175, "endLine": 177 },
+    "type": "theorem",
+    "title": "High Density Case",
+    "content": "**High Density Simplification:**\n\nIf d̄(A) > 1/2, then we can take t = 0:\n\n∃ infinite B, B + B ⊆ A\n\nIntuitively: if A is 'more than half' of ℕ, the sumset will hit A without needing a shift.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e656-erdos-172",
+    "proofId": "erdos-656",
+    "range": { "startLine": 185, "endLine": 187 },
+    "type": "theorem",
+    "title": "Erdős Problem #172",
+    "content": "**Erdős Problem #172** is Hindman's theorem itself.\n\nThese problems are closely related: #656 is the density analogue of #172.",
+    "significance": "supporting",
+    "relatedConcepts": ["Hindman's theorem"]
+  },
+  {
+    "id": "ann-e656-sarkozy",
+    "proofId": "erdos-656",
+    "range": { "startLine": 193, "endLine": 195 },
+    "type": "theorem",
+    "title": "Sárközy's Theorem",
+    "content": "**Sárközy's Theorem (1978):**\n\nIf A has positive upper density, then A contains two elements differing by a perfect square:\n\n∃ a₁, a₂ ∈ A, ∃ k > 0, a₁ - a₂ = k²\n\nThis is another density theorem in the same family as Erdős's conjecture.",
+    "significance": "key",
+    "relatedConcepts": ["Furstenberg-Sárközy theorem", "Density theorems"]
+  },
+  {
+    "id": "ann-e656-furstenberg",
+    "proofId": "erdos-656",
+    "range": { "startLine": 207, "endLine": 213 },
+    "type": "definition",
+    "title": "Furstenberg Correspondence",
+    "content": "The **Furstenberg correspondence principle** translates density statements into ergodic-theoretic ones.\n\nGiven A ⊆ ℕ with positive density, there exists a measure-preserving system where:\n- Positive density corresponds to positive measure\n- Sumset containment corresponds to recurrence\n\nThis is the key tool connecting combinatorics to dynamics.",
+    "significance": "key",
+    "relatedConcepts": ["Ergodic theory", "Measure-preserving systems"]
+  },
+  {
+    "id": "ann-e656-main",
+    "proofId": "erdos-656",
+    "range": { "startLine": 222, "endLine": 228 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**Erdős Problem #656: SOLVED**\n\nAnswer: YES, every set with positive upper density contains B + B + t for some infinite B and integer t.\n\nThe theorem follows from the Kra-Moreira-Richter-Robertson result (2024).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e656-shift-necessary",
+    "proofId": "erdos-656",
+    "range": { "startLine": 230, "endLine": 234 },
+    "type": "theorem",
+    "title": "Shift is Necessary",
+    "content": "**The shift t is sometimes necessary.**\n\nThere exist sets A with positive density such that B + B ⊈ A for any infinite B.\n\nExample intuition: Take A to be 'spread out' so that sums always miss certain residue classes.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e656-quantitative",
+    "proofId": "erdos-656",
+    "range": { "startLine": 236, "endLine": 239 },
+    "type": "theorem",
+    "title": "Quantitative Version",
+    "content": "**Quantitative strengthening:**\n\nThe infinite set B can be chosen to also have positive density.\n\nThis gives a 'density-preserving' version of the theorem.",
+    "significance": "supporting"
+  }
+]
