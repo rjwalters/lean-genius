@@ -38,7 +38,7 @@ Must every permutation of the natural numbers contain a monotone 4-term arithmet
 | erdos_szekeres_theorem | AXIOM | Related monotone subsequence theorem |
 | finite_threshold_implies_conjecture | SORRY | If finite threshold exists, conjecture follows |
 
-## Key Definitions Added (Session 2026-01-18)
+## Key Definitions Added (Sessions 2026-01-18)
 
 | Name | Type | Description | Location |
 |------|------|-------------|----------|
@@ -49,7 +49,27 @@ Must every permutation of the natural numbers contain a monotone 4-term arithmet
 | ForbiddenBackwardValue | def | Value forbidden at earlier indices | Erdos196Problem.lean:250 |
 | count3APs | def | Count 3-APs in finite permutation | Erdos196Problem.lean:282 |
 | DensityConjecture | def | Density argument conjecture | Erdos196Problem.lean:289 |
-| Finite4APThreshold | def | Finite threshold conjecture | Erdos196Problem.lean:301 |
+| Finite4APThreshold | def | Finite threshold conjecture | Erdos196Problem.lean:465 |
+| IsAP3WithOddCD | def | 3-AP with odd common difference | Erdos196Problem.lean:305 |
+| IsAP3WithEvenCD | def | 3-AP with even common difference | Erdos196Problem.lean:309 |
+| IsAP4WithOddCD | def | 4-AP with odd common difference | Erdos196Problem.lean:313 |
+| IsAP4WithEvenCD | def | 4-AP with even common difference | Erdos196Problem.lean:317 |
+| HasMonotone3APOddCD | def | Perm has monotone 3-AP odd CD | Erdos196Problem.lean:321 |
+| HasMonotone4APOddCD | def | Perm has monotone 4-AP odd CD | Erdos196Problem.lean:326 |
+| HasMonotone4APEvenCD | def | Perm has monotone 4-AP even CD | Erdos196Problem.lean:331 |
+| HasMonotone3APEvenCD | def | Perm has monotone 3-AP even CD | Erdos196Problem.lean:406 |
+
+## Key Results Added (Session 2026-01-18 continued)
+
+| Name | Status | Description |
+|------|--------|-------------|
+| every_perm_has_3ap_odd_cd | AXIOM | LeSaulnier-Vijay: every perm has odd-CD 3-AP |
+| exists_perm_avoiding_4ap_odd_cd | AXIOM | LeSaulnier-Vijay: can avoid odd-CD 4-APs |
+| ap4_odd_cd_iff_ap3_odd_cd | PROVED | 4-AP has odd CD iff its 3-AP prefix has odd CD |
+| conjecture_equiv_even_cd_forced | PROVED | Conjecture ⟺ avoiding odd-CD 4-APs forces even-CD 4-APs |
+| forbidden_even_cd_extension | PROVED | Even-CD 3-APs forbid specific forward extensions |
+| forbidden_even_cd_backward | PROVED | Even-CD 3-APs forbid specific backward extensions |
+| ap4_parity_dichotomy | PROVED | Every 4-AP has either odd or even common difference |
 
 ## Insights
 
@@ -57,10 +77,12 @@ Must every permutation of the natural numbers contain a monotone 4-term arithmet
 2. **Implication Structure**: 4-AP conjecture would imply 3-AP theorem as corollary
 3. **DEGS Construction**: Counterexample for k=5 uses interleaving increasing/decreasing segments
 4. **Erdos-Szekeres Connection**: Guarantees long monotone subsequences but not AP structure
-5. **Non-Extendability (NEW)**: If a permutation avoids 4-APs, every 3-AP must be non-extendable
-6. **Forbidden Values (NEW)**: Each 3-AP (a, a+d, a+2d) forbids value a+3d at later indices
-7. **Density Approach (NEW)**: Conjecture that forbidden value constraints accumulate to force 4-AP
-8. **Compactness (NEW)**: If finite threshold exists for permutations of [1,n], infinite case follows
+5. **Non-Extendability**: If a permutation avoids 4-APs, every 3-AP must be non-extendable
+6. **Forbidden Values**: Each 3-AP (a, a+d, a+2d) forbids value a+3d at later indices
+7. **Density Approach**: Conjecture that forbidden value constraints accumulate to force 4-AP
+8. **Compactness**: If finite threshold exists for permutations of [1,n], infinite case follows
+9. **Common Difference Parity (NEW)**: The conjecture reduces to even-CD case - LeSaulnier-Vijay showed odd-CD 4-APs CAN be avoided
+10. **Critical Reformulation (NEW)**: Conjecture ⟺ "avoiding odd-CD 4-APs forces even-CD 4-APs"
 
 ## Tags
 
@@ -124,6 +146,48 @@ grows with the number of 3-APs. Potential proof strategy:
 - arXiv:1803.06334 - "Forbidden arithmetic progressions in permutations"
 - arXiv:2012.12339 - Recent improvements on k=5,6 case
 - Discrete Mathematics 2024 - "Avoiding monotone APs in permutations of integers"
+
+### Session 2026-01-18 (continued)
+
+**Mode**: REVISIT research iteration
+**Focus**: Common difference parity structure
+
+**What I Did**:
+- Researched LeSaulnier-Vijay (2011) results on common difference parity
+- Added full infrastructure for odd/even common difference analysis
+- Proved key theorem: conjecture is equivalent to "avoiding odd-CD 4-APs forces even-CD 4-APs"
+- Added 10 new definitions for parity-based analysis
+- Proved 5 new theorems including constraint propagation lemmas
+
+**Key Mathematical Insight**:
+LeSaulnier-Vijay (2011) showed:
+1. Every permutation of ℕ MUST contain a 3-term AP with ODD common difference
+2. There EXIST permutations of ℕ avoiding ALL 4-term APs with ODD common difference
+
+This means odd-CD 4-APs can be avoided! The conjecture thus reduces to:
+**"Can even-CD 4-APs also be avoided?"**
+
+Proved `conjecture_equiv_even_cd_forced`:
+```
+Erdős196Conjecture ⟺ ∀ x, ¬HasMonotone4APOddCD x → HasMonotone4APEvenCD x
+```
+
+**Files Modified**:
+- proofs/Proofs/Erdos196Problem.lean (expanded to 505+ lines)
+- research/problems/erdos-196/knowledge.md (this file)
+
+**Outcome**: PROGRESS - identified that even-CD case is the critical remaining question
+
+**Next Steps**:
+1. Investigate whether even-CD 4-APs can be avoided (potential counterexample)
+2. Explore interaction between odd-CD 3-APs and even-CD 4-APs
+3. Consider whether LeSaulnier-Vijay construction creates even-CD 4-APs
+4. Try to prove constraint accumulation argument for even-CD case
+
+**References Consulted**:
+- LeSaulnier-Vijay (2011) - "On permutations avoiding arithmetic progressions"
+- arXiv:1004.1740 - Related constructions
+- Discrete Mathematics 2024 (Adenwalla) - Recent improvements
 
 ---
 

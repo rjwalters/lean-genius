@@ -292,6 +292,174 @@ def DensityConjecture : Prop :=
                         (i : ℕ) > j ∧ (j : ℕ) > k ∧ (k : ℕ) > l) ∧
       IsAP4 (x.toFun i).val (x.toFun j).val (x.toFun k).val (x.toFun l).val
 
+/-! ## Common Difference Structure
+
+Key insight from LeSaulnier-Vijay (2011) and subsequent work:
+- Every permutation of ℕ MUST contain a 3-term AP with ODD common difference
+- There EXIST permutations of ℕ avoiding ALL 4-term APs with ODD common difference
+
+This suggests the critical question: what about EVEN common differences?
+-/
+
+/-- A 3-AP has odd common difference. -/
+def IsAP3WithOddCD (a b c : ℕ) : Prop :=
+  IsAP3 a b c ∧ (b - a) % 2 = 1
+
+/-- A 3-AP has even common difference. -/
+def IsAP3WithEvenCD (a b c : ℕ) : Prop :=
+  IsAP3 a b c ∧ (b - a) % 2 = 0
+
+/-- A 4-AP has odd common difference. -/
+def IsAP4WithOddCD (a b c d : ℕ) : Prop :=
+  IsAP4 a b c d ∧ (b - a) % 2 = 1
+
+/-- A 4-AP has even common difference. -/
+def IsAP4WithEvenCD (a b c d : ℕ) : Prop :=
+  IsAP4 a b c d ∧ (b - a) % 2 = 0
+
+/-- A permutation contains a monotone 3-term AP with odd common difference. -/
+def HasMonotone3APOddCD (x : Permutation) : Prop :=
+  ∃ i j k : ℕ, (i < j ∧ j < k ∨ i > j ∧ j > k) ∧
+    IsAP3WithOddCD (x.toFun i) (x.toFun j) (x.toFun k)
+
+/-- A permutation contains a monotone 4-term AP with odd common difference. -/
+def HasMonotone4APOddCD (x : Permutation) : Prop :=
+  ∃ i j k l : ℕ, (i < j ∧ j < k ∧ k < l ∨ i > j ∧ j > k ∧ k > l) ∧
+    IsAP4WithOddCD (x.toFun i) (x.toFun j) (x.toFun k) (x.toFun l)
+
+/-- A permutation contains a monotone 4-term AP with even common difference. -/
+def HasMonotone4APEvenCD (x : Permutation) : Prop :=
+  ∃ i j k l : ℕ, (i < j ∧ j < k ∧ k < l ∨ i > j ∧ j > k ∧ k > l) ∧
+    IsAP4WithEvenCD (x.toFun i) (x.toFun j) (x.toFun k) (x.toFun l)
+
+/-! ## LeSaulnier-Vijay Results (2011)
+
+Key structural results about parity of common differences.
+-/
+
+/-- Every permutation of ℕ contains a monotone 3-AP with odd common difference.
+    (LeSaulnier-Vijay 2011) -/
+axiom every_perm_has_3ap_odd_cd : ∀ x : Permutation, HasMonotone3APOddCD x
+
+/-- There exists a permutation of ℕ avoiding all monotone 4-APs with odd common difference.
+    (LeSaulnier-Vijay 2011) -/
+axiom exists_perm_avoiding_4ap_odd_cd : ∃ x : Permutation, ¬HasMonotone4APOddCD x
+
+/-- Key observation: A 4-AP has odd CD iff the corresponding 3-AP has odd CD. -/
+theorem ap4_odd_cd_iff_ap3_odd_cd (a b c d : ℕ) (h : IsAP4 a b c d) :
+    (b - a) % 2 = 1 ↔ IsAP3WithOddCD a b c := by
+  unfold IsAP3WithOddCD IsAP3 IsAP4 at *
+  constructor
+  · intro hodd
+    constructor
+    · omega
+    · exact hodd
+  · intro ⟨_, hodd⟩
+    exact hodd
+
+/-- Structural theorem: The main conjecture is equivalent to saying that
+    permutations avoiding odd-CD 4-APs must contain even-CD 4-APs. -/
+theorem conjecture_equiv_even_cd_forced :
+    Erdos196Conjecture ↔ ∀ x : Permutation, ¬HasMonotone4APOddCD x → HasMonotone4APEvenCD x := by
+  constructor
+  · intro hconj x hno_odd
+    -- The conjecture gives us a 4-AP
+    obtain ⟨i, j, k, l, hmon, hap⟩ := hconj x
+    -- This 4-AP cannot be odd-CD (since x avoids odd-CD 4-APs)
+    -- So it must be even-CD
+    use i, j, k, l
+    constructor
+    · exact hmon
+    · unfold IsAP4WithEvenCD
+      constructor
+      · exact hap
+      · -- The 4-AP is not odd-CD, so it must be even-CD
+        by_contra h_not_even
+        push_neg at h_not_even
+        apply hno_odd
+        use i, j, k, l
+        constructor
+        · exact hmon
+        · unfold IsAP4WithOddCD
+          constructor
+          · exact hap
+          · omega
+  · intro heven x
+    by_cases h : HasMonotone4APOddCD x
+    · obtain ⟨i, j, k, l, hmon, hap_odd⟩ := h
+      use i, j, k, l
+      exact ⟨hmon, hap_odd.1⟩
+    · obtain ⟨i, j, k, l, hmon, hap_even⟩ := heven x h
+      use i, j, k, l
+      exact ⟨hmon, hap_even.1⟩
+
+/-! ## Even-CD Constraint Propagation
+
+Since odd-CD 4-APs can be avoided, the conjecture hinges on even-CD 4-APs.
+Key question: Can even-CD 4-APs also be avoided?
+
+Note: Even-CD 3-APs have the form (a, a+2d, a+4d) for some d > 0.
+To avoid even-CD 4-APs, the value a+6d must be avoided at all indices > k.
+-/
+
+/-- A permutation contains a monotone 3-term AP with even common difference. -/
+def HasMonotone3APEvenCD (x : Permutation) : Prop :=
+  ∃ i j k : ℕ, (i < j ∧ j < k ∨ i > j ∧ j > k) ∧
+    IsAP3WithEvenCD (x.toFun i) (x.toFun j) (x.toFun k)
+
+/-- Key constraint: If x avoids even-CD 4-APs and (i,j,k) is an even-CD 3-AP with
+    values (a,a+2d,a+4d), then for all l > k, x(l) ≠ a+6d. -/
+theorem forbidden_even_cd_extension (x : Permutation) (h : ¬HasMonotone4APEvenCD x)
+    (i j k : ℕ) (hijk : i < j ∧ j < k)
+    (hap : IsAP3WithEvenCD (x.toFun i) (x.toFun j) (x.toFun k)) :
+    ∀ l > k, x.toFun l ≠ x.toFun k + (x.toFun j - x.toFun i) := by
+  intro l hl heq
+  apply h
+  use i, j, k, l
+  constructor
+  · left; exact ⟨hijk.1, hijk.2, hl⟩
+  · unfold IsAP4WithEvenCD IsAP4 IsAP3WithEvenCD IsAP3 at *
+    obtain ⟨⟨h1, h2, h3⟩, h_even⟩ := hap
+    omega
+
+/-- The dual constraint: If x avoids even-CD 4-APs and (i,j,k) is an even-CD 3-AP,
+    then for all l < i with increasing indices l < i < j < k,
+    x(l) cannot be a - 2d where d is the common difference. -/
+theorem forbidden_even_cd_backward (x : Permutation) (h : ¬HasMonotone4APEvenCD x)
+    (i j k : ℕ) (hijk : i < j ∧ j < k)
+    (hap : IsAP3WithEvenCD (x.toFun i) (x.toFun j) (x.toFun k))
+    (hval : x.toFun i > x.toFun j - x.toFun i) :
+    ∀ l < i, x.toFun l ≠ x.toFun i - (x.toFun j - x.toFun i) := by
+  intro l hl heq
+  apply h
+  use l, i, j, k
+  constructor
+  · left; exact ⟨hl, hijk.1, hijk.2⟩
+  · unfold IsAP4WithEvenCD IsAP4 IsAP3WithEvenCD IsAP3 at *
+    obtain ⟨⟨h1, h2, h3⟩, h_even⟩ := hap
+    omega
+
+/-! ## The Dichotomy
+
+Every permutation of ℕ either:
+1. Contains a monotone 4-AP with odd common difference, OR
+2. Contains a monotone 4-AP with even common difference
+
+The conjecture asserts that one of these must hold.
+LeSaulnier-Vijay showed (1) can be avoided, so the question is whether (2) can also be avoided.
+-/
+
+/-- The partition of 4-APs by common difference parity. -/
+theorem ap4_parity_dichotomy (a b c d : ℕ) (h : IsAP4 a b c d) :
+    IsAP4WithOddCD a b c d ∨ IsAP4WithEvenCD a b c d := by
+  unfold IsAP4WithOddCD IsAP4WithEvenCD
+  by_cases hparity : (b - a) % 2 = 1
+  · left; exact ⟨h, hparity⟩
+  · right
+    constructor
+    · exact h
+    · omega
+
 /-! ## Finite Threshold Investigation
 
 For the k=3 case, the threshold is N ≤ 9.
