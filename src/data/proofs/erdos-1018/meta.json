@@ -1,33 +1,121 @@
 {
   "id": "erdos-1018",
-  "title": "Erdős Problem #1018",
+  "title": "Erdős Problem #1018: Non-Planar Subgraphs in Dense Graphs",
   "slug": "erdos-1018",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is there a constant ... such that, for all large ..., every graph on ... vertices with at least ... edges must conta...",
+  "description": "For ε > 0, does every graph with n vertices and n^(1+ε) edges contain a non-planar subgraph on O_ε(1) vertices? Kostochka-Pyber (1988) proved yes: such graphs contain K₅ subdivisions on constantly many vertices.",
   "meta": {
-    "author": "Unknown",
+    "author": "Kostochka-Pyber (1988)",
     "sourceUrl": "https://erdosproblems.com/1018",
-    "date": "",
+    "date": "1988",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1018Problem.lean",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "planar-graphs",
+      "erdos",
+      "topological-graph-theory",
+      "extremal-combinatorics"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "pending",
+    "sorries": 7,
     "erdosNumber": 1018,
     "erdosUrl": "https://erdosproblems.com/1018",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1018 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\epsilon>0$. Is there a constant $C_\\epsilon$ such that, for all large $n$, every graph on $n$ vertices with at least $n^{1+\\epsilon}$ edges must contain a subgraph on at most $C_\\epsilon$ vertices which is non-planar?\n\n\n\nErd\\H{o}s \\cite{Er71} writes it is 'not difficult to see' that $C_\\epsilon\\to \\infty$ as $\\epsilon\\to 0$.\n\nThis was solved in the affirmative by Kostochka and Pyber \\cite{KoPy88}, who proved that $G$ must contain a subdivision of $K_5$ (which is non-planar) with $O_\\epsilon(1)$ many vertices.\n\n\n\n\nReferences\n\n\n[Er71] Erd\\H{o}s, P., Some unsolved problems in graph theory and combinatorial analysis. Combinatorial Mathematics and its Applications (Proc.\nConf., Oxford, 1969) (1971), 97-109.\n\n[KoPy88] Kostochka, A. and Pyber, L., Small topological complete subgraphs of ``dense'' graphs. Combinatorica (1988), 83--86.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Planarity and Density**\n\nPlanar graphs - those embeddable in the plane without edge crossings - have at most 3n - 6 edges by Euler's formula. This is linear in n. What happens when we have more edges?\n\n**The Question**: For super-linear edge counts n^(1+ε), Erdős asked whether non-planarity must appear in a 'small' subgraph. The constant C_ε should depend only on ε, not on n.\n\n**Kuratowski's Theorem**: A graph is non-planar iff it contains a subdivision of K₅ or K₃,₃. So finding non-planarity means finding these obstructions.\n\n**Resolution**: Kostochka and Pyber (1988) proved that dense graphs contain K₅ subdivisions on O_ε(1) vertices, completely answering Erdős's question.",
+    "problemStatement": "**Problem Statement**\n\nLet ε > 0. Is there a constant C_ε such that, for all large n, every graph on n vertices with at least n^(1+ε) edges must contain a non-planar subgraph on at most C_ε vertices?\n\n**Status**: SOLVED (Kostochka-Pyber 1988)\n\n**Answer**: YES. Dense graphs contain K₅ subdivisions with O_ε(1) vertices.\n\n**Note**: Erdős observed C_ε → ∞ as ε → 0 (sparser graphs hide non-planarity in larger structures).",
+    "proofStrategy": "**Proof Approach (Kostochka-Pyber)**\n\n1. **Density Threshold**: Graphs with n^(1+ε) edges are 'super-linearly dense'.\n\n2. **Finding Structure**: Use probabilistic or extremal methods to find vertices of high degree.\n\n3. **K₅ Subdivision**: High-degree vertices connect through short paths, forming a K₅ subdivision.\n\n4. **Bounding Size**: The total vertices used (5 branch vertices + path vertices) is O_ε(1).\n\n**Key Insight**: Super-linear edge density forces enough local structure that K₅ subdivisions must appear in bounded-size subgraphs.",
+    "keyInsights": [
+      "Planar graphs have ≤ 3n - 6 edges (linear bound)",
+      "n^(1+ε) edges forces non-planarity in a small subgraph",
+      "Kostochka-Pyber: K₅ subdivisions on O_ε(1) vertices",
+      "C_ε → ∞ as ε → 0 (tradeoff between density and subgraph size)",
+      "Uses Kuratowski's characterization of non-planarity"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-basics",
+      "title": "Graph Basics",
+      "summary": "edgeCount and vertexCount definitions",
+      "startLine": 23,
+      "endLine": 36
+    },
+    {
+      "id": "dense-graphs",
+      "title": "Dense Graphs",
+      "summary": "isDense definition for n^(1+ε) edges",
+      "startLine": 38,
+      "endLine": 46
+    },
+    {
+      "id": "planar-graphs",
+      "title": "Planar Graphs",
+      "summary": "isPlanar and isNonPlanar definitions",
+      "startLine": 48,
+      "endLine": 61
+    },
+    {
+      "id": "kuratowski",
+      "title": "Complete Graphs K₅ and K₃,₃",
+      "summary": "Kuratowski obstructions to planarity",
+      "startLine": 63,
+      "endLine": 103
+    },
+    {
+      "id": "subgraphs",
+      "title": "Induced Subgraphs",
+      "summary": "inducedSubgraph and hasSmallNonPlanarSubgraph",
+      "startLine": 105,
+      "endLine": 119
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "existsBoundingConstant and erdos_1018_question",
+      "startLine": 121,
+      "endLine": 135
+    },
+    {
+      "id": "kostochka-pyber",
+      "title": "Kostochka-Pyber Theorem (1988)",
+      "summary": "Dense graphs have small K₅ subdivisions",
+      "startLine": 137,
+      "endLine": 166
+    },
+    {
+      "id": "constant-grows",
+      "title": "The Constant C_ε Grows as ε → 0",
+      "summary": "Sparser graphs need larger subgraphs",
+      "startLine": 168,
+      "endLine": 184
+    },
+    {
+      "id": "extremal",
+      "title": "Connection to Extremal Graph Theory",
+      "summary": "Super-linear edges force non-planarity",
+      "startLine": 186,
+      "endLine": 203
+    },
+    {
+      "id": "quantitative",
+      "title": "Quantitative Bounds",
+      "summary": "Explicit bounds on C_ε",
+      "startLine": 205,
+      "endLine": 235
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1018 asked whether dense graphs (n^(1+ε) edges) must contain non-planar subgraphs of bounded size. Kostochka and Pyber (1988) proved yes: such graphs contain K₅ subdivisions on O_ε(1) vertices. The bound C_ε grows as ε → 0, reflecting that sparser graphs hide non-planarity in larger structures.",
+    "implications": "**Theoretical Significance**\n\n1. **Topological Graph Theory**: Quantifies how density forces non-planar structure\n\n2. **Extremal Combinatorics**: Connects edge density to topological properties\n\n3. **Kuratowski Theory**: Shows obstructions appear in bounded-size subgraphs\n\n4. **Algorithmic Applications**: Bounds on finding non-planar subgraphs",
+    "openQuestions": [
+      "What is the optimal bound on C_ε as a function of ε?",
+      "Can similar results be proved for other surfaces (torus, etc.)?",
+      "What about finding K₃,₃ subdivisions specifically?",
+      "How does the result extend to hypergraphs?",
+      "What is the computational complexity of finding the small non-planar subgraph?"
+    ]
   }
 }

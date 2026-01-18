@@ -1008,17 +1008,21 @@
   },
   {
     "id": "erdos-1018",
-    "title": "Erdős Problem #1018",
+    "title": "Erdős Problem #1018: Non-Planar Subgraphs in Dense Graphs",
     "slug": "erdos-1018",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is there a constant ... such that, for all large ..., every graph on ... vertices with at least ... edges must conta...",
+    "description": "For ε > 0, does every graph with n vertices and n^(1+ε) edges contain a non-planar subgraph on O_ε(1) vertices? Kostochka-Pyber (1988) proved yes: such graphs contain K₅ subdivisions on constantly many vertices.",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "planar-graphs",
+      "erdos",
+      "topological-graph-theory",
+      "extremal-combinatorics"
     ],
     "erdosNumber": 1018,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 7,
+    "annotationCount": 18
   },
   {
     "id": "erdos-1019",
@@ -2070,16 +2074,22 @@
   },
   {
     "id": "erdos-110",
-    "title": "Erdős Problem #110",
+    "title": "Erdős Problem #110: Chromatic Number Growth in Uncountable Graphs",
     "slug": "erdos-110",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some ... such that every graph with chromatic number ... has, for all large ..., a subgraph with chromatic number .....",
+    "description": "Is there F(n) such that every ℵ₁-chromatic graph has an n-chromatic subgraph on ≤F(n) vertices? DISPROVED by Lambie-Hanson (2020) in ZFC. Earlier, Shelah showed consistency of a negative answer.",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "disproved",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "chromatic-number",
+      "erdos",
+      "infinite-graphs",
+      "set-theory",
+      "counterexample",
+      "disproved"
     ],
     "erdosNumber": 110,
-    "sorries": 0,
+    "sorries": 1,
     "annotationCount": 0
   },
   {
@@ -8541,17 +8551,23 @@
   },
   {
     "id": "erdos-610",
-    "title": "Erdős Problem #610",
+    "title": "Erdős Problem #610: Clique Transversal Numbers",
     "slug": "erdos-610",
-    "description": "For a graph G\" role=\"presentation\" style=\"position: relative;\">GGG let &#x03C4;(G)\" role=\"presentation\" style=\"position: relative;\">τ(G)τ(G)\\tau(G) denote the minimal number of vertices that includ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For a graph G, let τ(G) be the minimum vertices hitting every maximal clique. Known: τ(G) ≤ n - √(2n) + O(1). Open: Can we improve to n - ω(n)√n or n - c√(n log n)?",
+    "status": "formalized",
+    "badge": "conjecture",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "clique-transversal",
+      "maximal-cliques",
+      "independent-sets",
+      "open-problem"
     ],
     "erdosNumber": 610,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 18,
+    "annotationCount": 20
   },
   {
     "id": "erdos-611",

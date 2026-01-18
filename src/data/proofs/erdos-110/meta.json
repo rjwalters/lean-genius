@@ -1,33 +1,62 @@
 {
   "id": "erdos-110",
-  "title": "Erdős Problem #110",
+  "title": "Erdős Problem #110: Chromatic Number Growth in Uncountable Graphs",
   "slug": "erdos-110",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some ... such that every graph with chromatic number ... has, for all large ..., a subgraph with chromatic number .....",
+  "description": "Is there F(n) such that every ℵ₁-chromatic graph has an n-chromatic subgraph on ≤F(n) vertices? DISPROVED by Lambie-Hanson (2020) in ZFC. Earlier, Shelah showed consistency of a negative answer.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Hajnal-Szemerédi (conjecture), Shelah (consistency), Lambie-Hanson (2020 ZFC disproof)",
     "sourceUrl": "https://erdosproblems.com/110",
-    "date": "",
+    "date": "2020",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos110Problem.lean",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "chromatic-number",
+      "erdos",
+      "infinite-graphs",
+      "set-theory",
+      "counterexample",
+      "disproved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "disproved",
+    "sorries": 1,
     "erdosNumber": 110,
     "erdosUrl": "https://erdosproblems.com/110",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #110 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some $F(n)$ such that every graph with chromatic number $\\aleph_1$ has, for all large $n$, a subgraph with chromatic number $n$ on at most $F(n)$ vertices?\n\n\n\nConjectured by Erd\\H{o}s, Hajnal, and Szemer\\'{e}di \\cite{EHS82}. This fails if the graph has chromatic number $\\aleph_0$.\n\nA theorem of de Bruijn and Erd\\H{os} \\cite{dBEr51} implies that, if $G$ has infinite chromatic number, then $G$ has a finite subgraph of chromatic number $n$ for every $n\\geq 1$.\n\nIn \\cite{Er95d} Erd\\H{o}s suggests this is true, although such an $F$ must grow faster than the $k$-fold iterated exponential function for any $k$.\n\nShelah \\cite{KoSh05} proved that it is consistent that the answer is no. Lambie-Hanson \\cite{La20} constructed a counterexample in ZFC.\n\n\n\n\nReferences\n\n\n[EHS82] Erd\\H{o}s, P. and Hajnal, A. and Szemer\\'{e}di, E., On almost bipartite large chromatic graphs. Theory and practice of combinatorics (1982), 117-123.\n\n[Er95d] Erd\\H{o}s, Paul, On some problems in combinatorial set theory. Publ. Inst. Math. (Beograd) (N.S.) (1995), 61-65.\n\n[KoSh05] Komj\\'ath, P\\'{e}ter and Shelah, Saharon, Finite subgraphs of uncountably chromatic graphs. J. Graph Theory (2005), 28--38.\n\n[La20] Lambie-Hanson, Chris, On the growth rate of chromatic numbers of finite subgraphs. Adv. Math. (2020), 107176, 13.\n\n[dBEr51] de Bruijn, N. G. and Erd\\H{o}s, P., A colour problem for infinite graphs and a problem in the\ntheory of relations. Indag. Math. (1951), 369--373.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Finite Subgraphs of Infinite Chromatic Graphs**\n\nThe de Bruijn-Erdős theorem (1951) states that a graph with infinite chromatic number contains finite subgraphs of every finite chromatic number. But how efficiently? This problem asks whether there's a universal bound F(n) on the size needed to achieve chromatic number n.\n\n**The Conjecture (Erdős-Hajnal-Szemerédi 1982)**: For graphs with chromatic number ℵ₁ (the first uncountable cardinal), there should exist F(n) such that an n-chromatic subgraph exists on at most F(n) vertices.\n\n**Important**: This fails for ℵ₀-chromatic graphs! The uncountability is essential.\n\n**Erdős's Expectation**: If F exists, it must grow faster than any k-fold iterated exponential.\n\n**The Disproof**:\n- Shelah (2005): Showed it's consistent with ZFC that no such F exists\n- Lambie-Hanson (2020): Constructed an actual ZFC counterexample - no set-theoretic assumptions needed!",
+    "problemStatement": "**Problem Statement**\n\nIs there a function F: ℕ → ℕ such that every graph G with chromatic number ℵ₁ has, for all sufficiently large n, a subgraph with chromatic number n on at most F(n) vertices?\n\n**Answer**: NO (DISPROVED in ZFC)\n\n**Lambie-Hanson (2020)**: Constructed a graph with chromatic number ℵ₁ such that no such function F exists.\n\n**Note**: The conjecture specifically requires χ(G) = ℵ₁. For χ(G) = ℵ₀, counterexamples were already known.",
+    "proofStrategy": "**The Counterexample (Lambie-Hanson 2020)**\n\nThe construction uses sophisticated set-theoretic and combinatorial techniques:\n\n1. **Building the Graph**: Construct a graph G with χ(G) = ℵ₁ where chromatic subgraphs are 'sparse' but require increasingly large vertex sets.\n\n2. **Growth Rate Control**: Ensure that for any candidate F(n), there exists n where the minimum n-chromatic subgraph exceeds F(n) vertices.\n\n3. **ZFC Construction**: Unlike Shelah's consistency result, this works in any model of ZFC.\n\n**Shelah's Earlier Result (2005)**:\n- Showed the negative answer is consistent with ZFC\n- Left open whether it's provable in ZFC\n- Lambie-Hanson closed this gap\n\n**de Bruijn-Erdős Foundation**:\n- Guarantees finite n-chromatic subgraphs exist\n- But says nothing about their size",
+    "keyInsights": [
+      "DISPROVED in ZFC by Lambie-Hanson (2020) - no set-theoretic assumptions needed",
+      "Shelah (2005) had earlier shown consistency of negative answer",
+      "The conjecture was specifically for ℵ₁-chromatic graphs - it fails for ℵ₀",
+      "de Bruijn-Erdős theorem guarantees existence but not bounded size",
+      "Erdős expected F would need to grow faster than any iterated exponential",
+      "The problem connects graph theory to set theory and infinite combinatorics",
+      "Shows that uncountable chromatic number doesn't imply 'efficient' finite approximations"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "placeholder",
+      "title": "Placeholder Theorem",
+      "startLine": 36,
+      "endLine": 37,
+      "summary": "The current proof is a placeholder (erdos_110 : True). The conjecture was DISPROVED by Lambie-Hanson (2020)."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #110 asked whether ℵ₁-chromatic graphs have uniformly bounded n-chromatic subgraphs. DISPROVED by Lambie-Hanson (2020) in ZFC, building on Shelah's 2005 consistency result. The counterexample shows uncountable chromatic number doesn't guarantee efficient finite chromatic subgraphs.",
+    "implications": "**Theoretical Significance**\n\n1. **Set Theory Meets Graph Theory**: Resolved a question at the intersection of infinite combinatorics and chromatic theory\n\n2. **de Bruijn-Erdős Limitations**: Shows the theorem's existence guarantee can't be made uniform\n\n3. **Uncountable Cardinals**: Reveals surprising behavior at ℵ₁ - the first uncountable level\n\n4. **ZFC vs Consistency**: Lambie-Hanson's ZFC proof strengthened Shelah's consistency result\n\n5. **Compactness Failures**: Another example where infinite structures resist finite approximation bounds",
+    "openQuestions": [
+      "What is the structure of Lambie-Hanson's counterexample graph?",
+      "Are there natural graph classes where uniform bounds do exist?",
+      "What happens at higher cardinals (ℵ₂, ℵ₃, ...)?",
+      "Can the counterexample be made explicit/constructive?",
+      "Formalize the ZFC counterexample in Lean (requires substantial set theory)"
+    ]
   }
 }

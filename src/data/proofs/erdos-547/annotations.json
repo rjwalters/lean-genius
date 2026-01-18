@@ -22,7 +22,7 @@
   {
     "id": "ann-e547-ramsey-exists",
     "proofId": "erdos-547",
-    "range": { "startLine": 58, "endLine": 63 },
+    "range": { "startLine": 62, "endLine": 63 },
     "type": "axiom",
     "title": "Ramsey's Theorem",
     "content": "**Ramsey's Theorem**: For any finite graph G, there exists N such that any 2-coloring of K_N contains a monochromatic copy of G.\n\nThis foundational result guarantees that Ramsey numbers are well-defined.",
@@ -41,8 +41,8 @@
   {
     "id": "ann-e547-is-tree",
     "proofId": "erdos-547",
-    "range": { "startLine": 86, "endLine": 91 },
-    "type": "definition",
+    "range": { "startLine": 89, "endLine": 93 },
+    "type": "axiom",
     "title": "Tree Predicate",
     "content": "A graph is a **tree** if it is connected and has exactly n-1 edges for n vertices.\n\nEquivalently: connected and acyclic, or any two vertices connected by a unique path.",
     "significance": "critical"
@@ -68,8 +68,8 @@
   {
     "id": "ann-e547-is-star",
     "proofId": "erdos-547",
-    "range": { "startLine": 113, "endLine": 115 },
-    "type": "definition",
+    "range": { "startLine": 113, "endLine": 113 },
+    "type": "axiom",
     "title": "Star Graph",
     "content": "A **star** S_n is a tree with one central vertex adjacent to all n-1 other vertices.\n\nStars have the maximum Ramsey number among trees: R(S_n) = 2n - 2.",
     "significance": "key"
@@ -77,8 +77,8 @@
   {
     "id": "ann-e547-is-caterpillar",
     "proofId": "erdos-547",
-    "range": { "startLine": 116, "endLine": 118 },
-    "type": "definition",
+    "range": { "startLine": 116, "endLine": 116 },
+    "type": "axiom",
     "title": "Caterpillar Graph",
     "content": "A **caterpillar** is a tree where removing all leaves yields a path.\n\nCaterpillars interpolate between paths and stars in structure.",
     "significance": "supporting"
@@ -104,8 +104,8 @@
   {
     "id": "ann-e547-chvatal",
     "proofId": "erdos-547",
-    "range": { "startLine": 162, "endLine": 177 },
-    "type": "theorem",
+    "range": { "startLine": 173, "endLine": 175 },
+    "type": "axiom",
     "title": "Chvátal's Theorem (1977)",
     "content": "**Chvátal's Bound**: For a tree T with max degree Δ,\n\nR(T) ≤ (Δ - 1)(n - 1) + 1\n\nThis is tight for paths (Δ = 2 gives R ≤ n) but weak for stars (Δ = n-1).",
     "mathContext": "The bound depends on the maximum degree, capturing how 'star-like' the tree is.",
@@ -132,7 +132,7 @@
   {
     "id": "ann-e547-main",
     "proofId": "erdos-547",
-    "range": { "startLine": 219, "endLine": 226 },
+    "range": { "startLine": 223, "endLine": 225 },
     "type": "theorem",
     "title": "Main Result",
     "content": "**Erdős Problem #547: SOLVED**\n\nAnswer: YES, R(T) ≤ 2n - 2 for all trees T on n vertices.\n\nThe bound is tight (achieved by stars).",

@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-1018-edgecount",
+    "proofId": "erdos-1018",
+    "range": { "startLine": 31, "endLine": 33 },
+    "type": "definition",
+    "title": "Edge Count",
+    "content": "Number of edges in a simple graph.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1018-isdense",
+    "proofId": "erdos-1018",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "definition",
+    "title": "isDense",
+    "content": "Graph has ≥ n^(1+ε) edges (super-linear density).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1018-isplanar",
+    "proofId": "erdos-1018",
+    "range": { "startLine": 56, "endLine": 58 },
+    "type": "definition",
+    "title": "isPlanar",
+    "content": "Graph embeddable in plane without crossings.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1018-isnonplanar",
+    "proofId": "erdos-1018",
+    "range": { "startLine": 60, "endLine": 61 },
+    "type": "definition",
+    "title": "isNonPlanar",
+    "content": "Not planar - contains K₅ or K₃,₃ subdivision.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1018-k5",
+    "proofId": "erdos-1018",
+    "range": { "startLine": 69, "endLine": 76 },
+    "type": "definition",
+    "title": "Complete Graph K_n",
+    "content": "All pairs of distinct vertices are adjacent.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1018-k33",
+    "proofId": "erdos-1018",
+    "range": { "startLine": 78, "endLine": 88 },
+    "type": "definition",
+    "title": "Complete Bipartite K_{m,n}",
+    "content": "All edges between two disjoint vertex sets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1018-subdivision",
+    "proofId": "erdos-1018",
+    "range": { "startLine": 96, "endLine": 98 },
+    "type": "definition",
+    "title": "containsSubdivision",
+    "content": "G has subgraph homeomorphic to H.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1018-kuratowski",
+    "proofId": "erdos-1018",
+    "range": { "startLine": 100, "endLine": 103 },
+    "type": "theorem",
+    "title": "Kuratowski's Theorem",
+    "content": "Non-planar ↔ contains K₅ or K₃,₃ subdivision.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1018-induced",
+    "proofId": "erdos-1018",
+    "range": { "startLine": 111, "endLine": 115 },
+    "type": "definition",
+    "title": "Induced Subgraph",
+    "content": "Subgraph on a vertex subset with all original edges.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1018-smallnonplanar",
+    "proofId": "erdos-1018",
+    "range": { "startLine": 117, "endLine": 119 },
+    "type": "definition",
+    "title": "hasSmallNonPlanarSubgraph",
+    "content": "Contains non-planar subgraph on ≤ k vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1018-existsbound",
+    "proofId": "erdos-1018",
+    "range": { "startLine": 127, "endLine": 132 },
+    "type": "definition",
+    "title": "existsBoundingConstant",
+    "content": "∃ C_ε bounding non-planar subgraph size.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1018-question",
+    "proofId": "erdos-1018",
+    "range": { "startLine": 134, "endLine": 135 },
+    "type": "definition",
+    "title": "Main Question",
+    "content": "Does C_ε exist for all ε > 0?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1018-smallk5",
+    "proofId": "erdos-1018",
+    "range": { "startLine": 143, "endLine": 145 },
+    "type": "definition",
+    "title": "hasSmallK5Subdivision",
+    "content": "Contains K₅ subdivision on ≤ k vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1018-kp",
+    "proofId": "erdos-1018",
+    "range": { "startLine": 147, "endLine": 152 },
+    "type": "theorem",
+    "title": "Kostochka-Pyber (1988)",
+    "content": "Dense graphs have K₅ subdivisions on O_ε(1) vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1018-solved",
+    "proofId": "erdos-1018",
+    "range": { "startLine": 154, "endLine": 166 },
+    "type": "theorem",
+    "title": "Problem Solved",
+    "content": "Erdős #1018 answered: YES, C_ε exists.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1018-grows",
+    "proofId": "erdos-1018",
+    "range": { "startLine": 174, "endLine": 176 },
+    "type": "theorem",
+    "title": "Constant Grows",
+    "content": "C_ε → ∞ as ε → 0.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1018-linear",
+    "proofId": "erdos-1018",
+    "range": { "startLine": 192, "endLine": 195 },
+    "type": "theorem",
+    "title": "Planar Linear Bound",
+    "content": "Planar graphs have ≤ 3n - 6 edges.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1018-explicit",
+    "proofId": "erdos-1018",
+    "range": { "startLine": 211, "endLine": 213 },
+    "type": "definition",
+    "title": "Explicit Bound",
+    "content": "C_ε ~ 1/ε² (polynomial in 1/ε).",
+    "significance": "supporting"
+  }
+]

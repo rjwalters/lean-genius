@@ -1,1 +1,183 @@
-[]
+[
+  {
+    "id": "ann-e610-clique",
+    "proofId": "erdos-610",
+    "range": { "startLine": 34, "endLine": 36 },
+    "type": "definition",
+    "title": "Clique Definition",
+    "content": "A **clique** in a graph G is a set S of vertices where every pair is adjacent.\n\nFormally: ∀ u, v ∈ S, u ≠ v → G.Adj u v\n\nExamples: A triangle {a, b, c} with all edges is a 3-clique.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e610-maximal",
+    "proofId": "erdos-610",
+    "range": { "startLine": 38, "endLine": 40 },
+    "type": "definition",
+    "title": "Maximal Clique",
+    "content": "A clique is **maximal** if no vertex can be added while maintaining the clique property.\n\nNote: Maximal ≠ maximum! A maximal clique cannot be extended, but may not be the largest clique in the graph.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e610-maximal-cliques",
+    "proofId": "erdos-610",
+    "range": { "startLine": 42, "endLine": 44 },
+    "type": "definition",
+    "title": "Set of Maximal Cliques",
+    "content": "`maximalCliques G` is the set of all maximal cliques in G.\n\nA graph can have exponentially many maximal cliques — the Moon-Moser bound gives 3^(n/3) in the worst case.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e610-transversal",
+    "proofId": "erdos-610",
+    "range": { "startLine": 48, "endLine": 50 },
+    "type": "definition",
+    "title": "Clique Transversal",
+    "content": "A set T is a **clique transversal** if it intersects every maximal clique.\n\nFormally: ∀ maximal clique C, T ∩ C ≠ ∅\n\nThis ensures T 'hits' or 'covers' every maximal clique.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e610-tau",
+    "proofId": "erdos-610",
+    "range": { "startLine": 52, "endLine": 66 },
+    "type": "definition",
+    "title": "Clique Transversal Number τ(G)",
+    "content": "**τ(G)** = minimum size of a clique transversal.\n\nThis measures how 'spread out' the maximal cliques are. Small τ means cliques are clustered; large τ means they're dispersed.\n\nComputing τ is NP-hard in general.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e610-univ-trans",
+    "proofId": "erdos-610",
+    "range": { "startLine": 70, "endLine": 78 },
+    "type": "theorem",
+    "title": "Full Vertex Set is Transversal",
+    "content": "The entire vertex set V is always a clique transversal — it trivially intersects every clique.\n\nThis gives the trivial bound τ(G) ≤ n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e610-tau-empty",
+    "proofId": "erdos-610",
+    "range": { "startLine": 84, "endLine": 86 },
+    "type": "theorem",
+    "title": "Empty Graph",
+    "content": "**Empty graph:** τ(⊥) = n\n\nEvery singleton {v} is a maximal clique (no edges to extend). To hit all n singletons, we need all n vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e610-tau-complete",
+    "proofId": "erdos-610",
+    "range": { "startLine": 88, "endLine": 90 },
+    "type": "theorem",
+    "title": "Complete Graph",
+    "content": "**Complete graph:** τ(⊤) = 1\n\nThe entire vertex set is the unique maximal clique. Any single vertex hits it.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e610-egt-bound",
+    "proofId": "erdos-610",
+    "range": { "startLine": 94, "endLine": 101 },
+    "type": "theorem",
+    "title": "Erdős-Gallai-Tuza Bound",
+    "content": "**The Known Bound:**\n\nτ(G) ≤ n - √(2n) + O(1)\n\nThis says we can always find a transversal of size roughly n - √(2n).\n\nThe proof uses a clever greedy algorithm.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e610-q1",
+    "proofId": "erdos-610",
+    "range": { "startLine": 105, "endLine": 109 },
+    "type": "definition",
+    "title": "Question 1: ω(n) Improvement",
+    "content": "**OPEN:** Can we achieve τ(G) ≤ n - ω(n)√n for some ω(n) → ∞?\n\nThis asks: can the constant '1' in front of √n be replaced by a growing function?\n\nEven ω(n) = log log n would be progress!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e610-q2",
+    "proofId": "erdos-610",
+    "range": { "startLine": 111, "endLine": 116 },
+    "type": "definition",
+    "title": "Question 2: √(n log n) Bound",
+    "content": "**OPEN:** Is τ(G) ≤ n - c√(n log n) for some constant c > 0?\n\nThis is stronger than Question 1 — if true, it would imply Question 1 with ω(n) = c√(log n).\n\nThis is connected to triangle-free independence.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e610-independent",
+    "proofId": "erdos-610",
+    "range": { "startLine": 120, "endLine": 122 },
+    "type": "definition",
+    "title": "Independent Set",
+    "content": "An **independent set** has no edges between its vertices — the complement of a clique.\n\nIn the complement graph Ḡ, independent sets become cliques and vice versa.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e610-triangle-free",
+    "proofId": "erdos-610",
+    "range": { "startLine": 131, "endLine": 133 },
+    "type": "definition",
+    "title": "Triangle-Free Graph",
+    "content": "A graph is **triangle-free** if it contains no 3-clique.\n\nEquivalently: no three vertices are pairwise adjacent.\n\nTriangle-free graphs are important because they force large independent sets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e610-f-n",
+    "proofId": "erdos-610",
+    "range": { "startLine": 135, "endLine": 137 },
+    "type": "definition",
+    "title": "Triangle-Free Independence Function",
+    "content": "**f(n)** = minimum independence number over all triangle-free graphs on n vertices.\n\nThis is the guaranteed size of an independent set in any triangle-free graph.\n\nKim proved f(n) = Θ(√(n log n)).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e610-egt-conj",
+    "proofId": "erdos-610",
+    "range": { "startLine": 141, "endLine": 144 },
+    "type": "definition",
+    "title": "Erdős-Gallai-Tuza Conjecture",
+    "content": "**Conjecture:** τ(G) ≤ n - f(n)\n\nThis would connect clique transversal directly to triangle-free independence.\n\nSince f(n) = Θ(√(n log n)), this would answer Question 2!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e610-kim",
+    "proofId": "erdos-610",
+    "range": { "startLine": 146, "endLine": 150 },
+    "type": "axiom",
+    "title": "Kim's Theorem",
+    "content": "**Kim (1995):** f(n) = Θ(√(n log n))\n\nThe lower bound comes from a probabilistic construction.\nThe upper bound from Ramsey theory: R(3, k) ≥ ck²/log k.\n\nThis is the triangle-free Ramsey problem.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Probabilistic method"]
+  },
+  {
+    "id": "ann-e610-implies",
+    "proofId": "erdos-610",
+    "range": { "startLine": 152, "endLine": 155 },
+    "type": "theorem",
+    "title": "Conjecture Implies Question 2",
+    "content": "If ErdősGallaiTuzaConjecture is true, then Question2_LogImprovement follows.\n\nProof: τ ≤ n - f(n) and f(n) ≥ c√(n log n) give τ ≤ n - c√(n log n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e610-tight",
+    "proofId": "erdos-610",
+    "range": { "startLine": 159, "endLine": 168 },
+    "type": "definition",
+    "title": "Near-Tight Constructions",
+    "content": "**The bound is nearly optimal:**\n\nThere exist graphs with τ(G) ≈ n - √(2n).\n\nSo the question is whether the multiplicative constant can be improved, not the √n exponent.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e610-clique-cover",
+    "proofId": "erdos-610",
+    "range": { "startLine": 189, "endLine": 201 },
+    "type": "definition",
+    "title": "Clique Cover Duality",
+    "content": "**Clique cover number** = minimum cliques needed to cover all vertices.\n\n**Relation:** τ(G) ≥ clique cover number\n\nThis is because a transversal must include at least one vertex from each covering clique.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e610-main",
+    "proofId": "erdos-610",
+    "range": { "startLine": 205, "endLine": 214 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**Erdős Problem #610: OPEN**\n\nKnown: τ(G) ≤ n - √(2n) + O(1)\n\nOpen:\n1. Can we improve to n - ω(n)√n for ω → ∞?\n2. Can we achieve n - c√(n log n)?\n\nThe conjecture τ ≤ n - f(n) would resolve Question 2.",
+    "significance": "critical"
+  }
+]

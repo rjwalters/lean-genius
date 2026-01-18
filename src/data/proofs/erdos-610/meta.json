@@ -1,33 +1,144 @@
 {
   "id": "erdos-610",
-  "title": "Erdős Problem #610",
+  "title": "Erdős Problem #610: Clique Transversal Numbers",
   "slug": "erdos-610",
-  "description": "For a graph G\" role=\"presentation\" style=\"position: relative;\">GGG let &#x03C4;(G)\" role=\"presentation\" style=\"position: relative;\">τ(G)τ(G)\\tau(G) denote the minimal number of vertices that includ...",
+  "description": "For a graph G, let τ(G) be the minimum vertices hitting every maximal clique. Known: τ(G) ≤ n - √(2n) + O(1). Open: Can we improve to n - ω(n)√n or n - c√(n log n)?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Gallai-Tuza",
     "sourceUrl": "https://erdosproblems.com/610",
     "date": "",
-    "status": "pending",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos610Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "clique-transversal",
+      "maximal-cliques",
+      "independent-sets",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "conjecture",
+    "sorries": 18,
     "erdosNumber": 610,
     "erdosUrl": "https://erdosproblems.com/610",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple undirected graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for cliques and transversals",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "For ω(n) → ∞ condition",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of cliques and maximal cliques",
+      "Definition of clique transversal and τ(G)",
+      "Statement of Erdős-Gallai-Tuza bound",
+      "Formalization of the two open questions",
+      "Connection to triangle-free independence (Kim's theorem)",
+      "Statement of the Erdős-Gallai-Tuza conjecture"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #610 from erdosproblems.com.",
-    "problemStatement": "For a graph G\" role=\"presentation\" style=\"position: relative;\">GGG let &#x03C4;(G)\" role=\"presentation\" style=\"position: relative;\">τ(G)τ(G)\\tau(G) denote the minimal number of vertices that include at least one from each maximal clique of G\" role=\"presentation\" style=\"position: relative;\">GGG (sometimes called the clique transversal number). Estimate &#x03C4;(G)\" role=\"presentation\" style=\"position: relative;\">τ(G)τ(G)\\tau(G). In particular, is it true that if G\" role=\"presentation\" style=\"position: relative;\">GGG has n\" role=\"presentation\" style=\"position: relative;\">nnn vertices then&#x03C4;(G)&#x2264;n&#x2212;&#x03C9;(n)n\" role=\"presentation\" style=\"text-align: center; position: relative;\">τ(G)≤n−ω(n)n‾√τ(G)≤n−ω(n)n",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "A clique transversal is a set of vertices that 'hits' every maximal clique — containing at least one vertex from each. The clique transversal number τ(G) is the minimum size of such a set.\n\nErdős, Gallai, and Tuza proved that τ(G) ≤ n - √(2n) + O(1) for any n-vertex graph. The question is whether this can be improved. The connection to triangle-free graphs is deep: if f(n) is the guaranteed independence number in triangle-free graphs, they conjecture τ(G) ≤ n - f(n).\n\nKim proved f(n) = Θ(√(n log n)), so resolving this conjecture would answer Question 2.",
+    "problemStatement": "**Definition:**\nτ(G) = minimum size of a set hitting every maximal clique.\n\n**Known:** τ(G) ≤ n - √(2n) + O(1) (Erdős-Gallai-Tuza)\n\n**Open Questions:**\n1. Is τ(G) ≤ n - ω(n)√n for some ω(n) → ∞?\n2. Is τ(G) ≤ n - c√(n log n) for some constant c > 0?\n\n**Conjecture:** τ(G) ≤ n - f(n) where f(n) is the triangle-free independence function.",
+    "proofStrategy": "The formalization:\n\n1. Defines `IsClique` and `IsMaximalClique` for graph cliques\n2. Defines `IsCliqueTransversal` and `cliqueTransversalNumber` (τ)\n3. States `erdos_gallai_tuza`: τ ≤ n - √(2n) + O(1)\n4. States `Question1_OmegaImprovement` and `Question2_LogImprovement`\n5. Defines `triangleFreeIndependence` and states Kim's theorem\n6. States `ErdosGallaiTuzaConjecture`: τ ≤ n - f(n)\n7. Shows extreme cases (empty graph, complete graph)",
+    "keyInsights": [
+      "**Clique Transversal:** A set T is a transversal if T ∩ C ≠ ∅ for every maximal clique C.",
+      "**Extremes:** Empty graph has τ = n (all singletons are maximal cliques); complete graph has τ = 1.",
+      "**Known Bound:** τ ≤ n - √(2n) + O(1) is nearly tight — constructions achieve τ ≈ n - √(2n).",
+      "**Triangle-Free Connection:** The conjecture τ ≤ n - f(n) links to independent sets in triangle-free graphs.",
+      "**Kim's Theorem:** f(n) = Θ(√(n log n)), so proving the conjecture would give the √(n log n) improvement."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "cliques",
+      "title": "Cliques and Maximal Cliques",
+      "summary": "Definitions of cliques and maximality",
+      "startLine": 32,
+      "endLine": 44
+    },
+    {
+      "id": "transversal",
+      "title": "Clique Transversal",
+      "summary": "Definition of τ(G)",
+      "startLine": 46,
+      "endLine": 67
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "Bounds and extreme cases",
+      "startLine": 68,
+      "endLine": 91
+    },
+    {
+      "id": "egt-bound",
+      "title": "Erdős-Gallai-Tuza Bound",
+      "summary": "τ ≤ n - √(2n) + O(1)",
+      "startLine": 92,
+      "endLine": 102
+    },
+    {
+      "id": "open-questions",
+      "title": "The Main Questions (OPEN)",
+      "summary": "ω(n) improvement and √(n log n) bound",
+      "startLine": 103,
+      "endLine": 117
+    },
+    {
+      "id": "independent-sets",
+      "title": "Connection to Independent Sets",
+      "summary": "Triangle-free graphs and f(n)",
+      "startLine": 118,
+      "endLine": 138
+    },
+    {
+      "id": "conjecture",
+      "title": "Erdős-Gallai-Tuza Conjecture",
+      "summary": "τ ≤ n - f(n)",
+      "startLine": 139,
+      "endLine": 156
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "summary": "Near-tight constructions",
+      "startLine": 157,
+      "endLine": 169
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "Bipartite, chordal, perfect graphs",
+      "startLine": 170,
+      "endLine": 186
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #610 remains OPEN. The best known bound τ(G) ≤ n - √(2n) + O(1) by Erdős, Gallai, and Tuza is nearly tight, but whether it can be improved to n - ω(n)√n or n - c√(n log n) is unknown. The conjecture τ ≤ n - f(n) connecting to triangle-free independence would resolve Question 2.",
+    "implications": "This problem connects to:\n\n1. **Clique Theory:** Structure of maximal cliques in graphs\n2. **Independent Sets:** Via the triangle-free connection\n3. **Ramsey Theory:** Kim's construction uses probabilistic methods\n4. **Algorithmic Graph Theory:** Computing τ is NP-hard in general\n5. **Perfect Graph Theory:** Special cases where τ is well-behaved",
+    "openQuestions": [
+      "Can τ(G) ≤ n - ω(n)√n be achieved for any ω → ∞?",
+      "Does τ(G) ≤ n - c√(n log n) hold for some c > 0?",
+      "Is the Erdős-Gallai-Tuza conjecture τ ≤ n - f(n) true?",
+      "What is the exact constant in τ ≤ n - √(2n) + O(1)?",
+      "For which graph classes can τ be computed efficiently?"
+    ]
   }
 }
