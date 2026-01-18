@@ -29,9 +29,9 @@ References:
 
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Set.Basic
-import Mathlib.Data.Set.Finite
+import Mathlib.Data.Set.Card
 import Mathlib.Data.Real.Basic
-import Mathlib.Topology.Instances.Real
+import Mathlib.Topology.Order.Basic
 import Mathlib.Order.Filter.Basic
 
 open Set Filter
