@@ -1,1 +1,218 @@
-[]
+[
+  {
+    "id": "ann-976-1",
+    "proofId": "erdos-976",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #976: For irreducible f ∈ ℤ[x] of degree d ≥ 2, let F_f(n) = greatest prime dividing ∏_{m=1}^n f(m). Is F_f(n) ≫ n^{1+c} or even n^d? The main conjectures remain OPEN. Best known: F_f(n) ≫ n·exp((log n)^c) by Tenenbaum (1990).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-976-2",
+    "proofId": "erdos-976",
+    "range": {
+      "startLine": 39,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "Irreducible Polynomial",
+    "content": "A polynomial f ∈ ℤ[x] is irreducible if it has degree ≥ 1 and cannot be factored into polynomials of smaller degree over ℤ. Examples: x² + 1, x² - 2, x³ - 2. This is analogous to prime numbers among integers.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-976-3",
+    "proofId": "erdos-976",
+    "range": {
+      "startLine": 52,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Greatest Prime Divisor",
+    "content": "P(n) = max{p prime : p | n}. For example, P(60) = 5 since 60 = 2² · 3 · 5. By convention P(1) = 1. This function measures the 'smoothness' of an integer - smooth numbers have small P(n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-976-4",
+    "proofId": "erdos-976",
+    "range": {
+      "startLine": 60,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "The Function F_f(n)",
+    "content": "F_f(n) = greatest prime dividing f(m) for any 1 ≤ m ≤ n. Equivalently, F_f(n) = P(∏_{m=1}^n f(m)). This captures the largest prime factor appearing in the first n polynomial values.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-976-5",
+    "proofId": "erdos-976",
+    "range": {
+      "startLine": 73,
+      "endLine": 79
+    },
+    "type": "theorem",
+    "title": "Nagell-Ricci Bound (1922)",
+    "content": "F_f(n) ≫ n log n for any irreducible f of degree ≥ 2. This was the first non-trivial lower bound, establishing that F_f(n) grows faster than linear. The proof uses elementary number theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-976-6",
+    "proofId": "erdos-976",
+    "range": {
+      "startLine": 81,
+      "endLine": 89
+    },
+    "type": "theorem",
+    "title": "Erdős Bound (1952)",
+    "content": "F_f(n) ≫ n(log n)^{log log log n}. Erdős improved Nagell-Ricci using sieve methods to count integers with large prime factors. The iterated logarithm exponent shows slow but unbounded growth beyond n log n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-976-7",
+    "proofId": "erdos-976",
+    "range": {
+      "startLine": 91,
+      "endLine": 99
+    },
+    "type": "theorem",
+    "title": "Tenenbaum Bound (1990)",
+    "content": "F_f(n) ≫ n·exp((log n)^c) for some c > 0. Currently the best rigorous bound. The exp((log n)^c) factor grows faster than any power of log but slower than any power of n - a 'sub-polynomial' improvement.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-976-8",
+    "proofId": "erdos-976",
+    "range": {
+      "startLine": 105,
+      "endLine": 112
+    },
+    "type": "theorem",
+    "title": "First Conjecture",
+    "content": "Conjecture: F_f(n) ≫ n^{1+c} for some c > 0. This would establish true polynomial growth, vastly stronger than current bounds. The gap between n·exp((log n)^c) and n^{1+c} is enormous.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-976-9",
+    "proofId": "erdos-976",
+    "range": {
+      "startLine": 114,
+      "endLine": 122
+    },
+    "type": "theorem",
+    "title": "Second Conjecture",
+    "content": "Stronger conjecture: F_f(n) ≫ n^d where d = deg(f). This says the degree of the polynomial controls the growth exponent. Would imply quadratics give n², cubics give n³, etc.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-976-10",
+    "proofId": "erdos-976",
+    "range": {
+      "startLine": 133,
+      "endLine": 138
+    },
+    "type": "concept",
+    "title": "Linear Case",
+    "content": "For degree 1 polynomials f(x) = ax + b, the problem reduces to prime factors in arithmetic progressions. By Dirichlet's theorem, primes appear infinitely often, giving F_f(n) ~ n. The problem is only interesting for d ≥ 2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-976-11",
+    "proofId": "erdos-976",
+    "range": {
+      "startLine": 140,
+      "endLine": 145
+    },
+    "type": "concept",
+    "title": "Quadratic Case",
+    "content": "For f(x) = x² + 1, prime divisors p | m² + 1 must satisfy p ≡ 1 (mod 4) or p = 2, connecting to Gaussian primes. The Chebotarev density theorem governs which primes divide polynomial values.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-976-12",
+    "proofId": "erdos-976",
+    "range": {
+      "startLine": 147,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "Example: x² - 2",
+    "content": "For f(x) = x² - 2, a prime p divides m² - 2 for some m iff 2 is a quadratic residue mod p, which by quadratic reciprocity means p ≡ ±1 (mod 8). This illustrates the algebraic constraints on divisors.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-976-13",
+    "proofId": "erdos-976",
+    "range": {
+      "startLine": 165,
+      "endLine": 170
+    },
+    "type": "concept",
+    "title": "Sieve Methods",
+    "content": "Sieve methods count integers with specific prime factor properties. Erdős used them to show polynomial products must have large prime factors. The key: among n integers, not all can be 'smooth' (have only small prime factors).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-976-14",
+    "proofId": "erdos-976",
+    "range": {
+      "startLine": 172,
+      "endLine": 176
+    },
+    "type": "concept",
+    "title": "Large Sieve",
+    "content": "Tenenbaum's proof uses the large sieve inequality, a powerful tool in analytic number theory. It bounds sums over 'well-spaced' subsets and is crucial for estimating exponential sums over prime divisors.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-976-15",
+    "proofId": "erdos-976",
+    "range": {
+      "startLine": 178,
+      "endLine": 183
+    },
+    "type": "concept",
+    "title": "Algebraic Connection",
+    "content": "Prime divisors of f(m) relate to prime splitting in the number field K = ℚ[x]/(f). A prime p divides f(m) for some m iff p splits completely or partially in K. This algebraic structure constrains which primes appear.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-976-16",
+    "proofId": "erdos-976",
+    "range": {
+      "startLine": 185,
+      "endLine": 190
+    },
+    "type": "theorem",
+    "title": "Chebotarev Density",
+    "content": "The Chebotarev density theorem: primes splitting in a given way in K have positive density determined by the Galois group of f. This ensures infinitely many primes divide polynomial values, but doesn't give growth rates.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-976-17",
+    "proofId": "erdos-976",
+    "range": {
+      "startLine": 222,
+      "endLine": 227
+    },
+    "type": "concept",
+    "title": "The Lost Proof",
+    "content": "In 1965, Erdős claimed F_f(n) ≫ n·exp((log n)^c) but called the proof 'fairly complicated' and never published it. Later the proof was found to be flawed. Erdős-Schinzel 1990 published a weaker bound, apparently unaware of the issue.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-976-18",
+    "proofId": "erdos-976",
+    "range": {
+      "startLine": 293,
+      "endLine": 300
+    },
+    "type": "theorem",
+    "title": "Current Status",
+    "content": "Erdős #976 is OPEN for the main conjectures. Known: F_f(n) ≫ n·exp((log n)^c). Conjectured: n^{1+c} or n^d. The gap is huge - resolving this would be a major breakthrough in analytic number theory.",
+    "significance": "critical"
+  }
+]
