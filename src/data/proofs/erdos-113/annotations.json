@@ -1,1 +1,202 @@
-[]
+[
+  {
+    "id": "ann-e113-extremal",
+    "proofId": "erdos-113",
+    "range": { "startLine": 48, "endLine": 55 },
+    "type": "axiom",
+    "title": "Extremal Number",
+    "content": "**The Extremal Number** ex(n; H):\n\nThe maximum number of edges in an n-vertex graph containing no copy of H.\n\n**Properties:**\n- Monotonic in n: more vertices allows more edges\n- Trivially bounded by n(n-1)/2 (complete graph)\n\nAxiomatized since computing requires quantification over all n-vertex graphs.",
+    "mathContext": "Central to extremal graph theory, initiated by Turán (1941).",
+    "significance": "critical",
+    "relatedConcepts": ["Turán's theorem", "Forbidden subgraphs", "Graph density"]
+  },
+  {
+    "id": "ann-e113-monotonicity",
+    "proofId": "erdos-113",
+    "range": { "startLine": 57, "endLine": 59 },
+    "type": "axiom",
+    "title": "Extremal Monotonicity",
+    "content": "**ex(n; H) ≤ ex(m; H) for n ≤ m**\n\nMore vertices allows at least as many edges while avoiding H.\n\nProof: Any H-free graph on n vertices can be extended to m vertices with isolated vertices.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e113-degenerate",
+    "proofId": "erdos-113",
+    "range": { "startLine": 71, "endLine": 79 },
+    "type": "axiom",
+    "title": "Graph Degeneracy",
+    "content": "**k-Degeneracy Definition:**\n\nA graph G is k-degenerate if every non-empty induced subgraph has a vertex of degree at most k.\n\n**Equivalent characterizations:**\n1. Vertices can be ordered so each has ≤ k neighbors among predecessors\n2. The graph has arboricity at most k\n3. Every subgraph has average degree < 2k\n\nAxiomatized for graphs encoded as natural numbers.",
+    "mathContext": "Degeneracy measures structural sparsity. Trees are 1-degenerate, planar graphs are 5-degenerate.",
+    "significance": "critical",
+    "relatedConcepts": ["Arboricity", "Graph coloring", "Sparse graphs"]
+  },
+  {
+    "id": "ann-e113-2degenerate",
+    "proofId": "erdos-113",
+    "range": { "startLine": 87, "endLine": 89 },
+    "type": "axiom",
+    "title": "2-Degenerate Characterization",
+    "content": "**2-Degenerate means:**\n\nNo induced subgraph has minimum degree ≥ 3.\n\nEquivalently: every subgraph has a vertex of degree at most 2.\n\n**Examples:**\n- Paths and cycles are 2-degenerate\n- Outerplanar graphs are 2-degenerate\n- K_4 is NOT 2-degenerate (min degree 3)",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e113-bipartite",
+    "proofId": "erdos-113",
+    "range": { "startLine": 95, "endLine": 96 },
+    "type": "axiom",
+    "title": "Bipartite Graphs",
+    "content": "**Bipartite Graphs:**\n\nA graph G is bipartite if its vertices can be partitioned into two sets A, B such that every edge connects a vertex in A to one in B.\n\n**Equivalent:** G has no odd cycles.\n\nAxiomatized as a predicate on encoded graphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e113-kst-encoding",
+    "proofId": "erdos-113",
+    "range": { "startLine": 98, "endLine": 99 },
+    "type": "definition",
+    "title": "Complete Bipartite Encoding",
+    "content": "**K_{s,t} Encoding:**\n\nThe complete bipartite graph K_{s,t} is encoded as s * 1000 + t.\n\nThis allows referencing specific complete bipartite graphs in axioms about extremal numbers.\n\n**Example:** K_{2,3} is encoded as 2003.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e113-kst",
+    "proofId": "erdos-113",
+    "range": { "startLine": 115, "endLine": 123 },
+    "type": "axiom",
+    "title": "Kővári-Sós-Turán Theorem",
+    "content": "**KST Theorem (1954):**\n\nex(n; K_{s,t}) ≤ (1/2)(t-1)^{1/s} · n^{2-1/s} + (s-1)n/2\n\nfor t ≥ s ≥ 1.\n\n**Significance:** This is the fundamental upper bound for forbidden bipartite subgraphs.\n\n**Special cases:**\n- K_{2,2} = C_4: ex(n; C_4) = O(n^{3/2})\n- K_{3,3}: ex(n; K_{3,3}) = O(n^{5/3})",
+    "mathContext": "The proof uses double counting: count paths of length s, then apply convexity.",
+    "significance": "critical",
+    "relatedConcepts": ["Zarankiewicz problem", "Turán-type problems"]
+  },
+  {
+    "id": "ann-e113-c4",
+    "proofId": "erdos-113",
+    "range": { "startLine": 125, "endLine": 128 },
+    "type": "axiom",
+    "title": "C_4 Extremal Number",
+    "content": "**ex(n; C_4) = O(n^{3/2})**\n\nThe 4-cycle C_4 = K_{2,2} has extremal number O(n^{3/2}).\n\nThis is the threshold exponent in the Erdős-Simonovits conjecture.\n\n**Tight:** There exist graphs achieving Ω(n^{3/2}) edges.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e113-asymp",
+    "proofId": "erdos-113",
+    "range": { "startLine": 134, "endLine": 138 },
+    "type": "definition",
+    "title": "Asymptotic Notation",
+    "content": "**f ≪ g means f = O(g)**\n\nFormally: ∃ C > 0, ∃ n₀, ∀ n ≥ n₀: f(n) ≤ C · g(n)\n\nThis is the standard big-O notation adapted for use in Lean.\n\nThe notation has precedence 50, requiring parentheses with → and ↔.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e113-asymp-trans",
+    "proofId": "erdos-113",
+    "range": { "startLine": 140, "endLine": 142 },
+    "type": "axiom",
+    "title": "Asymptotic Transitivity",
+    "content": "**If f ≪ n^α and α < β, then f ≪ n^β**\n\nThis captures that O(n^{4/3}) ⊆ O(n^{3/2}) when 4/3 < 3/2.\n\nEssential for the Janzer counterexample argument.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e113-conjecture",
+    "proofId": "erdos-113",
+    "range": { "startLine": 150, "endLine": 162 },
+    "type": "definition",
+    "title": "Erdős-Simonovits Conjecture",
+    "content": "**The Conjecture (1984):**\n\nFor bipartite G:\n  ex(n; G) ≪ n^{3/2} ⟺ G is 2-degenerate\n\n**Forward Direction (TRUE):**\nIf G is 2-degenerate bipartite, then ex(n;G) ≪ n^{3/2}.\n\n**Backward Direction (DISPROVED):**\nIf ex(n;G) ≪ n^{3/2}, then G is 2-degenerate.\n\nThe conjecture claims both directions hold. Janzer disproved the backward direction.",
+    "mathContext": "Conjectured in 'Cube-supersaturated graphs and related problems' (1984).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e113-forward",
+    "proofId": "erdos-113",
+    "range": { "startLine": 164, "endLine": 170 },
+    "type": "axiom",
+    "title": "Forward Direction",
+    "content": "**Forward Direction is TRUE:**\n\nIf G is bipartite and 2-degenerate, then ex(n;G) ≪ n^{3/2}.\n\nThe proof follows from the KST theorem and properties of 2-degenerate graphs.\n\nThis half of the conjecture was never in doubt.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e113-backward",
+    "proofId": "erdos-113",
+    "range": { "startLine": 172, "endLine": 179 },
+    "type": "axiom",
+    "title": "Backward Direction (Disproved)",
+    "content": "**Backward Direction is FALSE:**\n\n∃ bipartite G: ex(n;G) ≪ n^{3/2} ∧ G is NOT 2-degenerate\n\nJanzer (2023) constructed such a counterexample.\n\nThis axiom encapsulates Janzer's disproof.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e113-regular",
+    "proofId": "erdos-113",
+    "range": { "startLine": 187, "endLine": 188 },
+    "type": "axiom",
+    "title": "Regular Graphs",
+    "content": "**k-Regular Graphs:**\n\nA graph is k-regular if every vertex has exactly degree k.\n\nAxiomatized as a predicate isRegular(g, k).\n\n**Key fact:** 3-regular graphs are NOT 2-degenerate.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e113-3reg-not-2deg",
+    "proofId": "erdos-113",
+    "range": { "startLine": 190, "endLine": 192 },
+    "type": "axiom",
+    "title": "3-Regular Not 2-Degenerate",
+    "content": "**3-Regular ⟹ NOT 2-Degenerate**\n\nIf G is 3-regular, then every vertex has degree 3.\n\nThus every induced subgraph on G has minimum degree at least 3 (for the whole graph) or contains a vertex of degree 3.\n\nThis contradicts 2-degeneracy.",
+    "mathContext": "This is the key structural property exploited by Janzer.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e113-janzer",
+    "proofId": "erdos-113",
+    "range": { "startLine": 194, "endLine": 207 },
+    "type": "axiom",
+    "title": "Janzer's Theorem",
+    "content": "**Janzer's Theorem (2023):**\n\nFor any ε > 0, there exists a 3-regular bipartite graph H such that\n  ex(n; H) ≪ n^{4/3 + ε}\n\n**Significance:**\n- H is 3-regular, hence NOT 2-degenerate\n- But ex(n; H) ≪ n^{4/3 + ε} ≪ n^{3/2}\n\nThis directly disproves the backward direction of the conjecture.",
+    "mathContext": "The construction uses subdivision methods from extremal combinatorics.",
+    "significance": "critical",
+    "relatedConcepts": ["Subdivision constructions", "Turán density"]
+  },
+  {
+    "id": "ann-e113-beats-threshold",
+    "proofId": "erdos-113",
+    "range": { "startLine": 209, "endLine": 221 },
+    "type": "theorem",
+    "title": "Janzer Beats Threshold",
+    "content": "**janzer_beats_threshold Theorem:**\n\nFor ε > 0 with ε < 1/6:\n∃ bipartite G: G not 2-degenerate ∧ ex(n;G) ≪ n^{3/2}\n\n**Proof:**\n1. Apply Janzer's counterexample with ε\n2. Get 3-regular bipartite H with ex ≪ n^{4/3+ε}\n3. H is not 2-degenerate (by regular3_not_2degenerate)\n4. Since 4/3 + ε < 3/2 when ε < 1/6, apply asymp_trans_exponent\n5. Thus ex(n;H) ≪ n^{3/2}",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e113-furedi",
+    "proofId": "erdos-113",
+    "range": { "startLine": 227, "endLine": 234 },
+    "type": "axiom",
+    "title": "Füredi's Theorem",
+    "content": "**Füredi's Theorem (1996):**\n\nTight bounds for ex(n; K_{s,t}) when t is large relative to s.\n\nThere exist constants c₁, c₂ > 0 such that:\n  c₁ · n^{2-1/s} ≤ ex(n; K_{s,t}) ≤ c₂ · n^{2-1/s}\n\nThis shows the KST bound is essentially optimal.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e113-related",
+    "proofId": "erdos-113",
+    "range": { "startLine": 236, "endLine": 243 },
+    "type": "axiom",
+    "title": "Related Erdős Problems",
+    "content": "**Related Problems:**\n\n**#146 (Zarankiewicz):** Exact values of ex(n; K_{s,t})\n\n**#147 (Turán Exponents):** For bipartite G, ∃ r ∈ [1,2] with ex(n;G) ≪ n^r\n\nThese problems study the same extremal phenomena from different angles.",
+    "significance": "supporting",
+    "relatedConcepts": ["Zarankiewicz problem", "Turán exponent"]
+  },
+  {
+    "id": "ann-e113-main",
+    "proofId": "erdos-113",
+    "range": { "startLine": 249, "endLine": 261 },
+    "type": "theorem",
+    "title": "Main Result: Conjecture Disproved",
+    "content": "**erdos_113: ¬ErdosSimonovitsConjecture**\n\n**Proof:**\n1. Assume ErdosSimonovitsConjecture holds\n2. Apply backward_false to get counterexample g:\n   - g is bipartite\n   - ex(n;g) ≪ n^{3/2}\n   - g is NOT 2-degenerate\n3. By the conjecture's ↔, ex ≪ n^{3/2} implies 2-degenerate\n4. But g is NOT 2-degenerate — contradiction\n5. Therefore the conjecture is FALSE.\n\n**The $500 prize was claimed by Janzer.**",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e113-forward-thm",
+    "proofId": "erdos-113",
+    "range": { "startLine": 263, "endLine": 267 },
+    "type": "theorem",
+    "title": "Forward Direction Theorem",
+    "content": "**erdos_113_forward:**\n\nisBipartite g → isDegenerate g 2 → ex(n;g) ≪ n^{3/2}\n\nThis theorem confirms the forward direction remains true.\n\nThe conjecture was only half wrong.",
+    "significance": "key"
+  }
+]
