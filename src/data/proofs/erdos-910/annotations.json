@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-910-connsubsets",
+    "proofId": "erdos-910",
+    "range": { "startLine": 57, "endLine": 59 },
+    "type": "definition",
+    "title": "Connected Subsets",
+    "content": "The collection of all connected subsets of a topological space X. A set is connected if it cannot be partitioned into two disjoint non-empty open sets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-910-connsubsetsof",
+    "proofId": "erdos-910",
+    "range": { "startLine": 61, "endLine": 63 },
+    "type": "definition",
+    "title": "Connected Subsets of S",
+    "content": "The set of all connected subsets contained within a given set S. This is what we count to address Erdős's second question about cardinality.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-910-homeo",
+    "proofId": "erdos-910",
+    "range": { "startLine": 72, "endLine": 74 },
+    "type": "definition",
+    "title": "Homeomorphic Sets",
+    "content": "Two sets are homeomorphic if there exists a continuous bijection with continuous inverse between them (with subspace topology). This captures 'topologically equivalent' structure.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-910-diverse",
+    "proofId": "erdos-910",
+    "range": { "startLine": 92, "endLine": 97 },
+    "type": "definition",
+    "title": "Diverse Connected Subset",
+    "content": "A set S has 'diverse' structure if it contains a proper connected subset T that is (1) not a single point, and (2) not homeomorphic to S itself. Erdős expected all connected sets to have this property.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-910-firstconj",
+    "proofId": "erdos-910",
+    "range": { "startLine": 99, "endLine": 102 },
+    "type": "definition",
+    "title": "Erdős's First Conjecture",
+    "content": "Every connected set has a diverse connected subset. Erdős believed connected sets should have rich internal structure with 'genuinely different' proper subsets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-910-card",
+    "proofId": "erdos-910",
+    "range": { "startLine": 111, "endLine": 113 },
+    "type": "definition",
+    "title": "Connected Subset Cardinality",
+    "content": "The cardinal number counting how many connected subsets a set has. For typical sets this is 2^ℵ₀ (the continuum), but Erdős asked if it's always strictly larger.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-910-continuum",
+    "proofId": "erdos-910",
+    "range": { "startLine": 115, "endLine": 116 },
+    "type": "definition",
+    "title": "The Continuum",
+    "content": "The cardinality of ℝ, denoted 2^ℵ₀ or 𝔠. This is the 'size' of the real numbers. Under CH, this equals ℵ₁.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-910-secondconj",
+    "proofId": "erdos-910",
+    "range": { "startLine": 118, "endLine": 121 },
+    "type": "definition",
+    "title": "Erdős's Second Conjecture",
+    "content": "Every connected set in ℝⁿ (n ≥ 2) has more than 2^ℵ₀ connected subsets. This would mean connected sets are 'very rich' in structure.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-910-ch",
+    "proofId": "erdos-910",
+    "range": { "startLine": 129, "endLine": 130 },
+    "type": "definition",
+    "title": "Continuum Hypothesis",
+    "content": "CH states ℵ₁ = 2^ℵ₀: there's no cardinality strictly between the naturals and reals. Rudin's construction requires this axiom, which is independent of ZFC.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-910-rudinset",
+    "proofId": "erdos-910",
+    "range": { "startLine": 132, "endLine": 137 },
+    "type": "definition",
+    "title": "Rudin Set",
+    "content": "A connected set where every proper connected subset is either a single point or homeomorphic to the whole. This 'self-similar' structure means no diverse subsets exist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-910-exactcard",
+    "proofId": "erdos-910",
+    "range": { "startLine": 139, "endLine": 141 },
+    "type": "definition",
+    "title": "Exactly Continuum Subsets",
+    "content": "A Rudin set has exactly 2^ℵ₀ connected subsets—not more. This directly contradicts Erdős's second conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-910-rudintheorem",
+    "proofId": "erdos-910",
+    "range": { "startLine": 149, "endLine": 154 },
+    "type": "theorem",
+    "title": "Rudin's Theorem",
+    "content": "Under CH, there exists a connected subset of ℝ² that is a Rudin set with exactly 2^ℵ₀ connected subsets. This is the key existence result providing the counterexample.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-910-nodiverse",
+    "proofId": "erdos-910",
+    "range": { "startLine": 160, "endLine": 175 },
+    "type": "theorem",
+    "title": "Rudin Sets Have No Diverse Subsets",
+    "content": "If S is a Rudin set, then every proper connected subset is either a point or homeomorphic to S. Thus no 'diverse' subset exists, directly contradicting Erdős's first conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-910-firstfalse",
+    "proofId": "erdos-910",
+    "range": { "startLine": 177, "endLine": 190 },
+    "type": "theorem",
+    "title": "First Conjecture False",
+    "content": "Under CH, Erdős's first conjecture fails: the Rudin set is a connected set without any diverse connected subsets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-910-secondfalse",
+    "proofId": "erdos-910",
+    "range": { "startLine": 192, "endLine": 200 },
+    "type": "theorem",
+    "title": "Second Conjecture False",
+    "content": "Under CH, Erdős's second conjecture fails: the Rudin set has exactly 2^ℵ₀ connected subsets, not more than 2^ℵ₀.",
+    "significance": "critical"
+  }
+]

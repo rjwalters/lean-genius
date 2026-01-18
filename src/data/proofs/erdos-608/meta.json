@@ -1,33 +1,124 @@
 {
   "id": "erdos-608",
-  "title": "Erdős Problem #608",
+  "title": "Erdős #608: Edges in 5-Cycles",
   "slug": "erdos-608",
-  "description": "Let G\" role=\"presentation\" style=\"position: relative;\">GGG be a graph with n\" role=\"presentation\" style=\"position: relative;\">nnn vertices and &gt;n2/4\" role=\"presentation\" style=\"position: relativ...",
+  "description": "Does G with > n²/4 edges have ≥ (2/9)n² edges in C₅? NO! The correct bound is c = (2 + √2)/16 ≈ 0.2134. Füredi-Maleki and Grzesik-Hu-Volec determined the exact value.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Zoltán Füredi, Dániel Maleki, Andrzej Grzesik, Ping Hu, Jan Volec",
     "sourceUrl": "https://erdosproblems.com/608",
-    "date": "",
-    "status": "pending",
+    "date": "2010s",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos608Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "cycles"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 13,
     "erdosNumber": 608,
     "erdosUrl": "https://erdosproblems.com/608",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #608 from erdosproblems.com.",
-    "problemStatement": "Let G\" role=\"presentation\" style=\"position: relative;\">GGG be a graph with n\" role=\"presentation\" style=\"position: relative;\">nnn vertices and &gt;n2/4\" role=\"presentation\" style=\"position: relative;\">>n2/4>n2/4>n^2/4 many edges. Are there at least 29n2\" role=\"presentation\" style=\"position: relative;\">29n229n2\\frac{2}{9}n^2 edges of G\" role=\"presentation\" style=\"position: relative;\">GGG which are contained in a C5\" role=\"presentation\" style=\"position: relative;\">C5C5C_5?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős asked whether graphs with > n²/4 edges must have (2/9)n² edges in 5-cycles. Füredi-Maleki constructed counterexamples showing the bound is unachievable. Grzesik-Hu-Volec proved the tight lower bound, determining c = (2 + √2)/16 ≈ 0.2134 is exact.",
+    "problemStatement": "Let G be a graph with n vertices and > n²/4 edges. Are there at least (2/9)n² edges of G contained in a C₅?",
+    "proofStrategy": "We formalize the C₅ definition, edge counting, the (false) original conjecture, the correct constant c = (2 + √2)/16, Füredi-Maleki upper bound, Grzesik-Hu-Volec lower bound, odd cycles in general, triangles, Turán threshold, and construction details.",
+    "keyInsights": [
+      "The original conjecture (2/9)n² is FALSE",
+      "Correct constant: c = (2 + √2)/16 ≈ 0.2134 < 2/9 ≈ 0.222",
+      "Füredi-Maleki: Upper bound construction with cn² + O(n)",
+      "Grzesik-Hu-Volec: Matching lower bound (c - o(1))n²",
+      "For C_{2k+1} with k ≥ 3, the bound (2/9)n² IS correct"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "C₅ definition and edge counting",
+      "startLine": 32,
+      "endLine": 49
+    },
+    {
+      "id": "conjecture",
+      "title": "Original Conjecture",
+      "summary": "The (false) claim of (2/9)n²",
+      "startLine": 51,
+      "endLine": 62
+    },
+    {
+      "id": "constant",
+      "title": "The Correct Constant",
+      "summary": "c = (2 + √2)/16 ≈ 0.2134",
+      "startLine": 64,
+      "endLine": 75
+    },
+    {
+      "id": "furedi-maleki",
+      "title": "Füredi-Maleki Upper Bound",
+      "summary": "Construction with few edges in C₅",
+      "startLine": 77,
+      "endLine": 90
+    },
+    {
+      "id": "grzesik-hu-volec",
+      "title": "Grzesik-Hu-Volec Lower Bound",
+      "summary": "Tight lower bound (c - o(1))n²",
+      "startLine": 92,
+      "endLine": 110
+    },
+    {
+      "id": "odd-cycles",
+      "title": "Odd Cycles in General",
+      "summary": "For k ≥ 3, (2/9)n² is correct",
+      "startLine": 112,
+      "endLine": 135
+    },
+    {
+      "id": "triangles",
+      "title": "Triangles",
+      "summary": "Erdős-Faudree-Rousseau bound",
+      "startLine": 137,
+      "endLine": 149
+    },
+    {
+      "id": "turan",
+      "title": "Turán Threshold",
+      "summary": "At n²/4 edges, bipartite graphs have 0 edges in C₅",
+      "startLine": 151,
+      "endLine": 172
+    },
+    {
+      "id": "small",
+      "title": "Small Cases",
+      "summary": "n = 5, 6 examples",
+      "startLine": 174,
+      "endLine": 186
+    },
+    {
+      "id": "construction",
+      "title": "Construction Details",
+      "summary": "Füredi-Maleki graph properties",
+      "startLine": 188,
+      "endLine": 217
+    },
+    {
+      "id": "counts",
+      "title": "Related Counts",
+      "summary": "Number of C₅ subgraphs",
+      "startLine": 219,
+      "endLine": 234
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #608 on edges in 5-cycles. The original conjecture of (2/9)n² edges is FALSE; the correct bound is c = (2 + √2)/16 ≈ 0.2134, determined exactly by Füredi-Maleki (upper) and Grzesik-Hu-Volec (lower).",
+    "implications": "The problem reveals that 5-cycles behave differently from longer odd cycles. For C_{2k+1} with k ≥ 3, the bound (2/9)n² IS correct. The special behavior of C₅ connects to algebraic constructions and blow-up techniques.",
+    "openQuestions": [
+      "What is the exact structure of near-extremal graphs?",
+      "Is there a simpler proof of the lower bound?",
+      "What happens for even cycles?"
+    ]
   }
 }

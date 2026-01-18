@@ -240,13 +240,29 @@ local structure (bipartiteness of subgraphs).
 The trivial upper bound: any n-vertex graph has at most n(n-1)/2 edges,
 so edge distance to bipartite is at most this.
 
-**Proof sketch (Aristotle 2026-01-14)**: Delete all edges to get the empty graph,
+**Proof (Aristotle 2026-01-14)**: Delete all edges to get the empty graph,
 which is bipartite (2-colorable with any constant coloring). The number of edges
 in a finite graph is at most n(n-1)/2.
+
+Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
 -/
-axiom edgeDistUpperBound (V : Type*) [Fintype V] [DecidableEq V]
+theorem edgeDistUpperBound (V : Type*) [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] :
-    edgeDistToBipartite V G ≤ Fintype.card V * (Fintype.card V - 1) / 2
+    edgeDistToBipartite V G ≤ Fintype.card V * (Fintype.card V - 1) / 2 := by
+  have h_trivial_upper_bound : ∀ E : Set (Sym2 V), E.ncard ≤ Nat.choose (Fintype.card V) 2 → E ⊆ G.edgeSet → (G.deleteEdges E).IsBipartite → Erdos74.edgeDistToBipartite V G ≤ E.ncard := by
+    exact fun E hE₁ hE₂ hE₃ => csInf_le ⟨ 0, fun k hk => Nat.zero_le _ ⟩ ⟨ E, rfl, hE₂, hE₃ ⟩;
+  refine' le_trans ( h_trivial_upper_bound _ _ _ _ ) _;
+  exact Set.image ( fun e : Sym2 V => e ) ( G.edgeSet );
+  · rw [ Set.ncard_image_of_injective _ fun x y hxy => by simpa using hxy ];
+    rw [ Set.ncard_eq_toFinset_card' ];
+    convert G.card_edgeFinset_le_card_choose_two;
+  · aesop;
+  · refine' ⟨ fun _ => 0, _ ⟩;
+    aesop;
+  · rw [ Set.ncard_image_of_injOn, Set.ncard_eq_toFinset_card' ];
+    · convert G.card_edgeFinset_le_card_choose_two using 1;
+      rw [ Nat.choose_two_right ];
+    · exact fun x hx y hy hxy => hxy
 
 /--
 Bipartite graphs have chromatic number at most 2, giving a lower bound on

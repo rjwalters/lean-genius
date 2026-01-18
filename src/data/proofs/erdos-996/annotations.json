@@ -1,1 +1,281 @@
-[]
+[
+  {
+    "id": "ann-996-header",
+    "proofId": "erdos-996",
+    "range": { "startLine": 1, "endLine": 36 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdős Problem #996 asks: For lacunary sequences and L² functions, if the Fourier error decays like 1/(log log log n)^C, does the strong law of large numbers hold? This connects harmonic analysis, probability, and ergodic theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-996-imports",
+    "proofId": "erdos-996",
+    "range": { "startLine": 38, "endLine": 48 },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import measure theory (for integration and almost-everywhere statements), Fourier analysis on the circle, logarithm functions, and filter theory for limits. These form the mathematical foundation.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-996-lacunary-def",
+    "proofId": "erdos-996",
+    "range": { "startLine": 52, "endLine": 56 },
+    "type": "definition",
+    "title": "Lacunary Sequences",
+    "content": "A sequence n₁ < n₂ < ... is **lacunary** if n(k+1)/n(k) ≥ λ for some λ > 1. This means the gaps grow exponentially. Example: 2^k has gaps doubling each time.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-996-powers-2",
+    "proofId": "erdos-996",
+    "range": { "startLine": 58, "endLine": 65 },
+    "type": "theorem",
+    "title": "Powers of 2 are Lacunary",
+    "content": "The sequence 1, 2, 4, 8, 16, ... (powers of 2) is lacunary with λ = 2. Each term is exactly twice the previous, so the ratio is constant at 2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-996-powers-3",
+    "proofId": "erdos-996",
+    "range": { "startLine": 67, "endLine": 74 },
+    "type": "theorem",
+    "title": "Powers of 3 are Lacunary",
+    "content": "Similarly, 1, 3, 9, 27, ... (powers of 3) is lacunary with λ = 3. Any geometric sequence a^k with a ≥ 2 is lacunary.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-996-strict-mono",
+    "proofId": "erdos-996",
+    "range": { "startLine": 76, "endLine": 79 },
+    "type": "theorem",
+    "title": "Lacunary Implies Increasing",
+    "content": "Any lacunary sequence is strictly increasing. Since n(k+1)/n(k) > 1, we have n(k+1) > n(k) for all k.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-996-fourier-partial",
+    "proofId": "erdos-996",
+    "range": { "startLine": 83, "endLine": 88 },
+    "type": "definition",
+    "title": "Fourier Partial Sums",
+    "content": "The Nth Fourier partial sum fₙ(x) uses frequencies from -N to N. It's the best L² approximation of f using trigonometric polynomials of degree N.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-996-fourier-error",
+    "proofId": "erdos-996",
+    "range": { "startLine": 90, "endLine": 92 },
+    "type": "definition",
+    "title": "Fourier Error",
+    "content": "The L² error ‖f - fₙ‖₂ measures how well the partial sum approximates f. Smoother functions have faster-decaying error. This decay rate is central to Problem #996.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-996-parseval",
+    "proofId": "erdos-996",
+    "range": { "startLine": 94, "endLine": 97 },
+    "type": "axiom",
+    "title": "Parseval's Identity",
+    "content": "Parseval's identity: the L² norm of f equals the sum of squared Fourier coefficients. This connects the function space norm to the frequency domain.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-996-frac",
+    "proofId": "erdos-996",
+    "range": { "startLine": 101, "endLine": 102 },
+    "type": "definition",
+    "title": "Fractional Part",
+    "content": "The fractional part {x} = x - ⌊x⌋ gives the remainder when x is divided by 1. This maps ℝ to [0,1), which is where we evaluate the periodic function f.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-996-ergodic-avg",
+    "proofId": "erdos-996",
+    "range": { "startLine": 104, "endLine": 107 },
+    "type": "definition",
+    "title": "Ergodic Average",
+    "content": "The ergodic average (1/N) Σₖ<N f({α·nₖ}) samples f along the orbit of α under the lacunary sequence. This is a 'time average' along the dynamical trajectory.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-996-space-avg",
+    "proofId": "erdos-996",
+    "range": { "startLine": 109, "endLine": 112 },
+    "type": "definition",
+    "title": "Space Average",
+    "content": "The space average ∫₀¹ f(x)dx is the integral of f over [0,1]. The strong law says the ergodic average converges to this for almost every starting point α.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-996-strong-law-def",
+    "proofId": "erdos-996",
+    "range": { "startLine": 116, "endLine": 119 },
+    "type": "definition",
+    "title": "Strong Law Holds",
+    "content": "The strong law holds for (f, n, α) if the ergodic average converges to the space average as N → ∞. This is the pointwise ergodic theorem for the specific α.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-996-strong-law-ae",
+    "proofId": "erdos-996",
+    "range": { "startLine": 121, "endLine": 124 },
+    "type": "definition",
+    "title": "Strong Law Almost Everywhere",
+    "content": "The strong law holds almost everywhere if it holds for almost every α ∈ [0,1]. This uses measure theory: the set of 'bad' α has measure zero.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-996-raikov",
+    "proofId": "erdos-996",
+    "range": { "startLine": 128, "endLine": 135 },
+    "type": "axiom",
+    "title": "Raikov's Theorem",
+    "content": "**Raikov**: For geometric sequences nₖ = aᵏ (a ≥ 2), the strong law holds for ALL f ∈ L² without any Fourier decay condition. Geometric sequences are 'maximally lacunary'.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-996-ksz",
+    "proofId": "erdos-996",
+    "range": { "startLine": 137, "endLine": 144 },
+    "type": "axiom",
+    "title": "Kac-Salem-Zygmund (1948)",
+    "content": "**KSZ 1948**: If Fourier error decays like 1/(log n)^c for c > 1, the strong law holds for any lacunary sequence. First general result for non-geometric lacunary sequences.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-996-erdos-1949",
+    "proofId": "erdos-996",
+    "range": { "startLine": 146, "endLine": 152 },
+    "type": "axiom",
+    "title": "Erdős (1949)",
+    "content": "**Erdős 1949**: Improved to 1/(log log n)^c for c > 1. This replaces log with log log—a significant weakening of the required decay condition.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-996-matsuyama",
+    "proofId": "erdos-996",
+    "range": { "startLine": 154, "endLine": 160 },
+    "type": "axiom",
+    "title": "Matsuyama (1966)",
+    "content": "**Matsuyama 1966**: Further improved the exponent from c > 1 to c > 1/2 for log log decay. This is the current best known result. Halving the exponent is a major improvement.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-996-problem-def",
+    "proofId": "erdos-996",
+    "range": { "startLine": 164, "endLine": 172 },
+    "type": "definition",
+    "title": "Problem #996 Statement",
+    "content": "**THE OPEN QUESTION**: Is there a constant C such that 1/(log log log n)^C decay suffices? This asks if we can add another 'log' to the hierarchy.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-996-open-status",
+    "proofId": "erdos-996",
+    "range": { "startLine": 174, "endLine": 176 },
+    "type": "axiom",
+    "title": "Open Status",
+    "content": "The problem remains OPEN. We don't know if log log log decay (with any exponent) is sufficient for the strong law.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-996-floor-power",
+    "proofId": "erdos-996",
+    "range": { "startLine": 180, "endLine": 184 },
+    "type": "definition",
+    "title": "Floor Power Question",
+    "content": "Related question: Does the strong law hold for nₖ = ⌊aᵏ⌋ with real a > 1? This is between geometric (a integer) and general lacunary sequences.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-996-bounded",
+    "proofId": "erdos-996",
+    "range": { "startLine": 186, "endLine": 190 },
+    "type": "definition",
+    "title": "Bounded Function Question",
+    "content": "Another open question: Does the strong law hold for ALL bounded functions f and lacunary sequences n, without any Fourier decay condition?",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-996-decay-structure",
+    "proofId": "erdos-996",
+    "range": { "startLine": 194, "endLine": 203 },
+    "type": "definition",
+    "title": "Decay Condition Structure",
+    "content": "We formalize the hierarchy of decay conditions: log, log log, log log log. Each is weaker than the previous, and we track which are known to suffice.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-996-log-decay",
+    "proofId": "erdos-996",
+    "range": { "startLine": 205, "endLine": 209 },
+    "type": "definition",
+    "title": "Log Decay",
+    "content": "The log decay condition: error ≤ 1/(log n)^c for c > 1. This was the original KSZ (1948) requirement.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-996-loglog-decay",
+    "proofId": "erdos-996",
+    "range": { "startLine": 211, "endLine": 215 },
+    "type": "definition",
+    "title": "Log Log Decay",
+    "content": "The log log decay condition: error ≤ 1/(log log n)^c. Erdős (1949) showed c > 1 suffices; Matsuyama (1966) improved to c > 1/2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-996-logloglog-decay",
+    "proofId": "erdos-996",
+    "range": { "startLine": 217, "endLine": 221 },
+    "type": "definition",
+    "title": "Log Log Log Decay",
+    "content": "The log log log decay condition: error ≤ 1/(log log log n)^c. UNKNOWN whether any exponent c suffices. This is Problem #996.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-996-quasi-indep",
+    "proofId": "erdos-996",
+    "range": { "startLine": 225, "endLine": 231 },
+    "type": "theorem",
+    "title": "Quasi-Independence",
+    "content": "Lacunary sequences have 'quasi-independence': the fractional parts {α·nₖ} behave almost like independent random variables. This is why probabilistic tools apply.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-996-not-lacunary",
+    "proofId": "erdos-996",
+    "range": { "startLine": 233, "endLine": 239 },
+    "type": "theorem",
+    "title": "Consecutive Not Lacunary",
+    "content": "The consecutive integers n(k) = k+1 are NOT lacunary: (k+2)/(k+1) → 1, not ≥ λ > 1. The strong law can fail for such sequences.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-996-known-gap",
+    "proofId": "erdos-996",
+    "range": { "startLine": 243, "endLine": 255 },
+    "type": "theorem",
+    "title": "The Known Gap",
+    "content": "We KNOW log log decay with c > 1/2 suffices (Matsuyama). We DON'T KNOW if log log log decay ever suffices. The gap is one iterated logarithm.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-996-weyl",
+    "proofId": "erdos-996",
+    "range": { "startLine": 265, "endLine": 269 },
+    "type": "axiom",
+    "title": "Weyl Equidistribution",
+    "content": "Weyl's theorem: {αn} is equidistributed mod 1 for irrational α. This is a precursor—lacunary sequences give a 'sparse' version with similar equidistribution.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-996-summary",
+    "proofId": "erdos-996",
+    "range": { "startLine": 273, "endLine": 299 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**SUMMARY**: We know log log decay with c > 1/2 works (Matsuyama). The question of whether log log log decay suffices remains OPEN. The formalization captures both the known results and the open problem.",
+    "significance": "critical"
+  }
+]

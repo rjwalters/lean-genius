@@ -1,34 +1,134 @@
 {
   "id": "erdos-625",
-  "title": "Erdős Problem #625",
+  "title": "Erdős #625: Chromatic vs Cochromatic Numbers of Random Graphs",
   "slug": "erdos-625",
-  "description": "The cochromatic number of G\" role=\"presentation\" style=\"position: relative;\">GGG, denoted by &#x03B6;(G)\" role=\"presentation\" style=\"position: relative;\">ζ(G)ζ(G)\\zeta(G), is the minimum number of ...",
+  "description": "For G(n, 1/2), does χ(G) - ζ(G) → ∞ almost surely? The cochromatic number ζ(G) allows color classes to be cliques or independent sets. Heckel/Steiner (2024) proved the difference is unbounded. Prize: $1000 (false) / $100 (true).",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, John Gimbel, Heckel, Steiner",
     "sourceUrl": "https://erdosproblems.com/625",
-    "date": "",
-    "status": "pending",
+    "date": "1989-2024",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos625Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "random-graphs",
+      "coloring"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 24,
     "erdosNumber": 625,
     "erdosUrl": "https://erdosproblems.com/625",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$1000"
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$1000/$100"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #625 from erdosproblems.com. Originally offered with a prize of $1000.",
-    "problemStatement": "The cochromatic number of G\" role=\"presentation\" style=\"position: relative;\">GGG, denoted by &#x03B6;(G)\" role=\"presentation\" style=\"position: relative;\">ζ(G)ζ(G)\\zeta(G), is the minimum number of colours needed to colour the vertices of G\" role=\"presentation\" style=\"position: relative;\">GGG such that each colour class induces either a complete graph or empty graph. Let &#x03C7;(G)\" role=\"presentation\" style=\"position: relative;\">χ(G)χ(G)\\chi(G) denote the chromatic number. If G\" role=\"presentation\" style=\"position: relative;\">GGG is a random graph with n\" role=\"presentation\" style=\"position: relative;\">nnn vertices and each edge included independently with probability 1/2\" role=\"presentation\" style=\"position: relative;\">1/21/21/2 then is it true that almost surely&#x03C7;(G)&#x2212;&#x03B6;(G)&#x2192;&#x221E;\" role=\"presentation\" style=\"text-align: center; position: relative;\">χ(G)−ζ(G)→∞χ(G)−ζ(G)→∞",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Proposed by Erdős and Gimbel at a random graph conference in Poznań, Poland (1989). The cochromatic number generalizes proper coloring by allowing cliques as well as independent sets as color classes. Recent breakthroughs by Heckel and Steiner (2024) have shown the difference χ - ζ grows unboundedly.",
+    "problemStatement": "The cochromatic number ζ(G) is the minimum colors where each class induces a complete or empty graph. For random G(n, 1/2), does χ(G) - ζ(G) → ∞ almost surely? Known: n/(2 log₂ n) ≤ ζ(G) ≤ χ(G) ≤ (1+o(1))n/(2 log₂ n). Heckel conjecture: χ - ζ ≈ n/(log n)³.",
+    "proofStrategy": "We formalize cochromatic colorings, the random graph model G(n, 1/2), Bollobás's bounds, the Heckel-Steiner unboundedness result, Heckel's conjecture, and connections to clique/independence numbers. The formalization includes concentration inequalities and special graph classes.",
+    "keyInsights": [
+      "ζ(G) ≤ χ(G) always",
+      "ζ(G) = ζ(Gᶜ) by symmetry",
+      "Bollobás (1988): χ(G) ≤ (1+o(1))n/(2 log₂ n) a.s.",
+      "Heckel/Steiner (2024): Difference is unbounded w.h.p.",
+      "Heckel conjecture: χ - ζ ≈ n/(log n)³",
+      "χ - ζ ≥ n^{1-ε} for ~95% of n (Heckel 2024c)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-defs",
+      "title": "Basic Definitions",
+      "summary": "Cochromatic coloring and number",
+      "startLine": 33,
+      "endLine": 57
+    },
+    {
+      "id": "basic-props",
+      "title": "Basic Properties",
+      "summary": "ζ ≤ χ and complement symmetry",
+      "startLine": 59,
+      "endLine": 79
+    },
+    {
+      "id": "random-graph",
+      "title": "Random Graph Model",
+      "summary": "G(n, 1/2) and almost sure properties",
+      "startLine": 81,
+      "endLine": 93
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "summary": "Bollobás bounds on χ and ζ",
+      "startLine": 95,
+      "endLine": 113
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "Does χ - ζ → ∞ a.s.?",
+      "startLine": 115,
+      "endLine": 128
+    },
+    {
+      "id": "heckel-steiner",
+      "title": "Heckel-Steiner (2024)",
+      "summary": "Difference is unbounded",
+      "startLine": 130,
+      "endLine": 151
+    },
+    {
+      "id": "heckel-conj",
+      "title": "Heckel's Conjecture",
+      "summary": "χ - ζ ≈ n/(log n)³",
+      "startLine": 153,
+      "endLine": 167
+    },
+    {
+      "id": "clique-independence",
+      "title": "Clique and Independence",
+      "summary": "Bounds via ω and α",
+      "startLine": 169,
+      "endLine": 189
+    },
+    {
+      "id": "concentration",
+      "title": "Concentration",
+      "summary": "χ and ζ are concentrated",
+      "startLine": 191,
+      "endLine": 203
+    },
+    {
+      "id": "special-graphs",
+      "title": "Special Graph Classes",
+      "summary": "Perfect graphs, bipartite, paths",
+      "startLine": 205,
+      "endLine": 220
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds on Difference",
+      "summary": "Trivial and better bounds",
+      "startLine": 222,
+      "endLine": 233
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Known results and status",
+      "startLine": 235,
+      "endLine": 249
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #625 on the gap between chromatic and cochromatic numbers in random graphs. Despite the 2024 breakthrough showing the difference grows unboundedly, the precise asymptotic behavior remains open.",
+    "implications": "Resolution would illuminate the structural difference between proper colorings and cochromatic colorings in random graphs, with implications for graph coloring algorithms.",
+    "openQuestions": [
+      "Does χ(G) - ζ(G) → ∞ almost surely? ($1000/$100 prize)",
+      "Is Heckel's conjecture χ - ζ ≈ n/(log n)³ correct?",
+      "What is the exact asymptotic of χ - ζ?",
+      "What is the concentration of ζ(G)?"
+    ]
   }
 }

@@ -1,33 +1,82 @@
 {
   "id": "erdos-1010",
-  "title": "Erdős Problem #1010",
+  "title": "Erdős Problem #1010: Triangle Supersaturation",
   "slug": "erdos-1010",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Does every graph on ... vertices with ... edges contain at least ... triangles?\n\n\n\nRademacher proved that every grap...",
+  "description": "For t < ⌊n/2⌋, every graph on n vertices with ⌊n²/4⌋ + t edges contains at least t·⌊n/2⌋ triangles. This quantifies the supersaturation phenomenon: how many triangles are forced when exceeding the Turán threshold.",
   "meta": {
-    "author": "Unknown",
+    "author": "Lovász-Simonovits / Nikiforov-Khadzhiivanov",
     "sourceUrl": "https://erdosproblems.com/1010",
-    "date": "",
-    "status": "pending",
+    "date": "1976/1981",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1010Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal",
+      "turán",
+      "supersaturation",
+      "triangles"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 1010,
     "erdosUrl": "https://erdosproblems.com/1010",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1010 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $t<\\lfloor n/2\\rfloor$. Does every graph on $n$ vertices with $\\lfloor n^2/4\\rfloor+t$ edges contain at least $t\\lfloor n/2\\rfloor$ triangles?\n\n\n\nRademacher proved that every graph on $n$ vertices with $\\lfloor n^2/4\\rfloor+1$ edges contains at least $\\lfloor n/2\\rfloor$ triangles. Erd\\H{o}s \\cite{Er62d} proved that every graph on $n$ vertices with $\\lfloor n^2/4\\rfloor+t$ edges contains at least $t\\lfloor n/2\\rfloor$ triangles, for all $t<cn$, for some constant $c>0$.\n\nThis is true, and was proved independently by Lov\\'{a}sz and Simonovits \\cite{LoSi76} and Nikiforov and Khadzhiivanov \\cite{NiKh81}.\n\n\n\n\nReferences\n\n\n[Er62d] Erd\\H{o}s, P., On a theorem of {R}ademacher-{T}ur\\'an. Illinois J. Math. (1962), 122--127.\n\n[LoSi76] Lov\\'asz, L. and Simonovits, Mikl\\'os, On the number of complete subgraphs of a graph. (1976), 431--441.\n\n[NiKh81] Nikiforov, V. S. and Khadzhiivanov, N. G., Solution of the problem of {P}. {E}rd\\H{o}s on the number of\ntriangles in graphs with {$n$}\\ vertices and\n{$[n\\sp{2}/4]+l$}\\ edges. C. R. Acad. Bulgare Sci. (1981), 969--970.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem extends the classical Turán theorem (1941), which established that a triangle-free graph on n vertices has at most ⌊n²/4⌋ edges. Rademacher proved the first supersaturation result: exceeding this threshold by one edge forces at least ⌊n/2⌋ triangles. Erdős asked in 1962 whether adding t edges over the threshold forces t·⌊n/2⌋ triangles, for all t < ⌊n/2⌋.",
+    "problemStatement": "Let t < ⌊n/2⌋. Does every graph on n vertices with ⌊n²/4⌋ + t edges contain at least t·⌊n/2⌋ triangles?",
+    "proofStrategy": "The problem was solved independently by Lovász-Simonovits (1976) and Nikiforov-Khadzhiivanov (1981). The Lovász-Simonovits proof introduced the influential 'stability method' in extremal graph theory: graphs close to the extremal bound must structurally resemble the extremal example (the Turán graph).",
+    "keyInsights": [
+      "The Turán graph K_{⌊n/2⌋,⌈n/2⌉} is the unique triangle-free graph with ⌊n²/4⌋ edges",
+      "Supersaturation quantifies how triangles 'explode' beyond the threshold",
+      "The bound t·⌊n/2⌋ is tight: adding t edges to one part of the Turán graph creates exactly this many triangles",
+      "The stability method shows near-extremal graphs must be close to bipartite"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "turan",
+      "title": "Turán Threshold",
+      "summary": "The Turán number ex(n, K₃) = ⌊n²/4⌋",
+      "startLine": 45,
+      "endLine": 52
+    },
+    {
+      "id": "counting",
+      "title": "Triangle Counting",
+      "summary": "Definition of triangle count as 3-cliques",
+      "startLine": 54,
+      "endLine": 57
+    },
+    {
+      "id": "rademacher",
+      "title": "Rademacher's Theorem",
+      "summary": "Base case: one extra edge forces ⌊n/2⌋ triangles",
+      "startLine": 59,
+      "endLine": 68
+    },
+    {
+      "id": "main",
+      "title": "Main Supersaturation Theorem",
+      "summary": "t extra edges force t·⌊n/2⌋ triangles",
+      "startLine": 70,
+      "endLine": 82
+    },
+    {
+      "id": "tightness",
+      "title": "Tightness",
+      "summary": "The bound is achieved by modifying the Turán graph",
+      "startLine": 96,
+      "endLine": 103
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "The Erdős-Lovász-Simonovits theorem resolves Problem #1010 affirmatively: for t < ⌊n/2⌋, any graph on n vertices with ⌊n²/4⌋ + t edges contains at least t·⌊n/2⌋ triangles. The bound is tight.",
+    "implications": "This result established the 'supersaturation' paradigm in extremal combinatorics. The stability method developed by Lovász and Simonovits has become a fundamental technique for proving exact results in extremal graph theory.",
+    "openQuestions": [
+      "What happens for t ≥ ⌊n/2⌋? The linear relationship breaks down and the problem becomes more subtle.",
+      "Generalizations to counting K_r for r > 3 (Kruskal-Katona type problems)"
+    ]
   }
 }

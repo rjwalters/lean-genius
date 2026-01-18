@@ -1,33 +1,160 @@
 {
   "id": "erdos-859",
-  "title": "Erdős Problem #859",
+  "title": "Erdős #859: Density of Divisor Sum Representations",
   "slug": "erdos-859",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... be the density of the set of integers ... for which ... can be represented as the sum of distinct divisor...",
+  "description": "Let dₜ be the density of n where t is a sum of distinct divisors. Is dₜ ~ c₁/(log t)^c₂? Known: 1/(log t)^c₃ < dₜ < 1/(log t)^c₄ (Erdős 1970).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1970)",
     "sourceUrl": "https://erdosproblems.com/859",
-    "date": "",
-    "status": "pending",
+    "date": "1970",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos859Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisors",
+      "density",
+      "asymptotics"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 8,
     "erdosNumber": 859,
     "erdosUrl": "https://erdosproblems.com/859",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "Divisors of a natural number",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit along filters",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Asymptotics.IsEquivalent",
+        "description": "Asymptotic equivalence",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of DivisorSumSet",
+      "Natural density definitions",
+      "Basic examples (t = 0, 1, 2)",
+      "Erdős's 1970 bounds as axioms",
+      "Connection to practical numbers",
+      "Subset sum perspective",
+      "Divisor function properties"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #859 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $t\\geq 1$ and let $d_t$ be the density of the set of integers $n\\in\\mathbb{N}$ for which $t$ can be represented as the sum of distinct divisors of $n$.\n\nDo there exist constants $c_1,c_2>0$ such that\\[d_t \\sim \\frac{c_1}{(\\log t)^{c_2}}\\]as $t\\to \\infty$?\n\n\n\nErd\\H{o}s \\cite{Er70} proved that $d_t$ always exists, and that there exist some constants $c_3,c_4>0$ such that\\[\\frac{1}{(\\log t)^{c_3}} < d_t < \\frac{1}{(\\log t)^{c_4}}.\\]\n\n\n\n\nReferences\n\n\n[Er70] Erd\\H{o}s, Paul, Some extremal problems in combinatorial number theory. Mathematical Essays Dedicated to A. J. Macintyre (1970), 123-133.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #859 studies the natural density of integers n for which a given t can be represented as a sum of distinct divisors of n. This connects divisibility theory with combinatorics.\n\nIn his 1970 paper 'Some extremal problems in combinatorial number theory', Erdős proved:\n- The density dₜ exists for all t (nontrivial since not all sets have density)\n- The density is always positive for t > 0\n- There exist constants c₃, c₄ > 0 such that 1/(log t)^c₃ < dₜ < 1/(log t)^c₄\n\nThe open question asks whether dₜ has a precise asymptotic form c₁/(log t)^c₂.",
+    "problemStatement": "Let t ≥ 1 and let dₜ be the density of integers n ∈ ℕ for which t can be represented as a sum of distinct divisors of n.\n\n**Question**: Do there exist constants c₁, c₂ > 0 such that\n$$ d_t \\sim \\frac{c_1}{(\\log t)^{c_2}} $$\nas t → ∞?\n\n**Status**: OPEN\n\n**Known (Erdős 1970)**: 1/(log t)^c₃ < dₜ < 1/(log t)^c₄ for some c₃, c₄ > 0",
+    "proofStrategy": "We formalize the problem by:\n\n1. **DivisorSumSet t**: The set of n where t is a subset sum of divisors of n\n2. **Natural density**: The limiting proportion #{n ≤ N : n ∈ S}/N\n3. **Basic examples**: t = 0 gives density 1, t = 1 gives density 1, t = 2 gives density 1/2\n4. **Erdős's bounds**: Axiomatize the 1970 upper/lower bounds\n5. **Practical numbers**: Connection to n where ALL k ≤ σ(n) are representable\n6. **Subset sum**: The combinatorial structure of divisor subset sums",
+    "keyInsights": [
+      "**DivisorSumSet t**: The set of n where t = d₁ + d₂ + ... + dₖ for distinct divisors dᵢ of n. For n = 6 with divisors {1, 2, 3, 6}, we can represent t = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12.",
+      "**Natural density**: dₜ = lim_{N→∞} #{n ≤ N : n ∈ DivisorSumSet t}/N. Not all sets have density, but Erdős proved DivisorSumSet t does.",
+      "**Bounds decay like (log t)^{-c}**: As t grows, fewer n can represent t. The density decays, but the precise rate is unknown.",
+      "**Practical numbers**: Numbers n where every k ≤ σ(n) is representable. These contribute to many DivisorSumSet t and have positive density.",
+      "**Multiplicative structure**: Divisors of mn for coprime m, n factor nicely, aiding analysis."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "divisor-sum-set",
+      "title": "Divisor Sum Sets",
+      "startLine": 46,
+      "endLine": 65,
+      "summary": "Definition of DivisorSumSet t."
+    },
+    {
+      "id": "density",
+      "title": "Natural Density",
+      "startLine": 67,
+      "endLine": 80,
+      "summary": "Counting function and density definitions."
+    },
+    {
+      "id": "examples",
+      "title": "Basic Examples",
+      "startLine": 82,
+      "endLine": 113,
+      "summary": "Examples for t = 0, 1, 2."
+    },
+    {
+      "id": "erdos-bounds",
+      "title": "Erdős's Bounds (1970)",
+      "startLine": 115,
+      "endLine": 141,
+      "summary": "Existence, positivity, and upper/lower bounds."
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "startLine": 143,
+      "endLine": 158,
+      "summary": "Precise asymptotics dₜ ~ c₁/(log t)^c₂?"
+    },
+    {
+      "id": "divisor-functions",
+      "title": "The Divisor Function",
+      "startLine": 160,
+      "endLine": 174,
+      "summary": "σ(n), τ(n), and subset sum counts."
+    },
+    {
+      "id": "multiplicative",
+      "title": "Multiplicative Structure",
+      "startLine": 176,
+      "endLine": 189,
+      "summary": "Divisors of coprime products."
+    },
+    {
+      "id": "comparisons",
+      "title": "Density Comparisons",
+      "startLine": 191,
+      "endLine": 206,
+      "summary": "Monotonicity properties of density."
+    },
+    {
+      "id": "practical",
+      "title": "Practical Numbers",
+      "startLine": 208,
+      "endLine": 223,
+      "summary": "Connection to practical numbers."
+    },
+    {
+      "id": "subset-sum",
+      "title": "Subset Sum Problem",
+      "startLine": 225,
+      "endLine": 236,
+      "summary": "Subset sum perspective."
+    },
+    {
+      "id": "sigma-growth",
+      "title": "Growth of σ(n)",
+      "startLine": 238,
+      "endLine": 248,
+      "summary": "Average order and typical size of σ(n)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 250,
+      "endLine": 277,
+      "summary": "Main results combined."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #859 on the density of divisor sum representations. Erdős (1970) proved that dₜ exists, is positive, and satisfies 1/(log t)^c₃ < dₜ < 1/(log t)^c₄. Whether dₜ has a precise asymptotic form c₁/(log t)^c₂ remains open.",
+    "implications": "The problem connects number theory (divisors) with combinatorics (subset sums) and analysis (asymptotic density). The structure of divisor sets—particularly their multiplicative properties—is key to understanding which representations are possible.",
+    "openQuestions": [
+      "Does dₜ ~ c₁/(log t)^c₂ for some constants c₁, c₂ > 0?",
+      "What are the optimal values of c₃ and c₄ in Erdős's bounds?",
+      "How does dₜ depend on the arithmetic properties of t?",
+      "Is there a connection to the distribution of highly composite numbers?"
+    ]
   }
 }

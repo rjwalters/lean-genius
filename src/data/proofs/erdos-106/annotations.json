@@ -1,1 +1,281 @@
-[]
+[
+  {
+    "id": "ann-106-square",
+    "proofId": "erdos-106",
+    "range": { "startLine": 44, "endLine": 48 },
+    "type": "definition",
+    "title": "Square Structure",
+    "content": "A square is defined by its center point and positive side length. All squares have sides parallel to the coordinate axes.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-106-interior",
+    "proofId": "erdos-106",
+    "range": { "startLine": 50, "endLine": 52 },
+    "type": "definition",
+    "title": "Square Interior",
+    "content": "The interior of a square: all points strictly inside (not on the boundary). Two squares can touch at edges but not overlap interiors.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-106-closure",
+    "proofId": "erdos-106",
+    "range": { "startLine": 54, "endLine": 56 },
+    "type": "definition",
+    "title": "Square Closure",
+    "content": "The closure includes the boundary. Used to check containment in the unit square.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-106-disjoint",
+    "proofId": "erdos-106",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "definition",
+    "title": "Disjoint Interiors",
+    "content": "Two squares have disjoint interiors if they don't overlap (touching boundaries is allowed). This is the non-overlapping condition.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-106-unit",
+    "proofId": "erdos-106",
+    "range": { "startLine": 68, "endLine": 69 },
+    "type": "definition",
+    "title": "The Unit Square",
+    "content": "The unit square [0,1] × [0,1]. All packed squares must fit inside this region.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-106-contained",
+    "proofId": "erdos-106",
+    "range": { "startLine": 71, "endLine": 73 },
+    "type": "definition",
+    "title": "Contained in Unit",
+    "content": "A square is contained in the unit square if its entire closure lies within [0,1]².",
+    "significance": "key"
+  },
+  {
+    "id": "ann-106-packing",
+    "proofId": "erdos-106",
+    "range": { "startLine": 81, "endLine": 85 },
+    "type": "definition",
+    "title": "Valid Packing",
+    "content": "A packing of n squares: all contained in unit square, all pairs have disjoint interiors. This is the feasible region for optimization.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-106-sum",
+    "proofId": "erdos-106",
+    "range": { "startLine": 87, "endLine": 89 },
+    "type": "definition",
+    "title": "Sum of Side Lengths",
+    "content": "sumSides(P) = Σᵢ sideᵢ. This is the objective function to maximize.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-106-fdef",
+    "proofId": "erdos-106",
+    "range": { "startLine": 97, "endLine": 99 },
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "f(n) = sup{sumSides(P) : P is a valid packing of n squares}. The maximum sum of side lengths achievable with n squares.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-106-bounded",
+    "proofId": "erdos-106",
+    "range": { "startLine": 101, "endLine": 102 },
+    "type": "theorem",
+    "title": "Cauchy-Schwarz Bound",
+    "content": "f(n) ≤ √n. By Cauchy-Schwarz: (Σ sᵢ)² ≤ n · Σ sᵢ² ≤ n · (total area) ≤ n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-106-mono",
+    "proofId": "erdos-106",
+    "range": { "startLine": 104, "endLine": 105 },
+    "type": "theorem",
+    "title": "f is Monotone",
+    "content": "f(n) ≤ f(m) when n ≤ m. More squares can only help (or at worst match) the sum.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-106-f1",
+    "proofId": "erdos-106",
+    "range": { "startLine": 111, "endLine": 112 },
+    "type": "theorem",
+    "title": "f(1) = 1",
+    "content": "One square: the unit square itself achieves sum = 1, which is optimal.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-106-f2",
+    "proofId": "erdos-106",
+    "range": { "startLine": 114, "endLine": 115 },
+    "type": "theorem",
+    "title": "f(2) = 1 (Erdős)",
+    "content": "Two squares in the unit square: maximum sum is still 1. This was Erdős's first result on this problem, proved for Hungarian high school students.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-106-f4",
+    "proofId": "erdos-106",
+    "range": { "startLine": 117, "endLine": 118 },
+    "type": "theorem",
+    "title": "f(4) = 2",
+    "content": "Four squares of side 1/2 tile the unit square with sum = 4 × 1/2 = 2. This equals √4.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-106-f5",
+    "proofId": "erdos-106",
+    "range": { "startLine": 120, "endLine": 121 },
+    "type": "theorem",
+    "title": "f(5) = 2 (Newman)",
+    "content": "Five squares can't beat the 2×2 grid. Newman proved this via personal communication to Erdős. The first non-trivial case beyond perfect squares.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-106-f9",
+    "proofId": "erdos-106",
+    "range": { "startLine": 123, "endLine": 124 },
+    "type": "theorem",
+    "title": "f(9) = 3",
+    "content": "Nine squares of side 1/3 tile perfectly with sum = 9 × 1/3 = 3 = √9.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-106-perfect",
+    "proofId": "erdos-106",
+    "range": { "startLine": 130, "endLine": 131 },
+    "type": "theorem",
+    "title": "f(k²) = k",
+    "content": "For perfect squares, f(k²) = k. Achieved by k×k grid of squares with side 1/k. Matches the Cauchy-Schwarz bound √(k²) = k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-106-grid",
+    "proofId": "erdos-106",
+    "range": { "startLine": 136, "endLine": 139 },
+    "type": "theorem",
+    "title": "Grid Construction",
+    "content": "The k×k grid of side-1/k squares achieves f(k²) = k. This is the optimal packing for perfect square counts.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-106-lower",
+    "proofId": "erdos-106",
+    "range": { "startLine": 145, "endLine": 146 },
+    "type": "theorem",
+    "title": "Lower Bound f(k²+1) ≥ k",
+    "content": "Can achieve sum ≥ k with k²+1 squares: use k×k grid, replace one square with two smaller ones. The conjecture says this is optimal.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-106-conj",
+    "proofId": "erdos-106",
+    "range": { "startLine": 148, "endLine": 150 },
+    "type": "conjecture",
+    "title": "Main Conjecture",
+    "content": "f(k²+1) = k for all k ≥ 1. One extra square beyond a perfect grid doesn't increase the sum. This is the central open question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-106-equiv",
+    "proofId": "erdos-106",
+    "range": { "startLine": 152, "endLine": 159 },
+    "type": "theorem",
+    "title": "Conjecture Equivalence",
+    "content": "The conjecture is equivalent to: f(k²+1) = f(k²). The k² point is a 'plateau' where adding one square doesn't help.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-106-halasz-odd",
+    "proofId": "erdos-106",
+    "range": { "startLine": 167, "endLine": 169 },
+    "type": "theorem",
+    "title": "Halász Bound (Odd)",
+    "content": "f(k²+2c+1) ≥ k + c/k for c ≥ 1. Beyond k²+1, adding pairs of squares can increase the sum.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-106-halasz-even",
+    "proofId": "erdos-106",
+    "range": { "startLine": 171, "endLine": 173 },
+    "type": "theorem",
+    "title": "Halász Bound (Even)",
+    "content": "f(k²+2c) ≥ k + c/(k+1) for c ≥ 1. Different formula for even increments beyond k².",
+    "significance": "key"
+  },
+  {
+    "id": "ann-106-soifer",
+    "proofId": "erdos-106",
+    "range": { "startLine": 181, "endLine": 184 },
+    "type": "conjecture",
+    "title": "Erdős-Soifer Conjecture",
+    "content": "f(k²+2c+1) = k + c/k for |c| < k. This generalizes the main conjecture to a complete formula for f near perfect squares.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-106-praton",
+    "proofId": "erdos-106",
+    "range": { "startLine": 186, "endLine": 188 },
+    "type": "theorem",
+    "title": "Praton's Equivalence",
+    "content": "The main conjecture f(k²+1) = k is equivalent to the full Erdős-Soifer conjecture. Solving one solves all.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-106-gdef",
+    "proofId": "erdos-106",
+    "range": { "startLine": 196, "endLine": 197 },
+    "type": "definition",
+    "title": "Axis-Parallel Function g",
+    "content": "g(n) is f(n) restricted to axis-parallel squares. In our formalization, g = f since all squares are axis-parallel.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-106-bku",
+    "proofId": "erdos-106",
+    "range": { "startLine": 199, "endLine": 200 },
+    "type": "theorem",
+    "title": "BKU Theorem (2024)",
+    "content": "Baek-Koizumi-Ueoro proved g(k²+1) = k for axis-parallel squares. They also determined all values of g(k²+2c+1) = k + c/k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-106-plateau",
+    "proofId": "erdos-106",
+    "range": { "startLine": 206, "endLine": 207 },
+    "type": "definition",
+    "title": "Plateau Set",
+    "content": "plateauSet = {n : f(n+1) = f(n)}. The values where adding one square doesn't increase the sum.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-106-oneplateau",
+    "proofId": "erdos-106",
+    "range": { "startLine": 209, "endLine": 213 },
+    "type": "theorem",
+    "title": "1 is a Plateau",
+    "content": "1 ∈ plateauSet since f(2) = f(1) = 1. The first verified plateau point.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-106-perfectplateau",
+    "proofId": "erdos-106",
+    "range": { "startLine": 215, "endLine": 220 },
+    "type": "theorem",
+    "title": "Perfect Squares as Plateaus",
+    "content": "k² ∈ plateauSet iff f(k²+1) = k. The main conjecture is exactly that all perfect squares are plateau points.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-106-open",
+    "proofId": "erdos-106",
+    "range": { "startLine": 226, "endLine": 227 },
+    "type": "conjecture",
+    "title": "The Open Problem",
+    "content": "Is f(k²+1) = k for all k? Despite 60+ years and the axis-parallel case being solved, the general problem remains open.",
+    "significance": "critical"
+  }
+]

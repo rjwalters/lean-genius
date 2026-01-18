@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-608-c5",
+    "proofId": "erdos-608",
+    "range": { "startLine": 34, "endLine": 38 },
+    "type": "definition",
+    "title": "5-Cycle (C₅)",
+    "content": "Five distinct vertices forming a cycle: a-b-c-d-e-a.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-608-edgeinc5",
+    "proofId": "erdos-608",
+    "range": { "startLine": 40, "endLine": 42 },
+    "type": "definition",
+    "title": "Edge in C₅",
+    "content": "An edge is in a C₅ if it's part of some 5-cycle.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-608-count",
+    "proofId": "erdos-608",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "definition",
+    "title": "Edges in C₅ Count",
+    "content": "The number of edges contained in some C₅.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-608-original",
+    "proofId": "erdos-608",
+    "range": { "startLine": 53, "endLine": 58 },
+    "type": "definition",
+    "title": "Original Conjecture",
+    "content": "Erdős's conjecture: ≥ (2/9)n² edges in C₅. This is FALSE.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-608-false",
+    "proofId": "erdos-608",
+    "range": { "startLine": 60, "endLine": 62 },
+    "type": "theorem",
+    "title": "Conjecture is False",
+    "content": "The original conjecture is disproven.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-608-c",
+    "proofId": "erdos-608",
+    "range": { "startLine": 66, "endLine": 67 },
+    "type": "definition",
+    "title": "Correct Constant c",
+    "content": "c = (2 + √2)/16 ≈ 0.2134. The exact answer.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-608-clt",
+    "proofId": "erdos-608",
+    "range": { "startLine": 73, "endLine": 75 },
+    "type": "theorem",
+    "title": "c < 2/9",
+    "content": "The correct constant is less than Erdős's guess.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-608-fm",
+    "proofId": "erdos-608",
+    "range": { "startLine": 79, "endLine": 86 },
+    "type": "definition",
+    "title": "Füredi-Maleki Construction",
+    "content": "Graphs with few edges in C₅: at most (c + ε)n².",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-608-ghv",
+    "proofId": "erdos-608",
+    "range": { "startLine": 94, "endLine": 101 },
+    "type": "definition",
+    "title": "Grzesik-Hu-Volec Bound",
+    "content": "Tight lower bound: at least (c - ε)n² edges in C₅.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-608-exact",
+    "proofId": "erdos-608",
+    "range": { "startLine": 107, "endLine": 110 },
+    "type": "theorem",
+    "title": "Exact Answer",
+    "content": "Combined: The answer is exactly cn².",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-608-oddcycle",
+    "proofId": "erdos-608",
+    "range": { "startLine": 114, "endLine": 118 },
+    "type": "definition",
+    "title": "Odd Cycle",
+    "content": "A (2k+1)-cycle for general k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-608-general",
+    "proofId": "erdos-608",
+    "range": { "startLine": 127, "endLine": 135 },
+    "type": "theorem",
+    "title": "General Odd Cycle Bound",
+    "content": "For k ≥ 3, the bound (2/9)n² IS correct.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-608-triangles",
+    "proofId": "erdos-608",
+    "range": { "startLine": 143, "endLine": 149 },
+    "type": "theorem",
+    "title": "Erdős-Faudree-Rousseau",
+    "content": "At least 2⌊n/2⌋ + 1 edges in triangles.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-608-turan",
+    "proofId": "erdos-608",
+    "range": { "startLine": 156, "endLine": 163 },
+    "type": "theorem",
+    "title": "Turán Graph",
+    "content": "Bipartite Turán graph has 0 edges in C₅.",
+    "significance": "key"
+  }
+]

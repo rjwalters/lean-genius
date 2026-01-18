@@ -1,33 +1,97 @@
 {
   "id": "erdos-1015",
-  "title": "Erdős Problem #1015",
+  "title": "Erdős Problem #1015: Partitioning 2-Colored Complete Graphs",
   "slug": "erdos-1015",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that, in any two-colouring of the edges of ..., the edges can be partitioned into vertex disjoint mon...",
+  "description": "What is f(t), the minimum leftover vertices when partitioning any 2-colored Kₙ into vertex-disjoint monochromatic Kₜ's? Burr-Erdős-Spencer (1975) proved f(t) = R(t, t-1) + x where 0 ≤ x < t, showing f(t)^{1/t} → 4 (not 1) and f(t) is not O(t).",
   "meta": {
-    "author": "Unknown",
+    "author": "Burr-Erdős-Spencer (1975)",
     "sourceUrl": "https://erdosproblems.com/1015",
-    "date": "",
-    "status": "pending",
+    "date": "1975",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1015Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey",
+      "clique-partition",
+      "coloring"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 1015,
     "erdosUrl": "https://erdosproblems.com/1015",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1015 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(t)$ be minimal such that, in any two-colouring of the edges of $K_n$, the edges can be partitioned into vertex disjoint monochromatic copies of $K_t$ (not necessarily the same colour) with at most $f(t)$ vertices remaining.\n\nEstimate $f(t)$. In particular, is it true that $f(t)^{1/t}\\to 1$? Is it true that $f(t)\\ll t$?\n\n\n\nA question of Moon \\cite{Mo66b}, who proved that $f(3)=4$, at least for $n\\geq 8$.\n\nPresumably Erd\\H{o}s intended to only ask this question for $n$ sufficiently large depending on $t$. Erd\\H{o}s notes that $f(t)\\ll 4^t$, by comparing to the Ramsey number $R(t)$.\n\nBurr, Erd\\H{o}s, and Spencer \\cite{BES75} proved that, for $n$ sufficiently large depending on $t$,\\[f(t)=R(t,t-1)+x(t,n),\\]where $0\\leq x(t,n)<t$ is such that $n+1\\equiv R(t,t-1)+x\\pmod{t}$.\n\n\n\n\nReferences\n\n\n[BES75] Burr, S. A. and Erd\\H{o}s, P. and Spencer, J. H., Ramsey theorems for multiple copies of graphs. Trans. Amer. Math. Soc. (1975), 87--99.\n\n[Mo66b] Moon, J. W., Disjoint triangles in chromatic graphs. Math. Mag. (1966), 259--261.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem, originally posed by Moon (1966), asks about efficiently partitioning the edges of a 2-colored complete graph using monochromatic cliques. Moon proved f(3) = 4 for n ≥ 8, meaning when partitioning 2-colored Kₙ into monochromatic triangles, at most 4 vertices remain uncovered. Erdős noted f(t) ≪ 4^t by comparison with Ramsey numbers, and asked whether f(t)^{1/t} → 1 or f(t) ≪ t.",
+    "problemStatement": "Let f(t) be minimal such that, in any two-coloring of the edges of Kₙ, the edges can be partitioned into vertex-disjoint monochromatic copies of Kₜ (not necessarily the same color) with at most f(t) vertices remaining. Estimate f(t). Is f(t)^{1/t} → 1? Is f(t) ≪ t?",
+    "proofStrategy": "Burr, Erdős, and Spencer (1975) proved an exact formula: for n sufficiently large depending on t, f(t) = R(t, t-1) + x(t,n) where 0 ≤ x(t,n) < t and n + 1 ≡ R(t,t-1) + x (mod t). This shows f(t) ≈ R(t, t-1), which grows like 4^t/√t, answering both questions negatively.",
+    "keyInsights": [
+      "f(t) depends on the Ramsey number R(t, t-1), not just t",
+      "Moon's f(3) = 4 is the first non-trivial case",
+      "The exact formula involves a modular correction term x(t,n)",
+      "f(t)^{1/t} → 4, not 1 as Erdős asked",
+      "f(t) grows exponentially, not linearly in t"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "two-coloring",
+      "title": "Two-Colorings and Monochromatic Cliques",
+      "summary": "Definitions for 2-coloring of edges and monochromatic cliques",
+      "startLine": 45,
+      "endLine": 58
+    },
+    {
+      "id": "clique-partition",
+      "title": "Clique Partitions",
+      "summary": "Structure for partitioning into vertex-disjoint monochromatic cliques",
+      "startLine": 60,
+      "endLine": 85
+    },
+    {
+      "id": "f-definition",
+      "title": "The Function f(t)",
+      "summary": "Definition of f(t) as min-max over colorings and partitions",
+      "startLine": 87,
+      "endLine": 103
+    },
+    {
+      "id": "moon",
+      "title": "Moon's Theorem",
+      "summary": "f(3) = 4 for the triangle case",
+      "startLine": 105,
+      "endLine": 113
+    },
+    {
+      "id": "ramsey-bound",
+      "title": "Ramsey Bound",
+      "summary": "Erdős's observation that f(t) < R(t,t) ≤ 4^t",
+      "startLine": 115,
+      "endLine": 126
+    },
+    {
+      "id": "exact-formula",
+      "title": "Burr-Erdős-Spencer Exact Formula",
+      "summary": "f(t) = R(t, t-1) + x with 0 ≤ x < t",
+      "startLine": 128,
+      "endLine": 140
+    },
+    {
+      "id": "asymptotic",
+      "title": "Asymptotic Behavior",
+      "summary": "f(t)^{1/t} → 4 and f(t) is not O(t)",
+      "startLine": 142,
+      "endLine": 152
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Burr, Erdős, and Spencer completely resolved this problem in 1975 by proving an exact formula: f(t) = R(t, t-1) + x(t,n) where the correction term x depends on n mod t. This shows f(t) grows like the Ramsey number R(t, t-1) ≈ 4^t/√t.",
+    "implications": "The result answers both of Erdős's questions negatively: f(t)^{1/t} → 4 (not 1), and f(t) grows exponentially (not linearly). This connects the clique partition problem directly to Ramsey theory.",
+    "openQuestions": [
+      "Exact values of f(t) for specific small t beyond t=3",
+      "Algorithmic complexity of finding optimal partitions",
+      "Generalizations to k-colorings for k > 2"
+    ]
   }
 }

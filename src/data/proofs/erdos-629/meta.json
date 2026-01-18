@@ -1,33 +1,104 @@
 {
   "id": "erdos-629",
-  "title": "Erdős Problem #629",
+  "title": "Erdős #629: List Chromatic Number of Bipartite Graphs",
   "slug": "erdos-629",
-  "description": "The list chromatic number &#x03C7;L(G)\" role=\"presentation\" style=\"position: relative;\">χL(G)χL(G)\\chi_L(G) is defined to be the minimal k\" role=\"presentation\" style=\"position: relative;\">kkk such ...",
+  "description": "Find n(k) = minimal vertices in bipartite G with list chromatic number χ_L(G) > k. Surprisingly, χ_L can be arbitrarily large even though χ ≤ 2!",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Arthur Rubin, Herbert Taylor",
     "sourceUrl": "https://erdosproblems.com/629",
-    "date": "",
-    "status": "pending",
+    "date": "1980",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos629Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "list-coloring",
+      "bipartite-graphs"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 17,
     "erdosNumber": 629,
     "erdosUrl": "https://erdosproblems.com/629",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #629 from erdosproblems.com.",
-    "problemStatement": "The list chromatic number &#x03C7;L(G)\" role=\"presentation\" style=\"position: relative;\">χL(G)χL(G)\\chi_L(G) is defined to be the minimal k\" role=\"presentation\" style=\"position: relative;\">kkk such that for any assignment of a list of k\" role=\"presentation\" style=\"position: relative;\">kkk colours to each vertex of G\" role=\"presentation\" style=\"position: relative;\">GGG (perhaps different lists for different vertices) a colouring of each vertex by a colour on its list can be chosen such that adjacent vertices receive distinct colours. Determine the minimal number of vertices n(k)\" role=\"presentation\" style=\"position: relative;\">n(k)n(k)n(k) of a bipartite graph G\" role=\"presentation\" style=\"position: relative;\">GGG such that &#x03C7;L(G)&gt;k\" role=\"presentation\" style=\"position: relative;\">χL(G)>kχL(G)>k\\chi_L(G)>k.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Introduced by Erdős, Rubin, and Taylor in 1980. They proved n(2) = 6 and gave initial bounds. Hanson, MacGillivray, and Toft (1996) found n(3) = 14 and a recursive bound. Radhakrishnan and Srinivasan (2000) improved the lower bound using probabilistic methods. Related to Problem #901 on Property B.",
+    "problemStatement": "The list chromatic number χ_L(G) is the minimal k such that for any assignment of lists of k colors to vertices, a proper coloring exists from the lists. Find n(k) = minimum number of vertices in a bipartite graph G with χ_L(G) > k.",
+    "proofStrategy": "We formalize list colorings, list chromatic number, and the function n(k). The exact values n(2) = 6 and n(3) = 14 are stated, along with the original and improved bounds. The connection to Property B is captured.",
+    "keyInsights": [
+      "Bipartite graphs have χ(G) ≤ 2 but χ_L(G) can be arbitrarily large!",
+      "Exact values: n(2) = 6 (Erdős-Rubin-Taylor), n(3) = 14 (Hanson-MacGillivray-Toft)",
+      "Original bounds: 2^{k-1} < n(k) < k² · 2^{k+2}",
+      "Improved lower: 2^k · (k/log k)^{1/2} ≪ n(k) (Radhakrishnan-Srinivasan)",
+      "Connection to Property B: m(k) ≤ n(k) ≤ m(k+1)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "list-coloring",
+      "title": "List Coloring Definitions",
+      "summary": "Color list assignments, respecting lists, list chromatic number",
+      "startLine": 37,
+      "endLine": 60
+    },
+    {
+      "id": "bipartite",
+      "title": "Bipartite Graphs",
+      "summary": "Bipartite definition and the surprising unboundedness of χ_L",
+      "startLine": 62,
+      "endLine": 77
+    },
+    {
+      "id": "n-function",
+      "title": "The Function n(k)",
+      "summary": "Minimal vertices for χ_L > k in bipartite graphs",
+      "startLine": 79,
+      "endLine": 92
+    },
+    {
+      "id": "exact-values",
+      "title": "Exact Values",
+      "summary": "n(2) = 6 and n(3) = 14",
+      "startLine": 94,
+      "endLine": 102
+    },
+    {
+      "id": "original-bounds",
+      "title": "Original Bounds",
+      "summary": "Erdős-Rubin-Taylor 1980: 2^{k-1} < n(k) < k² · 2^{k+2}",
+      "startLine": 104,
+      "endLine": 112
+    },
+    {
+      "id": "improved-bounds",
+      "title": "Improved Bounds",
+      "summary": "Radhakrishnan-Srinivasan lower bound and HMT recursive upper",
+      "startLine": 114,
+      "endLine": 126
+    },
+    {
+      "id": "property-b",
+      "title": "Property B Connection",
+      "summary": "Relation to m(k) thresholds from Problem #901",
+      "startLine": 128,
+      "endLine": 141
+    },
+    {
+      "id": "constructions",
+      "title": "Constructions",
+      "summary": "Complete bipartite graphs K_{m,n} and their list chromatic numbers",
+      "startLine": 143,
+      "endLine": 167
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #629 on list chromatic numbers of bipartite graphs. The central surprise is that while bipartite graphs are 2-colorable, their list chromatic number can be arbitrarily large. The exact asymptotic behavior of n(k) remains open.",
+    "implications": "List coloring is fundamentally different from ordinary coloring. The connection to Property B links this to hypergraph coloring theory. Understanding n(k) has implications for online algorithms and scheduling problems.",
+    "openQuestions": [
+      "What is the exact asymptotic behavior of n(k)?",
+      "Is n(k) = Θ(2^k · k^α) for some specific α?",
+      "Can n(4) be computed exactly?"
+    ]
   }
 }

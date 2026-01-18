@@ -1,33 +1,144 @@
 {
   "id": "erdos-480",
-  "title": "Erdős Problem #480",
+  "title": "Erdős Problem #480: Sequence Approximation in the Unit Interval",
   "slug": "erdos-480",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence. Is it true that\\[\\inf_n \\liminf_{m\\to \\infty} n \\lvert x_{m+n}-x_m\\rvert\\leq 5^{-1/2}\\approx...",
+  "description": "For any sequence in [0,1], are there infinitely many pairs (m,n) with |x_{m+n} - x_m| ≤ 1/(√5·n)? Solved by Chung-Graham (1984) with optimal constant.",
   "meta": {
-    "author": "Unknown",
+    "author": "Chung & Graham (1984)",
     "sourceUrl": "https://erdosproblems.com/480",
-    "date": "",
-    "status": "pending",
+    "date": "1984",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos480Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "sequences",
+      "distribution",
+      "golden-ratio",
+      "fibonacci"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 480,
     "erdosUrl": "https://erdosproblems.com/480",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.Icc",
+        "description": "Closed intervals [a, b]",
+        "module": "Mathlib.Data.Set.Intervals.Basic"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Predicate for infinite sets",
+        "module": "Mathlib.Data.Set.Finite"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root on real numbers",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Nat.fib",
+        "description": "Fibonacci sequence",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Clean formalization of Newman's conjecture and Chung-Graham theorem",
+      "Definition of unit interval sequences and good approximation pairs",
+      "Formalization of the Chung-Graham optimal constant via Fibonacci sum",
+      "Verified properties of the golden ratio and its conjugate",
+      "Connection between √5, golden ratio, and Fibonacci numbers",
+      "Proof that √5 < chungGrahamConstant (comparing bounds)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #480 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $x_1,x_2,\\ldots\\in [0,1]$ be an infinite sequence. Is it true that\\[\\inf_n \\liminf_{m\\to \\infty} n \\lvert x_{m+n}-x_m\\rvert\\leq 5^{-1/2}\\approx 0.447?\\]\n\n\n\nA conjecture of Newman. This was proved by Chung and Graham \\cite{ChGr84}, who in fact prove that\\[\\inf_n \\liminf_{m\\to \\infty} n \\lvert x_{m+n}-x_m\\rvert\\leq \\frac{1}{c}\\approx 0.3944\\]where\\[c=1+\\sum_{k\\geq 1}\\frac{1}{F_{2k}}=2.535\\cdots\\]and $F_m$ is the $m$th Fibonacci number. They also prove that this constant is best possible (van Doorn discusses their construction in the comments).\n\n\n\n\nReferences\n\n\n[ChGr84] Chung, F. R. K. and Graham, R. L., On irregularities of distribution. (1984), 181--222.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem originated with Donald Newman, who conjectured that for any sequence x₁, x₂, ... in [0, 1], there must be infinitely many pairs (m, n) where |x_{m+n} - x_m| ≤ 1/(√5·n). The appearance of √5 is connected to the golden ratio φ = (1+√5)/2.\n\nFan Chung and Ronald Graham (1984) proved Newman's conjecture and found something remarkable: the optimal constant is not √5 but rather c = 1 + Σ_{k≥1} 1/F_{2k} ≈ 2.535, where F_m is the m-th Fibonacci number. Since c > √5 ≈ 2.236, their bound 1/c ≈ 0.394 is stronger than Newman's 1/√5 ≈ 0.447.\n\nThe Fibonacci connection is not coincidental. The golden ratio φ has continued fraction [1; 1, 1, 1, ...], making it the 'worst approximable' irrational number. Fibonacci numbers F_n/F_{n-1} give the best rational approximations to φ. This worst-case behavior for φ translates into the optimal constant for sequence approximation.",
+    "problemStatement": "**Erdős Problem #480**: Let $x_1, x_2, \\ldots \\in [0, 1]$ be an infinite sequence. Is it true that\n$$\\inf_n \\liminf_{m \\to \\infty} n|x_{m+n} - x_m| \\leq \\frac{1}{\\sqrt{5}} \\approx 0.447?$$\n\n**Status**: SOLVED by Chung and Graham (1984)\n\n**Stronger Result**: The optimal constant is\n$$c = 1 + \\sum_{k \\geq 1} \\frac{1}{F_{2k}} = 2.535\\ldots$$\nwhere $F_m$ is the $m$-th Fibonacci number. The bound $1/c \\approx 0.394$ is best possible.",
+    "proofStrategy": "Our formalization takes a structured approach:\n\n1. **Define the setting**: Unit interval sequences and 'good pairs' (m, n) satisfying the approximation.\n\n2. **Axiomatize main results**: Newman's conjecture and the Chung-Graham theorem are stated as axioms since their proofs require sophisticated analysis beyond Mathlib.\n\n3. **Verify the golden ratio**: We prove algebraic identities like φ² = φ + 1 and φ·ψ = -1 (where ψ is the conjugate).\n\n4. **Compare constants**: We verify √5 < c using calc chains with Real.sqrt_lt_sqrt.\n\n5. **Provide examples**: Constant sequences trivially satisfy the bound; we verify basic sequence properties.",
+    "keyInsights": [
+      "**The golden ratio connection**: φ = (1+√5)/2 has the 'worst' Diophantine approximation properties. Its continued fraction [1;1,1,...] converges slowest.",
+      "**Fibonacci optimality**: The constant c = 1 + Σ 1/F_{2k} arises because Fibonacci ratios F_n/F_{n-1} are the best rational approximations to φ.",
+      "**√5 vs c**: Newman asked about 1/√5 ≈ 0.447, but Chung-Graham proved the tighter bound 1/c ≈ 0.394. Since c ≈ 2.535 > √5 ≈ 2.236, their result is stronger.",
+      "**Extremal sequences**: The sequences achieving the worst case are related to Sturmian sequences - binary sequences encoding irrational rotations on the circle.",
+      "**Universality**: The result holds for ALL sequences in [0,1] - there's no escape from having infinitely many good approximation pairs."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Documentation",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Problem statement, history, and references including Chung-Graham citation."
+    },
+    {
+      "id": "main-statement",
+      "title": "Main Definitions",
+      "startLine": 32,
+      "endLine": 45,
+      "summary": "Defines IsUnitIntervalSeq and GoodPairs for the approximation inequality."
+    },
+    {
+      "id": "chung-graham-constant",
+      "title": "The Chung-Graham Constant",
+      "startLine": 47,
+      "endLine": 58,
+      "summary": "Defines c = 1 + Σ 1/F_{2k} and states its approximate value."
+    },
+    {
+      "id": "newman-conjecture",
+      "title": "Newman's Conjecture",
+      "startLine": 60,
+      "endLine": 73,
+      "summary": "States the original conjecture with √5 bound."
+    },
+    {
+      "id": "chung-graham-theorem",
+      "title": "Chung-Graham Theorem",
+      "startLine": 75,
+      "endLine": 98,
+      "summary": "The main theorem with optimal constant and its optimality."
+    },
+    {
+      "id": "golden-ratio",
+      "title": "Golden Ratio Properties",
+      "startLine": 100,
+      "endLine": 149,
+      "summary": "Defines φ, ψ and proves algebraic identities: φ² = φ + 1, φψ = -1, etc."
+    },
+    {
+      "id": "comparison",
+      "title": "Constant Comparison",
+      "startLine": 151,
+      "endLine": 167,
+      "summary": "Proves √5 < chungGrahamConstant showing the stronger bound."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 169,
+      "endLine": 193,
+      "summary": "Properties of constant and harmonic sequences in [0,1]."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 195,
+      "endLine": 215,
+      "summary": "Combines Newman's conjecture and Chung-Graham theorem."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #480 on sequence approximation in [0,1]. For any sequence, infinitely many pairs (m,n) satisfy |x_{m+n} - x_m| ≤ 1/(C·n). Newman conjectured C = √5; Chung-Graham proved the optimal C ≈ 2.535 via Fibonacci numbers. The golden ratio's poor approximability underlies this result.",
+    "implications": "This problem connects several beautiful areas:\n\n1. **Diophantine approximation**: The golden ratio is the 'worst' irrational to approximate\n2. **Fibonacci sequences**: Appear naturally in the optimal constant\n3. **Ergodic theory**: Extremal sequences relate to irrational rotations\n4. **Discrepancy theory**: Measures how uniformly sequences can be distributed",
+    "openQuestions": [
+      "What is the exact rate of convergence to the liminf?",
+      "How does the result change for sequences in higher dimensions?",
+      "What is the distribution of good pairs (m, n) for 'typical' sequences?",
+      "Can the Chung-Graham constant be computed more efficiently?"
+    ]
   }
 }

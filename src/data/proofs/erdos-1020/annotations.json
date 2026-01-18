@@ -1,1 +1,245 @@
-[]
+[
+  {
+    "id": "ann-1020-hypergraph",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 47, "endLine": 50 },
+    "type": "definition",
+    "title": "r-Uniform Hypergraph",
+    "content": "An r-uniform hypergraph on vertex set V is a collection of r-element subsets (hyperedges). Every edge has exactly r vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1020-disjoint",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 54, "endLine": 55 },
+    "type": "definition",
+    "title": "Disjoint Edges",
+    "content": "Two edges are disjoint (independent) if they share no vertices. This is the key notion for matchings in hypergraphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1020-matching",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 57, "endLine": 59 },
+    "type": "definition",
+    "title": "Hypergraph Matching",
+    "content": "A matching M in hypergraph H is a set of pairwise disjoint edges from H. Matchings generalize graph matchings to hypergraphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1020-matchnum",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 61, "endLine": 63 },
+    "type": "definition",
+    "title": "Matching Number",
+    "content": "The matching number is the size of the largest matching in the hypergraph. The conjecture asks: how many edges can avoid matching number k?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1020-nokmatching",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 65, "endLine": 67 },
+    "type": "definition",
+    "title": "No k-Matching",
+    "content": "A hypergraph has no k-matching if its matching number is less than k. The function f(n;r,k) maximizes edges subject to this constraint.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1020-fdef",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 75, "endLine": 79 },
+    "type": "definition",
+    "title": "The Function f(n; r, k)",
+    "content": "f(n; r, k) is the maximum number of edges in an r-uniform hypergraph on n vertices containing no k pairwise disjoint edges. This is the central quantity.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1020-c1",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 87, "endLine": 88 },
+    "type": "definition",
+    "title": "Construction 1",
+    "content": "Take all r-edges on rk-1 vertices. Since rk-1 < rk, we can't fit k disjoint r-edges. This gives C(rk-1, r) edges with no k-matching.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1020-c2",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 90, "endLine": 91 },
+    "type": "definition",
+    "title": "Construction 2",
+    "content": "Take all edges meeting a fixed (k-1)-set. Any k edges must include two meeting this set, so they share a vertex. Gives C(n,r) - C(n-k+1,r) edges.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1020-conj",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 93, "endLine": 94 },
+    "type": "definition",
+    "title": "Conjectured Value",
+    "content": "The conjecture: f(n;r,k) = max(construction1, construction2). The extremal hypergraph is one of these two constructions.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1020-mainconj",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 96, "endLine": 99 },
+    "type": "conjecture",
+    "title": "Erdős Matching Conjecture",
+    "content": "For all r ≥ 3, f(n;r,k) = max(C(rk-1,r), C(n,r)-C(n-k+1,r)). One of the most important open problems in extremal hypergraph theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1020-ergallai",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 107, "endLine": 110 },
+    "type": "theorem",
+    "title": "Erdős-Gallai (r = 2)",
+    "content": "For graphs (r = 2), the conjecture is true. This classical 1959 result completely determines when graphs must have k-matchings.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1020-f2explicit",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 112, "endLine": 115 },
+    "type": "theorem",
+    "title": "Explicit r = 2 Formula",
+    "content": "f(n; 2, k) = max((k-1)(2k-1), kn - k² - k + 1). The binomial expressions simplify nicely for graphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1020-lm",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 123, "endLine": 126 },
+    "type": "theorem",
+    "title": "Łuczak-Mieczkowska (r = 3)",
+    "content": "The conjecture holds for 3-uniform hypergraphs. This 2014 breakthrough was the first uniformity beyond graphs to be fully resolved.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1020-kleitman",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 134, "endLine": 137 },
+    "type": "theorem",
+    "title": "Kleitman's Result",
+    "content": "When n = rk exactly, f(rk; r, k) = C(rk-1, r). The first construction is optimal at the boundary case.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1020-hls",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 139, "endLine": 142 },
+    "type": "theorem",
+    "title": "Huang-Loh-Sudakov",
+    "content": "For n ≥ 3kr², the conjecture holds. This 2012 result verified the conjecture for 'large n' regime.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1020-frankl-small",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 144, "endLine": 148 },
+    "type": "theorem",
+    "title": "Frankl Small n",
+    "content": "For n in range [rk, rk + k/(2r^{2r+1})], the first construction is optimal. Extends Kleitman's boundary case slightly.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1020-frankl-upper",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 156, "endLine": 159 },
+    "type": "theorem",
+    "title": "Frankl Upper Bound",
+    "content": "f(n; r, k) ≤ (k-1)·C(n-1, r-1). This 1987 bound is always true and is the key tool for proving the conjecture in various regimes.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1020-tight",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 161, "endLine": 164 },
+    "type": "theorem",
+    "title": "Upper Bound Tightness",
+    "content": "Construction 2 achieves the Frankl upper bound asymptotically. This shows the bound is essentially tight for large n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1020-c1lower",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 172, "endLine": 175 },
+    "type": "theorem",
+    "title": "Construction 1 Lower Bound",
+    "content": "f(n; r, k) ≥ C(rk-1, r) whenever n ≥ rk-1. The first construction always provides a valid lower bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1020-c2lower",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 177, "endLine": 180 },
+    "type": "theorem",
+    "title": "Construction 2 Lower Bound",
+    "content": "f(n; r, k) ≥ C(n,r) - C(n-k+1,r). The second construction also provides a valid lower bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1020-combined",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 182, "endLine": 188 },
+    "type": "theorem",
+    "title": "Combined Lower Bound",
+    "content": "f(n; r, k) ≥ max(construction1, construction2). The constructions together show the conjectured value is achievable.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1020-monon",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 194, "endLine": 196 },
+    "type": "theorem",
+    "title": "f Monotone in n",
+    "content": "f(n₁; r, k) ≤ f(n₂; r, k) when n₁ ≤ n₂. More vertices allow more edges before forcing a k-matching.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1020-monok",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 198, "endLine": 200 },
+    "type": "theorem",
+    "title": "f Monotone in k",
+    "content": "f(n; r, k₁) ≤ f(n; r, k₂) when k₁ ≤ k₂. Larger forbidden matching size allows more edges.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1020-largen",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 208, "endLine": 211 },
+    "type": "theorem",
+    "title": "Large n: Construction 2 Dominates",
+    "content": "For sufficiently large n, construction 2 exceeds construction 1. The crossover happens around n ≈ (r+1)k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1020-asymp",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 213, "endLine": 217 },
+    "type": "theorem",
+    "title": "Asymptotic Behavior",
+    "content": "f(n; r, k) ~ (k-1)·n^{r-1}/(r-1)! as n → ∞. For large n, the function grows like a polynomial in n of degree r-1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1020-open",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 225, "endLine": 226 },
+    "type": "conjecture",
+    "title": "The Open Problem",
+    "content": "The Erdős Matching Conjecture remains open for r ≥ 4. Proving it would be a major advance in extremal combinatorics.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1020-r4",
+    "proofId": "erdos-1020",
+    "range": { "startLine": 228, "endLine": 231 },
+    "type": "conjecture",
+    "title": "The r = 4 Case",
+    "content": "The first open case: prove f(n; 4, k) = max(C(4k-1, 4), C(n, 4) - C(n-k+1, 4)). Even this specific case remains unresolved.",
+    "significance": "key"
+  }
+]

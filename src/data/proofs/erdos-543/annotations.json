@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-543-subsetsum",
+    "proofId": "erdos-543",
+    "range": { "startLine": 42, "endLine": 44 },
+    "type": "definition",
+    "title": "Subset Sums",
+    "content": "The set of all elements expressible as ∑_{x ∈ S} x for some subset S ⊆ A. This captures what elements can be 'reached' from A.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-543-spanning",
+    "proofId": "erdos-543",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "Spanning Set",
+    "content": "A set A spans G if every element of G is a subset sum of A. The goal is to find the minimal size for this with high probability.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-543-probability",
+    "proofId": "erdos-543",
+    "range": { "startLine": 58, "endLine": 64 },
+    "type": "definition",
+    "title": "Spanning Probability",
+    "content": "The fraction of k-subsets of G that span all of G. This is what we want to be ≥ 1/2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-543-minimal",
+    "proofId": "erdos-543",
+    "range": { "startLine": 66, "endLine": 71 },
+    "type": "definition",
+    "title": "Minimal Spanning Size",
+    "content": "The minimal k such that a random k-subset spans G with probability ≥ 1/2. This is f(N) for a specific group.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-543-ffunction",
+    "proofId": "erdos-543",
+    "range": { "startLine": 73, "endLine": 77 },
+    "type": "definition",
+    "title": "The Function f(N)",
+    "content": "The supremum over all abelian groups of size N. This is the function from the problem statement.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-543-empty",
+    "proofId": "erdos-543",
+    "range": { "startLine": 81, "endLine": 95 },
+    "type": "theorem",
+    "title": "Empty Set Spans Only Trivial Group",
+    "content": "The empty set has only one subset sum (0), so it spans G iff G = {0}.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-543-mono",
+    "proofId": "erdos-543",
+    "range": { "startLine": 102, "endLine": 107 },
+    "type": "theorem",
+    "title": "Monotonicity of Spanning Probability",
+    "content": "Larger sets are more likely to span: if k₁ ≤ k₂, then P(k₁-subset spans) ≤ P(k₂-subset spans).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-543-erdosrenyi",
+    "proofId": "erdos-543",
+    "range": { "startLine": 111, "endLine": 119 },
+    "type": "theorem",
+    "title": "Erdős-Rényi Upper Bound (1965)",
+    "content": "The main known result: f(N) ≤ log₂ N + O(log log N). Uses probabilistic methods to show most random sets of this size span.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-543-littleo",
+    "proofId": "erdos-543",
+    "range": { "startLine": 129, "endLine": 136 },
+    "type": "definition",
+    "title": "The Little-o Conjecture",
+    "content": "The question: can O(log log N) be improved to o(log log N)? For every ε > 0, eventually f(N) ≤ log₂ N + ε·log log N.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-543-counter",
+    "proofId": "erdos-543",
+    "range": { "startLine": 138, "endLine": 145 },
+    "type": "definition",
+    "title": "Erdős's Counter-Conjecture",
+    "content": "Erdős believed the answer is NO: there exists ε > 0 such that infinitely many N have f(N) > log₂ N + ε·log log N.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-543-complementary",
+    "proofId": "erdos-543",
+    "range": { "startLine": 147, "endLine": 159 },
+    "type": "theorem",
+    "title": "Conjectures are Complementary",
+    "content": "The little-o conjecture and Erdős's counter-conjecture are logical negations. Exactly one must be true.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-543-lower",
+    "proofId": "erdos-543",
+    "range": { "startLine": 163, "endLine": 169 },
+    "type": "theorem",
+    "title": "Naive Lower Bound",
+    "content": "A k-subset has at most 2^k subset sums, so f(N) ≥ log₂ N - 1. This is the information-theoretic limit.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-543-cyclic",
+    "proofId": "erdos-543",
+    "range": { "startLine": 182, "endLine": 189 },
+    "type": "definition",
+    "title": "Cyclic Groups",
+    "content": "For cyclic groups ℤ/Nℤ, f_cyclic(N) may have special structure. The problem asks about all abelian groups.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-543-prime",
+    "proofId": "erdos-543",
+    "range": { "startLine": 191, "endLine": 195 },
+    "type": "theorem",
+    "title": "Prime Order Groups",
+    "content": "For prime p, ℤ/pℤ is a field. If |A| ≥ p, then A = ℤ/pℤ and trivially spans.",
+    "significance": "supporting"
+  }
+]

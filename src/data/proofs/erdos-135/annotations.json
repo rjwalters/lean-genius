@@ -1,1 +1,254 @@
-[]
+[
+  {
+    "id": "ann-e135-header",
+    "proofId": "erdos-135",
+    "range": {
+      "startLine": 9,
+      "endLine": 36
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #135**: If any 4 points from A ⊂ ℝ² determine at least 5 distinct distances, must A determine ≫ n² distances?\n\n**Status**: DISPROVED ($250 prize)\n**Solver**: Terence Tao (2024)\n\n**Answer**: NO! Tao constructed sets with O(n²/√(log n)) distances while maintaining the five-distance property.\n\nThis was one of several Erdős problems Tao solved in 2024-2025.",
+    "mathContext": "Four points have 6 pairwise distances. Requiring ≥ 5 distinct forbids highly symmetric configurations like parallelograms.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "distinct-distances",
+      "four-points",
+      "disproved"
+    ]
+  },
+  {
+    "id": "ann-e135-point",
+    "proofId": "erdos-135",
+    "range": {
+      "startLine": 50,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Points and Distances",
+    "content": "**Point** = EuclideanSpace ℝ (Fin 2) - the plane ℝ²\n\n**sqDist p q** = ‖p - q‖² - squared Euclidean distance\n\nWe use squared distance to avoid square roots and stay in ℝ (rationals won't suffice).",
+    "mathContext": "EuclideanSpace ℝ (Fin 2) is Mathlib's representation of ℝ² with standard inner product structure.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "euclidean-space",
+      "norm",
+      "squared-distance"
+    ]
+  },
+  {
+    "id": "ann-e135-distinctdist",
+    "proofId": "erdos-135",
+    "range": {
+      "startLine": 57,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Distinct Distances",
+    "content": "**distinctDistances A** = {sqDist(p,q) : p,q ∈ A, p ≠ q}\n\n**distanceCount A** = |distinctDistances A|\n\nThis counts how many different pairwise distances appear in the point set.",
+    "mathContext": "The famous Erdős distinct distances conjecture asks: what's the minimum distanceCount for n points? Guth-Katz (2015) proved Ω(n/√(log n)).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "distinct-distances",
+      "erdos-conjecture",
+      "guth-katz"
+    ]
+  },
+  {
+    "id": "ann-e135-fourpoint",
+    "proofId": "erdos-135",
+    "range": {
+      "startLine": 65,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "The Five-Distance Property",
+    "content": "**fourPointDistances p₁ p₂ p₃ p₄** = the set of 6 pairwise distances\n\n**HasFiveDistanceProperty A**: For any 4 distinct points in A, at least 5 of the 6 pairwise distances are distinct.\n\nThis forbids highly symmetric 4-point configurations:\n- Parallelograms have only 2-3 distinct distances\n- Squares have 2 (sides and diagonal)\n- Rhombi have 3",
+    "mathContext": "The constraint is: (fourPointDistances p₁ p₂ p₃ p₄).card ≥ 5. At most 1 distance can repeat among the 6 pairs.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "four-points",
+      "pairwise-distances",
+      "forbidden-patterns"
+    ]
+  },
+  {
+    "id": "ann-e135-conjecture",
+    "proofId": "erdos-135",
+    "range": {
+      "startLine": 79,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "Erdős's Conjecture (FALSE)",
+    "content": "**ErdosConjecture135**: ∃ c > 0 such that HasFiveDistanceProperty A implies distanceCount A ≥ c·n²\n\nErdős hoped that forbidding degenerate 4-point configurations would force many global distances.\n\n**axiom erdos_135_false : ¬ErdosConjecture135**\n\nThe conjecture is FALSE!",
+    "mathContext": "The conjecture would mean: local constraints (on 4-tuples) imply global density (n² distances). Tao showed this fails.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "local-global",
+      "disproved",
+      "erdos-conjecture"
+    ]
+  },
+  {
+    "id": "ann-e135-tao",
+    "proofId": "erdos-135",
+    "range": {
+      "startLine": 90,
+      "endLine": 106
+    },
+    "type": "theorem",
+    "title": "Tao's Counterexample (2024)",
+    "content": "**TaoCounterexample**: For n ≥ 2, ∃ A with:\n- A.card = n\n- HasFiveDistanceProperty A ✓\n- distanceCount A ≤ C·n²/√(log n)\n\n**axiom tao_counterexample : TaoCounterexample**\n\n**theorem erdos_135_disproved : ¬ErdosConjecture135** ✓\n\nThe counterexample has fewer than n² distances while satisfying the five-distance property!",
+    "mathContext": "n²/√(log n) is o(n²), so this disproves the Ω(n²) conjecture. The log factor matches Guth-Katz lower bounds.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "counterexample",
+      "tao-2024",
+      "subquadratic"
+    ]
+  },
+  {
+    "id": "ann-e135-generalposition",
+    "proofId": "erdos-135",
+    "range": {
+      "startLine": 109,
+      "endLine": 114
+    },
+    "type": "definition",
+    "title": "General Position",
+    "content": "**InGeneralPosition p₁ p₂ p₃ p₄**: No three points are collinear.\n\nThis is checked for all 4 triples:\n- ¬Collinear ℝ {p₁, p₂, p₃}\n- ¬Collinear ℝ {p₁, p₂, p₄}\n- ¬Collinear ℝ {p₁, p₃, p₄}\n- ¬Collinear ℝ {p₂, p₃, p₄}",
+    "mathContext": "General position is a standard assumption in discrete geometry. Collinear points can create degenerate distance configurations.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "collinear",
+      "general-position",
+      "discrete-geometry"
+    ]
+  },
+  {
+    "id": "ann-e135-parallelogram",
+    "proofId": "erdos-135",
+    "range": {
+      "startLine": 116,
+      "endLine": 141
+    },
+    "type": "theorem",
+    "title": "Parallelograms Are Forbidden",
+    "content": "**IsParallelogram p₁ p₂ p₃ p₄**: Opposite sides are equal and parallel.\n\np₁ - p₂ = p₄ - p₃ (or permutations)\n\n**theorem parallelogram_few_distances**: Parallelograms have ≤ 3 distinct distances.\n\nSince 3 < 5, parallelograms violate the five-distance property!",
+    "mathContext": "A parallelogram has 2 side lengths and 2 diagonal lengths. If it's a rhombus, sides are equal (2 distances). If rectangular, diagonals are equal (3 distances).",
+    "significance": "key",
+    "relatedConcepts": [
+      "parallelogram",
+      "forbidden",
+      "distance-count"
+    ]
+  },
+  {
+    "id": "ann-e135-forbidden",
+    "proofId": "erdos-135",
+    "range": {
+      "startLine": 166,
+      "endLine": 204
+    },
+    "type": "theorem",
+    "title": "Forbidden Four-Point Patterns",
+    "content": "**IsForbiddenPattern p₁ p₂ p₃ p₄**: (fourPointDistances).card < 5\n\n**Forbidden patterns include**:\n- Parallelograms (2-3 distances)\n- Isosceles trapezoids\n- Equilateral triangle with center\n- Various other symmetric configurations\n\n**theorem parallelogram_forbidden**: IsParallelogram → IsForbiddenPattern ✓\n\nTao's construction must avoid ALL these patterns.",
+    "mathContext": "The key insight: avoiding parallelograms is the main constraint. Other patterns are handled by random perturbations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "forbidden-pattern",
+      "symmetric-configurations",
+      "constraint"
+    ]
+  },
+  {
+    "id": "ann-e135-parabola",
+    "proofId": "erdos-135",
+    "range": {
+      "startLine": 205,
+      "endLine": 234
+    },
+    "type": "definition",
+    "title": "Tao's Algebraic Construction",
+    "content": "**ParabolaParams**: Parameters (a,b,c,d,e) defining parabolas\n(ax+by)² ≡ cx+dy+e (mod p) in finite field\n\n**Key property**: Points on such parabolas avoid parallelograms!\n\n**RandomizedParabolaApproach**:\n1. Take points on random parabola in ℤₚ²\n2. Apply random affine transformation\n3. Delete remaining bad 4-tuples (only O(n) of them)\n\n**axiom randomized_parabola_works** ✓",
+    "mathContext": "Parabolas have the property that no 4 points form a parallelogram (algebraic constraint). The randomization handles other forbidden patterns probabilistically.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "parabola",
+      "finite-fields",
+      "probabilistic-method"
+    ]
+  },
+  {
+    "id": "ann-e135-guthkatz",
+    "proofId": "erdos-135",
+    "range": {
+      "startLine": 236,
+      "endLine": 266
+    },
+    "type": "axiom",
+    "title": "Guth-Katz Lower Bound",
+    "content": "**Trivial upper bound**: distanceCount ≤ n(n-1)/2 (all distances distinct)\n\n**Guth-Katz (2015)**: distanceCount ≥ c·n/√(log n)\n\nThis is the famous solution to Erdős's distinct distances problem!\n\n**Comparison**: Tao's upper bound O(n²/√(log n)) shows the five-distance property doesn't help much - still only saves a √(log n) factor.",
+    "mathContext": "Guth-Katz used polynomial partitioning, a breakthrough technique in incidence geometry. The log factor remains mysterious.",
+    "significance": "key",
+    "relatedConcepts": [
+      "guth-katz",
+      "distinct-distances",
+      "polynomial-partitioning"
+    ]
+  },
+  {
+    "id": "ann-e135-optimal",
+    "proofId": "erdos-135",
+    "range": {
+      "startLine": 291,
+      "endLine": 300
+    },
+    "type": "theorem",
+    "title": "Matching Bounds",
+    "content": "**theorem tao_optimal_up_to_log**: The lower and upper bounds match in the log exponent!\n\n- **Lower**: distanceCount ≥ C₁ · n/√(log n) (Guth-Katz)\n- **Upper**: distanceCount ≤ C₂ · n²/√(log n) with five-distance (Tao)\n\nProof combines the two axioms with existential witnesses.",
+    "mathContext": "The √(log n) appears in both bounds - not a coincidence. This suggests the log factor captures something fundamental about distance geometry.",
+    "significance": "key",
+    "relatedConcepts": [
+      "matching-bounds",
+      "log-factor",
+      "optimality"
+    ]
+  },
+  {
+    "id": "ann-e135-examples",
+    "proofId": "erdos-135",
+    "range": {
+      "startLine": 302,
+      "endLine": 354
+    },
+    "type": "concept",
+    "title": "Example Configurations",
+    "content": "**Distance counts for special 4-point configurations**:\n\n| Configuration | Distinct Distances |\n|---------------|-------------------|\n| Square | 2 (side, diagonal) |\n| Rhombus | 3 |\n| Projected tetrahedron | 4 |\n| Generic | 6 (maximum) |\n\nThe five-distance property requires ≥ 5, ruling out the first three.",
+    "mathContext": "These examples show why the five-distance property is restrictive but not restrictive enough to force n² distances.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "examples",
+      "configurations",
+      "distance-count"
+    ]
+  },
+  {
+    "id": "ann-e135-summary",
+    "proofId": "erdos-135",
+    "range": {
+      "startLine": 356,
+      "endLine": 384
+    },
+    "type": "concept",
+    "title": "Summary and Status",
+    "content": "**Erdős Problem #135: DISPROVED** ($250 prize)\n\n**Question**: Must five-distance sets have Ω(n²) distances?\n**Answer**: NO (Tao 2024)\n\n**Tao's Construction**:\n1. Randomized parabolas over finite fields\n2. Parabolas avoid parallelograms automatically\n3. Random affine transforms reduce other forbidden patterns\n4. Probabilistic deletion of remaining bad 4-tuples\n\n**Result**: O(n²/√(log n)) distances with five-distance property\n\n**Historical Note**: Part of Tao's 2024-2025 exploration of erdosproblems.com",
+    "mathContext": "Tao explicitly mentioned this work was partly motivated by exploring AI-assisted mathematics. The problem had been open since the 1980s.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "problem-status",
+      "disproved",
+      "tao-2024"
+    ]
+  }
+]

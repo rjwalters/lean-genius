@@ -1,33 +1,158 @@
 {
   "id": "erdos-1043",
-  "title": "Erdős Problem #1043",
+  "title": "Erdős #1043: Polynomial Level Set Projections",
   "slug": "erdos-1043",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a monic non-constant polynomial. Must there exist a straight line ... such that the projection of\\[\\{ z: \\lvert f(...",
+  "description": "For a monic polynomial f, must some line's projection of {z : |f(z)| ≤ 1} have measure ≤ 2? NO (Pommerenke 1961): can be ≥ 2.386, but always ≤ 3.3.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Herzog, Piranian (1958); Pommerenke (1961)",
     "sourceUrl": "https://erdosproblems.com/1043",
-    "date": "",
-    "status": "pending",
+    "date": "1958-1961",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1043Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "polynomials",
+      "measure-theory",
+      "geometry"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 12,
     "erdosNumber": 1043,
     "erdosUrl": "https://erdosproblems.com/1043",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.eval",
+        "description": "Polynomial evaluation",
+        "module": "Mathlib.Algebra.Polynomial.Eval"
+      },
+      {
+        "theorem": "MeasureTheory.volume",
+        "description": "Lebesgue measure",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "Complex.norm",
+        "description": "Complex absolute value",
+        "module": "Mathlib.Analysis.Complex.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of polynomial level sets (lemniscates)",
+      "Projection measure definitions",
+      "Pommerenke's counterexample as axiom",
+      "Upper and lower bounds on projection measures",
+      "Connection to Bernoulli lemniscates"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1043 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f\\in \\mathbb{C}[x]$ be a monic non-constant polynomial. Must there exist a straight line $\\ell$ such that the projection of\\[\\{ z: \\lvert f(z)\\rvert\\leq 1\\}\\]onto $\\ell$ has measure at most $2$?\n\n\n\nA problem of Erd\\H{o}s, Herzog, and Piranian \\cite{EHP58}.\n\nPommerenke \\cite{Po61} (using his previous work \\cite{Po59}) proved that the answer is no, and there exists such an $f$ for which the projection of this set onto every line has measure at least $2.386$. On the other hand, Pommerenke also proved there always exists a line such that the projection has measure at most $3.3$.\n\n\n\n\nReferences\n\n\n[EHP58] Erd\\H{o}s, P. and Herzog, F. and Piranian, G., Metric properties of polynomials. J. Analyse Math. (1958), 125-148.\n\n[Po59] Pommerenke, Ch., On some problems by Erd\\H{o}s, Herzog and Piranian. Michigan Math. J. (1959), 221-225.\n\n[Po61] Pommerenke, Ch., On metric properties of complex polynomials. Michigan Math. J. (1961), 97-115.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #1043 was posed by Erdős, Herzog, and Piranian in their 1958 paper on metric properties of polynomials. They studied how 'spread out' the level set {z : |f(z)| ≤ 1} can be.\n\nFor f(z) = zⁿ, this level set is the closed unit disk, which projects to an interval of length 2 in every direction. The natural question: is 2 always achievable as the minimum projection length?\n\nPommerenke (1961) proved the answer is NO. He constructed polynomials where every projection has measure at least 2.386. However, he also proved that 3.3 is always achievable—every monic polynomial has some direction with projection measure ≤ 3.3.\n\nThese 'level sets' are called lemniscates, named after the figure-eight shape of {z : |z² - 1| = c}.",
+    "problemStatement": "Let f ∈ ℂ[x] be a monic non-constant polynomial. Consider the level set:\n\n$$ L_f = \\{z \\in \\mathbb{C} : |f(z)| \\leq 1\\} $$\n\nMust there exist a line ℓ such that the projection of $L_f$ onto ℓ has measure ≤ 2?\n\n**Answer**: NO (Pommerenke 1961)\n\n**Bounds**:\n- Some polynomials have all projections ≥ 2.386\n- Every polynomial has some projection ≤ 3.3",
+    "proofStrategy": "We formalize the problem by:\n\n1. **Level sets**: Define {z : |f(z)| ≤ r} for polynomials\n2. **Projections**: Map ℂ to ℝ via z ↦ Re(z · conj(u)) for unit vector u\n3. **Projection measure**: Length of the projected set\n4. **EHP conjecture**: The (false) claim that measure ≤ 2 is always achievable\n5. **Pommerenke's results**: Counterexample (≥ 2.386) and upper bound (≤ 3.3)\n\nThe key insight is that while f(z) = zⁿ gives a round disk, other polynomials can create elongated level sets that are 'wide' in every direction.",
+    "keyInsights": [
+      "**Level sets (lemniscates)**: The set {z : |f(z)| ≤ 1} generalizes the unit disk. For zⁿ it's a disk; for more complex polynomials, it can be multi-lobed.",
+      "**Projection measure**: The length of the 'shadow' when projecting onto a line. For a disk of radius 1, this is always 2.",
+      "**The answer is NO**: Pommerenke found polynomials where you can't achieve projection ≤ 2 in any direction.",
+      "**Upper bound 3.3**: While 2 isn't always achievable, 3.3 is. The gap between 2.386 and 3.3 represents what we don't know.",
+      "**Bernoulli lemniscate**: The classic {z : |z² - 1| = c} gives a figure-eight, illustrating how level sets can be non-convex."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "level-sets",
+      "title": "Level Sets of Polynomials",
+      "startLine": 43,
+      "endLine": 62,
+      "summary": "Definition of level sets and the unit lemniscate."
+    },
+    {
+      "id": "projections",
+      "title": "Projections onto Lines",
+      "startLine": 64,
+      "endLine": 80,
+      "summary": "Projecting complex sets onto real lines."
+    },
+    {
+      "id": "examples",
+      "title": "Basic Examples",
+      "startLine": 82,
+      "endLine": 92,
+      "summary": "The unit disk projects to measure 2 in all directions."
+    },
+    {
+      "id": "ehp-question",
+      "title": "The EHP Question",
+      "startLine": 94,
+      "endLine": 107,
+      "summary": "The (false) conjecture that measure ≤ 2 is always achievable."
+    },
+    {
+      "id": "counterexample",
+      "title": "Pommerenke's Counterexample",
+      "startLine": 109,
+      "endLine": 134,
+      "summary": "Exists polynomial with all projections ≥ 2.386."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Pommerenke's Upper Bound",
+      "startLine": 136,
+      "endLine": 148,
+      "summary": "Every polynomial has some projection ≤ 3.3."
+    },
+    {
+      "id": "level-set-properties",
+      "title": "Properties of Level Sets",
+      "startLine": 150,
+      "endLine": 165,
+      "summary": "Compactness, connectivity, capacity."
+    },
+    {
+      "id": "width-function",
+      "title": "The Width Function",
+      "startLine": 167,
+      "endLine": 184,
+      "summary": "Min/max width of sets in different directions."
+    },
+    {
+      "id": "lemniscates",
+      "title": "Lemniscates",
+      "startLine": 186,
+      "endLine": 200,
+      "summary": "The Bernoulli lemniscate and figure-eight shapes."
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "startLine": 202,
+      "endLine": 216,
+      "summary": "Transfinite diameter, Chebyshev polynomials."
+    },
+    {
+      "id": "bounds",
+      "title": "Quantitative Bounds",
+      "startLine": 218,
+      "endLine": 228,
+      "summary": "Area ≤ π, diameter ≤ 4 for level sets."
+    },
+    {
+      "id": "summary",
+      "title": "Main Theorem",
+      "startLine": 230,
+      "endLine": 242,
+      "summary": "Combined answer: NO, but ≤ 3.3 always exists."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #1043 on polynomial level set projections. The answer is NO: Pommerenke showed that some polynomials have all projections ≥ 2.386. However, every monic polynomial has some projection ≤ 3.3.",
+    "implications": "The problem connects complex analysis (polynomials, potential theory) with geometric measure theory (projections, widths). The Pommerenke constant—the supremum of minimum projection measures—lies between 2.386 and 3.3, but its exact value is unknown.",
+    "openQuestions": [
+      "What is the exact value of the Pommerenke constant?",
+      "Which polynomial achieves the supremum of min projection measures?",
+      "Can the upper bound 3.3 be improved?",
+      "How does the min projection measure depend on the degree?"
+    ]
   }
 }

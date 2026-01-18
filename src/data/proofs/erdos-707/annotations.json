@@ -1,1 +1,212 @@
-[]
+[
+  {
+    "id": "ann-e707-header",
+    "proofId": "erdos-707",
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This module formalizes **Erdos Problem #707**: Can every finite Sidon set be embedded in a perfect difference set? The conjecture was DISPROVED - Hall (1947) and Alexeev-Mixon (2025) found counterexamples.",
+    "mathContext": "Erdos offered $1000 for this problem. Remarkably, Hall disproved it 30 years before Erdos even asked the question! The 2025 proof was formalized in Lean with AI assistance.",
+    "significance": "critical",
+    "relatedConcepts": ["Sidon set", "perfect difference set", "counterexample"]
+  },
+  {
+    "id": "ann-e707-imports",
+    "proofId": "erdos-707",
+    "range": {
+      "startLine": 30,
+      "endLine": 38
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "We import **Finset** for finite sets, **Nat.Prime** for primality, and **ZMod** for modular arithmetic. These are the core structures needed for Sidon and perfect difference sets.",
+    "mathContext": "Finset provides decidable membership and cardinality. ZMod n represents the integers modulo n. Prime detection is needed for the Singer construction.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "Finset", "ZMod"]
+  },
+  {
+    "id": "ann-e707-sidon",
+    "proofId": "erdos-707",
+    "range": {
+      "startLine": 47,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Sidon Sets",
+    "content": "**IsSidon A** means all pairwise sums in A are distinct: if a + b = c + d with a <= b and c <= d, then {a,b} = {c,d}. Also called B2 sequences.",
+    "mathContext": "Examples: {1,2,4} is Sidon (sums: 2,3,5,3,5,6,8 - all distinct when counted correctly). {1,2,3} is NOT Sidon since 1+3 = 2+2 = 4.",
+    "significance": "critical",
+    "relatedConcepts": ["B2 sequence", "distinct sums", "additive combinatorics"]
+  },
+  {
+    "id": "ann-e707-sidon-diff",
+    "proofId": "erdos-707",
+    "range": {
+      "startLine": 53,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "Alternative Sidon Characterization",
+    "content": "**IsSidonDiff A** characterizes Sidon sets via distinct differences: if a - b = c - d with a != b and c != d, then a = c and b = d.",
+    "mathContext": "The sum and difference characterizations are equivalent. Differences avoid the ordering constraint (a <= b) needed for sums.",
+    "significance": "key",
+    "relatedConcepts": ["difference set", "equivalent definition"]
+  },
+  {
+    "id": "ann-e707-perfect-diff",
+    "proofId": "erdos-707",
+    "range": {
+      "startLine": 61,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "Perfect Difference Sets",
+    "content": "**IsPerfectDifferenceSet B n** means every nonzero residue mod n appears exactly once as b1 - b2 for distinct b1, b2 in B. This is related to cyclic projective planes.",
+    "mathContext": "If B is a perfect difference set mod n, then |B|(|B|-1) = n-1, giving |B| approximately sqrt(n). Example: {0,1,3} mod 7 has differences covering 1,2,3,4,5,6 exactly once each.",
+    "significance": "critical",
+    "relatedConcepts": ["projective plane", "cyclic", "difference representation"]
+  },
+  {
+    "id": "ann-e707-main-false",
+    "proofId": "erdos-707",
+    "range": {
+      "startLine": 75,
+      "endLine": 82
+    },
+    "type": "axiom",
+    "title": "The Conjecture is FALSE",
+    "content": "**erdos_707_false** axiomatizes that the conjecture is FALSE: NOT every finite Sidon set can be embedded in a perfect difference set.",
+    "mathContext": "This negation is proved by the existence of counterexamples. We cannot prove it directly in Lean without formalizing the exhaustive search that rules out all moduli.",
+    "significance": "critical",
+    "relatedConcepts": ["disproved", "negation", "counterexample"]
+  },
+  {
+    "id": "ann-e707-sidon-124",
+    "proofId": "erdos-707",
+    "range": {
+      "startLine": 95,
+      "endLine": 104
+    },
+    "type": "theorem",
+    "title": "Example: {1,2,4} is Sidon",
+    "content": "**sidon_124** verifies that {1,2,4} is a Sidon set by explicit case analysis. This is the start of the Mian-Chowla sequence.",
+    "mathContext": "The proof checks all 81 combinations of (a,b,c,d) from {1,2,4}^4. The tactic rcases splits on which element each variable equals, and simp_all handles the arithmetic.",
+    "significance": "key",
+    "relatedConcepts": ["Mian-Chowla", "case analysis", "verified"]
+  },
+  {
+    "id": "ann-e707-counterex-prime",
+    "proofId": "erdos-707",
+    "range": {
+      "startLine": 116,
+      "endLine": 120
+    },
+    "type": "axiom",
+    "title": "Counterexample: {1,2,4,8} for Primes",
+    "content": "**counterexample_alexeev_mixon_prime**: The Sidon set {1,2,4,8} cannot be extended to a perfect difference set mod p^2+p+1 for ANY prime p.",
+    "mathContext": "Alexeev and Mixon (2025) proved this by exhaustive computation. For each prime p, they showed no extension B of {1,2,4,8} can satisfy the perfect difference property.",
+    "significance": "critical",
+    "relatedConcepts": ["Alexeev", "Mixon", "exhaustive search"]
+  },
+  {
+    "id": "ann-e707-counterex-mc",
+    "proofId": "erdos-707",
+    "range": {
+      "startLine": 122,
+      "endLine": 126
+    },
+    "type": "axiom",
+    "title": "Counterexample: {1,2,4,8,13}",
+    "content": "**counterexample_mian_chowla**: The Sidon set {1,2,4,8,13} cannot be extended to ANY perfect difference set, regardless of modulus.",
+    "mathContext": "This is a stronger result than the prime case. The set {1,2,4,8,13} consists of the first 5 terms of the Mian-Chowla sequence (the greedy Sidon set starting from 1).",
+    "significance": "critical",
+    "relatedConcepts": ["Mian-Chowla sequence", "any modulus", "stronger result"]
+  },
+  {
+    "id": "ann-e707-counterex-hall",
+    "proofId": "erdos-707",
+    "range": {
+      "startLine": 128,
+      "endLine": 132
+    },
+    "type": "axiom",
+    "title": "Counterexample: Hall (1947)",
+    "content": "**counterexample_hall**: The Sidon set {1,3,9,10,13} cannot be extended to ANY perfect difference set. Hall proved this in 1947 - before Erdos even asked!",
+    "mathContext": "Hall's original set was {-8,-6,0,1,4} which shifts to {1,3,9,10,13}. His paper focused on cyclic projective planes, so the Sidon connection wasn't recognized.",
+    "significance": "critical",
+    "relatedConcepts": ["Hall", "1947", "historical"]
+  },
+  {
+    "id": "ann-e707-size-bound",
+    "proofId": "erdos-707",
+    "range": {
+      "startLine": 136,
+      "endLine": 140
+    },
+    "type": "axiom",
+    "title": "Size Bound",
+    "content": "**perfect_diff_set_size_bound**: A perfect difference set mod n has at most sqrt(n) + 1 elements. This follows from |B|(|B|-1) = n-1.",
+    "mathContext": "Each of the n-1 nonzero residues must appear exactly once as a difference. With |B| elements, there are |B|(|B|-1) ordered pairs, giving the equation.",
+    "significance": "key",
+    "relatedConcepts": ["cardinality", "quadratic bound", "counting"]
+  },
+  {
+    "id": "ann-e707-singer",
+    "proofId": "erdos-707",
+    "range": {
+      "startLine": 142,
+      "endLine": 146
+    },
+    "type": "axiom",
+    "title": "Singer Construction",
+    "content": "**singer_construction**: For any prime p, there exists a perfect difference set mod p^2+p+1 of size p+1. This is Singer's 1938 theorem.",
+    "mathContext": "Singer used the multiplicative group of GF(p^3) to construct these sets. For p=2: mod 7, the set {0,1,3} has size 3 = 2+1 and covers differences 1,2,3,4,5,6.",
+    "significance": "key",
+    "relatedConcepts": ["Singer", "existence", "construction"]
+  },
+  {
+    "id": "ann-e707-small",
+    "proofId": "erdos-707",
+    "range": {
+      "startLine": 148,
+      "endLine": 153
+    },
+    "type": "axiom",
+    "title": "Small Sidon Sets Extend",
+    "content": "**small_sidon_extendable**: Any Sidon set of size <= 3 CAN be extended to a perfect difference set. (Sawin, MathOverflow)",
+    "mathContext": "This is a positive result contrasting with the counterexamples. The boundary is somewhere between size 3 and size 4-5 where counterexamples appear.",
+    "significance": "key",
+    "relatedConcepts": ["small sets", "positive result", "boundary"]
+  },
+  {
+    "id": "ann-e707-example-7",
+    "proofId": "erdos-707",
+    "range": {
+      "startLine": 155,
+      "endLine": 158
+    },
+    "type": "axiom",
+    "title": "Example Embedding",
+    "content": "**example_124_in_7**: The Sidon set {1,2,4} can be embedded in a perfect difference set mod 7. Note 7 = 2^2 + 2 + 1.",
+    "mathContext": "The set {0,1,3} is a perfect difference set mod 7, and {1,2,4} = {0,1,3} + 1 (shifted). Differences: 1-0=1, 3-0=3, 3-1=2, and negatives give 6,4,5.",
+    "significance": "supporting",
+    "relatedConcepts": ["concrete example", "mod 7", "embedding"]
+  },
+  {
+    "id": "ann-e707-summary",
+    "proofId": "erdos-707",
+    "range": {
+      "startLine": 172,
+      "endLine": 192
+    },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_707_summary** packages verified results: {1,2,4} is a Sidon set (proved by case analysis), and perfect difference sets exist (Singer construction for p=2).",
+    "mathContext": "This demonstrates both our definitions work correctly and provides constructive witnesses. The Singer construction for p=2 gives a perfect difference set mod 7.",
+    "significance": "supporting",
+    "relatedConcepts": ["summary", "verification", "witnesses"]
+  }
+]

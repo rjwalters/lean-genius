@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-1006-overview",
+    "proofId": "erdos-1006",
+    "range": { "startLine": 1, "endLine": 42 },
+    "type": "context",
+    "title": "Problem Overview",
+    "content": "Erdős #1006 asks whether high-girth graphs admit 'robustly acyclic' orientations - orientations that remain acyclic even after reversing any single edge. The answer is NO: Nešetřil and Rödl (1978) showed counterexamples exist for ALL girths, not just small ones.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1006-girth",
+    "proofId": "erdos-1006",
+    "range": { "startLine": 50, "endLine": 62 },
+    "type": "definition",
+    "title": "Graph Girth",
+    "content": "The girth of a graph is the length of its shortest cycle. Graphs with high girth are 'locally tree-like' - they contain no short cycles. The hope was that this sparsity would allow stable orientations, but chromatic number turns out to be the key obstruction.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1006-orientations",
+    "proofId": "erdos-1006",
+    "range": { "startLine": 64, "endLine": 84 },
+    "type": "definition",
+    "title": "Orientations and Acyclicity",
+    "content": "An orientation assigns a direction to each undirected edge. The structure captures three constraints: every edge gets exactly one direction (covers + exclusive), and directed edges respect the original graph (respects). An orientation is acyclic if no directed path forms a cycle.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1006-robust",
+    "proofId": "erdos-1006",
+    "range": { "startLine": 86, "endLine": 108 },
+    "type": "definition",
+    "title": "Robust Acyclicity",
+    "content": "The key definition: an orientation is 'robustly acyclic' if it stays acyclic after reversing ANY single edge. This is a strong stability property - every edge must avoid being the 'critical' edge that would complete a cycle if flipped. The reverseEdge operation swaps one edge's direction while keeping others fixed.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1006-conjecture",
+    "proofId": "erdos-1006",
+    "range": { "startLine": 110, "endLine": 119 },
+    "type": "conjecture",
+    "title": "Ore's Conjecture (Disproved)",
+    "content": "Ore conjectured that graphs with girth > 4 always admit robustly acyclic orientations. The intuition: without short cycles, there should be 'room' to orient edges robustly. This turns out to be false - chromatic number, not girth, is the key constraint.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1006-grotzsch",
+    "proofId": "erdos-1006",
+    "range": { "startLine": 125, "endLine": 128 },
+    "type": "theorem",
+    "title": "Grötzsch Graph Counterexample",
+    "content": "The Grötzsch graph provides an explicit counterexample at girth 4. It's the smallest triangle-free graph requiring 4 colors, with 11 vertices and 20 edges. Its high chromatic number (relative to girth) forces every acyclic orientation to have a 'fragile' edge.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1006-nesetril-rodl",
+    "proofId": "erdos-1006",
+    "range": { "startLine": 130, "endLine": 134 },
+    "type": "theorem",
+    "title": "Nešetřil-Rödl Theorem",
+    "content": "The definitive result: for EVERY girth g ≥ 3, there exist graphs with girth g that have NO robustly acyclic orientation. The proof uses the probabilistic method - random graphs with high girth and high chromatic number work. This completely settles Ore's question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1006-disproof",
+    "proofId": "erdos-1006",
+    "range": { "startLine": 136, "endLine": 144 },
+    "type": "proof",
+    "title": "Conjecture Disproof",
+    "content": "The proof that Ore's conjecture is false: apply Nešetřil-Rödl with g=5 to get a graph with girth 5 (hence girth > 4) that has no robust orientation. This contradicts the conjecture, which claims all girth > 4 graphs have such orientations.",
+    "significance": "critical"
+  }
+]

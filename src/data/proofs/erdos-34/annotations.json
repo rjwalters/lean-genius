@@ -1,1 +1,142 @@
-[]
+[
+  {
+    "id": "ann-e34-header",
+    "proofId": "erdos-34",
+    "range": {
+      "startLine": 1,
+      "endLine": 32
+    },
+    "type": "concept",
+    "title": "Problem Overview (DISPROVED)",
+    "content": "**Erdos Problem #34** asked: For a permutation pi, is S(pi) = o(n^2)?\n\nS(pi) counts distinct consecutive sums: sums of the form sum_{i=u}^v pi(i).\n\n**Answer**: NO! The conjecture is FALSE.\n\n**History**:\n- Identity permutation: S(iota) = o(n^2) (motivated the conjecture)\n- Hegyvari (1986): First counterexample with S(pi) >= (1/18)n^2\n- Konieczny (2015): S(pi) >= n^2/4 is achievable\n\nThe conjecture is 'extremely false'!",
+    "mathContext": "A permutation pi in S_n rearranges {1,...,n}. Consecutive sums are contiguous subsequence sums.",
+    "significance": "critical",
+    "relatedConcepts": ["erdos", "permutations", "disproved"]
+  },
+  {
+    "id": "ann-e34-consecutivesum",
+    "proofId": "erdos-34",
+    "range": {
+      "startLine": 47,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Consecutive Sum",
+    "content": "**consecutiveSum n pi u v** computes the sum of pi(i) for i from u to v.\n\nIf u <= v, this is sum_{i in [u,v]} (pi(i) + 1), where +1 converts from 0-indexed Fin n to 1-indexed values.\n\nIf u > v, the sum is 0 (empty range).",
+    "mathContext": "For the identity, consecutive sums are arithmetic progressions: (v-u+1)(u+v+2)/2.",
+    "significance": "key",
+    "relatedConcepts": ["sum", "permutation", "interval"]
+  },
+  {
+    "id": "ann-e34-s-function",
+    "proofId": "erdos-34",
+    "range": {
+      "startLine": 60,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "S(pi) - Count of Distinct Sums",
+    "content": "**S n pi** is the cardinality of all distinct consecutive sums.\n\nThis is the main quantity studied. For random pi, S(pi) ~ 0.284n^2.\n\nFor the identity, S(iota) = O(n^1.5) = o(n^2), which is much smaller.",
+    "mathContext": "S(pi) = |{sum_{i=u}^v pi(i) : 0 <= u <= v < n}|",
+    "significance": "critical",
+    "relatedConcepts": ["cardinality", "distinct-values"]
+  },
+  {
+    "id": "ann-e34-disproved",
+    "proofId": "erdos-34",
+    "range": {
+      "startLine": 87,
+      "endLine": 99
+    },
+    "type": "axiom",
+    "title": "The Disproved Conjecture",
+    "content": "**ErdosConjecture** states: For all epsilon > 0, there exists N such that for all n > N and all pi in S_n, S(pi) < epsilon * n^2.\n\n**erdos_34_disproved** asserts this is FALSE.\n\nCounterexamples exist with S(pi) >= cn^2 for constant c > 0 (specifically c >= 1/4).",
+    "mathContext": "The little-o notation S(pi) = o(n^2) means S(pi)/n^2 -> 0 as n -> infinity.",
+    "significance": "critical",
+    "relatedConcepts": ["axiom", "counterexample", "asymptotic"]
+  },
+  {
+    "id": "ann-e34-hegyvari",
+    "proofId": "erdos-34",
+    "range": {
+      "startLine": 105,
+      "endLine": 111
+    },
+    "type": "axiom",
+    "title": "Hegyvari's Counterexample (1986)",
+    "content": "**hegyvari_counterexample** states there exist permutations with S(pi) >= (1/18 + o(1))n^2.\n\nThis was the FIRST counterexample to Erdos's conjecture.\n\n1/18 ~ 0.056 shows the conjecture fails by a constant factor.",
+    "mathContext": "Hegyvari's construction is explicit but the 1/18 constant was later improved dramatically.",
+    "significance": "key",
+    "relatedConcepts": ["axiom", "hegyvari", "first-counterexample"]
+  },
+  {
+    "id": "ann-e34-konieczny",
+    "proofId": "erdos-34",
+    "range": {
+      "startLine": 113,
+      "endLine": 119
+    },
+    "type": "axiom",
+    "title": "Konieczny's Quarter Bound (2015)",
+    "content": "**konieczny_quarter_bound** states there exist permutations with S(pi) >= n^2/4.\n\nThis shows the conjecture is 'extremely false' - not just failing by a small constant, but by a factor of 1/4.\n\nSince max possible is ~n^2/2 pairs, this is nearly half the theoretical maximum!",
+    "mathContext": "1/4 = 0.25, compared to Hegyvari's 1/18 ~ 0.056 - a 4.5x improvement.",
+    "significance": "critical",
+    "relatedConcepts": ["axiom", "konieczny", "optimal-bound"]
+  },
+  {
+    "id": "ann-e34-bounds",
+    "proofId": "erdos-34",
+    "range": {
+      "startLine": 121,
+      "endLine": 131
+    },
+    "type": "axiom",
+    "title": "Bounds on Maximum f(n)",
+    "content": "**f_lower_bound**: f(n) >= 0.286 * n^2\n**f_upper_bound**: f(n) <= 0.446 * n^2\n\nwhere f(n) = max_{pi} S(pi).\n\nThe gap [0.286, 0.446] shows the exact maximum is not yet known.",
+    "mathContext": "These bounds from Konieczny (2015) leave room for improvement.",
+    "significance": "key",
+    "relatedConcepts": ["bounds", "maximum", "open-problem"]
+  },
+  {
+    "id": "ann-e34-random",
+    "proofId": "erdos-34",
+    "range": {
+      "startLine": 133,
+      "endLine": 141
+    },
+    "type": "axiom",
+    "title": "Random Permutation Behavior",
+    "content": "**random_permutation_limit** states that for a random permutation,\n\nS(pi) ~ (1 + e^-2)/4 * n^2 ~ 0.2838 * n^2\n\nThis shows most permutations violate the conjecture by the same amount as worst-case constructions!",
+    "mathContext": "e^-2 ~ 0.135, so (1 + e^-2)/4 ~ 0.2838. Almost identical to the lower bound 0.286.",
+    "significance": "key",
+    "relatedConcepts": ["random", "probability", "typical-case"]
+  },
+  {
+    "id": "ann-e34-identity",
+    "proofId": "erdos-34",
+    "range": {
+      "startLine": 149,
+      "endLine": 162
+    },
+    "type": "axiom",
+    "title": "The Identity Permutation is Special",
+    "content": "**identity_is_little_o** states S(iota) = o(n^2) for the identity permutation.\n\nFor iota(i) = i, consecutive sums are arithmetic progressions: sum_{i=u}^v i = (v-u+1)(u+v)/2.\n\nThe number of distinct such sums is O(n^1.5), not Theta(n^2).\n\nThis special case motivated Erdos's (false) conjecture.",
+    "mathContext": "Identity has fewer distinct sums because arithmetic progression sums have algebraic structure.",
+    "significance": "key",
+    "relatedConcepts": ["identity", "special-case", "motivation"]
+  },
+  {
+    "id": "ann-e34-minimum",
+    "proofId": "erdos-34",
+    "range": {
+      "startLine": 168,
+      "endLine": 183
+    },
+    "type": "concept",
+    "title": "Minimum Bounds g(n)",
+    "content": "**g_lower_bound**: g(n) >= c * n^(3/2) for some c > 0.\n\n**MinimumConjecture**: Is g(n) >= n^(2-o(1))? (conjectured)\n\nwhere g(n) = min_{pi} S(pi).\n\nEven the minimum is superlinear - every permutation has many distinct consecutive sums.",
+    "mathContext": "The gap between n^1.5 (known) and n^(2-o(1)) (conjectured) is significant.",
+    "significance": "supporting",
+    "relatedConcepts": ["minimum", "lower-bound", "conjecture"]
+  }
+]

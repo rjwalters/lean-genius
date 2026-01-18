@@ -1,1 +1,155 @@
-[]
+[
+  {
+    "id": "ann-793-condition",
+    "proofId": "erdos-793",
+    "range": { "startLine": 54, "endLine": 57 },
+    "type": "definition",
+    "title": "The Divisibility Condition",
+    "content": "A set A satisfies the condition if for all distinct a,b,c ∈ A, we have a ∤ bc. No element divides the product of any two other elements. This is stronger than primitive (no element divides another).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-793-alt",
+    "proofId": "erdos-793",
+    "range": { "startLine": 59, "endLine": 62 },
+    "type": "definition",
+    "title": "Alternative Formulation",
+    "content": "An equivalent formulation requiring b ≠ c additionally. In practice, the case b = c (a ∤ b²) is implied by the primitive property for good sets.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-793-icc",
+    "proofId": "erdos-793",
+    "range": { "startLine": 70, "endLine": 71 },
+    "type": "definition",
+    "title": "The Set {1,...,n}",
+    "content": "We consider subsets of {1,...,n}, the first n positive integers. This is the natural domain for counting problems in number theory.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-793-F",
+    "proofId": "erdos-793",
+    "range": { "startLine": 73, "endLine": 75 },
+    "type": "definition",
+    "title": "The Function F(n)",
+    "content": "F(n) is the maximum cardinality of a subset A ⊆ {1,...,n} satisfying the divisibility condition. This is the central quantity we want to understand asymptotically.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-793-primepi",
+    "proofId": "erdos-793",
+    "range": { "startLine": 83, "endLine": 85 },
+    "type": "definition",
+    "title": "Prime Counting Function",
+    "content": "π(n) counts primes up to n. By the Prime Number Theorem, π(n) ~ n/log n. This is the dominant term in F(n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-793-largeprimes",
+    "proofId": "erdos-793",
+    "range": { "startLine": 87, "endLine": 96 },
+    "type": "theorem",
+    "title": "Large Primes Satisfy Condition",
+    "content": "Primes p > n^{2/3} automatically satisfy the condition: if p > n^{2/3} and b,c ≤ n with p ≠ b,c, then bc < n^{4/3} < p² implies p ∤ bc (since p is prime). Thus all ~π(n) large primes can be included.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-793-lower",
+    "proofId": "erdos-793",
+    "range": { "startLine": 104, "endLine": 107 },
+    "type": "theorem",
+    "title": "Lower Bound",
+    "content": "Erdős (1938) proved F(n) ≥ π(n) + c₁·n^{2/3}·(log n)^{-2}. Beyond primes, we can include some carefully chosen composites.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-793-upper",
+    "proofId": "erdos-793",
+    "range": { "startLine": 109, "endLine": 112 },
+    "type": "theorem",
+    "title": "Upper Bound",
+    "content": "Erdős proved F(n) ≤ π(n) + c₂·n^{2/3}·(log n)^{-2}. The constants c₁ < c₂ leave a gap—the exact behavior is unknown.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-793-simple",
+    "proofId": "erdos-793",
+    "range": { "startLine": 114, "endLine": 116 },
+    "type": "theorem",
+    "title": "Simple Upper Bound",
+    "content": "A cleaner bound F(n) ≤ π(n) + n^{2/3} follows from the graph-theoretic argument without the (log n)^{-2} refinement.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-793-secondary",
+    "proofId": "erdos-793",
+    "range": { "startLine": 124, "endLine": 126 },
+    "type": "definition",
+    "title": "Secondary Term",
+    "content": "The secondary term F(n) - π(n) measures how many 'extra' elements beyond primes fit in an optimal set. This is the interesting part of the asymptotics.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-793-normalized",
+    "proofId": "erdos-793",
+    "range": { "startLine": 128, "endLine": 130 },
+    "type": "definition",
+    "title": "Normalized Secondary Term",
+    "content": "Dividing by n^{2/3}·(log n)^{-2} normalizes the secondary term. The conjecture asks if this converges to a constant C.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-793-conjecture",
+    "proofId": "erdos-793",
+    "range": { "startLine": 132, "endLine": 134 },
+    "type": "conjecture",
+    "title": "Erdős's Conjecture",
+    "content": "The main open question: does the normalized secondary term converge to some constant C as n → ∞? If so, F(n) = π(n) + (C + o(1))·n^{2/3}·(log n)^{-2}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-793-graph",
+    "proofId": "erdos-793",
+    "range": { "startLine": 148, "endLine": 157 },
+    "type": "structure",
+    "title": "Erdős Graph Construction",
+    "content": "Erdős's elegant proof constructs a bipartite graph: vertices are small integers [1, n^{2/3}] and large primes (n^{2/3}, n]. Edge u~v exists if uv ∈ A. This encodes the set structure.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-793-p3free",
+    "proofId": "erdos-793",
+    "range": { "startLine": 159, "endLine": 161 },
+    "type": "definition",
+    "title": "P₃-Free Property",
+    "content": "The graph has no path of length 3 (four vertices in a row). This follows from the divisibility condition: a path a-b-c-d would give divisibility constraints that violate our condition.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-793-forest",
+    "proofId": "erdos-793",
+    "range": { "startLine": 163, "endLine": 165 },
+    "type": "concept",
+    "title": "P₃-Free Implies Forest",
+    "content": "Graphs without P₃ are forests (acyclic). Forests have |E| < |V|, giving the upper bound on |A| in terms of the vertex count.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-793-general",
+    "proofId": "erdos-793",
+    "range": { "startLine": 173, "endLine": 176 },
+    "type": "definition",
+    "title": "Generalized Condition",
+    "content": "For r ≥ 2: no element a divides any product of r distinct other elements. The original problem is r = 2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-793-genbounds",
+    "proofId": "erdos-793",
+    "range": { "startLine": 182, "endLine": 186 },
+    "type": "concept",
+    "title": "Generalized Bounds",
+    "content": "For the r-product condition, the exponent 2/3 becomes 2/(r+1). So r = 2 gives 2/3, r = 3 gives 1/2, etc. The secondary term shrinks as r increases.",
+    "significance": "key"
+  }
+]

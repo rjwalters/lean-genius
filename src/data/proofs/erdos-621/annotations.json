@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-621-triangle",
+    "proofId": "erdos-621",
+    "range": { "startLine": 35, "endLine": 37 },
+    "type": "definition",
+    "title": "Triangle",
+    "content": "A triangle is a set of 3 pairwise adjacent vertices in G.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-621-hits",
+    "proofId": "erdos-621",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "definition",
+    "title": "Hits Triangle",
+    "content": "An edge set S hits a triangle if it contains at least one edge of that triangle.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-621-cover",
+    "proofId": "erdos-621",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "definition",
+    "title": "Triangle Edge Cover",
+    "content": "An edge set that hits every triangle in the graph.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-621-tau1",
+    "proofId": "erdos-621",
+    "range": { "startLine": 56, "endLine": 60 },
+    "type": "definition",
+    "title": "τ₁(G)",
+    "content": "Minimum size of a triangle edge cover. Central to the conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-621-sparse",
+    "proofId": "erdos-621",
+    "range": { "startLine": 70, "endLine": 75 },
+    "type": "definition",
+    "title": "Triangle-Sparse",
+    "content": "An edge set containing at most one edge from each triangle.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-621-alpha1",
+    "proofId": "erdos-621",
+    "range": { "startLine": 78, "endLine": 82 },
+    "type": "definition",
+    "title": "α₁(G)",
+    "content": "Maximum size of a triangle-sparse edge set. Central to the conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-621-tauB",
+    "proofId": "erdos-621",
+    "range": { "startLine": 92, "endLine": 96 },
+    "type": "definition",
+    "title": "τ_B(G)",
+    "content": "Minimum edges to remove to make G bipartite. Key to Norin-Sun proof.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-621-tau1letauB",
+    "proofId": "erdos-621",
+    "range": { "startLine": 104, "endLine": 106 },
+    "type": "theorem",
+    "title": "τ₁ ≤ τ_B",
+    "content": "Making G bipartite hits all triangles. Crucial inequality.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-621-egt",
+    "proofId": "erdos-621",
+    "range": { "startLine": 111, "endLine": 112 },
+    "type": "definition",
+    "title": "EGT Conjecture",
+    "content": "The original conjecture: α₁(G) + τ₁(G) ≤ n²/4.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-621-norinsun",
+    "proofId": "erdos-621",
+    "range": { "startLine": 119, "endLine": 121 },
+    "type": "theorem",
+    "title": "Norin-Sun 2016",
+    "content": "The stronger result: α₁(G) + τ_B(G) ≤ n²/4. Resolves the conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-621-complete",
+    "proofId": "erdos-621",
+    "range": { "startLine": 131, "endLine": 137 },
+    "type": "theorem",
+    "title": "K_n Equality",
+    "content": "Complete graphs achieve equality in the bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-621-bipartite",
+    "proofId": "erdos-621",
+    "range": { "startLine": 140, "endLine": 145 },
+    "type": "theorem",
+    "title": "K_{n/2,n/2} Equality",
+    "content": "Complete bipartite graphs achieve equality.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-621-kmm",
+    "proofId": "erdos-621",
+    "range": { "startLine": 148, "endLine": 153 },
+    "type": "theorem",
+    "title": "K_{m,m}+vertex Equality",
+    "content": "K_{m,m} plus one universal vertex achieves equality.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-621-mantel",
+    "proofId": "erdos-621",
+    "range": { "startLine": 168, "endLine": 171 },
+    "type": "theorem",
+    "title": "Mantel's Theorem",
+    "content": "Triangle-free graphs have ≤ n²/4 edges. Classical result.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-621-problem23",
+    "proofId": "erdos-621",
+    "range": { "startLine": 215, "endLine": 219 },
+    "type": "definition",
+    "title": "Problem #23 Conjecture",
+    "content": "The related conjecture that τ_B(G) ≤ n²/25.",
+    "significance": "supporting"
+  }
+]

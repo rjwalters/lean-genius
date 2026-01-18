@@ -1,33 +1,131 @@
 {
   "id": "erdos-674",
-  "title": "Erdős Problem #674",
+  "title": "Erdős #674: The Equation x^x y^y = z^z",
   "slug": "erdos-674",
-  "description": "Are there any integer solutions to ... with ...?",
+  "description": "Are there integer solutions to x^x y^y = z^z with x, y, z > 1? Yes! Ko (1940) found infinitely many. Dem'janenko (1975) proved all solutions share the same prime factors.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Chao Ko, Andrzej Schinzel, V.A. Dem'janenko, S. Uchiyama",
     "sourceUrl": "https://erdosproblems.com/674",
-    "date": "",
-    "status": "pending",
+    "date": "1940-1984",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos674Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "diophantine-equations",
+      "exponential-equations"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 22,
     "erdosNumber": 674,
     "erdosUrl": "https://erdosproblems.com/674",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #674 from erdosproblems.com.",
-    "problemStatement": "Are there any integer solutions to $x^xy^y=z^z$ with $x,y,z>1$?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Ko (1940) discovered infinitely many solutions and proved none exist when gcd(x,y) = 1. Schinzel (1958) showed primes dividing x must divide y. Dem'janenko (1975) proved all three variables share identical prime factors. Uchiyama (1984) established finiteness results for fixed ratios.",
+    "problemStatement": "Are there any integer solutions to x^x y^y = z^z with x, y, z > 1?",
+    "proofStrategy": "We formalize the Solution structure, Ko's explicit example (2^12·3^6, 2^8·3^8, 2^11·3^7), the coprime impossibility, Schinzel's and Dem'janenko's structural theorems, Mills' constraint on 4xy vs z², Uchiyama's finiteness, and Ko's parametric family.",
+    "keyInsights": [
+      "Ko (1940): Infinitely many solutions exist",
+      "No solutions when gcd(x, y) = 1",
+      "Dem'janenko (1975): x, y, z have identical prime factors",
+      "Mills: Only Ko's family satisfies 4xy = z²",
+      "Uchiyama (1984): Finitely many solutions for each Q = xy/z² < 1/4"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "equation",
+      "title": "The Main Equation",
+      "summary": "Solution structure and existence",
+      "startLine": 29,
+      "endLine": 46
+    },
+    {
+      "id": "ko-example",
+      "title": "Ko's Explicit Solution",
+      "summary": "x = 2^12·3^6, y = 2^8·3^8, z = 2^11·3^7",
+      "startLine": 48,
+      "endLine": 86
+    },
+    {
+      "id": "coprime",
+      "title": "The Coprime Case",
+      "summary": "No solutions when gcd(x,y) = 1",
+      "startLine": 88,
+      "endLine": 96
+    },
+    {
+      "id": "schinzel",
+      "title": "Schinzel's Result",
+      "summary": "Primes dividing x must divide y",
+      "startLine": 98,
+      "endLine": 108
+    },
+    {
+      "id": "demjanenko",
+      "title": "Dem'janenko's Theorem",
+      "summary": "x, y, z share identical prime factors",
+      "startLine": 110,
+      "endLine": 120
+    },
+    {
+      "id": "mills",
+      "title": "Mills' Constraint",
+      "summary": "No solutions with 4xy > z², Ko family for equality",
+      "startLine": 122,
+      "endLine": 143
+    },
+    {
+      "id": "uchiyama",
+      "title": "Uchiyama's Finiteness",
+      "summary": "Finitely many solutions for fixed Q < 1/4",
+      "startLine": 145,
+      "endLine": 155
+    },
+    {
+      "id": "ko-family",
+      "title": "Ko's General Family",
+      "summary": "Parametric family producing infinitely many solutions",
+      "startLine": 157,
+      "endLine": 175
+    },
+    {
+      "id": "computational",
+      "title": "Computational Bounds",
+      "summary": "Mills' search for solutions with 4xy < z²",
+      "startLine": 177,
+      "endLine": 188
+    },
+    {
+      "id": "structure",
+      "title": "Structure of Solutions",
+      "summary": "Ko type conjecture and ratio constraints",
+      "startLine": 190,
+      "endLine": 210
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "summary": "No solutions for x = 2, 3, or x = y",
+      "startLine": 212,
+      "endLine": 232
+    },
+    {
+      "id": "ordering",
+      "title": "Ordering",
+      "summary": "WLOG x ≤ y, and z is between x and y",
+      "startLine": 234,
+      "endLine": 245
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #674 on the equation x^x y^y = z^z. Ko (1940) discovered infinitely many solutions and proved none exist when gcd(x,y) = 1. Dem'janenko (1975) proved all solutions share identical prime factors.",
+    "implications": "The complete characterization of solutions reveals deep structure: all solutions come from Ko's parametric family, share the same prime factors, and satisfy 4xy = z². This connects exponential Diophantine equations to the arithmetic of prime factorizations.",
+    "openQuestions": [
+      "Are there solutions outside Ko's family?",
+      "Can Mills' computational bound be extended?",
+      "What is the density of n for which koFamily(n) gives solutions?"
+    ]
   }
 }

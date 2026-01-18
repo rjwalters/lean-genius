@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-674-solution",
+    "proofId": "erdos-674",
+    "range": { "startLine": 31, "endLine": 39 },
+    "type": "definition",
+    "title": "Solution Structure",
+    "content": "A triple (x, y, z) with x, y, z > 1 satisfying x^x y^y = z^z.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-674-exist",
+    "proofId": "erdos-674",
+    "range": { "startLine": 41, "endLine": 42 },
+    "type": "definition",
+    "title": "Solutions Exist",
+    "content": "The main question: Are there any solutions?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-674-ko1940",
+    "proofId": "erdos-674",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "theorem",
+    "title": "Ko 1940",
+    "content": "YES, solutions exist. The affirmative answer.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-674-kox",
+    "proofId": "erdos-674",
+    "range": { "startLine": 50, "endLine": 57 },
+    "type": "definition",
+    "title": "Ko's Example",
+    "content": "x = 2^12·3^6, y = 2^8·3^8, z = 2^11·3^7. An explicit solution.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-674-nocoprime",
+    "proofId": "erdos-674",
+    "range": { "startLine": 90, "endLine": 92 },
+    "type": "theorem",
+    "title": "No Coprime Solutions",
+    "content": "No solutions exist when gcd(x, y) = 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-674-schinzel",
+    "proofId": "erdos-674",
+    "range": { "startLine": 100, "endLine": 103 },
+    "type": "theorem",
+    "title": "Schinzel 1958",
+    "content": "Every prime dividing x or y must divide both.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-674-demjanenko",
+    "proofId": "erdos-674",
+    "range": { "startLine": 112, "endLine": 114 },
+    "type": "theorem",
+    "title": "Dem'janenko 1975",
+    "content": "x, y, z all have identical prime factors. The key structural result.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-674-ratioQ",
+    "proofId": "erdos-674",
+    "range": { "startLine": 124, "endLine": 126 },
+    "type": "definition",
+    "title": "Ratio Q",
+    "content": "Q = xy/z². Key parameter for classifying solutions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-674-mills",
+    "proofId": "erdos-674",
+    "range": { "startLine": 128, "endLine": 131 },
+    "type": "theorem",
+    "title": "Mills' Constraint",
+    "content": "No non-trivial solutions when 4xy > z².",
+    "significance": "key"
+  },
+  {
+    "id": "ann-674-uchiyama",
+    "proofId": "erdos-674",
+    "range": { "startLine": 147, "endLine": 150 },
+    "type": "theorem",
+    "title": "Uchiyama 1984",
+    "content": "For fixed Q ∈ (0, 1/4), only finitely many solutions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-674-kofamily",
+    "proofId": "erdos-674",
+    "range": { "startLine": 159, "endLine": 164 },
+    "type": "definition",
+    "title": "Ko's Parametric Family",
+    "content": "General construction producing infinitely many solutions.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-674-infinite",
+    "proofId": "erdos-674",
+    "range": { "startLine": 172, "endLine": 175 },
+    "type": "theorem",
+    "title": "Infinitely Many Solutions",
+    "content": "Ko's family produces infinitely many distinct solutions.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-674-isKoType",
+    "proofId": "erdos-674",
+    "range": { "startLine": 192, "endLine": 196 },
+    "type": "definition",
+    "title": "Ko Type",
+    "content": "A solution is 'Ko type' if it comes from the parametric family.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-674-smallcases",
+    "proofId": "erdos-674",
+    "range": { "startLine": 214, "endLine": 227 },
+    "type": "theorem",
+    "title": "Small Cases",
+    "content": "No solutions with x = 2, x = 3, or x = y.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-674-ordering",
+    "proofId": "erdos-674",
+    "range": { "startLine": 242, "endLine": 245 },
+    "type": "theorem",
+    "title": "Ordering",
+    "content": "In any solution with x ≤ y, we have x < z < y.",
+    "significance": "supporting"
+  }
+]

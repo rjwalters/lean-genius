@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-673-sorteddivisors",
+    "proofId": "erdos-673",
+    "range": { "startLine": 36, "endLine": 37 },
+    "type": "definition",
+    "title": "Sorted Divisors",
+    "content": "The divisors of n as a sorted list: d₁ < d₂ < ... < d_τ(n).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-673-tau",
+    "proofId": "erdos-673",
+    "range": { "startLine": 40, "endLine": 40 },
+    "type": "definition",
+    "title": "Divisor Count τ(n)",
+    "content": "The number of divisors of n. Central to bounds on G(n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-673-divisorat",
+    "proofId": "erdos-673",
+    "range": { "startLine": 43, "endLine": 44 },
+    "type": "definition",
+    "title": "Divisor At Index",
+    "content": "The i-th divisor of n (0-indexed). Used to define G(n).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-673-g",
+    "proofId": "erdos-673",
+    "range": { "startLine": 59, "endLine": 61 },
+    "type": "definition",
+    "title": "Function G(n)",
+    "content": "G(n) = Σ dᵢ/dᵢ₊₁, the sum of consecutive divisor ratios. The central object.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-673-gprime",
+    "proofId": "erdos-673",
+    "range": { "startLine": 68, "endLine": 69 },
+    "type": "theorem",
+    "title": "G(p) for Primes",
+    "content": "G(p) = 1/p for prime p. Only one ratio: 1/p.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-673-upper",
+    "proofId": "erdos-673",
+    "range": { "startLine": 78, "endLine": 80 },
+    "type": "theorem",
+    "title": "G Upper Bound",
+    "content": "G(n) ≤ τ(n) - 1. Each ratio is at most 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-673-taoupper",
+    "proofId": "erdos-673",
+    "range": { "startLine": 83, "endLine": 85 },
+    "type": "theorem",
+    "title": "Tao's Upper Bound",
+    "content": "G(n) ≤ τ(n). Tao's simpler upper bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-673-taolower",
+    "proofId": "erdos-673",
+    "range": { "startLine": 88, "endLine": 90 },
+    "type": "theorem",
+    "title": "Tao's Lower Bound",
+    "content": "G(n) ≥ τ(n/m)/m for any divisor m of n. Key structural bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-673-even",
+    "proofId": "erdos-673",
+    "range": { "startLine": 93, "endLine": 95 },
+    "type": "theorem",
+    "title": "Even Number Bound",
+    "content": "For even n: G(n) ≥ τ(n)/4. Taking m = 2 in Tao's bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-673-average",
+    "proofId": "erdos-673",
+    "range": { "startLine": 100, "endLine": 103 },
+    "type": "theorem",
+    "title": "Average Tends to Infinity",
+    "content": "(1/X) Σ G(n) → ∞. The average of G grows without bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-673-almostall",
+    "proofId": "erdos-673",
+    "range": { "startLine": 106, "endLine": 109 },
+    "type": "definition",
+    "title": "Almost All G → ∞",
+    "content": "G(n) → ∞ for density 1 of integers. The first question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-673-gratio",
+    "proofId": "erdos-673",
+    "range": { "startLine": 118, "endLine": 119 },
+    "type": "definition",
+    "title": "G Ratio",
+    "content": "G(n)/τ(n), the normalized version of G.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-673-distribution",
+    "proofId": "erdos-673",
+    "range": { "startLine": 127, "endLine": 134 },
+    "type": "definition",
+    "title": "Continuous Distribution",
+    "content": "G(n)/τ(n) has a continuous distribution function. Erdős-Tenenbaum result.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-673-etthm",
+    "proofId": "erdos-673",
+    "range": { "startLine": 137, "endLine": 138 },
+    "type": "theorem",
+    "title": "Erdős-Tenenbaum Theorem",
+    "content": "The distribution function of G(n)/τ(n) is continuous.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-673-notmult",
+    "proofId": "erdos-673",
+    "range": { "startLine": 160, "endLine": 162 },
+    "type": "theorem",
+    "title": "G Not Multiplicative",
+    "content": "G(ab) ≠ G(a)G(b) in general. G is not a multiplicative function.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-673-asymptotic",
+    "proofId": "erdos-673",
+    "range": { "startLine": 173, "endLine": 177 },
+    "type": "theorem",
+    "title": "Asymptotic Formula",
+    "content": "Σ_{n≤X} G(n) ~ c X log X for some constant c > 0.",
+    "significance": "critical"
+  }
+]

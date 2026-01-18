@@ -1,33 +1,144 @@
 {
   "id": "erdos-868",
-  "title": "Erdős Problem #868",
+  "title": "Erdős Problem #868: Additive Bases and Minimal Bases",
   "slug": "erdos-868",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is an additive basis of order ..., and ... as ..., then must ... contain a minimal additive basis of order ...? (i.e. ...",
+  "description": "If A is an additive basis of order 2 with f(n) → ∞, must A contain a minimal additive basis of order 2?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős & Nathanson (1979, 1989)",
     "sourceUrl": "https://erdosproblems.com/868",
-    "date": "",
-    "status": "pending",
+    "date": "1979",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos868Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "number-theory",
+      "bases",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 868,
     "erdosUrl": "https://erdosproblems.com/868",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "partially-solved",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.Finite",
+        "description": "Predicate for finite sets",
+        "module": "Mathlib.Data.Set.Finite"
+      },
+      {
+        "theorem": "Filter.Eventually",
+        "description": "Eventually holds in a filter",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter at infinity",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm on reals",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of possibly infinite sets",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "Clean formalization of additive bases of arbitrary order h",
+      "Representation counting function definition using Set.ncard",
+      "Definition of minimal bases via the 'removing any element breaks it' criterion",
+      "Statement of the main OPEN questions about f(n) → ∞ and f(n) > ε log n",
+      "Statement of known results: Erdős-Nathanson 1979, 1989, Härtter-Nathanson",
+      "Theorem showing minimal bases have infinitely many essential gaps when an element is removed",
+      "Summary theorem packaging the gap between known sufficient and necessary conditions"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #868 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $A$ is an additive basis of order $2$, and $1_A\\ast 1_A(n)\\to \\infty$ as $n\\to \\infty$, then must $A$ contain a minimal additive basis of order $2$? (i.e. such that deleting any element creates infinitely many $n\\not\\in A+A$)\n\nWhat if $1_A\\ast 1_A(n) >\\epsilon \\log n$ (for all large $n$, for arbitrary fixed $\\epsilon>0$)?\n\n\n\nA question of Erd\\H{o}s and Nathanson \\cite{ErNa79}, who proved that this is true if $1_A\\ast 1_A(n) > (\\log \\frac{4}{3})^{-1}\\log n$ for all large $n$.\n\nH\\\"{a}rtter \\cite{Ha56} and Nathanson \\cite{Na74} proved that there exist additive bases which do not contain any minimal additive bases.\n\nErd\\H{o}s and Nathanson \\cite{ErNa89} proved that, for any $t$, there exists $A$ such that $1_A\\ast 1_A(n)\\geq t$ for all large $n$ and yet $A$ does not contain a minimal asymptotic basis of order $2$.\n\nSee also [870].\n\n\n\n\nReferences\n\n\n[ErNa79] Erd\\H{o}s, Paul and Nathanson, Melvyn B., Systems of distinct representatives and minimal bases in\nadditive number theory. (1979), 89--107.\n\n[ErNa89] Erd\\H{o}s, Paul and Nathanson, Melvyn B., Additive bases with many representations. Acta Arith. (1989), 399--406.\n\n[Ha56] H\\\"{a}rtter, Erich, Ein Beitrag zur {T}heorie der {M}inimalbasen. J. Reine Angew. Math. (1956), 170--204.\n\n[Na74] Nathanson, Melvyn B., Minimal bases and maximal nonbases in additive number theory. J. Number Theory (1974), 324--333.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #868 explores a fundamental question in additive combinatorics: when does an additive basis contain a 'minimal' subbasis?\n\nA set A ⊆ ℕ is an additive basis of order 2 if every sufficiently large natural number can be written as a₁ + a₂ with a₁, a₂ ∈ A. A minimal basis is one where removing any element destroys this property - infinitely many numbers become unrepresentable.\n\nThe representation function f(n) = r_{A,2}(n) counts how many ways n can be written as a sum of two elements from A. Erdős and Nathanson studied the relationship between f(n) and the existence of minimal subbases in their 1979 and 1989 papers.\n\nHärtter (1956) and Nathanson (1974) first showed that not every basis contains a minimal subbasis - there exist pathological bases with this property. The question became: what growth condition on f(n) guarantees a minimal subbasis exists?",
+    "problemStatement": "**Erdős Problem #868**: Let $A \\subseteq \\mathbb{N}$ be an additive basis of order 2, and let $f(n) = |\\{(a_1, a_2) \\in A^2 : a_1 + a_2 = n\\}|$ count representations.\n\n**Part (i) (OPEN)**: If $f(n) \\to \\infty$ as $n \\to \\infty$, must $A$ contain a minimal additive basis of order 2?\n\n**Part (ii) (OPEN)**: If $f(n) > \\varepsilon \\log n$ for all large $n$ (for any fixed $\\varepsilon > 0$), must $A$ contain a minimal basis?\n\n**Known Results**:\n- **Erdős-Nathanson (1979)**: If $f(n) > (\\log \\frac{4}{3})^{-1} \\log n \\approx 3.476 \\log n$, then $A$ contains a minimal basis. This uses a probabilistic argument.\n- **Härtter-Nathanson**: There exist bases with NO minimal subbasis.\n- **Erdős-Nathanson (1989)**: For any constant $t$, there exists a basis with $f(n) \\geq t$ for all large $n$, yet containing no minimal subbasis.\n\n**The Gap**: We know constant $f(n)$ is NOT sufficient, and $f(n) > c \\log n$ for large $c$ IS sufficient. The cases $f(n) \\to \\infty$ and $f(n) > \\varepsilon \\log n$ for small $\\varepsilon$ remain mysteriously open.",
+    "proofStrategy": "Our formalization takes an axiomatic approach to capture both the OPEN questions and the KNOWN results:\n\n1. **Define additive bases**: A set A is a basis of order h if the set of unrepresentable numbers is finite (cofinite coverage).\n\n2. **Define the representation function**: reprCount(A, h, n) uses Set.ncard to count representations of n as h-element sums from A.\n\n3. **Define minimal bases**: A basis B is minimal if removing any element b destroys the basis property - B \\ {b} has infinitely many gaps.\n\n4. **State open questions as axioms**: The unknown propositions erdos_868_part_i_open and erdos_868_part_ii_open represent the unresolved cases.\n\n5. **State known results as axioms**: The Erdős-Nathanson 1979 theorem (sufficient condition), the Härtter-Nathanson existence result, and the Erdős-Nathanson 1989 counterexample (bounded f(n) insufficient).\n\n6. **Prove structural results**: We show minimal bases have essential elements (removing them creates infinitely many gaps).",
+    "keyInsights": [
+      "**The growth rate mystery**: Constant f(n) ≥ t is NOT sufficient for a minimal subbasis (Erdős-Nathanson 1989), but f(n) > 3.476 log n IS sufficient (Erdős-Nathanson 1979). The gap between these - including f(n) → ∞ and f(n) > ε log n - remains open.",
+      "**Minimal = every element is essential**: In a minimal basis, removing ANY element creates infinitely many gaps. This is a strong structural constraint.",
+      "**The Erdős-Nathanson constant**: The threshold (log 4/3)⁻¹ ≈ 3.476 arises from a probabilistic deletion argument. Below this threshold, the method fails.",
+      "**Pathological bases exist**: Härtter and Nathanson constructed bases where you can always remove something while preserving the basis property - no subbasis is minimal.",
+      "**Representation growth matters**: The key insight is that HOW FAST f(n) grows determines structural properties of A, not just whether f(n) is bounded or unbounded."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Documentation",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Problem statement, history, and key results from Erdős-Nathanson and Härtter-Nathanson."
+    },
+    {
+      "id": "additive-bases",
+      "title": "Additive Bases",
+      "startLine": 38,
+      "endLine": 56,
+      "summary": "Definition of additive bases of order h via cofinite representability."
+    },
+    {
+      "id": "representation-function",
+      "title": "Representation Function",
+      "startLine": 57,
+      "endLine": 73,
+      "summary": "The representation function f(n) counting ways to write n as a sum."
+    },
+    {
+      "id": "minimal-bases",
+      "title": "Minimal Bases",
+      "startLine": 74,
+      "endLine": 90,
+      "summary": "Definition of minimal bases - removing any element breaks the basis property."
+    },
+    {
+      "id": "open-questions",
+      "title": "The Main Open Questions",
+      "startLine": 91,
+      "endLine": 122,
+      "summary": "Parts (i) and (ii) of Erdős Problem #868 - the unsolved cases."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 123,
+      "endLine": 187,
+      "summary": "Erdős-Nathanson 1979, 1989 and Härtter-Nathanson theorems."
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Structure",
+      "startLine": 188,
+      "endLine": 228,
+      "summary": "Basic examples and the essential element theorem for minimal bases."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 229,
+      "endLine": 257,
+      "summary": "Package of main results showing the gap between known conditions."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #868 on additive bases and minimal subbases. The problem asks: what growth rate of the representation function f(n) guarantees that a basis contains a minimal subbasis? We capture the known sufficient condition (f(n) > 3.476 log n), the known counterexamples (constant f(n) insufficient), and the open questions (f(n) → ∞, f(n) > ε log n).",
+    "implications": "This problem sits at the intersection of additive combinatorics and analytic number theory. The gap between constant and logarithmic growth reveals deep structural questions about how sets of integers combine under addition. Understanding this gap could illuminate the transition from 'chaotic' to 'structured' behavior in additive bases.",
+    "openQuestions": [
+      "Does f(n) → ∞ guarantee a minimal subbasis? (Main open question)",
+      "Does f(n) > ε log n for any ε > 0 guarantee a minimal subbasis?",
+      "Can the Erdős-Nathanson constant 3.476 be improved?",
+      "What is the exact threshold growth rate, if one exists?",
+      "Are there intermediate behaviors between constant and logarithmic growth?"
+    ]
   }
 }

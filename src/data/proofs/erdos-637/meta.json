@@ -1,33 +1,131 @@
 {
   "id": "erdos-637",
-  "title": "Erdős Problem #637",
+  "title": "Erdős #637: Distinct Degrees in Induced Subgraphs",
   "slug": "erdos-637",
-  "description": "If G\" role=\"presentation\" style=\"position: relative;\">GGG is a graph on n\" role=\"presentation\" style=\"position: relative;\">nnn vertices which contains no complete graph or independent set on &#x226...",
+  "description": "If G on n vertices has no clique/independent set on ≫ log n vertices, then G contains an induced subgraph with ≫ √n distinct degrees. Bukh-Sudakov (2007) proved this; JKLY (2020) strengthened to ≫ n^{2/3} degrees.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Faudree, Sós, Bukh, Sudakov, Jenssen, Keevash, Long, Yepremyan",
     "sourceUrl": "https://erdosproblems.com/637",
-    "date": "",
-    "status": "pending",
+    "date": "2007-2020",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos637Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "degrees"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 16,
     "erdosNumber": 637,
     "erdosUrl": "https://erdosproblems.com/637",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #637 from erdosproblems.com.",
-    "problemStatement": "If G\" role=\"presentation\" style=\"position: relative;\">GGG is a graph on n\" role=\"presentation\" style=\"position: relative;\">nnn vertices which contains no complete graph or independent set on &#x226B;log&#x2061;n\" role=\"presentation\" style=\"position: relative;\">≫logn≫log⁡n\\gg \\log n vertices then G\" role=\"presentation\" style=\"position: relative;\">GGG contains an induced subgraph on &#x226B;n\" role=\"presentation\" style=\"position: relative;\">≫n≫n\\gg n vertices which contains &#x226B;n1/2\" role=\"presentation\" style=\"position: relative;\">≫n1/2≫n1/2\\gg n^{1/2} distinct degrees.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős, Faudree, and Sós conjectured that graphs with small Ramsey numbers (no large cliques or independent sets) must have induced subgraphs with many distinct degrees. This connects degree diversity to Ramsey-theoretic properties.",
+    "problemStatement": "If G on n vertices has ω(G), α(G) = O(log n), then G contains an induced subgraph on ≫ n vertices with ≫ √n distinct degrees. Bukh-Sudakov (2007) proved this. JKLY (2020) improved to ≫ n^{2/3} degrees without vertex count restriction.",
+    "proofStrategy": "We formalize vertex degrees, distinct degree counts, Ramsey graph properties, induced subgraphs, the original conjecture, the Bukh-Sudakov solution, the JKLY strengthening, optimality considerations, and connections to Ramsey theory.",
+    "keyInsights": [
+      "Ramsey graphs: ω(G), α(G) = O(log n)",
+      "Bukh-Sudakov (2007): ≫ √n distinct degrees in induced subgraph",
+      "JKLY (2020): ≫ n^{2/3} distinct degrees (no vertex restriction)",
+      "Exponent 2/3 believed optimal",
+      "Random G(n, 1/2) is typically a Ramsey graph"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-defs",
+      "title": "Basic Definitions",
+      "summary": "Vertex degrees and distinct degree counts",
+      "startLine": 31,
+      "endLine": 51
+    },
+    {
+      "id": "ramsey-property",
+      "title": "Ramsey Property",
+      "summary": "Small clique and independence numbers",
+      "startLine": 53,
+      "endLine": 67
+    },
+    {
+      "id": "induced",
+      "title": "Induced Subgraphs",
+      "summary": "Induced subgraph definitions",
+      "startLine": 69,
+      "endLine": 83
+    },
+    {
+      "id": "original",
+      "title": "Original Conjecture",
+      "summary": "Erdős-Faudree-Sós statement",
+      "startLine": 85,
+      "endLine": 97
+    },
+    {
+      "id": "bukh-sudakov",
+      "title": "Bukh-Sudakov (2007)",
+      "summary": "First proof of the conjecture",
+      "startLine": 99,
+      "endLine": 112
+    },
+    {
+      "id": "jkly",
+      "title": "JKLY (2020)",
+      "summary": "Strengthened to n^{2/3} degrees",
+      "startLine": 114,
+      "endLine": 137
+    },
+    {
+      "id": "optimality",
+      "title": "Optimality",
+      "summary": "Exponent 2/3 is likely optimal",
+      "startLine": 139,
+      "endLine": 151
+    },
+    {
+      "id": "degree-sequences",
+      "title": "Degree Sequences",
+      "summary": "Regular graphs and degree diversity",
+      "startLine": 153,
+      "endLine": 172
+    },
+    {
+      "id": "random-graphs",
+      "title": "Random Graphs",
+      "summary": "G(n, 1/2) properties",
+      "startLine": 174,
+      "endLine": 189
+    },
+    {
+      "id": "ramsey-connections",
+      "title": "Ramsey Connections",
+      "summary": "Links to Ramsey numbers",
+      "startLine": 191,
+      "endLine": 202
+    },
+    {
+      "id": "algorithmic",
+      "title": "Algorithmic Aspects",
+      "summary": "Finding large induced subgraphs",
+      "startLine": 204,
+      "endLine": 214
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Overview of solutions",
+      "startLine": 216,
+      "endLine": 231
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #637 on distinct degrees in induced subgraphs of Ramsey graphs. The problem was solved by Bukh-Sudakov (2007) and strengthened by JKLY (2020).",
+    "implications": "The results reveal a fundamental connection between Ramsey-theoretic properties (absence of large cliques/independent sets) and degree diversity in graphs.",
+    "openQuestions": [
+      "Is the exponent 2/3 optimal?",
+      "What is the exact constant in the JKLY bound?",
+      "Can the result be extended to hypergraphs?"
+    ]
   }
 }

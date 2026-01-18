@@ -1,34 +1,104 @@
 {
   "id": "erdos-552",
-  "title": "Erdős Problem #552",
+  "title": "Erdős #552: Ramsey Number R(C₄, Sₙ)",
   "slug": "erdos-552",
-  "description": "Determine the Ramsey number\\[R(C_4,S_n),\\]where ... is the star on ... vertices. In particular, is it true that, for any ..., there are infinitely many ... such that\\[R(C_4,S_n)\\leq n+-c?\\]",
+  "description": "Determine R(C₄, Sₙ) for the 4-cycle and star graph. Is R(C₄, Sₙ) ≤ n + √n - c for infinitely many n? Connected to prime gaps.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, S.A. Burr, R.J. Faudree, C.C. Rousseau, R.H. Schelp",
     "sourceUrl": "https://erdosproblems.com/552",
-    "date": "",
-    "status": "pending",
+    "date": "1989",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos552Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "combinatorics"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 17,
     "erdosNumber": 552,
     "erdosUrl": "https://erdosproblems.com/552",
-    "erdosProblemStatus": "solved",
+    "erdosProblemStatus": "open",
     "erdosPrizeValue": "$100"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #552 from erdosproblems.com. Originally offered with a prize of $100.",
-    "problemStatement": "Determine the Ramsey number\\[R(C_4,S_n),\\]where $S_n=K_{1,n}$ is the star on $n+1$ vertices. In particular, is it true that, for any $c>0$, there are infinitely many $n$ such that\\[R(C_4,S_n)\\leq n+\\sqrt{n}-c?\\]",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This $100 Erdős problem was posed by Burr, Erdős, Faudree, Rousseau, and Schelp (1989). Parsons (1975) gave the upper bound and exact values for special n. The problem is connected to prime gaps: under Cramér's conjecture, the bounds tighten significantly.",
+    "problemStatement": "Determine R(C₄, Sₙ), where C₄ is the 4-cycle and Sₙ = K_{1,n} is the star on n+1 vertices. In particular: for any c > 0, are there infinitely many n with R(C₄, Sₙ) ≤ n + √n - c?",
+    "proofStrategy": "We formalize cycle and star graphs, the Ramsey number definition, known bounds (Parsons upper, BEFRS lower), exact values for n = q² ± t, and the connection to prime gaps via Cramér's conjecture.",
+    "keyInsights": [
+      "Lower bound: n + √n - 6n^{11/40} (BEFRS 1989)",
+      "Upper bound: n + ⌈√n⌉ + 1 (Parsons 1975)",
+      "Exact: n = q² + 1 gives R = n + ⌈√n⌉, n = q² gives R = n + ⌈√n⌉ + 1",
+      "All known values are n + ⌈√n⌉ or n + ⌈√n⌉ + 1",
+      "Under Cramér's conjecture: lower bound improves to n + √n - n^{o(1)}"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graphs",
+      "title": "Graph Definitions",
+      "summary": "Cycle graph C₄ and star graph Sₙ = K_{1,n}",
+      "startLine": 38,
+      "endLine": 57
+    },
+    {
+      "id": "ramsey",
+      "title": "Ramsey Numbers",
+      "summary": "Subgraph containment, complement, R(H₁,H₂) definition",
+      "startLine": 59,
+      "endLine": 81
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "summary": "Parsons upper bound and BEFRS lower bound",
+      "startLine": 83,
+      "endLine": 101
+    },
+    {
+      "id": "exact",
+      "title": "Exact Values",
+      "summary": "n = q² ± t for prime power q",
+      "startLine": 103,
+      "endLine": 119
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "Erdős's question about infinitely many n with R ≤ n + √n - c",
+      "startLine": 121,
+      "endLine": 134
+    },
+    {
+      "id": "prime-gaps",
+      "title": "Prime Gap Connection",
+      "summary": "Cramér's conjecture and improved bounds",
+      "startLine": 136,
+      "endLine": 153
+    },
+    {
+      "id": "f-function",
+      "title": "The Function f(n)",
+      "summary": "Questions about f(n+1) = f(n) and bounded increase",
+      "startLine": 155,
+      "endLine": 171
+    },
+    {
+      "id": "constructions",
+      "title": "Constructions",
+      "summary": "Parsons construction via projective planes",
+      "startLine": 173,
+      "endLine": 196
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #552, a $100 problem on R(C₄, Sₙ). The bounds n + √n - O(n^{11/40}) < R < n + ⌈√n⌉ + 1 are known, but the exact asymptotic behavior depends on prime gaps. The question of whether R ≤ n + √n - c for infinitely many n remains open.",
+    "implications": "This connects Ramsey theory to analytic number theory via prime gaps. Understanding R(C₄, Sₙ) has implications for extremal graph theory and the structure of C₄-free graphs.",
+    "openQuestions": [
+      "For any c > 0, are there infinitely many n with R(C₄, Sₙ) ≤ n + √n - c?",
+      "Does f(n+1) = f(n) infinitely often?",
+      "Is the answer to Erdős's question equivalent to some statement about prime gaps?"
+    ]
   }
 }

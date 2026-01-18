@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-35-counting",
+    "proofId": "erdos-35",
+    "range": { "startLine": 39, "endLine": 41 },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "Counts elements of A in {1, ..., N}. This is the numerator in the Schnirelmann density ratio.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-35-densityratio",
+    "proofId": "erdos-35",
+    "range": { "startLine": 43, "endLine": 45 },
+    "type": "definition",
+    "title": "Density Ratio",
+    "content": "The ratio |A ∩ {1,...,N}| / N for a specific N. The Schnirelmann density is the infimum over all N.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-35-schnirelmann",
+    "proofId": "erdos-35",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "definition",
+    "title": "Schnirelmann Density",
+    "content": "d_s(A) = inf_{N≥1} |A ∩ {1,...,N}| / N. Unlike natural density, this uses infimum not limit.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-35-sumset",
+    "proofId": "erdos-35",
+    "range": { "startLine": 56, "endLine": 58 },
+    "type": "definition",
+    "title": "Sumset",
+    "content": "A + B = {a + b : a ∈ A, b ∈ B}. The fundamental operation in additive combinatorics.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-35-kfold",
+    "proofId": "erdos-35",
+    "range": { "startLine": 63, "endLine": 67 },
+    "type": "definition",
+    "title": "k-Fold Sumset",
+    "content": "B + B + ... + B (k times). Defined recursively: 0-fold is {0}, (n+1)-fold is n-fold + B.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-35-basis",
+    "proofId": "erdos-35",
+    "range": { "startLine": 69, "endLine": 72 },
+    "type": "definition",
+    "title": "Additive Basis of Order k",
+    "content": "B is a basis of order k if every natural number is a sum of at most k elements of B. Example: squares have order 4 (Lagrange).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-35-nonneg",
+    "proofId": "erdos-35",
+    "range": { "startLine": 80, "endLine": 89 },
+    "type": "theorem",
+    "title": "Density is Non-negative",
+    "content": "Schnirelmann density is always ≥ 0 since it's an infimum of non-negative ratios.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-35-leone",
+    "proofId": "erdos-35",
+    "range": { "startLine": 91, "endLine": 97 },
+    "type": "theorem",
+    "title": "Density is at most 1",
+    "content": "Schnirelmann density is always ≤ 1 since we can count at most N elements in {1,...,N}.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-35-mono",
+    "proofId": "erdos-35",
+    "range": { "startLine": 107, "endLine": 111 },
+    "type": "theorem",
+    "title": "Sumset Increases Density",
+    "content": "If 0 ∈ B, then A ⊆ A + B, so d_s(A) ≤ d_s(A + B). Adding a basis helps.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-35-erdos1936",
+    "proofId": "erdos-35",
+    "range": { "startLine": 115, "endLine": 122 },
+    "type": "theorem",
+    "title": "Erdős 1936 Bound",
+    "content": "The original partial result: d_s(A+B) ≥ α + α(1-α)/(2k). Factor of 2 weaker than conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-35-plunnecke",
+    "proofId": "erdos-35",
+    "range": { "startLine": 126, "endLine": 133 },
+    "type": "theorem",
+    "title": "Plünnecke's Inequality",
+    "content": "The key 1970 result: d_s(A+B) ≥ α^{1-1/k}. This is stronger than Erdős's conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-35-powerbound",
+    "proofId": "erdos-35",
+    "range": { "startLine": 135, "endLine": 142 },
+    "type": "theorem",
+    "title": "Power Bound Implies Erdős",
+    "content": "Calculus lemma: α^{1-1/k} ≥ α + α(1-α)/k for α ∈ [0,1]. This bridges Plünnecke to Erdős.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-35-main",
+    "proofId": "erdos-35",
+    "range": { "startLine": 146, "endLine": 160 },
+    "type": "theorem",
+    "title": "Erdős Problem #35 (SOLVED)",
+    "content": "The main result: d_s(A+B) ≥ α + α(1-α)/k. Follows from Plünnecke + the power bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-35-squares",
+    "proofId": "erdos-35",
+    "range": { "startLine": 177, "endLine": 182 },
+    "type": "theorem",
+    "title": "Squares Form Basis of Order 4",
+    "content": "Lagrange's four-square theorem: every natural number is a sum of four squares.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-35-primes",
+    "proofId": "erdos-35",
+    "range": { "startLine": 184, "endLine": 190 },
+    "type": "theorem",
+    "title": "Primes Form Basis (Conditional)",
+    "content": "Conditional on Goldbach: primes with 1 form a basis of order 3. Vinogradov gives order 4 unconditionally for large n.",
+    "significance": "supporting"
+  }
+]

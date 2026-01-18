@@ -1,1 +1,155 @@
-[]
+[
+  {
+    "id": "ann-550-tree",
+    "proofId": "erdos-550",
+    "range": { "startLine": 32, "endLine": 34 },
+    "type": "definition",
+    "title": "IsTree",
+    "content": "A graph is a tree if connected and acyclic.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-550-multipartite",
+    "proofId": "erdos-550",
+    "range": { "startLine": 47, "endLine": 51 },
+    "type": "definition",
+    "title": "CompleteMultipartite",
+    "content": "K_{m₁,...,mₖ} with sorted part sizes.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-550-chromatic",
+    "proofId": "erdos-550",
+    "range": { "startLine": 57, "endLine": 58 },
+    "type": "definition",
+    "title": "Chromatic Number",
+    "content": "χ(K_{m₁,...,mₖ}) = k (number of parts).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-550-ramsey",
+    "proofId": "erdos-550",
+    "range": { "startLine": 77, "endLine": 88 },
+    "type": "definition",
+    "title": "Ramsey Number",
+    "content": "R(T,G): smallest N where any 2-coloring of K_N contains red T or blue G.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-550-chvatal",
+    "proofId": "erdos-550",
+    "range": { "startLine": 97, "endLine": 101 },
+    "type": "theorem",
+    "title": "Chvátal's Theorem",
+    "content": "R(T, Kₘ) = (m-1)(n-1) + 1 exactly (1977).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-550-bound",
+    "proofId": "erdos-550",
+    "range": { "startLine": 119, "endLine": 126 },
+    "type": "definition",
+    "title": "Conjectured Bound",
+    "content": "(χ(G)-1)(R(T,K_{m₁,m₂})-1) + m₁.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-550-conjecture",
+    "proofId": "erdos-550",
+    "range": { "startLine": 128, "endLine": 134 },
+    "type": "definition",
+    "title": "Erdős Conjecture",
+    "content": "R(T,G) ≤ conjectured bound for large n. OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-550-complete",
+    "proofId": "erdos-550",
+    "range": { "startLine": 141, "endLine": 145 },
+    "type": "theorem",
+    "title": "Complete Graph Case",
+    "content": "For G = Kₘ, reduces to Chvátal's theorem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-550-bipartite",
+    "proofId": "erdos-550",
+    "range": { "startLine": 147, "endLine": 152 },
+    "type": "theorem",
+    "title": "Bipartite Case",
+    "content": "Bound for K_{m,m}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-550-path",
+    "proofId": "erdos-550",
+    "range": { "startLine": 165, "endLine": 168 },
+    "type": "definition",
+    "title": "IsPath",
+    "content": "Path P_n: tree with max degree 2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-550-maxdeg",
+    "proofId": "erdos-550",
+    "range": { "startLine": 184, "endLine": 186 },
+    "type": "definition",
+    "title": "Max Degree",
+    "content": "Maximum vertex degree in tree.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-550-burr",
+    "proofId": "erdos-550",
+    "range": { "startLine": 194, "endLine": 199 },
+    "type": "definition",
+    "title": "Burr's Conjecture",
+    "content": "For bounded Δ, R(T, K₃) ≤ C·n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-550-burr-proved",
+    "proofId": "erdos-550",
+    "range": { "startLine": 201, "endLine": 203 },
+    "type": "theorem",
+    "title": "Burr Proved",
+    "content": "Burr's conjecture is true.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-550-turan",
+    "proofId": "erdos-550",
+    "range": { "startLine": 207, "endLine": 209 },
+    "type": "definition",
+    "title": "Turán Number",
+    "content": "Max edges avoiding K_r.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-550-lower",
+    "proofId": "erdos-550",
+    "range": { "startLine": 218, "endLine": 223 },
+    "type": "theorem",
+    "title": "Probabilistic Lower",
+    "content": "R(T, G) ≥ n - 1 for n-vertex tree.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-550-extremal",
+    "proofId": "erdos-550",
+    "range": { "startLine": 233, "endLine": 238 },
+    "type": "definition",
+    "title": "Extremal Graph",
+    "content": "(m-1)(n-1) vertices, no red tree, no blue Kₘ.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-550-asymptotic",
+    "proofId": "erdos-550",
+    "range": { "startLine": 247, "endLine": 253 },
+    "type": "theorem",
+    "title": "Asymptotic Behavior",
+    "content": "R(T_n, Kₘ) ~ (m-1)n as n → ∞.",
+    "significance": "key"
+  }
+]

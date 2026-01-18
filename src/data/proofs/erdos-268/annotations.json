@@ -1,1 +1,200 @@
-[]
+[
+  {
+    "id": "ann-268-header",
+    "proofId": "erdos-268",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdos Problem #268 asks about the topology of harmonic subseries points. Given an infinite set A with convergent harmonic sum, we can form a d-dimensional point by taking shifted sums. The question is whether the set X of all such points has nonempty interior (contains an open ball).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-268-answer",
+    "proofId": "erdos-268",
+    "range": { "startLine": 14, "endLine": 24 },
+    "type": "theorem",
+    "title": "Answer: YES",
+    "content": "The answer is YES for all dimensions d >= 1. Erdos-Straus proved d=2 first. Kovac (2024) proved d=3 with an explicit open ball construction. Kovac-Tao (2024) proved all dimensions using Ahmes series techniques.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-268-convergent-def",
+    "proofId": "erdos-268",
+    "range": { "startLine": 40, "endLine": 42 },
+    "type": "definition",
+    "title": "Convergent Harmonic Subseries",
+    "content": "A set A has a convergent harmonic subseries if the sum of 1/n over n in A is finite. This requires A to be 'thin'--the harmonic series diverges, so A cannot contain too many elements. Examples include squares {1, 4, 9, ...} and powers of 2 {1, 2, 4, 8, ...}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-268-shifted-sum",
+    "proofId": "erdos-268",
+    "range": { "startLine": 48, "endLine": 50 },
+    "type": "definition",
+    "title": "Shifted Harmonic Sum",
+    "content": "The shifted harmonic sum is the sum of 1/(n+k) over n in A. For k=0 we get the ordinary harmonic subseries. For k=1, we sum 1/(n+1). Each coordinate of our point uses a different shift k = 0, 1, ..., d-1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-268-finite-convergent",
+    "proofId": "erdos-268",
+    "range": { "startLine": 52, "endLine": 55 },
+    "type": "theorem",
+    "title": "Finite Sets Converge",
+    "content": "Any finite set A trivially has a convergent harmonic subseries--a finite sum is always finite. The interesting case is infinite sets where the terms go to zero fast enough for convergence.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-268-shifted-summable",
+    "proofId": "erdos-268",
+    "range": { "startLine": 57, "endLine": 61 },
+    "type": "theorem",
+    "title": "Shifted Series Also Converge",
+    "content": "If sum 1/n converges over A, then sum 1/(n+k) also converges for any fixed k. This is because 1/(n+k) <= 1/n for large n, and we can apply the comparison test. This ensures all coordinates of our point are well-defined.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-268-harmonic-point",
+    "proofId": "erdos-268",
+    "range": { "startLine": 65, "endLine": 68 },
+    "type": "definition",
+    "title": "The Harmonic Point",
+    "content": "Given a set A and dimension d, we form the harmonic point as a function from Fin d to R. The i-th coordinate is the shifted sum with shift i. So the point is (sum 1/n, sum 1/(n+1), ..., sum 1/(n+d-1)).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-268-point-set",
+    "proofId": "erdos-268",
+    "range": { "startLine": 70, "endLine": 73 },
+    "type": "definition",
+    "title": "The Point Set X",
+    "content": "The set X (harmonicPointSet d) consists of all harmonic points as A ranges over infinite sets with convergent harmonic subseries. This is the main object of study--we ask whether X has nonempty interior.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-268-main-theorem",
+    "proofId": "erdos-268",
+    "range": { "startLine": 95, "endLine": 96 },
+    "type": "axiom",
+    "title": "Main Result (Axiomatized)",
+    "content": "The main theorem states that the interior of X is nonempty for all dimensions d. This is axiomatized because the proof by Kovac and Kovac-Tao involves sophisticated analysis techniques not yet in Mathlib. The axiom captures the established mathematical result.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-268-open-ball",
+    "proofId": "erdos-268",
+    "range": { "startLine": 99, "endLine": 107 },
+    "type": "theorem",
+    "title": "Contains Open Ball",
+    "content": "We prove that 'nonempty interior' is equivalent to containing an open ball. Given the axiom that interior is nonempty, we extract a point x in the interior, then use the metric space definition of interior to find a ball around x contained in X.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-268-erdos-straus",
+    "proofId": "erdos-268",
+    "range": { "startLine": 111, "endLine": 116 },
+    "type": "axiom",
+    "title": "Erdos-Straus (d=2)",
+    "content": "Erdos and Straus proved the 2-dimensional case. The set of points (sum 1/n, sum 1/(n+1)) has nonempty interior in R^2. This was the first breakthrough on the problem, establishing that the phenomenon does occur.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-268-kovac",
+    "proofId": "erdos-268",
+    "range": { "startLine": 126, "endLine": 131 },
+    "type": "axiom",
+    "title": "Kovac's Theorem (d=3)",
+    "content": "Kovac (2024) proved the 3-dimensional case with an explicit construction. He found a specific open ball (center and radius) that lies inside X. This constructive approach gives concrete geometric information about the set.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-268-explicit-ball",
+    "proofId": "erdos-268",
+    "range": { "startLine": 133, "endLine": 140 },
+    "type": "definition",
+    "title": "Explicit Ball Construction",
+    "content": "We define placeholder values for Kovac's ball center and radius. In the actual proof, Kovac computed specific numerical values showing an explicit ball lies in X. The axiom kovac_explicit_ball captures this result.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-268-kovac-tao",
+    "proofId": "erdos-268",
+    "range": { "startLine": 149, "endLine": 151 },
+    "type": "theorem",
+    "title": "Kovac-Tao General Result",
+    "content": "Kovac and Tao (2024) proved the result for all dimensions d >= 1. Their proof uses techniques from Ahmes series (Egyptian fractions), connecting this topological question to classical number theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-268-ahmes",
+    "proofId": "erdos-268",
+    "range": { "startLine": 153, "endLine": 154 },
+    "type": "definition",
+    "title": "Ahmes Series Connection",
+    "content": "An Ahmes series is another name for an Egyptian fraction representation--expressing a number as a sum of distinct unit fractions 1/n. Kovac-Tao linked the harmonic subseries problem to questions about which numbers can be represented as Ahmes series.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-268-nonempty",
+    "proofId": "erdos-268",
+    "range": { "startLine": 159, "endLine": 161 },
+    "type": "theorem",
+    "title": "X is Non-empty",
+    "content": "The set X is non-empty because we can always find infinite sets with convergent harmonic subseries. For instance, the set of squares {1, 4, 9, 16, ...} works since sum 1/n^2 = pi^2/6 is finite.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-268-path-connected",
+    "proofId": "erdos-268",
+    "range": { "startLine": 164, "endLine": 166 },
+    "type": "theorem",
+    "title": "X is Path-Connected",
+    "content": "The set X is path-connected. Intuitively, we can continuously deform one infinite set A into another B while maintaining convergence, tracing a path in X. This shows X has nice topological properties beyond just having interior.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-268-coordinate-decreasing",
+    "proofId": "erdos-268",
+    "range": { "startLine": 188, "endLine": 192 },
+    "type": "theorem",
+    "title": "Coordinates Decrease",
+    "content": "The coordinates of a harmonic point are decreasing: the sum 1/n is larger than sum 1/(n+1), which is larger than sum 1/(n+2), etc. This is because 1/n > 1/(n+k) for k > 0, and the comparison holds term by term.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-268-positive",
+    "proofId": "erdos-268",
+    "range": { "startLine": 201, "endLine": 205 },
+    "type": "theorem",
+    "title": "All Coordinates Positive",
+    "content": "All coordinates of a harmonic point are positive (for non-empty A). This is because each term 1/(n+k) is positive, and we're summing positive terms. So X lies entirely in the positive orthant of R^d.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-268-projection",
+    "proofId": "erdos-268",
+    "range": { "startLine": 210, "endLine": 216 },
+    "type": "definition",
+    "title": "Projection Preserves X",
+    "content": "Projecting from higher to lower dimensions maps X to X. If we project a point in X_d (d-dimensional) to its first d' coordinates, we get a point in X_{d'}. This is because the same set A generates both points.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-268-squares",
+    "proofId": "erdos-268",
+    "range": { "startLine": 222, "endLine": 225 },
+    "type": "definition",
+    "title": "Squares Example",
+    "content": "The set of perfect squares {1, 4, 9, 16, ...} has a convergent harmonic subseries since sum 1/n^2 = pi^2/6. This gives a specific point in X whose first coordinate is pi^2/6 approximately 1.645.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-268-powers2",
+    "proofId": "erdos-268",
+    "range": { "startLine": 232, "endLine": 235 },
+    "type": "definition",
+    "title": "Powers of 2 Example",
+    "content": "The set of powers of 2 {1, 2, 4, 8, ...} has a convergent harmonic subseries since sum 1/2^k = 1 (geometric series). The first coordinate of this point is exactly 1. This gives another explicit point in X.",
+    "significance": "supporting"
+  }
+]

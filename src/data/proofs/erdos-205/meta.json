@@ -1,16 +1,19 @@
 {
   "id": "erdos-205",
-  "title": "Erdős Problem #205",
+  "title": "Erdős Problem #205: 2^k + m with Few Prime Factors",
   "slug": "erdos-205",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that all sufficiently large ... can be written as ... for some ..., where ...? (Here ... is the number of prime di...",
+  "description": "Can all large n be written as 2^k + m where Ω(m) < log log m? DISPROVED by Barreto-Leeham (2026).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/205",
     "date": "",
-    "status": "pending",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos205Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-factors",
+      "disproved"
     ],
     "badge": "axiom",
     "sorries": 0,
@@ -19,15 +22,25 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #205 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that all sufficiently large $n$ can be written as $2^k+m$ for some $k\\geq 0$, where $\\Omega(m)<\\log\\log m$? (Here $\\Omega(m)$ is the number of prime divisors of $m$ counted with multiplicity.) What about $<\\epsilon \\log\\log m$? Or some more slowly growing function?\n\n\n\nIt is easy to see by probabilistic methods that this holds for almost all integers. Romanoff \\cite{Ro34} showed that a positive density set of integers are representable as the sum of $2^k+p$ for prime $p$, and Erd\\H{o}s used covering systems to show that there is a positive density set of odd integers which cannot be so represented.\n\nSee also [851].\n\nBarreto and Leeham, using ChatGPT and Aristotle, have proved a negative answer: in fact there are infinitely many $n$ such that, for all $k$ with $2^k<n$, $n-2^k$ has at\\[\\gg \\left(\\frac{\\log n}{\\log\\log n}\\right)^{1/2}\\]many prime factors.\n\n\n\n\nReferences\n\n\n[Ro34] Romanoff, N. P., \\\"{U}ber einige S\\\"Atze der additiven Zahlentheorie. Math. Ann. (1934), 668-678.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős asked whether all large n can be represented as 2^k + m with few prime factors. Related to Romanoff's theorem (1934) on 2^k + prime representations and Erdős's work on covering systems.",
+    "problemStatement": "Is it true that all sufficiently large n can be written as 2^k + m for some k ≥ 0, where Ω(m) < log log m? Here Ω(m) counts prime divisors with multiplicity.",
+    "proofStrategy": "The disproof uses a counterexample construction: there exist infinitely many n such that ALL remainders n - 2^k have at least c√(log n / log log n) prime factors, which dominates log log n for large n.",
+    "keyInsights": [
+      "Ω(n) averages to log log n by classical results (Hardy-Ramanujan)",
+      "Almost all n DO have such representations (probabilistic argument)",
+      "But infinitely many n fail: all their remainders have too many prime factors",
+      "The threshold √(log n / log log n) grows faster than log log n",
+      "Related to covering systems and 2^k + prime representations"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #205 is DISPROVED. Barreto-Leeham (2026) showed there are infinitely many n where every remainder n - 2^k has Ω ≥ c√(log n / log log n) prime factors, which exceeds log log m for large n.",
+    "implications": "Even with the very weak bound Ω(m) < log log m, not all integers can be represented as 2^k + m. This strengthens our understanding of the limitations of power-of-2 representations.",
+    "openQuestions": [
+      "What is the optimal growth rate f(n) such that all large n have representation with Ω(m) < f(n)?",
+      "Can the density of exceptions be quantified?",
+      "What is the structure of the exceptional n?"
+    ]
   }
 }

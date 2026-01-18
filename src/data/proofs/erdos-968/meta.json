@@ -1,33 +1,152 @@
 {
   "id": "erdos-968",
-  "title": "Erdős Problem #968",
+  "title": "Erdős Problem #968: Normalized Prime Sequence",
   "slug": "erdos-968",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., where ... is the ...th prime. Does the set of ... such that ... have positive density?\n\n\n\nErds and Prachar  proved t...",
+  "description": "For uₙ = pₙ/n (normalized n-th prime), does the set of n where uₙ < uₙ₊₁ have positive density? Erdős-Prachar proved decreasing steps have positive density.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős & Prachar (1961/62)",
     "sourceUrl": "https://erdosproblems.com/968",
-    "date": "",
-    "status": "pending",
+    "date": "1961",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos968Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "prime-numbers",
+      "density",
+      "number-theory",
+      "prime-gaps"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 968,
     "erdosUrl": "https://erdosproblems.com/968",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.nth",
+        "description": "The n-th element satisfying a predicate (used for n-th prime)",
+        "module": "Mathlib.Order.Nat"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.primeCounting'",
+        "description": "Count of primes less than n",
+        "module": "Mathlib.NumberTheory.PrimeCounting"
+      },
+      {
+        "theorem": "Asymptotics.IsTheta",
+        "description": "Theta notation for asymptotic equivalence",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      }
+    ],
+    "originalContributions": [
+      "Clean formalization of the normalized prime sequence u(n) = p_{n+1}/(n+1)",
+      "Definition of increasing/decreasing steps and triples",
+      "Axiomatization of Erdős-Prachar theorems on total variation and decreasing density",
+      "Statement of the open questions about increasing steps and triples",
+      "Verified examples showing u(0)=2, u(1)=3/2, u(2)=5/3",
+      "Proofs that first step is decreasing, second step is increasing"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #968 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $u_n=p_n/n$, where $p_n$ is the $n$th prime. Does the set of $n$ such that $u_n<u_{n+1}$ have positive density?\n\n\n\nErd\\H{o}s and Prachar \\cite{ErPr61} proved that\\[\\sum_{p_n<x} \\lvert u_{n+1}-u_n\\rvert \\asymp (\\log x)^2,\\]and that the set of $n$ such that $u_n>u_{n+1}$ has positive density.\n\nErd\\H{o}s also asks whether\\[u_n<u_{n+1}<u_{n+2}\\]or\\[u_n>u_{n+1}>u_{n+2}\\]have infinitely many solutions.\n\n\n\n\nReferences\n\n\n[ErPr61] Erd\\H{o}s, P. and Prachar, K., S\\\"{a}tze und {P}robleme \\\"{u}ber {$p\\sb{k}/k$}. Abh. Math. Sem. Univ. Hamburg (1961/62), 251--256.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The 'normalized prime sequence' uₙ = pₙ/n was studied by Erdős and Prachar in their 1961/62 paper 'Sätze und Probleme über pₖ/k'. By the Prime Number Theorem, pₙ ~ n log n, so uₙ ~ log n. The sequence grows slowly on average but oscillates due to irregularities in prime gaps.\n\nErdős and Prachar proved two key results:\n1. The total variation Σ|uₙ₊₁ - uₙ| is asymptotic to (log x)², showing substantial oscillation\n2. The set of 'decreasing steps' {n : uₙ > uₙ₊₁} has positive density\n\nHowever, the analogous question for 'increasing steps' {n : uₙ < uₙ₊₁} remained open. This asymmetry is surprising given that the sets partition ℕ (except for the negligible 'flat' set). Erdős also asked about increasing and decreasing triples.",
+    "problemStatement": "**Erdős Problem #968**: Let $u_n = p_n/n$, where $p_n$ is the $n$-th prime. Does the set of $n$ such that $u_n < u_{n+1}$ have positive natural density?\n\n**Status**: OPEN\n\n**Known Results** (Erdős-Prachar 1961):\n1. $\\sum_{p_n < x} |u_{n+1} - u_n| \\asymp (\\log x)^2$\n2. The set $\\{n : u_n > u_{n+1}\\}$ has positive density\n\n**Related Open Questions**:\n- Are there infinitely many $n$ with $u_n < u_{n+1} < u_{n+2}$ (increasing triples)?\n- Are there infinitely many $n$ with $u_n > u_{n+1} > u_{n+2}$ (decreasing triples)?",
+    "proofStrategy": "Our formalization takes a structured approach:\n\n1. **Define the normalized prime sequence**: u(n) = p_{n+1}/(n+1) using Nat.nth with 0-based indexing.\n\n2. **Define step types**: increasingSteps, decreasingSteps, and flatSteps partition ℕ based on whether u(n) < u(n+1), u(n) > u(n+1), or u(n) = u(n+1).\n\n3. **Axiomatize density**: Natural density is axiomatized since the formal definition requires decidability machinery.\n\n4. **State known results**: The Erdős-Prachar theorems are axioms with full documentation.\n\n5. **Verify examples**: We prove u(0) = 2, u(1) = 3/2, u(2) = 5/3, and show the first step is decreasing while the second is increasing.",
+    "keyInsights": [
+      "**Normalized primes**: u_n = p_n/n captures how 'efficiently' primes are distributed relative to their index. By PNT, u_n ~ log n.",
+      "**The oscillation**: The sequence u_n doesn't monotonically increase. When prime gaps are large, u_{n+1} exceeds u_n; when gaps are small, it decreases.",
+      "**Total variation**: Σ|u_{n+1} - u_n| ~ (log x)² means the cumulative change grows quadratically in log x, indicating substantial oscillation.",
+      "**The asymmetry puzzle**: Why do decreasing steps provably have positive density while increasing steps remain open? The sets are complementary (mod negligible flat set).",
+      "**Prime gap connection**: u_{n+1} > u_n ⟺ prime gap p_{n+1} - p_n > u_n ~ log n. So increasing steps happen when gaps exceed the 'expected' log n."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Documentation",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Problem statement, history, and references to Erdős-Prachar paper."
+    },
+    {
+      "id": "normalized-sequence",
+      "title": "The Normalized Prime Sequence",
+      "startLine": 34,
+      "endLine": 47,
+      "summary": "Definition of u(n) = p_{n+1}/(n+1) using Nat.nth."
+    },
+    {
+      "id": "density",
+      "title": "Natural Density",
+      "startLine": 49,
+      "endLine": 57,
+      "summary": "Axiomatized definition of positive natural density."
+    },
+    {
+      "id": "step-types",
+      "title": "Step Types",
+      "startLine": 59,
+      "endLine": 73,
+      "summary": "Definitions of increasing, decreasing, and flat steps."
+    },
+    {
+      "id": "erdos-prachar",
+      "title": "Erdős-Prachar Results",
+      "startLine": 75,
+      "endLine": 97,
+      "summary": "Total variation theorem and decreasing density theorem."
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "startLine": 99,
+      "endLine": 116,
+      "summary": "Does the set of increasing steps have positive density?"
+    },
+    {
+      "id": "triples",
+      "title": "Triple Questions",
+      "startLine": 118,
+      "endLine": 140,
+      "summary": "Open questions about infinitely many increasing/decreasing triples."
+    },
+    {
+      "id": "pnt-connection",
+      "title": "Prime Number Theorem Connection",
+      "startLine": 142,
+      "endLine": 155,
+      "summary": "The asymptotic u(n) ~ log n from PNT."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 157,
+      "endLine": 201,
+      "summary": "Concrete values u(0)=2, u(1)=3/2, u(2)=5/3 and step classification."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 203,
+      "endLine": 247,
+      "summary": "Overview of what we know and the open questions."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #968 on the normalized prime sequence u_n = p_n/n. Erdős-Prachar (1961) proved that decreasing steps have positive density and the total variation grows like (log x)². The main question - whether increasing steps also have positive density - remains open.",
+    "implications": "This problem connects to:\n\n1. **Prime gap distribution**: The behavior of u_n reflects prime gap statistics\n2. **Analytic number theory**: The (log x)² total variation uses sieve methods\n3. **Ergodic questions**: Does the 'random walk' of u_n have balanced increments?\n4. **Comparative prime theory**: Similar questions for p_n/log n or p_n/π(n)",
+    "openQuestions": [
+      "Does the set {n : u_n < u_{n+1}} have positive density?",
+      "Are there infinitely many increasing triples u_n < u_{n+1} < u_{n+2}?",
+      "Are there infinitely many decreasing triples?",
+      "What is the density of increasing steps (if positive)?",
+      "Does the ratio (# increasing steps)/(# decreasing steps) converge?"
+    ]
   }
 }

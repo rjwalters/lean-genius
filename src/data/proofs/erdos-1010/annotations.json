@@ -1,1 +1,65 @@
-[]
+[
+  {
+    "id": "ann-1010-overview",
+    "proofId": "erdos-1010",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "context",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #1010 asks about 'supersaturation': when a graph exceeds the Turán threshold (the maximum edges in a triangle-free graph), how many triangles must appear? The answer is beautifully precise: t edges over the threshold force at least t·⌊n/2⌋ triangles.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1010-turan",
+    "proofId": "erdos-1010",
+    "range": { "startLine": 45, "endLine": 52 },
+    "type": "definition",
+    "title": "Turán Threshold",
+    "content": "The Turán number ex(n, K₃) = ⌊n²/4⌋ is a fundamental constant in extremal graph theory. Any triangle-free graph has at most this many edges. The definition captures the threshold above which triangles become inevitable.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1010-counting",
+    "proofId": "erdos-1010",
+    "range": { "startLine": 54, "endLine": 57 },
+    "type": "definition",
+    "title": "Triangle Counting",
+    "content": "We count triangles as 3-cliques: sets of 3 mutually adjacent vertices. The filter checks that all pairs in a size-3 subset are adjacent. This formalization allows precise statements about the minimum number of triangles.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1010-rademacher",
+    "proofId": "erdos-1010",
+    "range": { "startLine": 59, "endLine": 68 },
+    "type": "theorem",
+    "title": "Rademacher's Theorem",
+    "content": "The base case: adding just ONE edge over the Turán threshold forces at least ⌊n/2⌋ triangles. This unpublished result by Rademacher (attributed by Erdős) was the first supersaturation phenomenon discovered. It shows triangles don't appear one at a time—they come in clusters.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1010-main",
+    "proofId": "erdos-1010",
+    "range": { "startLine": 70, "endLine": 82 },
+    "type": "theorem",
+    "title": "Main Supersaturation Theorem",
+    "content": "The main result: for t < ⌊n/2⌋, adding t edges over the Turán threshold forces at least t·⌊n/2⌋ triangles. This linear relationship captures how triangles 'explode' beyond the threshold. The bound is tight—equality is achieved by adding edges within one part of the Turán graph.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1010-existence",
+    "proofId": "erdos-1010",
+    "range": { "startLine": 88, "endLine": 94 },
+    "type": "corollary",
+    "title": "Triangle Existence",
+    "content": "A direct corollary: any graph exceeding the Turán threshold contains at least one triangle. This is the qualitative version of Turán's theorem, following from the quantitative supersaturation result.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1010-tight",
+    "proofId": "erdos-1010",
+    "range": { "startLine": 96, "endLine": 103 },
+    "type": "theorem",
+    "title": "Tightness",
+    "content": "The bound t·⌊n/2⌋ is achieved exactly: take the Turán graph K_{⌊n/2⌋,⌈n/2⌉} and add t edges within one part. Each new edge uv in part A creates exactly ⌊n/2⌋ triangles (one with each vertex in part B), giving exactly t·⌊n/2⌋ triangles total.",
+    "significance": "key"
+  }
+]

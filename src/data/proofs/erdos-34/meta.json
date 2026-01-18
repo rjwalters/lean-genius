@@ -1,33 +1,117 @@
 {
   "id": "erdos-34",
-  "title": "Erdős Problem #34",
+  "title": "Erdos Problem #34: Consecutive Sums in Permutations",
   "slug": "erdos-34",
-  "description": "For any permutation ... of ... let ... count the number of distinct consecutive sums, that is, sums of the shape .... Is it true that\\[S(\\pi) = o(n^2)\\]for all ...? It is easy to see that ... if .....",
+  "description": "Is S(pi) = o(n^2) for all permutations? DISPROVED - there exist permutations with S(pi) >= n^2/4.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdos (1977); Disproved by Hegyvari (1986), Konieczny (2015)",
     "sourceUrl": "https://erdosproblems.com/34",
-    "date": "",
-    "status": "pending",
+    "date": "1977",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos34Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "permutations",
+      "disproved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 34,
     "erdosUrl": "https://erdosproblems.com/34",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Equiv.Perm",
+        "description": "Permutation type as equivalences",
+        "module": "Mathlib.GroupTheory.Perm.Basic"
+      },
+      {
+        "theorem": "Finset.Icc",
+        "description": "Closed interval as finite set",
+        "module": "Mathlib.Data.Finset.LocallyFinite"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for asymptotic statements",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of consecutive sums S(pi)",
+      "Statement of the disproved conjecture",
+      "Hegyvari's first counterexample (1/18 bound)",
+      "Konieczny's n^2/4 bound",
+      "Bounds on max/min f(n), g(n)",
+      "Identity permutation satisfies o(n^2)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #34 from erdosproblems.com.",
-    "problemStatement": "For any permutation $\\pi\\in S_n$ of $\\{1,\\ldots,n\\}$ let $S(\\pi)$ count the number of distinct consecutive sums, that is, sums of the shape $\\sum_{u\\leq i\\leq v}\\pi(i)$. Is it true that\\[S(\\pi) = o(n^2)\\]for all $\\pi\\in S_n$? It is easy to see that $S(\\iota)=o(n^2)$ if $\\iota$ denotes the identity permutation. Motivated by this, Erdős asked if this remains true for all permutations. The first counterexample was provided by Hegyvári [He86], who constructed a permutation with $S(\\pi) \\geq (1/18+o(1))n^2$. In fact this conjecture is extremely false, as shown by Konieczny [Ko15], who both constructs an explicit permutation with $S(\\pi) \\geq n^2/4$, and also shows that for a random permutation we have\\[S(\\pi)\\sim \\frac{1+e^{-2}}{4}n^2.\\]It is natural to further then ask about the behaviour of $f(n)=\\max_{\\pi\\in S_n}S(\\pi)$. Konieczny [Ko15] proves\\[(0.286\\cdots)n^2\\leq f(n) \\leq (0.446\\cdots)n^2.\\]One can also ask about $g(n)=\\min S(\\pi)$. Konieczny shows $g(n) \\gg n^{3/2}$, and it may be t",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdos observed that the identity permutation iota has S(iota) = o(n^2), where S counts distinct consecutive sums. He conjectured this holds for ALL permutations. This turned out to be spectacularly wrong!\n\nHegyvari (1986) gave the first counterexample with S(pi) >= (1/18)n^2. Konieczny (2015) showed the conjecture is 'extremely false' - there exist permutations with S(pi) >= n^2/4, which is asymptotically optimal.\n\nInterestingly, random permutations have S(pi) ~ (1 + e^-2)/4 * n^2 ~ 0.284n^2.",
+    "problemStatement": "**Erdos Problem #34 (DISPROVED)**\n\nFor a permutation $\\pi \\in S_n$, let $S(\\pi)$ count distinct consecutive sums $\\sum_{i=u}^v \\pi(i)$.\n\n**Erdos's Conjecture**: $S(\\pi) = o(n^2)$ for all $\\pi$.\n\n**Disproof**:\n- Hegyvari (1986): $S(\\pi) \\geq \\frac{1}{18}n^2$ exists\n- Konieczny (2015): $S(\\pi) \\geq \\frac{n^2}{4}$ exists\n\n**Bounds**: $0.286n^2 \\leq f(n) \\leq 0.446n^2$ where $f(n) = \\max_\\pi S(\\pi)$",
+    "proofStrategy": "We formalize:\n\n1. **consecutiveSum**: Sum from position u to v\n2. **S(pi)**: Count of distinct consecutive sums\n3. **ErdosConjecture**: The (false) statement S(pi) = o(n^2) for all pi\n4. **erdos_34_disproved**: Axiom stating the conjecture is false\n5. **Bounds**: Hegyvari, Konieczny, and random permutation results",
+    "keyInsights": [
+      "**Identity is special**: S(iota) = o(n^2) because consecutive sums form arithmetic progressions with limited distinct values.",
+      "**Most permutations are not special**: Random permutations have S(pi) ~ 0.284n^2, far from o(n^2).",
+      "**Quarter bound is achievable**: Konieczny's construction gives S(pi) >= n^2/4.",
+      "**Tight bounds known**: max_pi S(pi) lies between 0.286n^2 and 0.446n^2.",
+      "**Minimum is also studied**: min_pi S(pi) >> n^(3/2), possibly n^(2-o(1))."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 40,
+      "endLine": 76,
+      "summary": "Permutations, consecutive sums, S(pi), f(n), g(n)."
+    },
+    {
+      "id": "disproved-conjecture",
+      "title": "The Disproved Conjecture",
+      "startLine": 77,
+      "endLine": 99,
+      "summary": "Statement of the false conjecture and its negation."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 101,
+      "endLine": 142,
+      "summary": "Hegyvari, Konieczny, and random permutation bounds."
+    },
+    {
+      "id": "identity",
+      "title": "The Identity Permutation",
+      "startLine": 143,
+      "endLine": 163,
+      "summary": "Why iota satisfies S(iota) = o(n^2)."
+    },
+    {
+      "id": "minimum",
+      "title": "Minimum Bounds",
+      "startLine": 164,
+      "endLine": 184,
+      "summary": "Lower bounds on g(n) = min_pi S(pi)."
+    },
+    {
+      "id": "properties",
+      "title": "Basic Properties",
+      "startLine": 185,
+      "endLine": 205,
+      "summary": "Upper bound and positivity theorems."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #34 asked whether all permutations have S(pi) = o(n^2). This was DISPROVED: Hegyvari (1986) gave the first counterexample, and Konieczny (2015) showed S(pi) >= n^2/4 is achievable. The identity permutation that motivated the conjecture is exceptional, not typical.",
+    "implications": "This problem illustrates how intuition from special cases (identity permutation) can mislead. The gap between the identity (o(n^2)) and worst case (~n^2/4) is dramatic.",
+    "openQuestions": [
+      "What is the exact constant for f(n)/n^2 as n -> infinity?",
+      "Is g(n) = n^(2-o(1))? (minimum grows almost quadratically)",
+      "Can we characterize permutations with S(pi) = o(n^2)?",
+      "What about other notions of 'consecutive' in permutations?"
+    ]
   }
 }

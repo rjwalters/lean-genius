@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-546-edgecount",
+    "proofId": "erdos-546",
+    "range": { "startLine": 34, "endLine": 35 },
+    "type": "definition",
+    "title": "Edge Count",
+    "content": "The number of edges in a simple graph. The key parameter m in the problem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-546-noisolated",
+    "proofId": "erdos-546",
+    "range": { "startLine": 38, "endLine": 39 },
+    "type": "definition",
+    "title": "No Isolated Vertices",
+    "content": "Every vertex has at least one neighbor. Required condition for the bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-546-subgraph",
+    "proofId": "erdos-546",
+    "range": { "startLine": 48, "endLine": 49 },
+    "type": "definition",
+    "title": "Subgraph Containment",
+    "content": "H is a subgraph of G if all edges of H appear in G. Used in Ramsey definition.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-546-complement",
+    "proofId": "erdos-546",
+    "range": { "startLine": 52, "endLine": 55 },
+    "type": "definition",
+    "title": "Complement Graph",
+    "content": "Edges exactly where the original has none. Represents the 'other color' in 2-colorings.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-546-ramsey",
+    "proofId": "erdos-546",
+    "range": { "startLine": 59, "endLine": 64 },
+    "type": "definition",
+    "title": "Ramsey Number",
+    "content": "R(H) = minimum N such that any 2-coloring of K_N contains monochromatic H.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-546-sudakovbound",
+    "proofId": "erdos-546",
+    "range": { "startLine": 69, "endLine": 73 },
+    "type": "definition",
+    "title": "Sudakov Bound",
+    "content": "The statement that R(G) ≤ 2^{C√m} for some constant C. The main result.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-546-sudakov",
+    "proofId": "erdos-546",
+    "range": { "startLine": 76, "endLine": 77 },
+    "type": "theorem",
+    "title": "Sudakov's Theorem",
+    "content": "Sudakov (2011): R(G) ≤ 2^{O(√m)} holds for all graphs G with m edges and no isolated vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-546-bipartite",
+    "proofId": "erdos-546",
+    "range": { "startLine": 91, "endLine": 93 },
+    "type": "definition",
+    "title": "Bipartite Graph",
+    "content": "Vertices partition into two sets with edges only between them. Special case proved earlier.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-546-aks",
+    "proofId": "erdos-546",
+    "range": { "startLine": 96, "endLine": 101 },
+    "type": "theorem",
+    "title": "AKS Bipartite Bound",
+    "content": "Alon-Krivelevich-Sudakov (2003): The bound R(G) ≤ 2^{O(√m)} for bipartite G.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-546-rcolors",
+    "proofId": "erdos-546",
+    "range": { "startLine": 107, "endLine": 112 },
+    "type": "definition",
+    "title": "r-Color Ramsey",
+    "content": "Minimum N such that any r-coloring of K_N has monochromatic H. Generalizes 2-color.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-546-multicolor",
+    "proofId": "erdos-546",
+    "range": { "startLine": 115, "endLine": 120 },
+    "type": "definition",
+    "title": "Multi-Color Conjecture",
+    "content": "Does R_r(G) ≤ 2^{O(√m)} hold for r ≥ 3? OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-546-threecolor",
+    "proofId": "erdos-546",
+    "range": { "startLine": 123, "endLine": 123 },
+    "type": "definition",
+    "title": "Three-Color Conjecture",
+    "content": "The 3-color case: most important open case of the multi-color question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-546-path",
+    "proofId": "erdos-546",
+    "range": { "startLine": 128, "endLine": 131 },
+    "type": "definition",
+    "title": "Path Graph",
+    "content": "Pₙ: path on n vertices with n-1 edges. Linear Ramsey number.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-546-pathramsey",
+    "proofId": "erdos-546",
+    "range": { "startLine": 161, "endLine": 163 },
+    "type": "theorem",
+    "title": "Path Ramsey Linear",
+    "content": "R(Pₙ) ≤ 2n-1. Much better than the √m bound suggests.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-546-545",
+    "proofId": "erdos-546",
+    "range": { "startLine": 191, "endLine": 195 },
+    "type": "definition",
+    "title": "Problem #545",
+    "content": "More precise version asking about the exact exponent in the bound.",
+    "significance": "supporting"
+  }
+]

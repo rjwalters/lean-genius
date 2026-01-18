@@ -1,33 +1,120 @@
 {
   "id": "erdos-268",
-  "title": "Erdős Problem #268",
+  "title": "Erdős #268: Interior of Harmonic Subseries Points",
   "slug": "erdos-268",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the set of all points of the shape\\[\\left( \\sum_{n\\in A} {n},\\sum_{n\\in A}{n+1},\\sum_{n\\in A} {n+2}\\right) \\]as .....",
+  "description": "For X ⊆ ℝ^d of points (Σ 1/n, Σ 1/(n+1), ...) as A ranges over infinite sets with convergent harmonic sum, does X have nonempty interior? YES for all d ≥ 1 (Kovač 2024, Kovač-Tao 2024).",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Vjekoslav Kovač, Terence Tao",
     "sourceUrl": "https://erdosproblems.com/268",
-    "date": "",
-    "status": "pending",
+    "date": "1950s-2024",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos268Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "harmonic-series",
+      "topology",
+      "number-theory"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 12,
     "erdosNumber": 268,
     "erdosUrl": "https://erdosproblems.com/268",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #268 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $X\\subseteq \\mathbb{R}^3$ be the set of all points of the shape\\[\\left( \\sum_{n\\in A} \\frac{1}{n},\\sum_{n\\in A}\\frac{1}{n+1},\\sum_{n\\in A} \\frac{1}{n+2}\\right) \\]as $A\\subseteq\\mathbb{N}$ ranges over all infinite sets with $\\sum_{n\\in A}\\frac{1}{n}<\\infty$.\nDoes $X$ contain an open set?\n\n\n\nErd\\H{o}s and Straus proved the answer is yes for the 2-dimensional version, where $X\\subseteq \\mathbb{R}^2$ is the set of\\[\\left( \\sum_{n\\in A} \\frac{1}{n},\\sum_{n\\in A}\\frac{1}{n+1}\\right) \\]as $A\\subseteq\\mathbb{N}$ ranges over all infinite sets with $\\sum_{n\\in A}\\frac{1}{n}<\\infty$.\n\nThe answer is yes, proved by Kova\\v{c} \\cite{Ko24}, who constructs an explicit open ball inside the set. Kova\\v{c} and Tao \\cite{KoTa24} have proved an analogous result for all higher dimensions.\n\n\n\n\nReferences\n\n\n[Ko24] Kova\\vC, V., On the set of points represented by harmonic subseries. arXiv:2405.07681 (2024).\n\n[KoTa24] Kova\\vC, V. and Tao T., On several irrationality problems for Ahmes series. arXiv:2406.17593 (2024).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem connects harmonic series analysis with topology. Given an infinite subset A ⊆ ℕ with convergent harmonic subseries Σ_{n∈A} 1/n < ∞, we can construct a d-dimensional point by taking shifted sums: (Σ 1/n, Σ 1/(n+1), ..., Σ 1/(n+d-1)). The question asks whether the set X of all such points has nonempty interior—does it contain an open ball?\n\nErdős and Straus first proved the 2-dimensional case. The 3-dimensional version remained open for decades until Kovač (2024) gave an explicit construction of an open ball inside X. Shortly after, Kovač and Tao (2024) proved the result for all dimensions d ≥ 1, using techniques from the theory of Ahmes series (Egyptian fractions).\n\nThis result is surprising because the constraints on A are quite restrictive: A must be infinite, yet its harmonic sum must converge (a very 'thin' condition). Despite this, the resulting points fill out an open region in ℝ^d.",
+    "problemStatement": "Let X ⊆ ℝ^d be the set of all points (Σ_{n∈A} 1/n, Σ_{n∈A} 1/(n+1), ..., Σ_{n∈A} 1/(n+d-1)) as A ranges over infinite subsets of ℕ with Σ_{n∈A} 1/n < ∞. Does X have nonempty interior?\n\n**Answer**: YES for all d ≥ 1 (Kovač 2024, Kovač-Tao 2024)",
+    "proofStrategy": "We formalize the problem by defining harmonic subseries convergence, the shifted harmonic sums, and the d-dimensional point set X. The main theorem (that X has nonempty interior) is axiomatized since the proof involves sophisticated analysis beyond Mathlib. We prove derived results including the existence of an open ball, and formalize special cases: d=2 (Erdős-Straus), d=3 (Kovač). We also establish coordinate properties and give concrete examples using squares and powers of 2.",
+    "keyInsights": [
+      "**Convergent harmonic subseries**: Σ_{n∈A} 1/n < ∞ requires A to be very 'thin' (e.g., squares, powers of 2)",
+      "**The point construction**: Each coordinate is a shifted sum Σ 1/(n+k), forming a coherent d-tuple",
+      "**Interior = open ball**: The set X contains a genuine open neighborhood, not just isolated points",
+      "**Erdős-Straus (d=2)**: The first case solved, showing (Σ 1/n, Σ 1/(n+1)) fills out a 2D region",
+      "**Kovač's explicit ball (d=3)**: Constructive proof finding a specific center and radius",
+      "**Ahmes series connection**: Kovač-Tao linked this to Egyptian fraction representations"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "harmonic",
+      "title": "Harmonic Subseries",
+      "summary": "Defines convergent harmonic subseries and shifted sums",
+      "startLine": 38,
+      "endLine": 61
+    },
+    {
+      "id": "point-set",
+      "title": "The Point Set X",
+      "summary": "Defines harmonicPoint and harmonicPointSet in ℝ^d",
+      "startLine": 63,
+      "endLine": 87
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "summary": "States that X has nonempty interior (axiomatized)",
+      "startLine": 88,
+      "endLine": 107
+    },
+    {
+      "id": "dim-2",
+      "title": "2-Dimensional Case",
+      "summary": "Erdős-Straus theorem for d=2",
+      "startLine": 109,
+      "endLine": 122
+    },
+    {
+      "id": "dim-3",
+      "title": "3-Dimensional Case",
+      "summary": "Kovač's theorem with explicit ball construction",
+      "startLine": 124,
+      "endLine": 140
+    },
+    {
+      "id": "general",
+      "title": "General Dimension",
+      "summary": "Kovač-Tao theorem for all d ≥ 1",
+      "startLine": 142,
+      "endLine": 154
+    },
+    {
+      "id": "properties",
+      "title": "Properties of X",
+      "summary": "Non-emptiness, path-connectedness, density",
+      "startLine": 156,
+      "endLine": 183
+    },
+    {
+      "id": "coordinates",
+      "title": "Coordinate Properties",
+      "summary": "Decreasing coordinates, positivity",
+      "startLine": 185,
+      "endLine": 205
+    },
+    {
+      "id": "monotonicity",
+      "title": "Dimension Monotonicity",
+      "summary": "Projection maps between dimensions",
+      "startLine": 207,
+      "endLine": 216
+    },
+    {
+      "id": "examples",
+      "title": "Specific Examples",
+      "summary": "Squares and powers of 2 as concrete sets A",
+      "startLine": 218,
+      "endLine": 241
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #268 on the interior of harmonic subseries points. The main result—that X has nonempty interior in ℝ^d for all d ≥ 1—is axiomatized since the proof requires sophisticated analysis. We formalize the historical cases (Erdős-Straus d=2, Kovač d=3) and the general result (Kovač-Tao 2024), along with structural properties of the point set.",
+    "implications": "This result connects number theory (harmonic series, convergent subseries) with topology (interior, open sets) in a surprising way. Despite the restrictive constraint that A be infinite with convergent sum, the resulting points fill out an open region. This has connections to Ahmes series (Egyptian fractions) and analytic number theory.",
+    "openQuestions": [
+      "What is the largest open ball contained in X for each dimension d?",
+      "Can the center and radius of Kovač's ball be computed more precisely?",
+      "What is the boundary structure of X?",
+      "How does the interior behave as d → ∞?"
+    ]
   }
 }

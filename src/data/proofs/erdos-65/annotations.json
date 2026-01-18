@@ -1,1 +1,290 @@
-[]
+[
+  {
+    "id": "ann-e65-header",
+    "proofId": "erdos-65",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #65** connects edge density to cycle structure.\n\nGiven a graph G with n vertices and kn edges, let a₁ < a₂ < ... be the distinct cycle lengths. Two questions:\n1. Is Σ 1/aᵢ ≫ log k? (PROVED by GKS 1984)\n2. Is this sum minimized when G is complete bipartite? (OPEN)\n\nThe sum Σ 1/aᵢ measures 'cycle variety' with shorter cycles weighted more heavily.",
+    "mathContext": "For G = (V, E) with |V| = n and |E| = kn, the edge density k relates to average degree 2k. Dense graphs should have diverse cycle lengths.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "cycle-lengths",
+      "edge-density",
+      "extremal-graph-theory"
+    ]
+  },
+  {
+    "id": "ann-e65-background",
+    "proofId": "erdos-65",
+    "range": {
+      "startLine": 32,
+      "endLine": 42
+    },
+    "type": "concept",
+    "title": "Background on Cycle Variety",
+    "content": "The **cycle variety sum** Σ 1/aᵢ captures how 'spread out' the cycle lengths are.\n\n- Short cycles (length 3, 4, 5) contribute large terms (1/3, 1/4, 1/5)\n- Long cycles contribute negligibly\n- Dense graphs (high k) force more edge connectivity, creating more cycles\n\nThe log k lower bound says: doubling edge density roughly adds 1 to the sum.",
+    "mathContext": "Average degree 2k means most vertices have many neighbors. The pigeonhole principle forces short paths to close into cycles.",
+    "significance": "key",
+    "relatedConcepts": [
+      "harmonic-sum",
+      "graph-density",
+      "cycle-detection"
+    ]
+  },
+  {
+    "id": "ann-e65-succmod",
+    "proofId": "erdos-65",
+    "range": {
+      "startLine": 50,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Cyclic Successor",
+    "content": "**Fin.succMod** defines the cyclic successor: i ↦ (i+1) mod k.\n\nThis is essential for defining cycles: vertex i connects to vertex (i+1) mod k, so vertex k-1 wraps back to vertex 0, closing the cycle.",
+    "mathContext": "For a k-cycle, vertices are labeled 0, 1, ..., k-1 with edges i ~ (i+1) mod k. This requires modular arithmetic on Fin k.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "modular-arithmetic",
+      "fin-type",
+      "cycle-graph"
+    ]
+  },
+  {
+    "id": "ann-e65-containscycle",
+    "proofId": "erdos-65",
+    "range": {
+      "startLine": 54,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Cycle Length Detection",
+    "content": "**ContainsCycleLength G k** holds when G contains a k-cycle.\n\nFormally: there exist k ≥ 3 distinct vertices v₀, v₁, ..., vₖ₋₁ such that each vᵢ is adjacent to v₍ᵢ₊₁₎ ₘₒₖ k.\n\n**CycleLengthSet G** collects all such k into a set.",
+    "mathContext": "The injectivity requirement ensures the vertices are distinct (no repeated vertices). The cycle must have length ≥ 3 (triangles and larger).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "cycle-detection",
+      "injective-function",
+      "simple-graph"
+    ]
+  },
+  {
+    "id": "ann-e65-cyclefinset",
+    "proofId": "erdos-65",
+    "range": {
+      "startLine": 63,
+      "endLine": 67
+    },
+    "type": "definition",
+    "title": "Cycle Length Finset",
+    "content": "**cycleLengthFinset G** computes the finite set of cycle lengths in G.\n\nFor a graph on n vertices, cycle lengths are bounded by n (you can't have a cycle longer than the number of vertices). So we filter the range [0, n] for valid cycle lengths.\n\nThis uses classical decidability since cycle detection is generally undecidable without explicit algorithms.",
+    "mathContext": "noncomputable because Classical.dec provides decidability without computation. In practice, cycle detection is polynomial-time.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "finset-filter",
+      "classical-logic",
+      "decidability"
+    ]
+  },
+  {
+    "id": "ann-e65-edgedensity",
+    "proofId": "erdos-65",
+    "range": {
+      "startLine": 73,
+      "endLine": 85
+    },
+    "type": "definition",
+    "title": "Edge Density and Reciprocal Sum",
+    "content": "**edgeDensity G** = |E| / |V| is the ratio of edges to vertices.\n\n**cycleLengthReciprocalSum G** = Σ_{k ∈ cycles} 1/k measures cycle variety.\n\nThese are the two key quantities in the problem: we want to show the reciprocal sum grows at least logarithmically with edge density.",
+    "mathContext": "Edge density k means average degree 2k. The reciprocal sum is essentially a weighted count of cycle lengths, with short cycles weighted more.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "average-degree",
+      "harmonic-series",
+      "graph-invariants"
+    ]
+  },
+  {
+    "id": "ann-e65-gks",
+    "proofId": "erdos-65",
+    "range": {
+      "startLine": 93,
+      "endLine": 107
+    },
+    "type": "axiom",
+    "title": "Gyárfás-Komlós-Szemerédi Theorem (1984)",
+    "content": "**The GKS Theorem**: For any graph G with n vertices and kn edges:\n\nΣ 1/aᵢ ≥ c · log(k)\n\nfor some absolute constant c > 0.\n\nThis resolves the first part of Erdős's question affirmatively. Dense graphs MUST have diverse cycle lengths.",
+    "mathContext": "The logarithmic bound is tight up to constants. Liu-Montgomery (2020) proved the sharp constant is (1/2 - o(1)).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "extremal-graph-theory",
+      "logarithmic-bound",
+      "gks-theorem"
+    ]
+  },
+  {
+    "id": "ann-e65-openquestion",
+    "proofId": "erdos-65",
+    "range": {
+      "startLine": 109,
+      "endLine": 130
+    },
+    "type": "definition",
+    "title": "The Open Minimization Question",
+    "content": "**Erdos65Question** (OPEN): Is the reciprocal sum minimized by complete bipartite graphs?\n\nFor K_{r,s} (the complete bipartite graph), cycle lengths are exactly {4, 6, 8, ..., 2·min(r,s)}.\n\nThe conjecture: among all graphs with rs edges on r+s vertices, K_{r,s} has the smallest Σ 1/aᵢ.",
+    "mathContext": "Complete bipartite graphs avoid odd cycles entirely (no 1/3, 1/5, ... terms). This might minimize the sum, but proving it requires understanding ALL graphs with the same edge count.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "complete-bipartite-graph",
+      "extremal-problem",
+      "open-conjecture"
+    ]
+  },
+  {
+    "id": "ann-e65-bipartite-cycles",
+    "proofId": "erdos-65",
+    "range": {
+      "startLine": 139,
+      "endLine": 148
+    },
+    "type": "axiom",
+    "title": "Complete Bipartite Cycle Structure",
+    "content": "**Complete bipartite K_{r,s} cycle lengths**: exactly {4, 6, 8, ..., 2·min(r,s)}.\n\nKey properties:\n- Minimum cycle length is 4 (no triangles in bipartite graphs)\n- Maximum cycle length is 2·min(r,s)\n- All intermediate even lengths are achieved\n- No odd cycles exist",
+    "mathContext": "A cycle in K_{r,s} alternates between the two parts, so it must have even length. The maximum uses all vertices of the smaller part twice.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bipartite-graph",
+      "even-cycles",
+      "complete-graph"
+    ]
+  },
+  {
+    "id": "ann-e65-bipartitesum",
+    "proofId": "erdos-65",
+    "range": {
+      "startLine": 150,
+      "endLine": 159
+    },
+    "type": "axiom",
+    "title": "Bipartite Cycle Sum Formula",
+    "content": "**bipartiteCycleSum(r, s)** = Σᵢ₌₂^{min(r,s)} 1/(2i) = (1/2) · Σᵢ₌₂^m 1/i\n\nThis is half of a partial harmonic sum. For large m = min(r,s):\n\nbipartiteCycleSum ≈ (1/2) · (ln(m) - 1 + γ)\n\nwhere γ ≈ 0.577 is the Euler-Mascheroni constant.",
+    "mathContext": "The factor of 1/2 comes from even-only cycle lengths: we sum 1/4 + 1/6 + 1/8 + ... = (1/2)(1/2 + 1/3 + 1/4 + ...).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "harmonic-series",
+      "euler-mascheroni",
+      "asymptotic-formula"
+    ]
+  },
+  {
+    "id": "ann-e65-mindegree",
+    "proofId": "erdos-65",
+    "range": {
+      "startLine": 168,
+      "endLine": 173
+    },
+    "type": "axiom",
+    "title": "Minimum Degree Forces Short Cycles",
+    "content": "**Classical result**: A graph with minimum degree d ≥ 2 contains a cycle of length at most 2d.\n\n**Proof idea**: Take a longest path P = v₀ - v₁ - ... - vₖ. The endpoint vₖ has d neighbors, all on P (else we could extend). By pigeonhole, some neighbor vᵢ has i ≤ 2d, giving a cycle of length k - i ≤ k ≤ 2d.",
+    "mathContext": "This is a key technique in extremal graph theory: longest paths force short cycles via degree constraints.",
+    "significance": "key",
+    "relatedConcepts": [
+      "minimum-degree",
+      "longest-path",
+      "pigeonhole-principle"
+    ]
+  },
+  {
+    "id": "ann-e65-zarankiewicz",
+    "proofId": "erdos-65",
+    "range": {
+      "startLine": 191,
+      "endLine": 201
+    },
+    "type": "axiom",
+    "title": "Kővári-Sós-Turán Theorem",
+    "content": "**The KST Theorem** (1954): A K_{r,s}-free graph on n vertices has at most\n\n(1/2)(s-1)^{1/r} · n^{2-1/r} + ((r-1)/2) · n\n\nedges.\n\nThis is the **Zarankiewicz problem**: what's the maximum edges avoiding a complete bipartite subgraph?",
+    "mathContext": "For r = s = 2, this gives the C₄-free bound: at most (1/2)n^{3/2} + n/2 edges. The GKS proof uses similar extremal techniques.",
+    "significance": "key",
+    "relatedConcepts": [
+      "zarankiewicz-problem",
+      "kovari-sos-turan",
+      "forbidden-subgraph"
+    ]
+  },
+  {
+    "id": "ann-e65-densityone",
+    "proofId": "erdos-65",
+    "range": {
+      "startLine": 207,
+      "endLine": 217
+    },
+    "type": "axiom",
+    "title": "Density One Implies Cycles",
+    "content": "**Lemma**: A graph with n edges on n vertices contains a cycle.\n\n**Proof**: A forest (acyclic graph) on n vertices has at most n-1 edges. Each tree component with v vertices contributes v-1 edges.\n\nWith n edges, the graph has 'extra' edges beyond a spanning forest, so some component must contain a cycle.",
+    "mathContext": "This is the base case: even k = 1 forces at least one cycle. The GKS theorem shows k ≫ 1 forces many cycle lengths.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "forest",
+      "spanning-tree",
+      "acyclic-graph"
+    ]
+  },
+  {
+    "id": "ann-e65-bipartite-parity",
+    "proofId": "erdos-65",
+    "range": {
+      "startLine": 242,
+      "endLine": 252
+    },
+    "type": "axiom",
+    "title": "Bipartite Graphs Have Only Even Cycles",
+    "content": "**Classical result**: In a bipartite graph, all cycles have even length.\n\n**Proof**: 2-color the graph (bipartite = 2-colorable). Walking around a cycle, colors alternate: R-B-R-B-...\n\nAfter k steps, we return to the starting vertex (starting color). This requires k to be even.",
+    "mathContext": "This is why complete bipartite graphs avoid odd cycle contributions (1/3, 1/5, 1/7, ...) in the reciprocal sum.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bipartite-graph",
+      "2-coloring",
+      "parity-argument"
+    ]
+  },
+  {
+    "id": "ann-e65-oddcycle",
+    "proofId": "erdos-65",
+    "range": {
+      "startLine": 254,
+      "endLine": 262
+    },
+    "type": "theorem",
+    "title": "Odd Cycle Positive Contribution",
+    "content": "**Theorem**: An odd cycle of length k ≥ 3 contributes 1/k > 0 to the reciprocal sum.\n\n**Proof**: Uses `positivity` tactic since k ≥ 3 implies k > 0 as a real number.\n\nThis is the fully verified theorem in the file - the one actual proof rather than axiom.",
+    "mathContext": "Odd cycles are exactly what non-bipartite graphs have. Their positive contribution (1/3, 1/5, ...) might make non-bipartite graphs have larger sums than bipartite ones.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "positivity-tactic",
+      "odd-cycle",
+      "non-bipartite"
+    ]
+  },
+  {
+    "id": "ann-e65-summary",
+    "proofId": "erdos-65",
+    "range": {
+      "startLine": 264,
+      "endLine": 287
+    },
+    "type": "concept",
+    "title": "Summary and Status",
+    "content": "**Erdős Problem #65 Status: PARTIALLY SOLVED**\n\n✅ **PROVED** (GKS 1984): Σ 1/aᵢ ≫ log k for graphs with kn edges on n vertices.\n\n❓ **OPEN**: Is K_{r,s} the minimizer among graphs with rs edges on r+s vertices?\n\n**Why K_{r,s} might minimize**:\n1. No odd cycles → no 1/3, 1/5, ... terms\n2. Consecutive even lengths → no 'gaps' in the sum\n3. Maximum structure with minimum variety",
+    "mathContext": "Liu-Montgomery (2020) proved the sharp bound (1/2 - o(1))log k. The minimization question requires comparing all graphs with the same edge count.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "problem-status",
+      "gks-theorem",
+      "open-problem"
+    ]
+  }
+]

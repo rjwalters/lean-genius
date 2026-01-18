@@ -1,1 +1,123 @@
-[]
+[
+  {
+    "id": "ann-e364-header",
+    "proofId": "erdos-364",
+    "range": { "startLine": 1, "endLine": 21 },
+    "type": "concept",
+    "title": "Problem Statement and Status",
+    "content": "**Erdős Problem #364** asks one of the most natural questions about powerful numbers: can three consecutive integers all be powerful?\n\nA number n is **powerful** if whenever a prime p divides n, then p² also divides n. For example, 8 = 2³ is powerful (2 divides it, and so does 2² = 4), but 12 = 2²·3 is NOT powerful (3 divides it, but 3² = 9 does not).\n\n**The status**: OPEN. We know pairs exist infinitely often (like 8,9), quadruples are impossible, but the triple case remains unsolved after nearly 50 years of attempts. Computational searches have checked up to 10²² without finding a triple.",
+    "mathContext": "Powerful numbers are sometimes called squareful numbers. They form OEIS sequence A001694. The density of powerful numbers up to N is approximately c√N where c = ζ(3/2)/ζ(3) ≈ 2.17.",
+    "significance": "critical",
+    "relatedConcepts": ["powerful-numbers", "open-problem", "consecutive-integers"]
+  },
+  {
+    "id": "ann-e364-imports",
+    "proofId": "erdos-364",
+    "range": { "startLine": 23, "endLine": 27 },
+    "type": "concept",
+    "title": "Imports and Namespace",
+    "content": "**Setting up the formalization**. We import all of Mathlib to access number theory tools, then work in the `Erdos364` namespace.\n\n`open Nat` brings natural number operations into scope without qualification—we'll use `Prime`, `le_of_dvd`, `mod_eq_zero_of_dvd`, and other Nat lemmas throughout.",
+    "mathContext": "Mathlib's Nat module provides both computational definitions (decidable primality, divisibility) and proof-oriented lemmas. The interval_cases tactic we'll use requires decidable predicates.",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "namespace", "imports"]
+  },
+  {
+    "id": "ann-e364-powerful-def",
+    "proofId": "erdos-364",
+    "range": { "startLine": 36, "endLine": 41 },
+    "type": "definition",
+    "title": "The Powerful Predicate",
+    "content": "**The central definition**: `Powerful n` holds when for every prime p, if p divides n then p² also divides n.\n\nIn Lean: `∀ p : ℕ, p.Prime → p ∣ n → p ^ 2 ∣ n`\n\nThis captures the essence: a number is powerful iff its prime factorization has no prime appearing exactly once. Every exponent must be at least 2.\n\n**Equivalent characterization**: n is powerful iff n = a²b³ for some natural numbers a, b ≥ 1.",
+    "mathContext": "The alternative characterization n = a²b³ follows from: if all exponents are ≥ 2, write each as 2qᵢ + 3rᵢ (possible since 2,3 coprime). Then n = (∏pᵢ^qᵢ)² · (∏pᵢ^rᵢ)³.",
+    "significance": "critical",
+    "relatedConcepts": ["prime-factorization", "divisibility", "universal-quantifier"]
+  },
+  {
+    "id": "ann-e364-one-powerful",
+    "proofId": "erdos-364",
+    "range": { "startLine": 47, "endLine": 50 },
+    "type": "theorem",
+    "title": "1 is Powerful (Vacuously)",
+    "content": "**The base case**: 1 is powerful because no prime divides 1.\n\nThe proof uses `Nat.Prime.not_dvd_one`: if p is prime, then p does not divide 1. So the hypothesis 'p | 1' leads to a contradiction, and the implication 'p | n → p² | n' holds vacuously.\n\nThis is a classic example of vacuous truth in mathematics: 'for all primes dividing 1, ...' is true because there ARE no such primes.",
+    "mathContext": "The tactic `absurd hdiv (Nat.Prime.not_dvd_one hp)` derives False from hdiv : p ∣ 1 and the fact that primes don't divide 1. From False, anything follows (ex falso quodlibet).",
+    "significance": "supporting",
+    "relatedConcepts": ["vacuous-truth", "prime-not-dividing-one", "absurd"]
+  },
+  {
+    "id": "ann-e364-four-powerful",
+    "proofId": "erdos-364",
+    "range": { "startLine": 52, "endLine": 64 },
+    "type": "theorem",
+    "title": "4 = 2² is Powerful",
+    "content": "**First non-trivial example**: We prove 4 is powerful by showing any prime dividing 4 must be 2, and then 2² = 4 divides 4.\n\nThe key technique is **interval_cases**: knowing 2 ≤ p ≤ 4 (from p prime and p | 4), we check p = 2, 3, 4 separately:\n- p = 2: This is the valid case, and 2² = 4 | 4 ✓\n- p = 3: But 3 ∤ 4, contradiction\n- p = 4: But 4 is not prime, contradiction\n\nThe `decide` tactic handles small concrete arithmetic automatically.",
+    "mathContext": "The bound p ≤ 4 comes from Nat.le_of_dvd: if a | b and b > 0, then a ≤ b. Combined with hp.two_le (primes are ≥ 2), we get the finite range for interval_cases.",
+    "significance": "supporting",
+    "relatedConcepts": ["interval-cases", "decidability", "prime-divisor-bound"]
+  },
+  {
+    "id": "ann-e364-pair-89",
+    "proofId": "erdos-364",
+    "range": { "startLine": 103, "endLine": 121 },
+    "type": "theorem",
+    "title": "Consecutive Pairs via Pell Equations",
+    "content": "**The beautiful connection**: Infinitely many pairs (n, n+1) of consecutive powerful numbers exist!\n\n(8, 9) is the first: 8 = 2³ and 9 = 3² are both powerful. But there are infinitely more:\n- (288, 289) = (2⁵·3², 17²)\n- (9800, 9801) = (2³·5²·7², 99²)\n\n**The pattern**: The Pell equation x² = 8y² + 1 has infinitely many solutions. Each solution gives the pair (8y², x²). Why? Because 8y² = 2³·y² is powerful when y is a power, and x² is always powerful.",
+    "mathContext": "The fundamental solution to x² - 8y² = 1 is (3, 1), giving the pair (8, 9). Further solutions come from (3 + √8)ⁿ via the theory of continued fractions.",
+    "significance": "critical",
+    "relatedConcepts": ["pell-equation", "consecutive-pairs", "mahler"]
+  },
+  {
+    "id": "ann-e364-mod4-lemma",
+    "proofId": "erdos-364",
+    "range": { "startLine": 130, "endLine": 136 },
+    "type": "theorem",
+    "title": "The Mod 4 Obstruction",
+    "content": "**The key lemma**: A number ≡ 2 (mod 4) is NEVER powerful.\n\nWhy? If n ≡ 2 (mod 4), then:\n1. n is even, so 2 | n\n2. But n ≢ 0 (mod 4), so 4 ∤ n\n\nFor n to be powerful, we'd need 2 | n → 2² | n, i.e., 4 | n. Contradiction!\n\nNumbers like 2, 6, 10, 14, 18, ... (the sequence 4k+2) can never be powerful.",
+    "mathContext": "The proof uses omega for the divisibility arithmetic: from n % 4 = 2 we derive 2 | n, then from the Powerful condition 4 | n, which contradicts n % 4 = 2.",
+    "significance": "critical",
+    "relatedConcepts": ["modular-arithmetic", "divisibility", "obstruction"]
+  },
+  {
+    "id": "ann-e364-no-quadruple",
+    "proofId": "erdos-364",
+    "range": { "startLine": 138, "endLine": 150 },
+    "type": "theorem",
+    "title": "No Quadruples: The Main Constructive Result",
+    "content": "**The theorem we CAN prove**: There is no quadruple (n, n+1, n+2, n+3) of consecutive powerful numbers.\n\n**The proof is elegant**: Among any four consecutive integers, EXACTLY one is ≡ 2 (mod 4). The residues mod 4 cycle as (0,1,2,3), (1,2,3,0), (2,3,0,1), or (3,0,1,2) depending on n mod 4. Each pattern contains exactly one '2'.\n\nSo if all four were powerful, that '2' representative would need to be powerful—but we just proved numbers ≡ 2 (mod 4) can't be powerful!",
+    "mathContext": "The tactic `rcases h with h | h | h | h` handles four cases: which of n, n+1, n+2, n+3 is ≡ 2 (mod 4). Each case applies the mod 4 lemma to derive a contradiction.",
+    "significance": "critical",
+    "relatedConcepts": ["case-analysis", "pigeonhole", "modular-arithmetic"]
+  },
+  {
+    "id": "ann-e364-triple-conjecture",
+    "proofId": "erdos-364",
+    "range": { "startLine": 159, "endLine": 170 },
+    "type": "theorem",
+    "title": "The Open Triple Conjecture",
+    "content": "**The unsolved problem**: Erdős conjectured that no triple (n, n+1, n+2) of consecutive powerful numbers exists.\n\nThis is stated as an `axiom` because it remains OPEN. The mod 4 argument doesn't help here—among three consecutive integers, we might avoid 2 mod 4 entirely (e.g., 3, 4, 5 have residues 3, 0, 1).\n\n**What we know**:\n- Computational search: no triple for n < 10²²\n- abc conjecture: would imply only finitely many triples\n- Chan (2025): no triple with middle term a cube\n\nBut a PROOF remains elusive.",
+    "mathContext": "The axiom states: ¬∃ n : ℕ, Powerful n ∧ Powerful (n + 1) ∧ Powerful (n + 2). This is a pure existence denial—no constructive content, just the claim such n doesn't exist.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "axiom", "erdos-conjecture"]
+  },
+  {
+    "id": "ann-e364-gap-conjecture",
+    "proofId": "erdos-364",
+    "range": { "startLine": 179, "endLine": 188 },
+    "type": "theorem",
+    "title": "The Stronger Gap Conjecture",
+    "content": "**Erdős went further**: He conjectured that if nₖ is the k-th powerful number, then the gap nₖ₊₂ - nₖ grows polynomially in nₖ.\n\nFormally: ∃ c > 0, ∀ k, nₖ₊₂ - nₖ > nₖᶜ.\n\nThis is MUCH stronger than the triple conjecture. If gaps grow polynomially, not only can't we have a triple (gap ≥ 2), but eventually gaps exceed any fixed bound.\n\n**Why believe it?** The abc conjecture suggests powerful numbers are 'spread out' because if n and n+1 are both powerful, their radical (product of distinct primes) is small, violating abc for large n.",
+    "mathContext": "The formula uses Nat.nth Powerful k for the k-th element satisfying Powerful. The gap conjecture implies the triple conjecture (if c < 1, eventually the gap exceeds 2).",
+    "significance": "supporting",
+    "relatedConcepts": ["gap-conjecture", "abc-conjecture", "polynomial-growth"]
+  },
+  {
+    "id": "ann-e364-chan",
+    "proofId": "erdos-364",
+    "range": { "startLine": 194, "endLine": 203 },
+    "type": "theorem",
+    "title": "Chan's Cube Result (2025)",
+    "content": "**A recent breakthrough**: Chan (2025) proved there's no triple n-1, n, n+1 where n is a perfect cube.\n\nWhy cubes? If n = m³, then n is always powerful (exponent 3 ≥ 2). The question becomes: can m³-1 and m³+1 BOTH be powerful?\n\nChan's argument likely exploits the factorizations:\n- m³ - 1 = (m-1)(m² + m + 1)\n- m³ + 1 = (m+1)(m² - m + 1)\n\nThese factors have special properties that make simultaneous powerfulness impossible.",
+    "mathContext": "The statement: ¬∃ n : ℕ, (∃ m : ℕ, n = m³) ∧ Powerful (n - 1) ∧ Powerful n ∧ Powerful (n + 1). Note Powerful n is automatic when n is a cube.",
+    "significance": "supporting",
+    "relatedConcepts": ["chan-2025", "perfect-cubes", "partial-result"]
+  }
+]

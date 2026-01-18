@@ -1,33 +1,122 @@
 {
   "id": "erdos-1011",
-  "title": "Erdős Problem #1011",
+  "title": "Erdős Problem #1011: Triangles in Graphs with High Chromatic Number",
   "slug": "erdos-1011",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that every graph on ... vertices with ... edges and chromatic number ... contains a triangle. Determi...",
+  "description": "Let f_r(n) be minimal such that every n-vertex graph with ≥ f_r(n) edges and χ ≥ r contains a triangle. Known: f_2(n) = ⌊n²/4⌋+1 (Turán), f_3(n) = ⌊(n-1)²/4⌋+2 (Erdős-Gallai). Asymptotic involves g(r) ~ r² log r. OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Simonovits",
     "sourceUrl": "https://erdosproblems.com/1011",
-    "date": "",
-    "status": "pending",
+    "date": "1962",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1011Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "triangles",
+      "turan-type",
+      "extremal-graph-theory",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 1011,
     "erdosUrl": "https://erdosproblems.com/1011",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1011 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_r(n)$ be minimal such that every graph on $n$ vertices with $\\geq f_r(n)$ edges and chromatic number $\\geq r$ contains a triangle. Determine $f_r(n)$.\n\n\n\nTur\\'{a}n's theorem implies $f_2(n)=\\lfloor n^2/4\\rfloor+1$. Erd\\H{o}s and Gallai \\cite{Er62d} proved $f_3(n)=\\lfloor \\frac{1}{4}(n-1)^2\\rfloor+2$.\n\nSimonovits showed in his PhD thesis (see the discussion on p. 358 of \\cite{Si74}) that\\[f_r(n)=\\frac{n^2}{4}-\\frac{g(r)}{2}{n}+O(1),\\]where $g(r)$ is the largest $m$ such that, for any triangle-free graph with chromatic number $\\geq r$, at least $m$ vertices of $G$ need to be removed to obtain a bipartite graph. Simonovits \\cite{Si74} notes\\[\\frac{\\log r}{\\log\\log r}r^2 \\ll g(r) \\ll (\\log r)^2r^2.\\]Hunter in the comments has noted that other results imply $g(r)\\asymp r^2\\log r$ - in fact\\[(1/2-o(1))r^2\\log r\\leq g(r)\\leq (2+o(1))r^2\\log r.\\]The lower bound follows from work of Davies and Illingworth \\cite{DaIl22} (see [1104]). The upper bound follows from work of Hefty, Horn, King, and Pfender \\cite{HHKP25} on $R(3,k)$.\n\nRen, Wang, Wang, and Yang \\cite{RWWY24} showed that, for $n\\geq 150$,\\[f_4(n)=\\left\\lfloor\\frac{(n-3)^2}{4}\\right\\rfloor+6.\\]\n\n\n\n\nReferences\n\n\n[DaIl22] Davies, Ewan and Illingworth, Freddie, The {$\\chi$}-{R}amsey problem for triangle-free graphs. SIAM J. Discrete Math. (2022), 1124--1134.\n\n[Er62d] Erd\\H{o}s, P., On a theorem of {R}ademacher-{T}ur\\'an. Illinois J. Math. (1962), 122--127.\n\n[HHKP25] Z. Hefty, P. Horn, D. King, and F. Pfender, Improving $R(3,k)$ in just two bites. arXiv:2510.19718 (2025).\n\n[RWWY24] S. Ren, J. Wang, S. Wang, and W. Yang, Extremal triangle-free graphs with chromatic number at least four. arXiv:2404.07486 (2024).\n\n[Si74] Simonovits, M., Extermal graph problems with symmetrical extremal graphs.\n{A}dditional chromatic conditions. Discrete Math. (1974), 349--376.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem connects three fundamental graph invariants: edge count, chromatic number, and triangle existence. Turán's theorem (1941) completely solved the case r=2. Erdős and Gallai (1962) determined f_3(n). Simonovits's PhD thesis established the asymptotic form involving g(r). Recent work by Davies-Illingworth (2022) and Hefty-Horn-King-Pfender (2025) narrowed the bounds on g(r) to within a factor of 4.",
+    "problemStatement": "Let f_r(n) be minimal such that every graph on n vertices with at least f_r(n) edges and chromatic number at least r contains a triangle. Determine f_r(n).",
+    "proofStrategy": "The Lean formalization defines f_r(n) as a threshold function on graphs with chromatic number constraints. Known exact values for r=2,3,4 are stated as axioms. The Simonovits asymptotic f_r(n) = n²/4 - g(r)n/2 + O(1) introduces the key quantity g(r). Bounds on g(r) capture current knowledge: (1/2)r² log r ≤ g(r) ≤ 2r² log r.",
+    "keyInsights": [
+      "f_2(n) = ⌊n²/4⌋ + 1 (Turán's theorem)",
+      "f_3(n) = ⌊(n-1)²/4⌋ + 2 (Erdős-Gallai 1962)",
+      "f_4(n) = ⌊(n-3)²/4⌋ + 6 for n ≥ 150 (Ren-Wang-Wang-Yang 2024)",
+      "Simonovits asymptotic: f_r(n) = n²/4 - g(r)n/2 + O(1)",
+      "g(r) = max vertices to remove from χ≥r triangle-free graph to make bipartite",
+      "Bounds: (1/2-o(1))r² log r ≤ g(r) ≤ (2+o(1))r² log r"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic",
+      "title": "Basic Graph Properties",
+      "summary": "Triangle containment and chromatic number definitions",
+      "startLine": 38,
+      "endLine": 54
+    },
+    {
+      "id": "threshold",
+      "title": "The Threshold Function f_r(n)",
+      "summary": "Definition of the central function",
+      "startLine": 56,
+      "endLine": 78
+    },
+    {
+      "id": "turan",
+      "title": "Turán's Theorem (r = 2)",
+      "summary": "The classical case: > n²/4 edges implies triangle",
+      "startLine": 80,
+      "endLine": 98
+    },
+    {
+      "id": "r3",
+      "title": "Erdős-Gallai (r = 3)",
+      "summary": "f_3(n) = ⌊(n-1)²/4⌋ + 2",
+      "startLine": 100,
+      "endLine": 111
+    },
+    {
+      "id": "r4",
+      "title": "The Case r = 4",
+      "summary": "f_4(n) for large n (2024 result)",
+      "startLine": 113,
+      "endLine": 124
+    },
+    {
+      "id": "asymptotic",
+      "title": "The Simonovits Asymptotic",
+      "summary": "f_r(n) = n²/4 - g(r)n/2 + O(1)",
+      "startLine": 126,
+      "endLine": 143
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds on g(r)",
+      "summary": "Davies-Illingworth lower, HHKP upper",
+      "startLine": 145,
+      "endLine": 166
+    },
+    {
+      "id": "mono",
+      "title": "Monotonicity Properties",
+      "summary": "How f and g vary with parameters",
+      "startLine": 168,
+      "endLine": 182
+    },
+    {
+      "id": "special",
+      "title": "Special Values of g(r)",
+      "summary": "g(2)=0, g(3)=1, g(4)=3",
+      "startLine": 184,
+      "endLine": 195
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "summary": "Determining the exact asymptotic of g(r)",
+      "startLine": 197,
+      "endLine": 212
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "The threshold f_r(n) for forcing triangles in graphs with chromatic number ≥ r is well-understood for small r but the general asymptotic remains open. Simonovits showed f_r(n) = n²/4 - g(r)n/2 + O(1) where g(r) captures how far triangle-free χ≥r graphs are from bipartite. Current bounds show g(r) ~ r² log r with a factor-of-4 gap in the constant.",
+    "implications": "This connects extremal graph theory (Turán-type problems) with chromatic theory. Understanding g(r) would reveal how chromatic number constrains triangle-free graphs. The recent progress on R(3,k) (the Ramsey number) directly impacts the upper bound on g(r).",
+    "openQuestions": [
+      "What is the exact constant c such that g(r) ~ c·r² log r?",
+      "Is c = 1 (the 'natural' guess)?",
+      "What is f_5(n)? Higher exact values unknown.",
+      "Can Simonovits's O(1) error be made explicit?"
+    ]
   }
 }

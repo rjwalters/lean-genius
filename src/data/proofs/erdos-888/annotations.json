@@ -1,1 +1,201 @@
-[]
+[
+  {
+    "id": "ann-e888-header",
+    "proofId": "erdos-888",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #888** asks: What is the maximum size of A ⊆ {1,...,n} such that if a ≤ b ≤ c ≤ d ∈ A and abcd is a perfect square, then ad = bc?\n\n**Status**: Exact answer OPEN; bounds SOLVED\n\nThis is a question of Erdős, Sárközy, and Sós about multiplicative structure in subsets of integers.\n\n**Known bounds**: n/log n ≪ max|A| = o(n)",
+    "mathContext": "The problem connects combinatorial number theory with questions about how integers multiply together.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "perfect squares",
+      "multiplicative structure",
+      "prime numbers",
+      "sublinear growth"
+    ]
+  },
+  {
+    "id": "ann-e888-sqprod",
+    "proofId": "erdos-888",
+    "range": {
+      "startLine": 39,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Square-Product Condition",
+    "content": "**squareProductCondition(a, b, c, d)**: The implication\n\n`a ≤ b → b ≤ c → c ≤ d → IsSquare(abcd) → ad = bc`\n\nThis captures when an ordered quadruple (a,b,c,d) satisfies the required constraint: if their product is a perfect square, then the \"outer product\" ad must equal the \"inner product\" bc.\n\n**Intuition**: If a, b, c, d form a geometric progression, then bc = ad automatically. The condition restricts how elements can multiplicatively interact.",
+    "mathContext": "The constraint ad = bc relates to geometric progressions: if b/a = c/b = d/c = r, then bc = ar·r²r = ar³ = ad.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "geometric progression",
+      "IsSquare",
+      "multiplicative constraint"
+    ]
+  },
+  {
+    "id": "ann-e888-required",
+    "proofId": "erdos-888",
+    "range": {
+      "startLine": 44,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Required Condition for Sets",
+    "content": "**requiredCondition(A, n)**: A subset A ⊆ {1,...,n} satisfies the Erdős-Sárközy-Sós condition if:\n1. A ⊆ Ioc(0, n) (elements are in {1,...,n})\n2. For ALL choices of a, b, c, d ∈ A, the squareProductCondition holds\n\n**validSets(n)** is the set of all such valid subsets.\n\nThe problem asks: what is the maximum cardinality of a set in validSets(n)?",
+    "mathContext": "This universal quantification over all quadruples is what makes the condition restrictive. With many elements, there are many potential quadruples to check.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.Ioc",
+      "universal quantifier",
+      "set comprehension"
+    ]
+  },
+  {
+    "id": "ann-e888-maxsize",
+    "proofId": "erdos-888",
+    "range": {
+      "startLine": 75,
+      "endLine": 86
+    },
+    "type": "definition",
+    "title": "Maximum Valid Set Size",
+    "content": "**hasValidSetOfSize(n, k)**: Predicate indicating a valid set of size k exists.\n\n**maxValidSize(n)**: Axiomatized as the maximum k such that hasValidSetOfSize(n, k) holds.\n\n**maxValidSize_spec**: States that maxValidSize achieves the maximum:\n- There exists a valid set of size maxValidSize(n)\n- No valid set has size greater than maxValidSize(n)\n\nThis is axiomatized because proving the existence of a maximum requires decidability arguments.",
+    "mathContext": "The supremum exists because {1,...,n} is finite, so the set of cardinalities is bounded above.",
+    "significance": "key",
+    "relatedConcepts": [
+      "supremum",
+      "axiomatization",
+      "Nat.findGreatest"
+    ]
+  },
+  {
+    "id": "ann-e888-sarkozy",
+    "proofId": "erdos-888",
+    "range": {
+      "startLine": 101,
+      "endLine": 118
+    },
+    "type": "axiom",
+    "title": "Sárközy's Upper Bound (SOLVED)",
+    "content": "**sarkozy_upper_bound**: For any ε > 0, eventually maxValidSize(n) < εn.\n\nThis is the o(n) upper bound: the maximum valid set size grows sublinearly.\n\n**sarkozy_sublinear**: For any c > 0, eventually c × maxValidSize(n) < n.\n\nSárközy's proof uses multiplicative number theory techniques to count how many quadruples can have square products. Too many elements create too many potential violations.",
+    "mathContext": "The o(n) notation means maxValidSize(n)/n → 0 as n → ∞. The set cannot be a positive fraction of {1,...,n}.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "little-o notation",
+      "sublinear growth",
+      "multiplicative number theory"
+    ]
+  },
+  {
+    "id": "ann-e888-primes",
+    "proofId": "erdos-888",
+    "range": {
+      "startLine": 140,
+      "endLine": 147
+    },
+    "type": "axiom",
+    "title": "Prime Construction (SOLVED)",
+    "content": "**primesUpTo(n)** = {p ∈ {1,...,n} : p is prime}\n\n**primes_satisfy_condition**: The set of primes satisfies requiredCondition.\n\n**Why?** If p₁ ≤ p₂ ≤ p₃ ≤ p₄ are primes and p₁p₂p₃p₄ is a perfect square, each prime factor must appear an even number of times. With four primes, this forces some to be equal. Case analysis shows ad = bc holds in all cases.\n\n**primes_valid_construction**: Proves hasValidSetOfSize(n, |primesUpTo(n)|).",
+    "mathContext": "By the Prime Number Theorem, |primesUpTo(n)| ~ n/log n, giving the lower bound.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "prime numbers",
+      "unique factorization",
+      "Prime Number Theorem"
+    ]
+  },
+  {
+    "id": "ann-e888-lower-bound",
+    "proofId": "erdos-888",
+    "range": {
+      "startLine": 149,
+      "endLine": 158
+    },
+    "type": "axiom",
+    "title": "Prime Lower Bound",
+    "content": "**maxValidSize_ge_primeCount**: |primesUpTo(n)| ≤ maxValidSize(n)\n\nSince primes form a valid set, the maximum is at least the prime count.\n\n**primeCount_asymptotic**: Connects prime count to n/log n.\n\nBy the Prime Number Theorem: π(n) ~ n/log n, so maxValidSize(n) ≥ cn/log n for some constant c.",
+    "mathContext": "The Prime Number Theorem is one of the deepest results in analytic number theory, connecting prime distribution to the natural logarithm.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime counting function",
+      "Prime Number Theorem",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-e888-empty",
+    "proofId": "erdos-888",
+    "range": {
+      "startLine": 176,
+      "endLine": 181
+    },
+    "type": "theorem",
+    "title": "Empty Set Validity",
+    "content": "**empty_valid**: The empty set ∅ satisfies requiredCondition(∅, n).\n\n**Proof**: The empty set is vacuously contained in any Ioc. The universal quantifier over quadruples is vacuously true since there are no elements to form quadruples from.\n\nThis is the trivial base case: we can always achieve |A| ≥ 0.",
+    "mathContext": "Vacuous truth: ∀ x ∈ ∅, P(x) is true for any predicate P.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "vacuous truth",
+      "empty set",
+      "base case"
+    ]
+  },
+  {
+    "id": "ann-e888-singleton",
+    "proofId": "erdos-888",
+    "range": {
+      "startLine": 183,
+      "endLine": 192
+    },
+    "type": "theorem",
+    "title": "Singleton Validity",
+    "content": "**singleton_valid**: For any x ∈ {1,...,n}, the singleton {x} satisfies requiredCondition.\n\n**Proof**: With only one element, all four values a, b, c, d must equal x. Then:\n- ad = x × x = x²\n- bc = x × x = x²\n\nSo ad = bc trivially. The condition is satisfied.\n\nThis shows |A| ≥ 1 is always achievable (for n ≥ 1).",
+    "mathContext": "When all four elements are equal, the condition ad = bc becomes x² = x², which is always true.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "singleton set",
+      "trivial case",
+      "ring tactic"
+    ]
+  },
+  {
+    "id": "ann-e888-variants",
+    "proofId": "erdos-888",
+    "range": {
+      "startLine": 219,
+      "endLine": 233
+    },
+    "type": "definition",
+    "title": "Problem Variants",
+    "content": "**weakerCondition**: Only requires pairs (a, d) with ad square to satisfy a = d.\n\nThis is weaker because it only checks pairs, not quadruples.\n\n**squarefreeCondition**: Restricts A to contain only squarefree numbers (numbers with no repeated prime factors).\n\nSquarefree numbers have simpler factorizations: each prime appears 0 or 1 times. This might make the problem more tractable.",
+    "mathContext": "Squarefree numbers are products of distinct primes. The n-th squarefree number is approximately 6n/π².",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "squarefree",
+      "weakening conditions",
+      "problem variants"
+    ]
+  },
+  {
+    "id": "ann-e888-numerical",
+    "proofId": "erdos-888",
+    "range": {
+      "startLine": 236,
+      "endLine": 240
+    },
+    "type": "axiom",
+    "title": "Small Cases",
+    "content": "**maxValidSize_1 = 1**: For n = 1, only {1} works.\n\n**maxValidSize_2 = 2**: For n = 2, {1, 2} works.\n\nFor small n, we can verify by exhaustive enumeration. As n grows, exact computation becomes harder.\n\nThe primes {2, 3, 5, 7, 11, ...} provide a constructive lower bound for all n.",
+    "mathContext": "Computational verification for small cases provides confidence in the general theory.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "small cases",
+      "exhaustive verification",
+      "computational number theory"
+    ]
+  }
+]

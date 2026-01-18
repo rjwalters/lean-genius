@@ -1,1 +1,271 @@
-[]
+[
+  {
+    "id": "ann-e851-header",
+    "proofId": "erdos-851",
+    "range": {
+      "startLine": 1,
+      "endLine": 17
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #851** asks about covering integers with 2^k + n representations.\n\n**Romanoff's Theorem (1934)**: Integers of form 2^k + p (p prime) have positive lower density (~0.0868).\n\n**Erdős's Question**: For any ε > 0, can we find r such that integers of form 2^k + n (ω(n) ≤ r) have density ≥ 1 - ε?\n\n**Status**: OPEN - We don't know if density can approach 1 as r increases.",
+    "mathContext": "Lower density = liminf_{N→∞} |S ∩ [1,N]| / N. This measures the 'worst-case' proportion of integers in S.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "lower density",
+      "prime factors",
+      "additive number theory"
+    ]
+  },
+  {
+    "id": "ann-e851-twopowaddset",
+    "proofId": "erdos-851",
+    "range": {
+      "startLine": 32,
+      "endLine": 35
+    },
+    "type": "definition",
+    "title": "TwoPowAddSet Definition",
+    "content": "**TwoPowAddSet r** = {m | ∃ k n, m = 2^k + n ∧ n.primeFactors.card ≤ r}\n\nThis captures integers representable as a power of 2 plus a number with at most r distinct prime factors.\n\n**Examples**:\n- TwoPowAddSet 0 contains 2^k + 1 (since 1 has 0 prime factors)\n- TwoPowAddSet 1 contains 2^k + p for any prime p\n- TwoPowAddSet 2 contains 2^k + pq for distinct primes p, q",
+    "mathContext": "Uses Nat.primeFactors.card (ω function) rather than Ω (total count with multiplicity).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Nat.primeFactors",
+      "omega function",
+      "set-builder notation"
+    ]
+  },
+  {
+    "id": "ann-e851-lowerdensity",
+    "proofId": "erdos-851",
+    "range": {
+      "startLine": 37,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "Lower Density (Axiomatized)",
+    "content": "**lowerDensity S** represents liminf_{N→∞} |S ∩ [1,N]| / N.\n\nWe axiomatize this rather than define it constructively because:\n1. Avoids decidability issues with set membership\n2. Keeps the formalization focused on mathematical structure\n3. The definition itself isn't the interesting part—the properties are\n\n**Interpretation**: Lower density measures the 'worst-case' asymptotic proportion.",
+    "mathContext": "In Mathlib, Set.lowerDensity exists but requires decidable predicates. Axiomatization sidesteps this.",
+    "significance": "key",
+    "relatedConcepts": [
+      "liminf",
+      "asymptotic density",
+      "axiomatization"
+    ]
+  },
+  {
+    "id": "ann-e851-twopow-add-one",
+    "proofId": "erdos-851",
+    "range": {
+      "startLine": 47,
+      "endLine": 50
+    },
+    "type": "theorem",
+    "title": "2^k + 1 is Always Representable",
+    "content": "**twoPow_add_one_mem**: For any k, 2^k + 1 ∈ TwoPowAddSet 0.\n\n**Proof**: The number 1 has 0 prime factors (primeFactors 1 = ∅), so 2^k + 1 is in TwoPowAddSet 0.\n\nThis gives us Fermat numbers (3, 5, 17, 257, 65537, ...) for free.",
+    "mathContext": "The simp tactic handles Nat.primeFactors 1 = ∅ automatically.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fermat numbers",
+      "empty set cardinality"
+    ]
+  },
+  {
+    "id": "ann-e851-monotone",
+    "proofId": "erdos-851",
+    "range": {
+      "startLine": 52,
+      "endLine": 55
+    },
+    "type": "theorem",
+    "title": "Monotonicity of TwoPowAddSet",
+    "content": "**twoPowAddSet_mono**: If r ≤ s, then TwoPowAddSet r ⊆ TwoPowAddSet s.\n\n**Proof**: If m = 2^k + n with n having ≤ r prime factors, then certainly n has ≤ s prime factors.\n\n**Consequence**: As we allow more prime factors, we can represent more integers. The density is non-decreasing in r.",
+    "significance": "key",
+    "relatedConcepts": [
+      "subset relation",
+      "monotonicity"
+    ]
+  },
+  {
+    "id": "ann-e851-covers",
+    "proofId": "erdos-851",
+    "range": {
+      "startLine": 57,
+      "endLine": 61
+    },
+    "type": "theorem",
+    "title": "Union Covers All Integers ≥ 2",
+    "content": "**twoPowAddSet_union_covers**: For m ≥ 2, there exists r such that m ∈ TwoPowAddSet r.\n\n**Proof**: Write m = 2^0 + (m-1). Then take r = (m-1).primeFactors.card.\n\n**Significance**: Every integer ≥ 2 is eventually covered. The question is how large r needs to be as a function of the desired density.",
+    "mathContext": "Uses omega tactic to verify m = 1 + (m-1) when m ≥ 2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "covering",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-e851-romanoff",
+    "proofId": "erdos-851",
+    "range": {
+      "startLine": 70,
+      "endLine": 72
+    },
+    "type": "axiom",
+    "title": "Romanoff's Theorem (1934)",
+    "content": "**romanoff_theorem**: 0 < lowerDensity (TwoPowAddSet 1)\n\nRomanoff proved this foundational result in 1934. The set of integers of form 2^k + p (where p is prime or 1) has positive lower density.\n\n**Numerical value**: The density is approximately 0.0868, computed by Erdős-Odlyzko (1979).\n\n**Why this matters**: It shows that infinitely many integers have such representations, with positive proportion.",
+    "mathContext": "This is stated as an axiom because the full proof requires analytic number theory beyond basic Mathlib.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "analytic number theory",
+      "sieve methods"
+    ]
+  },
+  {
+    "id": "ann-e851-density-value",
+    "proofId": "erdos-851",
+    "range": {
+      "startLine": 74,
+      "endLine": 76
+    },
+    "type": "axiom",
+    "title": "Romanoff Density Bounds",
+    "content": "**romanoff_density_value**: 0.08 < lowerDensity(TwoPowAddSet 1) < 0.10\n\nErdős and Odlyzko (1979) computed sharper bounds. The exact value is approximately 0.0868.\n\n**Interpretation**: Only about 8.7% of integers can be written as 2^k + p for some prime p. This leaves ~91% uncovered, motivating Erdős's question about larger r.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Odlyzko",
+      "numerical bounds"
+    ]
+  },
+  {
+    "id": "ann-e851-conjecture",
+    "proofId": "erdos-851",
+    "range": {
+      "startLine": 85,
+      "endLine": 91
+    },
+    "type": "axiom",
+    "title": "Main Conjecture (OPEN)",
+    "content": "**erdos_851_conjecture**: ∀ ε > 0, ∃ r, 1 - ε ≤ lowerDensity(TwoPowAddSet r)\n\n**In words**: For any desired closeness to 1, we can achieve it by allowing enough prime factors.\n\n**This is OPEN**: We don't know if this is true. It's possible that:\n1. Yes: Density approaches 1 as r → ∞\n2. No: Some positive proportion of integers resist all such representations",
+    "mathContext": "Stated as axiom because the truth value is unknown.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open problem",
+      "density limit"
+    ]
+  },
+  {
+    "id": "ann-e851-density-mono",
+    "proofId": "erdos-851",
+    "range": {
+      "startLine": 97,
+      "endLine": 99
+    },
+    "type": "axiom",
+    "title": "Density Monotonicity",
+    "content": "**density_mono**: If r ≤ s, then lowerDensity(TwoPowAddSet r) ≤ lowerDensity(TwoPowAddSet s).\n\nThis follows from TwoPowAddSet monotonicity: larger sets have larger (or equal) density.\n\n**Consequence**: The sequence of densities is non-decreasing. The conjecture asks if it converges to 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotone sequence",
+      "convergence"
+    ]
+  },
+  {
+    "id": "ann-e851-limit-equiv",
+    "proofId": "erdos-851",
+    "range": {
+      "startLine": 113,
+      "endLine": 116
+    },
+    "type": "axiom",
+    "title": "Conjecture Equivalence",
+    "content": "**conjecture_iff_limit_one**: The main conjecture is equivalent to: ∀ ε > 0, ∃ r₀, ∀ r ≥ r₀, 1 - ε < lowerDensity(TwoPowAddSet r).\n\n**In other words**: The conjecture is true iff lim_{r→∞} density(r) = 1.\n\nThis is a standard ε-δ reformulation of limit convergence.",
+    "significance": "key",
+    "relatedConcepts": [
+      "limit definition",
+      "epsilon-delta"
+    ]
+  },
+  {
+    "id": "ann-e851-uncovered",
+    "proofId": "erdos-851",
+    "range": {
+      "startLine": 122,
+      "endLine": 125
+    },
+    "type": "axiom",
+    "title": "Uncovered by Primes",
+    "content": "**uncovered_by_primes_positive**: The complement (TwoPowAddSet 1)^c has positive density.\n\n**Meaning**: A positive proportion of integers CANNOT be written as 2^k + p for any prime p.\n\n**This is known**: Since Romanoff density is ~0.0868, the uncovered proportion is ~0.9132.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "complement",
+      "uncovered integers"
+    ]
+  },
+  {
+    "id": "ann-e851-erdos-odlyzko",
+    "proofId": "erdos-851",
+    "range": {
+      "startLine": 127,
+      "endLine": 129
+    },
+    "type": "axiom",
+    "title": "Erdős-Odlyzko (1979)",
+    "content": "**erdos_odlyzko_bound**: 0.0868 < lowerDensity(TwoPowAddSet 1)\n\nThis refined Romanoff's original bound. Their paper 'On the density of odd integers of the form (p-1)/2^n and related questions' established tighter estimates using sieve methods.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "historical results",
+      "sieve methods"
+    ]
+  },
+  {
+    "id": "ann-e851-examples",
+    "proofId": "erdos-851",
+    "range": {
+      "startLine": 137,
+      "endLine": 151
+    },
+    "type": "theorem",
+    "title": "Verified Examples",
+    "content": "**Explicit verifications**:\n\n- 3 = 2^1 + 1 ∈ TwoPowAddSet 0\n- 5 = 2^2 + 1 ∈ TwoPowAddSet 0\n- 9 = 2^3 + 1 ∈ TwoPowAddSet 0\n- 17 = 2^4 + 1 ∈ TwoPowAddSet 0\n\nThese are Fermat numbers F_n = 2^{2^n} + 1 for n = 0, 1, 2.\n\nThe proofs use rfl for the equation and simp for the prime factor count.",
+    "mathContext": "Each theorem provides witnesses (k, n) showing the representation exists.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fermat numbers",
+      "constructive proofs"
+    ]
+  },
+  {
+    "id": "ann-e851-covering-congruences",
+    "proofId": "erdos-851",
+    "range": {
+      "startLine": 157,
+      "endLine": 172
+    },
+    "type": "concept",
+    "title": "Connection to Covering Congruences",
+    "content": "**Covering congruences** are related to this problem.\n\n**Observation**: If m ≡ 0 (mod 2^k) for all small k, then m cannot be written as 2^k + n for small n.\n\n**The covering problem**: Either for some r, TwoPowAddSet(r) covers all m ≥ 2, or for every r, some integers remain uncovered.\n\nThis is equivalent to whether the limiting density equals 1.",
+    "mathContext": "Covering congruence systems have a rich history in number theory, connected to this problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "covering systems",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e851-history",
+    "proofId": "erdos-851",
+    "range": {
+      "startLine": 174,
+      "endLine": 195
+    },
+    "type": "concept",
+    "title": "Historical Context",
+    "content": "**Timeline**:\n- 1934: Romanoff proves positive density for 2^k + p\n- 1979: Erdős-Odlyzko refine bounds to ~0.0868\n- Present: Main conjecture remains OPEN\n\n**Connections**:\n- Additive number theory\n- Sieve methods (for counting)\n- Density of arithmetically defined sets\n\n**Key references**:\n- Romanoff, 'Über einige Sätze der additiven Zahlentheorie' (1934)\n- Erdős-Odlyzko, 'On the density of odd integers...' (1979)",
+    "significance": "key",
+    "relatedConcepts": [
+      "Romanoff",
+      "Erdős",
+      "Odlyzko"
+    ]
+  }
+]

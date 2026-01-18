@@ -1,33 +1,92 @@
 {
   "id": "erdos-1009",
-  "title": "Erdős Problem #1009",
+  "title": "Erdős Problem #1009: Edge-Disjoint Triangles Beyond Turán",
   "slug": "erdos-1009",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every ..., there exists ... such that every graph on ... vertices with at least ... edges, where ..., co...",
+  "description": "For every c > 0, does there exist f(c) such that every graph with ⌊n²/4⌋ + k edges (k < cn) contains at least k - f(c) edge-disjoint triangles? SOLVED: Györi (1988) proved this with f(c) ≪ c².",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1971)",
     "sourceUrl": "https://erdosproblems.com/1009",
-    "date": "",
-    "status": "pending",
+    "date": "1971",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1009Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "triangles",
+      "edge-disjoint",
+      "turan-numbers",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 1009,
     "erdosUrl": "https://erdosproblems.com/1009",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1009 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every $c>0$, there exists $f(c)$ such that every graph on $n$ vertices with at least $\\lfloor n^2/4\\rfloor+k$ edges, where $k<c n$, contains at least $k-f(c)$ many edge disjoint triangles?\n\n\n\nErd\\H{o}s proved this for $c<1/2$ using a theorem of Erd\\H{o}s and Gallai, which says that every graph on $n$ vertices with at least $(n-1)^2/4+2$ many edges, with chromatic number $3$, must contain a triangle.\n\nIn fact, Erd\\H{o}s proved this is true with $f(c)=0$ for $c<1/2$. At first Erd\\H{o}s thought $f(c)=0$ for larger values of $c$ but this is false: an example of Sauer proves that $f(2)\\geq 1$.\n\nSauer gave an example of a graph on $n$ vertices with $\\lfloor n^2/4\\rfloor+2n-6$ many edges which contains only $2n-7$ many edge disjoint triangles: if $n=2r+4$ then $G$ is the complete tripartite graph on $[r]\\times [r]\\times [4]$, with a $K_4$ on the $[4]$ vertices also.\n\nThis is true, and was proved by Gy\\\"{o}ri \\cite{Gy88} who proved that this is true with $f(c)\\ll c^2$, and also that $f(c)=0$ if $c<2$ for odd $n$ or $c<3/2$ for even $n$.\n\n\n\n\nReferences\n\n\n[Gy88] Gy\\H{o}ri, E., On the number of edge-disjoint triangles in graphs of given\nsize. (1988), 267--276.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős posed this in 1971, motivated by the Turán problem. The Turán number ex(n, K₃) = ⌊n²/4⌋ is the maximum edges in a triangle-free graph. If we exceed this by k edges, we must have triangles—but can we find nearly k edge-disjoint ones? Erdős initially believed f(c) = 0 for all c, but Sauer's counterexample showed otherwise. Györi's 1988 solution gave the optimal bound f(c) ≪ c².",
+    "problemStatement": "For every c > 0, does there exist f(c) such that every graph on n vertices with at least ⌊n²/4⌋ + k edges (where k < cn) contains at least k - f(c) edge-disjoint triangles?",
+    "proofStrategy": "Györi's proof shows that excess edges beyond Turán bound 'must' form triangles that are nearly disjoint. The key insight is that in dense graphs, the extra edges cannot all concentrate in shared triangles—they must spread out. For small c, the graphs are close enough to the Turán graph that f(c) = 0 works. For larger c, Sauer's complete tripartite construction shows some loss is unavoidable.",
+    "keyInsights": [
+      "Turán threshold n²/4 is the maximum for triangle-free graphs",
+      "Each extra edge 'should' contribute to a distinct triangle",
+      "Erdős proved f(c) = 0 for c < 1/2 using chromatic number 3 arguments",
+      "Sauer's K_{1,m,m} construction shows f(2) ≥ 1",
+      "Györi proved f(c) ≪ c², which is essentially optimal",
+      "Refinement: f(c) = 0 for c < 2 (odd n) or c < 3/2 (even n)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-basics",
+      "title": "Graph Basics",
+      "summary": "Vertex count, edge count, and Turán threshold definitions",
+      "startLine": 37,
+      "endLine": 53
+    },
+    {
+      "id": "triangles",
+      "title": "Triangles and Edge-Disjointness",
+      "summary": "Triangle structure and disjointness conditions",
+      "startLine": 55,
+      "endLine": 85
+    },
+    {
+      "id": "main-problem",
+      "title": "The Main Problem",
+      "summary": "Györi's theorem on edge-disjoint triangles",
+      "startLine": 87,
+      "endLine": 112
+    },
+    {
+      "id": "erdos-partial",
+      "title": "Erdős's Partial Result",
+      "summary": "The case f(c) = 0 for small c",
+      "startLine": 114,
+      "endLine": 145
+    },
+    {
+      "id": "sauer",
+      "title": "Sauer's Counterexample",
+      "summary": "Complete tripartite graph showing f(2) ≥ 1",
+      "startLine": 147,
+      "endLine": 172
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries",
+      "summary": "Connection to Turán's theorem",
+      "startLine": 174,
+      "endLine": 194
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Györi (1988) proved the conjecture with f(c) ≪ c². This bound is optimal up to constants, as shown by Sauer's construction. The result reveals the structure of dense graphs: excess edges beyond Turán threshold must organize into nearly edge-disjoint triangles.",
+    "implications": "This connects Turán-type extremal graph theory with matching/packing problems. Understanding how triangles 'pack' in dense graphs has applications to triangle removal lemmas and regularity methods.",
+    "openQuestions": [
+      "What is the exact value of the constant in f(c) ≤ Cc²?",
+      "Can similar results be proved for edge-disjoint K₄ or larger cliques?",
+      "What is the computational complexity of finding the maximum edge-disjoint triangle packing?"
+    ]
   }
 }

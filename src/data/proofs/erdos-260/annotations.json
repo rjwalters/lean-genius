@@ -1,1 +1,119 @@
-[]
+[
+  {
+    "id": "ann-260-incseq",
+    "proofId": "erdos-260",
+    "range": { "startLine": 41, "endLine": 44 },
+    "type": "definition",
+    "title": "Increasing Sequence Structure",
+    "content": "A structure capturing a strictly monotone sequence of natural numbers a₁ < a₂ < ⋯. This is the basic object we study.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-260-fastgrowth",
+    "proofId": "erdos-260",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "Fast Growth Condition",
+    "content": "The key condition from the problem: aₙ/n → ∞. This is weaker than requiring gaps to tend to infinity.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-260-gaps",
+    "proofId": "erdos-260",
+    "range": { "startLine": 50, "endLine": 52 },
+    "type": "definition",
+    "title": "Gaps to Infinity",
+    "content": "The stronger condition a_{n+1} - aₙ → ∞ under which Erdős proved irrationality. The gaps between consecutive terms grow without bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-260-superlog",
+    "proofId": "erdos-260",
+    "range": { "startLine": 54, "endLine": 57 },
+    "type": "definition",
+    "title": "Superlogarithmic Growth",
+    "content": "Another sufficient condition: aₙ ≫ n√(log n · log log n). This implies irrationality via Erdős's refined estimates.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-260-seriesterm",
+    "proofId": "erdos-260",
+    "range": { "startLine": 61, "endLine": 63 },
+    "type": "definition",
+    "title": "Series Term",
+    "content": "The n-th term aₙ/2^{aₙ} of the series. Each term is small because 2^{aₙ} grows much faster than aₙ.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-260-converge",
+    "proofId": "erdos-260",
+    "range": { "startLine": 69, "endLine": 74 },
+    "type": "theorem",
+    "title": "Series Convergence",
+    "content": "The series ∑ aₙ/2^{aₙ} converges for any increasing sequence, since terms are dominated by n/2ⁿ.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-260-gapsirr",
+    "proofId": "erdos-260",
+    "range": { "startLine": 82, "endLine": 90 },
+    "type": "theorem",
+    "title": "Gaps → ∞ Implies Irrational",
+    "content": "Erdős's theorem: if the gaps between consecutive terms grow to infinity, the series sum is irrational. Key technique: controlling denominators in rational approximations.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-260-superlogirr",
+    "proofId": "erdos-260",
+    "range": { "startLine": 92, "endLine": 99 },
+    "type": "theorem",
+    "title": "Superlogarithmic Growth Implies Irrational",
+    "content": "Erdős's refined result: the growth condition aₙ ≫ n√(log n · log log n) is sufficient for irrationality.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-260-squareseq",
+    "proofId": "erdos-260",
+    "range": { "startLine": 117, "endLine": 120 },
+    "type": "definition",
+    "title": "Square Sequence Example",
+    "content": "The concrete example aₙ = n². This sequence grows fast enough that its gaps (2n+1) tend to infinity.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-260-squaregaps",
+    "proofId": "erdos-260",
+    "range": { "startLine": 137, "endLine": 148 },
+    "type": "theorem",
+    "title": "Square Sequence Has Gaps → ∞",
+    "content": "The gaps (n+1)² - n² = 2n + 1 tend to infinity, satisfying Erdős's sufficient condition.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-260-squareirr",
+    "proofId": "erdos-260",
+    "range": { "startLine": 150, "endLine": 152 },
+    "type": "theorem",
+    "title": "Square Sequence Series is Irrational",
+    "content": "Applying the gaps theorem: ∑ n²/2^{n²} is irrational.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-260-conjecture",
+    "proofId": "erdos-260",
+    "range": { "startLine": 154, "endLine": 162 },
+    "type": "axiom",
+    "title": "The Main Conjecture (OPEN)",
+    "content": "Erdős Problem #260: fast growth alone (aₙ/n → ∞) should imply irrationality. Stated as an axiom since this remains open.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-260-counterex",
+    "proofId": "erdos-260",
+    "range": { "startLine": 164, "endLine": 177 },
+    "type": "definition",
+    "title": "Erdős-Graham Counterexample Specification",
+    "content": "What a counterexample would look like: unbounded gaps (limsup = ∞) but not tending to infinity (liminf < ∞), yet producing a rational sum. No such example is known.",
+    "significance": "supporting"
+  }
+]

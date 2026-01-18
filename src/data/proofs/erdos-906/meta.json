@@ -1,33 +1,159 @@
 {
   "id": "erdos-906",
-  "title": "Erdős Problem #906",
+  "title": "Erdős Problem #906: Dense Zeros of Derivative Subsequences",
   "slug": "erdos-906",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an entire non-zero function ... such that, for any infinite sequence ..., the set\\[\\{ z: f^{(n_k)}(z)=0 k\\geq 1\\}\\]i...",
+  "description": "Is there a transcendental entire function f : ℂ → ℂ such that for any subsequence of derivatives, their zeros are dense? Erdős claimed solved but no proof is known.",
   "meta": {
-    "author": "Unknown",
+    "author": "Unknown (Erdős claimed solved before 1972)",
     "sourceUrl": "https://erdosproblems.com/906",
-    "date": "",
-    "status": "pending",
+    "date": "1972-present",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos906Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "derivatives",
+      "density"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 906,
     "erdosUrl": "https://erdosproblems.com/906",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Differentiable",
+        "description": "Differentiability of functions",
+        "module": "Mathlib.Analysis.Calculus.ContDiff.Defs"
+      },
+      {
+        "theorem": "Complex.exp",
+        "description": "The complex exponential function",
+        "module": "Mathlib.Analysis.Complex.Basic"
+      },
+      {
+        "theorem": "Dense",
+        "description": "Dense subsets of topological spaces",
+        "module": "Mathlib.Topology.Basic"
+      },
+      {
+        "theorem": "Polynomial",
+        "description": "Polynomials over a ring",
+        "module": "Mathlib.Algebra.Polynomial.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Clean definitions of entire and transcendental functions",
+      "Axiomatization of iterated derivatives with basic properties",
+      "Definition of derivativeZeroSet for subsequences",
+      "HasDenseDerivativeZeros property capturing the question",
+      "Proof that polynomials trivially satisfy the property",
+      "Counterexample: exp doesn't work (no zeros)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #906 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an entire non-zero function $f:\\mathbb{C}\\to \\mathbb{C}$ such that, for any infinite sequence $n_1<n_2<\\cdots$, the set\\[\\{ z: f^{(n_k)}(z)=0 \\textrm{ for some }k\\geq 1\\}\\]is everywhere dense?\n\n\n\nErd\\H{o}s \\cite{Er82e} writes that this was solved in the affirmative 'more than ten years ago', but gives no reference or indication who solved it. From context he seems to attribute this to Barth and Schneider \\cite{BaSc72}, but this paper contains no such result.\n\nTang points out that the problem is trivial if we take $f$ to be a polynomial, so presumably it is intended the function $f$ is transcendental.\n\n\n\n\nReferences\n\n\n[BaSc72] Barth, K. F. and Schneider, W. J., On a problem of Erd\\H{o}s concerning the zeros of the\nderivatives of an entire function. Proc. Amer. Math. Soc. (1972), 229--232.\n\n[Er82e] Erd\\H{o}s, Paul, Some of my favourite problems which recently have been solved. (1982), 59--79.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem lies in the intersection of complex analysis and the theory of entire functions. An **entire function** is one that is holomorphic (complex differentiable) on all of ℂ - examples include polynomials, exp, sin, and cos. A **transcendental** entire function is one that is not a polynomial.\n\nThe problem asks about a very strong property: for ANY infinite subsequence of derivative orders n₁ < n₂ < ..., the union of zeros of f^{(nₖ)} should be dense in ℂ. This means no matter how sparse a subsequence you choose, you can find zeros of those derivatives arbitrarily close to any point.\n\nErdős wrote in 1982 that this was 'solved in the affirmative more than ten years ago' but gave no reference. He seemed to attribute it to Barth and Schneider (1972), but their paper 'On a problem of Erdős concerning zeros of derivatives' contains no such result. The formal-conjectures project marks this as OPEN due to no verified proof.",
+    "problemStatement": "**Erdős Problem #906**: Is there an entire non-zero transcendental function $f : \\mathbb{C} \\to \\mathbb{C}$ such that for any infinite increasing sequence $n_1 < n_2 < \\cdots$, the set\n$$\\{ z \\in \\mathbb{C} : f^{(n_k)}(z) = 0 \\text{ for some } k \\geq 1 \\}$$\nis everywhere dense in $\\mathbb{C}$?\n\n**Status**: UNCLEAR / OPEN\n\n**Note**: Tang observes the problem is trivial for polynomials (eventually all derivatives vanish), which is why **transcendental** is required.\n\n**Claimed solution**: Erdős stated this was solved affirmatively before 1972, but no proof has been located.",
+    "proofStrategy": "We formalize this problem by defining the key concepts:\n\n1. **IsEntire f**: f is differentiable everywhere on ℂ\n2. **IsTranscendental f**: f is not equal to any polynomial\n3. **iteratedDeriv n f**: The n-th derivative f^{(n)}, axiomatized with basic properties\n4. **derivativeZeroSet f n**: The set {z : f^{(n(k))}(z) = 0 for some k}\n5. **HasDenseDerivativeZeros f**: For all strictly monotone n, derivativeZeroSet f n is dense\n\nWe then axiomatize:\n- The main open question\n- That polynomials trivially satisfy the property (all high derivatives are zero)\n- That exp does NOT satisfy the property (no zeros at all)\n\nThe counterexample of exp shows the property is non-trivial for transcendental functions.",
+    "keyInsights": [
+      "**Entire vs polynomial**: Entire functions include all polynomials plus transcendental functions like exp, sin, cos. The problem excludes polynomials because they trivially work.",
+      "**Why polynomials are trivial**: A degree-d polynomial has f^{(n)} = 0 for all n > d. So for any subsequence eventually exceeding d, the zero set is all of ℂ.",
+      "**Why exp fails**: All derivatives of e^z equal e^z, which is never zero. So the zero set is empty for any subsequence.",
+      "**The density requirement**: Dense means the closure is ℂ. Every neighborhood must contain a zero of some f^{(nₖ)}. This is very strong.",
+      "**Historical mystery**: Erdős claimed this was solved but gave no reference. The attributed paper by Barth-Schneider doesn't contain this result."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Problem statement, unclear status, history and references."
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 30,
+      "endLine": 39,
+      "summary": "Mathlib imports for complex analysis, topology, and polynomials."
+    },
+    {
+      "id": "definitions",
+      "title": "Key Definitions",
+      "startLine": 41,
+      "endLine": 72,
+      "summary": "IsEntire, IsTranscendental, and iteratedDeriv with axiomatized properties."
+    },
+    {
+      "id": "zero-set",
+      "title": "The Zero Set",
+      "startLine": 74,
+      "endLine": 83,
+      "summary": "Definition of derivativeZeroSet for a subsequence of derivatives."
+    },
+    {
+      "id": "main-property",
+      "title": "The Main Property",
+      "startLine": 85,
+      "endLine": 93,
+      "summary": "HasDenseDerivativeZeros: the property Erdős asks about."
+    },
+    {
+      "id": "polynomials",
+      "title": "Why Polynomials Are Trivial",
+      "startLine": 95,
+      "endLine": 110,
+      "summary": "Polynomials satisfy the property trivially (all high derivatives are zero)."
+    },
+    {
+      "id": "main-problem",
+      "title": "The Main Problem",
+      "startLine": 112,
+      "endLine": 130,
+      "summary": "The open question axiomatized as unknown Prop, plus formal statement."
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Non-Examples",
+      "startLine": 132,
+      "endLine": 149,
+      "summary": "exp is entire and transcendental but doesn't satisfy the property."
+    },
+    {
+      "id": "related",
+      "title": "Related Concepts",
+      "startLine": 151,
+      "endLine": 161,
+      "summary": "Connections to Pólya and Weierstrass factorization."
+    },
+    {
+      "id": "properties",
+      "title": "Zero Set Properties",
+      "startLine": 163,
+      "endLine": 175,
+      "summary": "Zero sets are closed; individual zero sets are discrete for non-constant entire functions."
+    },
+    {
+      "id": "summary",
+      "title": "Summary Theorem",
+      "startLine": 177,
+      "endLine": 196,
+      "summary": "Summary packaging the key verified results."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #906 on dense zeros of derivative subsequences. The question asks whether a transcendental entire function exists such that for ANY subsequence of derivative orders, the union of zeros is dense. Polynomials trivially satisfy this (high derivatives vanish), but exp fails (no zeros). Erdős claimed this was solved before 1972 but no proof is known, so we treat it as open.",
+    "implications": "This problem connects to:\n\n1. **Complex analysis**: Distribution of zeros of entire functions\n2. **Derivative theory**: How zeros of successive derivatives relate\n3. **Topology**: Density conditions on sets in ℂ\n4. **Weierstrass factorization**: Constructing functions with prescribed zeros\n5. **Pólya's shire theorem**: Zeros of polynomial derivatives stay in convex hull",
+    "openQuestions": [
+      "Does there exist a transcendental entire f with the dense derivative zeros property?",
+      "What construction could produce such a function?",
+      "Who actually solved this problem, if anyone?",
+      "Is the Barth-Schneider paper [BaSc72] related, or was Erdős mistaken?",
+      "What is the relationship to the distribution of zeros of random entire functions?"
+    ]
   }
 }

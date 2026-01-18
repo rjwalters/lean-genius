@@ -1,33 +1,111 @@
 {
   "id": "erdos-901",
-  "title": "Erdős Problem #901",
+  "title": "Erdős #901: Property B and Hypergraph Coloring",
   "slug": "erdos-901",
-  "description": "Let m(n)\" role=\"presentation\" style=\"position: relative;\">m(n)m(n)m(n) be minimal such that there is an n\" role=\"presentation\" style=\"position: relative;\">nnn-uniform hypergraph with m(n)\" role=\"pr...",
+  "description": "Find m(n) = minimum edges in an n-uniform hypergraph without Property B (not 2-colorable). Known: √(n/log n)·2^n ≪ m(n) ≪ n²·2^n.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, László Lovász",
     "sourceUrl": "https://erdosproblems.com/901",
-    "date": "",
-    "status": "pending",
+    "date": "1963-1975",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos901Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "hypergraph",
+      "coloring",
+      "property-b",
+      "combinatorics"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 22,
     "erdosNumber": 901,
     "erdosUrl": "https://erdosproblems.com/901",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #901 from erdosproblems.com.",
-    "problemStatement": "Let m(n)\" role=\"presentation\" style=\"position: relative;\">m(n)m(n)m(n) be minimal such that there is an n\" role=\"presentation\" style=\"position: relative;\">nnn-uniform hypergraph with m(n)\" role=\"presentation\" style=\"position: relative;\">m(n)m(n)m(n) edges which is 3\" role=\"presentation\" style=\"position: relative;\">333-chromatic. Estimate m(n)\" role=\"presentation\" style=\"position: relative;\">m(n)m(n)m(n).",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős began studying this in 1963-64. The Erdős-Lovász conjecture (1975) proposes m(n) = Θ(n·2^n). Major progress: Beck (1977-78) gave n^{1/3}·2^n lower bound, Radhakrishnan-Srinivasan (2000) improved to √(n/log n)·2^n. Connected to list chromatic numbers (Problem #629).",
+    "problemStatement": "Let m(n) be the minimum edges in an n-uniform hypergraph without Property B. Property B means 2-colorable (some coloring has no monochromatic edge). Estimate m(n).",
+    "proofStrategy": "We formalize uniform hypergraphs, Property B, and the function m(n). The exact values m(2)=3, m(3)=7, m(4)=23 are stated. Lower and upper bounds are formalized, along with the Erdős-Lovász conjecture and the Lovász Local Lemma.",
+    "keyInsights": [
+      "Exact values: m(2) = 3, m(3) = 7, m(4) = 23",
+      "Lower: √(n/log n)·2^n ≪ m(n) (Radhakrishnan-Srinivasan 2000)",
+      "Upper: n²·2^n (Erdős 1963-64)",
+      "Erdős-Lovász Conjecture: m(n) = Θ(n·2^n)",
+      "Property B = 2-colorable = chromatic number ≤ 2"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "hypergraph",
+      "title": "Hypergraph Definitions",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "n-uniform hypergraphs as families of n-sets"
+    },
+    {
+      "id": "property-b",
+      "title": "Property B",
+      "startLine": 51,
+      "endLine": 80,
+      "summary": "2-coloring with no monochromatic edge"
+    },
+    {
+      "id": "m-function",
+      "title": "The Function m(n)",
+      "startLine": 81,
+      "endLine": 110,
+      "summary": "Minimum edges for lacking Property B"
+    },
+    {
+      "id": "exact",
+      "title": "Exact Values",
+      "startLine": 111,
+      "endLine": 140,
+      "summary": "m(2) = 3, m(3) = 7, m(4) = 23"
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "startLine": 141,
+      "endLine": 180,
+      "summary": "Erdős, Beck, Radhakrishnan-Srinivasan, Pluhár"
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "startLine": 181,
+      "endLine": 220,
+      "summary": "Probabilistic method and explicit constructions"
+    },
+    {
+      "id": "conjecture",
+      "title": "Erdős-Lovász Conjecture",
+      "startLine": 221,
+      "endLine": 250,
+      "summary": "m(n) = Θ(n·2^n)"
+    },
+    {
+      "id": "probabilistic",
+      "title": "Probabilistic Method",
+      "startLine": 251,
+      "endLine": 290,
+      "summary": "Lovász Local Lemma and random colorings"
+    },
+    {
+      "id": "connections",
+      "title": "Connections",
+      "startLine": 291,
+      "endLine": 320,
+      "summary": "Link to list chromatic number (Problem #629)"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #901 on Property B. The gap between √(n/log n) and n in the coefficient of 2^n is the main open question. The Erdős-Lovász conjecture predicts m(n) = Θ(n·2^n).",
+    "implications": "Property B is fundamental to hypergraph coloring theory. Understanding m(n) has implications for the probabilistic method, the Lovász Local Lemma, and connections to list coloring problems.",
+    "openQuestions": [
+      "Is m(n) = Θ(n·2^n) as conjectured?",
+      "What is m(5)?",
+      "Can the lower bound be improved beyond √(n/log n)·2^n?"
+    ]
   }
 }

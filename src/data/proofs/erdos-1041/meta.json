@@ -1,33 +1,138 @@
 {
   "id": "erdos-1041",
-  "title": "Erdős Problem #1041",
+  "title": "Erdős Problem #1041: Paths in Polynomial Level Sets",
   "slug": "erdos-1041",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... with ... for all ....\n\nMust there always exist a path of length less than ... in\\[\\{z: \\lvert f(z)\\rvert < 1\\}\\]which...",
+  "description": "For a monic polynomial with all roots in the unit disk, must there exist a path of length less than 2 in the sublevel set {z : |f(z)| < 1} connecting two roots?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Herzog-Piranian (1958) proved component lemma; path length OPEN",
     "sourceUrl": "https://erdosproblems.com/1041",
-    "date": "",
-    "status": "pending",
+    "date": "1958",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1041Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "polynomials",
+      "metric-geometry",
+      "level-sets",
+      "paths"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1041,
     "erdosUrl": "https://erdosproblems.com/1041",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Path",
+        "description": "Continuous paths in topological spaces",
+        "module": "Mathlib.Topology.Connected.PathConnected"
+      },
+      {
+        "theorem": "MeasureTheory.μH",
+        "description": "Hausdorff measure for computing path length",
+        "module": "Mathlib.MeasureTheory.Measure.Hausdorff"
+      },
+      {
+        "theorem": "Polynomial.roots",
+        "description": "Multiset of roots of a polynomial",
+        "module": "Mathlib.Algebra.Polynomial.Roots"
+      },
+      {
+        "theorem": "Metric.diam",
+        "description": "Diameter of metric sets",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of polynomial sublevel sets",
+      "Definition of path length via 1-dimensional Hausdorff measure",
+      "Axiomatization of Erdős-Herzog-Piranian Component Lemma (1958)",
+      "Statement of the OPEN path length conjecture",
+      "Proved theorems about sublevel set properties",
+      "Connection to polynomial lemniscates"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1041 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(z)=\\prod_{i=1}^n(z-z_i)\\in \\mathbb{C}[z]$ with $\\lvert z_i\\rvert < 1$ for all $i$.\n\nMust there always exist a path of length less than $2$ in\\[\\{z: \\lvert f(z)\\rvert < 1\\}\\]which connects two of the roots of $f$?\n\n\n\nA problem of Erd\\H{o}s, Herzog, and Piranian \\cite{EHP58}, who proved that this set always has a connected component containing at least two of the roots.\n\n\n\n\nReferences\n\n\n[EHP58] Erd\\H{o}s, P. and Herzog, F. and Piranian, G., Metric properties of polynomials. J. Analyse Math. (1958), 125-148.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem originates from the 1958 paper 'Metric properties of polynomials' by Erdős, Herzog, and Piranian. They studied the geometry of polynomial level sets—specifically the sublevel set {z : |f(z)| < 1} for monic polynomials with roots in the unit disk.\n\nThe authors proved that this sublevel set always has a connected component containing at least two roots (the Component Lemma). The open problem asks for a quantitative strengthening: can we find not just connectivity, but a SHORT path of length less than 2 connecting two roots?\n\nThe constant 2 is sharp—it's the diameter of the unit disk, so roots could be nearly 2 apart. The conjecture asks whether the sublevel set always provides an efficient shortcut.",
+    "problemStatement": "Let $f(z) = \\prod_{i=1}^{n}(z - z_i) \\in \\mathbb{C}[z]$ be a monic polynomial with $|z_i| < 1$ for all $i$.\n\n**Conjecture (OPEN)**: Must there always exist a path of length less than $2$ in the sublevel set\n$$\\{z \\in \\mathbb{C} : |f(z)| < 1\\}$$\nwhich connects two of the roots of $f$?\n\n**Known** (Erdős-Herzog-Piranian 1958): The sublevel set always has a connected component containing at least two roots.",
+    "proofStrategy": "We formalize this problem by:\n\n1. **Defining sublevel sets**: `sublevelSet f r = {z : ‖f.eval z‖ < r}`\n\n2. **Defining path length**: Using 1-dimensional Hausdorff measure `μH[1]`\n\n3. **Stating the Component Lemma**: The known 1958 result about connected components\n\n4. **Stating the main conjecture**: Existence of a path of length < 2\n\n5. **Special cases**: The quadratic case as a base case\n\n6. **Properties**: Sublevel sets are open and contain all roots",
+    "keyInsights": [
+      "**Sublevel sets are open**: Since polynomial evaluation is continuous, {z : |f(z)| < 1} is an open set containing all roots.",
+      "**Why 2 is the bound**: The diameter of the unit disk is 2, so any two roots are at distance less than 2. The conjecture asks if the sublevel set provides a path achieving this.",
+      "**Component vs path**: The Component Lemma guarantees connectivity but not path length. A winding path through the sublevel set could be arbitrarily long.",
+      "**Lemniscates**: The level curves {z : |f(z)| = c} are called polynomial lemniscates. They have beautiful geometric properties studied since Bernoulli.",
+      "**Quadratic base case**: For degree 2, the straight line segment between roots lies in the sublevel set and has length < 2."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 17,
+      "summary": "Problem statement, status, and references to Erdős-Herzog-Piranian (1958)."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 25,
+      "endLine": 43,
+      "summary": "Definitions of sublevelSet, length (via Hausdorff measure), and PathInC structure."
+    },
+    {
+      "id": "component-lemma",
+      "title": "Component Lemma (SOLVED 1958)",
+      "startLine": 45,
+      "endLine": 66,
+      "summary": "The Erdős-Herzog-Piranian theorem about connected components containing two roots."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture (OPEN)",
+      "startLine": 68,
+      "endLine": 92,
+      "summary": "The open problem about existence of short paths of length < 2."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 94,
+      "endLine": 118,
+      "summary": "Diameter bounds and the quadratic case as base case."
+    },
+    {
+      "id": "properties",
+      "title": "Sublevel Set Properties",
+      "startLine": 120,
+      "endLine": 143,
+      "summary": "Proved theorems: sublevel sets are open and contain all roots."
+    },
+    {
+      "id": "length",
+      "title": "Length Properties",
+      "startLine": 145,
+      "endLine": 163,
+      "summary": "Path length bounds and the triangle inequality for unit disk."
+    },
+    {
+      "id": "lemniscates",
+      "title": "Connection to Lemniscates",
+      "startLine": 165,
+      "endLine": 194,
+      "summary": "Definition of polynomial lemniscates and unit disk diameter bound."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #1041 about paths in polynomial sublevel sets. The Erdős-Herzog-Piranian Component Lemma (1958) shows that the sublevel set {z : |f(z)| < 1} has a connected component containing at least two roots. The open conjecture asks whether this connected component contains a SHORT path of length less than 2 connecting two roots.",
+    "implications": "This problem connects complex analysis, metric geometry, and potential theory. Understanding the geometry of polynomial level sets has applications in numerical analysis (root-finding algorithms) and complex dynamics. The 1-dimensional Hausdorff measure provides the natural notion of path length for potentially irregular curves.",
+    "openQuestions": [
+      "Does the conjecture hold for all monic polynomials with roots in the unit disk?",
+      "What is the supremum of the minimal path length over all such polynomials?",
+      "Is there a relationship between degree n and the minimal achievable path length?",
+      "Can the conjecture be strengthened to require the straight-line segment lies in the sublevel set?"
+    ]
   }
 }

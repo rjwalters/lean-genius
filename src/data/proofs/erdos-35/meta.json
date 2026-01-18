@@ -1,33 +1,94 @@
 {
   "id": "erdos-35",
-  "title": "Erdős Problem #35",
+  "title": "Erdős #35: Schnirelmann Density and Additive Bases",
   "slug": "erdos-35",
-  "description": "Let ... be an additive basis of order ... with .... Is it true that for every ... we have\\[d_s(A+B)\\geq \\alpha+{k},\\]where ... and\\[d_s(A) = \\inf \\rvert}{N}\\]is the Schnirelmann density? Erdős [Er3...",
+  "description": "If B is an additive basis of order k, does d_s(A+B) ≥ α + α(1-α)/k hold for all A?",
   "meta": {
-    "author": "Unknown",
+    "author": "Helmut Plünnecke",
     "sourceUrl": "https://erdosproblems.com/35",
-    "date": "",
-    "status": "pending",
+    "date": "1970",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos35Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "density"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 9,
     "erdosNumber": 35,
     "erdosUrl": "https://erdosproblems.com/35",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #35 from erdosproblems.com.",
-    "problemStatement": "Let $B\\subseteq\\mathbb{N}$ be an additive basis of order $k$ with $0\\in B$. Is it true that for every $A\\subseteq\\mathbb{N}$ we have\\[d_s(A+B)\\geq \\alpha+\\frac{\\alpha(1-\\alpha)}{k},\\]where $\\alpha=d_s(A)$ and\\[d_s(A) = \\inf \\frac{\\lvert A\\cap\\{1,\\ldots,N\\}\\rvert}{N}\\]is the Schnirelmann density? Erdős [Er36c] proved this is true with $k$ replaced by $2k$ in the denominator (in a stronger form that only considers $A\\cup (A+b)$ for some $b\\in B$, see [38]). Ruzsa has observed that this follows immediately from the stronger fact proved by Plünnecke [Pl70] that (under the same assumptions)\\[d_S(A+B)\\geq \\alpha^{1-1/k}.\\] View the LaTeX source",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős posed this problem in 1956 [Er56], having proved a weaker version with 2k in the denominator in 1936 [Er36c]. Plünnecke's 1970 paper [Pl70] proved the stronger inequality d_s(A+B) ≥ α^{1-1/k}, from which Ruzsa observed the original conjecture follows immediately.",
+    "problemStatement": "Let B ⊆ ℕ be an additive basis of order k with 0 ∈ B. Is it true that for every A ⊆ ℕ, d_s(A+B) ≥ α + α(1-α)/k where α = d_s(A) is the Schnirelmann density?",
+    "proofStrategy": "We formalize Schnirelmann density and additive bases, state Plünnecke's inequality as the key lemma, and show how the main theorem follows from a calculus bound on α^{1-1/k}.",
+    "keyInsights": [
+      "Schnirelmann density d_s(A) = inf_{N≥1} |A ∩ {1,...,N}| / N",
+      "Erdős (1936) proved the bound with 2k in denominator",
+      "Plünnecke (1970) proved the stronger d_s(A+B) ≥ α^{1-1/k}",
+      "The inequality α^{1-1/k} ≥ α + α(1-α)/k for α ∈ [0,1] completes the proof"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "schnirelmann",
+      "title": "Schnirelmann Density",
+      "summary": "Definition of counting function and Schnirelmann density d_s(A)",
+      "startLine": 37,
+      "endLine": 52
+    },
+    {
+      "id": "additive-basis",
+      "title": "Additive Bases",
+      "summary": "Sumsets, k-fold sums, and the definition of additive basis of order k",
+      "startLine": 54,
+      "endLine": 76
+    },
+    {
+      "id": "basic-props",
+      "title": "Basic Properties",
+      "summary": "Density bounds [0,1], monotonicity under sumsets",
+      "startLine": 78,
+      "endLine": 111
+    },
+    {
+      "id": "erdos-1936",
+      "title": "Erdős 1936 Result",
+      "summary": "The weaker bound with 2k in denominator",
+      "startLine": 113,
+      "endLine": 122
+    },
+    {
+      "id": "plunnecke",
+      "title": "Plünnecke's Inequality",
+      "summary": "The key 1970 result: d_s(A+B) ≥ α^{1-1/k}",
+      "startLine": 124,
+      "endLine": 142
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "summary": "Derivation of Erdős's conjecture from Plünnecke",
+      "startLine": 144,
+      "endLine": 160
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "Squares (Lagrange), primes (conditional on Goldbach)",
+      "startLine": 175,
+      "endLine": 190
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures the complete structure of Erdős Problem #35, from the definitions through Plünnecke's inequality to the final result. The main theorem erdos_35 shows how the conjecture follows from Plünnecke's stronger bound.",
+    "implications": "Plünnecke's inequality has become a fundamental tool in additive combinatorics, with applications far beyond this original problem. It provides quantitative control over how sumsets grow in density.",
+    "openQuestions": [
+      "Can the Plünnecke bound α^{1-1/k} be improved?",
+      "What is the optimal constant in the α + α(1-α)/k bound for specific bases like squares?"
+    ]
   }
 }

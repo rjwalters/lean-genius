@@ -1,33 +1,110 @@
 {
   "id": "erdos-546",
-  "title": "Erdős Problem #546",
+  "title": "Erdős #546: Ramsey Numbers and Edge Count",
   "slug": "erdos-546",
-  "description": "Let ... be a graph with no isolated vertices and ... edges. Is it true that\\[R(G) \\leq 2^{O(m^{1/2})}?\\] This is true, and was proved by Sudakov [Su11]. The analogous question for ... colours is st...",
+  "description": "For a graph G with no isolated vertices and m edges, is R(G) ≤ 2^{O(√m)}? Solved by Sudakov (2011). The ≥3 color version remains open.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Benny Sudakov",
     "sourceUrl": "https://erdosproblems.com/546",
-    "date": "",
-    "status": "pending",
+    "date": "1984-2011",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos546Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "combinatorics"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 10,
     "erdosNumber": 546,
     "erdosUrl": "https://erdosproblems.com/546",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #546 from erdosproblems.com.",
-    "problemStatement": "Let $G$ be a graph with no isolated vertices and $m$ edges. Is it true that\\[R(G) \\leq 2^{O(m^{1/2})}?\\] This is true, and was proved by Sudakov [Su11]. The analogous question for $\\geq 3$ colours is still open. Alon, Krivelevich, and Sudakov [AKS03] had earlier given a short proof of this when $G$ is bipartite. A more precise question is [545]. This problem is #11 in Ramsey Theory in the graphs problem collection. View the LaTeX source This page was last edited 18 November 2025.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős posed this problem in 1984, asking whether the Ramsey number of a graph G with m edges is at most exponential in √m. Sudakov proved this in 2011. Earlier, Alon-Krivelevich-Sudakov (2003) proved the bipartite case. The multi-color version (≥3 colors) remains open.",
+    "problemStatement": "Let G be a graph with no isolated vertices and m edges. Is R(G) ≤ 2^{O(√m)}? This asks whether the Ramsey number grows at most exponentially in the square root of the edge count.",
+    "proofStrategy": "We formalize the Ramsey number definition, Sudakov's theorem, the bipartite case (AKS 2003), the multi-color generalization (open), and specific graph classes (paths, cycles, complete bipartite). We also formalize the connection to Problem #545.",
+    "keyInsights": [
+      "Sudakov (2011): R(G) ≤ 2^{O(√m)} for all graphs G with m edges",
+      "AKS (2003): Bipartite case proved earlier",
+      "Multi-color (≥3): Remains OPEN",
+      "Sparse graphs (paths, cycles): R is linear, much better than √m bound",
+      "Connection to Problem #545: More precise exponent question"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graphs",
+      "title": "Graph Definitions",
+      "summary": "Edge count, no isolated vertices, degree",
+      "startLine": 31,
+      "endLine": 43
+    },
+    {
+      "id": "ramsey",
+      "title": "Ramsey Numbers",
+      "summary": "Subgraph containment, complement, R(H) definition",
+      "startLine": 45,
+      "endLine": 64
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "summary": "Sudakov's theorem: R(G) ≤ 2^{O(√m)}",
+      "startLine": 66,
+      "endLine": 86
+    },
+    {
+      "id": "bipartite",
+      "title": "Bipartite Case",
+      "summary": "Alon-Krivelevich-Sudakov (2003)",
+      "startLine": 88,
+      "endLine": 101
+    },
+    {
+      "id": "multicolor",
+      "title": "Multi-Color Generalization",
+      "summary": "The ≥3 color version (open)",
+      "startLine": 103,
+      "endLine": 123
+    },
+    {
+      "id": "specific",
+      "title": "Specific Graph Classes",
+      "summary": "Paths, cycles, complete bipartite graphs",
+      "startLine": 125,
+      "endLine": 156
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds for Specific Graphs",
+      "summary": "Linear bounds for paths and cycles",
+      "startLine": 158,
+      "endLine": 176
+    },
+    {
+      "id": "probabilistic",
+      "title": "Probabilistic Method",
+      "summary": "Lower bounds via random graphs",
+      "startLine": 178,
+      "endLine": 186
+    },
+    {
+      "id": "connection",
+      "title": "Connection to #545",
+      "summary": "More precise exponent question",
+      "startLine": 188,
+      "endLine": 203
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #546 on Ramsey numbers and edge count. Sudakov (2011) proved R(G) ≤ 2^{O(√m)}, solving the 2-color case. The bipartite case was proved earlier by AKS (2003). The analogous question for ≥3 colors remains open.",
+    "implications": "This result connects graph structure (edge count) to Ramsey-theoretic complexity. It shows that graphs with few edges have relatively small Ramsey numbers, which has applications in extremal graph theory.",
+    "openQuestions": [
+      "Does R_r(G) ≤ 2^{O(√m)} hold for r ≥ 3 colors?",
+      "What is the precise constant in Sudakov's bound?",
+      "Can the bound be improved for specific graph families?"
+    ]
   }
 }

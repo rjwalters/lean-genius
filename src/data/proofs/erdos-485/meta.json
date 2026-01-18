@@ -1,33 +1,90 @@
 {
   "id": "erdos-485",
-  "title": "Erdős Problem #485",
+  "title": "Minimum Terms in Squared Polynomials",
   "slug": "erdos-485",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimum number of terms in ..., where ... ranges over all polynomials with exactly ... non-zero terms. Is it t...",
+  "description": "Let f(k) be the minimum number of terms in P(x)², where P ranges over polynomials with exactly k non-zero terms. Is f(k) → ∞ as k → ∞?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Rényi",
     "sourceUrl": "https://erdosproblems.com/485",
     "date": "",
-    "status": "pending",
+    "status": "axiom",
     "proofRepoPath": "Proofs/Erdos485Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "algebra",
+      "polynomials",
+      "sparse-polynomials",
+      "asymptotics",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 10,
     "erdosNumber": 485,
     "erdosUrl": "https://erdosproblems.com/485",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #485 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(k)$ be the minimum number of terms in $P(x)^2$, where $P\\in \\mathbb{Q}[x]$ ranges over all polynomials with exactly $k$ non-zero terms. Is it true that $f(k)\\to\\infty$ as $k\\to \\infty$?\n\n\n\nThis is Problem 4.4 in \\cite{Ha74}, where it is attributed to Erd\\H{o}s.\n\nFirst investigated by R\\'{e}nyi and R\\'{e}dei \\cite{Re47}. Erd\\H{o}s \\cite{Er49b} proved that $f(k)<k^{1-c}$ for some $c>0$. The conjecture that $f(k)\\to \\infty$ is due to Erd\\H{o}s and R\\'{e}nyi.\n\nThis was solved by Schinzel \\cite{Sc87}, who proved that\\[f(k) > \\frac{\\log\\log k}{\\log 2}.\\]In fact Schinzel proves lower bounds for the corresponding problem with $P(x)^n$ for any integer $n\\geq 1$, where the coefficients of the polynomial can be from any field with zero or sufficiently large positive characteristic.\n\nSchinzel and Zannier \\cite{ScZa09} have improved this to\\[f(k) \\gg \\log k.\\]\n\n\n\n\nReferences\n\n\n[Er49b] Erd\\\"{o}s, P., On the number of terms of the square of a polynomial. Nieuw Arch. Wiskunde (2) (1949), 63-65.\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n[Re47] R\\'{e}nyi, A., On the minimal number of terms of the square of a polynomial. Hungarica Acta Math. (1947), 30-34.\n\n[Sc87] Schinzel, A., On the number of terms of a power of a polynomial. Acta Arith. (1987), 55-70.\n\n[ScZa09] Schinzel, Andrzej and Zannier, Umberto, On the number of terms of a power of a polynomial. Atti Accad. Naz. Lincei Rend. Lincei Mat. Appl. (2009), 95-98.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "First investigated by Rényi and Rédei (1947). Erdős (1949) proved an upper bound f(k) < k^(1-c). The conjecture f(k) → ∞ was due to Erdős and Rényi. Schinzel (1987) proved f(k) > (log log k)/log 2. Schinzel-Zannier (2009) improved this to f(k) ≫ log k. Listed as Problem 4.4 in Hayman (1974).",
+    "problemStatement": "Let f(k) be the minimum number of terms in P(x)², where P ∈ ℚ[x] ranges over all polynomials with exactly k non-zero terms. Is it true that f(k) → ∞ as k → ∞?",
+    "proofStrategy": "We define termCount for polynomials using Polynomial.support.card, then define f(k) as the infimum over all k-term polynomials. The main results state bounds: Erdős upper bound f(k) < k^(1-c), Schinzel lower bound f(k) > (log log k)/log 2, and Schinzel-Zannier improvement f(k) ≫ log k.",
+    "keyInsights": [
+      "Squaring a polynomial can reduce terms through cancellation of cross-terms",
+      "However, this reduction cannot continue indefinitely as k grows",
+      "Schinzel's proof extends to P(x)^n for any n ≥ 1",
+      "The result holds over any field of characteristic 0 or sufficiently large"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "term-count",
+      "title": "Term Count Definitions",
+      "startLine": 35,
+      "endLine": 48,
+      "summary": "Define termCount as the cardinality of a polynomial's support."
+    },
+    {
+      "id": "function-f",
+      "title": "The Function f(k)",
+      "startLine": 50,
+      "endLine": 57,
+      "summary": "f(k) = minimum terms in P² for P with k terms."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 59,
+      "endLine": 71,
+      "summary": "f(1) = 1 (monomials), f(2) = 3 (binomials)."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Erdős Upper Bound",
+      "startLine": 73,
+      "endLine": 81,
+      "summary": "Erdős (1949): f(k) < k^(1-c) for some c > 0."
+    },
+    {
+      "id": "main-result",
+      "title": "Main Divergence Result",
+      "startLine": 83,
+      "endLine": 107,
+      "summary": "Schinzel-Zannier: f(k) → ∞, specifically f(k) ≫ log k."
+    },
+    {
+      "id": "related",
+      "title": "Related Concepts",
+      "startLine": 124,
+      "endLine": 167,
+      "summary": "Connections to sparse and lacunary polynomials."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #485 about the minimum number of terms in squared polynomials. The conjecture f(k) → ∞ was confirmed by Schinzel (1987) with bound (log log k)/log 2, improved by Schinzel-Zannier (2009) to f(k) ≫ log k.",
+    "implications": "This shows that polynomial squaring cannot arbitrarily compress term counts. The result is part of the theory of sparse polynomials and has applications in computational algebra.",
+    "openQuestions": [
+      "What is the exact asymptotic growth rate of f(k)?",
+      "Are there explicit constructions achieving the minimum f(k)?",
+      "What is the behavior of the analogous function for higher powers?"
+    ]
   }
 }

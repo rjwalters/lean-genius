@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-623-header",
+    "proofId": "erdos-623",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdős Problem #623 asks about independence for functions on finite subsets. Given a set X of cardinality ℵ_ω and a 'free' function f: Finset(X) → X (where f(A) ∉ A always), must there exist an infinite 'independent' set Y where f(B) ∉ Y for all finite B ⊆ Y? Status: OPEN, possibly undecidable.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-623-aleph-omega",
+    "proofId": "erdos-623",
+    "range": { "startLine": 39, "endLine": 42 },
+    "type": "definition",
+    "title": "Aleph-Omega (ℵ_ω)",
+    "content": "ℵ_ω is the first singular cardinal—the supremum of ℵ_0, ℵ_1, ℵ_2, ... It's larger than any ℵ_n but is NOT the 'next' cardinal after them in the usual sense. Its cofinality is ω (countable), making it singular rather than regular.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-623-limit",
+    "proofId": "erdos-623",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "theorem",
+    "title": "ℵ_ω is a Limit Cardinal",
+    "content": "We prove ℵ_ω is a limit cardinal using Mathlib's Cardinal.isLimit_aleph. Limit cardinals are suprema of smaller cardinals, with no immediate predecessor. This makes ℵ_ω fundamentally different from successor cardinals like ℵ_1, ℵ_2, etc.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-623-singular",
+    "proofId": "erdos-623",
+    "range": { "startLine": 48, "endLine": 54 },
+    "type": "theorem",
+    "title": "ℵ_ω is Singular",
+    "content": "A cardinal κ is singular if its cofinality cof(κ) < κ. For ℵ_ω, the cofinality is ω (the sequence ℵ_0, ℵ_1, ... witnesses this). Singular cardinals often behave differently in set-theoretic combinatorics, which is why ℵ_ω is special here.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-623-free-def",
+    "proofId": "erdos-623",
+    "range": { "startLine": 63, "endLine": 66 },
+    "type": "definition",
+    "title": "Free Functions",
+    "content": "A function f: Finset(X) → X is 'free' if f(A) ∉ A for all finite A. The function always 'escapes' its input—it never returns an element already in the set. This is the key constraint that makes finding independent sets challenging.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-623-exists-free",
+    "proofId": "erdos-623",
+    "range": { "startLine": 68, "endLine": 74 },
+    "type": "theorem",
+    "title": "Free Functions Exist",
+    "content": "For any infinite set X, free functions exist. Since X is infinite and any A is finite, there's always some element of X not in A. This shows the problem's hypothesis is non-vacuous—free functions are plentiful.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-623-independent-def",
+    "proofId": "erdos-623",
+    "range": { "startLine": 78, "endLine": 81 },
+    "type": "definition",
+    "title": "Independent Sets",
+    "content": "A set Y is 'independent' for f if f(B) ∉ Y for all finite B ⊆ Y. Applying f to any finite subset of Y gives an element OUTSIDE Y. This is a strong closure-like property: Y is 'closed under not containing f-images'.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-623-empty-indep",
+    "proofId": "erdos-623",
+    "range": { "startLine": 83, "endLine": 87 },
+    "type": "theorem",
+    "title": "Empty Set is Independent",
+    "content": "The empty set ∅ is trivially independent for any f. There are no finite subsets B ⊆ ∅ to check (well, just ∅ itself), and f(∅) ∉ ∅ is vacuously true. The challenge is finding INFINITE independent sets.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-623-erdos-hajnal",
+    "proofId": "erdos-623",
+    "range": { "startLine": 104, "endLine": 113 },
+    "type": "axiom",
+    "title": "Erdős-Hajnal Theorem (1958)",
+    "content": "The key negative result: for any X with |X| < ℵ_ω, there exists a free function f with NO infinite independent set. This construction is axiomatized because it requires sophisticated set-theoretic techniques. It establishes ℵ_ω as a sharp threshold.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-623-counterexample",
+    "proofId": "erdos-623",
+    "range": { "startLine": 115, "endLine": 119 },
+    "type": "theorem",
+    "title": "Counterexamples at ℵ_n",
+    "content": "For every finite n, there exists a set of cardinality ℵ_n with a free function having no infinite independent set. This follows from the Erdős-Hajnal theorem since ℵ_n < ℵ_ω for all n < ω.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-623-conjecture",
+    "proofId": "erdos-623",
+    "range": { "startLine": 123, "endLine": 132 },
+    "type": "definition",
+    "title": "Main Conjecture (OPEN)",
+    "content": "The Erdős Problem #623 conjecture: for every free function f on a set of cardinality ℵ_ω, there exists an infinite independent set. This is stated as a definition since it remains OPEN. Erdős suggested it might be undecidable in ZFC.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-623-negative",
+    "proofId": "erdos-623",
+    "range": { "startLine": 134, "endLine": 137 },
+    "type": "definition",
+    "title": "Negative Formulation",
+    "content": "The negation: there exists a set of cardinality ℵ_ω with a free function having no infinite independent set. One of these two statements must be true classically, but which one might depend on set-theoretic axioms beyond ZFC.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-623-undecidable",
+    "proofId": "erdos-623",
+    "range": { "startLine": 150, "endLine": 157 },
+    "type": "definition",
+    "title": "Potential Undecidability",
+    "content": "Erdős (1999) suggested this problem might be 'perhaps undecidable'—independent of ZFC. Many problems at singular cardinals exhibit independence phenomena, where the answer depends on axioms like large cardinals or forcing axioms.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-623-cofinality",
+    "proofId": "erdos-623",
+    "range": { "startLine": 159, "endLine": 162 },
+    "type": "theorem",
+    "title": "Cofinality of ℵ_ω",
+    "content": "The cofinality of ℵ_ω is ω (the first infinite ordinal). This means ℵ_ω can be expressed as a supremum of countably many smaller cardinals. This countable cofinality is what makes ℵ_ω singular and gives it special combinatorial properties.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-623-finite-trivial",
+    "proofId": "erdos-623",
+    "range": { "startLine": 177, "endLine": 181 },
+    "type": "theorem",
+    "title": "Finite Case is Trivial",
+    "content": "For finite X, there's no infinite Y ⊆ X at all, so the question of infinite independent sets is vacuous. The problem only makes sense for infinite X.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-623-countable",
+    "proofId": "erdos-623",
+    "range": { "startLine": 183, "endLine": 190 },
+    "type": "theorem",
+    "title": "Countable Case",
+    "content": "For countable X (cardinality ℵ_0), the Erdős-Hajnal theorem gives a counterexample. This is the first non-trivial case and already shows the answer is NO. The same holds for ℵ_1, ℵ_2, etc.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-623-summary",
+    "proofId": "erdos-623",
+    "range": { "startLine": 194, "endLine": 212 },
+    "type": "theorem",
+    "title": "Known Results Summary",
+    "content": "The theorem known_results_summary captures all negative results: for every n < ω, there's a counterexample at ℵ_n. This leaves ℵ_ω as the exact threshold where the question becomes open.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-623-variants",
+    "proofId": "erdos-623",
+    "range": { "startLine": 216, "endLine": 231 },
+    "type": "definition",
+    "title": "Variants",
+    "content": "We consider variants: (1) erdos_623_uncountable requires Y to be uncountable, not just infinite—a strengthening. (2) erdos_623_weak only asks if SOME free function has an infinite independent set—a weakening. The strong version implies the weak one.",
+    "significance": "supporting"
+  }
+]

@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-1015-twocoloring",
+    "proofId": "erdos-1015",
+    "range": { "startLine": 49, "endLine": 50 },
+    "type": "definition",
+    "title": "Two-Coloring of Complete Graph",
+    "content": "A two-coloring assigns a Boolean value (red/blue) to each edge of Kₙ. We represent this as a function from pairs of vertices to Bool. The complete graph has edges between all pairs, so the coloring domain is Fin n × Fin n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1015-symmetric",
+    "proofId": "erdos-1015",
+    "range": { "startLine": 52, "endLine": 54 },
+    "type": "definition",
+    "title": "Symmetric Coloring",
+    "content": "Since edges are undirected, we require c(i,j) = c(j,i). This symmetry constraint ensures the coloring represents an actual edge coloring of the undirected complete graph.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1015-monoclique",
+    "proofId": "erdos-1015",
+    "range": { "startLine": 56, "endLine": 58 },
+    "type": "definition",
+    "title": "Monochromatic Clique",
+    "content": "A set S of vertices forms a monochromatic clique of color b if every edge between distinct vertices in S has color b. This is a Kₜ where all edges are the same color.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1015-disjoint",
+    "proofId": "erdos-1015",
+    "range": { "startLine": 64, "endLine": 67 },
+    "type": "definition",
+    "title": "Vertex-Disjoint Sets",
+    "content": "A collection of vertex sets is disjoint if no two sets share a vertex. This is essential for partitioning: each vertex can belong to at most one clique in the partition.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1015-partition",
+    "proofId": "erdos-1015",
+    "range": { "startLine": 69, "endLine": 77 },
+    "type": "definition",
+    "title": "CliquePartition Structure",
+    "content": "A clique partition consists of: (1) a list of cliques, each of size t, (2) a color for each clique, (3) each clique is monochromatic in its assigned color, and (4) all cliques are vertex-disjoint. The 'leftover' is the count of vertices not covered by any clique.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1015-minleftover",
+    "proofId": "erdos-1015",
+    "range": { "startLine": 93, "endLine": 95 },
+    "type": "definition",
+    "title": "Minimum Leftover for a Coloring",
+    "content": "For a specific 2-coloring c, minLeftover(c,t) is the minimum number of leftover vertices achievable by any valid partition into monochromatic Kₜ's. This measures how well we can cover this particular coloring.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1015-fn",
+    "proofId": "erdos-1015",
+    "range": { "startLine": 97, "endLine": 99 },
+    "type": "definition",
+    "title": "Function f_n(t)",
+    "content": "f_n(t) is the supremum of minLeftover over all 2-colorings of Kₙ. This is the worst-case leftover for a graph of size n: the adversarial coloring that maximizes the minimum leftover.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1015-f",
+    "proofId": "erdos-1015",
+    "range": { "startLine": 101, "endLine": 103 },
+    "type": "definition",
+    "title": "Function f(t)",
+    "content": "f(t) is the supremum of f_n(t) over all n. For large enough n, this stabilizes to the value given by the Burr-Erdős-Spencer formula. This is the fundamental quantity Erdős asked about.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1015-moon",
+    "proofId": "erdos-1015",
+    "range": { "startLine": 109, "endLine": 113 },
+    "type": "theorem",
+    "title": "Moon's Theorem (1966)",
+    "content": "Moon proved f(3) = 4: when partitioning any 2-colored Kₙ (n ≥ 8) into monochromatic triangles, at most 4 vertices remain uncovered. This is the base case that motivated the general question.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1015-ramsey",
+    "proofId": "erdos-1015",
+    "range": { "startLine": 119, "endLine": 120 },
+    "type": "definition",
+    "title": "Ramsey Numbers",
+    "content": "R(s,t) is the minimum n such that any 2-coloring of Kₙ contains either a red Kₛ or a blue Kₜ. The connection to f(t) comes from the fact that leftover vertices must avoid large monochromatic cliques.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1015-erdosbound",
+    "proofId": "erdos-1015",
+    "range": { "startLine": 122, "endLine": 126 },
+    "type": "theorem",
+    "title": "Erdős's Ramsey Bound",
+    "content": "Erdős observed f(t) < R(t,t) ≤ 4^t. The crude upper bound 4^t comes from the standard Ramsey bound. This shows f(t) grows at most exponentially, but doesn't give the precise rate.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1015-exact",
+    "proofId": "erdos-1015",
+    "range": { "startLine": 132, "endLine": 134 },
+    "type": "theorem",
+    "title": "Burr-Erdős-Spencer Exact Formula",
+    "content": "For t ≥ 3 and large n: f(t) = R(t, t-1) + x where 0 ≤ x < t. The correction term x depends on n mod t. This exact characterization is the main result resolving Erdős's problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1015-bounds",
+    "proofId": "erdos-1015",
+    "range": { "startLine": 136, "endLine": 140 },
+    "type": "theorem",
+    "title": "Bounds on f(t)",
+    "content": "The exact formula gives R(t, t-1) ≤ f(t) < R(t, t-1) + t. Since R(t, t-1) ≈ 4^t/√t, this pins down f(t) to within an additive O(t) of the Ramsey number.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1015-rootlimit",
+    "proofId": "erdos-1015",
+    "range": { "startLine": 148, "endLine": 149 },
+    "type": "theorem",
+    "title": "Root Limit",
+    "content": "f(t)^{1/t} → 4 as t → ∞. This answers Erdős's first question negatively: the t-th root does NOT tend to 1. The exponential growth rate is 4, matching the Ramsey number growth.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1015-notlinear",
+    "proofId": "erdos-1015",
+    "range": { "startLine": 151, "endLine": 152 },
+    "type": "theorem",
+    "title": "Not Linear Growth",
+    "content": "f(t) is NOT O(t), answering Erdős's second question negatively. The function grows exponentially like 4^t/√t, not linearly. No constant C satisfies f(t) ≤ Ct for all t.",
+    "significance": "critical"
+  }
+]

@@ -1,33 +1,111 @@
 {
   "id": "erdos-517",
-  "title": "Erdős Problem #517",
+  "title": "Erdős Problem #517: Lacunary Entire Functions and Value Distribution",
   "slug": "erdos-517",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an entire function (with ... for all ...). Is it true that if ... then ... assumes every value infinitely often?\n\n...",
+  "description": "Do entire functions with Fabry gaps (nₖ/k → ∞) assume every value infinitely often? The main conjecture is OPEN, but Biernacki proved the stronger Fejér gap case.",
   "meta": {
-    "author": "Unknown",
+    "author": "Fejér-Pólya Conjecture; Biernacki (1928) for Fejér gaps",
     "sourceUrl": "https://erdosproblems.com/517",
-    "date": "",
-    "status": "pending",
+    "date": "1928",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos517Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "lacunary-series",
+      "value-distribution"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 517,
     "erdosUrl": "https://erdosproblems.com/517",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Tendsto",
+        "description": "Limit of sequences and filters",
+        "module": "Mathlib.Topology.Order.Basic"
+      },
+      {
+        "theorem": "Summable",
+        "description": "Summability of infinite series",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "HasSum",
+        "description": "Power series convergence",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite sets",
+        "module": "Mathlib.Data.Set.Finite"
+      }
+    ],
+    "originalContributions": [
+      "Clear formalization of Fabry and Fejér gap conditions",
+      "Statement of the open Fabry gap conjecture",
+      "Biernacki's theorem as an axiom with educational documentation",
+      "Verified example showing exponential sequences have Fejér gaps"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #517 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(z)=\\sum_{k=1}^\\infty a_kz^{n_k}$ be an entire function (with $a_k\\neq 0$ for all $k\\geq 1$). Is it true that if $n_k/k\\to \\infty$ then $f(z)$ assumes every value infinitely often?\n\n\n\nA conjecture of Fej\\'{e}r and P\\'{o}lya.\n\nFej\\'{e}r \\cite{Fe08} proved that if $\\sum\\frac{1}{n_k}<\\infty$ then $f(z)$ assumes every value at least once, and Biernacki \\cite{Bi28} proved that if $\\sum\\frac{1}{n_k}<\\infty$ then $f(z)$ assumes every value infinitely often.\n\nP\\'{o}lya \\cite{Po29} proved that if $f$ has finite order then $f(z)$ assumes every value infinitely often under the assumption that $\\limsup (n_{k+1}-n_k)=\\infty$.\n\n\n\n\n\nReferences\n\n\n[Bi28] Biernacki, Mi\\'{e}cislas, Sur les \\'{e}quations alg\\'{e}briques contenant des param\\'{e}tres arbitraires. (1928), 145.\n\n[Fe08] Fej\\'{e}r, Leopold, \\\"{U}ber die Wurzel vom kleinsten absoluten Betrage einer algebraischen Gleichung. Math. Ann. (1908), 413-423.\n\n[Po29] P\\'olya, G., Untersuchungen \\\"uber {L}\\\"ucken und {S}ingularit\\\"{a}ten von\n{P}otenzreihen. Math. Z. (1929), 549--640.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem concerns lacunary power series - series f(z) = ∑ aₖz^{nₖ} where the exponents have gaps. The question of how these gaps affect value distribution goes back to the early 20th century.\n\nFejér (1908) proved that if ∑1/nₖ < ∞, the function assumes every value at least once. Biernacki (1928) strengthened this to show every value is assumed infinitely often under the same condition.\n\nThe Fejér-Pólya conjecture asks whether the weaker Fabry gap condition (nₖ/k → ∞) is sufficient. Pólya (1929) proved partial results for functions of finite order, but the general case remains open. This is a fundamental question connecting gap conditions in power series to complex function theory.",
+    "problemStatement": "**Conjecture (Fejér-Pólya)**: Let $f(z) = \\sum_{k=1}^{\\infty} a_k z^{n_k}$ be an entire function with $a_k \\neq 0$. If the exponents satisfy the **Fabry gap condition** $n_k/k \\to \\infty$, does $f(z)$ assume every complex value infinitely often?\n\n**Status**: OPEN\n\n**Related Result (Biernacki 1928)**: Under the stronger **Fejér gap condition** $\\sum 1/n_k < \\infty$, the answer is YES.",
+    "proofStrategy": "We formalize both the open conjecture and the related solved result:\n\n1. **Gap Conditions**: Define HasFabryGaps (nₖ/k → ∞) and HasFejerGaps (∑1/nₖ < ∞)\n\n2. **Hierarchy**: Prove that Fejér gaps imply Fabry gaps (the converse is false)\n\n3. **Open Conjecture**: State the Fabry gap conjecture as a Prop that can be true or false\n\n4. **Biernacki's Theorem**: State the solved Fejér gap case as an axiom, since the complex analysis proof is beyond current Mathlib\n\n5. **Example**: Verify that nₖ = 2^k has Fejér gaps, demonstrating the applicability of Biernacki's theorem",
+    "keyInsights": [
+      "**Lacunary series**: Power series with gaps in exponents have special properties. The 'density' of gaps determines value distribution behavior.",
+      "**Gap hierarchy**: Fejér gaps (∑1/nₖ < ∞) ⊂ Fabry gaps (nₖ/k → ∞). The former is easier to analyze but more restrictive.",
+      "**Value distribution**: Picard's theorem says entire functions miss at most one value. Gap conditions can force every value to be assumed infinitely often.",
+      "**The gap**: Despite 100+ years of study, we don't know if the weaker Fabry condition suffices for infinite value coverage."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and History",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "The Fejér-Pólya conjecture on value distribution of lacunary entire functions"
+    },
+    {
+      "id": "gap-conditions",
+      "title": "Gap Conditions",
+      "startLine": 32,
+      "endLine": 58,
+      "summary": "Definitions of Fabry and Fejér gaps, with the implication between them"
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture (OPEN)",
+      "startLine": 60,
+      "endLine": 78,
+      "summary": "Statement of the open Fabry gap conjecture"
+    },
+    {
+      "id": "biernacki",
+      "title": "Biernacki's Theorem",
+      "startLine": 80,
+      "endLine": 101,
+      "summary": "The solved Fejér gap case (stated as axiom)"
+    },
+    {
+      "id": "example",
+      "title": "Example: Exponential Gaps",
+      "startLine": 103,
+      "endLine": 128,
+      "summary": "Verification that 2^k has Fejér gaps and application of Biernacki's theorem"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize the Fejér-Pólya conjecture on lacunary entire functions. The main question - whether Fabry gaps suffice for infinite value coverage - remains open after over a century. We state Biernacki's 1928 theorem for the stronger Fejér gap condition and demonstrate its application to exponential sequences.",
+    "implications": "This problem sits at the intersection of gap Tauberian theory and Nevanlinna theory. Its resolution would clarify the precise relationship between power series gaps and value distribution in complex analysis.",
+    "openQuestions": [
+      "Does the Fabry gap condition nₖ/k → ∞ imply every value is assumed infinitely often?",
+      "What is the weakest gap condition that guarantees infinite value coverage?",
+      "Can techniques from Nevanlinna theory be extended to handle Fabry gaps?"
+    ]
   }
 }

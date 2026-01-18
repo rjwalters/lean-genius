@@ -1,1 +1,216 @@
-[]
+[
+  {
+    "id": "ann-e897-header",
+    "proofId": "erdos-897",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #897** explores the relationship between the behavior of additive arithmetic functions on prime powers and their consecutive differences. If f grows unboundedly fast on prime powers, must the consecutive differences f(n+1) - f(n) also be unbounded?\n\nThe problem has two parts, both **OPEN**. The converse direction was settled by Wirsing in 1970.",
+    "mathContext": "An additive function satisfies f(ab) = f(a) + f(b) when gcd(a,b) = 1. Examples: ω(n), Ω(n), log(n).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "additive functions",
+      "prime powers",
+      "consecutive differences",
+      "Wirsing's theorem"
+    ]
+  },
+  {
+    "id": "ann-e897-imports",
+    "proofId": "erdos-897",
+    "range": {
+      "startLine": 22,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "We import Mathlib and open the **Filter** and **Asymptotics** namespaces. These provide the `atTop` filter for limits at infinity and the `IsBigO` notation for asymptotic bounds used in Wirsing's theorem.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "filters",
+      "asymptotics"
+    ]
+  },
+  {
+    "id": "ann-e897-isadditive",
+    "proofId": "erdos-897",
+    "range": {
+      "startLine": 36,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Additive Function Definition",
+    "content": "**IsAdditive f** holds when f(ab) = f(a) + f(b) for all positive coprime pairs (a, b).\n\nThis is the standard definition of an additive arithmetic function, weaker than completely additive (which holds for ALL products, not just coprime ones).\n\nClassic examples:\n- **ω(n)**: number of distinct prime divisors\n- **Ω(n)**: total prime factors with multiplicity\n- **log(n)**: natural logarithm",
+    "mathContext": "For additive f, the value f(n) is determined by f on prime powers via the fundamental theorem of arithmetic.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "coprimality",
+      "arithmetic functions",
+      "multiplicative functions"
+    ]
+  },
+  {
+    "id": "ann-e897-unbounded",
+    "proofId": "erdos-897",
+    "range": {
+      "startLine": 44,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "Unbounded Growth on Prime Powers",
+    "content": "**UnboundedOnPrimePowers f** captures the condition: limsup_{p,k} f(p^k) / log(p^k) = ∞.\n\nThis means f grows faster than logarithmic on some sequence of prime powers. For any bound M, we can find p^k with f(p^k) > M·log(p^k).",
+    "mathContext": "This condition distinguishes functions like log (which has f(p^k)/log(p^k) = 1) from those that grow faster on prime powers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "limsup",
+      "prime powers",
+      "growth rates"
+    ]
+  },
+  {
+    "id": "ann-e897-part-i",
+    "proofId": "erdos-897",
+    "range": {
+      "startLine": 56,
+      "endLine": 64
+    },
+    "type": "axiom",
+    "title": "Part I: Consecutive Differences (OPEN)",
+    "content": "**Erdős Problem #897, Part I**: If f is additive and f(p^k)/log(p^k) is unbounded over prime powers, then is (f(n+1) - f(n))/log(n) also unbounded?\n\nThis asks whether rapid growth on prime powers propagates to consecutive differences. The `∃ᶠ n in atTop` notation means \"for infinitely many n\".",
+    "mathContext": "The normalization by log(n) is natural since log is the canonical additive function with bounded differences.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open problem",
+      "consecutive integers",
+      "limsup"
+    ]
+  },
+  {
+    "id": "ann-e897-part-ii",
+    "proofId": "erdos-897",
+    "range": {
+      "startLine": 66,
+      "endLine": 73
+    },
+    "type": "axiom",
+    "title": "Part II: Ratio of Consecutive Values (OPEN)",
+    "content": "**Erdős Problem #897, Part II**: Under the same hypotheses, is f(n+1)/f(n) also unbounded?\n\nThis is a multiplicative version of Part I. Instead of differences, we ask about ratios. Can the ratio of consecutive values be arbitrarily large?",
+    "mathContext": "For log, the ratio log(n+1)/log(n) → 1, so this asks about functions with more erratic behavior.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open problem",
+      "ratios",
+      "multiplicative behavior"
+    ]
+  },
+  {
+    "id": "ann-e897-wirsing",
+    "proofId": "erdos-897",
+    "range": {
+      "startLine": 82,
+      "endLine": 91
+    },
+    "type": "axiom",
+    "title": "Wirsing's Theorem (1970)",
+    "content": "**Wirsing's Theorem**: If f is additive and |f(n+1) - f(n)| ≤ C for all n (bounded consecutive differences), then f(n) = c·log(n) + O(1) for some constant c.\n\nThis is the **converse** direction—it characterizes log as essentially the unique additive function with bounded consecutive differences. This beautiful rigidity result was proved in 1970.",
+    "mathContext": "The O(1) notation via `=O[atTop] (1 : ℕ → ℝ)` means the error term f(n) - c·log(n) is bounded.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "solved result",
+      "logarithm characterization",
+      "big-O notation"
+    ]
+  },
+  {
+    "id": "ann-e897-strongly",
+    "proofId": "erdos-897",
+    "range": {
+      "startLine": 100,
+      "endLine": 103
+    },
+    "type": "definition",
+    "title": "Strongly Additive Functions",
+    "content": "**IsStronglyAdditive f** means f is additive AND f(p^k) = f(p) for all primes p and k ≥ 1.\n\nThe prime power contributes the same as the prime itself, regardless of the exponent. The canonical example is **ω(n)**, the number of distinct prime divisors.",
+    "mathContext": "Strongly additive functions 'ignore' multiplicities in prime factorizations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ω(n)",
+      "distinct primes",
+      "prime counting"
+    ]
+  },
+  {
+    "id": "ann-e897-completely",
+    "proofId": "erdos-897",
+    "range": {
+      "startLine": 105,
+      "endLine": 109
+    },
+    "type": "definition",
+    "title": "Completely Additive Functions",
+    "content": "**IsCompletelyAdditive f** means f is additive AND f(p^k) = k·f(p) for all primes p and k.\n\nThe contribution scales linearly with the exponent. Examples include **Ω(n)** (total prime factors with multiplicity) and **log(n)**.",
+    "mathContext": "Completely additive functions respect the full prime factorization including multiplicities.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ω(n)",
+      "logarithm",
+      "prime multiplicities"
+    ]
+  },
+  {
+    "id": "ann-e897-restricted",
+    "proofId": "erdos-897",
+    "range": {
+      "startLine": 111,
+      "endLine": 123
+    },
+    "type": "axiom",
+    "title": "Restricted Variants (OPEN)",
+    "content": "The same conjectures restricted to strongly additive or completely additive functions. These restrictions might be easier to prove or disprove, providing partial progress on the main problem.\n\nIt's unknown whether the restricted cases have different answers than the general case.",
+    "significance": "key",
+    "relatedConcepts": [
+      "restricted problem",
+      "special cases"
+    ]
+  },
+  {
+    "id": "ann-e897-examples",
+    "proofId": "erdos-897",
+    "range": {
+      "startLine": 129,
+      "endLine": 145
+    },
+    "type": "definition",
+    "title": "Classical Examples",
+    "content": "Three canonical additive functions:\n\n- **omega(n)**: Count of distinct prime divisors via `n.primeFactors.card`\n- **bigOmega(n)**: Total prime factors via `n.primeFactorsList.length`\n- **logN(n)**: Natural logarithm via `Real.log n`\n\nWe axiomatize that omega is strongly additive, while bigOmega and log are completely additive.",
+    "mathContext": "For n = 12 = 2²·3: ω(12) = 2, Ω(12) = 3, log(12) ≈ 2.48.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "prime counting",
+      "prime factorization",
+      "logarithm"
+    ]
+  },
+  {
+    "id": "ann-e897-properties",
+    "proofId": "erdos-897",
+    "range": {
+      "startLine": 151,
+      "endLine": 167
+    },
+    "type": "theorem",
+    "title": "Basic Properties",
+    "content": "**additive_at_one**: Every additive function satisfies f(1) = 0.\n\nProof: f(1) = f(1·1) = f(1) + f(1) (since gcd(1,1) = 1), so f(1) = 0.\n\nWe also state that completely additive functions satisfy f(p^k) = k·f(p), and strongly additive functions satisfy f(p^k) = f(p) for k ≥ 1.",
+    "mathContext": "The value f(1) = 0 is forced by the functional equation, matching log(1) = 0.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "functional equations",
+      "base case",
+      "prime powers"
+    ]
+  }
+]

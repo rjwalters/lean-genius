@@ -1,1 +1,142 @@
-[]
+[
+  {
+    "id": "ann-e918-header",
+    "proofId": "erdos-918",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This module formalizes **Erdős Problem #918**: Two questions about chromatic numbers of infinite graphs. Can a graph have very large chromatic number while all smaller subgraphs remain countably chromatic?",
+    "mathContext": "The main questions are OPEN. Question 1 asks about ℵ₂-chromatic graphs; Question 2 asks about ℵ_{ω+1}-chromatic graphs. Erdős-Hajnal (1968) proved the phenomenon exists for finite aleph numbers.",
+    "significance": "critical",
+    "relatedConcepts": ["infinite graphs", "chromatic number", "aleph cardinals"]
+  },
+  {
+    "id": "ann-e918-imports",
+    "proofId": "erdos-918",
+    "range": {
+      "startLine": 26,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "We import Mathlib modules for **cardinal arithmetic** (Cardinal.Basic) and **ordinal numbers** (Cardinal.Ordinal). The aleph function maps ordinals to infinite cardinals.",
+    "mathContext": "Cardinal.mk gives the cardinality of a type. The aleph function ℵ_α is defined for all ordinals α. We use these to state conditions like 'graph has ℵ₂ vertices'.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "Cardinal", "Ordinal", "aleph"]
+  },
+  {
+    "id": "ann-e918-infinite-chromatic",
+    "proofId": "erdos-918",
+    "range": {
+      "startLine": 33,
+      "endLine": 46
+    },
+    "type": "concept",
+    "title": "Infinite Chromatic Numbers",
+    "content": "For **infinite graphs**, chromatic number must be a cardinal, not a natural number. A graph is κ-colorable if its vertices can be colored with κ colors such that adjacent vertices have different colors.",
+    "mathContext": "Mathlib's SimpleGraph.chromaticNumber returns ℕ, suitable for finite graphs. For uncountable graphs, we need cardinal-valued versions. Since Mathlib doesn't directly provide this, we axiomatize the relevant properties.",
+    "significance": "key",
+    "relatedConcepts": ["chromatic number", "graph coloring", "cardinals"]
+  },
+  {
+    "id": "ann-e918-question1",
+    "proofId": "erdos-918",
+    "range": {
+      "startLine": 48,
+      "endLine": 56
+    },
+    "type": "axiom",
+    "title": "Question 1 (OPEN)",
+    "content": "**Question1**: Is there a graph with ℵ₂ vertices and chromatic number ℵ₂ where every ℵ₁-sized induced subgraph has chromatic number at most ℵ₀?",
+    "mathContext": "This asks if 'global' chromatic number ℵ₂ can coexist with 'local' countable chromaticity. The graph would need uncountably many colors globally, but any subgraph of size ℵ₁ could be colored with countably many colors.",
+    "significance": "critical",
+    "relatedConcepts": ["aleph-2", "induced subgraph", "countable chromatic"]
+  },
+  {
+    "id": "ann-e918-question2",
+    "proofId": "erdos-918",
+    "range": {
+      "startLine": 58,
+      "endLine": 65
+    },
+    "type": "axiom",
+    "title": "Question 2 (OPEN)",
+    "content": "**Question2**: Is there a graph with ℵ_{ω+1} vertices and chromatic number ℵ₁ where every ℵ_ω-sized induced subgraph has chromatic number at most ℵ₀?",
+    "mathContext": "Here ω is the first infinite ordinal (Ordinal.omega0). ℵ_ω = sup{ℵ_n : n < ω} is a limit cardinal, and ℵ_{ω+1} is its successor. This question involves larger cardinals than Question 1.",
+    "significance": "critical",
+    "relatedConcepts": ["aleph-omega", "limit cardinal", "successor cardinal"]
+  },
+  {
+    "id": "ann-e918-erdos-hajnal",
+    "proofId": "erdos-918",
+    "range": {
+      "startLine": 67,
+      "endLine": 82
+    },
+    "type": "axiom",
+    "title": "Erdős-Hajnal Finite Case (SOLVED)",
+    "content": "**erdos_hajnal_finite**: For every finite k, there exists a graph with ℵ_k vertices and chromatic number ℵ₁ where all subgraphs on fewer than ℵ_k vertices have chromatic number ≤ ℵ₀.",
+    "mathContext": "This is the SOLVED part of Problem #918. The construction uses transfinite induction on k. For k=1, we need an ℵ₁-vertex graph that is ℵ₁-chromatic but where all countable subgraphs are countably chromatic.",
+    "significance": "critical",
+    "relatedConcepts": ["transfinite construction", "diagonal argument", "finite case"]
+  },
+  {
+    "id": "ann-e918-negative",
+    "proofId": "erdos-918",
+    "range": {
+      "startLine": 84,
+      "endLine": 96
+    },
+    "type": "axiom",
+    "title": "Impossibility of Exact ℵ₀",
+    "content": "**eq_aleph0_impossible_statement**: The original problem in [Er69b] asked for chromatic number *exactly* ℵ₀, not *at most* ℵ₀. But this is trivially impossible!",
+    "mathContext": "Any graph contains finite subgraphs (like single edges or triangles) with finite chromatic number. So we cannot require ALL subgraphs to have chromatic number exactly ℵ₀. The corrected version uses ≤ ℵ₀.",
+    "significance": "key",
+    "relatedConcepts": ["finite subgraph", "chromatic number lower bound", "correction"]
+  },
+  {
+    "id": "ann-e918-aleph-hierarchy",
+    "proofId": "erdos-918",
+    "range": {
+      "startLine": 98,
+      "endLine": 116
+    },
+    "type": "theorem",
+    "title": "Aleph Cardinal Hierarchy",
+    "content": "We establish basic facts about aleph cardinals: ℵ₀ = |ℕ|, ℵ₀ < ℵ₁ < ℵ₂, and ℵ_ω is the supremum of all finite alephs.",
+    "mathContext": "The aleph hierarchy: ℵ₀ (countable), ℵ₁ (first uncountable), ℵ₂ (next uncountable), etc. ℵ_ω is a limit cardinal - it's the supremum but has no immediate predecessor. ℵ_{ω+1} is the successor of ℵ_ω.",
+    "significance": "key",
+    "relatedConcepts": ["mk_nat", "strict monotonicity", "limit cardinal", "successor cardinal"]
+  },
+  {
+    "id": "ann-e918-difficulty",
+    "proofId": "erdos-918",
+    "range": {
+      "startLine": 118,
+      "endLine": 132
+    },
+    "type": "concept",
+    "title": "Why This Problem is Hard",
+    "content": "The jump from finite k to ℵ₂ (or ℵ_{ω+1}) is fundamentally different. The combinatorial methods for finite k don't generalize, and the answer may depend on set-theoretic axioms beyond ZFC.",
+    "mathContext": "This connects to **compactness** in graph theory: can large chromatic number always be witnessed by a smaller subgraph? Erdős-Hajnal shows this fails at finite thresholds, but the infinite case is open.",
+    "significance": "key",
+    "relatedConcepts": ["compactness", "ZFC independence", "combinatorial methods"]
+  },
+  {
+    "id": "ann-e918-summary",
+    "proofId": "erdos-918",
+    "range": {
+      "startLine": 134,
+      "endLine": 148
+    },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_918_summary** packages the proved facts: ℵ₀ < ℵ₁ and ℵ₁ < ℵ₂. This demonstrates the strict ordering of the aleph cardinals relevant to the problem.",
+    "mathContext": "This is a genuine proved theorem (not axiom) that follows from our axioms about aleph ordering. It confirms the cardinal hierarchy needed to understand the problem statements.",
+    "significance": "supporting",
+    "relatedConcepts": ["cardinal ordering", "proved theorem", "summary"]
+  }
+]

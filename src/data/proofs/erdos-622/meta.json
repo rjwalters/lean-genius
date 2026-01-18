@@ -1,33 +1,104 @@
 {
   "id": "erdos-622",
-  "title": "Erdős Problem #622",
+  "title": "Erdős #622: Cycle-Spanning Subsets in Regular Graphs",
   "slug": "erdos-622",
-  "description": "Let G\" role=\"presentation\" style=\"position: relative;\">GGG be a regular graph with 2n\" role=\"presentation\" style=\"position: relative;\">2n2n2n vertices and degree n+1\" role=\"presentation\" style=\"pos...",
+  "description": "Let G be a regular graph with 2n vertices and degree n+1. Must G have ≫ 2^{2n} subsets spanned by a cycle? Solved by Draganić-Keevash-Müyesser (2025): at least (1/2 + o(1))2^{2n} subsets.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Ron Faudree, Nemanja Draganić, Peter Keevash, Alp Müyesser",
     "sourceUrl": "https://erdosproblems.com/622",
-    "date": "",
-    "status": "pending",
+    "date": "1970s-2025",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos622Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "cycles",
+      "regular-graphs"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 14,
     "erdosNumber": 622,
     "erdosUrl": "https://erdosproblems.com/622",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #622 from erdosproblems.com.",
-    "problemStatement": "Let G\" role=\"presentation\" style=\"position: relative;\">GGG be a regular graph with 2n\" role=\"presentation\" style=\"position: relative;\">2n2n2n vertices and degree n+1\" role=\"presentation\" style=\"position: relative;\">n+1n+1n+1. Must G\" role=\"presentation\" style=\"position: relative;\">GGG have &#x226B;22n\" role=\"presentation\" style=\"position: relative;\">≫22n≫22n\\gg 2^{2n} subsets that are spanned by a cycle?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős and Faudree asked whether regular graphs with 2n vertices and degree n+1 must have many cycle-spanned subsets. Erdős observed it's 'easy to see' that at least (1/2 + o(1))2^{2n} subsets are NOT on a cycle. Draganić-Keevash-Müyesser (2025) proved the same bound for subsets that ARE on a cycle.",
+    "problemStatement": "Let G be a regular graph with 2n vertices and degree n+1. Must G have ≫ 2^{2n} subsets that are spanned by a cycle?",
+    "proofStrategy": "We formalize the Erdős-Faudree condition (2n vertices, degree n+1), cycle-spanned subsets, the main theorem (DKM 2025), tightness of the bound, Erdős's observation about non-cycle sets, counterexamples showing regularity is essential (K_{n,n}), Paley graph examples, and Hamiltonian cycles.",
+    "keyInsights": [
+      "DKM (2025): At least (1/2 + o(1))2^{2n} subsets are spanned by a cycle",
+      "This bound is asymptotically tight",
+      "Both cycle and non-cycle sets are about half of all subsets",
+      "Regularity is essential: K_{n,n} has only O(n!²) cycle-spanned sets",
+      "Minimum degree condition alone is insufficient"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graphs",
+      "title": "Graph Definitions",
+      "summary": "Regular graphs and Erdős-Faudree condition",
+      "startLine": 32,
+      "endLine": 43
+    },
+    {
+      "id": "cycles",
+      "title": "Cycles and Spanning",
+      "summary": "Cycle definition and cycle-spanned subsets",
+      "startLine": 45,
+      "endLine": 58
+    },
+    {
+      "id": "main",
+      "title": "Main Result",
+      "summary": "DKM 2025: At least (1/2 + o(1))2^{2n} cycle-spanned subsets",
+      "startLine": 60,
+      "endLine": 81
+    },
+    {
+      "id": "erdos",
+      "title": "Erdős's Observation",
+      "summary": "At least (1/2 + o(1))2^{2n} sets NOT on a cycle",
+      "startLine": 83,
+      "endLine": 106
+    },
+    {
+      "id": "regularity",
+      "title": "Regularity is Essential",
+      "summary": "K_{n,n} counterexample for minimum degree",
+      "startLine": 108,
+      "endLine": 155
+    },
+    {
+      "id": "examples",
+      "title": "Examples: Paley Graphs",
+      "summary": "Erdős-Faudree graphs from Paley construction",
+      "startLine": 157,
+      "endLine": 179
+    },
+    {
+      "id": "hamiltonian",
+      "title": "Hamiltonian Cycles",
+      "summary": "Existence and counting of Hamiltonian cycles",
+      "startLine": 181,
+      "endLine": 206
+    },
+    {
+      "id": "turan",
+      "title": "Turán-type Connection",
+      "summary": "Edge count and density of Erdős-Faudree graphs",
+      "startLine": 198,
+      "endLine": 213
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #622 on cycle-spanning subsets in regular graphs. Draganić-Keevash-Müyesser (2025) proved that at least (1/2 + o(1))2^{2n} subsets are spanned by a cycle, matching Erdős's observation that the same proportion are NOT on a cycle.",
+    "implications": "The result shows a surprising symmetry: both cycle and non-cycle sets comprise about half of all subsets. The regularity condition is essential—minimum degree n+1 alone (as in K_{n,n} with stars) is insufficient.",
+    "openQuestions": [
+      "What is the exact coefficient for the o(1) term?",
+      "Can the bound be improved for specific graph families?",
+      "What about longer cycles (≥ k vertices) for fixed k?"
+    ]
   }
 }

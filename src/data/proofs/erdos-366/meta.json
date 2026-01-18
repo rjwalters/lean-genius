@@ -1,33 +1,136 @@
 {
   "id": "erdos-366",
-  "title": "Erdős Problem #366",
+  "title": "Erdős Problem #366: Consecutive k-Full Numbers",
   "slug": "erdos-366",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there any 2-full ... such that ... is 3-full? That is, if ... then ... and if ... then ....\n\n\n\nErds originally asked Mahl...",
+  "description": "Are there any 2-full (powerful) n such that n+1 is 3-full (cubeful)? A number is k-full if every prime factor appears with multiplicity at least k. Known: (8,9) and (12167,12168) are 3-full/2-full pairs, but no 2-full/3-full pairs are known.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Golomb, Mahler",
     "sourceUrl": "https://erdosproblems.com/366",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos366Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "powerful-numbers",
+      "k-full-numbers",
+      "consecutive-integers",
+      "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 366,
     "erdosUrl": "https://erdosproblems.com/366",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.factorization",
+        "description": "Prime factorization of natural numbers",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.divisors",
+        "description": "The set of divisors of a natural number",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Predicate for infinite sets",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of k-full numbers using prime factorization",
+      "Definitions of IsPowerful (2-full) and IsCubeful (3-full)",
+      "Statement of the main open conjecture (2-full n, 3-full n+1)",
+      "Theorems for known pairs: (8,9) and (12167,12168)",
+      "Weaker question: consecutive 3-full integers",
+      "Connection to Mahler's result on consecutive powerful numbers",
+      "Density growth bounds for k-full numbers"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #366 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there any 2-full $n$ such that $n+1$ is 3-full? That is, if $p\\mid n$ then $p^2\\mid n$ and if $p\\mid n+1$ then $p^3\\mid n+1$.\n\n\n\nErd\\H{o}s originally asked Mahler whether there are infinitely many pairs of consecutive powerful numbers, but Mahler immediately observed that the answer is yes from the infinitely many solutions to the Pell equation $x^2=8y^2+1$.\n\nNote that $8$ is 3-full and $9$ is 2-full. Erd\\H{o}s and Graham asked if this is the only pair of such consecutive integers. Stephan has observed that $12167=23^3$ and $12168=2^33^213^2$ (a pair already known to Golomb \\cite{Go70}) is another example, but (by OEIS A060355) there are no other examples for $n<10^{22}$.\n\nIn \\cite{Er76d} Erd\\H{o}s asks the weaker question of whether there are any consecutive pairs of $3$-full integers (which is also discussed in problem B16 of Guy's collection \\cite{Gu04}).\n\n\n\n\nReferences\n\n\n[Er76d] Erd\\H{o}s, P., Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics (Univ. Manitoba, Winnipeg, Man., 1975) (1976), 25-44.\n\n[Go70] Golomb, S. W., Powerful numbers. Amer. Math. Monthly (1970), 848-855.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "A natural number n is **k-full** (or k-powerful) if every prime factor of n appears with multiplicity at least k. Special cases:\n- **2-full = powerful**: Every prime appears at least squared (4, 8, 9, 16, 25, 27, 32, 36, ...)\n- **3-full = cubeful**: Every prime appears at least cubed (8, 16, 27, 32, 64, 81, ...)\n\n**Historical Background**:\nErdős originally asked Mahler about consecutive powerful numbers. Mahler immediately showed infinitely many exist via the Pell equation x² = 8y² + 1, which yields solutions like (8,9), (288,289), etc.\n\nThe harder question: What about mixed consecutive pairs?\n- **(n 3-full, n+1 2-full)**: Two known examples\n  - (8, 9): 8 = 2³ is cubeful, 9 = 3² is powerful\n  - (12167, 12168): 12167 = 23³ is cubeful, 12168 = 2³ × 3² × 13² is powerful (Golomb 1970)\n- **(n 2-full, n+1 3-full)**: NO KNOWN EXAMPLES (the main open question)\n\nOEIS A060355 lists 3-full n with 2-full n+1. Only {8, 12167} are known below 10²².",
+    "problemStatement": "**Erdős Problem #366**: Are there any 2-full n such that n+1 is 3-full?\n\nEquivalently: Does there exist n > 0 where:\n- For every prime p | n, we have p² | n (n is powerful)\n- For every prime q | (n+1), we have q³ | (n+1) (n+1 is cubeful)\n\n**Known Results**:\n- The reverse direction has solutions: (8,9) and (12167, 12168)\n- No (2-full, 3-full) consecutive pairs known\n- No other (3-full, 2-full) pairs below 10²²\n\n**Related Questions**:\n1. Are there infinitely many (3-full, 2-full) consecutive pairs?\n2. Do consecutive 3-full integers exist? (Even weaker, also open)\n\n**Status**: OPEN",
+    "proofStrategy": "The formalization defines k-full numbers and states the open questions:\n\n1. **k-Full Definition**: n is k-full if ∀ prime p, p | n → p^k | n\n   Using factorization: ∀ p, p.Prime → p ∣ n → k ≤ n.factorization p\n\n2. **Special Cases**:\n   - IsPowerful = IsKFull 2\n   - IsCubeful = IsKFull 3\n\n3. **Known Pairs**: Define CubefulPowerfulPairs and prove (8,9) and (12167,12168) are members\n\n4. **Open Questions**:\n   - erdos_366_conjecture: ∃ n > 0, IsPowerful n ∧ IsCubeful (n + 1)\n   - erdos_366_weaker: ∃ n > 0, IsCubeful n ∧ IsCubeful (n + 1)\n\n5. **Related Results**: Mahler's theorem on consecutive powerful numbers",
+    "keyInsights": [
+      "**Asymmetry of the problem**: The reverse direction (n cubeful, n+1 powerful) has solutions, but the forward direction (n powerful, n+1 cubeful) has none known. This asymmetry is mysterious.",
+      "**Density matters**: Powerful numbers have density ~ √N, cubeful numbers have density ~ N^(1/3). For random n, P(n powerful AND n+1 cubeful) ~ n^(-7/6), suggesting only finitely many such pairs exist heuristically.",
+      "**Pell equations help**: Mahler used x² = 8y² + 1 to find consecutive powerful numbers. But similar approaches haven't found (powerful, cubeful) pairs.",
+      "**The gap at 12167**: After 12167, the next (cubeful, powerful) pair (if any) must be beyond 10²². The search space is vast.",
+      "**Structure constraints**: Powerful numbers can be written as a²b³. Cubeful numbers are products of cubes and higher powers. Consecutive integers with such rigid structure are extremely rare.",
+      "**Weaker question also open**: Even consecutive cubeful integers (n, n+1 both 3-full) are unknown, showing how restrictive 3-full is."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Problem statement, definitions of k-full numbers, and known results."
+    },
+    {
+      "id": "definitions",
+      "title": "k-Full Number Definitions",
+      "startLine": 33,
+      "endLine": 58,
+      "summary": "Definitions of IsKFull, IsPowerful (2-full), and IsCubeful (3-full)."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 60,
+      "endLine": 95,
+      "summary": "Properties like 1 is k-full, prime powers are k-full iff exponent ≥ k."
+    },
+    {
+      "id": "main-question",
+      "title": "Main Open Question",
+      "startLine": 97,
+      "endLine": 113,
+      "summary": "The Erdős Problem #366 conjecture: 2-full n with 3-full n+1."
+    },
+    {
+      "id": "reverse-direction",
+      "title": "Reverse Direction",
+      "startLine": 115,
+      "endLine": 138,
+      "summary": "Known pairs (8,9) and (12167,12168) where n is 3-full and n+1 is 2-full."
+    },
+    {
+      "id": "weaker-question",
+      "title": "Weaker Question",
+      "startLine": 140,
+      "endLine": 154,
+      "summary": "Do consecutive 3-full integers exist?"
+    },
+    {
+      "id": "pell-connection",
+      "title": "Connection to Pell Equations",
+      "startLine": 169,
+      "endLine": 188,
+      "summary": "Mahler's result: infinitely many consecutive powerful numbers via Pell equations."
+    },
+    {
+      "id": "density",
+      "title": "Density of k-Full Numbers",
+      "startLine": 220,
+      "endLine": 249,
+      "summary": "Growth rates: powerful ~ √N, cubeful ~ N^(1/3)."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #366 on consecutive k-full numbers. The question of whether any 2-full n exists with 3-full n+1 remains OPEN. The reverse direction has exactly two known examples below 10²²: (8,9) and (12167,12168). The sparsity of k-full numbers makes such consecutive pairs extremely rare.",
+    "implications": "This problem connects to deep questions about the multiplicative structure of consecutive integers. The rigid prime factorization requirements of k-full numbers severely constrain when consecutive integers can both satisfy such conditions.",
+    "openQuestions": [
+      "Does any (2-full, 3-full) consecutive pair exist?",
+      "Are there infinitely many (3-full, 2-full) consecutive pairs?",
+      "Do consecutive 3-full integers exist?",
+      "What is the next (3-full, 2-full) pair after (12167, 12168)?",
+      "Can heuristic arguments predict whether (2-full, 3-full) pairs should exist?"
+    ]
   }
 }

@@ -1,33 +1,89 @@
 {
   "id": "erdos-543",
-  "title": "Erdős Problem #543",
+  "title": "Erdős #543: Random Subset Sums in Abelian Groups",
   "slug": "erdos-543",
-  "description": "Define ... be the minimal ... such that the following holds: if ... is an abelian group of size ... and ... is a random set of size ... then, with probability ..., all elements of ... can be writte...",
+  "description": "What is the minimal size k such that a random k-subset of an abelian group spans all elements via subset sums with probability ≥ 1/2?",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Alfréd Rényi",
     "sourceUrl": "https://erdosproblems.com/543",
-    "date": "",
-    "status": "pending",
+    "date": "1965",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos543Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "group-theory",
+      "probability",
+      "additive-combinatorics"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 8,
     "erdosNumber": 543,
     "erdosUrl": "https://erdosproblems.com/543",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #543 from erdosproblems.com.",
-    "problemStatement": "Define $f(N)$ be the minimal $k$ such that the following holds: if $G$ is an abelian group of size $N$ and $A\\subseteq G$ is a random set of size $k$ then, with probability $\\geq 1/2$, all elements of $G$ can be written as $\\sum_{x\\in S}x$ for some $S\\subseteq A$. Is\\[f(N) \\leq \\log_2 N+o(\\log\\log N)?\\] Erdős and Rényi [ErRe65] proved that\\[f(N) \\leq \\log_2N+O(\\log\\log N).\\]Erdős believed improving this to $o(\\log\\log N)$ is impossible. View the LaTeX source",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem originates from Erdős and Rényi's 1965 work on probabilistic methods in group theory [ErRe65]. They proved f(N) ≤ log₂ N + O(log log N), and the question asks whether the O(log log N) term can be improved to o(log log N). Erdős believed this improvement is impossible.",
+    "problemStatement": "Define f(N) as the minimal k such that: if G is an abelian group of size N and A ⊆ G is a random k-subset, then with probability ≥ 1/2, every element of G is a subset sum of A. Is f(N) ≤ log₂ N + o(log log N)?",
+    "proofStrategy": "We formalize the subset sum and spanning set definitions, define f(N) via the minimal spanning size, state the Erdős-Rényi upper bound, and capture both the 'little-o' conjecture and Erdős's counter-conjecture as formal propositions.",
+    "keyInsights": [
+      "Erdős-Rényi (1965): f(N) ≤ log₂ N + O(log log N)",
+      "Information-theoretic lower bound: f(N) ≥ log₂ N - O(1) since 2^k subset sums must cover N elements",
+      "The log log N term arises from collision probability in subset sums",
+      "Erdős believed the O(log log N) term is optimal and cannot be improved to o(log log N)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "subset-sums",
+      "title": "Subset Sums in Groups",
+      "summary": "Definition of subset sums and spanning sets in abelian groups",
+      "startLine": 40,
+      "endLine": 54
+    },
+    {
+      "id": "f-definition",
+      "title": "The Function f(N)",
+      "summary": "Spanning probability and the minimal spanning size definition",
+      "startLine": 56,
+      "endLine": 77
+    },
+    {
+      "id": "elementary",
+      "title": "Elementary Properties",
+      "summary": "Basic lemmas: empty set, generators, monotonicity",
+      "startLine": 79,
+      "endLine": 107
+    },
+    {
+      "id": "erdos-renyi",
+      "title": "Erdős-Rényi Upper Bound",
+      "summary": "The 1965 result: f(N) ≤ log₂ N + O(log log N)",
+      "startLine": 109,
+      "endLine": 125
+    },
+    {
+      "id": "conjectures",
+      "title": "The Conjecture",
+      "summary": "The little-o question and Erdős's counter-conjecture",
+      "startLine": 127,
+      "endLine": 178
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "Cyclic groups and prime order groups",
+      "startLine": 180,
+      "endLine": 196
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #543 on the threshold for random subset sums to span an abelian group. The key tension is between the known O(log log N) upper bound from Erdős-Rényi and the question of whether it can be improved to o(log log N).",
+    "implications": "Resolving this would reveal fundamental limits of probabilistic covering in groups. A positive answer would improve algorithmic bounds; Erdős's predicted negative answer would establish the log log N term as an inherent barrier.",
+    "openQuestions": [
+      "Can the Erdős-Rényi bound be improved to f(N) ≤ log₂ N + o(log log N)?",
+      "For which group structures is the log log N term necessary?",
+      "Is there a separation between cyclic and non-cyclic groups?"
+    ]
   }
 }

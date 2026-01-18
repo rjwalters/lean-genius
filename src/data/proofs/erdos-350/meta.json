@@ -1,33 +1,133 @@
 {
   "id": "erdos-350",
-  "title": "Erdős Problem #350",
+  "title": "Erdős Problem #350: Sum of Reciprocals of Dissociated Sets",
   "slug": "erdos-350",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a finite set of integers which is dissociated (that is, all of the subset sums are distinct) then\\[\\sum_{n\\in A}{n}...",
+  "description": "If A is a finite dissociated set (all subset sums distinct) of positive integers, prove that the sum of reciprocals is less than 2. Proved by Ryavec.",
   "meta": {
-    "author": "Unknown",
+    "author": "Ryavec (proof in [BeEr74]), Hanson-Steele-Stenger (1977 generalization)",
     "sourceUrl": "https://erdosproblems.com/350",
-    "date": "",
-    "status": "pending",
+    "date": "1974-1977",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos350Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "dissociated-sets",
+      "sidon-sets"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 350,
     "erdosUrl": "https://erdosproblems.com/350",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "proved",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Ring.Finset"
+      },
+      {
+        "theorem": "Finset.subset",
+        "description": "Subset relation for finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.powerset",
+        "description": "Powerset of a finite set",
+        "module": "Mathlib.Data.Finset.Powerset"
+      }
+    ],
+    "originalContributions": [
+      "Clean Lean 4 formalization of dissociated sets",
+      "Definition of DistinctSubsetSums predicate",
+      "Axiomatization of Ryavec's theorem and sharp bound",
+      "Axiomatization of Hanson-Steele-Stenger generalization",
+      "Proved theorems for subset inheritance of dissociated property",
+      "Connection to Sidon sets with IsSidonSet definition",
+      "Concrete numerical examples with norm_num proofs"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #350 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $A\\subset\\mathbb{N}$ is a finite set of integers which is dissociated (that is, all of the subset sums are distinct) then\\[\\sum_{n\\in A}\\frac{1}{n}<2.\\]\n\n\n\nThis was proved by Ryavec, who did not appear to ever publish the proof. Ryavec's proof is reproduced in \\cite{BeEr74}. More generally, Ryavec's proof delivers that\\[\\sum_{n\\in A}\\frac{1}{n}\\leq 2-2^{1-\\lvert A\\rvert},\\]with equality if and only if $A=\\{1,2,\\ldots,2^k\\}$.\n\nThe stronger statement that, for all $s\\geq 0$,\\[\\sum_{n\\in A}\\frac{1}{n^s} <\\frac{1}{1-2^{-s}},\\]was proved by Hanson, Steele, and Stenger \\cite{HSS77}.\n\nSee also [1].\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[BeEr74] Benkoski, S. J. and Erd\\H{o}s, P., On weird and pseudoperfect numbers. Math. Comp. (1974), 617-623.\n\n[HSS77] Hanson, F. and Steele, J. M. and Stenger, F., Distinct sums over subsets. Proc. Amer. Math. Soc. (1977), 179-180.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "A set A of positive integers is called **dissociated** (or a B-sequence) if all its subset sums are distinct. This means for any two different subsets X ≠ Y of A, we have ΣX ≠ ΣY. This concept is fundamental in additive combinatorics.\n\nErdős Problem #350 asks: if A ⊂ ℕ is a finite dissociated set, what can we say about Σ_{n∈A} 1/n?\n\nRyavec proved that this sum is always strictly less than 2, though he never formally published the proof. Benkoski and Erdős reproduced Ryavec's proof in their 1974 paper \"On weird and pseudoperfect numbers\" (Math. Comp.).\n\nIn 1977, Hanson, Steele, and Stenger generalized this result, proving that for all s > 0: Σ_{n∈A} 1/n^s < 1/(1-2^{-s}). When s = 1, this recovers Ryavec's bound since 1/(1-1/2) = 2.",
+    "problemStatement": "**Erdős Problem #350**: If $A \\subset \\mathbb{N}$ is a finite dissociated set (all subset sums are distinct), prove that\n$$\\sum_{n \\in A} \\frac{1}{n} < 2.$$\n\n**Status**: SOLVED (Ryavec)\n\n**Sharp Bound**: Ryavec proved the stronger result:\n$$\\sum_{n \\in A} \\frac{1}{n} \\leq 2 - 2^{1-|A|}$$\nwith equality if and only if $A = \\{1, 2, 4, \\ldots, 2^k\\}$ for some $k$.\n\n**Generalization** (Hanson-Steele-Stenger 1977): For all $s > 0$:\n$$\\sum_{n \\in A} \\frac{1}{n^s} < \\frac{1}{1-2^{-s}}$$",
+    "proofStrategy": "We formalize this solved problem and its generalizations:\n\n1. **Define dissociated sets**: The predicate `DistinctSubsetSums A` requires that for all distinct subsets X ≠ Y of A, we have ΣX ≠ ΣY.\n\n2. **State main theorems**: We axiomatize Ryavec's theorem (`erdos_350`) and the sharp bound (`ryavec_sharp_bound`), as the full proof requires intricate analysis of the structure of dissociated sets.\n\n3. **State generalization**: The Hanson-Steele-Stenger result (`hanson_steele_stenger`) extends the bound to all positive exponents.\n\n4. **Prove supporting results**: We prove that dissociated sets are closed under taking subsets (`dissociated_subset`) and removal of elements (`dissociated_erase`).\n\n5. **Verify numerical examples**: We prove concrete bounds like 1 + 1/2 + 1/4 + 1/8 < 2 using `norm_num`.\n\n6. **Connect to Sidon sets**: We define Sidon sets and axiomatize that every dissociated set is Sidon.",
+    "keyInsights": [
+      "**Dissociated sets**: A set where all 2^n subset sums are distinct. Powers of 2 are the canonical example: {1,2,4,...,2^k} has sums 0,1,2,...,2^{k+1}-1.",
+      "**Why the bound is 2**: The sum of reciprocals of powers of 2 is a geometric series: 1 + 1/2 + 1/4 + ... = 2. This is the limiting case that can never be achieved.",
+      "**Sharp bound characterization**: Ryavec's bound 2 - 2^{1-|A|} shows that only powers of 2 achieve equality, and the sum approaches 2 only as |A| → ∞.",
+      "**Sidon vs dissociated**: Sidon sets require distinct pairwise sums a+b. Dissociated sets require ALL subset sums to be distinct - a much stronger condition.",
+      "**Hanson-Steele-Stenger**: The generalization to 1/n^s shows this is not just about reciprocals but a fundamental property of dissociated sets."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Problem statement, answer, and references."
+    },
+    {
+      "id": "definitions",
+      "title": "Dissociated Sets Definition",
+      "startLine": 34,
+      "endLine": 48,
+      "summary": "Definition of DistinctSubsetSums and alternative formulation."
+    },
+    {
+      "id": "examples",
+      "title": "Examples of Dissociated Sets",
+      "startLine": 50,
+      "endLine": 66,
+      "summary": "Proofs that {1}, {1,2}, and powers of 2 are dissociated."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Main Theorems",
+      "startLine": 68,
+      "endLine": 97,
+      "summary": "Ryavec's theorem, sharp bound, and HSS generalization."
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds and Properties",
+      "startLine": 99,
+      "endLine": 118,
+      "summary": "Cardinality bounds and subset closure properties."
+    },
+    {
+      "id": "sidon",
+      "title": "Connection to Sidon Sets",
+      "startLine": 120,
+      "endLine": 134,
+      "summary": "Definition of Sidon sets and relationship to dissociated sets."
+    },
+    {
+      "id": "numerical",
+      "title": "Numerical Examples",
+      "startLine": 136,
+      "endLine": 152,
+      "summary": "Concrete verified computations of reciprocal sums."
+    },
+    {
+      "id": "summary",
+      "title": "Summary Theorem",
+      "startLine": 154,
+      "endLine": 170,
+      "summary": "Summary packaging key verified results."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #350 on dissociated sets. A dissociated set has all subset sums distinct - the most famous examples are powers of 2. Ryavec proved that for any finite dissociated set A of positive integers, the sum of reciprocals is strictly less than 2. The bound is sharp: equality (in the limit) is achieved only by powers of 2. Hanson, Steele, and Stenger generalized this to all positive exponents s.",
+    "implications": "This problem connects several areas:\n\n1. **Additive combinatorics**: Structure of sets with unique subset sums\n2. **Harmonic analysis**: Bounds on sums of reciprocals\n3. **Number theory**: Connection to weird and pseudoperfect numbers\n4. **Extremal combinatorics**: Powers of 2 as extremal examples",
+    "openQuestions": [
+      "Are there natural generalizations beyond powers of 2?",
+      "What is the density of dissociated sets among all subsets of [1,n]?",
+      "Can the proof be made constructive/computational?",
+      "What happens for dissociated sets in other algebraic structures?"
+    ]
   }
 }

@@ -1,1 +1,200 @@
-[]
+[
+  {
+    "id": "ann-1057-korselt",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 45, "endLine": 47 },
+    "type": "definition",
+    "title": "Korselt's Criterion",
+    "content": "n satisfies Korselt's criterion if n is squarefree and (p-1)|(n-1) for every prime p dividing n. This characterizes Carmichael numbers among composites.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1057-carmichael",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "definition",
+    "title": "Carmichael Number",
+    "content": "A Carmichael number is a composite n > 1 satisfying Korselt's criterion. These are exactly the composites that pass Fermat's test for all bases.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1057-fermat",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "definition",
+    "title": "Fermat Characterization",
+    "content": "The Fermat property: a^n ≡ a (mod n) for all a. Primes satisfy this by Fermat's little theorem; Carmichael numbers are the composites that do too.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1057-korseltthm",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 57, "endLine": 59 },
+    "type": "theorem",
+    "title": "Korselt's Theorem",
+    "content": "For composites n > 1, Korselt's criterion is equivalent to the Fermat property. This 1899 result characterizes Carmichael numbers.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1057-561",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 67, "endLine": 68 },
+    "type": "theorem",
+    "title": "Smallest Carmichael Number",
+    "content": "561 = 3 × 11 × 17 is the smallest Carmichael number. Discovered by R.D. Carmichael in 1910.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1057-verify561",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 73, "endLine": 79 },
+    "type": "theorem",
+    "title": "Korselt Verification for 561",
+    "content": "Check: 561-1=560. We need (3-1)|560, (11-1)|560, (17-1)|560. Indeed 2|560, 10|560, 16|560.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1057-1729",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 84, "endLine": 85 },
+    "type": "theorem",
+    "title": "Hardy-Ramanujan Taxicab Number",
+    "content": "1729 = 7 × 13 × 19 is both the Hardy-Ramanujan taxicab number (smallest sum of two cubes in two ways) and a Carmichael number.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1057-list",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 87, "endLine": 88 },
+    "type": "definition",
+    "title": "First Few Carmichael Numbers",
+    "content": "OEIS A002997: 561, 1105, 1729, 2465, 2821, 6601, 8911, ... The sequence grows slowly at first.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1057-C",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 96, "endLine": 98 },
+    "type": "definition",
+    "title": "Counting Function C(x)",
+    "content": "C(x) counts Carmichael numbers in [1,x]. This is the central quantity whose growth rate we want to understand.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1057-mono",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 100, "endLine": 107 },
+    "type": "theorem",
+    "title": "Monotonicity of C",
+    "content": "C is monotone increasing: if x ≤ y then C(x) ≤ C(y). The proof filters elements from a larger range.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1057-upper",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 115, "endLine": 119 },
+    "type": "theorem",
+    "title": "Erdős Upper Bound",
+    "content": "C(x) < x·exp(-c·log x·log log log x / log log x). This 1956 bound shows Carmichael numbers are sparse. Pomerance conjectures this is tight.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1057-lichtman",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 121, "endLine": 123 },
+    "type": "theorem",
+    "title": "Lichtman Lower Bound",
+    "content": "C(x) > x^{0.3389} for large x. This 2022 result is the current best lower bound, improving Harman's 0.33336704.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1057-harman",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 125, "endLine": 127 },
+    "type": "theorem",
+    "title": "Harman Lower Bound",
+    "content": "C(x) > x^{0.33336704} for large x. This 2008 result held as the best bound until Lichtman's improvement.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1057-agpinf",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 129, "endLine": 131 },
+    "type": "theorem",
+    "title": "Infinitely Many Carmichaels",
+    "content": "Alford-Granville-Pomerance (1994) proved there are infinitely many Carmichael numbers. This was a major breakthrough after decades of uncertainty.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1057-agp27",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 133, "endLine": 135 },
+    "type": "theorem",
+    "title": "AGP Quantitative Bound",
+    "content": "C(x) > x^{2/7} for large x. The AGP paper gave the first power-type lower bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1057-conjecture",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 143, "endLine": 145 },
+    "type": "conjecture",
+    "title": "Main Conjecture",
+    "content": "C(x) = x^{1-o(1)}: for every ε > 0, eventually C(x) > x^{1-ε}. This asserts Carmichael numbers have log-density approaching 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1057-alt",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 147, "endLine": 150 },
+    "type": "definition",
+    "title": "Alternative Formulation",
+    "content": "log C(x) / log x → 1. The ratio of logarithms tends to 1, meaning the 'exponent' of C(x) approaches 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1057-pomerance",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 152, "endLine": 154 },
+    "type": "definition",
+    "title": "Pomerance's Prediction",
+    "content": "The conjectured order: x·exp(-log x·log log log x / log log x). This matches Erdős's upper bound, suggesting it's tight.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1057-3primes",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 167, "endLine": 169 },
+    "type": "theorem",
+    "title": "At Least 3 Prime Factors",
+    "content": "Every Carmichael number has at least 3 distinct prime factors. With 1 or 2 primes, Korselt's criterion forces n to be prime or a prime power.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1057-odd",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 178, "endLine": 180 },
+    "type": "theorem",
+    "title": "Carmichael Numbers are Odd",
+    "content": "All Carmichael numbers are odd. If 2|n then Korselt requires (2-1)|(n-1), i.e., 1|(n-1), which is trivially true, but squarefreeness and the other conditions force oddness.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1057-upperexp",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 188, "endLine": 190 },
+    "type": "definition",
+    "title": "Upper Bound Exponent",
+    "content": "The effective exponent from Erdős's bound: 1 - log log log x / log log x. This tends to 1 very slowly.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1057-gap",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 195, "endLine": 197 },
+    "type": "theorem",
+    "title": "The Exponent Gap",
+    "content": "Current knowledge: 0.3389 < true exponent < 1 - o(1). The gap is enormous, leaving the true density unknown.",
+    "significance": "key"
+  }
+]

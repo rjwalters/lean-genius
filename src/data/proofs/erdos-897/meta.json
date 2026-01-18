@@ -1,33 +1,130 @@
 {
   "id": "erdos-897",
-  "title": "Erdős Problem #897",
+  "title": "Erdős Problem #897: Additive Functions and Consecutive Differences",
   "slug": "erdos-897",
-  "description": "Let f(n)\" role=\"presentation\" style=\"position: relative;\">f(n)f(n)f(n) be an additive function (so that f(ab)=f(a)+f(b)\" role=\"presentation\" style=\"position: relative;\">f(ab)=f(a)+f(b)f(ab)=f(a)+f(...",
+  "description": "For an additive function f with unbounded growth on prime powers, must consecutive differences f(n+1) - f(n) also be unbounded when normalized by log(n)?",
   "meta": {
-    "author": "Unknown",
+    "author": "Wirsing (1970) proved converse; main questions open",
     "sourceUrl": "https://erdosproblems.com/897",
-    "date": "",
-    "status": "pending",
+    "date": "1970",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos897Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-functions",
+      "analytic-number-theory",
+      "arithmetic-functions"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 897,
     "erdosUrl": "https://erdosproblems.com/897",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.atTop",
+        "description": "The filter of neighborhoods of infinity",
+        "module": "Mathlib.Order.Filter.AtTopBot.Basic"
+      },
+      {
+        "theorem": "Asymptotics.IsBigO",
+        "description": "Big-O notation for asymptotic bounds",
+        "module": "Mathlib.Analysis.Asymptotics.Defs"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "The natural logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Nat.primeFactors",
+        "description": "The set of prime factors of a natural number",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of additive arithmetic functions",
+      "Definition of unbounded growth on prime powers",
+      "Axiomatization of both OPEN conjectures (Parts I and II)",
+      "Statement of Wirsing's theorem (1970) as axiom",
+      "Restricted variants for strongly/completely additive functions",
+      "Definitions of omega, bigOmega, and log as examples"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #897 from erdosproblems.com.",
-    "problemStatement": "Let f(n)\" role=\"presentation\" style=\"position: relative;\">f(n)f(n)f(n) be an additive function (so that f(ab)=f(a)+f(b)\" role=\"presentation\" style=\"position: relative;\">f(ab)=f(a)+f(b)f(ab)=f(a)+f(b)f(ab)=f(a)+f(b) if (a,b)=1\" role=\"presentation\" style=\"position: relative;\">(a,b)=1(a,b)=1(a,b)=1) such thatlim&#x2006;supp,kf(pk)log&#x2061;pk=&#x221E;.\" role=\"presentation\" style=\"text-align: center; position: relative;\">limsupp,kf(pk)logpk=∞.lim supp,kf(pk)log⁡pk=∞.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem explores the behavior of additive arithmetic functions—functions satisfying f(ab) = f(a) + f(b) whenever gcd(a,b) = 1. Classic examples include ω(n) (distinct prime factors), Ω(n) (total prime factors with multiplicity), and log(n).\n\nErdős asked: if an additive function f grows unboundedly fast on prime powers (specifically, if limsup f(p^k)/log(p^k) = ∞), does this force the consecutive differences f(n+1) - f(n) to also be unbounded when normalized by log(n)?\n\nThe converse direction was settled by Wirsing in 1970, who proved that if consecutive differences are BOUNDED (|f(n+1) - f(n)| ≤ C), then f must behave like c·log(n) + O(1). This characterizes the logarithm as essentially the unique additive function with bounded consecutive differences.",
+    "problemStatement": "Let $f(n)$ be an additive function (so that $f(ab) = f(a) + f(b)$ when $(a,b) = 1$) such that\n$$\\limsup_{p,k} \\frac{f(p^k)}{\\log(p^k)} = \\infty$$\n\n**Part I**: Is it true that $\\displaystyle\\limsup_n \\frac{f(n+1) - f(n)}{\\log n} = \\infty$?\n\n**Part II**: Is it true that $\\displaystyle\\limsup_n \\frac{f(n+1)}{f(n)} = \\infty$?\n\n**Status**: Both parts remain **OPEN**.\n\n**Known** (Wirsing 1970): If $|f(n+1) - f(n)| \\leq C$, then $f(n) = c\\log n + O(1)$.",
+    "proofStrategy": "We formalize this problem by:\n\n1. **Defining additive functions**: IsAdditive f means f(ab) = f(a) + f(b) when gcd(a,b) = 1\n\n2. **Defining unbounded growth**: UnboundedOnPrimePowers captures the limsup condition on prime powers\n\n3. **Stating both conjectures as axioms**: Parts I and II about consecutive differences\n\n4. **Stating Wirsing's theorem**: The solved converse direction\n\n5. **Defining restricted variants**: StronglyAdditive (f(p^k) = f(p)) and CompletelyAdditive (f(p^k) = k·f(p))\n\n6. **Providing examples**: omega, bigOmega, and log as concrete additive functions",
+    "keyInsights": [
+      "**Additive vs multiplicative**: Additive functions add on coprime products; multiplicative functions multiply. The logarithm is additive: log(ab) = log(a) + log(b).",
+      "**Why prime powers matter**: For additive f, the value f(n) is determined by f on prime powers. If f grows fast on prime powers, it should affect consecutive values.",
+      "**Wirsing's characterization**: The logarithm is essentially unique among additive functions with bounded consecutive differences. This is a beautiful rigidity result.",
+      "**Strongly vs completely additive**: ω(n) counts distinct primes (strongly additive: ω(p^k) = 1), while Ω(n) counts with multiplicity (completely additive: Ω(p^k) = k).",
+      "**Open status**: Despite progress on the converse, Erdős's original questions about the forward direction remain unresolved."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Problem statement, status, and references to Wirsing (1970)."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 28,
+      "endLine": 47,
+      "summary": "Definition of IsAdditive and UnboundedOnPrimePowers predicates."
+    },
+    {
+      "id": "main-conjectures",
+      "title": "Main Conjectures (OPEN)",
+      "startLine": 49,
+      "endLine": 73,
+      "summary": "Parts I and II about consecutive differences being unbounded."
+    },
+    {
+      "id": "wirsing",
+      "title": "Wirsing's Theorem (SOLVED)",
+      "startLine": 75,
+      "endLine": 91,
+      "summary": "The converse: bounded differences imply f(n) = c·log(n) + O(1)."
+    },
+    {
+      "id": "restricted",
+      "title": "Restricted Variants",
+      "startLine": 93,
+      "endLine": 123,
+      "summary": "Definitions of strongly/completely additive and corresponding variants."
+    },
+    {
+      "id": "examples",
+      "title": "Classical Examples",
+      "startLine": 125,
+      "endLine": 145,
+      "summary": "Definitions of omega, bigOmega, and log as additive functions."
+    },
+    {
+      "id": "properties",
+      "title": "Basic Properties",
+      "startLine": 147,
+      "endLine": 170,
+      "summary": "Theorems about additive functions: f(1) = 0 and behavior on prime powers."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #897 about additive arithmetic functions and their consecutive differences. The problem asks whether unbounded growth on prime powers implies unbounded consecutive differences. Both parts remain OPEN, though Wirsing proved the converse in 1970: bounded differences characterize the logarithm.",
+    "implications": "This problem connects the local behavior of additive functions (on prime powers) with their global behavior (on consecutive integers). Understanding this connection would reveal deep structure in the distribution of prime factors across consecutive numbers.",
+    "openQuestions": [
+      "Part I: Does limsup f(p^k)/log(p^k) = ∞ imply limsup (f(n+1)-f(n))/log(n) = ∞?",
+      "Part II: Does limsup f(p^k)/log(p^k) = ∞ imply limsup f(n+1)/f(n) = ∞?",
+      "Do the restricted variants (strongly or completely additive) have different answers?",
+      "What is the relationship between the two parts?"
+    ]
   }
 }

@@ -1,33 +1,125 @@
 {
   "id": "erdos-918",
-  "title": "Erdős Problem #918",
+  "title": "Erdős Problem #918: Chromatic Numbers of Infinite Graphs",
   "slug": "erdos-918",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a graph with ... vertices and chromatic number ... such that every subgraph on ... vertices has chromatic number ......",
+  "description": "Two questions about graphs with large chromatic numbers: Can we have ℵ₂-chromatic graphs where all ℵ₁-subgraphs are countably chromatic? The main questions are OPEN, but Erdős-Hajnal proved the finite case.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős and Hajnal (finite case, 1968)",
     "sourceUrl": "https://erdosproblems.com/918",
-    "date": "",
-    "status": "pending",
+    "date": "1968-1969",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos918Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "infinite-graphs",
+      "chromatic-number",
+      "set-theory",
+      "cardinals"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 918,
     "erdosUrl": "https://erdosproblems.com/918",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Cardinal.aleph",
+        "description": "The aleph function mapping ordinals to cardinals",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Cardinal.mk",
+        "description": "Cardinality of a type",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Ordinal.omega0",
+        "description": "The first infinite ordinal ω",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      }
+    ],
+    "originalContributions": [
+      "Clean Lean 4 formalization of the problem statements",
+      "Axiomatization of Erdős-Hajnal finite case theorem",
+      "Axiomatization of the two open questions as Props",
+      "Proved theorems about aleph cardinal ordering",
+      "Educational commentary on infinite chromatic numbers"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #918 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a graph with $\\aleph_2$ vertices and chromatic number $\\aleph_2$ such that every subgraph on $\\aleph_1$ vertices has chromatic number $\\leq\\aleph_0$?\n\nIs there a graph with $\\aleph_{\\omega+1}$ vertices and chromatic number $\\aleph_1$ such that every subgraph on $\\aleph_\\omega$ vertices has chromatic number $\\leq\\aleph_0$?\n\n\n\nA question of Erd\\H{o}s and Hajnal \\cite{ErHa68b}, who proved that for every finite $k$ there is a graph with chromatic number $\\aleph_1$ where each subgraph on less than $\\aleph_k$ vertices has chromatic number $\\leq \\aleph_0$.\n\nIn \\cite{Er69b} it is asked with chromatic number $=\\aleph_0$, but in the comments louisd observes this is (assuming subgraph and not induced subgraph was intended) trivially impossible, and hence presumably the problem was intended as written here (which is how it is posed in \\cite{ErHa68b}).\n\n\n\n\nReferences\n\n\n[Er69b] Erd\\H{o}s, P., Problems and results in chromatic graph theory. Proof Techniques in Graph Theory (Proc. Second Ann\nArbor Graph Theory Conf., Ann Arbor, Mich.,\n1968) (1969), 27-35.\n\n[ErHa68b] Erd\\H{o}s, P. and Hajnal, A., On chromatic number of infinite graphs. (1968), 83--98.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem originates from Erdős and Hajnal's 1968 paper 'On chromatic number of infinite graphs'. They proved a remarkable result for finite ordinals: for every finite k, there exists a graph with ℵ_k vertices and chromatic number ℵ₁ such that every subgraph on fewer than ℵ_k vertices has chromatic number at most ℵ₀.\n\nThe construction uses transfinite induction and diagonal arguments. The question asks whether this phenomenon extends to infinite ordinals, specifically ℵ₂ and ℵ_{ω+1}.\n\nIn Erdős's 1969 paper 'Problems and results in chromatic graph theory', the problem was originally stated with chromatic number exactly ℵ₀ instead of at most ℵ₀. However, this is trivially impossible since any graph contains finite subgraphs with finite chromatic number. The corrected version asks for chromatic number ≤ ℵ₀.",
+    "problemStatement": "**Erdős Problem #918** (Two related questions):\n\n**Question 1 (OPEN)**: Is there a graph with $\\aleph_2$ vertices and chromatic number $\\aleph_2$ such that every induced subgraph on $\\aleph_1$ vertices has chromatic number $\\leq \\aleph_0$?\n\n**Question 2 (OPEN)**: Is there a graph with $\\aleph_{\\omega+1}$ vertices and chromatic number $\\aleph_1$ such that every induced subgraph on $\\aleph_\\omega$ vertices has chromatic number $\\leq \\aleph_0$?\n\n**Known Result (Erdős-Hajnal 1968)**: For every finite $k$, there exists a graph with $\\aleph_k$ vertices and chromatic number $\\aleph_1$ where each induced subgraph on fewer than $\\aleph_k$ vertices has chromatic number $\\leq \\aleph_0$.",
+    "proofStrategy": "We formalize this open problem and its known partial result:\n\n1. **Axiomatize the questions**: Since the answers are unknown, we axiomatize Question1 and Question2 as Props\n\n2. **State the Erdős-Hajnal theorem**: The finite case is axiomatized as `erdos_hajnal_finite`, stating the existence of appropriate graphs for each natural number k\n\n3. **Background on cardinals**: We prove basic facts about aleph cardinals using Mathlib's ordinal and cardinal theories\n\n4. **Note the impossibility**: We explain why the = ℵ₀ variant (from [Er69b]) is trivially false\n\nThe full formalization would require a cardinal-valued chromatic number for infinite graphs, which is not directly available in Mathlib.",
+    "keyInsights": [
+      "**Chromatic number for infinite graphs**: Unlike finite graphs where chromatic number is a natural number, infinite graphs require cardinal-valued chromatic numbers. The chromatic number is the smallest cardinal κ such that the graph admits a proper κ-coloring.",
+      "**The compactness question**: This problem asks about a kind of 'anti-compactness' for chromatic numbers. Can a graph have large chromatic number globally while being well-behaved locally? The Erdős-Hajnal result shows this can happen for finite thresholds.",
+      "**Why ℵ₂ is special**: The jump from finite k to ℵ₂ is significant because the combinatorial methods used for finite k don't immediately generalize to this setting.",
+      "**Set-theoretic considerations**: The answer may depend on axioms beyond ZFC. Questions about uncountable cardinals often involve set-theoretic independence.",
+      "**The equality variant fails**: Asking for chromatic number exactly ℵ₀ (not ≤ ℵ₀) is impossible because finite subgraphs have finite chromatic number."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Problem statement, status (OPEN), known results, and references."
+    },
+    {
+      "id": "open-questions",
+      "title": "The Main Open Questions",
+      "startLine": 42,
+      "endLine": 65,
+      "summary": "Axiomatization of Question1 (ℵ₂ case) and Question2 (ℵ_{ω+1} case)."
+    },
+    {
+      "id": "erdos-hajnal",
+      "title": "Erdős-Hajnal Finite Case",
+      "startLine": 67,
+      "endLine": 82,
+      "summary": "The solved part: for every finite k, such graphs exist."
+    },
+    {
+      "id": "negative-results",
+      "title": "Impossibility of Exact ℵ₀",
+      "startLine": 84,
+      "endLine": 96,
+      "summary": "Why the original = ℵ₀ formulation is trivially false."
+    },
+    {
+      "id": "background",
+      "title": "Aleph Cardinals Background",
+      "startLine": 98,
+      "endLine": 116,
+      "summary": "Basic facts about the aleph hierarchy using Mathlib."
+    },
+    {
+      "id": "difficulty",
+      "title": "Why This Problem is Hard",
+      "startLine": 118,
+      "endLine": 137,
+      "summary": "Commentary on the mathematical challenges."
+    },
+    {
+      "id": "summary",
+      "title": "Summary Theorem",
+      "startLine": 139,
+      "endLine": 148,
+      "summary": "Proved theorem packaging the cardinal ordering results."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #918 on chromatic numbers of infinite graphs. The problem consists of two OPEN questions about graphs with ℵ₂ (or ℵ_{ω+1}) vertices where large chromatic number coexists with countably chromatic local behavior. The finite case was solved by Erdős and Hajnal in 1968, showing the phenomenon exists for all finite aleph numbers.",
+    "implications": "This problem connects several areas:\n\n1. **Infinite combinatorics**: Understanding the structure of uncountable graphs\n2. **Set theory**: Questions may have independence results\n3. **Compactness phenomena**: When can global properties be witnessed locally?\n4. **Cardinal arithmetic**: The interplay between different infinite cardinalities",
+    "openQuestions": [
+      "Does Question1 have an affirmative answer?",
+      "Does Question2 have an affirmative answer?",
+      "Are the answers independent of ZFC?",
+      "What is the relationship between Questions 1 and 2?",
+      "Can similar phenomena occur at other cardinals?"
+    ]
   }
 }

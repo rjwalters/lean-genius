@@ -1,33 +1,127 @@
 {
   "id": "erdos-940",
-  "title": "Erdős Problem #940",
+  "title": "Erdős #940: Sums of r-Powerful Numbers",
   "slug": "erdos-940",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... A number ... is ...-powerful if for every prime ... which divides ... we have ....\n\nAre there infinitely many intege...",
+  "description": "For r ≥ 3, does the set of integers expressible as sums of at most r r-powerful numbers have density 0? Partial results by Baker-Brüdern (1994) and Heath-Brown (1988).",
   "meta": {
-    "author": "Unknown",
+    "author": "Baker-Brüdern (1994), Heath-Brown (1988)",
     "sourceUrl": "https://erdosproblems.com/940",
-    "date": "",
-    "status": "pending",
+    "date": "1976",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos940Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "powerful-numbers",
+      "density",
+      "additive-combinatorics"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 940,
     "erdosUrl": "https://erdosproblems.com/940",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #940 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 3$. A number $n$ is $r$-powerful if for every prime $p$ which divides $n$ we have $p^r\\mid n$.\n\nAre there infinitely many integers which are not the sum of at most $r$ many $r$-powerful numbers? Does the set of integers which are the sum of at most $r$ $r$-powerful numbers have density $0$?\n\n\n\nErd\\H{o}s \\cite{Er76d} claims that the claim that the set has density $0$ is 'easy' for $r=2$ (a potential 'easy argument' is given in the comments by Tao; this was first proved in the literature by Baker and Br\\\"{u}dern \\cite{BaBr94}). For $r=3$ it is not even known if those integers which are the sum of at most three cubes has density $0$.\n\nIn the Oberwolfach problem book this is recorded in 1986 as a problem of Erd\\H{o}s and Ivi\\'{c}.\n\nIn \\cite{Er76d} Erd\\H{o}s claims that 'a simple counting argument' implies that there are infinitely many integers which are not the sum of at most $r$ many $r$-powerful numbers, but Schinzel pointed out he made a mistake.\n\nHeath-Brown \\cite{He88} has proved that all large numbers are the sum of at most three $2$-powerful numbers, see [941].\n\nSee also [1081] for a more refined question concerning the case $r=2$, and [1107] for the case of $r+1$ summands.\n\n\n\n\nReferences\n\n\n[BaBr94] Baker, R. C. and Br\\\"udern, J., On sums of two squarefull numbers. Math. Proc. Cambridge Philos. Soc. (1994), 1--5.\n\n[Er76d] Erd\\H{o}s, P., Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics (Univ. Manitoba, Winnipeg, Man., 1975) (1976), 25-44.\n\n[He88] Heath-Brown, D. R., Ternary quadratic forms and sums of three square-full numbers. (1988), 137--163.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Erdős and Ivić, and recorded in the 1986 Oberwolfach problem book. It concerns a fundamental question about the additive structure of powerful numbers.\n\nA number n is r-powerful (or r-full) if every prime p dividing n satisfies p^r | n. For r = 2, these are called 'squarefull' numbers (4, 8, 9, 16, 25, ...). For r = 3, they are 'cubefull' numbers.\n\nErdős (1976) claimed the r = 2 case was 'easy', though the first rigorous proof came from Baker and Brüdern in 1994. Notably, Erdős initially claimed a simple counting argument showed infinitely many integers are not representable, but Schinzel discovered an error in this reasoning.\n\nHeath-Brown (1988) proved a complementary result: all sufficiently large integers ARE sums of at most three squarefull numbers. This creates an interesting contrast—the set of representable integers has density 0 (sparse) yet eventually contains all integers (with enough summands).",
+    "problemStatement": "Let $r \\geq 3$. A number $n$ is **$r$-powerful** if for every prime $p \\mid n$, we have $p^r \\mid n$.\n\n**Question 1**: Are there infinitely many integers that cannot be expressed as the sum of at most $r$ many $r$-powerful numbers?\n\n**Question 2**: Does the set of integers expressible as such sums have natural density 0?\n\n**Status**: OPEN for $r \\geq 3$\n\n**Partial Results**:\n- $r = 2$: Baker-Brüdern (1994) proved density is 0\n- Heath-Brown (1988): All large integers are sums of $\\leq 3$ squarefull numbers",
+    "proofStrategy": "We formalize the concept of r-powerful numbers and the set of their sums. The main conjecture (density 0 for r ≥ 3) is stated as a definition since it remains open.\n\nThe solved cases are axiomatized:\n- Baker-Brüdern's theorem: SumsOfPowerful 2 2 has density 0\n- Heath-Brown's theorem: Eventually all integers are in SumsOfPowerful 2 3\n\nWe also formalize several open variants, including the three cubes problem and the universal representation conjecture.",
+    "keyInsights": [
+      "**r-powerful numbers**: n where every prime p | n satisfies p^r | n. Squarefull = 2-powerful, cubefull = 3-powerful",
+      "**Diagonal case**: The main question concerns ≤ r summands of r-powerful numbers (matching indices)",
+      "**Density vs representation**: Density 0 ≠ infinitely many missing. Heath-Brown shows density 0 but eventual coverage with 3 summands",
+      "**Schinzel's correction**: Erdős's original 'counting argument' for infinitely many non-representable integers had an error",
+      "**Open even for cubes**: For r = 3, we don't even know if sums of ≤ 3 cubes have density 0",
+      "**Related problems**: #941 (Heath-Brown), #1081 (refined r=2), #1107 (r+1 summands)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "powerful-numbers",
+      "title": "r-Powerful Numbers",
+      "summary": "Definition of r-powerful (r-full) numbers and basic properties",
+      "startLine": 39,
+      "endLine": 76
+    },
+    {
+      "id": "sums-set",
+      "title": "The Set of Sums",
+      "summary": "Definition of SumsOfPowerful and DiagonalSums sets",
+      "startLine": 78,
+      "endLine": 104
+    },
+    {
+      "id": "density",
+      "title": "Natural Density",
+      "summary": "Counting function and density definitions",
+      "startLine": 106,
+      "endLine": 117
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture (OPEN)",
+      "summary": "Erdős's density-0 conjecture for r ≥ 3",
+      "startLine": 119,
+      "endLine": 142
+    },
+    {
+      "id": "squarefull",
+      "title": "The Squarefull Case (r = 2)",
+      "summary": "Baker-Brüdern theorem: squarefull pairs have density 0",
+      "startLine": 144,
+      "endLine": 159
+    },
+    {
+      "id": "heath-brown",
+      "title": "Heath-Brown's Representation Theorem",
+      "summary": "All large integers are sums of ≤ 3 squarefull numbers",
+      "startLine": 161,
+      "endLine": 180
+    },
+    {
+      "id": "cubefull",
+      "title": "The Cubefull Case and Three Cubes",
+      "summary": "Open problems for r = 3 and sums of cubes",
+      "startLine": 182,
+      "endLine": 203
+    },
+    {
+      "id": "universal",
+      "title": "The Large Integer Representation Question",
+      "summary": "Open problem: universal representation for diagonal sums",
+      "startLine": 205,
+      "endLine": 223
+    },
+    {
+      "id": "relationship",
+      "title": "Relationship Between the Questions",
+      "summary": "Summary of known and open cases",
+      "startLine": 225,
+      "endLine": 247
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Computations",
+      "summary": "Concrete examples: 4, 8, 72 as powerful numbers",
+      "startLine": 249,
+      "endLine": 280
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "summary": "Connections to Problems #941, #1081, #1107",
+      "startLine": 282,
+      "endLine": 294
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #940 on sums of r-powerful numbers. The main conjecture (density 0 for r ≥ 3) remains OPEN. We formalize the definition of r-powerful numbers, the set of sums, and axiomatize the known results: Baker-Brüdern's density-0 theorem for squarefull pairs and Heath-Brown's representation theorem for squarefull triples.",
+    "implications": "This problem connects additive combinatorics with multiplicative number theory. The contrast between density results (sparse sets) and representation results (eventual coverage) illustrates the subtle relationship between these concepts. Understanding powerful numbers has applications to ABC conjecture and related problems.",
+    "openQuestions": [
+      "Does the set of sums of ≤ 3 cubes have density 0?",
+      "For r ≥ 3, does DiagonalSums r have density 0?",
+      "Is every large integer a sum of ≤ r r-powerful numbers (diagonal case)?",
+      "What is the exact threshold N₀ beyond which Heath-Brown's theorem holds?"
+    ]
   }
 }

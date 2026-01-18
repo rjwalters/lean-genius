@@ -1,1 +1,123 @@
-[]
+[
+  {
+    "id": "ann-e225-header",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #225**: If a trigonometric polynomial has all roots on the unit circle and supremum norm 1, then its L¹ norm is at most 4. Solved by Kristiansen (1974) and Saff-Sheil-Small (1973).",
+    "mathContext": "f(θ) = Σₖ cₖ e^(ikθ) with all roots of P(z) = Σ cₖ zᵏ on |z| = 1. If max|f| = 1, then ∫|f| ≤ 4.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "trigonometric-polynomials",
+      "unit-circle",
+      "L1-norm"
+    ]
+  },
+  {
+    "id": "ann-e225-trigpoly",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 34,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "Trigonometric Polynomials",
+    "content": "**TrigPoly(n)**: A trigonometric polynomial of degree n with coefficients cₖ ∈ ℂ. **eval**: Evaluates f(θ) = Σₖ cₖ e^(ikθ).",
+    "mathContext": "Trigonometric polynomials are Fourier series with finitely many terms, fundamental in harmonic analysis.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fourier-series",
+      "complex-exponential"
+    ]
+  },
+  {
+    "id": "ann-e225-unitcircle",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 46,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "Unit Circle Roots",
+    "content": "**OnUnitCircle**: z lies on the unit circle if ‖z‖ = 1. **HasUnitCircleRoots**: All roots of the associated polynomial P(z) = Σ cₖ zᵏ satisfy |z| = 1.",
+    "mathContext": "The key constraint: 'real roots' in the problem statement means roots on the unit circle |z| = 1, not real numbers.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "polynomial-roots",
+      "unit-circle"
+    ]
+  },
+  {
+    "id": "ann-e225-norms",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 62,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "Norm Definitions",
+    "content": "**supNorm**: The L∞ norm sup_{θ∈[0,2π]} |f(θ)|. **l1Norm**: The L¹ norm ∫₀^(2π) |f(θ)| dθ.",
+    "mathContext": "The problem relates these two norms under the unit-circle-roots constraint.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sup-norm",
+      "L1-norm",
+      "measure-theory"
+    ]
+  },
+  {
+    "id": "ann-e225-main",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 76,
+      "endLine": 87
+    },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_225_main**: For any trigonometric polynomial p with unit circle roots and supNorm = 1, we have l1Norm ≤ 4.",
+    "mathContext": "The bound 4 is sharp and cannot be improved. This was proved by Kristiansen (1974) for real coefficients and Saff-Sheil-Small (1973) for complex coefficients.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "harmonic-analysis",
+      "norm-bounds"
+    ]
+  },
+  {
+    "id": "ann-e225-optimal",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 110,
+      "endLine": 129
+    },
+    "type": "theorem",
+    "title": "Optimality",
+    "content": "**erdos_225_optimal**: The bound 4 is optimal - there exist polynomials with L¹ norm arbitrarily close to 4.",
+    "mathContext": "Sharpness results show the bound cannot be improved to 4-ε for any ε > 0.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal-problems",
+      "sharpness"
+    ]
+  },
+  {
+    "id": "ann-e225-fejer",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 191,
+      "endLine": 199
+    },
+    "type": "axiom",
+    "title": "Fejér-Riesz Connection",
+    "content": "**fejer_riesz**: Non-negative trigonometric polynomials can be written as |g(θ)|² for some polynomial g.",
+    "mathContext": "The Fejér-Riesz theorem is a fundamental tool in the analysis of trigonometric polynomials and relates to sum-of-squares representations.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "fejer-riesz",
+      "sum-of-squares"
+    ]
+  }
+]

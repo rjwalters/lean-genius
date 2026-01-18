@@ -1,34 +1,133 @@
 {
   "id": "erdos-671",
-  "title": "Erdős Problem #671",
+  "title": "Erdős #671: Lagrange Interpolation Convergence",
   "slug": "erdos-671",
-  "description": "Given ... for all $1\\leq i\\leq n View the LaTeX source This page was last edited 06 December 2025.",
+  "description": "Can Lagrange interpolation L^n f(x) → f(x) even when the Lebesgue function λ_n(x) → ∞? Known: λ_n diverges somewhere (Bernstein), |L^n f| diverges a.e. for some f (Erdős-Vértesi). Prize: $250.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Sergei Bernstein, Péter Vértesi",
     "sourceUrl": "https://erdosproblems.com/671",
-    "date": "",
-    "status": "pending",
+    "date": "1980",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos671Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "interpolation",
+      "approximation-theory"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 20,
     "erdosNumber": 671,
     "erdosUrl": "https://erdosproblems.com/671",
-    "erdosProblemStatus": "solved",
+    "erdosProblemStatus": "open",
     "erdosPrizeValue": "$250"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #671 from erdosproblems.com. Originally offered with a prize of $250.",
-    "problemStatement": "Given $a_{i}^n\\in [-1,1]$ for all $1\\leq i\\leq n View the LaTeX source This page was last edited 06 December 2025.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Bernstein (1931) proved the Lebesgue function diverges at some point for any interpolation scheme. Erdős and Vértesi (1980) showed that for any points, some continuous function has |L^n f(x)| → ∞ almost everywhere. The questions ask whether convergence can still occur despite Lebesgue function divergence.",
+    "problemStatement": "Given points a_i^n ∈ [-1,1], define Lagrange basis polynomials p_i^n and interpolation L^n f(x) = Σ f(a_i^n) p_i^n(x). The Lebesgue function is λ_n(x) = Σ |p_i^n(x)|. Q1: Can λ_n(x) → ∞ yet L^n f(x) → f(x) for some x? Q2: Can λ_n(x) → ∞ for ALL x, yet still have convergence somewhere?",
+    "proofStrategy": "We formalize interpolation points, Lagrange basis polynomials, the interpolation operator, the Lebesgue function and constant, Bernstein's theorem, Erdős-Vértesi theorem, the two main questions, special point sequences (Chebyshev, equidistant), convergence conditions, and measure-theoretic aspects.",
+    "keyInsights": [
+      "Bernstein (1931): limsup λ_n(x₀) = ∞ for some x₀",
+      "Erdős-Vértesi (1980): |L^n f(x)| → ∞ a.e. for some continuous f",
+      "Chebyshev nodes minimize Lebesgue constant: Λ_n ~ (2/π) log n",
+      "Equidistant nodes have exponential Lebesgue constant growth",
+      "Faber's theorem: No universal uniform convergence"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-defs",
+      "title": "Basic Definitions",
+      "summary": "Interpolation points and Lagrange basis",
+      "startLine": 34,
+      "endLine": 58
+    },
+    {
+      "id": "lagrange-interp",
+      "title": "Lagrange Interpolation",
+      "summary": "The operator L^n and its properties",
+      "startLine": 60,
+      "endLine": 75
+    },
+    {
+      "id": "lebesgue",
+      "title": "Lebesgue Function",
+      "summary": "λ_n(x) and the Lebesgue constant Λ_n",
+      "startLine": 77,
+      "endLine": 96
+    },
+    {
+      "id": "bernstein",
+      "title": "Bernstein's Theorem",
+      "summary": "Divergence at some point (1931)",
+      "startLine": 98,
+      "endLine": 114
+    },
+    {
+      "id": "erdos-vertesi",
+      "title": "Erdős-Vértesi Theorem",
+      "summary": "Divergence a.e. for some f (1980)",
+      "startLine": 116,
+      "endLine": 128
+    },
+    {
+      "id": "question1",
+      "title": "Question 1",
+      "summary": "Convergence despite local divergence",
+      "startLine": 130,
+      "endLine": 140
+    },
+    {
+      "id": "question2",
+      "title": "Question 2",
+      "summary": "Convergence despite universal divergence",
+      "startLine": 142,
+      "endLine": 158
+    },
+    {
+      "id": "special-points",
+      "title": "Special Point Sequences",
+      "summary": "Chebyshev and equidistant nodes",
+      "startLine": 160,
+      "endLine": 177
+    },
+    {
+      "id": "convergence",
+      "title": "Convergence Conditions",
+      "summary": "When does L^n f → f?",
+      "startLine": 179,
+      "endLine": 196
+    },
+    {
+      "id": "pointwise",
+      "title": "Pointwise vs Uniform",
+      "summary": "Faber's theorem and pointwise behavior",
+      "startLine": 198,
+      "endLine": 210
+    },
+    {
+      "id": "measure",
+      "title": "Measure-Theoretic Aspects",
+      "summary": "Divergence and convergence sets",
+      "startLine": 212,
+      "endLine": 227
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "summary": "Relationship between Q1 and Q2",
+      "startLine": 229,
+      "endLine": 246
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #671 on Lagrange interpolation convergence. Despite Bernstein's divergence theorem and Erdős-Vértesi's a.e. divergence result, the questions ask whether pointwise convergence can still occur when the Lebesgue function diverges.",
+    "implications": "Resolution would clarify the subtle relationship between the Lebesgue function (which controls error) and actual convergence behavior. The problem connects approximation theory with measure theory.",
+    "openQuestions": [
+      "Can L^n f(x) → f(x) at points where λ_n(x) → ∞? (Q1, $250)",
+      "Can λ_n(x) → ∞ everywhere yet still have some convergence? (Q2)",
+      "What is the measure of convergence/divergence sets?",
+      "Are there special point sequences that answer the questions?"
+    ]
   }
 }

@@ -1,1 +1,230 @@
-[]
+[
+  {
+    "id": "ann-e1041-header",
+    "proofId": "erdos-1041",
+    "range": {
+      "startLine": 1,
+      "endLine": 17
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1041** asks about paths in polynomial sublevel sets. For a monic polynomial f with all roots in the unit disk, the sublevel set {z : |f(z)| < 1} always contains all roots.\n\nThe **OPEN** conjecture asks: must there exist a path of length less than 2 connecting two roots within this sublevel set?\n\nThe 1958 Erdős-Herzog-Piranian paper proved the weaker result that such a set has a connected component with at least two roots.",
+    "mathContext": "The constant 2 is sharp—it's the diameter of the unit disk. Roots could be nearly 2 apart.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "sublevel sets",
+      "polynomial roots",
+      "path length",
+      "Hausdorff measure"
+    ]
+  },
+  {
+    "id": "ann-e1041-imports",
+    "proofId": "erdos-1041",
+    "range": {
+      "startLine": 19,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "We import Mathlib and open namespaces for **Polynomial** (complex polynomials), **MeasureTheory** (Hausdorff measure for path length), **ENNReal** (extended non-negative reals), **Metric** (distance and diameter), and **Topology** (continuous paths).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "measure theory",
+      "topology"
+    ]
+  },
+  {
+    "id": "ann-e1041-sublevelset",
+    "proofId": "erdos-1041",
+    "range": {
+      "startLine": 29,
+      "endLine": 31
+    },
+    "type": "definition",
+    "title": "Sublevel Set Definition",
+    "content": "**sublevelSet f r** is the set of complex numbers where the polynomial has small absolute value:\n\n`{z ∈ ℂ : ‖f.eval z‖ < r}`\n\nFor r = 1, this is the region where |f(z)| < 1. This set always contains all roots of f (since f(root) = 0 < 1).",
+    "mathContext": "The sublevel set is open because polynomial evaluation and norm are continuous.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "level sets",
+      "polynomial evaluation",
+      "open sets"
+    ]
+  },
+  {
+    "id": "ann-e1041-length",
+    "proofId": "erdos-1041",
+    "range": {
+      "startLine": 33,
+      "endLine": 35
+    },
+    "type": "definition",
+    "title": "Path Length via Hausdorff Measure",
+    "content": "**length s** is defined as the 1-dimensional Hausdorff measure `μH[1] s`.\n\nThis generalizes arc length to arbitrary sets. For a rectifiable curve, it gives the usual notion of length. For fractal curves, it may be infinite.",
+    "mathContext": "The 1-dimensional Hausdorff measure is the natural way to measure 'length' of potentially irregular curves.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hausdorff measure",
+      "arc length",
+      "rectifiable curves"
+    ]
+  },
+  {
+    "id": "ann-e1041-component-lemma",
+    "proofId": "erdos-1041",
+    "range": {
+      "startLine": 52,
+      "endLine": 66
+    },
+    "type": "axiom",
+    "title": "Erdős-Herzog-Piranian Component Lemma (1958)",
+    "content": "**Known Result**: For any monic polynomial f of degree ≥ 2 with roots in the unit disk, the sublevel set {z : |f(z)| < 1} has a connected component containing at least two roots.\n\nThis was proved in the 1958 paper 'Metric properties of polynomials.' The proof uses potential theory—specifically, properties of the logarithmic potential associated with the polynomial's roots.",
+    "mathContext": "Connected components partition the sublevel set. At least one component must be 'rich' enough to contain multiple roots.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "solved result",
+      "connected components",
+      "potential theory"
+    ]
+  },
+  {
+    "id": "ann-e1041-conjecture",
+    "proofId": "erdos-1041",
+    "range": {
+      "startLine": 75,
+      "endLine": 92
+    },
+    "type": "axiom",
+    "title": "Main Conjecture (OPEN)",
+    "content": "**Erdős Problem #1041**: Under the same hypotheses, there exists a **path** of length less than 2 within the sublevel set connecting two roots.\n\nThis strengthens the Component Lemma from mere connectivity to a quantitative bound. While the Component Lemma says roots are connected, a winding path could be arbitrarily long. This conjecture demands a SHORT path.",
+    "mathContext": "The path γ : [0,1] → ℂ must satisfy: γ(0), γ(1) are distinct roots, the image lies in the sublevel set, and μH[1](range γ) < 2.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open problem",
+      "path length bound",
+      "quantitative topology"
+    ]
+  },
+  {
+    "id": "ann-e1041-diameter",
+    "proofId": "erdos-1041",
+    "range": {
+      "startLine": 98,
+      "endLine": 106
+    },
+    "type": "axiom",
+    "title": "Diameter Bound",
+    "content": "The diameter of the root set is less than 2. Since all roots lie in the open unit disk and the unit disk has diameter 2, no two roots can be 2 or more apart.\n\nThis gives hope that a short path exists—we just need to find one in the sublevel set.",
+    "significance": "key",
+    "relatedConcepts": [
+      "metric diameter",
+      "triangle inequality"
+    ]
+  },
+  {
+    "id": "ann-e1041-quadratic",
+    "proofId": "erdos-1041",
+    "range": {
+      "startLine": 108,
+      "endLine": 118
+    },
+    "type": "axiom",
+    "title": "Quadratic Case (Base Case)",
+    "content": "For **degree 2** polynomials f(z) = (z - z₁)(z - z₂), the conjecture holds.\n\nThe straight line segment from z₁ to z₂ has length |z₁ - z₂| < 2, and one can show this segment lies entirely in the sublevel set.\n\nThis provides the base case for potential inductive approaches.",
+    "mathContext": "For quadratics, the sublevel set {|f(z)| < 1} is the interior of a Cassini oval.",
+    "significance": "key",
+    "relatedConcepts": [
+      "base case",
+      "quadratic polynomials",
+      "Cassini ovals"
+    ]
+  },
+  {
+    "id": "ann-e1041-open",
+    "proofId": "erdos-1041",
+    "range": {
+      "startLine": 124,
+      "endLine": 129
+    },
+    "type": "theorem",
+    "title": "Sublevel Sets are Open",
+    "content": "**sublevelSet_isOpen**: The sublevel set {z : |f(z)| < r} is an open subset of ℂ.\n\nProof: Polynomial evaluation `f.eval` is continuous, norm is continuous, and the preimage of (-∞, r) under a continuous function is open.",
+    "mathContext": "This uses the continuity of aeval (algebra evaluation) which generalizes polynomial evaluation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "continuous functions",
+      "open sets",
+      "preimages"
+    ]
+  },
+  {
+    "id": "ann-e1041-roots-in",
+    "proofId": "erdos-1041",
+    "range": {
+      "startLine": 131,
+      "endLine": 143
+    },
+    "type": "theorem",
+    "title": "Roots are in the Sublevel Set",
+    "content": "**roots_in_sublevelSet**: If z is a root of f, then z ∈ sublevelSet f 1.\n\nProof: f(z) = 0 implies |f(z)| = 0 < 1.\n\n**roots_subset_sublevelSet**: All roots are contained in the sublevel set.",
+    "mathContext": "This is the fundamental reason the problem makes sense—we're looking for paths in a set that contains the endpoints.",
+    "significance": "key",
+    "relatedConcepts": [
+      "roots",
+      "containment",
+      "polynomial zeros"
+    ]
+  },
+  {
+    "id": "ann-e1041-dist",
+    "proofId": "erdos-1041",
+    "range": {
+      "startLine": 153,
+      "endLine": 158
+    },
+    "type": "theorem",
+    "title": "Distance Bound in Unit Disk",
+    "content": "**dist_in_unit_disk**: If |z₁| < 1 and |z₂| < 1, then |z₁ - z₂| < 2.\n\nProof by triangle inequality:\n`|z₁ - z₂| ≤ |z₁| + |z₂| < 1 + 1 = 2`\n\nThis is why 2 is the critical constant in the conjecture.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "triangle inequality",
+      "norm bounds"
+    ]
+  },
+  {
+    "id": "ann-e1041-lemniscate",
+    "proofId": "erdos-1041",
+    "range": {
+      "startLine": 171,
+      "endLine": 177
+    },
+    "type": "definition",
+    "title": "Polynomial Lemniscates",
+    "content": "**lemniscate f c** is the level set {z : |f(z)| = c}.\n\nThese curves are called polynomial lemniscates, generalizing the classical Bernoulli lemniscate (for f(z) = z² - 1). They have rich geometric properties studied since the 18th century.",
+    "mathContext": "The sublevel set is the interior bounded by the lemniscate at level 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "level curves",
+      "Bernoulli lemniscate",
+      "algebraic curves"
+    ]
+  },
+  {
+    "id": "ann-e1041-diameter",
+    "proofId": "erdos-1041",
+    "range": {
+      "startLine": 188,
+      "endLine": 192
+    },
+    "type": "theorem",
+    "title": "Unit Disk Diameter",
+    "content": "**unit_disk_diameter_bound**: The diameter of the open unit disk ball(0, 1) is at most 2.\n\nThis uses the general formula diam(ball(x, r)) ≤ 2r. For the unit disk (r = 1), this gives diameter ≤ 2.\n\nThe bound 2 in the conjecture is thus geometrically sharp.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "metric diameter",
+      "ball geometry"
+    ]
+  }
+]

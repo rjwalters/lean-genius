@@ -1,33 +1,139 @@
 {
   "id": "erdos-849",
-  "title": "Erdős Problem #849",
+  "title": "Erdős Problem #849: Binomial Coefficient Multiplicities",
   "slug": "erdos-849",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every integer ..., there is some integer ... such that\\[{k}=a\\](with ...) has exactly ... solutions?\n\n\n\n...",
+  "description": "Is it true that for every integer t ≥ 1, there is some integer a such that C(n,k) = a (with 1 ≤ k ≤ n/2) has exactly t solutions? Related to Singmaster's Conjecture.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Gordon, Singmaster (1971), Matomäki-Radziwill-Shao-Tao-Teräväinen (2022)",
     "sourceUrl": "https://erdosproblems.com/849",
-    "date": "",
-    "status": "pending",
+    "date": "1971",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos849Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "binomial-coefficients",
+      "pascal-triangle",
+      "singmaster-conjecture"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 849,
     "erdosUrl": "https://erdosproblems.com/849",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficient C(n,k)",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of sets (including infinite)",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite sets",
+        "module": "Mathlib.Data.Set.Finite"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm for asymptotic bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of BinomMultiplicitySet (pairs (n,k) with C(n,k) = a)",
+      "Definition of binomMultiplicity using Set.ncard",
+      "Definition of binomNMultiplicity (counting distinct n values)",
+      "Singmaster's Conjecture as axiom (bounded multiplicities)",
+      "Verified examples: C(10,3)=C(16,2)=C(120,1)=120",
+      "Verified examples: C(14,6)=C(15,5)=C(78,2)=C(3003,1)=3003",
+      "Theorems for t=1,3,4 cases with explicit witnesses",
+      "Asymptotic bound axiom: multiplicity ≤ O(log a)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #849 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every integer $t\\geq 1$, there is some integer $a$ such that\\[\\binom{n}{k}=a\\](with $1\\leq k\\leq n/2$) has exactly $t$ solutions?\n\n\n\nErd\\H{o}s \\cite{Er96b} credits this to himself and Gordon 'many years ago', but it is more commonly known as Singmaster's conjecture. For $t=3$ one could take $a=120$, and for $t=4$ one could take $a=3003$. There are no known examples for $t\\geq 5$.\n\nBoth Erd\\H{o}s and Singmaster believed the answer to this question is no, and in fact that there exists an absolute upper bound on the number of solutions.\n\nMatomäki, Radziwill, Shao, Tao, and Teräväinen \\cite{MRSTT22} have proved that there are always at most two solutions if we restrict $k$ to\\[k\\geq \\exp((\\log n)^{2/3+\\epsilon}),\\]assuming $a$ is sufficiently large depending on $\\epsilon>0$.\n\n\n\n\nReferences\n\n\n[Er96b] Erd\\\"{o}s, Paul, Some problems I presented or planned to present in my short\ntalk. Analytic number theory, Vol. 1 (Allerton Park, IL, 1995) (1996), 333-335.\n\n[MRSTT22] Matom\\\"{a}ki, Kaisa and Radziwi\\l\\l, Maksym and Shao, Xuancheng\nand Tao, Terence and Ter\\\"{a}v\\\"{a}inen, Joni, Singmaster's conjecture in the interior of {P}ascal's\ntriangle. Q. J. Math. (2022), 1137--1177.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős and Gordon** posed this question 'many years ago' (before 1996), though it is now commonly known as **Singmaster's Conjecture** (1971).\n\n**The Question**: Does every multiplicity t ≥ 1 occur? That is, for each t, is there an integer a appearing exactly t times in Pascal's triangle (with 1 ≤ k ≤ n/2)?\n\n**Known Cases**:\n- t = 1: a = 2 (appears only as C(2,1))\n- t = 2: a = 6 (appears as C(4,2) and C(6,1))\n- t = 3: a = 120 (appears at C(10,3), C(16,2), C(120,1))\n- t = 4: a = 3003 (appears at C(14,6), C(15,5), C(78,2), C(3003,1))\n- t ≥ 5: **NO KNOWN EXAMPLES**\n\n**Modern Progress**: Matomäki, Radziwill, Shao, Tao, and Teräväinen (2022) proved that in the 'interior' of Pascal's triangle (k large), there are at most 2 solutions for sufficiently large a.",
+    "problemStatement": "Define the **multiplicity** of a value a in Pascal's triangle as the number of distinct n such that C(n,k) = a for some 1 ≤ k ≤ n/2.\n\n**Erdős Problem #849 (OPEN)**: For every t ≥ 1, does there exist a value a with multiplicity exactly t?\n\n**Singmaster's Conjecture**: There exists an absolute constant N such that no value appears more than N times. The conjectured bound is N = 8.\n\n**Computational Evidence**: OEIS A003015 lists numbers appearing 5 or more times. Currently only 1 is known (and 1 doesn't count with our k ≥ 1 restriction).",
+    "proofStrategy": "We formalize this problem by:\n\n1. **Core definitions**: BinomMultiplicitySet captures pairs (n,k) with C(n,k) = a and 1 ≤ k ≤ n/2\n\n2. **Multiplicity functions**: binomMultiplicity (counting pairs) and binomNMultiplicity (counting distinct n)\n\n3. **Basic properties**: Every a ≥ 2 appears at least once as C(a,1) = a\n\n4. **Verified examples**: Using native_decide to verify C(10,3)=120, C(14,6)=3003, etc.\n\n5. **Singmaster's Conjecture**: Axiomatized as multiplicity_bound_8\n\n6. **Main conjecture**: erdos_849_conjecture states existence of a for each t",
+    "keyInsights": [
+      "**Edge vs Interior**: C(a,1) = a provides one appearance on the 'edge'. Triangular numbers give C(n,2) = n(n-1)/2. The hard part is counting 'deep' appearances.",
+      "**Why t=5 is hard**: Values with high multiplicity require multiple coincidences: edge appearance, triangular appearance, AND one or more deep appearances.",
+      "**Singmaster bound**: The conjectured bound of 8 comes from 3003, which appears 4 times, and the pattern suggests 8 should suffice.",
+      "**MRSTT 2022 breakthrough**: For 'interior' entries (k ≥ exp((log n)^{2/3+ε})), multiplicities are at most 2 for large a.",
+      "**Both directions open**: We don't know if multiplicity 5 exists, NOR if there's an absolute bound on multiplicities."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 30,
+      "endLine": 53,
+      "summary": "BinomMultiplicitySet, binomMultiplicity, binomNMultiplicity, HasExactMultiplicity."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 54,
+      "endLine": 71,
+      "summary": "Every a ≥ 2 appears at least once; multiplicities of 1 and 2."
+    },
+    {
+      "id": "singmaster",
+      "title": "Singmaster's Conjecture",
+      "startLine": 72,
+      "endLine": 87,
+      "summary": "Conjectured absolute bound on multiplicities (N = 8)."
+    },
+    {
+      "id": "known-multiplicities",
+      "title": "Known Multiplicities",
+      "startLine": 88,
+      "endLine": 120,
+      "summary": "Verified: 120 has multiplicity 3, 3003 has multiplicity 4."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture (OPEN)",
+      "startLine": 121,
+      "endLine": 150,
+      "summary": "Does every t ≥ 1 occur? t=5 case remains open."
+    },
+    {
+      "id": "special-values",
+      "title": "Special Values",
+      "startLine": 151,
+      "endLine": 163,
+      "summary": "Values 6 and 10 with multiplicity 2."
+    },
+    {
+      "id": "asymptotic",
+      "title": "Asymptotic Results",
+      "startLine": 164,
+      "endLine": 178,
+      "summary": "Upper bounds O(log a) on multiplicities."
+    },
+    {
+      "id": "oeis",
+      "title": "Related Sequences",
+      "startLine": 179,
+      "endLine": 196,
+      "summary": "Connection to OEIS A003015 and A182238."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #849, which asks whether every positive integer t occurs as the exact multiplicity of some value in Pascal's triangle. The problem is closely related to Singmaster's Conjecture about bounding multiplicities. While t = 1, 2, 3, 4 are achieved (by 2, 6, 120, 3003 respectively), no value with multiplicity exactly 5 is known.",
+    "implications": "This problem connects combinatorics (Pascal's triangle structure) to number theory (which values can coincidentally equal multiple binomial coefficients). Understanding multiplicities has implications for algorithms that search Pascal's triangle and for understanding the distribution of binomial coefficients.",
+    "openQuestions": [
+      "Does there exist a value with multiplicity exactly 5?",
+      "Is there an absolute bound N such that all multiplicities are ≤ N?",
+      "If the bound exists, is it 8 as conjectured?",
+      "What is the asymptotic growth of the smallest a with multiplicity ≥ t?"
+    ]
   }
 }

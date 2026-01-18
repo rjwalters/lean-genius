@@ -1,33 +1,91 @@
 {
   "id": "erdos-1008",
-  "title": "Erdős Problem #1008",
+  "title": "Erdős Problem #1008: C₄-Free Subgraphs",
   "slug": "erdos-1008",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph with ... edges contain a subgraph with ... edges which contains no ...?\n\n\n\nOriginally asked by Bollob\\'{a}s ...",
+  "description": "Does every graph with m edges contain a C₄-free subgraph with ≫ m^{2/3} edges? Yes, proved by Conlon-Fox-Sudakov (2014). The exponent 2/3 is optimal, as shown by Folkman's counterexample K_{n,n²}.",
   "meta": {
-    "author": "Unknown",
+    "author": "Conlon-Fox-Sudakov (2014)",
     "sourceUrl": "https://erdosproblems.com/1008",
-    "date": "",
-    "status": "pending",
+    "date": "2014",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1008Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal",
+      "cycles",
+      "subgraphs",
+      "zarankiewicz"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 1008,
     "erdosUrl": "https://erdosproblems.com/1008",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1008 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph with $m$ edges contain a subgraph with $\\gg m^{2/3}$ edges which contains no $C_4$?\n\n\n\nOriginally asked by Bollob\\'{a}s and Erd\\H{o}s in 'a colloquium on graph theory at Tihany' with $m^{2/3}$ replaced by $m^{3/4}$. Folkman showed this is false with the counterexample $K_{n,n^2}$, which has $n^3$ edges, and yet every subgraph with $>n^2+\\binom{n}{2}$ edges contains a $C_4$.\n\nIn \\cite{Er71} Erd\\H{o}s revises the conjecture to $m^{2/3}$, and notes $\\gg m^{1/2}$ is trivial. In a footnote he says Szemer\\'{e}di proved this conjecture, but gives no reference, and I could not find such a result in the literature.\n\nThis problem was first solved in the affirmative by Conlon, Fox, and Sudakov \\cite{CFS14b}. A simple proof is given by Hunter in the comments.\n\n\n\n\nReferences\n\n\n[CFS14b] D. Conlon, J. Fox, and B. Sudakov, Large subgraphs without complete bipartite graphs. arXiv:1401.6711 (2014).\n\n[Er71] Erd\\H{o}s, P., Some unsolved problems in graph theory and combinatorial analysis. Combinatorial Mathematics and its Applications (Proc.\nConf., Oxford, 1969) (1971), 97-109.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Originally asked by Bollobás and Erdős at the Tihany graph theory colloquium with exponent 3/4. Folkman disproved this using K_{n,n²}: it has n³ edges but every C₄-free subgraph has only O(n²) edges. Erdős revised the conjecture to exponent 2/3 in 1971, noting that 1/2 is trivial. He mentioned Szemerédi proved it but gave no reference.",
+    "problemStatement": "Does every graph with m edges contain a subgraph with ≫ m^{2/3} edges which contains no C₄ (4-cycle)?",
+    "proofStrategy": "Conlon, Fox, and Sudakov (2014) proved the result using dependent random choice and the Kővári–Sós–Turán theorem. The idea is to carefully select a subgraph that avoids 4-cycles while retaining many edges. A simpler proof was later given by Hunter in the problem's comments.",
+    "keyInsights": [
+      "C₄ = K_{2,2}, so C₄-free graphs avoid complete bipartite subgraphs",
+      "The trivial bound m^{1/2} follows from Kővári–Sós–Turán",
+      "Folkman's K_{n,n²} shows m^{3/4} is impossible",
+      "The exponent 2/3 is optimal and achievable",
+      "This generalizes to K_{s,t}-free subgraphs"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "c4-definition",
+      "title": "4-Cycles and C₄-Freeness",
+      "summary": "Definition of 4-cycles (C₄) and C₄-free graphs",
+      "startLine": 45,
+      "endLine": 57
+    },
+    {
+      "id": "subgraph",
+      "title": "Subgraphs and Edge Count",
+      "summary": "Definitions for subgraph relation and edge counting",
+      "startLine": 59,
+      "endLine": 69
+    },
+    {
+      "id": "trivial-bound",
+      "title": "Trivial Bound: m^{1/2}",
+      "summary": "The easy bound via Kővári–Sós–Turán theorem",
+      "startLine": 71,
+      "endLine": 86
+    },
+    {
+      "id": "folkman",
+      "title": "Folkman's Counterexample",
+      "summary": "K_{n,n²} shows m^{3/4} is impossible",
+      "startLine": 88,
+      "endLine": 102
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result: m^{2/3}",
+      "summary": "Conlon-Fox-Sudakov theorem proving the optimal bound",
+      "startLine": 104,
+      "endLine": 122
+    },
+    {
+      "id": "generalization",
+      "title": "Generalization to K_{s,t}",
+      "summary": "Extension to avoiding complete bipartite graphs",
+      "startLine": 124,
+      "endLine": 146
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Every graph with m edges contains a C₄-free subgraph with Ω(m^{2/3}) edges. The exponent 2/3 is optimal, matching Folkman's lower bound from K_{n,n²}.",
+    "implications": "This result fits into the broader Zarankiewicz problem: understanding the maximum edges in K_{s,t}-free graphs. The technique of finding large forbidden-subgraph-free subgraphs has applications in combinatorics and theoretical computer science.",
+    "openQuestions": [
+      "Optimal constants in the Ω(m^{2/3}) bound",
+      "Algorithmic versions: can we efficiently find such subgraphs?",
+      "Extensions to other forbidden subgraphs beyond complete bipartite graphs"
+    ]
   }
 }

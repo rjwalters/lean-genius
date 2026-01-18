@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-1095-spf",
+    "proofId": "erdos-1095",
+    "range": { "startLine": 55, "endLine": 58 },
+    "type": "definition",
+    "title": "Smallest Prime Factor",
+    "content": "The smallest prime factor of n, or n itself if n ≤ 1. This uses Mathlib's minFac which efficiently finds the smallest prime divisor.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1095-krough",
+    "proofId": "erdos-1095",
+    "range": { "startLine": 60, "endLine": 62 },
+    "type": "definition",
+    "title": "k-Roughness",
+    "content": "An integer n is k-rough if all its prime factors exceed k. This is the central property we seek: when is C(n,k) k-rough? Roughness generalizes primality—all primes are 1-rough.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1095-binom",
+    "proofId": "erdos-1095",
+    "range": { "startLine": 64, "endLine": 69 },
+    "type": "definition",
+    "title": "Binomial Coefficient Condition",
+    "content": "We want C(n,k) = n!/(k!(n-k)!) to have all prime factors greater than k. For most n, some prime p ≤ k divides C(n,k) by Kummer's theorem on carries in base-p addition.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1095-g",
+    "proofId": "erdos-1095",
+    "range": { "startLine": 77, "endLine": 80 },
+    "type": "definition",
+    "title": "The Erdős-Selfridge Function g(k)",
+    "content": "g(k) is the smallest n > k+1 such that C(n,k) is k-rough. This is defined using Nat.find, which requires proving existence. The witness k! + k + 1 works because C(k!+k+1, k) has only large prime factors.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1095-basic",
+    "proofId": "erdos-1095",
+    "range": { "startLine": 82, "endLine": 92 },
+    "type": "theorem",
+    "title": "Basic Properties of g(k)",
+    "content": "Two immediate consequences of the definition: g(k) > k+1 (we skip n ≤ k+1), and C(g(k),k) is k-rough (by definition of g as the minimum such n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1095-ees",
+    "proofId": "erdos-1095",
+    "range": { "startLine": 100, "endLine": 106 },
+    "type": "theorem",
+    "title": "Original EES Bounds (1974)",
+    "content": "Ecklund, Erdős, and Selfridge proved: k^{1+c} < g(k) ≤ exp((1+o(1))k). The polynomial lower bound was their first result; the exponential upper bound comes from properties of factorials.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1095-konyagin",
+    "proofId": "erdos-1095",
+    "range": { "startLine": 108, "endLine": 111 },
+    "type": "theorem",
+    "title": "Konyagin's Improvement (1999)",
+    "content": "Konyagin improved the lower bound to g(k) ≫ exp(c·(log k)²). This is superpolynomial but far from the conjectured exp(c·k/log k). The proof uses deeper results on smooth numbers.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1095-lcm",
+    "proofId": "erdos-1095",
+    "range": { "startLine": 119, "endLine": 125 },
+    "type": "definition",
+    "title": "LCM Function and Conjecture",
+    "content": "L_k = lcm(1,2,...,k) ~ exp(k) by the Prime Number Theorem. The EES conjecture states g(k) < L_k for large k. Since L_k is essentially the product of primes ≤ k, this bounds g(k) naturally.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1095-lcmasym",
+    "proofId": "erdos-1095",
+    "range": { "startLine": 127, "endLine": 129 },
+    "type": "theorem",
+    "title": "LCM Asymptotic",
+    "content": "By the Prime Number Theorem, log(L_k)/k → 1. This is Chebyshev's function ψ(k) = log(L_k) ~ k. Thus L_k ~ e^k, matching the upper bound on g(k).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1095-ratio",
+    "proofId": "erdos-1095",
+    "range": { "startLine": 137, "endLine": 143 },
+    "type": "conjecture",
+    "title": "Ratio Conjectures",
+    "content": "The function g(k) is believed to be highly irregular: lim sup g(k+1)/g(k) = ∞ and lim inf g(k+1)/g(k) = 0. This means g can jump by arbitrary factors or barely change between consecutive k values.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1095-heuristic",
+    "proofId": "erdos-1095",
+    "range": { "startLine": 151, "endLine": 155 },
+    "type": "conjecture",
+    "title": "Heuristic Asymptotic",
+    "content": "The main conjecture: log g(k) ~ c·k/log k for some constant c. This is between the known bounds exp(c(log k)²) and exp((1+o(1))k). A 'right-thinking person' believes this but proving it remains open.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1095-consensus",
+    "proofId": "erdos-1095",
+    "range": { "startLine": 157, "endLine": 160 },
+    "type": "theorem",
+    "title": "ELS Consensus Bound",
+    "content": "Erdős-Lacampagne-Selfridge (1993) stated that any 'right-thinking person' would conjecture g(k) ≥ exp(c·k/log k). This expected lower bound remains unproven.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1095-values",
+    "proofId": "erdos-1095",
+    "range": { "startLine": 168, "endLine": 181 },
+    "type": "theorem",
+    "title": "Computed Values",
+    "content": "Known values: g(2)=3, g(3)=7, g(4)=23, g(5)=62, g(6)=143. These are OEIS A003458. For example, g(3)=7 because C(7,3)=35=5·7 has all prime factors >3, and no smaller n works.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1095-open",
+    "proofId": "erdos-1095",
+    "range": { "startLine": 189, "endLine": 192 },
+    "type": "conjecture",
+    "title": "The Main Open Problem",
+    "content": "Determine the precise growth rate of g(k). Find f(k) such that log g(k)/f(k) → 1. The conjecture is f(k) = c·k/log k, but the huge gap between known bounds leaves this wide open.",
+    "significance": "critical"
+  }
+]

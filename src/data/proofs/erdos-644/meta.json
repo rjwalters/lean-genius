@@ -1,33 +1,133 @@
 {
   "id": "erdos-644",
-  "title": "Erdős Problem #644",
+  "title": "Erdős #644: Covering Families of Sets",
   "slug": "erdos-644",
-  "description": "Let f(k,r)\" role=\"presentation\" style=\"position: relative;\">f(k,r)f(k,r)f(k,r) be minimal such that if A1,A2,&#x2026;\" role=\"presentation\" style=\"position: relative;\">A1,A2,…A1,A2,…A_1,A_2,\\ldots i...",
+  "description": "Let f(k,r) be the minimum size of a covering set for k-uniform families where every r sets share a common pair. Known: f(k,3)=2k, f(k,4)=⌊3k/2⌋, f(k,5)=⌊5k/4⌋, f(k,6)=k. Is f(k,7)=(3/4+o(1))k?",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Fon-Der-Flaass, Kostochka, Tuza",
     "sourceUrl": "https://erdosproblems.com/644",
-    "date": "",
-    "status": "pending",
+    "date": "1992",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos644Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "set-systems",
+      "covering"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 22,
     "erdosNumber": 644,
     "erdosUrl": "https://erdosproblems.com/644",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #644 from erdosproblems.com.",
-    "problemStatement": "Let f(k,r)\" role=\"presentation\" style=\"position: relative;\">f(k,r)f(k,r)f(k,r) be minimal such that if A1,A2,&#x2026;\" role=\"presentation\" style=\"position: relative;\">A1,A2,…A1,A2,…A_1,A_2,\\ldots is a family of sets, all of size k\" role=\"presentation\" style=\"position: relative;\">kkk, such that for every collection of r\" role=\"presentation\" style=\"position: relative;\">rrr of the Ais\" role=\"presentation\" style=\"position: relative;\">AisAisA_is there is some pair {x,y}\" role=\"presentation\" style=\"position: relative;\">{x,y}{x,y}\\{x,y\\} which intersects all of the Aj\" role=\"presentation\" style=\"position: relative;\">AjAjA_j, then there is some set of size f(k,r)\" role=\"presentation\" style=\"position: relative;\">f(k,r)f(k,r)f(k,r) which intersects all of the sets Ai\" role=\"presentation\" style=\"position: relative;\">AiAiA_i. Is it true thatf(k,7)=(1+o(1))34k?\" role=\"presentation\" style=\"text-align: center; position: relative;\">f(k,7)=(1+o(1))34k?f(k,7)=(1+o(1))34k?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős, Fon-Der-Flaass, Kostochka, and Tuza (1992) studied the function f(k,r): the minimum covering set size for k-uniform set families with the r-wise pair intersection property. They determined exact values for r = 3, 4, 5, 6, showing a decreasing sequence of coefficients.",
+    "problemStatement": "Let f(k,r) be minimal such that if A₁, A₂, ... is a family of k-sets where every r sets share a common pair {x,y} intersecting all of them, then some set of size f(k,r) intersects all Aᵢ. Q1: Is f(k,7) = (3/4 + o(1))k? Q2: For all r ≥ 3, does f(k,r) = (c_r + o(1))k for some constant c_r?",
+    "proofStrategy": "We formalize the r-wise pair intersection property, the covering function f(k,r), known exact values from EFKT92, monotonicity properties, extremal constructions, sunflower connections, and the two main open questions about asymptotic behavior.",
+    "keyInsights": [
+      "f(k,3) = 2k [EFKT92]",
+      "f(k,4) = ⌊3k/2⌋ [EFKT92]",
+      "f(k,5) = ⌊5k/4⌋ [EFKT92]",
+      "f(k,6) = k [EFKT92]",
+      "Coefficients decrease: 2, 3/2, 5/4, 1, ...?",
+      "f(k,r) is non-increasing in r"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-defs",
+      "title": "Basic Definitions",
+      "summary": "k-families and pair intersection property",
+      "startLine": 37,
+      "endLine": 63
+    },
+    {
+      "id": "f-function",
+      "title": "The Function f(k,r)",
+      "summary": "Definition and basic bounds",
+      "startLine": 65,
+      "endLine": 74
+    },
+    {
+      "id": "known-values",
+      "title": "Known Values (EFKT92)",
+      "summary": "Exact values for r = 3, 4, 5, 6",
+      "startLine": 76,
+      "endLine": 92
+    },
+    {
+      "id": "pattern",
+      "title": "Pattern in Coefficients",
+      "summary": "Decreasing sequence of c_r",
+      "startLine": 94,
+      "endLine": 118
+    },
+    {
+      "id": "question1",
+      "title": "Question 1: r = 7",
+      "summary": "Is f(k,7) = (3/4 + o(1))k?",
+      "startLine": 120,
+      "endLine": 136
+    },
+    {
+      "id": "question2",
+      "title": "Question 2: General Asymptotics",
+      "summary": "Existence of limiting coefficients",
+      "startLine": 138,
+      "endLine": 152
+    },
+    {
+      "id": "extremal",
+      "title": "Extremal Constructions",
+      "summary": "Lower bound constructions",
+      "startLine": 154,
+      "endLine": 170
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity Properties",
+      "summary": "f(k,r) behavior in k and r",
+      "startLine": 172,
+      "endLine": 184
+    },
+    {
+      "id": "sunflower",
+      "title": "Sunflower Connection",
+      "summary": "Relation to sunflower lemma",
+      "startLine": 186,
+      "endLine": 199
+    },
+    {
+      "id": "hypergraph",
+      "title": "Hypergraph Formulation",
+      "summary": "Equivalent covering problem",
+      "startLine": 201,
+      "endLine": 212
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "Limiting behavior",
+      "startLine": 214,
+      "endLine": 227
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjectures",
+      "summary": "Combined open questions",
+      "startLine": 229,
+      "endLine": 251
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #644 on covering families of sets. The function f(k,r) measures the minimum covering set size for k-uniform families with the r-wise pair property. Exact values are known for r = 3, 4, 5, 6, showing a pattern of decreasing coefficients.",
+    "implications": "Resolution would reveal whether the coefficient sequence has a limiting structure and what governs the asymptotic behavior of f(k,r) as r increases.",
+    "openQuestions": [
+      "Is f(k,7) = (3/4 + o(1))k?",
+      "Does f(k,r) = (c_r + o(1))k for all r ≥ 3?",
+      "What is the limit of c_r as r → ∞?",
+      "Does f(k,r) eventually stabilize?"
+    ]
   }
 }

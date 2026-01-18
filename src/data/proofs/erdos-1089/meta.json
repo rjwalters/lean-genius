@@ -1,33 +1,107 @@
 {
   "id": "erdos-1089",
-  "title": "Erdős Problem #1089",
+  "title": "Erdős Problem #1089: Distinct Distances in Higher Dimensions",
   "slug": "erdos-1089",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that every collection of ... points in ... determines at least ... many distinct distances. Estimate ...",
+  "description": "Let g_d(n) be minimal such that every g_d(n) points in ℝ^d determine at least n distinct distances. Does lim_{d→∞} g_d(n)/d^{n-1} exist? Known: g_d(n) ≫ d^{n-1}, but g_d(n) ≤ c^{d^{1-b_n}}. OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Kelly, Erdős (1975)",
     "sourceUrl": "https://erdosproblems.com/1089",
-    "date": "",
-    "status": "pending",
+    "date": "1975",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1089Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "distinct-distances",
+      "high-dimensions",
+      "combinatorial-geometry",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 1089,
     "erdosUrl": "https://erdosproblems.com/1089",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1089 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $g_d(n)$ be minimal such that every collection of $g_d(n)$ points in $\\mathbb{R}^d$ determines at least $n$ many distinct distances. Estimate $g_d(n)$. In particular, does\\[\\lim_{d\\to \\infty}\\frac{g_d(n)}{d^{n-1}}\\]exist?\n\n\n\nA question of Kelly. Erd\\H{o}s \\cite{Er75f} writes it is 'easy' to see that $g_d(n)\\gg d^{n-1}$. Erd\\H{o}s and Straus proved (in unpublished work mentioned in \\cite{Er75f}) that\\[g_d(n) \\leq c^{d^{1-b_n}}\\]for some constants $c>0$ and $b_n>0$.\n\nIt is trivial that $g_1(3)=4$, and easy to see that $g_2(3)=6$. Croft \\cite{Cr62} proved $g_3(3)=7$. The vertices of a $d$-dimensional cube demonstrate that\\[g_d(d+1)>2^d.\\]The function $g_d(n)$ is essentially the inverse of the function $f_d(n)$ considered in [1083] - with our definitions, $g_d(n)>m$ if and only if $f_d(m)<n$. The emphasis in this problem is, however, on the behaviour for fixed $n$ as $d\\to\\infty$.\n\n\n\n\n\nReferences\n\n\n[Cr62] Croft, H. T., $9$-point and $7$-point configurations in $3$-space. Proc. London Math. Soc. (3) (1962), 400-424.\n\n[Er75f] Erd\\H{o}s, Paul, On some problems of elementary and combinatorial geometry. Ann. Mat. Pura Appl. (4) (1975), 99-108.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This is the higher-dimensional generalization of the famous distinct distances problem. Kelly posed this problem about the threshold function g_d(n)—the minimum number of points in ℝ^d that guarantee n distinct pairwise distances. Erdős (1975) showed 'easily' that g_d(n) ≫ d^{n-1}. The hypercube provides a key construction: its 2^d vertices achieve only d distinct distances. Croft (1962) computed g_3(3) = 7, showing even small cases require careful analysis.",
+    "problemStatement": "Let g_d(n) be minimal such that every collection of g_d(n) points in ℝ^d determines at least n distinct distances. Estimate g_d(n). In particular, does lim_{d→∞} g_d(n)/d^{n-1} exist?",
+    "proofStrategy": "The Lean formalization defines g_d(n) as the infimum of thresholds guaranteeing n distinct distances. The cube construction provides the key lower bound: 2^d vertices have distances √1, √2, ..., √d (at most d values). Known bounds are captured as axioms: Erdős's lower bound g_d(n) ≫ d^{n-1} and Erdős-Straus upper bound g_d(n) ≤ c^{d^{1-b_n}}. The gap between bounds leaves the limit question open.",
+    "keyInsights": [
+      "g_d(n) = min{m : every m-point set in ℝ^d has ≥ n distinct distances}",
+      "Cube bound: 2^d vertices of the d-cube have only d distinct distances",
+      "Known small values: g_1(3)=4, g_2(3)=6, g_3(3)=7 (Croft 1962)",
+      "Lower bound: g_d(n) ≫ d^{n-1} (Erdős, 'easy')",
+      "Upper bound: g_d(n) ≤ c^{d^{1-b_n}} for some constants (Erdős-Straus)",
+      "Inverse of f_d(n) from problem #1083: g_d(n) > m iff f_d(m) < n"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "points",
+      "title": "Points and Distances",
+      "summary": "Points in ℝ^d and distinct distance counting",
+      "startLine": 38,
+      "endLine": 57
+    },
+    {
+      "id": "gfunction",
+      "title": "The Function g_d(n)",
+      "summary": "Definition of the threshold function",
+      "startLine": 59,
+      "endLine": 75
+    },
+    {
+      "id": "small",
+      "title": "Small Cases",
+      "summary": "Known exact values: g_1(3)=4, g_2(3)=6, g_3(3)=7",
+      "startLine": 77,
+      "endLine": 97
+    },
+    {
+      "id": "lower",
+      "title": "Lower Bound",
+      "summary": "Cube construction and d^{n-1} bound",
+      "startLine": 99,
+      "endLine": 121
+    },
+    {
+      "id": "upper",
+      "title": "Upper Bound",
+      "summary": "Erdős-Straus exponential bound",
+      "startLine": 123,
+      "endLine": 132
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "summary": "Does g_d(n)/d^{n-1} converge as d → ∞?",
+      "startLine": 134,
+      "endLine": 156
+    },
+    {
+      "id": "mono",
+      "title": "Monotonicity Properties",
+      "summary": "How g_d(n) varies with d and n",
+      "startLine": 158,
+      "endLine": 170
+    },
+    {
+      "id": "inverse",
+      "title": "Connection to f_d(n)",
+      "summary": "Relationship with problem #1083",
+      "startLine": 172,
+      "endLine": 184
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "The threshold function g_d(n) captures how many points in ℝ^d guarantee n distinct distances. The cube construction shows g_d(d+1) > 2^d, while Erdős proved g_d(n) ≫ d^{n-1}. The Erdős-Straus upper bound g_d(n) ≤ c^{d^{1-b_n}} leaves a huge gap. Whether g_d(n)/d^{n-1} converges as d → ∞ remains the central open question.",
+    "implications": "This connects to the famous distinct distances problem in the plane (Guth-Katz 2015) and understanding how distance structure changes with dimension. The focus on fixed n as d → ∞ differs from typical questions about n points in fixed dimension.",
+    "openQuestions": [
+      "Does lim_{d→∞} g_d(n)/d^{n-1} exist for each fixed n?",
+      "What is the true growth rate of g_d(n)?",
+      "Can the upper and lower bounds be improved?",
+      "What is g_4(3)? Higher exact values unknown."
+    ]
   }
 }

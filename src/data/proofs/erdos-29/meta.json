@@ -1,18 +1,21 @@
 {
   "id": "erdos-29",
-  "title": "Erdős Problem #29",
+  "title": "Erdős Problem #29: Explicit Economical Additive Basis",
   "slug": "erdos-29",
-  "description": "Is there an explicit construction of a set ... such that ... but ... for every ...? The existence of such a set was asked by Sidon to Erdős in 1932. Erdős (eventually) proved the existence of such ...",
+  "description": "Is there an explicit construction of A ⊆ ℕ such that A + A = ℕ but r_A(n) = o(n^ε) for every ε > 0? SOLVED by Jain-Pham-Sawhney-Zakharov (2024).",
   "meta": {
-    "author": "Unknown",
+    "author": "Sidon, Erdős",
     "sourceUrl": "https://erdosproblems.com/29",
-    "date": "",
-    "status": "pending",
+    "date": "1932",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos29Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "additive-basis",
+      "explicit-construction"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 1,
     "erdosNumber": 29,
     "erdosUrl": "https://erdosproblems.com/29",
@@ -20,15 +23,25 @@
     "erdosPrizeValue": "$100"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #29 from erdosproblems.com. Originally offered with a prize of $100.",
-    "problemStatement": "Is there an explicit construction of a set $A\\subseteq \\mathbb{N}$ such that $A+A=\\mathbb{N}$ but $1_A\\ast 1_A(n)=o(n^\\epsilon)$ for every $\\epsilon>0$? The existence of such a set was asked by Sidon to Erdős in 1932. Erdős (eventually) proved the existence of such a set using probabilistic methods. This problem asks for a constructive solution. An explicit construction was given by Jain, Pham, Sawhney, and Zakharov [JPSZ24]. View the LaTeX source This page was last edited 28 December 2025.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Sidon asked Erdős this question in 1932. Erdős proved existence using probabilistic methods, but the explicit construction remained open for 90+ years until Jain-Pham-Sawhney-Zakharov (2024).",
+    "problemStatement": "Is there an explicit construction of a set A ⊆ ℕ such that A + A = ℕ (additive basis) but r_A(n) = o(n^ε) for every ε > 0 (economical)?",
+    "proofStrategy": "The formalization defines sumsets, representation functions, and the economical condition. Key comparisons: ℕ is a basis but not economical (r(n) = n+1), Sidon sets are economical but not bases. The JPSZ construction achieves both properties with r_A(n) ≤ exp(C√(log n)).",
+    "keyInsights": [
+      "Economical means subpolynomial representation count: r_A(n) = o(n^ε) for all ε > 0",
+      "ℕ itself fails: r_ℕ(n) = n + 1 is linear, not subpolynomial",
+      "Sidon sets (unique representations) are too thin to be bases",
+      "JPSZ set is the 'Goldilocks' construction: thick enough to be a basis, thin enough to be economical",
+      "The representation bound exp(C√(log n)) is subpolynomial for all ε > 0"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #29 is SOLVED. Jain-Pham-Sawhney-Zakharov (2024) gave the first explicit economical additive basis after 90+ years. The formalization includes verified proofs that ℕ is not economical, squares are not a basis, and Sidon sets cannot be bases.",
+    "implications": "Transforms Erdős's probabilistic existence proof into a constructive algorithm. Demonstrates the power of modern combinatorics to resolve long-standing problems explicitly.",
+    "openQuestions": [
+      "Can the representation bound exp(C√(log n)) be improved?",
+      "What is the optimal density for economical bases?",
+      "Are there simpler explicit constructions?"
+    ]
   }
 }

@@ -1,34 +1,144 @@
 {
   "id": "erdos-564",
-  "title": "Erdős Problem #564",
+  "title": "Erdős Problem #564: Hypergraph Ramsey Numbers",
   "slug": "erdos-564",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimal ... such that if the edges of the ...-uniform hypergraph on ... vertices are ...-coloured then there i...",
+  "description": "Is there a constant c > 0 such that R₃(n) ≥ 2^{2^{cn}}? An open problem asking whether the lower bound for 3-uniform hypergraph Ramsey numbers can match the tower height of the upper bound.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Hajnal, and Rado (1965)",
     "sourceUrl": "https://erdosproblems.com/564",
-    "date": "",
-    "status": "pending",
+    "date": "1965",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos564Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "hypergraphs",
+      "combinatorics",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 564,
     "erdosUrl": "https://erdosproblems.com/564",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$500"
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$500",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for eventually properties",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of the OPEN Erdős Problem #564",
+      "Definition of k-uniform hypergraphs and the Ramsey property",
+      "Axiomatization of the hypergraph Ramsey function R_k(n)",
+      "Erdős-Hajnal-Rado bounds: 2^{cn²} < R₃(n) < 2^{2^n}",
+      "Tower function definitions and properties",
+      "Known values: R₃(3) = 4, R₃(4) = 13",
+      "Comparison with graph Ramsey numbers",
+      "Discussion of the 4-colour doubly exponential result"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #564 from erdosproblems.com. Originally offered with a prize of $500.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $R_3(n)$ be the minimal $m$ such that if the edges of the $3$-uniform hypergraph on $m$ vertices are $2$-coloured then there is a monochromatic copy of the complete $3$-uniform hypergraph on $n$ vertices.\n\nIs there some constant $c>0$ such that\\[R_3(n) \\geq 2^{2^{cn}}?\\]\n\n\n\nA special case of [562]. A problem of Erd\\H{o}s, Hajnal, and Rado \\cite{EHR65}, who prove the bounds\\[2^{cn^2}< R_3(n)< 2^{2^{n}}\\]for some constant $c>0$.\n\nErd\\H{o}s, Hajnal, M\\'{a}t\\'{e}, and Rado \\cite{EHMR84} have proved a doubly exponential lower bound for the corresponding problem with $4$ colours.\n\n\nSee also the entry in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[EHMR84] Erd\\H{o}s, Paul and Hajnal, Andr\\'{a}s and M\\'{a}t\\'{e}, Attila and Rado, Richard, Combinatorial set theory: partition relations for cardinals. (1984), 347.\n\n[EHR65] Erd\\H{o}s, P. and Hajnal, A. and Rado, R., Partition relations for cardinal numbers. Acta Math. Acad. Sci. Hungar. (1965), 93-196.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem sits at the heart of hypergraph Ramsey theory, a generalization of classical Ramsey theory to k-uniform hypergraphs (where edges connect exactly k vertices rather than 2). For graphs (k = 2), Erdős and Szekeres (1935) showed that Ramsey numbers grow exponentially: roughly 2^{n/2} < R(n) < 4^n.\n\nFor 3-uniform hypergraphs (edges are triples), growth is dramatically faster. Erdős, Hajnal, and Rado proved in 1965 that 2^{cn²} < R₃(n) < 2^{2^n}. The lower bound is singly exponential in n², while the upper bound is a tower of exponentials of height 2.\n\nThe central question (Problem #564) asks whether the lower bound can be improved to match the tower height of the upper bound. If true, it would show that hypergraph Ramsey numbers are fundamentally 'tower-type' — requiring iterated exponentiation to describe. Erdős offered $500 for a resolution.",
+    "problemStatement": "**Problem (Erdős-Hajnal-Rado, 1965)**: Let $R_3(n)$ be the minimal $m$ such that if the edges of the 3-uniform hypergraph on $m$ vertices are 2-coloured, there is a monochromatic complete 3-uniform hypergraph on $n$ vertices.\n\nIs there some constant $c > 0$ such that\n$$R_3(n) \\geq 2^{2^{cn}}?$$\n\n**Status**: OPEN ($500 prize)\n\n**Known Bounds** (Erdős-Hajnal-Rado 1965):\n$$2^{cn^2} < R_3(n) < 2^{2^n}$$\n\nThe question asks whether the 'tower height' of the lower bound (currently 1, exponential in n²) can be increased to 2, matching the upper bound.\n\n**Evidence**: Erdős, Hajnal, Máté, and Rado (1984) proved a doubly exponential lower bound for the 4-colour version, suggesting the 2-colour case might also have such a bound.",
+    "proofStrategy": "We formalize this OPEN problem by:\n\n1. **Uniform Hypergraphs**: Define k-uniform hypergraphs as sets of k-element subsets of vertices.\n\n2. **Ramsey Property**: Define HasHypergraphRamseyProperty k m n expressing that any 2-colouring of the complete k-uniform hypergraph on m vertices contains a monochromatic clique of size n.\n\n3. **Ramsey Function**: Axiomatize R k n as the minimal m with the Ramsey property.\n\n4. **Known Bounds**: State the Erdős-Hajnal-Rado upper and lower bounds as axioms.\n\n5. **Main Conjecture**: Express erdos_564_conjecture using Filter.atTop to state 'for all sufficiently large n'.\n\n6. **Tower Functions**: Define tower k n = 2↑↑k (iterated exponentiation) to clarify the growth rate hierarchy.\n\n7. **Known Values**: State R₃(3) = 4 and R₃(4) = 13 as axioms.\n\n8. **Comparison**: State bounds for graph Ramsey numbers (k = 2) showing they're merely exponential.",
+    "keyInsights": [
+      "**Tower growth hierarchy**: The key insight is about 'tower height'. Growth rate 2^n (tower 1) is fundamentally different from 2^{2^n} (tower 2). The question asks which tower height describes R₃(n).",
+      "**Graph vs hypergraph gap**: For graphs (k = 2), Ramsey numbers grow exponentially (tower 1). For k = 3, we know they're between tower(1, n²) and tower(2, n). The gap is enormous.",
+      "**Known small values**: R₃(3) = 4 and R₃(4) = 13 are known exactly. These small values give no hint about asymptotic behavior.",
+      "**4-colour evidence**: The doubly exponential lower bound for 4 colours suggests the 2-colour case might also have tower height 2.",
+      "**Bounds gap**: For n = 10, the lower bound ~2^{100} and upper bound 2^{1024} differ by a factor of 2^{924} — illustrating the massive uncertainty."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Introduction to the hypergraph Ramsey number problem and known bounds"
+    },
+    {
+      "id": "hypergraphs",
+      "title": "Uniform Hypergraphs",
+      "startLine": 33,
+      "endLine": 44,
+      "summary": "Definitions of k-uniform hypergraphs and 2-colourings"
+    },
+    {
+      "id": "ramsey-function",
+      "title": "The Ramsey Function R_k(n)",
+      "startLine": 46,
+      "endLine": 71,
+      "summary": "Definition and axiomatization of hypergraph Ramsey numbers"
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds (EHR 1965)",
+      "startLine": 73,
+      "endLine": 92,
+      "summary": "The Erdős-Hajnal-Rado upper and lower bounds"
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 94,
+      "endLine": 115,
+      "summary": "The $500 open problem asking for doubly exponential lower bound"
+    },
+    {
+      "id": "tower",
+      "title": "Tower Functions",
+      "startLine": 117,
+      "endLine": 149,
+      "summary": "Definition and properties of iterated exponentiation"
+    },
+    {
+      "id": "small-values",
+      "title": "Small Values",
+      "startLine": 151,
+      "endLine": 164,
+      "summary": "Known exact values R₃(3) = 4 and R₃(4) = 13"
+    },
+    {
+      "id": "comparison",
+      "title": "Graph Ramsey Comparison",
+      "startLine": 166,
+      "endLine": 189,
+      "summary": "Comparison with exponential growth of graph Ramsey numbers"
+    },
+    {
+      "id": "four-colour",
+      "title": "The 4-Colour Case",
+      "startLine": 191,
+      "endLine": 212,
+      "summary": "Evidence from the 4-colour doubly exponential result"
+    },
+    {
+      "id": "gap",
+      "title": "Why the Problem is Hard",
+      "startLine": 214,
+      "endLine": 228,
+      "summary": "Illustration of the enormous gap between known bounds"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #564, an OPEN question with a $500 prize asking whether R₃(n) ≥ 2^{2^{cn}} for some c > 0. We axiomatize the hypergraph Ramsey function, state the known Erdős-Hajnal-Rado bounds, and define tower functions to clarify the growth rate hierarchy. The problem asks whether hypergraph Ramsey numbers have 'tower height' 2 (doubly exponential) or remain closer to tower height 1 (singly exponential).",
+    "implications": "A resolution would fundamentally characterize the growth rate of hypergraph Ramsey numbers. A positive answer (YES) would show they're doubly exponential, with profound implications for combinatorics and theoretical computer science. A negative answer would suggest an interesting 'intermediate' growth rate between singly and doubly exponential.",
+    "openQuestions": [
+      "Does R₃(n) ≥ 2^{2^{cn}} hold for some c > 0? ($500 prize)",
+      "What is the exact tower height of R_k(n) for general k?",
+      "Can the Erdős-Hajnal-Rado bounds be improved incrementally?",
+      "What techniques might close the gap between the bounds?",
+      "Does the 4-colour doubly exponential proof extend to 2 colours?"
+    ]
   }
 }

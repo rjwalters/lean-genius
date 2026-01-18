@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-902-tournament",
+    "proofId": "erdos-902",
+    "range": { "startLine": 40, "endLine": 45 },
+    "type": "definition",
+    "title": "Tournament",
+    "content": "A complete directed graph: for any two vertices, exactly one edge exists.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-902-dominates",
+    "proofId": "erdos-902",
+    "range": { "startLine": 52, "endLine": 54 },
+    "type": "definition",
+    "title": "Dominates",
+    "content": "Vertex v dominates set S if v beats all vertices in S.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-902-ndom",
+    "proofId": "erdos-902",
+    "range": { "startLine": 60, "endLine": 62 },
+    "type": "definition",
+    "title": "n-Dominating",
+    "content": "Tournament where every n-set is dominated by some vertex.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-902-f",
+    "proofId": "erdos-902",
+    "range": { "startLine": 66, "endLine": 72 },
+    "type": "definition",
+    "title": "f(n)",
+    "content": "Minimum tournament order where every n-set is dominated.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-902-f1",
+    "proofId": "erdos-902",
+    "range": { "startLine": 84, "endLine": 86 },
+    "type": "theorem",
+    "title": "f(1) = 3",
+    "content": "Rock-paper-scissors: the minimal 1-dominating tournament.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-902-f2",
+    "proofId": "erdos-902",
+    "range": { "startLine": 93, "endLine": 95 },
+    "type": "theorem",
+    "title": "f(2) = 7",
+    "content": "Paley tournament of order 7 achieves this bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-902-f3",
+    "proofId": "erdos-902",
+    "range": { "startLine": 107, "endLine": 109 },
+    "type": "theorem",
+    "title": "f(3) = 19",
+    "content": "Computationally determined exact value.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-902-lower",
+    "proofId": "erdos-902",
+    "range": { "startLine": 123, "endLine": 126 },
+    "type": "theorem",
+    "title": "Szekeres Lower Bound",
+    "content": "f(n) >= c * n * 2^n for some c > 0 (1965).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-902-upper",
+    "proofId": "erdos-902",
+    "range": { "startLine": 141, "endLine": 144 },
+    "type": "theorem",
+    "title": "Erdos Upper Bound",
+    "content": "f(n) <= C * n^2 * 2^n via probabilistic method (1963).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-902-ratio",
+    "proofId": "erdos-902",
+    "range": { "startLine": 154, "endLine": 155 },
+    "type": "definition",
+    "title": "Asymptotic Ratio",
+    "content": "f(n) / (n * 2^n): the key quantity to estimate.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-902-gap",
+    "proofId": "erdos-902",
+    "range": { "startLine": 167, "endLine": 171 },
+    "type": "theorem",
+    "title": "Asymptotic Gap",
+    "content": "c <= f(n)/(n*2^n) <= C*n. The gap remains open.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-902-paley",
+    "proofId": "erdos-902",
+    "range": { "startLine": 175, "endLine": 177 },
+    "type": "definition",
+    "title": "Paley Edge",
+    "content": "Edge u->v iff v-u is a quadratic residue mod prime p.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-902-residue",
+    "proofId": "erdos-902",
+    "range": { "startLine": 191, "endLine": 193 },
+    "type": "definition",
+    "title": "Quadratic Residue",
+    "content": "a is a QR if a = x^2 for some nonzero x.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-902-domnum",
+    "proofId": "erdos-902",
+    "range": { "startLine": 202, "endLine": 207 },
+    "type": "definition",
+    "title": "Domination Number",
+    "content": "Maximum n such that tournament is n-dominating.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-902-random",
+    "proofId": "erdos-902",
+    "range": { "startLine": 216, "endLine": 219 },
+    "type": "definition",
+    "title": "Random Tournament",
+    "content": "Probability that random k-tournament is n-dominating.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-902-prob",
+    "proofId": "erdos-902",
+    "range": { "startLine": 226, "endLine": 229 },
+    "type": "theorem",
+    "title": "Probabilistic Existence",
+    "content": "For any n, an n-dominating tournament exists.",
+    "significance": "key"
+  }
+]

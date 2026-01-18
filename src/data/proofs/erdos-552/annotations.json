@@ -1,1 +1,173 @@
-[]
+[
+  {
+    "id": "ann-552-cycle",
+    "proofId": "erdos-552",
+    "range": { "startLine": 41, "endLine": 48 },
+    "type": "definition",
+    "title": "Cycle Graph",
+    "content": "The cycle graph Cₙ on n vertices. Vertices i and j are adjacent if they differ by 1 mod n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-552-c4",
+    "proofId": "erdos-552",
+    "range": { "startLine": 51, "endLine": 51 },
+    "type": "definition",
+    "title": "C₄",
+    "content": "The 4-cycle, the specific cycle graph in this problem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-552-star",
+    "proofId": "erdos-552",
+    "range": { "startLine": 54, "endLine": 57 },
+    "type": "definition",
+    "title": "Star Graph",
+    "content": "Sₙ = K_{1,n}: one center vertex connected to n leaves. The other graph in our Ramsey problem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-552-subgraph",
+    "proofId": "erdos-552",
+    "range": { "startLine": 62, "endLine": 64 },
+    "type": "definition",
+    "title": "Contains Subgraph",
+    "content": "G contains H if there's an injective map preserving adjacency. Used in Ramsey definition.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-552-complement",
+    "proofId": "erdos-552",
+    "range": { "startLine": 67, "endLine": 70 },
+    "type": "definition",
+    "title": "Graph Complement",
+    "content": "The complement has edges exactly where the original doesn't. Represents the 'other color' in 2-colorings.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-552-ramsey",
+    "proofId": "erdos-552",
+    "range": { "startLine": 74, "endLine": 77 },
+    "type": "definition",
+    "title": "Ramsey Number",
+    "content": "R(H₁, H₂) = minimum N such that every 2-coloring of K_N contains monochromatic H₁ or H₂.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-552-rc4sn",
+    "proofId": "erdos-552",
+    "range": { "startLine": 80, "endLine": 81 },
+    "type": "definition",
+    "title": "R(C₄, Sₙ)",
+    "content": "The specific Ramsey number: minimum N where every 2-coloring has red C₄ or blue Sₙ.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-552-parsons",
+    "proofId": "erdos-552",
+    "range": { "startLine": 86, "endLine": 88 },
+    "type": "theorem",
+    "title": "Parsons Upper Bound",
+    "content": "R(C₄, Sₙ) ≤ n + ⌈√n⌉ + 1. The 1975 upper bound, still the best known.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-552-befrs",
+    "proofId": "erdos-552",
+    "range": { "startLine": 92, "endLine": 95 },
+    "type": "theorem",
+    "title": "BEFRS Lower Bound",
+    "content": "R(C₄, Sₙ) ≥ n + √n - 6n^{11/40}. The 1989 lower bound from Burr-Erdős-Faudree-Rousseau-Schelp.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-552-exact1",
+    "proofId": "erdos-552",
+    "range": { "startLine": 106, "endLine": 108 },
+    "type": "theorem",
+    "title": "Exact Value q² + 1",
+    "content": "For n = q² + 1 (q prime power): R = n + ⌈√n⌉ = n + q. The smaller case.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-552-exact2",
+    "proofId": "erdos-552",
+    "range": { "startLine": 111, "endLine": 113 },
+    "type": "theorem",
+    "title": "Exact Value q²",
+    "content": "For n = q² (q prime power): R = n + ⌈√n⌉ + 1 = n + q + 1. The larger case.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-552-question",
+    "proofId": "erdos-552",
+    "range": { "startLine": 125, "endLine": 126 },
+    "type": "definition",
+    "title": "Erdős Question",
+    "content": "For c > 0, are there infinitely many n with R(C₄, Sₙ) ≤ n + √n - c? The main open question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-552-conjecture",
+    "proofId": "erdos-552",
+    "range": { "startLine": 129, "endLine": 130 },
+    "type": "definition",
+    "title": "Erdős Conjecture",
+    "content": "The question holds for ALL c > 0. This is the $100 prize question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-552-primegap",
+    "proofId": "erdos-552",
+    "range": { "startLine": 139, "endLine": 142 },
+    "type": "definition",
+    "title": "Prime Gap",
+    "content": "The gap between consecutive primes. Connected to the problem via projective plane constructions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-552-cramer",
+    "proofId": "erdos-552",
+    "range": { "startLine": 145, "endLine": 147 },
+    "type": "definition",
+    "title": "Cramér's Conjecture",
+    "content": "Prime gaps are O((log p)²). If true, the lower bound improves significantly.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-552-cramerimprove",
+    "proofId": "erdos-552",
+    "range": { "startLine": 150, "endLine": 153 },
+    "type": "theorem",
+    "title": "Cramér Improves Bound",
+    "content": "Under Cramér's conjecture: R ≥ n + √n - n^ε for any ε > 0. A conditional result.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-552-f",
+    "proofId": "erdos-552",
+    "range": { "startLine": 158, "endLine": 158 },
+    "type": "definition",
+    "title": "Function f(n)",
+    "content": "f(n) = R(C₄, Sₙ). Convenient notation for studying the sequence.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-552-conseq",
+    "proofId": "erdos-552",
+    "range": { "startLine": 161, "endLine": 162 },
+    "type": "definition",
+    "title": "Consecutive Equal",
+    "content": "Does f(n+1) = f(n) infinitely often? A related open question.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-552-parsonscons",
+    "proofId": "erdos-552",
+    "range": { "startLine": 176, "endLine": 179 },
+    "type": "theorem",
+    "title": "Parsons Construction",
+    "content": "Uses projective plane PG(2,q) to construct extremal graphs. The polarity graph achieves the bound.",
+    "significance": "key"
+  }
+]

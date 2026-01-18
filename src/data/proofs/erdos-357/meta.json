@@ -1,33 +1,152 @@
 {
   "id": "erdos-357",
-  "title": "Erdős Problem #357",
+  "title": "Erdős #357: Distinct Consecutive Sums",
   "slug": "erdos-357",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be integers such that all sums of the shape ... are distinct. Let ... be the maximal such ....\n\nHow does ... grow? Is...",
+  "description": "Let f(n) = max k for 1 ≤ a₁ < ... < aₖ ≤ n with all consecutive sums distinct. Is f(n) = o(n)? Known: f(n) ≥ (2+o(1))√n.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Harzheim, Hegyvári, Weisenberg",
     "sourceUrl": "https://erdosproblems.com/357",
-    "date": "",
-    "status": "pending",
+    "date": "1977-1986",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos357Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "number-theory",
+      "sequences",
+      "distinct-sums"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 18,
     "erdosNumber": 357,
     "erdosUrl": "https://erdosproblems.com/357",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Asymptotics.isLittleO",
+        "description": "Little-o asymptotic notation",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for limits at infinity",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of distinct consecutive sums property",
+      "Three variants: f(n), g(n), h(n) with different monotonicity",
+      "Weisenberg's √n lower bound as axiom",
+      "Hegyvári's linear bounds for g(n) as axiom",
+      "Connection to B₂ sequences and Sidon sets"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #357 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $1\\leq a_1<\\cdots <a_k\\leq n$ be integers such that all sums of the shape $\\sum_{u\\leq i\\leq v}a_i$ are distinct. Let $f(n)$ be the maximal such $k$.\n\nHow does $f(n)$ grow? Is $f(n)=o(n)$?\n\n\n\nAsked by Erd\\H{o}s and Harzheim. In \\cite{Er77c} Erd\\H{o}s asks about an infinite such set of integers, and whether such a set must have density $0$. He notes that a simple averaging process implies $a_k \\gg k\\log k$ for infinitely many $k$, and so the lower density is $0$. He also asks whether $\\sum\\frac{1}{a_k}$ must converge.\n\nWeisenberg in the comments observes that any set which satisfies [874] also has this property, which implies $f(n)\\geq (2+o(1))n^{1/2}$.\n\nIf $g(n)$ is the maximal $k$ such that there are $1\\leq a_1,\\ldots,a_k\\leq n$ with all consecutive sums distinct (i.e. we drop the monotonicity assumption in the definition of $f$) then Hegyv\\'{a}ri \\cite{He86} has proved that\\[\\left(\\frac{1}{3}+o(1)\\right) n\\leq g(n)\\leq \\left(\\frac{2}{3}+o(1)\\right)n.\\]The upper bound of Coppersmith and Phillips in [867] implies\\[g(n) \\leq \\left(\\frac{2}{3}-\\frac{1}{512}+o(1)\\right)n.\\]A similar question can be asked if we replace strict monotonicity with weak monotonicity (i.e. we allow $a_i=a_j$).\n\nErd\\H{o}s and Harzheim also ask what is the least $m$ which is not a sum of the given form? Can it be much larger than $n$? Erd\\H{o}s and Harzheim can show that $\\sum_{x<a_i<x^2}\\frac{1}{a_i}\\ll 1$. Is it true that $\\sum_i \\frac{1}{a_i}\\ll 1$?\n\nSee also [34], [356], [670], and [867]. The multiplicative analogue is [421].\n\n\n\n\nReferences\n\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n[He86] Hegyv\\'ari, N., On consecutive sums in sequences. Acta Math. Hungar. (1986), 193--200.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #357 was posed by Erdős and Harzheim. Given integers 1 ≤ a₁ < a₂ < ... < aₖ ≤ n, we require that all 'consecutive sums' Σᵢ₌ᵤᵛ aᵢ (sums over contiguous index ranges) are distinct.\n\nFor a sequence of length k, there are k(k+1)/2 such sums (k single elements, k-1 pairs, etc.). The question asks how large k can be while maintaining distinctness.\n\nWeisenberg observed that any B₂ sequence (Sidon set) satisfies this condition, giving f(n) ≥ (2+o(1))√n. For the non-monotone variant g(n), Hegyvári (1986) proved (1/3+o(1))n ≤ g(n) ≤ (2/3+o(1))n.\n\nErdős also asked about infinite sets with this property, conjecturing they have density 0 and that Σ 1/aₖ converges.",
+    "problemStatement": "Let 1 ≤ a₁ < a₂ < ... < aₖ ≤ n be integers such that all sums Σᵢ₌ᵤᵛ aᵢ (for 1 ≤ u ≤ v ≤ k) are distinct. Define f(n) = max such k.\n\n**Main Question**: Is f(n) = o(n)?\n\n**Status**: OPEN\n\n**Known**:\n- f(n) ≥ (2 + o(1))√n (Weisenberg)\n- For non-monotone g(n): (1/3)n ≤ g(n) ≤ (2/3)n (Hegyvári 1986)",
+    "proofStrategy": "We formalize three variants of the problem:\n\n1. **f(n)**: strictly increasing sequences\n2. **g(n)**: arbitrary sequences (no monotonicity)\n3. **h(n)**: weakly increasing sequences (allowing ties)\n\nThe key insight is that k(k+1)/2 consecutive sums must all be distinct, limiting k. For strictly increasing sequences, Weisenberg's lower bound comes from B₂ sequences. For non-monotone sequences, Hegyvári's analysis shows linear growth.\n\nWe axiomatize the main results and explore connections to Sidon sets and subset sum problems.",
+    "keyInsights": [
+      "**Consecutive sums**: For indices u ≤ v, the sum Σᵢ₌ᵤᵛ aᵢ. There are k(k+1)/2 such sums for k elements.",
+      "**B₂ connection**: Sidon sets (where all pairwise sums are distinct) satisfy this condition, giving the √n lower bound.",
+      "**Monotonicity matters**: Without the strictly increasing requirement, g(n) = Θ(n). With it, f(n) might be o(n).",
+      "**Infinite sets**: Any infinite sequence with distinct consecutive sums has lower density 0 and possibly density 0.",
+      "**Powers of 2**: The sequence {1, 2, 4, 8, ...} has all consecutive sums distinct (binary representation uniqueness)."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "consecutive-sums",
+      "title": "Consecutive Sums Property",
+      "startLine": 40,
+      "endLine": 57,
+      "summary": "Definition of contiguous intervals and distinct consecutive sums."
+    },
+    {
+      "id": "function-f",
+      "title": "The Function f(n)",
+      "startLine": 59,
+      "endLine": 81,
+      "summary": "f(n) = max k for strictly increasing sequences with distinct sums."
+    },
+    {
+      "id": "trivial-bounds",
+      "title": "Trivial Bounds",
+      "startLine": 83,
+      "endLine": 109,
+      "summary": "Basic bounds: f(n) ≤ n, f(n) ≥ 1, counting contiguous intervals."
+    },
+    {
+      "id": "weisenberg",
+      "title": "Weisenberg's Lower Bound",
+      "startLine": 111,
+      "endLine": 130,
+      "summary": "f(n) ≥ (2 + o(1))√n via B₂ sequences."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 132,
+      "endLine": 149,
+      "summary": "Is f(n) = o(n)? Equivalent formulations."
+    },
+    {
+      "id": "variant-g",
+      "title": "Non-Monotone Variant g(n)",
+      "startLine": 151,
+      "endLine": 172,
+      "summary": "No monotonicity requirement; Hegyvári's bounds."
+    },
+    {
+      "id": "variant-h",
+      "title": "Weakly Monotone Variant h(n)",
+      "startLine": 174,
+      "endLine": 190,
+      "summary": "Allowing ties (a_i = a_j)."
+    },
+    {
+      "id": "infinite-sets",
+      "title": "Infinite Sets",
+      "startLine": 192,
+      "endLine": 209,
+      "summary": "Density and convergence conjectures for infinite sequences."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 211,
+      "endLine": 230,
+      "summary": "Concrete examples: {1,2,4}, powers of 2."
+    },
+    {
+      "id": "b2-connection",
+      "title": "B₂ Sequences",
+      "startLine": 232,
+      "endLine": 249,
+      "summary": "Connection to Sidon sets and the √n bound."
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "startLine": 251,
+      "endLine": 267,
+      "summary": "Problems #874, #421, and distinct subset sums."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #357 on distinct consecutive sums. The main question—whether f(n) = o(n)—remains open. We know f(n) ≥ (2+o(1))√n from B₂ sequences, and the non-monotone variant g(n) = Θ(n).",
+    "implications": "The problem connects to several areas: Sidon sets (additive combinatorics), sequence density (analytic number theory), and subset sums (combinatorics). The gap between √n and n bounds leaves room for the main conjecture.",
+    "openQuestions": [
+      "Is f(n) = o(n)?",
+      "What is the true growth rate of f(n)?",
+      "Do infinite sequences with this property have density 0?",
+      "Does Σ 1/aₖ converge for such infinite sequences?",
+      "Is h(n) = o(n) for the weakly monotone variant?"
+    ]
   }
 }

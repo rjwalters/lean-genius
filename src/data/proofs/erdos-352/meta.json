@@ -1,33 +1,152 @@
 {
   "id": "erdos-352",
-  "title": "Erdős Problem #352",
+  "title": "Erdős Problem #352: Triangles of Area 1 in Measurable Sets",
   "slug": "erdos-352",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some ... such that every measurable ... of measure ... contains the vertices of a triangle of area 1?\n\n\n\nErds (unpub...",
+  "description": "Is there c > 0 such that every measurable set A in R^2 with measure >= c contains a triangle of area 1? Conjectured c = 4pi/sqrt(27). Open problem.",
   "meta": {
-    "author": "Unknown",
+    "author": "Freiling-Mauldin (2002 partial), Erdős (unpublished special cases)",
     "sourceUrl": "https://erdosproblems.com/352",
-    "date": "",
-    "status": "pending",
+    "date": "1978-present",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos352Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometric-measure-theory",
+      "triangles",
+      "lebesgue-measure",
+      "convexity"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 352,
     "erdosUrl": "https://erdosproblems.com/352",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.volume",
+        "description": "Lebesgue measure on R^n",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "IsCompact",
+        "description": "Compact sets in topological spaces",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      },
+      {
+        "theorem": "Convex",
+        "description": "Convex sets in vector spaces",
+        "module": "Mathlib.Analysis.Convex.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function on reals",
+        "module": "Mathlib.Data.Real.Sqrt"
+      }
+    ],
+    "originalContributions": [
+      "Clean definition of triangle area via 2D cross product",
+      "Formal statement of the main open question",
+      "Definition of the conjectured constant 4pi/sqrt(27)",
+      "Axiomatization of known results (infinite measure, unbounded, compact convex)",
+      "Critical circle witness showing optimality of the constant",
+      "Reduction to finite unions of compact convex interiors"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #352 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some $c>0$ such that every measurable $A\\subseteq \\mathbb{R}^2$ of measure $\\geq c$ contains the vertices of a triangle of area 1?\n\n\n\nErd\\H{o}s (unpublished) proved that this is true if $A$ has infinite measure, or if $A$ is an unbounded set of positive measure (stating in \\cite{Er78d} and \\cite{Er83d} it 'follows easily from the Lebesgue density theorem').\n\nIn \\cite{Er78d} and \\cite{Er83d} he speculated that perhaps $C=4\\pi/\\sqrt{27}\\approx 2.418$ works, which would be the best possible, as witnessed by a circle of radius $<2\\cdot 3^{-3/4}$.\n\nFurther evidence for this is given by a result of Freiling and Mauldin \\cite{Ma02}, who proved that if $A$ has outer measure $>4\\pi/\\sqrt{27}$ then $A$ contains the vertices of a triangle with area $>1$. This also proves the same threshold for the original problem under the assumption that $A$ is a compact convex set.\n\nMauldin also discusses this problem in \\cite{Ma13}, in which he notes that it suffices to prove this under the assumption that $A$ is the union of the interiors of $n<\\infty$ many compact convex sets. Freiling and Mauldin (see \\cite{Ma13}) have proved this conjecture if $1\\leq n\\leq 3$.\n\n\n\n\nReferences\n\n\n[Er78d] Erd\\H{o}s, P., Set-theoretic, measure-theoretic, combinatorial, and\nnumber-theoretic problems concerning point sets in Euclidean\nspace. Real Anal. Exchange (1978/79), 113-138.\n\n[Er83d] Erd\\H{o}s, Paul, Some combinatorial, geometric and set theoretic problems in measure theory. Measure Theory, Oberwolfach 1983: Proceedings of the Conference held at Oberwolfach, June 26-July 2, 1983 (1984), 321-327.\n\n[Ma02] Mauldin, R. D., Some problems in set theory, analysis and geometry. (2002), 493--506.\n\n[Ma13] Mauldin, R. Daniel, Some problems and ideas of {E}rd\\H{o}s in analysis and\ngeometry. (2013), 365--376.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem sits at the intersection of geometric measure theory and combinatorial geometry. It asks a fundamental question: how much measure is needed to guarantee the existence of a 'large' geometric configuration?\n\nErdős posed this problem in his papers [Er78d] (1978/79) and [Er83d] (1984). He proved two special cases: (1) sets of infinite measure contain unit triangles, and (2) unbounded sets of positive measure contain unit triangles. Both follow from the Lebesgue density theorem, which says that almost every point of a measurable set is a 'density point'.\n\nErdős conjectured that the optimal threshold is c = 4pi/sqrt(27) ≈ 2.418. This is witnessed by a circle of radius r = 2·3^{-3/4}: its area is exactly 4pi/sqrt(27), and the largest inscribed triangle is equilateral with area (3sqrt(3)/4)r^2 < 1. Freiling and Mauldin made significant progress, proving the conjecture for compact convex sets and for unions of at most 3 compact convex sets.",
+    "problemStatement": "**Erdős Problem #352**: Is there some $c > 0$ such that every measurable $A \\subseteq \\mathbb{R}^2$ of measure $\\geq c$ contains the vertices of a triangle of area 1?\n\n**Status**: OPEN\n\n**Conjectured Answer**: YES, with $c = \\frac{4\\pi}{\\sqrt{27}} \\approx 2.418$\n\n**Known Results**:\n- TRUE for infinite measure sets (Erdős, unpublished)\n- TRUE for unbounded sets of positive measure (Erdős, unpublished)\n- TRUE for compact convex sets (Freiling-Mauldin, 2002)\n- TRUE for unions of $\\leq 3$ compact convex interiors (Freiling-Mauldin)\n\n**Witness for Optimality**: A circle of radius $2 \\cdot 3^{-3/4}$ has area exactly $\\frac{4\\pi}{\\sqrt{27}}$ but contains no triangle of area 1.",
+    "proofStrategy": "We formalize this problem by:\n\n1. **Define triangle area**: Using the 2D cross product formula: Area = (1/2)|det([q-p, r-p])| = (1/2)|cross2D(q-p, r-p)|.\n\n2. **Define the main property**: ContainsUnitTriangle A means there exist p, q, r in A with triangleArea p q r = 1.\n\n3. **State the main question**: Does there exist c > 0 such that measure(A) >= c implies ContainsUnitTriangle A?\n\n4. **Define the conjectured constant**: erdosConstant = 4pi/sqrt(27).\n\n5. **Axiomatize known results**: Infinite measure case, unbounded case, Freiling-Mauldin results for compact convex sets.\n\n6. **Define the critical circle witness**: criticalRadius = 2·3^{-3/4}, showing the constant is optimal.\n\n7. **State the reduction**: Mauldin showed it suffices to prove for finite unions of compact convex interiors.",
+    "keyInsights": [
+      "**Why 4pi/sqrt(27)?**: This is the area of a circle of radius 2·3^{-3/4}. Inside such a circle, the largest inscribed triangle is equilateral with area exactly approaching 1 as the radius approaches the critical value.",
+      "**Lebesgue density theorem**: A key tool - almost every point of a measurable set is a density point. This easily proves the infinite measure and unbounded cases.",
+      "**Compact convex case**: Freiling-Mauldin proved the conjecture for compact convex sets. The non-convex case remains open.",
+      "**Reduction to finite unions**: Mauldin showed the general problem reduces to unions of finitely many compact convex interiors. Freiling-Mauldin verified this for n <= 3.",
+      "**Triangle area formula**: Area = (1/2)|x1(y2-y3) + x2(y3-y1) + x3(y1-y2)| = (1/2)|cross product|."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Problem statement, status, known results, and references."
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 33,
+      "endLine": 41,
+      "summary": "Mathlib imports for measure theory, inner products, determinants."
+    },
+    {
+      "id": "triangle-area",
+      "title": "Triangle Area Definition",
+      "startLine": 43,
+      "endLine": 76,
+      "summary": "2D cross product, signed and unsigned triangle area, basic properties."
+    },
+    {
+      "id": "main-property",
+      "title": "The Main Property",
+      "startLine": 78,
+      "endLine": 88,
+      "summary": "ContainsTriangleOfArea and ContainsUnitTriangle definitions."
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "startLine": 90,
+      "endLine": 106,
+      "summary": "The open problem axiomatized, plus formal statement."
+    },
+    {
+      "id": "conjectured-constant",
+      "title": "The Conjectured Constant",
+      "startLine": 108,
+      "endLine": 134,
+      "summary": "erdosConstant = 4pi/sqrt(27), conjecture and optimality statement."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 136,
+      "endLine": 161,
+      "summary": "Infinite measure case, unbounded case, Freiling-Mauldin for compact convex."
+    },
+    {
+      "id": "critical-circle",
+      "title": "The Critical Circle Witness",
+      "startLine": 163,
+      "endLine": 191,
+      "summary": "criticalRadius, circle area equals constant, max inscribed triangle area."
+    },
+    {
+      "id": "reduction",
+      "title": "Reduction to Finite Unions",
+      "startLine": 193,
+      "endLine": 215,
+      "summary": "Mauldin's reduction and Freiling-Mauldin result for n <= 3 sets."
+    },
+    {
+      "id": "summary",
+      "title": "Summary Theorem",
+      "startLine": 217,
+      "endLine": 240,
+      "summary": "Summary packaging verified results: constant positive, example triangle."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #352 on finding triangles of area 1 in measurable sets of R^2. The question asks whether there exists c > 0 such that measure >= c guarantees a unit triangle. Erdős conjectured c = 4pi/sqrt(27), optimal by the critical circle example. Known results cover infinite measure, unbounded sets, and compact convex sets. The general case remains open.",
+    "implications": "This problem connects to:\n\n1. **Geometric measure theory**: How measure constrains geometric configurations\n2. **Lebesgue density theorem**: Key tool for special cases\n3. **Convex geometry**: Simpler for convex sets, harder for non-convex\n4. **Extremal geometry**: Finding optimal thresholds for geometric properties\n5. **Combinatorial geometry**: Related to Helly-type theorems",
+    "openQuestions": [
+      "Does c = 4pi/sqrt(27) suffice for all measurable sets?",
+      "Can the reduction to finite unions be extended beyond n = 3?",
+      "What is the structure of worst-case sets (maximizing measure without unit triangle)?",
+      "Is there a continuous version: for measure >= c + epsilon, must there be a triangle of area >= 1 + delta?",
+      "What happens in higher dimensions (tetrahedra of volume 1 in R^3)?"
+    ]
   }
 }

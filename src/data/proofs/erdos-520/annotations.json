@@ -1,1 +1,243 @@
-[]
+[
+  {
+    "id": "ann-e520-header",
+    "proofId": "erdos-520",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #520** asks about the fluctuations of partial sums of Rademacher multiplicative functions.\n\nA Rademacher multiplicative function is a random {-1, 0, 1}-valued function where prime values are independent fair coin flips, extended multiplicatively to square-free integers.\n\nThe **OPEN** conjecture asks: does limsup S_N/√(N log log N) = c for some universal constant c?",
+    "mathContext": "The normalization √(N log log N) comes from the classical law of the iterated logarithm.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "random multiplicative functions",
+      "law of iterated logarithm",
+      "probabilistic number theory"
+    ]
+  },
+  {
+    "id": "ann-e520-imports",
+    "proofId": "erdos-520",
+    "range": {
+      "startLine": 22,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "We import Mathlib and open namespaces for **MeasureTheory** (probability measures, integration), **ProbabilityTheory** (independence), **Nat** (natural numbers), **Real** (logarithms), and **Filter** (limits).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "measure theory",
+      "probability theory",
+      "filters"
+    ]
+  },
+  {
+    "id": "ann-e520-rademacher",
+    "proofId": "erdos-520",
+    "range": {
+      "startLine": 40,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Rademacher Multiplicative Function",
+    "content": "**IsRademacherMultiplicative f** captures the probabilistic structure:\n\n- **map_one**: f(1) = 1 deterministically\n- **prob_of_prime**: f(p) = ±1 with probability 1/2 each\n- **indep_primes**: Values at different primes are independent\n- **map_mul_coprime**: f(ab) = f(a)f(b) for coprime a, b\n- **map_non_squarefree**: f(n) = 0 if n has a square factor",
+    "mathContext": "This is the natural random analog of the Liouville function λ(n) = (-1)^{Ω(n)}.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "multiplicative functions",
+      "independence",
+      "square-free integers"
+    ]
+  },
+  {
+    "id": "ann-e520-partial-sum",
+    "proofId": "erdos-520",
+    "range": {
+      "startLine": 65,
+      "endLine": 67
+    },
+    "type": "definition",
+    "title": "Partial Sum",
+    "content": "**partialSum f N ω** computes S_N(ω) = ∑_{m ∈ [1,N]} f(m, ω).\n\nThis is the main object of study. Its fluctuations around zero are controlled by the multiplicative structure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "summatory functions",
+      "finite sums"
+    ]
+  },
+  {
+    "id": "ann-e520-normalized",
+    "proofId": "erdos-520",
+    "range": {
+      "startLine": 69,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "Normalized Sum",
+    "content": "**normalizedSum f N ω** computes S_N / √(N log log N) for N ≥ 3.\n\nThe √(N log log N) normalization is inspired by the law of the iterated logarithm. For i.i.d. random walks, this gives bounded fluctuations.",
+    "mathContext": "For N < 3, log log N is undefined or negative, so we return 0.",
+    "significance": "key",
+    "relatedConcepts": [
+      "normalization",
+      "law of iterated logarithm"
+    ]
+  },
+  {
+    "id": "ann-e520-conjecture",
+    "proofId": "erdos-520",
+    "range": {
+      "startLine": 81,
+      "endLine": 90
+    },
+    "type": "axiom",
+    "title": "Main Conjecture (OPEN)",
+    "content": "**Erdős Problem #520**: Does there exist c > 0 such that almost surely,\n\nlimsup_{N→∞} S_N / √(N log log N) = c ?\n\nThe notation `∀ᵐ ω ∂ℙ` means \"for almost every ω with respect to the probability measure.\"",
+    "mathContext": "If true, this would give a law of the iterated logarithm for random multiplicative functions.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open problem",
+      "limsup",
+      "almost sure convergence"
+    ]
+  },
+  {
+    "id": "ann-e520-wintner",
+    "proofId": "erdos-520",
+    "range": {
+      "startLine": 98,
+      "endLine": 104
+    },
+    "type": "axiom",
+    "title": "Wintner's Second Moment (1944)",
+    "content": "**Wintner's Result**: E[S_N²] = #{square-free m ≤ N}.\n\nProof idea: E[f(m)f(n)] = 1 if m = n and square-free (since f(m)² = 1), and 0 otherwise (by independence and mean zero).\n\nSo E[S_N²] = ∑_{m≤N} E[f(m)²] = #{square-free m ≤ N}.",
+    "mathContext": "This gives variance approximately (6/π²)N.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "second moment",
+      "variance calculation",
+      "orthogonality"
+    ]
+  },
+  {
+    "id": "ann-e520-squarefree",
+    "proofId": "erdos-520",
+    "range": {
+      "startLine": 106,
+      "endLine": 111
+    },
+    "type": "axiom",
+    "title": "Square-Free Density",
+    "content": "The density of square-free integers is 6/π² ≈ 0.608.\n\nThis classical result comes from the inclusion-exclusion formula:\n∑_{n≤N} μ²(n) ~ (6/π²)N\n\nwhere μ is the Möbius function.",
+    "mathContext": "The constant 6/π² = 1/ζ(2) where ζ is the Riemann zeta function.",
+    "significance": "key",
+    "relatedConcepts": [
+      "square-free integers",
+      "density",
+      "zeta function"
+    ]
+  },
+  {
+    "id": "ann-e520-harper",
+    "proofId": "erdos-520",
+    "range": {
+      "startLine": 113,
+      "endLine": 124
+    },
+    "type": "axiom",
+    "title": "Harper's Moment Bounds (2020)",
+    "content": "**Harper's Result**: For k ≥ 1,\n\nE[|S_N|^{2k}] ≍ N^k (log log N)^{k²}\n\nThe exponent k² (not k) on log log N shows that higher moments grow faster than expected from second moment alone. This reflects subtle correlations.",
+    "mathContext": "The ≍ notation means bounded above and below by constant multiples.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "moment bounds",
+      "Harper's work",
+      "higher moments"
+    ]
+  },
+  {
+    "id": "ann-e520-values",
+    "proofId": "erdos-520",
+    "range": {
+      "startLine": 130,
+      "endLine": 132
+    },
+    "type": "axiom",
+    "title": "Values in {-1, 0, 1}",
+    "content": "Rademacher multiplicative functions take values only in {-1, 0, 1}:\n\n- **0** for non-square-free n\n- **±1** for square-free n (product of ±1 from each prime factor)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "range of function",
+      "bounded values"
+    ]
+  },
+  {
+    "id": "ann-e520-mean-zero",
+    "proofId": "erdos-520",
+    "range": {
+      "startLine": 134,
+      "endLine": 136
+    },
+    "type": "axiom",
+    "title": "Mean Zero",
+    "content": "**rademacher_mean_zero**: E[f(n)] = 0 for all n > 1.\n\nFor square-free n, f(n) = ±1 with equal probability 1/2, so E[f(n)] = 0.\nFor non-square-free n, f(n) = 0 deterministically.",
+    "significance": "key",
+    "relatedConcepts": [
+      "expectation",
+      "symmetry"
+    ]
+  },
+  {
+    "id": "ann-e520-uncorrelated",
+    "proofId": "erdos-520",
+    "range": {
+      "startLine": 138,
+      "endLine": 141
+    },
+    "type": "axiom",
+    "title": "Uncorrelated Values",
+    "content": "**rademacher_uncorrelated**: For distinct square-free n ≠ m,\n\nE[f(n)f(m)] = 0\n\nThis is because n and m have at least one prime factor that differs, and independence + mean zero gives the result.",
+    "significance": "key",
+    "relatedConcepts": [
+      "uncorrelation",
+      "independence",
+      "orthogonality"
+    ]
+  },
+  {
+    "id": "ann-e520-lil",
+    "proofId": "erdos-520",
+    "range": {
+      "startLine": 143,
+      "endLine": 155
+    },
+    "type": "concept",
+    "title": "Law of the Iterated Logarithm",
+    "content": "For i.i.d. ±1 random variables X_i, the classical **LIL** states:\n\nlimsup S_N / √(2N log log N) = 1 almost surely\n\nThe constant √2 comes from the normalization. For multiplicative functions, the correlations may change this constant—or the conjecture may be false entirely!",
+    "mathContext": "Harper conjectures the sum grows slower than √(N log log N).",
+    "significance": "key",
+    "relatedConcepts": [
+      "law of iterated logarithm",
+      "random walk",
+      "classical probability"
+    ]
+  },
+  {
+    "id": "ann-e520-squarefree-uniform",
+    "proofId": "erdos-520",
+    "range": {
+      "startLine": 172,
+      "endLine": 176
+    },
+    "type": "axiom",
+    "title": "Uniform on Square-Frees",
+    "content": "For square-free n > 1, f(n) is uniformly distributed on {-1, 1}.\n\nThis is because f(n) = f(p₁)...f(pᵣ) where each f(pᵢ) = ±1 independently. The product of k independent ±1 variables is still uniformly ±1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "product of independent variables",
+      "uniform distribution"
+    ]
+  }
+]

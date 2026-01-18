@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-e171-header",
+    "proofId": "erdos-171",
+    "range": {
+      "startLine": 48,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #171**: Unit Distance Chromatic Number\n\n**Question**: What is the chromatic number χ(ℝ²) of the unit distance graph?\n\n**Also known as**: The Hadwiger-Nelson problem\n\n**Status**: SOLVED (lower bound improved)\n\n**History**:\n- Nelson (1950): χ ≥ 4 (Moser spindle)\n- Isbell (1950): χ ≤ 7 (hexagonal tiling)\n- de Grey (2018): χ ≥ 5 (breakthrough!)\n\n**Current knowledge**: 5 ≤ χ(ℝ²) ≤ 7",
+    "mathContext": "This is one of the most famous problems in combinatorial geometry. The 68-year gap between Nelson/Isbell's bounds and de Grey's improvement shows how difficult progress is.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "hadwiger-nelson",
+      "chromatic-number",
+      "unit-distance"
+    ]
+  },
+  {
+    "id": "ann-e171-unitgraph",
+    "proofId": "erdos-171",
+    "range": {
+      "startLine": 80,
+      "endLine": 83
+    },
+    "type": "definition",
+    "title": "Unit Distance Graph",
+    "content": "**def UnitDistanceGraph**: SimpleGraph (EuclideanSpace ℝ (Fin 2))\n  Adj x y := dist x y = 1\n\nVertices: All points in ℝ²\nEdges: Connect points at distance exactly 1\n\nThe graph is:\n- **Infinite** (uncountably many vertices)\n- **Symmetric** (dist is symmetric)\n- **Loopless** (dist(x,x) = 0 ≠ 1)",
+    "mathContext": "Using SimpleGraph from Mathlib ensures proper symmetric, irreflexive graph structure. The symmetry and loopless proofs use basic metric space properties.",
+    "significance": "key",
+    "relatedConcepts": [
+      "simple-graph",
+      "euclidean-plane",
+      "distance"
+    ]
+  },
+  {
+    "id": "ann-e171-coloring",
+    "proofId": "erdos-171",
+    "range": {
+      "startLine": 88,
+      "endLine": 95
+    },
+    "type": "definition",
+    "title": "Chromatic Number Definitions",
+    "content": "**def IsProperColoring (c : ℝ² → Fin k)**:\n  ∀ x y, dist x y = 1 → c x ≠ c y\n\nA coloring is proper if adjacent vertices (at unit distance) have different colors.\n\n**noncomputable def chromaticNumberPlane**:\n  sInf { k : ℕ | ∃ c : ℝ² → Fin k, IsProperColoring c }\n\nThe minimum k such that a proper k-coloring exists. This is χ(ℝ²).",
+    "mathContext": "The noncomputable marker is needed because we're taking infimum over an infinite set. The existence of such k is guaranteed by Isbell's upper bound (k = 7 works).",
+    "significance": "key",
+    "relatedConcepts": [
+      "proper-coloring",
+      "chromatic-number",
+      "infimum"
+    ]
+  },
+  {
+    "id": "ann-e171-moser",
+    "proofId": "erdos-171",
+    "range": {
+      "startLine": 101,
+      "endLine": 108
+    },
+    "type": "axiom",
+    "title": "Moser Spindle (Nelson 1950)",
+    "content": "**axiom moser_spindle**:\n  ∃ V : Finset ℝ², V.card = 7 ∧\n  (∀ c : V → Fin 3, ∃ x y ∈ V, dist x y = 1 ∧ c x = c y)\n\nThe Moser spindle is a 7-vertex unit distance graph that cannot be 3-colored.\n\n**theorem lower_bound_4**: χ(ℝ²) ≥ 4\n  Proof sketch: If χ(ℝ²) ≤ 3, we could 3-color the Moser spindle.\n\n**Note**: lower_bound_4 has a `sorry` - the full proof requires constructing the spindle coordinates.",
+    "mathContext": "The Moser spindle was discovered by Leo and William Moser in 1961 (though the lower bound was known to Nelson in 1950). It consists of two equilateral triangles sharing a vertex.",
+    "significance": "key",
+    "relatedConcepts": [
+      "moser-spindle",
+      "nelson-1950",
+      "lower-bound"
+    ]
+  },
+  {
+    "id": "ann-e171-degrey",
+    "proofId": "erdos-171",
+    "range": {
+      "startLine": 111,
+      "endLine": 119
+    },
+    "type": "axiom",
+    "title": "de Grey's Theorem (2018)",
+    "content": "**axiom de_grey_graph**:\n  ∃ V : Finset ℝ², V.card < 2000 ∧\n  (∀ c : V → Fin 4, ∃ x y ∈ V, dist x y = 1 ∧ c x = c y)\n\nde Grey constructed a unit distance graph with ~1581 vertices that cannot be 4-colored.\n\n**theorem de_grey**: χ(ℝ²) ≥ 5\n  The first improvement to the lower bound in 68 years!\n\n**Note**: de_grey has a `sorry` - the full proof requires the massive graph construction.",
+    "mathContext": "Aubrey de Grey's 2018 paper was a sensation. He found a 1581-vertex graph using computer search, later reduced to 553 vertices by Exoo-Ismailescu. The graph uses algebraic coordinates.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "de-grey-2018",
+      "breakthrough",
+      "computer-search"
+    ]
+  },
+  {
+    "id": "ann-e171-isbell",
+    "proofId": "erdos-171",
+    "range": {
+      "startLine": 123,
+      "endLine": 126
+    },
+    "type": "axiom",
+    "title": "Isbell Upper Bound",
+    "content": "**axiom isbell_upper_bound**: χ(ℝ²) ≤ 7\n\n**Proof idea**: Tile the plane with regular hexagons of diameter slightly less than 1. Points in the same hexagon are at distance < 1, so not adjacent. Color hexagons with 7 colors so adjacent hexagons differ.\n\nThis simple construction has not been improved since 1950!",
+    "mathContext": "The hexagonal tiling achieves 7 colors by the 4-color theorem applied to the hexagonal lattice graph plus 3 extra colors for a careful arrangement. Some believe χ = 5 or 6.",
+    "significance": "key",
+    "relatedConcepts": [
+      "isbell-1950",
+      "hexagonal-tiling",
+      "upper-bound"
+    ]
+  },
+  {
+    "id": "ann-e171-current",
+    "proofId": "erdos-171",
+    "range": {
+      "startLine": 131,
+      "endLine": 134
+    },
+    "type": "theorem",
+    "title": "Current Bounds",
+    "content": "**theorem current_bounds**:\n  5 ≤ chromaticNumberPlane ∧ chromaticNumberPlane ≤ 7\n\n**Proof**:\n- Lower: exact de_grey\n- Upper: exact isbell_upper_bound\n\n**The open question**: Is χ(ℝ²) equal to 5, 6, or 7?",
+    "mathContext": "This theorem summarizes 70+ years of research. The gap of 3 possible values remains despite intense study.",
+    "significance": "key",
+    "relatedConcepts": [
+      "current-knowledge",
+      "open-question",
+      "bounds"
+    ]
+  },
+  {
+    "id": "ann-e171-clique",
+    "proofId": "erdos-171",
+    "range": {
+      "startLine": 146,
+      "endLine": 158
+    },
+    "type": "theorem",
+    "title": "Clique Number (Aristotle Verified)",
+    "content": "**theorem clique_number_3** ✓ (Aristotle):\n  ∃ a b c ∈ ℝ², dist a b = 1 ∧ dist b c = 1 ∧ dist a c = 1\n\nProof constructs equilateral triangle: (0,0), (1,0), (1/2, √3/2)\nVerified using norm_num and EuclideanSpace.norm_eq.\n\n**theorem no_4_clique** ✓ (Aristotle):\n  ¬∃ a b c d ∈ ℝ², all pairwise distances = 1\n\nNo regular tetrahedron fits in ℝ². The clique number ω(G) = 3.\nVerified using grind tactic.",
+    "mathContext": "The clique number gives a trivial lower bound χ ≥ ω = 3. The interesting fact is that χ is much larger than ω (at least 5 vs 3).",
+    "significance": "key",
+    "relatedConcepts": [
+      "aristotle-verified",
+      "clique-number",
+      "equilateral-triangle"
+    ]
+  },
+  {
+    "id": "ann-e171-fractional",
+    "proofId": "erdos-171",
+    "range": {
+      "startLine": 138,
+      "endLine": 140
+    },
+    "type": "axiom",
+    "title": "Fractional Chromatic Number",
+    "content": "**axiom fractional_chromatic**: True\n\nPlaceholder for: χ_f(ℝ²) = 4\n\nThe fractional chromatic number is exactly 4, computed as the supremum over all finite unit distance subgraphs.\n\n**Note**: This axiom is trivially True - a placeholder for the actual result.",
+    "mathContext": "The fractional chromatic number gives another way to understand the problem. That χ_f = 4 while χ ≥ 5 shows the integral constraint adds significant difficulty.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "fractional-chromatic",
+      "placeholder",
+      "linear-programming"
+    ]
+  },
+  {
+    "id": "ann-e171-summary",
+    "proofId": "erdos-171",
+    "range": {
+      "startLine": 160,
+      "endLine": 183
+    },
+    "type": "concept",
+    "title": "Summary and Status",
+    "content": "**Erdős Problem #171: SOLVED** (lower bound improved)\n\n**Verified Theorems** (Aristotle):\n- clique_number_3 ✓: Equilateral triangle exists\n- no_4_clique ✓: No 4-clique in ℝ²\n\n**With Sorries**:\n- lower_bound_4: χ ≥ 4 (Moser spindle)\n- de_grey: χ ≥ 5 (de Grey 2018)\n\n**Key Results**:\n- 5 ≤ χ(ℝ²) ≤ 7\n- ω(unit distance graph) = 3\n- χ_f = 4\n\n**Remaining Open**: Is χ = 5, 6, or 7?",
+    "mathContext": "The problem is considered 'solved' in the sense that the lower bound was improved from the 1950 value. However, determining the exact value remains open.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "problem-status",
+      "solved",
+      "aristotle-verified"
+    ]
+  }
+]

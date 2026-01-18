@@ -1,18 +1,22 @@
 {
   "id": "erdos-140",
-  "title": "Erdős Problem #140",
+  "title": "Erdős Problem #140: Density of 3-AP-Free Sets",
   "slug": "erdos-140",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the size of the largest subset of ... which does not contain a non-trivial ...-term arithmetic progression. Prove ...",
+  "description": "Let r₃(N) be the size of the largest subset of {1,...,N} with no 3-term arithmetic progression. Prove r₃(N) ≪ N/(log N)^C for every C > 0. SOLVED by Kelley-Meka (2023).",
   "meta": {
-    "author": "Unknown",
+    "author": "Roth (1953), Kelley-Meka (2023)",
     "sourceUrl": "https://erdosproblems.com/140",
-    "date": "",
-    "status": "pending",
+    "date": "2023",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos140Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "3-AP-free",
+      "roth-number",
+      "kelley-meka"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 3,
     "erdosNumber": 140,
     "erdosUrl": "https://erdosproblems.com/140",
@@ -20,15 +24,27 @@
     "erdosPrizeValue": "$500"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #140 from erdosproblems.com. Originally offered with a prize of $500.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r_3(N)$ be the size of the largest subset of $\\{1,\\ldots,N\\}$ which does not contain a non-trivial $3$-term arithmetic progression. Prove that $r_3(N)\\ll N/(\\log N)^C$ for every $C>0$.\n\n\n\nProved by Kelley and Meka \\cite{KeMe23}. In \\cite{ErGr80} and \\cite{Er81} it is conjectured that this holds for every $k$-term arithmetic progression.\n\nSee also [3].\n\n\n\n\nReferences\n\n\n[Er81] Erd\\H{o}s, P., On the combinatorial problems which I would most like to see solved. Combinatorica (1981), 25-42.\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n[KeMe23] Kelley, Z. and Meka, R., Strong Bounds for 3-Progressions. arXiv:2302.05537 (2023).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Roth (1953) proved r₃(N) = o(N), showing 3-AP-free sets have density 0. Decades of improvements followed: Bourgain (2008), Sanders (2011), Bloom-Sisask (2020). Kelley-Meka (2023) finally proved Erdős's conjecture that r₃(N) = O(N/(log N)^C) for all C > 0, resolving the $500 prize.",
+    "problemStatement": "Define r₃(N) = max{ |A| : A ⊆ {1,...,N}, A contains no non-trivial 3-term arithmetic progression }. Erdős conjectured that r₃(N) ≪ N/(log N)^C for every C > 0. Kelley and Meka (2023) proved this is true.",
+    "proofStrategy": "The formalization defines 3-APs, the Roth number r₃(N), and proves it's achieved by some set. Historical bounds by Roth, Bourgain, Sanders, and Bloom-Sisask are recorded as axioms. The Kelley-Meka theorem is the main axiom resolving the problem. Corollaries about density decay and the k-term generalization are included.",
+    "keyInsights": [
+      "r₃(N) is well-defined and achieved (verified theorem)",
+      "Historical progression: o(N) → O(N/√log log N) → O(N log log N⁵/log N) → O(N/(log N)^{1+c})",
+      "Kelley-Meka (2023): r₃(N) = O(N/(log N)^C) for ALL C > 0",
+      "Behrend lower bound: r₃(N) ≥ N/exp(c√log N) - gap remains open",
+      "{1,2,4,5,10,11,13,14} is verified 3-AP-free (first 8 of greedy sequence)",
+      "k ≥ 4 case remains OPEN"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #140 is SOLVED (Kelley-Meka 2023). The maximum size of a 3-AP-free subset of {1,...,N} satisfies r₃(N) = O(N/(log N)^C) for all C > 0. This 70-year problem from Roth's 1953 breakthrough was resolved with a novel spectral approach.",
+    "implications": "The Kelley-Meka theorem is a major breakthrough in additive combinatorics. It essentially determines the order of r₃(N) up to the gap with Behrend's lower bound. The techniques may apply to other Ramsey-type problems.",
+    "openQuestions": [
+      "What is the true order of r₃(N)? (Behrend gap)",
+      "Does r_k(N) = O(N/(log N)^C) hold for k ≥ 4?",
+      "Is r₃(N) = Θ(N/exp(c√log N)) matching Behrend?",
+      "Can Kelley-Meka techniques improve k ≥ 4 bounds?"
+    ]
   }
 }

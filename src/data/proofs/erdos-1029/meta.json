@@ -1,34 +1,93 @@
 {
   "id": "erdos-1029",
-  "title": "Erdős Problem #1029",
+  "title": "Erdős Problem #1029: Ramsey Number Growth Rate",
   "slug": "erdos-1029",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is the Ramsey number for ..., the minimal ... such that every ...-colouring of the edges of ... contains a monochromat...",
+  "description": "If R(k) is the diagonal Ramsey number, prove R(k)/(k·2^{k/2}) → ∞. Known bounds: (√2/e)·k·2^{k/2} ≤ R(k) ≤ C(2k-2,k-1). OPEN ($100 proof, $1000 disproof).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1993)",
     "sourceUrl": "https://erdosproblems.com/1029",
-    "date": "",
-    "status": "pending",
+    "date": "1993",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1029Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "graph-theory",
+      "probabilistic-method",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 1029,
     "erdosUrl": "https://erdosproblems.com/1029",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$100"
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$100/$1000"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1029 from erdosproblems.com. Originally offered with a prize of $100.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $R(k)$ is the Ramsey number for $K_k$, the minimal $n$ such that every $2$-colouring of the edges of $K_n$ contains a monochromatic copy of $K_k$, then\\[\\frac{R(k)}{k2^{k/2}}\\to \\infty.\\]\n\n\n\nIn \\cite{Er93} Erd\\H{o}s offers \\$100 for a proof of this and \\$1000 for a disproof, but says 'this last offer is to some extent phoney: I am sure that [this] is true (but I have been wrong before).'\n\nErd\\H{o}s and Szekeres \\cite{ErSz35} proved\\[k2^{k/2} \\ll R(k) \\leq \\binom{2k-1}{k-1}.\\]One of the first applications of the probabilistic method pioneered by Erd\\H{o}s gives\\[R(k) \\geq (1+o(1))\\frac{1}{\\sqrt{2}e}k2^{k/2},\\]which Spencer \\cite{Sp75} improved by a factor of $2$ to\\[R(k) \\geq (1+o(1))\\frac{\\sqrt{2}}{e}k2^{k/2}.\\]See also [77] for a more general problem concerning $\\lim R(k)^{1/k}$, and discussion of upper bounds for $R(k)$.\n\n\n\n\nReferences\n\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n[ErSz35] Erd\\H{o}s, P. and Szekeres, G., A combinatorial problem in geometry. Compos. Math. (1935), 463-470.\n\n[Sp75] Spencer, Joel, Ramsey's theorem---a new lower bound. J. Combinatorial Theory Ser. A (1975), 108--115.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem addresses the fundamental question in Ramsey theory: how fast do Ramsey numbers grow? The Erdős-Szekeres bounds from 1935 give k·2^{k/2} ≪ R(k) ≤ C(2k-2,k-1). The lower bound comes from the probabilistic method—one of its first applications. This problem asks whether the lower bound is far from tight.",
+    "problemStatement": "If R(k) is the diagonal Ramsey number (minimal n such that every 2-coloring of K_n contains a monochromatic K_k), prove that R(k)/(k·2^{k/2}) → ∞ as k → ∞.",
+    "proofStrategy": "The probabilistic method gives R(k) ≥ c·k·2^{k/2} for c ≈ √2/e. The conjecture asserts this is far from tight—R(k) grows faster than any constant times k·2^{k/2}. Proving this would require showing the probabilistic lower bound misses significant structure in Ramsey graphs.",
+    "keyInsights": [
+      "Erdős-Szekeres (1935): k·2^{k/2} ≪ R(k) ≤ C(2k-2,k-1)",
+      "Probabilistic method: R(k) ≥ (1+o(1))·(1/√2e)·k·2^{k/2}",
+      "Spencer (1975): improved constant to √2/e",
+      "Upper bound ≈ 4^k/√k grows much faster than lower bound",
+      "Huge gap: √2 ≈ 1.4 vs 4 in the base of exponential",
+      "Erdős was confident the conjecture is true but offered $1000 for disproof"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "ramsey-numbers",
+      "title": "Ramsey Numbers",
+      "summary": "Definition of R(k) and edge colorings",
+      "startLine": 39,
+      "endLine": 64
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "summary": "Erdős-Szekeres and Spencer bounds",
+      "startLine": 66,
+      "endLine": 87
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "summary": "The ratio R(k)/(k·2^{k/2}) tends to infinity",
+      "startLine": 89,
+      "endLine": 118
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound Analysis",
+      "summary": "What we know about the ratio being bounded below",
+      "startLine": 120,
+      "endLine": 136
+    },
+    {
+      "id": "small-values",
+      "title": "Known Values",
+      "summary": "Exact Ramsey numbers for small k",
+      "startLine": 138,
+      "endLine": 157
+    },
+    {
+      "id": "ratio-values",
+      "title": "Ratio Computations",
+      "summary": "The ratio for known Ramsey numbers",
+      "startLine": 159,
+      "endLine": 173
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "The conjecture R(k)/(k·2^{k/2}) → ∞ asks whether diagonal Ramsey numbers grow significantly faster than the probabilistic lower bound. Despite decades of work, neither proof nor disproof exists. The gap between lower bound ~2^{k/2} and upper bound ~4^k remains one of the most important open problems in combinatorics.",
+    "implications": "Resolving this would reveal whether random constructions capture the true behavior of Ramsey graphs, or whether there's hidden structure forcing faster growth. It connects to fundamental questions about the power of the probabilistic method.",
+    "openQuestions": [
+      "Does R(k)/(k·2^{k/2}) → ∞?",
+      "Can the upper bound 4^k be improved to (4-ε)^k for some ε > 0?",
+      "What is the true growth rate of R(k)?",
+      "Is lim R(k)^{1/k} = 4 or strictly less?"
+    ]
   }
 }

@@ -1,1 +1,101 @@
-[]
+[
+  {
+    "id": "ann-1106-header",
+    "proofId": "erdos-1106",
+    "range": { "startLine": 1, "endLine": 40 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdős posed this problem at Oberwolfach in 1986. The partition function p(n) counts how many ways to write n as a sum of positive integers (order doesn't matter). For example, p(4) = 5 because 4 = 4 = 3+1 = 2+2 = 2+1+1 = 1+1+1+1. The problem asks about F(n), which counts distinct prime factors in the product p(1)·p(2)·...·p(n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1106-partition",
+    "proofId": "erdos-1106",
+    "range": { "startLine": 54, "endLine": 76 },
+    "type": "definition",
+    "title": "Partition Function p(n)",
+    "content": "The partition function is defined using Mathlib's Nat.Partition type, which represents a partition as a multiset of positive integers summing to n. The function partitionNumber(n) returns the cardinality of this finite type. Small values: p(0)=1, p(1)=1, p(2)=2, p(3)=3, p(4)=5, p(5)=7.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1106-product",
+    "proofId": "erdos-1106",
+    "range": { "startLine": 78, "endLine": 90 },
+    "type": "definition",
+    "title": "Partition Product",
+    "content": "The product ∏_{k=1}^{n} p(k) accumulates partition numbers. For n=5: 1·2·3·5·7 = 210. This product is always positive since each p(k) ≥ 1. The sequence of products (OEIS A194259) grows exponentially due to Hardy-Ramanujan's asymptotic formula for p(n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1106-primefactors",
+    "proofId": "erdos-1106",
+    "range": { "startLine": 92, "endLine": 106 },
+    "type": "definition",
+    "title": "Function F(n)",
+    "content": "F(n) counts the distinct prime factors of the partition product. Using Mathlib's primeFactors function, we extract the set of primes dividing the product and count them. F is monotone: as n increases, new primes can only be added, never removed.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1106-schinzel",
+    "proofId": "erdos-1106",
+    "range": { "startLine": 110, "endLine": 116 },
+    "type": "theorem",
+    "title": "Schinzel-Wirsing Lower Bound",
+    "content": "Schinzel and Wirsing (1987) proved F(n) ≫ log n, meaning F(n) ≥ c·log(n) for some constant c > 0 and all large n. This is the best known lower bound, but falls far short of the conjectured F(n) > n. The gap between log n and n is enormous.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1106-hardyramanujan",
+    "proofId": "erdos-1106",
+    "range": { "startLine": 118, "endLine": 129 },
+    "type": "theorem",
+    "title": "Hardy-Ramanujan Asymptotic",
+    "content": "The celebrated Hardy-Ramanujan formula (1918) gives p(n) ~ (1/4n√3)·exp(π√(2n/3)). This exponential growth is crucial: it means p(n) grows so fast that new prime factors must keep appearing in the product, driving F(n) → ∞.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1106-ono",
+    "proofId": "erdos-1106",
+    "range": { "startLine": 131, "endLine": 137 },
+    "type": "theorem",
+    "title": "Ono's Prime Divisibility",
+    "content": "Ken Ono (2000) proved every prime p divides p(n) for some n ≥ 1. Even stronger: for any fixed prime, this occurs for a positive density of n. This shows the partition function has rich divisibility structure, connecting to modular forms and Ramanujan's congruences.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1106-part1",
+    "proofId": "erdos-1106",
+    "range": { "startLine": 141, "endLine": 156 },
+    "type": "theorem",
+    "title": "Part 1: F(n) → ∞ (PROVED)",
+    "content": "The first question is resolved: F(n) tends to infinity. Schinzel noted this follows from combining Hardy-Ramanujan's asymptotic with Tijdeman's 1973 result on integers with many small prime factors. Details appear on page 69 of Erdős-Ivić (1990). The exponential growth of p(n) forces new primes to appear.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1106-part2",
+    "proofId": "erdos-1106",
+    "range": { "startLine": 158, "endLine": 169 },
+    "type": "definition",
+    "title": "Part 2: F(n) > n Eventually (OPEN)",
+    "content": "The conjecture that F(n) > n for all sufficiently large n remains open. This would mean the partition product has 'many' prime factors—more than n of them. Current best bound F(n) ≫ log n is far from this. The gap suggests subtle cancellation phenomena not yet understood.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1106-examples",
+    "proofId": "erdos-1106",
+    "range": { "startLine": 171, "endLine": 192 },
+    "type": "example",
+    "title": "Verified Small Values",
+    "content": "Concrete computations verified by native_decide: F(1)=0 (p(1)=1 has no prime factors), F(2)=1 (product 2), F(3)=2 (product 6=2·3), F(4)=3 (product 30=2·3·5), F(5)=4 (product 210=2·3·5·7). Each new partition number p(k) can introduce new primes.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1106-oeis",
+    "proofId": "erdos-1106",
+    "range": { "startLine": 194, "endLine": 208 },
+    "type": "concept",
+    "title": "OEIS Sequences",
+    "content": "The partition products form OEIS A194259: 1, 2, 6, 30, 210, 2310, 32340, ... The prime factor counts form A194260: 0, 1, 2, 3, 4, 5, 5, 6, ... Note F(6)=F(7)=5 because p(6)=11 and p(7)=15=3·5 introduce no new primes beyond {2,3,5,7,11}.",
+    "significance": "supporting"
+  }
+]

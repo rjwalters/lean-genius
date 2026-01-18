@@ -1,33 +1,154 @@
 {
   "id": "erdos-1085",
-  "title": "Erdős Problem #1085",
+  "title": "Erdős Problem #1085: The Unit Distance Problem",
   "slug": "erdos-1085",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that, in any set of ... points in ..., there exist at most ... pairs of points which distance ... apa...",
+  "description": "Let f_d(n) be the maximum number of pairs at unit distance among n points in ℝ^d. For d=2: n^(1+o(1)) ≤ f_2(n) ≤ O(n^(4/3)) with gap OPEN. For d≥4: f_d(n) ≈ (p-1)/(2p)·n² where p=⌊d/2⌋ (essentially SOLVED).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Spencer, Szemerédi, Trotter, Lenz, Brass, Swanepoel",
     "sourceUrl": "https://erdosproblems.com/1085",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1085Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-geometry",
+      "unit-distances",
+      "incidence-geometry",
+      "extremal-combinatorics",
+      "partially-open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1085,
     "erdosUrl": "https://erdosproblems.com/1085",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "d-dimensional Euclidean space ℝ^d",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "dist",
+        "description": "Distance function in metric spaces",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of PointConfig for n-point configurations in ℝ^d",
+      "Definition of unitDistanceCount counting pairs at distance 1",
+      "Axiomatization of maxUnitDistances (f_d(n))",
+      "Erdős 1946 lower bound for d=2: n^(1+c/log log n)",
+      "Spencer-Szemerédi-Trotter 1984 upper bound: O(n^(4/3))",
+      "Erdős 1960 lower bound for d=3: Ω(n^(4/3) log log n)",
+      "Lenz construction lower bound for d≥4",
+      "Erdős-Stone upper bound for d≥4",
+      "Brass 1997 exact formula for d=4",
+      "Swanepoel 2009 exact formulas for even d≥6",
+      "Erdős-Pach 1990 tight bounds for odd d≥5"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1085 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_d(n)$ be minimal such that, in any set of $n$ points in $\\mathbb{R}^d$, there exist at most $f_d(n)$ pairs of points which distance $1$ apart. Estimate $f_d(n)$.\n\n\n\nThe most difficult cases are $d=2$ and $d=3$. When $d=2$ this is the unit distance problem [90], and the best known bounds are\\[n^{1+\\frac{c}{\\log\\log n}}< f_2(n) \\ll n^{4/3}\\]for some constant $c>0$, the lower bound by Erd\\H{o}s \\cite{Er46b} and the upper bound by Spencer, Szemer\\'{e}di, and Trotter \\cite{SST84}.\n\nWhen $d=3$ the best known bounds are\\[n^{4/3}\\log\\log n \\ll f_3(n) \\ll n^{3/2}\\beta(n)\\]where $\\beta(n)$ is a very slowly growing function, the lower bound by Erd\\H{o}s \\cite{Er60b} and the upper bound by Clarkson, Edelsbrunner, Guibas, Sharir, and Welzl \\cite{CEGSW90}.\n\nA construction of Lenz (taking points on orthogonal circles) shows that, for $d\\geq 4$,\\[f_d(n)\\geq \\frac{p-1}{2p}n^2-O(1)\\]with $p=\\lfloor d/2\\rfloor$. Erd\\H{o}s \\cite{Er60b} showed that the Erd\\H{o}s-Stone theorem implies\\[f_d(n) \\leq \\left(\\frac{p-1}{2p}+o(1)\\right)n^2\\]for $d\\geq 4$.\n\nErd\\H{o}s \\cite{Er67e} determined $f_d(n)$ up to $O(1)$ for all even $d\\geq 4$. Brass \\cite{Br97} determined $f_4(n)$ exactly. Swanepoel \\cite{Sw09} determined $f_d(n)$ exactly for even $d\\geq 6$. For odd $d\\geq 5$ Erd\\H{o}s and Pach \\cite{ErPa90} proved that there exist constants $c_1(d),c_2(d)>0$ such that\\[\\frac{p-1}{2p}n^2 +c_1n^{4/3}\\leq f_d(n) \\leq \\frac{p-1}{2p}n^2 +c_2n^{4/3}.\\]\n\n\n\n\nReferences\n\n\n[Br97] Brass, P., On the maximum number of unit distances among {$n$} points in\ndimension four. (1997), 277--290.\n\n[CEGSW90] Clarkson, Kenneth L. and Edelsbrunner, Herbert and Guibas,\nLeonidas J. and Sharir, Micha and Welzl, Emo, Combinatorial complexity bounds for arrangements of curves and\nspheres. Discrete Comput. Geom. (1990), 99--160.\n\n[Er46b] Erd\\H{o}s, P., On sets of distances of {$n$} points. Amer. Math. Monthly (1946), 248--250.\n\n[Er60b] Erd\\H{o}s, P., On sets of distances of {$n$} points in {E}uclidean space. Magyar Tud. Akad. Mat. Kutat\\'o{} Int. K\\\"ozl. (1960), 165--169.\n\n[Er67e] Erd\\H{o}s, P., On some applications of graph theory to geometry. Canadian J. Math. (1967), 968--971.\n\n[ErPa90] Erd\\H{o}s, P. and Pach, J., Variations on the theme of repeated distances. Combinatorica (1990), 261--269.\n\n[SST84] Spencer, J. and Szemer\\'{e}di, E. and Trotter, Jr., W., Unit distances in the Euclidean plane. Graph theory and combinatorics (Cambridge, 1983) (1984), 293-303.\n\n[Sw09] Swanepoel, Konrad J., Unit distances and diameters in {E}uclidean spaces. Discrete Comput. Geom. (2009), 1--27.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The **Unit Distance Problem** is one of the most celebrated problems in combinatorial geometry. Given n points in ℝ^d, how many pairs can be at distance exactly 1?\n\n**Historical Timeline**:\n- **1946**: Erdős posed the 2D problem and proved the lower bound n^(1+c/log log n)\n- **1960**: Erdős extended to d=3 with lower bound n^(4/3) log log n\n- **1984**: Spencer, Szemerédi, and Trotter proved the landmark O(n^(4/3)) upper bound using the crossing number inequality\n- **1990**: Clarkson et al. achieved O(n^(3/2) β(n)) for d=3; Erdős-Pach settled odd d≥5\n- **1997**: Brass found the exact formula for d=4\n- **2009**: Swanepoel determined exact formulas for all even d≥6\n\n**The Lenz Construction**: For d≥4, place points on orthogonal unit circles. Points on different circles are at distance √2, but a clever arrangement makes them distance 1. This achieves ~(p-1)/(2p)·n² unit distances where p=⌊d/2⌋.\n\n**Connection to Erdős #90**: The d=2 case is sometimes listed as Problem #90. The gap between n^(1+o(1)) and n^(4/3) has been open for 80 years!",
+    "problemStatement": "**Erdős Problem #1085**: Let $f_d(n)$ be the maximum number of pairs of points at unit distance among any set of $n$ points in $\\mathbb{R}^d$. Estimate $f_d(n)$.\n\n**Dimension 2** (Classical Unit Distance Problem):\n$$n^{1+\\frac{c}{\\log\\log n}} < f_2(n) \\ll n^{4/3}$$\nLower bound: Erdős (1946) using integer lattice constructions\nUpper bound: Spencer-Szemerédi-Trotter (1984) using crossing numbers\n**GAP IS OPEN**\n\n**Dimension 3**:\n$$n^{4/3}\\log\\log n \\ll f_3(n) \\ll n^{3/2}\\beta(n)$$\nwhere $\\beta(n)$ is the inverse Ackermann function\n\n**Dimension $d \\geq 4$**: Let $p = \\lfloor d/2 \\rfloor$. Then:\n$$f_d(n) = \\frac{p-1}{2p} n^2 + o(n^2)$$\n- For d=4: Exact formula by Brass (1997)\n- For even d≥6: Exact formulas by Swanepoel (2009)\n- For odd d≥5: Error term O(n^(4/3)) by Erdős-Pach (1990)",
+    "proofStrategy": "The formalization captures the dimension-by-dimension structure of known results:\n\n1. **Core Definitions**:\n   - `PointConfig d n`: Configuration of n points in ℝ^d\n   - `unitDistanceCount P`: Number of pairs at distance 1 in configuration P\n   - `maxUnitDistances d n`: f_d(n) = max over all configurations\n\n2. **Dimension 2 Bounds**:\n   - `erdos_1946_lower_d2`: n^(1+c/log log n) lower bound\n   - `sst_1984_upper_d2`: O(n^(4/3)) upper bound\n   - `erdos_1085_2d_conjecture`: Open question - is f_2(n) = O(n^(1+o(1)))?\n\n3. **Dimension 3 Bounds**:\n   - `erdos_1960_lower_d3`: Ω(n^(4/3) log log n)\n   - `cegsw_1990_upper_d3`: O(n^(3/2))\n\n4. **High Dimensions (d ≥ 4)**:\n   - `lenz_lower_d4`: Lenz construction lower bound\n   - `erdos_stone_upper_d4`: Erdős-Stone theorem upper bound\n   - Exact results: `brass_1997_d4`, `swanepoel_2009_even`, `erdos_pach_1990_odd`",
+    "keyInsights": [
+      "**The crossing number breakthrough**: The Spencer-Szemerédi-Trotter O(n^(4/3)) bound uses a clever graph-theoretic argument. The unit distance graph (vertices = points, edges = unit distances) has crossing number Ω(e³/n²), forcing e ≤ O(n^(4/3)).",
+      "**Why d=2 and d=3 are hard**: In low dimensions, points are too constrained. A circle has infinitely many points at unit distance from its center, allowing complex configurations. In d≥4, geometric rigidity kicks in.",
+      "**The Lenz construction is optimal**: For d≥4, the construction using orthogonal circles achieves the exact leading coefficient (p-1)/(2p). This is remarkable - a simple construction matching a hard upper bound.",
+      "**Inverse Ackermann appears**: The d=3 upper bound involves β(n), the inverse Ackermann function. This arises from Davenport-Schinzel sequences in computational geometry, showing deep structural complexity.",
+      "**Even vs. odd dimensions**: For d≥4, even dimensions have exact formulas, while odd dimensions have O(n^(4/3)) error terms. This parity phenomenon relates to the Lenz construction's efficiency.",
+      "**80 years of open gaps**: The 2D case has been open since 1946. Despite intense study, we don't know if f_2(n) is closer to n^(1+o(1)) or n^(4/3). This remains a central open problem in combinatorial geometry."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Problem statement with dimension-by-dimension breakdown of known results."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 52,
+      "endLine": 83,
+      "summary": "PointConfig, distinctPairs, unitDistanceCount, and maxUnitDistances (f_d(n))."
+    },
+    {
+      "id": "trivial-bounds",
+      "title": "Trivial Bounds",
+      "startLine": 85,
+      "endLine": 98,
+      "summary": "Upper bound n(n-1)/2 and lower bound n-1 for any dimension."
+    },
+    {
+      "id": "dimension-2",
+      "title": "Dimension 2: Classical Unit Distance Problem",
+      "startLine": 100,
+      "endLine": 131,
+      "summary": "Erdős 1946 lower bound, Spencer-Szemerédi-Trotter 1984 upper bound, open conjecture."
+    },
+    {
+      "id": "dimension-3",
+      "title": "Dimension 3",
+      "startLine": 133,
+      "endLine": 161,
+      "summary": "Erdős 1960 lower bound, Clarkson et al. 1990 upper bound, partially open."
+    },
+    {
+      "id": "high-dimensions",
+      "title": "Dimension ≥ 4: High-Dimensional Case",
+      "startLine": 163,
+      "endLine": 188,
+      "summary": "Lenz construction, Erdős-Stone upper bound - essentially solved."
+    },
+    {
+      "id": "exact-results",
+      "title": "Exact Results for d ≥ 4",
+      "startLine": 190,
+      "endLine": 214,
+      "summary": "Brass d=4, Swanepoel even d≥6, Erdős-Pach odd d≥5."
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Special Values",
+      "startLine": 216,
+      "endLine": 231,
+      "summary": "Small cases: f_2(3)=3, f_2(4)=5, f_2(5)=7, f_3(4)=6."
+    },
+    {
+      "id": "connections",
+      "title": "Connections to Other Problems",
+      "startLine": 233,
+      "endLine": 250,
+      "summary": "Relations to crossing numbers, incidence geometry, distinct distances."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 252,
+      "endLine": 276,
+      "summary": "Overall status: high dimensions solved, d=2,3 partially open."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #1085 on the unit distance problem across all dimensions. For d≥4, the problem is essentially solved with f_d(n) ≈ (p-1)/(2p)·n². For d=2,3, significant gaps remain between upper and lower bounds, with the d=2 case being one of the most famous open problems in combinatorial geometry.",
+    "implications": "The unit distance problem sits at the intersection of combinatorics, geometry, and graph theory. The breakthrough upper bound of Spencer-Szemerédi-Trotter introduced crossing number techniques that have had wide influence. The contrast between the clean high-dimensional answers and the stubborn low-dimensional gaps illustrates how geometry becomes more rigid in higher dimensions.",
+    "openQuestions": [
+      "Is f_2(n) = O(n^(1+c/log log n))? (Main open question - 80 years old)",
+      "Is f_3(n) = O(n^(4/3) log log n)? (3D tight bound)",
+      "What is the exact value of f_2(n) for small n (say n ≤ 20)?",
+      "Can the crossing number approach be improved for d=2?",
+      "Is there a construction achieving f_2(n) = ω(n^(1+c/log log n))?"
+    ]
   }
 }

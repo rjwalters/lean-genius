@@ -1,33 +1,149 @@
 {
   "id": "erdos-304",
-  "title": "Erdős Problem #304",
+  "title": "Erdős Problem #304: Egyptian Fractions Complexity",
   "slug": "erdos-304",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor integers ... let ... denote the minimal ... such that there exist integers ... with\\[{b}={n_1}+\\cdots+{n_k}.\\]Estimate .....",
+  "description": "For integers 1 ≤ a < b, let N(a,b) denote the minimal number of distinct unit fractions summing to a/b. Let N(b) = max N(a,b). Erdős (1950) proved log log b ≪ N(b) ≪ log b/log log b. Vose (1985) improved to N(b) ≪ √(log b). Open: Is N(b) ≪ log log b?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Vose",
     "sourceUrl": "https://erdosproblems.com/304",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos304Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "asymptotic-bounds",
+      "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 304,
     "erdosUrl": "https://erdosproblems.com/304",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.log",
+        "description": "Natural number logarithm",
+        "module": "Mathlib.Data.Nat.Log"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "BigOperators",
+        "description": "Big sum operators over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of unitFractionExpressible as the set of valid representation sizes",
+      "Axiomatization of N(a,b) and N(b) as minimal collection sizes",
+      "Formalization of Erdős (1950) lower and upper bounds",
+      "Formalization of Vose (1985) improved upper bound",
+      "Statement of the main open conjecture",
+      "Average case lower bound formalization",
+      "Connection to Erdős Problem #293 via N(b-1,b)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #304 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor integers $1\\leq a<b$ let $N(a,b)$ denote the minimal $k$ such that there exist integers $1<n_1<\\cdots<n_k$ with\\[\\frac{a}{b}=\\frac{1}{n_1}+\\cdots+\\frac{1}{n_k}.\\]Estimate $N(b)=\\max_{1\\leq a<b}N(a,b)$. Is it true that $N(b) \\ll \\log\\log b$?\n\n\n\nErd\\H{o}s \\cite{Er50c} proved that\\[\\log\\log b \\ll N(b) \\ll \\frac{\\log b}{\\log\\log b}.\\]The upper bound was improved by Vose \\cite{Vo85} to\\[N(b) \\ll \\sqrt{\\log b}.\\]One can also investigate the average of $N(a,b)$ for fixed $b$, and it is known that\\[\\frac{1}{b}\\sum_{1\\leq a<b}N(a,b) \\gg \\log\\log b.\\]Related to [18]. There is also a close connection to [293] (particularly with $N(b-1,b)$), as elucidated by van Doorn and Tang \\cite{vDTa25b}.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Er50c] Erd\\H{o}s, P., Az $1/x_1 + 1/x_2 + \\ldots + 1/x_n =A/B$ egyenlet eg\\'{e}sz sz\\'{a}m\\'{u} megold\\'{a}sair\\'{o}l. Mat. Lapok (1950), 192-210.\n\n[Vo85] Vose, Michael D., Egyptian fractions. Bull. London Math. Soc. (1985), 21-24.\n\n[vDTa25b] W. van Doorn and Q. Tang, The smallest denominator not contained in a unit fraction decomposition of 1 with fixed length. arXiv:2512.22083 (2025).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Egyptian fractions - sums of distinct unit fractions 1/n - were used by the ancient Egyptians, who typically represented fractions this way. A classical theorem states every positive rational can be expressed as an Egyptian fraction.\n\n**The Complexity Question**: Given a/b, what is the minimum number N(a,b) of terms needed? And what is the worst case N(b) = max N(a,b) over all numerators?\n\n**Erdős (1950)** established the first bounds in his Hungarian paper:\n- Lower bound: log log b ≪ N(b)\n- Upper bound: N(b) ≪ log b / log log b\n\n**Vose (1985)** dramatically improved the upper bound:\n- N(b) ≪ √(log b)\n\n**Current Gap**: log log b ≪ N(b) ≪ √(log b)\n\nThe problem asks whether the upper bound can be improved to match the lower bound, giving N(b) ≍ log log b. This would completely determine the growth rate.",
+    "problemStatement": "**Erdős Problem #304**: For integers $1 \\leq a < b$, let $N(a,b)$ denote the minimal $k$ such that there exist integers $1 < n_1 < \\cdots < n_k$ with\n$$\\frac{a}{b} = \\frac{1}{n_1} + \\cdots + \\frac{1}{n_k}.$$\n\nLet $N(b) = \\max_{1 \\leq a < b} N(a,b)$.\n\n**Known Bounds**:\n- Erdős (1950): $\\log\\log b \\ll N(b) \\ll \\frac{\\log b}{\\log\\log b}$\n- Vose (1985): $N(b) \\ll \\sqrt{\\log b}$\n\n**Open Question**: Is it true that $N(b) \\ll \\log\\log b$?\n\nIf true, this would be optimal since we also have $\\log\\log b \\ll N(b)$, giving $N(b) \\asymp \\log\\log b$.",
+    "proofStrategy": "The formalization captures the complexity of Egyptian fraction representations:\n\n1. **Core Definitions**:\n   - `unitFractionExpressible a b` = {k : k distinct unit fractions sum to a/b}\n   - `smallestCollection a b` = N(a,b) = min(unitFractionExpressible a b)\n   - `smallestCollectionMax b` = N(b) = max N(a,b) over 1 ≤ a < b\n\n2. **Asymptotic Bounds** (axiomatized from published results):\n   - Erdős lower bound: c * log₂(log₂ b) ≤ N(b) for some c > 0\n   - Erdős upper bound: N(b) ≤ C * log₂ b / (log₂(log₂ b) + 1)\n   - Vose improvement: N(b)² ≤ C * log₂ b (i.e., N(b) ≤ C√(log b))\n\n3. **Open Conjecture**: N(b) ≤ C * log₂(log₂ b + 1) for some C > 0\n\n4. **Supporting Results**:\n   - Average case: (1/b) ∑ N(a,b) ≫ log log b\n   - Connection to #293 via N(b-1, b)\n   - Greedy algorithm gives O(log b) terms",
+    "keyInsights": [
+      "**The log log gap**: The current bounds span from log log b (lower) to √(log b) (upper). The open question asks if the upper can be tightened to log log b, which would completely characterize the growth rate.",
+      "**Why log log b is natural**: The lower bound comes from combinatorial constraints on how prime factors of denominators must arrange - roughly log log b distinct primes are needed for 'typical' rationals.",
+      "**Vose's technique**: The √(log b) upper bound uses continued fractions to construct efficient representations, improving Erdős's original log b / log log b bound.",
+      "**Average vs. maximum**: Even the average case requires Ω(log log b) terms, showing that most rationals need this many unit fractions, not just worst cases.",
+      "**Connection to Problem #293**: The special case N(b-1, b) (representing (b-1)/b = 1 - 1/b) connects to the smallest denominator missing from unit fraction representations of 1.",
+      "**The greedy algorithm is suboptimal**: The standard greedy algorithm uses O(log b) terms - much worse than the optimal O(√(log b)) - showing that finding minimal representations requires more sophisticated techniques."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 19,
+      "summary": "Problem statement, known bounds (Erdős 1950, Vose 1985), and the open question about matching upper and lower bounds."
+    },
+    {
+      "id": "background",
+      "title": "Egyptian Fractions Background",
+      "startLine": 31,
+      "endLine": 41,
+      "summary": "Historical context on Egyptian fractions as sums of distinct unit fractions."
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 43,
+      "endLine": 68,
+      "summary": "Defines unitFractionExpressible, smallestCollection (N(a,b)), and smallestCollectionMax (N(b))."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 70,
+      "endLine": 95,
+      "summary": "Properties of N(a,b) including the example N(2,15) = 2."
+    },
+    {
+      "id": "bounds",
+      "title": "Asymptotic Bounds",
+      "startLine": 97,
+      "endLine": 131,
+      "summary": "Erdős (1950) lower/upper bounds and Vose (1985) improvement."
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "startLine": 133,
+      "endLine": 150,
+      "summary": "Statement of the main conjecture: Is N(b) ≪ log log b?"
+    },
+    {
+      "id": "average-case",
+      "title": "Average Case",
+      "startLine": 152,
+      "endLine": 173,
+      "summary": "Average of N(a,b) over all numerators is also Ω(log log b)."
+    },
+    {
+      "id": "special-case",
+      "title": "Special Case N(b-1,b)",
+      "startLine": 175,
+      "endLine": 187,
+      "summary": "Connection to Erdős Problem #293 via representations of (b-1)/b."
+    },
+    {
+      "id": "algorithmic",
+      "title": "Algorithmic Aspects",
+      "startLine": 189,
+      "endLine": 200,
+      "summary": "The greedy algorithm uses O(log b) terms - worse than optimal."
+    },
+    {
+      "id": "summary",
+      "title": "Summary of Bounds",
+      "startLine": 202,
+      "endLine": 220,
+      "summary": "Summary theorem combining known lower and upper bounds."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #304 on the complexity of Egyptian fraction representations. The minimum number of unit fractions N(b) needed for the worst-case a/b with 1 ≤ a < b is bounded by log log b ≪ N(b) ≪ √(log b). The open question asks if N(b) ≪ log log b, which would completely characterize the growth rate.",
+    "implications": "This problem connects ancient mathematics (Egyptian fraction tradition) with modern asymptotic analysis. The bounds involve iterated logarithms, a rate of growth so slow it is essentially constant for practical purposes. Understanding N(b) precisely would illuminate the structure of how rationals decompose into unit fractions.",
+    "openQuestions": [
+      "Is N(b) ≪ log log b? (The main open question)",
+      "What is the exact constant in the lower bound log log b ≪ N(b)?",
+      "What is the exact constant in Vose's √(log b) upper bound?",
+      "Can the average (1/b)∑N(a,b) be bounded above by O(log log b)?",
+      "What is the computational complexity of finding an optimal Egyptian fraction representation?"
+    ]
   }
 }

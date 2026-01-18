@@ -1,1 +1,65 @@
-[]
+[
+  {
+    "id": "ann-1008-overview",
+    "proofId": "erdos-1008",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "context",
+    "title": "Problem Overview",
+    "content": "Erdős #1008 asks whether every graph with m edges has a C₄-free subgraph with ≫ m^{2/3} edges. Originally posed with exponent 3/4 (disproved by Folkman), the 2/3 version was proved by Conlon-Fox-Sudakov in 2014. The exponent is optimal.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1008-c4def",
+    "proofId": "erdos-1008",
+    "range": { "startLine": 45, "endLine": 57 },
+    "type": "definition",
+    "title": "4-Cycles and C₄-Freeness",
+    "content": "A C₄ (4-cycle) is a cycle a-b-c-d-a on 4 distinct vertices. We define hasC4 to detect such cycles and isC4Free as their absence. Note that C₄ = K_{2,2}, connecting this to the Zarankiewicz problem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1008-subgraph",
+    "proofId": "erdos-1008",
+    "range": { "startLine": 59, "endLine": 69 },
+    "type": "definition",
+    "title": "Subgraphs and Edge Count",
+    "content": "A subgraph H of G uses only edges from G. The edge count is simply the cardinality of the edge set. The problem asks: how many edges can we keep while eliminating all 4-cycles?",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1008-trivial",
+    "proofId": "erdos-1008",
+    "range": { "startLine": 71, "endLine": 86 },
+    "type": "theorem",
+    "title": "Trivial Bound: m^{1/2}",
+    "content": "Erdős noted that m^{1/2} is trivially achievable. By Kővári–Sós–Turán, C₄-free graphs on n vertices have O(n^{3/2}) edges. Greedily removing edges from 4-cycles gives a C₄-free subgraph with Ω(√m) edges.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1008-folkman",
+    "proofId": "erdos-1008",
+    "range": { "startLine": 88, "endLine": 102 },
+    "type": "theorem",
+    "title": "Folkman's Counterexample",
+    "content": "Folkman disproved the m^{3/4} conjecture using K_{n,n²}. This graph has n³ edges, but every C₄-free subgraph has only O(n²) = O((n³)^{2/3}) edges. This shows 3/4 is impossible and 2/3 is the best we can hope for.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1008-main",
+    "proofId": "erdos-1008",
+    "range": { "startLine": 104, "endLine": 122 },
+    "type": "theorem",
+    "title": "Main Result: m^{2/3}",
+    "content": "Conlon, Fox, and Sudakov (2014) proved the optimal bound: every graph with m edges has a C₄-free subgraph with Ω(m^{2/3}) edges. The exponent 2/3 matches Folkman's lower bound, so this is tight.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1008-kst",
+    "proofId": "erdos-1008",
+    "range": { "startLine": 124, "endLine": 142 },
+    "type": "definition",
+    "title": "Generalization to K_{s,t}",
+    "content": "The problem generalizes: K_{2,2} = C₄ is just one case. The Conlon-Fox-Sudakov paper proves results for avoiding K_{s,t} for general s,t. This connects to the classical Zarankiewicz problem in extremal graph theory.",
+    "significance": "key"
+  }
+]

@@ -1,1 +1,156 @@
-[]
+[
+  {
+    "id": "ann-e1108-header",
+    "proofId": "erdos-1108",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This module formalizes **Erdős Problem #1108**: Two OPEN questions about finite sums of distinct factorials and their relationship to perfect powers and powerful numbers.",
+    "mathContext": "Asked by Erdős at Oberwolfach in 1988, motivated by discussions with Mahler. Brindza-Erdős (1991) proved a partial result for fixed number of terms.",
+    "significance": "critical",
+    "relatedConcepts": ["factorials", "perfect powers", "powerful numbers"]
+  },
+  {
+    "id": "ann-e1108-factorial-sums",
+    "proofId": "erdos-1108",
+    "range": {
+      "startLine": 43,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Factorial Sums Set",
+    "content": "**FactorialSums** is the set A = {m : exists finite S, m = sum of n! for n in S}. This includes 0, 1, 2, 3, 6, 7, 24, etc.",
+    "mathContext": "Like binary representation uses powers of 2, we can represent some numbers as sums of distinct factorials. The rapid growth of n! makes this set sparse for large numbers.",
+    "significance": "critical",
+    "relatedConcepts": ["Finset", "sum", "factorial"]
+  },
+  {
+    "id": "ann-e1108-factorial-examples",
+    "proofId": "erdos-1108",
+    "range": {
+      "startLine": 50,
+      "endLine": 68
+    },
+    "type": "theorem",
+    "title": "Factorial Sum Examples",
+    "content": "We prove concrete membership: 0 (empty sum), 1 = 0!, 2 = 2!, 6 = 3!, 24 = 4! are all factorial sums.",
+    "mathContext": "The first several factorial sums are: 0, 1, 2, 3 (=1!+2!), 6, 7 (=1!+3!), 8 (=2!+3!), 9 (=1!+2!+3!), 24, ...",
+    "significance": "supporting",
+    "relatedConcepts": ["norm_num", "simp", "Nat.factorial"]
+  },
+  {
+    "id": "ann-e1108-powerful-def",
+    "proofId": "erdos-1108",
+    "range": {
+      "startLine": 76,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "Powerful Numbers",
+    "content": "**IsPowerful n** means every prime p dividing n satisfies p^2 | n. Equivalently, all prime exponents are >= 2.",
+    "mathContext": "Powerful numbers are products of squares and cubes: 1, 4, 8, 9, 16, 25, 27, 32, 36, 49, 64, 72, ... They are relatively rare among integers.",
+    "significance": "critical",
+    "relatedConcepts": ["prime", "divisibility", "squarefree"]
+  },
+  {
+    "id": "ann-e1108-one-powerful",
+    "proofId": "erdos-1108",
+    "range": {
+      "startLine": 83,
+      "endLine": 86
+    },
+    "type": "theorem",
+    "title": "1 is Powerful",
+    "content": "**one_is_powerful**: 1 is vacuously powerful since no prime divides 1.",
+    "mathContext": "The proof uses Nat.eq_one_of_dvd_one: if p | 1 then p = 1, but primes are > 1, contradiction.",
+    "significance": "supporting",
+    "relatedConcepts": ["vacuous truth", "Prime.ne_one", "dvd_one"]
+  },
+  {
+    "id": "ann-e1108-main-sets",
+    "proofId": "erdos-1108",
+    "range": {
+      "startLine": 96,
+      "endLine": 102
+    },
+    "type": "definition",
+    "title": "Main Question Sets",
+    "content": "**KthPowersInFactorialSums k** = factorial sums that are k-th powers. **PowerfulFactorialSums** = factorial sums that are powerful.",
+    "mathContext": "The main questions ask whether these sets are finite. If KthPowersInFactorialSums(2) is finite, there are only finitely many perfect squares expressible as factorial sums.",
+    "significance": "key",
+    "relatedConcepts": ["Set.Finite", "intersection", "k-th power"]
+  },
+  {
+    "id": "ann-e1108-question1",
+    "proofId": "erdos-1108",
+    "range": {
+      "startLine": 106,
+      "endLine": 113
+    },
+    "type": "axiom",
+    "title": "Question 1 (OPEN)",
+    "content": "**erdos_1108_kth_powers_open**: For each k >= 2, does FactorialSums contain only finitely many k-th powers? This is axiomatized as a Prop since the answer is unknown.",
+    "mathContext": "Even the case k=2 (squares) is open. It's not known if there are infinitely many squares expressible as sums of distinct factorials.",
+    "significance": "critical",
+    "relatedConcepts": ["perfect square", "open problem", "finiteness"]
+  },
+  {
+    "id": "ann-e1108-question2",
+    "proofId": "erdos-1108",
+    "range": {
+      "startLine": 115,
+      "endLine": 121
+    },
+    "type": "axiom",
+    "title": "Question 2 (OPEN)",
+    "content": "**erdos_1108_powerful_open**: Does FactorialSums contain only finitely many powerful numbers? Also axiomatized as an unknown Prop.",
+    "mathContext": "Powerful numbers are rarer than perfect powers, so this might be easier, but it's still open.",
+    "significance": "critical",
+    "relatedConcepts": ["powerful number", "open problem", "finiteness"]
+  },
+  {
+    "id": "ann-e1108-brindza-erdos",
+    "proofId": "erdos-1108",
+    "range": {
+      "startLine": 125,
+      "endLine": 133
+    },
+    "type": "axiom",
+    "title": "Brindza-Erdős Bound (1991)",
+    "content": "**brindza_erdos_bound**: For fixed r terms, if n1! + ... + nr! is powerful, then n1 <= C(r). The largest index is bounded.",
+    "mathContext": "This is a partial result: for any fixed r, only finitely many r-term factorial sums can be powerful. But r is unbounded in the main question.",
+    "significance": "key",
+    "relatedConcepts": ["bounded", "finite case", "partial result"]
+  },
+  {
+    "id": "ann-e1108-mahler",
+    "proofId": "erdos-1108",
+    "range": {
+      "startLine": 140,
+      "endLine": 158
+    },
+    "type": "concept",
+    "title": "Mahler's Related Problem",
+    "content": "Mahler asked about sums of powers of k. For k <= 4, infinitely many squares exist. For k >= 5, only one known: 1+7+49+343 = 400 = 20^2.",
+    "mathContext": "Mahler discussed this with Erdős shortly before his death in 1988, inspiring Problem #1108. The factorial version sits between these cases in some sense.",
+    "significance": "key",
+    "relatedConcepts": ["power sums", "Mahler", "dichotomy"]
+  },
+  {
+    "id": "ann-e1108-summary",
+    "proofId": "erdos-1108",
+    "range": {
+      "startLine": 184,
+      "endLine": 191
+    },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_1108_summary** packages verified results: 1 is both a square factorial sum and powerful, and Mahler's example 1+7+49+343=400.",
+    "mathContext": "This shows the sets KthPowersInFactorialSums(2) and PowerfulFactorialSums are nonempty. The question is whether they're finite.",
+    "significance": "supporting",
+    "relatedConcepts": ["summary", "nonempty", "verified"]
+  }
+]

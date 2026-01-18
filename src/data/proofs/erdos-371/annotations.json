@@ -1,1 +1,200 @@
-[]
+[
+  {
+    "id": "ann-371-header",
+    "proofId": "erdos-371",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdos Problem #371 asks about the density of integers n where P(n) < P(n+1), where P(n) is the largest prime factor of n. The conjecture is that exactly half of all integers satisfy this condition. Conditionally solved by Wang (2021), logarithmically solved by Teravanen (2018).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-371-gpf-def",
+    "proofId": "erdos-371",
+    "range": { "startLine": 40, "endLine": 44 },
+    "type": "definition",
+    "title": "Greatest Prime Factor P(n)",
+    "content": "The greatest prime factor of n, denoted P(n), is the largest prime dividing n. For n = 1, we define P(1) = 0 (or 1, by convention). For n > 1, P(n) is the maximum element of the prime factorization. Examples: P(12) = 3, P(15) = 5, P(17) = 17.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-371-gpf-properties",
+    "proofId": "erdos-371",
+    "range": { "startLine": 46, "endLine": 65 },
+    "type": "theorem",
+    "title": "Basic Properties of P(n)",
+    "content": "Key properties: (1) P(n) divides n, (2) P(n) is prime for n > 1, (3) P(n) is the maximum among all primes dividing n, (4) P(p) = p for prime p, (5) P(n) <= n always. These are the foundational lemmas for working with the greatest prime factor.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-371-counting",
+    "proofId": "erdos-371",
+    "range": { "startLine": 69, "endLine": 71 },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "The counting function for a set S counts how many elements of S are less than x. Formally, #{n < x : n in S}. This is the basic tool for defining density--we look at the ratio of this count to x as x goes to infinity.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-371-natural-density",
+    "proofId": "erdos-371",
+    "range": { "startLine": 73, "endLine": 75 },
+    "type": "definition",
+    "title": "Natural Density",
+    "content": "A set S has natural density d if #{n < x : n in S}/x converges to d as x tends to infinity. This is the 'standard' notion of density. For example, even numbers have density 1/2, primes have density 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-371-log-density",
+    "proofId": "erdos-371",
+    "range": { "startLine": 85, "endLine": 88 },
+    "type": "definition",
+    "title": "Logarithmic Density",
+    "content": "Logarithmic density weights each n by 1/n instead of counting equally. A set S has log density d if (sum of 1/n over n in S, n < x) / log(x) converges to d. Log density always exists if natural density does, but not conversely. It's often easier to compute.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-371-set-increasing",
+    "proofId": "erdos-371",
+    "range": { "startLine": 92, "endLine": 94 },
+    "type": "definition",
+    "title": "The Main Set",
+    "content": "SetPIncreasing = {n >= 2 : P(n) < P(n+1)} is the set of integers where the largest prime factor increases when we move to the next integer. The conjecture says this set has density exactly 1/2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-371-set-decreasing",
+    "proofId": "erdos-371",
+    "range": { "startLine": 96, "endLine": 98 },
+    "type": "definition",
+    "title": "Complementary Set",
+    "content": "SetPDecreasing = {n >= 2 : P(n) >= P(n+1)} is the complement. Either P increases or it doesn't, so these two sets partition all n >= 2. By symmetry, we expect both to have density 1/2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-371-partition",
+    "proofId": "erdos-371",
+    "range": { "startLine": 100, "endLine": 105 },
+    "type": "theorem",
+    "title": "Partition Property",
+    "content": "Every n >= 2 is in exactly one of SetPIncreasing or SetPDecreasing. This is a simple dichotomy: either P(n) < P(n+1) or P(n) >= P(n+1). If both sets have equal density, each must have density 1/2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-371-erdos-pomerance",
+    "proofId": "erdos-371",
+    "range": { "startLine": 109, "endLine": 118 },
+    "type": "axiom",
+    "title": "Erdos-Pomerance (1978)",
+    "content": "Erdos and Pomerance proved that BOTH sets have positive upper density--neither is negligible. This was the first major result, showing the density question is non-trivial. But they couldn't determine the exact density value.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-371-lu-wang",
+    "proofId": "erdos-371",
+    "range": { "startLine": 122, "endLine": 133 },
+    "type": "axiom",
+    "title": "Lu-Wang Lower Bound (2025)",
+    "content": "Lu and Wang proved the best unconditional lower bound: both sets have density at least 0.2017. This shows we're at least 40% of the way to proving density 1/2 (since 0.2017 + 0.2017 = 0.4034 < 1). The gap to 0.5 remains a significant challenge.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-371-teravanen",
+    "proofId": "erdos-371",
+    "range": { "startLine": 137, "endLine": 142 },
+    "type": "axiom",
+    "title": "Teravanen (2018)",
+    "content": "Teravanen proved the LOGARITHMIC density is exactly 1/2. This is a weaker notion than natural density, but it's the first result achieving the conjectured value. The log density weights small numbers more heavily, which can be easier to analyze.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-371-tao-teravanen",
+    "proofId": "erdos-371",
+    "range": { "startLine": 151, "endLine": 162 },
+    "type": "axiom",
+    "title": "Tao-Teravanen (2019)",
+    "content": "Tao and Teravanen proved the asymptotic density is 1/2 at 'almost all scales'. This means that for 'most' values of x, the ratio #{n < x}/x is close to 1/2. The exceptional set of x values where this fails has measure zero in a suitable sense.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-371-elliott-halberstam",
+    "proofId": "erdos-371",
+    "range": { "startLine": 166, "endLine": 167 },
+    "type": "definition",
+    "title": "Elliott-Halberstam Conjecture",
+    "content": "The Elliott-Halberstam conjecture is a deep hypothesis about the distribution of primes in arithmetic progressions. It generalizes the Bombieri-Vinogradov theorem. Wang's proof of density 1/2 assumes this conjecture for 'friable' (smooth) integers.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-371-wang",
+    "proofId": "erdos-371",
+    "range": { "startLine": 169, "endLine": 175 },
+    "type": "axiom",
+    "title": "Wang (2021)",
+    "content": "Wang proved the full result--natural density is exactly 1/2--but conditionally on the Elliott-Halberstam conjecture for friable integers. This is the closest we have to a complete solution. If Elliott-Halberstam is ever proved, Problem #371 is solved.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-371-conjecture",
+    "proofId": "erdos-371",
+    "range": { "startLine": 179, "endLine": 189 },
+    "type": "definition",
+    "title": "Main Conjecture",
+    "content": "Erdos Problem #371 asserts that SetPIncreasing has natural density 1/2. This remains open unconditionally. The current state: logarithmic density proved, almost-all-scales proved, conditional proof exists, but no unconditional proof of natural density.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-371-alpha-generalization",
+    "proofId": "erdos-371",
+    "range": { "startLine": 198, "endLine": 204 },
+    "type": "definition",
+    "title": "Generalized Problem",
+    "content": "Erdos (1979) asked a generalization: for alpha in [0,1], what is the density of {n : P(n+1) > P(n) * n^alpha}? When alpha = 0, this is the original problem. As alpha increases, we ask for P(n+1) to exceed P(n) by a larger multiplicative factor.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-371-teravanen-general",
+    "proofId": "erdos-371",
+    "range": { "startLine": 206, "endLine": 212 },
+    "type": "axiom",
+    "title": "Generalized Logarithmic Density",
+    "content": "Teravanen proved that for all alpha in [0,1], the logarithmic density of the generalized set exists. The formula involves a double integral with the 'density kernel' u(x) = x^{-1} * rho(x^{-1} - 1), where rho is the Dickman function.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-371-dickman",
+    "proofId": "erdos-371",
+    "range": { "startLine": 216, "endLine": 218 },
+    "type": "definition",
+    "title": "Dickman Function",
+    "content": "The Dickman function rho(u) is fundamental in analytic number theory. It satisfies the delay differential equation u*rho'(u) = -rho(u-1) for u > 1, with rho(u) = 1 for 0 <= u <= 1. It describes the density of smooth (friable) numbers.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-371-density-formula",
+    "proofId": "erdos-371",
+    "range": { "startLine": 224, "endLine": 232 },
+    "type": "theorem",
+    "title": "Theoretical Density Formula",
+    "content": "The theoretical density of SetPAlpha(alpha) is the double integral over [0,1]^2 of u(x)*u(y) where y >= x + alpha. For alpha = 0, this integral equals 1/2 by symmetry (the region y >= x is exactly half of the unit square).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-371-examples",
+    "proofId": "erdos-371",
+    "range": { "startLine": 236, "endLine": 261 },
+    "type": "theorem",
+    "title": "Small Examples",
+    "content": "Concrete calculations: P(2)=2, P(3)=3, P(4)=2, P(5)=5, P(6)=3. So P(2)=2 < P(3)=3 means 2 is in SetPIncreasing. P(4)=2 < P(5)=5 means 4 is in SetPIncreasing. But P(5)=5 > P(6)=3 means 5 is in SetPDecreasing.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-371-oeis",
+    "proofId": "erdos-371",
+    "range": { "startLine": 275, "endLine": 283 },
+    "type": "concept",
+    "title": "OEIS A070089",
+    "content": "The sequence of n with P(n) < P(n+1) is catalogued as A070089 in OEIS. The first terms are 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, ... Notice that many even numbers appear--when n is even, n+1 is odd and often has a large prime factor.",
+    "significance": "supporting"
+  }
+]

@@ -1,1 +1,145 @@
-[]
+[
+  {
+    "id": "ann-e817-header",
+    "proofId": "erdos-817",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Statement and History",
+    "content": "**Erdős Problem #817** asks about subset sum sets and arithmetic progressions. Given a set A ⊆ {1,...,N} of size n, the **subset sum set** ⟨A⟩ consists of all sums ∑_{a∈B} a for B ⊆ A.\n\nThe problem defines g_k(n) as the minimal N such that some A of size n has ⟨A⟩ avoiding k-term arithmetic progressions. The main question: is g₃(n) ≫ 3ⁿ?",
+    "mathContext": "This is an **OPEN** problem. Erdős and Sárközy proved the partial result g₃(n) ≫ 3ⁿ/n^{O(1)}, which establishes exponential growth up to polynomial factors.",
+    "significance": "critical",
+    "relatedConcepts": ["subset-sums", "arithmetic-progressions", "extremal-combinatorics", "open-problem"]
+  },
+  {
+    "id": "ann-e817-imports",
+    "proofId": "erdos-817",
+    "range": { "startLine": 28, "endLine": 32 },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "We import **Mathlib** for finite sets (`Finset`), filters for asymptotic analysis (`Filter`), and natural number operations (`Nat`). The `open` command brings these namespaces into scope.",
+    "mathContext": "The Filter.atTop filter is used for asymptotic statements like O(f(n)) = g(n), which capture 'for all sufficiently large n' behavior.",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "finset", "filter"]
+  },
+  {
+    "id": "ann-e817-ap-def",
+    "proofId": "erdos-817",
+    "range": { "startLine": 34, "endLine": 46 },
+    "type": "definition",
+    "title": "Arithmetic Progression Freedom",
+    "content": "**IsAPFreeOfLength k S** means the set S contains no non-trivial k-term arithmetic progression.\n\nFormally: for all starting points a and common differences d > 0, at least one term a + i·d (for i < k) is not in S.\n\nWe exclude d = 0 since constant sequences are 'trivial' APs.",
+    "mathContext": "A k-term AP is a sequence a, a+d, a+2d, ..., a+(k-1)d. Examples:\n- {0, 1, 2} contains the 3-AP (0, 1, 2) with d=1\n- {0, 1, 3, 4} is 3-AP-free",
+    "significance": "critical",
+    "relatedConcepts": ["arithmetic-progression", "ap-free", "szemeredi"]
+  },
+  {
+    "id": "ann-e817-ap-equiv",
+    "proofId": "erdos-817",
+    "range": { "startLine": 48, "endLine": 63 },
+    "type": "theorem",
+    "title": "Equivalent AP-Free Definitions",
+    "content": "We prove two definitions of 'k-AP-free' are equivalent:\n\n1. **Existential**: For all a, d > 0, ∃ i < k with a + i·d ∉ S\n2. **Negation**: For all a, d > 0, it's NOT the case that all terms are in S\n\nThe proof uses `push_neg` to convert between these forms.",
+    "mathContext": "This equivalence is logically: (∃ missing term) ↔ (¬ all terms present). Both capture 'not a complete k-AP in S'.",
+    "significance": "supporting",
+    "relatedConcepts": ["logical-equivalence", "push_neg", "ap-free"]
+  },
+  {
+    "id": "ann-e817-subset-sums",
+    "proofId": "erdos-817",
+    "range": { "startLine": 65, "endLine": 74 },
+    "type": "definition",
+    "title": "The Subset Sum Set",
+    "content": "**subsetSums A** is defined as the image of A.powerset under the sum function:\n\n```\nsubsetSums A = { ∑_{a∈B} a : B ⊆ A }\n```\n\nThis is the set of all possible sums formed by choosing subsets of A. The empty subset contributes 0.",
+    "mathContext": "For A = {1, 3}, the subset sums are:\n- ∅ → 0\n- {1} → 1\n- {3} → 3\n- {1, 3} → 4\n\nSo subsetSums {1, 3} = {0, 1, 3, 4}",
+    "significance": "critical",
+    "relatedConcepts": ["subset-sums", "powerset", "finset"]
+  },
+  {
+    "id": "ann-e817-subset-props",
+    "proofId": "erdos-817",
+    "range": { "startLine": 76, "endLine": 102 },
+    "type": "theorem",
+    "title": "Basic Properties of Subset Sums",
+    "content": "We prove fundamental facts about subset sum sets:\n\n1. **zero_mem_subsetSums**: 0 ∈ subsetSums A (from the empty subset)\n2. **sum_mem_subsetSums**: The total sum is in subsetSums A\n3. **mem_subsetSums_of_mem**: Each element a ∈ A is in subsetSums A\n4. **card_subsetSums_le**: |subsetSums A| ≤ 2^|A|",
+    "mathContext": "The bound |subsetSums A| ≤ 2^n comes from: at most 2^n subsets, each giving one sum (possibly with collisions). Equality holds when all subset sums are distinct (as for {1, 2, 4, 8, ...}).",
+    "significance": "supporting",
+    "relatedConcepts": ["cardinality", "powerset", "sum"]
+  },
+  {
+    "id": "ann-e817-validset",
+    "proofId": "erdos-817",
+    "range": { "startLine": 104, "endLine": 128 },
+    "type": "definition",
+    "title": "Valid Sets and the Extremal Function",
+    "content": "**ValidSet k n N** means there exists A ⊆ {1,...,N} with |A| = n such that subsetSums A is k-AP-free.\n\n**ValidNs k n** is the set of all N for which ValidSet holds.\n\n**g k n** is the infimum of ValidNs, i.e., the minimal N that works.\n\nWe prove **validNs_upward_closed**: if N works, so does any larger M ≥ N.",
+    "mathContext": "The upward closure follows because A ⊆ {1,...,N} ⊆ {1,...,M}, so the same witness set works for larger universes.",
+    "significance": "critical",
+    "relatedConcepts": ["extremal-function", "infimum", "monotonicity"]
+  },
+  {
+    "id": "ann-e817-conjecture",
+    "proofId": "erdos-817",
+    "range": { "startLine": 130, "endLine": 149 },
+    "type": "theorem",
+    "title": "The Main Conjecture (OPEN)",
+    "content": "**erdos817Conjecture**: Is g₃(n) ≫ 3ⁿ?\n\nFormally: 3^n = O(g(3,n)), meaning there exists C > 0 such that g(3,n) ≥ C · 3^n for large n.\n\n**erdos817ConjectureAlt**: Alternative formulation using eventually-greater-or-equal.",
+    "mathContext": "The conjecture asks whether avoiding 3-APs in subset sums requires N to grow exponentially with n. The ≫ notation means 'is asymptotically bounded below by'.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "big-O", "asymptotic"]
+  },
+  {
+    "id": "ann-e817-partial",
+    "proofId": "erdos-817",
+    "range": { "startLine": 151, "endLine": 163 },
+    "type": "axiom",
+    "title": "Erdős-Sárközy Partial Result",
+    "content": "**erdosSarkozy_partial**: g₃(n) ≫ 3ⁿ/n^{O(1)}.\n\nThis axiom states: there exists O > 0 such that 3^n/n^O = O(g(3,n)).\n\nThis establishes exponential growth but with a polynomial correction factor. The main conjecture asks if this factor is necessary.",
+    "mathContext": "Erdős and Sárközy proved this using density arguments and probabilistic methods. Closing the polynomial gap to prove the full conjecture remains open.",
+    "significance": "critical",
+    "relatedConcepts": ["axiom", "partial-result", "polynomial-gap"]
+  },
+  {
+    "id": "ann-e817-bounds",
+    "proofId": "erdos-817",
+    "range": { "startLine": 165, "endLine": 179 },
+    "type": "theorem",
+    "title": "Basic Bounds",
+    "content": "**g_ge_n**: g_k(n) ≥ n for k ≥ 3, n ≥ 1 (we need n distinct elements).\n\n**g3_le_exp**: g₃(n) ≤ 3^n (the set {1, 3, 9, ..., 3^(n-1)} works).\n\nThese give: n ≤ g₃(n) ≤ 3^n. The conjecture asks if g₃(n) is closer to the upper bound.",
+    "mathContext": "For {1, 3, 9, ..., 3^(n-1)}, every subset sum has a unique base-3 representation with digits 0 or 1. This set is 3-AP-free because no three such numbers form an AP.",
+    "significance": "supporting",
+    "relatedConcepts": ["upper-bound", "lower-bound", "geometric-progression"]
+  },
+  {
+    "id": "ann-e817-examples",
+    "proofId": "erdos-817",
+    "range": { "startLine": 181, "endLine": 196 },
+    "type": "theorem",
+    "title": "Small Cases",
+    "content": "**g3_one = 1**: A = {1} has subsetSums = {0, 1}, which is trivially 3-AP-free.\n\n**g3_two = 2**: A = {1, 2} gives {0, 1, 2, 3} which contains (0, 1, 2). But A = {1, 3} gives {0, 1, 3, 4}, which is 3-AP-free.",
+    "mathContext": "These small cases illustrate that the choice of A matters. Even for n=2, naive choices fail while careful choices succeed.",
+    "significance": "supporting",
+    "relatedConcepts": ["small-cases", "examples", "verification"]
+  },
+  {
+    "id": "ann-e817-heuristic",
+    "proofId": "erdos-817",
+    "range": { "startLine": 198, "endLine": 224 },
+    "type": "concept",
+    "title": "Heuristic Analysis",
+    "content": "Why should g₃(n) be exponential?\n\n1. |subsetSums A| ≤ 2^n (at most 2^n elements)\n2. subsetSums A ⊆ {0, ..., n·N} (bounded by sum of A)\n3. By Roth/Szemerédi, dense sets contain 3-APs\n4. Density ≈ 2^n / (n·N) must be small to avoid APs\n5. This requires N to be exponential in n",
+    "mathContext": "Roth's theorem (1953) says: any subset of {1,...,M} with density > c/log(log M) contains a 3-AP. Szemerédi's theorem generalizes to longer APs.",
+    "significance": "supporting",
+    "relatedConcepts": ["heuristic", "density", "roth-theorem"]
+  },
+  {
+    "id": "ann-e817-szemeredi",
+    "proofId": "erdos-817",
+    "range": { "startLine": 226, "endLine": 240 },
+    "type": "axiom",
+    "title": "Szemerédi's Theorem",
+    "content": "**szemeredi_theorem**: For k ≥ 3 and δ > 0, there exists N₀ such that any S ⊆ {1,...,N} with |S| ≥ δN contains a k-term AP (for N ≥ N₀).\n\nThis is axiomatized since the full proof is beyond Mathlib's current scope.",
+    "mathContext": "Szemerédi's theorem (1975) is one of the deepest results in additive combinatorics. It implies that avoiding k-APs requires sparse sets, connecting to our problem about subset sums.",
+    "significance": "supporting",
+    "relatedConcepts": ["szemeredi", "density", "ramsey-theory"]
+  }
+]

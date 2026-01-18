@@ -1,33 +1,131 @@
 {
   "id": "erdos-699",
-  "title": "Erdős Problem #699",
+  "title": "Erdős Problem #699: Prime Divisors of GCDs of Binomial Coefficients",
   "slug": "erdos-699",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every ... there exists some prime ... such that\\[p\\mid \\left({i}, {j}\\right)?\\]\n\n\n\nA problem of Erds and ...",
+  "description": "For 1 ≤ i < j ≤ n/2, does there exist a prime p ≥ i dividing gcd(C(n,i), C(n,j))? An open problem extending the Sylvester-Schur theorem from single binomial coefficients to their GCDs.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős and Szekeres (1978)",
     "sourceUrl": "https://erdosproblems.com/699",
-    "date": "",
-    "status": "pending",
+    "date": "1978",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos699Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "binomial-coefficients",
+      "prime-divisors",
+      "combinatorics",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 699,
     "erdosUrl": "https://erdosproblems.com/699",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficient C(n,k)",
+        "module": "Mathlib.Algebra.BigOperators.Ring"
+      },
+      {
+        "theorem": "Nat.gcd",
+        "description": "Greatest common divisor",
+        "module": "Mathlib.Data.Nat.GCD"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime"
+      },
+      {
+        "theorem": "Nat.choose_eq_factorial_div_factorial",
+        "description": "C(n,k) = n! / (k! · (n-k)!)",
+        "module": "Mathlib.Algebra.BigOperators.Ring"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of the OPEN Erdős problem",
+      "Definition of HasCommonLargePrime predicate",
+      "Sylvester-Schur theorem as axiom",
+      "Erdős-Szekeres strengthening conjecture",
+      "Verified GCD computations: gcd(C(6,2), C(6,3)) = 5, gcd(C(10,2), C(10,5)) = 9",
+      "Critical counterexample: gcd(C(28,5), C(28,14)) = 1080 = 2³·3³·5",
+      "Proof that (28,5,14) fails the strict version (max prime is exactly 5)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #699 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every $1\\leq i<j\\leq n/2$ there exists some prime $p\\geq i$ such that\\[p\\mid \\textrm{gcd}\\left(\\binom{n}{i}, \\binom{n}{j}\\right)?\\]\n\n\n\nA problem of Erd\\H{o}s and Szekeres. A theorem of Sylvester and Schur says that for any $1\\leq i\\leq n/2$ there exists some prime $p>i$ which divides $\\binom{n}{i}$.\n\nErd\\H{o}s and Szekeres further conjectured that $p\\geq i$ can be improved to $p>i$ except in a few special cases. In particular this fails when $i=2$ and $n$ being some particular powers of $2$. They also found some counterexamples when $i=3$, but only one counterexample when $i\\geq 4$:\\[\\textrm{gcd}\\left(\\binom{28}{5},\\binom{28}{14}\\right)=2^3\\cdot 3^3\\cdot 5.\\]This is mentioned in problem B31 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem combines prime factorization with binomial coefficient theory. The Sylvester-Schur theorem (proved independently by Sylvester in 1892 and Schur in 1929) established that for 1 ≤ i ≤ n/2, there exists a prime p > i dividing C(n,i). This is a non-trivial result about the prime structure of binomial coefficients.\n\nErdős and Szekeres (1978) asked the natural extension: for two binomial coefficients C(n,i) and C(n,j), does their GCD contain a 'large' prime p ≥ i? This is harder because while each coefficient has a large prime factor, those factors might be different.\n\nThe problem is marked as 'falsifiable' because a single counterexample—three integers (n, i, j) with no prime p ≥ i dividing gcd(C(n,i), C(n,j))—would disprove it. Finding such a counterexample, or proving none exists, remains open.",
+    "problemStatement": "**Problem (Erdős-Szekeres, 1978)**: Is it true that for every $1 \\leq i < j \\leq n/2$ there exists a prime $p \\geq i$ such that\n$$p \\mid \\gcd\\left(\\binom{n}{i}, \\binom{n}{j}\\right)?$$\n\n**Status**: OPEN (could be falsified by a finite counterexample)\n\n**Related Result - Sylvester-Schur Theorem**: For $1 \\leq i \\leq n/2$, there exists a prime $p > i$ dividing $\\binom{n}{i}$.\n\n**Erdős-Szekeres Strengthening**: The condition $p \\geq i$ can be improved to $p > i$ except for finitely many triples $(n, i, j)$. Known exceptions include $i = 2$ with certain powers of 2, several cases for $i = 3$, and $(n, i, j) = (28, 5, 14)$.",
+    "proofStrategy": "We formalize this OPEN problem by:\n\n1. **Sylvester-Schur Axiom**: State the classical theorem that single binomial coefficients have large prime divisors as an axiom.\n\n2. **Key Definitions**: Define `HasCommonLargePrime n i j` (∃ prime p ≥ i dividing gcd) and `HasCommonStrictlyLargePrime n i j` (∃ prime p > i).\n\n3. **Main Statement**: Express erdos_699_statement as a universally quantified formula over all valid triples.\n\n4. **Erdős-Szekeres Conjecture**: The strengthened version with finitely many exceptions.\n\n5. **Verified Examples**: Compute gcd(C(6,2), C(6,3)) = 5 and gcd(C(10,2), C(10,5)) = 9 using native_decide.\n\n6. **Critical Counterexample**: Show gcd(C(28,5), C(28,14)) = 1080 = 2³·3³·5, and prove this is a counterexample to the strict form (max prime is exactly 5 = i).",
+    "keyInsights": [
+      "**Sylvester-Schur foundation**: For a single binomial coefficient C(n,i), a prime p > i always divides it. But different coefficients may have *different* large prime factors.",
+      "**GCD challenge**: Finding common large prime divisors is harder than finding individual large divisors. The GCD might only contain small primes.",
+      "**Critical counterexample (28,5,14)**: gcd(C(28,5), C(28,14)) = 1080 = 2³·3³·5. The largest prime is 5 = i, NOT greater than i.",
+      "**Weak vs strong form**: The conjecture with p ≥ i is weaker (still open). The conjecture with p > i has known counterexamples but might hold except for finitely many cases.",
+      "**Falsifiability**: A single counterexample (n, i, j) with no prime p ≥ i in gcd would settle the problem negatively."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Introduction to the prime divisor problem for GCDs of binomial coefficients"
+    },
+    {
+      "id": "sylvester-schur",
+      "title": "Sylvester-Schur Theorem",
+      "startLine": 32,
+      "endLine": 48,
+      "summary": "The classical result: C(n,i) has a prime factor > i"
+    },
+    {
+      "id": "definitions",
+      "title": "Key Definitions",
+      "startLine": 50,
+      "endLine": 78,
+      "summary": "HasCommonLargePrime, HasCommonStrictlyLargePrime, and the main statement"
+    },
+    {
+      "id": "erdos-szekeres",
+      "title": "Erdős-Szekeres Strengthening",
+      "startLine": 80,
+      "endLine": 99,
+      "summary": "The conjectured stronger form with finitely many exceptions"
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 101,
+      "endLine": 146,
+      "summary": "Concrete GCD computations for small cases"
+    },
+    {
+      "id": "counterexample",
+      "title": "The Critical Counterexample",
+      "startLine": 148,
+      "endLine": 204,
+      "summary": "The (28,5,14) case: gcd = 1080 with max prime 5"
+    },
+    {
+      "id": "remarks",
+      "title": "Why Sylvester-Schur Doesn't Help",
+      "startLine": 206,
+      "endLine": 210,
+      "summary": "Explanation of why single-coefficient results don't extend"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #699, an OPEN question about prime divisors of GCDs of binomial coefficients. The problem asks whether for 1 ≤ i < j ≤ n/2, there exists a prime p ≥ i dividing gcd(C(n,i), C(n,j)). We state the Sylvester-Schur theorem (for single coefficients) as an axiom, define the main conjecture and the Erdős-Szekeres strengthening, and provide verified computations including the critical counterexample (28,5,14) to the strict form.",
+    "implications": "This problem illustrates the gap between knowing properties of individual objects (each C(n,i) has a large prime factor) and knowing properties of their combinations (the GCD might not). A resolution would deepen our understanding of the prime factorization structure of binomial coefficients.",
+    "openQuestions": [
+      "Does every (n, i, j) with 1 ≤ i < j ≤ n/2 have a prime p ≥ i in gcd(C(n,i), C(n,j))?",
+      "Is the set of exceptions to p > i (strict) finite?",
+      "What is the complete list of exceptions to the strict form?",
+      "Can we characterize when gcd(C(n,i), C(n,j)) has only small prime factors?"
+    ]
   }
 }

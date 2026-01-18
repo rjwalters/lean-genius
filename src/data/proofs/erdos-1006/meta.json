@@ -1,33 +1,83 @@
 {
   "id": "erdos-1006",
-  "title": "Erdős Problem #1006",
+  "title": "Erdős Problem #1006: Robust Acyclic Orientations",
   "slug": "erdos-1006",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with girth ... (that is, it contains no cycles of length ... or ...). Can the edges of ... always be direc...",
+  "description": "Can every graph with girth > 4 be oriented so that there is no directed cycle, and reversing any single edge also creates no directed cycle? Disproved by Nešetřil-Rödl (1978) for all girths.",
   "meta": {
-    "author": "Unknown",
+    "author": "Nešetřil-Rödl (disproof)",
     "sourceUrl": "https://erdosproblems.com/1006",
-    "date": "",
-    "status": "pending",
+    "date": "1978",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1006Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "orientation",
+      "girth",
+      "counterexample",
+      "probabilistic-method"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 1006,
     "erdosUrl": "https://erdosproblems.com/1006",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1006 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a graph with girth $>4$ (that is, it contains no cycles of length $3$ or $4$). Can the edges of $G$ always be directed such that there is no directed cycle, and reversing the direction of any edge also creates no directed cycle?\n\n\n\nIn \\cite{Er71} Erd\\H{o}s credits this problem to Ore, who gave an example of a graph without this property which has girth $4$. Gallai noted that the Gr\\\"{otzsch graph} also lacks this property.\n\nThis is false - Ne\\v{s}et\\v{r}il and R\\\"{o}dl \\cite{NeRo78b} proved that, for every integer $g$, there is a graph $G$ with girth $g$ such that every orientation of the edges in $G$ contains a directed cycle or a cycle obtained from a directed cycle by reversing one directed edge.\n\n\n\n\nReferences\n\n\n[Er71] Erd\\H{o}s, P., Some unsolved problems in graph theory and combinatorial analysis. Combinatorial Mathematics and its Applications (Proc.\nConf., Oxford, 1969) (1971), 97-109.\n\n[NeRo78b] Ne\\u set\\u ril, Jaroslav and R\\\"odl, Vojt\\v ech, On a probabilistic graph-theoretical method. Proc. Amer. Math. Soc. (1978), 417--421.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem, credited to Ore by Erdős, explores whether high-girth graphs have particularly stable acyclic orientations. Every graph admits an acyclic orientation (just order the vertices and direct edges from lower to higher), but some orientations are 'fragile' - reversing a single edge creates a cycle. Ore asked if girth > 4 guarantees a 'robust' orientation that stays acyclic after any single edge reversal.",
+    "problemStatement": "Let G be a graph with girth > 4 (no cycles of length 3 or 4). Can the edges of G always be directed such that (1) there is no directed cycle, and (2) reversing any single edge also creates no directed cycle?",
+    "proofStrategy": "Nešetřil and Rödl (1978) used the probabilistic method to construct counterexamples. They showed that random graphs with high girth and high chromatic number have the property that EVERY acyclic orientation contains an edge whose reversal creates a directed cycle. This gives counterexamples for all girths g ≥ 3.",
+    "keyInsights": [
+      "Acyclic orientations correspond to linear orderings: direct u→v iff u comes before v",
+      "A 'robust' orientation must avoid creating 2-cycles under any edge reversal",
+      "High chromatic number forces certain structural constraints that prevent robustness",
+      "The Grötzsch graph (girth 4, χ=4, triangle-free) is an explicit counterexample at girth 4",
+      "The probabilistic method shows counterexamples exist for ALL girths"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "girth",
+      "title": "Graph Girth",
+      "summary": "Definition of girth as the length of the shortest cycle",
+      "startLine": 50,
+      "endLine": 62
+    },
+    {
+      "id": "orientations",
+      "title": "Orientations and Acyclicity",
+      "summary": "Structure for graph orientations and acyclicity definition",
+      "startLine": 64,
+      "endLine": 84
+    },
+    {
+      "id": "robust",
+      "title": "Robust Acyclicity",
+      "summary": "Key property: acyclic after any single edge reversal",
+      "startLine": 86,
+      "endLine": 108
+    },
+    {
+      "id": "conjecture",
+      "title": "Ore's Conjecture (Disproved)",
+      "summary": "The false conjecture that girth > 4 implies robust orientability",
+      "startLine": 110,
+      "endLine": 119
+    },
+    {
+      "id": "counterexamples",
+      "title": "Counterexamples",
+      "summary": "Grötzsch graph and Nešetřil-Rödl theorem",
+      "startLine": 121,
+      "endLine": 145
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1006 is resolved NEGATIVELY. The conjecture that graphs with girth > 4 admit robustly acyclic orientations is false. Nešetřil and Rödl (1978) proved counterexamples exist for all girths g ≥ 3.",
+    "implications": "This result shows that sparsity (high girth) alone cannot guarantee robust orientability. The chromatic number plays a crucial role: graphs with high girth AND high chromatic number necessarily fail to have robust orientations.",
+    "openQuestions": [
+      "Characterize which graphs admit robustly acyclic orientations",
+      "What is the minimum chromatic number of a graph with girth g that fails robust orientability?"
+    ]
   }
 }

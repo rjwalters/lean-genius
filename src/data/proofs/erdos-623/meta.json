@@ -1,33 +1,119 @@
 {
   "id": "erdos-623",
-  "title": "Erdős Problem #623",
+  "title": "Erdős #623: Independence for Functions on Finite Subsets",
   "slug": "erdos-623",
-  "description": "Let X\" role=\"presentation\" style=\"position: relative;\">XXX be a set of cardinality &#x2135;&#x03C9;\" role=\"presentation\" style=\"position: relative;\">ℵωℵω\\aleph_\\omega and f\" role=\"presentation\" sty...",
+  "description": "Let X have cardinality ℵ_ω and f: Finset(X) → X satisfy f(A) ∉ A. Must there exist an infinite independent set Y ⊆ X where f(B) ∉ Y for all finite B ⊆ Y? OPEN - possibly undecidable.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Hajnal (1958)",
     "sourceUrl": "https://erdosproblems.com/623",
-    "date": "",
-    "status": "pending",
+    "date": "1958",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos623Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "set-theory",
+      "cardinals",
+      "combinatorics",
+      "independence"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 8,
     "erdosNumber": 623,
     "erdosUrl": "https://erdosproblems.com/623",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #623 from erdosproblems.com.",
-    "problemStatement": "Let X\" role=\"presentation\" style=\"position: relative;\">XXX be a set of cardinality &#x2135;&#x03C9;\" role=\"presentation\" style=\"position: relative;\">ℵωℵω\\aleph_\\omega and f\" role=\"presentation\" style=\"position: relative;\">fff be a function from the finite subsets of X\" role=\"presentation\" style=\"position: relative;\">XXX to X\" role=\"presentation\" style=\"position: relative;\">XXX such that f(A)&#x2209;A\" role=\"presentation\" style=\"position: relative;\">f(A)∉Af(A)∉Af(A)\\not\\in A for all A\" role=\"presentation\" style=\"position: relative;\">AAA. Must there exist an infinite Y&#x2286;X\" role=\"presentation\" style=\"position: relative;\">Y⊆XY⊆XY\\subseteq X that is independent - that is, for all finite B&#x2282;Y\" role=\"presentation\" style=\"position: relative;\">B⊂YB⊂YB\\subset Y we have f(B)&#x2209;Y\" role=\"presentation\" style=\"position: relative;\">f(B)∉Yf(B)∉Yf(B)\\not\\in Y?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Erdős and Hajnal in 1958 and lies at the intersection of set theory and combinatorics. It concerns the existence of infinite independent sets for functions on finite subsets.\n\nThe critical cardinality ℵ_ω (aleph-omega) is the first singular cardinal—the supremum of ℵ_0, ℵ_1, ℵ_2, ... Erdős and Hajnal proved that for any set X with |X| < ℵ_ω, there exists a 'free' function f with NO infinite independent set. This makes ℵ_ω a sharp threshold.\n\nIn 1999, Erdős suggested this problem might be 'perhaps undecidable', meaning it could be independent of the standard ZFC axioms. Problems at singular cardinals often exhibit such independence phenomena—their truth may depend on set-theoretic axioms beyond ZFC.",
+    "problemStatement": "Let $X$ be a set of cardinality $\\aleph_\\omega$ and $f$ be a function from the finite subsets of $X$ to $X$ such that $f(A) \\notin A$ for all $A$.\n\n**Question**: Must there exist an infinite $Y \\subseteq X$ that is **independent**—that is, for all finite $B \\subset Y$, we have $f(B) \\notin Y$?\n\n**Status**: OPEN (possibly undecidable)\n\n**Known**: For $|X| < \\aleph_\\omega$, the answer is NO (Erdős-Hajnal 1958)",
+    "proofStrategy": "We formalize the key concepts: free functions (f(A) ∉ A), independent sets (f(B) ∉ Y for finite B ⊆ Y), and the cardinal ℵ_ω.\n\nThe Erdős-Hajnal negative result for |X| < ℵ_ω is axiomatized since it requires complex set-theoretic constructions. The main conjecture is stated as a definition since it remains open.\n\nWe also discuss the potential undecidability and the special role of singular cardinals.",
+    "keyInsights": [
+      "**Free function**: f: Finset(X) → X where f(A) ∉ A always. The function 'escapes' its input.",
+      "**Independent set**: Y where f(B) ∉ Y for all finite B ⊆ Y. The image of f on Y's finite subsets lands outside Y.",
+      "**ℵ_ω is singular**: Its cofinality is ω (countable), not itself. First singular cardinal.",
+      "**Erdős-Hajnal threshold**: For |X| < ℵ_ω, counterexamples exist. At ℵ_ω, the question is open.",
+      "**Potential undecidability**: Erdős (1999) suggested this might be independent of ZFC"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "cardinals",
+      "title": "Cardinal Background",
+      "summary": "Definition of ℵ_ω, limit cardinals, singularity",
+      "startLine": 37,
+      "endLine": 59
+    },
+    {
+      "id": "free-functions",
+      "title": "Free Functions",
+      "summary": "Functions where f(A) ∉ A for all finite A",
+      "startLine": 61,
+      "endLine": 74
+    },
+    {
+      "id": "independent-sets",
+      "title": "Independent Sets",
+      "summary": "Sets Y where f(B) ∉ Y for all finite B ⊆ Y",
+      "startLine": 76,
+      "endLine": 100
+    },
+    {
+      "id": "erdos-hajnal",
+      "title": "Erdős-Hajnal Negative Result",
+      "summary": "For |X| < ℵ_ω, counterexamples exist",
+      "startLine": 102,
+      "endLine": 119
+    },
+    {
+      "id": "main-problem",
+      "title": "The Main Problem (OPEN)",
+      "summary": "The conjecture for |X| = ℵ_ω",
+      "startLine": 121,
+      "endLine": 146
+    },
+    {
+      "id": "undecidability",
+      "title": "Potential Undecidability",
+      "summary": "Erdős's 1999 suggestion about independence from ZFC",
+      "startLine": 148,
+      "endLine": 162
+    },
+    {
+      "id": "related",
+      "title": "Related Concepts",
+      "summary": "Chromatic and Ramsey interpretations",
+      "startLine": 164,
+      "endLine": 173
+    },
+    {
+      "id": "finite-cases",
+      "title": "Finite and Countable Cases",
+      "summary": "Trivial cases and the countable case",
+      "startLine": 175,
+      "endLine": 190
+    },
+    {
+      "id": "gap",
+      "title": "The Gap",
+      "summary": "Summary table of known results",
+      "startLine": 192,
+      "endLine": 212
+    },
+    {
+      "id": "variants",
+      "title": "Strengthenings and Variants",
+      "summary": "Uncountable Y and weak versions",
+      "startLine": 214,
+      "endLine": 231
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #623, an OPEN problem about independence for functions on finite subsets at cardinality ℵ_ω. The Erdős-Hajnal theorem shows the answer is NO for all smaller cardinals, making ℵ_ω a sharp threshold. Erdős suggested this problem might be undecidable in ZFC.",
+    "implications": "This problem connects combinatorics with set-theoretic independence. The singular cardinal ℵ_ω occupies a special position where many set-theoretic questions become sensitive to axioms. Understanding this problem could illuminate the boundary between decidable and undecidable combinatorial questions.",
+    "openQuestions": [
+      "Does every free function on ℵ_ω have an infinite independent set?",
+      "Is this problem independent of ZFC?",
+      "What happens for cardinals > ℵ_ω?",
+      "Does the answer depend on large cardinal axioms or forcing axioms?"
+    ]
   }
 }

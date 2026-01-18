@@ -1,1 +1,219 @@
-[]
+[
+  {
+    "id": "ann-e304-header",
+    "proofId": "erdos-304",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #304** studies the complexity of Egyptian fraction representations.\n\n**N(a,b)** = minimal k such that a/b = 1/n₁ + ... + 1/nₖ with 1 < n₁ < ... < nₖ\n\n**N(b)** = max N(a,b) over all 1 ≤ a < b (worst-case complexity)\n\n**Known Bounds**:\n- Erdős (1950): log log b ≪ N(b) ≪ log b / log log b\n- Vose (1985): N(b) ≪ √(log b)\n\n**Open Question**: Is N(b) ≪ log log b?",
+    "mathContext": "Egyptian fractions were used in ancient Egypt; this problem asks about the minimum number of terms needed.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Egyptian fractions",
+      "asymptotic bounds",
+      "unit fractions",
+      "iterated logarithms"
+    ]
+  },
+  {
+    "id": "ann-e304-unit-expressible",
+    "proofId": "erdos-304",
+    "range": {
+      "startLine": 47,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Unit Fraction Expressibility",
+    "content": "**unitFractionExpressible(a, b)**: The set of all k such that a/b can be written as a sum of k distinct unit fractions.\n\n```lean\ndef unitFractionExpressible (a b : ℕ) : Set ℕ :=\n  {k | ∃ s : Finset ℕ, s.card = k ∧ (∀ n ∈ s, n > 1) ∧\n       (a / b : ℚ) = ∑ n ∈ s, (n : ℚ)⁻¹}\n```\n\n**Key constraints**:\n- Denominators must be > 1 (no 1/1 = 1)\n- Denominators must be distinct\n- The sum must equal a/b exactly",
+    "mathContext": "This set captures all possible representation sizes. N(a,b) is the minimum element of this set.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Finset",
+      "set comprehension",
+      "unit fractions"
+    ]
+  },
+  {
+    "id": "ann-e304-smallest-collection",
+    "proofId": "erdos-304",
+    "range": {
+      "startLine": 52,
+      "endLine": 68
+    },
+    "type": "axiom",
+    "title": "N(a,b) and N(b) Axiomatization",
+    "content": "**smallestCollection(a, b)** = N(a,b) = min{k : a/b representable with k unit fractions}\n\n**smallestCollectionMax(b)** = N(b) = max{N(a,b) : 1 ≤ a < b}\n\n```lean\naxiom smallestCollection : ℕ → ℕ → ℕ\naxiom smallestCollectionMax : ℕ → ℕ\n```\n\nThese are axiomatized because computing the infimum/supremum requires decidability of the Egyptian fraction representation problem.",
+    "mathContext": "N(a,b) exists because every rational has an Egyptian fraction representation (e.g., via the greedy algorithm).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "infimum",
+      "supremum",
+      "decidability"
+    ]
+  },
+  {
+    "id": "ann-e304-example",
+    "proofId": "erdos-304",
+    "range": {
+      "startLine": 81,
+      "endLine": 95
+    },
+    "type": "theorem",
+    "title": "Example: N(2, 15) = 2",
+    "content": "**Concrete Example**: 2/15 = 1/10 + 1/30\n\n**Why N(2, 15) = 2**:\n- 2/15 ≠ 1/n for any integer n > 1 (since 15/2 = 7.5 is not an integer)\n- Therefore N(2, 15) ≥ 2\n- The representation 1/10 + 1/30 = 3/30 + 1/30 = 4/30 = 2/15 achieves k = 2\n\n```lean\naxiom example_two_fifteen : (2 : ℚ) / 15 = 1 / 10 + 1 / 30\naxiom smallestCollection_two_fifteen : smallestCollection 2 15 = 2\n```",
+    "mathContext": "This verifies the definition with a small concrete case where we can check optimality manually.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "concrete verification",
+      "optimality",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-e304-erdos-lower",
+    "proofId": "erdos-304",
+    "range": {
+      "startLine": 109,
+      "endLine": 116
+    },
+    "type": "axiom",
+    "title": "Erdős Lower Bound (1950)",
+    "content": "**Theorem (Erdős 1950)**: log log b ≪ N(b)\n\n```lean\naxiom erdos_1950_lower_bound :\n  ∃ c : ℚ, c > 0 ∧ ∀ b ≥ 10,\n    c * Nat.log 2 (Nat.log 2 b) ≤ smallestCollectionMax b\n```\n\n**Interpretation**: There exists c > 0 such that for all sufficiently large b:\n  N(b) ≥ c · log₂(log₂ b)\n\n**Why this bound?** The prime factorization structure of denominators forces at least log log b terms for some a/b.",
+    "mathContext": "This established the first non-trivial lower bound on Egyptian fraction complexity.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "iterated logarithm",
+      "prime factorization",
+      "lower bound"
+    ]
+  },
+  {
+    "id": "ann-e304-erdos-upper",
+    "proofId": "erdos-304",
+    "range": {
+      "startLine": 117,
+      "endLine": 124
+    },
+    "type": "axiom",
+    "title": "Erdős Upper Bound (1950)",
+    "content": "**Theorem (Erdős 1950)**: N(b) ≪ log b / log log b\n\n```lean\naxiom erdos_1950_upper_bound :\n  ∃ C : ℚ, C > 0 ∧ ∀ b ≥ 10,\n    smallestCollectionMax b ≤ C * Nat.log 2 b / (Nat.log 2 (Nat.log 2 b) + 1)\n```\n\nThis was Erdős's original upper bound, later improved by Vose.\n\n**Gap from 1950**: log log b ≪ N(b) ≪ log b / log log b",
+    "mathContext": "The +1 in the denominator avoids division by zero for small b.",
+    "significance": "key",
+    "relatedConcepts": [
+      "upper bound",
+      "big-O notation",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-e304-vose",
+    "proofId": "erdos-304",
+    "range": {
+      "startLine": 125,
+      "endLine": 132
+    },
+    "type": "axiom",
+    "title": "Vose's Improvement (1985)",
+    "content": "**Theorem (Vose 1985)**: N(b) ≪ √(log b)\n\n```lean\naxiom vose_1985_upper_bound :\n  ∃ C : ℚ, C > 0 ∧ ∀ b ≥ 10,\n    smallestCollectionMax b * smallestCollectionMax b ≤ C * Nat.log 2 b\n```\n\n**Written as**: N(b)² ≤ C · log₂ b, i.e., N(b) ≤ √(C · log₂ b)\n\nThis dramatically improved Erdős's original log b / log log b bound.\n\n**New gap**: log log b ≪ N(b) ≪ √(log b)",
+    "mathContext": "Vose's proof uses continued fractions to construct efficient representations.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "continued fractions",
+      "constructive proof",
+      "improved bounds"
+    ]
+  },
+  {
+    "id": "ann-e304-conjecture",
+    "proofId": "erdos-304",
+    "range": {
+      "startLine": 143,
+      "endLine": 150
+    },
+    "type": "definition",
+    "title": "The Main Open Conjecture",
+    "content": "**Erdős Problem #304**: Is N(b) ≪ log log b?\n\n```lean\ndef erdos_304_conjecture : Prop :=\n  ∃ C : ℚ, C > 0 ∧ ∀ b ≥ 10,\n    smallestCollectionMax b ≤ C * Nat.log 2 (Nat.log 2 b + 1)\n\naxiom erdos_304_open :\n  ¬(erdos_304_conjecture ↔ True) ∧ ¬(erdos_304_conjecture ↔ False)\n```\n\n**If true**: N(b) ≍ log log b (the bounds would match asymptotically)\n\n**Current gap**: log log b ≪ N(b) ≪ √(log b)",
+    "mathContext": "The +1 inside the log log handles the case b = 1 (where log log 1 = log 0 is undefined).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open problem",
+      "tight bounds",
+      "asymptotic equivalence"
+    ]
+  },
+  {
+    "id": "ann-e304-average",
+    "proofId": "erdos-304",
+    "range": {
+      "startLine": 158,
+      "endLine": 173
+    },
+    "type": "axiom",
+    "title": "Average Case Behavior",
+    "content": "**averageCollection(b)** = (1/(b-1)) ∑_{a=1}^{b-1} N(a,b)\n\nThe average number of unit fractions needed over all numerators.\n\n**Lower bound**: (1/b) ∑ N(a,b) ≫ log log b\n\n```lean\naxiom average_lower_bound :\n  ∃ c : ℚ, c > 0 ∧ ∀ b ≥ 10,\n    c * Nat.log 2 (Nat.log 2 b) ≤ averageCollection b\n```\n\n**Interpretation**: Even the typical case requires Ω(log log b) terms - not just worst cases.",
+    "mathContext": "This shows the lower bound is not just achieved by a few bad numerators, but is pervasive.",
+    "significance": "key",
+    "relatedConcepts": [
+      "average case",
+      "typical behavior",
+      "distribution"
+    ]
+  },
+  {
+    "id": "ann-e304-almost-one",
+    "proofId": "erdos-304",
+    "range": {
+      "startLine": 175,
+      "endLine": 187
+    },
+    "type": "definition",
+    "title": "Special Case: N(b-1, b)",
+    "content": "**almostOneCollection(b)** = N(b-1, b) = number of unit fractions for (b-1)/b\n\nThe fraction (b-1)/b = 1 - 1/b is a natural special case.\n\n```lean\nnoncomputable def almostOneCollection (b : ℕ) : ℕ :=\n  smallestCollection (b - 1) b\n\naxiom connection_to_problem_293 :\n  ∀ b ≥ 2, almostOneCollection b ≤ smallestCollectionMax b\n```\n\n**Connection to #293**: This relates to representations of 1 as a sum of unit fractions and which denominators can be missing.",
+    "mathContext": "van Doorn and Tang (2025) explored this connection in detail.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Erdős #293",
+      "representations of 1",
+      "missing denominators"
+    ]
+  },
+  {
+    "id": "ann-e304-greedy",
+    "proofId": "erdos-304",
+    "range": {
+      "startLine": 195,
+      "endLine": 200
+    },
+    "type": "axiom",
+    "title": "Greedy Algorithm Bound",
+    "content": "**Greedy Algorithm**: Given q > 0, repeatedly subtract the largest 1/n ≤ q.\n\n```lean\naxiom greedy_upper_bound :\n  ∃ C : ℚ, C > 0 ∧ ∀ b ≥ 2, ∀ a, 1 ≤ a → a < b →\n    ∃ s : Finset ℕ, s.card ≤ C * Nat.log 2 b ∧\n      (∀ n ∈ s, n > 1) ∧ (a / b : ℚ) = ∑ n ∈ s, (n : ℚ)⁻¹\n```\n\n**Bound**: Greedy uses O(log b) terms.\n\n**Comparison**:\n- Greedy: O(log b)\n- Optimal: O(√(log b))\n\nThe greedy algorithm is far from optimal!",
+    "mathContext": "The greedy algorithm is easy to implement but produces suboptimal representations.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "greedy algorithm",
+      "Fibonacci-Sylvester",
+      "algorithmic efficiency"
+    ]
+  },
+  {
+    "id": "ann-e304-bounds-known",
+    "proofId": "erdos-304",
+    "range": {
+      "startLine": 215,
+      "endLine": 220
+    },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**bounds_known**: Combines the Erdős lower bound and Vose upper bound into a single theorem.\n\n```lean\ntheorem bounds_known :\n    (∃ c : ℚ, c > 0 ∧ ∀ b ≥ 10,\n      c * Nat.log 2 (Nat.log 2 b) ≤ smallestCollectionMax b) ∧\n    (∃ C : ℚ, C > 0 ∧ ∀ b ≥ 10,\n      smallestCollectionMax b * smallestCollectionMax b ≤ C * Nat.log 2 b) :=\n  ⟨erdos_1950_lower_bound, vose_1985_upper_bound⟩\n```\n\n**Summary**: log log b ≪ N(b) ≪ √(log b)",
+    "mathContext": "This theorem captures the current state of knowledge, combining results from 1950 and 1985.",
+    "significance": "key",
+    "relatedConcepts": [
+      "combined bounds",
+      "state of the art",
+      "theorem synthesis"
+    ]
+  }
+]

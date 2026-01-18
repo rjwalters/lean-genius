@@ -1,34 +1,99 @@
 {
   "id": "erdos-104",
-  "title": "Erdős Problem #104",
+  "title": "Erdős Problem #104: Unit Circles Through Three Points",
   "slug": "erdos-104",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven ... points in ... the number of distinct unit circles containing at least three points is ....\n\n\n\nIn  Erds proved that ...",
+  "description": "Given n points in ℝ², how many unit circles contain at least 3 points? Known: Ω(n^{3/2}) ≤ answer ≤ O(n²). Conjecture: O(n^{3/2}). OPEN ($100 prize).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1975)",
     "sourceUrl": "https://erdosproblems.com/104",
-    "date": "",
-    "status": "pending",
+    "date": "1975",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos104Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "incidences",
+      "unit-circles",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 104,
     "erdosUrl": "https://erdosproblems.com/104",
-    "erdosProblemStatus": "solved",
+    "erdosProblemStatus": "open",
     "erdosPrizeValue": "$100"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #104 from erdosproblems.com. Originally offered with a prize of $100.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven $n$ points in $\\mathbb{R}^2$ the number of distinct unit circles containing at least three points is $o(n^2)$.\n\n\n\nIn \\cite{Er81d} Erd\\H{o}s proved that $\\gg n$ many circles is possible, and that there cannot be more than $O(n^2)$ many circles. The argument is very simple: every pair of points determines at most $2$ unit circles, and the claimed bound follows from double counting. Erd\\H{o}s claims in a number of places this produces the upper bound $n(n-1)$, but Harborth and Mengerson \\cite{HaMe86} note that in fact this delivers an upper bound of $\\frac{n(n-1)}{3}$.\n\nElekes \\cite{El84} has a simple construction of a set with $\\gg n^{3/2}$ such circles. This may be the correct order of magnitude.\n\nIn \\cite{Er75h} and \\cite{Er92e} Erd\\H{o}s also asks how many such unit circles there must be if the points are in general position.\n\nIn \\cite{Er92e} Erd\\H{o}s offered £100 for a proof or disproof that the answer is $O(n^{3/2})$.\n\nThe maximal number of unit circles achieved by $n$ points is A003829 in the OEIS.\n\nSee also [506] and [831].\n\n\n\n\nReferences\n\n\n[El84] Elekes, G., {$n$} points in the plane can determine $n^{3/2}$ unit\ncircles. Combinatorica (1984), 131.\n\n[Er75h] Erd\\H{o}s, P., Some problems on elementary geometry. Austral. Math. Soc. Gaz. (1975), 2-3.\n\n[Er81d] Erd\\H{o}s, P., Some applications of graph theory and combinatorial methods to number theory and geometry. Algebraic methods in graph theory, Vol. I, II (Szeged, 1978) (1981), 137-148.\n\n[Er92e] Erd\\H{o}s, P\\'{a}l, Some Unsolved problems in Geometry, Number Theory and Combinatorics. Eureka (1992), 44-48.\n\n[HaMe86] Harborth, Heiko and Mengersen, Ingrid, Point sets with many unit circles. Discrete Math. (1986), 193--197.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This is a fundamental problem in discrete geometry, related to the unit distance problem. Erdős posed it in 1975 and offered $100 for proving the O(n^{3/2}) bound. The trivial upper bound O(n²) comes from double counting: each pair determines at most 2 unit circles. Elekes (1984) showed the lower bound Ω(n^{3/2}) is achievable, suggesting this might be tight.",
+    "problemStatement": "Given n points in ℝ², prove that the number of distinct unit circles containing at least three points is o(n²), or more specifically, O(n^{3/2}).",
+    "proofStrategy": "The trivial bound uses double counting: each circle with 3+ points contains at least 3 pairs, each pair lies on at most 2 unit circles, giving ≤ 2·C(n,2)/3 = n(n-1)/3 circles. Proving O(n^{3/2}) likely requires incidence bounds like Szemerédi-Trotter for circles.",
+    "keyInsights": [
+      "Two points at distance d determine 2 unit circles (d<2), 1 circle (d=2), or 0 circles (d>2)",
+      "Trivial upper bound: n(n-1)/3 via Harborth-Mengersen counting",
+      "Elekes construction achieves Ω(n^{3/2}) unit circles with 3+ points",
+      "Related to Szemerédi-Trotter incidence theorem for algebraic curves",
+      "OEIS A003829 tracks maximum for small n: 1, 4, 8, 13, 20, 26, 35, ..."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "geometry",
+      "title": "Points and Unit Circles",
+      "summary": "Basic geometric definitions in ℝ²",
+      "startLine": 36,
+      "endLine": 55
+    },
+    {
+      "id": "counting",
+      "title": "Point Sets and Circle Counting",
+      "summary": "Counting circles with 3+ incidences",
+      "startLine": 57,
+      "endLine": 76
+    },
+    {
+      "id": "trivial-bound",
+      "title": "Trivial Upper Bound",
+      "summary": "O(n²) via pair counting",
+      "startLine": 78,
+      "endLine": 107
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound Constructions",
+      "summary": "Elekes's Ω(n^{3/2}) construction",
+      "startLine": 109,
+      "endLine": 125
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "summary": "O(n^{3/2}) upper bound",
+      "startLine": 127,
+      "endLine": 151
+    },
+    {
+      "id": "incidences",
+      "title": "Incidence Geometry",
+      "summary": "Connection to Szemerédi-Trotter",
+      "startLine": 153,
+      "endLine": 166
+    },
+    {
+      "id": "values",
+      "title": "Known Values",
+      "summary": "Maximum for small n (OEIS A003829)",
+      "startLine": 168,
+      "endLine": 188
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "The problem asks whether the number of unit circles with 3+ points from an n-point set is O(n^{3/2}). Elekes's construction shows this would be tight. Despite decades of work, even proving o(n²) remains open.",
+    "implications": "This connects discrete geometry to incidence theory. Similar questions for circles of arbitrary radii, or spheres in higher dimensions, have been studied. The techniques needed likely involve algebraic geometry and polynomial partitioning.",
+    "openQuestions": [
+      "Is the count O(n^{3/2})?",
+      "Can we at least prove o(n²)?",
+      "What is the answer for points in general position?",
+      "How does the answer change for circles of arbitrary (not unit) radius?"
+    ]
   }
 }

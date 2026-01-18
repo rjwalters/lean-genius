@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-454-header",
+    "proofId": "erdos-454",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdős Problem #454 asks about symmetric prime sums. Define f(n) = min over i < n of (p_{n+i} + p_{n-i}). If primes were evenly spaced, f(n) = 2p_n exactly. The question: is limsup(f(n) - 2p_n) = ∞? Pomerance (1979) proved limsup ≥ 2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-454-nthprime-def",
+    "proofId": "erdos-454",
+    "range": { "startLine": 37, "endLine": 38 },
+    "type": "definition",
+    "title": "The nth Prime Function",
+    "content": "nthPrime(k) returns the k-th prime (0-indexed). So nthPrime(0) = 2, nthPrime(1) = 3, nthPrime(2) = 5, etc. This uses Mathlib's Nat.nth Prime, which extracts the k-th element satisfying the Prime predicate.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-454-nthprime-props",
+    "proofId": "erdos-454",
+    "range": { "startLine": 40, "endLine": 57 },
+    "type": "theorem",
+    "title": "Prime Sequence Properties",
+    "content": "Key properties: (1) nthPrime(0) = 2, (2) nthPrime(1) = 3, (3) nthPrime(2) = 5, (4) every nthPrime(k) is prime, (5) the sequence is strictly monotone increasing. These are foundational for working with the k-th prime.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-454-symmetric-sum",
+    "proofId": "erdos-454",
+    "range": { "startLine": 61, "endLine": 66 },
+    "type": "definition",
+    "title": "Symmetric Prime Sum",
+    "content": "For i < n, the symmetric sum is p_{n+i} + p_{n-i}. This measures primes at equal 'distance' from position n. If primes were evenly spaced, this sum would equal 2p_n regardless of i (the deviations would cancel).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-454-f-def",
+    "proofId": "erdos-454",
+    "range": { "startLine": 68, "endLine": 74 },
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "f(n) = min_{i<n} (p_{n+i} + p_{n-i}) is the MINIMUM symmetric sum. By taking i = 0, we get p_n + p_n = 2p_n, so f(n) ≤ 2p_n always. The question is whether this minimum can be MUCH larger than 2p_n for some i.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-454-deviation-def",
+    "proofId": "erdos-454",
+    "range": { "startLine": 87, "endLine": 93 },
+    "type": "definition",
+    "title": "The Deviation",
+    "content": "deviation(n) = f(n) - 2p_n measures how far the minimum symmetric sum is from the 'ideal' value 2p_n. Positive deviation means all symmetric sums exceed 2p_n. The conjecture asks if deviations can be arbitrarily large.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-454-deviation-enat",
+    "proofId": "erdos-454",
+    "range": { "startLine": 95, "endLine": 99 },
+    "type": "definition",
+    "title": "Extended Natural Deviation",
+    "content": "For limsup computation, we use extended naturals (ℕ∞). When f(n) ≥ 2p_n, the deviation is converted to a natural; otherwise it's 0. This ensures the limsup is well-defined and can equal ∞.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-454-i-zero",
+    "proofId": "erdos-454",
+    "range": { "startLine": 103, "endLine": 106 },
+    "type": "theorem",
+    "title": "The i=0 Case",
+    "content": "When i = 0, the symmetric sum is p_n + p_n = 2p_n exactly. This means f(n) ≤ 2p_n always (the minimum is at most the i=0 term). So deviation(n) could be 0, but Pomerance showed it's often ≥ 2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-454-f-bound",
+    "proofId": "erdos-454",
+    "range": { "startLine": 108, "endLine": 110 },
+    "type": "theorem",
+    "title": "Upper Bound on f(n)",
+    "content": "Since i = 0 is always an option, f(n) ≤ 2p_n. This is the trivial upper bound. The interesting question is how much LARGER than 2p_n can f(n) be? That requires all symmetric sums to exceed 2p_n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-454-asymmetric",
+    "proofId": "erdos-454",
+    "range": { "startLine": 112, "endLine": 118 },
+    "type": "theorem",
+    "title": "Asymmetric Behavior",
+    "content": "For i > 0, we have p_{n+i} > p_n (further primes are larger) and p_{n-i} < p_n (earlier primes are smaller). Whether their sum exceeds, equals, or falls below 2p_n depends on the relative magnitudes of the gaps.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-454-pomerance",
+    "proofId": "erdos-454",
+    "range": { "startLine": 122, "endLine": 126 },
+    "type": "axiom",
+    "title": "Pomerance's Lower Bound",
+    "content": "Pomerance (1979) proved limsup(f(n) - 2p_n) ≥ 2. This means infinitely many n have ALL symmetric sums ≥ 2p_n + 2. The proof uses properties of the 'prime number graph' where primes are connected if their sum is prime.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-454-limsup-pos",
+    "proofId": "erdos-454",
+    "range": { "startLine": 128, "endLine": 132 },
+    "type": "theorem",
+    "title": "Positive Limsup",
+    "content": "An immediate corollary: the limsup is positive. This means deviations are not eventually zero—there are always n with f(n) > 2p_n. The open question is whether deviations can be arbitrarily large.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-454-infinitely-many",
+    "proofId": "erdos-454",
+    "range": { "startLine": 134, "endLine": 137 },
+    "type": "theorem",
+    "title": "Infinitely Many Deviations",
+    "content": "Infinitely many n have deviation ≥ 2. This follows from Pomerance's bound on the limsup. If only finitely many n had deviation ≥ 2, the limsup would be less than 2, contradicting Pomerance's result.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-454-conjecture",
+    "proofId": "erdos-454",
+    "range": { "startLine": 141, "endLine": 148 },
+    "type": "definition",
+    "title": "Main Conjecture",
+    "content": "The Erdős Problem #454 conjecture: limsup(f(n) - 2p_n) = ∞. This asks whether for every M, there exists n with f(n) - 2p_n > M. Equivalently: can symmetric prime sums deviate arbitrarily far from 2p_n?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-454-negation",
+    "proofId": "erdos-454",
+    "range": { "startLine": 150, "endLine": 152 },
+    "type": "definition",
+    "title": "Negation",
+    "content": "The negation: there exists M such that limsup ≤ M. This would mean deviations are uniformly bounded—eventually, f(n) ≤ 2p_n + M for all n. This seems unlikely given the irregularity of prime gaps.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-454-gap-heuristic",
+    "proofId": "erdos-454",
+    "range": { "startLine": 161, "endLine": 165 },
+    "type": "definition",
+    "title": "Prime Gap Heuristic",
+    "content": "Heuristically, prime gaps average about log(p). If gaps were exactly log(p), then p_{n+i} ≈ p_n + i·log(p_n), and symmetric sums would satisfy p_{n+i} + p_{n-i} ≈ 2p_n (the linear terms cancel). Real prime gaps are irregular.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-454-large-gaps",
+    "proofId": "erdos-454",
+    "range": { "startLine": 167, "endLine": 169 },
+    "type": "axiom",
+    "title": "Large Prime Gaps",
+    "content": "Arbitrarily large prime gaps exist. For any G, there's some k with p_{k+1} - p_k ≥ G. This is a classical result (consider n! + 2, n! + 3, ..., n! + n are all composite). Large gaps contribute to deviation irregularity.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-454-example-f3",
+    "proofId": "erdos-454",
+    "range": { "startLine": 178, "endLine": 182 },
+    "type": "theorem",
+    "title": "Example: f(3)",
+    "content": "Computing f(3): we minimize over i ∈ {0, 1, 2}. i=0: p_3 + p_3 = 5 + 5 = 10. i=1: p_4 + p_2 = 7 + 3 = 10. i=2: p_5 + p_1 = 11 + 3 = 14. So f(3) = min(10, 10, 14) = 10 = 2·p_3. Deviation is 0.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-454-prime-graph",
+    "proofId": "erdos-454",
+    "range": { "startLine": 223, "endLine": 234 },
+    "type": "definition",
+    "title": "The Prime Number Graph",
+    "content": "Pomerance's Prime Number Graph has vertices 0, 1, 2, ... with an edge n—m if p_n + p_m = p_k for some k. This graph structure encodes when prime sums are prime. The graph is infinite but locally finite.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-454-goldbach-symmetric",
+    "proofId": "erdos-454",
+    "range": { "startLine": 236, "endLine": 240 },
+    "type": "definition",
+    "title": "Symmetric Goldbach",
+    "content": "A Goldbach-like question: can every even number be written as p_{n+i} + p_{n-i} for some n, i? This relates to whether symmetric prime sums cover all even numbers, connecting to the original Goldbach conjecture.",
+    "significance": "supporting"
+  }
+]

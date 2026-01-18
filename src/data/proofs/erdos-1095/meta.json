@@ -1,33 +1,98 @@
 {
   "id": "erdos-1095",
-  "title": "Erdős Problem #1095",
+  "title": "Erdős Problem #1095: The Erdős-Selfridge Function",
   "slug": "erdos-1095",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the smallest ... such that all prime factors of ... are .... Estimate ....\n\n\n\nA question of Ecklund, Erds, and Sel...",
+  "description": "Let g(k) be the smallest n > k+1 such that all prime factors of C(n,k) exceed k. Estimate g(k). Known: exp(c·(log k)²) ≪ g(k) ≤ exp((1+o(1))k). Conjectured: log g(k) ~ k/log k. OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Ecklund-Erdős-Selfridge (1974)",
     "sourceUrl": "https://erdosproblems.com/1095",
-    "date": "",
-    "status": "pending",
+    "date": "1974",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1095Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "binomial-coefficients",
+      "prime-factors",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 1095,
     "erdosUrl": "https://erdosproblems.com/1095",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1095 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $g(k)>k+1$ be the smallest $n$ such that all prime factors of $\\binom{n}{k}$ are $>k$. Estimate $g(k)$.\n\n\n\nA question of Ecklund, Erd\\H{o}s, and Selfridge \\cite{EES74}, who proved\\[k^{1+c}<g(k)\\leq \\exp((1+o(1))k)\\]for some constant $c>0$, and conjectured $g(k)<L_k=[1,\\ldots,k]$, the least common multiple of all integers $\\leq k$, for all large $k$. In \\cite{EES74} they further conjecture that\\[\\limsup \\frac{g(k+1)}{g(k)}=\\infty\\]and\\[\\liminf \\frac{g(k+1)}{g(k)}=0.\\]The lower bound was improved by Erd\\H{o}s, Lacampagne, and Selfridge \\cite{ELS93} and Granville and Ramar\\'{e} \\cite{GrRa96}. The current record is\\[g(k) \\gg \\exp(c(\\log k)^2)\\]for some $c>0$, due to Konyagin \\cite{Ko99b}.\n\nErd\\H{o}s, Lacampagne, and Selfridge \\cite{ELS93} write 'it is clear to every right-thinking person' that $g(k)\\geq\\exp(c\\frac{k}{\\log k})$ for some constant $c>0$.\n\nSorenson, Sorenson, and Webster \\cite{SSW20} give heuristic evidence that\\[\\log g(k) \\asymp \\frac{k}{\\log k}.\\]See also [1094].\n\n\n\n\nReferences\n\n\n[EES74] Ecklund, Jr., E. F. and Erd\\H{o}s, P. and Selfridge, J. L., A new function associated with the prime factors of\n{$(\\sp{n}\\sb{k})$}. Math. Comp. (1974), 647--649.\n\n[ELS93] Erd\\H{o}s, P. and Lacampagne, C. B. and Selfridge, J. L., Estimates of the least prime factor of a binomial coefficient. Math. Comp. (1993), 215--224.\n\n[GrRa96] Granville, Andrew and Ramar\\'{e}, Olivier, Explicit bounds on exponential sums and the scarcity of\nsquarefree binomial coefficients. Mathematika (1996), 73--107.\n\n[Ko99b] Konyagin, S. V., Estimates of the least prime factor of a binomial coefficient. Mathematika (1999), 41--55.\n\n[SSW20] Sorenson, Brianna and Sorenson, Jonathan and Webster,\nJonathan, An algorithm and estimates for the {E}rd\\H{o}s-{S}elfridge\nfunction. (2020), 371--385.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This function was introduced by Ecklund, Erdős, and Selfridge in 1974. The binomial coefficient C(n,k) typically has many small prime factors—finding when all primes dividing it exceed k connects to smooth number theory. The function g(k) is highly irregular, related to OEIS sequence A003458.",
+    "problemStatement": "Let g(k) > k+1 be the smallest n such that all prime factors of C(n,k) are greater than k. Estimate g(k).",
+    "proofStrategy": "The bounds have evolved: original polynomial lower bound k^{1+c} was improved to exp(c·(log k)²) by Konyagin (1999). The upper bound exp((1+o(1))k) has not been improved. The gap is enormous, and the heuristic log g(k) ~ k/log k remains unproven.",
+    "keyInsights": [
+      "g(k) finds where C(n,k) is 'k-rough' (all prime factors > k)",
+      "For small n, primes p ≤ k typically divide C(n,k) via Kummer's theorem",
+      "The function is highly irregular: g(k+1)/g(k) is unbounded above and below",
+      "lcm(1,...,k) ~ exp(k) provides a natural upper bound conjecture",
+      "Computed values: g(2)=3, g(3)=7, g(4)=23, g(5)=62, g(6)=143"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "prime-factors",
+      "title": "Prime Factors of Binomial Coefficients",
+      "summary": "Definitions of k-roughness and the binomial coefficient condition",
+      "startLine": 49,
+      "endLine": 69
+    },
+    {
+      "id": "g-definition",
+      "title": "The Erdős-Selfridge Function g(k)",
+      "summary": "Definition as smallest n with C(n,k) k-rough",
+      "startLine": 71,
+      "endLine": 92
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "summary": "Lower and upper bounds from EES74 and Konyagin",
+      "startLine": 94,
+      "endLine": 111
+    },
+    {
+      "id": "lcm-conjecture",
+      "title": "The LCM Conjecture",
+      "summary": "g(k) < lcm(1,...,k) for large k",
+      "startLine": 113,
+      "endLine": 129
+    },
+    {
+      "id": "ratio-conjectures",
+      "title": "Ratio Conjectures",
+      "summary": "Irregular behavior: lim sup and lim inf of g(k+1)/g(k)",
+      "startLine": 131,
+      "endLine": 143
+    },
+    {
+      "id": "heuristic",
+      "title": "Heuristic Asymptotic",
+      "summary": "Conjectured: log g(k) ~ k/log k",
+      "startLine": 145,
+      "endLine": 160
+    },
+    {
+      "id": "values",
+      "title": "Known Values",
+      "summary": "Computed values for small k",
+      "startLine": 162,
+      "endLine": 181
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "The Erdős-Selfridge function g(k) measures when binomial coefficients become k-rough. Despite progress on bounds, the true growth rate remains unknown. The heuristic log g(k) ~ k/log k is widely believed but unproven.",
+    "implications": "This connects to smooth number theory, prime distribution in factorials, and the structure of binomial coefficients. Understanding g(k) would illuminate the arithmetic of C(n,k).",
+    "openQuestions": [
+      "Is log g(k) ~ c·k/log k for some constant c?",
+      "Is g(k) < lcm(1,...,k) for all large k?",
+      "Are lim sup g(k+1)/g(k) = ∞ and lim inf = 0?",
+      "Can the lower bound exp(c·(log k)²) be improved toward exp(c·k/log k)?"
+    ]
   }
 }

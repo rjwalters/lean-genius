@@ -1,33 +1,175 @@
 {
   "id": "erdos-942",
-  "title": "Erdős Problem #942",
+  "title": "Erdős Problem #942: Powerful Numbers Between Consecutive Squares",
   "slug": "erdos-942",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of powerful (if ... then ...) integers in .... Estimate .... In particular is there some constant .....",
+  "description": "Let h(n) count the powerful (squarefull) integers in [n², (n+1)²). Is there a constant c > 0 such that h(n) ~ (log n)^c? Known: limsup h(n) = ∞, densities δ_l exist with Σδ_l = 1, and h(n) ≥ c(log n/log log n)^{1/3} infinitely often (De Koninck-Luca 2004). The precise growth rate remains OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "De Koninck-Luca (2004), van Doorn (unboundedness)",
     "sourceUrl": "https://erdosproblems.com/942",
-    "date": "",
-    "status": "pending",
+    "date": "2004",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos942Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "powerful-numbers",
+      "squarefull",
+      "analytic-number-theory",
+      "density"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 942,
     "erdosUrl": "https://erdosproblems.com/942",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.Card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number definition",
+        "module": "Mathlib.Data.Nat.Prime.Defs"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real numbers",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "BigOperators",
+        "description": "Summation notation",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of Powerful (squarefull) predicate",
+      "Definition of PowerfulAlt (a²b³ characterization)",
+      "Axiom powerful_iff_alt (equivalence of definitions)",
+      "Axiom squareIntervalSet and specification",
+      "Function h counting powerful numbers in intervals",
+      "Examples: 1, 4, 8, 9, 36, 72 are powerful; 6, 12 are not",
+      "Axiom erdos_942_conjecture (the main open question)",
+      "Axiom h_unbounded (limsup h(n) = infinity)",
+      "Density axioms: HasDensity, delta, density_sum_one",
+      "Axiom de_koninck_luca_lower (lower bound infinitely often)",
+      "Powerful number properties: multiplication closure, squares, cubes",
+      "Asymptotic count of powerful numbers up to N",
+      "Small examples: h(1)=1, h(2)=2, h(3)=1"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #942 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h(n)$ count the number of powerful (if $p\\mid m$ then $p^2\\mid m$) integers in $[n^2,(n+1)^2)$. Estimate $h(n)$. In particular is there some constant $c>0$ such that\\[h(n) < (\\log n)^{c+o(1)}\\]and, for infinitely many $n$,\\[h(n) >(\\log n)^{c-o(1)}?\\]\n\n\n\nErd\\H{o}s writes it is not hard to prove that $\\limsup h(n)=\\infty$, and that the density $\\delta_l$ of integers for which $h(n)=l$ exists and $\\sum \\delta_l=1$.\n\nA proof that $h(n)$ is unbounded is provided by van Doorn in the comments.\n\nDe Koninck and Luca \\cite{DeLu04} have proved, for infinitely many $n$,\\[h(n) \\gg \\left(\\frac{\\log n}{\\log\\log n}\\right)^{1/3}.\\]They also give the density ($\\approx 0.275$) of those $n$ such that $h(n)=1$.\n\n\n\n\nReferences\n\n\n[DeLu04] De Koninck, Jean-Marie and Luca, Florian, Sur la proximit\\'{e} des nombres puissants. Acta Arith. (2004), 149--157.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Powerful numbers** (also called **squarefull numbers**) are positive integers m where every prime divisor p satisfies p² | m. Equivalently, m = a²b³ for some positive integers a, b.\n\n**Examples**: 1, 4, 8, 9, 16, 25, 27, 32, 36, 49, 64, 72, 81, 100, 108, 121, ...\n\n**Density**: The powerful numbers up to N have count asymptotic to c√N where c = ζ(3/2)/ζ(3) ≈ 2.173.\n\n**Erdős's Question**: How are powerful numbers distributed in the intervals [n², (n+1)²) between consecutive squares? Let h(n) count powerful numbers in this interval. What is the growth rate of h(n)?\n\n**Key Result (De Koninck-Luca 2004)**: They proved h(n) ≥ c(log n / log log n)^{1/3} for infinitely many n, and computed that approximately 27.5% of integers n have h(n) = 1.",
+    "problemStatement": "**Erdős Problem #942**: Let h(n) count the number of powerful (squarefull) integers in [n², (n+1)²). Estimate h(n).\n\n**Main Question** (OPEN): Is there a constant c > 0 such that\n- h(n) < (log n)^{c+o(1)} eventually, and\n- h(n) > (log n)^{c-o(1)} infinitely often?\n\n**Definitions**:\n- **Powerful number**: m > 0 such that p | m implies p² | m\n- **Alternative**: m = a²b³ for some positive a, b\n- **h(n)**: |{m ∈ [n², (n+1)²) : m is powerful}|\n\n**Known Results**:\n1. limsup h(n) = ∞ (proven by van Doorn)\n2. The density δ_l of {n : h(n) = l} exists for each l, and Σδ_l = 1\n3. δ_1 ≈ 0.275 (De Koninck-Luca)\n4. h(n) ≥ c(log n / log log n)^{1/3} infinitely often (De Koninck-Luca 2004)",
+    "proofStrategy": "The formalization captures the mathematical structure of the problem:\n\n1. **Core Definitions**:\n   - `Powerful m`: m > 0 and for all primes p, p | m implies p² | m\n   - `PowerfulAlt m`: exists a, b > 0 with m = a²b³\n   - `squareIntervalSet n`: the set [n², (n+1)²)\n   - `h n`: count of powerful numbers in the interval\n\n2. **Equivalence**:\n   - `powerful_iff_alt`: the two definitions are equivalent\n\n3. **Known Results (axiomatized)**:\n   - `h_unbounded`: for any M, exists n with h(n) > M\n   - `density_exists`, `delta`, `density_sum_one`: density theory\n   - `de_koninck_luca_lower`: the 2004 lower bound\n\n4. **Examples and Properties**:\n   - Concrete examples of powerful/non-powerful numbers\n   - Closure under multiplication\n   - Squares and cubes are powerful\n   - Small computed values: h(1)=1, h(2)=2, h(3)=1\n\n5. **Open Status**:\n   - `erdos_942_conjecture`: the main question (as Prop)\n   - `erdos_942_open`: it remains neither proven nor disproven",
+    "keyInsights": [
+      "**Powerful = Squarefull = a²b³**: A number is powerful iff every prime divides it at least twice, iff it can be written as a²b³ for positive integers.",
+      "**Interval length grows linearly**: [n², (n+1)²) has length 2n+1, but powerful numbers are sparse (density ~c/√N), so h(n) is typically small.",
+      "**Unboundedness is easy**: Near certain n values, many powerful numbers cluster, making h(n) arbitrarily large. van Doorn provides a proof.",
+      "**Density theory applies**: The proportion of n with h(n) = l has a well-defined limit δ_l. About 27.5% of n have exactly one powerful number in their interval.",
+      "**De Koninck-Luca lower bound**: The (log n / log log n)^{1/3} growth rate shows h(n) can grow, but the precise asymptotic remains unknown.",
+      "**The question is about fluctuations**: How much does h(n) vary? Is (log n)^c the right scale for both upper and lower bounds?"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Overview",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Problem statement, main question, known results, and references."
+    },
+    {
+      "id": "background",
+      "title": "Background: Powerful Numbers",
+      "startLine": 35,
+      "endLine": 48,
+      "summary": "Definition, examples, non-examples, and density of powerful numbers."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 50,
+      "endLine": 77,
+      "summary": "Powerful, PowerfulAlt, squareIntervalSet, h function definitions."
+    },
+    {
+      "id": "examples",
+      "title": "Examples of Powerful Numbers",
+      "startLine": 79,
+      "endLine": 103,
+      "summary": "1, 4, 8, 9, 36, 72 are powerful; 6, 12 are not."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture (OPEN)",
+      "startLine": 105,
+      "endLine": 118,
+      "summary": "erdos_942_conjecture and erdos_942_open axioms."
+    },
+    {
+      "id": "limsup",
+      "title": "Known Result: limsup h(n) = infinity",
+      "startLine": 120,
+      "endLine": 131,
+      "summary": "h_unbounded axiom with proof sketch."
+    },
+    {
+      "id": "density",
+      "title": "Known Result: Density of h(n) = l",
+      "startLine": 133,
+      "endLine": 158,
+      "summary": "HasDensity, delta, density_sum_one, density_h_eq_1 axioms."
+    },
+    {
+      "id": "dekoninck-luca",
+      "title": "De Koninck-Luca Lower Bound (2004)",
+      "startLine": 160,
+      "endLine": 172,
+      "summary": "The (log n / log log n)^{1/3} lower bound infinitely often."
+    },
+    {
+      "id": "properties",
+      "title": "Properties of Powerful Numbers",
+      "startLine": 174,
+      "endLine": 188,
+      "summary": "Closure under multiplication, squares and cubes are powerful."
+    },
+    {
+      "id": "interval",
+      "title": "The Square Interval",
+      "startLine": 190,
+      "endLine": 204,
+      "summary": "Properties of [n², (n+1)²): length 2n+1, endpoint membership."
+    },
+    {
+      "id": "small-examples",
+      "title": "Small Examples",
+      "startLine": 206,
+      "endLine": 217,
+      "summary": "Computed values: h(1)=1, h(2)=2, h(3)=1."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 219,
+      "endLine": 241,
+      "summary": "Problem summary and erdos_942_status theorem."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #942 on the distribution of powerful (squarefull) numbers between consecutive squares. The function h(n) counts powerful integers in [n², (n+1)²). While limsup h(n) = ∞ is proven and De Koninck-Luca established a lower bound of (log n / log log n)^{1/3} infinitely often, the precise growth rate ~ (log n)^c remains OPEN.",
+    "implications": "This problem connects the local distribution of powerful numbers (in short intervals) to their global density behavior. Understanding h(n) would reveal fine structure in how powerful numbers are positioned among all integers, with implications for the distribution of smooth numbers and the study of squarefree/squarefull dichotomy.",
+    "openQuestions": [
+      "What is the exact value of c (if it exists) such that h(n) ~ (log n)^c?",
+      "What is the liminf of h(n)? Is it bounded or unbounded?",
+      "Can the De Koninck-Luca lower bound be improved?",
+      "What is the distribution of h(n) for large n? Is it approximately Poisson?",
+      "How does the distribution of powerful numbers in [n², (n+1)²) compare to other intervals of similar length?"
+    ]
   }
 }

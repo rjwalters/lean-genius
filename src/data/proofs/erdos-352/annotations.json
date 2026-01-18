@@ -1,1 +1,212 @@
-[]
+[
+  {
+    "id": "ann-e352-header",
+    "proofId": "erdos-352",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This module formalizes **Erdos Problem #352**: Is there c > 0 such that every measurable set A in R^2 with measure >= c contains a triangle of area 1? This is a fundamental question in geometric measure theory.",
+    "mathContext": "The conjectured optimal threshold is c = 4pi/sqrt(27) approximately 2.418. This is witnessed by a circle of critical radius that contains no unit triangle. The problem remains OPEN for general measurable sets.",
+    "significance": "critical",
+    "relatedConcepts": ["measurable set", "Lebesgue measure", "triangle area"]
+  },
+  {
+    "id": "ann-e352-imports",
+    "proofId": "erdos-352",
+    "range": {
+      "startLine": 33,
+      "endLine": 41
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "We import **Lebesgue measure** for measurable sets in R^2, **inner product spaces** for the Euclidean structure, **determinants** for the cross product formula, and **Real.sqrt** for the conjectured constant.",
+    "mathContext": "Mathlib provides MeasureTheory.volume for Lebesgue measure on R^n, and the determinant/cross product gives us the triangle area formula Area = (1/2)|det([q-p, r-p])|.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "MeasureTheory", "volume"]
+  },
+  {
+    "id": "ann-e352-cross2d",
+    "proofId": "erdos-352",
+    "range": {
+      "startLine": 43,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "2D Cross Product",
+    "content": "**cross2D** computes the 2D 'cross product' (actually the wedge product), which gives a scalar. For vectors u = (u1, u2) and v = (v1, v2), we have u x v = u1*v2 - u2*v1.",
+    "mathContext": "In 2D, the cross product gives the signed area of the parallelogram spanned by the two vectors. This is the z-component of the 3D cross product when we embed the plane in R^3.",
+    "significance": "key",
+    "relatedConcepts": ["cross product", "wedge product", "determinant"]
+  },
+  {
+    "id": "ann-e352-triangle-area",
+    "proofId": "erdos-352",
+    "range": {
+      "startLine": 55,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Triangle Area Formula",
+    "content": "**triangleArea** computes the unsigned area of a triangle with vertices p, q, r using the formula Area = (1/2)|cross2D(q-p, r-p)|. This is the absolute value of the signed area.",
+    "mathContext": "This formula equals (1/2)|x1(y2-y3) + x2(y3-y1) + x3(y1-y2)| when expanded. The signed version is positive for counterclockwise vertex ordering and negative for clockwise.",
+    "significance": "critical",
+    "relatedConcepts": ["triangle", "area", "signed area"]
+  },
+  {
+    "id": "ann-e352-antisymm",
+    "proofId": "erdos-352",
+    "range": {
+      "startLine": 63,
+      "endLine": 76
+    },
+    "type": "theorem",
+    "title": "Cross Product Properties",
+    "content": "**cross2D_antisymm** proves the cross product is antisymmetric: u x v = -(v x u). We also axiomatize that triangle area is invariant under cyclic permutation of vertices.",
+    "mathContext": "Antisymmetry follows directly from the definition by algebraic manipulation. The permutation invariance of unsigned area follows from the absolute value, but we axiomatize it to avoid detailed casework.",
+    "significance": "supporting",
+    "relatedConcepts": ["antisymmetric", "permutation", "cyclic"]
+  },
+  {
+    "id": "ann-e352-main-property",
+    "proofId": "erdos-352",
+    "range": {
+      "startLine": 78,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "The Unit Triangle Property",
+    "content": "**ContainsUnitTriangle A** means there exist three points p, q, r in A such that the triangle they form has area exactly 1. This is the geometric configuration Erdos asks about.",
+    "mathContext": "The property ContainsTriangleOfArea generalizes to any area a. The unit triangle case (area = 1) is the specific instance studied in this problem.",
+    "significance": "critical",
+    "relatedConcepts": ["triangle", "unit area", "configuration"]
+  },
+  {
+    "id": "ann-e352-main-question",
+    "proofId": "erdos-352",
+    "range": {
+      "startLine": 90,
+      "endLine": 106
+    },
+    "type": "axiom",
+    "title": "The Open Problem",
+    "content": "**erdos_352_open** axiomatizes the unknown: does there exist c > 0 such that measure(A) >= c implies A contains a unit triangle? This is axiomatized as Prop since the answer is not known.",
+    "mathContext": "The formal statement erdos_352_statement packages this precisely: exists c > 0 such that for all measurable A with volume >= c, we have ContainsUnitTriangle A.",
+    "significance": "critical",
+    "relatedConcepts": ["open problem", "threshold", "existence"]
+  },
+  {
+    "id": "ann-e352-constant",
+    "proofId": "erdos-352",
+    "range": {
+      "startLine": 108,
+      "endLine": 134
+    },
+    "type": "definition",
+    "title": "The Conjectured Constant",
+    "content": "**erdosConstant** = 4pi/sqrt(27) approximately 2.418 is the conjectured optimal threshold. Erdos conjectured this is the smallest c that works.",
+    "mathContext": "This constant arises from the critical circle: a circle of radius 2*3^(-3/4) has area exactly 4pi/sqrt(27), and the largest inscribed triangle is equilateral with area approaching but not reaching 1.",
+    "significance": "critical",
+    "relatedConcepts": ["threshold", "pi", "sqrt(27)"]
+  },
+  {
+    "id": "ann-e352-conjecture",
+    "proofId": "erdos-352",
+    "range": {
+      "startLine": 125,
+      "endLine": 134
+    },
+    "type": "definition",
+    "title": "The Conjecture and Optimality",
+    "content": "**erdos_352_conjecture** states that c = 4pi/sqrt(27) suffices. **erdos_352_optimal** states this is tight: for any smaller c, there exist counterexamples.",
+    "mathContext": "Optimality means for any epsilon > 0, we can find a measurable set with measure >= c - epsilon that contains no unit triangle. The critical circle witnesses this.",
+    "significance": "key",
+    "relatedConcepts": ["conjecture", "optimal", "tight bound"]
+  },
+  {
+    "id": "ann-e352-infinite",
+    "proofId": "erdos-352",
+    "range": {
+      "startLine": 136,
+      "endLine": 148
+    },
+    "type": "axiom",
+    "title": "Infinite and Unbounded Cases",
+    "content": "**infinite_measure_contains_unit_triangle** and **unbounded_positive_measure_contains_unit_triangle** are Erdos's unpublished results. Both follow from the Lebesgue density theorem.",
+    "mathContext": "The Lebesgue density theorem says almost every point of a measurable set is a 'density point' where the local density approaches 1. This easily proves the special cases.",
+    "significance": "key",
+    "relatedConcepts": ["infinite measure", "unbounded", "density theorem"]
+  },
+  {
+    "id": "ann-e352-freiling",
+    "proofId": "erdos-352",
+    "range": {
+      "startLine": 150,
+      "endLine": 161
+    },
+    "type": "axiom",
+    "title": "Freiling-Mauldin Results",
+    "content": "**freiling_mauldin_2002** and **conjecture_for_compact_convex** are the main known results. Freiling and Mauldin proved the conjecture for compact convex sets in 2002.",
+    "mathContext": "Their key result: if outer measure > 4pi/sqrt(27), then A contains a triangle with area GREATER than 1 (not just equal). This implies the conjecture for nice sets.",
+    "significance": "key",
+    "relatedConcepts": ["Freiling", "Mauldin", "compact convex"]
+  },
+  {
+    "id": "ann-e352-critical-radius",
+    "proofId": "erdos-352",
+    "range": {
+      "startLine": 163,
+      "endLine": 177
+    },
+    "type": "definition",
+    "title": "The Critical Circle",
+    "content": "**criticalRadius** = 2*3^(-3/4) approximately 0.877 is the radius of the witness circle. A circle of this radius has area exactly equal to the conjectured threshold.",
+    "mathContext": "The calculation: pi * (2*3^(-3/4))^2 = pi * 4 * 3^(-3/2) = 4pi/3^(3/2) = 4pi/sqrt(27). This is the area of the Erdos constant.",
+    "significance": "critical",
+    "relatedConcepts": ["critical radius", "witness", "circle"]
+  },
+  {
+    "id": "ann-e352-max-inscribed",
+    "proofId": "erdos-352",
+    "range": {
+      "startLine": 178,
+      "endLine": 191
+    },
+    "type": "axiom",
+    "title": "Maximum Inscribed Triangle",
+    "content": "**max_inscribed_triangle_area** states the largest triangle inscribed in a circle of radius r has area (3*sqrt(3)/4)*r^2. This is achieved by an equilateral triangle.",
+    "mathContext": "For the critical radius, the max area is 3*sqrt(3)/4 * 4*3^(-3/2) = 3*sqrt(3)*3^(-3/2) which equals 1 exactly at the boundary. Hence circles slightly smaller contain no unit triangle.",
+    "significance": "key",
+    "relatedConcepts": ["inscribed triangle", "equilateral", "maximum"]
+  },
+  {
+    "id": "ann-e352-reduction",
+    "proofId": "erdos-352",
+    "range": {
+      "startLine": 193,
+      "endLine": 215
+    },
+    "type": "axiom",
+    "title": "Reduction to Finite Unions",
+    "content": "**reduction_to_finite_unions** is Mauldin's observation: proving the conjecture for unions of finitely many compact convex interiors would prove it for all sets.",
+    "mathContext": "Freiling and Mauldin verified the conjecture for n <= 3 such sets. The general case for arbitrary n remains open and would resolve the full problem.",
+    "significance": "key",
+    "relatedConcepts": ["reduction", "finite union", "convex interior"]
+  },
+  {
+    "id": "ann-e352-summary",
+    "proofId": "erdos-352",
+    "range": {
+      "startLine": 217,
+      "endLine": 240
+    },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_352_summary** packages verified results: the conjectured constant is positive (by positivity), and our triangle area formula correctly computes area 1 for a specific example.",
+    "mathContext": "The example triangle (0,0), (2,0), (1,1) has signed area cross2D(2,0)(1,1)/2 = (2*1 - 0*1)/2 = 1. This validates our definition.",
+    "significance": "supporting",
+    "relatedConcepts": ["summary", "example", "verification"]
+  }
+]

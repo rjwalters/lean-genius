@@ -1,33 +1,100 @@
 {
   "id": "erdos-1057",
-  "title": "Erdős Problem #1057",
+  "title": "Erdős Problem #1057: Counting Carmichael Numbers",
   "slug": "erdos-1057",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of Carmichael numbers in the interval .... Is it true that ...?\n\n\n\nErds  proved\\[C(x)  x^{0.33336704...",
+  "description": "Let C(x) count Carmichael numbers in [1,x]. Is C(x) = x^{1-o(1)}? Known: x^{0.3389} < C(x) < x·exp(-c·log x·log log log x / log log x). OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1956)",
     "sourceUrl": "https://erdosproblems.com/1057",
-    "date": "",
-    "status": "pending",
+    "date": "1956",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1057Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "carmichael-numbers",
+      "pseudoprimes",
+      "counting-functions",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 1057,
     "erdosUrl": "https://erdosproblems.com/1057",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1057 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $C(x)$ count the number of Carmichael numbers in the interval $[1,x]$. Is it true that $C(x)=x^{1-o(1)}$?\n\n\n\nErd\\H{o}s \\cite{Er56c} proved\\[C(x) < x \\exp\\left(-c \\frac{\\log x\\log\\log\\log x}{\\log\\log x}\\right)\\]for some constant $c>0$. Pomerance \\cite{Po89} gave a heuristic suggesting that this is the true order of growth, and in fact\\[C(x)= x \\exp\\left(-(1+o(1))\\frac{\\log x\\log\\log\\log x}{\\log\\log x}\\right).\\]Alford, Granville, and Pomerance \\cite{AGP94} proved that $C(x)\\to \\infty$, and in fact $C(x)>x^{2/7}$ for large $x$. The best-known lower bound to date is\\[C(x)> x^{0.33336704},\\]due to Harman \\cite{Ha08}.\n\nKorselt observed that $n$ being a Carmichael number is equivalent to $n$ being squarefree and $p-1\\mid n-1$ for all primes $p\\mid n$.\n\nThis is discussed in problem A13 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[AGP94] Alford, W. R. and Granville, Andrew and Pomerance, Carl, There are infinitely many {C}armichael numbers. Ann. of Math. (2) (1994), 703--722.\n\n[Er56c] Erd\\H{o}s, P., On pseudoprimes and {C}armichael numbers. Publ. Math. Debrecen (1956), 201--206.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Ha08] Harman, Glyn, Watt's mean value theorem and {C}armichael numbers. Int. J. Number Theory (2008), 241--248.\n\n[Po89] Pomerance, Carl, Two methods in elementary analytic number theory. (1989), 135--161.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Carmichael numbers are composite integers that pass the Fermat primality test for all bases—the ultimate pseudoprimes. Korselt (1899) characterized them: n is Carmichael iff n is squarefree and (p-1)|(n-1) for all primes p|n. The smallest is 561 = 3×11×17. Erdős (1956) gave the first non-trivial upper bound. The breakthrough came in 1994 when Alford-Granville-Pomerance proved infinitely many exist.",
+    "problemStatement": "Let C(x) count Carmichael numbers in [1,x]. Is it true that C(x) = x^{1-o(1)}? That is, for every ε > 0, is C(x) > x^{1-ε} for sufficiently large x?",
+    "proofStrategy": "The upper bound uses sieve methods and the structure of Korselt's criterion. The lower bound constructions find integers n where many primes p have (p-1)|(n-1). The huge gap (exponent 0.34 vs. 1) suggests either the upper or lower bound techniques are far from optimal.",
+    "keyInsights": [
+      "Korselt's criterion: n is Carmichael iff squarefree and (p-1)|(n-1) for all p|n",
+      "561 = 3×11×17 is smallest: 2|560, 10|560, 16|560",
+      "Every Carmichael number has at least 3 prime factors",
+      "Erdős upper: C(x) < x·exp(-c·log x·log log log x / log log x)",
+      "Lichtman lower (2022): C(x) > x^{0.3389}",
+      "AGP (1994): Proved infinitely many exist, C(x) > x^{2/7}"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "carmichael",
+      "title": "Carmichael Numbers",
+      "summary": "Definition via Korselt's criterion",
+      "startLine": 39,
+      "endLine": 59
+    },
+    {
+      "id": "small",
+      "title": "Small Carmichael Numbers",
+      "summary": "The first few examples: 561, 1105, 1729",
+      "startLine": 61,
+      "endLine": 88
+    },
+    {
+      "id": "counting",
+      "title": "The Counting Function",
+      "summary": "Definition of C(x) and monotonicity",
+      "startLine": 90,
+      "endLine": 107
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "summary": "Erdős upper, Lichtman/Harman lower, AGP",
+      "startLine": 109,
+      "endLine": 135
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "summary": "C(x) = x^{1-o(1)} and Pomerance's prediction",
+      "startLine": 137,
+      "endLine": 159
+    },
+    {
+      "id": "properties",
+      "title": "Structural Properties",
+      "summary": "At least 3 prime factors, always odd",
+      "startLine": 161,
+      "endLine": 180
+    },
+    {
+      "id": "gap",
+      "title": "The Gap",
+      "summary": "Distance between known bounds",
+      "startLine": 182,
+      "endLine": 200
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "The counting function C(x) for Carmichael numbers satisfies x^{0.3389} < C(x) < x^{1-o(1)} for large x. The conjecture C(x) = x^{1-o(1)} asserts Carmichael numbers are surprisingly dense—their log-density approaches 1. Despite progress from AGP (1994) proving infinitely many exist, the gap between bounds remains huge.",
+    "implications": "Understanding Carmichael numbers is crucial for primality testing. If dense (conjecture true), random composites often fool Fermat tests. The Pomerance heuristic suggests the upper bound is close to truth, meaning Carmichael numbers are actually sparse.",
+    "openQuestions": [
+      "Is C(x) = x^{1-o(1)}?",
+      "Is Pomerance's heuristic order correct?",
+      "Can the lower bound exponent be improved past 0.34?",
+      "What is the true density of Carmichael numbers?"
+    ]
   }
 }

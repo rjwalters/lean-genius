@@ -1,33 +1,82 @@
 {
   "id": "erdos-260",
-  "title": "Erdős Problem #260",
+  "title": "Erdős #260: Irrationality of Sparse Sequence Series",
   "slug": "erdos-260",
-  "description": "Let a1&lt;a2&lt;&#x22EF;\" role=\"presentation\" style=\"position: relative;\">a1a2⋯a1a2⋯a_1 be an increasing sequence such that an/n&#x2192;&#x221E;\" role=\"presentation\" style=\"position: relative;\">an/...",
+  "description": "If a₁ < a₂ < ⋯ is increasing with aₙ/n → ∞, is ∑ aₙ/2^{aₙ} necessarily irrational?",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/260",
-    "date": "",
-    "status": "pending",
+    "date": "1974",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos260Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "irrationality",
+      "series",
+      "sequences"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 5,
     "erdosNumber": 260,
     "erdosUrl": "https://erdosproblems.com/260",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #260 from erdosproblems.com.",
-    "problemStatement": "Let a1&lt;a2&lt;&#x22EF;\" role=\"presentation\" style=\"position: relative;\">a1a2⋯a1a2⋯a_1 be an increasing sequence such that an/n&#x2192;&#x221E;\" role=\"presentation\" style=\"position: relative;\">an/n→∞an/n→∞a_n/n\\to \\infty. Is the sum&#x2211;nan2an\" role=\"presentation\" style=\"text-align: center; position: relative;\">∑nan2an∑nan2an",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem originates from Erdős's work on irrationality of series [Er74b], further discussed in 'Old and New Problems and Results in Combinatorial Number Theory' with Graham [ErGr80]. It explores the boundary between sequences that produce irrational sums and those that might not.",
+    "problemStatement": "Let a₁ < a₂ < ⋯ be an increasing sequence of natural numbers such that aₙ/n → ∞. Is the sum ∑ₙ aₙ/2^{aₙ} necessarily irrational?",
+    "proofStrategy": "We formalize the sequence properties (fast growth, gaps to infinity, superlogarithmic growth), define the series and its convergence, and state Erdős's known partial results as theorems with sorry. The main conjecture is stated as an axiom since the problem remains open.",
+    "keyInsights": [
+      "Erdős proved irrationality when gaps a_{n+1} - aₙ → ∞",
+      "Irrationality also holds for aₙ ≫ n√(log n · log log n)",
+      "The n² sequence provides a concrete example with irrational sum",
+      "Erdős-Graham speculated that limsup(gaps) = ∞ is insufficient, but no counterexample exists"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "seq-properties",
+      "title": "Sequence Properties",
+      "summary": "Definitions of IncreasingSeq, FastGrowth, GapsToInfinity, and SuperlogarithmicGrowth",
+      "startLine": 39,
+      "endLine": 57
+    },
+    {
+      "id": "series-def",
+      "title": "Series Definition",
+      "summary": "The series ∑ aₙ/2^{aₙ}, its partial sums, and convergence theorem",
+      "startLine": 59,
+      "endLine": 78
+    },
+    {
+      "id": "known-results",
+      "title": "Known Irrationality Results",
+      "summary": "Erdős's theorems proving irrationality under stronger conditions",
+      "startLine": 80,
+      "endLine": 99
+    },
+    {
+      "id": "examples",
+      "title": "Example: Square Sequence",
+      "summary": "The sequence aₙ = n² has gaps → ∞, so its series is irrational",
+      "startLine": 117,
+      "endLine": 152
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "summary": "The open problem: fast growth alone should imply irrationality",
+      "startLine": 154,
+      "endLine": 177
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures the structure of Erdős Problem #260, defining the relevant sequence properties and stating both the known partial results and the open conjecture. The key insight is the gap between what Erdős proved (irrationality under strong gap conditions) and the full conjecture (irrationality under mere fast growth).",
+    "implications": "A proof would establish that growth rate alone determines arithmetic properties of these series. A counterexample would reveal subtle structure in rational-summing sparse sequences.",
+    "openQuestions": [
+      "Can the gaps → ∞ condition be weakened while preserving irrationality?",
+      "Does there exist a sequence with unbounded but non-tending-to-infinity gaps that gives a rational sum?",
+      "What is the minimal growth rate guaranteeing irrationality?"
+    ]
   }
 }

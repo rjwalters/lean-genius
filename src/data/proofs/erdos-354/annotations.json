@@ -1,1 +1,263 @@
-[]
+[
+  {
+    "id": "ann-e354-header",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #354**: Completeness of Binary Floor Sequences\n\n**Question**: Given α, β > 0 with α/β irrational, can every large integer be written as a sum of terms from {⌊2ᵏα⌋} ∪ {⌊2ᵏβ⌋}?\n\n**Status**: OPEN in general. Known FALSE for some pairs.\n\n**Key results**:\n- Hegyvári (1989): Complete if α is dyadic, β is not\n- Hegyvári (1989): NOT complete if β = 2ᵏα\n- Van Doorn: Complete if α < 2 < β < 3",
+    "mathContext": "This connects representation theory to Diophantine approximation. The floor sequences grow exponentially, so representation questions become subtle.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "floor-function",
+      "representation",
+      "completeness"
+    ]
+  },
+  {
+    "id": "ann-e354-floorseq",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 40,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Floor Sequence Definitions",
+    "content": "**FloorSeq α** = {n | ∃ k, n = ⌊2ᵏα⌋.toNat}\n  The set of values achievable by the floor sequence.\n\n**floorSeqTerm α k** = ⌊2ᵏα⌋.toNat\n  The k-th term of the floor sequence.\n\n**Examples**:\n- floorSeqTerm 1.5 0 = ⌊1.5⌋ = 1\n- floorSeqTerm 1.5 1 = ⌊3.0⌋ = 3\n- floorSeqTerm 1.5 2 = ⌊6.0⌋ = 6",
+    "mathContext": "The sequence grows roughly like 2ᵏ · α, but the floor function creates subtle irregularities that matter for representation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Int.floor",
+      "exponential-growth"
+    ]
+  },
+  {
+    "id": "ann-e354-representable",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 48,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Representability and Completeness",
+    "content": "**IsRepresentable α β n**:\n  ∃ S T : Finset ℕ, n = (Σ s ∈ S, ⌊2ˢα⌋) + (Σ t ∈ T, ⌊2ᵗβ⌋)\n\n  Meaning: n can be written as a sum of terms from both sequences.\n\n**IsComplete α β**:\n  ∃ N, ∀ n ≥ N, IsRepresentable α β n\n\n  Meaning: All sufficiently large integers are representable.",
+    "mathContext": "Completeness is the key property. Unlike binary representation (α = β = 1), general pairs may miss some integers.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Finset.sum",
+      "representation"
+    ]
+  },
+  {
+    "id": "ann-e354-dyadic",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 59,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Dyadic Rationals",
+    "content": "**IsDyadicRational x**: ∃ m : ℤ, n : ℕ, x = m / 2ⁿ\n\n  Dyadic rationals are fractions with power-of-2 denominators.\n\n**Examples**: 1/2, 3/4, 7/8, 5/16 are dyadic. 1/3, 1/5 are not.\n\n**HasIrrationalRatio α β**: Irrational(α/β)\n\n  The ratio is not a rational number.",
+    "mathContext": "Dyadic rationals have special properties in base-2: their binary expansions terminate. This creates periodicity in floor sequences.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binary-representation",
+      "periodicity"
+    ]
+  },
+  {
+    "id": "ann-e354-hegyvari-positive",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 93,
+      "endLine": 101
+    },
+    "type": "axiom",
+    "title": "Hegyvári's Positive Result (1989)",
+    "content": "**axiom hegyvari_dyadic_complete**:\n  If α is dyadic rational, β is NOT dyadic, and α/β is irrational,\n  then IsComplete α β.\n\n**Why it works**:\n- Dyadic α gives periodic behavior mod 2ᵏ\n- Non-dyadic β fills in the 'gaps'\n- The irrationality ensures enough variety",
+    "mathContext": "This is the strongest positive result. The key insight is that dyadic and non-dyadic numbers behave complementarily.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "hegyvari-1989",
+      "periodicity",
+      "coverage"
+    ]
+  },
+  {
+    "id": "ann-e354-hegyvari-negative",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 103,
+      "endLine": 108
+    },
+    "type": "axiom",
+    "title": "Hegyvári's Negative Result (1989)",
+    "content": "**axiom hegyvari_not_complete**:\n  If α ≥ 2 and β = 2ᵏ · α for some k ≥ 1, then ¬IsComplete α β.\n\n**Why it fails**:\n- The sequences are 'aligned' (one is a power-of-2 multiple of the other)\n- They miss certain residue classes\n- No amount of summing can fill the gaps",
+    "mathContext": "This shows the original conjecture is FALSE. The alignment β = 2ᵏα creates systematic holes in coverage.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "counterexample",
+      "alignment",
+      "residue-classes"
+    ]
+  },
+  {
+    "id": "ann-e354-vandoorn",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 116,
+      "endLine": 121
+    },
+    "type": "axiom",
+    "title": "Van Doorn's Result",
+    "content": "**axiom vanDoorn_complete**:\n  If 0 < α < 2 < β < 3 and α/β is irrational, then IsComplete α β.\n\n**Why it works**:\n- The separation 2 ∈ (α, β) ensures the sequences don't align\n- The constraint β < 3 prevents gaps from being too large\n- Interleaving properties guarantee coverage",
+    "mathContext": "This is a cleaner sufficient condition that doesn't require dyadic structure. The 'sandwich' around 2 is the key.",
+    "significance": "key",
+    "relatedConcepts": [
+      "separation",
+      "interleaving"
+    ]
+  },
+  {
+    "id": "ann-e354-recent",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 129,
+      "endLine": 138
+    },
+    "type": "axiom",
+    "title": "Recent Negative Results (2024-2025)",
+    "content": "**axiom jiangMa_not_complete** (2024):\n  For 1 < α < 2, there exists K such that for all k ≥ K,\n  ¬IsComplete α (2ᵏ · α).\n\n**axiom fangHe_not_complete** (2025):\n  For 1 < α < 2 and k ≥ 10, ¬IsComplete α (2ᵏ · α).\n\n**Significance**: Extends Hegyvári's α ≥ 2 result to α ∈ (1, 2).",
+    "mathContext": "These recent papers show the alignment phenomenon persists even for small α. The gap between positive and negative results narrows.",
+    "significance": "key",
+    "relatedConcepts": [
+      "jiang-ma-2024",
+      "fang-he-2025",
+      "extension"
+    ]
+  },
+  {
+    "id": "ann-e354-conjecture",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 146,
+      "endLine": 153
+    },
+    "type": "axiom",
+    "title": "Main Conjecture (OPEN)",
+    "content": "**axiom erdos_354_conjecture**:\n  (∀ α β, 0 < α → 0 < β → HasIrrationalRatio α β → IsComplete α β)\n  ∨\n  (∃ α β, 0 < α ∧ 0 < β ∧ HasIrrationalRatio α β ∧ ¬IsComplete α β)\n\n**Known**: The second disjunct is TRUE (counterexamples exist).\n\n**Open**: Precise characterization of when completeness holds.",
+    "mathContext": "The original conjecture (irrational ratio ⟹ complete) is false. The refined question asks for exact conditions.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open-problem",
+      "characterization"
+    ]
+  },
+  {
+    "id": "ann-e354-counterexample",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 155,
+      "endLine": 167
+    },
+    "type": "axiom",
+    "title": "Counterexamples Exist",
+    "content": "**axiom conjecture_is_false**:\n  ∃ α β, 0 < α ∧ 0 < β ∧ HasIrrationalRatio α β ∧ ¬IsComplete α β\n\n**Construction**: Take α > 2 and β such that:\n- α/β is irrational (for the ratio condition)\n- β = 2ᵏ · α for some k (for the non-completeness via Hegyvári)\n\nThis seems contradictory, but careful construction works.",
+    "mathContext": "The counterexample construction is technical. One can perturb to get irrational ratio while maintaining the 2ᵏ relationship asymptotically.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample",
+      "construction"
+    ]
+  },
+  {
+    "id": "ann-e354-refined",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 163,
+      "endLine": 168
+    },
+    "type": "axiom",
+    "title": "Refined Conjecture",
+    "content": "**axiom refined_conjecture**:\n  If HasIrrationalRatio α β AND β ≠ 2ᵏ · α for all k ∈ ℤ,\n  then IsComplete α β ∨ ¬IsComplete α β.\n\n**Interpretation**: When we exclude the known counterexamples (β = 2ᵏα), is completeness always achieved?\n\n**Status**: UNKNOWN - This is the refined open question.",
+    "mathContext": "Hegyvári conjectured that excluding power-of-2 multiples should suffice. This remains open.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "refined-conjecture",
+      "power-exclusion"
+    ]
+  },
+  {
+    "id": "ann-e354-binary",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 212,
+      "endLine": 217
+    },
+    "type": "axiom",
+    "title": "Binary Representation Case",
+    "content": "**axiom floorSeq_one**: floorSeqTerm 1 k = 2ᵏ\n  For α = 1, the floor sequence is just powers of 2.\n\n**axiom binary_complete**: IsComplete 1 1\n  With α = β = 1, every integer is representable (standard binary).\n\n**This is the base case**: Binary representation shows the concept works for the simplest parameters.",
+    "mathContext": "When α = 1, the floor function is trivial: ⌊2ᵏ⌋ = 2ᵏ. The completeness reduces to binary number representation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "binary-representation",
+      "powers-of-2"
+    ]
+  },
+  {
+    "id": "ann-e354-density",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 207,
+      "endLine": 216
+    },
+    "type": "axiom",
+    "title": "Measure-Theoretic Results",
+    "content": "**axiom representable_positive_density**:\n  The set of representable numbers has positive lower density.\n\n**axiom generic_completeness**:\n  'Most' pairs (α, β) give completeness (in a measure-theoretic sense).\n\n**Hegyvári (1991, 1994)**: The exceptional set (non-complete pairs) has cardinality continuum but may have measure zero.",
+    "mathContext": "Even when completeness fails, 'many' integers are still representable. The failure is in the tail, not everywhere.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "density",
+      "measure-theory",
+      "hegyvari-1991"
+    ]
+  },
+  {
+    "id": "ann-e354-generalization",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 225,
+      "endLine": 236
+    },
+    "type": "axiom",
+    "title": "Base γ Generalization",
+    "content": "**GeneralFloorSeq γ α** = {n | ∃ k, n = ⌊γᵏα⌋.toNat}\n  Floor sequence with arbitrary base γ instead of 2.\n\n**axiom generalized_conjecture**:\n  For γ ∈ (1, 2), is the union complete?\n\n**Open**: The base-γ version is even less understood than base-2.",
+    "mathContext": "Replacing 2 with γ ∈ (1, 2) changes the growth rate. Smaller bases give denser sequences but different gap patterns.",
+    "significance": "key",
+    "relatedConcepts": [
+      "generalization",
+      "base-gamma"
+    ]
+  },
+  {
+    "id": "ann-e354-summary",
+    "proofId": "erdos-354",
+    "range": {
+      "startLine": 237,
+      "endLine": 251
+    },
+    "type": "concept",
+    "title": "Summary and Status",
+    "content": "**Erdős Problem #354: OPEN**\n\n**Positive Results**:\n- Dyadic + non-dyadic → complete (Hegyvári)\n- α < 2 < β < 3 → complete (Van Doorn)\n- Ceiling variant with non-dyadic → complete\n\n**Negative Results**:\n- α ≥ 2, β = 2ᵏα → not complete (Hegyvári)\n- 1 < α < 2, β = 2ᵏα for large k → not complete (Jiang-Ma, Fang-He)\n\n**Open**: Precise characterization of complete pairs.",
+    "mathContext": "The problem is mostly solved for 'structured' pairs. The general case remains elusive.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "problem-status",
+      "open",
+      "summary"
+    ]
+  }
+]

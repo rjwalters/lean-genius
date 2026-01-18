@@ -1,34 +1,135 @@
 {
   "id": "erdos-707",
-  "title": "Erdős Problem #707",
+  "title": "Erdős Problem #707: Embedding Sidon Sets in Perfect Difference Sets",
   "slug": "erdos-707",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a finite Sidon set. Is there some set ... with ... which is perfect difference set modulo ... for some prime ...?\n...",
+  "description": "Can every finite Sidon set be embedded in a perfect difference set modulo p^2+p+1 for some prime p? DISPROVED: Hall (1947) and Alexeev-Mixon (2025) provided counterexamples.",
   "meta": {
-    "author": "Unknown",
+    "author": "Hall (1947), Alexeev-Mixon (2025)",
     "sourceUrl": "https://erdosproblems.com/707",
-    "date": "",
-    "status": "pending",
+    "date": "1947-2025",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos707Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "sidon-sets",
+      "perfect-difference-sets",
+      "counterexample"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 707,
     "erdosUrl": "https://erdosproblems.com/707",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$1000"
+    "erdosProblemStatus": "disproved",
+    "erdosPrizeValue": "$1000",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets with decidable membership",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime numbers in natural numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "ZMod",
+        "description": "Integers modulo n",
+        "module": "Mathlib.Data.ZMod.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Clean definitions of Sidon sets and perfect difference sets",
+      "Formal statement that the conjecture is FALSE",
+      "Three counterexamples: {1,2,4,8}, {1,2,4,8,13}, {1,3,9,10,13}",
+      "Singer construction axiom for existence of perfect difference sets",
+      "Size bound theorem for perfect difference sets",
+      "Verified proof that {1,2,4} is a Sidon set",
+      "Connection to Sidon set density problems"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #707 from erdosproblems.com. Originally offered with a prize of $1000.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset \\mathbb{N}$ be a finite Sidon set. Is there some set $B$ with $A\\subseteq B$ which is perfect difference set modulo $p^2+p+1$ for some prime $p$?\n\n\n\nSee also [44] and [329] (indeed a positive solution to this problem implies a positive solution to [44], and thence also to [329]).\n\nThis is discussed in problems C9 and C10 of Guy's collection \\cite{Gu04}, and was also asked by Erd\\H{o}s in the 1991 problem session of Great Western Number Theory. The prize of \\$1000 was offered in \\cite{Er80} for a proof or disproof of this conjecture. In some sources (such as \\cite{Er77c}) Erd\\H{o}s weakens this to whether any finite Sidon set can be contained in the perfect difference set modulo $m^2+m+1$ for some (not necessarily prime) $m$. In \\cite{Er97c} he admits this conjecture is 'perhaps too optimistic'.\n\nAlexeev and Mixon \\cite{AlMi25} have disproved this conjecture, proving that $\\{1,2,4,8\\}$ cannot be extended to a perfect difference set modulo $p^2+p+1$ for any prime $p$, and also that $\\{1,2,4,8,13\\}$ cannot be extended to any perfect difference set. Their proof has been formalised in Lean with the assistance of ChatGPT.\n\nSurprisingly, they discovered that this conjecture was actually first disproved by Hall in 1947 \\cite{Ha47}, long before Erd\\H{o}s asked this question. Hall proved that $\\{1,3,9,10,13\\}$ cannot be extended to any perfect difference set.\n\nIt is trivial that any Sidon set of size $2$ can be extended to a perfect difference set. In a discussion on MathOverflow, Sawin has proved that any Sidon set of size $3$ can also be extended. It remains open whether any Sidon set of size $4$ can be extended to a perfect difference set, but in the same MathOverflow discussion Mueller has shown that $\\{0,1,3,11\\}$ is a candidate counterexample, in that all the known ways to construct perfect difference sets cannot succeed.\n\n\n\n\nReferences\n\n\n[AlMi25] B. Alexeev and D. G. Mixon, Forbidden Sidon subsets of perfect difference sets, featuring a human-assisted proof. arXiv:2510.19804 (2025).\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n[Er80] Erd\\H{o}s, Paul, A survey of problems in combinatorial number theory. Ann. Discrete Math. (1980), 89-115.\n\n[Er97c] Erd\\H{o}s, Paul, Some of my favorite problems and results. The mathematics of Paul Erd\\H{o}s, I (1997), 47-67.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Ha47] Hall, Jr., Marshall, Cyclic projective planes. Duke Math. J. (1947), 1079--1090.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem connects two classical structures in additive combinatorics: **Sidon sets** (where all pairwise sums are distinct) and **perfect difference sets** (where every nonzero residue appears exactly once as a difference).\n\nErdős posed this question around 1977-1980, offering a $1000 prize. He asked whether every finite Sidon set could be embedded in a perfect difference set modulo p²+p+1 for some prime p. This would have significant implications for the maximum density of Sidon sets.\n\nRemarkably, the conjecture had already been disproved by **Marshall Hall Jr. in 1947** - before Erdős even asked the question! Hall showed that {1,3,9,10,13} cannot extend to any perfect difference set. This was rediscovered by **Alexeev and Mixon in 2025**, who independently proved {1,2,4,8} cannot extend for primes, and {1,2,4,8,13} cannot extend at all. Their proof was formalized in Lean with AI assistance.",
+    "problemStatement": "**Erdős Problem #707**: Let $A \\subseteq \\mathbb{N}$ be a finite Sidon set. Is there some set $B$ with $A \\subseteq B$ which is a perfect difference set modulo $p^2+p+1$ for some prime $p$?\n\n**Status**: DISPROVED\n\n**Prize**: $1000 (offered 1980)\n\n**Counterexamples**:\n- $\\{1,3,9,10,13\\}$ cannot extend to any perfect difference set (Hall 1947)\n- $\\{1,2,4,8\\}$ cannot extend mod $p^2+p+1$ for any prime $p$ (Alexeev-Mixon 2025)\n- $\\{1,2,4,8,13\\}$ cannot extend to any perfect difference set (Alexeev-Mixon 2025)\n\n**Positive Results**:\n- Size $\\leq 3$ Sidon sets can always be extended (Sawin)\n- Singer construction gives perfect difference sets for $n = p^2+p+1$",
+    "proofStrategy": "We formalize this problem by:\n\n1. **Define Sidon sets**: A set where all pairwise sums are distinct: $a + b = c + d$ with $a \\leq b$ and $c \\leq d$ implies $\\{a,b\\} = \\{c,d\\}$.\n\n2. **Define perfect difference sets**: A set $B$ where every nonzero element of $\\mathbb{Z}/n\\mathbb{Z}$ appears exactly once as a difference $b_1 - b_2$ for $b_1 \\neq b_2$ in $B$.\n\n3. **State the disproved conjecture**: Axiomatize that the statement is FALSE.\n\n4. **Provide counterexamples**: Three specific Sidon sets that cannot be extended.\n\n5. **Include positive results**: Singer construction for existence, small Sidon sets extendability.\n\n6. **Verify examples**: Prove {1,2,4} is a Sidon set by explicit case analysis.",
+    "keyInsights": [
+      "**Sidon sets vs B₂ sequences**: A Sidon set has distinct pairwise sums. Equivalently, all pairwise differences are distinct. These are also called B₂ sequences.",
+      "**Perfect difference sets**: Related to cyclic projective planes. A set B mod n where every nonzero residue appears exactly once as b₁ - b₂. This forces |B|(|B|-1) = n-1.",
+      "**Singer construction (1938)**: For any prime power p, there exists a perfect difference set mod p²+p+1 of size p+1. Example: {0,1,3} is perfect mod 7.",
+      "**Why Hall's result was forgotten**: Hall's 1947 paper focused on cyclic projective planes, not Sidon sets. The connection wasn't recognized when Erdős posed the problem 30 years later.",
+      "**Size-4 remains open**: While specific size-4 Sidon sets fail, it's unknown if ALL size-4 Sidon sets fail. The candidate {0,1,3,11} resists known constructions."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Problem statement, status (DISPROVED), prize, and references."
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 30,
+      "endLine": 38,
+      "summary": "Mathlib imports for Finset, primes, and modular arithmetic."
+    },
+    {
+      "id": "definitions",
+      "title": "Key Definitions",
+      "startLine": 40,
+      "endLine": 68,
+      "summary": "IsSidon, IsSidonDiff, and IsPerfectDifferenceSet definitions."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Conjecture is FALSE",
+      "startLine": 70,
+      "endLine": 91,
+      "summary": "The disproved statement and formal negation."
+    },
+    {
+      "id": "counterexamples",
+      "title": "Counterexamples",
+      "startLine": 93,
+      "endLine": 132,
+      "summary": "Three counterexamples: {1,2,4,8}, {1,2,4,8,13}, {1,3,9,10,13}."
+    },
+    {
+      "id": "positive-results",
+      "title": "Positive Results",
+      "startLine": 134,
+      "endLine": 158,
+      "summary": "Size bound, Singer construction, small Sidon extendability."
+    },
+    {
+      "id": "density",
+      "title": "Connection to Density",
+      "startLine": 160,
+      "endLine": 168,
+      "summary": "Link to Erdős Problem #329 on Sidon set density."
+    },
+    {
+      "id": "summary",
+      "title": "Summary Theorem",
+      "startLine": 170,
+      "endLine": 194,
+      "summary": "Verified results: {1,2,4} is Sidon, perfect difference sets exist."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #707 on embedding Sidon sets in perfect difference sets. The conjecture was DISPROVED: Hall (1947) and Alexeev-Mixon (2025) showed specific Sidon sets cannot be extended. We define Sidon sets and perfect difference sets, axiomatize the counterexamples, and verify that {1,2,4} is indeed a Sidon set. The Singer construction provides positive existence results.",
+    "implications": "This problem connects to:\n\n1. **Additive combinatorics**: Sidon sets are fundamental in the study of sum-free structures\n2. **Projective geometry**: Perfect difference sets correspond to cyclic projective planes\n3. **Sidon set density**: The conjecture, if true, would have implied optimal density bounds\n4. **AI-assisted proofs**: Alexeev-Mixon's 2025 proof was formalized with ChatGPT assistance\n5. **Historical mathematics**: Hall's 1947 result was forgotten for 30 years until Erdős re-asked the question",
+    "openQuestions": [
+      "Can EVERY Sidon set of size 4 be extended to a perfect difference set?",
+      "What is the structure of maximal non-extendable Sidon sets?",
+      "Is {0,1,3,11} truly a counterexample for size-4 Sidon extension?",
+      "What is the relationship between Sidon extendability and the Singer construction?",
+      "Can machine learning help identify non-extendable Sidon sets?"
+    ]
   }
 }

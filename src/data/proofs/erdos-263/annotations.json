@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-263-posintseq",
+    "proofId": "erdos-263",
+    "range": { "startLine": 36, "endLine": 36 },
+    "type": "definition",
+    "title": "Positive Integer Sequence",
+    "content": "A sequence of positive integers ℕ → ℕ+. The base type for irrationality sequences.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-263-recipsum",
+    "proofId": "erdos-263",
+    "range": { "startLine": 39, "endLine": 40 },
+    "type": "definition",
+    "title": "Reciprocal Sum",
+    "content": "The infinite sum Σ 1/b_n. Central to irrationality questions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-263-perturbation",
+    "proofId": "erdos-263",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "definition",
+    "title": "Perturbation",
+    "content": "A sequence b_n is a perturbation of a_n if b_n/a_n → 1. Small relative changes.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-263-irrseq",
+    "proofId": "erdos-263",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "definition",
+    "title": "Irrationality Sequence",
+    "content": "For ALL perturbations (b_n), the sum Σ 1/b_n is irrational. The central definition.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-263-doubleexp",
+    "proofId": "erdos-263",
+    "range": { "startLine": 58, "endLine": 58 },
+    "type": "definition",
+    "title": "Double Exponential",
+    "content": "The sequence 2^{2^n}. The specific sequence in Erdős's first question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-263-q1",
+    "proofId": "erdos-263",
+    "range": { "startLine": 61, "endLine": 61 },
+    "type": "definition",
+    "title": "Erdős Question 1",
+    "content": "Is 2^{2^n} an irrationality sequence? The first main open question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-263-superexp",
+    "proofId": "erdos-263",
+    "range": { "startLine": 66, "endLine": 67 },
+    "type": "definition",
+    "title": "Superexponential Growth",
+    "content": "a_n^{1/n} → ∞. Growth faster than any exponential c^n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-263-q2",
+    "proofId": "erdos-263",
+    "range": { "startLine": 70, "endLine": 71 },
+    "type": "definition",
+    "title": "Erdős Question 2",
+    "content": "Must irrationality sequences have superexponential growth? The second main question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-263-folklore",
+    "proofId": "erdos-263",
+    "range": { "startLine": 76, "endLine": 77 },
+    "type": "definition",
+    "title": "Folklore Growth",
+    "content": "a_n^{1/2^n} → ∞. Stronger than superexponential. Sufficient for irrationality.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-263-folklorethm",
+    "proofId": "erdos-263",
+    "range": { "startLine": 80, "endLine": 83 },
+    "type": "theorem",
+    "title": "Folklore Irrationality",
+    "content": "If a_n^{1/2^n} → ∞, then Σ 1/a_n is irrational. The classical sufficient condition.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-263-kt",
+    "proofId": "erdos-263",
+    "range": { "startLine": 100, "endLine": 101 },
+    "type": "definition",
+    "title": "Kovač-Tao Condition",
+    "content": "a_{n+1}/a_n² → 0. Sequences satisfying this are NOT irrationality sequences.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-263-ktthm",
+    "proofId": "erdos-263",
+    "range": { "startLine": 104, "endLine": 109 },
+    "type": "theorem",
+    "title": "Kovač-Tao Theorem",
+    "content": "Kovač-Tao (2024): Strictly increasing sequences with convergent sum and a_{n+1}/a_n² → 0 are NOT irrationality sequences.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-263-positive",
+    "proofId": "erdos-263",
+    "range": { "startLine": 114, "endLine": 116 },
+    "type": "definition",
+    "title": "Positive Condition",
+    "content": "liminf a_{n+1}/a_n^{2+ε} > 0 for some ε > 0. Sufficient for irrationality sequence.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-263-noncompute",
+    "proofId": "erdos-263",
+    "range": { "startLine": 172, "endLine": 175 },
+    "type": "theorem",
+    "title": "Non-Computability",
+    "content": "No algorithm can decide if a sequence is an irrationality sequence. Requires infinite information.",
+    "significance": "key"
+  }
+]

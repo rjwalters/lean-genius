@@ -1,34 +1,112 @@
 {
   "id": "erdos-94",
-  "title": "Erdős Problem #94",
+  "title": "Erdős #94: Distance Multiplicities in Convex Polygons",
   "slug": "erdos-94",
-  "description": "Suppose n\" role=\"presentation\" style=\"position: relative;\">nnn points in R2\" role=\"presentation\" style=\"position: relative;\">ℝ2R2^2 determine a convex polygon and the set of distances between them ...",
+  "description": "For n points forming a convex polygon with distance multiplicities f(u), prove ∑ f(u)² = O(n³). Solved by Fishburn, strengthened by Lefmann-Theile.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/94",
-    "date": "",
-    "status": "pending",
+    "date": "1990s",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos94Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "convex",
+      "distances",
+      "combinatorics"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 18,
     "erdosNumber": 94,
     "erdosUrl": "https://erdosproblems.com/94",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$44"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #94 from erdosproblems.com. Originally offered with a prize of $44.",
-    "problemStatement": "Suppose n\" role=\"presentation\" style=\"position: relative;\">nnn points in R2\" role=\"presentation\" style=\"position: relative;\">ℝ2R2\\mathbb{R}^2 determine a convex polygon and the set of distances between them is {u1,&#x2026;,ut}\" role=\"presentation\" style=\"position: relative;\">{u1,…,ut}{u1,…,ut}\\{u_1,\\ldots,u_t\\}. Suppose ui\" role=\"presentation\" style=\"position: relative;\">uiuiu_i appears as the distance between f(ui)\" role=\"presentation\" style=\"position: relative;\">f(ui)f(ui)f(u_i) many pairs of points. Then&#x2211;if(ui)2&#x226A;n3.\" role=\"presentation\" style=\"text-align: center; position: relative;\">∑if(ui)2≪n3.∑if(ui)2≪n3.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This $44 Erdős problem was solved by Fishburn. Lefmann and Theile (1995) strengthened it to work under the weaker 'no three collinear' condition instead of convexity. Erdős and Fishburn conjectured that the regular n-gon maximizes ∑ f(u)². Related to OEIS sequence A387858.",
+    "problemStatement": "Suppose n points in ℝ² form the vertices of a convex polygon. Let f(u) count pairs at distance u. Prove that ∑ f(u)² = O(n³). Note: trivially ∑ f(u) = C(n,2).",
+    "proofStrategy": "We formalize point configurations, distance multiplicities, and the sum of squares. The main theorem (Fishburn) states ∑ f(u)² ≤ C·n³. Lefmann-Theile strengthens this to 'no three collinear'. We also formalize the regular n-gon and the Erdős-Fishburn extremal conjecture.",
+    "keyInsights": [
+      "Trivial: ∑ f(u) = C(n,2) (total pairs)",
+      "Fishburn: ∑ f(u)² ≤ C·n³ for convex polygons",
+      "Lefmann-Theile (1995): Same bound under 'no three collinear'",
+      "Regular n-gon achieves Θ(n³), conjectured to be maximum",
+      "Equivalent to counting quadruples with equal distances"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "point-config",
+      "title": "Point Configurations",
+      "summary": "Points in ℝ², distances, and distance sets",
+      "startLine": 35,
+      "endLine": 52
+    },
+    {
+      "id": "multiplicity",
+      "title": "Distance Multiplicity",
+      "summary": "f(u) = count of pairs at distance u",
+      "startLine": 54,
+      "endLine": 67
+    },
+    {
+      "id": "sum-squared",
+      "title": "Sum of Squared Multiplicities",
+      "summary": "The key quantity ∑ f(u)² and equivalent formulations",
+      "startLine": 69,
+      "endLine": 83
+    },
+    {
+      "id": "convex-position",
+      "title": "Convex Position",
+      "summary": "Definition and relation to 'no three collinear'",
+      "startLine": 85,
+      "endLine": 100
+    },
+    {
+      "id": "fishburn",
+      "title": "Fishburn's Theorem",
+      "summary": "The main O(n³) bound for convex polygons",
+      "startLine": 102,
+      "endLine": 114
+    },
+    {
+      "id": "lefmann-theile",
+      "title": "Lefmann-Theile Strengthening",
+      "summary": "Bound under weaker 'no three collinear' condition",
+      "startLine": 116,
+      "endLine": 122
+    },
+    {
+      "id": "regular-ngon",
+      "title": "Regular n-gon",
+      "summary": "Construction and Θ(n³) lower bound",
+      "startLine": 124,
+      "endLine": 145
+    },
+    {
+      "id": "extremal",
+      "title": "Erdős-Fishburn Conjecture",
+      "summary": "Regular n-gon maximizes ∑ f(u)²",
+      "startLine": 147,
+      "endLine": 158
+    },
+    {
+      "id": "connections",
+      "title": "Connections",
+      "summary": "Unit distance problem and related quantities",
+      "startLine": 160,
+      "endLine": 189
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #94, a $44 problem solved by Fishburn. The bound ∑ f(u)² = O(n³) was proved for convex polygons and strengthened by Lefmann-Theile to 'no three collinear'. The Erdős-Fishburn conjecture that the regular n-gon is extremal remains open.",
+    "implications": "This result bounds the 'clustering' of distances in convex configurations. It has connections to distinct distances problems and incidence geometry. The quadruple-counting interpretation links to algebraic techniques.",
+    "openQuestions": [
+      "Does the regular n-gon maximize ∑ f(u)² for large n?",
+      "What is the exact constant C in Fishburn's theorem?",
+      "Can the bound be improved for specific classes of convex polygons?"
+    ]
   }
 }

@@ -1,33 +1,161 @@
 {
   "id": "erdos-401",
-  "title": "Erdős Problem #401",
+  "title": "Erdős Problem #401: Factorial Divisibility with Prime Products",
   "slug": "erdos-401",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some function ... such that ... as ..., such that, for infinitely many ..., there exist ... with\\[a_1+a_2> n+f(r)\\lo...",
+  "description": "Does there exist f(r) → ∞ such that for infinitely many n, there exist a₁, a₂ with a₁ + a₂ > n + f(r)·log(n) where a₁!·a₂! | n!·2ⁿ·3ⁿ·...·pᵣⁿ? YES (Barreto-Leeham 2026). The 'for all large n' version is FALSE (Sothanaphan).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Graham (1980), Barreto-Leeham (2026), Sothanaphan",
     "sourceUrl": "https://erdosproblems.com/401",
-    "date": "",
-    "status": "pending",
+    "date": "2026",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos401Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "factorial-divisibility",
+      "primorial",
+      "ai-assisted"
     ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 401,
     "erdosUrl": "https://erdosproblems.com/401",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.nth",
+        "description": "n-th element satisfying a predicate",
+        "module": "Mathlib.Order.OrderIsoNat"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Filter.Frequently",
+        "description": "Frequently predicate (∃ᶠ)",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of nthPrime via Nat.nth Nat.Prime",
+      "Definition of primorialPow (product of first r primes to power n)",
+      "Definition of FactorialDivides predicate",
+      "Axiom erdos_graham_baseline (a₁ + a₂ ≤ n + O(log n) bound)",
+      "Definition of TendsToInfty for functions",
+      "Definition of Erdos401Conjecture using Filter.Frequently",
+      "Axiom barreto_leeham_401 (main proof)",
+      "Definition and axiom for Erdos401Strong (the false version)",
+      "Axiom sothanaphan_counterexample",
+      "Definition of g₂ and g₂_modified functions",
+      "Connection to Problem #729"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #401 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some function $f(r)$ such that $f(r)\\to \\infty$ as $r\\to\\infty$, such that, for infinitely many $n$, there exist $a_1,a_2$ with\\[a_1+a_2> n+f(r)\\log n\\]such that $a_1!a_2! \\mid n!2^n3^n\\cdots p_r^n$?\n\n\n\nIt is ambiguous in \\cite{ErGr80} what the intended quantifiers are on the variables (they write 'is it true that we can find $a_1+a_2>n+f(r)\\log n$...'). Comparing to previous problems such as [728] and [729] it seems most likely that they intended to ask the formulation in the problem statement.\n\nSothanaphan, using ChatGPT, has found a disproof of the alternative statement with 'for all large $n$' instead: take $n=p_{r+1}^k-1$ for arbitrary $k$, whence the divisibility condition forces $a_1+a_2\\leq n+2p_{r+1}$.\n\nBarreto and Leeham have used ChatGPT to provide a proof of the stated problem (in fact essentially the same construction as their solution to [729]).\n\nSee also [400] and [729] (arguably this problem is a more precisely stated form of the latter).\n\n\n\n\nReferences\n\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem comes from Erdős and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory'. It is closely related to Problems #400 and #729.\n\n**The g_k Function**: Problem #400 introduced g_k(n), the maximum of (a₁ + ... + a_k) - n subject to a₁!...a_k! | n!. Erdős-Graham showed g_k(n) ≪ log(n).\n\n**The Extra Factors**: Problem #401 asks what happens when we multiply n! by prime powers 2ⁿ3ⁿ...p_rⁿ. These extra factors provide additional 'room' for the factorial divisibility.\n\n**Resolution**: In 2026, Barreto and Leeham proved the answer is YES using AI-assisted methods. Interestingly, Sothanaphan showed that the stronger version (for ALL large n) is FALSE, using the counterexample n = p_{r+1}^k - 1.",
+    "problemStatement": "**Erdős Problem #401**: Is there some function $f(r)$ such that $f(r) \\to \\infty$ as $r \\to \\infty$, such that for infinitely many $n$, there exist $a_1, a_2$ with\n$$a_1 + a_2 > n + f(r) \\log n$$\nsuch that $a_1! a_2! \\mid n! \\cdot 2^n \\cdot 3^n \\cdots p_r^n$?\n\n**Answer**: YES (Barreto-Leeham 2026)\n\n**Key Subtlety**: The quantifier 'for infinitely many n' is essential. The version with 'for all large n' is FALSE.\n\n**Counterexample to Strong Version**: Sothanaphan showed that taking $n = p_{r+1}^k - 1$ forces $a_1 + a_2 \\leq n + 2p_{r+1}$, which is bounded.",
+    "proofStrategy": "The formalization captures both the positive result and the counterexample:\n\n1. **Infrastructure**:\n   - `nthPrime`: The r-th prime via Nat.nth\n   - `primorialPow`: Product 2ⁿ·3ⁿ·...·p_rⁿ\n   - `FactorialDivides`: The central divisibility condition\n\n2. **Baseline**:\n   - `erdos_graham_baseline`: Without extra factors, a₁ + a₂ ≤ n + O(log n)\n\n3. **The Conjecture**:\n   - `TendsToInfty`: f(r) → ∞ as r → ∞\n   - `Erdos401Conjecture`: Existence of such f with infinitely many n\n\n4. **Resolution**:\n   - `barreto_leeham_401`: The main YES result (axiom)\n   - `erdos_401_proved`: The theorem statement\n\n5. **Counterexample**:\n   - `Erdos401Strong`: The false 'for all large n' version\n   - `sothanaphan_counterexample`: Proof it's false",
+    "keyInsights": [
+      "**Quantifier sensitivity**: The problem has different answers depending on 'infinitely many n' vs 'all large n'. This subtlety was clarified through the counterexample.",
+      "**Prime power factors matter**: The primorial factors 2ⁿ3ⁿ...p_rⁿ fundamentally change the divisibility landscape, allowing larger a₁ + a₂ values.",
+      "**Connection to #729**: The same Barreto-Leeham construction proves both problems, showing deep structural similarity.",
+      "**AI-assisted proof**: Both the positive result (Barreto-Leeham) and the counterexample (Sothanaphan) were found with AI assistance.",
+      "**The g-function viewpoint**: Reformulating via g₂_modified makes clear that we're asking if the modified function can grow faster than C·log(n)."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Overview",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Problem statement, background, and solution summary."
+    },
+    {
+      "id": "primes",
+      "title": "Prime Infrastructure",
+      "startLine": 45,
+      "endLine": 52,
+      "summary": "nthPrime and primorialPow definitions."
+    },
+    {
+      "id": "divides",
+      "title": "Divisibility Predicate",
+      "startLine": 54,
+      "endLine": 58,
+      "summary": "FactorialDivides definition."
+    },
+    {
+      "id": "baseline",
+      "title": "Erdős-Graham Baseline",
+      "startLine": 60,
+      "endLine": 67,
+      "summary": "The O(log n) bound without extra factors."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 69,
+      "endLine": 81,
+      "summary": "TendsToInfty and Erdos401Conjecture definitions."
+    },
+    {
+      "id": "proof",
+      "title": "Main Proof",
+      "startLine": 83,
+      "endLine": 99,
+      "summary": "Barreto-Leeham axiom and erdos_401_proved theorem."
+    },
+    {
+      "id": "counterexample",
+      "title": "Sothanaphan Counterexample",
+      "startLine": 101,
+      "endLine": 115,
+      "summary": "Erdos401Strong definition and sothanaphan_counterexample."
+    },
+    {
+      "id": "g-functions",
+      "title": "The g₂ Functions",
+      "startLine": 117,
+      "endLine": 140,
+      "summary": "g₂, g₂_modified, and reformulation."
+    },
+    {
+      "id": "connections",
+      "title": "Connection to #729",
+      "startLine": 142,
+      "endLine": 151,
+      "summary": "erdos_729_connection axiom."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 153,
+      "endLine": 175,
+      "summary": "Problem status and key results."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #401 on factorial divisibility with prime products. The problem asks whether adding factors 2ⁿ3ⁿ...p_rⁿ to n! allows exceeding the Erdős-Graham bound by an unbounded amount. The answer is YES for infinitely many n (Barreto-Leeham 2026), but NO for all large n (Sothanaphan counterexample).",
+    "implications": "This problem illustrates the subtle role of quantifiers in number theory conjectures. The extra prime power factors fundamentally change the factorial divisibility structure. The AI-assisted resolution of both the main conjecture and its negation demonstrates the power of computational approaches to Erdős problems.",
+    "openQuestions": [
+      "What is the optimal growth rate of f(r)?",
+      "Can the construction be made explicit (avoiding existence proofs)?",
+      "What happens for k > 2 factors (a₁!...a_k!)?",
+      "Are there other classes of n (besides Sothanaphan's) where the strong version fails?"
+    ]
   }
 }

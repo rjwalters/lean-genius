@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-551-cycle",
+    "proofId": "erdos-551",
+    "range": { "startLine": 36, "endLine": 49 },
+    "type": "definition",
+    "title": "cycleGraph",
+    "content": "The cycle graph C_k on k vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-551-contains-cycle",
+    "proofId": "erdos-551",
+    "range": { "startLine": 55, "endLine": 58 },
+    "type": "definition",
+    "title": "ContainsCycle",
+    "content": "G contains C_k as a subgraph.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-551-contains-clique",
+    "proofId": "erdos-551",
+    "range": { "startLine": 60, "endLine": 62 },
+    "type": "definition",
+    "title": "ContainsClique",
+    "content": "G contains K_n as a subgraph (clique).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-551-ramsey",
+    "proofId": "erdos-551",
+    "range": { "startLine": 66, "endLine": 73 },
+    "type": "definition",
+    "title": "RamseyNumber",
+    "content": "R(C_k, K_n): min N with red C_k or blue K_n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-551-formula",
+    "proofId": "erdos-551",
+    "range": { "startLine": 88, "endLine": 89 },
+    "type": "definition",
+    "title": "ConjecturedFormula",
+    "content": "R(C_k, K_n) = (k-1)(n-1) + 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-551-exception",
+    "proofId": "erdos-551",
+    "range": { "startLine": 96, "endLine": 102 },
+    "type": "theorem",
+    "title": "Exception (3,3)",
+    "content": "R(C_3, K_3) = 6 ≠ 5.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-551-lower",
+    "proofId": "erdos-551",
+    "range": { "startLine": 106, "endLine": 127 },
+    "type": "theorem",
+    "title": "Lower Bound",
+    "content": "(n-1) copies of K_{k-1} avoid both.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-551-bondy",
+    "proofId": "erdos-551",
+    "range": { "startLine": 131, "endLine": 135 },
+    "type": "theorem",
+    "title": "Bondy-Erdős (1973)",
+    "content": "Formula holds for k > n² - 2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-551-nikiforov",
+    "proofId": "erdos-551",
+    "range": { "startLine": 148, "endLine": 152 },
+    "type": "theorem",
+    "title": "Nikiforov (2005)",
+    "content": "Formula holds for k ≥ 4n + 2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-551-kls",
+    "proofId": "erdos-551",
+    "range": { "startLine": 165, "endLine": 169 },
+    "type": "theorem",
+    "title": "Keevash-Long-Skokan (2021)",
+    "content": "Formula holds for k ≥ C log n / log log n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-551-ck-k3",
+    "proofId": "erdos-551",
+    "range": { "startLine": 194, "endLine": 197 },
+    "type": "theorem",
+    "title": "R(C_k, K_3)",
+    "content": "R(C_k, K_3) = 2k - 1 for k ≥ 4.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-551-smallest-k",
+    "proofId": "erdos-551",
+    "range": { "startLine": 201, "endLine": 207 },
+    "type": "definition",
+    "title": "SmallestValidK",
+    "content": "Smallest k where identity holds for fixed n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-551-mono",
+    "proofId": "erdos-551",
+    "range": { "startLine": 220, "endLine": 228 },
+    "type": "theorem",
+    "title": "Monotonicity",
+    "content": "R(C_k, K_n) non-decreasing in k and n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-551-upper",
+    "proofId": "erdos-551",
+    "range": { "startLine": 238, "endLine": 242 },
+    "type": "theorem",
+    "title": "Upper Bound",
+    "content": "R(C_k, K_n) ≤ (k-1)(n-1) + 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-551-main",
+    "proofId": "erdos-551",
+    "range": { "startLine": 251, "endLine": 256 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "Formula holds iff k ≥ SmallestValidK(n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-551-solved",
+    "proofId": "erdos-551",
+    "range": { "startLine": 263, "endLine": 267 },
+    "type": "theorem",
+    "title": "Solved Asymptotically",
+    "content": "For each n, formula holds for large k.",
+    "significance": "critical"
+  }
+]

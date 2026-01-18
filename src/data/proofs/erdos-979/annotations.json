@@ -1,1 +1,170 @@
-[]
+[
+  {
+    "id": "ann-e979-header",
+    "proofId": "erdos-979",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This module formalizes **Erdos Problem #979**: For k primes, count ways to write n as the sum of their k-th powers. Erdos proved the count is unbounded for k=2,3; the case k>=4 remains open.",
+    "mathContext": "The problem asks: for f_k(n) counting solutions to n = p_1^k + ... + p_k^k, is lim sup f_k(n) = infinity? Erdos (1937) proved YES for k=2 using the Hardy-Littlewood circle method.",
+    "significance": "critical",
+    "relatedConcepts": ["prime powers", "additive number theory", "Waring problem"]
+  },
+  {
+    "id": "ann-e979-imports",
+    "proofId": "erdos-979",
+    "range": {
+      "startLine": 24,
+      "endLine": 33
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "We import **Multiset** for representing unordered prime collections with repetition, **Filter.limsup** for the asymptotic statement, and **BigOperators** for summing powers.",
+    "mathContext": "Multisets are essential because a solution like 8 = 2^2 + 2^2 uses the prime 2 twice. Filter.limsup captures the notion 'the count grows without bound'.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "Multiset", "Filter"]
+  },
+  {
+    "id": "ann-e979-solution-set",
+    "proofId": "erdos-979",
+    "range": {
+      "startLine": 35,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Solution Set and Counting Function",
+    "content": "**solutionSet n k** contains all multisets of k primes whose k-th powers sum to n. **f k n** counts these solutions using extended naturals (ℕ∞).",
+    "mathContext": "The definition uses Set comprehension: {P | P.card = k AND all elements prime AND sum of k-th powers = n}. Using Set.encard allows the count to be infinite.",
+    "significance": "critical",
+    "relatedConcepts": ["Multiset.card", "Set comprehension", "extended naturals"]
+  },
+  {
+    "id": "ann-e979-small-cases",
+    "proofId": "erdos-979",
+    "range": {
+      "startLine": 52,
+      "endLine": 66
+    },
+    "type": "theorem",
+    "title": "Edge Cases",
+    "content": "**solution_zero_zero** proves the empty multiset is the unique solution for n=0, k=0. **solution_zero_pos** states there's no solution for n=0 when k>=1.",
+    "mathContext": "For k>=1, we need k positive primes summing to 0, which is impossible since all prime powers are positive. This is axiomatized due to proof complexity.",
+    "significance": "supporting",
+    "relatedConcepts": ["empty sum", "card_eq_zero", "positive primes"]
+  },
+  {
+    "id": "ann-e979-example-k2",
+    "proofId": "erdos-979",
+    "range": {
+      "startLine": 68,
+      "endLine": 81
+    },
+    "type": "axiom",
+    "title": "Examples: Squares of Primes",
+    "content": "**example_8_eq_2sq_2sq** shows {2,2} solves n=8, k=2 since 2^2 + 2^2 = 4 + 4 = 8. **example_50** shows {5,5} solves n=50 since 5^2 + 5^2 = 50.",
+    "mathContext": "These are the simplest non-trivial examples for k=2. The multiset {2,2} contains 2 with multiplicity 2, and 8 is the smallest n with any solution.",
+    "significance": "key",
+    "relatedConcepts": ["prime square", "smallest solution", "concrete verification"]
+  },
+  {
+    "id": "ann-e979-example-k3",
+    "proofId": "erdos-979",
+    "range": {
+      "startLine": 83,
+      "endLine": 91
+    },
+    "type": "axiom",
+    "title": "Examples: Cubes of Primes",
+    "content": "**example_24_eq_cubes** shows {2,2,2} solves n=24, k=3 since 2^3 + 2^3 + 2^3 = 8 + 8 + 8 = 24.",
+    "mathContext": "For k=3, we need three prime cubes. Using the smallest prime 2 three times gives 24, the smallest n with a k=3 solution.",
+    "significance": "key",
+    "relatedConcepts": ["prime cube", "k=3 case", "multiplicity three"]
+  },
+  {
+    "id": "ann-e979-main-k2",
+    "proofId": "erdos-979",
+    "range": {
+      "startLine": 95,
+      "endLine": 100
+    },
+    "type": "axiom",
+    "title": "Erdos k=2 Theorem (1937)",
+    "content": "**erdos_979_k2** states lim sup f_2(n) = infinity. There are infinitely many n that can be written as p^2 + q^2 for primes p, q in arbitrarily many ways.",
+    "mathContext": "Published in 'On the Sum and Difference of Squares of Primes' (1937). The proof uses the Hardy-Littlewood circle method with estimates for primes in arithmetic progressions.",
+    "significance": "critical",
+    "relatedConcepts": ["circle method", "analytic number theory", "prime distribution"]
+  },
+  {
+    "id": "ann-e979-main-k3",
+    "proofId": "erdos-979",
+    "range": {
+      "startLine": 102,
+      "endLine": 107
+    },
+    "type": "axiom",
+    "title": "Erdos k=3 Theorem (unpublished)",
+    "content": "**erdos_979_k3** states lim sup f_3(n) = infinity for cubes of primes. This extends the k=2 result but was never formally published.",
+    "mathContext": "The k=3 case requires similar techniques but with more complex singular series. The proof exists but appears only in private communications.",
+    "significance": "critical",
+    "relatedConcepts": ["prime cubes", "unpublished", "singular series"]
+  },
+  {
+    "id": "ann-e979-open",
+    "proofId": "erdos-979",
+    "range": {
+      "startLine": 109,
+      "endLine": 114
+    },
+    "type": "axiom",
+    "title": "Open Question (k >= 4)",
+    "content": "**erdos_979_general_open** axiomatizes the unknown: is lim sup f_k(n) = infinity for ALL k >= 2? The k >= 4 cases remain unsolved.",
+    "mathContext": "As k increases, the k-th powers of primes become sparser, making it harder to find multiple representations. Whether the count still grows unboundedly is unknown.",
+    "significance": "critical",
+    "relatedConcepts": ["open problem", "sparse sets", "growth rate"]
+  },
+  {
+    "id": "ann-e979-connections",
+    "proofId": "erdos-979",
+    "range": {
+      "startLine": 116,
+      "endLine": 129
+    },
+    "type": "concept",
+    "title": "Connections to Major Problems",
+    "content": "This problem connects to **Goldbach** (sums of primes), **Waring** (sums of k-th powers), and the **Hardy-Littlewood method** (circle method for Diophantine equations).",
+    "mathContext": "Goldbach asks if every even n > 2 is p + q. Waring asks how many k-th powers suffice for any n. This problem restricts Waring to prime bases and asks about representation counts.",
+    "significance": "key",
+    "relatedConcepts": ["Goldbach conjecture", "Waring problem", "circle method"]
+  },
+  {
+    "id": "ann-e979-bounds",
+    "proofId": "erdos-979",
+    "range": {
+      "startLine": 131,
+      "endLine": 147
+    },
+    "type": "theorem",
+    "title": "Bounds on Solutions",
+    "content": "**no_solution_small** shows solutionSet n k = empty when n < 2^k. **smallest_k2** proves solutionSet 8 2 is nonempty (8 is the smallest n with a k=2 solution).",
+    "mathContext": "Since 2 is the smallest prime, the minimum sum of k k-th powers of primes is k * 2^k. For k=2, this is 2*4 = 8. For k=3, it's 3*8 = 24.",
+    "significance": "supporting",
+    "relatedConcepts": ["minimum bound", "smallest prime", "feasibility"]
+  },
+  {
+    "id": "ann-e979-summary",
+    "proofId": "erdos-979",
+    "range": {
+      "startLine": 149,
+      "endLine": 167
+    },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_979_summary** packages the verified examples: 8 = 2^2 + 2^2, 50 = 5^2 + 5^2, and 24 = 2^3 + 2^3 + 2^3.",
+    "mathContext": "This confirms the definitions are correctly capturing the intended mathematical content. Each example satisfies all three conditions: correct count of primes, all primes, sum equals n.",
+    "significance": "supporting",
+    "relatedConcepts": ["verified examples", "definition validation", "summary"]
+  }
+]

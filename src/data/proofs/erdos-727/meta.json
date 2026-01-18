@@ -1,33 +1,149 @@
 {
   "id": "erdos-727",
-  "title": "Erdős Problem #727",
+  "title": "Erdős Problem #727: Factorial Divisibility",
   "slug": "erdos-727",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Does\\[(n+k)!^2 \\mid (2n)!\\]for infinitely many ...?\n\n\n\nA conjecture of Erds, Graham, Ruzsa, and Straus . It is open ...",
+  "description": "For k ≥ 2, does ((n+k)!)² divide (2n)! for infinitely many n? The main problem is OPEN, but Balakran (1929) solved the k=1 case, and EGRS showed a weaker variant holds for all k ≥ 2.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Graham, Ruzsa, Straus",
     "sourceUrl": "https://erdosproblems.com/727",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos727Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "factorials",
+      "divisibility",
+      "catalan-numbers",
+      "open-problem",
+      "partially-solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 727,
     "erdosUrl": "https://erdosproblems.com/727",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function on natural numbers",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficient function",
+        "module": "Mathlib.Data.Nat.Choose.Central"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Predicate for infinite sets",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm for Erdős bound",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of the divisibility condition: ((n+k)!)² | (2n)!",
+      "Statement of the main conjecture (erdos_727_conjecture) for k ≥ 2",
+      "Axiomatization of Balakran's theorem for k = 1",
+      "Definition of Catalan numbers and divisibility property",
+      "Statement of EGRS variant: (n+k)!(n+1)! | (2n)! for k ≥ 2",
+      "Relationship between main conjecture and EGRS variant",
+      "Erdős 1968 bound: a!b! | n! implies a+b ≤ n + O(log n)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #727 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$. Does\\[(n+k)!^2 \\mid (2n)!\\]for infinitely many $n$?\n\n\n\nA conjecture of Erd\\H{o}s, Graham, Ruzsa, and Straus \\cite{EGRS75}. It is open even for $k=2$.\n\nBalakran \\cite{Ba29} proved this holds for $k=1$ - that is, $(n+1)^2\\mid \\binom{2n}{n}$ for infinitely many $n$. It is a classical fact that $(n+1)\\mid \\binom{2n}{n}$ for all $n$ (see Catalan numbers).\n\nErd\\H{o}s, Graham, Ruzsa, and Straus observe that the method of Balakran can be further used to prove that there are infinitely many $n$ such that\\[(n+k)!(n+1)! \\mid (2n)!\\](in fact this holds whenever $k<c \\log n$ for some small constant $c>0$).\n\nErd\\H{o}s \\cite{Er68c} proved that if $a!b!\\mid n!$ then $a+b\\leq n+O(\\log n)$.\n\n\n\n\nReferences\n\n\n[Ba29] H. Balakran, On the values of $n$ which make $(2n)!/(n+1)!(n+1)!$ an integer. J. Indian Math. Soc. (1929), 97-100.\n\n[EGRS75] Erd\\H{o}s, P. and Graham, R. L. and Ruzsa, I. Z. and Straus, E. G., On the prime factors of $(\\sp{2n}\\sb{n})$. Math. Comp. (1975), 83-92.\n\n[Er68c] P. Erd\\H{o}s, Aufgabe 557. Elemente Math. (1968), 111-113.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #727 was posed by Erdős, Graham, Ruzsa, and Straus in their 1975 paper 'On the prime factors of C(2n,n)'. The problem asks about the divisibility of (2n)! by squared factorials.\n\n**Key results**:\n- **Balakran (1929)**: Solved the k=1 case, proving ((n+1)!)² | (2n)! for infinitely many n. This is equivalent to (n+1)² dividing the central binomial coefficient C(2n,n).\n- **Classical**: (n+1) | C(2n,n) for ALL n (this defines the Catalan numbers).\n- **EGRS (1975)**: Proved a weaker variant: (n+k)!(n+1)! | (2n)! for infinitely many n, for any k ≥ 2.\n\nThe main question for k ≥ 2 remains **OPEN** even for k = 2.",
+    "problemStatement": "**Erdős Problem #727**: For $k \\geq 2$, does\n$$((n+k)!)^2 \\mid (2n)!$$\nhold for infinitely many $n$?\n\n**Status**: OPEN (for k ≥ 2)\n\n**Partial Results**:\n- **k = 1 (SOLVED)**: Balakran proved $((n+1)!)^2 \\mid (2n)!$ for infinitely many $n$\n- **k = 2**: Still open\n- **EGRS variant (SOLVED)**: $(n+k)!(n+1)! \\mid (2n)!$ for infinitely many $n$ when $k \\geq 2$\n\n**Related Facts**:\n- $(n+1) \\mid \\binom{2n}{n}$ for all $n$ (Catalan numbers)\n- If $a!b! \\mid n!$ then $a + b \\leq n + O(\\log n)$ (Erdős 1968)",
+    "proofStrategy": "The formalization captures the problem structure:\n\n1. **Main Conjecture**: We define `erdos_727_conjecture` as the statement that for all k ≥ 2, the set of n with ((n+k)!)² | (2n)! is infinite.\n\n2. **Balakran's Result**: Axiomatized as `balakran_theorem`, giving the k = 1 case.\n\n3. **Catalan Connection**: The divisibility (n+1) | C(2n,n) is classical and relates to Catalan numbers C_n = C(2n,n)/(n+1).\n\n4. **EGRS Variant**: The weaker result (n+k)!(n+1)! | (2n)! is axiomatized as `egrs_theorem`.\n\n5. **Logical Relationship**: We prove that the main conjecture implies the EGRS variant (a stronger statement implies the weaker one).",
+    "keyInsights": [
+      "**The k = 1 boundary**: Balakran solved k = 1 in 1929, but k ≥ 2 remains open nearly 100 years later. The squared factor makes the problem significantly harder.",
+      "**Connection to Catalan numbers**: The divisibility (n+1) | C(2n,n) is always true and defines the Catalan sequence. The question asks when (n+1)² divides (in the k=1 case).",
+      "**EGRS weaker variant**: The product (n+k)!(n+1)! is less than ((n+k)!)² when k ≥ 2, so proving divisibility by the product is easier than by the square.",
+      "**Prime factorization approach**: Using Legendre's formula for the prime power in n!, one can analyze when the divisibility holds. The difficulty is showing it happens infinitely often.",
+      "**Erdős's bound constrains solutions**: If a!b! | n!, then a + b ≤ n + O(log n). For our problem with a = b = n+k and factorial (2n)!, this gives constraints on valid n.",
+      "**Open even for k = 2**: Despite decades of work, even the specific case k = 2 asking whether ((n+2)!)² | (2n)! infinitely often is unresolved."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Problem statement, status (OPEN for k≥2), and historical references."
+    },
+    {
+      "id": "background",
+      "title": "Factorials and Divisibility",
+      "startLine": 27,
+      "endLine": 43,
+      "summary": "Central binomial coefficient and the basic factorial identity."
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "startLine": 45,
+      "endLine": 86,
+      "summary": "Definition of the divisibility condition and the main conjecture."
+    },
+    {
+      "id": "balakran",
+      "title": "Balakran's Theorem (k = 1)",
+      "startLine": 88,
+      "endLine": 109,
+      "summary": "The solved case k = 1 from 1929."
+    },
+    {
+      "id": "catalan",
+      "title": "Catalan Numbers",
+      "startLine": 111,
+      "endLine": 135,
+      "summary": "Classical divisibility property and Catalan number connection."
+    },
+    {
+      "id": "egrs",
+      "title": "The EGRS Variant",
+      "startLine": 137,
+      "endLine": 164,
+      "summary": "The weaker but solved variant with (n+k)!(n+1)!."
+    },
+    {
+      "id": "relationship",
+      "title": "Relationship Between Problems",
+      "startLine": 166,
+      "endLine": 191,
+      "summary": "Main conjecture implies EGRS variant."
+    },
+    {
+      "id": "erdos-bound",
+      "title": "Erdős's Related Result",
+      "startLine": 193,
+      "endLine": 209,
+      "summary": "The 1968 bound on factorial divisibility."
+    },
+    {
+      "id": "status-summary",
+      "title": "Status Summary",
+      "startLine": 256,
+      "endLine": 277,
+      "summary": "Summary of what is solved and what remains open."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #727, which asks whether ((n+k)!)² divides (2n)! for infinitely many n when k ≥ 2. The main problem is OPEN, but we capture the solved k=1 case (Balakran 1929) and the EGRS variant showing (n+k)!(n+1)! | (2n)! infinitely often.",
+    "implications": "This problem connects factorial arithmetic, Catalan numbers, and prime factorization. The gap between k=1 (solved) and k=2 (open) illustrates how small changes in divisibility conditions can dramatically change problem difficulty. Understanding this gap may reveal new techniques in multiplicative number theory.",
+    "openQuestions": [
+      "Does ((n+2)!)² | (2n)! for infinitely many n? (The k=2 case)",
+      "What is the density of n for which ((n+1)!)² | (2n)!?",
+      "Can computational evidence suggest the answer for k ≥ 2?",
+      "Is there a connection to p-adic valuations of central binomial coefficients?",
+      "What techniques from Balakran's proof fail for k ≥ 2?"
+    ]
   }
 }

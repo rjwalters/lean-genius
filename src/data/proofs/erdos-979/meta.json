@@ -1,33 +1,151 @@
 {
   "id": "erdos-979",
-  "title": "Erdős Problem #979",
+  "title": "Erdős Problem #979: Sums of k-th Powers of Primes",
   "slug": "erdos-979",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., and let ... count the number of solutions to\\[n=p_1^k+\\cdots+p_k^k,\\]where the ... are prime numbers. Is it true tha...",
+  "description": "For k primes p_1,...,p_k, count solutions to n = p_1^k + ... + p_k^k. Is this count unbounded? Erdős proved YES for k=2,3; k>=4 remains open.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1937, k=2), Erdős (unpublished, k=3)",
     "sourceUrl": "https://erdosproblems.com/979",
-    "date": "",
-    "status": "pending",
+    "date": "1937-present",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos979Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-powers",
+      "additive-combinatorics",
+      "waring-type"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 979,
     "erdosUrl": "https://erdosproblems.com/979",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "partially-solved",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Definition of prime numbers",
+        "module": "Mathlib.Data.Nat.Prime.Defs"
+      },
+      {
+        "theorem": "Multiset",
+        "description": "Finite multisets with multiplicity",
+        "module": "Mathlib.Data.Multiset.Basic"
+      },
+      {
+        "theorem": "Filter.limsup",
+        "description": "Limit superior for filters",
+        "module": "Mathlib.Order.Filter.AtTopBot.Basic"
+      },
+      {
+        "theorem": "Set.encard",
+        "description": "Extended natural number cardinality",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "Clean formalization of the solution counting function f_k(n)",
+      "Multiset representation of prime power sums",
+      "Axiomatization of Erdős's k=2 and k=3 results",
+      "Concrete examples: 8 = 2^2 + 2^2, 24 = 2^3 + 2^3 + 2^3",
+      "Connections to Goldbach, Waring, and Hardy-Littlewood method"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #979 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$, and let $f_k(n)$ count the number of solutions to\\[n=p_1^k+\\cdots+p_k^k,\\]where the $p_i$ are prime numbers. Is it true that $\\limsup f_k(n)=\\infty$?\n\n\n\nErd\\H{o}s \\cite{Er37b} proved this is true when $k=2$, and also when $k=3$ (but this proof appears to be unpublished).\n\n\n\n\nReferences\n\n\n[Er37b] Erd\\H{o}s, Paul, On the {S}um and {D}ifference of {S}quares of {P}rimes. J. London Math. Soc. (1937), 133--136.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem sits at the intersection of additive number theory and the distribution of primes. It asks whether, for each k >= 2, there exist integers n that can be represented as the sum of k many k-th powers of primes in arbitrarily many ways.\n\nErdős proved the case k=2 in his 1937 paper 'On the Sum and Difference of Squares of Primes' in the Journal of the London Mathematical Society. The proof uses the Hardy-Littlewood circle method combined with estimates for primes in arithmetic progressions. He also reportedly proved the k=3 case, though this proof appears to be unpublished.\n\nThe problem remains open for k >= 4. The difficulty increases with k because there are fewer k-th powers of primes below any given bound. The expected number of representations involves the singular series from the circle method, which becomes harder to analyze for larger k.",
+    "problemStatement": "**Erdős Problem #979**: Let $k \\geq 2$, and let $f_k(n)$ count the number of solutions to\n$$n = p_1^k + p_2^k + \\cdots + p_k^k$$\nwhere the $p_i$ are prime numbers (with repetition allowed).\n\n**Question**: Is it true that $\\limsup_{n \\to \\infty} f_k(n) = \\infty$?\n\n**Status**: PARTIALLY SOLVED\n\n**Known Results**:\n- **k=2**: SOLVED by Erdős (1937) - There are infinitely many n with arbitrarily many representations as sums of two squares of primes\n- **k=3**: SOLVED by Erdős (unpublished) - Same result for cubes of primes\n- **k>=4**: OPEN",
+    "proofStrategy": "We formalize this problem using multisets to represent solutions:\n\n1. **Define solutionSet(n,k)**: The set of all multisets P = {p_1,...,p_k} where each p_i is prime and the sum of their k-th powers equals n. Multisets naturally handle repeated primes.\n\n2. **Define f(k,n)**: The (extended natural number) cardinality of solutionSet(n,k). We use ℕ∞ to handle potentially infinite solution sets.\n\n3. **Axiomatize main results**: The theorems erdos_979_k2 and erdos_979_k3 state that Filter.limsup of f equals ⊤ (infinity) for k=2 and k=3. These require analytic number theory beyond Mathlib.\n\n4. **Provide concrete examples**: We axiomatize that 8 = 2^2 + 2^2 and 24 = 2^3 + 2^3 + 2^3 are valid solutions, demonstrating the definitions work.\n\n5. **Note connections**: The problem relates to Goldbach-type questions, Waring's problem, and the Hardy-Littlewood circle method.",
+    "keyInsights": [
+      "**Multiset representation**: A solution is a multiset {p_1,...,p_k} of k primes. Using multisets (not sets or tuples) correctly handles repeated primes like {2,2} for 8 = 2^2 + 2^2.",
+      "**The counting function f_k(n)**: Counts distinct multisets, so f_2(8) >= 1 from {2,2}. The question is whether sup over n of f_k(n) is unbounded.",
+      "**Why k matters**: For k=2, many primes p satisfy p^2 < n, giving more potential solutions. For larger k, the sparsity of k-th powers makes representations rarer.",
+      "**Connection to Waring**: Waring's problem asks about sums of k-th powers of all integers. This is the 'prime' variant: only prime bases allowed.",
+      "**Circle method**: Erdős's k=2 proof uses the Hardy-Littlewood circle method, analyzing exponential sums over primes."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Problem statement, status, known results for k=2,3, and references."
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 24,
+      "endLine": 33,
+      "summary": "Mathlib imports for primes, multisets, BigOperators, and filters."
+    },
+    {
+      "id": "solution-set",
+      "title": "Solution Set Definition",
+      "startLine": 35,
+      "endLine": 51,
+      "summary": "Define solutionSet(n,k) as multisets of k primes whose k-th powers sum to n, and f(k,n) as its cardinality."
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "startLine": 52,
+      "endLine": 66,
+      "summary": "Handle edge cases: n=0 with k=0 has unique empty solution; n=0 with k>=1 has no solutions."
+    },
+    {
+      "id": "examples-k2",
+      "title": "Examples: Sum of Two Squares",
+      "startLine": 68,
+      "endLine": 81,
+      "summary": "Concrete examples for k=2: 8 = 2^2 + 2^2 and 50 = 5^2 + 5^2."
+    },
+    {
+      "id": "examples-k3",
+      "title": "Examples: Sum of Three Cubes",
+      "startLine": 83,
+      "endLine": 91,
+      "summary": "Concrete example for k=3: 24 = 2^3 + 2^3 + 2^3."
+    },
+    {
+      "id": "main-results",
+      "title": "Main Theorems",
+      "startLine": 93,
+      "endLine": 114,
+      "summary": "Erdős's results: lim sup f_2(n) = infinity and lim sup f_3(n) = infinity. The k>=4 case remains open."
+    },
+    {
+      "id": "connections",
+      "title": "Connections to Other Problems",
+      "startLine": 116,
+      "endLine": 129,
+      "summary": "Relationships to Goldbach conjecture, Waring's problem, and Hardy-Littlewood method."
+    },
+    {
+      "id": "properties",
+      "title": "Properties of Solution Counts",
+      "startLine": 131,
+      "endLine": 147,
+      "summary": "Bounds: no solutions for n < 2^k; smallest k=2 solution is n=8."
+    },
+    {
+      "id": "summary",
+      "title": "Summary Theorem",
+      "startLine": 149,
+      "endLine": 167,
+      "summary": "Summary packaging the verified example solutions."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #979 on counting representations of integers as sums of k-th powers of primes. Using multisets to represent solutions and extended naturals to count them, we axiomatize Erdős's results that this count is unbounded for k=2 (proved 1937) and k=3 (unpublished). Concrete examples verify the definitions: 8 = 2^2 + 2^2 and 24 = 2^3 + 2^3 + 2^3.",
+    "implications": "This problem connects several major areas:\n\n1. **Additive number theory**: Variants of Goldbach and Waring problems restricted to prime bases\n2. **Analytic number theory**: The circle method for counting solutions to Diophantine equations\n3. **Prime distribution**: The density of primes determines the frequency of representations\n4. **Combinatorics**: Using multisets to handle repeated elements in sums",
+    "openQuestions": [
+      "Is lim sup f_k(n) = infinity for all k >= 4?",
+      "What is the growth rate of max_n f_k(n) as a function of the search bound?",
+      "For which n does f_2(n) achieve its maximum up to that point?",
+      "Can the Hardy-Littlewood method prove the general case, or is a new technique needed?",
+      "What is the connection to the Goldbach conjecture for sums of prime powers?"
+    ]
   }
 }

@@ -1,33 +1,117 @@
 {
   "id": "erdos-977",
-  "title": "Erdős Problem #977",
+  "title": "Erdős #977: Greatest Prime Factor of 2^n - 1",
   "slug": "erdos-977",
-  "description": "If P(m)\" role=\"presentation\" style=\"position: relative;\">P(m)P(m)P(m) is the greatest prime divisor of m\" role=\"presentation\" style=\"position: relative;\">mmm, then is it true thatP(2n&#x2212;1)n&#x...",
+  "description": "Does P(2^n - 1)/n → ∞? Solved by Stewart (2013): P(2^n - 1) ≥ n^{1 + 1/(104 log log n)}. Schinzel (1962) proved P(2^n - 1) > 2n for n > 12.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Andrzej Schinzel, Cameron Stewart",
     "sourceUrl": "https://erdosproblems.com/977",
-    "date": "",
-    "status": "pending",
+    "date": "1965-2013",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos977Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-factors",
+      "mersenne"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 23,
     "erdosNumber": 977,
     "erdosUrl": "https://erdosproblems.com/977",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #977 from erdosproblems.com.",
-    "problemStatement": "If P(m)\" role=\"presentation\" style=\"position: relative;\">P(m)P(m)P(m) is the greatest prime divisor of m\" role=\"presentation\" style=\"position: relative;\">mmm, then is it true thatP(2n&#x2212;1)n&#x2192;&#x221E;\" role=\"presentation\" style=\"text-align: center; position: relative;\">P(2n−1)n→∞P(2n−1)n→∞",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős asked whether P(2^n - 1)/n → ∞, where P(m) is the greatest prime factor. Schinzel (1962) proved P(2^n - 1) > 2n for n > 12. Stewart gave conditional results in 1974 and finally proved the full result unconditionally in 2013 with a quantitative bound.",
+    "problemStatement": "If P(m) is the greatest prime divisor of m, then is it true that P(2^n - 1)/n → ∞ as n → ∞?",
+    "proofStrategy": "We formalize the greatest prime factor function, Mersenne numbers, Stewart's theorem (2013), Schinzel's bound (1962), specific small cases, Mersenne primes, the related P(n!+1) question (still open), Zsygmondy's theorem on primitive prime factors, and the connection to multiplicative order.",
+    "keyInsights": [
+      "Stewart (2013): P(2^n - 1) ≥ n^{1 + 1/(104 log log n)}",
+      "Schinzel (1962): P(2^n - 1) > 2n for n > 12",
+      "For Mersenne primes, P(M_n) = M_n = 2^n - 1",
+      "Zsygmondy: 2^n - 1 has primitive prime factor for n > 6",
+      "Related: P(n! + 1) question is still OPEN"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "gpf",
+      "title": "Greatest Prime Factor",
+      "summary": "Definition and properties of P(n)",
+      "startLine": 30,
+      "endLine": 52
+    },
+    {
+      "id": "mersenne",
+      "title": "Mersenne Numbers",
+      "summary": "M_n = 2^n - 1 and basic properties",
+      "startLine": 54,
+      "endLine": 70
+    },
+    {
+      "id": "main",
+      "title": "Main Question",
+      "summary": "Does P(2^n - 1)/n → ∞?",
+      "startLine": 72,
+      "endLine": 80
+    },
+    {
+      "id": "schinzel",
+      "title": "Schinzel's Bound",
+      "summary": "P(2^n - 1) > 2n for n > 12",
+      "startLine": 82,
+      "endLine": 92
+    },
+    {
+      "id": "stewart",
+      "title": "Stewart's Quantitative Bound",
+      "summary": "P(2^n - 1) ≥ n^{1 + 1/(104 log log n)}",
+      "startLine": 94,
+      "endLine": 107
+    },
+    {
+      "id": "small",
+      "title": "Small Cases",
+      "summary": "Explicit values for small n",
+      "startLine": 109,
+      "endLine": 129
+    },
+    {
+      "id": "mersenne-primes",
+      "title": "Mersenne Primes",
+      "summary": "When M_n is prime, P(M_n) = M_n",
+      "startLine": 131,
+      "endLine": 144
+    },
+    {
+      "id": "factorial",
+      "title": "Related: P(n! + 1)",
+      "summary": "The open question about P(n! + 1)",
+      "startLine": 146,
+      "endLine": 161
+    },
+    {
+      "id": "zsygmondy",
+      "title": "Primitive Prime Factors",
+      "summary": "Zsygmondy's theorem",
+      "startLine": 163,
+      "endLine": 178
+    },
+    {
+      "id": "order",
+      "title": "Order of 2 mod p",
+      "summary": "Connection to multiplicative order",
+      "startLine": 180,
+      "endLine": 194
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #977 on the greatest prime factor of Mersenne numbers. Stewart (2013) proved P(2^n - 1)/n → ∞ with the quantitative bound P(2^n - 1) ≥ n^{1 + 1/(104 log log n)}. The related question about P(n! + 1) remains open.",
+    "implications": "Understanding the largest prime factors of 2^n - 1 connects to the structure of Mersenne numbers, primitive prime factors (Zsygmondy), and multiplicative orders. The techniques extend to other exponential sequences.",
+    "openQuestions": [
+      "Does P(n! + 1)/n → ∞?",
+      "Can the constant 104 in Stewart's bound be improved?",
+      "What is the typical size of P(2^n - 1) for random n?"
+    ]
   }
 }

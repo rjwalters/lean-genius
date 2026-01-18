@@ -1,33 +1,152 @@
 {
   "id": "erdos-329",
-  "title": "Erdős Problem #329",
+  "title": "Erdős Problem #329: Maximum Density of Sidon Sets",
   "slug": "erdos-329",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose ... is a Sidon set. How large can\\[\\limsup_{N\\to \\infty}\\rvert}{N^{1/2}}\\]be?\n\n\n\nErds proved that ... is possible and...",
+  "description": "For a Sidon set A (where all pairwise sums are distinct), how large can limsup |A ∩ {1,...,N}| / √N be? Known bounds: 1/√2 ≤ sup ≤ 1. The exact supremum remains OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1/2), Krückeberg (1/√2, 1961), Erdős-Turán (upper bound, 1941)",
     "sourceUrl": "https://erdosproblems.com/329",
-    "date": "",
-    "status": "pending",
+    "date": "1941-1961",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos329Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "sidon-sets",
+      "additive-number-theory",
+      "density"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 329,
     "erdosUrl": "https://erdosproblems.com/329",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of sets as natural numbers",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function for density normalization",
+        "module": "Mathlib.Data.Real.Sqrt"
+      },
+      {
+        "theorem": "Filter.limsup",
+        "description": "Limit superior for asymptotic density",
+        "module": "Mathlib.Order.LiminfLimsup"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "At infinity filter for limits",
+        "module": "Mathlib.Order.Filter.AtTopBot.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Clean Lean 4 definition of Sidon sets (IsSidon)",
+      "Definition of sqrt-normalized partial density and upper density",
+      "Definition of perfect difference sets",
+      "Axiomatization of Erdős, Krückeberg, and Erdős-Turán bounds",
+      "Conditional equivalence with perfect difference set embedding",
+      "Proved theorems: empty_is_sidon, singleton_is_sidon",
+      "Educational commentary on Sidon set theory"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #329 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose $A\\subseteq \\mathbb{N}$ is a Sidon set. How large can\\[\\limsup_{N\\to \\infty}\\frac{\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert}{N^{1/2}}\\]be?\n\n\n\nErd\\H{o}s proved that $1/2$ is possible and Kr\\\"{u}ckeberg \\cite{Kr61} proved $1/\\sqrt{2}$ is possible. Erd\\H{o}s and Tur\\'{a}n \\cite{ErTu41} have proved this $\\limsup$ is always $\\leq 1$.\n\nThe fact that $1$ is possible would follow if any finite Sidon set is a subset of a perfect difference set (see [44] and [707]).\n\nThis question can also be asked for $B_2[g]$ sequences (i.e. where the number of solutions to $n=a_1+a_2$ with $a_1\\leq a_2$ is at most $g$ for all $n$, so that a $B_2[1]$ set is a Sidon set). Kolountzakis \\cite{Ko96} constructed a $B_2[2]$ sequence where the $\\limsup$ is $1$, and for larger $g$ constructions were provided by Cilleruelo and Trujillo \\cite{CiTr01}.\n\n\n\n\nReferences\n\n\n[CiTr01] Cilleruelo, Javier and Trujillo, Carlos, Infinite {$B_2[g]$} sequences. Israel J. Math. (2001), 263--267.\n\n[ErTu41] Erd\\H{o}s, P. and Tur\\'{a}n, P., On a problem of Sidon in additive number theory, and on some related problems. J. London Math. Soc. (1941), 212-215.\n\n[Ko96] Kolountzakis, Mihail N., On the additive complements of the primes and sets of similar\ngrowth. Acta Arith. (1996), 1--8.\n\n[Kr61] Kr\\\"{u}ckeberg, Fritz, $B\\sb{2}$-Folgen und verwandte Zahlenfolgen. J. Reine Angew. Math. (1961), 53-60.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Sidon sets (also called B₂ sequences) were introduced by Simon Sidon in 1932, who asked about sets of integers where all pairwise sums are distinct. These sets have been central to additive combinatorics ever since.\n\nThe counting argument of Erdős and Turán (1941) established the fundamental upper bound: any Sidon set A ⊆ {1,...,N} has |A| ≤ √N + O(N^{1/4}). This gives the upper bound 1 for the normalized density limsup |A ∩ {1,...,N}| / √N.\n\nFor lower bounds, Erdős showed density 1/2 is achievable. Krückeberg (1961) improved this to 1/√2 ≈ 0.707 using an algebraic construction. The exact supremum between 1/√2 and 1 remains unknown.\n\nInterestingly, the supremum equals 1 if and only if every finite Sidon set can be embedded in a perfect difference set - connecting this problem to projective geometry.",
+    "problemStatement": "**Erdős Problem #329**: For a Sidon set $A \\subseteq \\mathbb{N}$, how large can\n$$\\limsup_{N \\to \\infty} \\frac{|A \\cap \\{1,\\ldots,N\\}|}{\\sqrt{N}}$$\nbe?\n\n**Status**: OPEN (exact supremum unknown)\n\n**Known Results**:\n- Erdős: $1/2$ is achievable\n- Krückeberg (1961): $1/\\sqrt{2} \\approx 0.707$ is achievable\n- Erdős-Turán (1941): Upper bound is $1$\n\n**Conditional**: If every finite Sidon set embeds in a perfect difference set, then the supremum is exactly $1$.",
+    "proofStrategy": "We formalize the problem and its known partial results:\n\n1. **Define Sidon sets**: A set A is Sidon if whenever a + b = c + d with a ≤ b, c ≤ d and all in A, then (a,b) = (c,d)\n\n2. **Define density measures**: sqrtPartialDensity(A, N) = |A ∩ [1,N]| / √N, and sidonUpperDensity(A) = limsup of this\n\n3. **Axiomatize bounds**: Erdős's 1/2, Krückeberg's 1/√2, Erdős-Turán's upper bound 1\n\n4. **Define perfect difference sets**: Sets where every nonzero integer appears as exactly one difference\n\n5. **State conditional equivalence**: supremum = 1 iff embedding property holds\n\n6. **Prove basic lemmas**: Empty set and singletons are trivially Sidon",
+    "keyInsights": [
+      "**The Sidon property**: All pairwise sums distinct. If a + b = c + d with elements from A, then {a,b} = {c,d}. This severely restricts how many elements can fit in [1,N].",
+      "**Why √N normalization**: The Erdős-Turán counting argument shows |A ∩ [1,N]| ≤ √(2N) + O(1). This makes √N the natural normalization for density.",
+      "**Krückeberg's improvement**: The jump from 1/2 to 1/√2 ≈ 0.707 required sophisticated algebraic techniques. This remains the best known lower bound for over 60 years.",
+      "**The perfect difference set connection**: These are Sidon sets with optimal structure - every nonzero difference appears exactly once. If we could always embed Sidon sets in these, density 1 would follow.",
+      "**Why this is hard**: The gap between 0.707 and 1 represents our ignorance about the optimal asymptotic structure of Sidon sets."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Problem statement, status (OPEN), known bounds, and references."
+    },
+    {
+      "id": "sidon-def",
+      "title": "Sidon Set Definition",
+      "startLine": 39,
+      "endLine": 49,
+      "summary": "IsSidon definition: all pairwise sums are distinct."
+    },
+    {
+      "id": "density",
+      "title": "Density Measures",
+      "startLine": 51,
+      "endLine": 65,
+      "summary": "sqrtPartialDensity and sidonUpperDensity using limsup."
+    },
+    {
+      "id": "perfect-diff",
+      "title": "Perfect Difference Sets",
+      "startLine": 67,
+      "endLine": 78,
+      "summary": "IsPerfectDifferenceSet definition and its connection to Sidon theory."
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "startLine": 80,
+      "endLine": 90,
+      "summary": "maxSidonDensity definition as supremum over all Sidon sets."
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Known Lower Bounds",
+      "startLine": 92,
+      "endLine": 116,
+      "summary": "Erdős (1/2), Krückeberg (1/√2), and corollary theorem."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Known Upper Bound",
+      "startLine": 117,
+      "endLine": 137,
+      "summary": "Erdős-Turán upper bound of 1."
+    },
+    {
+      "id": "conditional",
+      "title": "Conditional Results",
+      "startLine": 138,
+      "endLine": 156,
+      "summary": "Equivalence between density 1 and perfect difference set embedding."
+    },
+    {
+      "id": "examples",
+      "title": "Basic Examples",
+      "startLine": 158,
+      "endLine": 195,
+      "summary": "Proved: empty_is_sidon, singleton_is_sidon. Verified sum computations."
+    },
+    {
+      "id": "summary",
+      "title": "Summary Theorem",
+      "startLine": 197,
+      "endLine": 213,
+      "summary": "Combined statement of Krückeberg and Erdős-Turán results."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #329, the question of the maximum asymptotic density of Sidon sets. The problem remains OPEN: the best known lower bound is 1/√2 ≈ 0.707 (Krückeberg 1961), and the upper bound is 1 (Erdős-Turán 1941). We formalize these bounds as axioms and prove basic structural lemmas about Sidon sets.",
+    "implications": "This problem connects several areas:\n\n1. **Additive combinatorics**: Sidon sets are fundamental objects in the study of additive structure\n2. **Projective geometry**: Perfect difference sets arise from projective planes\n3. **Coding theory**: Sidon sets relate to constant-weight codes\n4. **Number theory**: Connections to prime distribution and analytic methods",
+    "openQuestions": [
+      "What is the exact supremum of Sidon set densities?",
+      "Can every finite Sidon set be embedded in a perfect difference set?",
+      "What about B₂[g] sequences (allowing g representations per sum)?",
+      "What is the best constant in Erdős-Turán's O(N^{1/4}) error term?"
+    ]
   }
 }

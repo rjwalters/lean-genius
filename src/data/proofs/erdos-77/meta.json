@@ -1,34 +1,126 @@
 {
   "id": "erdos-77",
-  "title": "Erdős Problem #77",
+  "title": "Erdos Problem #77: Ramsey Number Growth Rate",
   "slug": "erdos-77",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is the Ramsey number for ..., the minimal ... such that every ...-colouring of the edges of ... contains a monochromat...",
+  "description": "Find lim R(k)^{1/k} where R(k) is the diagonal Ramsey number. OPEN - bounds: sqrt(2) <= liminf <= limsup <= 3.7993 (2024). Prize: $100 for existence, $10000 for non-existence.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdos; Bounds by Campos-Griffiths-Morris-Sahasrabudhe (2023), Gupta-Ndiaye-Norin-Wei (2024)",
     "sourceUrl": "https://erdosproblems.com/77",
-    "date": "",
-    "status": "pending",
+    "date": "1947",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos77Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "graph-theory",
+      "probabilistic-method",
+      "open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 77,
     "erdosUrl": "https://erdosproblems.com/77",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$250"
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$100 (existence) / $10000 (non-existence)",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.liminf",
+        "description": "Limit inferior of a sequence",
+        "module": "Mathlib.Order.LiminfLimsup"
+      },
+      {
+        "theorem": "Filter.limsup",
+        "description": "Limit superior of a sequence",
+        "module": "Mathlib.Order.LiminfLimsup"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real exponentiation",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Axiomatization of Ramsey numbers R(k)",
+      "Known values: R(1)=1, R(2)=2, R(3)=6, R(4)=18",
+      "Bounds on R(5): 43 <= R(5) <= 48",
+      "Erdos lower bound: R(k) >= 2^{k/2} (probabilistic method)",
+      "Erdos-Szekeres upper bound: R(k) <= 4^{k-1}",
+      "2023 breakthrough: CGMS bound 4-1/128",
+      "2024 improvement: GNNW bound 3.7993",
+      "Verified theorems: erdos_bounds, current_best_bounds, erdos_conjecture_consistent"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #77 from erdosproblems.com. Originally offered with a prize of $250.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $R(k)$ is the Ramsey number for $K_k$, the minimal $n$ such that every $2$-colouring of the edges of $K_n$ contains a monochromatic copy of $K_k$, then find the value of\\[\\lim_{k\\to \\infty}R(k)^{1/k}.\\]\n\n\n\nErd\\H{o}s offered \\$100 for just a proof of the existence of this constant, without determining its value. He also offered \\$1000 for a proof that the limit does not exist, but says 'this is really a joke as [it] certainly exists'. (In \\cite{Er88} he raises this prize to \\$10000). Erd\\H{o}s proved\\[\\sqrt{2}\\leq \\liminf_{k\\to \\infty}R(k)^{1/k}\\leq \\limsup_{k\\to \\infty}R(k)^{1/k}\\leq 4.\\]The upper bound has been improved to $4-\\tfrac{1}{128}$ by Campos, Griffiths, Morris, and Sahasrabudhe \\cite{CGMS23}. This was improved to $3.7992\\cdots$ by Gupta, Ndiaye, Norin, and Wei \\cite{GNNW24}.\n\nA shorter and simpler proof of an upper bound of the strength $4-c$ for some constant $c>0$ (and a generalisation to the case of more than two colours) was given by Balister, Bollob\\'{a}s, Campos, Griffiths, Hurley, Morris, Sahasrabudhe, and Tiba \\cite{BBCGHMST24}.\n\nIn \\cite{Er93} Erd\\H{o}s writes 'I have no idea what the value of $\\lim R(k)^{1/k}$ should be, perhaps it is $2$ but we have no real evidence for this.'\n\nThis problem is #3 in Ramsey Theory in the graphs problem collection.\n\nSee also [1029] for a problem concerning a lower bound for $R(k)$ and discussion of lower bounds in general.\n\n\n\n\nReferences\n\n\n[BBCGHMST24] Balister, P. and Bollob\\'{a}s, B. and Campos, M. and Griffiths, S. and Hurley, E.\nand Morris, R. and Sahasrabudhe, J. and Tiba, M., Upper bounds for multicolour Ramsey numbers. arXiv:2410.17197 (2024).\n\n[CGMS23] Campos, Marcelo and Griffiths, Simon and Morris, Robert and Sahasrabudhe, Julian, An exponential improvement for diagonal Ramsey. arXiv:2303.09521 (2023).\n\n[Er88] Erd\\H{o}s, P, Problems and results in combinatorial analysis and graph theory. Discrete Math. (1988), 81-92.\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n[GNNW24] Gupta, P. and Ndiaye, N. and Norin, S. and Wei, L., Optimizing the CGMS upper bound on Ramsey numbers. arXiv:2407.19026 (2024).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This is one of the most famous problems in Ramsey theory. Erdos introduced the probabilistic method in 1947 by proving R(k) >= 2^{k/2}. The upper bound R(k) <= 4^{k-1} from the Erdos-Szekeres recurrence stood for ~90 years until Campos, Griffiths, Morris, and Sahasrabudhe (2023) proved R(k) <= (4 - 1/128)^k, later improved to (3.7993)^k by Gupta et al. (2024).\n\nErdos offered $100 for proving the limit exists and $10000 for proving it doesn't (calling this 'a joke' since he believed it exists). He suspected the limit might be 2 but said 'we have no real evidence for this.'",
+    "problemStatement": "**Erdos Problem #77 (OPEN)**\n\nFind $\\lim_{k \\to \\infty} R(k)^{1/k}$ where $R(k)$ is the diagonal Ramsey number - the minimum $n$ such that every 2-coloring of $K_n$ contains a monochromatic $K_k$.\n\n**Known bounds**:\n$$\\sqrt{2} \\leq \\liminf R(k)^{1/k} \\leq \\limsup R(k)^{1/k} \\leq 3.7993$$\n\n**Open questions**:\n1. Does the limit exist? ($100 prize)\n2. If so, what is its value? (Erdos suspected 2)\n\n**Small values**: R(3)=6, R(4)=18, 43 <= R(5) <= 48",
+    "proofStrategy": "We formalize the Ramsey number growth rate problem:\n\n1. **Ramsey Numbers**: Axiomatize R(k) with known small values\n2. **Classical Bounds**: Erdos lower (2^{k/2}) and upper (4^{k-1}) bounds\n3. **Growth Rate**: Define ramseyGrowthRate(k) = R(k)^{1/k}\n4. **Liminf/Limsup Bounds**: sqrt(2) <= liminf, limsup <= 4\n5. **2023-2024 Breakthroughs**: CGMS and GNNW improved upper bounds\n6. **Verified Theorems**: erdos_bounds, current_best_bounds, erdos_upper_bound'\n7. **Open Questions**: LimitExists, ErdosConjecture formalized",
+    "keyInsights": [
+      "**Probabilistic method origin**: Erdos's 1947 lower bound R(k) >= 2^{k/2} was one of the first uses of this revolutionary technique.",
+      "**90-year breakthrough**: The upper bound of 4 from the 1930s was only improved in 2023 by CGMS.",
+      "**Computational intractability**: Even R(5) is unknown exactly - Erdos's 'alien parable' captures this.",
+      "**Prize structure**: $100 for existence, $10000 for non-existence shows Erdos's belief the limit exists.",
+      "**Current gap**: [sqrt(2), 3.7993] ~ [1.414, 3.799] - significant uncertainty remains."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "ramsey-numbers",
+      "title": "Ramsey Numbers",
+      "startLine": 41,
+      "endLine": 84,
+      "summary": "Axiomatization of R(k) and small known values."
+    },
+    {
+      "id": "classical-bounds",
+      "title": "Classical Bounds",
+      "startLine": 86,
+      "endLine": 117,
+      "summary": "Erdos lower and upper bounds on R(k)."
+    },
+    {
+      "id": "growth-rate",
+      "title": "The Growth Rate Question",
+      "startLine": 119,
+      "endLine": 146,
+      "summary": "Definition of R(k)^{1/k} and liminf/limsup bounds."
+    },
+    {
+      "id": "breakthroughs",
+      "title": "Recent Breakthroughs (2023-2024)",
+      "startLine": 148,
+      "endLine": 185,
+      "summary": "CGMS 2023 and GNNW 2024 improvements to upper bound."
+    },
+    {
+      "id": "open-questions",
+      "title": "The Open Questions",
+      "startLine": 187,
+      "endLine": 216,
+      "summary": "LimitExists, ErdosConjecture, consistency verification."
+    },
+    {
+      "id": "probabilistic",
+      "title": "Probabilistic Method Bounds",
+      "startLine": 218,
+      "endLine": 232,
+      "summary": "Refined lower bound with o(1) terms."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdos Problem #77 asks for lim R(k)^{1/k}. This remains OPEN. The current bounds are sqrt(2) <= liminf <= limsup <= 3.7993. The 2023 breakthrough by Campos et al. was the first improvement to the upper bound in ~90 years. Erdos suspected the limit is 2 but acknowledged 'we have no real evidence.'",
+    "implications": "This problem lies at the heart of Ramsey theory and showcases the probabilistic method. The gap between lower (sqrt(2)) and upper (3.7993) bounds shows how far we are from understanding diagonal Ramsey numbers.",
+    "openQuestions": [
+      "Does lim R(k)^{1/k} exist? ($100 prize)",
+      "If so, is it equal to 2? (Erdos's conjecture)",
+      "What is the exact value of R(5)? (43 <= R(5) <= 48)",
+      "Can the lower bound sqrt(2) be improved?"
+    ]
   }
 }

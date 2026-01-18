@@ -1,34 +1,50 @@
 {
   "id": "erdos-18",
-  "title": "Erdős Problem #18",
+  "title": "Erdős Problem #18: Practical Numbers",
   "slug": "erdos-18",
-  "description": "We call ... practical if every integer $n View the LaTeX source This page was last edited 31 October 2025.",
+  "description": "Is h(n!) < n^o(1), where h(m) is the minimum number of divisors of m needed to represent all integers k < m? A number m is practical if every k < m is a sum of distinct divisors of m.",
   "meta": {
-    "author": "Unknown",
+    "author": "Srinivasan, Stewart, Sierpiński, Vose",
     "sourceUrl": "https://erdosproblems.com/18",
-    "date": "",
-    "status": "pending",
+    "date": "1948",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos18Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "practical-numbers",
+      "divisor-sums",
+      "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 1,
     "erdosNumber": 18,
     "erdosUrl": "https://erdosproblems.com/18",
-    "erdosProblemStatus": "solved",
+    "erdosProblemStatus": "open",
     "erdosPrizeValue": "$250"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #18 from erdosproblems.com. Originally offered with a prize of $250.",
-    "problemStatement": "We call $m$ practical if every integer $n View the LaTeX source This page was last edited 31 October 2025.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Practical numbers were introduced by Srinivasan (1948). Stewart and Sierpiński (1954-55) gave a complete characterization via prime factorization. Erdős showed h(n!) < n, and Vose (1985) proved infinitely many m have h(m) = O(√log m). The question of whether h(n!) is subpolynomial remains open.",
+    "problemStatement": "A positive integer m is practical if every integer 1 ≤ k < m can be expressed as a sum of distinct divisors of m. Let h(m) be the minimum number of divisors needed. Is h(n!) < n^ε for all ε > 0 (subpolynomial)? Or even h(n!) < (log n)^O(1) (polylogarithmic)?",
+    "proofStrategy": "The formalization defines practical numbers, proves small cases (1, 2 verified), and axiomatizes key theorems: Stewart-Sierpiński characterization, Erdős's bound h(n!) < n, Vose's polylog bound for special m. Also includes practical Goldbach (proven!) and practical twins (infinite!).",
+    "keyInsights": [
+      "Practical numbers were used by Fibonacci (1202) for Egyptian fractions",
+      "All factorials and primorials are practical (closure under multiplication)",
+      "Practical Goldbach is PROVEN: every even n is sum of two practical numbers",
+      "Practical twin conjecture is PROVEN: infinitely many (p, p+2) both practical",
+      "Density of practical numbers is 0, but computing h(m) is hard",
+      "Gap between known bounds: h(n!) < n (Erdős) vs h(m) = O(√log m) for some m (Vose)"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #18 remains OPEN with a $250 prize. The formalization covers practical number theory including the Stewart-Sierpiński characterization, Erdős's bound h(n!) < n, Vose's polylog construction, and proven analogs of Goldbach and twin prime conjectures for practical numbers.",
+    "implications": "Resolving whether h(n!) is subpolynomial requires understanding the fine structure of factorial divisors. The problem connects number theory, combinatorial optimization (subset sums), and extremal set theory.",
+    "openQuestions": [
+      "Is h(n!) < n^o(1) (subpolynomial)?",
+      "Is h(n!) < (log n)^O(1) (polylogarithmic)?",
+      "Are there infinitely many m with h(m) < (log log m)^O(1)?",
+      "What is the optimal asymptotic for practical number density?"
+    ]
   }
 }

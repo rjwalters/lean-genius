@@ -1,33 +1,124 @@
 {
   "id": "erdos-679",
-  "title": "Erdős Problem #679",
+  "title": "Erdős #679: Small ω(n-k) for All k < n",
   "slug": "erdos-679",
-  "description": "Let ... and ... count the number of distinct prime factors of .... Are there infinitely many values of ... such that\\[\\omega(n-k) 0$. View the LaTeX source This page was last edited 12 January 2026.",
+  "description": "Are there infinitely many n such that ω(n-k) < (1+ε) log k / log log k for all large k < n? The main question is OPEN; the stronger version with O(1) error is FALSE.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/679",
-    "date": "",
-    "status": "pending",
+    "date": "1979",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos679Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-factors",
+      "omega-function"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 14,
     "erdosNumber": 679,
     "erdosUrl": "https://erdosproblems.com/679",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #679 from erdosproblems.com.",
-    "problemStatement": "Let $\\epsilon>0$ and $\\omega(n)$ count the number of distinct prime factors of $n$. Are there infinitely many values of $n$ such that\\[\\omega(n-k) 0$. View the LaTeX source This page was last edited 12 January 2026.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős posed this problem about the distribution of prime factors. The stronger version (with O(1) error) has been disproven, but the main question with (1+ε) factor remains open. Cannot be resolved by finite computation.",
+    "problemStatement": "Let ε > 0 and ω(n) count the number of distinct prime factors of n. Are there infinitely many n such that ω(n-k) < (1+ε) log k / log log k for all sufficiently large k < n?",
+    "proofStrategy": "We formalize the ω function, Hardy-Ramanujan normal order, the main conjecture, the disproven stronger version, the Ω variant, special cases (powers of 2, primorials), lower bounds, and density considerations.",
+    "keyInsights": [
+      "The stronger version with O(1) error is FALSE",
+      "For all large n, ∃ k: ω(n-k) ≥ log k/log log k + c(log k)/(log log k)²",
+      "Hardy-Ramanujan: ω(n) ~ log log n for almost all n",
+      "The Ω variant uses threshold log₂ k",
+      "Cannot be resolved by finite computation"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "omega",
+      "title": "The ω Function",
+      "summary": "Number of distinct prime divisors",
+      "startLine": 30,
+      "endLine": 51
+    },
+    {
+      "id": "hardy-ramanujan",
+      "title": "Hardy-Ramanujan Bound",
+      "summary": "Normal order of ω(n) is log log n",
+      "startLine": 53,
+      "endLine": 72
+    },
+    {
+      "id": "main",
+      "title": "The Main Question",
+      "summary": "Main conjecture and threshold function",
+      "startLine": 74,
+      "endLine": 90
+    },
+    {
+      "id": "stronger",
+      "title": "Stronger Version (Disproven)",
+      "summary": "O(1) error version is FALSE",
+      "startLine": 92,
+      "endLine": 109
+    },
+    {
+      "id": "bigomega",
+      "title": "The Ω Function Variant",
+      "summary": "Prime factors with multiplicity",
+      "startLine": 111,
+      "endLine": 128
+    },
+    {
+      "id": "special",
+      "title": "Special Cases",
+      "summary": "Powers of 2 and primorials",
+      "startLine": 130,
+      "endLine": 143
+    },
+    {
+      "id": "lower",
+      "title": "Lower Bounds",
+      "summary": "Existence of large ω(n-k)",
+      "startLine": 145,
+      "endLine": 157
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "summary": "Connections to #248 and #413",
+      "startLine": 159,
+      "endLine": 167
+    },
+    {
+      "id": "heuristics",
+      "title": "Probabilistic Heuristics",
+      "summary": "Expected behavior and computational evidence",
+      "startLine": 169,
+      "endLine": 188
+    },
+    {
+      "id": "dichotomy",
+      "title": "Key Dichotomy",
+      "summary": "Either infinitely many exist or uniform lower bound",
+      "startLine": 190,
+      "endLine": 197
+    },
+    {
+      "id": "density",
+      "title": "Density Considerations",
+      "summary": "How dense are special n?",
+      "startLine": 199,
+      "endLine": 212
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #679 on small ω(n-k) values. The main question is OPEN but the stronger version with O(1) error has been disproven. The problem cannot be resolved by finite computation.",
+    "implications": "Understanding when all n-k have small prime factor counts connects to the distribution of smooth numbers and the Hardy-Ramanujan theorem on normal orders.",
+    "openQuestions": [
+      "Does the main conjecture hold for any ε > 0?",
+      "What is the density of special n if they exist?",
+      "What is the analogous answer for Ω?"
+    ]
   }
 }

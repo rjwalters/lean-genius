@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-671-points",
+    "proofId": "erdos-671",
+    "range": { "startLine": 36, "endLine": 40 },
+    "type": "definition",
+    "title": "InterpolationPoints",
+    "content": "n distinct points a_i ∈ [-1, 1] for interpolation.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-671-lagrange",
+    "proofId": "erdos-671",
+    "range": { "startLine": 45, "endLine": 48 },
+    "type": "definition",
+    "title": "Lagrange Basis",
+    "content": "p_i^n: polynomial with p_i(a_i) = 1, p_i(a_j) = 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-671-interp",
+    "proofId": "erdos-671",
+    "range": { "startLine": 62, "endLine": 64 },
+    "type": "definition",
+    "title": "Lagrange Interpolation",
+    "content": "L^n f(x) = Σ f(a_i) p_i(x).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-671-lebesgue",
+    "proofId": "erdos-671",
+    "range": { "startLine": 79, "endLine": 81 },
+    "type": "definition",
+    "title": "Lebesgue Function",
+    "content": "λ_n(x) = Σ |p_i^n(x)|. Controls interpolation error.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-671-constant",
+    "proofId": "erdos-671",
+    "range": { "startLine": 88, "endLine": 90 },
+    "type": "definition",
+    "title": "Lebesgue Constant",
+    "content": "Λ_n = max λ_n(x) over [-1, 1].",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-671-bernstein",
+    "proofId": "erdos-671",
+    "range": { "startLine": 100, "endLine": 104 },
+    "type": "theorem",
+    "title": "Bernstein (1931)",
+    "content": "For any points, ∃ x₀ where limsup λ_n(x₀) = ∞.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-671-ev",
+    "proofId": "erdos-671",
+    "range": { "startLine": 118, "endLine": 123 },
+    "type": "theorem",
+    "title": "Erdős-Vértesi (1980)",
+    "content": "For any points, ∃ f where |L^n f(x)| → ∞ a.e.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-671-q1",
+    "proofId": "erdos-671",
+    "range": { "startLine": 132, "endLine": 137 },
+    "type": "definition",
+    "title": "Question 1",
+    "content": "Can λ_n(x) → ∞ yet L^n f(x) → f(x) for some x?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-671-q2",
+    "proofId": "erdos-671",
+    "range": { "startLine": 144, "endLine": 151 },
+    "type": "definition",
+    "title": "Question 2",
+    "content": "Can λ_n(x) → ∞ for ALL x, yet have convergence?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-671-cheby",
+    "proofId": "erdos-671",
+    "range": { "startLine": 162, "endLine": 166 },
+    "type": "definition",
+    "title": "Chebyshev Nodes",
+    "content": "x_k = cos((2k-1)π/2n). Optimal Lebesgue constant.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-671-equi",
+    "proofId": "erdos-671",
+    "range": { "startLine": 168, "endLine": 172 },
+    "type": "definition",
+    "title": "Equidistant Nodes",
+    "content": "x_k = -1 + 2k/(n-1). Exponential Λ_n growth.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-671-faber",
+    "proofId": "erdos-671",
+    "range": { "startLine": 200, "endLine": 205 },
+    "type": "theorem",
+    "title": "Faber's Theorem",
+    "content": "No points give uniform convergence for all C⁰.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-671-pos",
+    "proofId": "erdos-671",
+    "range": { "startLine": 214, "endLine": 219 },
+    "type": "theorem",
+    "title": "Positive Measure Divergence",
+    "content": "Divergence set has positive measure for some f.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-671-main",
+    "proofId": "erdos-671",
+    "range": { "startLine": 231, "endLine": 233 },
+    "type": "definition",
+    "title": "Main Conjecture",
+    "content": "Question 1 ↔ Question 2?",
+    "significance": "critical"
+  }
+]

@@ -1,1 +1,124 @@
-[]
+[
+  {
+    "id": "ann-e402-header",
+    "proofId": "erdos-402",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #402 (Graham's GCD Conjecture)**: For any finite set A ⊂ ℕ, there exist a, b ∈ A such that gcd(a,b) ≤ a/|A|. Proved by Balasubramanian & Soundararajan (1996).",
+    "mathContext": "The bound relates the gcd of elements to the set's cardinality. Graham also characterized when equality holds.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "gcd",
+      "finite-sets",
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e402-main",
+    "proofId": "erdos-402",
+    "range": {
+      "startLine": 35,
+      "endLine": 46
+    },
+    "type": "theorem",
+    "title": "Main Statement",
+    "content": "**Graham's GCD Conjecture**: For any finite nonempty set A of positive integers, there exist a, b ∈ A with gcd(a,b) ≤ a/|A|.",
+    "mathContext": "erdos_402_graham_conjecture (A : Finset ℕ) (hA : A.Nonempty) (hpos : ∀ x ∈ A, x > 0) : ∃ a ∈ A, ∃ b ∈ A, Nat.gcd a b ≤ a / A.card",
+    "significance": "critical",
+    "relatedConcepts": [
+      "finset",
+      "nat-gcd",
+      "existence"
+    ]
+  },
+  {
+    "id": "ann-e402-ratio",
+    "proofId": "erdos-402",
+    "range": {
+      "startLine": 48,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Equivalent Formulation",
+    "content": "**MinGcdRatio**: The minimum ratio gcd(a,b)/a over all pairs in A. The conjecture states this is at most 1/|A|.",
+    "mathContext": "An equivalent formulation using rationals: ∃ a, b ∈ A, gcd(a,b)/a ≤ 1/|A|.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rational-numbers",
+      "inf-finset"
+    ]
+  },
+  {
+    "id": "ann-e402-singleton",
+    "proofId": "erdos-402",
+    "range": {
+      "startLine": 65,
+      "endLine": 81
+    },
+    "type": "theorem",
+    "title": "Special Cases",
+    "content": "**Singleton case**: For A = {a}, gcd(a,a) = a ≤ a/1 = a. **Range case**: For A = {1,...,n}, we need appropriate pair selection.",
+    "mathContext": "Base cases that verify the conjecture for simple set structures.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "singleton",
+      "finset-range"
+    ]
+  },
+  {
+    "id": "ann-e402-graham-set",
+    "proofId": "erdos-402",
+    "range": {
+      "startLine": 83,
+      "endLine": 102
+    },
+    "type": "theorem",
+    "title": "Graham Special Set",
+    "content": "**{2, 3, 4, 6}**: A special set mentioned by Graham. We verify gcd(4,3) = 1 ≤ 4/4 = 1, confirming the conjecture holds with equality.",
+    "mathContext": "GrahamSpecialSet = {2, 3, 4, 6}. This is one of three families achieving equality in the bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "native-decide",
+      "equality-case"
+    ]
+  },
+  {
+    "id": "ann-e402-equality",
+    "proofId": "erdos-402",
+    "range": {
+      "startLine": 104,
+      "endLine": 135
+    },
+    "type": "theorem",
+    "title": "Equality Characterization",
+    "content": "**Graham's Equality Conjecture**: For primitive sets (gcd of all elements = 1), equality is achieved only for: {1,...,n}, {L/1,...,L/n} where L = lcm(1,...,n), or {2,3,4,6}.",
+    "mathContext": "IsGrahamEqualityCase characterizes exactly which sets achieve the bound with equality.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "primitive-sets",
+      "lcm",
+      "characterization"
+    ]
+  },
+  {
+    "id": "ann-e402-lemmas",
+    "proofId": "erdos-402",
+    "range": {
+      "startLine": 137,
+      "endLine": 151
+    },
+    "type": "theorem",
+    "title": "Key Lemmas",
+    "content": "**gcd_one_suffices**: For coprime a, b with |A| ≤ a, gcd(a,b) = 1 ≤ a/|A|. **one_in_singleton_set**: The singleton {1} satisfies the conjecture.",
+    "mathContext": "Helper lemmas showing that coprime pairs and small sets satisfy the bound.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "coprime",
+      "one-le-div"
+    ]
+  }
+]

@@ -1,18 +1,21 @@
 {
   "id": "erdos-135",
-  "title": "Erdős Problem #135",
+  "title": "Erdős Problem #135: Four Points, Five Distances",
   "slug": "erdos-135",
-  "description": "Let A&#x2282;R2\" role=\"presentation\" style=\"position: relative;\">A⊂ℝ2A⊂R2A\\subset ^2 be a set of n\" role=\"presentation\" style=\"position: relative;\">nnn points such that any subset of size 4\" role=\"...",
+  "description": "If any 4 points from A ⊂ ℝ² determine at least 5 distinct distances, must A determine ≫ n² distances? DISPROVED by Tao (2024).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Gyárfás",
     "sourceUrl": "https://erdosproblems.com/135",
     "date": "",
-    "status": "pending",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos135Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "distinct-distances",
+      "disproved"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 1,
     "erdosNumber": 135,
     "erdosUrl": "https://erdosproblems.com/135",
@@ -20,15 +23,25 @@
     "erdosPrizeValue": "$250"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #135 from erdosproblems.com. Originally offered with a prize of $250.",
-    "problemStatement": "Let A&#x2282;R2\" role=\"presentation\" style=\"position: relative;\">A⊂ℝ2A⊂R2A\\subset \\mathbb{R}^2 be a set of n\" role=\"presentation\" style=\"position: relative;\">nnn points such that any subset of size 4\" role=\"presentation\" style=\"position: relative;\">444 determines at least 5\" role=\"presentation\" style=\"position: relative;\">555 distinct distances. Must A\" role=\"presentation\" style=\"position: relative;\">AAA determine &#x226B;n2\" role=\"presentation\" style=\"position: relative;\">≫n2≫n2\\gg n^2 many distances?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős conjectured that local constraints on 4-point configurations would force global distance diversity. Tao disproved this in 2024 as part of his exploration of erdosproblems.com.",
+    "problemStatement": "Let A ⊂ ℝ² be n points such that any 4 points determine at least 5 distinct distances (out of 6 possible). Must A determine ≫ n² total distinct distances?",
+    "proofStrategy": "Tao uses randomized algebraic curves over finite fields. Parabolas (ax+by)² ≡ cx+dy+e (mod p) naturally avoid parallelograms. Random affine transformations and probabilistic deletion handle other forbidden 4-point patterns. The result: O(n²/√(log n)) distances with the five-distance property.",
+    "keyInsights": [
+      "Four points have 6 pairwise distances; the 'five-distance property' requires ≥ 5 distinct",
+      "Parallelograms have only 2-3 distinct distances and must be forbidden",
+      "Points on parabolas automatically avoid parallelograms (algebraic constraint)",
+      "Random affine transformations reduce other forbidden patterns",
+      "The construction achieves O(n²/√(log n)) distances - subquadratic but not by much"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #135 is DISPROVED. Tao (2024) constructed n-point sets with the five-distance property but only O(n²/√(log n)) distinct distances, disproving the Ω(n²) conjecture.",
+    "implications": "Local constraints on 4-tuples don't imply global distance diversity. The √(log n) factor matches Guth-Katz bounds, suggesting this is optimal.",
+    "openQuestions": [
+      "What is the exact optimal bound for five-distance sets?",
+      "Can the construction be made deterministic?",
+      "What about higher dimensions or different forbidden patterns?"
+    ]
   }
 }

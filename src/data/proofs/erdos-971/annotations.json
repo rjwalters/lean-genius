@@ -1,1 +1,90 @@
-[]
+[
+  {
+    "id": "ann-e971-header",
+    "proofId": "erdos-971",
+    "range": { "startLine": 1, "endLine": 18 },
+    "type": "concept",
+    "title": "Problem Statement and Status",
+    "content": "**Erdős Problem #971** asks a deep question about how primes are distributed in arithmetic progressions.\n\nGiven a modulus d (like 10, 100, or any positive integer), we can ask: for each residue class a coprime to d, what is the smallest prime in that class? For example, modulo 10, the smallest prime ≡ 1 is 11, the smallest ≡ 3 is 3, the smallest ≡ 7 is 7, and the smallest ≡ 9 is 19.\n\nThe problem asks whether these 'least primes' can be systematically large for many residue classes at once. Specifically: is there a constant c > 0 such that for large d, at least a constant fraction of residue classes have their least prime exceeding (1+c) times the expected average φ(d)·log(d)?",
+    "mathContext": "The notation p(a,d) denotes the least prime p with p ≡ a (mod d). The expected size is φ(d)·log(d) by analytic number theory heuristics derived from the prime number theorem for arithmetic progressions.",
+    "significance": "critical",
+    "relatedConcepts": ["arithmetic-progressions", "primes", "dirichlet-theorem"]
+  },
+  {
+    "id": "ann-e971-imports",
+    "proofId": "erdos-971",
+    "range": { "startLine": 20, "endLine": 24 },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "**The formalization imports Mathlib**, Lean 4's comprehensive mathematical library. A single 'import Mathlib' statement brings in all necessary components.\n\nThe namespace `Erdos971` keeps our definitions local to this problem. The `open` declarations make commonly-used definitions available without qualification:\n\n- **Filter**: For asymptotic statements ('for all sufficiently large d')\n- **Finset**: For finite set operations and cardinality\n- **Real**: For real number operations including logarithm\n- **Nat**: For natural number operations including primality and totient",
+    "mathContext": "Lean 4's type system requires explicit imports. Mathlib provides the mathematical foundations: prime numbers, totient function, real logarithm, filters for limits, and finite set cardinality.",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "lean4", "imports"]
+  },
+  {
+    "id": "ann-e971-leastprime",
+    "proofId": "erdos-971",
+    "range": { "startLine": 33, "endLine": 47 },
+    "type": "definition",
+    "title": "Least Prime in Arithmetic Progression",
+    "content": "**The central definition** introduces `leastCongruentPrime a d`, the smallest prime number p such that p ≡ a (mod d).\n\nThis is defined using the infimum (greatest lower bound) of the set of all primes satisfying the congruence. By Dirichlet's theorem, when gcd(a,d) = 1, this set is infinite, so the infimum equals the minimum.\n\n**Example values for d = 10:**\n- leastCongruentPrime 1 10 = 11\n- leastCongruentPrime 3 10 = 3  \n- leastCongruentPrime 7 10 = 7\n- leastCongruentPrime 9 10 = 19\n\nThe definition is marked `noncomputable` because Lean cannot algorithmically compute infimums over infinite sets without additional axioms.",
+    "mathContext": "The infimum sInf {p : ℕ | p.Prime ∧ p ≡ a [MOD d]} uses Lean's conditional set-builder notation. The [MOD d] syntax is Lean's notation for modular congruence.",
+    "significance": "critical",
+    "relatedConcepts": ["infimum", "dirichlet-theorem", "modular-arithmetic"]
+  },
+  {
+    "id": "ann-e971-mainquestion",
+    "proofId": "erdos-971",
+    "range": { "startLine": 49, "endLine": 65 },
+    "type": "theorem",
+    "title": "The Main Open Question",
+    "content": "**This is the central unsolved question** formalized as a Lean definition rather than an axiom (since its truth value is unknown).\n\nThe statement uses several layers of quantification:\n1. **∃ c > 0**: There exists a positive constant c\n2. **∃ C > 0**: There exists a positive constant C (for the 'many residue classes' bound)\n3. **∀ᶠ d in atTop**: For all sufficiently large d\n4. The count of residue classes with large least primes must be at least C·φ(d)\n\nThe key inequality is: p(a,d) > (1+c)·φ(d)·log(d), meaning the least prime exceeds the expected average by a multiplicative factor of (1+c).",
+    "mathContext": "The filter notation ∀ᶠ d in atTop means 'eventually for d → ∞'. The counting uses Finset.card (notation #{...}) to count elements satisfying a predicate. The formula C·φ(d) represents 'a positive proportion of all φ(d) reduced residue classes'.",
+    "significance": "critical",
+    "relatedConcepts": ["filters", "asymptotic-analysis", "counting"]
+  },
+  {
+    "id": "ann-e971-infiniteseq",
+    "proofId": "erdos-971",
+    "range": { "startLine": 79, "endLine": 93 },
+    "type": "theorem",
+    "title": "Partial Result: Infinitely Many d",
+    "content": "**Erdős's first partial result** from 1949 establishes that the phenomenon in the main question DOES occur for infinitely many moduli d, even though we don't know if it occurs for ALL large d.\n\nThis is stated as an axiom because the proof uses Brun's sieve methods, which are not yet formalized in Mathlib. The key difference from the main question is `{...}.Infinite` instead of `∀ᶠ d in atTop`.\n\n**Why this matters**: Proving something for infinitely many values is often much easier than proving it for all sufficiently large values. This partial result shows the phenomenon is not impossible—it definitely happens—but leaves open whether it happens universally.",
+    "mathContext": "Brun's sieve is a combinatorial technique for counting primes satisfying multiple conditions. Erdős applied it to carefully constructed sequences of moduli with special multiplicative structure.",
+    "significance": "critical",
+    "relatedConcepts": ["sieve-methods", "brun-sieve", "erdos-1949"]
+  },
+  {
+    "id": "ann-e971-manysmall",
+    "proofId": "erdos-971",
+    "range": { "startLine": 95, "endLine": 109 },
+    "type": "theorem",
+    "title": "Partial Result: Many Small Least Primes",
+    "content": "**Erdős's second partial result** provides a complementary bound in the opposite direction.\n\nFor ANY ε > 0 (no matter how small), a positive proportion of residue classes have their least prime LESS than ε·φ(d)·log(d). This means many residue classes have least primes much smaller than the average.\n\n**The interplay**: Together with the first partial result, this shows both extremes occur:\n- Some moduli d have many classes with unusually LARGE least primes\n- For all large d, many classes have unusually SMALL least primes\n\nThe open question asks whether the 'large' behavior is also universal.",
+    "mathContext": "The statement ∀ ε > 0, ∃ C > 0, ∀ᶠ d in atTop, ... is a typical analytic number theory formulation. The constant C depends on ε (written C_ε in mathematical notation).",
+    "significance": "critical",
+    "relatedConcepts": ["complementary-bounds", "average-behavior", "erdos-1949"]
+  },
+  {
+    "id": "ann-e971-context",
+    "proofId": "erdos-971",
+    "range": { "startLine": 111, "endLine": 130 },
+    "type": "concept",
+    "title": "Mathematical Context and Related Theorems",
+    "content": "**This section provides essential background** connecting the problem to major results in analytic number theory.\n\n**Linnik's Theorem** (1944): The least prime p(a,d) satisfies p(a,d) ≤ c·d^L for some constant L (Linnik's constant). Current best bounds give L ≤ 5. This provides an UPPER bound on least primes.\n\n**Dirichlet's Theorem** (1837): Every arithmetic progression a (mod d) with gcd(a,d) = 1 contains infinitely many primes. This guarantees leastCongruentPrime is well-defined but says nothing about its size.\n\n**Expected Average**: Heuristically, one expects p(a,d) ≈ φ(d)·log(d) on average, based on the prime number theorem for arithmetic progressions.",
+    "mathContext": "The relationship between these results: Dirichlet says primes exist, Linnik bounds them polynomially in d, and the average is φ(d)·log(d). Problem #971 asks about deviations from this average.",
+    "significance": "supporting",
+    "relatedConcepts": ["linnik-theorem", "dirichlet-theorem", "prime-number-theorem"]
+  },
+  {
+    "id": "ann-e971-examples",
+    "proofId": "erdos-971",
+    "range": { "startLine": 132, "endLine": 155 },
+    "type": "example",
+    "title": "Verified Computational Examples",
+    "content": "**Concrete examples** demonstrate that our definition correctly captures the mathematical concept.\n\nFor modulus d = 10, there are φ(10) = 4 reduced residue classes: {1, 3, 7, 9}. The least primes are:\n- p(1, 10) = 11 (first prime ending in 1)\n- p(3, 10) = 3 (3 is already prime)\n- p(7, 10) = 7 (7 is already prime)\n- p(9, 10) = 19 (first prime ending in 9)\n\nWe prove two of these explicitly using Lean's `native_decide` tactic, which uses computational verification. The theorems confirm that 3 and 11 are prime and satisfy the required congruences.",
+    "mathContext": "The proofs use `decide` for primality (which Lean can check by trial division at compile time) and `native_decide` for modular arithmetic verification.",
+    "significance": "supporting",
+    "relatedConcepts": ["computational-verification", "native-decide", "modular-arithmetic"]
+  }
+]

@@ -1,33 +1,154 @@
 {
   "id": "erdos-354",
-  "title": "Erdős Problem #354",
+  "title": "Erdős Problem #354: Completeness of Binary Floor Sequences",
   "slug": "erdos-354",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... such that ... is irrational. Is the multiset\\[\\{ \\lfloor \\alpha\\rfloor,\\lfloor 2\\alpha\\rfloor,\\lfloor 4\\alpha\\rfloor,...",
+  "description": "Let α, β > 0 with α/β irrational. Is the multiset {⌊2ᵏα⌋} ∪ {⌊2ᵏβ⌋} complete (representing all large integers)? OPEN in general.",
   "meta": {
-    "author": "Unknown",
+    "author": "Graham (1971), Hegyvári (1989), Jiang-Ma (2024), Fang-He (2025)",
     "sourceUrl": "https://erdosproblems.com/354",
-    "date": "",
-    "status": "pending",
+    "date": "1971",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos354Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "representation",
+      "floor-function",
+      "additive-combinatorics"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 354,
     "erdosUrl": "https://erdosproblems.com/354",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.floor",
+        "description": "Floor function for reals",
+        "module": "Mathlib.Algebra.Order.Floor"
+      },
+      {
+        "theorem": "Irrational",
+        "description": "Irrational numbers",
+        "module": "Mathlib.Data.Real.Irrational"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sums over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of sets",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "Definition of FloorSeq and floorSeqTerm",
+      "Definition of IsRepresentable for sum representations",
+      "Definition of IsComplete (all large integers representable)",
+      "Definition of IsDyadicRational (m/2ⁿ form)",
+      "Hegyvári's positive result (dyadic + non-dyadic → complete)",
+      "Hegyvári's negative result (α ≥ 2, β = 2ᵏα → not complete)",
+      "Van Doorn's result (α < 2 < β < 3 → complete)",
+      "Recent Jiang-Ma and Fang-He negative results",
+      "Generalized conjecture for base γ ∈ (1, 2)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #354 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\alpha,\\beta\\in \\mathbb{R}_{>0}$ such that $\\alpha/\\beta$ is irrational. Is the multiset\\[\\{ \\lfloor \\alpha\\rfloor,\\lfloor 2\\alpha\\rfloor,\\lfloor 4\\alpha\\rfloor,\\ldots\\}\\cup \\{ \\lfloor \\beta\\rfloor,\\lfloor 2\\beta\\rfloor,\\lfloor 4\\beta\\rfloor,\\ldots\\}\\]complete? That is, can all sufficiently large natural numbers $n$ be written as\\[n=\\sum_{s\\in S}\\lfloor 2^s\\alpha\\rfloor+\\sum_{t\\in T}\\lfloor 2^t\\beta\\rfloor\\]for some finite $S,T\\subset \\mathbb{N}$?\n\nWhat if $2$ is replaced by some $\\gamma\\in(1,2)$?\n\n\n\nThis question was first mentioned by Graham \\cite{Gr71}.\n\nHegyv\\'{a}ri \\cite{He89} proved that this holds if $\\alpha=m/2^n$ is a dyadic rational and $\\beta$ is not. He later \\cite{He91} proved that, for any fixed $\\alpha>0$, the set of $\\beta$ for which this holds either has measure $0$ or infinite measure. In \\cite{He94} he proved that the set of $(\\alpha,\\beta)$ for which the corresponding set of sums does not contain an infinite arithmetic progression has cardinality continuum.\n\nHegyv\\'{a}ri \\cite{He89} proved that the sequence is not complete if $\\alpha\\geq 2$ and $\\beta =2^k\\alpha$ for some $k\\geq 0$. Jiang and Ma \\cite{JiMa24} and Fang and He \\cite{FaHe25} prove that the sequence is not complete if $1<\\alpha<2$ and $\\beta=2^k\\alpha$ for some sufficiently large $k$.\n\nIt is likely (and Hegyv\\'{a}ri conjectures) that the assumption $\\alpha/\\beta$ irrational can be weakened to $\\alpha/\\beta \\neq 2^k$ and either $\\alpha$ or $\\beta$ not a dyadic rational.\n\nIn the comments van Doorn proves the sequence is complete if $\\alpha < 2<\\beta<3$, and also proves that if either $\\alpha$ or $\\beta$ is not a dyadic rational then the corresponding sequence with ceiling functions replacing the floor functions is complete.\n\n\n\n\nReferences\n\n\n[FaHe25] Fang, J.-H. and He, J.-Y., On a problem of {E}rd\\H{o}s and {G}raham. Acta Math. Hungar. (2025), 532--542.\n\n[Gr71] Graham, R. L., On sums of integers taken from a fixed sequence. (1971), 22--40.\n\n[He89] Hegyv\\'ari, N., Some remarks on a problem of {E}rd\\H{o}s and {G}raham. Acta Math. Hungar. (1989), 149--154.\n\n[He91] Hegyv\\'ari, N., On complete sequences. Ann. Univ. Sci. Budapest. E\\\"otv\\\"os Sect. Math. (1991), 7--10.\n\n[He94] Hegyv\\'ari, Norbert, On sumset of certain sets. Publ. Math. Debrecen (1994), 115--122.\n\n[JiMa24] Jiang, Xing-Wang and Ma, Wu-Xia, A conjecture of {H}egyv\\'ari. Int. J. Number Theory (2024), 915--933.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Graham (1971)** first posed this question about representing integers using floor sequences. The problem connects representation theory with Diophantine approximation.\n\n**Hegyvári (1989)** made major progress:\n- POSITIVE: Complete when α is dyadic rational and β is not\n- NEGATIVE: Not complete when α ≥ 2 and β = 2ᵏα\n\n**Recent work**:\n- **Jiang-Ma (2024)** and **Fang-He (2025)** extended negative results to 1 < α < 2\n- **Van Doorn** proved completeness for α < 2 < β < 3\n\n**Measure theory**: Hegyvári (1991, 1994) proved continuum cardinality results about exceptional pairs.",
+    "problemStatement": "Define the **floor sequence** for α > 0: {⌊α⌋, ⌊2α⌋, ⌊4α⌋, ...} = {⌊2ᵏα⌋ : k ∈ ℕ}.\n\n**Definition**: The multiset {⌊2ᵏα⌋} ∪ {⌊2ᵏβ⌋} is **complete** if every sufficiently large n can be written as:\n  n = Σₛ∈S ⌊2ˢα⌋ + Σₜ∈T ⌊2ᵗβ⌋\nfor some finite sets S, T ⊆ ℕ.\n\n**Erdős Problem #354 (OPEN)**: Is completeness guaranteed when α/β is irrational?\n\n**Answer**: NO in full generality (counterexamples exist). The refined question asks for precise conditions.",
+    "proofStrategy": "We formalize this problem by:\n\n1. **Core definitions**: FloorSeq, floorSeqTerm, IsRepresentable, IsComplete\n\n2. **Structural definitions**: IsDyadicRational, HasIrrationalRatio\n\n3. **Known results**: Hegyvári's theorems as axioms\n\n4. **Counterexamples**: The conjecture fails when β = 2ᵏα\n\n5. **Generalizations**: Base γ ∈ (1, 2) version",
+    "keyInsights": [
+      "**Dyadic vs non-dyadic**: Dyadic rationals (m/2ⁿ) give periodic behavior in base-2 representations, enabling coverage arguments.",
+      "**Alignment kills completeness**: When β = 2ᵏα, the sequences are 'too aligned' and miss residue classes.",
+      "**Separation helps**: Van Doorn's α < 2 < β < 3 condition ensures the sequences interleave well.",
+      "**Ceiling variant always works**: If either α or β is non-dyadic, ceiling functions give completeness.",
+      "**Measure-theoretic view**: 'Most' pairs (α, β) give completeness in a measure-theoretic sense."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 34,
+      "endLine": 65,
+      "summary": "FloorSeq, floorSeqTerm, IsRepresentable, IsComplete, IsDyadicRational."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 67,
+      "endLine": 85,
+      "summary": "Non-negativity, unboundedness, eventual monotonicity."
+    },
+    {
+      "id": "hegyvari",
+      "title": "Hegyvári's Results (1989)",
+      "startLine": 87,
+      "endLine": 108,
+      "summary": "Positive result for dyadic + non-dyadic; negative result for α ≥ 2, β = 2ᵏα."
+    },
+    {
+      "id": "van-doorn",
+      "title": "Van Doorn's Result",
+      "startLine": 110,
+      "endLine": 121,
+      "summary": "Completeness when α < 2 < β < 3."
+    },
+    {
+      "id": "recent-negative",
+      "title": "Recent Negative Results",
+      "startLine": 123,
+      "endLine": 138,
+      "summary": "Jiang-Ma (2024) and Fang-He (2025) extensions."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture (OPEN)",
+      "startLine": 140,
+      "endLine": 176,
+      "summary": "The general question and its known falsity; refined conjecture."
+    },
+    {
+      "id": "representation",
+      "title": "Representation Properties",
+      "startLine": 178,
+      "endLine": 199,
+      "summary": "Zero representable, term representability, closure under addition."
+    },
+    {
+      "id": "measure",
+      "title": "Measure-Theoretic Results",
+      "startLine": 201,
+      "endLine": 216,
+      "summary": "Positive density, generic completeness."
+    },
+    {
+      "id": "binary",
+      "title": "Binary Representations",
+      "startLine": 218,
+      "endLine": 231,
+      "summary": "α = 1 gives powers of 2; α = β = 1 is complete (binary)."
+    },
+    {
+      "id": "generalization",
+      "title": "Generalization",
+      "startLine": 233,
+      "endLine": 258,
+      "summary": "Base γ ∈ (1, 2) version of the problem."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #354 about completeness of binary floor sequences. The original conjecture (irrational ratio implies completeness) is FALSE in general, as shown by Hegyvári's counterexamples. However, many special cases are solved: dyadic + non-dyadic is complete, α < 2 < β < 3 is complete, and ceiling functions always work for non-dyadic parameters.",
+    "implications": "This problem connects additive number theory to Diophantine approximation and measure theory. Understanding which integer sequences can represent all large integers has applications in coding theory and computational number theory.",
+    "openQuestions": [
+      "Precise characterization of (α, β) pairs giving completeness",
+      "Is non-dyadic + irrational ratio sufficient for completeness?",
+      "What happens for base γ ∈ (1, 2)?",
+      "Density of exceptional pairs (α, β) that fail completeness"
+    ]
   }
 }

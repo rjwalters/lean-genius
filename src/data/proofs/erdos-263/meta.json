@@ -1,33 +1,118 @@
 {
   "id": "erdos-263",
-  "title": "Erdős Problem #263",
+  "title": "Erdős #263: Irrationality Sequences",
   "slug": "erdos-263",
-  "description": "Let an\" role=\"presentation\" style=\"position: relative;\">anana_n be a sequence of integers such that for every sequence of integers bn\" role=\"presentation\" style=\"position: relative;\">bnbnb_n with b...",
+  "description": "Is 2^{2^n} an irrationality sequence? Must such sequences have a_n^{1/n} → ∞? A sequence is an irrationality sequence if all perturbations give irrational reciprocal sums.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/263",
-    "date": "",
-    "status": "pending",
+    "date": "1980s",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos263Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "sequences",
+      "analysis"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 10,
     "erdosNumber": 263,
     "erdosUrl": "https://erdosproblems.com/263",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #263 from erdosproblems.com.",
-    "problemStatement": "Let an\" role=\"presentation\" style=\"position: relative;\">anana_n be a sequence of integers such that for every sequence of integers bn\" role=\"presentation\" style=\"position: relative;\">bnbnb_n with bn/an&#x2192;1\" role=\"presentation\" style=\"position: relative;\">bn/an→1bn/an→1b_n/a_n\\to 1 the sum&#x2211;1bn\" role=\"presentation\" style=\"text-align: center; position: relative;\">∑1bn∑1bn",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem connects to the classical study of irrationality proofs. A sequence (a_n) is an 'irrationality sequence' if for every perturbation (b_n) with b_n/a_n → 1, the sum Σ 1/b_n is irrational. The folklore condition a_n^{1/2^n} → ∞ is sufficient. Kovač and Tao (2024) proved sequences with a_{n+1}/a_n² → 0 are NOT irrationality sequences.",
+    "problemStatement": "A sequence (a_n) of positive integers is an irrationality sequence if for every (b_n) with b_n/a_n → 1, the sum Σ 1/b_n is irrational. (1) Is 2^{2^n} an irrationality sequence? (2) Must every irrationality sequence satisfy a_n^{1/n} → ∞?",
+    "proofStrategy": "We formalize the definition of irrationality sequences, the double exponential 2^{2^n}, various growth conditions (superexponential, folklore), the Kovač-Tao negative result, and positive sufficient conditions. We also formalize the non-computability of this property.",
+    "keyInsights": [
+      "Irrationality sequence: all perturbations give irrational sums",
+      "Folklore: a_n^{1/2^n} → ∞ implies Σ 1/a_n is irrational",
+      "Kovač-Tao 2024: a_{n+1}/a_n² → 0 implies NOT irrationality sequence",
+      "Positive condition: liminf a_{n+1}/a_n^{2+ε} > 0 is sufficient",
+      "Cannot be resolved by finite computation"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "Positive integer sequences, reciprocal sums, perturbations",
+      "startLine": 33,
+      "endLine": 48
+    },
+    {
+      "id": "irrationality",
+      "title": "Irrationality Sequences",
+      "summary": "The main definition and Erdős's questions",
+      "startLine": 50,
+      "endLine": 61
+    },
+    {
+      "id": "growth",
+      "title": "Growth Conditions",
+      "summary": "Superexponential growth and the second question",
+      "startLine": 63,
+      "endLine": 71
+    },
+    {
+      "id": "folklore",
+      "title": "Folklore Condition",
+      "summary": "The sufficient condition a_n^{1/2^n} → ∞",
+      "startLine": 73,
+      "endLine": 87
+    },
+    {
+      "id": "kovac-tao",
+      "title": "Kovač-Tao Result",
+      "summary": "The 2024 negative result for slowly growing sequences",
+      "startLine": 89,
+      "endLine": 109
+    },
+    {
+      "id": "positive",
+      "title": "Positive Condition",
+      "summary": "Sufficient condition via liminf a_{n+1}/a_n^{2+ε}",
+      "startLine": 111,
+      "endLine": 122
+    },
+    {
+      "id": "examples",
+      "title": "Specific Examples",
+      "summary": "Factorial, tower function, double exponential",
+      "startLine": 124,
+      "endLine": 144
+    },
+    {
+      "id": "characterization",
+      "title": "Characterization Attempts",
+      "summary": "Gap between sufficient and necessary conditions",
+      "startLine": 146,
+      "endLine": 155
+    },
+    {
+      "id": "connections",
+      "title": "Connections",
+      "summary": "Links to Problems #262 and #264",
+      "startLine": 157,
+      "endLine": 167
+    },
+    {
+      "id": "noncomputable",
+      "title": "Non-Computability",
+      "summary": "Why this cannot be resolved by finite computation",
+      "startLine": 169,
+      "endLine": 181
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #263 on irrationality sequences. The gap between the Kovač-Tao condition (not irrationality) and the positive condition (is irrationality) remains the main open question. The problem cannot be resolved by finite computation.",
+    "implications": "Understanding irrationality sequences connects to Diophantine approximation, transcendence theory, and the structure of real numbers. The recent Kovač-Tao result shows unexpected limitations on which sequences can be irrationality sequences.",
+    "openQuestions": [
+      "Is 2^{2^n} an irrationality sequence?",
+      "Must irrationality sequences have a_n^{1/n} → ∞?",
+      "What is the sharp boundary between irrationality and non-irrationality sequences?"
+    ]
   }
 }

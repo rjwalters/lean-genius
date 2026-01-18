@@ -1,33 +1,137 @@
 {
   "id": "erdos-520",
-  "title": "Erdős Problem #520",
+  "title": "Erdős Problem #520: Rademacher Multiplicative Functions",
   "slug": "erdos-520",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a Rademacher multiplicative function: a random ...-valued multiplicative function, where for each prime ... we ind...",
+  "description": "For a Rademacher multiplicative function f, does there exist a constant c > 0 such that almost surely limsup (∑_{m≤N} f(m)) / √(N log log N) = c?",
   "meta": {
-    "author": "Unknown",
+    "author": "Wintner (1944) initiated; Harper (2013+) recent progress",
     "sourceUrl": "https://erdosproblems.com/520",
-    "date": "",
-    "status": "pending",
+    "date": "1944",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos520Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "probability",
+      "number-theory",
+      "random-multiplicative-functions",
+      "law-of-iterated-logarithm"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 520,
     "erdosUrl": "https://erdosproblems.com/520",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.Measure.IsProbabilityMeasure",
+        "description": "Probability measure structure",
+        "module": "Mathlib.MeasureTheory.Measure.Probability"
+      },
+      {
+        "theorem": "ProbabilityTheory.iIndepFun",
+        "description": "Independence of random variables",
+        "module": "Mathlib.Probability.Independence.Basic"
+      },
+      {
+        "theorem": "Filter.limsup",
+        "description": "Limit superior for filters",
+        "module": "Mathlib.Order.LiminfLimsup"
+      },
+      {
+        "theorem": "Nat.Squarefree",
+        "description": "Square-free natural numbers",
+        "module": "Mathlib.Algebra.Squarefree.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of Rademacher multiplicative functions",
+      "Statement of the OPEN limsup conjecture",
+      "Axiomatization of Wintner's second moment result (1944)",
+      "Statement of Harper's moment bounds (2020)",
+      "Properties of random multiplicative functions",
+      "Connection to the law of the iterated logarithm"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #520 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f$ be a Rademacher multiplicative function: a random $\\{-1,0,1\\}$-valued multiplicative function, where for each prime $p$ we independently choose $f(p)\\in \\{-1,1\\}$ uniformly at random, and for square-free integers $n$ we extend $f(p_1\\cdots p_r)=f(p_1)\\cdots f(p_r)$ (and $f(n)=0$ if $n$ is not squarefree). Does there exist some constant $c>0$ such that, almost surely,\\[\\limsup_{N\\to \\infty}\\frac{\\sum_{m\\leq N}f(m)}{\\sqrt{N\\log\\log N}}=c?\\]\n\n\n\nNote that if we drop the multiplicative assumption, and simply assign $f(m)=\\pm 1$ at random, then this statement is true (with $c=\\sqrt{2}$), the law of the iterated logarithm.\n\nWintner \\cite{Wi44} proved that, almost surely,\\[\\sum_{m\\leq N}f(m)\\ll N^{1/2+o(1)},\\]and Erd\\H{o}s improved the right-hand side to $N^{1/2}(\\log N)^{O(1)}$. Lau, Tenenbaum, and Wu \\cite{LTW13} have shown that, almost surely,\\[\\sum_{m\\leq N}f(m)\\ll N^{1/2}(\\log\\log N)^{2+o(1)}.\\]Caich \\cite{Ca24b} has improved this to\\[\\sum_{m\\leq N}f(m)\\ll N^{1/2}(\\log\\log N)^{3/4+o(1)}.\\]Harper \\cite{Ha13} has shown that the sum is almost surely not $O(N^{1/2}/(\\log\\log N)^{5/2+o(1)})$, and conjectured that in fact Erd\\H{o}s' conjecture is false, and almost surely\\[\\sum_{m\\leq N}f(m) \\ll N^{1/2}(\\log\\log N)^{1/4+o(1)}.\\]\n\n\n\n\nReferences\n\n\n[Ca24b] R. Caich, Almost sure upper bound for random multiplicative functions. arXiv:2304.00943 (2024).\n\n[Ha13] Harper, Adam J., Bounds on the suprema of Gaussian processes, and omega\nresults for the sum of a random multiplicative function. Ann. Appl. Probab. (2013), 584-616.\n\n[LTW13] Lau, Yuk-Kam and Tenenbaum, G\\'{e}rald and Wu, Jie, On mean values of random multiplicative functions. Proc. Amer. Math. Soc. (2013), 409-420.\n\n[Wi44] Wintner, Aurel, Random factorizations and Riemann's hypothesis. Duke Math. J. (1944), 267-275.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Rademacher multiplicative functions are random {-1, 0, 1}-valued multiplicative functions where prime values are independent fair coin flips. Wintner (1944) initiated their study, proving the partial sums grow like √N almost surely.\n\nThe conjecture asks whether there's a universal constant c such that the normalized partial sums S_N/√(N log log N) have limsup = c almost surely. This is analogous to the classical law of the iterated logarithm (LIL), which gives c = √2 for i.i.d. random walks.\n\nRecent work by Harper, Caich, and others has narrowed the gap between upper and lower bounds, but the exact behavior remains open. Harper even conjectures the original statement may be FALSE—the sum might grow slower than √(N log log N).",
+    "problemStatement": "Let $f$ be a **Rademacher multiplicative function**: for each prime $p$, independently choose $f(p) \\in \\{-1, 1\\}$ uniformly at random, extend multiplicatively to square-free integers, and set $f(n) = 0$ for non-square-free $n$.\n\n**Conjecture (OPEN)**: Does there exist a constant $c > 0$ such that, almost surely,\n$$\\limsup_{N \\to \\infty} \\frac{\\sum_{m \\leq N} f(m)}{\\sqrt{N \\log \\log N}} = c?$$\n\n**Known bounds**:\n- Wintner (1944): $\\sum_{m \\leq N} f(m) \\ll N^{1/2+o(1)}$ a.s.\n- Lau-Tenenbaum-Wu (2013): $\\ll N^{1/2}(\\log \\log N)^{2+o(1)}$ a.s.\n- Caich (2024): $\\ll N^{1/2}(\\log \\log N)^{3/4+o(1)}$ a.s.\n- Harper (2013): NOT $O(N^{1/2}/(\\log \\log N)^{5/2+o(1)})$ a.s.",
+    "proofStrategy": "We formalize this problem by:\n\n1. **Defining Rademacher multiplicative functions**: A structure capturing the probabilistic axioms\n\n2. **Partial sums and normalization**: S_N = ∑_{m≤N} f(m) and S_N/√(N log log N)\n\n3. **Main conjecture**: Existence of universal constant c for the limsup\n\n4. **Related results**: Wintner's second moment, square-free counting, Harper's bounds\n\n5. **Properties**: Values in {-1,0,1}, mean zero, uncorrelated at distinct square-frees",
+    "keyInsights": [
+      "**Rademacher vs i.i.d.**: For i.i.d. ±1 variables, the LIL gives c = √2. Multiplicativity creates subtle correlations that change the behavior.",
+      "**Why √(N log log N)**: This normalization comes from the LIL. The log log factor captures the fluctuations beyond √N.",
+      "**Second moment**: E[S_N²] = #{square-free m ≤ N} ~ (6/π²)N. This is because E[f(m)f(n)] = 1 only when m = n and square-free.",
+      "**Harper's counterconjecture**: Harper suggests the sum might grow SLOWER than √(N log log N), with exponent (log log N)^{1/4} instead.",
+      "**Square-free density**: About 6/π² ≈ 60.8% of integers are square-free. This density drives the variance calculation."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Problem statement, historical context, and references to Wintner (1944) and Harper (2020)."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 28,
+      "endLine": 57,
+      "summary": "The IsRademacherMultiplicative structure with independence, distribution, and multiplicativity axioms."
+    },
+    {
+      "id": "partial-sum",
+      "title": "Partial Sums",
+      "startLine": 59,
+      "endLine": 73,
+      "summary": "Definitions of partialSum and normalizedSum with √(N log log N) normalization."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture (OPEN)",
+      "startLine": 75,
+      "endLine": 90,
+      "summary": "The open problem about existence of universal constant c for limsup."
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "startLine": 92,
+      "endLine": 124,
+      "summary": "Wintner's second moment, square-free asymptotics, and Harper's moment bounds."
+    },
+    {
+      "id": "properties",
+      "title": "Properties",
+      "startLine": 126,
+      "endLine": 141,
+      "summary": "Values in {-1,0,1}, mean zero, and uncorrelated at distinct square-frees."
+    },
+    {
+      "id": "lil-connection",
+      "title": "Law of the Iterated Logarithm",
+      "startLine": 143,
+      "endLine": 160,
+      "summary": "Connection to classical LIL and the √2 constant."
+    },
+    {
+      "id": "squarefree",
+      "title": "Square-Free Structure",
+      "startLine": 162,
+      "endLine": 177,
+      "summary": "Square-free indicator and uniform distribution on square-frees."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #520 about the limsup behavior of partial sums of Rademacher multiplicative functions. The problem asks whether there's a universal constant c such that S_N/√(N log log N) → c almost surely. Despite significant recent progress on upper and lower bounds, the exact behavior remains OPEN.",
+    "implications": "This problem sits at the intersection of probabilistic number theory and random matrix theory. Understanding the fluctuations of random multiplicative functions has applications to L-functions, sieve methods, and the distribution of prime factors. The techniques involve moment methods, sieve combinatorics, and probabilistic inequalities.",
+    "openQuestions": [
+      "Does the conjectured constant c exist, and if so, what is its value?",
+      "Is Harper's counterconjecture correct—does the sum grow slower than √(N log log N)?",
+      "What is the exact rate of growth: (log log N)^{1/4} or something else?",
+      "How do the correlations from multiplicativity affect the limiting distribution?"
+    ]
   }
 }

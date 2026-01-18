@@ -1,33 +1,90 @@
 {
   "id": "erdos-225",
-  "title": "Erdős Problem #225",
+  "title": "L¹ Norm of Trigonometric Polynomials with Real Roots",
   "slug": "erdos-225",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[ f(\\theta) = \\sum_{0\\leq k\\leq n}c_k e^{ik\\theta}\\]be a trigonometric polynomial all of whose roots are real, such that ...",
+  "description": "If a trigonometric polynomial has all roots on the unit circle and supremum norm 1, then its L¹ norm is at most 4.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/225",
     "date": "",
-    "status": "pending",
+    "status": "axiom",
     "proofRepoPath": "Proofs/Erdos225Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "trigonometric-polynomials",
+      "unit-circle",
+      "L1-norm",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 225,
     "erdosUrl": "https://erdosproblems.com/225",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #225 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[ f(\\theta) = \\sum_{0\\leq k\\leq n}c_k e^{ik\\theta}\\]be a trigonometric polynomial all of whose roots are real, such that $\\max_{\\theta\\in [0,2\\pi]}\\lvert f(\\theta)\\rvert=1$. Then\\[\\int_0^{2\\pi}\\lvert f(\\theta)\\rvert \\mathrm{d}\\theta \\leq 4.\\]\n\n\n\nThis is Problem 4.20 in \\cite{Ha74}, where it is attributed to Erd\\H{o}s.\n\nThis was solved independently by Kristiansen \\cite{Kr74} (only in the case when $c_k\\in\\mathbb{R}$) and Saff and Sheil-Small \\cite{SSS73} (for general $c_k\\in \\mathbb{C}$).\n\n\n\n\nReferences\n\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n[Kr74] Kristiansen, G. K., Proof of an inequality for trigonometric polynomials. Proc. Amer. Math. Soc. (1974), 49-57.\n\n[SSS73] No reference found.\n\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem relates to the study of trigonometric polynomials and their norms. Solved independently by Kristiansen (1974) for real coefficients and Saff & Sheil-Small (1973) for complex coefficients. Listed as Problem 4.20 in Hayman's Research Problems in Function Theory (1974).",
+    "problemStatement": "Let f(θ) = Σₖ cₖ e^(ikθ) be a trigonometric polynomial all of whose roots are real (i.e., lie on the unit circle), such that max|f(θ)| = 1. Then ∫₀^(2π) |f(θ)| dθ ≤ 4.",
+    "proofStrategy": "We formalize trigonometric polynomials as functions from coefficients to complex-valued functions on ℝ. The condition of having 'real roots' means all roots of the associated polynomial P(z) = Σ cₖ zᵏ lie on the unit circle |z| = 1. The main theorem states the L¹ norm bound of 4.",
+    "keyInsights": [
+      "'Real roots' means roots on the unit circle |z| = 1, not real numbers",
+      "The bound 4 is optimal and achieved by specific polynomials",
+      "Related to the Fejér-Riesz theorem for non-negative trigonometric polynomials",
+      "Distinct from Littlewood's conjecture which gives lower bounds for unimodular polynomials"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "trig-poly",
+      "title": "Trigonometric Polynomials",
+      "startLine": 34,
+      "endLine": 44,
+      "summary": "Define trigonometric polynomials as functions f(θ) = Σₖ cₖ e^(ikθ)."
+    },
+    {
+      "id": "unit-circle",
+      "title": "Roots on the Unit Circle",
+      "startLine": 46,
+      "endLine": 60,
+      "summary": "Define what it means for a polynomial to have all roots on the unit circle."
+    },
+    {
+      "id": "norms",
+      "title": "Norm Definitions",
+      "startLine": 62,
+      "endLine": 74,
+      "summary": "Define the supremum norm and L¹ norm for trigonometric polynomials."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 76,
+      "endLine": 98,
+      "summary": "State and prove the L¹ norm bound of 4 for unit-circle-root polynomials."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 100,
+      "endLine": 110,
+      "summary": "Examples including the constant polynomial with L¹ norm 2π."
+    },
+    {
+      "id": "connections",
+      "title": "Related Results",
+      "startLine": 130,
+      "endLine": 154,
+      "summary": "Connections to Fejér-Riesz theorem and Littlewood's conjecture."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #225 about L¹ norms of trigonometric polynomials with unit circle roots. The bound of 4 was proved independently by Kristiansen (1974) and Saff & Sheil-Small (1973).",
+    "implications": "This connects the location of polynomial roots to integral norm bounds, with the unit circle condition being essential for the sharp bound.",
+    "openQuestions": [
+      "What are the extremal polynomials achieving L¹ norm close to 4?",
+      "Can the result be extended to more general function spaces?",
+      "What is the rate of convergence to the bound 4?"
+    ]
   }
 }

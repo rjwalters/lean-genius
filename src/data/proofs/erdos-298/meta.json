@@ -1,33 +1,175 @@
 {
   "id": "erdos-298",
-  "title": "Erdős Problem #298",
+  "title": "Erdős Problem #298: Unit Fractions from Sets of Positive Density",
   "slug": "erdos-298",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every set ... of positive density contain some finite ... such that ...?\n\n\n\nThe answer is yes, proved by Bloom .\n\nSee al...",
+  "description": "Does every set A ⊆ ℕ of positive density contain some finite S ⊂ A such that ∑_{n ∈ S} 1/n = 1? YES (Thomas Bloom, 2021). Prize: $500. A Lean 3 formalization exists at github.com/b-mehta/unit-fractions.",
   "meta": {
-    "author": "Unknown",
+    "author": "Thomas Bloom (2021), Bloom & Mehta (formalization)",
     "sourceUrl": "https://erdosproblems.com/298",
-    "date": "",
-    "status": "pending",
+    "date": "2021",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos298Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "density",
+      "egyptian-fractions",
+      "additive-combinatorics"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 298,
     "erdosUrl": "https://erdosproblems.com/298",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Rat",
+        "description": "Rational numbers",
+        "module": "Mathlib.Data.Rat.Defs"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit definition via filters",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real numbers",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of countUpTo for counting set elements",
+      "Definition of densityRatio for density calculations",
+      "Definition of HasPosDensity (positive natural density)",
+      "Axiom upperDensity and HasPosUpperDensity",
+      "Definition of unitFractionSum computing ∑ 1/n",
+      "Definition of SumsToOne and ContainsUnitSumSubset",
+      "Example axioms: 2,3,6 and 2,4,5,20 sum to 1",
+      "Definition of erdos_298_conjecture",
+      "Axiom bloom_2021 (main theorem)",
+      "Definition and axiom for upper density version",
+      "Definition of HasEgyptianRep for Egyptian fractions",
+      "Axiom bloom_quantitative (finitary version)",
+      "Axiom sparse_counterexample (necessity of density)",
+      "Connection to Erdős #46 and #47"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #298 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every set $A\\subseteq \\mathbb{N}$ of positive density contain some finite $S\\subset A$ such that $\\sum_{n\\in S}\\frac{1}{n}=1$?\n\n\n\nThe answer is yes, proved by Bloom \\cite{Bl21}.\n\nSee also [46] and [47].\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Bl21] Bloom, T. F., On a density conjecture about unit fractions. arXiv:2112.03726 (2021).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem connects to the ancient tradition of **Egyptian fractions** - representing numbers as sums of distinct unit fractions 1/n. The Rhind papyrus (~1650 BCE) contains extensive tables of Egyptian fraction representations.\n\n**Erdős's Question**: Given a set A of positive integers with positive density (meaning a positive proportion of all integers up to N are in A, in the limit), must A contain a finite subset whose reciprocals sum to exactly 1?\n\n**The Prize**: Erdős offered $500 for a proof - one of his famous monetary prizes.\n\n**The Breakthrough**: Thomas Bloom resolved this in 2021 (arXiv:2112.03726), proving that even the weaker condition of positive UPPER density suffices.\n\n**Formalization**: Remarkably, Bloom and Bhavik Mehta formalized the complete proof in Lean 3, creating ~10,000 lines of verified code at github.com/b-mehta/unit-fractions.",
+    "problemStatement": "**Erdős Problem #298**: Does every set $A \\subseteq \\mathbb{N}$ of positive density contain some finite $S \\subset A$ such that\n$$\\sum_{n \\in S} \\frac{1}{n} = 1?$$\n\n**Answer**: YES (Bloom 2021)\n\n**Definitions**:\n- **Natural density** of A: $\\lim_{N \\to \\infty} \\frac{|A \\cap [1,N]|}{N}$\n- **Upper density** of A: $\\limsup_{N \\to \\infty} \\frac{|A \\cap [1,N]|}{N}$\n- A set **contains a unit sum subset** if some finite S ⊆ A has $\\sum_{n \\in S} 1/n = 1$\n\n**Examples**:\n- $\\{2, 3, 6\\}$ sums to 1: $1/2 + 1/3 + 1/6 = 1$\n- $\\{2, 4, 5, 20\\}$ sums to 1: $1/2 + 1/4 + 1/5 + 1/20 = 1$",
+    "proofStrategy": "The formalization captures the theorem statement and key related results:\n\n1. **Core Definitions**:\n   - `countUpTo`, `densityRatio`: Measure density\n   - `HasPosDensity`, `HasPosUpperDensity`: Density conditions\n   - `unitFractionSum`, `SumsToOne`: Unit fraction arithmetic\n   - `ContainsUnitSumSubset`: The target property\n\n2. **Main Results**:\n   - `erdos_298_conjecture`: The formal statement\n   - `bloom_2021`: The affirmative answer (axiom)\n   - `bloom_theorem`: Direct application\n\n3. **Stronger Version**:\n   - `erdos_298_upper_density`: Upper density suffices\n   - `bloom_2021_upper`: This is also true\n   - `upper_implies_natural`: Implication (with sorry for technical lemma)\n\n4. **Related Results**:\n   - `bloom_quantitative`: Finitary version\n   - `sparse_counterexample`: Density is necessary\n   - Egyptian fraction connections",
+    "keyInsights": [
+      "**Positive density forces structure**: A dense enough set must contain the 'ingredients' for summing to 1, even though the set has no explicit additive structure.",
+      "**Upper vs natural density**: Bloom proved the stronger result with upper density, which applies to more sets (some have upper but not natural density).",
+      "**The density condition is necessary**: There exist arbitrarily large sets with NO unit sum subset - they must be sparse.",
+      "**Proof techniques**: Bloom used probabilistic methods, sum-product estimates, and Fourier analysis on ℤ/pℤ - a beautiful blend of combinatorics and analysis.",
+      "**Complete formalization**: The Lean 3 formalization (~10,000 lines) demonstrates that cutting-edge mathematical results can be fully verified.",
+      "**Connection to Egyptian fractions**: Every positive rational has an Egyptian fraction representation (ancient result). This problem asks about constrained representations."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Overview",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Problem statement, answer, and historical context."
+    },
+    {
+      "id": "background",
+      "title": "Background",
+      "startLine": 40,
+      "endLine": 54,
+      "summary": "Unit fractions, Egyptian fractions, and density definitions."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 56,
+      "endLine": 89,
+      "summary": "countUpTo, densityRatio, HasPosDensity, unitFractionSum, etc."
+    },
+    {
+      "id": "examples",
+      "title": "Unit Fraction Sum Examples",
+      "startLine": 91,
+      "endLine": 104,
+      "summary": "Examples: {2,3,6}, {2,4,5,20}, {3,4,5,6,20} all sum to 1."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős Conjecture",
+      "startLine": 106,
+      "endLine": 134,
+      "summary": "erdos_298_conjecture, bloom_2021, bloom_theorem."
+    },
+    {
+      "id": "upper-density",
+      "title": "Upper Density Version",
+      "startLine": 136,
+      "endLine": 162,
+      "summary": "Stronger version with upper density; bloom_2021_upper."
+    },
+    {
+      "id": "density-props",
+      "title": "Density Properties",
+      "startLine": 164,
+      "endLine": 182,
+      "summary": "Basic properties: monotonicity, finite sets have density 0."
+    },
+    {
+      "id": "egyptian",
+      "title": "Egyptian Fractions",
+      "startLine": 184,
+      "endLine": 202,
+      "summary": "HasEgyptianRep, egyptian_fraction_exists, one_has_egyptian_rep."
+    },
+    {
+      "id": "quantitative",
+      "title": "Quantitative Aspects",
+      "startLine": 204,
+      "endLine": 223,
+      "summary": "bloom_quantitative (finitary), sparse_counterexample."
+    },
+    {
+      "id": "formalization",
+      "title": "Lean 3 Formalization",
+      "startLine": 225,
+      "endLine": 238,
+      "summary": "Reference to Bloom-Mehta formalization."
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "startLine": 240,
+      "endLine": 256,
+      "summary": "Connection to Erdős #46 and #47."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 258,
+      "endLine": 280,
+      "summary": "erdos_298_solved theorem and final summary."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #298 on unit fractions from sets of positive density. The problem asks whether every dense set contains a finite subset whose reciprocals sum to 1. Thomas Bloom proved YES in 2021, earning the $500 Erdős prize. The stronger result (upper density suffices) also holds. A complete Lean 3 formalization exists.",
+    "implications": "This result reveals a deep connection between multiplicative structure (density) and additive structure (sums of reciprocals). The techniques developed by Bloom - combining probabilistic methods, sum-product phenomena, and Fourier analysis - have applications throughout additive combinatorics.",
+    "openQuestions": [
+      "What is the optimal quantitative bound in Bloom's theorem?",
+      "What is the smallest N such that every δ-dense subset of {1,...,N} contains a unit sum subset?",
+      "Can similar results be proved for other target sums (e.g., ∑ 1/n = 2)?",
+      "What about higher-dimensional analogues (sums of 1/n^k)?"
+    ]
   }
 }

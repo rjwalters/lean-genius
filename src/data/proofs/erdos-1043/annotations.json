@@ -1,1 +1,227 @@
-[]
+[
+  {
+    "id": "ann-1043-header",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdős Problem #1043 was posed by Erdős, Herzog, and Piranian in 1958. For a monic polynomial f, consider its 'level set' {z : |f(z)| ≤ 1}. Must some line's projection of this set have measure ≤ 2? Pommerenke (1961) proved the answer is NO.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1043-imports",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 32, "endLine": 41 },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import Mathlib's complex polynomial analysis, measure theory (for Lebesgue measure), projection machinery, and metric space topology. These provide the foundation for formalizing level sets and projections.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1043-levelset-def",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 45, "endLine": 52 },
+    "type": "definition",
+    "title": "Level Set Definition",
+    "content": "The level set of a polynomial f at height r is {z ∈ ℂ : |f(z)| ≤ r}. For r = 1, this is called the 'unit lemniscate'. For f(z) = zⁿ, the level set is simply the closed unit disk.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1043-unit-disk",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 54, "endLine": 62 },
+    "type": "theorem",
+    "title": "Unit Disk Examples",
+    "content": "For the simplest polynomials f(z) = z and f(z) = zⁿ, the unit level set is exactly the closed unit disk {z : |z| ≤ 1}. This is because |zⁿ| = |z|ⁿ ≤ 1 iff |z| ≤ 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1043-direction",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 66, "endLine": 67 },
+    "type": "definition",
+    "title": "Direction Type",
+    "content": "A direction in ℂ is represented as a unit vector u with |u| = 1. This parameterizes all possible lines through the origin onto which we can project the level set.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1043-projection",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 69, "endLine": 76 },
+    "type": "definition",
+    "title": "Projection onto Lines",
+    "content": "To project a point z onto the line with direction u, we compute Re(z · conj(u)). This gives the signed distance along the u-direction. For a set S, we project all points to get a subset of ℝ.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1043-projection-measure",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 78, "endLine": 80 },
+    "type": "definition",
+    "title": "Projection Measure",
+    "content": "The projection measure of a set S in direction u is the Lebesgue measure (length) of its projected set on the real line. For a disk of radius 1, this is always 2 (the diameter).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1043-disk-projection",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 84, "endLine": 92 },
+    "type": "theorem",
+    "title": "Disk Projects to Diameter",
+    "content": "The closed unit disk projects to the interval [-1, 1] in every direction, giving a projection measure of exactly 2. This is the 'best case' scenario that motivated the original conjecture.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1043-ehp-conjecture",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 96, "endLine": 99 },
+    "type": "definition",
+    "title": "The EHP Conjecture",
+    "content": "The Erdős-Herzog-Piranian conjecture asked: for every monic polynomial f with degree ≥ 1, does there exist a direction u such that the projection measure is at most 2? This is the natural generalization of the disk case.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1043-min-max-projection",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 101, "endLine": 107 },
+    "type": "definition",
+    "title": "Min/Max Projection Measures",
+    "content": "For a polynomial f, the minimum projection measure (over all directions) represents the 'thinnest' projection, while the maximum is the 'widest'. The EHP conjecture asks if minProjectionMeasure(f) ≤ 2 always.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1043-counterexample",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 111, "endLine": 117 },
+    "type": "axiom",
+    "title": "Pommerenke's Counterexample",
+    "content": "**KEY RESULT**: Pommerenke (1961) proved there exists a monic polynomial f such that EVERY projection has measure at least 2.386. This disproves the EHP conjecture—measure 2 is not always achievable.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1043-ehp-false",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 119, "endLine": 126 },
+    "type": "theorem",
+    "title": "EHP Conjecture is False",
+    "content": "Using Pommerenke's counterexample, we derive that the EHP conjecture is false. Since 2.386 > 2, no direction achieves measure ≤ 2 for Pommerenke's polynomial.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1043-pommerenke-constant",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 128, "endLine": 134 },
+    "type": "definition",
+    "title": "The Pommerenke Constant",
+    "content": "The Pommerenke constant is the supremum over all monic polynomials f of the minimum projection measure. It lies between 2.386 (lower bound from counterexample) and 3.3 (upper bound). Its exact value is unknown.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1043-upper-bound",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 138, "endLine": 148 },
+    "type": "axiom",
+    "title": "Pommerenke's Upper Bound",
+    "content": "**POSITIVE RESULT**: Pommerenke also proved that for ANY monic polynomial, some projection has measure at most 3.3. So while 2 isn't always achievable, 3.3 is. The gap 2.386 to 3.3 represents our uncertainty.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1043-capacity",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 152, "endLine": 155 },
+    "type": "axiom",
+    "title": "Level Set Capacity",
+    "content": "In potential theory, the 'capacity' of a compact set measures its size. For a monic polynomial of degree n, the unit level set has capacity 1. This is related to the transfinite diameter.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1043-connected",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 157, "endLine": 160 },
+    "type": "theorem",
+    "title": "Connectivity Criterion",
+    "content": "The level set {z : |f(z)| ≤ 1} is connected if and only if all roots of f lie within the level set. When roots spread out, the level set can break into multiple disconnected 'lobes'.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1043-compact",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 162, "endLine": 165 },
+    "type": "theorem",
+    "title": "Compactness",
+    "content": "The unit level set of any monic polynomial is compact (closed and bounded). Closedness comes from continuity of |f|; boundedness follows from |f(z)| → ∞ as |z| → ∞ for monic polynomials.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1043-width",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 169, "endLine": 184 },
+    "type": "definition",
+    "title": "Width Function",
+    "content": "The width of a set S in direction u is its projection length. The minimum width over all directions measures how 'thin' the set can appear, while maximum width is related to the diameter.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1043-lemniscate",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 188, "endLine": 196 },
+    "type": "definition",
+    "title": "Lemniscates",
+    "content": "Level sets of polynomials are called 'lemniscates', from the Latin for 'ribbon'. The classic Bernoulli lemniscate {z : |z² - 1| = c} forms a figure-eight shape, illustrating how level sets can be non-convex.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1043-bernoulli",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 198, "endLine": 200 },
+    "type": "theorem",
+    "title": "Bernoulli Lemniscate at Origin",
+    "content": "The Bernoulli lemniscate {z : |z² - 1| = 1} passes through the origin because |0² - 1| = |-1| = 1. This figure-eight shape was studied by Jakob Bernoulli in 1694.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1043-transfinite",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 204, "endLine": 211 },
+    "type": "axiom",
+    "title": "Related Results",
+    "content": "The problem connects to transfinite diameter (another measure of set size from potential theory) and Chebyshev polynomials (which minimize sup norm on intervals). These give different perspectives on polynomial level sets.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1043-roots-in-levelset",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 213, "endLine": 216 },
+    "type": "theorem",
+    "title": "Roots in Level Set",
+    "content": "Every root z of f satisfies f(z) = 0, so |f(z)| = 0 ≤ 1. Thus all roots are automatically contained in the unit level set. This is a simple but useful observation.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1043-area-bound",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 220, "endLine": 223 },
+    "type": "axiom",
+    "title": "Area Bound",
+    "content": "For any monic polynomial, the area of the unit level set is at most π (the area of the unit disk). Equality holds for f(z) = zⁿ. More complex polynomials have level sets with smaller area.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1043-diameter-bound",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 225, "endLine": 228 },
+    "type": "axiom",
+    "title": "Diameter Bound",
+    "content": "The diameter of any monic polynomial's unit level set is at most 4. The unit disk has diameter 2, but level sets can be more 'stretched out', reaching up to twice that distance.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1043-main-theorem",
+    "proofId": "erdos-1043",
+    "range": { "startLine": 232, "endLine": 242 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**FINAL ANSWER**: The EHP conjecture is FALSE (¬EHP_Conjecture), but every monic polynomial has some projection with measure ≤ 3.3. The complete answer combines Pommerenke's counterexample with his upper bound.",
+    "significance": "critical"
+  }
+]

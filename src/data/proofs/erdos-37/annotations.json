@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "id": "ann-e37-header",
+    "proofId": "erdos-37",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #37**: Essential Components and Lacunary Sets\n\n**Question**: Can a lacunary set A ⊂ ℕ be an essential component?\n\n**Answer**: NO (Ruzsa 1987)\n\n**Key Definitions**:\n- **Essential component**: A set where d_s(A + B) > d_s(B) for all B with 0 < d_s(B) < 1\n- **Lacunary set**: Elements grow exponentially (e.g., {2^n})\n\n**Ruzsa's Theorem**: Essential components must have |A ∩ {1,...,N}| ≥ (log N)^{1+c} for some c > 0. Lacunary sets only have O(log N) elements.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e37-placeholder",
+    "proofId": "erdos-37",
+    "range": {
+      "startLine": 16,
+      "endLine": 24
+    },
+    "type": "theorem",
+    "title": "Placeholder Theorem",
+    "content": "This is a stub file. The full formalization would include:\n- Schnirelmann density definition\n- Essential component definition\n- Lacunary set definition\n- Ruzsa's lower bound theorem\n- The disproof that lacunary sets cannot be essential components",
+    "significance": "supporting"
+  }
+]

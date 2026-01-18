@@ -1,33 +1,133 @@
 {
   "id": "erdos-306",
-  "title": "Erdős Problem #306",
+  "title": "Erdős Problem #306: Egyptian Fractions with Semiprime Denominators",
   "slug": "erdos-306",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... with ... squarefree. Are there integers ..., each the product of two distinct primes, such that\\[{b}={n_1}+\\cdots+{n_...",
+  "description": "Can every positive rational a/b with b squarefree be expressed as an Egyptian fraction where each denominator is a product of exactly 2 distinct primes? The 2-prime case is OPEN; the 3-prime case for integers was solved by Butler, Erdős, and Graham (2015).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Butler, Graham",
     "sourceUrl": "https://erdosproblems.com/306",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos306Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "prime-factorization",
+      "open-problem",
+      "partially-solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 306,
     "erdosUrl": "https://erdosproblems.com/306",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "ArithmeticFunction.cardDistinctFactors",
+        "description": "ω(n) - count of distinct prime factors",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Defs"
+      },
+      {
+        "theorem": "ArithmeticFunction.cardFactors",
+        "description": "Ω(n) - total count of prime factors with multiplicity",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Misc"
+      },
+      {
+        "theorem": "Squarefree",
+        "description": "Predicate for squarefree numbers",
+        "module": "Mathlib.Data.Nat.Squarefree"
+      },
+      {
+        "theorem": "Finset.Icc",
+        "description": "Closed interval as a finite set",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of k-distinct-prime products using ω and Ω functions",
+      "Structure for Egyptian fraction representations",
+      "Statement of the main open conjecture for 2 distinct primes",
+      "Axiomatization of Butler-Erdős-Graham theorem for 3 distinct primes",
+      "Verification of small examples using native_decide",
+      "Discussion of density and asymptotic properties"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #306 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a/b\\in \\mathbb{Q}_{>0}$ with $b$ squarefree. Are there integers $1<n_1<\\cdots<n_k$, each the product of two distinct primes, such that\\[\\frac{a}{b}=\\frac{1}{n_1}+\\cdots+\\frac{1}{n_k}?\\]\n\n\n\nFor $n_i$ the product of three distinct primes, this is true when $b=1$, as proved by Butler, Erd\\H{o}s and Graham \\cite{BEG15} (this paper is perhaps Erd\\H{o}s' last paper, appearing 19 years after his death).\n\n\n\n\nReferences\n\n\n[BEG15] Butler, Steve and Erd\\H{o}s, Paul and Graham, Ron, Egyptian fractions with each denominator having three distinct\nprime divisors. Integers (2015), Paper No. A51, 9.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #306 asks about Egyptian fractions - a topic dating back to ancient Egypt, where fractions were typically expressed as sums of distinct unit fractions.\n\n**The Problem**: Can every positive rational a/b (with b squarefree) be written as 1/n₁ + ... + 1/nₖ where each nᵢ is a product of exactly 2 distinct primes?\n\n**Status**:\n- **2 distinct primes**: OPEN - the main conjecture\n- **3 distinct primes**: SOLVED for integers by Butler, Erdős, and Graham (2015)\n\n**Historical Note**: The Butler-Erdős-Graham paper appeared in 2015, 19 years after Erdős's death in 1996. It may be Erdős's last published paper, demonstrating his enduring influence on mathematics.\n\n**Key Example**: The integer 1 can be represented with 2-distinct-prime denominators:\n1/6 + 1/10 + 1/14 + 1/15 + 1/21 + 1/35 = 1\nwhere 6=2×3, 10=2×5, 14=2×7, 15=3×5, 21=3×7, 35=5×7.",
+    "problemStatement": "**Erdős Problem #306**: Let $a/b \\in \\mathbb{Q}_{>0}$ with $b$ squarefree. Are there integers $1 < n_1 < \\cdots < n_k$, each the product of two distinct primes, such that\n$$\\frac{a}{b} = \\frac{1}{n_1} + \\cdots + \\frac{1}{n_k}?$$\n\n**Status**: OPEN (for 2 distinct primes)\n\n**Related Result (SOLVED)**: For denominators that are products of THREE distinct primes, this is true when $b = 1$ (i.e., for positive integers). Proved by Butler, Erdős, and Graham (2015).\n\n**Examples of 2-distinct-prime products**: 6 = 2×3, 10 = 2×5, 14 = 2×7, 15 = 3×5, 21 = 3×7, ...\n\n**Examples of 3-distinct-prime products**: 30 = 2×3×5, 42 = 2×3×7, 66 = 2×3×11, ...",
+    "proofStrategy": "The formalization captures both the open problem and the solved variant:\n\n1. **Prime Counting Functions**: Use Mathlib's ArithmeticFunction to define:\n   - `isProductOfKDistinctPrimes n k`: ω(n) = k and Ω(n) = k\n   - This ensures exactly k distinct primes, each appearing exactly once\n\n2. **Egyptian Representation**: Define `EgyptianRepr k` as a structure with:\n   - A sequence of k+1 denominators (with base = 1)\n   - Strictly increasing property\n   - Sum computed as ∑ 1/nᵢ\n\n3. **The Main Conjecture**: `erdos_306_conjecture` states every positive rational with squarefree denominator has a 2-prime Egyptian representation\n\n4. **Butler-Erdős-Graham**: Axiomatize the solved case for 3 distinct primes on positive integers\n\n5. **Examples**: Verify using native_decide that ω(6) = 2, Ω(6) = 2, ω(30) = 3, etc.",
+    "keyInsights": [
+      "**Semiprime constraint**: Products of exactly 2 distinct primes (semiprimes with distinct factors) are sparser than products of 3 distinct primes, making the 2-prime case harder.",
+      "**Why squarefree denominator?**: Every reduced fraction has squarefree denominator; this natural condition may be necessary for the representation to exist.",
+      "**Density matters**: Products of k distinct primes have density roughly n(log log n)^(k-1)/((k-1)! log n), so more prime factors means more available denominators.",
+      "**The 19-year posthumous paper**: Butler-Erdős-Graham (2015) may be Erdős's last publication, showing that collaborative mathematics transcends a single lifetime.",
+      "**Connection to greedy algorithm**: The classical greedy algorithm for Egyptian fractions works but doesn't guarantee prime structure; constrained versions need new techniques.",
+      "**ω vs Ω**: Using both ω(n) = k (distinct primes) and Ω(n) = k (total factors) ensures each prime appears exactly once - the key constraint."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 19,
+      "summary": "Problem statement, status (2-prime open, 3-prime solved), and references including Butler-Erdős-Graham (2015)."
+    },
+    {
+      "id": "egyptian-background",
+      "title": "Egyptian Fractions Background",
+      "startLine": 33,
+      "endLine": 45,
+      "summary": "Historical context on Egyptian fractions as sums of distinct unit fractions."
+    },
+    {
+      "id": "semiprime-defs",
+      "title": "Semiprime Definitions",
+      "startLine": 47,
+      "endLine": 72,
+      "summary": "Definitions of products of k distinct primes using ω and Ω functions."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 74,
+      "endLine": 110,
+      "summary": "The EgyptianRepr structure and the main open conjecture for 2 distinct primes."
+    },
+    {
+      "id": "butler-erdos-graham",
+      "title": "Butler-Erdős-Graham Theorem",
+      "startLine": 112,
+      "endLine": 138,
+      "summary": "The solved case for 3 distinct primes on positive integers."
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Verification",
+      "startLine": 140,
+      "endLine": 163,
+      "summary": "Verification of small cases using native_decide."
+    },
+    {
+      "id": "density",
+      "title": "Density Analysis",
+      "startLine": 183,
+      "endLine": 215,
+      "summary": "Why 2 primes is harder than 3 primes due to density considerations."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #306 on Egyptian fractions with semiprime denominators. The main conjecture - that every positive rational with squarefree denominator can be expressed with 2-distinct-prime denominators - remains OPEN. The variant for 3 distinct primes was solved by Butler, Erdős, and Graham in 2015 for positive integers.",
+    "implications": "This problem connects ancient Egyptian mathematics (unit fractions), modern number theory (prime factorization and arithmetic functions), and combinatorics (subset selection). The difficulty increases as we restrict the number of prime factors in denominators, revealing deep structure in how rationals can be decomposed.",
+    "openQuestions": [
+      "Is the 2-distinct-prime conjecture true for all squarefree denominators?",
+      "Can the Butler-Erdős-Graham result be extended from integers to arbitrary rationals?",
+      "What is the minimum number of terms needed for specific rationals?",
+      "Are there rationals that require exponentially many 2-distinct-prime terms?",
+      "What algorithmic approach would find such representations efficiently?"
+    ]
   }
 }

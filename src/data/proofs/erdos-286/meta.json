@@ -1,33 +1,89 @@
 {
   "id": "erdos-286",
-  "title": "Erdős Problem #286",
+  "title": "Unit Fractions in Short Intervals",
   "slug": "erdos-286",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is it true that there exists an interval ... of width ... and integers ... such that\\[1={n_1}+\\cdots+{n_k}?\\]\n\n\n\nThe...",
+  "description": "For k ≥ 2, can 1 be expressed as a sum of k distinct unit fractions with denominators in an interval of width (e-1+o(1))k? Croot (2001) proved the answer is yes.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Graham",
     "sourceUrl": "https://erdosproblems.com/286",
     "date": "",
-    "status": "pending",
+    "status": "axiom",
     "proofRepoPath": "Proofs/Erdos286Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "egyptian-fractions",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 286,
     "erdosUrl": "https://erdosproblems.com/286",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #286 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$. Is it true that there exists an interval $I$ of width $(e-1+o(1))k$ and integers $n_1<\\cdots<n_k\\in I$ such that\\[1=\\frac{1}{n_1}+\\cdots+\\frac{1}{n_k}?\\]\n\n\n\nThe answer is yes, proved by Croot \\cite{Cr01}.\n\n\n\n\nReferences\n\n\n[Cr01] Croot, III, Ernest S., On unit fractions with denominators in short intervals. Acta Arith. (2001), 99-114.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem from Erdős-Graham (1980, p.33) asks about representing 1 as a sum of unit fractions with denominators in a short interval. Croot (2001) proved the affirmative answer.",
+    "problemStatement": "Let k ≥ 2. Is it true that there exists an interval I of width (e-1+o(1))k and integers n₁ < ... < nₖ ∈ I such that 1 = 1/n₁ + ... + 1/nₖ?",
+    "proofStrategy": "We formalize the main definitions (unit fraction sums, short interval representations) and prove concrete examples for k=3 and k=4. The Erdős-Graham constant (e-1) ≈ 1.718 is shown to be approximately optimal.",
+    "keyInsights": [
+      "The constant (e-1) ≈ 1.718 is asymptotically optimal",
+      "Example: 1 = 1/2 + 1/3 + 1/6 uses interval [2,6] of width 4",
+      "Example: 1 = 1/2 + 1/4 + 1/5 + 1/20 uses interval [2,20] of width 18",
+      "Related to Egyptian fraction representations"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "unit-fractions",
+      "title": "Unit Fraction Representations",
+      "startLine": 32,
+      "endLine": 44,
+      "summary": "Define when a set of positive integers has reciprocals summing to a given value."
+    },
+    {
+      "id": "intervals",
+      "title": "Intervals",
+      "startLine": 46,
+      "endLine": 57,
+      "summary": "Define natural number intervals and their width."
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "startLine": 59,
+      "endLine": 70,
+      "summary": "HasShortIntervalRepresentation captures when k integers in a short interval sum to 1."
+    },
+    {
+      "id": "examples",
+      "title": "Small Examples",
+      "startLine": 72,
+      "endLine": 104,
+      "summary": "Verified examples for k=3 and k=4."
+    },
+    {
+      "id": "optimal-constant",
+      "title": "The Optimal Constant",
+      "startLine": 106,
+      "endLine": 126,
+      "summary": "The Erdős-Graham constant (e-1) and its approximation."
+    },
+    {
+      "id": "croot-theorem",
+      "title": "Croot's Theorem",
+      "startLine": 128,
+      "endLine": 163,
+      "summary": "Statement of Croot's theorem and asymptotic optimality."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #286 about unit fractions in short intervals. Croot (2001) proved that for all sufficiently large k, 1 can be expressed as a sum of k unit fractions with denominators in an interval of width at most (e-1+ε)k.",
+    "implications": "This connects the theory of Egyptian fractions to interval constraints, with the constant (e-1) being asymptotically optimal.",
+    "openQuestions": [
+      "What is the smallest k for which width ≤ (e-1)k suffices?",
+      "Can explicit constructions be given for all k?",
+      "What happens for other target sums besides 1?"
+    ]
   }
 }

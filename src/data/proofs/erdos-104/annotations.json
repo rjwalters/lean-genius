@@ -1,1 +1,200 @@
-[]
+[
+  {
+    "id": "ann-104-point",
+    "proofId": "erdos-104",
+    "range": { "startLine": 42, "endLine": 43 },
+    "type": "definition",
+    "title": "Point Type",
+    "content": "Points are elements of the 2-dimensional Euclidean space ℝ². We use Mathlib's EuclideanSpace for proper geometric structure.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-104-dist",
+    "proofId": "erdos-104",
+    "range": { "startLine": 45, "endLine": 47 },
+    "type": "definition",
+    "title": "Euclidean Distance",
+    "content": "The distance between points p and q is ‖p - q‖. This determines which pairs can lie on a unit circle.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-104-circle",
+    "proofId": "erdos-104",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "structure",
+    "title": "Unit Circle",
+    "content": "A unit circle is determined by its center point. All points at distance exactly 1 from the center lie on the circle.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-104-oncircle",
+    "proofId": "erdos-104",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "definition",
+    "title": "Point on Circle",
+    "content": "A point p lies on unit circle c if dist(p, c.center) = 1. This is the incidence relation we count.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-104-pointset",
+    "proofId": "erdos-104",
+    "range": { "startLine": 63, "endLine": 64 },
+    "type": "definition",
+    "title": "Point Set",
+    "content": "A finite set of points in the plane. We work with Finset Point for computability and cardinality.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-104-contains",
+    "proofId": "erdos-104",
+    "range": { "startLine": 66, "endLine": 68 },
+    "type": "definition",
+    "title": "Circle Contains k Points",
+    "content": "A circle 'contains k points' from P if at least k points of P lie on the circle. We care about k ≥ 3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-104-through3",
+    "proofId": "erdos-104",
+    "range": { "startLine": 70, "endLine": 72 },
+    "type": "definition",
+    "title": "Unit Circles Through 3 Points",
+    "content": "The set of all unit circles containing at least 3 points from P. This is the set whose size we bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-104-count",
+    "proofId": "erdos-104",
+    "range": { "startLine": 74, "endLine": 76 },
+    "type": "definition",
+    "title": "Circle Count",
+    "content": "The cardinality of the set of rich unit circles. We use ncard for potentially infinite sets (though finite for finite P).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-104-twocircles",
+    "proofId": "erdos-104",
+    "range": { "startLine": 84, "endLine": 88 },
+    "type": "theorem",
+    "title": "Two Points, Two Circles",
+    "content": "Two points at distance < 2 lie on exactly 2 unit circles. The centers are on the perpendicular bisector, at distance √(1 - d²/4) from it.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-104-onecircle",
+    "proofId": "erdos-104",
+    "range": { "startLine": 90, "endLine": 93 },
+    "type": "theorem",
+    "title": "Two Points, One Circle",
+    "content": "Two points at distance exactly 2 lie on exactly 1 unit circle: the center is their midpoint.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-104-nocircle",
+    "proofId": "erdos-104",
+    "range": { "startLine": 95, "endLine": 98 },
+    "type": "theorem",
+    "title": "Two Points, No Circle",
+    "content": "Two points at distance > 2 cannot both lie on any unit circle: no center exists at distance 1 from both.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-104-trivial",
+    "proofId": "erdos-104",
+    "range": { "startLine": 100, "endLine": 102 },
+    "type": "theorem",
+    "title": "Trivial Upper Bound",
+    "content": "At most n(n-1) unit circles with 3+ points. Each such circle contains a pair, each pair is on ≤ 2 circles.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-104-harborth",
+    "proofId": "erdos-104",
+    "range": { "startLine": 104, "endLine": 107 },
+    "type": "theorem",
+    "title": "Harborth-Mengersen Bound",
+    "content": "Refined to n(n-1)/3: each circle with 3+ points contains ≥ 3 pairs, so we divide by 3.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-104-elekes",
+    "proofId": "erdos-104",
+    "range": { "startLine": 115, "endLine": 119 },
+    "type": "theorem",
+    "title": "Elekes Lower Bound",
+    "content": "There exist n-point sets with Ω(n^{3/2}) unit circles containing 3+ points. This construction uses points on a grid-like structure.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-104-linear",
+    "proofId": "erdos-104",
+    "range": { "startLine": 121, "endLine": 125 },
+    "type": "theorem",
+    "title": "Linear Lower Bound",
+    "content": "Ω(n) is easy: place n points on a circle of radius 1, then many unit circles pass through 3+ points.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-104-conjecture",
+    "proofId": "erdos-104",
+    "range": { "startLine": 133, "endLine": 136 },
+    "type": "conjecture",
+    "title": "Main Conjecture",
+    "content": "The count is O(n^{3/2}). Combined with Elekes's lower bound, this would determine the exact growth rate.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-104-weak",
+    "proofId": "erdos-104",
+    "range": { "startLine": 138, "endLine": 141 },
+    "type": "conjecture",
+    "title": "Weak Conjecture",
+    "content": "The count is o(n²): for any ε > 0, eventually less than n^{2-ε}. Even this weaker statement is open.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-104-implies",
+    "proofId": "erdos-104",
+    "range": { "startLine": 143, "endLine": 151 },
+    "type": "theorem",
+    "title": "Strong Implies Weak",
+    "content": "O(n^{3/2}) implies o(n²) since 3/2 < 2 - ε for small enough ε.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-104-incidence",
+    "proofId": "erdos-104",
+    "range": { "startLine": 159, "endLine": 161 },
+    "type": "definition",
+    "title": "Incidence Count",
+    "content": "Total number of (point, circle) pairs where the point lies on the circle. Szemerédi-Trotter bounds relate this to circle count.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-104-st",
+    "proofId": "erdos-104",
+    "range": { "startLine": 163, "endLine": 166 },
+    "type": "theorem",
+    "title": "Circle Incidence Bound",
+    "content": "Szemerédi-Trotter type bound for circles: I(P,C) ≤ O(|P|^{2/3}|C|^{2/3} + |P| + |C|). This is a key tool in incidence geometry.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-104-max",
+    "proofId": "erdos-104",
+    "range": { "startLine": 174, "endLine": 176 },
+    "type": "definition",
+    "title": "Maximum Unit Circles",
+    "content": "f(n) = max over all n-point sets of the number of rich unit circles. This is OEIS A003829.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-104-values",
+    "proofId": "erdos-104",
+    "range": { "startLine": 178, "endLine": 188 },
+    "type": "theorem",
+    "title": "Known Values",
+    "content": "f(3)=1, f(4)=4, f(5)=8, f(6)=13. For 3 points, at most one unit circle passes through all three.",
+    "significance": "supporting"
+  }
+]

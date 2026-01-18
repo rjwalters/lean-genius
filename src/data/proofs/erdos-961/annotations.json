@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "ann-961-header",
+    "proofId": "erdos-961",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdős Problem #961 asks about smooth numbers in consecutive intervals. A k-smooth number has all prime factors ≤ k. The question: how many consecutive integers > k can all be k-smooth? The function f(k) measures this maximum run length.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-961-smooth",
+    "proofId": "erdos-961",
+    "range": { "startLine": 42, "endLine": 50 },
+    "type": "definition",
+    "title": "Smooth Numbers",
+    "content": "A positive integer n is k-smooth if every prime factor of n is at most k. For example, 12 = 2²·3 is 3-smooth (factors 2,3 ≤ 3), while 30 = 2·3·5 is 5-smooth but not 4-smooth (factor 5 > 4). Smooth numbers are central to factoring algorithms.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-961-smoothNumbers",
+    "proofId": "erdos-961",
+    "range": { "startLine": 52, "endLine": 70 },
+    "type": "theorem",
+    "title": "Connection to Mathlib",
+    "content": "We prove our definition of k-smooth is equivalent to membership in Mathlib's Nat.smoothNumbers (k+1). The offset by 1 is because smoothNumbers uses a strict bound: n ∈ smoothNumbers(k+1) means all prime factors are < k+1, i.e., ≤ k.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-961-property",
+    "proofId": "erdos-961",
+    "range": { "startLine": 74, "endLine": 77 },
+    "type": "definition",
+    "title": "HasLargePrimeFactor Property",
+    "content": "The key property: for a given k and n, every interval of n consecutive integers starting above k contains at least one number with a prime factor > k (not k-smooth). This is what f(k) minimizes.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-961-sylvester-axiom",
+    "proofId": "erdos-961",
+    "range": { "startLine": 103, "endLine": 105 },
+    "type": "theorem",
+    "title": "Sylvester-Schur Theorem",
+    "content": "The classical Sylvester-Schur theorem (1934): among any k consecutive integers greater than k, at least one has a prime factor > k. This establishes that f(k) ≤ k. Stated as axiom since the proof requires prime distribution analysis.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-961-f-def",
+    "proofId": "erdos-961",
+    "range": { "startLine": 110, "endLine": 112 },
+    "type": "definition",
+    "title": "Definition of f(k)",
+    "content": "f(k) is defined as the minimal n such that any n consecutive integers > k contain a non-k-smooth number. This uses Nat.find to extract the minimum from the existence proof provided by Sylvester-Schur.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-961-sylvester-bound",
+    "proofId": "erdos-961",
+    "range": { "startLine": 124, "endLine": 133 },
+    "type": "theorem",
+    "title": "Sylvester-Schur Bound",
+    "content": "From the Sylvester-Schur theorem, we immediately get f(k) ≤ k. This is the 'trivial' bound: any k consecutive integers above k contain a non-smooth number. The proof is just applying minimality of f.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-961-erdos",
+    "proofId": "erdos-961",
+    "range": { "startLine": 137, "endLine": 143 },
+    "type": "theorem",
+    "title": "Erdős Bound (1955)",
+    "content": "Erdős proved f(k) < 3k/log(k) for sufficiently large k. This shows f(k) grows sublinearly - slower than k. The proof uses properties of prime distribution and is stated as an axiom since it requires analytic number theory.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-961-jutila",
+    "proofId": "erdos-961",
+    "range": { "startLine": 151, "endLine": 159 },
+    "type": "theorem",
+    "title": "Jutila-Ramachandra-Shorey Bound",
+    "content": "The strongest known upper bound: f(k) ≪ (log log log k / log log k) · (k/log k). Proved independently by Jutila (1974) and Ramachandra-Shorey (1973) using sieve methods. This is much stronger than Erdős's bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-961-conjecture",
+    "proofId": "erdos-961",
+    "range": { "startLine": 163, "endLine": 170 },
+    "type": "definition",
+    "title": "Polylogarithmic Conjecture",
+    "content": "The main open conjecture: f(k) ≪ (log k)^C for some constant C. This predicts polylogarithmic growth, vastly smaller than the known O(k/polylog) bounds. The gap is enormous - roughly k vs log(k).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-961-examples",
+    "proofId": "erdos-961",
+    "range": { "startLine": 177, "endLine": 188 },
+    "type": "example",
+    "title": "Small Examples",
+    "content": "For k=2, 2-smooth numbers are powers of 2: 1,2,4,8,16... The gaps grow exponentially, so f(2) is small. For k=3, 3-smooth numbers are 2^a·3^b: 1,2,3,4,6,8,9,12... Again, gaps force f(3) ≤ 3 by Sylvester-Schur.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-961-connection",
+    "proofId": "erdos-961",
+    "range": { "startLine": 192, "endLine": 206 },
+    "type": "concept",
+    "title": "Connection to Problem #683",
+    "content": "Problem #683 asks about gaps between smooth numbers directly. If g(k) is the largest gap between consecutive k-smooth numbers, then f(k) ≤ g(k) + 1. The two problems are 'essentially equivalent' - progress on either helps the other.",
+    "significance": "key"
+  }
+]

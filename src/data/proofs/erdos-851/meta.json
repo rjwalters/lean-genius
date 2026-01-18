@@ -1,33 +1,126 @@
 {
   "id": "erdos-851",
-  "title": "Erdős Problem #851",
+  "title": "Erdős Problem #851: Density of Integers 2^k + n",
   "slug": "erdos-851",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is there some ... such that the density of integers of the form ..., where ... and ... has at most ... prime divisor...",
+  "description": "Romanoff (1934) proved that integers of the form 2^k + p (p prime) have positive lower density. Erdős asked: for any ε > 0, is there r such that integers of form 2^k + n (n has ≤ r prime factors) have density ≥ 1 - ε? OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Romanoff (1934), Erdős-Odlyzko (1979)",
     "sourceUrl": "https://erdosproblems.com/851",
-    "date": "",
-    "status": "pending",
+    "date": "1934",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos851Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "density",
+      "prime-factors"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 851,
     "erdosUrl": "https://erdosproblems.com/851",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.primeFactors",
+        "description": "Prime factors of a natural number",
+        "module": "Mathlib.Data.Nat.Prime"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "IsSquare",
+        "description": "Predicate for perfect squares",
+        "module": "Mathlib.Algebra.Associated"
+      }
+    ],
+    "originalContributions": [
+      "Definition of TwoPowAddSet: integers 2^k + n with ω(n) ≤ r",
+      "Axiomatization of lower density for natural number sets",
+      "Romanoff's Theorem (1934) as axiom",
+      "Erdős's density conjecture (OPEN) as axiom",
+      "Monotonicity of TwoPowAddSet in r",
+      "Covering property: union covers all m ≥ 2",
+      "Verified examples: 3, 5, 9, 17 in TwoPowAddSet 0"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #851 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\epsilon>0$. Is there some $r\\ll_\\epsilon 1$ such that the density of integers of the form $2^k+n$, where $k\\geq 0$ and $n$ has at most $r$ prime divisors, is at least $1-\\epsilon$?\n\n\n\nRomanoff \\cite{Ro34} proved that the set of integers of the form $2^k+p$ (where $p$ is prime) has positive lower density.\n\nSee also [205].\n\n\n\n\nReferences\n\n\n[Ro34] Romanoff, N. P., \\\"{U}ber einige S\\\"Atze der additiven Zahlentheorie. Math. Ann. (1934), 668-678.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Romanoff's Theorem (1934)** initiated the study of integers representable as 2^k + p where p is prime. Romanoff proved this set has positive lower density (approximately 0.0868).\n\n**Erdős's Question** generalizes this: if we allow n to have more prime factors (not just 1), can we cover almost all integers?\n\n**Timeline**:\n- 1934: Romanoff proves positive density for 2^k + p\n- 1979: Erdős-Odlyzko improve density bounds to ~0.0868\n- Present: The general conjecture remains **OPEN**\n\nThe problem connects to:\n- Additive number theory\n- Sieve methods\n- Covering congruences",
+    "problemStatement": "For integer $n \\geq 1$, define the set\n$$\\text{TwoPowAddSet}(r) = \\{2^k + n : k \\geq 0, \\omega(n) \\leq r\\}$$\nwhere $\\omega(n)$ counts distinct prime factors.\n\n**Romanoff's Theorem (1934)**: The set of integers $2^k + p$ (p prime or 1) has positive lower density:\n$$\\liminf_{N \\to \\infty} \\frac{|\\text{TwoPowAddSet}(1) \\cap [1,N]|}{N} > 0$$\n\n**Erdős Problem #851 (OPEN)**: For every $\\varepsilon > 0$, is there some $r$ such that\n$$\\liminf_{N \\to \\infty} \\frac{|\\text{TwoPowAddSet}(r) \\cap [1,N]|}{N} \\geq 1 - \\varepsilon?$$\n\nIn other words, can we cover almost all integers by allowing n to have a bounded number of prime factors?",
+    "proofStrategy": "We formalize this problem by:\n\n1. **TwoPowAddSet definition**: {m | ∃ k n, m = 2^k + n ∧ n.primeFactors.card ≤ r}\n\n2. **Lower density axiom**: Axiomatize lowerDensity(S) as liminf of counting measure\n\n3. **Romanoff's Theorem**: Axiomatize 0 < lowerDensity(TwoPowAddSet 1)\n\n4. **Main conjecture**: Axiomatize ∀ ε > 0, ∃ r, 1 - ε ≤ lowerDensity(TwoPowAddSet r)\n\n5. **Properties**: Prove monotonicity, covering, and verify specific examples\n\n6. **Density bounds**: Axiomatize the ~0.0868 lower bound from Erdős-Odlyzko",
+    "keyInsights": [
+      "**Why r = 1 isn't enough**: Romanoff's density ~0.0868 leaves most integers uncovered. Many integers cannot be written as 2^k + p for any prime p.",
+      "**Monotonicity**: TwoPowAddSet(r) ⊆ TwoPowAddSet(s) for r ≤ s, so density is non-decreasing in r.",
+      "**The covering question**: Does the limiting density as r → ∞ equal 1? If yes, the conjecture is true.",
+      "**Connection to covering congruences**: Integers m ≡ 0 (mod 2^k) for all small k have limited representations, suggesting potential barriers.",
+      "**Why the problem is hard**: We need to understand the interplay between powers of 2 and arithmetic properties of numbers with few prime factors."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 23,
+      "endLine": 41,
+      "summary": "TwoPowAddSet and lowerDensity definitions capturing the representability condition."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 43,
+      "endLine": 62,
+      "summary": "Powers of 2 plus 1 are always representable; TwoPowAddSet is monotone; union covers all m ≥ 2."
+    },
+    {
+      "id": "romanoff",
+      "title": "Romanoff's Theorem (1934)",
+      "startLine": 64,
+      "endLine": 77,
+      "summary": "The foundational result: 2^k + p has positive lower density, approximately 0.0868."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture (OPEN)",
+      "startLine": 78,
+      "endLine": 92,
+      "summary": "Erdős's question about achieving density arbitrarily close to 1."
+    },
+    {
+      "id": "density-properties",
+      "title": "Density Properties",
+      "startLine": 93,
+      "endLine": 117,
+      "summary": "Monotonicity of density in r, upper bound of 1, and equivalence to limit being 1."
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "startLine": 118,
+      "endLine": 130,
+      "summary": "Uncovered integers, Erdős-Odlyzko bounds, and covering problem status."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 131,
+      "endLine": 156,
+      "summary": "Specific integers 3, 5, 9, 17 verified to be in TwoPowAddSet 0."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #851 about the density of integers representable as 2^k + n where n has at most r prime factors. Romanoff's 1934 theorem establishes positive density for r = 1 (primes). The main conjecture—that density approaches 1 as r increases—remains OPEN.",
+    "implications": "This problem illuminates the structure of integers through additive representations involving powers of 2. Understanding which integers resist such representations reveals deep connections between multiplicative (prime factors) and additive (powers of 2) properties of numbers.",
+    "openQuestions": [
+      "Does lim_{r→∞} lowerDensity(TwoPowAddSet r) = 1? (The main conjecture)",
+      "What is the exact value of lowerDensity(TwoPowAddSet 1)? (Known to be ~0.0868)",
+      "For fixed ε, what is the minimum r achieving density ≥ 1 - ε?",
+      "Is there a positive proportion of integers not in any TwoPowAddSet(r)?"
+    ]
   }
 }

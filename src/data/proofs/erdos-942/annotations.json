@@ -1,1 +1,219 @@
-[]
+[
+  {
+    "id": "ann-e942-header",
+    "proofId": "erdos-942",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #942**: Powerful Numbers Between Consecutive Squares\n\n**Question**: Let h(n) count powerful (squarefull) integers in [n², (n+1)²). Estimate h(n).\n\n**Main Conjecture** (OPEN): Is there c > 0 such that h(n) ~ (log n)^c?\n\n**Key Points**:\n- A powerful number m has p | m implies p² | m (equivalently m = a²b³)\n- limsup h(n) = ∞ is proven (van Doorn)\n- De Koninck-Luca (2004): h(n) ≥ c(log n / log log n)^{1/3} infinitely often\n- The density of n with h(n) = 1 is approximately 27.5%",
+    "mathContext": "Powerful numbers are fundamental objects in multiplicative number theory. They form a sparse set (~c√N up to N), yet their distribution in short intervals reveals subtle structure.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "powerful-numbers",
+      "squarefull",
+      "density"
+    ]
+  },
+  {
+    "id": "ann-e942-background",
+    "proofId": "erdos-942",
+    "range": {
+      "startLine": 35,
+      "endLine": 48
+    },
+    "type": "concept",
+    "title": "Background: Powerful Numbers",
+    "content": "**Powerful number** (squarefull): m > 0 where p | m implies p² | m\n\n**Equivalent definition**: m = a²b³ for some positive integers a, b\n\n**Examples**: 1, 4, 8, 9, 16, 25, 27, 32, 36, 49, 64, 72, 81, 100, 108, 121, ...\n\n**Non-examples**: 2, 3, 5, 6, 7, 10, 11, 12, 14, 15, 18, ... (have a prime to the first power only)\n\n**Density**: Count of powerful numbers up to N is asymptotic to c√N where c = ζ(3/2)/ζ(3) ≈ 2.173",
+    "mathContext": "The a²b³ characterization comes from decomposing each prime power in the factorization: p^k = p^(2q) * p^r where k = 2q + r with r ∈ {0, 1, 2}. For powerful numbers, r ≤ 1 is not allowed unless q > 0.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime-factorization",
+      "squarefull",
+      "density-asymptotics"
+    ]
+  },
+  {
+    "id": "ann-e942-definitions",
+    "proofId": "erdos-942",
+    "range": {
+      "startLine": 50,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "Core Definitions",
+    "content": "**def Powerful (m : ℕ)**: Prop\n  m > 0 ∧ ∀ p, p.Prime → p ∣ m → p² ∣ m\n\n**def PowerfulAlt (m : ℕ)**: Prop\n  ∃ a b, a > 0 ∧ b > 0 ∧ m = a² * b³\n\n**axiom powerful_iff_alt (m : ℕ)**:\n  Powerful m ↔ PowerfulAlt m\n\n**axiom squareIntervalSet (n : ℕ)**: Set ℕ\n  The set [n², (n+1)²)\n\n**axiom h : ℕ → ℕ**\n  Counts powerful integers in the interval",
+    "mathContext": "The Powerful definition captures the prime-based characterization. PowerfulAlt captures the algebraic a²b³ form. Their equivalence is a standard exercise in elementary number theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "definition",
+      "equivalence",
+      "counting-function"
+    ]
+  },
+  {
+    "id": "ann-e942-examples",
+    "proofId": "erdos-942",
+    "range": {
+      "startLine": 79,
+      "endLine": 103
+    },
+    "type": "axiom",
+    "title": "Examples of Powerful Numbers",
+    "content": "**Powerful examples**:\n- 1 = 1² × 1³ (vacuously powerful)\n- 4 = 2² (square)\n- 8 = 2³ (cube)\n- 9 = 3² (square)\n- 36 = 2² × 3² (product of squares)\n- 72 = 2³ × 3² (cube times square)\n\n**Non-powerful examples**:\n- 6 = 2 × 3 (both primes to first power)\n- 12 = 2² × 3 (3 appears to first power only)",
+    "mathContext": "These examples illustrate the pattern: a number is powerful iff every prime appears at least twice in its factorization. Mixed powers like 72 = 8 × 9 = 2³ × 3² are powerful because both exponents ≥ 2.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "examples",
+      "prime-factorization",
+      "verification"
+    ]
+  },
+  {
+    "id": "ann-e942-conjecture",
+    "proofId": "erdos-942",
+    "range": {
+      "startLine": 113,
+      "endLine": 119
+    },
+    "type": "axiom",
+    "title": "The Main Conjecture (OPEN)",
+    "content": "**axiom erdos_942_conjecture : Prop**\n\nThe conjecture asks: Is there c > 0 such that\n- h(n) < (log n)^{c+o(1)} eventually, and\n- h(n) > (log n)^{c-o(1)} infinitely often?\n\n**axiom erdos_942_open**:\n  ¬(erdos_942_conjecture ↔ True) ∧ ¬(erdos_942_conjecture ↔ False)\n\nThe conjecture remains neither proven nor disproven.",
+    "mathContext": "This is asking whether h(n) has a well-defined 'typical' growth rate on the logarithmic scale. The o(1) terms allow for fluctuations that vanish as n → ∞.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open-problem",
+      "growth-rate",
+      "logarithmic-scale"
+    ]
+  },
+  {
+    "id": "ann-e942-unbounded",
+    "proofId": "erdos-942",
+    "range": {
+      "startLine": 127,
+      "endLine": 132
+    },
+    "type": "axiom",
+    "title": "Known Result: h(n) is Unbounded",
+    "content": "**axiom h_unbounded**: ∀ M : ℕ, ∃ n : ℕ, h n > M\n\n**Proof sketch** (van Doorn):\nSince powerful numbers have density ~c/√N, in an interval of length 2n+1 around n², we expect ~c(2n+1)/√(n²) = ~2c/√n powerful numbers on average.\n\nBut the distribution fluctuates. Near certain special values of n (e.g., when n² is close to products of many small prime powers), h(n) can be arbitrarily large.",
+    "mathContext": "Unboundedness follows from the clustering phenomenon: powerful numbers can cluster near products of small prime powers, creating intervals with many powerful numbers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unbounded",
+      "limsup",
+      "van-doorn"
+    ]
+  },
+  {
+    "id": "ann-e942-density",
+    "proofId": "erdos-942",
+    "range": {
+      "startLine": 140,
+      "endLine": 158
+    },
+    "type": "axiom",
+    "title": "Density of h(n) = l",
+    "content": "**axiom HasDensity (A : Set ℕ) (d : ℝ)**: Prop\n  Natural density definition\n\n**axiom delta : ℕ → ℝ**\n  δ_l = density of {n : h(n) = l}\n\n**axiom density_sum_one**: ∀ N, Σ_{l < N} δ_l ≤ 1\n  (In the limit, Σ δ_l = 1)\n\n**axiom density_h_eq_1**: 0.27 < δ_1 < 0.28\n  About 27.5% of n have exactly one powerful number in [n², (n+1)²)",
+    "mathContext": "The density theory shows that for 'most' n, h(n) is small. The 27.5% figure for h(n) = 1 indicates that n² is 'isolated' from other powerful numbers most of the time.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density",
+      "probability",
+      "de-koninck-luca"
+    ]
+  },
+  {
+    "id": "ann-e942-dekoninck-luca",
+    "proofId": "erdos-942",
+    "range": {
+      "startLine": 160,
+      "endLine": 172
+    },
+    "type": "axiom",
+    "title": "De Koninck-Luca Lower Bound (2004)",
+    "content": "**axiom de_koninck_luca_lower**:\n  ∃ c > 0, {n ≥ 3 | h(n) ≥ c}.Infinite\n\n**Full theorem** (De Koninck-Luca 2004):\nFor infinitely many n, h(n) ≥ c(log n / log log n)^{1/3}\n\n**Reference**: De Koninck, J.-M. and Luca, F., \"Sur la proximité des nombres puissants\", Acta Arith. (2004), 149-157.",
+    "mathContext": "This result shows h(n) can grow, though sublogarithmically. The (log n / log log n)^{1/3} rate is slower than any power of log n, leaving the main conjecture open.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "de-koninck-luca",
+      "lower-bound",
+      "acta-arithmetica"
+    ]
+  },
+  {
+    "id": "ann-e942-properties",
+    "proofId": "erdos-942",
+    "range": {
+      "startLine": 174,
+      "endLine": 188
+    },
+    "type": "axiom",
+    "title": "Properties of Powerful Numbers",
+    "content": "**axiom powerful_mul (a b)**:\n  Powerful a → Powerful b → Powerful (a * b)\n  Product of powerful numbers is powerful\n\n**axiom square_powerful (a) (ha : a > 0)**:\n  Powerful (a²)\n  Every perfect square is powerful\n\n**axiom cube_powerful (b) (hb : b > 0)**:\n  Powerful (b³)\n  Every perfect cube is powerful\n\n**axiom powerful_count_asymptotic**:\n  ∃ c ∈ (2, 2.2), count(powerful up to N) ~ c√N",
+    "mathContext": "Closure under multiplication follows from the definition: if p² | a and p² | b, then p² | ab. The asymptotic c = ζ(3/2)/ζ(3) ≈ 2.173 comes from a Dirichlet series calculation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "closure",
+      "squares",
+      "cubes",
+      "asymptotics"
+    ]
+  },
+  {
+    "id": "ann-e942-interval",
+    "proofId": "erdos-942",
+    "range": {
+      "startLine": 197,
+      "endLine": 205
+    },
+    "type": "axiom",
+    "title": "The Square Interval",
+    "content": "**axiom squareInterval_card (n)**:\n  (n+1)² - n² = 2n + 1\n  The interval [n², (n+1)²) has length 2n + 1\n\n**axiom next_square (n)**:\n  (n+1)² = n² + 2n + 1\n  Standard identity\n\n**axiom squareInterval_contains_endpoints (n)**:\n  n² ∈ [n², (n+1)²) ∧ n² + 2n ∈ [n², (n+1)²)\n  Both endpoints are in the interval",
+    "mathContext": "The interval length 2n+1 grows linearly. Since powerful numbers have density ~c/√N, we expect ~c(2n+1)/√(n²) ≈ 2c/√n powerful numbers per interval on average - a vanishing fraction.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "interval-length",
+      "consecutive-squares",
+      "expected-count"
+    ]
+  },
+  {
+    "id": "ann-e942-small-examples",
+    "proofId": "erdos-942",
+    "range": {
+      "startLine": 211,
+      "endLine": 218
+    },
+    "type": "axiom",
+    "title": "Small Examples",
+    "content": "**axiom h_one**: h(1) = 1\n  [1, 4) = {1, 2, 3}, only 1 is powerful\n\n**axiom h_two**: h(2) = 2\n  [4, 9) = {4, 5, 6, 7, 8}, both 4 and 8 are powerful\n\n**axiom h_three**: h(3) = 1\n  [9, 16) = {9, 10, 11, 12, 13, 14, 15}, only 9 is powerful",
+    "mathContext": "These concrete values illustrate the irregular behavior of h(n). Even for small n, h(n) varies: h(1)=1, h(2)=2, h(3)=1. The gap between 9 and 16 contains no powerful numbers except 9 itself.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "computed-examples",
+      "small-cases",
+      "verification"
+    ]
+  },
+  {
+    "id": "ann-e942-summary",
+    "proofId": "erdos-942",
+    "range": {
+      "startLine": 239,
+      "endLine": 240
+    },
+    "type": "theorem",
+    "title": "Summary and Status",
+    "content": "**theorem erdos_942_status**:\n  ¬(erdos_942_conjecture ↔ True)\n\n**Erdős Problem #942: OPEN**\n\n**What we know**:\n1. h(n) is unbounded (limsup = ∞)\n2. Densities δ_l exist with Σ δ_l = 1\n3. δ_1 ≈ 0.275\n4. h(n) ≥ c(log n / log log n)^{1/3} infinitely often\n\n**What remains open**:\nThe precise growth rate ~ (log n)^c",
+    "mathContext": "This problem illustrates a common situation in analytic number theory: we can prove unboundedness and establish partial bounds, but pinning down the exact growth rate requires deeper understanding of how arithmetic structure interacts with interval geometry.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "problem-status",
+      "open",
+      "summary"
+    ]
+  }
+]

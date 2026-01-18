@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-94-point",
+    "proofId": "erdos-94",
+    "range": { "startLine": 37, "endLine": 38 },
+    "type": "definition",
+    "title": "Point",
+    "content": "A point in the Euclidean plane ℝ². Uses Mathlib's EuclideanSpace.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-94-config",
+    "proofId": "erdos-94",
+    "range": { "startLine": 41, "endLine": 41 },
+    "type": "definition",
+    "title": "Point Configuration",
+    "content": "A finite set of points in ℝ². The vertices of a potential convex polygon.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-94-distset",
+    "proofId": "erdos-94",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "definition",
+    "title": "Distance Set",
+    "content": "The set of all distinct positive pairwise distances in a configuration.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-94-mult",
+    "proofId": "erdos-94",
+    "range": { "startLine": 57, "endLine": 58 },
+    "type": "definition",
+    "title": "Distance Multiplicity",
+    "content": "f(u) = number of ordered pairs at distance u. The key function in the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-94-unord",
+    "proofId": "erdos-94",
+    "range": { "startLine": 61, "endLine": 62 },
+    "type": "definition",
+    "title": "Unordered Multiplicity",
+    "content": "f(u) for unordered pairs (half of ordered count). What we actually sum.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-94-summult",
+    "proofId": "erdos-94",
+    "range": { "startLine": 65, "endLine": 67 },
+    "type": "theorem",
+    "title": "Sum of Multiplicities",
+    "content": "∑ f(u) = C(n,2). The trivial observation: total pairs equals binomial coefficient.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-94-sumsq",
+    "proofId": "erdos-94",
+    "range": { "startLine": 72, "endLine": 73 },
+    "type": "definition",
+    "title": "Sum of Squared Multiplicities",
+    "content": "∑ f(u)². The key quantity we want to bound by O(n³).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-94-quadruple",
+    "proofId": "erdos-94",
+    "range": { "startLine": 76, "endLine": 78 },
+    "type": "definition",
+    "title": "Equal Distance Pairs",
+    "content": "Count quadruples (p,q,r,s) with d(p,q) = d(r,s). Equivalent formulation of ∑ f(u)².",
+    "significance": "key"
+  },
+  {
+    "id": "ann-94-convex",
+    "proofId": "erdos-94",
+    "range": { "startLine": 88, "endLine": 89 },
+    "type": "definition",
+    "title": "Convex Position",
+    "content": "Points form a convex polygon: no point is in the convex hull of the others.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-94-collinear",
+    "proofId": "erdos-94",
+    "range": { "startLine": 92, "endLine": 95 },
+    "type": "definition",
+    "title": "No Three Collinear",
+    "content": "No three points lie on a line. Weaker than convex position.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-94-fishburn",
+    "proofId": "erdos-94",
+    "range": { "startLine": 105, "endLine": 108 },
+    "type": "theorem",
+    "title": "Fishburn's Theorem",
+    "content": "∑ f(u)² ≤ C·n³ for convex polygons. The main result solving the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-94-lt",
+    "proofId": "erdos-94",
+    "range": { "startLine": 119, "endLine": 122 },
+    "type": "theorem",
+    "title": "Lefmann-Theile Theorem",
+    "content": "Same O(n³) bound under the weaker 'no three collinear' condition. A strengthening.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-94-regular",
+    "proofId": "erdos-94",
+    "range": { "startLine": 127, "endLine": 130 },
+    "type": "definition",
+    "title": "Regular n-gon",
+    "content": "Vertices of the regular n-gon on the unit circle. The conjectured extremal configuration.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-94-cubic",
+    "proofId": "erdos-94",
+    "range": { "startLine": 142, "endLine": 145 },
+    "type": "theorem",
+    "title": "Regular n-gon is Θ(n³)",
+    "content": "The regular n-gon achieves ∑ f(u)² = Θ(n³), showing the bound is tight.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-94-conjecture",
+    "proofId": "erdos-94",
+    "range": { "startLine": 150, "endLine": 152 },
+    "type": "definition",
+    "title": "Erdős-Fishburn Conjecture",
+    "content": "The regular n-gon maximizes ∑ f(u)² among all convex n-gons (for large n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-94-distinct",
+    "proofId": "erdos-94",
+    "range": { "startLine": 163, "endLine": 164 },
+    "type": "definition",
+    "title": "Distinct Distances",
+    "content": "Number of distinct distances in the configuration. Bounded by ⌊n/2⌋ + 1 for convex.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-94-maxmult",
+    "proofId": "erdos-94",
+    "range": { "startLine": 172, "endLine": 173 },
+    "type": "definition",
+    "title": "Maximum Multiplicity",
+    "content": "The maximum f(u) over all distances. Bounded by O(n) for convex position.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-94-unit",
+    "proofId": "erdos-94",
+    "range": { "startLine": 183, "endLine": 184 },
+    "type": "definition",
+    "title": "Unit Distance Count",
+    "content": "f(1) = pairs at distance exactly 1. Connection to unit distance problem.",
+    "significance": "supporting"
+  }
+]

@@ -1,33 +1,150 @@
 {
   "id": "erdos-454",
-  "title": "Erdős Problem #454",
+  "title": "Erdős #454: Prime Sum Deviations",
   "slug": "erdos-454",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[f(n) = \\min_{i<n} (p_{n+i}+p_{n-i}),\\]where ... is the ...th prime. Is it true that\\[\\limsup_n (f(n)-2p_n)=\\infty?\\]\n\n\n\n...",
+  "description": "Let f(n) = min_{i<n} (p_{n+i} + p_{n-i}). Is limsup(f(n) - 2p_n) = ∞? Pomerance (1979) proved limsup ≥ 2. The problem remains open.",
   "meta": {
-    "author": "Unknown",
+    "author": "Carl Pomerance (1979 partial result)",
     "sourceUrl": "https://erdosproblems.com/454",
-    "date": "",
-    "status": "pending",
+    "date": "1979",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos454Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "analytic-number-theory"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 10,
     "erdosNumber": 454,
     "erdosUrl": "https://erdosproblems.com/454",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.nth Prime",
+        "description": "The nth prime function",
+        "module": "Mathlib.NumberTheory.PrimeCounting"
+      },
+      {
+        "theorem": "Filter.limsup",
+        "description": "Limit superior in filters",
+        "module": "Mathlib.Order.LiminfLimsup"
+      },
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of symmetric prime sum function f(n)",
+      "Definition of deviation f(n) - 2p_n",
+      "Pomerance's lower bound as axiom",
+      "The Prime Number Graph construction",
+      "Connection to prime gap irregularity"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #454 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[f(n) = \\min_{i<n} (p_{n+i}+p_{n-i}),\\]where $p_k$ is the $k$th prime. Is it true that\\[\\limsup_n (f(n)-2p_n)=\\infty?\\]\n\n\n\nPomerance \\cite{Po79} has proved the $\\limsup$ is at least $2$.\n\n\n\n\nReferences\n\n\n[Po79] Pomerance, Carl, The prime number graph. Math. Comp. (1979), 399-408.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #454 concerns the behavior of symmetric prime sums. The function f(n) computes the minimum of p_{n+i} + p_{n-i} over all i < n. If primes were perfectly evenly spaced, this minimum would equal exactly 2p_n for all n.\n\nPomerance studied this in his 1979 paper 'The Prime Number Graph', which introduced a graph structure on natural numbers based on prime sums. He proved that the limsup of f(n) - 2p_n is at least 2, showing that deviations from the 'ideal' spacing do occur.\n\nThe open question is whether these deviations can be arbitrarily large—that is, whether the limsup is infinite. This relates to fundamental questions about prime gap irregularity.",
+    "problemStatement": "Let p_k denote the k-th prime. Define:\n\n$$f(n) = \\min_{i<n} (p_{n+i} + p_{n-i})$$\n\nIs it true that $\\limsup_{n \\to \\infty} (f(n) - 2p_n) = \\infty$?\n\n**Status**: OPEN\n\n**Known**: Pomerance (1979) proved $\\limsup \\geq 2$.",
+    "proofStrategy": "We formalize the problem by:\n\n1. **nthPrime function**: Using Mathlib's Nat.nth Prime for the k-th prime\n2. **Symmetric sums**: Defining f(n) as the infimum over i < n\n3. **Deviation**: Measuring f(n) - 2p_n as the key quantity\n4. **Pomerance's bound**: Stated as an axiom (limsup ≥ 2)\n5. **Heuristics**: If prime gaps average log(p), gaps should cancel in symmetric sums\n6. **Prime Number Graph**: Pomerance's graph structure for understanding prime sums\n\nThe conjecture asks whether gap irregularity can cause unbounded deviations.",
+    "keyInsights": [
+      "**Symmetric cancellation**: For evenly spaced primes, p_{n+i} + p_{n-i} = 2p_n exactly. Real primes deviate from this.",
+      "**The i=0 term**: Always gives p_n + p_n = 2p_n, so f(n) ≤ 2p_n always.",
+      "**Gap irregularity**: If p_{n+i} is 'too large' (big gap before it) and p_{n-i} is 'too small' (big gap after it), the sum can exceed 2p_n significantly.",
+      "**Pomerance's contribution**: Proved limsup ≥ 2, showing deviations do occur.",
+      "**Prime Number Graph**: Vertices connected if their primes sum to another prime—relates to Goldbach-type questions."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "nth-prime",
+      "title": "The nth Prime Function",
+      "startLine": 35,
+      "endLine": 57,
+      "summary": "Definition of nthPrime and basic properties."
+    },
+    {
+      "id": "function-f",
+      "title": "The Function f(n)",
+      "startLine": 59,
+      "endLine": 83,
+      "summary": "Symmetric prime sum function f(n) = min_{i<n} (p_{n+i} + p_{n-i})."
+    },
+    {
+      "id": "deviation",
+      "title": "The Deviation from 2p_n",
+      "startLine": 85,
+      "endLine": 99,
+      "summary": "Measuring how far f(n) deviates from twice the central prime."
+    },
+    {
+      "id": "symmetric-analysis",
+      "title": "Understanding Symmetric Sums",
+      "startLine": 101,
+      "endLine": 118,
+      "summary": "Why the i=0 term gives deviation 0 and asymmetric behavior for i > 0."
+    },
+    {
+      "id": "pomerance",
+      "title": "Pomerance's Lower Bound",
+      "startLine": 120,
+      "endLine": 137,
+      "summary": "The 1979 result: limsup ≥ 2."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 139,
+      "endLine": 157,
+      "summary": "Statement of the open problem: is limsup = ∞?"
+    },
+    {
+      "id": "heuristics",
+      "title": "Heuristic Analysis",
+      "startLine": 159,
+      "endLine": 174,
+      "summary": "Connection to prime gaps and why deviations occur."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 176,
+      "endLine": 191,
+      "summary": "Computing f(3) and showing deviation(3) = 0."
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "startLine": 193,
+      "endLine": 203,
+      "summary": "Connection to Problem #458 and the Prime Number Theorem."
+    },
+    {
+      "id": "resolution",
+      "title": "What Would Resolve the Conjecture",
+      "startLine": 205,
+      "endLine": 219,
+      "summary": "What a proof or disproof would require."
+    },
+    {
+      "id": "prime-graph",
+      "title": "The Prime Number Graph",
+      "startLine": 221,
+      "endLine": 240,
+      "summary": "Pomerance's graph structure connecting primes that sum to primes."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #454 on symmetric prime sum deviations. The problem asks whether f(n) - 2p_n can be arbitrarily large, where f(n) is the minimum symmetric prime sum. Pomerance (1979) proved the limsup is at least 2, but whether it's infinite remains open.",
+    "implications": "The problem connects to fundamental questions about prime gap distribution. If gaps were regular (averaging log p), symmetric sums would cancel to 2p_n. The existence of deviations reflects prime gap irregularity. Resolving this would shed light on the fine structure of prime distribution.",
+    "openQuestions": [
+      "Is limsup(f(n) - 2p_n) finite or infinite?",
+      "Can the lower bound 2 be improved?",
+      "What is the typical size of f(n) - 2p_n?",
+      "How does the Prime Number Graph structure relate to the conjecture?"
+    ]
   }
 }

@@ -1,33 +1,96 @@
 {
   "id": "erdos-1106",
-  "title": "Erdős Problem #1106",
+  "title": "Erdős #1106: Prime Factors of Partition Products",
   "slug": "erdos-1106",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the partition function of ... and let ... count the number of distinct prime factors of\\[\\prod_{1\\leq k\\leq n}...",
+  "description": "Let F(n) count distinct prime factors of ∏_{k=1}^n p(k) where p(k) is the partition function. Does F(n) → ∞? Is F(n) > n eventually? The first is proved; the second remains open.",
   "meta": {
-    "author": "Unknown",
+    "author": "Schinzel, Tijdeman, Erdős-Ivić (1973-1990)",
     "sourceUrl": "https://erdosproblems.com/1106",
-    "date": "",
-    "status": "pending",
+    "date": "1986",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1106Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "partitions",
+      "prime-factors",
+      "analytic-number-theory"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 1106,
     "erdosUrl": "https://erdosproblems.com/1106",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1106 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $p(n)$ denote the partition function of $n$ and let $F(n)$ count the number of distinct prime factors of\\[\\prod_{1\\leq k\\leq n}p(k).\\]Does $F(n)\\to \\infty$ with $n$? Is $F(n)>n$ for all sufficiently large $n$?\n\n\n\nAsked by Erd\\H{o}s at Oberwolfach in 1986. Schinzel noted in the Oberwolfach problem book that $F(n)\\to \\infty$ follows from the asymptotic formula for $p(n)$ and a result of Tijdeman \\cite{Ti73}. This is not obvious; details are given in a paper of Erd\\H{o}s and Ivi\\'{c} (see page 69 of \\cite{ErIv90}).\n\nSchinzel and Wirsing \\cite{ScWi87} have proved $F(n) \\gg \\log n$.\n\nOno \\cite{On00} has proved that every prime divides $p(n)$ for some $n\\geq 1$ (indeed this holds, for any fixed prime, for a positive density set of $n$).\n\n\n\n\nReferences\n\n\n[ErIv90] Erd\\H{o}s, Paul and Ivi\\'c, Aleksandar, The distribution of values of a certain class of arithmetic\nfunctions at consecutive integers. (1990), 45--91.\n\n[On00] Ono, Ken, Distribution of the partition function modulo {$m$}. Ann. of Math. (2) (2000), 293--307.\n\n[ScWi87] Schinzel, A. and Wirsing, E., Multiplicative properties of the partition function. Proc. Indian Acad. Sci. Math. Sci. (1987), 297--303.\n\n[Ti73] Tijdeman, R., On integers with many small prime factors. Compositio Math. (1973), 319--330.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős posed this problem at the Oberwolfach mathematics research institute in 1986. The partition function p(n)—counting the number of ways to write n as a sum of positive integers—has deep connections to analytic number theory through the Hardy-Ramanujan asymptotic formula.\n\nThe first question (F(n) → ∞) was resolved quickly: Schinzel noted in the Oberwolfach problem book that this follows from combining the Hardy-Ramanujan asymptotic for p(n) with Tijdeman's 1973 result on integers with many small prime factors. Full details appear on page 69 of the 1990 paper by Erdős and Ivić.\n\nThe second question (F(n) > n eventually) remains open. Schinzel and Wirsing (1987) proved the lower bound F(n) ≫ log n, but the gap between log n and n is vast. A related breakthrough by Ken Ono in 2000 showed that every prime divides p(n) for some n, occurring for a positive density of n for each fixed prime.",
+    "problemStatement": "Let $p(n)$ denote the partition function and define\n$$F(n) = \\#\\{\\text{distinct primes dividing } \\prod_{k=1}^{n} p(k)\\}$$\n\n**Question 1**: Does $F(n) \\to \\infty$ as $n \\to \\infty$?\n**Answer**: YES (Schinzel via Tijdeman 1973, details in Erdős-Ivić 1990)\n\n**Question 2**: Is $F(n) > n$ for all sufficiently large $n$?\n**Answer**: OPEN (best known: $F(n) \\gg \\log n$ by Schinzel-Wirsing 1987)",
+    "proofStrategy": "We formalize the partition function using Mathlib's Nat.Partition type, which represents a partition of n as a multiset of positive integers summing to n. The product of partition numbers and the prime factor counting function F(n) are defined directly.\n\nThe main result (F(n) → ∞) requires deep analytic number theory—specifically the Hardy-Ramanujan asymptotic formula combined with Tijdeman's analysis of prime factorizations of exponentially growing sequences. We state this as an axiom since the proof machinery is far beyond current Mathlib.\n\nWe verify small examples computationally: F(5) = 4 since p(1)·p(2)·p(3)·p(4)·p(5) = 1·2·3·5·7 = 210 = 2·3·5·7.",
+    "keyInsights": [
+      "**Partition function**: p(n) counts the ways to write n as an unordered sum of positive integers. The first values are 1, 1, 2, 3, 5, 7, 11, 15, 22, 30, ...",
+      "**Hardy-Ramanujan formula**: p(n) ~ (1/4n√3)·exp(π√(2n/3)), giving exponential growth that drives prime factor accumulation",
+      "**Ono's theorem**: Every prime p divides p(n) for some n ≥ 1, and this occurs for a positive density of n",
+      "**OEIS connection**: The partition products form sequence A194259; the prime counts form A194260"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "partition-function",
+      "title": "The Partition Function",
+      "summary": "Definition of p(n) via Mathlib's Nat.Partition and small value verification",
+      "startLine": 54,
+      "endLine": 76
+    },
+    {
+      "id": "partition-product",
+      "title": "Product of Partition Numbers",
+      "summary": "Definition of the product ∏_{k=1}^{n} p(k) and its positivity",
+      "startLine": 78,
+      "endLine": 90
+    },
+    {
+      "id": "prime-factors",
+      "title": "Counting Prime Factors",
+      "summary": "Definition of F(n) as the number of distinct prime factors",
+      "startLine": 92,
+      "endLine": 106
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "summary": "Schinzel-Wirsing lower bound, Hardy-Ramanujan asymptotic, Ono's theorem",
+      "startLine": 108,
+      "endLine": 137
+    },
+    {
+      "id": "main-theorems",
+      "title": "Main Theorems",
+      "summary": "F(n) → ∞ (proved) and F(n) > n eventually (open conjecture)",
+      "startLine": 139,
+      "endLine": 169
+    },
+    {
+      "id": "examples",
+      "title": "Small Examples",
+      "summary": "Verified computations of F(1) through F(5)",
+      "startLine": 171,
+      "endLine": 192
+    },
+    {
+      "id": "oeis",
+      "title": "OEIS Sequences",
+      "summary": "Connection to A194259 (partition products) and A194260 (prime counts)",
+      "startLine": 194,
+      "endLine": 208
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #1106 on prime factors of partition products. The first part (F(n) → ∞) is a proved theorem from the 1970s-1990s, combining deep results from analytic number theory. The second part (F(n) > n eventually) remains one of the open problems in the theory of partitions, with the current best bound of F(n) ≫ log n falling far short of the conjectured linear growth.",
+    "implications": "Understanding the prime factorization of partition numbers connects to fundamental questions about the arithmetic nature of p(n). Ono's 2000 result that every prime divides some p(n) was a major breakthrough, showing rich divisibility structure. The gap between log n and n for F(n) suggests there may be subtle cancellation phenomena not yet understood.",
+    "openQuestions": [
+      "Is F(n) > n for all sufficiently large n?",
+      "What is the true growth rate of F(n)? Is F(n) ~ cn for some constant c?",
+      "Can Ono's density results be strengthened to help with the F(n) > n question?"
+    ]
   }
 }

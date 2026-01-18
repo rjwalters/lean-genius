@@ -1,1 +1,236 @@
-[]
+[
+  {
+    "id": "ann-e298-header",
+    "proofId": "erdos-298",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #298**: Unit Fractions from Sets of Positive Density\n\n**Question**: Does every set A ⊆ ℕ of positive density contain some finite S ⊂ A such that ∑_{n ∈ S} 1/n = 1?\n\n**Answer**: YES (Thomas Bloom, 2021)\n\n**Prize**: $500 (one of Erdős's monetary problems)\n\n**Key Points**:\n- Bloom proved the stronger result: positive UPPER density suffices\n- The proof uses probabilistic methods, sum-product estimates, and Fourier analysis\n- A Lean 3 formalization exists at github.com/b-mehta/unit-fractions (~10,000 lines)",
+    "mathContext": "This problem connects additive structure (sums of unit fractions) with multiplicative structure (density of the set). It was a major open problem in additive combinatorics.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "unit-fractions",
+      "density",
+      "bloom-2021"
+    ]
+  },
+  {
+    "id": "ann-e298-background",
+    "proofId": "erdos-298",
+    "range": {
+      "startLine": 40,
+      "endLine": 54
+    },
+    "type": "concept",
+    "title": "Background: Unit Fractions and Density",
+    "content": "**Unit fraction**: 1/n for positive integer n\n\n**Egyptian fractions**: Sums of distinct unit fractions (ancient representation system)\n\n**Key identity**: 1 = 1/2 + 1/3 + 1/6\n\n**Density types**:\n- **Natural density**: lim_{N→∞} |A ∩ [1,N]| / N\n- **Upper density**: limsup_{N→∞} |A ∩ [1,N]| / N\n\n**Erdős's question**: If A is dense enough, must it contain a finite subset whose reciprocals sum to 1?",
+    "mathContext": "The distinction between natural and upper density is subtle but important. Upper density always exists; natural density may not.",
+    "significance": "key",
+    "relatedConcepts": [
+      "egyptian-fractions",
+      "natural-density",
+      "upper-density"
+    ]
+  },
+  {
+    "id": "ann-e298-definitions",
+    "proofId": "erdos-298",
+    "range": {
+      "startLine": 56,
+      "endLine": 89
+    },
+    "type": "axiom",
+    "title": "Core Definitions",
+    "content": "**def countUpTo (A : Set ℕ) (N : ℕ)**: ℕ\n  Count of elements in A ∩ [1,N]\n\n**noncomputable def densityRatio (A : Set ℕ) (N : ℕ)**: ℝ\n  = countUpTo A N / N\n\n**def HasPosDensity (A : Set ℕ)**: Prop\n  Natural density exists and is positive\n\n**axiom upperDensity (A : Set ℕ)**: ℝ\n  The limsup of density ratios\n\n**def HasPosUpperDensity (A : Set ℕ)**: Prop\n  upperDensity A > 0\n\n**noncomputable def unitFractionSum (S : Finset ℕ)**: ℚ\n  ∑ n ∈ S, 1/n\n\n**def SumsToOne (S : Finset ℕ)**: Prop\n  unitFractionSum S = 1\n\n**def ContainsUnitSumSubset (A : Set ℕ)**: Prop\n  ∃ finite S ⊆ A with SumsToOne S",
+    "mathContext": "These definitions formalize the problem statement precisely. The use of ℚ for unit fraction sums avoids real number complications.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counting",
+      "density",
+      "unit-fraction-sum"
+    ]
+  },
+  {
+    "id": "ann-e298-examples",
+    "proofId": "erdos-298",
+    "range": {
+      "startLine": 97,
+      "endLine": 104
+    },
+    "type": "axiom",
+    "title": "Unit Fraction Sum Examples",
+    "content": "**axiom example_2_3_6**: unitFractionSum {2, 3, 6} = 1\n  Classic: 1/2 + 1/3 + 1/6 = 3/6 + 2/6 + 1/6 = 1\n\n**axiom example_2_4_5_20**: unitFractionSum {2, 4, 5, 20} = 1\n  1/2 + 1/4 + 1/5 + 1/20 = 10/20 + 5/20 + 4/20 + 1/20 = 1\n\n**axiom example_3_4_5_6_20**: unitFractionSum {3, 4, 5, 6, 20} = 1\n\nThese show unit fraction sums equal to 1 exist in various forms.",
+    "mathContext": "There are infinitely many finite sets whose reciprocals sum to 1. The challenge is finding one INSIDE a given dense set A.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "examples",
+      "egyptian-fractions",
+      "sum-to-one"
+    ]
+  },
+  {
+    "id": "ann-e298-conjecture",
+    "proofId": "erdos-298",
+    "range": {
+      "startLine": 102,
+      "endLine": 103
+    },
+    "type": "definition",
+    "title": "The Erdős Conjecture",
+    "content": "**def erdos_298_conjecture**: Prop\n  ∀ A : Set ℕ, 0 ∉ A → HasPosDensity A → ContainsUnitSumSubset A\n\n**In words**: Every set of positive integers with positive natural density contains a finite subset whose reciprocals sum to 1.\n\nThis was a conjecture of Erdős with a $500 prize.",
+    "mathContext": "The condition 0 ∉ A is technical (to avoid 1/0). The key insight is that positive density forces enough structure to guarantee unit sum subsets.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "conjecture",
+      "erdos-prize",
+      "positive-density"
+    ]
+  },
+  {
+    "id": "ann-e298-bloom",
+    "proofId": "erdos-298",
+    "range": {
+      "startLine": 129,
+      "endLine": 134
+    },
+    "type": "axiom",
+    "title": "Bloom's Theorem (2021)",
+    "content": "**axiom bloom_2021**: erdos_298_conjecture\n\n**theorem bloom_theorem (A : Set ℕ)**:\n  0 ∉ A → HasPosDensity A → ContainsUnitSumSubset A\n  := bloom_2021 A\n\n**Thomas Bloom's proof** (arXiv:2112.03726) uses:\n1. Probabilistic construction of auxiliary sets\n2. Sum-product estimates\n3. Fourier-analytic techniques on ℤ/pℤ\n4. Density increment arguments\n\nThis was a major breakthrough in additive combinatorics!",
+    "mathContext": "Bloom's proof resolved a longstanding conjecture and earned the $500 Erdős prize. The techniques connect number theory, combinatorics, and harmonic analysis.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "bloom-2021",
+      "probabilistic-method",
+      "fourier-analysis"
+    ]
+  },
+  {
+    "id": "ann-e298-upper",
+    "proofId": "erdos-298",
+    "range": {
+      "startLine": 150,
+      "endLine": 162
+    },
+    "type": "definition",
+    "title": "Stronger Version: Upper Density",
+    "content": "**def erdos_298_upper_density**: Prop\n  ∀ A, 0 ∉ A → HasPosUpperDensity A → ContainsUnitSumSubset A\n\n**axiom bloom_2021_upper**: erdos_298_upper_density\n\n**theorem upper_implies_natural**:\n  erdos_298_upper_density → erdos_298_conjecture\n\n**Why stronger?**\n- Natural density implies upper density\n- Upper density can exist when natural density doesn't\n- Example: A = {1, 10, 11, 100, 101, 102, 103, ...} has positive upper density but no natural density",
+    "mathContext": "The upper density version is strictly stronger. Bloom proved this stronger version, which immediately implies the original conjecture.",
+    "significance": "key",
+    "relatedConcepts": [
+      "upper-density",
+      "stronger-result",
+      "implication"
+    ]
+  },
+  {
+    "id": "ann-e298-density-props",
+    "proofId": "erdos-298",
+    "range": {
+      "startLine": 171,
+      "endLine": 182
+    },
+    "type": "axiom",
+    "title": "Density Properties",
+    "content": "**axiom nat_pos_density**: HasPosDensity {n : ℕ | n > 0}\n  ℕ⁺ has density 1\n\n**axiom even_density**: HasPosDensity {n : ℕ | Even n ∧ n > 0}\n  Even numbers have density 1/2\n\n**axiom density_mono (A B) (h : A ⊆ B)**:\n  upperDensity A ≤ upperDensity B\n  Density is monotone\n\n**axiom finite_density_zero (A) (h : A.Finite)**:\n  upperDensity A = 0\n  Finite sets have density 0",
+    "mathContext": "These basic properties of density are used throughout the theory. Monotonicity and the finite set property are particularly important.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "density-properties",
+      "monotone",
+      "finite-sets"
+    ]
+  },
+  {
+    "id": "ann-e298-egyptian",
+    "proofId": "erdos-298",
+    "range": {
+      "startLine": 178,
+      "endLine": 186
+    },
+    "type": "definition",
+    "title": "Egyptian Fractions",
+    "content": "**def HasEgyptianRep (q : ℚ)**: Prop\n  ∃ S : Finset ℕ, (∀ n ∈ S, n > 0) ∧ unitFractionSum S = q\n\n**axiom egyptian_fraction_exists (q : ℚ) (hq : q > 0)**:\n  HasEgyptianRep q\n  Every positive rational has an Egyptian fraction representation\n\n**theorem one_has_egyptian_rep**: HasEgyptianRep 1\n  := ⟨{2, 3, 6}, by simp, example_2_3_6⟩\n\nThis classical result shows unit fraction sums can represent any positive rational.",
+    "mathContext": "Egyptian fractions date back to ancient Egypt. The Rhind papyrus (~1650 BCE) contains tables of Egyptian fraction representations.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "egyptian-fractions",
+      "classical-theorem",
+      "representation"
+    ]
+  },
+  {
+    "id": "ann-e298-quantitative",
+    "proofId": "erdos-298",
+    "range": {
+      "startLine": 214,
+      "endLine": 223
+    },
+    "type": "axiom",
+    "title": "Quantitative Aspects",
+    "content": "**axiom bloom_quantitative (δ : ℝ) (hδ : δ > 0)**:\n  ∃ N, ∀ A : Finset ℕ, (∀ a ∈ A, 0 < a ∧ a ≤ N) →\n  A.card ≥ δ * N → ∃ S ⊆ A, SumsToOne S\n\n**Finitary version**: For any δ > 0, there's N such that any δ-dense subset of {1,...,N} contains a unit sum subset.\n\n**axiom sparse_counterexample**:\n  ∀ N, ∃ A : Finset ℕ, A.card = N ∧ ¬∃ S ⊆ A, SumsToOne S\n\nThe density condition cannot be dropped - arbitrarily large sparse sets exist without unit sum subsets.",
+    "mathContext": "The quantitative version shows the density condition is effective. The counterexample shows it's necessary - sparse sets can avoid unit sum subsets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quantitative",
+      "finitary",
+      "counterexample"
+    ]
+  },
+  {
+    "id": "ann-e298-formalization",
+    "proofId": "erdos-298",
+    "range": {
+      "startLine": 237,
+      "endLine": 238
+    },
+    "type": "axiom",
+    "title": "Lean 3 Formalization",
+    "content": "**axiom formalization_exists**: True\n\nBloom and Mehta formalized the complete proof in Lean 3.\n\n**Repository**: github.com/b-mehta/unit-fractions\n**Size**: ~10,000 lines of Lean code\n\n**Coverage**:\n1. Density lemmas and limit theory\n2. Probabilistic constructions\n3. The main theorem and corollaries\n\nThis is one of the most significant formalizations of a recent mathematical breakthrough.",
+    "mathContext": "The formalization was completed shortly after Bloom's proof, demonstrating the feasibility of formalizing cutting-edge research.",
+    "significance": "key",
+    "relatedConcepts": [
+      "formalization",
+      "lean-3",
+      "bloom-mehta"
+    ]
+  },
+  {
+    "id": "ann-e298-related",
+    "proofId": "erdos-298",
+    "range": {
+      "startLine": 250,
+      "endLine": 256
+    },
+    "type": "axiom",
+    "title": "Related Erdős Problems",
+    "content": "**axiom erdos_46_related**: ∀ n ≥ 5, ∃ S, (∀ a ∈ S, a ≤ n) ∧ SumsToOne S\n\n**Problem #46**: Can every n ≥ 2 be written as 1 = 1/x₁ + ... + 1/xₖ with xᵢ ≤ n?\nAnswer: Yes for n ≥ 5.\n\n**axiom erdos_47_related**: True\n\n**Problem #47**: Bounds on unit fraction representations from intervals.\n\nThese problems form a cluster around unit fraction representations.",
+    "mathContext": "Erdős posed many problems about unit fractions. Problems #46, #47, and #298 are closely related, all asking about constraints on Egyptian fraction representations.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "erdos-46",
+      "erdos-47",
+      "related-problems"
+    ]
+  },
+  {
+    "id": "ann-e298-summary",
+    "proofId": "erdos-298",
+    "range": {
+      "startLine": 264,
+      "endLine": 265
+    },
+    "type": "theorem",
+    "title": "Summary and Final Theorem",
+    "content": "**theorem erdos_298_solved**: erdos_298_conjecture := bloom_2021\n\n**Erdős Problem #298: SOLVED** (Bloom 2021)\n\n**Answer**: YES - every set of positive density contains a unit sum subset.\n\n**Key techniques**:\n1. Probabilistic method for candidate sets\n2. Sum-product estimates\n3. Fourier analysis on ℤ/pℤ\n4. Density increment arguments\n\n**Stronger result**: Positive UPPER density suffices.\n\n**Prize**: $500 (awarded to Bloom)",
+    "mathContext": "This was one of Erdős's monetary problems, demonstrating the importance he placed on this question. The solution reveals deep connections between additive and multiplicative structure.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "problem-status",
+      "solved",
+      "erdos-prize"
+    ]
+  }
+]

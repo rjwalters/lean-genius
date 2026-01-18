@@ -1,33 +1,132 @@
 {
   "id": "erdos-551",
-  "title": "Erdős Problem #551",
+  "title": "Erdős #551: Ramsey Numbers for Cycles vs Complete Graphs",
   "slug": "erdos-551",
-  "description": "Prove that\\[R(C_k,K_n)=(k-1)(n-1)+1\\]for ... (except when ...). Asked by Erdős, Faudree, Rousseau, and Schelp, who also ask for the smallest value of ... such that this identity holds (for fixed .....",
+  "description": "Prove R(C_k, K_n) = (k-1)(n-1) + 1 for k ≥ n ≥ 3 (except n=k=3). Bondy-Erdős (1973): k > n²-2. Nikiforov (2005): k ≥ 4n+2. Keevash-Long-Skokan (2021): k ≥ C log n / log log n.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Bondy, Nikiforov, Keevash, Long, Skokan",
     "sourceUrl": "https://erdosproblems.com/551",
-    "date": "",
-    "status": "pending",
+    "date": "1973-2021",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos551Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "cycles"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 26,
     "erdosNumber": 551,
     "erdosUrl": "https://erdosproblems.com/551",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #551 from erdosproblems.com.",
-    "problemStatement": "Prove that\\[R(C_k,K_n)=(k-1)(n-1)+1\\]for $k\\geq n\\geq 3$ (except when $n=k=3$). Asked by Erdős, Faudree, Rousseau, and Schelp, who also ask for the smallest value of $k$ such that this identity holds (for fixed $n$). They also ask, for fixed $n$, what is the minimum value of $R(C_k,K_n)$? This identity was proved for $k>n^2-2$ by Bondy and Erdős [BoEr73]. Nikiforov [Ni05] extended this to $k\\geq 4n+2$. Keevash, Long, and Skokan [KLS21] have proved this identity when $k\\geq C\\frac{\\log n}{\\log\\log n}$ for some constant $C$, thus establishing the conjecture for sufficiently large $n$. This problem is #18 in Ramsey Theory in the graphs problem collection. View the LaTeX source",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The Ramsey number R(C_k, K_n) asks for the minimum N such that any 2-coloring of K_N contains a red k-cycle or a blue n-clique. Erdős, Faudree, Rousseau, and Schelp conjectured R(C_k, K_n) = (k-1)(n-1) + 1 for k ≥ n ≥ 3, with one exception at (3,3).",
+    "problemStatement": "Prove R(C_k, K_n) = (k-1)(n-1) + 1 for k ≥ n ≥ 3, except when n = k = 3 where R(C_3, K_3) = 6. The lower bound comes from (n-1) disjoint copies of K_{k-1}. The upper bound requires showing any graph on (k-1)(n-1)+1 vertices contains C_k or its complement contains K_n.",
+    "proofStrategy": "We formalize cycle and clique containment, the Ramsey number definition, the conjectured formula, lower and upper bound constructions, and the progression of results from Bondy-Erdős through Keevash-Long-Skokan. The formalization includes monotonicity properties and related questions.",
+    "keyInsights": [
+      "Bondy-Erdős (1973): k > n² - 2",
+      "Nikiforov (2005): k ≥ 4n + 2",
+      "Keevash-Long-Skokan (2021): k ≥ C log n / log log n",
+      "Exception: R(C_3, K_3) = 6 ≠ 5",
+      "Lower bound: (n-1) copies of K_{k-1}",
+      "R(C_k, K_3) = 2k - 1 for k ≥ 4"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-defs",
+      "title": "Basic Definitions",
+      "summary": "Cycle graphs, cliques, and containment",
+      "startLine": 34,
+      "endLine": 62
+    },
+    {
+      "id": "ramsey",
+      "title": "Ramsey Numbers",
+      "summary": "Definition of R(C_k, K_n)",
+      "startLine": 64,
+      "endLine": 84
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "summary": "R(C_k, K_n) = (k-1)(n-1) + 1",
+      "startLine": 86,
+      "endLine": 102
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound",
+      "summary": "Construction avoiding both structures",
+      "startLine": 104,
+      "endLine": 127
+    },
+    {
+      "id": "bondy-erdos",
+      "title": "Bondy-Erdős (1973)",
+      "summary": "Formula for k > n² - 2",
+      "startLine": 129,
+      "endLine": 144
+    },
+    {
+      "id": "nikiforov",
+      "title": "Nikiforov (2005)",
+      "summary": "Formula for k ≥ 4n + 2",
+      "startLine": 146,
+      "endLine": 161
+    },
+    {
+      "id": "kls",
+      "title": "Keevash-Long-Skokan (2021)",
+      "summary": "Formula for k ≥ C log n / log log n",
+      "startLine": 163,
+      "endLine": 178
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "Small values and R(C_k, K_3)",
+      "startLine": 180,
+      "endLine": 197
+    },
+    {
+      "id": "related",
+      "title": "Related Questions",
+      "summary": "Smallest valid k, minimum Ramsey value",
+      "startLine": 199,
+      "endLine": 216
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity",
+      "summary": "Behavior in k and n",
+      "startLine": 218,
+      "endLine": 234
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound Techniques",
+      "summary": "Path-cycle method",
+      "startLine": 236,
+      "endLine": 247
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Main theorem and current best",
+      "startLine": 249,
+      "endLine": 267
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #551 on Ramsey numbers R(C_k, K_n). The conjecture R(C_k, K_n) = (k-1)(n-1) + 1 has been progressively proven for larger ranges of k, with the Keevash-Long-Skokan (2021) result essentially resolving it for all sufficiently large parameters.",
+    "implications": "The problem is considered SOLVED in the sense that for any fixed n, the formula holds for all but finitely many k. The remaining open questions concern the exact threshold where the formula starts to hold.",
+    "openQuestions": [
+      "For fixed n, what is the smallest k where the identity holds?",
+      "For fixed n, what is the minimum value of R(C_k, K_n)?",
+      "Can the KLS constant C be made explicit?"
+    ]
   }
 }

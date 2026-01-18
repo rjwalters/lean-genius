@@ -1,33 +1,127 @@
 {
   "id": "erdos-779",
-  "title": "Erdős Problem #779",
+  "title": "Erdős Problem #779: Primorial Plus Prime",
   "slug": "erdos-779",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... denote the first ... primes. Let .... Does there always exist some prime ... with ... such that ... is prime?...",
+  "description": "Given the primorial P = p₁·p₂·...·pₙ (product of first n primes), does there always exist a prime p with pₙ < p < P such that P + p is also prime? An open problem of Deaconescu verified for n ≤ 1000.",
   "meta": {
-    "author": "Unknown",
+    "author": "Deaconescu Conjecture; Verified for n ≤ 1000",
     "sourceUrl": "https://erdosproblems.com/779",
-    "date": "",
-    "status": "pending",
+    "date": "1983",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos779Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "primorial",
+      "additive-combinatorics"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 779,
     "erdosUrl": "https://erdosproblems.com/779",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.nth",
+        "description": "The nth element satisfying a predicate",
+        "module": "Mathlib.Order.Nth"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Definition of prime numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.prod",
+        "description": "Product over a finite set",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Nat.prime_nth_prime",
+        "description": "The nth prime is prime",
+        "module": "Mathlib.Data.Nat.Prime.Nth"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of primorial function",
+      "Statement of the Deaconescu conjecture",
+      "Erdős's polynomial bound conjecture",
+      "Verified examples for n = 2, 3, 4, 5",
+      "Connection to OEIS A005235"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #779 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n> 1$ and $p_1<\\cdots<p_n$ denote the first $n$ primes. Let $P=\\prod_{1\\leq i\\leq n}p_i$. Does there always exist some prime $p$ with $p_n<p<P$ such that $P+p$ is prime?\n\n\n\nA problem of Deaconescu. Erd\\H{o}s expects that the least such prime is much smaller than $P$, and in fact satisfies $p\\leq n^{O(1)}$. Deaconescu has verified this conjecture for $n\\leq 1000$.\n\nWith the usual heuristic, we expect that $P+p$ is prime with 'probability' $\\approx 1/\\log P$, and hence the chance that this fails is $\\ll (1-1/\\log P)^{P-p_n}\\ll \\exp(-n^{-cn})$, using $P=n^{(1+o(1))n}$. As Cambie points out, 'the chances of failing are ridiculously small'.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Marian Deaconescu and appeared in Erdős's problem collection. The primorial n# = p₁·p₂·...·pₙ is the product of the first n primes, a fundamental object in number theory.\n\nDeaconescu computationally verified the conjecture for all n ≤ 1000. Erdős made a stronger conjecture: not only does such a prime p exist, but the smallest one satisfies p ≤ n^O(1) (polynomial in n, not exponential).\n\nThe heuristic argument is compelling: since primorials grow very fast (roughly e^(n log n)), there are many primes to try in the interval (pₙ, P). Each has 'probability' about 1/log(P) of making P + p prime, so the chance that ALL fail is exponentially small.",
+    "problemStatement": "**Conjecture (Deaconescu)**: Let $p_1 < p_2 < \\cdots < p_n$ be the first $n$ primes, and let $P = p_1 \\cdot p_2 \\cdots p_n$ (the primorial). For all $n \\geq 2$, does there exist a prime $p$ with $p_n < p < P$ such that $P + p$ is also prime?\n\n**Status**: OPEN\n\n**Verified**: True for $n \\leq 1000$ (Deaconescu)\n\n**Stronger Conjecture** (Erdős): The smallest such prime satisfies $p \\leq n^{O(1)}$.",
+    "proofStrategy": "We formalize the conjecture and verify small cases:\n\n1. **Primorial Definition**: Define nthPrime(k) = kth prime and primorial(n) = product of first n primes\n\n2. **Conjecture Statement**: Define validPrimes(n) as primes p in (pₙ, P) with P + p prime. The conjecture says this set is nonempty for n ≥ 2.\n\n3. **Verified Cases**: Prove explicit witnesses for n = 2, 3, 4, 5:\n   - n=2: P=6, p=5 gives 6+5=11 (prime)\n   - n=3: P=30, p=7 gives 30+7=37 (prime)\n   - n=4: P=210, p=13 gives 210+13=223 (prime)\n   - n=5: P=2310, p=23 gives 2310+23=2333 (prime)\n\n4. **OEIS Connection**: Reference sequence A005235 for the smallest valid primes",
+    "keyInsights": [
+      "**Primorial growth**: The primorial grows roughly as e^(n log n) by the Prime Number Theorem, much faster than 2^n.",
+      "**Heuristic probability**: With 'probability' 1/log(P) that P + p is prime, and ~P primes to try, failure probability is exp(-n^(cn)) - vanishingly small.",
+      "**Polynomial bound**: Erdős's stronger conjecture says the smallest valid prime is polynomial in n, not just that one exists.",
+      "**Computational verification**: Deaconescu checked n ≤ 1000, providing strong numerical evidence."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "The Deaconescu conjecture on primorial plus prime"
+    },
+    {
+      "id": "primorial",
+      "title": "The Primorial Function",
+      "startLine": 32,
+      "endLine": 48,
+      "summary": "Definitions of nthPrime and primorial"
+    },
+    {
+      "id": "properties",
+      "title": "Basic Properties",
+      "startLine": 50,
+      "endLine": 69,
+      "summary": "Primorial positivity and divisibility properties"
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture (OPEN)",
+      "startLine": 71,
+      "endLine": 96,
+      "summary": "Statement of the Deaconescu and Erdős conjectures"
+    },
+    {
+      "id": "verified-cases",
+      "title": "Verified Small Cases",
+      "startLine": 110,
+      "endLine": 172,
+      "summary": "Explicit witness primes for n = 2, 3, 4, 5"
+    },
+    {
+      "id": "heuristic",
+      "title": "Heuristic Analysis",
+      "startLine": 174,
+      "endLine": 189,
+      "summary": "Probabilistic argument for why the conjecture should be true"
+    },
+    {
+      "id": "connections",
+      "title": "Connection to Other Problems",
+      "startLine": 191,
+      "endLine": 228,
+      "summary": "Primorial primes, OEIS A005235, and computational verification"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #779 (the Deaconescu conjecture) asking whether for each n, there exists a prime p between the nth prime and the primorial such that P + p is prime. We verify explicit witnesses for small n and state Erdős's stronger polynomial bound conjecture.",
+    "implications": "This problem connects prime distribution to additive properties of primorials. A proof would give new insights into the additive structure of prime numbers. The heuristic argument is overwhelming, but converting it to a proof requires deep analytic number theory.",
+    "openQuestions": [
+      "Does a valid prime always exist for all n ≥ 2?",
+      "Is the smallest valid prime bounded by n^c for some constant c?",
+      "What is the distribution of the smallest valid prime as n → ∞?",
+      "Can sieve methods prove the conjecture for sufficiently large n?"
+    ]
   }
 }

@@ -1,1 +1,264 @@
-[]
+[
+  {
+    "id": "ann-e182-header",
+    "proofId": "erdos-182",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #182**: Maximum Edges Avoiding k-Regular Subgraphs\n\n**Question**: For k >= 3, what is the maximum number of edges a graph on n vertices can have if it contains no k-regular subgraph?\n\n**Status**: SOLVED by Janzer-Sudakov (2023).\n\n**Answer**: The maximum is Theta(n log log n). Both the upper and lower bounds match.",
+    "mathContext": "This is a fundamental question in extremal graph theory about the edge-density threshold for regular substructures.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "k-regular-graphs",
+      "extremal-graph-theory",
+      "janzer-sudakov"
+    ]
+  },
+  {
+    "id": "ann-e182-isregular",
+    "proofId": "erdos-182",
+    "range": {
+      "startLine": 38,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "k-Regular Graphs",
+    "content": "**IsRegular G k**: Every vertex in G has exactly k neighbors.\n\nFormally: forall v : V, (G.neighborSet v).ncard = k\n\n**Examples**:\n- Complete graph K_n is (n-1)-regular\n- Cycle C_n is 2-regular\n- Petersen graph is 3-regular",
+    "mathContext": "Uses ncard (noncomputable cardinality) to avoid decidability requirements. Regular graphs are fundamental structures in algebraic and combinatorial graph theory.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "degree",
+      "neighborSet",
+      "ncard"
+    ]
+  },
+  {
+    "id": "ann-e182-haskregular",
+    "proofId": "erdos-182",
+    "range": {
+      "startLine": 47,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "k-Regular Subgraph Containment",
+    "content": "**HasKRegularSubgraph G k**: There exists a non-empty k-regular graph H that is a subgraph of G.\n\n**Key aspects**:\n- W is the vertex set of the subgraph (a Finset, not all of V)\n- H is a SimpleGraph on W\n- Every edge of H corresponds to an edge in G\n- W must be non-empty",
+    "mathContext": "This captures the notion of 'finding' a regular substructure within a larger graph. The subgraph can be on any non-empty subset of vertices.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "subgraph",
+      "induced-subgraph",
+      "Finset"
+    ]
+  },
+  {
+    "id": "ann-e182-extremal",
+    "proofId": "erdos-182",
+    "range": {
+      "startLine": 60,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Extremal Function",
+    "content": "**extremalFunction n k**: Maximum number of edges in a graph on n vertices with no k-regular subgraph.\n\n**The placeholder**: Returns n choose 2 (complete graph edges) as a trivial upper bound.\n\n**Actual value**: Theta(n log log n) by Janzer-Sudakov and Pyber-Rodl-Szemeredi.",
+    "mathContext": "The extremal function is the central object of study. Finding its exact growth rate is the main achievement.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.choose",
+      "extremal-function"
+    ]
+  },
+  {
+    "id": "ann-e182-basic",
+    "proofId": "erdos-182",
+    "range": {
+      "startLine": 69,
+      "endLine": 83
+    },
+    "type": "axiom",
+    "title": "Basic Properties of Regular Graphs",
+    "content": "**zero_regular_edgeless**: A 0-regular graph has no edges.\n\n**regular_edge_count**: A k-regular graph on n vertices has exactly kn/2 edges.\n  - Each vertex contributes k to the degree sum\n  - Total degree sum = kn\n  - Each edge counted twice, so edges = kn/2\n\n**regular_parity**: k*n must be even for a k-regular graph to exist.\n\n**complete_is_regular**: K_n is (n-1)-regular.",
+    "mathContext": "These are standard facts about regular graphs. The edge count formula 2|E| = sum of degrees is the handshaking lemma.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "handshaking-lemma",
+      "complete-graph",
+      "parity"
+    ]
+  },
+  {
+    "id": "ann-e182-janzer-sudakov",
+    "proofId": "erdos-182",
+    "range": {
+      "startLine": 91,
+      "endLine": 101
+    },
+    "type": "axiom",
+    "title": "Janzer-Sudakov Theorem (2023)",
+    "content": "**axiom janzer_sudakov_theorem**:\nFor every k >= 3, there exists C = C(k) > 0 such that any graph on n vertices with at least C*n*log(log n) edges contains a k-regular subgraph.\n\n**Significance**: This resolves the upper bound side of Erdos Problem #182.\n\n**Method**: Iterative reduction argument where each step preserves structure. The iteration depth is O(log log n).",
+    "mathContext": "The log log n factor is unusual in extremal combinatorics. It arises from the specific iterative structure of the proof.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "janzer-sudakov-2023",
+      "iterative-argument",
+      "log-log"
+    ]
+  },
+  {
+    "id": "ann-e182-upper-bound",
+    "proofId": "erdos-182",
+    "range": {
+      "startLine": 103,
+      "endLine": 109
+    },
+    "type": "axiom",
+    "title": "Upper Bound Corollary",
+    "content": "**axiom extremal_upper_bound**:\nIf a graph on n vertices (n >= 10) has no k-regular subgraph, then it has fewer than C*n*log(log n) edges.\n\n**This is the contrapositive of Janzer-Sudakov**: If edges >= threshold, then has k-regular subgraph. Equivalently, if no k-regular subgraph, then edges < threshold.",
+    "mathContext": "The bound n >= 10 ensures log(log n) is well-defined and positive.",
+    "significance": "key",
+    "relatedConcepts": [
+      "contrapositive",
+      "upper-bound"
+    ]
+  },
+  {
+    "id": "ann-e182-pyber",
+    "proofId": "erdos-182",
+    "range": {
+      "startLine": 117,
+      "endLine": 126
+    },
+    "type": "axiom",
+    "title": "Pyber-Rodl-Szemeredi Lower Bound (1995)",
+    "content": "**axiom pyber_rodl_szemeredi_lower_bound**:\nThere exist graphs on n vertices with Omega(n log log n) edges that contain no 3-regular subgraph.\n\n**Construction**: The proof uses an explicit construction based on careful analysis of degree constraints.\n\n**Significance**: This shows the Janzer-Sudakov bound is tight up to constants.",
+    "mathContext": "The lower bound was known for decades before the matching upper bound. The construction shows the log log n factor is necessary, not just sufficient.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "pyber-rodl-szemeredi-1995",
+      "lower-bound",
+      "construction"
+    ]
+  },
+  {
+    "id": "ann-e182-theta",
+    "proofId": "erdos-182",
+    "range": {
+      "startLine": 128,
+      "endLine": 133
+    },
+    "type": "axiom",
+    "title": "Tight Bounds",
+    "content": "**axiom extremal_theta**:\nThe extremal function f(n,k) = Theta(n log log n).\n\nThere exist constants 0 < c < C such that:\n- c * n * log(log n) <= f(n,k) <= C * n * log(log n)\n\n**Interpretation**: The extremal function grows exactly like n log log n, up to constant factors.",
+    "mathContext": "Theta notation means both upper and lower bounds match asymptotically. This is the strongest possible characterization.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "big-theta",
+      "asymptotic-analysis"
+    ]
+  },
+  {
+    "id": "ann-e182-special-k2",
+    "proofId": "erdos-182",
+    "range": {
+      "startLine": 139,
+      "endLine": 146
+    },
+    "type": "axiom",
+    "title": "Special Case: k = 2 (Forests)",
+    "content": "**k_equals_2_is_forest**: A graph has no 2-regular subgraph iff it is acyclic (a forest).\n\n**Why?**: A 2-regular graph is a disjoint union of cycles. So no 2-regular subgraph means no cycles.\n\n**forest_edge_bound**: Forests have at most n-1 edges.\n\n**Implication**: For k=2, the extremal function is linear (n-1), not n log log n.",
+    "mathContext": "The case k=2 is fundamentally different. The log log n behavior only emerges for k >= 3.",
+    "significance": "key",
+    "relatedConcepts": [
+      "forest",
+      "cycle",
+      "IsAcyclic"
+    ]
+  },
+  {
+    "id": "ann-e182-connected",
+    "proofId": "erdos-182",
+    "range": {
+      "startLine": 158,
+      "endLine": 174
+    },
+    "type": "axiom",
+    "title": "Connected k-Regular Variant",
+    "content": "**HasConnectedKRegularSubgraph**: Like HasKRegularSubgraph, but requires H to be connected.\n\n**connected_3_regular_bound** (Erdos 1975):\nGraphs with >= C*n^{5/3} edges contain a connected 3-regular subgraph.\n\n**Comparison**: This is weaker than the general case (n^{5/3} >> n log log n). Requiring connectivity significantly weakens the forcing condition.",
+    "mathContext": "Erdos proved this weaker bound in 1975. The connected variant remains less understood than the general case.",
+    "significance": "key",
+    "relatedConcepts": [
+      "connected-graph",
+      "erdos-1975"
+    ]
+  },
+  {
+    "id": "ann-e182-dense",
+    "proofId": "erdos-182",
+    "range": {
+      "startLine": 180,
+      "endLine": 185
+    },
+    "type": "axiom",
+    "title": "Dense Graphs",
+    "content": "**axiom dense_has_regular**:\nFor any epsilon > 0, graphs with >= epsilon*n^2 edges contain k-regular subgraphs (for n large enough).\n\n**Interpretation**: Quadratically dense graphs (constant edge density) always have regular substructures. The interesting threshold is at the sparser n log log n level.",
+    "mathContext": "This shows the n log log n threshold is about sparse graphs. Dense graphs trivially have all kinds of substructures.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "dense-graph",
+      "edge-density"
+    ]
+  },
+  {
+    "id": "ann-e182-history",
+    "proofId": "erdos-182",
+    "range": {
+      "startLine": 195,
+      "endLine": 208
+    },
+    "type": "concept",
+    "title": "Historical Timeline",
+    "content": "**Timeline**:\n- **1975, 1981**: Erdos poses the problem with Sauer\n- **1995**: Pyber-Rodl-Szemeredi give the lower bound construction (Omega(n log log n))\n- **2023**: Janzer-Sudakov prove the matching upper bound (O(n log log n))\n\n**Gap**: 28 years between the lower bound (1995) and the matching upper bound (2023)!\n\n**Key insight**: The log log n factor comes from O(log log n) iteration steps, each preserving enough graph structure.",
+    "mathContext": "The long gap between lower and upper bounds reflects the difficulty of the upper bound argument. Many intermediate partial results were obtained.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "erdos-sauer",
+      "problem-history"
+    ]
+  },
+  {
+    "id": "ann-e182-resolved",
+    "proofId": "erdos-182",
+    "range": {
+      "startLine": 211,
+      "endLine": 223
+    },
+    "type": "axiom",
+    "title": "Main Resolution Theorem",
+    "content": "**axiom erdos_182_resolved**:\nCombines both directions:\n\n1. **Upper bound**: No k-regular subgraph implies edges <= C*n*log(log n)\n2. **Lower bound**: There exist graphs with edges >= c*n*log(log n) and no k-regular subgraph\n\n**Together**: The extremal function is Theta(n log log n), fully resolving the problem.",
+    "mathContext": "This single axiom encapsulates the complete solution to Erdos Problem #182.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "complete-solution",
+      "both-bounds"
+    ]
+  },
+  {
+    "id": "ann-e182-loglog",
+    "proofId": "erdos-182",
+    "range": {
+      "startLine": 100,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "The log log n Factor",
+    "content": "**Why log log n?**\n\nThe Janzer-Sudakov proof uses an iterative reduction:\n1. Start with graph G with many edges\n2. Each iteration finds a subgraph or reduces a parameter\n3. After O(log log n) iterations, success is guaranteed\n\n**Growth comparison**:\n- log log 10 ~ 0.83\n- log log 100 ~ 1.53\n- log log 10^6 ~ 2.62\n- log log 10^100 ~ 5.27\n\nThis is extremely slow-growing, so n log log n is only slightly superlinear.",
+    "mathContext": "The iterated logarithm appears in complexity theory (e.g., Ackermann inverse) and other combinatorial bounds. Here it reflects the depth of the iterative argument.",
+    "significance": "key",
+    "relatedConcepts": [
+      "iterated-logarithm",
+      "iteration-depth"
+    ]
+  }
+]

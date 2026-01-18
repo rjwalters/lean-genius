@@ -1,33 +1,162 @@
 {
   "id": "erdos-37",
-  "title": "Erdős Problem #37",
+  "title": "Erdős Problem #37: Essential Components and Lacunary Sets",
   "slug": "erdos-37",
-  "description": "We say that ... is an essential component if ... for every ... with ... such that ... for all large .... Furthermore, Ruzsa proves that this is best possible, in that for any ... there exists an es...",
+  "description": "Can a lacunary set A ⊂ ℕ be an essential component? NO (Ruzsa 1987). Essential components need |A ∩ {1,...,N}| ≥ (log N)^{1+c}, but lacunary sets have only O(log N) elements. Open: Is {2^m · 3^n} essential?",
   "meta": {
-    "author": "Unknown",
+    "author": "Ruzsa (1987, 1999)",
     "sourceUrl": "https://erdosproblems.com/37",
-    "date": "",
-    "status": "pending",
+    "date": "1987",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos37Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-number-theory",
+      "schnirelmann-density",
+      "essential-component",
+      "lacunary-sets"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 37,
     "erdosUrl": "https://erdosproblems.com/37",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of sets as natural numbers",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "iInf",
+        "description": "Infimum over indexed family",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for eventual properties",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "StrictMono",
+        "description": "Strictly monotone functions",
+        "module": "Mathlib.Order.Monotone.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of countingFunction for set elements",
+      "Definition of schnirelmannDensity via infimum",
+      "Definition of sumset with +ₛ notation",
+      "Definition of IsEssentialComponent",
+      "Definition of IsLacunarySeq and IsLacunarySet",
+      "Definition of powersOfTwo with verified lacunary property",
+      "Axiom ruzsa_essential_component_lower_bound ((log N)^{1+c} growth)",
+      "Axiom ruzsa_essential_component_construction (optimality)",
+      "Axiom erdos_37_disproved (main result)",
+      "Verified theorem erdos_37_answer",
+      "Definition of smoothNumbers23 and RuzsaOpenQuestion",
+      "Classical axioms: schnirelmann_theorem, mann_theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #37 from erdosproblems.com.",
-    "problemStatement": "We say that $A\\subset \\mathbb{N}$ is an essential component if $d_s(A+B)>d_s(B)$ for every $B\\subset \\mathbb{N}$ with $00$ such that $\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\geq (\\log N)^{1+c}$ for all large $N$. Furthermore, Ruzsa proves that this is best possible, in that for any $c>0$ there exists an essential component $A$ for which $\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\leq (\\log N)^{1+c}$ for all large $N$. In [Ru99] Ruzsa states \"The simplest set with a chance to be an essential component is the collection of numbers in the form $2^m3^n$ and Erdős often asked whether it is an essential component or not; I do not even have a plausible guess.\" View the LaTeX source This page was last edited 05 October 2025.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Essential components** were introduced in additive number theory to describe sets that 'help' increase Schnirelmann density. A set A is essential if adding it to any B with positive density strictly increases the density: d_s(A + B) > d_s(B).\n\n**Lacunary sets** have exponentially growing elements (like powers of 2). They are extremely sparse but have rich structure in harmonic analysis.\n\n**Erdős's Question**: Can such sparse sets still be essential components?\n\n**Ruzsa's Resolution (1987)**: NO. Ruzsa proved that essential components must grow at least as (log N)^{1+c}, which rules out lacunary sets (growing only as log N). Furthermore, this bound is tight.\n\n**Remaining Open Problem**: Ruzsa (1999) asked whether {2^m · 3^n : m,n ∈ ℕ} is an essential component. This set grows as (log N)², which is faster than lacunary but doesn't meet the (log N)^{1+c} threshold. The answer remains unknown.",
+    "problemStatement": "**Erdős Problem #37**: Can a lacunary set $A \\subset \\mathbb{N}$ be an essential component?\n\n**Definitions**:\n- **Schnirelmann density**: $d_s(A) = \\inf_{n \\geq 1} \\frac{|A \\cap \\{1,...,n\\}|}{n}$\n- **Essential component**: A set A where $d_s(A + B) > d_s(B)$ for all B with $0 < d_s(B) < 1$\n- **Lacunary set**: A set enumerated as $\\{a_n\\}$ with $a_{n+1}/a_n \\geq r > 1$\n\n**Answer**: NO (Ruzsa 1987)\n\n**Ruzsa's Theorem**: If A is an essential component, then $\\exists c > 0$ such that\n$$|A \\cap \\{1,...,N\\}| \\geq (\\log N)^{1+c}$$\nfor all large N. Lacunary sets have only $O(\\log N)$ elements, so they fail this requirement.",
+    "proofStrategy": "The formalization captures Ruzsa's characterization:\n\n1. **Density Infrastructure**:\n   - `countingFunction`: Count elements up to N\n   - `schnirelmannDensity`: Infimum-based density\n   - `sumset`: The A + B operation\n\n2. **Key Definitions**:\n   - `IsEssentialComponent`: The property that adding A increases density\n   - `IsLacunarySet`: Exponentially growing element sequence\n   - `powersOfTwo`: Canonical lacunary example (verified!)\n\n3. **Ruzsa's Results**:\n   - `ruzsa_essential_component_lower_bound`: (log N)^{1+c} is required\n   - `ruzsa_essential_component_construction`: This is tight\n   - `erdos_37_disproved`: Lacunary ⟹ not essential\n\n4. **Verified Theorems**:\n   - `powersOfTwo_lacunary`: {2^n} is lacunary\n   - `erdos_37_answer`: The main negative result\n\n5. **Open Question**:\n   - `smoothNumbers23`: {2^m · 3^n}\n   - `RuzsaOpenQuestion`: Is this essential?",
+    "keyInsights": [
+      "**Growth is the key**: The minimum growth rate for essential components is exactly (log N)^{1+c}. This is both necessary (Ruzsa lower bound) and sufficient (Ruzsa construction).",
+      "**Lacunary sets are too sparse**: With only O(log N) elements, they cannot meet the (log N)^{1+c} threshold.",
+      "**The boundary case**: Sets growing as (log N)^k for k ≤ 1 cannot be essential. The question for (log N)² (smooth 2-3 numbers) remains open.",
+      "**Schnirelmann vs natural density**: The infimum-based Schnirelmann density is better suited for sumset problems than limit-based natural density.",
+      "**Classical context**: Schnirelmann's theorem (d_s(A) + d_s(B) ≥ 1 ⟹ A + B = ℕ⁺) and Mann's theorem underpin this area."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Overview",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Problem statement, answer, and historical context."
+    },
+    {
+      "id": "schnirelmann",
+      "title": "Schnirelmann Density",
+      "startLine": 42,
+      "endLine": 65,
+      "summary": "countingFunction, schnirelmannDensity definitions."
+    },
+    {
+      "id": "sumset",
+      "title": "Sumsets",
+      "startLine": 67,
+      "endLine": 77,
+      "summary": "sumset definition and +ₛ notation."
+    },
+    {
+      "id": "essential",
+      "title": "Essential Components",
+      "startLine": 79,
+      "endLine": 93,
+      "summary": "IsEssentialComponent definition."
+    },
+    {
+      "id": "lacunary",
+      "title": "Lacunary Sets",
+      "startLine": 95,
+      "endLine": 126,
+      "summary": "IsLacunarySeq, IsLacunarySet, powersOfTwo (verified)."
+    },
+    {
+      "id": "growth",
+      "title": "Growth Bounds",
+      "startLine": 128,
+      "endLine": 167,
+      "summary": "Ruzsa's lower and upper bounds on essential component growth."
+    },
+    {
+      "id": "main",
+      "title": "Main Results",
+      "startLine": 169,
+      "endLine": 187,
+      "summary": "erdos_37_disproved axiom, Erdos37Question, erdos_37_answer theorem."
+    },
+    {
+      "id": "smooth23",
+      "title": "The 2^m · 3^n Question",
+      "startLine": 189,
+      "endLine": 207,
+      "summary": "smoothNumbers23, RuzsaOpenQuestion (OPEN)."
+    },
+    {
+      "id": "classical",
+      "title": "Classical Results",
+      "startLine": 209,
+      "endLine": 223,
+      "summary": "schnirelmann_theorem, mann_theorem axioms."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 225,
+      "endLine": 239,
+      "summary": "Problem status summary."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #37 on whether lacunary sets can be essential components. Ruzsa (1987) proved NO: essential components must grow at least as (log N)^{1+c}, but lacunary sets grow only as log N. The bound is optimal. The question for {2^m · 3^n} (growth ~ (log N)²) remains open.",
+    "implications": "This result characterizes the minimum density required for a set to be 'additively helpful' in the Schnirelmann sense. The tight bound (log N)^{1+c} shows essential components cannot be extremely sparse, but they can come arbitrarily close to this threshold.",
+    "openQuestions": [
+      "Is {2^m · 3^n : m,n ∈ ℕ} an essential component? (Ruzsa 1999)",
+      "What is the exact threshold for smooth numbers {p₁^{a₁} · ... · p_k^{a_k}}?",
+      "Can the Ruzsa construction be made explicit?",
+      "What other natural sets are/aren't essential components?"
+    ]
   }
 }

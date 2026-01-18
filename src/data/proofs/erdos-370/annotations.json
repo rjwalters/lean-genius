@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-e370-header",
+    "proofId": "erdos-370",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #370** asks whether infinitely many n exist such that both n and n+1 have their largest prime factor less than their square root. Steinerberger found an elegant solution using n = m² - 1.",
+    "mathContext": "gpf(n) < √n means n is 'sqrt-smooth'. The problem asks about consecutive sqrt-smooth numbers.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "smooth-numbers",
+      "greatest-prime-factor",
+      "consecutive-integers"
+    ]
+  },
+  {
+    "id": "ann-e370-gpf",
+    "proofId": "erdos-370",
+    "range": {
+      "startLine": 35,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Greatest Prime Factor",
+    "content": "**gpf(n)** is the greatest prime factor of n, axiomatized with key properties: gpf(p) = p for primes, gpf(p^k) = p for prime powers, and gpf(ab) ≤ max(gpf(a), gpf(b)).",
+    "mathContext": "gpf(n) = max{p : p prime, p | n}. Key property: gpf(ab) ≤ max(gpf(a), gpf(b)).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "prime-factors",
+      "nat-primeFactors",
+      "finset-max"
+    ]
+  },
+  {
+    "id": "ann-e370-smooth",
+    "proofId": "erdos-370",
+    "range": {
+      "startLine": 60,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "Smooth Numbers",
+    "content": "**B-smooth** numbers have all prime factors ≤ B. **√-smooth** numbers have gpf(n) < √n. The main predicate **ConsecutiveSqrtSmooth(n)** captures when both n and n+1 are sqrt-smooth.",
+    "mathContext": "IsSqrtSmooth(n) ≡ gpf(n) < √n. These are numbers whose largest prime factor is 'small' relative to the number.",
+    "significance": "key",
+    "relatedConcepts": [
+      "smooth-numbers",
+      "friable-numbers",
+      "dickman-function"
+    ]
+  },
+  {
+    "id": "ann-e370-construction",
+    "proofId": "erdos-370",
+    "range": {
+      "startLine": 77,
+      "endLine": 94
+    },
+    "type": "definition",
+    "title": "Steinerberger Construction",
+    "content": "**Key insight**: Take n = m² - 1 = (m-1)(m+1). Then n+1 = m², so gpf(n+1) = gpf(m). If m is a power of 2, gpf(m²) = 2 < m = √(m²). For n to work, we need gpf((m-1)(m+1)) < m.",
+    "mathContext": "SteinerbergerConstruction(m) = m² - 1. The factorization (m-1)(m+1) controls the prime factors of n.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "difference-of-squares",
+      "prime-factorization",
+      "power-of-two"
+    ]
+  },
+  {
+    "id": "ann-e370-example63",
+    "proofId": "erdos-370",
+    "range": {
+      "startLine": 96,
+      "endLine": 129
+    },
+    "type": "theorem",
+    "title": "Example: n = 63",
+    "content": "**Verified example**: n = 63 = 8² - 1 = 7·9. We have gpf(63) = 7 < √63 ≈ 7.94 and gpf(64) = 2 < √64 = 8. This demonstrates the Steinerberger construction works.",
+    "mathContext": "63 = 7·3², so gpf(63) = 7. 64 = 2⁶, so gpf(64) = 2. Both satisfy the sqrt-smooth condition.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native-decide",
+      "verification",
+      "concrete-example"
+    ]
+  },
+  {
+    "id": "ann-e370-main",
+    "proofId": "erdos-370",
+    "range": {
+      "startLine": 143,
+      "endLine": 168
+    },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**Erdős #370 (SOLVED)**: There are infinitely many n with gpf(n) < √n and gpf(n+1) < √(n+1). The Steinerberger construction provides an infinite family of examples.",
+    "mathContext": "The set {n : ConsecutiveSqrtSmooth(n)} is infinite. Powers of 2 give infinitely many valid m values.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "set-infinite",
+      "injective-function",
+      "existence"
+    ]
+  },
+  {
+    "id": "ann-e370-pomerance",
+    "proofId": "erdos-370",
+    "range": {
+      "startLine": 170,
+      "endLine": 184
+    },
+    "type": "axiom",
+    "title": "Pomerance's Density Observation",
+    "content": "**Pomerance noted**: If we replace exponent 1/2 with 1/√e - ε, the statement is true for density reasons. The critical exponent 1/√e ≈ 0.6065 comes from the Dickman function: half of integers have gpf ≤ n^{1/√e}.",
+    "mathContext": "The Dickman function ρ(u) gives the density of u-smooth numbers. At u = √e, the density is 1/2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "dickman-function",
+      "density",
+      "analytic-number-theory"
+    ]
+  }
+]

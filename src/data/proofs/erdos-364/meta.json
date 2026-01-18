@@ -1,33 +1,142 @@
 {
   "id": "erdos-364",
-  "title": "Erdős Problem #364",
+  "title": "Erdős Problem #364: Consecutive Powerful Numbers",
   "slug": "erdos-364",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there any triples of consecutive positive integers all of which are powerful (i.e. if ... then ...)?\n\n\n\nErds originally a...",
+  "description": "A positive integer n is powerful if p | n implies p² | n. Are there three consecutive powerful numbers? The quadruple case is impossible (proved), but the triple case remains OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1976), Chan (2025)",
     "sourceUrl": "https://erdosproblems.com/364",
-    "date": "",
-    "status": "pending",
+    "date": "1976",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos364Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "powerful-numbers",
+      "divisibility",
+      "modular-arithmetic",
+      "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 364,
     "erdosUrl": "https://erdosproblems.com/364",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Definition and properties of prime numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.le_of_dvd",
+        "description": "If a | b and b > 0, then a ≤ b",
+        "module": "Mathlib.Algebra.Divisibility.Basic"
+      },
+      {
+        "theorem": "Nat.mod_eq_zero_of_dvd",
+        "description": "n % m = 0 iff m | n",
+        "module": "Mathlib.Data.Nat.ModEq"
+      },
+      {
+        "theorem": "Nat.nth",
+        "description": "The n-th element satisfying a predicate",
+        "module": "Mathlib.Order.Nat"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Predicate for infinite sets",
+        "module": "Mathlib.Data.Set.Finite"
+      }
+    ],
+    "originalContributions": [
+      "Defines powerful numbers via prime divisibility condition",
+      "Proves 1, 4, 8, 9 are powerful using interval_cases and decidability",
+      "Proves no quadruple of consecutive powerful numbers exists (mod 4 argument)",
+      "States the OPEN triple conjecture as an axiom with historical context",
+      "Includes Chan's 2025 partial result about cubes",
+      "Formalizes Erdős's stronger gap conjecture"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #364 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there any triples of consecutive positive integers all of which are powerful (i.e. if $p\\mid n$ then $p^2\\mid n$)?\n\n\n\nErd\\H{o}s originally asked Mahler whether there are infinitely many pairs of consecutive powerful numbers, but Mahler immediately observed that the answer is yes from the infinitely many solutions to the Pell equation $x^2=8y^2+1$.\n\nThis conjecture was also made by Mollin and Walsh \\cite{MoWa86}. Erd\\H{o}s \\cite{Er76d} believed the answer to this question is no, and in fact if $n_k$ is the $k$th powerful number then\\[n_{k+2}-n_k > n_k^c\\]for some constant $c>0$. The abc conjecture implies there are only finitely many such triples.\n\nIt is trivial that there are no quadruples of consecutive powerful numbers since one must be $2\\pmod{4}$.\n\nChan \\cite{Ch25} has shown there are no triples $n-1,n,n+1$ of powerful numbers with $n$ a cube.\n\nBy OEIS A060355 there are no such $n$ for $n<10^{22}$.\n\nSee also [137], [365], and [938].\n\n\n\n\nReferences\n\n\n[Ch25] Chan, Tsz Ho, A note on three consecutive powerful numbers. Integers (2025), Paper No. A7, 7.\n\n[Er76d] Erd\\H{o}s, P., Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics (Univ. Manitoba, Winnipeg, Man., 1975) (1976), 25-44.\n\n[MoWa86] Mollin, R. A. and Walsh, P. G., On powerful numbers. Internat. J. Math. Math. Sci. (1986), 801--806.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Powerful numbers were introduced by Solomon W. Golomb in 1970. A positive integer n is powerful if for every prime p dividing n, we also have p² | n. Equivalently, n can be written as a²b³ for some integers a, b ≥ 1. The sequence begins 1, 4, 8, 9, 16, 25, 27, 32, 36, 49, ...\n\nIn 1976, Erdős asked Mahler whether infinitely many pairs of consecutive powerful numbers exist. Mahler immediately observed that yes—the Pell equation x² = 8y² + 1 has infinitely many solutions, and each gives a pair: (8, 9), (288, 289), (9800, 9801), etc. This is because 8y² is always powerful (divisible by 2³·y²) and x² = 8y² + 1 makes x² powerful too.\n\nErdős then asked the natural follow-up: can there be three consecutive powerful numbers? He believed no, and conjectured more strongly that if nₖ is the k-th powerful number, then nₖ₊₂ - nₖ > nₖᶜ for some c > 0. The abc conjecture would imply only finitely many triples exist.\n\nChan (2025) proved a partial result: no triple n-1, n, n+1 exists when n is a perfect cube. Computational searches have verified no triple exists for n < 10²².",
+    "problemStatement": "A positive integer $n$ is **powerful** if for every prime $p$ dividing $n$, we have $p^2 \\mid n$.\n\n**Question**: Do there exist three consecutive powerful numbers $n$, $n+1$, $n+2$?\n\n**Status**: OPEN (conjectured to be NO)\n\n**Known Results**:\n- Pairs (n, n+1) exist infinitely often (Mahler, via Pell equation)\n- Quadruples are impossible (one of four consecutive integers is ≡ 2 (mod 4))\n- No triple found for $n < 10^{22}$ (OEIS A060355)\n- abc conjecture implies finitely many triples\n- No triple with middle term a cube (Chan 2025)",
+    "proofStrategy": "Our formalization proves the quadruple impossibility constructively and states the triple conjecture as an axiom.\n\n**For the quadruple result**: Among any four consecutive integers n, n+1, n+2, n+3, exactly one is congruent to 2 (mod 4). But a number ≡ 2 (mod 4) cannot be powerful: it is divisible by 2 but not by 4 = 2². This contradiction rules out all quadruples.\n\n**For the triple conjecture**: Since this remains open, we state it as an axiom with full historical context. We also include Chan's 2025 partial result and Erdős's stronger gap conjecture.\n\n**Examples**: We verify 1, 4, 8, 9 are powerful using interval_cases to check all primes up to the value, combined with decidability of divisibility and primality.",
+    "keyInsights": [
+      "**Powerful numbers**: If every prime dividing n also has its square divide n, then n is powerful. The characterization n = a²b³ connects to the structure of prime factorizations.",
+      "**Mod 4 obstruction**: Numbers ≡ 2 (mod 4) are exactly divisible by 2 but not 4, so they can never be powerful. This simple observation kills the quadruple case immediately.",
+      "**Pell equation connection**: The identity 8y² + 1 = x² from Pell theory gives infinitely many consecutive pairs, since 8y² = 2³·y² is powerful when y is powerful.",
+      "**abc conjecture implications**: If the abc conjecture holds, then for coprime a + b = c, we have c < K·rad(abc)^{1+ε}. Applied to powerful triples, this limits how close they can be.",
+      "**The gap problem**: Erdős believed gaps between powerful numbers grow polynomially—if true, this is much stronger than just ruling out triples."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Description",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Header documentation with problem statement, status, and known results."
+    },
+    {
+      "id": "powerful-def",
+      "title": "Powerful Number Definition",
+      "startLine": 29,
+      "endLine": 41,
+      "summary": "Defines a natural number as powerful if p | n implies p² | n for all primes p."
+    },
+    {
+      "id": "basic-examples",
+      "title": "Basic Examples",
+      "startLine": 43,
+      "endLine": 101,
+      "summary": "Proves 1, 4, 8, 9 are powerful using interval_cases and decidability."
+    },
+    {
+      "id": "pairs",
+      "title": "Consecutive Pairs",
+      "startLine": 103,
+      "endLine": 121,
+      "summary": "Shows (8,9) is a powerful pair and states infinitely many pairs exist via Pell equation."
+    },
+    {
+      "id": "quadruple",
+      "title": "No Quadruples",
+      "startLine": 123,
+      "endLine": 150,
+      "summary": "Proves no four consecutive powerful numbers exist using the mod 4 argument."
+    },
+    {
+      "id": "triple-conjecture",
+      "title": "Triple Conjecture (OPEN)",
+      "startLine": 152,
+      "endLine": 170,
+      "summary": "States the open conjecture that no three consecutive powerful numbers exist."
+    },
+    {
+      "id": "stronger-gap",
+      "title": "Gap Conjecture",
+      "startLine": 172,
+      "endLine": 188,
+      "summary": "States Erdős's stronger conjecture about polynomial growth of gaps."
+    },
+    {
+      "id": "partial",
+      "title": "Partial Results",
+      "startLine": 190,
+      "endLine": 204,
+      "summary": "States Chan's 2025 result ruling out triples with a cube in the middle."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalized Erdős Problem #364 on consecutive powerful numbers. The quadruple impossibility follows from the simple observation that one of every four consecutive integers is ≡ 2 (mod 4), hence divisible by 2 but not 4. The triple case remains one of the classic open problems in combinatorial number theory, with computational searches to 10²² and connections to the abc conjecture.",
+    "implications": "This problem illustrates how local obstructions (mod 4) can settle one case completely while leaving closely related cases wide open. The techniques connect prime factorization, modular arithmetic, and Diophantine equations (Pell theory).",
+    "openQuestions": [
+      "Does there exist a triple of consecutive powerful numbers?",
+      "Is the gap between the k-th and (k+2)-th powerful numbers always greater than nₖᶜ for some c > 0?",
+      "What is the asymptotic density of powerful numbers? (Known: ~c·√n for some constant c)",
+      "Can the abc conjecture approach be made unconditional for this problem?"
+    ]
   }
 }

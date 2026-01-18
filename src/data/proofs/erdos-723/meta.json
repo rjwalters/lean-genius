@@ -1,33 +1,49 @@
 {
   "id": "erdos-723",
-  "title": "Erdős Problem #723",
+  "title": "Erdős Problem #723: Prime Power Conjecture for Projective Planes",
   "slug": "erdos-723",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf there is a finite projective plane of order ... then must ... be a prime power?\n\nA finite projective plane of order ... is...",
+  "description": "If there is a finite projective plane of order n, must n be a prime power? OPEN in general. Verified for n ≤ 11, with Bruck-Ryser application for n=6 fully verified.",
   "meta": {
-    "author": "Unknown",
+    "author": "Bruck-Ryser (1949), Lam (1997)",
     "sourceUrl": "https://erdosproblems.com/723",
-    "date": "",
-    "status": "pending",
+    "date": "1949",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos723Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "projective-planes",
+      "prime-power",
+      "bruck-ryser"
     ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 723,
     "erdosUrl": "https://erdosproblems.com/723",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #723 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf there is a finite projective plane of order $n$ then must $n$ be a prime power?\n\nA finite projective plane of order $n$ is a collection of subsets of $\\{1,\\ldots,n^2+n+1\\}$ of size $n+1$ such that every pair of elements is contained in exactly one set.\n\n\n\nThese always exist if $n$ is a prime power. This conjecture has been proved for $n\\leq 11$, but it is open whether there exists a projective plane of order $12$.\n\nBruck and Ryser \\cite{BrRy49} have proved that if $n\\equiv 1\\pmod{4}$ or $n\\equiv 2\\pmod{4}$ then $n$ must be the sum of two squares. For example, this rules out $n=6$ or $n=14$. The case $n=10$ was ruled out by computer search \\cite{La97}.\n\n\n\n\nReferences\n\n\n[BrRy49] Bruck, R. H. and Ryser, H. J., The nonexistence of certain finite projective planes. Canad. J. Math. (1949), 88-93.\n\n[La97] Lam, C. W. H., The search for a finite projective plane of order {$10$}\n[{MR}1103185 (92b:51013)]. (1997), 335-355.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Projective planes have been studied since the 19th century. The prime power conjecture asks whether all finite projective planes have prime power order. Bruck-Ryser (1949) gave a necessary condition, and Lam (1997) ruled out order 10 by computer search. Order 12 remains the smallest open case.",
+    "problemStatement": "A finite projective plane of order n has n²+n+1 points, n²+n+1 lines, with n+1 points per line and n+1 lines per point. The Prime Power Conjecture asks: must n be a prime power? Planes exist for all prime powers via PG(2,q) construction.",
+    "proofStrategy": "The formalization uses Mathlib's Configuration.ProjectivePlane type. Verified theorems include point/line counting, prime power status for small orders, and a complete Bruck-Ryser application ruling out order 6. The Lam result for order 10 and open status of order 12 are recorded as axioms.",
+    "keyInsights": [
+      "plane_points and plane_lines verified from Mathlib API",
+      "IsPrimePow verified for orders 1-5 by decide",
+      "order_6/10/12_not_prime_power verified by decide",
+      "six_not_sum_squares verified by interval_cases",
+      "no_plane_order_6 verified using Bruck-Ryser theorem",
+      "Order 12 is smallest open case (Bruck-Ryser doesn't apply)"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #723 (Prime Power Conjecture) is OPEN in general. The formalization includes verified proofs that orders 1-5 are prime powers, a complete Bruck-Ryser application ruling out order 6, and records Lam's computational result for order 10. Order 12 remains the smallest unknown case.",
+    "implications": "The conjecture connects finite geometry to number theory via the sum-of-squares condition. If a non-prime-power projective plane exists, it would require fundamentally new construction methods beyond finite fields.",
+    "openQuestions": [
+      "Does a projective plane of order 12 exist?",
+      "Are there non-prime-power projective planes?",
+      "Can Bruck-Ryser be strengthened?",
+      "What is the next non-existence result after Lam?"
+    ]
   }
 }

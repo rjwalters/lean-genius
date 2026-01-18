@@ -1,34 +1,111 @@
 {
   "id": "erdos-27",
-  "title": "Erdős Problem #27",
+  "title": "Erdős #27: Almost Covering Systems",
   "slug": "erdos-27",
-  "description": "An ...-almost covering system is a set of congruences ... for distinct moduli ... such that for every ... and ... there is an ...-almost covering system with $N\\leq n_1 View the LaTeX source This p...",
+  "description": "Does there exist C > 1 such that ε-almost covering systems exist with moduli in [N, CN] for all ε, N? Answer: NO (disproved by FFKPY).",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/27",
-    "date": "",
-    "status": "pending",
+    "date": "1950s",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos27Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "covering-systems",
+      "density"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 18,
     "erdosNumber": 27,
     "erdosUrl": "https://erdosproblems.com/27",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$100"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #27 from erdosproblems.com. Originally offered with a prize of $100.",
-    "problemStatement": "An $\\epsilon$-almost covering system is a set of congruences $a_i\\pmod{n_i}$ for distinct moduli $n_11$ such that for every $\\epsilon>0$ and $N\\geq 1$ there is an $\\epsilon$-almost covering system with $N\\leq n_1 View the LaTeX source This page was last edited 06 December 2025.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This $100 Erdős problem asked whether bounded ranges of moduli can achieve arbitrarily good almost-coverings. Filaseta, Ford, Konyagin, Pomerance, and Yu disproved it, showing no constant C works. Related to the famous problem of perfect covering systems (minimum modulus bounded by Bloom-Briggs-Maynard-Smith-Tao).",
+    "problemStatement": "An ε-almost covering system is a set of congruences with distinct moduli such that the density of uncovered integers is at most ε. Does there exist C > 1 such that for all ε > 0 and N ≥ 1, an ε-almost covering exists with moduli in [N, CN]?",
+    "proofStrategy": "We formalize congruence systems, uncovered density, and the main question. The FFKPY disproof shows that for C ≤ N^{α(N)} where α(N) = log log log N / (4 log log N), the uncovered density is bounded below. We also formalize what DOES work: growing C with N.",
+    "keyInsights": [
+      "Answer is NO: no constant C works (FFKPY disproof)",
+      "For C ≤ N^{α(N)}, uncovered density ≥ (1-o(1)) · ∏(1 - 1/n_i)",
+      "The product ∏(1 - 1/n_i) ≥ 1/C for moduli in [N, CN]",
+      "Growing C (e.g., C = N^{1/log log N}) DOES work for any fixed ε",
+      "Connected to perfect coverings via BBMST bound < 616,000"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "congruence-systems",
+      "title": "Congruence Systems",
+      "summary": "Basic definitions: congruences, systems, covered/uncovered integers",
+      "startLine": 36,
+      "endLine": 60
+    },
+    {
+      "id": "density",
+      "title": "Uncovered Density",
+      "summary": "Counting and asymptotic density of uncovered integers",
+      "startLine": 62,
+      "endLine": 74
+    },
+    {
+      "id": "almost-covering",
+      "title": "Almost Covering Systems",
+      "summary": "ε-almost covering and perfect covering definitions",
+      "startLine": 76,
+      "endLine": 89
+    },
+    {
+      "id": "bounded-moduli",
+      "title": "Bounded Moduli Systems",
+      "summary": "Systems with moduli in [N, CN] for constant C",
+      "startLine": 91,
+      "endLine": 99
+    },
+    {
+      "id": "natural-density",
+      "title": "Natural Density Bound",
+      "summary": "The product ∏(1 - 1/n) and averaging argument",
+      "startLine": 101,
+      "endLine": 118
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "Erdős conjecture and its negation",
+      "startLine": 120,
+      "endLine": 135
+    },
+    {
+      "id": "disproof",
+      "title": "The FFKPY Disproof",
+      "summary": "Critical exponent and the main negative result",
+      "startLine": 137,
+      "endLine": 166
+    },
+    {
+      "id": "what-works",
+      "title": "What Does Work",
+      "summary": "Growing C with N achieves almost-covering",
+      "startLine": 168,
+      "endLine": 184
+    },
+    {
+      "id": "perfect-covering",
+      "title": "Perfect Covering Connection",
+      "summary": "BBMST bound on minimum modulus",
+      "startLine": 186,
+      "endLine": 201
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #27, a $100 problem that was DISPROVED. The question was whether a constant C > 1 allows ε-almost coverings with moduli in [N, CN] for all ε and N. The answer is NO: Filaseta-Ford-Konyagin-Pomerance-Yu showed that for any fixed C, uncovered density cannot be made arbitrarily small.",
+    "implications": "This result reveals a fundamental limitation of covering systems with bounded moduli ranges. It connects to the study of perfect covering systems, where the BBMST bound shows minimum modulus must be < 616,000.",
+    "openQuestions": [
+      "What is the optimal function f(N) such that ε-almost coverings exist with moduli in [N, f(N)·N]?",
+      "Can the critical exponent α(N) = log log log N / (4 log log N) be improved?",
+      "What is the true minimum modulus bound for perfect coverings?"
+    ]
   }
 }

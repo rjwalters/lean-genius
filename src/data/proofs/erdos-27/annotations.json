@@ -1,1 +1,173 @@
-[]
+[
+  {
+    "id": "ann-27-congruence",
+    "proofId": "erdos-27",
+    "range": { "startLine": 39, "endLine": 42 },
+    "type": "definition",
+    "title": "Congruence",
+    "content": "A congruence class: residue a modulo n with n > 0. The building block of covering systems.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-27-satisfies",
+    "proofId": "erdos-27",
+    "range": { "startLine": 45, "endLine": 46 },
+    "type": "definition",
+    "title": "Satisfies Congruence",
+    "content": "An integer x satisfies congruence (a, n) if x ≡ a (mod n).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-27-system",
+    "proofId": "erdos-27",
+    "range": { "startLine": 49, "endLine": 52 },
+    "type": "definition",
+    "title": "Congruence System",
+    "content": "A finite set of congruences with distinct moduli. This is the central structure.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-27-covers",
+    "proofId": "erdos-27",
+    "range": { "startLine": 55, "endLine": 56 },
+    "type": "definition",
+    "title": "Covered Integer",
+    "content": "An integer is covered if it satisfies at least one congruence in the system.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-27-uncovered",
+    "proofId": "erdos-27",
+    "range": { "startLine": 59, "endLine": 60 },
+    "type": "definition",
+    "title": "Uncovered Integer",
+    "content": "An integer is uncovered if it satisfies NO congruence. The density of such integers is the key measure.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-27-density",
+    "proofId": "erdos-27",
+    "range": { "startLine": 69, "endLine": 70 },
+    "type": "definition",
+    "title": "Uncovered Density",
+    "content": "The fraction of integers up to M that are uncovered. This converges to the asymptotic density.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-27-asymptotic",
+    "proofId": "erdos-27",
+    "range": { "startLine": 73, "endLine": 74 },
+    "type": "definition",
+    "title": "Asymptotic Uncovered Density",
+    "content": "The liminf of uncovered density as M → ∞. This is what we want to make ≤ ε.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-27-almost",
+    "proofId": "erdos-27",
+    "range": { "startLine": 79, "endLine": 80 },
+    "type": "definition",
+    "title": "ε-Almost Covering",
+    "content": "A system where asymptotic uncovered density is at most ε. The goal is to achieve small ε.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-27-perfect",
+    "proofId": "erdos-27",
+    "range": { "startLine": 83, "endLine": 84 },
+    "type": "definition",
+    "title": "Perfect Covering",
+    "content": "Every integer is covered (ε = 0). A much stronger condition than almost-covering.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-27-range",
+    "proofId": "erdos-27",
+    "range": { "startLine": 94, "endLine": 95 },
+    "type": "definition",
+    "title": "Moduli in Range",
+    "content": "All moduli lie in [N, M]. The question is about bounded ranges [N, CN].",
+    "significance": "key"
+  },
+  {
+    "id": "ann-27-natural",
+    "proofId": "erdos-27",
+    "range": { "startLine": 104, "endLine": 106 },
+    "type": "definition",
+    "title": "Natural Density",
+    "content": "The product ∏(1 - 1/n) over moduli in [m₁, m₂]. This is the best achievable density by averaging.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-27-conjecture",
+    "proofId": "erdos-27",
+    "range": { "startLine": 124, "endLine": 126 },
+    "type": "definition",
+    "title": "Erdős Conjecture",
+    "content": "There exists C > 1 such that for all ε > 0 and N ≥ 1, an ε-almost covering exists with moduli in [N, CN].",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-27-negation",
+    "proofId": "erdos-27",
+    "range": { "startLine": 129, "endLine": 131 },
+    "type": "definition",
+    "title": "Conjecture Negation",
+    "content": "For all C > 1, some ε and N fail. This is what was PROVED - the conjecture is FALSE.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-27-critical",
+    "proofId": "erdos-27",
+    "range": { "startLine": 140, "endLine": 142 },
+    "type": "definition",
+    "title": "Critical Exponent",
+    "content": "α(N) = log log log N / (4 log log N). For C ≤ N^{α(N)}, almost-covering fails.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-27-ffkpy",
+    "proofId": "erdos-27",
+    "range": { "startLine": 145, "endLine": 149 },
+    "type": "theorem",
+    "title": "FFKPY Main Theorem",
+    "content": "For C ≤ N^{α(N)}, uncovered density ≥ (1/2) · ∏(1 - 1/n_i). The core of the disproof.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-27-disproved",
+    "proofId": "erdos-27",
+    "range": { "startLine": 158, "endLine": 159 },
+    "type": "theorem",
+    "title": "Conjecture Disproved",
+    "content": "The Erdős conjecture is FALSE. No constant C works for all ε and N.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-27-growing",
+    "proofId": "erdos-27",
+    "range": { "startLine": 171, "endLine": 175 },
+    "type": "theorem",
+    "title": "Growing C Works",
+    "content": "If C is allowed to grow with N, ε-almost coverings DO exist for any fixed ε.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-27-sufficient",
+    "proofId": "erdos-27",
+    "range": { "startLine": 178, "endLine": 179 },
+    "type": "definition",
+    "title": "Sufficient C",
+    "content": "C = N^{1/log log N} suffices for any fixed ε. Shows what DOES work.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-27-bbmst",
+    "proofId": "erdos-27",
+    "range": { "startLine": 198, "endLine": 201 },
+    "type": "theorem",
+    "title": "BBMST Bound",
+    "content": "For perfect coverings, minimum modulus < 616,000 (Bloom-Briggs-Maynard-Smith-Tao).",
+    "significance": "key"
+  }
+]

@@ -1,1 +1,101 @@
-[]
+[
+  {
+    "id": "ann-e845-header",
+    "proofId": "erdos-845",
+    "range": { "startLine": 1, "endLine": 21 },
+    "type": "concept",
+    "title": "Problem Statement and Resolution",
+    "content": "**Erdős Problem #845** concerns 3-smooth numbers—positive integers of the form 2^k · 3^l. These include 1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, and so on.\n\nThe problem asks: if we write an integer as a sum of distinct 3-smooth numbers b₁ < b₂ < ... < bₜ where the ratio bₜ/b₁ is at most some constant C, does this set of representable integers have density 0?\n\n**Surprise answer**: NO! Van Doorn and Everts (2025) proved that ALL integers can be represented this way with C = 6. So the set has density 1, not 0—the opposite of what Erdős expected.",
+    "mathContext": "Natural density measures how common a property is: if #{n ≤ N with property P} / N → ρ as N → ∞, then P has density ρ. Erdős conjectured ρ = 0 but it's actually ρ = 1.",
+    "significance": "critical",
+    "relatedConcepts": ["smooth-numbers", "density", "additive-representations"]
+  },
+  {
+    "id": "ann-e845-imports",
+    "proofId": "erdos-845",
+    "range": { "startLine": 23, "endLine": 27 },
+    "type": "concept",
+    "title": "Mathlib Setup",
+    "content": "**Imports and namespace declaration**. The `import Mathlib` brings in the full mathematical library, and we work in the `Erdos845` namespace.\n\n`open Finset` makes finite set operations available without qualification—we'll use these heavily for summing over sets of 3-smooth numbers and finding their max/min elements.",
+    "mathContext": "Mathlib provides Finset.image, Finset.max', Finset.min', and Finset.sum which are essential for formalizing sums over finite sets of 3-smooth numbers.",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "finset", "imports"]
+  },
+  {
+    "id": "ann-e845-smooth-def",
+    "proofId": "erdos-845",
+    "range": { "startLine": 36, "endLine": 47 },
+    "type": "definition",
+    "title": "3-Smooth Numbers",
+    "content": "**Two equivalent definitions** for 3-smooth numbers:\n\n1. `isThreeSmooth n` - the predicate asserting n = 2^k · 3^l for some natural numbers k, l\n\n2. `smoothNum k l` - the function computing 2^k · 3^l directly\n\n**Examples**: smoothNum 0 0 = 1, smoothNum 1 0 = 2, smoothNum 0 1 = 3, smoothNum 2 1 = 12.\n\nThe term '3-smooth' comes from number theory: an integer is k-smooth if all its prime factors are ≤ k. So 3-smooth means only factors of 2 and 3.",
+    "mathContext": "3-smooth numbers are also called 'regular numbers' and appear in Babylonian mathematics (base 60 = 2² · 3 · 5), music theory (just intonation), and algorithm analysis.",
+    "significance": "critical",
+    "relatedConcepts": ["smooth-numbers", "prime-factorization", "exponentiation"]
+  },
+  {
+    "id": "ann-e845-bounded-rep",
+    "proofId": "erdos-845",
+    "range": { "startLine": 56, "endLine": 64 },
+    "type": "definition",
+    "title": "Bounded-Ratio Representations",
+    "content": "**The central definition**: `hasBoundedRep C n` holds when n can be written as a sum of distinct 3-smooth numbers where the largest is at most C times the smallest.\n\nFormally, we require:\n1. A nonempty finite set B of pairs (k, l)\n2. n equals the sum of smoothNum(k, l) over all pairs in B\n3. max(values) ≤ C · min(values)\n\n**Example**: 7 = 1 + 2 + 4 = 2⁰·3⁰ + 2¹·3⁰ + 2²·3⁰. Here max = 4, min = 1, ratio = 4, so this is a 4-bounded representation.",
+    "mathContext": "The ratio constraint bₜ ≤ C·b₁ forces the summands to be 'close together' in multiplicative scale. Small C means tighter clustering.",
+    "significance": "critical",
+    "relatedConcepts": ["finset-image", "finset-sum", "max-min-ratio"]
+  },
+  {
+    "id": "ann-e845-conjecture",
+    "proofId": "erdos-845",
+    "range": { "startLine": 73, "endLine": 82 },
+    "type": "definition",
+    "title": "Erdős's Original Conjecture",
+    "content": "**The conjecture Erdős posed**: For ANY C > 0, the set of integers with C-bounded representations has natural density 0.\n\nIn other words, 'most' integers cannot be written as such sums, no matter how generous we make the ratio bound. The formalization captures density 0 via: for any ε > 0, eventually the proportion of representable integers below M is less than ε.\n\n**This conjecture is FALSE** — van Doorn and Everts showed density equals 1 for C = 6.",
+    "mathContext": "The definition uses set cardinality (.ncard) for possibly infinite sets, though for n < M the set is always finite.",
+    "significance": "critical",
+    "relatedConcepts": ["natural-density", "epsilon-delta", "asymptotic-behavior"]
+  },
+  {
+    "id": "ann-e845-disproof",
+    "proofId": "erdos-845",
+    "range": { "startLine": 91, "endLine": 107 },
+    "type": "theorem",
+    "title": "The 2025 Disproof",
+    "content": "**The breakthrough result** by van Doorn and Everts (arXiv:2511.04585, 2025):\n\n`vanDoornEverts_universal`: Every positive integer has a 6-bounded representation.\n\n`erdosConjecture_false`: Therefore Erdős's conjecture is false.\n\nThis is stated as an axiom because the proof involves intricate combinatorial constructions not yet formalized in Mathlib. The key insight is that 3-smooth numbers are dense enough that clever combinations can hit every integer while keeping the ratio bounded.",
+    "mathContext": "The paper title 'Smooth sums with small spacings' emphasizes the ratio constraint. The proof likely uses greedy algorithms and careful case analysis.",
+    "significance": "critical",
+    "relatedConcepts": ["axiom", "universal-statement", "van-doorn-everts"]
+  },
+  {
+    "id": "ann-e845-lower-bounds",
+    "proofId": "erdos-845",
+    "range": { "startLine": 116, "endLine": 134 },
+    "type": "theorem",
+    "title": "Lower Bounds on the Optimal Constant",
+    "content": "**What's the tightest ratio that works?** Let C* be the smallest constant such that all large integers have C*-bounded representations.\n\n**Known bounds**:\n- **Erdős-Lewin (1996)**: C* > 2. Infinitely many integers fail with ratio bound 2.\n- **van Doorn-Everts (2025)**: C* ≥ 3. Infinitely many integers fail with ratio bound 3.\n- **Upper bound**: C* ≤ 6 (since C = 6 works universally).\n\nSo we know 3 < C* ≤ 6, with conjectures suggesting C* ≈ 3.604.",
+    "mathContext": "The notation ∃ᶠ n in atTop means 'for infinitely many n' or equivalently 'frequently as n → ∞'. This captures that exceptions exist at arbitrarily large scales.",
+    "significance": "critical",
+    "relatedConcepts": ["filter-frequently", "optimal-constant", "erdos-lewin"]
+  },
+  {
+    "id": "ann-e845-silly",
+    "proofId": "erdos-845",
+    "range": { "startLine": 144, "endLine": 162 },
+    "type": "theorem",
+    "title": "The 'Silly Conjecture'",
+    "content": "**A related, simpler problem** that Erdős called his 'silly conjecture': Every positive integer can be written as a sum of distinct 3-smooth numbers where NO summand divides any other.\n\nErdős thought this was 'nice and difficult' but Jansen and others quickly found a simple inductive proof:\n- If n is even, apply induction to n/2 and double all summands\n- If n is odd, let 3^k be the largest power of 3 ≤ n, subtract it, and apply induction to the (even) remainder\n\nThe `nonDivisible` predicate captures the no-divisibility constraint.",
+    "mathContext": "Non-divisibility is weaker than the ratio constraint—if bₜ ≤ C·b₁ with C < 2, then automatically no bᵢ divides another (since bᵢ₊₁ > bᵢ but bᵢ₊₁ < 2bᵢ).",
+    "significance": "supporting",
+    "relatedConcepts": ["induction", "divisibility", "erdos-conjecture"]
+  },
+  {
+    "id": "ann-e845-examples",
+    "proofId": "erdos-845",
+    "range": { "startLine": 170, "endLine": 189 },
+    "type": "example",
+    "title": "Verified Examples",
+    "content": "**Concrete computations** verified by Lean:\n\n- 1 = 2⁰·3⁰ is 3-smooth\n- 6 = 2¹·3¹ is 3-smooth  \n- 12 = 2²·3¹ is 3-smooth\n\n**Sum examples**:\n- 7 = 1 + 2 + 4 = smoothNum(0,0) + smoothNum(1,0) + smoothNum(2,0)\n- 5 = 2 + 3 = smoothNum(1,0) + smoothNum(0,1)\n\nThese use `norm_num` for arithmetic verification, demonstrating that our definitions correctly capture the intended mathematics.",
+    "mathContext": "The examples show that even small integers have multiple 3-smooth representations, hinting at why universality might hold for larger ratio bounds.",
+    "significance": "supporting",
+    "relatedConcepts": ["norm-num", "computational-verification", "examples"]
+  }
+]

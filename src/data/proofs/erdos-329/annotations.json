@@ -1,1 +1,254 @@
-[]
+[
+  {
+    "id": "ann-e329-header",
+    "proofId": "erdos-329",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This module formalizes **Erdos Problem #329**: How large can the normalized density of a Sidon set be? A Sidon set is one where all pairwise sums are distinct.",
+    "mathContext": "The problem asks for sup{limsup |A cap [1,N]| / sqrt(N) : A is Sidon}. Known bounds: 1/sqrt(2) <= sup <= 1. The exact value is OPEN.",
+    "significance": "supporting",
+    "relatedConcepts": ["Sidon sets", "B2 sequences", "additive combinatorics"]
+  },
+  {
+    "id": "ann-e329-imports",
+    "proofId": "erdos-329",
+    "range": {
+      "startLine": 28,
+      "endLine": 37
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "We import Mathlib modules for **set cardinality** (Set.ncard), **real numbers** and **square roots** (Real.sqrt), and **filter theory** (limsup, atTop) for defining asymptotic density.",
+    "mathContext": "The key tool is Filter.limsup which formalizes limit superior. We use Set.Icc for closed intervals [1, N].",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "Filter", "limsup", "Set.ncard"]
+  },
+  {
+    "id": "ann-e329-sidon-def",
+    "proofId": "erdos-329",
+    "range": {
+      "startLine": 39,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "Sidon Set Definition",
+    "content": "**IsSidon A** means all pairwise sums from A are distinct. If a + b = c + d with a <= b and c <= d and all four in A, then (a,b) = (c,d).",
+    "mathContext": "This is the standard definition of a B_2 sequence. The condition ensures that if we list all sums a + b with a <= b, no sum appears twice. This severely limits how many elements can fit in [1,N].",
+    "significance": "critical",
+    "relatedConcepts": ["B2 sequence", "additive structure", "distinct sums"]
+  },
+  {
+    "id": "ann-e329-partial-density",
+    "proofId": "erdos-329",
+    "range": {
+      "startLine": 51,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Sqrt-Normalized Partial Density",
+    "content": "**sqrtPartialDensity A N** counts |A cap [1,N]| / sqrt(N). We divide by sqrt(N) instead of N because Sidon sets can have at most sqrt(N) elements.",
+    "mathContext": "Normal density (dividing by N) would give 0 for any Sidon set. The sqrt(N) normalization captures the right growth rate, as Erdos-Turan showed |A cap [1,N]| <= sqrt(N) + O(N^{1/4}).",
+    "significance": "key",
+    "relatedConcepts": ["density", "normalization", "asymptotic growth"]
+  },
+  {
+    "id": "ann-e329-upper-density",
+    "proofId": "erdos-329",
+    "range": {
+      "startLine": 60,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Sidon Upper Density",
+    "content": "**sidonUpperDensity A** is the limsup of sqrtPartialDensity. This captures the best asymptotic behavior of A, ignoring finitely many exceptional values.",
+    "mathContext": "We use limsup rather than lim because the limit may not exist. The limsup captures 'how dense can A be infinitely often' - the quantity we want to maximize.",
+    "significance": "critical",
+    "relatedConcepts": ["limsup", "asymptotic density", "Filter.atTop"]
+  },
+  {
+    "id": "ann-e329-perfect-diff",
+    "proofId": "erdos-329",
+    "range": {
+      "startLine": 67,
+      "endLine": 78
+    },
+    "type": "definition",
+    "title": "Perfect Difference Sets",
+    "content": "**IsPerfectDifferenceSet D n** means D has n+1 elements, is Sidon, and every nonzero integer appears as exactly one difference d1 - d2 with d1, d2 in D.",
+    "mathContext": "Perfect difference sets are the 'optimal' finite Sidon sets - they achieve maximum structure. They arise from projective planes: a projective plane of order q gives a perfect difference set of order q.",
+    "significance": "key",
+    "relatedConcepts": ["projective geometry", "difference sets", "optimal structure"]
+  },
+  {
+    "id": "ann-e329-main-question",
+    "proofId": "erdos-329",
+    "range": {
+      "startLine": 80,
+      "endLine": 90
+    },
+    "type": "definition",
+    "title": "The Main Question",
+    "content": "**maxSidonDensity** is the supremum of sidonUpperDensity over all Sidon sets. This is THE quantity Erdos asked about - its exact value is unknown!",
+    "mathContext": "We know 1/sqrt(2) <= maxSidonDensity <= 1. The lower bound comes from Kruckeberg's construction, the upper bound from Erdos-Turan. Determining the exact value is the open problem.",
+    "significance": "critical",
+    "relatedConcepts": ["supremum", "open problem", "density bounds"]
+  },
+  {
+    "id": "ann-e329-erdos-lower",
+    "proofId": "erdos-329",
+    "range": {
+      "startLine": 92,
+      "endLine": 98
+    },
+    "type": "axiom",
+    "title": "Erdos's Lower Bound",
+    "content": "**erdos_lower_bound**: There exists a Sidon set achieving density at least 1/2. This was Erdos's original construction.",
+    "mathContext": "Erdos's construction is based on quadratic residues. While 1/2 was the first nontrivial lower bound, it was later improved by Kruckeberg.",
+    "significance": "supporting",
+    "relatedConcepts": ["quadratic residues", "construction", "historical"]
+  },
+  {
+    "id": "ann-e329-kruckeberg",
+    "proofId": "erdos-329",
+    "range": {
+      "startLine": 100,
+      "endLine": 107
+    },
+    "type": "axiom",
+    "title": "Kruckeberg's Construction (1961)",
+    "content": "**kruckeberg_1961**: There exists a Sidon set with density exactly 1/sqrt(2) = 0.707... This is the best known construction for over 60 years!",
+    "mathContext": "Kruckeberg's construction uses algebraic number theory. The density 1/sqrt(2) may or may not be optimal - we simply don't know if we can do better.",
+    "significance": "critical",
+    "relatedConcepts": ["algebraic construction", "best known bound", "1961"]
+  },
+  {
+    "id": "ann-e329-corollary",
+    "proofId": "erdos-329",
+    "range": {
+      "startLine": 109,
+      "endLine": 115
+    },
+    "type": "theorem",
+    "title": "Corollary: Lower Bound",
+    "content": "**max_density_ge_inv_sqrt2**: A proved theorem that the maximum density is at least 1/sqrt(2). This follows directly from Kruckeberg's existence result.",
+    "mathContext": "The proof is simple: Kruckeberg gives us a Sidon set achieving exactly 1/sqrt(2), so the supremum is at least this value. We use hd.ge to convert equality to >=.",
+    "significance": "key",
+    "relatedConcepts": ["corollary", "existence", "ge_of_eq"]
+  },
+  {
+    "id": "ann-e329-upper-bound",
+    "proofId": "erdos-329",
+    "range": {
+      "startLine": 117,
+      "endLine": 127
+    },
+    "type": "axiom",
+    "title": "Erdos-Turan Upper Bound (1941)",
+    "content": "**erdos_turan_upper_bound**: Every Sidon set has density at most 1. This fundamental result from 1941 gives the ceiling for possible densities.",
+    "mathContext": "The counting argument: if |A cap [1,N]| = k, then the k(k+1)/2 pairwise sums are distinct and lie in [2, 2N]. So k(k+1)/2 <= 2N-1, giving k <= sqrt(4N) + O(1), hence density <= 1.",
+    "significance": "critical",
+    "relatedConcepts": ["counting argument", "upper bound", "Erdos-Turan 1941"]
+  },
+  {
+    "id": "ann-e329-le-one",
+    "proofId": "erdos-329",
+    "range": {
+      "startLine": 129,
+      "endLine": 136
+    },
+    "type": "theorem",
+    "title": "Maximum Density at Most 1",
+    "content": "**max_density_le_one**: Every element in the set of achievable densities is at most 1. This uses the Erdos-Turan bound applied to the witnessing Sidon set.",
+    "mathContext": "The proof destructures the membership: if d is an achievable density, there exists A with IsSidon A and sidonUpperDensity A = d. Applying Erdos-Turan to A gives d <= 1.",
+    "significance": "key",
+    "relatedConcepts": ["set membership", "universal bound", "destructuring"]
+  },
+  {
+    "id": "ann-e329-conditional",
+    "proofId": "erdos-329",
+    "range": {
+      "startLine": 138,
+      "endLine": 156
+    },
+    "type": "axiom",
+    "title": "Conditional Equivalence",
+    "content": "**embedding_implies_density_one** and **density_one_implies_embedding**: The maximum density equals 1 if and only if every finite Sidon set embeds in a perfect difference set.",
+    "mathContext": "This remarkable equivalence connects the asymptotic density question to a finite combinatorial embedding problem. If we could always embed Sidon sets in perfect difference sets, we'd achieve density 1.",
+    "significance": "key",
+    "relatedConcepts": ["equivalence", "embedding", "perfect difference sets"]
+  },
+  {
+    "id": "ann-e329-empty",
+    "proofId": "erdos-329",
+    "range": {
+      "startLine": 158,
+      "endLine": 163
+    },
+    "type": "theorem",
+    "title": "Empty Set is Sidon",
+    "content": "**empty_is_sidon**: The empty set trivially satisfies the Sidon property - there are no elements, so no sums can collide!",
+    "mathContext": "The proof uses vacuous truth: we assume a is in the empty set, which is a contradiction (Set.notMem_empty). From a false premise, anything follows.",
+    "significance": "supporting",
+    "relatedConcepts": ["vacuous truth", "empty set", "base case"]
+  },
+  {
+    "id": "ann-e329-singleton",
+    "proofId": "erdos-329",
+    "range": {
+      "startLine": 165,
+      "endLine": 170
+    },
+    "type": "theorem",
+    "title": "Singletons are Sidon",
+    "content": "**singleton_is_sidon**: Any singleton {n} is a Sidon set. With only one element, the only sum is n + n, which cannot collide with itself.",
+    "mathContext": "The proof uses Set.mem_singleton_iff to show all four elements must equal n, then the conclusion (n,n) = (n,n) is trivial.",
+    "significance": "supporting",
+    "relatedConcepts": ["singleton", "trivial case", "simp"]
+  },
+  {
+    "id": "ann-e329-example",
+    "proofId": "erdos-329",
+    "range": {
+      "startLine": 172,
+      "endLine": 173
+    },
+    "type": "axiom",
+    "title": "Concrete Example: {1, 2, 5, 10}",
+    "content": "**sidon_example_1_2_5_10**: The set {1, 2, 5, 10} is a Sidon set. Its 6 pairwise sums (3, 6, 7, 11, 12, 15) are all distinct.",
+    "mathContext": "This is axiomatized because checking all 15 pairs would be tedious. The verified computations below confirm the 6 sums are distinct.",
+    "significance": "supporting",
+    "relatedConcepts": ["concrete example", "verification", "four-element Sidon set"]
+  },
+  {
+    "id": "ann-e329-verified",
+    "proofId": "erdos-329",
+    "range": {
+      "startLine": 175,
+      "endLine": 195
+    },
+    "type": "theorem",
+    "title": "Verified Sum Computations",
+    "content": "We verify the 6 pairwise sums from {1, 2, 5, 10}: 1+2=3, 1+5=6, 1+10=11, 2+5=7, 2+10=12, 5+10=15. All are distinct!",
+    "mathContext": "These use native_decide to compute at proof-checking time. The set {3, 6, 7, 11, 12, 15} has 6 distinct elements, confirming the Sidon property.",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide", "computation", "verification"]
+  },
+  {
+    "id": "ann-e329-summary",
+    "proofId": "erdos-329",
+    "range": {
+      "startLine": 197,
+      "endLine": 213
+    },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_329_summary** packages the two main known results: Kruckeberg's lower bound (existence of 1/sqrt(2) density) and Erdos-Turan's upper bound (all densities <= 1).",
+    "mathContext": "This is a proved theorem, not an axiom - it simply combines the two axioms into a conjunction. It captures the complete known state of the problem.",
+    "significance": "critical",
+    "relatedConcepts": ["summary", "state of the art", "open problem"]
+  }
+]

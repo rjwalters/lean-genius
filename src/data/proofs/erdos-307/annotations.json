@@ -1,1 +1,290 @@
-[]
+[
+  {
+    "id": "ann-307-header",
+    "proofId": "erdos-307",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdős Problem #307 asks: Can two finite sets of primes P and Q have reciprocal sums that multiply to 1? The prime version is OPEN; the coprime relaxation was SOLVED by Cambie.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-307-imports",
+    "proofId": "erdos-307",
+    "range": { "startLine": 29, "endLine": 38 },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import prime number theory, finite set operations, rational arithmetic, and big operators for sums. These provide the foundation for formalizing reciprocal sum products.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-307-reciprocal-sum",
+    "proofId": "erdos-307",
+    "range": { "startLine": 42, "endLine": 45 },
+    "type": "definition",
+    "title": "Reciprocal Sum",
+    "content": "**reciprocalSum S** computes Σ_{n ∈ S} 1/n as a rational number. For S = {2, 3, 5}, this gives 1/2 + 1/3 + 1/5 = 31/30.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-307-reciprocal-product",
+    "proofId": "erdos-307",
+    "range": { "startLine": 47, "endLine": 50 },
+    "type": "definition",
+    "title": "Reciprocal Product",
+    "content": "**reciprocalProduct P Q** is the product (Σ 1/p)(Σ 1/q). We ask when this equals exactly 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-307-set-of-primes",
+    "proofId": "erdos-307",
+    "range": { "startLine": 52, "endLine": 54 },
+    "type": "definition",
+    "title": "Set of Primes",
+    "content": "**IsSetOfPrimes S** means every element of S is prime. This is the constraint in the original problem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-307-pairwise-coprime",
+    "proofId": "erdos-307",
+    "range": { "startLine": 56, "endLine": 58 },
+    "type": "definition",
+    "title": "Pairwise Coprime",
+    "content": "**IsPairwiseCoprime S** means any two distinct elements are coprime. This is the weaker condition Cambie used.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-307-main-problem",
+    "proofId": "erdos-307",
+    "range": { "startLine": 60, "endLine": 70 },
+    "type": "definition",
+    "title": "The Open Problem",
+    "content": "**ErdosProblem307**: Do there exist prime sets P, Q with (Σ 1/p)(Σ 1/q) = 1? This remains OPEN after nearly 50 years.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-307-coprime-version",
+    "proofId": "erdos-307",
+    "range": { "startLine": 75, "endLine": 82 },
+    "type": "definition",
+    "title": "Coprime Version",
+    "content": "**ErdosProblem307Coprime**: The relaxed version where elements need only be pairwise coprime. This version is SOLVED.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-307-cambie-example1-def",
+    "proofId": "erdos-307",
+    "range": { "startLine": 84, "endLine": 88 },
+    "type": "definition",
+    "title": "Cambie's First Example",
+    "content": "P = {1, 5}, Q = {2, 3}. These are pairwise coprime sets that will multiply to 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-307-cambie-example1-coprime",
+    "proofId": "erdos-307",
+    "range": { "startLine": 90, "endLine": 102 },
+    "type": "theorem",
+    "title": "Coprimality Verification",
+    "content": "{1, 5} and {2, 3} are each pairwise coprime. gcd(1, 5) = 1 and gcd(2, 3) = 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-307-cambie-example1-sums",
+    "proofId": "erdos-307",
+    "range": { "startLine": 104, "endLine": 112 },
+    "type": "theorem",
+    "title": "Reciprocal Sums",
+    "content": "Σ{1,5} = 1 + 1/5 = 6/5 and Σ{2,3} = 1/2 + 1/3 = 5/6. These are reciprocals of each other!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-307-cambie-example1-works",
+    "proofId": "erdos-307",
+    "range": { "startLine": 114, "endLine": 117 },
+    "type": "theorem",
+    "title": "Product Equals 1",
+    "content": "(6/5)(5/6) = 1. Cambie's first example works! Verified computationally via norm_num.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-307-cambie-example2",
+    "proofId": "erdos-307",
+    "range": { "startLine": 119, "endLine": 138 },
+    "type": "theorem",
+    "title": "Cambie's Second Example",
+    "content": "P = {1, 41}, Q = {2, 3, 7}. We get (42/41)(41/42) = 1. Another verified solution!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-307-coprime-solved",
+    "proofId": "erdos-307",
+    "range": { "startLine": 140, "endLine": 145 },
+    "type": "theorem",
+    "title": "Coprime Version Solved",
+    "content": "**erdos_307_coprime_solved**: We prove ErdosProblem307Coprime by exhibiting Cambie's first example. The coprime version has solutions.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-307-strengthened",
+    "proofId": "erdos-307",
+    "range": { "startLine": 147, "endLine": 158 },
+    "type": "definition",
+    "title": "Strengthened Coprime Version",
+    "content": "**ErdosProblem307CoprimeStrengthened**: Require 1 ∉ P ∪ Q. No examples are known! This is an open sub-problem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-307-disjointness",
+    "proofId": "erdos-307",
+    "range": { "startLine": 160, "endLine": 174 },
+    "type": "theorem",
+    "title": "Prime Sets Must Be Disjoint",
+    "content": "If P, Q are prime sets with product 1, then P ∩ Q = ∅. A shared prime would create an irreconcilable denominator structure.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-307-amgm-bound",
+    "proofId": "erdos-307",
+    "range": { "startLine": 176, "endLine": 185 },
+    "type": "theorem",
+    "title": "Sum Lower Bound (AM-GM)",
+    "content": "If (Σ 1/p)(Σ 1/q) = 1, then by AM-GM: Σ 1/p + Σ 1/q ≥ 2. The combined reciprocal sum must be at least 2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-307-size-bound",
+    "proofId": "erdos-307",
+    "range": { "startLine": 187, "endLine": 196 },
+    "type": "theorem",
+    "title": "Size Bound: |P ∪ Q| ≥ 60",
+    "content": "Since Σ 1/p grows like log log n, we need about 60 primes to reach sum ≥ 2. The first 60 primes give Σ 1/p ≈ 2.009.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-307-partial-sum",
+    "proofId": "erdos-307",
+    "range": { "startLine": 198, "endLine": 205 },
+    "type": "definition",
+    "title": "Prime Reciprocal Partial Sum",
+    "content": "**primeReciprocalPartialSum n** computes 1/2 + 1/3 + 1/5 + ... for the first n primes. This grows very slowly.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-307-divergence",
+    "proofId": "erdos-307",
+    "range": { "startLine": 207, "endLine": 210 },
+    "type": "axiom",
+    "title": "Slow Divergence",
+    "content": "The sum Σ 1/p diverges, but very slowly (like log log n). This is a classical result making the problem computationally hard.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-307-rigidity",
+    "proofId": "erdos-307",
+    "range": { "startLine": 212, "endLine": 219 },
+    "type": "axiom",
+    "title": "Product Rigidity",
+    "content": "Most choices of P have NO matching Q. The reciprocal of a prime sum is rarely itself a sum of prime reciprocals.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-307-egyptian-def",
+    "proofId": "erdos-307",
+    "range": { "startLine": 221, "endLine": 226 },
+    "type": "definition",
+    "title": "Egyptian Fractions",
+    "content": "**IsEgyptianOne S** means 1 = Σ_{n ∈ S} 1/n. This connects to ancient Egyptian mathematics where fractions were written as sums of unit fractions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-307-egyptian-example",
+    "proofId": "erdos-307",
+    "range": { "startLine": 228, "endLine": 235 },
+    "type": "theorem",
+    "title": "Egyptian Example",
+    "content": "1 = 1/2 + 1/3 + 1/6. This classic identity shows 1 can be written as a sum of distinct unit fractions.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-307-search-space",
+    "proofId": "erdos-307",
+    "range": { "startLine": 243, "endLine": 255 },
+    "type": "definition",
+    "title": "Search Space Size",
+    "content": "With 60 primes, there are 2^60 ≈ 10^18 partitions into P and Q. At 10^9 checks/second, this takes 36+ years.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-307-why-one",
+    "proofId": "erdos-307",
+    "range": { "startLine": 257, "endLine": 266 },
+    "type": "theorem",
+    "title": "Why 1 Helps",
+    "content": "Cambie's examples all use 1. Since 1 + 1/n = (n+1)/n, its reciprocal n/(n+1) is easy to match with primes. Without 1, balancing is much harder.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-307-pair-with-one",
+    "proofId": "erdos-307",
+    "range": { "startLine": 268, "endLine": 274 },
+    "type": "theorem",
+    "title": "Pair with One",
+    "content": "If P = {1, n}, then Σ_P = (n+1)/n. To get product 1, we need Q with Σ_Q = n/(n+1). For n = 5: need Q with sum 5/6 = 1/2 + 1/3.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-307-multiplicative",
+    "proofId": "erdos-307",
+    "range": { "startLine": 276, "endLine": 284 },
+    "type": "definition",
+    "title": "Multiplicative Formulation",
+    "content": "The problem can be recast in terms of products: ∏P · ∏Q = (sum over subsets). This gives a polynomial equation constraint.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-307-lcd",
+    "proofId": "erdos-307",
+    "range": { "startLine": 286, "endLine": 293 },
+    "type": "axiom",
+    "title": "LCD Connection",
+    "content": "The product equals 1 iff a specific polynomial identity holds for the LCD of the sets. This connects to algebraic number theory.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-307-no-size-two",
+    "proofId": "erdos-307",
+    "range": { "startLine": 295, "endLine": 306 },
+    "type": "theorem",
+    "title": "No Size-2 Solution",
+    "content": "If |P| = |Q| = 2, there's no prime solution. The equation (p₁+p₂)(q₁+q₂) = p₁p₂q₁q₂ has no prime solutions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-307-no-two-three",
+    "proofId": "erdos-307",
+    "range": { "startLine": 308, "endLine": 313 },
+    "type": "theorem",
+    "title": "No (2,3) Solution",
+    "content": "No prime solution exists with |P| = 2 and |Q| = 3. Small cases have been ruled out computationally.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-307-summary",
+    "proofId": "erdos-307",
+    "range": { "startLine": 315, "endLine": 346 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**SUMMARY**: (1) Coprime version is SOLVED (Cambie). (2) Prime version needs |P ∪ Q| ≥ 60. (3) Small sizes ruled out. (4) Prime version remains OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-307-footer",
+    "proofId": "erdos-307",
+    "range": { "startLine": 349, "endLine": 377 },
+    "type": "concept",
+    "title": "Historical Context",
+    "content": "Asked by Barbeau (1976). Cambie solved the coprime version. The prime version connects number theory (primes, Egyptian fractions) with computational complexity. The 60-prime bound makes brute force infeasible.",
+    "significance": "key"
+  }
+]

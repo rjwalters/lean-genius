@@ -1,33 +1,137 @@
 {
   "id": "erdos-845",
-  "title": "Erdős Problem #845",
+  "title": "Erdős Problem #845: Sums of 3-Smooth Numbers with Bounded Ratio",
   "slug": "erdos-845",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is it true that the set of integers of the form\\[n=b_1+\\cdots+b_tb_1<\\cdots<b_t\\]where ... for ... and ... has densi...",
+  "description": "For C > 0, does the set of integers expressible as sums of 3-smooth numbers b₁ < ... < bₜ with bₜ ≤ Cb₁ have density 0? Disproved: all integers have such representations with C = 6.",
   "meta": {
-    "author": "Unknown",
+    "author": "van Doorn and Everts (2025)",
     "sourceUrl": "https://erdosproblems.com/845",
-    "date": "",
-    "status": "pending",
+    "date": "2025",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos845Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "smooth-numbers",
+      "representations",
+      "density"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 845,
     "erdosUrl": "https://erdosproblems.com/845",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "disproved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.image",
+        "description": "Maps a function over a finite set",
+        "module": "Mathlib.Data.Finset.Image"
+      },
+      {
+        "theorem": "Finset.max'",
+        "description": "Maximum element of a nonempty finite set",
+        "module": "Mathlib.Data.Finset.Lattice"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over elements of a finite set",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for 'infinitely often' statements",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      }
+    ],
+    "originalContributions": [
+      "Defines 3-smooth numbers and bounded-ratio representations",
+      "States the original conjecture and its disproof",
+      "Formalizes van Doorn-Everts universal representation theorem",
+      "Captures lower bound results from Erdős-Lewin (1996) and van Doorn-Everts (2025)",
+      "Includes the related 'silly conjecture' about non-divisibility",
+      "Provides verified computational examples"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #845 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $C>0$. Is it true that the set of integers of the form\\[n=b_1+\\cdots+b_t\\textrm{ with }b_1<\\cdots<b_t\\]where $b_i=2^{k_i}3^{l_i}$ for $1\\leq i\\leq t$ and $b_t\\leq Cb_1$ has density $0$?\n\n\n\nIn \\cite{Er92b} Erd\\H{o}s wrote 'last year I made the following silly conjecture': every integer $n$ can be written as the sum of distinct integers of the form $2^k3^l$, none of which divide any other. 'I mistakenly thought that this was a nice and difficult conjecture but Jansen and several others found a simple proof by induction.'\n\nIndeed, one proves (by induction) the stronger fact that such a representation always exists, and moreover if $n$ is even then all the summands can be taken to be even (this is actually not stronger, see the comment by marinov): if $n=2m$ we are done applying the inductive hypothesis to $m$. Otherwise if $n$ is odd then let $3^k$ be the largest power of $3$ which is $\\leq n$ and apply the inductive hypothesis to $n-3^k$ (which is even).\n\nvan Doorn and Everts \\cite{vDEv25} have disproved this with $C=6$ - in fact, they prove that all integers can be written as such a sum in which $b_t<6b_1$.\n\nIf $C$ is the smallest constant for which all large integers can be written as such a sum with $b_t<Cb_1$ then Erd\\H{o}s and Lewin \\cite{ErLe96} show that $C>2$, and van Doorn and Everts \\cite{vDEv25} show that $C\\geq 3$. In the comments Alexeev and Cambie give evidence that perhaps any $C>3^{10}/2^{14}\\approx 3.604$ suffices.\n\nSee also [123] and [1110].\n\n\n\n\nReferences\n\n\n[Er92b] Erd\\H{o}s, Paul, Some of my favourite problems in various branches of combinatorics. Matematiche (Catania) (1992), 231-240.\n\n[ErLe96] Erd\\H{o}s, P. and Lewin, Mordechai, $d$-complete sequences of integers. Math. Comp. (1996), 837-840.\n\n[vDEv25] W. van Doorn and A. Everts, Smooth sums with small spacings. arXiv:2511.04585 (2025).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem involves 3-smooth numbers—positive integers whose only prime factors are 2 and 3 (i.e., numbers of the form 2^k · 3^l). Erdős asked whether, for any constant C > 0, the set of integers expressible as sums of distinct 3-smooth numbers with bounded ratio (largest ≤ C times smallest) has natural density zero.\n\nIn 1992, Erdős wrote about his 'silly conjecture' that every integer can be written as a sum of distinct 3-smooth numbers where no summand divides another. This was quickly proved by Jansen and others using a simple induction.\n\nThe main problem was resolved in 2025 by van Doorn and Everts, who proved that ALL integers can be represented with C = 6, completely disproving Erdős's conjecture—the set has density 1, not 0.\n\nThe optimal constant C* remains of interest: Erdős and Lewin (1996) showed C* > 2, and van Doorn and Everts showed C* ≥ 3. It is conjectured that C* > 3^10/2^14 ≈ 3.604 may suffice.",
+    "problemStatement": "Let $C > 0$. Consider the set of integers $n$ expressible as\n$$n = b_1 + b_2 + \\cdots + b_t$$\nwhere $b_1 < b_2 < \\cdots < b_t$ are distinct 3-smooth numbers (of the form $2^k \\cdot 3^l$) satisfying $b_t \\leq C \\cdot b_1$.\n\n**Question**: Does this set have natural density 0?\n\n**Answer**: NO (DISPROVED). Van Doorn and Everts (2025) proved that with $C = 6$, ALL positive integers have such representations. The set has density 1, not 0.",
+    "proofStrategy": "We formalize the problem using Mathlib's Finset operations. A 3-smooth number is defined as 2^k · 3^l for natural numbers k, l. The bounded-ratio representation property is captured by requiring the max/min ratio of the summand set to be at most C.\n\nSince the 2025 disproof involves sophisticated combinatorial arguments beyond current Mathlib capabilities, we state the main results as axioms:\n1. Universal representation with C = 6 (van Doorn-Everts)\n2. The conjecture is false (corollary)\n3. Lower bounds C > 2 (Erdős-Lewin) and C ≥ 3 (van Doorn-Everts)\n\nWe also include the 'silly conjecture' result about representations with non-divisibility.",
+    "keyInsights": [
+      "**3-smooth numbers**: Numbers of the form 2^k · 3^l form a sparse but structured subset of integers, fundamental in number theory and computer science.",
+      "**Density reversal**: Erdős expected sparsity (density 0) but the set turns out to be universal (density 1 for C = 6).",
+      "**Optimal constant**: The smallest C making all integers representable lies in the interval (3, 6], with conjectures suggesting it's around 3.6.",
+      "**The 'silly conjecture'**: Every integer is a sum of 3-smooth numbers with no divisibility—a simple warm-up proved by induction.",
+      "**Recent breakthrough**: The 2025 paper by van Doorn and Everts resolved this decades-old problem."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Description",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Header documentation stating the problem, its disproof, and bounds on the optimal constant."
+    },
+    {
+      "id": "smooth-numbers",
+      "title": "3-Smooth Number Definitions",
+      "startLine": 29,
+      "endLine": 47,
+      "summary": "Defines 3-smooth numbers as products of powers of 2 and 3, with the smoothNum parametrization."
+    },
+    {
+      "id": "bounded-rep",
+      "title": "Bounded-Ratio Representations",
+      "startLine": 49,
+      "endLine": 64,
+      "summary": "Defines when an integer has a C-bounded representation as a sum of 3-smooth numbers."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Original Conjecture",
+      "startLine": 66,
+      "endLine": 82,
+      "summary": "States Erdős's original conjecture that bounded-ratio representation sets have density 0."
+    },
+    {
+      "id": "disproof",
+      "title": "The Disproof",
+      "startLine": 84,
+      "endLine": 107,
+      "summary": "Formalizes van Doorn-Everts (2025): all integers have 6-bounded representations, disproving the conjecture."
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds on Optimal C",
+      "startLine": 109,
+      "endLine": 134,
+      "summary": "Captures results showing C* > 2 (Erdős-Lewin) and C* ≥ 3 (van Doorn-Everts)."
+    },
+    {
+      "id": "silly-conjecture",
+      "title": "The 'Silly Conjecture'",
+      "startLine": 136,
+      "endLine": 162,
+      "summary": "Related result: every integer is a sum of 3-smooth numbers with no divisibility relations."
+    },
+    {
+      "id": "examples",
+      "title": "Computational Examples",
+      "startLine": 164,
+      "endLine": 189,
+      "summary": "Verified examples showing 3-smooth numbers and their sums."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalized Erdős Problem #845, which asked whether bounded-ratio sums of 3-smooth numbers form a density-0 set. The 2025 breakthrough by van Doorn and Everts definitively disproved this—all integers have 6-bounded representations. We captured the main results as axioms and included the related 'silly conjecture' about non-divisibility representations.",
+    "implications": "This resolution demonstrates that 3-smooth numbers are remarkably flexible for additive representations. The techniques may have applications in digital signal processing (where 3-smooth numbers appear as shift-and-add multipliers) and algorithmic number theory.",
+    "openQuestions": [
+      "What is the exact optimal constant C* such that all integers have C*-bounded representations?",
+      "Does C* = 3^10/2^14 ≈ 3.604 suffice, as conjectured?",
+      "Can the van Doorn-Everts result be formalized constructively in Lean?",
+      "What happens for k-smooth numbers (only prime factors ≤ k) for k > 3?"
+    ]
   }
 }

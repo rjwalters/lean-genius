@@ -1,33 +1,132 @@
 {
   "id": "erdos-550",
-  "title": "Erdős Problem #550",
+  "title": "Erdős #550: Ramsey Numbers for Trees and Multipartite Graphs",
   "slug": "erdos-550",
-  "description": "Let ... and ... be sufficiently large. If ... is a tree on ... vertices and ... is the complete multipartite graph with vertex class sizes ... then prove that\\[R(T,G)\\leq (\\chi(G)-1)(R(T,K_{m_1,m_2...",
+  "description": "For T a tree on n vertices and G = K_{m₁,...,mₖ}, prove R(T,G) ≤ (χ(G)-1)(R(T,K_{m₁,m₂})-1)+m₁. Chvátal (1977): R(T,Kₘ) = (m-1)(n-1)+1 is the foundational result.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Václav Chvátal",
     "sourceUrl": "https://erdosproblems.com/550",
-    "date": "",
-    "status": "pending",
+    "date": "1985",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos550Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "trees"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 18,
     "erdosNumber": 550,
     "erdosUrl": "https://erdosproblems.com/550",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #550 from erdosproblems.com.",
-    "problemStatement": "Let $m_1\\leq\\cdots\\leq m_k$ and $n$ be sufficiently large. If $T$ is a tree on $n$ vertices and $G$ is the complete multipartite graph with vertex class sizes $m_1,\\ldots,m_k$ then prove that\\[R(T,G)\\leq (\\chi(G)-1)(R(T,K_{m_1,m_2})-1)+m_1.\\] Chvátal [Ch77] proved that $R(T,K_m)=(m-1)(n-1)+1$. This problem is #16 in Ramsey Theory in the graphs problem collection. View the LaTeX source",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem extends Chvátal's 1977 exact result R(T,Kₘ) = (m-1)(n-1)+1 to complete multipartite graphs. The conjecture proposes a recursive bound using the chromatic number χ(G) = k and the bipartite Ramsey number R(T,K_{m₁,m₂}). It appears as #16 in the Ramsey Theory problems collection.",
+    "problemStatement": "Let m₁ ≤ ⋯ ≤ mₖ and n be sufficiently large. If T is a tree on n vertices and G is the complete multipartite graph K_{m₁,...,mₖ}, prove that R(T,G) ≤ (χ(G)-1)(R(T,K_{m₁,m₂})-1)+m₁.",
+    "proofStrategy": "We formalize trees, complete multipartite graphs, Ramsey numbers, Chvátal's theorem, the main conjecture, special cases (paths, stars, bounded degree), probabilistic lower bounds, extremal constructions, and asymptotic behavior.",
+    "keyInsights": [
+      "Chvátal (1977): R(T, Kₘ) = (m-1)(n-1) + 1 exactly",
+      "χ(K_{m₁,...,mₖ}) = k (number of parts)",
+      "The bound reduces to Chvátal when G = Kₘ",
+      "Burr's conjecture for bounded-degree trees is proved",
+      "For fixed m, R(T_n, Kₘ) ~ (m-1)n asymptotically"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-defs",
+      "title": "Graph Definitions",
+      "summary": "Trees and vertex counting",
+      "startLine": 30,
+      "endLine": 43
+    },
+    {
+      "id": "multipartite",
+      "title": "Complete Multipartite Graphs",
+      "summary": "K_{m₁,...,mₖ} structure and chromatic number",
+      "startLine": 45,
+      "endLine": 73
+    },
+    {
+      "id": "ramsey",
+      "title": "Ramsey Numbers",
+      "summary": "Definition of R(T, G)",
+      "startLine": 75,
+      "endLine": 93
+    },
+    {
+      "id": "chvatal",
+      "title": "Chvátal's Theorem",
+      "summary": "R(T, Kₘ) = (m-1)(n-1) + 1",
+      "startLine": 95,
+      "endLine": 115
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "summary": "The conjectured bound for multipartite G",
+      "startLine": 117,
+      "endLine": 137
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "Complete graphs, bipartite, stars",
+      "startLine": 139,
+      "endLine": 161
+    },
+    {
+      "id": "paths",
+      "title": "Path Graphs",
+      "summary": "P_n and Gerencsér-Gyárfás",
+      "startLine": 163,
+      "endLine": 180
+    },
+    {
+      "id": "tree-structure",
+      "title": "Tree Structure",
+      "summary": "Maximum degree and Burr's conjecture",
+      "startLine": 182,
+      "endLine": 203
+    },
+    {
+      "id": "turan",
+      "title": "Turán Connections",
+      "summary": "Extremal graph theory connections",
+      "startLine": 205,
+      "endLine": 214
+    },
+    {
+      "id": "probabilistic",
+      "title": "Probabilistic Bounds",
+      "summary": "Lower bounds from random graphs",
+      "startLine": 216,
+      "endLine": 229
+    },
+    {
+      "id": "extremal",
+      "title": "Extremal Graphs",
+      "summary": "Constructions achieving bounds",
+      "startLine": 231,
+      "endLine": 243
+    },
+    {
+      "id": "asymptotic",
+      "title": "Asymptotic Behavior",
+      "summary": "R(T_n, Kₘ) ~ (m-1)n",
+      "startLine": 245,
+      "endLine": 258
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #550 on Ramsey numbers for trees and complete multipartite graphs. The conjecture extends Chvátal's exact result R(T,Kₘ) = (m-1)(n-1)+1 to multipartite graphs using a recursive bound involving the chromatic number.",
+    "implications": "The problem connects tree embedding with Ramsey theory. Chvátal's theorem provides the complete answer for complete graphs, but the extension to multipartite graphs remains open. Special cases like bounded-degree trees (Burr's conjecture) have been resolved.",
+    "openQuestions": [
+      "Does the conjectured bound hold for all sufficiently large n?",
+      "What is the exact value of R(T, K_{m,m}) for general trees?",
+      "Can the bound be improved for specific tree families?",
+      "What is the relationship to Turán extremal graphs?"
+    ]
   }
 }

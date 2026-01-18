@@ -1,33 +1,102 @@
 {
   "id": "erdos-624",
-  "title": "Erdős Problem #624",
+  "title": "Covering Properties of Subset Functions",
   "slug": "erdos-624",
-  "description": "Let X\" role=\"presentation\" style=\"position: relative;\">XXX be a finite set of size n\" role=\"presentation\" style=\"position: relative;\">nnn and H(n)\" role=\"presentation\" style=\"position: relative;\">H...",
+  "description": "Let X be a finite set of size n. What is the minimum H(n) such that some function f: P(X) -> X covers all of X from any subset Y of size at least H(n)?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Hajnal",
     "sourceUrl": "https://erdosproblems.com/624",
-    "date": "",
-    "status": "pending",
+    "date": "1968",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos624Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "covering-problems",
+      "set-theory"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 2,
     "erdosNumber": 624,
     "erdosUrl": "https://erdosproblems.com/624",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #624 from erdosproblems.com.",
-    "problemStatement": "Let X\" role=\"presentation\" style=\"position: relative;\">XXX be a finite set of size n\" role=\"presentation\" style=\"position: relative;\">nnn and H(n)\" role=\"presentation\" style=\"position: relative;\">H(n)H(n)H(n) be such that there is a function f:{A:A&#x2286;X}&#x2192;X\" role=\"presentation\" style=\"position: relative;\">f:{A:A⊆X}→Xf:{A:A⊆X}→Xf:\\{A : A\\subseteq X\\}\\to X so that for every Y&#x2286;X\" role=\"presentation\" style=\"position: relative;\">Y⊆XY⊆XY\\subseteq X with &#x007C;Y&#x007C;&#x2265;H(n)\" role=\"presentation\" style=\"position: relative;\">|Y|≥H(n)|Y|≥H(n)\\lvert Y\\rvert \\geq H(n) we have{f(A):A&#x2286;Y}=X.\" role=\"presentation\" style=\"text-align: center; position: relative;\">{f(A):A⊆Y}=X.{f(A):A⊆Y}=X.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős and Hajnal (1968) studied covering properties of functions on power sets. The problem asks how large a subset Y must be to guarantee that the image {f(A) : A ⊆ Y} covers the entire set X.",
+    "problemStatement": "Let X be a finite set of size n and H(n) be the minimum integer such that there exists f: P(X) -> X where for every Y ⊆ X with |Y| >= H(n), we have {f(A) : A ⊆ Y} = X. Prove that H(n) - log_2(n) -> infinity.",
+    "proofStrategy": "The lower bound log_2(n) <= H(n) follows from counting: 2^H subsets can produce at most 2^H distinct images. The upper bound uses probabilistic constructions. The gap H(n) - log_2(n) -> infinity remains open.",
+    "keyInsights": [
+      "Lower bound: 2^H >= n since {f(A) : A ⊆ Y} must equal X",
+      "Upper bound: Erdős-Hajnal achieved H < log_2(n) + 3*log_2(log_2(n))",
+      "Alon showed no function achieves perfect covering",
+      "Even H(2^k) >= k+1 is open"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "core-defs",
+      "title": "Core Definitions",
+      "summary": "subsetImage, IsCoveringFunction, coveringNumber",
+      "startLine": 39,
+      "endLine": 54
+    },
+    {
+      "id": "basic-props",
+      "title": "Basic Properties",
+      "summary": "card_powerset_eq, subsetImage_card_le",
+      "startLine": 55,
+      "endLine": 68
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound",
+      "summary": "H(n) ≥ log₂(n)",
+      "startLine": 69,
+      "endLine": 86
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound",
+      "summary": "Erdős-Hajnal construction",
+      "startLine": 87,
+      "endLine": 98
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "summary": "H(n) - log₂(n) → ∞",
+      "startLine": 99,
+      "endLine": 112
+    },
+    {
+      "id": "weaker-statement",
+      "title": "Weaker Statement",
+      "summary": "H(2^k) ≥ k + 1 (also open)",
+      "startLine": 113,
+      "endLine": 123
+    },
+    {
+      "id": "alon-results",
+      "title": "Alon's Results",
+      "summary": "Upper and lower bounds on coverage",
+      "startLine": 124,
+      "endLine": 147
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Problem status and known results",
+      "startLine": 148,
+      "endLine": 165
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization defines the covering number H(n) and states both the main conjecture (H(n) - log_2(n) -> infinity) and the weaker conjecture (H(2^k) >= k+1). Both remain open problems.",
+    "implications": "Understanding covering properties has applications in combinatorics and coding theory.",
+    "openQuestions": [
+      "Prove H(n) - log_2(n) -> infinity",
+      "Prove the weaker H(2^k) >= k+1",
+      "Determine the exact constant in Alon's theorem"
+    ]
   }
 }

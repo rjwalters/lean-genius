@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-501-setfamily",
+    "proofId": "erdos-501",
+    "range": { "startLine": 38, "endLine": 39 },
+    "type": "definition",
+    "title": "Set Family",
+    "content": "A family of sets indexed by reals: for each x ∈ ℝ, we have a set A_x ⊆ ℝ.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-501-bounded",
+    "proofId": "erdos-501",
+    "range": { "startLine": 41, "endLine": 43 },
+    "type": "definition",
+    "title": "Bounded Set",
+    "content": "A set is bounded if contained in some interval [-M, M]. Required for the problem setup.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-501-outer",
+    "proofId": "erdos-501",
+    "range": { "startLine": 45, "endLine": 47 },
+    "type": "definition",
+    "title": "Outer Measure",
+    "content": "Lebesgue outer measure of a set. The key condition is that each A_x has outer measure < 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-501-boundedfam",
+    "proofId": "erdos-501",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "definition",
+    "title": "Bounded Outer Measure Family",
+    "content": "The main hypothesis: each A_x is bounded and has outer measure < 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-501-closed",
+    "proofId": "erdos-501",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "definition",
+    "title": "Closed Measure Family",
+    "content": "Stronger hypothesis: each A_x is closed (not just bounded) with measure < 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-501-isindep",
+    "proofId": "erdos-501",
+    "range": { "startLine": 59, "endLine": 61 },
+    "type": "definition",
+    "title": "Independent Set",
+    "content": "X is independent if for all distinct x, y ∈ X, we have x ∉ A_y. No element lies in another's associated set.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-501-indepsize",
+    "proofId": "erdos-501",
+    "range": { "startLine": 63, "endLine": 65 },
+    "type": "definition",
+    "title": "Independent Set of Size n",
+    "content": "There exists a finite independent set with exactly n elements.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-501-infinite",
+    "proofId": "erdos-501",
+    "range": { "startLine": 67, "endLine": 69 },
+    "type": "definition",
+    "title": "Infinite Independent Set",
+    "content": "There exists an infinite independent set. This is the main question!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-501-erdoshajnal",
+    "proofId": "erdos-501",
+    "range": { "startLine": 73, "endLine": 77 },
+    "type": "theorem",
+    "title": "Erdős-Hajnal Theorem (1960)",
+    "content": "For any bounded outer measure family, arbitrarily large finite independent sets exist. The finite case is always solvable!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-501-ch",
+    "proofId": "erdos-501",
+    "range": { "startLine": 86, "endLine": 92 },
+    "type": "axiom",
+    "title": "Continuum Hypothesis",
+    "content": "CH is stated as an axiom. Its truth or falsity is independent of ZFC.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-501-hechler",
+    "proofId": "erdos-501",
+    "range": { "startLine": 94, "endLine": 96 },
+    "type": "theorem",
+    "title": "Hechler's Theorem (1972)",
+    "content": "Under CH, there exists a bounded outer measure family with NO infinite independent set. The answer is NO under CH!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-501-gladysz",
+    "proofId": "erdos-501",
+    "range": { "startLine": 100, "endLine": 103 },
+    "type": "theorem",
+    "title": "Gladysz's Theorem (1962)",
+    "content": "For closed measure families, size-2 independent sets always exist.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-501-nps",
+    "proofId": "erdos-501",
+    "range": { "startLine": 105, "endLine": 109 },
+    "type": "theorem",
+    "title": "NPS Theorem (1987)",
+    "content": "For closed families, infinite independent sets DO exist. Provable in ZFC without extra axioms!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-501-q1",
+    "proofId": "erdos-501",
+    "range": { "startLine": 113, "endLine": 122 },
+    "type": "definition",
+    "title": "Question 1: Infinite Independence",
+    "content": "Does every bounded outer measure family have an infinite independent set? Answer: NO under CH, YES for closed families, OPEN in general.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-501-q2",
+    "proofId": "erdos-501",
+    "range": { "startLine": 124, "endLine": 129 },
+    "type": "definition",
+    "title": "Question 2: Size-3 for Closed",
+    "content": "For closed families, must size-3 independent sets exist? Gladysz showed size-2. Size-3 remains open!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-501-zfc",
+    "proofId": "erdos-501",
+    "range": { "startLine": 131, "endLine": 139 },
+    "type": "theorem",
+    "title": "Independence from ZFC",
+    "content": "Question 1 is independent of ZFC: false under CH, true for closed families. A rare set-theoretic independence result!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-501-hereditary",
+    "proofId": "erdos-501",
+    "range": { "startLine": 143, "endLine": 147 },
+    "type": "theorem",
+    "title": "Hereditary Property",
+    "content": "Subsets of independent sets are independent. Independence is a hereditary property.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-501-insert",
+    "proofId": "erdos-501",
+    "range": { "startLine": 149, "endLine": 161 },
+    "type": "theorem",
+    "title": "Insertion Lemma",
+    "content": "To extend an independent set by z, we need z ∉ A_y for all y ∈ X and y ∉ A_z for all y ∈ X.",
+    "significance": "supporting"
+  }
+]

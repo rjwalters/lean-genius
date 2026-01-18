@@ -1,33 +1,129 @@
 {
   "id": "erdos-1020",
-  "title": "Erdős Problem #1020",
+  "title": "Erdős Problem #1020: The Erdős Matching Conjecture",
   "slug": "erdos-1020",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal number of edges in an ...-uniform hypergraph which contains no set of ... many independent edges.\n\nFor...",
+  "description": "Let f(n;r,k) be max edges in r-uniform hypergraph with no k independent edges. Conjecture: f(n;r,k) = max(C(rk-1,r), C(n,r)-C(n-k+1,r)). Solved for r=2,3. Upper bound: (k-1)C(n-1,r-1). OPEN for r≥4.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/1020",
-    "date": "",
-    "status": "pending",
+    "date": "1965",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1020Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "hypergraph-theory",
+      "matching",
+      "extremal-combinatorics",
+      "turan-type",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 1020,
     "erdosUrl": "https://erdosproblems.com/1020",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1020 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n;r,k)$ be the maximal number of edges in an $r$-uniform hypergraph which contains no set of $k$ many independent edges.\n\nFor all $r\\geq 3$,\\[f(n;r,k)=\\max\\left(\\binom{rk-1}{r}, \\binom{n}{r}-\\binom{n-k+1}{r}\\right).\\]\n\n\n\nErd\\H{o}s and Gallai \\cite{ErGa59} proved this is true when $r=2$ (when $r=2$ this also follows from the Erd\\H{os-Ko-Rado theorem}).\n\nThe conjectured form of $f(n;r,k)$ is the best possible, as witnessed by two examples: all $r$-edges on a set of $rk-1$ many vertices, and all edges on a set of $n$ vertices which contain at least one element of a fixed set of $k-1$ vertices.\n\nFrankl \\cite{Fr87} proved $f(n;r,k) \\leq (k-1)\\binom{n-1}{r-1}$.\n\nThis is sometimes known as the Erd\\H{o}s matching conjecture. Note that the second term in the maximum dominates when $n\\geq (r+1)k$. There are many partial results towards this, establishing the conjecture in different ranges. These can be separated into two regimes. For small $n$:\n{UL}\n{LI}The conjecture is trivially true if $n<kr$.{/LI}\n{LI}Kleitman \\cite{Kl68} when $n=kr$.{/LI}\n{LI}Frankl \\cite{Fr17} when\\[kr \\leq n\\leq k\\left(r+\\frac{1}{2r^{2r+1}}\\right).\\]{/LI}\n{LI}Kolupaev and Kupavskii \\cite{KoKu23} when $r\\geq 5$, $k>101r^3$, and\\[kr \\leq n < k\\left(r+\\frac{1}{100r}\\right).\\]{/LI}\n{/UL}\nFor large $n$:\n{UL}\n{LI}Erd\\H{o}s \\cite{Er65d} when $n>kc_r$ (where $c_r$ depends on $r$ in some unspecified fashion).{/LI}\n{LI} Frankl and F\\\"{u}redi \\cite{Fr87} when $n>100 k^2r$.{/LI}\n{LI} Bollob\\'{a}s, Daykin, and Erd\\H{o}s \\cite{BDE76} when $n\\geq 2kr^3$.{/LI}\n{LI} Frankl, R\\\"{o}dl, and Ruci\\'{n}ski \\cite{FRR12} when $r=3$ and $n\\geq 4k$.{/LI}\n{LI} Huang, Loh, and Sudakov \\cite{HLS12} when $n\\geq 3kr^2$.{/LI}\n{LI} Frankl, Luczak, and Mieczkowska \\cite{FLM12} when $n> 2k\\frac{r^2}{\\log r}$.{/LI}\n{LI} Luczak and Mieczkowska \\cite{LuMi14} when $r=3$ (for all $k$).{/LI}\n{/UL}\n\n\n\n\nReferences\n\n\n[BDE76] Bollob\\'as, B. and Daykin, D. E. and Erd\\H{o}s, P., Sets of independent edges of a hypergraph. Quart. J. Math. Oxford Ser. (2) (1976), 25--32.\n\n[Er65d] Erd\\H{o}s, P., A problem on independent {$r$}-tuples. Ann. Univ. Sci. Budapest. E\\\"otv\\\"os Sect. Math. (1965), 93--95.\n\n[ErGa59] Erd\\H{o}s, P. and Gallai, T., On maximal paths and circuits of graphs. Acta Math. Acad. Sci. Hungar. (1959), 337-356 (unbound insert).\n\n[FLM12] Frankl, Peter and \\L uczak, Tomasz and Mieczkowska, Katarzyna, On matchings in hypergraphs. Electron. J. Combin. (2012), Paper 42, 5.\n\n[FRR12] Frankl, Peter and R\\\"odl, Vojtech and Ruci\\'nski, Andrzej, On the maximum number of edges in a triple system not\ncontaining a disjoint family of a given size. Combin. Probab. Comput. (2012), 141--148.\n\n[Fr17] Frankl, Peter, Proof of the {E}rd\\H{o}s matching conjecture in a new range. Israel J. Math. (2017), 421--430.\n\n[Fr87] Frankl, Peter, The shifting technique in extremal set theory. (1987), 81--110.\n\n[HLS12] Huang, Hao and Loh, Po-Shen and Sudakov, Benny, The size of a hypergraph and its matching number. Combin. Probab. Comput. (2012), 442--450.\n\n[Kl68] Kleitman, Daniel J., Maximal number of subsets of a finite set no {$k$} of which\nare pairwise disjoint. J. Combinatorial Theory (1968), 157--163.\n\n[KoKu23] Kolupaev, Dmitriy and Kupavskii, Andrey, Erd\\H{o}s matching conjecture for almost perfect matchings. Discrete Math. (2023), Paper No. 113304, 9.\n\n[LuMi14] \\L uczak, Tomasz and Mieczkowska, Katarzyna, On {E}rd\\H{o}s' extremal problem on matchings in hypergraphs. J. Combin. Theory Ser. A (2014), 178--194.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The Erdős Matching Conjecture is one of the central problems in extremal hypergraph theory. For graphs (r=2), Erdős-Gallai (1959) solved it completely. For 3-uniform hypergraphs, Łuczak-Mieczkowska (2014) confirmed the conjecture after decades of partial progress. For r≥4, despite major advances by Frankl, Huang-Loh-Sudakov, and others, the general conjecture remains open. Two natural constructions achieve the conjectured bound.",
+    "problemStatement": "Let f(n; r, k) be the maximum number of edges in an r-uniform hypergraph on n vertices containing no k pairwise disjoint edges. Conjecture: f(n; r, k) = max(C(rk-1, r), C(n, r) - C(n-k+1, r)) for all r ≥ 3.",
+    "proofStrategy": "The Lean formalization defines r-uniform hypergraphs with a matching predicate. The function f(n;r,k) is the supremum over hypergraphs avoiding k-matchings. Two constructions provide the conjectured lower bound. Frankl's upper bound (k-1)C(n-1,r-1) is stated as an axiom. Solved cases (r=2,3) and partial results (small n, large n regimes) are captured.",
+    "keyInsights": [
+      "f(n;r,k) = max(C(rk-1,r), C(n,r)-C(n-k+1,r)) is conjectured",
+      "Construction 1: All r-edges on rk-1 vertices (can't fit k disjoint edges)",
+      "Construction 2: All edges meeting a fixed (k-1)-set (any k share a vertex)",
+      "r=2: Erdős-Gallai (1959) - completely solved",
+      "r=3: Łuczak-Mieczkowska (2014) - confirmed conjecture",
+      "Upper bound: f(n;r,k) ≤ (k-1)C(n-1,r-1) (Frankl 1987)",
+      "Large n: Huang-Loh-Sudakov proved for n ≥ 3kr²"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basics",
+      "title": "Hypergraph Basics",
+      "summary": "r-uniform hypergraphs and matchings",
+      "startLine": 41,
+      "endLine": 67
+    },
+    {
+      "id": "function",
+      "title": "The Function f(n; r, k)",
+      "summary": "Maximum edges avoiding k independent edges",
+      "startLine": 69,
+      "endLine": 79
+    },
+    {
+      "id": "formula",
+      "title": "The Conjectured Formula",
+      "summary": "Two extremal constructions",
+      "startLine": 81,
+      "endLine": 99
+    },
+    {
+      "id": "r2",
+      "title": "The Case r = 2 (Graphs)",
+      "summary": "Erdős-Gallai solution",
+      "startLine": 101,
+      "endLine": 115
+    },
+    {
+      "id": "r3",
+      "title": "The Case r = 3",
+      "summary": "Łuczak-Mieczkowska (2014)",
+      "startLine": 117,
+      "endLine": 126
+    },
+    {
+      "id": "partial",
+      "title": "Partial Results",
+      "summary": "Kleitman, Frankl, Huang-Loh-Sudakov",
+      "startLine": 128,
+      "endLine": 148
+    },
+    {
+      "id": "upper",
+      "title": "Upper Bounds",
+      "summary": "Frankl's (k-1)C(n-1,r-1) bound",
+      "startLine": 150,
+      "endLine": 164
+    },
+    {
+      "id": "lower",
+      "title": "Lower Bounds",
+      "summary": "Construction-based lower bounds",
+      "startLine": 166,
+      "endLine": 188
+    },
+    {
+      "id": "mono",
+      "title": "Monotonicity",
+      "summary": "f increasing in n and k",
+      "startLine": 190,
+      "endLine": 200
+    },
+    {
+      "id": "asymptotic",
+      "title": "Asymptotic Behavior",
+      "summary": "Large n regime and asymptotics",
+      "startLine": 202,
+      "endLine": 217
+    },
+    {
+      "id": "open",
+      "title": "The Open Problem",
+      "summary": "Conjecture open for r ≥ 4",
+      "startLine": 219,
+      "endLine": 231
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "The Erdős Matching Conjecture predicts the exact maximum edges in an r-uniform hypergraph avoiding k disjoint edges. The formula max(C(rk-1,r), C(n,r)-C(n-k+1,r)) is proven for r=2,3 and verified in various regimes for larger r. Frankl's upper bound (k-1)C(n-1,r-1) is always true. The conjecture remains open for r ≥ 4 despite substantial partial progress.",
+    "implications": "This connects to Turán-type extremal problems, the Erdős-Ko-Rado theorem, and hypergraph matching theory. A proof would unify our understanding of when hypergraphs must contain large matchings. The conjecture has applications to coding theory and combinatorial design.",
+    "openQuestions": [
+      "Is the conjecture true for r = 4?",
+      "Can the gap between small n and large n regimes be closed?",
+      "Is there a unified proof approach for all r?",
+      "What is the structure of extremal hypergraphs?"
+    ]
   }
 }

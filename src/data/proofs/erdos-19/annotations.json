@@ -1,1 +1,308 @@
-[]
+[
+  {
+    "id": "ann-e19-header",
+    "proofId": "erdos-19",
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #19**: The Erdős-Faber-Lovász Conjecture\n\nIf G is an edge-disjoint union of n copies of K_n, is χ(G) = n?\n\n**Status**: SOLVED ($500 prize)\n**Solvers**: Kang, Kelly, Kühn, Methuku, Osthus (2021)\n\n**Origin**: Conjectured at a party in Boulder, Colorado, September 1972, by Erdős, Faber, and Lovász.",
+    "mathContext": "Edge-disjoint means any two K_n's share at most one vertex (no common edges). The conjecture is that n colors always suffice.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "chromatic-number",
+      "complete-graph",
+      "edge-disjoint"
+    ]
+  },
+  {
+    "id": "ann-e19-background",
+    "proofId": "erdos-19",
+    "range": {
+      "startLine": 37,
+      "endLine": 46
+    },
+    "type": "concept",
+    "title": "Background",
+    "content": "**The EFL Conjecture** is one of the most famous problems in combinatorics.\n\n**Connections**:\n- Graph coloring theory\n- Hypergraph chromatic index\n- Combinatorial set theory\n\n**Difficulty**: Deceptively simple statement, but resisted proof for nearly **50 years**!",
+    "mathContext": "The conjecture connects several areas of combinatorics and has multiple equivalent formulations, each offering different insights.",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph-coloring",
+      "hypergraph",
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e19-graphdef",
+    "proofId": "erdos-19",
+    "range": {
+      "startLine": 52,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "Graph Definitions",
+    "content": "**SimpleGraph' V**: A simple undirected graph with:\n- `adj : V → V → Prop` - adjacency relation\n- `symm`: edges are undirected\n- `loopless`: no self-loops\n\n**completeGraph V** = K_V: all distinct pairs are adjacent\n\n**EdgeDisjoint G H**: G and H share no edges",
+    "mathContext": "We use a custom SimpleGraph' rather than Mathlib's SimpleGraph for cleaner axiom statements.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "simple-graph",
+      "complete-graph",
+      "edge-disjoint"
+    ]
+  },
+  {
+    "id": "ann-e19-chromatic",
+    "proofId": "erdos-19",
+    "range": {
+      "startLine": 68,
+      "endLine": 93
+    },
+    "type": "axiom",
+    "title": "Chromatic Number",
+    "content": "**IsProperColoring G k c**: c : V → Fin k assigns colors so adjacent vertices differ.\n\n**IsKColorable G k**: Some proper k-coloring exists.\n\n**axiom chromaticNumber G : ℕ** - the minimum k such that G is k-colorable.\n\n**Properties**:\n- `chromaticNumber_colorable`: χ(G)-coloring exists\n- `chromaticNumber_minimal`: χ(G) ≤ k for any valid k",
+    "mathContext": "Computing χ(G) exactly is NP-hard, so we axiomatize it. The EFL conjecture claims χ = n for specific graphs.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "proper-coloring",
+      "np-hard",
+      "minimum"
+    ]
+  },
+  {
+    "id": "ann-e19-eflfamily",
+    "proofId": "erdos-19",
+    "range": {
+      "startLine": 102,
+      "endLine": 114
+    },
+    "type": "definition",
+    "title": "EFL Family Structure",
+    "content": "**structure EFLFamily (n : ℕ)** encodes the conjecture setup:\n- `cliques : Fin n → Finset (Fin (n * n))` - n cliques\n- `clique_size`: each clique has exactly n vertices\n- `edge_disjoint`: any two cliques share at most 1 vertex\n\n**eflUnionGraph n F**: The union graph where x ~ y iff they're in a common clique.",
+    "mathContext": "The vertex set Fin (n * n) is large enough to hold n disjoint K_n's. The edge-disjoint condition means |cliques i ∩ cliques j| ≤ 1.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "structure",
+      "clique",
+      "union-graph"
+    ]
+  },
+  {
+    "id": "ann-e19-lowerbound",
+    "proofId": "erdos-19",
+    "range": {
+      "startLine": 129,
+      "endLine": 137
+    },
+    "type": "axiom",
+    "title": "Lower Bound: χ(G) ≥ n",
+    "content": "**axiom efl_chromatic_lower_bound**: χ(eflUnionGraph n F) ≥ n\n\n**Why?** Each clique K_n is a subgraph requiring n colors.\n\nSince the cliques share at most one vertex, the colorings must use at least n distinct colors.\n\nThe **hard part** is proving χ(G) ≤ n!",
+    "mathContext": "The lower bound is straightforward: K_n has chromatic number n. The upper bound requires showing global coordination is possible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lower-bound",
+      "clique-number",
+      "trivial"
+    ]
+  },
+  {
+    "id": "ann-e19-hindman",
+    "proofId": "erdos-19",
+    "range": {
+      "startLine": 140,
+      "endLine": 147
+    },
+    "type": "axiom",
+    "title": "Hindman: Small Cases",
+    "content": "**axiom hindman_small_cases**: For n < 10, χ(G) = n.\n\nHindman verified the conjecture for small values by exhaustive analysis.\n\nThis handles the base cases that the asymptotic proof doesn't cover.",
+    "mathContext": "Small cases often require different techniques than large n. Hindman's work ensures no gaps in the full resolution.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "small-cases",
+      "verification",
+      "base-case"
+    ]
+  },
+  {
+    "id": "ann-e19-kahn",
+    "proofId": "erdos-19",
+    "range": {
+      "startLine": 149,
+      "endLine": 162
+    },
+    "type": "axiom",
+    "title": "Kahn's Asymptotic Result (1992)",
+    "content": "**axiom kahn_asymptotic**: χ(G) ≤ n + o(n)\n\n**axiom kahn_explicit_bound**: χ(G) ≤ n + n^(1-1/51)\n\nKahn proved the conjecture is 'asymptotically true' - the chromatic number exceeds n by only a sublinear amount.\n\n**Prize**: Kahn won Erdős's **$100 consolation prize** for this result!",
+    "mathContext": "The bound n + n^(50/51) shows χ(G)/n → 1 as n → ∞. This was major progress but left a gap for the exact bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic",
+      "kahn-1992",
+      "consolation-prize"
+    ]
+  },
+  {
+    "id": "ann-e19-mainresult",
+    "proofId": "erdos-19",
+    "range": {
+      "startLine": 164,
+      "endLine": 181
+    },
+    "type": "theorem",
+    "title": "Main Result: KKMO (2021)",
+    "content": "**axiom kang_kelly_kuhn_methuku_osthus**:\n∃ N, ∀ n ≥ N, ∀ F : EFLFamily n, χ(eflUnionGraph n F) = n\n\n**EFLConjecture**: ∀ n ≥ 1, χ(G) = n\n\n**axiom efl_conjecture_resolved : EFLConjecture** ✓\n\nThe full resolution combines:\n- Hindman (n < 10)\n- Kang et al. (n ≥ N for some large N)\n- Verification of intermediate cases",
+    "mathContext": "The 2021 result was a major breakthrough, resolving a 50-year-old conjecture. The proof uses the absorbing method.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "resolution",
+      "absorbing-method",
+      "2021"
+    ]
+  },
+  {
+    "id": "ann-e19-hypergraph",
+    "proofId": "erdos-19",
+    "range": {
+      "startLine": 187,
+      "endLine": 208
+    },
+    "type": "definition",
+    "title": "Linear Hypergraph Formulation",
+    "content": "**LinearHypergraph V**: A hypergraph where any two edges share at most one vertex.\n\n**chromaticIndex H**: Minimum edge-coloring (edges sharing vertices get different colors).\n\n**EFL Equivalent**: Every linear hypergraph on n vertices with n edges has chromatic index ≤ n.\n\nThis formulation connects to Latin squares and block designs.",
+    "mathContext": "Linear hypergraphs generalize linear spaces in geometry. The chromatic index bound is a natural coloring question.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hypergraph",
+      "chromatic-index",
+      "linear"
+    ]
+  },
+  {
+    "id": "ann-e19-nearlydisjoint",
+    "proofId": "erdos-19",
+    "range": {
+      "startLine": 210,
+      "endLine": 227
+    },
+    "type": "definition",
+    "title": "Nearly Disjoint Sets",
+    "content": "**NearlyDisjointFamily α n**: n sets A₁, ..., Aₙ with:\n- |Aᵢ| = n\n- |Aᵢ ∩ Aⱼ| ≤ 1 for i ≠ j\n\n**EFL Equivalent**: Such families admit **rainbow partitions** - color the union with n colors so each Aᵢ contains exactly one element of each color.\n\nThis is the most 'set-theoretic' formulation.",
+    "mathContext": "Rainbow partitions require each set to be a 'transversal' of the color classes. This connects to Hall's theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "nearly-disjoint",
+      "rainbow-partition",
+      "transversal"
+    ]
+  },
+  {
+    "id": "ann-e19-special",
+    "proofId": "erdos-19",
+    "range": {
+      "startLine": 230,
+      "endLine": 249
+    },
+    "type": "axiom",
+    "title": "Special Cases",
+    "content": "**Projective Planes**: When cliques come from a projective plane of order n-1, χ(G) = n exactly.\n\n**Steiner Systems**: S(2, n, n²) Steiner systems provide explicit EFL families with optimal colorings.\n\nThese special cases are easier to analyze due to their regular structure.",
+    "mathContext": "Projective planes and Steiner systems have rich algebraic structure that makes the coloring problem tractable.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "projective-plane",
+      "steiner-system",
+      "regular-structure"
+    ]
+  },
+  {
+    "id": "ann-e19-extensions",
+    "proofId": "erdos-19",
+    "range": {
+      "startLine": 259,
+      "endLine": 269
+    },
+    "type": "axiom",
+    "title": "Extensions and Generalizations",
+    "content": "**Erdős-Füredi Generalization**: What if cliques can share up to k vertices?\n\n**axiom erdos_furedi_generalization**: χ(G) ≤ n + k - 1\n\n**Triangle-free Variant**: What if clique intersections form triangle-free subgraphs?\n\nKang et al. also proved these generalizations.",
+    "mathContext": "Generalizations test the limits of the technique. The k-wise case shows the bound degrades gracefully with more overlap.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "generalization",
+      "k-wise",
+      "erdos-furedi"
+    ]
+  },
+  {
+    "id": "ann-e19-boulder",
+    "proofId": "erdos-19",
+    "range": {
+      "startLine": 281,
+      "endLine": 292
+    },
+    "type": "concept",
+    "title": "The Boulder Party (1972)",
+    "content": "**Historical Origin**: The conjecture arose at a party in Boulder, Colorado, September 1972.\n\n**The Three Conjecturers**:\n- Paul Erdős (Hungarian mathematician)\n- Vance Faber (American mathematician)\n- László Lovász (Hungarian mathematician)\n\nThis is one of many famous problems from Erdős's legendary mathematical discussions at social gatherings.",
+    "mathContext": "Erdős was famous for posing problems at conferences and parties. Many bear his name along with collaborators met at such events.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "history",
+      "boulder-1972",
+      "erdos-style"
+    ]
+  },
+  {
+    "id": "ann-e19-difficulty",
+    "proofId": "erdos-19",
+    "range": {
+      "startLine": 294,
+      "endLine": 315
+    },
+    "type": "concept",
+    "title": "Why This Problem Was Hard",
+    "content": "**Four Difficulty Aspects**:\n\n1. **Combinatorial explosion**: EFL families grow extremely fast with n\n2. **Tight bound**: χ(G) = n is sharp - no room for error\n3. **Local vs global**: Local constraints (each K_n needs n colors) must coordinate globally\n4. **Irregular structure**: Unlike regular graphs, EFL unions can be highly irregular",
+    "mathContext": "The proof required sophisticated probabilistic and absorbing techniques developed over decades of extremal combinatorics research.",
+    "significance": "key",
+    "relatedConcepts": [
+      "difficulty",
+      "local-global",
+      "irregular"
+    ]
+  },
+  {
+    "id": "ann-e19-absorbing",
+    "proofId": "erdos-19",
+    "range": {
+      "startLine": 317,
+      "endLine": 332
+    },
+    "type": "concept",
+    "title": "The Absorbing Method",
+    "content": "**The Proof Technique** (Kang et al. 2021):\n\n1. **Absorbing structure**: Find small set A that can 'absorb' leftover vertices\n2. **Almost-cover**: Greedily color most vertices, leaving small remainder\n3. **Absorption**: Use A to handle the remainder\n\n**Related successes**: This technique also resolved the Ringel conjecture and other long-standing problems.",
+    "mathContext": "The absorbing method is a powerful technique in extremal combinatorics, developed for problems where greedy approaches fall just short.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "absorbing-method",
+      "proof-technique",
+      "ringel-conjecture"
+    ]
+  },
+  {
+    "id": "ann-e19-summary",
+    "proofId": "erdos-19",
+    "range": {
+      "startLine": 334,
+      "endLine": 361
+    },
+    "type": "concept",
+    "title": "Summary and Status",
+    "content": "**Erdős Problem #19: SOLVED** ($500 prize)\n\n**Timeline**:\n- 1972: Conjectured at Boulder party\n- Hindman: Proved for n < 10\n- 1992: Kahn proved χ(G) ≤ (1+o(1))n → **$100 consolation prize**\n- 2021: Kang, Kelly, Kühn, Methuku, Osthus proved for all large n\n\n**Result**: χ(G) = n for all edge-disjoint unions of n copies of K_n\n\n**Key Technique**: Absorbing method\n\n**Equivalent Forms**: Linear hypergraph chromatic index, rainbow partitions",
+    "mathContext": "50 years from conjecture to complete resolution. A landmark result in extremal combinatorics.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "problem-status",
+      "solved",
+      "timeline"
+    ]
+  }
+]

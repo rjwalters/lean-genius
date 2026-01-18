@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-86-vertex",
+    "proofId": "erdos-86",
+    "range": { "startLine": 56, "endLine": 57 },
+    "type": "definition",
+    "title": "Hypercube Vertices",
+    "content": "Vertices of the n-dimensional hypercube Qₙ are binary strings of length n, represented as functions Fin n → Bool. There are 2ⁿ such vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-86-adj",
+    "proofId": "erdos-86",
+    "range": { "startLine": 59, "endLine": 61 },
+    "type": "definition",
+    "title": "Hypercube Adjacency",
+    "content": "Two vertices are adjacent in Qₙ if they differ in exactly one coordinate. This means their Hamming distance is 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-86-graph",
+    "proofId": "erdos-86",
+    "range": { "startLine": 63, "endLine": 77 },
+    "type": "definition",
+    "title": "Hypercube Graph",
+    "content": "The hypercube graph Qₙ is defined as a SimpleGraph with the adjacency relation above. We verify it's symmetric (edges are undirected) and loopless (no vertex is adjacent to itself).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-86-vertexcount",
+    "proofId": "erdos-86",
+    "range": { "startLine": 79, "endLine": 83 },
+    "type": "theorem",
+    "title": "Vertex Count",
+    "content": "The hypercube Qₙ has exactly 2ⁿ vertices, one for each binary string of length n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-86-edgecount",
+    "proofId": "erdos-86",
+    "range": { "startLine": 85, "endLine": 87 },
+    "type": "theorem",
+    "title": "Edge Count",
+    "content": "The hypercube Qₙ has n·2^(n-1) edges. Each vertex has degree n (one neighbor per coordinate to flip), giving n·2ⁿ/2 = n·2^(n-1) edges.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-86-c4",
+    "proofId": "erdos-86",
+    "range": { "startLine": 96, "endLine": 99 },
+    "type": "definition",
+    "title": "4-Cycle Definition",
+    "content": "A 4-cycle (C₄) consists of four distinct vertices a,b,c,d forming a cycle: edges a-b, b-c, c-d, d-a. In a hypercube, this is a 'square' where two coordinates vary.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-86-c4free",
+    "proofId": "erdos-86",
+    "range": { "startLine": 101, "endLine": 103 },
+    "type": "definition",
+    "title": "C₄-Free Graph",
+    "content": "A graph is C₄-free if it contains no 4-cycle. The question is: how many edges of Qₙ can we keep while maintaining this property?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-86-subgraph",
+    "proofId": "erdos-86",
+    "range": { "startLine": 111, "endLine": 112 },
+    "type": "definition",
+    "title": "Hypercube Subgraph",
+    "content": "A subgraph of Qₙ keeps the same vertices but only some edges. Formally, it's a graph G with G ≤ hypercubeGraph n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-86-f",
+    "proofId": "erdos-86",
+    "range": { "startLine": 114, "endLine": 117 },
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "f(n) is the maximum number of edges in any C₄-free subgraph of Qₙ. This is the central quantity: what fraction of edges can we keep?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-86-erdoslower",
+    "proofId": "erdos-86",
+    "range": { "startLine": 125, "endLine": 127 },
+    "type": "theorem",
+    "title": "Erdős Lower Bound",
+    "content": "Erdős (1991) showed f(n) ≥ (1/2 + c/n)·n·2^(n-1). This means we can keep slightly more than half the edges.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-86-bhnlower",
+    "proofId": "erdos-86",
+    "range": { "startLine": 129, "endLine": 131 },
+    "type": "theorem",
+    "title": "Brass-Harborth-Nienborg Lower Bound",
+    "content": "Improved to f(n) ≥ (1/2 + c/√n)·n·2^(n-1). The excess over 1/2 decays like 1/√n, not 1/n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-86-baberupper",
+    "proofId": "erdos-86",
+    "range": { "startLine": 133, "endLine": 135 },
+    "type": "theorem",
+    "title": "Baber Upper Bound",
+    "content": "Baber (2012) proved f(n) ≤ 0.60318·n·2^(n-1) using flag algebra methods. This is the best known upper bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-86-summary",
+    "proofId": "erdos-86",
+    "range": { "startLine": 137, "endLine": 150 },
+    "type": "theorem",
+    "title": "Bounds Summary",
+    "content": "Combining bounds: 1/2 < f(n)/(n·2^(n-1)) ≤ 0.60318. The gap between 0.5 and 0.60318 is the heart of the open problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-86-conjecture",
+    "proofId": "erdos-86",
+    "range": { "startLine": 158, "endLine": 161 },
+    "type": "conjecture",
+    "title": "Erdős's Conjecture",
+    "content": "The main conjecture: f(n)/(n·2^(n-1)) → 1/2 as n → ∞. Equivalently, f(n) = (1/2 + o(1))·n·2^(n-1). This remains OPEN with a $100 prize.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-86-alt",
+    "proofId": "erdos-86",
+    "range": { "startLine": 163, "endLine": 165 },
+    "type": "definition",
+    "title": "Alternative Formulation",
+    "content": "Equivalent to: for all ε > 0, f(n) ≤ (1/2 + ε)·n·2^(n-1) for sufficiently large n. This ε-δ style makes the conjecture precise.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-86-implication",
+    "proofId": "erdos-86",
+    "range": { "startLine": 180, "endLine": 186 },
+    "type": "theorem",
+    "title": "Conjecture Implication",
+    "content": "If the conjecture is true, then for any ε > 0 there exists N such that f(n)/(n·2^(n-1)) is within ε of 1/2 for all n ≥ N.",
+    "significance": "supporting"
+  }
+]

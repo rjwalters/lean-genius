@@ -1,33 +1,117 @@
 {
   "id": "erdos-961",
-  "title": "Erdős Problem #961",
+  "title": "Erdős #961: Smooth Numbers in Consecutive Intervals",
   "slug": "erdos-961",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimal ... such that every set of ... consecutive integers ... contains an integer divisible by a prime .... ...",
+  "description": "Let f(k) = minimal n such that any n consecutive integers > k contain a number with a prime factor > k. Bounds known; polylogarithmic conjecture is open.",
   "meta": {
-    "author": "Unknown",
+    "author": "Sylvester, Schur, Erdős, Jutila, Ramachandra, Shorey (1934-1974)",
     "sourceUrl": "https://erdosproblems.com/961",
-    "date": "",
-    "status": "pending",
+    "date": "1955",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos961Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "smooth-numbers",
+      "prime-factors",
+      "analytic-number-theory"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "erdosNumber": 961,
     "erdosUrl": "https://erdosproblems.com/961",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #961 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(k)$ be the minimal $n$ such that every set of $n$ consecutive integers $>k$ contains an integer divisible by a prime $>k$. Estimate $f(k)$.\n\n\n\nIn other words, how large can a consecutive set of $k$-smooth integers be? Sylvester and Schur (see \\cite{Er34}) proved $f(k)\\leq k$ and Erd\\H{o}s \\cite{Er55d} proved\\[f(k)<3\\frac{k}{\\log k}.\\]Jutila \\cite{Ju74} and Ramachandra, and Shorey \\cite{RaSh73} proved\\[f(k) \\ll \\frac{\\log\\log\\log k}{\\log \\log k}\\frac{k}{\\log k}.\\]It is likely that $f(k) \\ll (\\log k)^{O(1)}$.\n\nThis is essentially equivalent to [683].\n\n\n\n\nReferences\n\n\n[Er34] Erd\\H{o}s, Paul, A {T}heorem of {S}ylvester and {S}chur. J. London Math. Soc. (1934), 282--288.\n\n[Er55d] Erd\\H{o}s, P., On consecutive integers. Nieuw Arch. Wisk. (3) (1955), 124--128.\n\n[Ju74] Jutila, Matti, On numbers with a large prime factor. {II}. J. Indian Math. Soc. (N.S.) (1974), 125--130.\n\n[RaSh73] Ramachandra, K. and Shorey, T. N., On gaps between numbers with a large prime factor. Acta Arith. (1973), 99--111.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem connects to a classical result by Sylvester (1892) and Schur (1929) showing that among any k consecutive integers greater than k, at least one has a prime factor greater than k. Erdős published this as Problem #961, asking for better bounds on f(k).\n\nErdős himself improved the bound in 1955 to f(k) < 3k/log(k), showing sublinear growth. The strongest known result came from Jutila (1974) and independently Ramachandra-Shorey (1973), who proved f(k) ≪ (log log log k / log log k) · (k/log k) using sieve methods.\n\nThe problem is essentially equivalent to Problem #683, which asks about gaps between smooth numbers. The conjecture that f(k) grows only polylogarithmically remains wide open.",
+    "problemStatement": "Let $f(k)$ be the minimal $n$ such that every set of $n$ consecutive integers greater than $k$ contains an integer divisible by a prime greater than $k$ (equivalently, not $(k+1)$-smooth).\n\n**Known bounds:**\n- $f(k) \\leq k$ (Sylvester-Schur 1934)\n- $f(k) < 3k/\\log k$ (Erdős 1955)\n- $f(k) \\ll \\frac{\\log\\log\\log k}{\\log\\log k} \\cdot \\frac{k}{\\log k}$ (Jutila, Ramachandra-Shorey 1973-74)\n\n**Conjecture:** $f(k) \\ll (\\log k)^{O(1)}$",
+    "proofStrategy": "We formalize smooth numbers using Mathlib's Nat.smoothNumbers, defining k-smooth integers as those with all prime factors ≤ k. The function f(k) is defined as the minimal n satisfying the key property.\n\nThe Sylvester-Schur bound f(k) ≤ k follows directly from the classical theorem. Stronger bounds from Erdős and Jutila-Ramachandra-Shorey are stated as axioms since they require deep analytic number theory (sieve methods, prime distribution).\n\nThe polylogarithmic conjecture is formalized but marked as open.",
+    "keyInsights": [
+      "**Smooth numbers**: A positive integer n is k-smooth if all its prime factors are ≤ k. Examples: 12 = 2²·3 is 3-smooth; 30 = 2·3·5 is 5-smooth but not 3-smooth",
+      "**Sylvester-Schur**: The foundational result f(k) ≤ k uses pigeonhole: among k consecutive integers > k, one must have a large prime factor",
+      "**Exponential gap**: Known bounds give f(k) = O(k/log²k · polylog), but the conjecture predicts f(k) = O(polylog k) - an exponential improvement",
+      "**Connection to #683**: If g(k) is the largest gap between k-smooth numbers, then f(k) ≤ g(k) + 1"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "smooth-numbers",
+      "title": "Smooth Numbers",
+      "summary": "Definition of k-smooth integers and connection to Mathlib",
+      "startLine": 40,
+      "endLine": 70
+    },
+    {
+      "id": "key-property",
+      "title": "The Key Property",
+      "summary": "HasLargePrimeFactor predicate for consecutive intervals",
+      "startLine": 72,
+      "endLine": 99
+    },
+    {
+      "id": "f-function",
+      "title": "The Function f(k)",
+      "summary": "Definition of f(k) as the minimal n with the property",
+      "startLine": 101,
+      "endLine": 120
+    },
+    {
+      "id": "sylvester-schur",
+      "title": "Sylvester-Schur Bound",
+      "summary": "Classical result f(k) ≤ k from 1934",
+      "startLine": 122,
+      "endLine": 133
+    },
+    {
+      "id": "erdos-bound",
+      "title": "Erdős Bound",
+      "summary": "Erdős's 1955 improvement: f(k) < 3k/log(k)",
+      "startLine": 135,
+      "endLine": 147
+    },
+    {
+      "id": "jutila-rs-bound",
+      "title": "Jutila-Ramachandra-Shorey Bound",
+      "summary": "Best known: f(k) ≪ (log log log k / log log k) · (k/log k)",
+      "startLine": 149,
+      "endLine": 159
+    },
+    {
+      "id": "conjecture",
+      "title": "The Open Conjecture",
+      "summary": "Polylogarithmic conjecture: f(k) ≪ (log k)^C",
+      "startLine": 161,
+      "endLine": 173
+    },
+    {
+      "id": "examples",
+      "title": "Small Examples",
+      "summary": "Bounds for k = 2 and k = 3",
+      "startLine": 175,
+      "endLine": 188
+    },
+    {
+      "id": "connection-683",
+      "title": "Connection to Problem #683",
+      "summary": "Relationship to smooth number gaps",
+      "startLine": 190,
+      "endLine": 206
+    },
+    {
+      "id": "summary",
+      "title": "Bounds Summary",
+      "summary": "Overview of all known bounds on f(k)",
+      "startLine": 208,
+      "endLine": 227
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #961 on the distribution of smooth numbers. While strong bounds are known (Sylvester-Schur, Erdős, Jutila-Ramachandra-Shorey), the conjecture that f(k) grows only polylogarithmically remains open. The gap between O(k/polylog) and O(polylog) is enormous.",
+    "implications": "Understanding smooth number gaps has applications in cryptography (factoring algorithms rely on smooth numbers), computational number theory (quadratic sieve, number field sieve), and the theory of multiplicative functions. The connection to Problem #683 shows these questions are deeply interrelated.",
+    "openQuestions": [
+      "Is f(k) ≪ (log k)^C for some constant C?",
+      "What is the true order of growth of f(k)?",
+      "Can the connection to Problem #683 be exploited to improve bounds?"
+    ]
   }
 }

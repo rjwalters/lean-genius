@@ -1,1 +1,281 @@
-[]
+[
+  {
+    "id": "ann-859-header",
+    "proofId": "erdos-859",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdős Problem #859 studies a fundamental question: for how many integers n can a given t be written as a sum of distinct divisors? Let dₜ be the density of such n. Erdős (1970) proved bounds, but the precise asymptotic form remains open.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-859-imports",
+    "proofId": "erdos-859",
+    "range": { "startLine": 34, "endLine": 44 },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import divisor theory from `NumberTheory.Divisors`, asymptotic analysis from `Analysis.Asymptotics`, logarithms from `SpecialFunctions.Log`, and filter theory from `Order.Filter.Basic`. These provide the mathematical foundation for density and asymptotics.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-859-divisor-sum-set",
+    "proofId": "erdos-859",
+    "range": { "startLine": 46, "endLine": 59 },
+    "type": "definition",
+    "title": "Divisor Sum Set",
+    "content": "**DivisorSumSet t** is the set of natural numbers n where t can be represented as a sum of distinct divisors of n. For n = 6 with divisors {1, 2, 3, 6}, we can represent 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12 as subset sums.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-859-mem-characterization",
+    "proofId": "erdos-859",
+    "range": { "startLine": 61, "endLine": 65 },
+    "type": "theorem",
+    "title": "Membership Characterization",
+    "content": "n ∈ DivisorSumSet t if and only if some subset of divisors(n) sums to t. This is a direct unfolding of the definition, connecting the set-theoretic definition to the subset sum problem.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-859-counting",
+    "proofId": "erdos-859",
+    "range": { "startLine": 67, "endLine": 71 },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "The counting function #{n ≤ N : n ∈ DivisorSumSet t} counts how many integers up to N can represent t as a divisor subset sum. Dividing by N and taking the limit gives the density.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-859-natural-density",
+    "proofId": "erdos-859",
+    "range": { "startLine": 73, "endLine": 76 },
+    "type": "definition",
+    "title": "Natural Density",
+    "content": "A set S ⊆ ℕ has **natural density** d if #{n ≤ N : n ∈ S}/N → d as N → ∞. Not all sets have natural density (e.g., integers with odd digit sum), but DivisorSumSet t does.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-859-positive-density",
+    "proofId": "erdos-859",
+    "range": { "startLine": 78, "endLine": 80 },
+    "type": "definition",
+    "title": "Positive Density",
+    "content": "HasPositiveDensity S means S has natural density d > 0. This is stronger than having infinitely many elements—it means a positive proportion of integers are in S.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-859-zero-example",
+    "proofId": "erdos-859",
+    "range": { "startLine": 82, "endLine": 95 },
+    "type": "theorem",
+    "title": "Example: t = 0",
+    "content": "DivisorSumSet 0 = ℕ because every n can represent 0 as the empty sum (Σ∅ = 0). Thus d₀ = 1. This is the trivial base case.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-859-one-example",
+    "proofId": "erdos-859",
+    "range": { "startLine": 97, "endLine": 107 },
+    "type": "theorem",
+    "title": "Example: t = 1",
+    "content": "Every n ≥ 1 can represent 1 using the singleton {1}, since 1 divides all positive integers. Thus d₁ = 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-859-two-example",
+    "proofId": "erdos-859",
+    "range": { "startLine": 109, "endLine": 113 },
+    "type": "theorem",
+    "title": "Example: t = 2",
+    "content": "n ∈ DivisorSumSet 2 iff 2 | n. We need a subset summing to 2: only {2} works (since {1,1} isn't allowed). So d₂ = 1/2, the first non-trivial case.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-859-existence",
+    "proofId": "erdos-859",
+    "range": { "startLine": 115, "endLine": 122 },
+    "type": "axiom",
+    "title": "Erdős: Density Exists",
+    "content": "**Erdős (1970)**: The density dₜ exists for ALL t. This is nontrivial—many natural sets don't have density. The proof uses the multiplicative structure of divisors.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-859-positivity",
+    "proofId": "erdos-859",
+    "range": { "startLine": 124, "endLine": 130 },
+    "type": "axiom",
+    "title": "Erdős: Density Positive",
+    "content": "**Erdős (1970)**: For t > 0, the density dₜ is positive. Some n can always represent t—the question is how many. The density never drops to zero.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-859-bounds",
+    "proofId": "erdos-859",
+    "range": { "startLine": 132, "endLine": 141 },
+    "type": "axiom",
+    "title": "Erdős: Upper and Lower Bounds",
+    "content": "**Erdős (1970)**: There exist c₃, c₄ > 0 such that 1/(log t)^c₃ < dₜ < 1/(log t)^c₄ for large t. The density decays polynomially in log t—neither too fast nor too slow.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-859-open-question",
+    "proofId": "erdos-859",
+    "range": { "startLine": 143, "endLine": 155 },
+    "type": "definition",
+    "title": "The Open Question",
+    "content": "**Problem #859**: Is dₜ ~ c₁/(log t)^c₂ for constants c₁, c₂ > 0? This asks for a *precise* asymptotic, not just bounds. Erdős's bounds bracket the truth but don't pin it down.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-859-open-status",
+    "proofId": "erdos-859",
+    "range": { "startLine": 157, "endLine": 158 },
+    "type": "axiom",
+    "title": "Status: Open",
+    "content": "The problem remains OPEN. We know the decay is polynomial in log t, but the precise form is unknown. No one has proved or disproved the asymptotic formula.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-859-sigma",
+    "proofId": "erdos-859",
+    "range": { "startLine": 160, "endLine": 164 },
+    "type": "definition",
+    "title": "Sum of Divisors σ(n)",
+    "content": "σ(n) = Σ_{d|n} d is the sum of all divisors of n. For n = 12: σ(12) = 1+2+3+4+6+12 = 28. The maximum possible subset sum for n is σ(n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-859-tau",
+    "proofId": "erdos-859",
+    "range": { "startLine": 166, "endLine": 168 },
+    "type": "definition",
+    "title": "Number of Divisors τ(n)",
+    "content": "τ(n) = #{d : d | n} counts divisors. For n = 12: τ(12) = 6 (divisors are 1, 2, 3, 4, 6, 12). More divisors means more possible subset sums.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-859-subset-count",
+    "proofId": "erdos-859",
+    "range": { "startLine": 170, "endLine": 174 },
+    "type": "theorem",
+    "title": "Subset Count",
+    "content": "There are 2^τ(n) subsets of divisors(n). For n = 12 with 6 divisors, there are 64 subsets, giving at most 64 distinct sums (usually fewer due to collisions).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-859-coprime-divisors",
+    "proofId": "erdos-859",
+    "range": { "startLine": 176, "endLine": 182 },
+    "type": "theorem",
+    "title": "Multiplicative Structure",
+    "content": "If gcd(m,n) = 1, then τ(mn) = τ(m)·τ(n). Divisors of mn are products of divisors of m and n. This multiplicative structure is key to analyzing DivisorSumSet.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-859-prime-power",
+    "proofId": "erdos-859",
+    "range": { "startLine": 184, "endLine": 189 },
+    "type": "theorem",
+    "title": "Prime Power Divisors",
+    "content": "Divisors of p^a are exactly {1, p, p², ..., p^a}—a geometric sequence. For p = 2, a = 3: divisors of 8 are {1, 2, 4, 8}. This structure helps analyze subset sums.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-859-decreasing",
+    "proofId": "erdos-859",
+    "range": { "startLine": 191, "endLine": 198 },
+    "type": "theorem",
+    "title": "Density Decreasing",
+    "content": "For large t, dₜ < 1. Most n have σ(n) < t, so they can't possibly represent t. As t grows, the 'eligible' n become sparse.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-859-comparison",
+    "proofId": "erdos-859",
+    "range": { "startLine": 200, "endLine": 206 },
+    "type": "theorem",
+    "title": "Density Monotonicity",
+    "content": "d_{2t} ≤ dₜ for all t > 0. If we can represent 2t, we can (roughly) represent t by taking a smaller subset. Larger targets have smaller density.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-859-practical-def",
+    "proofId": "erdos-859",
+    "range": { "startLine": 208, "endLine": 213 },
+    "type": "definition",
+    "title": "Practical Numbers",
+    "content": "n is **practical** if EVERY k ≤ σ(n) can be represented as a divisor subset sum. Practical numbers contribute to DivisorSumSet t for ALL t ≤ σ(n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-859-practical-examples",
+    "proofId": "erdos-859",
+    "range": { "startLine": 215, "endLine": 218 },
+    "type": "theorem",
+    "title": "Practical Number Examples",
+    "content": "Small practical numbers: 1, 2, 4, 6, 8, 12, 16, 18, 20, 24, ... These are relatively common and contribute significantly to many DivisorSumSet t.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-859-practical-density",
+    "proofId": "erdos-859",
+    "range": { "startLine": 220, "endLine": 223 },
+    "type": "axiom",
+    "title": "Practical Numbers Have Positive Density",
+    "content": "**Margenstern (1991)**: Practical numbers have positive density. This relates to our problem—practical numbers provide a 'base' of n contributing to many DivisorSumSet t.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-859-subset-sum-def",
+    "proofId": "erdos-859",
+    "range": { "startLine": 225, "endLine": 231 },
+    "type": "definition",
+    "title": "Subset Sum Problem",
+    "content": "Given a finite set S and target t, does some subset sum to t? This is NP-complete in general, but divisor sets have special structure (multiplicative, highly composite) that can be exploited.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-859-subset-sum-equiv",
+    "proofId": "erdos-859",
+    "range": { "startLine": 233, "endLine": 236 },
+    "type": "theorem",
+    "title": "DivisorSumSet as Subset Sum",
+    "content": "n ∈ DivisorSumSet t iff SubsetSumExists(divisors(n), t). This connects our density problem to the classical combinatorial subset sum problem.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-859-sigma-average",
+    "proofId": "erdos-859",
+    "range": { "startLine": 238, "endLine": 243 },
+    "type": "axiom",
+    "title": "Average Order of σ(n)",
+    "content": "Σ_{n≤N} σ(n) ~ (π²/12)N². On average, σ(n) ≈ (π²/6)n. This bounds how many n can contribute to DivisorSumSet t for large t.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-859-sigma-typical",
+    "proofId": "erdos-859",
+    "range": { "startLine": 245, "endLine": 248 },
+    "type": "axiom",
+    "title": "Typical Size of σ(n)",
+    "content": "For 'most' n, σ(n) < n·(log n)². This means for large t, most n have σ(n) < t and can't represent t. Only the 'highly divisible' n contribute.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-859-summary",
+    "proofId": "erdos-859",
+    "range": { "startLine": 250, "endLine": 277 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**SUMMARY**: (1) Density dₜ exists for all t. (2) dₜ > 0 for t > 0. (3) 1/(log t)^c₃ < dₜ < 1/(log t)^c₄. The open question: is dₜ ~ c₁/(log t)^c₂?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-859-footer",
+    "proofId": "erdos-859",
+    "range": { "startLine": 280, "endLine": 308 },
+    "type": "concept",
+    "title": "Summary and Historical Note",
+    "content": "This formalization captures Erdős Problem #859 on divisor sum representations. The 1970 bounds remain the best known. The problem connects divisibility theory with combinatorics (subset sums) and analysis (asymptotic density).",
+    "significance": "key"
+  }
+]

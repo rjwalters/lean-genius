@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-590-header",
+    "proofId": "erdos-590",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdős Problem #590 asks about ordinal Ramsey theory: Must every 2-coloring of the complete graph on ω^ω vertices contain either a red copy of the whole graph or a blue triangle? Chang proved the answer is YES in 1972, earning the $250 prize.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-590-ramsey-axiom",
+    "proofId": "erdos-590",
+    "range": { "startLine": 41, "endLine": 48 },
+    "type": "axiom",
+    "title": "Ordinal Ramsey Property",
+    "content": "We axiomatize OrdinalRamseyProperty α β n as the statement that every 2-coloring of pairs from α contains either a monochromatic subset of order type β (color 1) or a monochromatic n-element set (color 2). This captures the arrow notation α → (β, n)².",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-590-notation",
+    "proofId": "erdos-590",
+    "range": { "startLine": 50, "endLine": 51 },
+    "type": "definition",
+    "title": "Arrow Notation",
+    "content": "We introduce notation α →ₒ (β, n)² for OrdinalRamseyProperty. The subscript ₒ indicates ordinal Ramsey theory. The superscript 2 means we're coloring pairs (edges), not larger tuples.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-590-specker-positive",
+    "proofId": "erdos-590",
+    "range": { "startLine": 55, "endLine": 61 },
+    "type": "axiom",
+    "title": "Specker's Positive Result (ω²)",
+    "content": "Specker (1957) proved ω² → (ω², 3)² holds. Any 2-coloring of the complete graph on ω² vertices contains either a red copy of ω² or a blue triangle. The ordinal ω² = ω·ω is the order type of ℕ×ℕ under lexicographic ordering.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-590-specker-negative",
+    "proofId": "erdos-590",
+    "range": { "startLine": 63, "endLine": 69 },
+    "type": "axiom",
+    "title": "Specker's Negative Result (ω^n fails)",
+    "content": "Surprisingly, Specker also proved ω^n → (ω^n, 3)² FAILS for all finite n ≥ 3. Larger ordinals can have WORSE Ramsey properties! There exist 2-colorings of K_{ω³} avoiding both a red K_{ω³} and a blue triangle.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-590-specker-failures",
+    "proofId": "erdos-590",
+    "range": { "startLine": 71, "endLine": 77 },
+    "type": "theorem",
+    "title": "Explicit Failure Cases",
+    "content": "We derive explicit failure theorems for ω³ and ω⁴ from Specker's general result. These show the surprising pattern: ω² works, but ω³, ω⁴, ω⁵, ... all fail.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-590-chang",
+    "proofId": "erdos-590",
+    "range": { "startLine": 81, "endLine": 91 },
+    "type": "axiom",
+    "title": "Chang's Theorem (1972)",
+    "content": "Chang proved the remarkable result that ω^ω → (ω^ω, 3)² holds! Despite ω³, ω⁴, ... all failing, the limit ordinal ω^ω restores the Ramsey property. This resolved Erdős Problem #590 and earned the $250 prize.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-590-solved",
+    "proofId": "erdos-590",
+    "range": { "startLine": 93, "endLine": 94 },
+    "type": "theorem",
+    "title": "Problem Solved",
+    "content": "The theorem erdos_590_solved directly states the solution: ω^ω has the Ramsey property. This is an immediate consequence of Chang's axiom.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-590-milner-larson",
+    "proofId": "erdos-590",
+    "range": { "startLine": 98, "endLine": 104 },
+    "type": "axiom",
+    "title": "Milner-Larson Extension",
+    "content": "Milner extended Chang's result: ω^ω → (ω^ω, m)² holds for ANY finite m, not just m = 3. You can require any finite clique size! Larson (1973/74) provided a shorter proof.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-590-milner-examples",
+    "proofId": "erdos-590",
+    "range": { "startLine": 106, "endLine": 112 },
+    "type": "theorem",
+    "title": "Extension Examples",
+    "content": "We derive specific cases: ω^ω → (ω^ω, 4)² and ω^ω → (ω^ω, 10)² both hold. Any finite clique size works as the second color target.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-590-ordinals",
+    "proofId": "erdos-590",
+    "range": { "startLine": 116, "endLine": 124 },
+    "type": "theorem",
+    "title": "Ordinal Arithmetic",
+    "content": "We verify basic ordinal identities using Mathlib: ω is positive (the first infinite ordinal), ω² = ω·ω (order type of ℕ×ℕ), and ω³ = ω·ω·ω.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-590-omega-omega",
+    "proofId": "erdos-590",
+    "range": { "startLine": 126, "endLine": 136 },
+    "type": "theorem",
+    "title": "Properties of ω^ω",
+    "content": "ω^ω is positive and is a limit ordinal (not a successor). It's the supremum of all ω^n for finite n - the first ordinal not reachable by finite exponentiation from ω. This 'escape' from the failure pattern is key to Chang's theorem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-590-chain",
+    "proofId": "erdos-590",
+    "range": { "startLine": 138, "endLine": 142 },
+    "type": "theorem",
+    "title": "Ordinal Chain",
+    "content": "We prove ω^n < ω^ω for all finite n ≥ 1. The ordinal ω^ω strictly dominates every finite power of ω.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-590-pattern",
+    "proofId": "erdos-590",
+    "range": { "startLine": 146, "endLine": 168 },
+    "type": "theorem",
+    "title": "The Pattern Summary",
+    "content": "The pattern_summary theorem combines all the key results: ω² works (Specker), ω³ fails (Specker), and ω^ω works (Chang). The documentation includes a table showing the complete pattern from ω through ω^(ω²).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-590-related",
+    "proofId": "erdos-590",
+    "range": { "startLine": 172, "endLine": 180 },
+    "type": "definition",
+    "title": "Related Problems",
+    "content": "Problem #591 asks about ω^(ω²) → (ω^(ω²), 3)², which remains OPEN with a $250 prize. Problem #592 investigates even larger ordinals. The pattern of limit ordinals restoring Ramsey properties is not fully understood.",
+    "significance": "key"
+  }
+]

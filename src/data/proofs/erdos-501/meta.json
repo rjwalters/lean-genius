@@ -1,33 +1,96 @@
 {
   "id": "erdos-501",
-  "title": "Erdős Problem #501",
+  "title": "Erdős #501: Independent Sets for Outer Measure Families",
   "slug": "erdos-501",
-  "description": "For every ... let ... be a bounded set with outer measure $ View the LaTeX source",
+  "description": "For bounded sets A_x with outer measure < 1, must infinite independent sets exist? Answer depends on set-theoretic axioms!",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, András Hajnal",
     "sourceUrl": "https://erdosproblems.com/501",
-    "date": "",
-    "status": "pending",
+    "date": "1960",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos501Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "set-theory",
+      "measure-theory",
+      "combinatorics",
+      "independence"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 7,
     "erdosNumber": 501,
     "erdosUrl": "https://erdosproblems.com/501",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #501 from erdosproblems.com.",
-    "problemStatement": "For every $x\\in\\mathbb{R}$ let $A_x\\subset \\mathbb{R}$ be a bounded set with outer measure $ View the LaTeX source",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem connects combinatorics with set theory and measure theory. Erdős and Hajnal (1960) proved arbitrarily large finite independent sets exist. Remarkably, the infinite case depends on set-theoretic axioms: Hechler (1972) showed NO under CH, while Newelski-Pawlikowski-Seredyński (1987) showed YES for closed sets.",
+    "problemStatement": "For every x ∈ ℝ, let A_x ⊂ ℝ be a bounded set with outer measure < 1. A set X is 'independent' if x ∉ A_y for all distinct x, y ∈ X. Must infinite independent sets exist?",
+    "proofStrategy": "We formalize the set family and independence definitions, state the Erdős-Hajnal theorem for finite independent sets, and capture the set-theoretic independence via Hechler's CH result and the NPS theorem for closed sets.",
+    "keyInsights": [
+      "Erdős-Hajnal (1960): Arbitrarily large finite independent sets always exist",
+      "Hechler (1972): Under CH, infinite independent sets may NOT exist",
+      "NPS (1987): For closed sets, infinite independent sets DO exist (provable in ZFC)",
+      "This is a rare example where the answer genuinely depends on set-theoretic axioms!"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "Set families, bounded sets, outer measure conditions",
+      "startLine": 36,
+      "endLine": 55
+    },
+    {
+      "id": "independence",
+      "title": "Independence",
+      "summary": "Independent sets, finite and infinite independence",
+      "startLine": 57,
+      "endLine": 69
+    },
+    {
+      "id": "erdos-hajnal",
+      "title": "Erdős-Hajnal Theorem",
+      "summary": "Arbitrarily large finite independent sets exist",
+      "startLine": 71,
+      "endLine": 82
+    },
+    {
+      "id": "ch-result",
+      "title": "Continuum Hypothesis Result",
+      "summary": "Hechler (1972): NO infinite independent under CH",
+      "startLine": 84,
+      "endLine": 96
+    },
+    {
+      "id": "closed-result",
+      "title": "Closed Set Results",
+      "summary": "Gladysz size-2, NPS infinite independence for closed families",
+      "startLine": 98,
+      "endLine": 109
+    },
+    {
+      "id": "open-questions",
+      "title": "The Main Questions",
+      "summary": "Q1: Infinite independence (axiom-dependent), Q2: Size-3 for closed (open)",
+      "startLine": 111,
+      "endLine": 139
+    },
+    {
+      "id": "structure",
+      "title": "Structural Properties",
+      "summary": "Hereditary property, insertion lemma",
+      "startLine": 141,
+      "endLine": 170
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #501, a remarkable example where the answer depends on set-theoretic axioms beyond ZFC. The Erdős-Hajnal theorem guarantees arbitrarily large finite independent sets, but infinite independence is false under CH (Hechler) yet true for closed families (NPS).",
+    "implications": "This problem lies at the intersection of combinatorics, measure theory, and set theory. It demonstrates that even natural-seeming questions about real analysis can be independent of ZFC.",
+    "openQuestions": [
+      "What is the exact set-theoretic strength needed for infinite independence?",
+      "For closed families, must size-3 independent sets exist?",
+      "Can the gap between finite and infinite be characterized model-theoretically?"
+    ]
   }
 }

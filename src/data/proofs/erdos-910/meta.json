@@ -1,33 +1,97 @@
 {
   "id": "erdos-910",
-  "title": "Erdős Problem #910",
+  "title": "Erdős Problem #910: Connected Subsets of Euclidean Space",
   "slug": "erdos-910",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every connected set in ... contain a connected subset which is not a point and not homeomorphic to the original set?\n\nIf...",
+  "description": "Does every connected set in ℝⁿ have a proper connected subset that isn't a point or homeomorphic to the whole? Does it have more than 2^ℵ₀ connected subsets? Both NO—Rudin (1958) constructed a counterexample under CH.",
   "meta": {
-    "author": "Unknown",
+    "author": "Mary Ellen Rudin (1958)",
     "sourceUrl": "https://erdosproblems.com/910",
-    "date": "",
-    "status": "pending",
+    "date": "1958",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos910Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "topology",
+      "connected-sets",
+      "homeomorphism",
+      "continuum-hypothesis"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 910,
     "erdosUrl": "https://erdosproblems.com/910",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #910 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every connected set in $\\mathbb{R}^n$ contain a connected subset which is not a point and not homeomorphic to the original set?\n\nIf $n\\geq 2$ does every connected set in $\\mathbb{R}^n$ contain more than $2^{\\aleph_0}$ many connected subsets?\n\n\n\nAsked by Erd\\H{o}s in the 1940s, who thought the answer to both questions is yes. The answer to both is in fact no, as shown by Rudin \\cite{Ru58} (conditional on the continuum hypothesis).\n\n\n\n\nReferences\n\n\n[Ru58] Rudin, M. E., A connected subset of the plane. Fund. Math. (1958), 15--24.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős posed these questions in the 1940s, expecting affirmative answers. The intuition was that connected sets should have rich internal structure with many 'genuinely different' connected subsets. For typical connected sets like intervals or disks, there are continuum-many connected subsets and most proper subsets are not homeomorphic to the whole.",
+    "problemStatement": "(1) Does every connected set in ℝⁿ contain a connected subset which is not a point and not homeomorphic to the original set? (2) If n ≥ 2, does every connected set in ℝⁿ contain more than 2^ℵ₀ many connected subsets?",
+    "proofStrategy": "Mary Ellen Rudin (1958) constructed a pathological counterexample under the Continuum Hypothesis. Her 'Rudin set' is a connected subset of ℝ² where every proper connected subset is either a single point or homeomorphic to the whole set, and it has exactly 2^ℵ₀ connected subsets. This simultaneously answers both questions negatively.",
+    "keyInsights": [
+      "The Continuum Hypothesis (CH) is essential to the construction",
+      "The Rudin set has 'self-similar' structure: proper connected subsets are points or copies of the whole",
+      "This shows connected sets can have surprisingly rigid, non-diverse structure",
+      "The counterexample is in ℝ², answering both the general and n ≥ 2 cases",
+      "Without CH, the problem's status is less clear"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "connected-subsets",
+      "title": "Connected Sets and Subsets",
+      "summary": "Basic definitions for connected subspaces",
+      "startLine": 49,
+      "endLine": 63
+    },
+    {
+      "id": "homeomorphism",
+      "title": "Homeomorphism Between Subsets",
+      "summary": "When two subsets are topologically equivalent",
+      "startLine": 65,
+      "endLine": 83
+    },
+    {
+      "id": "first-question",
+      "title": "Erdős's First Question",
+      "summary": "Diverse connected subsets property",
+      "startLine": 85,
+      "endLine": 102
+    },
+    {
+      "id": "second-question",
+      "title": "Erdős's Second Question",
+      "summary": "Cardinality of connected subsets",
+      "startLine": 104,
+      "endLine": 121
+    },
+    {
+      "id": "rudin-set",
+      "title": "The Rudin Set",
+      "summary": "Definition of the pathological counterexample",
+      "startLine": 123,
+      "endLine": 141
+    },
+    {
+      "id": "rudin-theorem",
+      "title": "Rudin's Theorem",
+      "summary": "Existence of Rudin set under CH",
+      "startLine": 143,
+      "endLine": 154
+    },
+    {
+      "id": "disproving",
+      "title": "Disproving Erdős's Conjectures",
+      "summary": "Using the Rudin set to answer both questions negatively",
+      "startLine": 156,
+      "endLine": 200
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Both of Erdős's questions are answered negatively. Under the Continuum Hypothesis, Mary Ellen Rudin constructed a connected planar set where every proper connected subset is either a point or homeomorphic to the whole, and there are exactly 2^ℵ₀ (not more) connected subsets.",
+    "implications": "This result reveals that connected sets can have surprisingly rigid topological structure. The dependence on CH highlights the set-theoretic nature of the problem. Rudin's construction is a landmark in point-set topology.",
+    "openQuestions": [
+      "What happens without assuming the Continuum Hypothesis?",
+      "Are there ZFC-provable counterexamples?",
+      "What other axioms affect the answer?"
+    ]
   }
 }

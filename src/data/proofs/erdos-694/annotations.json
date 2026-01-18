@@ -1,1 +1,142 @@
-[]
+[
+  {
+    "id": "ann-e694-header",
+    "proofId": "erdos-694",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This module formalizes **Erdős Problem #694**: Investigate the spread of preimages of Euler's totient function. How large can f_max(n)/f_min(n) be?",
+    "mathContext": "The main investigation is OPEN. Related: Carmichael's conjecture (1907) that no totient value has a unique preimage. Erdős proved: if one exists, infinitely many do.",
+    "significance": "critical",
+    "relatedConcepts": ["Euler's totient", "Carmichael's conjecture", "preimage"]
+  },
+  {
+    "id": "ann-e694-totient-preimage",
+    "proofId": "erdos-694",
+    "range": {
+      "startLine": 31,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "Totient Preimage",
+    "content": "**totientPreimage n** is the set of all m with φ(m) = n. This set is always finite because φ(m) grows roughly like m/log(log(m)).",
+    "mathContext": "For example: totientPreimage(1) = {1, 2} since φ(1) = φ(2) = 1. totientPreimage(2) = {3, 4, 6} since these all have totient 2.",
+    "significance": "critical",
+    "relatedConcepts": ["Nat.totient", "Set.Finite", "preimage"]
+  },
+  {
+    "id": "ann-e694-fmax-fmin",
+    "proofId": "erdos-694",
+    "range": {
+      "startLine": 43,
+      "endLine": 75
+    },
+    "type": "axiom",
+    "title": "f_max and f_min Functions",
+    "content": "**f_max(n)** is the largest m with φ(m) = n. **f_min(n)** is the smallest. These are axiomatized with properties ensuring they're the max/min of the preimage.",
+    "mathContext": "For n=1: f_min(1) = 1, f_max(1) = 2. For n=2: f_min(2) = 3, f_max(2) = 6. The ratio f_max(n)/f_min(n) measures the 'spread' of the preimage.",
+    "significance": "key",
+    "relatedConcepts": ["maximum", "minimum", "finite set"]
+  },
+  {
+    "id": "ann-e694-ratio",
+    "proofId": "erdos-694",
+    "range": {
+      "startLine": 77,
+      "endLine": 92
+    },
+    "type": "definition",
+    "title": "Preimage Ratio (Main Question)",
+    "content": "**preimageRatio n** = f_max(n)/f_min(n). The main open question asks: what is max_{n≤x} preimageRatio(n)? How does this grow with x?",
+    "mathContext": "When preimageRatio(n) = 1, the preimage has exactly one element - this is a Carmichael totient. Carmichael conjectured this never happens.",
+    "significance": "critical",
+    "relatedConcepts": ["ratio", "maximum", "growth rate"]
+  },
+  {
+    "id": "ann-e694-carmichael",
+    "proofId": "erdos-694",
+    "range": {
+      "startLine": 94,
+      "endLine": 110
+    },
+    "type": "definition",
+    "title": "Carmichael's Totient Conjecture",
+    "content": "**isCarmichaelTotient n** means φ(m) = n has exactly one solution m. **CarmichaelConjecture** states no such n exists.",
+    "mathContext": "Carmichael (1907) conjectured this 119 years ago. If false, Ford (1999) showed any counterexample exceeds 10^(10^10) - computationally inaccessible.",
+    "significance": "critical",
+    "relatedConcepts": ["unique solution", "conjecture", "Ford bound"]
+  },
+  {
+    "id": "ann-e694-erdos-conditional",
+    "proofId": "erdos-694",
+    "range": {
+      "startLine": 112,
+      "endLine": 128
+    },
+    "type": "axiom",
+    "title": "Erdős's Conditional Infinitude",
+    "content": "**erdos_conditional_infinite**: If ANY Carmichael totient exists, then INFINITELY MANY exist. This is the SOLVED part of the problem.",
+    "mathContext": "The proof uses multiplicative structure: if φ(m) = n is unique, then for certain primes p, n·p also has a unique preimage. This iterates infinitely.",
+    "significance": "critical",
+    "relatedConcepts": ["conditional result", "infinite set", "multiplicative"]
+  },
+  {
+    "id": "ann-e694-ford",
+    "proofId": "erdos-694",
+    "range": {
+      "startLine": 130,
+      "endLine": 146
+    },
+    "type": "axiom",
+    "title": "Ford's Lower Bound",
+    "content": "**ford_lower_bound**: Any Carmichael totient must exceed 10^(10^10). This astronomical bound makes computational search impossible.",
+    "mathContext": "Ford's 1999 result uses careful analysis of the distribution of totient values. Even with all computing power, we can't check this many values.",
+    "significance": "key",
+    "relatedConcepts": ["lower bound", "computational", "1999"]
+  },
+  {
+    "id": "ann-e694-examples",
+    "proofId": "erdos-694",
+    "range": {
+      "startLine": 148,
+      "endLine": 163
+    },
+    "type": "theorem",
+    "title": "Totient Computations",
+    "content": "Concrete examples verified by rfl: φ(1) = 1, φ(2) = 1, φ(3) = 2, φ(4) = 2, φ(6) = 2. These show 1 and 2 have multiple preimages.",
+    "mathContext": "φ(n) counts integers up to n coprime to n. φ(1) = 1 trivially. φ(2) = 1 since only 1 is coprime to 2. φ(p) = p-1 for prime p.",
+    "significance": "supporting",
+    "relatedConcepts": ["rfl", "computation", "coprime"]
+  },
+  {
+    "id": "ann-e694-non-carmichael",
+    "proofId": "erdos-694",
+    "range": {
+      "startLine": 165,
+      "endLine": 189
+    },
+    "type": "theorem",
+    "title": "Non-Carmichael Proofs",
+    "content": "**one_not_carmichael** and **two_not_carmichael**: We prove 1 and 2 are NOT Carmichael totients because they each have multiple preimages.",
+    "mathContext": "Proof technique: Assume n is Carmichael, then get two preimages via huniq, deduce they're equal, get 1=2 or 3=4 contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["proof by contradiction", "multiple preimages", "norm_num"]
+  },
+  {
+    "id": "ann-e694-summary",
+    "proofId": "erdos-694",
+    "range": {
+      "startLine": 191,
+      "endLine": 205
+    },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_694_summary** packages the proved results: neither 1 nor 2 is a Carmichael totient. These are the first two totient values.",
+    "mathContext": "This is a genuine proved theorem (not axiom). While we can't check all totient values computationally, we verify the smallest ones aren't Carmichael.",
+    "significance": "supporting",
+    "relatedConcepts": ["summary", "proved", "small cases"]
+  }
+]

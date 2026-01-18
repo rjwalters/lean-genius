@@ -1,1 +1,226 @@
-[]
+[
+  {
+    "id": "ann-e157-header",
+    "proofId": "erdos-157",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #157**: Infinite Sidon Set as Asymptotic Basis\n\n**Question**: Does there exist an infinite Sidon set which is an asymptotic basis of order 3?\n\n**Answer**: YES (Pilatte, 2023)\n\n**Key Definitions**:\n- **Sidon set** (B₂ sequence): All pairwise sums are distinct\n- **Asymptotic basis of order k**: Every large integer is a sum of at most k elements\n\n**The Tension**: Sidon sets are sparse (≤ √N elements up to N), but bases need density. Order 3 is the sweet spot where these constraints can coexist.",
+    "mathContext": "This problem sits at the intersection of additive combinatorics and density arguments. The Sidon condition severely limits growth, while the basis condition demands sufficient density.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "sidon-set",
+      "asymptotic-basis",
+      "pilatte-2023"
+    ]
+  },
+  {
+    "id": "ann-e157-sidon",
+    "proofId": "erdos-157",
+    "range": {
+      "startLine": 30,
+      "endLine": 34
+    },
+    "type": "definition",
+    "title": "Sidon Set Definition",
+    "content": "**def IsSidon (A : Set ℕ)**: Prop\n  All pairwise sums are distinct: a + b = c + d with a ≤ b, c ≤ d implies (a,b) = (c,d)\n\n**Equivalently**: No sum s has more than one representation as a + b with a ≤ b.\n\n**Example**: {1, 2, 5, 11} is Sidon:\n- Sums: 3, 6, 7, 12, 13, 16 (all distinct)\n\n**Non-example**: {1, 2, 5, 10, 11} is NOT Sidon:\n- 1 + 11 = 2 + 10 = 12 (repeated sum)",
+    "mathContext": "Sidon sets (named after Simon Sidon) are also called B₂ sequences. They arise naturally in Fourier analysis on abelian groups.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "b2-sequence",
+      "sum-free-structure"
+    ]
+  },
+  {
+    "id": "ann-e157-sidon-alt",
+    "proofId": "erdos-157",
+    "range": {
+      "startLine": 36,
+      "endLine": 38
+    },
+    "type": "definition",
+    "title": "Alternative Sidon Characterization",
+    "content": "**def IsSidonAlt (A : Set ℕ)**: Prop\n  For each sum s, the set {(a,b) | a ∈ A, b ∈ A, a ≤ b, a + b = s} has at most 1 element.\n\n**In other words**: The sumset A + A has no collisions (each sum value appears at most once as an ordered pair sum).\n\nThis characterization is often more convenient for counting arguments.",
+    "mathContext": "The alternative definition makes the 'unique representation' property explicit via cardinality bounds.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sumset",
+      "counting"
+    ]
+  },
+  {
+    "id": "ann-e157-sidon-equiv",
+    "proofId": "erdos-157",
+    "range": {
+      "startLine": 41,
+      "endLine": 56
+    },
+    "type": "theorem",
+    "title": "Sidon Equivalence (VERIFIED)",
+    "content": "**theorem sidon_iff_sidon_alt**: IsSidon A ↔ IsSidonAlt A\n\n✅ **FULLY VERIFIED** - This theorem is completely proved in Lean!\n\n**Proof outline**:\n- (⟹) If two representations exist for some s, the Sidon property forces them equal\n- (⟸) If |{(a,b) : a+b=s}| ≤ 1 for all s, repeated sums are impossible\n\nThe proof uses `Set.ncard` properties and `aesop` for set reasoning.",
+    "mathContext": "This equivalence is fundamental for working with Sidon sets. Different characterizations are useful in different contexts.",
+    "significance": "key",
+    "relatedConcepts": [
+      "equivalence",
+      "verified"
+    ]
+  },
+  {
+    "id": "ann-e157-sumset",
+    "proofId": "erdos-157",
+    "range": {
+      "startLine": 60,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "k-fold Sumset",
+    "content": "**def SumsetK (A : Set ℕ) (k : ℕ)**: Set ℕ\n  The set of all n expressible as sums of at most k elements from A.\n\n**Formally**: n ∈ SumsetK A k iff ∃ S : Finset ℕ with |S| ≤ k, S ⊆ A, and n = Σ_{s∈S} s.\n\n**Examples**:\n- SumsetK {1,2,3} 1 = {1, 2, 3}\n- SumsetK {1,2,3} 2 = {1, 2, 3, 4, 5}\n- SumsetK {1,2,3} 3 = {1, 2, 3, 4, 5, 6}",
+    "mathContext": "The k-fold sumset measures the 'reach' of a set under addition with bounded terms. This is the key object for studying bases.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sumset",
+      "additive-combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e157-basis",
+    "proofId": "erdos-157",
+    "range": {
+      "startLine": 64,
+      "endLine": 67
+    },
+    "type": "definition",
+    "title": "Asymptotic Basis Definition",
+    "content": "**def IsAsymptoticBasis (A : Set ℕ) (k : ℕ)**: Prop\n  ∃ N₀, ∀ n ≥ N₀, n ∈ SumsetK A k\n\n**Meaning**: Every sufficiently large integer is a sum of at most k elements of A.\n\n**Classic examples**:\n- ℕ is an asymptotic basis of order 1 (trivially)\n- Squares are an asymptotic basis of order 4 (Lagrange)\n- Primes are an asymptotic basis of order 3 (Vinogradov, for odd numbers)\n\n**Key constraint**: The order k matters greatly for density requirements.",
+    "mathContext": "The concept of 'basis' has been central to additive number theory since Waring's problem. The asymptotic version allows finitely many exceptions.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "waring-problem",
+      "lagrange-four-squares"
+    ]
+  },
+  {
+    "id": "ann-e157-conjecture",
+    "proofId": "erdos-157",
+    "range": {
+      "startLine": 76,
+      "endLine": 83
+    },
+    "type": "definition",
+    "title": "The Erdős Conjecture",
+    "content": "**def Erdos157Conjecture**: Prop\n  ∃ A : Set ℕ, A.Infinite ∧ IsSidon A ∧ IsAsymptoticBasis A 3\n\n**In words**: There exists an infinite Sidon set that is also an asymptotic basis of order 3.\n\n**Why order 3?**\n- Order 2 is impossible (Sidon sets too sparse)\n- Order 3 is achievable (Pilatte 2023)\n- This is the minimal order for which it works!",
+    "mathContext": "The question asks whether the Sidon sparsity condition and the basis density condition can coexist. Order 3 is the boundary case.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "existence",
+      "boundary-case"
+    ]
+  },
+  {
+    "id": "ann-e157-pilatte",
+    "proofId": "erdos-157",
+    "range": {
+      "startLine": 87,
+      "endLine": 92
+    },
+    "type": "theorem",
+    "title": "Pilatte's Existence Theorem (2023)",
+    "content": "**theorem pilatte_existence**: Erdos157Conjecture\n\n**Status**: sorry (existential construction not formalized)\n\n**Pilatte's proof** (2023) uses a probabilistic construction:\n1. Carefully select elements to maintain the Sidon property\n2. Ensure enough density to cover all large integers with 3 terms\n3. Balance the competing constraints through delicate analysis\n\nThe construction is non-explicit - it proves existence without giving a concrete set.",
+    "mathContext": "Probabilistic existence proofs are common in combinatorics. They show something exists without constructing it explicitly.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "probabilistic-method",
+      "pilatte-2023",
+      "non-constructive"
+    ]
+  },
+  {
+    "id": "ann-e157-not-basis-2",
+    "proofId": "erdos-157",
+    "range": {
+      "startLine": 96,
+      "endLine": 102
+    },
+    "type": "theorem",
+    "title": "Sidon Sets Cannot Be Order-2 Bases",
+    "content": "**theorem sidon_not_basis_2 (A : Set ℕ)**:\n  A.Infinite → IsSidon A → ¬IsAsymptoticBasis A 2\n\n**Status**: sorry\n\n**Why it's true**:\n- Sidon sets satisfy |A ∩ [1,N]| ≤ √N + O(N^{1/4})\n- Order-2 bases require |A ∩ [1,N]| ≫ √N (to cover N different sums)\n- These constraints are incompatible!\n\nThis explains why Erdős asked about order 3, not order 2.",
+    "mathContext": "The impossibility of order 2 is a density argument. Sidon sets grow too slowly to form pairwise sums covering all integers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density-argument",
+      "impossibility"
+    ]
+  },
+  {
+    "id": "ann-e157-counting",
+    "proofId": "erdos-157",
+    "range": {
+      "startLine": 104,
+      "endLine": 106
+    },
+    "type": "axiom",
+    "title": "Sidon Counting Bound",
+    "content": "**axiom sidon_counting_bound**:\n  |A ∩ [1,N]| ≤ √N + C·N^{1/4} for some constant C\n\n**Classical result** (Erdős-Turán 1941):\n- Sidon sets grow at most like √N\n- The O(N^{1/4}) term captures lower-order fluctuations\n\n**Optimal constructions**:\n- Singer difference sets achieve |A ∩ [1,N]| ∼ √N\n- So the bound is essentially tight",
+    "mathContext": "The √N growth rate is the key constraint. It comes from counting: a Sidon set of size k has k(k+1)/2 distinct pairwise sums, which must fit in [2, 2N].",
+    "significance": "key",
+    "relatedConcepts": [
+      "erdos-turan",
+      "growth-rate"
+    ]
+  },
+  {
+    "id": "ann-e157-basis-lower",
+    "proofId": "erdos-157",
+    "range": {
+      "startLine": 108,
+      "endLine": 111
+    },
+    "type": "axiom",
+    "title": "Basis Counting Lower Bound",
+    "content": "**axiom basis_counting_lower**:\n  If A is an asymptotic basis of order k, then |A ∩ [1,N]| ≥ c·N^{1/k}\n\n**Proof idea**: The k-fold sums of |A ∩ [1,N]| elements must cover [N₀, N].\n- Number of such sums ≈ |A ∩ [1,N]|^k\n- Must cover ≈ N integers\n- So |A ∩ [1,N]|^k ≳ N, giving |A ∩ [1,N]| ≳ N^{1/k}\n\n**Why order 3 works**:\n- Sidon: |A| ≤ √N = N^{1/2}\n- Basis order 3: need |A| ≥ N^{1/3}\n- Since 1/3 < 1/2, these are compatible!",
+    "mathContext": "This lower bound explains the density requirements for bases. Combined with the Sidon upper bound, it shows exactly which orders are feasible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density-lower-bound",
+      "compatibility"
+    ]
+  },
+  {
+    "id": "ann-e157-powers-sidon",
+    "proofId": "erdos-157",
+    "range": {
+      "startLine": 129,
+      "endLine": 144
+    },
+    "type": "theorem",
+    "title": "Powers of Two Form a Sidon Set (VERIFIED)",
+    "content": "**theorem powers_of_two_sidon**: IsSidon {n | ∃ k, n = 2^k}\n\n✅ **FULLY VERIFIED** - Complete proof in Lean!\n\n**Why {1, 2, 4, 8, 16, ...} is Sidon**:\nIf 2^a + 2^b = 2^c + 2^d with a ≤ b, c ≤ d, then (a,b) = (c,d).\n\n**Proof technique**:\n- Factor: 2^a(1 + 2^{b-a}) = 2^c(1 + 2^{d-c})\n- Compare 2-adic valuations\n- Case analysis on the exponents\n\nThis is the canonical example of an infinite Sidon set.",
+    "mathContext": "Powers of 2 give the sparsest possible Sidon set (logarithmic growth). They show Sidon sets can be arbitrarily sparse.",
+    "significance": "key",
+    "relatedConcepts": [
+      "canonical-example",
+      "verified",
+      "2-adic"
+    ]
+  },
+  {
+    "id": "ann-e157-example",
+    "proofId": "erdos-157",
+    "range": {
+      "startLine": 146,
+      "endLine": 153
+    },
+    "type": "theorem",
+    "title": "Finite Sidon Example",
+    "content": "**def exampleSidonSet**: Finset ℕ := {1, 2, 5, 11}\n\n**theorem example_is_sidon**: IsSidon exampleSidonSet\n  Status: sorry\n\n**Verification**: The pairwise sums are:\n- 1+2=3, 1+5=6, 1+11=12, 2+5=7, 2+11=13, 5+11=16\n- All distinct ✓\n\n**Historical note**: The original set {1, 2, 5, 10, 11, 13} was NOT Sidon (1+11 = 2+10 = 12). Aristotle proof search discovered this bug!",
+    "mathContext": "Small Sidon sets are useful for testing. The bug-finding note shows the value of formal verification even for 'obvious' claims.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "example",
+      "bug-found"
+    ]
+  }
+]

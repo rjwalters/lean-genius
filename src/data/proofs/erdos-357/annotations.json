@@ -1,1 +1,191 @@
-[]
+[
+  {
+    "id": "ann-357-header",
+    "proofId": "erdos-357",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdős Problem #357 asks: given 1 ≤ a₁ < a₂ < ... < aₖ ≤ n with all 'consecutive sums' Σᵢ₌ᵤᵛ aᵢ distinct, what is the maximum k? Is f(n) = o(n)? Known: f(n) ≥ (2+o(1))√n from B₂ sequences.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-357-contiguous",
+    "proofId": "erdos-357",
+    "range": { "startLine": 42, "endLine": 45 },
+    "type": "definition",
+    "title": "Contiguous Intervals",
+    "content": "A contiguous interval is a set of consecutive indices {u, u+1, ..., v}. For a sequence of k elements, there are k(k+1)/2 such intervals: k singletons, k-1 pairs, k-2 triples, ..., 1 full sequence.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-357-distinct-sums",
+    "proofId": "erdos-357",
+    "range": { "startLine": 47, "endLine": 52 },
+    "type": "definition",
+    "title": "Distinct Consecutive Sums",
+    "content": "A sequence has distinct consecutive sums if for every pair of different contiguous intervals I ≠ J, we have Σᵢ∈I aᵢ ≠ Σⱼ∈J aⱼ. This is stronger than just requiring single elements to be distinct.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-357-valid-sequence",
+    "proofId": "erdos-357",
+    "range": { "startLine": 61, "endLine": 65 },
+    "type": "definition",
+    "title": "Valid Sequence",
+    "content": "A valid sequence for f(n) must: (1) have all elements in [1, n], (2) be strictly increasing, and (3) have all consecutive sums distinct. The function f(n) is the maximum length of such sequences.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-357-f-def",
+    "proofId": "erdos-357",
+    "range": { "startLine": 67, "endLine": 69 },
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "f(n) = supremum of k over all valid sequences. This is the key quantity: how many strictly increasing integers in [1,n] can we choose while keeping all consecutive sums distinct?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-357-trivial-upper",
+    "proofId": "erdos-357",
+    "range": { "startLine": 85, "endLine": 87 },
+    "type": "theorem",
+    "title": "Trivial Upper Bound",
+    "content": "f(n) ≤ n trivially since we can't choose more than n distinct integers from [1, n]. The interesting question is whether f(n) is o(n) or Θ(n).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-357-count-intervals",
+    "proofId": "erdos-357",
+    "range": { "startLine": 99, "endLine": 104 },
+    "type": "theorem",
+    "title": "Counting Intervals",
+    "content": "A sequence of k elements has exactly k(k+1)/2 contiguous intervals (triangular number). These must all produce distinct sums, limiting how large k can be.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-357-weisenberg",
+    "proofId": "erdos-357",
+    "range": { "startLine": 113, "endLine": 121 },
+    "type": "axiom",
+    "title": "Weisenberg's Lower Bound",
+    "content": "f(n) ≥ (2 + o(1))√n. This comes from the connection to B₂ sequences (Sidon sets). Any B₂ sequence—where all pairwise sums a_i + a_j are distinct—also has distinct consecutive sums.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-357-sqrt-growth",
+    "proofId": "erdos-357",
+    "range": { "startLine": 123, "endLine": 130 },
+    "type": "theorem",
+    "title": "At Least √n Growth",
+    "content": "Corollary: f(n) ≥ C√n for some constant C > 0. This establishes that f(n) grows at least as fast as √n, but leaves open whether it can grow faster (perhaps linearly).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-357-conjecture",
+    "proofId": "erdos-357",
+    "range": { "startLine": 134, "endLine": 141 },
+    "type": "definition",
+    "title": "Main Conjecture",
+    "content": "Erdős Problem #357 asks: Is f(n) = o(n)? Equivalently, does f(n)/n → 0 as n → ∞? This would mean sequences with distinct consecutive sums are sparse compared to n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-357-g-def",
+    "proofId": "erdos-357",
+    "range": { "startLine": 153, "endLine": 157 },
+    "type": "definition",
+    "title": "Non-Monotone Variant g(n)",
+    "content": "g(n) = max k for sequences in [1,n] with distinct consecutive sums, but WITHOUT requiring the sequence to be increasing. This is a relaxation: g(n) ≥ f(n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-357-hegyvari",
+    "proofId": "erdos-357",
+    "range": { "startLine": 163, "endLine": 166 },
+    "type": "axiom",
+    "title": "Hegyvári's Bounds",
+    "content": "Hegyvári (1986) proved (1/3 + o(1))n ≤ g(n) ≤ (2/3 + o(1))n. So the non-monotone variant grows linearly! The monotonicity requirement in f(n) might be what limits growth.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-357-h-def",
+    "proofId": "erdos-357",
+    "range": { "startLine": 176, "endLine": 182 },
+    "type": "definition",
+    "title": "Weakly Monotone Variant h(n)",
+    "content": "h(n) = max k for weakly increasing sequences (a_i ≤ a_{i+1}, allowing ties). This is between f(n) and g(n) in generality. Whether h(n) = o(n) is also open.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-357-infinite-sets",
+    "proofId": "erdos-357",
+    "range": { "startLine": 194, "endLine": 196 },
+    "type": "definition",
+    "title": "Infinite Sets",
+    "content": "An infinite set A = {a₁ < a₂ < ...} with distinct consecutive sums. Erdős asked: must such sets have density 0? Must Σ 1/aₖ converge? Lower density 0 is known.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-357-lower-density",
+    "proofId": "erdos-357",
+    "range": { "startLine": 198, "endLine": 200 },
+    "type": "axiom",
+    "title": "Lower Density Zero",
+    "content": "Any infinite sequence with distinct consecutive sums has lower density 0. This follows from an averaging argument: a_k ≫ k log k for infinitely many k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-357-density-conjecture",
+    "proofId": "erdos-357",
+    "range": { "startLine": 202, "endLine": 205 },
+    "type": "definition",
+    "title": "Density Zero Conjecture",
+    "content": "Conjecture: Any infinite set with distinct consecutive sums has density 0 (not just lower density 0). This is stronger than what's currently known.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-357-sum-conjecture",
+    "proofId": "erdos-357",
+    "range": { "startLine": 207, "endLine": 209 },
+    "type": "definition",
+    "title": "Sum Convergence Conjecture",
+    "content": "Conjecture: For any infinite set A with distinct consecutive sums, Σ 1/aₖ converges. This would mean elements grow fast enough that their reciprocals are summable.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-357-powers-of-2",
+    "proofId": "erdos-357",
+    "range": { "startLine": 227, "endLine": 230 },
+    "type": "theorem",
+    "title": "Powers of 2 Example",
+    "content": "The sequence {1, 2, 4, 8, 16, ...} has all consecutive sums distinct. This is because sums of consecutive powers of 2 can be read off from their binary representations.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-357-b2-def",
+    "proofId": "erdos-357",
+    "range": { "startLine": 234, "endLine": 237 },
+    "type": "definition",
+    "title": "B₂ Sequences",
+    "content": "A B₂ sequence (Sidon set) has all pairwise sums distinct: a_i + a_j = a_k + a_l implies {i,j} = {k,l}. Famous example: {1, 2, 5, 10, 11, ...}. Max size in [1,n] is (1+o(1))√n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-357-b2-implies",
+    "proofId": "erdos-357",
+    "range": { "startLine": 239, "endLine": 242 },
+    "type": "theorem",
+    "title": "B₂ Implies Distinct Consecutive",
+    "content": "Any B₂ sequence automatically has distinct consecutive sums. Consecutive sums are a subset of all pairwise sums (with appropriate weighting), so distinctness transfers.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-357-subset-sums",
+    "proofId": "erdos-357",
+    "range": { "startLine": 253, "endLine": 256 },
+    "type": "definition",
+    "title": "Distinct Subset Sums",
+    "content": "Problem #874 asks about sequences where ALL subset sums are distinct (not just consecutive). Such sequences also have distinct consecutive sums, but are much more restrictive.",
+    "significance": "supporting"
+  }
+]

@@ -1,33 +1,118 @@
 {
   "id": "erdos-621",
-  "title": "Erdős Problem #621",
+  "title": "Erdős #621: Triangle Edge Covers",
   "slug": "erdos-621",
-  "description": "Let G\" role=\"presentation\" style=\"position: relative;\">GGG be a graph on n\" role=\"presentation\" style=\"position: relative;\">nnn vertices, &#x03B1;1(G)\" role=\"presentation\" style=\"position: relative...",
+  "description": "For graph G on n vertices, is α₁(G) + τ₁(G) ≤ n²/4? Solved by Norin-Sun (2016) with the stronger result α₁(G) + τ_B(G) ≤ n²/4.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Tibor Gallai, Zsolt Tuza, Sergey Norin, Hehui Wu",
     "sourceUrl": "https://erdosproblems.com/621",
-    "date": "",
-    "status": "pending",
+    "date": "1996-2016",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos621Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "triangles",
+      "edge-covers",
+      "extremal-combinatorics"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 22,
     "erdosNumber": 621,
     "erdosUrl": "https://erdosproblems.com/621",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #621 from erdosproblems.com.",
-    "problemStatement": "Let G\" role=\"presentation\" style=\"position: relative;\">GGG be a graph on n\" role=\"presentation\" style=\"position: relative;\">nnn vertices, &#x03B1;1(G)\" role=\"presentation\" style=\"position: relative;\">α1(G)α1(G)\\alpha_1(G) be the maximum number of edges that contain at most one edge from every triangle, and &#x03C4;1(G)\" role=\"presentation\" style=\"position: relative;\">τ1(G)τ1(G)\\tau_1(G) be the minimum number of edges that contain at least one edge from every triangle. Is it true that&#x03B1;1(G)+&#x03C4;1(G)&#x2264;n24?\" role=\"presentation\" style=\"text-align: center; position: relative;\">α1(G)+τ1(G)≤n24?α1(G)+τ1(G)≤n24?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős, Gallai, and Tuza (1996) posed this conjecture, noting it 'is probably quite difficult.' Norin and Sun (2016) proved the stronger result using bipartite removal. The problem connects triangle edge covers to classical extremal graph theory.",
+    "problemStatement": "Let G be a graph on n vertices. Define α₁(G) = maximum number of edges containing at most one edge from each triangle, and τ₁(G) = minimum number of edges hitting every triangle. Is α₁(G) + τ₁(G) ≤ n²/4?",
+    "proofStrategy": "We formalize triangle edge covers (τ₁), triangle-sparse sets (α₁), bipartite removal (τ_B), the key inequality τ₁ ≤ τ_B, Norin-Sun's main result, equality cases (complete graphs, complete bipartite, K_{m,m}+vertex), and connection to Mantel's theorem.",
+    "keyInsights": [
+      "Norin-Sun (2016): α₁(G) + τ_B(G) ≤ n²/4",
+      "Since τ₁(G) ≤ τ_B(G), the original conjecture follows",
+      "Equality achieved by: K_n, K_{n/2,n/2}, K_{m,m}+universal vertex",
+      "For triangle-free graphs, reduces to Mantel's theorem",
+      "Related to Problem #23 on bipartite removal bounds"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "triangles",
+      "title": "Triangle Definitions",
+      "summary": "Triangles, triangle hits, and edge covers",
+      "startLine": 33,
+      "endLine": 51
+    },
+    {
+      "id": "tau1",
+      "title": "The τ₁ Function",
+      "summary": "Minimum triangle edge cover size",
+      "startLine": 53,
+      "endLine": 65
+    },
+    {
+      "id": "alpha1",
+      "title": "The α₁ Function",
+      "summary": "Maximum triangle-sparse edge set",
+      "startLine": 67,
+      "endLine": 87
+    },
+    {
+      "id": "bipartite",
+      "title": "Bipartite Removal",
+      "summary": "τ_B and its relation to τ₁",
+      "startLine": 89,
+      "endLine": 106
+    },
+    {
+      "id": "main",
+      "title": "Main Conjecture",
+      "summary": "The EGT conjecture and Norin-Sun solution",
+      "startLine": 108,
+      "endLine": 126
+    },
+    {
+      "id": "equality",
+      "title": "Equality Cases",
+      "summary": "K_n, K_{n/2,n/2}, and K_{m,m}+vertex",
+      "startLine": 128,
+      "endLine": 153
+    },
+    {
+      "id": "triangle-free",
+      "title": "Triangle-Free Graphs",
+      "summary": "Special case reducing to Mantel's theorem",
+      "startLine": 155,
+      "endLine": 176
+    },
+    {
+      "id": "dense",
+      "title": "Dense Graphs",
+      "summary": "Complete graphs and edge triangulation",
+      "startLine": 178,
+      "endLine": 193
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds and Estimates",
+      "summary": "Upper bounds on α₁, τ₁, τ_B",
+      "startLine": 195,
+      "endLine": 210
+    },
+    {
+      "id": "problem23",
+      "title": "Relation to Problem #23",
+      "summary": "Connection to τ_B ≤ n²/25 conjecture",
+      "startLine": 212,
+      "endLine": 227
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #621 on triangle edge covers. Norin-Sun (2016) proved α₁(G) + τ_B(G) ≤ n²/4, which implies the original conjecture since τ₁(G) ≤ τ_B(G). Three families of graphs achieve equality.",
+    "implications": "The result reveals deep connections between triangle covering, bipartite removal, and classical extremal graph theory. The bound n²/4 appears in both this problem and Mantel's theorem, suggesting a unified structure.",
+    "openQuestions": [
+      "Are there other equality cases beyond the three known families?",
+      "Does Problem #23 (τ_B ≤ n²/25) hold?",
+      "What is the computational complexity of computing α₁ and τ₁?"
+    ]
   }
 }

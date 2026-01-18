@@ -1,1 +1,173 @@
-[]
+[
+  {
+    "id": "ann-1004-header",
+    "proofId": "erdos-1004",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdos Problem #1004 asks about distinct consecutive totient values. Given any c > 0, for sufficiently large x, can we always find n <= x such that phi(n+1), phi(n+2), ..., phi(n+floor((log x)^c)) are ALL distinct? This remains open, with partial results from EPS (1987).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1004-phi-def",
+    "proofId": "erdos-1004",
+    "range": { "startLine": 38, "endLine": 39 },
+    "type": "definition",
+    "title": "Euler's Totient Function",
+    "content": "phi(n) counts how many integers from 1 to n are coprime to n. For example: phi(1)=1, phi(2)=1, phi(3)=2, phi(4)=2, phi(5)=4, phi(6)=2. The function is multiplicative: phi(mn) = phi(m)phi(n) when gcd(m,n)=1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1004-phi-prime",
+    "proofId": "erdos-1004",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "theorem",
+    "title": "Totient of Primes",
+    "content": "For prime p, phi(p) = p - 1. This is because every integer from 1 to p-1 is coprime to p. This formula makes computing phi easy for primes: phi(7) = 6, phi(11) = 10, phi(13) = 12.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1004-phi-bounds",
+    "proofId": "erdos-1004",
+    "range": { "startLine": 48, "endLine": 58 },
+    "type": "theorem",
+    "title": "Basic Bounds on phi",
+    "content": "Key bounds: (1) phi(n) > 0 for n > 0, (2) phi(n) <= n always, (3) phi(n) < n for n > 1 (since n is not coprime to itself unless n=1). These show phi(n) is always between 1 and n-1 for n > 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1004-distinct-run",
+    "proofId": "erdos-1004",
+    "range": { "startLine": 62, "endLine": 66 },
+    "type": "definition",
+    "title": "Distinct Totient Run",
+    "content": "A run of length K at position n means phi(n+1), phi(n+2), ..., phi(n+K) are ALL different. This is the key concept--we're asking how long such runs can be. Collisions (repeated values) end runs early.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1004-trivial-runs",
+    "proofId": "erdos-1004",
+    "range": { "startLine": 77, "endLine": 85 },
+    "type": "theorem",
+    "title": "Trivial Runs",
+    "content": "The empty run (K=0) and single-element run (K=1) are always distinct trivially. The interesting question is: how long can K be? Starting from any n, there's some maximum K before a collision occurs.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1004-max-length",
+    "proofId": "erdos-1004",
+    "range": { "startLine": 89, "endLine": 91 },
+    "type": "definition",
+    "title": "Maximum Run Length",
+    "content": "For each n, define maxDistinctRunLength(n) as the supremum of all K such that the run at n is distinct. This function captures how 'collision-free' the sequence starting at n+1 is.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1004-eps87",
+    "proofId": "erdos-1004",
+    "range": { "startLine": 100, "endLine": 113 },
+    "type": "axiom",
+    "title": "EPS87 Theorem",
+    "content": "Erdos-Pomerance-Sarkozy (1987) proved: If phi(n+k) are distinct for 1 <= k <= K, then K <= n/exp(c(log n)^{1/3}) for some constant c > 0. This is a strong upper bound--runs cannot grow faster than n divided by an exponential in (log n)^{1/3}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1004-sublinear",
+    "proofId": "erdos-1004",
+    "range": { "startLine": 115, "endLine": 118 },
+    "type": "theorem",
+    "title": "Sublinear Run Length",
+    "content": "A corollary of EPS87: the maximum run length at n is o(n), meaning maxDistinctRunLength(n)/n tends to 0. Runs grow slower than linearly in n. This rules out runs of length cn for any constant c > 0.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1004-conjecture",
+    "proofId": "erdos-1004",
+    "range": { "startLine": 122, "endLine": 132 },
+    "type": "definition",
+    "title": "Main Conjecture",
+    "content": "The Erdos Problem #1004 conjecture: For ANY c > 0, if x is large enough, there exists n <= x with a distinct run of length floor((log x)^c). This asks whether logarithmic-length runs always exist. The EPS bound says runs can't be TOO long, but maybe (log x)^c is achievable.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1004-negation",
+    "proofId": "erdos-1004",
+    "range": { "startLine": 134, "endLine": 138 },
+    "type": "definition",
+    "title": "Negation",
+    "content": "The negation: There exists some c > 0 such that for large x, NO n <= x has a distinct run of length (log x)^c. This would mean some threshold c exists beyond which such runs become impossible to find.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1004-example-n1",
+    "proofId": "erdos-1004",
+    "range": { "startLine": 156, "endLine": 163 },
+    "type": "theorem",
+    "title": "Example at n=1",
+    "content": "Starting at n=1: phi(2)=1, phi(3)=2, phi(4)=2. The values 1, 2, 2 have a collision at positions 2 and 3. So the maximum distinct run at n=1 has length 2 (values 1 and 2 are distinct, but adding phi(4)=2 creates a collision).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1004-collision-def",
+    "proofId": "erdos-1004",
+    "range": { "startLine": 180, "endLine": 181 },
+    "type": "definition",
+    "title": "Totient Collision",
+    "content": "A collision occurs when phi(a) = phi(b) for distinct a, b. Example: phi(3) = phi(4) = phi(6) = 2. These collisions are why distinct runs must end--eventually two consecutive integers will share a totient value with an earlier one.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1004-collision-12",
+    "proofId": "erdos-1004",
+    "range": { "startLine": 183, "endLine": 187 },
+    "type": "theorem",
+    "title": "Collision at 1 and 2",
+    "content": "phi(1) = phi(2) = 1. This is the simplest collision: both 1 and 2 have exactly one number coprime to them in the range [1,n]. For 1, it's just 1 itself. For 2, only 1 is coprime to 2.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1004-collision-ends",
+    "proofId": "erdos-1004",
+    "range": { "startLine": 195, "endLine": 201 },
+    "type": "theorem",
+    "title": "Collisions End Runs",
+    "content": "If phi(n+i) = phi(n+j) for i < j in the run, then the run cannot extend to length j with distinct values. The collision at positions i and j means at most j-1 consecutive values can be distinct before position j is reached.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1004-divisor-connection",
+    "proofId": "erdos-1004",
+    "range": { "startLine": 205, "endLine": 217 },
+    "type": "definition",
+    "title": "Connection to Problem #945",
+    "content": "Problem #945 asks the same question for the divisor function tau(n) = number of divisors. Can we find runs where tau(n+1), tau(n+2), ..., tau(n+K) are all distinct? The two problems are analogous and both remain open.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1004-birthday",
+    "proofId": "erdos-1004",
+    "range": { "startLine": 231, "endLine": 236 },
+    "type": "definition",
+    "title": "Birthday Heuristic",
+    "content": "The birthday paradox provides intuition: if there are ~V distinct totient values available, the probability of K consecutive values being distinct is roughly prod_{k=0}^{K-1}(1 - k/V). For V ~ n/log n, collisions become likely after ~sqrt(n/log n) terms.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1004-special-1",
+    "proofId": "erdos-1004",
+    "range": { "startLine": 252, "endLine": 254 },
+    "type": "theorem",
+    "title": "phi(n) = 1",
+    "content": "phi(n) = 1 if and only if n = 1 or n = 2. For n=1, the only number in [1,1] coprime to 1 is 1 itself. For n=2, only 1 is coprime to 2. No other n has phi(n) = 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1004-special-2",
+    "proofId": "erdos-1004",
+    "range": { "startLine": 256, "endLine": 258 },
+    "type": "theorem",
+    "title": "phi(n) = 2",
+    "content": "phi(n) = 2 if and only if n in {3, 4, 6}. These are the only numbers with exactly 2 integers coprime to them in [1,n]. The fact that 3 different numbers share phi=2 shows collisions are common for small totient values.",
+    "significance": "supporting"
+  }
+]

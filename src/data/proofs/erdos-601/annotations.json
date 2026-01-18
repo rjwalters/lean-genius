@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-601-ordgraph",
+    "proofId": "erdos-601",
+    "range": { "startLine": 36, "endLine": 37 },
+    "type": "definition",
+    "title": "OrdinalGraph",
+    "content": "A graph with vertex set α (an ordinal).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-601-infpath",
+    "proofId": "erdos-601",
+    "range": { "startLine": 39, "endLine": 41 },
+    "type": "definition",
+    "title": "HasInfinitePath",
+    "content": "Exists injective f : ℕ → V with f(n) ~ f(n+1).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-601-indep",
+    "proofId": "erdos-601",
+    "range": { "startLine": 43, "endLine": 45 },
+    "type": "definition",
+    "title": "IsIndependent",
+    "content": "No edges between any two vertices in S.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-601-ordertype",
+    "proofId": "erdos-601",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "definition",
+    "title": "HasOrderType",
+    "content": "S has order type β under induced ordering.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-601-propertyp",
+    "proofId": "erdos-601",
+    "range": { "startLine": 53, "endLine": 56 },
+    "type": "definition",
+    "title": "PropertyP",
+    "content": "Every graph on α has infinite path OR α-type independent set.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-601-finite",
+    "proofId": "erdos-601",
+    "range": { "startLine": 67, "endLine": 69 },
+    "type": "theorem",
+    "title": "P(n) Finite",
+    "content": "P holds trivially for finite ordinals.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-601-omega",
+    "proofId": "erdos-601",
+    "range": { "startLine": 79, "endLine": 81 },
+    "type": "theorem",
+    "title": "P(ω)",
+    "content": "P holds for ω via Ramsey's theorem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-601-critical",
+    "proofId": "erdos-601",
+    "range": { "startLine": 90, "endLine": 91 },
+    "type": "definition",
+    "title": "Critical Ordinal",
+    "content": "ω₁^{ω+2}: the frontier of knowledge.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-601-ehm",
+    "proofId": "erdos-601",
+    "range": { "startLine": 93, "endLine": 96 },
+    "type": "theorem",
+    "title": "Erdős-Hajnal-Milner",
+    "content": "P(α) holds for all α < ω₁^{ω+2} (1970).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-601-critconj",
+    "proofId": "erdos-601",
+    "range": { "startLine": 104, "endLine": 105 },
+    "type": "definition",
+    "title": "Critical Conjecture",
+    "content": "Does P(ω₁^{ω+2}) hold? $250 prize.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-601-ma",
+    "proofId": "erdos-601",
+    "range": { "startLine": 119, "endLine": 120 },
+    "type": "definition",
+    "title": "Martin's Axiom",
+    "content": "Set-theoretic axiom extending results.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-601-larson",
+    "proofId": "erdos-601",
+    "range": { "startLine": 125, "endLine": 128 },
+    "type": "theorem",
+    "title": "Larson (1990)",
+    "content": "Under MA, P(α) for α < 2^{ℵ₀}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-601-hierarchy",
+    "proofId": "erdos-601",
+    "range": { "startLine": 143, "endLine": 146 },
+    "type": "theorem",
+    "title": "Ordinal Hierarchy",
+    "content": "ω < ω₁ < ω₁^ω < ω₁^{ω+1} < ω₁^{ω+2}.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-601-indnum",
+    "proofId": "erdos-601",
+    "range": { "startLine": 168, "endLine": 170 },
+    "type": "definition",
+    "title": "Independence Number",
+    "content": "Maximum cardinality of independent set.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-601-transfinite",
+    "proofId": "erdos-601",
+    "range": { "startLine": 190, "endLine": 196 },
+    "type": "theorem",
+    "title": "Transfinite Induction",
+    "content": "Induction principle for ordinals.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-601-general",
+    "proofId": "erdos-601",
+    "range": { "startLine": 200, "endLine": 202 },
+    "type": "definition",
+    "title": "General Conjecture",
+    "content": "P(α) for all limit ordinals. $500 prize.",
+    "significance": "critical"
+  }
+]

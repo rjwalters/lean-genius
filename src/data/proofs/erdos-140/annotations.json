@@ -1,1 +1,236 @@
-[]
+[
+  {
+    "id": "ann-e140-header",
+    "proofId": "erdos-140",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #140**: Density of 3-AP-Free Sets\n\n**Question**: Prove r₃(N) ≪ N/(log N)^C for every C > 0.\n\n**Status**: SOLVED (Kelley-Meka 2023)\n**Prize**: $500\n\n**Answer**: YES. The Kelley-Meka theorem proves this is the best possible bound of this form.\n\nThis represents a major breakthrough in additive combinatorics.",
+    "mathContext": "r₃(N) is the maximum size of a subset of {1,...,N} with no 3-term arithmetic progression. The problem asks for near-optimal density bounds.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "3-AP-free",
+      "roth-number",
+      "kelley-meka"
+    ]
+  },
+  {
+    "id": "ann-e140-isap3",
+    "proofId": "erdos-140",
+    "range": {
+      "startLine": 35,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "3-Term Arithmetic Progressions",
+    "content": "**IsAP3 a b c**: 2b = a + c ∧ a < b < c\n\nThree values a, a+d, a+2d form a 3-AP when d ≠ 0.\n\n**Is3APFree A**: No three elements of A form a 3-AP.\n\n**Finset3APFree A**: Same for finite sets.\n\nExamples: {1,2,3} has a 3-AP. {1,2,4} is 3-AP-free.",
+    "mathContext": "The condition 2b = a + c is equivalent to b - a = c - b, meaning b is the arithmetic mean of a and c.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic-progression",
+      "ap-free",
+      "szemerédi"
+    ]
+  },
+  {
+    "id": "ann-e140-r3",
+    "proofId": "erdos-140",
+    "range": {
+      "startLine": 48,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "The Roth Number r₃(N)",
+    "content": "**r3 N** = max{ |A| : A ⊆ {0,...,N}, A is 3-AP-free }\n\nDefined as the supremum over all valid subsets.\n\n**theorem r3_achieved** ✓: The supremum is achieved by some finite set.\n\n**Proof**: The set of achievable cardinalities is nonempty (∅ works) and bounded by N+1, so the supremum exists and is achieved.",
+    "mathContext": "This is Roth's original quantity. Understanding r₃(N) is central to additive combinatorics and Ramsey theory.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "roth-number",
+      "supremum",
+      "extremal"
+    ]
+  },
+  {
+    "id": "ann-e140-roth",
+    "proofId": "erdos-140",
+    "range": {
+      "startLine": 81,
+      "endLine": 90
+    },
+    "type": "axiom",
+    "title": "Roth's Theorem (1953)",
+    "content": "**axiom roth_theorem**: r₃(N) = o(N)\n\nThe first non-trivial upper bound showing 3-AP-free sets have density 0.\n\n**Explicit bound**: r₃(N) ≤ C·N / log log N\n\nRoth won the Fields Medal in part for this work.",
+    "mathContext": "Roth used Fourier-analytic methods (circle method) to prove this. It showed that large 3-AP-free sets cannot exist.",
+    "significance": "key",
+    "relatedConcepts": [
+      "roth-1953",
+      "density-0",
+      "fourier-analysis"
+    ]
+  },
+  {
+    "id": "ann-e140-progress",
+    "proofId": "erdos-140",
+    "range": {
+      "startLine": 92,
+      "endLine": 110
+    },
+    "type": "axiom",
+    "title": "Historical Progress",
+    "content": "**Bourgain (2008)**: r₃(N) = O(N / √(log log N))\nImproved Roth using deeper Fourier analysis.\n\n**Sanders (2011)**: r₃(N) = O(N (log log N)⁵ / log N)\nFirst bound with log N in denominator!\n\n**Bloom-Sisask (2020)**: r₃(N) = O(N / (log N)^{1+c}) for some c > 0\nBreakthrough: power > 1 in log exponent.",
+    "mathContext": "Each improvement required new techniques. Sanders introduced nilsequences; Bloom-Sisask used entropy-based methods.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bourgain",
+      "sanders",
+      "bloom-sisask"
+    ]
+  },
+  {
+    "id": "ann-e140-kelley-meka",
+    "proofId": "erdos-140",
+    "range": {
+      "startLine": 114,
+      "endLine": 127
+    },
+    "type": "axiom",
+    "title": "Kelley-Meka Theorem (2023)",
+    "content": "**KelleyMekaTheorem**: ∀ C > 0, ∃ K > 0, ∀ N ≥ 3:\n  r₃(N) ≤ K·N / (log N)^C\n\n**axiom kelley_meka**: KelleyMekaTheorem\n\n**theorem erdos_140_solved** = kelley_meka\n\nThis resolves Erdős Problem #140 and the $500 prize!",
+    "mathContext": "Kelley-Meka's proof uses a novel approach combining spectral methods with graph theory. The paper appeared in 2023.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "kelley-meka-2023",
+      "main-theorem",
+      "resolved"
+    ]
+  },
+  {
+    "id": "ann-e140-corollaries",
+    "proofId": "erdos-140",
+    "range": {
+      "startLine": 131,
+      "endLine": 149
+    },
+    "type": "theorem",
+    "title": "Corollaries",
+    "content": "**theorem r3_superlogarithmic**: For all C > 0, ε > 0:\n  r₃(N) < ε·N / (log N)^C for large N\n\nApply Kelley-Meka with exponent C + 1.\n\n**theorem r3_density_vanishes**: r₃(N)·(log N)^C / N → 0\n\nThe density vanishes faster than any inverse power of log N.",
+    "mathContext": "These show Kelley-Meka is nearly optimal. The density cannot decay much faster due to Behrend's lower bound.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "corollary",
+      "density",
+      "asymptotics"
+    ]
+  },
+  {
+    "id": "ann-e140-behrend",
+    "proofId": "erdos-140",
+    "range": {
+      "startLine": 153,
+      "endLine": 161
+    },
+    "type": "axiom",
+    "title": "Behrend Lower Bound",
+    "content": "**axiom behrend_lower_bound**:\n  r₃(N) ≥ N · exp(-c · √(log N))\n\nThis is the best known LOWER bound (1946).\n\n**The Gap**:\n- Upper: O(N / (log N)^C) for all C\n- Lower: Ω(N / exp(c √log N))\n\nThe true order of r₃(N) remains unknown!",
+    "mathContext": "Behrend constructed 3-AP-free sets in a d-dimensional sphere. The gap between bounds is a major open problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "behrend-1946",
+      "lower-bound",
+      "gap"
+    ]
+  },
+  {
+    "id": "ann-e140-examples",
+    "proofId": "erdos-140",
+    "range": {
+      "startLine": 165,
+      "endLine": 182
+    },
+    "type": "theorem",
+    "title": "3-AP-Free Examples (Verified)",
+    "content": "**example** ✓: {0} is 3-AP-free (trivially)\n\n**example** ✓: {1, 2, 4, 5, 10, 11, 13, 14} is 3-AP-free\n\nThis is the first 8 elements of the greedy 3-AP-free sequence (OEIS A003278).\n\nVerified by case analysis with omega tactic.",
+    "mathContext": "The greedy sequence starts: 1, 2, 4, 5, 10, 11, 13, 14, 28, 29, ... It grows roughly like N^0.63.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "verified",
+      "A003278",
+      "greedy-sequence"
+    ]
+  },
+  {
+    "id": "ann-e140-greedy",
+    "proofId": "erdos-140",
+    "range": {
+      "startLine": 186,
+      "endLine": 195
+    },
+    "type": "definition",
+    "title": "Greedy 3-AP-Free Sequence",
+    "content": "**greedyAP3Free n**: The greedy sequence A003278\n\nStart with 1, then repeatedly add the smallest integer that doesn't create a 3-AP.\n\nYields: 1, 2, 4, 5, 10, 11, 13, 14, 28, 29, ...\n\n**axiom greedy_is_3APFree**: The greedy sequence is 3-AP-free.",
+    "mathContext": "The greedy sequence has been studied extensively. Its growth rate is approximately n^(log 2 / log 3) ≈ n^0.63.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "greedy",
+      "A003278",
+      "construction"
+    ]
+  },
+  {
+    "id": "ann-e140-generalization",
+    "proofId": "erdos-140",
+    "range": {
+      "startLine": 199,
+      "endLine": 218
+    },
+    "type": "definition",
+    "title": "k-term AP Generalization",
+    "content": "**IsAPk k vals**: k values form an arithmetic progression\n  vals(i) = a + i·d for some a, d with d ≠ 0\n\n**FinsetkAPFree k A**: No k elements of A form a k-AP\n\n**rk k N**: Maximum size of k-AP-free subset of {0,...,N}\n\n**ErdosAPConjecture**: For all k ≥ 3, C > 0:\n  r_k(N) = O(N / (log N)^C)\n\nThis is OPEN for k ≥ 4!",
+    "mathContext": "Szemerédi's theorem (1975) shows r_k(N) = o(N), but the quantitative bounds are much weaker for k ≥ 4.",
+    "significance": "key",
+    "relatedConcepts": [
+      "k-AP",
+      "generalization",
+      "szemerédi"
+    ]
+  },
+  {
+    "id": "ann-e140-k3-equiv",
+    "proofId": "erdos-140",
+    "range": {
+      "startLine": 220,
+      "endLine": 239
+    },
+    "type": "theorem",
+    "title": "k=3 Case (Verified)",
+    "content": "**theorem r3_eq_rk_3** ✓: r₃ N = r_k 3 N\n\nThe Roth number definitions are equivalent.\n\n**theorem erdos_ap_conjecture_k3** ✓:\nFor all C > 0, r_3(N) = O(N / (log N)^C)\n\nDirect application of Kelley-Meka to the generalized definition.",
+    "mathContext": "This shows Kelley-Meka resolves the k=3 case of Erdős's generalized conjecture. The k ≥ 4 cases remain open.",
+    "significance": "key",
+    "relatedConcepts": [
+      "verified",
+      "equivalence",
+      "k=3"
+    ]
+  },
+  {
+    "id": "ann-e140-summary",
+    "proofId": "erdos-140",
+    "range": {
+      "startLine": 241,
+      "endLine": 265
+    },
+    "type": "concept",
+    "title": "Summary and Status",
+    "content": "**Erdős Problem #140: SOLVED** (Kelley-Meka 2023)\n**Prize: $500**\n\n**Verified:**\n- r3_achieved ✓\n- Examples: {0}, {1,2,4,5,10,11,13,14} ✓\n- r3_eq_rk_3 ✓\n- erdos_ap_conjecture_k3 ✓\n\n**Timeline:**\n1953: Roth → 2008: Bourgain → 2011: Sanders → 2020: Bloom-Sisask → 2023: Kelley-Meka\n\n**OPEN**: True order of r₃(N), and k ≥ 4 cases.",
+    "mathContext": "The problem took 70 years from Roth's initial breakthrough to Kelley-Meka's resolution. The Behrend gap remains.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "problem-status",
+      "solved",
+      "timeline"
+    ]
+  }
+]

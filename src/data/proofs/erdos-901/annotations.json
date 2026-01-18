@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-901-hypergraph",
+    "proofId": "erdos-901",
+    "range": { "startLine": 39, "endLine": 46 },
+    "type": "definition",
+    "title": "Uniform Hypergraph",
+    "content": "An n-uniform hypergraph: a family of n-element subsets of a ground set. Every edge has exactly n vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-901-twocoloring",
+    "proofId": "erdos-901",
+    "range": { "startLine": 51, "endLine": 51 },
+    "type": "definition",
+    "title": "Two-Coloring",
+    "content": "A 2-coloring assigns each vertex to one of two colors (0 or 1).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-901-monochromatic",
+    "proofId": "erdos-901",
+    "range": { "startLine": 54, "endLine": 55 },
+    "type": "definition",
+    "title": "Monochromatic Edge",
+    "content": "An edge is monochromatic if all its vertices have the same color.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-901-propertyb",
+    "proofId": "erdos-901",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "definition",
+    "title": "Property B",
+    "content": "A hypergraph has Property B if there exists a 2-coloring with no monochromatic edge. Named after Bernstein.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-901-lacksb",
+    "proofId": "erdos-901",
+    "range": { "startLine": 63, "endLine": 65 },
+    "type": "definition",
+    "title": "Lacks Property B",
+    "content": "Every 2-coloring has at least one monochromatic edge. Equivalently, chromatic number ≥ 3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-901-m",
+    "proofId": "erdos-901",
+    "range": { "startLine": 76, "endLine": 78 },
+    "type": "definition",
+    "title": "Function m(n)",
+    "content": "m(n) = minimum edges in an n-uniform hypergraph without Property B. The central object of study.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-901-m2",
+    "proofId": "erdos-901",
+    "range": { "startLine": 91, "endLine": 92 },
+    "type": "theorem",
+    "title": "m(2) = 3",
+    "content": "Three edges on 4 vertices: the minimum 2-uniform hypergraph without Property B.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-901-m3",
+    "proofId": "erdos-901",
+    "range": { "startLine": 95, "endLine": 96 },
+    "type": "theorem",
+    "title": "m(3) = 7",
+    "content": "The Fano plane: the unique minimal 3-uniform hypergraph without Property B.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-901-m4",
+    "proofId": "erdos-901",
+    "range": { "startLine": 99, "endLine": 100 },
+    "type": "theorem",
+    "title": "m(4) = 23",
+    "content": "Found by computer search. The exact value for 4-uniform hypergraphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-901-erdoslower",
+    "proofId": "erdos-901",
+    "range": { "startLine": 105, "endLine": 106 },
+    "type": "theorem",
+    "title": "Erdős Lower Bound",
+    "content": "m(n) > 2^{n-1}. The original 1963-64 lower bound from the probabilistic method.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-901-beck",
+    "proofId": "erdos-901",
+    "range": { "startLine": 109, "endLine": 112 },
+    "type": "theorem",
+    "title": "Beck Lower Bound",
+    "content": "m(n) ≫ n^{1/3} · 2^n. Beck's 1977-78 improvement using the Local Lemma.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-901-rs",
+    "proofId": "erdos-901",
+    "range": { "startLine": 115, "endLine": 118 },
+    "type": "theorem",
+    "title": "Radhakrishnan-Srinivasan Bound",
+    "content": "m(n) ≫ √(n/log n) · 2^n. The best known lower bound (2000).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-901-upper",
+    "proofId": "erdos-901",
+    "range": { "startLine": 129, "endLine": 131 },
+    "type": "theorem",
+    "title": "Erdős Upper Bound",
+    "content": "m(n) < n² · 2^n. The 1963-64 upper bound, still essentially best known.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-901-conjecture",
+    "proofId": "erdos-901",
+    "range": { "startLine": 141, "endLine": 144 },
+    "type": "definition",
+    "title": "Erdős-Lovász Conjecture",
+    "content": "m(n) = Θ(n · 2^n). The gap between √(n/log n) and n in the coefficient is the main open question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-901-lll",
+    "proofId": "erdos-901",
+    "range": { "startLine": 171, "endLine": 175 },
+    "type": "theorem",
+    "title": "Lovász Local Lemma",
+    "content": "Sparse hypergraphs have Property B. If each edge shares vertices with few others, a good coloring exists.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-901-chromatic",
+    "proofId": "erdos-901",
+    "range": { "startLine": 197, "endLine": 200 },
+    "type": "theorem",
+    "title": "Property B and Chromatic Number",
+    "content": "Lacks Property B iff chromatic number ≥ 3. Connects 2-colorability to chromatic theory.",
+    "significance": "supporting"
+  }
+]

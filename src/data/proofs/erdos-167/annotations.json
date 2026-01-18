@@ -1,1 +1,236 @@
-[]
+[
+  {
+    "id": "ann-e167-header",
+    "proofId": "erdos-167",
+    "range": {
+      "startLine": 1,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #167**: Tuza's Conjecture on Triangle Covering\n\n**Statement**: If G has at most k edge-disjoint triangles, can G be made triangle-free by removing ≤ 2k edges?\n\n**Status**: PARTIALLY SOLVED\n\n**Aristotle verified**:\n- `trivial_bound`: τ(G) ≤ 3ν(G) ✓\n- `k4_tight`: K₄ shows 2k is tight ✓\n- `k5_tight`: K₅ shows 2k is tight ✓",
+    "mathContext": "Tuza's Conjecture (1981) relates triangle packing (ν) and covering (τ). The conjecture τ ≤ 2ν is sharp if true.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "tuza-conjecture",
+      "triangle-covering",
+      "triangle-packing"
+    ]
+  },
+  {
+    "id": "ann-e167-triangle",
+    "proofId": "erdos-167",
+    "range": {
+      "startLine": 56,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Triangles in Graphs",
+    "content": "**IsTriangle G a b c**: Three vertices forming K₃\n- a ≠ b ≠ c ≠ a (all distinct)\n- G.Adj a b ∧ G.Adj b c ∧ G.Adj a c (all edges present)\n\n**Triangles G**: Set of all triangles as unordered 3-element sets.",
+    "mathContext": "We represent triangles as subtypes {s : Finset V // s.card = 3} for efficient manipulation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangle",
+      "K3",
+      "clique"
+    ]
+  },
+  {
+    "id": "ann-e167-edge-disjoint",
+    "proofId": "erdos-167",
+    "range": {
+      "startLine": 64,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "Edge-Disjoint Triangles and ν(G)",
+    "content": "**EdgeDisjoint G t₁ t₂**: Triangles t₁ and t₂ share no edges.\n\n**maxEdgeDisjointTriangles G** = ν(G): Maximum size of a set of pairwise edge-disjoint triangles.\n\nDefined as sSup over all valid packings.",
+    "mathContext": "ν(G) is the triangle packing number. Finding it is NP-hard in general, but we axiomatize its properties.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "packing",
+      "edge-disjoint",
+      "nu-G"
+    ]
+  },
+  {
+    "id": "ann-e167-cover",
+    "proofId": "erdos-167",
+    "range": {
+      "startLine": 78,
+      "endLine": 84
+    },
+    "type": "definition",
+    "title": "Triangle Covering and τ(G)",
+    "content": "**IsTriangleCover G E**: Removing edges E makes G triangle-free.\nG.deleteEdges E has no triangles.\n\n**triangleCoverNumber G** = τ(G): Minimum size of a triangle cover.\n\nDefined as sInf over all valid covers.",
+    "mathContext": "τ(G) is the triangle cover number. Tuza's conjecture relates τ to ν: τ ≤ 2ν.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "covering",
+      "delete-edges",
+      "tau-G"
+    ]
+  },
+  {
+    "id": "ann-e167-tuza",
+    "proofId": "erdos-167",
+    "range": {
+      "startLine": 88,
+      "endLine": 93
+    },
+    "type": "definition",
+    "title": "Tuza's Conjecture (1981)",
+    "content": "**TuzaConjecture**: For all graphs G,\nτ(G) ≤ 2 · ν(G)\n\n**Interpretation**: If G has at most k edge-disjoint triangles, then 2k edges suffice to destroy all triangles.\n\nThis is open in general but known for special graph classes.",
+    "mathContext": "The factor 2 is sharp: K₄ and K₅ show equality is achieved. The trivial bound is 3.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "tuza-1981",
+      "conjecture",
+      "open-problem"
+    ]
+  },
+  {
+    "id": "ann-e167-exists-packing",
+    "proofId": "erdos-167",
+    "range": {
+      "startLine": 104,
+      "endLine": 121
+    },
+    "type": "theorem",
+    "title": "Maximum Packing Exists (Aristotle)",
+    "content": "**theorem exists_max_packing** ✓ (Aristotle)\n\n∃ T : Finset of triangles with:\n- T.card = maxEdgeDisjointTriangles G\n- All t ∈ T are triangles in G\n- Any two distinct t₁, t₂ ∈ T are edge-disjoint\n\n**Proof**: Uses Set.exists_max_image on the finite type of possible packings.",
+    "mathContext": "This lemma is needed to construct the cover in the trivial bound proof. The key is that the set of possible packings is finite and bounded.",
+    "significance": "key",
+    "relatedConcepts": [
+      "aristotle",
+      "maximum",
+      "existence"
+    ]
+  },
+  {
+    "id": "ann-e167-trivial",
+    "proofId": "erdos-167",
+    "range": {
+      "startLine": 125,
+      "endLine": 174
+    },
+    "type": "theorem",
+    "title": "Trivial Bound τ ≤ 3ν (Aristotle)",
+    "content": "**theorem trivial_bound** ✓ (Aristotle)\n\ntriangleCoverNumber G ≤ 3 * maxEdgeDisjointTriangles G\n\n**Proof strategy**:\n1. Get maximum packing T with |T| = ν(G)\n2. Construct E = all edges from triangles in T\n3. Show E is a triangle cover (maximality of T)\n4. Count: |E| ≤ 3|T| = 3ν(G)\n\nThe key insight: if a triangle survives, it's edge-disjoint from T, contradicting maximality.",
+    "mathContext": "This is a sophisticated 50-line proof verified by Aristotle. It uses Finset.biUnion, offDiag, and careful case analysis.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "aristotle",
+      "trivial-bound",
+      "verified"
+    ]
+  },
+  {
+    "id": "ann-e167-k4",
+    "proofId": "erdos-167",
+    "range": {
+      "startLine": 178,
+      "endLine": 203
+    },
+    "type": "theorem",
+    "title": "K₄ Shows 2k is Tight (Aristotle)",
+    "content": "**theorem k4_tight** ✓ (Aristotle)\n\n∃ G : SimpleGraph (Fin 4) with:\n- ν(G) = 1 (one edge-disjoint triangle)\n- τ(G) = 2 (need 2 edges to cover)\n\n**Proof**: G = K₄ (complete graph on 4 vertices)\n- K₄ has 4 triangles, any two share an edge → ν = 1\n- Any single edge is in exactly 2 triangles → τ = 2\n\nUses `native_decide` for finite verification.",
+    "mathContext": "K₄ achieves τ = 2ν exactly. This shows Tuza's conjecture, if true, is best possible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "aristotle",
+      "K4",
+      "tight-example"
+    ]
+  },
+  {
+    "id": "ann-e167-k5",
+    "proofId": "erdos-167",
+    "range": {
+      "startLine": 205,
+      "endLine": 238
+    },
+    "type": "theorem",
+    "title": "K₅ Shows 2k is Tight (Aristotle)",
+    "content": "**theorem k5_tight** ✓ (Aristotle)\n\n∃ G : SimpleGraph (Fin 5) with:\n- ν(G) = 2 (two edge-disjoint triangles)\n- τ(G) = 4 (need 4 edges to cover)\n\n**Proof**: G = K₅ (complete graph on 5 vertices)\n- K₅ has 10 triangles; max 2 can be edge-disjoint\n- Need 4 edges to hit all triangles\n\nAgain uses `native_decide` for exhaustive verification.",
+    "mathContext": "K₅ also achieves τ = 2ν. The proof is more complex due to the larger graph, requiring finite case analysis.",
+    "significance": "key",
+    "relatedConcepts": [
+      "aristotle",
+      "K5",
+      "tight-example"
+    ]
+  },
+  {
+    "id": "ann-e167-haxell",
+    "proofId": "erdos-167",
+    "range": {
+      "startLine": 240,
+      "endLine": 243
+    },
+    "type": "axiom",
+    "title": "Haxell-Kohayakawa Bound (1998)",
+    "content": "**axiom haxell_kohayakawa**:\n\nτ(G) ≤ (3 - 3/23) · ν(G) ≈ 2.87ν(G)\n\nThis is the best known general bound, improving on the trivial 3ν.\n\nThe coefficient 3 - 3/23 ≈ 2.8696 is far from the conjectured 2.",
+    "mathContext": "The gap between 2.87 and 2 represents the current state of the conjecture. Closing this gap is a major open problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "haxell",
+      "kohayakawa",
+      "best-bound"
+    ]
+  },
+  {
+    "id": "ann-e167-special",
+    "proofId": "erdos-167",
+    "range": {
+      "startLine": 245,
+      "endLine": 252
+    },
+    "type": "axiom",
+    "title": "Special Graph Classes",
+    "content": "**axiom tuza_for_k4_free**: Tuza holds for K₄-free graphs.\nIf G has no K₄ subgraph, then τ(G) ≤ 2ν(G).\n\n**axiom tuza_for_planar**: Tuza holds for planar graphs.\n\nThese special cases are proven, showing the conjecture holds for restricted graph families.",
+    "mathContext": "K₄-free graphs avoid the tight example K₄. Planar graphs have bounded density which helps control triangle structure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "special-cases",
+      "K4-free",
+      "planar"
+    ]
+  },
+  {
+    "id": "ann-e167-fractional",
+    "proofId": "erdos-167",
+    "range": {
+      "startLine": 256,
+      "endLine": 259
+    },
+    "type": "axiom",
+    "title": "Fractional Version is True",
+    "content": "**axiom fractional_tuza**: The fractional relaxation of Tuza's conjecture IS true.\n\nτ*(G) ≤ 2 · ν*(G)\n\nwhere τ* and ν* are the fractional (LP relaxation) versions.\n\nThis shows the integral conjecture would follow from rounding guarantees.",
+    "mathContext": "Fractional versions allow assigning weights in [0,1] instead of {0,1}. LP duality often makes these easier to prove.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "fractional",
+      "LP-relaxation",
+      "proven"
+    ]
+  },
+  {
+    "id": "ann-e167-summary",
+    "proofId": "erdos-167",
+    "range": {
+      "startLine": 263,
+      "endLine": 284
+    },
+    "type": "concept",
+    "title": "Summary and Status",
+    "content": "**Erdős Problem #167: PARTIALLY SOLVED**\n\n**Aristotle verified** (3 theorems):\n- trivial_bound: τ ≤ 3ν ✓\n- k4_tight: K₄ achieves τ = 2ν ✓\n- k5_tight: K₅ achieves τ = 2ν ✓\n\n**Known bounds**:\n- Trivial: τ ≤ 3ν\n- Best general: τ ≤ 2.87ν (Haxell-Kohayakawa)\n- Conjectured: τ ≤ 2ν (open)\n\n**Special cases proven**: K₄-free, planar, random graphs\n\n**Fractional version**: TRUE",
+    "mathContext": "This is one of the most important open problems in extremal graph theory. The gap between 2.87 and 2 has resisted improvement for decades.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "problem-status",
+      "partially-solved",
+      "aristotle"
+    ]
+  }
+]

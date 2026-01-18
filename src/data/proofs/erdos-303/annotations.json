@@ -1,1 +1,112 @@
-[]
+[
+  {
+    "id": "ann-e303-header",
+    "proofId": "erdos-303",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "concept",
+    "title": "Problem Statement and History",
+    "content": "**Erdős Problem #303** asks a beautiful Ramsey-theoretic question about unit fractions: if you colour every integer with one of finitely many colours, must there exist three integers a, b, c of the *same colour* satisfying 1/a = 1/b + 1/c?\n\nThis equation, sometimes called the **Egyptian fraction equation**, has ancient roots - Egyptians preferred writing fractions as sums of unit fractions (fractions with numerator 1).",
+    "mathContext": "Brown and Rödl proved the answer is YES in 1991. No matter how you partition the integers into finitely many colour classes, some class contains a solution triple. This is a **partition regularity** result in Ramsey theory.",
+    "significance": "critical",
+    "relatedConcepts": ["ramsey-theory", "unit-fractions", "egyptian-fractions", "partition-regularity"]
+  },
+  {
+    "id": "ann-e303-imports",
+    "proofId": "erdos-303",
+    "range": { "startLine": 26, "endLine": 30 },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "We import **Mathlib** for the foundational mathematics. The `open Set` command brings set operations into scope, which we use for defining finite colourings via `Set.range` (the image of a function).",
+    "mathContext": "The key Mathlib dependencies are `Set.range` for function images, `Set.Finite` for finiteness, and `List.Nodup` for distinctness conditions.",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "set-theory", "imports"]
+  },
+  {
+    "id": "ann-e303-equation",
+    "proofId": "erdos-303",
+    "range": { "startLine": 32, "endLine": 53 },
+    "type": "definition",
+    "title": "The Unit Fraction Equation",
+    "content": "**UnitFractionEq a b c** defines the equation 1/a = 1/b + 1/c as a relation on integers. We work with real-valued division to avoid integer arithmetic issues.\n\n**UnitFractionEqAlt** provides an equivalent algebraic form: bc = a(b+c). This is obtained by multiplying the original equation by abc.",
+    "mathContext": "The equivalence: 1/a = 1/b + 1/c ⟺ bc/abc = (ac + ab)/abc ⟺ bc = a(c + b).\n\nThe algebraic form bc = a(b+c) is often easier to work with since it avoids division. For instance, (2, 3, 6) satisfies it: 3·6 = 18 = 2·(3+6) = 2·9 = 18. ✓",
+    "significance": "critical",
+    "relatedConcepts": ["unit-fractions", "algebraic-identity", "rational-equations"]
+  },
+  {
+    "id": "ann-e303-examples",
+    "proofId": "erdos-303",
+    "range": { "startLine": 55, "endLine": 82 },
+    "type": "theorem",
+    "title": "Verified Examples",
+    "content": "We prove four concrete examples using `norm_num`:\n\n• **1/2 = 1/3 + 1/6**: The classic example (2, 3, 6)\n• **1/3 = 1/4 + 1/12**: Triple (3, 4, 12)\n• **1/4 = 1/5 + 1/20**: Triple (4, 5, 20)\n• **1/6 = 1/7 + 1/42**: Triple (6, 7, 42)\n\nThese follow a pattern: for n ≥ 2, (n, n+1, n(n+1)) is always a solution.",
+    "mathContext": "Verification for 1/2 = 1/3 + 1/6: We have 1/3 + 1/6 = 2/6 + 1/6 = 3/6 = 1/2. ✓\n\nThe `norm_num` tactic performs exact arithmetic verification, confirming these numerical equalities.",
+    "significance": "supporting",
+    "relatedConcepts": ["norm_num", "examples", "verification"]
+  },
+  {
+    "id": "ann-e303-colouring",
+    "proofId": "erdos-303",
+    "range": { "startLine": 84, "endLine": 106 },
+    "type": "definition",
+    "title": "Finite Colourings and Monochromaticity",
+    "content": "**IsFiniteColouring 𝓒** means the colouring function 𝓒 : ℤ → α uses only finitely many colours. Formally: the range (set of colours actually used) is finite.\n\n**Monochromatic 𝓒 a b c** means all three integers have the same colour: 𝓒(a) = 𝓒(b) = 𝓒(c).\n\n**MonochromaticAlt** provides an equivalent definition: the image 𝓒({a,b,c}) is a singleton set.",
+    "mathContext": "In Ramsey theory, we often ask: given any finite colouring, must some colour class contain a specific structure (here, a unit fraction triple)?\n\nThe equivalence of the two monochromatic definitions follows from: all elements equal ⟺ the set of values has at most one element.",
+    "significance": "critical",
+    "relatedConcepts": ["finite-colouring", "monochromatic", "ramsey-theory", "partition"]
+  },
+  {
+    "id": "ann-e303-valid",
+    "proofId": "erdos-303",
+    "range": { "startLine": 108, "endLine": 117 },
+    "type": "definition",
+    "title": "Valid Solutions",
+    "content": "**ValidSolution a b c** bundles all requirements for a proper solution:\n\n1. **Nonzero**: a ≠ 0, b ≠ 0, c ≠ 0 (division by zero is undefined)\n2. **Distinct**: a ≠ b, b ≠ c, a ≠ c (we want three different integers)\n3. **Equation**: 1/a = 1/b + 1/c holds",
+    "mathContext": "The distinctness requirement rules out trivial solutions like a = b = c (which would require 1/a = 2/a, impossible for nonzero a).\n\nSome formulations allow b = c; this would give 1/a = 2/b, so a = b/2.",
+    "significance": "supporting",
+    "relatedConcepts": ["solution", "distinctness", "nonzero"]
+  },
+  {
+    "id": "ann-e303-theorem",
+    "proofId": "erdos-303",
+    "range": { "startLine": 119, "endLine": 138 },
+    "type": "axiom",
+    "title": "Brown-Rödl Theorem (SOLVED)",
+    "content": "**brownRodl_theorem** states the main result as an axiom:\n\n*For any finite colouring 𝓒 of the integers, there exist distinct nonzero integers a, b, c satisfying 1/a = 1/b + 1/c such that 𝓒(a) = 𝓒(b) = 𝓒(c).*\n\nThis was proved by Brown and Rödl in 1991 using Ramsey-theoretic methods.",
+    "mathContext": "The full proof uses sophisticated arguments from Ramsey theory, potentially involving van der Waerden-type results or density methods. It's stated as an axiom because the proof exceeds what we formalize here.\n\nThe alternative statement **erdos303Statement** matches the formal-conjectures format using `List.Nodup` and `Set.Subsingleton`.",
+    "significance": "critical",
+    "relatedConcepts": ["axiom", "brown-rodl", "ramsey-theorem", "partition-regularity"]
+  },
+  {
+    "id": "ann-e303-infinite",
+    "proofId": "erdos-303",
+    "range": { "startLine": 140, "endLine": 164 },
+    "type": "theorem",
+    "title": "Infinite Family of Solutions",
+    "content": "**infinitely_many_solutions** proves that for any n ≥ 2:\n\n**1/n = 1/(n+1) + 1/(n(n+1))**\n\nVerification: 1/(n+1) + 1/(n(n+1)) = n/(n(n+1)) + 1/(n(n+1)) = (n+1)/(n(n+1)) = 1/n ✓\n\nThis gives infinitely many distinct solutions, crucial for the Ramsey argument.",
+    "mathContext": "This identity is the key to the Brown-Rödl proof sketch:\n\n1. There are infinitely many solutions (n, n+1, n(n+1)) for n = 2, 3, 4, ...\n2. In any k-colouring, by pigeonhole, infinitely many share a colour\n3. A Ramsey argument then finds a monochromatic triple\n\nThe proof that these triples are distinct (n ≠ n+1 ≠ n(n+1)) uses basic algebra.",
+    "significance": "critical",
+    "relatedConcepts": ["infinite-family", "pigeonhole", "algebraic-identity"]
+  },
+  {
+    "id": "ann-e303-distinct",
+    "proofId": "erdos-303",
+    "range": { "startLine": 166, "endLine": 189 },
+    "type": "theorem",
+    "title": "Solution Distinctness",
+    "content": "**solution_distinct** proves that for n ≥ 2, the triple (n, n+1, n(n+1)) has three distinct values:\n\n• n ≠ n+1 (obvious: consecutive integers differ)\n• n+1 ≠ n(n+1): If equal, n(n+1) - (n+1) = (n-1)(n+1) = 0, so n = 1. But n ≥ 2.\n• n ≠ n(n+1): If equal, n·n = 0, so n = 0. But n ≥ 2.",
+    "mathContext": "The proofs use `omega` for simple inequalities and explicit algebraic manipulation. The case n+1 = n(n+1) reduces to showing n ≠ 1, and n = n(n+1) reduces to showing n ≠ 0.",
+    "significance": "supporting",
+    "relatedConcepts": ["distinctness", "omega", "algebraic-proof"]
+  },
+  {
+    "id": "ann-e303-density",
+    "proofId": "erdos-303",
+    "range": { "startLine": 190, "endLine": 222 },
+    "type": "concept",
+    "title": "Connection to Density Version",
+    "content": "**Erdős Problem #302** asks the *density version*: does every set A ⊆ ℤ with positive upper density contain a solution to 1/a = 1/b + 1/c?\n\nThis is the density analog of the colouring version (Problem #303). By Furstenberg's correspondence principle, density results often imply colouring results.\n\nThe comments also list the pattern: (2,3,6), (3,4,12), (4,5,20), (5,6,30), (6,7,42), etc.",
+    "mathContext": "The density version would state: if A has positive upper density d (meaning lim sup |A ∩ [-N,N]|/(2N+1) ≥ d > 0), then A contains a unit fraction triple.\n\nDensity → Colouring: If every dense set contains the pattern, then by partitioning ℤ into k colours, at least one colour class has density ≥ 1/k > 0, so it contains the pattern.",
+    "significance": "supporting",
+    "relatedConcepts": ["density", "erdos-302", "furstenberg-correspondence", "ramsey-density"]
+  }
+]

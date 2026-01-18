@@ -1,34 +1,133 @@
 {
   "id": "erdos-601",
-  "title": "Erdős Problem #601",
+  "title": "Erdős #601: Infinite Paths and Independent Sets in Ordinal Graphs",
   "slug": "erdos-601",
-  "description": "For which limit ordinals &#x03B1;\" role=\"presentation\" style=\"position: relative;\">αα\\alpha is it true that if G\" role=\"presentation\" style=\"position: relative;\">GGG is a graph with vertex set &#x0...",
+  "description": "For which limit ordinals α must every graph on α have infinite path OR independent set of order type α? Known for α < ω₁^{ω+2}. Prize: $500.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, András Hajnal, Eric Milner, Jean Larson",
     "sourceUrl": "https://erdosproblems.com/601",
-    "date": "",
-    "status": "pending",
+    "date": "1970",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos601Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "set-theory",
+      "ordinals"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 18,
     "erdosNumber": 601,
     "erdosUrl": "https://erdosproblems.com/601",
-    "erdosProblemStatus": "solved",
+    "erdosProblemStatus": "open",
     "erdosPrizeValue": "$500"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #601 from erdosproblems.com. Originally offered with a prize of $500.",
-    "problemStatement": "For which limit ordinals &#x03B1;\" role=\"presentation\" style=\"position: relative;\">αα\\alpha is it true that if G\" role=\"presentation\" style=\"position: relative;\">GGG is a graph with vertex set &#x03B1;\" role=\"presentation\" style=\"position: relative;\">αα\\alpha then G\" role=\"presentation\" style=\"position: relative;\">GGG must have either an infinite path or independent set on a set of vertices with order type &#x03B1;\" role=\"presentation\" style=\"position: relative;\">αα\\alpha?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős, Hajnal, and Milner (1970) established that P(α) holds for all α < ω₁^{ω+2}. Larson (1990) extended this to α < 2^{ℵ₀} under Martin's Axiom. The critical case α = ω₁^{ω+2} and the general conjecture remain open with prize money offered.",
+    "problemStatement": "For which limit ordinals α is it true that if G is a graph with vertex set α, then G must have either an infinite path or an independent set on a set of vertices with order type α?",
+    "proofStrategy": "We formalize ordinal graphs, infinite paths, independent sets with order types, the property P(α), Erdős-Hajnal-Milner theorem, the critical ordinal ω₁^{ω+2}, Martin's Axiom and Larson's result, ordinal arithmetic, graph-theoretic tools, and the general conjecture.",
+    "keyInsights": [
+      "P(α) holds for α < ω₁^{ω+2} (Erdős-Hajnal-Milner 1970)",
+      "P(α) holds for α < 2^{ℵ₀} under Martin's Axiom (Larson 1990)",
+      "The critical case α = ω₁^{ω+2} is open ($250)",
+      "The general conjecture is open ($500)",
+      "Connects graph theory with ordinal arithmetic and set theory"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-defs",
+      "title": "Basic Definitions",
+      "summary": "Ordinal graphs, infinite paths, independent sets",
+      "startLine": 34,
+      "endLine": 49
+    },
+    {
+      "id": "property-p",
+      "title": "The Property P(α)",
+      "summary": "Definition and equivalent formulations",
+      "startLine": 51,
+      "endLine": 63
+    },
+    {
+      "id": "finite",
+      "title": "Finite Ordinals",
+      "summary": "P(n) holds trivially",
+      "startLine": 65,
+      "endLine": 75
+    },
+    {
+      "id": "omega",
+      "title": "The First Infinite Ordinal",
+      "summary": "P(ω) via Ramsey's theorem",
+      "startLine": 77,
+      "endLine": 86
+    },
+    {
+      "id": "ehm",
+      "title": "Erdős-Hajnal-Milner Theorem",
+      "summary": "P(α) for α < ω₁^{ω+2}",
+      "startLine": 88,
+      "endLine": 100
+    },
+    {
+      "id": "critical",
+      "title": "The Critical Case",
+      "summary": "α = ω₁^{ω+2} is open ($250)",
+      "startLine": 102,
+      "endLine": 115
+    },
+    {
+      "id": "martins-axiom",
+      "title": "Martin's Axiom",
+      "summary": "Larson: P(α) for α < 2^{ℵ₀} under MA",
+      "startLine": 117,
+      "endLine": 133
+    },
+    {
+      "id": "ordinal-arithmetic",
+      "title": "Ordinal Arithmetic",
+      "summary": "The hierarchy approaching the critical point",
+      "startLine": 135,
+      "endLine": 150
+    },
+    {
+      "id": "graph-tools",
+      "title": "Graph-Theoretic Tools",
+      "summary": "König's lemma and Ramsey theory",
+      "startLine": 152,
+      "endLine": 164
+    },
+    {
+      "id": "independence",
+      "title": "Independence Number",
+      "summary": "Failure conditions",
+      "startLine": 166,
+      "endLine": 176
+    },
+    {
+      "id": "structural",
+      "title": "Structural Results",
+      "summary": "Bounded paths and transfinite induction",
+      "startLine": 178,
+      "endLine": 196
+    },
+    {
+      "id": "general",
+      "title": "The General Conjecture",
+      "summary": "P(α) for all limit ordinals ($500)",
+      "startLine": 198,
+      "endLine": 219
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #601 on the dichotomy between infinite paths and large independent sets in ordinal graphs. The property P(α) is known for α < ω₁^{ω+2}, with extensions under Martin's Axiom. The general case remains open with $500 prize.",
+    "implications": "The problem lies at the intersection of graph theory, set theory, and ordinal arithmetic. Resolution would illuminate the structure of infinite graphs and the role of set-theoretic axioms in combinatorics.",
+    "openQuestions": [
+      "Does P(ω₁^{ω+2}) hold? ($250)",
+      "Does P(α) hold for all limit ordinals α? ($500)",
+      "What happens for singular cardinals?",
+      "Is the answer independent of ZFC?"
+    ]
   }
 }

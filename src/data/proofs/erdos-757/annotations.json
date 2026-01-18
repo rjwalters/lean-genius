@@ -1,1 +1,222 @@
-[]
+[
+  {
+    "id": "ann-e757-header",
+    "proofId": "erdos-757",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #757** asks for the best constant c such that almost-Sidon sets must contain Sidon subsets of linear size.\n\nAn **almost-Sidon set** A has the property that every 4-element subset B satisfies |B - B| ≥ 11. For comparison, a true Sidon set of size 4 has |B - B| = 13.\n\n**Known Bounds** (Gyárfás-Lehel 1995):\n- 1/2 < c < 3/5\n\nThe exact value of c is OPEN.",
+    "mathContext": "The condition |B - B| ≥ 11 means at most one 'collision' among differences—a minimal relaxation of the Sidon property.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Sidon sets",
+      "difference sets",
+      "additive combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e757-sidon-def",
+    "proofId": "erdos-757",
+    "range": {
+      "startLine": 35,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "Sidon Set Definition",
+    "content": "**IsSidon S** means: if a + b = c + d for elements in S, then {a, b} = {c, d}.\n\nThis captures the property that all pairwise sums are distinct. Equivalently, all non-zero differences are distinct.\n\nSidon sets are also called **B₂ sequences** in additive combinatorics.",
+    "mathContext": "Named after Simon Sidon, who studied such sets in the context of Fourier analysis.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "B₂ sequences",
+      "sum-free sets",
+      "distinct sums"
+    ]
+  },
+  {
+    "id": "ann-e757-almost-sidon",
+    "proofId": "erdos-757",
+    "range": {
+      "startLine": 54,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Almost-Sidon Property",
+    "content": "**AlmostSidon A** means: every 4-element subset B ⊆ A has |B - B| ≥ 11.\n\nSince a 4-element Sidon set has |B - B| = 13 (0 plus 12 distinct ±differences), requiring ≥ 11 allows at most one collision among differences.\n\nThis is a 'local' condition—each 4-element subset is nearly Sidon.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "difference set cardinality",
+      "local-to-global"
+    ]
+  },
+  {
+    "id": "ann-e757-admissible",
+    "proofId": "erdos-757",
+    "range": {
+      "startLine": 59,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Admissible Constants",
+    "content": "**IsAdmissible c** means: every finite almost-Sidon set A contains a Sidon subset S with |S| ≥ c|A|.\n\nThe problem asks for sup{c : IsAdmissible c}—the best guaranteed linear fraction of a Sidon subset.",
+    "mathContext": "The supremum exists because c = 0 is admissible and c ≤ 1 (can't have more than 100%).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "extremal constants",
+      "guaranteed subsets"
+    ]
+  },
+  {
+    "id": "ann-e757-conjecture",
+    "proofId": "erdos-757",
+    "range": {
+      "startLine": 71,
+      "endLine": 77
+    },
+    "type": "axiom",
+    "title": "Main Conjecture (OPEN)",
+    "content": "**Erdős Problem #757**: Find the exact value of sSup {c | IsAdmissible c}.\n\nThe conjecture asserts this supremum exists in the interval (1/2, 3/5). The exact value is OPEN despite 30+ years of study.\n\nNote: This is stated as an axiom because the problem remains unsolved—we assume the answer exists without proving it.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open problem",
+      "supremum",
+      "extremal combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e757-lower-bound",
+    "proofId": "erdos-757",
+    "range": {
+      "startLine": 83,
+      "endLine": 88
+    },
+    "type": "axiom",
+    "title": "Lower Bound (Gyárfás-Lehel 1995)",
+    "content": "**gyarfas_lehel_lower_bound**: 1/2 < sSup {c | IsAdmissible c}.\n\nThe proof uses a **greedy algorithm**: repeatedly add elements that don't create sum collisions. In almost-Sidon sets, this produces Sidon subsets of size > n/2.\n\nThis improves the earlier Erdős-Sós bound of c ≥ 1/2.",
+    "mathContext": "The greedy approach exploits the fact that few collisions exist locally.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "greedy algorithms",
+      "constructive bounds"
+    ]
+  },
+  {
+    "id": "ann-e757-upper-bound",
+    "proofId": "erdos-757",
+    "range": {
+      "startLine": 90,
+      "endLine": 96
+    },
+    "type": "axiom",
+    "title": "Upper Bound (Gyárfás-Lehel 1995)",
+    "content": "**gyarfas_lehel_upper_bound**: sSup {c | IsAdmissible c} < 3/5.\n\nThe proof exhibits a **counterexample family**: the first n **Fibonacci numbers** form an almost-Sidon set whose largest Sidon subset has size just under 3n/5.\n\nThe Fibonacci structure creates specific difference patterns that limit Sidon subsets.",
+    "mathContext": "Fibonacci numbers: 1, 1, 2, 3, 5, 8, 13, ... where F_{n+2} = F_{n+1} + F_n.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Fibonacci sequence",
+      "counterexamples",
+      "upper bounds"
+    ]
+  },
+  {
+    "id": "ann-e757-difference-count",
+    "proofId": "erdos-757",
+    "range": {
+      "startLine": 102,
+      "endLine": 111
+    },
+    "type": "axiom",
+    "title": "Difference Set Cardinality",
+    "content": "**sidon_difference_count**: A Sidon set of size n has |S - S| = n(n-1)/2 + n + 1.\n\n**sidon_4_difference_count**: For n = 4, a Sidon set has |S - S| = 13.\n\nA 4-element set has C(4,2) = 6 pairs. Each gives a distinct positive difference (and its negative), plus 0. So 12 non-zero values plus 0 = 13 total.",
+    "significance": "key",
+    "relatedConcepts": [
+      "difference set structure",
+      "counting arguments"
+    ]
+  },
+  {
+    "id": "ann-e757-sidon-properties",
+    "proofId": "erdos-757",
+    "range": {
+      "startLine": 113,
+      "endLine": 130
+    },
+    "type": "theorem",
+    "title": "Basic Sidon Properties",
+    "content": "**sidon_subset**: Any subset of a Sidon set is Sidon.\n\n**sidon_empty**: The empty set is Sidon (vacuously true).\n\n**sidon_singleton**: Singletons {x} are Sidon (only x + x = 2x possible).\n\n**sidon_pair**: Pairs {x, y} with x ≠ y are Sidon.\n\nThese provide base cases for inductive arguments.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "closure properties",
+      "base cases"
+    ]
+  },
+  {
+    "id": "ann-e757-difference-sets",
+    "proofId": "erdos-757",
+    "range": {
+      "startLine": 136,
+      "endLine": 147
+    },
+    "type": "theorem",
+    "title": "Difference Set Properties",
+    "content": "**zero_mem_differenceSet**: For nonempty A, 0 ∈ A - A (since a - a = 0).\n\n**differenceSet_symmetric**: x ∈ A - A ↔ -x ∈ A - A (since a - b = x implies b - a = -x).\n\nThese structural properties hold for any set, not just Sidon sets.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "symmetry",
+      "difference set structure"
+    ]
+  },
+  {
+    "id": "ann-e757-condition-bounds",
+    "proofId": "erdos-757",
+    "range": {
+      "startLine": 156,
+      "endLine": 163
+    },
+    "type": "axiom",
+    "title": "Bounds on |B - B| for 4-Sets",
+    "content": "**max_difference_4**: For any 4-element set B, |B - B| ≤ 13 (Sidon case is maximum).\n\n**min_difference_4**: For any 4-element set B, |B - B| ≥ 7.\n\nThe minimum 7 occurs for **arithmetic progressions** {a, a+d, a+2d, a+3d}:\n- Differences are 0, ±d, ±2d, ±3d (7 values)\n\nSo |B - B| ranges from 7 to 13 for 4-element sets.",
+    "mathContext": "The condition |B - B| ≥ 11 excludes severely non-Sidon configurations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic progressions",
+      "extremal configurations"
+    ]
+  },
+  {
+    "id": "ann-e757-admissible-props",
+    "proofId": "erdos-757",
+    "range": {
+      "startLine": 177,
+      "endLine": 206
+    },
+    "type": "theorem",
+    "title": "Properties of Admissible Constants",
+    "content": "**zero_admissible**: c = 0 is admissible (empty set is Sidon, |∅| ≥ 0 · n).\n\n**neg_admissible**: c < 0 is admissible (0 ≥ c · n for c < 0, n ≥ 0).\n\n**admissible_bounded_above**: The set of admissible constants is bounded above (by 1, since |S| ≤ |A|).\n\n**admissible_nonempty**: The set is nonempty (contains 0).\n\nThese ensure sSup exists by completeness of ℝ.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "well-definedness",
+      "supremum existence"
+    ]
+  },
+  {
+    "id": "ann-e757-b2-sequence",
+    "proofId": "erdos-757",
+    "range": {
+      "startLine": 215,
+      "endLine": 224
+    },
+    "type": "definition",
+    "title": "B₂ Sequences and Sidon Constant",
+    "content": "**IsB2Sequence**: A B₂ sequence is just a Sidon set (alternate terminology from additive combinatorics).\n\n**sidon_constant**: Any finite set A ⊂ ℝ contains a Sidon subset of size ≥ C√|A| for some universal C > 0.\n\nThis is the general Sidon extraction problem. The almost-Sidon condition gives a *linear* guarantee instead of √n.",
+    "mathContext": "The √n bound is optimal in general—some sets have no larger Sidon subsets.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "B₂ sequences",
+      "Sidon extraction",
+      "asymptotic bounds"
+    ]
+  }
+]

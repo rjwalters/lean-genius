@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-545-edgecount",
+    "proofId": "erdos-545",
+    "range": { "startLine": 41, "endLine": 44 },
+    "type": "definition",
+    "title": "Edge Count",
+    "content": "The number of edges in a simple graph, computed as the cardinality of the edge finset.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-545-noisolated",
+    "proofId": "erdos-545",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "No Isolated Vertices",
+    "content": "Every vertex has at least one neighbor. Required in the problem to avoid trivial cases.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-545-coloring",
+    "proofId": "erdos-545",
+    "range": { "startLine": 52, "endLine": 53 },
+    "type": "definition",
+    "title": "Edge Coloring",
+    "content": "A 2-coloring of K_n represented as a function from vertex pairs to Bool.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-545-valid",
+    "proofId": "erdos-545",
+    "range": { "startLine": 55, "endLine": 57 },
+    "type": "definition",
+    "title": "Valid Coloring",
+    "content": "A coloring is valid if symmetric (c(i,j) = c(j,i)) and irreflexive (c(i,i) = false).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-545-monoclique",
+    "proofId": "erdos-545",
+    "range": { "startLine": 59, "endLine": 62 },
+    "type": "definition",
+    "title": "Monochromatic Clique",
+    "content": "A set S forms a monochromatic clique if all edges within S have the same color.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-545-ramseydef",
+    "proofId": "erdos-545",
+    "range": { "startLine": 64, "endLine": 72 },
+    "type": "definition",
+    "title": "Ramsey Number R(k)",
+    "content": "The minimum n such that any 2-coloring of K_n contains a monochromatic K_k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-545-ramseygraph",
+    "proofId": "erdos-545",
+    "range": { "startLine": 74, "endLine": 80 },
+    "type": "definition",
+    "title": "Ramsey Number R(G)",
+    "content": "For general graph G: minimum n such that any 2-coloring of K_n contains a monochromatic copy of G.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-545-decompose",
+    "proofId": "erdos-545",
+    "range": { "startLine": 84, "endLine": 90 },
+    "type": "definition",
+    "title": "Edge Decomposition",
+    "content": "Given m edges, find n and t such that m = C(n,2) + t with 0 ≤ t < n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-545-maxcomplete",
+    "proofId": "erdos-545",
+    "range": { "startLine": 92, "endLine": 95 },
+    "type": "definition",
+    "title": "Maximally Complete Graph",
+    "content": "K_n plus a new vertex connected to t vertices. This is conjectured to maximize R(G) for m edges.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-545-conjecture",
+    "proofId": "erdos-545",
+    "range": { "startLine": 97, "endLine": 102 },
+    "type": "definition",
+    "title": "Erdős-Graham Conjecture",
+    "content": "For any G with m edges, R(G) ≤ R(H) where H is the maximally complete graph.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-545-smallcounterex",
+    "proofId": "erdos-545",
+    "range": { "startLine": 106, "endLine": 107 },
+    "type": "definition",
+    "title": "Small Counterexamples",
+    "content": "The set {2,3,4,5,7,8,9} where the conjecture is known to fail.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-545-counterexaxiom",
+    "proofId": "erdos-545",
+    "range": { "startLine": 109, "endLine": 115 },
+    "type": "axiom",
+    "title": "Counterexamples Exist",
+    "content": "For each m in the small counterexamples set, there exists a graph with R(G) > R(H).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-545-asymptotic",
+    "proofId": "erdos-545",
+    "range": { "startLine": 117, "endLine": 122 },
+    "type": "definition",
+    "title": "Asymptotic Conjecture",
+    "content": "The conjecture may hold for sufficiently large m. This remains open.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-545-sudakov",
+    "proofId": "erdos-545",
+    "range": { "startLine": 126, "endLine": 135 },
+    "type": "theorem",
+    "title": "Sudakov's Upper Bound",
+    "content": "R(G) ≤ 2^{C√m} for any graph G with m edges. Proven in 2011.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-545-r3",
+    "proofId": "erdos-545",
+    "range": { "startLine": 147, "endLine": 149 },
+    "type": "theorem",
+    "title": "R(3) = 6",
+    "content": "The classic result: any 2-coloring of K_6 contains a monochromatic triangle.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-545-r4",
+    "proofId": "erdos-545",
+    "range": { "startLine": 151, "endLine": 153 },
+    "type": "theorem",
+    "title": "R(4) = 18",
+    "content": "Any 2-coloring of K_18 contains a monochromatic K_4.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-545-lower",
+    "proofId": "erdos-545",
+    "range": { "startLine": 155, "endLine": 158 },
+    "type": "theorem",
+    "title": "Ramsey Lower Bound",
+    "content": "R(k) ≥ 2^{k/2} via the probabilistic method (Erdős 1947).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-545-mono",
+    "proofId": "erdos-545",
+    "range": { "startLine": 167, "endLine": 173 },
+    "type": "theorem",
+    "title": "Edge Monotonicity",
+    "content": "If G is a subgraph of H, then R(G) ≤ R(H). More edges means harder to avoid.",
+    "significance": "key"
+  }
+]

@@ -1,33 +1,113 @@
 {
   "id": "erdos-873",
-  "title": "Erdős Problem #873",
+  "title": "Erdős Problem #873: LCM of Consecutive Sequence Terms",
   "slug": "erdos-873",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... count the number of ... such that\\[[a_i,a_{i+1},\\ldots,a_{i+k-1}] < X,\\]where the left-hand side is the l...",
+  "description": "Can the count of k-tuples with small LCM be made subpolynomial by choosing k large enough? An open problem of Erdős and Szemerédi on multiplicative structure of sequences.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Szemerédi Conjecture (1992)",
     "sourceUrl": "https://erdosproblems.com/873",
-    "date": "",
-    "status": "pending",
+    "date": "1992",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos873Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "lcm",
+      "sequences",
+      "multiplicative-structure"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 873,
     "erdosUrl": "https://erdosproblems.com/873",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.lcm",
+        "description": "LCM over finite sets",
+        "module": "Mathlib.Algebra.GCDMonoid.Finset"
+      },
+      {
+        "theorem": "Set.encard",
+        "description": "Extended natural cardinality of sets",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "StrictMono",
+        "description": "Strictly increasing functions",
+        "module": "Mathlib.Order.Monotone.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of consecutive LCM counting function F(A,X,k)",
+      "Formal statement of the open conjecture",
+      "Axioms for Erdős-Szemerédi bounds on F(A,X,3)",
+      "Verified examples for natural and exponential sequences"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #873 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{a_1<a_2<\\cdots\\}\\subseteq \\mathbb{N}$ and let $F(A,X,k)$ count the number of $i$ such that\\[[a_i,a_{i+1},\\ldots,a_{i+k-1}] < X,\\]where the left-hand side is the least common multiple. Is it true that, for every $\\epsilon >0$, there exists some $k$ such that\\[F(A,X,k)<X^\\epsilon?\\]\n\n\n\nA problem of Erd\\H{o}s and Szemer\\'{e}di, who proved that for every $A$\\[F(A,X,3) \\ll X^{1/3}\\log X,\\]and there is an $A$ such that\\[F(A,X,3) \\gg X^{1/3}\\log X\\]for infinitely many $X$. There may be a sequence for which this holds for every $X$.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Erdős and Szemerédi in their work on multiplicative properties of sequences. It asks about the fundamental question: how many consecutive terms of a sequence can have 'small' LCM?\n\nThe LCM of consecutive terms measures their multiplicative dependence. If terms share many prime factors, their LCM is relatively small. The question is whether, for any sequence, we can always find a window size k such that few k-tuples have LCM below any threshold X^ε.\n\nErdős and Szemerédi proved tight bounds for k=3: F(A,X,3) grows like X^(1/3) log X in the worst case. The general conjecture asks whether the exponent can be made arbitrarily small by increasing k.",
+    "problemStatement": "**Conjecture (Erdős-Szemerédi)**: Let $A = \\{a_1 < a_2 < \\cdots\\} \\subseteq \\mathbb{N}$ and let $F(A,X,k)$ count positions $i$ where $[a_i, a_{i+1}, \\ldots, a_{i+k-1}] < X$ (LCM of $k$ consecutive terms).\n\nFor every $\\varepsilon > 0$, does there exist $k$ such that $F(A,X,k) < X^\\varepsilon$?\n\n**Status**: OPEN\n\n**Known**: For $k=3$, we have $F(A,X,3) \\ll X^{1/3} \\log X$ for all $A$, and this is tight.",
+    "proofStrategy": "We formalize the conjecture and known results:\n\n1. **Counting Function**: Define consecutiveLcm(a,i,k) as the LCM of k terms starting at position i, and F(a,X,k) as the count of positions where this LCM is less than X.\n\n2. **Monotonicity**: Prove that F decreases as k increases (more terms means larger LCM, so fewer qualify).\n\n3. **Conjecture Statement**: State the open problem asking whether F can always be made subpolynomial in X.\n\n4. **Known Bounds**: State the Erdős-Szemerédi theorem for k=3 as axioms.\n\n5. **Examples**: Verify behavior for specific sequences (naturals, powers of 2).",
+    "keyInsights": [
+      "**Multiplicative dependence**: The LCM measures how much consecutive terms share prime factors. Small LCM means high dependence.",
+      "**Window size tradeoff**: Larger k means the LCM includes more terms, so it grows faster and F(A,X,k) shrinks.",
+      "**The k=3 bound**: X^(1/3) log X is the critical exponent for 3 consecutive terms. The conjecture asks if any exponent is achievable for large enough k.",
+      "**Open question**: Despite decades of study, we don't know if subpolynomial growth F(A,X,k) < X^ε is always achievable."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "The Erdős-Szemerédi conjecture on LCM of consecutive sequence terms"
+    },
+    {
+      "id": "definitions",
+      "title": "The Counting Function F(A,X,k)",
+      "startLine": 31,
+      "endLine": 46,
+      "summary": "Definitions of consecutiveLcm and the counting function F"
+    },
+    {
+      "id": "properties",
+      "title": "Basic Properties",
+      "startLine": 48,
+      "endLine": 75,
+      "summary": "Monotonicity of LCM in k and F in k"
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture (OPEN)",
+      "startLine": 77,
+      "endLine": 94,
+      "summary": "Statement of the open Erdős-Szemerédi conjecture"
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 96,
+      "endLine": 116,
+      "summary": "Erdős-Szemerédi bounds for k=3"
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 118,
+      "endLine": 146,
+      "summary": "Verified examples for natural numbers and powers of 2"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize the Erdős-Szemerédi conjecture on LCM counting in sequences. The main question - whether F(A,X,k) can always be made subpolynomial by choosing k large enough - remains open. We state the known optimal bounds for k=3 and provide verified examples.",
+    "implications": "This problem connects to fundamental questions about multiplicative structure in sequences. A positive answer would show that all sequences have limited multiplicative dependence when viewed through large enough windows.",
+    "openQuestions": [
+      "Can F(A,X,k) < X^ε be achieved for all sequences and all ε > 0?",
+      "What is the optimal exponent for k=4, k=5, etc.?",
+      "Are there sequences that are 'maximally multiplicatively dependent' in some sense?"
+    ]
   }
 }

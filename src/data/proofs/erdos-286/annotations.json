@@ -1,1 +1,123 @@
-[]
+[
+  {
+    "id": "ann-e286-header",
+    "proofId": "erdos-286",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #286**: Can 1 be expressed as a sum of k distinct unit fractions with denominators in an interval of width (e-1+o(1))k? Croot (2001) proved the answer is yes.",
+    "mathContext": "1 = 1/n₁ + ... + 1/nₖ with all nᵢ in [a, a + (e-1)k]. The constant e-1 ≈ 1.718 is optimal.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "unit-fractions",
+      "egyptian-fractions",
+      "interval-width"
+    ]
+  },
+  {
+    "id": "ann-e286-definitions",
+    "proofId": "erdos-286",
+    "range": {
+      "startLine": 32,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Core Definitions",
+    "content": "**IsUnitFractionSum**: A set S of positive integers with ∑(1/n) = q. **SumsToOne**: When S sums to 1. **NatInterval**: The interval [a,b] in ℕ.",
+    "mathContext": "These definitions capture unit fraction representations and interval constraints.",
+    "significance": "key",
+    "relatedConcepts": [
+      "finset",
+      "sum-reciprocals"
+    ]
+  },
+  {
+    "id": "ann-e286-main",
+    "proofId": "erdos-286",
+    "range": {
+      "startLine": 59,
+      "endLine": 70
+    },
+    "type": "definition",
+    "title": "Main Predicate",
+    "content": "**HasShortIntervalRepresentation(k, width)**: There exist k positive integers in an interval of given width whose reciprocals sum to 1.",
+    "mathContext": "The core question: for which k and width does such a representation exist?",
+    "significance": "critical",
+    "relatedConcepts": [
+      "existence",
+      "interval-constraint"
+    ]
+  },
+  {
+    "id": "ann-e286-examples",
+    "proofId": "erdos-286",
+    "range": {
+      "startLine": 72,
+      "endLine": 104
+    },
+    "type": "theorem",
+    "title": "Verified Examples",
+    "content": "**k=3**: 1 = 1/2 + 1/3 + 1/6 in [2,6], width 4. **k=4**: 1 = 1/2 + 1/4 + 1/5 + 1/20 in [2,20], width 18.",
+    "mathContext": "Concrete examples verified with native_decide, showing the problem is satisfiable for small k.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native-decide",
+      "verification"
+    ]
+  },
+  {
+    "id": "ann-e286-constant",
+    "proofId": "erdos-286",
+    "range": {
+      "startLine": 106,
+      "endLine": 126
+    },
+    "type": "theorem",
+    "title": "Erdős-Graham Constant",
+    "content": "**ErdosGrahamConstant = e - 1 ≈ 1.718**: The asymptotically optimal width coefficient. We prove 1.7 < e-1 < 1.72 using Mathlib's exp bounds.",
+    "mathContext": "Real.exp_one_gt_d9 and Real.exp_one_lt_d9 give tight bounds on e.",
+    "significance": "key",
+    "relatedConcepts": [
+      "euler-number",
+      "real-exp"
+    ]
+  },
+  {
+    "id": "ann-e286-croot",
+    "proofId": "erdos-286",
+    "range": {
+      "startLine": 128,
+      "endLine": 163
+    },
+    "type": "theorem",
+    "title": "Croot's Theorem",
+    "content": "**Croot (2001)**: For all sufficiently large k, there exists a representation with interval width at most (e-1+ε)k. The constant e-1 is asymptotically tight.",
+    "mathContext": "croot_theorem states the upper bound; optimality states the matching lower bound.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "asymptotic-analysis",
+      "upper-bound",
+      "lower-bound"
+    ]
+  },
+  {
+    "id": "ann-e286-egyptian",
+    "proofId": "erdos-286",
+    "range": {
+      "startLine": 165,
+      "endLine": 181
+    },
+    "type": "definition",
+    "title": "Egyptian Fractions",
+    "content": "**IsEgyptianFraction**: A representation of q as a sum of distinct unit fractions. The greedy algorithm always finds such a representation, but doesn't minimize interval width.",
+    "mathContext": "Every positive rational has an Egyptian fraction representation, but finding one with minimal interval width is the harder question.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "greedy-algorithm",
+      "distinct-denominators"
+    ]
+  }
+]

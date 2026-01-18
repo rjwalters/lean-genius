@@ -1,1 +1,173 @@
-[]
+[
+  {
+    "id": "ann-629-listassign",
+    "proofId": "erdos-629",
+    "range": { "startLine": 39, "endLine": 40 },
+    "type": "definition",
+    "title": "Color List Assignment",
+    "content": "A function assigning to each vertex a finite set of available colors. Different vertices may have different lists.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-629-respects",
+    "proofId": "erdos-629",
+    "range": { "startLine": 43, "endLine": 44 },
+    "type": "definition",
+    "title": "Respecting Lists",
+    "content": "A coloring respects a list assignment if each vertex receives a color from its assigned list.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-629-proper",
+    "proofId": "erdos-629",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "definition",
+    "title": "Proper Coloring",
+    "content": "Adjacent vertices must receive different colors. This is the standard coloring constraint.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-629-klist",
+    "proofId": "erdos-629",
+    "range": { "startLine": 51, "endLine": 55 },
+    "type": "definition",
+    "title": "k-List-Colorable",
+    "content": "A graph is k-list-colorable if for ANY assignment of k-lists, a proper coloring exists. The quantification over all list assignments is crucial!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-629-listchrom",
+    "proofId": "erdos-629",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "definition",
+    "title": "List Chromatic Number",
+    "content": "χ_L(G) = minimal k for which G is k-list-colorable. Always ≥ χ(G) but can be much larger!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-629-bipartite",
+    "proofId": "erdos-629",
+    "range": { "startLine": 65, "endLine": 66 },
+    "type": "definition",
+    "title": "Bipartite Graph",
+    "content": "A graph is bipartite if it can be 2-colored. Equivalently, it has no odd cycles.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-629-unbounded",
+    "proofId": "erdos-629",
+    "range": { "startLine": 74, "endLine": 77 },
+    "type": "theorem",
+    "title": "List Chromatic Unbounded",
+    "content": "The key surprise: bipartite graphs have χ ≤ 2 but χ_L can be arbitrarily large! This is why the problem is interesting.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-629-nfunc",
+    "proofId": "erdos-629",
+    "range": { "startLine": 82, "endLine": 84 },
+    "type": "definition",
+    "title": "The Function n(k)",
+    "content": "n(k) = minimum number of vertices in a bipartite G with χ_L(G) > k. This is the central object of study.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-629-n2",
+    "proofId": "erdos-629",
+    "range": { "startLine": 97, "endLine": 98 },
+    "type": "theorem",
+    "title": "n(2) = 6",
+    "content": "Erdős-Rubin-Taylor (1980): The smallest bipartite graph with χ_L > 2 has exactly 6 vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-629-n3",
+    "proofId": "erdos-629",
+    "range": { "startLine": 101, "endLine": 102 },
+    "type": "theorem",
+    "title": "n(3) = 14",
+    "content": "Hanson-MacGillivray-Toft (1996): The smallest bipartite graph with χ_L > 3 has 14 vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-629-ertlower",
+    "proofId": "erdos-629",
+    "range": { "startLine": 107, "endLine": 108 },
+    "type": "theorem",
+    "title": "Original Lower Bound",
+    "content": "2^{k-1} < n(k). The first lower bound from Erdős-Rubin-Taylor 1980.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-629-ertupper",
+    "proofId": "erdos-629",
+    "range": { "startLine": 111, "endLine": 112 },
+    "type": "theorem",
+    "title": "Original Upper Bound",
+    "content": "n(k) < k² · 2^{k+2}. The first upper bound showing exponential growth.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-629-rs",
+    "proofId": "erdos-629",
+    "range": { "startLine": 118, "endLine": 121 },
+    "type": "theorem",
+    "title": "Radhakrishnan-Srinivasan Lower",
+    "content": "2^k · (k/log k)^{1/2} ≪ n(k). Improved lower bound from 2000 using probabilistic methods.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-629-hmt",
+    "proofId": "erdos-629",
+    "range": { "startLine": 124, "endLine": 126 },
+    "type": "theorem",
+    "title": "HMT Recursive Upper",
+    "content": "n(k) ≤ k · n(k-2) + 2^k. A recursive bound that helps compute upper bounds.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-629-propb",
+    "proofId": "erdos-629",
+    "range": { "startLine": 132, "endLine": 135 },
+    "type": "definition",
+    "title": "Property B Threshold",
+    "content": "m(k) = smallest family of k-sets without Property B (a 2-coloring with no monochromatic set).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-629-connection",
+    "proofId": "erdos-629",
+    "range": { "startLine": 139, "endLine": 141 },
+    "type": "theorem",
+    "title": "Property B Connection",
+    "content": "m(k) ≤ n(k) ≤ m(k+1). Links list coloring to hypergraph coloring (Problem #901).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-629-kbip",
+    "proofId": "erdos-629",
+    "range": { "startLine": 146, "endLine": 156 },
+    "type": "definition",
+    "title": "Complete Bipartite Graph",
+    "content": "K_{m,n} = complete bipartite graph with parts of size m and n. Key construction for understanding χ_L.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-629-knn",
+    "proofId": "erdos-629",
+    "range": { "startLine": 164, "endLine": 167 },
+    "type": "theorem",
+    "title": "K_{n,n} List Chromatic",
+    "content": "χ_L(K_{n,n}) ≈ log₂ n + 1. Shows how list chromatic number grows for balanced complete bipartite graphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-629-asymp",
+    "proofId": "erdos-629",
+    "range": { "startLine": 178, "endLine": 181 },
+    "type": "definition",
+    "title": "Exact Asymptotic Conjecture",
+    "content": "Is n(k) = Θ(2^k · k^α) for some specific α? Determining α is the main open question.",
+    "significance": "critical"
+  }
+]

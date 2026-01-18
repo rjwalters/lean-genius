@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-637-degree",
+    "proofId": "erdos-637",
+    "range": { "startLine": 33, "endLine": 35 },
+    "type": "definition",
+    "title": "vertexDegree",
+    "content": "Degree of vertex v in graph G.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-637-distinct",
+    "proofId": "erdos-637",
+    "range": { "startLine": 37, "endLine": 43 },
+    "type": "definition",
+    "title": "distinctDegrees / numDistinctDegrees",
+    "content": "Set and count of distinct degrees in G.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-637-clique-indep",
+    "proofId": "erdos-637",
+    "range": { "startLine": 45, "endLine": 51 },
+    "type": "definition",
+    "title": "cliqueNumber / independenceNumber",
+    "content": "ω(G) and α(G).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-637-ramsey",
+    "proofId": "erdos-637",
+    "range": { "startLine": 55, "endLine": 62 },
+    "type": "definition",
+    "title": "IsRamseyGraph",
+    "content": "ω(G), α(G) = O(log n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-637-induced",
+    "proofId": "erdos-637",
+    "range": { "startLine": 71, "endLine": 79 },
+    "type": "definition",
+    "title": "inducedSubgraph",
+    "content": "Induced subgraph on vertex set S.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-637-large-induced",
+    "proofId": "erdos-637",
+    "range": { "startLine": 81, "endLine": 83 },
+    "type": "definition",
+    "title": "HasLargeInducedWithManyDegrees",
+    "content": "Large induced subgraph with many degrees.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-637-original",
+    "proofId": "erdos-637",
+    "range": { "startLine": 87, "endLine": 97 },
+    "type": "definition",
+    "title": "OriginalConjecture",
+    "content": "≫ n vertices with ≫ √n distinct degrees.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-637-bukh-sudakov",
+    "proofId": "erdos-637",
+    "range": { "startLine": 101, "endLine": 106 },
+    "type": "theorem",
+    "title": "Bukh-Sudakov (2007)",
+    "content": "Proved the original conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-637-strengthened",
+    "proofId": "erdos-637",
+    "range": { "startLine": 116, "endLine": 126 },
+    "type": "definition",
+    "title": "StrengthenedConjecture",
+    "content": "≫ n^{2/3} distinct degrees.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-637-jkly",
+    "proofId": "erdos-637",
+    "range": { "startLine": 124, "endLine": 137 },
+    "type": "theorem",
+    "title": "JKLY (2020)",
+    "content": "n^{2/3} degrees without vertex restriction.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-637-optimality",
+    "proofId": "erdos-637",
+    "range": { "startLine": 141, "endLine": 151 },
+    "type": "definition",
+    "title": "OptimalityConjecture",
+    "content": "Exponent 2/3 is believed optimal.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-637-regular",
+    "proofId": "erdos-637",
+    "range": { "startLine": 159, "endLine": 166 },
+    "type": "theorem",
+    "title": "Regular Graphs",
+    "content": "Regular graphs have 1 distinct degree.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-637-summary",
+    "proofId": "erdos-637",
+    "range": { "startLine": 218, "endLine": 223 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "Both conjectures are solved.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-637-progression",
+    "proofId": "erdos-637",
+    "range": { "startLine": 225, "endLine": 231 },
+    "type": "theorem",
+    "title": "Bound Progression",
+    "content": "√n → n^{2/3} distinct degrees.",
+    "significance": "key"
+  }
+]

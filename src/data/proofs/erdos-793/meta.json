@@ -1,33 +1,99 @@
 {
   "id": "erdos-793",
-  "title": "Erdős Problem #793",
+  "title": "Erdős Problem #793: Primitive Sets Avoiding Product Divisibility",
   "slug": "erdos-793",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximum possible size of a subset ... such that ... whenever ... with ... and .... Is there a constant ... suc...",
+  "description": "Let F(n) = max size of A ⊆ {1,...,n} where a ∤ bc for distinct a,b,c ∈ A. Is F(n) = π(n) + (C+o(1))·n^{2/3}·(log n)^{-2} for some constant C? Known: bounds with different constants c₁, c₂. OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1938)",
     "sourceUrl": "https://erdosproblems.com/793",
-    "date": "",
-    "status": "pending",
+    "date": "1938",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos793Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisibility",
+      "primitive-sets",
+      "primes",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 1,
     "erdosNumber": 793,
     "erdosUrl": "https://erdosproblems.com/793",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #793 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $F(n)$ be the maximum possible size of a subset $A\\subseteq\\{1,\\ldots,n\\}$ such that $a\\nmid bc$ whenever $a,b,c\\in A$ with $a\\neq b$ and $a\\neq c$. Is there a constant $C$ such that\\[F(n)=\\pi(n)+(C+o(1))n^{2/3}(\\log n)^{-2}?\\]\n\n\n\nErd\\H{o}s \\cite{Er38} proved there exist constants $0<c_1\\leq c_2$ such that\\[\\pi(n)+c_1n^{2/3}(\\log n)^{-2}\\leq F(n) \\leq \\pi(n)+c_2n^{2/3}(\\log n)^{-2}.\\]Erd\\H{o}s \\cite{Er69} gave a simple proof that $F(n) \\leq \\pi(n)+n^{2/3}$: define a graph with vertex set the union of those integers in $[1,n^{2/3}]$ with all primes $p\\in (n^{2/3},n]$. We have an edge $u\\sim v$ if and only if $uv\\in A$. It is easy to see that every $m\\leq n$ can be written as $uv$ where $u\\leq n^{2/3}$ and $v$ is either prime or $\\leq n^{2/3}$, and hence there are $\\geq \\lvert A\\rvert$ many edges. This graph contains no path of length $3$ and hence must be a tree and have fewer edges than vertices, and we are done. This can be improved to give the upper bound mentioned by using a subset of integers in $[1,n^{2/3}]$.\n\nMore generally, one can ask for such an asymptotic for the size of sets such that no $a\\in A$ divides the product of $r$ distinct other elements of $A$, with the exponent $2/3$ replaced by $\\frac{2}{r+1}$.\n\nFor further discussion and references concerning this generalisation to $r\\geq 3$ see the comment by Wouter van Doorn.\n\nSee also [425].\n\n\n\n\nReferences\n\n\n[Er38] P. Erd\\H{o}s, On sequences of integers no one of which divides the product of two others and on related problems. Tomsk. Gos. Univ. Ucen Zap. (1938), 74-82.\n\n[Er69] Erd\\H{o}s, Paul, Some applications of graph theory to number theory. The Many Facets of Graph Theory (Proc. Conf.,\nWestern Mich. Univ., Kalamazoo, Mich., 1968) (1969), 77-82.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem dates to Erdős's 1938 paper, making it one of his earliest contributions to extremal combinatorics. A 'primitive' set has no element dividing another; here we strengthen this to: no element divides the product of two others. The primes larger than n^{2/3} automatically satisfy this, so the question is about the 'extra' elements beyond primes.",
+    "problemStatement": "Let F(n) be the maximum size of A ⊆ {1,...,n} such that a ∤ bc for all distinct a,b,c ∈ A. Is there a constant C such that F(n) = π(n) + (C + o(1))·n^{2/3}·(log n)^{-2}?",
+    "proofStrategy": "Erdős proved bounds π(n) + c₁·n^{2/3}·(log n)^{-2} ≤ F(n) ≤ π(n) + c₂·n^{2/3}·(log n)^{-2} for some constants c₁ < c₂. The upper bound uses a clever graph-theoretic argument: construct a bipartite graph with small integers and large primes as vertices, edges representing products in A. This graph is P₃-free (no path of length 3), hence a forest.",
+    "keyInsights": [
+      "All primes p > n^{2/3} can be included: they can't divide products of smaller numbers",
+      "The 'extra' elements beyond primes contribute the secondary term n^{2/3}·(log n)^{-2}",
+      "The graph-theoretic proof: P₃-free graphs are forests with |E| < |V|",
+      "The exact constant C is unknown—this is the open part",
+      "Generalizes to r-products with exponent 2/(r+1)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "condition",
+      "title": "The Divisibility Condition",
+      "summary": "Definition: a ∤ bc for distinct elements",
+      "startLine": 47,
+      "endLine": 62
+    },
+    {
+      "id": "f-definition",
+      "title": "The Function F(n)",
+      "summary": "Maximum size of valid subsets of {1,...,n}",
+      "startLine": 64,
+      "endLine": 75
+    },
+    {
+      "id": "primes",
+      "title": "Prime Counting Function",
+      "summary": "Large primes form the core of optimal sets",
+      "startLine": 77,
+      "endLine": 96
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "summary": "Erdős's upper and lower bounds with constants c₁, c₂",
+      "startLine": 98,
+      "endLine": 116
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "summary": "Does F(n) - π(n) have a precise asymptotic?",
+      "startLine": 118,
+      "endLine": 140
+    },
+    {
+      "id": "graph",
+      "title": "Graph-Theoretic Approach",
+      "summary": "P₃-free bipartite graph construction",
+      "startLine": 142,
+      "endLine": 165
+    },
+    {
+      "id": "generalization",
+      "title": "Generalization to r-Products",
+      "summary": "Extension with exponent 2/(r+1)",
+      "startLine": 167,
+      "endLine": 186
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős established that F(n) = π(n) + Θ(n^{2/3}·(log n)^{-2}), but the exact constant C in the secondary term remains unknown. The problem asks whether such a constant exists at all.",
+    "implications": "This connects number theory (primes, divisibility) with extremal combinatorics (graph theory). The graph-theoretic proof technique has influenced many later results in combinatorial number theory.",
+    "openQuestions": [
+      "Does the limit C = lim (F(n) - π(n)) / (n^{2/3}·(log n)^{-2}) exist?",
+      "If so, what is the value of C?",
+      "Can the bounds c₁ and c₂ be improved?",
+      "What are the exact values of F(n) for small n?"
+    ]
   }
 }

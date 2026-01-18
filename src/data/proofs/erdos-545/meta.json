@@ -1,33 +1,95 @@
 {
   "id": "erdos-545",
-  "title": "Erdős Problem #545",
+  "title": "Erdős #545: Ramsey Numbers and Maximally Complete Graphs",
   "slug": "erdos-545",
-  "description": "Let ... be a graph with ... edges and no isolated vertices. Is the Ramsey number ... maximised when ... is 'as complete as possible'? That is, if ... edges with $0\\leq t View the LaTeX source This ...",
+  "description": "Is the Ramsey number R(G) maximized when G is 'as complete as possible' for a given number of edges?",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Ronald Graham",
     "sourceUrl": "https://erdosproblems.com/545",
-    "date": "",
-    "status": "pending",
+    "date": "1975",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos545Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "combinatorics"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 14,
     "erdosNumber": 545,
     "erdosUrl": "https://erdosproblems.com/545",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #545 from erdosproblems.com.",
-    "problemStatement": "Let $G$ be a graph with $m$ edges and no isolated vertices. Is the Ramsey number $R(G)$ maximised when $G$ is 'as complete as possible'? That is, if $m=\\binom{n}{2}+t$ edges with $0\\leq t View the LaTeX source This page was last edited 02 December 2025.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Erdős and Graham [ErGr75, p.526]. The conjecture asks whether the 'most complete' graph with m edges maximizes the Ramsey number. Surprisingly, the conjecture fails for small values of m (specifically m ∈ {2,3,4,5,7,8,9}), but the asymptotic version remains open.",
+    "problemStatement": "Let G be a graph with m edges and no isolated vertices. If m = C(n,2) + t with 0 ≤ t < n, is R(G) ≤ R(H) where H is K_n plus a new vertex connected to t vertices of K_n?",
+    "proofStrategy": "We formalize edge colorings, Ramsey numbers for complete graphs and general graphs, define the 'maximally complete' graph construction, and state both the original conjecture and its asymptotic variant. The known counterexamples are recorded as an axiom.",
+    "keyInsights": [
+      "The conjecture fails for m ∈ {2,3,4,5,7,8,9} - small counterexamples exist",
+      "The asymptotic version (for large m) remains open",
+      "Sudakov (2011) proved the weaker R(G) ≤ 2^{O(√m)} for any m-edge graph",
+      "Ramsey numbers are monotonic: more edges means larger Ramsey number"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-basics",
+      "title": "Graph Basics",
+      "summary": "Edge count and isolated vertex definitions",
+      "startLine": 39,
+      "endLine": 48
+    },
+    {
+      "id": "ramsey-numbers",
+      "title": "Ramsey Numbers",
+      "summary": "Edge colorings, monochromatic cliques, and R(k) definition",
+      "startLine": 50,
+      "endLine": 80
+    },
+    {
+      "id": "max-complete",
+      "title": "Maximally Complete Graphs",
+      "summary": "The decomposition m = C(n,2) + t and the conjecture",
+      "startLine": 82,
+      "endLine": 102
+    },
+    {
+      "id": "counterexamples",
+      "title": "Known Counterexamples",
+      "summary": "Small values where the conjecture fails",
+      "startLine": 104,
+      "endLine": 122
+    },
+    {
+      "id": "sudakov",
+      "title": "Sudakov's Upper Bound",
+      "summary": "The weaker result R(G) ≤ 2^{O(√m)} from 2011",
+      "startLine": 124,
+      "endLine": 135
+    },
+    {
+      "id": "classical-ramsey",
+      "title": "Classical Ramsey Numbers",
+      "summary": "Known values: R(1)=1, R(2)=2, R(3)=6, R(4)=18",
+      "startLine": 137,
+      "endLine": 163
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity Properties",
+      "summary": "Adding edges increases Ramsey number",
+      "startLine": 165,
+      "endLine": 183
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #545 on whether the 'most complete' graph maximizes Ramsey number for a given edge count. The surprising discovery of small counterexamples (m ∈ {2,3,4,5,7,8,9}) shows the conjecture is false in general, but the asymptotic version remains open.",
+    "implications": "Understanding which graphs maximize Ramsey number would shed light on the structure of extremal Ramsey graphs. Sudakov's 2^{O(√m)} bound provides a universal upper bound but doesn't identify the maximum.",
+    "openQuestions": [
+      "Does the conjecture hold for all sufficiently large m?",
+      "What is the smallest M such that no counterexamples exist for m ≥ M?",
+      "Can the set of counterexample values {2,3,4,5,7,8,9} be characterized?"
+    ]
   }
 }

@@ -1,1 +1,245 @@
-[]
+[
+  {
+    "id": "ann-434-header",
+    "proofId": "erdos-434",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdős Problem #434 asks: Which k-element subset of {1,...,n} maximizes the count of non-representable integers? Kiss (2002) proved the answer is {n-k+1,...,n} (the 'top k' set).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-434-imports",
+    "proofId": "erdos-434",
+    "range": { "startLine": 31, "endLine": 37 },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import Mathlib's multiset operations (for sums with repetition), set cardinality, and GCD theory. These provide the foundation for defining representability and counting non-representables.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-434-representable",
+    "proofId": "erdos-434",
+    "range": { "startLine": 41, "endLine": 51 },
+    "type": "definition",
+    "title": "Representability",
+    "content": "A number n is representable by set A if n can be written as a sum of elements from A, with repetition allowed. We formalize this using multisets: n = a₁ + a₂ + ... + aₘ where each aᵢ ∈ A.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-434-zero-rep",
+    "proofId": "erdos-434",
+    "range": { "startLine": 53, "endLine": 56 },
+    "type": "theorem",
+    "title": "Zero is Representable",
+    "content": "Zero is always representable by any set—use the empty multiset. This is the base case: the empty sum equals 0.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-434-mem-rep",
+    "proofId": "erdos-434",
+    "range": { "startLine": 58, "endLine": 61 },
+    "type": "theorem",
+    "title": "Elements are Representable",
+    "content": "Any element of A is representable: just take the singleton multiset containing that element. Its sum is itself.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-434-add-rep",
+    "proofId": "erdos-434",
+    "range": { "startLine": 63, "endLine": 76 },
+    "type": "theorem",
+    "title": "Sum of Representables",
+    "content": "If m and n are both representable by A, then m + n is also representable. Combine the two multisets—the sum of sums is the sum of the combined multiset.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-434-nonrep-def",
+    "proofId": "erdos-434",
+    "range": { "startLine": 80, "endLine": 82 },
+    "type": "definition",
+    "title": "Non-Representable Set",
+    "content": "The set of non-representable integers: all n ∈ ℕ such that n cannot be written as a sum of elements from A. This is the complement of the representable integers.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-434-count",
+    "proofId": "erdos-434",
+    "range": { "startLine": 84, "endLine": 90 },
+    "type": "definition",
+    "title": "Counting Non-Representables",
+    "content": "We define both encard (extended natural, may be infinite) and ncard (natural) counts. When gcd(A) > 1, infinitely many integers are non-representable; when gcd(A) = 1, the count is finite.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-434-frobenius",
+    "proofId": "erdos-434",
+    "range": { "startLine": 94, "endLine": 99 },
+    "type": "definition",
+    "title": "Frobenius Number",
+    "content": "The Frobenius number of A is the LARGEST non-representable integer. For coprime a, b, Sylvester proved this equals ab - a - b. Problem #434 asks about COUNT, not maximum.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-434-complete",
+    "proofId": "erdos-434",
+    "range": { "startLine": 101, "endLine": 104 },
+    "type": "definition",
+    "title": "Complete Sets",
+    "content": "A set is 'complete' if gcd(A) = 1. Such sets have only finitely many non-representable integers. The Chicken McNugget theorem is a famous example: {6, 9, 20} gives Frobenius number 43.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-434-topk",
+    "proofId": "erdos-434",
+    "range": { "startLine": 108, "endLine": 110 },
+    "type": "definition",
+    "title": "The topK Set",
+    "content": "topK(n, k) = {n-k+1, n-k+2, ..., n}—the k largest integers in {1,...,n}. This is the conjectured (and proved) optimal choice for maximizing non-representables.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-434-topk-card",
+    "proofId": "erdos-434",
+    "range": { "startLine": 112, "endLine": 115 },
+    "type": "theorem",
+    "title": "topK Has k Elements",
+    "content": "When k ≤ n and k > 0, the set topK(n,k) contains exactly k elements. This is the interval [n-k+1, n] which has n - (n-k+1) + 1 = k elements.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-434-extremal-def",
+    "proofId": "erdos-434",
+    "range": { "startLine": 117, "endLine": 120 },
+    "type": "definition",
+    "title": "Extremal Frobenius Question",
+    "content": "The formal question: for any k-element subset A of {1,...,n}, is nCardNonRepresentable(A) ≤ nCardNonRepresentable(topK(n,k))? Kiss proved: YES.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-434-example-23",
+    "proofId": "erdos-434",
+    "range": { "startLine": 124, "endLine": 134 },
+    "type": "theorem",
+    "title": "Example: {2, 3}",
+    "content": "With A = {2, 3}, the only non-representable positive integer is 1. We can make 2=2, 3=3, 4=2+2, 5=2+3, 6=3+3, and all larger integers. Frobenius number is 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-434-example-35",
+    "proofId": "erdos-434",
+    "range": { "startLine": 136, "endLine": 139 },
+    "type": "theorem",
+    "title": "Example: {3, 5}",
+    "content": "With A = {3, 5}, non-representables are {1, 2, 4, 7}. The Frobenius number is 7. By Sylvester: 3·5 - 3 - 5 = 7. Count: (3-1)(5-1)/2 = 4.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-434-topk-example",
+    "proofId": "erdos-434",
+    "range": { "startLine": 141, "endLine": 156 },
+    "type": "theorem",
+    "title": "Example: topK(5,2) = {4,5}",
+    "content": "With n=5, k=2, we get topK = {4, 5}. Non-representables include 1, 2, 3, 6, 7, 11, and many more. Compare to {1, 2} where only 0 is non-representable!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-434-kiss",
+    "proofId": "erdos-434",
+    "range": { "startLine": 160, "endLine": 169 },
+    "type": "axiom",
+    "title": "Kiss's Theorem (2002)",
+    "content": "**KEY RESULT**: For any 1 ≤ k ≤ n, the set {n-k+1,...,n} maximizes the count of non-representable integers among all k-element subsets of {1,...,n}. This is axiomatized as the proof requires deep analysis.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-434-answer",
+    "proofId": "erdos-434",
+    "range": { "startLine": 171, "endLine": 175 },
+    "type": "theorem",
+    "title": "Problem Answer",
+    "content": "The answer to Erdős Problem #434 is YES: the topK set is optimal. This follows directly from Kiss's theorem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-434-intuition",
+    "proofId": "erdos-434",
+    "range": { "startLine": 179, "endLine": 191 },
+    "type": "theorem",
+    "title": "Larger Numbers Create Gaps",
+    "content": "Intuition: If A contains 1, almost everything is representable. If A contains only large numbers like {9, 10}, many small integers (1-8) plus gaps (11-17, etc.) are non-representable.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-434-sylvester",
+    "proofId": "erdos-434",
+    "range": { "startLine": 195, "endLine": 198 },
+    "type": "axiom",
+    "title": "Sylvester-Frobenius Theorem",
+    "content": "For coprime a, b > 0, the Frobenius number is ab - a - b. This classical 1884 result gives an explicit formula for two elements. For {3,5}: 3·5-3-5 = 7.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-434-sylvester-count",
+    "proofId": "erdos-434",
+    "range": { "startLine": 200, "endLine": 202 },
+    "type": "axiom",
+    "title": "Sylvester Count Formula",
+    "content": "For coprime a, b, the COUNT of non-representables is (a-1)(b-1)/2. For {3,5}: (2)(4)/2 = 4. This count grows quadratically as a, b increase.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-434-consecutive",
+    "proofId": "erdos-434",
+    "range": { "startLine": 204, "endLine": 208 },
+    "type": "theorem",
+    "title": "Consecutive Integers",
+    "content": "For consecutive integers n-1, n (always coprime), the count is (n-2)(n-1)/2. This grows quadratically with n, showing why larger numbers give more non-representables.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-434-greedy",
+    "proofId": "erdos-434",
+    "range": { "startLine": 212, "endLine": 222 },
+    "type": "definition",
+    "title": "Greedy Construction",
+    "content": "The greedy approach: always pick the largest available number. This produces exactly the topK set and is optimal. Intuition: large numbers enable fewer representations.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-434-finite",
+    "proofId": "erdos-434",
+    "range": { "startLine": 226, "endLine": 237 },
+    "type": "theorem",
+    "title": "Finiteness of Non-Representables",
+    "content": "When gcd(A) = 1 (A is 'complete'), the set of non-representables is finite. For topK(n,k) with k ≥ 2, gcd is often 1, ensuring finitely many non-representables.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-434-problem433",
+    "proofId": "erdos-434",
+    "range": { "startLine": 241, "endLine": 253 },
+    "type": "definition",
+    "title": "Connection to Problem #433",
+    "content": "Problem #433 asks about Frobenius numbers for {n, n+1, ..., n+k-1} (consecutive starting at n). Problem #434 asks which subset of {1,...,n} maximizes COUNT. Related but distinct questions.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-434-complete-answer",
+    "proofId": "erdos-434",
+    "range": { "startLine": 257, "endLine": 268 },
+    "type": "theorem",
+    "title": "Complete Answer",
+    "content": "**FINAL RESULT**: For all n ≥ 1, k ≥ 1, k ≤ n: the set {n-k+1, ..., n} maximizes nCardNonRepresentable among all k-element subsets of {1,...,n}. Kiss (2002) proved this.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-434-maximum",
+    "proofId": "erdos-434",
+    "range": { "startLine": 270, "endLine": 275 },
+    "type": "theorem",
+    "title": "topK Achieves Maximum",
+    "content": "Corollary formulation: topK(n,k) is the unique (up to edge cases) set achieving the maximum count of non-representable integers.",
+    "significance": "key"
+  }
+]

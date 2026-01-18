@@ -1,33 +1,160 @@
 {
   "id": "erdos-996",
-  "title": "Erdős Problem #996",
+  "title": "Erdős #996: Strong Law for Lacunary Sequences",
   "slug": "erdos-996",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a lacunary sequence of integers, and let .... Let ... be the ...th partial sum of the Fourier series of .... Is th...",
+  "description": "For lacunary sequences and L² functions, if ‖f - fₙ‖₂ = O(1/(log log log n)^C), does the strong law hold? Open. Known: log log decay with c > 1/2 suffices (Matsuyama 1966).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1949), Matsuyama (1966)",
     "sourceUrl": "https://erdosproblems.com/996",
-    "date": "",
-    "status": "pending",
+    "date": "1949-1966",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos996Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "harmonic-analysis",
+      "probability",
+      "lacunary-sequences",
+      "fourier-series"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 4,
     "erdosNumber": 996,
     "erdosUrl": "https://erdosproblems.com/996",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.integral",
+        "description": "Bochner integration",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit along filters",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of lacunary sequences",
+      "Fourier partial sums and L² error",
+      "Ergodic averages along sequences",
+      "Strong law of large numbers definition",
+      "Historical results as axioms (Raikov, KSZ, Erdős, Matsuyama)",
+      "Decay condition hierarchy",
+      "Related open questions"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #996 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n_1<n_2<\\cdots$ be a lacunary sequence of integers, and let $f\\in L^2([0,1])$. Let $f_n$ be the $n$th partial sum of the Fourier series of $f(x)$. Is there an absolute constant $C>0$ such that, if\\[\\| f-f_n\\|_2 \\ll \\frac{1}{(\\log\\log\\log n)^{C}}\\]then\\[\\lim_{N\\to\\infty}\\frac{1}{N}\\sum_{k\\leq N}f(\\{\\alpha n_k\\})=\\int_0^1 f(x)\\mathrm{d}x\\]for almost every $\\alpha$?\n\n\n\nRaikov proved the conclusion always holds (for every $f\\in L^2([0,1])$, with no assumption on $\\| f-f_n\\|_2$) if $n_k=a^k$ for some integer $a\\geq 2$. Erd\\H{o}s \\cite{Er64b} also asked whether this is true for $n_k=\\lfloor a^k\\rfloor$ for some $a>1$.\n\nKac, Salem, and Zygmund \\cite{KSZ48} proved that the conclusion holds if\\[\\| f-f_n\\|_2 \\ll \\frac{1}{(\\log n)^{c}}\\]for some constant $c>1$. Erd\\H{o}s \\cite{Er49d} proved that the conclusion holds if\\[\\| f-f_n\\|_2 \\ll \\frac{1}{(\\log\\log n)^{c}}\\]for some constant $c>1$. Matsuyama \\cite{Ma66} improved this to $c>1/2$.\n\nIn \\cite{Er64b} Erd\\H{o}s asked whether the conclusion holds for all bounded functions $f$ and lacunary sequences $n_k$.\n\n\n\n\nReferences\n\n\n[Er49d] Erd\\H{o}s, P., On the strong law of large numbers. Trans. Amer. Math. Soc. (1949), 51--56.\n\n[Er64b] Erd\\H{o}s, P., Problems and results on diophantine approximations. Compositio Math. (1964), 52-65.\n\n[KSZ48] Kac, M. and Salem, R. and Zygmund, A., A gap theorem. Trans. Amer. Math. Soc. (1948), 235--243.\n\n[Ma66] Matsuyama, Noboru, On the strong law of large numbers. Tohoku Math. J. (2) (1966), 259--269.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #996 sits at the intersection of harmonic analysis, probability theory, and ergodic theory. It concerns the strong law of large numbers for sequences evaluated along lacunary (exponentially growing) subsequences.\n\nThe problem has a rich history of incremental improvements:\n- **Raikov**: Proved the strong law for geometric sequences nₖ = aᵏ unconditionally\n- **Kac-Salem-Zygmund (1948)**: First general result for lacunary sequences, requiring Fourier error decay O(1/(log n)^c) for c > 1\n- **Erdős (1949)**: Improved to O(1/(log log n)^c) for c > 1\n- **Matsuyama (1966)**: Further improved the exponent to c > 1/2\n\nThe open question asks whether we can push to log log log decay.",
+    "problemStatement": "Let n₁ < n₂ < ... be a lacunary sequence of integers, and let f ∈ L²([0,1]). Let fₙ be the nth Fourier partial sum of f.\n\n**Question**: Is there an absolute constant C > 0 such that if\n$$ \\|f - f_n\\|_2 \\ll \\frac{1}{(\\log\\log\\log n)^C} $$\nthen for almost every α:\n$$ \\lim_{N\\to\\infty} \\frac{1}{N}\\sum_{k\\leq N} f(\\{\\alpha n_k\\}) = \\int_0^1 f(x)\\,dx $$\n\n**Status**: OPEN\n\n**Known**: log log decay with exponent c > 1/2 suffices (Matsuyama 1966)",
+    "proofStrategy": "We formalize the problem by:\n\n1. **Lacunary sequences**: Sequences with n(k+1)/n(k) ≥ λ > 1 (exponential gaps)\n2. **Fourier partial sums**: The best L² approximation using frequencies -N to N\n3. **Ergodic averages**: (1/N) Σₖ f({α·nₖ}) along the lacunary sequence\n4. **Strong law**: Ergodic average → space average for a.e. α\n5. **Known results**: Axiomatize Raikov, KSZ, Erdős, Matsuyama\n6. **Open question**: Formalize the log log log decay question\n\nThe key insight is that lacunary sequences have quasi-independence, allowing probabilistic tools to apply.",
+    "keyInsights": [
+      "**Lacunary sequences**: A sequence n₁ < n₂ < ... with n(k+1)/n(k) ≥ λ > 1. Examples: 2^k, 3^k. The gaps grow exponentially.",
+      "**Quasi-independence**: The fractional parts {α·nₖ} behave almost like independent random variables, enabling the law of large numbers.",
+      "**Fourier decay**: How fast ‖f - fₙ‖₂ → 0 measures the smoothness of f. Smoother functions have faster decay.",
+      "**The decay hierarchy**: log → log log → log log log. Each step is a weaker condition, and we're asking if the weakest suffices.",
+      "**Matsuyama's improvement**: Reduced the exponent from c > 1 to c > 1/2 for log log decay, a significant strengthening."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "lacunary",
+      "title": "Lacunary Sequences",
+      "startLine": 50,
+      "endLine": 79,
+      "summary": "Definition and examples of lacunary sequences."
+    },
+    {
+      "id": "fourier",
+      "title": "Fourier Series and Partial Sums",
+      "startLine": 81,
+      "endLine": 97,
+      "summary": "Fourier partial sums and L² error."
+    },
+    {
+      "id": "ergodic",
+      "title": "The Ergodic Average",
+      "startLine": 99,
+      "endLine": 112,
+      "summary": "Averaging f along the lacunary orbit."
+    },
+    {
+      "id": "strong-law",
+      "title": "The Strong Law of Large Numbers",
+      "startLine": 114,
+      "endLine": 124,
+      "summary": "Convergence of ergodic averages to the space average."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 126,
+      "endLine": 160,
+      "summary": "Raikov, Kac-Salem-Zygmund, Erdős, Matsuyama."
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "startLine": 162,
+      "endLine": 176,
+      "summary": "Does log log log decay suffice?"
+    },
+    {
+      "id": "related",
+      "title": "Related Questions",
+      "startLine": 178,
+      "endLine": 190,
+      "summary": "Floor powers and bounded functions."
+    },
+    {
+      "id": "decay-hierarchy",
+      "title": "The Decay Hierarchy",
+      "startLine": 192,
+      "endLine": 221,
+      "summary": "log, log log, log log log conditions."
+    },
+    {
+      "id": "quasi-independence",
+      "title": "Why Lacunary Sequences?",
+      "startLine": 223,
+      "endLine": 239,
+      "summary": "Quasi-independence and non-lacunary counterexamples."
+    },
+    {
+      "id": "gap",
+      "title": "The Gap Between Results",
+      "startLine": 241,
+      "endLine": 255,
+      "summary": "What we know vs. what's open."
+    },
+    {
+      "id": "connections",
+      "title": "Connections to Other Areas",
+      "startLine": 257,
+      "endLine": 269,
+      "summary": "Ergodic theory, Diophantine approximation."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 271,
+      "endLine": 299,
+      "summary": "Main theorem combining known results."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #996 on the strong law of large numbers for lacunary sequences. Matsuyama (1966) proved that log log decay with exponent c > 1/2 suffices. The open question asks whether log log log decay (with some power C) also suffices.",
+    "implications": "The problem connects harmonic analysis (Fourier convergence) with probability (law of large numbers) and ergodic theory (equidistribution). The progression from log to log log suggests log log log might work, but this remains unproven.",
+    "openQuestions": [
+      "Does log log log decay with some exponent C suffice?",
+      "What is the optimal exponent for log log decay?",
+      "Does the strong law hold for all bounded functions and lacunary sequences?",
+      "Does it hold for floor powers ⌊aᵏ⌋ with real a > 1?"
+    ]
   }
 }

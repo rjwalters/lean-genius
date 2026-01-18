@@ -1,33 +1,95 @@
 {
   "id": "erdos-202",
-  "title": "Erdős Problem #202",
+  "title": "Erdős #202: Disjoint Covering Systems",
   "slug": "erdos-202",
-  "description": "Let n1&lt;&#x22EF;&lt;nr&#x2264;N\" role=\"presentation\" style=\"position: relative;\">n1⋯nr≤Nn1⋯nr≤Nn_1 with associated ai(modni)\" role=\"presentation\" style=\"position: relative;\">ai(modni)ai(modni)a_i...",
+  "description": "How many disjoint congruence classes can have moduli bounded by N? Bounds involve L(N) = exp(√(log N · log log N)).",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Endre Szemerédi",
     "sourceUrl": "https://erdosproblems.com/202",
-    "date": "",
-    "status": "pending",
+    "date": "1968",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos202Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "covering-systems",
+      "combinatorics"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 13,
     "erdosNumber": 202,
     "erdosUrl": "https://erdosproblems.com/202",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #202 from erdosproblems.com.",
-    "problemStatement": "Let n1&lt;&#x22EF;&lt;nr&#x2264;N\" role=\"presentation\" style=\"position: relative;\">n1⋯nr≤Nn1⋯nr≤Nn_1 with associated ai(modni)\" role=\"presentation\" style=\"position: relative;\">ai(modni)ai(modni)a_i\\pmod{n_i} such that the congruence classes are disjoint (that is, every integer is &#x2261;ai(modni)\" role=\"presentation\" style=\"position: relative;\">≡ai(modni)≡ai(modni)\\equiv a_i\\pmod{n_i} for at most one 1&#x2264;i&#x2264;r\" role=\"presentation\" style=\"position: relative;\">1≤i≤r1≤i≤r1\\leq i\\leq r). How large can r\" role=\"presentation\" style=\"position: relative;\">rrr be in terms of N\" role=\"presentation\" style=\"position: relative;\">NNN?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős and Stein conjectured f(N) = o(N), proved by Erdős-Szemerédi in 1968. Subsequent work by Croot (2003), Chen (2005), and de la Bretèche-Ford-Vandehey (2013) refined the bounds. The function L(N) = exp(√(log N · log log N)) plays a central role.",
+    "problemStatement": "Let n₁ < ⋯ < n_r ≤ N with disjoint congruence classes a_i (mod n_i). Define f(N) = maximum r. What is f(N) asymptotically?",
+    "proofStrategy": "We formalize congruence classes, disjoint systems, and the function f(N). The L function is defined and its growth properties stated. The historical progression of bounds from Erdős-Szemerédi through BFV is captured.",
+    "keyInsights": [
+      "Erdős-Stein Conjecture f(N) = o(N) was proved in 1968",
+      "The key function is L(N) = exp(√(log N · log log N))",
+      "Current bounds: N/L(N)^{1+o(1)} < f(N) < N/L(N)^{√3/2+o(1)}",
+      "The lower bound is conjectured to be tight"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "congruence-classes",
+      "title": "Congruence Classes",
+      "summary": "Structure for residue classes and membership predicate",
+      "startLine": 37,
+      "endLine": 51
+    },
+    {
+      "id": "disjoint-systems",
+      "title": "Disjoint Systems",
+      "summary": "Finite sets of pairwise disjoint congruence classes",
+      "startLine": 53,
+      "endLine": 70
+    },
+    {
+      "id": "f-function",
+      "title": "The Function f(N)",
+      "summary": "Maximum size of a disjoint system with moduli ≤ N",
+      "startLine": 72,
+      "endLine": 80
+    },
+    {
+      "id": "l-function",
+      "title": "The L Function",
+      "summary": "L(N) = exp(√(log N · log log N)) and its growth properties",
+      "startLine": 92,
+      "endLine": 111
+    },
+    {
+      "id": "erdos-stein",
+      "title": "Erdős-Stein Conjecture",
+      "summary": "f(N) = o(N), proved by Erdős-Szemerédi 1968",
+      "startLine": 113,
+      "endLine": 127
+    },
+    {
+      "id": "modern-bounds",
+      "title": "Modern Bounds",
+      "summary": "Current best: N/L(N)^{1+o(1)} < f(N) < N/L(N)^{√3/2+o(1)}",
+      "startLine": 129,
+      "endLine": 162
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Density",
+      "summary": "Concrete examples and density constraints",
+      "startLine": 164,
+      "endLine": 178
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #202 on disjoint covering systems. While the Erdős-Stein conjecture f(N) = o(N) is proved, the exact asymptotics remain open. The gap between L(N)^{1+o(1)} and L(N)^{√3/2+o(1)} in the exponent is the main open question.",
+    "implications": "Understanding disjoint covering systems has connections to number theory, particularly the distribution of primes in arithmetic progressions. The L function appears in many related problems.",
+    "openQuestions": [
+      "Is f(N) = N/L(N)^{1+o(1)} (matching the lower bound)?",
+      "What is the exact exponent in the L(N) term?",
+      "Are there structural constraints on extremal disjoint systems?"
+    ]
   }
 }

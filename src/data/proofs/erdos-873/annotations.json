@@ -1,1 +1,101 @@
-[]
+[
+  {
+    "id": "ann-e873-header",
+    "proofId": "erdos-873",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "concept",
+    "title": "Problem Statement and History",
+    "content": "**Erdős Problem #873** asks about the LCM of consecutive terms in sequences. Given a strictly increasing sequence A ⊆ ℕ and a counting function F(A,X,k) that counts k-tuples with LCM < X, can we always find k large enough to make F(A,X,k) < X^ε for any ε > 0?\n\nThis is an **OPEN** problem posed by Erdős and Szemerédi.",
+    "mathContext": "The LCM of consecutive terms measures multiplicative dependence. If terms share prime factors, their LCM is relatively small. The conjecture asks whether increasing the window size k can always reduce the count of 'small LCM' tuples.",
+    "significance": "critical",
+    "relatedConcepts": ["lcm", "sequences", "multiplicative-structure", "erdos-szemeredi"]
+  },
+  {
+    "id": "ann-e873-imports",
+    "proofId": "erdos-873",
+    "range": { "startLine": 25, "endLine": 29 },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "We import **Mathlib** for LCM operations on finite sets (`Finset.lcm`), extended natural cardinality (`Set.encard`), and real number operations.",
+    "mathContext": "The key structure is `Finset.lcm` which computes the LCM over a finite set of natural numbers, and `Set.encard` for counting potentially infinite sets.",
+    "significance": "supporting",
+    "relatedConcepts": ["mathlib", "finset", "lcm"]
+  },
+  {
+    "id": "ann-e873-consecutive-lcm",
+    "proofId": "erdos-873",
+    "range": { "startLine": 38, "endLine": 41 },
+    "type": "definition",
+    "title": "Consecutive LCM Definition",
+    "content": "**consecutiveLcm(a, i, k)** computes the LCM of k consecutive terms of sequence a, starting at position i:\n\n[aᵢ, aᵢ₊₁, ..., aᵢ₊ₖ₋₁]\n\nThis is implemented as `(Finset.range k).lcm (fun m => a (i + m))`.",
+    "mathContext": "The LCM of k numbers equals their product divided by their GCD structure. For coprime numbers, LCM = product; for numbers with shared factors, LCM is smaller.",
+    "significance": "critical",
+    "relatedConcepts": ["lcm", "finset", "consecutive-terms"]
+  },
+  {
+    "id": "ann-e873-counting-function",
+    "proofId": "erdos-873",
+    "range": { "startLine": 43, "endLine": 46 },
+    "type": "definition",
+    "title": "The Counting Function F(A,X,k)",
+    "content": "**F(a, X, k)** counts positions i where the LCM of k consecutive terms is less than X. This is the central quantity in the Erdős-Szemerédi problem.\n\nReturns an extended natural number (ℕ∞) to handle potentially infinite counts.",
+    "mathContext": "We use `Set.encard` (extended cardinality) because for some sequences and parameters, infinitely many positions might qualify.",
+    "significance": "critical",
+    "relatedConcepts": ["counting", "encard", "threshold"]
+  },
+  {
+    "id": "ann-e873-monotonicity",
+    "proofId": "erdos-873",
+    "range": { "startLine": 56, "endLine": 75 },
+    "type": "theorem",
+    "title": "Monotonicity Properties",
+    "content": "Two key monotonicity results:\n\n1. **LCM grows with k**: consecutiveLcm(a,i,k₁) | consecutiveLcm(a,i,k₂) when k₁ ≤ k₂. More terms can only increase the LCM.\n\n2. **F decreases with k**: F(a,X,k₂) ≤ F(a,X,k₁) when k₁ ≤ k₂. Larger windows mean fewer qualifying positions.",
+    "mathContext": "The divisibility follows from the fact that LCM over a subset divides LCM over a superset. The F monotonicity follows because larger LCMs are less likely to fall below threshold X.",
+    "significance": "supporting",
+    "relatedConcepts": ["monotonicity", "divisibility", "window-size"]
+  },
+  {
+    "id": "ann-e873-conjecture",
+    "proofId": "erdos-873",
+    "range": { "startLine": 84, "endLine": 94 },
+    "type": "theorem",
+    "title": "The Main Conjecture (OPEN)",
+    "content": "**The Erdős-Szemerédi Conjecture**: For any strictly increasing sequence A and any ε > 0, there exists k such that F(A,X,k) < X^ε.\n\nIn words: by looking at long enough windows of consecutive terms, we can always make the count of small-LCM tuples grow slower than any polynomial.",
+    "mathContext": "The conjecture asserts that multiplicative dependence between consecutive terms is always 'bounded' - no sequence can have too many consecutive tuples with small LCM when the window is large enough.",
+    "significance": "critical",
+    "relatedConcepts": ["open-problem", "subpolynomial", "window-size"]
+  },
+  {
+    "id": "ann-e873-upper-bound",
+    "proofId": "erdos-873",
+    "range": { "startLine": 102, "endLine": 108 },
+    "type": "theorem",
+    "title": "Erdős-Szemerédi Upper Bound",
+    "content": "**Known result**: For k = 3 and any sequence A, we have F(A,X,3) ≪ X^(1/3) log X.\n\nThis shows the exponent 1/3 is achievable for 3-term windows. Stated as an axiom since the proof requires deep number-theoretic analysis.",
+    "mathContext": "The X^(1/3) factor comes from counting solutions to a*b*c being 'smooth' (having small prime factors). The log X factor accounts for multiplicity.",
+    "significance": "critical",
+    "relatedConcepts": ["axiom", "upper-bound", "k-equals-3"]
+  },
+  {
+    "id": "ann-e873-lower-bound",
+    "proofId": "erdos-873",
+    "range": { "startLine": 110, "endLine": 116 },
+    "type": "theorem",
+    "title": "Erdős-Szemerédi Lower Bound",
+    "content": "**Tightness**: There exists a sequence A with F(A,X,3) ≫ X^(1/3) log X for infinitely many X.\n\nThis shows the upper bound is essentially optimal for k = 3. The gap to the conjecture is whether larger k can achieve any exponent.",
+    "mathContext": "The construction of extremal sequences uses number-theoretic techniques to maximize the count of small-LCM triples.",
+    "significance": "supporting",
+    "relatedConcepts": ["axiom", "lower-bound", "tightness"]
+  },
+  {
+    "id": "ann-e873-examples",
+    "proofId": "erdos-873",
+    "range": { "startLine": 122, "endLine": 144 },
+    "type": "theorem",
+    "title": "Verified Examples",
+    "content": "We verify LCM behavior for specific sequences:\n\n1. **Natural numbers**: [6,7] = 42 since gcd(6,7) = 1, so LCM = product.\n\n2. **Powers of 2**: [2³, 2⁴] = 2⁴ since 2³ | 2⁴, so LCM = larger term.\n\nThese examples illustrate the two extremes: coprime terms (LCM = product) and divisible terms (LCM = max).",
+    "mathContext": "For consecutive natural numbers n, n+1, we always have gcd = 1, so LCM = n(n+1). For geometric sequences like 2^k, each term divides the next.",
+    "significance": "supporting",
+    "relatedConcepts": ["examples", "coprime", "divisibility"]
+  }
+]

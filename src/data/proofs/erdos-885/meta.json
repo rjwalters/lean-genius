@@ -1,33 +1,126 @@
 {
   "id": "erdos-885",
-  "title": "Erdős Problem #885",
+  "title": "Erdős Problem #885: Common Factor Difference Sets",
   "slug": "erdos-885",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor integer ... we define the factor difference set of ... by\\[D(n) = \\{\\lvert a-b\\rvert : n=ab\\}.\\]Is it true that, for ever...",
+  "description": "For n ≥ 1, define D(n) = {|a - b| : n = ab}. For every k ≥ 1, do there exist integers N₁ < ... < Nₖ with |∩ᵢ D(Nᵢ)| ≥ k? Solved for k ≤ 4; OPEN for k ≥ 5.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Rosenfeld (1997), Jiménez-Urroz (1999), Bremner (2019)",
     "sourceUrl": "https://erdosproblems.com/885",
-    "date": "",
-    "status": "pending",
+    "date": "1997",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos885Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "factorization",
+      "divisors",
+      "combinatorics"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 885,
     "erdosUrl": "https://erdosproblems.com/885",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.natAbs",
+        "description": "Absolute value for integers as natural number",
+        "module": "Mathlib.Data.Int.Abs"
+      },
+      {
+        "theorem": "Nat.divisors",
+        "description": "Divisors of a natural number",
+        "module": "Mathlib.Data.Nat.Divisors"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of sets as natural numbers",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "Definition of factor difference sets D(n)",
+      "Definition of k-common sets",
+      "Axiomatization of the Erdős-Rosenfeld conjecture",
+      "Solved cases: k = 2, 3, 4",
+      "Open case: k ≥ 5",
+      "Connection to divisor structure",
+      "Verified examples for D(6) and D(12)"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #885 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor integer $n\\geq 1$ we define the factor difference set of $n$ by\\[D(n) = \\{\\lvert a-b\\rvert : n=ab\\}.\\]Is it true that, for every $k\\geq 1$, there exist integers $N_1<\\cdots<N_k$ such that\\[\\lvert \\cap_i D(N_i)\\rvert \\geq k?\\]\n\n\n\nA question of Erd\\H{o}s and Rosenfeld \\cite{ErRo97}, who proved this is true for $k=2$. Jim\\'{e}nez-Urroz \\cite{Ji99} proved this for $k=3$ and Bremner \\cite{Br19} proved this for $k=4$.\n\n\n\n\nReferences\n\n\n[Br19] Bremner, Andrew, On a problem of Erd\\H{o}s related to common factor\ndifferences. Int. J. Number Theory (2019), 1059--1068.\n\n[ErRo97] Erd\\H{o}s, Paul and Rosenfeld, Moshe, The factor-difference set of integers. Acta Arith. (1997), 353--359.\n\n[Ji99] Jim\\'{e}nez-Urroz, Jorge, A note on a conjecture of Erd\\H{o}s and {R}osenfeld. J. Number Theory (1999), 140--143.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "The **factor difference set** D(n) was introduced by Erdős and Rosenfeld in 1997 to study the arithmetic structure of integers through their factorizations.\n\n**Definition**: D(n) = {|a - b| : n = ab}\n\nFor example:\n- D(12) = {11, 4, 1} from factorizations 1×12, 2×6, 3×4\n- D(6) = {5, 1} from factorizations 1×6, 2×3\n\n**Timeline of Results**:\n- 1997: Erdős-Rosenfeld prove k = 2\n- 1999: Jiménez-Urroz proves k = 3\n- 2019: Bremner proves k = 4\n- 2019+: k ≥ 5 remains OPEN\n\nThe difficulty increases exponentially with k because finding integers with large D(n) intersections requires coordinating many divisibility constraints.",
+    "problemStatement": "For integer $n \\geq 1$, define the **factor difference set** of $n$ by\n$$D(n) = \\{|a - b| : n = ab\\}$$\n\n**Erdős Problem #885**: Is it true that for every $k \\geq 1$, there exist integers $N_1 < \\cdots < N_k$ such that\n$$|\\bigcap_i D(N_i)| \\geq k?$$\n\n**Status by k**:\n- $k = 2$: SOLVED (Erdős-Rosenfeld 1997)\n- $k = 3$: SOLVED (Jiménez-Urroz 1999)\n- $k = 4$: SOLVED (Bremner 2019)\n- $k \\geq 5$: **OPEN**",
+    "proofStrategy": "We formalize this problem by:\n\n1. **Factor difference set**: D(n) = {|a - b| : n = ab} as a set of natural numbers\n\n2. **k-common sets**: A Finset of k positive integers whose D(n) sets share ≥ k elements\n\n3. **Main conjecture**: For all k ≥ 1, a k-common set exists\n\n4. **Solved cases**: Axiomatize results for k = 2, 3, 4\n\n5. **Properties**: Connection to divisors, cardinality formulas, and examples\n\n6. **Verified computations**: Show specific elements in D(6) and D(12)",
+    "keyInsights": [
+      "**D(n) size**: |D(n)| = ⌈d(n)/2⌉ where d(n) is the number of divisors. Highly composite numbers have larger D(n).",
+      "**Why finding intersections is hard**: D(n) grows slowly (logarithmically in n), so finding k integers with k common differences requires careful construction.",
+      "**The role of highly composite numbers**: Numbers like 12, 24, 60, 120 with many divisors are natural candidates for building k-common sets.",
+      "**Computational barrier**: For k = 4, Bremner needed sophisticated search algorithms. For k = 5+, no construction is known.",
+      "**Connection to Diophantine equations**: Finding k-common sets reduces to solving systems of equations about factorizations."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 38,
+      "endLine": 41,
+      "summary": "The factor difference set D(n) captures absolute differences between factor pairs."
+    },
+    {
+      "id": "properties",
+      "title": "Basic Properties",
+      "startLine": 43,
+      "endLine": 60,
+      "summary": "D(n) for perfect squares contains 0; D(n) always contains n-1; special cases for D(1) and D(p)."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 69,
+      "endLine": 80,
+      "summary": "Definition of k-common sets and the Erdős-Rosenfeld conjecture."
+    },
+    {
+      "id": "solved",
+      "title": "Solved Cases",
+      "startLine": 82,
+      "endLine": 104,
+      "summary": "Results for k = 2 (1997), k = 3 (1999), k = 4 (2019)."
+    },
+    {
+      "id": "open",
+      "title": "The Open Case: k ≥ 5",
+      "startLine": 106,
+      "endLine": 119,
+      "summary": "The conjecture remains open for all k ≥ 5."
+    },
+    {
+      "id": "computational",
+      "title": "Computational Properties",
+      "startLine": 121,
+      "endLine": 145,
+      "summary": "Cardinality formula and connection to divisor structure."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 147,
+      "endLine": 180,
+      "summary": "Specific elements in D(6) and D(12), and their intersection."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #885 about common factor difference sets. The problem asks whether for every k ≥ 1, there exist k integers whose factor difference sets share at least k elements. This has been proven for k ≤ 4 but remains OPEN for k ≥ 5.",
+    "implications": "This problem connects to the multiplicative structure of integers. Understanding which factor differences can be shared across multiple integers illuminates the relationship between divisibility and arithmetic properties of factorizations.",
+    "openQuestions": [
+      "Does there exist a 5-common set? (The next unsolved case)",
+      "Is the conjecture true for all k? (The full problem)",
+      "What is the growth rate of the smallest integers achieving k-common sets?",
+      "Is there a theoretical obstruction for large k, or just computational difficulty?"
+    ]
   }
 }

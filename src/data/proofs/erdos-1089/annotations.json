@@ -1,1 +1,245 @@
-[]
+[
+  {
+    "id": "ann-1089-point",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 44, "endLine": 45 },
+    "type": "definition",
+    "title": "Point in ℝ^d",
+    "content": "A point in d-dimensional Euclidean space, represented as EuclideanSpace ℝ (Fin d). This is the standard Mathlib representation of ℝ^d.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1089-dist",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "definition",
+    "title": "Euclidean Distance",
+    "content": "The Euclidean distance between two points p, q in ℝ^d, defined as ‖p - q‖. This is the standard 2-norm distance.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1089-distinctdist",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 51, "endLine": 53 },
+    "type": "definition",
+    "title": "Distinct Distances Set",
+    "content": "The set of distinct positive distances determined by a point set P. Computed by taking all pairs, computing distances, and filtering to positive values (to exclude self-distances).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1089-numdist",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 55, "endLine": 57 },
+    "type": "definition",
+    "title": "Number of Distinct Distances",
+    "content": "The cardinality of the distinct distances set. This is the central quantity: how many different distances appear among pairs of points.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1089-determines",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 65, "endLine": 67 },
+    "type": "definition",
+    "title": "Determines n Distances",
+    "content": "A point set P 'determines at least n distinct distances' if numDistinctDistances P ≥ n. This predicate is used to define the threshold function g.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1089-gdef",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 69, "endLine": 71 },
+    "type": "definition",
+    "title": "The Function g_d(n)",
+    "content": "g(d, n) is the infimum of m such that EVERY m-point set in ℝ^d determines at least n distinct distances. This is the central object of study.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1089-welldef",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 73, "endLine": 75 },
+    "type": "theorem",
+    "title": "g is Well-Defined",
+    "content": "For n ≥ 1, the threshold g_d(n) exists as a finite number. Taken as an axiom since the proof requires showing the set is nonempty and bounded.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1089-g13",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 83, "endLine": 84 },
+    "type": "theorem",
+    "title": "g_1(3) = 4",
+    "content": "Four points on a line give exactly 3 distinct distances (in optimal configuration). Any 3 points give ≤ 2 distances. This is the 1-dimensional base case.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1089-g23",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 86, "endLine": 87 },
+    "type": "theorem",
+    "title": "g_2(3) = 6",
+    "content": "Six points in the plane guarantee 3 distinct distances. Any 5 points can have only 2 distances (vertices of regular pentagon plus center, carefully arranged).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1089-g33",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 89, "endLine": 90 },
+    "type": "theorem",
+    "title": "g_3(3) = 7 (Croft 1962)",
+    "content": "Croft proved seven points in 3-space guarantee 3 distinct distances. This required careful analysis of 6-point configurations in ℝ³ with only 2 distances.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1089-gd1",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 92, "endLine": 94 },
+    "type": "theorem",
+    "title": "g_d(1) = 2",
+    "content": "Trivially, any two distinct points determine exactly 1 distance. So g_d(1) = 2 for all d ≥ 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1089-gd2",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 96, "endLine": 97 },
+    "type": "theorem",
+    "title": "g_d(2) = 3",
+    "content": "Three points determine at least 2 distinct distances (unless collinear and equispaced, which still gives 1). So g_d(2) = 3 for d ≥ 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1089-cube",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 105, "endLine": 106 },
+    "type": "definition",
+    "title": "Cube Vertices",
+    "content": "The vertices of the d-dimensional unit cube {0,1}^d. This is the key construction for lower bounds.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1089-cubecard",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 108, "endLine": 109 },
+    "type": "theorem",
+    "title": "Cube Has 2^d Vertices",
+    "content": "The d-dimensional unit cube has exactly 2^d vertices. Each vertex is a binary string of length d.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1089-cubedist",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 111, "endLine": 113 },
+    "type": "theorem",
+    "title": "Cube Distance Bound",
+    "content": "The vertices of the d-cube have at most d distinct distances: √1, √2, ..., √d. Two vertices differing in k coordinates have distance √k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1089-cubelower",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 115, "endLine": 117 },
+    "type": "theorem",
+    "title": "Cube Lower Bound",
+    "content": "g_d(d+1) > 2^d: the cube's 2^d vertices have only d distances, so we need more than 2^d points to guarantee d+1 distances.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1089-erdoslower",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 119, "endLine": 121 },
+    "type": "theorem",
+    "title": "Erdős Lower Bound",
+    "content": "g_d(n) ≥ c·d^{n-1} for some constant c > 0. Erdős wrote this is 'easy' to prove. This establishes polynomial growth in d.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1089-upper",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 129, "endLine": 132 },
+    "type": "theorem",
+    "title": "Erdős-Straus Upper Bound",
+    "content": "g_d(n) ≤ c^{d^{1-b_n}} for constants c > 1 and b_n > 0 depending on n. This is much larger than d^{n-1}, leaving a huge gap.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1089-ratio",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 140, "endLine": 142 },
+    "type": "definition",
+    "title": "Normalized Ratio",
+    "content": "gRatio(d, n) = g_d(n) / d^{n-1}. The main question asks whether this ratio converges as d → ∞ for fixed n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1089-conj",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 144, "endLine": 146 },
+    "type": "conjecture",
+    "title": "Main Conjecture",
+    "content": "For each fixed n, does lim_{d→∞} g_d(n)/d^{n-1} exist? This asks whether the ratio converges to some finite limit L.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1089-bounded",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 148, "endLine": 150 },
+    "type": "definition",
+    "title": "Ratio is Bounded",
+    "content": "A weaker question: is gRatio(d, n) bounded above? The lower bound shows it's bounded below, but is there an upper bound?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1089-belowbound",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 152, "endLine": 156 },
+    "type": "theorem",
+    "title": "Ratio Bounded Below",
+    "content": "From Erdős's lower bound, gRatio(d, n) ≥ c for all d ≥ 1 and some c > 0. The ratio doesn't go to zero.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1089-monon",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 164, "endLine": 166 },
+    "type": "theorem",
+    "title": "Monotonicity in n",
+    "content": "g_d(n) is increasing in n: requiring more distances needs at least as many points. If n₁ ≤ n₂ then g_d(n₁) ≤ g_d(n₂).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1089-monod",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 168, "endLine": 170 },
+    "type": "theorem",
+    "title": "Monotonicity in d",
+    "content": "g_d(n) is generally increasing in d for n ≥ 2: higher dimensions allow more points with few distances. If d₁ ≤ d₂ then g_{d₁}(n) ≤ g_{d₂}(n).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1089-fdef",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 178, "endLine": 180 },
+    "type": "definition",
+    "title": "The Function f_d(n)",
+    "content": "f_d(n) = max distinct distances achievable by n points in ℝ^d. This is the inverse perspective from problem #1083.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1089-inverse",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 182, "endLine": 184 },
+    "type": "theorem",
+    "title": "g and f Relationship",
+    "content": "g_d(n) = min{m : f_d(m) ≥ n}. The threshold function g is the inverse of the maximum function f. Problem #1089 studies g for fixed n, #1083 studies f.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1089-open",
+    "proofId": "erdos-1089",
+    "range": { "startLine": 192, "endLine": 194 },
+    "type": "conjecture",
+    "title": "The Open Problem",
+    "content": "erdos1089OpenProblem: for all n ≥ 2, does gRatio(d, n) converge as d → ∞? This remains unresolved despite known bounds.",
+    "significance": "critical"
+  }
+]

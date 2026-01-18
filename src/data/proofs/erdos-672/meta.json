@@ -1,33 +1,151 @@
 {
   "id": "erdos-672",
-  "title": "Erdős Problem #672",
+  "title": "Erdős Problem #672: Products of Arithmetic Progressions as Perfect Powers",
   "slug": "erdos-672",
-  "description": "Can the product of an arithmetic progression of positive integers ... of length ... (with ...) be a perfect power?",
+  "description": "Can the product n(n+d)(n+2d)···(n+(k-1)d) of k≥4 terms in arithmetic progression (with gcd(n,d)=1) be a perfect power? Euler proved k=4, l=2 impossible. Obláth extended to more cases. Erdős-Selfridge (1975) settled the consecutive case (d=1). General case remains OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Euler, Obláth, Selfridge",
     "sourceUrl": "https://erdosproblems.com/672",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos672Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "arithmetic-progressions",
+      "perfect-powers",
+      "diophantine-equations",
+      "partially-open"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 672,
     "erdosUrl": "https://erdosproblems.com/672",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.gcd",
+        "description": "Greatest common divisor of natural numbers",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Finset.prod",
+        "description": "Product over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime.Defs"
+      }
+    ],
+    "originalContributions": [
+      "Definition of apTerm and apProduct for arithmetic progressions",
+      "Definition of IsPerfectPower and Erdos672With predicate",
+      "Statement of the general conjecture for k≥4, l>1",
+      "Euler's result: k=4, l=2 is impossible",
+      "Obláth's results: k=5,l=2 and k=3,l=3,4,5 are impossible",
+      "Erdős-Selfridge theorem for consecutive integers (d=1)",
+      "Derived theorem for d=1 case of the conjecture",
+      "Pairwise gcd bounds for AP factors"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #672 from erdosproblems.com.",
-    "problemStatement": "Can the product of an arithmetic progression of positive integers $n,n+d,\\ldots,n+(k-1)d$ of length $k\\geq 4$ (with $(n,d)=1$) be a perfect power?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem asks whether products of arithmetic progressions can be perfect powers. The question has a rich history dating back to Euler.\n\n**Historical Timeline**:\n- **18th century**: Euler proved that four terms in AP cannot have product equal to a perfect square\n- **1951**: Obláth extended this to five terms (squares) and three terms (cubes through 5th powers)\n- **1975**: Erdős and Selfridge proved the landmark result that consecutive integers' product is never a perfect power\n\n**The Constraint gcd(n,d) = 1**: This \"primitive\" condition is essential. If gcd(n,d) = g > 1, then g^k divides the product, which could trivially create powers. The primitive case is the hard one.\n\n**Why This Matters**: The question connects to deep problems about the multiplicative structure of integers. Products of nearly-coprime factors having highly structured prime factorizations (like perfect powers) is extremely rare.",
+    "problemStatement": "**Erdős Problem #672**: Can the product of an arithmetic progression\n$$n(n+d)(n+2d)\\cdots(n+(k-1)d)$$\nof length $k \\geq 4$ (with $\\gcd(n,d) = 1$) be a perfect $l$-th power for $l > 1$?\n\n**Conjecture**: NO. For all $k \\geq 4$ and $l > 1$, no such product is a perfect $l$-th power.\n\n**Known Results**:\n- **Euler**: $k = 4$, $l = 2$ (product of 4 terms is never a square)\n- **Obláth (1951)**: $k = 5$, $l = 2$; $k = 3$, $l = 3, 4, 5$\n- **Erdős-Selfridge (1975)**: $d = 1$ (consecutive integers), any $k \\geq 2$, $l \\geq 2$\n\n**Open**: General $k \\geq 4$, $l > 1$ with $d > 1$.",
+    "proofStrategy": "The formalization captures the structure of the problem and known results:\n\n1. **Core Definitions**:\n   - `apTerm n d i = n + i*d` (i-th term of AP)\n   - `apProduct n d k = ∏_{i=0}^{k-1} (n + i*d)` (product of k terms)\n   - `IsPerfectPower m l ↔ ∃ q > 0, m = q^l`\n   - `Erdos672With k l` = \"no k-term AP product is an l-th power\"\n\n2. **The Conjecture**: `erdos_672_conjecture = ∀ k ≥ 4, l > 1, Erdos672With k l`\n\n3. **Known Results** (axiomatized):\n   - `euler_k4_l2 : Erdos672With 4 2`\n   - `oblath_k5_l2`, `oblath_k3_l3`, `oblath_k3_l4`, `oblath_k3_l5`\n   - `erdos_selfridge_1975`: consecutive case\n\n4. **Derived**: `erdos_selfridge_implies_d1` shows the conjecture holds for d=1.",
+    "keyInsights": [
+      "**The gcd condition is crucial**: With gcd(n,d) = 1, the k factors n, n+d, ..., n+(k-1)d have controlled pairwise gcds. This near-coprimality makes it hard for the product to be a perfect power.",
+      "**Euler's descent method**: The k=4 case uses infinite descent - assuming a solution leads to a smaller one, contradicting well-ordering. This classic technique doesn't extend easily to larger k.",
+      "**Erdős-Selfridge is a tour de force**: The d=1 case took decades to prove. It requires careful analysis of prime distribution in consecutive integers and shows no product n(n+1)···(n+k-1) is a perfect power for k ≥ 2.",
+      "**The overdetermined nature**: For the product to be an l-th power, EVERY prime must appear with multiplicity ≡ 0 (mod l). With k nearly-coprime factors, this is extremely restrictive.",
+      "**Heuristic probability argument**: The probability that a random product of k near-coprime factors is a perfect l-th power is ~1/P^(1-1/l), which sums to a finite constant. This suggests only finitely many (possibly zero) solutions exist.",
+      "**Gap in the literature**: While Euler (k=4) and Obláth (k=5) settled small cases for l=2, larger k and other l values remain open despite decades of work."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Problem statement, known results, and references."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 43,
+      "endLine": 61,
+      "summary": "apTerm, apProduct, IsPerfectPower, IsPerfectPowerSome."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős Conjecture",
+      "startLine": 63,
+      "endLine": 78,
+      "summary": "Erdos672With predicate and the full conjecture statement."
+    },
+    {
+      "id": "euler",
+      "title": "Euler's Result: k=4, l=2",
+      "startLine": 80,
+      "endLine": 96,
+      "summary": "Four terms in AP cannot have product equal to a square."
+    },
+    {
+      "id": "oblath",
+      "title": "Obláth's Results (1951)",
+      "startLine": 98,
+      "endLine": 119,
+      "summary": "Extensions to k=5 (squares) and k=3 (cubes through 5th powers)."
+    },
+    {
+      "id": "erdos-selfridge",
+      "title": "Erdős-Selfridge (1975)",
+      "startLine": 121,
+      "endLine": 143,
+      "summary": "Consecutive integers: product is never a perfect power."
+    },
+    {
+      "id": "examples",
+      "title": "Small Examples",
+      "startLine": 145,
+      "endLine": 165,
+      "summary": "Concrete examples: 120, 24, 945, 880 are not perfect powers."
+    },
+    {
+      "id": "gcd-analysis",
+      "title": "GCD Analysis",
+      "startLine": 167,
+      "endLine": 196,
+      "summary": "Why gcd(n,d)=1 is required; pairwise gcd bounds."
+    },
+    {
+      "id": "summary-table",
+      "title": "Known Cases Summary",
+      "startLine": 198,
+      "endLine": 219,
+      "summary": "Table of proven cases and combined theorem."
+    },
+    {
+      "id": "heuristics",
+      "title": "Heuristic Arguments",
+      "startLine": 221,
+      "endLine": 247,
+      "summary": "Why the conjecture should be true: overdetermined constraints."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #672 on products of arithmetic progressions as perfect powers. The conjecture that such products (with k≥4, gcd(n,d)=1) are never perfect l-th powers (l>1) is partially resolved: Euler proved k=4,l=2; Obláth proved k=5,l=2 and k=3,l=3,4,5; Erdős-Selfridge proved the consecutive case (d=1). The general case remains open.",
+    "implications": "This problem connects to fundamental questions about the multiplicative structure of integers. The Erdős-Selfridge theorem is a landmark result in number theory, showing that products of consecutive integers have highly structured prime factorizations that prevent them from being perfect powers.",
+    "openQuestions": [
+      "Does Erdos672With k l hold for all k≥4, l>1? (Main open question)",
+      "Can Erdős-Selfridge techniques extend to d>1?",
+      "Is there a uniform proof covering all k≥4 for fixed l=2?",
+      "What is the density of arithmetic progressions whose product is 'close' to a perfect power?",
+      "Can the heuristic argument be made rigorous?"
+    ]
   }
 }

@@ -1,33 +1,148 @@
 {
   "id": "erdos-371",
-  "title": "Erdős Problem #371",
+  "title": "Erdős #371: Density of P(n) < P(n+1)",
   "slug": "erdos-371",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the largest prime factor of .... Show that the set of ... with ... has density ....\n\n\n\nConjectured by Erds and...",
+  "description": "Let P(n) be the largest prime factor of n. Show that {n : P(n) < P(n+1)} has density 1/2. Conditionally solved by Wang (2021); logarithmic density proved by Teräväinen (2018).",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Carl Pomerance, Joni Teräväinen, Terence Tao, Zhiwei Wang",
     "sourceUrl": "https://erdosproblems.com/371",
-    "date": "",
-    "status": "pending",
+    "date": "1978-2021",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos371Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-factors",
+      "density",
+      "analytic-number-theory"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 18,
     "erdosNumber": 371,
     "erdosUrl": "https://erdosproblems.com/371",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #371 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $P(n)$ denote the largest prime factor of $n$. Show that the set of $n$ with $P(n)<P(n+1)$ has density $1/2$.\n\n\n\nConjectured by Erd\\H{o}s and Pomerance \\cite{ErPo78}, who proved that this set and its complement both have positive upper density. The best unconditional lower bound available is due to L\\\"{u} and Wang \\cite{LuWa25}, who prove that\\[\\#\\{ n<x :P(n)<P(n+1)\\} > (0.2017-o(1))x,\\]and the same lower bound for the complement.\n\nIn \\cite{Er79e} Erd\\H{o}s also asks whether, for every $\\alpha$, the density of the set of $n$ where\\[P(n+1)>P(n)n^\\alpha\\]exists.\n\nTer\\\"{a}v\\\"{a}inen \\cite{Te18} has proved that the logarithmic density of the set of $n$ for which $P(n)<P(n+1)$ is $1/2$. Tao and Ter\\\"{a}v\\\"{a}inen \\cite{TaTe19} have proved that the asymptotic density is $1/2$ at 'almost all scales'.\n\nMore generally, for any $0\\leq \\alpha \\leq1$, Ter\\\"{a}v\\\"{a}inen \\cite{Te18} proved that the logarithmic density of the set of $n$ for which $P(n+1)>P(n)n^\\alpha$ exists and is equal to\\[\\int_{[0,1]^2}1_{y\\geq x+\\alpha}u(x)u(y)\\mathrm{d}x\\mathrm{d}y\\]where $u(x)=x^{-1}\\rho(x^{-1}-1)$ and $\\rho$ is the Dickman function. Wang \\cite{Wa21} has proved the same value holds for the asymptotic density (and in particular provided an affirmative answer to the original question) conditional on the Elliott-Halberstam conjecture for friable integers.\n\nThe sequence of such $n$ is A070089 in the OEIS.\n\nSee also [372] and [928].\n\n\n\n\nReferences\n\n\n[Er79e] Erd\\H{o}s, Paul, Some unconventional problems in number theory. Ast\\'{e}risque (1979), 73-82.\n\n[ErPo78] Erd\\H{o}s, Paul and Pomerance, Carl, On the largest prime factors of {$n$} and {$n+1$}. Aequationes Math. (1978), 311-321.\n\n[LuWa25] L\\\"u, Xiaodong and Wang, Zhiwei, On the largest prime factors of consecutive integers. Monatsh. Math. (2025), 403--418.\n\n[TaTe19] Tao, Terence and Ter\\\"{a}v\\\"{a}inen, Joni, The structure of correlations of multiplicative functions at\nalmost all scales, with applications to the {C}howla and\n{E}lliott conjectures. Algebra Number Theory (2019), 2103--2150.\n\n[Te18] Ter\\\"{a}v\\\"{a}inen, Joni, On binary correlations of multiplicative functions. Forum Math. Sigma (2018), Paper No. e10, 41.\n\n[Wa21] Wang, Zhiwei, Three conjectures on {$P^+(n)$} and {$P^+(n+1)$} hold under\nthe {E}lliott-{H}alberstam conjecture for friable integers. J. Number Theory (2021), 1--11.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was conjectured by Erdős and Pomerance in 1978. They proved that both the set {n : P(n) < P(n+1)} and its complement have positive upper density, but couldn't establish the exact density. The problem attracted significant attention from analytic number theorists.\n\nTeräväinen (2018) proved that the logarithmic density is exactly 1/2. Tao and Teräväinen (2019) showed the asymptotic density is 1/2 at 'almost all scales'. Finally, Wang (2021) proved the full result (natural density = 1/2) conditionally on the Elliott-Halberstam conjecture for friable integers.\n\nThe best unconditional lower bound is due to Lü and Wang (2025), who proved that both sets have density at least 0.2017. The sequence of n with P(n) < P(n+1) is A070089 in OEIS.",
+    "problemStatement": "Let P(n) denote the largest prime factor of n. Show that the set {n : P(n) < P(n+1)} has natural density 1/2.\n\n**Status**: Conditionally SOLVED (Wang 2021 under Elliott-Halberstam); Logarithmically SOLVED (Teräväinen 2018)",
+    "proofStrategy": "We formalize the greatest prime factor function P(n), various notions of density (natural, logarithmic, at almost all scales), and the main sets. The key results are axiomatized: Erdős-Pomerance positive upper density, Teräväinen logarithmic density 1/2, Tao-Teräväinen almost all scales, and Wang's conditional full result. We also formalize the generalized problem with parameter α and its connection to the Dickman function.",
+    "keyInsights": [
+      "**Natural density 1/2**: Intuitively, P(n) < P(n+1) should happen about half the time by symmetry",
+      "**Logarithmic density**: Teräväinen proved the logarithmic density (weighting by 1/n) is exactly 1/2",
+      "**Elliott-Halberstam**: Wang's full result requires this deep conjecture about prime distribution",
+      "**Dickman function**: The generalized density formula involves the Dickman function ρ from smooth number theory",
+      "**OEIS A070089**: The sequence 2, 4, 6, 8, 10, ... shows even numbers often appear",
+      "**Related #372, #928**: Connected to questions about P(n)/P(n+1) and consecutive prime factors"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "gpf",
+      "title": "Greatest Prime Factor",
+      "summary": "Definition of P(n) and basic properties",
+      "startLine": 38,
+      "endLine": 65
+    },
+    {
+      "id": "density",
+      "title": "Natural Density",
+      "summary": "Definitions of natural, logarithmic, and lower density",
+      "startLine": 67,
+      "endLine": 88
+    },
+    {
+      "id": "main-sets",
+      "title": "The Main Sets",
+      "summary": "SetPIncreasing and SetPDecreasing partition N≥2",
+      "startLine": 90,
+      "endLine": 105
+    },
+    {
+      "id": "erdos-pomerance",
+      "title": "Erdős-Pomerance (1978)",
+      "summary": "Both sets have positive upper density",
+      "startLine": 107,
+      "endLine": 118
+    },
+    {
+      "id": "lu-wang",
+      "title": "Lü-Wang Lower Bound",
+      "summary": "Unconditional bound: density > 0.2017",
+      "startLine": 120,
+      "endLine": 133
+    },
+    {
+      "id": "teravanen",
+      "title": "Teräväinen (2018)",
+      "summary": "Logarithmic density is exactly 1/2",
+      "startLine": 135,
+      "endLine": 147
+    },
+    {
+      "id": "tao-teravanen",
+      "title": "Tao-Teräväinen (2019)",
+      "summary": "Asymptotic density 1/2 at almost all scales",
+      "startLine": 149,
+      "endLine": 162
+    },
+    {
+      "id": "wang",
+      "title": "Wang (2021)",
+      "summary": "Full result under Elliott-Halberstam",
+      "startLine": 164,
+      "endLine": 175
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "summary": "Natural density is 1/2",
+      "startLine": 177,
+      "endLine": 194
+    },
+    {
+      "id": "generalized",
+      "title": "Generalized Form",
+      "summary": "P(n+1) > P(n)·n^α for α ∈ [0,1]",
+      "startLine": 196,
+      "endLine": 212
+    },
+    {
+      "id": "dickman",
+      "title": "Dickman Function",
+      "summary": "The density kernel and theoretical formula",
+      "startLine": 214,
+      "endLine": 232
+    },
+    {
+      "id": "examples",
+      "title": "Small Examples",
+      "summary": "P(2), P(3), P(4), P(5), P(6) and set membership",
+      "startLine": 234,
+      "endLine": 261
+    },
+    {
+      "id": "related",
+      "title": "Related Problems",
+      "summary": "Connection to problems #372 and #928",
+      "startLine": 263,
+      "endLine": 271
+    },
+    {
+      "id": "oeis",
+      "title": "OEIS Sequence",
+      "summary": "A070089: integers with P(n) < P(n+1)",
+      "startLine": 273,
+      "endLine": 283
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #371 on the density of consecutive integers with increasing largest prime factor. The logarithmic density was proved to be 1/2 by Teräväinen (2018), and the natural density is 1/2 conditionally on the Elliott-Halberstam conjecture (Wang 2021). The unconditional natural density remains open but is known to be at least 0.2017.",
+    "implications": "This problem connects the distribution of prime factors with density theory. The appearance of the Dickman function in the generalized formula links this problem to smooth number theory. The conditional proof via Elliott-Halberstam demonstrates deep connections between prime distribution conjectures and multiplicative function theory.",
+    "openQuestions": [
+      "Prove the natural density is 1/2 unconditionally",
+      "Improve the lower bound beyond 0.2017",
+      "Find the exact density for the generalized problem with specific α values",
+      "Extend to higher consecutive differences: P(n) vs P(n+k)"
+    ]
   }
 }

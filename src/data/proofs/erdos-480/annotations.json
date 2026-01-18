@@ -1,1 +1,145 @@
-[]
+[
+  {
+    "id": "ann-e480-header",
+    "proofId": "erdos-480",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "concept",
+    "title": "Problem Statement and History",
+    "content": "**Erdős Problem #480** asks a deceptively simple question: for any infinite sequence x₁, x₂, ... in [0,1], must there be infinitely many pairs (m, n) with |x_{m+n} - x_m| small?\n\nNewman conjectured the bound 1/(√5·n). Chung and Graham (1984) proved something stronger: the optimal constant is c = 1 + Σ 1/F_{2k} ≈ 2.535, where F_m is the Fibonacci sequence.\n\n**The surprise**: √5 appears because of the golden ratio φ = (1+√5)/2. But the true answer involves Fibonacci numbers, which are intimately connected to φ through Binet's formula.",
+    "mathContext": "The problem relates to discrepancy theory and Diophantine approximation. The golden ratio has the worst approximation properties among all irrationals, which is why it appears here.",
+    "significance": "critical",
+    "relatedConcepts": ["unit-interval", "approximation", "golden-ratio"]
+  },
+  {
+    "id": "ann-e480-unit-interval",
+    "proofId": "erdos-480",
+    "range": { "startLine": 39, "endLine": 41 },
+    "type": "definition",
+    "title": "Unit Interval Sequences",
+    "content": "**IsUnitIntervalSeq x** means every term x(n) lies in the closed interval [0, 1].\n\nThis is a natural constraint - we're looking at sequences valued in a bounded region. The unit interval is convenient but the results generalize to any bounded interval.",
+    "mathContext": "Set.Icc 0 1 is Mathlib's notation for the closed interval {r ∈ ℝ : 0 ≤ r ≤ 1}. The condition ∀ n, x n ∈ Icc 0 1 requires every term to be in this interval.",
+    "significance": "key",
+    "relatedConcepts": ["closed-interval", "bounded-sequence", "constraint"]
+  },
+  {
+    "id": "ann-e480-good-pairs",
+    "proofId": "erdos-480",
+    "range": { "startLine": 43, "endLine": 45 },
+    "type": "definition",
+    "title": "Good Approximation Pairs",
+    "content": "**GoodPairs x C** is the set of pairs (m, n) where:\n1. Both m and n are nonzero\n2. |x(m+n) - x(m)| ≤ 1/(C·n)\n\nThese are 'good' because the difference x(m+n) - x(m) is small relative to the gap n. Larger C means tighter approximation bounds.",
+    "mathContext": "The condition |x(m+n) - x(m)| ≤ 1/(C·n) measures how much the sequence changes when we jump n steps from position m. The factor 1/n normalizes for the gap size.",
+    "significance": "critical",
+    "relatedConcepts": ["approximation-pair", "sequence-difference", "gap"]
+  },
+  {
+    "id": "ann-e480-chung-graham-constant",
+    "proofId": "erdos-480",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "definition",
+    "title": "The Chung-Graham Constant",
+    "content": "**chungGrahamConstant** = 1 + Σ_{k≥1} 1/F_{2k} where F_m is the m-th Fibonacci number.\n\nThis remarkable sum converges to approximately 2.535. It uses only even-indexed Fibonacci numbers: F_2 = 1, F_4 = 3, F_6 = 8, F_8 = 21, ...\n\nSo c = 1 + 1/1 + 1/3 + 1/8 + 1/21 + ... ≈ 2.535.",
+    "mathContext": "The sum ∑' (k : ℕ+), (1 : ℝ) / Nat.fib (2 * k) converges because Fibonacci numbers grow exponentially: F_n ≈ φⁿ/√5 where φ ≈ 1.618.",
+    "significance": "critical",
+    "relatedConcepts": ["fibonacci", "infinite-series", "convergence"]
+  },
+  {
+    "id": "ann-e480-newman",
+    "proofId": "erdos-480",
+    "range": { "startLine": 66, "endLine": 73 },
+    "type": "axiom",
+    "title": "Newman's Conjecture (Theorem)",
+    "content": "**newman_conjecture**: For any unit interval sequence, the set of pairs (m, n) satisfying |x(m+n) - x(m)| ≤ 1/(√5·n) is infinite.\n\nNewman originally conjectured the √5 bound. Chung and Graham proved this and more - they found the optimal constant is larger than √5.",
+    "mathContext": "The statement uses Set.Infinite to assert infinitely many good pairs exist. This is an axiom because the proof requires probabilistic and analytic methods beyond Mathlib.",
+    "significance": "critical",
+    "relatedConcepts": ["newman", "sqrt-5", "infinite-set"]
+  },
+  {
+    "id": "ann-e480-chung-graham-theorem",
+    "proofId": "erdos-480",
+    "range": { "startLine": 81, "endLine": 90 },
+    "type": "axiom",
+    "title": "Chung-Graham Theorem (1984)",
+    "content": "**chung_graham_theorem**: The optimal constant C for which infinitely many pairs satisfy the approximation is exactly c = 1 + Σ 1/F_{2k}.\n\nThis is stronger than Newman's conjecture because c ≈ 2.535 > √5 ≈ 2.236. A larger constant means a tighter bound 1/c < 1/√5.",
+    "mathContext": "Fan Chung and Ronald Graham proved this in their 1984 paper 'On irregularities of distribution'. The construction showing optimality uses sequences related to Sturmian words.",
+    "significance": "critical",
+    "relatedConcepts": ["optimal-constant", "chung-graham", "1984"]
+  },
+  {
+    "id": "ann-e480-optimality",
+    "proofId": "erdos-480",
+    "range": { "startLine": 92, "endLine": 98 },
+    "type": "axiom",
+    "title": "Optimality of the Constant",
+    "content": "**chung_graham_optimal**: The constant c is best possible - for any C > c, there exists a sequence with only finitely many C-good pairs.\n\nThis uses **IsGreatest** to assert c is the maximum of all working constants. The extremal sequences are related to irrational rotations on the circle.",
+    "mathContext": "IsGreatest S c means c ∈ S and ∀ x ∈ S, x ≤ c. Here S is the set of constants for which all sequences have infinitely many good pairs.",
+    "significance": "key",
+    "relatedConcepts": ["optimality", "extremal-sequence", "greatest-element"]
+  },
+  {
+    "id": "ann-e480-golden-ratio",
+    "proofId": "erdos-480",
+    "range": { "startLine": 109, "endLine": 110 },
+    "type": "definition",
+    "title": "The Golden Ratio",
+    "content": "**goldenRatio** φ = (1 + √5)/2 ≈ 1.618...\n\nThis famous constant appears throughout mathematics. It satisfies φ² = φ + 1 and has the continued fraction expansion [1; 1, 1, 1, ...] - all 1s, the 'simplest' possible pattern.\n\nThe golden ratio is connected to Fibonacci numbers: F_{n+1}/F_n → φ as n → ∞.",
+    "mathContext": "The golden ratio is the positive root of x² - x - 1 = 0. Its conjugate ψ = (1 - √5)/2 ≈ -0.618 is the other root.",
+    "significance": "critical",
+    "relatedConcepts": ["golden-ratio", "phi", "continued-fraction"]
+  },
+  {
+    "id": "ann-e480-golden-sq",
+    "proofId": "erdos-480",
+    "range": { "startLine": 112, "endLine": 117 },
+    "type": "theorem",
+    "title": "Golden Ratio Squared",
+    "content": "**goldenRatio_sq**: φ² = φ + 1.\n\nThis is the defining property of the golden ratio. The proof uses ring_nf to simplify ((1 + √5)/2)² and sq_sqrt to handle √5·√5 = 5.",
+    "mathContext": "From φ² = φ + 1 we can derive φ = 1 + 1/φ, showing the recursive self-similarity that makes φ appear in growth patterns and spirals.",
+    "significance": "key",
+    "relatedConcepts": ["golden-identity", "defining-equation", "ring-normalization"]
+  },
+  {
+    "id": "ann-e480-conjugate",
+    "proofId": "erdos-480",
+    "range": { "startLine": 136, "endLine": 149 },
+    "type": "theorem",
+    "title": "Golden Ratio Conjugate Properties",
+    "content": "**binetPsi** ψ = (1 - √5)/2 is the conjugate of φ.\n\n**golden_conjugate_sum**: φ + ψ = 1\n**golden_conjugate_prod**: φ · ψ = -1\n\nThese are the standard relations between roots of x² - x - 1 = 0 (Vieta's formulas).",
+    "mathContext": "Binet's formula uses both: F_n = (φⁿ - ψⁿ)/√5. Since |ψ| < 1, the ψⁿ term vanishes for large n, giving F_n ≈ φⁿ/√5.",
+    "significance": "supporting",
+    "relatedConcepts": ["conjugate-root", "vieta", "binet-formula"]
+  },
+  {
+    "id": "ann-e480-sqrt5-comparison",
+    "proofId": "erdos-480",
+    "range": { "startLine": 160, "endLine": 167 },
+    "type": "theorem",
+    "title": "Comparing √5 and c",
+    "content": "**sqrt5_lt_chungGraham**: √5 < c (the Chung-Graham constant).\n\nSince √5 ≈ 2.236 and c ≈ 2.535, we have 1/c ≈ 0.394 < 1/√5 ≈ 0.447. The Chung-Graham bound is tighter than Newman's original conjecture!\n\nThe proof uses calc to chain: √5 < 2.3 (since 5 < 2.3² = 5.29) and 2.3 < 2.5 < c.",
+    "mathContext": "Real.sqrt_lt_sqrt compares square roots: √a < √b when a < b. Real.sqrt_sq shows √(x²) = x for x ≥ 0.",
+    "significance": "key",
+    "relatedConcepts": ["comparison", "calc-chain", "sqrt-inequality"]
+  },
+  {
+    "id": "ann-e480-examples",
+    "proofId": "erdos-480",
+    "range": { "startLine": 176, "endLine": 193 },
+    "type": "theorem",
+    "title": "Verified Sequence Examples",
+    "content": "**constant_seq_unit_interval**: A constant sequence x_n = c with c ∈ [0,1] is a valid unit interval sequence.\n\n**constant_seq_diff_zero**: For constant sequences, |x(m+n) - x(m)| = 0 always, so ALL pairs are good!\n\n**harmonic_seq_unit_interval**: The sequence x_n = n/(n+1) stays in [0, 1) and converges to 1.",
+    "mathContext": "The harmonic sequence n/(n+1) = 1 - 1/(n+1) shows that sequences can approach the boundary. The proof uses div_le_one and positivity.",
+    "significance": "supporting",
+    "relatedConcepts": ["constant-sequence", "harmonic-sequence", "examples"]
+  },
+  {
+    "id": "ann-e480-summary",
+    "proofId": "erdos-480",
+    "range": { "startLine": 209, "endLine": 213 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_480_summary**: Combines both results - for any unit interval sequence, there are infinitely many pairs satisfying both the √5 bound AND the tighter Chung-Graham bound.\n\nThe proof is a simple conjunction of newman_conjecture and chung_graham_theorem.",
+    "mathContext": "The And.intro notation ⟨_, _⟩ constructs a conjunction from its two components. This packages both theorems into a single statement.",
+    "significance": "supporting",
+    "relatedConcepts": ["summary", "conjunction", "packaging"]
+  }
+]

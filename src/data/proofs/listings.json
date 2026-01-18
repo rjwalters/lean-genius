@@ -789,17 +789,20 @@
   },
   {
     "id": "erdos-1004",
-    "title": "Erdős Problem #1004",
+    "title": "Erdős #1004: Distinct Consecutive Totient Values",
     "slug": "erdos-1004",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... If ... is sufficiently large then does there exist ... such that the values of ... are all distinct for ..., where ....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For c > 0, if x is large, does there exist n ≤ x such that φ(n+1), ..., φ(n+⌊(log x)^c⌋) are all distinct? EPS (1987) proved K ≤ n/exp(c(log n)^{1/3}).",
+    "status": "formalized",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "totient",
+      "analytic-number-theory"
     ],
     "erdosNumber": 1004,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 14,
+    "annotationCount": 19
   },
   {
     "id": "erdos-1005",
@@ -817,87 +820,118 @@
   },
   {
     "id": "erdos-1006",
-    "title": "Erdős Problem #1006",
+    "title": "Erdős Problem #1006: Robust Acyclic Orientations",
     "slug": "erdos-1006",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with girth ... (that is, it contains no cycles of length ... or ...). Can the edges of ... always be direc...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Can every graph with girth > 4 be oriented so that there is no directed cycle, and reversing any single edge also creates no directed cycle? Disproved by Nešetřil-Rödl (1978) for all girths.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "orientation",
+      "girth",
+      "counterexample",
+      "probabilistic-method"
     ],
     "erdosNumber": 1006,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 3,
+    "annotationCount": 8
   },
   {
     "id": "erdos-1007",
-    "title": "Erdős Problem #1007",
+    "title": "Erdős Problem #1007: Graph Dimension",
     "slug": "erdos-1007",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe dimension of a graph ... is the minimal ... such that ... can be embedded in ... such that every edge of ... is a unit li...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "What is the smallest number of edges in a graph with dimension 4? The answer is 9, achieved uniquely by K_{3,3}. Graph dimension is the minimum Euclidean dimension for unit-distance embedding.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "geometry",
+      "dimension",
+      "unit-distance",
+      "embedding"
     ],
     "erdosNumber": 1007,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 6
   },
   {
     "id": "erdos-1008",
-    "title": "Erdős Problem #1008",
+    "title": "Erdős Problem #1008: C₄-Free Subgraphs",
     "slug": "erdos-1008",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every graph with ... edges contain a subgraph with ... edges which contains no ...?\n\n\n\nOriginally asked by Bollob\\'{a}s ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does every graph with m edges contain a C₄-free subgraph with ≫ m^{2/3} edges? Yes, proved by Conlon-Fox-Sudakov (2014). The exponent 2/3 is optimal, as shown by Folkman's counterexample K_{n,n²}.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal",
+      "cycles",
+      "subgraphs",
+      "zarankiewicz"
     ],
     "erdosNumber": 1008,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 2,
+    "annotationCount": 7
   },
   {
     "id": "erdos-1009",
-    "title": "Erdős Problem #1009",
+    "title": "Erdős Problem #1009: Edge-Disjoint Triangles Beyond Turán",
     "slug": "erdos-1009",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every ..., there exists ... such that every graph on ... vertices with at least ... edges, where ..., co...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For every c > 0, does there exist f(c) such that every graph with ⌊n²/4⌋ + k edges (k < cn) contains at least k - f(c) edge-disjoint triangles? SOLVED: Györi (1988) proved this with f(c) ≪ c².",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "triangles",
+      "edge-disjoint",
+      "turan-numbers",
+      "solved"
     ],
     "erdosNumber": 1009,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 18
   },
   {
     "id": "erdos-1010",
-    "title": "Erdős Problem #1010",
+    "title": "Erdős Problem #1010: Triangle Supersaturation",
     "slug": "erdos-1010",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Does every graph on ... vertices with ... edges contain at least ... triangles?\n\n\n\nRademacher proved that every grap...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For t < ⌊n/2⌋, every graph on n vertices with ⌊n²/4⌋ + t edges contains at least t·⌊n/2⌋ triangles. This quantifies the supersaturation phenomenon: how many triangles are forced when exceeding the Turán threshold.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal",
+      "turán",
+      "supersaturation",
+      "triangles"
     ],
     "erdosNumber": 1010,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 7
   },
   {
     "id": "erdos-1011",
-    "title": "Erdős Problem #1011",
+    "title": "Erdős Problem #1011: Triangles in Graphs with High Chromatic Number",
     "slug": "erdos-1011",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that every graph on ... vertices with ... edges and chromatic number ... contains a triangle. Determi...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f_r(n) be minimal such that every n-vertex graph with ≥ f_r(n) edges and χ ≥ r contains a triangle. Known: f_2(n) = ⌊n²/4⌋+1 (Turán), f_3(n) = ⌊(n-1)²/4⌋+2 (Erdős-Gallai). Asymptotic involves g(r) ~ r² log r. OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "triangles",
+      "turan-type",
+      "extremal-graph-theory",
+      "open-problem"
     ],
     "erdosNumber": 1011,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 26
   },
   {
     "id": "erdos-1012",
@@ -915,17 +949,21 @@
   },
   {
     "id": "erdos-1015",
-    "title": "Erdős Problem #1015",
+    "title": "Erdős Problem #1015: Partitioning 2-Colored Complete Graphs",
     "slug": "erdos-1015",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that, in any two-colouring of the edges of ..., the edges can be partitioned into vertex disjoint mon...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "What is f(t), the minimum leftover vertices when partitioning any 2-colored Kₙ into vertex-disjoint monochromatic Kₜ's? Burr-Erdős-Spencer (1975) proved f(t) = R(t, t-1) + x where 0 ≤ x < t, showing f(t)^{1/t} → 4 (not 1) and f(t) is not O(t).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey",
+      "clique-partition",
+      "coloring"
     ],
     "erdosNumber": 1015,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 3,
+    "annotationCount": 15
   },
   {
     "id": "erdos-1017",
@@ -971,17 +1009,22 @@
   },
   {
     "id": "erdos-1020",
-    "title": "Erdős Problem #1020",
+    "title": "Erdős Problem #1020: The Erdős Matching Conjecture",
     "slug": "erdos-1020",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximal number of edges in an ...-uniform hypergraph which contains no set of ... many independent edges.\n\nFor...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f(n;r,k) be max edges in r-uniform hypergraph with no k independent edges. Conjecture: f(n;r,k) = max(C(rk-1,r), C(n,r)-C(n-k+1,r)). Solved for r=2,3. Upper bound: (k-1)C(n-1,r-1). OPEN for r≥4.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "hypergraph-theory",
+      "matching",
+      "extremal-combinatorics",
+      "turan-type",
+      "open-problem"
     ],
     "erdosNumber": 1020,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 3,
+    "annotationCount": 27
   },
   {
     "id": "erdos-1021",
@@ -1097,17 +1140,21 @@
   },
   {
     "id": "erdos-1029",
-    "title": "Erdős Problem #1029",
+    "title": "Erdős Problem #1029: Ramsey Number Growth Rate",
     "slug": "erdos-1029",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is the Ramsey number for ..., the minimal ... such that every ...-colouring of the edges of ... contains a monochromat...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If R(k) is the diagonal Ramsey number, prove R(k)/(k·2^{k/2}) → ∞. Known bounds: (√2/e)·k·2^{k/2} ≤ R(k) ≤ C(2k-2,k-1). OPEN ($100 proof, $1000 disproof).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "graph-theory",
+      "probabilistic-method",
+      "open-problem"
     ],
     "erdosNumber": 1029,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 2,
+    "annotationCount": 20
   },
   {
     "id": "erdos-1030",
@@ -1223,17 +1270,21 @@
   },
   {
     "id": "erdos-104",
-    "title": "Erdős Problem #104",
+    "title": "Erdős Problem #104: Unit Circles Through Three Points",
     "slug": "erdos-104",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven ... points in ... the number of distinct unit circles containing at least three points is ....\n\n\n\nIn  Erds proved that ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Given n points in ℝ², how many unit circles contain at least 3 points? Known: Ω(n^{3/2}) ≤ answer ≤ O(n²). Conjecture: O(n^{3/2}). OPEN ($100 prize).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "incidences",
+      "unit-circles",
+      "open-problem"
     ],
     "erdosNumber": 104,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 22
   },
   {
     "id": "erdos-1040",
@@ -1251,17 +1302,24 @@
   },
   {
     "id": "erdos-1041",
-    "title": "Erdős Problem #1041",
+    "title": "Erdős Problem #1041: Paths in Polynomial Level Sets",
     "slug": "erdos-1041",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... with ... for all ....\n\nMust there always exist a path of length less than ... in\\[\\{z: \\lvert f(z)\\rvert < 1\\}\\]which...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For a monic polynomial with all roots in the unit disk, must there exist a path of length less than 2 in the sublevel set {z : |f(z)| < 1} connecting two roots?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "polynomials",
+      "metric-geometry",
+      "level-sets",
+      "paths"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 1041,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-1042",
@@ -1279,17 +1337,22 @@
   },
   {
     "id": "erdos-1043",
-    "title": "Erdős Problem #1043",
+    "title": "Erdős #1043: Polynomial Level Set Projections",
     "slug": "erdos-1043",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a monic non-constant polynomial. Must there exist a straight line ... such that the projection of\\[\\{ z: \\lvert f(...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For a monic polynomial f, must some line's projection of {z : |f(z)| ≤ 1} have measure ≤ 2? NO (Pommerenke 1961): can be ≥ 2.386, but always ≤ 3.3.",
+    "status": "formalized",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "polynomials",
+      "measure-theory",
+      "geometry"
     ],
     "erdosNumber": 1043,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 12,
+    "annotationCount": 25
   },
   {
     "id": "erdos-1044",
@@ -1444,17 +1507,22 @@
   },
   {
     "id": "erdos-1057",
-    "title": "Erdős Problem #1057",
+    "title": "Erdős Problem #1057: Counting Carmichael Numbers",
     "slug": "erdos-1057",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of Carmichael numbers in the interval .... Is it true that ...?\n\n\n\nErds  proved\\[C(x)  x^{0.33336704...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let C(x) count Carmichael numbers in [1,x]. Is C(x) = x^{1-o(1)}? Known: x^{0.3389} < C(x) < x·exp(-c·log x·log log log x / log log x). OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "carmichael-numbers",
+      "pseudoprimes",
+      "counting-functions",
+      "open-problem"
     ],
     "erdosNumber": 1057,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 22
   },
   {
     "id": "erdos-1058",
@@ -1472,17 +1540,22 @@
   },
   {
     "id": "erdos-106",
-    "title": "Erdős Problem #106",
+    "title": "Erdős Problem #106: Square Packing in the Unit Square",
     "slug": "erdos-106",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDraw ... squares inside the unit square with no common interior point. Let ... be the maximum possible sum of the side-length...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Pack n squares in the unit square with disjoint interiors. Let f(n) = max sum of side lengths. Is f(k²+1) = k? Known: f(k²) = k, f(2) = 1, f(5) = 2. Axis-parallel case solved (2024). OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "packing",
+      "squares",
+      "optimization",
+      "open-problem"
     ],
     "erdosNumber": 106,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 31
   },
   {
     "id": "erdos-1064",
@@ -1743,17 +1816,24 @@
   },
   {
     "id": "erdos-1085",
-    "title": "Erdős Problem #1085",
+    "title": "Erdős Problem #1085: The Unit Distance Problem",
     "slug": "erdos-1085",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that, in any set of ... points in ..., there exist at most ... pairs of points which distance ... apa...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f_d(n) be the maximum number of pairs at unit distance among n points in ℝ^d. For d=2: n^(1+o(1)) ≤ f_2(n) ≤ O(n^(4/3)) with gap OPEN. For d≥4: f_d(n) ≈ (p-1)/(2p)·n² where p=⌊d/2⌋ (essentially SOLVED).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-geometry",
+      "unit-distances",
+      "incidence-geometry",
+      "extremal-combinatorics",
+      "partially-open"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 1085,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-1086",
@@ -1799,17 +1879,22 @@
   },
   {
     "id": "erdos-1089",
-    "title": "Erdős Problem #1089",
+    "title": "Erdős Problem #1089: Distinct Distances in Higher Dimensions",
     "slug": "erdos-1089",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be minimal such that every collection of ... points in ... determines at least ... many distinct distances. Estimate ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let g_d(n) be minimal such that every g_d(n) points in ℝ^d determine at least n distinct distances. Does lim_{d→∞} g_d(n)/d^{n-1} exist? Known: g_d(n) ≫ d^{n-1}, but g_d(n) ≤ c^{d^{1-b_n}}. OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "distinct-distances",
+      "high-dimensions",
+      "combinatorial-geometry",
+      "open-problem"
     ],
     "erdosNumber": 1089,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 2,
+    "annotationCount": 27
   },
   {
     "id": "erdos-109",
@@ -1862,17 +1947,21 @@
   },
   {
     "id": "erdos-1095",
-    "title": "Erdős Problem #1095",
+    "title": "Erdős Problem #1095: The Erdős-Selfridge Function",
     "slug": "erdos-1095",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the smallest ... such that all prime factors of ... are .... Estimate ....\n\n\n\nA question of Ecklund, Erds, and Sel...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let g(k) be the smallest n > k+1 such that all prime factors of C(n,k) exceed k. Estimate g(k). Known: exp(c·(log k)²) ≪ g(k) ≤ exp((1+o(1))k). Conjectured: log g(k) ~ k/log k. OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "binomial-coefficients",
+      "prime-factors",
+      "open-problem"
     ],
     "erdosNumber": 1095,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 3,
+    "annotationCount": 14
   },
   {
     "id": "erdos-1096",
@@ -2005,17 +2094,21 @@
   },
   {
     "id": "erdos-1106",
-    "title": "Erdős Problem #1106",
+    "title": "Erdős #1106: Prime Factors of Partition Products",
     "slug": "erdos-1106",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the partition function of ... and let ... count the number of distinct prime factors of\\[\\prod_{1\\leq k\\leq n}...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let F(n) count distinct prime factors of ∏_{k=1}^n p(k) where p(k) is the partition function. Does F(n) → ∞? Is F(n) > n eventually? The first is proved; the second remains open.",
+    "status": "formalized",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "partitions",
+      "prime-factors",
+      "analytic-number-theory"
     ],
     "erdosNumber": 1106,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 11
   },
   {
     "id": "erdos-1107",
@@ -2038,17 +2131,24 @@
   },
   {
     "id": "erdos-1108",
-    "title": "Erdős Problem #1108",
+    "title": "Erdős Problem #1108: Factorial Sums and Perfect Powers",
     "slug": "erdos-1108",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[A = \\left\\{ \\sum_{n\\in S}n! : S\\subset \\right\\}.\\]If ..., then does ... contain only finitely many ...th powers? Does it...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does the set of finite sums of distinct factorials contain only finitely many k-th powers (for k >= 2)? Does it contain only finitely many powerful numbers?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "factorials",
+      "perfect-powers",
+      "powerful-numbers",
+      "diophantine"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 1108,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-1109",
@@ -2534,17 +2634,20 @@
   },
   {
     "id": "erdos-135",
-    "title": "Erdős Problem #135",
+    "title": "Erdős Problem #135: Four Points, Five Distances",
     "slug": "erdos-135",
-    "description": "Let A&#x2282;R2\" role=\"presentation\" style=\"position: relative;\">A⊂ℝ2A⊂R2A\\subset ^2 be a set of n\" role=\"presentation\" style=\"position: relative;\">nnn points such that any subset of size 4\" role=\"...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "If any 4 points from A ⊂ ℝ² determine at least 5 distinct distances, must A determine ≫ n² distances? DISPROVED by Tao (2024).",
+    "status": "formalized",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "distinct-distances",
+      "disproved"
     ],
     "erdosNumber": 135,
     "sorries": 1,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-136",
@@ -2618,17 +2721,21 @@
   },
   {
     "id": "erdos-140",
-    "title": "Erdős Problem #140",
+    "title": "Erdős Problem #140: Density of 3-AP-Free Sets",
     "slug": "erdos-140",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the size of the largest subset of ... which does not contain a non-trivial ...-term arithmetic progression. Prove ...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Let r₃(N) be the size of the largest subset of {1,...,N} with no 3-term arithmetic progression. Prove r₃(N) ≪ N/(log N)^C for every C > 0. SOLVED by Kelley-Meka (2023).",
+    "status": "formalized",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "3-AP-free",
+      "roth-number",
+      "kelley-meka"
     ],
     "erdosNumber": 140,
     "sorries": 3,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-141",
@@ -2794,17 +2901,24 @@
   },
   {
     "id": "erdos-157",
-    "title": "Erdős Problem #157",
+    "title": "Erdős Problem #157: Infinite Sidon Set as Asymptotic Basis",
     "slug": "erdos-157",
-    "description": "Does there exist an infinite Sidon set which is an asymptotic basis of order 3? Yes, as shown by Pilatte [Pi23]. View the LaTeX source",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Does there exist an infinite Sidon set which is an asymptotic basis of order 3? YES (Pilatte 2023). Two theorems verified: sidon_iff_sidon_alt and powers_of_two_sidon.",
+    "status": "complete",
+    "badge": "verified",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "sidon-set",
+      "asymptotic-basis",
+      "additive-combinatorics",
+      "density"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 157,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 3,
+    "annotationCount": 13
   },
   {
     "id": "erdos-158",
@@ -2828,17 +2942,21 @@
   },
   {
     "id": "erdos-16",
-    "title": "Erdős Problem #16",
+    "title": "Erdős Problem #16: Odd Integers Not of Form 2^k + p",
     "slug": "erdos-16",
-    "description": "Is the set of odd integers not of the form ... the union of an infinite arithmetic progression and a set of density ...? Erdős called this conjecture 'rather silly'. Using covering congruences Erdő...",
-    "status": "pending",
+    "description": "Is the set of odd integers not of the form 2^k + p the union of an arithmetic progression and a density-0 set? DISPROVED by Chen (2023).",
+    "status": "formalized",
     "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "romanoff-type",
+      "covering-congruences",
+      "disproved"
     ],
     "erdosNumber": 16,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-161",
@@ -2912,17 +3030,21 @@
   },
   {
     "id": "erdos-167",
-    "title": "Erdős Problem #167",
+    "title": "Erdős Problem #167: Tuza's Conjecture",
     "slug": "erdos-167",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a graph with at most ... edge disjoint triangles then can ... be made triangle-free after removing at most ... edge...",
-    "status": "pending",
+    "description": "If G is a graph with at most k edge-disjoint triangles, can G be made triangle-free by removing at most 2k edges? Tuza's Conjecture (1981) remains open in general.",
+    "status": "formalized",
     "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "triangle-covering",
+      "triangle-packing",
+      "tuza-conjecture"
     ],
     "erdosNumber": 167,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-168",
@@ -3000,17 +3122,23 @@
   },
   {
     "id": "erdos-171",
-    "title": "Erdős Problem #171",
+    "title": "Erdős Problem #171: Unit Distance Chromatic Number",
     "slug": "erdos-171",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every ... and integer ..., if ... is sufficiently large and ... is a subset of ... of size at least ... t...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "What is the chromatic number χ(ℝ²) of the unit distance graph? The Hadwiger-Nelson problem. Nelson (1950): χ ≥ 4. Isbell (1950): χ ≤ 7. de Grey (2018): χ ≥ 5. Current knowledge: 5 ≤ χ(ℝ²) ≤ 7.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-geometry",
+      "chromatic-number",
+      "unit-distance",
+      "hadwiger-nelson"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 171,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 2,
+    "annotationCount": 10
   },
   {
     "id": "erdos-172",
@@ -3132,31 +3260,41 @@
   },
   {
     "id": "erdos-18",
-    "title": "Erdős Problem #18",
+    "title": "Erdős Problem #18: Practical Numbers",
     "slug": "erdos-18",
-    "description": "We call ... practical if every integer $n View the LaTeX source This page was last edited 31 October 2025.",
-    "status": "pending",
+    "description": "Is h(n!) < n^o(1), where h(m) is the minimum number of divisors of m needed to represent all integers k < m? A number m is practical if every k < m is a sum of distinct divisors of m.",
+    "status": "formalized",
     "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "practical-numbers",
+      "divisor-sums",
+      "open-problem"
     ],
     "erdosNumber": 18,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 18
   },
   {
     "id": "erdos-182",
-    "title": "Erdős Problem #182",
+    "title": "Erdős Problem #182: Maximum Edges Avoiding k-Regular Subgraphs",
     "slug": "erdos-182",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... What is the maximum number of edges that a graph on ... vertices can contain if it does not have a ...-regular subgr...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For k >= 3, what is the maximum number of edges a graph on n vertices can have if it contains no k-regular subgraph? Resolved by Janzer-Sudakov (2023): the answer is Θ(n log log n).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-graph-theory",
+      "regular-graphs",
+      "solved"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 182,
+    "mathlibCount": 5,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-184",
@@ -3233,7 +3371,7 @@
     ],
     "erdosNumber": 19,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 17
   },
   {
     "id": "erdos-191",
@@ -3363,17 +3501,20 @@
   },
   {
     "id": "erdos-202",
-    "title": "Erdős Problem #202",
+    "title": "Erdős #202: Disjoint Covering Systems",
     "slug": "erdos-202",
-    "description": "Let n1&lt;&#x22EF;&lt;nr&#x2264;N\" role=\"presentation\" style=\"position: relative;\">n1⋯nr≤Nn1⋯nr≤Nn_1 with associated ai(modni)\" role=\"presentation\" style=\"position: relative;\">ai(modni)ai(modni)a_i...",
-    "status": "pending",
+    "description": "How many disjoint congruence classes can have moduli bounded by N? Bounds involve L(N) = exp(√(log N · log log N)).",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "covering-systems",
+      "combinatorics"
     ],
     "erdosNumber": 202,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 13,
+    "annotationCount": 9
   },
   {
     "id": "erdos-204",
@@ -3391,17 +3532,20 @@
   },
   {
     "id": "erdos-205",
-    "title": "Erdős Problem #205",
+    "title": "Erdős Problem #205: 2^k + m with Few Prime Factors",
     "slug": "erdos-205",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that all sufficiently large ... can be written as ... for some ..., where ...? (Here ... is the number of prime di...",
-    "status": "pending",
+    "description": "Can all large n be written as 2^k + m where Ω(m) < log log m? DISPROVED by Barreto-Leeham (2026).",
+    "status": "formalized",
     "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-factors",
+      "disproved"
     ],
     "erdosNumber": 205,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-206",
@@ -3480,7 +3624,7 @@
     ],
     "erdosNumber": 21,
     "sorries": 3,
-    "annotationCount": 0
+    "annotationCount": 20
   },
   {
     "id": "erdos-210",
@@ -3642,7 +3786,7 @@
     ],
     "erdosNumber": 22,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 16
   },
   {
     "id": "erdos-220",
@@ -3716,17 +3860,22 @@
   },
   {
     "id": "erdos-225",
-    "title": "Erdős Problem #225",
+    "title": "L¹ Norm of Trigonometric Polynomials with Real Roots",
     "slug": "erdos-225",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[ f(\\theta) = \\sum_{0\\leq k\\leq n}c_k e^{ik\\theta}\\]be a trigonometric polynomial all of whose roots are real, such that ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If a trigonometric polynomial has all roots on the unit circle and supremum norm 1, then its L¹ norm is at most 4.",
+    "status": "axiom",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "trigonometric-polynomials",
+      "unit-circle",
+      "L1-norm",
+      "solved"
     ],
     "erdosNumber": 225,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 3,
+    "annotationCount": 7
   },
   {
     "id": "erdos-226",
@@ -3812,7 +3961,7 @@
     ],
     "erdosNumber": 23,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-230",
@@ -4303,17 +4452,21 @@
   },
   {
     "id": "erdos-260",
-    "title": "Erdős Problem #260",
+    "title": "Erdős #260: Irrationality of Sparse Sequence Series",
     "slug": "erdos-260",
-    "description": "Let a1&lt;a2&lt;&#x22EF;\" role=\"presentation\" style=\"position: relative;\">a1a2⋯a1a2⋯a_1 be an increasing sequence such that an/n&#x2192;&#x221E;\" role=\"presentation\" style=\"position: relative;\">an/...",
-    "status": "pending",
+    "description": "If a₁ < a₂ < ⋯ is increasing with aₙ/n → ∞, is ∑ aₙ/2^{aₙ} necessarily irrational?",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "irrationality",
+      "series",
+      "sequences"
     ],
     "erdosNumber": 260,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 5,
+    "annotationCount": 13
   },
   {
     "id": "erdos-262",
@@ -4331,17 +4484,21 @@
   },
   {
     "id": "erdos-263",
-    "title": "Erdős Problem #263",
+    "title": "Erdős #263: Irrationality Sequences",
     "slug": "erdos-263",
-    "description": "Let an\" role=\"presentation\" style=\"position: relative;\">anana_n be a sequence of integers such that for every sequence of integers bn\" role=\"presentation\" style=\"position: relative;\">bnbnb_n with b...",
-    "status": "pending",
+    "description": "Is 2^{2^n} an irrationality sequence? Must such sequences have a_n^{1/n} → ∞? A sequence is an irrationality sequence if all perturbations give irrational reciprocal sums.",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "irrationality",
+      "sequences",
+      "analysis"
     ],
     "erdosNumber": 263,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 10,
+    "annotationCount": 14
   },
   {
     "id": "erdos-264",
@@ -4385,45 +4542,56 @@
   },
   {
     "id": "erdos-267",
-    "title": "Erdős Problem #267",
+    "title": "Erdős Problem #267: Irrationality of Fibonacci Reciprocal Sums",
     "slug": "erdos-267",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... be the Fibonacci sequence. Let ... be an infinite sequence with .... Must\\[\\sum_k{F_{n_k}}\\]be irrational?\n\n\n...",
-    "status": "pending",
+    "description": "If n₁ < n₂ < ... is a sequence with n_{k+1}/n_k ≥ c > 1, must Σ 1/F_{n_k} be irrational? PARTIALLY SOLVED: Special cases proved, general conjecture OPEN.",
+    "status": "formalized",
     "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "fibonacci",
+      "irrationality",
+      "reciprocal-sums"
     ],
     "erdosNumber": 267,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-268",
-    "title": "Erdős Problem #268",
+    "title": "Erdős #268: Interior of Harmonic Subseries Points",
     "slug": "erdos-268",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the set of all points of the shape\\[\\left( \\sum_{n\\in A} {n},\\sum_{n\\in A}{n+1},\\sum_{n\\in A} {n+2}\\right) \\]as .....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For X ⊆ ℝ^d of points (Σ 1/n, Σ 1/(n+1), ...) as A ranges over infinite sets with convergent harmonic sum, does X have nonempty interior? YES for all d ≥ 1 (Kovač 2024, Kovač-Tao 2024).",
+    "status": "formalized",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "harmonic-series",
+      "topology",
+      "number-theory"
     ],
     "erdosNumber": 268,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 12,
+    "annotationCount": 22
   },
   {
     "id": "erdos-27",
-    "title": "Erdős Problem #27",
+    "title": "Erdős #27: Almost Covering Systems",
     "slug": "erdos-27",
-    "description": "An ...-almost covering system is a set of congruences ... for distinct moduli ... such that for every ... and ... there is an ...-almost covering system with $N\\leq n_1 View the LaTeX source This p...",
-    "status": "pending",
+    "description": "Does there exist C > 1 such that ε-almost covering systems exist with moduli in [N, CN] for all ε, N? Answer: NO (disproved by FFKPY).",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "covering-systems",
+      "density"
     ],
     "erdosNumber": 27,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 18,
+    "annotationCount": 19
   },
   {
     "id": "erdos-270",
@@ -4573,17 +4741,21 @@
   },
   {
     "id": "erdos-286",
-    "title": "Erdős Problem #286",
+    "title": "Unit Fractions in Short Intervals",
     "slug": "erdos-286",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is it true that there exists an interval ... of width ... and integers ... such that\\[1={n_1}+\\cdots+{n_k}?\\]\n\n\n\nThe...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For k ≥ 2, can 1 be expressed as a sum of k distinct unit fractions with denominators in an interval of width (e-1+o(1))k? Croot (2001) proved the answer is yes.",
+    "status": "axiom",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "egyptian-fractions",
+      "solved"
     ],
     "erdosNumber": 286,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 3,
+    "annotationCount": 7
   },
   {
     "id": "erdos-287",
@@ -4601,17 +4773,20 @@
   },
   {
     "id": "erdos-29",
-    "title": "Erdős Problem #29",
+    "title": "Erdős Problem #29: Explicit Economical Additive Basis",
     "slug": "erdos-29",
-    "description": "Is there an explicit construction of a set ... such that ... but ... for every ...? The existence of such a set was asked by Sidon to Erdős in 1932. Erdős (eventually) proved the existence of such ...",
-    "status": "pending",
-    "badge": "wip",
+    "description": "Is there an explicit construction of A ⊆ ℕ such that A + A = ℕ but r_A(n) = o(n^ε) for every ε > 0? SOLVED by Jain-Pham-Sawhney-Zakharov (2024).",
+    "status": "formalized",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "additive-basis",
+      "explicit-construction"
     ],
     "erdosNumber": 29,
     "sorries": 1,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-290",
@@ -4706,17 +4881,21 @@
   },
   {
     "id": "erdos-296",
-    "title": "Erdős Problem #296",
+    "title": "Erdős Problem #296: Disjoint Unit Fraction Partitions",
     "slug": "erdos-296",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... be maximal such that there are ... disjoint ... with ... for all .... Estimate .... Is it true that ...?\n...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "How many disjoint sets A₁,...,Aₖ ⊆ {1,...,N} can have Σ 1/n = 1 for each set? Erdős asked if k(N) = o(log N). Answer: NO. Hunter-Sawhney (via Bloom 2021) proved k(N) = (1-o(1))·log N.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "egyptian-fractions",
+      "packing"
     ],
     "erdosNumber": 296,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-297",
@@ -4734,17 +4913,24 @@
   },
   {
     "id": "erdos-298",
-    "title": "Erdős Problem #298",
+    "title": "Erdős Problem #298: Unit Fractions from Sets of Positive Density",
     "slug": "erdos-298",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every set ... of positive density contain some finite ... such that ...?\n\n\n\nThe answer is yes, proved by Bloom .\n\nSee al...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does every set A ⊆ ℕ of positive density contain some finite S ⊂ A such that ∑_{n ∈ S} 1/n = 1? YES (Thomas Bloom, 2021). Prize: $500. A Lean 3 formalization exists at github.com/b-mehta/unit-fractions.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "density",
+      "egyptian-fractions",
+      "additive-combinatorics"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 298,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-299",
@@ -4828,31 +5014,42 @@
   },
   {
     "id": "erdos-303",
-    "title": "Erdős Problem #303",
+    "title": "Erdős Problem #303: Monochromatic Unit Fraction Solutions",
     "slug": "erdos-303",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that in any finite colouring of the integers there exists a monochromatic solution to\\[{a}={b}+{c}\\]with distinct ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "In any finite colouring of the integers, does there exist a monochromatic solution to 1/a = 1/b + 1/c with distinct a, b, c? A Ramsey-theoretic problem solved affirmatively by Brown and Rödl (1991).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "unit-fractions",
+      "colouring",
+      "number-theory"
     ],
     "erdosNumber": 303,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 3,
+    "annotationCount": 10
   },
   {
     "id": "erdos-304",
-    "title": "Erdős Problem #304",
+    "title": "Erdős Problem #304: Egyptian Fractions Complexity",
     "slug": "erdos-304",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor integers ... let ... denote the minimal ... such that there exist integers ... with\\[{b}={n_1}+\\cdots+{n_k}.\\]Estimate .....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For integers 1 ≤ a < b, let N(a,b) denote the minimal number of distinct unit fractions summing to a/b. Let N(b) = max N(a,b). Erdős (1950) proved log log b ≪ N(b) ≪ log b/log log b. Vose (1985) improved to N(b) ≪ √(log b). Open: Is N(b) ≪ log log b?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "asymptotic-bounds",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 304,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-305",
@@ -4870,31 +5067,43 @@
   },
   {
     "id": "erdos-306",
-    "title": "Erdős Problem #306",
+    "title": "Erdős Problem #306: Egyptian Fractions with Semiprime Denominators",
     "slug": "erdos-306",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... with ... squarefree. Are there integers ..., each the product of two distinct primes, such that\\[{b}={n_1}+\\cdots+{n_...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Can every positive rational a/b with b squarefree be expressed as an Egyptian fraction where each denominator is a product of exactly 2 distinct primes? The 2-prime case is OPEN; the 3-prime case for integers was solved by Butler, Erdős, and Graham (2015).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "prime-factorization",
+      "open-problem",
+      "partially-solved"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 306,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-307",
-    "title": "Erdős Problem #307",
+    "title": "Erdős #307: Prime Reciprocal Products",
     "slug": "erdos-307",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there two finite sets of primes ... such that\\[1=\\left(\\sum_{p\\in P}{p}\\right)\\left(\\sum_{q\\in Q}{q}\\right)?\\]\n\n\n\nAsked b...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Are there two finite sets of primes P, Q with (Σ 1/p)(Σ 1/q) = 1? Prime version: OPEN. Coprime version: SOLVED by Cambie with (1 + 1/5)(1/2 + 1/3) = 1.",
+    "status": "formalized",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "egyptian-fractions",
+      "reciprocals"
     ],
     "erdosNumber": 307,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 8,
+    "annotationCount": 32
   },
   {
     "id": "erdos-308",
@@ -4942,7 +5151,7 @@
     "erdosNumber": 31,
     "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 20
   },
   {
     "id": "erdos-310",
@@ -4988,17 +5197,22 @@
   },
   {
     "id": "erdos-316",
-    "title": "Erdős Problem #316",
+    "title": "Erdős Problem #316: Partitioning Sets by Reciprocal Sums",
     "slug": "erdos-316",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that if ... is a finite set with ... then there is a partition ... such that\\[\\sum_{n\\in A_i}{n}<1\\]for ...?\n\n\n\nTh...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Can every finite set with reciprocal sum < 2 be partitioned into two parts each with sum < 1? Answer: NO - disproved by Sándor (1997).",
+    "status": "complete",
+    "badge": "theorem",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "partitions",
+      "counterexample"
     ],
     "erdosNumber": 316,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 8
   },
   {
     "id": "erdos-318",
@@ -5112,17 +5326,23 @@
   },
   {
     "id": "erdos-329",
-    "title": "Erdős Problem #329",
+    "title": "Erdős Problem #329: Maximum Density of Sidon Sets",
     "slug": "erdos-329",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose ... is a Sidon set. How large can\\[\\limsup_{N\\to \\infty}\\rvert}{N^{1/2}}\\]be?\n\n\n\nErds proved that ... is possible and...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For a Sidon set A (where all pairwise sums are distinct), how large can limsup |A ∩ {1,...,N}| / √N be? Known bounds: 1/√2 ≤ sup ≤ 1. The exact supremum remains OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "sidon-sets",
+      "additive-number-theory",
+      "density"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 329,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-33",
@@ -5242,17 +5462,22 @@
   },
   {
     "id": "erdos-34",
-    "title": "Erdős Problem #34",
+    "title": "Erdos Problem #34: Consecutive Sums in Permutations",
     "slug": "erdos-34",
-    "description": "For any permutation ... of ... let ... count the number of distinct consecutive sums, that is, sums of the shape .... Is it true that\\[S(\\pi) = o(n^2)\\]for all ...? It is easy to see that ... if .....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is S(pi) = o(n^2) for all permutations? DISPROVED - there exist permutations with S(pi) >= n^2/4.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "permutations",
+      "disproved"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 34,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 2,
+    "annotationCount": 10
   },
   {
     "id": "erdos-343",
@@ -5284,31 +5509,40 @@
   },
   {
     "id": "erdos-35",
-    "title": "Erdős Problem #35",
+    "title": "Erdős #35: Schnirelmann Density and Additive Bases",
     "slug": "erdos-35",
-    "description": "Let ... be an additive basis of order ... with .... Is it true that for every ... we have\\[d_s(A+B)\\geq \\alpha+{k},\\]where ... and\\[d_s(A) = \\inf \\rvert}{N}\\]is the Schnirelmann density? Erdős [Er3...",
-    "status": "pending",
+    "description": "If B is an additive basis of order k, does d_s(A+B) ≥ α + α(1-α)/k hold for all A?",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "density"
     ],
     "erdosNumber": 35,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 9,
+    "annotationCount": 15
   },
   {
     "id": "erdos-350",
-    "title": "Erdős Problem #350",
+    "title": "Erdős Problem #350: Sum of Reciprocals of Dissociated Sets",
     "slug": "erdos-350",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is a finite set of integers which is dissociated (that is, all of the subset sums are distinct) then\\[\\sum_{n\\in A}{n}...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If A is a finite dissociated set (all subset sums distinct) of positive integers, prove that the sum of reciprocals is less than 2. Proved by Ryavec.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "dissociated-sets",
+      "sidon-sets"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 350,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-351",
@@ -5332,17 +5566,23 @@
   },
   {
     "id": "erdos-352",
-    "title": "Erdős Problem #352",
+    "title": "Erdős Problem #352: Triangles of Area 1 in Measurable Sets",
     "slug": "erdos-352",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some ... such that every measurable ... of measure ... contains the vertices of a triangle of area 1?\n\n\n\nErds (unpub...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is there c > 0 such that every measurable set A in R^2 with measure >= c contains a triangle of area 1? Conjectured c = 4pi/sqrt(27). Open problem.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometric-measure-theory",
+      "triangles",
+      "lebesgue-measure",
+      "convexity"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 352,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-353",
@@ -5360,17 +5600,23 @@
   },
   {
     "id": "erdos-354",
-    "title": "Erdős Problem #354",
+    "title": "Erdős Problem #354: Completeness of Binary Floor Sequences",
     "slug": "erdos-354",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... such that ... is irrational. Is the multiset\\[\\{ \\lfloor \\alpha\\rfloor,\\lfloor 2\\alpha\\rfloor,\\lfloor 4\\alpha\\rfloor,...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let α, β > 0 with α/β irrational. Is the multiset {⌊2ᵏα⌋} ∪ {⌊2ᵏβ⌋} complete (representing all large integers)? OPEN in general.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "representation",
+      "floor-function",
+      "additive-combinatorics"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 354,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-355",
@@ -5402,17 +5648,22 @@
   },
   {
     "id": "erdos-357",
-    "title": "Erdős Problem #357",
+    "title": "Erdős #357: Distinct Consecutive Sums",
     "slug": "erdos-357",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be integers such that all sums of the shape ... are distinct. Let ... be the maximal such ....\n\nHow does ... grow? Is...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f(n) = max k for 1 ≤ a₁ < ... < aₖ ≤ n with all consecutive sums distinct. Is f(n) = o(n)? Known: f(n) ≥ (2+o(1))√n.",
+    "status": "formalized",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "number-theory",
+      "sequences",
+      "distinct-sums"
     ],
     "erdosNumber": 357,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 18,
+    "annotationCount": 21
   },
   {
     "id": "erdos-359",
@@ -5472,17 +5723,23 @@
   },
   {
     "id": "erdos-364",
-    "title": "Erdős Problem #364",
+    "title": "Erdős Problem #364: Consecutive Powerful Numbers",
     "slug": "erdos-364",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there any triples of consecutive positive integers all of which are powerful (i.e. if ... then ...)?\n\n\n\nErds originally a...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "A positive integer n is powerful if p | n implies p² | n. Are there three consecutive powerful numbers? The quadruple case is impossible (proved), but the triple case remains OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "powerful-numbers",
+      "divisibility",
+      "modular-arithmetic",
+      "open-problem"
     ],
     "erdosNumber": 364,
+    "mathlibCount": 5,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-365",
@@ -5500,17 +5757,24 @@
   },
   {
     "id": "erdos-366",
-    "title": "Erdős Problem #366",
+    "title": "Erdős Problem #366: Consecutive k-Full Numbers",
     "slug": "erdos-366",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there any 2-full ... such that ... is 3-full? That is, if ... then ... and if ... then ....\n\n\n\nErds originally asked Mahl...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Are there any 2-full (powerful) n such that n+1 is 3-full (cubeful)? A number is k-full if every prime factor appears with multiplicity at least k. Known: (8,9) and (12167,12168) are 3-full/2-full pairs, but no 2-full/3-full pairs are known.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "powerful-numbers",
+      "k-full-numbers",
+      "consecutive-integers",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 366,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-368",
@@ -5528,45 +5792,59 @@
   },
   {
     "id": "erdos-37",
-    "title": "Erdős Problem #37",
+    "title": "Erdős Problem #37: Essential Components and Lacunary Sets",
     "slug": "erdos-37",
-    "description": "We say that ... is an essential component if ... for every ... with ... such that ... for all large .... Furthermore, Ruzsa proves that this is best possible, in that for any ... there exists an es...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Can a lacunary set A ⊂ ℕ be an essential component? NO (Ruzsa 1987). Essential components need |A ∩ {1,...,N}| ≥ (log N)^{1+c}, but lacunary sets have only O(log N) elements. Open: Is {2^m · 3^n} essential?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-number-theory",
+      "schnirelmann-density",
+      "essential-component",
+      "lacunary-sets"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 37,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 5,
+    "sorries": 2,
+    "annotationCount": 2
   },
   {
     "id": "erdos-370",
-    "title": "Erdős Problem #370",
+    "title": "Consecutive Smooth Numbers",
     "slug": "erdos-370",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many ... such that the largest prime factor of ... is ... and the largest prime factor of ... is ...?\n\n\n...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Are there infinitely many n such that both n and n+1 have their largest prime factor less than their square root? Steinerberger found an elegant solution using n = m² - 1.",
+    "status": "axiom",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-factors",
+      "smooth-numbers",
+      "solved"
     ],
     "erdosNumber": 370,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 2,
+    "annotationCount": 7
   },
   {
     "id": "erdos-371",
-    "title": "Erdős Problem #371",
+    "title": "Erdős #371: Density of P(n) < P(n+1)",
     "slug": "erdos-371",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the largest prime factor of .... Show that the set of ... with ... has density ....\n\n\n\nConjectured by Erds and...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let P(n) be the largest prime factor of n. Show that {n : P(n) < P(n+1)} has density 1/2. Conditionally solved by Wang (2021); logarithmic density proved by Teräväinen (2018).",
+    "status": "formalized",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-factors",
+      "density",
+      "analytic-number-theory"
     ],
     "erdosNumber": 371,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 18,
+    "annotationCount": 22
   },
   {
     "id": "erdos-372",
@@ -5612,17 +5890,23 @@
   },
   {
     "id": "erdos-376",
-    "title": "Erdős Problem #376",
+    "title": "Erdős Problem #376: Central Binomial Coefficients Coprime to 105",
     "slug": "erdos-376",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many ... such that ... is coprime to ...?\n\n\n\nErds, Graham, Ruzsa, and Straus  have shown that, for any t...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Are there infinitely many n such that C(2n,n) is coprime to 105 = 3×5×7? OPEN for three primes. EGRS (1975) solved the two-prime case.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "binomial-coefficients",
+      "kummer-theorem",
+      "digit-constraints"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 376,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-377",
@@ -5774,17 +6058,23 @@
   },
   {
     "id": "erdos-392",
-    "title": "Erdős Problem #392",
+    "title": "Erdős Problem #392: Optimal Factorization of n!",
     "slug": "erdos-392",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... denote the least value of ... such that\\[n!=a_1\\cdots a_t\\]with .... Is it true that\\[A(n)={2}-{2\\log n}+o\\left({\\log...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let A(n) be the minimum number of factors needed to write n! = a₁...aₜ with each aᵢ ≤ n². Then A(n) = n/2 - n/(2 log n) + o(n/log n).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "factorization",
+      "factorial",
+      "asymptotics",
+      "number-theory"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 392,
+    "mathlibCount": 5,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-393",
@@ -5899,31 +6189,41 @@
   },
   {
     "id": "erdos-401",
-    "title": "Erdős Problem #401",
+    "title": "Erdős Problem #401: Factorial Divisibility with Prime Products",
     "slug": "erdos-401",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there some function ... such that ... as ..., such that, for infinitely many ..., there exist ... with\\[a_1+a_2> n+f(r)\\lo...",
-    "status": "pending",
+    "description": "Does there exist f(r) → ∞ such that for infinitely many n, there exist a₁, a₂ with a₁ + a₂ > n + f(r)·log(n) where a₁!·a₂! | n!·2ⁿ·3ⁿ·...·pᵣⁿ? YES (Barreto-Leeham 2026). The 'for all large n' version is FALSE (Sothanaphan).",
+    "status": "complete",
     "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "factorial-divisibility",
+      "primorial",
+      "ai-assisted"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 401,
+    "mathlibCount": 5,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-402",
-    "title": "Erdős Problem #402",
+    "title": "Graham's GCD Conjecture",
     "slug": "erdos-402",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nProve that, for any finite set ..., there exist ... such that\\[(a,b)\\leq a/\\lvert A\\rvert.\\]\n\n\n\nA conjecture of Graham , who ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For any finite set A ⊂ ℕ, there exist a, b ∈ A such that gcd(a, b) ≤ a/|A|. Graham's conjecture was proved by Balasubramanian and Soundararajan in 1996.",
+    "status": "axiom",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "gcd",
+      "combinatorics",
+      "solved"
     ],
     "erdosNumber": 402,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 4,
+    "annotationCount": 7
   },
   {
     "id": "erdos-403",
@@ -6182,17 +6482,21 @@
   },
   {
     "id": "erdos-434",
-    "title": "Erdős Problem #434",
+    "title": "Erdős #434: Extremal Frobenius Problem",
     "slug": "erdos-434",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... What choice of ... (with ...) of size ... maximises the number of integers not representable as the sum of finitely ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Which k-subset of {1,...,n} maximizes non-representable integers? Answer: {n-k+1,...,n} (Kiss 2002).",
+    "status": "formalized",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "frobenius-problem"
     ],
     "erdosNumber": 434,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 12,
+    "annotationCount": 27
   },
   {
     "id": "erdos-435",
@@ -6467,17 +6771,21 @@
   },
   {
     "id": "erdos-454",
-    "title": "Erdős Problem #454",
+    "title": "Erdős #454: Prime Sum Deviations",
     "slug": "erdos-454",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[f(n) = \\min_{i<n} (p_{n+i}+p_{n-i}),\\]where ... is the ...th prime. Is it true that\\[\\limsup_n (f(n)-2p_n)=\\infty?\\]\n\n\n\n...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f(n) = min_{i<n} (p_{n+i} + p_{n-i}). Is limsup(f(n) - 2p_n) = ∞? Pomerance (1979) proved limsup ≥ 2. The problem remains open.",
+    "status": "formalized",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "analytic-number-theory"
     ],
     "erdosNumber": 454,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 10,
+    "annotationCount": 20
   },
   {
     "id": "erdos-455",
@@ -6687,17 +6995,23 @@
   },
   {
     "id": "erdos-480",
-    "title": "Erdős Problem #480",
+    "title": "Erdős Problem #480: Sequence Approximation in the Unit Interval",
     "slug": "erdos-480",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence. Is it true that\\[\\inf_n \\liminf_{m\\to \\infty} n \\lvert x_{m+n}-x_m\\rvert\\leq 5^{-1/2}\\approx...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For any sequence in [0,1], are there infinitely many pairs (m,n) with |x_{m+n} - x_m| ≤ 1/(√5·n)? Solved by Chung-Graham (1984) with optimal constant.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "sequences",
+      "distribution",
+      "golden-ratio",
+      "fibonacci"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 480,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-481",
@@ -6743,17 +7057,22 @@
   },
   {
     "id": "erdos-485",
-    "title": "Erdős Problem #485",
+    "title": "Minimum Terms in Squared Polynomials",
     "slug": "erdos-485",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimum number of terms in ..., where ... ranges over all polynomials with exactly ... non-zero terms. Is it t...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f(k) be the minimum number of terms in P(x)², where P ranges over polynomials with exactly k non-zero terms. Is f(k) → ∞ as k → ∞?",
+    "status": "axiom",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "algebra",
+      "polynomials",
+      "sparse-polynomials",
+      "asymptotics",
+      "solved"
     ],
     "erdosNumber": 485,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 10,
+    "annotationCount": 8
   },
   {
     "id": "erdos-486",
@@ -6866,17 +7185,21 @@
   },
   {
     "id": "erdos-501",
-    "title": "Erdős Problem #501",
+    "title": "Erdős #501: Independent Sets for Outer Measure Families",
     "slug": "erdos-501",
-    "description": "For every ... let ... be a bounded set with outer measure $ View the LaTeX source",
-    "status": "pending",
+    "description": "For bounded sets A_x with outer measure < 1, must infinite independent sets exist? Answer depends on set-theoretic axioms!",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "set-theory",
+      "measure-theory",
+      "combinatorics",
+      "independence"
     ],
     "erdosNumber": 501,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 7,
+    "annotationCount": 18
   },
   {
     "id": "erdos-511",
@@ -6950,17 +7273,22 @@
   },
   {
     "id": "erdos-517",
-    "title": "Erdős Problem #517",
+    "title": "Erdős Problem #517: Lacunary Entire Functions and Value Distribution",
     "slug": "erdos-517",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an entire function (with ... for all ...). Is it true that if ... then ... assumes every value infinitely often?\n\n...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Do entire functions with Fabry gaps (nₖ/k → ∞) assume every value infinitely often? The main conjecture is OPEN, but Biernacki proved the stronger Fejér gap case.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "lacunary-series",
+      "value-distribution"
     ],
     "erdosNumber": 517,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 9
   },
   {
     "id": "erdos-518",
@@ -6992,17 +7320,23 @@
   },
   {
     "id": "erdos-520",
-    "title": "Erdős Problem #520",
+    "title": "Erdős Problem #520: Rademacher Multiplicative Functions",
     "slug": "erdos-520",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a Rademacher multiplicative function: a random ...-valued multiplicative function, where for each prime ... we ind...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For a Rademacher multiplicative function f, does there exist a constant c > 0 such that almost surely limsup (∑_{m≤N} f(m)) / √(N log log N) = c?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "probability",
+      "number-theory",
+      "random-multiplicative-functions",
+      "law-of-iterated-logarithm"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 520,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-521",
@@ -7020,17 +7354,23 @@
   },
   {
     "id": "erdos-522",
-    "title": "Erdős Problem #522",
+    "title": "Erdős Problem #522: Random Polynomial Roots in the Unit Disk",
     "slug": "erdos-522",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a random polynomial, where ... independently uniformly at random for ....\n\nIs it true that, if ... is the number o...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For random polynomials with ±1 coefficients, does the number of roots in the unit disk converge to n/2 almost surely? Yakir (2021) proved convergence in probability.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "probability",
+      "complex-analysis",
+      "random-polynomials",
+      "kac-polynomials"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 522,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 2,
+    "annotationCount": 14
   },
   {
     "id": "erdos-523",
@@ -7235,45 +7575,55 @@
   },
   {
     "id": "erdos-543",
-    "title": "Erdős Problem #543",
+    "title": "Erdős #543: Random Subset Sums in Abelian Groups",
     "slug": "erdos-543",
-    "description": "Define ... be the minimal ... such that the following holds: if ... is an abelian group of size ... and ... is a random set of size ... then, with probability ..., all elements of ... can be writte...",
-    "status": "pending",
+    "description": "What is the minimal size k such that a random k-subset of an abelian group spans all elements via subset sums with probability ≥ 1/2?",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "group-theory",
+      "probability",
+      "additive-combinatorics"
     ],
     "erdosNumber": 543,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 8,
+    "annotationCount": 14
   },
   {
     "id": "erdos-545",
-    "title": "Erdős Problem #545",
+    "title": "Erdős #545: Ramsey Numbers and Maximally Complete Graphs",
     "slug": "erdos-545",
-    "description": "Let ... be a graph with ... edges and no isolated vertices. Is the Ramsey number ... maximised when ... is 'as complete as possible'? That is, if ... edges with $0\\leq t View the LaTeX source This ...",
-    "status": "pending",
+    "description": "Is the Ramsey number R(G) maximized when G is 'as complete as possible' for a given number of edges?",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "combinatorics"
     ],
     "erdosNumber": 545,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 14,
+    "annotationCount": 18
   },
   {
     "id": "erdos-546",
-    "title": "Erdős Problem #546",
+    "title": "Erdős #546: Ramsey Numbers and Edge Count",
     "slug": "erdos-546",
-    "description": "Let ... be a graph with no isolated vertices and ... edges. Is it true that\\[R(G) \\leq 2^{O(m^{1/2})}?\\] This is true, and was proved by Sudakov [Su11]. The analogous question for ... colours is st...",
-    "status": "pending",
+    "description": "For a graph G with no isolated vertices and m edges, is R(G) ≤ 2^{O(√m)}? Solved by Sudakov (2011). The ≥3 color version remains open.",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "combinatorics"
     ],
     "erdosNumber": 546,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 10,
+    "annotationCount": 15
   },
   {
     "id": "erdos-547",
@@ -7336,45 +7686,54 @@
   },
   {
     "id": "erdos-550",
-    "title": "Erdős Problem #550",
+    "title": "Erdős #550: Ramsey Numbers for Trees and Multipartite Graphs",
     "slug": "erdos-550",
-    "description": "Let ... and ... be sufficiently large. If ... is a tree on ... vertices and ... is the complete multipartite graph with vertex class sizes ... then prove that\\[R(T,G)\\leq (\\chi(G)-1)(R(T,K_{m_1,m_2...",
-    "status": "pending",
+    "description": "For T a tree on n vertices and G = K_{m₁,...,mₖ}, prove R(T,G) ≤ (χ(G)-1)(R(T,K_{m₁,m₂})-1)+m₁. Chvátal (1977): R(T,Kₘ) = (m-1)(n-1)+1 is the foundational result.",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "trees"
     ],
     "erdosNumber": 550,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 18,
+    "annotationCount": 17
   },
   {
     "id": "erdos-551",
-    "title": "Erdős Problem #551",
+    "title": "Erdős #551: Ramsey Numbers for Cycles vs Complete Graphs",
     "slug": "erdos-551",
-    "description": "Prove that\\[R(C_k,K_n)=(k-1)(n-1)+1\\]for ... (except when ...). Asked by Erdős, Faudree, Rousseau, and Schelp, who also ask for the smallest value of ... such that this identity holds (for fixed .....",
-    "status": "pending",
+    "description": "Prove R(C_k, K_n) = (k-1)(n-1) + 1 for k ≥ n ≥ 3 (except n=k=3). Bondy-Erdős (1973): k > n²-2. Nikiforov (2005): k ≥ 4n+2. Keevash-Long-Skokan (2021): k ≥ C log n / log log n.",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "cycles"
     ],
     "erdosNumber": 551,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 26,
+    "annotationCount": 16
   },
   {
     "id": "erdos-552",
-    "title": "Erdős Problem #552",
+    "title": "Erdős #552: Ramsey Number R(C₄, Sₙ)",
     "slug": "erdos-552",
-    "description": "Determine the Ramsey number\\[R(C_4,S_n),\\]where ... is the star on ... vertices. In particular, is it true that, for any ..., there are infinitely many ... such that\\[R(C_4,S_n)\\leq n+-c?\\]",
-    "status": "pending",
+    "description": "Determine R(C₄, Sₙ) for the 4-cycle and star graph. Is R(C₄, Sₙ) ≤ n + √n - c for infinitely many n? Connected to prime gaps.",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "combinatorics"
     ],
     "erdosNumber": 552,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 17,
+    "annotationCount": 19
   },
   {
     "id": "erdos-553",
@@ -7482,17 +7841,22 @@
   },
   {
     "id": "erdos-564",
-    "title": "Erdős Problem #564",
+    "title": "Erdős Problem #564: Hypergraph Ramsey Numbers",
     "slug": "erdos-564",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimal ... such that if the edges of the ...-uniform hypergraph on ... vertices are ...-coloured then there i...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is there a constant c > 0 such that R₃(n) ≥ 2^{2^{cn}}? An open problem asking whether the lower bound for 3-uniform hypergraph Ramsey numbers can match the tower height of the upper bound.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "hypergraphs",
+      "combinatorics",
+      "open-problem"
     ],
     "erdosNumber": 564,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 2,
+    "sorries": 1,
+    "annotationCount": 13
   },
   {
     "id": "erdos-565",
@@ -7785,17 +8149,21 @@
   },
   {
     "id": "erdos-590",
-    "title": "Erdős Problem #590",
+    "title": "Erdős #590: Ordinal Ramsey Theory for ω^ω",
     "slug": "erdos-590",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the infinite ordinal .... Is it true that in any red/blue colouring of the edges of ... there is either a red ... ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does every 2-coloring of K_{ω^ω} contain a red K_{ω^ω} or a blue K_3? YES - proved by Chang (1972). The Ramsey property fails for ω³, ω⁴, ... but is restored for ω^ω.",
+    "status": "formalized",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "set-theory",
+      "ramsey-theory",
+      "ordinals",
+      "combinatorics"
     ],
     "erdosNumber": 590,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-591",
@@ -7927,17 +8295,20 @@
   },
   {
     "id": "erdos-601",
-    "title": "Erdős Problem #601",
+    "title": "Erdős #601: Infinite Paths and Independent Sets in Ordinal Graphs",
     "slug": "erdos-601",
-    "description": "For which limit ordinals &#x03B1;\" role=\"presentation\" style=\"position: relative;\">αα\\alpha is it true that if G\" role=\"presentation\" style=\"position: relative;\">GGG is a graph with vertex set &#x0...",
-    "status": "pending",
+    "description": "For which limit ordinals α must every graph on α have infinite path OR independent set of order type α? Known for α < ω₁^{ω+2}. Prize: $500.",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "set-theory",
+      "ordinals"
     ],
     "erdosNumber": 601,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 18,
+    "annotationCount": 16
   },
   {
     "id": "erdos-604",
@@ -7997,17 +8368,20 @@
   },
   {
     "id": "erdos-608",
-    "title": "Erdős Problem #608",
+    "title": "Erdős #608: Edges in 5-Cycles",
     "slug": "erdos-608",
-    "description": "Let G\" role=\"presentation\" style=\"position: relative;\">GGG be a graph with n\" role=\"presentation\" style=\"position: relative;\">nnn vertices and &gt;n2/4\" role=\"presentation\" style=\"position: relativ...",
-    "status": "pending",
+    "description": "Does G with > n²/4 edges have ≥ (2/9)n² edges in C₅? NO! The correct bound is c = (2 + √2)/16 ≈ 0.2134. Füredi-Maleki and Grzesik-Hu-Volec determined the exact value.",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "cycles"
     ],
     "erdosNumber": 608,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 13,
+    "annotationCount": 14
   },
   {
     "id": "erdos-609",
@@ -8202,73 +8576,91 @@
   },
   {
     "id": "erdos-621",
-    "title": "Erdős Problem #621",
+    "title": "Erdős #621: Triangle Edge Covers",
     "slug": "erdos-621",
-    "description": "Let G\" role=\"presentation\" style=\"position: relative;\">GGG be a graph on n\" role=\"presentation\" style=\"position: relative;\">nnn vertices, &#x03B1;1(G)\" role=\"presentation\" style=\"position: relative...",
-    "status": "pending",
+    "description": "For graph G on n vertices, is α₁(G) + τ₁(G) ≤ n²/4? Solved by Norin-Sun (2016) with the stronger result α₁(G) + τ_B(G) ≤ n²/4.",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "triangles",
+      "edge-covers",
+      "extremal-combinatorics"
     ],
     "erdosNumber": 621,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 22,
+    "annotationCount": 15
   },
   {
     "id": "erdos-622",
-    "title": "Erdős Problem #622",
+    "title": "Erdős #622: Cycle-Spanning Subsets in Regular Graphs",
     "slug": "erdos-622",
-    "description": "Let G\" role=\"presentation\" style=\"position: relative;\">GGG be a regular graph with 2n\" role=\"presentation\" style=\"position: relative;\">2n2n2n vertices and degree n+1\" role=\"presentation\" style=\"pos...",
-    "status": "pending",
+    "description": "Let G be a regular graph with 2n vertices and degree n+1. Must G have ≫ 2^{2n} subsets spanned by a cycle? Solved by Draganić-Keevash-Müyesser (2025): at least (1/2 + o(1))2^{2n} subsets.",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "cycles",
+      "regular-graphs"
     ],
     "erdosNumber": 622,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 14,
+    "annotationCount": 16
   },
   {
     "id": "erdos-623",
-    "title": "Erdős Problem #623",
+    "title": "Erdős #623: Independence for Functions on Finite Subsets",
     "slug": "erdos-623",
-    "description": "Let X\" role=\"presentation\" style=\"position: relative;\">XXX be a set of cardinality &#x2135;&#x03C9;\" role=\"presentation\" style=\"position: relative;\">ℵωℵω\\aleph_\\omega and f\" role=\"presentation\" sty...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let X have cardinality ℵ_ω and f: Finset(X) → X satisfy f(A) ∉ A. Must there exist an infinite independent set Y ⊆ X where f(B) ∉ Y for all finite B ⊆ Y? OPEN - possibly undecidable.",
+    "status": "formalized",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "set-theory",
+      "cardinals",
+      "combinatorics",
+      "independence"
     ],
     "erdosNumber": 623,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 8,
+    "annotationCount": 18
   },
   {
     "id": "erdos-624",
-    "title": "Erdős Problem #624",
+    "title": "Covering Properties of Subset Functions",
     "slug": "erdos-624",
-    "description": "Let X\" role=\"presentation\" style=\"position: relative;\">XXX be a finite set of size n\" role=\"presentation\" style=\"position: relative;\">nnn and H(n)\" role=\"presentation\" style=\"position: relative;\">H...",
-    "status": "pending",
+    "description": "Let X be a finite set of size n. What is the minimum H(n) such that some function f: P(X) -> X covers all of X from any subset Y of size at least H(n)?",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "covering-problems",
+      "set-theory"
     ],
     "erdosNumber": 624,
-    "sorries": 0,
+    "sorries": 2,
     "annotationCount": 0
   },
   {
     "id": "erdos-625",
-    "title": "Erdős Problem #625",
+    "title": "Erdős #625: Chromatic vs Cochromatic Numbers of Random Graphs",
     "slug": "erdos-625",
-    "description": "The cochromatic number of G\" role=\"presentation\" style=\"position: relative;\">GGG, denoted by &#x03B6;(G)\" role=\"presentation\" style=\"position: relative;\">ζ(G)ζ(G)\\zeta(G), is the minimum number of ...",
-    "status": "pending",
+    "description": "For G(n, 1/2), does χ(G) - ζ(G) → ∞ almost surely? The cochromatic number ζ(G) allows color classes to be cliques or independent sets. Heckel/Steiner (2024) proved the difference is unbounded. Prize: $1000 (false) / $100 (true).",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "random-graphs",
+      "coloring"
     ],
     "erdosNumber": 625,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 24,
+    "annotationCount": 15
   },
   {
     "id": "erdos-626",
@@ -8314,17 +8706,21 @@
   },
   {
     "id": "erdos-629",
-    "title": "Erdős Problem #629",
+    "title": "Erdős #629: List Chromatic Number of Bipartite Graphs",
     "slug": "erdos-629",
-    "description": "The list chromatic number &#x03C7;L(G)\" role=\"presentation\" style=\"position: relative;\">χL(G)χL(G)\\chi_L(G) is defined to be the minimal k\" role=\"presentation\" style=\"position: relative;\">kkk such ...",
-    "status": "pending",
+    "description": "Find n(k) = minimal vertices in bipartite G with list chromatic number χ_L(G) > k. Surprisingly, χ_L can be arbitrarily large even though χ ≤ 2!",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "list-coloring",
+      "bipartite-graphs"
     ],
     "erdosNumber": 629,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 17,
+    "annotationCount": 19
   },
   {
     "id": "erdos-63",
@@ -8429,17 +8825,20 @@
   },
   {
     "id": "erdos-637",
-    "title": "Erdős Problem #637",
+    "title": "Erdős #637: Distinct Degrees in Induced Subgraphs",
     "slug": "erdos-637",
-    "description": "If G\" role=\"presentation\" style=\"position: relative;\">GGG is a graph on n\" role=\"presentation\" style=\"position: relative;\">nnn vertices which contains no complete graph or independent set on &#x226...",
-    "status": "pending",
+    "description": "If G on n vertices has no clique/independent set on ≫ log n vertices, then G contains an induced subgraph with ≫ √n distinct degrees. Bukh-Sudakov (2007) proved this; JKLY (2020) strengthened to ≫ n^{2/3} degrees.",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "degrees"
     ],
     "erdosNumber": 637,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 16,
+    "annotationCount": 14
   },
   {
     "id": "erdos-639",
@@ -8521,31 +8920,42 @@
   },
   {
     "id": "erdos-644",
-    "title": "Erdős Problem #644",
+    "title": "Erdős #644: Covering Families of Sets",
     "slug": "erdos-644",
-    "description": "Let f(k,r)\" role=\"presentation\" style=\"position: relative;\">f(k,r)f(k,r)f(k,r) be minimal such that if A1,A2,&#x2026;\" role=\"presentation\" style=\"position: relative;\">A1,A2,…A1,A2,…A_1,A_2,\\ldots i...",
-    "status": "pending",
+    "description": "Let f(k,r) be the minimum size of a covering set for k-uniform families where every r sets share a common pair. Known: f(k,3)=2k, f(k,4)=⌊3k/2⌋, f(k,5)=⌊5k/4⌋, f(k,6)=k. Is f(k,7)=(3/4+o(1))k?",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "set-systems",
+      "covering"
     ],
     "erdosNumber": 644,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 22,
+    "annotationCount": 16
   },
   {
     "id": "erdos-645",
-    "title": "Erdős Problem #645",
+    "title": "Erdős Problem #645: Monochromatic AP with Large Difference",
     "slug": "erdos-645",
-    "description": "If N\" role=\"presentation\" style=\"position: relative;\">ℕN is 2-coloured then must there exist a monochromatic three-term arithmetic progression x,x+d,x+2d\" role=\"presentation\" style=\"position: relat...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If ℕ is 2-colored, must there exist a monochromatic 3-term arithmetic progression x, x+d, x+2d such that d > x? This is a strengthening of van der Waerden's theorem requiring the common difference to exceed the first term.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "ramsey-theory",
+      "arithmetic-progressions",
+      "van-der-waerden",
+      "coloring",
+      "solved"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 645,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-646",
@@ -8610,31 +9020,37 @@
   },
   {
     "id": "erdos-65",
-    "title": "Erdős Problem #65",
+    "title": "Erdős Problem #65: Cycle Lengths in Dense Graphs",
     "slug": "erdos-65",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a graph with ... vertices and ... edges, and ... be the lengths of cycles in .... Is it true that\\[\\sum{a_i}\\gg \\l...",
-    "status": "pending",
+    "description": "Let G be a graph with n vertices and kn edges. Is the sum of reciprocals of cycle lengths Σ 1/aᵢ ≫ log k? Is this sum minimized when G is complete bipartite?",
+    "status": "formalized",
     "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "cycles"
     ],
     "erdosNumber": 65,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 16
   },
   {
     "id": "erdos-650",
-    "title": "Erdős Problem #650",
+    "title": "Erdős #650: Divisibility Covering in Intervals",
     "slug": "erdos-650",
-    "description": "Let f(m)\" role=\"presentation\" style=\"position: relative;\">f(m)f(m)f(m) be such that if A&#x2286;{1,&#x2026;,N}\" role=\"presentation\" style=\"position: relative;\">A⊆{1,…,N}A⊆{1,…,N}A\\subseteq \\{1,\\ldo...",
-    "status": "pending",
+    "description": "If A ⊆ {1,...,N} with |A| = m, every interval of length 2N contains ≥ f(m) integers divisible by distinct elements of A. Known: f(m) ≫ √m. Open: Is f(m) ≪ √m?",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisibility",
+      "covering"
     ],
     "erdosNumber": 650,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 21,
+    "annotationCount": 16
   },
   {
     "id": "erdos-651",
@@ -8864,59 +9280,75 @@
   },
   {
     "id": "erdos-671",
-    "title": "Erdős Problem #671",
+    "title": "Erdős #671: Lagrange Interpolation Convergence",
     "slug": "erdos-671",
-    "description": "Given ... for all $1\\leq i\\leq n View the LaTeX source This page was last edited 06 December 2025.",
-    "status": "pending",
+    "description": "Can Lagrange interpolation L^n f(x) → f(x) even when the Lebesgue function λ_n(x) → ∞? Known: λ_n diverges somewhere (Bernstein), |L^n f| diverges a.e. for some f (Erdős-Vértesi). Prize: $250.",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "analysis",
+      "interpolation",
+      "approximation-theory"
     ],
     "erdosNumber": 671,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 20,
+    "annotationCount": 14
   },
   {
     "id": "erdos-672",
-    "title": "Erdős Problem #672",
+    "title": "Erdős Problem #672: Products of Arithmetic Progressions as Perfect Powers",
     "slug": "erdos-672",
-    "description": "Can the product of an arithmetic progression of positive integers ... of length ... (with ...) be a perfect power?",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Can the product n(n+d)(n+2d)···(n+(k-1)d) of k≥4 terms in arithmetic progression (with gcd(n,d)=1) be a perfect power? Euler proved k=4, l=2 impossible. Obláth extended to more cases. Erdős-Selfridge (1975) settled the consecutive case (d=1). General case remains OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "arithmetic-progressions",
+      "perfect-powers",
+      "diophantine-equations",
+      "partially-open"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 672,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-673",
-    "title": "Erdős Problem #673",
+    "title": "Erdős #673: Sum of Consecutive Divisor Ratios",
     "slug": "erdos-673",
-    "description": "Let $1=d_1 View the LaTeX source",
-    "status": "pending",
+    "description": "For G(n) = Σ dᵢ/dᵢ₊₁ (consecutive divisor ratios), does G(n) → ∞ for almost all n? What is the asymptotic formula for Σ G(n)? Solved: Tao gave bounds τ(n/m)/m ≤ G(n) ≤ τ(n).",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisors",
+      "analytic-number-theory"
     ],
     "erdosNumber": 673,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 21,
+    "annotationCount": 16
   },
   {
     "id": "erdos-674",
-    "title": "Erdős Problem #674",
+    "title": "Erdős #674: The Equation x^x y^y = z^z",
     "slug": "erdos-674",
-    "description": "Are there any integer solutions to ... with ...?",
-    "status": "pending",
+    "description": "Are there integer solutions to x^x y^y = z^z with x, y, z > 1? Yes! Ko (1940) found infinitely many. Dem'janenko (1975) proved all solutions share the same prime factors.",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "diophantine-equations",
+      "exponential-equations"
     ],
     "erdosNumber": 674,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 22,
+    "annotationCount": 15
   },
   {
     "id": "erdos-678",
@@ -8934,17 +9366,20 @@
   },
   {
     "id": "erdos-679",
-    "title": "Erdős Problem #679",
+    "title": "Erdős #679: Small ω(n-k) for All k < n",
     "slug": "erdos-679",
-    "description": "Let ... and ... count the number of distinct prime factors of .... Are there infinitely many values of ... such that\\[\\omega(n-k) 0$. View the LaTeX source This page was last edited 12 January 2026.",
-    "status": "pending",
+    "description": "Are there infinitely many n such that ω(n-k) < (1+ε) log k / log log k for all large k < n? The main question is OPEN; the stronger version with O(1) error is FALSE.",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-factors",
+      "omega-function"
     ],
     "erdosNumber": 679,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 14,
+    "annotationCount": 13
   },
   {
     "id": "erdos-682",
@@ -9009,17 +9444,23 @@
   },
   {
     "id": "erdos-694",
-    "title": "Erdős Problem #694",
+    "title": "Erdős Problem #694: Preimages of Euler's Totient Function",
     "slug": "erdos-694",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the largest ... such that ..., and ... be the smallest such ..., where ... is Euler's totient function. Investigat...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Investigate max f_max(n)/f_min(n) where f_max(n) and f_min(n) are the largest and smallest m with φ(m) = n. Related to Carmichael's conjecture: does φ(m) = n ever have exactly one solution?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "totient-function",
+      "carmichael-conjecture",
+      "preimage"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 694,
+    "mathlibCount": 2,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-696",
@@ -9065,17 +9506,23 @@
   },
   {
     "id": "erdos-699",
-    "title": "Erdős Problem #699",
+    "title": "Erdős Problem #699: Prime Divisors of GCDs of Binomial Coefficients",
     "slug": "erdos-699",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every ... there exists some prime ... such that\\[p\\mid \\left({i}, {j}\\right)?\\]\n\n\n\nA problem of Erds and ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For 1 ≤ i < j ≤ n/2, does there exist a prime p ≥ i dividing gcd(C(n,i), C(n,j))? An open problem extending the Sylvester-Schur theorem from single binomial coefficients to their GCDs.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "binomial-coefficients",
+      "prime-divisors",
+      "combinatorics",
+      "open-problem"
     ],
     "erdosNumber": 699,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 13
   },
   {
     "id": "erdos-7",
@@ -9171,17 +9618,23 @@
   },
   {
     "id": "erdos-707",
-    "title": "Erdős Problem #707",
+    "title": "Erdős Problem #707: Embedding Sidon Sets in Perfect Difference Sets",
     "slug": "erdos-707",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a finite Sidon set. Is there some set ... with ... which is perfect difference set modulo ... for some prime ...?\n...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Can every finite Sidon set be embedded in a perfect difference set modulo p^2+p+1 for some prime p? DISPROVED: Hall (1947) and Alexeev-Mixon (2025) provided counterexamples.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "sidon-sets",
+      "perfect-difference-sets",
+      "counterexample"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 707,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-708",
@@ -9213,17 +9666,21 @@
   },
   {
     "id": "erdos-71",
-    "title": "Erdős Problem #71",
+    "title": "Erdős Problem #71: Cycle Lengths in Arithmetic Progressions",
     "slug": "erdos-71",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every infinite arithmetic progression ... which contains even numbers there is some constant ... such tha...",
-    "status": "pending",
+    "description": "For every arithmetic progression P containing even numbers, does there exist c(P) such that graphs with average degree ≥ c contain a cycle of length in P? SOLVED by Bollobás (1977): YES.",
+    "status": "formalized",
     "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "cycle-lengths",
+      "average-degree",
+      "arithmetic-progressions"
     ],
     "erdosNumber": 71,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-710",
@@ -9409,17 +9866,21 @@
   },
   {
     "id": "erdos-723",
-    "title": "Erdős Problem #723",
+    "title": "Erdős Problem #723: Prime Power Conjecture for Projective Planes",
     "slug": "erdos-723",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf there is a finite projective plane of order ... then must ... be a prime power?\n\nA finite projective plane of order ... is...",
-    "status": "pending",
+    "description": "If there is a finite projective plane of order n, must n be a prime power? OPEN in general. Verified for n ≤ 11, with Bruck-Ryser application for n=6 fully verified.",
+    "status": "formalized",
     "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "projective-planes",
+      "prime-power",
+      "bruck-ryser"
     ],
     "erdosNumber": 723,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-724",
@@ -9451,17 +9912,25 @@
   },
   {
     "id": "erdos-727",
-    "title": "Erdős Problem #727",
+    "title": "Erdős Problem #727: Factorial Divisibility",
     "slug": "erdos-727",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Does\\[(n+k)!^2 \\mid (2n)!\\]for infinitely many ...?\n\n\n\nA conjecture of Erds, Graham, Ruzsa, and Straus . It is open ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For k ≥ 2, does ((n+k)!)² divide (2n)! for infinitely many n? The main problem is OPEN, but Balakran (1929) solved the k=1 case, and EGRS showed a weaker variant holds for all k ≥ 2.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "factorials",
+      "divisibility",
+      "catalan-numbers",
+      "open-problem",
+      "partially-solved"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 727,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 11
   },
   {
     "id": "erdos-728-factorial-divisibility",
@@ -9629,7 +10098,7 @@
     "erdosNumber": 74,
     "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 10
+    "annotationCount": 11
   },
   {
     "id": "erdos-740",
@@ -9815,17 +10284,23 @@
   },
   {
     "id": "erdos-757",
-    "title": "Erdős Problem #757",
+    "title": "Erdős Problem #757: Sidon Sets in Almost-Sidon Families",
     "slug": "erdos-757",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set of size ... such that every subset ... with ... has .... Find the best constant ... such that ... must alway...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let A ⊂ ℝ be a set of size n such that every 4-element subset B has |B - B| ≥ 11. Find the best constant c > 0 such that A must contain a Sidon set of size ≥ cn. Known: 1/2 < c < 3/5.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "sidon-sets",
+      "additive-combinatorics",
+      "extremal-combinatorics"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 757,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 1,
+    "annotationCount": 13
   },
   {
     "id": "erdos-758",
@@ -9983,17 +10458,23 @@
   },
   {
     "id": "erdos-77",
-    "title": "Erdős Problem #77",
+    "title": "Erdos Problem #77: Ramsey Number Growth Rate",
     "slug": "erdos-77",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is the Ramsey number for ..., the minimal ... such that every ...-colouring of the edges of ... contains a monochromat...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Find lim R(k)^{1/k} where R(k) is the diagonal Ramsey number. OPEN - bounds: sqrt(2) <= liminf <= limsup <= 3.7993 (2024). Prize: $100 for existence, $10000 for non-existence.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "graph-theory",
+      "probabilistic-method",
+      "open"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 77,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-771",
@@ -10095,17 +10576,22 @@
   },
   {
     "id": "erdos-779",
-    "title": "Erdős Problem #779",
+    "title": "Erdős Problem #779: Primorial Plus Prime",
     "slug": "erdos-779",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and ... denote the first ... primes. Let .... Does there always exist some prime ... with ... such that ... is prime?...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Given the primorial P = p₁·p₂·...·pₙ (product of first n primes), does there always exist a prime p with pₙ < p < P such that P + p is also prime? An open problem of Deaconescu verified for n ≤ 1000.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "primorial",
+      "additive-combinatorics"
     ],
     "erdosNumber": 779,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 1,
+    "annotationCount": 13
   },
   {
     "id": "erdos-780",
@@ -10269,17 +10755,22 @@
   },
   {
     "id": "erdos-793",
-    "title": "Erdős Problem #793",
+    "title": "Erdős Problem #793: Primitive Sets Avoiding Product Divisibility",
     "slug": "erdos-793",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the maximum possible size of a subset ... such that ... whenever ... with ... and .... Is there a constant ... suc...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let F(n) = max size of A ⊆ {1,...,n} where a ∤ bc for distinct a,b,c ∈ A. Is F(n) = π(n) + (C+o(1))·n^{2/3}·(log n)^{-2} for some constant C? Known: bounds with different constants c₁, c₂. OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisibility",
+      "primitive-sets",
+      "primes",
+      "open-problem"
     ],
     "erdosNumber": 793,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 1,
+    "annotationCount": 17
   },
   {
     "id": "erdos-794",
@@ -10639,17 +11130,22 @@
   },
   {
     "id": "erdos-817",
-    "title": "Erdős Problem #817",
+    "title": "Erdős Problem #817: Subset Sum Sets and Arithmetic Progressions",
     "slug": "erdos-817",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and define ... to be the minimal ... such that ... contains some ... of size ... such that\\[\\langle A\\rangle = \\left\\...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Given a set A ⊆ {1,...,N} of size n, the subset sum set ⟨A⟩ consists of all possible sums of subsets of A. How large must N be for ⟨A⟩ to avoid non-trivial 3-term arithmetic progressions? An open problem asking whether g₃(n) ≫ 3ⁿ.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "subset-sums",
+      "extremal-combinatorics"
     ],
     "erdosNumber": 817,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 5,
+    "sorries": 4,
+    "annotationCount": 13
   },
   {
     "id": "erdos-818",
@@ -10971,31 +11467,43 @@
   },
   {
     "id": "erdos-845",
-    "title": "Erdős Problem #845",
+    "title": "Erdős Problem #845: Sums of 3-Smooth Numbers with Bounded Ratio",
     "slug": "erdos-845",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is it true that the set of integers of the form\\[n=b_1+\\cdots+b_tb_1<\\cdots<b_t\\]where ... for ... and ... has densi...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For C > 0, does the set of integers expressible as sums of 3-smooth numbers b₁ < ... < bₜ with bₜ ≤ Cb₁ have density 0? Disproved: all integers have such representations with C = 6.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "smooth-numbers",
+      "representations",
+      "density"
     ],
     "erdosNumber": 845,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 9
   },
   {
     "id": "erdos-849",
-    "title": "Erdős Problem #849",
+    "title": "Erdős Problem #849: Binomial Coefficient Multiplicities",
     "slug": "erdos-849",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every integer ..., there is some integer ... such that\\[{k}=a\\](with ...) has exactly ... solutions?\n\n\n\n...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is it true that for every integer t ≥ 1, there is some integer a such that C(n,k) = a (with 1 ≤ k ≤ n/2) has exactly t solutions? Related to Singmaster's Conjecture.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "binomial-coefficients",
+      "pascal-triangle",
+      "singmaster-conjecture"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 849,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 16
   },
   {
     "id": "erdos-85",
@@ -11020,17 +11528,23 @@
   },
   {
     "id": "erdos-851",
-    "title": "Erdős Problem #851",
+    "title": "Erdős Problem #851: Density of Integers 2^k + n",
     "slug": "erdos-851",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Is there some ... such that the density of integers of the form ..., where ... and ... has at most ... prime divisor...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Romanoff (1934) proved that integers of the form 2^k + p (p prime) have positive lower density. Erdős asked: for any ε > 0, is there r such that integers of form 2^k + n (n has ≤ r prime factors) have density ≥ 1 - ε? OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "density",
+      "prime-factors"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 851,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 16
   },
   {
     "id": "erdos-855",
@@ -11090,31 +11604,41 @@
   },
   {
     "id": "erdos-859",
-    "title": "Erdős Problem #859",
+    "title": "Erdős #859: Density of Divisor Sum Representations",
     "slug": "erdos-859",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... be the density of the set of integers ... for which ... can be represented as the sum of distinct divisor...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let dₜ be the density of n where t is a sum of distinct divisors. Is dₜ ~ c₁/(log t)^c₂? Known: 1/(log t)^c₃ < dₜ < 1/(log t)^c₄ (Erdős 1970).",
+    "status": "formalized",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisors",
+      "density",
+      "asymptotics"
     ],
     "erdosNumber": 859,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 8,
+    "annotationCount": 31
   },
   {
     "id": "erdos-86",
-    "title": "Erdős Problem #86",
+    "title": "Erdős Problem #86: C₄-Free Subgraphs of Hypercubes",
     "slug": "erdos-86",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the ...-dimensional hypercube graph (so that ... has ... vertices and ... edges). Is it true that every subgraph o...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f(n) = max edges in a C₄-free subgraph of the n-hypercube Qₙ. Conjecture: f(n) ≤ (1/2+o(1))·n·2^(n-1). Known: 1/2 < f(n)/(n·2^(n-1)) ≤ 0.60318. The gap remains OPEN ($100 prize).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "hypercube",
+      "extremal",
+      "cycles",
+      "open-problem"
     ],
     "erdosNumber": 86,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 16
   },
   {
     "id": "erdos-860",
@@ -11202,17 +11726,23 @@
   },
   {
     "id": "erdos-868",
-    "title": "Erdős Problem #868",
+    "title": "Erdős Problem #868: Additive Bases and Minimal Bases",
     "slug": "erdos-868",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... is an additive basis of order ..., and ... as ..., then must ... contain a minimal additive basis of order ...? (i.e. ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If A is an additive basis of order 2 with f(n) → ∞, must A contain a minimal additive basis of order 2?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "number-theory",
+      "bases",
+      "open-problem"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 868,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 5,
+    "sorries": 2,
+    "annotationCount": 15
   },
   {
     "id": "erdos-869",
@@ -11258,17 +11788,22 @@
   },
   {
     "id": "erdos-873",
-    "title": "Erdős Problem #873",
+    "title": "Erdős Problem #873: LCM of Consecutive Sequence Terms",
     "slug": "erdos-873",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... count the number of ... such that\\[[a_i,a_{i+1},\\ldots,a_{i+k-1}] < X,\\]where the left-hand side is the l...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Can the count of k-tuples with small LCM be made subpolynomial by choosing k large enough? An open problem of Erdős and Szemerédi on multiplicative structure of sequences.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "lcm",
+      "sequences",
+      "multiplicative-structure"
     ],
     "erdosNumber": 873,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 2,
+    "annotationCount": 9
   },
   {
     "id": "erdos-874",
@@ -11398,17 +11933,23 @@
   },
   {
     "id": "erdos-885",
-    "title": "Erdős Problem #885",
+    "title": "Erdős Problem #885: Common Factor Difference Sets",
     "slug": "erdos-885",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor integer ... we define the factor difference set of ... by\\[D(n) = \\{\\lvert a-b\\rvert : n=ab\\}.\\]Is it true that, for ever...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For n ≥ 1, define D(n) = {|a - b| : n = ab}. For every k ≥ 1, do there exist integers N₁ < ... < Nₖ with |∩ᵢ D(Nᵢ)| ≥ k? Solved for k ≤ 4; OPEN for k ≥ 5.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "factorization",
+      "divisors",
+      "combinatorics"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 885,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-886",
@@ -11440,17 +11981,25 @@
   },
   {
     "id": "erdos-888",
-    "title": "Erdős Problem #888",
+    "title": "Erdős Problem #888: Square Products with ad = bc Constraint",
     "slug": "erdos-888",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest ... such that if ... are such that ... is a square then ...?\n\n\n\nA question of Erds, S\\'{a}rk\\...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "What is the size of the largest A ⊆ {1,...,n} such that if a ≤ b ≤ c ≤ d ∈ A and abcd is a perfect square, then ad = bc? The exact answer is OPEN, but bounds are SOLVED: Sárközy proved |A| = o(n), while the primes show |A| ≫ n/log n.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "multiplicative-structure",
+      "prime-numbers",
+      "open-problem",
+      "partially-solved"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 888,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-89",
@@ -11502,17 +12051,23 @@
   },
   {
     "id": "erdos-897",
-    "title": "Erdős Problem #897",
+    "title": "Erdős Problem #897: Additive Functions and Consecutive Differences",
     "slug": "erdos-897",
-    "description": "Let f(n)\" role=\"presentation\" style=\"position: relative;\">f(n)f(n)f(n) be an additive function (so that f(ab)=f(a)+f(b)\" role=\"presentation\" style=\"position: relative;\">f(ab)=f(a)+f(b)f(ab)=f(a)+f(...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For an additive function f with unbounded growth on prime powers, must consecutive differences f(n+1) - f(n) also be unbounded when normalized by log(n)?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "additive-functions",
+      "analytic-number-theory",
+      "arithmetic-functions"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 897,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-898",
@@ -11583,31 +12138,38 @@
   },
   {
     "id": "erdos-901",
-    "title": "Erdős Problem #901",
+    "title": "Erdős #901: Property B and Hypergraph Coloring",
     "slug": "erdos-901",
-    "description": "Let m(n)\" role=\"presentation\" style=\"position: relative;\">m(n)m(n)m(n) be minimal such that there is an n\" role=\"presentation\" style=\"position: relative;\">nnn-uniform hypergraph with m(n)\" role=\"pr...",
-    "status": "pending",
+    "description": "Find m(n) = minimum edges in an n-uniform hypergraph without Property B (not 2-colorable). Known: √(n/log n)·2^n ≪ m(n) ≪ n²·2^n.",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "hypergraph",
+      "coloring",
+      "property-b",
+      "combinatorics"
     ],
     "erdosNumber": 901,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 22,
+    "annotationCount": 16
   },
   {
     "id": "erdos-902",
-    "title": "Erdős Problem #902",
+    "title": "Erdős #902: Tournament Domination",
     "slug": "erdos-902",
-    "description": "Let f(n)\" role=\"presentation\" style=\"position: relative;\">f(n)f(n)f(n) be minimal such that there is a tournament (a complete directed graph) on f(n)\" role=\"presentation\" style=\"position: relative;...",
-    "status": "pending",
+    "description": "Let f(n) be minimal such that there is a tournament on f(n) vertices such that every set of n vertices is dominated. Known: f(1)=3, f(2)=7, f(3)=19. Bounds: n·2^n ≪ f(n) ≪ n²·2^n.",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "tournaments",
+      "domination"
     ],
     "erdosNumber": 902,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 22,
+    "annotationCount": 16
   },
   {
     "id": "erdos-903",
@@ -11653,17 +12215,23 @@
   },
   {
     "id": "erdos-906",
-    "title": "Erdős Problem #906",
+    "title": "Erdős Problem #906: Dense Zeros of Derivative Subsequences",
     "slug": "erdos-906",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an entire non-zero function ... such that, for any infinite sequence ..., the set\\[\\{ z: f^{(n_k)}(z)=0 k\\geq 1\\}\\]i...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is there a transcendental entire function f : ℂ → ℂ such that for any subsequence of derivatives, their zeros are dense? Erdős claimed solved but no proof is known.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "derivatives",
+      "density"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 906,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-907",
@@ -11723,17 +12291,21 @@
   },
   {
     "id": "erdos-910",
-    "title": "Erdős Problem #910",
+    "title": "Erdős Problem #910: Connected Subsets of Euclidean Space",
     "slug": "erdos-910",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes every connected set in ... contain a connected subset which is not a point and not homeomorphic to the original set?\n\nIf...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does every connected set in ℝⁿ have a proper connected subset that isn't a point or homeomorphic to the whole? Does it have more than 2^ℵ₀ connected subsets? Both NO—Rudin (1958) constructed a counterexample under CH.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "topology",
+      "connected-sets",
+      "homeomorphism",
+      "continuum-hypothesis"
     ],
     "erdosNumber": 910,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 2,
+    "annotationCount": 15
   },
   {
     "id": "erdos-912",
@@ -11807,17 +12379,23 @@
   },
   {
     "id": "erdos-918",
-    "title": "Erdős Problem #918",
+    "title": "Erdős Problem #918: Chromatic Numbers of Infinite Graphs",
     "slug": "erdos-918",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a graph with ... vertices and chromatic number ... such that every subgraph on ... vertices has chromatic number ......",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Two questions about graphs with large chromatic numbers: Can we have ℵ₂-chromatic graphs where all ℵ₁-subgraphs are countably chromatic? The main questions are OPEN, but Erdős-Hajnal proved the finite case.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "infinite-graphs",
+      "chromatic-number",
+      "set-theory",
+      "cardinals"
     ],
+    "dateAdded": "2026-01-16",
     "erdosNumber": 918,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 10
   },
   {
     "id": "erdos-92",
@@ -12063,31 +12641,39 @@
   },
   {
     "id": "erdos-94",
-    "title": "Erdős Problem #94",
+    "title": "Erdős #94: Distance Multiplicities in Convex Polygons",
     "slug": "erdos-94",
-    "description": "Suppose n\" role=\"presentation\" style=\"position: relative;\">nnn points in R2\" role=\"presentation\" style=\"position: relative;\">ℝ2R2^2 determine a convex polygon and the set of distances between them ...",
-    "status": "pending",
+    "description": "For n points forming a convex polygon with distance multiplicities f(u), prove ∑ f(u)² = O(n³). Solved by Fishburn, strengthened by Lefmann-Theile.",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "convex",
+      "distances",
+      "combinatorics"
     ],
     "erdosNumber": 94,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 18,
+    "annotationCount": 18
   },
   {
     "id": "erdos-940",
-    "title": "Erdős Problem #940",
+    "title": "Erdős #940: Sums of r-Powerful Numbers",
     "slug": "erdos-940",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... A number ... is ...-powerful if for every prime ... which divides ... we have ....\n\nAre there infinitely many intege...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For r ≥ 3, does the set of integers expressible as sums of at most r r-powerful numbers have density 0? Partial results by Baker-Brüdern (1994) and Heath-Brown (1988).",
+    "status": "formalized",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "powerful-numbers",
+      "density",
+      "additive-combinatorics"
     ],
     "erdosNumber": 940,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 2,
+    "annotationCount": 16
   },
   {
     "id": "erdos-941",
@@ -12105,31 +12691,44 @@
   },
   {
     "id": "erdos-942",
-    "title": "Erdős Problem #942",
+    "title": "Erdős Problem #942: Powerful Numbers Between Consecutive Squares",
     "slug": "erdos-942",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... count the number of powerful (if ... then ...) integers in .... Estimate .... In particular is there some constant .....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let h(n) count the powerful (squarefull) integers in [n², (n+1)²). Is there a constant c > 0 such that h(n) ~ (log n)^c? Known: limsup h(n) = ∞, densities δ_l exist with Σδ_l = 1, and h(n) ≥ c(log n/log log n)^{1/3} infinitely often (De Koninck-Luca 2004). The precise growth rate remains OPEN.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "powerful-numbers",
+      "squarefull",
+      "analytic-number-theory",
+      "density"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 942,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-944",
-    "title": "Erdős Problem #944",
+    "title": "Erdős Problem #944: Critical Graphs Without Critical Edges",
     "slug": "erdos-944",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA critical vertex, edge, or set of edges, is one whose deletion lowers the chromatic number.\n\nLet ... and .... Must there exi...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For k ≥ 4 and r ≥ 1, does there exist a k-vertex-critical graph where every critical edge set has size > r? The case k = 4 remains OPEN; all k ≥ 5 are solved.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "critical-graphs",
+      "vertex-critical"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 944,
+    "mathlibCount": 1,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-945",
@@ -12269,17 +12868,21 @@
   },
   {
     "id": "erdos-961",
-    "title": "Erdős Problem #961",
+    "title": "Erdős #961: Smooth Numbers in Consecutive Intervals",
     "slug": "erdos-961",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the minimal ... such that every set of ... consecutive integers ... contains an integer divisible by a prime .... ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f(k) = minimal n such that any n consecutive integers > k contain a number with a prime factor > k. Bounds known; polylogarithmic conjecture is open.",
+    "status": "formalized",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "smooth-numbers",
+      "prime-factors",
+      "analytic-number-theory"
     ],
     "erdosNumber": 961,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 3,
+    "annotationCount": 12
   },
   {
     "id": "erdos-962",
@@ -12353,17 +12956,23 @@
   },
   {
     "id": "erdos-968",
-    "title": "Erdős Problem #968",
+    "title": "Erdős Problem #968: Normalized Prime Sequence",
     "slug": "erdos-968",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., where ... is the ...th prime. Does the set of ... such that ... have positive density?\n\n\n\nErds and Prachar  proved t...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For uₙ = pₙ/n (normalized n-th prime), does the set of n where uₙ < uₙ₊₁ have positive density? Erdős-Prachar proved decreasing steps have positive density.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "prime-numbers",
+      "density",
+      "number-theory",
+      "prime-gaps"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 968,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 14
   },
   {
     "id": "erdos-969",
@@ -12415,31 +13024,42 @@
   },
   {
     "id": "erdos-971",
-    "title": "Erdős Problem #971",
+    "title": "Erdős Problem #971: Distribution of Least Primes in Arithmetic Progressions",
     "slug": "erdos-971",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the least prime congruent to .... Does there exist a constant ... such that, for all large ...,\\[p(a,d) > (1+c)\\ph...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For p(a,d) the least prime congruent to a mod d, does there exist c > 0 such that p(a,d) > (1+c)φ(d)log d for many residue classes a, for all large d?",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "arithmetic-progressions",
+      "analytic-number-theory",
+      "sieve-methods"
     ],
     "erdosNumber": 971,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 8
   },
   {
     "id": "erdos-972",
-    "title": "Erdős Problem #972",
+    "title": "Erdős Problem #972: Primes p with Floor(pα) Also Prime",
     "slug": "erdos-972",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be irrational. Are there infinitely many primes ... such that ... is also prime?\n\n\n\nVinogradov  proved that the seque...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For irrational α > 1, are there infinitely many primes p such that floor(pα) is also prime? An open problem of Erdős involving prime distribution under irrational scaling.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "irrational-numbers",
+      "floor-function"
     ],
     "erdosNumber": 972,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 5,
+    "sorries": 2,
+    "annotationCount": 10
   },
   {
     "id": "erdos-973",
@@ -12505,17 +13125,20 @@
   },
   {
     "id": "erdos-977",
-    "title": "Erdős Problem #977",
+    "title": "Erdős #977: Greatest Prime Factor of 2^n - 1",
     "slug": "erdos-977",
-    "description": "If P(m)\" role=\"presentation\" style=\"position: relative;\">P(m)P(m)P(m) is the greatest prime divisor of m\" role=\"presentation\" style=\"position: relative;\">mmm, then is it true thatP(2n&#x2212;1)n&#x...",
-    "status": "pending",
+    "description": "Does P(2^n - 1)/n → ∞? Solved by Stewart (2013): P(2^n - 1) ≥ n^{1 + 1/(104 log log n)}. Schinzel (1962) proved P(2^n - 1) > 2n for n > 12.",
+    "status": "formalized",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-factors",
+      "mersenne"
     ],
     "erdosNumber": 977,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 23,
+    "annotationCount": 16
   },
   {
     "id": "erdos-978",
@@ -12533,17 +13156,23 @@
   },
   {
     "id": "erdos-979",
-    "title": "Erdős Problem #979",
+    "title": "Erdős Problem #979: Sums of k-th Powers of Primes",
     "slug": "erdos-979",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ..., and let ... count the number of solutions to\\[n=p_1^k+\\cdots+p_k^k,\\]where the ... are prime numbers. Is it true tha...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For k primes p_1,...,p_k, count solutions to n = p_1^k + ... + p_k^k. Is this count unbounded? Erdős proved YES for k=2,3; k>=4 remains open.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-powers",
+      "additive-combinatorics",
+      "waring-type"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 979,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 12
   },
   {
     "id": "erdos-980",
@@ -12785,17 +13414,22 @@
   },
   {
     "id": "erdos-996",
-    "title": "Erdős Problem #996",
+    "title": "Erdős #996: Strong Law for Lacunary Sequences",
     "slug": "erdos-996",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a lacunary sequence of integers, and let .... Let ... be the ...th partial sum of the Fourier series of .... Is th...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For lacunary sequences and L² functions, if ‖f - fₙ‖₂ = O(1/(log log log n)^C), does the strong law hold? Open. Known: log log decay with c > 1/2 suffices (Matsuyama 1966).",
+    "status": "formalized",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "harmonic-analysis",
+      "probability",
+      "lacunary-sequences",
+      "fourier-series"
     ],
     "erdosNumber": 996,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 4,
+    "annotationCount": 31
   },
   {
     "id": "erdos-997",

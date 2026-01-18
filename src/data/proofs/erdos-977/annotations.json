@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-977-gpf",
+    "proofId": "erdos-977",
+    "range": { "startLine": 33, "endLine": 36 },
+    "type": "definition",
+    "title": "Greatest Prime Factor",
+    "content": "P(n) = the largest prime dividing n. Returns 0 for n ≤ 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-977-gpfdvd",
+    "proofId": "erdos-977",
+    "range": { "startLine": 42, "endLine": 43 },
+    "type": "theorem",
+    "title": "P(n) Divides n",
+    "content": "The greatest prime factor divides n. Basic property.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-977-gpfprime",
+    "proofId": "erdos-977",
+    "range": { "startLine": 46, "endLine": 47 },
+    "type": "theorem",
+    "title": "P(n) is Prime",
+    "content": "The greatest prime factor is itself prime.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-977-mersenne",
+    "proofId": "erdos-977",
+    "range": { "startLine": 57, "endLine": 57 },
+    "type": "definition",
+    "title": "Mersenne Number",
+    "content": "M_n = 2^n - 1. The Mersenne numbers.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-977-mainq",
+    "proofId": "erdos-977",
+    "range": { "startLine": 75, "endLine": 76 },
+    "type": "definition",
+    "title": "Main Question",
+    "content": "Does P(2^n - 1)/n → ∞? The central question.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-977-stewart",
+    "proofId": "erdos-977",
+    "range": { "startLine": 79, "endLine": 80 },
+    "type": "theorem",
+    "title": "Stewart's Theorem",
+    "content": "Stewart (2013): YES, P(2^n - 1)/n → ∞. The main result.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-977-schinzel",
+    "proofId": "erdos-977",
+    "range": { "startLine": 85, "endLine": 87 },
+    "type": "theorem",
+    "title": "Schinzel's Bound",
+    "content": "Schinzel (1962): P(2^n - 1) > 2n for n > 12.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-977-stewartq",
+    "proofId": "erdos-977",
+    "range": { "startLine": 97, "endLine": 100 },
+    "type": "theorem",
+    "title": "Stewart's Quantitative Bound",
+    "content": "P(2^n - 1) ≥ n^{1 + 1/(104 log log n)}. The precise growth rate.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-977-m2",
+    "proofId": "erdos-977",
+    "range": { "startLine": 112, "endLine": 113 },
+    "type": "theorem",
+    "title": "P(M₂) = 3",
+    "content": "P(2² - 1) = P(3) = 3. First Mersenne number.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-977-mersenneprime",
+    "proofId": "erdos-977",
+    "range": { "startLine": 134, "endLine": 134 },
+    "type": "definition",
+    "title": "Mersenne Prime",
+    "content": "A prime of the form 2^n - 1. When prime, P(M_n) = M_n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-977-gpfmp",
+    "proofId": "erdos-977",
+    "range": { "startLine": 137, "endLine": 139 },
+    "type": "theorem",
+    "title": "GPF of Mersenne Prime",
+    "content": "If M_n is prime, then P(M_n) = M_n = 2^n - 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-977-related",
+    "proofId": "erdos-977",
+    "range": { "startLine": 149, "endLine": 150 },
+    "type": "definition",
+    "title": "Related: P(n! + 1)",
+    "content": "The open question: Does P(n! + 1)/(n log n) → ∞?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-977-lai",
+    "proofId": "erdos-977",
+    "range": { "startLine": 158, "endLine": 161 },
+    "type": "theorem",
+    "title": "Lai's Bound",
+    "content": "Lai (2021): limsup P(n! + 1)/n ≥ 1 + 9 log 2 ≈ 7.238.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-977-primitive",
+    "proofId": "erdos-977",
+    "range": { "startLine": 167, "endLine": 168 },
+    "type": "definition",
+    "title": "Primitive Prime Factor",
+    "content": "A prime p | 2^n - 1 that doesn't divide 2^k - 1 for any k < n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-977-zsygmondy",
+    "proofId": "erdos-977",
+    "range": { "startLine": 171, "endLine": 173 },
+    "type": "theorem",
+    "title": "Zsygmondy's Theorem",
+    "content": "For n > 6, 2^n - 1 has a primitive prime factor.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-977-ord",
+    "proofId": "erdos-977",
+    "range": { "startLine": 183, "endLine": 184 },
+    "type": "definition",
+    "title": "Order of 2 mod p",
+    "content": "The multiplicative order of 2 modulo p. Connected to divisibility.",
+    "significance": "supporting"
+  }
+]

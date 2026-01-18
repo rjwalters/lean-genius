@@ -1,1 +1,202 @@
-[]
+[
+  {
+    "id": "ann-e306-header",
+    "proofId": "erdos-306",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #306** asks: Can every positive rational a/b with b squarefree be expressed as an Egyptian fraction where each denominator is a product of exactly 2 distinct primes?\n\n**Status**:\n- 2 distinct primes: **OPEN**\n- 3 distinct primes (integers only): **SOLVED** by Butler, Erdős, Graham (2015)\n\n**Historical Note**: The Butler-Erdős-Graham paper appeared 19 years after Erdős's death, making it perhaps his last publication.",
+    "mathContext": "Egyptian fractions date to ancient Egypt; this problem adds a modern constraint on prime factorization of denominators.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Egyptian fractions",
+      "semiprimes",
+      "squarefree",
+      "prime factorization"
+    ]
+  },
+  {
+    "id": "ann-e306-kdistinct",
+    "proofId": "erdos-306",
+    "range": {
+      "startLine": 57,
+      "endLine": 72
+    },
+    "type": "definition",
+    "title": "Products of k Distinct Primes",
+    "content": "**isProductOfKDistinctPrimes(n, k)**: A natural number n is a product of exactly k distinct primes if:\n- ω(n) = k (number of distinct prime divisors)\n- Ω(n) = k (total number of prime factors with multiplicity)\n\nThe condition ω = Ω ensures each prime appears exactly once (no repeated factors).\n\n**Examples for k=2**: 6=2×3, 10=2×5, 14=2×7, 15=3×5, 21=3×7, 35=5×7\n**Non-examples**: 4=2², 12=2²×3 (repeated factors)",
+    "mathContext": "Uses Mathlib's ArithmeticFunction.cardDistinctFactors (ω) and cardFactors (Ω) to formalize the constraint.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "omega function",
+      "Omega function",
+      "squarefree numbers",
+      "semiprimes"
+    ]
+  },
+  {
+    "id": "ann-e306-egyptian-repr",
+    "proofId": "erdos-306",
+    "range": {
+      "startLine": 81,
+      "endLine": 91
+    },
+    "type": "definition",
+    "title": "Egyptian Fraction Representation",
+    "content": "**EgyptianRepr k** is a structure representing k unit fractions:\n\n```\nstructure EgyptianRepr (k : ℕ) where\n  denoms : Fin (k + 1) → ℕ\n  base_is_one : denoms 0 = 1\n  strictly_increasing : StrictMono denoms\n```\n\nThe sum is computed as:\n```\nEgyptianRepr.sum = ∑ᵢ (1/denomsᵢ) for i ∈ {1, ..., k}\n```\n\nThe base denominators 0 = 1 is a sentinel; actual fractions start at index 1.",
+    "mathContext": "Strictly increasing denominators ensure all unit fractions are distinct, matching the classical definition of Egyptian fractions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit fractions",
+      "StrictMono",
+      "Finset.Icc"
+    ]
+  },
+  {
+    "id": "ann-e306-conjecture",
+    "proofId": "erdos-306",
+    "range": {
+      "startLine": 103,
+      "endLine": 110
+    },
+    "type": "definition",
+    "title": "The Main Open Conjecture",
+    "content": "**erdos_306_conjecture**: Every positive rational q with Squarefree(q.den) can be expressed as an Egyptian fraction where each denominator is a product of exactly 2 distinct primes.\n\n```lean\ndef erdos_306_conjecture : Prop :=\n  ∀ q : ℚ, 0 < q → Squarefree q.den →\n    ∃ k : ℕ, ∃ repr : EgyptianRepr k,\n      isTwoPrimeRepr repr ∧ repr.sum = q\n```\n\nThis remains **OPEN** - neither proved nor disproved.",
+    "mathContext": "The squarefree denominator condition is natural since every reduced fraction has this property.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Squarefree",
+      "Rat.den",
+      "existential quantifier"
+    ]
+  },
+  {
+    "id": "ann-e306-beg",
+    "proofId": "erdos-306",
+    "range": {
+      "startLine": 119,
+      "endLine": 127
+    },
+    "type": "axiom",
+    "title": "Butler-Erdős-Graham Theorem",
+    "content": "**butler_erdos_graham_theorem**: Every positive integer can be expressed as an Egyptian fraction where each denominator is a product of exactly 3 distinct primes.\n\n```lean\naxiom butler_erdos_graham_theorem :\n  ∀ m : ℕ, 0 < m →\n    ∃ k : ℕ, k > 0 ∧ ∃ repr : EgyptianRepr k,\n      isThreePrimeRepr repr ∧ repr.sum = m\n```\n\nThis was proved by Butler, Erdős, and Graham in their 2015 paper, appearing 19 years after Erdős's death.",
+    "mathContext": "The 3-prime case is easier than 2-prime because products of 3 distinct primes are denser among the integers.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "posthumous publication",
+      "density arguments",
+      "constructive existence"
+    ]
+  },
+  {
+    "id": "ann-e306-three-prime-solved",
+    "proofId": "erdos-306",
+    "range": {
+      "startLine": 135,
+      "endLine": 138
+    },
+    "type": "theorem",
+    "title": "Three-Prime Version Solved",
+    "content": "**three_prime_solved**: Derives the 3-prime integer version from Butler-Erdős-Graham.\n\n```lean\ntheorem three_prime_solved : three_prime_integer_version := by\n  intro m hm\n  obtain ⟨k, hk, repr, hrepr, hsum⟩ := butler_erdos_graham_theorem m hm\n  exact ⟨k, repr, hrepr, hsum⟩\n```\n\nThis is a direct corollary of the axiomatized theorem, dropping the k > 0 condition.",
+    "mathContext": "The proof uses obtain to destructure the existence statement and rebuilds it with the simpler predicate.",
+    "significance": "key",
+    "relatedConcepts": [
+      "obtain tactic",
+      "existential elimination",
+      "corollary"
+    ]
+  },
+  {
+    "id": "ann-e306-examples",
+    "proofId": "erdos-306",
+    "range": {
+      "startLine": 147,
+      "endLine": 163
+    },
+    "type": "theorem",
+    "title": "Computational Verification",
+    "content": "**native_decide examples**: Verify that specific numbers satisfy the conditions:\n\n```lean\nexample : ArithmeticFunction.cardDistinctFactors 6 = 2 := by native_decide\nexample : ArithmeticFunction.cardFactors 6 = 2 := by native_decide\nexample : ArithmeticFunction.cardDistinctFactors 30 = 3 := by native_decide\n```\n\nThese confirm:\n- 6 = 2×3 has ω(6) = Ω(6) = 2 (product of 2 distinct primes)\n- 30 = 2×3×5 has ω(30) = 3 (product of 3 distinct primes)",
+    "mathContext": "native_decide uses Lean's kernel to compute and verify arithmetic statements.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "decidability",
+      "computational verification"
+    ]
+  },
+  {
+    "id": "ann-e306-one-repr",
+    "proofId": "erdos-306",
+    "range": {
+      "startLine": 153,
+      "endLine": 157
+    },
+    "type": "axiom",
+    "title": "Representation of 1",
+    "content": "**example_one_representation**: The integer 1 can be represented with 2-distinct-prime denominators:\n\n```lean\naxiom example_one_representation :\n  (1 : ℚ) / 6 + 1 / 10 + 1 / 14 + 1 / 15 + 1 / 21 + 1 / 35 = 1\n```\n\nVerification: 6=2×3, 10=2×5, 14=2×7, 15=3×5, 21=3×7, 35=5×7\n\nSum: 1/6 + 1/10 + 1/14 + 1/15 + 1/21 + 1/35 = 35+21+15+14+10+6 / 210 = 1",
+    "mathContext": "This shows the conjecture holds for q = 1. The denominators form all products of pairs from {2,3,5,7}.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "specific examples",
+      "perfect Egyptian fraction",
+      "pairs of primes"
+    ]
+  },
+  {
+    "id": "ann-e306-density",
+    "proofId": "erdos-306",
+    "range": {
+      "startLine": 183,
+      "endLine": 202
+    },
+    "type": "concept",
+    "title": "Density of k-Prime Products",
+    "content": "**Asymptotic density**: Products of exactly k distinct primes up to n are counted asymptotically by:\n\n$$\\pi_k(n) \\sim \\frac{n (\\log\\log n)^{k-1}}{(k-1)! \\log n}$$\n\n**Key insight**: More prime factors → higher density → easier to find representations.\n\nThis explains why the 3-prime case is solved but 2-prime remains open: there are simply more 3-prime products to work with.",
+    "mathContext": "The formula involves iterated logarithms; for large n, products of more primes become relatively more common.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime counting",
+      "asymptotic analysis",
+      "logarithmic density"
+    ]
+  },
+  {
+    "id": "ann-e306-squarefree",
+    "proofId": "erdos-306",
+    "range": {
+      "startLine": 165,
+      "endLine": 181
+    },
+    "type": "concept",
+    "title": "Why Squarefree Denominator?",
+    "content": "**The squarefree condition**: The problem requires b to be squarefree (no repeated prime factors).\n\n**Why this is natural**:\n1. Every reduced fraction a/b in lowest terms has squarefree b\n2. The constraint on denominators (products of distinct primes) resonates with squarefreeness\n3. The arithmetic is cleaner without prime powers\n\n**axiom reduce_to_squarefree**: Every positive rational can be written with squarefree denominator.",
+    "mathContext": "Squarefree numbers are exactly the products of distinct primes - matching the denominator constraint.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Squarefree",
+      "lowest terms",
+      "prime factorization"
+    ]
+  },
+  {
+    "id": "ann-e306-greedy",
+    "proofId": "erdos-306",
+    "range": {
+      "startLine": 223,
+      "endLine": 239
+    },
+    "type": "axiom",
+    "title": "Greedy Algorithm",
+    "content": "**greedy_egyptian_exists**: The classical greedy algorithm produces an Egyptian fraction for any positive rational:\n\n1. Given q > 0, find smallest n with 1/n ≤ q\n2. Set q ← q - 1/n\n3. Repeat until q = 0\n\n```lean\naxiom greedy_egyptian_exists : ∀ q : ℚ, 0 < q →\n  ∃ k : ℕ, ∃ repr : EgyptianRepr k, repr.sum = q\n```\n\n**Limitation**: The greedy algorithm doesn't guarantee prime structure of denominators.",
+    "mathContext": "The greedy algorithm always terminates but may produce denominators that violate the semiprime constraint.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "greedy algorithm",
+      "Fibonacci-Sylvester",
+      "algorithmic number theory"
+    ]
+  }
+]

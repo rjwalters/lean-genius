@@ -1,1 +1,56 @@
-[]
+[
+  {
+    "id": "ann-1007-overview",
+    "proofId": "erdos-1007",
+    "range": { "startLine": 1, "endLine": 43 },
+    "type": "context",
+    "title": "Problem Overview",
+    "content": "Erdős #1007 asks for the minimum edges in a 4-dimensional graph. Graph dimension is a geometric invariant: the smallest n such that the graph embeds in ℝⁿ with all edges having unit length. The answer is 9 edges, achieved uniquely by K_{3,3}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1007-embedding",
+    "proofId": "erdos-1007",
+    "range": { "startLine": 49, "endLine": 67 },
+    "type": "definition",
+    "title": "Unit Distance Embedding",
+    "content": "A unit distance embedding places vertices in ℝⁿ so every edge has Euclidean length exactly 1. The structure captures the embedding function and the constraint that adjacent vertices are at unit distance. Graph dimension is the minimum n where such an embedding exists.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1007-bipartite",
+    "proofId": "erdos-1007",
+    "range": { "startLine": 69, "endLine": 81 },
+    "type": "definition",
+    "title": "Complete Bipartite Graphs",
+    "content": "K_{m,n} is the complete bipartite graph: m vertices on one side, n on the other, with all m·n cross-edges present. We represent this on Fin m ⊕ Fin n, with adjacency between vertices from different sides. K_{3,3} has 3+3=6 vertices and 3×3=9 edges.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1007-known",
+    "proofId": "erdos-1007",
+    "range": { "startLine": 83, "endLine": 94 },
+    "type": "theorem",
+    "title": "Known Dimensions",
+    "content": "The complete graphs form a dimension ladder: K₃ (triangle) embeds in the plane (dimension 2), K₄ (tetrahedron) requires 3D. These are regular simplices. K_{3,3} breaks the pattern—it's not complete but still needs 4 dimensions.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1007-main",
+    "proofId": "erdos-1007",
+    "range": { "startLine": 96, "endLine": 115 },
+    "type": "theorem",
+    "title": "Main Result: 9 Edges Minimum",
+    "content": "House (2013) proved: (1) every dimension-4 graph has at least 9 edges, and (2) K_{3,3} is the UNIQUE graph achieving this minimum. The uniqueness is remarkable—no other 9-edge graph has dimension 4, and no 8-edge graph reaches dimension 4.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1007-dim5",
+    "proofId": "erdos-1007",
+    "range": { "startLine": 117, "endLine": 131 },
+    "type": "theorem",
+    "title": "Dimension 5 Extension",
+    "content": "Chaffee and Noble (2016) extended to dimension 5: the minimum is 15 edges, achieved by K₆ and K_{1,3,3}. Unlike dimension 4, the minimum is not unique—two non-isomorphic graphs achieve it. K₆ is complete; K_{1,3,3} is tripartite.",
+    "significance": "key"
+  }
+]

@@ -1,33 +1,122 @@
 {
   "id": "erdos-971",
-  "title": "Erdős Problem #971",
+  "title": "Erdős Problem #971: Distribution of Least Primes in Arithmetic Progressions",
   "slug": "erdos-971",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the least prime congruent to .... Does there exist a constant ... such that, for all large ...,\\[p(a,d) > (1+c)\\ph...",
+  "description": "For p(a,d) the least prime congruent to a mod d, does there exist c > 0 such that p(a,d) > (1+c)φ(d)log d for many residue classes a, for all large d?",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős (1949 partial results)",
     "sourceUrl": "https://erdosproblems.com/971",
-    "date": "",
-    "status": "pending",
+    "date": "1949",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos971Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primes",
+      "arithmetic-progressions",
+      "analytic-number-theory",
+      "sieve-methods"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 971,
     "erdosUrl": "https://erdosproblems.com/971",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for asymptotic statements ('for all sufficiently large')",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function φ(n)",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm on real numbers",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets for counting residue classes",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "Defines leastCongruentPrime as the infimum of primes in an arithmetic progression",
+      "States the open problem precisely using Mathlib filters for asymptotic behavior",
+      "Formalizes both of Erdős's 1949 partial results as axioms with documentation",
+      "Provides educational context connecting to Linnik's and Dirichlet's theorems",
+      "Includes verified computational examples for small moduli"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #971 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $p(a,d)$ be the least prime congruent to $a\\pmod{d}$. Does there exist a constant $c>0$ such that, for all large $d$,\\[p(a,d) > (1+c)\\phi(d)\\log d\\]for $\\gg \\phi(d)$ many values of $a$?\n\n\n\nErd\\H{o}s \\cite{Er49c} could prove this is true for an infinite sequence of $d$. He also proved that, for any $\\epsilon>0$,\\[p(a,d)< \\epsilon \\phi(d)\\log d\\]for $\\gg_\\epsilon \\phi(d)$ many values of $a$.\n\n\n\n\nReferences\n\n\n[Er49c] Erd\\H{o}s, P., On some applications of {B}run's method. Acta Univ. Szeged. Sect. Sci. Math. (1949), 57--63.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Paul Erdős and concerns the distribution of the smallest primes in arithmetic progressions. Let p(a,d) denote the least prime congruent to a modulo d. The question asks whether there is a systematic bias causing many residue classes to have their least primes significantly larger than the expected average.\n\nErdős made significant progress on this problem in his 1949 paper 'On some applications of Brun's method' (Acta Univ. Szeged). Using Brun's sieve, he proved two partial results: first, that the desired phenomenon occurs for infinitely many moduli d (though not necessarily all large d); second, that in the opposite direction, for any ε > 0, many residue classes have least primes less than ε·φ(d)·log d.\n\nThis problem sits at the intersection of sieve theory and the study of primes in arithmetic progressions, extending questions raised by Dirichlet's theorem and refined by Linnik's theorem on the least prime in an arithmetic progression.",
+    "problemStatement": "Let $p(a,d)$ denote the least prime congruent to $a \\pmod{d}$. Does there exist a constant $c > 0$ such that, for all sufficiently large $d$,\n$$p(a,d) > (1+c)\\varphi(d)\\log d$$\nfor $\\gg \\varphi(d)$ many values of $a$ coprime to $d$?\n\n**Status**: OPEN. The main question remains unresolved. Erdős (1949) proved the statement holds for infinitely many $d$, and also proved the complementary bound $p(a,d) < \\varepsilon \\varphi(d) \\log d$ for many $a$.",
+    "proofStrategy": "We formalize the problem statement and Erdős's partial results using Mathlib's filter framework for asymptotic statements. The key definition is leastCongruentPrime, which uses the infimum of primes satisfying the congruence condition.\n\nSince the partial results depend on Brun's sieve methods (not yet in Mathlib), we state them as axioms with careful documentation of the mathematical references. The main open question is stated as a definition rather than an axiom, since its truth value is unknown.\n\nWe also provide verified computational examples showing that least primes can be explicitly computed for small moduli, demonstrating that our definition captures the intended mathematical concept.",
+    "keyInsights": [
+      "**Arithmetic progressions and primes**: Dirichlet's theorem guarantees infinitely many primes in each arithmetic progression a (mod d) when gcd(a,d) = 1, but finding the *least* such prime is much harder.",
+      "**Linnik's theorem**: Provides an upper bound p(a,d) ≤ c·d^L for some 'Linnik constant' L, currently known to satisfy L ≤ 5. This problem asks about the complementary lower bound behavior.",
+      "**Expected size**: On average over residue classes, one expects p(a,d) ≈ φ(d)·log d by the prime number theorem for arithmetic progressions.",
+      "**Brun's sieve**: The key tool in Erdős's 1949 partial results, allowing counting arguments for primes satisfying multiple congruence conditions.",
+      "**Open vs. solved variants**: The full statement (for ALL large d) remains open, but the statement for INFINITELY MANY d is proved."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Description",
+      "startLine": 1,
+      "endLine": 18,
+      "summary": "Header documentation stating the problem, its open status, and Erdős's partial results from 1949."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 26,
+      "endLine": 47,
+      "summary": "Defines leastCongruentPrime as the infimum of primes in an arithmetic progression, with documentation explaining the connection to Dirichlet's theorem."
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Open Question",
+      "startLine": 49,
+      "endLine": 65,
+      "summary": "States the main open question precisely using Mathlib's filter notation for 'for all sufficiently large d'."
+    },
+    {
+      "id": "partial-results",
+      "title": "Erdős's Partial Results (1949)",
+      "startLine": 66,
+      "endLine": 109,
+      "summary": "Formalizes both of Erdős's 1949 partial results: the statement for infinitely many d, and the complementary small prime bound."
+    },
+    {
+      "id": "context",
+      "title": "Mathematical Context",
+      "startLine": 111,
+      "endLine": 130,
+      "summary": "Explains connections to Linnik's theorem, Dirichlet's theorem, and average behavior of primes in progressions."
+    },
+    {
+      "id": "examples",
+      "title": "Computational Examples",
+      "startLine": 132,
+      "endLine": 155,
+      "summary": "Verified examples showing least primes for residue classes modulo 10, demonstrating the definition is computationally meaningful."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalized Erdős Problem #971, which asks about the distribution of least primes in arithmetic progressions. The main question—whether many residue classes systematically have large least primes for ALL large moduli—remains open. We captured Erdős's 1949 partial results as axioms: the phenomenon occurs for infinitely many d, and a complementary small-prime bound holds universally.",
+    "implications": "This problem connects fundamental questions about prime distribution. Progress would likely require advances in sieve theory or new techniques for understanding the uniformity of prime distribution across arithmetic progressions. The contrast between the 'infinitely many d' and 'all large d' versions highlights how much harder uniform asymptotic statements can be in analytic number theory.",
+    "openQuestions": [
+      "Can the 'infinitely many d' result be strengthened to 'all large d'?",
+      "What is the optimal constant c in the inequality?",
+      "Are there explicit constructions of moduli d where the phenomenon fails?",
+      "What is the relationship to the Generalized Riemann Hypothesis?"
+    ]
   }
 }

@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-644-kfamily",
+    "proofId": "erdos-644",
+    "range": { "startLine": 39, "endLine": 42 },
+    "type": "definition",
+    "title": "KFamily",
+    "content": "A family of sets, each of cardinality k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-644-pair-intersects",
+    "proofId": "erdos-644",
+    "range": { "startLine": 44, "endLine": 50 },
+    "type": "definition",
+    "title": "PairIntersects",
+    "content": "Pair {x,y} intersects A if x ∈ A or y ∈ A.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-644-rwise",
+    "proofId": "erdos-644",
+    "range": { "startLine": 52, "endLine": 55 },
+    "type": "definition",
+    "title": "HasRWisePairProperty",
+    "content": "Every r sets share a common pair intersecting all.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-644-covering",
+    "proofId": "erdos-644",
+    "range": { "startLine": 57, "endLine": 63 },
+    "type": "definition",
+    "title": "IsCoveringSet",
+    "content": "S intersects all sets in the family.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-644-f",
+    "proofId": "erdos-644",
+    "range": { "startLine": 67, "endLine": 70 },
+    "type": "definition",
+    "title": "f(k,r)",
+    "content": "Minimum covering set size for r-wise pair families.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-644-fk3",
+    "proofId": "erdos-644",
+    "range": { "startLine": 78, "endLine": 80 },
+    "type": "theorem",
+    "title": "f(k,3) = 2k",
+    "content": "EFKT92: Three-wise pair property requires 2k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-644-fk4",
+    "proofId": "erdos-644",
+    "range": { "startLine": 82, "endLine": 84 },
+    "type": "theorem",
+    "title": "f(k,4) = ⌊3k/2⌋",
+    "content": "EFKT92: Four-wise pair property.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-644-fk5",
+    "proofId": "erdos-644",
+    "range": { "startLine": 86, "endLine": 88 },
+    "type": "theorem",
+    "title": "f(k,5) = ⌊5k/4⌋",
+    "content": "EFKT92: Five-wise pair property.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-644-fk6",
+    "proofId": "erdos-644",
+    "range": { "startLine": 90, "endLine": 92 },
+    "type": "theorem",
+    "title": "f(k,6) = k",
+    "content": "EFKT92: Six-wise pair property.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-644-coeff",
+    "proofId": "erdos-644",
+    "range": { "startLine": 96, "endLine": 102 },
+    "type": "definition",
+    "title": "coefficientSequence",
+    "content": "c_3=2, c_4=3/2, c_5=5/4, c_6=1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-644-q1",
+    "proofId": "erdos-644",
+    "range": { "startLine": 122, "endLine": 128 },
+    "type": "definition",
+    "title": "Question 1",
+    "content": "Is f(k,7) = (3/4 + o(1))k?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-644-q2",
+    "proofId": "erdos-644",
+    "range": { "startLine": 140, "endLine": 147 },
+    "type": "definition",
+    "title": "Question 2",
+    "content": "Does f(k,r) = (c_r + o(1))k for all r ≥ 3?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-644-extremal",
+    "proofId": "erdos-644",
+    "range": { "startLine": 156, "endLine": 165 },
+    "type": "definition",
+    "title": "Extremal Families",
+    "content": "Constructions showing lower bounds are tight.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-644-mono",
+    "proofId": "erdos-644",
+    "range": { "startLine": 174, "endLine": 180 },
+    "type": "theorem",
+    "title": "Monotonicity",
+    "content": "f(k,r) non-increasing in r, non-decreasing in k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-644-sunflower",
+    "proofId": "erdos-644",
+    "range": { "startLine": 188, "endLine": 199 },
+    "type": "theorem",
+    "title": "Sunflower Connection",
+    "content": "Link between pair property and sunflower lemma.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-644-main",
+    "proofId": "erdos-644",
+    "range": { "startLine": 231, "endLine": 236 },
+    "type": "definition",
+    "title": "Main Conjecture",
+    "content": "Question 1 ∧ Question 2.",
+    "significance": "critical"
+  }
+]

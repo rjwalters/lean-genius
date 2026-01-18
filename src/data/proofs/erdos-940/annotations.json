@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-940-header",
+    "proofId": "erdos-940",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdős Problem #940 asks about r-powerful numbers: integers n where every prime p | n satisfies p^r | n. The main question is whether the set of integers expressible as sums of at most r r-powerful numbers has density 0 for r ≥ 3.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-940-powerful-def",
+    "proofId": "erdos-940",
+    "range": { "startLine": 41, "endLine": 52 },
+    "type": "definition",
+    "title": "r-Powerful Numbers",
+    "content": "A number n is r-powerful (or r-full) if every prime p dividing n satisfies p^r | n. For r = 2, these are 'squarefull' numbers (4, 8, 9, 16, 25, 27...). For r = 3, 'cubefull' numbers (1, 8, 27, 64...). The definition excludes 0 by convention.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-940-one-powerful",
+    "proofId": "erdos-940",
+    "range": { "startLine": 54, "endLine": 59 },
+    "type": "theorem",
+    "title": "1 is r-Powerful",
+    "content": "The number 1 is vacuously r-powerful for all r ≥ 1 because it has no prime divisors. This makes 1 the 'trivial' powerful number present in all sums.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-940-power-powerful",
+    "proofId": "erdos-940",
+    "range": { "startLine": 66, "endLine": 76 },
+    "type": "theorem",
+    "title": "Perfect Powers are Powerful",
+    "content": "If n ≥ 1, then n^r is always r-powerful. This is because any prime p | n^r satisfies p | n, so p^r | n^r. Thus all perfect r-th powers (1, 2^r, 3^r, ...) are r-powerful.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-940-sums-def",
+    "proofId": "erdos-940",
+    "range": { "startLine": 80, "endLine": 86 },
+    "type": "definition",
+    "title": "Set of Sums",
+    "content": "SumsOfPowerful(r, k) is the set of natural numbers expressible as sums of at most k r-powerful numbers. DiagonalSums(r) = SumsOfPowerful(r, r) is the 'diagonal' case where we use r summands of r-powerful numbers.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-940-density-def",
+    "proofId": "erdos-940",
+    "range": { "startLine": 108, "endLine": 117 },
+    "type": "definition",
+    "title": "Natural Density",
+    "content": "A set A has natural density d if the proportion of integers ≤ N in A converges to d as N → ∞. Density 0 means the set is 'sparse' in some sense, though it may still be infinite. The counting function |A ∩ [0,N]| grows sublinearly.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-940-main-conjecture",
+    "proofId": "erdos-940",
+    "range": { "startLine": 121, "endLine": 131 },
+    "type": "definition",
+    "title": "Main Conjecture (OPEN)",
+    "content": "The central question: for all r ≥ 3, does DiagonalSums(r) have density 0? This is the 'diagonal case' where we match the number of summands to the power. Status: OPEN. Erdős believed a counting argument should work, but Schinzel found an error.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-940-baker-brudern",
+    "proofId": "erdos-940",
+    "range": { "startLine": 146, "endLine": 159 },
+    "type": "axiom",
+    "title": "Baker-Brüdern Theorem (1994)",
+    "content": "The set of integers expressible as sums of at most TWO squarefull (2-powerful) numbers has density 0. This is the r = 2 case of the main conjecture. Erdős called this 'easy' in 1976, but the first rigorous proof came from Baker and Brüdern in 1994.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-940-heath-brown",
+    "proofId": "erdos-940",
+    "range": { "startLine": 163, "endLine": 175 },
+    "type": "axiom",
+    "title": "Heath-Brown's Theorem (1988)",
+    "content": "All sufficiently large integers are sums of at most THREE squarefull numbers. This is a representation theorem, not a density theorem. It shows that with 3 summands (instead of 2), eventually ALL integers are representable. This contrasts with Baker-Brüdern: density 0 with 2 summands, but density 1 (eventually) with 3.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-940-three-cubes",
+    "proofId": "erdos-940",
+    "range": { "startLine": 184, "endLine": 192 },
+    "type": "definition",
+    "title": "Three Cubes Conjecture (OPEN)",
+    "content": "Does the set of sums of at most 3 perfect cubes have density 0? This is a special case of the r = 3 problem since cubes are a subset of 3-powerful numbers. If even this simpler case is open, the full cubefull conjecture is harder.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-940-cubes-subset",
+    "proofId": "erdos-940",
+    "range": { "startLine": 194, "endLine": 200 },
+    "type": "theorem",
+    "title": "Cubes are Cubefull",
+    "content": "Every perfect cube n^3 (for n ≥ 1) is 3-powerful. This means sums of cubes form a subset of sums of cubefull numbers. If the cubefull density-0 conjecture is true, it would imply the cubes version (but not vice versa).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-940-universal",
+    "proofId": "erdos-940",
+    "range": { "startLine": 207, "endLine": 218 },
+    "type": "definition",
+    "title": "Universal Representation (OPEN)",
+    "content": "For r ≥ 2, are all sufficiently large integers in DiagonalSums(r)? Heath-Brown proved this for SumsOfPowerful(2, 3) (off-diagonal). The diagonal case DiagonalSums(2) = SumsOfPowerful(2, 2) is OPEN—we don't know if large integers are sums of just 2 squarefull numbers.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-940-status",
+    "proofId": "erdos-940",
+    "range": { "startLine": 242, "endLine": 247 },
+    "type": "theorem",
+    "title": "Status Summary",
+    "content": "The theorem status_summary combines the two known results: Baker-Brüdern (squarefull pairs have density 0) and Heath-Brown (squarefull triples eventually cover all integers). These are the only completely settled cases.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-940-example-4",
+    "proofId": "erdos-940",
+    "range": { "startLine": 251, "endLine": 257 },
+    "type": "theorem",
+    "title": "Example: 4 is Squarefull",
+    "content": "We verify 4 = 2² is 2-powerful (squarefull). The only prime divisor is 2, and 2² | 4. This is the smallest non-trivial squarefull number.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-940-example-8",
+    "proofId": "erdos-940",
+    "range": { "startLine": 259, "endLine": 265 },
+    "type": "theorem",
+    "title": "Example: 8 is Cubefull",
+    "content": "We verify 8 = 2³ is 3-powerful (cubefull). The only prime divisor is 2, and 2³ | 8. Perfect cubes of primes are the 'building blocks' of cubefull numbers.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-940-related",
+    "proofId": "erdos-940",
+    "range": { "startLine": 284, "endLine": 294 },
+    "type": "definition",
+    "title": "Related Problems",
+    "content": "Problem #941 concerns Heath-Brown's theorem specifically. Problem #1081 asks refined questions about the r = 2 case. Problem #1107 concerns r + 1 summands instead of r (off-diagonal cases like Heath-Brown studied).",
+    "significance": "supporting"
+  }
+]

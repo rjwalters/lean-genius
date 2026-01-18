@@ -42,6 +42,20 @@
     "relatedConcepts": ["infimum", "edge-deletion", "bipartite"]
   },
   {
+    "id": "ann-e74-infinite-counterexample",
+    "proofId": "erdos-74",
+    "range": {
+      "startLine": 53,
+      "endLine": 135
+    },
+    "type": "insight",
+    "title": "Infinite Graph Counterexample (Aristotle Discovery)",
+    "content": "**Aristotle Discovery (2026-01-14)**: The naive equivalence 'G is bipartite ⟺ edgeDistToBipartite = 0' is FALSE for infinite graphs!\n\n**Counterexample**: The complete graph K_ℕ on natural numbers:\n- NOT bipartite (any 2-coloring has monochromatic edges by pigeonhole)\n- Yet edgeDistToBipartite ℕ K_ℕ = 0!\n\n**Why?** Set.ncard of an infinite set is 0. Deleting all (infinitely many) edges gives the empty graph (bipartite), and ncard(all edges) = 0.\n\nThe equivalence only holds for FINITE graphs, hence `isBipartiteIffDistZero_finite`.\n\n*Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>*",
+    "mathContext": "This reveals a subtle interaction between Set.ncard (which returns 0 for infinite sets) and our definition.",
+    "significance": "critical",
+    "relatedConcepts": ["aristotle", "counterexample", "infinite-graphs", "ncard"]
+  },
+  {
     "id": "ann-e74-max-dist",
     "proofId": "erdos-74",
     "range": {
@@ -130,13 +144,13 @@
     "proofId": "erdos-74",
     "range": {
       "startLine": 239,
-      "endLine": 258
+      "endLine": 276
     },
-    "type": "axiom",
-    "title": "Basic Bounds",
-    "content": "**edgeDistUpperBound**: Any n-vertex graph has at most n(n-1)/2 edges, so edge distance to bipartite is at most this.\n\n**bipartite_chromaticNumber_le_two**: Bipartite graphs have χ ≤ 2.\n\nThese are marked with `sorry` as they require straightforward but detailed proofs.",
+    "type": "theorem",
+    "title": "Basic Bounds (Proved)",
+    "content": "**edgeDistUpperBound**: Any n-vertex graph has at most n(n-1)/2 edges, so edge distance to bipartite is at most this. Proved by showing we can delete all edges to get the empty (bipartite) graph.\n\n**bipartite_chromaticNumber_le_two**: Bipartite graphs have χ ≤ 2. Follows directly from the definition of IsBipartite.\n\n*Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>*",
     "mathContext": "The upper bound shows the problem is well-posed—edge distance is always finite for finite graphs.",
-    "significance": "supporting",
-    "relatedConcepts": ["upper-bound", "trivial-bound", "sorry"]
+    "significance": "key",
+    "relatedConcepts": ["upper-bound", "trivial-bound", "aristotle"]
   }
 ]

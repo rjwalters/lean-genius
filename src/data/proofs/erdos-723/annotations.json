@@ -1,1 +1,218 @@
-[]
+[
+  {
+    "id": "ann-e723-header",
+    "proofId": "erdos-723",
+    "range": {
+      "startLine": 1,
+      "endLine": 17
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #723**: Prime Power Conjecture for Projective Planes\n\n**Question**: If there is a finite projective plane of order n, must n be a prime power?\n\n**Status**: OPEN (general conjecture)\n\n**Partial Results**:\n- Planes exist for all prime powers (classical)\n- Verified for n ≤ 11\n- n = 10 ruled out by computer search (Lam 1997)\n- Bruck-Ryser rules out n ≡ 1,2 (mod 4) when n ≠ sum of two squares\n- Order 12 remains OPEN",
+    "mathContext": "One of the most famous open problems in combinatorics. Despite decades of effort, neither proof nor counterexample exists.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "projective-plane",
+      "prime-power",
+      "bruck-ryser"
+    ]
+  },
+  {
+    "id": "ann-e723-background",
+    "proofId": "erdos-723",
+    "range": {
+      "startLine": 25,
+      "endLine": 36
+    },
+    "type": "concept",
+    "title": "Projective Plane Background",
+    "content": "**Finite Projective Plane of Order n**:\n- n² + n + 1 points\n- n² + n + 1 lines\n- Each line contains n + 1 points\n- Each point lies on n + 1 lines\n- Any two distinct points → unique line\n- Any two distinct lines → unique point\n\nMathlib type: `Configuration.ProjectivePlane P L`",
+    "mathContext": "The axioms ensure a highly symmetric structure. The Fano plane (order 2) is the smallest example with 7 points and 7 lines.",
+    "significance": "key",
+    "relatedConcepts": [
+      "projective-geometry",
+      "incidence-structure",
+      "fano-plane"
+    ]
+  },
+  {
+    "id": "ann-e723-conjecture",
+    "proofId": "erdos-723",
+    "range": {
+      "startLine": 40,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "The Prime Power Conjecture",
+    "content": "**PrimePowerConjecture**:\nFor every finite projective plane, the order is a prime power.\n\n∀ projective plane pp, IsPrimePow pp.order\n\n**axiom erdos_723_open**: True\n(Indicates the general conjecture remains open)\n\nThis is one of the most famous open problems in combinatorics.",
+    "mathContext": "The conjecture has been verified for all orders ≤ 11, but no general proof exists. The smallest open case is order 12.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open-problem",
+      "prime-power",
+      "order"
+    ]
+  },
+  {
+    "id": "ann-e723-existence",
+    "proofId": "erdos-723",
+    "range": {
+      "startLine": 64,
+      "endLine": 74
+    },
+    "type": "axiom",
+    "title": "Existence for Prime Powers",
+    "content": "**axiom prime_power_planes_exist**:\nFor every prime power q = p^k, a projective plane of order q exists.\n\n**Construction**: PG(2, q) from finite field GF(q)\n- Points = 1-dimensional subspaces of GF(q)³\n- Lines = 2-dimensional subspaces of GF(q)³\n\nThis gives planes of order 2, 3, 4, 5, 7, 8, 9, 11, 13, 16, ...",
+    "mathContext": "The construction uses the projective space over a finite field. This is the only known infinite family of projective planes.",
+    "significance": "key",
+    "relatedConcepts": [
+      "finite-field",
+      "PG(2,q)",
+      "construction"
+    ]
+  },
+  {
+    "id": "ann-e723-verified",
+    "proofId": "erdos-723",
+    "range": {
+      "startLine": 78,
+      "endLine": 87
+    },
+    "type": "axiom",
+    "title": "Verified for n ≤ 11",
+    "content": "**axiom verified_up_to_11**:\nFor all projective planes with order ≤ 11, the order is a prime power.\n\n**Breakdown**:\n- n = 1,2,3,4,5,7,8,9,11: prime powers, planes exist\n- n = 6: ruled out by Bruck-Ryser\n- n = 10: ruled out by Lam's computer search\n\nThe conjecture holds through order 11!",
+    "mathContext": "Each case required different techniques. The n=10 case alone took over a decade of computation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "verified",
+      "small-cases",
+      "exhaustive"
+    ]
+  },
+  {
+    "id": "ann-e723-bruck-ryser",
+    "proofId": "erdos-723",
+    "range": {
+      "startLine": 91,
+      "endLine": 104
+    },
+    "type": "axiom",
+    "title": "Bruck-Ryser Theorem",
+    "content": "**axiom bruck_ryser** (1949):\nIf a projective plane of order n exists and n ≡ 1,2 (mod 4),\nthen n must be the sum of two squares.\n\n**Rules out**:\n- n = 6: 6 ≡ 2 (mod 4), 6 ≠ a² + b²\n- n = 14: 14 ≡ 2 (mod 4), 14 ≠ a² + b²\n- n = 21: 21 ≡ 1 (mod 4), 21 ≠ a² + b²\n- n = 22: 22 ≡ 2 (mod 4), 22 ≠ a² + b²\n\nDoes NOT apply to n ≡ 0,3 (mod 4).",
+    "mathContext": "Bruck-Ryser uses algebraic number theory. It gives a necessary but not sufficient condition for existence.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "bruck-ryser-1949",
+      "sum-of-squares",
+      "necessary-condition"
+    ]
+  },
+  {
+    "id": "ann-e723-lam",
+    "proofId": "erdos-723",
+    "range": {
+      "startLine": 108,
+      "endLine": 119
+    },
+    "type": "axiom",
+    "title": "Lam's Theorem (Order 10)",
+    "content": "**axiom lam_order_10** (1997):\nThere is no projective plane of order 10.\n\n¬∃ projective plane pp, pp.order = 10\n\n**Significance**:\n- Bruck-Ryser does NOT rule out 10 (10 = 1² + 3²)\n- Required massive computer search (decade of computation)\n- One of the largest computational proofs ever\n\nShows the conjecture holds for n = 10 despite no theoretical obstruction.",
+    "mathContext": "The search checked all possible incidence structures. No order-10 plane exists despite passing Bruck-Ryser.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "lam-1997",
+      "computer-search",
+      "non-existence"
+    ]
+  },
+  {
+    "id": "ann-e723-order12",
+    "proofId": "erdos-723",
+    "range": {
+      "startLine": 123,
+      "endLine": 129
+    },
+    "type": "axiom",
+    "title": "Order 12 (OPEN)",
+    "content": "**axiom order_12_open**: True\n\nExistence of a projective plane of order 12 is OPEN.\n\n**Why it's hard**:\n- 12 ≡ 0 (mod 4), so Bruck-Ryser doesn't apply\n- 12 is NOT a prime power\n- Computer search is infeasible (too many configurations)\n- No theoretical obstruction known\n\nThis is the smallest open case!",
+    "mathContext": "Order 12 would have 157 points and 157 lines. The search space is astronomically larger than order 10.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open",
+      "order-12",
+      "smallest-unknown"
+    ]
+  },
+  {
+    "id": "ann-e723-properties",
+    "proofId": "erdos-723",
+    "range": {
+      "startLine": 133,
+      "endLine": 141
+    },
+    "type": "theorem",
+    "title": "Basic Properties (Verified)",
+    "content": "**theorem plane_points** ✓:\n  |P| = n² + n + 1\n\n**theorem plane_lines** ✓:\n  |L| = n² + n + 1\n\nBoth follow from Mathlib's `ProjectivePlane` API:\n- pp.card_points\n- pp.card_lines",
+    "mathContext": "The formula n² + n + 1 is symmetric in points and lines, reflecting the duality principle of projective geometry.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "verified",
+      "counting",
+      "duality"
+    ]
+  },
+  {
+    "id": "ann-e723-small-orders",
+    "proofId": "erdos-723",
+    "range": {
+      "startLine": 145,
+      "endLine": 169
+    },
+    "type": "theorem",
+    "title": "Small Orders (Verified)",
+    "content": "**Verified by decide**:\n- order_1_is_prime_power ✓ (trivial plane)\n- order_2_is_prime_power ✓ (Fano plane: 7 pts)\n- order_3_is_prime_power ✓ (13 pts)\n- order_4_is_prime_power ✓ (2² = 4, 21 pts)\n- order_5_is_prime_power ✓ (31 pts)\n\n**Non-prime-powers (verified)**:\n- order_6_not_prime_power ✓\n- order_10_not_prime_power ✓\n- order_12_not_prime_power ✓",
+    "mathContext": "The `decide` tactic computes IsPrimePow directly. Order 4 requires showing 4 = 2², which uses IsPrimePow.pow.",
+    "significance": "key",
+    "relatedConcepts": [
+      "verified",
+      "decide",
+      "small-cases"
+    ]
+  },
+  {
+    "id": "ann-e723-bruck-ryser-app",
+    "proofId": "erdos-723",
+    "range": {
+      "startLine": 173,
+      "endLine": 187
+    },
+    "type": "theorem",
+    "title": "Bruck-Ryser Application (Verified)",
+    "content": "**theorem six_mod_4** ✓: 6 % 4 = 2\n\n**theorem six_not_sum_squares** ✓:\n  ¬∃ a b, 6 = a² + b²\n\nProved by interval_cases: check all (a,b) with a² + b² ≤ 6.\n\n**theorem no_plane_order_6** ✓:\n  No projective plane of order 6 exists!\n\n**Proof**: Apply Bruck-Ryser (6 ≡ 2 mod 4) + six_not_sum_squares.",
+    "mathContext": "This is a complete proof ruling out order 6 using only Bruck-Ryser. The verified theorem chain shows formal verification in action.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "verified",
+      "bruck-ryser-application",
+      "non-existence"
+    ]
+  },
+  {
+    "id": "ann-e723-summary",
+    "proofId": "erdos-723",
+    "range": {
+      "startLine": 1,
+      "endLine": 17
+    },
+    "type": "concept",
+    "title": "Summary and Status",
+    "content": "**Erdős Problem #723: OPEN**\n\n**Verified Theorems**:\n- plane_points, plane_lines ✓\n- order_1/2/3/4/5_is_prime_power ✓\n- order_6/10/12_not_prime_power ✓\n- six_mod_4, six_not_sum_squares ✓\n- no_plane_order_6 ✓ (Bruck-Ryser application!)\n\n**Status by Order**:\n- 1-5,7-9,11: prime powers, planes exist\n- 6: ruled out (Bruck-Ryser, verified)\n- 10: ruled out (Lam computer search)\n- 12: OPEN (smallest unknown)",
+    "mathContext": "The formalization includes a complete verified proof that no order-6 plane exists, showcasing Bruck-Ryser in Lean.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "problem-status",
+      "open",
+      "verified-chain"
+    ]
+  }
+]

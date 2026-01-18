@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-296-recipsum",
+    "proofId": "erdos-296",
+    "range": { "startLine": 51, "endLine": 53 },
+    "type": "definition",
+    "title": "Reciprocal Sum",
+    "content": "The reciprocal sum of a set A is Σ_{n∈A} 1/n. We use rationals (ℚ) to ensure exact arithmetic. This measures the 'weight' of a set in terms of its unit fractions.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-296-unitset",
+    "proofId": "erdos-296",
+    "range": { "startLine": 55, "endLine": 57 },
+    "type": "definition",
+    "title": "Unit Set",
+    "content": "A set is a 'unit set' if all its elements are positive and their reciprocals sum to exactly 1. These are Egyptian fraction representations of 1, like {2,3,6} since 1/2+1/3+1/6=1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-296-example",
+    "proofId": "erdos-296",
+    "range": { "startLine": 59, "endLine": 62 },
+    "type": "example",
+    "title": "Classic Example",
+    "content": "The set {2,3,6} is a unit set: 1/2 + 1/3 + 1/6 = 3/6 + 2/6 + 1/6 = 6/6 = 1. This is the smallest such set and the most familiar Egyptian fraction for 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-296-disjoint",
+    "proofId": "erdos-296",
+    "range": { "startLine": 70, "endLine": 73 },
+    "type": "definition",
+    "title": "Pairwise Disjoint",
+    "content": "A collection of sets is pairwise disjoint if no integer belongs to more than one set. This constraint makes packing multiple unit sets challenging: once an integer is used, it's unavailable.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-296-packing",
+    "proofId": "erdos-296",
+    "range": { "startLine": 75, "endLine": 80 },
+    "type": "structure",
+    "title": "Unit Set Packing",
+    "content": "A valid packing consists of multiple disjoint unit sets, all contained in {1,...,N}. The structure tracks: the list of sets, that each is a unit set, that all elements are ≤N, and that sets are disjoint.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-296-k",
+    "proofId": "erdos-296",
+    "range": { "startLine": 91, "endLine": 93 },
+    "type": "definition",
+    "title": "The Function k(N)",
+    "content": "k(N) is the maximum number of disjoint unit sets that can be packed into {1,...,N}. This is the central quantity Erdős asked about: how does it grow with N?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-296-lower",
+    "proofId": "erdos-296",
+    "range": { "startLine": 99, "endLine": 100 },
+    "type": "theorem",
+    "title": "k(N) ≥ 1",
+    "content": "For N ≥ 6, we can fit at least one unit set: {2,3,6}. This is the trivial lower bound establishing k(N) is non-zero for reasonable N.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-296-upper",
+    "proofId": "erdos-296",
+    "range": { "startLine": 102, "endLine": 103 },
+    "type": "theorem",
+    "title": "Trivial Upper Bound",
+    "content": "k(N) ≤ N since disjoint sets can't collectively contain more than N elements. This is a weak bound but shows k(N) is finite.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-296-sunflower",
+    "proofId": "erdos-296",
+    "range": { "startLine": 111, "endLine": 117 },
+    "type": "theorem",
+    "title": "Sunflower Lower Bound",
+    "content": "Using the sunflower lemma, one can construct at least N·exp(-O(√log N)) disjoint sets with equal reciprocal sums (though not necessarily equal to 1). This gives a sublinear but superpolylogarithmic bound.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-296-hunterlower",
+    "proofId": "erdos-296",
+    "range": { "startLine": 125, "endLine": 127 },
+    "type": "theorem",
+    "title": "Hunter-Sawhney Lower Bound",
+    "content": "For any ε > 0 and large N: k(N) ≥ (1-ε)·log N. Combined with the upper bound, this shows k(N) = (1-o(1))·log N. The proof uses Bloom's Theorem 3 on unit fraction density.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-296-upperlog",
+    "proofId": "erdos-296",
+    "range": { "startLine": 129, "endLine": 131 },
+    "type": "theorem",
+    "title": "Logarithmic Upper Bound",
+    "content": "k(N) ≤ log N + O(1). This follows because each unit set must use at least one integer ≤ some threshold, and there aren't enough small integers to support more than ~log N disjoint sets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-296-main",
+    "proofId": "erdos-296",
+    "range": { "startLine": 133, "endLine": 136 },
+    "type": "theorem",
+    "title": "Main Asymptotic Result",
+    "content": "k(N)/log N → 1 as N → ∞. This is the definitive answer: k(N) grows exactly like log N, neither faster nor slower asymptotically.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-296-notsublog",
+    "proofId": "erdos-296",
+    "range": { "startLine": 144, "endLine": 152 },
+    "type": "theorem",
+    "title": "Not Sublogarithmic",
+    "content": "k(N) is NOT o(log N), directly answering Erdős's question. The proof is by contradiction: if k(N)/log N → 0, it would contradict k(N)/log N → 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-296-corollary",
+    "proofId": "erdos-296",
+    "range": { "startLine": 154, "endLine": 169 },
+    "type": "theorem",
+    "title": "Infinitely Often Large",
+    "content": "For any 0 < ε < 1, there are infinitely many N with k(N) > ε·log N. This constructive corollary shows k(N) genuinely achieves near-logarithmic values, not just in the limit.",
+    "significance": "key"
+  }
+]

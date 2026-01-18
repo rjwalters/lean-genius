@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-e672-header",
+    "proofId": "erdos-672",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #672**: Products of Arithmetic Progressions as Perfect Powers\n\n**Question**: Can n(n+d)(n+2d)···(n+(k-1)d) with gcd(n,d)=1 be a perfect l-th power?\n\n**Conjecture**: NO for k ≥ 4, l > 1.\n\n**Known Results**:\n- Euler (18th c): k=4, l=2 impossible\n- Obláth (1951): k=5, l=2 and k=3, l=3,4,5 impossible\n- Erdős-Selfridge (1975): d=1 (consecutive) case solved\n- General case: OPEN\n\nThe gcd(n,d)=1 condition ensures the AP is 'primitive'.",
+    "mathContext": "Products of arithmetic progressions having highly structured prime factorizations (like perfect powers) is extremely rare. The constraint gcd(n,d)=1 makes the factors nearly coprime, severely restricting perfect power possibilities.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "arithmetic-progressions",
+      "perfect-powers",
+      "diophantine-equations"
+    ]
+  },
+  {
+    "id": "ann-e672-definitions",
+    "proofId": "erdos-672",
+    "range": {
+      "startLine": 43,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Core Definitions",
+    "content": "**apTerm n d i**: The i-th term of AP = n + i*d\n\n**apProduct n d k**: Product of k terms\n  ∏_{i=0}^{k-1} (n + i*d) = n(n+d)(n+2d)···(n+(k-1)d)\n\n**IsPerfectPower m l**: m = q^l for some q > 0\n\n**IsPerfectPowerSome m**: m is a perfect l-th power for some l > 1\n\nThese definitions capture the mathematical structure precisely.",
+    "mathContext": "Using Finset.prod from Mathlib provides a clean formalization of the product. The IsPerfectPower predicate requires q > 0 to avoid trivial cases.",
+    "significance": "key",
+    "relatedConcepts": [
+      "finset-prod",
+      "perfect-power",
+      "arithmetic-progression"
+    ]
+  },
+  {
+    "id": "ann-e672-conjecture",
+    "proofId": "erdos-672",
+    "range": {
+      "startLine": 63,
+      "endLine": 78
+    },
+    "type": "definition",
+    "title": "The Erdős Conjecture",
+    "content": "**Erdos672With k l**: For all n, d > 0 with gcd(n,d) = 1,\n  apProduct n d k is NOT a perfect l-th power.\n\n**erdos_672_conjecture**: ∀ k ≥ 4, l > 1, Erdos672With k l\n\n**erdos_672_open**: The full conjecture remains OPEN.\n\nThe predicate Erdos672With encapsulates the claim for specific (k, l) pairs, allowing us to state proven cases cleanly.",
+    "mathContext": "Breaking the conjecture into Erdos672With predicates follows the modular pattern of the actual mathematical progress: each (k,l) case is proved separately.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open-problem",
+      "conjecture",
+      "predicate-design"
+    ]
+  },
+  {
+    "id": "ann-e672-euler",
+    "proofId": "erdos-672",
+    "range": {
+      "startLine": 80,
+      "endLine": 96
+    },
+    "type": "axiom",
+    "title": "Euler's Result: k=4, l=2",
+    "content": "**axiom euler_k4_l2**: Erdos672With 4 2\n\nEuler proved in the 18th century that the product of 4 terms in arithmetic progression cannot be a perfect square.\n\n**theorem euler_four_terms_not_square**: Direct application showing n(n+d)(n+2d)(n+3d) ≠ q² when gcd(n,d) = 1.\n\n**Proof method**: Euler used infinite descent - assuming a solution leads to a smaller solution, contradicting well-ordering.",
+    "mathContext": "Euler's descent argument is a classic technique in Diophantine equations. The same method doesn't easily extend to larger k values, explaining the gap in proven cases.",
+    "significance": "key",
+    "relatedConcepts": [
+      "euler",
+      "infinite-descent",
+      "perfect-square"
+    ]
+  },
+  {
+    "id": "ann-e672-oblath",
+    "proofId": "erdos-672",
+    "range": {
+      "startLine": 98,
+      "endLine": 119
+    },
+    "type": "axiom",
+    "title": "Obláth's Results (1951)",
+    "content": "**axiom oblath_k5_l2**: Erdos672With 5 2\n  Product of 5 terms cannot be a perfect square.\n\n**axiom oblath_k3_l3**: Erdos672With 3 3\n  Product of 3 terms cannot be a perfect cube.\n\n**axiom oblath_k3_l4**: Erdos672With 3 4\n  Product of 3 terms cannot be a 4th power.\n\n**axiom oblath_k3_l5**: Erdos672With 3 5\n  Product of 3 terms cannot be a 5th power.\n\n**theorem oblath_results**: Combined statement of all four results.",
+    "mathContext": "Obláth's 1951 paper extended Euler's work significantly. The case k=3 with various l values uses similar descent techniques but with more complex analysis.",
+    "significance": "key",
+    "relatedConcepts": [
+      "oblath",
+      "descent",
+      "higher-powers"
+    ]
+  },
+  {
+    "id": "ann-e672-erdos-selfridge",
+    "proofId": "erdos-672",
+    "range": {
+      "startLine": 121,
+      "endLine": 143
+    },
+    "type": "axiom",
+    "title": "Erdős-Selfridge Theorem (1975)",
+    "content": "**def consecutiveProduct n k**: apProduct n 1 k = n(n+1)···(n+k-1)\n\n**axiom erdos_selfridge_1975**: For n ≥ 1, k ≥ 2, l ≥ 2,\n  consecutiveProduct n k is NEVER a perfect l-th power.\n\nThis landmark theorem took decades to prove and completely settles the d=1 case.\n\n**axiom erdos_selfridge_implies_d1**: The conjecture holds for d=1.",
+    "mathContext": "The Erdős-Selfridge theorem is a major achievement in number theory. The proof analyzes how primes distribute among consecutive integers, showing their product cannot have the highly structured factorization needed for perfect powers.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "erdos-selfridge",
+      "consecutive-integers",
+      "landmark-theorem"
+    ]
+  },
+  {
+    "id": "ann-e672-examples",
+    "proofId": "erdos-672",
+    "range": {
+      "startLine": 145,
+      "endLine": 165
+    },
+    "type": "axiom",
+    "title": "Small Examples",
+    "content": "**axiom example_2345**: 2×3×4×5 = 120 is not a perfect power\n  120 = 2³×3×5 - mixed exponents\n\n**axiom example_1234**: 1×2×3×4 = 24 is not a perfect power\n  24 = 2³×3 - mixed exponents\n\n**axiom example_3579**: 3×5×7×9 = 945 is not a perfect power\n  945 = 3³×5×7 - mixed exponents (d=2 case)\n\n**axiom example_d3**: 2×5×8×11 = 880 is not a perfect power\n  880 = 2⁴×5×11 - mixed exponents (d=3 case)",
+    "mathContext": "These concrete examples illustrate why the conjecture is true: the prime factorizations of AP products have inconsistent exponents, preventing perfect power status.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "examples",
+      "factorization",
+      "verification"
+    ]
+  },
+  {
+    "id": "ann-e672-gcd",
+    "proofId": "erdos-672",
+    "range": {
+      "startLine": 163,
+      "endLine": 196
+    },
+    "type": "axiom",
+    "title": "GCD Analysis",
+    "content": "**Why gcd(n,d) = 1 matters**: If gcd(n,d) = g > 1, then g divides every term, so g^k | product. This could trivially create powers.\n\n**axiom gcd_factorization**: With gcd(n,d) = g, ∃ m, apProduct n d k = g^k × m\n\n**axiom pairwise_gcd_bound**: For i ≠ j,\n  gcd(apTerm n d i, apTerm n d j) | |j-i| × d\n\nThe 'primitive' constraint gcd(n,d) = 1 controls how primes can appear across the factors.",
+    "mathContext": "The pairwise gcd bound is crucial: consecutive terms in a primitive AP share at most factors related to d. This near-coprimality is what makes perfect powers so restrictive.",
+    "significance": "key",
+    "relatedConcepts": [
+      "gcd",
+      "primitive",
+      "pairwise-coprimality"
+    ]
+  },
+  {
+    "id": "ann-e672-summary",
+    "proofId": "erdos-672",
+    "range": {
+      "startLine": 198,
+      "endLine": 219
+    },
+    "type": "theorem",
+    "title": "Known Cases Summary",
+    "content": "**Summary Table**:\n| k | l | Status | Reference |\n|---|---|--------|-----------|\n| 4 | 2 | PROVED | Euler |\n| 5 | 2 | PROVED | Obláth 1951 |\n| 3 | 3 | PROVED | Obláth 1951 |\n| 3 | 4 | PROVED | Obláth 1951 |\n| 3 | 5 | PROVED | Obláth 1951 |\n| k | l (d=1) | PROVED | Erdős-Selfridge 1975 |\n| ≥4 | >1 | OPEN | General conjecture |\n\n**theorem known_cases**: Combined statement of all proven (k,l) pairs.",
+    "mathContext": "This table shows the sporadic nature of progress: isolated cases proved over centuries, but no uniform method for general k and l.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "known-results",
+      "summary",
+      "proof-status"
+    ]
+  },
+  {
+    "id": "ann-e672-heuristics",
+    "proofId": "erdos-672",
+    "range": {
+      "startLine": 221,
+      "endLine": 247
+    },
+    "type": "concept",
+    "title": "Heuristic Arguments",
+    "content": "**Why the conjecture should be true**:\n\n1. **Overdetermined system**: For product P = q^l, every prime p | P must appear with multiplicity ≡ 0 (mod l)\n\n2. **Near-independence**: The k factors have nearly independent prime factorizations (due to gcd bounds)\n\n3. **Probability argument**: The probability that a 'random' product of k near-coprime factors is a perfect l-th power is ~1/P^(1-1/l), which is extremely small\n\n**axiom heuristic_argument**: True (placeholder for informal reasoning)",
+    "mathContext": "These heuristics explain why mathematicians believe the conjecture is true, even though a proof remains elusive. The constraints are simply too restrictive for a perfect power to emerge.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "heuristics",
+      "probability",
+      "overdetermined"
+    ]
+  }
+]

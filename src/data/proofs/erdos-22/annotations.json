@@ -1,1 +1,290 @@
-[]
+[
+  {
+    "id": "ann-e22-header",
+    "proofId": "erdos-22",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #22** (Bollobás-Erdős Conjecture):\n\nLet ε > 0 and n be large. Can a K₄-free graph on n vertices have ≥ n²/8 edges while having independence number at most εn?\n\nEquivalently: Is rt(n; 4, εn) ≥ n²/8?\n\n**Status**: SOLVED by Fox-Loh-Zhao (2015)",
+    "mathContext": "rt(n; k, ℓ) = max edges in a K_k-free graph on n vertices with independence number < ℓ. The conjecture asks if this Ramsey-Turán number is at least n²/8.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "ramsey-turan",
+      "independence-number",
+      "K4-free"
+    ]
+  },
+  {
+    "id": "ann-e22-background",
+    "proofId": "erdos-22",
+    "range": {
+      "startLine": 28,
+      "endLine": 45
+    },
+    "type": "concept",
+    "title": "Ramsey-Turán Theory Background",
+    "content": "**Ramsey-Turán theory** combines two classical areas:\n\n**Turán's theorem**: Max edges in K_{r+1}-free graph ≈ (1 - 1/r)n²/2\n**Ramsey theory**: Large graphs contain large cliques or independent sets\n\n**The key question**: What if we want BOTH K_r-free AND small independence number?\n\nThe Turán graph T(n,3) has n²/3 edges without K₄, but independence number n/3 (linear). Can we do better?",
+    "mathContext": "T(n,r) is the complete r-partite graph with parts as equal as possible. It achieves the Turán bound but has linear independence number.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "turan-theorem",
+      "ramsey-theory",
+      "turan-graph"
+    ]
+  },
+  {
+    "id": "ann-e22-graphdef",
+    "proofId": "erdos-22",
+    "range": {
+      "startLine": 53,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Graph Structure",
+    "content": "**Graph V** is a structure with:\n- `adj : V → V → Prop` - adjacency relation\n- `symm` - edges are undirected (x ~ y implies y ~ x)\n- `loopless` - no self-loops (¬(x ~ x))\n\nThis is a simple undirected graph without multi-edges.",
+    "mathContext": "We use a custom Graph type rather than Mathlib's SimpleGraph for cleaner axiom statements. The properties ensure it behaves like a standard simple graph.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "simple-graph",
+      "adjacency",
+      "symmetric-relation"
+    ]
+  },
+  {
+    "id": "ann-e22-independent",
+    "proofId": "erdos-22",
+    "range": {
+      "startLine": 62,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "Independence Number",
+    "content": "**IsIndependent G S** holds when no two vertices in S are adjacent.\n\n**independenceNumber G** (α(G)) is the size of the largest independent set.\n\nThis is the key parameter we want to minimize while maximizing edges.",
+    "mathContext": "Computing α(G) is NP-hard in general, so we axiomatize it. For our extremal constructions, we prove upper bounds on α(G).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "independent-set",
+      "np-hard",
+      "graph-invariant"
+    ]
+  },
+  {
+    "id": "ann-e22-clique",
+    "proofId": "erdos-22",
+    "range": {
+      "startLine": 70,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "Cliques and K₄-freeness",
+    "content": "**ContainsClique G k** holds when G has k pairwise adjacent vertices.\n\n**IsCliqueFree G k** means G contains no K_k (no k-clique).\n\nFor this problem, we want K₄-free graphs (IsCliqueFree G 4).",
+    "mathContext": "K₄ is the complete graph on 4 vertices - 6 edges forming a tetrahedron. K₄-free graphs avoid this dense local structure.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "complete-graph",
+      "clique",
+      "forbidden-subgraph"
+    ]
+  },
+  {
+    "id": "ann-e22-rt",
+    "proofId": "erdos-22",
+    "range": {
+      "startLine": 82,
+      "endLine": 99
+    },
+    "type": "axiom",
+    "title": "Ramsey-Turán Numbers",
+    "content": "**rt(n, k, ℓ)** = max edges in a K_k-free graph on n vertices with independence number < ℓ.\n\nKey properties:\n- `rt_achievable`: some graph achieves this maximum\n- `rt_maximal`: no valid graph exceeds this bound\n\nThis is the central object of study in Ramsey-Turán theory.",
+    "mathContext": "rt(n; 4, εn) is asking: among all K₄-free graphs with 'small' independence (< εn), what's the maximum edges?",
+    "significance": "critical",
+    "relatedConcepts": [
+      "extremal-function",
+      "ramsey-turan-number",
+      "optimization"
+    ]
+  },
+  {
+    "id": "ann-e22-turan",
+    "proofId": "erdos-22",
+    "range": {
+      "startLine": 105,
+      "endLine": 123
+    },
+    "type": "axiom",
+    "title": "Turán's Theorem",
+    "content": "**Turán's theorem** (1941): The maximum edges in a K_{r+1}-free graph on n vertices is:\n\nex(n, K_{r+1}) = (1 - 1/r) · n²/2 ± O(r)\n\n**For K₄**: ex(n, K₄) ≈ n²/3 (edge density 1/3)\n\nThe Turán graph T(n,r) achieves this bound.",
+    "mathContext": "T(n,3) is a complete tripartite graph - 3 independent sets with all edges between different sets. It has n²/3 edges but independence number n/3.",
+    "significance": "key",
+    "relatedConcepts": [
+      "turan-theorem",
+      "turan-graph",
+      "extremal-number"
+    ]
+  },
+  {
+    "id": "ann-e22-conjecture",
+    "proofId": "erdos-22",
+    "range": {
+      "startLine": 129,
+      "endLine": 134
+    },
+    "type": "definition",
+    "title": "The Bollobás-Erdős Conjecture",
+    "content": "**BollobasErdosConjecture**: For all ε > 0 and large n:\n\nrt(n; 4, εn) ≥ n²/8\n\nThis asks: can we keep n²/8 edges (edge density 1/4) in a K₄-free graph while forcing the independence number to be sublinear?",
+    "mathContext": "The bound n²/8 is exactly half of what Turán's theorem gives (n²/4 for the Turán graph). We sacrifice half the edges to get sublinear independence.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "bollobas-erdos",
+      "conjecture",
+      "edge-density"
+    ]
+  },
+  {
+    "id": "ann-e22-flz",
+    "proofId": "erdos-22",
+    "range": {
+      "startLine": 141,
+      "endLine": 150
+    },
+    "type": "axiom",
+    "title": "Fox-Loh-Zhao Theorem (2015)",
+    "content": "**Main Theorem**: For all n ≥ 1, there exists a K₄-free graph G with:\n- n vertices\n- ≥ n²/8 edges\n- Independence number ≤ 10 · (log log n)^(3/2) / (log n)^(1/2) · n\n\nThe independence bound is **much stronger than εn** - it's only polylogarithmic!",
+    "mathContext": "(log log n)^(3/2) / (log n)^(1/2) → 0 as n → ∞, so this bound is o(n) for ANY ε > 0. The construction far exceeds what the conjecture required.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "fox-loh-zhao",
+      "pseudorandom",
+      "polylogarithmic"
+    ]
+  },
+  {
+    "id": "ann-e22-proof",
+    "proofId": "erdos-22",
+    "range": {
+      "startLine": 166,
+      "endLine": 202
+    },
+    "type": "theorem",
+    "title": "Conjecture Resolution (Verified Proof)",
+    "content": "**theorem conjecture_resolved : BollobasErdosConjecture**\n\nThis is the main verified proof in the file!\n\n**Proof outline**:\n1. Given ε > 0, get N where Fox-Loh-Zhao bound < ε\n2. For n ≥ N, apply Fox-Loh-Zhao to get graph G\n3. G has ≥ n²/8 edges and independence < εn\n4. By rt_lower_bound, rt(n; 4, ⌈εn⌉) ≥ edgeCount G ≥ n²/8",
+    "mathContext": "The proof uses linarith for the final inequality chain. Key steps: Fox-Loh-Zhao gives the graph, then we verify it satisfies the rt bound.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "verified-proof",
+      "linarith",
+      "resolution"
+    ]
+  },
+  {
+    "id": "ann-e22-tight",
+    "proofId": "erdos-22",
+    "range": {
+      "startLine": 210,
+      "endLine": 219
+    },
+    "type": "axiom",
+    "title": "Tightness of n²/8",
+    "content": "**The bound n²/8 is sharp**: You cannot do significantly better than n²/8 edges while maintaining K₄-free and sublinear independence.\n\nFor any ε > 0 and large n, every K₄-free graph with independence ≤ εn has at most (1/8 + ε)n² edges.",
+    "mathContext": "This shows the conjecture captures the true extremal value. The Ramsey-Turán density ρ₄ = 1/4 (corresponding to n²/8 out of max n²/2 edges).",
+    "significance": "key",
+    "relatedConcepts": [
+      "tight-bound",
+      "upper-bound",
+      "sharpness"
+    ]
+  },
+  {
+    "id": "ann-e22-construction",
+    "proofId": "erdos-22",
+    "range": {
+      "startLine": 221,
+      "endLine": 237
+    },
+    "type": "axiom",
+    "title": "Pseudorandom Construction",
+    "content": "**Fox-Loh-Zhao's technique**: Pseudorandom Cayley graphs over finite fields.\n\n1. Start with an algebraic Cayley graph with nice structure\n2. Use probabilistic deletion to remove K₄'s\n3. The pseudorandomness ensures edge density is preserved\n4. Independence stays small due to algebraic structure",
+    "mathContext": "Cayley graphs Cay(G, S) have vertex set G and edges g ~ gs for s ∈ S. Choosing G = F_p^n and appropriate S gives the required properties.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cayley-graph",
+      "finite-fields",
+      "probabilistic-method"
+    ]
+  },
+  {
+    "id": "ann-e22-comparison",
+    "proofId": "erdos-22",
+    "range": {
+      "startLine": 243,
+      "endLine": 256
+    },
+    "type": "theorem",
+    "title": "Turán vs Ramsey-Turán Tradeoff",
+    "content": "**The density gap**:\n\n| Graph Type | Edges | Independence | Edge Density |\n|------------|-------|--------------|-------------|\n| Turán T(n,3) | n²/3 | n/3 (linear) | 1/3 ≈ 33% |\n| Ramsey-Turán | n²/8 | o(n) (sublinear) | 1/8 ≈ 12.5% |\n\nWe lose about 62% of edges to get sublinear independence!",
+    "mathContext": "1/3 > 1/8 is verified with norm_num. The tradeoff is fundamental: forcing small independence severely restricts the graph structure.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "edge-density",
+      "tradeoff",
+      "comparison"
+    ]
+  },
+  {
+    "id": "ann-e22-rho",
+    "proofId": "erdos-22",
+    "range": {
+      "startLine": 276,
+      "endLine": 290
+    },
+    "type": "axiom",
+    "title": "Ramsey-Turán Densities ρ_r",
+    "content": "**ρ_r** = lim_{n→∞} rt(n; r, o(n)) / (n²/2)\n\nThis is the asymptotic edge density for K_r-free graphs with sublinear independence.\n\n**Known values**:\n- ρ₃ = 0 (triangle-free forces many independent vertices)\n- ρ₄ = 1/4 (this problem!)\n- ρ₅ = 1/4 (same as ρ₄, surprisingly)",
+    "mathContext": "ρ_r > 0 iff r ≥ 4. For triangles, any dense triangle-free graph must have linear independence (Ramsey for K₃).",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic-density",
+      "limit",
+      "ramsey-turan-density"
+    ]
+  },
+  {
+    "id": "ann-e22-why",
+    "proofId": "erdos-22",
+    "range": {
+      "startLine": 292,
+      "endLine": 303
+    },
+    "type": "theorem",
+    "title": "Why n²/8?",
+    "content": "**density_interpretation**: n²/8 out of max n²/2 edges = 1/4 density\n\nThis exactly equals ρ₄ = 1/4!\n\nThe proof `(1/8) / (1/2) = 1/4` is verified by norm_num.",
+    "mathContext": "The bound n²/8 isn't arbitrary - it's precisely the Ramsey-Turán density times the maximum possible edges.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "norm-num",
+      "density-calculation",
+      "verification"
+    ]
+  },
+  {
+    "id": "ann-e22-summary",
+    "proofId": "erdos-22",
+    "range": {
+      "startLine": 330,
+      "endLine": 358
+    },
+    "type": "concept",
+    "title": "Summary and Status",
+    "content": "**Erdős Problem #22: SOLVED**\n\n✅ Fox-Loh-Zhao (2015) proved rt(n; 4, εn) ≥ n²/8\n\n**Key results**:\n- Turán: K₄-free → at most n²/3 edges, independence n/3\n- Ramsey-Turán: K₄-free + small independence → at most n²/8 edges\n- Fox-Loh-Zhao: Achieved n²/8 with independence (log log n)^(3/2)/(log n)^(1/2) · n\n\n**The bound corresponds to ρ₄ = 1/4**",
+    "mathContext": "The resolution uses pseudorandom Cayley graphs, connecting algebraic constructions to extremal combinatorics.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "problem-status",
+      "fox-loh-zhao",
+      "solved"
+    ]
+  }
+]

@@ -1,33 +1,132 @@
 {
   "id": "erdos-650",
-  "title": "Erdős Problem #650",
+  "title": "Erdős #650: Divisibility Covering in Intervals",
   "slug": "erdos-650",
-  "description": "Let f(m)\" role=\"presentation\" style=\"position: relative;\">f(m)f(m)f(m) be such that if A&#x2286;{1,&#x2026;,N}\" role=\"presentation\" style=\"position: relative;\">A⊆{1,…,N}A⊆{1,…,N}A\\subseteq \\{1,\\ldo...",
+  "description": "If A ⊆ {1,...,N} with |A| = m, every interval of length 2N contains ≥ f(m) integers divisible by distinct elements of A. Known: f(m) ≫ √m. Open: Is f(m) ≪ √m?",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, György Sarányi",
     "sourceUrl": "https://erdosproblems.com/650",
-    "date": "",
-    "status": "pending",
+    "date": "1959",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos650Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisibility",
+      "covering"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 21,
     "erdosNumber": 650,
     "erdosUrl": "https://erdosproblems.com/650",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #650 from erdosproblems.com.",
-    "problemStatement": "Let f(m)\" role=\"presentation\" style=\"position: relative;\">f(m)f(m)f(m) be such that if A&#x2286;{1,&#x2026;,N}\" role=\"presentation\" style=\"position: relative;\">A⊆{1,…,N}A⊆{1,…,N}A\\subseteq \\{1,\\ldots,N\\} has &#x007C;A&#x007C;=m\" role=\"presentation\" style=\"position: relative;\">|A|=m|A|=m\\lvert A\\rvert=m then every interval in [1,&#x221E;)\" role=\"presentation\" style=\"position: relative;\">[1,∞)[1,∞)[1,\\infty) of length 2N\" role=\"presentation\" style=\"position: relative;\">2N2N2N contains &#x2265;f(m)\" role=\"presentation\" style=\"position: relative;\">≥f(m)≥f(m)\\geq f(m) many distinct integers b1,&#x2026;,br\" role=\"presentation\" style=\"position: relative;\">b1,…,brb1,…,brb_1,\\ldots,b_r where each bi\" role=\"presentation\" style=\"position: relative;\">bibib_i is divisible by some ai&#x2208;A\" role=\"presentation\" style=\"position: relative;\">ai∈Aai∈Aa_i\\in A, where a1,&#x2026;,ar\" role=\"presentation\" style=\"position: relative;\">a1,…,ara1,…,ara_1,\\ldots,a_r are distinct. Estimate f(m)\" role=\"presentat",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős and Sarányi (1959) established the lower bound f(m) ≫ √m using a pigeonhole argument. The upper bound f(m) ≪ √m remains open. This problem connects divisibility, covering, and number-theoretic distribution.",
+    "problemStatement": "Let f(m) be such that if A ⊆ {1,...,N} has |A| = m, then every interval in [1,∞) of length 2N contains ≥ f(m) distinct integers b₁,...,bᵣ where each bᵢ is divisible by some aᵢ ∈ A, with all aᵢ distinct. Estimate f(m). Is f(m) ≪ m^{1/2}?",
+    "proofStrategy": "We formalize valid sets, intervals, coverings with distinct witnesses, the function f(m), the Erdős-Sarányi lower bound, the open upper bound conjecture, small cases, divisibility structure, greedy algorithms, probabilistic approaches, extremal sets, related functions, and asymptotic analysis.",
+    "keyInsights": [
+      "f(m) ≥ c√m for some c > 0 (Erdős-Sarányi 1959)",
+      "Upper bound f(m) ≤ C√m is OPEN",
+      "Each element a ∈ A contributes ~2N/a multiples to interval",
+      "Pigeonhole argument gives the lower bound",
+      "If both bounds hold, f(m) ~ √m asymptotically"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-defs",
+      "title": "Basic Definitions",
+      "summary": "Valid sets and intervals",
+      "startLine": 31,
+      "endLine": 42
+    },
+    {
+      "id": "covering",
+      "title": "Covering Property",
+      "summary": "Coverings with distinct witnesses",
+      "startLine": 44,
+      "endLine": 69
+    },
+    {
+      "id": "f-definition",
+      "title": "The Function f(m)",
+      "summary": "Minimum guaranteed covering size",
+      "startLine": 71,
+      "endLine": 85
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound",
+      "summary": "Erdős-Sarányi: f(m) ≥ c√m",
+      "startLine": 87,
+      "endLine": 103
+    },
+    {
+      "id": "upper-conjecture",
+      "title": "Upper Bound Conjecture",
+      "summary": "Is f(m) ≤ C√m? OPEN",
+      "startLine": 105,
+      "endLine": 118
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "summary": "f(1) = 1, f(2) ≥ 1, f(4) ≥ 2",
+      "startLine": 120,
+      "endLine": 133
+    },
+    {
+      "id": "divisibility",
+      "title": "Divisibility Structure",
+      "summary": "Counting multiples in intervals",
+      "startLine": 135,
+      "endLine": 153
+    },
+    {
+      "id": "greedy",
+      "title": "Greedy Algorithm",
+      "summary": "Constructing coverings",
+      "startLine": 155,
+      "endLine": 164
+    },
+    {
+      "id": "probabilistic",
+      "title": "Probabilistic Approach",
+      "summary": "Expected covering for random sets",
+      "startLine": 166,
+      "endLine": 176
+    },
+    {
+      "id": "extremal",
+      "title": "Extremal Sets",
+      "summary": "Sets achieving minimum f(m)",
+      "startLine": 178,
+      "endLine": 193
+    },
+    {
+      "id": "related",
+      "title": "Related Functions",
+      "summary": "Variants g(m) and h(m)",
+      "startLine": 195,
+      "endLine": 221
+    },
+    {
+      "id": "asymptotic",
+      "title": "Asymptotic Analysis",
+      "summary": "The ratio f(m)/√m",
+      "startLine": 223,
+      "endLine": 243
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #650 on divisibility covering in intervals. The function f(m) measures minimum guaranteed coverings where each covered integer uses a distinct divisor from A. The lower bound √m is known; the upper bound remains open.",
+    "implications": "The problem connects divisibility theory with covering problems. The √m lower bound uses counting arguments, while the upper bound question relates to extremal set configurations and the distribution of multiples.",
+    "openQuestions": [
+      "Is f(m) ≪ √m?",
+      "What is the structure of extremal sets achieving f(m)?",
+      "Does lim f(m)/√m exist?",
+      "What are the exact values of f(m) for small m?"
+    ]
   }
 }

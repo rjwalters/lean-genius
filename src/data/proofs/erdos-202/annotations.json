@@ -1,1 +1,83 @@
-[]
+[
+  {
+    "id": "ann-202-congclass",
+    "proofId": "erdos-202",
+    "range": { "startLine": 39, "endLine": 47 },
+    "type": "definition",
+    "title": "Congruence Class",
+    "content": "A congruence class structure: residue a modulo n, with containment predicate for integer membership.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-202-disjoint",
+    "proofId": "erdos-202",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "definition",
+    "title": "Disjoint Congruence Classes",
+    "content": "Two congruence classes are disjoint if no integer belongs to both.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-202-system",
+    "proofId": "erdos-202",
+    "range": { "startLine": 55, "endLine": 70 },
+    "type": "definition",
+    "title": "Disjoint System",
+    "content": "A finite set of pairwise disjoint congruence classes with moduli bounded by N.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-202-f",
+    "proofId": "erdos-202",
+    "range": { "startLine": 74, "endLine": 76 },
+    "type": "definition",
+    "title": "The Function f(N)",
+    "content": "Maximum size of a disjoint system with moduli ≤ N. This is the function we want to understand.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-202-l",
+    "proofId": "erdos-202",
+    "range": { "startLine": 94, "endLine": 97 },
+    "type": "definition",
+    "title": "The L Function",
+    "content": "L(N) = exp(√(log N · log log N)), the key function appearing in all the bounds.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-202-erdosstein",
+    "proofId": "erdos-202",
+    "range": { "startLine": 115, "endLine": 121 },
+    "type": "theorem",
+    "title": "Erdős-Stein Conjecture (Proved)",
+    "content": "f(N) = o(N). Proved by Erdős-Szemerédi in 1968.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-202-upper",
+    "proofId": "erdos-202",
+    "range": { "startLine": 131, "endLine": 136 },
+    "type": "theorem",
+    "title": "BFV Upper Bound",
+    "content": "f(N) < N/L(N)^{√3/2 - o(1)}. Current best upper bound from 2013.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-202-lower",
+    "proofId": "erdos-202",
+    "range": { "startLine": 138, "endLine": 143 },
+    "type": "theorem",
+    "title": "BFV Lower Bound",
+    "content": "f(N) > N/L(N)^{1 + o(1)}. Conjectured to be the truth.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-202-conjecture",
+    "proofId": "erdos-202",
+    "range": { "startLine": 145, "endLine": 148 },
+    "type": "definition",
+    "title": "Exact Asymptotic Conjecture",
+    "content": "f(N) = N/L(N)^{1 + o(1)}. The lower bound is conjectured to be tight.",
+    "significance": "critical"
+  }
+]

@@ -1,1 +1,139 @@
-[]
+[
+  {
+    "id": "ann-e485-header",
+    "proofId": "erdos-485",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #485**: Let f(k) = minimum terms in P(x)² for polynomials P with k terms. Does f(k) → ∞? Solved affirmatively by Schinzel (1987) and improved by Schinzel-Zannier (2009).",
+    "mathContext": "f(k) measures how much squaring can compress polynomial terms. The answer is YES: compression is limited.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "sparse-polynomials",
+      "polynomial-multiplication",
+      "asymptotics"
+    ]
+  },
+  {
+    "id": "ann-e485-termcount",
+    "proofId": "erdos-485",
+    "range": {
+      "startLine": 35,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Term Count",
+    "content": "**termCount**: Number of non-zero monomials in a polynomial, equals p.support.card. **hasTerms**: Predicate that p has exactly k terms.",
+    "mathContext": "For P = Σᵢ aᵢxⁱ, termCount is |{i : aᵢ ≠ 0}|.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial-support",
+      "finset-card"
+    ]
+  },
+  {
+    "id": "ann-e485-f",
+    "proofId": "erdos-485",
+    "range": {
+      "startLine": 50,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "The Function f(k)",
+    "content": "**f(k)**: The infimum of termCount(P²) over all polynomials P ∈ ℚ[x] with exactly k non-zero terms.",
+    "mathContext": "f(k) = inf{termCount(P²) : P ∈ ℚ[x], termCount(P) = k}",
+    "significance": "critical",
+    "relatedConcepts": [
+      "infimum",
+      "polynomial-squaring"
+    ]
+  },
+  {
+    "id": "ann-e485-basic",
+    "proofId": "erdos-485",
+    "range": {
+      "startLine": 59,
+      "endLine": 71
+    },
+    "type": "theorem",
+    "title": "Basic Values",
+    "content": "**f(1) = 1**: A monomial aₙxⁿ squares to a²ₙx²ⁿ (one term). **f(2) = 3**: (a + bxⁿ)² = a² + 2abxⁿ + b²x²ⁿ (three terms, no cancellation possible).",
+    "mathContext": "These base cases show f is non-trivial: it's not constantly 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "binomial-square",
+      "monomial"
+    ]
+  },
+  {
+    "id": "ann-e485-upper",
+    "proofId": "erdos-485",
+    "range": {
+      "startLine": 73,
+      "endLine": 81
+    },
+    "type": "theorem",
+    "title": "Erdős Upper Bound",
+    "content": "**Erdős (1949)**: There exists c > 0 such that f(k) < k^(1-c) for all sufficiently large k.",
+    "mathContext": "This shows squaring CAN significantly reduce terms - f(k) grows slower than k.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sublinear-growth",
+      "polynomial-cancellation"
+    ]
+  },
+  {
+    "id": "ann-e485-schinzel",
+    "proofId": "erdos-485",
+    "range": {
+      "startLine": 83,
+      "endLine": 100
+    },
+    "type": "theorem",
+    "title": "Schinzel's Lower Bounds",
+    "content": "**Schinzel (1987)**: f(k) > (log log k)/log 2. **Schinzel-Zannier (2009)**: f(k) ≫ log k (improved bound).",
+    "mathContext": "These lower bounds prove f(k) → ∞, solving the conjecture. The gap between k^(1-c) upper and log k lower remains.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "logarithmic-growth",
+      "divergence"
+    ]
+  },
+  {
+    "id": "ann-e485-main",
+    "proofId": "erdos-485",
+    "range": {
+      "startLine": 102,
+      "endLine": 107
+    },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**erdos_485_main**: f(k) → ∞ as k → ∞. Formally: Filter.Tendsto f atTop atTop.",
+    "mathContext": "The central result: squaring cannot indefinitely compress polynomial terms.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "filter-tendsto",
+      "divergence-to-infinity"
+    ]
+  },
+  {
+    "id": "ann-e485-general",
+    "proofId": "erdos-485",
+    "range": {
+      "startLine": 124,
+      "endLine": 131
+    },
+    "type": "theorem",
+    "title": "Generalization to Powers",
+    "content": "**g(k,n)**: Minimum terms in P^n for P with k terms. **general_divergence**: g(k,n) → ∞ for any n ≥ 1.",
+    "mathContext": "Schinzel's proof works for any power, not just squaring.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial-powers",
+      "generalization"
+    ]
+  }
+]

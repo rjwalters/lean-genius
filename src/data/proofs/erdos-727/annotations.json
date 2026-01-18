@@ -1,1 +1,201 @@
-[]
+[
+  {
+    "id": "ann-e727-header",
+    "proofId": "erdos-727",
+    "range": {
+      "startLine": 1,
+      "endLine": 21
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #727** asks: For k ≥ 2, does ((n+k)!)² divide (2n)! for infinitely many n?\n\n**Status**: OPEN (for k ≥ 2)\n\nThis is a conjecture of Erdős, Graham, Ruzsa, and Straus from 1975. Remarkably, the k = 1 case was solved by Balakran in 1929, but k ≥ 2 remains open nearly a century later.",
+    "mathContext": "The problem connects factorial divisibility to Catalan numbers and prime factorization theory.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "factorial divisibility",
+      "Catalan numbers",
+      "central binomial coefficient",
+      "EGRS 1975"
+    ]
+  },
+  {
+    "id": "ann-e727-centralbinom",
+    "proofId": "erdos-727",
+    "range": {
+      "startLine": 34,
+      "endLine": 43
+    },
+    "type": "definition",
+    "title": "Central Binomial Coefficient",
+    "content": "**centralBinom(n)** = C(2n, n) = (2n)! / (n!)²\n\nThe central binomial coefficient appears in the middle of Pascal's triangle row 2n. It counts ways to choose n items from 2n.\n\n**Basic identity**: (2n)! = C(2n,n) × (n!)²\n\nValues: C(2,1)=2, C(4,2)=6, C(6,3)=20, C(8,4)=70, ...",
+    "mathContext": "The central binomial coefficient has rich divisibility properties that connect to Catalan numbers and prime distribution.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binomial coefficient",
+      "Pascal's triangle",
+      "factorial"
+    ]
+  },
+  {
+    "id": "ann-e727-divides",
+    "proofId": "erdos-727",
+    "range": {
+      "startLine": 54,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "The Divisibility Condition",
+    "content": "**divides_factorial(k, n)**: ((n+k)!)² | (2n)!\n\nThis is the core predicate of the problem. We ask whether this divisibility holds for infinitely many n.\n\n**divisible_set(k)** = { n : ℕ | divides_factorial(k, n) }\n\nThe main question is whether this set is infinite for each k ≥ 2.",
+    "mathContext": "The squared factorial in the divisor makes this harder than it might first appear. The prime powers in (2n)! must be at least twice those in (n+k)!.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Set.Infinite",
+      "divisibility",
+      "factorial powers"
+    ]
+  },
+  {
+    "id": "ann-e727-conjecture",
+    "proofId": "erdos-727",
+    "range": {
+      "startLine": 71,
+      "endLine": 86
+    },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "**erdos_727_conjecture**: For every k ≥ 2, (divisible_set k).Infinite\n\nThis states that for each k ≥ 2, there are infinitely many n such that ((n+k)!)² | (2n)!.\n\n**erdos_727_k2_open** focuses on k = 2 specifically, which remains unsolved.\n\nThe conjecture is stated but not proven (or disproven) - it's a genuine OPEN problem.",
+    "mathContext": "This is the formal statement of Erdős's question. The answer is unknown even for the smallest case k = 2.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "universal quantifier",
+      "open problem",
+      "infinite set"
+    ]
+  },
+  {
+    "id": "ann-e727-balakran",
+    "proofId": "erdos-727",
+    "range": {
+      "startLine": 88,
+      "endLine": 109
+    },
+    "type": "axiom",
+    "title": "Balakran's Theorem (k = 1 SOLVED)",
+    "content": "**balakran_theorem**: (divisible_set 1).Infinite\n\nBalakran proved in 1929 that there are infinitely many n with ((n+1)!)² | (2n)!.\n\nEquivalently: (n+1)² | C(2n, n) for infinitely many n.\n\n**erdos_727_k1_solved** records this as a proven theorem.\n\n**Reference**: H. Balakran, 'On the values of n which make (2n)!/(n+1)!(n+1)! an integer', J. Indian Math. Soc. (1929), 97-100.",
+    "mathContext": "Balakran's result is nearly 100 years old. The gap between k=1 (solved) and k=2 (open) remains mysterious.",
+    "significance": "key",
+    "relatedConcepts": [
+      "solved case",
+      "1929 result",
+      "boundary case"
+    ]
+  },
+  {
+    "id": "ann-e727-catalan",
+    "proofId": "erdos-727",
+    "range": {
+      "startLine": 111,
+      "endLine": 135
+    },
+    "type": "definition",
+    "title": "Catalan Numbers",
+    "content": "**catalanNumber(n)** = C(2n,n) / (n+1)\n\nThe Catalan numbers count many combinatorial structures: balanced parentheses, binary trees, non-crossing partitions, etc.\n\n**catalan_divisibility**: (n+1) | C(2n, n) for ALL n.\n\nThis classical fact ensures catalanNumber(n) is always an integer. The identity is:\nC(2n, n) = (n+1) × C_n\n\nCatalan sequence: 1, 1, 2, 5, 14, 42, 132, ...",
+    "mathContext": "The connection to Catalan numbers shows this problem has deep combinatorial roots. The (n+1) divisibility is always true; the question is when (n+1)² divides.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Catalan numbers",
+      "combinatorics",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-e727-egrs",
+    "proofId": "erdos-727",
+    "range": {
+      "startLine": 137,
+      "endLine": 168
+    },
+    "type": "axiom",
+    "title": "The EGRS Variant (SOLVED)",
+    "content": "**egrs_divides(k, n)**: (n+k)! × (n+1)! | (2n)!\n\nThis is a weaker condition than ((n+k)!)².\n\n**egrs_theorem**: For k ≥ 2, (egrs_set k).Infinite\n\nErdős, Graham, Ruzsa, and Straus proved this weaker variant holds. They showed:\n- There are infinitely many n with (n+k)!(n+1)! | (2n)!\n- In fact, this holds whenever k < c log n for some constant c > 0\n\nThis uses Balakran's method but doesn't achieve the squared version.",
+    "mathContext": "The EGRS result shows that the product (n+k)!(n+1)! divides infinitely often. But since (n+1)! < (n+k)! when k ≥ 2, this is weaker than the main conjecture.",
+    "significance": "key",
+    "relatedConcepts": [
+      "EGRS 1975",
+      "weaker variant",
+      "Balakran's method"
+    ]
+  },
+  {
+    "id": "ann-e727-relationship",
+    "proofId": "erdos-727",
+    "range": {
+      "startLine": 170,
+      "endLine": 191
+    },
+    "type": "theorem",
+    "title": "Relationship Between Problems",
+    "content": "**main_implies_egrs**: If ((n+k)!)² | (2n)!, then (n+k)!(n+1)! | (2n)!\n\nThis is because (n+1)! ≤ (n+k)! when k ≥ 0, so:\n(n+k)! × (n+1)! ≤ (n+k)! × (n+k)! = ((n+k)!)²\n\n**main_conjecture_implies_egrs**: If the main conjecture holds, then the EGRS variant holds.\n\nThe converse is NOT known - EGRS doesn't imply the main conjecture.",
+    "mathContext": "This shows the logical structure: the main conjecture is strictly stronger than EGRS. Proving EGRS is insufficient to resolve the main question.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "implication",
+      "stronger vs weaker",
+      "Set.Infinite.mono"
+    ]
+  },
+  {
+    "id": "ann-e727-erdosbound",
+    "proofId": "erdos-727",
+    "range": {
+      "startLine": 193,
+      "endLine": 213
+    },
+    "type": "axiom",
+    "title": "Erdős's Factorial Bound",
+    "content": "**erdos_factorial_bound**: If a!b! | n!, then a + b ≤ n + O(log n)\n\nErdős proved this bound in 1968 (Elemente Math., Aufgabe 557).\n\nFor Erdős #727, we have a = b = n+k and the factorial is (2n)!, giving:\n2(n+k) ≤ 2n + O(log 2n)\n\nThis means 2k ≤ O(log n), so valid n must be exponentially large in k.",
+    "mathContext": "This bound constrains where solutions can occur. For fixed k, solutions exist only when n is large enough to satisfy the logarithmic constraint.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Erdős 1968",
+      "logarithmic bound",
+      "factorial divisibility"
+    ]
+  },
+  {
+    "id": "ann-e727-numerical",
+    "proofId": "erdos-727",
+    "range": {
+      "startLine": 215,
+      "endLine": 232
+    },
+    "type": "concept",
+    "title": "Numerical Evidence",
+    "content": "For k = 2, we check whether ((n+2)!)² | (2n)!:\n\n| n | (n+2)! | ((n+2)!)² | (2n)! | Divides? |\n|---|--------|-----------|-------|----------|\n| 2 | 24 | 576 | 24 | No |\n| 3 | 120 | 14400 | 720 | No |\n| 4 | 720 | 518400 | 40320 | No |\n\nFor small n, divisibility fails. The conjecture predicts divisibility for infinitely many larger n.",
+    "mathContext": "Computational evidence neither proves nor disproves the conjecture, but gives intuition for the difficulty of finding solutions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "computational verification",
+      "counterexamples",
+      "asymptotic behavior"
+    ]
+  },
+  {
+    "id": "ann-e727-status",
+    "proofId": "erdos-727",
+    "range": {
+      "startLine": 256,
+      "endLine": 277
+    },
+    "type": "theorem",
+    "title": "Status Summary",
+    "content": "**erdos_727_status** summarizes what is known:\n\n1. (divisible_set 1).Infinite ✓ (Balakran 1929)\n2. ∀ k ≥ 2, (egrs_set k).Infinite ✓ (EGRS 1975)\n\n**Still OPEN**:\n- erdos_727_conjecture: ∀ k ≥ 2, (divisible_set k).Infinite\n- erdos_727_k2_open: (divisible_set 2).Infinite\n\nThe gap between k=1 (solved) and k=2 (open) is the central mystery.",
+    "mathContext": "This theorem captures the current state of knowledge, clearly separating solved from open questions.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "solved vs open",
+      "status summary",
+      "partial progress"
+    ]
+  }
+]

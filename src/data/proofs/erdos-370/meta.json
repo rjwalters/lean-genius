@@ -1,33 +1,82 @@
 {
   "id": "erdos-370",
-  "title": "Erdős Problem #370",
+  "title": "Consecutive Smooth Numbers",
   "slug": "erdos-370",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many ... such that the largest prime factor of ... is ... and the largest prime factor of ... is ...?\n\n\n...",
+  "description": "Are there infinitely many n such that both n and n+1 have their largest prime factor less than their square root? Steinerberger found an elegant solution using n = m² - 1.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Graham",
     "sourceUrl": "https://erdosproblems.com/370",
     "date": "",
-    "status": "pending",
+    "status": "axiom",
     "proofRepoPath": "Proofs/Erdos370Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-factors",
+      "smooth-numbers",
+      "solved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "erdosNumber": 370,
     "erdosUrl": "https://erdosproblems.com/370",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #370 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many $n$ such that the largest prime factor of $n$ is $<n^{1/2}$ and the largest prime factor of $n+1$ is $<(n+1)^{1/2}$?\n\n\n\nPomerance has observed that if we replace $1/2$ in the exponent by $1/\\sqrt{e}-\\epsilon$ for any $\\epsilon>0$ then this is true for density reasons (since the density of integers $n$ whose greatest prime factor is $\\leq n^{1/\\sqrt{e}}$ is $1/2$).\n\nSteinerberger has pointed out this problem has a trivial solution: take $n=m^2-1$, and then it is obvious that the largest prime factor of $n$ is $\\leq m+1\\ll n^{1/2}$ and the largest prime factor of $n+1$ is $\\leq m\\ll (n+1)^{1/2}$ (these $\\ll$ can be replaced by $<$ if we choose $m$ such that $m,m+1$ are both composite).\n\nGiven that Erd\\H{o}s and Graham describe the above observation of Pomerance and explicitly say about this problem that 'we know very little about this', it is strange that such a trivial obstruction was overlooked. Perhaps the problem they intended was subtly different, and the problem in this form was the result of a typographical error, but I have no good guess what was intended here.\n\nSee also [369] and [928].\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem from Erdős-Graham (1980) asks about consecutive integers whose largest prime factors are unusually small. Pomerance observed that relaxing the exponent from 1/2 to 1/√e - ε gives a positive density result. Steinerberger found an elegant construction: n = m² - 1 works when m is chosen appropriately.",
+    "problemStatement": "Are there infinitely many n such that gpf(n) < √n and gpf(n+1) < √(n+1), where gpf denotes the greatest prime factor?",
+    "proofStrategy": "We axiomatize gpf with key properties and formalize the Steinerberger construction n = m² - 1 = (m-1)(m+1). For n = 63 = 8² - 1, we verify gpf(63) = 7 < √63 and gpf(64) = 2 < √64. The main theorem states infinitely many such n exist.",
+    "keyInsights": [
+      "The key construction is n = m² - 1 = (m-1)(m+1)",
+      "Then n + 1 = m², so gpf(n+1) = gpf(m)",
+      "For powers of 2: gpf(2^(2k)) = 2 < 2^k = √(4^k)",
+      "Example: n = 63, gpf(63) = 7 < √63 ≈ 7.94, gpf(64) = 2 < 8"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "gpf-definition",
+      "title": "Greatest Prime Factor",
+      "startLine": 35,
+      "endLine": 58,
+      "summary": "Axiomatize gpf with key properties for primes, prime powers, and products."
+    },
+    {
+      "id": "smooth-numbers",
+      "title": "Smooth Numbers",
+      "startLine": 60,
+      "endLine": 75,
+      "summary": "Define B-smooth and √-smooth numbers, and the main predicate ConsecutiveSqrtSmooth."
+    },
+    {
+      "id": "steinerberger",
+      "title": "The Steinerberger Construction",
+      "startLine": 77,
+      "endLine": 141,
+      "summary": "The construction n = m² - 1 with examples n = 63 (m = 8) and n = 224 (m = 15)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 143,
+      "endLine": 168,
+      "summary": "State that infinitely many n satisfy the condition."
+    },
+    {
+      "id": "pomerance",
+      "title": "Pomerance's Density Perspective",
+      "startLine": 170,
+      "endLine": 184,
+      "summary": "Connection to Dickman function and the critical exponent 1/√e."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #370 about consecutive smooth numbers. The Steinerberger construction n = m² - 1 provides infinitely many examples where both n and n+1 have their largest prime factor less than their square root.",
+    "implications": "This connects the distribution of smooth numbers to elementary number theory. The elegant solution shows how sometimes deep-sounding problems have simple answers.",
+    "openQuestions": [
+      "What is the density of such n?",
+      "How does the count of such n up to N grow?",
+      "Are there infinitely many n with gpf(n), gpf(n+1), gpf(n+2) all small?"
+    ]
   }
 }

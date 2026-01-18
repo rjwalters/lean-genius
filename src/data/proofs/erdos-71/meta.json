@@ -1,16 +1,20 @@
 {
   "id": "erdos-71",
-  "title": "Erdős Problem #71",
+  "title": "Erdős Problem #71: Cycle Lengths in Arithmetic Progressions",
   "slug": "erdos-71",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every infinite arithmetic progression ... which contains even numbers there is some constant ... such tha...",
+  "description": "For every arithmetic progression P containing even numbers, does there exist c(P) such that graphs with average degree ≥ c contain a cycle of length in P? SOLVED by Bollobás (1977): YES.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Burr (conjecture), Bollobás (1977, proof)",
     "sourceUrl": "https://erdosproblems.com/71",
-    "date": "",
-    "status": "pending",
+    "date": "1977",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos71Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "cycle-lengths",
+      "average-degree",
+      "arithmetic-progressions"
     ],
     "badge": "axiom",
     "sorries": 0,
@@ -19,15 +23,27 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #71 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every infinite arithmetic progression $P$ which contains even numbers there is some constant $c=c(P)$ such that every graph with average degree at least $c$ contains a cycle whose length is in $P$?\n\n\n\nIn \\cite{Er82e} Erd\\H{o}s credits this conjecture to himself and Burr. This has been proved by Bollob\\'{a}s \\cite{Bo77}. The best dependence of the constant $c(P)$ is unknown.\n\nSee also [72].\n\n\n\n\nReferences\n\n\n[Bo77] Bollob\\'{a}s, B\\'{e}la, Cycles modulo $k$. Bull. London Math. Soc. (1977), 97-98.\n\n[Er82e] Erd\\H{o}s, Paul, Some of my favourite problems which recently have been solved. (1982), 59--79.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős and Burr conjectured that high average degree forces cycles from any arithmetic progression containing even numbers. Bollobás proved this in 1977. The even condition is necessary because bipartite graphs (with only even cycles) can have arbitrarily high average degree.",
+    "problemStatement": "Let P = {a, a+d, a+2d, ...} be an arithmetic progression containing even numbers. Does there exist c(P) > 0 such that every graph with average degree ≥ c contains a cycle whose length is in P? Answer: YES (Bollobás 1977).",
+    "proofStrategy": "The formalization defines arithmetic progressions, the containsEven condition, cycle containment, and average degree. Two corollaries are verified: (1) high degree implies an even cycle, (2) high degree implies a cycle of length divisible by 4. The necessity of the even condition is shown via bipartite graphs.",
+    "keyInsights": [
+      "P contains even numbers iff (a is even) OR (d is odd)",
+      "Bollobás (1977): c(P) exists for all valid progressions",
+      "Even condition is NECESSARY: bipartite K_{n,n} has high degree but only even cycles",
+      "Two verified corollaries: even cycles, multiples of 4",
+      "OPEN: optimal dependence of c(P) on parameters a, d",
+      "Related: Bondy-Simonovits theorem on cycle lengths"
+    ]
   },
   "sections": [],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #71 is SOLVED (Bollobás 1977). High average degree forces cycles from any arithmetic progression containing even numbers. The formalization includes two verified corollaries and proves the even condition is necessary via bipartite counterexamples.",
+    "implications": "This connects graph density to cycle structure in a precise way. The result is fundamental in extremal graph theory and relates to Turán-type problems about cycles.",
+    "openQuestions": [
+      "What is the optimal dependence c(P) = f(a, d)?",
+      "Can Bollobás's proof be made constructive?",
+      "What about weighted or directed versions?",
+      "How does the constant change for specific families of graphs?"
+    ]
   }
 }

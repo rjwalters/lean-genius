@@ -1,33 +1,138 @@
 {
   "id": "erdos-376",
-  "title": "Erdős Problem #376",
+  "title": "Erdős Problem #376: Central Binomial Coefficients Coprime to 105",
   "slug": "erdos-376",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many ... such that ... is coprime to ...?\n\n\n\nErds, Graham, Ruzsa, and Straus  have shown that, for any t...",
+  "description": "Are there infinitely many n such that C(2n,n) is coprime to 105 = 3×5×7? OPEN for three primes. EGRS (1975) solved the two-prime case.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Graham-Ruzsa-Straus (1975), Kummer (1852)",
     "sourceUrl": "https://erdosproblems.com/376",
-    "date": "",
-    "status": "pending",
+    "date": "1975",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos376Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "binomial-coefficients",
+      "kummer-theorem",
+      "digit-constraints"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 376,
     "erdosUrl": "https://erdosproblems.com/376",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.centralBinom",
+        "description": "Central binomial coefficient C(2n,n)",
+        "module": "Mathlib.Data.Nat.Choose.Central"
+      },
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality of natural numbers",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.digits",
+        "description": "Digit representation in any base",
+        "module": "Mathlib.Data.Nat.Digits"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite sets",
+        "module": "Mathlib.Data.Set.Finite"
+      }
+    ],
+    "originalContributions": [
+      "Definition of Is105Good and GoodSet105",
+      "Kummer's Theorem as axiom (prime power in binomial coefficients)",
+      "EGRS Theorem as axiom (two odd primes case)",
+      "Verified corollaries for 15, 21, 35 coprimality",
+      "Base-good sets: Base3Good, Base5Good, Base7Good",
+      "Computationally verified: one_is_good, two_not_good, four_not_good",
+      "Characterization via digit intersection"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #376 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many $n$ such that $\\binom{2n}{n}$ is coprime to $105$?\n\n\n\nErd\\H{o}s, Graham, Ruzsa, and Straus \\cite{EGRS75} have shown that, for any two odd primes $p$ and $q$, there are infinitely many $n$ such that $\\binom{2n}{n}$ is coprime to $pq$.\n\nThis is equivalent (via Kummer's theorem) to whether there are infinitely many $n$ which have only digits $0,1$ in base $3$, digits $0,1,2$ in base $5$, and digits $0,1,2,3$ in base $7$.\n\nThe sequence of such $n$ is A030979 in the OEIS.\n\nThe best result in this direction is due to Bloom and Croot \\cite{BlCr25}, who proved that, if $p_1,p_2,p_3$ are sufficiently large primes, then there are infinitely many $n$ such that almost all of the base $p_i$ digits are $<p_i/2$. In other words, for all $\\epsilon>0$, there are infinitely many $n$ such that $\\binom{2n}{n}$ is coprime to $p_1p_2p_3$, except for a factor of size $\\leq n^\\epsilon$.\n\nThis is mentioned in problem B33 of Guy's collection \\cite{Gu04}. It is also discussed in an article of Pomerance \\cite{Po15c}.\n\nGraham offered \\$1000 for a solution to this problem (as mentioned in \\cite{Gu04} and \\cite{BeHa98}).\n\n\n\n\nReferences\n\n\n[BeHa98] Berend, Daniel and Harmse, J\\o rgen E., On some arithmetical properties of middle binomial\ncoefficients. Acta Arith. (1998), 31--41.\n\n[BlCr25] T. F. Bloom and E. Croot, Integers with small digits in multiple bases. arXiv:2509.02835 (2025).\n\n[EGRS75] Erd\\H{o}s, P. and Graham, R. L. and Ruzsa, I. Z. and Straus, E. G., On the prime factors of $(\\sp{2n}\\sb{n})$. Math. Comp. (1975), 83-92.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Po15c] Pomerance, Carl, Divisors of the middle binomial coefficient. Amer. Math. Monthly (2015), 636--644.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Kummer's Theorem (1852)** connects binomial coefficient divisibility to digit carries: the exact power of prime p dividing C(m,k) equals the number of carries when adding k + (m-k) in base p.\n\n**EGRS Theorem (1975)**: Erdős, Graham, Ruzsa, and Straus proved that for any two odd primes p and q, infinitely many n have C(2n,n) coprime to pq.\n\n**The Open Case**: The question for THREE primes (105 = 3 × 5 × 7) remains **OPEN**.\n\n**Connection to Digits**: C(2n,n) coprime to p iff n has only 'small' digits (0, 1, ..., (p-1)/2) in base p. For 105, this means simultaneously:\n- Only digits {0,1} in base 3\n- Only digits {0,1,2} in base 5\n- Only digits {0,1,2,3} in base 7",
+    "problemStatement": "Define the **central binomial coefficient** $C(2n,n) = \\binom{2n}{n}$.\n\n**Definition**: An integer $n$ is **105-good** if $\\gcd(C(2n,n), 105) = 1$.\n\n**Erdős Problem #376 (OPEN)**: Is the set of 105-good integers infinite?\n\n**Known Results**:\n- Two primes: SOLVED by EGRS (1975)\n- Three primes (105 = 3×5×7): **OPEN**\n\n**Equivalently**: Is $\\{n : n \\text{ has restricted digits in bases 3, 5, and 7}\\}$ infinite?",
+    "proofStrategy": "We formalize this problem by:\n\n1. **Core definitions**: Is105Good, GoodSet105 using Nat.centralBinom and Nat.Coprime\n\n2. **Kummer's Theorem**: Axiomatize the connection between coprimality and digit representations\n\n3. **EGRS Theorem**: Axiomatize the two-prime result\n\n4. **Corollaries**: Prove infinitely many n coprime to 15, 21, 35 using EGRS\n\n5. **Digit characterization**: Define Base3Good, Base5Good, Base7Good\n\n6. **Computational verification**: Use native_decide for small cases",
+    "keyInsights": [
+      "**Kummer's Theorem key**: C(2n,n) coprime to p iff no carries when computing n + n in base p, i.e., all digits ≤ (p-1)/2.",
+      "**Two primes solved**: EGRS construction works for any pq (odd primes). The three-prime case is fundamentally harder.",
+      "**Digit intersection**: 105-good ≡ Base3Good ∩ Base5Good ∩ Base7Good. Each individual set is infinite, but intersection may be finite.",
+      "**Small cases**: n = 1 is 105-good (C(2,1) = 2). n = 2 fails (C(4,2) = 6 divisible by 3). n = 4 fails (C(8,4) = 70 divisible by 5 and 7).",
+      "**Why three primes is harder**: More constraints must be satisfied simultaneously. The digit sets become increasingly sparse."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 31,
+      "endLine": 45,
+      "summary": "Central binomial coefficient, Is105Good, GoodSet105."
+    },
+    {
+      "id": "kummer",
+      "title": "Kummer's Theorem",
+      "startLine": 47,
+      "endLine": 68,
+      "summary": "Connection between coprimality and digit representations via carries."
+    },
+    {
+      "id": "digit-conditions",
+      "title": "Digit Conditions for 105",
+      "startLine": 69,
+      "endLine": 94,
+      "summary": "Specific digit constraints for coprimality to 3, 5, and 7."
+    },
+    {
+      "id": "egrs",
+      "title": "EGRS Theorem (1975)",
+      "startLine": 95,
+      "endLine": 125,
+      "summary": "Two-prime case solved; corollaries for 15, 21, 35."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture (OPEN)",
+      "startLine": 126,
+      "endLine": 143,
+      "summary": "The three-prime question for 105."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 144,
+      "endLine": 168,
+      "summary": "Computational verification: 1 is good, 2 and 4 are not."
+    },
+    {
+      "id": "digit-sets",
+      "title": "Digit Set Characterization",
+      "startLine": 186,
+      "endLine": 215,
+      "summary": "Base3Good, Base5Good, Base7Good and their intersection."
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations",
+      "startLine": 234,
+      "endLine": 250,
+      "summary": "General conjecture for arbitrary prime sets."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #376 about central binomial coefficients coprime to 105 = 3 × 5 × 7. The EGRS theorem (1975) solved the two-prime case, but the three-prime case remains OPEN. The problem reduces to finding integers with simultaneously restricted digit representations in bases 3, 5, and 7.",
+    "implications": "This problem connects binomial coefficient arithmetic to simultaneous digit constraints in multiple bases. Understanding which integers satisfy multiple digit restrictions across coprime bases has applications in combinatorics and number theory.",
+    "openQuestions": [
+      "Is {n | C(2n,n) coprime to 105} infinite? (The main conjecture)",
+      "Does Base3Good ∩ Base5Good ∩ Base7Good have positive density?",
+      "What happens for four or more odd primes?",
+      "What is the density of the intersection as the number of primes increases?"
+    ]
   }
 }

@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-650-valid",
+    "proofId": "erdos-650",
+    "range": { "startLine": 33, "endLine": 35 },
+    "type": "definition",
+    "title": "ValidSet",
+    "content": "A ⊆ {1,...,N} with all elements positive.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-650-interval",
+    "proofId": "erdos-650",
+    "range": { "startLine": 37, "endLine": 39 },
+    "type": "definition",
+    "title": "Interval",
+    "content": "[x, x + 2N) of length 2N.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-650-covering",
+    "proofId": "erdos-650",
+    "range": { "startLine": 46, "endLine": 54 },
+    "type": "definition",
+    "title": "Covering",
+    "content": "Distinct b₁,...,bᵣ with distinct witnesses a₁,...,aᵣ ∈ A where aᵢ | bᵢ.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-650-mincov",
+    "proofId": "erdos-650",
+    "range": { "startLine": 60, "endLine": 69 },
+    "type": "definition",
+    "title": "minCovering",
+    "content": "Minimum covering size for A in interval at x.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-650-f",
+    "proofId": "erdos-650",
+    "range": { "startLine": 73, "endLine": 79 },
+    "type": "definition",
+    "title": "f(m)",
+    "content": "Minimum guaranteed covering over all valid m-sets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-650-lower",
+    "proofId": "erdos-650",
+    "range": { "startLine": 89, "endLine": 92 },
+    "type": "theorem",
+    "title": "Erdős-Sarányi Lower",
+    "content": "f(m) ≥ c√m for some c > 0 (1959).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-650-pigeonhole",
+    "proofId": "erdos-650",
+    "range": { "startLine": 99, "endLine": 103 },
+    "type": "theorem",
+    "title": "Pigeonhole Argument",
+    "content": "Lower bound proof technique.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-650-upper",
+    "proofId": "erdos-650",
+    "range": { "startLine": 107, "endLine": 109 },
+    "type": "definition",
+    "title": "Upper Bound Conjecture",
+    "content": "f(m) ≤ C√m for some C. OPEN.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-650-tight",
+    "proofId": "erdos-650",
+    "range": { "startLine": 114, "endLine": 118 },
+    "type": "theorem",
+    "title": "Tight Bound",
+    "content": "If conjecture true, f(m) ~ √m.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-650-f1",
+    "proofId": "erdos-650",
+    "range": { "startLine": 122, "endLine": 124 },
+    "type": "theorem",
+    "title": "f(1) = 1",
+    "content": "One element covers at least 1 multiple.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-650-multiples",
+    "proofId": "erdos-650",
+    "range": { "startLine": 137, "endLine": 139 },
+    "type": "definition",
+    "title": "multiplesInInterval",
+    "content": "Count of multiples of a in [x, x+2N).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-650-greedy",
+    "proofId": "erdos-650",
+    "range": { "startLine": 157, "endLine": 159 },
+    "type": "definition",
+    "title": "Greedy Covering",
+    "content": "Pick largest uncovered, use smallest witness.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-650-random",
+    "proofId": "erdos-650",
+    "range": { "startLine": 168, "endLine": 171 },
+    "type": "definition",
+    "title": "Random Expectation",
+    "content": "Expected covering for random m-subset.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-650-extremal",
+    "proofId": "erdos-650",
+    "range": { "startLine": 180, "endLine": 182 },
+    "type": "definition",
+    "title": "IsExtremal",
+    "content": "Sets achieving minimum f(m).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-650-ratio",
+    "proofId": "erdos-650",
+    "range": { "startLine": 225, "endLine": 226 },
+    "type": "definition",
+    "title": "Ratio",
+    "content": "f(m)/√m: key asymptotic quantity.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-650-limit",
+    "proofId": "erdos-650",
+    "range": { "startLine": 238, "endLine": 240 },
+    "type": "definition",
+    "title": "Limit Exists",
+    "content": "Does lim f(m)/√m exist? OPEN.",
+    "significance": "key"
+  }
+]

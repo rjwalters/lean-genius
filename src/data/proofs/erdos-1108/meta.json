@@ -1,33 +1,142 @@
 {
   "id": "erdos-1108",
-  "title": "Erdős Problem #1108",
+  "title": "Erdős Problem #1108: Factorial Sums and Perfect Powers",
   "slug": "erdos-1108",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[A = \\left\\{ \\sum_{n\\in S}n! : S\\subset \\right\\}.\\]If ..., then does ... contain only finitely many ...th powers? Does it...",
+  "description": "Does the set of finite sums of distinct factorials contain only finitely many k-th powers (for k >= 2)? Does it contain only finitely many powerful numbers?",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1988), Brindza-Erdős (1991 partial result)",
     "sourceUrl": "https://erdosproblems.com/1108",
-    "date": "",
-    "status": "pending",
+    "date": "1988-1991",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos1108Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "factorials",
+      "perfect-powers",
+      "powerful-numbers",
+      "diophantine"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1108,
     "erdosUrl": "https://erdosproblems.com/1108",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.factorial",
+        "description": "The factorial function n!",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime.Defs"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Ring.Finset"
+      }
+    ],
+    "originalContributions": [
+      "Clean Lean 4 formalization of factorial sums set",
+      "Definition of IsPowerful predicate for powerful numbers",
+      "Axiomatization of both open questions as Props",
+      "Axiomatization of Brindza-Erdős 1991 bound",
+      "Connection to Mahler's related problem on power sums",
+      "Proved membership examples for factorial sums",
+      "Proved 1 is both a square factorial sum and powerful"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1108 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet\\[A = \\left\\{ \\sum_{n\\in S}n! : S\\subset \\mathbb{N}\\textrm{ finite}\\right\\}.\\]If $k\\geq 2$, then does $A$ contain only finitely many $k$th powers? Does it contain only finitely many powerful numbers?\n\n\n\nAsked by Erd\\H{o}s at Oberwolfach in 1988. It is open even whether there are infinitely many squares of the form $1+n!$ (see [398]).\n\nThis was motivated in part by a problem of Mahler which he discussed with Erd\\H{o}s a few days before his death in 1988: if $k\\geq 5$ and\\[A_k= \\left\\{ \\sum_{n\\in S}k^n : S\\subset \\mathbb{N}\\textrm{ finite}\\right\\}\\]then does $A_k$ contain only finitely many squares? Mahler showed that there are infinitely many squares in $A_k$ for $k\\leq 4$, and found only one square for $k\\geq 5$, namely\\[1+7+7^2+7^3=400.\\]Brindza and Erd\\H{o}s \\cite{BrEr91} proved that, for any $r$, if $n_1!+\\cdots+n_r!$ is powerful then $n_1\\ll_r 1$.\n\n\n\n\nReferences\n\n\n[BrEr91] Brindza, B. and Erd\\H{o}s, P., On some {D}iophantine problems involving powers and\nfactorials. J. Austral. Math. Soc. Ser. A (1991), 1--7.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was asked by Erdős at Oberwolfach in 1988, motivated by discussions with Mahler shortly before Mahler's death that same year. Mahler had posed a related question about finite sums of powers of a base k: for k >= 5, does A_k contain only finitely many squares?\n\nMahler showed that for k <= 4, there are infinitely many squares in A_k. For k >= 5, he found only one square: 1 + 7 + 7² + 7³ = 400 = 20².\n\nBrindza and Erdős (1991) proved a partial result: for any fixed number r of terms, if n₁! + ... + nᵣ! is powerful, then the largest term n₁ is bounded by a constant depending only on r. This doesn't resolve the main question because the number of terms is unbounded.",
+    "problemStatement": "**Erdős Problem #1108**: Let $A = \\left\\{ \\sum_{n \\in S} n! : S \\subset \\mathbb{N} \\text{ finite} \\right\\}$ be the set of all finite sums of distinct factorials.\n\n**Question 1 (OPEN)**: For each $k \\geq 2$, does $A$ contain only finitely many $k$-th powers?\n\n**Question 2 (OPEN)**: Does $A$ contain only finitely many powerful numbers?\n\n**Status**: OPEN\n\n**Known Result** (Brindza-Erdős 1991): For any fixed $r$, if $n_1! + \\cdots + n_r!$ is powerful with $n_1 \\geq \\cdots \\geq n_r$, then $n_1 \\leq C(r)$ for some constant depending only on $r$.",
+    "proofStrategy": "We formalize this open problem and its known partial results:\n\n1. **Define FactorialSums**: The set A of all finite sums of distinct factorials.\n\n2. **Define IsPowerful**: A number is powerful if every prime factor appears with exponent >= 2.\n\n3. **Axiomatize the open questions**: Since the answers are unknown, we axiomatize the questions as Props.\n\n4. **State Brindza-Erdős bound**: For fixed number of terms, the largest factorial index is bounded.\n\n5. **State Mahler's related results**: For bases k <= 4, infinitely many squares; for k >= 5, only one known square.\n\n6. **Prove small examples**: We verify that 1 is both a square factorial sum and powerful.",
+    "keyInsights": [
+      "**Factorial sums**: The set A = {0, 1, 2, 3, 6, 7, 8, 9, 24, 25, ...} consists of all numbers expressible as sums of distinct factorials. This is analogous to binary representation but with factorials.",
+      "**Powerful numbers**: Numbers like 1, 4, 8, 9, 16, 25, 27, 36 where every prime factor has exponent >= 2. They are products of squares and cubes.",
+      "**Why this is hard**: The rapid growth of factorials (n! >> n) makes the structure of A very different from polynomial sequences, yet hard to analyze.",
+      "**Brindza-Erdős insight**: For fixed number of terms, there's a finite check. But the unbounded case remains open.",
+      "**Mahler's dichotomy**: Small bases (k <= 4) give infinitely many squares, while large bases (k >= 5) seem to give very few. Factorials are 'in between'."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Problem statement, status (OPEN), and references."
+    },
+    {
+      "id": "factorial-sums",
+      "title": "Factorial Sums Definition",
+      "startLine": 37,
+      "endLine": 68,
+      "summary": "Definition of FactorialSums set and membership examples."
+    },
+    {
+      "id": "powerful",
+      "title": "Powerful Numbers",
+      "startLine": 70,
+      "endLine": 92,
+      "summary": "Definition and examples of powerful numbers."
+    },
+    {
+      "id": "main-sets",
+      "title": "Main Question Sets",
+      "startLine": 94,
+      "endLine": 102,
+      "summary": "Definitions of k-th powers and powerful numbers in factorial sums."
+    },
+    {
+      "id": "open-questions",
+      "title": "The Open Questions",
+      "startLine": 104,
+      "endLine": 121,
+      "summary": "Axiomatization of both open questions."
+    },
+    {
+      "id": "partial-results",
+      "title": "Known Partial Results",
+      "startLine": 123,
+      "endLine": 138,
+      "summary": "Brindza-Erdős bound and related open problem #398."
+    },
+    {
+      "id": "mahler",
+      "title": "Mahler's Related Problem",
+      "startLine": 140,
+      "endLine": 158,
+      "summary": "Mahler's problem on power sums and his example."
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "startLine": 160,
+      "endLine": 172,
+      "summary": "Proofs that sets are nonempty (1 is in both)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary Theorem",
+      "startLine": 174,
+      "endLine": 193,
+      "summary": "Summary packaging the verified results."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #1108, two OPEN questions about finite sums of distinct factorials. Question 1 asks whether only finitely many k-th powers (k >= 2) can be expressed as such sums. Question 2 asks the same for powerful numbers. The Brindza-Erdős bound (1991) provides a partial result: for fixed number of terms, the largest factorial index is bounded. The problem connects to Mahler's similar questions about sums of powers.",
+    "implications": "This problem connects several areas:\n\n1. **Diophantine equations**: Equations involving factorials and powers\n2. **Analytic number theory**: Growth rates of factorials vs powers\n3. **Computational number theory**: Searching for solutions\n4. **Transcendence theory**: Mahler's original motivations",
+    "openQuestions": [
+      "Are there only finitely many perfect squares in factorial sums?",
+      "Are there only finitely many powerful numbers in factorial sums?",
+      "What is the largest known square in factorial sums?",
+      "Can the Brindza-Erdős bound be extended to unbounded terms?",
+      "Is the related question (Problem #398) about 1 + n! being a square also open?"
+    ]
   }
 }

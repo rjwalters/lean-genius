@@ -1,33 +1,110 @@
 {
   "id": "erdos-673",
-  "title": "Erdős Problem #673",
+  "title": "Erdős #673: Sum of Consecutive Divisor Ratios",
   "slug": "erdos-673",
-  "description": "Let $1=d_1 View the LaTeX source",
+  "description": "For G(n) = Σ dᵢ/dᵢ₊₁ (consecutive divisor ratios), does G(n) → ∞ for almost all n? What is the asymptotic formula for Σ G(n)? Solved: Tao gave bounds τ(n/m)/m ≤ G(n) ≤ τ(n).",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Terence Tao, Gérald Tenenbaum",
     "sourceUrl": "https://erdosproblems.com/673",
-    "date": "",
-    "status": "pending",
+    "date": "1979-1982",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos673Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisors",
+      "analytic-number-theory"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 21,
     "erdosNumber": 673,
     "erdosUrl": "https://erdosproblems.com/673",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #673 from erdosproblems.com.",
-    "problemStatement": "Let $1=d_1 View the LaTeX source",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős posed this problem about the function G(n) = Σ dᵢ/dᵢ₊₁ summing consecutive divisor ratios. The first question (G(n) → ∞ for almost all n) is trivial. Terence Tao established the key bounds. Erdős and Tenenbaum proved G(n)/τ(n) has a continuous distribution function.",
+    "problemStatement": "Let 1 = d₁ < d₂ < ... < d_τ(n) = n be the divisors of n. Define G(n) = Σᵢ dᵢ/dᵢ₊₁. (1) Does G(n) → ∞ for almost all n? (2) Find an asymptotic formula for Σ_{n≤X} G(n).",
+    "proofStrategy": "We formalize G(n) as a sum over consecutive divisor ratios, establish Tao's bounds (τ(n/m)/m ≤ G(n) ≤ τ(n)), prove asymptotic behavior (average → ∞), and formalize the Erdős-Tenenbaum distribution result.",
+    "keyInsights": [
+      "G(n) = sum of consecutive divisor ratios dᵢ/dᵢ₊₁",
+      "Tao: τ(n/m)/m ≤ G(n) ≤ τ(n) for any divisor m of n",
+      "For even n: τ(n)/4 ≤ G(n) ≤ τ(n)",
+      "Erdős-Tenenbaum: G(n)/τ(n) has continuous distribution",
+      "Σ_{n≤X} G(n) ~ c X log X for some constant c"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "divisors",
+      "title": "Divisor Definitions",
+      "summary": "Sorted divisors, τ(n), divisorAt",
+      "startLine": 33,
+      "endLine": 54
+    },
+    {
+      "id": "g-function",
+      "title": "The Function G(n)",
+      "summary": "Sum of consecutive divisor ratios",
+      "startLine": 56,
+      "endLine": 73
+    },
+    {
+      "id": "bounds",
+      "title": "Bounds on G(n)",
+      "summary": "Tao's upper and lower bounds",
+      "startLine": 75,
+      "endLine": 95
+    },
+    {
+      "id": "asymptotic",
+      "title": "Asymptotic Behavior",
+      "summary": "Average tends to infinity, almost all n",
+      "startLine": 97,
+      "endLine": 113
+    },
+    {
+      "id": "distribution",
+      "title": "Distribution of G(n)/τ(n)",
+      "summary": "Erdős-Tenenbaum continuous distribution",
+      "startLine": 115,
+      "endLine": 138
+    },
+    {
+      "id": "specific",
+      "title": "Specific Values",
+      "summary": "G(6), G(12), highly composite numbers",
+      "startLine": 140,
+      "endLine": 155
+    },
+    {
+      "id": "multiplicative",
+      "title": "Multiplicative Properties",
+      "summary": "G is not multiplicative, coprime relations",
+      "startLine": 157,
+      "endLine": 168
+    },
+    {
+      "id": "formula",
+      "title": "Asymptotic Formula",
+      "summary": "Σ G(n) ~ c X log X",
+      "startLine": 170,
+      "endLine": 182
+    },
+    {
+      "id": "tau-connection",
+      "title": "Connection to τ(n)",
+      "summary": "G and τ have similar average behavior",
+      "startLine": 184,
+      "endLine": 200
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #673 on consecutive divisor ratios. The first question (G(n) → ∞ almost always) is trivial. The key results are Tao's bounds relating G(n) to τ(n), and the Erdős-Tenenbaum theorem that G(n)/τ(n) has a continuous distribution function.",
+    "implications": "Understanding G(n) provides insight into the structure of divisor sequences. The bounds show G(n) behaves similarly to τ(n) on average, connecting to classical results in analytic number theory.",
+    "openQuestions": [
+      "What is the exact constant c in Σ G(n) ~ c X log X?",
+      "What is the explicit form of the distribution function for G(n)/τ(n)?",
+      "How does G(n) behave for specific number families (primes, prime powers, squarefree)?"
+    ]
   }
 }

@@ -1,1 +1,219 @@
-[]
+[
+  {
+    "id": "ann-e645-header",
+    "proofId": "erdos-645",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdos Problem #645** asks: If ℕ is 2-colored, must there exist a monochromatic 3-term arithmetic progression x, x+d, x+2d such that d > x?\n\n**Status**: SOLVED (Yes)\n\nThis is a strengthening of van der Waerden's theorem. Van der Waerden guarantees monochromatic APs of any length, but this asks for a structural constraint: the common difference must exceed the first term.",
+    "mathContext": "The problem lies in Ramsey theory, asking what arithmetic structures must appear in any partition of the natural numbers.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "van der Waerden's theorem",
+      "arithmetic progressions",
+      "2-colorings",
+      "Ramsey theory"
+    ]
+  },
+  {
+    "id": "ann-e645-coloring",
+    "proofId": "erdos-645",
+    "range": {
+      "startLine": 27,
+      "endLine": 38
+    },
+    "type": "concept",
+    "title": "2-Colorings of Natural Numbers",
+    "content": "A **2-coloring** of ℕ is a function c : ℕ → Bool.\n\nWe can think of this as painting each natural number either 'true' (say, blue) or 'false' (red). The question is whether any such coloring must contain certain monochromatic patterns.\n\nUsing Bool is equivalent to using Fin 2 or {0, 1}, but is more natural for binary colorings.",
+    "mathContext": "This is the standard Ramsey-theoretic setup. The finiteness of the color set (2 colors) is crucial - more colors would make it easier to avoid patterns.",
+    "significance": "key",
+    "relatedConcepts": [
+      "partition",
+      "Bool type",
+      "Ramsey coloring"
+    ]
+  },
+  {
+    "id": "ann-e645-ap-def",
+    "proofId": "erdos-645",
+    "range": {
+      "startLine": 40,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "3-Term Arithmetic Progressions",
+    "content": "**is3AP(x, d)** requires d > 0 (nontrivial progression).\n\n**AP3terms(x, d)** returns the three terms of the AP:\n- AP3terms(x, d)(0) = x\n- AP3terms(x, d)(1) = x + d\n- AP3terms(x, d)(2) = x + 2d\n\nFor example, (3, 7, 11) is a 3-AP with x = 3 and d = 4.",
+    "mathContext": "Arithmetic progressions are the fundamental objects in additive combinatorics. A k-AP is a sequence a, a+d, a+2d, ..., a+(k-1)d.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic progression",
+      "common difference",
+      "Fin type"
+    ]
+  },
+  {
+    "id": "ann-e645-monochromatic",
+    "proofId": "erdos-645",
+    "range": {
+      "startLine": 54,
+      "endLine": 72
+    },
+    "type": "definition",
+    "title": "Monochromatic Progressions",
+    "content": "A 3-AP is **monochromatic** if all three terms have the same color.\n\n**isMonochromatic(c, x, d)**: c(x) = c(x+d) ∧ c(x+d) = c(x+2d)\n\n**isMonochromatic'(c, x, d)**: ∃ C, c(x) = C ∧ c(x+d) = C ∧ c(x+2d) = C\n\nThese definitions are equivalent (proven in monochromatic_iff). The first uses chain equalities; the second explicitly names the common color C.",
+    "mathContext": "Monochromatic structures are the objects of interest in Ramsey theory. The goal is to show they cannot be avoided.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey property",
+      "chain equality",
+      "existential witness"
+    ]
+  },
+  {
+    "id": "ann-e645-condition",
+    "proofId": "erdos-645",
+    "range": {
+      "startLine": 74,
+      "endLine": 93
+    },
+    "type": "concept",
+    "title": "The Erdős Condition: d > x",
+    "content": "**erdosCondition(x, d)**: 0 < x ∧ x < d\n\nThis is the key constraint that strengthens van der Waerden's theorem:\n- x > 0: The first term is positive\n- d > x: The common difference exceeds the first term\n\n**Satisfying examples**:\n- (1, 3, 5): x = 1, d = 2, so d > x ✓\n- (2, 7, 12): x = 2, d = 5, so d > x ✓\n\n**Non-satisfying examples**:\n- (3, 5, 7): x = 3, d = 2, so d < x ✗\n- (5, 7, 9): x = 5, d = 2, so d < x ✗",
+    "mathContext": "The constraint d > x forces the progression to 'jump' by more than its starting point. This is a nontrivial structural requirement beyond just having a monochromatic AP.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "structural constraint",
+      "large difference",
+      "jump size"
+    ]
+  },
+  {
+    "id": "ann-e645-statement",
+    "proofId": "erdos-645",
+    "range": {
+      "startLine": 102,
+      "endLine": 122
+    },
+    "type": "definition",
+    "title": "The Main Statement",
+    "content": "**erdos_645_statement**: For any 2-coloring c : ℕ → Bool, there exist x, d with:\n- erdosCondition(x, d) (i.e., 0 < x < d)\n- isMonochromatic'(c, x, d) (i.e., x, x+d, x+2d are all the same color)\n\n**erdos_645_explicit** gives an equivalent formulation that unfolds all definitions:\n∀ c, ∃ x d, 0 < x ∧ x < d ∧ ∃ C, c(x) = C ∧ c(x+d) = C ∧ c(x+2d) = C\n\nThe theorem **erdos_645_equiv** proves these are logically equivalent.",
+    "mathContext": "This is the precise formalization of Erdős's question. The answer being YES means no 2-coloring can avoid such progressions.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "universal quantifier",
+      "existential quantifier",
+      "equivalent formulations"
+    ]
+  },
+  {
+    "id": "ann-e645-main-theorem",
+    "proofId": "erdos-645",
+    "range": {
+      "startLine": 141,
+      "endLine": 144
+    },
+    "type": "axiom",
+    "title": "Main Theorem (Axiom)",
+    "content": "**erdos_645 : erdos_645_statement**\n\nThis axiom asserts that Erdős Problem #645 is true. The proof uses Ramsey-type combinatorial arguments involving careful case analysis and the pigeonhole principle.\n\nThe statement is known to be true in the mathematical literature, proven by combinatorial methods.",
+    "mathContext": "We axiomatize this result rather than proving it from first principles, as the full proof requires substantial combinatorial machinery not yet in Mathlib.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "axiomatization",
+      "combinatorial proof",
+      "literature result"
+    ]
+  },
+  {
+    "id": "ann-e645-vdw",
+    "proofId": "erdos-645",
+    "range": {
+      "startLine": 149,
+      "endLine": 174
+    },
+    "type": "theorem",
+    "title": "Connection to van der Waerden",
+    "content": "**vanDerWaerden_2_3**: For any 2-coloring, there exists a monochromatic 3-AP (without the d > x constraint).\n\n**erdos_645_implies_vdw**: Erdős #645 implies this weak form of van der Waerden.\n\nProof: If we have a monochromatic 3-AP with d > x, then in particular d > 0, so it's a valid 3-AP for van der Waerden.\n\nThe converse is NOT true - van der Waerden is strictly weaker since it doesn't guarantee d > x.",
+    "mathContext": "This shows the logical relationship between the problems. Erdős's question is a strengthening that adds structure beyond mere existence.",
+    "significance": "key",
+    "relatedConcepts": [
+      "van der Waerden's theorem",
+      "implication",
+      "weak vs strong forms"
+    ]
+  },
+  {
+    "id": "ann-e645-parity-example",
+    "proofId": "erdos-645",
+    "range": {
+      "startLine": 182,
+      "endLine": 192
+    },
+    "type": "axiom",
+    "title": "Example: Parity Coloring",
+    "content": "**colorByParity(n)** = (n % 2 = 0)\n\nThis colors even numbers true and odd numbers false.\n\n**example_parity**: The AP (2, 6, 10) works:\n- x = 2, d = 4\n- d = 4 > 2 = x ✓\n- All three terms are even: c(2) = c(6) = c(10) = true ✓\n\nSo colorByParity satisfies Erdős #645 with this specific witness.",
+    "mathContext": "This example shows a natural coloring that immediately yields a monochromatic AP with large difference. Even numbers form APs with even differences.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "parity",
+      "modular arithmetic",
+      "explicit witness"
+    ]
+  },
+  {
+    "id": "ann-e645-threshold-example",
+    "proofId": "erdos-645",
+    "range": {
+      "startLine": 193,
+      "endLine": 205
+    },
+    "type": "axiom",
+    "title": "Example: Threshold Coloring",
+    "content": "**colorByThreshold(n)** = (n < 5)\n\nThis colors numbers 1-4 as true, and numbers ≥ 5 as false.\n\n**example_threshold**: The AP (5, 11, 17) works:\n- x = 5, d = 6\n- d = 6 > 5 = x ✓\n- All three terms are ≥ 5: c(5) = c(11) = c(17) = false ✓\n\nNote that we can't use the 'true' color since 1, 2, 3, 4 are too small to form an AP with d > x.",
+    "mathContext": "This shows that even simple threshold colorings must contain the desired pattern among the larger (false) values.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "threshold function",
+      "indicator function",
+      "explicit witness"
+    ]
+  },
+  {
+    "id": "ann-e645-generalization",
+    "proofId": "erdos-645",
+    "range": {
+      "startLine": 207,
+      "endLine": 232
+    },
+    "type": "definition",
+    "title": "Generalization to k-APs",
+    "content": "**erdos_645_generalized(k)**: For k ≥ 3, every 2-coloring has a monochromatic k-AP with d > x.\n\nA k-AP is a sequence x, x+d, x+2d, ..., x+(k-1)d. The condition requires all k terms to have the same color AND d > x.\n\n**erdos_645_is_k3**: The original problem is exactly the k = 3 case.\n\nThis generalization asks whether longer progressions can also be forced to have large difference. The answer is likely yes by similar arguments, though harder to prove.",
+    "mathContext": "Natural generalizations of Ramsey-type results often hold for longer progressions. Szemerédi's theorem is the density analog.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "k-term AP",
+      "Szemerédi's theorem",
+      "generalization"
+    ]
+  },
+  {
+    "id": "ann-e645-finite",
+    "proofId": "erdos-645",
+    "range": {
+      "startLine": 235,
+      "endLine": 259
+    },
+    "type": "definition",
+    "title": "The Finite Version",
+    "content": "**finiteErdos645(N)**: Every 2-coloring of {1, ..., N} (as a function ℕ → Bool restricted to this range) contains a monochromatic 3-AP with d > x where all terms are < N.\n\n**erdos645_threshold**: The smallest N₀ such that finiteErdos645(N) holds for all N ≥ N₀.\n\n**erdos645_threshold_works**: For all N ≥ erdos645_threshold, finiteErdos645(N) holds.\n\nFinding the exact value of this threshold is a harder computational problem, related to but distinct from van der Waerden numbers.",
+    "mathContext": "Ramsey-type results often have finite versions with explicit bounds. Computing these bounds is typically much harder than proving existence.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "finite Ramsey theory",
+      "van der Waerden numbers",
+      "explicit bounds"
+    ]
+  }
+]
