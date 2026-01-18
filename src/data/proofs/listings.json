@@ -1853,7 +1853,7 @@
     "erdosNumber": 1077,
     "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 8
+    "annotationCount": 11
   },
   {
     "id": "erdos-1078",
@@ -1905,17 +1905,25 @@
   },
   {
     "id": "erdos-1080",
-    "title": "Erdős Problem #1080",
+    "title": "Erdős Problem #1080: Six-Cycles in Sparse Bipartite Graphs",
     "slug": "erdos-1080",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a bipartite graph on ... vertices such that one part has ... vertices. Is there a constant ... such that if ... ha...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is there a constant c > 0 such that bipartite graphs with n vertices (one part of size ⌊n^(2/3)⌋) and cn edges must contain a C_6? NO, disproved by De Caen-Székely (1992).",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorics",
+      "graph-theory",
+      "extremal-graph-theory",
+      "bipartite-graphs",
+      "cycles",
+      "disproved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 1080,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-1081",
@@ -7629,7 +7637,7 @@
     "slug": "erdos-522",
     "description": "For random polynomials with ±1 coefficients, does the number of roots in the unit disk converge to n/2 almost surely? Yakir (2021) proved convergence in probability.",
     "status": "complete",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "probability",
@@ -7640,8 +7648,8 @@
     "dateAdded": "2026-01-17",
     "erdosNumber": 522,
     "mathlibCount": 3,
-    "sorries": 2,
-    "annotationCount": 14
+    "sorries": 0,
+    "annotationCount": 17
   },
   {
     "id": "erdos-523",
@@ -13737,17 +13745,24 @@
   },
   {
     "id": "erdos-982",
-    "title": "Erdős Problem #982",
+    "title": "Erdos Problem #982: Distinct Distances from Convex Polygon Vertices",
     "slug": "erdos-982",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... distinct points in ... form a convex polygon then some vertex has at least ... different distances to other vertices.\n...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If n distinct points in the plane form a convex polygon, then some vertex has at least floor(n/2) different distances to other vertices.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "convex",
+      "discrete-geometry",
+      "distances",
+      "open"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 982,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 4,
+    "annotationCount": 20
   },
   {
     "id": "erdos-983",
