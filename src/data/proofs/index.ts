@@ -52,7 +52,15 @@ export async function getProofAsync(slug: string): Promise<ProofData | undefined
   try {
     const module = await loader()
     // Try default export first, then named export
-    return module.default || module[slugToExportName(slug)]
+    const proofData: ProofData = module.default || module[slugToExportName(slug)]
+
+    // Load the source code if getProofSource is available
+    if (module.getProofSource && proofData?.proof) {
+      const source = await module.getProofSource()
+      proofData.proof.source = source
+    }
+
+    return proofData
   } catch (e) {
     console.error(`Failed to load proof: ${slug}`, e)
     return undefined
