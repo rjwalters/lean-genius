@@ -16,8 +16,8 @@
       "random-polynomials",
       "kac-polynomials"
     ],
-    "badge": "wip",
-    "sorries": 2,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 522,
     "erdosUrl": "https://erdosproblems.com/522",
     "erdosProblemStatus": "partially-solved",
@@ -66,64 +66,71 @@
       "id": "header",
       "title": "Module Documentation",
       "startLine": 1,
-      "endLine": 24,
+      "endLine": 26,
       "summary": "Problem statement, status, history, and references."
     },
     {
       "id": "polynomial-types",
       "title": "Littlewood and Rademacher Polynomials",
-      "startLine": 37,
-      "endLine": 54,
+      "startLine": 39,
+      "endLine": 59,
       "summary": "Definitions of polynomial classes with constrained coefficients."
     },
     {
       "id": "unit-disk",
       "title": "Unit Disk and Circle",
-      "startLine": 56,
-      "endLine": 86,
-      "summary": "Definitions of unitDisk, unitCircle, and absolute value axioms."
-    },
-    {
-      "id": "main-theorems",
-      "title": "Main Theorems and Open Question",
-      "startLine": 88,
-      "endLine": 119,
-      "summary": "Erdős-Offord, Yakir's theorem, and the open almost sure question."
+      "startLine": 61,
+      "endLine": 106,
+      "summary": "Definitions of unitDisk, unitCircle, and membership proofs."
     },
     {
       "id": "kac-polynomials",
       "title": "Kac Polynomial Structure",
-      "startLine": 121,
-      "endLine": 152,
+      "startLine": 107,
+      "endLine": 134,
       "summary": "Structure for random polynomial data with coefficient constraints."
     },
     {
-      "id": "heuristics",
-      "title": "Bounds and Heuristics",
-      "startLine": 154,
-      "endLine": 178,
-      "summary": "Probabilistic heuristics and geometric series example."
+      "id": "root-counting",
+      "title": "Root Counting",
+      "startLine": 136,
+      "endLine": 146,
+      "summary": "Axiomatized root counting function for the unit disk."
     },
     {
-      "id": "verified",
-      "title": "Verified Properties",
-      "startLine": 180,
-      "endLine": 200,
-      "summary": "Proofs that ±1 and ±i lie on the unit circle."
+      "id": "main-theorems",
+      "title": "Main Theorems",
+      "startLine": 148,
+      "endLine": 197,
+      "summary": "Erdős-Offord, Yakir's theorem, and the open almost sure question."
+    },
+    {
+      "id": "heuristics",
+      "title": "Heuristics and Bounds",
+      "startLine": 199,
+      "endLine": 229,
+      "summary": "Why n/2? Symmetry argument and geometric series example."
     },
     {
       "id": "connections",
       "title": "Connections to Other Areas",
-      "startLine": 202,
-      "endLine": 212,
+      "startLine": 231,
+      "endLine": 255,
       "summary": "Links to Salem numbers and Mahler measure."
     },
     {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 257,
+      "endLine": 271,
+      "summary": "Proofs that specific polynomials have roots on the unit circle."
+    },
+    {
       "id": "summary",
-      "title": "Summary Theorem",
-      "startLine": 214,
-      "endLine": 231,
-      "summary": "Summary packaging the key results."
+      "title": "Summary",
+      "startLine": 273,
+      "endLine": 297,
+      "summary": "Summary of what we know and the open question."
     }
   ],
   "conclusion": {
