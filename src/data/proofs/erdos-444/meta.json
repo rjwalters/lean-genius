@@ -1,16 +1,20 @@
 {
   "id": "erdos-444",
-  "title": "Erdős Problem #444",
+  "title": "Erdős Problem #444: Generalized Divisor Functions",
   "slug": "erdos-444",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be infinite and ... count the number of ... which divide .... Is it true that, for every ...,\\[\\limsup_{x\\to \\infty} ...",
+  "description": "Let A ⊆ ℕ be infinite and d_A(n) count divisors of n in A. Is limsup max d_A(n) / (Σ 1/a)^k = ∞ for all k? SOLVED: YES by Erdős-Sárközy (1980) - the maximum grows faster than any power of the harmonic sum.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős, Graham, Sárközy",
     "sourceUrl": "https://erdosproblems.com/444",
-    "date": "",
-    "status": "pending",
+    "date": "1980",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos444Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisor-functions",
+      "harmonic-sums",
+      "extremal"
     ],
     "badge": "mathlib",
     "sorries": 0,
@@ -19,15 +23,82 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #444 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq\\mathbb{N}$ be infinite and $d_A(n)$ count the number of $a\\in A$ which divide $n$. Is it true that, for every $k$,\\[\\limsup_{x\\to \\infty} \\frac{\\max_{n<x}d_A(n)}{\\left(\\sum_{n\\in A\\cap[1,x)}\\frac{1}{n}\\right)^k}=\\infty?\\]\n\n\n\nThe answer is yes, proved by Erd\\H{o}s and S\\'{a}rk\\H{o}zy \\cite{ErSa80}.\n\n\n\n\nReferences\n\n\n[ErSa80] Erd\\H{o}s, P. and S\\'{a}rk\\\"{o}zy, A., Some asymptotic formulas on generalized divisor functions.\nIV. Studia Sci. Math. Hungar. (1980), 467-479.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "From Erdős and Graham's 'Old and New Problems and Results in Combinatorial Number Theory' (1980), page 88. The problem studies the relationship between restricted divisor functions and partial harmonic sums. Erdős and Sárközy resolved it in their paper 'Some asymptotic formulas on generalized divisor functions IV'.",
+    "problemStatement": "Let A ⊆ ℕ be infinite and d_A(n) count the number of elements of A that divide n. Is it true that for every k, limsup_{x→∞} max_{n<x} d_A(n) / (∑_{a∈A, a<x} 1/a)^k = ∞?",
+    "proofStrategy": "The formalization defines the generalized divisor function d_A, the partial harmonic sum H_A, and the maximum M_A. The main theorem states that for any infinite A and any k ≥ 1, M_A(x) eventually exceeds any multiple of H_A(x)^k. Special cases include A = ℕ (standard divisors) and A = primes (prime omega function).",
+    "keyInsights": [
+      "The maximum divisor count grows faster than any power of the harmonic sum",
+      "Result holds for ALL infinite subsets A of ℕ",
+      "Highly composite numbers relative to A provide extremal examples",
+      "Specializes to known results when A = ℕ or A = primes",
+      "Uses extremal constructions tailored to each A"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "section-1",
+      "title": "Basic Definitions",
+      "startLine": 31,
+      "endLine": 62,
+      "summary": "Defines infinite subsets, the generalized divisor function d_A(n), partial harmonic sum H_A(x), and maximum M_A(x)."
+    },
+    {
+      "id": "section-2",
+      "title": "Main Conjecture (Proved)",
+      "startLine": 63,
+      "endLine": 86,
+      "summary": "Formalizes the Erdős-Graham conjecture about the limsup being infinite for all k."
+    },
+    {
+      "id": "section-3",
+      "title": "Special Cases",
+      "startLine": 87,
+      "endLine": 113,
+      "summary": "Special cases: A = ℕ gives standard divisor function, A = primes gives prime omega function."
+    },
+    {
+      "id": "section-4",
+      "title": "Why the Result Holds",
+      "startLine": 114,
+      "endLine": 140,
+      "summary": "Explains the key insight: highly composite numbers make d_A(n) exceed H_A(x)^k."
+    },
+    {
+      "id": "section-5",
+      "title": "Proof Techniques",
+      "startLine": 141,
+      "endLine": 165,
+      "summary": "Key techniques: multiplicativity, probabilistic heuristics, extremal constructions."
+    },
+    {
+      "id": "section-6",
+      "title": "Related Divisor Functions",
+      "startLine": 166,
+      "endLine": 195,
+      "summary": "Related functions: standard divisor d(n), prime omega ω(n), sum of divisors σ(n)."
+    },
+    {
+      "id": "section-7",
+      "title": "Growth Rate Considerations",
+      "startLine": 196,
+      "endLine": 220,
+      "summary": "Growth rate analysis: lower bounds, no uniform upper bound, dependence on A."
+    },
+    {
+      "id": "section-8",
+      "title": "Summary and Status",
+      "startLine": 271,
+      "endLine": 318,
+      "summary": "Complete summary stating the problem was solved by Erdős-Sárközy in 1980."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #444 was SOLVED by Erdős and Sárközy in 1980. The answer is YES: for any infinite A ⊆ ℕ and any k ≥ 1, the maximum of the restricted divisor function d_A grows faster than any fixed power of the partial harmonic sum H_A. This reveals a fundamental extremal property of divisor functions.",
+    "implications": "The result shows that the maximum divisor count cannot be uniformly bounded by any power of the 'density' measure given by the harmonic sum. This has implications for understanding highly divisible numbers and multiplicative function extrema.",
+    "openQuestions": [
+      "What is the precise growth rate of M_A(x) in terms of H_A(x) for specific classes of A?",
+      "How does the rate of divergence depend on the structure of A?",
+      "Are there effective versions with explicit constants?"
+    ]
   }
 }

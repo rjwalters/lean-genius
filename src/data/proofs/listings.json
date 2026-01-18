@@ -6947,17 +6947,21 @@
   },
   {
     "id": "erdos-444",
-    "title": "Erdős Problem #444",
+    "title": "Erdős Problem #444: Generalized Divisor Functions",
     "slug": "erdos-444",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be infinite and ... count the number of ... which divide .... Is it true that, for every ...,\\[\\limsup_{x\\to \\infty} ...",
-    "status": "pending",
+    "description": "Let A ⊆ ℕ be infinite and d_A(n) count divisors of n in A. Is limsup max d_A(n) / (Σ 1/a)^k = ∞ for all k? SOLVED: YES by Erdős-Sárközy (1980) - the maximum grows faster than any power of the harmonic sum.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisor-functions",
+      "harmonic-sums",
+      "extremal"
     ],
     "erdosNumber": 444,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-445",
