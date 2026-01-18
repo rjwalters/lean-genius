@@ -1,1 +1,254 @@
-[]
+[
+  {
+    "id": "ann-648-header",
+    "proofId": "erdos-648",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #648: Decreasing Greatest Prime Factors**\n\nLet g(n) be the longest increasing sequence below n with strictly decreasing greatest prime factors.\n\n**Status**: SOLVED (Cambie 2025)\n\n**Answer**: g(n) ≍ (n/log n)^(1/2)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-648-gpf-def",
+    "proofId": "erdos-648",
+    "range": { "startLine": 34, "endLine": 37 },
+    "type": "definition",
+    "title": "Greatest Prime Factor",
+    "content": "**greatestPrimeFactor n**: P(n) = greatest prime factor of n.\n\nReturns 1 if n ≤ 1.\n\nDefined as max of prime factors.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-648-gpf-prime",
+    "proofId": "erdos-648",
+    "range": { "startLine": 42, "endLine": 44 },
+    "type": "theorem",
+    "title": "GPF of Prime",
+    "content": "**gpf_prime**: P(p) = p for any prime p.\n\nThe only prime factor of a prime is itself.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-648-gpf-dvd",
+    "proofId": "erdos-648",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "theorem",
+    "title": "GPF Divides",
+    "content": "**gpf_dvd**: P(n) | n for n ≥ 2.\n\nThe greatest prime factor divides the number.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-648-gpf-is-prime",
+    "proofId": "erdos-648",
+    "range": { "startLine": 50, "endLine": 52 },
+    "type": "theorem",
+    "title": "GPF is Prime",
+    "content": "**gpf_is_prime**: P(n) is prime for n ≥ 2.\n\nBy definition of prime factorization.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-648-gpf-mul",
+    "proofId": "erdos-648",
+    "range": { "startLine": 54, "endLine": 57 },
+    "type": "theorem",
+    "title": "GPF of Product",
+    "content": "**gpf_mul_ge**: P(ab) ≥ max(P(a), P(b)).\n\nThe GPF of a product is at least the max of the factors' GPFs.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-648-smooth",
+    "proofId": "erdos-648",
+    "range": { "startLine": 65, "endLine": 66 },
+    "type": "definition",
+    "title": "Smooth Numbers",
+    "content": "**IsSmooth n y**: n is y-smooth if P(n) ≤ y.\n\nSmooth numbers have bounded greatest prime factor.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-648-smooth-count",
+    "proofId": "erdos-648",
+    "range": { "startLine": 68, "endLine": 73 },
+    "type": "definition",
+    "title": "Smooth Count",
+    "content": "**smoothCount x y**: Ψ(x,y) = count of y-smooth numbers ≤ x.\n\nThis is a fundamental counting function in analytic number theory.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-648-de-bruijn",
+    "proofId": "erdos-648",
+    "range": { "startLine": 75, "endLine": 78 },
+    "type": "axiom",
+    "title": "De Bruijn Estimate",
+    "content": "**de_bruijn_estimate**: Ψ(x,y) ≈ x · ρ(u) where u = log x / log y.\n\nThe Dickman-de Bruijn function ρ controls smooth number counts.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-648-seq-struct",
+    "proofId": "erdos-648",
+    "range": { "startLine": 86, "endLine": 93 },
+    "type": "definition",
+    "title": "Decreasing GPF Sequence",
+    "content": "**DecreasingGPFSeq n**: A sequence a₁ < a₂ < ... < aₜ < n with P(a₁) > P(a₂) > ... > P(aₜ).\n\nIntegers increase, greatest prime factors decrease.\n\nThis is the central structure of the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-648-g-def",
+    "proofId": "erdos-648",
+    "range": { "startLine": 95, "endLine": 97 },
+    "type": "definition",
+    "title": "Function g(n)",
+    "content": "**g n**: Maximum length of a decreasing GPF sequence below n.\n\nThis is the extremal function the problem asks about.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-648-example",
+    "proofId": "erdos-648",
+    "range": { "startLine": 105, "endLine": 107 },
+    "type": "theorem",
+    "title": "Example: 6, 4",
+    "content": "**example_seq_6_4**: P(6) > P(4), i.e., 3 > 2.\n\nThe sequence 6, 4 has increasing values but decreasing GPF.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-648-g-small",
+    "proofId": "erdos-648",
+    "range": { "startLine": 109, "endLine": 115 },
+    "type": "theorem",
+    "title": "Small Values",
+    "content": "**g_ge_one, g_ge_two**: Basic lower bounds.\n\ng(n) ≥ 1 for n ≥ 3\ng(n) ≥ 2 for n ≥ 5",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-648-power-two",
+    "proofId": "erdos-648",
+    "range": { "startLine": 117, "endLine": 119 },
+    "type": "theorem",
+    "title": "Powers of 2",
+    "content": "**gpf_power_of_two**: P(2^k) = 2 for k ≥ 1.\n\nPowers of 2 have the smallest possible GPF.\n\nUseful for ending sequences.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-648-distinct-gpf",
+    "proofId": "erdos-648",
+    "range": { "startLine": 127, "endLine": 130 },
+    "type": "theorem",
+    "title": "Distinct GPF Values",
+    "content": "**distinct_gpf_values**: All GPF values in a sequence are distinct.\n\nSince P(aᵢ) > P(aᵢ₊₁), the GPF values form a strictly decreasing sequence.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-648-pi-bound",
+    "proofId": "erdos-648",
+    "range": { "startLine": 132, "endLine": 139 },
+    "type": "theorem",
+    "title": "Prime Counting Bound",
+    "content": "**gpf_values_bounded_by_primes, g_le_pi**: g(n) ≤ π(n).\n\nSequence length is bounded by the number of primes up to n.\n\nThis is a trivial upper bound.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-648-upper",
+    "proofId": "erdos-648",
+    "range": { "startLine": 141, "endLine": 143 },
+    "type": "axiom",
+    "title": "Upper Bound",
+    "content": "**g_upper_bound**: g(n) ≤ 3√(n/log n).\n\nCambie's upper bound on the extremal function.\n\nThe key is counting smooth numbers appropriately.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-648-construction",
+    "proofId": "erdos-648",
+    "range": { "startLine": 151, "endLine": 157 },
+    "type": "axiom",
+    "title": "Construction Lower Bound",
+    "content": "**primePowerSeq, construction_lower_bound**: g(n) ≥ 2√(n/log n).\n\nExplicit construction achieves this bound.\n\nUses powers of consecutive primes.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-648-cambie",
+    "proofId": "erdos-648",
+    "range": { "startLine": 165, "endLine": 171 },
+    "type": "theorem",
+    "title": "Cambie's Theorem",
+    "content": "**cambie_theorem (2025)**: g(n) ≍ (n/log n)^(1/2).\n\n2√(n/log n) ≤ g(n) ≤ 3√(n/log n)\n\nThe main result solving Erdős #648.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-648-exponent",
+    "proofId": "erdos-648",
+    "range": { "startLine": 173, "endLine": 177 },
+    "type": "definition",
+    "title": "Exponent and Base",
+    "content": "**cambie_exponent**: 1/2\n**cambie_base n**: n/log n\n\nThe growth is √(n/log n).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-648-constant-question",
+    "proofId": "erdos-648",
+    "range": { "startLine": 185, "endLine": 189 },
+    "type": "definition",
+    "title": "Constant Question",
+    "content": "**CambieConstantQuestion**: Does g(n) ~ c√(n/log n) for some constant c?\n\nAsks whether the limit g(n)/√(n/log n) exists.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-648-constant-bounds",
+    "proofId": "erdos-648",
+    "range": { "startLine": 191, "endLine": 208 },
+    "type": "axiom",
+    "title": "Constant Bounds",
+    "content": "**constant_bounds**: If c exists, then c ∈ [2, 2√2].\n\n**c_lower** = 2\n**c_upper** = 2√2 ≈ 2.83\n\n**c_upper_approx**: 2√2 < 3.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-648-term-smooth",
+    "proofId": "erdos-648",
+    "range": { "startLine": 216, "endLine": 223 },
+    "type": "theorem",
+    "title": "Terms are Smooth",
+    "content": "**term_is_smooth**: Each term aᵢ is P(aᵢ)-smooth.\n\n**smooth_numbers_provide_candidates**: Smooth numbers give sequence candidates.\n\nKey connection to smooth number theory.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-648-spf",
+    "proofId": "erdos-648",
+    "range": { "startLine": 231, "endLine": 245 },
+    "type": "definition",
+    "title": "Smallest Prime Factor",
+    "content": "**smallestPrimeFactor n**: p(n) = smallest prime factor.\n\n**spf_le_gpf**: p(n) ≤ P(n) always.\n**spf_eq_gpf_prime**: p(n) = P(n) for primes.\n\nDual to greatest prime factor.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-648-squarefree",
+    "proofId": "erdos-648",
+    "range": { "startLine": 247, "endLine": 248 },
+    "type": "definition",
+    "title": "Squarefree",
+    "content": "**Squarefree n**: No prime squared divides n.\n\nSquarefree numbers have distinct prime factors.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-648-oeis",
+    "proofId": "erdos-648",
+    "range": { "startLine": 256, "endLine": 261 },
+    "type": "definition",
+    "title": "OEIS Connection",
+    "content": "**oeis_A391750**: OEIS sequence A391750 = values of g(n).\n\n**oeis_small_values**: g(10) ≥ 2, g(100) ≥ 4, g(1000) ≥ 8.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-648-main",
+    "proofId": "erdos-648",
+    "range": { "startLine": 269, "endLine": 289 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_648**: Erdős Problem #648 is SOLVED.\n\nQuestion: What is the asymptotic behavior of g(n)?\n\nAnswer: g(n) ≍ (n/log n)^(1/2)\n\nSolved by Stijn Cambie (2025).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-648-answer",
+    "proofId": "erdos-648",
+    "range": { "startLine": 291, "endLine": 297 },
+    "type": "definition",
+    "title": "Final Answer",
+    "content": "**erdos_648_answer**: \"SOLVED: g(n) ≍ (n/log n)^(1/2), constant c ∈ [2, 2√2] (Cambie 2025)\"\n\n**erdos_648_status**: \"SOLVED by Stijn Cambie (2025)\"",
+    "significance": "critical"
+  }
+]
