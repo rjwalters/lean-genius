@@ -1,33 +1,112 @@
 {
   "id": "erdos-880",
-  "title": "Erdős Problem #880",
+  "title": "Erdős Problem #880: Gaps in Restricted Additive Bases",
   "slug": "erdos-880",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an additive basis of order .... Let ... be the set of integers which are the sum of ... or fewer distinct .... Is ...",
+  "description": "If A is an additive basis of order k, are gaps in the restricted sumset k×A (sums of distinct elements) bounded? Answer: YES for k=2 (gaps ≤ 2), NO for k≥3. Solved by Hegyvári-Hennecart-Plagne (2007).",
   "meta": {
-    "author": "Unknown",
+    "author": "Stefan Burr, Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/880",
-    "date": "",
+    "date": "2007",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos880Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "number-theory",
+      "additive-bases",
+      "restricted-sums"
     ],
     "badge": "mathlib",
-    "sorries": 0,
+    "sorries": 4,
     "erdosNumber": 880,
     "erdosUrl": "https://erdosproblems.com/880",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #880 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset\\mathbb{N}$ be an additive basis of order $k$. Let $B=\\{b_1<b_2<\\cdots\\}$ be the set of integers which are the sum of $k$ or fewer distinct $a\\in A$. Is it true that $b_{n+1}-b_n=O(1)$? (Where the implied constant may depend on both $A$ and $k$.)\n\n\n\nA problem of Burr and Erd\\H{o}s.\n\nHegyv\\'{a}ri, Hennecart, and Plagne \\cite{HHP07} showed the answer is yes for $k=2$ (in fact with $b_{n+1}-b_n\\leq 2$ for large $n$) but no for $k\\geq 3$.\n\nThe proof that $b_{n+1}-b_n\\leq 2$ for $k=2$ is trivial, since clearly all odd numbers in $A+A$ must be the sum of two distinct elements from $A$.\n\n\n\n\nReferences\n\n\n[HHP07] Hegyv\\'ari, Norbert and Hennecart, Fran\\c cois and Plagne,\nAlain, Answer to a question by {B}urr and {E}rd\\H{o}s on restricted\naddition, and related results. Combin. Probab. Comput. (2007), 747--756.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem was posed by Burr and Erdős and concerns the gap structure of restricted additive bases. An additive basis of order k is a set A ⊂ ℕ where every sufficiently large integer can be written as a sum of at most k elements from A. The 'restricted' version k×A only allows sums of distinct elements. The question asks whether gaps in k×A are uniformly bounded. Hegyvári, Hennecart, and Plagne completely resolved this in 2007, finding a surprising dichotomy based on the value of k.",
+    "problemStatement": "Let A ⊂ ℕ be an additive basis of order k. Let B = {b₁ < b₂ < ···} be the set of integers which are the sum of k or fewer distinct elements of A. Is it true that b_{n+1} - b_n = O(1)? (Where the implied constant may depend on both A and k.)",
+    "proofStrategy": "The formalization defines additive bases, restricted sumsets k×A, and the gap boundedness property. The key results are: (1) For k=2, the parity argument shows gaps are at most 2 - since sums a+a are even but 2A ~ ℕ requires odd numbers, which must come from distinct pairs a+b. (2) For k≥3, an explicit counterexample is constructed where kA ~ ℕ but k×A has arbitrarily large gaps.",
+    "keyInsights": [
+      "The answer depends on k: YES for k=2, NO for k≥3",
+      "For k=2, parity forces bounded gaps: a+a is always even, so odd numbers need distinct pairs",
+      "The gap bound for k=2 is exactly 2 (tight)",
+      "For k≥3, counterexamples exist with Δ(k×A) = ∞",
+      "The 'distinct elements' constraint fundamentally changes the problem",
+      "k×A ⊆ kA, but the restricted set can be much sparser"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "additive-bases",
+      "title": "Additive Bases",
+      "startLine": 27,
+      "endLine": 51,
+      "summary": "Definition of additive bases of order k and k-fold sumsets"
+    },
+    {
+      "id": "restricted-sumsets",
+      "title": "Restricted Sumsets",
+      "startLine": 52,
+      "endLine": 87,
+      "summary": "Definition of restricted sumsets k×A and gap boundedness"
+    },
+    {
+      "id": "burr-erdos-question",
+      "title": "The Burr-Erdős Question",
+      "startLine": 88,
+      "endLine": 101,
+      "summary": "Formal statement of the problem: does kA ~ ℕ imply Δ(k×A) < ∞?"
+    },
+    {
+      "id": "k2-case",
+      "title": "The k = 2 Case",
+      "startLine": 102,
+      "endLine": 132,
+      "summary": "Positive answer for k=2: gaps are at most 2 via parity argument"
+    },
+    {
+      "id": "k3-case",
+      "title": "The k ≥ 3 Case",
+      "startLine": 133,
+      "endLine": 161,
+      "summary": "Negative answer for k≥3: counterexamples with unbounded gaps"
+    },
+    {
+      "id": "complete-resolution",
+      "title": "Complete Resolution",
+      "startLine": 162,
+      "endLine": 189,
+      "summary": "The complete answer combining both cases"
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "startLine": 190,
+      "endLine": 215,
+      "summary": "Connection to classical additive bases and representation functions"
+    },
+    {
+      "id": "parity-argument",
+      "title": "The Parity Argument",
+      "startLine": 216,
+      "endLine": 238,
+      "summary": "Detailed explanation of why parity works for k=2 but not k≥3"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 239,
+      "endLine": 280,
+      "summary": "Final status and key results for Problem #880"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #880 is SOLVED with a dichotomous answer. For k=2, the Burr-Erdős question has a positive answer: if 2A ~ ℕ then Δ(2×A) ≤ 2. For k≥3, the answer is negative: there exist bases A with kA ~ ℕ but Δ(k×A) = ∞. This was completely resolved by Hegyvári, Hennecart, and Plagne in 2007.",
+    "implications": "This result beautifully illustrates how the 'distinct elements' constraint fundamentally changes the structure of additive problems. The parity argument for k=2 is elegant and elementary, while the k≥3 counterexamples require careful construction. The problem connects to the broader study of restricted addition in additive combinatorics.",
+    "openQuestions": [
+      "What is the growth rate of the maximum gap in k×A for k≥3?",
+      "Are there natural conditions on A that ensure bounded gaps for k≥3?",
+      "What about gaps in h×A for h < k when A is a basis of order k?"
+    ]
   }
 }
