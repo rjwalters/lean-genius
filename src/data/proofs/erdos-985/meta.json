@@ -1,33 +1,140 @@
 {
   "id": "erdos-985",
-  "title": "Erdős Problem #985",
+  "title": "Erdős Problem #985: Prime Primitive Roots",
   "slug": "erdos-985",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every prime ..., there is a prime ... which is a primitive root modulo ...?\n\n\n\nArtin conjectured that .....",
+  "description": "Is it true that for every prime p, there is a prime q < p which is a primitive root modulo p? This OPEN problem asks about the intersection of primitive roots and prime numbers.",
   "meta": {
-    "author": "Unknown",
+    "author": "Open Problem (Erdős)",
     "sourceUrl": "https://erdosproblems.com/985",
     "date": "",
-    "status": "pending",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos985Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primitive-roots",
+      "primes",
+      "modular-arithmetic"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 985,
     "erdosUrl": "https://erdosproblems.com/985",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "orderOf",
+        "description": "Multiplicative order of an element in a group",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "ZMod",
+        "description": "Integers modulo n",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of IsPrimitiveRoot predicate",
+      "Definition of PrimePrimitiveRoots set",
+      "Verified primitive root orders for primes 3, 5, 7, 11, 13, 17, 19, 23",
+      "Constructive proofs of conjecture for 8 small primes",
+      "Heath-Brown theorem axiom (2, 3, or 5 is primitive root infinitely often)",
+      "Artin's conjecture axiom (conditional on GRH)",
+      "Definition of leastPrimePrimitiveRoot with equivalence theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #985 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every prime $p$, there is a prime $q<p$ which is a primitive root modulo $p$?\n\n\n\nArtin conjectured that $2$ is a primitive root for infinitely many primes $p$, which Hooley \\cite{Ho67b} proved assuming the Generalised Riemann Hypothesis. Heath-Brown \\cite{He86b} proved that at least one of $2$, $3$, or $5$ is a primitive root for infinitely many primes $p$.\n\n\n\n\nReferences\n\n\n[He86b] Heath-Brown, D. R., Artin's conjecture for primitive roots. Quart. J. Math. Oxford Ser. (2) (1986), 27--38.\n\n[Ho67b] Hooley, Christopher, On {A}rtin's conjecture. J. Reine Angew. Math. (1967), 209--220.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős Problem #985 asks a fundamental question at the intersection of two basic concepts in number theory: primitive roots and prime numbers. A primitive root modulo a prime p is a generator of the multiplicative group (Z/pZ)*, meaning its powers produce all nonzero residues modulo p.\n\nThe question is whether there always exists a prime q < p that serves as a primitive root modulo p. This is verified computationally for all tested primes, but a proof remains elusive.\n\nThe problem connects to Artin's conjecture, which predicts that 2 is a primitive root for infinitely many primes. Hooley (1967) proved this assuming the Generalized Riemann Hypothesis. Heath-Brown (1986) proved unconditionally that at least one of 2, 3, or 5 is a primitive root for infinitely many primes.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nIs it true that for every prime $p > 2$, there exists a prime $q < p$ which is a primitive root modulo $p$?\n\n**Definition**: A primitive root $g$ modulo $p$ satisfies $\\text{ord}_p(g) = p-1$, meaning $g$ generates $(\\mathbb{Z}/p\\mathbb{Z})^*$.\n\n**Examples**:\n- $p = 7$: $q = 3$ is a primitive root (order 6)\n- $p = 11$: $q = 2$ is a primitive root (order 10)\n- $p = 17$: $q = 3$ is a primitive root (order 16)",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Primitive Roots**: Define IsPrimitiveRoot using Mathlib's orderOf in ZMod p\n2. **Main Conjecture**: State as erdos_985_conjecture with quantifiers over primes\n3. **Verified Examples**: Use native_decide to verify primitive root orders for small primes\n4. **Constructive Proofs**: Exhibit specific prime primitive roots for p = 3, 5, 7, 11, 13, 17, 19, 23\n5. **Related Results**: Axiomatize Heath-Brown's theorem and Artin's conjecture\n6. **OEIS Connection**: Define leastPrimePrimitiveRoot (sequence A103309)",
+    "keyInsights": [
+      "**Why primitive roots exist**: Gauss proved (Z/pZ)* is cyclic for prime p, so generators (primitive roots) always exist. There are exactly φ(p-1) of them.",
+      "**The hard part**: Proving that among the φ(p-1) primitive roots, at least one less than p is prime. This requires understanding how primes distribute among primitive roots.",
+      "**Heath-Brown's breakthrough**: The unconditional result that 2, 3, or 5 works infinitely often is a major achievement, but doesn't settle Erdős #985.",
+      "**Computational evidence**: OEIS A103309 gives the least prime primitive root for each prime. The conjecture is verified to very large bounds.",
+      "**Artin's constant**: Heuristically, about 37.39% of primes should have 2 as a primitive root. Similar densities apply to other small primes."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Problem statement, definition of primitive roots, related results, and references."
+    },
+    {
+      "id": "primitive-roots",
+      "title": "Primitive Root Definitions",
+      "startLine": 38,
+      "endLine": 54,
+      "summary": "IsPrimitiveRoot predicate and PrimePrimitiveRoots set."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture (OPEN)",
+      "startLine": 56,
+      "endLine": 71,
+      "summary": "Statement of erdos_985_conjecture."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 73,
+      "endLine": 111,
+      "summary": "Native_decide proofs of primitive root orders for primes 3, 5, 7, 11, 13, 17, 19, 23."
+    },
+    {
+      "id": "small-primes",
+      "title": "Conjecture for Small Primes",
+      "startLine": 113,
+      "endLine": 149,
+      "summary": "Constructive existence proofs for p = 3, 5, 7, 11, 13, 17, 19, 23."
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "startLine": 151,
+      "endLine": 177,
+      "summary": "Heath-Brown's theorem and Artin's conjecture."
+    },
+    {
+      "id": "difficulty",
+      "title": "Why This Is Hard",
+      "startLine": 179,
+      "endLine": 198,
+      "summary": "Discussion of the difficulty and count of primitive roots."
+    },
+    {
+      "id": "oeis",
+      "title": "OEIS Connection",
+      "startLine": 200,
+      "endLine": 228,
+      "summary": "Definition of leastPrimePrimitiveRoot and equivalence theorem."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 230,
+      "endLine": 246,
+      "summary": "Overview of what the conjecture says and why it's hard."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #985 asks whether every prime p > 2 has a prime primitive root q < p. We formalize the conjecture, verify it for 8 small primes using native_decide, and state Heath-Brown's theorem (2, 3, or 5 works infinitely often) as an axiom. The problem remains open.",
+    "implications": "**Connections to Number Theory**\n\n1. **Artin's Conjecture**: The density of primes for which a fixed integer is a primitive root\n2. **Primitive Root Distribution**: How primitive roots are distributed among residues\n3. **Prime Distribution**: The prime number theorem and beyond\n4. **Multiplicative Groups**: Structure of (Z/pZ)* and its generators",
+    "openQuestions": [
+      "Is there always a prime primitive root < p for every prime p?",
+      "What is the density of primes p for which 2 is a primitive root? (Artin's constant ≈ 0.3739)",
+      "Can the least prime primitive root grow arbitrarily large relative to p?",
+      "What is the distribution of the number of prime primitive roots modulo p?"
+    ]
   }
 }

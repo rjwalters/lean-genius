@@ -1,1 +1,145 @@
-[]
+[
+  {
+    "id": "ann-e985-header",
+    "proofId": "erdos-985",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #985** asks: for every prime p > 2, does there exist a prime q < p that is a primitive root modulo p? A **primitive root** is a generator of the multiplicative group (Z/pZ)*, meaning its powers produce all nonzero residues mod p.",
+    "mathContext": "Primitive roots always exist for prime moduli (Gauss's theorem). The question is whether at least one of the φ(p-1) primitive roots is always prime.",
+    "significance": "critical",
+    "relatedConcepts": ["primitive roots", "multiplicative groups", "prime numbers"]
+  },
+  {
+    "id": "ann-e985-primitive-root-def",
+    "proofId": "erdos-985",
+    "range": { "startLine": 45, "endLine": 50 },
+    "type": "definition",
+    "title": "IsPrimitiveRoot Predicate",
+    "content": "**IsPrimitiveRoot g p** means g has multiplicative order p-1 modulo p. We use Mathlib's `orderOf (g : ZMod p)` to compute the order.\n\n**Example**: 3 is a primitive root mod 7 because 3¹=3, 3²=2, 3³=6, 3⁴=4, 3⁵=5, 3⁶=1 (order 6 = 7-1).",
+    "mathContext": "The multiplicative group (Z/pZ)* has order p-1 for prime p. An element is a primitive root iff it generates this cyclic group.",
+    "significance": "critical",
+    "relatedConcepts": ["orderOf", "ZMod", "cyclic groups"]
+  },
+  {
+    "id": "ann-e985-prime-primitive-roots",
+    "proofId": "erdos-985",
+    "range": { "startLine": 52, "endLine": 54 },
+    "type": "definition",
+    "title": "Prime Primitive Roots Set",
+    "content": "**PrimePrimitiveRoots p** is the set of primes q < p that are primitive roots modulo p. Erdős's conjecture says this set is always nonempty for p > 2.",
+    "mathContext": "The intersection of primitive roots and primes is the key object of study. Heuristically, about 1/ln(p) of the φ(p-1) primitive roots should be prime.",
+    "significance": "key",
+    "relatedConcepts": ["Set", "Prime", "primitive roots"]
+  },
+  {
+    "id": "ann-e985-conjecture",
+    "proofId": "erdos-985",
+    "range": { "startLine": 63, "endLine": 68 },
+    "type": "definition",
+    "title": "Main Conjecture (OPEN)",
+    "content": "**erdos_985_conjecture**: For every prime p ≠ 2, there exists a prime q with q < p and orderOf(q : ZMod p) = p-1. This is stated but **not proved** — the conjecture remains open.",
+    "mathContext": "The universal quantifier over all primes makes this hard. While verified computationally for all checked primes, no general proof exists.",
+    "significance": "critical",
+    "relatedConcepts": ["open problem", "universal quantification"]
+  },
+  {
+    "id": "ann-e985-example-mod3",
+    "proofId": "erdos-985",
+    "range": { "startLine": 80, "endLine": 81 },
+    "type": "theorem",
+    "title": "2 is Primitive Root mod 3",
+    "content": "**primitive_root_mod_3**: orderOf(2 : ZMod 3) = 2 = 3-1. Verified by native_decide.\n\n**Computation**: 2¹ ≡ 2 (mod 3), 2² ≡ 1 (mod 3). Order = 2.",
+    "mathContext": "This is the simplest case. For p = 3, the only candidate primitive root is 2, and it works.",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide", "small primes"]
+  },
+  {
+    "id": "ann-e985-example-mod7",
+    "proofId": "erdos-985",
+    "range": { "startLine": 89, "endLine": 93 },
+    "type": "theorem",
+    "title": "3 and 5 are Primitive Roots mod 7",
+    "content": "Both **3** and **5** are primitive roots modulo 7 (order 6). We verify orderOf(3 : ZMod 7) = 6 and orderOf(5 : ZMod 7) = 6 using native_decide.\n\n**Note**: 2 is NOT a primitive root mod 7 (order 3).",
+    "mathContext": "For p = 7, we have φ(6) = 2 primitive roots among {1,2,3,4,5,6}. They are exactly 3 and 5, both prime.",
+    "significance": "key",
+    "relatedConcepts": ["multiple witnesses", "primitive root count"]
+  },
+  {
+    "id": "ann-e985-example-mod17",
+    "proofId": "erdos-985",
+    "range": { "startLine": 104, "endLine": 105 },
+    "type": "theorem",
+    "title": "3 is Primitive Root mod 17",
+    "content": "**primitive_root_mod_17**: orderOf(3 : ZMod 17) = 16 = 17-1. Verified by native_decide.\n\n**Note**: 2 is NOT a primitive root mod 17 (order 8).",
+    "mathContext": "This shows that 2 doesn't always work. For p = 17, we need q = 3 (or other primes like 5, 7, 11, 13).",
+    "significance": "key",
+    "relatedConcepts": ["native_decide", "counterexample to 2 always working"]
+  },
+  {
+    "id": "ann-e985-constructive-proofs",
+    "proofId": "erdos-985",
+    "range": { "startLine": 119, "endLine": 149 },
+    "type": "theorem",
+    "title": "Conjecture for Small Primes",
+    "content": "We **constructively prove** the conjecture for p = 3, 5, 7, 11, 13, 17, 19, 23 by exhibiting explicit prime primitive roots:\n\n| p | Witness q |\n|---|---|\n| 3 | 2 |\n| 5 | 2 |\n| 7 | 3 |\n| 11 | 2 |\n| 13 | 2 |\n| 17 | 3 |\n| 19 | 2 |\n| 23 | 5 |",
+    "mathContext": "Each proof combines: (1) q is prime (Nat.prime_two, etc.), (2) q < p (norm_num), (3) orderOf(q) = p-1 (native_decide).",
+    "significance": "key",
+    "relatedConcepts": ["constructive proofs", "witnesses"]
+  },
+  {
+    "id": "ann-e985-heath-brown",
+    "proofId": "erdos-985",
+    "range": { "startLine": 158, "endLine": 166 },
+    "type": "axiom",
+    "title": "Heath-Brown's Theorem",
+    "content": "**Heath-Brown (1986)**: At least one of 2, 3, or 5 is a primitive root for infinitely many primes p. This is axiomatized as `heath_brown_theorem`.\n\nThis is the strongest **unconditional** result toward Artin's conjecture.",
+    "mathContext": "The proof uses the large sieve and character sum estimates. It doesn't identify which of {2,3,5} works infinitely often, just that at least one does.",
+    "significance": "critical",
+    "relatedConcepts": ["Heath-Brown", "Artin's conjecture", "infinitely many primes"]
+  },
+  {
+    "id": "ann-e985-artin",
+    "proofId": "erdos-985",
+    "range": { "startLine": 168, "endLine": 177 },
+    "type": "axiom",
+    "title": "Artin's Conjecture",
+    "content": "**Artin's Conjecture**: 2 is a primitive root for infinitely many primes. Hooley (1967) proved this **assuming GRH**.\n\n**Artin's constant**: The density of such primes is approximately 0.3739... (the Artin constant).",
+    "mathContext": "The dependence on GRH makes this result conditional. Removing the hypothesis is a major open problem in analytic number theory.",
+    "significance": "key",
+    "relatedConcepts": ["Artin's conjecture", "GRH", "density"]
+  },
+  {
+    "id": "ann-e985-count",
+    "proofId": "erdos-985",
+    "range": { "startLine": 192, "endLine": 198 },
+    "type": "axiom",
+    "title": "Count of Primitive Roots",
+    "content": "**count_primitive_roots**: There are exactly φ(p-1) primitive roots modulo p.\n\n**Example**: For p = 13, φ(12) = φ(4)·φ(3) = 2·2 = 4 primitive roots: {2, 6, 7, 11}.",
+    "mathContext": "This classical result follows from the fact that generators of a cyclic group of order n number exactly φ(n).",
+    "significance": "supporting",
+    "relatedConcepts": ["totient function", "generators of cyclic groups"]
+  },
+  {
+    "id": "ann-e985-least-prime",
+    "proofId": "erdos-985",
+    "range": { "startLine": 209, "endLine": 215 },
+    "type": "definition",
+    "title": "Least Prime Primitive Root",
+    "content": "**leastPrimePrimitiveRoot p** returns the smallest prime q < p that is a primitive root modulo p (or 0 if none exists).\n\nThis corresponds to **OEIS A103309** (indexed by primes).",
+    "mathContext": "The sequence begins: 2, 2, 3, 2, 2, 3, 5, 2, ... for primes p = 3, 5, 7, 11, 13, 17, 19, 23, ...",
+    "significance": "key",
+    "relatedConcepts": ["OEIS", "minimum", "Nat.find"]
+  },
+  {
+    "id": "ann-e985-equiv",
+    "proofId": "erdos-985",
+    "range": { "startLine": 217, "endLine": 228 },
+    "type": "theorem",
+    "title": "Equivalence Theorem",
+    "content": "**erdos_985_equiv**: Erdős #985 is equivalent to saying leastPrimePrimitiveRoot p ≠ 0 for all primes p > 2.\n\nThis reformulation highlights the computational nature of the problem.",
+    "mathContext": "The equivalence is immediate from the definitions. It shows that Erdős #985 is really asking whether a certain computable function is always positive.",
+    "significance": "supporting",
+    "relatedConcepts": ["equivalence", "reformulation"]
+  }
+]

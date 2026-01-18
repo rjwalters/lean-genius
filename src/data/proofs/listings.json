@@ -1853,7 +1853,7 @@
     "erdosNumber": 1077,
     "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 8
+    "annotationCount": 11
   },
   {
     "id": "erdos-1078",
@@ -7629,7 +7629,7 @@
     "slug": "erdos-522",
     "description": "For random polynomials with ±1 coefficients, does the number of roots in the unit disk converge to n/2 almost surely? Yakir (2021) proved convergence in probability.",
     "status": "complete",
-    "badge": "wip",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "probability",
@@ -7640,8 +7640,8 @@
     "dateAdded": "2026-01-17",
     "erdosNumber": 522,
     "mathlibCount": 3,
-    "sorries": 2,
-    "annotationCount": 14
+    "sorries": 0,
+    "annotationCount": 17
   },
   {
     "id": "erdos-523",
@@ -13737,17 +13737,24 @@
   },
   {
     "id": "erdos-982",
-    "title": "Erdős Problem #982",
+    "title": "Erdos Problem #982: Distinct Distances from Convex Polygon Vertices",
     "slug": "erdos-982",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... distinct points in ... form a convex polygon then some vertex has at least ... different distances to other vertices.\n...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "If n distinct points in the plane form a convex polygon, then some vertex has at least floor(n/2) different distances to other vertices.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "convex",
+      "discrete-geometry",
+      "distances",
+      "open"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 982,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 4,
+    "annotationCount": 20
   },
   {
     "id": "erdos-983",
@@ -13779,17 +13786,23 @@
   },
   {
     "id": "erdos-985",
-    "title": "Erdős Problem #985",
+    "title": "Erdős Problem #985: Prime Primitive Roots",
     "slug": "erdos-985",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every prime ..., there is a prime ... which is a primitive root modulo ...?\n\n\n\nArtin conjectured that .....",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Is it true that for every prime p, there is a prime q < p which is a primitive root modulo p? This OPEN problem asks about the intersection of primitive roots and prime numbers.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "primitive-roots",
+      "primes",
+      "modular-arithmetic"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 985,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 13
   },
   {
     "id": "erdos-986",
