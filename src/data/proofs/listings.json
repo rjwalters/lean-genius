@@ -712,31 +712,38 @@
   },
   {
     "id": "erdos-100",
-    "title": "Erdős Problem #100",
+    "title": "Erdős #100: Point Sets with Restricted Distances",
     "slug": "erdos-100",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set of ... points in ... such that all pairwise distances are at least ... and if two distinct distances differ ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let A be n points in ℝ² with all pairwise distances ≥ 1 and any two distinct distances differing by ≥ 1. Must the diameter be ≫ n? Known: n^(3/4) (Kanold), n/log n (Guth-Katz). Piepmeyer: 9 points with diameter < 5.",
+    "status": "formalized",
+    "badge": "wip",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "distance-geometry",
+      "combinatorial-geometry"
     ],
     "erdosNumber": 100,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 6,
+    "annotationCount": 15
   },
   {
     "id": "erdos-1000",
-    "title": "Erdős Problem #1000",
+    "title": "Erdős #1000: Generalized Totients and Diophantine Approximation",
     "slug": "erdos-1000",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence of integers, and let ... count the number of ... such that the fraction ... does not have den...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For an infinite sequence A = {n₁ < n₂ < ...}, define φ_A(k) as the count of m ≤ n_k such that m/n_k in lowest form has denominator different from all previous n_j. Does lim (1/N) Σ φ_A(k)/n_k = 0 for some A? Answer: YES (Haight), contrary to Erdős' expectation.",
+    "status": "formalized",
+    "badge": "wip",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "diophantine-approximation",
+      "totient-function",
+      "cesaro-averages"
     ],
     "erdosNumber": 1000,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 4,
+    "annotationCount": 15
   },
   {
     "id": "erdos-1001",
@@ -3715,17 +3722,23 @@
   },
   {
     "id": "erdos-215",
-    "title": "Erdős Problem #215",
+    "title": "Erdős #215: The Steinhaus Lattice Point Problem",
     "slug": "erdos-215",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist ... such that every set congruent to ... (that is, ... after some translation and rotation) contains exactly...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Does there exist S ⊆ ℝ² such that every congruent copy of S contains exactly one integer lattice point? Surprisingly YES, proved by Jackson-Mauldin (2002) using the Axiom of Choice.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "set-theory",
+      "axiom-of-choice",
+      "lattice-points"
     ],
+    "dateAdded": "2026-01-17",
     "erdosNumber": 215,
+    "mathlibCount": 3,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-216",
@@ -8336,17 +8349,22 @@
   },
   {
     "id": "erdos-604",
-    "title": "Erdős Problem #604",
+    "title": "Erdős Problem #604: The Pinned Distance Problem",
     "slug": "erdos-604",
-    "description": "Given n\" role=\"presentation\" style=\"position: relative;\">nnn distinct points A&#x2282;R2\" role=\"presentation\" style=\"position: relative;\">A⊂ℝ2A⊂R2A\\subset^2 must there be a point x&#x2208;A\" role=\"...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Given n distinct points in the plane, must some point have nearly n distinct distances to other points? The 'pinned' version of the distinct distances problem. OPEN with $500 prize.",
+    "status": "formalized",
+    "badge": "conjecture",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "distinct-distances",
+      "combinatorial-geometry",
+      "open-problem"
     ],
     "erdosNumber": 604,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 6,
+    "annotationCount": 14
   },
   {
     "id": "erdos-605",
@@ -9376,17 +9394,22 @@
   },
   {
     "id": "erdos-678",
-    "title": "Erdős Problem #678",
+    "title": "Erdős Problem #678: LCM of Consecutive Integers",
     "slug": "erdos-678",
-    "description": "Let ... be the least common multiple of .... Are there infinitely many ... and ... with ... such that\\[M(n,k)>M(m,k+1)?\\]",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Can a shorter interval of consecutive integers have larger LCM than a longer interval starting later? Yes! Solved by Cambie (2024) with Lean proof.",
+    "status": "formalized",
+    "badge": "verified",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "lcm",
+      "prime-powers",
+      "computational"
     ],
     "erdosNumber": 678,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 10,
+    "annotationCount": 15
   },
   {
     "id": "erdos-679",
@@ -9834,17 +9857,21 @@
   },
   {
     "id": "erdos-72",
-    "title": "Erdős Problem #72",
+    "title": "Erdős Problem #72: Unavoidable Cycle Lengths",
     "slug": "erdos-72",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a set ... of density ... and a constant ... such that every graph on sufficiently many vertices with average degree ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Given a sparse set A of natural numbers and sufficiently high average degree, must every large graph contain a cycle whose length is in A? This $100 problem was solved affirmatively, with Liu and Montgomery's 2020 result contradicting Erdős's original intuition about powers of 2.",
+    "status": "formalized",
+    "badge": "wip",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "extremal-combinatorics",
+      "erdos",
+      "cycles",
+      "density"
     ],
     "erdosNumber": 72,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 3,
+    "annotationCount": 16
   },
   {
     "id": "erdos-720",
@@ -9994,16 +10021,20 @@
   },
   {
     "id": "erdos-73",
-    "title": "Erdős Problem #73",
+    "title": "Erdős Problem #73: Almost Bipartite Graphs",
     "slug": "erdos-73",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Let ... be a graph such that every subgraph ... contains an independent set of size ..., where ... is the number of ...",
+    "description": "If every subgraph of G has an independent set covering at least half its vertices (minus k), must G be 'almost bipartite' - the union of a bipartite graph and O(1) extra vertices? Reed's 'Mangoes and Blueberries' paper (1999) proves yes.",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "independent-sets",
+      "bipartite-graphs",
+      "erdos",
+      "structural-graph-theory"
     ],
     "erdosNumber": 73,
-    "sorries": 0,
+    "sorries": 1,
     "annotationCount": 0
   },
   {
@@ -10356,16 +10387,21 @@
   },
   {
     "id": "erdos-76",
-    "title": "Erdős Problem #76",
+    "title": "Erdős Problem #76: Monochromatic Triangle Packings",
     "slug": "erdos-76",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that in any ...-colouring of the edges of ... there must exist at least\\[(1+o(1)){12}\\]many edge-disjoint monochro...",
+    "description": "In any 2-coloring of the complete graph K_n, how many edge-disjoint monochromatic triangles must exist? Erdős, Faudree, and Ordman conjectured the answer is (1+o(1))n²/12, proved optimal by Gruslys and Letzter in 2020.",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "ramsey-theory",
+      "erdos",
+      "triangle-packing",
+      "edge-coloring",
+      "extremal-combinatorics"
     ],
     "erdosNumber": 76,
-    "sorries": 0,
+    "sorries": 1,
     "annotationCount": 0
   },
   {

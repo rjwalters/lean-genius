@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-72-header",
+    "proofId": "erdos-72",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdős Problem #72 asks: Does there exist a set A ⊂ ℕ of density 0 and a constant c > 0 such that every sufficiently large graph with average degree ≥ c contains a cycle whose length is in A? The answer is YES, proved by Verstraëte (2005) non-constructively and by Liu-Montgomery (2020) for powers of 2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-72-counting",
+    "proofId": "erdos-72",
+    "range": { "startLine": 42, "endLine": 44 },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "The counting function |A ∩ [0,n]| counts how many elements of A appear up to n. This is the foundation for defining density. For powers of 2, this is approximately log₂(n), while for arithmetic progressions it grows linearly.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-72-density",
+    "proofId": "erdos-72",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "Density Zero",
+    "content": "A set A has density 0 if |A ∩ [1,n]|/n → 0 as n → ∞. Examples: powers of 2 (log n / n → 0), perfect squares (√n / n → 0). Non-examples: arithmetic progressions (constant density 1/d), primes (~n/ln(n) / n → 0, but too slowly for this problem).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-72-powers2",
+    "proofId": "erdos-72",
+    "range": { "startLine": 50, "endLine": 55 },
+    "type": "definition",
+    "title": "Powers of Two",
+    "content": "The set {1, 2, 4, 8, 16, ...} = {2^k : k ∈ ℕ}. Erdős believed this set would NOT work as an unavoidable cycle length set. Liu and Montgomery (2020) proved him wrong! Only O(log n) powers of 2 exist up to n, making this a very sparse set.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-72-avgdeg",
+    "proofId": "erdos-72",
+    "range": { "startLine": 69, "endLine": 75 },
+    "type": "definition",
+    "title": "Average Degree",
+    "content": "The average degree of a graph is (Σ deg(v)) / |V|, which equals 2|E|/|V|. Dense graphs have high average degree. The key question: how high must average degree be to guarantee specific cycle lengths?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-72-cyclelengths",
+    "proofId": "erdos-72",
+    "range": { "startLine": 77, "endLine": 83 },
+    "type": "definition",
+    "title": "Cycle Lengths in a Graph",
+    "content": "The set of all k such that G contains a cycle of length k. For example, K₄ has cycles of lengths 3 and 4. The question asks: which cycle lengths must appear in all sufficiently dense graphs?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-72-unavoidable",
+    "proofId": "erdos-72",
+    "range": { "startLine": 87, "endLine": 97 },
+    "type": "definition",
+    "title": "Unavoidable Cycle Lengths",
+    "content": "A set A is unavoidable with threshold c if every large graph with average degree ≥ c contains some cycle whose length is in A. The key insight: high density forces rich structure, and some cycle length from A must appear. A is strongly unavoidable if some threshold c works.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-72-statement",
+    "proofId": "erdos-72",
+    "range": { "startLine": 101, "endLine": 108 },
+    "type": "theorem",
+    "title": "Erdős Problem #72 Statement",
+    "content": "The formal statement: ∃ A ⊂ ℕ with density 0, ∃ c > 0, such that every large graph with average degree ≥ c has a cycle of length in A. This combines number-theoretic sparsity (density 0) with extremal graph theory (cycle forcing).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-72-bollobas",
+    "proofId": "erdos-72",
+    "range": { "startLine": 112, "endLine": 121 },
+    "type": "axiom",
+    "title": "Bollobás (1977)",
+    "content": "If A is an infinite arithmetic progression containing even numbers, then A is strongly unavoidable. Example: A = {2, 4, 6, 8, ...} works. But arithmetic progressions have positive density, so this doesn't solve Problem #72 directly. It shows the cycle-forcing phenomenon exists.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-72-verstraete",
+    "proofId": "erdos-72",
+    "range": { "startLine": 123, "endLine": 128 },
+    "type": "axiom",
+    "title": "Verstraëte (2005)",
+    "content": "Non-constructive existence proof: SOME density-0 set A exists that is strongly unavoidable. This solved Problem #72 in principle, but didn't identify which sets work. The proof uses probabilistic and compactness arguments.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-72-liuMontgomery",
+    "proofId": "erdos-72",
+    "range": { "startLine": 130, "endLine": 135 },
+    "type": "axiom",
+    "title": "Liu-Montgomery (2020)",
+    "content": "BREAKTHROUGH: Powers of 2 are strongly unavoidable! There exists c > 0 such that every large graph with average degree ≥ c has a cycle whose length is a power of 2. This was surprising because Erdős was 'almost certain' this would fail.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-72-solved",
+    "proofId": "erdos-72",
+    "range": { "startLine": 137, "endLine": 140 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "Combining Liu-Montgomery (powers of 2 are unavoidable) with the fact that powers of 2 have density 0, we get the complete solution to Erdős Problem #72. The $100 prize was awarded.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-72-erdoswrong",
+    "proofId": "erdos-72",
+    "range": { "startLine": 144, "endLine": 152 },
+    "type": "insight",
+    "title": "Erdős Was Wrong",
+    "content": "Erdős stated he was 'almost certain' that powers of 2 would NOT work. He expected the required average degree would need to grow with graph size. Liu-Montgomery proved a CONSTANT threshold suffices. This is a rare instance of Erdős's intuition being definitively wrong.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-72-squares",
+    "proofId": "erdos-72",
+    "range": { "startLine": 156, "endLine": 164 },
+    "type": "definition",
+    "title": "Open Question: Perfect Squares",
+    "content": "Perfect squares {1, 4, 9, 16, 25, ...} have density 0 (only √n up to n). But it's UNKNOWN whether they are strongly unavoidable. This remains an open question in extremal combinatorics.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-72-threshold",
+    "proofId": "erdos-72",
+    "range": { "startLine": 176, "endLine": 185 },
+    "type": "definition",
+    "title": "Optimal Threshold",
+    "content": "For a given unavoidable set A, what is the smallest c that works? Liu-Montgomery gives some explicit (but large) bound for powers of 2. Finding the optimal threshold remains open. It's likely much smaller than the current best bound.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-72-general",
+    "proofId": "erdos-72",
+    "range": { "startLine": 193, "endLine": 198 },
+    "type": "theorem",
+    "title": "General Liu-Montgomery",
+    "content": "Liu-Montgomery actually proved a more general result: any set A with logarithmic growth and containing only even numbers (plus possibly 1) is strongly unavoidable. Powers of 2 is just a special case of this general theorem.",
+    "significance": "key"
+  }
+]
