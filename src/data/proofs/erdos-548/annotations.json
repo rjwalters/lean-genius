@@ -1,1 +1,191 @@
-[]
+[
+  {
+    "id": "ann-548-header",
+    "proofId": "erdos-548",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "The Erdős-Sós Conjecture (1963): Every graph on n vertices with more than (k-1)n/2 edges contains every tree on k+1 vertices. Equivalently, average degree > k-1 forces all trees with k edges. This remains one of the most famous open problems in extremal graph theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-548-tree-def",
+    "proofId": "erdos-548",
+    "range": { "startLine": 48, "endLine": 54 },
+    "type": "definition",
+    "title": "Tree Definition",
+    "content": "A tree is a connected acyclic graph. Key property: a tree on k+1 vertices has exactly k edges. Trees are the 'minimal connected' graphs - removing any edge disconnects them.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-548-path",
+    "proofId": "erdos-548",
+    "range": { "startLine": 56, "endLine": 68 },
+    "type": "definition",
+    "title": "Path Graph",
+    "content": "The path graph P_n has vertices 0,1,...,n-1 with edges connecting consecutive integers. Paths are the 'hardest' trees - they achieve the extremal bound exactly. Finding long paths requires careful structure.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-548-star",
+    "proofId": "erdos-548",
+    "range": { "startLine": 70, "endLine": 86 },
+    "type": "definition",
+    "title": "Star Graph",
+    "content": "The star K_{1,k} has one center connected to k leaves. Stars are 'easy' - they just need a vertex of degree ≥ k. This is why the conjecture must handle ALL tree shapes to be meaningful.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-548-subgraph",
+    "proofId": "erdos-548",
+    "range": { "startLine": 90, "endLine": 96 },
+    "type": "definition",
+    "title": "Subgraph Containment",
+    "content": "G contains H as a subgraph if there's an injective map f: V(H) → V(G) preserving edges. This is 'labeled' containment - we embed H into G vertex by vertex while preserving adjacencies.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-548-edges",
+    "proofId": "erdos-548",
+    "range": { "startLine": 100, "endLine": 106 },
+    "type": "definition",
+    "title": "Edge Count and Degree Sum",
+    "content": "The handshaking lemma: sum of degrees = 2·|E(G)|. This connects vertex degrees to edge count. Average degree = 2|E|/n, so edge threshold (k-1)n/2 means average degree > k-1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-548-avgdeg",
+    "proofId": "erdos-548",
+    "range": { "startLine": 108, "endLine": 116 },
+    "type": "definition",
+    "title": "Average Degree",
+    "content": "Average degree = (sum of degrees)/n = 2|E|/n. The conjecture says 'average degree > k-1 forces all (k+1)-vertex trees'. This is an elegant reformulation of the edge count condition.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-548-conjecture",
+    "proofId": "erdos-548",
+    "range": { "startLine": 120, "endLine": 132 },
+    "type": "theorem",
+    "title": "The Erdős-Sós Conjecture",
+    "content": "The formal statement: For all graphs G with |E| > (k-1)n/2 and all trees T on k+1 vertices, G contains T as a subgraph. This single statement captures the essence of the tree Turán problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-548-statement",
+    "proofId": "erdos-548",
+    "range": { "startLine": 134, "endLine": 141 },
+    "type": "theorem",
+    "title": "Original Problem Form",
+    "content": "Erdős's original phrasing uses ≥ (k-1)n/2 + 1 edges, which is equivalent to > (k-1)n/2 for integer edge counts. The '+1' makes the threshold explicit for discrete counting.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-548-trivial",
+    "proofId": "erdos-548",
+    "range": { "startLine": 145, "endLine": 154 },
+    "type": "axiom",
+    "title": "Trivial Bound",
+    "content": "A weak but easily proved bound: n(k-1)+1 edges suffice for any tree on k+1 vertices. This is roughly n times weaker than the conjecture! It's proved by induction on k.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-548-girth",
+    "proofId": "erdos-548",
+    "range": { "startLine": 156, "endLine": 162 },
+    "type": "definition",
+    "title": "Girth",
+    "content": "The girth of a graph is the length of its shortest cycle (∞ if acyclic). High girth means no short cycles, giving local tree-like structure that makes embedding actual trees easier.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-548-brandt",
+    "proofId": "erdos-548",
+    "range": { "startLine": 164, "endLine": 173 },
+    "type": "axiom",
+    "title": "Brandt-Dobson (1996)",
+    "content": "The conjecture holds for graphs with girth ≥ 5. With no triangles or 4-cycles, the graph is locally tree-like, allowing greedy embedding strategies to succeed.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-548-c4free",
+    "proofId": "erdos-548",
+    "range": { "startLine": 175, "endLine": 188 },
+    "type": "axiom",
+    "title": "Saclé-Wozniak (1997)",
+    "content": "The conjecture holds for C₄-free graphs. Absence of 4-cycles prevents edges from clustering in dense bicliques, forcing the graph structure to be favorable for tree embedding.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-548-complement",
+    "proofId": "erdos-548",
+    "range": { "startLine": 190, "endLine": 209 },
+    "type": "axiom",
+    "title": "Wang-Li-Liu (2000)",
+    "content": "The conjecture holds when the complement has girth ≥ 5. If the complement is sparse (high girth), then G is dense with large cliques, allowing inductive tree embedding within neighborhoods.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-548-extremal",
+    "proofId": "erdos-548",
+    "range": { "startLine": 213, "endLine": 222 },
+    "type": "definition",
+    "title": "Extremal Number",
+    "content": "ex(n, T) is the maximum edges in a T-free graph on n vertices. The conjecture says ex(n, T) ≤ (k-1)n/2 for all trees T with k edges. This connects to the Turán-type extremal theory.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-548-path-ext",
+    "proofId": "erdos-548",
+    "range": { "startLine": 226, "endLine": 228 },
+    "type": "axiom",
+    "title": "Paths Are Extremal",
+    "content": "The path P_{k+1} achieves ex(n, P_{k+1}) = (k-1)n/2 exactly. This is the 'tight' case - paths are the hardest trees to embed. If the conjecture is true, this bound is tight for all trees.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-548-star-easy",
+    "proofId": "erdos-548",
+    "range": { "startLine": 230, "endLine": 235 },
+    "type": "theorem",
+    "title": "Stars Are Easy",
+    "content": "K_{1,k} just needs a vertex of degree ≥ k. By pigeonhole, if average degree ≥ k, such a vertex exists. This shows why the conjecture's difficulty lies in handling paths, not stars.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-548-komlos",
+    "proofId": "erdos-548",
+    "range": { "startLine": 239, "endLine": 249 },
+    "type": "axiom",
+    "title": "Komlós-Sós-Szemerédi",
+    "content": "For sufficiently large k, the conjecture holds. This uses the Szemerédi regularity lemma and blow-up lemma for asymptotic embedding. The exact threshold k₀ is not explicitly known.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-548-gallai",
+    "proofId": "erdos-548",
+    "range": { "startLine": 253, "endLine": 265 },
+    "type": "axiom",
+    "title": "Erdős-Gallai Theorem",
+    "content": "A related result: the maximum edges without k+1 independent edges is max(C(2k+1,2), C(k,2)+k(n-k)). This is the matching version of Turán-type problems, closely related to tree embedding.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-548-turan-path",
+    "proofId": "erdos-548",
+    "range": { "startLine": 267, "endLine": 272 },
+    "type": "theorem",
+    "title": "Turán Number for Paths",
+    "content": "The Turán number for P_k (path on k vertices) is (k-2)(n-1)/2. This is the 'next simplest' case after the conjecture, giving the exact threshold for paths of any length.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-548-open",
+    "proofId": "erdos-548",
+    "range": { "startLine": 276, "endLine": 284 },
+    "type": "insight",
+    "title": "Open Status",
+    "content": "The Erdős-Sós conjecture remains open after 60+ years. It's marked 'falsifiable' - could be disproved by a finite counterexample. No such counterexample has been found despite extensive searching.",
+    "significance": "critical"
+  }
+]

@@ -1,33 +1,120 @@
 {
   "id": "erdos-548",
-  "title": "Erdős Problem #548",
+  "title": "Erdős Problem #548: The Erdős-Sós Conjecture",
   "slug": "erdos-548",
-  "description": "Let .... Every graph on ... vertices with at least ... edges contains every tree on ... vertices.",
+  "description": "Every graph on n vertices with more than (k-1)n/2 edges contains every tree on k+1 vertices. This famous conjecture of Erdős and Sós remains open, with partial results for girth ≥ 5, C₄-free graphs, and large k.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Sós (1963), partial: Brandt-Dobson (1996), Saclé-Wozniak (1997)",
     "sourceUrl": "https://erdosproblems.com/548",
-    "date": "",
-    "status": "pending",
+    "date": "1963",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos548Problem.lean",
     "tags": [
+      "graph-theory",
+      "trees",
+      "extremal-graph-theory",
+      "erdos-sos",
       "erdos"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 6,
     "erdosNumber": 548,
     "erdosUrl": "https://erdosproblems.com/548",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #548 from erdosproblems.com.",
-    "problemStatement": "Let $n\\geq k+1$. Every graph on $n$ vertices with at least $\\frac{k-1}{2}n+1$ edges contains every tree on $k+1$ vertices.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**The Erdős-Sós Conjecture**\n\nThis is one of the most famous open problems in extremal graph theory. Proposed by Erdős and Sós around 1963, it asks: how many edges guarantee that a graph contains every possible tree of a given size?\n\n**The Conjecture**: If a graph G on n vertices has more than (k-1)n/2 edges, then G contains every tree on k+1 vertices as a subgraph.\n\n**Equivalently**: Average degree > k-1 forces all trees with k edges.\n\n**Key Developments**:\n- **1963**: Erdős and Sós pose the conjecture\n- **1996**: Brandt-Dobson prove it for girth ≥ 5 graphs\n- **1997**: Saclé-Wozniak prove it for C₄-free graphs\n- **2000**: Wang-Li-Liu prove it when complement has girth ≥ 5\n- **Announced**: Komlós-Sós-Szemerédi claim proof for sufficiently large k (details unpublished)\n\n**Why It Matters**: The conjecture would give a complete answer to the tree Turán problem, determining exactly when any tree must appear as a subgraph.",
+    "problemStatement": "**Problem Statement**\n\nLet n ≥ k+1. Does every graph on n vertices with at least (k-1)n/2 + 1 edges contain every tree on k+1 vertices?\n\n**Equivalent Formulations**:\n1. Average degree > k-1 implies all (k+1)-vertex trees\n2. ex(n, T) ≤ (k-1)n/2 for all trees T with k edges\n3. Every T-free graph has at most (k-1)n/2 edges\n\n**Status**: OPEN (marked as 'falsifiable' - could be disproved by counterexample)\n\n**Best Known Bound**: n(k-1)+1 edges suffice (much weaker than conjectured).",
+    "proofStrategy": "**Approach to Partial Results**\n\nThe various partial results use different techniques:\n\n1. **Girth ≥ 5 (Brandt-Dobson)**: High girth graphs have local tree-like structure, making embedding easier via greedy methods.\n\n2. **C₄-free (Saclé-Wozniak)**: Absence of 4-cycles limits the ways edges can 'cluster', forcing spread-out structure favorable for tree embeddings.\n\n3. **Complement Girth ≥ 5 (Wang-Li-Liu)**: Dense neighborhoods in G (since complement is sparse) allow inductive tree embedding.\n\n4. **Large k (Komlós-Sós)**: Uses the regularity lemma and blow-up lemma for asymptotic embedding.\n\n**Key Difficulty**: Different tree shapes (paths vs stars vs balanced trees) require different embedding strategies, and the conjecture must work for ALL trees simultaneously.",
+    "keyInsights": [
+      "The path P_{k+1} is the 'hardest' tree - it achieves the extremal bound exactly",
+      "Stars K_{1,k} are 'easy' - they just need a vertex of degree k",
+      "The conjecture is equivalent to saying ex(n,T) ≤ (k-1)n/2 for all trees T",
+      "Girth conditions (no short cycles) make the problem tractable",
+      "The Komlós-Sós approach works for 'large enough' k, but the threshold is unknown"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "trees",
+      "title": "Trees",
+      "startLine": 46,
+      "endLine": 86,
+      "summary": "Definition of trees, path graphs, and star graphs"
+    },
+    {
+      "id": "subgraph-containment",
+      "title": "Subgraph Containment",
+      "startLine": 88,
+      "endLine": 96,
+      "summary": "Injective homomorphisms and T-free graphs"
+    },
+    {
+      "id": "edge-counting",
+      "title": "Edge Counting",
+      "startLine": 98,
+      "endLine": 116,
+      "summary": "Edge count, degree sum, and average degree"
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Erdős-Sós Conjecture",
+      "startLine": 118,
+      "endLine": 141,
+      "summary": "The main conjecture statement in two forms"
+    },
+    {
+      "id": "known-results",
+      "title": "Known Partial Results",
+      "startLine": 143,
+      "endLine": 209,
+      "summary": "Trivial bound, Brandt-Dobson, Saclé-Wozniak, Wang-Li-Liu"
+    },
+    {
+      "id": "extremal-function",
+      "title": "Extremal Function",
+      "startLine": 211,
+      "endLine": 222,
+      "summary": "The extremal number ex(n, T) and its connection to the conjecture"
+    },
+    {
+      "id": "special-trees",
+      "title": "Special Trees",
+      "startLine": 224,
+      "endLine": 235,
+      "summary": "Paths achieve the extremal bound; stars are easier"
+    },
+    {
+      "id": "komlos-sos",
+      "title": "Large k Result",
+      "startLine": 237,
+      "endLine": 249,
+      "summary": "Komlós-Sós announced result for sufficiently large k"
+    },
+    {
+      "id": "related-theorems",
+      "title": "Related Theorems",
+      "startLine": 251,
+      "endLine": 272,
+      "summary": "Erdős-Gallai matching theorem and Turán numbers for paths"
+    },
+    {
+      "id": "open-status",
+      "title": "Open Status",
+      "startLine": 274,
+      "endLine": 284,
+      "summary": "The conjecture remains open"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #548 is the famous Erdős-Sós conjecture: every graph with average degree > k-1 contains every tree on k+1 vertices. Despite partial results for special graph classes and large k, the general conjecture remains one of the major open problems in extremal graph theory.",
+    "implications": "**Theoretical Significance**\n\n1. **Extremal Graph Theory**: Would completely resolve the tree Turán problem\n\n2. **Subgraph Containment**: Trees are the 'threshold' forbidden subgraphs between sparse and dense regimes\n\n3. **Embedding Theory**: Understanding when trees embed reveals graph structure\n\n4. **Regularity Methods**: The Komlós-Sós approach showcases power of regularity lemma",
+    "openQuestions": [
+      "Is the Erdős-Sós conjecture true in full generality?",
+      "What is the smallest k for which Komlós-Sós holds?",
+      "Are there counterexamples for small k?",
+      "Can the girth conditions be relaxed further?",
+      "What is the computational complexity of finding tree embeddings?"
+    ]
   }
 }
