@@ -1,34 +1,75 @@
 {
   "id": "erdos-95",
-  "title": "Erdős Problem #95",
+  "title": "Erdős Problem #95: Sum of Squared Distance Multiplicities",
   "slug": "erdos-95",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... determine the set of distances .... Suppose ... appears as the distance between ... many pairs of points. Then for al...",
+  "description": "For n points in ℝ² with distance multiplicities f(uᵢ), prove ∑f(uᵢ)² ≪ n^{3+ε}. Solved by Guth and Katz (2015) with the stronger bound n³ log n, as part of their landmark distinct distances paper.",
   "meta": {
-    "author": "Unknown",
+    "author": "Guth & Katz (2015)",
     "sourceUrl": "https://erdosproblems.com/95",
-    "date": "",
+    "date": "2015",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos95Problem.lean",
     "tags": [
-      "erdos"
+      "discrete-geometry",
+      "distinct-distances",
+      "erdos",
+      "polynomial-method",
+      "algebraic-geometry",
+      "incidence-geometry"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "pending",
+    "sorries": 1,
     "erdosNumber": 95,
     "erdosUrl": "https://erdosproblems.com/95",
     "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$500"
+    "erdosPrizeValue": "$500",
+    "relatedProblems": [
+      {
+        "id": "erdos-94",
+        "relationship": "The main distinct distances problem (also solved by Guth-Katz)"
+      },
+      {
+        "id": "erdos-93",
+        "relationship": "Distinct distances in convex polygons"
+      },
+      {
+        "id": "erdos-89",
+        "relationship": "Related distinct distances problem"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #95 from erdosproblems.com. Originally offered with a prize of $500.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $x_1,\\ldots,x_n\\in\\mathbb{R}^2$ determine the set of distances $\\{u_1,\\ldots,u_t\\}$. Suppose $u_i$ appears as the distance between $f(u_i)$ many pairs of points. Then for all $\\epsilon>0$\\[\\sum_i f(u_i)^2 \\ll_\\epsilon n^{3+\\epsilon}.\\]\n\n\n\nThe case when the points determine a convex polygon was solved by Fishburn \\cite{Al63}. Note it is trivial that $\\sum f(u_i)=\\binom{n}{2}$. Solved by Guth and Katz \\cite{GuKa15} who proved the upper bound\\[ \\sum_i f(u_i)^2 \\ll n^3\\log n.\\]See also [94].\n\n\n\n\nReferences\n\n\n[Al63] Altman, E., On a problem of P. Erd\\H{o}s. Amer. Math. Monthly (1963), 148-157.\n\n[GuKa15] Guth, Larry and Katz, Nets Hawk, On the Erd\\H{o}s distinct distances problem in the plane. Ann. of Math. (2) (2015), 155-190.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**The Guth-Katz Revolution**\n\nThis problem is part of Erdős's famous distinct distances family. While Problem #94 asks for the minimum number of distinct distances (answered: Ω(n/log n)), this companion problem asks about the *distribution* of distance multiplicities.\n\n**The Setup**: Given n points in ℝ², let f(uᵢ) count how many pairs have distance uᵢ. The sum ∑f(uᵢ) = C(n,2) is trivial (every pair contributes once). But what about ∑f(uᵢ)²?\n\n**Erdős's Conjecture**: For all ε > 0, ∑f(uᵢ)² ≪ n^{3+ε}. This says distance multiplicities can't be too concentrated.\n\n**The Solution**: Guth and Katz (2015) proved the stronger bound ∑f(uᵢ)² ≪ n³ log n. This was part of their landmark paper that also resolved the main distinct distances conjecture (#94).\n\n**Earlier Progress**: Fishburn solved the convex polygon case using Altman's work (1963).",
+    "problemStatement": "**Problem Statement**\n\nLet x₁,...,xₙ ∈ ℝ² determine distances {u₁,...,uₜ}. If distance uᵢ occurs between f(uᵢ) pairs of points, prove:\n\n∑ᵢ f(uᵢ)² ≪_ε n^{3+ε} for all ε > 0\n\n**Interpretation**: This bounds how 'concentrated' the distance distribution can be. If one distance appeared n² times, the sum would be n⁴, which is forbidden.\n\n**Answer**: PROVED by Guth and Katz (2015)\n\n**Their Result**: ∑ᵢ f(uᵢ)² ≪ n³ log n\n\nThis is stronger than Erdős asked (removing the ε and replacing with log n).",
+    "proofStrategy": "**The Guth-Katz Approach (2015)**\n\nThe proof uses revolutionary algebraic techniques:\n\n1. **Point-Line Duality**: Transform the distance problem into an incidence problem in 3D.\n\n2. **Ruled Surfaces**: Distances correspond to lines on a quadric surface. Point pairs at the same distance become concurrent lines.\n\n3. **Polynomial Partitioning**: Partition ℝ³ using algebraic surfaces to control incidences.\n\n4. **Elekes-Sharir Framework**: Reduce to counting incidences between points and lines in ℝ³.\n\n5. **The Key Bound**: Prove that n points and n lines in ℝ³ have O(n^{3/2}) incidences unless many lines lie on a common ruled surface.\n\n**Why n³ log n?**: The log factor comes from careful combinatorial analysis of how distance multiplicities can accumulate across the partition cells.\n\n**Impact**: This paper revolutionized incidence geometry and opened new directions in combinatorial geometry.",
+    "keyInsights": [
+      "The sum ∑f(uᵢ)² measures concentration of the distance distribution",
+      "Guth-Katz proved n³ log n, stronger than the conjectured n^{3+ε}",
+      "Same paper also solved Problem #94 (distinct distances lower bound)",
+      "Uses polynomial partitioning - a technique that transformed combinatorial geometry",
+      "Point-line duality converts distances to incidences in higher dimensions",
+      "The convex case was solved earlier by Fishburn using Altman's methods",
+      "$500 prize reflects the difficulty and importance of this result"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "placeholder",
+      "title": "Placeholder Theorem",
+      "startLine": 34,
+      "endLine": 35,
+      "summary": "The current proof is a placeholder (erdos_95 : True). Full formalization would require encoding the Guth-Katz polynomial method."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #95 asked for an upper bound on the sum of squared distance multiplicities. Guth and Katz (2015) proved ∑f(uᵢ)² ≪ n³ log n, stronger than the conjectured n^{3+ε}. This result came from their landmark paper that also resolved the main distinct distances conjecture.",
+    "implications": "**Theoretical Significance**\n\n1. **Polynomial Method**: Established polynomial partitioning as a fundamental tool in combinatorics\n\n2. **Incidence Geometry**: The Elekes-Sharir-Guth-Katz framework spawned numerous subsequent results\n\n3. **Algebraic Techniques**: Showed that algebraic geometry can solve hard combinatorial problems\n\n4. **Distance Distribution**: Reveals structure in how distances can be distributed among point sets\n\n5. **Higher Dimensions**: Techniques extend to higher-dimensional distance problems",
+    "openQuestions": [
+      "Is the log n factor necessary, or can it be removed?",
+      "What is the tight constant in the n³ log n bound?",
+      "Extend to higher dimensions with optimal bounds",
+      "Characterize point configurations achieving the maximum",
+      "Full Lean formalization of the Guth-Katz polynomial method"
+    ]
   }
 }

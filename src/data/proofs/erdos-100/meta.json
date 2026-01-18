@@ -1,33 +1,118 @@
 {
   "id": "erdos-100",
-  "title": "Erdős Problem #100",
+  "title": "Erdős #100: Point Sets with Restricted Distances",
   "slug": "erdos-100",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set of ... points in ... such that all pairwise distances are at least ... and if two distinct distances differ ...",
+  "description": "Let A be n points in ℝ² with all pairwise distances ≥ 1 and any two distinct distances differing by ≥ 1. Must the diameter be ≫ n? Known: n^(3/4) (Kanold), n/log n (Guth-Katz). Piepmeyer: 9 points with diameter < 5.",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Kanold, Piepmeyer, Guth-Katz",
     "sourceUrl": "https://erdosproblems.com/100",
-    "date": "",
-    "status": "pending",
+    "date": "1990-2015",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos100Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "discrete-geometry",
+      "distance-geometry",
+      "combinatorial-geometry"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 6,
     "erdosNumber": 100,
     "erdosUrl": "https://erdosproblems.com/100",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #100 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A$ be a set of $n$ points in $\\mathbb{R}^2$ such that all pairwise distances are at least $1$ and if two distinct distances differ then they differ by at least $1$. Is the diameter of $A$ $\\gg n$?\n\n\n\nPerhaps the diameter is even $\\geq n-1$ for sufficiently large $n$. Piepmeyer has an example of $9$ such points with diameter $<5$. Kanold proved the diameter is $\\geq n^{3/4}$. The bounds on the distinct distance problem [89] proved by Guth and Katz \\cite{GuKa15} imply a lower bound of $\\gg n/\\log n$.\n\n\n\n\nReferences\n\n\n[GuKa15] Guth, Larry and Katz, Nets Hawk, On the Erd\\H{o}s distinct distances problem in the plane. Ann. of Math. (2) (2015), 155-190.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős posed this problem in the 1990s as part of his extensive work on distance problems in discrete geometry. The problem connects to Erdős #89 (distinct distances problem), which was famously solved by Guth and Katz in 2015. Piepmeyer's construction of 9 points with diameter < 5 shows the conjectured bound cannot be too strong.",
+    "problemStatement": "Let A be a set of n points in ℝ² such that all pairwise distances are at least 1 and any two distinct distances differ by at least 1. Is the diameter of A ≫ n?",
+    "proofStrategy": "We formalize the restricted distance property, diameter, and the known bounds. Key results include Kanold's n^(3/4) bound, the Guth-Katz n/log n bound (via distinct distances), and Piepmeyer's counterexample to diameter ≥ n-1.",
+    "keyInsights": [
+      "Distances are forced to be positive integers: 1, 2, 3, ...",
+      "Kanold: diameter ≥ n^(3/4)",
+      "Guth-Katz: distinct distances ≫ n/log n implies diameter ≫ n/log n",
+      "Piepmeyer: 9 points with diameter < 5 (counterexample to n-1)",
+      "Conjecture: diameter ≥ n-1 may hold for large n"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "plane-distance",
+      "title": "The Plane and Distance",
+      "summary": "Point type and Euclidean distance in ℝ²",
+      "startLine": 34,
+      "endLine": 44
+    },
+    {
+      "id": "restricted-distances",
+      "title": "Restricted Distance Sets",
+      "summary": "minDistanceOne, integerDistances, hasRestrictedDistances",
+      "startLine": 46,
+      "endLine": 67
+    },
+    {
+      "id": "diameter",
+      "title": "Diameter",
+      "summary": "Diameter as maximum pairwise distance",
+      "startLine": 69,
+      "endLine": 83
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "summary": "erdos_100_conjecture and strong conjecture",
+      "startLine": 85,
+      "endLine": 100
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Known Lower Bounds",
+      "summary": "Kanold's n^(3/4) and Guth-Katz n/log n bounds",
+      "startLine": 102,
+      "endLine": 117
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Known Upper Bounds",
+      "summary": "Piepmeyer's 9-point construction with diameter < 5",
+      "startLine": 119,
+      "endLine": 141
+    },
+    {
+      "id": "distinct-distances",
+      "title": "Connection to Distinct Distances",
+      "summary": "Relation to Erdős #89 and Guth-Katz theorem",
+      "startLine": 143,
+      "endLine": 165
+    },
+    {
+      "id": "trivial-bounds",
+      "title": "Trivial Bounds",
+      "summary": "Basic lower bounds on diameter",
+      "startLine": 167,
+      "endLine": 181
+    },
+    {
+      "id": "unit-distance",
+      "title": "Unit Distance Graphs",
+      "summary": "Graph structure on points at distance 1",
+      "startLine": 183,
+      "endLine": 207
+    },
+    {
+      "id": "lattice-points",
+      "title": "Lattice Point Configurations",
+      "summary": "Integer lattice examples",
+      "startLine": 209,
+      "endLine": 223
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #100 on point sets with restricted distances. The question asks whether the diameter must grow linearly with n when distances are positive integers.",
+    "implications": "The problem connects discrete geometry to the distinct distances problem. Guth-Katz's breakthrough on distinct distances provides the current best lower bound of n/log n. The gap between this and the conjectured linear bound remains open.",
+    "openQuestions": [
+      "Is diameter ≫ n (linear growth)?",
+      "Is diameter ≥ n-1 for large n?",
+      "What is the best constant in the linear bound?",
+      "Can Piepmeyer's construction be extended to larger n?"
+    ]
   }
 }

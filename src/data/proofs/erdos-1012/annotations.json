@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-1012-edgecount",
+    "proofId": "erdos-1012",
+    "range": { "startLine": 32, "endLine": 34 },
+    "type": "definition",
+    "title": "Edge Count",
+    "content": "Number of edges in a simple graph.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1012-threshold",
+    "proofId": "erdos-1012",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "Edge Threshold",
+    "content": "C(n-k-1,2) + C(k+2,2) + 1, the critical edge count.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1012-hascycle",
+    "proofId": "erdos-1012",
+    "range": { "startLine": 61, "endLine": 64 },
+    "type": "definition",
+    "title": "Has Cycle of Length",
+    "content": "Graph contains a cycle visiting l distinct vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1012-hamiltonian",
+    "proofId": "erdos-1012",
+    "range": { "startLine": 66, "endLine": 68 },
+    "type": "definition",
+    "title": "Hamiltonian",
+    "content": "A cycle visiting all n vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1012-haslongcycle",
+    "proofId": "erdos-1012",
+    "range": { "startLine": 77, "endLine": 83 },
+    "type": "definition",
+    "title": "hasLongCycle",
+    "content": "Every graph with ≥ threshold edges has (n-k)-cycle.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1012-erdosf",
+    "proofId": "erdos-1012",
+    "range": { "startLine": 85, "endLine": 93 },
+    "type": "definition",
+    "title": "erdosF(k)",
+    "content": "Min n₀ such that hasLongCycle holds for n ≥ n₀.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1012-ore",
+    "proofId": "erdos-1012",
+    "range": { "startLine": 106, "endLine": 108 },
+    "type": "theorem",
+    "title": "Ore's Theorem (1961)",
+    "content": "f(0) = 1: Hamiltonian cycles in dense graphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1012-fzero",
+    "proofId": "erdos-1012",
+    "range": { "startLine": 110, "endLine": 112 },
+    "type": "theorem",
+    "title": "f(0) = 1",
+    "content": "Ore's result: f(0) = 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1012-bondy",
+    "proofId": "erdos-1012",
+    "range": { "startLine": 126, "endLine": 127 },
+    "type": "theorem",
+    "title": "Bondy's Theorem (1971)",
+    "content": "f(1) = 1: (n-1)-cycles in dense graphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1012-pancyclic",
+    "proofId": "erdos-1012",
+    "range": { "startLine": 140, "endLine": 142 },
+    "type": "definition",
+    "title": "Pancyclic Up To",
+    "content": "Has cycles of all lengths from 3 to m.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1012-woodall",
+    "proofId": "erdos-1012",
+    "range": { "startLine": 144, "endLine": 147 },
+    "type": "theorem",
+    "title": "Woodall's Theorem (1972)",
+    "content": "For n ≥ 2k+3 with sufficient edges, has (n-k)-cycle.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1012-woodallpan",
+    "proofId": "erdos-1012",
+    "range": { "startLine": 149, "endLine": 155 },
+    "type": "theorem",
+    "title": "Woodall Pancyclic",
+    "content": "Dense graphs are pancyclic from 3 to n-k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1012-upperbound",
+    "proofId": "erdos-1012",
+    "range": { "startLine": 164, "endLine": 166 },
+    "type": "theorem",
+    "title": "Upper Bound",
+    "content": "f(k) ≤ 2k + 3 for all k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1012-solved",
+    "proofId": "erdos-1012",
+    "range": { "startLine": 168, "endLine": 169 },
+    "type": "theorem",
+    "title": "Problem Solved",
+    "content": "Erdős #1012 is completely solved.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1012-extremal",
+    "proofId": "erdos-1012",
+    "range": { "startLine": 178, "endLine": 184 },
+    "type": "definition",
+    "title": "Extremal Graph",
+    "content": "Graphs with threshold-1 edges lacking (n-k)-cycle.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1012-tight",
+    "proofId": "erdos-1012",
+    "range": { "startLine": 186, "endLine": 187 },
+    "type": "theorem",
+    "title": "Threshold Tight",
+    "content": "The edge threshold is optimal.",
+    "significance": "key"
+  }
+]

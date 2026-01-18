@@ -1,33 +1,121 @@
 {
   "id": "erdos-1012",
-  "title": "Erdős Problem #1012",
+  "title": "Erdős Problem #1012: Long Cycles in Dense Graphs",
   "slug": "erdos-1012",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Let ... be such that every graph on ... vertices with at least ... edges contains a cycle on ... vertices. Determine...",
+  "description": "Let f(k) be such that every graph on n ≥ f(k) vertices with ≥ C(n-k-1,2) + C(k+2,2) + 1 edges has an (n-k)-cycle. Woodall (1972) proved f(k) ≤ 2k+3 and such graphs are pancyclic from 3 to n-k.",
   "meta": {
-    "author": "Unknown",
+    "author": "Woodall (1972)",
     "sourceUrl": "https://erdosproblems.com/1012",
-    "date": "",
+    "date": "1972",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1012Problem.lean",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "extremal-combinatorics",
+      "erdos",
+      "hamiltonian-cycles",
+      "pancyclic-graphs"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "pending",
+    "sorries": 7,
     "erdosNumber": 1012,
     "erdosUrl": "https://erdosproblems.com/1012",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1012 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 0$. Let $f(k)$ be such that every graph on $n\\geq f(k)$ vertices with at least $\\binom{n-k-1}{2}+\\binom{k+2}{2}+1$ edges contains a cycle on $n-k$ vertices. Determine or estimate $f(k)$.\n\n\n\nErd\\H{o}s \\cite{Er62e} proved that $f(k)$ exists for all $k\\geq 0$; this is not immediately stated in \\cite{Er62e}, but Cambie has in the comments explained why the existence of $f(k)$ follows from the result of \\cite{Er62e}.\n\nOre \\cite{Or61} proved that $f(0)=1$, in other words, every graph on $n\\geq 1$ vertices with at least $\\binom{n-1}{2}+2$ edges contains a Hamiltonian cycle on $n$ vertices.\n\nBondy \\cite{Bo71b} proved that $f(1)=1$.\n\nWoodall \\cite{Wo72} proved that every graph on $n\\geq 2k+3$ vertices with at least $\\binom{n-k-1}{2}+\\binom{k+2}{2}+1$ edges contains a cycle on $l$ vertices for all $3\\leq l\\leq n-k$. This settles this question completely.\n\n\n\n\nReferences\n\n\n[Bo71b] Bondy, J. A., Large cycles in graphs. Discrete Math. (1971/72), 121--132.\n\n[Er62e] Erd\\H{o}s, P., Remarks on a paper of {P}\\'osa. Magyar Tud. Akad. Mat. Kutat\\'o{} Int. K\\\"ozl. (1962), 227--229.\n\n[Or61] Ore, Oystein, Arc coverings of graphs. Ann. Mat. Pura Appl. (4) (1961), 315--321.\n\n[Wo72] Woodall, D. R., Sufficient conditions for circuits in graphs. Proc. London Math. Soc. (3) (1972), 739--755.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Hamiltonian Cycle Extensions**\n\nA fundamental question in graph theory asks: how many edges guarantee a Hamiltonian cycle? Ore's theorem (1961) gives a sufficient condition. This problem generalizes to (n-k)-cycles.\n\n**The Edge Threshold**: The critical edge count C(n-k-1, 2) + C(k+2, 2) + 1 arises from extremal constructions. Below this threshold, graphs avoiding (n-k)-cycles exist; above it, they cannot.\n\n**Historical Development**:\n- Erdős (1962) proved f(k) exists for all k\n- Ore (1961): f(0) = 1 (Hamiltonian cycle case)\n- Bondy (1971): f(1) = 1\n- Woodall (1972): Complete solution showing f(k) ≤ 2k+3\n\n**The Pancyclic Surprise**: Woodall proved more than asked - dense graphs have cycles of ALL lengths from 3 to n-k, not just length n-k.",
+    "problemStatement": "**Problem Statement**\n\nLet k ≥ 0. Define f(k) as the minimum n₀ such that every graph on n ≥ n₀ vertices with at least:\n$$\\binom{n-k-1}{2} + \\binom{k+2}{2} + 1$$\nedges contains a cycle on n-k vertices.\n\n**Question**: Determine or estimate f(k).\n\n**Status**: SOLVED (Woodall 1972)\n\n**Answer**: f(k) ≤ 2k+3, and such graphs are pancyclic from 3 to n-k (have cycles of all intermediate lengths).",
+    "proofStrategy": "**Solution Approach**\n\n1. **Base Cases**:\n   - k=0: Ore's Hamiltonian cycle theorem\n   - k=1: Bondy's extension to (n-1)-cycles\n\n2. **General Case (Woodall)**:\n   - Analyze the structure of graphs with many edges\n   - Use induction on k with careful edge counting\n   - Show such graphs are 'pancyclic' - they have cycles of all lengths\n\n3. **Extremal Examples**:\n   - Construct graphs with threshold-1 edges avoiding (n-k)-cycles\n   - These show the threshold is tight\n\n**Key Insight**: Dense graphs are highly connected, forcing not just one long cycle but a complete spectrum of cycle lengths.",
+    "keyInsights": [
+      "Edge threshold C(n-k-1,2) + C(k+2,2) + 1 is tight",
+      "Ore (1961): f(0) = 1 (Hamiltonian cycles)",
+      "Bondy (1971): f(1) = 1",
+      "Woodall (1972): f(k) ≤ 2k+3 for all k",
+      "Bonus: such graphs are pancyclic from 3 to n-k"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-basics",
+      "title": "Graph Basics",
+      "summary": "edgeCount and vertexCount definitions",
+      "startLine": 24,
+      "endLine": 37
+    },
+    {
+      "id": "edge-threshold",
+      "title": "The Edge Threshold",
+      "summary": "edgeThreshold definition and expanded form",
+      "startLine": 39,
+      "endLine": 53
+    },
+    {
+      "id": "cycles",
+      "title": "Cycles in Graphs",
+      "summary": "hasCycleOfLength and isHamiltonian",
+      "startLine": 55,
+      "endLine": 68
+    },
+    {
+      "id": "function-f",
+      "title": "The Function f(k)",
+      "summary": "hasLongCycle and erdosF definitions",
+      "startLine": 70,
+      "endLine": 93
+    },
+    {
+      "id": "ore",
+      "title": "Ore's Theorem (1961): f(0) = 1",
+      "summary": "Hamiltonian cycle case",
+      "startLine": 95,
+      "endLine": 112
+    },
+    {
+      "id": "bondy",
+      "title": "Bondy's Theorem (1971): f(1) = 1",
+      "summary": "(n-1)-cycle case",
+      "startLine": 114,
+      "endLine": 131
+    },
+    {
+      "id": "woodall",
+      "title": "Woodall's Theorem (1972): Complete Solution",
+      "summary": "isPancyclicUpTo and main theorems",
+      "startLine": 133,
+      "endLine": 155
+    },
+    {
+      "id": "solution",
+      "title": "The Solution",
+      "summary": "erdosF_upper_bound and erdos_1012_solved",
+      "startLine": 157,
+      "endLine": 169
+    },
+    {
+      "id": "extremal",
+      "title": "Extremal Examples",
+      "summary": "extremalGraph and threshold_tight",
+      "startLine": 171,
+      "endLine": 187
+    },
+    {
+      "id": "turan",
+      "title": "Connection to Turán Theory",
+      "summary": "turanNumber and threshold connection",
+      "startLine": 189,
+      "endLine": 202
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1012 asked for the function f(k) such that graphs on n ≥ f(k) vertices with ≥ C(n-k-1,2) + C(k+2,2) + 1 edges must contain (n-k)-cycles. Woodall (1972) completely solved this, showing f(k) ≤ 2k+3 and proving such graphs are pancyclic from 3 to n-k.",
+    "implications": "**Theoretical Significance**\n\n1. **Extremal Graph Theory**: Determines exact edge threshold for long cycles\n\n2. **Hamiltonian Cycles**: Generalizes Ore's classical theorem\n\n3. **Pancyclicity**: Reveals hidden structure - dense graphs have all cycle lengths\n\n4. **Turán-type Problems**: Connects to cycle Turán numbers",
+    "openQuestions": [
+      "What is the exact value of f(k) for k ≥ 2?",
+      "Are there stronger pancyclicity results?",
+      "How does the structure change for directed graphs?",
+      "Can similar results be proved for hypergraphs?",
+      "What are the algorithmic implications for cycle detection?"
+    ]
   }
 }

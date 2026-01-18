@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-76-color",
+    "proofId": "erdos-76",
+    "range": { "startLine": 35, "endLine": 39 },
+    "type": "definition",
+    "title": "Color",
+    "content": "Two colors: Red and Blue for edge coloring.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-76-edgecoloring",
+    "proofId": "erdos-76",
+    "range": { "startLine": 41, "endLine": 43 },
+    "type": "definition",
+    "title": "EdgeColoring",
+    "content": "A 2-coloring assigns each edge to Red or Blue.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-76-triangle",
+    "proofId": "erdos-76",
+    "range": { "startLine": 55, "endLine": 58 },
+    "type": "definition",
+    "title": "Triangle",
+    "content": "A set of 3 vertices (3-clique).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-76-mono",
+    "proofId": "erdos-76",
+    "range": { "startLine": 64, "endLine": 66 },
+    "type": "definition",
+    "title": "Monochromatic",
+    "content": "All edges of the triangle have the same color.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-76-disjoint",
+    "proofId": "erdos-76",
+    "range": { "startLine": 74, "endLine": 76 },
+    "type": "definition",
+    "title": "Edge-Disjoint",
+    "content": "Two triangles share no edges.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-76-packing",
+    "proofId": "erdos-76",
+    "range": { "startLine": 78, "endLine": 80 },
+    "type": "definition",
+    "title": "isPacking",
+    "content": "A set of pairwise edge-disjoint triangles.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-76-maxpacking",
+    "proofId": "erdos-76",
+    "range": { "startLine": 93, "endLine": 95 },
+    "type": "definition",
+    "title": "Maximum Packing Size",
+    "content": "Max edge-disjoint monochromatic triangles in a coloring.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-76-balanced",
+    "proofId": "erdos-76",
+    "range": { "startLine": 108, "endLine": 113 },
+    "type": "definition",
+    "title": "Balanced Coloring",
+    "content": "Partition into halves; between=red, within=blue.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-76-bound",
+    "proofId": "erdos-76",
+    "range": { "startLine": 136, "endLine": 137 },
+    "type": "definition",
+    "title": "Conjectured Bound",
+    "content": "n²/12 - the extremal triangle packing count.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-76-gruslys",
+    "proofId": "erdos-76",
+    "range": { "startLine": 154, "endLine": 156 },
+    "type": "theorem",
+    "title": "Gruslys-Letzter (2020)",
+    "content": "Every 2-coloring has ≥ (1+o(1))n²/12 edge-disjoint mono triangles.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-76-total",
+    "proofId": "erdos-76",
+    "range": { "startLine": 172, "endLine": 176 },
+    "type": "definition",
+    "title": "Triangle and Edge Counts",
+    "content": "C(n,3) triangles, C(n,2) edges in K_n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-76-upper",
+    "proofId": "erdos-76",
+    "range": { "startLine": 178, "endLine": 181 },
+    "type": "theorem",
+    "title": "Packing Upper Bound",
+    "content": "At most (edges/3) triangles can be packed.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-76-cliques",
+    "proofId": "erdos-76",
+    "range": { "startLine": 193, "endLine": 197 },
+    "type": "theorem",
+    "title": "Bound from Cliques",
+    "content": "n²/12 = 2 × (n/2)²/24 from two color-class cliques.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-76-single",
+    "proofId": "erdos-76",
+    "range": { "startLine": 215, "endLine": 219 },
+    "type": "definition",
+    "title": "Single-Color Conjecture",
+    "content": "Erdős: max single-color packing ≥ cn² for c > 1/24.",
+    "significance": "supporting"
+  }
+]

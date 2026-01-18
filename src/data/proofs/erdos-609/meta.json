@@ -1,33 +1,144 @@
 {
   "id": "erdos-609",
-  "title": "Erdős Problem #609",
+  "title": "Erdős Problem #609: Monochromatic Odd Cycles in Edge Colorings",
   "slug": "erdos-609",
-  "description": "Let f(n)\" role=\"presentation\" style=\"position: relative;\">f(n)f(n)f(n) be the minimal m\" role=\"presentation\" style=\"position: relative;\">mmm such that if the edges of K2n+1\" role=\"presentation\" sty...",
+  "description": "Let f(n) = min cycle length forced in n-colorings of K_{2^n+1}. K_{2^n} can avoid all odd cycles, but K_{2^n+1} cannot. Estimate f(n). OPEN with exponential gap between bounds.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Graham, bounds by Day-Johnson, Janzer-Yip",
     "sourceUrl": "https://erdosproblems.com/609",
     "date": "",
-    "status": "pending",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos609Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "graph-coloring",
+      "cycles",
+      "extremal-combinatorics",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "conjecture",
+    "sorries": 20,
     "erdosNumber": 609,
     "erdosUrl": "https://erdosproblems.com/609",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Sym2",
+        "description": "Unordered pairs for edges",
+        "module": "Mathlib.Data.Sym.Sym2"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of monochromatic odd cycles in edge colorings",
+      "Definition of the threshold function f(n)",
+      "Statement of the 2^n vs 2^n+1 dichotomy",
+      "Formalization of Day-Johnson and Janzer-Yip bounds",
+      "The doubling construction for avoiding odd cycles"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #609 from erdosproblems.com.",
-    "problemStatement": "Let f(n)\" role=\"presentation\" style=\"position: relative;\">f(n)f(n)f(n) be the minimal m\" role=\"presentation\" style=\"position: relative;\">mmm such that if the edges of K2n+1\" role=\"presentation\" style=\"position: relative;\">K2n+1K2n+1K_{2^n+1} are coloured with n\" role=\"presentation\" style=\"position: relative;\">nnn colours then there must be a monochromatic odd cycle of length at most m\" role=\"presentation\" style=\"position: relative;\">mmm. Estimate f(n)\" role=\"presentation\" style=\"position: relative;\">f(n)f(n)f(n).",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem originates from Erdős and Graham's work on Ramsey theory. The key observation is that K_{2^n} can be n-colored with no monochromatic odd cycles at all (using a 'doubling' construction), but adding just one more vertex to get K_{2^n+1} forces a monochromatic odd cycle.\n\nChung (1997) asked whether f(n) → ∞, which Day and Johnson confirmed in 2017. Recent work by Girão-Hunter (2024) and Janzer-Yip (2025) has improved the upper bounds, but a large gap remains.",
+    "problemStatement": "**Definition:**\nLet f(n) be the minimal m such that every n-coloring of the edges of K_{2^n+1} contains a monochromatic odd cycle of length ≤ m.\n\n**Question:** Estimate f(n).\n\n**Known Facts:**\n- K_{2^n} CAN be n-colored avoiding all monochromatic odd cycles\n- K_{2^n+1} MUST have a monochromatic odd cycle\n- C_5 and C_7 can be avoided for large n\n\n**Best Bounds:**\n- Lower: f(n) ≥ 2^{c√(log n)} (Day-Johnson 2017)\n- Upper: f(n) ≤ n^{3/2} · 2^{n/2} (Janzer-Yip 2025)",
+    "proofStrategy": "The formalization:\n\n1. Defines `EdgeColoring'` for k-colorings of graphs\n2. Defines `IsCycle`, `IsOddCycle`, `IsMonochromaticCycle`\n3. Defines `erdos609_f n` as the threshold function\n4. States `K_2n_avoids_odd_cycles`: the doubling construction\n5. States `K_2n_plus_1_forces_odd_cycle`: the forcing result\n6. States Day-Johnson lower bound and Janzer-Yip upper bound\n7. Connects to bipartite graphs and cycle Ramsey numbers",
+    "keyInsights": [
+      "**The 2^n Threshold:** K_{2^n} is exactly the largest complete graph that can be n-colored without monochromatic odd cycles. The doubling construction achieves this.",
+      "**Bipartite Connection:** A color class avoiding odd cycles is bipartite. The problem asks: how can n bipartite graphs cover K_{2^n+1}?",
+      "**Chung's Question Answered:** Day-Johnson (2017) proved f(n) → ∞, meaning longer and longer cycles can be avoided as n grows.",
+      "**Exponential Gap:** Lower bound 2^{c√(log n)} vs upper bound n^{3/2} · 2^{n/2} — the true growth rate is unknown!",
+      "**Short Cycles Avoidable:** C_5 and C_7 can be avoided for large n, suggesting f(n) grows significantly."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-defs",
+      "title": "Basic Definitions",
+      "summary": "Edge colorings and cycle structures",
+      "startLine": 33,
+      "endLine": 52
+    },
+    {
+      "id": "monochromatic",
+      "title": "Monochromatic Structures",
+      "summary": "Monochromatic cycles and the key predicate",
+      "startLine": 54,
+      "endLine": 70
+    },
+    {
+      "id": "complete-graph",
+      "title": "The Complete Graph",
+      "summary": "Definition of K_n",
+      "startLine": 72,
+      "endLine": 81
+    },
+    {
+      "id": "f-function",
+      "title": "The Function f(n)",
+      "summary": "Definition of the threshold function",
+      "startLine": 83,
+      "endLine": 103
+    },
+    {
+      "id": "threshold",
+      "title": "The 2^n Threshold",
+      "summary": "K_{2^n} avoids, K_{2^n+1} forces",
+      "startLine": 105,
+      "endLine": 120
+    },
+    {
+      "id": "short-cycles",
+      "title": "Avoiding Short Cycles",
+      "summary": "C_5 and C_7 avoidance",
+      "startLine": 122,
+      "endLine": 138
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "summary": "Day-Johnson and Janzer-Yip results",
+      "startLine": 140,
+      "endLine": 169
+    },
+    {
+      "id": "ramsey-connection",
+      "title": "Connection to Ramsey Theory",
+      "summary": "Cycle Ramsey numbers",
+      "startLine": 171,
+      "endLine": 182
+    },
+    {
+      "id": "bipartite",
+      "title": "Bipartite Connection",
+      "summary": "No odd cycles ↔ bipartite",
+      "startLine": 184,
+      "endLine": 198
+    },
+    {
+      "id": "doubling",
+      "title": "The Doubling Construction",
+      "summary": "How to n-color K_{2^n}",
+      "startLine": 200,
+      "endLine": 213
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #609 asks for the asymptotics of f(n), the minimum odd cycle length forced in any n-coloring of K_{2^n+1}. The key insight is that K_{2^n} can avoid all monochromatic odd cycles via a doubling construction, but K_{2^n+1} cannot. Current bounds span an exponential gap: 2^{c√(log n)} ≤ f(n) ≤ n^{3/2} · 2^{n/2}. The problem remains OPEN.",
+    "implications": "This problem connects to:\n\n1. **Ramsey Theory:** Multi-color cycle Ramsey numbers\n2. **Graph Decomposition:** Covering complete graphs with bipartite graphs\n3. **Extremal Combinatorics:** Unavoidable substructures in colorings\n4. **Recursive Constructions:** The doubling technique for avoiding patterns\n5. **Logarithmic Bounds:** The √(log n) exponent in the lower bound",
+    "openQuestions": [
+      "What is the true growth rate of f(n)?",
+      "Is f(n) polynomial, quasi-polynomial, or exponential in n?",
+      "Can the doubling construction be improved for K_{2^n+1}?",
+      "What is the smallest odd cycle that cannot be avoided?"
+    ]
   }
 }

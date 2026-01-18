@@ -1,33 +1,111 @@
 {
   "id": "erdos-1000",
-  "title": "Erdős Problem #1000",
+  "title": "Erdős #1000: Generalized Totients and Diophantine Approximation",
   "slug": "erdos-1000",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an infinite sequence of integers, and let ... count the number of ... such that the fraction ... does not have den...",
+  "description": "For an infinite sequence A = {n₁ < n₂ < ...}, define φ_A(k) as the count of m ≤ n_k such that m/n_k in lowest form has denominator different from all previous n_j. Does lim (1/N) Σ φ_A(k)/n_k = 0 for some A? Answer: YES (Haight), contrary to Erdős' expectation.",
   "meta": {
-    "author": "Unknown",
+    "author": "J.W.S. Cassels, Paul Erdős, J.A. Haight",
     "sourceUrl": "https://erdosproblems.com/1000",
-    "date": "",
-    "status": "pending",
+    "date": "1950-1964",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1000Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "diophantine-approximation",
+      "totient-function",
+      "cesaro-averages"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 4,
     "erdosNumber": 1000,
     "erdosUrl": "https://erdosproblems.com/1000",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1000 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{n_1<n_2<\\cdots\\}$ be an infinite sequence of integers, and let $\\phi_A(k)$ count the number of $1\\leq m\\leq n_k$ such that the fraction $\\frac{m}{n_k}$ does not have denominator $n_j$ for $j<k$ when written in lowest form; equivalently,\\[\\frac{n_k}{(m,n_k)}\\neq n_j\\]for all $1\\leq j<k$.\n\nIs there a sequence $A$ such that\\[\\lim_{N\\to \\infty}\\frac{1}{N}\\sum_{k\\leq N}\\frac{\\phi_A(k)}{n_k}=0?\\]\n\n\n\nIt is trivial that $\\phi_A(k)\\geq \\phi(n_k)$, where $\\phi$ is the Euler totient function. Equality is achieved when $A=\\mathbb{N}$.\n\nThe study of $\\phi_A$ was introduced by Cassels \\cite{Ca50b}, who proved that there exist sequences such that\\[\\liminf_{N\\to \\infty}\\frac{1}{N}\\sum_{k\\leq N}\\frac{\\phi_A(k)}{n_k}=0.\\]Cassels proved that the property of divergence of $\\sum_k \\frac{f(n_k)}{k}$ implying, for almost all $\\alpha$, \\[\\left\\lvert \\alpha-\\frac{m_k}{n_k}\\right\\rvert < \\frac{f(n_k)}{n_k^2},\\]is equivalent to the above $\\liminf$ being $>0$.\n\nErd\\H{o}s \\cite{Er64b} believed that a sequence with the property in the question does not exist. He could only prove that the limit of $\\frac{\\phi_A(k)}{n_k}$ as $k\\to \\infty$ cannot be $0$.\n\nIn fact he proved that if $\\liminf \\frac{\\phi_A(k)}{n_k}=0$ then $\\limsup \\frac{\\phi_A(k)}{n_k}=1$. Indeed, the hypothesis implies that for any $\\epsilon>0$ there are arbitrarily large $k$ such that $\\phi(n_k)<\\epsilon n_k$, and hence there are arbitrarily large primes $p$ such that $p$ divides some $n_i\\in A$. If $n_k$ is minimal such that $p\\mid n_k$ then every $1\\leq m\\leq n_k$ not divisible by $p$ has the required property, and hence $\\phi_A(k)/n_k\\geq 1-\\frac{1}{p}$.\n\nThis was solved by Haight \\cite{Ha} who proved that such a sequence does exist (contrary to Erd\\H{o}s' expectations).\n\n\n\n\nReferences\n\n\n[Ca50b] Cassels, J. W. S., Some metrical theorems in {D}iophantine approximation. {I}. Proc. Cambridge Philos. Soc. (1950), 209--218.\n\n[Er64b] Erd\\H{o}s, P., Problems and results on diophantine approximations. Compositio Math. (1964), 52-65.\n\n[Ha] Haight, J. A., Metric Diophantine approximation and related topics. PhD thesis ().\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Cassels (1950) introduced the generalized totient φ_A to study Diophantine approximation properties. Erdős (1964) proved that the limit of individual terms φ_A(k)/n_k cannot be 0, and that liminf = 0 implies limsup = 1. Erdős believed no sequence could have vanishing Cesàro average. Haight proved him wrong, showing such sequences exist.",
+    "problemStatement": "Let A = {n₁ < n₂ < ⋯} be an infinite sequence of positive integers. Define φ_A(k) as the count of 1 ≤ m ≤ n_k such that m/n_k in lowest form has denominator ≠ n_j for all j < k. Is there a sequence A such that lim_{N→∞} (1/N) Σ_{k≤N} φ_A(k)/n_k = 0?",
+    "proofStrategy": "We formalize the increasing sequence structure, the generalized totient φ_A, and the Cesàro average. Key results include Cassels' liminf = 0 construction, Erdős' liminf/limsup dichotomy, and Haight's resolution showing such sequences exist.",
+    "keyInsights": [
+      "φ_A(k) ≥ φ(n_k) always, with equality when A = ℕ",
+      "Cassels (1950): Some sequences have liminf of average = 0",
+      "Erdős (1964): Individual limit cannot be 0",
+      "Erdős (1964): If liminf = 0 then limsup = 1",
+      "Haight: Cesàro average can converge to 0 (contrary to Erdős)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "generalized-totient",
+      "title": "The Generalized Totient φ_A",
+      "summary": "Definition of increasing sequences and the generalized totient function",
+      "startLine": 34,
+      "endLine": 67
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "φ_A(k) ≥ φ(n_k) and the baseline case A = ℕ",
+      "startLine": 69,
+      "endLine": 99
+    },
+    {
+      "id": "average-density",
+      "title": "Average Density",
+      "summary": "Density ratio and Cesàro average definitions",
+      "startLine": 101,
+      "endLine": 118
+    },
+    {
+      "id": "cassels-result",
+      "title": "Cassels' Result (1950)",
+      "summary": "Liminf of average can be 0; connection to Diophantine approximation",
+      "startLine": 120,
+      "endLine": 137
+    },
+    {
+      "id": "erdos-results",
+      "title": "Erdős' Results (1964)",
+      "summary": "Individual limit cannot be 0; liminf/limsup dichotomy",
+      "startLine": 139,
+      "endLine": 168
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "Definition of vanishing average and the main question",
+      "startLine": 170,
+      "endLine": 191
+    },
+    {
+      "id": "haight-resolution",
+      "title": "Haight's Resolution",
+      "summary": "Haight's theorem: such sequences exist",
+      "startLine": 193,
+      "endLine": 213
+    },
+    {
+      "id": "diophantine-connection",
+      "title": "Connection to Diophantine Approximation",
+      "summary": "Cassels' characterization linking to Khinchin-Groshev theory",
+      "startLine": 215,
+      "endLine": 236
+    },
+    {
+      "id": "observations",
+      "title": "Observations and Corollaries",
+      "summary": "Oscillation behavior of Haight's sequence",
+      "startLine": 238,
+      "endLine": 262
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #1000 on generalized totients. The question asks whether a sequence can have vanishing Cesàro average of φ_A(k)/n_k. Haight proved YES, contrary to Erdős' expectation.",
+    "implications": "The result shows that 'new denominators' can become increasingly rare on average while still oscillating between extremes. This connects to fundamental questions in metric Diophantine approximation and the Khinchin-Groshev theory.",
+    "openQuestions": [
+      "Can we construct explicit examples of Haight-type sequences?",
+      "What is the optimal rate of convergence to 0?",
+      "How does this connect to other number-theoretic sequences?"
+    ]
   }
 }

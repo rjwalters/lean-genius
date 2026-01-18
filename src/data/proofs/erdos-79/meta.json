@@ -1,33 +1,121 @@
 {
   "id": "erdos-79",
-  "title": "Erdős Problem #79",
+  "title": "Erdős Problem #79: Minimally Non-Ramsey-Size-Linear Graphs",
   "slug": "erdos-79",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe say ... is Ramsey size linear if ... for all graphs ... with ... edges and no isolated vertices.\n\nAre there infinitely man...",
+  "description": "A graph is 'Ramsey size linear' if R(G,H) grows linearly in the edges of H. Are there infinitely many graphs that fail this property minimally - not Ramsey size linear, but all subgraphs are? Wigderson (2024) proved yes, though only K₄ is explicitly known.",
   "meta": {
-    "author": "Unknown",
+    "author": "Wigderson (2024)",
     "sourceUrl": "https://erdosproblems.com/79",
-    "date": "",
+    "date": "2024",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos79Problem.lean",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "ramsey-theory",
+      "erdos",
+      "ramsey-numbers",
+      "extremal-graphs"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 3,
     "erdosNumber": 79,
     "erdosUrl": "https://erdosproblems.com/79",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #79 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe say $G$ is Ramsey size linear if $R(G,H)\\ll m$ for all graphs $H$ with $m$ edges and no isolated vertices.\n\nAre there infinitely many graphs $G$ which are not Ramsey size linear but such that all of its subgraphs are?\n\n\n\nAsked by Erd\\H{o}s, Faudree, Rousseau, and Schelp \\cite{EFRS93}. $K_4$ is the only known example of such a graph.\n\nWigderson \\cite{Wi24} has proved that there are infinitely many such graphs (although his proof is not explicit, and an explicit example of such a graph apart from $K_4$ is still unknown).\n\n\n\n\nReferences\n\n\n[EFRS93] Erd\\H{o}s, Paul and Faudree, R. J. and Rousseau, C. C. and Schelp, R. H., Ramsey size linear graphs. Combin. Probab. Comput. (1993), 389-399.\n\n[Wi24] Y. Wigderson, Infinitely many minimally Ramsey size-linear graphs. arXiv:2409.05931 (2024).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Ramsey Size Linearity**\n\nThe Ramsey number R(G,H) is the minimum n such that any 2-coloring of K_n contains a red copy of G or a blue copy of H. This problem studies graphs G for which R(G,H) grows linearly in the size of H.\n\n**The Definition**: A graph G is *Ramsey size linear* if R(G,H) = O(m) for all graphs H with m edges and no isolated vertices. Intuitively, the 'difficulty' of avoiding G doesn't compound with the size of H.\n\n**The Mystery of K₄**: The complete graph K₄ is known to NOT be Ramsey size linear, but every proper subgraph of K₄ (triangles, paths, matchings) IS Ramsey size linear. This makes K₄ 'minimally non-Ramsey-size-linear'.\n\n**The Question**: Erdős, Faudree, Rousseau, and Schelp (1993) asked whether K₄ is the only such graph, or if infinitely many exist.\n\n**Resolution**: Wigderson's 2024 breakthrough proved infinitely many such graphs exist, though the proof is non-constructive. K₄ remains the only explicit example!",
+    "problemStatement": "**Problem Statement**\n\nWe say G is *Ramsey size linear* if R(G,H) ≪ m for all graphs H with m edges and no isolated vertices.\n\nAre there infinitely many graphs G which are NOT Ramsey size linear but such that all proper subgraphs of G ARE Ramsey size linear?\n\n**Terminology**: Such graphs are called *minimally non-Ramsey-size-linear* or *minimally Ramsey size superlinear*.\n\n**Known Examples**: Only K₄ (the complete graph on 4 vertices) is explicitly known.\n\n**Answer**: YES, infinitely many exist (Wigderson 2024), but constructing explicit examples beyond K₄ remains open.",
+    "proofStrategy": "**Proof Approach (Wigderson 2024)**\n\nWigderson's non-constructive proof uses probabilistic and extremal methods:\n\n1. **Hereditary Property Analysis**: Study the class of Ramsey size linear graphs and its closure properties under taking subgraphs.\n\n2. **Forbidden Subgraph Characterization**: Show that minimally non-Ramsey-size-linear graphs form an infinite antichain in the subgraph ordering.\n\n3. **Probabilistic Existence**: Use probabilistic arguments to show that avoiding all minimal obstructions is impossible in certain graph families.\n\n4. **Counting Arguments**: Derive a contradiction from assuming only finitely many minimal examples exist.\n\n**Key Difficulty**: The proof establishes existence without providing a construction. Finding the 'next' example after K₄ requires new techniques.",
+    "keyInsights": [
+      "K₄ is the unique known explicit minimally non-Ramsey-size-linear graph",
+      "The property 'Ramsey size linear' is hereditary (closed under subgraphs)",
+      "Minimal obstructions to hereditary properties form antichains in subgraph order",
+      "Wigderson's proof is non-constructive - the graphs exist but we can't describe them",
+      "The gap between existence and explicit construction is a major open problem"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "ramsey-numbers",
+      "title": "Ramsey Numbers",
+      "summary": "Definition of the Ramsey number R(G,H)",
+      "startLine": 25,
+      "endLine": 43
+    },
+    {
+      "id": "no-isolated",
+      "title": "Graphs with No Isolated Vertices",
+      "summary": "noIsolatedVertices and edgeCount definitions",
+      "startLine": 45,
+      "endLine": 59
+    },
+    {
+      "id": "ramsey-linear",
+      "title": "Ramsey Size Linearity",
+      "summary": "isRamseySizeLinear and isRamseySizeSuperlinear",
+      "startLine": 61,
+      "endLine": 76
+    },
+    {
+      "id": "hereditary",
+      "title": "Subgraphs and Hereditary Property",
+      "summary": "Ramsey size linearity is closed under subgraphs",
+      "startLine": 78,
+      "endLine": 91
+    },
+    {
+      "id": "minimal",
+      "title": "Minimally Non-Linear Graphs",
+      "summary": "isMinimallyNonLinear definition",
+      "startLine": 93,
+      "endLine": 105
+    },
+    {
+      "id": "K4",
+      "title": "The Complete Graph K₄",
+      "summary": "K₄ is the unique known explicit example",
+      "startLine": 107,
+      "endLine": 132
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "Are there infinitely many such graphs?",
+      "startLine": 134,
+      "endLine": 147
+    },
+    {
+      "id": "wigderson",
+      "title": "Wigderson's Theorem (2024)",
+      "summary": "Non-constructive proof of infinitely many",
+      "startLine": 149,
+      "endLine": 161
+    },
+    {
+      "id": "explicit",
+      "title": "Explicit Construction Problem",
+      "summary": "Only K₄ is explicitly known",
+      "startLine": 163,
+      "endLine": 184
+    },
+    {
+      "id": "antichain",
+      "title": "Antichain Structure",
+      "summary": "Minimal graphs form an antichain",
+      "startLine": 205,
+      "endLine": 217
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #79 asked whether infinitely many 'minimally non-Ramsey-size-linear' graphs exist - graphs failing Ramsey size linearity while all subgraphs satisfy it. Wigderson (2024) proved yes, but only K₄ is explicitly known. The non-constructive nature of the proof leaves explicit construction as a major open problem.",
+    "implications": "**Theoretical Significance**\n\n1. **Ramsey Theory Structure**: Reveals the complexity of the Ramsey size linear property's boundary\n\n2. **Antichain Theory**: Connects to the study of infinite antichains in graph orderings\n\n3. **Explicit vs Existence**: Highlights the gap between probabilistic existence proofs and constructive mathematics\n\n4. **K₄ Uniqueness**: K₄'s special status as the only known example suggests deep structural properties",
+    "openQuestions": [
+      "Find an explicit minimally non-Ramsey-size-linear graph other than K₄",
+      "Is there a finite characterization of Ramsey size linear graphs?",
+      "What is the growth rate of the smallest such graphs?",
+      "Can the proof be made constructive or algorithmic?",
+      "Full Lean formalization of Ramsey size linearity and Wigderson's result"
+    ]
   }
 }

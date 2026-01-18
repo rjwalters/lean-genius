@@ -1,1 +1,140 @@
-[]
+[
+  {
+    "id": "ann-e604-euclidean",
+    "proofId": "erdos-604",
+    "range": { "startLine": 39, "endLine": 41 },
+    "type": "definition",
+    "title": "Euclidean Distance",
+    "content": "The standard Euclidean distance between two points p and q in ℝ²:\n\nd(p,q) = √((p₁-q₁)² + (p₂-q₂)²)\n\nThis is the L² metric that gives the plane its familiar geometry.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e604-pinned-distances",
+    "proofId": "erdos-604",
+    "range": { "startLine": 43, "endLine": 45 },
+    "type": "definition",
+    "title": "Pinned Distances Set",
+    "content": "The **pinned distances** from point x to a set A is the set of all distinct distances from x to other points:\n\n{d(x,y) : y ∈ A, y ≠ x}\n\nThis 'pins' or fixes one endpoint and varies the other. The key question is: how large must this set be for some choice of x?",
+    "mathContext": "Uses `Finset.filter` to exclude x, then `Finset.image` to collect distances. The result is a finite set of real numbers.",
+    "significance": "critical",
+    "relatedConcepts": ["Distinct distances", "Distance geometry", "Combinatorial geometry"]
+  },
+  {
+    "id": "ann-e604-pinned-count",
+    "proofId": "erdos-604",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "definition",
+    "title": "Pinned Distance Count",
+    "content": "The cardinality of the pinned distance set. This is the number of distinct distances that point x 'sees' to other points in A.\n\nFor a point in general position, this could be as high as n-1 (all distances distinct). The conjecture asks: must some point achieve close to this maximum?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e604-weak-conjecture",
+    "proofId": "erdos-604",
+    "range": { "startLine": 57, "endLine": 62 },
+    "type": "definition",
+    "title": "Weak Pinned Distance Conjecture",
+    "content": "**Erdős Problem #604 (Weak Form):**\n\nFor every ε > 0, every sufficiently large n-point set has a point x seeing at least n^(1-ε) distinct distances.\n\nThis says the exponent can get arbitrarily close to 1. Currently, Katz-Tardos achieves exponent ≈ 0.864.",
+    "mathContext": "Formalized as: ∀ ε > 0, ∃ N₀, ∀ A with |A| ≥ N₀, ∃ x ∈ A, d(x) ≥ |A|^(1-ε)",
+    "significance": "critical",
+    "relatedConcepts": ["Asymptotic bounds", "o(1) notation"]
+  },
+  {
+    "id": "ann-e604-strong-conjecture",
+    "proofId": "erdos-604",
+    "range": { "startLine": 64, "endLine": 67 },
+    "type": "definition",
+    "title": "Strong Pinned Distance Conjecture",
+    "content": "**Strong Form:**\n\nThere exists c > 0 such that every n-point set has a point seeing at least c·n/√(log n) distinct distances.\n\nThis matches the integer lattice construction, suggesting it's the truth. If true, the weak form follows immediately.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e604-katz-tardos-exponent",
+    "proofId": "erdos-604",
+    "range": { "startLine": 71, "endLine": 73 },
+    "type": "definition",
+    "title": "Katz-Tardos Exponent",
+    "content": "The **Katz-Tardos exponent**:\n\nc = (48 - 14e) / (55 - 16e) ≈ 0.864137\n\nwhere e ≈ 2.718 is Euler's number. This peculiar expression arises from their crossing number argument combined with the Szemerédi-Trotter theorem.",
+    "mathContext": "The exact value involves the natural constant e because the proof uses exponential growth bounds in certain graph-theoretic arguments.",
+    "significance": "key",
+    "relatedConcepts": ["Crossing number inequality", "Szemerédi-Trotter theorem"]
+  },
+  {
+    "id": "ann-e604-katz-tardos-theorem",
+    "proofId": "erdos-604",
+    "range": { "startLine": 75, "endLine": 79 },
+    "type": "theorem",
+    "title": "Katz-Tardos Theorem (2004)",
+    "content": "**Best Known Result:**\n\nEvery n-point set in the plane has a point x with at least c·n^0.864 distinct distances, where c > 0 is an absolute constant.\n\nThis is marked `sorry` because the full proof requires:\n- The crossing number inequality\n- Incidence geometry bounds\n- Careful combinatorial counting",
+    "mathContext": "The proof uses the fact that if all points had few pinned distances, there would be too many repeated distances, creating graph structures that violate crossing number bounds.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e604-trivial-lower",
+    "proofId": "erdos-604",
+    "range": { "startLine": 83, "endLine": 86 },
+    "type": "theorem",
+    "title": "Trivial Lower Bound",
+    "content": "Every point in a set of 2+ points sees at least 1 distinct distance.\n\nThis is trivial: if |A| ≥ 2 and x ∈ A, there exists y ∈ A with y ≠ x, giving d(x,y) > 0.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e604-upper-bound",
+    "proofId": "erdos-604",
+    "range": { "startLine": 88, "endLine": 96 },
+    "type": "theorem",
+    "title": "Upper Bound on Pinned Distances",
+    "content": "No point can see more than n-1 distinct distances.\n\nProof: From x, we measure distances to at most n-1 other points. Even if all distances are distinct, we get at most n-1 values.\n\nThe `card_image_le` lemma shows |image f S| ≤ |S|.",
+    "mathContext": "Uses the chain: |image| ≤ |filter| ≤ |A| ≤ |A| - 1, where the last step needs |A| ≥ 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e604-lattice",
+    "proofId": "erdos-604",
+    "range": { "startLine": 98, "endLine": 102 },
+    "type": "theorem",
+    "title": "Integer Lattice Construction",
+    "content": "**Key Upper Bound Example:**\n\nThe integer lattice {1,...,√n} × {1,...,√n} contains n points where every point sees at most O(n/√log n) distinct distances.\n\nThis is because distances in the lattice are √(a² + b²) for integers a,b, and the number of such representable integers up to N is O(N/√log N) by classical results on sums of two squares.",
+    "mathContext": "Uses Landau's theorem: the count of integers ≤ N representable as sum of two squares is asymptotic to c·N/√log N.",
+    "significance": "key",
+    "relatedConcepts": ["Sum of two squares", "Landau's theorem", "Number theory"]
+  },
+  {
+    "id": "ann-e604-sum-conjecture",
+    "proofId": "erdos-604",
+    "range": { "startLine": 110, "endLine": 113 },
+    "type": "definition",
+    "title": "Pinned Distance Sum Conjecture",
+    "content": "**Erdős's Sum Conjecture:**\n\nΣ_x |{d(x,y) : y ∈ A}| ≫ n²/√log n\n\nThe total count of pinned distances, summed over all points, should be at least n²/√log n.\n\nErdős initially thought this equaled the distinct distance count, but Harborth showed they differ.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e604-all-distances",
+    "proofId": "erdos-604",
+    "range": { "startLine": 117, "endLine": 119 },
+    "type": "definition",
+    "title": "All Distinct Distances",
+    "content": "The set of all pairwise distinct distances in A:\n\n{d(p,q) : p,q ∈ A, p ≠ q}\n\nThis is the 'unpinned' distinct distance set studied in Erdős Problem #89, famously solved by Guth-Katz (2015) who proved it has size ≫ n/log n.",
+    "significance": "supporting",
+    "relatedConcepts": ["Erdős Problem #89", "Guth-Katz theorem"]
+  },
+  {
+    "id": "ann-e604-subset-relation",
+    "proofId": "erdos-604",
+    "range": { "startLine": 121, "endLine": 130 },
+    "type": "theorem",
+    "title": "Pinned Distances Subset of All",
+    "content": "**Structural Result:**\n\nFor any x ∈ A, the pinned distances from x form a subset of all pairwise distances.\n\nThis is immediate: if d = d(x,y) is a pinned distance, then (x,y) is a pair in A with distance d.",
+    "mathContext": "The proof constructs the pair (x,y) witnessing that d appears in the full distance set. Uses membership in products and filters.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e604-open-statement",
+    "proofId": "erdos-604",
+    "range": { "startLine": 134, "endLine": 138 },
+    "type": "theorem",
+    "title": "Open Problem Marker",
+    "content": "**Status: OPEN**\n\nThis reflexive statement `pinnedDistanceConjecture ↔ pinnedDistanceConjecture` serves as a marker that the conjecture remains unproven.\n\nThe $500 prize awaits whoever proves the exponent approaches 1.",
+    "significance": "critical"
+  }
+]

@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-1002-frac",
+    "proofId": "erdos-1002",
+    "range": { "startLine": 30, "endLine": 31 },
+    "type": "definition",
+    "title": "Fractional Part",
+    "content": "frac(x) = x - ⌊x⌋, the fractional part of x.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1002-innersum",
+    "proofId": "erdos-1002",
+    "range": { "startLine": 48, "endLine": 50 },
+    "type": "definition",
+    "title": "Inner Sum",
+    "content": "Σ_{1≤k≤n} (1/2 - {αk}), deviation from uniform distribution.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1002-f",
+    "proofId": "erdos-1002",
+    "range": { "startLine": 52, "endLine": 54 },
+    "type": "definition",
+    "title": "Weighted Sum f(α,n)",
+    "content": "f(α,n) = innerSum(α,n) / log(n), the normalized deviation.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1002-distfunc",
+    "proofId": "erdos-1002",
+    "range": { "startLine": 63, "endLine": 68 },
+    "type": "definition",
+    "title": "Distribution Function",
+    "content": "Non-decreasing g with g(-∞)=0, g(+∞)=1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1002-levelset",
+    "proofId": "erdos-1002",
+    "range": { "startLine": 77, "endLine": 79 },
+    "type": "definition",
+    "title": "Level Set",
+    "content": "{α ∈ (0,1) : f(α,n) ≤ c}, the set of α with bounded f.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1002-asymptotic",
+    "proofId": "erdos-1002",
+    "range": { "startLine": 81, "endLine": 88 },
+    "type": "definition",
+    "title": "Asymptotic Distribution",
+    "content": "∃g: μ(levelSet(n,c)) → g(c) as n → ∞.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1002-conjecture",
+    "proofId": "erdos-1002",
+    "range": { "startLine": 97, "endLine": 98 },
+    "type": "definition",
+    "title": "Main Conjecture (OPEN)",
+    "content": "f(α,n) has an asymptotic distribution function.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1002-twoparam",
+    "proofId": "erdos-1002",
+    "range": { "startLine": 109, "endLine": 114 },
+    "type": "definition",
+    "title": "Two-Parameter Variant",
+    "content": "f(α,β,n) = (1/log n) Σ (1/2 - {β + αk}), adds shift β.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1002-cauchy",
+    "proofId": "erdos-1002",
+    "range": { "startLine": 120, "endLine": 122 },
+    "type": "definition",
+    "title": "Cauchy Distribution",
+    "content": "g(c) = (1/π)arctan(ρc) + 1/2, the limiting distribution.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1002-kesten",
+    "proofId": "erdos-1002",
+    "range": { "startLine": 128, "endLine": 133 },
+    "type": "theorem",
+    "title": "Kesten's Theorem (1960)",
+    "content": "The two-parameter variant has Cauchy asymptotic distribution.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1002-special",
+    "proofId": "erdos-1002",
+    "range": { "startLine": 142, "endLine": 145 },
+    "type": "theorem",
+    "title": "Special Case Relationship",
+    "content": "f(α,n) = f(α,0,n), one-parameter is β=0 case.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1002-weyl",
+    "proofId": "erdos-1002",
+    "range": { "startLine": 154, "endLine": 159 },
+    "type": "theorem",
+    "title": "Weyl Equidistribution",
+    "content": "{αk} mod 1 is equidistributed for irrational α.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1002-oscillation",
+    "proofId": "erdos-1002",
+    "range": { "startLine": 161, "endLine": 166 },
+    "type": "theorem",
+    "title": "Oscillation for Fixed α",
+    "content": "For fixed irrational α, f(α,n) oscillates without settling.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1002-bounded",
+    "proofId": "erdos-1002",
+    "range": { "startLine": 174, "endLine": 177 },
+    "type": "theorem",
+    "title": "Boundedness",
+    "content": "f(α,n) is bounded for α ∈ (0,1).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1002-cfbound",
+    "proofId": "erdos-1002",
+    "range": { "startLine": 179, "endLine": 182 },
+    "type": "theorem",
+    "title": "Continued Fraction Bound",
+    "content": "|innerSum(α,n)| ≤ C·log(n) for irrational α.",
+    "significance": "key"
+  }
+]

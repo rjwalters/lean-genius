@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-1001-approx",
+    "proofId": "erdos-1001",
+    "range": { "startLine": 39, "endLine": 41 },
+    "type": "definition",
+    "title": "isApproximable",
+    "content": "α is (A,y)-approximable if |α - x/y| < A/y² for some coprime x.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1001-set",
+    "proofId": "erdos-1001",
+    "range": { "startLine": 43, "endLine": 45 },
+    "type": "definition",
+    "title": "Approximation Set",
+    "content": "Set of α ∈ (0,1) approximable by some y in [N, cN].",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1001-S",
+    "proofId": "erdos-1001",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "definition",
+    "title": "S(N, A, c)",
+    "content": "Lebesgue measure of the approximation set.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1001-bounds",
+    "proofId": "erdos-1001",
+    "range": { "startLine": 57, "endLine": 60 },
+    "type": "theorem",
+    "title": "S Bounds",
+    "content": "0 ≤ S(N,A,c) ≤ 1 for all valid parameters.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1001-f",
+    "proofId": "erdos-1001",
+    "range": { "startLine": 78, "endLine": 80 },
+    "type": "definition",
+    "title": "Limit Function f",
+    "content": "f(A,c) = 12A log(c)/π², the explicit limiting density.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1001-exists",
+    "proofId": "erdos-1001",
+    "range": { "startLine": 82, "endLine": 84 },
+    "type": "definition",
+    "title": "Limit Exists",
+    "content": "The main question: does lim S(N,A,c) exist?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1001-regime",
+    "proofId": "erdos-1001",
+    "range": { "startLine": 92, "endLine": 94 },
+    "type": "definition",
+    "title": "EST Regime",
+    "content": "The regime 0 < A < c/(1+c²) where explicit formula holds.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1001-est",
+    "proofId": "erdos-1001",
+    "range": { "startLine": 98, "endLine": 100 },
+    "type": "theorem",
+    "title": "Erdős-Szüsz-Turán (1958)",
+    "content": "In EST regime, S(N,A,c) → f(A,c) = 12A log(c)/π².",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1001-bounded",
+    "proofId": "erdos-1001",
+    "range": { "startLine": 114, "endLine": 116 },
+    "type": "theorem",
+    "title": "EST Boundedness",
+    "content": "If min(A,c) > 10, S stays bounded away from 0 and 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1001-kesten",
+    "proofId": "erdos-1001",
+    "range": { "startLine": 125, "endLine": 127 },
+    "type": "theorem",
+    "title": "Kesten-Sós (1966)",
+    "content": "The limit exists for all valid A, c.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1001-value",
+    "proofId": "erdos-1001",
+    "range": { "startLine": 129, "endLine": 133 },
+    "type": "definition",
+    "title": "Limit Value",
+    "content": "The limiting value (exists by Kesten-Sós).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1001-boca",
+    "proofId": "erdos-1001",
+    "range": { "startLine": 148, "endLine": 150 },
+    "type": "definition",
+    "title": "Boca Method",
+    "content": "Alternative proof using Farey fractions (2008).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1001-farey",
+    "proofId": "erdos-1001",
+    "range": { "startLine": 165, "endLine": 167 },
+    "type": "definition",
+    "title": "Farey Fractions",
+    "content": "Rationals p/q with 0 ≤ p ≤ q ≤ n and gcd(p,q) = 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1001-farey-count",
+    "proofId": "erdos-1001",
+    "range": { "startLine": 169, "endLine": 171 },
+    "type": "theorem",
+    "title": "Farey Asymptotics",
+    "content": "|F_n| ~ 3n²/π², explaining the π² in EST formula.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1001-pi",
+    "proofId": "erdos-1001",
+    "range": { "startLine": 173, "endLine": 177 },
+    "type": "theorem",
+    "title": "π² Explanation",
+    "content": "f(1, e) = 12/π², showing the Farey connection.",
+    "significance": "supporting"
+  }
+]

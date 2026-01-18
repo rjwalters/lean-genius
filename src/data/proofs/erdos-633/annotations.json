@@ -1,1 +1,168 @@
-[]
+[
+  {
+    "id": "ann-e633-triangle-struct",
+    "proofId": "erdos-633",
+    "range": { "startLine": 39, "endLine": 50 },
+    "type": "definition",
+    "title": "Triangle Structure",
+    "content": "A triangle is represented by three positive real side lengths (a, b, c) satisfying the **triangle inequality**:\n\n- a + b > c\n- b + c > a  \n- c + a > b\n\nThis ensures the sides can actually form a triangle.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e633-triangle-angles",
+    "proofId": "erdos-633",
+    "range": { "startLine": 52, "endLine": 60 },
+    "type": "definition",
+    "title": "Triangle by Angles",
+    "content": "An alternative representation using three angles (α, β, γ) in radians.\n\nConstraints:\n- Each angle is in (0, π)\n- α + β + γ = π\n\nThis is useful for the integral independence condition.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e633-heron",
+    "proofId": "erdos-633",
+    "range": { "startLine": 62, "endLine": 65 },
+    "type": "definition",
+    "title": "Heron's Formula",
+    "content": "The area of a triangle with sides a, b, c:\n\nArea = √(s(s-a)(s-b)(s-c))\n\nwhere s = (a+b+c)/2 is the semi-perimeter.\n\nThis is key for dissection counting: n pieces means each has area (total area)/n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e633-dissection",
+    "proofId": "erdos-633",
+    "range": { "startLine": 69, "endLine": 74 },
+    "type": "definition",
+    "title": "Congruent Dissection",
+    "content": "A **congruent dissection** of T into n copies of S requires:\n\n1. **Area compatibility:** Area(T) = n × Area(S)\n2. **Congruence:** S has the same shape as T (same angle ratios)\n\nThe pieces must tile T exactly with no gaps or overlaps.",
+    "mathContext": "In practice, the pieces S are typically similar to T with a specific scaling factor.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e633-can-dissect",
+    "proofId": "erdos-633",
+    "range": { "startLine": 76, "endLine": 78 },
+    "type": "definition",
+    "title": "Can Dissect Into",
+    "content": "The predicate `CanDissectInto T n` asserts that triangle T can be divided into exactly n congruent triangular pieces.\n\nThis is the core relation we study: for which n does a valid dissection exist?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e633-dissection-counts",
+    "proofId": "erdos-633",
+    "range": { "startLine": 80, "endLine": 82 },
+    "type": "definition",
+    "title": "Dissection Counts",
+    "content": "The set of all valid dissection counts for a triangle T:\n\nDissectionCounts(T) = {n ≥ 1 : T can be dissected into n congruent pieces}\n\nThe problem asks: for which T is this set exactly {1, 4, 9, 16, ...}?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e633-is-square",
+    "proofId": "erdos-633",
+    "range": { "startLine": 86, "endLine": 87 },
+    "type": "definition",
+    "title": "Perfect Square",
+    "content": "A natural number n is a **perfect square** if n = k² for some k ∈ ℕ.\n\nPerfect squares: 1, 4, 9, 16, 25, 36, ...",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e633-square-only",
+    "proofId": "erdos-633",
+    "range": { "startLine": 89, "endLine": 92 },
+    "type": "definition",
+    "title": "Square-Only Property",
+    "content": "A triangle has the **square-only property** if every valid dissection count is a perfect square:\n\n∀ n ∈ DissectionCounts(T), ∃ k, n = k²\n\nThis is the restrictive property we want to classify.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e633-universal",
+    "proofId": "erdos-633",
+    "range": { "startLine": 100, "endLine": 103 },
+    "type": "theorem",
+    "title": "Universal Square Dissections",
+    "content": "**Key Result:**\n\nEvery triangle can be dissected into n² congruent triangles for any n ≥ 1.\n\nThe construction: divide each side into n equal parts and connect to form an n×n grid of similar triangles.",
+    "mathContext": "This shows that square numbers are always achievable. The question is whether NON-square numbers are also achievable.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e633-soifer-def",
+    "proofId": "erdos-633",
+    "range": { "startLine": 115, "endLine": 145 },
+    "type": "definition",
+    "title": "Soifer's Triangle",
+    "content": "**Soifer's Example:**\n\nThe triangle with sides √2, √3, √4 (= 2).\n\nThis is a valid triangle:\n- √2 + √3 > 2 ✓\n- √3 + 2 > √2 ✓  \n- 2 + √2 > √3 ✓\n\nSoifer proved this triangle can ONLY be dissected into square numbers of congruent pieces.",
+    "mathContext": "The construction uses Lean's Real.sqrt and verifies the triangle inequalities explicitly.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e633-soifer-thm",
+    "proofId": "erdos-633",
+    "range": { "startLine": 147, "endLine": 149 },
+    "type": "theorem",
+    "title": "Soifer's Theorem",
+    "content": "**Soifer's Result:**\n\nThe triangle (√2, √3, √4) has the square-only property.\n\nThis is marked `sorry` — the proof involves careful analysis of how the irrational side lengths constrain possible tilings.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e633-integral-ind",
+    "proofId": "erdos-633",
+    "range": { "startLine": 153, "endLine": 157 },
+    "type": "definition",
+    "title": "Integral Independence",
+    "content": "Angles are **integrally independent** if:\n\nFor integers a, b, c: aα + bβ + cγ = 0 implies a = b = c = 0\n\n(modulo the constraint α + β + γ = π)\n\nTriangles with this property tend to have the square-only property.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e633-equilateral",
+    "proofId": "erdos-633",
+    "range": { "startLine": 171, "endLine": 174 },
+    "type": "theorem",
+    "title": "Equilateral Dissects to 3",
+    "content": "**Counterexample to Square-Only:**\n\nEquilateral triangles can be dissected into 3 congruent triangles (not a square!).\n\nConstruction: Connect the center to the three vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e633-right-isoceles",
+    "proofId": "erdos-633",
+    "range": { "startLine": 176, "endLine": 179 },
+    "type": "theorem",
+    "title": "Right Isoceles Dissects to 2",
+    "content": "**Another Counterexample:**\n\nA 45-45-90 triangle can be dissected into 2 congruent triangles.\n\nConstruction: Draw the altitude from the right angle to the hypotenuse.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e633-similar",
+    "proofId": "erdos-633",
+    "range": { "startLine": 188, "endLine": 191 },
+    "type": "theorem",
+    "title": "Similar Dissection Theorem",
+    "content": "**Related Result (Similar, not Congruent):**\n\nEvery triangle can be dissected into n similar triangles for n ≠ 2, 3, 5.\n\nSome triangles cannot be dissected into 2, 3, or 5 similar copies.\n\nThis is a complete characterization for the similar case!",
+    "significance": "key",
+    "relatedConcepts": ["Similar triangles", "Problem #634"]
+  },
+  {
+    "id": "ann-e633-classification",
+    "proofId": "erdos-633",
+    "range": { "startLine": 201, "endLine": 207 },
+    "type": "definition",
+    "title": "The Classification Problem",
+    "content": "**Erdős Problem #633:**\n\nFind a predicate P on triangles such that:\n\nHasSquareOnlyProperty(T) ↔ P(T)\n\nwhere P is a 'nice' geometric condition (like angle relationships or side ratios).\n\nThis remains OPEN with a $25 prize.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e633-soifer-family",
+    "proofId": "erdos-633",
+    "range": { "startLine": 215, "endLine": 220 },
+    "type": "definition",
+    "title": "Soifer's Family",
+    "content": "**Generalization:**\n\nTriangles with sides (√p, √q, √r) for distinct positive integers p, q, r (satisfying triangle inequality) form Soifer's family.\n\nConjectured: all such triangles have the square-only property.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e633-main",
+    "proofId": "erdos-633",
+    "range": { "startLine": 228, "endLine": 232 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**Erdős Problem #633: OPEN**\n\nWe prove: ∃ T, HasSquareOnlyProperty T\n\nwitnessed by Soifer's triangle (√2, √3, √4).\n\nThe complete classification remains unsolved. Prize: $25.",
+    "significance": "critical"
+  }
+]

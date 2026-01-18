@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-e895-graph-interval",
+    "proofId": "erdos-895",
+    "range": { "startLine": 41, "endLine": 42 },
+    "type": "definition",
+    "title": "Graph on Interval",
+    "content": "A graph on {1,...,n} is represented as a `SimpleGraph (Fin n)`.\n\nUsing `Fin n` ensures vertices are exactly 0, 1, ..., n-1 (which we interpret as 1, ..., n).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e895-independent-triple",
+    "proofId": "erdos-895",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "definition",
+    "title": "Independent Triple",
+    "content": "Three vertices a, b, c form an **independent set** if no two are adjacent:\n\n¬G.Adj a b ∧ ¬G.Adj b c ∧ ¬G.Adj a c\n\nThis is the key property we want to find for additive triples.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e895-triangle-free",
+    "proofId": "erdos-895",
+    "range": { "startLine": 48, "endLine": 50 },
+    "type": "definition",
+    "title": "Triangle-Free Graph",
+    "content": "A graph is **triangle-free** if it contains no three mutually adjacent vertices:\n\n∀ a b c, ¬(G.Adj a b ∧ G.Adj b c ∧ G.Adj a c)\n\nTriangle-free graphs have structural constraints that force large independent sets.",
+    "mathContext": "By Ramsey theory (R(3,3)=6), every 2-coloring of K₆ has a monochromatic triangle, so triangle-free graphs have independence number ≥ √n.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey theory", "Independence number", "Turán's theorem"]
+  },
+  {
+    "id": "ann-e895-additive-triple",
+    "proofId": "erdos-895",
+    "range": { "startLine": 54, "endLine": 56 },
+    "type": "definition",
+    "title": "Additive Triple",
+    "content": "An **additive triple** is (a, b, c) where a + b = c and a, b > 0.\n\nThese are also called **Schur triples** in the context of Ramsey theory. The constraint a, b > 0 ensures non-degeneracy.",
+    "significance": "critical",
+    "relatedConcepts": ["Schur's theorem", "Sum-free sets"]
+  },
+  {
+    "id": "ann-e895-main-predicate",
+    "proofId": "erdos-895",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "definition",
+    "title": "Has Independent Additive Triple",
+    "content": "The key predicate: does G contain vertices a, b, a+b that are pairwise non-adjacent?\n\nThis combines:\n- Additive structure: a + b = c\n- Graph structure: no edges between a, b, c\n\nThe problem asks: is this always satisfiable for triangle-free G on large n?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e895-conjecture",
+    "proofId": "erdos-895",
+    "range": { "startLine": 64, "endLine": 68 },
+    "type": "definition",
+    "title": "Erdős Problem #895",
+    "content": "**The Conjecture:**\n\nThere exists N such that for all n ≥ N, every triangle-free graph on {1,...,n} has an independent additive triple.\n\nThe question is: does such N exist, and what is its value?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e895-threshold",
+    "proofId": "erdos-895",
+    "range": { "startLine": 70, "endLine": 71 },
+    "type": "definition",
+    "title": "The Threshold",
+    "content": "The threshold is **n = 18**.\n\nFor n ≥ 18, every triangle-free graph has an independent additive triple. For n = 17, a counterexample exists.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e895-barber",
+    "proofId": "erdos-895",
+    "range": { "startLine": 75, "endLine": 78 },
+    "type": "theorem",
+    "title": "Barber's Theorem",
+    "content": "**Ben Barber's Result:**\n\nFor all n ≥ 18, every triangle-free graph on {1,...,n} has an independent additive triple a, b, a+b.\n\nThis was verified computationally using a SAT solver, not proved by hand.",
+    "mathContext": "SAT solvers encode the combinatorial problem as Boolean satisfiability and prove unsatisfiability of the negation for each n ≥ 18.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e895-main-result",
+    "proofId": "erdos-895",
+    "range": { "startLine": 80, "endLine": 83 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**Erdős Problem #895: SOLVED**\n\nThe conjecture is TRUE with threshold N = 18. We prove this by applying Barber's theorem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e895-counterexample",
+    "proofId": "erdos-895",
+    "range": { "startLine": 87, "endLine": 90 },
+    "type": "theorem",
+    "title": "Counterexample for n = 17",
+    "content": "**Sharpness:**\n\nThere exists a triangle-free graph on {1,...,17} with NO independent additive triple.\n\nThis shows the threshold 18 is optimal.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e895-ramsey",
+    "proofId": "erdos-895",
+    "range": { "startLine": 100, "endLine": 104 },
+    "type": "theorem",
+    "title": "Ramsey R(3,3) = 6",
+    "content": "**Classical Ramsey Theory:**\n\nAny 2-coloring of K₆ (complete graph on 6 vertices) contains a monochromatic triangle.\n\nEquivalently: every graph on ≥ 6 vertices has either a triangle or an independent set of size 3.",
+    "significance": "supporting",
+    "relatedConcepts": ["Ramsey numbers", "Pigeonhole principle"]
+  },
+  {
+    "id": "ann-e895-independence-bound",
+    "proofId": "erdos-895",
+    "range": { "startLine": 106, "endLine": 109 },
+    "type": "theorem",
+    "title": "Independence Bound",
+    "content": "**Ramsey Lower Bound:**\n\nEvery triangle-free graph on n vertices has an independent set of size ≥ √n.\n\nThis follows from R(3,k) ≤ Ck²/log k, giving large independent sets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e895-sum-free",
+    "proofId": "erdos-895",
+    "range": { "startLine": 113, "endLine": 115 },
+    "type": "definition",
+    "title": "Sum-Free Sets",
+    "content": "A set S is **sum-free** if it contains no Schur triple:\n\n∀ a, b ∈ S, a + b ∉ S\n\nSum-free sets avoid additive structure. The problem relates to finding sets that are NOT sum-free within independent sets.",
+    "significance": "key",
+    "relatedConcepts": ["Schur numbers", "Additive combinatorics"]
+  },
+  {
+    "id": "ann-e895-schur",
+    "proofId": "erdos-895",
+    "range": { "startLine": 117, "endLine": 121 },
+    "type": "definition",
+    "title": "Schur Numbers",
+    "content": "The **Schur number S(k)** is the largest n such that {1,...,n} can be k-colored with no monochromatic Schur triple.\n\n- S(1) = 1\n- S(2) = 4\n- S(3) = 13\n- S(4) = 44\n- S(5) = 160 (known since 2017)",
+    "significance": "key",
+    "relatedConcepts": ["Schur's theorem", "Partition regularity"]
+  },
+  {
+    "id": "ann-e895-hindman",
+    "proofId": "erdos-895",
+    "range": { "startLine": 137, "endLine": 139 },
+    "type": "definition",
+    "title": "Hindman Sets",
+    "content": "A **Hindman set** from a base B is the set of all finite sums of distinct elements from B:\n\n{Σ T : T ⊆ B, T finite, T ≠ ∅}\n\nFor example, from B = {1, 2}, the Hindman set is {1, 2, 3}.",
+    "significance": "key",
+    "relatedConcepts": ["Hindman's theorem", "IP sets"]
+  },
+  {
+    "id": "ann-e895-hajnal",
+    "proofId": "erdos-895",
+    "range": { "startLine": 141, "endLine": 146 },
+    "type": "definition",
+    "title": "Hajnal's Conjecture",
+    "content": "**Open Generalization:**\n\nHajnal conjectured that for large n, every triangle-free graph on {1,...,n} has an independent Hindman set—all finite sums of some base set form an independent set.\n\nThis is stronger than Erdős 895 (which only requires a, b, a+b).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e895-hajnal-open",
+    "proofId": "erdos-895",
+    "range": { "startLine": 148, "endLine": 150 },
+    "type": "theorem",
+    "title": "Hajnal's Conjecture is OPEN",
+    "content": "The reflexive statement `hajnalConjecture ↔ hajnalConjecture` marks this as an open problem.\n\nThe generalization from triples to full Hindman sets remains unresolved.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e895-mantel",
+    "proofId": "erdos-895",
+    "range": { "startLine": 154, "endLine": 157 },
+    "type": "theorem",
+    "title": "Mantel's Theorem",
+    "content": "**Edge Bound for Triangle-Free Graphs:**\n\nA triangle-free graph on n vertices has at most n²/4 edges.\n\nThis is achieved by the complete bipartite graph K_{n/2, n/2}. It constrains how 'dense' triangle-free graphs can be.",
+    "significance": "supporting",
+    "relatedConcepts": ["Turán's theorem", "Extremal graph theory"]
+  },
+  {
+    "id": "ann-e895-summary",
+    "proofId": "erdos-895",
+    "range": { "startLine": 176, "endLine": 183 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdős Problem #895: SOLVED**\n\n- Answer: YES, independent additive triples exist for n ≥ 18\n- Method: SAT solver verification by Ben Barber\n- Threshold: n = 18 is sharp (counterexample for n = 17)\n- Open: Hajnal's generalization to Hindman sets",
+    "significance": "critical"
+  }
+]

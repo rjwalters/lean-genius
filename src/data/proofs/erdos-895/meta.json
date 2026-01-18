@@ -1,33 +1,129 @@
 {
   "id": "erdos-895",
-  "title": "Erdős Problem #895",
+  "title": "Erdős Problem #895: Independent Additive Triples",
   "slug": "erdos-895",
-  "description": "Is it true that, for all sufficiently large n\" role=\"presentation\" style=\"position: relative;\">nnn, if G\" role=\"presentation\" style=\"position: relative;\">GGG is a triangle-free graph on {1,&#x2026;...",
+  "description": "In a triangle-free graph on {1,...,n}, must there exist independent vertices a, b, a+b? Yes, for n ≥ 18! Solved by Ben Barber via SAT verification.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Hajnal, solved by Barber",
     "sourceUrl": "https://erdosproblems.com/895",
-    "date": "",
-    "status": "pending",
+    "date": "1995",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos895Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "additive-combinatorics",
+      "ramsey-theory",
+      "schur-numbers",
+      "computational"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 11,
     "erdosNumber": 895,
     "erdosUrl": "https://erdosproblems.com/895",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Fin",
+        "description": "Finite types for bounded naturals",
+        "module": "Mathlib.Data.Fin.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of independent additive triples",
+      "Statement of Barber's theorem with threshold n=18",
+      "Connection to Schur numbers and Ramsey theory",
+      "Formalization of Hajnal's open generalization"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #895 from erdosproblems.com.",
-    "problemStatement": "Is it true that, for all sufficiently large n\" role=\"presentation\" style=\"position: relative;\">nnn, if G\" role=\"presentation\" style=\"position: relative;\">GGG is a triangle-free graph on {1,&#x2026;,n}\" role=\"presentation\" style=\"position: relative;\">{1,…,n}{1,…,n}\\{1,\\ldots,n\\} then there must exist three independent points a,b,a+b\" role=\"presentation\" style=\"position: relative;\">a,b,a+ba,b,a+ba,b,a+b?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem lies at the intersection of graph theory and additive combinatorics. Erdős and Hajnal posed it in 1995: if G is a triangle-free graph on the integers {1,...,n}, must there exist vertices a, b, a+b forming an independent set?\n\nThe question connects two distinct structures: the graph-theoretic constraint (triangle-free) and the arithmetic constraint (additive triple). Ben Barber settled it computationally using SAT solver verification, showing the answer is YES for n ≥ 18.",
+    "problemStatement": "Let G be a triangle-free graph with vertex set {1, 2, ..., n}.\n\n**Question:** For sufficiently large n, must there exist vertices a, b, and a+b that form an independent set (no edges between them)?\n\n**Answer:** YES, for all n ≥ 18 (Barber)\n\nThe threshold n = 18 is sharp: there exists a triangle-free graph on {1,...,17} with no independent additive triple.",
+    "proofStrategy": "The formalization:\n\n1. Defines `GraphOnInterval n` as SimpleGraph on Fin n\n2. Defines `IsTriangleFree` and `IsIndependentTriple`\n3. Defines `IsAdditiveTriple a b c` requiring a + b = c\n4. States `barber_theorem`: the result holds for n ≥ 18\n5. States `counterexample_17`: threshold is sharp\n6. Connects to Ramsey theory and Schur numbers\n7. States Hajnal's open generalization about Hindman sets",
+    "keyInsights": [
+      "**Graph-Arithmetic Interplay:** Triangle-free graphs force large independent sets (Ramsey), which must intersect arithmetic structure.",
+      "**Threshold n = 18:** Computationally verified by SAT solver; there's a counterexample for n = 17.",
+      "**Schur Connection:** Related to Schur numbers—the largest n where {1,...,n} can be colored avoiding monochromatic a+b=c.",
+      "**Ramsey Bound:** Triangle-free graphs on n vertices have independence number ≥ √n (Ramsey R(3,3) = 6).",
+      "**Hajnal's Generalization:** Does there exist an independent Hindman set? (All finite sums from a base set) — OPEN."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-defs",
+      "title": "Graph Definitions",
+      "summary": "Basic definitions for graphs on intervals",
+      "startLine": 36,
+      "endLine": 50
+    },
+    {
+      "id": "additive-triples",
+      "title": "Additive Triples",
+      "summary": "Definitions for additive triples and independent additive triples",
+      "startLine": 52,
+      "endLine": 60
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "summary": "Statement of Erdős Problem #895",
+      "startLine": 62,
+      "endLine": 71
+    },
+    {
+      "id": "barber",
+      "title": "Barber's Theorem",
+      "summary": "The main result with threshold 18",
+      "startLine": 73,
+      "endLine": 83
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "summary": "Counterexample for n=17 showing sharpness",
+      "startLine": 85,
+      "endLine": 96
+    },
+    {
+      "id": "ramsey",
+      "title": "Ramsey Connection",
+      "summary": "R(3,3) = 6 and independence bounds",
+      "startLine": 98,
+      "endLine": 109
+    },
+    {
+      "id": "schur",
+      "title": "Schur Numbers",
+      "summary": "Connection to sum-free sets and Schur's theorem",
+      "startLine": 111,
+      "endLine": 133
+    },
+    {
+      "id": "hajnal",
+      "title": "Hajnal's Generalization",
+      "summary": "The open question about Hindman sets",
+      "startLine": 135,
+      "endLine": 150
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #895 asks whether triangle-free graphs on {1,...,n} must contain independent additive triples a, b, a+b. The answer is YES for n ≥ 18, verified computationally by Ben Barber. Our formalization captures the main theorem, the sharp threshold, connections to Ramsey theory and Schur numbers, and Hajnal's open generalization.",
+    "implications": "This problem connects to:\n\n1. **Ramsey Theory:** Triangle-free graphs and independence numbers\n2. **Additive Combinatorics:** Schur's theorem and sum-free sets\n3. **Hindman's Theorem:** Finite sums in partition regular structures\n4. **Computational Methods:** SAT solver verification of combinatorial conjectures\n5. **Arithmetic Ramsey Theory:** Combining graph and number-theoretic constraints",
+    "openQuestions": [
+      "Prove Hajnal's generalization about independent Hindman sets",
+      "Find an explicit (non-SAT) proof of the main result",
+      "Determine the structure of extremal graphs for n = 17",
+      "Extend to other additive patterns beyond a + b = c"
+    ]
   }
 }

@@ -765,17 +765,21 @@
   },
   {
     "id": "erdos-1002",
-    "title": "Erdős Problem #1002",
+    "title": "Erdős Problem #1002: Asymptotic Distribution of Weighted Fractional Sums",
     "slug": "erdos-1002",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any ..., let\\[f(\\alpha,n)={\\log n}\\sum_{1\\leq k\\leq n}({2}-\\{ \\alpha k\\}).\\]Does ... have an asymptotic distribution func...",
+    "description": "For 0 < α < 1, define f(α,n) = (1/log n) Σ (1/2 - {αk}). Does f(α,n) have an asymptotic distribution function? Kesten (1960) proved the two-parameter variant has Cauchy distribution, but the one-parameter case remains open.",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "wip",
     "tags": [
-      "erdos"
+      "analysis",
+      "diophantine-approximation",
+      "erdos",
+      "distribution-functions",
+      "fractional-parts"
     ],
     "erdosNumber": 1002,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 5,
+    "annotationCount": 15
   },
   {
     "id": "erdos-1003",
@@ -817,17 +821,21 @@
   },
   {
     "id": "erdos-1005",
-    "title": "Erdős Problem #1005",
+    "title": "Erdős Problem #1005: Farey Fractions and Similar Ordering",
     "slug": "erdos-1005",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the Farey fractions of order .... Let ... be the largest integer such that if ... then ... and ... are similarly o...",
+    "description": "Let f(n) be the longest run of consecutive similarly ordered Farey fractions of order n. Estimate f(n) - is there c > 0 with f(n) = (c + o(1))n? Known: (1/12 - o(1))n ≤ f(n) ≤ n/4 + O(1).",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "number-theory",
+      "farey-fractions",
+      "erdos",
+      "asymptotic-analysis",
+      "combinatorics"
     ],
     "erdosNumber": 1005,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 5,
+    "annotationCount": 16
   },
   {
     "id": "erdos-1006",
@@ -946,17 +954,21 @@
   },
   {
     "id": "erdos-1012",
-    "title": "Erdős Problem #1012",
+    "title": "Erdős Problem #1012: Long Cycles in Dense Graphs",
     "slug": "erdos-1012",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet .... Let ... be such that every graph on ... vertices with at least ... edges contains a cycle on ... vertices. Determine...",
+    "description": "Let f(k) be such that every graph on n ≥ f(k) vertices with ≥ C(n-k-1,2) + C(k+2,2) + 1 edges has an (n-k)-cycle. Woodall (1972) proved f(k) ≤ 2k+3 and such graphs are pancyclic from 3 to n-k.",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "extremal-combinatorics",
+      "erdos",
+      "hamiltonian-cycles",
+      "pancyclic-graphs"
     ],
     "erdosNumber": 1012,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 7,
+    "annotationCount": 16
   },
   {
     "id": "erdos-1015",
@@ -978,17 +990,21 @@
   },
   {
     "id": "erdos-1017",
-    "title": "Erdős Problem #1017",
+    "title": "Erdős Problem #1017: Clique Partition of Graphs",
     "slug": "erdos-1017",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that every graph on ... vertices and ... edges can be partitioned into at most ... edge-disjoint complete gra...",
+    "description": "Let f(n,k) be the min cliques to partition any graph with n vertices, k edges. Erdős-Goodman-Pósa proved f(n,k) ≤ n²/4. Can this be improved for k > n²/4? The K₄-free case is solved (Győri-Keszegh 2017).",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "extremal-combinatorics",
+      "erdos",
+      "clique-partition",
+      "graph-decomposition"
     ],
     "erdosNumber": 1017,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 8,
+    "annotationCount": 18
   },
   {
     "id": "erdos-1018",
@@ -1418,7 +1434,7 @@
     "slug": "erdos-1047",
     "description": "Must the connected components of {z : |f(z)| ≤ c} be convex for small c? No! Grunsky's conjecture was disproved by Pommerenke (1961) and Goodman (1966) with explicit counterexamples.",
     "status": "wip",
-    "badge": "disproved",
+    "badge": "axiom",
     "tags": [
       "erdos",
       "complex-analysis",
@@ -1430,7 +1446,7 @@
     ],
     "erdosNumber": 1047,
     "mathlibCount": 5,
-    "sorries": 18,
+    "sorries": 0,
     "annotationCount": 18
   },
   {
@@ -1463,16 +1479,21 @@
   },
   {
     "id": "erdos-105",
-    "title": "Erdős Problem #105",
+    "title": "Erdős Problem #105: Lines Avoiding a Point Set",
     "slug": "erdos-105",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be disjoint sets of size ... and ... respectively, with not all of ... contained on a single line. Is there a line wh...",
+    "description": "Given n points A (not collinear) and n-3 points B, must some line hit 2+ points of A and miss B entirely? DISPROVED by Xichuan with explicit counterexamples. Variants with n-4 or (1-o(1))n remain open.",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "disproved",
     "tags": [
-      "erdos"
+      "discrete-geometry",
+      "incidence-geometry",
+      "erdos",
+      "point-line-incidences",
+      "counterexample",
+      "disproved"
     ],
     "erdosNumber": 105,
-    "sorries": 0,
+    "sorries": 1,
     "annotationCount": 0
   },
   {
@@ -6365,17 +6386,23 @@
   },
   {
     "id": "erdos-415",
-    "title": "Erdős Problem #415",
+    "title": "Erdős Problem #415: Ordering Patterns in Euler's Totient Function",
     "slug": "erdos-415",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any ... let ... be the largest ... such that any of the ... possible ordering patterns appears in some sequence of ... wi...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let F(n) = largest k such that ALL k! ordering patterns appear in some φ(m+1),...,φ(m+k). Erdős proved F(n) ≍ log log log n. The exact constant and which pattern fails first remain OPEN.",
+    "status": "formalized",
+    "badge": "conjecture",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "totient-function",
+      "ordering-patterns",
+      "asymptotics",
+      "open-problem"
     ],
     "erdosNumber": 415,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 18,
+    "annotationCount": 24
   },
   {
     "id": "erdos-416",
@@ -7679,45 +7706,59 @@
   },
   {
     "id": "erdos-547",
-    "title": "Erdős Problem #547",
+    "title": "Erdős Problem #547: Tree Ramsey Numbers",
     "slug": "erdos-547",
-    "description": "If ... is a tree on ... vertices then\\[R(T) \\leq 2n-2.\\]",
-    "status": "pending",
-    "badge": "wip",
+    "description": "For any tree T on n vertices, R(T) ≤ 2n - 2. The bound is tight: stars achieve R(S_n) = 2n - 2.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "graph-theory",
+      "trees",
+      "extremal-combinatorics"
     ],
     "erdosNumber": 547,
-    "sorries": 1,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 0,
+    "annotationCount": 16
   },
   {
     "id": "erdos-548",
-    "title": "Erdős Problem #548",
+    "title": "Erdős Problem #548: The Erdős-Sós Conjecture",
     "slug": "erdos-548",
-    "description": "Let .... Every graph on ... vertices with at least ... edges contains every tree on ... vertices.",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Every graph on n vertices with more than (k-1)n/2 edges contains every tree on k+1 vertices. This famous conjecture of Erdős and Sós remains open, with partial results for girth ≥ 5, C₄-free graphs, and large k.",
+    "status": "formalized",
+    "badge": "wip",
     "tags": [
+      "graph-theory",
+      "trees",
+      "extremal-graph-theory",
+      "erdos-sos",
       "erdos"
     ],
     "erdosNumber": 548,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 6,
+    "annotationCount": 21
   },
   {
     "id": "erdos-549",
-    "title": "Erdős Problem #549",
+    "title": "Erdős Problem #549: Ramsey Numbers for Bipartite Trees",
     "slug": "erdos-549",
-    "description": "If ... is a tree which is a bipartite graph with ... vertices and ... vertices in the other class then\\[R(T)=4k-1.\\]",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Conjecture: R(T) = 4k-1 for bipartite (k, 2k) trees. DISPROVED by Norin-Sun-Zhao! The double star has R(T) ≥ 4.2k. Best bounds: 4.2k ≤ R ≤ 4.21526k.",
+    "status": "formalized",
+    "badge": "verified",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "trees",
+      "graph-theory",
+      "counterexample"
     ],
     "erdosNumber": 549,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 18,
+    "annotationCount": 22
   },
   {
     "id": "erdos-55",
@@ -7789,17 +7830,22 @@
   },
   {
     "id": "erdos-553",
-    "title": "Erdős Problem #553",
+    "title": "Erdős Problem #553: Multi-Color Ramsey Asymptotics",
     "slug": "erdos-553",
-    "description": "Let ... denote the smallest integer ... such that if we ...-colour the edges of ... then there is either a monochromatic triangle in one of the first two colours or a monochromatic ... in the third...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Show R(3,3,n)/R(3,n) → ∞. The third color dramatically increases the off-diagonal threshold. Solved by Alon-Rödl (2005): R(3,3,n) ≍ n³(log n)^O(1) vs R(3,n) ≪ n²/log n.",
+    "status": "formalized",
+    "badge": "wip",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "graph-coloring",
+      "asymptotics",
+      "off-diagonal"
     ],
     "erdosNumber": 553,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 15,
+    "annotationCount": 19
   },
   {
     "id": "erdos-556",
@@ -8368,7 +8414,7 @@
     "slug": "erdos-604",
     "description": "Given n distinct points in the plane, must some point have nearly n distinct distances to other points? The 'pinned' version of the distinct distances problem. OPEN with $500 prize.",
     "status": "formalized",
-    "badge": "conjecture",
+    "badge": "wip",
     "tags": [
       "erdos",
       "discrete-geometry",
@@ -8378,50 +8424,63 @@
     ],
     "erdosNumber": 604,
     "mathlibCount": 4,
-    "sorries": 6,
+    "sorries": 5,
     "annotationCount": 14
   },
   {
     "id": "erdos-605",
-    "title": "Erdős Problem #605",
+    "title": "Erdős Problem #605: Repeated Distances on a Sphere",
     "slug": "erdos-605",
-    "description": "Is there some function f(n)&#x2192;&#x221E;\" role=\"presentation\" style=\"position: relative;\">f(n)→∞f(n)→∞f(n)\\to \\infty as n&#x2192;&#x221E;\" role=\"presentation\" style=\"position: relative;\">n→∞n→∞n...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Can n points be placed on a sphere with at least f(n)·n pairs at the same distance, where f(n) → ∞? Solved affirmatively: Swanepoel-Valtr proved u(n) ≫ n·√(log n), and for radius √2 we have u(n) ≈ n^{4/3}.",
+    "status": "formalized",
+    "badge": "wip",
     "tags": [
-      "erdos"
+      "geometry",
+      "discrete-geometry",
+      "distances",
+      "erdos",
+      "sphere"
     ],
     "erdosNumber": 605,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 4,
+    "annotationCount": 16
   },
   {
     "id": "erdos-606",
-    "title": "Erdős Problem #606",
+    "title": "Erdős Problem #606: Distinct Lines from n Points",
     "slug": "erdos-606",
-    "description": "Given any n\" role=\"presentation\" style=\"position: relative;\">nnn distinct points in R2\" role=\"presentation\" style=\"position: relative;\">ℝ2R2^2 let f(n)\" role=\"presentation\" style=\"position: relativ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Given n distinct points in the plane, what are the possible values for the number of distinct lines they determine? Erdős and Salamon characterized the answer: all values from n to C(n,2) are achievable except C(n,2)-1 and C(n,2)-3.",
+    "status": "formalized",
+    "badge": "wip",
     "tags": [
+      "discrete-geometry",
+      "incidence-geometry",
+      "combinatorial-geometry",
       "erdos"
     ],
     "erdosNumber": 606,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 10,
+    "annotationCount": 21
   },
   {
     "id": "erdos-607",
-    "title": "Erdős Problem #607",
+    "title": "Erdős Problem #607: Incidence Signatures of Point Configurations",
     "slug": "erdos-607",
-    "description": "For a set of n\" role=\"presentation\" style=\"position: relative;\">nnn points P&#x2282;R2\" role=\"presentation\" style=\"position: relative;\">P⊂ℝ2P⊂R2P\\subset ^2 let &#x2113;1,&#x2026;,&#x2113;m\" role=\"p...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For n points in ℝ², let A be the multiset of incidence counts (points per line). F(n) counts distinct achievable sets A. Szemerédi-Trotter proved F(n) ≤ exp(O(√n)), which is optimal.",
+    "status": "formalized",
+    "badge": "solved",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-geometry",
+      "incidence-geometry",
+      "point-line-incidences",
+      "counting",
+      "asymptotics"
     ],
     "erdosNumber": 607,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 4,
+    "sorries": 19,
+    "annotationCount": 20
   },
   {
     "id": "erdos-608",
@@ -8442,17 +8501,23 @@
   },
   {
     "id": "erdos-609",
-    "title": "Erdős Problem #609",
+    "title": "Erdős Problem #609: Monochromatic Odd Cycles in Edge Colorings",
     "slug": "erdos-609",
-    "description": "Let f(n)\" role=\"presentation\" style=\"position: relative;\">f(n)f(n)f(n) be the minimal m\" role=\"presentation\" style=\"position: relative;\">mmm such that if the edges of K2n+1\" role=\"presentation\" sty...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let f(n) = min cycle length forced in n-colorings of K_{2^n+1}. K_{2^n} can avoid all odd cycles, but K_{2^n+1} cannot. Estimate f(n). OPEN with exponential gap between bounds.",
+    "status": "formalized",
+    "badge": "conjecture",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "graph-coloring",
+      "cycles",
+      "extremal-combinatorics",
+      "open-problem"
     ],
     "erdosNumber": 609,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 20,
+    "annotationCount": 22
   },
   {
     "id": "erdos-61",
@@ -8619,17 +8684,21 @@
   },
   {
     "id": "erdos-620",
-    "title": "Erdős Problem #620",
+    "title": "Erdős Problem #620: The Erdős-Rogers Problem",
     "slug": "erdos-620",
-    "description": "If G\" role=\"presentation\" style=\"position: relative;\">GGG is a graph on n\" role=\"presentation\" style=\"position: relative;\">nnn vertices without a K4\" role=\"presentation\" style=\"position: relative;\"...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "In any K₄-free graph on n vertices, how large a triangle-free induced subgraph must exist? Current bounds: √n·√(log n)/log log n ≪ f(n) ≪ √n·log n. The gap represents fundamental uncertainty about extremal K₄-free graph structure.",
+    "status": "formalized",
+    "badge": "wip",
     "tags": [
+      "graph-theory",
+      "ramsey-theory",
+      "induced-subgraphs",
+      "extremal-graph-theory",
       "erdos"
     ],
     "erdosNumber": 620,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 6,
+    "annotationCount": 19
   },
   {
     "id": "erdos-621",
@@ -8840,17 +8909,22 @@
   },
   {
     "id": "erdos-633",
-    "title": "Erdős Problem #633",
+    "title": "Erdős Problem #633: Square Number Triangle Dissections",
     "slug": "erdos-633",
-    "description": "Classify those triangles which can only be cut into a square number of congruent triangles.",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Which triangles can ONLY be cut into a perfect square number of congruent triangles? Classification remains OPEN with $25 prize.",
+    "status": "formalized",
+    "badge": "wip",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "dissection",
+      "triangles",
+      "open-problem"
     ],
     "erdosNumber": 633,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 2,
+    "sorries": 8,
+    "annotationCount": 18
   },
   {
     "id": "erdos-634",
@@ -9413,7 +9487,7 @@
     "slug": "erdos-678",
     "description": "Can a shorter interval of consecutive integers have larger LCM than a longer interval starting later? Yes! Solved by Cambie (2024) with Lean proof.",
     "status": "formalized",
-    "badge": "verified",
+    "badge": "wip",
     "tags": [
       "erdos",
       "number-theory",
@@ -9423,7 +9497,7 @@
     ],
     "erdosNumber": 678,
     "mathlibCount": 4,
-    "sorries": 10,
+    "sorries": 11,
     "annotationCount": 15
   },
   {
@@ -10406,7 +10480,7 @@
     "slug": "erdos-76",
     "description": "In any 2-coloring of the complete graph K_n, how many edge-disjoint monochromatic triangles must exist? Erdős, Faudree, and Ordman conjectured the answer is (1+o(1))n²/12, proved optimal by Gruslys and Letzter in 2020.",
     "status": "pending",
-    "badge": "pending",
+    "badge": "wip",
     "tags": [
       "graph-theory",
       "ramsey-theory",
@@ -10416,8 +10490,8 @@
       "extremal-combinatorics"
     ],
     "erdosNumber": 76,
-    "sorries": 1,
-    "annotationCount": 0
+    "sorries": 4,
+    "annotationCount": 14
   },
   {
     "id": "erdos-760",
@@ -10792,7 +10866,7 @@
     "slug": "erdos-79",
     "description": "A graph is 'Ramsey size linear' if R(G,H) grows linearly in the edges of H. Are there infinitely many graphs that fail this property minimally - not Ramsey size linear, but all subgraphs are? Wigderson (2024) proved yes, though only K₄ is explicitly known.",
     "status": "pending",
-    "badge": "pending",
+    "badge": "wip",
     "tags": [
       "graph-theory",
       "ramsey-theory",
@@ -10801,8 +10875,8 @@
       "extremal-graphs"
     ],
     "erdosNumber": 79,
-    "sorries": 1,
-    "annotationCount": 0
+    "sorries": 3,
+    "annotationCount": 14
   },
   {
     "id": "erdos-790",
@@ -10957,13 +11031,18 @@
   },
   {
     "id": "erdos-80",
-    "title": "Erdős Problem #80",
+    "title": "Erdős Problem #80: Book Size in Triangle Graphs",
     "slug": "erdos-80",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... be the maximal ... such that every graph ... with ... vertices and at least ... edges, where each edge is...",
+    "description": "In a dense graph where every edge lies in a triangle, how large must the largest 'book' be - an edge shared by many triangles? This open problem of Erdős and Rothschild has a phase transition at density 1/4, with the precise growth rate still unknown.",
     "status": "pending",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "extremal-combinatorics",
+      "erdos",
+      "triangles",
+      "regularity-lemma",
+      "open-problem"
     ],
     "erdosNumber": 80,
     "sorries": 0,
@@ -11111,13 +11190,18 @@
   },
   {
     "id": "erdos-81",
-    "title": "Erdős Problem #81",
+    "title": "Erdős Problem #81: Clique Partitions of Chordal Graphs",
     "slug": "erdos-81",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a chordal graph on ... vertices - that is, ... has no induced cycles of length greater than .... Can the edges of ...",
+    "description": "Can every chordal graph (no induced cycles > 3) have its edges partitioned into n²/6 + O(n) cliques? The lower bound is achieved by specific constructions, but the upper bound remains open despite progress on split graphs.",
     "status": "pending",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "chordal-graphs",
+      "erdos",
+      "clique-partitions",
+      "split-graphs",
+      "open-problem"
     ],
     "erdosNumber": 81,
     "sorries": 0,
@@ -11345,13 +11429,18 @@
   },
   {
     "id": "erdos-83",
-    "title": "Erdős Problem #83",
+    "title": "Erdős Problem #83: Complete Intersection Theorem",
     "slug": "erdos-83",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose that we have a family $...[4n]...\\lvert A\\rvert=2n...A\\in...A,B\\in ...\\lvert A\\cap B\\rvert \\geq 2......[4n]...2n...n+...",
+    "description": "For 2n-subsets of [4n] with pairwise intersections ≥ 2, what is the maximum family size? The Ahlswede-Khachatrian theorem (1997) gives the exact answer, resolving this $500 Erdős-Ko-Rado conjecture.",
     "status": "pending",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "combinatorics",
+      "set-systems",
+      "erdos",
+      "intersection-theorems",
+      "extremal-combinatorics",
+      "erdos-ko-rado"
     ],
     "erdosNumber": 83,
     "sorries": 0,
@@ -11462,13 +11551,18 @@
   },
   {
     "id": "erdos-84",
-    "title": "Erdős Problem #84",
+    "title": "Erdős Problem #84: Counting Cycle Sets",
     "slug": "erdos-84",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe cycle set of a graph ... on ... vertices is a set ... such that there is a cycle in ... of length ... if and only if .......",
+    "description": "How many distinct 'cycle sets' can graphs on n vertices have? The count f(n) lies between 2^{n/2} and 2^{n-2}. Verstraëte proved f(n) = o(2^n), but the second part showing f(n)/2^{n/2} → ∞ remains open.",
     "status": "pending",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "cycles",
+      "erdos",
+      "counting",
+      "extremal-combinatorics",
+      "partially-open"
     ],
     "erdosNumber": 84,
     "sorries": 0,
@@ -11956,13 +12050,18 @@
   },
   {
     "id": "erdos-88",
-    "title": "Erdős Problem #88",
+    "title": "Erdős Problem #88: Induced Subgraphs in Ramsey Graphs",
     "slug": "erdos-88",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any ... there exists ... such that if ... is a graph on ... vertices with no independent set or clique of size ... then ....",
+    "description": "In a graph with no large clique or independent set, can we find induced subgraphs with any desired edge count up to δn²? The Erdős-McKay conjecture was proved by Kwan, Sah, Sauermann, and Sawhney (2022), earning the $100 prize.",
     "status": "pending",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "ramsey-theory",
+      "erdos",
+      "induced-subgraphs",
+      "anticoncentration",
+      "extremal-combinatorics"
     ],
     "erdosNumber": 88,
     "sorries": 0,
@@ -12120,7 +12219,7 @@
     "slug": "erdos-895",
     "description": "In a triangle-free graph on {1,...,n}, must there exist independent vertices a, b, a+b? Yes, for n ≥ 18! Solved by Ben Barber via SAT verification.",
     "status": "formalized",
-    "badge": "verified",
+    "badge": "wip",
     "tags": [
       "erdos",
       "graph-theory",
@@ -12131,8 +12230,8 @@
     ],
     "erdosNumber": 895,
     "mathlibCount": 3,
-    "sorries": 14,
-    "annotationCount": 0
+    "sorries": 11,
+    "annotationCount": 19
   },
   {
     "id": "erdos-897",
@@ -12362,16 +12461,20 @@
   },
   {
     "id": "erdos-91",
-    "title": "Erdős Problem #91",
+    "title": "Erdős Problem #91: Non-Uniqueness of Minimal Distance Sets",
     "slug": "erdos-91",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose ... has ... and minimises the number of distinct distances between points in .... Prove that for large ... there are ...",
+    "description": "Among n-point sets minimizing the number of distinct distances, must there be multiple non-similar configurations for large n? Known for small n (the regular pentagon is uniquely optimal for n=5), but open in general.",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "open",
     "tags": [
-      "erdos"
+      "discrete-geometry",
+      "distinct-distances",
+      "erdos",
+      "point-configurations",
+      "open-problem"
     ],
     "erdosNumber": 91,
-    "sorries": 0,
+    "sorries": 1,
     "annotationCount": 0
   },
   {
@@ -12630,16 +12733,20 @@
   },
   {
     "id": "erdos-93",
-    "title": "Erdős Problem #93",
+    "title": "Erdős Problem #93: Distinct Distances in Convex Polygons",
     "slug": "erdos-93",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... distinct points in ... form a convex polygon then they determine at least ... distinct distances.\n\n\n\nSolved by Altman ...",
+    "description": "The vertices of a convex n-gon determine at least ⌊n/2⌋ distinct distances. Proved by Altman (1963), this is a foundational result in discrete geometry, though stronger variants remain open.",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "discrete-geometry",
+      "distinct-distances",
+      "erdos",
+      "convex-polygons",
+      "combinatorial-geometry"
     ],
     "erdosNumber": 93,
-    "sorries": 0,
+    "sorries": 1,
     "annotationCount": 0
   },
   {
@@ -12869,16 +12976,21 @@
   },
   {
     "id": "erdos-95",
-    "title": "Erdős Problem #95",
+    "title": "Erdős Problem #95: Sum of Squared Distance Multiplicities",
     "slug": "erdos-95",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... determine the set of distances .... Suppose ... appears as the distance between ... many pairs of points. Then for al...",
+    "description": "For n points in ℝ² with distance multiplicities f(uᵢ), prove ∑f(uᵢ)² ≪ n^{3+ε}. Solved by Guth and Katz (2015) with the stronger bound n³ log n, as part of their landmark distinct distances paper.",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "discrete-geometry",
+      "distinct-distances",
+      "erdos",
+      "polynomial-method",
+      "algebraic-geometry",
+      "incidence-geometry"
     ],
     "erdosNumber": 95,
-    "sorries": 0,
+    "sorries": 1,
     "annotationCount": 0
   },
   {
@@ -12939,16 +13051,21 @@
   },
   {
     "id": "erdos-96",
-    "title": "Erdős Problem #96",
+    "title": "Erdős Problem #96: Unit Distances in Convex Polygons",
     "slug": "erdos-96",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... points in ... form a convex polygon then there are ... many pairs which are distance ... apart.\n\n\n\nConjectured by Erds...",
+    "description": "In a convex n-gon, are there only O(n) pairs of vertices at unit distance? Conjectured by Erdős and Moser, the best upper bound is n log n + O(n) (Aggarwal 2015), while 2n-7 is achievable. The conjecture remains OPEN.",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "open",
     "tags": [
-      "erdos"
+      "discrete-geometry",
+      "unit-distances",
+      "erdos",
+      "convex-polygons",
+      "open-problem",
+      "combinatorial-geometry"
     ],
     "erdosNumber": 96,
-    "sorries": 0,
+    "sorries": 1,
     "annotationCount": 0
   },
   {
@@ -13401,16 +13518,21 @@
   },
   {
     "id": "erdos-99",
-    "title": "Erdős Problem #99",
+    "title": "Erdős Problem #99: Equilateral Triangles in Minimal Diameter Sets",
     "slug": "erdos-99",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set of ... points with minimum distance equal to 1, chosen to minimise the diameter of .... If ... is sufficient...",
+    "description": "Must n points with min distance 1 and minimal diameter contain a unit equilateral triangle for large n? Erdős offered $100 for a counterexample but only $50 for a proof. The problem remains OPEN.",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "open",
     "tags": [
-      "erdos"
+      "discrete-geometry",
+      "packing",
+      "erdos",
+      "equilateral-triangles",
+      "open-problem",
+      "triangular-lattice"
     ],
     "erdosNumber": 99,
-    "sorries": 0,
+    "sorries": 1,
     "annotationCount": 0
   },
   {

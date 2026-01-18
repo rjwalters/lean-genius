@@ -1,33 +1,121 @@
 {
   "id": "erdos-1005",
-  "title": "Erdős Problem #1005",
+  "title": "Erdős Problem #1005: Farey Fractions and Similar Ordering",
   "slug": "erdos-1005",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the Farey fractions of order .... Let ... be the largest integer such that if ... then ... and ... are similarly o...",
+  "description": "Let f(n) be the longest run of consecutive similarly ordered Farey fractions of order n. Estimate f(n) - is there c > 0 with f(n) = (c + o(1))n? Known: (1/12 - o(1))n ≤ f(n) ≤ n/4 + O(1).",
   "meta": {
-    "author": "Unknown",
+    "author": "van Doorn (2025)",
     "sourceUrl": "https://erdosproblems.com/1005",
-    "date": "",
+    "date": "2025",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1005Problem.lean",
     "tags": [
-      "erdos"
+      "number-theory",
+      "farey-fractions",
+      "erdos",
+      "asymptotic-analysis",
+      "combinatorics"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "pending",
+    "sorries": 5,
     "erdosNumber": 1005,
     "erdosUrl": "https://erdosproblems.com/1005",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1005 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\frac{a_1}{b_1},\\frac{a_2}{b_2},\\ldots$ be the Farey fractions of order $n\\geq 4$. Let $f(n)$ be the largest integer such that if $1\\leq k<l\\leq k+f(n)$ then $\\frac{a_k}{b_k}$ and $\\frac{a_l}{b_l}$ are similarly ordered - in other words,\\[(a_k-a_l)(b_k-b_l)\\geq 0.\\]Estimate $f(n)$ - in particular, is there a constant $c>0$ such that $f(n)=(c+o(1))n$ for all large $n$?\n\n\n\nThe function $f(n)$ was first considered by Mayer \\cite{Ma42}, who proved $f(n)\\to \\infty$ as $n\\to \\infty$. Erd\\H{o}s \\cite{Er43} proved $f(n)\\gg n$.\n\nvan Doorn \\cite{vD25b} has proved that\\[\\left(\\frac{1}{12}-o(1)\\right)n\\leq f(n) \\leq \\frac{1}{4}n+O(1),\\]and conjectures that the upper bound is optimal.\n\n\n\n\nReferences\n\n\n[Er43] Erd\\H{o}s, P., A note on {F}arey series. Quart. J. Math. Oxford Ser. (1943), 82--85.\n\n[Ma42] Mayer, A. E., A mean value theorem concerning {F}arey series. Quart. J. Math. Oxford Ser. (1942), 48--57.\n\n[vD25b] W. van Doorn, Improved bounds for the Mayer-Erd\\H{o}s phenomenon on similarly ordered Farey fractions. arXiv:2509.00121 (2025).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Farey Sequences**\n\nThe Farey sequence F_n consists of all reduced fractions a/b with 0 ≤ a ≤ b ≤ n, arranged in increasing order. These sequences have remarkable properties: adjacent fractions a/b and c/d satisfy |ad - bc| = 1, and the mediant (a+c)/(b+d) appears in F_{b+d}.\n\n**The Mayer-Erdős Phenomenon**: In 1942, Mayer observed that consecutive Farey fractions tend to be 'similarly ordered' - meaning (a_k - a_l)(b_k - b_l) ≥ 0 for nearby fractions. Erdős (1943) proved this phenomenon persists for runs of length Ω(n).\n\n**Modern Progress**: van Doorn (2025) established the best known bounds, showing the maximum run length f(n) satisfies (1/12 - o(1))n ≤ f(n) ≤ n/4 + O(1), and conjectured the upper bound is tight.",
+    "problemStatement": "**Problem Statement**\n\nLet a₁/b₁, a₂/b₂, ... be the Farey fractions of order n ≥ 4 (in increasing order).\n\nTwo fractions aₖ/bₖ and aₗ/bₗ are **similarly ordered** if:\n$$(a_k - a_l)(b_k - b_l) \\geq 0$$\n\nLet **f(n)** = largest k such that some run of k consecutive Farey fractions are pairwise similarly ordered.\n\n**Question**: Estimate f(n). Is there a constant c > 0 such that:\n$$f(n) = (c + o(1))n$$\n\n**Status**: OPEN\n\n**Best Known**: (1/12 - o(1))n ≤ f(n) ≤ n/4 + O(1) (van Doorn 2025)",
+    "proofStrategy": "**Understanding Similar Ordering**\n\n1. **Geometric View**: Similarly ordered means both numerator and denominator move in the same direction (both increase or both decrease).\n\n2. **Stern-Brocot Connection**: Farey fractions correspond to nodes in the Stern-Brocot tree. Similarly ordered runs correspond to monotone paths.\n\n3. **Counting Approach**: The Farey sequence has ~3n²/π² elements. Understanding run lengths requires analyzing local structure.\n\n**van Doorn's Methods**:\n- Upper bound: Analyze obstructions to similar ordering using mediant properties\n- Lower bound: Construct explicit long similarly ordered runs\n- Gap: Factor of 3 between bounds suggests complex transition behavior",
+    "keyInsights": [
+      "Similarly ordered means (a-c)(b-d) ≥ 0: numerator and denominator change in same direction",
+      "Mayer (1942) first showed f(n) → ∞ as n → ∞",
+      "Erdős (1943) proved f(n) grows at least linearly: f(n) ≫ n",
+      "van Doorn (2025) established (1/12 - o(1))n ≤ f(n) ≤ n/4 + O(1)",
+      "Conjecture: c = 1/4 is the correct asymptotic constant"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "farey-fractions",
+      "title": "Farey Fractions",
+      "summary": "FareyFraction structure and fareySequence definition",
+      "startLine": 25,
+      "endLine": 49
+    },
+    {
+      "id": "similarly-ordered",
+      "title": "Similarly Ordered Fractions",
+      "summary": "similarlyOrdered definition and properties",
+      "startLine": 51,
+      "endLine": 72
+    },
+    {
+      "id": "consecutive-runs",
+      "title": "Consecutive Similarly Ordered Runs",
+      "summary": "fareyList and isSimOrdered definitions",
+      "startLine": 74,
+      "endLine": 90
+    },
+    {
+      "id": "function-f",
+      "title": "The Function f(n)",
+      "summary": "mayerErdosF definition",
+      "startLine": 92,
+      "endLine": 101
+    },
+    {
+      "id": "historical",
+      "title": "Historical Results",
+      "summary": "Mayer (1942) and Erdős (1943) theorems",
+      "startLine": 103,
+      "endLine": 113
+    },
+    {
+      "id": "van-doorn",
+      "title": "Modern Bounds (van Doorn 2025)",
+      "summary": "Lower and upper bounds on f(n)",
+      "startLine": 115,
+      "endLine": 133
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture (OPEN)",
+      "summary": "hasAsymptoticConstant and vanDoornConjecture",
+      "startLine": 135,
+      "endLine": 154
+    },
+    {
+      "id": "mediant",
+      "title": "Mediant Property of Farey Fractions",
+      "summary": "mediant and adjacent property",
+      "startLine": 156,
+      "endLine": 171
+    },
+    {
+      "id": "geometric",
+      "title": "Geometric Interpretation",
+      "summary": "Connection to Stern-Brocot tree",
+      "startLine": 173,
+      "endLine": 188
+    },
+    {
+      "id": "bounds-gap",
+      "title": "Why the Gap Between 1/12 and 1/4?",
+      "summary": "Analysis of the bounds ratio",
+      "startLine": 190,
+      "endLine": 202
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1005 asks for the asymptotic behavior of f(n), the longest run of consecutive similarly ordered Farey fractions. While Mayer showed f(n) → ∞ and Erdős proved linear growth, the exact constant remains unknown. van Doorn (2025) established (1/12 - o(1))n ≤ f(n) ≤ n/4 + O(1) and conjectured c = 1/4.",
+    "implications": "**Theoretical Significance**\n\n1. **Number Theory**: Reveals structure in how Farey fractions are organized beyond their ordering\n\n2. **Combinatorics**: Connects to longest monotone subsequence problems\n\n3. **Stern-Brocot Trees**: Relates to path properties in the binary tree of fractions\n\n4. **Approximation Theory**: Understanding Farey structure aids in Diophantine approximation",
+    "openQuestions": [
+      "Is c = 1/4 the correct asymptotic constant?",
+      "Can the lower bound be improved beyond 1/12?",
+      "What is the structure of maximal similarly ordered runs?",
+      "How does the answer depend on n mod small primes?",
+      "Is there a closed form for f(n) for specific n?"
+    ]
   }
 }

@@ -1,16 +1,20 @@
 {
   "id": "erdos-45",
-  "title": "Erdős Problem #45",
+  "title": "Erdős #45: Monochromatic Egyptian Fractions",
   "slug": "erdos-45",
-  "description": "Let .... Is there an integer ... such that, if ... (simply taking ... to be the lowest common multiple of some interval ...). Sawhney has observed that there is also a doubly exponential lower boun...",
+  "description": "For k ≥ 2, does there exist n_k such that any k-coloring of proper divisors D of n_k contains a monochromatic D' with Σ 1/d = 1? YES (Croot). Bounds: n_k ≈ exp(C^k) doubly exponential (Sawhney).",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Ernest Croot, Mehtaab Sawhney",
     "sourceUrl": "https://erdosproblems.com/45",
-    "date": "",
-    "status": "pending",
+    "date": "1995-2003",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos45Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "ramsey-theory",
+      "egyptian-fractions"
     ],
     "badge": "wip",
     "sorries": 1,
@@ -19,15 +23,68 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #45 from erdosproblems.com.",
-    "problemStatement": "Let $k\\geq 2$. Is there an integer $n_k$ such that, if $D=\\{ 11$ (simply taking $n_k$ to be the lowest common multiple of some interval $[1,C^k]$). Sawhney has observed that there is also a doubly exponential lower bound, and hence this bound is essentially sharp. Indeed, we must trivially have $\\sum_{d|n_k}1/d \\geq k$, or else there is a greedy colouring as a counterexample. Since $\\prod_{p}(1+1/p^2)$ is finite we must have $\\prod_{p|n_k}(1+1/p)\\gg k$. To achieve the minimal $\\prod_{p|n_k}p$ we take the product of primes up to $T$ where $\\prod_{p\\leq T}(1+1/p)\\gg k$; by Mertens theorems this implies $T\\geq C^{k}$ for some constant $C>1$, and hence $n_k\\geq \\prod_{p\\mid n_k}p\\geq \\exp(cC^k)$ for some $c>0$. The existence of such an $n_k$ is mentioned in problem B2 of Guy's collection [Gu04]. View the LaTeX source This page was last edited 28 September 2025.",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem connects Egyptian fractions (unit fraction representations) with Ramsey theory. Erdős asked whether highly composite numbers force monochromatic Egyptian representations under any coloring. Croot (2003) proved existence using probabilistic methods. Sawhney established tight doubly exponential bounds.",
+    "problemStatement": "Let k ≥ 2. Is there an integer n_k such that for D = {d : 1 < d < n_k, d | n_k}, any k-coloring of D contains a monochromatic subset D' ⊆ D with Σ_{d ∈ D'} 1/d = 1?",
+    "proofStrategy": "We formalize proper divisors, k-colorings, monochromatic subsets, reciprocal sums, and the k-Egyptian property. Key results include Croot's existence theorem and Sawhney's doubly exponential bounds.",
+    "keyInsights": [
+      "The answer is YES - such n_k exists for all k ≥ 2 (Croot)",
+      "Upper bound: n_k ≤ exp(C^k) using LCM of [1, C^k]",
+      "Lower bound: n_k ≥ exp(cC^k) from divisor sum constraints",
+      "Necessity: Σ_{d|n_k} 1/d ≥ k required, else greedy counterexample",
+      "Mertens theorem: minimal prime product requires primes up to C^k"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "summary": "Proper divisors, k-coloring, monochromatic subsets, reciprocal sum",
+      "startLine": 42,
+      "endLine": 61
+    },
+    {
+      "id": "main-property",
+      "title": "The Main Property",
+      "summary": "The k-Egyptian property definition",
+      "startLine": 62,
+      "endLine": 72
+    },
+    {
+      "id": "croot-theorem",
+      "title": "Croot's Theorem",
+      "summary": "Existence of n_k for all k ≥ 2",
+      "startLine": 74,
+      "endLine": 83
+    },
+    {
+      "id": "bounds",
+      "title": "Sawhney's Bounds",
+      "summary": "Doubly exponential upper and lower bounds",
+      "startLine": 85,
+      "endLine": 103
+    },
+    {
+      "id": "basic-facts",
+      "title": "Basic Facts",
+      "summary": "Divisor reciprocal sum and Egyptian fraction bounds",
+      "startLine": 105,
+      "endLine": 116
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "summary": "For k=2, n=120 works",
+      "startLine": 118,
+      "endLine": 124
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #45 on monochromatic Egyptian fractions. For any k-coloring of proper divisors of sufficiently large n_k, there exists a monochromatic subset with reciprocal sum 1. The bound is doubly exponential.",
+    "implications": "The result connects divisor theory to Ramsey theory. Highly composite numbers have enough divisor structure to force monochromatic unit fraction representations regardless of coloring.",
+    "openQuestions": [
+      "What is the exact value of the optimal constant C?",
+      "Can explicit constructions replace probabilistic existence?",
+      "What is the smallest n_k for small values of k?"
+    ]
   }
 }

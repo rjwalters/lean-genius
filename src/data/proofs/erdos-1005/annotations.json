@@ -1,1 +1,146 @@
-[]
+[
+  {
+    "id": "ann-1005-fareyfrac",
+    "proofId": "erdos-1005",
+    "range": { "startLine": 32, "endLine": 38 },
+    "type": "definition",
+    "title": "Farey Fraction",
+    "content": "Pair (a,b) with gcd(a,b)=1, 0 ≤ a ≤ b, denom > 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1005-fareyseq",
+    "proofId": "erdos-1005",
+    "range": { "startLine": 40, "endLine": 42 },
+    "type": "definition",
+    "title": "Farey Sequence",
+    "content": "All Farey fractions with denominator ≤ n, in order.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1005-count",
+    "proofId": "erdos-1005",
+    "range": { "startLine": 44, "endLine": 49 },
+    "type": "theorem",
+    "title": "Farey Count Asymptotic",
+    "content": "|F_n| ~ 3n²/π², the number of Farey fractions.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1005-simord",
+    "proofId": "erdos-1005",
+    "range": { "startLine": 59, "endLine": 62 },
+    "type": "definition",
+    "title": "Similarly Ordered",
+    "content": "(a-c)(b-d) ≥ 0: numerator and denominator move together.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1005-symm",
+    "proofId": "erdos-1005",
+    "range": { "startLine": 64, "endLine": 67 },
+    "type": "theorem",
+    "title": "Symmetry",
+    "content": "similarlyOrdered f g ↔ similarlyOrdered g f.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1005-issimord",
+    "proofId": "erdos-1005",
+    "range": { "startLine": 85, "endLine": 90 },
+    "type": "definition",
+    "title": "isSimOrdered",
+    "content": "A run of length k starting at i is pairwise similarly ordered.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1005-mayerf",
+    "proofId": "erdos-1005",
+    "range": { "startLine": 98, "endLine": 101 },
+    "type": "definition",
+    "title": "mayerErdosF(n)",
+    "content": "Max length of consecutive similarly ordered Farey fractions.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1005-mayer",
+    "proofId": "erdos-1005",
+    "range": { "startLine": 109, "endLine": 110 },
+    "type": "theorem",
+    "title": "Mayer (1942)",
+    "content": "f(n) → ∞ as n → ∞.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1005-erdos43",
+    "proofId": "erdos-1005",
+    "range": { "startLine": 112, "endLine": 113 },
+    "type": "theorem",
+    "title": "Erdős (1943)",
+    "content": "f(n) ≫ n: linear growth in n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1005-vdlower",
+    "proofId": "erdos-1005",
+    "range": { "startLine": 121, "endLine": 123 },
+    "type": "theorem",
+    "title": "van Doorn Lower Bound",
+    "content": "f(n) ≥ (1/12 - o(1))n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1005-vdupper",
+    "proofId": "erdos-1005",
+    "range": { "startLine": 125, "endLine": 127 },
+    "type": "theorem",
+    "title": "van Doorn Upper Bound",
+    "content": "f(n) ≤ n/4 + O(1).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1005-hasconst",
+    "proofId": "erdos-1005",
+    "range": { "startLine": 141, "endLine": 144 },
+    "type": "definition",
+    "title": "Asymptotic Constant (OPEN)",
+    "content": "∃c: f(n)/n → c as n → ∞.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1005-vdconj",
+    "proofId": "erdos-1005",
+    "range": { "startLine": 146, "endLine": 148 },
+    "type": "definition",
+    "title": "van Doorn Conjecture",
+    "content": "c = 1/4 is the asymptotic constant.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1005-mediant",
+    "proofId": "erdos-1005",
+    "range": { "startLine": 162, "endLine": 164 },
+    "type": "definition",
+    "title": "Mediant",
+    "content": "mediant(a/b, c/d) = (a+c)/(b+d).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1005-adjacent",
+    "proofId": "erdos-1005",
+    "range": { "startLine": 166, "endLine": 171 },
+    "type": "theorem",
+    "title": "Adjacent Property",
+    "content": "Adjacent Farey fractions satisfy |ad - bc| = 1.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1005-monotone",
+    "proofId": "erdos-1005",
+    "range": { "startLine": 183, "endLine": 188 },
+    "type": "theorem",
+    "title": "Monotone Interpretation",
+    "content": "Similarly ordered ↔ monotone in both coordinates.",
+    "significance": "key"
+  }
+]

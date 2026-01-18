@@ -1,1 +1,219 @@
-[]
+[
+  {
+    "id": "ann-e415-phi",
+    "proofId": "erdos-415",
+    "range": { "startLine": 33, "endLine": 34 },
+    "type": "definition",
+    "title": "Euler's Totient Function",
+    "content": "**φ(n)** counts integers k with 1 ≤ k ≤ n and gcd(k,n) = 1.\n\nExamples:\n- φ(1) = 1\n- φ(p) = p - 1 for prime p\n- φ(p^k) = p^{k-1}(p - 1)\n\nThis is the central function in the problem.",
+    "significance": "critical",
+    "relatedConcepts": ["Multiplicative function", "Prime factorization"]
+  },
+  {
+    "id": "ann-e415-sigma",
+    "proofId": "erdos-415",
+    "range": { "startLine": 36, "endLine": 37 },
+    "type": "definition",
+    "title": "Sum of Divisors",
+    "content": "**σ(n)** is the sum of all divisors of n.\n\nExamples: σ(6) = 1 + 2 + 3 + 6 = 12.\n\nThe same ordering pattern results hold for σ.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e415-tau",
+    "proofId": "erdos-415",
+    "range": { "startLine": 39, "endLine": 40 },
+    "type": "definition",
+    "title": "Number of Divisors",
+    "content": "**τ(n)** counts divisors of n.\n\nExamples: τ(6) = 4 (divisors: 1, 2, 3, 6).\n\nThe same triple-log bound applies to τ.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e415-omega",
+    "proofId": "erdos-415",
+    "range": { "startLine": 42, "endLine": 43 },
+    "type": "definition",
+    "title": "Distinct Prime Divisors",
+    "content": "**ω(n)** counts distinct prime divisors of n.\n\nExamples: ω(12) = ω(2² · 3) = 2.\n\nThis additive function also satisfies F(n) ≍ log log log n.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e415-pattern",
+    "proofId": "erdos-415",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "definition",
+    "title": "Ordering Pattern",
+    "content": "An **ordering pattern** on k elements is a permutation of Fin k.\n\nFor k = 3, there are 3! = 6 patterns:\n- 1 < 2 < 3 (increasing)\n- 3 < 2 < 1 (decreasing)\n- 1 < 3 < 2, 2 < 1 < 3, 2 < 3 < 1, 3 < 1 < 2\n\nThe question: which patterns appear in φ sequences?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e415-pattern-count",
+    "proofId": "erdos-415",
+    "range": { "startLine": 50, "endLine": 53 },
+    "type": "theorem",
+    "title": "Pattern Count",
+    "content": "There are exactly **k!** ordering patterns on k elements.\n\nThis grows very fast: 2! = 2, 3! = 6, 4! = 24, 5! = 120, ...\n\nFinding all k! patterns becomes exponentially harder.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e415-realizes",
+    "proofId": "erdos-415",
+    "range": { "startLine": 55, "endLine": 58 },
+    "type": "definition",
+    "title": "Realizes Pattern",
+    "content": "A sequence **realizes** a pattern if the relative ordering matches.\n\nFor example, [5, 3, 8] realizes the pattern (2, 1, 3) because:\n- 5 is medium (rank 2)\n- 3 is smallest (rank 1)\n- 8 is largest (rank 3)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e415-achievable",
+    "proofId": "erdos-415",
+    "range": { "startLine": 66, "endLine": 68 },
+    "type": "definition",
+    "title": "Pattern Achievable",
+    "content": "A pattern is **achievable at n** if some sequence φ(m+1), ..., φ(m+k) with m + k ≤ n realizes it.\n\nWe search through all starting points m to find each pattern.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e415-all-achievable",
+    "proofId": "erdos-415",
+    "range": { "startLine": 70, "endLine": 72 },
+    "type": "definition",
+    "title": "All Patterns Achievable",
+    "content": "`AllPatternsAchievable n k` means ALL k! patterns appear somewhere in φ(1), ..., φ(n).\n\nThis is the condition that defines F(n).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e415-F-def",
+    "proofId": "erdos-415",
+    "range": { "startLine": 74, "endLine": 80 },
+    "type": "definition",
+    "title": "The Function F(n)",
+    "content": "**F(n)** = largest k such that all k! patterns are achievable.\n\nEquivalently: F(n) + 1 is the smallest k where some pattern is missing.\n\nThe key question: How fast does F(n) grow?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e415-asymp-def",
+    "proofId": "erdos-415",
+    "range": { "startLine": 88, "endLine": 93 },
+    "type": "definition",
+    "title": "Triple-Log Asymptotic",
+    "content": "**F(n) ≍ log log log n** means:\n\nc₁ · log log log n ≤ F(n) ≤ c₂ · log log log n\n\nfor constants c₁, c₂ > 0 and large n.\n\nThis is INCREDIBLY slow growth!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e415-erdos-1936",
+    "proofId": "erdos-415",
+    "range": { "startLine": 95, "endLine": 97 },
+    "type": "theorem",
+    "title": "Erdős 1936 Result",
+    "content": "**Erdős (1936):** F(n) ≍ log log log n.\n\nThis is the main known result. The exact constant remains unknown!\n\nSource: 'On a problem of Chowla and some related problems'",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e415-q1",
+    "proofId": "erdos-415",
+    "range": { "startLine": 101, "endLine": 104 },
+    "type": "definition",
+    "title": "Question 1: Exact Constant",
+    "content": "**OPEN:** Is there a constant c such that\n\nF(n) = (c + o(1)) · log log log n?\n\nThe o(1) term goes to 0 as n → ∞.\n\nIf true, this would pin down the leading constant.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e415-decreasing",
+    "proofId": "erdos-415",
+    "range": { "startLine": 106, "endLine": 111 },
+    "type": "definition",
+    "title": "Strictly Decreasing Pattern",
+    "content": "The **strictly decreasing pattern** is:\n\nφ(m+1) > φ(m+2) > ... > φ(m+k)\n\nThis is conjectured to be the hardest pattern to find — the first to fail as k increases.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e415-q2",
+    "proofId": "erdos-415",
+    "range": { "startLine": 113, "endLine": 116 },
+    "type": "definition",
+    "title": "Question 2: First to Fail",
+    "content": "**OPEN:** Is strictly decreasing always the first pattern to fail?\n\nIn other words: if some pattern is missing, is the decreasing pattern definitely missing?\n\nThis would identify the 'hardest' pattern.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e415-natural",
+    "proofId": "erdos-415",
+    "range": { "startLine": 118, "endLine": 120 },
+    "type": "definition",
+    "title": "Natural Pattern",
+    "content": "The **natural pattern** mimics the ordering of φ(1), φ(2), ..., φ(k).\n\nFor k = 5: φ(1)=1, φ(2)=1, φ(3)=2, φ(4)=2, φ(5)=4\nSo the natural pattern encodes: 1 ≤ 2 < 3 ≤ 4 < 5.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e415-q3",
+    "proofId": "erdos-415",
+    "range": { "startLine": 122, "endLine": 126 },
+    "type": "definition",
+    "title": "Question 3: Most Common",
+    "content": "**OPEN:** Is the natural pattern the most commonly occurring?\n\nThis asks whether the 'generic' behavior of φ produces the most common ordering pattern.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e415-k2",
+    "proofId": "erdos-415",
+    "range": { "startLine": 139, "endLine": 142 },
+    "type": "theorem",
+    "title": "k = 2 Patterns",
+    "content": "For k = 2, both patterns (increasing and decreasing) appear for small n.\n\n- φ(2) = 1 < φ(3) = 2 (increasing)\n- φ(3) = 2 > φ(4) = 2... wait, need strict inequality\n\nWith n ≥ 10, both strict patterns appear.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e415-phi-prime",
+    "proofId": "erdos-415",
+    "range": { "startLine": 151, "endLine": 153 },
+    "type": "theorem",
+    "title": "φ at Primes",
+    "content": "**φ(p) = p - 1** for prime p.\n\nThis is because all integers 1, 2, ..., p-1 are coprime to p.\n\nConsecutive primes give increasing φ values.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e415-phi-small",
+    "proofId": "erdos-415",
+    "range": { "startLine": 164, "endLine": 167 },
+    "type": "theorem",
+    "title": "φ Can Be Small",
+    "content": "**φ is highly variable:** φ(n) can be much smaller than n.\n\nFor highly composite n (many small prime factors), φ(n)/n can be arbitrarily small.\n\nThis variability drives the pattern diversity.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e415-other-funcs",
+    "proofId": "erdos-415",
+    "range": { "startLine": 171, "endLine": 180 },
+    "type": "theorem",
+    "title": "Other Functions",
+    "content": "**Universality:** The same F(n) ≍ log log log n holds for:\n- σ(n) (sum of divisors)\n- τ(n) (number of divisors)\n- ω(n) (distinct prime factors)\n- Any 'decent' additive or multiplicative function\n\nThe triple-log is robust!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e415-why-triple",
+    "proofId": "erdos-415",
+    "range": { "startLine": 190, "endLine": 192 },
+    "type": "concept",
+    "title": "Why Triple Log?",
+    "content": "**Intuition for log log log n:**\n\n1. Need k! patterns in ~n/k windows\n2. k! ≈ (k/e)^k suggests k^k ≲ n\n3. Naive: k ≲ log n / log log n\n4. But φ values cluster (many collisions)\n5. Clustering adds another log factor → log log log n",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e415-collisions",
+    "proofId": "erdos-415",
+    "range": { "startLine": 199, "endLine": 202 },
+    "type": "theorem",
+    "title": "φ Collisions",
+    "content": "**Many integers share the same φ value:**\n\n- φ(1) = φ(2) = 1\n- φ(3) = φ(4) = φ(6) = 2\n- φ(5) = φ(8) = φ(10) = φ(12) = 4\n\nThese collisions reduce the effective 'randomness' of φ sequences.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e415-main",
+    "proofId": "erdos-415",
+    "range": { "startLine": 206, "endLine": 216 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**Erdős Problem #415: OPEN**\n\nKnown: F(n) ≍ log log log n (Erdős 1936)\n\nUnknown:\n1. Exact constant c\n2. Whether strictly decreasing fails first\n3. Whether natural pattern is most common",
+    "significance": "critical"
+  }
+]

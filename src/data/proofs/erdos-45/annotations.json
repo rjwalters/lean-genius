@@ -1,1 +1,101 @@
-[]
+[
+  {
+    "id": "ann-45-divisors",
+    "proofId": "erdos-45",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "definition",
+    "title": "Proper Divisors",
+    "content": "D = {d : 1 < d < n, d | n}, excluding 1 and n itself.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-45-coloring",
+    "proofId": "erdos-45",
+    "range": { "startLine": 48, "endLine": 50 },
+    "type": "definition",
+    "title": "k-Coloring",
+    "content": "Assignment of colors from Fin k to elements of a set.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-45-mono",
+    "proofId": "erdos-45",
+    "range": { "startLine": 54, "endLine": 56 },
+    "type": "definition",
+    "title": "Monochromatic",
+    "content": "A subset where all elements have the same color.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-45-reciprocal",
+    "proofId": "erdos-45",
+    "range": { "startLine": 58, "endLine": 60 },
+    "type": "definition",
+    "title": "Reciprocal Sum",
+    "content": "Σ_{d ∈ S} 1/d, the sum of unit fractions.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-45-egyptian",
+    "proofId": "erdos-45",
+    "range": { "startLine": 68, "endLine": 72 },
+    "type": "definition",
+    "title": "k-Egyptian Property",
+    "content": "Any k-coloring has monochromatic subset with reciprocal sum 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-45-croot",
+    "proofId": "erdos-45",
+    "range": { "startLine": 81, "endLine": 83 },
+    "type": "theorem",
+    "title": "Croot's Theorem",
+    "content": "For all k ≥ 2, there exists n_k with k-Egyptian property.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-45-upper",
+    "proofId": "erdos-45",
+    "range": { "startLine": 92, "endLine": 93 },
+    "type": "theorem",
+    "title": "Upper Bound",
+    "content": "n_k ≤ exp(C^k), doubly exponential (Sawhney).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-45-lower",
+    "proofId": "erdos-45",
+    "range": { "startLine": 102, "endLine": 103 },
+    "type": "theorem",
+    "title": "Lower Bound",
+    "content": "n_k ≥ exp(cC^k), matching the upper bound (Sawhney).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-45-divsum",
+    "proofId": "erdos-45",
+    "range": { "startLine": 107, "endLine": 110 },
+    "type": "lemma",
+    "title": "Divisor Reciprocal Sum",
+    "content": "Reciprocal sum of divisors equals σ_{-1}(n).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-45-bound",
+    "proofId": "erdos-45",
+    "range": { "startLine": 113, "endLine": 116 },
+    "type": "lemma",
+    "title": "Egyptian Fraction Bound",
+    "content": "If D' sums to 1, each d ≤ prod(D'). PROVED by Aristotle.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-45-k2",
+    "proofId": "erdos-45",
+    "range": { "startLine": 123, "endLine": 124 },
+    "type": "theorem",
+    "title": "Case k=2",
+    "content": "n = 120 has the 2-Egyptian property.",
+    "significance": "supporting"
+  }
+]

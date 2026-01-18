@@ -1,34 +1,68 @@
 {
   "id": "erdos-99",
-  "title": "Erdős Problem #99",
+  "title": "Erdős Problem #99: Equilateral Triangles in Minimal Diameter Sets",
   "slug": "erdos-99",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a set of ... points with minimum distance equal to 1, chosen to minimise the diameter of .... If ... is sufficient...",
+  "description": "Must n points with min distance 1 and minimal diameter contain a unit equilateral triangle for large n? Erdős offered $100 for a counterexample but only $50 for a proof. The problem remains OPEN.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (conjecture), Thue (optimal packing)",
     "sourceUrl": "https://erdosproblems.com/99",
     "date": "",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos99Problem.lean",
     "tags": [
-      "erdos"
+      "discrete-geometry",
+      "packing",
+      "erdos",
+      "equilateral-triangles",
+      "open-problem",
+      "triangular-lattice"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "open",
+    "sorries": 1,
     "erdosNumber": 99,
     "erdosUrl": "https://erdosproblems.com/99",
-    "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$100"
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$100 (counterexample) / $50 (proof)",
+    "relatedProblems": [
+      {
+        "id": "erdos-103",
+        "relationship": "Related problem on point configurations"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #99 from erdosproblems.com. Originally offered with a prize of $100.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq\\mathbb{R}^2$ be a set of $n$ points with minimum distance equal to 1, chosen to minimise the diameter of $A$. If $n$ is sufficiently large then must there be three points in $A$ which form an equilateral triangle of size 1?\n\n\n\nThue proved that the minimal such diameter is achieved (asymptotically) by the points in a triangular lattice intersected with a circle. In general Erd\\H{o}s believed such a set must have very large intersection with the triangular lattice (perhaps as many as $(1-o(1))n$).\n\nErd\\H{o}s \\cite{Er94b} wrote 'I could not prove it but felt that it should not be hard. To my great surprise both B. H. Sendov and M. Simonovits doubted the truth of this conjecture.' In \\cite{Er94b} he offers \\$100 for a counterexample but only \\$50 for a proof.\n\nThe stated problem is false for $n=4$, for example taking the points to be vertices of a square. The behaviour of such sets for small $n$ is explored by Bezdek and Fodor \\cite{BeFo99}.\n\nSee also [103].\n\n\n\n\nReferences\n\n\n[BeFo99] Bezdek, Andr\\'{a}s and Fodor, Ferenc, Minimal diameter of certain sets in the plane. J. Combin. Theory Ser. A (1999), 105-111.\n\n[Er94b] Erd\\H{o}s, Paul, Some problems in number theory, combinatorics and combinatorial geometry. Math. Pannon. (1994), 261-269.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Optimal Packing and Lattice Structure**\n\nThis problem connects optimal circle packing to the structure of point configurations. Given n points with minimum pairwise distance 1, minimizing the diameter forces points to pack efficiently.\n\n**Thue's Theorem**: The optimal packing density in ℝ² is achieved by the triangular (hexagonal) lattice. Thus, diameter-minimizing configurations should resemble a circular region of the triangular lattice.\n\n**The Conjecture**: If the configuration must resemble the triangular lattice, it should contain unit equilateral triangles - the fundamental building blocks of that lattice.\n\n**Erdős's Surprise**: He wrote: 'I could not prove it but felt that it should not be hard. To my great surprise both B. H. Sendov and M. Simonovits doubted the truth of this conjecture.'\n\n**The Prize Asymmetry**: Erdős offered $100 for a counterexample but only $50 for a proof - suggesting he suspected the conjecture might be false!",
+    "problemStatement": "**Problem Statement**\n\nLet A ⊆ ℝ² be n points with minimum distance 1, chosen to minimize the diameter of A. For sufficiently large n, must A contain three points forming a unit equilateral triangle?\n\n**Status**: OPEN\n\n**Prize**: $100 for counterexample, $50 for proof\n\n**Small Cases**:\n- n = 3: Triangle (yes, trivially)\n- n = 4: Square vertices work (NO equilateral triangle!)\n- Small n: Explored by Bezdek-Fodor (1999)\n\n**Erdős's Stronger Belief**: Such configurations should have (1-o(1))n points on the triangular lattice.",
+    "proofStrategy": "**Approaches**\n\n**For a Proof**:\n1. Show diameter-minimizing sets must have large triangular lattice intersection\n2. Any sufficiently large lattice region contains equilateral triangles\n3. Quantify 'sufficiently large' n\n\n**For a Counterexample**:\n1. Find non-lattice configurations with small diameter\n2. Avoid equilateral triangles while maintaining minimum distance 1\n3. The n=4 square example suggests this might be possible\n\n**Why It's Hard**:\n- Thue's theorem is asymptotic - small deviations from lattice structure are allowed\n- Non-lattice configurations can have comparable diameter\n- The transition from 'approximately lattice' to 'contains lattice triangle' is subtle\n\n**Bezdek-Fodor Analysis**:\n- Classified optimal configurations for small n\n- Found that lattice structure emerges gradually\n- Transition behavior suggests the problem is delicate",
+    "keyInsights": [
+      "Erdős offered MORE for a counterexample than a proof - he suspected it might be false",
+      "The n=4 square shows small cases can avoid equilateral triangles",
+      "Thue's optimal packing theorem suggests lattice structure should emerge",
+      "The gap between 'asymptotically lattice' and 'contains lattice triangles' is subtle",
+      "Sendov and Simonovits doubted the conjecture, surprising Erdős",
+      "The stronger conjecture claims (1-o(1))n points lie on the triangular lattice",
+      "This connects packing theory to discrete geometry"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "placeholder",
+      "title": "Placeholder Theorem",
+      "startLine": 34,
+      "endLine": 35,
+      "summary": "The current proof is a placeholder (erdos_99 : True). This is an OPEN problem about equilateral triangles in optimal point packings."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #99 asks whether diameter-minimizing n-point sets (with min distance 1) must contain unit equilateral triangles for large n. The problem is OPEN, with Erdős offering $100 for a counterexample but only $50 for a proof. The n=4 square shows small cases can avoid triangles.",
+    "implications": "**Theoretical Significance**\n\n1. **Packing Theory**: Tests whether optimal packings must exhibit triangular lattice structure\n\n2. **Discrete Geometry**: Connects global optimization (diameter) to local structure (triangles)\n\n3. **Lattice Theory**: Would show that 'approximately lattice' implies 'contains lattice pieces'\n\n4. **Asymptotic Structure**: Explores how structure emerges as n → ∞",
+    "openQuestions": [
+      "Prove or find counterexample (main problem)",
+      "What is the smallest n where equilateral triangles are forced?",
+      "Prove (1-o(1))n points lie on triangular lattice (stronger conjecture)",
+      "Characterize all diameter-minimizing configurations for each n",
+      "Extend to higher dimensions and other lattices",
+      "What happens if we minimize perimeter instead of diameter?"
+    ]
   }
 }

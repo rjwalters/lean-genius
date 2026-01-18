@@ -1,1 +1,164 @@
-[]
+[
+  {
+    "id": "ann-1017-edgecount",
+    "proofId": "erdos-1017",
+    "range": { "startLine": 33, "endLine": 35 },
+    "type": "definition",
+    "title": "Edge Count",
+    "content": "Number of edges in a simple graph.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1017-isclique",
+    "proofId": "erdos-1017",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "isClique",
+    "content": "Set S where all pairs are adjacent.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1017-completeon",
+    "proofId": "erdos-1017",
+    "range": { "startLine": 50, "endLine": 54 },
+    "type": "definition",
+    "title": "completeOn",
+    "content": "Complete graph on a vertex set S.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1017-edgedisjoint",
+    "proofId": "erdos-1017",
+    "range": { "startLine": 62, "endLine": 64 },
+    "type": "definition",
+    "title": "Edge-Disjoint",
+    "content": "Two subgraphs share no edges.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1017-partition",
+    "proofId": "erdos-1017",
+    "range": { "startLine": 78, "endLine": 80 },
+    "type": "definition",
+    "title": "isCliquePartition",
+    "content": "Edge-disjoint cliques whose union equals G.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1017-canpartition",
+    "proofId": "erdos-1017",
+    "range": { "startLine": 88, "endLine": 94 },
+    "type": "definition",
+    "title": "canPartitionInto",
+    "content": "Every (n,k)-graph partitions into ≤ m cliques.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1017-fnk",
+    "proofId": "erdos-1017",
+    "range": { "startLine": 96, "endLine": 102 },
+    "type": "definition",
+    "title": "cliquePartitionNumber",
+    "content": "f(n,k) = min cliques to partition any (n,k)-graph.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1017-edgestriangles",
+    "proofId": "erdos-1017",
+    "range": { "startLine": 111, "endLine": 113 },
+    "type": "definition",
+    "title": "Edges and Triangles Only",
+    "content": "Partition uses only 2-cliques and 3-cliques.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1017-egp",
+    "proofId": "erdos-1017",
+    "range": { "startLine": 115, "endLine": 123 },
+    "type": "theorem",
+    "title": "Erdős-Goodman-Pósa (1966)",
+    "content": "f(n,k) ≤ n²/4 using edges and triangles.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1017-bipartite",
+    "proofId": "erdos-1017",
+    "range": { "startLine": 136, "endLine": 143 },
+    "type": "definition",
+    "title": "Complete Bipartite",
+    "content": "Edges only between two disjoint vertex sets.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1017-notriangles",
+    "proofId": "erdos-1017",
+    "range": { "startLine": 145, "endLine": 147 },
+    "type": "theorem",
+    "title": "Bipartite No Triangles",
+    "content": "K_{n/2,n/2} has no triangles.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1017-improve",
+    "proofId": "erdos-1017",
+    "range": { "startLine": 164, "endLine": 167 },
+    "type": "definition",
+    "title": "Can Improve for Dense",
+    "content": "∃ better bound when k > n²/4.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1017-question",
+    "proofId": "erdos-1017",
+    "range": { "startLine": 169, "endLine": 170 },
+    "type": "definition",
+    "title": "Main Question (OPEN)",
+    "content": "Can EGP bound be sharpened for k > n²/4?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1017-lovaszt",
+    "proofId": "erdos-1017",
+    "range": { "startLine": 181, "endLine": 183 },
+    "type": "definition",
+    "title": "Lovász Parameter t",
+    "content": "Max t with t² - t ≤ C(n,2) - k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1017-lovasz",
+    "proofId": "erdos-1017",
+    "range": { "startLine": 185, "endLine": 193 },
+    "type": "theorem",
+    "title": "Lovász Covering (1968)",
+    "content": "Non-edge-disjoint covering in C(n,2) - k + t cliques.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1017-k4free",
+    "proofId": "erdos-1017",
+    "range": { "startLine": 201, "endLine": 203 },
+    "type": "definition",
+    "title": "K₄-Free",
+    "content": "Graph contains no 4-clique.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1017-gyori",
+    "proofId": "erdos-1017",
+    "range": { "startLine": 205, "endLine": 215 },
+    "type": "theorem",
+    "title": "Győri-Keszegh (2017)",
+    "content": "K₄-free with n²/4 + m edges has m disjoint triangles.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1017-largerhelp",
+    "proofId": "erdos-1017",
+    "range": { "startLine": 235, "endLine": 243 },
+    "type": "theorem",
+    "title": "Larger Cliques Help",
+    "content": "Using full clique vs edges reduces partition size.",
+    "significance": "key"
+  }
+]

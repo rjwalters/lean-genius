@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-1000-incseq",
+    "proofId": "erdos-1000",
+    "range": { "startLine": 46, "endLine": 49 },
+    "type": "definition",
+    "title": "IncreasingSeq",
+    "content": "A strictly increasing sequence of positive integers A = {n₁ < n₂ < ⋯}.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1000-reduced-denom",
+    "proofId": "erdos-1000",
+    "range": { "startLine": 55, "endLine": 55 },
+    "type": "definition",
+    "title": "Reduced Denominator",
+    "content": "For m/n, the reduced denominator is n/gcd(m,n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1000-phiA",
+    "proofId": "erdos-1000",
+    "range": { "startLine": 64, "endLine": 67 },
+    "type": "definition",
+    "title": "Generalized Totient φ_A",
+    "content": "Count of m ≤ n_k where reduced denominator of m/n_k is not any previous n_j.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1000-phiA-bound",
+    "proofId": "erdos-1000",
+    "range": { "startLine": 81, "endLine": 83 },
+    "type": "theorem",
+    "title": "φ_A(k) ≥ φ(n_k)",
+    "content": "The generalized totient is always at least the Euler totient.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1000-naturalSeq",
+    "proofId": "erdos-1000",
+    "range": { "startLine": 88, "endLine": 91 },
+    "type": "definition",
+    "title": "Natural Numbers Sequence",
+    "content": "The natural numbers as an increasing sequence: n ↦ n+1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1000-density",
+    "proofId": "erdos-1000",
+    "range": { "startLine": 110, "endLine": 111 },
+    "type": "definition",
+    "title": "Density Ratio",
+    "content": "The ratio φ_A(k)/n_k for a single term.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1000-cesaro",
+    "proofId": "erdos-1000",
+    "range": { "startLine": 116, "endLine": 118 },
+    "type": "definition",
+    "title": "Cesàro Average",
+    "content": "The average (1/N) Σ_{k≤N} φ_A(k)/n_k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1000-cassels",
+    "proofId": "erdos-1000",
+    "range": { "startLine": 135, "endLine": 137 },
+    "type": "theorem",
+    "title": "Cassels' Result (1950)",
+    "content": "There exist sequences where liminf of the Cesàro average is 0.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1000-erdos-limit",
+    "proofId": "erdos-1000",
+    "range": { "startLine": 152, "endLine": 153 },
+    "type": "theorem",
+    "title": "Erdős: No Zero Limit",
+    "content": "For any sequence, the limit of φ_A(k)/n_k cannot be 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1000-erdos-dichotomy",
+    "proofId": "erdos-1000",
+    "range": { "startLine": 166, "endLine": 168 },
+    "type": "theorem",
+    "title": "Erdős' Dichotomy",
+    "content": "If liminf φ_A(k)/n_k = 0, then limsup = 1.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1000-vanishing",
+    "proofId": "erdos-1000",
+    "range": { "startLine": 181, "endLine": 182 },
+    "type": "definition",
+    "title": "Vanishing Average",
+    "content": "A sequence has vanishing average if its Cesàro average tends to 0.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1000-question",
+    "proofId": "erdos-1000",
+    "range": { "startLine": 190, "endLine": 191 },
+    "type": "definition",
+    "title": "The Main Question",
+    "content": "Does there exist a sequence with vanishing average? Erdős conjectured NO.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1000-haight",
+    "proofId": "erdos-1000",
+    "range": { "startLine": 207, "endLine": 207 },
+    "type": "theorem",
+    "title": "Haight's Theorem",
+    "content": "Such sequences exist, contrary to Erdős' expectation. SOLVED.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1000-solved",
+    "proofId": "erdos-1000",
+    "range": { "startLine": 213, "endLine": 213 },
+    "type": "theorem",
+    "title": "Problem #1000 Solved",
+    "content": "The answer is YES - sequences with vanishing average exist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1000-oscillation",
+    "proofId": "erdos-1000",
+    "range": { "startLine": 252, "endLine": 262 },
+    "type": "theorem",
+    "title": "Haight Oscillation",
+    "content": "Haight's sequence has vanishing average yet oscillates between 0 and 1.",
+    "significance": "key"
+  }
+]

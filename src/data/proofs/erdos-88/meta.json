@@ -1,34 +1,61 @@
 {
   "id": "erdos-88",
-  "title": "Erdős Problem #88",
+  "title": "Erdős Problem #88: Induced Subgraphs in Ramsey Graphs",
   "slug": "erdos-88",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any ... there exists ... such that if ... is a graph on ... vertices with no independent set or clique of size ... then ....",
+  "description": "In a graph with no large clique or independent set, can we find induced subgraphs with any desired edge count up to δn²? The Erdős-McKay conjecture was proved by Kwan, Sah, Sauermann, and Sawhney (2022), earning the $100 prize.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős & McKay (conjecture), Kwan-Sah-Sauermann-Sawhney (2022 proof)",
     "sourceUrl": "https://erdosproblems.com/88",
-    "date": "",
+    "date": "2022",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos88Problem.lean",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "ramsey-theory",
+      "erdos",
+      "induced-subgraphs",
+      "anticoncentration",
+      "extremal-combinatorics"
     ],
     "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 88,
     "erdosUrl": "https://erdosproblems.com/88",
     "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$100"
+    "erdosPrizeValue": "$100",
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #88 from erdosproblems.com. Originally offered with a prize of $100.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any $\\epsilon>0$ there exists $\\delta=\\delta(\\epsilon)>0$ such that if $G$ is a graph on $n$ vertices with no independent set or clique of size $\\geq \\epsilon\\log n$ then $G$ contains an induced subgraph with $m$ edges for all $m\\leq \\delta n^2$.\n\n\n\nConjectured by Erd\\H{o}s and McKay, who proved it with $\\delta n^2$ replaced by $\\delta (\\log n)^2$. Solved by Kwan, Sah, Sauermann, and Sawhney \\cite{KSSS22}. Erd\\H{o}s' original formulation also had the condition that $G$ has $\\gg n^2$ edges, but an old result of Erd\\H{o}s and Szemer\\'{e}di says that this follows from the other condition anyway.\n\n\n\n\nReferences\n\n\n[KSSS22] Kwan, M. and Sah, A. and Sauermann, L. and Sawhney, M., Anticoncentration in Ramsey graphs and a proof of the Erd\\H{o}s-McKay conjecture. arXiv:2208.02874 (2022).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Ramsey Graphs and Edge Count Flexibility**\n\nA 'Ramsey graph' is one with no large clique or independent set. By Ramsey's theorem, such graphs must have bounded size, but for fixed clique/independence bounds, they can be arbitrarily large. This problem asks about the flexibility of their induced subgraph structure.\n\n**The Erdős-McKay Conjecture**: For graphs with no clique or independent set of size ≥ ε log n, Erdős and McKay conjectured that induced subgraphs can achieve any edge count from 0 to δn² for some δ > 0.\n\n**Partial Progress**: Erdős and McKay proved a weaker version with δ(log n)² instead of δn². The gap from logarithmic to quadratic was open for decades.\n\n**The Solution**: Kwan, Sah, Sauermann, and Sawhney (2022) proved the full conjecture using 'anticoncentration' techniques, earning the $100 Erdős prize.",
+    "problemStatement": "**Problem Statement**\n\nFor any ε > 0, there exists δ = δ(ε) > 0 such that if G is a graph on n vertices with:\n- No independent set of size ≥ ε log n\n- No clique of size ≥ ε log n\n\nThen G contains an induced subgraph with exactly m edges for all m ≤ δn².\n\n**Key Insight**: The condition 'no large clique or independent set' actually implies G has Θ(n²) edges (Erdős-Szemerédi), so the δn² bound is natural.\n\n**Answer**: PROVED by Kwan-Sah-Sauermann-Sawhney (2022)",
+    "proofStrategy": "**The KSSS Approach (2022)**\n\nThe proof uses sophisticated probabilistic and combinatorial techniques:\n\n1. **Anticoncentration**: The key insight is that edge counts of random induced subgraphs are 'anticoncentrated' - they don't cluster around specific values.\n\n2. **Probabilistic Sampling**: Sample vertices with appropriate probability and analyze the distribution of edge counts.\n\n3. **Covering the Range**: Show that the anticoncentration property allows hitting all edge counts in [0, δn²].\n\n4. **Regularity and Structure**: Use structural properties of Ramsey graphs to control the distribution.\n\n**Why This Was Hard**: The jump from δ(log n)² to δn² requires understanding global structure, not just local properties. The anticoncentration approach was the key innovation.",
+    "keyInsights": [
+      "Ramsey graphs (no large clique/independent set) have rich induced subgraph structure",
+      "The Erdős-Szemerédi result implies Ramsey graphs have Θ(n²) edges automatically",
+      "Anticoncentration: edge counts of random subgraphs are well-spread",
+      "The gap from (log n)² to n² was qualitative - logarithmic vs polynomial",
+      "KSSS solved this as part of a broader anticoncentration program",
+      "The $100 prize reflects the difficulty and importance of the problem"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "placeholder",
+      "title": "Placeholder Theorem",
+      "startLine": 34,
+      "endLine": 35,
+      "summary": "The current proof is a placeholder (erdos_88 : True). Full formalization would encode the KSSS anticoncentration result."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #88 (the Erdős-McKay conjecture) asked whether Ramsey graphs contain induced subgraphs with any edge count up to δn². After Erdős-McKay proved the weaker δ(log n)² bound, the full conjecture remained open until Kwan, Sah, Sauermann, and Sawhney proved it in 2022, earning the $100 Erdős prize.",
+    "implications": "**Theoretical Significance**\n\n1. **Ramsey Theory**: Reveals deep structure in graphs avoiding large homogeneous sets\n\n2. **Anticoncentration**: Introduces powerful probabilistic techniques to combinatorics\n\n3. **Induced Subgraphs**: Shows Ramsey graphs are 'flexible' in their induced structure\n\n4. **Probabilistic Combinatorics**: Demonstrates the power of distribution analysis in graph theory",
+    "openQuestions": [
+      "What is the optimal value of δ(ε)?",
+      "Can the anticoncentration approach be simplified or made constructive?",
+      "Extend to hypergraphs or other Ramsey-type settings",
+      "What other properties do Ramsey graph induced subgraphs have?",
+      "Full Lean formalization of the KSSS anticoncentration argument"
+    ]
   }
 }

@@ -1,33 +1,122 @@
 {
   "id": "erdos-76",
-  "title": "Erdős Problem #76",
+  "title": "Erdős Problem #76: Monochromatic Triangle Packings",
   "slug": "erdos-76",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that in any ...-colouring of the edges of ... there must exist at least\\[(1+o(1)){12}\\]many edge-disjoint monochro...",
+  "description": "In any 2-coloring of the complete graph K_n, how many edge-disjoint monochromatic triangles must exist? Erdős, Faudree, and Ordman conjectured the answer is (1+o(1))n²/12, proved optimal by Gruslys and Letzter in 2020.",
   "meta": {
-    "author": "Unknown",
+    "author": "Gruslys & Letzter (2020)",
     "sourceUrl": "https://erdosproblems.com/76",
-    "date": "",
+    "date": "2020",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos76Problem.lean",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "ramsey-theory",
+      "erdos",
+      "triangle-packing",
+      "edge-coloring",
+      "extremal-combinatorics"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 4,
     "erdosNumber": 76,
     "erdosUrl": "https://erdosproblems.com/76",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #76 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that in any $2$-colouring of the edges of $K_n$ there must exist at least\\[(1+o(1))\\frac{n^2}{12}\\]many edge-disjoint monochromatic triangles?\n\n\n\nConjectured by Erd\\H{o}s, Faudreee, and Ordman. This would be best possible, as witnessed by dividing the vertices of $K_n$ into two equal parts and colouring all edges between the parts red and all edges inside the parts blue.\n\nThe answer is yes, proved by Gruslys and Letzter \\cite{GrLe20}.\n\nIn \\cite{Er97d} Erd\\H{o}s also asks for a lower bound for the count of edge-disjoint monochromatic triangles in single colour (the colour chosen to maximise this quantity), and speculates that the answer is $\\geq cn^2$ for some constant $c>1/24$.\n\n\n\n\nReferences\n\n\n[Er97d] Erd\\H{o}s, Paul, Some recent problems and results in graph theory. Discrete Math. (1997), 81-85.\n\n[GrLe20] Gruslys, V. and Letzter, S., Monochromatic triangle packings in red-blue graphs. arXiv:2008.05311 (2020).\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Packing Monochromatic Triangles**\n\nThis problem sits at the intersection of Ramsey theory and extremal graph theory. While Ramsey's theorem guarantees monochromatic cliques in edge-colorings, this problem asks a quantitative packing question: how many edge-disjoint monochromatic triangles must exist?\n\n**The Extremal Construction**: The conjectured bound n²/12 comes from a natural construction. Partition vertices into two equal halves, color all edges between halves red, and all edges within halves blue. Each color class is a balanced complete bipartite graph (no triangles between halves) or two disjoint cliques of size n/2. The blue triangles can be packed to get roughly (n/2)²/6 ≈ n²/24 triangles from each half, totaling n²/12.\n\n**The Conjecture**: Erdős, Faudree, and Ordman conjectured this construction is worst-case optimal - any 2-coloring must contain at least this many edge-disjoint monochromatic triangles.\n\n**Resolution**: Gruslys and Letzter confirmed this in their 2020 paper 'Monochromatic triangle packings in red-blue graphs'.",
+    "problemStatement": "**Problem Statement**\n\nIs it true that in any 2-coloring of the edges of K_n there must exist at least (1+o(1))n²/12 many edge-disjoint monochromatic triangles?\n\n**Key Definitions**:\n- **Edge-disjoint**: No two triangles share an edge\n- **Monochromatic**: All three edges of the triangle have the same color\n- **2-coloring**: Each edge is colored red or blue\n\n**Answer**: YES. The bound n²/12 is asymptotically tight, achieved by the balanced bipartition coloring.\n\n**Related Question**: Erdős also asked about maximizing monochromatic triangles in a single color, conjecturing ≥ cn² for some c > 1/24.",
+    "proofStrategy": "**Proof Approach (Gruslys-Letzter 2020)**\n\nThe proof uses sophisticated techniques from extremal combinatorics:\n\n1. **Regularity Framework**: Apply a variant of Szemerédi's regularity lemma to decompose the colored graph into structured pieces.\n\n2. **Triangle Removal**: Analyze how triangles distribute across regular pairs and handle irregular parts.\n\n3. **Greedy Packing with Absorption**: Use a combination of greedy triangle selection and absorption methods to build a large edge-disjoint collection.\n\n4. **Balancing Colors**: Show that the total count from both colors together achieves the n²/12 bound, even if one color contributes less.\n\n5. **Handling the o(1) Term**: Carefully track error terms from regularity to achieve the asymptotic result.\n\n**Key Insight**: The extremal coloring 'wastes' edges by creating large bipartite regions (no triangles), but this is the only way to minimize the triangle packing count.",
+    "keyInsights": [
+      "The balanced bipartition coloring minimizes edge-disjoint monochromatic triangles",
+      "Triangle packing is harder than triangle counting - edges can only be used once",
+      "The n²/12 bound comes from (n/2 choose 3) / 3 ≈ n²/24 per color class",
+      "Ramsey-type results give existence; this gives quantitative packing bounds",
+      "The problem connects packing theory to edge-coloring extremal questions"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "edge-colorings",
+      "title": "Edge Colorings",
+      "summary": "Color type and EdgeColoring definition",
+      "startLine": 29,
+      "endLine": 47
+    },
+    {
+      "id": "triangles",
+      "title": "Triangles",
+      "summary": "Triangle structure and monochromatic definition",
+      "startLine": 49,
+      "endLine": 66
+    },
+    {
+      "id": "packings",
+      "title": "Edge-Disjoint Packings",
+      "summary": "edgeDisjoint, isPacking, monochromaticPacking",
+      "startLine": 68,
+      "endLine": 84
+    },
+    {
+      "id": "max-packing",
+      "title": "Maximum Packing Size",
+      "summary": "maxPackingSize and minMaxPackingSize definitions",
+      "startLine": 86,
+      "endLine": 99
+    },
+    {
+      "id": "extremal",
+      "title": "Extremal Construction",
+      "summary": "The balanced bipartition coloring",
+      "startLine": 101,
+      "endLine": 127
+    },
+    {
+      "id": "conjecture",
+      "title": "Erdős-Faudree-Ordman Conjecture",
+      "summary": "The n²/12 bound and balanced coloring achieves it",
+      "startLine": 129,
+      "endLine": 143
+    },
+    {
+      "id": "gruslys-letzter",
+      "title": "Gruslys-Letzter Theorem",
+      "summary": "Main result confirming the conjecture (2020)",
+      "startLine": 145,
+      "endLine": 163
+    },
+    {
+      "id": "counting-vs-packing",
+      "title": "Triangle Counting vs Packing",
+      "summary": "Upper bounds from edge constraints",
+      "startLine": 165,
+      "endLine": 181
+    },
+    {
+      "id": "bound-explained",
+      "title": "The n²/12 Bound Explained",
+      "summary": "Why this bound arises from clique structure",
+      "startLine": 183,
+      "endLine": 197
+    },
+    {
+      "id": "single-color",
+      "title": "Single-Color Maximum",
+      "summary": "Erdős's related conjecture on single-color packing",
+      "startLine": 199,
+      "endLine": 219
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #76 asked for the minimum number of edge-disjoint monochromatic triangles in any 2-coloring of K_n. Gruslys and Letzter (2020) proved the answer is (1+o(1))n²/12, confirming the Erdős-Faudree-Ordman conjecture. The extremal coloring partitions vertices into two halves with edges between halves in one color.",
+    "implications": "**Theoretical Significance**\n\n1. **Ramsey Theory**: Extends classical Ramsey results to quantitative packing questions\n\n2. **Extremal Combinatorics**: Identifies the unique extremal construction for this packing problem\n\n3. **Algorithm Design**: Suggests efficient algorithms for finding large monochromatic triangle packings\n\n4. **Generalizations**: Opens questions about k-colorings and larger cliques",
+    "openQuestions": [
+      "What is the exact (non-asymptotic) minimum for small n?",
+      "What happens for 3 or more colors?",
+      "Can the result be extended to edge-disjoint monochromatic K_4 or larger cliques?",
+      "What is the answer to Erdős's single-color question (is c > 1/24)?",
+      "Full Lean formalization of the Gruslys-Letzter packing argument"
+    ]
   }
 }

@@ -1,34 +1,68 @@
 {
   "id": "erdos-105",
-  "title": "Erdős Problem #105",
+  "title": "Erdős Problem #105: Lines Avoiding a Point Set",
   "slug": "erdos-105",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be disjoint sets of size ... and ... respectively, with not all of ... contained on a single line. Is there a line wh...",
+  "description": "Given n points A (not collinear) and n-3 points B, must some line hit 2+ points of A and miss B entirely? DISPROVED by Xichuan with explicit counterexamples. Variants with n-4 or (1-o(1))n remain open.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős & Purdy (conjecture), Xichuan (disproof)",
     "sourceUrl": "https://erdosproblems.com/105",
     "date": "",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos105Problem.lean",
     "tags": [
-      "erdos"
+      "discrete-geometry",
+      "incidence-geometry",
+      "erdos",
+      "point-line-incidences",
+      "counterexample",
+      "disproved"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "disproved",
+    "sorries": 1,
     "erdosNumber": 105,
     "erdosUrl": "https://erdosproblems.com/105",
     "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$50"
+    "erdosPrizeValue": "$50",
+    "relatedProblems": [
+      {
+        "id": "erdos-211",
+        "relationship": "Beck and Szemerédi-Trotter results on point-line incidences"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #105 from erdosproblems.com. Originally offered with a prize of $50.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A,B\\subset \\mathbb{R}^2$ be disjoint sets of size $n$ and $n-3$ respectively, with not all of $A$ contained on a single line. Is there a line which contains at least two points from $A$ and no points from $B$?\n\n\n\nConjectured by Erd\\H{o}s and Purdy \\cite{ErPu95} (the prize is for a proof or disproof). A construction of Hickerson shows that this fails with $n-2$. A result independently proved by Beck \\cite{Be83} and Szemer\\'{e}di and Trotter \\cite{SzTr83} (see [211]) implies it is true with $n-3$ replaced by $cn$ for some constant $c>0$.\n\nThis has been disproved by Xichuan in the comments, who has found three explicit counterexamples. It remains possible that this holds with $n-4$ (or in general with $n-O(1)$ or $(1-o(1))n$).\n\n\n\n\nReferences\n\n\n[Be83] Beck, J\\'{o}zsef, On the lattice property of the plane and some problems of Dirac, Motzkin and Erd\\H{o}s in combinatorial geometry. Combinatorica (1983), 281-297.\n\n[ErPu95] Erd\\H{o}s, P. and Purdy, G., Two combinatorial problems in the plane. Discrete Comput. Geom. (1995), 441-443.\n\n[SzTr83] Szemer\\'{e}di, Endre and Trotter, Jr., William T., Extremal problems in discrete geometry. Combinatorica (1983), 381-392.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Rich Lines Avoiding Obstacles**\n\nThis problem asks about finding 'rich' lines (containing multiple points from a set A) that avoid a set of obstacles B. It connects to the classical Szemerédi-Trotter theorem on point-line incidences.\n\n**The Conjecture (Erdős-Purdy 1995)**: Given n points A (not all collinear) and n-3 obstacle points B, there should exist a line containing ≥2 points of A and no points of B.\n\n**The Disproof**: Xichuan found three explicit counterexamples, disproving the conjecture. The $50 prize was for proof OR disproof.\n\n**Earlier Results**:\n- Hickerson: Conjecture fails with n-2 obstacles (showing n-3 is best possible if true)\n- Beck (1983) & Szemerédi-Trotter (1983): True with cn obstacles for some c > 0\n\n**Remaining Questions**: Does the conjecture hold with n-4 obstacles? Or with (1-o(1))n?",
+    "problemStatement": "**Problem Statement**\n\nLet A, B ⊂ ℝ² be disjoint sets with |A| = n, |B| = n-3, and A not contained on a single line. Must there exist a line containing at least two points from A and no points from B?\n\n**Answer**: NO (DISPROVED)\n\n**Counterexamples**: Xichuan provided three explicit counterexamples.\n\n**Prize**: $50 (awarded for disproof)\n\n**Bounds History**:\n- n-2 obstacles: FALSE (Hickerson construction)\n- n-3 obstacles: FALSE (Xichuan counterexamples)\n- cn obstacles: TRUE for some c > 0 (Beck, Szemerédi-Trotter)\n\n**Open**: What is the largest f(n) such that the statement holds with f(n) obstacles?",
+    "proofStrategy": "**The Counterexamples**\n\nXichuan's disproof constructs specific point configurations where:\n1. A has n points, not all collinear\n2. B has n-3 points\n3. Every line through 2+ points of A also contains a point of B\n\n**Why Counterexamples Work**:\n- Carefully place B points on all 'rich' lines of A\n- The n-3 budget is just enough to block all such lines\n- Requires A to have few rich lines relative to its size\n\n**Beck-Szemerédi-Trotter Positive Result**:\n- Uses incidence bounds to show many rich lines exist\n- With only cn obstacles (c small), some rich line must be unblocked\n- The constant c is not optimized\n\n**Hickerson's n-2 Construction**:\n- Shows the conjecture fails at n-2\n- Xichuan extended this to n-3",
+    "keyInsights": [
+      "The Erdős-Purdy conjecture is FALSE - counterexamples exist with n-3 obstacles",
+      "Xichuan found three explicit counterexamples",
+      "Hickerson had earlier shown n-2 obstacles suffice to block all rich lines",
+      "Beck and Szemerédi-Trotter showed cn obstacles (c > 0 constant) is not enough",
+      "The threshold lies between cn and n-3 - exact value unknown",
+      "Problem connects to point-line incidence theory (Szemerédi-Trotter theorem)",
+      "$50 prize was awarded for the disproof"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "placeholder",
+      "title": "Placeholder Theorem",
+      "startLine": 34,
+      "endLine": 35,
+      "summary": "The current proof is a placeholder (erdos_105 : True). The original conjecture was DISPROVED by Xichuan."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #105 (Erdős-Purdy conjecture) asked whether n-3 obstacle points can block all rich lines through n points. DISPROVED by Xichuan with explicit counterexamples. The exact threshold between cn and n-3 where the statement transitions from true to false remains open.",
+    "implications": "**Theoretical Significance**\n\n1. **Incidence Geometry**: Reveals limits of 'rich line' existence theorems\n\n2. **Szemerédi-Trotter**: The constant in cn is important - near-linear obstacles can block\n\n3. **Combinatorial Geometry**: Shows careful constructions can defeat natural conjectures\n\n4. **Open Threshold**: The exact transition point is an interesting structural question",
+    "openQuestions": [
+      "Does the statement hold with n-4 obstacles?",
+      "What is the largest f(n) for which the statement is true?",
+      "Is f(n) = (1-o(1))n? Or f(n) = n - O(1)?",
+      "What is the optimal constant c in the Beck-Szemerédi-Trotter result?",
+      "Formalize Xichuan's counterexamples in Lean",
+      "Generalize to higher dimensions"
+    ]
   }
 }

@@ -1,33 +1,121 @@
 {
   "id": "erdos-1002",
-  "title": "Erdős Problem #1002",
+  "title": "Erdős Problem #1002: Asymptotic Distribution of Weighted Fractional Sums",
   "slug": "erdos-1002",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any ..., let\\[f(\\alpha,n)={\\log n}\\sum_{1\\leq k\\leq n}({2}-\\{ \\alpha k\\}).\\]Does ... have an asymptotic distribution func...",
+  "description": "For 0 < α < 1, define f(α,n) = (1/log n) Σ (1/2 - {αk}). Does f(α,n) have an asymptotic distribution function? Kesten (1960) proved the two-parameter variant has Cauchy distribution, but the one-parameter case remains open.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/1002",
     "date": "",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1002Problem.lean",
     "tags": [
-      "erdos"
+      "analysis",
+      "diophantine-approximation",
+      "erdos",
+      "distribution-functions",
+      "fractional-parts"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 5,
     "erdosNumber": 1002,
     "erdosUrl": "https://erdosproblems.com/1002",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1002 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any $0<\\alpha<1$, let\\[f(\\alpha,n)=\\frac{1}{\\log n}\\sum_{1\\leq k\\leq n}(\\tfrac{1}{2}-\\{ \\alpha k\\}).\\]Does $f(\\alpha,n)$ have an asymptotic distribution function?\n\nIn other words, is there a non-decreasing function $g$ such that $g(-\\infty)=0$, $g(\\infty)=1$,\nand\\[\\lim_{n\\to \\infty}\\lvert \\{ \\alpha\\in (0,1): f(\\alpha,n)\\leq c\\}\\rvert=g(c)?\\]\n\n\n\nKesten \\cite{Ke60} proved that if\\[f(\\alpha,\\beta,n)=\\frac{1}{\\log n}\\sum_{1\\leq k\\leq n}(\\tfrac{1}{2}-\\{\\beta+\\alpha k\\})\\]then $f(\\alpha,\\beta,n)$ has asymptotic distribution function\\[g(c)=\\frac{1}{\\pi}\\int_{-\\infty}^{\\rho c}\\frac{1}{1+t^2}\\mathrm{d}t,\\]where $\\rho>0$ is an explicit constant.\n\n\n\n\nReferences\n\n\n[Ke60] Kesten, Harry, Uniform distribution {${\\rm mod}\\,1$}. Ann. of Math. (2) (1960), 445--471.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Fractional Part Distribution**\n\nThe fractional part function {x} = x - ⌊x⌋ plays a central role in Diophantine approximation. For irrational α, the sequence {α}, {2α}, {3α}, ... is equidistributed in [0,1) by Weyl's theorem.\n\n**The Weighted Sum**: Erdős considered the deviation from uniformity: f(α,n) = (1/log n) Σ (1/2 - {αk}). The factor 1/2 centers the fractional part, and dividing by log n normalizes the sum.\n\n**Distribution Question**: Rather than asking about specific α, Erdős asked whether f(α,n) has an *asymptotic distribution* - does the measure of {α : f(α,n) ≤ c} converge as n → ∞?\n\n**Kesten's Breakthrough**: In 1960, Kesten proved the two-parameter variant f(α,β,n) = (1/log n) Σ (1/2 - {β + αk}) has asymptotic Cauchy distribution. Averaging over β provides independence that the one-parameter case lacks.",
+    "problemStatement": "**Problem Statement**\n\nFor any 0 < α < 1, define:\n$$f(\\alpha,n) = \\frac{1}{\\log n} \\sum_{1 \\leq k \\leq n} \\left(\\frac{1}{2} - \\{\\alpha k\\}\\right)$$\n\nDoes f(α,n) possess an asymptotic distribution function?\n\nMore precisely: Does there exist a non-decreasing function g with g(-∞) = 0, g(+∞) = 1, such that:\n$$\\lim_{n \\to \\infty} |\\{\\alpha \\in (0,1) : f(\\alpha,n) \\leq c\\}| = g(c)?$$\n\n**Status**: OPEN\n\n**Related Result**: Kesten (1960) proved that f(α,β,n) with an additional shift parameter β has Cauchy distribution g(c) = (1/π)arctan(ρc) + 1/2.",
+    "proofStrategy": "**Why This Problem is Difficult**\n\nThe key difficulty is the loss of independence when β = 0:\n\n1. **Two-Parameter Case**: Averaging over both α and β provides sufficient independence for ergodic methods.\n\n2. **One-Parameter Case**: With β = 0 fixed, the sequence {αk} for different k values has subtle correlations.\n\n3. **Continued Fractions**: The behavior of f(α,n) depends on the continued fraction expansion of α. Different Diophantine properties of α lead to different behaviors.\n\n4. **Dynamical Systems**: The problem connects to geodesic flows on modular surfaces, but the relevant ergodic theory is incomplete.\n\n**Potential Approaches**:\n- Study the joint distribution of (α, {α}, {2α}, ..., {nα})\n- Analyze the Fourier transform of the distribution\n- Use number-theoretic properties of continued fractions",
+    "keyInsights": [
+      "The fractional part {αk} for irrational α is equidistributed (Weyl's theorem)",
+      "The deviation from uniformity, weighted by 1/log n, captures subtle arithmetic structure",
+      "Kesten's two-parameter result uses averaging over β to achieve independence",
+      "Fixing β = 0 destroys the independence and makes the problem much harder",
+      "The answer may depend on Diophantine properties of α (how well approximable it is)"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "fractional-part",
+      "title": "Fractional Part",
+      "summary": "Definition of frac(x) = x - ⌊x⌋",
+      "startLine": 24,
+      "endLine": 37
+    },
+    {
+      "id": "weighted-sum",
+      "title": "The Weighted Sum f(α, n)",
+      "summary": "innerSum and f definitions",
+      "startLine": 39,
+      "endLine": 54
+    },
+    {
+      "id": "distribution-functions",
+      "title": "Distribution Functions",
+      "summary": "isDistributionFunction definition",
+      "startLine": 56,
+      "endLine": 68
+    },
+    {
+      "id": "asymptotic-distribution",
+      "title": "Asymptotic Distribution",
+      "summary": "levelSet and hasAsymptoticDistribution",
+      "startLine": 70,
+      "endLine": 88
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture (OPEN)",
+      "summary": "erdos_1002_conjecture definition",
+      "startLine": 90,
+      "endLine": 101
+    },
+    {
+      "id": "kesten-theorem",
+      "title": "Kesten's Theorem (1960)",
+      "summary": "Two-parameter variant has Cauchy distribution",
+      "startLine": 103,
+      "endLine": 133
+    },
+    {
+      "id": "relationship",
+      "title": "Relationship Between Problems",
+      "summary": "One-parameter as special case",
+      "startLine": 135,
+      "endLine": 145
+    },
+    {
+      "id": "difficulty",
+      "title": "Why the Problem is Difficult",
+      "summary": "Independence is lost when β = 0",
+      "startLine": 147,
+      "endLine": 166
+    },
+    {
+      "id": "partial-results",
+      "title": "Partial Results",
+      "summary": "Boundedness and continued fraction bounds",
+      "startLine": 168,
+      "endLine": 182
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Overview and open problems",
+      "startLine": 184,
+      "endLine": 208
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1002 asks whether the weighted fractional part sum f(α,n) = (1/log n) Σ (1/2 - {αk}) has an asymptotic distribution function. While Kesten (1960) proved the two-parameter variant has Cauchy distribution, the one-parameter case (fixing β = 0) remains open. The difficulty lies in the loss of independence when the shift parameter is fixed.",
+    "implications": "**Theoretical Significance**\n\n1. **Diophantine Approximation**: Connects distribution theory to number-theoretic properties of real numbers\n\n2. **Ergodic Theory**: Relates to geodesic flows and mixing properties on modular surfaces\n\n3. **Probability Theory**: Tests limits of central limit theorem-type results for dependent sequences\n\n4. **Continued Fractions**: The answer may distinguish between different Diophantine types of α",
+    "openQuestions": [
+      "Does f(α,n) have an asymptotic distribution for Lebesgue-almost all α?",
+      "If a distribution exists, is it the same Cauchy distribution as Kesten's result?",
+      "How does the behavior depend on the continued fraction expansion of α?",
+      "Can the problem be resolved for specific classes (quadratic irrationals, Liouville numbers)?",
+      "What is the connection to the dynamics of the Gauss map?"
+    ]
   }
 }

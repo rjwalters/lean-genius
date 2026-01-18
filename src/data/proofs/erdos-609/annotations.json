@@ -1,1 +1,204 @@
-[]
+[
+  {
+    "id": "ann-e609-edge-coloring",
+    "proofId": "erdos-609",
+    "range": { "startLine": 35, "endLine": 37 },
+    "type": "definition",
+    "title": "Edge Coloring",
+    "content": "An **n-edge-coloring** assigns a color from Fin n to each edge.\n\nWe use `Sym2 V` to represent unordered pairs (edges), so the coloring is automatically symmetric: color({u,v}) is well-defined.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e609-cycle",
+    "proofId": "erdos-609",
+    "range": { "startLine": 39, "endLine": 45 },
+    "type": "definition",
+    "title": "Cycle in a Graph",
+    "content": "A **cycle** is a list of vertices [v₀, v₁, ..., vₖ₋₁] where:\n- Length ≥ 3\n- All vertices distinct (Nodup)\n- Consecutive vertices are adjacent: G.Adj vᵢ vᵢ₊₁\n- The cycle closes: G.Adj vₖ₋₁ v₀",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e609-odd-cycle",
+    "proofId": "erdos-609",
+    "range": { "startLine": 50, "endLine": 52 },
+    "type": "definition",
+    "title": "Odd Cycle",
+    "content": "An **odd cycle** is a cycle with odd length (3, 5, 7, ...).\n\nOdd cycles are the key obstruction to bipartiteness: a graph is bipartite ↔ it has no odd cycles.",
+    "significance": "critical",
+    "relatedConcepts": ["Bipartite graphs", "2-colorability"]
+  },
+  {
+    "id": "ann-e609-mono-cycle",
+    "proofId": "erdos-609",
+    "range": { "startLine": 56, "endLine": 62 },
+    "type": "definition",
+    "title": "Monochromatic Cycle",
+    "content": "A cycle is **monochromatic in color c** if every edge of the cycle has color c.\n\nThis is the structure we're trying to force: a monochromatic odd cycle.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e609-has-mono-odd",
+    "proofId": "erdos-609",
+    "range": { "startLine": 64, "endLine": 70 },
+    "type": "definition",
+    "title": "Has Monochromatic Odd Cycle",
+    "content": "The predicate `HasMonochromaticOddCycleOfLength G coloring m` asserts:\n\n∃ cycle, ∃ color c, cycle is odd AND monochromatic in c AND length ≤ m\n\nThis is what f(n) measures: the minimum m that is always forced.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e609-complete-graph",
+    "proofId": "erdos-609",
+    "range": { "startLine": 74, "endLine": 81 },
+    "type": "definition",
+    "title": "Complete Graph K_n",
+    "content": "The **complete graph** K_n has all possible edges: every pair of distinct vertices is adjacent.\n\nK_n has n(n-1)/2 edges. The problem studies colorings of K_{2^n+1}.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e609-f-def",
+    "proofId": "erdos-609",
+    "range": { "startLine": 89, "endLine": 96 },
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "**The Key Function:**\n\nf(n) = minimum m such that EVERY n-coloring of K_{2^n+1} has a monochromatic odd cycle of length ≤ m.\n\nThis is defined via Nat.find, assuming such m always exists (which follows from the forcing theorem).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e609-avoids",
+    "proofId": "erdos-609",
+    "range": { "startLine": 107, "endLine": 112 },
+    "type": "theorem",
+    "title": "K_{2^n} Avoids Odd Cycles",
+    "content": "**The Doubling Miracle:**\n\nK_{2^n} CAN be n-colored with NO monochromatic odd cycles at all!\n\nConstruction: Start with K_2 (1 color). At each step, double the graph and use a new color for cross-edges. Each color class is bipartite, so no odd cycles.",
+    "mathContext": "This is the key extremal result: 2^n is the threshold.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e609-forces",
+    "proofId": "erdos-609",
+    "range": { "startLine": 114, "endLine": 120 },
+    "type": "theorem",
+    "title": "K_{2^n+1} Forces Odd Cycle",
+    "content": "**The Forcing Result:**\n\nWith n colors on K_{2^n+1}, at least one color must contain an odd cycle.\n\nWhy? Each color class avoiding odd cycles is bipartite with ≤ 2^n vertices. But n bipartite graphs on ≤ 2^n vertices can cover at most K_{2^n}!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e609-avoid-c5",
+    "proofId": "erdos-609",
+    "range": { "startLine": 124, "endLine": 128 },
+    "type": "theorem",
+    "title": "Avoiding C_5",
+    "content": "**Short Cycle Avoidance:**\n\nFor large enough n, there exists an n-coloring of K_{2^n+1} with no monochromatic pentagon (C_5).\n\nThis shows f(n) > 5 for large n — we can avoid the shortest odd cycles.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e609-avoid-c7",
+    "proofId": "erdos-609",
+    "range": { "startLine": 130, "endLine": 134 },
+    "type": "theorem",
+    "title": "Avoiding C_7",
+    "content": "**Heptagon Avoidance:**\n\nFor large enough n, monochromatic C_7 can also be avoided.\n\nThis further constrains f(n): we know f(n) > 7 for large n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e609-chung",
+    "proofId": "erdos-609",
+    "range": { "startLine": 136, "endLine": 138 },
+    "type": "definition",
+    "title": "Chung's Question",
+    "content": "**Chung (1997):**\n\nDoes f(n) → ∞ as n → ∞?\n\nIn other words: can arbitrarily long odd cycles be avoided for large enough n?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e609-day-johnson",
+    "proofId": "erdos-609",
+    "range": { "startLine": 142, "endLine": 145 },
+    "type": "theorem",
+    "title": "Day-Johnson Lower Bound",
+    "content": "**Day-Johnson (2017):**\n\nf(n) ≥ 2^{c√(log n)} for some constant c > 0.\n\nThis answered Chung's question affirmatively: f(n) → ∞.\n\nThe √(log n) exponent means very slow growth — but still unbounded!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e609-f-infinity",
+    "proofId": "erdos-609",
+    "range": { "startLine": 147, "endLine": 149 },
+    "type": "theorem",
+    "title": "f(n) Tends to Infinity",
+    "content": "**Chung's Question: ANSWERED YES**\n\nFor any M, there exists N such that n ≥ N implies f(n) ≥ M.\n\nThe minimum forced odd cycle length grows without bound!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e609-girao-hunter",
+    "proofId": "erdos-609",
+    "range": { "startLine": 151, "endLine": 154 },
+    "type": "theorem",
+    "title": "Girão-Hunter Upper Bound",
+    "content": "**Girão-Hunter (2024):**\n\nf(n) ≤ C · 2^n / n^{1-o(1)}\n\nThis gives an exponential upper bound — some odd cycle of length O(2^n/n) must appear.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e609-janzer-yip",
+    "proofId": "erdos-609",
+    "range": { "startLine": 156, "endLine": 159 },
+    "type": "theorem",
+    "title": "Janzer-Yip Upper Bound",
+    "content": "**Janzer-Yip (2025):**\n\nf(n) ≤ C · n^{3/2} · 2^{n/2}\n\nThis is the current best upper bound! The 2^{n/2} factor is much smaller than the previous 2^n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e609-gap",
+    "proofId": "erdos-609",
+    "range": { "startLine": 163, "endLine": 169 },
+    "type": "definition",
+    "title": "The Bounds Gap",
+    "content": "**The Exponential Mystery:**\n\nLower: 2^{c√(log n)} ≈ n^{c'}\nUpper: n^{3/2} · 2^{n/2} ≈ exp(n/2)\n\nThe gap is EXPONENTIAL! The true behavior of f(n) is completely unknown between these bounds.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e609-cycle-ramsey",
+    "proofId": "erdos-609",
+    "range": { "startLine": 173, "endLine": 175 },
+    "type": "definition",
+    "title": "Cycle Ramsey Numbers",
+    "content": "**R(C_k, ..., C_k):**\n\nThe r-color Ramsey number for odd cycles C_k is the minimum n such that any r-coloring of K_n has a monochromatic C_k.\n\nFor odd k, this grows exponentially in r.",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey theory", "Cycle graphs"]
+  },
+  {
+    "id": "ann-e609-bipartite",
+    "proofId": "erdos-609",
+    "range": { "startLine": 186, "endLine": 189 },
+    "type": "theorem",
+    "title": "Bipartite Characterization",
+    "content": "**Classical Result:**\n\nA graph is bipartite ↔ it has no odd cycles.\n\nThis is fundamental: avoiding monochromatic odd cycles means each color class is bipartite.",
+    "significance": "key",
+    "relatedConcepts": ["Graph 2-coloring", "König's theorem"]
+  },
+  {
+    "id": "ann-e609-color-bipartite",
+    "proofId": "erdos-609",
+    "range": { "startLine": 191, "endLine": 198 },
+    "type": "theorem",
+    "title": "Color Classes Are Bipartite",
+    "content": "**Key Observation:**\n\nIf a color class has no odd cycle, it's bipartite.\n\nSo n-coloring K_{2^n+1} without odd cycles requires covering it with n bipartite graphs.\n\nBut n bipartite graphs can only cover K_{2^n}, not K_{2^n+1}!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e609-doubling",
+    "proofId": "erdos-609",
+    "range": { "startLine": 202, "endLine": 213 },
+    "type": "definition",
+    "title": "The Doubling Construction",
+    "content": "**How to n-Color K_{2^n}:**\n\n- Base: K_2 = single edge, 1 color\n- Step: Given K_{2^n} with n colors, form K_{2^{n+1}} by taking two copies and connecting all cross-edges with color n+1\n\nEach color class is bipartite (either within a copy, or between copies), so no odd cycles!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e609-main",
+    "proofId": "erdos-609",
+    "range": { "startLine": 217, "endLine": 228 },
+    "type": "theorem",
+    "title": "Main Problem Statement",
+    "content": "**Erdős Problem #609: OPEN**\n\nEstimate f(n), the minimum odd cycle length forced in n-colorings of K_{2^n+1}.\n\nBest bounds:\n- Lower: 2^{c√(log n)}\n- Upper: n^{3/2} · 2^{n/2}\n\nThe exponential gap remains a major open problem.",
+    "significance": "critical"
+  }
+]

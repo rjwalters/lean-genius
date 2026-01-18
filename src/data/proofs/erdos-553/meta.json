@@ -1,33 +1,129 @@
 {
   "id": "erdos-553",
-  "title": "Erdős Problem #553",
+  "title": "Erdős Problem #553: Multi-Color Ramsey Asymptotics",
   "slug": "erdos-553",
-  "description": "Let ... denote the smallest integer ... such that if we ...-colour the edges of ... then there is either a monochromatic triangle in one of the first two colours or a monochromatic ... in the third...",
+  "description": "Show R(3,3,n)/R(3,n) → ∞. The third color dramatically increases the off-diagonal threshold. Solved by Alon-Rödl (2005): R(3,3,n) ≍ n³(log n)^O(1) vs R(3,n) ≪ n²/log n.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Sós, solved by Alon-Rödl",
     "sourceUrl": "https://erdosproblems.com/553",
-    "date": "",
-    "status": "pending",
+    "date": "2005",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos553Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "ramsey-theory",
+      "graph-coloring",
+      "asymptotics",
+      "off-diagonal"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 15,
     "erdosNumber": 553,
     "erdosUrl": "https://erdosproblems.com/553",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.CliqueFree",
+        "description": "Triangle-free graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for cliques",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for asymptotic bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of multi-color Ramsey numbers R(3,n) and R(3,3,n)",
+      "Statement of Alon-Rödl bounds for R(3,3,n)",
+      "Statement of Shearer's bound for R(3,n)",
+      "Formalization of the divergence result",
+      "Turán-style intuition for why the third color helps"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #553 from erdosproblems.com.",
-    "problemStatement": "Let $R(3,3,n)$ denote the smallest integer $m$ such that if we $3$-colour the edges of $K_m$ then there is either a monochromatic triangle in one of the first two colours or a monochromatic $K_n$ in the third colour. Define $R(3,n)$ similarly but with two colours. Show that\\[\\frac{R(3,3,n)}{R(3,n)}\\to \\infty\\]as $n\\to \\infty$. A problem of Erdős and Sós. This was solved by Alon and Rödl [AlRo05], who in fact show that\\[R(3,3,n)\\asymp n^3(\\log n)^{O(1)}\\](recalling that Shearer [Sh83] showed $R(3,n) \\ll n^2/\\log n$). This problem is #22 in Ramsey Theory in the graphs problem collection. See also [925]. View the LaTeX source",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem, posed by Erdős and Sós, concerns the asymptotic behavior of multi-color Ramsey numbers. The standard Ramsey number R(3,n) is the minimum m such that any 2-coloring of K_m has either a red triangle or a blue K_n. The three-color variant R(3,3,n) allows two colors for triangles and one for the large clique.\n\nThe key insight is that having two 'triangle' colors dramatically increases the threshold, because two triangle-free graphs (one per color) can together cover many more edges than one alone. Alon and Rödl proved this in 2005, establishing precise asymptotic bounds.",
+    "problemStatement": "**Definitions:**\n- R(3,n) = min m : any 2-coloring of K_m has a red triangle or blue K_n\n- R(3,3,n) = min m : any 3-coloring of K_m has a red triangle, blue triangle, or green K_n\n\n**Question:** Show that R(3,3,n) / R(3,n) → ∞ as n → ∞.\n\n**Solution (Alon-Rödl 2005):**\n- R(3,3,n) ≍ n³ · (log n)^O(1)\n- R(3,n) ≪ n² / log n (Shearer 1983)\n- Ratio grows like n · (log factors) → ∞",
+    "proofStrategy": "The formalization:\n\n1. Defines `EdgeColoring n k` for k-colorings of K_n\n2. Defines `HasMonochromaticTriangle` and `HasMonochromaticClique`\n3. Constructs `R_3_n n` and `R_3_3_n n` as Ramsey numbers\n4. States Shearer's upper bound: R(3,n) ≤ Cn²/log n\n5. States Alon-Rödl bounds: R(3,3,n) ≍ n³(log n)^O(1)\n6. Proves `RatioTendsToInfinity` from these bounds\n7. Provides intuition via Turán-type edge counting",
+    "keyInsights": [
+      "**Two Colors vs Three:** In 2-coloring, one color's edges must be triangle-free (≤ n²/4 edges by Turán). In 3-coloring, two colors can be triangle-free, allowing n²/2 edges total—double the room for the clique color.",
+      "**Shearer's Bound (1983):** R(3,n) ≤ Cn²/log n. The triangle-free constraint limits edge density, forcing the clique color to dominate quickly.",
+      "**Alon-Rödl Bound (2005):** R(3,3,n) ≍ n³(log n)^O(1). Two triangle-free colors can support much denser edge structures before forcing a large clique.",
+      "**Ratio Growth:** R(3,3,n)/R(3,n) ≈ n³/n² = n → ∞. The cubic vs quadratic growth drives the divergence.",
+      "**General Pattern:** For r triangle-colors, expect R(3,...,3,n) ~ n^(r+1), suggesting deeper Erdős-Sós conjectures."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "coloring-basics",
+      "title": "Graph Coloring Basics",
+      "summary": "Edge colorings and monochromatic structures",
+      "startLine": 32,
+      "endLine": 53
+    },
+    {
+      "id": "r-3-n",
+      "title": "Two-Color Ramsey R(3,n)",
+      "summary": "Definition and properties of R(3,n)",
+      "startLine": 55,
+      "endLine": 71
+    },
+    {
+      "id": "r-3-3-n",
+      "title": "Three-Color Ramsey R(3,3,n)",
+      "summary": "Definition and properties of R(3,3,n)",
+      "startLine": 73,
+      "endLine": 92
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "summary": "Shearer and Alon-Rödl asymptotic bounds",
+      "startLine": 94,
+      "endLine": 113
+    },
+    {
+      "id": "main-result",
+      "title": "The Main Result",
+      "summary": "Ratio divergence theorem",
+      "startLine": 115,
+      "endLine": 128
+    },
+    {
+      "id": "intuition",
+      "title": "Intuition: Why Third Color Helps",
+      "summary": "Turán-type edge counting argument",
+      "startLine": 130,
+      "endLine": 145
+    },
+    {
+      "id": "off-diagonal",
+      "title": "Off-Diagonal Ramsey Numbers",
+      "summary": "Connection to standard R(s,t)",
+      "startLine": 147,
+      "endLine": 163
+    },
+    {
+      "id": "asymptotics",
+      "title": "Asymptotic Notation",
+      "summary": "f ≍ g notation and asymptotic results",
+      "startLine": 165,
+      "endLine": 181
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #553 asks whether R(3,3,n)/R(3,n) → ∞. Alon and Rödl (2005) proved this by establishing R(3,3,n) ≍ n³(log n)^O(1) compared to Shearer's R(3,n) ≪ n²/log n. The ratio grows like n times logarithmic factors, confirming the conjecture. The formalization captures the definitions, bounds, and provides Turán-style intuition for why additional triangle colors dramatically increase the threshold.",
+    "implications": "This result connects to:\n\n1. **Extremal Graph Theory:** Turán's theorem and triangle-free edge bounds\n2. **Multi-Color Ramsey Theory:** How additional colors affect thresholds\n3. **Probabilistic Method:** Random constructions underlie the bounds\n4. **Off-Diagonal Ramsey:** Asymmetric R(s,t) number asymptotics\n5. **Logarithmic Factors:** The polylog terms in Ramsey asymptotics",
+    "openQuestions": [
+      "What is the exact exponent in the (log n)^O(1) factor for R(3,3,n)?",
+      "Does R(3,3,3,n)/R(3,3,n) → ∞? (Erdős-Sós generalization)",
+      "What are explicit constructions achieving the lower bounds?",
+      "How do the bounds change for R(4,4,n) vs R(4,n)?"
+    ]
   }
 }

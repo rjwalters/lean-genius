@@ -1,33 +1,121 @@
 {
   "id": "erdos-1017",
-  "title": "Erdős Problem #1017",
+  "title": "Erdős Problem #1017: Clique Partition of Graphs",
   "slug": "erdos-1017",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be such that every graph on ... vertices and ... edges can be partitioned into at most ... edge-disjoint complete gra...",
+  "description": "Let f(n,k) be the min cliques to partition any graph with n vertices, k edges. Erdős-Goodman-Pósa proved f(n,k) ≤ n²/4. Can this be improved for k > n²/4? The K₄-free case is solved (Győri-Keszegh 2017).",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Goodman-Pósa (1966), Győri-Keszegh (2017)",
     "sourceUrl": "https://erdosproblems.com/1017",
-    "date": "",
+    "date": "1966",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1017Problem.lean",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "extremal-combinatorics",
+      "erdos",
+      "clique-partition",
+      "graph-decomposition"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "pending",
+    "sorries": 8,
     "erdosNumber": 1017,
     "erdosUrl": "https://erdosproblems.com/1017",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1017 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n,k)$ be such that every graph on $n$ vertices and $k$ edges can be partitioned into at most $f(n,k)$ edge-disjoint complete graphs. Estimate $f(n,k)$ for $k>n^2/4$.\n\n\n\nThe function $f(n,k)$ is sometimes called the clique partition number.\n\nErd\\H{o}s, Goodman, and P\\'{o}sa \\cite{EGP66} proved that $f(n,k)\\leq n^2/4$ for all $k$ (and in fact the complete graphs can be taken to be edges and triangles), which is best possible in general, as witnessed for example by a complete bipartite graph. In \\cite{Er71} Erd\\H{o} asks vaguely whether this result can be 'sharpened' for $k>n^2/4$.\n\nLov\\'{a}sz \\cite{Lo68} proved that every graph on $n$ vertices and $k$ edges is the union of $\\binom{n}{2}-k+t$ complete graphs, where $t$ is maximal such that $t^2-t\\leq \\binom{n}{2}-k$, but without the assumption that the complete graphs are edge disjoint. Lov\\'{a}sz's result is sharp in many cases.\n\nIf $k>n^2/4$ and the graph contains no $K_4$ then this is equivalent to finding the minimum number of edge disjoint triangles. This special case was also asked about by Erd\\H{o}s. A complete answer was provided by Gy\\\"{o}ri and Keszegh \\cite{GyKe17}, who proved that every $K_4$-free graph with $n$ vertices and $\\lfloor n^2/4\\rfloor+m$ edges contins $m$ pairwise edge disjoint triangles.\n\nSee also [184] for an analogous problem decomposing into edges and cycles, and [583] for decomposing into paths. The clique partition problem for chordal graphs is the subject of [81].\n\n\n\n\nReferences\n\n\n[EGP66] Erd\\H{o}s, Paul and Goodman, A. W. and P\\'{o}sa, Lajos, The representation of a graph by set intersections. Canadian J. Math. (1966), 106-112.\n\n[Er71] Erd\\H{o}s, P., Some unsolved problems in graph theory and combinatorial analysis. Combinatorial Mathematics and its Applications (Proc.\nConf., Oxford, 1969) (1971), 97-109.\n\n[GyKe17] Gy\\H{o}ri, Ervin and Keszegh, Bal\\'azs, On the number of edge-disjoint triangles in {$K_4$}-free\ngraphs. Combinatorica (2017), 1113--1124.\n\n[Lo68] Lov\\'{a}sz, L., On covering of graphs. Theory of Graphs (Proc. Colloq., Tihany, 1966) (1968), 231-236.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Graph Decomposition**\n\nPartitioning a graph into simpler pieces is a fundamental problem. The clique partition number f(n,k) asks: what's the minimum number of complete subgraphs needed to cover all edges exactly once?\n\n**Erdős-Goodman-Pósa (1966)**: Proved the elegant bound f(n,k) ≤ n²/4, achievable using only edges and triangles. This is tight for complete bipartite graphs.\n\n**The Open Question**: Erdős asked whether this bound can be improved when k > n²/4 (more edges than a balanced bipartite graph).\n\n**Partial Progress**: Győri-Keszegh (2017) completely solved the K₄-free case, showing such graphs with n²/4 + m edges contain exactly m edge-disjoint triangles.",
+    "problemStatement": "**Problem Statement**\n\nLet f(n,k) be such that every graph on n vertices and k edges can be partitioned into at most f(n,k) edge-disjoint complete graphs.\n\n**Known**: f(n,k) ≤ n²/4 for all k (Erdős-Goodman-Pósa 1966)\n\n**Question**: Estimate f(n,k) for k > n²/4. Can the bound be improved for dense graphs?\n\n**Status**: OPEN (general case)\n\n**Special Case**: K₄-free graphs with n²/4 + m edges have exactly m edge-disjoint triangles (Győri-Keszegh 2017).",
+    "proofStrategy": "**Approach to the Problem**\n\n1. **Upper Bound (EGP)**: Greedily find triangles, then partition remaining edges. This gives n²/4.\n\n2. **Lower Bound**: Complete bipartite graphs have no triangles, so each edge needs its own 'clique'. K_{n/2,n/2} has n²/4 edges.\n\n3. **Dense Graphs**: When k > n²/4, the graph has 'extra' edges. Can these form larger cliques that reduce the count?\n\n4. **K₄-Free Case**: Without K₄, extra edges must form triangles. Győri-Keszegh showed these triangles are edge-disjoint.\n\n**Key Difficulty**: When K₄ is allowed, edges might belong to multiple potential clique partitions.",
+    "keyInsights": [
+      "f(n,k) ≤ n²/4 using only edges and triangles (Erdős-Goodman-Pósa)",
+      "Complete bipartite graphs achieve this bound (no triangles)",
+      "Lovász gave a covering bound without edge-disjointness",
+      "K₄-free case: extra edges beyond n²/4 give that many disjoint triangles",
+      "General case with K₄ remains open"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-basics",
+      "title": "Graph Basics",
+      "summary": "edgeCount and vertexCount definitions",
+      "startLine": 25,
+      "endLine": 38
+    },
+    {
+      "id": "cliques",
+      "title": "Complete Subgraphs (Cliques)",
+      "summary": "isClique and completeOn definitions",
+      "startLine": 40,
+      "endLine": 54
+    },
+    {
+      "id": "partitions",
+      "title": "Edge-Disjoint Clique Partitions",
+      "summary": "edgeDisjoint, isPairwiseEdgeDisjoint, isCliquePartition",
+      "startLine": 56,
+      "endLine": 80
+    },
+    {
+      "id": "partition-number",
+      "title": "The Clique Partition Number f(n,k)",
+      "summary": "canPartitionInto and cliquePartitionNumber",
+      "startLine": 82,
+      "endLine": 102
+    },
+    {
+      "id": "egp",
+      "title": "Erdős-Goodman-Pósa Theorem (1966)",
+      "summary": "f(n,k) ≤ n²/4 using edges and triangles",
+      "startLine": 104,
+      "endLine": 128
+    },
+    {
+      "id": "extremal",
+      "title": "Extremal Example: Complete Bipartite Graph",
+      "summary": "K_{n/2,n/2} achieves the bound",
+      "startLine": 130,
+      "endLine": 156
+    },
+    {
+      "id": "open-problem",
+      "title": "The Open Problem: k > n²/4",
+      "summary": "canImproveForDenseGraphs and erdos_1017_question",
+      "startLine": 158,
+      "endLine": 173
+    },
+    {
+      "id": "lovasz",
+      "title": "Lovász's Covering Result (1968)",
+      "summary": "Non-edge-disjoint covering bound",
+      "startLine": 175,
+      "endLine": 193
+    },
+    {
+      "id": "k4free",
+      "title": "K₄-Free Case: Győri-Keszegh (2017)",
+      "summary": "Complete solution for triangle-free case",
+      "startLine": 195,
+      "endLine": 227
+    },
+    {
+      "id": "general-harder",
+      "title": "Why the General Case is Harder",
+      "summary": "Larger cliques complicate structure",
+      "startLine": 229,
+      "endLine": 243
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1017 asks whether the clique partition bound f(n,k) ≤ n²/4 can be improved for dense graphs (k > n²/4). While the K₄-free case is solved by Győri-Keszegh (2017), the general case remains open. The difficulty lies in how larger cliques interact with the partition structure.",
+    "implications": "**Theoretical Significance**\n\n1. **Graph Decomposition**: Fundamental question about graph structure\n\n2. **Extremal Combinatorics**: Connects to Turán-type problems\n\n3. **Algorithm Design**: Optimal partitions have applications in data structures\n\n4. **Set Theory**: Related to intersection representations of graphs",
+    "openQuestions": [
+      "Can f(n,k) < n²/4 for k > n²/4 when K₄ is allowed?",
+      "What is the exact value of f(n,k) for specific (n,k)?",
+      "Is there an efficient algorithm to find optimal clique partitions?",
+      "How does the problem extend to hypergraphs?",
+      "What about weighted versions of the problem?"
+    ]
   }
 }

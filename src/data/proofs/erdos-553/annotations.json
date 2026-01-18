@@ -1,1 +1,178 @@
-[]
+[
+  {
+    "id": "ann-e553-edge-coloring",
+    "proofId": "erdos-553",
+    "range": { "startLine": 34, "endLine": 35 },
+    "type": "definition",
+    "title": "Edge Coloring",
+    "content": "An **edge coloring** of the complete graph K_n with k colors assigns a color from Fin k to each edge (pair of vertices).\n\nWe represent edges as ordered pairs (i, j) ∈ Fin n × Fin n. Symmetric colorings satisfy c(i,j) = c(j,i).",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e553-symmetric",
+    "proofId": "erdos-553",
+    "range": { "startLine": 37, "endLine": 39 },
+    "type": "definition",
+    "title": "Symmetric Coloring",
+    "content": "A coloring is **symmetric** if c(i,j) = c(j,i) for all vertices i, j.\n\nThis ensures our edge colorings are well-defined for undirected graphs, where {i,j} = {j,i}.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e553-mono-clique",
+    "proofId": "erdos-553",
+    "range": { "startLine": 41, "endLine": 44 },
+    "type": "definition",
+    "title": "Monochromatic Clique",
+    "content": "A set S of vertices forms a **monochromatic clique** in color col if every edge within S has color col:\n\n∀ i, j ∈ S, i ≠ j → c(i,j) = col\n\nThis is the key structure Ramsey theory guarantees will exist for large enough graphs.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e553-mono-triangle",
+    "proofId": "erdos-553",
+    "range": { "startLine": 46, "endLine": 49 },
+    "type": "definition",
+    "title": "Monochromatic Triangle",
+    "content": "A **monochromatic triangle** in color col is three distinct vertices a, b, c where all three edges have the same color:\n\nc(a,b) = c(b,c) = c(a,c) = col\n\nTriangles (K₃) are the simplest cliques and play a central role in Ramsey theory.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e553-r3n-def",
+    "proofId": "erdos-553",
+    "range": { "startLine": 57, "endLine": 64 },
+    "type": "definition",
+    "title": "Ramsey Number R(3,n)",
+    "content": "**R(3,n)** is the smallest m such that any 2-coloring of K_m has either:\n- A monochromatic triangle in color 0 (red), OR\n- A monochromatic K_n in color 1 (blue)\n\nIntuitively: how large must a graph be to force either a red triangle or a blue clique of size n?",
+    "mathContext": "R(3,3) = 6 is the classical result. For larger n, Shearer (1983) showed R(3,n) ≤ Cn²/log n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e553-r33n-def",
+    "proofId": "erdos-553",
+    "range": { "startLine": 75, "endLine": 83 },
+    "type": "definition",
+    "title": "Ramsey Number R(3,3,n)",
+    "content": "**R(3,3,n)** is the smallest m such that any 3-coloring of K_m has either:\n- A monochromatic triangle in color 0 (red), OR\n- A monochromatic triangle in color 1 (blue), OR\n- A monochromatic K_n in color 2 (green)\n\nThe key difference: TWO colors can now be triangle-free, not just one!",
+    "mathContext": "Having two triangle-free colors dramatically increases the threshold. Alon-Rödl showed R(3,3,n) ≍ n³(log n)^O(1).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e553-shearer",
+    "proofId": "erdos-553",
+    "range": { "startLine": 96, "endLine": 99 },
+    "type": "theorem",
+    "title": "Shearer's Bound",
+    "content": "**Shearer (1983):**\n\nR(3,n) ≤ C · n² / log n\n\nfor some constant C > 0.\n\nThis is the key upper bound for the 2-color case. The log factor in the denominator comes from probabilistic constructions of triangle-free graphs.",
+    "significance": "critical",
+    "relatedConcepts": ["Probabilistic method", "Triangle-free graphs", "Turán's theorem"]
+  },
+  {
+    "id": "ann-e553-r3n-lower",
+    "proofId": "erdos-553",
+    "range": { "startLine": 101, "endLine": 104 },
+    "type": "theorem",
+    "title": "R(3,n) Lower Bound",
+    "content": "**Lower Bound:**\n\nR(3,n) ≥ c · n² / (log n)²\n\nThe lower bound is slightly weaker than the upper bound (extra log factor). The exact asymptotics of R(3,n) remain an open problem!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e553-alon-rodl-upper",
+    "proofId": "erdos-553",
+    "range": { "startLine": 106, "endLine": 109 },
+    "type": "theorem",
+    "title": "Alon-Rödl Upper Bound",
+    "content": "**Alon-Rödl (2005):**\n\nR(3,3,n) ≤ C · n³ · (log n)^k\n\nfor some constants C > 0 and k ∈ ℕ.\n\nThe **cubic** growth in n (vs quadratic for R(3,n)) is the key to the divergence result.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e553-alon-rodl-lower",
+    "proofId": "erdos-553",
+    "range": { "startLine": 111, "endLine": 113 },
+    "type": "theorem",
+    "title": "Alon-Rödl Lower Bound",
+    "content": "**Alon-Rödl (2005):**\n\nR(3,3,n) ≥ c · n³ / (log n)^k\n\nfor some constants c > 0 and k ∈ ℕ.\n\nTogether with the upper bound, this establishes R(3,3,n) ≍ n³(log n)^O(1).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e553-ratio-def",
+    "proofId": "erdos-553",
+    "range": { "startLine": 117, "endLine": 120 },
+    "type": "definition",
+    "title": "Ratio Tends to Infinity",
+    "content": "**The Divergence Condition:**\n\nFor every M > 0, there exists N such that for all n ≥ N:\n\nR(3,3,n) / R(3,n) > M\n\nThis is the formal statement that the ratio grows without bound.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e553-main",
+    "proofId": "erdos-553",
+    "range": { "startLine": 122, "endLine": 128 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "**Erdős Problem #553: SOLVED**\n\nR(3,3,n) / R(3,n) → ∞ as n → ∞.\n\n**Proof sketch:**\n- R(3,3,n) ≥ cn³/(log n)^k\n- R(3,n) ≤ Cn²/log n\n- Ratio ≥ (c/C) · n · (log n)^(1-k) → ∞",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e553-turan",
+    "proofId": "erdos-553",
+    "range": { "startLine": 132, "endLine": 137 },
+    "type": "theorem",
+    "title": "Triangle-Free Turán Bound",
+    "content": "**Turán's Theorem for Triangles:**\n\nA triangle-free graph on n vertices has at most n²/4 edges.\n\nThis bound is achieved by the complete bipartite graph K_{n/2, n/2}.\n\nIn a 2-coloring, one color must be triangle-free, so it has ≤ n²/4 edges.",
+    "significance": "key",
+    "relatedConcepts": ["Turán's theorem", "Extremal graph theory"]
+  },
+  {
+    "id": "ann-e553-two-tf",
+    "proofId": "erdos-553",
+    "range": { "startLine": 139, "endLine": 145 },
+    "type": "theorem",
+    "title": "Two Triangle-Free Graphs",
+    "content": "**Key Insight:**\n\nTwo triangle-free graphs together can have up to n²/2 edges (double what one can have).\n\nIn a 3-coloring:\n- Color 0 and Color 1 can each be triangle-free\n- Combined, they can cover n²/2 edges\n- This leaves only n²/2 - n²/2 = 0 edges for the clique color at the boundary\n\nThis extra flexibility is why R(3,3,n) grows faster than R(3,n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e553-off-diag",
+    "proofId": "erdos-553",
+    "range": { "startLine": 149, "endLine": 155 },
+    "type": "definition",
+    "title": "Off-Diagonal Ramsey R(s,t)",
+    "content": "The **off-diagonal Ramsey number** R(s,t) is the smallest m such that any 2-coloring of K_m has either:\n- A red clique of size s, OR\n- A blue clique of size t\n\nR(3,n) is exactly the off-diagonal Ramsey number R(3,n).",
+    "significance": "supporting",
+    "relatedConcepts": ["Ramsey theory", "Graph Ramsey numbers"]
+  },
+  {
+    "id": "ann-e553-r33",
+    "proofId": "erdos-553",
+    "range": { "startLine": 157, "endLine": 159 },
+    "type": "theorem",
+    "title": "Classical R(3,3) = 6",
+    "content": "**Classical Result:**\n\nR(3,3) = 6.\n\nAny 2-coloring of K₆ has a monochromatic triangle. This is the simplest non-trivial Ramsey number.\n\nThe proof is a beautiful case analysis or clever counting argument.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e553-asymp",
+    "proofId": "erdos-553",
+    "range": { "startLine": 167, "endLine": 172 },
+    "type": "definition",
+    "title": "Asymptotic Equivalence",
+    "content": "**Notation: f ≍ g**\n\nf ≍ g means there exist constants c₁, c₂ > 0 and N such that:\n\nc₁ · g(n) ≤ f(n) ≤ c₂ · g(n)  for all n ≥ N\n\nThis captures 'same order of magnitude up to constants'.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e553-generalization",
+    "proofId": "erdos-553",
+    "range": { "startLine": 189, "endLine": 194 },
+    "type": "definition",
+    "title": "Erdős-Sós Generalization",
+    "content": "**Open Question:**\n\nFor r < s triangle colors, does\n\nR(3,...,3,n) / R(3,...,3,n) → ∞?\n(s 3's)     (r 3's)\n\nThe pattern suggests yes: each additional triangle color adds a power of n to the threshold.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e553-summary",
+    "proofId": "erdos-553",
+    "range": { "startLine": 198, "endLine": 206 },
+    "type": "theorem",
+    "title": "Summary",
+    "content": "**Erdős Problem #553: SOLVED**\n\n- Question: Does R(3,3,n)/R(3,n) → ∞?\n- Answer: YES (Alon-Rödl 2005)\n- Key: R(3,3,n) ≍ n³(log)^O(1) vs R(3,n) ≪ n²/log n\n- Intuition: Two triangle-free colors allow much denser edge structures\n- Ratio growth: ~n times logarithmic factors",
+    "significance": "critical"
+  }
+]

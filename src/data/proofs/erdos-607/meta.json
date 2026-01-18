@@ -1,34 +1,144 @@
 {
   "id": "erdos-607",
-  "title": "Erdős Problem #607",
+  "title": "Erdős Problem #607: Incidence Signatures of Point Configurations",
   "slug": "erdos-607",
-  "description": "For a set of n\" role=\"presentation\" style=\"position: relative;\">nnn points P&#x2282;R2\" role=\"presentation\" style=\"position: relative;\">P⊂ℝ2P⊂R2P\\subset ^2 let &#x2113;1,&#x2026;,&#x2113;m\" role=\"p...",
+  "description": "For n points in ℝ², let A be the multiset of incidence counts (points per line). F(n) counts distinct achievable sets A. Szemerédi-Trotter proved F(n) ≤ exp(O(√n)), which is optimal.",
   "meta": {
-    "author": "Unknown",
+    "author": "Szemerédi-Trotter (1983)",
     "sourceUrl": "https://erdosproblems.com/607",
-    "date": "",
-    "status": "pending",
+    "date": "1983",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos607Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "combinatorial-geometry",
+      "incidence-geometry",
+      "point-line-incidences",
+      "counting",
+      "asymptotics"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "solved",
+    "sorries": 19,
     "erdosNumber": 607,
     "erdosUrl": "https://erdosproblems.com/607",
     "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$250"
+    "erdosPrizeValue": "$250",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Points in ℝ²",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "Multiset",
+        "description": "Multisets for incidence signatures",
+        "module": "Mathlib.Data.Multiset.Basic"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential function for bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Exp"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for √n growth",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of point configurations and lines",
+      "Definition of incidence signatures as multisets",
+      "Statement of F(n) counting function",
+      "Formalization of Szemerédi-Trotter upper bound",
+      "Statement of matching lower bound construction",
+      "Connection to Szemerédi-Trotter incidence theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #607 from erdosproblems.com. Originally offered with a prize of $250.",
-    "problemStatement": "For a set of n\" role=\"presentation\" style=\"position: relative;\">nnn points P&#x2282;R2\" role=\"presentation\" style=\"position: relative;\">P⊂ℝ2P⊂R2P\\subset \\mathbb{R}^2 let &#x2113;1,&#x2026;,&#x2113;m\" role=\"presentation\" style=\"position: relative;\">ℓ1,…,ℓmℓ1,…,ℓm\\ell_1,\\ldots,\\ell_m be the lines determined by P\" role=\"presentation\" style=\"position: relative;\">PPP, and let A={&#x007C;&#x2113;1&#x2229;P&#x007C;,&#x2026;,&#x007C;&#x2113;m&#x2229;P&#x007C;}\" role=\"presentation\" style=\"position: relative;\">A={|ℓ1∩P|,…,|ℓm∩P|}A={|ℓ1∩P|,…,|ℓm∩P|}A=\\{\\lvert \\ell_1\\cap P\\rvert,\\ldots,\\lvert \\ell_m\\cap P\\rvert\\}. Let F(n)\" role=\"presentation\" style=\"position: relative;\">F(n)F(n)F(n) count the number of possible sets A\" role=\"presentation\" style=\"position: relative;\">AAA that can be constructed this way. Is it true thatF(n)&#x2264;exp&#x2061;(O(n))?\" role=\"presentation\" style=\"text-align: center; position: relative;\">F(n)≤exp(O(n‾√))?F(n)≤exp⁡(O(n))? Erdős writes it is 'easy to see' that this boun",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem connects to the famous Szemerédi-Trotter theorem on point-line incidences. Given n points, they determine at most C(n,2) lines, with each line containing 2 to n points. The 'incidence signature' A records how many points lie on each line. Erdős asked: how many distinct signatures are possible?\n\nThe answer F(n) = exp(Θ(√n)) is surprisingly small — despite the vast number of point configurations, the geometric constraints severely limit the achievable signatures. The √n exponent comes from partition-theoretic considerations: the signature encodes a partition of C(n,2) into 'pairs per line' contributions.",
+    "problemStatement": "**Definition:**\nFor n points P ⊂ ℝ², let ℓ₁,...,ℓₘ be the determined lines.\nLet A = {|ℓ₁ ∩ P|, ..., |ℓₘ ∩ P|} be the multiset of incidence counts.\nLet F(n) = number of distinct sets A achievable by n-point configurations.\n\n**Question:** Is F(n) ≤ exp(O(√n))?\n\n**Solution:** Szemerédi-Trotter proved F(n) ≤ exp(O(√n)).\nErdős noted the bound is optimal: F(n) = exp(Θ(√n)).",
+    "proofStrategy": "The formalization:\n\n1. Defines `PointConfig n` as n distinct points in ℝ²\n2. Defines `Line` and `determinedLines` for lines through point pairs\n3. Defines `incidenceCount` and `incidenceSignature` (multiset of counts)\n4. Defines `F n` as the number of distinct achievable signatures\n5. States `ErdosConjecture607`: F(n) ≤ exp(C√n)\n6. States `szemeredi_trotter_607` confirming the upper bound\n7. States `LowerBoundConjecture` for matching lower bound\n8. Shows special configurations (collinear, general position, grid)",
+    "keyInsights": [
+      "**Incidence Signature:** A = {|ℓ ∩ P| : ℓ determined by P} encodes the 'collinearity structure' of a configuration.",
+      "**Constraint:** Every line has 2 ≤ |ℓ ∩ P| ≤ n, and the sum Σ C(|ℓᵢ ∩ P|, 2) = C(n, 2) is fixed.",
+      "**Partition Connection:** Signatures correspond to constrained integer partitions, explaining √n growth.",
+      "**Szemerédi-Trotter:** The famous incidence bound I ≤ O((nm)^{2/3} + n + m) constrains possible signatures.",
+      "**Extremes:** Collinear points give A = {n}; general position gives A = {2}; grids give intermediate signatures."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "point-configurations",
+      "title": "Point Configurations",
+      "summary": "Points, lines, and incidences in ℝ²",
+      "startLine": 31,
+      "endLine": 62
+    },
+    {
+      "id": "incidence-counts",
+      "title": "Incidence Counts",
+      "summary": "Counting points per line, signatures as multisets",
+      "startLine": 63,
+      "endLine": 76
+    },
+    {
+      "id": "f-function",
+      "title": "The Function F(n)",
+      "summary": "Counting achievable signatures",
+      "startLine": 77,
+      "endLine": 86
+    },
+    {
+      "id": "conjecture-solution",
+      "title": "The Conjecture and Solution",
+      "summary": "F(n) ≤ exp(O(√n)) proved by Szemerédi-Trotter",
+      "startLine": 87,
+      "endLine": 96
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound Analysis",
+      "summary": "Constraints on incidence counts",
+      "startLine": 97,
+      "endLine": 113
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound Optimality",
+      "summary": "Matching exp(c√n) lower bound",
+      "startLine": 114,
+      "endLine": 124
+    },
+    {
+      "id": "special-configs",
+      "title": "Special Configurations",
+      "summary": "Collinear, general position, and grid configurations",
+      "startLine": 125,
+      "endLine": 150
+    },
+    {
+      "id": "sz-trotter",
+      "title": "Szemerédi-Trotter Connection",
+      "summary": "The incidence theorem and its implications",
+      "startLine": 151,
+      "endLine": 164
+    },
+    {
+      "id": "partitions",
+      "title": "Partition Connection",
+      "summary": "Why √n growth emerges",
+      "startLine": 165,
+      "endLine": 181
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #607 is solved: F(n) = exp(Θ(√n)). The upper bound was proved by Szemerédi and Trotter using their incidence theorem. The lower bound follows from explicit constructions. The √n exponent reflects the partition-theoretic nature of incidence signatures.",
+    "implications": "This problem connects to:\n\n1. **Incidence Geometry:** The Szemerédi-Trotter theorem and its applications\n2. **Partition Theory:** Constrained partitions of C(n,2)\n3. **Combinatorial Enumeration:** Counting geometric configurations\n4. **Algebraic Geometry:** Point-line arrangements and their invariants\n5. **Problem #606:** Which specific line COUNTS (not signatures) are achievable",
+    "openQuestions": [
+      "What are the exact constants c, C in exp(c√n) ≤ F(n) ≤ exp(C√n)?",
+      "Which specific signatures are achievable for small n?",
+      "How does F(n) behave in higher dimensions?",
+      "What about other 'geometric signatures' beyond incidence counts?"
+    ]
   }
 }

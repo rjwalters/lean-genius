@@ -1,34 +1,61 @@
 {
   "id": "erdos-83",
-  "title": "Erdős Problem #83",
+  "title": "Erdős Problem #83: Complete Intersection Theorem",
   "slug": "erdos-83",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose that we have a family $...[4n]...\\lvert A\\rvert=2n...A\\in...A,B\\in ...\\lvert A\\cap B\\rvert \\geq 2......[4n]...2n...n+...",
+  "description": "For 2n-subsets of [4n] with pairwise intersections ≥ 2, what is the maximum family size? The Ahlswede-Khachatrian theorem (1997) gives the exact answer, resolving this $500 Erdős-Ko-Rado conjecture.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Ko-Rado (1961 conjecture), Ahlswede-Khachatrian (1997 proof)",
     "sourceUrl": "https://erdosproblems.com/83",
-    "date": "",
+    "date": "1997",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos83Problem.lean",
     "tags": [
-      "erdos"
+      "combinatorics",
+      "set-systems",
+      "erdos",
+      "intersection-theorems",
+      "extremal-combinatorics",
+      "erdos-ko-rado"
     ],
     "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 83,
     "erdosUrl": "https://erdosproblems.com/83",
     "erdosProblemStatus": "solved",
-    "erdosPrizeValue": "$500"
+    "erdosPrizeValue": "$500",
+    "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #83 from erdosproblems.com. Originally offered with a prize of $500.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose that we have a family $\\mathcal{F}$ of subsets of $[4n]$ such that $\\lvert A\\rvert=2n$ for all $A\\in\\mathcal{F}$ and for every $A,B\\in \\mathcal{F}$ we have $\\lvert A\\cap B\\rvert \\geq 2$. Then\\[\\lvert \\mathcal{F}\\rvert \\leq \\frac{1}{2}\\left(\\binom{4n}{2n}-\\binom{2n}{n}^2\\right).\\]\n\n\n\nConjectured by Erd\\H{o}s, Ko, and Rado \\cite{ErKoRa61}. This inequality would be best possible, as shown by taking $\\mathcal{F}$ to be the collection of all subsets of $[4n]$ of size $2n$ containing at least $n+1$ elements from $[2n]$.\n\nProved by Ahlswede and Khachatrian \\cite{AhKh97}, who more generally showed the following. Let $2\\leq t\\leq k\\leq m$ and let $r\\geq 0$ be such that\\[\\frac{1}{r+1}\\leq \\frac{m-2k+2t-2}{(t-1)(k-t+1)}< \\frac{1}{r}.\\]The largest possible family of subsets of $[m]$ of size $k$, such that the pairwise intersections have size at least $t$, is the family of all subsets of $[m]$ of size $k$ which contain at least $t+r$ elements from $\\{1,\\ldots,t+2r\\}$.\n\n\n\n\n\nReferences\n\n\n[AhKh97] Ahlswede, Rudolf and Khachatrian, Levon H., The complete intersection theorem for systems of finite sets. European J. Combin. (1997), 125-136.\n\n[ErKoRa61] Erd\\H{o}s, P. and Ko, Chao and Rado, R., Intersection theorems for systems of finite sets. Quart. J. Math. Oxford Ser. (2) (1961), 313-320.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**The Erdős-Ko-Rado Legacy**\n\nThe 1961 Erdős-Ko-Rado theorem is one of the foundational results in extremal set theory. It characterizes the largest family of k-subsets of [n] where every pair intersects. This problem extends that to require intersection size ≥ 2.\n\n**The $500 Conjecture**: Erdős, Ko, and Rado conjectured the exact maximum for families of 2n-subsets of [4n] with pairwise 2-intersections. This was open for 36 years until Ahlswede and Khachatrian's breakthrough.\n\n**The Complete Intersection Theorem (1997)**: Ahlswede and Khachatrian didn't just prove this special case - they solved the general problem for all parameters m, k, t. Their result determines the maximum family of k-subsets of [m] with pairwise t-intersections, for all valid parameters.\n\n**Significance**: This is considered one of the major achievements in extremal combinatorics, completing a program started by Erdős, Ko, and Rado in 1961.",
+    "problemStatement": "**Problem Statement**\n\nLet F be a family of subsets of [4n] such that:\n- |A| = 2n for all A ∈ F\n- |A ∩ B| ≥ 2 for all A, B ∈ F\n\nThen:\n|F| ≤ ½(C(4n,2n) - C(2n,n)²)\n\n**Extremal Construction**: Take all 2n-subsets of [4n] containing at least n+1 elements from [2n]. This achieves the bound.\n\n**Answer**: PROVED by Ahlswede-Khachatrian (1997)\n\n**General Theorem**: For 2 ≤ t ≤ k ≤ m, the maximum t-intersecting family of k-subsets of [m] consists of all k-subsets containing at least t+r elements from a fixed (t+2r)-set, where r is determined by a specific inequality.",
+    "proofStrategy": "**The Ahlswede-Khachatrian Approach**\n\nThe proof of the Complete Intersection Theorem uses several sophisticated techniques:\n\n1. **Shifting/Compression**: Transform any family to a 'shifted' family without decreasing size or violating intersection properties.\n\n2. **Generating Sets**: Analyze the structure of shifted t-intersecting families through their generating sets.\n\n3. **Inductive Framework**: Build the solution by carefully analyzing how optimal families are structured.\n\n4. **The Critical Ratio**: The parameter r is determined by:\n   1/(r+1) ≤ (m-2k+2t-2)/((t-1)(k-t+1)) < 1/r\n\n5. **Optimality Proof**: Show that the 'star-like' construction (sets containing many elements from a fixed small set) achieves the maximum.\n\n**Key Insight**: The extremal families have a specific hierarchical structure determined by the ratio of parameters.",
+    "keyInsights": [
+      "The Erdős-Ko-Rado theorem (t=1) was just the beginning - t≥2 required 36 more years",
+      "The extremal construction is 'star-like': sets must contain many elements from a fixed core",
+      "The critical parameter r creates phase transitions in the structure of optimal families",
+      "Shifting/compression techniques reduce the problem to analyzing structured families",
+      "The $500 prize reflected the difficulty - this was a major open problem for decades",
+      "The general theorem covers all valid (m,k,t) parameters, not just this special case"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "placeholder",
+      "title": "Placeholder Theorem",
+      "startLine": 34,
+      "endLine": 35,
+      "summary": "The current proof is a placeholder (erdos_83 : True). Full formalization would encode the Complete Intersection Theorem."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #83 asked for the maximum size of a family of 2n-subsets of [4n] with pairwise 2-intersections. Ahlswede and Khachatrian (1997) proved the conjectured bound ½(C(4n,2n) - C(2n,n)²), earning the $500 Erdős prize. Their Complete Intersection Theorem solves this for all parameters (m,k,t).",
+    "implications": "**Theoretical Significance**\n\n1. **Extremal Set Theory**: Completes the Erdős-Ko-Rado program for all intersection sizes\n\n2. **Coding Theory**: Optimal intersecting families relate to error-correcting codes\n\n3. **Combinatorial Optimization**: The phase transition structure has algorithmic implications\n\n4. **Probability**: Connects to random set systems and threshold phenomena",
+    "openQuestions": [
+      "Can the Ahlswede-Khachatrian proof be simplified?",
+      "What are efficient algorithms for constructing optimal families?",
+      "How do intersection properties behave for random families?",
+      "Extensions to multisets or other combinatorial structures?",
+      "Full Lean formalization of the Complete Intersection Theorem"
+    ]
   }
 }

@@ -1,1 +1,183 @@
-[]
+[
+  {
+    "id": "ann-e607-point",
+    "proofId": "erdos-607",
+    "range": { "startLine": 33, "endLine": 34 },
+    "type": "definition",
+    "title": "Point in the Plane",
+    "content": "**Point** is defined as `EuclideanSpace ℝ (Fin 2)` — a point in ℝ².\n\nThis is the standard Mathlib representation of 2D Euclidean space with the usual distance metric.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e607-config",
+    "proofId": "erdos-607",
+    "range": { "startLine": 36, "endLine": 39 },
+    "type": "definition",
+    "title": "Point Configuration",
+    "content": "A **PointConfig n** consists of:\n- `points : Fin n → Point` — n labeled points\n- `distinct` — proof that all points are different\n\nDistinctness is crucial: coincident points would trivially reduce line counts.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e607-line",
+    "proofId": "erdos-607",
+    "range": { "startLine": 41, "endLine": 45 },
+    "type": "definition",
+    "title": "Line Structure",
+    "content": "A **Line** is determined by two distinct points `point1` and `point2`.\n\nThe `ne` field proves `point1 ≠ point2`, ensuring the line is well-defined.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e607-contains",
+    "proofId": "erdos-607",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "definition",
+    "title": "Point on Line",
+    "content": "`Line.contains l p` means point p lies on line l.\n\nDefinition: p = point1 + t(point2 - point1) for some real t.\n\nThis is the parametric form of a line — t = 0 gives point1, t = 1 gives point2.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e607-determined",
+    "proofId": "erdos-607",
+    "range": { "startLine": 57, "endLine": 61 },
+    "type": "definition",
+    "title": "Determined Lines",
+    "content": "`determinedLines config` is the set of all lines through pairs of points in the configuration.\n\nFor n points, there are at most C(n,2) = n(n-1)/2 such lines (fewer if points are collinear).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e607-incidence-count",
+    "proofId": "erdos-607",
+    "range": { "startLine": 65, "endLine": 67 },
+    "type": "definition",
+    "title": "Incidence Count",
+    "content": "`incidenceCount config l` counts how many configuration points lie on line l.\n\nFor a determined line, this is always ≥ 2 (the defining pair) and ≤ n (all points).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e607-signature",
+    "proofId": "erdos-607",
+    "range": { "startLine": 69, "endLine": 75 },
+    "type": "definition",
+    "title": "Incidence Signature",
+    "content": "The **incidence signature** is the multiset of incidence counts:\n\nA = {|ℓ₁ ∩ P|, |ℓ₂ ∩ P|, ..., |ℓₘ ∩ P|}\n\nThis captures the 'collinearity structure' — how points cluster on lines.\n\nThe set form ignores multiplicities (how many lines share the same count).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e607-F",
+    "proofId": "erdos-607",
+    "range": { "startLine": 79, "endLine": 85 },
+    "type": "definition",
+    "title": "The Function F(n)",
+    "content": "**F(n)** = number of distinct incidence signatures achievable by n-point configurations.\n\nThis counts how many 'incidence patterns' are geometrically realizable.\n\nDespite infinitely many configurations, F(n) is finite (and quite small)!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e607-conjecture",
+    "proofId": "erdos-607",
+    "range": { "startLine": 89, "endLine": 91 },
+    "type": "definition",
+    "title": "The Erdős Conjecture",
+    "content": "**ErdosConjecture607:** F(n) ≤ exp(C√n) for some constant C > 0.\n\nThis asks whether the number of achievable signatures grows at most exponentially in √n.\n\nErdős noted this bound would be optimal if true.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e607-sz-trotter",
+    "proofId": "erdos-607",
+    "range": { "startLine": 93, "endLine": 95 },
+    "type": "theorem",
+    "title": "Szemerédi-Trotter Solution",
+    "content": "**szemeredi_trotter_607:** Szemerédi and Trotter proved the conjecture.\n\nTheir proof uses the famous incidence bound to constrain possible signatures.\n\nThis earned the $250 prize.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e607-at-least-2",
+    "proofId": "erdos-607",
+    "range": { "startLine": 99, "endLine": 102 },
+    "type": "theorem",
+    "title": "Minimum Incidence",
+    "content": "Every determined line contains **at least 2 points** — the pair that defined it.\n\nThis is a key constraint: incidence counts range from 2 to n, not 0 to n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e607-at-most-n",
+    "proofId": "erdos-607",
+    "range": { "startLine": 104, "endLine": 107 },
+    "type": "theorem",
+    "title": "Maximum Incidence",
+    "content": "Every line contains **at most n points** (trivially, all points in the configuration).\n\nEquality holds only for collinear configurations.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e607-lower-bound",
+    "proofId": "erdos-607",
+    "range": { "startLine": 116, "endLine": 123 },
+    "type": "definition",
+    "title": "Lower Bound Conjecture",
+    "content": "**LowerBoundConjecture:** F(n) ≥ exp(c√n) for some c > 0.\n\nThis says the upper bound is tight — we can construct exp(Ω(√n)) distinct signatures.\n\nCombined with the upper bound: F(n) = exp(Θ(√n)).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e607-collinear",
+    "proofId": "erdos-607",
+    "range": { "startLine": 127, "endLine": 133 },
+    "type": "definition",
+    "title": "Collinear Configuration",
+    "content": "**collinearConfig:** All n points on a single line.\n\nExample: (0,0), (1,0), (2,0), ..., (n-1,0)\n\nSignature: A = {n} — one line with all n points.\n\nThis is the 'most collinear' possible configuration.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e607-general",
+    "proofId": "erdos-607",
+    "range": { "startLine": 135, "endLine": 141 },
+    "type": "definition",
+    "title": "General Position",
+    "content": "**generalPositionConfig:** No three points collinear (e.g., points on a circle).\n\nSignature: A = {2} — every line contains exactly 2 points.\n\nThis is the 'least collinear' configuration, achieving maximum C(n,2) lines.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e607-grid",
+    "proofId": "erdos-607",
+    "range": { "startLine": 143, "endLine": 149 },
+    "type": "definition",
+    "title": "Grid Configuration",
+    "content": "**gridConfig:** An m × m grid of points.\n\nSignature includes: 2 (diagonal lines with 2 points), m (rows, columns).\n\nGrids achieve intermediate signatures between collinear and general position.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e607-incidence-bound",
+    "proofId": "erdos-607",
+    "range": { "startLine": 153, "endLine": 158 },
+    "type": "axiom",
+    "title": "Szemerédi-Trotter Incidence Bound",
+    "content": "The famous **Szemerédi-Trotter theorem:**\n\n# incidences between n points and m lines ≤ O((nm)^{2/3} + n + m)\n\nThis fundamental bound limits how 'clustered' incidences can be.\n\nIt's a cornerstone of incidence geometry with applications throughout combinatorics.",
+    "significance": "critical",
+    "relatedConcepts": ["Incidence geometry", "Combinatorial geometry"]
+  },
+  {
+    "id": "ann-e607-partition",
+    "proofId": "erdos-607",
+    "range": { "startLine": 167, "endLine": 173 },
+    "type": "concept",
+    "title": "Partition Connection",
+    "content": "**Why √n?** Incidence signatures encode partitions!\n\nIf lines have incidences k₁, k₂, ..., kₘ, then:\n\nΣᵢ C(kᵢ, 2) = C(n, 2) = n(n-1)/2\n\nThis is because each pair of points determines exactly one line.\n\nThe number of such constrained partitions grows as exp(Θ(√n)) — the Hardy-Ramanujan partition function!",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e607-main",
+    "proofId": "erdos-607",
+    "range": { "startLine": 184, "endLine": 192 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**Erdős Problem #607: SOLVED**\n\nF(n) = exp(Θ(√n))\n\n- Upper bound: Szemerédi-Trotter (using incidence theorem)\n- Lower bound: Explicit constructions\n- The √n comes from partition-theoretic constraints\n\n$250 prize awarded.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e607-tight",
+    "proofId": "erdos-607",
+    "range": { "startLine": 194, "endLine": 199 },
+    "type": "theorem",
+    "title": "Tight Asymptotic",
+    "content": "**erdos_607_tight:** The complete characterization:\n\nexp(c√n) ≤ F(n) ≤ exp(C√n)\n\nfor constants 0 < c < C and large n.\n\nThe exact constants remain an interesting open question.",
+    "significance": "key"
+  }
+]

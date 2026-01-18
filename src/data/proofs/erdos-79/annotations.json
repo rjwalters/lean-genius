@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "id": "ann-79-ramsey",
+    "proofId": "erdos-79",
+    "range": { "startLine": 32, "endLine": 43 },
+    "type": "definition",
+    "title": "Ramsey Number",
+    "content": "R(G,H) = min n such that any 2-coloring of K_n has red G or blue H.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-79-noisolated",
+    "proofId": "erdos-79",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "definition",
+    "title": "No Isolated Vertices",
+    "content": "Every vertex has degree ≥ 1.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-79-edgecount",
+    "proofId": "erdos-79",
+    "range": { "startLine": 57, "endLine": 59 },
+    "type": "definition",
+    "title": "Edge Count",
+    "content": "Number of edges in a finite graph.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-79-linear",
+    "proofId": "erdos-79",
+    "range": { "startLine": 70, "endLine": 72 },
+    "type": "definition",
+    "title": "Ramsey Size Linear",
+    "content": "R(G,H) ≪ m for all H with m edges, no isolated vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-79-superlinear",
+    "proofId": "erdos-79",
+    "range": { "startLine": 74, "endLine": 76 },
+    "type": "definition",
+    "title": "Ramsey Size Superlinear",
+    "content": "NOT Ramsey size linear - R(G,H) grows faster than O(m).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-79-hereditary",
+    "proofId": "erdos-79",
+    "range": { "startLine": 89, "endLine": 91 },
+    "type": "theorem",
+    "title": "Hereditary Property",
+    "content": "Ramsey size linearity is closed under taking subgraphs.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-79-minimal",
+    "proofId": "erdos-79",
+    "range": { "startLine": 103, "endLine": 105 },
+    "type": "definition",
+    "title": "Minimally Non-Linear",
+    "content": "NOT linear, but all proper subgraphs ARE linear.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-79-complete",
+    "proofId": "erdos-79",
+    "range": { "startLine": 113, "endLine": 117 },
+    "type": "definition",
+    "title": "Complete Graph K_n",
+    "content": "All pairs of distinct vertices are adjacent.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-79-K4notlinear",
+    "proofId": "erdos-79",
+    "range": { "startLine": 119, "endLine": 120 },
+    "type": "theorem",
+    "title": "K₄ Not Linear",
+    "content": "K₄ is NOT Ramsey size linear.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-79-K4minimal",
+    "proofId": "erdos-79",
+    "range": { "startLine": 127, "endLine": 132 },
+    "type": "theorem",
+    "title": "K₄ is Minimal",
+    "content": "K₄ is minimally non-Ramsey-size-linear.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-79-question",
+    "proofId": "erdos-79",
+    "range": { "startLine": 145, "endLine": 147 },
+    "type": "definition",
+    "title": "Main Question",
+    "content": "Are there infinitely many minimally non-linear graphs?",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-79-wigderson",
+    "proofId": "erdos-79",
+    "range": { "startLine": 156, "endLine": 158 },
+    "type": "theorem",
+    "title": "Wigderson (2024)",
+    "content": "YES, infinitely many exist (non-constructive proof).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-79-solved",
+    "proofId": "erdos-79",
+    "range": { "startLine": 160, "endLine": 161 },
+    "type": "theorem",
+    "title": "Problem Solved",
+    "content": "Erdős #79 is solved: infinitely many such graphs exist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-79-antichain",
+    "proofId": "erdos-79",
+    "range": { "startLine": 212, "endLine": 217 },
+    "type": "theorem",
+    "title": "Antichain Structure",
+    "content": "Minimal non-linear graphs form antichain in subgraph order.",
+    "significance": "key"
+  }
+]

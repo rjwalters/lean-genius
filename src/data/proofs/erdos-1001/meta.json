@@ -1,33 +1,118 @@
 {
   "id": "erdos-1001",
-  "title": "Erdős Problem #1001",
+  "title": "Erdős #1001: Diophantine Approximation Density",
   "slug": "erdos-1001",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the measure of the set of those ... such that\\[\\left\\lvert \\alpha-{y}\\right\\rvert< {y^2}\\]for some ... and .... Do...",
+  "description": "Let S(N,A,c) measure α ∈ (0,1) with |α - x/y| < A/y² for some N ≤ y ≤ cN, gcd(x,y)=1. Does lim S(N,A,c) exist? YES (Kesten-Sós). Formula: f(A,c) = 12A log(c)/π² in EST regime.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Szüsz-Turán, Kesten-Sós, Boca, Xiong-Zaharescu",
     "sourceUrl": "https://erdosproblems.com/1001",
-    "date": "",
-    "status": "pending",
+    "date": "1958-2008",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos1001Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "diophantine-approximation",
+      "measure-theory",
+      "farey-fractions"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 5,
     "erdosNumber": 1001,
     "erdosUrl": "https://erdosproblems.com/1001",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1001 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $S(N,A,c)$ be the measure of the set of those $\\alpha\\in (0,1)$ such that\\[\\left\\lvert \\alpha-\\frac{x}{y}\\right\\rvert< \\frac{A}{y^2}\\]for some $N\\leq y\\leq cN$ and $(x,y)=1$. Does\\[\\lim_{N\\to \\infty}S(N,A,c)=f(A,c)\\]exist? What is its explicit form?\n\n\n\nA problem of Erd\\H{o}s, Sz\\\"{u}sz, and Tur\\'{a}n \\cite{EST58}, who proved that\\[f(A,c)=\\frac{12 A\\log c}{\\pi^2}\\]when $0<A< \\frac{c}{1+c^2}$, and also that if $\\min(A,c)>10$ then $S(N,A,c)$ is bounded away from $0$ and $1$.\n\nThe existence of this limit was proved by Kesten and S\\'{o}s \\cite{KeSo66}, without a method to determine its value. Alternative, more explicit, proofs of the existence of this limit were provided independently by Boca \\cite{Bo08} and Xiong and Zaharescu \\cite{XiZa06}\n\n\n\n\nReferences\n\n\n[Bo08] Boca, Florin P., A problem of {E}rd\\H{o}s, {S}z\\\"usz and {T}ur\\'an concerning\n{D}iophantine approximations. Int. J. Number Theory (2008), 691--708.\n\n[EST58] Erd\\H{o}s, P. and Sz\\\"usz, P. and Tur\\'an, P., Remarks on the theory of diophantine approximation. Colloq. Math. (1958), 119--126.\n\n[KeSo66] Kesten, H. and S\\'os, V. T., On two problems of {E}rd\\H{o}s, {S}z\\\"usz and {T}ur\\'an\nconcerning diophantine approximations. Acta Arith. (1966/67), 183--192.\n\n[XiZa06] Xiong, Maosheng and Zaharescu, Alexandru, A problem of {E}rd\\H{o}s-{S}z\\\"usz-{T}ur\\'an on {D}iophantine\napproximation. Acta Arith. (2006), 163--177.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős, Szüsz, and Turán posed this problem in 1958, proving the explicit formula f(A,c) = 12A log(c)/π² in a specific regime. Kesten and Sós (1966) proved the limit always exists. Boca (2008) and Xiong-Zaharescu (2006) provided alternative explicit proofs using Farey fractions and continued fractions respectively.",
+    "problemStatement": "Let S(N,A,c) be the measure of α ∈ (0,1) such that |α - x/y| < A/y² for some N ≤ y ≤ cN with gcd(x,y) = 1. Does lim_{N→∞} S(N,A,c) = f(A,c) exist? What is its explicit form?",
+    "proofStrategy": "We formalize the approximation set, measure S(N,A,c), the limiting function f(A,c), and the key results: EST explicit formula, Kesten-Sós existence, and the connection to Farey fractions explaining the π² denominator.",
+    "keyInsights": [
+      "The limit exists for all valid A, c (Kesten-Sós 1966)",
+      "Explicit formula: f(A,c) = 12A log(c)/π² when 0 < A < c/(1+c²)",
+      "When min(A,c) > 10, S stays bounded away from 0 and 1",
+      "The π² comes from Farey fraction asymptotics: |F_n| ~ 3n²/π²",
+      "Multiple proof methods: measure theory, Farey fractions, continued fractions"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "approximation-set",
+      "title": "The Approximation Set",
+      "summary": "Definition of isApproximable, approximationSet, and S(N,A,c)",
+      "startLine": 32,
+      "endLine": 49
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "S bounds between 0 and 1, monotonicity in A and c",
+      "startLine": 51,
+      "endLine": 70
+    },
+    {
+      "id": "limit-function",
+      "title": "The Limit Function",
+      "summary": "Definition of f(A,c) = 12A log(c)/π² and limitExists",
+      "startLine": 72,
+      "endLine": 84
+    },
+    {
+      "id": "est-result",
+      "title": "Erdős-Szüsz-Turán Result (1958)",
+      "summary": "Explicit formula in the EST regime",
+      "startLine": 86,
+      "endLine": 106
+    },
+    {
+      "id": "boundedness",
+      "title": "Boundedness Away from 0 and 1",
+      "summary": "EST boundedness when min(A,c) > 10",
+      "startLine": 108,
+      "endLine": 116
+    },
+    {
+      "id": "kesten-sos",
+      "title": "Kesten-Sós Result (1966)",
+      "summary": "Limit exists for all valid A, c",
+      "startLine": 118,
+      "endLine": 139
+    },
+    {
+      "id": "alternative-proofs",
+      "title": "Alternative Proofs",
+      "summary": "Boca (2008) and Xiong-Zaharescu (2006) approaches",
+      "startLine": 141,
+      "endLine": 157
+    },
+    {
+      "id": "farey-connection",
+      "title": "Connection to Farey Fractions",
+      "summary": "Why π² appears in the formula",
+      "startLine": 159,
+      "endLine": 177
+    },
+    {
+      "id": "khinchin-connection",
+      "title": "The Khinchin Connection",
+      "summary": "Relation to Khinchin's theorem",
+      "startLine": 179,
+      "endLine": 192
+    },
+    {
+      "id": "explicit-bounds",
+      "title": "Explicit Bounds",
+      "summary": "Small A approximation and zero density",
+      "startLine": 194,
+      "endLine": 208
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "This formalization captures Erdős Problem #1001 on Diophantine approximation density. The limit lim S(N,A,c) exists (Kesten-Sós) with explicit formula f(A,c) = 12A log(c)/π² in the EST regime.",
+    "implications": "The result connects metric number theory to measure theory. The appearance of π² relates to the distribution of Farey fractions and the density of coprime pairs.",
+    "openQuestions": [
+      "What is the explicit formula for f(A,c) outside the EST regime?",
+      "What is the rate of convergence of S(N,A,c) to f(A,c)?",
+      "How does the result extend to higher dimensions?"
+    ]
   }
 }
