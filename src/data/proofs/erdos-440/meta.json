@@ -1,16 +1,20 @@
 {
   "id": "erdos-440",
-  "title": "Erdős Problem #440",
+  "title": "Erdős Problem #440: LCM of Consecutive Sequence Elements",
   "slug": "erdos-440",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be infinite and let ... count the number of indices for which .... Is it true that ...?\n\nHow large can\\[\\liminf {x^{1...",
+  "description": "For infinite sequence A, let A(x) count indices i with lcm(aᵢ, aᵢ₊₁) ≤ x. Is A(x) = O(√x)? YES, and liminf A(x)/√x ≤ 1 always, with equality for A = ℕ (Erdős-Szemerédi 1980).",
   "meta": {
-    "author": "Unknown",
+    "author": "Paul Erdős, Endre Szemerédi",
     "sourceUrl": "https://erdosproblems.com/440",
-    "date": "",
+    "date": "1980",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos440Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "lcm",
+      "multiplicative-structure",
+      "counting-functions"
     ],
     "badge": "mathlib",
     "sorries": 0,
@@ -19,15 +23,82 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #440 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{a_1<a_2<\\cdots\\}\\subseteq \\mathbb{N}$ be infinite and let $A(x)$ count the number of indices for which $\\mathrm{lcm}(a_i,a_{i+1})\\leq x$. Is it true that $A(x) \\ll x^{1/2}$?\n\nHow large can\\[\\liminf \\frac{A(x)}{x^{1/2}}\\]be?\n\n\n\nTaking $A=\\mathbb{N}$ shows that\\[\\liminf \\frac{A(x)}{x^{1/2}}=1\\]is possible. Erd\\H{o}s and Szemer\\'{e}di \\cite{ErSz80} proved that it is always $\\leq 1$.\n\nTao in the comments has given a simple proof that $A(x) \\ll x^{1/2}$. van Doorn has proved that $A(x) \\leq (c+o(1))x^{1/2}$ where\\[c=\\sum_{n\\geq 1}\\frac{1}{n^{1/2}(n+1)}\\approx 1.86.\\]This was already proved by Erd\\H{o}s and Szemer\\'{e}di \\cite{ErSz80}, who showed that this constant is the best possible.\n\nThere are more related results (particularly for the more general case of $\\mathrm{lcm}(a_i,a_{i+1},\\ldots,a_{i+k})$) in \\cite{ErSz80}.\n\n\n\n\n\nReferences\n\n\n[ErSz80] Erd\\H{o}s, P\\'{a}l and Szemer\\'{e}di, Endre, Remarks on a problem of the American Mathematical Monthly. Mat. Lapok (1980), 121-124.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This problem originated from the American Mathematical Monthly. Erdős and Szemerédi solved it completely in their 1980 paper in Mat. Lapok. The problem asks about the growth of counting functions for consecutive pairs with bounded LCM. Terence Tao later gave a simple proof of the O(√x) bound in online discussions, and Wouter van Doorn established the sharp constant c ≈ 1.86.",
+    "problemStatement": "Let A = {a₁ < a₂ < ...} ⊆ ℕ be an infinite increasing sequence. Let A(x) count the number of indices i for which lcm(aᵢ, aᵢ₊₁) ≤ x. Two questions: (1) Is A(x) = O(x^{1/2})? (2) How large can liminf A(x)/x^{1/2} be?",
+    "proofStrategy": "The formalization defines increasing sequences, the counting function A(x), and the normalized ratio. Key results: (1) A(x) = O(√x) for any sequence (Tao's elementary proof using divisor bounds), (2) liminf A(x)/√x ≤ 1 always (Erdős-Szemerédi), (3) A = ℕ achieves equality. The sharp bound A(x) ≤ (c + o(1))√x with c ≈ 1.86 is also captured.",
+    "keyInsights": [
+      "For A = ℕ, lcm(n, n+1) = n(n+1) since consecutive integers are coprime",
+      "A = ℕ gives liminf A(x)/√x = 1, which is the maximum possible",
+      "The bound A(x) = O(√x) follows from divisor function estimates",
+      "The optimal constant c = Σ_{n≥1} 1/(√n(n+1)) ≈ 1.86",
+      "Generalizes to k-consecutive LCM with different exponents"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 36,
+      "endLine": 67,
+      "summary": "LCM, increasing sequence, counting function A(x)"
+    },
+    {
+      "id": "naturals-case",
+      "title": "The Natural Numbers Case",
+      "startLine": 69,
+      "endLine": 102,
+      "summary": "A = ℕ achieves liminf = 1, the maximum"
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound",
+      "startLine": 104,
+      "endLine": 144,
+      "summary": "A(x) = O(√x), Tao's proof, optimal constant c ≈ 1.86"
+    },
+    {
+      "id": "liminf-question",
+      "title": "The Liminf Question",
+      "startLine": 146,
+      "endLine": 169,
+      "summary": "Erdős-Szemerédi: liminf ≤ 1 always"
+    },
+    {
+      "id": "proof-ideas",
+      "title": "Proof Ideas",
+      "startLine": 171,
+      "endLine": 205,
+      "summary": "Key observations, counting argument, Tao's proof sketch"
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations",
+      "startLine": 207,
+      "endLine": 232,
+      "summary": "k-consecutive LCM, multiplicative connections"
+    },
+    {
+      "id": "special-sequences",
+      "title": "Special Sequences",
+      "startLine": 234,
+      "endLine": 257,
+      "summary": "Arithmetic progressions, primes, powers of 2"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 277,
+      "endLine": 315,
+      "summary": "Complete solution: both questions answered affirmatively"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #440 is SOLVED. Both questions are answered: (1) YES, A(x) = O(√x) for any infinite sequence, and (2) liminf A(x)/√x ≤ 1 always, with equality achieved by A = ℕ. The sharp bound A(x) ≤ (c + o(1))√x with c ≈ 1.86 is optimal. This is a clean quantitative result in multiplicative number theory connecting LCM constraints with counting functions.",
+    "implications": "The problem illustrates the interplay between multiplicative structure (LCM, GCD) and additive counting. The extremality of the natural numbers sequence shows that consecutive coprime pairs maximize the liminf. The techniques extend to k-consecutive LCM bounds with appropriate exponent adjustments.",
+    "openQuestions": [
+      "Optimal bounds for k-consecutive LCM",
+      "Characterization of sequences achieving specific liminf values",
+      "Connections to prime gap problems"
+    ]
   }
 }
