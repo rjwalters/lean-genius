@@ -1,10 +1,10 @@
 {
   "id": "erdos-48",
-  "title": "Erdős Problem #48: φ(n) = σ(m)",
+  "title": "Erdos Problem #48: Infinitely Many Pairs with phi(n) = sigma(m)",
   "slug": "erdos-48",
-  "description": "Are there infinitely many integers n, m such that Euler's totient φ(n) equals the sum of divisors σ(m)?",
+  "description": "Are there infinitely many integers n, m such that phi(n) = sigma(m)? YES, proved by Ford-Luca-Pomerance (2010).",
   "meta": {
-    "author": "Ford, Luca, Pomerance (2010)",
+    "author": "Ford-Luca-Pomerance (2010 proof), Erdos (1959 problem)",
     "sourceUrl": "https://erdosproblems.com/48",
     "date": "2010",
     "status": "complete",
@@ -12,84 +12,155 @@
     "tags": [
       "erdos",
       "number-theory",
-      "arithmetic-functions",
       "totient",
-      "divisors"
+      "sum-of-divisors",
+      "arithmetic-functions",
+      "solved"
     ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 48,
     "erdosUrl": "https://erdosproblems.com/48",
-    "erdosProblemStatus": "proved",
+    "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-13",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.totient",
-        "description": "Euler's totient function φ(n)",
+        "description": "Euler's totient function",
         "module": "Mathlib.Data.Nat.Totient"
       },
       {
         "theorem": "Nat.divisors",
-        "description": "The set of divisors of a natural number",
+        "description": "Set of divisors of a natural number",
         "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
       }
     ],
     "originalContributions": [
-      "Formal statement of the Erdős problem in Lean 4",
-      "Custom definition of sum of divisors using Finset.sum",
-      "Verified concrete example: φ(5) = σ(3) = 4"
+      "sumDivisors definition: sum of all divisors sigma(n)",
+      "totientSigmaPairs set: {(n,m) | phi(n) = sigma(m)}",
+      "commonValues set: intersection of totient and sigma ranges",
+      "Concrete examples: (2,1), (5,3), (7,5), (13,11), (13,6)",
+      "ford_luca_pomerance axiom: totientSigmaPairs.Infinite",
+      "garaev_improvement axiom: strengthened density bounds",
+      "twin_prime_gives_pair theorem: connection to twin primes",
+      "prime_pair_condition theorem: characterizing prime pairs",
+      "Sophie Germain and perfect number connections",
+      "Multiplicativity properties",
+      "erdos_48 theorem: the main result"
     ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #48 connects two of the most fundamental functions in number theory: Euler's totient function φ(n), which counts integers coprime to n, and the sum of divisors function σ(n). These functions have been studied since antiquity—σ(n) relates to perfect numbers (known to the Greeks), while φ(n) is central to modular arithmetic and RSA cryptography.\n\nErdős posed this problem asking whether the ranges of these two functions intersect infinitely often in a specific way. The question is surprisingly deep because φ and σ have very different behaviors: φ(n) < n for n > 1 (always shrinks), while σ(n) > n for n > 1 (always grows).\n\nThe problem was solved affirmatively by Kevin Ford, Florian Luca, and Carl Pomerance in 2010, using sophisticated analytic methods.",
-    "problemStatement": "Are there infinitely many pairs of positive integers $(n, m)$ such that\n$$\\varphi(n) = \\sigma(m)$$\nwhere $\\varphi$ is Euler's totient function and $\\sigma$ is the sum of divisors?\n\n**Answer**: YES — proved by Ford, Luca, and Pomerance (2010).",
-    "proofStrategy": "The proof by Ford-Luca-Pomerance uses analytic number theory to show:\n\n1. For infinitely many primes p, the value p-1 is in the range of σ\n2. For such primes, p = φ(p) (since φ(p) = p-1 for prime p... wait, φ(p) = p-1)\n3. The key is finding m with σ(m) = p-1, then n = p gives φ(n) = p-1 = σ(m)\n\nThe actual proof requires estimates on how often values appear in the ranges of arithmetic functions.\n\nWe formalize the statement and verify a concrete example: φ(5) = 4 and σ(3) = 1 + 3 = 4, so (5, 3) is such a pair.",
+    "historicalContext": "**Erdos Problem #48**\n\nThis problem asks about common values of two fundamental arithmetic functions.\n\n**Key History:**\n- Erdos [Er59c], [Er74b], [Er95]: Original problem formulations\n- Ford-Luca-Pomerance (2010): Proved infinitely many pairs exist\n- Garaev (2011): Improved density bounds\n\n**Mathematical Setting:**\n- phi(n) = Euler's totient = count of integers 1 to n coprime to n\n- sigma(n) = sum of all positive divisors of n\n\nBoth are multiplicative functions with very different behavior: phi(n) < n for n > 1 (shrinks), while sigma(n) > n for n > 1 (grows).",
+    "problemStatement": "**Problem Statement (Proved)**\n\nAre there infinitely many integers n, m such that phi(n) = sigma(m)?\n\n**Answer: YES**\n\nFord, Luca, and Pomerance (2010) proved:\n1. Infinitely many such pairs exist\n2. Quantitative bound: >= exp((log log x)^c) common values <= x\n\nGaraev (2011) improved to exp((log log x)^omega(x)) where omega(x) -> infinity.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Arithmetic Functions:** Define sumDivisors sigma(n) using Finset.sum\n\n2. **Key Sets:**\n   - totientSigmaPairs: {(n,m) | phi(n) = sigma(m)}\n   - commonValues: intersection of phi-range and sigma-range\n\n3. **Examples:** Verify (2,1), (5,3), (7,5), (13,11), (13,6) using native_decide\n\n4. **Main Results:** Axiomatize Ford-Luca-Pomerance and Garaev theorems\n\n5. **Connections:** Twin primes, Sophie Germain primes, perfect numbers\n\n6. **Properties:** Multiplicativity of phi and sigma",
     "keyInsights": [
-      "**Totient function**: φ(n) counts integers from 1 to n that share no common factor with n. For prime p, φ(p) = p-1.",
-      "**Sum of divisors**: σ(n) = Σ_{d|n} d. For prime p, σ(p) = 1 + p. For example, σ(6) = 1+2+3+6 = 12.",
-      "**The connection is non-obvious**: φ tends to be 'small' (< n) while σ tends to be 'large' (> n), yet their ranges overlap infinitely often.",
-      "**Concrete example**: φ(5) = 4 (coprime to 5: 1,2,3,4) and σ(3) = 4 (divisors: 1,3), so the pair (5,3) works.",
-      "**The full proof is analytic**: It requires understanding the distribution of values of multiplicative functions, beyond current Mathlib formalization."
+      "**Twin Prime Connection:** If p, p+2 both prime, then phi(p+2) = sigma(p) = p+1",
+      "**Value Distribution:** phi tends to be small, sigma tends to be large",
+      "**Common Values Include:** 1, 4, 6, 12, 24, 48, ...",
+      "**Multiplicativity:** Both phi and sigma are multiplicative functions",
+      "**Perfect Numbers:** sigma(n) = 2n gives special structure",
+      "**Density:** Common values have positive lower density"
     ]
   },
   "sections": [
     {
-      "id": "imports",
-      "title": "Imports and Setup",
-      "startLine": 1,
-      "endLine": 22,
-      "summary": "Module documentation explaining the problem and Mathlib imports for totient and divisors."
+      "id": "arithmetic-functions",
+      "title": "Arithmetic Functions",
+      "summary": "sumDivisors definition, notation, Euler's totient from Mathlib",
+      "startLine": 40,
+      "endLine": 69
     },
     {
-      "id": "definitions",
-      "title": "Key Definitions",
-      "startLine": 24,
-      "endLine": 29,
-      "summary": "Define sum of divisors σ(n) and the set of pairs (n,m) with φ(n) = σ(m)."
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "sumDivisors_one, sumDivisors_prime, totient_prime, totient_lt",
+      "startLine": 71,
+      "endLine": 100
     },
     {
-      "id": "main-theorem",
-      "title": "Main Theorem",
-      "startLine": 31,
-      "endLine": 40,
-      "summary": "State Erdős Problem #48 as an axiom: infinitely many pairs exist."
+      "id": "pair-sets",
+      "title": "Totient-Sigma Pairs",
+      "summary": "totientSigmaPairs, commonValues, commonValues_iff",
+      "startLine": 102,
+      "endLine": 129
     },
     {
       "id": "examples",
       "title": "Verified Examples",
-      "startLine": 42,
-      "endLine": 57,
-      "summary": "Compute concrete values and prove (5,3) satisfies the condition."
+      "summary": "pair_5_3, pair_2_1, pair_7_5, pair_13_11, pair_13_6",
+      "startLine": 131,
+      "endLine": 215
+    },
+    {
+      "id": "ford-luca-pomerance",
+      "title": "Ford-Luca-Pomerance Theorem",
+      "summary": "ford_luca_pomerance axiom, erdos_48 main theorem",
+      "startLine": 217,
+      "endLine": 242
+    },
+    {
+      "id": "garaev",
+      "title": "Garaev's Improvement",
+      "summary": "garaev_improvement axiom with stronger density bounds",
+      "startLine": 244,
+      "endLine": 262
+    },
+    {
+      "id": "twin-primes",
+      "title": "Connection to Twin Primes",
+      "summary": "twin_prime_gives_pair, twin_prime_implies_erdos_48",
+      "startLine": 264,
+      "endLine": 294
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "prime_pair_condition, Sophie Germain, perfect numbers",
+      "startLine": 296,
+      "endLine": 334
+    },
+    {
+      "id": "value-distribution",
+      "title": "Value Distribution",
+      "summary": "totientRange, sigmaRange, common values 1, 4, 6, 12",
+      "startLine": 336,
+      "endLine": 401
+    },
+    {
+      "id": "multiplicativity",
+      "title": "Multiplicativity",
+      "summary": "sumDivisors_multiplicative, totient_multiplicative",
+      "startLine": 403,
+      "endLine": 422
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_48_summary, erdos_48_answer, at_least_five_pairs",
+      "startLine": 424,
+      "endLine": 472
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #48, which asks whether φ(n) = σ(m) has infinitely many solutions. The answer is YES, proved by Ford, Luca, and Pomerance in 2010. We state the main theorem as an axiom (the analytic proof is beyond current formalization) and verify a concrete example: φ(5) = σ(3) = 4.",
-    "implications": "This result connects two fundamental arithmetic functions in an unexpected way. It shows that despite φ and σ having opposite growth tendencies, their ranges share infinitely many values. The proof technique (analytic estimates on value distributions) is a powerful method in multiplicative number theory.",
+    "summary": "Erdos Problem #48 asked whether infinitely many pairs (n,m) exist with phi(n) = sigma(m). The answer is YES, proved by Ford, Luca, and Pomerance in 2010. Garaev improved the density bounds in 2011. The problem has deep connections to twin primes - if the twin prime conjecture is true, Erdos #48 follows immediately.",
+    "implications": "**Number-Theoretic Connections**\n\n1. **Twin Primes:** phi(p+2) = sigma(p) = p+1 for twin primes\n\n2. **Value Ranges:** Understanding which values are in Im(phi) and Im(sigma)\n\n3. **Multiplicativity:** Both functions are multiplicative\n\n4. **Perfect Numbers:** sigma(n) = 2n gives special pairs\n\n5. **Density Estimates:** Common values have positive density",
     "openQuestions": [
-      "Can we find an elementary proof avoiding analytic methods?",
-      "What is the density of such pairs among all (n,m)?",
-      "Can we characterize which values appear as both φ(n) and σ(m) for some n,m?"
+      "Exact characterization of common values",
+      "Optimal density bounds for common values",
+      "Explicit construction of infinitely many pairs",
+      "Connection to Carmichael's totient conjecture",
+      "Common values of other arithmetic function pairs"
     ]
   }
 }

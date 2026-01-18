@@ -1,107 +1,210 @@
 [
   {
-    "id": "ann-e48-imports",
-    "proofId": "erdos-48",
-    "range": {
-      "startLine": 17,
-      "endLine": 18
-    },
-    "type": "concept",
-    "title": "Mathlib Imports",
-    "content": "We import `Data.Nat.Totient` for Euler's totient function φ(n), which counts integers from 1 to n that are coprime to n. We also import `NumberTheory.Divisors` for the divisors function.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Mathlib",
-      "arithmetic functions"
-    ]
-  },
-  {
     "id": "ann-e48-sum-divisors",
     "proofId": "erdos-48",
-    "range": {
-      "startLine": 24,
-      "endLine": 25
-    },
+    "range": { "startLine": 46, "endLine": 55 },
     "type": "definition",
-    "title": "Sum of Divisors Function σ(n)",
-    "content": "The **sum of divisors** function σ(n) adds up all positive divisors of n. For example, σ(6) = 1 + 2 + 3 + 6 = 12. This is one of the most studied arithmetic functions.",
-    "mathContext": "In Lean, we define `sumDivisors n` as `(n.divisors).sum id`, which sums over the Finset of divisors.",
-    "significance": "key",
-    "relatedConcepts": [
-      "divisors",
-      "arithmetic functions",
-      "perfect numbers"
-    ]
-  },
-  {
-    "id": "ann-e48-totient-sigma-pairs",
-    "proofId": "erdos-48",
-    "range": {
-      "startLine": 27,
-      "endLine": 29
-    },
-    "type": "definition",
-    "title": "The Set of (n,m) Pairs",
-    "content": "We define the set of all pairs (n,m) where Euler's totient φ(n) equals the sum of divisors σ(m). Erdős asked: is this set infinite?",
-    "mathContext": "In Lean, this is a set comprehension: `{p : ℕ × ℕ | p.1.totient = sumDivisors p.2}`.",
-    "significance": "key",
-    "relatedConcepts": [
-      "set theory",
-      "arithmetic functions"
-    ]
-  },
-  {
-    "id": "ann-e48-main-axiom",
-    "proofId": "erdos-48",
-    "range": {
-      "startLine": 31,
-      "endLine": 40
-    },
-    "type": "theorem",
-    "title": "Main Theorem (Axiom)",
-    "content": "**Erdős Problem #48**: There are infinitely many pairs (n,m) with φ(n) = σ(m). This was proved by Ford, Luca, and Pomerance in 2010 using analytic number theory techniques involving the distribution of values of multiplicative functions.",
-    "mathContext": "We state this as an axiom because the full proof requires deep results about arithmetic function distributions that are beyond current Mathlib formalization. The proof shows that for infinitely many primes p, both p-1 is in the range of σ and p is in the range of φ.",
+    "title": "Sum of Divisors Function",
+    "content": "**sumDivisors** sigma(n):\n\nThe sum of all positive divisors of n.\n\n**Examples:**\n- sigma(1) = 1\n- sigma(6) = 1 + 2 + 3 + 6 = 12\n- sigma(p) = 1 + p for prime p\n\n**Definition:**\n```lean\ndef sumDivisors (n : N) : N := (n.divisors).sum id\n```",
+    "mathContext": "One of the most fundamental arithmetic functions, studied since antiquity in connection with perfect numbers.",
     "significance": "critical",
-    "relatedConcepts": [
-      "analytic number theory",
-      "multiplicative functions",
-      "prime distribution"
-    ]
+    "relatedConcepts": ["Divisors", "Perfect numbers", "Multiplicative functions"]
   },
   {
-    "id": "ann-e48-sigma-examples",
+    "id": "ann-e48-totient",
     "proofId": "erdos-48",
-    "range": {
-      "startLine": 42,
-      "endLine": 47
-    },
-    "type": "lemma",
-    "title": "Computing σ(n) Examples",
-    "content": "We verify σ(1) = 1 (the only divisor of 1 is itself) and σ(3) = 4 (divisors are 1 and 3). These computations use `native_decide`, which evaluates concrete expressions at compile time.",
-    "mathContext": "The `native_decide` tactic compiles the decidable proposition to native code and evaluates it, giving a verified certificate of the result.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "decidability",
-      "native_decide",
-      "computation"
-    ]
+    "range": { "startLine": 60, "endLine": 69 },
+    "type": "definition",
+    "title": "Euler's Totient Function",
+    "content": "**Euler's Totient** phi(n):\n\nThe count of integers from 1 to n that are coprime to n.\n\n**Examples:**\n- phi(1) = 1\n- phi(6) = 2 (only 1 and 5 are coprime to 6)\n- phi(p) = p - 1 for prime p\n\nUses Mathlib's Nat.totient.",
+    "mathContext": "Central to modular arithmetic, RSA cryptography, and group theory.",
+    "significance": "critical",
+    "relatedConcepts": ["Coprimality", "Modular arithmetic", "Multiplicative functions"]
   },
   {
-    "id": "ann-e48-example-pair",
+    "id": "ann-e48-basic-props",
     "proofId": "erdos-48",
-    "range": {
-      "startLine": 52,
-      "endLine": 55
-    },
+    "range": { "startLine": 75, "endLine": 100 },
+    "type": "axiom",
+    "title": "Basic Properties",
+    "content": "**Fundamental properties of sigma and phi:**\n\n1. sigma(1) = 1, sigma(p) = 1 + p for prime p\n2. sigma(n) >= n for n >= 1 (n divides itself)\n3. phi(1) = 1, phi(p) = p - 1 for prime p\n4. phi(n) < n for n > 1 (at least 1 is always excluded)\n\nKey insight: sigma grows (> n), phi shrinks (< n).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e48-pairs-set",
+    "proofId": "erdos-48",
+    "range": { "startLine": 106, "endLine": 111 },
+    "type": "definition",
+    "title": "Totient-Sigma Pairs",
+    "content": "**totientSigmaPairs:**\n\nThe set of pairs (n, m) where phi(n) = sigma(m).\n\n**Definition:**\n```lean\ndef totientSigmaPairs : Set (N x N) :=\n  {p : N x N | p.1.totient = sigma(p.2)}\n```\n\nThe central object of Erdos #48.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e48-common-values",
+    "proofId": "erdos-48",
+    "range": { "startLine": 113, "endLine": 118 },
+    "type": "definition",
+    "title": "Common Values",
+    "content": "**commonValues:**\n\nThe set of values that appear as both phi(n) and sigma(m) for some n, m.\n\n```lean\ndef commonValues : Set N :=\n  {a : N | (exists n, n.totient = a) and (exists m, sigma(m) = a)}\n```\n\nThis equals totientRange intersect sigmaRange.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e48-example-5-3",
+    "proofId": "erdos-48",
+    "range": { "startLine": 143, "endLine": 148 },
     "type": "theorem",
-    "title": "Concrete Example: (5, 3)",
-    "content": "We prove that (5, 3) is in our set: φ(5) = 4 (since 1,2,3,4 are all coprime to 5) and σ(3) = 1+3 = 4. This gives a verified example of a pair satisfying the Erdős condition.",
-    "mathContext": "This demonstrates that the set is non-empty. The infinite family proven by Ford-Luca-Pomerance includes infinitely many such pairs, but finding them requires sophisticated number theory.",
+    "title": "Example: (5, 3)",
+    "content": "**pair_5_3:**\n\n(5, 3) satisfies phi(5) = sigma(3) = 4.\n\n**Verification:**\n- phi(5) = 4 (integers 1,2,3,4 are coprime to 5)\n- sigma(3) = 1 + 3 = 4\n\nProved by native_decide.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e48-example-2-1",
+    "proofId": "erdos-48",
+    "range": { "startLine": 156, "endLine": 161 },
+    "type": "theorem",
+    "title": "Example: (2, 1)",
+    "content": "**pair_2_1:**\n\n(2, 1) satisfies phi(2) = sigma(1) = 1.\n\n**Verification:**\n- phi(2) = 1 (only 1 is coprime to 2)\n- sigma(1) = 1 (only divisor of 1 is itself)\n\nThe smallest totient-sigma pair.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e48-example-7-5",
+    "proofId": "erdos-48",
+    "range": { "startLine": 178, "endLine": 183 },
+    "type": "theorem",
+    "title": "Example: (7, 5)",
+    "content": "**pair_7_5:**\n\n(7, 5) satisfies phi(7) = sigma(5) = 6.\n\n**Verification:**\n- phi(7) = 6 (prime, so p-1 = 6)\n- sigma(5) = 1 + 5 = 6 (prime, so 1+p = 6)",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e48-example-13-11",
+    "proofId": "erdos-48",
+    "range": { "startLine": 191, "endLine": 196 },
+    "type": "theorem",
+    "title": "Example: (13, 11)",
+    "content": "**pair_13_11:**\n\n(13, 11) satisfies phi(13) = sigma(11) = 12.\n\n**Verification:**\n- phi(13) = 12 (prime)\n- sigma(11) = 1 + 11 = 12 (prime)\n\nNotice 13 = 11 + 2: a quasi-twin-prime pattern!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e48-ford-luca-pomerance",
+    "proofId": "erdos-48",
+    "range": { "startLine": 223, "endLine": 230 },
+    "type": "axiom",
+    "title": "Ford-Luca-Pomerance Theorem",
+    "content": "**ford_luca_pomerance:**\n\nThere are infinitely many pairs (n, m) with phi(n) = sigma(m).\n\n**Statement:**\n```lean\naxiom ford_luca_pomerance : totientSigmaPairs.Infinite\n```\n\n**Quantitative bound:**\n|{a <= x : exists n,m with phi(n) = sigma(m) = a}| >= exp((log log x)^c)\n\nProved using analytic number theory (2010).",
+    "mathContext": "The proof uses sophisticated estimates on value distributions of multiplicative functions.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e48-erdos-48",
+    "proofId": "erdos-48",
+    "range": { "startLine": 232, "endLine": 236 },
+    "type": "theorem",
+    "title": "Erdos Problem #48: SOLVED",
+    "content": "**erdos_48:**\n\n```lean\ntheorem erdos_48 : totientSigmaPairs.Infinite :=\n  ford_luca_pomerance\n```\n\nThe answer to Erdos's question is YES.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e48-garaev",
+    "proofId": "erdos-48",
+    "range": { "startLine": 250, "endLine": 262 },
+    "type": "axiom",
+    "title": "Garaev's Improvement",
+    "content": "**garaev_improvement:**\n\nThe number of common values up to x is at least exp((log log x)^omega(x)) where omega(x) -> infinity as x -> infinity.\n\nThis improves Ford-Luca-Pomerance by replacing the constant c with a slowly growing function.\n\nPublished in 2011.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e48-twin-prime",
+    "proofId": "erdos-48",
+    "range": { "startLine": 268, "endLine": 286 },
+    "type": "theorem",
+    "title": "Twin Prime Connection",
+    "content": "**twin_prime_gives_pair:**\n\nIf p and p+2 are both prime (twin primes), then (p+2, p) is a totient-sigma pair.\n\n**Proof:**\n- phi(p+2) = (p+2) - 1 = p + 1 (since p+2 is prime)\n- sigma(p) = 1 + p (since p is prime)\n\nSo phi(p+2) = sigma(p) = p + 1.\n\nThis shows: Twin Prime Conjecture => Erdos #48.",
+    "mathContext": "The twin prime conjecture remains open, but Ford-Luca-Pomerance proved Erdos #48 unconditionally.",
+    "significance": "critical",
+    "relatedConcepts": ["Twin primes", "Prime gaps"]
+  },
+  {
+    "id": "ann-e48-prime-pair-cond",
+    "proofId": "erdos-48",
+    "range": { "startLine": 304, "endLine": 315 },
+    "type": "theorem",
+    "title": "Prime Pair Condition",
+    "content": "**prime_pair_condition:**\n\nFor primes p, q: (p, q) in totientSigmaPairs iff p - 1 = q + 1.\n\nThis means p = q + 2, i.e., (p, q) must be (q+2, q).\n\nSo prime pairs in the set are exactly twin prime pairs!",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e48-sophie-germain",
+    "proofId": "erdos-48",
+    "range": { "startLine": 317, "endLine": 322 },
+    "type": "definition",
+    "title": "Sophie Germain Primes",
+    "content": "**isSophieGermain:**\n\nA Sophie Germain prime p has 2p + 1 also prime.\n\nFor such p: phi(2p+1) = 2p, and we seek m with sigma(m) = 2p.\n\nExamples: 2, 3, 5, 11, 23, 29, ...",
+    "significance": "supporting",
+    "relatedConcepts": ["Safe primes", "Prime number theory"]
+  },
+  {
+    "id": "ann-e48-perfect",
+    "proofId": "erdos-48",
+    "range": { "startLine": 324, "endLine": 334 },
+    "type": "definition",
+    "title": "Perfect Numbers",
+    "content": "**isPerfect:**\n\nA perfect number n satisfies sigma(n) = 2n.\n\n**Examples:** 6, 28, 496, 8128, ...\n\nIf we find m with phi(m) = 2n, then (m, n) is a totient-sigma pair.\n\n**Theorem:** six_is_perfect proves sigma(6) = 12 = 2 * 6.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mersenne primes", "Euclid-Euler theorem"]
+  },
+  {
+    "id": "ann-e48-value-ranges",
+    "proofId": "erdos-48",
+    "range": { "startLine": 340, "endLine": 357 },
+    "type": "definition",
+    "title": "Value Ranges",
+    "content": "**totientRange and sigmaRange:**\n\n- totientRange = {a : N | exists n, n.totient = a}\n- sigmaRange = {a : N | exists m, sigma(m) = a}\n\n**Key theorem:**\ncommonValues = totientRange intersect sigmaRange\n\nThe problem asks: is this intersection infinite?",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e48-common-1",
+    "proofId": "erdos-48",
+    "range": { "startLine": 359, "endLine": 368 },
+    "type": "theorem",
+    "title": "1 is Common",
+    "content": "**one_is_common:**\n\n1 is in commonValues because:\n- phi(2) = 1\n- sigma(1) = 1\n\nThis is the smallest common value.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e48-common-4",
+    "proofId": "erdos-48",
+    "range": { "startLine": 370, "endLine": 379 },
+    "type": "theorem",
+    "title": "4 is Common",
+    "content": "**four_is_common:**\n\n4 is in commonValues because:\n- phi(5) = 4\n- sigma(3) = 4",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e48-multiplicativity",
+    "proofId": "erdos-48",
+    "range": { "startLine": 407, "endLine": 422 },
+    "type": "axiom",
+    "title": "Multiplicativity",
+    "content": "**Multiplicative Functions:**\n\nBoth sigma and phi are multiplicative:\n- sigma(mn) = sigma(m) * sigma(n) for coprime m, n\n- phi(mn) = phi(m) * phi(n) for coprime m, n\n\nThe totient multiplicativity uses Mathlib's Nat.totient_mul.\n\nMultiplicativity is key to understanding these functions.",
     "significance": "key",
-    "relatedConcepts": [
-      "totient function",
-      "sum of divisors",
-      "verification"
-    ]
+    "relatedConcepts": ["Multiplicative functions", "Coprimality"]
+  },
+  {
+    "id": "ann-e48-summary",
+    "proofId": "erdos-48",
+    "range": { "startLine": 428, "endLine": 447 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "**erdos_48_summary:**\n\nCombines all main results:\n1. totientSigmaPairs.Infinite (the main theorem)\n2. commonValues.Infinite (infinite common values)\n3. 1, 4, 6, 12 are all in commonValues\n\n```lean\ntheorem erdos_48_summary :\n    totientSigmaPairs.Infinite and\n    commonValues.Infinite and\n    1 in commonValues and\n    4 in commonValues and\n    6 in commonValues and\n    12 in commonValues\n```",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e48-five-pairs",
+    "proofId": "erdos-48",
+    "range": { "startLine": 456, "endLine": 471 },
+    "type": "theorem",
+    "title": "At Least Five Pairs",
+    "content": "**at_least_five_pairs:**\n\nConstructively proves that at least 5 pairs exist:\n- (2, 1): phi(2) = sigma(1) = 1\n- (5, 3): phi(5) = sigma(3) = 4\n- (7, 5): phi(7) = sigma(5) = 6\n- (13, 11): phi(13) = sigma(11) = 12\n- (13, 6): phi(13) = sigma(6) = 12\n\nNote: 12 appears twice as a common value!",
+    "significance": "key"
   }
 ]
