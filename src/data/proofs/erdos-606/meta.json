@@ -1,33 +1,119 @@
 {
   "id": "erdos-606",
-  "title": "Erdős Problem #606",
+  "title": "Erdős Problem #606: Distinct Lines from n Points",
   "slug": "erdos-606",
-  "description": "Given any n\" role=\"presentation\" style=\"position: relative;\">nnn distinct points in R2\" role=\"presentation\" style=\"position: relative;\">ℝ2R2^2 let f(n)\" role=\"presentation\" style=\"position: relativ...",
+  "description": "Given n distinct points in the plane, what are the possible values for the number of distinct lines they determine? Erdős and Salamon characterized the answer: all values from n to C(n,2) are achievable except C(n,2)-1 and C(n,2)-3.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (1985), Erdős-Salamon (1988)",
     "sourceUrl": "https://erdosproblems.com/606",
-    "date": "",
-    "status": "pending",
+    "date": "1988",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos606Problem.lean",
     "tags": [
+      "discrete-geometry",
+      "incidence-geometry",
+      "combinatorial-geometry",
       "erdos"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 10,
     "erdosNumber": 606,
     "erdosUrl": "https://erdosproblems.com/606",
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #606 from erdosproblems.com.",
-    "problemStatement": "Given any n\" role=\"presentation\" style=\"position: relative;\">nnn distinct points in R2\" role=\"presentation\" style=\"position: relative;\">ℝ2R2\\mathbb{R}^2 let f(n)\" role=\"presentation\" style=\"position: relative;\">f(n)f(n)f(n) count the number of distinct lines determined by these points. What are the possible values of f(n)\" role=\"presentation\" style=\"position: relative;\">f(n)f(n)f(n)?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**The Distinct Lines Problem**\n\nThis classic problem in discrete geometry asks: given n points in the plane, how many distinct lines can they determine? The answer ranges from 1 (all collinear) to C(n,2) (general position).\n\n**Key Historical Results**:\n- **Sylvester-Gallai (1893/1944)**: Non-collinear points determine at least one 'ordinary' line (with exactly 2 points)\n- **Erdős (1985)**: Posed the complete characterization problem\n- **Erdős-Salamon (1988)**: Solved for large n - all values from n to C(n,2) achievable except C(n,2)-1 and C(n,2)-3\n\n**Why These Exceptions?**\n- C(n,2)-1 would require exactly one 'coincidence' - geometrically impossible\n- C(n,2)-3 would require a specific pattern that can't exist\n\n**Related Theorems**: Beck's theorem, Szemerédi-Trotter incidence bound, and the orchard problem are all closely connected.",
+    "problemStatement": "**Problem Statement**\n\nGiven n distinct points in ℝ², let f(n) count the number of distinct lines determined by these points. What are the possible values of f(n)?\n\n**Bounds**:\n- Minimum: f(n) = 1 (all points collinear)\n- Maximum: f(n) = C(n,2) = n(n-1)/2 (general position, no 3 collinear)\n\n**The Question**: Which integers between 1 and C(n,2) are achievable?\n\n**Answer**: For large n, achievable values are {1} ∪ [n, C(n,2)] \\ {C(n,2)-1, C(n,2)-3}.",
+    "proofStrategy": "**Proof Approach**\n\nThe Erdős-Salamon characterization combines:\n\n1. **Constructions**: Show values ARE achievable\n   - Collinear: 1 line\n   - Circle: C(n,2) lines (general position)\n   - Grids: intermediate values via controlled collinearities\n\n2. **Impossibility Proofs**: Show values are NOT achievable\n   - C(n,2)-1: Would need exactly one 3-point line, impossible\n   - C(n,2)-3: Geometric analysis rules out this configuration\n\n3. **Density Arguments**: Erdős showed almost all intermediate values work using probabilistic and algebraic constructions.\n\n**Key Tools**: Sylvester-Gallai theorem, Beck's dichotomy, incidence bounds.",
+    "keyInsights": [
+      "The minimum is 1 (all collinear) or n (Sylvester-Gallai forces at least n lines)",
+      "C(n,2)-1 is impossible: you can't have exactly one '3-point coincidence'",
+      "C(n,2)-3 is impossible for geometric reasons involving line multiplicities",
+      "Grids provide a systematic way to achieve intermediate line counts",
+      "Beck's theorem: either many collinear points OR Ω(n²) lines"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "points-lines",
+      "title": "Points and Lines",
+      "startLine": 39,
+      "endLine": 62,
+      "summary": "Definitions of points, configurations, and lines in ℝ²"
+    },
+    {
+      "id": "counting-lines",
+      "title": "Counting Distinct Lines",
+      "startLine": 64,
+      "endLine": 81,
+      "summary": "Distinct pairs and maximum line count C(n,2)"
+    },
+    {
+      "id": "collinearity",
+      "title": "Collinearity",
+      "startLine": 83,
+      "endLine": 106,
+      "summary": "Collinear points, general position, and their line counts"
+    },
+    {
+      "id": "sylvester-gallai",
+      "title": "Sylvester-Gallai Theorem",
+      "startLine": 108,
+      "endLine": 126,
+      "summary": "Non-collinear points have an ordinary line; implies ≥ n lines"
+    },
+    {
+      "id": "main-problem",
+      "title": "The Main Problem",
+      "startLine": 128,
+      "endLine": 143,
+      "summary": "Achievable line counts and the main characterization question"
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 145,
+      "endLine": 176,
+      "summary": "Non-achievable values and Erdős density result"
+    },
+    {
+      "id": "constructions",
+      "title": "Constructions",
+      "startLine": 178,
+      "endLine": 215,
+      "summary": "Collinear, circular, and grid configurations"
+    },
+    {
+      "id": "beck-theorem",
+      "title": "Beck's Theorem",
+      "startLine": 217,
+      "endLine": 227,
+      "summary": "Dichotomy: many collinear points or many lines"
+    },
+    {
+      "id": "szemeredi-trotter",
+      "title": "Szemerédi-Trotter Bound",
+      "startLine": 229,
+      "endLine": 244,
+      "summary": "Incidence bound and its implications"
+    },
+    {
+      "id": "complete-characterization",
+      "title": "Complete Characterization",
+      "startLine": 246,
+      "endLine": 273,
+      "summary": "Erdős-Salamon theorem and main result"
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #606 characterizes which line counts are achievable for n points in the plane. The Erdős-Salamon theorem shows that for large n, all values from n to C(n,2) are achievable except exactly two: C(n,2)-1 and C(n,2)-3. These exceptions arise from fundamental geometric impossibilities.",
+    "implications": "**Theoretical Significance**\n\n1. **Discrete Geometry**: Complete answer to a basic counting question about points and lines\n\n2. **Incidence Geometry**: Connects to Szemerédi-Trotter bounds and Beck's theorem\n\n3. **Extremal Combinatorics**: The 'gaps' at C(n,2)-1 and C(n,2)-3 reveal geometric rigidity\n\n4. **Algebraic Methods**: Constructions use algebraic curves and finite fields",
+    "openQuestions": [
+      "What is the exact threshold N for the Erdős-Salamon characterization?",
+      "What values below n are achievable for specific small n?",
+      "Analogous questions for higher dimensions",
+      "Computational complexity of determining if k lines are achievable",
+      "Probabilistic distribution of line counts for random point sets"
+    ]
   }
 }

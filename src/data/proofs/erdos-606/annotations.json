@@ -1,1 +1,191 @@
-[]
+[
+  {
+    "id": "ann-606-header",
+    "proofId": "erdos-606",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdős Problem #606: Given n distinct points in ℝ², what values can f(n) take, where f(n) is the number of distinct lines determined by these points? The Erdős-Salamon theorem gives a complete characterization for large n.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-606-point",
+    "proofId": "erdos-606",
+    "range": { "startLine": 41, "endLine": 47 },
+    "type": "definition",
+    "title": "Point Configuration",
+    "content": "A point configuration is n distinct points in the Euclidean plane ℝ². Distinctness is crucial - coincident points would trivially reduce line counts. The injective function ensures all n points are different.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-606-line",
+    "proofId": "erdos-606",
+    "range": { "startLine": 49, "endLine": 62 },
+    "type": "definition",
+    "title": "Lines in ℝ²",
+    "content": "A line is determined by two distinct points p and q. Lines are equivalent if they contain the same set of points. A point x lies on line (p,q) iff x = p + t(q-p) for some real t (parametric form).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-606-maxlines",
+    "proofId": "erdos-606",
+    "range": { "startLine": 80, "endLine": 81 },
+    "type": "definition",
+    "title": "Maximum Lines",
+    "content": "The maximum number of distinct lines from n points is C(n,2) = n(n-1)/2, achieved when no three points are collinear. Each pair determines a unique line, and all C(n,2) pairs give different lines.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-606-collinear",
+    "proofId": "erdos-606",
+    "range": { "startLine": 85, "endLine": 91 },
+    "type": "definition",
+    "title": "Collinearity",
+    "content": "Three points are collinear if they all lie on a common line. If ALL n points are collinear, they determine exactly 1 line. This is the minimum possible line count for any configuration.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-606-general",
+    "proofId": "erdos-606",
+    "range": { "startLine": 93, "endLine": 106 },
+    "type": "definition",
+    "title": "General Position",
+    "content": "Points are in 'general position' if no three are collinear. This is the generic case - random points are almost surely in general position. General position achieves the maximum C(n,2) lines.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-606-ordinary",
+    "proofId": "erdos-606",
+    "range": { "startLine": 110, "endLine": 112 },
+    "type": "definition",
+    "title": "Ordinary Line",
+    "content": "An ordinary line contains exactly 2 points of the configuration. The Sylvester-Gallai theorem guarantees at least one ordinary line exists for any non-collinear configuration.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-606-sylvester",
+    "proofId": "erdos-606",
+    "range": { "startLine": 114, "endLine": 121 },
+    "type": "axiom",
+    "title": "Sylvester-Gallai Theorem",
+    "content": "If n ≥ 3 points are not all collinear, they determine at least one ordinary line (containing exactly 2 points). This classical result dates to Sylvester (1893) with a proof by Gallai (1944).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-606-minlines",
+    "proofId": "erdos-606",
+    "range": { "startLine": 123, "endLine": 126 },
+    "type": "theorem",
+    "title": "Minimum Lines (Non-collinear)",
+    "content": "Corollary of Sylvester-Gallai: if points are not all collinear, they determine at least n lines. This follows by induction using the ordinary line guaranteed by the theorem.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-606-achievable",
+    "proofId": "erdos-606",
+    "range": { "startLine": 130, "endLine": 143 },
+    "type": "definition",
+    "title": "Achievable Line Counts",
+    "content": "AchievableLineCounts(n) is the set of integers k such that some configuration of n points determines exactly k lines. The main problem is to characterize this set completely.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-606-minus1",
+    "proofId": "erdos-606",
+    "range": { "startLine": 147, "endLine": 153 },
+    "type": "axiom",
+    "title": "C(n,2)-1 Not Achievable",
+    "content": "You cannot achieve exactly C(n,2)-1 lines for n ≥ 4. This would require exactly one pair of points to lie on a line containing a third point, while all other pairs determine unique lines - geometrically impossible.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-606-minus3",
+    "proofId": "erdos-606",
+    "range": { "startLine": 155, "endLine": 161 },
+    "type": "axiom",
+    "title": "C(n,2)-3 Not Achievable",
+    "content": "You cannot achieve exactly C(n,2)-3 lines for n ≥ 6. The geometric analysis shows this intermediate value is impossible - you can't have exactly the right pattern of collinearities.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-606-minus2",
+    "proofId": "erdos-606",
+    "range": { "startLine": 163, "endLine": 166 },
+    "type": "theorem",
+    "title": "C(n,2)-2 IS Achievable",
+    "content": "C(n,2)-2 is achievable: place 3 points collinear and the rest in general position. The 3 collinear points reduce the count by 2 (3 pairs share one line instead of determining 3 lines).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-606-density",
+    "proofId": "erdos-606",
+    "range": { "startLine": 168, "endLine": 176 },
+    "type": "axiom",
+    "title": "Erdős Density Result",
+    "content": "Erdős showed that all integers in [cn^{3/2}, C(n,2)-4] are achievable for some constant c > 0. This fills in most of the gap between the minimum n and maximum C(n,2).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-606-collinear-config",
+    "proofId": "erdos-606",
+    "range": { "startLine": 180, "endLine": 193 },
+    "type": "definition",
+    "title": "Collinear Configuration",
+    "content": "n points on a line (e.g., (0,0), (1,0), ..., (n-1,0)) determine exactly 1 line. This is the extreme minimum case, showing f(n) = 1 is always achievable.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-606-circle-config",
+    "proofId": "erdos-606",
+    "range": { "startLine": 195, "endLine": 202 },
+    "type": "definition",
+    "title": "Circle Configuration",
+    "content": "n points evenly spaced on a circle are in general position (no 3 collinear). This achieves the maximum C(n,2) lines, showing the upper bound is always achievable.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-606-grid",
+    "proofId": "erdos-606",
+    "range": { "startLine": 204, "endLine": 215 },
+    "type": "definition",
+    "title": "Grid Configuration",
+    "content": "An m×m grid of points has many collinearities (rows, columns, diagonals). The line count is C(m²,2) minus O(m³) for the shared lines. Grids achieve many intermediate values.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-606-beck",
+    "proofId": "erdos-606",
+    "range": { "startLine": 219, "endLine": 227 },
+    "type": "axiom",
+    "title": "Beck's Theorem",
+    "content": "Beck's dichotomy: For n points, either (1) at least n/100 points lie on a single line, OR (2) the points determine at least cn² distinct lines. There's no middle ground - either very concentrated or very spread.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-606-szemeredi",
+    "proofId": "erdos-606",
+    "range": { "startLine": 231, "endLine": 236 },
+    "type": "axiom",
+    "title": "Szemerédi-Trotter Bound",
+    "content": "The number of incidences between n points and m lines is O((nm)^{2/3} + n + m). This fundamental bound limits how 'clustered' points and lines can be, with applications throughout incidence geometry.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-606-erdos-salamon",
+    "proofId": "erdos-606",
+    "range": { "startLine": 248, "endLine": 258 },
+    "type": "axiom",
+    "title": "Erdős-Salamon Characterization",
+    "content": "For large n, achievable line counts are exactly: {1} ∪ [n, C(n,2)] \\ {C(n,2)-1, C(n,2)-3}. This completely characterizes the possible values - a satisfying answer to the original problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-606-solved",
+    "proofId": "erdos-606",
+    "range": { "startLine": 260, "endLine": 273 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "Erdős Problem #606 is solved: for sufficiently large n, we know exactly which line counts are achievable. The two 'forbidden' values C(n,2)-1 and C(n,2)-3 are the only gaps in the range [n, C(n,2)].",
+    "significance": "critical"
+  }
+]
