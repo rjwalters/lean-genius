@@ -13015,17 +13015,21 @@
   },
   {
     "id": "erdos-921",
-    "title": "Erdős Problem #921",
+    "title": "Erdős Problem #921: Chromatic Number and Odd Cycle Girth",
     "slug": "erdos-921",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... and let ... be the largest ... such that there is a graph on ... vertices with chromatic number ... in which every od...",
-    "status": "pending",
+    "description": "For k ≥ 4, let f_k(n) be the largest m such that there exists an n-vertex graph with χ = k where all odd cycles have length > m. SOLVED: f_k(n) ≍ n^{1/(k-2)} by Kierstead-Szemerédi-Trotter (1984).",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "cycle-girth",
+      "extremal-graph-theory"
     ],
     "erdosNumber": 921,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-922",
