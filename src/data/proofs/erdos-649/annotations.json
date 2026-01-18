@@ -1,1 +1,175 @@
-[]
+[
+  {
+    "id": "ann-e649-gpf",
+    "proofId": "erdos-649",
+    "range": { "startLine": 45, "endLine": 60 },
+    "type": "axiom",
+    "title": "Greatest Prime Factor",
+    "content": "**Greatest Prime Factor** P(m):\n\nThe largest prime number that divides m.\n\n**Definition:**\n- P(1) = 0 by convention\n- P(p) = p for prime p\n- P(p^k) = p for prime power\n- P(m·n) = max(P(m), P(n))\n\n**Examples:**\n- P(12) = P(2² · 3) = 3\n- P(100) = P(2² · 5²) = 5\n- P(2^k) = 2 for all k ≥ 1\n\nAxiomatized since computing requires prime factorization.",
+    "mathContext": "Central to many number-theoretic problems about consecutive integers.",
+    "significance": "critical",
+    "relatedConcepts": ["Prime factorization", "Smooth numbers", "Largest prime factor"]
+  },
+  {
+    "id": "ann-e649-gpf-properties",
+    "proofId": "erdos-649",
+    "range": { "startLine": 62, "endLine": 79 },
+    "type": "axiom",
+    "title": "GPF Properties",
+    "content": "**Key Properties of P(m):**\n\n1. **gpf_prime**: P(p) = p for prime p\n2. **gpf_prime_power**: P(p^k) = p for k ≥ 1\n3. **gpf_mul**: P(m·n) = max(P(m), P(n)) for m,n > 1\n4. **gpf_divides**: P(m) | m for m > 1\n5. **gpf_is_prime**: P(m) is prime for m > 1\n6. **gpf_one**: P(1) = 0 by convention\n\nThese capture the essential behavior of the greatest prime factor function.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e649-conjecture",
+    "proofId": "erdos-649",
+    "range": { "startLine": 87, "endLine": 95 },
+    "type": "definition",
+    "title": "Erdős Conjecture",
+    "content": "**ErdosConjecture649 (DISPROVED):**\n\nFor any two primes p, q, there exists n > 0 such that:\n- P(n) = p\n- P(n+1) = q\n\n**In Lean:**\n```lean\ndef ErdosConjecture649 : Prop :=\n  ∀ p q : ℕ, p.Prime → q.Prime →\n    ∃ n : ℕ, n > 0 ∧ P(n) = p ∧ P(n + 1) = q\n```\n\nErdős called this 'probably hopelessly difficult' - but it turned out to be false.",
+    "mathContext": "Erdős believed this problem was very hard to settle either way.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e649-gpf-two-iff",
+    "proofId": "erdos-649",
+    "range": { "startLine": 103, "endLine": 108 },
+    "type": "axiom",
+    "title": "Powers of 2 Characterization",
+    "content": "**gpf_eq_two_iff:**\n\nFor n > 1: P(n) = 2 ⟺ n = 2^k for some k ≥ 1\n\n**Intuition:**\n- If P(n) = 2, then 2 is the largest prime dividing n\n- This means n has no odd prime factors\n- Therefore n must be a power of 2\n\nThis is the first step in analyzing the (2, 7) case.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e649-mod7-cycle",
+    "proofId": "erdos-649",
+    "range": { "startLine": 116, "endLine": 125 },
+    "type": "axiom",
+    "title": "Powers of 2 mod 7",
+    "content": "**two_power_mod_seven:**\n\n2^k ≢ -1 (mod 7) for all k ≥ 0.\n\n**The Cycle:**\n- 2^0 ≡ 1 (mod 7)\n- 2^1 ≡ 2 (mod 7)\n- 2^2 ≡ 4 (mod 7)\n- 2^3 ≡ 1 (mod 7) ← cycle repeats\n\nThe powers cycle through {1, 2, 4}, never reaching 6 ≡ -1.\n\n**Group Theory View:**\nord₇(2) = 3 (odd), so -1 ∉ ⟨2⟩ in (ℤ/7ℤ)*",
+    "mathContext": "The order of 2 modulo 7 being odd is the key obstruction.",
+    "significance": "critical",
+    "relatedConcepts": ["Multiplicative order", "Cyclic groups", "Fermat's Little Theorem"]
+  },
+  {
+    "id": "ann-e649-divisibility",
+    "proofId": "erdos-649",
+    "range": { "startLine": 127, "endLine": 128 },
+    "type": "axiom",
+    "title": "Seven Non-Divisibility",
+    "content": "**seven_not_divide_two_pow_plus_one:**\n\n7 ∤ (2^k + 1) for all k.\n\n**Proof:**\n- 7 | (2^k + 1) ⟺ 2^k ≡ -1 (mod 7)\n- But 2^k cycles through {1, 2, 4} mod 7\n- None of these equal 6 ≡ -1\n- Therefore 7 never divides 2^k + 1\n\nThis is the crucial divisibility obstruction for the (2, 7) counterexample.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e649-no-solution-2-7",
+    "proofId": "erdos-649",
+    "range": { "startLine": 130, "endLine": 152 },
+    "type": "theorem",
+    "title": "Counterexample: (2, 7)",
+    "content": "**no_solution_2_7:**\n\n¬∃ n : ℕ, n > 0 ∧ P(n) = 2 ∧ P(n+1) = 7\n\n**Proof Structure:**\n1. Assume such n exists\n2. Since P(n) = 2 and n > 1, we have n = 2^k for some k ≥ 1\n3. Then n + 1 = 2^k + 1\n4. If P(2^k + 1) = 7, then 7 | (2^k + 1)\n5. But 7 ∤ (2^k + 1) by the cycle argument\n6. Contradiction\n\n**Edge Case:**\nThe proof handles n = 1 separately: P(1) = 0 ≠ 2.",
+    "mathContext": "This is the simplest counterexample to the conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e649-primitive-root",
+    "proofId": "erdos-649",
+    "range": { "startLine": 160, "endLine": 168 },
+    "type": "axiom",
+    "title": "Primitive Root Obstruction",
+    "content": "**Primitive Root Obstruction:**\n\nWhen 2 is a primitive root modulo prime q > 2, additional constraints arise.\n\n**Mechanism:**\n- If ord_q(2) = q - 1 (primitive root)\n- Then 2^k ≡ -1 (mod q) requires k = (q-1)/2\n- This imposes constraints on which p can work\n\n**Example:** 2 is a primitive root mod 19, leading to the (19, 2) obstruction.",
+    "significance": "key",
+    "relatedConcepts": ["Primitive roots", "Multiplicative order", "Quadratic residues"]
+  },
+  {
+    "id": "ann-e649-tong",
+    "proofId": "erdos-649",
+    "range": { "startLine": 170, "endLine": 177 },
+    "type": "axiom",
+    "title": "Tong's Theorem",
+    "content": "**Tong's Theorem:**\n\nFor any prime p, there exist infinitely many primes q such that no n exists with P(n) = p and P(n+1) = q.\n\n**In Lean:**\n```lean\naxiom tong_theorem (p : ℕ) (hp : p.Prime) :\n  ∃ Q : Set ℕ, Q.Infinite ∧ (∀ q ∈ Q, q.Prime) ∧\n    ∀ q ∈ Q, ¬∃ n : ℕ, n > 0 ∧ P(n) = p ∧ P(n + 1) = q\n```\n\nThis shows the failure is systematic, not just isolated counterexamples.",
+    "mathContext": "Tong's general theorem uses quadratic reciprocity arguments.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e649-19-2",
+    "proofId": "erdos-649",
+    "range": { "startLine": 179, "endLine": 183 },
+    "type": "axiom",
+    "title": "Counterexample: (19, 2)",
+    "content": "**no_solution_19_2:**\n\nNo n exists with P(n) = 19 and P(n+1) = 2.\n\n**Why it fails:**\n- P(n+1) = 2 means n + 1 = 2^k\n- So n = 2^k - 1 (Mersenne-like number)\n- P(2^k - 1) = 19 requires 19 | (2^k - 1)\n- But 2 is a primitive root mod 19\n- ord₁₉(2) = 18, so 2^k ≡ 1 (mod 19) only when 18 | k\n- Additional constraints prevent this from working",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e649-positive-2-3",
+    "proofId": "erdos-649",
+    "range": { "startLine": 191, "endLine": 208 },
+    "type": "theorem",
+    "title": "Positive Case: (2, 3)",
+    "content": "**solution_2_3:**\n\nn = 8 satisfies P(n) = 2 and P(n+1) = 3.\n\n**Verification:**\n- P(8) = P(2³) = 2 ✓\n- P(9) = P(3²) = 3 ✓\n\n**In Lean:**\n```lean\ntheorem solution_2_3 : ∃ n : ℕ, n > 0 ∧ P(n) = 2 ∧ P(n + 1) = 3 := by\n  use 8\n  constructor\n  · norm_num\n  constructor\n  · have : (8 : ℕ) = 2 ^ 3 := by norm_num\n    rw [this]\n    exact gpf_prime_power 2 3 Nat.prime_two (by norm_num)\n  · ...\n```\n\nThis shows some pairs DO work.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e649-positive-3-2",
+    "proofId": "erdos-649",
+    "range": { "startLine": 210, "endLine": 224 },
+    "type": "theorem",
+    "title": "Positive Case: (3, 2)",
+    "content": "**solution_3_2:**\n\nn = 3 satisfies P(n) = 3 and P(n+1) = 2.\n\n**Verification:**\n- P(3) = 3 (prime) ✓\n- P(4) = P(2²) = 2 ✓\n\nThis demonstrates the conjecture isn't universally false - many pairs work, but not all.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e649-mahler",
+    "proofId": "erdos-649",
+    "range": { "startLine": 232, "endLine": 253 },
+    "type": "axiom",
+    "title": "Mahler's Growth Theorem",
+    "content": "**Mahler's Theorem (1935):**\n\nP(n(n+1)) → ∞ as n → ∞, but grows very slowly.\n\n**Growth Rate:**\nP(n(n+1)) ~ log log n\n\n**In Lean:**\n```lean\naxiom mahler_growth :\n  ∀ C : ℕ, ∃ N : ℕ, ∀ n ≥ N, P(n * (n + 1)) > C\n```\n\n**Corollary:** For any prime p, infinitely many n have P(n(n+1)) > p.",
+    "mathContext": "Mahler studied the distribution of smooth numbers.",
+    "significance": "key",
+    "relatedConcepts": ["Smooth numbers", "Asymptotic growth", "Prime gaps"]
+  },
+  {
+    "id": "ann-e649-order-2-mod-7",
+    "proofId": "erdos-649",
+    "range": { "startLine": 272, "endLine": 287 },
+    "type": "axiom",
+    "title": "Order of 2 mod 7",
+    "content": "**Multiplicative Order:**\n\nord₇(2) = 3\n\n**Meaning:**\n- 3 is the smallest positive k with 2^k ≡ 1 (mod 7)\n- The cyclic group ⟨2⟩ in (ℤ/7ℤ)* has order 3\n- Elements: {1, 2, 4} = {2^0, 2^1, 2^2}\n\n**Key Observation:**\nSince ord₇(2) = 3 is ODD, -1 ∉ ⟨2⟩.\n(For -1 to appear, we'd need 2^k = -1, but then (2^k)² = 1 means 2k ≡ 0 (mod 3), impossible for k < 3.)",
+    "mathContext": "Odd order is the group-theoretic reason -1 is not reachable.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e649-odd-order",
+    "proofId": "erdos-649",
+    "range": { "startLine": 283, "endLine": 287 },
+    "type": "theorem",
+    "title": "Odd Order Implies No -1",
+    "content": "**odd_order_no_minus_one:**\n\n∀ k : ℕ, (2^k : ZMod 7) ≠ -1\n\n**Proof:**\n- We have (-1 : ZMod 7) = 6\n- Apply two_power_mod_seven\n\n**General Principle:**\nIf ord_q(a) is odd, then a^k ≡ -1 (mod q) has no solution.\n(Because -1 has order 2, so would need order divisible by 2.)",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e649-main-theorem",
+    "proofId": "erdos-649",
+    "range": { "startLine": 293, "endLine": 312 },
+    "type": "theorem",
+    "title": "Main Result: Conjecture Disproved",
+    "content": "**erdos_649: ¬ErdosConjecture649**\n\n**Proof:**\n1. Assume ErdosConjecture649 holds\n2. The conjecture claims all (p, q) pairs work\n3. Instantiate with p = 2, q = 7\n4. Get n with P(n) = 2 and P(n+1) = 7\n5. But no_solution_2_7 says no such n exists\n6. Contradiction\n\n**In Lean:**\n```lean\ntheorem erdos_649 : ¬ErdosConjecture649 := by\n  intro hconj\n  have hp7 : Nat.Prime 7 := by native_decide\n  have h27 := hconj 2 7 Nat.prime_two hp7\n  obtain ⟨n, hn_pos, hPn, hPn1⟩ := h27\n  have hfalse := no_solution_2_7\n  exact hfalse ⟨n, hn_pos, hPn, hPn1⟩\n```",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e649-some-work",
+    "proofId": "erdos-649",
+    "range": { "startLine": 314, "endLine": 318 },
+    "type": "theorem",
+    "title": "Some Pairs Work",
+    "content": "**some_pairs_work:**\n\nBoth (2, 3) and (3, 2) have solutions.\n\n**Statement:**\n```lean\ntheorem some_pairs_work :\n  (∃ n : ℕ, n > 0 ∧ P(n) = 2 ∧ P(n + 1) = 3) ∧\n  (∃ n : ℕ, n > 0 ∧ P(n) = 3 ∧ P(n + 1) = 2) :=\n  ⟨solution_2_3, solution_3_2⟩\n```\n\nThis emphasizes the conjecture is not trivially false - characterizing which pairs work is an open problem.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e649-infinite-failures",
+    "proofId": "erdos-649",
+    "range": { "startLine": 320, "endLine": 326 },
+    "type": "theorem",
+    "title": "Infinitely Many Failures",
+    "content": "**infinitely_many_failures:**\n\nFor any prime p, infinitely many primes q fail.\n\n**Statement:**\n```lean\ntheorem infinitely_many_failures :\n  ∀ p : ℕ, p.Prime → ∃ Q : Set ℕ, Q.Infinite ∧\n    ∀ q ∈ Q, q.Prime ∧ ¬∃ n : ℕ, n > 0 ∧ P(n) = p ∧ P(n + 1) = q\n```\n\nThis follows from Tong's theorem and shows the phenomenon is pervasive.",
+    "significance": "key"
+  }
+]

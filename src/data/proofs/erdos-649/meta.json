@@ -1,33 +1,136 @@
 {
   "id": "erdos-649",
-  "title": "Erdős Problem #649",
+  "title": "Erdős Problem #649: Greatest Prime Factors of Consecutive Integers",
   "slug": "erdos-649",
-  "description": "Let P(m)\" role=\"presentation\" style=\"position: relative;\">P(m)P(m)P(m) denote the greatest prime factor of m\" role=\"presentation\" style=\"position: relative;\">mmm. Is it true that, for any two prime...",
+  "description": "Can any two primes p, q be achieved as P(n) = p and P(n+1) = q for some n? DISPROVED: The pair (2, 7) fails since 2^k ≢ -1 (mod 7) for all k.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős (conjecture), Tong (general obstruction theorem)",
     "sourceUrl": "https://erdosproblems.com/649",
-    "date": "",
-    "status": "pending",
+    "date": "2025",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos649Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "prime-factors",
+      "counterexample",
+      "disproved",
+      "modular-arithmetic"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 649,
     "erdosUrl": "https://erdosproblems.com/649",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "ZMod",
+        "description": "Modular arithmetic",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Nat.Factorization",
+        "description": "Prime factorization",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Axiomatized greatest prime factor P(m) function",
+      "Properties: P(p) = p, P(p^k) = p, P(m*n) = max(P(m), P(n))",
+      "Erdős conjecture formal statement",
+      "Key lemma: 2^k ≢ -1 (mod 7) for all k",
+      "Counterexample theorem: no n with P(n) = 2, P(n+1) = 7",
+      "Main theorem: ¬ErdosConjecture649",
+      "Tong's theorem: infinitely many failing pairs",
+      "Mahler's growth theorem for P(n(n+1))",
+      "Positive examples: (2,3) and (3,2) work"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #649 from erdosproblems.com.",
-    "problemStatement": "Let P(m)\" role=\"presentation\" style=\"position: relative;\">P(m)P(m)P(m) denote the greatest prime factor of m\" role=\"presentation\" style=\"position: relative;\">mmm. Is it true that, for any two primes p,q\" role=\"presentation\" style=\"position: relative;\">p,qp,qp,q, there exists some integer n\" role=\"presentation\" style=\"position: relative;\">nnn such that P(n)=p\" role=\"presentation\" style=\"position: relative;\">P(n)=pP(n)=pP(n)=p and P(n+1)=q\" role=\"presentation\" style=\"position: relative;\">P(n+1)=qP(n+1)=qP(n+1)=q?",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Erdős Problem #649**\n\nThis problem asks whether all prime pairs can be realized as greatest prime factors of consecutive integers.\n\n**Key History:**\n- Erdős believed the problem was 'probably hopelessly difficult'\n- Multiple counterexamples discovered via modular arithmetic\n- Tong proved infinitely many pairs fail for any fixed p\n- Mahler (1935) studied growth of P(n(n+1))\n\n**The Counterexamples:**\n- (2, 7): 2^k ≢ -1 (mod 7) since ord_7(2) = 3 is odd\n- (19, 2): 2 is a primitive root mod 19\n- Infinitely many pairs via quadratic reciprocity obstructions",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet P(m) denote the greatest prime factor of m.\n\nIs it true that for any two primes p, q, there exists n such that:\n- P(n) = p\n- P(n+1) = q\n\n**Answer: NO**\n\nThe pair (p, q) = (2, 7) has no solution, and infinitely many other pairs fail.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Greatest Prime Factor:** Axiomatize P(m) with key properties\n\n2. **Erdős Conjecture:** Define as ∀ p q prime, ∃ n with P(n) = p, P(n+1) = q\n\n3. **Counterexample (2, 7):**\n   - If P(n) = 2, then n = 2^k for some k\n   - If P(2^k + 1) = 7, then 7 | (2^k + 1)\n   - But 2^k cycles {1, 2, 4} mod 7, never reaching 6 ≡ -1\n   - Contradiction\n\n4. **Main Theorem:** Apply the counterexample to disprove the conjecture\n\n5. **Extensions:** Tong's theorem on infinitely many failures",
+    "keyInsights": [
+      "**Powers of 2 mod 7:** The cycle {1, 2, 4} has period 3, never hitting 6 ≡ -1",
+      "**Order Theory:** ord_7(2) = 3 is odd, so -1 ∉ ⟨2⟩ in (Z/7Z)*",
+      "**Primitive Roots:** When 2 is a primitive root mod q, additional obstructions arise",
+      "**Positive Cases Exist:** n=8 gives P(8)=2, P(9)=3 and n=3 gives P(3)=3, P(4)=2",
+      "**Mahler's Theorem:** P(n(n+1)) → ∞ but grows as slow as log log n",
+      "**Tong's Generalization:** For any prime p, infinitely many q have no solution"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "gpf-definition",
+      "title": "Greatest Prime Factor",
+      "summary": "Definition of P(m), axioms for primes, prime powers, products",
+      "startLine": 39,
+      "endLine": 79
+    },
+    {
+      "id": "conjecture",
+      "title": "Erdős Conjecture",
+      "summary": "ErdosConjecture649 definition",
+      "startLine": 81,
+      "endLine": 95
+    },
+    {
+      "id": "counterexample-2-7",
+      "title": "Counterexample: (2, 7)",
+      "summary": "Key modular arithmetic lemmas, no_solution_2_7 theorem",
+      "startLine": 97,
+      "endLine": 152
+    },
+    {
+      "id": "general-obstruction",
+      "title": "General Obstruction Theory",
+      "summary": "Tong's theorem, primitive root obstruction, (19, 2) counterexample",
+      "startLine": 154,
+      "endLine": 201
+    },
+    {
+      "id": "positive-cases",
+      "title": "Positive Results",
+      "summary": "Solutions for (2,3) and (3,2)",
+      "startLine": 203,
+      "endLine": 242
+    },
+    {
+      "id": "mahler",
+      "title": "Mahler's Growth Theorem",
+      "summary": "P(n(n+1)) growth, infinitely_many_large_gpf corollary",
+      "startLine": 244,
+      "endLine": 271
+    },
+    {
+      "id": "quadratic-reciprocity",
+      "title": "Quadratic Reciprocity Connection",
+      "summary": "Order of 2 mod 7, odd_order_no_minus_one",
+      "startLine": 273,
+      "endLine": 305
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_649, some_pairs_work, infinitely_many_failures",
+      "startLine": 307,
+      "endLine": 347
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #649 asked whether any two primes p, q can be achieved as P(n) = p and P(n+1) = q. The answer is NO. The simplest counterexample is (2, 7): powers of 2 modulo 7 cycle through {1, 2, 4}, never reaching 6 ≡ -1, so 7 never divides 2^k + 1. Tong's theorem shows infinitely many pairs fail for any fixed p.",
+    "implications": "**Number-Theoretic Connections**\n\n1. **Multiplicative Order:** The obstruction for (2, 7) comes from ord_7(2) = 3 being odd\n\n2. **Primitive Roots:** When 2 is a primitive root mod q, similar obstructions apply\n\n3. **Quadratic Reciprocity:** Tong's general theorem uses deeper reciprocity arguments\n\n4. **Smooth Numbers:** P(n) = p means n is p-smooth times a power of p\n\n5. **Related Problems:** Connects to consecutive smooth numbers and prime gap theory",
+    "openQuestions": [
+      "Complete characterization of which prime pairs (p, q) work",
+      "Density of working pairs among all prime pairs",
+      "Effective bounds for Tong's theorem",
+      "Connection to Cunningham numbers (2^k ± 1)",
+      "Generalization to P(n) = p, P(n+d) = q for fixed d"
+    ]
   }
 }
