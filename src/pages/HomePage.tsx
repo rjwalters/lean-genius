@@ -199,7 +199,7 @@ export function HomePage() {
       <section className="max-w-6xl mx-auto px-6 pb-16">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            Available Proofs ({proofs.length})
+            {hasActiveFilters ? `Showing ${proofs.length} of ${listings.length} proofs` : `${listings.length} Proofs`}
           </h2>
           <div className="flex flex-wrap items-center gap-3 sm:gap-4">
             {/* Search Box */}
