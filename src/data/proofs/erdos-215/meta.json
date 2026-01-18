@@ -1,33 +1,132 @@
 {
   "id": "erdos-215",
-  "title": "Erdős Problem #215",
+  "title": "Erdős #215: The Steinhaus Lattice Point Problem",
   "slug": "erdos-215",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist ... such that every set congruent to ... (that is, ... after some translation and rotation) contains exactly...",
+  "description": "Does there exist S ⊆ ℝ² such that every congruent copy of S contains exactly one integer lattice point? Surprisingly YES, proved by Jackson-Mauldin (2002) using the Axiom of Choice.",
   "meta": {
-    "author": "Unknown",
+    "author": "Steinhaus (question), Jackson-Mauldin (solution, 2002)",
     "sourceUrl": "https://erdosproblems.com/215",
-    "date": "",
-    "status": "pending",
+    "date": "2002",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos215Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "set-theory",
+      "axiom-of-choice",
+      "lattice-points"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 215,
     "erdosUrl": "https://erdosproblems.com/215",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Isometry",
+        "description": "Distance-preserving maps between metric spaces",
+        "module": "Mathlib.Topology.MetricSpace.Isometry"
+      },
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Finite-dimensional Euclidean space",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of sets as natural numbers",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of the integer lattice ℤ² in EuclideanSpace",
+      "Definition of congruence via isometries",
+      "Formalization of the Steinhaus property",
+      "Axiomatization of the Jackson-Mauldin theorem",
+      "Lattice point counting formulation",
+      "Higher-dimensional generalization statement"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #215 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist $S\\subseteq \\mathbb{R}^2$ such that every set congruent to $S$ (that is, $S$ after some translation and rotation) contains exactly one point from $\\mathbb{Z}^2$?\n\n\n\nAn old question of Steinhaus. Erd\\H{o}s was 'almost certain that such a set does not exist'.\n\nIn fact, such a set does exist, as proved by Jackson and Mauldin \\cite{JaMa02}. Their construction depends on the axiom of choice.\n\n\n\n\nReferences\n\n\n[JaMa02] Jackson, Steve and Mauldin, R. Daniel, Sets meeting isometric copies of the lattice ${\\bf Z}^2$ in exactly one point. Proc. Natl. Acad. Sci. USA (2002), 15883-15887.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "This is an old question posed by Hugo Steinhaus, one of the founders of the Lwów School of Mathematics. The problem asks whether there exists a 'universal selector' for lattice points under rigid motions.\n\nErdős was 'almost certain that such a set does not exist' - his intuition suggested that the constraint of meeting every congruent copy in exactly one point was too restrictive. However, Jackson and Mauldin proved in 2002 that such a set DOES exist.\n\nThe surprise is not just that the answer is YES, but that the proof fundamentally requires the Axiom of Choice. No explicit construction of such a set is known, and it's likely that none can be given in ZF alone.",
+    "problemStatement": "**The Steinhaus Lattice Point Problem**: Does there exist a set $S \\subseteq \\mathbb{R}^2$ such that every set congruent to $S$ (i.e., any translation and rotation of $S$) contains exactly one point from the integer lattice $\\mathbb{Z}^2$?\n\n**Answer**: YES (Jackson-Mauldin 2002)\n\nThe construction uses the Axiom of Choice via transfinite induction on the group of Euclidean isometries.",
+    "proofStrategy": "We formalize this problem by:\n\n1. **Defining the lattice**: The integer lattice ℤ² embedded in EuclideanSpace ℝ (Fin 2)\n\n2. **Defining congruence**: Two sets are congruent if one is an isometric image of the other\n\n3. **The Steinhaus property**: A set S has this property if every congruent copy meets ℤ² in exactly one point\n\n4. **The Jackson-Mauldin theorem**: Axiomatized as the existence of a Steinhaus set\n\n5. **Derived properties**: We state that Steinhaus sets must be unbounded and cannot be 'nice' (measurable with finite positive measure)",
+    "keyInsights": [
+      "**Erdős was wrong**: His intuition that no such set exists was contradicted by Jackson-Mauldin",
+      "**Axiom of Choice is essential**: The construction uses transfinite induction and cannot be made explicit",
+      "**The set is 'pathological'**: It must be unbounded and cannot have finite positive measure",
+      "**Generalizes to higher dimensions**: The Jackson-Mauldin result holds for ℤⁿ ⊂ ℝⁿ when n ≥ 2",
+      "**Selector interpretation**: A Steinhaus set gives a canonical way to select a lattice point from any congruent copy"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "The Steinhaus lattice point problem and its surprising resolution."
+    },
+    {
+      "id": "lattice",
+      "title": "The Integer Lattice",
+      "startLine": 38,
+      "endLine": 63,
+      "summary": "Definition of ℤ² in EuclideanSpace and lattice point characterization."
+    },
+    {
+      "id": "congruence",
+      "title": "Isometries and Congruence",
+      "startLine": 65,
+      "endLine": 110,
+      "summary": "Definition of congruent sets via isometric mappings."
+    },
+    {
+      "id": "steinhaus",
+      "title": "The Steinhaus Property",
+      "startLine": 112,
+      "endLine": 144,
+      "summary": "Definition of the Steinhaus property and counting formulation."
+    },
+    {
+      "id": "jackson-mauldin",
+      "title": "Jackson-Mauldin Theorem",
+      "startLine": 146,
+      "endLine": 177,
+      "summary": "The main existence theorem (axiomatized)."
+    },
+    {
+      "id": "properties",
+      "title": "Properties of Steinhaus Sets",
+      "startLine": 179,
+      "endLine": 193,
+      "summary": "Steinhaus sets must be unbounded and non-measurable."
+    },
+    {
+      "id": "selector",
+      "title": "The Lattice Point Selector",
+      "startLine": 195,
+      "endLine": 225,
+      "summary": "Extracting the unique lattice point from congruent copies."
+    },
+    {
+      "id": "higher-dim",
+      "title": "Higher Dimensions",
+      "startLine": 227,
+      "endLine": 242,
+      "summary": "Generalization to ℤⁿ ⊂ ℝⁿ."
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "We formalize Erdős Problem #215, the Steinhaus lattice point problem. The surprising answer is YES: there exists a set S ⊆ ℝ² such that every congruent copy contains exactly one lattice point. This was proved by Jackson and Mauldin in 2002 using the Axiom of Choice.",
+    "implications": "The Jackson-Mauldin theorem shows that our geometric intuition can fail spectacularly when the Axiom of Choice is involved. The existence of Steinhaus sets is a beautiful example of non-constructive mathematics - we know such sets exist, but we cannot describe any explicitly.",
+    "openQuestions": [
+      "Is the Axiom of Choice necessary, or can a Steinhaus set be constructed in ZF?",
+      "What is the relationship between Steinhaus sets and other Choice-dependent constructions?",
+      "Can bounds be placed on the 'complexity' of a Steinhaus set?",
+      "Does an analogous result hold for other lattices (e.g., hexagonal lattice)?"
+    ]
   }
 }

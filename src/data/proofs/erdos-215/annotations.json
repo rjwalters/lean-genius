@@ -1,1 +1,134 @@
-[]
+[
+  {
+    "id": "ann-e215-header",
+    "proofId": "erdos-215",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #215** is the Steinhaus Lattice Point Problem: Does there exist S ⊆ ℝ² such that every congruent copy of S contains exactly one point from ℤ²?\n\n**Answer**: YES (Jackson-Mauldin 2002)\n\nErdős was 'almost certain' no such set exists, but the proof uses the Axiom of Choice.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e215-lattice",
+    "proofId": "erdos-215",
+    "range": {
+      "startLine": 44,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Integer Lattice",
+    "content": "**integerLattice** is ℤ² embedded in EuclideanSpace ℝ (Fin 2).\n\nA point p is in the lattice iff every coordinate is an integer: ∀ i, ∃ n : ℤ, p i = n.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e215-lattice-equiv",
+    "proofId": "erdos-215",
+    "range": {
+      "startLine": 52,
+      "endLine": 63
+    },
+    "type": "theorem",
+    "title": "Lattice Point Characterization",
+    "content": "A point is in **integerLattice** iff it satisfies **isLatticePoint**: there exist m, n : ℤ with p 0 = m and p 1 = n.\n\nThis gives two equivalent ways to express lattice membership.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e215-congruent",
+    "proofId": "erdos-215",
+    "range": {
+      "startLine": 73,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "Congruent Sets",
+    "content": "**IsCongruent S T** means T = f(S) for some isometry f.\n\nIn ℝ², isometries are compositions of translations, rotations, and reflections. This captures the notion of 'same shape and size'.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e215-steinhaus-prop",
+    "proofId": "erdos-215",
+    "range": {
+      "startLine": 119,
+      "endLine": 121
+    },
+    "type": "definition",
+    "title": "The Steinhaus Property",
+    "content": "**HasSteinhausProperty S** means every congruent copy of S meets ℤ² in exactly one point.\n\nThis is the key property Steinhaus asked about. Such a set S acts as a 'universal selector' for lattice points.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e215-count",
+    "proofId": "erdos-215",
+    "range": {
+      "startLine": 123,
+      "endLine": 144
+    },
+    "type": "theorem",
+    "title": "Counting Formulation",
+    "content": "The Steinhaus property is equivalent to: for every congruent copy T, **latticePointCount T = 1**.\n\nThis reformulation uses Set.ncard to count lattice points.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e215-jackson-mauldin",
+    "proofId": "erdos-215",
+    "range": {
+      "startLine": 124,
+      "endLine": 125
+    },
+    "type": "axiom",
+    "title": "Jackson-Mauldin Theorem (Axiom)",
+    "content": "**jackson_mauldin_theorem**: There exists S with the Steinhaus property.\n\nThis is axiomatized because:\n1. The proof requires the Axiom of Choice\n2. The construction uses transfinite induction\n3. No explicit description of S is possible",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e215-answer",
+    "proofId": "erdos-215",
+    "range": {
+      "startLine": 132,
+      "endLine": 134
+    },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**erdos_215_answer**: The answer to Erdős Problem #215 is YES.\n\nSuch a set exists, proved by Jackson and Mauldin in 2002. The theorem follows directly from the axiom.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-e215-unbounded",
+    "proofId": "erdos-215",
+    "range": {
+      "startLine": 142,
+      "endLine": 144
+    },
+    "type": "axiom",
+    "title": "Steinhaus Sets are Unbounded",
+    "content": "**steinhaus_set_unbounded**: Any set with the Steinhaus property must be unbounded.\n\nIntuitively, a bounded set would miss some lattice points when rotated appropriately.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-e215-selector",
+    "proofId": "erdos-215",
+    "range": {
+      "startLine": 165,
+      "endLine": 182
+    },
+    "type": "definition",
+    "title": "Lattice Point Selector",
+    "content": "**steinhausSelector** extracts the unique lattice point from a congruent copy.\n\nGiven S with the Steinhaus property and any congruent T, we get the unique p ∈ T ∩ ℤ².",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-e215-higher-dim",
+    "proofId": "erdos-215",
+    "range": {
+      "startLine": 198,
+      "endLine": 199
+    },
+    "type": "axiom",
+    "title": "Higher Dimensional Generalization",
+    "content": "**jackson_mauldin_general**: The result generalizes to ℤⁿ ⊂ ℝⁿ for n ≥ 2.\n\nThe construction works in any dimension at least 2.",
+    "significance": "supporting"
+  }
+]
