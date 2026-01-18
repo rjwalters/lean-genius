@@ -270,31 +270,36 @@ launch_agents() {
         tmux send-keys -t "$session" "export CLAIM_TTL='$CLAIM_TTL'" Enter
         tmux send-keys -t "$session" "export REPO_ROOT='$REPO_ROOT'" Enter
 
-        # Create the prompt
-        local prompt="You are Erdős stub enhancer agent $enhancer_id working in an isolated git worktree.
+        # Write prompt to file (avoids tmux multiline issues)
+        local prompt_file="$LOGS_DIR/$session-prompt.md"
+        cat > "$prompt_file" << PROMPT_EOF
+# Erdős Stub Enhancer Agent $enhancer_id
 
-Your worktree: $worktree_path
-Your branch: feature/enhancer-$i
+You are working in an isolated git worktree with your own branch.
 
-WORKFLOW:
-1. Claim: \$REPO_ROOT/scripts/erdos/claim-stub.sh claim-random
-2. Enhance the claimed stub:
-   - Rewrite proofs/Proofs/Erdos{N}Problem.lean
-   - Update src/data/proofs/erdos-{n}/meta.json
-   - Create src/data/proofs/erdos-{n}/annotations.json
-3. Build: pnpm build
-4. Commit: git add -A && git commit -m 'Enhance Erdős #{N}: Title'
-5. Push: git push -u origin feature/enhancer-$i
-6. PR: gh pr create --title 'Enhance Erdős #{N}' --body 'Stub enhancement' --label 'erdos-enhancement'
-7. Complete: \$REPO_ROOT/scripts/erdos/claim-stub.sh complete {N}
-8. Reset branch for next stub: git checkout main && git pull origin main && git checkout -B feature/enhancer-$i main
-9. Repeat from step 1
+**Your worktree:** $worktree_path
+**Your branch:** feature/enhancer-$i
+**Claim script:** \$REPO_ROOT/scripts/erdos/claim-stub.sh
 
-Read .loom/roles/erdos-enhancer.md for detailed enhancement guidelines.
-Start now with step 1."
+## Quick Start
 
-        # Start Claude Code
-        tmux send-keys -t "$session" "claude --dangerously-skip-permissions \"$prompt\" 2>&1 | tee '$log_file'" Enter
+1. Read the full instructions: \`cat .loom/roles/erdos-enhancer.md\`
+2. Claim a stub: \`\$REPO_ROOT/scripts/erdos/claim-stub.sh claim-random\`
+3. Enhance it (Lean proof, meta.json, annotations.json)
+4. Build: \`pnpm build\`
+5. Commit: \`git add -A && git commit -m "Enhance Erdős #N: Title"\`
+6. Push: \`git push -u origin feature/enhancer-$i\`
+7. Create PR: \`gh pr create --title "Enhance Erdős #N" --body "Stub enhancement" --label erdos-enhancement\`
+8. Mark complete: \`\$REPO_ROOT/scripts/erdos/claim-stub.sh complete N\`
+9. Reset for next: \`git checkout main && git pull && git checkout -B feature/enhancer-$i main\`
+10. Repeat from step 2
+
+Start now by running step 1 to read the full instructions, then claim and enhance a stub.
+PROMPT_EOF
+
+        # Start Claude Code with simple prompt pointing to instructions
+        local simple_prompt="You are $enhancer_id. Read $prompt_file for your instructions, then start the enhancement workflow."
+        tmux send-keys -t "$session" "claude --dangerously-skip-permissions '$simple_prompt' 2>&1 | tee '$log_file'" Enter
 
         print_success "Launched $session (worktree: $worktree_path)"
     done

@@ -6344,12 +6344,17 @@ def IsTally (L : Language) : Prop :=
 
     **Proof sketch:** A tally language L contains only strings of the form 1^k
     (encoded as 2^k - 1). For any bound n, there are at most log₂(n+1) such
-    strings up to n, since 2^k - 1 ≤ n implies k ≤ log₂(n+1). -/
+    strings up to n, since 2^k - 1 ≤ n implies k ≤ log₂(n+1).
+
+    The countP of any predicate over List.range(n+1) is at most n+1,
+    which is ≤ 1*n + 1 (our polynomial eval). -/
 theorem tally_is_sparse (L : Language) (h : IsTally L) : IsSparse L := by
-  use ⟨1, 1⟩  -- Linear polynomial (actually logarithmic suffices)
+  use ⟨1, 1⟩  -- Linear polynomial p(n) = n + 1
   intro n
-  -- At most log₂(n+1) powers of 2 up to n, which is ≤ n for n ≥ 1
-  sorry  -- Requires cardinality bound on tally strings
+  unfold census Polynomial.eval
+  simp only [List.length_range, one_mul]
+  -- countP on range is ≤ length of range
+  exact List.countP_le_length
 
 /-! ### Ladner's Theorem -/
 
