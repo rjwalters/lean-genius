@@ -1,1 +1,173 @@
-[]
+[
+  {
+    "id": "ann-1021-edgecount",
+    "proofId": "erdos-1021",
+    "range": { "startLine": 34, "endLine": 36 },
+    "type": "definition",
+    "title": "Edge Count",
+    "content": "Number of edges in a simple graph.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-1021-pairvertex",
+    "proofId": "erdos-1021",
+    "range": { "startLine": 48, "endLine": 49 },
+    "type": "definition",
+    "title": "Pair Vertex Count",
+    "content": "C(k,2) = k(k-1)/2 pair vertices in G_k.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1021-gkvertex",
+    "proofId": "erdos-1021",
+    "range": { "startLine": 54, "endLine": 55 },
+    "type": "definition",
+    "title": "G_k Vertex Type",
+    "content": "Primary (left) or pair (right) vertex.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1021-gk",
+    "proofId": "erdos-1021",
+    "range": { "startLine": 57, "endLine": 64 },
+    "type": "definition",
+    "title": "Bipartite Pair Graph G_k",
+    "content": "k primary vertices, C(k,2) pair vertices, bipartite.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1021-bipartite",
+    "proofId": "erdos-1021",
+    "range": { "startLine": 66, "endLine": 69 },
+    "type": "theorem",
+    "title": "G_k is Bipartite",
+    "content": "Edges only between primary and pair vertices.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1021-cycle",
+    "proofId": "erdos-1021",
+    "range": { "startLine": 77, "endLine": 83 },
+    "type": "definition",
+    "title": "Cycle Graph C_n",
+    "content": "n vertices in a cycle.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1021-g3c6",
+    "proofId": "erdos-1021",
+    "range": { "startLine": 85, "endLine": 88 },
+    "type": "theorem",
+    "title": "G_3 = C_6",
+    "content": "G_3 is isomorphic to the 6-cycle.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1021-isfree",
+    "proofId": "erdos-1021",
+    "range": { "startLine": 96, "endLine": 98 },
+    "type": "definition",
+    "title": "H-Free Graph",
+    "content": "Graph contains no copy of H.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1021-extremal",
+    "proofId": "erdos-1021",
+    "range": { "startLine": 100, "endLine": 104 },
+    "type": "definition",
+    "title": "Extremal Number",
+    "content": "ex(n, H) = max edges in n-vertex H-free graph.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1021-asymp",
+    "proofId": "erdos-1021",
+    "range": { "startLine": 112, "endLine": 114 },
+    "type": "definition",
+    "title": "Asymptotic Bound (<<)",
+    "content": "f(n) << g(n) means f = O(g).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1021-littleo",
+    "proofId": "erdos-1021",
+    "range": { "startLine": 116, "endLine": 118 },
+    "type": "definition",
+    "title": "Little-o Notation",
+    "content": "f(n) = o(g(n)) means f/g -> 0.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1021-conjecture",
+    "proofId": "erdos-1021",
+    "range": { "startLine": 135, "endLine": 137 },
+    "type": "definition",
+    "title": "Main Conjecture",
+    "content": "ex(n, G_k) << n^(3/2 - c_k) for some c_k > 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1021-vanishes",
+    "proofId": "erdos-1021",
+    "range": { "startLine": 145, "endLine": 149 },
+    "type": "definition",
+    "title": "Exponent Vanishes",
+    "content": "c_k -> 0 as k -> infinity.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1021-eslimit",
+    "proofId": "erdos-1021",
+    "range": { "startLine": 151, "endLine": 152 },
+    "type": "theorem",
+    "title": "Erdos-Simonovits Limit",
+    "content": "If conjecture holds, c_k -> 0.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1021-weak",
+    "proofId": "erdos-1021",
+    "range": { "startLine": 160, "endLine": 162 },
+    "type": "definition",
+    "title": "Weak Conjecture",
+    "content": "ex(n, G_k) = o(n^(3/2)) - even this is unknown.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1021-c6bound",
+    "proofId": "erdos-1021",
+    "range": { "startLine": 180, "endLine": 182 },
+    "type": "theorem",
+    "title": "C_6 Extremal Bound",
+    "content": "ex(n, C_6) << n^(7/6) (Erdos, Bondy-Simonovits).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-1021-c3value",
+    "proofId": "erdos-1021",
+    "range": { "startLine": 184, "endLine": 185 },
+    "type": "theorem",
+    "title": "c_3 = 1/3",
+    "content": "7/6 = 3/2 - 1/3, so c_3 = 1/3 works.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1021-kst",
+    "proofId": "erdos-1021",
+    "range": { "startLine": 213, "endLine": 224 },
+    "type": "theorem",
+    "title": "Kovari-Sos-Turan",
+    "content": "ex(n, K_{s,t}) <= C * n^(2-1/s).",
+    "significance": "key"
+  },
+  {
+    "id": "ann-1021-trivial",
+    "proofId": "erdos-1021",
+    "range": { "startLine": 226, "endLine": 229 },
+    "type": "theorem",
+    "title": "Trivial Bound",
+    "content": "ex(n, G_k) << n^(3/2) from KST.",
+    "significance": "key"
+  }
+]

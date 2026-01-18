@@ -2,8 +2,8 @@
   {
     "id": "ann-e656-upper-density",
     "proofId": "erdos-656",
-    "range": { "startLine": 46, "endLine": 51 },
-    "type": "definition",
+    "range": { "startLine": 52, "endLine": 52 },
+    "type": "axiom",
     "title": "Upper Density",
     "content": "The **upper density** of A ⊆ ℕ is:\n\nd̄(A) = limsup_{n→∞} |A ∩ [1,n]| / n\n\nThis measures the 'proportion' of naturals in A, taking the limsup to capture asymptotic behavior even when the limit doesn't exist.",
     "mathContext": "Axiomatized as a function Set ℕ → ℝ. The exact definition requires filter-theoretic machinery (limsup over atTop filter).",
@@ -13,8 +13,8 @@
   {
     "id": "ann-e656-lower-density",
     "proofId": "erdos-656",
-    "range": { "startLine": 53, "endLine": 55 },
-    "type": "definition",
+    "range": { "startLine": 56, "endLine": 56 },
+    "type": "axiom",
     "title": "Lower Density",
     "content": "The **lower density** is:\n\nd̲(A) = liminf_{n→∞} |A ∩ [1,n]| / n\n\nWhen d̄(A) = d̲(A), the set has a well-defined **natural density**.",
     "significance": "supporting"
@@ -22,7 +22,7 @@
   {
     "id": "ann-e656-positive-density",
     "proofId": "erdos-656",
-    "range": { "startLine": 57, "endLine": 58 },
+    "range": { "startLine": 59, "endLine": 60 },
     "type": "definition",
     "title": "Positive Upper Density",
     "content": "A set has **positive upper density** if d̄(A) > 0.\n\nThis is the key hypothesis in Erdős's conjecture. Examples:\n- Even numbers: d̄ = 1/2\n- Primes: d̄ = 0 (too sparse!)\n- {1, 2, ..., n, 2n, 2n+1, ..., 3n, ...}: d̄ = 1/2 but d̲ = 0",
@@ -31,8 +31,8 @@
   {
     "id": "ann-e656-density-bounds",
     "proofId": "erdos-656",
-    "range": { "startLine": 60, "endLine": 61 },
-    "type": "theorem",
+    "range": { "startLine": 63, "endLine": 63 },
+    "type": "axiom",
     "title": "Density Bounds",
     "content": "For any A ⊆ ℕ:\n\n0 ≤ d̲(A) ≤ d̄(A) ≤ 1\n\nThe bounds follow from the definition: |A ∩ [1,n]| / n is always in [0,1].",
     "significance": "supporting"
@@ -88,8 +88,8 @@
   {
     "id": "ann-e656-hindman",
     "proofId": "erdos-656",
-    "range": { "startLine": 114, "endLine": 122 },
-    "type": "theorem",
+    "range": { "startLine": 123, "endLine": 124 },
+    "type": "axiom",
     "title": "Hindman's Theorem",
     "content": "**Hindman's Theorem (1974):**\n\nFor any finite coloring of ℕ, there exists an infinite set B such that FS(B) is monochromatic.\n\nThis is a cornerstone of Ramsey theory. The original proof was combinatorial (86 pages!); Furstenberg later gave an ergodic-theoretic proof.",
     "mathContext": "Axiomatized as hindman_theorem. The proof requires sophisticated techniques from either combinatorics or dynamics.",
@@ -117,8 +117,8 @@
   {
     "id": "ann-e656-high-density",
     "proofId": "erdos-656",
-    "range": { "startLine": 175, "endLine": 177 },
-    "type": "theorem",
+    "range": { "startLine": 178, "endLine": 179 },
+    "type": "axiom",
     "title": "High Density Case",
     "content": "**High Density Simplification:**\n\nIf d̄(A) > 1/2, then we can take t = 0:\n\n∃ infinite B, B + B ⊆ A\n\nIntuitively: if A is 'more than half' of ℕ, the sumset will hit A without needing a shift.",
     "significance": "key"
@@ -136,8 +136,8 @@
   {
     "id": "ann-e656-sarkozy",
     "proofId": "erdos-656",
-    "range": { "startLine": 193, "endLine": 195 },
-    "type": "theorem",
+    "range": { "startLine": 196, "endLine": 197 },
+    "type": "axiom",
     "title": "Sárközy's Theorem",
     "content": "**Sárközy's Theorem (1978):**\n\nIf A has positive upper density, then A contains two elements differing by a perfect square:\n\n∃ a₁, a₂ ∈ A, ∃ k > 0, a₁ - a₂ = k²\n\nThis is another density theorem in the same family as Erdős's conjecture.",
     "significance": "key",
@@ -174,8 +174,8 @@
   {
     "id": "ann-e656-quantitative",
     "proofId": "erdos-656",
-    "range": { "startLine": 236, "endLine": 239 },
-    "type": "theorem",
+    "range": { "startLine": 239, "endLine": 241 },
+    "type": "axiom",
     "title": "Quantitative Version",
     "content": "**Quantitative strengthening:**\n\nThe infinite set B can be chosen to also have positive density.\n\nThis gives a 'density-preserving' version of the theorem.",
     "significance": "supporting"

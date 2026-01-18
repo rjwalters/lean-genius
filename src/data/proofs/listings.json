@@ -1063,17 +1063,21 @@
   },
   {
     "id": "erdos-1021",
-    "title": "Erdős Problem #1021",
+    "title": "Erdős Problem #1021: Extremal Numbers for Bipartite Pair Graphs",
     "slug": "erdos-1021",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every ..., there is a constant ... such that\\[(n,G_k) \\ll n^{3/2-c_k},\\]where ... is the bipartite graph...",
+    "description": "For k ≥ 3, does there exist c_k > 0 such that ex(n, G_k) ≪ n^(3/2 - c_k)? Here G_k is the bipartite graph with k primary vertices and C(k,2) pair vertices. Even ex(n, G_k) = o(n^(3/2)) is unknown.",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "extremal-combinatorics",
+      "erdos",
+      "turan-type",
+      "bipartite-graphs"
     ],
     "erdosNumber": 1021,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 6,
+    "annotationCount": 19
   },
   {
     "id": "erdos-1022",
@@ -8600,17 +8604,24 @@
   },
   {
     "id": "erdos-612",
-    "title": "Erdős Problem #612",
+    "title": "Erdős Problem #612: Diameter Bounds for Clique-Free Graphs",
     "slug": "erdos-612",
-    "description": "Let G\" role=\"presentation\" style=\"position: relative;\">GGG be a connected graph with n\" role=\"presentation\" style=\"position: relative;\">nnn vertices, minimum degree d\" role=\"presentation\" style=\"po...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For connected K_r-free graphs: what is the relationship between diameter D, minimum degree d, and vertex count n? Original conjecture D ≤ α·n/d + O(1) disproved for r ≥ 4; base case (triangle-free) remains valid.",
+    "status": "formalized",
+    "badge": "conjecture",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "diameter",
+      "clique-free",
+      "degree-bounds",
+      "counterexample",
+      "open-problem"
     ],
     "erdosNumber": 612,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 15,
+    "annotationCount": 20
   },
   {
     "id": "erdos-613",
@@ -12292,17 +12303,22 @@
   },
   {
     "id": "erdos-898",
-    "title": "Erdős Problem #898",
+    "title": "Erdős Problem #898: The Erdős-Mordell Inequality",
     "slug": "erdos-898",
-    "description": "If A,B,C&#x2208;R2\" role=\"presentation\" style=\"position: relative;\">A,B,C∈ℝ2A,B,C∈R2A,B,C\\in ^2 form a triangle and P\" role=\"presentation\" style=\"position: relative;\">PPP is a point in the interior...",
-    "status": "pending",
+    "description": "For an interior point P of triangle ABC, if X, Y, Z are the feet of perpendiculars from P to the sides, then PA + PB + PC ≥ 2(PX + PY + PZ). Equality holds iff the triangle is equilateral and P is its center.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "geometry",
+      "inequalities",
+      "triangles",
+      "classical"
     ],
     "erdosNumber": 898,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 3,
+    "sorries": 5,
+    "annotationCount": 19
   },
   {
     "id": "erdos-899",

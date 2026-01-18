@@ -1,1 +1,182 @@
-[]
+[
+  {
+    "id": "ann-612-header",
+    "proofId": "erdos-612",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Diameter bounds for clique-free graphs:**\n\nFor connected graphs with n vertices, minimum degree d, diameter D:\n\n**Basic:** D ≤ 3n/(d+1) + O(1) (always)\n**Original conjectures:** K_r-free should improve coefficient\n**Status:** DISPROVED for r ≥ 4, but base case (triangle-free) valid\n\n**Amended:** D ≤ (3 - 2/k) · n/d for K_{k+1}-free",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-612-diameter",
+    "proofId": "erdos-612",
+    "range": { "startLine": 36, "endLine": 38 },
+    "type": "definition",
+    "title": "Diameter",
+    "content": "**Diameter D** = maximum distance between any two vertices.\n\nFor connected graphs, D measures how 'spread out' the graph is. Small diameter means any two vertices are close; large diameter means some vertices are far apart.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-612-min-degree",
+    "proofId": "erdos-612",
+    "range": { "startLine": 40, "endLine": 42 },
+    "type": "definition",
+    "title": "Minimum Degree",
+    "content": "**Minimum degree d** = min over all vertices of degree.\n\nHigher minimum degree means every vertex has many neighbors, which typically reduces diameter (more 'shortcuts' available).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-612-k-free",
+    "proofId": "erdos-612",
+    "range": { "startLine": 44, "endLine": 46 },
+    "type": "definition",
+    "title": "K_r-Free",
+    "content": "`IsKFree G r` means G contains no complete subgraph on r vertices.\n\n- K_3-free = triangle-free\n- K_4-free = no complete subgraph on 4 vertices\n\nForbidding cliques constrains graph structure.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-612-basic-bound",
+    "proofId": "erdos-612",
+    "range": { "startLine": 53, "endLine": 60 },
+    "type": "axiom",
+    "title": "Basic Diameter Bound",
+    "content": "**Erdős-Pach-Pollack-Tuza (1989):**\n\nD ≤ 3n/(d+1) + O(1) for ANY connected graph.\n\nThis is the baseline: coefficient 3. The question is whether forbidding cliques can reduce this coefficient.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-612-alpha-2r",
+    "proofId": "erdos-612",
+    "range": { "startLine": 64, "endLine": 66 },
+    "type": "definition",
+    "title": "Coefficient α_{2r}",
+    "content": "For K_{2r}-free graphs, the conjectured coefficient was:\n\nα = 2(r-1)(3r+2) / (2r²-1)\n\nFor r=2: α = 2·1·8 / 7 = 16/7 ≈ 2.29\nFor r=3: α = 2·2·11 / 17 = 44/17 ≈ 2.59",
+    "significance": "key"
+  },
+  {
+    "id": "ann-612-conjecture1",
+    "proofId": "erdos-612",
+    "range": { "startLine": 72, "endLine": 81 },
+    "type": "definition",
+    "title": "Original Conjecture 1",
+    "content": "**Conjecture (DISPROVED for r ≥ 2):**\n\nIf G is K_{2r}-free and (r-1)(3r+2) | d, then:\nD ≤ α_{2r} · n/d + O(1)\n\nThe divisibility condition on d was meant to handle boundary cases.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-612-counterexample",
+    "proofId": "erdos-612",
+    "range": { "startLine": 106, "endLine": 118 },
+    "type": "axiom",
+    "title": "Counterexamples Exist",
+    "content": "**Czabarka-Singgih-Székely (2021):**\n\nFor r ≥ 2, there exist K_{2r}-free graphs with:\nD = (6r-5)n / ((2r-1)d + 2r-3) + O(1)\n\nThis exceeds the conjectured bound as d → ∞, disproving the conjecture.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-612-false",
+    "proofId": "erdos-612",
+    "range": { "startLine": 120, "endLine": 123 },
+    "type": "theorem",
+    "title": "Conjecture 1 False for r ≥ 2",
+    "content": "The original conjecture is **FALSE** for r ≥ 2.\n\nThis is a rare case of an Erdős conjecture being completely disproved (not just shown to need modification).\n\nThe base case r = 1 (triangle-free) survives.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-612-triangle-free",
+    "proofId": "erdos-612",
+    "range": { "startLine": 127, "endLine": 135 },
+    "type": "axiom",
+    "title": "Triangle-Free Valid",
+    "content": "**Base case (r = 1) is TRUE:**\n\nFor triangle-free graphs: D ≤ 5n/(2d) + O(1)\n\nCoefficient 5/2 = 2.5, compared to general bound coefficient 3.\n\nSo triangle-free graphs DO have smaller diameter (as expected).",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-612-amended-alpha",
+    "proofId": "erdos-612",
+    "range": { "startLine": 143, "endLine": 145 },
+    "type": "definition",
+    "title": "Amended Coefficient",
+    "content": "The **amended conjecture** uses coefficient:\n\n(3 - 2/k) for K_{k+1}-free graphs\n\n- k=2: 3 - 1 = 2 (K_3-free)\n- k=3: 3 - 2/3 = 7/3 ≈ 2.33 (K_4-free)\n- k→∞: coefficient → 3 (no clique restriction)",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-612-amended-conj",
+    "proofId": "erdos-612",
+    "range": { "startLine": 147, "endLine": 156 },
+    "type": "definition",
+    "title": "Amended Conjecture",
+    "content": "**New Conjecture (Czabarka-Singgih-Székely):**\n\nFor K_{k+1}-free connected graphs:\nD ≤ (3 - 2/k) · n/d + O(1)\n\nThis is simpler than the original (no divisibility conditions) and interpolates smoothly as k increases.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-612-k2",
+    "proofId": "erdos-612",
+    "range": { "startLine": 158, "endLine": 161 },
+    "type": "theorem",
+    "title": "k = 2 Case",
+    "content": "For k = 2 (triangle-free, K_3-free):\n\namended_alpha 2 = 3 - 2/2 = 2\n\nBut we know the actual bound is 5/2 = 2.5, so the amended conjecture is NOT tight here.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-612-limit",
+    "proofId": "erdos-612",
+    "range": { "startLine": 168, "endLine": 171 },
+    "type": "theorem",
+    "title": "Limit as k → ∞",
+    "content": "As k → ∞ (no clique restriction):\n\n(3 - 2/k) → 3\n\nThis matches the basic bound D ≤ 3n/(d+1), as expected when we impose no clique constraint.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-612-colorable",
+    "proofId": "erdos-612",
+    "range": { "startLine": 175, "endLine": 193 },
+    "type": "axiom",
+    "title": "Verified Under Colorability",
+    "content": "The amended conjecture is **verified** for:\n\n- k = 3 (K_4-free) IF the graph is 3-colorable\n- k = 4 (K_5-free) IF the graph is 4-colorable\n\nThe colorability assumption is crucial — without it, further counterexamples exist.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-612-cambie",
+    "proofId": "erdos-612",
+    "range": { "startLine": 197, "endLine": 203 },
+    "type": "axiom",
+    "title": "Further Counterexamples",
+    "content": "**Cambie-Jooken (2025):**\n\nEven the amended conjecture has counterexamples for K_4-free graphs (without colorability assumption).\n\nThe story continues — finding the correct bound remains open.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-612-path",
+    "proofId": "erdos-612",
+    "range": { "startLine": 207, "endLine": 210 },
+    "type": "theorem",
+    "title": "Path Graph",
+    "content": "**Path on n vertices:**\n- Diameter D = n - 1\n- Minimum degree d = 1 (endpoints)\n\nThis is the extreme: D/n → 1, but d = 1 is minimal.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-612-complete",
+    "proofId": "erdos-612",
+    "range": { "startLine": 217, "endLine": 220 },
+    "type": "theorem",
+    "title": "Complete Graph",
+    "content": "**Complete graph K_n:**\n- Diameter D = 1 (every pair adjacent)\n- Minimum degree d = n - 1 (maximum possible)\n\nOpposite extreme: minimal diameter, maximal degree.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-612-moore",
+    "proofId": "erdos-612",
+    "range": { "startLine": 238, "endLine": 241 },
+    "type": "theorem",
+    "title": "Moore Bound",
+    "content": "The **Moore bound** gives:\n\nn ≤ 1 + d + d(d-1) + d(d-1)² + ... + d(d-1)^{D-1}\n\nFor fixed d and D, this limits n. The degree-diameter problem asks for graphs achieving this bound.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-612-main",
+    "proofId": "erdos-612",
+    "range": { "startLine": 245, "endLine": 261 },
+    "type": "theorem",
+    "title": "Main Status",
+    "content": "**Erdős Problem #612: OPEN (PARTIALLY DISPROVED)**\n\n1. **Original conjectures:** DISPROVED for r ≥ 2\n2. **Base case r = 1:** TRUE (triangle-free: D ≤ 5n/2d)\n3. **Amended conjecture:** Partially verified (needs colorability)\n4. **Further counterexamples:** Cambie-Jooken 2025\n\nThe exact correct bound remains unknown.",
+    "significance": "critical"
+  }
+]

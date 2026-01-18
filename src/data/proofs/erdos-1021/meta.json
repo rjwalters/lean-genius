@@ -1,33 +1,121 @@
 {
   "id": "erdos-1021",
-  "title": "Erdős Problem #1021",
+  "title": "Erdős Problem #1021: Extremal Numbers for Bipartite Pair Graphs",
   "slug": "erdos-1021",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every ..., there is a constant ... such that\\[(n,G_k) \\ll n^{3/2-c_k},\\]where ... is the bipartite graph...",
+  "description": "For k ≥ 3, does there exist c_k > 0 such that ex(n, G_k) ≪ n^(3/2 - c_k)? Here G_k is the bipartite graph with k primary vertices and C(k,2) pair vertices. Even ex(n, G_k) = o(n^(3/2)) is unknown.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Simonovits",
     "sourceUrl": "https://erdosproblems.com/1021",
-    "date": "",
+    "date": "1971",
     "status": "pending",
     "proofRepoPath": "Proofs/Erdos1021Problem.lean",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "extremal-combinatorics",
+      "erdos",
+      "turan-type",
+      "bipartite-graphs"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "pending",
+    "sorries": 7,
     "erdosNumber": 1021,
     "erdosUrl": "https://erdosproblems.com/1021",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "relatedProblems": [572, 926]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1021 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for every $k\\geq 3$, there is a constant $c_k>0$ such that\\[\\mathrm{ex}(n,G_k) \\ll n^{3/2-c_k},\\]where $G_k$ is the bipartite graph between $\\{y_1,\\ldots,y_k\\}$ and $\\{z_1,\\ldots,z_{\\binom{k}{2}}\\}$, with each $z_j$ joined to a unique pair of $y_i$?\n\n\n\nA conjecture of Erd\\H{o}s and Simonovits, who proved (in unpublished work) that in such a result one must have $c_k\\to 0$ as $k\\to \\infty$. Erd\\H{o}s \\cite{Er71} could not even prove whether $\\mathrm{ex}(n,G_k)=o(n^{3/2})$.\n\nWhen $k=3$ the graph $G_3$ is the $6$-cycle $C_6$, for which Erd\\H{o}s \\cite{Er64c} and Bondy and Simonovits \\cite{BoSi74} proved $\\mathrm{ex}(n,C_6)\\ll n^{7/6}$ (see [572]).\n\nThe graph $G_k$ is the graph $H_k$ of [926] with the vertex $x$ omitted.\n\n\n\n\nReferences\n\n\n[BoSi74] Bondy, J. A. and Simonovits, M., Cycles of even length in graphs. J. Combinatorial Theory Ser. B (1974), 97-105.\n\n[Er64c] Erd\\H{o}s, P., Extremal problems in graph theory. Theory of Graphs and its Applications (Proc. Sympos. Smolenice, 1963) (1964), 29-36.\n\n[Er71] Erd\\H{o}s, P., Some unsolved problems in graph theory and combinatorial analysis. Combinatorial Mathematics and its Applications (Proc.\nConf., Oxford, 1969) (1971), 97-109.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Extremal Graph Theory**\n\nThe extremal number ex(n, H) is the maximum edges an n-vertex graph can have while avoiding H as a subgraph. This is central to Turán-type problems.\n\n**The Bipartite Pair Graph G_k**: G_k has k 'primary' vertices {y₁,...,y_k} and C(k,2) 'pair' vertices {z₁,...,z_{C(k,2)}}. Each pair vertex z_j connects to exactly one pair of primary vertices.\n\n**Known Constraint**: Erdős-Simonovits proved (unpublished) that any improvement c_k must satisfy c_k → 0 as k → ∞.\n\n**Special Case**: When k = 3, G_3 is the 6-cycle C_6. Erdős and Bondy-Simonovits proved ex(n, C_6) ≪ n^(7/6).",
+    "problemStatement": "**Problem Statement**\n\nIs it true that for every k ≥ 3, there exists a constant c_k > 0 such that\n\nex(n, G_k) ≪ n^(3/2 - c_k)?\n\n**Status**: OPEN\n\n**Weak Version**: Even ex(n, G_k) = o(n^(3/2)) is unknown for general k.\n\n**Note**: The trivial bound from Kővári-Sós-Turán is ex(n, G_k) ≪ n^(3/2).",
+    "proofStrategy": "**What Would Be Needed**\n\n1. **Beating the Trivial Bound**: The Kővári-Sós-Turán theorem gives n^(3/2). Any improvement requires new techniques.\n\n2. **Structure of G_k**: The specific pair-connectivity structure of G_k should be exploitable.\n\n3. **Dependent Random Choice**: Modern extremal techniques might help.\n\n4. **Connection to H_k**: G_k is H_k (Problem 926) minus one vertex - this relationship may be useful.\n\n**Known Approach (k=3)**: For C_6, algebraic and probabilistic methods give n^(7/6).",
+    "keyInsights": [
+      "G_k has k + C(k,2) vertices with specific bipartite structure",
+      "Trivial bound is n^(3/2) from Kővári-Sós-Turán",
+      "c_k → 0 as k → ∞ (if conjecture holds)",
+      "k = 3 case: G_3 = C_6, and ex(n, C_6) ≪ n^(7/6)",
+      "Even beating n^(3/2) by any amount is unknown"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-basics",
+      "title": "Graph Basics",
+      "summary": "edgeCount and vertexCount definitions",
+      "startLine": 26,
+      "endLine": 39
+    },
+    {
+      "id": "gk-graph",
+      "title": "The Bipartite Pair Graph G_k",
+      "summary": "pairVertexCount, Gk_vertex, Gk definition",
+      "startLine": 41,
+      "endLine": 69
+    },
+    {
+      "id": "c6-case",
+      "title": "Special Case: G_3 = C_6",
+      "summary": "cycleGraph and G3_is_C6 isomorphism",
+      "startLine": 71,
+      "endLine": 88
+    },
+    {
+      "id": "extremal",
+      "title": "Extremal Numbers",
+      "summary": "isFree and extremalNumber definitions",
+      "startLine": 90,
+      "endLine": 104
+    },
+    {
+      "id": "asymptotic",
+      "title": "Asymptotic Notation",
+      "summary": "isAsympBounded (≪) and isLittleO (o)",
+      "startLine": 106,
+      "endLine": 121
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "summary": "erdos_1021_conjecture statement",
+      "startLine": 123,
+      "endLine": 137
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "summary": "exponentVanishes and weak_conjecture",
+      "startLine": 139,
+      "endLine": 169
+    },
+    {
+      "id": "c6-bound",
+      "title": "The C_6 Case (k = 3)",
+      "summary": "exC6, C6_extremal_bound, k3_case_solved",
+      "startLine": 171,
+      "endLine": 190
+    },
+    {
+      "id": "connection",
+      "title": "Connection to Problem 926",
+      "summary": "Hk_vertexCount and Gk_from_Hk",
+      "startLine": 192,
+      "endLine": 205
+    },
+    {
+      "id": "trivial-bounds",
+      "title": "Trivial Bounds",
+      "summary": "Kővári-Sós-Turán and trivial_bound",
+      "startLine": 207,
+      "endLine": 243
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #1021 asks whether extremal numbers for the bipartite pair graphs G_k satisfy ex(n, G_k) ≪ n^(3/2 - c_k) for some c_k > 0. Even the weaker statement ex(n, G_k) = o(n^(3/2)) is unknown. The k = 3 case (C_6) is solved with exponent 7/6.",
+    "implications": "**Theoretical Significance**\n\n1. **Extremal Graph Theory**: Fundamental question about Turán-type bounds\n\n2. **Bipartite Graphs**: Specific structure of G_k challenges current techniques\n\n3. **Connections**: Related to Problem 572 (C_6) and Problem 926 (H_k)\n\n4. **Limit Behavior**: c_k → 0 shows bounds degrade for larger k",
+    "openQuestions": [
+      "Does ex(n, G_k) = o(n^(3/2)) hold for any k ≥ 4?",
+      "What is the optimal c_k for small values of k?",
+      "Can dependent random choice improve bounds?",
+      "How does the H_k connection help?",
+      "Are there algebraic constructions achieving the trivial bound?"
+    ]
   }
 }

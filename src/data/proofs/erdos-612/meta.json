@@ -1,33 +1,148 @@
 {
   "id": "erdos-612",
-  "title": "Erdős Problem #612",
+  "title": "Erdős Problem #612: Diameter Bounds for Clique-Free Graphs",
   "slug": "erdos-612",
-  "description": "Let G\" role=\"presentation\" style=\"position: relative;\">GGG be a connected graph with n\" role=\"presentation\" style=\"position: relative;\">nnn vertices, minimum degree d\" role=\"presentation\" style=\"po...",
+  "description": "For connected K_r-free graphs: what is the relationship between diameter D, minimum degree d, and vertex count n? Original conjecture D ≤ α·n/d + O(1) disproved for r ≥ 4; base case (triangle-free) remains valid.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Pach-Pollack-Tuza (1989), counterexamples by Czabarka-Singgih-Székely (2021)",
     "sourceUrl": "https://erdosproblems.com/612",
-    "date": "",
-    "status": "pending",
+    "date": "1989",
+    "status": "formalized",
     "proofRepoPath": "Proofs/Erdos612Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "diameter",
+      "clique-free",
+      "degree-bounds",
+      "counterexample",
+      "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "conjecture",
+    "sorries": 15,
     "erdosNumber": 612,
     "erdosUrl": "https://erdosproblems.com/612",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple undirected graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Connected",
+        "description": "Graph connectivity",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Connectivity"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Asymptotic analysis",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of diameter and minimum degree",
+      "Definition of K_r-free (clique-free) graphs",
+      "Statement of original conjectures 1 and 2",
+      "Formalization of counterexample existence (Czabarka-Singgih-Székely)",
+      "Statement of amended conjecture: D ≤ (3-2/k)·n/d",
+      "Triangle-free base case validation",
+      "Special cases: path, cycle, complete, bipartite graphs"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #612 from erdosproblems.com.",
-    "problemStatement": "Let G\" role=\"presentation\" style=\"position: relative;\">GGG be a connected graph with n\" role=\"presentation\" style=\"position: relative;\">nnn vertices, minimum degree d\" role=\"presentation\" style=\"position: relative;\">ddd, and diameter D\" role=\"presentation\" style=\"position: relative;\">DDD. Show if that G\" role=\"presentation\" style=\"position: relative;\">GGG contains no K2r\" role=\"presentation\" style=\"position: relative;\">K2rK2rK_{2r} and (r&#x2212;1)(3r+2)&#x2223;d\" role=\"presentation\" style=\"position: relative;\">(r−1)(3r+2)∣d(r−1)(3r+2)∣d(r-1)(3r+2)\\mid d thenD&#x2264;2(r&#x2212;1)(3r+2)2r2&#x2212;1nd+O(1),\" role=\"presentation\" style=\"text-align: center; position: relative;\">D≤2(r−1)(3r+2)2r2−1nd+O(1),D≤2(r−1)(3r+2)2r2−1nd+O(1),",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "Erdős, Pach, Pollack, and Tuza (1989) proved that any connected graph on n vertices with minimum degree d has diameter D ≤ 3n/(d+1) + O(1). They conjectured that forbidding cliques would improve this bound.\n\n**Original Conjectures:**\n1. K_{2r}-free with (r-1)(3r+2)|d: D ≤ (2(r-1)(3r+2))/(2r²-1) · n/d\n2. K_{2r+1}-free with (3r-1)|d: D ≤ (3r-1)/r · n/d\n\n**Counterexamples (2021):** Czabarka, Singgih, and Székely disproved both for r ≥ 2.\n\n**Amended Conjecture:** For K_{k+1}-free: D ≤ (3-2/k) · n/d + O(1)",
+    "problemStatement": "**Setup:** G is connected, n vertices, minimum degree d, diameter D, K_r-free.\n\n**Original Question:** Does D ≤ α(r) · n/d + O(1) for specific α(r) coefficients?\n\n**Status:**\n- **r = 1 (triangle-free):** TRUE — D ≤ 5n/(2d) + O(1)\n- **r ≥ 2:** DISPROVED — counterexamples exist with larger diameter\n\n**Amended Conjecture:** D ≤ (3 - 2/k) · n/d for K_{k+1}-free (partially verified)",
+    "proofStrategy": "The formalization:\n\n1. Defines `diameter`, `minDegree`, and `IsKFree`\n2. States `OriginalConjecture1` and `OriginalConjecture2`\n3. Defines coefficient functions `alpha_2r` and `alpha_2r1`\n4. States `counterexample_exists` for r ≥ 2\n5. Proves `original_conjecture1_false` for r ≥ 2\n6. States `triangle_free_diameter` for base case\n7. Defines `AmendedConjecture` with coefficient (3 - 2/k)\n8. Shows special cases and the Moore bound connection",
+    "keyInsights": [
+      "**Basic bound:** D ≤ 3n/(d+1) holds for all connected graphs.",
+      "**Clique-free intuition:** Forbidding cliques should allow shorter paths, improving the bound.",
+      "**Counterexamples:** Czabarka-Singgih-Székely showed graphs with D = (6r-5)n/((2r-1)d+2r-3).",
+      "**Base case valid:** Triangle-free (K_3-free) satisfies D ≤ 5n/(2d) — coefficient 2.5 vs general 3.",
+      "**Amended (3-2/k):** As k → ∞, coefficient → 3, matching the general bound."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "graph-properties",
+      "title": "Graph Properties",
+      "summary": "Diameter, minimum degree, K_r-free",
+      "startLine": 34,
+      "endLine": 49
+    },
+    {
+      "id": "basic-bound",
+      "title": "The Basic Bound",
+      "summary": "D ≤ 3n/(d+1) + O(1) for all graphs",
+      "startLine": 51,
+      "endLine": 60
+    },
+    {
+      "id": "original-conjecture1",
+      "title": "Original Conjecture 1",
+      "summary": "K_{2r}-free diameter bound",
+      "startLine": 62,
+      "endLine": 81
+    },
+    {
+      "id": "original-conjecture2",
+      "title": "Original Conjecture 2",
+      "summary": "K_{2r+1}-free diameter bound",
+      "startLine": 83,
+      "endLine": 102
+    },
+    {
+      "id": "counterexamples",
+      "title": "Counterexamples",
+      "summary": "Czabarka-Singgih-Székely (2021)",
+      "startLine": 104,
+      "endLine": 123
+    },
+    {
+      "id": "base-case",
+      "title": "Base Case: Triangle-Free",
+      "summary": "r = 1 remains valid",
+      "startLine": 125,
+      "endLine": 139
+    },
+    {
+      "id": "amended-conjecture",
+      "title": "Amended Conjecture",
+      "summary": "D ≤ (3-2/k)·n/d for K_{k+1}-free",
+      "startLine": 141,
+      "endLine": 171
+    },
+    {
+      "id": "verified-cases",
+      "title": "Verified Cases",
+      "summary": "k = 3,4 under colorability",
+      "startLine": 173,
+      "endLine": 203
+    },
+    {
+      "id": "special-graphs",
+      "title": "Special Graph Classes",
+      "summary": "Path, cycle, complete graphs",
+      "startLine": 205,
+      "endLine": 241
+    },
+    {
+      "id": "main-status",
+      "title": "Main Problem Status",
+      "summary": "Summary of known results",
+      "startLine": 243,
+      "endLine": 268
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #612 has a complex status: the original conjectures are DISPROVED for r ≥ 2 by Czabarka-Singgih-Székely (2021), but the base case (triangle-free, r = 1) remains valid. The amended conjecture D ≤ (3-2/k)·n/d is partially verified but has its own counterexamples from Cambie-Jooken (2025).",
+    "implications": "This problem connects to:\n\n1. **Diameter-Degree Trade-off:** Fundamental relationship in graph theory\n2. **Extremal Graph Theory:** Clique-free graph structure\n3. **Moore Bound:** Connection to degree-diameter problem\n4. **Colorability:** Verified cases require chromatic assumptions\n5. **Graph Constructions:** Counterexample techniques",
+    "openQuestions": [
+      "What is the correct coefficient for K_{k+1}-free graphs?",
+      "Is the amended conjecture (3-2/k) true without colorability assumptions?",
+      "What is the exact extremal construction for each k?",
+      "How does the diameter bound depend on graph structure beyond clique number?",
+      "Can the counterexample technique be generalized?"
+    ]
   }
 }

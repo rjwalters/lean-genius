@@ -1,1 +1,173 @@
-[]
+[
+  {
+    "id": "ann-898-header",
+    "proofId": "erdos-898",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős-Mordell Inequality** (1935/1937):\n\nFor any interior point P of triangle ABC:\n\nPA + PB + PC ≥ 2(PX + PY + PZ)\n\nwhere X, Y, Z are feet of perpendiculars from P to the sides.\n\nProved by Mordell and Barrow in 1937. One of the most elegant results in plane geometry.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-898-point",
+    "proofId": "erdos-898",
+    "range": { "startLine": 37, "endLine": 37 },
+    "type": "definition",
+    "title": "Point in ℝ²",
+    "content": "A point in the Euclidean plane, represented as `EuclideanSpace ℝ (Fin 2)`.\n\nThis is Mathlib's standard type for the Euclidean plane with norm and inner product.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-898-dist",
+    "proofId": "erdos-898",
+    "range": { "startLine": 40, "endLine": 40 },
+    "type": "definition",
+    "title": "Euclidean Distance",
+    "content": "dist(P, Q) = ‖P - Q‖, the standard Euclidean distance.\n\nThis is the metric used throughout the problem.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-898-triangle",
+    "proofId": "erdos-898",
+    "range": { "startLine": 43, "endLine": 44 },
+    "type": "definition",
+    "title": "IsTriangle",
+    "content": "Three points form a **non-degenerate triangle** if they are not collinear.\n\nThis ensures ABC spans a 2-dimensional region with positive area.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-898-interior",
+    "proofId": "erdos-898",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "definition",
+    "title": "Interior Point",
+    "content": "P is an **interior point** of triangle ABC if it lies strictly inside the convex hull.\n\nThe inequality may fail for points on the boundary or exterior.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-898-foot",
+    "proofId": "erdos-898",
+    "range": { "startLine": 58, "endLine": 59 },
+    "type": "definition",
+    "title": "Perpendicular Foot",
+    "content": "The **perpendicular foot** from P to line AB is the point X on AB closest to P.\n\nEquivalently, X is the orthogonal projection of P onto line AB.\n\nPX ⊥ AB at X.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-898-distline",
+    "proofId": "erdos-898",
+    "range": { "startLine": 62, "endLine": 63 },
+    "type": "definition",
+    "title": "Distance to Line",
+    "content": "The **distance from P to line AB** is dist(P, X) where X is the perpendicular foot.\n\nThis is the perpendicular distance, the shortest path from P to the line.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-898-feet",
+    "proofId": "erdos-898",
+    "range": { "startLine": 66, "endLine": 75 },
+    "type": "definition",
+    "title": "Perpendicular Feet Structure",
+    "content": "The three perpendicular feet from P to triangle ABC:\n\n- X = foot on side BC\n- Y = foot on side CA\n- Z = foot on side AB\n\nThese form the **pedal triangle** XYZ.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-898-vertexsum",
+    "proofId": "erdos-898",
+    "range": { "startLine": 84, "endLine": 85 },
+    "type": "definition",
+    "title": "Vertex Distance Sum",
+    "content": "**PA + PB + PC**: Sum of distances from P to the three vertices.\n\nThis is the left-hand side of the Erdős-Mordell inequality.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-898-sidesum",
+    "proofId": "erdos-898",
+    "range": { "startLine": 88, "endLine": 89 },
+    "type": "definition",
+    "title": "Side Distance Sum",
+    "content": "**PX + PY + PZ**: Sum of perpendicular distances from P to the three sides.\n\nThis is half the right-hand side of the inequality.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-898-inequality",
+    "proofId": "erdos-898",
+    "range": { "startLine": 92, "endLine": 93 },
+    "type": "definition",
+    "title": "The Erdős-Mordell Inequality",
+    "content": "**PA + PB + PC ≥ 2(PX + PY + PZ)**\n\nVertex distances are at least twice side distances.\n\nThe constant 2 is optimal and cannot be improved.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-898-theorem",
+    "proofId": "erdos-898",
+    "range": { "startLine": 98, "endLine": 100 },
+    "type": "axiom",
+    "title": "The Erdős-Mordell Theorem",
+    "content": "**Theorem** (Mordell, 1937): The Erdős-Mordell inequality holds for all interior points P of any triangle ABC.\n\nAxiomatized here; multiple elementary proofs exist.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-898-equilateral",
+    "proofId": "erdos-898",
+    "range": { "startLine": 109, "endLine": 110 },
+    "type": "definition",
+    "title": "Equilateral Triangle",
+    "content": "A triangle is **equilateral** if all three sides have equal length:\n\n|AB| = |BC| = |CA|",
+    "significance": "key"
+  },
+  {
+    "id": "ann-898-centroid",
+    "proofId": "erdos-898",
+    "range": { "startLine": 113, "endLine": 114 },
+    "type": "definition",
+    "title": "Centroid",
+    "content": "The **centroid** is the center of mass: G = (A + B + C)/3.\n\nFor equilateral triangles, centroid = incenter = circumcenter.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-898-equality",
+    "proofId": "erdos-898",
+    "range": { "startLine": 125, "endLine": 128 },
+    "type": "axiom",
+    "title": "Equality Condition",
+    "content": "**Equality** PA + PB + PC = 2(PX + PY + PZ) holds **if and only if**:\n\n1. ABC is equilateral, AND\n2. P is the center (centroid/incenter/circumcenter)\n\nFor any other configuration, the inequality is strict.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-898-mordell",
+    "proofId": "erdos-898",
+    "range": { "startLine": 162, "endLine": 163 },
+    "type": "axiom",
+    "title": "Mordell's Proof",
+    "content": "**Mordell (1937)**: First proof using trigonometric identities.\n\nExpresses distances in terms of angles and applies AM-GM.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-898-barrow",
+    "proofId": "erdos-898",
+    "range": { "startLine": 166, "endLine": 167 },
+    "type": "axiom",
+    "title": "Barrow's Proof",
+    "content": "**Barrow (1937)**: Independent, more elementary proof.\n\nPublished in the American Mathematical Monthly.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-898-viviani",
+    "proofId": "erdos-898",
+    "range": { "startLine": 210, "endLine": 212 },
+    "type": "axiom",
+    "title": "Viviani's Theorem",
+    "content": "**Viviani's Theorem**: In an equilateral triangle, the sum of distances from any interior point to the sides equals the altitude.\n\nPX + PY + PZ = h (constant!)\n\nThis is a beautiful invariant for equilateral triangles.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-898-main",
+    "proofId": "erdos-898",
+    "range": { "startLine": 237, "endLine": 240 },
+    "type": "theorem",
+    "title": "Main Result",
+    "content": "**Erdős Problem #898: SOLVED**\n\nThe Erdős-Mordell inequality holds:\nPA + PB + PC ≥ 2(PX + PY + PZ)\n\nProved by Mordell in 1937, now a classic of geometric inequalities.",
+    "significance": "critical"
+  }
+]
