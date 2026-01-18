@@ -59,32 +59,39 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Imports, problem statement, historical context, and references."
+    },
+    {
       "id": "definitions",
       "title": "Definitions",
-      "startLine": 50,
-      "endLine": 71,
-      "summary": "D-balanced property and min/max degree definitions."
+      "startLine": 51,
+      "endLine": 72,
+      "summary": "D-balanced property, min/max degree definitions."
     },
     {
       "id": "properties",
       "title": "Basic Properties",
-      "startLine": 73,
-      "endLine": 87,
+      "startLine": 74,
+      "endLine": 89,
       "summary": "1-balanced graphs are regular."
     },
     {
       "id": "original-question",
       "title": "The Original Question",
-      "startLine": 89,
-      "endLine": 100,
+      "startLine": 90,
+      "endLine": 101,
       "summary": "Discussion of ambiguities in Erdős-Simonovits formulation."
     },
     {
       "id": "resolution",
       "title": "The Resolution",
-      "startLine": 102,
-      "endLine": 154,
-      "summary": "Jiang-Longbrake's Θ(n^α) answer and the main theorem."
+      "startLine": 103,
+      "endLine": 156,
+      "summary": "Jiang-Longbrake's Θ(n^α) answer, upper/lower bounds, and main theorem."
     }
   ],
   "conclusion": {

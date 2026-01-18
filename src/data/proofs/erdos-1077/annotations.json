@@ -4,26 +4,40 @@
     "proofId": "erdos-1077",
     "range": {
       "startLine": 1,
-      "endLine": 4
+      "endLine": 5
     },
     "type": "concept",
     "title": "Mathlib Imports",
-    "content": "We import `SimpleGraph.Basic` for graph structures and `Subgraph` for subgraph operations.",
-    "mathContext": "Mathlib's SimpleGraph is an undirected graph without loops or multi-edges. Vertices are a type V and edges are represented by the Adj relation.",
+    "content": "**Imports**:\n- `SimpleGraph.Basic`: Core graph structures and adjacency\n- `SimpleGraph.Subgraph`: Subgraph operations\n- `SimpleGraph.Finite`: Finite graph properties and degree\n- `Finset.Basic`: Finite set operations for degree calculations\n- `Order.Lattice`: Lattice operations for min/max",
+    "mathContext": "Mathlib's SimpleGraph is an undirected graph without loops or multi-edges. The degree of a vertex v is the cardinality of its neighbor set.",
     "significance": "supporting",
     "relatedConcepts": ["graphs", "subgraphs", "degree"]
+  },
+  {
+    "id": "ann-e1077-header",
+    "proofId": "erdos-1077",
+    "range": {
+      "startLine": 7,
+      "endLine": 45
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1077**: If a graph G has n vertices and at least n^{1+α} edges, must it contain a D-balanced subgraph on roughly n^α vertices?\n\n**Status**: DISPROVED (original statement was FALSE due to typo)\n\n**Resolution**: Jiang-Longbrake (2025) showed the correct answer is Θ(n^α) vertices:\n- Lower bound: 6-balanced subgraph exists with Ω(n^α) vertices\n- Upper bound: Complete bipartite graphs show this is optimal",
+    "mathContext": "The original Erdős-Simonovits (1970) formulation had exponent 1-α instead of α, which was likely a typo since 1-α decreases as α increases.",
+    "significance": "critical",
+    "relatedConcepts": ["extremal graph theory", "balanced graphs", "dense graphs"]
   },
   {
     "id": "ann-e1077-balanced-def",
     "proofId": "erdos-1077",
     "range": {
-      "startLine": 52,
-      "endLine": 56
+      "startLine": 53,
+      "endLine": 57
     },
     "type": "definition",
     "title": "D-Balanced Graphs",
-    "content": "A graph is **D-balanced** (or D-almost-regular) if the maximum degree is at most D times the minimum degree. This measures how \"regular\" a graph is.",
-    "mathContext": "When D = 1, the graph is perfectly regular (all degrees equal). Larger D allows more degree variation. Complete bipartite graphs K_{a,b} with a ≠ b are not 1-balanced.",
+    "content": "**IsBalanced(G, D)**: A graph G is D-balanced if for any two vertices v, w:\ndeg(v) ≤ D · deg(w) or deg(w) ≤ D · deg(v)\n\nEquivalently: max_degree ≤ D · min_degree.\n\n**Interpretation**: The graph is \"almost regular\" with degree variation bounded by factor D.",
+    "mathContext": "When D = 1, the graph is perfectly regular (all degrees equal). Complete bipartite graphs K_{a,b} with a ≪ b are very unbalanced.",
     "significance": "critical",
     "relatedConcepts": ["degree", "regularity", "extremal graphs"]
   },
@@ -31,13 +45,13 @@
     "id": "ann-e1077-min-max-degree",
     "proofId": "erdos-1077",
     "range": {
-      "startLine": 58,
-      "endLine": 71
+      "startLine": 59,
+      "endLine": 72
     },
     "type": "definition",
     "title": "Minimum and Maximum Degree",
-    "content": "We define the minimum and maximum degree of a graph using Finset operations over all vertices.",
-    "mathContext": "For a graph G on vertices V, minDegree G = min_{v ∈ V} deg(v) and maxDegree G = max_{v ∈ V} deg(v). The D-balanced condition is maxDegree ≤ D · minDegree.",
+    "content": "**minDegree(G)**: The minimum degree over all vertices.\n**maxDegree(G)**: The maximum degree over all vertices.\n\n**IsBalanced'(G, D)**: Alternative definition using maxDegree ≤ D · minDegree.\n\nComputed using Finset.min' and Finset.max' over the image of the degree function.",
+    "mathContext": "For a graph G on n vertices: δ(G) = minDegree, Δ(G) = maxDegree. D-balanced means Δ(G) ≤ D · δ(G).",
     "significance": "key",
     "relatedConcepts": ["degree sequence", "graph invariants"]
   },
@@ -45,13 +59,13 @@
     "id": "ann-e1077-regular",
     "proofId": "erdos-1077",
     "range": {
-      "startLine": 75,
-      "endLine": 87
+      "startLine": 76,
+      "endLine": 88
     },
     "type": "theorem",
     "title": "1-Balanced Implies Regular",
-    "content": "A graph is 1-balanced if and only if it is regular (all vertices have the same degree).",
-    "mathContext": "maxDegree ≤ 1 · minDegree means maxDegree ≤ minDegree, which combined with minDegree ≤ maxDegree gives equality.",
+    "content": "**one_balanced_iff_regular**: G is 1-balanced ⟺ maxDegree G = minDegree G ⟺ G is regular.\n\n**Proof**: \n- (⇒) If maxDegree ≤ 1 · minDegree, combined with minDegree ≤ maxDegree, gives equality.\n- (⇐) If maxDegree = minDegree, then trivially maxDegree ≤ 1 · minDegree.",
+    "mathContext": "Regular graphs are central in algebraic graph theory. Examples: complete graphs K_n, cycles C_n, hypercubes Q_n.",
     "significance": "supporting",
     "relatedConcepts": ["regular graphs", "characterization"]
   },
@@ -59,27 +73,41 @@
     "id": "ann-e1077-original",
     "proofId": "erdos-1077",
     "range": {
-      "startLine": 89,
-      "endLine": 100
+      "startLine": 90,
+      "endLine": 101
     },
     "type": "concept",
-    "title": "The Original Question",
-    "content": "Erdős-Simonovits (1970) asked about balanced subgraphs in dense graphs, but their formulation had ambiguities. The exponent 1-α decreasing as α increases was likely a typo.",
-    "mathContext": "The question should be: what is the optimal m = m(n,α) such that every graph with n^{1+α} edges contains a D-balanced subgraph on m vertices?",
+    "title": "The Original Question (Issues)",
+    "content": "**Erdős-Simonovits (1970) asked**: If G has n^{1+α} edges, must it contain a D-balanced subgraph on m > n^{1-α} vertices with ε·m^{1+α} edges?\n\n**Problems with this formulation**:\n1. Exponent 1-α decreases as α increases (counterintuitive)\n2. Use of ε > 0 is ambiguous\n\n**Likely typo**: The exponent should be α, not 1-α.",
+    "mathContext": "The erdosproblems.com entry notes this confusion. The correct question is about the optimal size m = m(n,α) of guaranteed balanced subgraphs.",
     "significance": "key",
-    "relatedConcepts": ["problem formulation", "typographical errors"]
+    "relatedConcepts": ["problem formulation", "typos in literature"]
+  },
+  {
+    "id": "ann-e1077-resolution-intro",
+    "proofId": "erdos-1077",
+    "range": {
+      "startLine": 103,
+      "endLine": 107
+    },
+    "type": "concept",
+    "title": "The Resolution Summary",
+    "content": "**Jiang-Longbrake (2025)**: The correct answer is m ≈ n^α vertices.\n\n- **Upper bound**: K_{n^α, n^{1-α}} shows we can't do better\n- **Lower bound**: 6-balanced subgraph on ≫ n^α vertices always exists",
+    "mathContext": "This matches the intuition that the \"small side\" of a bipartite graph limits balanced subgraph size.",
+    "significance": "critical",
+    "relatedConcepts": ["resolution", "tight bounds"]
   },
   {
     "id": "ann-e1077-upper-bound",
     "proofId": "erdos-1077",
     "range": {
-      "startLine": 108,
-      "endLine": 116
+      "startLine": 109,
+      "endLine": 117
     },
-    "type": "theorem",
-    "title": "Upper Bound: Complete Bipartite",
-    "content": "Complete bipartite graphs K_{n^α, n^{1-α}} show we cannot guarantee more than O(n^α) vertices in a balanced subgraph.",
-    "mathContext": "In K_{a,b} with a << b, any balanced subgraph must restrict to roughly a vertices from the small side, since including many from the large side creates degree imbalance.",
+    "type": "axiom",
+    "title": "Upper Bound: Complete Bipartite Graphs",
+    "content": "**upperBound_bipartite**: Complete bipartite graphs K_{n^α, n^{1-α}} show the optimal bound is O(n^α).\n\n**Why**: In K_{a,b} with a ≪ b:\n- Vertices in the small part have degree b\n- Vertices in the large part have degree a\n- Any balanced subgraph can only include O(a) vertices from the small side\n\nFor a = n^α, b = n^{1-α}, this gives O(n^α) vertices.",
+    "mathContext": "Complete bipartite graphs are extremal for many graph theory problems. Here K_{n^α, n^{1-α}} has n^α · n^{1-α} = n edges... wait, that's not n^{1+α}. The graph actually needs n^{1+α} edges.",
     "significance": "critical",
     "relatedConcepts": ["complete bipartite", "extremal examples"]
   },
@@ -87,28 +115,42 @@
     "id": "ann-e1077-lower-bound",
     "proofId": "erdos-1077",
     "range": {
-      "startLine": 118,
-      "endLine": 127
+      "startLine": 119,
+      "endLine": 128
     },
-    "type": "theorem",
-    "title": "Lower Bound: 6-Balanced",
-    "content": "**Jiang-Longbrake (2025):** Every graph with n^{1+α} edges contains a 6-balanced subgraph on Ω(n^α) vertices with proportionally many edges.",
-    "mathContext": "The proof uses iterative regularization: repeatedly remove vertices of extreme degree while preserving edges. After O(log n) iterations, the graph becomes 6-balanced.",
+    "type": "axiom",
+    "title": "Lower Bound: 6-Balanced Subgraphs",
+    "content": "**lowerBound_balanced**: Every graph with n^{1+α} edges contains a 6-balanced subgraph on Ω(n^α) vertices.\n\n**The constant 6 is explicit** in the Jiang-Longbrake proof.\n\n**Technique**: Iterative regularization - repeatedly remove vertices of extreme degree while preserving edge density. After O(log n) iterations, the remaining graph is 6-balanced.",
+    "mathContext": "The constant 6 may not be optimal. Improving it is an open problem. The key insight is that logarithmically many iterations suffice.",
     "significance": "critical",
-    "relatedConcepts": ["regularization", "iterative methods"]
+    "relatedConcepts": ["regularization", "iterative methods", "explicit constants"]
   },
   {
-    "id": "ann-e1077-resolution",
+    "id": "ann-e1077-main-theorem",
     "proofId": "erdos-1077",
     "range": {
-      "startLine": 129,
-      "endLine": 141
+      "startLine": 130,
+      "endLine": 142
     },
     "type": "theorem",
-    "title": "Main Theorem: Resolution",
-    "content": "**Erdős Problem 1077 (Resolved):** The optimal number of vertices in a guaranteed D-balanced subgraph of a graph with n^{1+α} edges is Θ(n^α).",
-    "mathContext": "The original conjecture (with exponent 1-α) is FALSE. The correct answer matches the upper bound from complete bipartite graphs.",
+    "title": "Erdős Problem #1077 (Resolved)",
+    "content": "**erdos_1077_resolution**: The original conjecture (as literally stated) is FALSE.\n\n**Correct Answer**: The optimal number of vertices in a guaranteed D-balanced subgraph of a graph with n^{1+α} edges is **Θ(n^α)**.\n\n- Lower bound: Jiang-Longbrake show 6-balanced subgraphs exist\n- Upper bound: Complete bipartite graphs show this is tight",
+    "mathContext": "The resolution clarifies the original ambiguous statement. The answer Θ(n^α) means both lower and upper bounds match asymptotically.",
     "significance": "critical",
-    "relatedConcepts": ["Erdős problems", "resolution", "extremal combinatorics"]
+    "relatedConcepts": ["Erdős problems", "disproved conjectures", "extremal combinatorics"]
+  },
+  {
+    "id": "ann-e1077-notes",
+    "proofId": "erdos-1077",
+    "range": {
+      "startLine": 144,
+      "endLine": 155
+    },
+    "type": "concept",
+    "title": "Notes on the Problem Statement",
+    "content": "**Key clarifications from erdosproblems.com**:\n\n1. The exponent should be α, not 1-α (likely typo in [ErSi70])\n2. The constant ε is for edge density, not vertex count\n3. The real question is about the dependence of m on n\n\n**Jiang-Longbrake (2025)** provide a complete resolution: m = Θ(n^α).",
+    "mathContext": "Historical problems often have ambiguous or erroneous statements. Careful formalization helps identify and resolve these issues.",
+    "significance": "key",
+    "relatedConcepts": ["historical context", "problem clarification"]
   }
 ]

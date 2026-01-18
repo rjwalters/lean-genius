@@ -1,4 +1,8 @@
-import Mathlib
+import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib.Combinatorics.SimpleGraph.Subgraph
+import Mathlib.Combinatorics.SimpleGraph.Finite
+import Mathlib.Data.Finset.Basic
+import Mathlib.Order.Lattice
 
 /-!
 # Erdős Problem 1077: Balanced Subgraphs in Dense Graphs
