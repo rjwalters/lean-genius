@@ -2956,17 +2956,21 @@
   },
   {
     "id": "erdos-144",
-    "title": "Erdős Problem #144",
+    "title": "Erdős Problem #144: Propinquity of Divisors",
     "slug": "erdos-144",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe density of integers which have two divisors ... such that ... exists and is equal to ....\n\n\n\nIn  asks the stronger versio...",
-    "status": "pending",
+    "description": "The density of integers with two divisors d₁ < d₂ < 2d₁ exists and equals 1. SOLVED by Maier-Tenenbaum (1984), who proved the stronger version for any c > 1. The threshold β* = log 3 - 1 separates density 1 from density 0.",
+    "status": "complete",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisors",
+      "density",
+      "probabilistic-number-theory"
     ],
     "erdosNumber": 144,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 18
   },
   {
     "id": "erdos-145",
