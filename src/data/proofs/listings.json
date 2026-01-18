@@ -747,17 +747,21 @@
   },
   {
     "id": "erdos-1001",
-    "title": "Erdős Problem #1001",
+    "title": "Erdős #1001: Diophantine Approximation Density",
     "slug": "erdos-1001",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be the measure of the set of those ... such that\\[\\left\\lvert \\alpha-{y}\\right\\rvert< {y^2}\\]for some ... and .... Do...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Let S(N,A,c) measure α ∈ (0,1) with |α - x/y| < A/y² for some N ≤ y ≤ cN, gcd(x,y)=1. Does lim S(N,A,c) exist? YES (Kesten-Sós). Formula: f(A,c) = 12A log(c)/π² in EST regime.",
+    "status": "formalized",
+    "badge": "wip",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "diophantine-approximation",
+      "measure-theory",
+      "farey-fractions"
     ],
     "erdosNumber": 1001,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 5,
+    "annotationCount": 15
   },
   {
     "id": "erdos-1002",
@@ -1410,17 +1414,24 @@
   },
   {
     "id": "erdos-1047",
-    "title": "Erdős Problem #1047",
+    "title": "Erdős Problem #1047: Convexity of Polynomial Lemniscates",
     "slug": "erdos-1047",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be a monic polynomial with ... distinct roots, and let ... be a constant small enough such that ... has ... distinct ...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "Must the connected components of {z : |f(z)| ≤ c} be convex for small c? No! Grunsky's conjecture was disproved by Pommerenke (1961) and Goodman (1966) with explicit counterexamples.",
+    "status": "wip",
+    "badge": "disproved",
     "tags": [
-      "erdos"
+      "erdos",
+      "complex-analysis",
+      "polynomials",
+      "lemniscates",
+      "convexity",
+      "counterexample",
+      "potential-theory"
     ],
     "erdosNumber": 1047,
-    "sorries": 0,
-    "annotationCount": 0
+    "mathlibCount": 5,
+    "sorries": 18,
+    "annotationCount": 18
   },
   {
     "id": "erdos-1048",
@@ -6766,17 +6777,21 @@
   },
   {
     "id": "erdos-45",
-    "title": "Erdős Problem #45",
+    "title": "Erdős #45: Monochromatic Egyptian Fractions",
     "slug": "erdos-45",
-    "description": "Let .... Is there an integer ... such that, if ... (simply taking ... to be the lowest common multiple of some interval ...). Sawhney has observed that there is also a doubly exponential lower boun...",
-    "status": "pending",
+    "description": "For k ≥ 2, does there exist n_k such that any k-coloring of proper divisors D of n_k contains a monochromatic D' with Σ 1/d = 1? YES (Croot). Bounds: n_k ≈ exp(C^k) doubly exponential (Sawhney).",
+    "status": "formalized",
     "badge": "wip",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "ramsey-theory",
+      "egyptian-fractions"
     ],
     "erdosNumber": 45,
     "sorries": 1,
-    "annotationCount": 0
+    "annotationCount": 11
   },
   {
     "id": "erdos-452",
@@ -10024,8 +10039,8 @@
     "title": "Erdős Problem #73: Almost Bipartite Graphs",
     "slug": "erdos-73",
     "description": "If every subgraph of G has an independent set covering at least half its vertices (minus k), must G be 'almost bipartite' - the union of a bipartite graph and O(1) extra vertices? Reed's 'Mangoes and Blueberries' paper (1999) proves yes.",
-    "status": "pending",
-    "badge": "pending",
+    "status": "formalized",
+    "badge": "wip",
     "tags": [
       "graph-theory",
       "independent-sets",
@@ -10034,8 +10049,8 @@
       "structural-graph-theory"
     ],
     "erdosNumber": 73,
-    "sorries": 1,
-    "annotationCount": 0
+    "sorries": 5,
+    "annotationCount": 15
   },
   {
     "id": "erdos-732",
@@ -10773,16 +10788,20 @@
   },
   {
     "id": "erdos-79",
-    "title": "Erdős Problem #79",
+    "title": "Erdős Problem #79: Minimally Non-Ramsey-Size-Linear Graphs",
     "slug": "erdos-79",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe say ... is Ramsey size linear if ... for all graphs ... with ... edges and no isolated vertices.\n\nAre there infinitely man...",
+    "description": "A graph is 'Ramsey size linear' if R(G,H) grows linearly in the edges of H. Are there infinitely many graphs that fail this property minimally - not Ramsey size linear, but all subgraphs are? Wigderson (2024) proved yes, though only K₄ is explicitly known.",
     "status": "pending",
-    "badge": "mathlib",
+    "badge": "pending",
     "tags": [
-      "erdos"
+      "graph-theory",
+      "ramsey-theory",
+      "erdos",
+      "ramsey-numbers",
+      "extremal-graphs"
     ],
     "erdosNumber": 79,
-    "sorries": 0,
+    "sorries": 1,
     "annotationCount": 0
   },
   {
@@ -12097,16 +12116,22 @@
   },
   {
     "id": "erdos-895",
-    "title": "Erdős Problem #895",
+    "title": "Erdős Problem #895: Independent Additive Triples",
     "slug": "erdos-895",
-    "description": "Is it true that, for all sufficiently large n\" role=\"presentation\" style=\"position: relative;\">nnn, if G\" role=\"presentation\" style=\"position: relative;\">GGG is a triangle-free graph on {1,&#x2026;...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "In a triangle-free graph on {1,...,n}, must there exist independent vertices a, b, a+b? Yes, for n ≥ 18! Solved by Ben Barber via SAT verification.",
+    "status": "formalized",
+    "badge": "verified",
     "tags": [
-      "erdos"
+      "erdos",
+      "graph-theory",
+      "additive-combinatorics",
+      "ramsey-theory",
+      "schur-numbers",
+      "computational"
     ],
     "erdosNumber": 895,
-    "sorries": 0,
+    "mathlibCount": 3,
+    "sorries": 14,
     "annotationCount": 0
   },
   {

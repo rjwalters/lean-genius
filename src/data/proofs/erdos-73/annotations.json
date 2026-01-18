@@ -1,1 +1,137 @@
-[]
+[
+  {
+    "id": "ann-73-header",
+    "proofId": "erdos-73",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdős Problem #73 asks: If every subgraph of G on n vertices has an independent set of size ≥ (n-k)/2, must G be 'almost bipartite'? Reed's 1999 paper 'Mangoes and Blueberries' proves YES - such graphs decompose into a bipartite core plus O_k(1) exceptional vertices.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-73-independent",
+    "proofId": "erdos-73",
+    "range": { "startLine": 41, "endLine": 43 },
+    "type": "definition",
+    "title": "Independent Set",
+    "content": "An independent set S in graph G is a set of vertices with no edges between them: for all u,v in S, u and v are not adjacent. Independent sets are central to graph coloring - a k-coloring partitions vertices into k independent sets.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-73-independence-num",
+    "proofId": "erdos-73",
+    "range": { "startLine": 45, "endLine": 47 },
+    "type": "definition",
+    "title": "Independence Number",
+    "content": "The independence number α(G) is the size of the largest independent set in G. For bipartite graphs with parts A and B, α(G) ≥ max(|A|, |B|) ≥ n/2. This is why bipartite graphs satisfy the k=0 condition.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-73-condition",
+    "proofId": "erdos-73",
+    "range": { "startLine": 62, "endLine": 66 },
+    "type": "definition",
+    "title": "The k-Independence Condition",
+    "content": "A graph satisfies the k-independence condition if every induced subgraph H on n vertices has an independent set of size ≥ (n-k)/2. This 'slackened bipartite condition' allows independence number to be slightly less than n/2.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-73-bipartite",
+    "proofId": "erdos-73",
+    "range": { "startLine": 74, "endLine": 78 },
+    "type": "definition",
+    "title": "Bipartite Graph",
+    "content": "A graph is bipartite if its vertices can be partitioned into two independent sets A and B, with all edges going between A and B. Equivalently: G is bipartite iff G has no odd cycles. This characterization is key to the problem.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-73-odd-cycle",
+    "proofId": "erdos-73",
+    "range": { "startLine": 80, "endLine": 86 },
+    "type": "theorem",
+    "title": "Odd Cycle Characterization",
+    "content": "A graph is bipartite if and only if it contains no odd cycles. An odd cycle on 2m+1 vertices has independence number exactly m (you can take every other vertex). Since m < (2m+1)/2, odd cycles violate the k=0 condition.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-73-trivial",
+    "proofId": "erdos-73",
+    "range": { "startLine": 102, "endLine": 113 },
+    "type": "theorem",
+    "title": "The Trivial k=0 Case",
+    "content": "If every subgraph has an independent set of size ≥ n/2, then G is bipartite. Proof: If G isn't bipartite, it has an odd cycle C_{2m+1}. But α(C_{2m+1}) = m < (2m+1)/2, contradiction. Reed noted this case is trivial.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-73-almost",
+    "proofId": "erdos-73",
+    "range": { "startLine": 117, "endLine": 120 },
+    "type": "definition",
+    "title": "Almost Bipartite",
+    "content": "A graph is f(k)-almost-bipartite if removing at most f(k) vertices leaves a bipartite graph. The key question: does f(k) depend only on k, not on graph size? Reed proved yes - there's a universal bound depending only on k.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-73-deficiency",
+    "proofId": "erdos-73",
+    "range": { "startLine": 122, "endLine": 124 },
+    "type": "definition",
+    "title": "Bipartite Deficiency",
+    "content": "The bipartite deficiency of G is the minimum number of vertices to remove to make G bipartite. This measures 'how far' G is from being bipartite. Reed's theorem bounds this by f(k) when the k-independence condition holds.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-73-reed",
+    "proofId": "erdos-73",
+    "range": { "startLine": 133, "endLine": 145 },
+    "type": "axiom",
+    "title": "Reed's Theorem (1999)",
+    "content": "For every k ≥ 0, there exists f(k) such that: if every subgraph of G on n vertices has an independent set of size ≥ (n-k)/2, then G is f(k)-almost-bipartite. The bound f(k) is independent of |V(G)| - this is the surprising part.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-73-main",
+    "proofId": "erdos-73",
+    "range": { "startLine": 147, "endLine": 151 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "Combining definitions: If G satisfies the k-independence condition, then there exists a set S of at most f(k) vertices such that G \\ S is bipartite. This completely answers Erdős's question in the affirmative.",
+    "significance": "critical"
+  },
+  {
+    "id": "ann-73-k0",
+    "proofId": "erdos-73",
+    "range": { "startLine": 155, "endLine": 168 },
+    "type": "theorem",
+    "title": "Special Case: k=0",
+    "content": "When k=0, Reed's bound is f(0)=0. This means the strict condition (independence ≥ n/2 for all subgraphs) implies EXACT bipartiteness - no vertices need removal. This matches the 'trivial case' Reed mentioned.",
+    "significance": "key"
+  },
+  {
+    "id": "ann-73-triangle",
+    "proofId": "erdos-73",
+    "range": { "startLine": 172, "endLine": 184 },
+    "type": "definition",
+    "title": "Triangle Example",
+    "content": "K_3 (the triangle) is the simplest non-bipartite graph. It has 3 vertices, independence number 1, so 2*1 < 3 = n. It violates the k=0 condition. But it's 1-almost-bipartite: removing any vertex leaves K_2, which is bipartite.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-73-bounds",
+    "proofId": "erdos-73",
+    "range": { "startLine": 188, "endLine": 189 },
+    "type": "theorem",
+    "title": "Explicit Bounds",
+    "content": "Reed's proof gives f(k) ≤ 2^k as an explicit (but likely not optimal) bound. The optimal growth rate of f(k) remains of interest - is it polynomial? Linear? The proof technique gives exponential, but better may be possible.",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-73-chromatic",
+    "proofId": "erdos-73",
+    "range": { "startLine": 200, "endLine": 207 },
+    "type": "theorem",
+    "title": "Chromatic Number Connection",
+    "content": "Bipartite graphs are exactly 2-colorable. If G is f(k)-almost-bipartite, then χ(G) ≤ f(k) + 2: color the bipartite part with 2 colors, and give each removed vertex its own color. This connects independence conditions to coloring.",
+    "significance": "key"
+  }
+]
