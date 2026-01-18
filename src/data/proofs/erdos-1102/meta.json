@@ -74,17 +74,24 @@
       "summary": "The set of squarefree numbers with examples and density constant."
     },
     {
-      "id": "main-results",
-      "title": "Main Results (van Doorn-Tao)",
+      "id": "main-axioms",
+      "title": "Main Axioms (van Doorn-Tao)",
       "startLine": 93,
-      "endLine": 136,
-      "summary": "Density bounds for P and Q sequences stated as axioms."
+      "endLine": 129,
+      "summary": "Density bounds for P and Q sequences stated as axioms from the 2025 paper."
+    },
+    {
+      "id": "derived-theorems",
+      "title": "Derived Theorems",
+      "startLine": 131,
+      "endLine": 152,
+      "summary": "Theorems combining the axioms to state that squarefree numbers form an optimal Q-sequence."
     },
     {
       "id": "special-sequences",
       "title": "Special Sequences",
-      "startLine": 138,
-      "endLine": 155,
+      "startLine": 154,
+      "endLine": 171,
       "summary": "Results for 2ⁿ ± 1 and n! ± 1."
     }
   ],

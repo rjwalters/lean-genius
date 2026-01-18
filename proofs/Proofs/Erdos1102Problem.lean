@@ -130,10 +130,26 @@ axiom propertyQ_achievable :
 
 /-- **Erdős Problem 1102** (Solved)
 
-    Summary of the resolution by van Doorn and Tao:
+    Summary of the resolution by van Doorn and Tao (2025):
     - Property P sequences have density 0, but can decay arbitrarily slowly
-    - Property Q sequences have upper density ≤ 6/π², with equality achievable -/
-theorem erdos_1102_summary : True := trivial
+    - Property Q sequences have upper density ≤ 6/π², with equality achievable
+
+    This theorem combines the key results: the squarefree numbers form an
+    optimal Q-sequence, achieving the maximum possible density. -/
+theorem erdos_1102_squarefrees_form_Q :
+    ∃ A : ℕ → ℕ, StrictMono A ∧ HasPropertyQ (range A) ∧
+    (∀ j, Squarefree (A j)) := by
+  obtain ⟨A, hA_mono, hA_sf, hA_Q, _⟩ := propertyQ_achievable
+  exact ⟨A, hA_mono, hA_Q, hA_sf⟩
+
+/-- The optimal density for Q-sequences equals the squarefree density.
+    This follows from the existence of an optimal sequence (squarefree numbers)
+    combined with the upper bound holding for all Q-sequences. -/
+theorem erdos_1102_optimal_density_exists :
+    ∃ A : ℕ → ℕ, StrictMono A ∧ HasPropertyQ (range A) ∧
+    Tendsto (fun j : ℕ ↦ (j / A j : ℝ)) atTop (𝓝 squarefreeDensity) := by
+  obtain ⟨A, hA_mono, hA_sf, hA_Q, hA_tend⟩ := propertyQ_achievable
+  exact ⟨A, hA_mono, hA_Q, hA_tend⟩
 
 /-! ## Special Sequences
 

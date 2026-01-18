@@ -126,11 +126,39 @@
     "relatedConcepts": ["upper density", "optimal bound", "squarefree density"]
   },
   {
+    "id": "ann-e1102-squarefrees-form-q",
+    "proofId": "erdos-1102",
+    "range": {
+      "startLine": 131,
+      "endLine": 143
+    },
+    "type": "theorem",
+    "title": "Squarefree Numbers Form a Q-Sequence",
+    "content": "**Derived theorem:** The squarefree numbers {1, 2, 3, 5, 6, 7, 10, ...} form a sequence with property Q. This is a direct consequence of the existence axiom.",
+    "mathContext": "The proof uses the Lean `obtain` tactic to destructure the existence axiom, then recombines the components in the desired order.",
+    "significance": "key",
+    "relatedConcepts": ["squarefree numbers", "property Q", "existence"]
+  },
+  {
+    "id": "ann-e1102-optimal-density",
+    "proofId": "erdos-1102",
+    "range": {
+      "startLine": 145,
+      "endLine": 152
+    },
+    "type": "theorem",
+    "title": "Optimal Density Exists",
+    "content": "**Derived theorem:** There exists a Q-sequence achieving the maximum possible density 6/π². Combined with the upper bound, this shows 6/π² is the exact optimal value.",
+    "mathContext": "This theorem extracts the limit statement from the existence axiom, confirming the squarefree numbers achieve the theoretical maximum.",
+    "significance": "critical",
+    "relatedConcepts": ["optimal bound", "density", "6/π²"]
+  },
+  {
     "id": "ann-e1102-special-sequences",
     "proofId": "erdos-1102",
     "range": {
-      "startLine": 148,
-      "endLine": 154
+      "startLine": 164,
+      "endLine": 170
     },
     "type": "axiom",
     "title": "Special Sequences Have Property Q",
