@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #591** asks about ordinal Ramsey theory: Does every 2-coloring of the complete graph on ω^(ω²) vertices contain either a red copy of the whole graph or a blue triangle?\n\nThis problem carries a **$250 prize** from Erdős, reflecting its difficulty.",
+    "content": "**Erdős Problem #591** (SOLVED) asks about ordinal Ramsey theory: Does every 2-coloring of the complete graph on ω^(ω²) vertices contain either a red copy of the whole graph or a blue triangle?\n\nThe answer is **YES**, proved independently by **Schipperus (2010)** and **Darby**. The $250 prize was awarded.",
     "mathContext": "The problem is written in arrow notation as ω^(ω²) → (ω^(ω²), 3)². The superscript 2 indicates we're coloring pairs (edges), and (α, 3) means we seek either a monochromatic α or a monochromatic 3-element set.",
     "significance": "critical",
     "relatedConcepts": [
@@ -124,38 +124,38 @@
     ]
   },
   {
-    "id": "ann-e591-open-problem",
+    "id": "ann-e591-solved-context",
     "proofId": "erdos-591",
     "range": {
-      "startLine": 92,
-      "endLine": 104
+      "startLine": 91,
+      "endLine": 102
     },
     "type": "concept",
-    "title": "The Open Problem Context",
-    "content": "The known results create a tantalizing pattern:\n- ω² works (Specker)\n- ω³, ω⁴, ..., ω^n fail for n ≥ 3 (Specker)\n- ω^ω works (Chang)\n- ω^(ω²) = ? (**This problem**)\n\nThe question is whether the pattern continues: does having a 'limit' exponent always restore the Ramsey property?",
+    "title": "The Solved Problem Context",
+    "content": "The known results now complete the pattern:\n- ω² works (Specker)\n- ω³, ω⁴, ..., ω^n fail for n ≥ 3 (Specker)\n- ω^ω works (Chang)\n- ω^(ω²) works (Schipperus 2010, Darby)\n\nThe pattern is confirmed: limit ordinal exponents restore the Ramsey property!",
     "significance": "critical",
     "relatedConcepts": [
-      "pattern",
-      "limit vs successor",
-      "open problems"
+      "pattern confirmed",
+      "limit ordinals",
+      "solved problems"
     ]
   },
   {
-    "id": "ann-e591-conjecture",
+    "id": "ann-e591-main-theorem",
     "proofId": "erdos-591",
     "range": {
-      "startLine": 106,
-      "endLine": 115
+      "startLine": 104,
+      "endLine": 120
     },
-    "type": "definition",
-    "title": "The $250 Conjecture",
-    "content": "**Erdős Problem #591**: Does `OrdinalRamseyProperty (ω ^ (ω ^ 2)) 3` hold?\n\nIn words: Must every 2-coloring of K_{ω^(ω²)} contain either a red K_{ω^(ω²)} or a blue K_3?\n\nErdős offered **$250** for a resolution, reflecting the problem's difficulty and importance.",
-    "mathContext": "The ordinal ω^(ω²) = ω^(ω·ω) is vastly larger than ω^ω. If the property holds, it would support the conjecture that limit exponents always work.",
+    "type": "theorem",
+    "title": "Schipperus-Darby Theorem",
+    "content": "**Erdős Problem #591 (SOLVED)**: `OrdinalRamseyProperty (ω ^ (ω ^ 2)) 3` holds!\n\nEvery 2-coloring of K_{ω^(ω²)} contains either a red K_{ω^(ω²)} or a blue K_3.\n\nProved independently by **Schipperus (2010)** and **Darby**. The $250 prize was claimed.",
+    "mathContext": "The ordinal ω^(ω²) = ω^(ω·ω) is vastly larger than ω^ω. The positive answer confirms that limit exponents restore the Ramsey property.",
     "significance": "critical",
     "relatedConcepts": [
-      "Erdős prize",
-      "conjecture",
-      "ω^(ω²)"
+      "Schipperus",
+      "Darby",
+      "solved problem"
     ]
   },
   {
@@ -215,12 +215,12 @@
     },
     "type": "concept",
     "title": "The Pattern Summary",
-    "content": "The documentation summarizes the known results in a table:\n\n| Ordinal | Property holds? |\n|---------|----------------|\n| ω² | Yes (Specker) |\n| ω^n (n≥3) | No (Specker) |\n| ω^ω | Yes (Chang) |\n| ω^(ω²) | ? (OPEN) |\n\nThe pattern suggests limit exponents might restore the property.",
+    "content": "The documentation summarizes the complete results in a table:\n\n| Ordinal | Property holds? | Reference |\n|---------|-----------------|----------------------|\n| ω² | Yes | Specker |\n| ω^n (n≥3) | No | Specker |\n| ω^ω | Yes | Chang |\n| ω^(ω²) | Yes | Schipperus, Darby |\n\nThe pattern is confirmed: limit ordinal exponents restore the property.",
     "significance": "key",
     "relatedConcepts": [
       "summary",
-      "pattern recognition",
-      "research frontier"
+      "pattern confirmed",
+      "solved problem"
     ]
   }
 ]

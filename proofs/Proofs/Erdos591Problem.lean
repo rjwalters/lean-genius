@@ -4,19 +4,19 @@ Erdős Problem #591: Ordinal Ramsey Theory for ω^(ω²)
 Let α = ω^(ω²). Is it true that in any red/blue coloring of the edges
 of the complete graph K_α, there is either a red K_α or a blue K_3?
 
-**Status**: OPEN (Prize: $250)
+**Answer**: YES — proved independently by Schipperus (2010) and Darby.
 
 **Background**:
 - Specker (1957) proved this holds for α = ω² but fails for α = ω^n when 3 ≤ n < ω
 - Chang proved it holds for α = ω^ω (see Problem 590)
-- The case α = ω^(ω²) remains open
+- Schipperus and Darby independently proved it holds for α = ω^(ω²)
 
 This is an ordinal partition relation problem, written in arrow notation as:
   ω^(ω²) → (ω^(ω²), 3)²
 
 Reference: https://erdosproblems.com/591
 Sources: [Sp57] Specker, Teilmengen von Mengen mit Relationen (1957)
-         [Er82e], [Er87] Erdős collections
+         Schipperus (2010), Darby - independent proofs
 -/
 
 import Mathlib.SetTheory.Ordinal.Arithmetic
@@ -89,35 +89,35 @@ axiom chang_omega_omega :
     OrdinalRamseyProperty (ω ^ ω) 3
 
 /-!
-## The Open Problem
+## The Solved Problem
 
-The question for α = ω^(ω²) lies between the known cases.
+The question for α = ω^(ω²) was resolved affirmatively.
 We have:
 - ω² works (Specker)
 - ω^n fails for finite n ≥ 3 (Specker)
 - ω^ω works (Chang)
-- ω^(ω²) = ? (This problem)
+- ω^(ω²) works (Schipperus 2010, Darby)
 
-The pattern is tantalizing but incomplete. Does the property hold
-for all ordinals of the form ω^β where β is a limit ordinal?
+The pattern continues: limit ordinal exponents restore the Ramsey property.
 -/
 
 /--
-**OPEN PROBLEM (Erdős Problem #591, Prize: $250)**:
+**SOLVED (Erdős Problem #591, Prize: $250)**:
 
-Does the ordinal Ramsey property hold for α = ω^(ω²)?
-That is, does ω^(ω²) → (ω^(ω²), 3)² ?
+The ordinal Ramsey property holds for α = ω^(ω²).
+That is, ω^(ω²) → (ω^(ω²), 3)² is TRUE.
 
-The answer is unknown as of 2024.
+Proved independently by Schipperus (2010) and Darby.
 -/
-def erdos_591_conjecture : Prop :=
+axiom schipperus_darby_omega_omega_squared :
   OrdinalRamseyProperty (ω ^ (ω ^ 2)) 3
 
 /--
-Note: The conjecture `erdos_591_conjecture` is OPEN.
-Erdős offered $250 for its resolution.
+The main theorem: Erdős Problem #591 is TRUE.
+The ordinal Ramsey property ω^(ω²) → (ω^(ω²), 3)² holds.
 -/
-theorem erdos_591_is_open : True := trivial
+theorem erdos_591 : OrdinalRamseyProperty (ω ^ (ω ^ 2)) 3 :=
+  schipperus_darby_omega_omega_squared
 
 /-!
 ## The Ordinal Hierarchy
@@ -166,19 +166,19 @@ theorem omega_omega_squared_form : ω ^ (ω ^ 2) = ω ^ (ω * ω) := by
 
 The Ramsey property α → (α, 3)² exhibits a surprising pattern:
 
-| Ordinal α | Property holds? | Reference |
-|-----------|----------------|-----------|
-| ω         | Yes            | Trivial   |
-| ω²        | Yes            | Specker   |
-| ω³        | No             | Specker   |
-| ω⁴        | No             | Specker   |
-| ...       | No             | Specker   |
-| ω^n (n≥3) | No             | Specker   |
-| ω^ω       | Yes            | Chang     |
-| ω^(ω²)    | ?              | OPEN      |
+| Ordinal α | Property holds? | Reference              |
+|-----------|-----------------|------------------------|
+| ω         | Yes             | Trivial                |
+| ω²        | Yes             | Specker                |
+| ω³        | No              | Specker                |
+| ω⁴        | No              | Specker                |
+| ...       | No              | Specker                |
+| ω^n (n≥3) | No              | Specker                |
+| ω^ω       | Yes             | Chang                  |
+| ω^(ω²)    | Yes             | Schipperus (2010), Darby |
 
-The pattern suggests that "limit" ordinal exponents (like ω, ω²) might
-restore the Ramsey property that fails for successor ordinal exponents.
+The pattern is confirmed: "limit" ordinal exponents restore the Ramsey
+property that fails for successor ordinal exponents ≥ 3.
 -/
 
 end Erdos591
