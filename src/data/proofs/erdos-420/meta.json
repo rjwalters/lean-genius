@@ -1,33 +1,152 @@
 {
   "id": "erdos-420",
-  "title": "Erdős Problem #420",
+  "title": "Erdős Problem #420: Divisor Function Ratios for Factorials",
   "slug": "erdos-420",
-  "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... counts the number of divisors of ... then let\\[F(f,n)={\\tau(n!)}.\\]Is it true that\\[\\lim_{n\\to \\infty}F((\\log n)^C,n)=...",
+  "description": "For F(f,n) = τ((n+⌊f(n)⌋)!)/τ(n!), study when F→∞ and when F is dense in (1,∞). Partially solved by EGIP96: liminf F(c log n, n) = 1 and lim F(n^{4/9}, n) = ∞.",
   "meta": {
-    "author": "Unknown",
+    "author": "Erdős-Graham-Ivić-Pomerance (1996)",
     "sourceUrl": "https://erdosproblems.com/420",
-    "date": "",
-    "status": "pending",
+    "date": "1996",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos420Problem.lean",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisor-function",
+      "factorials",
+      "prime-gaps",
+      "partially-solved"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 420,
     "erdosUrl": "https://erdosproblems.com/420",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "Set of divisors of a natural number",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for limits at infinity",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "tau definition: divisor counting function",
+      "tauFactorial definition: τ(n!)",
+      "F definition: the ratio τ((n+k)!)/τ(n!)",
+      "sqrt_gives_infinity axiom: easy case f = √n",
+      "liminf_log_equals_one axiom: EGIP96 result",
+      "four_ninths_gives_infinity axiom: EGIP96 result",
+      "small_f_gives_one_almost_all axiom: almost all n result",
+      "bounded_gaps_implies_limsup_infinity axiom: prime gap connection",
+      "zhang_bounded_gaps axiom: Zhang's 2013 theorem",
+      "bounded_gaps_consequence theorem: corollary of Zhang",
+      "cramer_implies_limit_infinity axiom: Cramér connection"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #420 from erdosproblems.com.",
-    "problemStatement": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $\\tau(n)$ counts the number of divisors of $n$ then let\\[F(f,n)=\\frac{\\tau((n+\\lfloor f(n)\\rfloor)!)}{\\tau(n!)}.\\]Is it true that\\[\\lim_{n\\to \\infty}F((\\log n)^C,n)=\\infty\\]for large $C$?\n\nIs it true that $F(\\log n,n)$ is everywhere dense in $(1,\\infty)$?\n\nMore generally, if $f(n)\\leq \\log n$ is a monotonic function such that $f(n)\\to \\infty$ as $n\\to \\infty$, then is $F(f,n)$ everywhere dense?\n\n\n\nErd\\H{o}s and Graham write that it is easy to show that $\\lim F(n^{1/2},n)=\\infty$, and in fact the $n^{1/2}$ can be replaced by $n^{1/2-c}$ for some small constant $c>0$.\n\nErd\\H{o}s, Graham, Ivi\\'{c}, and Pomerance \\cite{EGIP96} have proved that\\[\\liminf F(c\\log n, n) = 1\\]for any $c>0$, and\\[\\lim F(n^{4/9},n)=\\infty.\\](The exponent $4/9$ can be improved slightly.) They also prove that, if $f(n)=o((\\log n)^2)$, then for almost all $n$\\[F(f,n)\\sim 1.\\]van Doorn notes in the comments that the existence of infinitely many bounded prime gaps implies\\[\\limsup_{n\\to \\infty}F(g(n),n)=\\infty\\]for any $g(n)\\to \\infty$, and that Cram\\'{e}r's conjecture implies\\[\\lim F(g(n)(\\log n)^2, n)=\\infty\\]for any $g(n)\\to \\infty$>\n\n\n\n\nReferences\n\n\n[EGIP96] Erd\\H{o}s, Paul and Graham, S. W. and Ivi\\'c, Aleksandar and\nPomerance, Carl, On the number of divisors of {$n!$}. (1996), 337--355.\n\n\nBack to the problem",
-    "proofStrategy": "TODO: Document proof strategy",
-    "keyInsights": []
+    "historicalContext": "**Divisor Functions and Factorials**\n\nThis problem studies how the divisor function τ(n) = number of divisors of n behaves when applied to factorials. The ratio F(f,n) = τ((n+⌊f(n)⌋)!)/τ(n!) measures how much τ grows when we extend from n! to a slightly larger factorial.\n\n**Key Paper:**\nErdős, Graham, Ivić, and Pomerance (1996) established the fundamental bounds in their paper \"On the number of divisors of n!\". They showed that:\n- lim F(n^{1/2}, n) = ∞ (and n^{1/2} can be improved to n^{1/2-c})\n- liminf F(c log n, n) = 1 for any c > 0\n- lim F(n^{4/9}, n) = ∞\n\n**Connection to Prime Gaps:**\nVan Doorn noted that bounded prime gaps (now known to exist by Zhang's theorem) imply limsup F(g(n), n) = ∞ for any g(n) → ∞. Cramér's conjecture would give even stronger results.",
+    "problemStatement": "**The Problem (Partially Solved)**\n\nLet $\\tau(n)$ count the divisors of $n$ and define:\n$$F(f,n) = \\frac{\\tau((n+\\lfloor f(n)\\rfloor)!)}{\\tau(n!)}$$\n\n**Question 1:** Is $\\lim_{n\\to\\infty} F((\\log n)^C, n) = \\infty$ for large $C$?\n\n**Question 2:** Is $F(\\log n, n)$ everywhere dense in $(1,\\infty)$?\n\n**Question 3:** If $f(n) \\leq \\log n$ is monotonic with $f(n) \\to \\infty$, is $F(f,n)$ everywhere dense?\n\n**Known Results:**\n- $\\liminf F(c\\log n, n) = 1$ for any $c > 0$ (EGIP96)\n- $\\lim F(n^{4/9}, n) = \\infty$ (EGIP96)\n- If $f(n) = o((\\log n)^2)$, then $F(f,n) \\sim 1$ for almost all $n$",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Divisor Function:** Define τ using Mathlib's Nat.divisors.card\n\n2. **Factorial Divisors:** Define tauFactorial(n) = τ(n!)\n\n3. **The F Function:** Formalize F(f,n) = τ((n+⌊f(n)⌋)!)/τ(n!)\n\n4. **EGIP96 Results:** State key theorems as axioms:\n   - liminf behavior for logarithmic f\n   - limit behavior for polynomial f (n^{4/9})\n   - Almost-all behavior for small f\n\n5. **Prime Gap Connections:** Formalize Zhang's theorem and its implications for F\n\n6. **Axiom Justification:** Full proofs require analytic number theory beyond Mathlib scope.",
+    "keyInsights": [
+      "**Divisor Growth:** τ(n!) encodes prime factorization structure via Legendre's formula",
+      "**Threshold Behavior:** There's a transition between f where F→1 and f where F→∞",
+      "**EGIP96 Gap:** The behavior between (log n)^C and n^{4/9} remains partially open",
+      "**Prime Connection:** F behavior is intimately connected to prime gap distribution",
+      "**Zhang Consequence:** Bounded prime gaps imply limsup F(g(n), n) = ∞ for any g→∞",
+      "**Almost-All Results:** For small f = o((log n)²), F(f,n) ≈ 1 for almost all n"
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "divisor-function",
+      "title": "The Divisor Function",
+      "summary": "tau definition, tau_one, tau_prime, tau_multiplicative",
+      "startLine": 40,
+      "endLine": 69
+    },
+    {
+      "id": "factorial-divisors",
+      "title": "Divisor Function of Factorials",
+      "summary": "tauFactorial definition, tau_factorial_asymptotic",
+      "startLine": 71,
+      "endLine": 90
+    },
+    {
+      "id": "f-function",
+      "title": "The F Function",
+      "summary": "F definition measuring divisor count ratios",
+      "startLine": 92,
+      "endLine": 110
+    },
+    {
+      "id": "easy-result",
+      "title": "Easy Result - F(√n, n) → ∞",
+      "summary": "sqrt_gives_infinity, subhalf_exponent_works axioms",
+      "startLine": 112,
+      "endLine": 134
+    },
+    {
+      "id": "egip96-results",
+      "title": "EGIP96 Results",
+      "summary": "liminf_log_equals_one, four_ninths_gives_infinity, small_f_gives_one_almost_all",
+      "startLine": 136,
+      "endLine": 173
+    },
+    {
+      "id": "prime-gaps",
+      "title": "Connection to Prime Gaps",
+      "summary": "bounded_gaps_implies_limsup_infinity, zhang_bounded_gaps, bounded_gaps_consequence, cramer_implies_limit_infinity",
+      "startLine": 175,
+      "endLine": 223
+    },
+    {
+      "id": "open-questions",
+      "title": "Open Questions",
+      "summary": "Three partially open questions about density and limits",
+      "startLine": 225,
+      "endLine": 255
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "summary": "erdos_420 theorem, egip96_summary",
+      "startLine": 257,
+      "endLine": 282
+    },
+    {
+      "id": "significance",
+      "title": "Mathematical Significance",
+      "summary": "Why this problem is interesting, tau factorial formula",
+      "startLine": 284,
+      "endLine": 316
+    }
+  ],
   "conclusion": {
-    "summary": "TODO: Add proof summary",
-    "implications": "",
-    "openQuestions": []
+    "summary": "Erdős Problem #420 studies the ratio F(f,n) = τ((n+⌊f(n)⌋)!)/τ(n!) as a function of f. The EGIP96 paper established key results: liminf F(c log n, n) = 1 and lim F(n^{4/9}, n) = ∞. The density question for F(log n, n) in (1,∞) remains open. The problem has deep connections to prime gap theory, with Zhang's bounded gaps theorem implying consequences for F.",
+    "implications": "**Broader Impact**\n\n1. **Divisor Theory:** Advances understanding of how τ grows for factorials.\n\n2. **Prime Distribution:** F behavior encodes information about prime gaps.\n\n3. **Almost-All Results:** The density-0 exceptional set phenomenon appears frequently.\n\n4. **Connection to Cramér:** Resolution would shed light on prime gap conjectures.",
+    "openQuestions": [
+      "Does lim F((log n)^C, n) = ∞ for some/all large C?",
+      "Is {F(log n, n) : n ∈ ℕ} dense in (1, ∞)?",
+      "For monotonic f ≤ log n with f → ∞, is F(f,n) dense?",
+      "Precise threshold f* where lim F(f*, n) first becomes ∞",
+      "Quantitative versions of almost-all results"
+    ]
   }
 }
