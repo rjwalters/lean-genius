@@ -6634,17 +6634,24 @@
   },
   {
     "id": "erdos-420",
-    "title": "Erdős Problem #420",
+    "title": "Erdős Problem #420: Divisor Function Ratios for Factorials",
     "slug": "erdos-420",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf ... counts the number of divisors of ... then let\\[F(f,n)={\\tau(n!)}.\\]Is it true that\\[\\lim_{n\\to \\infty}F((\\log n)^C,n)=...",
-    "status": "pending",
-    "badge": "mathlib",
+    "description": "For F(f,n) = τ((n+⌊f(n)⌋)!)/τ(n!), study when F→∞ and when F is dense in (1,∞). Partially solved by EGIP96: liminf F(c log n, n) = 1 and lim F(n^{4/9}, n) = ∞.",
+    "status": "complete",
+    "badge": "axiom",
     "tags": [
-      "erdos"
+      "erdos",
+      "number-theory",
+      "divisor-function",
+      "factorials",
+      "prime-gaps",
+      "partially-solved"
     ],
+    "dateAdded": "2026-01-18",
     "erdosNumber": 420,
+    "mathlibCount": 4,
     "sorries": 0,
-    "annotationCount": 0
+    "annotationCount": 15
   },
   {
     "id": "erdos-425",
