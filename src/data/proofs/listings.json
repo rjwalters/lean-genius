@@ -8473,7 +8473,7 @@
     "id": "erdos-591",
     "title": "Erdős Problem #591: Ordinal Ramsey Theory for ω^(ω²)",
     "slug": "erdos-591",
-    "description": "Does the ordinal Ramsey property ω^(ω²) → (ω^(ω²), 3)² hold? That is, must every 2-coloring of K_{ω^(ω²)} contain a red copy of itself or a blue triangle?",
+    "description": "The ordinal Ramsey property ω^(ω²) → (ω^(ω²), 3)² holds. Proved independently by Schipperus (2010) and Darby.",
     "status": "complete",
     "badge": "axiom",
     "tags": [
@@ -8482,7 +8482,7 @@
       "ramsey-theory",
       "ordinals",
       "combinatorics",
-      "open-problem"
+      "solved"
     ],
     "dateAdded": "2026-01-16",
     "erdosNumber": 591,
@@ -12392,17 +12392,21 @@
   },
   {
     "id": "erdos-880",
-    "title": "Erdős Problem #880",
+    "title": "Erdős Problem #880: Gaps in Restricted Additive Bases",
     "slug": "erdos-880",
-    "description": "Forum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet ... be an additive basis of order .... Let ... be the set of integers which are the sum of ... or fewer distinct .... Is ...",
+    "description": "If A is an additive basis of order k, are gaps in the restricted sumset k×A (sums of distinct elements) bounded? Answer: YES for k=2 (gaps ≤ 2), NO for k≥3. Solved by Hegyvári-Hennecart-Plagne (2007).",
     "status": "pending",
     "badge": "mathlib",
     "tags": [
-      "erdos"
+      "erdos",
+      "additive-combinatorics",
+      "number-theory",
+      "additive-bases",
+      "restricted-sums"
     ],
     "erdosNumber": 880,
-    "sorries": 0,
-    "annotationCount": 0
+    "sorries": 4,
+    "annotationCount": 17
   },
   {
     "id": "erdos-882",
